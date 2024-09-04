@@ -1,3 +1,5 @@
+import SignIn from '~/lib/components/Authentication/SignIn';
+
 export default function Home() {
-  return <p>Sign in</p>;
+  return <SignIn />;
 }

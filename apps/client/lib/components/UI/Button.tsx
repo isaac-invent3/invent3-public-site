@@ -1,4 +1,4 @@
-import { Button, Link as ChakraLink } from '@chakra-ui/react';
+import { Button as ChakraButton, Link as ChakraLink } from '@chakra-ui/react';
 import NextLink from 'next/link';
 
 interface ButtonProps {
@@ -10,9 +10,10 @@ interface ButtonProps {
   customStyles?: { [key: string]: unknown };
   isDisabled?: boolean;
   href?: string;
+  variant?: 'primary' | 'secondary' | 'outline';
 }
 
-const PrimaryButton = (props: ButtonProps) => {
+const Button = (props: ButtonProps) => {
   const {
     children,
     handleClick,
@@ -20,16 +21,25 @@ const PrimaryButton = (props: ButtonProps) => {
     type,
     isLoading,
     loadingText = 'Submitting...',
+    variant = 'primary',
     isDisabled,
     href,
   } = props;
 
   const buttonElement = (
-    <Button
+    <ChakraButton
       type={type || 'button'}
       isDisabled={isLoading || isDisabled}
-      bgColor="primary.500"
-      color="secondary.pale.500"
+      borderWidth={variant === 'outline' ? '1px' : 'none'}
+      borderColor="primary.500"
+      bgColor={
+        variant === 'outline'
+          ? 'white'
+          : variant === 'primary'
+            ? 'primary.500'
+            : '#F6F6F6'
+      }
+      color={variant === 'primary' ? 'secondary.pale.500' : 'primary.main'}
       rounded="8px"
       fontSize="14px"
       lineHeight="16.63px"
@@ -40,18 +50,30 @@ const PrimaryButton = (props: ButtonProps) => {
       isLoading={isLoading}
       loadingText={loadingText}
       _focus={{ outline: 'none' }}
-      _hover={{ bgColor: 'primary.accent' }}
-      _active={{ bgColor: 'primary.accent' }}
+      _hover={{
+        bgColor:
+          variant === 'outline'
+            ? 'primary.500'
+            : variant === 'primary'
+              ? 'primary.accent'
+              : 'none',
+        color: variant === 'outline' ? 'secondary.pale.500' : 'initial',
+      }}
+      _active={{
+        bgColor:
+          variant === 'primary' || variant === 'outline'
+            ? 'primary.accent'
+            : 'none',
+      }}
       onClick={handleClick}
       {...customStyles}
     >
       {children}
-    </Button>
+    </ChakraButton>
   );
 
   // If href is provided, render the button as a link
   if (href) {
-    // Internal link (using Next.js's Link for routing)
     return (
       <NextLink href={href} passHref>
         <ChakraLink _hover={{ textDecoration: 'none' }}>
@@ -64,4 +86,4 @@ const PrimaryButton = (props: ButtonProps) => {
   return buttonElement;
 };
 
-export default PrimaryButton;
+export default Button;

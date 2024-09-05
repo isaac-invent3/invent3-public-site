@@ -1,9 +1,10 @@
-import { Flex, Text } from '@chakra-ui/react';
+import { Flex, Text, useDisclosure } from '@chakra-ui/react';
 import { createColumnHelper } from '@tanstack/react-table';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Asset } from '~/lib/interfaces/asset.interfaces';
 import DataTable from '../UI/Table';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
+import AssetDetail from './AssetDetail';
 
 const Status = (status: number) => {
   return <Text color="black">{status}</Text>;
@@ -34,6 +35,18 @@ const ListView = (props: ListViewProps) => {
   // eslint-disable-next-line no-unused-vars
   const [selectedAsset, setselectedAsset] = useState<Asset | null>(null);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  useEffect(() => {
+    if (selectedAsset) {
+      onOpen();
+    }
+  }, [selectedAsset]);
+
+  const handleClose = () => {
+    setselectedAsset(null);
+    onClose();
+  };
 
   const columns = useMemo(
     () => [
@@ -93,6 +106,13 @@ const ListView = (props: ListViewProps) => {
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
       />
+      {selectedAsset && (
+        <AssetDetail
+          data={selectedAsset}
+          onClose={handleClose}
+          isOpen={isOpen}
+        />
+      )}
     </Flex>
   );
 };

@@ -24,6 +24,8 @@ type ExtendedColors = {
   neutral?: {
     [key: number]: string;
   };
+  brand?: CustomColorShades;
+  error?: CustomColorShades;
 };
 
 /** extend additional color here */
@@ -53,6 +55,13 @@ const extendedColors: DeepPartial<ExtendedColors> = {
     600: '#838383',
     700: '#656565',
     800: '#42403D',
+  },
+  brand: {
+    500: '#98FEFE',
+  },
+  error: {
+    200: '#FFDCDC',
+    500: '#FD3C3C',
   },
 };
 

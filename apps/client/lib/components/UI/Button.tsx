@@ -1,4 +1,5 @@
-import { Button } from '@chakra-ui/react';
+import { Button, Link as ChakraLink } from '@chakra-ui/react';
+import NextLink from 'next/link';
 
 interface ButtonProps {
   children?: React.ReactNode;
@@ -8,7 +9,9 @@ interface ButtonProps {
   loadingText?: string;
   customStyles?: { [key: string]: unknown };
   isDisabled?: boolean;
+  href?: string;
 }
+
 const PrimaryButton = (props: ButtonProps) => {
   const {
     children,
@@ -18,9 +21,10 @@ const PrimaryButton = (props: ButtonProps) => {
     isLoading,
     loadingText = 'Submitting...',
     isDisabled,
+    href,
   } = props;
 
-  return (
+  const buttonElement = (
     <Button
       type={type || 'button'}
       isDisabled={isLoading || isDisabled}
@@ -31,25 +35,33 @@ const PrimaryButton = (props: ButtonProps) => {
       lineHeight="16.63px"
       fontWeight={500}
       p="16px"
-      height="50px"
+      minH="50px"
       width="full"
       isLoading={isLoading}
       loadingText={loadingText}
-      _focus={{
-        outline: 'none',
-      }}
-      _hover={{
-        bgColor: 'primary.accent',
-      }}
-      _active={{
-        bgColor: 'primary.accent',
-      }}
+      _focus={{ outline: 'none' }}
+      _hover={{ bgColor: 'primary.accent' }}
+      _active={{ bgColor: 'primary.accent' }}
       onClick={handleClick}
       {...customStyles}
     >
       {children}
     </Button>
   );
+
+  // If href is provided, render the button as a link
+  if (href) {
+    // Internal link (using Next.js's Link for routing)
+    return (
+      <NextLink href={href} passHref>
+        <ChakraLink _hover={{ textDecoration: 'none' }}>
+          {buttonElement}
+        </ChakraLink>
+      </NextLink>
+    );
+  }
+
+  return buttonElement;
 };
 
 export default PrimaryButton;

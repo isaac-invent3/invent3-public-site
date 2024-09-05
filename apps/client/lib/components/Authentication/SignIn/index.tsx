@@ -25,6 +25,7 @@ const SignIn = () => {
       >
         <VStack alignItems="flex-start" spacing="16px" mb="77px">
           <Heading
+            as="h2"
             fontWeight={800}
             fontSize="40px"
             lineHeight="47.52px"

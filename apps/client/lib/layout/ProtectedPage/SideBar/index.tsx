@@ -80,7 +80,7 @@ const SideBar = () => {
               onClick={() => setIsCollapse((prev) => !prev)}
             />
           </HStack>
-          <Box height="30px" width="full">
+          <Box height="25px" width="full">
             <Collapse
               in={!isCollapse}
               transition={{

@@ -2,7 +2,7 @@ import type { ComponentStyleConfig } from '@chakra-ui/react';
 
 const CustomText: ComponentStyleConfig = {
   baseStyle: {
-    fontWeight: 'normal',
+    fontWeight: 500,
   },
 };
 

@@ -35,4 +35,102 @@ const InfoIcon = createIcon({
   ),
 });
 
-export { InfoIcon };
+const ChevronLeftIcon = createIcon({
+  displayName: 'ChevronLeftIcon',
+  viewBox: '0 0 9 9',
+
+  path: (
+    <svg
+      width="9"
+      height="9"
+      viewBox="0 0 9 9"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g clipPath="url(#clip0_50_1679)">
+        <path
+          d="M5.77277 8.26935C5.86741 8.17471 5.86741 8.02127 5.77277 7.92663L3.60152 5.75537L5.77277 3.5841C5.86741 3.48946 5.86741 3.33604 5.77277 3.2414C5.67813 3.14676 5.52469 3.14676 5.43005 3.2414L3.08744 5.58402C2.9928 5.67866 2.9928 5.83208 3.08744 5.92672L5.43005 8.26935C5.52469 8.36399 5.67813 8.36399 5.77277 8.26935Z"
+          fill="currentColor"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0_50_1679">
+          <rect
+            width="7.75488"
+            height="7.75488"
+            fill="white"
+            transform="matrix(-4.37114e-08 -1 -1 4.37114e-08 8.50977 8.63232)"
+          />
+        </clipPath>
+      </defs>
+    </svg>
+  ),
+});
+
+const ChevronRightIcon = createIcon({
+  displayName: 'ChevronRightIcon',
+  viewBox: '0 0 9 9',
+
+  path: (
+    <svg
+      width="9"
+      height="9"
+      viewBox="0 0 9 9"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M3.24627 7.26935C3.15163 7.17471 3.15163 7.02127 3.24627 6.92663L5.41752 4.75537L3.24627 2.5841C3.15163 2.48946 3.15163 2.33604 3.24627 2.2414C3.34091 2.14676 3.49435 2.14676 3.58899 2.2414L5.9316 4.58402C6.02625 4.67866 6.02625 4.83208 5.9316 4.92672L3.58899 7.26935C3.49435 7.36399 3.34091 7.36399 3.24627 7.26935Z"
+        fill="currentColor"
+      />
+    </svg>
+  ),
+});
+
+const ChevronDownIcon = createIcon({
+  displayName: 'ChevronDownIcon',
+  viewBox: '0 0 8 8',
+
+  path: (
+    <svg
+      width="8"
+      height="8"
+      viewBox="0 0 8 8"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M1.36297 2.73675C1.45761 2.64211 1.61105 2.64211 1.70569 2.73675L3.87695 4.908L6.04822 2.73675C6.14286 2.64211 6.29628 2.64211 6.39092 2.73675C6.48557 2.83139 6.48557 2.98483 6.39092 3.07947L4.0483 5.42208C3.95366 5.51672 3.80024 5.51672 3.7056 5.42208L1.36297 3.07947C1.26833 2.98483 1.26833 2.83139 1.36297 2.73675Z"
+        fill="currentColor"
+      />
+    </svg>
+  ),
+});
+
+const ChevronUpIcon = createIcon({
+  displayName: 'ChevronUpIcon',
+  viewBox: '0 0 8 8',
+
+  path: (
+    <svg
+      width="8"
+      height="8"
+      viewBox="0 0 8 8"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M1.36297 5.26325C1.45761 5.35789 1.61105 5.35789 1.70569 5.26325L3.87695 3.092L6.04822 5.26325C6.14286 5.35789 6.29628 5.35789 6.39092 5.26325C6.48557 5.16861 6.48557 5.01517 6.39092 4.92053L4.0483 2.57792C3.95366 2.48328 3.80024 2.48328 3.7056 2.57792L1.36297 4.92053C1.26833 5.01517 1.26833 5.16861 1.36297 5.26325Z"
+        fill="currentColor"
+      />
+    </svg>
+  ),
+});
+
+export {
+  InfoIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+};

@@ -9,34 +9,34 @@
 @font-face {
     font-family: 'Creato Display';
     src: url('/fonts/CreatoDisplay-Regular.otf') format('opentype');
-    font-weight: 500;
+    font-weight: 400;
     font-style: normal;
   }
 
   @font-face {
     font-family: 'Creato Display';
     src: url('/fonts/CreatoDisplay-Medium.otf') format('opentype');
-    font-weight: 600;
+    font-weight: 500;
     font-style: normal;
   }
 
   @font-face {
     font-family: 'Creato Display';
     src: url('/fonts/CreatoDisplay-Bold.otf') format('opentype');
-    font-weight: 700;
+    font-weight: 600;
     font-style: normal;
   }
 
   @font-face {
     font-family: 'Creato Display';
     src: url('/fonts/CreatoDisplay-ExtraBold.otf') format('opentype');
-    font-weight: 800;
+    font-weight: 700;
     font-style: normal;
   }
 
   @font-face {
     font-family: 'Creato Display';
     src: url('/fonts/CreatoDisplay-Black.otf') format('opentype');
-    font-weight: 900;
+    font-weight: 800;
     font-style: normal;
   }

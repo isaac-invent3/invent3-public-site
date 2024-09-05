@@ -67,14 +67,20 @@ const UserActionPopover = () => {
         <PopoverTrigger>
           <HStack
             p="7px"
-            pl="5px"
+            pl={0}
+            height="40px"
             rounded="full"
             bgColor="white"
             spacing="20px"
             cursor="pointer"
           >
             <HStack spacing="10px">
-              <Avatar width="40px" height="40px" src="" />
+              <Avatar
+                width="38px"
+                height="38px"
+                src=""
+                border="2.4px solid white"
+              />
               <VStack alignItems="flex-start" spacing="1px">
                 <Text
                   color="neutral.800"

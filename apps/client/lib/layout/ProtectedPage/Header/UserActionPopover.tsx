@@ -80,7 +80,7 @@ const UserActionPopover = () => {
                   color="neutral.800"
                   fontSize="11.18px"
                   lineHeight="13.28px"
-                  letterSpacing="5%"
+                  letterSpacing="0.05em"
                   fontWeight={700}
                 >
                   George Washington
@@ -89,7 +89,7 @@ const UserActionPopover = () => {
                   color="neutral.600"
                   fontSize="9.58px"
                   lineHeight="11.38px"
-                  letterSpacing="5%"
+                  letterSpacing="0.05em"
                   fontWeight={400}
                 >
                   Operation Manager

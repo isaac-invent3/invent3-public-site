@@ -1,15 +1,15 @@
 import { VStack } from '@chakra-ui/react';
 import React from 'react';
 import InfoOne from './InfoOne';
-import InfoTwo from './InfoTwo.tsx';
+import InfoTwo from './InfoTwo';
 
-const GeneralTab = () => {
+const AcquisitionTab = () => {
   return (
-    <VStack width="full" spacing="33px" my="24px">
+    <VStack width="full" spacing="40px" my="24px">
       <InfoOne />
       <InfoTwo />
     </VStack>
   );
 };
 
-export default GeneralTab;
+export default AcquisitionTab;

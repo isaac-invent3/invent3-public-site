@@ -43,11 +43,6 @@ const ListView = (props: ListViewProps) => {
     }
   }, [selectedAsset]);
 
-  const handleClose = () => {
-    setselectedAsset(null);
-    onClose();
-  };
-
   const columns = useMemo(
     () => [
       columnHelper.accessor('assetId', {
@@ -107,11 +102,7 @@ const ListView = (props: ListViewProps) => {
         setSelectedRows={setSelectedRows}
       />
       {selectedAsset && (
-        <AssetDetail
-          data={selectedAsset}
-          onClose={handleClose}
-          isOpen={isOpen}
-        />
+        <AssetDetail data={selectedAsset} onClose={onClose} isOpen={isOpen} />
       )}
     </Flex>
   );

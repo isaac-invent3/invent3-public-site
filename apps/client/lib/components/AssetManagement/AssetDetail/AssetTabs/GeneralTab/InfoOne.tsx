@@ -50,9 +50,7 @@ const InfoOne = () => {
             >
               {item.label}
             </DetailContent>
-            <DetailContent customStyles={{ minW: '221px' }}>
-              {item.value}
-            </DetailContent>
+            <DetailContent>{item.value}</DetailContent>
           </HStack>
         ))}
       </VStack>

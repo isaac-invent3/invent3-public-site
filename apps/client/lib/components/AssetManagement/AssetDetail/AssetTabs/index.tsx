@@ -8,6 +8,7 @@ import {
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import GeneralTab from './GeneralTab';
+import AcquisitionTab from './AcquisitionTab';
 
 const AssetTabs = () => {
   const [tabIndex, setTabIndex] = useState(0);
@@ -18,7 +19,7 @@ const AssetTabs = () => {
     },
     {
       label: 'Acquistion',
-      component: null,
+      component: <AcquisitionTab />,
     },
     {
       label: 'Maintenance',

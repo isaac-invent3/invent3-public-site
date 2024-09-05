@@ -10,7 +10,7 @@ interface ProtectedLayoutProps {
 }
 const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
   return (
-    <Flex width="full" minH="100vh" position="relative" bgColor="#D9D9D9">
+    <Flex width="full" height="100vh" bgColor="#D9D9D9" overflowY="scroll">
       <SideBar />
       <Flex
         width="calc(100vw - 73px)"
@@ -19,6 +19,7 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
         pt="32px"
         direction="column"
         position="relative"
+        height="full"
       >
         <Header />
         {children}

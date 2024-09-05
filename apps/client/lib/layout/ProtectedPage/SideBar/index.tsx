@@ -23,7 +23,7 @@ const SideBar = () => {
   return (
     <Flex
       direction="column"
-      width={isCollapse ? '90px' : '249px'}
+      width={isCollapse ? '65px' : '249px'}
       mt="8px"
       ml="8px"
       pt="42px"

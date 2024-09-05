@@ -21,7 +21,7 @@ const AssetManagement = () => {
   const [pageSize, setPageSize] = useState(1);
 
   return (
-    <Flex width="full" direction="column">
+    <Flex width="full" direction="column" pb="24px">
       <Header />
       <Flex direction="column" mt="42px" position="relative">
         <Tabs variant="custom" width={'full'}>

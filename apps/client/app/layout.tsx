@@ -1,9 +1,17 @@
 import type { Metadata } from 'next';
 import AppProviders from '~/lib/layout/Provider';
 
+const APP_NAME = 'Invent3';
+const DESCRIPTION = 'Assest Management Software';
 export const metadata: Metadata = {
-  title: 'Invent3',
-  description: 'Assest Management Software',
+  title: { default: APP_NAME, template: '%s | Invent3' },
+  description: DESCRIPTION,
+  applicationName: APP_NAME,
+  appleWebApp: {
+    capable: true,
+    title: APP_NAME,
+    statusBarStyle: 'default',
+  },
 };
 
 export default function RootLayout({

@@ -1,5 +1,6 @@
 'use client';
 
+import 'focus-visible/dist/focus-visible';
 import { useEffect, useState } from 'react';
 import { CacheProvider } from '@chakra-ui/next-js';
 import { ChakraProvider } from '~/lib/components/ChakraProvider';

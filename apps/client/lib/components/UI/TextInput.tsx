@@ -5,13 +5,12 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
-  Text,
   Flex,
   InputLeftElement,
   Icon,
 } from '@chakra-ui/react';
 import { useField } from 'formik';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { InfoIcon } from '../CustomIcons';
 
@@ -30,7 +29,6 @@ interface TextInputProps {
 const TextInput: React.FC<TextInputProps> = ({
   name,
   type,
-  placeholder,
   label,
   customStyle,
   value,
@@ -41,7 +39,7 @@ const TextInput: React.FC<TextInputProps> = ({
   const [field, meta] = useField(name);
   const [show, setShow] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
-  const inputValue = value || field.value;
+  const inputValue = value || meta.value;
   const handleFocus = () => setIsFocused(true);
   const handleBlur = () => {
     if (!value) setIsFocused(false);
@@ -54,32 +52,32 @@ const TextInput: React.FC<TextInputProps> = ({
       isInvalid={meta.touched && meta.error !== undefined}
       position="relative"
     >
-      <FormLabel
-        htmlFor={name}
-        position="absolute"
-        top={isFocused || inputValue ? '10px' : '50%'}
-        left={customLeftElement ? '60px' : '16px'}
-        transform={
-          isFocused || inputValue
-            ? 'translateY(-40%) scale(0.85)'
-            : 'translateY(-50%)'
-        }
-        transformOrigin="left top"
-        fontSize={isFocused || inputValue ? '12px' : '16px'}
-        lineHeight={isFocused || inputValue ? '14.26px' : '19.01px'}
-        color={isFocused ? 'neutral.800' : 'neutral.700'}
-        pointerEvents="none"
-        transition="all 0.2s ease-in-out"
-        zIndex={99}
-      >
-        {label}
-      </FormLabel>
       <InputGroup position="relative">
         {customLeftElement && (
           <InputLeftElement textAlign="center" height="full" mr="16px">
             {customLeftElement}
           </InputLeftElement>
         )}
+
+        <FormLabel
+          position="absolute"
+          top={isFocused || inputValue ? '10px' : '50%'}
+          left={customLeftElement ? '60px' : '16px'}
+          transform={
+            isFocused || inputValue
+              ? 'translateY(-40%) scale(0.85)'
+              : 'translateY(-50%)'
+          }
+          transformOrigin="left top"
+          fontSize={isFocused || inputValue ? '12px' : '14px'}
+          lineHeight={isFocused || inputValue ? '14.26px' : '16.63px'}
+          color={isFocused ? 'neutral.800' : 'neutral.700'}
+          pointerEvents="none"
+          transition="all 0.2s ease-in-out"
+          zIndex={99}
+        >
+          {label}
+        </FormLabel>
 
         <Input
           {...field}

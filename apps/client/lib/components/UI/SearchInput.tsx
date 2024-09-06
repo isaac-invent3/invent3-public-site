@@ -36,7 +36,7 @@ const SearchInput = (props: ISearchInput) => {
         py="6px"
         px="12px"
         // pl="40px"
-        height="36px"
+        minH="36px"
         width={width}
         _placeholder={{
           color: 'neutral.300',

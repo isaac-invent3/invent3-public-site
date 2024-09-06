@@ -1,4 +1,5 @@
 import { Asset } from '~/lib/interfaces/asset.interfaces';
+import { Option } from '~/lib/interfaces/general.interfaces';
 
 const assetData: Asset[] = [
   {
@@ -423,4 +424,27 @@ const assetData: Asset[] = [
   },
 ];
 
-export { assetData };
+const categoryData: Option[] = [
+  {
+    value: 'IT Equipment',
+    label: 'IT Equipment',
+  },
+  {
+    value: 'Vehicle',
+    label: 'Vehicle',
+  },
+  {
+    value: 'Machinery',
+    label: 'Machinery',
+  },
+  {
+    value: 'Heavy Equipment',
+    label: 'Heavy Equipment',
+  },
+  {
+    value: 'Outdoor Equipment',
+    label: 'Outdoor Equipment',
+  },
+];
+
+export { assetData, categoryData };

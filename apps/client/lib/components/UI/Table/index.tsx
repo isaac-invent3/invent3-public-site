@@ -21,7 +21,7 @@ import {
   type ColumnDef,
 } from '@tanstack/react-table';
 import { useState } from 'react';
-import CheckBox from './CheckBox';
+import CheckBox from '../CheckBox';
 import { ChevronDownIcon, ChevronUpIcon } from '../../CustomIcons';
 import Pagination from './Pagination';
 

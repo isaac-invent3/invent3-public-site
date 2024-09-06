@@ -72,3 +72,8 @@ export interface Asset {
   deletedBy: string | null;
   guid: string | null;
 }
+
+export interface FilterInput {
+  category: (string | number)[];
+  location: (string | number)[];
+}

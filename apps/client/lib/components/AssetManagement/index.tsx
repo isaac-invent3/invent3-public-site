@@ -8,17 +8,37 @@ import {
   TabPanels,
   Tab,
   TabPanel,
+  useDisclosure,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from './Header';
-import Filters from './Filters';
 import ListView from './ListView';
 import { assetData } from '~/lib/utils/MockData/asset';
+import Filters from './Filters';
+import FilterDisplay from './Filters/FilterDisplay';
+import { FilterInput } from '~/lib/interfaces/asset.interfaces';
 
 const AssetManagement = () => {
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(1);
+  const [filterData, setFilterData] = useState<FilterInput>({
+    location: [],
+    category: [],
+  });
+  const [activeFilter, setActiveFilter] = useState<'bulk' | 'general' | null>(
+    null
+  );
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  useEffect(() => {
+    if (activeFilter && !isOpen) {
+      onOpen();
+    }
+    if (!activeFilter) {
+      onClose();
+    }
+  }, [activeFilter]);
 
   return (
     <Flex width="full" direction="column" pb="24px">
@@ -31,12 +51,22 @@ const AssetManagement = () => {
               <Tab>Map View</Tab>
             </TabList>
             <Flex position="absolute" right={0} bottom="8px">
-              <Filters setSearch={setSearch} />
+              <Filters
+                setSearch={setSearch}
+                activeFilter={activeFilter}
+                setActiveFilter={setActiveFilter}
+              />
             </Flex>
           </Flex>
 
           <TabPanels>
             <TabPanel>
+              <FilterDisplay
+                activeFilter={activeFilter}
+                isOpen={isOpen}
+                filterData={filterData}
+                setFilterData={setFilterData}
+              />
               <ListView
                 data={assetData}
                 isLoading={false}

@@ -11,9 +11,7 @@ const Status = (status: string) => {
   return (
     <Text
       color={MaintenanceColorCode[status as 'completed']}
-      fontSize="12px"
-      fontWeight={500}
-      lineHeight="14.26px"
+      textTransform="capitalize"
     >
       {status}
     </Text>
@@ -23,11 +21,8 @@ const Status = (status: string) => {
 const Description = (description: string) => {
   return (
     <Text
-      fontSize="12px"
-      fontWeight={500}
       height="full"
       whiteSpace="normal"
-      lineHeight="14px"
       noOfLines={3}
       textOverflow="ellipsis"
       width="full"
@@ -42,22 +37,20 @@ const Description = (description: string) => {
 const Technician = (name: string) => {
   return (
     <VStack alignItems="flex-start" spacing="4px">
-      <Text fontSize="12px" lineHeight="14.26px" fontWeight={500} color="black">
-        {name}
-      </Text>
+      <Text color="black">{name}</Text>
       <Text
-        fontSize="12px"
-        lineHeight="14.26px"
-        fontWeight={500}
         color="neutral.600"
+        fontSize="10px"
+        lineHeight="11.88px"
+        fontWeight={400}
       >
         +1 555-123-4567
       </Text>
       <Text
-        fontSize="12px"
-        lineHeight="14.26px"
-        fontWeight={500}
         color="neutral.600"
+        fontSize="10px"
+        lineHeight="11.88px"
+        fontWeight={400}
       >
         {name}
       </Text>

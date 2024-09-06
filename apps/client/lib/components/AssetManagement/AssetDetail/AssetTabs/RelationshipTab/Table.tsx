@@ -1,15 +1,18 @@
 /* eslint-disable no-unused-vars */
-import { Text, VStack } from '@chakra-ui/react';
+import { Flex, VStack } from '@chakra-ui/react';
 import { createColumnHelper } from '@tanstack/react-table';
 import React, { useMemo } from 'react';
 import { Asset } from '~/lib/interfaces/asset.interfaces';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
-import { assetData } from '~/lib/utils/MockData/asset';
 import { DetailTable } from '../../DetailTable';
 import AssetStatus from '../../../AssetStatus';
 
 const Status = (status: number) => {
-  return <AssetStatus label="In Use" color="#07CC3B" />;
+  return (
+    <Flex>
+      <AssetStatus label="In Use" color="#07CC3B" />
+    </Flex>
+  );
 };
 
 interface TableProps {

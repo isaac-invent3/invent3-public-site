@@ -12,16 +12,10 @@ const SummaryInfo = (props: SummaryInfoProps) => {
   const { label, value, children } = props;
   return (
     <Flex direction="column">
-      <Text
-        mb="8px"
-        fontSize="14px"
-        fontWeight={500}
-        lineHeight="16.63px"
-        color="neutral.600"
-      >
+      <Text size="md" mb="8px" color="neutral.600">
         {label}
       </Text>
-      <Text fontSize="14px" fontWeight={500} lineHeight="16.63px" color="black">
+      <Text size="md" color="black">
         {value}
       </Text>
       {children}

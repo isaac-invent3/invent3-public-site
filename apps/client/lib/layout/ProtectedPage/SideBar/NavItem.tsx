@@ -33,7 +33,7 @@ const NavItem = (props: NavItemProps) => {
         bgColor={splittedPathname[1] === route ? '#6E7D8E80' : 'none'}
         spacing="16px"
         py="12px"
-        px="8px"
+        px={isCollapse ? '12px' : '8px'}
         width={isCollapse ? 'max-content' : 'full'}
         _groupHover={{
           bgColor: '#6E7D8E80',
@@ -48,9 +48,8 @@ const NavItem = (props: NavItemProps) => {
         {!isCollapse && (
           <Text
             color={splittedPathname[1] === route ? 'white' : 'neutral.600'}
+            size="md"
             fontWeight={splittedPathname[1] === route ? 700 : 500}
-            fontSize="14px"
-            lineHeight="16.63px"
             whiteSpace="nowrap"
             _groupHover={{ color: 'white', fontWeight: 700 }}
           >

@@ -32,7 +32,7 @@ const ActionButton = (props: ActionButtonProps) => {
     <HStack py="8px" width="full" spacing="16px" cursor="pointer">
       <Icon as={icon} boxSize="25px" />
 
-      <Text fontWeight={500} color="primary.500">
+      <Text size="md" color="primary.500">
         {name}
       </Text>
     </HStack>
@@ -149,12 +149,7 @@ const UserActionPopover = () => {
                 border="2.4px solid white"
               />
               <VStack alignItems="flex-start" spacing={0}>
-                <Text
-                  color="white"
-                  fontSize="16px"
-                  lineHeight="19.2px"
-                  fontWeight={700}
-                >
+                <Text color="white" size="lg" fontWeight={700}>
                   George Washington
                 </Text>
                 <Text

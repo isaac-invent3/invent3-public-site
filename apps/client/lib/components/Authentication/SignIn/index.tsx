@@ -77,7 +77,7 @@ const SignIn = () => {
 
                 <Flex width="full" justifyContent="flex-end" color="brand.500">
                   <Link href="/forgot-password">
-                    <Text fontWeight={700} fontSize="14px" lineHeight="16.63px">
+                    <Text size="md" fontWeight={700}>
                       Forgot Password?
                     </Text>
                   </Link>
@@ -96,9 +96,8 @@ const SignIn = () => {
         </Formik>
         <Flex alignItems="center" mt="64px" mb="32px">
           <Text
-            fontSize="16px"
+            size="lg"
             fontWeight={400}
-            lineHeight="19.01px"
             mr="12px"
             color="white"
             whiteSpace="nowrap"

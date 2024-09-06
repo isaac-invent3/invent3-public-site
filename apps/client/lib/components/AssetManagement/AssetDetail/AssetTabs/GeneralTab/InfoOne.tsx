@@ -1,7 +1,7 @@
-import { HStack, SimpleGrid, Text, VStack } from '@chakra-ui/react';
+import { SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
-import { DetailContent } from '../../DetailContent';
 import DetailHeader from '../../DetailHeader';
+import DetailSection from '../../DetailSection';
 
 const InfoOne = () => {
   const details = [
@@ -40,28 +40,11 @@ const InfoOne = () => {
       justifyContent="space-between"
     >
       <VStack alignItems="flex-start" spacing="8px">
-        {details.map((item) => (
-          <HStack spacing="8px" alignItems="flex-start">
-            <DetailContent
-              customStyles={{
-                minW: '77px',
-                color: 'neutral.600',
-              }}
-            >
-              {item.label}
-            </DetailContent>
-            <DetailContent>{item.value}</DetailContent>
-          </HStack>
-        ))}
+        <DetailSection details={details} minWidth="77px" />
       </VStack>
       <VStack alignItems="flex-start">
         <DetailHeader>Description:</DetailHeader>
-        <Text
-          fontSize="14px"
-          lineHeight="16.63px"
-          color="neutral.800"
-          fontWeight={400}
-        >
+        <Text size="md" color="neutral.800" fontWeight={400}>
           Lorem ipsum dolor sit amet consectetur. Maecenas iaculis diam et at
           imperdiet massa dignissim. Faucibus odio fermentum imperdiet ac enim
           imperdiet sit integer. Diam felis mattis elit fusce dignissim at felis

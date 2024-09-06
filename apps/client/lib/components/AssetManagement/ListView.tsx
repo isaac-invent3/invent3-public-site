@@ -33,7 +33,7 @@ const ListView = (props: ListViewProps) => {
   } = props;
   const columnHelper = createColumnHelper<Asset>();
   // eslint-disable-next-line no-unused-vars
-  const [selectedAsset, setselectedAsset] = useState<Asset | null>(null);
+  const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -43,10 +43,11 @@ const ListView = (props: ListViewProps) => {
     }
   }, [selectedAsset]);
 
-  const handleClose = () => {
-    onClose();
-    setselectedAsset(null);
-  };
+  useEffect(() => {
+    if (!isOpen) {
+      setSelectedAsset(null);
+    }
+  }, [isOpen]);
 
   const columns = useMemo(
     () => [
@@ -102,16 +103,12 @@ const ListView = (props: ListViewProps) => {
         pageNumber={pageNumber}
         pageSize={pageSize}
         setPageSize={setPageSize}
-        handleSelectRow={setselectedAsset}
+        handleSelectRow={setSelectedAsset}
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
       />
       {selectedAsset && (
-        <AssetDetail
-          data={selectedAsset}
-          onClose={handleClose}
-          isOpen={isOpen}
-        />
+        <AssetDetail data={selectedAsset} onClose={onClose} isOpen={isOpen} />
       )}
     </Flex>
   );

@@ -57,7 +57,7 @@ const Button = (props: ButtonProps) => {
             : variant === 'primary'
               ? 'primary.accent'
               : 'none',
-        color: variant === 'outline' ? 'secondary.pale.500' : 'initial',
+        color: variant === 'outline' && 'secondary.pale.500',
       }}
       _active={{
         bgColor:

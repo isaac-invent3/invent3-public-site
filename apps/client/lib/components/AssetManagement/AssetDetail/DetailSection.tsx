@@ -1,6 +1,5 @@
-import { HStack, VStack } from '@chakra-ui/react';
+import { HStack, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
-import { DetailContent } from './DetailContent';
 import DetailHeader from './DetailHeader';
 
 interface DetailSectionProps {
@@ -20,15 +19,10 @@ const DetailSection = (props: DetailSectionProps) => {
       <VStack alignItems="flex-start" spacing="8px" width="full">
         {details.map((item) => (
           <HStack spacing="8px" alignItems="flex-start">
-            <DetailContent
-              customStyles={{
-                minW: minWidth,
-                color: 'neutral.600',
-              }}
-            >
+            <Text size="md" minW={minWidth} color="neutral.600">
               {item.label}
-            </DetailContent>
-            <DetailContent>{item.value}</DetailContent>
+            </Text>
+            <Text size="md">{item.value}</Text>
           </HStack>
         ))}
       </VStack>

@@ -1,7 +1,7 @@
-import { Flex, HStack, SimpleGrid, VStack } from '@chakra-ui/react';
+import { Flex, SimpleGrid, VStack } from '@chakra-ui/react';
 import React from 'react';
 import DetailHeader from '../../../DetailHeader';
-import { DetailContent } from '../../../DetailContent';
+import DetailSection from '../../../DetailSection';
 
 const InfoTwo = () => {
   const details = [
@@ -31,24 +31,11 @@ const InfoTwo = () => {
       justifyContent="space-between"
     >
       <VStack alignItems="flex-start" spacing="16px">
-        <DetailHeader>Owner's Info</DetailHeader>
-        <VStack alignItems="flex-start" spacing="8px">
-          {details.map((item) => (
-            <HStack spacing="8px" alignItems="flex-start">
-              <DetailContent
-                customStyles={{
-                  minW: '101px',
-                  color: 'neutral.600',
-                }}
-              >
-                {item.label}
-              </DetailContent>
-              <DetailContent customStyles={{ minW: '221px' }}>
-                {item.value}
-              </DetailContent>
-            </HStack>
-          ))}
-        </VStack>
+        <DetailSection
+          minWidth="101px"
+          details={details}
+          header="Owner's Info"
+        />
       </VStack>
       <VStack alignItems="flex-start" spacing="16px">
         <DetailHeader>Photos</DetailHeader>

@@ -10,8 +10,7 @@ const DetailHeader = (props: DetailHeaderProps) => {
   return (
     <Text
       width="full"
-      fontSize="16px"
-      lineHeight="19.01px"
+      size="lg"
       fontWeight={700}
       py="4px"
       color="neutral.800"

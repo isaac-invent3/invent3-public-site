@@ -24,13 +24,7 @@ const DocumentsTab = () => {
             <Flex position="relative" width="58px" height="58px">
               <Image src="/pdf.png" fill alt="Pdf image" />
             </Flex>
-            <Text
-              fontSize="14px"
-              fontWeight={500}
-              lineHeight="16.63px"
-              color="neutral.600"
-              textAlign="center"
-            >
+            <Text size="md" color="neutral.600" textAlign="center">
               {item}
             </Text>
           </VStack>

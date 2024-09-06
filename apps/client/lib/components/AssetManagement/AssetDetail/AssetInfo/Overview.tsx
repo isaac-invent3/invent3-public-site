@@ -2,7 +2,6 @@ import { Flex, Heading, HStack, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { Asset } from '~/lib/interfaces/asset.interfaces';
 import AssetStatus from '../../AssetStatus';
-import { DetailContent } from '../DetailContent';
 
 interface OverviewProps {
   data: Asset;
@@ -47,46 +46,32 @@ const Overview = ({ data }: OverviewProps) => {
         <HStack width="full" justifyContent="space-between">
           <VStack alignItems="flex-start" spacing="8px">
             <HStack spacing="8px">
-              <DetailContent
-                color="neutral.600"
-                customStyles={{ width: '92px', fontWeight: 800 }}
-              >
+              <Text size="md" color="neutral.600" fontWeight={800}>
                 Asset ID
-              </DetailContent>
-              <DetailContent customStyles={{ fontWeight: 800 }}>
+              </Text>
+              <Text size="md" color="black" fontWeight={800}>
                 {data.assetId}
-              </DetailContent>
+              </Text>
             </HStack>
             <HStack spacing="8px">
-              <DetailContent
-                color="neutral.600"
-                customStyles={{ width: '92px', fontWeight: 800 }}
-              >
+              <Text color="neutral.600" size="md" fontWeight={800}>
                 Category
-              </DetailContent>
-              <DetailContent customStyles={{ fontWeight: 800 }}>
+              </Text>
+              <Text size="md" color="black" fontWeight={800}>
                 {data.categoryId}
-              </DetailContent>
+              </Text>
             </HStack>
             {assetInfo.map((info) => (
               <HStack spacing="8px">
-                <DetailContent
-                  color="neutral.600"
-                  customStyles={{ width: '92px' }}
-                >
+                <Text color="neutral.600" width="92px" size="md">
                   {info.label}
-                </DetailContent>
-                <DetailContent>{info.value}</DetailContent>
+                </Text>
+                <Text>{info.value}</Text>
               </HStack>
             ))}
           </VStack>
           <VStack alignItems="flex-start" spacing="7px">
-            <Text
-              fontSize="14px"
-              lineHeight="16.63px"
-              fontWeight={500}
-              color="black"
-            >
+            <Text size="md" color="black">
               Barcode:
             </Text>
             <Flex bgColor="white" height="89px" width="185px" />

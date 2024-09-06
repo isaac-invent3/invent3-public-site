@@ -15,9 +15,7 @@ const AssetStatus = (props: AssetStatusProps) => {
       spacing="8px"
     >
       <Box width="8px" height="8px" rounded="full" bgColor={color} />
-      <Text color="black" fontSize="12px" lineHeight="14.26px" fontWeight={500}>
-        {label}
-      </Text>
+      <Text color="black">{label}</Text>
     </HStack>
   );
 };

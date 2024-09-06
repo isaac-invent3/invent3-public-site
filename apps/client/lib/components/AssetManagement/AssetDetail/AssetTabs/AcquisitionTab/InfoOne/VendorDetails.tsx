@@ -2,27 +2,7 @@ import { Heading, HStack, StackDivider, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import DetailHeader from '../../../DetailHeader';
 
-interface DetailProps {
-  children: React.ReactNode;
-  customStyles?: { [key: string]: unknown };
-}
-const Detail = (props: DetailProps) => {
-  const { children, customStyles } = props;
-
-  return (
-    <Text
-      fontSize="14px"
-      lineHeight="16.63px"
-      color="neutral.600"
-      fontWeight={500}
-      {...customStyles}
-    >
-      {children}
-    </Text>
-  );
-};
-
-const VendorDetails = () => {
+const VendorTexts = () => {
   return (
     <VStack
       width="full"
@@ -48,18 +28,30 @@ const VendorDetails = () => {
           >
             Tech Solutions Inc.
           </Heading>
-          <Detail>123 Technology Drive, Suite 200, NY</Detail>
-          <Detail>www.techsolutions.com</Detail>
+          <Text size="md" color="neutral.600">
+            123 Technology Drive, Suite 200, NY
+          </Text>
+          <Text size="md" color="neutral.600">
+            www.techsolutions.com
+          </Text>
         </VStack>
         <VStack spacing="4px" alignItems="flex-start">
-          <Detail customStyles={{ color: 'black' }}>Contact Person</Detail>
-          <Detail>John Doe</Detail>
-          <Detail>+1 555-123-4567</Detail>
-          <Detail>johndoe@techsolutions.com</Detail>
+          <Text size="md" color="black">
+            Contact Person
+          </Text>
+          <Text size="md" color="neutral.600">
+            John Doe
+          </Text>
+          <Text size="md" color="neutral.600">
+            +1 555-123-4567
+          </Text>
+          <Text size="md" color="neutral.600">
+            johndoe@techsolutions.com
+          </Text>
         </VStack>
       </HStack>
     </VStack>
   );
 };
 
-export default VendorDetails;
+export default VendorTexts;

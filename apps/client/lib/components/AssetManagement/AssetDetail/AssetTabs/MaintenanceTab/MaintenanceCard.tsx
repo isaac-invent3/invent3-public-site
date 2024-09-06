@@ -4,26 +4,6 @@ import React from 'react';
 import { MaintenanceColorCode } from '~/lib/utils/ColorCodes';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
-interface DetailProps {
-  children: React.ReactNode;
-  customStyles?: { [key: string]: unknown };
-}
-const Detail = (props: DetailProps) => {
-  const { children, customStyles } = props;
-
-  return (
-    <Text
-      fontSize="14px"
-      lineHeight="16.63px"
-      color="neutral.600"
-      fontWeight={500}
-      {...customStyles}
-    >
-      {children}
-    </Text>
-  );
-};
-
 interface MaintenanceCardProps {
   description: {
     id: string;
@@ -60,12 +40,7 @@ const MaintenanceCard = (props: MaintenanceCardProps) => {
       <GridItem area="description">
         <HStack spacing="22px" alignItems="flex-start">
           <VStack spacing="2px">
-            <Text
-              color="neutral.600"
-              fontSize="14px"
-              lineHeight="16.63px"
-              fontWeight={500}
-            >
+            <Text color="neutral.600" size="md" fontWeight={500}>
               {dateFormatter(description.date, 'ddd')}
             </Text>
 
@@ -79,8 +54,6 @@ const MaintenanceCard = (props: MaintenanceCardProps) => {
             </Text>
             <Text
               color="neutral.800"
-              fontSize="12px"
-              lineHeight="14.26px"
               fontWeight={800}
               letterSpacing="0.1em"
               textTransform="uppercase"
@@ -90,40 +63,14 @@ const MaintenanceCard = (props: MaintenanceCardProps) => {
           </VStack>
           <VStack spacing="8px" alignItems="flex-start">
             <VStack alignItems="flex-start" spacing="2px">
-              <Text
-                color="neutral.800"
-                fontSize="16px"
-                lineHeight="19.01px"
-                fontWeight={800}
-              >
+              <Text color="neutral.800" size="lg" fontWeight={800}>
                 {description.name}
               </Text>
-              <Text
-                color="neutral.600"
-                fontSize="12px"
-                lineHeight="14.26px"
-                fontWeight={500}
-              >
-                {description.type}
-              </Text>
+              <Text color="neutral.600">{description.type}</Text>
             </VStack>
             <VStack alignItems="flex-start" spacing="2px">
-              <Text
-                color="neutral.600"
-                fontSize="12px"
-                lineHeight="14.26px"
-                fontWeight={500}
-              >
-                By: {description.time}
-              </Text>
-              <Text
-                color="neutral.600"
-                fontSize="12px"
-                lineHeight="14.26px"
-                fontWeight={500}
-              >
-                By: {description.by}
-              </Text>
+              <Text color="neutral.600">{description.time}</Text>
+              <Text color="neutral.600">By: {description.by}</Text>
             </VStack>
           </VStack>
         </HStack>
@@ -132,10 +79,18 @@ const MaintenanceCard = (props: MaintenanceCardProps) => {
       {/* Contact Starts Here */}
       <GridItem area="contact">
         <VStack spacing="4px" alignItems="flex-start">
-          <Detail customStyles={{ color: 'black' }}>Contact Person</Detail>
-          <Detail>{contactPerson.name}</Detail>
-          <Detail>{contactPerson.phoneNumber}</Detail>
-          <Detail>{contactPerson.email}</Detail>
+          <Text size="md" color="black">
+            Contact Person
+          </Text>
+          <Text size="md" color="neutral.600">
+            {contactPerson.name}
+          </Text>
+          <Text size="md" color="neutral.600">
+            {contactPerson.phoneNumber}
+          </Text>
+          <Text size="md" color="neutral.600">
+            {contactPerson.email}
+          </Text>
         </VStack>
       </GridItem>
       {/* Contact Ends Here */}
@@ -148,30 +103,16 @@ const MaintenanceCard = (props: MaintenanceCardProps) => {
           alignItems="flex-start"
         >
           <VStack spacing="4px" alignItems="flex-start">
+            <Text color="neutral.700">Status:</Text>
             <Text
-              fontSize="12px"
-              fontWeight={500}
-              lineHeight="14.26px"
-              color="neutral.700"
-            >
-              Status:
-            </Text>
-            <Text
-              fontSize="12px"
               fontWeight={800}
-              lineHeight="14.26px"
               color={MaintenanceColorCode[status as 'completed']}
             >
               {status}
             </Text>
           </VStack>
           <Link href="#">
-            <Text
-              color="primary.main"
-              fontSize="12px"
-              fontWeight={700}
-              lineHeight="14.26px"
-            >
+            <Text color="primary.main" fontWeight={700}>
               View Tasks
             </Text>
           </Link>

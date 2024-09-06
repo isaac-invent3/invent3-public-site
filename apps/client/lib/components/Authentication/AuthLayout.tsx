@@ -58,12 +58,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
                 AI
               </Text>
               <Link href="#">
-                <Text
-                  fontWeight={700}
-                  fontSize="14px"
-                  lineHeight="16.63px"
-                  color="secondary.pale.accent"
-                >
+                <Text fontWeight={700} size="md" color="secondary.pale.accent">
                   Learn more
                 </Text>
               </Link>
@@ -73,15 +68,8 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
         </Flex>
         {/* Footer Starts Here */}
         <Flex width="full" pr="5px" justifyContent="space-between">
-          <Text fontSize="12px" lineHeight="14.26px" color="neutral.700">
-            Copyright (c) 2024
-          </Text>
-          <HStack
-            spacing="40px"
-            fontSize="12px"
-            lineHeight="14.26px"
-            color="brand.500"
-          >
+          <Text color="neutral.700">Copyright (c) 2024</Text>
+          <HStack spacing="40px" color="brand.500">
             <Link href="#">
               <Text fontWeight={700}>Terms of use</Text>
             </Link>

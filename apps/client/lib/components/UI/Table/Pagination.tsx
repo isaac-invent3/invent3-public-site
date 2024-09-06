@@ -25,13 +25,7 @@ const Pagination = (props: PaginationProps) => {
   return (
     <HStack bgColor="white" py="8px" px="16px" spacing="16px" rounded="6px">
       <HStack spacing="16px">
-        <Text
-          fontSize="12px"
-          lineHeight="14.26px"
-          fontWeight={500}
-          color="neutral.800"
-          whiteSpace="nowrap"
-        >
+        <Text color="neutral.800" whiteSpace="nowrap">
           Rows per page
         </Text>
         <NumberInput

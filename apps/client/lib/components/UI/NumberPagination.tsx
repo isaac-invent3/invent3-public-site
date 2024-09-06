@@ -14,8 +14,6 @@ const PageNumber = (props: IPageNumber) => {
   return (
     <Text
       color={isCurrent ? 'black' : 'neutral.600'}
-      lineHeight="14.26px"
-      fontSize="12px"
       key={value}
       fontWeight={isCurrent ? 800 : 500}
     >
@@ -50,12 +48,7 @@ const NumberPagination = ({
   const renderBeforeEnd = () => {
     const pages = [];
     const ellipsis = (
-      <Text
-        key="ellipsis"
-        fontSize="12px"
-        lineHeight="14.26px"
-        color="neutral.600"
-      >
+      <Text key="ellipsis" color="neutral.600">
         ...
       </Text>
     );
@@ -84,12 +77,7 @@ const NumberPagination = ({
   const renderOnEnd = () => {
     const pages = [];
     const ellipsis = (
-      <Text
-        key="ellipsis"
-        fontSize="12px"
-        lineHeight="14.26px"
-        color="neutral.600"
-      >
+      <Text key="ellipsis" color="neutral.600">
         ...
       </Text>
     );
@@ -124,7 +112,9 @@ const NumberPagination = ({
         boxSize="10px"
         cursor="pointer"
         mb="3px"
-        onClick={() => onPageChange && onPageChange(currentPage - 1)}
+        onClick={() =>
+          onPageChange && currentPage > 1 && onPageChange(currentPage - 1)
+        }
       />
 
       {!hasEnded && <HStack spacing="16px">{renderBeforeEnd()}</HStack>}
@@ -134,7 +124,11 @@ const NumberPagination = ({
         as={ChevronRightIcon}
         boxSize="10px"
         cursor="pointer"
-        onClick={() => onPageChange && onPageChange(currentPage + 1)}
+        onClick={() =>
+          onPageChange &&
+          currentPage < totalPage &&
+          onPageChange(currentPage + 1)
+        }
       />
     </HStack>
   );

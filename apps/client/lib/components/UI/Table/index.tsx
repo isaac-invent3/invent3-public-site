@@ -229,7 +229,7 @@ function DataTable<Data extends object>({
       {/* Empty state */}
       {!isLoading && data.length < 1 && (
         <HStack justifyContent="center" my="77px">
-          <Text color="primary" fontSize="16px">
+          <Text color="neutral.600" size="md">
             {emptyText}
           </Text>
         </HStack>

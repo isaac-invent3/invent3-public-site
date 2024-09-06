@@ -9,6 +9,10 @@ import {
 import React, { useState } from 'react';
 import GeneralTab from './GeneralTab';
 import AcquisitionTab from './AcquisitionTab';
+import MaintenanceTab from './MaintenanceTab';
+import DocumentsTab from './DocumentsTab';
+import HistoryTab from './HistoryTab';
+import RelationshipTab from './RelationshipTab';
 
 const AssetTabs = () => {
   const [tabIndex, setTabIndex] = useState(0);
@@ -23,19 +27,19 @@ const AssetTabs = () => {
     },
     {
       label: 'Maintenance',
-      component: null,
+      component: <MaintenanceTab />,
     },
     {
       label: 'History',
-      component: null,
+      component: <HistoryTab />,
     },
     {
       label: 'Documents',
-      component: null,
+      component: <DocumentsTab />,
     },
     {
       label: 'Relationship',
-      component: null,
+      component: <RelationshipTab />,
     },
   ];
   return (
@@ -55,7 +59,6 @@ const AssetTabs = () => {
           {AllTabs.map((item, index) => (
             <TabPanel>{index === tabIndex && item.component}</TabPanel>
           ))}
-          <TabPanel></TabPanel>
         </TabPanels>
       </Tabs>
     </Flex>

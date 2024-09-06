@@ -1,4 +1,4 @@
-import { Collapse } from '@chakra-ui/react';
+import { Collapse, Flex } from '@chakra-ui/react';
 import React from 'react';
 import BulkActions from './BulkActions';
 import { FilterInput } from '~/lib/interfaces/asset.interfaces';
@@ -17,12 +17,16 @@ const FilterDisplay = (props: FilterDisplayProps) => {
       startingHeight={0}
       in={isOpen}
       transition={{ enter: { duration: 0.7 } }}
-      style={{ marginTop: '16px' }}
     >
-      {activeFilter === 'bulk' && <BulkActions />}
-      {activeFilter === 'general' && (
-        <GeneralFilter filterData={filterData} setFilterData={setFilterData} />
-      )}
+      <Flex mt="16px" width="full">
+        {activeFilter === 'bulk' && <BulkActions />}
+        {activeFilter === 'general' && (
+          <GeneralFilter
+            filterData={filterData}
+            setFilterData={setFilterData}
+          />
+        )}
+      </Flex>
     </Collapse>
   );
 };

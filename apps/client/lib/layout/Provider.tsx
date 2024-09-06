@@ -4,6 +4,7 @@ import 'focus-visible/dist/focus-visible';
 import { useEffect, useState } from 'react';
 import { CacheProvider } from '@chakra-ui/next-js';
 import { ChakraProvider } from '~/lib/components/ChakraProvider';
+// import ReduxProvider from '../redux/ReduxProvider';
 
 const AppProviders = ({ children }: { children: React.ReactNode }) => {
   const [isMounted, setIsMounted] = useState(false);
@@ -17,9 +18,11 @@ const AppProviders = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
+    // <ReduxProvider>
     <CacheProvider>
       <ChakraProvider>{children}</ChakraProvider>
     </CacheProvider>
+    // </ReduxProvider>
   );
 };
 

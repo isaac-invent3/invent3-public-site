@@ -7,10 +7,12 @@ import {
   Flex,
   useDisclosure,
   Collapse,
+  useOutsideClick,
 } from '@chakra-ui/react';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { ChevronDownIcon } from '../CustomIcons';
 import CheckBox from './CheckBox';
+import { useEffect, useRef, useState } from 'react';
 
 interface FilterDropDownProps {
   label: string;
@@ -21,10 +23,16 @@ interface FilterDropDownProps {
 
 const FilterDropDown = (props: FilterDropDownProps) => {
   const { label, options, selectedOptions, handleClick } = props;
-  const { onToggle, isOpen } = useDisclosure();
+  const { onToggle, isOpen, onClose } = useDisclosure();
+  const buttonRef = useRef<HTMLDivElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  useOutsideClick({
+    ref: containerRef,
+    handler: () => onClose(),
+  });
 
   return (
-    <Flex direction="column" width="full" maxW="max-content">
+    <Flex direction="column" width="full" maxW="max-content" ref={containerRef}>
       <HStack
         onClick={onToggle}
         cursor="pointer"
@@ -34,6 +42,7 @@ const FilterDropDown = (props: FilterDropDownProps) => {
         py="10px"
         px="12px"
         rounded="6px"
+        ref={buttonRef}
       >
         <HStack spacing="8px">
           <Text width="full" whiteSpace="nowrap" color="neutral.600">
@@ -64,8 +73,7 @@ const FilterDropDown = (props: FilterDropDownProps) => {
           position="absolute"
           zIndex={999}
           boxShadow="md"
-          width="full"
-          maxWidth="max-content"
+          width={buttonRef?.current?.offsetWidth}
         >
           {options.map((option, index) => (
             <HStack key={index} spacing="8px">

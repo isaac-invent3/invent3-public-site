@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 
-export const generalInfoSchema = Yup.object().shape({
+const generalInfoSchema = Yup.object().shape({
   name: Yup.string().required('Name is required'),
   description: Yup.string().required('Description is Required'),
   images: Yup.array()
@@ -23,3 +23,24 @@ export const generalInfoSchema = Yup.object().shape({
   assignedTo: Yup.string().required('This is Required'),
   responsibleFor: Yup.string().required('This is Required'),
 });
+
+const acquisitionInfoSchema = Yup.object().shape({
+  name: Yup.string().required('Name is required'),
+  description: Yup.string().required('Description is Required'),
+  acquisitionDate: Yup.string().required('Acquisition Date is required'),
+  assetCondition: Yup.string().required('Asset Condition is required'),
+  purchasePrice: Yup.number().required('Purchase Price is required'),
+  warrantyStartDate: Yup.string().required('Warranty Start Date is required'),
+  warrantyEndDate: Yup.string().required('Warranty End Date is required'),
+  warrantyTerms: Yup.string().required('Warranty Terms is required'),
+  paymentTerms: Yup.string().required('Payment Terms is required'),
+  depreciationStartDate: Yup.string().required(
+    'Depreciation Start Date is required'
+  ),
+  depreciationMethod: Yup.string().required('Depreciation Method is required'),
+  depreciationRate: Yup.number().required('Depreciation Rate is required'),
+  vendorId: Yup.string().required('Vendor is required'),
+  vendorDetail: Yup.string().required('Vendor Detail is required'),
+});
+
+export { generalInfoSchema, acquisitionInfoSchema };

@@ -23,6 +23,7 @@ interface TextInputProps {
   value?: string | number;
   customLeftElement?: React.ReactNode;
   customRightElement?: React.ReactNode;
+  leftElementWidth?: string;
   rightElementWidth?: string;
   isDisabled?: boolean;
   variant?: 'primary' | 'secondary';
@@ -36,6 +37,7 @@ const TextInput: React.FC<TextInputProps> = ({
   value,
   customLeftElement,
   customRightElement,
+  leftElementWidth,
   rightElementWidth,
   isDisabled = false,
   variant = 'primary',
@@ -57,7 +59,7 @@ const TextInput: React.FC<TextInputProps> = ({
     >
       <InputGroup position="relative">
         {customLeftElement && (
-          <InputLeftElement textAlign="center" height="full" mr="16px">
+          <InputLeftElement textAlign="center" height="full">
             {customLeftElement}
           </InputLeftElement>
         )}
@@ -65,7 +67,7 @@ const TextInput: React.FC<TextInputProps> = ({
         <FormLabel
           position="absolute"
           top={isFocused || inputValue ? '10px' : '50%'}
-          left={customLeftElement ? '60px' : '16px'}
+          left={customLeftElement ? leftElementWidth ?? '16px' : '16px'}
           transform={
             isFocused || inputValue
               ? 'translateY(-40%) scale(0.85)'
@@ -102,7 +104,7 @@ const TextInput: React.FC<TextInputProps> = ({
           rounded="8px"
           height="50px"
           pt={isFocused || value ? '10px' : '6px'}
-          pl={customLeftElement ? '60px' : '16px'}
+          pl={customLeftElement ? leftElementWidth ?? '16px' : '16px'}
           pr={
             customRightElement || type === 'password'
               ? rightElementWidth ?? '36px'
@@ -158,7 +160,7 @@ const TextInput: React.FC<TextInputProps> = ({
         )}
 
         {customRightElement && (
-          <InputRightElement textAlign="center" height="full" mr="16px">
+          <InputRightElement textAlign="center" height="full" mr="4px">
             {customRightElement}
           </InputRightElement>
         )}

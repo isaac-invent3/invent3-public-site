@@ -4,7 +4,7 @@ import Button from '../../UI/Button';
 import { ChevronLeftIcon } from '../../CustomIcons';
 
 interface FormActionButtonsProps {
-  activeStep: 0;
+  activeStep: number;
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
   handleContinue?: () => void;
 }

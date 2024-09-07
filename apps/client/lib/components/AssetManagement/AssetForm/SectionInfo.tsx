@@ -21,7 +21,9 @@ const SectionInfo = (props: SectionInfoProps) => {
           </Text>
         )}
       </HStack>
-      <Text color="neutral.600">{info}</Text>
+      <Text color="neutral.600" maxW="90%">
+        {info}
+      </Text>
     </VStack>
   );
 };

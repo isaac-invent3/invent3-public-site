@@ -33,8 +33,8 @@ const DimensionDropDown = (props: DimensionDropDownProps) => {
       position="relative"
       ref={containerRef}
       cursor="pointer"
-      width="66px"
-      pr="16px"
+      width="116px"
+      pr="46px"
       zIndex={99}
     >
       <HStack

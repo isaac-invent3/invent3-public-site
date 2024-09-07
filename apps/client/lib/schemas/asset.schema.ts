@@ -43,4 +43,8 @@ const acquisitionInfoSchema = Yup.object().shape({
   vendorDetail: Yup.string().required('Vendor Detail is required'),
 });
 
-export { generalInfoSchema, acquisitionInfoSchema };
+const documentSchema = Yup.object().shape({
+  documents: Yup.array(),
+});
+
+export { generalInfoSchema, acquisitionInfoSchema, documentSchema };

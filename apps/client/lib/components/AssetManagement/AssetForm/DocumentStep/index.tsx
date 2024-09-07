@@ -1,24 +1,30 @@
 import { Flex, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 import React from 'react';
-import { acquisitionInfoSchema } from '~/lib/schemas/asset.schema';
+import { documentSchema } from '~/lib/schemas/asset.schema';
 import FormActionButtons from '../FormActionButtons';
 import AddDocument from './AddDocument';
+import { AssetFormDetails } from '~/lib/interfaces/asset.interfaces';
+
 interface DocumentStepProps {
+  setFormDetails: React.Dispatch<React.SetStateAction<AssetFormDetails>>;
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
+  formDetails: AssetFormDetails;
 }
 const DocumentStep = (props: DocumentStepProps) => {
-  const { setActiveStep } = props;
+  const { setActiveStep, setFormDetails, formDetails } = props;
 
   const initialValues = {
-    documents: [],
+    documents: formDetails.documents ?? [],
   };
 
   const formik = useFormik({
     initialValues,
-    validationSchema: acquisitionInfoSchema,
-    onSubmit: async () => {
-      setActiveStep(1);
+    validationSchema: documentSchema,
+    onSubmit: async (values) => {
+      console.log('Documents');
+      setFormDetails((prev) => ({ ...prev, ...values }));
+      setActiveStep(3);
     },
   });
 

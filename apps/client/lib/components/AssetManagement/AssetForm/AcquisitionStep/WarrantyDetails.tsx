@@ -23,7 +23,7 @@ const WarrantyDetails = () => {
             <Field
               as={TextInput}
               name="warrantyStartDate"
-              type="text"
+              type="date"
               label="Start Date"
               customRightElement={
                 <Icon as={CalendarIcon} boxSize="20px" color="#374957" />
@@ -32,7 +32,7 @@ const WarrantyDetails = () => {
             <Field
               as={TextInput}
               name="warrantyEndDate"
-              type="text"
+              type="date"
               label="End Date"
               customRightElement={
                 <Icon as={CalendarIcon} boxSize="20px" color="#374957" />

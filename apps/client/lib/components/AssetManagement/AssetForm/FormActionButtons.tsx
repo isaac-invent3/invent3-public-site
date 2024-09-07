@@ -20,6 +20,7 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
         spacing="8px"
         bgColor="#F6F6F666"
         visibility={activeStep === 0 ? 'hidden' : 'visible'}
+        minW="96px"
         minH="50px"
         onClick={() => {
           activeStep > 0 && setActiveStep((prev) => prev - 1);
@@ -30,25 +31,32 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
       </HStack>
 
       <HStack spacing="16px" justifySelf="flex-end">
-        <HStack
-          as="button"
-          px="16px"
-          rounded="8px"
-          bgColor="#F6F6F6B2"
-          minH="50px"
-        >
-          <Text size="md" color="primary.500">
-            Cancel
-          </Text>
-        </HStack>
-        <Button variant="outline">Save for later</Button>
+        {activeStep === 0 && (
+          <HStack
+            as="button"
+            px="16px"
+            rounded="8px"
+            bgColor="#F6F6F6B2"
+            minH="50px"
+            minW="96px"
+            justifyContent="center"
+          >
+            <Text size="md" color="primary.500">
+              Cancel
+            </Text>
+          </HStack>
+        )}
+        <Button variant="outline" customStyles={{ minW: '137px' }}>
+          Save for later
+        </Button>
         <Button
           type={activeStep < 3 ? 'submit' : 'button'}
           handleClick={() => {
             handleContinue && handleContinue();
           }}
+          customStyles={{ minW: '167px' }}
         >
-          Continue
+          {activeStep < 3 ? 'Continue' : 'Complete'}
         </Button>
       </HStack>
     </HStack>

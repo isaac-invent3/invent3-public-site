@@ -14,10 +14,10 @@ const generalInfoSchema = Yup.object().shape({
   serialNo: Yup.string().required('Serial No. is Required'),
   category: Yup.string().required('Category is Required'),
   subCategory: Yup.string().required('Subcategory is Required'),
-  weight: Yup.string().required('Weight is Required'),
-  width: Yup.string().required('Width is Required'),
-  height: Yup.string().required('Height is Required'),
-  depth: Yup.string().required('Depth is Required'),
+  weight: Yup.number().required('Weight is Required'),
+  width: Yup.number().required('Width is Required'),
+  height: Yup.number().required('Height is Required'),
+  depth: Yup.number().required('Depth is Required'),
   owner: Yup.string().required('Owner is Required'),
   department: Yup.string().required('Department is Required'),
   assignedTo: Yup.string().required('This is Required'),
@@ -25,8 +25,6 @@ const generalInfoSchema = Yup.object().shape({
 });
 
 const acquisitionInfoSchema = Yup.object().shape({
-  name: Yup.string().required('Name is required'),
-  description: Yup.string().required('Description is Required'),
   acquisitionDate: Yup.string().required('Acquisition Date is required'),
   assetCondition: Yup.string().required('Asset Condition is required'),
   purchasePrice: Yup.number().required('Purchase Price is required'),

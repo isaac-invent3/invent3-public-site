@@ -35,7 +35,7 @@ const AssetDimension = () => {
         <Field
           as={TextInput}
           name="weight"
-          type="text"
+          type="number"
           label="Weight"
           rightElementWidth="72px"
           customRightElement={
@@ -51,7 +51,7 @@ const AssetDimension = () => {
         <Field
           as={TextInput}
           name="width"
-          type="text"
+          type="number"
           label="Width"
           rightElementWidth="72px"
           customRightElement={
@@ -67,7 +67,7 @@ const AssetDimension = () => {
         <Field
           as={TextInput}
           name="height"
-          type="text"
+          type="number"
           label="Height"
           rightElementWidth="72px"
           customRightElement={
@@ -83,7 +83,7 @@ const AssetDimension = () => {
         <Field
           as={TextInput}
           name="depth"
-          type="text"
+          type="number"
           label="Depth"
           rightElementWidth="72px"
           customRightElement={

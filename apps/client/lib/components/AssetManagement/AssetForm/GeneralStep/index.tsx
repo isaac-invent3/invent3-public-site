@@ -9,39 +9,43 @@ import AssetDimension from './AssetDimension';
 import AssetOwner from './AssetOwner';
 import AssetNameCodeDescription from './AssetNameCodeDescription';
 import FormActionButtons from '../FormActionButtons';
+import { AssetFormDetails } from '~/lib/interfaces/asset.interfaces';
 
 interface GeneralStepProps {
+  setFormDetails: React.Dispatch<React.SetStateAction<AssetFormDetails>>;
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
+  formDetails: AssetFormDetails;
 }
 const GeneralStep = (props: GeneralStepProps) => {
-  const { setActiveStep } = props;
+  const { setActiveStep, setFormDetails, formDetails } = props;
 
   const initialValues = {
-    images: [],
-    name: '',
-    description: '',
-    assetCode: '',
-    make: '',
-    model: '',
-    serialNo: '',
-    codePrefix: '',
-    codeSuffix: '',
-    category: '',
-    subCategory: '',
-    weight: '',
-    width: '',
-    height: '',
-    depth: '',
-    owner: '',
-    department: '',
-    assignedTo: '',
-    responsibleFor: '',
+    images: formDetails.images ?? [],
+    name: formDetails.name ?? '',
+    description: formDetails.description ?? '',
+    assetCode: formDetails.assetCode ?? '',
+    make: formDetails.make ?? '',
+    model: formDetails.model ?? '',
+    serialNo: formDetails.serialNo ?? '',
+    codePrefix: formDetails.codePrefix ?? '',
+    codeSuffix: formDetails.codeSuffix ?? '',
+    category: formDetails.category ?? '',
+    subCategory: formDetails.subCategory ?? '',
+    weight: formDetails.weight ?? 0,
+    width: formDetails.width ?? 0,
+    height: formDetails.height ?? 0,
+    depth: formDetails.depth ?? 0,
+    owner: formDetails.owner ?? '',
+    department: formDetails.department ?? '',
+    assignedTo: formDetails.assignedTo ?? '',
+    responsibleFor: formDetails.responsibleFor ?? '',
   };
 
   const formik = useFormik({
     initialValues,
     validationSchema: generalInfoSchema,
-    onSubmit: async () => {
+    onSubmit: async (values) => {
+      setFormDetails((prev) => ({ ...prev, ...values }));
       setActiveStep(1);
     },
   });

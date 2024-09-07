@@ -1,6 +1,6 @@
 import { Flex, SimpleGrid, VStack } from '@chakra-ui/react';
 import React from 'react';
-import DetailHeader from '../../../DetailHeader';
+import DetailHeader from '../../../../../UI/DetailHeader';
 import DetailSection from '../../../DetailSection';
 
 const InfoTwo = () => {
@@ -38,7 +38,7 @@ const InfoTwo = () => {
         />
       </VStack>
       <VStack alignItems="flex-start" spacing="16px">
-        <DetailHeader>Photos</DetailHeader>
+        <DetailHeader variant="secondary">Photos</DetailHeader>
         <Flex width="full" gap="16px" wrap="wrap">
           {Array(8)
             .fill('')

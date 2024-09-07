@@ -53,7 +53,7 @@ const UserActionPopover = () => {
           width="100vw"
           height="100vh"
           bg="blackAlpha.600"
-          zIndex="5"
+          zIndex="9"
           onClick={onClose}
         />
       )}

@@ -21,7 +21,7 @@ const DepreciationDetails = () => {
         <Field
           as={TextInput}
           name="depreciationStartDate"
-          type="text"
+          type="date"
           label="Start Date"
           customRightElement={
             <Icon as={CalendarIcon} boxSize="20px" color="#374957" />

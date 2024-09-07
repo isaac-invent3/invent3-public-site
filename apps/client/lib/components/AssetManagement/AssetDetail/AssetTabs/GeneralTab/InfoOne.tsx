@@ -1,6 +1,6 @@
 import { SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
-import DetailHeader from '../../DetailHeader';
+import DetailHeader from '../../../../UI/DetailHeader';
 import DetailSection from '../../DetailSection';
 
 const InfoOne = () => {
@@ -43,7 +43,7 @@ const InfoOne = () => {
         <DetailSection details={details} minWidth="77px" />
       </VStack>
       <VStack alignItems="flex-start">
-        <DetailHeader>Description:</DetailHeader>
+        <DetailHeader variant="secondary">Description:</DetailHeader>
         <Text size="md" color="neutral.800" fontWeight={400}>
           Lorem ipsum dolor sit amet consectetur. Maecenas iaculis diam et at
           imperdiet massa dignissim. Faucibus odio fermentum imperdiet ac enim

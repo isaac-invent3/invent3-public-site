@@ -8,33 +8,37 @@ import PurchasePrice from './PurchasePrice';
 import WarrantyDetails from './WarrantyDetails';
 import DepreciationDetails from './DepreciationDetails';
 import VendorDetails from './VendorDetails';
+import { AssetFormDetails } from '~/lib/interfaces/asset.interfaces';
 
 interface AcquisitionStepProps {
+  setFormDetails: React.Dispatch<React.SetStateAction<AssetFormDetails>>;
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
+  formDetails: AssetFormDetails;
 }
 const AcquisitionStep = (props: AcquisitionStepProps) => {
-  const { setActiveStep } = props;
+  const { setActiveStep, setFormDetails, formDetails } = props;
 
   const initialValues = {
-    acquisitionDate: '',
-    assetCondition: '',
-    purchasePrice: '',
-    warrantyStartDate: '',
-    warrantyEndDate: '',
-    warrantyTerms: '',
-    paymentTerms: '',
-    depreciationStartDate: '',
-    depreciationMethod: '',
-    depreciationRate: '',
-    vendorId: '',
-    vendorDetail: '',
+    acquisitionDate: formDetails.acquisitionDate ?? '',
+    assetCondition: formDetails.assetCondition ?? '',
+    purchasePrice: formDetails.purchasePrice ?? 0,
+    warrantyStartDate: formDetails.warrantyStartDate ?? '',
+    warrantyEndDate: formDetails.warrantyEndDate ?? '',
+    warrantyTerms: formDetails.warrantyTerms ?? '',
+    paymentTerms: formDetails.paymentTerms ?? '',
+    depreciationStartDate: formDetails.depreciationStartDate ?? '',
+    depreciationMethod: formDetails.depreciationMethod ?? '',
+    depreciationRate: formDetails.depreciationRate ?? 0,
+    vendorId: formDetails.vendorId ?? '',
+    vendorDetail: formDetails.vendorDetail ?? '',
   };
 
   const formik = useFormik({
     initialValues,
     validationSchema: acquisitionInfoSchema,
-    onSubmit: async () => {
-      setActiveStep(1);
+    onSubmit: async (values) => {
+      setFormDetails((prev) => ({ ...prev, ...values }));
+      setActiveStep(2);
     },
   });
 

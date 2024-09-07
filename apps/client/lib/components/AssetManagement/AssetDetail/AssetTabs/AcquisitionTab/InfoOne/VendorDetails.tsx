@@ -1,6 +1,6 @@
 import { Heading, HStack, StackDivider, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
-import DetailHeader from '../../../DetailHeader';
+import DetailHeader from '../../../../../UI/DetailHeader';
 
 const VendorTexts = () => {
   return (
@@ -12,7 +12,7 @@ const VendorTexts = () => {
       rounded="8px"
       spacing="16px"
     >
-      <DetailHeader>Vendor's Details</DetailHeader>
+      <DetailHeader variant="secondary">Vendor's Details</DetailHeader>
       <HStack
         spacing="24px"
         alignItems="flex-start"

@@ -34,14 +34,15 @@ const AddDocument = () => {
               if (event.currentTarget.files.length > 0) {
                 if (event.currentTarget.files[0].size > 10 * 1024 * 1024) {
                   helpers.setError('File size must be less than 10 MB');
-                }
-                if (!meta.value.includes(event.currentTarget.files[0])) {
-                  helpers.setValue([
-                    ...meta.value,
-                    event.currentTarget.files[0],
-                  ]);
-                  // eslint-disable-next-line no-param-reassign
-                  event.target.value = '';
+                } else {
+                  if (!meta.value.includes(event.currentTarget.files[0])) {
+                    helpers.setValue([
+                      ...meta.value,
+                      event.currentTarget.files[0],
+                    ]);
+                    // eslint-disable-next-line no-param-reassign
+                    event.target.value = '';
+                  }
                 }
               }
             }}
@@ -91,8 +92,8 @@ const AddDocument = () => {
           </FormErrorMessage>
         </FormControl>
         <VStack width="full" spacing="4px">
-          {meta.value.map((item: File) => (
-            <SingleDocument document={item} />
+          {meta.value.map((item: File, index: number) => (
+            <SingleDocument document={item} key={index} />
           ))}
         </VStack>
       </VStack>

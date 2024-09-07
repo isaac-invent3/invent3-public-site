@@ -14,7 +14,7 @@ const PurchasePrice = () => {
           isRequired
         />
       </Flex>
-      <SimpleGrid columns={3} width="full">
+      <SimpleGrid columns={3} width="full" gap="20px">
         <Field
           as={TextInput}
           name="purchasePrice"

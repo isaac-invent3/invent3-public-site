@@ -1,4 +1,4 @@
-export interface AssetLocation {
+interface AssetLocation {
   locationId: number;
   locationGuid: string | null;
   facilityId: number;
@@ -30,7 +30,7 @@ export interface AssetLocation {
   shelfRef: string;
 }
 
-export interface Asset {
+interface Asset {
   assetId: number;
   assetName: string;
   assetCode: string;
@@ -73,7 +73,44 @@ export interface Asset {
   guid: string | null;
 }
 
-export interface FilterInput {
+interface AssetFormDetails {
+  images: (string | File)[];
+  name: string;
+  description: string;
+  assetCode: string;
+  make: string;
+  model: string;
+  serialNo: string;
+  codePrefix: string;
+  codeSuffix: string;
+  category: string;
+  subCategory: string;
+  weight: number;
+  width: number;
+  height: number;
+  depth: number;
+  owner: string;
+  department: string;
+  assignedTo: string;
+  responsibleFor: string;
+  acquisitionDate: string;
+  assetCondition: string;
+  purchasePrice: number;
+  warrantyStartDate: string;
+  warrantyEndDate: string;
+  warrantyTerms: string;
+  paymentTerms: string;
+  depreciationStartDate: string;
+  depreciationMethod: string;
+  depreciationRate: number;
+  vendorId: string;
+  vendorDetail: string;
+  documents: (string | File)[];
+}
+
+interface FilterInput {
   category: (string | number)[];
   location: (string | number)[];
 }
+
+export type { AssetLocation, Asset, AssetFormDetails, FilterInput };

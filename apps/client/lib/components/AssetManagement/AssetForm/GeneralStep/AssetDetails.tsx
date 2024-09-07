@@ -1,6 +1,8 @@
-import { Flex, HStack } from '@chakra-ui/react';
+import { Flex, HStack, SimpleGrid } from '@chakra-ui/react';
 import React from 'react';
 import SectionInfo from '../SectionInfo';
+import { Field } from 'formik';
+import TextInput from '~/lib/components/UI/TextInput';
 
 const AssetDetail = () => {
   return (
@@ -12,6 +14,11 @@ const AssetDetail = () => {
           isRequired
         />
       </Flex>
+      <SimpleGrid width="full" columns={4} gap="11px">
+        <Field as={TextInput} name="make" type="text" label="Make" />
+        <Field as={TextInput} name="model" type="text" label="Model" />
+        <Field as={TextInput} name="serialNo" type="text" label="Serial No." />
+      </SimpleGrid>
     </HStack>
   );
 };

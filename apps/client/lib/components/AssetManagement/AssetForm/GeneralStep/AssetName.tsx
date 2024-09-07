@@ -1,6 +1,8 @@
 import { Flex, HStack } from '@chakra-ui/react';
 import React from 'react';
 import SectionInfo from '../SectionInfo';
+import { Field } from 'formik';
+import TextInput from '~/lib/components/UI/TextInput';
 
 const AssetName = () => {
   return (
@@ -12,6 +14,13 @@ const AssetName = () => {
           isRequired
         />
       </Flex>
+      <Field
+        as={TextInput}
+        name="name"
+        type="text"
+        label="Name"
+        placeholder="Name"
+      />
     </HStack>
   );
 };

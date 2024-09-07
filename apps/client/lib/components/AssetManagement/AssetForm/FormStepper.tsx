@@ -38,7 +38,7 @@ const ActiveInactiveIcon = (props: ActiveInactiveIconProps) => {
       opacity={active ? 1 : 0.5}
       justifyContent="center"
     >
-      <Text size="md" color="white">
+      <Text size="md" color="white" fontWeight={800}>
         {boxIndex + 1}
       </Text>
     </HStack>
@@ -95,7 +95,7 @@ const FormStepper = (props: FormStepperProps) => {
             {index !== steps.length - 1 && (
               <Divider
                 orientation="horizontal"
-                borderWidth="3px"
+                borderWidth="2px"
                 borderColor="neutral.600"
                 w="full"
                 mr="29px"

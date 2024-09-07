@@ -23,7 +23,9 @@ interface TextInputProps {
   value?: string | number;
   customLeftElement?: React.ReactNode;
   customRightElement?: React.ReactNode;
+  rightElementWidth?: string;
   isDisabled?: boolean;
+  variant?: 'primary' | 'secondary';
 }
 
 const TextInput: React.FC<TextInputProps> = ({
@@ -34,7 +36,9 @@ const TextInput: React.FC<TextInputProps> = ({
   value,
   customLeftElement,
   customRightElement,
+  rightElementWidth,
   isDisabled = false,
+  variant = 'primary',
 }) => {
   const [field, meta] = useField(name);
   const [show, setShow] = useState(false);
@@ -44,7 +48,6 @@ const TextInput: React.FC<TextInputProps> = ({
   const handleBlur = () => {
     if (!value) setIsFocused(false);
   };
-
   const inputType = type === 'password' ? (show ? 'text' : 'password') : type;
 
   return (
@@ -71,7 +74,15 @@ const TextInput: React.FC<TextInputProps> = ({
           transformOrigin="left top"
           fontSize={isFocused || inputValue ? '12px' : '14px'}
           lineHeight={isFocused || inputValue ? '14.26px' : '16.63px'}
-          color={isFocused ? 'neutral.800' : 'neutral.700'}
+          color={
+            isFocused
+              ? variant === 'primary'
+                ? 'neutral.600'
+                : 'neutral.800'
+              : variant === 'primary'
+                ? 'neutral.300'
+                : 'neutral.700'
+          }
           pointerEvents="none"
           transition="all 0.2s ease-in-out"
           zIndex={99}
@@ -92,12 +103,17 @@ const TextInput: React.FC<TextInputProps> = ({
           height="50px"
           pt={isFocused || value ? '10px' : '6px'}
           pl={customLeftElement ? '60px' : '16px'}
-          pr={customRightElement || type === 'password' ? '36px' : '16px'}
-          bgColor="#F7F7F799"
+          pr={
+            customRightElement || type === 'password'
+              ? rightElementWidth ?? '36px'
+              : '16px'
+          }
+          bgColor={variant === 'primary' ? 'neutral.100' : '#F7F7F799'}
           borderWidth={0}
           fontWeight={500}
           fontSize="14px"
           lineHeight="16.63px"
+          overflow="hidden"
           onFocus={handleFocus}
           onBlur={handleBlur}
           _invalid={{
@@ -117,7 +133,7 @@ const TextInput: React.FC<TextInputProps> = ({
             borderColor: 'none',
           }}
           _disabled={{
-            backgroundColor: '#F7F7F7',
+            backgroundColor: 'neutral.100',
           }}
           _placeholder={{
             color: 'netural.700',

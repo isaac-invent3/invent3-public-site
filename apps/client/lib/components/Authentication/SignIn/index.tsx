@@ -64,6 +64,7 @@ const SignIn = () => {
                 type="text"
                 label="Email"
                 placeholder="Email"
+                variant="secondary"
               />
 
               <Flex direction="column" w="full" gap="16px">
@@ -73,6 +74,7 @@ const SignIn = () => {
                   type="password"
                   label="Password"
                   placeholder="Password"
+                  variant="secondary"
                 />
 
                 <Flex width="full" justifyContent="flex-end" color="brand.500">

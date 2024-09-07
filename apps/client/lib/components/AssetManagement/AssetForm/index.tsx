@@ -15,7 +15,7 @@ const AssetForm = () => {
       <Header />
       <Flex width="full" gap="8px" mt="32px" direction="column">
         <FormStepper currentStep={activeStep} />
-        <GeneralStep />
+        {activeStep === 0 && <GeneralStep setActiveStep={setActiveStep} />}
       </Flex>
     </Flex>
   );

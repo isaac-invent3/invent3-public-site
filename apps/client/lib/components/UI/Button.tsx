@@ -34,7 +34,7 @@ const Button = (props: ButtonProps) => {
       borderColor="primary.500"
       bgColor={
         variant === 'outline'
-          ? 'white'
+          ? 'transparent'
           : variant === 'primary'
             ? 'primary.500'
             : '#F6F6F6'
@@ -45,7 +45,8 @@ const Button = (props: ButtonProps) => {
       lineHeight="16.63px"
       fontWeight={500}
       p="16px"
-      minH="50px"
+      height="full"
+      maxH="50px"
       width="full"
       isLoading={isLoading}
       loadingText={loadingText}

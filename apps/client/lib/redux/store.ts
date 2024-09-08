@@ -1,3 +1,4 @@
+/* eslint-disable turbo/no-undeclared-env-vars */
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import {
@@ -7,27 +8,36 @@ import {
   PERSIST,
   PURGE,
   REGISTER,
+  persistReducer,
 } from 'redux-persist';
 
+import storage from './customStorage';
 import { assetApi } from './services/asset.services';
 import { authApi } from './services/auth.services';
+
+export const persistConfig = {
+  key: 'root',
+  storage,
+  whitelist: [''],
+};
 
 const rootReducer = combineReducers({
   [authApi.reducerPath]: authApi.reducer,
   [assetApi.reducerPath]: assetApi.reducer,
 });
 
-const customMiddleWare = [assetApi.middleware, authApi.middleware];
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const makeStore = () => {
   return configureStore({
-    reducer: rootReducer,
+    reducer: persistedReducer,
+    devTools: process.env.NODE_ENV !== 'production',
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
         serializableCheck: {
           ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
         },
-      }).concat(customMiddleWare),
+      }).concat([authApi.middleware, assetApi.middleware]),
   });
 };
 

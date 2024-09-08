@@ -26,6 +26,8 @@ const SideBar = () => {
       bgImage="/layout-bg.png"
       bgSize="cover"
       zIndex={999}
+      onMouseEnter={() => setIsCollapse(false)}
+      onMouseLeave={() => setIsCollapse(true)}
     >
       <Flex direction="column">
         {/* Logo Section Starts */}

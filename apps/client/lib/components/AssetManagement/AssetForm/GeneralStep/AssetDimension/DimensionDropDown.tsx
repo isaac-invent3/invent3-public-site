@@ -35,6 +35,9 @@ const DimensionDropDown = (props: DimensionDropDownProps) => {
       ref={containerRef}
       cursor="pointer"
       width="66px"
+      top={0}
+      height="50px"
+      justifyContent="center"
       right={0}
       zIndex={99}
     >

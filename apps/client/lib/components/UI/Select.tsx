@@ -16,7 +16,13 @@ import { useState } from 'react';
 const DropdownIndicator = (props: any) => {
   return (
     <components.DropdownIndicator {...props}>
-      <Icon as={ChevronDownIcon} color="neutral.800" boxSize="16px" pb="4px" />
+      <Icon
+        as={ChevronDownIcon}
+        color="neutral.800"
+        boxSize="16px"
+        height="50px"
+        pb="12px"
+      />
     </components.DropdownIndicator>
   );
 };
@@ -58,8 +64,12 @@ function SelectInput({
         position="relative"
       >
         <FormLabel
+          height="50px"
+          justifyContent="center"
+          display="flex"
+          alignItems="center"
           position="absolute"
-          top={isFocused || inputValue ? '10px' : '50%'}
+          top={isFocused || inputValue ? '10px' : meta.error ? '40%' : '50%'}
           transform={
             isFocused || inputValue
               ? 'translateY(-40%) scale(0.85)'
@@ -132,7 +142,7 @@ function SelectInput({
               ...provided,
               display: 'hidden',
               padding: 0,
-              paddingTop: '4px',
+              paddingTop: '0px',
               paddingRight: '16px',
             }),
             placeholder: (provided) => ({

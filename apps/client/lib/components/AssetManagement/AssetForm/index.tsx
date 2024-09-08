@@ -23,24 +23,24 @@ const initialValue = {
   codeSuffix: '',
   category: '',
   subCategory: '',
-  weight: 0,
-  width: 0,
-  height: 0,
-  depth: 0,
+  weight: undefined,
+  width: undefined,
+  height: undefined,
+  depth: undefined,
   owner: '',
   department: '',
   assignedTo: '',
   responsibleFor: '',
   acquisitionDate: '',
   assetCondition: '',
-  purchasePrice: 0,
+  purchasePrice: undefined,
   warrantyStartDate: '',
   warrantyEndDate: '',
   warrantyTerms: '',
   paymentTerms: '',
   depreciationStartDate: '',
   depreciationMethod: '',
-  depreciationRate: 0,
+  depreciationRate: undefined,
   vendorId: '',
   vendorDetail: '',
   documents: [],
@@ -51,7 +51,6 @@ const AssetForm = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [formDetails, setFormDetails] =
     useState<AssetFormDetails>(initialValue);
-
   return (
     <Flex width="full" direction="column" pb="24px">
       <Header />

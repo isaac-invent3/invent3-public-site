@@ -1,11 +1,11 @@
-import { Flex, HStack, Icon, SimpleGrid } from '@chakra-ui/react';
+import { Flex, HStack, SimpleGrid } from '@chakra-ui/react';
 import React from 'react';
 import SectionInfo from '../SectionInfo';
 import { Field } from 'formik';
 import TextInput from '~/lib/components/UI/TextInput';
-import { CalendarIcon } from '~/lib/components/CustomIcons';
 import SelectInput from '~/lib/components/UI/Select';
 import { categoryData } from '~/lib/utils/MockData/asset';
+import CustomDatePicker from './DatePicker';
 
 const DepreciationDetails = () => {
   return (
@@ -18,15 +18,7 @@ const DepreciationDetails = () => {
         />
       </Flex>
       <SimpleGrid columns={3} width="full" spacing="16px">
-        <Field
-          as={TextInput}
-          name="depreciationStartDate"
-          type="date"
-          label="Start Date"
-          customRightElement={
-            <Icon as={CalendarIcon} boxSize="20px" color="#374957" />
-          }
-        />
+        <CustomDatePicker name="depreciationStartDate" label="Start Date" />
         <SelectInput
           name="depreciationMethod"
           title="Depreciation Method"

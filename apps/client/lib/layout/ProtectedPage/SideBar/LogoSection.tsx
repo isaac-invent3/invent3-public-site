@@ -42,7 +42,9 @@ const LogoSection = (props: LogoSectionProps) => {
           >
             <Image
               src={
-                isCollapse ? '/logo-small-initials-white.svg' : 'logo-white.svg'
+                isCollapse
+                  ? '/logo-small-initials-white.svg'
+                  : '/logo-white.svg'
               }
               alt="Invent3 logo"
               fill

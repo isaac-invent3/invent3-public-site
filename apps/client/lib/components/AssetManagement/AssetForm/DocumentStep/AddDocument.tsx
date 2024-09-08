@@ -8,20 +8,57 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
 import SectionInfo from '../SectionInfo';
 import { useField } from 'formik';
 import { DocumentIcon, InfoIcon } from '~/lib/components/CustomIcons';
 import SingleDocument from './SingleDocument';
 
 const AddDocument = () => {
-  const [field, meta, helpers] = useField('documents'); //eslint-disable-line
+  const [field, meta, helpers] = useField('documents'); // eslint-disable-line
+  const [isDragging, setIsDragging] = useState(false);
+
+  const handleDragOver = (event: React.DragEvent) => {
+    event.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleDrop = (event: React.DragEvent) => {
+    event.preventDefault();
+    setIsDragging(false);
+
+    if (event.dataTransfer.files.length > 0) {
+      const droppedFiles = Array.from(event.dataTransfer.files);
+      const validFiles = droppedFiles.filter(
+        (file) =>
+          file.size <= 10 * 1024 * 1024 &&
+          [
+            'application/pdf',
+            'application/msword',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          ].includes(file.type)
+      );
+
+      if (validFiles.length < droppedFiles.length) {
+        helpers.setError(
+          'Some files are larger than 10MB or not in a supported format (PDF, DOC, DOCX)'
+        );
+      } else {
+        helpers.setValue([...meta.value, ...validFiles]);
+      }
+    }
+  };
+
   return (
     <HStack width="full" alignItems="flex-start" spacing="81px">
       <Flex width="full" maxW="141px">
         <SectionInfo
           title="Upload Documents"
-          info="Size max: 10MB each Format: JPG, PNG"
+          info="Size max: 10MB each Format: PDF, DOC, DOCX"
           isRequired={false}
         />
       </Flex>
@@ -32,17 +69,22 @@ const AddDocument = () => {
             display="none"
             onChange={(event: any) => {
               if (event.currentTarget.files.length > 0) {
-                if (event.currentTarget.files[0].size > 10 * 1024 * 1024) {
+                const file = event.currentTarget.files[0];
+                const validTypes = [
+                  'application/pdf',
+                  'application/msword',
+                  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                ];
+
+                if (file.size > 10 * 1024 * 1024) {
                   helpers.setError('File size must be less than 10 MB');
+                } else if (!validTypes.includes(file.type)) {
+                  helpers.setError(
+                    'Unsupported file format. Only PDF, DOC, and DOCX are allowed.'
+                  );
                 } else {
-                  if (!meta.value.includes(event.currentTarget.files[0])) {
-                    helpers.setValue([
-                      ...meta.value,
-                      event.currentTarget.files[0],
-                    ]);
-                    // eslint-disable-next-line no-param-reassign
-                    event.target.value = '';
-                  }
+                  helpers.setValue([...meta.value, file]);
+                  event.target.value = ''; // Reset file input value
                 }
               }
             }}
@@ -51,12 +93,27 @@ const AddDocument = () => {
           />
           <label htmlFor="file">
             <VStack
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
               justifyContent="center"
               spacing="24px"
               borderStyle="dashed"
               borderWidth="1px"
-              borderColor={meta.error ? 'error.500' : 'neutral.300'}
-              bgColor={meta.error ? 'error.200' : 'neutral.100'}
+              borderColor={
+                isDragging
+                  ? 'primary.500'
+                  : meta.error
+                    ? 'error.500'
+                    : 'neutral.300'
+              }
+              bgColor={
+                isDragging
+                  ? 'primary.50'
+                  : meta.error
+                    ? 'error.200'
+                    : 'neutral.100'
+              }
               width="full"
               height="full"
               rounded="8px"
@@ -74,7 +131,7 @@ const AddDocument = () => {
                 </Text>
               </VStack>
               <Text size="md" color="neutral.600">
-                PDF, DOC are supported
+                PDF and Doc are supported
               </Text>
             </VStack>
           </label>

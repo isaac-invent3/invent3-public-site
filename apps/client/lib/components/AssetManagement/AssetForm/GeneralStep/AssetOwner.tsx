@@ -6,13 +6,7 @@ import { categoryData } from '~/lib/utils/MockData/asset';
 
 const AssetOwner = () => {
   return (
-    <HStack
-      width="full"
-      alignItems="flex-start"
-      spacing="104px"
-      position="relative"
-      zIndex={9}
-    >
+    <HStack width="full" alignItems="flex-start" spacing="104px">
       <Flex width="full" maxW="118px">
         <SectionInfo
           title="Owner's Info"

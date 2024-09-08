@@ -18,7 +18,14 @@ function amountFormatter(
   );
 }
 
-const dateFormatter = (date: string, format?: string) => {
+const dateFormatter = (
+  date: string | Date,
+  format?: string,
+  stringFormat?: string
+) => {
+  if (stringFormat) {
+    return moment(date, stringFormat).format(format ?? 'DD-MM-YYYY');
+  }
   return moment(date).format(format ?? 'DD-MM-YYYY');
 };
 

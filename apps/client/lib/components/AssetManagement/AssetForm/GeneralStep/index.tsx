@@ -31,10 +31,10 @@ const GeneralStep = (props: GeneralStepProps) => {
     codeSuffix: formDetails.codeSuffix ?? '',
     category: formDetails.category ?? '',
     subCategory: formDetails.subCategory ?? '',
-    weight: formDetails.weight ?? 0,
-    width: formDetails.width ?? 0,
-    height: formDetails.height ?? 0,
-    depth: formDetails.depth ?? 0,
+    weight: formDetails.weight ?? undefined,
+    width: formDetails.width ?? undefined,
+    height: formDetails.height ?? undefined,
+    depth: formDetails.depth ?? undefined,
     owner: formDetails.owner ?? '',
     department: formDetails.department ?? '',
     assignedTo: formDetails.assignedTo ?? '',
@@ -58,7 +58,6 @@ const GeneralStep = (props: GeneralStepProps) => {
             spacing="32px"
             width="full"
             alignItems="flex-start"
-            position="relative"
             bgColor="white"
             pt="26px"
             pl="16px"

@@ -22,6 +22,7 @@ const DimensionDropDown = (props: DimensionDropDownProps) => {
   const { options, value, handleChange } = props;
   const { onToggle, isOpen, onClose } = useDisclosure();
   const containerRef = useRef<HTMLDivElement | null>(null);
+
   useOutsideClick({
     ref: containerRef,
     handler: () => onClose(),
@@ -30,11 +31,11 @@ const DimensionDropDown = (props: DimensionDropDownProps) => {
   return (
     <Flex
       direction="column"
-      position="relative"
+      position="absolute"
       ref={containerRef}
       cursor="pointer"
-      width="116px"
-      pr="46px"
+      width="66px"
+      right={0}
       zIndex={99}
     >
       <HStack
@@ -44,8 +45,9 @@ const DimensionDropDown = (props: DimensionDropDownProps) => {
         paddingLeft="16px"
         borderColor="neutral.300"
         spacing="8px"
-        width="50px"
+        width="66px"
         cursor="pointer"
+        pl="10px"
       >
         <Text size="lg" color={value ? 'neutral.800' : 'neutral.300'}>
           {value ? value : 'cm'}
@@ -64,8 +66,7 @@ const DimensionDropDown = (props: DimensionDropDownProps) => {
           position="absolute"
           zIndex={9999}
           boxShadow="md"
-          width="66px"
-          visibility={isOpen ? 'visible' : 'hidden'}
+          width="60px"
         >
           {options.map((option) => (
             <Text

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import AppProviders from '~/lib/layout/Provider';
+import './globals.css';
 
 const APP_NAME = 'Invent3';
 const DESCRIPTION = 'Assest Management Software';

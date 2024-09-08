@@ -1,11 +1,11 @@
-import { Flex, Grid, GridItem, HStack, Icon } from '@chakra-ui/react';
+import { Flex, Grid, GridItem, HStack } from '@chakra-ui/react';
 import React from 'react';
 import SectionInfo from '../SectionInfo';
 import { Field } from 'formik';
 import TextInput from '~/lib/components/UI/TextInput';
 import SelectInput from '~/lib/components/UI/Select';
 import { categoryData } from '~/lib/utils/MockData/asset';
-import { CalendarIcon } from '~/lib/components/CustomIcons';
+import CustomDatePicker from './DatePicker';
 
 const WarrantyDetails = () => {
   return (
@@ -20,24 +20,9 @@ const WarrantyDetails = () => {
       <Grid templateColumns="repeat(3, 1fr)" gap="16px" width="full">
         <GridItem colSpan={2} width="full">
           <HStack width="full" alignItems="flex-start" spacing="16px">
-            <Field
-              as={TextInput}
-              name="warrantyStartDate"
-              type="date"
-              label="Start Date"
-              customRightElement={
-                <Icon as={CalendarIcon} boxSize="20px" color="#374957" />
-              }
-            />
-            <Field
-              as={TextInput}
-              name="warrantyEndDate"
-              type="date"
-              label="End Date"
-              customRightElement={
-                <Icon as={CalendarIcon} boxSize="20px" color="#374957" />
-              }
-            />
+            <CustomDatePicker name="warrantyStartDate" label="Start Date" />
+
+            <CustomDatePicker name="warrantyEndDate" label="End Date" />
           </HStack>
         </GridItem>
         <GridItem colSpan={2} width="full">

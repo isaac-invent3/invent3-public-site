@@ -21,14 +21,14 @@ const AcquisitionStep = (props: AcquisitionStepProps) => {
   const initialValues = {
     acquisitionDate: formDetails.acquisitionDate ?? '',
     assetCondition: formDetails.assetCondition ?? '',
-    purchasePrice: formDetails.purchasePrice ?? 0,
+    purchasePrice: formDetails.purchasePrice ?? undefined,
     warrantyStartDate: formDetails.warrantyStartDate ?? '',
     warrantyEndDate: formDetails.warrantyEndDate ?? '',
     warrantyTerms: formDetails.warrantyTerms ?? '',
     paymentTerms: formDetails.paymentTerms ?? '',
     depreciationStartDate: formDetails.depreciationStartDate ?? '',
     depreciationMethod: formDetails.depreciationMethod ?? '',
-    depreciationRate: formDetails.depreciationRate ?? 0,
+    depreciationRate: formDetails.depreciationRate ?? undefined,
     vendorId: formDetails.vendorId ?? '',
     vendorDetail: formDetails.vendorDetail ?? '',
   };

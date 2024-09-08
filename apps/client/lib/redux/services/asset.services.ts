@@ -18,7 +18,7 @@ export const assetApi = createApi({
       }),
       providesTags: ['allAsset'],
     }),
-    getAdminById: builder.query({
+    getAssetById: builder.query({
       query: (id: any) => ({
         url: `/assets/${id}`,
         method: 'GET',
@@ -26,7 +26,7 @@ export const assetApi = createApi({
       }),
       providesTags: ['singleAsset'],
     }),
-    createAdmin: builder.mutation({
+    createAsset: builder.mutation({
       query: (body: any) => ({
         url: `/assets/create`,
         method: 'POST',
@@ -39,7 +39,7 @@ export const assetApi = createApi({
 });
 
 export const {
-  useCreateAdminMutation,
-  useGetAdminByIdQuery,
+  useCreateAssetMutation,
+  useGetAssetByIdQuery,
   useGetallAssetQuery,
 } = assetApi;

@@ -53,3 +53,21 @@ a {
   outline: none;
   box-shadow: none;
 }
+
+input[type='date'] {
+  text-align: left;
+}
+
+input[type='date']:before {
+  color: transparent;
+  content: '' !important;
+  /* margin-right: 0.5em; */
+}
+input[type='date']:focus::before,
+input[type='date']:valid::before {
+  content: '' !important;
+}
+
+.hidden-input {
+  height: 0px;
+}

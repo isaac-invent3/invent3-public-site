@@ -27,7 +27,9 @@ const generalInfoSchema = Yup.object().shape({
 const acquisitionInfoSchema = Yup.object().shape({
   acquisitionDate: Yup.string().required('Acquisition Date is required'),
   assetCondition: Yup.string().required('Asset Condition is required'),
-  purchasePrice: Yup.number().required('Purchase Price is required'),
+  purchasePrice: Yup.number()
+    .required('Purchase Price is required')
+    .min(1, 'Price must be greater than 0'),
   warrantyStartDate: Yup.string().required('Warranty Start Date is required'),
   warrantyEndDate: Yup.string().required('Warranty End Date is required'),
   warrantyTerms: Yup.string().required('Warranty Terms is required'),
@@ -36,7 +38,9 @@ const acquisitionInfoSchema = Yup.object().shape({
     'Depreciation Start Date is required'
   ),
   depreciationMethod: Yup.string().required('Depreciation Method is required'),
-  depreciationRate: Yup.number().required('Depreciation Rate is required'),
+  depreciationRate: Yup.number()
+    .required('Depreciation Rate is required')
+    .min(1, 'Rate must be greater than 0'),
   vendorId: Yup.string().required('Vendor is required'),
   vendorDetail: Yup.string().required('Vendor Detail is required'),
 });

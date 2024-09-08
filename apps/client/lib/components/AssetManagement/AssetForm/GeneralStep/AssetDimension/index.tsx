@@ -32,70 +32,73 @@ const AssetDimension = () => {
         />
       </Flex>
       <SimpleGrid width="full" columns={4} gap="11px" position="relative">
-        <Field
-          as={TextInput}
-          name="weight"
-          type="number"
-          label="Weight"
-          rightElementWidth="72px"
-          customRightElement={
-            <DimensionDropDown
-              options={sampleDimensions}
-              value={dimensions.weight}
-              handleChange={(value: string) =>
-                setDimensions((prev) => ({ ...prev, weight: value }))
-              }
-            />
-          }
-        />
-        <Field
-          as={TextInput}
-          name="width"
-          type="number"
-          label="Width"
-          rightElementWidth="72px"
-          customRightElement={
-            <DimensionDropDown
-              options={sampleDimensions}
-              value={dimensions.width}
-              handleChange={(value: string) =>
-                setDimensions((prev) => ({ ...prev, width: value }))
-              }
-            />
-          }
-        />
-        <Field
-          as={TextInput}
-          name="height"
-          type="number"
-          label="Height"
-          rightElementWidth="72px"
-          customRightElement={
-            <DimensionDropDown
-              options={sampleDimensions}
-              value={dimensions.height}
-              handleChange={(value: string) =>
-                setDimensions((prev) => ({ ...prev, height: value }))
-              }
-            />
-          }
-        />
-        <Field
-          as={TextInput}
-          name="depth"
-          type="number"
-          label="Depth"
-          rightElementWidth="72px"
-          customRightElement={
-            <DimensionDropDown
-              options={sampleDimensions}
-              value={dimensions.depth}
-              handleChange={(value: string) =>
-                setDimensions((prev) => ({ ...prev, depth: value }))
-              }
-            />
-          }
-        />
+        <HStack spacing={0} position="relative">
+          <Field
+            as={TextInput}
+            name="weight"
+            type="number"
+            label="Weight"
+            customStyle={{ pr: '70px' }}
+          />
+          <DimensionDropDown
+            options={sampleDimensions}
+            value={dimensions.weight}
+            handleChange={(value: string) =>
+              setDimensions((prev) => ({ ...prev, weight: value }))
+            }
+          />
+        </HStack>
+
+        <HStack spacing={0} position="relative">
+          <Field
+            as={TextInput}
+            name="width"
+            type="number"
+            label="Width"
+            customStyle={{ pr: '70px' }}
+          />
+          <DimensionDropDown
+            options={sampleDimensions}
+            value={dimensions.width}
+            handleChange={(value: string) =>
+              setDimensions((prev) => ({ ...prev, width: value }))
+            }
+          />
+        </HStack>
+
+        <HStack spacing={0} position="relative">
+          <Field
+            as={TextInput}
+            name="height"
+            type="number"
+            label="Height"
+            customStyle={{ pr: '70px' }}
+          />
+          <DimensionDropDown
+            options={sampleDimensions}
+            value={dimensions.height}
+            handleChange={(value: string) =>
+              setDimensions((prev) => ({ ...prev, height: value }))
+            }
+          />
+        </HStack>
+
+        <HStack spacing={0} position="relative">
+          <Field
+            as={TextInput}
+            name="depth"
+            type="number"
+            label="Depth"
+            customStyle={{ pr: '70px' }}
+          />
+          <DimensionDropDown
+            options={sampleDimensions}
+            value={dimensions.depth}
+            handleChange={(value: string) =>
+              setDimensions((prev) => ({ ...prev, depth: value }))
+            }
+          />
+        </HStack>
       </SimpleGrid>
     </HStack>
   );

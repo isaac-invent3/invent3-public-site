@@ -17,14 +17,12 @@ import { InfoIcon } from '../CustomIcons';
 interface TextInputProps {
   name: string;
   type: 'text' | 'password' | 'number' | 'date' | 'time' | 'datetime';
-  placeholder: string;
   label: string;
   customStyle?: { [key: string]: unknown };
   value?: string | number;
   customLeftElement?: React.ReactNode;
   customRightElement?: React.ReactNode;
   leftElementWidth?: string;
-  rightElementWidth?: string;
   isDisabled?: boolean;
   variant?: 'primary' | 'secondary';
 }
@@ -38,7 +36,6 @@ const TextInput: React.FC<TextInputProps> = ({
   customLeftElement,
   customRightElement,
   leftElementWidth,
-  rightElementWidth,
   isDisabled = false,
   variant = 'primary',
 }) => {
@@ -66,16 +63,20 @@ const TextInput: React.FC<TextInputProps> = ({
 
         <FormLabel
           position="absolute"
-          top={isFocused || inputValue ? '10px' : '50%'}
+          top={isFocused || inputValue || inputValue === 0 ? '10px' : '50%'}
           left={customLeftElement ? leftElementWidth ?? '16px' : '16px'}
           transform={
-            isFocused || inputValue
+            isFocused || inputValue || inputValue === 0
               ? 'translateY(-40%) scale(0.85)'
               : 'translateY(-50%)'
           }
           transformOrigin="left top"
-          fontSize={isFocused || inputValue ? '12px' : '14px'}
-          lineHeight={isFocused || inputValue ? '14.26px' : '16.63px'}
+          fontSize={
+            isFocused || inputValue || inputValue === 0 ? '12px' : '14px'
+          }
+          lineHeight={
+            isFocused || inputValue || inputValue === 0 ? '14.26px' : '16.63px'
+          }
           color={
             isFocused
               ? variant === 'primary'
@@ -100,16 +101,16 @@ const TextInput: React.FC<TextInputProps> = ({
           color={meta.error ? 'error' : 'black'}
           type={inputType}
           position="relative"
-          value={value}
+          value={
+            !meta.value && (value === undefined || value === null)
+              ? ''
+              : meta.value ?? value
+          }
           rounded="8px"
           height="50px"
           pt={isFocused || value ? '10px' : '6px'}
           pl={customLeftElement ? leftElementWidth ?? '16px' : '16px'}
-          pr={
-            customRightElement || type === 'password'
-              ? rightElementWidth ?? '36px'
-              : '16px'
-          }
+          pr={customRightElement || type === 'password' ? '36px' : '16px'}
           bgColor={variant === 'primary' ? 'neutral.100' : '#F7F7F799'}
           borderWidth={0}
           fontWeight={500}
@@ -160,7 +161,13 @@ const TextInput: React.FC<TextInputProps> = ({
         )}
 
         {customRightElement && (
-          <InputRightElement textAlign="center" height="full" mr="4px">
+          <InputRightElement
+            textAlign="center"
+            height="full"
+            mr="4px"
+            position="absolute"
+            zIndex={999}
+          >
             {customRightElement}
           </InputRightElement>
         )}

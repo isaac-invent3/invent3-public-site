@@ -27,7 +27,7 @@ const Acquisition = ({ assetFormDetails }: AcquisitionProps) => {
   const row1 = [
     {
       label: 'Acquisition Date',
-      value: dateFormatter(acquisitionDate, 'Do MMM, YYYY'),
+      value: dateFormatter(acquisitionDate, 'Do MMM, YYYY', 'DD/MM/YYYY'),
     },
     {
       label: 'Asset  Condition',
@@ -35,18 +35,18 @@ const Acquisition = ({ assetFormDetails }: AcquisitionProps) => {
     },
     {
       label: 'Purchase Price',
-      value: amountFormatter(purchasePrice),
+      value: amountFormatter(purchasePrice ?? 0),
     },
   ];
 
   const row2 = [
     {
       label: 'Warranty Start Date',
-      value: dateFormatter(warrantyStartDate, 'Do MMM, YYYY'),
+      value: dateFormatter(warrantyStartDate, 'Do MMM, YYYY', 'DD/MM/YYYY'),
     },
     {
       label: 'Warranty End Date',
-      value: dateFormatter(warrantyEndDate, 'Do MMM, YYYY'),
+      value: dateFormatter(warrantyEndDate, 'Do MMM, YYYY', 'DD/MM/YYYY'),
     },
     {
       label: 'Warranty Terms',
@@ -61,7 +61,7 @@ const Acquisition = ({ assetFormDetails }: AcquisitionProps) => {
   const row3 = [
     {
       label: 'Depreciation Start Date',
-      value: dateFormatter(depreciationStartDate, 'Do MMM, YYYY'),
+      value: dateFormatter(depreciationStartDate, 'Do MMM, YYYY', 'DD/MM/YYYY'),
     },
     {
       label: 'Depreciation Method',

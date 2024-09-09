@@ -25,7 +25,7 @@ const SignIn = () => {
     onSubmit: async (values, { setSubmitting }) => {
       setSubmitting(true);
       const result = await signIn('credentials', {
-        redirectTo: ref ?? '/dashboard',
+        redirect: false,
         username: values.username,
         password: values.password,
       });
@@ -35,8 +35,6 @@ const SignIn = () => {
         console.error(result.error);
       } else {
         router.push(ref ?? '/dashboard');
-        router.refresh();
-        // Handle successful login
         console.log('Logged in successfully!');
       }
       setSubmitting(false);

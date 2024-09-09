@@ -1,6 +1,6 @@
 import { Flex, HStack, Text } from '@chakra-ui/react';
 import React from 'react';
-import { Asset } from '~/lib/interfaces/asset.interfaces';
+import { useAppSelector } from '~/lib/redux/hooks';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
 
 interface SummaryInfoProps {
@@ -23,29 +23,28 @@ const SummaryInfo = (props: SummaryInfoProps) => {
   );
 };
 
-interface SummaryProps {
-  data: Asset;
-}
-const Summary = ({ data }: SummaryProps) => {
+const Summary = () => {
+  const assetData = useAppSelector((state) => state.asset.asset);
+  const { initialValue, dateCreated } = assetData;
   const Summary1 = [
-    {
-      label: 'Utilization Rate',
-      value: '85%',
-    },
+    // {
+    //   label: 'Utilization Rate',
+    //   value: '85%',
+    // },
     {
       label: 'Current Cost',
-      value: amountFormatter(data.initialValue ?? 0),
+      value: amountFormatter(initialValue ?? 0),
     },
   ];
 
   const Summary2 = [
     {
       label: 'Last Repair Date',
-      value: dateFormatter(data.createdDate, 'Do MMM, YYYY'),
+      value: dateFormatter(dateCreated, 'Do MMM, YYYY'),
     },
     {
       label: 'Next Maintenance Date',
-      value: dateFormatter(data.createdDate, 'Do MMM, YYYY'),
+      value: dateFormatter(dateCreated, 'Do MMM, YYYY'),
     },
   ];
   return (
@@ -64,7 +63,7 @@ const Summary = ({ data }: SummaryProps) => {
         ))}
         <SummaryInfo
           label="Maintenance Cost"
-          value={amountFormatter(data.initialValue ?? 0)}
+          value={amountFormatter(initialValue ?? 0)}
         >
           <HStack
             color="#00A129"

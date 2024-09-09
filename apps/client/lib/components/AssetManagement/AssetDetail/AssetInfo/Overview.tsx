@@ -1,12 +1,14 @@
 import { Flex, Heading, HStack, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
-import { Asset } from '~/lib/interfaces/asset.interfaces';
 import AssetStatus from '../../AssetStatus';
+import { ReactBarcode, Renderer } from 'react-jsbarcode';
+import { useAppSelector } from '~/lib/redux/hooks';
 
-interface OverviewProps {
-  data: Asset;
-}
-const Overview = ({ data }: OverviewProps) => {
+const Overview = () => {
+  const assetData = useAppSelector((state) => state.asset.asset);
+  const { serialNo, currentStatus, assetName, assetId, assetCategory } =
+    assetData;
+
   const assetInfo = [
     {
       label: 'Make',
@@ -18,7 +20,7 @@ const Overview = ({ data }: OverviewProps) => {
     },
     {
       label: 'Serial Number',
-      value: data?.serialNo ?? '-',
+      value: serialNo ?? '-',
     },
   ];
   return (
@@ -39,9 +41,9 @@ const Overview = ({ data }: OverviewProps) => {
             lineHeight="38.02px"
             fontWeight={800}
           >
-            {data.assetName}
+            {assetName}
           </Heading>
-          <AssetStatus color="#07CC3B" label={data?.currentStatus} />
+          <AssetStatus color="#07CC3B" label={currentStatus} />
         </HStack>
         <HStack width="full" justifyContent="space-between">
           <VStack alignItems="flex-start" spacing="8px">
@@ -50,7 +52,7 @@ const Overview = ({ data }: OverviewProps) => {
                 Asset ID
               </Text>
               <Text size="md" color="black" fontWeight={800}>
-                {data.assetId}
+                {assetId}
               </Text>
             </HStack>
             <HStack spacing="8px">
@@ -58,7 +60,7 @@ const Overview = ({ data }: OverviewProps) => {
                 Category
               </Text>
               <Text size="md" color="black" fontWeight={800}>
-                {data.assetCategory}
+                {assetCategory}
               </Text>
             </HStack>
             {assetInfo.map((info) => (
@@ -74,7 +76,14 @@ const Overview = ({ data }: OverviewProps) => {
             <Text size="md" color="black">
               Barcode:
             </Text>
-            <Flex bgColor="white" height="89px" width="185px" />
+            <Flex bgColor="white" height="89px" width="185px">
+              <ReactBarcode
+                value={assetId.toString()}
+                renderer={Renderer.CANVAS}
+                options={{ displayValue: false }}
+                style={{ width: '100%' }}
+              />
+            </Flex>
           </VStack>
         </HStack>
       </VStack>

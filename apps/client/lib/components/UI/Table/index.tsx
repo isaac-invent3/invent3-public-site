@@ -188,6 +188,7 @@ function DataTable<Data extends object>({
                       borderColor="neutral.300"
                       py="16px"
                       px="16px"
+                      onClick={(e) => e.stopPropagation()}
                     >
                       <CheckBox
                         isChecked={selectedRows.includes(rowIndex)}

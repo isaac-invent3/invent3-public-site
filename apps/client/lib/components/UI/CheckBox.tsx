@@ -40,10 +40,6 @@ const CheckBox = (props: CheckBoxProps) => {
         },
       }}
       isChecked={isChecked}
-      onClick={(e) => {
-        e.stopPropagation();
-        handleChange();
-      }}
       onChange={handleChange}
     />
   );

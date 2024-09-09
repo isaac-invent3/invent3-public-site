@@ -35,7 +35,7 @@ export async function handleCredentialsSignin({
   }
 }
 
-export async function handleSignOut() {
+export async function handleSignOut(ref?: string) {
   try {
     const session = await auth();
     if (!session?.user?.accessToken) {
@@ -74,6 +74,7 @@ export async function handleSignOut() {
     // notifySentry(error)
   } finally {
     // Ensure the user is signed out and redirected, even if an error occurs
-    await signOut({ redirectTo: '/' });
+    const redirectUrl = ref ? `/?ref=${ref}` : '/';
+    await signOut({ redirectTo: redirectUrl });
   }
 }

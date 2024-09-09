@@ -31,7 +31,7 @@ const baseQueryWithReauth: BaseQueryFn<
 > = async (args, api, extraOptions) => {
   // First attempt to execute the query
   let result = await baseQuery(args, api, extraOptions);
-
+  // const path = typeof args === 'string' ? args : args.url;
   // If you get a 401 response, try refreshing the token
   if (result.error && result.error.status === 401) {
     handleSignOut();

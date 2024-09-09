@@ -4,13 +4,58 @@ import React from 'react';
 import { Divider, Flex, Heading, Text, VStack } from '@chakra-ui/react';
 import Link from 'next/link';
 import { loginSchema } from '~/lib/schemas/auth.schema';
-import { Field, Form, Formik } from 'formik';
+import { Field, FormikProvider, useFormik } from 'formik';
 import AuthLayout from '../AuthLayout';
 import TextInput from '../../UI/TextInput';
 import PrimaryButton from '../../UI/Button';
 import SSOLogin from './SSOLogin';
+import { handleCredentialsSignin } from '~/app/actions/authActions';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const SignIn = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const ref = searchParams.get('ref');
+  const formik = useFormik({
+    initialValues: {
+      username: '',
+      password: '',
+    },
+    validationSchema: loginSchema,
+    onSubmit: async (values, { setSubmitting }) => {
+      setSubmitting(true);
+
+      try {
+        const result = await handleCredentialsSignin({
+          ...values,
+          callbackUrl: ref,
+        });
+        if (result) {
+          router.refresh();
+        }
+      } catch (error) {
+        console.log('An unexpected error occurred. Please try again.');
+      } finally {
+        setSubmitting(false);
+      }
+      // setSubmitting(true);
+      // const result = await signIn('credentials', {
+      //   redirectTo: ref ?? '/dashboard',
+      //   username: values.username,
+      //   password: values.password,
+      // });
+
+      // if (result?.error) {
+      //   // Handle error
+      //   console.error(result.error);
+      // } else {
+      //   // Handle successful login
+      //   console.log('Logged in successfully!');
+      // }
+      // setSubmitting(false);
+    },
+  });
+
   return (
     <AuthLayout>
       <Flex
@@ -48,22 +93,15 @@ const SignIn = () => {
             </Link>
           </Text>
         </VStack>
-        <Formik
-          initialValues={{
-            email: '',
-            password: '',
-          }}
-          validationSchema={loginSchema}
-          onSubmit={async () => {}}
-        >
-          <Form style={{ width: '100%' }}>
+        <FormikProvider value={formik}>
+          <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
             <VStack spacing="16px" width="full" mb="40px">
               <Field
                 as={TextInput}
-                name="email"
+                name="username"
                 type="text"
-                label="Email"
-                placeholder="Email"
+                label="Username"
+                placeholder="Username"
                 variant="secondary"
               />
 
@@ -88,14 +126,14 @@ const SignIn = () => {
             </VStack>
 
             <PrimaryButton
-              isLoading={false}
+              isLoading={formik.isSubmitting}
               loadingText="Logging In..."
               type="submit"
             >
               Sign in
             </PrimaryButton>
-          </Form>
-        </Formik>
+          </form>
+        </FormikProvider>
         <Flex alignItems="center" mt="64px" mb="32px">
           <Text
             size="lg"

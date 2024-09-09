@@ -17,6 +17,7 @@ import { assetData } from '~/lib/utils/MockData/asset';
 import Filters from './Filters';
 import FilterDisplay from './Filters/FilterDisplay';
 import { FilterInput } from '~/lib/interfaces/asset.interfaces';
+import { useGetallAssetQuery } from '~/lib/redux/services/asset.services';
 
 const AssetManagement = () => {
   const [search, setSearch] = useState('');
@@ -30,6 +31,7 @@ const AssetManagement = () => {
     null
   );
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { data: assetData, isLoading } = useGetallAssetQuery({});
 
   useEffect(() => {
     if (activeFilter && !isOpen) {
@@ -69,7 +71,7 @@ const AssetManagement = () => {
               />
               <ListView
                 data={assetData}
-                isLoading={false}
+                isLoading={isLoading}
                 pageNumber={currentPage}
                 setPageNumber={setCurrentPage}
                 pageSize={pageSize}

@@ -21,15 +21,24 @@ import {
   Setting2Icon,
   UserProfileIcon,
 } from '~/lib/components/CustomIcons/layout';
+import { handleSignOut } from '~/app/actions/authActions';
+import { useSession } from 'next-auth/react';
 
 interface ActionButtonProps {
   icon: ComponentWithAs<'svg', IconProps>;
   name: string;
+  handleClick: () => void;
 }
 const ActionButton = (props: ActionButtonProps) => {
-  const { icon, name } = props;
+  const { icon, name, handleClick } = props;
   return (
-    <HStack py="8px" width="full" spacing="16px" cursor="pointer">
+    <HStack
+      py="8px"
+      width="full"
+      spacing="16px"
+      cursor="pointer"
+      onClick={handleClick}
+    >
       <Icon as={icon} boxSize="25px" />
 
       <Text size="md" color="primary.500">
@@ -41,6 +50,7 @@ const ActionButton = (props: ActionButtonProps) => {
 
 const UserActionPopover = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { data } = useSession();
 
   return (
     <>
@@ -73,6 +83,7 @@ const UserActionPopover = () => {
             bgColor="white"
             spacing="20px"
             cursor="pointer"
+            textTransform="capitalize"
           >
             <HStack spacing="10px">
               <Avatar
@@ -89,7 +100,7 @@ const UserActionPopover = () => {
                   letterSpacing="0.05em"
                   fontWeight={700}
                 >
-                  George Washington
+                  {data?.user?.name}
                 </Text>
                 <Text
                   color="neutral.600"
@@ -98,7 +109,7 @@ const UserActionPopover = () => {
                   letterSpacing="0.05em"
                   fontWeight={400}
                 >
-                  Operation Manager
+                  {data?.user?.role}
                 </Text>
               </VStack>
             </HStack>
@@ -150,7 +161,7 @@ const UserActionPopover = () => {
               />
               <VStack alignItems="flex-start" spacing={0}>
                 <Text color="white" size="lg" fontWeight={700}>
-                  George Washington
+                  {data?.user?.name}
                 </Text>
                 <Text
                   color="neutral.300"
@@ -158,15 +169,23 @@ const UserActionPopover = () => {
                   lineHeight="18px"
                   fontWeight={400}
                 >
-                  Operation Manager
+                  {data?.user?.role}
                 </Text>
               </VStack>
             </HStack>
           </PopoverHeader>
           <PopoverBody py="24px" px="20px">
             <VStack alignItems="flex-start" spacing="8px">
-              <ActionButton icon={UserProfileIcon} name="User Profile" />
-              <ActionButton icon={Setting2Icon} name="Logout" />
+              <ActionButton
+                icon={UserProfileIcon}
+                name="User Profile"
+                handleClick={() => {}}
+              />
+              <ActionButton
+                icon={Setting2Icon}
+                name="Logout"
+                handleClick={() => handleSignOut()}
+              />
             </VStack>
           </PopoverBody>
         </PopoverContent>

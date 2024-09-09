@@ -39,9 +39,9 @@ const AssetImages = () => {
         </Flex>
         <HStack spacing="12px" alignItems="flex-start" width="full">
           {/* Display */}
-          <HStack spacing="12px" wrap="wrap" width="full" maxW="max-content">
-            {meta.value.length >= 1 &&
-              meta.value.map((image: File | string, index: number) => (
+          {meta.value.length >= 1 && (
+            <HStack spacing="12px" wrap="wrap" width="full" maxW="max-content">
+              {meta.value.map((image: File | string, index: number) => (
                 <Box
                   key={index}
                   bgImage={
@@ -66,7 +66,8 @@ const AssetImages = () => {
                   </Flex>
                 </Box>
               ))}
-          </HStack>
+            </HStack>
+          )}
           {/* Display */}
           <FormControl isInvalid={meta.touched && meta.error !== undefined}>
             <Input
@@ -92,7 +93,7 @@ const AssetImages = () => {
                 borderWidth="1px"
                 borderColor={meta.error ? 'error.500' : '#BBBBBB'}
                 bgColor={meta.error ? 'error.200' : '#F6F6F6'}
-                color="primar.main"
+                color="primary.main"
                 width="140px"
                 height="75px"
                 rounded="8px"

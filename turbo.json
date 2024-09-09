@@ -15,7 +15,11 @@
         "!.next/cache/**"
       ],
       "env": [
-        "NEXT_PUBLIC_BASE_URL"
+        "NEXT_PUBLIC_BASE_URL",
+        "NEXTAUTH_SECRET",
+        "NEXT_PUBLIC_API_URL",
+        "NODE_ENV",
+        "API_BASE_URL"
       ]
     },
     "lint": {

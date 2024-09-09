@@ -1,4 +1,5 @@
 import { Avatar, Collapse, Flex, HStack, Text, VStack } from '@chakra-ui/react';
+import { useSession } from 'next-auth/react';
 import React from 'react';
 
 interface FooterSectionProps {
@@ -6,6 +7,8 @@ interface FooterSectionProps {
 }
 const FooterSection = (props: FooterSectionProps) => {
   const { isCollapse } = props;
+  const { data } = useSession();
+
   return (
     <HStack
       spacing="19px"
@@ -26,9 +29,11 @@ const FooterSection = (props: FooterSectionProps) => {
             textTransform="capitalize"
             color="neutral.100"
           >
-            George Washington
+            {data?.user?.name}
           </Text>
-          <Text color="neutral.600">Operation Manager</Text>
+          <Text color="neutral.600" textTransform="capitalize">
+            {data?.user?.role}
+          </Text>
         </VStack>
       </Collapse>
     </HStack>

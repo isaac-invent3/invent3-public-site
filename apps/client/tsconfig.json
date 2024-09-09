@@ -8,8 +8,11 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./*"]
-    }
+      "~/*": ["./*"],
+      "auth": ["./auth"]
+    },
+    "declaration": false,
+    "declarationMap": false
   },
   "include": [
     "next-env.d.ts",

@@ -3,9 +3,9 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
-    "dev": "turbo dev",
+    "dev": "NODE_TLS_REJECT_UNAUTHORIZED=0 turbo dev",
     "build:client": "turbo build --filter=client",
-    "dev:client": "turbo dev --filter=client",
+    "dev:client": "NODE_TLS_REJECT_UNAUTHORIZED=0 turbo dev --filter=client",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
@@ -30,5 +30,9 @@
   "packageManager": "pnpm@9.1.2",
   "engines": {
     "node": ">=18"
+  },
+  "browser": {
+    "crypto": false,
+    "stream": false
   }
 }

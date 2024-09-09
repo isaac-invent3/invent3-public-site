@@ -9,8 +9,8 @@ import AuthLayout from '../AuthLayout';
 import TextInput from '../../UI/TextInput';
 import PrimaryButton from '../../UI/Button';
 import SSOLogin from './SSOLogin';
-import { handleCredentialsSignin } from '~/app/actions/authActions';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 
 const SignIn = () => {
   const router = useRouter();
@@ -24,35 +24,22 @@ const SignIn = () => {
     validationSchema: loginSchema,
     onSubmit: async (values, { setSubmitting }) => {
       setSubmitting(true);
+      const result = await signIn('credentials', {
+        redirectTo: ref ?? '/dashboard',
+        username: values.username,
+        password: values.password,
+      });
 
-      try {
-        const result = await handleCredentialsSignin({
-          ...values,
-          callbackUrl: ref,
-        });
-        if (result) {
-          router.refresh();
-        }
-      } catch (error) {
-        console.log('An unexpected error occurred. Please try again.');
-      } finally {
-        setSubmitting(false);
+      if (result?.error) {
+        // Handle error
+        console.error(result.error);
+      } else {
+        router.push(ref ?? '/dashboard');
+        router.refresh();
+        // Handle successful login
+        console.log('Logged in successfully!');
       }
-      // setSubmitting(true);
-      // const result = await signIn('credentials', {
-      //   redirectTo: ref ?? '/dashboard',
-      //   username: values.username,
-      //   password: values.password,
-      // });
-
-      // if (result?.error) {
-      //   // Handle error
-      //   console.error(result.error);
-      // } else {
-      //   // Handle successful login
-      //   console.log('Logged in successfully!');
-      // }
-      // setSubmitting(false);
+      setSubmitting(false);
     },
   });
 

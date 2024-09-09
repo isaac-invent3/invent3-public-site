@@ -1,13 +1,14 @@
-import { Flex, Text, useDisclosure } from '@chakra-ui/react';
+import { Flex, useDisclosure } from '@chakra-ui/react';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useEffect, useMemo, useState } from 'react';
 import { Asset } from '~/lib/interfaces/asset.interfaces';
 import DataTable from '../UI/Table';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
 import AssetDetail from './AssetDetail';
+import AssetStatus from './AssetStatus';
 
-const Status = (status: number) => {
-  return <Text color="black">{status}</Text>;
+const Status = (status: string) => {
+  return <AssetStatus label={status} color="#07CC3B" />;
 };
 
 interface ListViewProps {
@@ -61,11 +62,11 @@ const ListView = (props: ListViewProps) => {
         header: 'Asset Name',
         enableSorting: false,
       }),
-      columnHelper.accessor('categoryId', {
+      columnHelper.accessor('assetCategory', {
         cell: (info) => info.getValue(),
         header: 'Category',
       }),
-      columnHelper.accessor('locationId', {
+      columnHelper.accessor('roomName', {
         cell: (info) => info.getValue(),
         header: 'Location',
         enableSorting: false,
@@ -75,7 +76,7 @@ const ListView = (props: ListViewProps) => {
         header: 'Owner',
         enableSorting: false,
       }),
-      columnHelper.accessor('createdDate', {
+      columnHelper.accessor('dateCreated', {
         cell: (info) => dateFormatter(info.getValue()),
         header: 'Last Maintenance',
       }),
@@ -83,7 +84,7 @@ const ListView = (props: ListViewProps) => {
         cell: () => amountFormatter(0),
         header: 'Current Value',
       }),
-      columnHelper.accessor('statusId', {
+      columnHelper.accessor('currentStatus', {
         cell: (info) => Status(info.getValue()),
         header: 'Status',
         enableSorting: false,

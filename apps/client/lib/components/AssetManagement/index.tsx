@@ -13,7 +13,6 @@ import {
 import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import ListView from './ListView';
-import { assetData } from '~/lib/utils/MockData/asset';
 import Filters from './Filters';
 import FilterDisplay from './Filters/FilterDisplay';
 import { FilterInput } from '~/lib/interfaces/asset.interfaces';
@@ -70,7 +69,7 @@ const AssetManagement = () => {
                 setFilterData={setFilterData}
               />
               <ListView
-                data={assetData}
+                data={assetData?.data ?? []}
                 isLoading={isLoading}
                 pageNumber={currentPage}
                 setPageNumber={setCurrentPage}

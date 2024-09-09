@@ -36,29 +36,29 @@ interface Asset {
   assetName: string;
   assetCode: string;
   assetTag: string;
-  rfidtag: string;
+  rfidtag: string | null;
   serialNo: string;
   lifeExpectancy: number;
   acquisitionDate: string;
   currentOwner: string;
-  assignedTo: string;
-  responsibleFor: string;
+  assignedTo: string | null;
+  responsibleFor: string | null;
   purchaseDate: string;
-  initialValue: number;
+  initialValue: number | null;
   resalevalue: number;
   dateCreated: string;
   scrapvalue: number;
   parentId: number | null;
   isDeleted: boolean;
-  assetType: string;
+  assetType: string | null;
   currentStatus: string;
   assetCategory: string;
   assetSubCategory: string;
   currentCondition: string;
-  weightKg: number;
-  lengthCm: number;
-  widthCm: number;
-  heightCm: number;
+  weightKg: number | null;
+  lengthCm: number | null;
+  widthCm: number | null;
+  heightCm: number | null;
   facilityName: string;
   facilityRef: string;
   facilityAddress: string;
@@ -80,7 +80,7 @@ interface Asset {
   shelfName: string;
   shelfRef: string;
   description: string;
-  assetComponentId: number;
+  assetComponentId: number | null;
 }
 
 interface AssetFormDetails {

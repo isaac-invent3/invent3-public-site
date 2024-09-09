@@ -84,12 +84,7 @@ function DataTable<Data extends object>({
 
   return (
     <Flex direction="column" width="full">
-      <TableContainer
-        overflow="auto"
-        opacity={!isLoading && isFetching ? 0.5 : 1}
-        bgColor="white"
-        rounded="4px"
-      >
+      <TableContainer overflow="auto" bgColor="white" rounded="4px">
         <Table>
           <Thead bgColor="#B4BFCA80">
             {table.getHeaderGroups().map((headerGroup) => (
@@ -143,7 +138,7 @@ function DataTable<Data extends object>({
               </Tr>
             ))}
           </Thead>
-          <Tbody bgColor="white">
+          <Tbody bgColor="white" opacity={!isLoading && isFetching ? 0.5 : 1}>
             {isLoading
               ? table.getHeaderGroups().map((headerGroup) =>
                   Array(emptyLines)

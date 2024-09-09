@@ -7,10 +7,10 @@ import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
 import { DetailTable } from '../../DetailTable';
 import AssetStatus from '../../../AssetStatus';
 
-const Status = (status: number) => {
+const Status = (status: string) => {
   return (
     <Flex>
-      <AssetStatus label="In Use" color="#07CC3B" />
+      <AssetStatus label={status} color="#07CC3B" />
     </Flex>
   );
 };
@@ -36,11 +36,11 @@ const Table = (props: TableProps) => {
         header: 'Asset Name',
         enableSorting: false,
       }),
-      columnHelper.accessor('categoryId', {
+      columnHelper.accessor('assetCategory', {
         cell: (info) => info.getValue(),
         header: 'Category',
       }),
-      columnHelper.accessor('createdDate', {
+      columnHelper.accessor('dateCreated', {
         cell: (info) => dateFormatter(info.getValue()),
         header: 'Last Maintenance',
       }),
@@ -48,7 +48,7 @@ const Table = (props: TableProps) => {
         cell: () => amountFormatter(0),
         header: 'Current Value',
       }),
-      columnHelper.accessor('statusId', {
+      columnHelper.accessor('currentStatus', {
         cell: (info) => Status(info.getValue()),
         header: 'Status',
         enableSorting: false,

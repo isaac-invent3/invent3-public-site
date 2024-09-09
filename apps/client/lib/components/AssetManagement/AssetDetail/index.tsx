@@ -45,7 +45,7 @@ const AssetDetail = (props: AssetDetailProps) => {
         </DrawerHeader>
         <DrawerBody p={0}>
           <VStack width="full" alignItems="flex-start" spacing="24px">
-            <AssetInfo data={data} />
+            <AssetInfo />
             <AssetTabs />
           </VStack>
         </DrawerBody>

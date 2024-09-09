@@ -66,11 +66,11 @@ const HistoryTab = () => {
         cell: (info) => info.getValue(),
         header: 'ID',
       }),
-      columnHelper.accessor('createdDate', {
+      columnHelper.accessor('dateCreated', {
         cell: (info) => dateFormatter(info.getValue(), 'YYYY-MM-DD'),
         header: 'Date',
       }),
-      columnHelper.accessor('locationId', {
+      columnHelper.accessor('roomName', {
         cell: (info) => info.getValue(),
         header: 'Type',
       }),
@@ -86,7 +86,7 @@ const HistoryTab = () => {
         cell: (info) => amountFormatter(info.getValue() ?? 0, '$'),
         header: 'Cost',
       }),
-      columnHelper.accessor('statusId', {
+      columnHelper.accessor('currentStatus', {
         cell: () => Status('completed'),
         header: 'Status',
       }),

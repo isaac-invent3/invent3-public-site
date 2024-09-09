@@ -13,6 +13,7 @@ const AssetStatus = (props: AssetStatusProps) => {
       border="1px solid #BBBBBB80"
       rounded="6px"
       spacing="8px"
+      maxW="max-content"
     >
       <Box width="8px" height="8px" rounded="full" bgColor={color} />
       <Text color="black">{label}</Text>

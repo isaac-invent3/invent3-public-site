@@ -2,24 +2,28 @@ import { Flex, SimpleGrid, VStack } from '@chakra-ui/react';
 import React from 'react';
 import DetailHeader from '../../../../../UI/DetailHeader';
 import DetailSection from '../../../DetailSection';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 const InfoTwo = () => {
+  const assetData = useAppSelector((state) => state.asset.asset);
+  const { currentOwner, departmentName, assignedTo, responsibleFor } =
+    assetData;
   const details = [
     {
       label: 'Owner',
-      value: 'Dell',
+      value: currentOwner ?? '-',
     },
     {
       label: 'Department',
-      value: 'Latitude 360',
+      value: departmentName ?? '-',
     },
     {
       label: 'Responsible for',
-      value: 'A23570720495730',
+      value: responsibleFor ?? '-',
     },
     {
       label: 'Assigned to',
-      value: 'Latitude 360',
+      value: assignedTo ?? '-',
     },
   ];
   return (

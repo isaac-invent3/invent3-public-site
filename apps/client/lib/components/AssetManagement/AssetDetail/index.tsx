@@ -6,11 +6,13 @@ import {
   DrawerOverlay,
   VStack,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Asset } from '~/lib/interfaces/asset.interfaces';
 import AssetHeader from './Header';
 import AssetInfo from './AssetInfo';
 import AssetTabs from './AssetTabs';
+import { useAppDispatch } from '~/lib/redux/hooks';
+import { setAsset } from '~/lib/redux/slices/assetSlice';
 
 interface AssetDetailProps {
   data: Asset;
@@ -19,6 +21,12 @@ interface AssetDetailProps {
 }
 const AssetDetail = (props: AssetDetailProps) => {
   const { data, isOpen, onClose } = props;
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(setAsset(data));
+  }, [data]);
+
   return (
     <Drawer
       isOpen={isOpen}

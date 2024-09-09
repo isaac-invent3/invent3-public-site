@@ -5,7 +5,7 @@ import DetailHeader from '../../UI/DetailHeader';
 interface DetailSectionProps {
   details: {
     label: string;
-    value: string;
+    value: string | number | React.ReactNode;
   }[];
   minWidth: string;
   header?: string;

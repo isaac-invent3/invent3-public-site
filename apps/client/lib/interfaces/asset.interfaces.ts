@@ -48,7 +48,7 @@ interface Asset {
   resalevalue: number;
   dateCreated: string;
   scrapvalue: number;
-  parentId: number;
+  parentId: number | null;
   isDeleted: boolean;
   assetType: string;
   currentStatus: string;

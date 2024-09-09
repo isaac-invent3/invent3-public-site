@@ -12,6 +12,7 @@ import {
 import storage from './customStorage';
 import { assetApi } from './services/asset.services';
 import { authApi } from './services/auth.services';
+import assetSlice from './slices/assetSlice';
 
 export const persistConfig = {
   key: 'root',
@@ -22,6 +23,7 @@ export const persistConfig = {
 const rootReducer = combineReducers({
   [authApi.reducerPath]: authApi.reducer,
   [assetApi.reducerPath]: assetApi.reducer,
+  asset: assetSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

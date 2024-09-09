@@ -14,6 +14,8 @@ const CheckBox = (props: CheckBoxProps) => {
       borderColor="neutral.800"
       iconColor="white"
       outline="none"
+      position="relative"
+      zIndex={50}
       sx={{
         '& .chakra-checkbox__control': {
           borderRadius: '4px',
@@ -38,6 +40,10 @@ const CheckBox = (props: CheckBoxProps) => {
         },
       }}
       isChecked={isChecked}
+      onClick={(e) => {
+        e.stopPropagation();
+        handleChange();
+      }}
       onChange={handleChange}
     />
   );

@@ -12,7 +12,7 @@ export const assetApi = createApi({
   endpoints: (builder) => ({
     getallAsset: builder.query({
       query: (data: any) => ({
-        url: generateQueryStr(`/assets`, data),
+        url: generateQueryStr(`/assets?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),

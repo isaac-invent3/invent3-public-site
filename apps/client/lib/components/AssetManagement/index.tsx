@@ -21,7 +21,7 @@ import { useGetallAssetQuery } from '~/lib/redux/services/asset.services';
 const AssetManagement = () => {
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const [filterData, setFilterData] = useState<FilterInput>({
     location: [],
     category: [],
@@ -30,7 +30,14 @@ const AssetManagement = () => {
     null
   );
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { data: assetData, isLoading } = useGetallAssetQuery({});
+  const {
+    data: assetData,
+    isLoading,
+    isFetching,
+  } = useGetallAssetQuery({
+    pageNumber: currentPage,
+    pageSize: pageSize,
+  });
 
   useEffect(() => {
     if (activeFilter && !isOpen) {
@@ -69,12 +76,14 @@ const AssetManagement = () => {
                 setFilterData={setFilterData}
               />
               <ListView
-                data={assetData?.data ?? []}
+                data={assetData?.data?.items ?? []}
                 isLoading={isLoading}
+                isFetching={isFetching}
                 pageNumber={currentPage}
                 setPageNumber={setCurrentPage}
                 pageSize={pageSize}
                 setPageSize={setPageSize}
+                totalPages={assetData?.data?.totalPages}
               />
             </TabPanel>
             <TabPanel></TabPanel>

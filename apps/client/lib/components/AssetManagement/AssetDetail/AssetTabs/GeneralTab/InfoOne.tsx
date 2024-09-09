@@ -2,32 +2,58 @@ import { SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import DetailHeader from '../../../../UI/DetailHeader';
 import DetailSection from '../../DetailSection';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 const InfoOne = () => {
+  const assetData = useAppSelector((state) => state.asset.asset);
+  const {
+    facilityName,
+    departmentName,
+    buildingName,
+    roomName,
+    aisleName,
+    shelfName,
+    weightKg,
+    lengthCm,
+    assetCode,
+    heightCm,
+    widthCm,
+    description,
+  } = assetData;
   const details = [
     {
       label: 'Location:',
-      value: 'Lekki Branch, Building A, Floor 3, IT Room, Aisle 5, Shelve 3',
+      value:
+        [
+          facilityName,
+          departmentName,
+          buildingName,
+          roomName,
+          aisleName,
+          shelfName,
+        ]
+          .filter(Boolean)
+          .join(', ') || '-',
     },
     {
       label: 'Asset Code:',
-      value: 'Latitude 360',
+      value: assetCode ?? '-',
     },
     {
       label: 'Weight:',
-      value: 'A23570720495730',
+      value: `${weightKg ?? 0}kg`,
     },
     {
       label: 'Length:',
-      value: 'Latitude 360',
+      value: `${lengthCm ?? 0}cm`,
     },
     {
       label: 'Width:',
-      value: 'Latitude 360',
+      value: `${widthCm ?? 0}cm`,
     },
     {
       label: 'Height::',
-      value: 'Latitude 360',
+      value: `${heightCm ?? 0}cm`,
     },
   ];
 
@@ -45,12 +71,7 @@ const InfoOne = () => {
       <VStack alignItems="flex-start">
         <DetailHeader variant="secondary">Description:</DetailHeader>
         <Text size="md" color="neutral.800" fontWeight={400}>
-          Lorem ipsum dolor sit amet consectetur. Maecenas iaculis diam et at
-          imperdiet massa dignissim. Faucibus odio fermentum imperdiet ac enim
-          imperdiet sit integer. Diam felis mattis elit fusce dignissim at felis
-          in neque. Condimentum diam vestibulum ipsum purus tristique feugiat
-          integer. Enim est vitae amet libero vitae tristique consequat non.
-          Eget donec eu congue velit.
+          {description}
         </Text>
       </VStack>
     </SimpleGrid>

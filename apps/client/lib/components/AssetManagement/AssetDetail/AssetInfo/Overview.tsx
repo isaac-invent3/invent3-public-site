@@ -18,7 +18,7 @@ const Overview = ({ data }: OverviewProps) => {
     },
     {
       label: 'Serial Number',
-      value: 'A23570720495730',
+      value: data?.serialNo ?? '-',
     },
   ];
   return (
@@ -41,12 +41,12 @@ const Overview = ({ data }: OverviewProps) => {
           >
             {data.assetName}
           </Heading>
-          <AssetStatus color="#07CC3B" label="In Use" />
+          <AssetStatus color="#07CC3B" label={data?.currentStatus} />
         </HStack>
         <HStack width="full" justifyContent="space-between">
           <VStack alignItems="flex-start" spacing="8px">
             <HStack spacing="8px">
-              <Text size="md" color="neutral.600" fontWeight={800}>
+              <Text size="md" color="neutral.600" fontWeight={800} width="92px">
                 Asset ID
               </Text>
               <Text size="md" color="black" fontWeight={800}>
@@ -54,11 +54,11 @@ const Overview = ({ data }: OverviewProps) => {
               </Text>
             </HStack>
             <HStack spacing="8px">
-              <Text color="neutral.600" size="md" fontWeight={800}>
+              <Text color="neutral.600" size="md" fontWeight={800} width="92px">
                 Category
               </Text>
               <Text size="md" color="black" fontWeight={800}>
-                {data.categoryId}
+                {data.assetCategory}
               </Text>
             </HStack>
             {assetInfo.map((info) => (

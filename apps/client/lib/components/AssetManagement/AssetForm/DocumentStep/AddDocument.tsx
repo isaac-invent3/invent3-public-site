@@ -63,10 +63,11 @@ const AddDocument = () => {
         />
       </Flex>
       <VStack width="full" spacing="51px">
-        <FormControl isInvalid={meta.touched && meta.error !== undefined}>
+        <FormControl isInvalid={meta.error !== undefined}>
           <Input
             id="file"
             display="none"
+            {...field}
             onChange={(event: any) => {
               if (event.currentTarget.files.length > 0) {
                 const file = event.currentTarget.files[0];
@@ -82,6 +83,7 @@ const AddDocument = () => {
                   helpers.setError(
                     'Unsupported file format. Only PDF, DOC, and DOCX are allowed.'
                   );
+                  helpers.setTouched(true, true);
                 } else {
                   helpers.setValue([...meta.value, file]);
                   event.target.value = ''; // Reset file input value

@@ -50,7 +50,7 @@ const SearchInput = (props: ISearchInput) => {
           setSearchText(e.target.value);
           const timeout = setTimeout(() => {
             setSearch(e.target.value);
-          }, 2000);
+          }, 3000);
 
           return () => clearTimeout(timeout);
         }}

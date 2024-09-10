@@ -72,7 +72,7 @@ const HistoryTab = () => {
       }),
       columnHelper.accessor('roomName', {
         cell: (info) => info.getValue(),
-        header: 'Type',
+        header: 'Maintenance Type',
       }),
       columnHelper.accessor('description', {
         cell: (info) => Description(info.getValue()),

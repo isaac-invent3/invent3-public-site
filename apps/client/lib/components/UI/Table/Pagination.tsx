@@ -24,14 +24,12 @@ const Pagination = (props: PaginationProps) => {
   const [inputValue, setInputValue] = useState(pageSize);
 
   useEffect(() => {
-    // Set a timeout to wait for 3 seconds before calling setPageSize
     const timeoutId = setTimeout(() => {
       if (setPageSize) {
         setPageSize((prev) => (inputValue ? inputValue : prev));
       }
-    }, 3000); // 3 seconds delay
+    }, 3000);
 
-    // Cleanup function to clear timeout if the user types again before 3 seconds
     return () => clearTimeout(timeoutId);
   }, [inputValue, setPageSize]);
 

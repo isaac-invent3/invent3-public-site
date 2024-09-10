@@ -108,10 +108,16 @@ function DataTable<Data extends object>({
                       lineHeight="14.26px"
                       fontWeight={500}
                       color="primary"
-                      px="16px"
+                      pl="10px"
+                      pr="16px"
                       py="17px"
                     >
-                      <Flex align="center">
+                      <Flex
+                        align="center"
+                        justifyContent={
+                          meta?.centerHeader ? 'center' : 'flex-start'
+                        }
+                      >
                         {flexRender(
                           header.column.columnDef.header,
                           header.getContext()
@@ -181,12 +187,15 @@ function DataTable<Data extends object>({
                     onClick={() =>
                       handleSelectRow && handleSelectRow(row.original)
                     }
+                    _hover={{
+                      bgColor: 'neutral.200',
+                    }}
                   >
                     {/* Checkbox for selecting individual row */}
                     <Td
                       key={`checkbox-${row.id}`}
                       borderColor="neutral.300"
-                      py="16px"
+                      py="4px"
                       px="16px"
                       onClick={(e) => e.stopPropagation()}
                     >
@@ -206,8 +215,9 @@ function DataTable<Data extends object>({
                           fontSize="12px"
                           fontWeight={500}
                           lineHeight="14.26px"
-                          py="23px"
-                          px="16px"
+                          py="4px"
+                          pl="10px"
+                          pr="16px"
                         >
                           {flexRender(
                             cell.column.columnDef.cell,

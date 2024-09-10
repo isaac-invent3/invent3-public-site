@@ -13,6 +13,7 @@ import storage from './customStorage';
 import { assetApi } from './services/asset.services';
 import { authApi } from './services/auth.services';
 import assetSlice from './slices/assetSlice';
+import { utilityApi } from './services/utility.services';
 
 export const persistConfig = {
   key: 'root',
@@ -23,6 +24,7 @@ export const persistConfig = {
 const rootReducer = combineReducers({
   [authApi.reducerPath]: authApi.reducer,
   [assetApi.reducerPath]: assetApi.reducer,
+  [utilityApi.reducerPath]: utilityApi.reducer,
   asset: assetSlice,
 });
 
@@ -37,7 +39,11 @@ export const makeStore = () => {
         serializableCheck: {
           ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
         },
-      }).concat([authApi.middleware, assetApi.middleware]),
+      }).concat([
+        authApi.middleware,
+        assetApi.middleware,
+        utilityApi.middleware,
+      ]),
   });
 };
 

@@ -25,7 +25,12 @@ const SummaryInfo = (props: SummaryInfoProps) => {
 
 const Summary = () => {
   const assetData = useAppSelector((state) => state.asset.asset);
-  const { initialValue, dateCreated } = assetData;
+  const {
+    currentCost,
+    lastMaintenanceDate,
+    nextMaintenanceDate,
+    maintenanceCost,
+  } = assetData;
   const Summary1 = [
     // {
     //   label: 'Utilization Rate',
@@ -33,18 +38,24 @@ const Summary = () => {
     // },
     {
       label: 'Current Cost',
-      value: amountFormatter(initialValue ?? 0),
+      value: currentCost !== null ? amountFormatter(currentCost) : 'N/A',
     },
   ];
 
   const Summary2 = [
     {
       label: 'Last Repair Date',
-      value: dateFormatter(dateCreated, 'Do MMM, YYYY'),
+      value:
+        lastMaintenanceDate !== null
+          ? dateFormatter(lastMaintenanceDate, 'Do MMM, YYYY')
+          : 'N/A',
     },
     {
       label: 'Next Maintenance Date',
-      value: dateFormatter(dateCreated, 'Do MMM, YYYY'),
+      value:
+        nextMaintenanceDate !== null
+          ? dateFormatter(nextMaintenanceDate, 'Do MMM, YYYY')
+          : 'N/A',
     },
   ];
   return (
@@ -63,7 +74,9 @@ const Summary = () => {
         ))}
         <SummaryInfo
           label="Maintenance Cost"
-          value={amountFormatter(initialValue ?? 0)}
+          value={
+            maintenanceCost !== null ? amountFormatter(maintenanceCost) : 'N/A'
+          }
         >
           <HStack
             color="#00A129"

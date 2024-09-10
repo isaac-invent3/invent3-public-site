@@ -22,7 +22,7 @@ const AssetTabs = () => {
       component: <GeneralTab />,
     },
     {
-      label: 'Acquistion',
+      label: 'Acquisition',
       component: <AcquisitionTab />,
     },
     {

@@ -11,19 +11,19 @@ const InfoTwo = () => {
   const details = [
     {
       label: 'Owner',
-      value: currentOwner ?? '-',
+      value: currentOwner ?? 'N/A',
     },
     {
       label: 'Department',
-      value: departmentName ?? '-',
+      value: departmentName ?? 'N/A',
     },
     {
       label: 'Responsible for',
-      value: responsibleFor ?? '-',
+      value: responsibleFor ?? 'N/A',
     },
     {
       label: 'Assigned to',
-      value: assignedTo ?? '-',
+      value: assignedTo ?? 'N/A',
     },
   ];
   return (

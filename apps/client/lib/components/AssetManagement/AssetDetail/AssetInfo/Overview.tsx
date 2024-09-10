@@ -6,21 +6,28 @@ import { useAppSelector } from '~/lib/redux/hooks';
 
 const Overview = () => {
   const assetData = useAppSelector((state) => state.asset.asset);
-  const { serialNo, currentStatus, assetName, assetId, assetCategory } =
-    assetData;
+  const {
+    serialNo,
+    currentStatus,
+    assetName,
+    assetId,
+    assetCategory,
+    brandName,
+    modelRef,
+  } = assetData;
 
   const assetInfo = [
     {
       label: 'Make',
-      value: 'Dell',
+      value: brandName ?? 'N/A',
     },
     {
       label: 'Model',
-      value: 'Latitude 360',
+      value: modelRef ?? 'N/A',
     },
     {
       label: 'Serial Number',
-      value: serialNo ?? '-',
+      value: serialNo ?? 'N/A',
     },
   ];
   return (

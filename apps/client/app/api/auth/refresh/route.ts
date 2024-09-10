@@ -1,21 +1,20 @@
-import { cookies } from 'next/headers';
-
 export async function POST(request: Request) {
   const body = await request.json();
 
-  const prefix = process.env.NODE_ENV === 'development' ? '__Dev-' : '';
-
   const payload = {
-    refreshToken: cookies().get(`${prefix}xxx.refresh-token` as any)?.value,
-    userID: body.userID,
+    accessToken: body.accessToken,
+    refreshToken: body.refreshToken,
+    apiKey: body.apiKey,
   };
 
   // change it with your own endpoint
-  const res = await fetch(`${process.env.API_BASE_URL}/auth/refresh`, {
+  const res = await fetch(`${process.env.API_BASE_URL}/Users/refresh-tokens`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${body.accessToken}`,
+      ApiKey: `${body.apiKey}`,
     },
     body: JSON.stringify(payload),
   });

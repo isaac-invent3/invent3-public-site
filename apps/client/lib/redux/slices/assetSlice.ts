@@ -6,6 +6,8 @@ const initialValue = {
   rowId: 0,
   assetId: 0,
   assetName: '',
+  brandName: null,
+  modelRef: null,
   assetCode: '',
   assetTag: '',
   rfidtag: '',
@@ -53,6 +55,10 @@ const initialValue = {
   shelfRef: '',
   description: '',
   assetComponentId: 0,
+  lastMaintenanceDate: null,
+  nextMaintenanceDate: null,
+  currentCost: 0,
+  maintenanceCost: 0,
 };
 
 export interface SliceProps {

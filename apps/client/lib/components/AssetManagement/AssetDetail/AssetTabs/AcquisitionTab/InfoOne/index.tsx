@@ -19,23 +19,23 @@ const InfoOne = () => {
       label: 'Acquisition Date:',
       value: acquisitionDate
         ? dateFormatter(acquisitionDate, 'Do MMM, YYYY')
-        : '-',
+        : 'N/A',
     },
     {
       label: 'Purchase Price:',
-      value: initialValue ? amountFormatter(initialValue) : '-',
+      value: initialValue !== null ? amountFormatter(initialValue) : 'N/A',
     },
     {
       label: 'Resale Value:',
-      value: amountFormatter(resalevalue),
+      value: resalevalue !== null ? amountFormatter(resalevalue) : 'N/A',
     },
     {
       label: 'Scrap Value:',
-      value: amountFormatter(scrapvalue),
+      value: scrapvalue !== null ? amountFormatter(scrapvalue) : 'N/A',
     },
     {
       label: 'Condition:',
-      value: currentCondition ?? '-',
+      value: currentCondition ?? 'N/A',
     },
   ];
   return (

@@ -1,4 +1,4 @@
-import { Flex, useDisclosure } from '@chakra-ui/react';
+import { Flex, Text, useDisclosure } from '@chakra-ui/react';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useEffect, useMemo, useState } from 'react';
 import { Asset } from '~/lib/interfaces/asset.interfaces';
@@ -7,8 +7,20 @@ import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
 import AssetDetail from './AssetDetail';
 import AssetStatus from './AssetStatus';
 
+const AssetName = (name: string) => {
+  return (
+    <Text fontWeight={700} textDecoration="underline">
+      {name}
+    </Text>
+  );
+};
+
 const Status = (status: string) => {
-  return <AssetStatus label={status} color="#07CC3B" />;
+  return (
+    <Flex width="full" justifyContent="flex-end">
+      <AssetStatus label={status} color="#07CC3B" />
+    </Flex>
+  );
 };
 
 interface ListViewProps {
@@ -54,11 +66,11 @@ const ListView = (props: ListViewProps) => {
     () => [
       columnHelper.accessor('assetId', {
         cell: (info) => info.getValue(),
-        header: 'Asset ID',
+        header: '#',
         enableSorting: false,
       }),
       columnHelper.accessor('assetName', {
-        cell: (info) => info.getValue(),
+        cell: (info) => AssetName(info.getValue()),
         header: 'Asset Name',
         enableSorting: false,
       }),
@@ -88,6 +100,9 @@ const ListView = (props: ListViewProps) => {
         cell: (info) => Status(info.getValue()),
         header: 'Status',
         enableSorting: false,
+        meta: {
+          centerHeader: true,
+        },
       }),
     ],
     [data] //eslint-disable-line

@@ -1,7 +1,6 @@
 import NextAuth from 'next-auth';
 import type { NextAuthConfig } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { cookies, headers } from 'next/headers';
 
 // @ts-ignore
 // @ts-ignore
@@ -10,12 +9,14 @@ async function refreshAccessToken(token) {
   console.log('Now refreshing the expired token...');
   try {
     const res = await fetch(
-      `${process.env.API_BASE_URL}/Users/refresh-tokens`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/refresh`,
       {
         method: 'POST',
-        headers: headers(),
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
-          accessToken: token.userId,
+          accessToken: token.accessToken,
           refreshToken: token.refreshToken,
           apiKey: token.apiKey,
         }),
@@ -30,7 +31,7 @@ async function refreshAccessToken(token) {
     }
 
     console.log('The token has been refreshed successfully.');
-
+    console.log({ refresh: data });
     // get some data from the new access token such as exp (expiration time)
     const decodedAccessToken = JSON.parse(
       Buffer.from(data.data.accessToken.split('.')[1], 'base64').toString()
@@ -93,17 +94,6 @@ export const config = {
         }
 
         if (res.ok && user) {
-          const prefix = process.env.NODE_ENV === 'development' ? '__Dev-' : '';
-
-          // we set http only cookie here to store refresh token information as we will not append it to our session to avoid maximum size warning for the session cookie (4096 bytes)
-          cookies().set({
-            name: `${prefix}xxx.refresh-token`,
-            value: user.data.refreshToken,
-            httpOnly: true,
-            sameSite: 'strict',
-            secure: true,
-          } as any);
-
           return user.data;
         }
 
@@ -135,16 +125,8 @@ export const config = {
           token.refreshToken = user.refreshToken;
           token.sessionId = user.sessionId;
           token.apiKey = user.apiKey;
-          token.role = decodedAccessToken.role?.[0] ?? 'User';
+          token.role = decodedAccessToken['role']?.[0] ?? 'User';
         }
-
-        // token.id = user.id;
-        // token.name = user.name;
-        // token.email = user.email;
-        // token.accessToken = user.accessToken;
-        // token.refreshToken = user.refreshToken;
-        // token.apiKey = user.apiKey;
-        // token.role = 'Unknown';
 
         if (decodedAccessToken) {
           token.accessTokenExpires = decodedAccessToken['exp'] * 1000;

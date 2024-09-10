@@ -33,6 +33,8 @@ interface AssetLocation {
 interface Asset {
   rowId: number;
   assetId: number;
+  brandName: string | null;
+  modelRef: string | null;
   assetName: string;
   assetCode: string;
   assetTag: string;
@@ -81,6 +83,10 @@ interface Asset {
   shelfRef: string;
   description: string;
   assetComponentId: number | null;
+  lastMaintenanceDate: string | null;
+  nextMaintenanceDate: string | null;
+  currentCost: number | null;
+  maintenanceCost: number | null;
 }
 
 interface AssetFormDetails {

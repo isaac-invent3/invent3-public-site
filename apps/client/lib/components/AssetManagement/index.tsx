@@ -17,11 +17,18 @@ import Filters from './Filters';
 import FilterDisplay from './Filters/FilterDisplay';
 import { FilterInput } from '~/lib/interfaces/asset.interfaces';
 import { useGetallAssetQuery } from '~/lib/redux/services/asset.services';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
+import { useSearchApiMutation } from '~/lib/redux/services/utility.services';
+import { SearchResponse } from '~/lib/interfaces/general.interfaces';
 
 const AssetManagement = () => {
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { handleSubmit } = useCustomMutation();
+  const [searchAsset, { isLoading: searchLoading }] = useSearchApiMutation({});
+  const [searchData, setSearchData] = useState<SearchResponse | null>(null);
   const [filterData, setFilterData] = useState<FilterInput>({
     location: [],
     category: [],
@@ -29,16 +36,51 @@ const AssetManagement = () => {
   const [activeFilter, setActiveFilter] = useState<'bulk' | 'general' | null>(
     null
   );
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     data: assetData,
     isLoading,
     isFetching,
-  } = useGetallAssetQuery({
+  } = useGetallAssetQuery(
+    {
+      pageNumber: currentPage,
+      pageSize: pageSize,
+    },
+    { skip: search !== '' }
+  );
+
+  const searchCriterion = {
+    criterion: [
+      {
+        columnName: 'assetName',
+        columnValue: search,
+        operation: 7,
+      },
+    ],
     pageNumber: currentPage,
     pageSize: pageSize,
-  });
+  };
 
+  const handleSearch = async () => {
+    const response = await handleSubmit(searchAsset, searchCriterion, '');
+    setSearchData(response?.data?.data);
+  };
+
+  useEffect(() => {
+    if (search && searchData?.items) {
+      handleSearch();
+    }
+  }, [currentPage, pageSize]);
+
+  // Initiate Search
+  useEffect(() => {
+    setPageSize(10);
+    setCurrentPage(1);
+    if (search) {
+      handleSearch();
+    }
+  }, [search]);
+
+  // Handles Toggling the Asset Details Drawer
   useEffect(() => {
     if (activeFilter && !isOpen) {
       onOpen();
@@ -76,14 +118,22 @@ const AssetManagement = () => {
                 setFilterData={setFilterData}
               />
               <ListView
-                data={assetData?.data?.items ?? []}
+                data={
+                  search && searchData
+                    ? searchData.items
+                    : assetData?.data?.items ?? []
+                }
                 isLoading={isLoading}
-                isFetching={isFetching}
+                isFetching={isFetching || searchLoading}
                 pageNumber={currentPage}
                 setPageNumber={setCurrentPage}
                 pageSize={pageSize}
                 setPageSize={setPageSize}
-                totalPages={assetData?.data?.totalPages}
+                totalPages={
+                  search && searchData
+                    ? searchData?.totalPages
+                    : assetData?.data?.totalPages
+                }
               />
             </TabPanel>
             <TabPanel></TabPanel>

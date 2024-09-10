@@ -4,7 +4,7 @@ import { Asset } from '~/lib/interfaces/asset.interfaces';
 
 const initialValue = {
   rowId: 0,
-  assetId: 0,
+  assetId: null,
   assetName: '',
   brandName: null,
   modelRef: null,

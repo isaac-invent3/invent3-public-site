@@ -7,7 +7,7 @@ export async function POST(request: Request) {
     apiKey: body.apiKey,
   };
 
-  // change it with your own endpoint
+  console.log({ refresh: payload });
   const res = await fetch(`${process.env.API_BASE_URL}/Users/refresh-tokens`, {
     method: 'POST',
     headers: {

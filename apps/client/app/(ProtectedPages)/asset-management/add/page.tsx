@@ -5,4 +5,6 @@ export const metadata: Metadata = {
   title: 'Asset Management',
 };
 
-export default AssetForm;
+export default function Page() {
+  return <AssetForm type="create" />;
+}

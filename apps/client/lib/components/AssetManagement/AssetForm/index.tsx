@@ -2,7 +2,6 @@
 
 import { Flex } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import Header from './Header';
 import FormStepper from './FormStepper';
 import GeneralStep from './GeneralStep';
 import AcquisitionStep from './AcquisitionStep';
@@ -10,6 +9,7 @@ import DocumentStep from './DocumentStep';
 import { AssetFormDetails } from '~/lib/interfaces/asset.interfaces';
 import SummaryStep from './SummaryStep';
 import SlideTransition from '../../UI/SlideTransition';
+import Header from './Header';
 
 const initialValue = {
   images: [],
@@ -46,14 +46,18 @@ const initialValue = {
   documents: [],
 };
 
-const AssetForm = () => {
+interface AssetFormProps {
+  type: 'create' | 'edit';
+}
+const AssetForm = (props: AssetFormProps) => {
+  const { type } = props;
   // eslint-disable-next-line no-unused-vars
   const [activeStep, setActiveStep] = useState(0);
   const [formDetails, setFormDetails] =
     useState<AssetFormDetails>(initialValue);
   return (
     <Flex width="full" direction="column" pb="24px">
-      <Header />
+      <Header type={type} />
       <Flex width="full" gap="8px" mt="32px" direction="column">
         <FormStepper currentStep={activeStep} />
         {activeStep === 0 && (

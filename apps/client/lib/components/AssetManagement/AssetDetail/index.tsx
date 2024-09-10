@@ -12,7 +12,7 @@ import AssetHeader from './Header';
 import AssetInfo from './AssetInfo';
 import AssetTabs from './AssetTabs';
 import { useAppDispatch } from '~/lib/redux/hooks';
-import { setAsset } from '~/lib/redux/slices/assetSlice';
+import { clearAsset, setAsset } from '~/lib/redux/slices/assetSlice';
 
 interface AssetDetailProps {
   data: Asset;
@@ -25,6 +25,10 @@ const AssetDetail = (props: AssetDetailProps) => {
 
   useEffect(() => {
     dispatch(setAsset(data));
+
+    return () => {
+      dispatch(clearAsset());
+    };
   }, [data]);
 
   return (

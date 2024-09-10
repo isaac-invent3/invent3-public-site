@@ -85,7 +85,7 @@ const Overview = () => {
             </Text>
             <Flex bgColor="white" height="89px" width="185px">
               <ReactBarcode
-                value={assetId.toString()}
+                value={assetId ? assetId.toString() : ''}
                 renderer={Renderer.CANVAS}
                 options={{ displayValue: false }}
                 style={{ width: '100%' }}

@@ -32,7 +32,7 @@ interface AssetLocation {
 
 interface Asset {
   rowId: number;
-  assetId: number;
+  assetId: number | null;
   brandName: string | null;
   modelRef: string | null;
   assetName: string;

@@ -1,5 +1,5 @@
 import { Flex, Heading, HStack, Text, VStack } from '@chakra-ui/react';
-import Image from 'next/image';
+// import Image from 'next/image';
 import React from 'react';
 import { useAppSelector } from '~/lib/redux/hooks';
 
@@ -40,7 +40,7 @@ const ParentAsset = () => {
           rounded="10px"
           bgColor="white"
         >
-          <Image src="" fill alt="Parent asset image" />
+          {/* <Image src="" fill alt="Parent asset image" /> */}
         </Flex>
         <VStack alignItems="flex-start" spacing="8px">
           <Heading

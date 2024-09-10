@@ -1,4 +1,4 @@
-import { Icon } from '@chakra-ui/react';
+import { Flex, Icon } from '@chakra-ui/react';
 import { useField } from 'formik';
 import { useRef } from 'react';
 import DatePicker from 'react-datepicker';
@@ -26,7 +26,7 @@ const CustomDatePicker = (props: CustomDatePickerProps) => {
   };
 
   return (
-    <div>
+    <Flex width="full" direction="column">
       <TextInput
         name={name}
         type="text"
@@ -46,7 +46,7 @@ const CustomDatePicker = (props: CustomDatePickerProps) => {
         ref={pickerRef}
         className="hidden-input"
       />
-    </div>
+    </Flex>
   );
 };
 

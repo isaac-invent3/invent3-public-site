@@ -49,4 +49,16 @@ const documentSchema = Yup.object().shape({
   documents: Yup.array(),
 });
 
-export { generalInfoSchema, acquisitionInfoSchema, documentSchema };
+const assetTransferSchema = Yup.object().shape({
+  newOwner: Yup.string().required('Owner is Required'),
+  transferDate: Yup.string().required('Transfer Date is Required'),
+  condition: Yup.string().required('Condition is Required'),
+  reason: Yup.string(),
+});
+
+export {
+  generalInfoSchema,
+  acquisitionInfoSchema,
+  documentSchema,
+  assetTransferSchema,
+};

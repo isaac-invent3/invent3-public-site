@@ -132,6 +132,7 @@ function SelectInput({
               marginTop: '2px',
               borderWidth: '0px',
               backgroundColor: '#F7F7F7',
+              zIndex: 999,
             }),
 
             indicatorsContainer: (provided) => ({

@@ -145,10 +145,7 @@ export const config = {
           Date.now() < Number(token.accessTokenExpires)) ||
         token.error == 'RefreshAccessTokenError'
       ) {
-        // eslint-disable-next-line no-unused-vars
-        const { refreshToken, ...rest } = token;
-
-        return rest;
+        return token;
       }
       return await refreshAccessToken(token);
     },

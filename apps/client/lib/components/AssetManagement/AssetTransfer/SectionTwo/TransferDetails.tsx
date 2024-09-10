@@ -1,0 +1,36 @@
+import { VStack } from '@chakra-ui/react';
+import React from 'react';
+import DetailHeader from '~/lib/components/UI/DetailHeader';
+import SelectInput from '~/lib/components/UI/Select';
+import { categoryData } from '~/lib/utils/MockData/asset';
+import CustomDatePicker from '../../AssetForm/AcquisitionStep/DatePicker';
+import { Field } from 'formik';
+import TextareaInput from '~/lib/components/UI/TextArea';
+// import User from '../User';
+
+const TransferDetails = () => {
+  return (
+    <VStack spacing="16px" alignItems="flex-start" width="full">
+      <DetailHeader variant="secondary">Transfer Details</DetailHeader>
+      <VStack width="full" spacing="16px">
+        <CustomDatePicker name="transferDate" label="Transfer Date" />
+        <SelectInput
+          name="condition"
+          title="Condition of Asset"
+          options={categoryData}
+          isSearchable
+        />
+        <Field
+          as={TextareaInput}
+          name="reason"
+          type="text"
+          label="Reason for Transfer"
+          customStyle={{ height: '131px' }}
+        />
+      </VStack>
+      {/* <User /> */}
+    </VStack>
+  );
+};
+
+export default TransferDetails;

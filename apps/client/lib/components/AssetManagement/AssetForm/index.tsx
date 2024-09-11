@@ -52,9 +52,10 @@ interface AssetFormProps {
 const AssetForm = (props: AssetFormProps) => {
   const { type } = props;
   // eslint-disable-next-line no-unused-vars
-  const [activeStep, setActiveStep] = useState(1);
+  const [activeStep, setActiveStep] = useState(0);
   const [formDetails, setFormDetails] =
     useState<AssetFormDetails>(initialValue);
+
   return (
     <Flex width="full" direction="column" pb="24px">
       <Header type={type} />

@@ -2,12 +2,14 @@ import { HStack, Icon } from '@chakra-ui/react';
 import React from 'react';
 import Button from '../../UI/Button';
 import { CloseIcon } from '../../CustomIcons';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 interface AssetHeaderProps {
   handleBack: () => void;
 }
 const AssetHeader = (props: AssetHeaderProps) => {
   const { handleBack } = props;
+  const assetData = useAppSelector((state) => state.asset.asset);
   return (
     <HStack width="full" justifyContent="space-between">
       <HStack spacing="16px">
@@ -28,6 +30,7 @@ const AssetHeader = (props: AssetHeaderProps) => {
         <Button
           customStyles={{ minH: '34px', minW: '60px', px: '16px' }}
           variant="secondary"
+          href={`/asset-management/${assetData.assetId}/edit`}
         >
           Edit
         </Button>
@@ -52,6 +55,7 @@ const AssetHeader = (props: AssetHeaderProps) => {
             lineHeight: '16.63px',
           }}
           variant="primary"
+          href={`/asset-management/${assetData.assetId}/transfer`}
         >
           Transfer
         </Button>

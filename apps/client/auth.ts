@@ -31,7 +31,6 @@ async function refreshAccessToken(token) {
     }
 
     console.log('The token has been refreshed successfully.');
-    console.log({ refresh: data });
     // get some data from the new access token such as exp (expiration time)
     const decodedAccessToken = JSON.parse(
       Buffer.from(data.data.accessToken.split('.')[1], 'base64').toString()

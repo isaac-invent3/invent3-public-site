@@ -20,7 +20,7 @@ const AssetCategory = () => {
           <HStack spacing="11px" alignItems="flex-start">
             <VStack alignItems="flex-end" width="full">
               <SelectInput
-                name="category"
+                name="categoryId"
                 title="Category"
                 options={categoryData}
                 isSearchable
@@ -29,7 +29,7 @@ const AssetCategory = () => {
             </VStack>
             <VStack alignItems="flex-end" width="full">
               <SelectInput
-                name="subCategory"
+                name="subCategoryId"
                 title="Sub Category"
                 options={categoryData}
                 width="full"

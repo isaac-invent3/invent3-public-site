@@ -9,18 +9,18 @@ interface GeneralProps {
 }
 const General = ({ assetFormDetails }: GeneralProps) => {
   const {
-    name,
+    assetName,
     assetCode,
-    category,
-    subCategory,
-    make,
-    model,
+    categoryId,
+    subCategoryId,
+    brandName,
+    modelRef,
     serialNo,
-    weight,
-    width,
-    height,
-    depth,
-    owner,
+    weightKg,
+    widthCm,
+    heightCm,
+    depthCm,
+    currentOwner,
     department,
     assignedTo,
     responsibleFor,
@@ -29,7 +29,7 @@ const General = ({ assetFormDetails }: GeneralProps) => {
   const row1 = [
     {
       label: 'Asset Name',
-      value: name,
+      value: assetName,
     },
     {
       label: 'Asset Code',
@@ -40,22 +40,22 @@ const General = ({ assetFormDetails }: GeneralProps) => {
   const row2 = [
     {
       label: 'Category',
-      value: category,
+      value: categoryId,
     },
     {
       label: 'Sub-category',
-      value: subCategory,
+      value: subCategoryId,
     },
   ];
 
   const row3 = [
     {
       label: 'Make',
-      value: make,
+      value: brandName,
     },
     {
       label: 'Model',
-      value: model,
+      value: modelRef,
     },
     {
       label: 'Serial Number',
@@ -66,26 +66,26 @@ const General = ({ assetFormDetails }: GeneralProps) => {
   const row4 = [
     {
       label: 'Weight',
-      value: weight,
+      value: weightKg,
     },
     {
       label: 'Width',
-      value: width,
+      value: widthCm,
     },
     {
       label: 'Height',
-      value: height,
+      value: heightCm,
     },
     {
       label: 'Depth',
-      value: depth,
+      value: depthCm,
     },
   ];
 
   const row5 = [
     {
       label: 'Owner',
-      value: owner,
+      value: currentOwner,
     },
     {
       label: 'Department',

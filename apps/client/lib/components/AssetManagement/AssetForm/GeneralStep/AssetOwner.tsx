@@ -16,7 +16,7 @@ const AssetOwner = () => {
       </Flex>
       <SimpleGrid columns={4} gap="11px" width="full">
         <SelectInput
-          name="owner"
+          name="currentOwner"
           title="Owner"
           options={categoryData}
           isSearchable

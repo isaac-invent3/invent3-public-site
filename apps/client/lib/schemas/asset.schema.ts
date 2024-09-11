@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 
 const generalInfoSchema = Yup.object().shape({
-  name: Yup.string().required('Name is required'),
+  assetName: Yup.string().required('Name is required'),
   description: Yup.string().required('Description is Required'),
   images: Yup.array()
     .required('Images is required')
@@ -9,16 +9,16 @@ const generalInfoSchema = Yup.object().shape({
   codePrefix: Yup.string().required('Code Prefix is Required'),
   codeSuffix: Yup.string().required('Code Suffix is Required'),
   assetCode: Yup.string().required('Asset Code is Required'),
-  make: Yup.string().required('Make is Required'),
-  model: Yup.string().required('Model is Required'),
+  brandName: Yup.string().required('Make is Required'),
+  modelRef: Yup.string().required('Model is Required'),
   serialNo: Yup.string().required('Serial No. is Required'),
-  category: Yup.string().required('Category is Required'),
-  subCategory: Yup.string().required('Subcategory is Required'),
-  weight: Yup.number().required('Weight is Required'),
-  width: Yup.number().required('Width is Required'),
-  height: Yup.number().required('Height is Required'),
-  depth: Yup.number().required('Depth is Required'),
-  owner: Yup.string().required('Owner is Required'),
+  categoryId: Yup.string().required('Category is Required'),
+  subCategoryId: Yup.string().required('Subcategory is Required'),
+  weightKg: Yup.number().required('Weight is Required'),
+  widthCm: Yup.number().required('Width is Required'),
+  heightCm: Yup.number().required('Height is Required'),
+  depthCm: Yup.number().required('Depth is Required'),
+  currentOwner: Yup.string().required('Owner is Required'),
   department: Yup.string().required('Department is Required'),
   assignedTo: Yup.string().required('This is Required'),
   responsibleFor: Yup.string().required('This is Required'),
@@ -26,8 +26,8 @@ const generalInfoSchema = Yup.object().shape({
 
 const acquisitionInfoSchema = Yup.object().shape({
   acquisitionDate: Yup.string().required('Acquisition Date is required'),
-  assetCondition: Yup.string().required('Asset Condition is required'),
-  purchasePrice: Yup.number()
+  conditionId: Yup.string().required('Asset Condition is required'),
+  initialValue: Yup.number()
     .required('Purchase Price is required')
     .min(1, 'Price must be greater than 0'),
   warrantyStartDate: Yup.string().required('Warranty Start Date is required'),

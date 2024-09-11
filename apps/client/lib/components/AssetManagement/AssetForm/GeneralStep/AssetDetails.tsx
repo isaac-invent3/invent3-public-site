@@ -15,8 +15,8 @@ const AssetDetail = () => {
         />
       </Flex>
       <SimpleGrid width="full" columns={4} gap="11px">
-        <Field as={TextInput} name="make" type="text" label="Make" />
-        <Field as={TextInput} name="model" type="text" label="Model" />
+        <Field as={TextInput} name="brandName" type="text" label="Make" />
+        <Field as={TextInput} name="modelRef" type="text" label="Model" />
         <Field as={TextInput} name="serialNo" type="text" label="Serial No." />
       </SimpleGrid>
     </HStack>

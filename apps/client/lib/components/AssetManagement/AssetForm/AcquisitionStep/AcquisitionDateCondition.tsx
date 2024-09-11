@@ -29,7 +29,7 @@ const AcquisitionDateConditon = () => {
               />
             </Flex>
             <SelectInput
-              name="assetCondition"
+              name="conditionId"
               title="Select an option"
               options={categoryData}
               isSearchable

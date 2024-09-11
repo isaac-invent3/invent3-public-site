@@ -16,7 +16,7 @@ const AssetName = () => {
       </Flex>
       <Field
         as={TextInput}
-        name="name"
+        name="assetName"
         type="text"
         label="Name"
         placeholder="Name"

@@ -11,7 +11,7 @@ interface HeaderProps {
 const Header = (props: HeaderProps) => {
   const { type } = props;
   const assetData = useAppSelector((state) => state.asset.asset);
-  const defaultHeader = type === 'create' ? 'Asset New Asset' : 'Update Asset';
+  const defaultHeader = type === 'create' ? 'Add New Asset' : 'Edit Asset';
 
   const breadCrumbData = [
     {
@@ -35,7 +35,9 @@ const Header = (props: HeaderProps) => {
         justifyContent="space-between"
         alignItems="flex-start"
       >
-        <PageHeader>Add New Asset</PageHeader>
+        <PageHeader>
+          {type === 'create' ? 'Add New Asset' : 'Edit Asset'}
+        </PageHeader>
         {assetData?.assetId && <ParentAsset />}
       </HStack>
     </VStack>

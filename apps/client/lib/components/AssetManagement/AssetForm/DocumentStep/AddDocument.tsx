@@ -15,7 +15,7 @@ import { DocumentIcon, InfoIcon } from '~/lib/components/CustomIcons';
 import SingleDocument from './SingleDocument';
 
 const AddDocument = () => {
-  const [field, meta, helpers] = useField('documents'); // eslint-disable-line
+  const [field, meta, helpers] = useField('documents'); //eslint-disable-line
   const [isDragging, setIsDragging] = useState(false);
 
   const handleDragOver = (event: React.DragEvent) => {
@@ -67,26 +67,18 @@ const AddDocument = () => {
           <Input
             id="file"
             display="none"
-            {...field}
             onChange={(event: any) => {
               if (event.currentTarget.files.length > 0) {
-                const file = event.currentTarget.files[0];
-                const validTypes = [
-                  'application/pdf',
-                  'application/msword',
-                  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                ];
-
-                if (file.size > 10 * 1024 * 1024) {
+                if (event.currentTarget.files[0].size > 10 * 1024 * 1024) {
                   helpers.setError('File size must be less than 10 MB');
-                } else if (!validTypes.includes(file.type)) {
-                  helpers.setError(
-                    'Unsupported file format. Only PDF, DOC, and DOCX are allowed.'
-                  );
-                  helpers.setTouched(true, true);
-                } else {
-                  helpers.setValue([...meta.value, file]);
-                  event.target.value = ''; // Reset file input value
+                }
+                if (!meta.value.includes(event.currentTarget.files[0])) {
+                  helpers.setValue([
+                    ...meta.value,
+                    event.currentTarget.files[0],
+                  ]);
+                  // eslint-disable-next-line no-param-reassign
+                  event.target.value = '';
                 }
               }
             }}
@@ -111,7 +103,7 @@ const AddDocument = () => {
               }
               bgColor={
                 isDragging
-                  ? 'primary.50'
+                  ? 'neutral.300'
                   : meta.error
                     ? 'error.200'
                     : 'neutral.100'
@@ -133,7 +125,7 @@ const AddDocument = () => {
                 </Text>
               </VStack>
               <Text size="md" color="neutral.600">
-                PDF and Doc are supported
+                PDF, DOC are supported
               </Text>
             </VStack>
           </label>
@@ -151,8 +143,8 @@ const AddDocument = () => {
           </FormErrorMessage>
         </FormControl>
         <VStack width="full" spacing="4px">
-          {meta.value.map((item: File, index: number) => (
-            <SingleDocument document={item} key={index} />
+          {meta.value.map((item: File) => (
+            <SingleDocument document={item} />
           ))}
         </VStack>
       </VStack>

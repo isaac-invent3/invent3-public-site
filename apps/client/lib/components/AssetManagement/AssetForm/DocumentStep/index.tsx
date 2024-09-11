@@ -22,7 +22,6 @@ const DocumentStep = (props: DocumentStepProps) => {
     initialValues,
     validationSchema: documentSchema,
     onSubmit: async (values) => {
-      console.log('Documents');
       setFormDetails((prev) => ({ ...prev, ...values }));
       setActiveStep(3);
     },

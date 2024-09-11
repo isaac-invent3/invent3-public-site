@@ -11,8 +11,8 @@ interface AcquisitionProps {
 const Acquisition = ({ assetFormDetails }: AcquisitionProps) => {
   const {
     acquisitionDate,
-    assetCondition,
-    purchasePrice,
+    conditionId,
+    initialValue,
     warrantyStartDate,
     warrantyEndDate,
     warrantyTerms,
@@ -31,11 +31,11 @@ const Acquisition = ({ assetFormDetails }: AcquisitionProps) => {
     },
     {
       label: 'Asset  Condition',
-      value: assetCondition,
+      value: conditionId,
     },
     {
       label: 'Purchase Price',
-      value: amountFormatter(purchasePrice ?? 0),
+      value: amountFormatter(initialValue ?? 0),
     },
   ];
 

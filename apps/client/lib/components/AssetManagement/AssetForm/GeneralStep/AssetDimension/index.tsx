@@ -35,7 +35,7 @@ const AssetDimension = () => {
         <HStack spacing={0} position="relative">
           <Field
             as={TextInput}
-            name="weight"
+            name="weightKg"
             type="number"
             label="Weight"
             customStyle={{ pr: '70px' }}
@@ -52,7 +52,7 @@ const AssetDimension = () => {
         <HStack spacing={0} position="relative">
           <Field
             as={TextInput}
-            name="width"
+            name="widthCm"
             type="number"
             label="Width"
             customStyle={{ pr: '70px' }}
@@ -69,7 +69,7 @@ const AssetDimension = () => {
         <HStack spacing={0} position="relative">
           <Field
             as={TextInput}
-            name="height"
+            name="heightCm"
             type="number"
             label="Height"
             customStyle={{ pr: '70px' }}
@@ -86,7 +86,7 @@ const AssetDimension = () => {
         <HStack spacing={0} position="relative">
           <Field
             as={TextInput}
-            name="depth"
+            name="depthCm"
             type="number"
             label="Depth"
             customStyle={{ pr: '70px' }}

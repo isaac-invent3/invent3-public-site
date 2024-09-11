@@ -17,7 +17,7 @@ const PurchasePrice = () => {
       <SimpleGrid columns={3} width="full" gap="20px">
         <Field
           as={TextInput}
-          name="purchasePrice"
+          name="initialValue"
           type="number"
           label="Purchase Price"
         />

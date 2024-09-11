@@ -20,8 +20,8 @@ const AcquisitionStep = (props: AcquisitionStepProps) => {
 
   const initialValues = {
     acquisitionDate: formDetails.acquisitionDate ?? '',
-    assetCondition: formDetails.assetCondition ?? '',
-    purchasePrice: formDetails.purchasePrice ?? undefined,
+    conditionId: formDetails.conditionId ?? '',
+    initialValue: formDetails.initialValue ?? undefined,
     warrantyStartDate: formDetails.warrantyStartDate ?? '',
     warrantyEndDate: formDetails.warrantyEndDate ?? '',
     warrantyTerms: formDetails.warrantyTerms ?? '',

@@ -1,11 +1,12 @@
-import { Flex, Text, useDisclosure } from '@chakra-ui/react';
+import { Flex, Icon, Text, useDisclosure } from '@chakra-ui/react';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useEffect, useMemo, useState } from 'react';
-import { Asset } from '~/lib/interfaces/asset.interfaces';
+import { Asset, AssetStatusType } from '~/lib/interfaces/asset.interfaces';
 import DataTable from '../UI/Table';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
 import AssetDetail from './AssetDetail';
 import AssetStatus from './AssetStatus';
+import { ThreeVerticalDotsIcon } from '../CustomIcons';
 
 const AssetName = (name: string) => {
   return (
@@ -15,10 +16,11 @@ const AssetName = (name: string) => {
   );
 };
 
-const Status = (status: string) => {
+const Status = (status: AssetStatusType) => {
   return (
-    <Flex width="full" justifyContent="flex-end">
-      <AssetStatus label={status} color="#07CC3B" />
+    <Flex width="full" justifyContent="flex-end" gap="14px" alignItems="center">
+      <AssetStatus status={status} />
+      <Icon as={ThreeVerticalDotsIcon} boxSize="14px" color="neutral.700" />
     </Flex>
   );
 };

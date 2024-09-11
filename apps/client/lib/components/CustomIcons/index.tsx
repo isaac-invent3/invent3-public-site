@@ -349,6 +349,34 @@ const DocumentIcon = createIcon({
   ),
 });
 
+const ThreeVerticalDotsIcon = createIcon({
+  displayName: 'ThreeVerticalDotsIcon',
+  viewBox: '0 0 14 14',
+
+  path: (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 14 14"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M7.00016 2.33333C7.64449 2.33333 8.16683 1.811 8.16683 1.16667C8.16683 0.522334 7.64449 0 7.00016 0C6.35583 0 5.8335 0.522334 5.8335 1.16667C5.8335 1.811 6.35583 2.33333 7.00016 2.33333Z"
+        fill="currentColor"
+      />
+      <path
+        d="M7.00016 8.16683C7.64449 8.16683 8.16683 7.64449 8.16683 7.00016C8.16683 6.35583 7.64449 5.8335 7.00016 5.8335C6.35583 5.8335 5.8335 6.35583 5.8335 7.00016C5.8335 7.64449 6.35583 8.16683 7.00016 8.16683Z"
+        fill="currentColor"
+      />
+      <path
+        d="M7.00016 13.9999C7.64449 13.9999 8.16683 13.4775 8.16683 12.8332C8.16683 12.1888 7.64449 11.6665 7.00016 11.6665C6.35583 11.6665 5.8335 12.1888 5.8335 12.8332C5.8335 13.4775 6.35583 13.9999 7.00016 13.9999Z"
+        fill="currentColor"
+      />
+    </svg>
+  ),
+});
+
 export {
   InfoIcon,
   ChevronLeftIcon,
@@ -364,4 +392,5 @@ export {
   AddIcon,
   CalendarIcon,
   DocumentIcon,
+  ThreeVerticalDotsIcon,
 };

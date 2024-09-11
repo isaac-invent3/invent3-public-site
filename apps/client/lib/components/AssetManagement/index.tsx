@@ -10,7 +10,7 @@ import {
   TabPanel,
   useDisclosure,
 } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Header from './Header';
 import ListView from './ListView';
 import Filters from './Filters';
@@ -60,23 +60,23 @@ const AssetManagement = () => {
     pageSize: pageSize,
   };
 
-  const handleSearch = async () => {
+  const handleSearch = useCallback(async () => {
     const response = await handleSubmit(searchAsset, searchCriterion, '');
     setSearchData(response?.data?.data);
-  };
+  }, [searchAsset, searchCriterion]);
 
+  // Trigger search when search input changes or pagination updates
   useEffect(() => {
-    if (search && searchData?.items) {
-      handleSearch();
-    }
-  }, [currentPage, pageSize]);
-
-  // Initiate Search
-  useEffect(() => {
-    setPageSize(10);
-    setCurrentPage(1);
     if (search) {
       handleSearch();
+    }
+  }, [search, currentPage, pageSize]);
+
+  // Reset pagination when clearing the search
+  useEffect(() => {
+    if (!search) {
+      setPageSize(10);
+      setCurrentPage(1);
     }
   }, [search]);
 

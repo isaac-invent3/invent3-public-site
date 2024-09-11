@@ -28,7 +28,7 @@ const Pagination = (props: PaginationProps) => {
       if (setPageSize) {
         setPageSize((prev) => (inputValue ? inputValue : prev));
       }
-    }, 3000);
+    }, 500);
 
     return () => clearTimeout(timeoutId);
   }, [inputValue, setPageSize]);

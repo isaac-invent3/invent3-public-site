@@ -30,6 +30,17 @@ interface AssetLocation {
   shelfRef: string;
 }
 
+type AssetStatusType =
+  | 'Active'
+  | 'Inactive'
+  | 'Decommissioned'
+  | 'Pending Disposal'
+  | 'In Storage'
+  | 'Operational'
+  | 'Non-Operational'
+  | 'Scheduled for Maintenance'
+  | 'Out of Service';
+
 interface Asset {
   rowId: number;
   assetId: number | null;
@@ -53,7 +64,7 @@ interface Asset {
   parentId: number | null;
   isDeleted: boolean;
   assetType: string | null;
-  currentStatus: string;
+  currentStatus: AssetStatusType;
   assetCategory: string;
   assetSubCategory: string;
   currentCondition: string;
@@ -129,4 +140,10 @@ interface FilterInput {
   location: (string | number)[];
 }
 
-export type { AssetLocation, Asset, AssetFormDetails, FilterInput };
+export type {
+  AssetLocation,
+  Asset,
+  AssetFormDetails,
+  FilterInput,
+  AssetStatusType,
+};

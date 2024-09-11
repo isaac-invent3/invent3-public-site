@@ -1,6 +1,6 @@
 import { Icon, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
-import type React from 'react';
-import { useState } from 'react';
+import React, { useState, useMemo } from 'react';
+import { debounce } from 'lodash';
 import { SearchIcon } from '../CustomIcons/layout';
 
 interface ISearchInput {
@@ -9,6 +9,7 @@ interface ISearchInput {
   width?: string;
   customStyle?: { [key: string]: unknown };
 }
+
 const SearchInput = (props: ISearchInput) => {
   const [searchText, setSearchText] = useState('');
   const {
@@ -17,6 +18,18 @@ const SearchInput = (props: ISearchInput) => {
     width = '246px',
     customStyle,
   } = props;
+
+  // Use useMemo to create a memoized version of the debounced function
+  const debouncedSetSearch = useMemo(
+    () => debounce((value: string) => setSearch(value), 500), // 500ms debounce
+    [setSearch]
+  );
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchText(value);
+    debouncedSetSearch(value); // Call the debounced function
+  };
 
   return (
     <InputGroup alignItems="center" height="36px" width={width}>
@@ -35,7 +48,6 @@ const SearchInput = (props: ISearchInput) => {
         rounded="8px"
         py="6px"
         px="12px"
-        // pl="40px"
         minH="36px"
         width={width}
         _placeholder={{
@@ -46,14 +58,7 @@ const SearchInput = (props: ISearchInput) => {
         _focusVisible={{
           border: 'none',
         }}
-        onChange={(e) => {
-          setSearchText(e.target.value);
-          const timeout = setTimeout(() => {
-            setSearch(e.target.value);
-          }, 3000);
-
-          return () => clearTimeout(timeout);
-        }}
+        onChange={handleSearchChange} // Use the debounced handler
         {...customStyle}
       />
     </InputGroup>

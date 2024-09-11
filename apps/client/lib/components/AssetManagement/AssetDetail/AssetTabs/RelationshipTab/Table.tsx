@@ -2,15 +2,15 @@
 import { Flex, VStack } from '@chakra-ui/react';
 import { createColumnHelper } from '@tanstack/react-table';
 import React, { useMemo } from 'react';
-import { Asset } from '~/lib/interfaces/asset.interfaces';
+import { Asset, AssetStatusType } from '~/lib/interfaces/asset.interfaces';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
 import { DetailTable } from '../../DetailTable';
 import AssetStatus from '../../../AssetStatus';
 
-const Status = (status: string) => {
+const Status = (status: AssetStatusType) => {
   return (
     <Flex>
-      <AssetStatus label={status} color="#07CC3B" />
+      <AssetStatus status={status} />
     </Flex>
   );
 };

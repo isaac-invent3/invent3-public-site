@@ -50,7 +50,7 @@ const Overview = () => {
           >
             {assetName}
           </Heading>
-          <AssetStatus color="#07CC3B" label={currentStatus} />
+          <AssetStatus status={currentStatus} />
         </HStack>
         <HStack width="full" justifyContent="space-between">
           <VStack alignItems="flex-start" spacing="8px">

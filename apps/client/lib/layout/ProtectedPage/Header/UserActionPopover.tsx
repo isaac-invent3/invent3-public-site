@@ -22,7 +22,7 @@ import {
   UserProfileIcon,
 } from '~/lib/components/CustomIcons/layout';
 import { handleSignOut } from '~/app/actions/authActions';
-import { useSession } from 'next-auth/react';
+// import { useSession } from 'next-auth/react';
 
 interface ActionButtonProps {
   icon: ComponentWithAs<'svg', IconProps>;

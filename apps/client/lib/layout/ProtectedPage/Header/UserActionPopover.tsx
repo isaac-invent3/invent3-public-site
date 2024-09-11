@@ -50,7 +50,7 @@ const ActionButton = (props: ActionButtonProps) => {
 
 const UserActionPopover = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { data } = useSession();
+  // const { data } = useSession();
 
   return (
     <>
@@ -100,7 +100,7 @@ const UserActionPopover = () => {
                   letterSpacing="0.05em"
                   fontWeight={700}
                 >
-                  {data?.user?.name}
+                  {/* {data?.user?.name} */}
                 </Text>
                 <Text
                   color="neutral.600"
@@ -109,7 +109,7 @@ const UserActionPopover = () => {
                   letterSpacing="0.05em"
                   fontWeight={400}
                 >
-                  {data?.user?.role}
+                  {/* {data?.user?.role} */}
                 </Text>
               </VStack>
             </HStack>
@@ -161,7 +161,7 @@ const UserActionPopover = () => {
               />
               <VStack alignItems="flex-start" spacing={0}>
                 <Text color="white" size="lg" fontWeight={700}>
-                  {data?.user?.name}
+                  {/* {data?.user?.name} */}
                 </Text>
                 <Text
                   color="neutral.300"
@@ -169,7 +169,7 @@ const UserActionPopover = () => {
                   lineHeight="18px"
                   fontWeight={400}
                 >
-                  {data?.user?.role}
+                  {/* {data?.user?.role} */}
                 </Text>
               </VStack>
             </HStack>

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { CacheProvider } from '@chakra-ui/next-js';
 import { ChakraProvider } from '~/lib/components/ChakraProvider';
 import ReduxProvider from '../redux/ReduxProvider';
-import { SessionProvider } from 'next-auth/react';
+// import { SessionProvider } from 'next-auth/react';
 
 const AppProviders = ({ children }: { children: React.ReactNode }) => {
   const [isMounted, setIsMounted] = useState(false);
@@ -19,13 +19,13 @@ const AppProviders = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <SessionProvider>
-      <ReduxProvider>
-        <CacheProvider>
-          <ChakraProvider>{children}</ChakraProvider>
-        </CacheProvider>
-      </ReduxProvider>
-    </SessionProvider>
+    // <SessionProvider>
+    <ReduxProvider>
+      <CacheProvider>
+        <ChakraProvider>{children}</ChakraProvider>
+      </CacheProvider>
+    </ReduxProvider>
+    // </SessionProvider>
   );
 };
 

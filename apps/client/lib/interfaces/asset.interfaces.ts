@@ -33,6 +33,7 @@ interface AssetLocation {
 type AssetStatusType =
   | 'Active'
   | 'Inactive'
+  | 'Under Maintenance'
   | 'Decommissioned'
   | 'Pending Disposal'
   | 'In Storage'

@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { Asset } from '~/lib/interfaces/asset.interfaces';
+import { Asset, AssetStatusType } from '~/lib/interfaces/asset.interfaces';
 
 const initialValue = {
   rowId: 0,
@@ -25,7 +25,7 @@ const initialValue = {
   parentId: null,
   isDeleted: false,
   assetType: '',
-  currentStatus: '',
+  currentStatus: 'Inactive' as AssetStatusType,
   assetCategory: '',
   assetSubCategory: '',
   currentCondition: '',

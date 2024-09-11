@@ -6,6 +6,7 @@ const MaintenanceColorCode = {
 const AssetColorCode = {
   Active: '#07CC3B',
   Inactive: '#EABC30',
+  'Under Maintenance': '#8595A5',
   Decommissioned: '#4D55BB',
   'Pending Disposal': '#FF7A37',
   'In Storage': '#7E7000',

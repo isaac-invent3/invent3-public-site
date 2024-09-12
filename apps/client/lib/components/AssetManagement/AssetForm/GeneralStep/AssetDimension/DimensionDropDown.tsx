@@ -2,14 +2,13 @@ import {
   Collapse,
   Flex,
   HStack,
-  Icon,
   Text,
   useDisclosure,
   useOutsideClick,
   VStack,
 } from '@chakra-ui/react';
 import React, { useRef } from 'react';
-import { ChevronDownIcon } from '~/lib/components/CustomIcons';
+// import { ChevronDownIcon } from '~/lib/components/CustomIcons';
 import { Option } from '~/lib/interfaces/general.interfaces';
 
 interface DimensionDropDownProps {
@@ -20,7 +19,7 @@ interface DimensionDropDownProps {
 }
 const DimensionDropDown = (props: DimensionDropDownProps) => {
   const { options, value, handleChange } = props;
-  const { onToggle, isOpen, onClose } = useDisclosure();
+  const { isOpen, onClose } = useDisclosure();
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useOutsideClick({
@@ -42,7 +41,7 @@ const DimensionDropDown = (props: DimensionDropDownProps) => {
       zIndex={99}
     >
       <HStack
-        onClick={onToggle}
+        // onClick={onToggle}
         height="19px"
         borderLeftWidth="1px"
         paddingLeft="16px"
@@ -50,12 +49,12 @@ const DimensionDropDown = (props: DimensionDropDownProps) => {
         spacing="8px"
         width="66px"
         cursor="pointer"
-        pl="10px"
+        // pl="10px"
       >
         <Text size="lg" color={value ? 'neutral.800' : 'neutral.300'}>
           {value ? value : 'cm'}
         </Text>
-        <Icon as={ChevronDownIcon} boxSize="16px" color="neutral.800" />
+        {/* <Icon as={ChevronDownIcon} boxSize="16px" color="neutral.800" /> */}
       </HStack>
       <Collapse in={isOpen}>
         <VStack

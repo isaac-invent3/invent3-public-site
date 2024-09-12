@@ -56,9 +56,20 @@ const assetTransferSchema = Yup.object().shape({
   reason: Yup.string(),
 });
 
+const locationSchema = Yup.object().shape({
+  facilityId: Yup.string().required('Facility is Required'),
+  buildingId: Yup.string().required('Building is Required'),
+  floorId: Yup.string().required('Floor is is Required'),
+  departmentId: Yup.string().required('Department is is Required'),
+  roomId: Yup.string().required('Room is is Required'),
+  aisleId: Yup.string().required('Aisle is is Required'),
+  shelfId: Yup.string().required('Shelf is is Required'),
+});
+
 export {
   generalInfoSchema,
   acquisitionInfoSchema,
   documentSchema,
   assetTransferSchema,
+  locationSchema,
 };

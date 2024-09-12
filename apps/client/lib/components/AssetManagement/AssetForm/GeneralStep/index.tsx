@@ -1,6 +1,6 @@
 import { Flex, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { generalInfoSchema } from '~/lib/schemas/asset.schema';
 import AssetImages from './AssetImages';
 import AssetCategory from './AssetCategory';
@@ -10,6 +10,7 @@ import AssetOwner from './AssetOwner';
 import AssetNameCodeDescription from './AssetNameCodeDescription';
 import FormActionButtons from '../FormActionButtons';
 import { AssetFormDetails } from '~/lib/interfaces/asset.interfaces';
+import AssetLocation from './AssetLocation';
 
 interface GeneralStepProps {
   setFormDetails: React.Dispatch<React.SetStateAction<AssetFormDetails>>;
@@ -19,7 +20,6 @@ interface GeneralStepProps {
 const GeneralStep = (props: GeneralStepProps) => {
   const { setActiveStep, setFormDetails, formDetails } = props;
 
-  useEffect(() => {}, [formDetails]);
   const formik = useFormik({
     initialValues: {
       images: formDetails.images ?? [],
@@ -69,6 +69,7 @@ const GeneralStep = (props: GeneralStepProps) => {
             <AssetCategory />
             <AssetDetail />
             <AssetDimension />
+            <AssetLocation />
             <AssetOwner />
           </VStack>
           <Flex width="full" mt="16px">

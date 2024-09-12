@@ -29,9 +29,11 @@ function GenericModal({
         width="full"
         rounded="8px"
         bgColor="white"
+        p={0}
+        m={0}
         {...contentStyle}
       >
-        <ModalBody width="full" {...customStyle}>
+        <ModalBody p={0} m={0} width="full" {...customStyle}>
           {children}
         </ModalBody>
       </ModalContent>

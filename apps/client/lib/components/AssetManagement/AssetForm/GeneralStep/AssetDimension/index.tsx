@@ -12,10 +12,10 @@ const sampleDimensions = [
 ];
 const AssetDimension = () => {
   const [dimensions, setDimensions] = useState({
-    weight: '',
-    width: '',
-    height: '',
-    depth: '',
+    weight: 'Kg',
+    width: 'Cm',
+    height: 'Cm',
+    depth: 'Cm',
   });
   return (
     <HStack

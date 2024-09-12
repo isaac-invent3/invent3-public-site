@@ -1,8 +1,9 @@
-import { HStack, VStack } from '@chakra-ui/react';
+import { HStack, Icon, VStack } from '@chakra-ui/react';
 import React from 'react';
 import GenericBreadCrumb from '../UI/BreadCrumb';
 import PageHeader from '../UI/PageHeader';
 import PrimaryButton from '../UI/Button';
+import { AddIcon } from '../CustomIcons';
 
 const breadCrumbData = [
   {
@@ -20,7 +21,13 @@ const Header = () => {
       <GenericBreadCrumb routes={breadCrumbData} />
       <HStack width="full" justifyContent="space-between">
         <PageHeader>Asset Management</PageHeader>
-        <PrimaryButton href="/asset-management/add">Add Asset</PrimaryButton>
+        <PrimaryButton
+          href="/asset-management/add"
+          customStyles={{ width: '227px' }}
+        >
+          <Icon as={AddIcon} boxSize="18px" color="#D2FEFD" mr="4px" />
+          Add Asset
+        </PrimaryButton>
       </HStack>
     </VStack>
   );

@@ -6,7 +6,7 @@ import DetailHeader from '~/lib/components/UI/DetailHeader';
 const Documents = ({ documents }: { documents: (string | File)[] }) => {
   return (
     <VStack spacing="8px" width="full" alignItems="flex-start">
-      <DetailHeader variant="primary">Asset Images</DetailHeader>
+      <DetailHeader variant="primary">Documents</DetailHeader>
       <VStack width="full" alignItems="flex-start" spacing="12px">
         {documents.map((document, index) => (
           <HStack spacing="16px" width="full">

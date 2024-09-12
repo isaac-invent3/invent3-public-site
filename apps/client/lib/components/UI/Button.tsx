@@ -1,5 +1,4 @@
-import { Button as ChakraButton, Link as ChakraLink } from '@chakra-ui/react';
-import NextLink from 'next/link';
+import { Button as ChakraButton } from '@chakra-ui/react';
 
 interface ButtonProps {
   children?: React.ReactNode;
@@ -49,6 +48,8 @@ const Button = (props: ButtonProps) => {
       maxH="50px"
       width="full"
       isLoading={isLoading}
+      as={href ? 'a' : 'button'}
+      {...(href ? { href } : {})}
       loadingText={loadingText}
       _focus={{ outline: 'none' }}
       _hover={{
@@ -72,17 +73,6 @@ const Button = (props: ButtonProps) => {
       {children}
     </ChakraButton>
   );
-
-  // If href is provided, render the button as a link
-  if (href) {
-    return (
-      <NextLink href={href} passHref>
-        <ChakraLink _hover={{ textDecoration: 'none' }}>
-          {buttonElement}
-        </ChakraLink>
-      </NextLink>
-    );
-  }
 
   return buttonElement;
 };

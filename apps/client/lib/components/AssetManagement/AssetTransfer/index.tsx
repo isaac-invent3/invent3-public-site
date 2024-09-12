@@ -1,4 +1,4 @@
-import { Flex, HStack, Text } from '@chakra-ui/react';
+import { Flex, HStack, Text, useDisclosure } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import Header from './Header';
 import { Asset } from '~/lib/interfaces/asset.interfaces';
@@ -9,12 +9,14 @@ import { clearAsset, setAsset } from '~/lib/redux/slices/assetSlice';
 import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
 import Button from '../../UI/Button';
+import AssetSuccessModal from '../Modals/AssetSuccessModal';
 
 interface AssetTransferProps {
   data: Asset;
 }
 const AssetTransfer = (props: AssetTransferProps) => {
   const { data } = props;
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
 
   const formik = useFormik({
@@ -25,7 +27,9 @@ const AssetTransfer = (props: AssetTransferProps) => {
       reason: '',
     },
     validationSchema: assetTransferSchema,
-    onSubmit: async () => {},
+    onSubmit: async () => {
+      onOpen();
+    },
   });
 
   useEffect(() => {
@@ -76,6 +80,12 @@ const AssetTransfer = (props: AssetTransferProps) => {
           </Flex>
         </form>
       </FormikProvider>
+      <AssetSuccessModal
+        isOpen={isOpen}
+        onClose={onClose}
+        buttonWidth="193px"
+        successText="Asset Transfer Successful"
+      />
     </Flex>
   );
 };

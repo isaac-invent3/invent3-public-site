@@ -1,0 +1,37 @@
+import React from 'react';
+import GenericSuccessModal from './GenericSuccessModal';
+import Button from '../../UI/Button';
+import { HStack, VStack } from '@chakra-ui/react';
+
+interface AddAssetSuccessModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+const AddAssetSuccessModal = (props: AddAssetSuccessModalProps) => {
+  const { isOpen, onClose } = props;
+  return (
+    <GenericSuccessModal
+      isOpen={isOpen}
+      onClose={onClose}
+      successText="Asset details added successfully"
+    >
+      <VStack spacing="24px" width="full">
+        <HStack spacing="16px" width="full">
+          <Button customStyles={{ width: 'full' }} variant="outline">
+            Add a Child Asset
+          </Button>
+          <Button customStyles={{ width: 'full' }}>Add Another Asset</Button>
+        </HStack>
+        <Button
+          href="/asset-management"
+          variant="secondary"
+          customStyles={{ height: '30px', maxW: 'max-content' }}
+        >
+          Back to Grid
+        </Button>
+      </VStack>
+    </GenericSuccessModal>
+  );
+};
+
+export default AddAssetSuccessModal;

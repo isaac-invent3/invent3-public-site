@@ -110,7 +110,7 @@ function DataTable<Data extends object>({
                       color="primary"
                       pl="10px"
                       pr="16px"
-                      py="17px"
+                      py="16px"
                     >
                       <Flex
                         align="center"
@@ -195,7 +195,7 @@ function DataTable<Data extends object>({
                     <Td
                       key={`checkbox-${row.id}`}
                       borderColor="neutral.300"
-                      py="4px"
+                      py="8px"
                       px="16px"
                       onClick={(e) => e.stopPropagation()}
                     >
@@ -215,7 +215,7 @@ function DataTable<Data extends object>({
                           fontSize="12px"
                           fontWeight={500}
                           lineHeight="14.26px"
-                          py="4px"
+                          py="8px"
                           pl="10px"
                           pr="16px"
                         >

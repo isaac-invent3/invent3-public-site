@@ -7,7 +7,7 @@ export async function POST(request: Request) {
     apiKey: body.apiKey,
   };
 
-  const res = await fetch(`${process.env.API_BASE_URL}/Users/refresh-tokens`, {
+  const res = await fetch(`${process.env.API_BASE_URL}/refresh-tokens`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

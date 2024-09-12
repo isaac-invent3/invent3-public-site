@@ -1,6 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { Asset, AssetStatusType } from '~/lib/interfaces/asset.interfaces';
+import {
+  Asset,
+  AssetFormDetails,
+  AssetStatusType,
+} from '~/lib/interfaces/asset.interfaces';
 
 const initialValue = {
   rowId: 0,
@@ -61,12 +65,49 @@ const initialValue = {
   maintenanceCost: 0,
 };
 
+const initialAssetForm = {
+  images: [],
+  assetName: '',
+  description: '',
+  assetCode: '',
+  brandName: '',
+  modelRef: '',
+  serialNo: '',
+  codePrefix: '',
+  codeSuffix: '',
+  categoryId: '',
+  subCategoryId: '',
+  weightKg: undefined,
+  widthCm: undefined,
+  heightCm: undefined,
+  depthCm: undefined,
+  currentOwner: '',
+  department: '',
+  assignedTo: '',
+  responsibleFor: '',
+  acquisitionDate: '',
+  conditionId: '',
+  initialValue: undefined,
+  warrantyStartDate: '',
+  warrantyEndDate: '',
+  warrantyTerms: '',
+  paymentTerms: '',
+  depreciationStartDate: '',
+  depreciationMethod: '',
+  depreciationRate: undefined,
+  vendorId: '',
+  vendorDetail: '',
+  documents: [],
+};
+
 export interface SliceProps {
   asset: Asset;
+  assetForm: AssetFormDetails;
 }
 
 const initialState: SliceProps = {
   asset: initialValue,
+  assetForm: initialAssetForm,
 };
 
 export const assetSlice = createSlice({
@@ -79,9 +120,27 @@ export const assetSlice = createSlice({
     clearAsset: (state) => {
       state.asset = initialValue;
     },
+    setAssetForm: (state, { payload }: PayloadAction<AssetFormDetails>) => {
+      state.assetForm = payload;
+    },
+    updateAssetForm: (
+      state,
+      { payload }: PayloadAction<Partial<AssetFormDetails>>
+    ) => {
+      state.assetForm = { ...state.assetForm, ...payload };
+    },
+    clearAssetForm: (state) => {
+      state.assetForm = initialAssetForm;
+    },
   },
 });
 
-export const { setAsset, clearAsset } = assetSlice.actions;
+export const {
+  setAsset,
+  clearAsset,
+  setAssetForm,
+  clearAssetForm,
+  updateAssetForm,
+} = assetSlice.actions;
 
 export default assetSlice.reducer;

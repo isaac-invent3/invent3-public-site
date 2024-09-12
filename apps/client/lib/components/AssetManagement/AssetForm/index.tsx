@@ -1,7 +1,7 @@
 'use client';
 
 import { Flex } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import FormStepper from './FormStepper';
 import GeneralStep from './GeneralStep';
 import AcquisitionStep from './AcquisitionStep';
@@ -10,7 +10,6 @@ import { AssetFormDetails } from '~/lib/interfaces/asset.interfaces';
 import SummaryStep from './SummaryStep';
 import SlideTransition from '../../UI/SlideTransition';
 import Header from './Header';
-import { dateFormatter } from '~/lib/utils/Formatters';
 
 const initialValue = {
   images: [],
@@ -53,20 +52,10 @@ interface AssetFormProps {
 }
 const AssetForm = (props: AssetFormProps) => {
   const { type, data } = props;
-  // eslint-disable-next-line no-unused-vars
   const [activeStep, setActiveStep] = useState(0);
-  const [formDetails, setFormDetails] =
-    useState<AssetFormDetails>(initialValue);
-
-  useEffect(() => {
-    if (data) {
-      setFormDetails({
-        ...formDetails,
-        ...data,
-        acquisitionDate: dateFormatter(data.acquisitionDate, 'DD/MM/YYYY'),
-      });
-    }
-  }, [data]);
+  const [formDetails, setFormDetails] = useState<AssetFormDetails>(
+    data ?? initialValue
+  );
 
   return (
     <Flex width="full" direction="column" pb="24px">

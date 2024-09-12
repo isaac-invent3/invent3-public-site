@@ -1,6 +1,6 @@
 import { Flex, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { generalInfoSchema } from '~/lib/schemas/asset.schema';
 import AssetImages from './AssetImages';
 import AssetCategory from './AssetCategory';
@@ -19,30 +19,29 @@ interface GeneralStepProps {
 const GeneralStep = (props: GeneralStepProps) => {
   const { setActiveStep, setFormDetails, formDetails } = props;
 
-  const initialValues = {
-    images: formDetails.images ?? [],
-    assetName: formDetails.assetName ?? '',
-    description: formDetails.description ?? '',
-    assetCode: formDetails.assetCode ?? '',
-    brandName: formDetails.brandName ?? '',
-    modelRef: formDetails.modelRef ?? '',
-    serialNo: formDetails.serialNo ?? '',
-    codePrefix: formDetails.codePrefix ?? '',
-    codeSuffix: formDetails.codeSuffix ?? '',
-    categoryId: formDetails.categoryId ?? '',
-    subCategoryId: formDetails.subCategoryId ?? '',
-    weightKg: formDetails.weightKg ?? undefined,
-    widthCm: formDetails.widthCm ?? undefined,
-    heightCm: formDetails.heightCm ?? undefined,
-    depthCm: formDetails.depthCm ?? undefined,
-    currentOwner: formDetails.currentOwner ?? '',
-    department: formDetails.department ?? '',
-    assignedTo: formDetails.assignedTo ?? '',
-    responsibleFor: formDetails.responsibleFor ?? '',
-  };
-
+  useEffect(() => {}, [formDetails]);
   const formik = useFormik({
-    initialValues,
+    initialValues: {
+      images: formDetails.images ?? [],
+      assetName: formDetails.assetName ?? '',
+      description: formDetails.description ?? '',
+      assetCode: formDetails.assetCode ?? '',
+      brandName: formDetails.brandName ?? '',
+      modelRef: formDetails.modelRef ?? '',
+      serialNo: formDetails.serialNo ?? '',
+      codePrefix: formDetails.codePrefix ?? '',
+      codeSuffix: formDetails.codeSuffix ?? '',
+      categoryId: formDetails.categoryId ?? '',
+      subCategoryId: formDetails.subCategoryId ?? '',
+      weightKg: formDetails.weightKg ?? undefined,
+      widthCm: formDetails.widthCm ?? undefined,
+      heightCm: formDetails.heightCm ?? undefined,
+      depthCm: formDetails.depthCm ?? undefined,
+      currentOwner: formDetails.currentOwner ?? '',
+      department: formDetails.department ?? '',
+      assignedTo: formDetails.assignedTo ?? '',
+      responsibleFor: formDetails.responsibleFor ?? '',
+    },
     validationSchema: generalInfoSchema,
     onSubmit: async (values) => {
       setFormDetails((prev) => ({ ...prev, ...values }));

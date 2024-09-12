@@ -8,7 +8,7 @@ const getHeaders = () => ({
 export const assetApi = createApi({
   reducerPath: 'assetApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['allAsset', 'singleAsset'],
+  tagTypes: ['allAsset', 'singleAsset', 'allAssetCategory'],
   endpoints: (builder) => ({
     getallAsset: builder.query({
       query: (data: any) => ({
@@ -35,6 +35,14 @@ export const assetApi = createApi({
       }),
       invalidatesTags: ['allAsset'],
     }),
+    getAllAssetCategory: builder.query({
+      query: (data: any) => ({
+        url: generateQueryStr(`/AssetCategories?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allAssetCategory'],
+    }),
   }),
 });
 
@@ -42,4 +50,5 @@ export const {
   useCreateAssetMutation,
   useGetAssetByIdQuery,
   useGetallAssetQuery,
+  useGetAllAssetCategoryQuery,
 } = assetApi;

@@ -4,8 +4,14 @@ import SectionInfo from '../SectionInfo';
 import SelectInput from '~/lib/components/UI/Select';
 import { categoryData } from '~/lib/utils/MockData/asset';
 import AddButton from '../AddButton';
+import { useGetAllAssetCategoryQuery } from '~/lib/redux/services/asset.services';
+import { generateOptions } from '~/lib/utils/helperFunctions';
 
 const AssetCategory = () => {
+  const { data: assetCategoryData, isLoading } = useGetAllAssetCategoryQuery(
+    {}
+  );
+
   return (
     <HStack width="full" alignItems="flex-start" spacing="104px">
       <Flex width="full" maxW="118px">
@@ -22,7 +28,12 @@ const AssetCategory = () => {
               <SelectInput
                 name="categoryId"
                 title="Category"
-                options={categoryData}
+                isLoading={isLoading}
+                options={generateOptions(
+                  assetCategoryData?.data?.items,
+                  'categoryName',
+                  'id'
+                )}
                 isSearchable
               />
               <AddButton handleClick={() => {}}>Add New Category</AddButton>

@@ -90,7 +90,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
           justifyContent={{ base: 'center', lg: 'space-between' }}
           alignItems={{ base: 'center', lg: 'flex-start' }}
           height="full"
-          direction={{ base: 'column', md: 'row' }}
+          direction={{ base: 'column', lg: 'row' }}
           gap={{ base: '27px', lg: 'none' }}
         >
           <Flex

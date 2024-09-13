@@ -44,6 +44,7 @@ const SignIn = () => {
   return (
     <AuthLayout>
       <Flex
+        mt={{ base: '51px', lg: '0px' }}
         width="full"
         maxW="404px"
         direction="column"

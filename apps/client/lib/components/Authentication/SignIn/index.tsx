@@ -47,18 +47,22 @@ const SignIn = () => {
         width="full"
         maxW="404px"
         direction="column"
-        pt="71px"
-        px="40px"
-        pb="43px"
+        pt={{ base: '32px', lg: '71px' }}
+        px={{ base: '16px', lg: '40px' }}
+        pb={{ base: '32px', lg: '43px' }}
         bgColor="#0000004D"
-        rounded="10px"
+        rounded={{ base: '8.49px', lg: '10px' }}
       >
-        <VStack alignItems="flex-start" spacing="16px" mb="77px">
+        <VStack
+          alignItems="flex-start"
+          spacing={{ base: '13px', lg: '16px' }}
+          mb={{ base: '64px', lg: '77px' }}
+        >
           <Heading
             as="h2"
             fontWeight={800}
-            fontSize="40px"
-            lineHeight="47.52px"
+            fontSize={{ base: '32px', lg: '40px' }}
+            lineHeight={{ base: '38.02px', lg: '47.52px' }}
             color="neutral.100"
           >
             Sign in
@@ -80,7 +84,11 @@ const SignIn = () => {
         </VStack>
         <FormikProvider value={formik}>
           <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
-            <VStack spacing="16px" width="full" mb="40px">
+            <VStack
+              spacing="16px"
+              width="full"
+              mb={{ base: '34px', lg: '40px' }}
+            >
               <Field
                 as={TextInput}
                 name="username"
@@ -119,7 +127,11 @@ const SignIn = () => {
             </PrimaryButton>
           </form>
         </FormikProvider>
-        <Flex alignItems="center" mt="64px" mb="32px">
+        <Flex
+          alignItems="center"
+          mt={{ base: '54px', lg: '64px' }}
+          mb={{ base: '27px', lg: '32px' }}
+        >
           <Text
             size="lg"
             fontWeight={400}

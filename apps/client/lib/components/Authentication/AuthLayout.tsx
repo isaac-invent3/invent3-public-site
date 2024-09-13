@@ -6,32 +6,80 @@ import React from 'react';
 interface AuthLayoutProps {
   children: React.ReactNode;
 }
+
+const InfoLearnMore = () => {
+  return (
+    <Flex
+      direction={{ base: 'row', md: 'column' }}
+      gap="24px"
+      alignItems={{ base: 'center', md: 'flex-start' }}
+      justifyContent="space-between"
+      width="full"
+    >
+      <Text
+        fontWeight={700}
+        color="white"
+        fontSize={{ base: '12px', md: '18px' }}
+        lineHeight={{ base: '14.26px', md: '21.38px' }}
+        maxW={{ base: '204px', md: '344px' }}
+      >
+        A new way to experience managing your assets and facility using AI
+      </Text>
+      <Link href="#">
+        <Text
+          fontWeight={700}
+          size={{ base: 'base', md: 'md' }}
+          color={{ base: '#98FEFE', md: '#E4FEFE' }}
+        >
+          Learn more
+        </Text>
+      </Link>
+    </Flex>
+  );
+};
 const AuthLayout = ({ children }: AuthLayoutProps) => {
   return (
     <Flex
       position="relative"
       width="full"
-      height="full"
-      bgImage={'./auth-bg.png'}
+      height="100vh"
+      bgImage={{ base: './auth-bg-mobile.png', md: './auth-bg.png' }}
       bgSize="cover"
       justifyContent="center"
+      overflow="hidden"
     >
       <Flex
         width="full"
         maxW="1440px"
         height="full"
-        h="100vh"
-        overflowY="scroll"
+        overflow="auto"
         position="relative"
-        px="100px"
-        pt="78px"
-        pb="29px"
+        px={{ base: '25px', lg: '100px' }}
+        pt={{ base: '24px', lg: '78px' }}
+        pb={{ base: '19px', lg: '29px' }}
         direction="column"
         justifyContent="space-between"
         gap="105px"
+        sx={{
+          scrollbarWidth: '0px',
+          scrollbarColor: 'transparent transparent',
+          '&::-webkit-scrollbar': {
+            width: '0px',
+            height: '0px',
+          },
+          '&::-webkit-scrollbar-thumb': {
+            background: 'transparent',
+          },
+        }}
       >
-        <Flex position="absolute" left="173px" top="0" zIndex={99}>
-          <Flex width="225px" height="70vh" position="absolute">
+        <Flex
+          position="absolute"
+          left="173px"
+          top="0"
+          zIndex={99}
+          display={{ base: 'none', md: 'flex' }}
+        >
+          <Flex width="225px" height="70vh" position="sticky">
             <Image src="/logo-initials.svg" fill alt="logo-initial" />
           </Flex>
         </Flex>
@@ -41,43 +89,53 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
           zIndex={5}
           justifyContent="space-between"
           height="min-content"
+          direction={{ base: 'column', md: 'row' }}
+          gap={{ base: '27px', lg: 'none' }}
+          alignItems={{ base: 'center' }}
         >
-          <Flex direction="column" height="full" justifyContent="space-between">
-            <Flex position="relative" width="122px" height="34px">
-              <Image src="/logo-white.svg" fill alt="Invent3 white logo" />
-            </Flex>
-            <VStack alignItems="flex-start" spacing="24px">
-              <Text
-                fontWeight={700}
-                color="white"
-                fontSize="18px"
-                lineHeight="21.38px"
-                maxW="344px"
-              >
-                A new way to experience managing your assets and facility using
-                AI
-              </Text>
-              <Link href="#">
-                <Text fontWeight={700} size="md" color="secondary.pale.accent">
-                  Learn more
-                </Text>
-              </Link>
-            </VStack>
+          <Flex
+            position="relative"
+            width={{ base: '86.27px', md: '122px' }}
+            height={{ base: '24px', md: '34px' }}
+            alignSelf="flex-start"
+          >
+            <Image src="/logo-white.svg" fill alt="Invent3 white logo" />
           </Flex>
           {children}
         </Flex>
         {/* Footer Starts Here */}
-        <Flex width="full" pr="5px" justifyContent="space-between">
-          <Text color="neutral.700">Copyright (c) 2024</Text>
-          <HStack spacing="40px" color="brand.500">
-            <Link href="#">
-              <Text fontWeight={700}>Terms of use</Text>
-            </Link>
-            <Link href="#">
-              <Text fontWeight={700}>Privacy Policy</Text>
-            </Link>
-          </HStack>
-        </Flex>
+        <VStack width="full" spacing="65px">
+          <Flex width="full" display={{ md: 'none' }}>
+            <InfoLearnMore />
+          </Flex>
+          <Flex
+            width="full"
+            pr="5px"
+            justifyContent="space-between"
+            alignItems="flex-end"
+          >
+            <VStack spacing="105px" alignItems="flex-start" position="relative">
+              <Flex
+                width="344px"
+                maxW="344px"
+                display={{ base: 'none', md: 'flex' }}
+                position="absolute"
+                bottom="115px"
+              >
+                <InfoLearnMore />
+              </Flex>
+              <Text color="neutral.700">Copyright (c) 2024</Text>
+            </VStack>
+            <HStack spacing={{ base: '24px', md: '40px' }} color="brand.500">
+              <Link href="#">
+                <Text fontWeight={700}>Terms of use</Text>
+              </Link>
+              <Link href="#">
+                <Text fontWeight={700}>Privacy Policy</Text>
+              </Link>
+            </HStack>
+          </Flex>
+        </VStack>
         {/* Footer Ends Here */}
       </Flex>
     </Flex>

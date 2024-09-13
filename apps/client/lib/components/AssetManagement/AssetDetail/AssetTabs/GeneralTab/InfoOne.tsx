@@ -8,6 +8,7 @@ const InfoOne = () => {
   const assetData = useAppSelector((state) => state.asset.asset);
   const {
     facilityName,
+    floorName,
     buildingName,
     departmentName,
     roomName,
@@ -27,6 +28,7 @@ const InfoOne = () => {
         [
           facilityName,
           buildingName,
+          floorName,
           departmentName,
           roomName,
           aisleName,

@@ -41,6 +41,12 @@ const GeneralStep = (props: GeneralStepProps) => {
       department: formDetails.department ?? '',
       assignedTo: formDetails.assignedTo ?? '',
       responsibleFor: formDetails.responsibleFor ?? '',
+      facilityId: formDetails.facilityId ?? null,
+      floorId: formDetails.floorId ?? null,
+      departmentId: formDetails.departmentId ?? null,
+      roomId: formDetails.roomId ?? null,
+      aisleId: formDetails.aisleId ?? null,
+      shelfId: formDetails.shelfId ?? null,
     },
     validationSchema: generalInfoSchema,
     onSubmit: async (values) => {
@@ -69,7 +75,10 @@ const GeneralStep = (props: GeneralStepProps) => {
             <AssetCategory />
             <AssetDetail />
             <AssetDimension />
-            <AssetLocation />
+            <AssetLocation
+              errors={formik.errors}
+              setFieldValue={formik.setFieldValue}
+            />
             <AssetOwner />
           </VStack>
           <Flex width="full" mt="16px">

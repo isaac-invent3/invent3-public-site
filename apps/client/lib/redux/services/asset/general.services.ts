@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../baseQueryWithReauth';
+import baseQueryWithReauth from '../../baseQueryWithReauth';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -35,21 +35,6 @@ export const assetApi = createApi({
       }),
       invalidatesTags: ['allAsset'],
     }),
-    getAllAssetCategory: builder.query({
-      query: (data: any) => ({
-        url: generateQueryStr(`/AssetCategories?`, data),
-        method: 'GET',
-        headers: getHeaders(),
-      }),
-      providesTags: ['allAssetCategory'],
-    }),
-    getAllAssetSubCategoryById: builder.query({
-      query: (data: any) => ({
-        url: generateQueryStr(`/AssetSubCategories?`, data),
-        method: 'GET',
-        headers: getHeaders(),
-      }),
-    }),
   }),
 });
 
@@ -57,5 +42,4 @@ export const {
   useCreateAssetMutation,
   useGetAssetByIdQuery,
   useGetallAssetQuery,
-  useGetAllAssetCategoryQuery,
 } = assetApi;

@@ -71,9 +71,12 @@ const FilterDropDown = (props: FilterDropDownProps) => {
           rounded="6px"
           mt="2px"
           position="absolute"
-          zIndex={999}
+          zIndex={99}
           boxShadow="md"
           width={buttonRef?.current?.offsetWidth}
+          height="min-content"
+          maxH="200px"
+          overflow="auto"
         >
           {options.map((option, index) => (
             <HStack key={index} spacing="8px">

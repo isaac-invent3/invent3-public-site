@@ -2,10 +2,13 @@ import { Flex, Grid, GridItem, HStack } from '@chakra-ui/react';
 import React from 'react';
 import SectionInfo from '../SectionInfo';
 import SelectInput from '~/lib/components/UI/Select';
-import { categoryData } from '~/lib/utils/MockData/asset';
 import CustomDatePicker from './DatePicker';
+import { useGetAllAssetConditionQuery } from '~/lib/redux/services/asset/condition.services';
+import { generateOptions } from '~/lib/utils/helperFunctions';
 
 const AcquisitionDateConditon = () => {
+  const { data: conditionData, isLoading: conditionLoading } =
+    useGetAllAssetConditionQuery({ pageSize: 25 });
   return (
     <HStack width="full" alignItems="flex-start" spacing="78px">
       <Flex width="full" maxW="144px">
@@ -31,7 +34,12 @@ const AcquisitionDateConditon = () => {
             <SelectInput
               name="conditionId"
               title="Select an option"
-              options={categoryData}
+              options={generateOptions(
+                conditionData?.data?.items,
+                'conditionName',
+                'conditionId'
+              )}
+              isLoading={conditionLoading}
               isSearchable
             />
           </HStack>

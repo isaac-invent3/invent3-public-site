@@ -16,7 +16,7 @@ import ListView from './ListView';
 import Filters from './Filters';
 import FilterDisplay from './Filters/FilterDisplay';
 import { FilterInput } from '~/lib/interfaces/asset.interfaces';
-import { useGetallAssetQuery } from '~/lib/redux/services/asset.services';
+import { useGetallAssetQuery } from '~/lib/redux/services/asset/general.services';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useSearchApiMutation } from '~/lib/redux/services/utility.services';
 import { SearchResponse } from '~/lib/interfaces/general.interfaces';
@@ -121,7 +121,7 @@ const AssetManagement = () => {
                 data={
                   search && searchData
                     ? searchData.items
-                    : assetData?.data?.items ?? []
+                    : (assetData?.data?.items ?? [])
                 }
                 isLoading={isLoading}
                 isFetching={isFetching || searchLoading}

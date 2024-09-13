@@ -10,10 +10,15 @@ import {
 } from 'redux-persist';
 
 import storage from './customStorage';
-import { assetApi } from './services/asset.services';
+import { assetApi } from './services/asset/general.services';
 import { authApi } from './services/auth.services';
 import assetSlice from './slices/assetSlice';
 import { utilityApi } from './services/utility.services';
+import { locationApi } from './services/asset/location.services';
+import { categoryApi } from './services/asset/category.services';
+import { conditionApi } from './services/asset/condition.services';
+import { userApi } from './services/user.services';
+import { depreciationApi } from './services/asset/depreciation.services';
 
 export const persistConfig = {
   key: 'root',
@@ -24,7 +29,12 @@ export const persistConfig = {
 const rootReducer = combineReducers({
   [authApi.reducerPath]: authApi.reducer,
   [assetApi.reducerPath]: assetApi.reducer,
+  [categoryApi.reducerPath]: categoryApi.reducer,
+  [conditionApi.reducerPath]: conditionApi.reducer,
+  [depreciationApi.reducerPath]: depreciationApi.reducer,
+  [locationApi.reducerPath]: locationApi.reducer,
   [utilityApi.reducerPath]: utilityApi.reducer,
+  [userApi.reducerPath]: userApi.reducer,
   asset: assetSlice,
 });
 
@@ -42,7 +52,12 @@ export const makeStore = () => {
       }).concat([
         authApi.middleware,
         assetApi.middleware,
+        depreciationApi.middleware,
+        locationApi.middleware,
+        categoryApi.middleware,
+        conditionApi.middleware,
         utilityApi.middleware,
+        userApi.middleware,
       ]),
   });
 };

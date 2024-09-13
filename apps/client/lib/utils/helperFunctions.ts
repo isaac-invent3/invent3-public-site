@@ -4,7 +4,7 @@ interface IOption {
 
 export function generateOptions(
   options: IOption[] | undefined,
-  labelKey: string,
+  labelKey: string | string[],
   valueKey: string
 ) {
   const selectOptions = [];
@@ -12,9 +12,14 @@ export function generateOptions(
   if (options?.length) {
     for (let i = 0; i < options.length; i++) {
       if (options[i]) {
+        // Handle labelKey being a string or array of strings
+        const label = Array.isArray(labelKey)
+          ? labelKey.map((key) => options[i]?.[key] ?? '').join(' ') // Concatenate labels with spaces
+          : (options[i]?.[labelKey] ?? '');
+
         selectOptions.push({
-          label: options?.[i]?.[labelKey] ?? '',
-          value: options?.[i]?.[valueKey] ?? '',
+          label: label,
+          value: options[i]?.[valueKey] ?? '',
         });
       }
     }

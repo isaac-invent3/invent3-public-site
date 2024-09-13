@@ -18,7 +18,7 @@ const FilterDisplay = (props: FilterDisplayProps) => {
       in={isOpen}
       transition={{ enter: { duration: 0.7 } }}
     >
-      <Flex mt="16px" width="full">
+      <Flex mt="16px" width="full" gap="56px">
         {activeFilter === 'bulk' && <BulkActions />}
         {activeFilter === 'general' && (
           <GeneralFilter

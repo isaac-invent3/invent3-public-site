@@ -134,11 +134,28 @@ interface AssetFormDetails {
   vendorId: string;
   vendorDetail: string;
   documents: (string | File)[];
+  facilityId: number | null;
+  buildingId: number | null;
+  floorId: number | null;
+  departmentId: number | null;
+  roomId: number | null;
+  aisleId: number | null;
+  shelfId: number | null;
 }
 
 interface FilterInput {
   category: (string | number)[];
   location: (string | number)[];
+}
+
+interface FormLocation {
+  facility: string;
+  building: string;
+  floor: string;
+  department: string;
+  room: string;
+  aisle: string;
+  shelf: string;
 }
 
 export type {
@@ -147,4 +164,5 @@ export type {
   AssetFormDetails,
   FilterInput,
   AssetStatusType,
+  FormLocation,
 };

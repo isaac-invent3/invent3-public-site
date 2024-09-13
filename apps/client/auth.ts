@@ -159,6 +159,7 @@ export const config = {
           sessionId: token.sessionId as number,
           apiKey: token.apiKey as string,
           accessToken: token.accessToken as string,
+          refreshToken: token.refreshToken as string,
           accessTokenExpires: token.accessTokenExpires as number,
           role: token.role as string,
         },

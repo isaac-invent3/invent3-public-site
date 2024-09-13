@@ -35,6 +35,8 @@ interface SelectInputProps {
   width?: string | { [name: string]: string };
   isLoading?: boolean;
   showAsRelative?: boolean;
+  // eslint-disable-next-line no-unused-vars
+  handleSelect?: (options: Option) => void;
   variant?: 'primary' | 'secondary';
   isMulti?: boolean;
 }
@@ -47,6 +49,7 @@ function SelectInput({
   isLoading,
   variant = 'primary',
   isMulti = false,
+  handleSelect,
 }: SelectInputProps) {
   const [field, meta, helpers] = useField(name);
   const SelectComponent = isMulti ? CreatableSelect : Select;
@@ -181,6 +184,7 @@ function SelectInput({
                   .join(',');
                 helpers.setValue(valuesString);
               } else {
+                handleSelect && handleSelect(selectedOptions as Option);
                 helpers.setValue((selectedOptions as Option).value);
               }
             }

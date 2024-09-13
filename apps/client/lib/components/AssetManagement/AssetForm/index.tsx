@@ -44,6 +44,13 @@ const initialValue = {
   vendorId: '',
   vendorDetail: '',
   documents: [],
+  facilityId: null,
+  buildingId: null,
+  floorId: null,
+  departmentId: null,
+  roomId: null,
+  aisleId: null,
+  shelfId: null,
 };
 
 interface AssetFormProps {

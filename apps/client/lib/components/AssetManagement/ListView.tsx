@@ -101,7 +101,6 @@ const ListView = (props: ListViewProps) => {
       columnHelper.accessor('currentStatus', {
         cell: (info) => Status(info.getValue()),
         header: 'Status',
-        enableSorting: false,
         meta: {
           centerHeader: true,
         },

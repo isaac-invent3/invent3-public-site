@@ -6,6 +6,7 @@ interface IGenericModal {
   children: React.ReactNode;
   contentStyle?: { [name: string]: unknown };
   customStyle?: { [name: string]: unknown };
+  mainModalStyle?: { [name: string]: unknown };
 }
 function GenericModal({
   isOpen,
@@ -13,6 +14,7 @@ function GenericModal({
   children,
   contentStyle,
   customStyle,
+  mainModalStyle,
 }: IGenericModal) {
   return (
     <Modal
@@ -21,6 +23,7 @@ function GenericModal({
       closeOnOverlayClick
       isCentered
       scrollBehavior="inside"
+      {...mainModalStyle}
     >
       <ModalOverlay />
 

@@ -1,6 +1,16 @@
 import * as Yup from 'yup';
 
-const generalInfoSchema = Yup.object().shape({
+const locationSchema = Yup.object().shape({
+  facilityId: Yup.string().required('Facility is Required'),
+  buildingId: Yup.string().nullable(),
+  floorId: Yup.string().nullable(),
+  departmentId: Yup.string().nullable(),
+  roomId: Yup.string().nullable(),
+  aisleId: Yup.string().nullable(),
+  shelfId: Yup.string().nullable(),
+});
+
+const generalInfoSchema = locationSchema.shape({
   assetName: Yup.string().required('Name is required'),
   description: Yup.string().required('Description is Required'),
   images: Yup.array()
@@ -54,16 +64,6 @@ const assetTransferSchema = Yup.object().shape({
   transferDate: Yup.string().required('Transfer Date is Required'),
   condition: Yup.string().required('Condition is Required'),
   reason: Yup.string(),
-});
-
-const locationSchema = Yup.object().shape({
-  facilityId: Yup.string().required('Facility is Required'),
-  buildingId: Yup.string().required('Building is Required'),
-  floorId: Yup.string().required('Floor is is Required'),
-  departmentId: Yup.string().required('Department is is Required'),
-  roomId: Yup.string().required('Room is is Required'),
-  aisleId: Yup.string().required('Aisle is is Required'),
-  shelfId: Yup.string().required('Shelf is is Required'),
 });
 
 export {

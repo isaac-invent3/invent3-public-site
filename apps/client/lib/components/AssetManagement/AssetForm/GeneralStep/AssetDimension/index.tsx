@@ -38,7 +38,7 @@ const AssetDimension = () => {
             name="weightKg"
             type="number"
             label="Weight"
-            customStyle={{ pr: '70px' }}
+            customStyle={{ pr: '53px' }}
           />
           <DimensionDropDown
             options={sampleDimensions}
@@ -55,7 +55,7 @@ const AssetDimension = () => {
             name="widthCm"
             type="number"
             label="Width"
-            customStyle={{ pr: '70px' }}
+            customStyle={{ pr: '53px' }}
           />
           <DimensionDropDown
             options={sampleDimensions}
@@ -72,7 +72,7 @@ const AssetDimension = () => {
             name="heightCm"
             type="number"
             label="Height"
-            customStyle={{ pr: '70px' }}
+            customStyle={{ pr: '53px' }}
           />
           <DimensionDropDown
             options={sampleDimensions}
@@ -89,7 +89,7 @@ const AssetDimension = () => {
             name="depthCm"
             type="number"
             label="Depth"
-            customStyle={{ pr: '70px' }}
+            customStyle={{ pr: '53px' }}
           />
           <DimensionDropDown
             options={sampleDimensions}

@@ -4,7 +4,7 @@ import SectionInfo from '../SectionInfo';
 import SelectInput from '~/lib/components/UI/Select';
 import { categoryData } from '~/lib/utils/MockData/asset';
 import AddButton from '../AddButton';
-import { useGetAllAssetCategoryQuery } from '~/lib/redux/services/asset.services';
+import { useGetAllAssetCategoryQuery } from '~/lib/redux/services/asset/category.services';
 import { generateOptions } from '~/lib/utils/helperFunctions';
 
 const AssetCategory = () => {
@@ -32,7 +32,7 @@ const AssetCategory = () => {
                 options={generateOptions(
                   assetCategoryData?.data?.items,
                   'categoryName',
-                  'id'
+                  'categoryId'
                 )}
                 isSearchable
               />

@@ -79,7 +79,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
           zIndex={99}
           display={{ base: 'none', md: 'flex' }}
         >
-          <Flex width="225px" height="70vh" position="sticky">
+          <Flex width="225px" height="100vh" position="fixed" top="-30%">
             <Image src="/logo-initials.svg" fill alt="logo-initial" />
           </Flex>
         </Flex>
@@ -87,14 +87,15 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
           width="full"
           position="relative"
           zIndex={5}
-          justifyContent="space-between"
-          height="min-content"
+          justifyContent={{ base: 'center', lg: 'space-between' }}
+          alignItems={{ base: 'center', lg: 'flex-start' }}
+          height="full"
           direction={{ base: 'column', md: 'row' }}
           gap={{ base: '27px', lg: 'none' }}
-          alignItems={{ base: 'center' }}
         >
           <Flex
-            position="relative"
+            top={0}
+            position={{ base: 'absolute', lg: 'relative' }}
             width={{ base: '86.27px', md: '122px' }}
             height={{ base: '24px', md: '34px' }}
             alignSelf="flex-start"

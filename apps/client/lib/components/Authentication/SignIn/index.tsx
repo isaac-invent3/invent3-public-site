@@ -70,9 +70,9 @@ const SignIn = () => {
           </Heading>
           <Text
             color="neutral.300"
-            fontSize="15px"
-            fontWeight={700}
-            lineHeight="17.82px"
+            fontSize={{ base: '14px', lg: '15px' }}
+            fontWeight={500}
+            lineHeight={{ base: '16.63px', lg: '17.82px' }}
           >
             Have no account?
             <Link href="#">

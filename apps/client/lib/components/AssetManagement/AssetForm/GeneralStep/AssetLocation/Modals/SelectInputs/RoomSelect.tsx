@@ -1,80 +1,37 @@
-import React, { useEffect, useState } from 'react';
-import SelectInput from '~/lib/components/UI/Select';
-import useCustomMutation from '~/lib/hooks/mutation.hook';
+import React, { useState } from 'react';
+import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import {
   useGetAllRoomsQuery,
   useSearchRoomsMutation,
 } from '~/lib/redux/services/asset/location.services';
-import { generateOptions } from '~/lib/utils/helperFunctions';
-import { Operators } from '~/lib/utils/operators';
 
-interface BuildingSelectProps {
+interface RoomSelectProps {
   // eslint-disable-next-line no-unused-vars
   handleSelect?: (options: Option) => void;
 }
 
-const RoomSelect = (props: BuildingSelectProps) => {
+const RoomSelect = (props: RoomSelectProps) => {
   const { handleSelect } = props;
   const [searchRoom] = useSearchRoomsMutation({});
-  const { handleSubmit } = useCustomMutation();
 
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading } = useGetAllRoomsQuery({
     pageSize: 25,
     pageNumber,
   });
-  const [options, setOptions] = useState<Option[]>([]);
-
-  const handlePagination = () => {
-    if (data?.data && data?.data?.totalPages > pageNumber) {
-      setPageNumber((prev) => prev + 1);
-    }
-  };
-
-  const handleSearch = async (inputValue: string): Promise<Option[]> => {
-    const searchCriterion = {
-      criterion: [
-        {
-          columnName: 'roomName',
-          columnValue: inputValue,
-          operation: Operators.Contains,
-        },
-      ],
-      pageNumber: 1,
-      pageSize: 25,
-    };
-    const response = await handleSubmit(searchRoom, searchCriterion, '');
-    const formattedOptions = generateOptions(
-      response?.data?.data.items,
-      'roomName',
-      'roomId'
-    );
-    return formattedOptions;
-  };
-
-  useEffect(() => {
-    if (data?.data) {
-      const formattedOptions = generateOptions(
-        data?.data?.items,
-        'roomName',
-        'roomId'
-      );
-      setOptions((prev) => [...prev, ...formattedOptions]);
-    }
-  }, [data]);
-
   return (
-    <SelectInput
-      name="roomId"
-      title="Room"
-      options={options}
-      handleSelect={(option) => handleSelect && handleSelect(option)}
+    <GenericAsyncSelect
+      selectName="roomId"
+      selectTitle="Room"
+      data={data}
+      labelKey="roomName"
+      valueKey="roomId"
+      mutationFn={searchRoom}
       isLoading={isLoading}
-      callBackFunction={(inputValue: string) => handleSearch(inputValue)}
-      isAsync
-      handleOnMenuScrollToBottom={handlePagination}
-      isSearchable
+      pageNumber={pageNumber}
+      setPageNumber={setPageNumber}
+      handleSelect={handleSelect}
     />
   );
 };

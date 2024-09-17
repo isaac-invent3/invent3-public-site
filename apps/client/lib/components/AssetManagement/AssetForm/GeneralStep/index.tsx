@@ -3,7 +3,6 @@ import { FormikProvider, useFormik } from 'formik';
 import React from 'react';
 import { generalInfoSchema } from '~/lib/schemas/asset/main.schema';
 import AssetImages from './AssetImages';
-import AssetCategory from './AssetCategory';
 import AssetDetail from './AssetDetails';
 import AssetDimension from './AssetDimension';
 import AssetOwner from './AssetOwner';
@@ -11,6 +10,7 @@ import AssetNameCodeDescription from './AssetNameCodeDescription';
 import FormActionButtons from '../FormActionButtons';
 import { AssetFormDetails } from '~/lib/interfaces/asset.interfaces';
 import AssetLocation from './AssetLocation';
+import AssetCategory from './AssetCategory';
 
 interface GeneralStepProps {
   setFormDetails: React.Dispatch<React.SetStateAction<AssetFormDetails>>;

@@ -1,11 +1,11 @@
 import { Flex, Grid, GridItem, HStack, VStack } from '@chakra-ui/react';
 import React from 'react';
-import SectionInfo from '../SectionInfo';
 import SelectInput from '~/lib/components/UI/Select';
 import { categoryData } from '~/lib/utils/MockData/asset';
-import AddButton from '../AddButton';
 import { useGetAllAssetCategoryQuery } from '~/lib/redux/services/asset/category.services';
 import { generateOptions } from '~/lib/utils/helperFunctions';
+import SectionInfo from '../../SectionInfo';
+import AddButton from '../../AddButton';
 
 const AssetCategory = () => {
   const { data: assetCategoryData, isLoading } = useGetAllAssetCategoryQuery(

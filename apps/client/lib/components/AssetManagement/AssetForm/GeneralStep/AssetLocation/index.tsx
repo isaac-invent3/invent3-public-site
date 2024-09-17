@@ -11,7 +11,7 @@ import {
 import SectionInfo from '../../SectionInfo';
 import AddButton from '../../AddButton';
 import LocationModal from './Modals/LocationModal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   AssetFormDetails,
   FormLocation,
@@ -39,6 +39,10 @@ const AssetLocation = (props: AssetLocationProps) => {
     aisle: '',
     shelf: '',
   });
+
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
   return (
     <HStack
       width="full"

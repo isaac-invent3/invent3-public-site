@@ -8,10 +8,10 @@ import {
 } from '@chakra-ui/react';
 import { useField } from 'formik';
 import Select, { components } from 'react-select';
-import CreatableSelect from 'react-select/creatable';
+import AsyncSelect from 'react-select/async';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { ChevronDownIcon, InfoIcon } from '../CustomIcons';
-import { useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 const DropdownIndicator = (props: any) => {
   return (
@@ -37,8 +37,11 @@ interface SelectInputProps {
   showAsRelative?: boolean;
   // eslint-disable-next-line no-unused-vars
   handleSelect?: (options: Option) => void;
+  handleOnMenuScrollToBottom?: () => void;
+  // eslint-disable-next-line no-unused-vars
+  callBackFunction?: (inputValue: string) => Promise<Option[]>;
   variant?: 'primary' | 'secondary';
-  isMulti?: boolean;
+  isAsync?: boolean;
 }
 function SelectInput({
   name,
@@ -48,17 +51,45 @@ function SelectInput({
   width = 'full',
   isLoading,
   variant = 'primary',
-  isMulti = false,
+  isAsync = false,
   handleSelect,
+  callBackFunction,
+  handleOnMenuScrollToBottom,
 }: SelectInputProps) {
   const [field, meta, helpers] = useField(name);
-  const SelectComponent = isMulti ? CreatableSelect : Select;
+  const SelectComponent = isAsync ? AsyncSelect : Select;
   const [isFocused, setIsFocused] = useState(false);
   const inputValue = meta.value;
   const handleFocus = () => setIsFocused(true);
   const handleBlur = () => {
     if (!inputValue) setIsFocused(false);
   };
+
+  // Debounce ref
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Debounce the promiseOptions function
+  const promiseOptions = useCallback(
+    (inputValue: string) => {
+      return new Promise<Option[]>((resolve) => {
+        if (debounceRef.current) {
+          clearTimeout(debounceRef.current);
+        }
+
+        debounceRef.current = setTimeout(async () => {
+          if (callBackFunction) {
+            const options = await callBackFunction(inputValue);
+            console.log({ newOptions: options });
+            resolve(options);
+          } else {
+            resolve([]);
+          }
+          debounceRef.current = null;
+        }, 2000); // Delay of 2000ms
+      });
+    },
+    [callBackFunction]
+  );
 
   return (
     <Box width={width} position="relative" height="full">
@@ -102,7 +133,9 @@ function SelectInput({
           isSearchable={isSearchable}
           options={options}
           isLoading={isLoading || false}
-          isMulti={isMulti}
+          defaultOptions={options}
+          loadOptions={promiseOptions}
+          onMenuScrollToBottom={handleOnMenuScrollToBottom}
           onFocus={handleFocus}
           onBlur={handleBlur}
           styles={{
@@ -178,15 +211,8 @@ function SelectInput({
           value={options.find((option) => option.value === meta.value)}
           onChange={(selectedOptions) => {
             if (selectedOptions) {
-              if (isMulti) {
-                const valuesString = (selectedOptions as Option[])
-                  .map((option) => option.label)
-                  .join(',');
-                helpers.setValue(valuesString);
-              } else {
-                handleSelect && handleSelect(selectedOptions as Option);
-                helpers.setValue((selectedOptions as Option).value);
-              }
+              handleSelect && handleSelect(selectedOptions as Option);
+              helpers.setValue((selectedOptions as Option).value);
             }
           }}
           components={{ DropdownIndicator }}

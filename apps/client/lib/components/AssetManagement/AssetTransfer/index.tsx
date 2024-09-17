@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import Header from './Header';
 import { Asset } from '~/lib/interfaces/asset.interfaces';
 import { FormikProvider, useFormik } from 'formik';
-import { assetTransferSchema } from '~/lib/schemas/asset.schema';
+import { assetTransferSchema } from '~/lib/schemas/asset/main.schema';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { clearAsset, setAsset } from '~/lib/redux/slices/assetSlice';
 import SectionOne from './SectionOne';

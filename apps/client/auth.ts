@@ -93,7 +93,7 @@ export const config = {
         }
 
         if (res.ok && user) {
-          return user.data;
+          return { ...user.data, username: credentials.username };
         }
 
         return null;
@@ -120,6 +120,7 @@ export const config = {
           token.id = decodedAccessToken.UserId;
           token.name = decodedAccessToken['nameid'].join(' ');
           token.email = decodedAccessToken['email'];
+          token.username = user.username;
           token.accessToken = user.accessToken;
           token.refreshToken = user.refreshToken;
           token.sessionId = user.sessionId;
@@ -156,6 +157,7 @@ export const config = {
           ...session.user,
           id: token.id as string,
           email: token.email as string,
+          username: token.username as string,
           sessionId: token.sessionId as number,
           apiKey: token.apiKey as string,
           accessToken: token.accessToken as string,

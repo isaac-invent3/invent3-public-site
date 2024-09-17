@@ -35,6 +35,14 @@ export const locationApi = createApi({
       }),
       invalidatesTags: ['allFacilities'],
     }),
+    searchFacilities: builder.mutation({
+      query: (body: any) => ({
+        url: `/Facilities/Search`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
     getAllBuildings: builder.query({
       query: (data: any) => ({
         url: generateQueryStr(`/Buildings?`, data),
@@ -51,6 +59,14 @@ export const locationApi = createApi({
         body,
       }),
       invalidatesTags: ['allBuildings'],
+    }),
+    searchBuilding: builder.mutation({
+      query: (body: any) => ({
+        url: `/Buildings/Search`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
     }),
     getAllDepartments: builder.query({
       query: (data: any) => ({
@@ -69,6 +85,14 @@ export const locationApi = createApi({
       }),
       invalidatesTags: ['allDepartments'],
     }),
+    searchDepartments: builder.mutation({
+      query: (body: any) => ({
+        url: `/Departments/Search`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
     getAllFloors: builder.query({
       query: (data: any) => ({
         url: generateQueryStr(`/Floors?`, data),
@@ -85,6 +109,14 @@ export const locationApi = createApi({
         body,
       }),
       invalidatesTags: ['allFloors'],
+    }),
+    searchFloors: builder.mutation({
+      query: (body: any) => ({
+        url: `/Floors/Search`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
     }),
     getAllRooms: builder.query({
       query: (data: any) => ({
@@ -103,6 +135,14 @@ export const locationApi = createApi({
       }),
       invalidatesTags: ['allRooms'],
     }),
+    searchRooms: builder.mutation({
+      query: (body: any) => ({
+        url: `/Rooms/Search`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
     getAllAisles: builder.query({
       query: (data: any) => ({
         url: generateQueryStr(`/Aisles?`, data),
@@ -120,6 +160,14 @@ export const locationApi = createApi({
       }),
       invalidatesTags: ['allAisles'],
     }),
+    searchAisle: builder.mutation({
+      query: (body: any) => ({
+        url: `/Aisles/Search`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
     getAllShelves: builder.query({
       query: (data: any) => ({
         url: generateQueryStr(`/Shelves?`, data),
@@ -136,6 +184,14 @@ export const locationApi = createApi({
         body,
       }),
       invalidatesTags: ['allShelves'],
+    }),
+    searchShelf: builder.mutation({
+      query: (body: any) => ({
+        url: `/Shelves/Search`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
     }),
   }),
 });
@@ -155,4 +211,11 @@ export const {
   useGetAllFloorsQuery,
   useGetAllRoomsQuery,
   useGetAllShelvesQuery,
+  useSearchBuildingMutation,
+  useSearchAisleMutation,
+  useSearchDepartmentsMutation,
+  useSearchFacilitiesMutation,
+  useSearchFloorsMutation,
+  useSearchRoomsMutation,
+  useSearchShelfMutation,
 } = locationApi;

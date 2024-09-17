@@ -1,0 +1,31 @@
+/* eslint-disable no-unused-vars */
+import { useDisclosure, VStack } from '@chakra-ui/react';
+import React from 'react';
+import AddButton from '../../../../AddButton';
+import { Option } from '~/lib/interfaces/general.interfaces';
+import { FormLocation } from '~/lib/interfaces/asset.interfaces';
+import DepartmentModal from '../DepartmentModal';
+import DepartmentSelect from '../SelectInputs/DepartmentSelect';
+
+interface DepartmentProps {
+  handleReadableLocation: (option: Option, key: keyof FormLocation) => void;
+}
+const Department = (props: DepartmentProps) => {
+  const { handleReadableLocation } = props;
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  return (
+    <>
+      <VStack alignItems="flex-end" width="full">
+        <DepartmentSelect
+          handleSelect={(option) =>
+            handleReadableLocation(option, 'department')
+          }
+        />
+        <AddButton handleClick={onOpen}>Add New Department</AddButton>
+      </VStack>
+      <DepartmentModal isOpen={isOpen} onClose={onClose} />
+    </>
+  );
+};
+
+export default Department;

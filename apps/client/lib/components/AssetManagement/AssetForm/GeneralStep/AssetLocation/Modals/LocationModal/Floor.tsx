@@ -1,0 +1,29 @@
+/* eslint-disable no-unused-vars */
+import { useDisclosure, VStack } from '@chakra-ui/react';
+import React from 'react';
+import AddButton from '../../../../AddButton';
+import { Option } from '~/lib/interfaces/general.interfaces';
+import { FormLocation } from '~/lib/interfaces/asset.interfaces';
+import FloorModal from '../FloorModal';
+import FloorSelect from '../SelectInputs/FloorSelect';
+
+interface FloorProps {
+  handleReadableLocation: (option: Option, key: keyof FormLocation) => void;
+}
+const Floor = (props: FloorProps) => {
+  const { handleReadableLocation } = props;
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  return (
+    <>
+      <VStack alignItems="flex-end" width="full">
+        <FloorSelect
+          handleSelect={(option) => handleReadableLocation(option, 'floor')}
+        />
+        <AddButton handleClick={onOpen}>Add New Floor</AddButton>
+      </VStack>
+      <FloorModal isOpen={isOpen} onClose={onClose} />
+    </>
+  );
+};
+
+export default Floor;

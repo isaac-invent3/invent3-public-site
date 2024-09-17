@@ -1,7 +1,7 @@
 import { Flex, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 import React from 'react';
-import { documentSchema } from '~/lib/schemas/asset.schema';
+import { documentSchema } from '~/lib/schemas/asset/main.schema';
 import FormActionButtons from '../FormActionButtons';
 import AddDocument from './AddDocument';
 import { AssetFormDetails } from '~/lib/interfaces/asset.interfaces';

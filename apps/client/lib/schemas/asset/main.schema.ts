@@ -1,14 +1,5 @@
 import * as Yup from 'yup';
-
-const locationSchema = Yup.object().shape({
-  facilityId: Yup.string().required('Facility is Required'),
-  buildingId: Yup.string().nullable(),
-  floorId: Yup.string().nullable(),
-  departmentId: Yup.string().nullable(),
-  roomId: Yup.string().nullable(),
-  aisleId: Yup.string().nullable(),
-  shelfId: Yup.string().nullable(),
-});
+import { locationSchema } from './location.schema';
 
 const generalInfoSchema = locationSchema.shape({
   assetName: Yup.string().required('Name is required'),

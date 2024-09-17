@@ -18,11 +18,44 @@ export const categoryApi = createApi({
       }),
       providesTags: ['allAssetCategory'],
     }),
-    getAllAssetSubCategoryById: builder.query({
-      query: ({ id, ...data }: any) => ({
-        url: generateQueryStr(`/AssetSubCategories${id}?`, data),
+    createCategory: builder.mutation({
+      query: (body: any) => ({
+        url: `/AssetCategories`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allAssetCategory'],
+    }),
+    searchCategories: builder.mutation({
+      query: (body: any) => ({
+        url: `/AssetCategories/Search`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
+    getAllAssetSubCategory: builder.query({
+      query: (data: any) => ({
+        url: generateQueryStr(`/AssetSubCategories`, data),
         method: 'GET',
         headers: getHeaders(),
+      }),
+    }),
+    createSubCategory: builder.mutation({
+      query: (body: any) => ({
+        url: `/AssetSubCategories`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
+    searchSubCategory: builder.mutation({
+      query: (body: any) => ({
+        url: `/AssetSubCategories/Search`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
       }),
     }),
   }),
@@ -30,5 +63,9 @@ export const categoryApi = createApi({
 
 export const {
   useGetAllAssetCategoryQuery,
-  useGetAllAssetSubCategoryByIdQuery,
+  useCreateCategoryMutation,
+  useCreateSubCategoryMutation,
+  useGetAllAssetSubCategoryQuery,
+  useSearchCategoriesMutation,
+  useSearchSubCategoryMutation,
 } = categoryApi;

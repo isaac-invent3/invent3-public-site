@@ -38,7 +38,7 @@ const AssetCategory = () => {
       criterion: [
         {
           columnName: 'categoryId',
-          columnValue: selectedCategory,
+          columnValue: selectedCategory?.toString(),
           operation: Operators.Equals,
         },
       ],

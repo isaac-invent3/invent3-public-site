@@ -3,8 +3,8 @@
 import { Skeleton } from '@chakra-ui/react';
 import { notFound } from 'next/navigation';
 
-import { useGetAssetByIdQuery } from '~/lib/redux/services/asset.services';
 import AssetForm from '~/lib/components/AssetManagement/AssetForm';
+import { useGetAssetByIdQuery } from '~/lib/redux/services/asset/general.services';
 
 export default function Page({ params }: { params: { id: string } }) {
   const { data, isLoading } = useGetAssetByIdQuery(params.id);

@@ -12,7 +12,7 @@ export const assetApi = createApi({
   endpoints: (builder) => ({
     getallAsset: builder.query({
       query: (data: any) => ({
-        url: generateQueryStr(`/assets?`, data),
+        url: generateQueryStr(`/Assets?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -20,15 +20,38 @@ export const assetApi = createApi({
     }),
     getAssetById: builder.query({
       query: (id: any) => ({
-        url: `/assets/${id}`,
+        url: `/Assets/${id}`,
         method: 'GET',
         headers: getHeaders(),
       }),
       providesTags: ['singleAsset'],
     }),
+    getAcquisitionInfoByAssetId: builder.query({
+      query: (id: any) => ({
+        url: `/Assets/GetAcquisitionInfo/${id}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    GetAssetComponentInfoByAssetGuid: builder.query({
+      query: ({ id }) => ({
+        url: `/GetAssetComponentInfo/${id}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
     createAsset: builder.mutation({
       query: (body: any) => ({
-        url: `/assets/create`,
+        url: `/Invent3Pro/Assets/Create`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allAsset'],
+    }),
+    updateAsset: builder.mutation({
+      query: (body: any) => ({
+        url: `/Invent3Pro/Assets/Update`,
         method: 'POST',
         headers: getHeaders(),
         body,
@@ -40,6 +63,9 @@ export const assetApi = createApi({
 
 export const {
   useCreateAssetMutation,
+  useUpdateAssetMutation,
   useGetAssetByIdQuery,
   useGetallAssetQuery,
+  useGetAcquisitionInfoByAssetIdQuery,
+  useGetAssetComponentInfoByAssetGuidQuery,
 } = assetApi;

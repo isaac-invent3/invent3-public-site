@@ -5,8 +5,18 @@ const generalInfoSchema = locationSchema.shape({
   assetName: Yup.string().required('Name is required'),
   description: Yup.string().required('Description is Required'),
   images: Yup.array()
-    .required('Images is required')
-    .min(1, 'Images must contain at least one item'),
+    .of(
+      Yup.object().shape({
+        imageName: Yup.string().required(),
+        base64PhotoImage: Yup.string().required(),
+        isPrimaryImage: Yup.boolean().required(),
+      })
+    )
+    .required('Images are required')
+    .min(1, 'Images must contain at least one item')
+    .test('has-primary', 'One image must be set as primary', (images) =>
+      images.some((img) => img.isPrimaryImage)
+    ),
   codePrefix: Yup.string().required('Code Prefix is Required'),
   codeSuffix: Yup.string().required('Code Suffix is Required'),
   assetCode: Yup.string().required('Asset Code is Required'),

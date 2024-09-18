@@ -18,11 +18,19 @@ const AssetName = (name: string) => {
 
 const Status = (status: AssetStatusType) => {
   return (
-    <Flex width="full" justifyContent="flex-end" gap="14px" alignItems="center">
+    <Flex
+      width="full"
+      justifyContent="flex-start"
+      gap="14px"
+      alignItems="center"
+    >
       <AssetStatus status={status} />
-      <Icon as={ThreeVerticalDotsIcon} boxSize="14px" color="neutral.700" />
     </Flex>
   );
+};
+
+const Dots = () => {
+  return <Icon as={ThreeVerticalDotsIcon} boxSize="14px" color="neutral.700" />;
 };
 
 interface ListViewProps {
@@ -67,7 +75,7 @@ const ListView = (props: ListViewProps) => {
   const columns = useMemo(
     () => [
       columnHelper.accessor('assetId', {
-        cell: (info) => info.getValue(),
+        cell: (info) => info.getValue() ?? 'N/A',
         header: '#',
         enableSorting: false,
       }),
@@ -76,34 +84,160 @@ const ListView = (props: ListViewProps) => {
         header: 'Asset Name',
         enableSorting: false,
       }),
-      columnHelper.accessor('assetCategory', {
-        cell: (info) => info.getValue(),
-        header: 'Category',
-      }),
-      columnHelper.accessor('roomName', {
-        cell: (info) => info.getValue(),
-        header: 'Location',
+      columnHelper.accessor('assetCode', {
+        cell: (info) => info.getValue() ?? 'N/A',
+        header: 'Asset Code',
         enableSorting: false,
       }),
+      columnHelper.accessor('assetCategory', {
+        cell: (info) => info.getValue() ?? 'N/A',
+        header: 'Category',
+      }),
+      columnHelper.accessor('assetSubCategory', {
+        cell: (info) => info.getValue() ?? 'N/A',
+        header: 'Subcategory',
+      }),
+      columnHelper.accessor('brandName', {
+        cell: (info) => info.getValue() ?? 'N/A',
+        header: 'Brand Name',
+      }),
+      columnHelper.accessor('modelRef', {
+        cell: (info) => info.getValue() ?? 'N/A',
+        header: 'Model Reference',
+      }),
       columnHelper.accessor('currentOwner', {
-        cell: (info) => info.getValue(),
+        cell: (info) => info.getValue() ?? 'N/A',
         header: 'Owner',
         enableSorting: false,
       }),
-      columnHelper.accessor('dateCreated', {
-        cell: (info) => dateFormatter(info.getValue()),
-        header: 'Last Maintenance',
+      columnHelper.accessor('assignedTo', {
+        cell: (info) => info.getValue() ?? 'N/A',
+        header: 'Assigned To',
+        enableSorting: false,
+      }),
+      columnHelper.accessor('responsibleFor', {
+        cell: (info) => info.getValue() ?? 'N/A',
+        header: 'Responsible For',
+        enableSorting: false,
+      }),
+      columnHelper.accessor('facilityName', {
+        cell: (info) => info.getValue() ?? 'N/A',
+        header: 'Facility',
+        enableSorting: false,
+      }),
+      columnHelper.accessor('buildingName', {
+        cell: (info) => info.getValue() ?? 'N/A',
+        header: 'Building',
+        enableSorting: false,
+      }),
+      columnHelper.accessor('floorName', {
+        cell: (info) => info.getValue() ?? 'N/A',
+        header: 'Floor',
+        enableSorting: false,
+      }),
+      columnHelper.accessor('departmentName', {
+        cell: (info) => info.getValue() ?? 'N/A',
+        header: 'Department',
+        enableSorting: false,
+      }),
+      columnHelper.accessor('roomName', {
+        cell: (info) => info.getValue() ?? 'N/A',
+        header: 'Room',
+        enableSorting: false,
+      }),
+      columnHelper.accessor('aisleName', {
+        cell: (info) => info.getValue() ?? 'N/A',
+        header: 'Aisle',
+        enableSorting: false,
+      }),
+      columnHelper.accessor('shelfName', {
+        cell: (info) => info.getValue() ?? 'N/A',
+        header: 'Shelf',
+        enableSorting: false,
+      }),
+      columnHelper.accessor('acquisitionDate', {
+        cell: (info) =>
+          info.getValue() ? dateFormatter(info.getValue()) : 'N/A',
+        header: 'Acquisition Date',
+      }),
+      columnHelper.accessor('purchaseDate', {
+        cell: (info) =>
+          info.getValue() ? dateFormatter(info.getValue()) : 'N/A',
+        header: 'Purchase Date',
       }),
       columnHelper.accessor('initialValue', {
-        cell: () => amountFormatter(0),
-        header: 'Current Value',
+        cell: (info) =>
+          info.getValue() ? amountFormatter(info.getValue() as number) : 'N/A',
+        header: 'Initial Value',
       }),
+      columnHelper.accessor('resalevalue', {
+        cell: (info) =>
+          info.getValue() ? amountFormatter(info.getValue() as number) : 'N/A',
+        header: 'Resale Value',
+      }),
+      columnHelper.accessor('scrapvalue', {
+        cell: (info) =>
+          info.getValue() ? amountFormatter(info.getValue() as number) : 'N/A',
+        header: 'Scrap Value',
+      }),
+      columnHelper.accessor('currentCost', {
+        cell: (info) =>
+          info.getValue() ? amountFormatter(info.getValue() as number) : 'N/A',
+        header: 'Current Cost',
+      }),
+      columnHelper.accessor('maintenanceCost', {
+        cell: (info) =>
+          info.getValue() ? amountFormatter(info.getValue() as number) : 'N/A',
+        header: 'Maintenance Cost',
+      }),
+      columnHelper.accessor('lifeExpectancy', {
+        cell: (info) =>
+          info.getValue()
+            ? `${info.getValue()} year${info.getValue() > 1 ? 's' : ''}`
+            : 'N/A',
+        header: 'Life Expectancy',
+      }),
+      columnHelper.accessor('lastMaintenanceDate', {
+        cell: (info) =>
+          info.getValue() ? dateFormatter(info.getValue() as string) : 'N/A',
+        header: 'Last Maintenance',
+      }),
+      columnHelper.accessor('nextMaintenanceDate', {
+        cell: (info) =>
+          info.getValue() ? dateFormatter(info.getValue() as string) : 'N/A',
+        header: 'Next Maintenance',
+      }),
+      columnHelper.accessor('weightKg', {
+        cell: (info) => (info.getValue() ? `${info.getValue()}kg` : 'N/A'),
+        header: 'Weight',
+      }),
+      columnHelper.accessor('lengthCm', {
+        cell: (info) => (info.getValue() ? `${info.getValue()}cm` : 'N/A'),
+        header: 'Length',
+      }),
+      columnHelper.accessor('widthCm', {
+        cell: (info) => (info.getValue() ? `${info.getValue()}cm` : 'N/A'),
+        header: 'Width',
+      }),
+      columnHelper.accessor('heightCm', {
+        cell: (info) => (info.getValue() ? `${info.getValue()}cm` : 'N/A'),
+        header: 'Height',
+      }),
+      columnHelper.accessor('dateCreated', {
+        cell: (info) =>
+          info.getValue() ? dateFormatter(info.getValue() as string) : 'N/A',
+        header: 'Date Created',
+      }),
+
       columnHelper.accessor('currentStatus', {
         cell: (info) => Status(info.getValue()),
         header: 'Status',
-        meta: {
-          centerHeader: true,
-        },
+      }),
+
+      columnHelper.accessor('currentStatus', {
+        cell: () => Dots(),
+        header: '',
+        enableSorting: false,
       }),
     ],
     [data] //eslint-disable-line

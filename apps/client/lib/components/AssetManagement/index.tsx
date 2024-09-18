@@ -24,7 +24,7 @@ import { SearchResponse } from '~/lib/interfaces/general.interfaces';
 const AssetManagement = () => {
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(25);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { handleSubmit } = useCustomMutation();
   const [searchAsset, { isLoading: searchLoading }] = useSearchApiMutation({});
@@ -75,7 +75,7 @@ const AssetManagement = () => {
   // Reset pagination when clearing the search
   useEffect(() => {
     if (!search) {
-      setPageSize(10);
+      setPageSize(25);
       setCurrentPage(1);
     }
   }, [search]);

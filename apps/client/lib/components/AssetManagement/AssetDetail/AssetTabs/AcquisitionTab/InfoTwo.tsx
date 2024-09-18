@@ -16,10 +16,6 @@ const InfoTwo = () => {
       label: 'Warranty Terms:',
       value: '2 years for all IT equipment',
     },
-    {
-      label: 'Payment Terms:',
-      value: 'Net 30',
-    },
   ];
 
   const details2 = [

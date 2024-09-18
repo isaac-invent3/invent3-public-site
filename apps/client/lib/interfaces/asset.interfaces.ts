@@ -44,6 +44,7 @@ type AssetStatusType =
 
 interface Asset {
   rowId: number;
+  guid: string;
   assetId: number | null;
   brandName: string | null;
   modelRef: string | null;

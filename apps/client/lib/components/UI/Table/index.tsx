@@ -104,10 +104,10 @@ function DataTable<Data extends object>({
                       onClick={header.column.getToggleSortingHandler()}
                       isNumeric={meta?.isNumeric}
                       textTransform="capitalize"
-                      fontSize="14px"
+                      fontSize="12px"
                       lineHeight="14.26px"
-                      fontWeight={500}
-                      color="primary"
+                      fontWeight={600}
+                      color="black"
                       pl="10px"
                       pr="16px"
                       py="16px"

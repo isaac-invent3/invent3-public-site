@@ -18,7 +18,15 @@ export const userApi = createApi({
       }),
       providesTags: ['allUsers'],
     }),
+    searchUsers: builder.mutation({
+      query: (body: any) => ({
+        url: `/Users/Search`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useGetAllUsersQuery } = userApi;
+export const { useGetAllUsersQuery, useSearchUsersMutation } = userApi;

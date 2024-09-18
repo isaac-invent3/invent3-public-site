@@ -8,6 +8,7 @@ import {
 
 const initialValue = {
   rowId: 0,
+  guid: '',
   assetId: null,
   assetName: '',
   brandName: null,

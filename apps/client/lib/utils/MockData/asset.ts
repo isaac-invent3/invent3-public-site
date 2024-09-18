@@ -4,6 +4,7 @@ import { Option } from '~/lib/interfaces/general.interfaces';
 const assetData: Asset[] = [
   {
     rowId: 1,
+    guid: '',
     assetId: 7,
     assetName: 'Laptop',
     brandName: 'Dell',
@@ -62,6 +63,7 @@ const assetData: Asset[] = [
   },
   {
     rowId: 2,
+    guid: '',
     assetId: 8,
     assetName: 'Printer',
     brandName: null,
@@ -120,6 +122,7 @@ const assetData: Asset[] = [
   },
   {
     rowId: 3,
+    guid: '',
     assetId: 11,
     assetName: 'Desktop Computer',
     brandName: null,
@@ -178,6 +181,7 @@ const assetData: Asset[] = [
   },
   {
     rowId: 4,
+    guid: '',
     assetId: 13,
     assetName: 'Projector',
     brandName: null,
@@ -236,6 +240,7 @@ const assetData: Asset[] = [
   },
   {
     rowId: 5,
+    guid: '',
     assetId: 16,
     assetName: 'Mobile Phone',
     brandName: null,

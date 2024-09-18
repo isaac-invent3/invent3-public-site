@@ -26,11 +26,11 @@ const AssetTabs = () => {
       component: <AcquisitionTab />,
     },
     {
-      label: 'Maintenance',
+      label: 'Planned Maintenance',
       component: <MaintenanceTab />,
     },
     {
-      label: 'History',
+      label: 'Maintenance History',
       component: <HistoryTab />,
     },
     {
@@ -38,7 +38,7 @@ const AssetTabs = () => {
       component: <DocumentsTab />,
     },
     {
-      label: 'Relationship',
+      label: 'Components',
       component: <RelationshipTab />,
     },
   ];

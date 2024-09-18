@@ -1,6 +1,9 @@
 const MaintenanceColorCode = {
-  completed: '#34C759',
-  pending: '#FF9500',
+  Completed: '#07CC3B',
+  'On Hold': '#FF7A37',
+  Cancelled: '#F50000',
+  'In Progress': '#0366EF',
+  'Not Started': '#8595A5',
 };
 
 const AssetColorCode = {

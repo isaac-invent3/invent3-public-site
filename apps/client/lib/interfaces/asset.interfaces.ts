@@ -178,12 +178,25 @@ interface AcquisitionInfo {
   vendorContactNo: string;
   vendorContactEmail: string | null;
   warrantyDetails: string;
-  expiryDate: string;
+  warrantyStartDate: string;
+  warrantyEndDate: string;
   depreciationMethod: string;
   depreciationDate: string;
   depreciationRate: number;
   accumulatedDepreciation: number;
   conditionName: string;
+}
+
+interface ContractDocument {
+  rowId: number;
+  assetId: number;
+  contractId: number;
+  contractDocument: string;
+  documentId: number;
+  documentName: string;
+  documentType: string;
+  vendorId: number;
+  vendorName: string;
 }
 
 export type {
@@ -194,4 +207,5 @@ export type {
   AssetStatusType,
   FormLocation,
   AcquisitionInfo,
+  ContractDocument,
 };

@@ -1,27 +1,19 @@
 import { Flex, Grid, GridItem, HStack, Text, VStack } from '@chakra-ui/react';
+import moment from 'moment';
 import Link from 'next/link';
 import React from 'react';
+import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 import { MaintenanceColorCode } from '~/lib/utils/ColorCodes';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
 interface MaintenanceCardProps {
-  description: {
-    id: string;
-    name: string;
-    type: string;
-    date: string;
-    time: string;
-    by: string;
-  };
-  contactPerson: {
-    name: string;
-    phoneNumber: string;
-    email: string;
-  };
-  status: string;
+  data: MaintenancePlan;
 }
 const MaintenanceCard = (props: MaintenanceCardProps) => {
-  const { description, contactPerson, status } = props;
+  const { data } = props;
+  const endTime = data?.durationInHours
+    ? moment(data?.scheduledDate).add(data?.durationInHours, 'hours') // Add the duration if available
+    : null;
   return (
     <Grid
       templateAreas={`"description contact status"`}
@@ -41,7 +33,7 @@ const MaintenanceCard = (props: MaintenanceCardProps) => {
         <HStack spacing="22px" alignItems="flex-start">
           <VStack spacing="2px">
             <Text color="neutral.600" size="md" fontWeight={500}>
-              {dateFormatter(description.date, 'ddd')}
+              {dateFormatter(data?.scheduledDate, 'ddd')}
             </Text>
 
             <Text
@@ -50,7 +42,7 @@ const MaintenanceCard = (props: MaintenanceCardProps) => {
               lineHeight="28.51px"
               fontWeight={800}
             >
-              {dateFormatter(description.date, 'DD')}
+              {dateFormatter(data?.scheduledDate, 'DD')}
             </Text>
             <Text
               color="neutral.800"
@@ -58,19 +50,22 @@ const MaintenanceCard = (props: MaintenanceCardProps) => {
               letterSpacing="0.1em"
               textTransform="uppercase"
             >
-              {dateFormatter(description.date, 'MMM')}
+              {dateFormatter(data?.scheduledDate, 'MMM')}
             </Text>
           </VStack>
           <VStack spacing="8px" alignItems="flex-start">
             <VStack alignItems="flex-start" spacing="2px">
               <Text color="neutral.800" size="lg" fontWeight={800}>
-                {description.name}
+                {data?.planName}
               </Text>
-              <Text color="neutral.600">{description.type}</Text>
+              <Text color="neutral.600">{data?.typeName}</Text>
             </VStack>
             <VStack alignItems="flex-start" spacing="2px">
-              <Text color="neutral.600">{description.time}</Text>
-              <Text color="neutral.600">By: {description.by}</Text>
+              <Text color="neutral.600">
+                {dateFormatter(data?.scheduledDate, 'HH:mm')} -{' '}
+                {endTime ? endTime.format('HH:mm') : 'N/A'}
+              </Text>
+              <Text color="neutral.600">By: N/A</Text>
             </VStack>
           </VStack>
         </HStack>
@@ -83,13 +78,13 @@ const MaintenanceCard = (props: MaintenanceCardProps) => {
             Contact Person
           </Text>
           <Text size="md" color="neutral.600">
-            {contactPerson.name}
+            {data?.owner ?? 'N/A'}
           </Text>
           <Text size="md" color="neutral.600">
-            {contactPerson.phoneNumber}
+            {data?.ownerContactNo ?? 'N/A'}
           </Text>
           <Text size="md" color="neutral.600">
-            {contactPerson.email}
+            {data?.ownerContactEmail ?? 'N/A'}
           </Text>
         </VStack>
       </GridItem>
@@ -106,12 +101,12 @@ const MaintenanceCard = (props: MaintenanceCardProps) => {
             <Text color="neutral.700">Status:</Text>
             <Text
               fontWeight={800}
-              color={MaintenanceColorCode[status as 'completed']}
+              color={MaintenanceColorCode[data?.currentStatus as 'Completed']}
             >
-              {status}
+              {data?.currentStatus ?? 'N/A'}
             </Text>
           </VStack>
-          <Link href="#">
+          <Link href={`/maintenance?id=${data?.scheduleId}`}>
             <Text color="primary.main" fontWeight={700}>
               View Tasks
             </Text>

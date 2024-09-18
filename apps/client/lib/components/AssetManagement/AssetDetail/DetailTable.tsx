@@ -18,6 +18,7 @@ import {
   getCoreRowModel,
   type ColumnDef,
 } from '@tanstack/react-table';
+import Pagination from '../../UI/Table/Pagination';
 
 export type TableProps<Data extends object> = {
   data: Data[];
@@ -29,8 +30,10 @@ export type TableProps<Data extends object> = {
   emptyLines?: number;
   pageNumber?: number;
   totalPages?: number;
+  pageSize?: number;
   handleSelectRow?: React.Dispatch<React.SetStateAction<any>>;
   setPageNumber?: React.Dispatch<React.SetStateAction<number>>;
+  setPageSize?: React.Dispatch<React.SetStateAction<number>>;
 };
 
 export function DetailTable<Data extends object>({
@@ -43,8 +46,10 @@ export function DetailTable<Data extends object>({
   emptyLines = 5,
   pageNumber = 1,
   totalPages = 1,
+  pageSize = 1,
   handleSelectRow,
   setPageNumber,
+  setPageSize,
 }: TableProps<Data>) {
   const table = useReactTable({
     columns,
@@ -174,6 +179,18 @@ export function DetailTable<Data extends object>({
         </HStack>
       )}
       {/* Empty state ends */}
+      {/* Footer */}
+      {showFooter && data && data.length >= 1 && (
+        <Flex width="full" mt="8px" justifyContent="flex-end">
+          <Pagination
+            totalPage={totalPages}
+            pageNumber={pageNumber}
+            setPageNumber={setPageNumber}
+            pageSize={pageSize}
+            setPageSize={setPageSize}
+          />
+        </Flex>
+      )}
     </Flex>
   );
 }

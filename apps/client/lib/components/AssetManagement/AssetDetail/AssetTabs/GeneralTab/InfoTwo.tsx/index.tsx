@@ -1,8 +1,8 @@
-import { Flex, SimpleGrid, VStack } from '@chakra-ui/react';
+import { SimpleGrid, VStack } from '@chakra-ui/react';
 import React from 'react';
-import DetailHeader from '../../../../../UI/DetailHeader';
 import DetailSection from '../../../DetailSection';
 import { useAppSelector } from '~/lib/redux/hooks';
+import PhotoViewer from './Photos';
 
 const InfoTwo = () => {
   const assetData = useAppSelector((state) => state.asset.asset);
@@ -41,22 +41,7 @@ const InfoTwo = () => {
           header="Owner's Info"
         />
       </VStack>
-      <VStack alignItems="flex-start" spacing="16px">
-        <DetailHeader variant="secondary">Photos</DetailHeader>
-        <Flex width="full" gap="16px" wrap="wrap">
-          {Array(8)
-            .fill('')
-            .map((_, index) => (
-              <Flex
-                key={index}
-                width="60px"
-                height="60px"
-                rounded="8px"
-                bgColor="#6E7D8E80"
-              />
-            ))}
-        </Flex>
-      </VStack>
+      <PhotoViewer />
     </SimpleGrid>
   );
 };

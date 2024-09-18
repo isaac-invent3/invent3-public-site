@@ -33,6 +33,44 @@ export const assetApi = createApi({
         headers: getHeaders(),
       }),
     }),
+    getImagesByAssetId: builder.query({
+      query: ({ id }) => ({
+        url: `/AssetImages/GetImagesbyAssetId/${id}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getPlannedMaintenanceByAssetId: builder.query({
+      query: ({ id, ...data }) => ({
+        url: generateQueryStr(
+          `/MaintenanceSchedules/GetAssetPlannedMaintenanceInfo/${id}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getMaintenanceHistoryByAssetId: builder.query({
+      query: ({ id, ...data }) => ({
+        url: generateQueryStr(
+          `/MaintenanceSchedules/GetAssetMaintenanceHistory/${id}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getDocumentsByAssetId: builder.query({
+      query: ({ id, ...data }) => ({
+        url: generateQueryStr(
+          `/VendorContractDocuments/GetAssetContractDocuments/${id}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+
     GetAssetComponentInfoByAssetGuid: builder.query({
       query: ({ id }) => ({
         url: `/GetAssetComponentInfo/${id}`,
@@ -68,4 +106,8 @@ export const {
   useGetallAssetQuery,
   useGetAcquisitionInfoByAssetIdQuery,
   useGetAssetComponentInfoByAssetGuidQuery,
+  useGetImagesByAssetIdQuery,
+  useGetMaintenanceHistoryByAssetIdQuery,
+  useGetPlannedMaintenanceByAssetIdQuery,
+  useGetDocumentsByAssetIdQuery,
 } = assetApi;

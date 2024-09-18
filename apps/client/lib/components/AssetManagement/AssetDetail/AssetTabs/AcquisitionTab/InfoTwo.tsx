@@ -13,14 +13,14 @@ const InfoTwo = (props: InfoTwoProps) => {
   const details1 = [
     {
       label: 'Start Date:',
-      value: data?.purchaseDate
-        ? dateFormatter(data?.purchaseDate, 'Do MMM, YYYY')
+      value: data?.warrantyStartDate
+        ? dateFormatter(data?.warrantyStartDate, 'Do MMM, YYYY')
         : 'N/A',
     },
     {
       label: 'End Date:',
-      value: data?.expiryDate
-        ? dateFormatter(data?.expiryDate, 'Do MMM, YYYY')
+      value: data?.warrantyEndDate
+        ? dateFormatter(data?.warrantyEndDate, 'Do MMM, YYYY')
         : 'N/A',
     },
     {

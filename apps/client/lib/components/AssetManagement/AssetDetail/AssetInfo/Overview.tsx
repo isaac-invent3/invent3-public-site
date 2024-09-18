@@ -14,6 +14,7 @@ const Overview = () => {
     assetCategory,
     brandName,
     modelRef,
+    primaryImage,
   } = assetData;
 
   const assetInfo = [
@@ -39,7 +40,23 @@ const Overview = () => {
       spacing="16px"
       alignItems="flex-start"
     >
-      <Flex height="149px" width="184px" rounded="16px" bgColor="white" />
+      <Flex
+        height="149px"
+        width="184px"
+        rounded="16px"
+        bgColor="white"
+        overflow="hidden"
+      >
+        <Flex
+          width="full"
+          height="full"
+          bgSize="contain"
+          bgRepeat="no-repeat"
+          bgPosition="center"
+          mx="8px"
+          bgImage={`data:image/jpeg;base64,${primaryImage}`}
+        />
+      </Flex>
       <VStack alignItems="flex-start" width="full" spacing="24px">
         <HStack spacing="16px">
           <Heading

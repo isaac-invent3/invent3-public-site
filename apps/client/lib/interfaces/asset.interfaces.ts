@@ -45,6 +45,7 @@ type AssetStatusType =
 interface Asset {
   rowId: number;
   guid: string;
+  primaryImage: string | null;
   assetId: number | null;
   brandName: string | null;
   modelRef: string | null;
@@ -100,6 +101,7 @@ interface Asset {
   nextMaintenanceDate: string | null;
   currentCost: number | null;
   maintenanceCost: number | null;
+  y2dmaintenanceCost: number;
 }
 
 interface AssetFormDetails {
@@ -159,6 +161,31 @@ interface FormLocation {
   shelf: string;
 }
 
+interface AcquisitionInfo {
+  rowId: number;
+  assetId: number;
+  assetName: string;
+  assetCode: string;
+  description: string;
+  acquisitionDate: string;
+  purchaseDate: string;
+  initialValue: number;
+  resalevalue: number;
+  scrapvalue: number;
+  vendorId: number;
+  vendorName: string;
+  vendorAddress: string | null;
+  vendorContactNo: string;
+  vendorContactEmail: string | null;
+  warrantyDetails: string;
+  expiryDate: string;
+  depreciationMethod: string;
+  depreciationDate: string;
+  depreciationRate: number;
+  accumulatedDepreciation: number;
+  conditionName: string;
+}
+
 export type {
   AssetLocation,
   Asset,
@@ -166,4 +193,5 @@ export type {
   FilterInput,
   AssetStatusType,
   FormLocation,
+  AcquisitionInfo,
 };

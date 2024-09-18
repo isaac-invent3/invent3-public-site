@@ -1,49 +1,61 @@
-import { Flex, HStack } from '@chakra-ui/react';
+import { Flex, HStack, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 import DetailSection from '../../../DetailSection';
 import VendorDetails from './VendorDetails';
-import { useAppSelector } from '~/lib/redux/hooks';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
+import { AcquisitionInfo } from '~/lib/interfaces/asset.interfaces';
 
-const InfoOne = () => {
-  const assetData = useAppSelector((state) => state.asset.asset);
-  const {
-    acquisitionDate,
-    resalevalue,
-    currentCondition,
-    scrapvalue,
-    initialValue,
-  } = assetData;
+interface InfoOneProps {
+  isLoading: boolean;
+  data: AcquisitionInfo;
+}
+const InfoOne = (props: InfoOneProps) => {
+  const { isLoading, data } = props;
+
   const details = [
     {
       label: 'Acquisition Date:',
-      value: acquisitionDate
-        ? dateFormatter(acquisitionDate, 'Do MMM, YYYY')
+      value: data?.acquisitionDate
+        ? dateFormatter(data?.acquisitionDate, 'Do MMM, YYYY')
         : 'N/A',
     },
     {
       label: 'Purchase Price:',
-      value: initialValue !== null ? amountFormatter(initialValue) : 'N/A',
+      value:
+        data?.initialValue !== null
+          ? amountFormatter(data?.initialValue)
+          : 'N/A',
     },
     {
       label: 'Resale Value:',
-      value: resalevalue !== null ? amountFormatter(resalevalue) : 'N/A',
+      value:
+        data?.resalevalue !== null ? amountFormatter(data?.resalevalue) : 'N/A',
     },
     {
       label: 'Scrap Value:',
-      value: scrapvalue !== null ? amountFormatter(scrapvalue) : 'N/A',
+      value:
+        data?.scrapvalue !== null ? amountFormatter(data?.scrapvalue) : 'N/A',
     },
     {
       label: 'Condition:',
-      value: currentCondition ?? 'N/A',
+      value: data?.conditionName ?? 'N/A',
     },
   ];
   return (
-    <HStack width="full" justifyContent="space-between" spacing="66px">
+    <HStack
+      width="full"
+      justifyContent="space-between"
+      spacing="66px"
+      alignItems="flex-start"
+    >
       <Flex width="min-content" whiteSpace="nowrap">
-        <DetailSection minWidth="105px" details={details} />
+        <Skeleton isLoaded={!isLoading} width="full">
+          <DetailSection minWidth="105px" details={details} />
+        </Skeleton>
       </Flex>
-      <VendorDetails />
+      <Skeleton isLoaded={!isLoading} width="full" rounded="8px" height="full">
+        <VendorDetails data={data} />
+      </Skeleton>
     </HStack>
   );
 };

@@ -27,7 +27,7 @@ export const assetApi = createApi({
       providesTags: ['singleAsset'],
     }),
     getAcquisitionInfoByAssetId: builder.query({
-      query: (id: any) => ({
+      query: ({ id }) => ({
         url: `/Assets/GetAcquisitionInfo/${id}`,
         method: 'GET',
         headers: getHeaders(),

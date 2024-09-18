@@ -30,6 +30,7 @@ const Summary = () => {
     lastMaintenanceDate,
     nextMaintenanceDate,
     maintenanceCost,
+    y2dmaintenanceCost,
   } = assetData;
   const Summary1 = [
     // {
@@ -90,7 +91,9 @@ const Summary = () => {
               YTD:
             </Text>
             <Text fontSize="10px" lineHeight="#00A129">
-              N20,000
+              {y2dmaintenanceCost !== null
+                ? amountFormatter(y2dmaintenanceCost)
+                : 'N/A'}
             </Text>
           </HStack>
         </SummaryInfo>

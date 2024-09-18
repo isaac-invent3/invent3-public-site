@@ -9,6 +9,7 @@ import {
 const initialValue = {
   rowId: 0,
   guid: '',
+  primaryImage: null,
   assetId: null,
   assetName: '',
   brandName: null,
@@ -64,6 +65,7 @@ const initialValue = {
   nextMaintenanceDate: null,
   currentCost: 0,
   maintenanceCost: 0,
+  y2dmaintenanceCost: 0,
 };
 
 const initialAssetForm = {

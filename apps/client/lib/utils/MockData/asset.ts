@@ -5,6 +5,7 @@ const assetData: Asset[] = [
   {
     rowId: 1,
     guid: '',
+    primaryImage: null,
     assetId: 7,
     assetName: 'Laptop',
     brandName: 'Dell',
@@ -60,10 +61,12 @@ const assetData: Asset[] = [
     nextMaintenanceDate: null,
     currentCost: 1000000.0,
     maintenanceCost: 0.0,
+    y2dmaintenanceCost: 0.0,
   },
   {
     rowId: 2,
     guid: '',
+    primaryImage: null,
     assetId: 8,
     assetName: 'Printer',
     brandName: null,
@@ -119,10 +122,12 @@ const assetData: Asset[] = [
     nextMaintenanceDate: null,
     currentCost: 0.0,
     maintenanceCost: 0.0,
+    y2dmaintenanceCost: 0.0,
   },
   {
     rowId: 3,
     guid: '',
+    primaryImage: null,
     assetId: 11,
     assetName: 'Desktop Computer',
     brandName: null,
@@ -178,10 +183,12 @@ const assetData: Asset[] = [
     nextMaintenanceDate: null,
     currentCost: 0.0,
     maintenanceCost: 0.0,
+    y2dmaintenanceCost: 0.0,
   },
   {
     rowId: 4,
     guid: '',
+    primaryImage: null,
     assetId: 13,
     assetName: 'Projector',
     brandName: null,
@@ -237,10 +244,12 @@ const assetData: Asset[] = [
     nextMaintenanceDate: null,
     currentCost: 0.0,
     maintenanceCost: 0.0,
+    y2dmaintenanceCost: 0.0,
   },
   {
     rowId: 5,
     guid: '',
+    primaryImage: null,
     assetId: 16,
     assetName: 'Mobile Phone',
     brandName: null,
@@ -296,6 +305,7 @@ const assetData: Asset[] = [
     nextMaintenanceDate: null,
     currentCost: 0.0,
     maintenanceCost: 0.0,
+    y2dmaintenanceCost: 0.0,
   },
 ];
 

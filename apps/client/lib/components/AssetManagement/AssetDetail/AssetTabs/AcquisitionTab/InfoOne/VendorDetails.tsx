@@ -1,8 +1,13 @@
 import { Heading, HStack, StackDivider, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import DetailHeader from '../../../../../UI/DetailHeader';
+import { AcquisitionInfo } from '~/lib/interfaces/asset.interfaces';
 
-const VendorTexts = () => {
+interface VendorTextsProps {
+  data: AcquisitionInfo;
+}
+const VendorTexts = (props: VendorTextsProps) => {
+  const { data } = props;
   return (
     <VStack
       width="full"
@@ -16,7 +21,9 @@ const VendorTexts = () => {
       <HStack
         spacing="24px"
         alignItems="flex-start"
-        divider={<StackDivider borderColor="#BBBBBB80" />}
+        divider={
+          data?.vendorName ? <StackDivider borderColor="#BBBBBB80" /> : <></>
+        }
       >
         <VStack spacing="4px" alignItems="flex-start">
           <Heading
@@ -26,27 +33,29 @@ const VendorTexts = () => {
             color="black"
             fontWeight={700}
           >
-            Tech Solutions Inc.
+            {data?.vendorName}
           </Heading>
           <Text size="md" color="neutral.600">
-            123 Technology Drive, Suite 200, NY
+            {data?.vendorAddress}
           </Text>
-          <Text size="md" color="neutral.600">
+          {/* <Text size="md" color="neutral.600">
             www.techsolutions.com
-          </Text>
+          </Text> */}
         </VStack>
         <VStack spacing="4px" alignItems="flex-start">
-          <Text size="md" color="black">
-            Contact Person
+          {data?.vendorName && (
+            <Text size="md" color="black">
+              Contact Person
+            </Text>
+          )}
+          <Text size="md" color="neutral.600">
+            {data?.vendorName}
           </Text>
           <Text size="md" color="neutral.600">
-            John Doe
+            {data?.vendorContactNo}
           </Text>
           <Text size="md" color="neutral.600">
-            +1 555-123-4567
-          </Text>
-          <Text size="md" color="neutral.600">
-            johndoe@techsolutions.com
+            {data?.vendorContactEmail}
           </Text>
         </VStack>
       </HStack>

@@ -26,10 +26,9 @@ const SummaryInfo = (props: SummaryInfoProps) => {
 const Summary = () => {
   const assetData = useAppSelector((state) => state.asset.asset);
   const {
-    currentCost,
     lastMaintenanceDate,
     nextMaintenanceDate,
-    maintenanceCost,
+    initialValue,
     y2dmaintenanceCost,
   } = assetData;
   const Summary1 = [
@@ -38,8 +37,15 @@ const Summary = () => {
     //   value: '85%',
     // },
     {
-      label: 'Current Cost',
-      value: currentCost !== null ? amountFormatter(currentCost) : 'N/A',
+      label: 'Purchase Cost',
+      value: initialValue !== null ? amountFormatter(initialValue) : 'N/A',
+    },
+    {
+      label: 'Maintenance Cost (YTD)',
+      value:
+        y2dmaintenanceCost !== null
+          ? amountFormatter(y2dmaintenanceCost)
+          : 'N/A',
     },
   ];
 
@@ -73,30 +79,6 @@ const Summary = () => {
         {Summary1.map((item) => (
           <SummaryInfo {...item} key={item.label} />
         ))}
-        <SummaryInfo
-          label="Maintenance Cost"
-          value={
-            maintenanceCost !== null ? amountFormatter(maintenanceCost) : 'N/A'
-          }
-        >
-          <HStack
-            color="#00A129"
-            spacing="4px"
-            fontWeight={700}
-            fontSize="10px"
-            lineHeight="#00A129"
-            mt="4px"
-          >
-            <Text fontSize="10px" lineHeight="#00A129">
-              YTD:
-            </Text>
-            <Text fontSize="10px" lineHeight="#00A129">
-              {y2dmaintenanceCost !== null
-                ? amountFormatter(y2dmaintenanceCost)
-                : 'N/A'}
-            </Text>
-          </HStack>
-        </SummaryInfo>
       </HStack>
       <HStack spacing="24px">
         {Summary2.map((item) => (

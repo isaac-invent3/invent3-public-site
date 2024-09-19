@@ -149,14 +149,29 @@ const AssetImages = () => {
                 onChange={(event: any) => {
                   const files = Array.from(event.currentTarget.files) as File[]; // Convert FileList to array
                   if (files.length > 0) {
-                    const newImages = files.map((file: File) => ({
-                      imageName: file.name,
-                      base64PhotoImage: URL.createObjectURL(file),
-                      isPrimaryImage: false,
-                    }));
+                    const newImages: any[] = [];
 
-                    helpers.setValue([...meta.value, ...newImages]);
+                    files.forEach((file: File) => {
+                      const reader = new FileReader();
+                      reader.readAsDataURL(file);
+
+                      reader.onloadend = () => {
+                        const base64PhotoImage = reader.result as string;
+
+                        newImages.push({
+                          imageName: file.name,
+                          base64PhotoImage: base64PhotoImage,
+                          isPrimaryImage: false,
+                        });
+
+                        // Update the state or Formik helpers only when all images are processed
+                        if (newImages.length === files.length) {
+                          helpers.setValue([...meta.value, ...newImages]);
+                        }
+                      };
+                    });
                   }
+
                   event.target.value = ''; // Clear the input after selecting files
                 }}
                 type="file"

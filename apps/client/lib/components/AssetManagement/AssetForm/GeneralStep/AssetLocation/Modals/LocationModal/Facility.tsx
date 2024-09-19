@@ -19,7 +19,7 @@ const Facility = (props: FacilityProps) => {
         <FacilitySelect
           handleSelect={(option) => handleReadableLocation(option, 'facility')}
         />
-        <AddButton handleClick={onOpen}>Add New Faculty</AddButton>
+        <AddButton handleClick={onOpen}>Add New Facility</AddButton>
       </VStack>
       <FacilityModal isOpen={isOpen} onClose={onClose} />
     </>

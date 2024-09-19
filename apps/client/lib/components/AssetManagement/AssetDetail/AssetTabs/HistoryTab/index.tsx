@@ -96,7 +96,7 @@ const HistoryTab = () => {
           !info.row.original.ownerContactNo
             ? 'N/A'
             : Technician(info.row.original),
-        header: 'Technician',
+        header: 'Contact Person',
       }),
       columnHelper.accessor('statusId', {
         cell: (info) => amountFormatter(info.getValue() ?? 0),

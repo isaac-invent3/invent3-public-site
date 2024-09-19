@@ -97,6 +97,10 @@ const ListView = (props: ListViewProps) => {
         cell: (info) => info.getValue() ?? 'N/A',
         header: 'Subcategory',
       }),
+      columnHelper.accessor('currentStatus', {
+        cell: (info) => Status(info.getValue()),
+        header: 'Status',
+      }),
       columnHelper.accessor('brandName', {
         cell: (info) => info.getValue() ?? 'N/A',
         header: 'Brand Name',
@@ -227,11 +231,6 @@ const ListView = (props: ListViewProps) => {
         cell: (info) =>
           info.getValue() ? dateFormatter(info.getValue() as string) : 'N/A',
         header: 'Date Created',
-      }),
-
-      columnHelper.accessor('currentStatus', {
-        cell: (info) => Status(info.getValue()),
-        header: 'Status',
       }),
 
       columnHelper.accessor('currentStatus', {

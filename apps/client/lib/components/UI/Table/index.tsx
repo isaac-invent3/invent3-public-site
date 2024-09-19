@@ -24,6 +24,7 @@ import { useState } from 'react';
 import CheckBox from '../CheckBox';
 import { ChevronDownIcon, ChevronUpIcon } from '../../CustomIcons';
 import Pagination from './Pagination';
+import OverflowTd from './OverflowTd';
 
 export type TableProps<Data extends object> = {
   data: Data[];
@@ -84,7 +85,26 @@ function DataTable<Data extends object>({
 
   return (
     <Flex direction="column" width="full">
-      <TableContainer overflow="auto" bgColor="white" rounded="4px">
+      <TableContainer
+        overflow="auto"
+        bgColor="white"
+        rounded="4px"
+        sx={{
+          '::-webkit-scrollbar': {
+            width: '12px', // Adjust width as needed
+            visibility: 'visible',
+          },
+          '::-webkit-scrollbar-thumb': {
+            background: 'rgba(0, 0, 0, 0.3)', // Custom scrollbar color
+            borderRadius: '10px',
+          },
+          '::-webkit-scrollbar-track': {
+            background: '#f1f1f1',
+          },
+          scrollbarWidth: 'auto', // For Firefox
+          scrollbarColor: 'rgba(0, 0, 0, 0.3) #f1f1f1', // For Firefox
+        }}
+      >
         <Table>
           <Thead bgColor="#B4BFCA80">
             {table.getHeaderGroups().map((headerGroup) => (
@@ -207,23 +227,12 @@ function DataTable<Data extends object>({
                     {row.getVisibleCells().map((cell) => {
                       const { meta } = cell.column.columnDef;
                       return (
-                        <Td
-                          key={cell.id}
-                          isNumeric={meta?.isNumeric}
-                          borderColor="neutral.300"
-                          color="black"
-                          fontSize="12px"
-                          fontWeight={500}
-                          lineHeight="14.26px"
-                          py="8px"
-                          pl="10px"
-                          pr="16px"
-                        >
+                        <OverflowTd isNumeric={meta?.isNumeric ?? false}>
                           {flexRender(
                             cell.column.columnDef.cell,
                             cell.getContext()
                           )}
-                        </Td>
+                        </OverflowTd>
                       );
                     })}
                   </Tr>

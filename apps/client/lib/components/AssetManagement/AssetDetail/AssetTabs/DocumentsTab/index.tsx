@@ -10,7 +10,7 @@ import Image from 'next/image';
 const DocumentsTab = () => {
   const { assetId } = useAppSelector((state) => state.asset.asset);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(25);
+  const [pageSize] = useState(5);
   const { data, isLoading } = useGetDocumentsByAssetIdQuery(
     { id: assetId, pageSize, pageNumber: currentPage },
     { skip: !assetId }

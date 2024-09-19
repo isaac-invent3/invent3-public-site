@@ -75,11 +75,11 @@ const PhotoViewer = () => {
               width="60px"
               height="60px"
               rounded="8px"
-              bgColor="#6E7D8E80"
+              bgColor="white"
+              boxShadow="md"
               bgSize="contain"
               bgRepeat="no-repeat"
               bgPosition="center"
-              mx="8px"
               bgImage={`data:image/jpeg;base64,${photo.photoImage}`}
               cursor="pointer"
               onClick={() => openModal(index)}

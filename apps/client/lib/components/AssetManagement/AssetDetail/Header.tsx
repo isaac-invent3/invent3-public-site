@@ -14,50 +14,52 @@ const AssetHeader = (props: AssetHeaderProps) => {
     <HStack width="full" justifyContent="space-between">
       <HStack spacing="16px">
         <Button
-          customStyles={{ minH: '28px', px: '12px' }}
+          customStyles={{ height: '32px', px: '12px' }}
           variant="secondary"
           handleClick={handleBack}
         >
           <Icon as={CloseIcon} boxSize="16px" color="primary.500" mr="8px" />
-          Back to Grid
-        </Button>
-
-        <Button customStyles={{ minH: '28px', px: '12px' }} variant="secondary">
-          Asset Open Ticket
+          Back
         </Button>
       </HStack>
-      <HStack>
+      <HStack width="min-content" spacing="8px">
         <Button
-          customStyles={{ minH: '34px', minW: '60px', px: '16px' }}
-          variant="secondary"
+          customStyles={{ height: '35px', width: '106px', px: '16px' }}
+          variant="primary"
           href={`/asset-management/${assetData.assetId}/edit`}
         >
-          Edit
+          Edit Asset
         </Button>
         <Button
-          customStyles={{
-            minH: '34px',
-            minW: '94px',
-            px: '8px',
-            fontSize: '14px',
-            lineHeight: '16.63px',
-          }}
+          customStyles={{ height: '35px', px: '12px', width: '106px' }}
           variant="outline"
         >
-          Dispose
+          Raise Ticket
         </Button>
         <Button
           customStyles={{
-            minH: '34px',
-            minW: '94px',
+            height: '35px',
+            width: '106px',
             px: '8px',
             fontSize: '14px',
             lineHeight: '16.63px',
           }}
-          variant="primary"
+          variant="secondary"
           href={`/asset-management/${assetData.assetId}/transfer`}
         >
           Transfer
+        </Button>
+        <Button
+          customStyles={{
+            height: '35px',
+            width: '106px',
+            px: '8px',
+            fontSize: '14px',
+            lineHeight: '16.63px',
+          }}
+          variant="secondary"
+        >
+          Dispose
         </Button>
       </HStack>
     </HStack>

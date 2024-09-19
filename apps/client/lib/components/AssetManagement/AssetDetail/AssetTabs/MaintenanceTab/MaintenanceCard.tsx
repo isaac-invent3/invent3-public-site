@@ -65,7 +65,7 @@ const MaintenanceCard = (props: MaintenanceCardProps) => {
                 {dateFormatter(data?.scheduledDate, 'HH:mm')} -{' '}
                 {endTime ? endTime.format('HH:mm') : 'N/A'}
               </Text>
-              <Text color="neutral.600">By: N/A</Text>
+              <Text color="neutral.600">Created By: N/A</Text>
             </VStack>
           </VStack>
         </HStack>

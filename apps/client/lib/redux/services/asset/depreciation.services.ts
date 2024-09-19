@@ -18,7 +18,18 @@ export const depreciationApi = createApi({
       }),
       providesTags: ['allDepreciation'],
     }),
+    searchDepreciation: builder.mutation({
+      query: (body: any) => ({
+        url: `/AssetDepreciations/Search`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useGetAllAssetDepreciationQuery } = depreciationApi;
+export const {
+  useGetAllAssetDepreciationQuery,
+  useSearchDepreciationMutation,
+} = depreciationApi;

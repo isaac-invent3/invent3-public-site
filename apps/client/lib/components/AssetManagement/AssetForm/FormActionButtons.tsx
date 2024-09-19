@@ -7,9 +7,12 @@ interface FormActionButtonsProps {
   activeStep: number;
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
   handleContinue?: () => void;
+  isLoading?: boolean;
+  loadingText?: string;
 }
 const FormActionButtons = (props: FormActionButtonsProps) => {
-  const { activeStep, setActiveStep, handleContinue } = props;
+  const { activeStep, setActiveStep, handleContinue, isLoading, loadingText } =
+    props;
 
   return (
     <HStack width="full" justifyContent="space-between" maxH="50px">
@@ -55,6 +58,8 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
             handleContinue && handleContinue();
           }}
           customStyles={{ minW: '167px' }}
+          isLoading={isLoading}
+          loadingText={loadingText}
         >
           {activeStep < 3 ? 'Continue' : 'Complete'}
         </Button>

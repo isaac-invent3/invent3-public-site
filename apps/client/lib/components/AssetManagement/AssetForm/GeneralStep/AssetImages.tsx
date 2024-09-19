@@ -159,6 +159,7 @@ const AssetImages = () => {
                         const base64PhotoImage = reader.result as string;
 
                         newImages.push({
+                          imageId: null,
                           imageName: file.name,
                           base64PhotoImage: base64PhotoImage,
                           isPrimaryImage: false,

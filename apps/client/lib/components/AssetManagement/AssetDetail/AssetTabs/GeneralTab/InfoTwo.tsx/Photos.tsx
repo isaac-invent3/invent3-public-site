@@ -104,14 +104,14 @@ const PhotoViewer = () => {
       <Modal isOpen={isOpen} onClose={closeModal} size="xl" isCentered>
         <ModalOverlay />
         <ModalContent height="500px">
-          <ModalCloseButton />
-          <ModalBody>
+          <ModalCloseButton p={4} />
+          <ModalBody px={8} pt={16}>
             {currentIndex !== null && (
               <Flex
                 flexDirection="column"
                 alignItems="center"
                 justifyContent="center"
-                height="full"
+                height="90%"
               >
                 <Image
                   src={`data:image/jpeg;base64,${photos[currentIndex]?.photoImage}`}
@@ -121,7 +121,7 @@ const PhotoViewer = () => {
             )}
           </ModalBody>
           <ModalFooter>
-            <Flex justifyContent="space-between" width="full" mt={4}>
+            <Flex justifyContent="space-between" width="full">
               <Button
                 variant="secondary"
                 handleClick={goPrev}

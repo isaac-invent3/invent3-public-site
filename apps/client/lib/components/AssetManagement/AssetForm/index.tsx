@@ -11,8 +11,9 @@ import SummaryStep from './SummaryStep';
 import SlideTransition from '../../UI/SlideTransition';
 import Header from './Header';
 
-const initialValue = {
+export const initialAssetFormValue = {
   images: [],
+  assetId: null,
   assetName: '',
   description: '',
   assetCode: '',
@@ -59,9 +60,9 @@ interface AssetFormProps {
 }
 const AssetForm = (props: AssetFormProps) => {
   const { type, data } = props;
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(1);
   const [formDetails, setFormDetails] = useState<AssetFormDetails>(
-    data ?? initialValue
+    data ?? initialAssetFormValue
   );
 
   return (
@@ -97,8 +98,10 @@ const AssetForm = (props: AssetFormProps) => {
         <SlideTransition trigger={activeStep === 3}>
           {activeStep === 3 && (
             <SummaryStep
+              setAssetFormDetails={setFormDetails}
               assetFormDetails={formDetails}
               setActiveStep={setActiveStep}
+              type={type}
             />
           )}
         </SlideTransition>

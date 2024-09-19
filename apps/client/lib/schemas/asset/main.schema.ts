@@ -7,6 +7,7 @@ const generalInfoSchema = locationSchema.shape({
   images: Yup.array()
     .of(
       Yup.object().shape({
+        imageId: Yup.number().nullable(),
         imageName: Yup.string().required(),
         base64PhotoImage: Yup.string().required(),
         isPrimaryImage: Yup.boolean().required(),

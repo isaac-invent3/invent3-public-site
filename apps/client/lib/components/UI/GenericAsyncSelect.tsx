@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import SelectInput from '~/lib/components/UI/Select';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { Option } from '~/lib/interfaces/general.interfaces';
+import { OPERATORS } from '~/lib/utils/constants';
 import { generateOptions } from '~/lib/utils/helperFunctions';
-import { Operators } from '~/lib/utils/operators';
 
 interface BuildingSelectProps {
   // eslint-disable-next-line no-unused-vars
@@ -47,7 +47,7 @@ const GenericAsyncSelect = (props: BuildingSelectProps) => {
         {
           columnName: typeof labelKey === 'string' ? labelKey : labelKey[0],
           columnValue: inputValue,
-          operation: Operators.Contains,
+          operation: OPERATORS.Contains,
         },
       ],
       pageNumber: 1,

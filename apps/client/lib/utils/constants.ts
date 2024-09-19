@@ -1,4 +1,4 @@
-const Operators = {
+const OPERATORS = {
   Equals: 1,
   NotEquals: 2,
   GreaterThan: 3,
@@ -10,4 +10,10 @@ const Operators = {
   EndsWith: 9,
 };
 
-export { Operators };
+const IMAGES_ENUM = {
+  add: 1,
+  delete: 2,
+  update: 3,
+};
+
+export { OPERATORS, IMAGES_ENUM };

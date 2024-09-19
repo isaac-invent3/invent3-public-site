@@ -37,14 +37,14 @@ const Description = (description: string) => {
 const Technician = (info: MaintenancePlan) => {
   return (
     <VStack alignItems="flex-start" spacing="4px">
-      <Text color="black">{info.owner}</Text>
+      <Text color="black">{info.contactPerson}</Text>
       <Text
         color="neutral.600"
         fontSize="10px"
         lineHeight="11.88px"
         fontWeight={400}
       >
-        {info.ownerContactNo}
+        {info.contactPersonPhoneNo}
       </Text>
       <Text
         color="neutral.600"
@@ -52,7 +52,7 @@ const Technician = (info: MaintenancePlan) => {
         lineHeight="11.88px"
         fontWeight={400}
       >
-        {info.ownerContactEmail}
+        {info.contactPersonEmail}
       </Text>
     </VStack>
   );
@@ -80,7 +80,7 @@ const HistoryTab = () => {
             : 'N/A',
         header: 'Date',
       }),
-      columnHelper.accessor('typeName', {
+      columnHelper.accessor('maintenanceType', {
         cell: (info) => info.getValue(),
         header: 'Maintenance Type',
       }),
@@ -89,16 +89,16 @@ const HistoryTab = () => {
           info.getValue() ? Description(info.getValue()) : 'N/A',
         header: 'Description',
       }),
-      columnHelper.accessor('ownerContactEmail', {
+      columnHelper.accessor('contactPerson', {
         cell: (info) =>
-          !info.row.original.owner &&
-          !info.row.original.ownerContactEmail &&
-          !info.row.original.ownerContactNo
+          !info.row.original.contactPerson &&
+          !info.row.original.contactPersonEmail &&
+          !info.row.original.contactPersonPhoneNo
             ? 'N/A'
             : Technician(info.row.original),
         header: 'Contact Person',
       }),
-      columnHelper.accessor('statusId', {
+      columnHelper.accessor('totalCost', {
         cell: (info) => amountFormatter(info.getValue() ?? 0),
         header: 'Cost',
       }),

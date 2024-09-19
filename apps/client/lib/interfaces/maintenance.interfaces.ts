@@ -9,12 +9,15 @@ interface MaintenancePlan {
   durationInHours: number;
   comments: string;
   ticketId: number;
+  assignedTo: number;
   statusId: number;
   currentStatus: string;
-  owner: string;
-  ownerContactNo: string;
-  ownerContactEmail: string;
-  typeName: string;
+  contactPerson: string;
+  contactPersonPhoneNo: string;
+  contactPersonEmail: string;
+  maintenanceType: string;
+  createdBy: string;
+  totalCost: number;
 }
 
 export type { MaintenancePlan };

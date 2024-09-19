@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import GenericSuccessModal from './GenericSuccessModal';
 import Button from '../../UI/Button';
@@ -6,9 +7,10 @@ import { HStack, VStack } from '@chakra-ui/react';
 interface AddAssetSuccessModalProps {
   isOpen: boolean;
   onClose: () => void;
+  handleAction: (type: 'childAsset' | 'parentAsset') => void;
 }
 const AddAssetSuccessModal = (props: AddAssetSuccessModalProps) => {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, handleAction } = props;
   return (
     <GenericSuccessModal
       isOpen={isOpen}
@@ -17,10 +19,19 @@ const AddAssetSuccessModal = (props: AddAssetSuccessModalProps) => {
     >
       <VStack spacing="24px" width="full">
         <HStack spacing="16px" width="full">
-          <Button customStyles={{ width: 'full' }} variant="outline">
+          <Button
+            customStyles={{ width: 'full' }}
+            variant="outline"
+            handleClick={() => handleAction('childAsset')}
+          >
             Add a Child Asset
           </Button>
-          <Button customStyles={{ width: 'full' }}>Add Another Asset</Button>
+          <Button
+            customStyles={{ width: 'full' }}
+            handleClick={() => handleAction('parentAsset')}
+          >
+            Add Another Asset
+          </Button>
         </HStack>
         <Button
           href="/asset-management"

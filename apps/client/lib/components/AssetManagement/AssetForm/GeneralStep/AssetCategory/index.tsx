@@ -15,9 +15,9 @@ import { useSearchSubCategoryMutation } from '~/lib/redux/services/asset/categor
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { generateOptions } from '~/lib/utils/helperFunctions';
-import { Operators } from '~/lib/utils/operators';
 import CategoryModal from './Modals/CategoryModal';
 import SubCategoryModal from './Modals/SubCategoryModal';
+import { OPERATORS } from '~/lib/utils/constants';
 
 const AssetCategory = () => {
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
@@ -39,7 +39,7 @@ const AssetCategory = () => {
         {
           columnName: 'categoryId',
           columnValue: selectedCategory?.toString(),
-          operation: Operators.Equals,
+          operation: OPERATORS.Equals,
         },
       ],
       pageNumber,

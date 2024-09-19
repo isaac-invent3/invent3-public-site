@@ -104,8 +104,16 @@ interface Asset {
   y2dmaintenanceCost: number;
 }
 
+interface AssetFormImages {
+  imageId: number | null;
+  imageName: string | null;
+  base64PhotoImage: string;
+  isPrimaryImage: boolean;
+}
+
 interface AssetFormDetails {
-  images: (string | File)[];
+  images: AssetFormImages[];
+  assetId: number | null;
   assetName: string;
   brandName: string;
   modelRef: string;
@@ -199,6 +207,23 @@ interface ContractDocument {
   vendorName: string;
 }
 
+interface AssetImages {
+  isNew: boolean;
+  createdDate: string;
+  createdBy: string;
+  lastModifiedDate: string;
+  lastModifiedBy: string;
+  isDeleted: boolean;
+  deletedDate: string;
+  deletedBy: string;
+  guid: string;
+  imageId: number;
+  imageName: string;
+  photoImage: string;
+  isPrimaryImage: true;
+  assetId: number;
+}
+
 export type {
   AssetLocation,
   Asset,
@@ -208,4 +233,6 @@ export type {
   FormLocation,
   AcquisitionInfo,
   ContractDocument,
+  AssetImages,
+  AssetFormImages,
 };

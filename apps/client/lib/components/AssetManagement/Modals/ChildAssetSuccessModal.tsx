@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import GenericSuccessModal from './GenericSuccessModal';
 import Button from '../../UI/Button';
@@ -6,9 +7,10 @@ import { HStack } from '@chakra-ui/react';
 interface ChildAssetSuccessModalProps {
   isOpen: boolean;
   onClose: () => void;
+  handleAction: (type: 'childAsset' | 'parentAsset') => void;
 }
 const ChildAssetSuccessModal = (props: ChildAssetSuccessModalProps) => {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, handleAction } = props;
   return (
     <GenericSuccessModal
       isOpen={isOpen}
@@ -23,7 +25,10 @@ const ChildAssetSuccessModal = (props: ChildAssetSuccessModalProps) => {
         >
           Back to Grid
         </Button>
-        <Button customStyles={{ width: 'full' }}>
+        <Button
+          customStyles={{ width: 'full' }}
+          handleClick={() => handleAction('childAsset')}
+        >
           Add Another Child Asset
         </Button>
       </HStack>

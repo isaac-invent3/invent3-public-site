@@ -3,6 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import {
   Asset,
   AssetFormDetails,
+  AssetImages,
   AssetStatusType,
 } from '~/lib/interfaces/asset.interfaces';
 
@@ -70,6 +71,7 @@ const initialValue = {
 
 const initialAssetForm = {
   images: [],
+  assetId: null,
   assetName: '',
   description: '',
   assetCode: '',
@@ -113,11 +115,13 @@ const initialAssetForm = {
 export interface SliceProps {
   asset: Asset;
   assetForm: AssetFormDetails;
+  assetImages: AssetImages[];
 }
 
 const initialState: SliceProps = {
   asset: initialValue,
   assetForm: initialAssetForm,
+  assetImages: [],
 };
 
 export const assetSlice = createSlice({
@@ -128,6 +132,12 @@ export const assetSlice = createSlice({
       state.asset = payload;
     },
     clearAsset: (state) => {
+      state.asset = initialValue;
+    },
+    setAssetImages: (state, { payload }: PayloadAction<AssetImages[]>) => {
+      state.assetImages = payload;
+    },
+    clearAssetImages: (state) => {
       state.asset = initialValue;
     },
     setAssetForm: (state, { payload }: PayloadAction<AssetFormDetails>) => {

@@ -2,8 +2,9 @@ import { Flex, HStack, VStack } from '@chakra-ui/react';
 import Image from 'next/image';
 import React from 'react';
 import DetailHeader from '~/lib/components/UI/DetailHeader';
+import { AssetFormImages } from '~/lib/interfaces/asset.interfaces';
 
-const Images = ({ images }: { images: (string | File)[] }) => {
+const Images = ({ images }: { images: AssetFormImages[] }) => {
   return (
     <VStack spacing="8px" width="full" alignItems="flex-start">
       <DetailHeader variant="primary">Asset Images</DetailHeader>
@@ -17,15 +18,7 @@ const Images = ({ images }: { images: (string | File)[] }) => {
             key={index}
             overflow="hidden"
           >
-            <Image
-              src={
-                typeof image === 'string'
-                  ? image
-                  : URL.createObjectURL(image as File)
-              }
-              alt="asset image"
-              fill
-            />
+            <Image src={image.base64PhotoImage} alt="asset image" fill />
           </Flex>
         ))}
       </HStack>

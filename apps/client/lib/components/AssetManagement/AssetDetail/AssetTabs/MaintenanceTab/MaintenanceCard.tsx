@@ -58,14 +58,16 @@ const MaintenanceCard = (props: MaintenanceCardProps) => {
               <Text color="neutral.800" size="lg" fontWeight={800}>
                 {data?.planName}
               </Text>
-              <Text color="neutral.600">{data?.typeName}</Text>
+              <Text color="neutral.600">{data?.maintenanceType}</Text>
             </VStack>
             <VStack alignItems="flex-start" spacing="2px">
               <Text color="neutral.600">
                 {dateFormatter(data?.scheduledDate, 'HH:mm')} -{' '}
                 {endTime ? endTime.format('HH:mm') : 'N/A'}
               </Text>
-              <Text color="neutral.600">Created By: N/A</Text>
+              <Text color="neutral.600">
+                Created By: {data?.createdBy ?? 'N/A'}
+              </Text>
             </VStack>
           </VStack>
         </HStack>
@@ -78,13 +80,13 @@ const MaintenanceCard = (props: MaintenanceCardProps) => {
             Contact Person
           </Text>
           <Text size="md" color="neutral.600">
-            {data?.owner ?? 'N/A'}
+            {data?.contactPerson ?? 'N/A'}
           </Text>
           <Text size="md" color="neutral.600">
-            {data?.ownerContactNo ?? 'N/A'}
+            {data?.contactPersonPhoneNo ?? 'N/A'}
           </Text>
           <Text size="md" color="neutral.600">
-            {data?.ownerContactEmail ?? 'N/A'}
+            {data?.contactPersonEmail ?? 'N/A'}
           </Text>
         </VStack>
       </GridItem>

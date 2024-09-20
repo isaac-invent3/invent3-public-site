@@ -9,15 +9,18 @@ import FloorSelect from '../SelectInputs/FloorSelect';
 
 interface FloorProps {
   handleReadableLocation: (option: Option, key: keyof FormLocation) => void;
+  buildingId: number | undefined;
 }
 const Floor = (props: FloorProps) => {
-  const { handleReadableLocation } = props;
+  const { handleReadableLocation, buildingId } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
       <VStack alignItems="flex-end" width="full">
         <FloorSelect
           handleSelect={(option) => handleReadableLocation(option, 'floor')}
+          buildingId={buildingId}
+          type="specificById"
         />
         <AddButton handleClick={onOpen}>Add New Floor</AddButton>
       </VStack>

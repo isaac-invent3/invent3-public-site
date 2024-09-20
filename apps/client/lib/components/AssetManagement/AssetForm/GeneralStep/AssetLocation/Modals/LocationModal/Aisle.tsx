@@ -10,9 +10,10 @@ import AisleSelect from '../SelectInputs/AisleSelect';
 
 interface AisleProps {
   handleReadableLocation: (option: Option, key: keyof FormLocation) => void;
+  roomId: number | undefined;
 }
 const Aisle = (props: AisleProps) => {
-  const { handleReadableLocation } = props;
+  const { handleReadableLocation, roomId } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -20,6 +21,8 @@ const Aisle = (props: AisleProps) => {
       <VStack alignItems="flex-end" width="full">
         <AisleSelect
           handleSelect={(option) => handleReadableLocation(option, 'aisle')}
+          type="specificById"
+          roomId={roomId}
         />
         <AddButton handleClick={onOpen}>Add New Aisle</AddButton>
       </VStack>

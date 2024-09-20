@@ -6,104 +6,38 @@ import FormStepper from './FormStepper';
 import GeneralStep from './GeneralStep';
 import AcquisitionStep from './AcquisitionStep';
 import DocumentStep from './DocumentStep';
-import { AssetFormDetails } from '~/lib/interfaces/asset.interfaces';
 import SummaryStep from './SummaryStep';
 import SlideTransition from '../../UI/SlideTransition';
 import Header from './Header';
 
-export const initialAssetFormValue = {
-  images: [],
-  assetId: null,
-  assetName: '',
-  description: '',
-  assetCode: '',
-  brandName: '',
-  modelRef: '',
-  serialNo: '',
-  codePrefix: '',
-  codeSuffix: '',
-  categoryId: '',
-  subCategoryId: '',
-  weightKg: undefined,
-  widthCm: undefined,
-  heightCm: undefined,
-  depthCm: undefined,
-  currentOwner: '',
-  department: '',
-  assignedTo: '',
-  responsibleFor: '',
-  acquisitionDate: '',
-  conditionId: '',
-  initialValue: undefined,
-  warrantyStartDate: '',
-  warrantyEndDate: '',
-  warrantyTerms: '',
-  paymentTerms: '',
-  depreciationStartDate: '',
-  depreciationMethod: '',
-  depreciationRate: undefined,
-  vendorId: '',
-  vendorDetail: '',
-  documents: [],
-  facilityId: null,
-  buildingId: null,
-  floorId: null,
-  departmentId: null,
-  roomId: null,
-  aisleId: null,
-  shelfId: null,
-};
-
 interface AssetFormProps {
   type: 'create' | 'edit';
-  data?: AssetFormDetails;
 }
 const AssetForm = (props: AssetFormProps) => {
-  const { type, data } = props;
-  const [activeStep, setActiveStep] = useState(1);
-  const [formDetails, setFormDetails] = useState<AssetFormDetails>(
-    data ?? initialAssetFormValue
-  );
+  const { type } = props;
+  const [activeStep, setActiveStep] = useState(0);
 
   return (
     <Flex width="full" direction="column" pb="24px">
       <Header type={type} />
       <Flex width="full" gap="8px" mt="32px" direction="column">
         <FormStepper currentStep={activeStep} />
-        {activeStep === 0 && (
-          <GeneralStep
-            setActiveStep={setActiveStep}
-            formDetails={formDetails}
-            setFormDetails={setFormDetails}
-          />
-        )}
+        <GeneralStep activeStep={activeStep} setActiveStep={setActiveStep} />
         <SlideTransition trigger={activeStep === 1}>
-          {activeStep === 1 && (
-            <AcquisitionStep
-              setActiveStep={setActiveStep}
-              formDetails={formDetails}
-              setFormDetails={setFormDetails}
-            />
-          )}
+          <AcquisitionStep
+            activeStep={activeStep}
+            setActiveStep={setActiveStep}
+          />
         </SlideTransition>
         <SlideTransition trigger={activeStep === 2}>
-          {activeStep === 2 && (
-            <DocumentStep
-              setActiveStep={setActiveStep}
-              formDetails={formDetails}
-              setFormDetails={setFormDetails}
-            />
-          )}
+          <DocumentStep activeStep={activeStep} setActiveStep={setActiveStep} />
         </SlideTransition>
         <SlideTransition trigger={activeStep === 3}>
-          {activeStep === 3 && (
-            <SummaryStep
-              setAssetFormDetails={setFormDetails}
-              assetFormDetails={formDetails}
-              setActiveStep={setActiveStep}
-              type={type}
-            />
-          )}
+          <SummaryStep
+            activeStep={activeStep}
+            setActiveStep={setActiveStep}
+            type={type}
+          />
         </SlideTransition>
       </Flex>
     </Flex>

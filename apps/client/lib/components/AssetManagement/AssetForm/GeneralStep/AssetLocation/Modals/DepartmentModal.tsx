@@ -54,7 +54,7 @@ const DepartmentModal = (props: DepartmentModalProps) => {
 
             {/* Main Form Starts Here */}
             <VStack width="full" spacing="16px">
-              <FloorSelect />
+              <FloorSelect type="general" />
               <Field
                 as={TextInput}
                 name="departmentName"

@@ -54,7 +54,7 @@ const FloorModal = (props: FloorModalProps) => {
 
             {/* Main Form Starts Here */}
             <VStack width="full" spacing="16px">
-              <BuildingSelect />
+              <BuildingSelect type="general" />
               <Field
                 as={TextInput}
                 name="floorName"

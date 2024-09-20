@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import SelectInput from '~/lib/components/UI/Select';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { Option } from '~/lib/interfaces/general.interfaces';
+import { Option, SearchCriterion } from '~/lib/interfaces/general.interfaces';
 import { OPERATORS } from '~/lib/utils/constants';
 import { generateOptions } from '~/lib/utils/helperFunctions';
 
@@ -17,6 +17,9 @@ interface BuildingSelectProps {
   mutationFn: any;
   pageNumber: number;
   setPageNumber: React.Dispatch<React.SetStateAction<number>>;
+  // eslint-disable-next-line no-unused-vars
+  specialSearch?: (searchValue: string) => SearchCriterion[];
+  fetchKey?: string | number | null;
 }
 
 const GenericAsyncSelect = (props: BuildingSelectProps) => {
@@ -31,9 +34,15 @@ const GenericAsyncSelect = (props: BuildingSelectProps) => {
     mutationFn,
     pageNumber,
     setPageNumber,
+    specialSearch,
+    fetchKey,
   } = props;
   const { handleSubmit } = useCustomMutation();
   const [options, setOptions] = useState<Option[]>([]);
+  const [prevPageNumber, setPrevPageNumber] = useState(1);
+  const [prevFetchKey, setPrevFetchKey] = useState<string | number | null>(
+    null
+  );
 
   const handlePagination = () => {
     if (data?.data && data?.data?.totalPages > pageNumber) {
@@ -43,13 +52,15 @@ const GenericAsyncSelect = (props: BuildingSelectProps) => {
 
   const handleSearch = async (inputValue: string): Promise<Option[]> => {
     const searchCriterion = {
-      criterion: [
-        {
-          columnName: typeof labelKey === 'string' ? labelKey : labelKey[0],
-          columnValue: inputValue,
-          operation: OPERATORS.Contains,
-        },
-      ],
+      criterion: specialSearch
+        ? specialSearch(inputValue)
+        : [
+            {
+              columnName: typeof labelKey === 'string' ? labelKey : labelKey[0],
+              columnValue: inputValue,
+              operation: OPERATORS.Contains,
+            },
+          ],
       pageNumber: 1,
       pageSize: 25,
     };
@@ -62,6 +73,14 @@ const GenericAsyncSelect = (props: BuildingSelectProps) => {
     return formattedOptions;
   };
 
+  // Reset page number when fetchKey changes
+  useEffect(() => {
+    if (fetchKey !== prevFetchKey) {
+      setPageNumber(1);
+      setPrevPageNumber(1);
+    }
+  }, [fetchKey]);
+
   useEffect(() => {
     if (data?.data) {
       const formattedOptions = generateOptions(
@@ -69,9 +88,20 @@ const GenericAsyncSelect = (props: BuildingSelectProps) => {
         labelKey,
         valueKey
       );
-      setOptions((prev) => [...prev, ...formattedOptions]);
+
+      // If fetchKey is provided and it has changed, replace the options
+      if (fetchKey !== undefined && fetchKey !== prevFetchKey) {
+        setOptions(formattedOptions); // Replace options
+        setPrevFetchKey(fetchKey); // Update prevFetchKey
+        setPrevPageNumber(pageNumber);
+        // Data are unsually undefined when fetching so this component is called twice and the condition fixes that
+      } else if (fetchKey === prevFetchKey && pageNumber === prevPageNumber) {
+        setOptions(formattedOptions);
+      } else if (!fetchKey) {
+        setOptions((prev) => [...prev, ...formattedOptions]);
+      }
     }
-  }, [data]);
+  }, [data, fetchKey]);
 
   return (
     <SelectInput

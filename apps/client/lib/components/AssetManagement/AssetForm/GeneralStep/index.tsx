@@ -8,17 +8,19 @@ import AssetDimension from './AssetDimension';
 import AssetOwner from './AssetOwner';
 import AssetNameCodeDescription from './AssetNameCodeDescription';
 import FormActionButtons from '../FormActionButtons';
-import { AssetFormDetails } from '~/lib/interfaces/asset.interfaces';
 import AssetLocation from './AssetLocation';
 import AssetCategory from './AssetCategory';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { updateAssetForm } from '~/lib/redux/slices/assetSlice';
 
 interface GeneralStepProps {
-  setFormDetails: React.Dispatch<React.SetStateAction<AssetFormDetails>>;
+  activeStep: number;
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
-  formDetails: AssetFormDetails;
 }
 const GeneralStep = (props: GeneralStepProps) => {
-  const { setActiveStep, setFormDetails, formDetails } = props;
+  const { activeStep, setActiveStep } = props;
+  const formDetails = useAppSelector((state) => state.asset.assetForm);
+  const dispatch = useAppDispatch();
 
   const formik = useFormik({
     initialValues: {
@@ -36,27 +38,31 @@ const GeneralStep = (props: GeneralStepProps) => {
       weightKg: formDetails.weightKg ?? undefined,
       widthCm: formDetails.widthCm ?? undefined,
       heightCm: formDetails.heightCm ?? undefined,
-      depthCm: formDetails.depthCm ?? undefined,
+      lengthCm: formDetails.lengthCm ?? undefined,
       currentOwner: formDetails.currentOwner ?? '',
-      department: formDetails.department ?? '',
       assignedTo: formDetails.assignedTo ?? '',
       responsibleFor: formDetails.responsibleFor ?? '',
-      facilityId: formDetails.facilityId ?? null,
-      floorId: formDetails.floorId ?? null,
-      departmentId: formDetails.departmentId ?? null,
-      roomId: formDetails.roomId ?? null,
-      aisleId: formDetails.aisleId ?? null,
-      shelfId: formDetails.shelfId ?? null,
+      facilityId: formDetails.facilityId ?? undefined,
+      floorId: formDetails.floorId ?? undefined,
+      departmentId: formDetails.departmentId ?? undefined,
+      roomId: formDetails.roomId ?? undefined,
+      aisleId: formDetails.aisleId ?? undefined,
+      shelfId: formDetails.shelfId ?? undefined,
     },
     validationSchema: generalInfoSchema,
     onSubmit: async (values) => {
-      setFormDetails((prev) => ({ ...prev, ...values }));
+      dispatch(updateAssetForm(values));
       setActiveStep(1);
     },
   });
 
   return (
-    <Flex width="full" height="full" direction="column">
+    <Flex
+      width="full"
+      height="full"
+      direction="column"
+      display={activeStep === 0 ? 'flex' : 'none'}
+    >
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
           <VStack

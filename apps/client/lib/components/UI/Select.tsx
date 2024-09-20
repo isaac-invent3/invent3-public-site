@@ -208,7 +208,7 @@ function SelectInput({
               lineHeight: '16.63px',
             }),
           }}
-          value={options.find((option) => option.value === meta.value)}
+          value={options.find((option) => option.value === meta.value) || null}
           onChange={(selectedOptions) => {
             if (selectedOptions) {
               handleSelect && handleSelect(selectedOptions as Option);

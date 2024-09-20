@@ -1,8 +1,10 @@
 import { Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import DetailHeader from '~/lib/components/UI/DetailHeader';
+import { useAppSelector } from '~/lib/redux/hooks';
 
-const Description = ({ description }: { description: string }) => {
+const Description = () => {
+  const { description } = useAppSelector((state) => state.asset.assetForm);
   return (
     <VStack spacing="8px" width="full" alignItems="flex-start">
       <DetailHeader variant="primary">Description</DetailHeader>
@@ -16,6 +18,7 @@ const Description = ({ description }: { description: string }) => {
         bgColor="#F0F0F0"
         color="neutral.700"
         width="full"
+        minH="86px"
       >
         {description}
       </Text>

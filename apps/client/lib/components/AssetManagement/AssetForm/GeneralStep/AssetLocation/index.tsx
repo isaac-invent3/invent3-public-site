@@ -11,38 +11,32 @@ import {
 import SectionInfo from '../../SectionInfo';
 import AddButton from '../../AddButton';
 import LocationModal from './Modals/LocationModal';
-import { useEffect, useState } from 'react';
-import {
-  AssetFormDetails,
-  FormLocation,
-} from '~/lib/interfaces/asset.interfaces';
+import { AssetFormDetails } from '~/lib/interfaces/asset.interfaces';
 import ErrorMessage from '~/lib/components/UI/ErrorMessage';
 import { FormikErrors } from 'formik';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 interface AssetLocationProps {
   errors: FormikErrors<AssetFormDetails>;
   setFieldValue: (
     field: keyof AssetFormDetails,
-    value: string | number | null,
+    value: string | number | undefined,
     shouldValidate?: boolean
   ) => void;
 }
 const AssetLocation = (props: AssetLocationProps) => {
+  const {
+    facilityName,
+    buildingName,
+    floorName,
+    departmentName,
+    roomName,
+    aisleName,
+    shelfName,
+  } = useAppSelector((state) => state.asset.assetForm);
   const { errors, setFieldValue } = props;
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const [location, setLocation] = useState<FormLocation>({
-    facility: '',
-    building: '',
-    floor: '',
-    department: '',
-    room: '',
-    aisle: '',
-    shelf: '',
-  });
 
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
   return (
     <HStack
       width="full"
@@ -58,17 +52,27 @@ const AssetLocation = (props: AssetLocationProps) => {
         />
       </Flex>
       <Grid width="full" gap="16px" templateColumns="repeat(4, 1fr)">
-        {location.facility && (
+        {facilityName && (
           <GridItem colSpan={2}>
             <Text py="14px" px="16px" bgColor="neutral.100" rounded="8px">
-              {Object.values(location).filter(Boolean).join(', ')}
+              {[
+                facilityName,
+                buildingName,
+                floorName,
+                departmentName,
+                roomName,
+                aisleName,
+                shelfName,
+              ]
+                .filter(Boolean)
+                .join(', ')}
             </Text>
           </GridItem>
         )}
         <GridItem colSpan={1}>
           <VStack alignItems="flex-start" justifyContent="center" height="full">
             <AddButton handleClick={onOpen}>
-              {location?.facility ? 'Edit' : 'Add'} Location
+              {facilityName ? 'Edit' : 'Add'} Location
             </AddButton>
             {errors.facilityId && (
               <ErrorMessage>Location is required</ErrorMessage>
@@ -78,7 +82,6 @@ const AssetLocation = (props: AssetLocationProps) => {
         <LocationModal
           isOpen={isOpen}
           onClose={onClose}
-          setLocation={setLocation}
           setFieldValue={setFieldValue}
         />
       </Grid>

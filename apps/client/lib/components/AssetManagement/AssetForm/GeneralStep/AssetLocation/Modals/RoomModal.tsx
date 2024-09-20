@@ -54,7 +54,7 @@ const RoomModal = (props: RoomModalProps) => {
 
             {/* Main Form Starts Here */}
             <VStack width="full" spacing="16px">
-              <DepartmentSelect />
+              <DepartmentSelect type="general" />
               <Field
                 as={TextInput}
                 name="roomName"

@@ -1,4 +1,4 @@
-import { Flex, HStack, Skeleton } from '@chakra-ui/react';
+import { Flex, Grid, GridItem, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 import DetailSection from '../../../DetailSection';
 import VendorDetails from './VendorDetails';
@@ -42,21 +42,25 @@ const InfoOne = (props: InfoOneProps) => {
     },
   ];
   return (
-    <HStack
-      width="full"
-      justifyContent="space-between"
-      spacing="66px"
-      alignItems="flex-start"
-    >
-      <Flex width="min-content" whiteSpace="nowrap">
-        <Skeleton isLoaded={!isLoading} width="full">
-          <DetailSection minWidth="105px" details={details} />
+    <Grid templateColumns="repeat(3, 1fr)" gap="100px" width="full">
+      <GridItem colSpan={1}>
+        <Flex width="max-content" whiteSpace="nowrap">
+          <Skeleton isLoaded={!isLoading} width="full">
+            <DetailSection minWidth="105px" details={details} />
+          </Skeleton>
+        </Flex>
+      </GridItem>
+      <GridItem colSpan={2}>
+        <Skeleton
+          isLoaded={!isLoading}
+          width="full"
+          rounded="8px"
+          height="full"
+        >
+          <VendorDetails data={data} />
         </Skeleton>
-      </Flex>
-      <Skeleton isLoaded={!isLoading} width="full" rounded="8px" height="full">
-        <VendorDetails data={data} />
-      </Skeleton>
-    </HStack>
+      </GridItem>
+    </Grid>
   );
 };
 

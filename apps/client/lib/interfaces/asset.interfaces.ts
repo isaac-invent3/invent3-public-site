@@ -127,9 +127,8 @@ interface AssetFormDetails {
   weightKg: number | undefined;
   widthCm: number | undefined;
   heightCm: number | undefined;
-  depthCm: number | undefined;
+  lengthCm: number | undefined;
   currentOwner: string;
-  department: string;
   assignedTo: string;
   responsibleFor: string;
   acquisitionDate: string;
@@ -143,15 +142,33 @@ interface AssetFormDetails {
   depreciationMethod: string;
   depreciationRate: number | undefined;
   vendorId: string;
-  vendorDetail: string;
   documents: (string | File)[];
-  facilityId: number | null;
-  buildingId: number | null;
-  floorId: number | null;
-  departmentId: number | null;
-  roomId: number | null;
-  aisleId: number | null;
-  shelfId: number | null;
+  facilityId: number | undefined;
+  buildingId: number | undefined;
+  floorId: number | undefined;
+  departmentId: number | undefined;
+  roomId: number | undefined;
+  aisleId: number | undefined;
+  shelfId: number | undefined;
+  currentOwnerName: string | undefined;
+  responsibleForName: string | undefined;
+  assignedToName: string | undefined;
+  facilityName: string | undefined;
+  buildingName: string | undefined;
+  floorName: string | undefined;
+  departmentName: string | undefined;
+  roomName: string | undefined;
+  aisleName: string | undefined;
+  shelfName: string | undefined;
+  categoryName: string | undefined;
+  subCategoryName: string | undefined;
+  conditionName: string | undefined;
+  vendorDetails: {
+    vendorName: string | undefined;
+    address: string | undefined;
+    phoneNumber: string | undefined;
+    emailAddress: string | undefined;
+  };
 }
 
 interface FilterInput {
@@ -159,14 +176,19 @@ interface FilterInput {
   location: (string | number)[];
 }
 
+interface LocationOption {
+  label: string | undefined;
+  value: number | undefined;
+}
+
 interface FormLocation {
-  facility: string;
-  building: string;
-  floor: string;
-  department: string;
-  room: string;
-  aisle: string;
-  shelf: string;
+  facility: LocationOption;
+  building: LocationOption;
+  floor: LocationOption;
+  department: LocationOption;
+  room: LocationOption;
+  aisle: LocationOption;
+  shelf: LocationOption;
 }
 
 interface AcquisitionInfo {

@@ -54,7 +54,7 @@ const AisleModal = (props: AisleModalProps) => {
 
             {/* Main Form Starts Here */}
             <VStack width="full" spacing="16px">
-              <RoomSelect />
+              <RoomSelect type="general" />
               <Field
                 as={TextInput}
                 name="aisleName"

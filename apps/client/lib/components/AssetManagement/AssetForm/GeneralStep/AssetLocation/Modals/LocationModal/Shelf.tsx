@@ -9,15 +9,18 @@ import ShelfSelect from '../SelectInputs/ShelfSelect';
 
 interface ShelfProps {
   handleReadableLocation: (option: Option, key: keyof FormLocation) => void;
+  aisleId: number | undefined;
 }
 const Shelf = (props: ShelfProps) => {
-  const { handleReadableLocation } = props;
+  const { handleReadableLocation, aisleId } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
       <VStack alignItems="flex-end" width="full">
         <ShelfSelect
           handleSelect={(option) => handleReadableLocation(option, 'shelf')}
+          aisleId={aisleId}
+          type="specificById"
         />
         <AddButton handleClick={onOpen}>Add New Shelf</AddButton>
       </VStack>

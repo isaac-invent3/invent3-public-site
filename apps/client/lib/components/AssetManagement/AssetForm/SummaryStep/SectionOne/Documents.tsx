@@ -2,8 +2,10 @@ import { Flex, HStack, Text, VStack } from '@chakra-ui/react';
 import Image from 'next/image';
 import React from 'react';
 import DetailHeader from '~/lib/components/UI/DetailHeader';
+import { useAppSelector } from '~/lib/redux/hooks';
 
-const Documents = ({ documents }: { documents: (string | File)[] }) => {
+const Documents = () => {
+  const { documents } = useAppSelector((state) => state.asset.assetForm);
   return (
     <VStack spacing="8px" width="full" alignItems="flex-start">
       <DetailHeader variant="primary">Documents</DetailHeader>

@@ -9,15 +9,18 @@ import RoomModal from '../RoomModal';
 
 interface RoomProps {
   handleReadableLocation: (option: Option, key: keyof FormLocation) => void;
+  departmentId: number | undefined;
 }
 const Room = (props: RoomProps) => {
-  const { handleReadableLocation } = props;
+  const { handleReadableLocation, departmentId } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
       <VStack alignItems="flex-end" width="full">
         <RoomSelect
           handleSelect={(option) => handleReadableLocation(option, 'room')}
+          departmentId={departmentId}
+          type="specificById"
         />
         <AddButton handleClick={onOpen}>Add New Room</AddButton>
       </VStack>

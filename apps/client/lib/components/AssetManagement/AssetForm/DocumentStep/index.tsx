@@ -4,15 +4,17 @@ import React from 'react';
 import { documentSchema } from '~/lib/schemas/asset/main.schema';
 import FormActionButtons from '../FormActionButtons';
 import AddDocument from './AddDocument';
-import { AssetFormDetails } from '~/lib/interfaces/asset.interfaces';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { updateAssetForm } from '~/lib/redux/slices/assetSlice';
 
 interface DocumentStepProps {
-  setFormDetails: React.Dispatch<React.SetStateAction<AssetFormDetails>>;
+  activeStep: number;
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
-  formDetails: AssetFormDetails;
 }
 const DocumentStep = (props: DocumentStepProps) => {
-  const { setActiveStep, setFormDetails, formDetails } = props;
+  const { activeStep, setActiveStep } = props;
+  const formDetails = useAppSelector((state) => state.asset.assetForm);
+  const dispatch = useAppDispatch();
 
   const initialValues = {
     documents: formDetails.documents ?? [],
@@ -22,13 +24,18 @@ const DocumentStep = (props: DocumentStepProps) => {
     initialValues,
     validationSchema: documentSchema,
     onSubmit: async (values) => {
-      setFormDetails((prev) => ({ ...prev, ...values }));
+      dispatch(updateAssetForm(values));
       setActiveStep(3);
     },
   });
 
   return (
-    <Flex width="full" height="full" direction="column">
+    <Flex
+      width="full"
+      height="full"
+      direction="column"
+      display={activeStep === 2 ? 'flex' : 'none'}
+    >
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
           <VStack

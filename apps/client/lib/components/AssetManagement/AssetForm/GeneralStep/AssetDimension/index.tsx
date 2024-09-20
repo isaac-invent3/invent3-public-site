@@ -15,7 +15,7 @@ const AssetDimension = () => {
     weight: 'Kg',
     width: 'Cm',
     height: 'Cm',
-    depth: 'Cm',
+    length: 'Cm',
   });
   return (
     <HStack
@@ -35,20 +35,19 @@ const AssetDimension = () => {
         <HStack spacing={0} position="relative">
           <Field
             as={TextInput}
-            name="weightKg"
+            name="lengthCm"
             type="number"
-            label="Weight"
+            label="Length"
             customStyle={{ pr: '53px' }}
           />
           <DimensionDropDown
             options={sampleDimensions}
-            value={dimensions.weight}
+            value={dimensions.length}
             handleChange={(value: string) =>
-              setDimensions((prev) => ({ ...prev, weight: value }))
+              setDimensions((prev) => ({ ...prev, depth: value }))
             }
           />
         </HStack>
-
         <HStack spacing={0} position="relative">
           <Field
             as={TextInput}
@@ -82,20 +81,19 @@ const AssetDimension = () => {
             }
           />
         </HStack>
-
         <HStack spacing={0} position="relative">
           <Field
             as={TextInput}
-            name="depthCm"
+            name="weightKg"
             type="number"
-            label="Depth"
+            label="Weight"
             customStyle={{ pr: '53px' }}
           />
           <DimensionDropDown
             options={sampleDimensions}
-            value={dimensions.depth}
+            value={dimensions.weight}
             handleChange={(value: string) =>
-              setDimensions((prev) => ({ ...prev, depth: value }))
+              setDimensions((prev) => ({ ...prev, weight: value }))
             }
           />
         </HStack>

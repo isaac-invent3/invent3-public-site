@@ -1,10 +1,13 @@
 import { Flex, HStack, SimpleGrid } from '@chakra-ui/react';
 import React from 'react';
 import SectionInfo from '../../SectionInfo';
-import DepartmentSelect from '../AssetLocation/Modals/SelectInputs/DepartmentSelect';
-import UserSelect from './UserSelect';
+import EmployeeSelect from './EmployeeSelect';
+import { useAppDispatch } from '~/lib/redux/hooks';
+import { updateAssetForm } from '~/lib/redux/slices/assetSlice';
 
 const AssetOwner = () => {
+  const dispatch = useAppDispatch();
+
   return (
     <HStack width="full" alignItems="flex-start" spacing="104px">
       <Flex width="full" maxW="118px">
@@ -15,10 +18,27 @@ const AssetOwner = () => {
         />
       </Flex>
       <SimpleGrid columns={4} gap="11px" width="full">
-        <UserSelect selectName="currentOwner" selectTitle="Owner" />
-        <DepartmentSelect />
-        <UserSelect selectName="assignedTo" selectTitle="Assigned to" />
-        <UserSelect selectName="responsibleFor" selectTitle="Responsible for" />
+        <EmployeeSelect
+          selectName="currentOwner"
+          selectTitle="Owner"
+          handleSelect={(option) =>
+            dispatch(updateAssetForm({ currentOwnerName: option.label }))
+          }
+        />
+        <EmployeeSelect
+          selectName="assignedTo"
+          selectTitle="Assigned to"
+          handleSelect={(option) =>
+            dispatch(updateAssetForm({ assignedToName: option.label }))
+          }
+        />
+        <EmployeeSelect
+          selectName="responsibleFor"
+          selectTitle="Responsible for"
+          handleSelect={(option) =>
+            dispatch(updateAssetForm({ responsibleForName: option.label }))
+          }
+        />
       </SimpleGrid>
     </HStack>
   );

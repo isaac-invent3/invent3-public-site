@@ -8,15 +8,17 @@ import PurchasePrice from './PurchasePrice';
 import WarrantyDetails from './WarrantyDetails';
 import DepreciationDetails from './DepreciationDetails';
 import VendorDetails from './VendorDetails';
-import { AssetFormDetails } from '~/lib/interfaces/asset.interfaces';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { updateAssetForm } from '~/lib/redux/slices/assetSlice';
 
 interface AcquisitionStepProps {
-  setFormDetails: React.Dispatch<React.SetStateAction<AssetFormDetails>>;
+  activeStep: number;
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
-  formDetails: AssetFormDetails;
 }
 const AcquisitionStep = (props: AcquisitionStepProps) => {
-  const { setActiveStep, setFormDetails, formDetails } = props;
+  const { activeStep, setActiveStep } = props;
+  const formDetails = useAppSelector((state) => state.asset.assetForm);
+  const dispatch = useAppDispatch();
 
   const initialValues = {
     acquisitionDate: formDetails.acquisitionDate ?? '',
@@ -30,20 +32,24 @@ const AcquisitionStep = (props: AcquisitionStepProps) => {
     depreciationMethod: formDetails.depreciationMethod ?? '',
     depreciationRate: formDetails.depreciationRate ?? undefined,
     vendorId: formDetails.vendorId ?? '',
-    vendorDetail: formDetails.vendorDetail ?? '',
   };
 
   const formik = useFormik({
     initialValues,
     validationSchema: acquisitionInfoSchema,
     onSubmit: async (values) => {
-      setFormDetails((prev) => ({ ...prev, ...values }));
+      dispatch(updateAssetForm(values));
       setActiveStep(2);
     },
   });
 
   return (
-    <Flex width="full" height="full" direction="column">
+    <Flex
+      width="full"
+      height="full"
+      direction="column"
+      display={activeStep === 1 ? 'flex' : 'none'}
+    >
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
           <VStack

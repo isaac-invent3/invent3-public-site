@@ -54,7 +54,7 @@ const ShelfModal = (props: ShelfModalProps) => {
 
             {/* Main Form Starts Here */}
             <VStack width="full" spacing="16px">
-              <AisleSelect />
+              <AisleSelect type="general" />
               <Field
                 as={TextInput}
                 name="shelfName"

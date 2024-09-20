@@ -2,9 +2,10 @@ import { Flex, HStack, VStack } from '@chakra-ui/react';
 import Image from 'next/image';
 import React from 'react';
 import DetailHeader from '~/lib/components/UI/DetailHeader';
-import { AssetFormImages } from '~/lib/interfaces/asset.interfaces';
+import { useAppSelector } from '~/lib/redux/hooks';
 
-const Images = ({ images }: { images: AssetFormImages[] }) => {
+const Images = () => {
+  const { images } = useAppSelector((state) => state.asset.assetForm);
   return (
     <VStack spacing="8px" width="full" alignItems="flex-start">
       <DetailHeader variant="primary">Asset Images</DetailHeader>

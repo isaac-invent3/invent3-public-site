@@ -11,11 +11,17 @@ export const locationApi = createApi({
   tagTypes: [
     'allFacilities',
     'allBuildings',
-    'allDepartments',
     'allFloors',
+    'allDepartments',
     'allRooms',
     'allAisles',
     'allShelves',
+    'buildingsByFacilityId',
+    'floorsByBuildingId',
+    'departmentsByFloorId',
+    'roomsByDepartmentId',
+    'aislesByRoomId',
+    'shelvesByAisleId',
   ],
   endpoints: (builder) => ({
     getAllFacilities: builder.query({
@@ -51,6 +57,17 @@ export const locationApi = createApi({
       }),
       providesTags: ['allBuildings'],
     }),
+    getBuildingsByFacilityId: builder.query({
+      query: ({ id, ...data }) => ({
+        url: generateQueryStr(
+          `/Buildings/GetBuildingByFacilityId/${id}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['buildingsByFacilityId'],
+    }),
     createBuilding: builder.mutation({
       query: (body: any) => ({
         url: `/Buildings`,
@@ -58,36 +75,11 @@ export const locationApi = createApi({
         headers: getHeaders(),
         body,
       }),
-      invalidatesTags: ['allBuildings'],
+      invalidatesTags: ['allBuildings', 'buildingsByFacilityId'],
     }),
     searchBuilding: builder.mutation({
       query: (body: any) => ({
         url: `/Buildings/Search`,
-        method: 'POST',
-        headers: getHeaders(),
-        body,
-      }),
-    }),
-    getAllDepartments: builder.query({
-      query: (data: any) => ({
-        url: generateQueryStr(`/Departments?`, data),
-        method: 'GET',
-        headers: getHeaders(),
-      }),
-      providesTags: ['allDepartments'],
-    }),
-    createDepartment: builder.mutation({
-      query: (body: any) => ({
-        url: `/Departments`,
-        method: 'POST',
-        headers: getHeaders(),
-        body,
-      }),
-      invalidatesTags: ['allDepartments'],
-    }),
-    searchDepartments: builder.mutation({
-      query: (body: any) => ({
-        url: `/Departments/Search`,
         method: 'POST',
         headers: getHeaders(),
         body,
@@ -101,6 +93,14 @@ export const locationApi = createApi({
       }),
       providesTags: ['allFloors'],
     }),
+    getFloorsByBuildingId: builder.query({
+      query: ({ id, ...data }) => ({
+        url: generateQueryStr(`/Floors/GetFloorByBuilingId/${id}?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['floorsByBuildingId'],
+    }),
     createFloor: builder.mutation({
       query: (body: any) => ({
         url: `/Floors`,
@@ -108,11 +108,47 @@ export const locationApi = createApi({
         headers: getHeaders(),
         body,
       }),
-      invalidatesTags: ['allFloors'],
+      invalidatesTags: ['allFloors', 'floorsByBuildingId'],
     }),
     searchFloors: builder.mutation({
       query: (body: any) => ({
         url: `/Floors/Search`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
+    getAllDepartments: builder.query({
+      query: (data: any) => ({
+        url: generateQueryStr(`/Departments?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allDepartments'],
+    }),
+    getDepartmentsByFloorId: builder.query({
+      query: ({ id, ...data }) => ({
+        url: generateQueryStr(
+          `/Departments/GetDepartmentByFloorId/${id}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['departmentsByFloorId'],
+    }),
+    createDepartment: builder.mutation({
+      query: (body: any) => ({
+        url: `/Departments`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allDepartments', 'departmentsByFloorId'],
+    }),
+    searchDepartments: builder.mutation({
+      query: (body: any) => ({
+        url: `/Departments/Search`,
         method: 'POST',
         headers: getHeaders(),
         body,
@@ -126,6 +162,14 @@ export const locationApi = createApi({
       }),
       providesTags: ['allRooms'],
     }),
+    getRoomsByDepartmentId: builder.query({
+      query: ({ id, ...data }) => ({
+        url: generateQueryStr(`/Rooms/GetRoomByDepartmentId/${id}?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['roomsByDepartmentId'],
+    }),
     createRoom: builder.mutation({
       query: (body: any) => ({
         url: `/Rooms`,
@@ -133,7 +177,7 @@ export const locationApi = createApi({
         headers: getHeaders(),
         body,
       }),
-      invalidatesTags: ['allRooms'],
+      invalidatesTags: ['allRooms', 'roomsByDepartmentId'],
     }),
     searchRooms: builder.mutation({
       query: (body: any) => ({
@@ -151,6 +195,14 @@ export const locationApi = createApi({
       }),
       providesTags: ['allAisles'],
     }),
+    getAislesByRoomId: builder.query({
+      query: ({ id, ...data }) => ({
+        url: generateQueryStr(`/Aisles/GetAisleByRoomId/${id}?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['aislesByRoomId'],
+    }),
     createAisle: builder.mutation({
       query: (body: any) => ({
         url: `/Aisles`,
@@ -158,7 +210,7 @@ export const locationApi = createApi({
         headers: getHeaders(),
         body,
       }),
-      invalidatesTags: ['allAisles'],
+      invalidatesTags: ['allAisles', 'aislesByRoomId'],
     }),
     searchAisle: builder.mutation({
       query: (body: any) => ({
@@ -176,6 +228,14 @@ export const locationApi = createApi({
       }),
       providesTags: ['allShelves'],
     }),
+    getShelvesByAisleId: builder.query({
+      query: ({ id, ...data }) => ({
+        url: generateQueryStr(`/Shelves/GetShelfByAisleId/${id}?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['shelvesByAisleId'],
+    }),
     createShelf: builder.mutation({
       query: (body: any) => ({
         url: `/Shelves`,
@@ -183,7 +243,7 @@ export const locationApi = createApi({
         headers: getHeaders(),
         body,
       }),
-      invalidatesTags: ['allShelves'],
+      invalidatesTags: ['allShelves', 'shelvesByAisleId'],
     }),
     searchShelf: builder.mutation({
       query: (body: any) => ({
@@ -211,6 +271,12 @@ export const {
   useGetAllFloorsQuery,
   useGetAllRoomsQuery,
   useGetAllShelvesQuery,
+  useGetAislesByRoomIdQuery,
+  useGetBuildingsByFacilityIdQuery,
+  useGetDepartmentsByFloorIdQuery,
+  useGetFloorsByBuildingIdQuery,
+  useGetRoomsByDepartmentIdQuery,
+  useGetShelvesByAisleIdQuery,
   useSearchBuildingMutation,
   useSearchAisleMutation,
   useSearchDepartmentsMutation,

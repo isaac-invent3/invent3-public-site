@@ -17,7 +17,7 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
   return (
     <HStack width="full" justifyContent="space-between" maxH="50px">
       <HStack
-        as="button"
+        cursor="pointer"
         px="16px"
         rounded="8px"
         spacing="8px"
@@ -36,7 +36,7 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
       <HStack spacing="16px" justifySelf="flex-end">
         {activeStep === 0 && (
           <HStack
-            as="button"
+            cursor="pointer"
             px="16px"
             rounded="8px"
             bgColor="#F6F6F6B2"

@@ -19,6 +19,8 @@ import { categoryApi } from './services/asset/category.services';
 import { conditionApi } from './services/asset/condition.services';
 import { userApi } from './services/user.services';
 import { depreciationApi } from './services/asset/depreciation.services';
+import { vendorsApi } from './services/asset/vendor.services';
+import { employeesApi } from './services/employees.services';
 
 export const persistConfig = {
   key: 'root',
@@ -32,9 +34,11 @@ const rootReducer = combineReducers({
   [categoryApi.reducerPath]: categoryApi.reducer,
   [conditionApi.reducerPath]: conditionApi.reducer,
   [depreciationApi.reducerPath]: depreciationApi.reducer,
+  [employeesApi.reducerPath]: employeesApi.reducer,
   [locationApi.reducerPath]: locationApi.reducer,
   [utilityApi.reducerPath]: utilityApi.reducer,
   [userApi.reducerPath]: userApi.reducer,
+  [vendorsApi.reducerPath]: vendorsApi.reducer,
   asset: assetSlice,
 });
 
@@ -53,11 +57,13 @@ export const makeStore = () => {
         authApi.middleware,
         assetApi.middleware,
         depreciationApi.middleware,
+        employeesApi.middleware,
         locationApi.middleware,
         categoryApi.middleware,
         conditionApi.middleware,
         utilityApi.middleware,
         userApi.middleware,
+        vendorsApi.middleware,
       ]),
   });
 };

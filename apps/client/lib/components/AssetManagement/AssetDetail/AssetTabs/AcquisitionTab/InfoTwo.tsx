@@ -1,4 +1,4 @@
-import { Flex, HStack, Skeleton } from '@chakra-ui/react';
+import { Flex, Grid, GridItem, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 import DetailSection from '../../DetailSection';
 import { AcquisitionInfo } from '~/lib/interfaces/asset.interfaces';
@@ -47,26 +47,30 @@ const InfoTwo = (props: InfoTwoProps) => {
   ];
 
   return (
-    <HStack width="full" alignItems="flex-start" spacing="118px">
-      <Flex width="max-content">
-        <Skeleton isLoaded={!isLoading} width="full">
-          <DetailSection
-            details={details1}
-            minWidth="103px"
-            header="Warranty Details"
-          />
-        </Skeleton>
-      </Flex>
-      <Flex width="max-content">
-        <Skeleton isLoaded={!isLoading} width="full">
-          <DetailSection
-            details={details2}
-            minWidth="151px"
-            header="Depreciation Details"
-          />
-        </Skeleton>
-      </Flex>
-    </HStack>
+    <Grid templateColumns="repeat(3, 1fr)" gap="100px" width="full">
+      <GridItem colSpan={1} width="full">
+        <Flex minW="full">
+          <Skeleton isLoaded={!isLoading} width="full">
+            <DetailSection
+              details={details1}
+              minWidth="103px"
+              header="Warranty Details"
+            />
+          </Skeleton>
+        </Flex>
+      </GridItem>
+      <GridItem colSpan={2}>
+        <Flex width="max-content">
+          <Skeleton isLoaded={!isLoading} width="full">
+            <DetailSection
+              details={details2}
+              minWidth="151px"
+              header="Depreciation Details"
+            />
+          </Skeleton>
+        </Flex>
+      </GridItem>
+    </Grid>
   );
 };
 

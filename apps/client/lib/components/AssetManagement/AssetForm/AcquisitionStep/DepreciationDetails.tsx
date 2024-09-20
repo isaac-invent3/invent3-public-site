@@ -35,12 +35,11 @@ const DepreciationDetails = () => {
           selectTitle="Depreciation Method"
           data={data}
           labelKey="depreciationMethod"
-          valueKey="depreciationId"
+          valueKey="depreciationMethod"
           mutationFn={searchDepreciation}
           isLoading={isLoading}
           pageNumber={pageNumber}
           setPageNumber={setPageNumber}
-          // handleSelect={handleSelect}
         />
         <Field
           as={TextInput}

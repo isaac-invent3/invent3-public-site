@@ -1,29 +1,32 @@
 import { Grid, GridItem, HStack, SimpleGrid, VStack } from '@chakra-ui/react';
 import React from 'react';
 import DetailHeader from '~/lib/components/UI/DetailHeader';
-import { AssetFormDetails } from '~/lib/interfaces/asset.interfaces';
 import Info from './Info';
+import { useAppSelector } from '~/lib/redux/hooks';
 
-interface GeneralProps {
-  assetFormDetails: AssetFormDetails;
-}
-const General = ({ assetFormDetails }: GeneralProps) => {
+const General = () => {
+  const assetFormDetails = useAppSelector((state) => state.asset.assetForm);
   const {
     assetName,
-    assetCode,
-    categoryId,
-    subCategoryId,
+    categoryName,
+    subCategoryName,
     brandName,
     modelRef,
     serialNo,
     weightKg,
     widthCm,
     heightCm,
-    depthCm,
-    currentOwner,
-    department,
-    assignedTo,
-    responsibleFor,
+    lengthCm,
+    currentOwnerName,
+    assignedToName,
+    responsibleForName,
+    facilityName,
+    buildingName,
+    floorName,
+    departmentName,
+    roomName,
+    aisleName,
+    shelfName,
   } = assetFormDetails;
 
   const row1 = [
@@ -31,20 +34,30 @@ const General = ({ assetFormDetails }: GeneralProps) => {
       label: 'Asset Name',
       value: assetName,
     },
-    {
-      label: 'Asset Code',
-      value: assetCode,
-    },
   ];
 
   const row2 = [
     {
       label: 'Category',
-      value: categoryId,
+      value: categoryName,
     },
     {
       label: 'Sub-category',
-      value: subCategoryId,
+      value: subCategoryName,
+    },
+    {
+      label: 'Location',
+      value: [
+        facilityName,
+        buildingName,
+        floorName,
+        departmentName,
+        roomName,
+        aisleName,
+        shelfName,
+      ]
+        .filter(Boolean)
+        .join(', '),
     },
   ];
 
@@ -66,38 +79,34 @@ const General = ({ assetFormDetails }: GeneralProps) => {
   const row4 = [
     {
       label: 'Weight',
-      value: weightKg,
+      value: weightKg + 'kg',
     },
     {
       label: 'Width',
-      value: widthCm,
+      value: widthCm + 'cm',
     },
     {
       label: 'Height',
-      value: heightCm,
+      value: heightCm + 'cm',
     },
     {
-      label: 'Depth',
-      value: depthCm,
+      label: 'Length',
+      value: lengthCm + 'cm',
     },
   ];
 
   const row5 = [
     {
       label: 'Owner',
-      value: currentOwner,
-    },
-    {
-      label: 'Department',
-      value: department,
+      value: currentOwnerName,
     },
     {
       label: 'Assigned to',
-      value: assignedTo,
+      value: assignedToName,
     },
     {
       label: 'Responsible for',
-      value: responsibleFor,
+      value: responsibleForName,
     },
   ];
 
@@ -113,7 +122,7 @@ const General = ({ assetFormDetails }: GeneralProps) => {
         </SimpleGrid>
         {/* Row 2  */}
         <Grid templateColumns="repeat(4, 1fr)" width="full">
-          <GridItem colSpan={2} width="full">
+          <GridItem colSpan={3} width="full">
             <HStack width="full" spacing="16px" alignItems="flex-start">
               {row2.map((item) => (
                 <Info {...item} key={item.label} />

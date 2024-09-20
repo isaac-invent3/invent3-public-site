@@ -1,26 +1,26 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+import baseQueryWithReauth from '../baseQueryWithReauth';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const conditionApi = createApi({
-  reducerPath: 'conditionApi',
+export const employeesApi = createApi({
+  reducerPath: 'employeesApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['allCondition'],
+  tagTypes: ['allUsers'],
   endpoints: (builder) => ({
-    getAllAssetCondition: builder.query({
+    getAllEmployees: builder.query({
       query: (data: any) => ({
-        url: generateQueryStr(`/AssetConditions?`, data),
+        url: generateQueryStr(`/Employees?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
-      providesTags: ['allCondition'],
+      providesTags: ['allUsers'],
     }),
-    searchCondition: builder.mutation({
+    searchEmployees: builder.mutation({
       query: (body: any) => ({
-        url: `/AssetConditions/Search`,
+        url: `/Employees/Search`,
         method: 'POST',
         headers: getHeaders(),
         body,
@@ -29,5 +29,5 @@ export const conditionApi = createApi({
   }),
 });
 
-export const { useGetAllAssetConditionQuery, useSearchConditionMutation } =
-  conditionApi;
+export const { useGetAllEmployeesQuery, useSearchEmployeesMutation } =
+  employeesApi;

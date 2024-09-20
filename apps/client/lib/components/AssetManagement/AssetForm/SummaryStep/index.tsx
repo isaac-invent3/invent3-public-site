@@ -1,6 +1,6 @@
 import { Flex, useDisclosure, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import { Asset, AssetFormDetails } from '~/lib/interfaces/asset.interfaces';
+import { Asset } from '~/lib/interfaces/asset.interfaces';
 import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
 import FormActionButtons from '../FormActionButtons';
@@ -16,12 +16,14 @@ import {
 import AddAssetSuccessModal from '../../Modals/AddAssetSuccessModal';
 import AssetSuccessModal from '../../Modals/AssetSuccessModal';
 import ChildAssetSuccessModal from '../../Modals/ChildAssetSuccessModal';
-import { clearAsset, setAsset } from '~/lib/redux/slices/assetSlice';
-import { initialAssetFormValue } from '..';
+import {
+  clearAsset,
+  clearAssetForm,
+  setAsset,
+} from '~/lib/redux/slices/assetSlice';
 
 interface SummaryStepProps {
-  assetFormDetails: AssetFormDetails;
-  setAssetFormDetails: React.Dispatch<React.SetStateAction<AssetFormDetails>>;
+  activeStep: number;
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
   type: 'create' | 'edit';
 }
@@ -32,19 +34,17 @@ interface Image {
   base64PhotoImage?: string;
   isPrimaryImage?: boolean;
   assetId?: number;
-  actionType?:
-    | typeof IMAGES_ENUM.add
-    | typeof IMAGES_ENUM.delete
-    | typeof IMAGES_ENUM.update;
+  actionType?: (typeof IMAGES_ENUM)[keyof typeof IMAGES_ENUM];
   createdBy?: string;
   lastModifiedBy?: string | null;
 }
 
 const SummaryStep = (props: SummaryStepProps) => {
-  const { setAssetFormDetails, assetFormDetails, setActiveStep, type } = props;
+  const { activeStep, setActiveStep, type } = props;
   const assetData = useAppSelector((state) => state.asset.asset);
   const assetImages = useAppSelector((state) => state.asset.assetImages);
   const [assetResponse, setAssetResponse] = useState<Asset | null>(null);
+  const assetFormDetails = useAppSelector((state) => state.asset.assetForm);
   const dispatch = useAppDispatch();
   const { handleSubmit } = useCustomMutation();
   const [createAsset, { isLoading: createLoading }] = useCreateAssetMutation();
@@ -101,7 +101,7 @@ const SummaryStep = (props: SummaryStepProps) => {
     serialNo: assetFormDetails.serialNo,
     description: assetFormDetails.description,
     weightKg: assetFormDetails.weightKg,
-    lengthCm: assetFormDetails.depthCm,
+    lengthCm: assetFormDetails.lengthCm,
     widthCm: assetFormDetails.widthCm,
     heightCm: assetFormDetails.heightCm,
     purchaseDate: '2024-09-19T13:54:09.635Z',
@@ -223,12 +223,17 @@ const SummaryStep = (props: SummaryStepProps) => {
     if (type === 'parentAsset') {
       dispatch(clearAsset());
     }
-    setAssetFormDetails(initialAssetFormValue);
+    dispatch(clearAssetForm());
   };
 
   return (
     <>
-      <Flex width="full" gap="16px" direction="column">
+      <Flex
+        width="full"
+        gap="16px"
+        direction="column"
+        display={activeStep === 3 ? 'flex' : 'none'}
+      >
         <VStack
           width="full"
           alignItems="flex-start"
@@ -240,8 +245,8 @@ const SummaryStep = (props: SummaryStepProps) => {
           pb="40px"
           rounded="8px"
         >
-          <SectionOne assetFormDetails={assetFormDetails} />
-          <SectionTwo assetFormDetails={assetFormDetails} />
+          <SectionOne />
+          <SectionTwo />
         </VStack>
         <FormActionButtons
           activeStep={3}

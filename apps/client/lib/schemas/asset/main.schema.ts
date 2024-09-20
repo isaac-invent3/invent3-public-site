@@ -29,9 +29,8 @@ const generalInfoSchema = locationSchema.shape({
   weightKg: Yup.number().required('Weight is Required'),
   widthCm: Yup.number().required('Width is Required'),
   heightCm: Yup.number().required('Height is Required'),
-  depthCm: Yup.number().required('Depth is Required'),
+  lengthCm: Yup.number().required('Length is Required'),
   currentOwner: Yup.string().required('Owner is Required'),
-  department: Yup.string().required('Department is Required'),
   assignedTo: Yup.string().required('This is Required'),
   responsibleFor: Yup.string().required('This is Required'),
 });
@@ -41,7 +40,7 @@ const acquisitionInfoSchema = Yup.object().shape({
   conditionId: Yup.string().required('Asset Condition is required'),
   initialValue: Yup.number()
     .required('Purchase Price is required')
-    .min(1, 'Price must be greater than 0'),
+    .min(1, 'Price must be greater than 1'),
   warrantyStartDate: Yup.string().required('Warranty Start Date is required'),
   warrantyEndDate: Yup.string().required('Warranty End Date is required'),
   warrantyTerms: Yup.string().required('Warranty Terms is required'),
@@ -52,9 +51,8 @@ const acquisitionInfoSchema = Yup.object().shape({
   depreciationMethod: Yup.string().required('Depreciation Method is required'),
   depreciationRate: Yup.number()
     .required('Depreciation Rate is required')
-    .min(1, 'Rate must be greater than 0'),
-  vendorId: Yup.string().required('Vendor is required'),
-  vendorDetail: Yup.string().required('Vendor Detail is required'),
+    .min(0, 'Rate must be greater than 0'),
+  vendorId: Yup.string(),
 });
 
 const documentSchema = Yup.object().shape({

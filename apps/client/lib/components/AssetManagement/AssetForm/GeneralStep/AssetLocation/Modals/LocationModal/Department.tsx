@@ -9,9 +9,10 @@ import DepartmentSelect from '../SelectInputs/DepartmentSelect';
 
 interface DepartmentProps {
   handleReadableLocation: (option: Option, key: keyof FormLocation) => void;
+  floorId: number | undefined;
 }
 const Department = (props: DepartmentProps) => {
-  const { handleReadableLocation } = props;
+  const { handleReadableLocation, floorId } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
@@ -20,6 +21,8 @@ const Department = (props: DepartmentProps) => {
           handleSelect={(option) =>
             handleReadableLocation(option, 'department')
           }
+          floorId={floorId}
+          type="specificById"
         />
         <AddButton handleClick={onOpen}>Add New Department</AddButton>
       </VStack>

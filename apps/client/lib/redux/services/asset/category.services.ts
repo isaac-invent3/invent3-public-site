@@ -8,7 +8,7 @@ const getHeaders = () => ({
 export const categoryApi = createApi({
   reducerPath: 'categoryApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['allAssetCategory'],
+  tagTypes: ['allAssetCategory', 'assetSubCategoriesById'],
   endpoints: (builder) => ({
     getAllAssetCategory: builder.query({
       query: (data: any) => ({
@@ -42,6 +42,17 @@ export const categoryApi = createApi({
         headers: getHeaders(),
       }),
     }),
+    getAssetSubCatgoriesByCategoryId: builder.query({
+      query: ({ id, ...data }) => ({
+        url: generateQueryStr(
+          `/AssetSubCategories/GetSubCategoryByCategoryId/${id}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['assetSubCategoriesById'],
+    }),
     createSubCategory: builder.mutation({
       query: (body: any) => ({
         url: `/AssetSubCategories`,
@@ -49,6 +60,7 @@ export const categoryApi = createApi({
         headers: getHeaders(),
         body,
       }),
+      invalidatesTags: ['assetSubCategoriesById'],
     }),
     searchSubCategory: builder.mutation({
       query: (body: any) => ({
@@ -65,6 +77,7 @@ export const {
   useGetAllAssetCategoryQuery,
   useCreateCategoryMutation,
   useCreateSubCategoryMutation,
+  useGetAssetSubCatgoriesByCategoryIdQuery,
   useGetAllAssetSubCategoryQuery,
   useSearchCategoriesMutation,
   useSearchSubCategoryMutation,

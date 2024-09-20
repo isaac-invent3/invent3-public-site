@@ -8,7 +8,7 @@ import {
   Input,
   Text,
 } from '@chakra-ui/react';
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import SectionInfo from '../SectionInfo';
 import { useField } from 'formik';
 import {
@@ -35,10 +35,6 @@ const AssetImages = () => {
     }));
     helpers.setValue(updatedImages);
   };
-
-  useEffect(() => {
-    console.log(meta.value);
-  }, [meta.value]);
 
   return useMemo(
     () => (
@@ -142,7 +138,7 @@ const AssetImages = () => {
           )}
           {/* Display */}
           <HStack alignItems="flex-start" spacing="12px">
-            <FormControl isInvalid={meta.touched && meta.error !== undefined}>
+            <FormControl isInvalid={meta.error !== undefined}>
               <Input
                 id="file"
                 display="none"

@@ -1,17 +1,15 @@
 import { SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import DetailHeader from '~/lib/components/UI/DetailHeader';
-import { AssetFormDetails } from '~/lib/interfaces/asset.interfaces';
 import Info from './Info';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
+import { useAppSelector } from '~/lib/redux/hooks';
 
-interface AcquisitionProps {
-  assetFormDetails: AssetFormDetails;
-}
-const Acquisition = ({ assetFormDetails }: AcquisitionProps) => {
+const Acquisition = () => {
+  const assetFormDetails = useAppSelector((state) => state.asset.assetForm);
   const {
     acquisitionDate,
-    conditionId,
+    conditionName,
     initialValue,
     warrantyStartDate,
     warrantyEndDate,
@@ -20,8 +18,7 @@ const Acquisition = ({ assetFormDetails }: AcquisitionProps) => {
     depreciationStartDate,
     depreciationMethod,
     depreciationRate,
-    vendorId,
-    vendorDetail,
+    vendorDetails,
   } = assetFormDetails;
 
   const row1 = [
@@ -31,7 +28,7 @@ const Acquisition = ({ assetFormDetails }: AcquisitionProps) => {
     },
     {
       label: 'Asset  Condition',
-      value: conditionId,
+      value: conditionName,
     },
     {
       label: 'Purchase Price',
@@ -100,10 +97,13 @@ const Acquisition = ({ assetFormDetails }: AcquisitionProps) => {
           <Text color="neutral.600">Vendor Details</Text>
           <VStack width="full" alignItems="flex-start" spacing="4px">
             <Text size="lg" color="black" fontWeight={700}>
-              {vendorId}
+              {vendorDetails.vendorName}
             </Text>
-            <Text size="md" color="neutral.600" width="full" maxW="149px">
-              {vendorDetail}
+            <Text color="neutral.600" size="md">
+              {vendorDetails.address}
+            </Text>
+            <Text color="neutral.600" size="md">
+              {vendorDetails.emailAddress}
             </Text>
           </VStack>
         </VStack>

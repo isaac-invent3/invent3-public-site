@@ -10,9 +10,10 @@ import BuildingSelect from '../SelectInputs/BuildingSelect';
 
 interface BuildingProps {
   handleReadableLocation: (option: Option, key: keyof FormLocation) => void;
+  facilityId: number | undefined;
 }
 const Building = (props: BuildingProps) => {
-  const { handleReadableLocation } = props;
+  const { handleReadableLocation, facilityId } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -20,6 +21,8 @@ const Building = (props: BuildingProps) => {
       <VStack alignItems="flex-end" width="full">
         <BuildingSelect
           handleSelect={(option) => handleReadableLocation(option, 'building')}
+          facilityId={facilityId}
+          type="specificById"
         />
         <AddButton handleClick={onOpen}>Add New Building</AddButton>
       </VStack>

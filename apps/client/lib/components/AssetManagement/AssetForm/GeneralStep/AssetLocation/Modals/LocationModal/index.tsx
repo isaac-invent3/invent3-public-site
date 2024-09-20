@@ -22,21 +22,6 @@ import { resetDependentFields, resetFormikFields } from './utility';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/assetSlice';
 
-const intialState = {
-  label: undefined,
-  value: undefined,
-};
-
-const locationInitialState = {
-  facility: intialState,
-  building: intialState,
-  floor: intialState,
-  department: intialState,
-  room: intialState,
-  aisle: intialState,
-  shelf: intialState,
-};
-
 interface LocationModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -127,10 +112,6 @@ const LocationModal = (props: LocationModalProps) => {
     }));
   };
 
-  const handleCancel = () => {
-    setLocalLocation(locationInitialState);
-    onClose();
-  };
   return (
     <GenericModal
       isOpen={isOpen}
@@ -178,7 +159,7 @@ const LocationModal = (props: LocationModalProps) => {
               <Button
                 variant="secondary"
                 customStyles={{ width: '96px' }}
-                handleClick={handleCancel}
+                handleClick={onClose}
               >
                 Cancel
               </Button>

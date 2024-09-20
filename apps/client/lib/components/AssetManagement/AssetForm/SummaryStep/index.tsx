@@ -110,9 +110,9 @@ const SummaryStep = (props: SummaryStepProps) => {
     assetTypeId: 0,
     statusId: 0,
     categoryId: assetFormDetails.categoryId,
-    currentOwner: assetFormDetails.currentOwner,
-    responsibleFor: assetFormDetails.responsibleFor,
-    assignedTo: assetFormDetails.assignedTo,
+    currentOwner: assetFormDetails.currentOwnerName,
+    responsibleFor: assetFormDetails.responsibleForName,
+    assignedTo: assetFormDetails.assignedToName,
     conditionId: assetFormDetails.conditionId,
     acquisitionDate: moment(
       assetFormDetails.acquisitionDate,

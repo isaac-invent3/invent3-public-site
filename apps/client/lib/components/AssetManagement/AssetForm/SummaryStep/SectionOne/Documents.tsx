@@ -10,16 +10,28 @@ const Documents = () => {
     <VStack spacing="8px" width="full" alignItems="flex-start">
       <DetailHeader variant="primary">Documents</DetailHeader>
       <VStack width="full" alignItems="flex-start" spacing="12px">
-        {documents.map((document, index) => (
-          <HStack spacing="16px" width="full">
-            <Flex position="relative" width="34px" height="34px" key={index}>
-              <Image src="/pdf.png" alt="asset image" fill />
-            </Flex>
-            <Text color="neutral.800">
-              {typeof document === 'string' ? document : document.name}
-            </Text>
-          </HStack>
-        ))}
+        {documents.length >= 1 ? (
+          documents.map((document, index) => (
+            <HStack spacing="16px" width="full">
+              <Flex position="relative" width="34px" height="34px" key={index}>
+                <Image src="/pdf.png" alt="asset image" fill />
+              </Flex>
+              <Text color="neutral.800">
+                {typeof document === 'string' ? document : document.name}
+              </Text>
+            </HStack>
+          ))
+        ) : (
+          <Text
+            fontStyle="italic"
+            color="neutral.300"
+            width="full"
+            textAlign="center"
+            my={4}
+          >
+            No Documents added
+          </Text>
+        )}
       </VStack>
     </VStack>
   );

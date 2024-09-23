@@ -1,8 +1,9 @@
 import { Flex, HStack, VStack } from '@chakra-ui/react';
-import AssetName from './AssetName';
-import AssetCode from './AssetCode';
-import TextareaInput from '~/lib/components/UI/TextArea';
 import { Field } from 'formik';
+
+import AssetName from './AssetName';
+import TextareaInput from '~/lib/components/UI/TextArea';
+import AssetTypeStatus from './AssetTypeStatus';
 
 const AssetNameCodeDescription = () => {
   return (
@@ -15,7 +16,7 @@ const AssetNameCodeDescription = () => {
         height="full"
       >
         <AssetName />
-        <AssetCode />
+        <AssetTypeStatus />
       </VStack>
       <Flex width="44%" height="full">
         <Field
@@ -24,7 +25,7 @@ const AssetNameCodeDescription = () => {
           type="text"
           label="Description"
           placeholder="Description"
-          customStyle={{ height: '133px' }}
+          customStyle={{ height: '150px' }}
         />
       </Flex>
     </HStack>

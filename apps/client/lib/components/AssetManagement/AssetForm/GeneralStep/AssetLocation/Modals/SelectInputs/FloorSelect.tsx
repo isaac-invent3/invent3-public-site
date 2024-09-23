@@ -12,7 +12,7 @@ interface FloorSelectProps {
   // eslint-disable-next-line no-unused-vars
   handleSelect?: (options: Option) => void;
   type: 'general' | 'specificById';
-  buildingId?: number;
+  buildingId?: number | null;
 }
 
 const FloorSelect = (props: FloorSelectProps) => {

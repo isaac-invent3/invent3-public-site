@@ -65,7 +65,7 @@ const AddDocument = () => {
       <VStack width="full" spacing="51px">
         <FormControl isInvalid={meta.error !== undefined}>
           <Input
-            id="file"
+            id="document"
             display="none"
             onChange={(event: any) => {
               if (event.currentTarget.files.length > 0) {
@@ -85,7 +85,7 @@ const AddDocument = () => {
             type="file"
             accept=".pdf, .doc, .docx"
           />
-          <label htmlFor="file">
+          <label htmlFor="document">
             <VStack
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}

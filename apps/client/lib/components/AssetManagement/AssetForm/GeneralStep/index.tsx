@@ -27,14 +27,13 @@ const GeneralStep = (props: GeneralStepProps) => {
       images: formDetails.images ?? [],
       assetName: formDetails.assetName ?? '',
       description: formDetails.description ?? '',
-      assetCode: formDetails.assetCode ?? '',
       brandName: formDetails.brandName ?? '',
       modelRef: formDetails.modelRef ?? '',
       serialNo: formDetails.serialNo ?? '',
-      codePrefix: formDetails.codePrefix ?? '',
-      codeSuffix: formDetails.codeSuffix ?? '',
-      categoryId: formDetails.categoryId ?? '',
-      subCategoryId: formDetails.subCategoryId ?? '',
+      categoryId: formDetails.categoryId ?? null,
+      subCategoryId: formDetails.subCategoryId ?? null,
+      statusId: formDetails.statusId ?? null,
+      assetTypeId: formDetails.assetTypeId ?? null,
       weightKg: formDetails.weightKg ?? undefined,
       widthCm: formDetails.widthCm ?? undefined,
       heightCm: formDetails.heightCm ?? undefined,
@@ -50,6 +49,7 @@ const GeneralStep = (props: GeneralStepProps) => {
       shelfId: formDetails.shelfId ?? undefined,
     },
     validationSchema: generalInfoSchema,
+    enableReinitialize: true,
     onSubmit: async (values) => {
       dispatch(updateAssetForm(values));
       setActiveStep(1);
@@ -75,6 +75,7 @@ const GeneralStep = (props: GeneralStepProps) => {
             pb="33px"
             pr="44px"
             rounded="6px"
+            minH="60vh"
           >
             <AssetImages />
             <AssetNameCodeDescription />

@@ -12,7 +12,7 @@ interface AisleSelectProps {
   // eslint-disable-next-line no-unused-vars
   handleSelect?: (options: Option) => void;
   type: 'general' | 'specificById';
-  roomId?: number;
+  roomId?: number | null;
 }
 
 const AisleSelect = (props: AisleSelectProps) => {

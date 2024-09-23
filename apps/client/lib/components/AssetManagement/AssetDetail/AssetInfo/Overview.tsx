@@ -132,6 +132,7 @@ const Overview = () => {
                 <ReactBarcode
                   value={assetId ? assetId.toString() : ''}
                   renderer={Renderer.CANVAS}
+                  options={{ displayValue: false }}
                   style={{ width: '100%' }}
                 />
               </Flex>

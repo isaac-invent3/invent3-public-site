@@ -9,7 +9,7 @@ import ShelfSelect from '../SelectInputs/ShelfSelect';
 
 interface ShelfProps {
   handleReadableLocation: (option: Option, key: keyof FormLocation) => void;
-  aisleId: number | undefined;
+  aisleId: number | null;
 }
 const Shelf = (props: ShelfProps) => {
   const { handleReadableLocation, aisleId } = props;

@@ -12,7 +12,7 @@ interface DepartmentSelectProps {
   // eslint-disable-next-line no-unused-vars
   handleSelect?: (options: Option) => void;
   type: 'general' | 'specificById';
-  floorId?: number;
+  floorId?: number | null;
 }
 
 const DepartmentSelect = (props: DepartmentSelectProps) => {

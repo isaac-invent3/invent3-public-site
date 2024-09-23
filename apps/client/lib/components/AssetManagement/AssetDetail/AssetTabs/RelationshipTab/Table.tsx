@@ -41,7 +41,8 @@ const Table = (props: TableProps) => {
         header: 'Category',
       }),
       columnHelper.accessor('dateCreated', {
-        cell: (info) => dateFormatter(info.getValue()),
+        cell: (info) =>
+          info.getValue() ? dateFormatter(info.getValue() as string) : 'N/A',
         header: 'Last Maintenance',
       }),
       columnHelper.accessor('initialValue', {

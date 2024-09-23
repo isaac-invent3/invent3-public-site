@@ -8,7 +8,7 @@ import AssetDetail from './AssetDetail';
 import AssetStatus from './AssetStatus';
 import { ThreeVerticalDotsIcon } from '../CustomIcons';
 
-const AssetName = (name: string) => {
+const AssetName = (name: string | null) => {
   return (
     <Text fontWeight={700} textDecoration="underline">
       {name}
@@ -161,12 +161,12 @@ const ListView = (props: ListViewProps) => {
       }),
       columnHelper.accessor('acquisitionDate', {
         cell: (info) =>
-          info.getValue() ? dateFormatter(info.getValue()) : 'N/A',
+          info.getValue() ? dateFormatter(info.getValue() as string) : 'N/A',
         header: 'Acquisition Date',
       }),
       columnHelper.accessor('purchaseDate', {
         cell: (info) =>
-          info.getValue() ? dateFormatter(info.getValue()) : 'N/A',
+          info.getValue() ? dateFormatter(info.getValue() as string) : 'N/A',
         header: 'Purchase Date',
       }),
       columnHelper.accessor('initialValue', {
@@ -197,7 +197,7 @@ const ListView = (props: ListViewProps) => {
       columnHelper.accessor('lifeExpectancy', {
         cell: (info) =>
           info.getValue()
-            ? `${info.getValue()} year${info.getValue() > 1 ? 's' : ''}`
+            ? `${info.getValue()} year${(info.getValue() as number) > 1 ? 's' : ''}`
             : 'N/A',
         header: 'Life Expectancy',
       }),

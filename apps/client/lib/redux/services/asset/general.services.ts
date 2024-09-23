@@ -8,7 +8,7 @@ const getHeaders = () => ({
 export const assetApi = createApi({
   reducerPath: 'assetApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['allAsset', 'singleAsset', 'allAssetCategory'],
+  tagTypes: ['allAsset', 'singleAsset', 'allStatuses', 'allAssetTypes'],
   endpoints: (builder) => ({
     getallAsset: builder.query({
       query: (data: any) => ({
@@ -96,6 +96,38 @@ export const assetApi = createApi({
       }),
       invalidatesTags: ['allAsset'],
     }),
+    getAllStatus: builder.query({
+      query: (data: any) => ({
+        url: generateQueryStr(`/AssetStatus?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allStatuses'],
+    }),
+    searchStatus: builder.mutation({
+      query: (body: any) => ({
+        url: `/AssetStatus/Search`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
+    getAllAssetTypes: builder.query({
+      query: (data: any) => ({
+        url: generateQueryStr(`/AssetTypes?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allAssetTypes'],
+    }),
+    searchAssetTypes: builder.mutation({
+      query: (body: any) => ({
+        url: `/AssetStatus/Search`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
   }),
 });
 
@@ -110,4 +142,8 @@ export const {
   useGetMaintenanceHistoryByAssetIdQuery,
   useGetPlannedMaintenanceByAssetIdQuery,
   useGetDocumentsByAssetIdQuery,
+  useGetAllAssetTypesQuery,
+  useGetAllStatusQuery,
+  useSearchAssetTypesMutation,
+  useSearchStatusMutation,
 } = assetApi;

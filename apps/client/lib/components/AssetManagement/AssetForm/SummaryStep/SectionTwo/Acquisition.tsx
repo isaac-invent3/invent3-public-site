@@ -24,7 +24,9 @@ const Acquisition = () => {
   const row1 = [
     {
       label: 'Acquisition Date',
-      value: dateFormatter(acquisitionDate, 'Do MMM, YYYY', 'DD/MM/YYYY'),
+      value: acquisitionDate
+        ? dateFormatter(acquisitionDate, 'Do MMM, YYYY', 'DD/MM/YYYY')
+        : 'N/A',
     },
     {
       label: 'Asset  Condition',
@@ -39,11 +41,15 @@ const Acquisition = () => {
   const row2 = [
     {
       label: 'Warranty Start Date',
-      value: dateFormatter(warrantyStartDate, 'Do MMM, YYYY', 'DD/MM/YYYY'),
+      value: warrantyStartDate
+        ? dateFormatter(warrantyStartDate, 'Do MMM, YYYY', 'DD/MM/YYYY')
+        : 'N/A',
     },
     {
       label: 'Warranty End Date',
-      value: dateFormatter(warrantyEndDate, 'Do MMM, YYYY', 'DD/MM/YYYY'),
+      value: warrantyEndDate
+        ? dateFormatter(warrantyEndDate, 'Do MMM, YYYY', 'DD/MM/YYYY')
+        : 'N/A',
     },
     {
       label: 'Warranty Terms',
@@ -58,7 +64,9 @@ const Acquisition = () => {
   const row3 = [
     {
       label: 'Depreciation Start Date',
-      value: dateFormatter(depreciationStartDate, 'Do MMM, YYYY', 'DD/MM/YYYY'),
+      value: depreciationStartDate
+        ? dateFormatter(depreciationStartDate, 'Do MMM, YYYY', 'DD/MM/YYYY')
+        : 'N/A',
     },
     {
       label: 'Depreciation Method',

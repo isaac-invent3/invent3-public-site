@@ -4,6 +4,8 @@ import { locationSchema } from './location.schema';
 const generalInfoSchema = locationSchema.shape({
   assetName: Yup.string().required('Name is required'),
   description: Yup.string().required('Description is Required'),
+  statusId: Yup.string().required('Status is Required'),
+  assetTypeId: Yup.string().required('Type is Required'),
   images: Yup.array()
     .of(
       Yup.object().shape({
@@ -18,9 +20,6 @@ const generalInfoSchema = locationSchema.shape({
     .test('has-primary', 'One image must be set as primary', (images) =>
       images.some((img) => img.isPrimaryImage)
     ),
-  codePrefix: Yup.string().required('Code Prefix is Required'),
-  codeSuffix: Yup.string().required('Code Suffix is Required'),
-  assetCode: Yup.string().required('Asset Code is Required'),
   brandName: Yup.string().required('Make is Required'),
   modelRef: Yup.string().required('Model is Required'),
   serialNo: Yup.string().required('Serial No. is Required'),

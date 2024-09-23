@@ -23,6 +23,7 @@ const DocumentStep = (props: DocumentStepProps) => {
   const formik = useFormik({
     initialValues,
     validationSchema: documentSchema,
+    enableReinitialize: true,
     onSubmit: async (values) => {
       dispatch(updateAssetForm(values));
       setActiveStep(3);
@@ -49,6 +50,7 @@ const DocumentStep = (props: DocumentStepProps) => {
             pr="41px"
             rounded="6px"
             spacing="51px"
+            minH="60vh"
           >
             <AddDocument />
           </VStack>

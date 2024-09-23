@@ -10,7 +10,7 @@ import AisleSelect from '../SelectInputs/AisleSelect';
 
 interface AisleProps {
   handleReadableLocation: (option: Option, key: keyof FormLocation) => void;
-  roomId: number | undefined;
+  roomId: number | null;
 }
 const Aisle = (props: AisleProps) => {
   const { handleReadableLocation, roomId } = props;

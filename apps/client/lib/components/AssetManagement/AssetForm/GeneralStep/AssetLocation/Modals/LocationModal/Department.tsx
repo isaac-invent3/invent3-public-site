@@ -9,7 +9,7 @@ import DepartmentSelect from '../SelectInputs/DepartmentSelect';
 
 interface DepartmentProps {
   handleReadableLocation: (option: Option, key: keyof FormLocation) => void;
-  floorId: number | undefined;
+  floorId: number | null;
 }
 const Department = (props: DepartmentProps) => {
   const { handleReadableLocation, floorId } = props;

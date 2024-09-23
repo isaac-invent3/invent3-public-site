@@ -6,19 +6,18 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
 import SectionInfo from '../../SectionInfo';
 import AddButton from '../../AddButton';
 import CategorySelect from './CategorySelect';
 import CategoryModal from './Modals/CategoryModal';
 import SubCategoryModal from './Modals/SubCategoryModal';
 import SubCategorySelect from './SubCategorySelect';
-import { useAppDispatch } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/assetSlice';
 
 const AssetCategory = () => {
   const dispatch = useAppDispatch();
-  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  const { categoryId } = useAppSelector((state) => state.asset.assetForm);
   const { isOpen, onClose, onOpen } = useDisclosure();
   const {
     isOpen: isOpenSubCategory,
@@ -42,15 +41,19 @@ const AssetCategory = () => {
               <VStack alignItems="flex-end" width="full">
                 <CategorySelect
                   handleSelect={(option) => {
-                    setSelectedCategory(option.value as number);
-                    dispatch(updateAssetForm({ categoryName: option.label }));
+                    dispatch(
+                      updateAssetForm({
+                        categoryId: option.value as number,
+                        categoryName: option.label,
+                      })
+                    );
                   }}
                 />
                 <AddButton handleClick={onOpen}>Add New Category</AddButton>
               </VStack>
               <VStack alignItems="flex-end" width="full">
                 <SubCategorySelect
-                  categoryId={selectedCategory}
+                  categoryId={categoryId}
                   handleSelect={(option) => {
                     dispatch(
                       updateAssetForm({ subCategoryName: option.label })

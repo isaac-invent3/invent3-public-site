@@ -19,7 +19,7 @@ const FooterSection = (props: FooterSectionProps) => {
           <Text
             lineHeight="15.44px"
             fontSize="13px"
-            letterSpacing="5%"
+            letterSpacing="0.05em"
             fontWeight={700}
             textTransform="capitalize"
             color="neutral.100"

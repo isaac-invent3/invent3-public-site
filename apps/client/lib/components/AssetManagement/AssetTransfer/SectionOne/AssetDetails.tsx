@@ -1,12 +1,19 @@
 import { Flex, Heading, HStack, Text, VStack } from '@chakra-ui/react';
-// import Image from 'next/image';
+import Image from 'next/image';
 import React from 'react';
 import DetailHeader from '~/lib/components/UI/DetailHeader';
 import { useAppSelector } from '~/lib/redux/hooks';
 
 const AssetDetails = () => {
   const assetData = useAppSelector((state) => state.asset.asset);
-  const { assetName, assetId, assetCategory, modelRef, brandName } = assetData;
+  const {
+    assetName,
+    assetId,
+    assetCategory,
+    modelRef,
+    brandName,
+    primaryImage,
+  } = assetData;
 
   const info1 = [
     {
@@ -40,9 +47,14 @@ const AssetDetails = () => {
           height="100px"
           overflow="hidden"
           rounded="12px"
-          bgColor="neutral.200"
+          bgColor="neutral.100"
+          flexShrink={0}
         >
-          {/* <Image src="" fill alt="Asset image" /> */}
+          <Image
+            src={`data:image/jpeg;base64,${primaryImage}`}
+            fill
+            alt="Asset image"
+          />
         </Flex>
         <VStack spacing="16px" alignItems="flex-start">
           <Heading as="h4" fontSize="24px" lineHeight="28.51px" color="black">

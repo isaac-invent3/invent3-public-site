@@ -22,7 +22,7 @@ const AcquisitionStep = (props: AcquisitionStepProps) => {
 
   const initialValues = {
     acquisitionDate: formDetails.acquisitionDate ?? '',
-    conditionId: formDetails.conditionId ?? '',
+    conditionId: formDetails.conditionId ?? null,
     initialValue: formDetails.initialValue ?? undefined,
     warrantyStartDate: formDetails.warrantyStartDate ?? '',
     warrantyEndDate: formDetails.warrantyEndDate ?? '',
@@ -37,6 +37,7 @@ const AcquisitionStep = (props: AcquisitionStepProps) => {
   const formik = useFormik({
     initialValues,
     validationSchema: acquisitionInfoSchema,
+    enableReinitialize: true,
     onSubmit: async (values) => {
       dispatch(updateAssetForm(values));
       setActiveStep(2);
@@ -62,6 +63,7 @@ const AcquisitionStep = (props: AcquisitionStepProps) => {
             pb="24px"
             pr="29px"
             rounded="6px"
+            minH="60vh"
           >
             <VStack
               width="full"

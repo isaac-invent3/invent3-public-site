@@ -2,57 +2,61 @@ import NextAuth from 'next-auth';
 import type { NextAuthConfig } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
-// @ts-ignore
+// Shared promise to track the refresh token process
+let refreshTokenPromise: Promise<any> | null = null;
 // @ts-ignore
 async function refreshAccessToken(token) {
-  // this is our refresh token method
-  console.log('Now refreshing the expired token...');
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/refresh`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          accessToken: token.accessToken,
-          refreshToken: token.refreshToken,
-          apiKey: token.apiKey,
-        }),
+  if (!refreshTokenPromise) {
+    refreshTokenPromise = (async () => {
+      console.log('Now refreshing the expired token...');
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/refresh`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              accessToken: token.accessToken,
+              refreshToken: token.refreshToken,
+              apiKey: token.apiKey,
+            }),
+          }
+        );
+
+        const { success, data } = await res.json();
+
+        if (!success) {
+          console.log('The token could not be refreshed!');
+          throw data;
+        }
+
+        console.log('The token has been refreshed successfully.');
+        const decodedAccessToken = JSON.parse(
+          Buffer.from(data.data.accessToken.split('.')[1], 'base64').toString()
+        );
+
+        return {
+          ...token,
+          accessToken: data.data.accessToken,
+          refreshToken: data.data.refreshToken,
+          sessionId: data.data.sessionId,
+          accessTokenExpires: decodedAccessToken['exp'] * 1000,
+          error: '',
+        };
+      } catch (error) {
+        console.log(error);
+        return {
+          ...token,
+          error: 'RefreshAccessTokenError',
+        };
+      } finally {
+        refreshTokenPromise = null; // Reset the promise after completion
       }
-    );
-
-    const { success, data } = await res.json();
-
-    if (!success) {
-      console.log('The token could not be refreshed!');
-      throw data;
-    }
-
-    console.log('The token has been refreshed successfully.');
-    // get some data from the new access token such as exp (expiration time)
-    const decodedAccessToken = JSON.parse(
-      Buffer.from(data.data.accessToken.split('.')[1], 'base64').toString()
-    );
-
-    return {
-      ...token,
-      accessToken: data.data.accessToken,
-      refreshToken: data.data.refreshToken,
-      sessionId: data.data.sessionId,
-      accessTokenExpires: decodedAccessToken['exp'] * 1000,
-      error: '',
-    };
-  } catch (error) {
-    console.log(error);
-
-    // return an error if somethings goes wrong
-    return {
-      ...token,
-      error: 'RefreshAccessTokenError', // attention!
-    };
+    })();
   }
+  return refreshTokenPromise;
 }
 
 export const config = {
@@ -126,27 +130,25 @@ export const config = {
           token.sessionId = user.sessionId;
           token.apiKey = user.apiKey;
           token.role = decodedAccessToken['role']?.[0] ?? 'User';
-        }
-
-        if (decodedAccessToken) {
           token.accessTokenExpires = decodedAccessToken['exp'] * 1000;
         }
       }
 
-      // we update our token
-      if (trigger == 'update') {
-        if (session?.user?.email) {
-          token.email = session.user.email;
-        }
+      // Update token if triggered by 'update'
+      if (trigger === 'update' && session?.user?.email) {
+        token.email = session.user.email;
       }
 
+      // If token is still valid, return it
       if (
-        (token.accessTokenExpires &&
-          Date.now() < Number(token.accessTokenExpires)) ||
-        token.error == 'RefreshAccessTokenError'
+        token.accessTokenExpires &&
+        Date.now() < Number(token.accessTokenExpires) &&
+        token.error !== 'RefreshAccessTokenError'
       ) {
         return token;
       }
+
+      // Otherwise, refresh the token
       return await refreshAccessToken(token);
     },
 

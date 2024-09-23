@@ -93,11 +93,10 @@ const SummaryStep = (props: SummaryStepProps) => {
   };
 
   const ASSET = {
+    ...(type === 'edit' ? { assetId: assetFormDetails.assetId } : {}),
     assetName: assetFormDetails.assetName,
     brandName: assetFormDetails.brandName,
     modelRef: assetFormDetails.modelRef,
-    assetTag: 'string',
-    rfidtag: 'string',
     serialNo: assetFormDetails.serialNo,
     description: assetFormDetails.description,
     weightKg: assetFormDetails.weightKg,
@@ -106,9 +105,8 @@ const SummaryStep = (props: SummaryStepProps) => {
     heightCm: assetFormDetails.heightCm,
     purchaseDate: '2024-09-19T13:54:09.635Z',
     lifeExpectancy: 0,
-    locationId: 0,
-    assetTypeId: 0,
-    statusId: 0,
+    assetTypeId: assetFormDetails.assetTypeId,
+    statusId: assetFormDetails.statusId,
     categoryId: assetFormDetails.categoryId,
     currentOwner: assetFormDetails.currentOwnerName,
     responsibleFor: assetFormDetails.responsibleForName,
@@ -119,8 +117,6 @@ const SummaryStep = (props: SummaryStepProps) => {
       'DD/MM/YYYY'
     ).toISOString(),
     initialValue: assetFormDetails.initialValue,
-    resalevalue: 0,
-    scrapvalue: 0,
     parentId: assetData.assetId ?? null,
     subCategoryId: assetFormDetails.subCategoryId,
     [`${type === 'create' ? 'createdBy' : 'lastModifiedBy'}`]: username,
@@ -200,7 +196,7 @@ const SummaryStep = (props: SummaryStepProps) => {
       const response = await handleSubmit(createAsset, PAYLOAD, '');
       if (response?.data) {
         setAssetResponse(response?.data?.data);
-        if (assetData) {
+        if (assetData.assetId) {
           onOpenChildModal();
         } else {
           onOpenAddModal();
@@ -223,7 +219,11 @@ const SummaryStep = (props: SummaryStepProps) => {
     if (type === 'parentAsset') {
       dispatch(clearAsset());
     }
+    setActiveStep(0);
     dispatch(clearAssetForm());
+    onCloseAddModal();
+    onCloseChildModal();
+    onCloseEditModal();
   };
 
   return (
@@ -244,6 +244,7 @@ const SummaryStep = (props: SummaryStepProps) => {
           pr="44px"
           pb="40px"
           rounded="8px"
+          minH="60vh"
         >
           <SectionOne />
           <SectionTwo />

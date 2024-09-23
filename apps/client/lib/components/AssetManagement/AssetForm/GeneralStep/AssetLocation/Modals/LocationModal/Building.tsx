@@ -10,7 +10,7 @@ import BuildingSelect from '../SelectInputs/BuildingSelect';
 
 interface BuildingProps {
   handleReadableLocation: (option: Option, key: keyof FormLocation) => void;
-  facilityId: number | undefined;
+  facilityId: number | null;
 }
 const Building = (props: BuildingProps) => {
   const { handleReadableLocation, facilityId } = props;

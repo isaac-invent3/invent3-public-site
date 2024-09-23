@@ -9,7 +9,7 @@ import FloorSelect from '../SelectInputs/FloorSelect';
 
 interface FloorProps {
   handleReadableLocation: (option: Option, key: keyof FormLocation) => void;
-  buildingId: number | undefined;
+  buildingId: number | null;
 }
 const Floor = (props: FloorProps) => {
   const { handleReadableLocation, buildingId } = props;

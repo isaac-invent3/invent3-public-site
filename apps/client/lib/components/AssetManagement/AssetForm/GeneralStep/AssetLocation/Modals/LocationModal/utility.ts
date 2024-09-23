@@ -1,8 +1,8 @@
 import { FormLocation } from '~/lib/interfaces/asset.interfaces';
 
 const intialState = {
-  label: undefined,
-  value: undefined,
+  label: null,
+  value: null,
 };
 
 const resetFormikFields = (
@@ -18,42 +18,42 @@ const resetFormikFields = (
   switch (key) {
     case 'facilityId':
       return {
-        buildingId: undefined,
-        floorId: undefined,
-        departmentId: undefined,
-        roomId: undefined,
-        aisleId: undefined,
-        shelfId: undefined,
+        buildingId: null,
+        floorId: null,
+        departmentId: null,
+        roomId: null,
+        aisleId: null,
+        shelfId: null,
       };
     case 'buildingId':
       return {
-        floorId: undefined,
-        departmentId: undefined,
-        roomId: undefined,
-        aisleId: undefined,
-        shelfId: undefined,
+        floorId: null,
+        departmentId: null,
+        roomId: null,
+        aisleId: null,
+        shelfId: null,
       };
     case 'floorId':
       return {
-        departmentId: undefined,
-        roomId: undefined,
-        aisleId: undefined,
-        shelfId: undefined,
+        departmentId: null,
+        roomId: null,
+        aisleId: null,
+        shelfId: null,
       };
     case 'departmentId':
       return {
-        roomId: undefined,
-        aisleId: undefined,
-        shelfId: undefined,
+        roomId: null,
+        aisleId: null,
+        shelfId: null,
       };
     case 'roomId':
       return {
-        aisleId: undefined,
-        shelfId: undefined,
+        aisleId: null,
+        shelfId: null,
       };
     case 'aisleId':
       return {
-        shelfId: undefined,
+        shelfId: null,
       };
     default:
       return {};

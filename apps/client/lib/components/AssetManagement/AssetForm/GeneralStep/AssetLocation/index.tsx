@@ -20,7 +20,7 @@ interface AssetLocationProps {
   errors: FormikErrors<AssetFormDetails>;
   setFieldValue: (
     field: keyof AssetFormDetails,
-    value: string | number | undefined,
+    value: string | number | undefined | null,
     shouldValidate?: boolean
   ) => void;
 }

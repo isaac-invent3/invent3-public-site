@@ -9,7 +9,7 @@ import RoomModal from '../RoomModal';
 
 interface RoomProps {
   handleReadableLocation: (option: Option, key: keyof FormLocation) => void;
-  departmentId: number | undefined;
+  departmentId: number | null;
 }
 const Room = (props: RoomProps) => {
   const { handleReadableLocation, departmentId } = props;

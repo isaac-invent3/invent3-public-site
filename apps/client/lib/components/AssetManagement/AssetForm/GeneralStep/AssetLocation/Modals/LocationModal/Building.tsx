@@ -26,7 +26,11 @@ const Building = (props: BuildingProps) => {
         />
         <AddButton handleClick={onOpen}>Add New Building</AddButton>
       </VStack>
-      <BuildingModal isOpen={isOpen} onClose={onClose} />
+      <BuildingModal
+        isOpen={isOpen}
+        onClose={onClose}
+        defaultFacilityId={facilityId}
+      />
     </>
   );
 };

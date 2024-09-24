@@ -13,15 +13,51 @@ const Acquisition = () => {
     initialValue,
     warrantyStartDate,
     warrantyEndDate,
-    warrantyTerms,
-    paymentTerms,
+    warrantyDetails,
     depreciationStartDate,
     depreciationMethod,
     depreciationRate,
     vendorDetails,
+    purchaseDate,
+    lifeExpectancy,
+    scrapValue,
+    resaleValue,
+    currentValue,
   } = assetFormDetails;
 
   const row1 = [
+    {
+      label: 'Purchase Date',
+      value: purchaseDate
+        ? dateFormatter(purchaseDate, 'Do MMM, YYYY', 'DD/MM/YYYY')
+        : 'N/A',
+    },
+    {
+      label: 'Purchase Price',
+      value: amountFormatter(initialValue ?? 0),
+    },
+    {
+      label: 'Life Expectancy',
+      value: lifeExpectancy,
+    },
+  ];
+
+  const row2 = [
+    {
+      label: 'Resale Value',
+      value: amountFormatter(resaleValue ?? 0),
+    },
+    {
+      label: 'Scrap Value',
+      value: amountFormatter(scrapValue ?? 0),
+    },
+    {
+      label: 'Current Value',
+      value: amountFormatter(currentValue ?? 0),
+    },
+  ];
+
+  const row3 = [
     {
       label: 'Acquisition Date',
       value: acquisitionDate
@@ -32,13 +68,9 @@ const Acquisition = () => {
       label: 'Asset  Condition',
       value: conditionName,
     },
-    {
-      label: 'Purchase Price',
-      value: amountFormatter(initialValue ?? 0),
-    },
   ];
 
-  const row2 = [
+  const row4 = [
     {
       label: 'Warranty Start Date',
       value: warrantyStartDate
@@ -53,15 +85,11 @@ const Acquisition = () => {
     },
     {
       label: 'Warranty Terms',
-      value: warrantyTerms,
-    },
-    {
-      label: 'Payment Terms',
-      value: paymentTerms,
+      value: warrantyDetails,
     },
   ];
 
-  const row3 = [
+  const row5 = [
     {
       label: 'Depreciation Start Date',
       value: depreciationStartDate
@@ -82,6 +110,11 @@ const Acquisition = () => {
     <VStack spacing="8px" width="full" alignItems="flex-start">
       <DetailHeader variant="primary">Acquisition</DetailHeader>
       <VStack width="full" spacing="24px" alignItems="flex-start">
+        <SimpleGrid columns={4} width="full">
+          {row3.map((item) => (
+            <Info {...item} key={item.label} />
+          ))}
+        </SimpleGrid>
         {/* Row 1  */}
         <SimpleGrid columns={4} width="full">
           {row1.map((item) => (
@@ -95,8 +128,14 @@ const Acquisition = () => {
           ))}
         </SimpleGrid>
         {/* Row 3  */}
+
         <SimpleGrid columns={4} width="full">
-          {row3.map((item) => (
+          {row4.map((item) => (
+            <Info {...item} key={item.label} />
+          ))}
+        </SimpleGrid>
+        <SimpleGrid columns={4} width="full">
+          {row5.map((item) => (
             <Info {...item} key={item.label} />
           ))}
         </SimpleGrid>

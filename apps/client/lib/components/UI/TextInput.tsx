@@ -39,7 +39,7 @@ const TextInput: React.FC<TextInputProps> = ({
   isDisabled = false,
   variant = 'primary',
 }) => {
-  const [field, meta] = useField(name);
+  const [field, meta, helpers] = useField(name);
   const [show, setShow] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const inputValue = value || meta.value;
@@ -48,6 +48,26 @@ const TextInput: React.FC<TextInputProps> = ({
     if (!value) setIsFocused(false);
   };
   const inputType = type === 'password' ? (show ? 'text' : 'password') : type;
+
+  // Function to handle input change with max 2 decimal places
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let inputValue = e.target.value;
+
+    if (type === 'number') {
+      const formattedValue = inputValue.replace(/[^0-9.]/g, ''); // Remove non-numeric characters
+      if (formattedValue) {
+        // Ensure the number has at most 2 decimal places
+        const [integerPart, decimalPart] = formattedValue.split('.');
+        if (decimalPart && decimalPart.length > 2) {
+          inputValue = `${integerPart}.${decimalPart.slice(0, 2)}`;
+        } else {
+          inputValue = formattedValue;
+        }
+      }
+    }
+
+    helpers.setValue(type === 'number' ? parseFloat(inputValue) : inputValue);
+  };
 
   return (
     <FormControl
@@ -64,7 +84,7 @@ const TextInput: React.FC<TextInputProps> = ({
         <FormLabel
           position="absolute"
           top={isFocused || inputValue || inputValue === 0 ? '10px' : '50%'}
-          left={customLeftElement ? leftElementWidth ?? '16px' : '16px'}
+          left={customLeftElement ? (leftElementWidth ?? '16px') : '16px'}
           transform={
             isFocused || inputValue || inputValue === 0
               ? 'translateY(-40%) scale(0.85)'
@@ -104,12 +124,12 @@ const TextInput: React.FC<TextInputProps> = ({
           value={
             !meta.value && (value === undefined || value === null)
               ? ''
-              : meta.value ?? value
+              : (meta.value ?? value)
           }
           rounded="8px"
           height="50px"
           pt={isFocused || value ? '10px' : '6px'}
-          pl={customLeftElement ? leftElementWidth ?? '16px' : '16px'}
+          pl={customLeftElement ? (leftElementWidth ?? '16px') : '16px'}
           pr={customRightElement || type === 'password' ? '36px' : '16px'}
           bgColor={variant === 'primary' ? 'neutral.100' : '#F7F7F799'}
           borderWidth={0}
@@ -119,6 +139,7 @@ const TextInput: React.FC<TextInputProps> = ({
           overflow="hidden"
           onFocus={handleFocus}
           onBlur={handleBlur}
+          onChange={handleChange}
           _invalid={{
             borderColor: 'error.500',
             borderWidth: '1.5px',

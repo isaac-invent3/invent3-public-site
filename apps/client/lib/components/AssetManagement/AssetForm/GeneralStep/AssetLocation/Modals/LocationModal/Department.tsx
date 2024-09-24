@@ -26,7 +26,11 @@ const Department = (props: DepartmentProps) => {
         />
         <AddButton handleClick={onOpen}>Add New Department</AddButton>
       </VStack>
-      <DepartmentModal isOpen={isOpen} onClose={onClose} />
+      <DepartmentModal
+        isOpen={isOpen}
+        onClose={onClose}
+        defaultFloorId={floorId}
+      />
     </>
   );
 };

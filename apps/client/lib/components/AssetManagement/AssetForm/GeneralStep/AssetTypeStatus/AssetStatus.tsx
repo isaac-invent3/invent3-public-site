@@ -28,7 +28,7 @@ const AssetStatusSelect = () => {
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
       handleSelect={(option) =>
-        dispatch(updateAssetForm({ assetTypeName: option.label }))
+        dispatch(updateAssetForm({ statusName: option.label }))
       }
     />
   );

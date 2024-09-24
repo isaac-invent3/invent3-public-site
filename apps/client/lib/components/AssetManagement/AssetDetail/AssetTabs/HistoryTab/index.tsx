@@ -1,7 +1,6 @@
 import { Flex, Text, VStack } from '@chakra-ui/react';
 import { createColumnHelper } from '@tanstack/react-table';
 import React, { useMemo, useState } from 'react';
-import { assetData } from '~/lib/utils/MockData/asset';
 import { DetailTable } from '../../DetailTable';
 import { MaintenanceColorCode } from '~/lib/utils/ColorCodes';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
@@ -71,7 +70,7 @@ const HistoryTab = () => {
     () => [
       columnHelper.accessor('assetId', {
         cell: (info) => info.getValue(),
-        header: 'ID',
+        header: '#',
       }),
       columnHelper.accessor('completionDate', {
         cell: (info) =>
@@ -107,7 +106,7 @@ const HistoryTab = () => {
         header: 'Status',
       }),
     ],
-    [assetData] //eslint-disable-line
+    [data?.data?.items] //eslint-disable-line
   );
 
   return (

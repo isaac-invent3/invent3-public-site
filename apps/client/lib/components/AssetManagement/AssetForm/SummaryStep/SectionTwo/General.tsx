@@ -27,6 +27,11 @@ const General = () => {
     roomName,
     aisleName,
     shelfName,
+    assetTypeName,
+    statusName,
+    countryName,
+    stateName,
+    lgaName,
   } = assetFormDetails;
 
   const row1 = [
@@ -34,17 +39,17 @@ const General = () => {
       label: 'Asset Name',
       value: assetName,
     },
+    {
+      label: 'Asset Type',
+      value: assetTypeName,
+    },
+    {
+      label: 'Asset Status',
+      value: statusName,
+    },
   ];
 
   const row2 = [
-    {
-      label: 'Category',
-      value: categoryName,
-    },
-    {
-      label: 'Sub-category',
-      value: subCategoryName,
-    },
     {
       label: 'Location',
       value: [
@@ -58,6 +63,14 @@ const General = () => {
       ]
         .filter(Boolean)
         .join(', '),
+    },
+    {
+      label: 'Category',
+      value: categoryName,
+    },
+    {
+      label: 'Sub-category',
+      value: subCategoryName,
     },
   ];
 
@@ -110,13 +123,34 @@ const General = () => {
     },
   ];
 
+  const row6 = [
+    {
+      label: 'Country',
+      value: countryName,
+    },
+    {
+      label: 'State',
+      value: stateName,
+    },
+    {
+      label: 'LGA',
+      value: lgaName,
+    },
+  ];
+
   return (
     <VStack spacing="8px" width="full" alignItems="flex-start">
       <DetailHeader variant="primary">General</DetailHeader>
       <VStack width="full" spacing="24px" alignItems="flex-start">
         {/* Row 1  */}
-        <SimpleGrid columns={2} width="full">
+        <SimpleGrid columns={4} width="full">
           {row1.map((item) => (
+            <Info {...item} key={item.label} />
+          ))}
+        </SimpleGrid>
+        {/* Row 6  */}
+        <SimpleGrid columns={4} width="full">
+          {row6.map((item) => (
             <Info {...item} key={item.label} />
           ))}
         </SimpleGrid>

@@ -46,6 +46,7 @@ const GenericAsyncSelect = (props: BuildingSelectProps) => {
 
   const handlePagination = () => {
     if (data?.data && data?.data?.totalPages > pageNumber) {
+      setPrevPageNumber(pageNumber);
       setPageNumber((prev) => prev + 1);
     }
   };
@@ -97,6 +98,8 @@ const GenericAsyncSelect = (props: BuildingSelectProps) => {
         // Data are unsually undefined when fetching so this component is called twice and the condition fixes that
       } else if (fetchKey === prevFetchKey && pageNumber === prevPageNumber) {
         setOptions(formattedOptions);
+      } else if (fetchKey === prevFetchKey && pageNumber !== prevPageNumber) {
+        setOptions((prev) => [...prev, ...formattedOptions]);
       } else if (!fetchKey) {
         setOptions((prev) => [...prev, ...formattedOptions]);
       }

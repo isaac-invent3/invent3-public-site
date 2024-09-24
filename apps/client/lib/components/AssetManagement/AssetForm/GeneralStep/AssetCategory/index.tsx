@@ -14,10 +14,14 @@ import SubCategoryModal from './Modals/SubCategoryModal';
 import SubCategorySelect from './SubCategorySelect';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/assetSlice';
+import { useState } from 'react';
 
 const AssetCategory = () => {
   const dispatch = useAppDispatch();
   const { categoryId } = useAppSelector((state) => state.asset.assetForm);
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(
+    categoryId
+  );
   const { isOpen, onClose, onOpen } = useDisclosure();
   const {
     isOpen: isOpenSubCategory,
@@ -41,9 +45,9 @@ const AssetCategory = () => {
               <VStack alignItems="flex-end" width="full">
                 <CategorySelect
                   handleSelect={(option) => {
+                    setSelectedCategory(option.value as number);
                     dispatch(
                       updateAssetForm({
-                        categoryId: option.value as number,
                         categoryName: option.label,
                       })
                     );
@@ -53,7 +57,7 @@ const AssetCategory = () => {
               </VStack>
               <VStack alignItems="flex-end" width="full">
                 <SubCategorySelect
-                  categoryId={categoryId}
+                  categoryId={selectedCategory}
                   handleSelect={(option) => {
                     dispatch(
                       updateAssetForm({ subCategoryName: option.label })
@@ -72,6 +76,7 @@ const AssetCategory = () => {
       <SubCategoryModal
         isOpen={isOpenSubCategory}
         onClose={onCloseSubCategory}
+        defaultCategory={selectedCategory}
       />
     </>
   );

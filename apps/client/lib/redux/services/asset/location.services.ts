@@ -24,6 +24,51 @@ export const locationApi = createApi({
     'shelvesByAisleId',
   ],
   endpoints: (builder) => ({
+    getAllCountries: builder.query({
+      query: (data: any) => ({
+        url: generateQueryStr(`/Countries?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    searchCountries: builder.mutation({
+      query: (body: any) => ({
+        url: `/Countries/Search`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
+    getStatesByCountryId: builder.query({
+      query: ({ id, ...data }) => ({
+        url: generateQueryStr(`/States/GetStatesByCountryId/${id}?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    searchStates: builder.mutation({
+      query: (body: any) => ({
+        url: `/States/Search`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
+    getLGAByStateId: builder.query({
+      query: ({ id, ...data }) => ({
+        url: generateQueryStr(`/StateLgas/GetLGAsByStateId/${id}?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    searchLGA: builder.mutation({
+      query: (body: any) => ({
+        url: `/StateLgas/Search`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
     getAllFacilities: builder.query({
       query: (data: any) => ({
         url: generateQueryStr(`/Facilities?`, data),
@@ -284,4 +329,10 @@ export const {
   useSearchFloorsMutation,
   useSearchRoomsMutation,
   useSearchShelfMutation,
+  useGetAllCountriesQuery,
+  useGetLGAByStateIdQuery,
+  useGetStatesByCountryIdQuery,
+  useSearchCountriesMutation,
+  useSearchLGAMutation,
+  useSearchStatesMutation,
 } = locationApi;

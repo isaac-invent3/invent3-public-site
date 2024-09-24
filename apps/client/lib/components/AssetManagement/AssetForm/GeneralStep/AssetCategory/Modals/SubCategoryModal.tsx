@@ -15,19 +15,21 @@ import CategorySelect from '../CategorySelect';
 interface SubCategoryModalProps {
   isOpen: boolean;
   onClose: () => void;
+  defaultCategory: number | null;
 }
 const SubCategoryModal = (props: SubCategoryModalProps) => {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, defaultCategory } = props;
   const [createSubCategory, { isLoading }] = useCreateSubCategoryMutation({});
   const { handleSubmit } = useCustomMutation();
   const { data } = useSession();
 
   const formik = useFormik({
     initialValues: {
-      categoryId: null,
+      categoryId: defaultCategory ?? null,
       categoryName: null,
     },
     validationSchema: subCategorySchema,
+    enableReinitialize: true,
     onSubmit: async (values) => {
       const finalValue = { ...values, createdBy: data?.user?.username };
       const response = await handleSubmit(createSubCategory, finalValue, '');

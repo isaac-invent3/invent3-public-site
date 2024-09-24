@@ -2,7 +2,6 @@ import { HStack } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { FilterInput } from '~/lib/interfaces/asset.interfaces';
 import FilterDropDown from '../../UI/FilterDropDown';
-import { categoryData } from '~/lib/utils/MockData/asset';
 import Button from '../../UI/Button';
 import { useGetAllAssetCategoryQuery } from '~/lib/redux/services/asset/category.services';
 import { generateOptions } from '~/lib/utils/helperFunctions';
@@ -65,7 +64,11 @@ const GeneralFilter = (props: GeneralFilterProps) => {
         />
         <FilterDropDown
           label="Location"
-          options={categoryData}
+          options={generateOptions(
+            assetCategoryData?.data?.items,
+            'categoryName',
+            'categoryId'
+          )}
           selectedOptions={filterData.location}
           handleClick={(value) => handleFilterData(value, 'location')}
         />

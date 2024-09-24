@@ -49,9 +49,6 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
             </Text>
           </HStack>
         )}
-        <Button variant="outline" customStyles={{ minW: '137px' }}>
-          Save for later
-        </Button>
         <Button
           type={activeStep < 3 ? 'submit' : 'button'}
           handleClick={() => {

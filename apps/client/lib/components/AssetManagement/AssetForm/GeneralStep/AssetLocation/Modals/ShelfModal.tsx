@@ -15,20 +15,22 @@ import AisleSelect from './SelectInputs/AisleSelect';
 interface ShelfModalProps {
   isOpen: boolean;
   onClose: () => void;
+  defaultAisleId: number | null;
 }
 const ShelfModal = (props: ShelfModalProps) => {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, defaultAisleId } = props;
   const [createShelf, { isLoading }] = useCreateShelfMutation({});
   const { handleSubmit } = useCustomMutation();
   const { data } = useSession();
 
   const formik = useFormik({
     initialValues: {
-      aisleId: null,
+      aisleId: defaultAisleId ?? null,
       shelfName: null,
       shelfRef: null,
     },
     validationSchema: shelfSchema,
+    enableReinitialize: true,
     onSubmit: async (values) => {
       const finalValue = { ...values, createdBy: data?.user?.username };
       const response = await handleSubmit(createShelf, finalValue, '');

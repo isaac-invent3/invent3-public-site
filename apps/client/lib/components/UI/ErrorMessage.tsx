@@ -8,7 +8,7 @@ interface ErrorMessageProps {
 const ErrorMessage = ({ children }: ErrorMessageProps) => {
   return (
     <Flex width="full" gap="8px" alignItems="center">
-      <Icon as={InfoIcon} color="error.500" />
+      <Icon as={InfoIcon} color="error.500" boxSize="12px" />
       <Text color="error.500">{children}</Text>
     </Flex>
   );

@@ -15,20 +15,22 @@ import BuildingSelect from './SelectInputs/BuildingSelect';
 interface FloorModalProps {
   isOpen: boolean;
   onClose: () => void;
+  defaultBuildingId: number | null;
 }
 const FloorModal = (props: FloorModalProps) => {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, defaultBuildingId } = props;
   const [createFloor, { isLoading }] = useCreateFloorMutation({});
   const { handleSubmit } = useCustomMutation();
   const { data } = useSession();
 
   const formik = useFormik({
     initialValues: {
-      buildingId: null,
+      buildingId: defaultBuildingId ?? null,
       floorName: null,
       floorRef: null,
     },
     validationSchema: floorSchema,
+    enableReinitialize: true,
     onSubmit: async (values) => {
       const finalValue = { ...values, createdBy: data?.user?.username };
       const response = await handleSubmit(createFloor, finalValue, '');

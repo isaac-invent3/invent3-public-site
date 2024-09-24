@@ -15,20 +15,22 @@ import RoomSelect from './SelectInputs/RoomSelect';
 interface AisleModalProps {
   isOpen: boolean;
   onClose: () => void;
+  defaultRoomId: number | null;
 }
 const AisleModal = (props: AisleModalProps) => {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, defaultRoomId } = props;
   const [createAisle, { isLoading }] = useCreateAisleMutation({});
   const { handleSubmit } = useCustomMutation();
   const { data } = useSession();
 
   const formik = useFormik({
     initialValues: {
-      roomId: null,
+      roomId: defaultRoomId ?? null,
       aisleName: null,
       aisleRef: null,
     },
     validationSchema: aisleSchema,
+    enableReinitialize: true,
     onSubmit: async (values) => {
       const finalValue = { ...values, createdBy: data?.user?.username };
       const response = await handleSubmit(createAisle, finalValue, '');

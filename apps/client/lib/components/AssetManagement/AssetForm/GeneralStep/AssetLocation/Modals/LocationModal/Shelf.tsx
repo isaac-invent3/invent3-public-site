@@ -24,7 +24,7 @@ const Shelf = (props: ShelfProps) => {
         />
         <AddButton handleClick={onOpen}>Add New Shelf</AddButton>
       </VStack>
-      <ShelfModal isOpen={isOpen} onClose={onClose} />
+      <ShelfModal isOpen={isOpen} onClose={onClose} defaultAisleId={aisleId} />
     </>
   );
 };

@@ -4,7 +4,7 @@ import React from 'react';
 import { acquisitionInfoSchema } from '~/lib/schemas/asset/main.schema';
 import FormActionButtons from '../FormActionButtons';
 import AcquisitionDateConditon from './AcquisitionDateCondition';
-import PurchasePrice from './PurchasePrice';
+import Purchase from './Purchase';
 import WarrantyDetails from './WarrantyDetails';
 import DepreciationDetails from './DepreciationDetails';
 import VendorDetails from './VendorDetails';
@@ -24,14 +24,19 @@ const AcquisitionStep = (props: AcquisitionStepProps) => {
     acquisitionDate: formDetails.acquisitionDate ?? '',
     conditionId: formDetails.conditionId ?? null,
     initialValue: formDetails.initialValue ?? undefined,
+    purchaseDate: formDetails.purchaseDate ?? '',
     warrantyStartDate: formDetails.warrantyStartDate ?? '',
     warrantyEndDate: formDetails.warrantyEndDate ?? '',
-    warrantyTerms: formDetails.warrantyTerms ?? '',
-    paymentTerms: formDetails.paymentTerms ?? '',
+    warrantyDetails: formDetails.warrantyDetails ?? '',
     depreciationStartDate: formDetails.depreciationStartDate ?? '',
     depreciationMethod: formDetails.depreciationMethod ?? '',
     depreciationRate: formDetails.depreciationRate ?? undefined,
-    vendorId: formDetails.vendorId ?? '',
+    vendorId: formDetails.vendorId ?? null,
+    resaleValue: formDetails.resaleValue ?? null,
+    scrapValue: formDetails.scrapValue ?? null,
+    currentValue: formDetails.currentValue ?? null,
+    lifeExpectancy: formDetails.lifeExpectancy ?? null,
+    accumulatedDepreciation: formDetails.accumulatedDepreciation ?? null,
   };
 
   const formik = useFormik({
@@ -72,7 +77,7 @@ const AcquisitionStep = (props: AcquisitionStepProps) => {
               spacing="24px"
             >
               <AcquisitionDateConditon />
-              <PurchasePrice />
+              <Purchase />
               <WarrantyDetails />
               <DepreciationDetails />
               <VendorDetails />

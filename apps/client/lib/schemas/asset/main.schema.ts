@@ -32,18 +32,26 @@ const generalInfoSchema = locationSchema.shape({
   currentOwner: Yup.string().required('Owner is Required'),
   assignedTo: Yup.string().required('This is Required'),
   responsibleFor: Yup.string().required('This is Required'),
+  lgaId: Yup.number().required('LGA is Required'),
+  stateId: Yup.number().required('State is Required'),
+  countryId: Yup.number().required('Country is Required'),
 });
 
 const acquisitionInfoSchema = Yup.object().shape({
   acquisitionDate: Yup.string().required('Acquisition Date is required'),
+  purchaseDate: Yup.string(),
   conditionId: Yup.string().required('Asset Condition is required'),
   initialValue: Yup.number()
     .required('Purchase Price is required')
     .min(1, 'Price must be greater than 1'),
   warrantyStartDate: Yup.string().required('Warranty Start Date is required'),
   warrantyEndDate: Yup.string().required('Warranty End Date is required'),
-  warrantyTerms: Yup.string().required('Warranty Terms is required'),
-  paymentTerms: Yup.string().required('Payment Terms is required'),
+  warrantyDetails: Yup.string().required('Warranty Terms is required'),
+  resaleValue: Yup.number().nullable(),
+  scrapValue: Yup.number().nullable(),
+  currentValue: Yup.number().nullable(),
+  lifeExpectancy: Yup.number().nullable(),
+  accumulatedDepreciation: Yup.number().nullable(),
   depreciationStartDate: Yup.string().required(
     'Depreciation Start Date is required'
   ),
@@ -51,7 +59,7 @@ const acquisitionInfoSchema = Yup.object().shape({
   depreciationRate: Yup.number()
     .required('Depreciation Rate is required')
     .min(0, 'Rate must be greater than 0'),
-  vendorId: Yup.string(),
+  vendorId: Yup.number().nullable(),
 });
 
 const documentSchema = Yup.object().shape({

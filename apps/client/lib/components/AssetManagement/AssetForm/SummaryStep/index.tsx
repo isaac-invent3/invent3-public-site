@@ -68,6 +68,7 @@ const SummaryStep = (props: SummaryStepProps) => {
   const username = data?.user?.username;
 
   const LOCATION = {
+    lgaId: assetFormDetails.lgaId,
     facilityId: assetFormDetails.facilityId,
     buildingId: assetFormDetails.buildingId,
     floorId: assetFormDetails.floorId,
@@ -75,11 +76,21 @@ const SummaryStep = (props: SummaryStepProps) => {
     roomId: assetFormDetails.roomId,
     aisleId: assetFormDetails.aisleId,
     shelfId: assetFormDetails.shelfId,
+    ...(type === 'edit'
+      ? {
+          locationId: assetFormDetails.locationId,
+        }
+      : {}),
     [`${type === 'create' ? 'createdBy' : 'lastModifiedBy'}`]: username,
   };
 
   const DEPRECIATION = {
-    ...(type === 'edit' ? { assetId: assetFormDetails.assetId } : {}),
+    ...(type === 'edit'
+      ? {
+          assetId: assetFormDetails.assetId,
+          depreciationId: assetFormDetails.depreciationId,
+        }
+      : {}),
     depreciationDate: moment(
       assetFormDetails.depreciationStartDate,
       'DD/MM/YYYY'
@@ -87,8 +98,8 @@ const SummaryStep = (props: SummaryStepProps) => {
     depreciationMethod: assetFormDetails.depreciationMethod,
     depreciationRate: assetFormDetails.depreciationRate,
     initialValue: assetFormDetails.initialValue,
-    accumulatedDepreciation: 0,
-    currentValue: 0,
+    accumulatedDepreciation: assetFormDetails.accumulatedDepreciation,
+    currentValue: assetFormDetails.currentValue,
     [`${type === 'create' ? 'createdBy' : 'lastModifiedBy'}`]: username,
   };
 
@@ -103,8 +114,11 @@ const SummaryStep = (props: SummaryStepProps) => {
     lengthCm: assetFormDetails.lengthCm,
     widthCm: assetFormDetails.widthCm,
     heightCm: assetFormDetails.heightCm,
-    purchaseDate: '2024-09-19T13:54:09.635Z',
-    lifeExpectancy: 0,
+    purchaseDate: moment(
+      assetFormDetails.purchaseDate,
+      'DD/MM/YYYY'
+    ).toISOString(),
+    lifeExpectancy: assetFormDetails.lifeExpectancy,
     assetTypeId: assetFormDetails.assetTypeId,
     statusId: assetFormDetails.statusId,
     categoryId: assetFormDetails.categoryId,
@@ -117,20 +131,27 @@ const SummaryStep = (props: SummaryStepProps) => {
       'DD/MM/YYYY'
     ).toISOString(),
     initialValue: assetFormDetails.initialValue,
+    resalevalue: assetFormDetails.resaleValue,
+    scrapvalue: assetFormDetails.scrapValue,
     parentId: assetData.assetId ?? null,
     subCategoryId: assetFormDetails.subCategoryId,
     [`${type === 'create' ? 'createdBy' : 'lastModifiedBy'}`]: username,
   };
 
   const WARRANTY = {
-    warrantyDetails: assetFormDetails.warrantyTerms,
+    warrantyDetails: assetFormDetails.warrantyDetails,
     startDate: moment(assetFormDetails.warrantyStartDate, 'DD/MM/YYYY').format(
       'YYYY-MM-DD'
     ),
     expiryDate: moment(assetFormDetails.warrantyEndDate, 'DD/MM/YYYY').format(
       'YYYY-MM-DD'
     ),
-    ...(type === 'edit' ? { assetId: assetFormDetails.assetId } : {}),
+    ...(type === 'edit'
+      ? {
+          assetId: assetFormDetails.assetId,
+          warrantyId: assetFormDetails.warrantyId,
+        }
+      : {}),
     [`${type === 'create' ? 'createdBy' : 'lastModifiedBy'}`]: username,
   };
 
@@ -191,6 +212,22 @@ const SummaryStep = (props: SummaryStepProps) => {
     [getDtoKey('AssetDepreciation')]: DEPRECIATION,
   };
 
+  const handleModalAction = (type: 'childAsset' | 'parentAsset') => {
+    if (type === 'childAsset') {
+      if (!assetData.assetId && assetResponse) {
+        dispatch(setAsset(assetResponse));
+      }
+    }
+    if (type === 'parentAsset') {
+      dispatch(clearAsset());
+    }
+    setActiveStep(0);
+    dispatch(clearAssetForm());
+    onCloseAddModal();
+    onCloseChildModal();
+    onCloseEditModal();
+  };
+
   const handleSumbitAsset = async () => {
     if (type === 'create') {
       const response = await handleSubmit(createAsset, PAYLOAD, '');
@@ -208,22 +245,6 @@ const SummaryStep = (props: SummaryStepProps) => {
         onOpenEditModal();
       }
     }
-  };
-
-  const handleModalAction = (type: 'childAsset' | 'parentAsset') => {
-    if (type === 'childAsset') {
-      if (!assetData.assetId && assetResponse) {
-        dispatch(setAsset(assetResponse));
-      }
-    }
-    if (type === 'parentAsset') {
-      dispatch(clearAsset());
-    }
-    setActiveStep(0);
-    dispatch(clearAssetForm());
-    onCloseAddModal();
-    onCloseChildModal();
-    onCloseEditModal();
   };
 
   return (

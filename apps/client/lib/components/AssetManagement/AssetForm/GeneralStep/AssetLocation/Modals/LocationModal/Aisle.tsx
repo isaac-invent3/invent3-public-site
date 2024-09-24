@@ -26,7 +26,7 @@ const Aisle = (props: AisleProps) => {
         />
         <AddButton handleClick={onOpen}>Add New Aisle</AddButton>
       </VStack>
-      <AisleModal isOpen={isOpen} onClose={onClose} />
+      <AisleModal isOpen={isOpen} onClose={onClose} defaultRoomId={roomId} />
     </>
   );
 };

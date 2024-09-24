@@ -124,6 +124,21 @@ const ListView = (props: ListViewProps) => {
         header: 'Responsible For',
         enableSorting: false,
       }),
+      columnHelper.accessor('countryName', {
+        cell: (info) => info.getValue() ?? 'N/A',
+        header: 'Country',
+        enableSorting: false,
+      }),
+      columnHelper.accessor('stateName', {
+        cell: (info) => info.getValue() ?? 'N/A',
+        header: 'State',
+        enableSorting: false,
+      }),
+      columnHelper.accessor('lganame', {
+        cell: (info) => info.getValue() ?? 'N/A',
+        header: 'LGA',
+        enableSorting: false,
+      }),
       columnHelper.accessor('facilityName', {
         cell: (info) => info.getValue() ?? 'N/A',
         header: 'Facility',

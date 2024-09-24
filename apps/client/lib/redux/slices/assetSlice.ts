@@ -41,6 +41,12 @@ const initialValue = {
   lengthCm: null,
   widthCm: null,
   heightCm: null,
+  lgaid: null,
+  lganame: null,
+  stateId: null,
+  stateName: null,
+  countryId: null,
+  countryName: null,
   facilityName: null,
   facilityRef: null,
   facilityAddress: null,
@@ -101,12 +107,12 @@ const initialAssetForm = {
   assignedTo: null,
   responsibleFor: null,
   acquisitionDate: null,
+  purchaseDate: null,
   conditionId: null,
   initialValue: null,
   warrantyStartDate: null,
   warrantyEndDate: null,
-  warrantyTerms: null,
-  paymentTerms: null,
+  warrantyDetails: null,
   depreciationStartDate: null,
   depreciationMethod: null,
   depreciationRate: null,
@@ -137,6 +143,19 @@ const initialAssetForm = {
   statusId: null,
   statusName: null,
   locationId: null,
+  warrantyId: null,
+  depreciationId: null,
+  resaleValue: null,
+  scrapValue: null,
+  currentValue: null,
+  lifeExpectancy: null,
+  accumulatedDepreciation: null,
+  lgaId: null,
+  stateId: null,
+  countryId: null,
+  lgaName: null,
+  stateName: null,
+  countryName: null,
   vendorDetails: {
     vendorName: null,
     address: null,
@@ -149,12 +168,14 @@ export interface SliceProps {
   asset: Asset;
   assetForm: AssetFormDetails;
   assetImages: AssetImages[];
+  reinitializeAssetForm: boolean;
 }
 
 const initialState: SliceProps = {
   asset: initialValue,
   assetForm: initialAssetForm,
   assetImages: [],
+  reinitializeAssetForm: false,
 };
 
 export const assetSlice = createSlice({

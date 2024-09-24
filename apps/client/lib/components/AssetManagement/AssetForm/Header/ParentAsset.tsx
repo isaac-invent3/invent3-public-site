@@ -25,7 +25,7 @@ const ParentAsset = () => {
     <HStack spacing="13px" alignItems="flex-start">
       <VStack alignItems="flex-start" spacing="8px" maxW="120px">
         <Text size="md" fontWeight={700} color="primary.main">
-          Parent
+          Parent Asset
         </Text>
         <Text color="neutral.600">
           You are adding a child asset to the Parent Asset
@@ -39,6 +39,7 @@ const ParentAsset = () => {
           overflow="hidden"
           rounded="10px"
           bgColor="white"
+          flexShrink={0}
         >
           {/* <Image src="" fill alt="Parent asset image" /> */}
         </Flex>

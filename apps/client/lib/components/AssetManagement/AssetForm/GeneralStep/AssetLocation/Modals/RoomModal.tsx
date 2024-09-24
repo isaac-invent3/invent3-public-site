@@ -15,20 +15,22 @@ import DepartmentSelect from './SelectInputs/DepartmentSelect';
 interface RoomModalProps {
   isOpen: boolean;
   onClose: () => void;
+  defaultDepartmentId: number | null;
 }
 const RoomModal = (props: RoomModalProps) => {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, defaultDepartmentId } = props;
   const [createRoom, { isLoading }] = useCreateRoomMutation({});
   const { handleSubmit } = useCustomMutation();
   const { data } = useSession();
 
   const formik = useFormik({
     initialValues: {
-      departmentId: null,
+      departmentId: defaultDepartmentId ?? null,
       roomName: null,
       roomRef: null,
     },
     validationSchema: roomSchema,
+    enableReinitialize: true,
     onSubmit: async (values) => {
       const finalValue = { ...values, createdBy: data?.user?.username };
       const response = await handleSubmit(createRoom, finalValue, '');

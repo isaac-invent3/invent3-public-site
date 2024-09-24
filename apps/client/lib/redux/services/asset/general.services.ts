@@ -26,6 +26,13 @@ export const assetApi = createApi({
       }),
       providesTags: ['singleAsset'],
     }),
+    getAssetInfoHeaderById: builder.query({
+      query: (id: any) => ({
+        url: `/Assets/GetAssetInfoHeader/${id}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
     getAcquisitionInfoByAssetId: builder.query({
       query: ({ id }) => ({
         url: `/Assets/GetAcquisitionInfo/${id}`,
@@ -135,6 +142,7 @@ export const {
   useCreateAssetMutation,
   useUpdateAssetMutation,
   useGetAssetByIdQuery,
+  useGetAssetInfoHeaderByIdQuery,
   useGetallAssetQuery,
   useGetAcquisitionInfoByAssetIdQuery,
   useGetAssetComponentInfoByAssetGuidQuery,

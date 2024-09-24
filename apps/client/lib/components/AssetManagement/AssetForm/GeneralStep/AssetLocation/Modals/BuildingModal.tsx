@@ -15,16 +15,17 @@ import FacilitySelect from './SelectInputs/FacilitySelect';
 interface BuildingModalProps {
   isOpen: boolean;
   onClose: () => void;
+  defaultFacilityId: number | null;
 }
 const BuildingModal = (props: BuildingModalProps) => {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, defaultFacilityId } = props;
   const [createBuilding, { isLoading }] = useCreateBuildingMutation({});
   const { handleSubmit } = useCustomMutation();
   const { data } = useSession();
 
   const formik = useFormik({
     initialValues: {
-      facilityId: null,
+      facilityId: defaultFacilityId ?? null,
       buildingName: null,
       buildingRef: null,
       address: null,
@@ -32,6 +33,7 @@ const BuildingModal = (props: BuildingModalProps) => {
       latitude: 0,
     },
     validationSchema: buildingSchema,
+    enableReinitialize: true,
     onSubmit: async (values) => {
       const finalValue = { ...values, createdBy: data?.user?.username };
       const response = await handleSubmit(createBuilding, finalValue, '');

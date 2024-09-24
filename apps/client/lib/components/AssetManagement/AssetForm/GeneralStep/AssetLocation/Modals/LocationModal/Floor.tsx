@@ -24,7 +24,11 @@ const Floor = (props: FloorProps) => {
         />
         <AddButton handleClick={onOpen}>Add New Floor</AddButton>
       </VStack>
-      <FloorModal isOpen={isOpen} onClose={onClose} />
+      <FloorModal
+        isOpen={isOpen}
+        onClose={onClose}
+        defaultBuildingId={buildingId}
+      />
     </>
   );
 };

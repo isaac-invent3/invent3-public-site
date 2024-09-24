@@ -24,7 +24,11 @@ const Room = (props: RoomProps) => {
         />
         <AddButton handleClick={onOpen}>Add New Room</AddButton>
       </VStack>
-      <RoomModal isOpen={isOpen} onClose={onClose} />
+      <RoomModal
+        isOpen={isOpen}
+        onClose={onClose}
+        defaultDepartmentId={departmentId}
+      />
     </>
   );
 };

@@ -7,6 +7,9 @@ import { useAppSelector } from '~/lib/redux/hooks';
 const InfoOne = () => {
   const assetData = useAppSelector((state) => state.asset.asset);
   const {
+    countryName,
+    stateName,
+    lganame,
     facilityName,
     floorName,
     buildingName,
@@ -22,6 +25,18 @@ const InfoOne = () => {
     description,
   } = assetData;
   const details = [
+    {
+      label: 'Country:',
+      value: countryName ?? 'N/A',
+    },
+    {
+      label: 'State:',
+      value: stateName ?? 'N/A',
+    },
+    {
+      label: 'LGA:',
+      value: lganame ?? 'N/A',
+    },
     {
       label: 'Location:',
       value:

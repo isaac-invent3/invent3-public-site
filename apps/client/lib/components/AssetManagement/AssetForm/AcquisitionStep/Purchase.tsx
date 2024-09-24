@@ -5,46 +5,53 @@ import { Field } from 'formik';
 import TextInput from '~/lib/components/UI/TextInput';
 import CustomDatePicker from './DatePicker';
 
-const DepreciationDetails = () => {
+const PurchasePrice = () => {
   return (
     <HStack width="full" alignItems="flex-start" spacing="78px">
       <Flex width="full" maxW="144px">
         <SectionInfo
-          title="Depreciation Details"
+          title="Purchase"
           info="Add name that users can likely search with"
           isRequired
         />
       </Flex>
-      <Grid templateColumns="repeat(3, 1fr)" gap="16px" width="full">
-        <GridItem colSpan={2} width="full">
+      <Grid templateColumns="repeat(4, 1fr)" gap="16px" width="full">
+        <GridItem colSpan={4} width="full">
           <HStack width="full" alignItems="flex-start" spacing="16px">
-            <CustomDatePicker name="depreciationStartDate" label="Start Date" />
-
+            <CustomDatePicker name="purchaseDate" label="Purchase Date" />
             <Field
               as={TextInput}
-              name="depreciationMethod"
-              type="text"
-              label="Depreciation Method"
-              customStyles
+              name="initialValue"
+              type="number"
+              label="Purchase Price"
+            />
+            <Field
+              as={TextInput}
+              name="lifeExpectancy"
+              type="number"
+              label="Life Expectancy"
             />
           </HStack>
         </GridItem>
-        <GridItem colSpan={2} width="full">
+        <GridItem colSpan={4} width="full">
           <HStack width="full" alignItems="flex-start" spacing="16px">
             <Field
               as={TextInput}
-              name="depreciationRate"
+              name="currentValue"
               type="number"
-              label="Depreciation Rate"
-              customStyles
+              label="Current Value"
             />
-
             <Field
               as={TextInput}
-              name="accumulatedDepreciation"
+              name="resaleValue"
               type="number"
-              label="Accumulated Depreciation"
-              customStyles
+              label="Resale Value"
+            />
+            <Field
+              as={TextInput}
+              name="scrapValue"
+              type="number"
+              label="Scrap Value"
             />
           </HStack>
         </GridItem>
@@ -53,4 +60,4 @@ const DepreciationDetails = () => {
   );
 };
 
-export default DepreciationDetails;
+export default PurchasePrice;

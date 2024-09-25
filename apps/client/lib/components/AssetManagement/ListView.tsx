@@ -261,7 +261,7 @@ const ListView = (props: ListViewProps) => {
         header: 'Date Created',
       }),
 
-      columnHelper.accessor('currentStatus', {
+      columnHelper.accessor('rowId', {
         cell: () => Dots(),
         header: '',
         enableSorting: false,

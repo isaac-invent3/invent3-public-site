@@ -227,7 +227,10 @@ function DataTable<Data extends object>({
                     {row.getVisibleCells().map((cell) => {
                       const { meta } = cell.column.columnDef;
                       return (
-                        <OverflowTd isNumeric={meta?.isNumeric ?? false}>
+                        <OverflowTd
+                          isNumeric={meta?.isNumeric ?? false}
+                          key={cell.id}
+                        >
                           {flexRender(
                             cell.column.columnDef.cell,
                             cell.getContext()

@@ -48,7 +48,7 @@ const NumberPagination = ({
   const renderBeforeEnd = () => {
     const pages = [];
     const ellipsis = (
-      <Text key="ellipsis" color="neutral.600">
+      <Text key="ellipsis-before" color="neutral.600">
         ...
       </Text>
     );
@@ -77,7 +77,7 @@ const NumberPagination = ({
   const renderOnEnd = () => {
     const pages = [];
     const ellipsis = (
-      <Text key="ellipsis" color="neutral.600">
+      <Text key="ellipsis-after" color="neutral.600">
         ...
       </Text>
     );

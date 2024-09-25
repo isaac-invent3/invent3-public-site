@@ -20,6 +20,7 @@ import { useGetallAssetQuery } from '~/lib/redux/services/asset/general.services
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useSearchApiMutation } from '~/lib/redux/services/utility.services';
 import { SearchResponse } from '~/lib/interfaces/general.interfaces';
+import MapView from './MapView';
 
 const AssetManagement = () => {
   const [search, setSearch] = useState('');
@@ -27,6 +28,7 @@ const AssetManagement = () => {
   const [pageSize, setPageSize] = useState(25);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { handleSubmit } = useCustomMutation();
+  const [tabIndex, setTabIndex] = useState(0);
   const [searchAsset, { isLoading: searchLoading }] = useSearchApiMutation({});
   const [searchData, setSearchData] = useState<SearchResponse | null>(null);
   const [filterData, setFilterData] = useState<FilterInput>({
@@ -94,7 +96,11 @@ const AssetManagement = () => {
     <Flex width="full" direction="column" pb="24px">
       <Header />
       <Flex direction="column" mt="42px" position="relative">
-        <Tabs variant="custom" width={'full'}>
+        <Tabs
+          variant="custom"
+          width={'full'}
+          onChange={(index) => setTabIndex(index)}
+        >
           <Flex width="full" position="relative">
             <TabList>
               <Tab>List View</Tab>
@@ -136,7 +142,7 @@ const AssetManagement = () => {
                 }
               />
             </TabPanel>
-            <TabPanel></TabPanel>
+            <TabPanel>{tabIndex === 1 && <MapView />}</TabPanel>
           </TabPanels>
         </Tabs>
       </Flex>

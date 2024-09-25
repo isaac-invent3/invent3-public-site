@@ -39,7 +39,7 @@ const ActionButton = (props: ActionButtonProps) => {
       cursor="pointer"
       onClick={handleClick}
     >
-      <Icon as={icon} boxSize="25px" />
+      <Icon as={icon} boxSize="24px" bgColor="#F9F9F9F9" rounded="8px" />
 
       <Text size="md" color="primary.500">
         {name}

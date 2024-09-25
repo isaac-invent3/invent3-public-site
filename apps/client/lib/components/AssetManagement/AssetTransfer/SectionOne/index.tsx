@@ -3,8 +3,10 @@ import React from 'react';
 import CurrentOwner from './CurrentOwner';
 import AssetDetails from './AssetDetails';
 import Button from '~/lib/components/UI/Button';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 const SectionOne = () => {
+  const { assetId } = useAppSelector((state) => state.asset.asset);
   return (
     <Flex gap="112px" width="full">
       <Flex width="40%">
@@ -22,6 +24,7 @@ const SectionOne = () => {
               width: 'max-content',
               paddingX: '12px',
             }}
+            href={`/asset-management?asset=${assetId}`}
           >
             View Full Asset Details
           </Button>

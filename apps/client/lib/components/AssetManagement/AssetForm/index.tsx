@@ -9,7 +9,6 @@ import DocumentStep from './DocumentStep';
 import SummaryStep from './SummaryStep';
 import SlideTransition from '../../UI/SlideTransition';
 import Header from './Header';
-import { useAppSelector } from '~/lib/redux/hooks';
 
 interface AssetFormProps {
   type: 'create' | 'edit';
@@ -17,14 +16,10 @@ interface AssetFormProps {
 const AssetForm = (props: AssetFormProps) => {
   const { type } = props;
   const [activeStep, setActiveStep] = useState(0);
-  const formDetails = useAppSelector((state) => state.asset.assetForm);
 
   useEffect(() => {
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-      // Check if there's unsaved form data
-      if (formDetails.assetName !== null) {
-        event.preventDefault();
-      }
+      event.preventDefault();
     };
 
     window.addEventListener('beforeunload', handleBeforeUnload);
@@ -32,7 +27,7 @@ const AssetForm = (props: AssetFormProps) => {
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, [formDetails]);
+  }, []);
 
   return (
     <Flex width="full" direction="column" pb="24px">

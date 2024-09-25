@@ -17,7 +17,7 @@ const LGASelect = (props: LGASelectProps) => {
   const { stateId, handleSelect } = props;
   const [searchLga] = useSearchLGAMutation({});
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetLGAByStateIdQuery(
+  const { data, isLoading, isFetching } = useGetLGAByStateIdQuery(
     {
       id: stateId,
       pageSize: 25,
@@ -46,7 +46,7 @@ const LGASelect = (props: LGASelectProps) => {
     <GenericAsyncSelect
       selectName="lgaId"
       selectTitle="Local Government Area"
-      data={data}
+      data={isFetching ? [] : data}
       labelKey="lgaName"
       valueKey="lgaId"
       mutationFn={searchLga}

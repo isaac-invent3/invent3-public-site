@@ -20,7 +20,6 @@ import {
 
 const AssetImages = () => {
   const [field, meta, helpers] = useField('images'); //eslint-disable-line
-
   const handleRemoveImage = (image: any) => {
     const newValue = meta.value.filter(
       (old: { name: string }) => old !== image
@@ -138,7 +137,7 @@ const AssetImages = () => {
           )}
           {/* Display */}
           <HStack alignItems="flex-start" spacing="12px">
-            <FormControl isInvalid={meta.error !== undefined}>
+            <FormControl isInvalid={meta.touched && meta.error !== undefined}>
               <Input
                 id="file"
                 display="none"
@@ -181,13 +180,22 @@ const AssetImages = () => {
                   spacing="4px"
                   borderStyle="dashed"
                   borderWidth="1px"
-                  borderColor={meta.error ? 'error.500' : '#BBBBBB'}
-                  bgColor={meta.error ? 'error.200' : '#F6F6F6'}
+                  borderColor={
+                    meta.touched && meta.error !== undefined
+                      ? 'error.500'
+                      : '#BBBBBB'
+                  }
+                  bgColor={
+                    meta.touched && meta.error !== undefined
+                      ? 'error.200'
+                      : '#F6F6F6'
+                  }
                   color="primary.main"
                   width="140px"
                   height="75px"
                   rounded="8px"
                   cursor="pointer"
+                  onClick={() => helpers.setTouched(true)}
                 >
                   <Icon as={AddIcon} boxSize="18px" />
                   <Text>Add Images</Text>
@@ -229,7 +237,7 @@ const AssetImages = () => {
         </HStack>
       </HStack>
     ),
-    [meta.value, meta.error] //eslint-disable-line
+    [meta.value, meta.error, meta.touched] //eslint-disable-line
   );
 };
 

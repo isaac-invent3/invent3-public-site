@@ -17,14 +17,15 @@ const SubCategorySelect = (props: SubCategorySelectProps) => {
   const { categoryId, handleSelect } = props;
   const [searchCategory] = useSearchSubCategoryMutation({});
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAssetSubCatgoriesByCategoryIdQuery(
-    {
-      id: categoryId,
-      pageSize: 25,
-      pageNumber,
-    },
-    { skip: !categoryId }
-  );
+  const { data, isLoading, isFetching } =
+    useGetAssetSubCatgoriesByCategoryIdQuery(
+      {
+        id: categoryId,
+        pageSize: 25,
+        pageNumber,
+      },
+      { skip: !categoryId }
+    );
 
   const subCategorySearchCriterion = (
     searchValue: string
@@ -48,7 +49,7 @@ const SubCategorySelect = (props: SubCategorySelectProps) => {
     <GenericAsyncSelect
       selectName="subCategoryId"
       selectTitle="Sub Category"
-      data={data}
+      data={isFetching ? [] : data}
       labelKey="subCategoryName"
       valueKey="subCategoryId"
       mutationFn={searchCategory}

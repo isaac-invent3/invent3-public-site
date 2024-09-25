@@ -13,16 +13,15 @@ import AddButton from '../../AddButton';
 import LocationModal from './Modals/LocationModal';
 import { AssetFormDetails } from '~/lib/interfaces/asset.interfaces';
 import ErrorMessage from '~/lib/components/UI/ErrorMessage';
-import { FormikErrors } from 'formik';
+import { useField } from 'formik';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import CountrySelect from './CountrySelect';
 import StateSelect from './StateSelect';
 import LGASelect from './LGASelect';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { updateAssetForm } from '~/lib/redux/slices/assetSlice';
 
 interface AssetLocationProps {
-  errors: FormikErrors<AssetFormDetails>;
   setFieldValue: (
     field: keyof AssetFormDetails,
     value: string | number | undefined | null,
@@ -47,9 +46,15 @@ const AssetLocation = (props: AssetLocationProps) => {
     aisleName,
     shelfName,
   } = useAppSelector((state) => state.asset.assetForm);
-  const { errors, setFieldValue } = props;
+  const { setFieldValue } = props;
+  const [field, meta, helpers] = useField('facilityId');
   const { isOpen, onClose, onOpen } = useDisclosure();
 
+  useEffect(() => {
+    if (meta.value) {
+      helpers.setError(undefined);
+    }
+  }, [meta.value, meta.error]);
   return (
     <HStack
       width="full"
@@ -137,7 +142,7 @@ const AssetLocation = (props: AssetLocationProps) => {
                 <AddButton handleClick={onOpen}>
                   {facilityName ? 'Edit' : 'Add'} Location
                 </AddButton>
-                {!facilityName && errors.facilityId && (
+                {meta.touched && meta.error !== undefined && (
                   <ErrorMessage>Location is required</ErrorMessage>
                 )}
               </VStack>

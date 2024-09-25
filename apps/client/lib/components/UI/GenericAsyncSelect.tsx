@@ -19,7 +19,7 @@ interface BuildingSelectProps {
   setPageNumber: React.Dispatch<React.SetStateAction<number>>;
   // eslint-disable-next-line no-unused-vars
   specialSearch?: (searchValue: string) => SearchCriterion[];
-  fetchKey?: string | number | null;
+  fetchKey?: string | number | null | undefined;
 }
 
 const GenericAsyncSelect = (props: BuildingSelectProps) => {
@@ -40,9 +40,9 @@ const GenericAsyncSelect = (props: BuildingSelectProps) => {
   const { handleSubmit } = useCustomMutation();
   const [options, setOptions] = useState<Option[]>([]);
   const [prevPageNumber, setPrevPageNumber] = useState(1);
-  const [prevFetchKey, setPrevFetchKey] = useState<string | number | null>(
-    null
-  );
+  const [prevFetchKey, setPrevFetchKey] = useState<
+    string | number | null | undefined
+  >(null);
 
   const handlePagination = () => {
     if (data?.data && data?.data?.totalPages > pageNumber) {
@@ -77,6 +77,7 @@ const GenericAsyncSelect = (props: BuildingSelectProps) => {
   // Reset page number when fetchKey changes
   useEffect(() => {
     if (fetchKey !== prevFetchKey) {
+      setOptions([]);
       setPageNumber(1);
       setPrevPageNumber(1);
     }
@@ -89,7 +90,6 @@ const GenericAsyncSelect = (props: BuildingSelectProps) => {
         labelKey,
         valueKey
       );
-
       // If fetchKey is provided and it has changed, replace the options
       if (fetchKey !== undefined && fetchKey !== prevFetchKey) {
         setOptions(formattedOptions); // Replace options

@@ -85,10 +85,7 @@ const GeneralStep = (props: GeneralStepProps) => {
             <AssetCategory />
             <AssetDetail />
             <AssetDimension />
-            <AssetLocation
-              errors={formik.errors}
-              setFieldValue={formik.setFieldValue}
-            />
+            <AssetLocation setFieldValue={formik.setFieldValue} />
             <AssetOwner />
           </VStack>
           <Flex width="full" mt="16px">

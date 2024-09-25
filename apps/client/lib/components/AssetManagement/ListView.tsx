@@ -7,6 +7,8 @@ import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
 import AssetDetail from './AssetDetail';
 import AssetStatus from './AssetStatus';
 import { ThreeVerticalDotsIcon } from '../CustomIcons';
+import { useSearchParams } from 'next/navigation';
+import { useGetAssetInfoHeaderByIdQuery } from '~/lib/redux/services/asset/general.services';
 
 const AssetName = (name: string | null) => {
   return (
@@ -59,6 +61,11 @@ const ListView = (props: ListViewProps) => {
   const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const searchParams = useSearchParams();
+  const assetId = searchParams.get('asset');
+  const { data: assetData } = useGetAssetInfoHeaderByIdQuery(assetId, {
+    skip: !assetId,
+  });
 
   useEffect(() => {
     if (selectedAsset) {
@@ -71,6 +78,12 @@ const ListView = (props: ListViewProps) => {
       setSelectedAsset(null);
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    if (assetData?.data) {
+      setSelectedAsset(assetData?.data);
+    }
+  }, [assetData]);
 
   const columns = useMemo(
     () => [

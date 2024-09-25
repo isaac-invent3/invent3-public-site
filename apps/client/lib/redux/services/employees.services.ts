@@ -18,6 +18,13 @@ export const employeesApi = createApi({
       }),
       providesTags: ['allUsers'],
     }),
+    getEmployeeById: builder.query({
+      query: (id: any) => ({
+        url: `/Employees/${id}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
     searchEmployees: builder.mutation({
       query: (body: any) => ({
         url: `/Employees/Search`,
@@ -29,5 +36,8 @@ export const employeesApi = createApi({
   }),
 });
 
-export const { useGetAllEmployeesQuery, useSearchEmployeesMutation } =
-  employeesApi;
+export const {
+  useGetAllEmployeesQuery,
+  useGetEmployeeByIdQuery,
+  useSearchEmployeesMutation,
+} = employeesApi;

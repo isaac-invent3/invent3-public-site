@@ -1,19 +1,23 @@
 import { Avatar, Heading, HStack, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
-import { useAppSelector } from '~/lib/redux/hooks';
 
-const User = () => {
-  const assetData = useAppSelector((state) => state.asset.asset);
-  const { currentOwner, departmentName, buildingName, roomName } = assetData;
+interface UserProps {
+  name: string | null;
+  role: string | null;
+  location: string | null;
+  department: string | null;
+}
+const User = (props: UserProps) => {
+  const { name, role, department, location } = props;
 
   const info = [
     {
       label: 'Department',
-      value: departmentName ?? 'N/A',
+      value: department ?? 'N/A',
     },
     {
       label: 'Location',
-      value: [buildingName, roomName].filter(Boolean).join(', ') || 'N/A',
+      value: location ?? 'N/A',
     },
   ];
 
@@ -29,9 +33,9 @@ const User = () => {
             fontWeight={700}
             color="black"
           >
-            {currentOwner}
+            {name}
           </Heading>
-          <Text color="neutral.600">Operation Manager</Text>
+          <Text color="neutral.600">{role}</Text>
         </VStack>
         <VStack alignItems="flex-start" spacing="8px">
           {info.map((item) => (

@@ -2,8 +2,9 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import {
   Asset,
+  AssetDocument,
   AssetFormDetails,
-  AssetImages,
+  AssetImage,
   AssetStatusType,
 } from '~/lib/interfaces/asset.interfaces';
 
@@ -11,6 +12,10 @@ const initialValue = {
   rowId: null,
   guid: null,
   primaryImage: null,
+  currentOwnerId: null,
+  assignedToEmployeeId: null,
+  employeeResponsibleId: null,
+  primaryImagePrefix: null,
   assetId: null,
   assetName: null,
   brandName: null,
@@ -102,10 +107,13 @@ const initialAssetForm = {
   widthCm: null,
   heightCm: null,
   lengthCm: null,
-  currentOwner: null,
   department: null,
+  currentOwner: null,
   assignedTo: null,
   responsibleFor: null,
+  currentOwnerName: null,
+  responsibleForName: null,
+  assignedToName: null,
   acquisitionDate: null,
   purchaseDate: null,
   conditionId: null,
@@ -125,9 +133,6 @@ const initialAssetForm = {
   roomId: null,
   aisleId: null,
   shelfId: null,
-  currentOwnerName: null,
-  responsibleForName: null,
-  assignedToName: null,
   facilityName: null,
   buildingName: null,
   floorName: null,
@@ -167,7 +172,8 @@ const initialAssetForm = {
 export interface SliceProps {
   asset: Asset;
   assetForm: AssetFormDetails;
-  assetImages: AssetImages[];
+  assetImages: AssetImage[];
+  assetDocuments: AssetDocument[];
   reinitializeAssetForm: boolean;
 }
 
@@ -175,6 +181,7 @@ const initialState: SliceProps = {
   asset: initialValue,
   assetForm: initialAssetForm,
   assetImages: [],
+  assetDocuments: [],
   reinitializeAssetForm: false,
 };
 
@@ -188,11 +195,17 @@ export const assetSlice = createSlice({
     clearAsset: (state) => {
       state.asset = initialValue;
     },
-    setAssetImages: (state, { payload }: PayloadAction<AssetImages[]>) => {
+    setAssetImages: (state, { payload }: PayloadAction<AssetImage[]>) => {
       state.assetImages = payload;
     },
     clearAssetImages: (state) => {
       state.assetImages = [];
+    },
+    setAssetDocuments: (state, { payload }: PayloadAction<AssetDocument[]>) => {
+      state.assetDocuments = payload;
+    },
+    clearAssetDocuments: (state) => {
+      state.assetDocuments = [];
     },
     setAssetForm: (state, { payload }: PayloadAction<AssetFormDetails>) => {
       state.assetForm = payload;
@@ -217,6 +230,8 @@ export const {
   updateAssetForm,
   setAssetImages,
   clearAssetImages,
+  setAssetDocuments,
+  clearAssetDocuments,
 } = assetSlice.actions;
 
 export default assetSlice.reducer;

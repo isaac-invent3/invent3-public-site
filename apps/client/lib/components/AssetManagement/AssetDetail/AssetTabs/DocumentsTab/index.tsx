@@ -1,11 +1,11 @@
-import { Flex, HStack, Skeleton, Text, VStack } from '@chakra-ui/react';
+import { Flex, HStack, Icon, Skeleton, Text, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
-// import Button from '~/lib/components/UI/Button';
 import { useAppSelector } from '~/lib/redux/hooks';
 import Button from '~/lib/components/UI/Button';
-import { ContractDocument } from '~/lib/interfaces/asset.interfaces';
+import { AssetDocument } from '~/lib/interfaces/asset.interfaces';
 import { useGetDocumentsByAssetIdQuery } from '~/lib/redux/services/asset/general.services';
-import Image from 'next/image';
+import { FILE_ICONS } from '~/lib/utils/constants';
+import { getDocumentInfo } from '~/lib/utils/helperFunctions';
 
 const DocumentsTab = () => {
   const { assetId } = useAppSelector((state) => state.asset.asset);
@@ -15,12 +15,12 @@ const DocumentsTab = () => {
     { id: assetId, pageSize, pageNumber: currentPage },
     { skip: !assetId }
   );
-  const mimeType = 'application/pdf';
-  const downloadDocument = (item: ContractDocument) => {
-    if (item.contractDocument) {
+
+  const downloadDocument = (item: AssetDocument) => {
+    if (item.document) {
       const link = document.createElement('a');
-      link.href = `data:${mimeType};base64,${item.contractDocument}`;
-      link.download = `${item.documentName}.pdf`;
+      link.href = `${item.base64Prefix}${item.document}`;
+      link.download = item.documentName;
       link.click();
     }
   };
@@ -44,25 +44,34 @@ const DocumentsTab = () => {
       direction="column"
       my="16px"
     >
-      <HStack width="full" spacing="24px" wrap="wrap">
+      <HStack width="full" spacing="24px" wrap="wrap" alignItems="flex-start">
         {data?.data?.items.length >= 1 ? (
-          data?.data?.items.map((item: ContractDocument, index: number) => (
-            <VStack
-              spacing="11px"
-              px="5px"
-              key={index}
-              width="67px"
-              cursor="pointer"
-              onClick={() => downloadDocument(item)}
-            >
-              <Flex position="relative" width="58px" height="58px">
-                <Image src="/pdf.png" fill alt="Pdf image" />
-              </Flex>
-              <Text size="md" color="neutral.600" textAlign="center">
-                {item.documentName}
-              </Text>
-            </VStack>
-          ))
+          data?.data?.items.map((item: AssetDocument, index: number) => {
+            const { extensionName } = getDocumentInfo({
+              base64Document: item.document,
+              documentName: item.documentName,
+              base64Prefix: item.base64Prefix,
+              documentId: item.documentId,
+            });
+            return (
+              <VStack
+                spacing="11px"
+                px="5px"
+                key={index}
+                width="100px"
+                cursor="pointer"
+                onClick={() => downloadDocument(item)}
+              >
+                <Icon
+                  as={FILE_ICONS[extensionName ?? 'invalid']}
+                  boxSize="58px"
+                />
+                <Text size="md" color="neutral.600" textAlign="center">
+                  {item.documentName}
+                </Text>
+              </VStack>
+            );
+          })
         ) : (
           <Text
             width="full"

@@ -20,7 +20,7 @@ const LGASelect = (props: LGASelectProps) => {
   const { data, isLoading, isFetching } = useGetLGAByStateIdQuery(
     {
       id: stateId,
-      pageSize: 25,
+      pageSize: 45,
       pageNumber,
     },
     { skip: !stateId }

@@ -1,8 +1,10 @@
-import { Flex, HStack, Text, VStack } from '@chakra-ui/react';
-import Image from 'next/image';
+import { HStack, Icon, Text, VStack } from '@chakra-ui/react';
+
 import React from 'react';
 import DetailHeader from '~/lib/components/UI/DetailHeader';
 import { useAppSelector } from '~/lib/redux/hooks';
+import { FILE_ICONS } from '~/lib/utils/constants';
+import { getDocumentInfo } from '~/lib/utils/helperFunctions';
 
 const Documents = () => {
   const { documents } = useAppSelector((state) => state.asset.assetForm);
@@ -11,16 +13,24 @@ const Documents = () => {
       <DetailHeader variant="primary">Documents</DetailHeader>
       <VStack width="full" alignItems="flex-start" spacing="12px">
         {documents.length >= 1 ? (
-          documents.map((document, index) => (
-            <HStack spacing="16px" width="full">
-              <Flex position="relative" width="34px" height="34px" key={index}>
-                <Image src="/pdf.png" alt="asset image" fill />
-              </Flex>
-              <Text color="neutral.800">
-                {typeof document === 'string' ? document : document.name}
-              </Text>
-            </HStack>
-          ))
+          documents.map((document, index) => {
+            const { extensionName } = getDocumentInfo(document);
+            return (
+              <HStack spacing="16px" width="full" key={index}>
+                <Icon
+                  as={FILE_ICONS[extensionName ?? 'invalid']}
+                  boxSize="34px"
+                />
+                <Text
+                  color="neutral.800"
+                  overflow="hidden"
+                  textOverflow="ellipsis"
+                >
+                  {document.documentName}
+                </Text>
+              </HStack>
+            );
+          })
         ) : (
           <Text
             fontStyle="italic"

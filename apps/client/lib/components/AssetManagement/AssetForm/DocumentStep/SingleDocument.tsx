@@ -1,11 +1,13 @@
 import { Flex, HStack, Icon, Text } from '@chakra-ui/react';
 import { useField } from 'formik';
-import Image from 'next/image';
 import React from 'react';
 import { CircularCloseIcon } from '~/lib/components/CustomIcons';
+import { AssetFormDocument } from '~/lib/interfaces/asset.interfaces';
+import { FILE_ICONS } from '~/lib/utils/constants';
+import { getDocumentInfo } from '~/lib/utils/helperFunctions';
 
 interface SingleDocumentProps {
-  document: File;
+  document: AssetFormDocument;
 }
 
 const SingleDocument = (props: SingleDocumentProps) => {
@@ -14,10 +16,11 @@ const SingleDocument = (props: SingleDocumentProps) => {
 
   const handleRemoveDocument = (document: any) => {
     const newValue = meta.value.filter(
-      (old: { name: string }) => old !== document
+      (old: { documentName: string }) => old !== document
     );
     helpers.setValue(newValue);
   };
+  const { extensionName, sizeInMB } = getDocumentInfo(document);
 
   return (
     <HStack
@@ -31,32 +34,25 @@ const SingleDocument = (props: SingleDocumentProps) => {
     >
       <HStack spacing="64px">
         <HStack spacing="16px">
-          <Flex position="relative" height="34px" width="34px">
-            <Image src="/pdf.png" fill alt="Document type image" />
-          </Flex>
-          <Text
-            size="lg"
-            color="neutral.800"
-            maxW="150px"
-            // overflow="hidden"
-            // textOverflow="ellipsis"
-            // whiteSpace="nowrap"
-          >
-            {document.name}
+          <Icon as={FILE_ICONS[extensionName ?? 'invalid']} boxSize="34px" />
+          <Text size="lg" color="neutral.800" width="150px">
+            {document.documentName}
           </Text>
         </HStack>
-        <Text
-          py="7px"
-          px="12px"
-          bgColor="neutral.100"
-          color="neutral.800"
-          textTransform="uppercase"
-          rounded="8px"
-        >
-          {document?.type.split('/')?.[1]}
-        </Text>
+        <Flex width="70px">
+          <Text
+            py="7px"
+            px="12px"
+            bgColor="neutral.100"
+            color="neutral.800"
+            textTransform="uppercase"
+            rounded="8px"
+          >
+            {extensionName}
+          </Text>
+        </Flex>
         <Text size="md" fontWeight={700}>
-          {(document.size / 1000000).toFixed(2)}MB
+          {sizeInMB.toFixed(2)}MB
         </Text>
       </HStack>
       <Icon

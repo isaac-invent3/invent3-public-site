@@ -7,7 +7,7 @@ import AssetForm from '~/lib/components/AssetManagement/AssetForm';
 import {
   AcquisitionInfo,
   Asset,
-  AssetImages,
+  AssetImage,
 } from '~/lib/interfaces/asset.interfaces';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import {
@@ -35,7 +35,7 @@ export default function Page({ params }: { params: { id: string } }) {
     const asset: Asset = data?.data;
     if (assetImagesData?.data) {
       dispatch(setAssetImages(assetImagesData?.data?.items));
-      formImages = assetImagesData.data.items.map((image: AssetImages) => ({
+      formImages = assetImagesData.data.items.map((image: AssetImage) => ({
         imageId: image.imageId || null,
         imageName: image.imageName || null,
         base64PhotoImage: image.photoImage,
@@ -104,6 +104,9 @@ export default function Page({ params }: { params: { id: string } }) {
         subCategoryName: asset.assetSubCategory,
         currentOwnerName: asset.currentOwner,
         responsibleForName: asset.responsibleFor,
+        currentOwner: asset.currentOwnerId,
+        responsibleFor: asset.employeeResponsibleId,
+        assignedTo: asset.assignedToEmployeeId,
         facilityId: asset.facilityId,
         facilityName: asset.facilityName,
         buildingId: asset.buildingId,

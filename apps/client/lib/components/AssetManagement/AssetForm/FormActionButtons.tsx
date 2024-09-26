@@ -2,6 +2,7 @@ import { HStack, Icon, Text } from '@chakra-ui/react';
 import React from 'react';
 import Button from '../../UI/Button';
 import { ChevronLeftIcon } from '../../CustomIcons';
+import Link from 'next/link';
 
 interface FormActionButtonsProps {
   activeStep: number;
@@ -35,19 +36,21 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
 
       <HStack spacing="16px" justifySelf="flex-end">
         {activeStep === 0 && (
-          <HStack
-            cursor="pointer"
-            px="16px"
-            rounded="8px"
-            bgColor="#F6F6F6B2"
-            minH="50px"
-            minW="96px"
-            justifyContent="center"
-          >
-            <Text size="md" color="primary.500">
-              Cancel
-            </Text>
-          </HStack>
+          <Link href="/asset-management">
+            <HStack
+              cursor="pointer"
+              px="16px"
+              rounded="8px"
+              bgColor="#F6F6F6B2"
+              minH="50px"
+              minW="96px"
+              justifyContent="center"
+            >
+              <Text size="md" color="primary.500">
+                Cancel
+              </Text>
+            </HStack>
+          </Link>
         )}
         <Button
           type={activeStep < 3 ? 'submit' : 'button'}

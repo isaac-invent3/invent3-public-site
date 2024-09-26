@@ -1,3 +1,13 @@
+import {
+  AiOutlineFilePdf,
+  AiOutlineFileWord,
+  AiOutlineFileExcel,
+  AiOutlineFilePpt,
+  AiOutlineFileText,
+  AiOutlineFileImage,
+  AiOutlineQuestion,
+} from 'react-icons/ai';
+
 const OPERATORS = {
   Equals: 1,
   NotEquals: 2,
@@ -10,10 +20,24 @@ const OPERATORS = {
   EndsWith: 9,
 };
 
-const IMAGES_ENUM = {
+const FORM_ENUM = {
   add: 1,
   delete: 2,
   update: 3,
 };
 
-export { OPERATORS, IMAGES_ENUM };
+const FILE_ICONS = {
+  pdf: AiOutlineFilePdf,
+  doc: AiOutlineFileWord,
+  docx: AiOutlineFileWord,
+  xls: AiOutlineFileExcel,
+  xlsx: AiOutlineFileExcel,
+  ppt: AiOutlineFilePpt,
+  pptx: AiOutlineFilePpt,
+  txt: AiOutlineFileText,
+  jpeg: AiOutlineFileImage,
+  jpg: AiOutlineFileImage,
+  invalid: AiOutlineQuestion,
+};
+
+export { OPERATORS, FORM_ENUM, FILE_ICONS };

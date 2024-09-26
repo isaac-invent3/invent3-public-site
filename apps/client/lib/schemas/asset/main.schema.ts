@@ -12,6 +12,7 @@ const generalInfoSchema = locationSchema.shape({
         imageId: Yup.number().nullable(),
         imageName: Yup.string().required(),
         base64PhotoImage: Yup.string().required(),
+        base64Prefix: Yup.string().nullable(),
         isPrimaryImage: Yup.boolean().required(),
       })
     )
@@ -29,9 +30,9 @@ const generalInfoSchema = locationSchema.shape({
   widthCm: Yup.number().required('Width is Required'),
   heightCm: Yup.number().required('Height is Required'),
   lengthCm: Yup.number().required('Length is Required'),
-  currentOwner: Yup.string().required('Owner is Required'),
-  assignedTo: Yup.string().required('This is Required'),
-  responsibleFor: Yup.string().required('This is Required'),
+  currentOwner: Yup.number().required('Owner is Required'),
+  assignedTo: Yup.number().required('This is Required'),
+  responsibleFor: Yup.number().required('This is Required'),
   lgaId: Yup.number().required('LGA is Required'),
   stateId: Yup.number().required('State is Required'),
   countryId: Yup.number().required('Country is Required'),
@@ -63,7 +64,14 @@ const acquisitionInfoSchema = Yup.object().shape({
 });
 
 const documentSchema = Yup.object().shape({
-  documents: Yup.array(),
+  documents: Yup.array().of(
+    Yup.object().shape({
+      documentId: Yup.number().nullable(),
+      documentName: Yup.string().required(),
+      base64Document: Yup.string().required(),
+      base64Prefix: Yup.string().nullable(),
+    })
+  ),
 });
 
 const assetTransferSchema = Yup.object().shape({

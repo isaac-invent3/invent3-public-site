@@ -13,10 +13,55 @@ import SectionInfo from '../SectionInfo';
 import { useField } from 'formik';
 import { DocumentIcon, InfoIcon } from '~/lib/components/CustomIcons';
 import SingleDocument from './SingleDocument';
+import { AssetFormDocument } from '~/lib/interfaces/asset.interfaces';
 
 const AddDocument = () => {
-  const [field, meta, helpers] = useField('documents'); //eslint-disable-line
+  const [field, meta, helpers] = useField('documents'); // eslint-disable-line
   const [isDragging, setIsDragging] = useState(false);
+
+  // Updated valid file types for txt, word, excel, powerpoint, pdf, and images (jpeg)
+  const validFileTypes = [
+    'application/pdf',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // DOCX
+    'application/vnd.ms-excel', // XLS
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // XLSX
+    'application/vnd.ms-powerpoint', // PPT
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation', // PPTX
+    'text/plain', // TXT
+    'image/jpeg', // JPEG
+  ];
+
+  const handleFileChange = (files: File[], validFiles: File[]) => {
+    const newDocuments: any[] = [];
+
+    if (validFiles.length < files.length) {
+      helpers.setError(
+        'Some files are larger than 10MB or not in a supported format (TXT, PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, JPEG)'
+      );
+    } else {
+      files.forEach((file: File) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        reader.onloadend = () => {
+          const baseDocument = reader.result as string;
+
+          newDocuments.push({
+            documentId: null,
+            documentName: file.name,
+            base64Document: baseDocument,
+            base64Prefix: null,
+          });
+
+          // Update the state or Formik helpers only when all files are processed
+          if (newDocuments.length === files.length) {
+            helpers.setValue([...meta.value, ...newDocuments]);
+          }
+        };
+      });
+    }
+  };
 
   const handleDragOver = (event: React.DragEvent) => {
     event.preventDefault();
@@ -35,21 +80,10 @@ const AddDocument = () => {
       const droppedFiles = Array.from(event.dataTransfer.files);
       const validFiles = droppedFiles.filter(
         (file) =>
-          file.size <= 10 * 1024 * 1024 &&
-          [
-            'application/pdf',
-            'application/msword',
-            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-          ].includes(file.type)
+          file.size <= 10 * 1024 * 1024 && validFileTypes.includes(file.type)
       );
 
-      if (validFiles.length < droppedFiles.length) {
-        helpers.setError(
-          'Some files are larger than 10MB or not in a supported format (PDF, DOC, DOCX)'
-        );
-      } else {
-        helpers.setValue([...meta.value, ...validFiles]);
-      }
+      handleFileChange(droppedFiles, validFiles);
     }
   };
 
@@ -58,7 +92,7 @@ const AddDocument = () => {
       <Flex width="full" maxW="141px">
         <SectionInfo
           title="Upload Documents"
-          info="Size max: 10MB each Format: PDF, DOC, DOCX"
+          info="Size max: 10MB each Format: TXT, PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, JPEG"
           isRequired={false}
         />
       </Flex>
@@ -68,22 +102,17 @@ const AddDocument = () => {
             id="document"
             display="none"
             onChange={(event: any) => {
-              if (event.currentTarget.files.length > 0) {
-                if (event.currentTarget.files[0].size > 10 * 1024 * 1024) {
-                  helpers.setError('File size must be less than 10 MB');
-                }
-                if (!meta.value.includes(event.currentTarget.files[0])) {
-                  helpers.setValue([
-                    ...meta.value,
-                    event.currentTarget.files[0],
-                  ]);
-                  // eslint-disable-next-line no-param-reassign
-                  event.target.value = '';
-                }
-              }
+              const files = Array.from(event.currentTarget.files) as File[]; // Convert FileList to array
+              const validFiles = files.filter(
+                (file) =>
+                  file.size <= 10 * 1024 * 1024 &&
+                  validFileTypes.includes(file.type)
+              );
+              handleFileChange(files, validFiles);
             }}
             type="file"
-            accept=".pdf, .doc, .docx"
+            accept=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .jpeg, .jpg"
+            multiple
           />
           <label htmlFor="document">
             <VStack
@@ -125,7 +154,7 @@ const AddDocument = () => {
                 </Text>
               </VStack>
               <Text size="md" color="neutral.600">
-                PDF, DOC are supported
+                TXT, PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, JPEG are supported
               </Text>
             </VStack>
           </label>
@@ -143,7 +172,7 @@ const AddDocument = () => {
           </FormErrorMessage>
         </FormControl>
         <VStack width="full" spacing="4px">
-          {meta.value.map((item: File) => (
+          {meta.value.map((item: AssetFormDocument) => (
             <SingleDocument document={item} />
           ))}
         </VStack>

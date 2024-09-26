@@ -70,7 +70,7 @@ export const assetApi = createApi({
     getDocumentsByAssetId: builder.query({
       query: ({ id, ...data }) => ({
         url: generateQueryStr(
-          `/VendorContractDocuments/GetAssetContractDocuments/${id}?`,
+          `/AssetDocuments/GetDocumentsByAssetId/${id}?`,
           data
         ),
         method: 'GET',

@@ -20,7 +20,7 @@ const StateSelect = (props: StateSelectProps) => {
   const { data, isLoading } = useGetStatesByCountryIdQuery(
     {
       id: countryId,
-      pageSize: 25,
+      pageSize: 37,
       pageNumber,
     },
     { skip: !countryId }

@@ -46,6 +46,7 @@ interface Asset {
   rowId: number | null;
   guid: string | null;
   primaryImage: string | null;
+  primaryImagePrefix: string | null;
   assetId: number | null;
   brandName: string | null;
   modelRef: string | null;
@@ -59,6 +60,9 @@ interface Asset {
   currentOwner: string | null;
   assignedTo: string | null;
   responsibleFor: string | null;
+  currentOwnerId: number | null;
+  assignedToEmployeeId: number | null;
+  employeeResponsibleId: number | null;
   purchaseDate: string | null;
   initialValue: number | null;
   resalevalue: number | null;
@@ -123,15 +127,23 @@ interface Asset {
   y2dmaintenanceCost: number | null;
 }
 
-interface AssetFormImages {
+interface AssetFormImage {
   imageId: number | null;
   imageName: string | null;
   base64PhotoImage: string;
   isPrimaryImage: boolean;
+  base64Prefix: string | null;
+}
+
+interface AssetFormDocument {
+  documentId: number | null;
+  documentName: string | null;
+  base64Document: string;
+  base64Prefix: string | null;
 }
 
 interface AssetFormDetails {
-  images: AssetFormImages[];
+  images: AssetFormImage[];
   assetId: number | null;
   assetName: string | null;
   brandName: string | null;
@@ -144,9 +156,9 @@ interface AssetFormDetails {
   widthCm: number | null;
   heightCm: number | null;
   lengthCm: number | null;
-  currentOwner: string | null;
-  assignedTo: string | null;
-  responsibleFor: string | null;
+  currentOwner: number | null;
+  assignedTo: number | null;
+  responsibleFor: number | null;
   acquisitionDate: string | null;
   purchaseDate: string | null;
   conditionId: number | null;
@@ -158,7 +170,7 @@ interface AssetFormDetails {
   depreciationMethod: string | null;
   depreciationRate: number | null;
   vendorId: number | null;
-  documents: (string | File)[];
+  documents: AssetFormDocument[];
   locationId: number | null;
   facilityId: number | null;
   buildingId: number | null;
@@ -266,7 +278,7 @@ interface ContractDocument {
   vendorName: string;
 }
 
-interface AssetImages {
+interface BaseAsset {
   isNew: boolean;
   createdDate: string;
   createdBy: string;
@@ -276,12 +288,27 @@ interface AssetImages {
   deletedDate: string;
   deletedBy: string;
   guid: string;
+}
+
+interface Images {
   imageId: number;
   imageName: string;
   photoImage: string;
+  base64Prefix: string;
   isPrimaryImage: true;
   assetId: number;
 }
+
+interface Document {
+  documentId: number;
+  documentName: string;
+  document: string;
+  base64Prefix: string;
+  assetId: number;
+}
+
+interface AssetImage extends BaseAsset, Images {}
+interface AssetDocument extends BaseAsset, Document {}
 
 export type {
   AssetLocation,
@@ -292,6 +319,8 @@ export type {
   FormLocation,
   AcquisitionInfo,
   ContractDocument,
-  AssetImages,
-  AssetFormImages,
+  AssetImage,
+  AssetDocument,
+  AssetFormImage,
+  AssetFormDocument,
 };

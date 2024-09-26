@@ -17,12 +17,13 @@ import { useGetImagesByAssetIdQuery } from '~/lib/redux/services/asset/general.s
 import { useAppSelector } from '~/lib/redux/hooks';
 import DetailHeader from '~/lib/components/UI/DetailHeader';
 import Button from '~/lib/components/UI/Button';
+import { AssetImage } from '~/lib/interfaces/asset.interfaces';
 
 const PhotoViewer = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [currentIndex, setCurrentIndex] = useState<number | null>(null);
   const { assetId } = useAppSelector((state) => state.asset.asset);
-  const [photos, setPhotos] = useState<{ photoImage: string }[]>([]);
+  const [photos, setPhotos] = useState<AssetImage[]>([]);
   const { data, isLoading } = useGetImagesByAssetIdQuery(
     { id: assetId },
     { skip: !assetId }
@@ -69,7 +70,7 @@ const PhotoViewer = () => {
               <Skeleton width="60px" height="60px" rounded="8px" key={idx} />
             ))
         ) : photos.length >= 1 ? (
-          photos.map((photo: { photoImage: string }, index: number) => (
+          photos.map((photo: AssetImage, index: number) => (
             <Flex
               key={index}
               width="60px"
@@ -80,7 +81,7 @@ const PhotoViewer = () => {
               bgSize="contain"
               bgRepeat="no-repeat"
               bgPosition="center"
-              bgImage={`data:image/jpeg;base64,${photo.photoImage}`}
+              bgImage={`${photo.base64Prefix}${photo.photoImage}`}
               cursor="pointer"
               onClick={() => openModal(index)}
             />
@@ -114,7 +115,7 @@ const PhotoViewer = () => {
                 height="90%"
               >
                 <Image
-                  src={`data:image/jpeg;base64,${photos[currentIndex]?.photoImage}`}
+                  src={`data:${photos[currentIndex]?.base64Prefix};base64,${photos[currentIndex]?.photoImage}`}
                   alt={`Photo ${currentIndex + 1}`}
                 />
               </Flex>

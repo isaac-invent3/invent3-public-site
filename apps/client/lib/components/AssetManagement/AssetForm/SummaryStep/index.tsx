@@ -7,7 +7,6 @@ import FormActionButtons from '../FormActionButtons';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useSession } from 'next-auth/react';
 import moment from 'moment';
-import { IMAGES_ENUM } from '~/lib/utils/constants';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import {
   useCreateAssetMutation,
@@ -21,6 +20,7 @@ import {
   clearAssetForm,
   setAsset,
 } from '~/lib/redux/slices/assetSlice';
+import { generateDocumentArray, generateImagesArray } from './helperFunction';
 
 interface SummaryStepProps {
   activeStep: number;
@@ -28,21 +28,11 @@ interface SummaryStepProps {
   type: 'create' | 'edit';
 }
 
-interface Image {
-  imageId?: number;
-  imageName: string;
-  base64PhotoImage?: string;
-  isPrimaryImage?: boolean;
-  assetId?: number;
-  actionType?: (typeof IMAGES_ENUM)[keyof typeof IMAGES_ENUM];
-  createdBy?: string;
-  lastModifiedBy?: string | null;
-}
-
 const SummaryStep = (props: SummaryStepProps) => {
   const { activeStep, setActiveStep, type } = props;
   const assetData = useAppSelector((state) => state.asset.asset);
   const assetImages = useAppSelector((state) => state.asset.assetImages);
+  const assetDocuments = useAppSelector((state) => state.asset.assetDocuments);
   const [assetResponse, setAssetResponse] = useState<Asset | null>(null);
   const assetFormDetails = useAppSelector((state) => state.asset.assetForm);
   const dispatch = useAppDispatch();
@@ -122,9 +112,9 @@ const SummaryStep = (props: SummaryStepProps) => {
     assetTypeId: assetFormDetails.assetTypeId,
     statusId: assetFormDetails.statusId,
     categoryId: assetFormDetails.categoryId,
-    currentOwner: assetFormDetails.currentOwnerName,
-    responsibleFor: assetFormDetails.responsibleForName,
-    assignedTo: assetFormDetails.assignedToName,
+    currentOwner: assetFormDetails.currentOwner,
+    responsibleFor: assetFormDetails.responsibleFor,
+    assignedTo: assetFormDetails.assignedTo,
     conditionId: assetFormDetails.conditionId,
     acquisitionDate: moment(
       assetFormDetails.acquisitionDate,
@@ -155,59 +145,27 @@ const SummaryStep = (props: SummaryStepProps) => {
     [`${type === 'create' ? 'createdBy' : 'lastModifiedBy'}`]: username,
   };
 
-  const generateImagesArray = () => {
-    const images: Image[] = [];
-
-    // Handle new images or updates
-    assetFormDetails.images.forEach((image) => {
-      const imageData: Image = {
-        imageName: image.imageName as string,
-        base64PhotoImage: image.base64PhotoImage,
-        isPrimaryImage: image.isPrimaryImage,
-        [type === 'create' ? 'createdBy' : 'lastModifiedBy']: username,
-      };
-
-      if (image.imageId) {
-        imageData.imageId = image.imageId;
-      }
-
-      if (type === 'edit') {
-        imageData.assetId = assetFormDetails.assetId as number;
-        imageData.actionType = image.imageId
-          ? IMAGES_ENUM.update
-          : IMAGES_ENUM.add;
-      }
-
-      images.push(imageData);
-    });
-
-    // Handle deletions in edit mode
-    if (type === 'edit') {
-      assetImages.forEach((assetImage) => {
-        const imageExists = images.some(
-          (image) => image.imageId === assetImage.imageId
-        );
-        if (!imageExists) {
-          images.push({
-            imageId: assetImage.imageId,
-            imageName: assetImage.imageName,
-            assetId: assetImage.assetId,
-            actionType: IMAGES_ENUM.delete,
-            lastModifiedBy: username,
-          });
-        }
-      });
-    }
-
-    return images;
-  };
-
   const getDtoKey = (base: string) =>
     `${type === 'create' ? `create${base}Dto` : `update${base}Dto`}`;
+
   const PAYLOAD = {
     [getDtoKey('Location')]: LOCATION,
     [getDtoKey('Asset')]: ASSET,
-    [getDtoKey('AssetImage')]: generateImagesArray(),
+    [type === 'create' ? 'createAssetImageDto' : 'multiPurposeAssetImageDto']:
+      generateImagesArray(
+        type,
+        assetFormDetails,
+        assetImages,
+        username as string
+      ),
+    [type === 'create'
+      ? 'createAssetDocumentsDto'
+      : 'multiPurposeAssetDocumentDto']: generateDocumentArray(
+      type,
+      assetFormDetails,
+      assetDocuments,
+      username as string
+    ),
     [getDtoKey('AssetWarranty')]: WARRANTY,
     [getDtoKey('AssetDepreciation')]: DEPRECIATION,
   };

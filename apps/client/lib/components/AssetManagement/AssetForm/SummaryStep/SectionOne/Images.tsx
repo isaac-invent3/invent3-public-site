@@ -19,7 +19,15 @@ const Images = () => {
             key={index}
             overflow="hidden"
           >
-            <Image src={image.base64PhotoImage} alt="asset image" fill />
+            <Image
+              src={
+                image.base64Prefix
+                  ? `${image.base64Prefix}${image.base64PhotoImage}`
+                  : image.base64PhotoImage
+              }
+              alt="asset image"
+              fill
+            />
           </Flex>
         ))}
       </HStack>

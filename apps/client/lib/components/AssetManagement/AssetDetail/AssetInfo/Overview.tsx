@@ -15,6 +15,7 @@ const Overview = () => {
     brandName,
     modelRef,
     primaryImage,
+    primaryImagePrefix,
   } = assetData;
 
   const assetInfo1 = [
@@ -59,7 +60,7 @@ const Overview = () => {
           bgRepeat="no-repeat"
           bgPosition="center"
           mx="8px"
-          bgImage={`data:image/jpeg;base64,${primaryImage}`}
+          bgImage={`${primaryImagePrefix}${primaryImage}`}
         />
       </Flex>
       <VStack alignItems="flex-start" width="full" spacing="16px">

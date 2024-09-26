@@ -114,12 +114,15 @@ const MapViewComponent = ({ assetData }: MapViewComponentProps) => {
 
   return (
     <MapContainer
-      style={{ height: '100%', width: '100%', backgroundColor: 'transparent' }}
+      style={{
+        minHeight: '800px',
+        minWidth: '800px',
+        backgroundColor: 'transparent',
+      }} // Full width and height
       center={[9.082, 8.6753]}
       zoom={6}
       scrollWheelZoom={false}
       doubleClickZoom={false}
-      // zoomControl={false}
       attributionControl={false}
       dragging={false}
     >
@@ -133,7 +136,6 @@ const MapViewComponent = ({ assetData }: MapViewComponentProps) => {
               style={mapStyle}
               onEachFeature={onEachState}
             />
-            {/* Add markers for each state with assets */}
             {Object.keys(assetData).map((stateName) => {
               if (
                 assetData[stateName] &&
@@ -149,8 +151,7 @@ const MapViewComponent = ({ assetData }: MapViewComponentProps) => {
                   </Marker>
                 );
               }
-
-              return null; // No marker for states without assets
+              return null;
             })}
           </>
         )

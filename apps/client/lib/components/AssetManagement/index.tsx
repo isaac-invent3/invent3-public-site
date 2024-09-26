@@ -21,6 +21,8 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useSearchApiMutation } from '~/lib/redux/services/utility.services';
 import { SearchResponse } from '~/lib/interfaces/general.interfaces';
 import MapView from './MapView';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { OPERATORS } from '~/lib/utils/constants';
 
 const AssetManagement = () => {
   const [search, setSearch] = useState('');
@@ -28,9 +30,12 @@ const AssetManagement = () => {
   const [pageSize, setPageSize] = useState(25);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { handleSubmit } = useCustomMutation();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [tabIndex, setTabIndex] = useState(0);
   const [searchAsset, { isLoading: searchLoading }] = useSearchApiMutation({});
   const [searchData, setSearchData] = useState<SearchResponse | null>(null);
+
   const [filterData, setFilterData] = useState<FilterInput>({
     location: [],
     category: [],
@@ -55,7 +60,7 @@ const AssetManagement = () => {
       {
         columnName: 'assetName',
         columnValue: search,
-        operation: 7,
+        operation: OPERATORS.Contains,
       },
     ],
     pageNumber: currentPage,
@@ -92,6 +97,23 @@ const AssetManagement = () => {
     }
   }, [activeFilter]);
 
+  // Retrieve the `tab` parameter from URL on mount
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    if (tab === 'map') {
+      setTabIndex(1); // Set to the map tab if "map" is in the URL
+    } else {
+      setTabIndex(0); // Otherwise default to list tab
+    }
+  }, [searchParams]);
+
+  // Update the URL whenever the tab is changed
+  const handleTabChange = (index: number) => {
+    setTabIndex(index);
+    const tabName = index === 1 ? 'map' : 'list';
+    router.push(`/asset-management?tab=${tabName}`);
+  };
+
   return (
     <Flex width="full" direction="column" pb="24px">
       <Header />
@@ -99,7 +121,8 @@ const AssetManagement = () => {
         <Tabs
           variant="custom"
           width={'full'}
-          onChange={(index) => setTabIndex(index)}
+          onChange={(index) => handleTabChange(index)}
+          index={tabIndex}
         >
           <Flex width="full" position="relative">
             <TabList>

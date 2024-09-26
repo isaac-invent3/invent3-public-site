@@ -21,6 +21,7 @@ import { userApi } from './services/user.services';
 import { depreciationApi } from './services/asset/depreciation.services';
 import { vendorsApi } from './services/asset/vendor.services';
 import { employeesApi } from './services/employees.services';
+import { assetStatsApi } from './services/asset/stats.services';
 
 export const persistConfig = {
   key: 'root',
@@ -31,6 +32,7 @@ export const persistConfig = {
 const rootReducer = combineReducers({
   [authApi.reducerPath]: authApi.reducer,
   [assetApi.reducerPath]: assetApi.reducer,
+  [assetStatsApi.reducerPath]: assetStatsApi.reducer,
   [categoryApi.reducerPath]: categoryApi.reducer,
   [conditionApi.reducerPath]: conditionApi.reducer,
   [depreciationApi.reducerPath]: depreciationApi.reducer,
@@ -64,6 +66,7 @@ export const makeStore = () => {
         utilityApi.middleware,
         userApi.middleware,
         vendorsApi.middleware,
+        assetStatsApi.middleware,
       ]),
   });
 };

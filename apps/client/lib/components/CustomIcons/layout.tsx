@@ -33,8 +33,8 @@ const DashboardIcon = createIcon({
   ),
 });
 
-const AssetIcon = createIcon({
-  displayName: 'AssetIcon',
+const AssetManagementIcon = createIcon({
+  displayName: 'AssetManagementIcon',
   viewBox: '0 0 20 20',
 
   path: (
@@ -374,7 +374,7 @@ const UserProfileIcon = createIcon({
 
 export {
   DashboardIcon,
-  AssetIcon,
+  AssetManagementIcon,
   TaskIcon,
   MaintenanceIcon,
   TicketIcon,

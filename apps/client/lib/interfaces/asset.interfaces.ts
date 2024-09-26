@@ -310,6 +310,22 @@ interface Document {
 interface AssetImage extends BaseAsset, Images {}
 interface AssetDocument extends BaseAsset, Document {}
 
+interface StateAssetCount {
+  rowId: number;
+  assetCount: number;
+  stateId: number;
+  stateName: string;
+  countryId: number;
+}
+
+interface LGAAssetCount {
+  rowId: number;
+  assetCount: number;
+  lagId: number;
+  lgaName: string;
+  stateId: number;
+}
+
 export type {
   AssetLocation,
   Asset,
@@ -323,4 +339,6 @@ export type {
   AssetDocument,
   AssetFormImage,
   AssetFormDocument,
+  StateAssetCount,
+  LGAAssetCount,
 };

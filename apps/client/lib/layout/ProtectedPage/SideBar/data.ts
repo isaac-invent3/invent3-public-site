@@ -1,6 +1,6 @@
 import {
   AnalyticsIcon,
-  AssetIcon,
+  AssetManagementIcon,
   ComplianceIcon,
   DashboardIcon,
   MaintenanceIcon,
@@ -17,7 +17,7 @@ const sideBarData = [
   {
     name: 'Asset Management',
     route: 'asset-management',
-    icon: AssetIcon,
+    icon: AssetManagementIcon,
   },
   {
     name: 'Task Management',

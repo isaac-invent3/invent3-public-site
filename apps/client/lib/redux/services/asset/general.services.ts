@@ -18,6 +18,14 @@ export const assetApi = createApi({
       }),
       providesTags: ['allAsset'],
     }),
+    searchAssets: builder.mutation({
+      query: (body: any) => ({
+        url: `/Assets/Search`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
     getAssetById: builder.query({
       query: (id: any) => ({
         url: `/Assets/${id}`,
@@ -154,4 +162,5 @@ export const {
   useGetAllStatusQuery,
   useSearchAssetTypesMutation,
   useSearchStatusMutation,
+  useSearchAssetsMutation,
 } = assetApi;

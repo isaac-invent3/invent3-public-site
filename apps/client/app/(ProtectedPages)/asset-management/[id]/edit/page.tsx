@@ -7,42 +7,66 @@ import AssetForm from '~/lib/components/AssetManagement/AssetForm';
 import {
   AcquisitionInfo,
   Asset,
+  AssetDocument,
   AssetImage,
 } from '~/lib/interfaces/asset.interfaces';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import {
   useGetAcquisitionInfoByAssetIdQuery,
   useGetAssetInfoHeaderByIdQuery,
+  useGetDocumentsByAssetIdQuery,
   useGetImagesByAssetIdQuery,
 } from '~/lib/redux/services/asset/general.services';
-import { setAssetImages, updateAssetForm } from '~/lib/redux/slices/assetSlice';
+import {
+  setAssetDocuments,
+  setAssetImages,
+  updateAssetForm,
+} from '~/lib/redux/slices/assetSlice';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
 export default function Page({ params }: { params: { id: string } }) {
   const { data, isLoading } = useGetAssetInfoHeaderByIdQuery(params.id);
   const { data: assetImagesData, isLoading: imagesLoading } =
-    useGetImagesByAssetIdQuery({ id: params.id });
+    useGetImagesByAssetIdQuery({ id: params.id, pageSize: 25 });
+  const { data: assetDocumentData, isLoading: documentsLoading } =
+    useGetDocumentsByAssetIdQuery({ id: params.id, pageSize: 25 });
   const { data: acquisitionData, isLoading: acquisitionLoading } =
     useGetAcquisitionInfoByAssetIdQuery({ id: params.id });
   const dispatch = useAppDispatch();
 
-  if (isLoading || imagesLoading || acquisitionLoading) {
+  if (isLoading || imagesLoading || acquisitionLoading || documentsLoading) {
     return <Skeleton width="full" rounded="8px" height="250px" mt="80px" />;
   }
   if (!data?.data) return notFound();
   if (data?.data) {
     let formImages;
+    let formDocuments;
     const asset: Asset = data?.data;
+    //Populating Asset Images
     if (assetImagesData?.data) {
       dispatch(setAssetImages(assetImagesData?.data?.items));
       formImages = assetImagesData.data.items.map((image: AssetImage) => ({
         imageId: image.imageId || null,
         imageName: image.imageName || null,
         base64PhotoImage: image.photoImage,
+        base64prefix: image.base64Prefix,
         isPrimaryImage: image.isPrimaryImage,
       }));
     }
+    //Populating Asset Documents
+    if (assetDocumentData?.data) {
+      dispatch(setAssetDocuments(assetDocumentData?.data?.items));
+      formDocuments = assetDocumentData.data.items.map(
+        (document: AssetDocument) => ({
+          documentId: document.documentId || null,
+          documentName: document.documentName || null,
+          base64Document: document.document,
+          base64Prefix: document.base64Prefix,
+        })
+      );
+    }
     let acquisitionInfo;
+    //Populating Asset Acquisition Info
     if (acquisitionData?.data) {
       const acquisition: AcquisitionInfo = acquisitionData?.data;
       acquisitionInfo = {
@@ -80,6 +104,7 @@ export default function Page({ params }: { params: { id: string } }) {
         },
       };
     }
+    //Populating Other Asset Informations
     dispatch(
       updateAssetForm({
         assetId: asset.assetId,
@@ -130,6 +155,7 @@ export default function Page({ params }: { params: { id: string } }) {
         lifeExpectancy: asset.lifeExpectancy,
         initialValue: asset.initialValue,
         images: formImages,
+        documents: formDocuments,
         ...acquisitionInfo,
       })
     );

@@ -16,9 +16,11 @@ import ListView from './ListView';
 import Filters from './Filters';
 import FilterDisplay from './Filters/FilterDisplay';
 import { FilterInput } from '~/lib/interfaces/asset.interfaces';
-import { useGetallAssetQuery } from '~/lib/redux/services/asset/general.services';
+import {
+  useGetallAssetQuery,
+  useSearchAssetsMutation,
+} from '~/lib/redux/services/asset/general.services';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { useSearchApiMutation } from '~/lib/redux/services/utility.services';
 import { SearchResponse } from '~/lib/interfaces/general.interfaces';
 import MapView from './MapView';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -33,7 +35,9 @@ const AssetManagement = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [tabIndex, setTabIndex] = useState(0);
-  const [searchAsset, { isLoading: searchLoading }] = useSearchApiMutation({});
+  const [searchAsset, { isLoading: searchLoading }] = useSearchAssetsMutation(
+    {}
+  );
   const [searchData, setSearchData] = useState<SearchResponse | null>(null);
 
   const [filterData, setFilterData] = useState<FilterInput>({

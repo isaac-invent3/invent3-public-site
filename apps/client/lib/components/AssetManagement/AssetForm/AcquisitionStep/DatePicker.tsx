@@ -33,7 +33,7 @@ const CustomDatePicker = (props: CustomDatePickerProps) => {
         label={label}
         customStyle={{
           onClick: () => handleButtonClick(),
-          autoComplete: 'false',
+          autoComplete: 'off',
         }}
         customRightElement={
           <Icon as={CalendarIcon} boxSize="20px" color="#374957" />

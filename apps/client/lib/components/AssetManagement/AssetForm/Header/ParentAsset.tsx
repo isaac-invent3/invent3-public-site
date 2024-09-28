@@ -1,11 +1,17 @@
 import { Flex, Heading, HStack, Text, VStack } from '@chakra-ui/react';
-// import Image from 'next/image';
+import Image from 'next/image';
 import React from 'react';
 import { useAppSelector } from '~/lib/redux/hooks';
 
 const ParentAsset = () => {
   const assetData = useAppSelector((state) => state.asset.asset);
-  const { assetName, assetId, assetCategory } = assetData;
+  const {
+    assetName,
+    assetId,
+    assetCategory,
+    primaryImage,
+    primaryImagePrefix,
+  } = assetData;
 
   const assetInfo = [
     {
@@ -41,7 +47,11 @@ const ParentAsset = () => {
           bgColor="white"
           flexShrink={0}
         >
-          {/* <Image src="" fill alt="Parent asset image" /> */}
+          <Image
+            src={`${primaryImagePrefix}${primaryImage}`}
+            fill
+            alt="Parent asset image"
+          />
         </Flex>
         <VStack alignItems="flex-start" spacing="8px">
           <Heading

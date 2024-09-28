@@ -1,4 +1,4 @@
-import { Flex, Text, VStack } from '@chakra-ui/react';
+import { Flex, HStack, Icon, Text, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import MapViewComponent from './Map';
 import {
@@ -6,22 +6,32 @@ import {
   useGetStateAssetCountByCountryIdQuery,
 } from '~/lib/redux/services/asset/stats.services';
 import Stats from './Stats';
+import { MapAssetData } from '~/lib/interfaces/general.interfaces';
+import { ChevronLeftIcon } from '@chakra-ui/icons';
+import LoadingSpinner from './Map/LoadingSpinner';
 
 interface AssetCountOption {
   assetCount: number;
   stateName?: string;
   lgaName?: string;
+  stateId?: number;
+  lgaId?: number;
 }
 
 const generateAssetCountOption = (
   data: AssetCountOption[] | undefined
-): Record<string, number> => {
-  const options: Record<string, number> = {};
+): Record<string, MapAssetData> => {
+  const options: Record<string, MapAssetData> = {};
 
   if (data && Array.isArray(data)) {
     data.forEach((item) => {
       const label = item.lgaName || item.stateName || 'Unknown Location';
-      options[label] = item.assetCount;
+      const id = item.stateId || item.lgaId || 0;
+      options[label] = {
+        count: item.assetCount,
+        id: id,
+        name: label,
+      };
     });
   }
 
@@ -29,16 +39,12 @@ const generateAssetCountOption = (
 };
 
 const MapView = () => {
-  // eslint-disable-next-line no-unused-vars
-  const [selectedState, setSelectedState] = useState<{
-    name: string;
-    id: number;
-  } | null>(null);
+  const [selectedState, setSelectedState] = useState<MapAssetData | null>(null);
   const { data: stateAssetCount, isLoading: isLoadingStateAssetCount } =
     useGetStateAssetCountByCountryIdQuery({ id: 1, pageSize: 37 });
   const { data: lgaAssetCount, isLoading: isLoadingLGAAssetCount } =
     useGetLGAAssetCountByStateIdQuery(
-      { id: 1, pageSize: 45 },
+      { id: selectedState?.id, pageSize: 45 },
       { skip: !selectedState }
     );
   const assetLabel = selectedState?.name
@@ -46,24 +52,45 @@ const MapView = () => {
     : 'Under Management';
 
   return (
-    <Flex width="full" height="70vh" gap="40px" justifyContent="space-between">
-      <Flex width="70%" height="full">
-        <VStack mt="32px" pl="24px" alignItems="flex-start" spacing="4px">
-          <Text
-            fontWeight={700}
-            size="lg"
-            whiteSpace="nowrap"
-          >{`Asset ${assetLabel}`}</Text>
-          {!selectedState?.id && (
-            <Text color="neutral.600" maxW="124px">
-              Click on the different region to drill down
-            </Text>
+    <Flex width="full" height="full" gap="40px" justifyContent="space-between">
+      <Flex width="70%" height="90vh" position="relative" direction="column">
+        <HStack width="full" justifyContent="space-between" my="32px">
+          <VStack
+            pl="24px"
+            alignItems="flex-start"
+            spacing="4px"
+            // position="absolute"
+          >
+            <Text
+              fontWeight={700}
+              size="lg"
+              whiteSpace="nowrap"
+            >{`Asset ${assetLabel}`}</Text>
+            {!selectedState?.id && (
+              <Text color="neutral.600" maxW="124px">
+                Click on the different region to drill down
+              </Text>
+            )}
+          </VStack>
+          {selectedState?.name && (
+            <HStack
+              alignItems="center"
+              spacing="4px"
+              mt="8px"
+              cursor="pointer"
+              onClick={() => setSelectedState(null)}
+            >
+              <Icon as={ChevronLeftIcon} boxSize="24px" />
+              <Text>Back To Country Map</Text>
+            </HStack>
           )}
-        </VStack>
+        </HStack>
         {isLoadingLGAAssetCount || isLoadingStateAssetCount ? (
-          <Text>Loading...</Text>
+          <LoadingSpinner />
         ) : (
           <MapViewComponent
+            selectedState={selectedState}
+            setSelectedState={setSelectedState}
             assetData={generateAssetCountOption(
               selectedState?.id
                 ? lgaAssetCount?.data?.items

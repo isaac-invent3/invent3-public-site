@@ -131,7 +131,7 @@ const AssetImages = () => {
                         whiteSpace="nowrap"
                         fontWeight={500}
                       >
-                        {image.isPrimaryImage ? 'Default' : 'Make Default'}
+                        {image.isPrimaryImage ? 'Primary' : 'Make Primary'}
                       </Text>
                       <Icon as={AttachmentIcon} boxSize="18px" color="white" />
                     </HStack>

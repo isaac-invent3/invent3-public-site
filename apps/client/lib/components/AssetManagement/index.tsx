@@ -133,13 +133,15 @@ const AssetManagement = () => {
               <Tab>List View</Tab>
               <Tab>Map View</Tab>
             </TabList>
-            <Flex position="absolute" right={0} bottom="8px">
-              <Filters
-                setSearch={setSearch}
-                activeFilter={activeFilter}
-                setActiveFilter={setActiveFilter}
-              />
-            </Flex>
+            {tabIndex === 0 && (
+              <Flex position="absolute" right={0} bottom="8px">
+                <Filters
+                  setSearch={setSearch}
+                  activeFilter={activeFilter}
+                  setActiveFilter={setActiveFilter}
+                />
+              </Flex>
+            )}
           </Flex>
 
           <TabPanels>

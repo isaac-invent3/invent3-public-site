@@ -4,7 +4,7 @@ import React from 'react';
 interface AssetCountListProps {
   type: 'state' | 'lga';
   isLoading: boolean;
-  data: Record<string, number>;
+  data: Record<string, { name: string; count: number; id: number }>;
 }
 
 const AssetCountList = (props: AssetCountListProps) => {
@@ -17,7 +17,7 @@ const AssetCountList = (props: AssetCountListProps) => {
         fontSize="16px"
         lineHeight="19.01px"
       >
-        Assets by {type ? 'State' : 'LGA'}
+        Assets by {type === 'state' ? 'State' : 'LGA'}
       </Heading>
       <VStack width="full" spacing="8px" maxH="50vh" overflow="auto">
         {isLoading
@@ -29,11 +29,11 @@ const AssetCountList = (props: AssetCountListProps) => {
                   <Skeleton width="20%" height="15px" />
                 </HStack>
               ))
-          : Object.entries(data).map(([label, value], index) => (
+          : Object.entries(data).map(([label, option], index) => (
               <HStack width="full" key={index} justifyContent="space-between">
                 <Text color="neutral.600">{label}</Text>
                 <Text color="black" fontWeight={800}>
-                  {value.toLocaleString()}
+                  {option.count.toLocaleString()}
                 </Text>
               </HStack>
             ))}

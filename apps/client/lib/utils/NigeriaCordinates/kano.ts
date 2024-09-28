@@ -1,0 +1,35 @@
+import { LatLngExpression } from 'leaflet';
+
+const KANO_COORDINATES: { [key: string]: LatLngExpression } = {
+  Ajingi: [11.547222, 8.229444],
+  Albasu: [11.333056, 8.4925],
+  Bagwai: [11.535, 8.0825],
+  Bebeji: [11.158611, 8.303056],
+  Bichi: [11.493056, 8.428611],
+  Bunkure: [11.75, 8.424444],
+  Dala: [12.014444, 8.515556],
+  Dambatta: [11.537222, 8.206389],
+  'Dawakin Kudu': [11.973056, 8.584444],
+  'Dawakin Tofa': [11.845, 8.508056],
+  Gaya: [11.308056, 8.301944],
+  Gezawa: [11.774167, 8.367222],
+  Giwa: [11.676111, 8.0175],
+  Karaye: [11.598056, 8.327222],
+  'Kano Municipal': [12.003056, 8.595556],
+  Karasawa: [11.865, 8.51],
+  Kibiya: [11.631944, 8.17],
+  Kumbotso: [12.029444, 8.565],
+  Madobi: [11.8, 8.531389],
+  Maiduguri: [11.72, 8.144444],
+  Nasarawa: [12.054167, 8.591667],
+  Rogo: [11.3375, 8.316389],
+  Shanono: [11.836111, 8.094167],
+  Sumaila: [11.4975, 8.6575],
+  Tarauni: [12.0525, 8.561389],
+  Tofa: [11.871944, 8.224444],
+  Tsanyawa: [11.674444, 8.51],
+  Ungogo: [12.045278, 8.581944],
+  Warawa: [11.993056, 8.473056],
+};
+
+export default KANO_COORDINATES;

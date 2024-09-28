@@ -133,8 +133,11 @@ const Overview = () => {
                 <ReactBarcode
                   value={assetId ? assetId.toString() : ''}
                   renderer={Renderer.CANVAS}
-                  options={{ displayValue: false }}
-                  style={{ width: '100%' }}
+                  options={{ displayValue: false, margin: 0 }}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                  }}
                 />
               </Flex>
             </HStack>

@@ -6,7 +6,7 @@ import PieChartStats from './PieChartStats';
 
 interface StatsProps {
   isLoading: boolean;
-  data: Record<string, number>;
+  data: Record<string, { name: string; count: number; id: number }>;
   type: 'state' | 'lga';
 }
 const Stats = (props: StatsProps) => {
@@ -19,7 +19,7 @@ const Stats = (props: StatsProps) => {
     >
       <SummaryCardStats isLoading={isLoading} />
       <AssetCountList isLoading={isLoading} data={data} type={type} />
-      <PieChartStats />
+      <PieChartStats isLoading={isLoading} />
     </VStack>
   );
 };

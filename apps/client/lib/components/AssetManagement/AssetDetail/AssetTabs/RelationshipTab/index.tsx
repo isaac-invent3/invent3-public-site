@@ -25,7 +25,7 @@ const EmptyState = ({ text }: { text: string }) => {
 const GenerateAssetTable = ({ asset }: { asset: Asset }) => {
   return (
     <AssetTable
-      data={[asset] ?? []}
+      data={[asset]}
       isLoading={false}
       isFetching={false}
       showFooter={false}

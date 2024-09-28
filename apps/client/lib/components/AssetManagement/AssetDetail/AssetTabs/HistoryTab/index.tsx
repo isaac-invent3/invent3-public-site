@@ -1,12 +1,12 @@
 import { Flex, Text, VStack } from '@chakra-ui/react';
 import { createColumnHelper } from '@tanstack/react-table';
 import React, { useMemo, useState } from 'react';
-import { DetailTable } from '../../DetailTable';
 import { MaintenanceColorCode } from '~/lib/utils/ColorCodes';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
 import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 import { useGetMaintenanceHistoryByAssetIdQuery } from '~/lib/redux/services/asset/general.services';
 import { useAppSelector } from '~/lib/redux/hooks';
+import DataTable from '~/lib/components/UI/Table';
 
 const Status = (status: string) => {
   return (
@@ -71,6 +71,7 @@ const HistoryTab = () => {
       columnHelper.accessor('assetId', {
         cell: (info) => info.getValue(),
         header: '#',
+        enableSorting: false,
       }),
       columnHelper.accessor('completionDate', {
         cell: (info) =>
@@ -78,15 +79,18 @@ const HistoryTab = () => {
             ? dateFormatter(info.getValue(), 'YYYY-MM-DD')
             : 'N/A',
         header: 'Date',
+        enableSorting: false,
       }),
       columnHelper.accessor('maintenanceType', {
         cell: (info) => info.getValue(),
         header: 'Maintenance Type',
+        enableSorting: false,
       }),
       columnHelper.accessor('comments', {
         cell: (info) =>
           info.getValue() ? Description(info.getValue()) : 'N/A',
         header: 'Description',
+        enableSorting: false,
       }),
       columnHelper.accessor('contactPerson', {
         cell: (info) =>
@@ -96,14 +100,17 @@ const HistoryTab = () => {
             ? 'N/A'
             : Technician(info.row.original),
         header: 'Contact Person',
+        enableSorting: false,
       }),
       columnHelper.accessor('totalCost', {
         cell: (info) => amountFormatter(info.getValue() ?? 0),
         header: 'Cost',
+        enableSorting: false,
       }),
       columnHelper.accessor('currentStatus', {
         cell: (info) => (info.getValue() ? Status(info.getValue()) : 'N/A'),
         header: 'Status',
+        enableSorting: false,
       }),
     ],
     [data?.data?.items] //eslint-disable-line
@@ -111,7 +118,7 @@ const HistoryTab = () => {
 
   return (
     <Flex width="full" my="23px">
-      <DetailTable
+      <DataTable
         columns={columns}
         data={data?.data?.items ?? []}
         isLoading={isLoading}
@@ -119,6 +126,19 @@ const HistoryTab = () => {
         pageNumber={currentPage}
         setPageNumber={setCurrentPage}
         setPageSize={setPageSize}
+        customThStyle={{
+          paddingLeft: '16px',
+          paddingTop: '8px',
+          paddingBottom: '8px',
+          fontWeight: 500,
+        }}
+        customTdStyle={{
+          paddingLeft: '16px',
+          paddingTop: '16px',
+          paddingBottom: '8px',
+        }}
+        customTBodyRowStyle={{ verticalAlign: 'top' }}
+        customTableContainerStyle={{ rounded: 'none' }}
       />
     </Flex>
   );

@@ -115,7 +115,7 @@ const PhotoViewer = () => {
                 height="90%"
               >
                 <Image
-                  src={`data:${photos[currentIndex]?.base64Prefix};base64,${photos[currentIndex]?.photoImage}`}
+                  src={`${photos[currentIndex]?.base64Prefix}${photos[currentIndex]?.photoImage}`}
                   alt={`Photo ${currentIndex + 1}`}
                 />
               </Flex>

@@ -11,7 +11,13 @@ const Info = (props: InfoProps) => {
   return (
     <VStack width="full" spacing="4px" alignItems="flex-start">
       <Text color="neutral.600">{label}</Text>
-      <Text size="md" color="black">
+      <Text
+        size="md"
+        color="black"
+        overflow="hidden"
+        textOverflow="ellipsis"
+        maxW="full"
+      >
         {value}
       </Text>
     </VStack>

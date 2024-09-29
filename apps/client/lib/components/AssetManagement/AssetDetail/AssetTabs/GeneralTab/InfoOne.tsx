@@ -26,18 +26,6 @@ const InfoOne = () => {
   } = assetData;
   const details = [
     {
-      label: 'Country:',
-      value: countryName ?? 'N/A',
-    },
-    {
-      label: 'State:',
-      value: stateName ?? 'N/A',
-    },
-    {
-      label: 'LGA:',
-      value: lganame ?? 'N/A',
-    },
-    {
       label: 'Location:',
       value:
         [
@@ -48,6 +36,9 @@ const InfoOne = () => {
           roomName,
           aisleName,
           shelfName,
+          lganame,
+          stateName,
+          countryName,
         ]
           .filter(Boolean)
           .join(', ') || 'N/A',

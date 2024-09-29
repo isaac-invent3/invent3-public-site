@@ -49,7 +49,7 @@ export default function Page({ params }: { params: { id: string } }) {
         imageId: image.imageId || null,
         imageName: image.imageName || null,
         base64PhotoImage: image.photoImage,
-        base64prefix: image.base64Prefix,
+        base64Prefix: image.base64Prefix,
         isPrimaryImage: image.isPrimaryImage,
       }));
     }

@@ -1,40 +1,79 @@
 import { Flex, useDisclosure } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
-import { Asset } from '~/lib/interfaces/asset.interfaces';
-import AssetDetail from './AssetDetail';
+import { useCallback, useEffect, useState } from 'react';
+
 import { useSearchParams } from 'next/navigation';
-import { useGetAssetInfoHeaderByIdQuery } from '~/lib/redux/services/asset/general.services';
+import { Asset } from '~/lib/interfaces/asset.interfaces';
+import {
+  useGetallAssetQuery,
+  useGetAssetInfoHeaderByIdQuery,
+  useSearchAssetsMutation,
+} from '~/lib/redux/services/asset/general.services';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
+import { SearchResponse } from '~/lib/interfaces/general.interfaces';
+import { OPERATORS } from '~/lib/utils/constants';
 import AssetTable from './Common/AssetTable';
+import AssetDetail from './AssetDetail';
 
 interface ListViewProps {
-  data: Asset[];
-  pageNumber?: number;
-  setPageNumber?: React.Dispatch<React.SetStateAction<number>>;
-  pageSize?: number;
-  setPageSize?: React.Dispatch<React.SetStateAction<number>>;
-  totalPages?: number;
-  isLoading: boolean;
-  isFetching?: boolean;
+  search: string;
 }
 const ListView = (props: ListViewProps) => {
-  const {
-    data,
-    pageNumber,
-    setPageNumber,
-    totalPages,
-    pageSize,
-    setPageSize,
-    isLoading,
-    isFetching = false,
-  } = props;
+  const { search } = props;
   const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(25);
   const searchParams = useSearchParams();
   const assetId = searchParams.get('asset');
+  const { handleSubmit } = useCustomMutation();
+  const [searchAsset, { isLoading: searchLoading }] = useSearchAssetsMutation(
+    {}
+  );
+  const [searchData, setSearchData] = useState<SearchResponse | null>(null);
+
   const { data: assetData } = useGetAssetInfoHeaderByIdQuery(assetId, {
     skip: !assetId,
   });
+  const { data, isLoading, isFetching } = useGetallAssetQuery(
+    {
+      pageNumber: currentPage,
+      pageSize: pageSize,
+    },
+    { skip: search !== '' }
+  );
+
+  const searchCriterion = {
+    criterion: [
+      {
+        columnName: 'assetName',
+        columnValue: search,
+        operation: OPERATORS.Contains,
+      },
+    ],
+    pageNumber: currentPage,
+    pageSize: pageSize,
+  };
+
+  const handleSearch = useCallback(async () => {
+    const response = await handleSubmit(searchAsset, searchCriterion, '');
+    setSearchData(response?.data?.data);
+  }, [searchAsset, searchCriterion]);
+
+  // Trigger search when search input changes or pagination updates
+  useEffect(() => {
+    if (search) {
+      handleSearch();
+    }
+  }, [search, currentPage, pageSize]);
+
+  // Reset pagination when clearing the search
+  useEffect(() => {
+    if (!search) {
+      setPageSize(25);
+      setCurrentPage(1);
+    }
+  }, [search]);
 
   useEffect(() => {
     if (selectedAsset) {
@@ -57,14 +96,18 @@ const ListView = (props: ListViewProps) => {
   return (
     <Flex width="full" mt="8px">
       <AssetTable
-        data={data ?? []}
+        data={
+          search && searchData ? searchData.items : (data?.data?.items ?? [])
+        }
         isLoading={isLoading}
-        isFetching={isFetching}
-        totalPages={totalPages}
-        setPageNumber={setPageNumber}
-        pageNumber={pageNumber}
+        isFetching={isFetching || searchLoading}
+        pageNumber={currentPage}
+        setPageNumber={setCurrentPage}
         pageSize={pageSize}
         setPageSize={setPageSize}
+        totalPages={
+          search && searchData ? searchData?.totalPages : data?.data?.totalPages
+        }
         handleSelectRow={setSelectedAsset}
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}

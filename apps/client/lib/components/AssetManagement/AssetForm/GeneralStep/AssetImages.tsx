@@ -9,7 +9,7 @@ import {
   Text,
   Badge,
 } from '@chakra-ui/react';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import SectionInfo from '../SectionInfo';
 import { useField } from 'formik';
 import {
@@ -36,6 +36,10 @@ const AssetImages = () => {
     }));
     helpers.setValue(updatedImages);
   };
+
+  useEffect(() => {
+    console.log(meta.value);
+  }, [meta.value]);
 
   return useMemo(
     () => (

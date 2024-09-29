@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 'use client';
 
 import {
@@ -10,35 +9,21 @@ import {
   TabPanel,
   useDisclosure,
 } from '@chakra-ui/react';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import ListView from './ListView';
 import Filters from './Filters';
 import FilterDisplay from './Filters/FilterDisplay';
 import { FilterInput } from '~/lib/interfaces/asset.interfaces';
-import {
-  useGetallAssetQuery,
-  useSearchAssetsMutation,
-} from '~/lib/redux/services/asset/general.services';
-import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { SearchResponse } from '~/lib/interfaces/general.interfaces';
 import MapView from './MapView';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { OPERATORS } from '~/lib/utils/constants';
 
 const AssetManagement = () => {
   const [search, setSearch] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(25);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { handleSubmit } = useCustomMutation();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [tabIndex, setTabIndex] = useState(0);
-  const [searchAsset, { isLoading: searchLoading }] = useSearchAssetsMutation(
-    {}
-  );
-  const [searchData, setSearchData] = useState<SearchResponse | null>(null);
 
   const [filterData, setFilterData] = useState<FilterInput>({
     location: [],
@@ -47,51 +32,8 @@ const AssetManagement = () => {
   const [activeFilter, setActiveFilter] = useState<'bulk' | 'general' | null>(
     null
   );
-  const {
-    data: assetData,
-    isLoading,
-    isFetching,
-  } = useGetallAssetQuery(
-    {
-      pageNumber: currentPage,
-      pageSize: pageSize,
-    },
-    { skip: search !== '' }
-  );
 
-  const searchCriterion = {
-    criterion: [
-      {
-        columnName: 'assetName',
-        columnValue: search,
-        operation: OPERATORS.Contains,
-      },
-    ],
-    pageNumber: currentPage,
-    pageSize: pageSize,
-  };
-
-  const handleSearch = useCallback(async () => {
-    const response = await handleSubmit(searchAsset, searchCriterion, '');
-    setSearchData(response?.data?.data);
-  }, [searchAsset, searchCriterion]);
-
-  // Trigger search when search input changes or pagination updates
-  useEffect(() => {
-    if (search) {
-      handleSearch();
-    }
-  }, [search, currentPage, pageSize]);
-
-  // Reset pagination when clearing the search
-  useEffect(() => {
-    if (!search) {
-      setPageSize(25);
-      setCurrentPage(1);
-    }
-  }, [search]);
-
-  // Handles Toggling the Asset Details Drawer
+  // Handles Toggling the  Filter
   useEffect(() => {
     if (activeFilter && !isOpen) {
       onOpen();
@@ -152,24 +94,7 @@ const AssetManagement = () => {
                 filterData={filterData}
                 setFilterData={setFilterData}
               />
-              <ListView
-                data={
-                  search && searchData
-                    ? searchData.items
-                    : (assetData?.data?.items ?? [])
-                }
-                isLoading={isLoading}
-                isFetching={isFetching || searchLoading}
-                pageNumber={currentPage}
-                setPageNumber={setCurrentPage}
-                pageSize={pageSize}
-                setPageSize={setPageSize}
-                totalPages={
-                  search && searchData
-                    ? searchData?.totalPages
-                    : assetData?.data?.totalPages
-                }
-              />
+              <ListView search={search} />
             </TabPanel>
             <TabPanel>{tabIndex === 1 && <MapView />}</TabPanel>
           </TabPanels>

@@ -81,10 +81,17 @@ const assetTransferSchema = Yup.object().shape({
   reason: Yup.string(),
 });
 
+const assetDisposeSchema = documentSchema.shape({
+  disposalDate: Yup.string().required('Transfer Date is Required'),
+  reason: Yup.string().required('Reason is Required'),
+  additionalInfo: Yup.string(),
+});
+
 export {
   generalInfoSchema,
   acquisitionInfoSchema,
   documentSchema,
   assetTransferSchema,
   locationSchema,
+  assetDisposeSchema,
 };

@@ -4,11 +4,12 @@ import React from 'react';
 interface UserProps {
   name: string | null;
   role: string | null;
-  location: string | null;
-  department: string | null;
+  location?: string | null;
+  department?: string | null;
+  variant?: 'fullDetails' | 'userDetails';
 }
 const User = (props: UserProps) => {
-  const { name, role, department, location } = props;
+  const { name, role, department, location, variant = 'fullDetails' } = props;
 
   const info = [
     {
@@ -23,7 +24,11 @@ const User = (props: UserProps) => {
 
   return (
     <HStack width="full" spacing="24px" alignItems="flex-start">
-      <Avatar width="99px" height="99px" src="" />
+      <Avatar
+        width={variant === 'fullDetails' ? '99px' : '40px'}
+        height={variant === 'fullDetails' ? '99px' : '40px'}
+        src=""
+      />
       <VStack spacing="24px" alignItems="flex-start">
         <VStack alignItems="flex-start" spacing="8px">
           <Heading
@@ -37,18 +42,20 @@ const User = (props: UserProps) => {
           </Heading>
           <Text color="neutral.600">{role}</Text>
         </VStack>
-        <VStack alignItems="flex-start" spacing="8px">
-          {info.map((item) => (
-            <HStack width="full" justifyContent="space-between">
-              <Text size="md" color="neutral.600" minW="78px">
-                {item.label}
-              </Text>
-              <Text size="md" color="black">
-                {item.value}
-              </Text>
-            </HStack>
-          ))}
-        </VStack>
+        {variant === 'fullDetails' && (
+          <VStack alignItems="flex-start" spacing="8px">
+            {info.map((item) => (
+              <HStack width="full" justifyContent="space-between">
+                <Text size="md" color="neutral.600" minW="78px">
+                  {item.label}
+                </Text>
+                <Text size="md" color="black">
+                  {item.value}
+                </Text>
+              </HStack>
+            ))}
+          </VStack>
+        )}
       </VStack>
     </HStack>
   );

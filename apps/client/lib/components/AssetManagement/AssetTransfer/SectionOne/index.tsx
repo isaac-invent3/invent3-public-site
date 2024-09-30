@@ -1,9 +1,9 @@
 import { Flex, HStack } from '@chakra-ui/react';
 import React from 'react';
 import CurrentOwner from './CurrentOwner';
-import AssetDetails from './AssetDetails';
 import Button from '~/lib/components/UI/Button';
 import { useAppSelector } from '~/lib/redux/hooks';
+import AssetDetails from '../../Common/AssetDetail';
 
 const SectionOne = () => {
   const { assetId } = useAppSelector((state) => state.asset.asset);
@@ -14,8 +14,8 @@ const SectionOne = () => {
       </Flex>
       <Flex width="60%">
         <HStack width="full" alignItems="flex-end" spacing="45px">
-          <Flex width="70%">
-            <AssetDetails />
+          <Flex width="max-content" maxW="max-content">
+            <AssetDetails stackType="column" showStatus={false} />
           </Flex>
           <Button
             variant="secondary"

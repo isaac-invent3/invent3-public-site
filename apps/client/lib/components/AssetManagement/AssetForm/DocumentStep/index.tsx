@@ -1,4 +1,4 @@
-import { Flex, VStack } from '@chakra-ui/react';
+import { Flex, HStack, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 import React from 'react';
 import { documentSchema } from '~/lib/schemas/asset/main.schema';
@@ -6,6 +6,7 @@ import FormActionButtons from '../FormActionButtons';
 import AddDocument from './AddDocument';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/assetSlice';
+import SectionInfo from '../SectionInfo';
 
 interface DocumentStepProps {
   activeStep: number;
@@ -52,7 +53,16 @@ const DocumentStep = (props: DocumentStepProps) => {
             spacing="51px"
             minH="60vh"
           >
-            <AddDocument />
+            <HStack width="full" alignItems="flex-start" spacing="81px">
+              <Flex width="full" maxW="141px">
+                <SectionInfo
+                  title="Upload Documents"
+                  info="Size max: 10MB each Format: TXT, PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, JPEG"
+                  isRequired={false}
+                />
+              </Flex>
+              <AddDocument />
+            </HStack>
           </VStack>
           <Flex width="full" mt="16px">
             <FormActionButtons activeStep={1} setActiveStep={setActiveStep} />

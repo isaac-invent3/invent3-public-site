@@ -8,10 +8,11 @@ import { getDocumentInfo } from '~/lib/utils/helperFunctions';
 
 interface SingleDocumentProps {
   document: AssetFormDocument;
+  variant?: 'primary' | 'secondary';
 }
 
 const SingleDocument = (props: SingleDocumentProps) => {
-  const { document } = props;
+  const { document, variant = 'primary' } = props;
   const [field, meta, helpers] = useField('documents'); //eslint-disable-line
 
   const handleRemoveDocument = (document: any) => {
@@ -31,30 +32,51 @@ const SingleDocument = (props: SingleDocumentProps) => {
       borderBottomWidth="1px"
       borderColor="neutral.300"
       justifyContent="space-between"
+      spacing="16px"
     >
-      <HStack spacing="64px">
+      <HStack spacing={variant === 'primary' ? '64px' : '0px'} flexWrap="wrap">
         <HStack spacing="16px">
           <Icon as={FILE_ICONS[extensionName ?? 'invalid']} boxSize="34px" />
-          <Text size="lg" color="neutral.800" width="150px">
+          <Text
+            size="lg"
+            color="neutral.800"
+            width={variant === 'primary' ? '150px' : 'full'}
+          >
             {document.documentName}
           </Text>
         </HStack>
-        <Flex width="70px">
-          <Text
-            py="7px"
-            px="12px"
-            bgColor="neutral.100"
-            color="neutral.800"
-            textTransform="uppercase"
-            rounded="8px"
-          >
-            {extensionName}
+        {variant === 'primary' && (
+          <Flex width="70px">
+            <Text
+              py="7px"
+              px="12px"
+              bgColor="neutral.100"
+              color="neutral.800"
+              textTransform="uppercase"
+              rounded="8px"
+            >
+              {extensionName}
+            </Text>
+          </Flex>
+        )}
+        {variant === 'primary' && (
+          <Text size="md" fontWeight={700}>
+            {sizeInMB.toFixed(2)}MB
           </Text>
-        </Flex>
-        <Text size="md" fontWeight={700}>
-          {sizeInMB.toFixed(2)}MB
-        </Text>
+        )}
       </HStack>
+      {variant === 'secondary' && (
+        <Text
+          py="7px"
+          px="12px"
+          bgColor="neutral.100"
+          color="neutral.800"
+          textTransform="uppercase"
+          rounded="8px"
+        >
+          {extensionName}
+        </Text>
+      )}
       <Icon
         as={CircularCloseIcon}
         color="#FF3B30"

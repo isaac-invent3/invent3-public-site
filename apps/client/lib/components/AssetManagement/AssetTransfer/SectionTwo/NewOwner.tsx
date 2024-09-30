@@ -4,7 +4,7 @@ import DetailHeader from '~/lib/components/UI/DetailHeader';
 import EmployeeSelect from '../../AssetForm/GeneralStep/AssetOwner/EmployeeSelect';
 import { Employee } from '~/lib/interfaces/user.interfaces';
 import { useGetEmployeeByIdQuery } from '~/lib/redux/services/employees.services';
-import User from '../User';
+import User from '../../Common/User';
 
 const NewOwner = () => {
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);

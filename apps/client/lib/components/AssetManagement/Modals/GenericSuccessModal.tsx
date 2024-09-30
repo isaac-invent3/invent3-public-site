@@ -7,9 +7,10 @@ interface GenericSuccessModalProps {
   onClose: () => void;
   successText: string;
   children: React.ReactNode;
+  headingText?: string;
 }
 const GenericSuccessModal = (props: GenericSuccessModalProps) => {
-  const { isOpen, onClose, successText, children } = props;
+  const { isOpen, onClose, successText, children, headingText } = props;
   return (
     <GenericModal
       isOpen={isOpen}
@@ -31,10 +32,11 @@ const GenericSuccessModal = (props: GenericSuccessModalProps) => {
               lineHeight="38.02px"
               fontWeight={800}
               color="primary.main"
+              textAlign="center"
             >
-              Successful!
+              {headingText ?? 'Successful!'}
             </Heading>
-            <Text size="md" color="neutral.600">
+            <Text size="md" color="neutral.600" textAlign="center" maxW="306px">
               {successText}
             </Text>
           </VStack>

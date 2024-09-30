@@ -58,6 +58,7 @@ const AssetHeader = (props: AssetHeaderProps) => {
             lineHeight: '16.63px',
           }}
           variant="secondary"
+          href={`/asset-management/${assetData.assetId}/dispose`}
         >
           Dispose
         </Button>

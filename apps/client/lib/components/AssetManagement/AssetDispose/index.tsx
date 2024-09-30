@@ -3,30 +3,30 @@ import React, { useEffect } from 'react';
 import Header from './Header';
 import { Asset } from '~/lib/interfaces/asset.interfaces';
 import { FormikProvider, useFormik } from 'formik';
-import { assetTransferSchema } from '~/lib/schemas/asset/main.schema';
+import { assetDisposeSchema } from '~/lib/schemas/asset/main.schema';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { clearAsset, setAsset } from '~/lib/redux/slices/assetSlice';
-import SectionOne from './SectionOne';
-import SectionTwo from './SectionTwo';
 import Button from '../../UI/Button';
 import AssetSuccessModal from '../Modals/AssetSuccessModal';
+import SectionOne from './SectionOne';
+import SectionTwo from './SectionTwo';
 
-interface AssetTransferProps {
+interface AssetDisposeProps {
   data: Asset;
 }
-const AssetTransfer = (props: AssetTransferProps) => {
+const AssetDispose = (props: AssetDisposeProps) => {
   const { data } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
 
   const formik = useFormik({
     initialValues: {
-      newOwner: '',
-      transferDate: '',
-      condition: '',
+      disposalDate: '',
       reason: '',
+      additionalInfo: '',
+      documents: [],
     },
-    validationSchema: assetTransferSchema,
+    validationSchema: assetDisposeSchema,
     onSubmit: async () => {
       onOpen();
     },
@@ -75,7 +75,7 @@ const AssetTransfer = (props: AssetTransferProps) => {
               </HStack>
 
               <Button type="submit" customStyles={{ width: '161px' }}>
-                Transfer
+                Dispose
               </Button>
             </HStack>
           </Flex>
@@ -85,10 +85,11 @@ const AssetTransfer = (props: AssetTransferProps) => {
         isOpen={isOpen}
         onClose={onClose}
         buttonWidth="193px"
-        successText="Asset Transfer Successful"
+        headingText="Dispose Request Submitted"
+        successText="Your request to dispose has been submitted and would be reviewed by the appropriate user"
       />
     </Flex>
   );
 };
 
-export default AssetTransfer;
+export default AssetDispose;

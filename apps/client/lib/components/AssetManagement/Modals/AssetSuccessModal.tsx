@@ -7,13 +7,15 @@ interface AssetSuccessModalProps {
   onClose: () => void;
   successText: string;
   buttonWidth: string;
+  headingText?: string;
 }
 const AssetSuccessModal = (props: AssetSuccessModalProps) => {
-  const { isOpen, onClose, successText, buttonWidth } = props;
+  const { isOpen, onClose, successText, buttonWidth, headingText } = props;
   return (
     <GenericSuccessModal
       isOpen={isOpen}
       onClose={onClose}
+      headingText={headingText}
       successText={successText}
     >
       <Button

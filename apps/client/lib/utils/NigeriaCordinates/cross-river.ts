@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const CROSS_RIVER_COORDINATES: { [key: string]: LatLngExpression } = {
+const CROSS_RIVER_COORDINATES: { [key: string]: Point } = {
   Abi: [5.6275, 8.295833],
   Akamkpa: [5.233056, 8.268333],
   Akpabuyo: [4.926111, 8.446944],

@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const TARABA_COORDINATES: { [key: string]: LatLngExpression } = {
+const TARABA_COORDINATES: { [key: string]: Point } = {
   'Ardo Kola': [8.65, 11.2667],
   Bali: [7.8667, 10.9833],
   Donga: [7.6667, 10.05],

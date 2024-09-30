@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const OYO_COORDINATES: { [key: string]: LatLngExpression } = {
+const OYO_COORDINATES: { [key: string]: Point } = {
   Afijio: [7.85, 3.9333],
   Akinyele: [7.6, 3.9167],
   Atiba: [7.5833, 4.0333],

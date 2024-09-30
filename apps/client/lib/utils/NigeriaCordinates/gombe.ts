@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const GOMBE_COORDINATES: { [key: string]: LatLngExpression } = {
+const GOMBE_COORDINATES: { [key: string]: Point } = {
   Akko: [10.265, 11.205278],
   Balanga: [10.321389, 11.358611],
   Billiri: [10.226111, 11.373611],

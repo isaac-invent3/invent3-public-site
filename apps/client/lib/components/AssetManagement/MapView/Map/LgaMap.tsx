@@ -1,16 +1,16 @@
-import { MapContainer, GeoJSON } from 'react-leaflet';
+import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
 import { useEffect, useState } from 'react';
 import type { GeoJsonTypes } from 'geojson';
 import {
   GeoJSONFeature,
   MapAssetData,
 } from '~/lib/interfaces/general.interfaces';
-import _ from 'lodash';
+// import _ from 'lodash';
 
-import '~/lib/styles/custom-leaflet.css';
 import CustomMarker from './CustomMarker';
 import NIGERIA_CORDINATES from '~/lib/utils/NigeriaCordinates';
 import LoadingSpinner from './LoadingSpinner';
+import { getScaleByStateSize } from '~/lib/utils/helperFunctions';
 
 interface GeoJSONData {
   type: GeoJsonTypes;
@@ -30,17 +30,23 @@ interface LgaMapProps {
 const LgaMap = ({ assetData, selectedState }: LgaMapProps) => {
   const [geoData, setGeoData] = useState<GeoJSONData | null>(null);
   const [isLoading, setIsLoading] = useState(false); // Track loading state
+  const [hoveredMarker, setHoveredMarker] = useState<string | null>(null); // Track hovered marker
 
-  const stateName =
-    selectedState?.name === 'Abuja(FCT)' ? 'fct' : selectedState?.name;
+  // const stateName =
+  //   selectedState?.name === 'Abuja(FCT)' ? 'fct' : selectedState?.name;
+
+  // Create a sorted list of markers, with the hovered marker placed last
+  const sortedAssetData = Object.keys(assetData).sort((a, b) => {
+    if (a === hoveredMarker) return 1;
+    if (b === hoveredMarker) return -1;
+    return 0;
+  });
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(
-          `/nigeria-geojson/${_.kebabCase(stateName.toLowerCase())}.geojson`
-        );
+        const response = await fetch(`/nigeria-geojson/state.geojson`);
         if (!response.ok) {
           throw new Error('Failed to fetch GeoJSON data');
         }
@@ -56,55 +62,93 @@ const LgaMap = ({ assetData, selectedState }: LgaMapProps) => {
     fetchData();
   }, []);
 
-  // Custom style for each state to match the uploaded image
-  const mapStyle = {
-    fillColor: '#b5b5b5',
-    weight: 2,
-    color: 'white',
-    fillOpacity: 1,
-  };
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
-    <MapContainer
+    <ComposableMap
+      projection="geoMercator"
+      projectionConfig={{
+        scale: getScaleByStateSize(selectedState.name),
+        center: NIGERIA_CORDINATES.states?.[selectedState.name],
+      }}
       style={{
+        width: '100%',
+        maxWidth: '1200px',
+        height: 'max-content',
         display: 'flex',
-        flex: 1,
-        minHeight: '100%',
-        minWidth: '100%',
-        backgroundColor: 'transparent',
-      }} // Full width and height
-      center={NIGERIA_CORDINATES.states?.[selectedState.name]}
-      zoom={8}
-      zoomControl={false}
-      scrollWheelZoom={false}
-      doubleClickZoom={false}
-      attributionControl={false}
-      dragging={false}
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
     >
-      {isLoading ? (
-        <LoadingSpinner />
-      ) : (
-        geoData && (
-          <>
-            <GeoJSON data={geoData} style={mapStyle} />
-            {Object.keys(assetData).map((lgaName) => {
-              if (assetData[lgaName] && assetData[lgaName].count > 0) {
+      {/* Geographies for rendering the map */}
+      {geoData && (
+        <Geographies geography={geoData}>
+          {({ geographies }) =>
+            geographies.map((geo) => {
+              if (geo.properties.state === selectedState.name) {
                 return (
-                  <CustomMarker
-                    name={lgaName}
-                    assetCount={assetData[lgaName].count}
-                    cordinates={
-                      NIGERIA_CORDINATES?.[selectedState?.name as 'Abia']
-                    }
+                  <Geography
+                    key={geo.rsmKey}
+                    geography={geo}
+                    style={{
+                      default: {
+                        fill: '#b5b5b5',
+                        stroke: 'white',
+                        strokeWidth: 5,
+                      },
+                      hover: {
+                        fill: '#b5b5b5',
+                        stroke: 'white',
+                        strokeWidth: 5,
+                      },
+                      pressed: {
+                        fill: '#b5b5b5',
+                        strokeWidth: 5,
+                        stroke: 'white',
+                      },
+                    }}
                   />
                 );
               }
               return null;
-            })}
-          </>
-        )
+            })
+          }
+        </Geographies>
       )}
-    </MapContainer>
+
+      {/* Custom markers for each state with assets */}
+      {sortedAssetData.map((lgaName) => {
+        if (
+          assetData &&
+          assetData?.[lgaName] &&
+          assetData?.[lgaName]?.count > 0
+        ) {
+          const coordinates =
+            NIGERIA_CORDINATES?.[selectedState.name as 'Abia']?.[
+              assetData?.[lgaName].name
+            ];
+
+          // Ensure the coordinates are valid
+          let newCoordinates: [number, number] = [0, 0];
+          if (coordinates && coordinates.length === 2) {
+            newCoordinates = [coordinates[1], coordinates[0]]; // latitude, longitude order
+          }
+
+          return (
+            <CustomMarker
+              key={lgaName}
+              name={lgaName}
+              assetCount={assetData?.[lgaName]?.count}
+              coordinates={newCoordinates}
+              setHoveredMarker={setHoveredMarker}
+            />
+          );
+        }
+        return null;
+      })}
+    </ComposableMap>
   );
 };
 

@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const BENUE_COORDINATES: { [key: string]: LatLngExpression } = {
+const BENUE_COORDINATES: { [key: string]: Point } = {
   Ado: [7.286111, 9.219444],
   Agatu: [7.193056, 9.569722],
   Apa: [7.111944, 9.1975],

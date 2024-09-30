@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const LAGOS_COORDINATES: { [key: string]: LatLngExpression } = {
+const LAGOS_COORDINATES: { [key: string]: Point } = {
   Agege: [6.558056, 3.2575],
   'Ajeromi-Ifelodun': [6.555, 3.339444],
   Alimosho: [6.56, 3.335],

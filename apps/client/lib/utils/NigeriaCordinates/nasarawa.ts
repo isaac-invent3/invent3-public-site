@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const NASARAWA_COORDINATES: { [key: string]: LatLngExpression } = {
+const NASARAWA_COORDINATES: { [key: string]: Point } = {
   Akwanga: [8.456944, 8.6975],
   Doma: [8.224444, 8.356944],
   Karu: [8.9525, 7.953056],

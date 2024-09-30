@@ -1,5 +1,6 @@
 import { AssetFormDocument } from '../interfaces/asset.interfaces';
 import { FILE_ICONS } from './constants';
+import nigeriaStatesByLandSize from './NigeriaCordinates/landSize';
 
 interface IOption {
   [key: string]: any;
@@ -69,5 +70,26 @@ function getDocumentInfo(document: AssetFormDocument) {
     sizeInMB,
   };
 }
+const getScaleByStateSize = (stateName: string) => {
+  const size = nigeriaStatesByLandSize?.[stateName as 'Abia'];
 
-export { generateOptions, getDocumentInfo };
+  if (!size) {
+    return 8000;
+  }
+
+  if (size < 10000) {
+    return 23000;
+  } else if (size >= 10000 && size < 20000) {
+    return 16000;
+  } else if (size >= 20000 && size < 25000) {
+    return 13000;
+  } else if (size >= 25000 && size < 35000) {
+    return 11500;
+  } else if (size >= 35000 && size < 50000) {
+    return 11000;
+  } else if (size >= 50000) {
+    return 8000;
+  }
+};
+
+export { generateOptions, getDocumentInfo, getScaleByStateSize };

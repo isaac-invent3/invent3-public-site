@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const KWARA_COORDINATES: { [key: string]: LatLngExpression } = {
+const KWARA_COORDINATES: { [key: string]: Point } = {
   Asa: [8.446944, 4.614444],
   Baruten: [8.927222, 4.103056],
   Ekiti: [8.368056, 4.7],

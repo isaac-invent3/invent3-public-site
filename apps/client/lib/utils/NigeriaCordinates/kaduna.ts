@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const KADUNA_COORDINATES: { [key: string]: LatLngExpression } = {
+const KADUNA_COORDINATES: { [key: string]: Point } = {
   'Birnin Gwari': [10.709444, 7.258056],
   Chikun: [10.353056, 7.356389],
   Dareta: [10.746111, 7.133056],

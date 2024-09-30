@@ -1,6 +1,7 @@
 import React from 'react';
 import { MapAssetData } from '~/lib/interfaces/general.interfaces';
 import LgaMap from './LgaMap';
+// import LgaMap from './templeaflet';
 import StateMap from './StateMap';
 
 interface MapViewComponentProps {

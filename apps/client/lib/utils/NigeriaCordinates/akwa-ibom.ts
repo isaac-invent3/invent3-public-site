@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const AKWA_IBOM_COORDINATES: { [key: string]: LatLngExpression } = {
+const AKWA_IBOM_COORDINATES: { [key: string]: Point } = {
   Abak: [4.982462, 7.786388],
   'Eastern Obolo': [4.550267, 7.744246],
   Eket: [4.642421, 7.919763],

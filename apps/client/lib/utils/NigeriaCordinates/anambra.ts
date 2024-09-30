@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const ANAMBRA_COORDINATES: { [key: string]: LatLngExpression } = {
+const ANAMBRA_COORDINATES: { [key: string]: Point } = {
   Aguata: [6.012001, 7.059348],
   'Anambra East': [6.355001, 6.91572],
   'Anambra West': [6.34287, 6.72335],

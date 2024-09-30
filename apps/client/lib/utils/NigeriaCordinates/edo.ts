@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const EDO_COORDINATES: { [key: string]: LatLngExpression } = {
+const EDO_COORDINATES: { [key: string]: Point } = {
   'Akoko-Edo': [7.279167, 6.039167],
   Egor: [6.308611, 5.626944],
   'Esan Central': [6.448056, 6.264444],

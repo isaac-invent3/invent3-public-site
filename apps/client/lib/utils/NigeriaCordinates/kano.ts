@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const KANO_COORDINATES: { [key: string]: LatLngExpression } = {
+const KANO_COORDINATES: { [key: string]: Point } = {
   Ajingi: [11.547222, 8.229444],
   Albasu: [11.333056, 8.4925],
   Bagwai: [11.535, 8.0825],

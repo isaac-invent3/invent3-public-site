@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const KEBBI_COORDINATES: { [key: string]: LatLngExpression } = {
+const KEBBI_COORDINATES: { [key: string]: Point } = {
   Aleiro: [12.426944, 4.176389],
   'Arewa Dandi': [12.42, 4.461944],
   Bagudo: [12.547222, 4.208056],

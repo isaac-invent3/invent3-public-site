@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const YOBE_COORDINATES: { [key: string]: LatLngExpression } = {
+const YOBE_COORDINATES: { [key: string]: Point } = {
   Bade: [12.7833, 10.9833],
   Bursari: [12.9, 11.2],
   Damaturu: [11.75, 11.9667],

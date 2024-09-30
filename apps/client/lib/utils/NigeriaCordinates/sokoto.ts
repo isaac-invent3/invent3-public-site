@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const SOKOTO_COORDINATES: { [key: string]: LatLngExpression } = {
+const SOKOTO_COORDINATES: { [key: string]: Point } = {
   Binji: [13.2167, 5.2333],
   Bodinga: [12.8667, 5.2333],
   'Dange Shuni': [12.85, 5.35],

@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const OSUN_COORDINATES: { [key: string]: LatLngExpression } = {
+const OSUN_COORDINATES: { [key: string]: Point } = {
   'Atakunmosa East': [7.5794, 4.7397],
   'Atakunmosa West': [7.5079, 4.3337],
   Ayedaade: [7.5001, 4.1061],

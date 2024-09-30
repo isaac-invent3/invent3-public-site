@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const ONDO_COORDINATES: { [key: string]: LatLngExpression } = {
+const ONDO_COORDINATES: { [key: string]: Point } = {
   'Akoko North-East': [7.336944, 5.786111],
   'Akoko North-West': [7.375, 5.658333],
   'Akoko South-East': [7.274167, 5.615833],

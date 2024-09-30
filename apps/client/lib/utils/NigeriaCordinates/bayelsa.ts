@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const BAYELSA_COORDINATES: { [key: string]: LatLngExpression } = {
+const BAYELSA_COORDINATES: { [key: string]: Point } = {
   Brass: [4.257228, 6.222736],
   Burutu: [5.224031, 6.032848],
   Ekeremor: [4.665024, 6.206584],

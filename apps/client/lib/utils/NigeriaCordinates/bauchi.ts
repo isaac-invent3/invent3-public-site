@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const BAUCHI_COORDINATES: { [key: string]: LatLngExpression } = {
+const BAUCHI_COORDINATES: { [key: string]: Point } = {
   Alkaleri: [9.43086, 9.296594],
   Bauchi: [9.309722, 9.8421],
   'Bauchi LGA': [9.309722, 9.8421],

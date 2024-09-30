@@ -53,14 +53,21 @@ const MapView = () => {
 
   return (
     <Flex width="full" height="full" gap="40px" justifyContent="space-between">
-      <Flex width="70%" height="90vh" position="relative" direction="column">
-        <HStack width="full" justifyContent="space-between" my="32px">
-          <VStack
-            pl="24px"
-            alignItems="flex-start"
-            spacing="4px"
-            // position="absolute"
-          >
+      <Flex
+        width="70%"
+        height="90vh"
+        position="relative"
+        direction="column"
+        alignItems="flex-start"
+      >
+        <HStack
+          width="full"
+          justifyContent="space-between"
+          my="32px"
+          // position="absolute"
+          // display="hidden"
+        >
+          <VStack pl="24px" alignItems="flex-start" spacing="4px">
             <Text
               fontWeight={700}
               size="lg"
@@ -88,15 +95,24 @@ const MapView = () => {
         {isLoadingLGAAssetCount || isLoadingStateAssetCount ? (
           <LoadingSpinner />
         ) : (
-          <MapViewComponent
-            selectedState={selectedState}
-            setSelectedState={setSelectedState}
-            assetData={generateAssetCountOption(
-              selectedState?.id
-                ? lgaAssetCount?.data?.items
-                : stateAssetCount?.data?.items
-            )}
-          />
+          <Flex
+            width="full"
+            height="full"
+            zIndex={99}
+            alignItems="flex-start"
+            justifyContent="center"
+            position="relative"
+          >
+            <MapViewComponent
+              selectedState={selectedState}
+              setSelectedState={setSelectedState}
+              assetData={generateAssetCountOption(
+                selectedState?.id
+                  ? lgaAssetCount?.data?.items
+                  : stateAssetCount?.data?.items
+              )}
+            />
+          </Flex>
         )}
       </Flex>
       <Flex width="256px" mt="24px" pr="9px">

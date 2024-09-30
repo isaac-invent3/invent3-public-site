@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const JIGAWA_COORDINATES: { [key: string]: LatLngExpression } = {
+const JIGAWA_COORDINATES: { [key: string]: Point } = {
   Auyo: [12.85, 9.09],
   Babura: [12.905833, 9.040833],
   Badaguishiki: [12.7575, 9.223611],

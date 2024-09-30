@@ -3,6 +3,7 @@ import React from 'react';
 import DetailHeader from '../../../../UI/DetailHeader';
 import DetailSection from '../../DetailSection';
 import { useAppSelector } from '~/lib/redux/hooks';
+import PhotoViewer from './InfoTwo.tsx/Photos';
 
 const InfoOne = () => {
   const assetData = useAppSelector((state) => state.asset.asset);
@@ -76,11 +77,14 @@ const InfoOne = () => {
       <VStack alignItems="flex-start" spacing="8px">
         <DetailSection details={details} minWidth="77px" />
       </VStack>
-      <VStack alignItems="flex-start">
-        <DetailHeader variant="secondary">Description:</DetailHeader>
-        <Text size="md" color="neutral.800" fontWeight={400}>
-          {description}
-        </Text>
+      <VStack alignItems="flex-start" spacing="18px">
+        <VStack width="full" spacing="8px" alignItems="flex-start">
+          <DetailHeader variant="secondary">Description:</DetailHeader>
+          <Text size="md" color="neutral.800" fontWeight={400}>
+            {description}
+          </Text>
+        </VStack>
+        <PhotoViewer />
       </VStack>
     </SimpleGrid>
   );

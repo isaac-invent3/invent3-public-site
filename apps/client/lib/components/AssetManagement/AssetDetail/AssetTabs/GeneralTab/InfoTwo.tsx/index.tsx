@@ -2,7 +2,7 @@ import { SimpleGrid, VStack } from '@chakra-ui/react';
 import React from 'react';
 import DetailSection from '../../../DetailSection';
 import { useAppSelector } from '~/lib/redux/hooks';
-import PhotoViewer from './Photos';
+import MapView from './MapView';
 
 const InfoTwo = () => {
   const assetData = useAppSelector((state) => state.asset.asset);
@@ -41,7 +41,7 @@ const InfoTwo = () => {
           header="Owner's Info"
         />
       </VStack>
-      <PhotoViewer />
+      <MapView />
     </SimpleGrid>
   );
 };

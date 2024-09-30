@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const DELTA_COORDINATES: { [key: string]: LatLngExpression } = {
+const DELTA_COORDINATES: { [key: string]: Point } = {
   'Aniocha North': [6.428611, 6.3925],
   'Aniocha South': [6.378056, 6.494722],
   Asaba: [6.184444, 6.719722],

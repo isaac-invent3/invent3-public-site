@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const EBONYI_COORDINATES: { [key: string]: LatLngExpression } = {
+const EBONYI_COORDINATES: { [key: string]: Point } = {
   Abakaliki: [6.319722, 8.097222],
   'Afikpo North': [5.951389, 7.927778],
   'Afikpo South': [5.916667, 7.839167],

@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const BORNO_COORDINATES: { [key: string]: LatLngExpression } = {
+const BORNO_COORDINATES: { [key: string]: Point } = {
   Abadam: [12.356944, 13.289722],
   'Askira/Uba': [10.562222, 12.691389],
   Bama: [11.0575, 13.180278],

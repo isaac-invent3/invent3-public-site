@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const EKITI_COORDINATES: { [key: string]: LatLngExpression } = {
+const EKITI_COORDINATES: { [key: string]: Point } = {
   'Ado Ekiti': [7.669444, 5.221389],
   'Ekiti East': [7.575833, 5.290833],
   'Ekiti South-West': [7.301944, 5.278056],

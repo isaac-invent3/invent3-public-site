@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const KATSINA_COORDINATES: { [key: string]: LatLngExpression } = {
+const KATSINA_COORDINATES: { [key: string]: Point } = {
   Batsari: [12.284444, 7.5425],
   Baure: [12.399444, 7.3075],
   Bindawa: [12.459167, 7.325278],

@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const PLATEAU_COORDINATES: { [key: string]: LatLngExpression } = {
+const PLATEAU_COORDINATES: { [key: string]: Point } = {
   'Barkin Ladi': [9.5333, 8.9],
   Bassa: [9.9333, 8.75],
   Bokkos: [9.3, 8.9833],

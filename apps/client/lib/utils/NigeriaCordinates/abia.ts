@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const ABIA_CORDINATES: { [key: string]: LatLngExpression } = {
+const ABIA_CORDINATES: { [key: string]: Point } = {
   'Aba North': [5.345317, 7.370362],
   'Aba South': [5.121975, 7.366627],
   Arochukwu: [5.378935, 7.912649],

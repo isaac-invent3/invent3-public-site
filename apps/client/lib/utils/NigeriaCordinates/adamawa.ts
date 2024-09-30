@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const ADAMAWA_CORDINATES: { [key: string]: LatLngExpression } = {
+const ADAMAWA_CORDINATES: { [key: string]: Point } = {
   Demsa: [9.458239, 12.059589],
   Fufore: [9.424566, 12.574251],
   Ganye: [8.433049, 12.060798],

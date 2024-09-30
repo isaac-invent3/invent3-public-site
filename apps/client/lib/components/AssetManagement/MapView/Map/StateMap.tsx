@@ -1,19 +1,13 @@
-import { MapContainer, GeoJSON } from 'react-leaflet';
 import { useEffect, useState } from 'react';
-import { Layer, GeoJSON as GeoJSONType } from 'leaflet';
-import '~/lib/styles/custom-leaflet.css';
-import type { GeoJsonTypes } from 'geojson';
-import {
-  GeoJSONFeature,
-  MapAssetData,
-} from '~/lib/interfaces/general.interfaces';
-import CustomMarker from './CustomMarker';
+import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
 import NIGERIA_CORDINATES from '~/lib/utils/NigeriaCordinates';
 import LoadingSpinner from './LoadingSpinner';
+import { MapAssetData } from '~/lib/interfaces/general.interfaces';
+import CustomMarker from './CustomMarker';
 
 interface GeoJSONData {
-  type: GeoJsonTypes;
-  features: GeoJSONFeature[];
+  type: string;
+  features: any[];
 }
 
 // Define asset data type
@@ -28,7 +22,8 @@ interface StateMapProps {
 
 const StateMap = ({ assetData, setSelectedState }: StateMapProps) => {
   const [geoData, setGeoData] = useState<GeoJSONData | null>(null);
-  const [isLoading, setIsLoading] = useState(false); // Track loading state
+  const [isLoading, setIsLoading] = useState(false);
+  const [hoveredMarker, setHoveredMarker] = useState<string | null>(null); // Track hovered marker
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,88 +45,98 @@ const StateMap = ({ assetData, setSelectedState }: StateMapProps) => {
     fetchData();
   }, []);
 
-  // Custom style for each state to match the uploaded image
-  const mapStyle = {
-    fillColor: '#b5b5b5',
-    weight: 2,
-    color: 'white',
-    fillOpacity: 1,
-  };
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
-  // Function to bind popup and event listeners to each state
-  //@ts-ignore
-  const onEachState = (state: GeoJSONType.Features, layer: Layer) => {
-    const stateName = (state.properties as { state: string }).state;
-    const assetCount = assetData[stateName]?.count || 0;
-
-    layer.on({
-      mouseover: (e: any) => {
-        const targetLayer = e.target;
-        targetLayer.setStyle({
-          weight: 4,
-          color: '#b5b5b5',
-          fillOpacity: 0,
-        });
-        targetLayer.bindPopup(`${stateName}: ${assetCount} assets`).openPopup();
-      },
-      mouseout: (e: any) => {
-        const targetLayer = e.target;
-        targetLayer.setStyle(mapStyle);
-        targetLayer.closePopup();
-      },
-      click: () => {
-        if (assetData[stateName]) {
-          setSelectedState(assetData[stateName]);
-        }
-      },
-    });
-  };
+  // Create a sorted list of markers, with the hovered marker placed last
+  const sortedAssetData = Object.keys(assetData).sort((a, b) => {
+    if (a === hoveredMarker) return 1;
+    if (b === hoveredMarker) return -1;
+    return 0;
+  });
 
   return (
-    <MapContainer
-      style={{
-        display: 'flex',
-        flex: 1,
-        minHeight: '100%',
-        minWidth: '100%',
-        backgroundColor: 'transparent',
-        transform: 'scale(1.3)',
-        transformOrigin: 'center',
-      }} // Full width and height
-      center={[9.082, 8.6753]}
-      zoom={6}
-      zoomControl={false}
-      scrollWheelZoom={false}
-      doubleClickZoom={false}
-      attributionControl={false}
-      dragging={false}
-    >
-      {isLoading ? (
-        <LoadingSpinner />
-      ) : (
-        geoData && (
-          <>
-            <GeoJSON
-              data={geoData}
-              style={mapStyle}
-              onEachFeature={onEachState}
-            />
-            {Object.keys(assetData).map((stateName) => {
-              if (assetData[stateName] && assetData[stateName].count > 0) {
+    <>
+      <ComposableMap
+        projection="geoMercator"
+        projectionConfig={{
+          scale: 3600,
+          center: [8.6753, 9.082], // Center on Nigeria's coordinates
+        }}
+        style={{
+          width: '100%',
+          maxWidth: '1200px',
+          height: 'max-content',
+          position: 'relative',
+        }}
+      >
+        {/* Geographies for rendering the map */}
+        {geoData && (
+          <Geographies geography={geoData}>
+            {({ geographies }) =>
+              geographies.map((geo) => {
+                const stateName = geo.properties.state;
+
                 return (
-                  <CustomMarker
-                    name={stateName}
-                    assetCount={assetData[stateName].count}
-                    cordinates={NIGERIA_CORDINATES.states}
+                  <Geography
+                    key={geo.rsmKey}
+                    geography={geo}
+                    style={{
+                      default: {
+                        fill: '#b5b5b5',
+                        stroke: 'white',
+                        strokeWidth: 2,
+                      },
+                      hover: {
+                        fill: '#b5b5b5BF',
+                        stroke: 'white',
+                        strokeWidth: 2,
+                      },
+                      pressed: { fill: '#b5b5b5BF' },
+                    }}
+                    onClick={() => {
+                      if (assetData[stateName]) {
+                        setSelectedState(assetData[stateName]);
+                      }
+                    }}
                   />
                 );
-              }
-              return null;
-            })}
-          </>
-        )
-      )}
-    </MapContainer>
+              })
+            }
+          </Geographies>
+        )}
+
+        {/* Custom markers for each state with assets */}
+        {sortedAssetData.map((stateName) => {
+          if (
+            assetData &&
+            assetData?.[stateName] &&
+            assetData?.[stateName]?.count > 0
+          ) {
+            const coordinates =
+              NIGERIA_CORDINATES.states[assetData?.[stateName].name];
+
+            // Ensure the coordinates are valid
+            let newCoordinates: [number, number] = [0, 0];
+            if (coordinates && coordinates.length === 2) {
+              newCoordinates = coordinates;
+            }
+
+            return (
+              <CustomMarker
+                key={stateName}
+                name={stateName}
+                assetCount={assetData?.[stateName]?.count}
+                coordinates={newCoordinates}
+                setHoveredMarker={setHoveredMarker}
+              />
+            );
+          }
+          return null;
+        })}
+      </ComposableMap>
+    </>
   );
 };
 

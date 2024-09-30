@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const RIVERS_COORDINATES: { [key: string]: LatLngExpression } = {
+const RIVERS_COORDINATES: { [key: string]: Point } = {
   'Abua-Odual': [5.05, 6.65],
   'Ahoada East': [5.0833, 6.65],
   'Ahoada West': [5.0833, 6.4167],

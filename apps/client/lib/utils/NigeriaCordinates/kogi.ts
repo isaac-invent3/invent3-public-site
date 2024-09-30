@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const KOGI_COORDINATES: { [key: string]: LatLngExpression } = {
+const KOGI_COORDINATES: { [key: string]: Point } = {
   Adavi: [7.437222, 6.687222],
   Ajaokuta: [7.749444, 6.663056],
   Bassa: [7.424722, 7.347222],

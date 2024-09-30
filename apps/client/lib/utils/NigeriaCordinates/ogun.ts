@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const OGUN_COORDINATES: { [key: string]: LatLngExpression } = {
+const OGUN_COORDINATES: { [key: string]: Point } = {
   'Abeokuta North': [7.115278, 3.354444],
   'Abeokuta South': [7.052778, 3.359167],
   'Ado-Odo/Ota': [6.670556, 3.594444],

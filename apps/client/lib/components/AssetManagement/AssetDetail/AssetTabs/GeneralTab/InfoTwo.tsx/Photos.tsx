@@ -60,11 +60,11 @@ const PhotoViewer = () => {
   }, [data]);
 
   return (
-    <VStack alignItems="flex-start" spacing="16px">
+    <VStack alignItems="flex-start" spacing="16px" width="full">
       <DetailHeader variant="secondary">Photos</DetailHeader>
       <Flex width="full" gap="16px" wrap="wrap">
         {isLoading ? (
-          Array(6)
+          Array(4)
             .fill('')
             .map((_, idx) => (
               <Skeleton width="60px" height="60px" rounded="8px" key={idx} />

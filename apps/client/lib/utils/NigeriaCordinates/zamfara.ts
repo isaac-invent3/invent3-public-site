@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const ZAMFARA_COORDINATES: { [key: string]: LatLngExpression } = {
+const ZAMFARA_COORDINATES: { [key: string]: Point } = {
   Anka: [12.1, 5.9333],
   Bakura: [12.7167, 5.9167],
   'Birnin Magaji/Kiyaw': [12.7833, 6.4167],

@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const IMO_COORDINATES: { [key: string]: LatLngExpression } = {
+const IMO_COORDINATES: { [key: string]: Point } = {
   'Aboh Mbaise': [5.442222, 7.178056],
   'Ahiazu Mbaise': [5.45, 7.168056],
   'Ehime Mbano': [5.522222, 7.224444],

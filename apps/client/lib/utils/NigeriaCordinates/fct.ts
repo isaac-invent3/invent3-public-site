@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const FCT_ABUJA_COORDINATES: { [key: string]: LatLngExpression } = {
+const FCT_ABUJA_COORDINATES: { [key: string]: Point } = {
   Abaji: [8.238056, 7.250833],
   Bwari: [9.062222, 7.630556],
   Gwagwalada: [8.946944, 7.191389],

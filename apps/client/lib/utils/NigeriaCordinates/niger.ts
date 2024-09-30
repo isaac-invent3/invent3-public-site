@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const NIGER_COORDINATES: { [key: string]: LatLngExpression } = {
+const NIGER_COORDINATES: { [key: string]: Point } = {
   Agaie: [9.171389, 6.410833],
   Agwara: [9.142222, 5.616944],
   Bida: [9.073056, 6.031389],

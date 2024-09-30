@@ -1,6 +1,6 @@
-import { LatLngExpression } from 'leaflet';
+import { Point } from 'react-simple-maps';
 
-const ENUGU_COORDINATES: { [key: string]: LatLngExpression } = {
+const ENUGU_COORDINATES: { [key: string]: Point } = {
   'Enugu East': [6.438056, 7.460833],
   'Enugu North': [6.442222, 7.5075],
   'Enugu South': [6.423611, 7.448056],

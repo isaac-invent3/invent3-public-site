@@ -124,6 +124,7 @@ const MapView = () => {
               : stateAssetCount?.data?.items
           )}
           type={selectedState?.id ? 'lga' : 'state'}
+          selectedState={selectedState}
         />
       </Flex>
     </Flex>

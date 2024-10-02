@@ -326,6 +326,20 @@ interface LGAAssetCount {
   stateId: number;
 }
 
+interface AssetStats {
+  activeAssets: number;
+  inActiveAssets: number;
+  assetsUnderMaintenance: number;
+  decommissionedAssets: number;
+  assetsPendingDisposal: number;
+  assetsInStorage: number;
+  operationalAssets: number;
+  assetsScheduledForMaintenance: number;
+  assetsOutOfService: number;
+  assetsNotInUse: number;
+  totalAssets: number;
+}
+
 export type {
   AssetLocation,
   Asset,
@@ -341,4 +355,5 @@ export type {
   AssetFormDocument,
   StateAssetCount,
   LGAAssetCount,
+  AssetStats,
 };

@@ -31,8 +31,10 @@ const AssetCountList = (props: AssetCountListProps) => {
               ))
           : Object.entries(data).map(([label, option], index) => (
               <HStack width="full" key={index} justifyContent="space-between">
-                <Text color="neutral.600">{label}</Text>
-                <Text color="black" fontWeight={800}>
+                <Text color="neutral.600" size="md">
+                  {label}
+                </Text>
+                <Text color="black" fontWeight={800} size="md">
                   {option.count.toLocaleString()}
                 </Text>
               </HStack>

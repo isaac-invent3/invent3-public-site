@@ -66,7 +66,7 @@ const StateMap = ({ assetData, setSelectedState }: StateMapProps) => {
         }}
         style={{
           width: '100%',
-          maxWidth: '1200px',
+          // maxWidth: '1200px',
           height: 'max-content',
           position: 'relative',
         }}

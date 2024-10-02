@@ -40,4 +40,15 @@ const FILE_ICONS = {
   invalid: AiOutlineQuestion,
 };
 
-export { OPERATORS, FORM_ENUM, FILE_ICONS };
+const timeRangeOptions = [
+  {
+    label: 'This Week',
+    value: 2,
+  },
+  {
+    label: 'This Month',
+    value: 1,
+  },
+];
+
+export { OPERATORS, FORM_ENUM, FILE_ICONS, timeRangeOptions };

@@ -101,10 +101,11 @@ function DataTable<Data extends object>({
   };
 
   return (
-    <Flex direction="column" width="full">
+    <Flex direction="column" width="full" overflow="auto">
       <TableContainer
-        overflow="auto"
+        overflowY="auto"
         bgColor="white"
+        height="full"
         rounded="4px"
         sx={{
           '::-webkit-scrollbar': {
@@ -185,7 +186,7 @@ function DataTable<Data extends object>({
               </Tr>
             ))}
           </Thead>
-          <Tbody bgColor="white" opacity={!isLoading && isFetching ? 0.5 : 1}>
+          <Tbody opacity={!isLoading && isFetching ? 0.5 : 1} overflow="auto">
             {isLoading
               ? table.getHeaderGroups().map((headerGroup) =>
                   Array(emptyLines)

@@ -32,10 +32,26 @@ export const assetStatsApi = createApi({
       }),
       providesTags: ['allLGAAssetCount'],
     }),
+    getCumulativeAssetStatusCountByCountryId: builder.query({
+      query: (id) => ({
+        url: `/Locations/GetCumulativeAssetStatusCountsByCountryId/${id}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getCumulativeAssetStatusCountByStateId: builder.query({
+      query: (id) => ({
+        url: `/Locations/GetCumulativeAssetStatusCountsByStateId/${id}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
   }),
 });
 
 export const {
   useGetLGAAssetCountByStateIdQuery,
   useGetStateAssetCountByCountryIdQuery,
+  useGetCumulativeAssetStatusCountByCountryIdQuery,
+  useGetCumulativeAssetStatusCountByStateIdQuery,
 } = assetStatsApi;

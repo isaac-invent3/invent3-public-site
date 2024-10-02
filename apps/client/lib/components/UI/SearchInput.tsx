@@ -8,6 +8,9 @@ interface ISearchInput {
   placeholderText?: string;
   width?: string;
   customStyle?: { [key: string]: unknown };
+  containerStyle?: { [key: string]: unknown };
+  leftElementStyle?: { [key: string]: unknown };
+  iconSize?: string;
 }
 
 const SearchInput = (props: ISearchInput) => {
@@ -17,6 +20,9 @@ const SearchInput = (props: ISearchInput) => {
     placeholderText = 'Search',
     width = '246px',
     customStyle,
+    containerStyle,
+    iconSize,
+    leftElementStyle,
   } = props;
 
   // Use useMemo to create a memoized version of the debounced function
@@ -32,9 +38,19 @@ const SearchInput = (props: ISearchInput) => {
   };
 
   return (
-    <InputGroup alignItems="center" height="36px" width={width}>
-      <InputLeftElement pb="6px">
-        <Icon as={SearchIcon} boxSize="24px" color="neutral.800" />
+    <InputGroup
+      alignItems="center"
+      height="36px"
+      width={width}
+      {...containerStyle}
+      display="flex"
+    >
+      <InputLeftElement pb="6px" {...leftElementStyle}>
+        <Icon
+          as={SearchIcon}
+          boxSize={iconSize ?? '24px'}
+          color="neutral.800"
+        />
       </InputLeftElement>
 
       <Input

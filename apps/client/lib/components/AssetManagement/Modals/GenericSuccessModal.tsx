@@ -11,6 +11,7 @@ interface GenericSuccessModalProps {
 }
 const GenericSuccessModal = (props: GenericSuccessModalProps) => {
   const { isOpen, onClose, successText, children, headingText } = props;
+
   return (
     <GenericModal
       isOpen={isOpen}

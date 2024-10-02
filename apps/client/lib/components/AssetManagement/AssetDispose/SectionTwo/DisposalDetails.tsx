@@ -36,7 +36,7 @@ const DisposalDetails = () => {
         />
         <Field
           as={TextareaInput}
-          name="reason"
+          name="additionalInformation"
           type="text"
           label="Additional Information"
           customStyle={{ height: '177px' }}

@@ -104,6 +104,9 @@ importers:
       '@types/lodash':
         specifier: ^4.17.7
         version: 4.17.7
+      async-mutex:
+        specifier: ^0.5.0
+        version: 0.5.0
       chart.js:
         specifier: ^4.4.4
         version: 4.4.4
@@ -3298,6 +3301,9 @@ packages:
 
   async-limiter@1.0.1:
     resolution: {integrity: sha512-csOlWGAcRFJaI6m+F2WKdnMKr4HhdhFVBk0H/QbJFMCr+uO2kwohwXQPxw/9OCxp05r5ghVBFSyioixx3gfkNQ==}
+
+  async-mutex@0.5.0:
+    resolution: {integrity: sha512-1A94B18jkJ3DYq284ohPxoXbfTA5HsQ7/Mf4DEhcyLx3Bz27Rh59iScbB6EPiP+B+joue6YCxcMXSbFC1tZKwA==}
 
   async@2.6.4:
     resolution: {integrity: sha512-mzo5dfJYwAn29PeiJ0zvwTo04zj8HDJj0Mn8TD7sno7q12prdbnasKJHhkm2c1LgrhlJ0teaea8860oxi51mGA==}
@@ -14352,6 +14358,10 @@ snapshots:
   async-each@1.0.6: {}
 
   async-limiter@1.0.1: {}
+
+  async-mutex@0.5.0:
+    dependencies:
+      tslib: 2.7.0
 
   async@2.6.4:
     dependencies:

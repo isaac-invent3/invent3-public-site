@@ -1,12 +1,13 @@
 import { Flex, HStack, Icon, Skeleton, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { AssetIcon } from '~/lib/components/CustomIcons';
+import { AssetStats } from '~/lib/interfaces/asset.interfaces';
 
 interface SummaryCardProps {
   iconColor: string;
   label: string;
   bgColor: string;
-  value: string;
+  value: number;
   isLoading: boolean;
 }
 
@@ -39,7 +40,7 @@ const SummaryCard = (props: SummaryCardProps) => {
       </HStack>
       <Skeleton isLoaded={!isLoading}>
         <Text color="primary.500" size="lg" fontWeight={700}>
-          {value}
+          {value && value.toLocaleString()}
         </Text>
       </Skeleton>
     </HStack>
@@ -48,21 +49,22 @@ const SummaryCard = (props: SummaryCardProps) => {
 
 interface SummaryCardStatsProps {
   isLoading: boolean;
+  data: AssetStats;
 }
 const SummaryCardStats = (props: SummaryCardStatsProps) => {
-  const { isLoading } = props;
+  const { isLoading, data } = props;
   const assetSummaryStats = [
     {
       iconColor: '#07CC3B',
       label: 'Assets in Use',
       bgColor: '#07CC3B0D',
-      value: '92,890',
+      value: data?.activeAssets,
     },
     {
       iconColor: '#EABC30',
       label: 'Assets not in Use',
       bgColor: '#EABC300D',
-      value: '16,280',
+      value: data?.assetsNotInUse,
     },
   ];
 

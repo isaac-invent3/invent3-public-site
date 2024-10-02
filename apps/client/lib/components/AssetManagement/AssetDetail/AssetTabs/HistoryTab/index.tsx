@@ -1,23 +1,13 @@
-import { Flex, Text, VStack } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 import { createColumnHelper } from '@tanstack/react-table';
 import React, { useMemo, useState } from 'react';
-import { MaintenanceColorCode } from '~/lib/utils/ColorCodes';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
 import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 import { useGetMaintenanceHistoryByAssetIdQuery } from '~/lib/redux/services/asset/general.services';
 import { useAppSelector } from '~/lib/redux/hooks';
 import DataTable from '~/lib/components/UI/Table';
-
-const Status = (status: string) => {
-  return (
-    <Text
-      color={MaintenanceColorCode[status as 'Completed']}
-      textTransform="capitalize"
-    >
-      {status}
-    </Text>
-  );
-};
+import Technician from '../../../Common/Technician';
+import Status from '../../../Common/MaintenanceStatus';
 
 const Description = (description: string) => {
   return (
@@ -31,29 +21,6 @@ const Description = (description: string) => {
     >
       {description}
     </Text>
-  );
-};
-const Technician = (info: MaintenancePlan) => {
-  return (
-    <VStack alignItems="flex-start" spacing="4px">
-      <Text color="black">{info.contactPerson}</Text>
-      <Text
-        color="neutral.600"
-        fontSize="10px"
-        lineHeight="11.88px"
-        fontWeight={400}
-      >
-        {info.contactPersonPhoneNo}
-      </Text>
-      <Text
-        color="neutral.600"
-        fontSize="10px"
-        lineHeight="11.88px"
-        fontWeight={400}
-      >
-        {info.contactPersonEmail}
-      </Text>
-    </VStack>
   );
 };
 

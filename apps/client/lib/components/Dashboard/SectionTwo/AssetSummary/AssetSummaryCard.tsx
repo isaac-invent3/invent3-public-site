@@ -4,21 +4,24 @@ import {
   HStack,
   Icon,
   IconProps,
+  Skeleton,
   Text,
   VStack,
 } from '@chakra-ui/react';
 import React from 'react';
 import CardHeader from '../../Common/CardHeader';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 interface AssetSummaryCardProps {
   title: string;
   icon: ComponentWithAs<'svg', IconProps>;
-  value: number;
+  value: number | undefined;
   children: React.ReactNode;
 }
 
 const AssetSummaryCard = (props: AssetSummaryCardProps) => {
   const { title, icon, value, children } = props;
+  const { isLoading } = useAppSelector((state) => state.dashboard.info);
   return (
     <VStack
       width="full"
@@ -36,15 +39,17 @@ const AssetSummaryCard = (props: AssetSummaryCardProps) => {
         <CardHeader>{title}</CardHeader>
         <Icon as={icon} boxSize="24px" />
       </HStack>
-      <Text
-        mt="8px"
-        fontSize="24px"
-        lineHeight="28.51px"
-        fontWeight={800}
-        color="primary.500"
-      >
-        {value.toLocaleString()}
-      </Text>
+      <Skeleton isLoaded={!isLoading} minW="50px">
+        <Text
+          mt="8px"
+          fontSize="24px"
+          lineHeight="28.51px"
+          fontWeight={800}
+          color="primary.500"
+        >
+          {value !== undefined ? value.toLocaleString() : '-'}
+        </Text>
+      </Skeleton>
       <Flex mt="16px">{children}</Flex>
     </VStack>
   );

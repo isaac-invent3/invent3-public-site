@@ -4,7 +4,7 @@ import MeanTime from './MeanTime';
 import MaintenanceCostGraph from './MaintenanceCostGraph';
 import AssetSummary from './AssetSummary';
 
-const ContentTwo = () => {
+const SectionTwo = () => {
   return (
     <Flex width="full" gap="16px">
       <Flex width="24%">
@@ -20,4 +20,4 @@ const ContentTwo = () => {
   );
 };
 
-export default ContentTwo;
+export default SectionTwo;

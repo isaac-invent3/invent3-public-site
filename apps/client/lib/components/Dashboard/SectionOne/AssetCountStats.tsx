@@ -1,19 +1,24 @@
-import { HStack, StackDivider, Text } from '@chakra-ui/react';
+import { HStack, Skeleton, StackDivider, Text } from '@chakra-ui/react';
 import React from 'react';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 interface StatsProps {
-  value: number;
+  value: number | undefined;
   text1: string;
   text2: string;
   color: string;
 }
 const Stats = (props: StatsProps) => {
   const { value, text1, text2, color } = props;
+  const { isLoading } = useAppSelector((state) => state.dashboard.info);
+
   return (
     <HStack color={color} spacing="8px">
-      <Text fontWeight={800} fontSize="48px" lineHeight="57.02px">
-        {value.toLocaleString()}
-      </Text>
+      <Skeleton isLoaded={!isLoading} minW={isLoading ? '40px' : 'min-content'}>
+        <Text fontWeight={800} fontSize="48px" lineHeight="57.02px">
+          {value !== undefined ? value.toLocaleString() : '-'}
+        </Text>
+      </Skeleton>
       <Text size="lg" fontWeight={700}>
         {text1}
         <br />
@@ -24,21 +29,22 @@ const Stats = (props: StatsProps) => {
 };
 
 const AssetCountStats = () => {
+  const { stats } = useAppSelector((state) => state.dashboard.info);
   const data = [
     {
-      value: 15,
+      value: stats?.newAssets,
       text1: 'New',
       text2: 'Assets',
       color: '#009F2A',
     },
     {
-      value: 25,
+      value: stats?.assetsScheduledForMaintenance,
       text1: 'Scheduled',
       text2: 'Maintenance',
       color: '#D67D00',
     },
     {
-      value: 12,
+      value: stats?.disposedAssets,
       text1: 'Total',
       text2: 'Disposed',
       color: '#F50000',

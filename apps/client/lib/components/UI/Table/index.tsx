@@ -105,7 +105,6 @@ function DataTable<Data extends object>({
       <TableContainer
         overflowY="auto"
         bgColor="white"
-        height="full"
         rounded="4px"
         sx={{
           '::-webkit-scrollbar': {

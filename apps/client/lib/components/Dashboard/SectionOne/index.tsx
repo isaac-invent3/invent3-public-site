@@ -3,7 +3,7 @@ import React from 'react';
 import QuickLinks from './QuickLinks';
 import AssetCountStats from './AssetCountStats';
 
-const ContentOne = () => {
+const SectionOne = () => {
   return (
     <SimpleGrid width="full" columns={2} gap="16px">
       <QuickLinks />
@@ -12,4 +12,4 @@ const ContentOne = () => {
   );
 };
 
-export default ContentOne;
+export default SectionOne;

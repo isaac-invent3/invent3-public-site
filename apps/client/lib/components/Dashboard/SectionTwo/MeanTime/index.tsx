@@ -9,7 +9,7 @@ import RadarChart from './RadarChart';
 
 const MeanTime = () => {
   const [selectedTimeRange, setSelectedTimeRange] = useState<Option | null>(
-    null
+    timeRangeOptions[0] as Option
   );
   return (
     <VStack
@@ -28,10 +28,10 @@ const MeanTime = () => {
           label="Timeline"
           handleClick={(option) => setSelectedTimeRange(option)}
           selectedOptions={selectedTimeRange}
-          width="100px"
+          width="110px"
         />
       </HStack>
-      <HStack width="full" height="full" spacing="37px">
+      <HStack width="full" height="full" spacing="24px" alignItems="flex-start">
         <Flex width="51%">
           <RadarChart />
         </Flex>

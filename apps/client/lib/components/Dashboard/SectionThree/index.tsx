@@ -3,7 +3,7 @@ import React from 'react';
 import AssetsInRegion from './AssetsInRegion';
 import UpcomingMaintenance from './UpcomingMaintenance';
 
-const ContentThree = () => {
+const SectionThree = () => {
   return (
     <Flex width="full" gap="16px">
       <Flex width="48%">
@@ -16,4 +16,4 @@ const ContentThree = () => {
   );
 };
 
-export default ContentThree;
+export default SectionThree;

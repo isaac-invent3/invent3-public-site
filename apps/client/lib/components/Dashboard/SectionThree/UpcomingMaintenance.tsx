@@ -7,10 +7,11 @@ import { Option } from '~/lib/interfaces/general.interfaces';
 import DataTable from '../../UI/Table';
 import { createColumnHelper } from '@tanstack/react-table';
 import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
-import { useGetMaintenanceHistoryByAssetIdQuery } from '~/lib/redux/services/asset/general.services';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import Technician from '../../AssetManagement/Common/Technician';
 import Status from '../../AssetManagement/Common/MaintenanceStatus';
+import { useGetUpcomingMaintenanceQuery } from '~/lib/redux/services/dashboard.services';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 const ContentDisplay = (
   content: string | React.ReactNode,
@@ -33,15 +34,20 @@ const ContentDisplay = (
 };
 
 const UpcomingMaintenance = () => {
+  const { selectedCountry, selectedState } = useAppSelector(
+    (state) => state.dashboard.info
+  );
   const [selectedTimeRange, setSelectedTimeRange] = useState<Option | null>(
-    null
+    timeRangeOptions[0] as Option
   );
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(25);
-  const { data, isLoading } = useGetMaintenanceHistoryByAssetIdQuery({
-    id: 7,
+  const { data, isLoading } = useGetUpcomingMaintenanceQuery({
+    id: selectedCountry?.value,
+    ...(selectedState?.value ? { regionId: selectedState?.value } : {}),
     pageSize,
     pageNumber: currentPage,
+    datePeriod: selectedTimeRange?.value,
   });
   const columnHelper = createColumnHelper<MaintenancePlan>();
   const columns = useMemo(
@@ -112,7 +118,7 @@ const UpcomingMaintenance = () => {
           label="Timeline"
           handleClick={(option) => setSelectedTimeRange(option)}
           selectedOptions={selectedTimeRange}
-          width="100px"
+          width="110px"
         />
       </HStack>
       <Flex width="full" height="full" overflow="auto" maxH="280px">

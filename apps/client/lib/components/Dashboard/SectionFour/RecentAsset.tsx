@@ -1,34 +1,38 @@
 import { Flex, HStack, VStack } from '@chakra-ui/react';
 import React, { useCallback, useEffect, useState } from 'react';
 import CardHeader from '../Common/CardHeader';
-import {
-  useGetallAssetQuery,
-  useSearchAssetsMutation,
-} from '~/lib/redux/services/asset/general.services';
+import { useSearchAssetsMutation } from '~/lib/redux/services/asset/general.services';
 import { OPERATORS, timeRangeOptions } from '~/lib/utils/constants';
 import { Option, SearchResponse } from '~/lib/interfaces/general.interfaces';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import DropDown from '../Common/DropDown';
 import SearchInput from '../../UI/SearchInput';
 import AssetTable from '../../AssetManagement/Common/AssetTable';
+import { useGetRecentAssetsQuery } from '~/lib/redux/services/dashboard.services';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 const RecentAsset = () => {
+  const { selectedCountry, selectedState } = useAppSelector(
+    (state) => state.dashboard.info
+  );
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(25);
   const [selectedTimeRange, setSelectedTimeRange] = useState<Option | null>(
-    null
+    timeRangeOptions[0] as Option
   );
   const { handleSubmit } = useCustomMutation();
   const [searchAsset, { isLoading: searchLoading }] = useSearchAssetsMutation(
     {}
   );
   const [searchData, setSearchData] = useState<SearchResponse | null>(null);
-
-  const { data, isLoading, isFetching } = useGetallAssetQuery(
+  const { data, isLoading, isFetching } = useGetRecentAssetsQuery(
     {
+      id: selectedCountry?.value,
+      ...(selectedState?.value ? { regionId: selectedState?.value } : {}),
+      pageSize,
       pageNumber: currentPage,
-      pageSize: pageSize,
+      datePeriod: selectedTimeRange?.value,
     },
     { skip: search !== '' }
   );
@@ -101,7 +105,7 @@ const RecentAsset = () => {
             label="Timeline"
             handleClick={(option) => setSelectedTimeRange(option)}
             selectedOptions={selectedTimeRange}
-            width="100px"
+            width="110px"
           />
         </HStack>
       </HStack>

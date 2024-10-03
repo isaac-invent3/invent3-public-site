@@ -7,13 +7,20 @@ import {
   InUseIcon,
   UptrendIcon,
 } from '~/lib/components/CustomIcons';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 const AssetSummary = () => {
+  const { stats } = useAppSelector((state) => state.dashboard.info);
+
   const valueChange = -5;
 
   return (
     <VStack width="full" spacing="14px">
-      <AssetSummaryCard title="Total Assets" value={108098} icon={AssetBoxIcon}>
+      <AssetSummaryCard
+        title="Total Assets"
+        value={stats?.totalAssets}
+        icon={AssetBoxIcon}
+      >
         <HStack spacing="4px">
           <HStack
             py="4px"
@@ -40,7 +47,7 @@ const AssetSummary = () => {
       </AssetSummaryCard>
       <AssetSummaryCard
         title="Total Assets in Use"
-        value={89098}
+        value={stats?.activeAssets}
         icon={InUseIcon}
       >
         <HStack spacing="4px">

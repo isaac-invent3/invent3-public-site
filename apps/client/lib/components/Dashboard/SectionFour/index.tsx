@@ -3,7 +3,7 @@ import React from 'react';
 import RecentAsset from './RecentAsset';
 import CTA from './CTA';
 
-const ContentFour = () => {
+const SectionFour = () => {
   return (
     <Flex width="full" gap="16px">
       <Flex width="71%">
@@ -16,4 +16,4 @@ const ContentFour = () => {
   );
 };
 
-export default ContentFour;
+export default SectionFour;

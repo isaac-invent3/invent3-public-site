@@ -11,7 +11,7 @@ const AssetsInRegion = () => {
   const { selectedCountry, selectedState } = useAppSelector(
     (state) => state.dashboard.info
   );
-  const { data, isLoading } = useGetAssetsInRegionQuery({
+  const { isLoading } = useGetAssetsInRegionQuery({
     id: selectedCountry?.value,
     ...(selectedState?.value ? { regionId: selectedState?.value } : {}),
     pageSize: 45,

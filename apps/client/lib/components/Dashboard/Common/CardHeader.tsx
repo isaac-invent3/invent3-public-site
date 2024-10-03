@@ -3,11 +3,12 @@ import React from 'react';
 
 interface CardHeaderProps {
   children: React.ReactNode;
+  color?: string;
 }
-const CardHeader = ({ children }: CardHeaderProps) => {
+const CardHeader = ({ children, color }: CardHeaderProps) => {
   return (
     <Heading
-      color="Neutral.800"
+      color={color ?? 'Neutral.800'}
       fontSize="16px"
       lineHeight="19.01px"
       fontWeight={700}

@@ -5,9 +5,12 @@ import {
   AssetBoxIcon,
   DowntrendIcon,
   InUseIcon,
+  UptrendIcon,
 } from '~/lib/components/CustomIcons';
 
 const AssetSummary = () => {
+  const valueChange = -5;
+
   return (
     <VStack width="full" spacing="14px">
       <AssetSummaryCard title="Total Assets" value={108098} icon={AssetBoxIcon}>
@@ -17,10 +20,18 @@ const AssetSummary = () => {
             px="8px"
             spacing="8px"
             rounded="full"
-            bgColor="#BA00001A"
+            bgColor={valueChange < 0 ? '#BA00001A' : '#00A1291A'}
           >
-            <Icon as={DowntrendIcon} boxSize="18px" />
-            <Text color="#BA0000">-10%</Text>
+            <Icon
+              as={valueChange < 0 ? DowntrendIcon : UptrendIcon}
+              boxSize="18px"
+              color={valueChange < 0 ? '#BA0000' : '#00A129'}
+            />
+            <Text color={valueChange < 0 ? '#BA0000' : '#00A129'}>
+              {valueChange < 0 && '-'}
+              {valueChange > 0 && '+'}
+              {valueChange < 0 ? valueChange * -1 : valueChange}%
+            </Text>
           </HStack>
           <Text color="neutral.600" fontWeight={700}>
             vs Last Year

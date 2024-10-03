@@ -39,7 +39,7 @@ const QuickLinks = () => {
       >
         Quick Links:
       </Heading>
-      <HStack>
+      <HStack flexWrap="wrap">
         {LinkData.map((item, index) => (
           <Button
             key={index}

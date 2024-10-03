@@ -6,7 +6,7 @@ const CTA = () => {
   return (
     <Flex
       width="full"
-      height="357px"
+      height="full"
       rounded="8px"
       border="1px solid white"
       background="linear-gradient(138.78deg, #1578DC 11.13%, #5AACFF 90.96%)"

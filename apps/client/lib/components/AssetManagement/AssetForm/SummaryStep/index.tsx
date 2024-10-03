@@ -88,7 +88,7 @@ const SummaryStep = (props: SummaryStepProps) => {
     depreciationMethod: assetFormDetails.depreciationMethod,
     depreciationRate: assetFormDetails.depreciationRate,
     initialValue: assetFormDetails.initialValue,
-    accumulatedDepreciation: assetFormDetails.accumulatedDepreciation,
+    accumulatedDepreciation: 0,
     currentValue: assetFormDetails.currentValue,
     [`${type === 'create' ? 'createdBy' : 'lastModifiedBy'}`]: username,
   };
@@ -104,10 +104,10 @@ const SummaryStep = (props: SummaryStepProps) => {
     lengthCm: assetFormDetails.lengthCm,
     widthCm: assetFormDetails.widthCm,
     heightCm: assetFormDetails.heightCm,
-    purchaseDate: moment(
-      assetFormDetails.purchaseDate,
-      'DD/MM/YYYY'
-    ).toISOString(),
+    // purchaseDate: moment(
+    //   assetFormDetails.purchaseDate,
+    //   'DD/MM/YYYY'
+    // ).toISOString(),
     lifeExpectancy: assetFormDetails.lifeExpectancy,
     assetTypeId: assetFormDetails.assetTypeId,
     statusId: assetFormDetails.statusId,
@@ -123,7 +123,7 @@ const SummaryStep = (props: SummaryStepProps) => {
     initialValue: assetFormDetails.initialValue,
     resalevalue: assetFormDetails.resaleValue,
     scrapvalue: assetFormDetails.scrapValue,
-    parentId: assetData.assetId ?? null,
+    parentId: assetData.assetId ?? assetFormDetails.parentId,
     subCategoryId: assetFormDetails.subCategoryId,
     [`${type === 'create' ? 'createdBy' : 'lastModifiedBy'}`]: username,
   };
@@ -236,22 +236,28 @@ const SummaryStep = (props: SummaryStepProps) => {
           loadingText={createLoading ? 'Submitting...' : 'Updating...'}
         />
       </Flex>
-      <AddAssetSuccessModal
-        isOpen={isOpenAddModal}
-        onClose={onCloseAddModal}
-        handleAction={handleModalAction}
-      />
-      <ChildAssetSuccessModal
-        isOpen={isOpenChildModal}
-        onClose={onCloseChildModal}
-        handleAction={handleModalAction}
-      />
-      <AssetSuccessModal
-        isOpen={isOpenEditModal}
-        onClose={onCloseEditModal}
-        successText="Asset edited successfully"
-        buttonWidth="full"
-      />
+      {isOpenAddModal && (
+        <AddAssetSuccessModal
+          isOpen={isOpenAddModal}
+          onClose={onCloseAddModal}
+          handleAction={handleModalAction}
+        />
+      )}
+      {isOpenChildModal && (
+        <ChildAssetSuccessModal
+          isOpen={isOpenChildModal}
+          onClose={onCloseChildModal}
+          handleAction={handleModalAction}
+        />
+      )}
+      {isOpenEditModal && (
+        <AssetSuccessModal
+          isOpen={isOpenEditModal}
+          onClose={onCloseEditModal}
+          successText="Asset edited successfully"
+          buttonWidth="full"
+        />
+      )}
     </>
   );
 };

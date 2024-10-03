@@ -31,7 +31,7 @@ const RadarChart = () => {
         borderColor: '#6CF892',
         borderWidth: 2,
         pointBackgroundColor: '#6CF892',
-        pointBorderColor: '#fff',
+        pointBorderColor: '#BBBBBB',
         pointBorderWidth: 1,
         pointRadius: 3,
         fill: true,
@@ -46,11 +46,11 @@ const RadarChart = () => {
       r: {
         angleLines: {
           display: true,
-          color: '#fff',
+          color: '#BBBBBB',
         },
         grid: {
           circular: true,
-          color: '#fff',
+          color: '#BBBBBB',
         },
         ticks: {
           display: false,
@@ -59,7 +59,7 @@ const RadarChart = () => {
         suggestedMin: 0,
         suggestedMax: 40,
         pointLabels: {
-          color: '#fff',
+          color: '#BBBBBB',
           font: {
             size: 12,
           },

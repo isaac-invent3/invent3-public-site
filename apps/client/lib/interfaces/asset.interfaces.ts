@@ -144,6 +144,7 @@ interface AssetFormDocument {
 
 interface AssetFormDetails {
   images: AssetFormImage[];
+  parentId: number | null;
   assetId: number | null;
   assetName: string | null;
   brandName: string | null;
@@ -228,6 +229,9 @@ interface LocationOption {
 }
 
 interface FormLocation {
+  country: LocationOption;
+  state: LocationOption;
+  lga: LocationOption;
   facility: LocationOption;
   building: LocationOption;
   floor: LocationOption;

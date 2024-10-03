@@ -81,13 +81,15 @@ const AssetDispose = (props: AssetDisposeProps) => {
           </Flex>
         </form>
       </FormikProvider>
-      <AssetSuccessModal
-        isOpen={isOpen}
-        onClose={onClose}
-        buttonWidth="193px"
-        headingText="Dispose Request Submitted"
-        successText="Your request to dispose has been submitted and would be reviewed by the appropriate user"
-      />
+      {isOpen && (
+        <AssetSuccessModal
+          isOpen={isOpen}
+          onClose={onClose}
+          buttonWidth="193px"
+          headingText="Dispose Request Submitted"
+          successText="Your request to dispose has been submitted and would be reviewed by the appropriate user"
+        />
+      )}
     </Flex>
   );
 };

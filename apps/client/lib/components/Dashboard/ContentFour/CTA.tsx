@@ -23,6 +23,8 @@ const CTA = () => {
         justifyContent="space-between"
         alignItems="flex-start"
         pb="59px"
+        position="relative"
+        zIndex={99}
       >
         <Text
           fontWeight={700}

@@ -89,9 +89,10 @@ const RecentAsset = () => {
             containerStyle={{ maxHeight: '28px' }}
             leftElementStyle={{ pb: '12px' }}
             customStyle={{
+              minHeight: '28px',
               maxHeight: '28px',
               bgColor: 'neutral.200',
-              rounded: 'full',
+              rounded: '5px',
               border: 'none',
             }}
           />

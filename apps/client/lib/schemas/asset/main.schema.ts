@@ -4,8 +4,6 @@ import { locationSchema } from './location.schema';
 const generalInfoSchema = locationSchema.shape({
   assetName: Yup.string().required('Name is required'),
   description: Yup.string().required('Description is Required'),
-  statusId: Yup.string().required('Status is Required'),
-  assetTypeId: Yup.string().required('Type is Required'),
   images: Yup.array()
     .of(
       Yup.object().shape({
@@ -33,15 +31,15 @@ const generalInfoSchema = locationSchema.shape({
   currentOwner: Yup.number().required('Owner is Required'),
   assignedTo: Yup.number().required('This is Required'),
   responsibleFor: Yup.number().required('This is Required'),
-  lgaId: Yup.number().required('LGA is Required'),
-  stateId: Yup.number().required('State is Required'),
-  countryId: Yup.number().required('Country is Required'),
+  parentId: Yup.number().nullable(),
 });
 
 const acquisitionInfoSchema = Yup.object().shape({
   acquisitionDate: Yup.string().required('Acquisition Date is required'),
   purchaseDate: Yup.string(),
   conditionId: Yup.string().required('Asset Condition is required'),
+  statusId: Yup.string().required('Status is Required'),
+  assetTypeId: Yup.string().required('Type is Required'),
   initialValue: Yup.number()
     .required('Purchase Price is required')
     .min(1, 'Price must be greater than 1'),

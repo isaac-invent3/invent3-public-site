@@ -80,7 +80,7 @@ const RelationshipTab = () => {
         <GenerateAssetTable asset={data?.data?.asset} />
       </ComponentBox>
       {hasChildren && (
-        <VStack spacing={0} pl="56px">
+        <VStack spacing={0} pl={hasParent ? '56px' : '0px'}>
           {data?.data?.childComponents.map((item: Asset, index: number) => (
             <ComponentBox
               isPrimary={false}

@@ -39,7 +39,7 @@ const Y2DTab = () => {
           width="100px"
         />
       </HStack>
-      <Info value={90000} valueChange={20} title="YTD" />
+      <Info value={90000} valueChange={20} />
       <LineChart labels={labels} actual={actual} projected={projected} />
     </VStack>
   );

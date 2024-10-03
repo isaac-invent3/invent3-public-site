@@ -1,12 +1,10 @@
 import {
-  Flex,
   Grid,
   GridItem,
   HStack,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import SectionInfo from '../../SectionInfo';
 import AddButton from '../../AddButton';
 import CategorySelect from './CategorySelect';
 import CategoryModal from './Modals/CategoryModal';
@@ -30,55 +28,42 @@ const AssetCategory = () => {
   } = useDisclosure();
 
   return (
-    <>
-      <HStack width="full" alignItems="flex-start" spacing="104px">
-        <Flex width="full" maxW="118px">
-          <SectionInfo
-            title="Category"
-            info="Choose the category and the sub-category"
-            isRequired
-          />
-        </Flex>
-        <Grid templateColumns="repeat(4, 1fr)" gap="11px" width="full">
-          <GridItem colSpan={3}>
-            <HStack spacing="11px" alignItems="flex-start">
-              <VStack alignItems="flex-end" width="full">
-                <CategorySelect
-                  handleSelect={(option) => {
-                    setSelectedCategory(option.value as number);
-                    dispatch(
-                      updateAssetForm({
-                        categoryName: option.label,
-                      })
-                    );
-                  }}
-                />
-                <AddButton handleClick={onOpen}>Add New Category</AddButton>
-              </VStack>
-              <VStack alignItems="flex-end" width="full">
-                <SubCategorySelect
-                  categoryId={selectedCategory}
-                  handleSelect={(option) => {
-                    dispatch(
-                      updateAssetForm({ subCategoryName: option.label })
-                    );
-                  }}
-                />
-                <AddButton handleClick={onOpenSubCategory}>
-                  Add New Subcategory
-                </AddButton>
-              </VStack>
-            </HStack>
-          </GridItem>
-        </Grid>
-      </HStack>
+    <Grid templateColumns="repeat(4, 1fr)" gap="11px" width="full">
+      <GridItem colSpan={4}>
+        <HStack spacing="11px" alignItems="flex-start">
+          <VStack alignItems="flex-end" width="full">
+            <CategorySelect
+              handleSelect={(option) => {
+                setSelectedCategory(option.value as number);
+                dispatch(
+                  updateAssetForm({
+                    categoryName: option.label,
+                  })
+                );
+              }}
+            />
+            <AddButton handleClick={onOpen}>Add New Category</AddButton>
+          </VStack>
+          <VStack alignItems="flex-end" width="full">
+            <SubCategorySelect
+              categoryId={selectedCategory}
+              handleSelect={(option) => {
+                dispatch(updateAssetForm({ subCategoryName: option.label }));
+              }}
+            />
+            <AddButton handleClick={onOpenSubCategory}>
+              Add New Subcategory
+            </AddButton>
+          </VStack>
+        </HStack>
+      </GridItem>
       <CategoryModal isOpen={isOpen} onClose={onClose} />
       <SubCategoryModal
         isOpen={isOpenSubCategory}
         onClose={onCloseSubCategory}
         defaultCategory={selectedCategory}
       />
-    </>
+    </Grid>
   );
 };
 

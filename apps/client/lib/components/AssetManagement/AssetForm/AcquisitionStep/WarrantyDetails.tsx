@@ -1,4 +1,4 @@
-import { Flex, HStack, SimpleGrid } from '@chakra-ui/react';
+import { Flex, Grid, GridItem, HStack } from '@chakra-ui/react';
 import React from 'react';
 import SectionInfo from '../SectionInfo';
 import { Field } from 'formik';
@@ -15,16 +15,38 @@ const WarrantyDetails = () => {
           isRequired
         />
       </Flex>
-      <SimpleGrid gap="16px" width="full" columns={3}>
-        <CustomDatePicker name="warrantyStartDate" label="Start Date" />
-        <CustomDatePicker name="warrantyEndDate" label="End Date" />
-        <Field
-          as={TextInput}
-          name="warrantyDetails"
-          type="text"
-          label="Warranty Terms"
-        />
-      </SimpleGrid>
+      <Grid templateColumns="repeat(3, 1fr)" gap="16px" width="full">
+        <GridItem colSpan={3}>
+          <HStack gap="16px" width="full" alignItems="flex-start">
+            <CustomDatePicker name="warrantyStartDate" label="Start Date" />
+            <CustomDatePicker name="warrantyEndDate" label="End Date" />
+
+            <HStack width="full" alignItems="flex-start" spacing="0px">
+              <Flex width="full" maxW="130px">
+                <SectionInfo
+                  title="Life Expectancy"
+                  info="Add name that users can likely search with"
+                  isRequired
+                />
+              </Flex>
+              <Field
+                as={TextInput}
+                name="lifeExpectancy"
+                type="number"
+                label="Life Expectancy"
+              />
+            </HStack>
+          </HStack>
+        </GridItem>
+        <GridItem colSpan={1}>
+          <Field
+            as={TextInput}
+            name="warrantyDetails"
+            type="text"
+            label="Warranty Terms"
+          />
+        </GridItem>
+      </Grid>
     </HStack>
   );
 };

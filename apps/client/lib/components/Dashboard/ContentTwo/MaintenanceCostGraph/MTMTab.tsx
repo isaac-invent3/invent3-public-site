@@ -24,7 +24,7 @@ const MTMTab = () => {
           width="100px"
         />
       </HStack>
-      <Info value={35650} valueChange={20} title="MTM" />
+      <Info value={35650} valueChange={20} />
       <LineChart labels={labels} actual={actual} projected={projected} />
     </VStack>
   );

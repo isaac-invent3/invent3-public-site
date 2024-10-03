@@ -45,7 +45,7 @@ const LGASelect = (props: LGASelectProps) => {
   return (
     <GenericAsyncSelect
       selectName="lgaId"
-      selectTitle="Local Government Area"
+      selectTitle="LGA"
       data={isFetching ? [] : data}
       labelKey="lgaName"
       valueKey="lgaId"

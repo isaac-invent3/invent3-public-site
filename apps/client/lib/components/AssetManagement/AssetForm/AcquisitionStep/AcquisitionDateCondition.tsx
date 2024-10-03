@@ -9,6 +9,7 @@ import {
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/assetSlice';
+import AssetStatusSelect from './AssetStatus';
 
 const AcquisitionDateConditon = () => {
   const [pageNumber, setPageNumber] = useState(1);
@@ -31,11 +32,11 @@ const AcquisitionDateConditon = () => {
         <GridItem colSpan={1}>
           <CustomDatePicker name="acquisitionDate" label="Acquisition Date" />
         </GridItem>
-        <GridItem colSpan={2}>
-          <HStack width="full" alignItems="flex-start" spacing="39px">
-            <Flex width="full" maxW="151px">
+        <GridItem colSpan={1}>
+          <HStack width="full" alignItems="flex-start" spacing="0px">
+            <Flex width="full" maxW="130px">
               <SectionInfo
-                title="Acquisition Condition"
+                title="Asset Condition"
                 info="Add name that users can likely search with"
                 isRequired
               />
@@ -54,6 +55,18 @@ const AcquisitionDateConditon = () => {
                 dispatch(updateAssetForm({ conditionName: option.label }))
               }
             />
+          </HStack>
+        </GridItem>
+        <GridItem colSpan={1}>
+          <HStack width="full" alignItems="flex-start" spacing="0px">
+            <Flex width="full" maxW="130px">
+              <SectionInfo
+                title="Asset Status"
+                info="Add name that users can likely search with"
+                isRequired
+              />
+            </Flex>
+            <AssetStatusSelect />
           </HStack>
         </GridItem>
       </Grid>

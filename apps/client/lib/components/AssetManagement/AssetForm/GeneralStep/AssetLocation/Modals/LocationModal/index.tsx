@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { HStack, VStack } from '@chakra-ui/react';
+import { Flex, HStack, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 import React, { useState } from 'react';
 import GenericModal from '~/lib/components/UI/Modal';
@@ -21,6 +21,9 @@ import Shelf from './Shelf';
 import { resetDependentFields, resetFormikFields } from './utility';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/assetSlice';
+import LGASelect from '../../LGASelect';
+import StateSelect from '../../StateSelect';
+import CountrySelect from '../../CountrySelect';
 
 interface LocationModalProps {
   isOpen: boolean;
@@ -35,7 +38,26 @@ const LocationModal = (props: LocationModalProps) => {
   const { isOpen, onClose, setFieldValue } = props;
   const assetFormDetails = useAppSelector((state) => state.asset.assetForm);
   const dispatch = useAppDispatch();
+  const { countryId, stateId } = useAppSelector(
+    (state) => state.asset.assetForm
+  );
+  const [selectedCountry, setSelectedCountry] = useState<number | null>(
+    countryId
+  );
+  const [selectedState, setSelectedState] = useState<number | null>(stateId);
   const [localLocation, setLocalLocation] = useState<FormLocation>({
+    country: {
+      label: assetFormDetails.countryName,
+      value: assetFormDetails.countryId,
+    },
+    state: {
+      label: assetFormDetails.facilityName,
+      value: assetFormDetails.facilityId,
+    },
+    lga: {
+      label: assetFormDetails.facilityName,
+      value: assetFormDetails.facilityId,
+    },
     facility: {
       label: assetFormDetails.facilityName,
       value: assetFormDetails.facilityId,
@@ -68,6 +90,9 @@ const LocationModal = (props: LocationModalProps) => {
 
   const formik = useFormik({
     initialValues: {
+      countryId: assetFormDetails.countryId,
+      stateId: assetFormDetails.stateId,
+      lgaId: assetFormDetails.lgaId,
       facilityId: assetFormDetails.facilityId,
       buildingId: assetFormDetails.buildingId,
       floorId: assetFormDetails.facilityId,
@@ -83,6 +108,9 @@ const LocationModal = (props: LocationModalProps) => {
       });
       dispatch(
         updateAssetForm({
+          countryName: localLocation.country.label,
+          stateName: localLocation.state.label,
+          lgaName: localLocation.lga.label,
           facilityName: localLocation.facility.label,
           buildingName: localLocation.building.label,
           floorName: localLocation.floor.label,
@@ -116,7 +144,7 @@ const LocationModal = (props: LocationModalProps) => {
     <GenericModal
       isOpen={isOpen}
       onClose={onClose}
-      contentStyle={{ width: { sm: '450px' } }}
+      contentStyle={{ width: { md: '605px' } }}
     >
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
@@ -128,43 +156,76 @@ const LocationModal = (props: LocationModalProps) => {
 
             {/* Main Form Starts Here */}
             <VStack width="full" spacing="16px">
-              <Facility handleReadableLocation={handleReadableLocation} />
-              <Building
-                handleReadableLocation={handleReadableLocation}
-                facilityId={localLocation.facility.value}
-              />
-              <Floor
-                handleReadableLocation={handleReadableLocation}
-                buildingId={localLocation.building.value}
-              />
-              <Department
-                handleReadableLocation={handleReadableLocation}
-                floorId={localLocation.floor.value}
-              />
-              <Room
-                handleReadableLocation={handleReadableLocation}
-                departmentId={localLocation.department.value}
-              />
-              <Aisle
-                handleReadableLocation={handleReadableLocation}
-                roomId={localLocation.room.value}
-              />
-              <Shelf
-                handleReadableLocation={handleReadableLocation}
-                aisleId={localLocation.aisle.value}
-              />
+              <HStack width="full" alignItems="flex-start" spacing="8px">
+                <CountrySelect
+                  handleSelect={(option) => {
+                    setSelectedCountry(option.value as number);
+                    handleReadableLocation(option, 'country');
+                  }}
+                />
+                <StateSelect
+                  countryId={selectedCountry}
+                  handleSelect={(option) => {
+                    setSelectedState(option.value as number);
+                    handleReadableLocation(option, 'state');
+                  }}
+                />
+                <LGASelect
+                  stateId={selectedState}
+                  handleSelect={(option) =>
+                    handleReadableLocation(option, 'lga')
+                  }
+                />
+              </HStack>
+              <HStack width="full" spacing="16px">
+                <Facility handleReadableLocation={handleReadableLocation} />
+                <Building
+                  handleReadableLocation={handleReadableLocation}
+                  facilityId={localLocation.facility.value}
+                />
+              </HStack>
+              <HStack width="full" spacing="16px">
+                <Floor
+                  handleReadableLocation={handleReadableLocation}
+                  buildingId={localLocation.building.value}
+                />
+                <Department
+                  handleReadableLocation={handleReadableLocation}
+                  floorId={localLocation.floor.value}
+                />
+              </HStack>
+              <HStack width="full" spacing="16px">
+                <Room
+                  handleReadableLocation={handleReadableLocation}
+                  departmentId={localLocation.department.value}
+                />
+                <Aisle
+                  handleReadableLocation={handleReadableLocation}
+                  roomId={localLocation.room.value}
+                />
+              </HStack>
+              <HStack width="full" spacing="16px">
+                <Flex width="50%">
+                  <Shelf
+                    handleReadableLocation={handleReadableLocation}
+                    aisleId={localLocation.aisle.value}
+                  />
+                </Flex>
+              </HStack>
             </VStack>
             {/* Main Form Ends Here */}
-            <HStack width="full" spacing="24px">
-              <Button
-                variant="secondary"
-                customStyles={{ width: '96px' }}
-                handleClick={onClose}
-              >
-                Cancel
-              </Button>
-              <Button type="submit">Add Location</Button>
-            </HStack>
+            <Flex width="full" justifyContent="flex-end">
+              <HStack width="370px" spacing="24px">
+                <Button
+                  variant="secondary"
+                  customStyles={{ width: '96px' }}
+                  handleClick={onClose}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit">Add Location</Button>
+              </HStack>
+            </Flex>
           </VStack>
         </form>
       </FormikProvider>

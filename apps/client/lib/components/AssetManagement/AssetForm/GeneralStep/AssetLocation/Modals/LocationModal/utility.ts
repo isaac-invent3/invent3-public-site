@@ -7,6 +7,9 @@ const intialState = {
 
 const resetFormikFields = (
   key:
+    | 'countryId'
+    | 'stateId'
+    | 'lgaId'
     | 'facilityId'
     | 'buildingId'
     | 'floorId'

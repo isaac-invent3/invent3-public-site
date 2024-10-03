@@ -23,6 +23,8 @@ const AcquisitionStep = (props: AcquisitionStepProps) => {
   const initialValues = {
     acquisitionDate: formDetails.acquisitionDate ?? '',
     conditionId: formDetails.conditionId ?? null,
+    statusId: formDetails.statusId ?? null,
+    assetTypeId: formDetails.assetTypeId ?? null,
     initialValue: formDetails.initialValue ?? undefined,
     purchaseDate: formDetails.purchaseDate ?? '',
     warrantyStartDate: formDetails.warrantyStartDate ?? '',
@@ -70,12 +72,7 @@ const AcquisitionStep = (props: AcquisitionStepProps) => {
             rounded="6px"
             minH="60vh"
           >
-            <VStack
-              width="full"
-              alignItems="flex-start"
-              maxW="92%"
-              spacing="24px"
-            >
+            <VStack width="full" alignItems="flex-start" spacing="36px">
               <AcquisitionDateConditon />
               <Purchase />
               <WarrantyDetails />

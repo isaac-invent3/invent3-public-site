@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import GenericModal from '../../UI/Modal';
 import { Heading, Image, Text, VStack } from '@chakra-ui/react';
 
@@ -11,22 +11,60 @@ interface GenericSuccessModalProps {
 }
 const GenericSuccessModal = (props: GenericSuccessModalProps) => {
   const { isOpen, onClose, successText, children, headingText } = props;
+  const checkVideoRef = useRef<HTMLVideoElement>(null);
+  const [showRibbon, setShowRibbon] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      setShowRibbon(true);
+
+      if (checkVideoRef.current) {
+        checkVideoRef.current.play();
+      }
+
+      // Hide the ribbon after 5 seconds
+      const timer = setTimeout(() => {
+        setShowRibbon(false);
+      }, 5000);
+
+      return () => {
+        clearTimeout(timer);
+        setShowRibbon(false);
+      };
+    } else {
+      setShowRibbon(false); // Ensure the ribbon is hidden when the modal closes
+    }
+  }, [isOpen]);
 
   return (
     <GenericModal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={() => {
+        onClose();
+        setShowRibbon(false);
+      }}
       contentStyle={{ width: { lg: '526px' } }}
     >
       <VStack spacing="48px" width="full" pb={{ lg: '40px' }} px="74px">
-        <Image
-          src="/success-ribbon.gif"
-          width="290px"
-          minH="full"
-          position="absolute"
-        />
+        {showRibbon && (
+          <Image
+            src="/success-ribbon.gif"
+            width="290px"
+            minH="full"
+            position="absolute"
+          />
+        )}
         <VStack width="full" spacing="24px" pt={{ lg: '48px' }}>
-          <Image src="/success-check.gif" width="60px" height="60px" />
+          <VStack width="60px" align="center" position="relative">
+            <video
+              ref={checkVideoRef}
+              style={{ display: 'block' }}
+              src="/success-check.webm"
+              playsInline
+              muted
+              autoPlay
+            />
+          </VStack>
           <VStack spacing="8px" width="full">
             <Heading
               fontSize="32px"

@@ -9,6 +9,7 @@ import {
 } from '~/lib/redux/services/asset/vendor.services';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/assetSlice';
+import AssetTypeSelect from './AssetType';
 
 const VendorDetails = () => {
   const dispatch = useAppDispatch();
@@ -100,6 +101,18 @@ const VendorDetails = () => {
               </Text>
             )}
           </VStack>
+        </GridItem>
+        <GridItem colSpan={1}>
+          <HStack width="full" alignItems="flex-start" spacing="0px">
+            <Flex width="full" maxW="130px">
+              <SectionInfo
+                title="Asset Type"
+                info="Add name that users can likely search with"
+                isRequired
+              />
+            </Flex>
+            <AssetTypeSelect />
+          </HStack>
         </GridItem>
       </Grid>
     </HStack>

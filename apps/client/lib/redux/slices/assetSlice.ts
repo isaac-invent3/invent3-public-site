@@ -96,6 +96,7 @@ const initialValue = {
 const initialAssetForm = {
   images: [],
   assetId: null,
+  parentId: null,
   assetName: null,
   description: null,
   brandName: null,

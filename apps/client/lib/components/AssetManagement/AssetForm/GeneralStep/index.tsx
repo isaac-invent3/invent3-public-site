@@ -9,9 +9,9 @@ import AssetOwner from './AssetOwner';
 import AssetNameCodeDescription from './AssetNameCodeDescription';
 import FormActionButtons from '../FormActionButtons';
 import AssetLocation from './AssetLocation';
-import AssetCategory from './AssetCategory';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/assetSlice';
+import ParentAsset from './ParentAsset';
 
 interface GeneralStepProps {
   activeStep: number;
@@ -28,12 +28,11 @@ const GeneralStep = (props: GeneralStepProps) => {
       assetName: formDetails.assetName ?? '',
       description: formDetails.description ?? '',
       brandName: formDetails.brandName ?? '',
+      parentId: formDetails.parentId ?? null,
       modelRef: formDetails.modelRef ?? '',
       serialNo: formDetails.serialNo ?? '',
       categoryId: formDetails.categoryId ?? null,
       subCategoryId: formDetails.subCategoryId ?? null,
-      statusId: formDetails.statusId ?? null,
-      assetTypeId: formDetails.assetTypeId ?? null,
       weightKg: formDetails.weightKg ?? null,
       widthCm: formDetails.widthCm ?? null,
       heightCm: formDetails.heightCm ?? null,
@@ -69,7 +68,7 @@ const GeneralStep = (props: GeneralStepProps) => {
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
           <VStack
-            spacing="32px"
+            spacing="43px"
             width="full"
             alignItems="flex-start"
             bgColor="white"
@@ -82,8 +81,8 @@ const GeneralStep = (props: GeneralStepProps) => {
           >
             <AssetImages />
             <AssetNameCodeDescription />
-            <AssetCategory />
             <AssetDetail />
+            <ParentAsset />
             <AssetDimension />
             <AssetLocation setFieldValue={formik.setFieldValue} />
             <AssetOwner />

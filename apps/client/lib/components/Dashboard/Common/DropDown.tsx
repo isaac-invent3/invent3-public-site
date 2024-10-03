@@ -39,10 +39,10 @@ const DropDown = (props: DropDownProps) => {
         cursor="pointer"
         bgColor="neutral.200"
         width={width}
-        minH="28px"
+        height="28px"
         py="7px"
         px="8px"
-        rounded="full"
+        rounded="5px"
         alignItems="center"
         justifyContent="space-between"
       >
@@ -59,7 +59,7 @@ const DropDown = (props: DropDownProps) => {
           direction="column"
           bgColor="neutral.200"
           py="8px"
-          rounded="6px"
+          rounded="5px"
           mt="2px"
           position="absolute"
           zIndex={99}

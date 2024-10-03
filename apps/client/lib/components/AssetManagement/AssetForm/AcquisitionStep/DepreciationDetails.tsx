@@ -16,7 +16,7 @@ const DepreciationDetails = () => {
         />
       </Flex>
       <Grid templateColumns="repeat(3, 1fr)" gap="16px" width="full">
-        <GridItem colSpan={2} width="full">
+        <GridItem colSpan={3} width="full">
           <HStack width="full" alignItems="flex-start" spacing="16px">
             <CustomDatePicker name="depreciationStartDate" label="Start Date" />
 
@@ -27,23 +27,11 @@ const DepreciationDetails = () => {
               label="Depreciation Method"
               customStyles
             />
-          </HStack>
-        </GridItem>
-        <GridItem colSpan={2} width="full">
-          <HStack width="full" alignItems="flex-start" spacing="16px">
             <Field
               as={TextInput}
               name="depreciationRate"
               type="number"
               label="Depreciation Rate"
-              customStyles
-            />
-
-            <Field
-              as={TextInput}
-              name="accumulatedDepreciation"
-              type="number"
-              label="Accumulated Depreciation"
               customStyles
             />
           </HStack>

@@ -1,6 +1,9 @@
 import * as Yup from 'yup';
 
 const locationSchema = Yup.object().shape({
+  countryId: Yup.number().required('Country is Required'),
+  stateId: Yup.number().required('State is Required'),
+  lgaId: Yup.number().required('LGA is Required'),
   facilityId: Yup.string().required('Facility is Required'),
   buildingId: Yup.string().nullable(),
   floorId: Yup.string().nullable(),

@@ -108,6 +108,7 @@ export default function Page({ params }: { params: { id: string } }) {
     dispatch(
       updateAssetForm({
         assetId: asset.assetId,
+        parentId: asset.parentId,
         assetName: asset.assetName,
         lengthCm: asset.lengthCm,
         widthCm: asset.widthCm,

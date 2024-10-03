@@ -42,8 +42,8 @@ const SearchInput = (props: ISearchInput) => {
       alignItems="center"
       height="36px"
       width={width}
-      {...containerStyle}
       display="flex"
+      {...containerStyle}
     >
       <InputLeftElement pb="6px" {...leftElementStyle}>
         <Icon

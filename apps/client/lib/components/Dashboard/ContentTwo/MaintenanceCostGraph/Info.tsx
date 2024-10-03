@@ -4,11 +4,10 @@ import { DowntrendIcon, UptrendIcon } from '~/lib/components/CustomIcons';
 
 interface InfoProps {
   value: number;
-  title: string;
   valueChange: number;
 }
 const Info = (props: InfoProps) => {
-  const { value, title, valueChange } = props;
+  const { value, valueChange } = props;
   return (
     <HStack width="full" justifyContent="space-between" alignItems="flex-start">
       <HStack spacing="8px">
@@ -38,9 +37,6 @@ const Info = (props: InfoProps) => {
             {valueChange}%
           </Text>
         </HStack>
-        <Text size="md" color="neutral.300" fontWeight={700}>
-          {title}
-        </Text>
       </HStack>
       <VStack alignItems="flex-start" spacing="4px" mt="10px">
         <HStack spacing="16px">

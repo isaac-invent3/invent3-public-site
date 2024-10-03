@@ -14,12 +14,8 @@ import LocationModal from './Modals/LocationModal';
 import { AssetFormDetails } from '~/lib/interfaces/asset.interfaces';
 import ErrorMessage from '~/lib/components/UI/ErrorMessage';
 import { useField } from 'formik';
-import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import CountrySelect from './CountrySelect';
-import StateSelect from './StateSelect';
-import LGASelect from './LGASelect';
-import { useEffect, useState } from 'react';
-import { updateAssetForm } from '~/lib/redux/slices/assetSlice';
+import { useAppSelector } from '~/lib/redux/hooks';
+import { useEffect } from 'react';
 
 interface AssetLocationProps {
   setFieldValue: (
@@ -29,15 +25,10 @@ interface AssetLocationProps {
   ) => void;
 }
 const AssetLocation = (props: AssetLocationProps) => {
-  const dispatch = useAppDispatch();
-  const { countryId, stateId } = useAppSelector(
-    (state) => state.asset.assetForm
-  );
-  const [selectedCountry, setSelectedCountry] = useState<number | null>(
-    countryId
-  );
-  const [selectedState, setSelectedState] = useState<number | null>(stateId);
   const {
+    countryName,
+    stateName,
+    lgaName,
     facilityName,
     buildingName,
     floorName,
@@ -70,68 +61,35 @@ const AssetLocation = (props: AssetLocationProps) => {
         />
       </Flex>
       <Grid templateColumns="repeat(4, 1fr)" gap="16px" width="full">
-        <GridItem colSpan={4} width="full">
-          <HStack width="full" alignItems="flex-start" spacing="16px">
-            <CountrySelect
-              handleSelect={(option) => {
-                setSelectedCountry(option.value as number);
-                dispatch(
-                  updateAssetForm({
-                    countryName: option.label,
-                  })
-                );
-              }}
-            />
-            <StateSelect
-              countryId={selectedCountry}
-              handleSelect={(option) => {
-                setSelectedState(option.value as number);
-                dispatch(
-                  updateAssetForm({
-                    stateName: option.label,
-                  })
-                );
-              }}
-            />
-            <LGASelect
-              stateId={selectedState}
-              handleSelect={(option) => {
-                dispatch(
-                  updateAssetForm({
-                    lgaName: option.label,
-                  })
-                );
-              }}
-            />
-          </HStack>
-        </GridItem>
-
         <GridItem colSpan={4}>
-          <Grid templateColumns="repeat(3, 1fr)" width="full" gap="16px">
-            <GridItem colSpan={2}>
-              <Text
-                py="14px"
-                px="16px"
-                bgColor="neutral.100"
-                rounded="8px"
-                textAlign={facilityName ? 'left' : 'center'}
-                color={facilityName ? 'black' : 'neutral.300'}
-              >
-                {facilityName
-                  ? [
-                      facilityName,
-                      buildingName,
-                      floorName,
-                      departmentName,
-                      roomName,
-                      aisleName,
-                      shelfName,
-                    ]
-                      .filter(Boolean)
-                      .join(', ')
-                  : 'No Location added yet'}
-              </Text>
-            </GridItem>
+          <Grid templateColumns="repeat(4, 1fr)" width="full" gap="16px">
+            {facilityName && (
+              <GridItem colSpan={2}>
+                <Text
+                  py="14px"
+                  px="16px"
+                  bgColor="neutral.100"
+                  rounded="8px"
+                  textAlign={facilityName ? 'left' : 'center'}
+                  color={facilityName ? 'black' : 'neutral.300'}
+                >
+                  {[
+                    countryName,
+                    stateName,
+                    lgaName,
+                    facilityName,
+                    buildingName,
+                    floorName,
+                    departmentName,
+                    roomName,
+                    aisleName,
+                    shelfName,
+                  ]
+                    .filter(Boolean)
+                    .join(', ')}
+                </Text>
+              </GridItem>
+            )}
 
             <GridItem colSpan={1}>
               <VStack

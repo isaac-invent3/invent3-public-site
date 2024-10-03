@@ -81,12 +81,14 @@ const AssetTransfer = (props: AssetTransferProps) => {
           </Flex>
         </form>
       </FormikProvider>
-      <AssetSuccessModal
-        isOpen={isOpen}
-        onClose={onClose}
-        buttonWidth="193px"
-        successText="Asset Transfer Successful"
-      />
+      {isOpen && (
+        <AssetSuccessModal
+          isOpen={isOpen}
+          onClose={onClose}
+          buttonWidth="193px"
+          successText="Asset Transfer Successful"
+        />
+      )}
     </Flex>
   );
 };

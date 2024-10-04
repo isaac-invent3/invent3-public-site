@@ -26,7 +26,7 @@ const sideBarData = [
   },
   {
     name: 'Maintenance Schedule',
-    route: 'maintenance-schedule',
+    route: 'maintenance',
     icon: MaintenanceIcon,
   },
   {

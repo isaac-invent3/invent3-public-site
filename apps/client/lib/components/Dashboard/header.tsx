@@ -81,16 +81,14 @@ const Header = () => {
             width="150px"
           />
           <DropDown
-            options={
-              [
-                { label: 'All', value: null },
-                ...generateOptions(
-                  allStates?.data?.items,
-                  'stateName',
-                  'stateId'
-                ),
-              ] ?? []
-            }
+            options={[
+              { label: 'All', value: null },
+              ...generateOptions(
+                allStates?.data?.items,
+                'stateName',
+                'stateId'
+              ),
+            ]}
             isLoading={isLoadingStates}
             label="Region"
             handleClick={(option) =>

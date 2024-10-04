@@ -11,6 +11,19 @@ import { ChevronLeftIcon } from '@chakra-ui/icons';
 import LoadingSpinner from './Map/LoadingSpinner';
 
 interface AssetCountOption {
+  // activeAssets: number;
+  // inActiveAssets: number;
+  // newAssets: number;
+  // assetsUnderMaintenance: number;
+  // decommissionedAssets: number;
+  // assetsPendingDisposal: number;
+  // disposedAssets: number;
+  // assetsInStorage: number;
+  // operationalAssets: number;
+  // assetsScheduledForMaintenance: number;
+  // assetsOutOfService: number;
+  // assetsNotInUse: number;
+  // totalAssets: number;
   assetCount: number;
   stateName?: string;
   lgaName?: string;
@@ -52,9 +65,9 @@ const MapView = () => {
     : 'Under Management';
 
   return (
-    <Flex width="full" height="full" gap="40px" justifyContent="space-between">
+    <Flex width="full" height="full" gap="20px" justifyContent="space-between">
       <Flex
-        width="70%"
+        width="80%"
         height="90vh"
         position="relative"
         direction="column"

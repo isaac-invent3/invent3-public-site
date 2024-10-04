@@ -68,7 +68,11 @@ const AssetsInRegion = () => {
       bgColor="white"
       rounded="8px"
     >
-      <CardHeader>Assets in Region</CardHeader>
+      <CardHeader>
+        {isProperState
+          ? `Assets in ${selectedState?.label}`
+          : 'All Assets In Nigeria'}
+      </CardHeader>
       <Skeleton isLoaded={!isLoading && !isFetching} width="full">
         <Box width="full" height="275px" bgColor="red">
           {transformedCenter ? (

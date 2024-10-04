@@ -39,6 +39,7 @@ export const dashboardApi = createApi({
         method: 'GET',
         headers: getHeaders(),
       }),
+      keepUnusedDataFor: 0,
     }),
     getDashboardStats: builder.query({
       query: ({ id, ...data }) => ({

@@ -64,7 +64,7 @@ const UpcomingMaintenance = () => {
         header: 'Date',
         enableSorting: false,
       }),
-      columnHelper.accessor('maintenanceType', {
+      columnHelper.accessor('assetId', {
         cell: () => ContentDisplay('Brand New Bike', 'black', '100px'),
         header: 'Asset',
         enableSorting: false,

@@ -155,6 +155,9 @@ importers:
       next-auth:
         specifier: 5.0.0-beta.18
         version: 5.0.0-beta.18(next@14.1.1(@babel/core@7.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+      pigeon-maps:
+        specifier: ^0.21.6
+        version: 0.21.6(react@18.3.1)
       postcss-preset-env:
         specifier: ^10.0.5
         version: 10.0.5(postcss@8.4.31)
@@ -7585,6 +7588,11 @@ packages:
   pify@4.0.1:
     resolution: {integrity: sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==}
     engines: {node: '>=6'}
+
+  pigeon-maps@0.21.6:
+    resolution: {integrity: sha512-6io58lhpbtVT/DUKDoOqsjeAFW46Nfe+gr4PX/kmD1dyJxfb8WaT4hcgwcmM8dJdkyfibgLHo59Uo2o2/xscaQ==}
+    peerDependencies:
+      react: '*'
 
   pinkie-promise@2.0.1:
     resolution: {integrity: sha512-0Gni6D4UcLTbv9c57DfxDGdr41XfgUjqWZu492f0cIGr16zDU06BWP/RAEvOuo7CQ0CNjHaLlM59YJJFm3NWlw==}
@@ -19834,6 +19842,10 @@ snapshots:
   pify@3.0.0: {}
 
   pify@4.0.1: {}
+
+  pigeon-maps@0.21.6(react@18.3.1):
+    dependencies:
+      react: 18.3.1
 
   pinkie-promise@2.0.1:
     dependencies:

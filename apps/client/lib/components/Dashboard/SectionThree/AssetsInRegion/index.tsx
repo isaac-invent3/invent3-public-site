@@ -1,21 +1,61 @@
 import { Box, Skeleton, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
-import { Map, Marker } from 'pigeon-maps';
+import React, { useEffect, useState } from 'react';
+import { Map, Marker, Point } from 'pigeon-maps';
 import { useGetAssetsInRegionQuery } from '~/lib/redux/services/dashboard.services';
 import { useAppSelector } from '~/lib/redux/hooks';
 import CardHeader from '../../Common/CardHeader';
 import CountMarker from './CountMarker';
+import NIGERIA_CORDINATES from '~/lib/utils/NigeriaCordinates';
+
+interface RegionData {
+  rowId: number;
+  assetCount: number;
+  lgaId: number | null;
+  lgaName: string | null;
+  stateId: number | null;
+  countryId: number;
+  stateName: string | null;
+}
 
 const AssetsInRegion = () => {
-  const position = [8.6753, 9.082];
+  const [hoveredName, setHoveredName] = useState<string | null>(null);
+  const [sortedAssetData, setSortedAssetData] = useState<RegionData[]>([]);
   const { selectedCountry, selectedState } = useAppSelector(
     (state) => state.dashboard.info
   );
-  const { isLoading } = useGetAssetsInRegionQuery({
+  const { data, isLoading, isFetching } = useGetAssetsInRegionQuery({
     id: selectedCountry?.value,
-    ...(selectedState?.value ? { regionId: selectedState?.value } : {}),
+    ...(selectedState?.value && selectedState?.value !== '-1'
+      ? { regionId: selectedState?.value }
+      : {}),
     pageSize: 45,
   });
+  const isProperState = selectedState?.label && selectedState?.label !== 'All';
+
+  const defaultCenter: Point = isProperState
+    ? (NIGERIA_CORDINATES.states?.[selectedState?.label] ?? [9.082, 8.6753])
+    : [9.082, 8.6753];
+
+  const transformedCenter: Point = selectedState?.label
+    ? [defaultCenter[1], defaultCenter[0]]
+    : defaultCenter;
+
+  useEffect(() => {
+    if (data?.data?.items) {
+      const sortedData = [...data.data.items].sort(
+        (a: RegionData, b: RegionData) => {
+          const nameA = isProperState ? a.lgaName : a.stateName;
+          const nameB = isProperState ? b.lgaName : b.stateName;
+
+          if (nameA === hoveredName) return 1;
+          if (nameB === hoveredName) return -1;
+          return 0;
+        }
+      );
+      setSortedAssetData(sortedData);
+    }
+  }, [data, hoveredName]);
+
   return (
     <VStack
       width="full"
@@ -29,23 +69,48 @@ const AssetsInRegion = () => {
       rounded="8px"
     >
       <CardHeader>Assets in Region</CardHeader>
-      <Skeleton isLoaded={!isLoading} width="full">
+      <Skeleton isLoaded={!isLoading && !isFetching} width="full">
         <Box width="full" height="275px" bgColor="red">
-          {position ? (
+          {transformedCenter ? (
             <Map
               height={275}
-              defaultCenter={[8.6753, 9.082]}
-              defaultZoom={7}
+              defaultCenter={transformedCenter}
+              defaultZoom={isProperState ? 9 : 6}
               attribution={false}
             >
-              <Marker
-                width={50}
-                anchor={[8.6753, 9.082]}
-                onMouseOver={() => console.log('heelo')}
-                hover={true}
-              >
-                <CountMarker name="Lagos" value={50} externalHover={false} />
-              </Marker>
+              {sortedAssetData.map((item: RegionData, index: number) => {
+                const anchor = isProperState
+                  ? NIGERIA_CORDINATES?.[selectedState?.label as 'Abia']?.[
+                      item.lgaName as 'Abia North'
+                    ]
+                  : NIGERIA_CORDINATES?.states?.[item.stateName as 'Abia'];
+
+                const name = isProperState ? item.lgaName : item.stateName;
+                const assetCount = item.assetCount;
+
+                if (assetCount > 0 && name) {
+                  return (
+                    <Marker
+                      key={index}
+                      anchor={anchor}
+                      style={{ pointerEvents: 'auto' }}
+                      hover={true}
+                      payload={{ name }}
+                      onMouseOver={(event) =>
+                        setHoveredName(event.payload.name)
+                      }
+                      onMouseOut={() => setHoveredName(null)}
+                    >
+                      <CountMarker
+                        name={name}
+                        value={assetCount}
+                        externalHover={hoveredName === name}
+                      />
+                    </Marker>
+                  );
+                }
+                return null;
+              })}
             </Map>
           ) : (
             <Box

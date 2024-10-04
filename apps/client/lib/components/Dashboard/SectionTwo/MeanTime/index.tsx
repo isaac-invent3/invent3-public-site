@@ -32,7 +32,7 @@ const MeanTime = () => {
         />
       </HStack>
       <HStack width="full" height="full" spacing="24px" alignItems="flex-start">
-        <Flex width="51%">
+        <Flex width="51%" flexGrow={1} alignItems="flex-start">
           <RadarChart />
         </Flex>
         <Flex

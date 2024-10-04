@@ -14,8 +14,9 @@ async function refreshAccessToken(token) {
   const release = await refreshTokenMutex.acquire();
 
   try {
-    // Check if the token has already been refreshed
+    // Check again if the token has been refreshed after acquiring the lock
     if (refreshedTokens.has(token.accessToken)) {
+      console.log('Token was already refreshed while waiting.');
       return refreshedTokens.get(token.accessToken);
     }
 
@@ -159,10 +160,17 @@ export const config = {
       ) {
         return token;
       }
-      // If the mutex is locked, wait for the refresh to complete
+
+      // Handle mutex logic to avoid race conditions
       if (refreshTokenMutex.isLocked()) {
+        console.log('Waiting for the refresh process to complete...');
         await refreshTokenMutex.waitForUnlock();
-        return token; // Assuming the refreshed token is available after the wait
+
+        // Recheck the refreshedTokens map after waiting
+        if (refreshedTokens.has(token.accessToken)) {
+          console.log('Using the refreshed token after wait.');
+          return refreshedTokens.get(token.accessToken);
+        }
       }
 
       // Otherwise, refresh the token

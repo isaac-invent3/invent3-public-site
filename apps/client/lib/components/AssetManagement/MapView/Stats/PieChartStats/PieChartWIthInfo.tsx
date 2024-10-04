@@ -48,7 +48,7 @@ const PieChartWithInfo = (props: PieChartWithInfoProps) => {
       </Box>
       <VStack alignItems="flex-start" spacing="2px">
         <Text fontWeight={700} size="lg">
-          {mainValue.toLocaleString()}
+          {mainValue?.toLocaleString()}
         </Text>
         <Text color="neutral.600">{label}</Text>
       </VStack>

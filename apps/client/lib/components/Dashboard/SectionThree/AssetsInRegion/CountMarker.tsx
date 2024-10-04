@@ -2,7 +2,7 @@ import { Box, Flex, HStack, Text } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 
 interface CountMarkerProps {
-  name: string;
+  name: string | null;
   value: number;
   externalHover: boolean;
 }
@@ -20,9 +20,14 @@ const CountMarker = (props: CountMarkerProps) => {
   }, [externalHover]);
 
   return (
-    <Flex direction="column" position="relative">
+    <Flex direction="column" position="absolute" width="full">
       {isHovered && (
-        <Flex direction="column" width="full" position="absolute" top={-8}>
+        <Flex
+          direction="column"
+          minW="min-content"
+          position="absolute"
+          top={-8}
+        >
           <HStack
             spacing="4px"
             bgColor="white"
@@ -30,14 +35,13 @@ const CountMarker = (props: CountMarkerProps) => {
             px="8px"
             rounded="8px"
             height="full"
-            width="min-content"
+            width="full"
           >
             <Text
               color="neutral.600"
               fontWeight={500}
-              overflow="hidden"
-              textOverflow="ellipsis"
-              noOfLines={1}
+              whiteSpace="nowrap"
+              width="full"
             >
               {name}
             </Text>
@@ -63,7 +67,11 @@ const CountMarker = (props: CountMarkerProps) => {
         rounded="full"
         bgColor="#00A129"
         cursor="pointer"
-        width="max-content"
+        minW="32px"
+        minH="32px"
+        shrink={0}
+        justifyContent="center"
+        alignItems="center"
       >
         <Text color="white" fontWeight={800} size="md">
           {value}

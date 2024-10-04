@@ -82,8 +82,14 @@ const Header = () => {
           />
           <DropDown
             options={
-              generateOptions(allStates?.data?.items, 'stateName', 'stateId') ??
-              []
+              [
+                { label: 'All', value: null },
+                ...generateOptions(
+                  allStates?.data?.items,
+                  'stateName',
+                  'stateId'
+                ),
+              ] ?? []
             }
             isLoading={isLoadingStates}
             label="Region"

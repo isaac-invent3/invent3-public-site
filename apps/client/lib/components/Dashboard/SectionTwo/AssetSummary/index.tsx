@@ -1,4 +1,4 @@
-import { HStack, Icon, Text, VStack } from '@chakra-ui/react';
+import { HStack, Icon, Skeleton, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import AssetSummaryCard from './AssetSummaryCard';
 import {
@@ -10,7 +10,7 @@ import {
 import { useAppSelector } from '~/lib/redux/hooks';
 
 const AssetSummary = () => {
-  const { stats } = useAppSelector((state) => state.dashboard.info);
+  const { stats, isLoading } = useAppSelector((state) => state.dashboard.info);
 
   const valueChange = -5;
 
@@ -51,16 +51,17 @@ const AssetSummary = () => {
         icon={InUseIcon}
       >
         <HStack spacing="4px">
-          <Text
-            color="#0366EF"
-            py="4px"
-            px="12px"
-            rounded="full"
-            bgColor="#0366EF1A"
-          >
-            12,000
-          </Text>
-
+          <Skeleton isLoaded={!isLoading}>
+            <Text
+              color="#0366EF"
+              py="4px"
+              px="12px"
+              rounded="full"
+              bgColor="#0366EF1A"
+            >
+              {stats?.assetsNotInUse.toLocaleString()}
+            </Text>
+          </Skeleton>
           <Text color="neutral.600" fontWeight={700}>
             vs Assets{' '}
             <Text as="span" color="black" fontWeight={800}>

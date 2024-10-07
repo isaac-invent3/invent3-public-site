@@ -344,6 +344,32 @@ interface AssetStats {
   totalAssets: number;
 }
 
+interface MapStats {
+  stateId?: number;
+  stateName?: string;
+  lgaId?: number;
+  lgaName?: string;
+}
+
+interface AssetMapStats extends AssetStats, MapStats {}
+
+interface InfoProps {
+  iconColor: string;
+  bgColor: string;
+  textColor: string;
+  label: string;
+  value: number | undefined;
+  shorten?: boolean;
+  suffix?: string;
+}
+
+interface SingleMapAssetData {
+  name: string;
+  assetInUseCount: number;
+  assetNoInUseCount: number;
+  id: number;
+}
+
 export type {
   AssetLocation,
   Asset,
@@ -360,4 +386,7 @@ export type {
   StateAssetCount,
   LGAAssetCount,
   AssetStats,
+  AssetMapStats,
+  InfoProps,
+  SingleMapAssetData,
 };

@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
 import NIGERIA_CORDINATES from '~/lib/utils/NigeriaCordinates';
 import LoadingSpinner from './LoadingSpinner';
-import { MapAssetData } from '~/lib/interfaces/general.interfaces';
 import CustomMarker from './CustomMarker';
+import { SingleMapAssetData } from '~/lib/interfaces/asset.interfaces';
 
 interface GeoJSONData {
   type: string;
@@ -12,15 +12,19 @@ interface GeoJSONData {
 
 // Define asset data type
 interface AssetData {
-  [stateName: string]: MapAssetData;
+  [stateName: string]: SingleMapAssetData;
 }
 
 interface StateMapProps {
   assetData: AssetData;
-  setSelectedState: React.Dispatch<React.SetStateAction<MapAssetData | null>>;
+  setSelectedState: React.Dispatch<
+    React.SetStateAction<SingleMapAssetData | null>
+  >;
+  currentAssetStatus: string;
 }
 
-const StateMap = ({ assetData, setSelectedState }: StateMapProps) => {
+const StateMap = (props: StateMapProps) => {
+  const { assetData, setSelectedState, currentAssetStatus } = props;
   const [geoData, setGeoData] = useState<GeoJSONData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [hoveredMarker, setHoveredMarker] = useState<string | null>(null); // Track hovered marker
@@ -112,7 +116,10 @@ const StateMap = ({ assetData, setSelectedState }: StateMapProps) => {
           if (
             assetData &&
             assetData?.[stateName] &&
-            assetData?.[stateName]?.count > 0
+            ((currentAssetStatus === 'In Use' &&
+              assetData?.[stateName]?.assetInUseCount > 0) ||
+              (currentAssetStatus === 'Not in Use' &&
+                assetData?.[stateName]?.assetNoInUseCount > 0))
           ) {
             const coordinates =
               NIGERIA_CORDINATES.states[assetData?.[stateName].name];
@@ -127,7 +134,12 @@ const StateMap = ({ assetData, setSelectedState }: StateMapProps) => {
               <CustomMarker
                 key={stateName}
                 name={stateName}
-                assetCount={assetData?.[stateName]?.count}
+                isInUse={currentAssetStatus === 'In Use'}
+                assetCount={
+                  currentAssetStatus === 'In Use'
+                    ? assetData?.[stateName]?.assetInUseCount
+                    : assetData?.[stateName]?.assetNoInUseCount
+                }
                 coordinates={newCoordinates}
                 setHoveredMarker={setHoveredMarker}
               />

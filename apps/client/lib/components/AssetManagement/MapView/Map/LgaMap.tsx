@@ -1,16 +1,14 @@
 import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
 import { useEffect, useState } from 'react';
 import type { GeoJsonTypes } from 'geojson';
-import {
-  GeoJSONFeature,
-  MapAssetData,
-} from '~/lib/interfaces/general.interfaces';
+import { GeoJSONFeature } from '~/lib/interfaces/general.interfaces';
 // import _ from 'lodash';
 
 import CustomMarker from './CustomMarker';
 import NIGERIA_CORDINATES from '~/lib/utils/NigeriaCordinates';
 import LoadingSpinner from './LoadingSpinner';
 import { getScaleByStateSize } from '~/lib/utils/helperFunctions';
+import { SingleMapAssetData } from '~/lib/interfaces/asset.interfaces';
 
 interface GeoJSONData {
   type: GeoJsonTypes;
@@ -19,15 +17,17 @@ interface GeoJSONData {
 
 // Define asset data type
 interface AssetData {
-  [lgaName: string]: MapAssetData;
+  [lgaName: string]: SingleMapAssetData;
 }
 
 interface LgaMapProps {
   assetData: AssetData;
-  selectedState: MapAssetData;
+  selectedState: SingleMapAssetData;
+  currentAssetStatus: string;
 }
 
-const LgaMap = ({ assetData, selectedState }: LgaMapProps) => {
+const LgaMap = (props: LgaMapProps) => {
+  const { assetData, selectedState, currentAssetStatus } = props;
   const [geoData, setGeoData] = useState<GeoJSONData | null>(null);
   const [isLoading, setIsLoading] = useState(false); // Track loading state
   const [hoveredMarker, setHoveredMarker] = useState<string | null>(null); // Track hovered marker
@@ -123,7 +123,10 @@ const LgaMap = ({ assetData, selectedState }: LgaMapProps) => {
         if (
           assetData &&
           assetData?.[lgaName] &&
-          assetData?.[lgaName]?.count > 0
+          ((currentAssetStatus === 'In Use' &&
+            assetData?.[lgaName]?.assetInUseCount > 0) ||
+            (currentAssetStatus === 'Not in Use' &&
+              assetData?.[lgaName]?.assetNoInUseCount > 0))
         ) {
           const coordinates =
             NIGERIA_CORDINATES?.[selectedState.name as 'Abia']?.[
@@ -140,7 +143,12 @@ const LgaMap = ({ assetData, selectedState }: LgaMapProps) => {
             <CustomMarker
               key={lgaName}
               name={lgaName}
-              assetCount={assetData?.[lgaName]?.count}
+              isInUse={currentAssetStatus === 'In Use'}
+              assetCount={
+                currentAssetStatus === 'In Use'
+                  ? assetData?.[lgaName]?.assetInUseCount
+                  : assetData?.[lgaName]?.assetNoInUseCount
+              }
               coordinates={newCoordinates}
               setHoveredMarker={setHoveredMarker}
             />

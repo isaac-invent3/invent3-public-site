@@ -1,14 +1,16 @@
 import { Heading, HStack, Skeleton, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
+import { SingleMapAssetData } from '~/lib/interfaces/asset.interfaces';
 
 interface AssetCountListProps {
   type: 'state' | 'lga';
   isLoading: boolean;
-  data: Record<string, { name: string; count: number; id: number }>;
+  data: Record<string, SingleMapAssetData>;
+  currentAssetStatus: string;
 }
 
 const AssetCountList = (props: AssetCountListProps) => {
-  const { type, isLoading, data } = props;
+  const { type, isLoading, data, currentAssetStatus } = props;
   return (
     <VStack width="full" spacing="8px" alignItems="flex-start">
       <Heading
@@ -35,7 +37,9 @@ const AssetCountList = (props: AssetCountListProps) => {
                   {label}
                 </Text>
                 <Text color="black" fontWeight={800} size="md">
-                  {option.count.toLocaleString()}
+                  {currentAssetStatus === 'In Use'
+                    ? option.assetInUseCount.toLocaleString()
+                    : option.assetNoInUseCount.toLocaleString()}
                 </Text>
               </HStack>
             ))}

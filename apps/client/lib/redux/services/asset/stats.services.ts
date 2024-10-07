@@ -13,7 +13,7 @@ export const assetStatsApi = createApi({
     getStateAssetCountByCountryId: builder.query({
       query: ({ id, ...data }) => ({
         url: generateQueryStr(
-          `/Locations/GetStateAssetCountByCountryId/${id}?`,
+          `/Locations/GetStateAssetStatusCountByCountryId/${id}?`,
           data
         ),
         method: 'GET',
@@ -24,7 +24,7 @@ export const assetStatsApi = createApi({
     getLGAAssetCountByStateId: builder.query({
       query: ({ id, ...data }) => ({
         url: generateQueryStr(
-          `/Locations/GetLGAAssetCountByStateId/${id}?`,
+          `/Locations/GetLGAAssetStatusCountByStateId/${id}?`,
           data
         ),
         method: 'GET',

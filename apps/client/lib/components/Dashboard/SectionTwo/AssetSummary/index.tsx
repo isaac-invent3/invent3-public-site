@@ -63,7 +63,7 @@ const AssetSummary = () => {
             </Text>
           </Skeleton>
           <Text color="neutral.600" fontWeight={700}>
-            vs Assets{' '}
+            Assets{' '}
             <Text as="span" color="black" fontWeight={800}>
               NOT
             </Text>{' '}

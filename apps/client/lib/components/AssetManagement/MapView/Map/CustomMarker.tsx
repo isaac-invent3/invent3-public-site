@@ -7,12 +7,15 @@ interface CustomMarkerProps {
   name: string;
   assetCount: number;
   coordinates: [number, number];
+  isInUse: boolean;
   setHoveredMarker: React.Dispatch<React.SetStateAction<string | null>>; // Add this prop
 }
 
 const CustomMarker = (props: CustomMarkerProps) => {
-  const { name, assetCount, coordinates, setHoveredMarker } = props;
+  const { name, assetCount, coordinates, setHoveredMarker, isInUse } = props;
   const [isHovered, setIsHovered] = useState(false);
+  const bgColor = isInUse ? '#00A1291A' : '#EABC300D';
+  const iconColor = isInUse ? '#00A129' : '#EABC30';
 
   return (
     <Marker
@@ -32,7 +35,7 @@ const CustomMarker = (props: CustomMarkerProps) => {
           width="40px"
           height="40px"
           rounded="full"
-          bgColor={isHovered ? '#00A1291A' : 'none'}
+          bgColor={isHovered ? bgColor : 'none'}
           justifyContent="center"
           alignItems="center"
           transition="background-color 0.3s ease"
@@ -48,7 +51,8 @@ const CustomMarker = (props: CustomMarkerProps) => {
           >
             <Flex
               rounded="full"
-              border="1px solid #00A129"
+              borderWidth="1px"
+              borderColor={bgColor}
               width={isHovered ? '12px' : '20px'}
               height={isHovered ? '12px' : '20px'}
               justifyContent="center"
@@ -59,7 +63,7 @@ const CustomMarker = (props: CustomMarkerProps) => {
                 <Icon
                   as={AssetIcon}
                   boxSize="16px"
-                  color="#00A129"
+                  color={iconColor}
                   position="relative"
                   zIndex={9}
                 />
@@ -87,10 +91,10 @@ const CustomMarker = (props: CustomMarkerProps) => {
                 rounded="6px"
                 justifyContent="center"
                 alignItems="center"
-                bgColor="#07CC3B33"
+                bgColor={bgColor}
                 shrink={0}
               >
-                <Icon as={AssetIcon} boxSize="16px" color="#00A129" />
+                <Icon as={AssetIcon} boxSize="16px" color={iconColor} />
               </Flex>
               <VStack alignItems="flex-start" spacing={0}>
                 <Text

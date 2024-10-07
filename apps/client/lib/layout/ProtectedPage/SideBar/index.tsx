@@ -25,7 +25,7 @@ const SideBar = () => {
       transition="width 0.4s ease"
       bgImage="/layout-bg.png"
       bgSize="cover"
-      zIndex={999}
+      zIndex={9999}
       onMouseEnter={() => setIsCollapse(false)}
       onMouseLeave={() => setIsCollapse(true)}
     >

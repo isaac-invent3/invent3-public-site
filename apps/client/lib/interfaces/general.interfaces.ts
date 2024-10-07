@@ -45,16 +45,4 @@ interface GeoJSONFeature {
   };
 }
 
-interface MapAssetData {
-  name: string;
-  count: number;
-  id: number;
-}
-
-export type {
-  Option,
-  SearchResponse,
-  SearchCriterion,
-  GeoJSONFeature,
-  MapAssetData,
-};
+export type { Option, SearchResponse, SearchCriterion, GeoJSONFeature };

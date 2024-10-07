@@ -6,42 +6,25 @@ import {
   useGetStateAssetCountByCountryIdQuery,
 } from '~/lib/redux/services/asset/stats.services';
 import Stats from './Stats';
-import { MapAssetData } from '~/lib/interfaces/general.interfaces';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
 import LoadingSpinner from './Map/LoadingSpinner';
-
-interface AssetCountOption {
-  // activeAssets: number;
-  // inActiveAssets: number;
-  // newAssets: number;
-  // assetsUnderMaintenance: number;
-  // decommissionedAssets: number;
-  // assetsPendingDisposal: number;
-  // disposedAssets: number;
-  // assetsInStorage: number;
-  // operationalAssets: number;
-  // assetsScheduledForMaintenance: number;
-  // assetsOutOfService: number;
-  // assetsNotInUse: number;
-  // totalAssets: number;
-  assetCount: number;
-  stateName?: string;
-  lgaName?: string;
-  stateId?: number;
-  lgaId?: number;
-}
+import {
+  AssetMapStats,
+  SingleMapAssetData,
+} from '~/lib/interfaces/asset.interfaces';
 
 const generateAssetCountOption = (
-  data: AssetCountOption[] | undefined
-): Record<string, MapAssetData> => {
-  const options: Record<string, MapAssetData> = {};
+  data: AssetMapStats[] | undefined
+): Record<string, SingleMapAssetData> => {
+  const options: Record<string, SingleMapAssetData> = {};
 
   if (data && Array.isArray(data)) {
     data.forEach((item) => {
       const label = item.lgaName || item.stateName || 'Unknown Location';
       const id = item.stateId || item.lgaId || 0;
       options[label] = {
-        count: item.assetCount,
+        assetInUseCount: item.activeAssets,
+        assetNoInUseCount: item.assetsNotInUse,
         id: id,
         name: label,
       };
@@ -52,9 +35,12 @@ const generateAssetCountOption = (
 };
 
 const MapView = () => {
-  const [selectedState, setSelectedState] = useState<MapAssetData | null>(null);
+  const [selectedState, setSelectedState] = useState<SingleMapAssetData | null>(
+    null
+  );
   const { data: stateAssetCount, isLoading: isLoadingStateAssetCount } =
     useGetStateAssetCountByCountryIdQuery({ id: 1, pageSize: 37 });
+  const [currentAssetStatus, setCurrentAssetStatus] = useState('In Use');
   const { data: lgaAssetCount, isLoading: isLoadingLGAAssetCount } =
     useGetLGAAssetCountByStateIdQuery(
       { id: selectedState?.id, pageSize: 45 },
@@ -68,18 +54,12 @@ const MapView = () => {
     <Flex width="full" height="full" gap="20px" justifyContent="space-between">
       <Flex
         width="80%"
-        height="90vh"
+        height="full"
         position="relative"
         direction="column"
         alignItems="flex-start"
       >
-        <HStack
-          width="full"
-          justifyContent="space-between"
-          my="32px"
-          // position="absolute"
-          // display="hidden"
-        >
+        <HStack width="full" justifyContent="space-between" my="32px">
           <VStack pl="24px" alignItems="flex-start" spacing="4px">
             <Text
               fontWeight={700}
@@ -116,6 +96,32 @@ const MapView = () => {
             justifyContent="center"
             position="relative"
           >
+            <Flex
+              width="full"
+              height="full"
+              position="absolute"
+              alignItems="center"
+              justifyContent="center"
+              top={0}
+              bottom={0}
+              right={0}
+              left={0}
+              pointerEvents="none"
+              overflow="hidden"
+            >
+              <Text
+                textAlign="center"
+                letterSpacing="0.3em"
+                fontSize="174.62px"
+                lineHeight="207.45px"
+                fontWeight={900}
+                color="neutral.300"
+                transform="rotate(-27deg)"
+                opacity={0.8}
+              >
+                {selectedState?.name}
+              </Text>
+            </Flex>
             <MapViewComponent
               selectedState={selectedState}
               setSelectedState={setSelectedState}
@@ -124,6 +130,7 @@ const MapView = () => {
                   ? lgaAssetCount?.data?.items
                   : stateAssetCount?.data?.items
               )}
+              currentAssetStatus={currentAssetStatus}
             />
           </Flex>
         )}
@@ -138,6 +145,8 @@ const MapView = () => {
           )}
           type={selectedState?.id ? 'lga' : 'state'}
           selectedState={selectedState}
+          currentAssetStatus={currentAssetStatus}
+          setCurrentAssetStatus={setCurrentAssetStatus}
         />
       </Flex>
     </Flex>

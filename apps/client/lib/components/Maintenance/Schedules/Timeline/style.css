@@ -1,0 +1,62 @@
+/* Header styling */
+.rbc-header, .rbc-time-header-gutter {
+    background-color: #F7F7F7;
+    text-align: center;
+    height: 50px !important;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .rbc-header span {
+    text-transform: uppercase;
+  }
+  
+  .rbc-header::after {
+    content: '';
+    display: block;
+  }
+  
+  .rbc-header span::first-letter {
+    font-weight: bold;
+  }
+  
+  /* Format day headers like SUNDAY 07 */
+  .rbc-header span {
+    display: inline-block;
+    font-size: 14px;
+  }
+  
+  .rbc-header span:first-child {
+    display: block;
+    font-weight: normal;
+    text-transform: uppercase;
+  }
+  
+
+  .rbc-time-view .rbc-allday-cell {
+    display: none;
+    border: none;
+  }
+  
+  .rbc-day-slot, .rbc-time-slot, .rbc-timeslot-group{
+    background-color: white;
+    display: flex;
+    justify-content: center;
+  }
+
+  .rbc-label {
+    color: #838383;
+    text-align: center;
+    display: flex;
+    height: 50px !important;
+    align-items: center;
+  }
+
+
+
+  /*  Today's header style */
+  .rbc-header.rbc-today{
+        background-color: #B4BFCA4D;
+  }
+       
+  

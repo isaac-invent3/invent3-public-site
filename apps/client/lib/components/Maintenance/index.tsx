@@ -33,7 +33,7 @@ const Maintenance = () => {
   const handleTabChange = (index: number) => {
     setTabIndex(index);
     const tabName = index === 1 ? 'history' : 'schedules';
-    router.push(`/asset-management?tab=${tabName}`);
+    router.push(`/maintenance?tab=${tabName}`);
   };
 
   return (

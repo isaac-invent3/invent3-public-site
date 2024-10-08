@@ -5,31 +5,22 @@
     height: 50px !important;
     display: flex;
     justify-content: center;
+    align-items: center;
+    
   }
   
   .rbc-header span {
     text-transform: uppercase;
+    color: #838383;
+    font-size: 14px;
+    line-height: 16.63px;
+    font-weight: 500;
+    max-height: fit-content;
   }
   
   .rbc-header::after {
     content: '';
     display: block;
-  }
-  
-  .rbc-header span::first-letter {
-    font-weight: bold;
-  }
-  
-  /* Format day headers like SUNDAY 07 */
-  .rbc-header span {
-    display: inline-block;
-    font-size: 14px;
-  }
-  
-  .rbc-header span:first-child {
-    display: block;
-    font-weight: normal;
-    text-transform: uppercase;
   }
   
 
@@ -41,6 +32,7 @@
   .rbc-day-slot, .rbc-time-slot, .rbc-timeslot-group{
     background-color: white;
     display: flex;
+    min-width: 78px;
     justify-content: center;
   }
 
@@ -52,11 +44,35 @@
     align-items: center;
   }
 
-
-
   /*  Today's header style */
   .rbc-header.rbc-today{
         background-color: #B4BFCA4D;
   }
+
+  /*  Today's header style */
+  .rbc-day-bg {
+    background-color: white;
+  }
+
+  /* Events */
+  .rbc-day-slot .rbc-events-container{
+    margin-right: 0px !important;
+  }
+  .rbc-event {
+    background-color: transparent !important;
+    border: none !important;
+    color: inherit;
+    padding: 0px !important;
+
+  }
+
+.rbc-event-label {
+  display: none !important;
+}
+
+/* Hide current time indicator */
+.rbc-current-time-indicator{
+  display: none;
+}
        
   

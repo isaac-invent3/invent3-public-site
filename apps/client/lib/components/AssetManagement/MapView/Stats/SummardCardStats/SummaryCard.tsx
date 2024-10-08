@@ -37,7 +37,7 @@ const SummaryCard = (props: SummaryCardProps) => {
               ? shorten
                 ? formatNumberShort(value)
                 : value.toLocaleString()
-              : '-'}
+              : 0}
           </Text>
           {suffix && (
             <Text

@@ -41,10 +41,14 @@ const HistoryTab = () => {
         enableSorting: false,
       }),
       columnHelper.accessor('completionDate', {
-        cell: (info) =>
-          info.getValue()
-            ? dateFormatter(info.getValue(), 'YYYY-MM-DD')
-            : 'N/A',
+        cell: (info) => {
+          const value = info.getValue();
+          if (value && !isNaN(new Date(value).getTime())) {
+            return dateFormatter(value, 'YYYY-MM-DD');
+          } else {
+            return 'N/A';
+          }
+        },
         header: 'Date',
         enableSorting: false,
       }),

@@ -1,3 +1,5 @@
+import mockPlan from './maintenancePlan';
+
 const now = new Date();
 
 export default [
@@ -130,12 +132,9 @@ export default [
     title: 'Today',
     start: new Date(new Date().setHours(new Date().getHours() - 3)),
     end: new Date(new Date().setHours(new Date().getHours() + 3)),
-  },
-  {
-    id: 15,
-    title: 'Point in Time Event',
-    start: now,
-    end: now,
+    resource: {
+      ...mockPlan,
+    },
   },
   {
     id: 16,

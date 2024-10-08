@@ -52,7 +52,7 @@ const CustomMarker = (props: CustomMarkerProps) => {
             <Flex
               rounded="full"
               borderWidth="1px"
-              borderColor={bgColor}
+              borderColor={iconColor}
               width={isHovered ? '12px' : '20px'}
               height={isHovered ? '12px' : '20px'}
               justifyContent="center"

@@ -1,7 +1,11 @@
 /* eslint-disable no-unused-vars */
-import { HStack, Text } from '@chakra-ui/react';
+import { HStack, Icon, Text } from '@chakra-ui/react';
 import moment from 'moment';
 import { View } from 'react-big-calendar';
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from '~/lib/components/CustomIcons';
 import Button from '~/lib/components/UI/Button';
 
 interface CustomToolbarProps {
@@ -13,6 +17,25 @@ interface CustomToolbarProps {
 const CustomToolbar = (props: CustomToolbarProps) => {
   const { date, onNavigate, onView, view } = props;
   const monthYear = moment(date).format('MMM YYYY');
+
+  // Function to get the display date based on the current view
+  const getDisplayDate = () => {
+    if (view === 'day') {
+      return moment(date).format('MMMM Do, YYYY');
+    } else if (view === 'week') {
+      const startOfWeek = moment(date).startOf('week');
+      const endOfWeek = moment(date).endOf('week');
+      const sameMonth = startOfWeek.isSame(endOfWeek, 'month');
+
+      return sameMonth
+        ? `${startOfWeek.format('MMMM D')} - ${endOfWeek.format('D, YYYY')}`
+        : `${startOfWeek.format('MMMM D')} - ${endOfWeek.format('MMMM D, YYYY')}`;
+    } else if (view === 'month') {
+      return moment(date).format('MMMM, YYYY');
+    }
+  };
+
+  const displayDate = getDisplayDate(); // Call the function to get the formatted date
 
   const todayButtonStyle = { bgColor: '#B4BFCA4D', color: 'primary.500' };
 
@@ -42,32 +65,61 @@ const CustomToolbar = (props: CustomToolbarProps) => {
           Today
         </Button>
       </HStack>
-      <HStack bgColor="white" rounded="8px" padding="4px" height="38px">
-        {['day', 'week', 'month'].map((item, index) => (
-          <Button
-            customStyles={{
-              textTransform: 'capitalize',
-              bgColor: view === item ? 'primary.500' : 'white',
-              color: view === item ? 'secondary.pale.500' : 'neutral.800',
-              _hover: {
+      <HStack spacing="12px">
+        <HStack bgColor="white" rounded="8px" padding="4px" height="38px">
+          {['day', 'week', 'month'].map((item, index) => (
+            <Button
+              customStyles={{
+                textTransform: 'capitalize',
                 bgColor: view === item ? 'primary.500' : 'white',
                 color: view === item ? 'secondary.pale.500' : 'neutral.800',
-              },
-              _focus: {
-                bgColor: view === item ? 'primary.500' : 'white',
-                color: view === item ? 'secondary.pale.500' : 'neutral.800',
-              },
-              _active: {
-                bgColor: view === item ? 'primary.500' : 'white',
-                color: view === item ? 'secondary.pale.500' : 'neutral.800',
-              },
-            }}
-            key={index}
-            handleClick={() => onView(item as View)}
-          >
-            {item}
-          </Button>
-        ))}
+                _hover: {
+                  bgColor: view === item ? 'primary.500' : 'white',
+                  color: view === item ? 'secondary.pale.500' : 'neutral.800',
+                },
+                _focus: {
+                  bgColor: view === item ? 'primary.500' : 'white',
+                  color: view === item ? 'secondary.pale.500' : 'neutral.800',
+                },
+                _active: {
+                  bgColor: view === item ? 'primary.500' : 'white',
+                  color: view === item ? 'secondary.pale.500' : 'neutral.800',
+                },
+              }}
+              key={index}
+              handleClick={() => onView(item as View)}
+            >
+              {item}
+            </Button>
+          ))}
+        </HStack>
+        <HStack
+          height="38px"
+          border="1px solid #B4BFCA80"
+          rounded="4px"
+          padding="6px"
+          spacing="16px"
+        >
+          <Icon
+            as={ChevronLeftIcon}
+            boxSize="16px"
+            color="black"
+            mb="6px"
+            cursor="pointer"
+            onClick={() => onNavigate('PREV')}
+          />
+          <Text color="black" fontWeight={800}>
+            {displayDate}
+          </Text>
+          <Icon
+            as={ChevronRightIcon}
+            boxSize="16px"
+            color="black"
+            mb="4px"
+            cursor="pointer"
+            onClick={() => onNavigate('NEXT')}
+          />
+        </HStack>
       </HStack>
     </HStack>
   );

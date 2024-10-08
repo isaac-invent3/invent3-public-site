@@ -71,7 +71,7 @@ const PlanDetail = (props: PlanDetailProps) => {
       </DetailHeader>
       <DataTable
         columns={columns}
-        data={[data] ?? []}
+        data={[data]}
         customThStyle={{
           paddingLeft: '16px',
           paddingTop: '12px',

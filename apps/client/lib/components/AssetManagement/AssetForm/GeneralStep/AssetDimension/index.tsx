@@ -1,5 +1,5 @@
 import { Flex, HStack, SimpleGrid } from '@chakra-ui/react';
-import SectionInfo from '../../SectionInfo';
+import SectionInfo from '../../../../UI/Form/FormSectionInfo';
 import { Field } from 'formik';
 import TextInput from '~/lib/components/UI/TextInput';
 import { useState } from 'react';

@@ -5,7 +5,7 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import AddButton from '../../AddButton';
+import AddButton from '../../../../UI/Form/FormAddButton';
 import CategorySelect from './CategorySelect';
 import CategoryModal from './Modals/CategoryModal';
 import SubCategoryModal from './Modals/SubCategoryModal';

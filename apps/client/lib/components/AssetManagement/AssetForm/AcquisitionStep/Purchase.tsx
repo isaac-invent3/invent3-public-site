@@ -1,6 +1,6 @@
 import { Flex, Grid, GridItem, HStack } from '@chakra-ui/react';
 import React from 'react';
-import SectionInfo from '../SectionInfo';
+import SectionInfo from '../../../UI/Form/FormSectionInfo';
 import { Field } from 'formik';
 import TextInput from '~/lib/components/UI/TextInput';
 // import CustomDatePicker from './DatePicker';

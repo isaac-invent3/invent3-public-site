@@ -8,8 +8,8 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import SectionInfo from '../../SectionInfo';
-import AddButton from '../../AddButton';
+import SectionInfo from '../../../../UI/Form/FormSectionInfo';
+import AddButton from '../../../../UI/Form/FormAddButton';
 import LocationModal from './Modals/LocationModal';
 import { AssetFormDetails } from '~/lib/interfaces/asset.interfaces';
 import ErrorMessage from '~/lib/components/UI/ErrorMessage';

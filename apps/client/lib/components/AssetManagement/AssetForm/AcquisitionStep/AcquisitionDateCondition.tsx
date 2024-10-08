@@ -1,7 +1,7 @@
 import { Flex, Grid, GridItem, HStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import SectionInfo from '../SectionInfo';
-import CustomDatePicker from './DatePicker';
+import SectionInfo from '../../../UI/Form/FormSectionInfo';
+import CustomDatePicker from '../../../UI/Form/FormDatePicker';
 import {
   useGetAllAssetConditionQuery,
   useSearchConditionMutation,

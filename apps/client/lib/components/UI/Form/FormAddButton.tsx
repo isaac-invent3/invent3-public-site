@@ -11,7 +11,9 @@ const AddButton = (props: AddButtonProps) => {
   return (
     <HStack spacing="4px" cursor="pointer" onClick={handleClick}>
       <Icon as={AddIcon} boxSize="18px" color="primary.main" />
-      <Text color="primary.main">{children}</Text>
+      <Text color="primary.main" mt="3px">
+        {children}
+      </Text>
     </HStack>
   );
 };

@@ -1,7 +1,7 @@
 import { VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import DetailHeader from '~/lib/components/UI/DetailHeader';
-import CustomDatePicker from '../../AssetForm/AcquisitionStep/DatePicker';
+import CustomDatePicker from '../../../UI/Form/FormDatePicker';
 import { Field } from 'formik';
 import TextareaInput from '~/lib/components/UI/TextArea';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';

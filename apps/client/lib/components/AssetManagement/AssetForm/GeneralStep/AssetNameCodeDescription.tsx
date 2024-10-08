@@ -4,7 +4,7 @@ import { Field } from 'formik';
 import TextareaInput from '~/lib/components/UI/TextArea';
 import AssetCategory from './AssetCategory';
 import TextInput from '~/lib/components/UI/TextInput';
-import SectionInfo from '../SectionInfo';
+import SectionInfo from '../../../UI/Form/FormSectionInfo';
 
 const AssetNameCodeDescription = () => {
   return (

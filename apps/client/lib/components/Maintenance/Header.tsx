@@ -21,7 +21,10 @@ const Header = () => {
       <GenericBreadCrumb routes={breadCrumbData} />
       <HStack width="full" justifyContent="space-between">
         <PageHeader>Maintenance Schedule</PageHeader>
-        <PrimaryButton customStyles={{ width: '227px' }}>
+        <PrimaryButton
+          customStyles={{ width: '227px' }}
+          href="/maintenance/add"
+        >
           <Icon as={AddIcon} boxSize="18px" color="#D2FEFD" mr="4px" />
           Add New Schedule
         </PrimaryButton>

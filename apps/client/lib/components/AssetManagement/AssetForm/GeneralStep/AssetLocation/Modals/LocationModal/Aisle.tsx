@@ -2,7 +2,7 @@
 import { useDisclosure, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { useGetAllAislesQuery } from '~/lib/redux/services/asset/location.services';
-import AddButton from '../../../../AddButton';
+import AddButton from '../../../../../../UI/Form/FormAddButton';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { FormLocation } from '~/lib/interfaces/asset.interfaces';
 import AisleModal from '../AisleModal';

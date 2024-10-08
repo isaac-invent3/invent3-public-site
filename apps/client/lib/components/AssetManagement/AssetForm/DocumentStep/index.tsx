@@ -6,7 +6,7 @@ import FormActionButtons from '../FormActionButtons';
 import AddDocument from './AddDocument';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/assetSlice';
-import SectionInfo from '../SectionInfo';
+import SectionInfo from '../../../UI/Form/FormSectionInfo';
 
 interface DocumentStepProps {
   activeStep: number;

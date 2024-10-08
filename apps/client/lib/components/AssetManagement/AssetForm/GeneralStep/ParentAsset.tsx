@@ -6,7 +6,7 @@ import {
   useGetallAssetQuery,
   useSearchAssetsMutation,
 } from '~/lib/redux/services/asset/general.services';
-import SectionInfo from '../SectionInfo';
+import SectionInfo from '../../../UI/Form/FormSectionInfo';
 
 interface ParentAssetProps {
   // eslint-disable-next-line no-unused-vars

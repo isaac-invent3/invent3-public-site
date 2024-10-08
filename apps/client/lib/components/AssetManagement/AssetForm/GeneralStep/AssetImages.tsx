@@ -10,7 +10,7 @@ import {
   Badge,
 } from '@chakra-ui/react';
 import React, { useEffect, useMemo } from 'react';
-import SectionInfo from '../SectionInfo';
+import SectionInfo from '../../../UI/Form/FormSectionInfo';
 import { useField } from 'formik';
 import {
   AddIcon,

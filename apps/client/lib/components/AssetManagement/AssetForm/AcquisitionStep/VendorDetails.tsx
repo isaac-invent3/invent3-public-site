@@ -1,6 +1,6 @@
 import { Flex, Grid, GridItem, HStack, Text, VStack } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import SectionInfo from '../SectionInfo';
+import SectionInfo from '../../../UI/Form/FormSectionInfo';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import {
   useGetAllVendorsQuery,

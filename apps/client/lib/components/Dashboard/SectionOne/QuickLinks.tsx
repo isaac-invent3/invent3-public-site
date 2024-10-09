@@ -9,7 +9,7 @@ const LinkData = [
   },
   {
     label: 'Maintenance Schedule',
-    href: '#',
+    href: '/maintenance',
   },
   {
     label: 'Tasks',

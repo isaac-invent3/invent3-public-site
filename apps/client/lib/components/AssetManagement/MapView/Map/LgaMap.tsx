@@ -24,16 +24,14 @@ interface LgaMapProps {
   assetData: AssetData;
   selectedState: SingleMapAssetData;
   currentAssetStatus: string;
+  type: 'count' | 'value';
 }
 
 const LgaMap = (props: LgaMapProps) => {
-  const { assetData, selectedState, currentAssetStatus } = props;
+  const { assetData, selectedState, currentAssetStatus, type } = props;
   const [geoData, setGeoData] = useState<GeoJSONData | null>(null);
   const [isLoading, setIsLoading] = useState(false); // Track loading state
   const [hoveredMarker, setHoveredMarker] = useState<string | null>(null); // Track hovered marker
-
-  // const stateName =
-  //   selectedState?.name === 'Abuja(FCT)' ? 'fct' : selectedState?.name;
 
   // Create a sorted list of markers, with the hovered marker placed last
   const sortedAssetData = Object.keys(assetData).sort((a, b) => {
@@ -143,6 +141,7 @@ const LgaMap = (props: LgaMapProps) => {
             <CustomMarker
               key={lgaName}
               name={lgaName}
+              type={type}
               isInUse={currentAssetStatus === 'In Use'}
               assetCount={
                 currentAssetStatus === 'In Use'

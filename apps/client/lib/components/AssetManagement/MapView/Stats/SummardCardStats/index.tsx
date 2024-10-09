@@ -4,7 +4,8 @@ import SummaryCard from './SummaryCard';
 import { InfoProps } from '~/lib/interfaces/asset.interfaces';
 
 interface SummaryCardStatsProps {
-  setCurrentInfo?: React.Dispatch<React.SetStateAction<string>>;
+  // eslint-disable-next-line no-unused-vars
+  setCurrentInfo?: (value: string) => void;
   infoOneSwitchText: string;
   infoTwoSwitchText: string;
   isLoading: boolean;

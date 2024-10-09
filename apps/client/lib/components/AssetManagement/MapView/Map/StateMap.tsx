@@ -21,10 +21,11 @@ interface StateMapProps {
     React.SetStateAction<SingleMapAssetData | null>
   >;
   currentAssetStatus: string;
+  type: 'count' | 'value';
 }
 
 const StateMap = (props: StateMapProps) => {
-  const { assetData, setSelectedState, currentAssetStatus } = props;
+  const { assetData, setSelectedState, currentAssetStatus, type } = props;
   const [geoData, setGeoData] = useState<GeoJSONData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [hoveredMarker, setHoveredMarker] = useState<string | null>(null); // Track hovered marker
@@ -134,6 +135,7 @@ const StateMap = (props: StateMapProps) => {
               <CustomMarker
                 key={stateName}
                 name={stateName}
+                type={type}
                 isInUse={currentAssetStatus === 'In Use'}
                 assetCount={
                   currentAssetStatus === 'In Use'

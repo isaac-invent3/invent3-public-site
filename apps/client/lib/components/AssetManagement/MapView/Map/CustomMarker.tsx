@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Flex, HStack, Icon, Text, VStack, Box } from '@chakra-ui/react';
-import { AssetIcon } from '~/lib/components/CustomIcons';
+import { AssetIcon, NairaIcon } from '~/lib/components/CustomIcons';
 import { Marker } from 'react-simple-maps';
 
 interface CustomMarkerProps {
@@ -8,14 +8,17 @@ interface CustomMarkerProps {
   assetCount: number;
   coordinates: [number, number];
   isInUse: boolean;
+  type: 'count' | 'value';
   setHoveredMarker: React.Dispatch<React.SetStateAction<string | null>>; // Add this prop
 }
 
 const CustomMarker = (props: CustomMarkerProps) => {
-  const { name, assetCount, coordinates, setHoveredMarker, isInUse } = props;
+  const { name, assetCount, coordinates, setHoveredMarker, isInUse, type } =
+    props;
   const [isHovered, setIsHovered] = useState(false);
   const bgColor = isInUse ? '#00A1291A' : '#EABC300D';
   const iconColor = isInUse ? '#00A129' : '#EABC30';
+  const icon = type === 'count' ? AssetIcon : NairaIcon;
 
   return (
     <Marker
@@ -61,8 +64,8 @@ const CustomMarker = (props: CustomMarkerProps) => {
             >
               {!isHovered && (
                 <Icon
-                  as={AssetIcon}
-                  boxSize="16px"
+                  as={icon}
+                  boxSize={type === 'count' ? '16px' : '12px'}
                   color={iconColor}
                   position="relative"
                   zIndex={9}
@@ -94,7 +97,11 @@ const CustomMarker = (props: CustomMarkerProps) => {
                 bgColor={bgColor}
                 shrink={0}
               >
-                <Icon as={AssetIcon} boxSize="16px" color={iconColor} />
+                <Icon
+                  as={icon}
+                  boxSize={type === 'count' ? '16px' : '12px'}
+                  color={iconColor}
+                />
               </Flex>
               <VStack alignItems="flex-start" spacing={0}>
                 <Text

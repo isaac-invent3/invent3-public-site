@@ -41,6 +41,7 @@ const MapView = () => {
   const { data: stateAssetCount, isLoading: isLoadingStateAssetCount } =
     useGetStateAssetCountByCountryIdQuery({ id: 1, pageSize: 37 });
   const [currentAssetStatus, setCurrentAssetStatus] = useState('In Use');
+  const [statType, setStatType] = useState<'value' | 'count'>('value');
   const { data: lgaAssetCount, isLoading: isLoadingLGAAssetCount } =
     useGetLGAAssetCountByStateIdQuery(
       { id: selectedState?.id, pageSize: 45 },
@@ -131,6 +132,7 @@ const MapView = () => {
                   : stateAssetCount?.data?.items
               )}
               currentAssetStatus={currentAssetStatus}
+              type={statType}
             />
           </Flex>
         )}
@@ -147,6 +149,7 @@ const MapView = () => {
           selectedState={selectedState}
           currentAssetStatus={currentAssetStatus}
           setCurrentAssetStatus={setCurrentAssetStatus}
+          setStatType={setStatType}
         />
       </Flex>
     </Flex>

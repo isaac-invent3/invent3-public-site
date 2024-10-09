@@ -16,6 +16,7 @@ interface StatsProps {
   selectedState: SingleMapAssetData | null;
   currentAssetStatus: string;
   setCurrentAssetStatus: React.Dispatch<React.SetStateAction<string>>;
+  setStatType: React.Dispatch<React.SetStateAction<'value' | 'count'>>;
 }
 const Stats = (props: StatsProps) => {
   const {
@@ -25,6 +26,7 @@ const Stats = (props: StatsProps) => {
     selectedState,
     currentAssetStatus,
     setCurrentAssetStatus,
+    setStatType,
   } = props;
   const { data: countryStats, isLoading: isLoadingCountryStats } =
     useGetCumulativeAssetStatusCountByCountryIdQuery(1);
@@ -46,6 +48,9 @@ const Stats = (props: StatsProps) => {
           isLoading={isLoading || isLoadingCountryStats || isLoadingStateStats}
           infoOneSwitchText="Total Value"
           infoTwoSwitchText="Total Count"
+          setCurrentInfo={(value) =>
+            setStatType(value === 'Total Value' ? 'value' : 'count')
+          }
           info={{
             infoOne: {
               iconColor: '#07CC3B',
@@ -71,7 +76,7 @@ const Stats = (props: StatsProps) => {
           isLoading={isLoading || isLoadingCountryStats || isLoadingStateStats}
           infoOneSwitchText="In Use"
           infoTwoSwitchText="Not in Use"
-          setCurrentInfo={setCurrentAssetStatus}
+          setCurrentInfo={(value) => setCurrentAssetStatus(value)}
           info={{
             infoOne: {
               iconColor: '#07CC3B',

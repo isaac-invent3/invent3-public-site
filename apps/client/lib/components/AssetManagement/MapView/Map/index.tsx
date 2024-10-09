@@ -10,23 +10,31 @@ interface MapViewComponentProps {
     React.SetStateAction<SingleMapAssetData | null>
   >;
   currentAssetStatus: string;
+  type: 'count' | 'value';
   assetData: { [name: string]: SingleMapAssetData };
 }
 const MapViewComponent = (props: MapViewComponentProps) => {
-  const { selectedState, setSelectedState, assetData, currentAssetStatus } =
-    props;
+  const {
+    selectedState,
+    setSelectedState,
+    assetData,
+    currentAssetStatus,
+    type,
+  } = props;
 
   return selectedState?.name ? (
     <LgaMap
       selectedState={selectedState}
       assetData={assetData}
       currentAssetStatus={currentAssetStatus}
+      type={type}
     />
   ) : (
     <StateMap
       assetData={assetData}
       setSelectedState={setSelectedState}
       currentAssetStatus={currentAssetStatus}
+      type={type}
     />
   );
 };

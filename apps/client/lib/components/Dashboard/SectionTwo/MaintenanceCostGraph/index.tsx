@@ -9,7 +9,7 @@ import {
 import React from 'react';
 import CardHeader from '../../Common/CardHeader';
 import Y2DTab from './Y2DTab';
-import MTMTab from './MTMTab';
+import YTYTab from './YTYTab';
 
 const MaintenanceCostGraph = () => {
   return (
@@ -27,7 +27,7 @@ const MaintenanceCostGraph = () => {
       <Tabs variant="custom" width={'full'}>
         <TabList>
           <Tab paddingBottom="4px">YTD</Tab>
-          <Tab paddingBottom="4px">MTM</Tab>
+          <Tab paddingBottom="4px">YTY</Tab>
         </TabList>
 
         <TabPanels>
@@ -35,7 +35,7 @@ const MaintenanceCostGraph = () => {
             <Y2DTab />
           </TabPanel>
           <TabPanel mt="16px">
-            <MTMTab />
+            <YTYTab />
           </TabPanel>
         </TabPanels>
       </Tabs>

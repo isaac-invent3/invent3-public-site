@@ -1,4 +1,5 @@
 import { AssetFormDocument } from '../interfaces/asset.interfaces';
+import { ActualProjectedData } from '../interfaces/dashboard.interfaces';
 import { FILE_ICONS } from './constants';
 import nigeriaStatesByLandSize from './NigeriaCordinates/landSize';
 
@@ -106,9 +107,73 @@ function formatNumberShort(value: number) {
   }
 }
 
+function generateLastFiveYears() {
+  const currentYear = new Date().getFullYear();
+  const yearsArray = [];
+
+  for (let i = 0; i < 5; i++) {
+    const year = currentYear - i;
+    yearsArray.push({ label: year.toString(), value: year.toString() });
+  }
+
+  return yearsArray;
+}
+
+function transformCostsData(data: ActualProjectedData[] | undefined) {
+  const monthLabels = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+  const weekLabels = ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'];
+
+  // Initialize month data for projected and actual costs
+  const monthProjected = new Array(12).fill(0);
+  const monthActual = new Array(12).fill(0);
+
+  // Initialize weekly data for each week across all months
+  const weeklyProjected = new Array(5).fill(0);
+  const weeklyActual = new Array(5).fill(0);
+
+  // Loop through the backend data and fill the arrays
+  if (data) {
+    data.forEach((item) => {
+      const monthIndex = item.monthNo - 1; // Convert month number to zero-based index
+
+      monthProjected[monthIndex] = item.projectedCost;
+      monthActual[monthIndex] = item.actualCost;
+
+      // Process weekly costs (for weeks 1-5)
+      const weekIndex = item.weekNo;
+      weeklyProjected[weekIndex] = item.projectedCost;
+      weeklyActual[weekIndex] = item.actualCost;
+    });
+  }
+
+  return {
+    monthLabels,
+    weekLabels,
+    monthProjected,
+    monthActual,
+    weeklyProjected,
+    weeklyActual,
+  };
+}
+
 export {
   generateOptions,
   getDocumentInfo,
   getScaleByStateSize,
   formatNumberShort,
+  generateLastFiveYears,
+  transformCostsData,
 };

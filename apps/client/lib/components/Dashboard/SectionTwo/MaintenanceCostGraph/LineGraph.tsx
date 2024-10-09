@@ -10,7 +10,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { Flex } from '@chakra-ui/react';
+import { Flex, Skeleton } from '@chakra-ui/react';
 
 ChartJS.register(
   LineElement,
@@ -26,9 +26,10 @@ interface LineChartProps {
   labels: string[];
   actual: number[];
   projected: number[];
+  isLoading: boolean;
 }
 const LineChart = (props: LineChartProps) => {
-  const { labels, actual, projected } = props;
+  const { labels, actual, projected, isLoading } = props;
 
   const data = {
     labels,
@@ -101,9 +102,11 @@ const LineChart = (props: LineChartProps) => {
   };
 
   return (
-    <Flex width="full" height="150px">
-      <Line data={data} options={options} />
-    </Flex>
+    <Skeleton isLoaded={!isLoading} width="full">
+      <Flex width="full" height="150px">
+        <Line data={data} options={options} />
+      </Flex>
+    </Skeleton>
   );
 };
 

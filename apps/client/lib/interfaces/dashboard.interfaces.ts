@@ -12,4 +12,12 @@ interface AssetStatistics {
   totalMaintenanceCost: number;
 }
 
-export type { AssetStatistics };
+interface ActualProjectedData {
+  projectedCost: number;
+  actualCost: number;
+  monthNo: number;
+  weekNo: number;
+  year: number;
+}
+
+export type { AssetStatistics, ActualProjectedData };

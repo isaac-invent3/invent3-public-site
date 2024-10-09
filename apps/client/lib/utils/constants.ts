@@ -26,6 +26,11 @@ const FORM_ENUM = {
   update: 3,
 };
 
+const AREA_ENUM = {
+  country: 1,
+  state: 2,
+};
+
 const FILE_ICONS = {
   pdf: AiOutlineFilePdf,
   doc: AiOutlineFileWord,
@@ -71,6 +76,10 @@ const yearOptions = [
 ];
 
 const monthOptions = [
+  {
+    label: 'All',
+    value: 0,
+  },
   {
     label: 'January',
     value: 1,
@@ -124,6 +133,7 @@ const monthOptions = [
 export {
   OPERATORS,
   FORM_ENUM,
+  AREA_ENUM,
   FILE_ICONS,
   timeRangeOptions,
   yearOptions,

@@ -51,6 +51,17 @@ export const dashboardApi = createApi({
         headers: getHeaders(),
       }),
     }),
+    getMaintenanceCostStats: builder.query({
+      query: ({ id, ...data }) => ({
+        url: generateQueryStr(
+          `/MaintenanceSchedules/GetProjectedAndActualCostsByArea/${id}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+        keepUnusedDataFor: 0,
+      }),
+    }),
   }),
 });
 
@@ -59,4 +70,5 @@ export const {
   useGetRecentAssetsQuery,
   useGetUpcomingMaintenanceQuery,
   useGetDashboardStatsQuery,
+  useGetMaintenanceCostStatsQuery,
 } = dashboardApi;

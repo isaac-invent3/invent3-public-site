@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import moment from 'moment';
 import {
   Calendar,
@@ -7,33 +7,44 @@ import {
   momentLocalizer,
   Event as EventType,
 } from 'react-big-calendar';
-import events from '~/lib/utils/MockData/events';
-import { Flex, useDisclosure } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './style.css';
 import CustomToolbar from './CustomToolBar';
 import Event from './Events';
 import CustomDateHeader from './CustomDateHeader';
-import EventDetailModal from './EventDetailModal';
-import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
+import { useGetMaintenanceScheduleAggregateQuery } from '~/lib/redux/services/maintenance/schedule.services';
+import {
+  getDisplayDate,
+  transformToCalendarEvents,
+} from '~/lib/utils/helperFunctions';
+import { AREA_ENUM } from '~/lib/utils/constants';
 
 const mLocalizer = momentLocalizer(moment);
 
 const ScheduleTimeline = () => {
   const [date, setDate] = useState(new Date());
   const [view, setView] = useState<View>(Views.WEEK);
-  const { isOpen, onClose, onOpen } = useDisclosure();
-  const [eventDetail, setEventDetail] = useState<MaintenancePlan | null>(null);
+  const [eventData, setEventData] = useState<EventType[]>([]);
+  const { startDate, endDate } = getDisplayDate(date, view);
+  const { data, isLoading, isFetching } =
+    useGetMaintenanceScheduleAggregateQuery({
+      id: 1,
+      areaType: AREA_ENUM.country,
+      startDate,
+      endDate,
+    });
 
-  const { components, views } = useMemo(
+  const { components, views, events } = useMemo(
     () => ({
       components: {
         toolbar: CustomToolbar,
       },
       defaultDate: new Date(),
+      events: eventData,
       views: [Views.MONTH, Views.WEEK, Views.DAY],
     }),
-    []
+    [eventData]
   );
 
   const handleNavigate = (action: 'PREV' | 'NEXT' | 'TODAY') => {
@@ -52,18 +63,20 @@ const ScheduleTimeline = () => {
     setView(newView);
   };
 
-  const handleEventClick = (event: EventType) => {
-    setEventDetail(event.resource);
-    onOpen();
-  };
-
-  const handleCloseModal = () => {
-    setEventDetail(null);
-    onClose();
-  };
+  useEffect(() => {
+    if (data?.data?.items) {
+      setEventData(transformToCalendarEvents(data?.data?.items));
+    }
+  }, [data]);
 
   return (
-    <Flex width="full" height="full" direction="column">
+    <Flex
+      width="full"
+      height="full"
+      direction="column"
+      pointerEvents={isFetching || isLoading ? 'none' : 'initial'}
+      opacity={isLoading || isFetching ? 0.7 : 1}
+    >
       <Calendar
         date={date}
         events={events}
@@ -74,7 +87,6 @@ const ScheduleTimeline = () => {
         onView={handleViewChange}
         timeslots={1}
         step={60}
-        onSelectEvent={handleEventClick}
         components={{
           ...components,
           week: {
@@ -100,13 +112,6 @@ const ScheduleTimeline = () => {
         }}
         style={{ height: '100%', width: '100%' }}
       />
-      {eventDetail && (
-        <EventDetailModal
-          isOpen={isOpen}
-          onClose={handleCloseModal}
-          data={eventDetail}
-        />
-      )}
     </Flex>
   );
 };

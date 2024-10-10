@@ -4,6 +4,7 @@ type CustomColorShades = {
   50?: string;
   100?: string;
   200?: string;
+  250?: string;
   300?: string;
   400?: string;
   500: string;
@@ -51,6 +52,7 @@ const extendedColors: DeepPartial<ExtendedColors> = {
   neutral: {
     100: '#F7F7F7',
     200: '#F2F1F1',
+    250: '#E6E6E6',
     300: '#BBBBBB',
     600: '#838383',
     700: '#656565',

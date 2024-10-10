@@ -25,6 +25,7 @@ const generateAssetCountOption = (
       options[label] = {
         assetInUseCount: item.activeAssets,
         assetNoInUseCount: item.assetsNotInUse,
+        assetValue: item.totalAssetValue,
         id: id,
         name: label,
       };

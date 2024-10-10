@@ -57,7 +57,7 @@ const Stats = (props: StatsProps) => {
               bgColor: '#FFFFFF0D',
               textColor: '#838383',
               label: 'Total Assets Value',
-              value: 2100000000,
+              value: finalData?.totalAssetValue,
               shorten: true,
               suffix: '₦',
             },
@@ -66,7 +66,7 @@ const Stats = (props: StatsProps) => {
               bgColor: '#BBBBBB',
               textColor: '#0E2642',
               label: 'Total Assets Count',
-              value: 109000,
+              value: finalData?.totalAssets,
               shorten: true,
             },
           }}

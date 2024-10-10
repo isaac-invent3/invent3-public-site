@@ -3,7 +3,7 @@ import React from 'react';
 import SearchInput from '../../UI/SearchInput';
 import Button from '../../UI/Button';
 import { BulkSearchIcon, DownloadIcon, FilterIcon } from '../../CustomIcons';
-import FilterButton from './FilterButton';
+import FilterButton from '../../UI/Filter/FilterButton';
 
 interface FiltersProps {
   setSearch: React.Dispatch<React.SetStateAction<string>>;

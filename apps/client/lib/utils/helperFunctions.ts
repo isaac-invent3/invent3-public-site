@@ -1,7 +1,9 @@
+import moment from 'moment';
 import { AssetFormDocument } from '../interfaces/asset.interfaces';
 import { ActualProjectedData } from '../interfaces/dashboard.interfaces';
 import { FILE_ICONS } from './constants';
 import nigeriaStatesByLandSize from './NigeriaCordinates/landSize';
+import { Event as EventType, View } from 'react-big-calendar';
 
 interface IOption {
   [key: string]: any;
@@ -169,6 +171,59 @@ function transformCostsData(data: ActualProjectedData[] | undefined) {
   };
 }
 
+// Function to transform data into react-big-calendar events
+const transformToCalendarEvents = (data: any[]): EventType[] => {
+  return data.map((item, index) => {
+    return {
+      id: index,
+      title: 'Scheduled Event',
+      start: new Date(item.scheduledDate),
+      end: new Date(item.maxCompletionDate || item.scheduledDate),
+      allDay: false,
+      resource: { ...item },
+    };
+  });
+};
+
+const getDisplayDate = (date: Date, view: View) => {
+  let startDate: string = '';
+  let endDate: string = '';
+  let displayDate: string = '';
+
+  if (view === 'day') {
+    // Day view: from 00:00:00 to 23:59:59 of the selected day
+    startDate = moment(date).startOf('day').toISOString();
+    endDate = moment(date).endOf('day').toISOString();
+    displayDate = moment(date).format('MMMM Do, YYYY');
+  } else if (view === 'week') {
+    // Week view: from 00:00:00 of the start of the week to 23:59:59 of the end of the week
+    const startOfWeek = moment(date).startOf('week');
+    const endOfWeek = moment(date).endOf('week');
+
+    startDate = startOfWeek.toISOString();
+    endDate = endOfWeek.toISOString();
+
+    const sameMonth = startOfWeek.isSame(endOfWeek, 'month');
+    displayDate = sameMonth
+      ? `${startOfWeek.format('MMMM D')} - ${endOfWeek.format('D, YYYY')}`
+      : `${startOfWeek.format('MMMM D')} - ${endOfWeek.format('MMMM D, YYYY')}`;
+  } else if (view === 'month') {
+    // Month view: from 00:00:00 of the first day of the month to 23:59:59 of the last day of the month
+    const startOfMonth = moment(date).startOf('month');
+    const endOfMonth = moment(date).endOf('month');
+
+    startDate = startOfMonth.toISOString();
+    endDate = endOfMonth.toISOString();
+    displayDate = moment(date).format('MMMM, YYYY');
+  }
+
+  return {
+    startDate,
+    endDate,
+    displayDate,
+  };
+};
+
 export {
   generateOptions,
   getDocumentInfo,
@@ -176,4 +231,6 @@ export {
   formatNumberShort,
   generateLastFiveYears,
   transformCostsData,
+  transformToCalendarEvents,
+  getDisplayDate,
 };

@@ -7,6 +7,7 @@ import {
   ChevronRightIcon,
 } from '~/lib/components/CustomIcons';
 import Button from '~/lib/components/UI/Button';
+import { getDisplayDate } from '~/lib/utils/helperFunctions';
 
 interface CustomToolbarProps {
   date: Date;
@@ -18,24 +19,7 @@ const CustomToolbar = (props: CustomToolbarProps) => {
   const { date, onNavigate, onView, view } = props;
   const monthYear = moment(date).format('MMM YYYY');
 
-  // Function to get the display date based on the current view
-  const getDisplayDate = () => {
-    if (view === 'day') {
-      return moment(date).format('MMMM Do, YYYY');
-    } else if (view === 'week') {
-      const startOfWeek = moment(date).startOf('week');
-      const endOfWeek = moment(date).endOf('week');
-      const sameMonth = startOfWeek.isSame(endOfWeek, 'month');
-
-      return sameMonth
-        ? `${startOfWeek.format('MMMM D')} - ${endOfWeek.format('D, YYYY')}`
-        : `${startOfWeek.format('MMMM D')} - ${endOfWeek.format('MMMM D, YYYY')}`;
-    } else if (view === 'month') {
-      return moment(date).format('MMMM, YYYY');
-    }
-  };
-
-  const displayDate = getDisplayDate(); // Call the function to get the formatted date
+  const { displayDate } = getDisplayDate(date, view as 'day');
 
   const todayButtonStyle = { bgColor: '#B4BFCA4D', color: 'primary.500' };
 

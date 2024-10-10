@@ -132,6 +132,7 @@ export default [
     end: new Date(new Date().setHours(new Date().getHours() + 3)),
     resource: {
       ...mockPlan,
+      totalScheduleCount: 15,
     },
   },
   {

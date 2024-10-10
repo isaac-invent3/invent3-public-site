@@ -31,7 +31,6 @@ const HeaderInfo = (props: HeaderInfoProps) => {
             {data.planName}
           </Heading>
           <Text color="neutral.600">{data?.maintenanceType}</Text>
-          <Text color="neutral.600">By {data?.contactPerson}</Text>
         </VStack>
         <VStack spacing="4px" alignItems="flex-start" width="27%">
           <Text color="neutral.700">Status:</Text>

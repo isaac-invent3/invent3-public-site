@@ -1,50 +1,60 @@
-import { HStack, SimpleGrid, Text, VStack } from '@chakra-ui/react';
+import { HStack, SimpleGrid, Skeleton, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
+import { MaintenanceScheduleStat } from '~/lib/interfaces/maintenance.interfaces';
 import { formatNumberShort } from '~/lib/utils/helperFunctions';
 
 interface StatsProps {
   label: string;
   value: number;
   suffix?: string;
+  isLoading: boolean;
 }
 const Stats = (props: StatsProps) => {
-  const { label, value, suffix } = props;
+  const { label, value, suffix, isLoading } = props;
   return (
     <VStack width="full" alignItems="flex-start" spacing="16px">
       <Text color="neutral.600">{label}</Text>
-      <HStack spacing="3px" alignItems="flex-end">
-        <Text
-          color="primary.500"
-          fontSize="32px"
-          lineHeight="38.02px"
-          fontWeight={800}
-        >
-          {formatNumberShort(value)}
-        </Text>
-        {suffix && (
-          <Text mb="4px" color="neutral.600">
-            {suffix}
+      <Skeleton isLoaded={!isLoading}>
+        <HStack spacing="3px" alignItems="flex-end">
+          <Text
+            color="primary.500"
+            fontSize="32px"
+            lineHeight="38.02px"
+            fontWeight={800}
+          >
+            {formatNumberShort(value)}
           </Text>
-        )}
-      </HStack>
+          {suffix && (
+            <Text mb="4px" color="neutral.600">
+              {suffix}
+            </Text>
+          )}
+        </HStack>
+      </Skeleton>
     </VStack>
   );
 };
 
-const GeneralStats = () => {
+interface GeneralStatsProps {
+  isLoading: boolean;
+  data: MaintenanceScheduleStat;
+}
+const GeneralStats = (props: GeneralStatsProps) => {
+  const { data: info, isLoading } = props;
+
   const data = [
     {
       label: 'Total Schedules',
-      value: 20,
+      value: info?.totalSchedules ?? 0,
     },
     {
       label: 'Total hours',
-      value: 54,
+      value: info?.totalHours ?? 0,
       suffix: 'hours',
     },
     {
       label: 'Total cost',
-      value: 2400,
+      value: info?.totalCost ?? 0,
       suffix: '₦',
     },
   ];
@@ -59,7 +69,7 @@ const GeneralStats = () => {
       spacing="16px"
     >
       {data.map((item, index) => (
-        <Stats {...item} key={index} />
+        <Stats {...item} key={index} isLoading={isLoading} />
       ))}
     </SimpleGrid>
   );

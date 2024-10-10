@@ -13,10 +13,10 @@ import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import ListView from './ListView';
 import Filters from './Filters';
-import FilterDisplay from './Filters/FilterDisplay';
 import { FilterInput } from '~/lib/interfaces/asset.interfaces';
 import MapView from './MapView';
 import { useRouter, useSearchParams } from 'next/navigation';
+import AssetFilterDisplay from './Filters/AssetFilterDisplay';
 
 const AssetManagement = () => {
   const [search, setSearch] = useState('');
@@ -88,7 +88,7 @@ const AssetManagement = () => {
 
           <TabPanels>
             <TabPanel>
-              <FilterDisplay
+              <AssetFilterDisplay
                 activeFilter={activeFilter}
                 isOpen={isOpen}
                 filterData={filterData}

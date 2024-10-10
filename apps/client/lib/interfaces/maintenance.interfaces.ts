@@ -23,4 +23,23 @@ interface MaintenancePlan {
   totalCost: number;
 }
 
-export type { MaintenancePlan };
+interface AggregateMaintenanceSchedule {
+  totalScheduleCount: number;
+  scheduledDate: string;
+  maxCompletionDate: string;
+}
+
+interface MaintenanceScheduleStat {
+  totalSchedules: number;
+  totalHours: number;
+  totalCost: number;
+  completed: number;
+  pending: number;
+  missed: number;
+}
+
+export type {
+  MaintenancePlan,
+  MaintenanceScheduleStat,
+  AggregateMaintenanceSchedule,
+};

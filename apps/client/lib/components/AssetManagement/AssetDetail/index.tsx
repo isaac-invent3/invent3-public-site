@@ -12,7 +12,7 @@ import AssetHeader from './Header';
 import AssetInfo from './AssetInfo';
 import AssetTabs from './AssetTabs';
 import { useAppDispatch } from '~/lib/redux/hooks';
-import { clearAsset, setAsset } from '~/lib/redux/slices/assetSlice';
+import { clearAsset, setAsset } from '~/lib/redux/slices/AssetSlice';
 
 interface AssetDetailProps {
   data: Asset;

@@ -21,7 +21,7 @@ import {
   setAssetDocuments,
   setAssetImages,
   updateAssetForm,
-} from '~/lib/redux/slices/assetSlice';
+} from '~/lib/redux/slices/AssetSlice';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
 export default function Page({ params }: { params: { id: string } }) {

@@ -19,7 +19,7 @@ import {
   clearAsset,
   clearAssetForm,
   setAsset,
-} from '~/lib/redux/slices/assetSlice';
+} from '~/lib/redux/slices/AssetSlice';
 import { generateDocumentArray, generateImagesArray } from './helperFunction';
 
 interface SummaryStepProps {

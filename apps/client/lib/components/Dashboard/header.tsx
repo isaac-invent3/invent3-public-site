@@ -11,7 +11,7 @@ import {
   useGetStatesByCountryIdQuery,
 } from '~/lib/redux/services/asset/location.services';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import { updateInfo } from '~/lib/redux/slices/dashboardSlice';
+import { updateInfo } from '~/lib/redux/slices/DashboardSlice';
 
 const breadCrumbData = [
   {

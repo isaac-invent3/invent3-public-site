@@ -5,7 +5,7 @@ import {
   useGetAllAssetTypesQuery,
   useSearchAssetTypesMutation,
 } from '~/lib/redux/services/asset/general.services';
-import { updateAssetForm } from '~/lib/redux/slices/assetSlice';
+import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 
 const AssetTypeSelect = () => {
   const dispatch = useAppDispatch();

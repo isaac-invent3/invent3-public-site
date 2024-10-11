@@ -3,7 +3,7 @@ import React from 'react';
 import SectionInfo from '../../../../UI/Form/FormSectionInfo';
 import EmployeeSelect from './EmployeeSelect';
 import { useAppDispatch } from '~/lib/redux/hooks';
-import { updateAssetForm } from '~/lib/redux/slices/assetSlice';
+import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 
 const AssetOwner = () => {
   const dispatch = useAppDispatch();

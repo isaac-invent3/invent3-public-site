@@ -9,7 +9,7 @@ import SectionThree from './SectionThree';
 import SectionFour from './SectionFour';
 import { useGetDashboardStatsQuery } from '~/lib/redux/services/dashboard.services';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import { updateInfo } from '~/lib/redux/slices/dashboardSlice';
+import { updateInfo } from '~/lib/redux/slices/DashboardSlice';
 
 const Dashboard = () => {
   const { selectedCountry, selectedState } = useAppSelector(

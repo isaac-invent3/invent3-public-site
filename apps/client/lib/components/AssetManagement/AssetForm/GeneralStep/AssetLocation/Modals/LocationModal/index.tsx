@@ -20,7 +20,7 @@ import Aisle from './Aisle';
 import Shelf from './Shelf';
 import { resetDependentFields, resetFormikFields } from './utility';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import { updateAssetForm } from '~/lib/redux/slices/assetSlice';
+import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import LGASelect from '../../LGASelect';
 import StateSelect from '../../StateSelect';
 import CountrySelect from '../../CountrySelect';

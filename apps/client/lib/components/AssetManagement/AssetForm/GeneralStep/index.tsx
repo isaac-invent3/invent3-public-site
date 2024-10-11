@@ -10,7 +10,7 @@ import AssetNameCodeDescription from './AssetNameCodeDescription';
 import FormActionButtons from '../FormActionButtons';
 import AssetLocation from './AssetLocation';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import { updateAssetForm } from '~/lib/redux/slices/assetSlice';
+import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import ParentAsset from './ParentAsset';
 
 interface GeneralStepProps {

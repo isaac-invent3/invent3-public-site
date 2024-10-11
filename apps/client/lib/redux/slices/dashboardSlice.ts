@@ -26,7 +26,7 @@ const initialState: SliceProps = {
   info: InitialInfo,
 };
 
-export const dashboardSlice = createSlice({
+export const DashboardSlice = createSlice({
   name: 'dashboardReducer',
   initialState,
   reducers: {
@@ -39,6 +39,6 @@ export const dashboardSlice = createSlice({
   },
 });
 
-export const { updateInfo, clearInfo } = dashboardSlice.actions;
+export const { updateInfo, clearInfo } = DashboardSlice.actions;
 
-export default dashboardSlice.reducer;
+export default DashboardSlice.reducer;

@@ -11,7 +11,7 @@ import CategoryModal from './Modals/CategoryModal';
 import SubCategoryModal from './Modals/SubCategoryModal';
 import SubCategorySelect from './SubCategorySelect';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import { updateAssetForm } from '~/lib/redux/slices/assetSlice';
+import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import { useState } from 'react';
 
 const AssetCategory = () => {

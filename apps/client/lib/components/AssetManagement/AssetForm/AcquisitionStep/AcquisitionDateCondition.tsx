@@ -8,7 +8,7 @@ import {
 } from '~/lib/redux/services/asset/condition.services';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { useAppDispatch } from '~/lib/redux/hooks';
-import { updateAssetForm } from '~/lib/redux/slices/assetSlice';
+import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import AssetStatusSelect from './AssetStatus';
 
 const AcquisitionDateConditon = () => {

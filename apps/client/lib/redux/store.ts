@@ -12,7 +12,7 @@ import {
 import storage from './customStorage';
 import { assetApi } from './services/asset/general.services';
 import { authApi } from './services/auth.services';
-import assetSlice from './slices/assetSlice';
+import assetSlice from './slices/AssetSlice';
 import { utilityApi } from './services/utility.services';
 import { locationApi } from './services/asset/location.services';
 import { categoryApi } from './services/asset/category.services';
@@ -23,7 +23,7 @@ import { vendorsApi } from './services/asset/vendor.services';
 import { employeesApi } from './services/employees.services';
 import { assetStatsApi } from './services/asset/stats.services';
 import { dashboardApi } from './services/dashboard.services';
-import dashboardSlice from './slices/dashboardSlice';
+import dashboardSlice from './slices/DashboardSlice';
 import { maintenancePlanApi } from './services/maintenance/plan.services';
 import { maintenanceScheduleApi } from './services/maintenance/schedule.services';
 

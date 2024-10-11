@@ -186,7 +186,7 @@ const initialState: SliceProps = {
   reinitializeAssetForm: false,
 };
 
-export const assetSlice = createSlice({
+export const AssetSlice = createSlice({
   name: 'assetReducer',
   initialState,
   reducers: {
@@ -233,6 +233,6 @@ export const {
   clearAssetImages,
   setAssetDocuments,
   clearAssetDocuments,
-} = assetSlice.actions;
+} = AssetSlice.actions;
 
-export default assetSlice.reducer;
+export default AssetSlice.reducer;

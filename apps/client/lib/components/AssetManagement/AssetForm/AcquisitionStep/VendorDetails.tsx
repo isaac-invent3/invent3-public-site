@@ -8,7 +8,7 @@ import {
   useSearchVendorsMutation,
 } from '~/lib/redux/services/asset/vendor.services';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import { updateAssetForm } from '~/lib/redux/slices/assetSlice';
+import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import AssetTypeSelect from './AssetType';
 
 const VendorDetails = () => {

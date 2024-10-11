@@ -9,7 +9,7 @@ import WarrantyDetails from './WarrantyDetails';
 import DepreciationDetails from './DepreciationDetails';
 import VendorDetails from './VendorDetails';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import { updateAssetForm } from '~/lib/redux/slices/assetSlice';
+import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 
 interface AcquisitionStepProps {
   activeStep: number;

@@ -5,7 +5,7 @@ import { documentSchema } from '~/lib/schemas/asset/main.schema';
 import FormActionButtons from '../FormActionButtons';
 import AddDocument from './AddDocument';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import { updateAssetForm } from '~/lib/redux/slices/assetSlice';
+import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import SectionInfo from '../../../UI/Form/FormSectionInfo';
 
 interface DocumentStepProps {

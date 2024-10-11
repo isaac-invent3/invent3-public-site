@@ -38,8 +38,28 @@ interface MaintenanceScheduleStat {
   missed: number;
 }
 
+interface ScheduleFormDetails {
+  name: string | null;
+  planId: string | null;
+  planName: string | null;
+  typeId: string | null;
+  typeName: string | null;
+  assetId: string | null;
+  assetName: string | null;
+  assetLocation: string | null;
+  description: string | null;
+  scheduledDate: string | null;
+  completionDate: string | null;
+  ticketId: string | null;
+  contactDetails: {
+    picture: string | null;
+    contactPerson: string | null;
+  };
+}
+
 export type {
   MaintenancePlan,
   MaintenanceScheduleStat,
   AggregateMaintenanceSchedule,
+  ScheduleFormDetails,
 };

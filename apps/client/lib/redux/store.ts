@@ -13,6 +13,7 @@ import storage from './customStorage';
 import { assetApi } from './services/asset/general.services';
 import { authApi } from './services/auth.services';
 import assetSlice from './slices/AssetSlice';
+import dashboardSlice from './slices/DashboardSlice';
 import { utilityApi } from './services/utility.services';
 import { locationApi } from './services/asset/location.services';
 import { categoryApi } from './services/asset/category.services';
@@ -23,9 +24,10 @@ import { vendorsApi } from './services/asset/vendor.services';
 import { employeesApi } from './services/employees.services';
 import { assetStatsApi } from './services/asset/stats.services';
 import { dashboardApi } from './services/dashboard.services';
-import dashboardSlice from './slices/DashboardSlice';
 import { maintenancePlanApi } from './services/maintenance/plan.services';
 import { maintenanceScheduleApi } from './services/maintenance/schedule.services';
+import maintenanceSlice from './slices/MaintenanceSlice';
+import { maintenanceTypeApi } from './services/maintenance/type.services';
 
 export const persistConfig = {
   key: 'root',
@@ -44,12 +46,14 @@ const rootReducer = combineReducers({
   [employeesApi.reducerPath]: employeesApi.reducer,
   [maintenancePlanApi.reducerPath]: maintenancePlanApi.reducer,
   [maintenanceScheduleApi.reducerPath]: maintenanceScheduleApi.reducer,
+  [maintenanceTypeApi.reducerPath]: maintenanceTypeApi.reducer,
   [locationApi.reducerPath]: locationApi.reducer,
   [utilityApi.reducerPath]: utilityApi.reducer,
   [userApi.reducerPath]: userApi.reducer,
   [vendorsApi.reducerPath]: vendorsApi.reducer,
   asset: assetSlice,
   dashboard: dashboardSlice,
+  maintenance: maintenanceSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -72,6 +76,7 @@ export const makeStore = () => {
         employeesApi.middleware,
         maintenancePlanApi.middleware,
         maintenanceScheduleApi.middleware,
+        maintenanceTypeApi.middleware,
         locationApi.middleware,
         categoryApi.middleware,
         conditionApi.middleware,

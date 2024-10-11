@@ -2,7 +2,7 @@ import { Flex, HStack, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 import React from 'react';
 import { documentSchema } from '~/lib/schemas/asset/main.schema';
-import FormActionButtons from '../FormActionButtons';
+import FormActionButtons from '../../../UI/Form/FormActionButtons';
 import AddDocument from './AddDocument';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
@@ -65,7 +65,12 @@ const DocumentStep = (props: DocumentStepProps) => {
             </HStack>
           </VStack>
           <Flex width="full" mt="16px">
-            <FormActionButtons activeStep={1} setActiveStep={setActiveStep} />
+            <FormActionButtons
+              cancelLink="/asset-management"
+              totalStep={3}
+              activeStep={1}
+              setActiveStep={setActiveStep}
+            />
           </Flex>
         </form>
       </FormikProvider>

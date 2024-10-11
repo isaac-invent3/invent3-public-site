@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import GenericModal from '../../UI/Modal';
+import GenericModal from '../Modal';
 import { Heading, Image, Text, VStack } from '@chakra-ui/react';
 
 interface GenericSuccessModalProps {

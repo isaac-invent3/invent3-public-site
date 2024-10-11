@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import GenericSuccessModal from './GenericSuccessModal';
+import GenericSuccessModal from '../../UI/Modal/GenericSuccessModal';
 import Button from '../../UI/Button';
 import { HStack, VStack } from '@chakra-ui/react';
 

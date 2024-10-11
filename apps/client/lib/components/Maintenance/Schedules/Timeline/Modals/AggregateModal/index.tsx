@@ -22,8 +22,10 @@ import {
 } from '~/lib/interfaces/maintenance.interfaces';
 import { CloseIcon } from '~/lib/components/CustomIcons';
 import { dateFormatter } from '~/lib/utils/Formatters';
-import { useGetPlannedMaintenanceByAssetIdQuery } from '~/lib/redux/services/asset/general.services';
 import Event from '../../Events';
+import { useAppSelector } from '~/lib/redux/hooks';
+import { AREA_ENUM } from '~/lib/utils/constants';
+import { useGetMaintenanceSchedulesByAreaQuery } from '~/lib/redux/services/maintenance/schedule.services';
 
 interface AggregateDetailModalProps {
   isOpen: boolean;
@@ -31,11 +33,19 @@ interface AggregateDetailModalProps {
   data: AggregateMaintenanceSchedule;
 }
 const AggregateDetailModal = (props: AggregateDetailModalProps) => {
+  const { selectedCountry } = useAppSelector((state) => state.maintenance.info);
   const { isOpen, onClose, data } = props;
   const [currentPage, setCurrentPage] = useState(1);
   const [localSchedules, setLocalSchedules] = useState<MaintenancePlan[]>([]);
   const { data: allSchedules, isLoading } =
-    useGetPlannedMaintenanceByAssetIdQuery({ id: 7, pageNumber: currentPage });
+    useGetMaintenanceSchedulesByAreaQuery({
+      areaId: selectedCountry?.value,
+      areaType: AREA_ENUM.country,
+      startDate: data.scheduledDate,
+      endDate: data.maxCompletionDate,
+      pageNumber: currentPage,
+      pageSize: 25,
+    });
 
   useEffect(() => {
     if (allSchedules?.data?.items) {
@@ -88,7 +98,7 @@ const AggregateDetailModal = (props: AggregateDetailModalProps) => {
                 Schedules for {dateFormatter(data?.scheduledDate, 'hh:mmA')}
               </Heading>
             </VStack>
-            <Flex id="scheduleDiv" height="full" overflowY="auto" width="full">
+            <Flex id="schedulesDiv" height="full" overflowY="auto" width="full">
               {isLoading ? (
                 <SimpleGrid
                   columns={3}
@@ -106,8 +116,13 @@ const AggregateDetailModal = (props: AggregateDetailModalProps) => {
                 <InfiniteScroll
                   dataLength={localSchedules.length}
                   next={() => setCurrentPage((prev) => prev + 1)}
-                  hasMore={false}
-                  scrollableTarget="notificationDiv"
+                  hasMore={
+                    (allSchedules?.data &&
+                      allSchedules.data.pageNumber <
+                        allSchedules.data.totalPages) ??
+                    false
+                  }
+                  scrollableTarget="schedulesDiv"
                   loader={
                     <Flex
                       my={{ base: '8px', lg: '16px' }}

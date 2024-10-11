@@ -7,7 +7,7 @@ import AssetDetail from './AssetDetails';
 import AssetDimension from './AssetDimension';
 import AssetOwner from './AssetOwner';
 import AssetNameCodeDescription from './AssetNameCodeDescription';
-import FormActionButtons from '../FormActionButtons';
+import FormActionButtons from '../../../UI/Form/FormActionButtons';
 import AssetLocation from './AssetLocation';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
@@ -88,7 +88,12 @@ const GeneralStep = (props: GeneralStepProps) => {
             <AssetOwner />
           </VStack>
           <Flex width="full" mt="16px">
-            <FormActionButtons activeStep={0} setActiveStep={setActiveStep} />
+            <FormActionButtons
+              cancelLink="/asset-management"
+              totalStep={3}
+              activeStep={0}
+              setActiveStep={setActiveStep}
+            />
           </Flex>
         </form>
       </FormikProvider>

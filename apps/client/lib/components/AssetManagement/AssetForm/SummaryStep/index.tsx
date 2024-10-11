@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Asset } from '~/lib/interfaces/asset.interfaces';
 import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
-import FormActionButtons from '../FormActionButtons';
+import FormActionButtons from '../../../UI/Form/FormActionButtons';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useSession } from 'next-auth/react';
 import moment from 'moment';
@@ -229,6 +229,8 @@ const SummaryStep = (props: SummaryStepProps) => {
           <SectionTwo />
         </VStack>
         <FormActionButtons
+          cancelLink="/asset-management"
+          totalStep={3}
           activeStep={3}
           setActiveStep={setActiveStep}
           handleContinue={handleSumbitAsset}

@@ -1,11 +1,11 @@
-import { Flex, HStack } from '@chakra-ui/react';
+import { Flex, HStack, SimpleGrid } from '@chakra-ui/react';
 import React from 'react';
 import CustomDatePicker from '~/lib/components/UI/Form/FormDatePicker';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 
 const Date = () => {
   return (
-    <HStack alignItems="flex-start" width="full" spacing="40px">
+    <SimpleGrid columns={2} alignItems="flex-start" width="full" spacing="40px">
       <HStack width="full" alignItems="flex-start" spacing="81px">
         <Flex width="full" maxW="130px">
           <SectionInfo
@@ -14,7 +14,7 @@ const Date = () => {
             isRequired
           />
         </Flex>
-        <CustomDatePicker name="scheduleDate" label="Schedule Date" />
+        <CustomDatePicker name="scheduledDate" label="Schedule Date" />
       </HStack>
 
       <HStack width="full" alignItems="flex-start" spacing="56px">
@@ -27,7 +27,7 @@ const Date = () => {
         </Flex>
         <CustomDatePicker name="completionDate" label="Completion Date" />
       </HStack>
-    </HStack>
+    </SimpleGrid>
   );
 };
 

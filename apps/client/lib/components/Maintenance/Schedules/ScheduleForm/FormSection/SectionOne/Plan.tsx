@@ -3,10 +3,12 @@ import React, { useState } from 'react';
 import AddButton from '~/lib/components/UI/Form/FormAddButton';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
+import { useAppDispatch } from '~/lib/redux/hooks';
 import {
   useGetAllMaintenancePlanQuery,
   useSearchMaintenancePlanMutation,
 } from '~/lib/redux/services/maintenance/plan.services';
+import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';
 
 const Plan = () => {
   const [pageNumber, setPageNumber] = useState(1);
@@ -15,6 +17,7 @@ const Plan = () => {
     pageNumber,
   });
   const [searchMaintenancePlan] = useSearchMaintenancePlanMutation({});
+  const dispatch = useAppDispatch();
   return (
     <HStack width="full" alignItems="flex-start" spacing="81px">
       <Flex width="full" maxW="130px">
@@ -35,6 +38,9 @@ const Plan = () => {
           isLoading={isLoading}
           pageNumber={pageNumber}
           setPageNumber={setPageNumber}
+          handleSelect={(option) =>
+            dispatch(updateScheduleForm({ planName: option.label }))
+          }
         />
         <AddButton handleClick={() => {}}>Add New Plan</AddButton>
       </VStack>

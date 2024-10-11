@@ -1,21 +1,17 @@
 'use client';
 
-import { Flex, HStack, VStack } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
-import Header from './Header';
-import { FormikProvider, useFormik } from 'formik';
-import { scheduleSchema } from '~/lib/schemas/maintenance.schema';
-import ScheduleTitle from './Title';
-import Type from './Type';
-import Date from './Date';
-import Plan from './Plan';
-import Comment from './Comment';
+import { Flex } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import FormSection from './FormSection';
+import SummarySection from './SummarySection';
+import SlideTransition from '~/lib/components/UI/SlideTransition';
 
 interface ScheduleFormProps {
   type: 'create' | 'edit';
 }
 const ScheduleForm = (props: ScheduleFormProps) => {
   const { type } = props;
+  const [activeStep, setActiveStep] = useState(0);
 
   useEffect(() => {
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
@@ -29,51 +25,20 @@ const ScheduleForm = (props: ScheduleFormProps) => {
     };
   }, []);
 
-  const formik = useFormik({
-    initialValues: {
-      title: null,
-      planId: null,
-      comments: null,
-      scheduledDate: null,
-      completionDate: null,
-      statusId: null,
-      ticketId: null,
-    },
-    validationSchema: scheduleSchema,
-    enableReinitialize: true,
-    onSubmit: async () => {},
-  });
-
   return (
     <Flex width="full" direction="column" pb="24px">
-      <Header type={type} />
-      <FormikProvider value={formik}>
-        <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
-          <VStack
-            spacing="45px"
-            width="full"
-            alignItems="flex-start"
-            bgColor="white"
-            pt="37px"
-            pl="16px"
-            pb="33px"
-            pr="30px"
-            mt="40px"
-            rounded="6px"
-            minH="60vh"
-          >
-            <HStack alignItems="flex-start" width="full" spacing="40px">
-              <ScheduleTitle />
-              <Type />
-            </HStack>
-            <Date />
-            <HStack alignItems="flex-start" width="full" spacing="40px">
-              <Plan />
-              <Comment />
-            </HStack>
-          </VStack>
-        </form>
-      </FormikProvider>
+      <FormSection
+        activeStep={activeStep}
+        setActiveStep={setActiveStep}
+        type={type}
+      />
+      <SlideTransition trigger={activeStep === 1}>
+        <SummarySection
+          activeStep={activeStep}
+          setActiveStep={setActiveStep}
+          type={type}
+        />
+      </SlideTransition>
     </Flex>
   );
 };

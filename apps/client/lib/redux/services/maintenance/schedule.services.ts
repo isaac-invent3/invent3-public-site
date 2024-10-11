@@ -8,7 +8,11 @@ const getHeaders = () => ({
 export const maintenanceScheduleApi = createApi({
   reducerPath: 'maintenanceSchedule',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['allMaintenanceSchedule', 'maintenanceScheduleStats'],
+  tagTypes: [
+    'allMaintenanceSchedule',
+    'maintenanceScheduleStats',
+    'maintenanceScheduleByArea',
+  ],
   endpoints: (builder) => ({
     getAllMaintenanceSchedule: builder.query({
       // eslint-disable-next-line no-unused-vars
@@ -41,6 +45,18 @@ export const maintenanceScheduleApi = createApi({
       }),
       providesTags: ['maintenanceScheduleStats'],
     }),
+    getMaintenanceSchedulesByArea: builder.query({
+      query: (data) => ({
+        url: generateQueryStr(
+          '/MaintenanceSchedules/GetSchedulesByArea?',
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['maintenanceScheduleByArea'],
+    }),
+
     searchMaintenanceSchedule: builder.mutation({
       query: (body: any) => ({
         url: `/MaintenanceSchedules/Search`,
@@ -57,4 +73,5 @@ export const {
   useGetMaintenanceScheduleStatsQuery,
   useGetMaintenanceScheduleAggregateQuery,
   useSearchMaintenanceScheduleMutation,
+  useGetMaintenanceSchedulesByAreaQuery,
 } = maintenanceScheduleApi;

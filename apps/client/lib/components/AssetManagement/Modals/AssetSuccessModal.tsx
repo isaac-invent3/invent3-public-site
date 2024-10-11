@@ -1,5 +1,5 @@
 import React from 'react';
-import GenericSuccessModal from './GenericSuccessModal';
+import GenericSuccessModal from '../../UI/Modal/GenericSuccessModal';
 import Button from '../../UI/Button';
 
 interface AssetSuccessModalProps {

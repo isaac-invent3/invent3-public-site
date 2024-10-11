@@ -2,7 +2,7 @@ import { Flex, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 import React from 'react';
 import { acquisitionInfoSchema } from '~/lib/schemas/asset/main.schema';
-import FormActionButtons from '../FormActionButtons';
+import FormActionButtons from '../../../UI/Form/FormActionButtons';
 import AcquisitionDateConditon from './AcquisitionDateCondition';
 import Purchase from './Purchase';
 import WarrantyDetails from './WarrantyDetails';
@@ -81,7 +81,12 @@ const AcquisitionStep = (props: AcquisitionStepProps) => {
             </VStack>
           </VStack>
           <Flex width="full" mt="16px">
-            <FormActionButtons activeStep={1} setActiveStep={setActiveStep} />
+            <FormActionButtons
+              cancelLink="/asset-management"
+              totalStep={3}
+              activeStep={1}
+              setActiveStep={setActiveStep}
+            />
           </Flex>
         </form>
       </FormikProvider>

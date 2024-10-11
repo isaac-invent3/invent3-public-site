@@ -1,19 +1,30 @@
 import { HStack, Icon, Text } from '@chakra-ui/react';
 import React from 'react';
-import Button from '../../UI/Button';
+import Button from '../Button';
 import { ChevronLeftIcon } from '../../CustomIcons';
 import Link from 'next/link';
 
 interface FormActionButtonsProps {
   activeStep: number;
+  totalStep: number;
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
   handleContinue?: () => void;
   isLoading?: boolean;
   loadingText?: string;
+  cancelLink: string;
+  finalText?: string;
 }
 const FormActionButtons = (props: FormActionButtonsProps) => {
-  const { activeStep, setActiveStep, handleContinue, isLoading, loadingText } =
-    props;
+  const {
+    activeStep,
+    totalStep,
+    setActiveStep,
+    handleContinue,
+    isLoading,
+    loadingText,
+    finalText,
+    cancelLink,
+  } = props;
 
   return (
     <HStack width="full" justifyContent="space-between" maxH="50px">
@@ -36,7 +47,7 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
 
       <HStack spacing="16px" justifySelf="flex-end">
         {activeStep === 0 && (
-          <Link href="/asset-management">
+          <Link href={cancelLink}>
             <HStack
               cursor="pointer"
               px="16px"
@@ -53,7 +64,7 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
           </Link>
         )}
         <Button
-          type={activeStep < 3 ? 'submit' : 'button'}
+          type={activeStep < totalStep ? 'submit' : 'button'}
           handleClick={() => {
             handleContinue && handleContinue();
           }}
@@ -61,7 +72,7 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
           isLoading={isLoading}
           loadingText={loadingText}
         >
-          {activeStep < 3 ? 'Continue' : 'Complete'}
+          {activeStep < totalStep ? 'Continue' : (finalText ?? 'Finish')}
         </Button>
       </HStack>
     </HStack>

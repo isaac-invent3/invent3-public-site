@@ -152,6 +152,7 @@ const MapView = () => {
           )}
           type={selectedState?.id ? 'lga' : 'state'}
           selectedState={selectedState}
+          currentStatType={statType}
           currentAssetStatus={currentAssetStatus}
           setCurrentAssetStatus={setCurrentAssetStatus}
           setStatType={setStatType}

@@ -18,6 +18,7 @@ interface StatsProps {
   setCurrentAssetStatus: React.Dispatch<
     React.SetStateAction<'In Use' | 'Not in Use'>
   >;
+  currentStatType: 'value' | 'count';
   setStatType: React.Dispatch<React.SetStateAction<'value' | 'count'>>;
 }
 const Stats = (props: StatsProps) => {
@@ -27,6 +28,7 @@ const Stats = (props: StatsProps) => {
     type,
     selectedState,
     currentAssetStatus,
+    currentStatType,
     setCurrentAssetStatus,
     setStatType,
   } = props;
@@ -108,6 +110,7 @@ const Stats = (props: StatsProps) => {
         isLoading={isLoading}
         data={data}
         type={type}
+        currentStatType={currentStatType}
         currentAssetStatus={currentAssetStatus}
       />
       <PieChartStats

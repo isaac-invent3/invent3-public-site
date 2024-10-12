@@ -6,11 +6,12 @@ interface AssetCountListProps {
   type: 'state' | 'lga';
   isLoading: boolean;
   data: Record<string, SingleMapAssetData>;
-  currentAssetStatus: string;
+  currentAssetStatus: 'In Use' | 'Not in Use';
+  currentStatType: 'value' | 'count';
 }
 
 const AssetCountList = (props: AssetCountListProps) => {
-  const { type, isLoading, data, currentAssetStatus } = props;
+  const { type, isLoading, data, currentAssetStatus, currentStatType } = props;
   return (
     <VStack width="full" spacing="8px" alignItems="flex-start">
       <Heading
@@ -31,18 +32,31 @@ const AssetCountList = (props: AssetCountListProps) => {
                   <Skeleton width="20%" height="15px" />
                 </HStack>
               ))
-          : Object.entries(data).map(([label, option], index) => (
-              <HStack width="full" key={index} justifyContent="space-between">
-                <Text color="neutral.600" size="md">
-                  {label}
-                </Text>
-                <Text color="black" fontWeight={800} size="md">
-                  {currentAssetStatus === 'In Use'
+          : Object.entries(data).map(([label, option], index) => {
+              let displayData;
+              if (currentStatType === 'count') {
+                displayData =
+                  currentAssetStatus === 'In Use'
                     ? option.assetInUseCount.toLocaleString()
-                    : option.assetNoInUseCount.toLocaleString()}
-                </Text>
-              </HStack>
-            ))}
+                    : option.assetNoInUseCount.toLocaleString();
+              } else {
+                displayData =
+                  currentAssetStatus === 'In Use'
+                    ? option.activeAssetsTotalValue.toLocaleString()
+                    : option.assetsNotInUseTotalValue.toLocaleString();
+              }
+
+              return (
+                <HStack width="full" key={index} justifyContent="space-between">
+                  <Text color="neutral.600" size="md">
+                    {label}
+                  </Text>
+                  <Text color="black" fontWeight={800} size="md">
+                    {displayData}
+                  </Text>
+                </HStack>
+              );
+            })}
       </VStack>
     </VStack>
   );

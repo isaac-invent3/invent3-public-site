@@ -6,6 +6,7 @@ import { Marker } from 'react-simple-maps';
 interface CustomMarkerProps {
   name: string;
   assetCount: number;
+  value: number;
   coordinates: [number, number];
   isInUse: boolean;
   type: 'count' | 'value';
@@ -13,12 +14,20 @@ interface CustomMarkerProps {
 }
 
 const CustomMarker = (props: CustomMarkerProps) => {
-  const { name, assetCount, coordinates, setHoveredMarker, isInUse, type } =
-    props;
+  const {
+    name,
+    assetCount,
+    coordinates,
+    setHoveredMarker,
+    isInUse,
+    type,
+    value,
+  } = props;
   const [isHovered, setIsHovered] = useState(false);
   const bgColor = isInUse ? '#00A1291A' : '#EABC300D';
   const iconColor = isInUse ? '#00A129' : '#EABC30';
   const icon = type === 'count' ? AssetIcon : NairaIcon;
+  const displayValue = type === 'count' ? assetCount : value;
 
   return (
     <Marker
@@ -78,7 +87,13 @@ const CustomMarker = (props: CustomMarkerProps) => {
 
       {/* Tooltip simulation on hover */}
       {isHovered && (
-        <foreignObject x={-30} y={-47} width={90} height={45} radius={8}>
+        <foreignObject
+          x={-30}
+          y={-47}
+          width={type === 'value' ? 100 : 90}
+          height={45}
+          radius={8}
+        >
           <Flex direction="column" width="full">
             <HStack
               spacing="4px"
@@ -116,7 +131,7 @@ const CustomMarker = (props: CustomMarkerProps) => {
                   {name}
                 </Text>
                 <Text color="primary.500" fontWeight={800}>
-                  {assetCount.toLocaleString()}
+                  {displayValue.toLocaleString()}
                 </Text>
               </VStack>
             </HStack>

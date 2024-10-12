@@ -14,8 +14,10 @@ interface StatsProps {
   data: Record<string, SingleMapAssetData>;
   type: 'state' | 'lga';
   selectedState: SingleMapAssetData | null;
-  currentAssetStatus: string;
-  setCurrentAssetStatus: React.Dispatch<React.SetStateAction<string>>;
+  currentAssetStatus: 'In Use' | 'Not in Use';
+  setCurrentAssetStatus: React.Dispatch<
+    React.SetStateAction<'In Use' | 'Not in Use'>
+  >;
   setStatType: React.Dispatch<React.SetStateAction<'value' | 'count'>>;
 }
 const Stats = (props: StatsProps) => {
@@ -57,7 +59,10 @@ const Stats = (props: StatsProps) => {
               bgColor: '#FFFFFF0D',
               textColor: '#838383',
               label: 'Total Assets Value',
-              value: finalData?.totalAssetValue,
+              value:
+                currentAssetStatus === 'In Use'
+                  ? finalData?.activeAssetsTotalValue
+                  : finalData?.assetsNotInUseTotalValue,
               shorten: true,
               suffix: '₦',
             },
@@ -76,7 +81,9 @@ const Stats = (props: StatsProps) => {
           isLoading={isLoading || isLoadingCountryStats || isLoadingStateStats}
           infoOneSwitchText="In Use"
           infoTwoSwitchText="Not in Use"
-          setCurrentInfo={(value) => setCurrentAssetStatus(value)}
+          setCurrentInfo={(value) =>
+            setCurrentAssetStatus(value === 'In Use' ? 'In Use' : 'Not in Use')
+          }
           info={{
             infoOne: {
               iconColor: '#07CC3B',

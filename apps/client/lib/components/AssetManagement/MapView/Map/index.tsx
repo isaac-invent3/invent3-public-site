@@ -9,7 +9,7 @@ interface MapViewComponentProps {
   setSelectedState: React.Dispatch<
     React.SetStateAction<SingleMapAssetData | null>
   >;
-  currentAssetStatus: string;
+  currentAssetStatus: 'In Use' | 'Not in Use';
   type: 'count' | 'value';
   assetData: { [name: string]: SingleMapAssetData };
 }

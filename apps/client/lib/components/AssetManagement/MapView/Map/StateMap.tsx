@@ -20,7 +20,7 @@ interface StateMapProps {
   setSelectedState: React.Dispatch<
     React.SetStateAction<SingleMapAssetData | null>
   >;
-  currentAssetStatus: string;
+  currentAssetStatus: 'In Use' | 'Not in Use';
   type: 'count' | 'value';
 }
 
@@ -137,6 +137,11 @@ const StateMap = (props: StateMapProps) => {
                 name={stateName}
                 type={type}
                 isInUse={currentAssetStatus === 'In Use'}
+                value={
+                  currentAssetStatus === 'In Use'
+                    ? assetData?.[stateName]?.activeAssetsTotalValue
+                    : assetData?.[stateName]?.assetsNotInUseTotalValue
+                }
                 assetCount={
                   currentAssetStatus === 'In Use'
                     ? assetData?.[stateName]?.assetInUseCount

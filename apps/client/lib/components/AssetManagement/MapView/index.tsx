@@ -26,6 +26,8 @@ const generateAssetCountOption = (
         assetInUseCount: item.activeAssets,
         assetNoInUseCount: item.assetsNotInUse,
         assetValue: item.totalAssetValue,
+        assetsNotInUseTotalValue: item.assetsNotInUseTotalValue,
+        activeAssetsTotalValue: item.activeAssetsTotalValue,
         id: id,
         name: label,
       };
@@ -41,7 +43,9 @@ const MapView = () => {
   );
   const { data: stateAssetCount, isLoading: isLoadingStateAssetCount } =
     useGetStateAssetCountByCountryIdQuery({ id: 1, pageSize: 37 });
-  const [currentAssetStatus, setCurrentAssetStatus] = useState('In Use');
+  const [currentAssetStatus, setCurrentAssetStatus] = useState<
+    'In Use' | 'Not in Use'
+  >('In Use');
   const [statType, setStatType] = useState<'value' | 'count'>('value');
   const { data: lgaAssetCount, isLoading: isLoadingLGAAssetCount } =
     useGetLGAAssetCountByStateIdQuery(

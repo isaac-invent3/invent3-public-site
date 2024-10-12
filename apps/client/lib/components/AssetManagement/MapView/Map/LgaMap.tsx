@@ -23,7 +23,7 @@ interface AssetData {
 interface LgaMapProps {
   assetData: AssetData;
   selectedState: SingleMapAssetData;
-  currentAssetStatus: string;
+  currentAssetStatus: 'In Use' | 'Not in Use';
   type: 'count' | 'value';
 }
 
@@ -143,6 +143,11 @@ const LgaMap = (props: LgaMapProps) => {
               name={lgaName}
               type={type}
               isInUse={currentAssetStatus === 'In Use'}
+              value={
+                currentAssetStatus === 'In Use'
+                  ? assetData?.[lgaName]?.activeAssetsTotalValue
+                  : assetData?.[lgaName]?.assetsNotInUseTotalValue
+              }
               assetCount={
                 currentAssetStatus === 'In Use'
                   ? assetData?.[lgaName]?.assetInUseCount

@@ -343,6 +343,8 @@ interface AssetStats {
   assetsNotInUse: number;
   totalAssets: number;
   totalAssetValue: number;
+  assetsNotInUseTotalValue: number;
+  activeAssetsTotalValue: number;
 }
 
 interface MapStats {
@@ -369,6 +371,8 @@ interface SingleMapAssetData {
   assetInUseCount: number;
   assetNoInUseCount: number;
   assetValue: number;
+  activeAssetsTotalValue: number;
+  assetsNotInUseTotalValue: number;
   id: number;
 }
 

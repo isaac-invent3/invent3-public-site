@@ -124,7 +124,7 @@ function SelectInput({
           }
           pointerEvents="none"
           transition="all 0.2s ease-in-out"
-          zIndex={99}
+          zIndex={1}
         >
           {title}
         </FormLabel>

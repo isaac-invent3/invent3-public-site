@@ -14,6 +14,24 @@ export const maintenanceScheduleApi = createApi({
     'maintenanceScheduleByArea',
   ],
   endpoints: (builder) => ({
+    createMaintenanceSchedule: builder.mutation({
+      query: (body: any) => ({
+        url: `/MaintenanceSchedules`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allMaintenanceSchedule'],
+    }),
+    updateMaintenanceSchedule: builder.mutation({
+      query: ({ id, ...data }) => ({
+        url: `/MaintenanceSchedules/${id}`,
+        method: 'PUT',
+        headers: getHeaders(),
+        body: data,
+      }),
+      invalidatesTags: ['allMaintenanceSchedule'],
+    }),
     getAllMaintenanceSchedule: builder.query({
       // eslint-disable-next-line no-unused-vars
       query: ({ id, ...data }) => ({
@@ -22,6 +40,13 @@ export const maintenanceScheduleApi = createApi({
         headers: getHeaders(),
       }),
       providesTags: ['allMaintenanceSchedule'],
+    }),
+    getMaintenanceScheduleById: builder.query({
+      query: (id) => ({
+        url: `/MaintenanceSchedules/${id}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
     }),
     getMaintenanceScheduleStats: builder.query({
       query: ({ id, ...data }) => ({
@@ -69,9 +94,12 @@ export const maintenanceScheduleApi = createApi({
 });
 
 export const {
+  useCreateMaintenanceScheduleMutation,
+  useUpdateMaintenanceScheduleMutation,
   useGetAllMaintenanceScheduleQuery,
   useGetMaintenanceScheduleStatsQuery,
   useGetMaintenanceScheduleAggregateQuery,
   useSearchMaintenanceScheduleMutation,
   useGetMaintenanceSchedulesByAreaQuery,
+  useGetMaintenanceScheduleByIdQuery,
 } = maintenanceScheduleApi;

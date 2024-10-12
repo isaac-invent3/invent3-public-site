@@ -108,7 +108,7 @@ const TextInput: React.FC<TextInputProps> = ({
           }
           pointerEvents="none"
           transition="all 0.2s ease-in-out"
-          zIndex={99}
+          zIndex={1}
         >
           {label}
         </FormLabel>

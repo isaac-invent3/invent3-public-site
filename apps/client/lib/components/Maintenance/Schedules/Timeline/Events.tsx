@@ -127,13 +127,11 @@ const Event = ({ event }: { event: EventType }) => {
         />
       )}
 
-      {isOpenAggregate && (
-        <AggregateDetailModal
-          isOpen={isOpenAggregate}
-          onClose={onCloseAggregate}
-          data={event.resource}
-        />
-      )}
+      <AggregateDetailModal
+        isOpen={isOpenAggregate}
+        onClose={onCloseAggregate}
+        data={event.resource}
+      />
     </Flex>
   );
 };

@@ -56,7 +56,7 @@ const TextareaInput = ({
           color={isFocused || inputValue ? 'neutral.600' : 'neutral.300'}
           pointerEvents="none"
           transition="all 0.2s ease-in-out"
-          zIndex={99}
+          zIndex={1}
           px="16px"
         >
           {label}

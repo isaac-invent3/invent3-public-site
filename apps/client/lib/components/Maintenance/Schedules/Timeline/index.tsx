@@ -19,21 +19,40 @@ import {
   transformToCalendarEvents,
 } from '~/lib/utils/helperFunctions';
 import { AREA_ENUM } from '~/lib/utils/constants';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { updateScheduleInfo } from '~/lib/redux/slices/MaintenanceSlice';
 
 const mLocalizer = momentLocalizer(moment);
 
 const ScheduleTimeline = () => {
+  const { selectedCountry, selectedState } = useAppSelector(
+    (state) => state.maintenance.scheduleInfo
+  );
+  const dispatch = useAppDispatch();
   const [date, setDate] = useState(new Date());
   const [view, setView] = useState<View>(Views.WEEK);
   const [eventData, setEventData] = useState<EventType[]>([]);
   const { startDate, endDate } = getDisplayDate(date, view);
+  const isProperState = selectedState?.label && selectedState?.label !== 'All';
   const { data, isLoading, isFetching } =
     useGetMaintenanceScheduleAggregateQuery({
-      id: 1,
-      areaType: AREA_ENUM.country,
+      id: isProperState ? selectedState.value : selectedCountry?.value,
+      areaType: isProperState ? AREA_ENUM.state : AREA_ENUM.country,
       startDate,
       endDate,
     });
+
+  useEffect(() => {
+    if (date) {
+      const { startDate, endDate } = getDisplayDate(date, view);
+      dispatch(
+        updateScheduleInfo({
+          timelineStartDate: startDate,
+          timelineEndDate: endDate,
+        })
+      );
+    }
+  }, [date]);
 
   const { components, views, events } = useMemo(
     () => ({

@@ -5,23 +5,22 @@ import GenericSuccessModal from '~/lib/components/UI/Modal/GenericSuccessModal';
 interface ScheduleSuccessModalProps {
   isOpen: boolean;
   onClose: () => void;
-  successText: string;
-  buttonWidth: string;
-  headingText?: string;
+  type: 'create' | 'edit';
 }
 const ScheduleSuccessModal = (props: ScheduleSuccessModalProps) => {
-  const { isOpen, onClose, buttonWidth } = props;
+  const { isOpen, onClose, type } = props;
+  const successText =
+    type === 'create'
+      ? 'A new maintenance schedule has been created successfully'
+      : 'Your maintenance schedule has been updated successfully';
   return (
     <GenericSuccessModal
       isOpen={isOpen}
       onClose={onClose}
       headingText="Successful!"
-      successText="A new maintenance schedule has been created successfully"
+      successText={successText}
     >
-      <Button
-        href="/maintenance"
-        customStyles={{ width: buttonWidth, mb: '54px' }}
-      >
+      <Button href="/maintenance" customStyles={{ width: '193px', mb: '54px' }}>
         Continue
       </Button>
     </GenericSuccessModal>

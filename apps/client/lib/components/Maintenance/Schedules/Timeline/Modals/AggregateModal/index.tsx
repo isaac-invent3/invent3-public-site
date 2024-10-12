@@ -33,7 +33,9 @@ interface AggregateDetailModalProps {
   data: AggregateMaintenanceSchedule;
 }
 const AggregateDetailModal = (props: AggregateDetailModalProps) => {
-  const { selectedCountry } = useAppSelector((state) => state.maintenance.info);
+  const { selectedCountry } = useAppSelector(
+    (state) => state.maintenance.scheduleInfo
+  );
   const { isOpen, onClose, data } = props;
   const [currentPage, setCurrentPage] = useState(1);
   const [localSchedules, setLocalSchedules] = useState<MaintenancePlan[]>([]);
@@ -143,7 +145,7 @@ const AggregateDetailModal = (props: AggregateDetailModalProps) => {
                     {completedSchedules.length >= 1 && (
                       <VStack width="full" spacing="6px">
                         {completedSchedules.map((item, index) => (
-                          <Flex width="full" height="50px">
+                          <Flex width="full" height="50px" key={index}>
                             <Event
                               event={{
                                 resource: {
@@ -162,7 +164,7 @@ const AggregateDetailModal = (props: AggregateDetailModalProps) => {
                     {pendingSchedules.length >= 1 && (
                       <VStack width="full" spacing="6px">
                         {pendingSchedules.map((item, index) => (
-                          <Flex width="full" height="50px">
+                          <Flex width="full" height="50px" key={index}>
                             <Event event={{ resource: item }} key={index} />
                           </Flex>
                         ))}
@@ -173,7 +175,7 @@ const AggregateDetailModal = (props: AggregateDetailModalProps) => {
                     {missedSchedules.length >= 1 && (
                       <VStack width="full" spacing="6px">
                         {missedSchedules.map((item, index) => (
-                          <Flex width="full" height="50px">
+                          <Flex width="full" height="50px" key={index}>
                             <Event
                               event={{
                                 resource: { ...item, currentStatus: 'missed' },

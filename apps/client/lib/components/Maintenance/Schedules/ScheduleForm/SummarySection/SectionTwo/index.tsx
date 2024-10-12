@@ -52,7 +52,7 @@ const SectionTwo = () => {
       </GridItem>
       <GridItem colSpan={2} width="full" height="full">
         <HStack spacing="16px" alignItems="flex-start" width="full">
-          <VStack width="80%" spacing="8px" alignItems="flex-start">
+          <VStack width="70%" spacing="8px" alignItems="flex-start">
             <Text color="neutral.600">Description</Text>
             <Text
               color="neutral.700"
@@ -65,7 +65,7 @@ const SectionTwo = () => {
               {formDetails.description}
             </Text>
           </VStack>
-          <VStack width="20%" height="full" spacing="16px">
+          <VStack width="30%" height="full" spacing="16px">
             {dateFields.map((item, index) => (
               <VStack
                 alignItems="flex-start"
@@ -77,8 +77,8 @@ const SectionTwo = () => {
                 <Text color="black">
                   {dateFormatter(
                     item.value ?? '',
-                    'Do MMM, YYYY',
-                    'DD/MM/YYYY'
+                    'Do MMM, YYYY hh:mmA',
+                    'DD/MM/YYYY hh:mmA'
                   )}
                 </Text>
               </VStack>

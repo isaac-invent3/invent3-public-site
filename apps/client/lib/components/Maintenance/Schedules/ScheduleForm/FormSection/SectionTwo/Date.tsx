@@ -14,7 +14,11 @@ const Date = () => {
             isRequired
           />
         </Flex>
-        <CustomDatePicker name="scheduledDate" label="Schedule Date" />
+        <CustomDatePicker
+          name="scheduledDate"
+          label="Schedule Date"
+          type="datetime"
+        />
       </HStack>
 
       <HStack width="full" alignItems="flex-start" spacing="56px">
@@ -25,7 +29,11 @@ const Date = () => {
             isRequired
           />
         </Flex>
-        <CustomDatePicker name="completionDate" label="Completion Date" />
+        <CustomDatePicker
+          name="completionDate"
+          label="Completion Date"
+          type="datetime"
+        />
       </HStack>
     </SimpleGrid>
   );

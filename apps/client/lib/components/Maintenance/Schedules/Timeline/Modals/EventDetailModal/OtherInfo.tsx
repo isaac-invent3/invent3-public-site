@@ -26,7 +26,7 @@ const OtherInfo = (props: OtherInfoProps) => {
         >
           Asset Location
         </DetailHeader>
-        <Text color="neutral.600">N/A</Text>
+        <Text color="neutral.600">{data?.assetLocation}</Text>
       </VStack>
       <VStack width="27%" alignItems="flex-start" spacing="4px">
         <DetailHeader

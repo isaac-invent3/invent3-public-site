@@ -62,7 +62,7 @@ const EventDetailModal = (props: EventDetailModalProps) => {
             pb="26px"
           >
             <PlanDetail data={data} />
-            <ModalButtons />
+            <ModalButtons id={data?.scheduleId} />
           </VStack>
         </ModalBody>
       </ModalContent>

@@ -2,26 +2,33 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { Option } from '~/lib/interfaces/general.interfaces';
 import { ScheduleFormDetails } from '~/lib/interfaces/maintenance.interfaces';
 
-interface Info {
+interface ScheduleInfo {
   selectedState: Option | null;
   selectedCountry: Option | null;
   isLoading: boolean;
+  timelineStartDate: string | null;
+  timelineEndDate: string | null;
 }
 export interface SliceProps {
-  info: Info;
+  scheduleInfo: ScheduleInfo;
   scheduleForm: ScheduleFormDetails;
 }
 
 const initialScheduleForm = {
   name: null,
   planId: null,
+  scheduleId: null,
   planName: null,
   typeId: null,
   typeName: null,
   assetId: null,
   assetName: null,
+  sla: null,
+  frequencyId: null,
+  frequencyName: null,
   assetLocation: null,
   description: null,
+  comment: null,
   scheduledDate: null,
   completionDate: null,
   ticketId: null,
@@ -31,17 +38,19 @@ const initialScheduleForm = {
   },
 };
 
-const InitialInfo = {
+const InitialScheduleInfo = {
   selectedState: null,
   selectedCountry: {
     label: 'Nigeria',
     value: 1,
   },
   isLoading: false,
+  timelineStartDate: null,
+  timelineEndDate: null,
 };
 
 const initialState: SliceProps = {
-  info: InitialInfo,
+  scheduleInfo: InitialScheduleInfo,
   scheduleForm: initialScheduleForm,
 };
 
@@ -49,11 +58,14 @@ export const Maintenance = createSlice({
   name: 'maintenanceReducer',
   initialState,
   reducers: {
-    updateInfo: (state, { payload }: PayloadAction<Partial<Info>>) => {
-      state.info = { ...state.info, ...payload };
+    updateScheduleInfo: (
+      state,
+      { payload }: PayloadAction<Partial<ScheduleInfo>>
+    ) => {
+      state.scheduleInfo = { ...state.scheduleInfo, ...payload };
     },
-    clearInfo: (state) => {
-      state.info = InitialInfo;
+    clearScheduleInfo: (state) => {
+      state.scheduleInfo = InitialScheduleInfo;
     },
 
     setScheduleForm: (
@@ -75,8 +87,8 @@ export const Maintenance = createSlice({
 });
 
 export const {
-  updateInfo,
-  clearInfo,
+  updateScheduleInfo,
+  clearScheduleInfo,
   setScheduleForm,
   updateScheduleForm,
   clearScheduleForm,

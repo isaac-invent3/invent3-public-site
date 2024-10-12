@@ -28,6 +28,7 @@ import { maintenancePlanApi } from './services/maintenance/plan.services';
 import { maintenanceScheduleApi } from './services/maintenance/schedule.services';
 import maintenanceSlice from './slices/MaintenanceSlice';
 import { maintenanceTypeApi } from './services/maintenance/type.services';
+import { maintenanceFrequencyApi } from './services/maintenance/frequency.services';
 
 export const persistConfig = {
   key: 'root',
@@ -44,6 +45,7 @@ const rootReducer = combineReducers({
   [dashboardApi.reducerPath]: dashboardApi.reducer,
   [depreciationApi.reducerPath]: depreciationApi.reducer,
   [employeesApi.reducerPath]: employeesApi.reducer,
+  [maintenanceFrequencyApi.reducerPath]: maintenanceFrequencyApi.reducer,
   [maintenancePlanApi.reducerPath]: maintenancePlanApi.reducer,
   [maintenanceScheduleApi.reducerPath]: maintenanceScheduleApi.reducer,
   [maintenanceTypeApi.reducerPath]: maintenanceTypeApi.reducer,
@@ -74,6 +76,7 @@ export const makeStore = () => {
         dashboardApi.middleware,
         depreciationApi.middleware,
         employeesApi.middleware,
+        maintenanceFrequencyApi.middleware,
         maintenancePlanApi.middleware,
         maintenanceScheduleApi.middleware,
         maintenanceTypeApi.middleware,

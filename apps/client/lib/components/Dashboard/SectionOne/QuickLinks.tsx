@@ -8,7 +8,7 @@ const LinkData = [
     href: '/asset-management',
   },
   {
-    label: 'Maintenance Schedule',
+    label: 'Maintenance',
     href: '/maintenance',
   },
   {

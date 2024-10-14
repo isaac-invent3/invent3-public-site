@@ -3,7 +3,7 @@ import React from 'react';
 import Button from '~/lib/components/UI/Button';
 
 interface ModalButtonsProps {
-  id: number;
+  id: string;
 }
 const ModalButtons = (props: ModalButtonsProps) => {
   const { id } = props;

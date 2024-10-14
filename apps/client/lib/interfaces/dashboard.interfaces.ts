@@ -10,6 +10,7 @@ interface AssetStatistics {
   assetsNotInUse: number;
   totalAssets: number;
   totalMaintenanceCost: number;
+  totalAssetsPercentageChange: number;
 }
 
 interface ActualProjectedData {

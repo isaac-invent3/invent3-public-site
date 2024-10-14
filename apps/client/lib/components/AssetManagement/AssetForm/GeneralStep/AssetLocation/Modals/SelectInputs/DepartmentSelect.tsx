@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { Option, SearchCriterion } from '~/lib/interfaces/general.interfaces';
+import { useAppSelector } from '~/lib/redux/hooks';
 import {
   useGetAllDepartmentsQuery,
   useGetDepartmentsByFloorIdQuery,
@@ -17,6 +18,7 @@ interface DepartmentSelectProps {
 
 const DepartmentSelect = (props: DepartmentSelectProps) => {
   const { handleSelect, type, floorId } = props;
+  const { departmentName } = useAppSelector((state) => state.asset.assetForm);
   const [searchDepartment] = useSearchDepartmentsMutation({});
 
   const [pageNumber, setPageNumber] = useState(1);
@@ -64,6 +66,7 @@ const DepartmentSelect = (props: DepartmentSelectProps) => {
       data={type === 'general' ? data : floorId ? departmentsByFloorIdData : []}
       labelKey="departmentName"
       valueKey="departmentId"
+      defaultInputValue={departmentName}
       mutationFn={searchDepartment}
       isLoading={isLoading || isLoadingDepartmentsByFloorIdData}
       pageNumber={pageNumber}

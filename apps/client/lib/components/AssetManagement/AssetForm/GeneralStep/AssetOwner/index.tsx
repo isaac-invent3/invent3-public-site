@@ -2,11 +2,13 @@ import { Flex, HStack, SimpleGrid } from '@chakra-ui/react';
 import React from 'react';
 import SectionInfo from '../../../../UI/Form/FormSectionInfo';
 import EmployeeSelect from './EmployeeSelect';
-import { useAppDispatch } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 
 const AssetOwner = () => {
   const dispatch = useAppDispatch();
+  const { currentOwnerName, assignedToName, responsibleForName } =
+    useAppSelector((state) => state.asset.assetForm);
 
   return (
     <HStack width="full" alignItems="flex-start" spacing="104px">
@@ -21,6 +23,7 @@ const AssetOwner = () => {
         <EmployeeSelect
           selectName="currentOwner"
           selectTitle="Owner"
+          defaultName={currentOwnerName}
           handleSelect={(option) =>
             dispatch(updateAssetForm({ currentOwnerName: option.label }))
           }
@@ -28,6 +31,7 @@ const AssetOwner = () => {
         <EmployeeSelect
           selectName="assignedTo"
           selectTitle="Assigned to"
+          defaultName={assignedToName}
           handleSelect={(option) =>
             dispatch(updateAssetForm({ assignedToName: option.label }))
           }
@@ -35,6 +39,7 @@ const AssetOwner = () => {
         <EmployeeSelect
           selectName="responsibleFor"
           selectTitle="Responsible for"
+          defaultName={responsibleForName}
           handleSelect={(option) =>
             dispatch(updateAssetForm({ responsibleForName: option.label }))
           }

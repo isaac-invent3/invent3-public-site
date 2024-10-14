@@ -1,10 +1,10 @@
 import { Flex, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import DetailHeader from '~/lib/components/UI/DetailHeader';
-import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
+import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
 
 interface OtherInfoProps {
-  data: MaintenancePlan;
+  data: MaintenanceSchedule;
 }
 const OtherInfo = (props: OtherInfoProps) => {
   const { data } = props;

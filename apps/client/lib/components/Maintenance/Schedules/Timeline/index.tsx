@@ -13,7 +13,10 @@ import './style.css';
 import CustomToolbar from './CustomToolBar';
 import Event from './Events';
 import CustomDateHeader from './CustomDateHeader';
-import { useGetMaintenanceScheduleAggregateQuery } from '~/lib/redux/services/maintenance/schedule.services';
+import {
+  useGetMaintenanceScheduleAggregateQuery,
+  useGetMaintenanceSchedulesWithSingleAggregateCountsByAreaQuery,
+} from '~/lib/redux/services/maintenance/schedule.services';
 import {
   getDisplayDate,
   transformToCalendarEvents,
@@ -34,6 +37,16 @@ const ScheduleTimeline = () => {
   const [eventData, setEventData] = useState<EventType[]>([]);
   const { startDate, endDate } = getDisplayDate(date, view);
   const isProperState = selectedState?.label && selectedState?.label !== 'All';
+  const {
+    data: singleAggregateCountData,
+    isLoading: isLoadingSingle,
+    isFetching: isFetchingSingle,
+  } = useGetMaintenanceSchedulesWithSingleAggregateCountsByAreaQuery({
+    id: isProperState ? selectedState.value : selectedCountry?.value,
+    areaType: isProperState ? AREA_ENUM.state : AREA_ENUM.country,
+    startDate,
+    endDate,
+  });
   const { data, isLoading, isFetching } =
     useGetMaintenanceScheduleAggregateQuery({
       id: isProperState ? selectedState.value : selectedCountry?.value,
@@ -86,15 +99,26 @@ const ScheduleTimeline = () => {
     if (data?.data?.items) {
       setEventData(transformToCalendarEvents(data?.data?.items));
     }
-  }, [data]);
+    if (singleAggregateCountData?.data?.items) {
+      setEventData(
+        transformToCalendarEvents(singleAggregateCountData?.data?.items)
+      );
+    }
+  }, [data, singleAggregateCountData]);
 
   return (
     <Flex
       width="full"
       height="full"
       direction="column"
-      pointerEvents={isFetching || isLoading ? 'none' : 'initial'}
-      opacity={isLoading || isFetching ? 0.7 : 1}
+      pointerEvents={
+        isFetching || isLoading || isLoadingSingle || isFetchingSingle
+          ? 'none'
+          : 'initial'
+      }
+      opacity={
+        isLoading || isFetching || isLoadingSingle || isFetchingSingle ? 0.7 : 1
+      }
     >
       <Calendar
         date={date}

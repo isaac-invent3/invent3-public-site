@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { Option, SearchCriterion } from '~/lib/interfaces/general.interfaces';
+import { useAppSelector } from '~/lib/redux/hooks';
 import {
   useGetAllShelvesQuery,
   useGetShelvesByAisleIdQuery,
@@ -17,6 +18,7 @@ interface ShelfSelectProps {
 
 const ShelfSelect = (props: ShelfSelectProps) => {
   const { handleSelect, type, aisleId } = props;
+  const { shelfName } = useAppSelector((state) => state.asset.assetForm);
   const [searchShelf] = useSearchShelfMutation({});
 
   const [pageNumber, setPageNumber] = useState(1);
@@ -62,6 +64,7 @@ const ShelfSelect = (props: ShelfSelectProps) => {
       data={type === 'general' ? data : aisleId ? shelvesByAisleIdData : []}
       labelKey="shelfName"
       valueKey="shelfId"
+      defaultInputValue={shelfName}
       mutationFn={searchShelf}
       isLoading={isLoading || isLoadingShelvesByAisleId}
       pageNumber={pageNumber}

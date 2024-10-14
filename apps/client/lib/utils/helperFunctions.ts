@@ -178,7 +178,7 @@ const transformToCalendarEvents = (data: any[]): EventType[] => {
       id: index,
       title: 'Scheduled Event',
       start: new Date(item.scheduledDate),
-      end: new Date(item.maxCompletionDate || item.scheduledDate),
+      end: new Date(item.maxCompletionDate || item.completionDate),
       allDay: false,
       resource: { ...item },
     };

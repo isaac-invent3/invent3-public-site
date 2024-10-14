@@ -7,7 +7,7 @@ import {
   useSearchConditionMutation,
 } from '~/lib/redux/services/asset/condition.services';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
-import { useAppDispatch } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import AssetStatusSelect from './AssetStatus';
 
@@ -18,6 +18,7 @@ const AcquisitionDateConditon = () => {
     pageNumber,
   });
   const [searchCondition] = useSearchConditionMutation({});
+  const { conditionName } = useAppSelector((state) => state.asset.assetForm);
   const dispatch = useAppDispatch();
   return (
     <HStack width="full" alignItems="flex-start" spacing="78px">
@@ -47,6 +48,7 @@ const AcquisitionDateConditon = () => {
               data={data}
               labelKey="conditionName"
               valueKey="conditionId"
+              defaultInputValue={conditionName}
               mutationFn={searchCondition}
               isLoading={isLoading}
               pageNumber={pageNumber}

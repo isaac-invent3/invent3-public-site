@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
-import { useAppDispatch } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import {
   useGetAllAssetTypesQuery,
   useSearchAssetTypesMutation,
@@ -8,6 +8,7 @@ import {
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 
 const AssetTypeSelect = () => {
+  const { assetTypeName } = useAppSelector((state) => state.asset.assetForm);
   const dispatch = useAppDispatch();
   const [searchType] = useSearchAssetTypesMutation({});
 
@@ -24,6 +25,7 @@ const AssetTypeSelect = () => {
       labelKey="typeName"
       valueKey="assetTypeId"
       mutationFn={searchType}
+      defaultInputValue={assetTypeName}
       isLoading={isLoading}
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}

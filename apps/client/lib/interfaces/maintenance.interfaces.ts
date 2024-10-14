@@ -7,6 +7,7 @@ interface MaintenancePlan {
   maintenancePlanId: number;
   planName: string;
   scheduleId: number;
+  scheduleGuid: number;
   scheduledDate: string;
   completionDate: string | null;
   durationInHours: number;
@@ -25,29 +26,37 @@ interface MaintenancePlan {
 }
 
 interface MaintenanceSchedule {
-  isNew: boolean | null;
-  createdDate: string | null;
-  createdBy: string | null;
-  lastModifiedDate: string | null;
-  lastModifiedBy: string | null;
-  isDeleted: boolean | null;
-  deletedDate: string | null;
-  deletedBy: string | null;
-  guid: string | null;
-  scheduleId: number | null;
-  planId: number | null;
+  rowId: number;
+  assetId: number | null;
+  assetName: string | null;
+  countryId: number | null;
+  stateId: number | null;
+  maintenancePlanId: number | null;
+  planName: string | null;
+  scheduleId: number;
+  scheduleGuid: string;
+  scheduledDate: string | null;
+  completionDate: string | null;
+  durationInHours: number | null;
   scheduleName: string | null;
   description: string | null;
   sla: number | null;
   maintenanceTypeId: number | null;
-  frequencyId: number | null;
+  isDeleted: boolean | null;
   comments: string | null;
-  scheduledDate: string | null;
-  completionDate: string | null;
-  durationInHours: number | null;
-  statusId: number | null;
   ticketId: number | null;
   assignedTo: number | null;
+  statusId: number | null;
+  currentStatus: string | null;
+  contactPerson: string | null;
+  contactPersonPhoneNo: string | null;
+  contactPersonEmail: string | null;
+  maintenanceType: string | null;
+  frequencyName: string | null;
+  frequencyId: number | null;
+  createdBy: string | null;
+  totalCost: number | null;
+  assetLocation: string | null;
 }
 
 interface AggregateMaintenanceSchedule {

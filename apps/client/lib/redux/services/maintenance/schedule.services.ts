@@ -62,13 +62,22 @@ export const maintenanceScheduleApi = createApi({
     getMaintenanceScheduleAggregate: builder.query({
       query: ({ id, ...data }) => ({
         url: generateQueryStr(
-          `/MaintenanceSchedules/GetMaintenanceScheduleAggregtesByArea/${id}?`,
+          `/MaintenanceSchedules/GetMaintenanceScheduleAggregatesByArea/${id}?`,
           data
         ),
         method: 'GET',
         headers: getHeaders(),
       }),
-      providesTags: ['maintenanceScheduleStats'],
+    }),
+    getMaintenanceSchedulesWithSingleAggregateCountsByArea: builder.query({
+      query: ({ id, ...data }) => ({
+        url: generateQueryStr(
+          `/MaintenanceSchedules/GetMaintenanceSchedulesWithSingleAggregateCountsByArea/${id}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
     }),
     getMaintenanceSchedulesByArea: builder.query({
       query: (data) => ({
@@ -102,4 +111,5 @@ export const {
   useSearchMaintenanceScheduleMutation,
   useGetMaintenanceSchedulesByAreaQuery,
   useGetMaintenanceScheduleByIdQuery,
+  useGetMaintenanceSchedulesWithSingleAggregateCountsByAreaQuery,
 } = maintenanceScheduleApi;

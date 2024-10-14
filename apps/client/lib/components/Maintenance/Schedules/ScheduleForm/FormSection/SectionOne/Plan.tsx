@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import AddButton from '~/lib/components/UI/Form/FormAddButton';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
-import { useAppDispatch } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import {
   useGetAllMaintenancePlanQuery,
   useSearchMaintenancePlanMutation,
@@ -17,7 +17,11 @@ const Plan = () => {
     pageNumber,
   });
   const [searchMaintenancePlan] = useSearchMaintenancePlanMutation({});
+  const { planName } = useAppSelector(
+    (state) => state.maintenance.scheduleForm
+  );
   const dispatch = useAppDispatch();
+
   return (
     <HStack width="full" alignItems="flex-start" spacing="81px">
       <Flex width="full" maxW="130px">
@@ -34,6 +38,7 @@ const Plan = () => {
           data={data}
           labelKey="planName"
           valueKey="maintenancePlanId"
+          defaultInputValue={planName}
           mutationFn={searchMaintenancePlan}
           isLoading={isLoading}
           pageNumber={pageNumber}

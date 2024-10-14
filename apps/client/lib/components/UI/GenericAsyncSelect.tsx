@@ -16,6 +16,7 @@ interface BuildingSelectProps {
   valueKey: string;
   mutationFn: any;
   pageNumber: number;
+  defaultInputValue?: string | null;
   setPageNumber: React.Dispatch<React.SetStateAction<number>>;
   // eslint-disable-next-line no-unused-vars
   specialSearch?: (searchValue: string) => SearchCriterion[];
@@ -32,6 +33,7 @@ const GenericAsyncSelect = (props: BuildingSelectProps) => {
     labelKey,
     valueKey,
     mutationFn,
+    defaultInputValue,
     pageNumber,
     setPageNumber,
     specialSearch,
@@ -113,6 +115,7 @@ const GenericAsyncSelect = (props: BuildingSelectProps) => {
       options={options}
       handleSelect={(option) => handleSelect && handleSelect(option)}
       isLoading={isLoading}
+      defaultInputValue={defaultInputValue ?? undefined}
       callBackFunction={(inputValue: string) => handleSearch(inputValue)}
       isAsync
       handleOnMenuScrollToBottom={handlePagination}

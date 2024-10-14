@@ -35,6 +35,7 @@ interface SelectInputProps {
   width?: string | { [name: string]: string };
   isLoading?: boolean;
   showAsRelative?: boolean;
+  defaultInputValue?: string;
   // eslint-disable-next-line no-unused-vars
   handleSelect?: (options: Option) => void;
   handleOnMenuScrollToBottom?: () => void;
@@ -43,19 +44,21 @@ interface SelectInputProps {
   variant?: 'primary' | 'secondary';
   isAsync?: boolean;
 }
-function SelectInput({
-  name,
-  title,
-  options,
-  isSearchable = false,
-  width = 'full',
-  isLoading,
-  variant = 'primary',
-  isAsync = false,
-  handleSelect,
-  callBackFunction,
-  handleOnMenuScrollToBottom,
-}: SelectInputProps) {
+function SelectInput(props: SelectInputProps) {
+  const {
+    name,
+    title,
+    options,
+    isSearchable = false,
+    width = 'full',
+    isLoading,
+    variant = 'primary',
+    isAsync = false,
+    defaultInputValue,
+    handleSelect,
+    callBackFunction,
+    handleOnMenuScrollToBottom,
+  } = props;
   const [field, meta, helpers] = useField(name);
   const SelectComponent = isAsync ? AsyncSelect : Select;
   const [isFocused, setIsFocused] = useState(false);
@@ -77,7 +80,7 @@ function SelectInput({
         }
 
         debounceRef.current = setTimeout(async () => {
-          if (callBackFunction) {
+          if (callBackFunction && inputValue.length >= 3) {
             const options = await callBackFunction(inputValue);
             console.log({ newOptions: options });
             resolve(options);
@@ -208,6 +211,7 @@ function SelectInput({
               lineHeight: '16.63px',
             }),
           }}
+          defaultInputValue={defaultInputValue}
           value={options.find((option) => option.value === meta.value) || null}
           onChange={(selectedOptions) => {
             if (selectedOptions) {

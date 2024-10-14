@@ -11,10 +11,11 @@ interface AssetSelectProps {
   handleSelect?: (options: Option) => void;
   selectName: string;
   selectTitle: string;
+  defaultInputValue?: string | null;
 }
 
 const AssetSelect = (props: AssetSelectProps) => {
-  const { handleSelect, selectName, selectTitle } = props;
+  const { handleSelect, selectName, selectTitle, defaultInputValue } = props;
   const [searchAsset] = useSearchAssetsMutation({});
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading } = useGetallAssetQuery({
@@ -33,6 +34,7 @@ const AssetSelect = (props: AssetSelectProps) => {
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
       handleSelect={handleSelect}
+      defaultInputValue={defaultInputValue}
     />
   );
 };

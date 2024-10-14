@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { Option, SearchCriterion } from '~/lib/interfaces/general.interfaces';
+import { useAppSelector } from '~/lib/redux/hooks';
 import {
   useGetAssetSubCatgoriesByCategoryIdQuery,
   useSearchSubCategoryMutation,
@@ -15,6 +16,7 @@ interface SubCategorySelectProps {
 
 const SubCategorySelect = (props: SubCategorySelectProps) => {
   const { categoryId, handleSelect } = props;
+  const { subCategoryName } = useAppSelector((state) => state.asset.assetForm);
   const [searchCategory] = useSearchSubCategoryMutation({});
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading, isFetching } =
@@ -53,6 +55,7 @@ const SubCategorySelect = (props: SubCategorySelectProps) => {
       labelKey="subCategoryName"
       valueKey="subCategoryId"
       mutationFn={searchCategory}
+      defaultInputValue={subCategoryName}
       isLoading={isLoading}
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}

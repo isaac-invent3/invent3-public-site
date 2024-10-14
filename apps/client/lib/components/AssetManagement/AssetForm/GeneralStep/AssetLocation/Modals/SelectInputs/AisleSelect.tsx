@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { Option, SearchCriterion } from '~/lib/interfaces/general.interfaces';
+import { useAppSelector } from '~/lib/redux/hooks';
 import {
   useGetAislesByRoomIdQuery,
   useGetAllAislesQuery,
@@ -17,6 +18,7 @@ interface AisleSelectProps {
 
 const AisleSelect = (props: AisleSelectProps) => {
   const { handleSelect, type, roomId } = props;
+  const { aisleName } = useAppSelector((state) => state.asset.assetForm);
   const [searchAisle] = useSearchAisleMutation({});
 
   const [pageNumber, setPageNumber] = useState(1);
@@ -62,6 +64,7 @@ const AisleSelect = (props: AisleSelectProps) => {
       data={type === 'general' ? data : roomId ? aislesByRoomIdData : []}
       labelKey="aisleName"
       valueKey="aisleId"
+      defaultInputValue={aisleName}
       mutationFn={searchAisle}
       isLoading={isLoading || isLoadingAislesByRoomId}
       pageNumber={pageNumber}

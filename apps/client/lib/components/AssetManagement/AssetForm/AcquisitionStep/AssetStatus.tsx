@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
-import { useAppDispatch } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import {
   useGetAllStatusQuery,
   useSearchStatusMutation,
@@ -8,6 +8,7 @@ import {
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 
 const AssetStatusSelect = () => {
+  const { statusName } = useAppSelector((state) => state.asset.assetForm);
   const dispatch = useAppDispatch();
   const [searchStatus] = useSearchStatusMutation({});
 
@@ -27,6 +28,7 @@ const AssetStatusSelect = () => {
       isLoading={isLoading}
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
+      defaultInputValue={statusName}
       handleSelect={(option) =>
         dispatch(updateAssetForm({ statusName: option.label }))
       }

@@ -18,6 +18,8 @@ import Filters from './Schedules/Filters';
 import ScheduleFilterDisplay from './Schedules/Filters/ScheduleFilterDisplay';
 import { FilterInput } from '~/lib/interfaces/asset.interfaces';
 
+const ALlTabs = ['Plans', 'Schedules', 'History'];
+
 const Maintenance = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -36,18 +38,21 @@ const Maintenance = () => {
   // Retrieve the `tab` parameter from URL on mount
   useEffect(() => {
     const tab = searchParams.get('tab');
-    if (tab === 'History') {
-      setTabIndex(1);
-    } else {
-      setTabIndex(0); // Otherwise default to list tab
+    if (tab) {
+      const tabIndex = ALlTabs.findIndex((value) => value === tab);
+      if (tabIndex !== -1) {
+        setTabIndex(tabIndex);
+      }
     }
   }, [searchParams]);
 
   // Update the URL whenever the tab is changed
   const handleTabChange = (index: number) => {
     setTabIndex(index);
-    const tabName = index === 1 ? 'history' : 'schedules';
-    router.push(`/maintenance?tab=${tabName}`);
+    const tabName = ALlTabs[index];
+    if (tabName) {
+      router.push(`/maintenance?tab=${tabName}`);
+    }
   };
 
   // Handles Toggling the  Filter
@@ -72,10 +77,11 @@ const Maintenance = () => {
         >
           <Flex width="full" position="relative">
             <TabList>
-              <Tab>All Schedules</Tab>
+              <Tab>Plans</Tab>
+              <Tab>Schedules</Tab>
               <Tab>History</Tab>
             </TabList>
-            {tabIndex === 0 && (
+            {tabIndex === 1 && (
               <Flex position="absolute" right={0} bottom="8px">
                 <Filters
                   setSearch={setSearch}
@@ -87,6 +93,7 @@ const Maintenance = () => {
           </Flex>
 
           <TabPanels>
+            <TabPanel />
             <TabPanel>
               <ScheduleFilterDisplay
                 isOpen={isOpen}

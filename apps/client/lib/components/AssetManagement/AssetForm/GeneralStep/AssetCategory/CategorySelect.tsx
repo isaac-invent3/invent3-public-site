@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { Option } from '~/lib/interfaces/general.interfaces';
+import { useAppSelector } from '~/lib/redux/hooks';
 import {
   useGetAllAssetCategoryQuery,
   useSearchCategoriesMutation,
@@ -13,6 +14,7 @@ interface CategorySelectProps {
 
 const CategorySelect = (props: CategorySelectProps) => {
   const { handleSelect } = props;
+  const { categoryName } = useAppSelector((state) => state.asset.assetForm);
   const [searchCategory] = useSearchCategoriesMutation({});
 
   const [pageNumber, setPageNumber] = useState(1);
@@ -27,6 +29,7 @@ const CategorySelect = (props: CategorySelectProps) => {
       data={data}
       labelKey="categoryName"
       valueKey="categoryId"
+      defaultInputValue={categoryName}
       mutationFn={searchCategory}
       isLoading={isLoading}
       pageNumber={pageNumber}

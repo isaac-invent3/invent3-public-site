@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { Option, SearchCriterion } from '~/lib/interfaces/general.interfaces';
+import { useAppSelector } from '~/lib/redux/hooks';
 import {
   useGetAllRoomsQuery,
   useGetRoomsByDepartmentIdQuery,
@@ -17,6 +18,7 @@ interface RoomSelectProps {
 
 const RoomSelect = (props: RoomSelectProps) => {
   const { handleSelect, type, departmentId } = props;
+  const { roomName } = useAppSelector((state) => state.asset.assetForm);
   const [searchRooms] = useSearchRoomsMutation({});
 
   const [pageNumber, setPageNumber] = useState(1);
@@ -66,6 +68,7 @@ const RoomSelect = (props: RoomSelectProps) => {
       }
       labelKey="roomName"
       valueKey="roomId"
+      defaultInputValue={roomName}
       mutationFn={searchRooms}
       isLoading={isLoading || isLoadingRoomsByDepartmentIdData}
       pageNumber={pageNumber}

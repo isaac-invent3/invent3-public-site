@@ -7,7 +7,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import React from 'react';
-import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
+import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
 import HeaderInfo from './HeaderInfo';
 import OtherInfo from './OtherInfo';
 import PlanDetail from './PlanDetail';
@@ -17,7 +17,7 @@ import { CloseIcon } from '~/lib/components/CustomIcons';
 interface EventDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
-  data: MaintenancePlan;
+  data: MaintenanceSchedule;
 }
 const EventDetailModal = (props: EventDetailModalProps) => {
   const { isOpen, onClose, data } = props;
@@ -62,7 +62,7 @@ const EventDetailModal = (props: EventDetailModalProps) => {
             pb="26px"
           >
             <PlanDetail data={data} />
-            <ModalButtons id={data?.scheduleId} />
+            <ModalButtons id={data?.scheduleGuid} />
           </VStack>
         </ModalBody>
       </ModalContent>

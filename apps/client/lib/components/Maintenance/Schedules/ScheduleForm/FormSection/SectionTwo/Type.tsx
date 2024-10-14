@@ -2,7 +2,7 @@ import { Flex, HStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
-import { useAppDispatch } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import {
   useGetAllMaintenanceTypeQuery,
   useSearchMaintenanceTypeMutation,
@@ -16,6 +16,9 @@ const Type = () => {
     pageNumber,
   });
   const [searchMaintenanceType] = useSearchMaintenanceTypeMutation({});
+  const { typeName } = useAppSelector(
+    (state) => state.maintenance.scheduleForm
+  );
   const dispatch = useAppDispatch();
   return (
     <HStack width="full" alignItems="flex-start" spacing="56px">
@@ -32,6 +35,7 @@ const Type = () => {
         data={data}
         labelKey="typeName"
         valueKey="maintenanceTypeId"
+        defaultInputValue={typeName}
         mutationFn={searchMaintenanceType}
         isLoading={isLoading}
         pageNumber={pageNumber}

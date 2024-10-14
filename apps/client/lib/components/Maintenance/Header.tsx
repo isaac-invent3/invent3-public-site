@@ -11,7 +11,7 @@ const breadCrumbData = [
     route: '/',
   },
   {
-    label: 'Maintenance Schedule',
+    label: 'Maintenance',
     route: '#',
   },
 ];
@@ -20,7 +20,7 @@ const Header = () => {
     <VStack spacing="58px" alignItems="flex-start" width="full" pt="12px">
       <GenericBreadCrumb routes={breadCrumbData} />
       <HStack width="full" justifyContent="space-between">
-        <PageHeader>Maintenance Schedule</PageHeader>
+        <PageHeader>Maintenance</PageHeader>
         <PrimaryButton
           customStyles={{ width: '227px' }}
           href="/maintenance/add"

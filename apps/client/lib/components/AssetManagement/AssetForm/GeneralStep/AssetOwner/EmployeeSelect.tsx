@@ -11,10 +11,11 @@ interface EmployeeSelectProps {
   handleSelect?: (options: Option) => void;
   selectName: string;
   selectTitle: string;
+  defaultName?: string | null;
 }
 
 const EmployeeSelect = (props: EmployeeSelectProps) => {
-  const { handleSelect, selectName, selectTitle } = props;
+  const { handleSelect, selectName, selectTitle, defaultName } = props;
   const [searchEmployee] = useSearchEmployeesMutation({});
 
   const [pageNumber, setPageNumber] = useState(1);
@@ -29,6 +30,7 @@ const EmployeeSelect = (props: EmployeeSelectProps) => {
       data={data}
       labelKey="employeeName"
       valueKey="employeeId"
+      defaultInputValue={defaultName}
       mutationFn={searchEmployee}
       isLoading={isLoading}
       pageNumber={pageNumber}

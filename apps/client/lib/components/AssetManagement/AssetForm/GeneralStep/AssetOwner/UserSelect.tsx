@@ -11,10 +11,11 @@ interface UserSelectProps {
   handleSelect?: (options: Option) => void;
   selectName: string;
   selectTitle: string;
+  defaultName?: string;
 }
 
 const UserSelect = (props: UserSelectProps) => {
-  const { handleSelect, selectName, selectTitle } = props;
+  const { handleSelect, selectName, selectTitle, defaultName } = props;
   const [searchUser] = useSearchUsersMutation({});
 
   const [pageNumber, setPageNumber] = useState(1);
@@ -34,6 +35,7 @@ const UserSelect = (props: UserSelectProps) => {
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
       handleSelect={handleSelect}
+      defaultInputValue={defaultName}
     />
   );
 };

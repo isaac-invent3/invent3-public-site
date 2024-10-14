@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { Option, SearchCriterion } from '~/lib/interfaces/general.interfaces';
+import { useAppSelector } from '~/lib/redux/hooks';
 import {
   useGetStatesByCountryIdQuery,
   useSearchStatesMutation,
@@ -15,6 +16,7 @@ interface StateSelectProps {
 
 const StateSelect = (props: StateSelectProps) => {
   const { countryId, handleSelect } = props;
+  const { stateName } = useAppSelector((state) => state.asset.assetForm);
   const [searchState] = useSearchStatesMutation({});
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading } = useGetStatesByCountryIdQuery(
@@ -49,6 +51,7 @@ const StateSelect = (props: StateSelectProps) => {
       data={data}
       labelKey="stateName"
       valueKey="stateId"
+      defaultInputValue={stateName}
       mutationFn={searchState}
       isLoading={isLoading}
       pageNumber={pageNumber}

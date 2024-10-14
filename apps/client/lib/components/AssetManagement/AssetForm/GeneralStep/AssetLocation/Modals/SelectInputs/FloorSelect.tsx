@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { Option, SearchCriterion } from '~/lib/interfaces/general.interfaces';
+import { useAppSelector } from '~/lib/redux/hooks';
 import {
   useGetAllFloorsQuery,
   useGetFloorsByBuildingIdQuery,
@@ -17,6 +18,7 @@ interface FloorSelectProps {
 
 const FloorSelect = (props: FloorSelectProps) => {
   const { handleSelect, type, buildingId } = props;
+  const { floorName } = useAppSelector((state) => state.asset.assetForm);
   const [searchFloors] = useSearchFloorsMutation({});
 
   const [pageNumber, setPageNumber] = useState(1);
@@ -66,6 +68,7 @@ const FloorSelect = (props: FloorSelectProps) => {
       }
       labelKey="floorName"
       valueKey="floorId"
+      defaultInputValue={floorName}
       mutationFn={searchFloors}
       isLoading={isLoading || isLoadingFloorsByBuildingIdData}
       pageNumber={pageNumber}

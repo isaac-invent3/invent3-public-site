@@ -4,7 +4,7 @@ import AssetSelect from '~/lib/components/Common/AssetSelect';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import { Asset } from '~/lib/interfaces/asset.interfaces';
 import { Option } from '~/lib/interfaces/general.interfaces';
-import { useAppDispatch } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useGetAssetInfoHeaderByIdQuery } from '~/lib/redux/services/asset/general.services';
 import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';
 
@@ -14,6 +14,9 @@ const AssetField = () => {
     skip: !selectedAsset?.value,
   });
   const dispatch = useAppDispatch();
+  const { assetName } = useAppSelector(
+    (state) => state.maintenance.scheduleForm
+  );
 
   useEffect(() => {
     if (data?.data) {
@@ -51,6 +54,7 @@ const AssetField = () => {
       <AssetSelect
         selectName="assetId"
         selectTitle="Asset"
+        defaultInputValue={assetName}
         handleSelect={(option) => {
           setSelectedAsset(option);
           dispatch(updateScheduleForm({ assetName: option.label }));

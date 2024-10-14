@@ -59,6 +59,7 @@ const VendorDetails = () => {
             data={data}
             labelKey="vendorName"
             valueKey="vendorId"
+            defaultInputValue={vendorDetails?.vendorName}
             mutationFn={searchVendor}
             isLoading={isLoading}
             pageNumber={pageNumber}

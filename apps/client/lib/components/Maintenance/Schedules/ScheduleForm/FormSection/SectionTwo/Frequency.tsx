@@ -2,7 +2,7 @@ import { Flex, HStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
-import { useAppDispatch } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import {
   useGetAllMaintenanceFrequenciesQuery,
   useSearchMaintenanceFrequenciesMutation,
@@ -19,6 +19,10 @@ const Frequency = () => {
     {}
   );
   const dispatch = useAppDispatch();
+  const { frequencyName } = useAppSelector(
+    (state) => state.maintenance.scheduleForm
+  );
+
   return (
     <HStack width="full" alignItems="flex-start" spacing="81px">
       <Flex width="full" maxW="130px">
@@ -34,6 +38,7 @@ const Frequency = () => {
         data={data}
         labelKey="frequencyName"
         valueKey="frequencyId"
+        defaultInputValue={frequencyName}
         mutationFn={searchMaintenanceFrequency}
         isLoading={isLoading}
         pageNumber={pageNumber}

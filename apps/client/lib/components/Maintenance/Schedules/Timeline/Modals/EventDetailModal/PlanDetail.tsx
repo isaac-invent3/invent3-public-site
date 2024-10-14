@@ -3,15 +3,15 @@ import { createColumnHelper } from '@tanstack/react-table';
 import React, { useMemo } from 'react';
 import DetailHeader from '~/lib/components/UI/DetailHeader';
 import DataTable from '~/lib/components/UI/Table';
-import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
+import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
 
 interface PlanDetailProps {
-  data: MaintenancePlan;
+  data: MaintenanceSchedule;
 }
 const PlanDetail = (props: PlanDetailProps) => {
   const { data } = props;
-  const columnHelper = createColumnHelper<MaintenancePlan>();
+  const columnHelper = createColumnHelper<MaintenanceSchedule>();
 
   const columns = useMemo(
     () => [
@@ -25,7 +25,7 @@ const PlanDetail = (props: PlanDetailProps) => {
         header: 'Plan Type',
         enableSorting: false,
       }),
-      columnHelper.accessor('assetName', {
+      columnHelper.accessor('frequencyName', {
         cell: (info) => info.getValue(),
         header: 'Frequency',
         enableSorting: false,

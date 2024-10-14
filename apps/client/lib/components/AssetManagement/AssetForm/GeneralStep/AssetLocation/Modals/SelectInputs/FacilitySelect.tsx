@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { Option } from '~/lib/interfaces/general.interfaces';
+import { useAppSelector } from '~/lib/redux/hooks';
 import {
   useGetAllFacilitiesQuery,
   useSearchFacilitiesMutation,
@@ -13,6 +14,7 @@ interface FacilitySelectProps {
 
 const FacilitySelect = (props: FacilitySelectProps) => {
   const { handleSelect } = props;
+  const { facilityName } = useAppSelector((state) => state.asset.assetForm);
   const [searchFacility] = useSearchFacilitiesMutation({});
 
   const [pageNumber, setPageNumber] = useState(1);
@@ -27,6 +29,7 @@ const FacilitySelect = (props: FacilitySelectProps) => {
       data={data}
       labelKey="facilityName"
       valueKey="facilityId"
+      defaultInputValue={facilityName}
       mutationFn={searchFacility}
       isLoading={isLoading}
       pageNumber={pageNumber}

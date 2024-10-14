@@ -6,8 +6,8 @@ import TextareaInput from '~/lib/components/UI/TextArea';
 
 const Description = () => {
   return (
-    <HStack width="full" alignItems="flex-start" spacing="81px">
-      <Flex width="full" maxW="130px">
+    <HStack width="full" alignItems="flex-start" spacing="41px">
+      <Flex width="full" maxW="141px">
         <SectionInfo
           title="Description"
           info="Add name that users can likely search with"

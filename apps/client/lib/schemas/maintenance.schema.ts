@@ -10,8 +10,16 @@ const scheduleSchema = Yup.object().shape({
   description: Yup.string().required('Description is Required'),
   comment: Yup.string().nullable(),
   scheduledDate: Yup.string().required('Scheduled Date is Required'),
-  completionDate: Yup.string().required('Completion Date is Required'),
+  completionDate: Yup.string().nullable(),
   ticketId: Yup.number().nullable(),
 });
 
-export { scheduleSchema };
+const planSchema = Yup.object().shape({
+  planName: Yup.string().required('Name is Required'),
+  planTypeId: Yup.string().required('Type is Required'),
+  startDate: Yup.string().required('Start Date is Required'),
+  endDate: Yup.string().required('End Date is Required'),
+  assetId: Yup.string().required('Asset is Required'),
+});
+
+export { scheduleSchema, planSchema };

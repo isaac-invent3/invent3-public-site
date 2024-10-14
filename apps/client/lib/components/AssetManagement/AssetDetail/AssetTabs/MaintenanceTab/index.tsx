@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import MaintenanceCard from './MaintenanceCard';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { useGetPlannedMaintenanceByAssetIdQuery } from '~/lib/redux/services/asset/general.services';
-import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
+import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
 import Button from '~/lib/components/UI/Button';
 
 const MaintenanceTab = () => {
@@ -43,7 +43,7 @@ const MaintenanceTab = () => {
       </Button> */}
       <VStack width="full" spacing="16px">
         {data?.data?.items.length >= 1 ? (
-          data?.data?.items.map((item: MaintenancePlan) => (
+          data?.data?.items.map((item: MaintenanceSchedule) => (
             <MaintenanceCard data={item} key={item.scheduleId} />
           ))
         ) : (

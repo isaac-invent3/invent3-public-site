@@ -1,7 +1,7 @@
 import { Text, VStack } from '@chakra-ui/react';
-import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
+import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
 
-const Technician = (info: MaintenancePlan) => {
+const Technician = (info: MaintenanceSchedule) => {
   return (
     <VStack alignItems="flex-start" spacing="4px">
       <Text color="black">{info.contactPerson}</Text>

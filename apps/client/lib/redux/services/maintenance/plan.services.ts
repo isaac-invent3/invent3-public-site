@@ -10,6 +10,15 @@ export const maintenancePlanApi = createApi({
   baseQuery: baseQueryWithReauth,
   tagTypes: ['allMaintenancePlan'],
   endpoints: (builder) => ({
+    createMaintenancePlan: builder.mutation({
+      query: (body: any) => ({
+        url: `/MaintenancePlans`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allMaintenancePlan'],
+    }),
     getAllMaintenancePlan: builder.query({
       query: (data: any) => ({
         url: generateQueryStr(`/MaintenancePlans?`, data),
@@ -30,6 +39,7 @@ export const maintenancePlanApi = createApi({
 });
 
 export const {
+  useCreateMaintenancePlanMutation,
   useGetAllMaintenancePlanQuery,
   useSearchMaintenancePlanMutation,
 } = maintenancePlanApi;

@@ -18,7 +18,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 
 import {
   AggregateMaintenanceSchedule,
-  MaintenancePlan,
+  MaintenanceSchedule,
 } from '~/lib/interfaces/maintenance.interfaces';
 import { CloseIcon } from '~/lib/components/CustomIcons';
 import { dateFormatter } from '~/lib/utils/Formatters';
@@ -38,7 +38,9 @@ const AggregateDetailModal = (props: AggregateDetailModalProps) => {
   );
   const { isOpen, onClose, data } = props;
   const [currentPage, setCurrentPage] = useState(1);
-  const [localSchedules, setLocalSchedules] = useState<MaintenancePlan[]>([]);
+  const [localSchedules, setLocalSchedules] = useState<MaintenanceSchedule[]>(
+    []
+  );
   const { data: allSchedules, isLoading } =
     useGetMaintenanceSchedulesByAreaQuery({
       areaId: selectedCountry?.value,

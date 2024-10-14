@@ -1,28 +1,20 @@
 interface MaintenancePlan {
-  rowId: number;
-  assetId: number;
-  assetName: string;
-  countryId: number;
-  stateId: number;
-  maintenancePlanId: number;
-  planName: string;
-  scheduleId: number;
-  scheduleGuid: number;
-  scheduledDate: string;
-  completionDate: string | null;
-  durationInHours: number;
-  comments: string;
-  ticketId: number | null;
-  assignedTo: number | null;
-  statusId: number;
-  currentStatus: string;
-  contactPerson: string | null;
-  contactPersonPhoneNo: string | null;
-  contactPersonEmail: string | null;
-  maintenanceType: string;
-  createdBy: string | null;
-  totalCost: number;
-  assetLocation: string;
+  rowId: number | null;
+  maintenancePlanId: number | null;
+  planName: string | null;
+  startDate: string | null;
+  endDate: string | null;
+  dateCreated: string | null;
+  cost: number | null;
+  isDeleted: boolean | null;
+  owner: string | null;
+  assetId: number | null;
+  assetCode: string | null;
+  serialNo: string | null;
+  assetDescription: string | null;
+  activeSchedules: number | null;
+  openTasks: number | null;
+  assetLocation: string | null;
 }
 
 interface MaintenanceSchedule {

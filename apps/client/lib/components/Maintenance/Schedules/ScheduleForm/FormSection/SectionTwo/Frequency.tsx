@@ -24,7 +24,7 @@ const Frequency = () => {
   );
 
   return (
-    <HStack width="full" alignItems="flex-start" spacing="81px">
+    <HStack width="full" alignItems="flex-start" spacing="56px">
       <Flex width="full" maxW="130px">
         <SectionInfo
           title="Frequency"

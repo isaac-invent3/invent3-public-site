@@ -17,6 +17,7 @@ import History from './History';
 import Filters from './Schedules/Filters';
 import ScheduleFilterDisplay from './Schedules/Filters/ScheduleFilterDisplay';
 import { FilterInput } from '~/lib/interfaces/asset.interfaces';
+import Plans from './Plans';
 
 const ALlTabs = ['Plans', 'Schedules', 'History'];
 
@@ -81,19 +82,19 @@ const Maintenance = () => {
               <Tab>Schedules</Tab>
               <Tab>History</Tab>
             </TabList>
-            {tabIndex === 1 && (
-              <Flex position="absolute" right={0} bottom="8px">
-                <Filters
-                  setSearch={setSearch}
-                  activeFilter={activeFilter}
-                  setActiveFilter={setActiveFilter}
-                />
-              </Flex>
-            )}
+            <Flex position="absolute" right={0} bottom="8px">
+              <Filters
+                setSearch={setSearch}
+                activeFilter={activeFilter}
+                setActiveFilter={setActiveFilter}
+              />
+            </Flex>
           </Flex>
 
           <TabPanels>
-            <TabPanel />
+            <TabPanel>
+              <Plans />
+            </TabPanel>
             <TabPanel>
               <ScheduleFilterDisplay
                 isOpen={isOpen}

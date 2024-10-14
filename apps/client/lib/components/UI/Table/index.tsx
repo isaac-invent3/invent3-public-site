@@ -129,7 +129,7 @@ function DataTable<Data extends object>({
               <Tr key={headerGroup.id}>
                 {/* Checkbox for selecting all rows */}
                 {isSelectable && (
-                  <Th key="selectAll" px="16px">
+                  <Th key="selectAll" px="16px" {...customThStyle}>
                     <CheckBox
                       isChecked={selectAll}
                       handleChange={handleSelectAll}
@@ -243,6 +243,7 @@ function DataTable<Data extends object>({
                         py="8px"
                         px="16px"
                         onClick={(e) => e.stopPropagation()}
+                        {...customTdStyle}
                       >
                         <CheckBox
                           isChecked={

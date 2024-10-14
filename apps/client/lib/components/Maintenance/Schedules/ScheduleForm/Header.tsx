@@ -16,7 +16,7 @@ const Header = (props: HeaderProps) => {
       route: '/',
     },
     {
-      label: 'Maintenance Schedule',
+      label: 'Maintenance',
       route: '/maintenance',
     },
     {

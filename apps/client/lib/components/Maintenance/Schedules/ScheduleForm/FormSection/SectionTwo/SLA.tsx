@@ -1,4 +1,4 @@
-import { Flex, HStack } from '@chakra-ui/react';
+import { Box, Flex, HStack, Text } from '@chakra-ui/react';
 import { Field } from 'formik';
 import React from 'react';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
@@ -14,12 +14,25 @@ const ServiceLevelAgreement = () => {
           isRequired
         />
       </Flex>
-      <Field
-        as={TextInput}
-        name="sla"
-        type="number"
-        label="Agreement Max. Hours"
-      />
+      <HStack spacing={0} position="relative" width="full">
+        <Field
+          as={TextInput}
+          name="sla"
+          type="number"
+          label="Agreement Max. Hours"
+          customStyle={{ roundedRight: 'none' }}
+        />
+        <HStack
+          height="50px"
+          bgColor="neutral.100"
+          pr="16px"
+          spacing="17px"
+          roundedRight="8px"
+        >
+          <Box borderWidth="1px" borderColor="neutral.700" height="24px" />
+          <Text color="neutral.700">Hours</Text>
+        </HStack>
+      </HStack>
     </HStack>
   );
 };

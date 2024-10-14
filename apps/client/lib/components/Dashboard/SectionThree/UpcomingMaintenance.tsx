@@ -6,7 +6,7 @@ import { timeRangeOptions } from '~/lib/utils/constants';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import DataTable from '../../UI/Table';
 import { createColumnHelper } from '@tanstack/react-table';
-import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
+import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import Technician from '../../AssetManagement/Common/Technician';
 import Status from '../../AssetManagement/Common/MaintenanceStatus';
@@ -49,18 +49,22 @@ const UpcomingMaintenance = () => {
     pageNumber: currentPage,
     datePeriod: selectedTimeRange?.value,
   });
-  const columnHelper = createColumnHelper<MaintenancePlan>();
+  const columnHelper = createColumnHelper<MaintenanceSchedule>();
   const columns = useMemo(
     () => [
       columnHelper.accessor('scheduledDate', {
-        cell: (info) =>
-          ContentDisplay(
-            info.getValue()
-              ? dateFormatter(info.getValue(), 'D MMM, YYYY')
-              : 'N/A',
-            'neutral.600',
-            '74px'
-          ),
+        cell: (info) => {
+          const value = info.getValue();
+          if (value && !isNaN(new Date(value).getTime())) {
+            return ContentDisplay(
+              info.getValue() ? dateFormatter(value, 'D MMM, YYYY') : 'N/A',
+              'neutral.600',
+              '74px'
+            );
+          } else {
+            return 'N/A';
+          }
+        },
         header: 'Date',
         enableSorting: false,
       }),
@@ -90,7 +94,8 @@ const UpcomingMaintenance = () => {
         enableSorting: false,
       }),
       columnHelper.accessor('currentStatus', {
-        cell: (info) => (info.getValue() ? Status(info.getValue()) : 'N/A'),
+        cell: (info) =>
+          info.getValue() ? Status(info.getValue() as string) : 'N/A',
         header: 'Status',
         enableSorting: false,
       }),

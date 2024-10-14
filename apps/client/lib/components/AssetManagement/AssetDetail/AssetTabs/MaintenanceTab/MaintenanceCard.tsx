@@ -2,12 +2,12 @@ import { Flex, Grid, GridItem, HStack, Text, VStack } from '@chakra-ui/react';
 import moment from 'moment';
 import Link from 'next/link';
 import React from 'react';
-import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
+import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
 import { MaintenanceColorCode } from '~/lib/utils/ColorCodes';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
 interface MaintenanceCardProps {
-  data: MaintenancePlan;
+  data: MaintenanceSchedule;
 }
 const MaintenanceCard = (props: MaintenanceCardProps) => {
   const { data } = props;
@@ -33,7 +33,9 @@ const MaintenanceCard = (props: MaintenanceCardProps) => {
         <HStack spacing="22px" alignItems="flex-start">
           <VStack spacing="2px">
             <Text color="neutral.600" size="md" fontWeight={500}>
-              {dateFormatter(data?.scheduledDate, 'ddd')}
+              {data?.scheduledDate
+                ? dateFormatter(data?.scheduledDate, 'ddd')
+                : 'N/A'}
             </Text>
 
             <Text
@@ -42,7 +44,9 @@ const MaintenanceCard = (props: MaintenanceCardProps) => {
               lineHeight="28.51px"
               fontWeight={800}
             >
-              {dateFormatter(data?.scheduledDate, 'DD')}
+              {data?.scheduledDate
+                ? dateFormatter(data?.scheduledDate, 'DD')
+                : 'N/A'}
             </Text>
             <Text
               color="neutral.800"
@@ -50,7 +54,9 @@ const MaintenanceCard = (props: MaintenanceCardProps) => {
               letterSpacing="0.1em"
               textTransform="uppercase"
             >
-              {dateFormatter(data?.scheduledDate, 'MMM')}
+              {data?.scheduledDate
+                ? dateFormatter(data?.scheduledDate, 'MMM')
+                : 'N/A'}
             </Text>
           </VStack>
           <VStack spacing="8px" alignItems="flex-start">
@@ -62,8 +68,10 @@ const MaintenanceCard = (props: MaintenanceCardProps) => {
             </VStack>
             <VStack alignItems="flex-start" spacing="2px">
               <Text color="neutral.600">
-                {dateFormatter(data?.scheduledDate, 'HH:mm')} -{' '}
-                {endTime ? endTime.format('HH:mm') : 'N/A'}
+                {data?.scheduledDate
+                  ? dateFormatter(data?.scheduledDate, 'HH:mm')
+                  : 'N/A'}{' '}
+                - {endTime ? endTime.format('HH:mm') : 'N/A'}
               </Text>
               <Text color="neutral.600">
                 Created By: {data?.createdBy ?? 'N/A'}

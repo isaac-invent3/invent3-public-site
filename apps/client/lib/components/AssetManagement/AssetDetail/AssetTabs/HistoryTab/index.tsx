@@ -2,14 +2,14 @@ import { Flex, Text } from '@chakra-ui/react';
 import { createColumnHelper } from '@tanstack/react-table';
 import React, { useMemo, useState } from 'react';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
-import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
+import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
 import { useGetMaintenanceHistoryByAssetIdQuery } from '~/lib/redux/services/asset/general.services';
 import { useAppSelector } from '~/lib/redux/hooks';
 import DataTable from '~/lib/components/UI/Table';
 import Technician from '../../../Common/Technician';
 import Status from '../../../Common/MaintenanceStatus';
 
-const Description = (description: string) => {
+const Description = (description: string | null) => {
   return (
     <Text
       height="full"
@@ -32,7 +32,7 @@ const HistoryTab = () => {
     { id: assetId, pageSize, pageNumber: currentPage },
     { skip: !assetId }
   );
-  const columnHelper = createColumnHelper<MaintenancePlan>();
+  const columnHelper = createColumnHelper<MaintenanceSchedule>();
   const columns = useMemo(
     () => [
       columnHelper.accessor('assetId', {
@@ -79,7 +79,8 @@ const HistoryTab = () => {
         enableSorting: false,
       }),
       columnHelper.accessor('currentStatus', {
-        cell: (info) => (info.getValue() ? Status(info.getValue()) : 'N/A'),
+        cell: (info) =>
+          info.getValue() ? Status(info.getValue() as string) : 'N/A',
         header: 'Status',
         enableSorting: false,
       }),

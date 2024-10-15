@@ -6,6 +6,7 @@ import Type from './Type';
 import Date from './Date';
 import Frequency from './Frequency';
 import ServiceLevelAgreement from './SLA';
+import Tasks from './Tasks';
 
 const SectionTwo = () => {
   return (
@@ -36,6 +37,14 @@ const SectionTwo = () => {
       >
         <Date />
         <ServiceLevelAgreement />
+      </SimpleGrid>
+      <SimpleGrid
+        columns={2}
+        alignItems="flex-start"
+        width="full"
+        spacing="40px"
+      >
+        <Tasks />
       </SimpleGrid>
     </VStack>
   );

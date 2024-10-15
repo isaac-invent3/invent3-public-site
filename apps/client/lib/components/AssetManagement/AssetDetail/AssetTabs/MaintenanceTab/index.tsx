@@ -1,7 +1,6 @@
 import { Flex, Skeleton, Text, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
-// import Button from '~/lib/components/UI/Button';
-import MaintenanceCard from './MaintenanceCard';
+import MaintenanceScheduleCard from '../../../../Maintenance/Schedules/MaintenanceScheduleCard';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { useGetPlannedMaintenanceByAssetIdQuery } from '~/lib/redux/services/asset/general.services';
 import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
@@ -44,7 +43,7 @@ const MaintenanceTab = () => {
       <VStack width="full" spacing="16px">
         {data?.data?.items.length >= 1 ? (
           data?.data?.items.map((item: MaintenanceSchedule) => (
-            <MaintenanceCard data={item} key={item.scheduleId} />
+            <MaintenanceScheduleCard data={item} key={item.scheduleId} />
           ))
         ) : (
           <Text

@@ -29,6 +29,9 @@ import { maintenanceScheduleApi } from './services/maintenance/schedule.services
 import maintenanceSlice from './slices/MaintenanceSlice';
 import { maintenanceTypeApi } from './services/maintenance/type.services';
 import { maintenanceFrequencyApi } from './services/maintenance/frequency.services';
+import { taskApi } from './services/task/general.services';
+import { taskPrioritiesApi } from './services/task/priorities.services';
+import { taskTypeApi } from './services/task/types.services';
 
 export const persistConfig = {
   key: 'root',
@@ -49,6 +52,9 @@ const rootReducer = combineReducers({
   [maintenancePlanApi.reducerPath]: maintenancePlanApi.reducer,
   [maintenanceScheduleApi.reducerPath]: maintenanceScheduleApi.reducer,
   [maintenanceTypeApi.reducerPath]: maintenanceTypeApi.reducer,
+  [taskApi.reducerPath]: taskApi.reducer,
+  [taskPrioritiesApi.reducerPath]: taskPrioritiesApi.reducer,
+  [taskTypeApi.reducerPath]: taskTypeApi.reducer,
   [locationApi.reducerPath]: locationApi.reducer,
   [utilityApi.reducerPath]: utilityApi.reducer,
   [userApi.reducerPath]: userApi.reducer,
@@ -80,6 +86,9 @@ export const makeStore = () => {
         maintenancePlanApi.middleware,
         maintenanceScheduleApi.middleware,
         maintenanceTypeApi.middleware,
+        taskApi.middleware,
+        taskPrioritiesApi.middleware,
+        taskTypeApi.middleware,
         locationApi.middleware,
         categoryApi.middleware,
         conditionApi.middleware,

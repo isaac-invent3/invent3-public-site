@@ -10,19 +10,31 @@ import {
 import { createColumnHelper } from '@tanstack/react-table';
 import React, { useMemo, useState } from 'react';
 import { InfoIcon } from '~/lib/components/CustomIcons';
+import CustomizedPlanModal from '~/lib/components/Maintenance/Plans/Modals/CustomizedplanModal';
+import PlanDetailsModal from '~/lib/components/Maintenance/Plans/Modals/PlanDetailModal';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import DataTable from '~/lib/components/UI/Table';
 import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 // import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useGetAllMaintenancePlanQuery } from '~/lib/redux/services/maintenance/plan.services';
 import { dateFormatter } from '~/lib/utils/Formatters';
-import CustomizedPlanModal from './CustomizedplanModal';
 
 const View = (info: MaintenancePlan) => {
+  const { isOpen, onClose, onOpen } = useDisclosure();
   return (
-    <Text color="primary.500" textDecoration="underline" cursor="pointer">
-      View
-    </Text>
+    <>
+      <Text
+        color="#0366EF"
+        textDecoration="underline"
+        cursor="pointer"
+        onClick={() => onOpen()}
+      >
+        View
+      </Text>
+      {isOpen && (
+        <PlanDetailsModal isOpen={isOpen} onClose={onClose} data={info} />
+      )}
+    </>
   );
 };
 const Plan = () => {

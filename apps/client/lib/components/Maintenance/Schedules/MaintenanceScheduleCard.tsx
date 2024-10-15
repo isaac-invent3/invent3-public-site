@@ -6,10 +6,10 @@ import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
 import { MaintenanceColorCode } from '~/lib/utils/ColorCodes';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
-interface MaintenanceCardProps {
+interface MaintenanceScheduleCardProps {
   data: MaintenanceSchedule;
 }
-const MaintenanceCard = (props: MaintenanceCardProps) => {
+const MaintenanceScheduleCard = (props: MaintenanceScheduleCardProps) => {
   const { data } = props;
   const endTime = data?.durationInHours
     ? moment(data?.scheduledDate).add(data?.durationInHours, 'hours') // Add the duration if available
@@ -128,4 +128,4 @@ const MaintenanceCard = (props: MaintenanceCardProps) => {
   );
 };
 
-export default MaintenanceCard;
+export default MaintenanceScheduleCard;

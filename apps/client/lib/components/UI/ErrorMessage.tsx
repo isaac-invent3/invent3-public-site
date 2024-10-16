@@ -3,7 +3,7 @@ import React from 'react';
 import { InfoIcon } from '../CustomIcons';
 
 interface ErrorMessageProps {
-  children: React.ReactNode;
+  children: React.ReactNode | string;
 }
 const ErrorMessage = ({ children }: ErrorMessageProps) => {
   return (

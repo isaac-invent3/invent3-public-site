@@ -31,6 +31,7 @@ export default function Page({ params }: { params: { id: string } }) {
         typeName: schedule?.maintenanceType,
         assetId: schedule?.assetId,
         assetName: schedule?.assetName,
+        // assetTypeId: schedule?.
         sla: schedule?.sla,
         frequencyId: schedule?.frequencyId,
         frequencyName: schedule?.frequencyName,

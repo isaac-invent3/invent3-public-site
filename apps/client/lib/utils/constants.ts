@@ -31,6 +31,11 @@ const AREA_ENUM = {
   state: 2,
 };
 
+const MAINTENANCE_PLAN_ENUM = {
+  default: 1,
+  custom: 2,
+};
+
 const FILE_ICONS = {
   pdf: AiOutlineFilePdf,
   doc: AiOutlineFileWord,
@@ -135,6 +140,7 @@ export {
   FORM_ENUM,
   AREA_ENUM,
   FILE_ICONS,
+  MAINTENANCE_PLAN_ENUM,
   timeRangeOptions,
   yearOptions,
   monthOptions,

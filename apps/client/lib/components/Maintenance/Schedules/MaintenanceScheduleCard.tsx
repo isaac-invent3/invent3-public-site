@@ -117,8 +117,12 @@ const MaintenanceScheduleCard = (props: MaintenanceScheduleCardProps) => {
             </Text>
           </VStack>
           <Link href={`/maintenance?id=${data?.scheduleId}`}>
-            <Text color="primary.main" fontWeight={700}>
-              View Tasks
+            <Text
+              color="primary.500"
+              fontWeight={700}
+              textDecoration="underline"
+            >
+              View Schedule Tasks
             </Text>
           </Link>
         </Flex>

@@ -19,4 +19,13 @@ const AssetColorCode = {
   'Out of Service': '#F50000',
 };
 
-export { MaintenanceColorCode, AssetColorCode };
+const TaskPriorityColorCode = {
+  Critical: '#07CC3B',
+  High: '#FF7A37',
+  Cancelled: '#F50000',
+  Low: '#0366EF',
+  Medium: '#8595A5',
+  Urgent: '#8D35F1',
+};
+
+export { MaintenanceColorCode, AssetColorCode, TaskPriorityColorCode };

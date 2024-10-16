@@ -22,6 +22,7 @@ const initialScheduleForm = {
   typeId: null,
   typeName: null,
   assetId: null,
+  assetTypeId: null,
   assetName: null,
   sla: null,
   frequencyId: null,
@@ -32,6 +33,7 @@ const initialScheduleForm = {
   scheduledDate: null,
   completionDate: null,
   ticketId: null,
+  tasks: [],
   contactDetails: {
     picture: null,
     contactPerson: null,

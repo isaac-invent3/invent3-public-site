@@ -8,7 +8,7 @@ const getHeaders = () => ({
 export const maintenancePlanApi = createApi({
   reducerPath: 'maintenancePlanApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['allMaintenancePlan'],
+  tagTypes: ['allMaintenancePlan', 'allMaintenancePlansByAssetId'],
   endpoints: (builder) => ({
     createMaintenancePlan: builder.mutation({
       query: (body: any) => ({
@@ -17,7 +17,7 @@ export const maintenancePlanApi = createApi({
         headers: getHeaders(),
         body,
       }),
-      invalidatesTags: ['allMaintenancePlan'],
+      invalidatesTags: ['allMaintenancePlan', 'allMaintenancePlansByAssetId'],
     }),
     getAllMaintenancePlan: builder.query({
       query: (data: any) => ({
@@ -26,6 +26,17 @@ export const maintenancePlanApi = createApi({
         headers: getHeaders(),
       }),
       providesTags: ['allMaintenancePlan'],
+    }),
+    getAllMaintenancePlansByAssetId: builder.query({
+      query: ({ id, ...data }) => ({
+        url: generateQueryStr(
+          `/MaintenancePlans/GetAssetMaintenancePlans/${id}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allMaintenancePlansByAssetId'],
     }),
     searchMaintenancePlan: builder.mutation({
       query: (body: any) => ({
@@ -42,4 +53,5 @@ export const {
   useCreateMaintenancePlanMutation,
   useGetAllMaintenancePlanQuery,
   useSearchMaintenancePlanMutation,
+  useGetAllMaintenancePlansByAssetIdQuery,
 } = maintenancePlanApi;

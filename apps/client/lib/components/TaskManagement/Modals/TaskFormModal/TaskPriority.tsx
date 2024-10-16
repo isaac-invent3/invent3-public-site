@@ -1,4 +1,5 @@
 import { Flex, HStack } from '@chakra-ui/react';
+import { useFormikContext } from 'formik';
 import React, { useState } from 'react';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
@@ -14,6 +15,7 @@ const TaskPriority = () => {
     pageNumber,
   });
   const [searchTaskPriorities] = useSearchTaskPrioritiesMutation({});
+  const { setFieldValue } = useFormikContext<any>();
 
   return (
     <HStack width="full" alignItems="flex-start" spacing="73px">
@@ -34,6 +36,7 @@ const TaskPriority = () => {
         isLoading={isLoading}
         pageNumber={pageNumber}
         setPageNumber={setPageNumber}
+        handleSelect={(option) => setFieldValue('priorityName', option.label)}
       />
     </HStack>
   );

@@ -38,6 +38,8 @@ const AssetField = () => {
       dispatch(
         updateScheduleForm({
           assetLocation: location,
+          assetTypeId: asset.assetTypeId,
+          assetId: asset.assetId,
         })
       );
     }

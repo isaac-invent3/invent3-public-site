@@ -4,10 +4,11 @@ import { Checkbox as ChakraCheckbox } from '@chakra-ui/react';
 interface CheckBoxProps {
   isChecked: boolean;
   handleChange: () => void;
+  customStyle?: { [key: string]: unknown };
 }
 
 const CheckBox = (props: CheckBoxProps) => {
-  const { isChecked, handleChange } = props;
+  const { isChecked, handleChange, customStyle } = props;
 
   return (
     <ChakraCheckbox
@@ -41,6 +42,7 @@ const CheckBox = (props: CheckBoxProps) => {
       }}
       isChecked={isChecked}
       onChange={handleChange}
+      {...customStyle}
     />
   );
 };

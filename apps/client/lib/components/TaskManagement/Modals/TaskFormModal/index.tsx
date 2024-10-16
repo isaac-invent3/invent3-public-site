@@ -1,12 +1,10 @@
+/* eslint-disable no-unused-vars */
 import { Flex, HStack, VStack } from '@chakra-ui/react';
 import { Field, FormikProvider, useFormik } from 'formik';
 import React from 'react';
 import GenericModal from '~/lib/components/UI/Modal';
 import Button from '~/lib/components/UI/Button';
-import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { useSession } from 'next-auth/react';
 import TextInput from '~/lib/components/UI/TextInput';
-import { useCreateMaintenancePlanMutation } from '~/lib/redux/services/maintenance/plan.services';
 import ModalHeading from '~/lib/components/UI/ModalHeading';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import CustomDatePicker from '~/lib/components/UI/Form/FormDatePicker';
@@ -14,41 +12,47 @@ import BackButton from '~/lib/components/UI/Button/BackButton';
 import TaskPriority from './TaskPriority';
 import TextareaInput from '~/lib/components/UI/TextArea';
 import TaskType from './TaskType';
-import { taskSchema } from '~/lib/schemas/task.schema';
+import { taskBaseSchema } from '~/lib/schemas/task.schema';
+import { taskFormDetails } from '~/lib/interfaces/task.interfaces';
+import TaskAssignedTo from './AssignedTo';
 
 interface TaskFormModalProps {
   isOpen: boolean;
   onClose: () => void;
+  handleData?: (task: taskFormDetails) => void;
+  data?: taskFormDetails;
 }
 const TaskFormModal = (props: TaskFormModalProps) => {
-  const { isOpen, onClose } = props;
-  const [createPlan, { isLoading }] = useCreateMaintenancePlanMutation({});
-  const { handleSubmit } = useCustomMutation();
-  const { data } = useSession();
+  const { isOpen, onClose, handleData, data } = props;
+  // const { handleSubmit } = useCustomMutation();
 
   const formik = useFormik({
     initialValues: {
-      taskTypeId: null,
-      taskName: null,
-      taskDescription: null,
-      priorityId: null,
-      taskStatusId: null,
-      assignedTo: null,
-      dueDate: null,
-      dateCompleted: null,
-      costEstimate: null,
-      actualCost: null,
-      comments: null,
-      scheduleId: null,
+      taskId: data?.taskId ?? null,
+      taskTypeId: data?.taskTypeId ?? null,
+      taskTypeName: data?.taskTypeName ?? null,
+      taskName: data?.taskName ?? null,
+      taskDescription: data?.taskDescription ?? null,
+      priorityId: data?.priorityId ?? null,
+      priorityName: data?.priorityName ?? null,
+      taskStatusId: data?.taskStatusId ?? null,
+      taskStatusName: data?.taskStatusName ?? null,
+      assignedTo: data?.assignedTo ?? null,
+      assignedToName: data?.assignedToName ?? null,
+      dueDate: data?.dueDate ?? null,
+      dateCompleted: data?.dateCompleted ?? null,
+      costEstimate: data?.costEstimate ?? null,
+      actualCost: data?.actualCost ?? null,
+      comments: data?.comments ?? null,
     },
-    validationSchema: taskSchema,
+    validationSchema: taskBaseSchema,
     enableReinitialize: true,
-    onSubmit: async (values) => {
-      const finalValue = { ...values, createdBy: data?.user?.username };
-      const response = await handleSubmit(createPlan, finalValue, '');
-      if (response?.data) {
-        onClose();
+    onSubmit: async (values, { resetForm }) => {
+      if (handleData) {
+        handleData({ ...values, taskStatusName: 'Not Started' });
       }
+      resetForm();
+      onClose();
     },
   });
 
@@ -116,11 +120,7 @@ const TaskFormModal = (props: TaskFormModalProps) => {
                   />
                 </Flex>
 
-                <CustomDatePicker
-                  name="dueDate"
-                  label="Due Date"
-                  type="datetime"
-                />
+                <CustomDatePicker name="dueDate" label="Due Date" type="date" />
               </HStack>
               <HStack width="full" alignItems="flex-start" spacing="73px">
                 <Flex width="full" maxW="118px">
@@ -134,7 +134,7 @@ const TaskFormModal = (props: TaskFormModalProps) => {
                 <CustomDatePicker
                   name="dateCompleted"
                   label="Completion Date"
-                  type="datetime"
+                  type="date"
                 />
               </HStack>
               <HStack width="full" alignItems="flex-start" spacing="73px">
@@ -152,6 +152,7 @@ const TaskFormModal = (props: TaskFormModalProps) => {
                   label="Cost Estimate"
                 />
               </HStack>
+              <TaskAssignedTo />
             </VStack>
             {/* Main Form Ends Here */}
             <HStack
@@ -167,11 +168,7 @@ const TaskFormModal = (props: TaskFormModalProps) => {
               >
                 Cancel
               </Button>
-              <Button
-                type="submit"
-                customStyles={{ width: '237px' }}
-                isLoading={isLoading}
-              >
+              <Button type="submit" customStyles={{ width: '237px' }}>
                 Save Task
               </Button>
             </HStack>

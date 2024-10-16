@@ -36,10 +36,13 @@ const FormSection = (props: FormSectionProps) => {
       comment: formDetails.comment ?? null,
       scheduledDate: formDetails.scheduledDate ?? null,
       completionDate: formDetails.completionDate ?? null,
+      tasks: formDetails.tasks ?? [],
     },
     validationSchema: scheduleSchema,
     enableReinitialize: true,
-    onSubmit: async (values) => {
+
+    onSubmit: async (values, { setTouched }) => {
+      setTouched({ planId: true });
       dispatch(updateScheduleForm(values));
       setActiveStep(1);
     },

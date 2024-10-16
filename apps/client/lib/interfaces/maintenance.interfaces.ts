@@ -1,20 +1,29 @@
+import { taskFormDetails } from './task.interfaces';
+
 interface MaintenancePlan {
-  rowId: number | null;
-  maintenancePlanId: number | null;
-  planName: string | null;
-  startDate: string | null;
-  endDate: string | null;
-  dateCreated: string | null;
-  cost: number | null;
-  isDeleted: boolean | null;
-  owner: string | null;
-  assetId: number | null;
-  assetCode: string | null;
-  serialNo: string | null;
-  assetDescription: string | null;
-  activeSchedules: number | null;
-  openTasks: number | null;
-  assetLocation: string | null;
+  rowId: number;
+  maintenancePlanId: number;
+  planName: string;
+  startDate: string;
+  endDate: string;
+  dateCreated: string;
+  cost: number;
+  isDeleted: boolean;
+  owner: string;
+  assetId: number;
+  assetCode: string;
+  assetTypeId: number;
+  serialNo: string;
+  assetDescription: string;
+  planTypeName: string;
+  planStatusName: string;
+  frequencyName: string;
+  frequencyId: number;
+  assetTypeName: string;
+  ownedByAssetType: number;
+  activeSchedules: number;
+  openTasks: number;
+  assetLocation: string;
 }
 
 interface MaintenanceSchedule {
@@ -74,6 +83,7 @@ interface ScheduleFormDetails {
   typeId: number | null;
   typeName: string | null;
   assetId: number | null;
+  assetTypeId: number | null;
   assetName: string | null;
   sla: number | null;
   frequencyId: number | null;
@@ -84,6 +94,7 @@ interface ScheduleFormDetails {
   scheduledDate: string | null;
   completionDate: string | null;
   ticketId: string | null;
+  tasks: taskFormDetails[];
   contactDetails: {
     picture: string | null;
     contactPerson: string | null;

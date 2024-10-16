@@ -21,17 +21,19 @@ const ServiceLevelAgreement = () => {
           type="number"
           label="Agreement Max. Hours"
           customStyle={{ roundedRight: 'none' }}
+          customRightElement={
+            <HStack
+              height="50px"
+              bgColor="neutral.100"
+              pr="16px"
+              spacing="17px"
+              roundedRight="8px"
+            >
+              <Box borderWidth="1px" bgColor="neutral.700" height="24px" />
+              <Text color="neutral.700">Hours</Text>
+            </HStack>
+          }
         />
-        <HStack
-          height="50px"
-          bgColor="neutral.100"
-          pr="16px"
-          spacing="17px"
-          roundedRight="8px"
-        >
-          <Box borderWidth="1px" borderColor="neutral.700" height="24px" />
-          <Text color="neutral.700">Hours</Text>
-        </HStack>
       </HStack>
     </HStack>
   );

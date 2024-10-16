@@ -5,7 +5,7 @@ import { ThreeVerticalDotsIcon } from '~/lib/components/CustomIcons';
 import DataTable from '~/lib/components/UI/Table';
 import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 import { useGetAllMaintenancePlanQuery } from '~/lib/redux/services/maintenance/plan.services';
-import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
+import { dateFormatter } from '~/lib/utils/Formatters';
 
 const Dots = () => {
   return <Icon as={ThreeVerticalDotsIcon} boxSize="14px" color="neutral.700" />;
@@ -30,19 +30,19 @@ const Plans = () => {
         header: 'Plan Name',
         enableSorting: false,
       }),
-      columnHelper.accessor('serialNo', {
+      columnHelper.accessor('planTypeName', {
         cell: (info) => info.getValue(),
-        header: 'Type',
+        header: 'Plan Type',
         enableSorting: false,
       }),
-      columnHelper.accessor('assetId', {
+      columnHelper.accessor('assetTypeName', {
         cell: (info) => info.getValue(),
-        header: 'Asset ID',
+        header: 'Asset Type',
         enableSorting: false,
       }),
-      columnHelper.accessor('cost', {
-        cell: (info) => amountFormatter(info.getValue() ?? 0),
-        header: 'Cost',
+      columnHelper.accessor('activeSchedules', {
+        cell: (info) => info.getValue(),
+        header: 'Total Schedules',
         enableSorting: false,
       }),
       columnHelper.accessor('startDate', {
@@ -69,9 +69,21 @@ const Plans = () => {
         header: 'End Date',
         enableSorting: false,
       }),
-      columnHelper.accessor('serialNo', {
+      columnHelper.accessor('planStatusName', {
         cell: (info) => info.getValue(),
         header: 'Status',
+        enableSorting: false,
+      }),
+      columnHelper.accessor('dateCreated', {
+        cell: (info) => {
+          const value = info.getValue();
+          if (value && !isNaN(new Date(value).getTime())) {
+            return dateFormatter(value, 'DD / MM / YYYY');
+          } else {
+            return 'N/A';
+          }
+        },
+        header: 'Created Date',
         enableSorting: false,
       }),
       columnHelper.accessor('rowId', {

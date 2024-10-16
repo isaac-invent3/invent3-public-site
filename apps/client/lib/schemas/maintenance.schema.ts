@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import { taskBaseSchema } from './task.schema';
 
 const scheduleSchema = Yup.object().shape({
   name: Yup.string().required('Title is Required'),
@@ -12,14 +13,18 @@ const scheduleSchema = Yup.object().shape({
   scheduledDate: Yup.string().required('Scheduled Date is Required'),
   completionDate: Yup.string().nullable(),
   ticketId: Yup.number().nullable(),
+  tasks: Yup.array()
+    .of(taskBaseSchema)
+    .required('Tasks are required')
+    .min(1, 'There must be atleast one task'),
 });
 
 const planSchema = Yup.object().shape({
   planName: Yup.string().required('Name is Required'),
-  planTypeId: Yup.string().required('Type is Required'),
   startDate: Yup.string().required('Start Date is Required'),
   endDate: Yup.string().required('End Date is Required'),
-  assetId: Yup.string().required('Asset is Required'),
+  ownerId: Yup.number().required('Owner is Required'),
+  cost: Yup.number().nullable(),
 });
 
 export { scheduleSchema, planSchema };

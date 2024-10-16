@@ -1,7 +1,7 @@
 import { VStack } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import DetailHeader from '~/lib/components/UI/DetailHeader';
-import EmployeeSelect from '../../AssetForm/GeneralStep/AssetOwner/EmployeeSelect';
+import EmployeeSelect from '../../../Common/EmployeeSelect';
 import { Employee } from '~/lib/interfaces/user.interfaces';
 import { useGetEmployeeByIdQuery } from '~/lib/redux/services/employees.services';
 import User from '../../Common/User';

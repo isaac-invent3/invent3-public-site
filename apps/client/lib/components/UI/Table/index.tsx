@@ -38,6 +38,7 @@ export type TableProps<Data extends object> = {
   pageSize?: number;
   totalPages?: number;
   selectedRows?: number[];
+  disabledRows?: number[];
   setSelectedRows?: React.Dispatch<React.SetStateAction<number[]>>;
   handleSelectRow?: React.Dispatch<React.SetStateAction<any>>;
   setPageNumber?: React.Dispatch<React.SetStateAction<number>>;
@@ -63,6 +64,7 @@ function DataTable<Data extends object>({
   pageSize = 1,
   setPageSize,
   selectedRows,
+  disabledRows,
   maxTdWidth,
   setSelectedRows,
   handleSelectRow,
@@ -85,7 +87,13 @@ function DataTable<Data extends object>({
   const handleSelectAll = () => {
     setSelectAll(!selectAll);
     if (setSelectedRows) {
-      setSelectedRows(!selectAll ? data.map((_, index) => index) : []);
+      setSelectedRows(
+        !selectAll
+          ? data
+              .map((_, index) => index)
+              .filter((index) => !disabledRows?.includes(index))
+          : []
+      );
     }
   };
 
@@ -223,77 +231,92 @@ function DataTable<Data extends object>({
                       </Tr>
                     ))
                 )
-              : table.getRowModel().rows.map((row, rowIndex) => (
-                  <Tr
-                    key={row.id}
-                    cursor="pointer"
-                    onClick={() =>
-                      handleSelectRow && handleSelectRow(row.original)
-                    }
-                    _hover={{
-                      bgColor: 'neutral.200',
-                    }}
-                    {...customTBodyRowStyle}
-                  >
-                    {/* Checkbox for selecting individual row */}
-                    {isSelectable && (
-                      <Td
-                        key={`checkbox-${row.id}`}
-                        borderColor="neutral.300"
-                        py="8px"
-                        px="16px"
-                        onClick={(e) => e.stopPropagation()}
-                        {...customTdStyle}
-                      >
-                        <CheckBox
-                          isChecked={
-                            selectedRows
-                              ? selectedRows.includes(rowIndex)
-                              : false
-                          }
-                          handleChange={() => handleSelectRowCheckbox(rowIndex)}
-                        />
-                      </Td>
-                    )}
-                    {row.getVisibleCells().map((cell) => {
-                      const { meta } = cell.column.columnDef;
-                      if (maxTdWidth) {
-                        return (
-                          <OverflowTd
-                            isNumeric={meta?.isNumeric ?? false}
-                            key={cell.id}
-                            maxW={maxTdWidth}
-                          >
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
-                            )}
-                          </OverflowTd>
-                        );
-                      } else {
-                        return (
-                          <Td
-                            key={cell.id}
-                            isNumeric={meta?.isNumeric}
-                            borderColor="neutral.300"
-                            color="black"
-                            fontSize="12px"
-                            fontWeight={500}
-                            lineHeight="14.26px"
-                            py="23px"
-                            px="16px"
-                            {...customTdStyle}
-                          >
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
-                            )}
-                          </Td>
-                        );
+              : table.getRowModel().rows.map((row, rowIndex) => {
+                  const isDisabledRow = disabledRows
+                    ? disabledRows.includes(rowIndex)
+                    : false;
+                  return (
+                    <Tr
+                      key={row.id}
+                      cursor="pointer"
+                      onClick={() =>
+                        handleSelectRow && handleSelectRow(row.original)
                       }
-                    })}
-                  </Tr>
-                ))}
+                      _hover={{
+                        bgColor: 'neutral.200',
+                      }}
+                      {...customTBodyRowStyle}
+                    >
+                      {/* Checkbox for selecting individual row */}
+                      {isSelectable && (
+                        <Td
+                          key={`checkbox-${row.id}`}
+                          borderColor="neutral.300"
+                          py="8px"
+                          px="16px"
+                          onClick={(e) => e.stopPropagation()}
+                          {...customTdStyle}
+                        >
+                          <CheckBox
+                            isChecked={
+                              selectedRows
+                                ? selectedRows.includes(rowIndex)
+                                : false
+                            }
+                            handleChange={() =>
+                              !isDisabledRow &&
+                              handleSelectRowCheckbox(rowIndex)
+                            }
+                            customStyle={{
+                              borderColor: isDisabledRow
+                                ? 'neutral.300'
+                                : 'neutral.800',
+                              cursor: isDisabledRow ? 'not-allowed' : 'pointer',
+                            }}
+                          />
+                        </Td>
+                      )}
+                      {row.getVisibleCells().map((cell) => {
+                        const { meta } = cell.column.columnDef;
+                        if (maxTdWidth) {
+                          return (
+                            <OverflowTd
+                              isNumeric={meta?.isNumeric ?? false}
+                              key={cell.id}
+                              maxW={maxTdWidth}
+                            >
+                              {flexRender(
+                                cell.column.columnDef.cell,
+                                cell.getContext()
+                              )}
+                            </OverflowTd>
+                          );
+                        } else {
+                          return (
+                            <Td
+                              key={cell.id}
+                              isNumeric={meta?.isNumeric}
+                              borderColor="neutral.300"
+                              color={isDisabledRow ? 'neutral.300' : 'black'}
+                              cursor={isDisabledRow ? 'not-allowed' : 'pointer'}
+                              fontSize="12px"
+                              fontWeight={500}
+                              lineHeight="14.26px"
+                              py="23px"
+                              px="16px"
+                              {...customTdStyle}
+                            >
+                              {flexRender(
+                                cell.column.columnDef.cell,
+                                cell.getContext()
+                              )}
+                            </Td>
+                          );
+                        }
+                      })}
+                    </Tr>
+                  );
+                })}
           </Tbody>
         </Table>
       </TableContainer>

@@ -16,13 +16,18 @@ import AssetSelect from '~/lib/components/Common/AssetSelect';
 import { LongBackArrowIcon } from '~/lib/components/CustomIcons';
 import { planSchema } from '~/lib/schemas/maintenance.schema';
 import BackButton from '~/lib/components/UI/Button/BackButton';
+import { MAINTENANCE_PLAN_ENUM } from '~/lib/utils/constants';
+import moment from 'moment';
+import Frequency from '~/lib/components/Common/Frequency';
+import Owner from './Owner';
 
 interface CustomizedPlanModalProps {
   isOpen: boolean;
   onClose: () => void;
+  assetId?: number | null;
 }
 const CustomizedPlanModal = (props: CustomizedPlanModalProps) => {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, assetId } = props;
   const [createPlan, { isLoading }] = useCreateMaintenancePlanMutation({});
   const { handleSubmit } = useCustomMutation();
   const { data } = useSession();
@@ -30,15 +35,20 @@ const CustomizedPlanModal = (props: CustomizedPlanModalProps) => {
   const formik = useFormik({
     initialValues: {
       planName: null,
-      planTypeId: null,
       startDate: null,
       endDate: null,
-      assetId: null,
     },
     validationSchema: planSchema,
     enableReinitialize: true,
     onSubmit: async (values) => {
-      const finalValue = { ...values, createdBy: data?.user?.username };
+      const finalValue = {
+        ...values,
+        assetId,
+        startDate: moment(values.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+        endDate: moment(values.endDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+        planTypeId: MAINTENANCE_PLAN_ENUM.custom,
+        createdBy: data?.user?.username,
+      };
       const response = await handleSubmit(createPlan, finalValue, '');
       if (response?.data) {
         onClose();
@@ -86,18 +96,23 @@ const CustomizedPlanModal = (props: CustomizedPlanModalProps) => {
                   label="Plan Title"
                 />
               </HStack>
-              <Plan />
-              <HStack width="full" alignItems="flex-start" spacing="73px">
-                <Flex width="full" maxW="118px">
-                  <SectionInfo
-                    title="Asset"
-                    info="Add name that users can likely search with"
-                    isRequired
-                  />
-                </Flex>
+              <Frequency />
+              {!assetId && (
+                <>
+                  <Plan />
+                  <HStack width="full" alignItems="flex-start" spacing="73px">
+                    <Flex width="full" maxW="118px">
+                      <SectionInfo
+                        title="Asset"
+                        info="Add name that users can likely search with"
+                        isRequired
+                      />
+                    </Flex>
 
-                <AssetSelect selectName="assetId" selectTitle="Asset" />
-              </HStack>
+                    <AssetSelect selectName="assetId" selectTitle="Asset" />
+                  </HStack>
+                </>
+              )}
               <HStack width="full" alignItems="flex-start" spacing="73px">
                 <Flex width="full" maxW="118px">
                   <SectionInfo
@@ -124,6 +139,7 @@ const CustomizedPlanModal = (props: CustomizedPlanModalProps) => {
 
                 <CustomDatePicker name="endDate" label="End Date" type="date" />
               </HStack>
+              <Owner />
             </VStack>
             {/* Main Form Ends Here */}
             <HStack

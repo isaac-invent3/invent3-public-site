@@ -26,18 +26,18 @@ export default function Page({ params }: { params: { id: string } }) {
         name: schedule?.scheduleName,
         scheduleId: schedule?.scheduleId,
         planId: schedule?.maintenancePlanId,
-        planName: schedule?.planName,
         typeId: schedule?.maintenanceTypeId,
         typeName: schedule?.maintenanceType,
         assetId: schedule?.assetId,
         assetName: schedule?.assetName,
-        // assetTypeId: schedule?.
+        assetTypeId: schedule?.assetTypeId,
         sla: schedule?.sla,
         frequencyId: schedule?.frequencyId,
         frequencyName: schedule?.frequencyName,
         assetLocation: schedule?.assetLocation,
         description: schedule?.description,
         comment: schedule?.comments,
+        taskCount: schedule?.activeTasksCount,
         scheduledDate: schedule?.scheduledDate
           ? dateFormatter(schedule?.scheduledDate, 'DD/MM/YYYY hh:mmA')
           : null,

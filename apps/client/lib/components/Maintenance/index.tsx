@@ -66,9 +66,19 @@ const Maintenance = () => {
     }
   }, [activeFilter]);
 
+  const headerInfo = {
+    0: {
+      name: 'Plan',
+    },
+    1: {
+      name: 'Schedules',
+      href: '/maintenance/schedules/add',
+    },
+  };
+
   return (
     <Flex width="full" direction="column" pb="24px">
-      <Header />
+      <Header {...headerInfo[tabIndex as 0]} />
       <Flex direction="column" mt="42px" position="relative">
         <Tabs
           variant="custom"

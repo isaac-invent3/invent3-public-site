@@ -29,6 +29,7 @@ interface MaintenancePlan {
 interface MaintenanceSchedule {
   rowId: number;
   assetId: number | null;
+  assetTypeId: number | null;
   assetName: string | null;
   countryId: number | null;
   stateId: number | null;
@@ -58,6 +59,7 @@ interface MaintenanceSchedule {
   createdBy: string | null;
   totalCost: number | null;
   assetLocation: string | null;
+  activeTasksCount: number | null;
 }
 
 interface AggregateMaintenanceSchedule {
@@ -79,7 +81,6 @@ interface ScheduleFormDetails {
   name: string | null;
   scheduleId: number | null;
   planId: number | null;
-  planName: string | null;
   typeId: number | null;
   typeName: string | null;
   assetId: number | null;
@@ -94,6 +95,14 @@ interface ScheduleFormDetails {
   scheduledDate: string | null;
   completionDate: string | null;
   ticketId: string | null;
+  maintenancePlanInfo: {
+    planName: string | null;
+    assetTypeName: string | null;
+    planStatus: string | null;
+    startDate: string | null;
+    endDate: string | null;
+  };
+  taskCount: number | null;
   tasks: taskFormDetails[];
   contactDetails: {
     picture: string | null;

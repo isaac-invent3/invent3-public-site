@@ -13,7 +13,7 @@ const ModalButtons = (props: ModalButtonsProps) => {
         <Button
           customStyles={{ height: '50px', width: '137px', px: '16px' }}
           variant="secondary"
-          href={`/maintenance/${id}/edit`}
+          href={`/maintenance/schedules/${id}/edit`}
         >
           Edit Schedule
         </Button>

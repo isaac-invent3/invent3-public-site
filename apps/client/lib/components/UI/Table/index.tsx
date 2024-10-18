@@ -64,7 +64,7 @@ function DataTable<Data extends object>({
   pageSize = 1,
   setPageSize,
   selectedRows,
-  disabledRows,
+  disabledRows = [],
   maxTdWidth,
   setSelectedRows,
   handleSelectRow,
@@ -233,7 +233,7 @@ function DataTable<Data extends object>({
                 )
               : table.getRowModel().rows.map((row, rowIndex) => {
                   const isDisabledRow = disabledRows
-                    ? disabledRows.includes(rowIndex)
+                    ? disabledRows?.includes(rowIndex)
                     : false;
                   return (
                     <Tr

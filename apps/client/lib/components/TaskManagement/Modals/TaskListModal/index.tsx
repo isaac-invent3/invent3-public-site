@@ -11,7 +11,8 @@ interface TaskListModalProps {
   onClose: () => void;
   // eslint-disable-next-line no-unused-vars
   handleAddTask?: (task: taskFormDetails) => void;
-  isDefaultPlan?: boolean;
+  showAddTaskButton?: boolean;
+  scheduleId?: number;
   children: React.ReactNode;
 }
 
@@ -20,8 +21,9 @@ const TaskListModal = (props: TaskListModalProps) => {
     isOpen,
     onClose,
     handleAddTask,
-    isDefaultPlan = false,
+    showAddTaskButton = true,
     children,
+    scheduleId,
   } = props;
   const {
     isOpen: isOpenForm,
@@ -49,13 +51,14 @@ const TaskListModal = (props: TaskListModalProps) => {
         justifyContent="space-between"
       >
         <BackButton handleClick={onClose} />
-        <Button
-          handleClick={onOpenForm}
-          customStyles={{ width: '138px', height: '35px' }}
-          isDisabled={isDefaultPlan}
-        >
-          Add New Task
-        </Button>
+        {showAddTaskButton && (
+          <Button
+            handleClick={onOpenForm}
+            customStyles={{ width: '138px', height: '35px' }}
+          >
+            Add New Task
+          </Button>
+        )}
       </HStack>
       <VStack width="full" alignItems="flex-start" spacing="32px">
         <Heading
@@ -73,6 +76,7 @@ const TaskListModal = (props: TaskListModalProps) => {
         isOpen={isOpenForm}
         onClose={onCLoseForm}
         handleData={handleAddTask}
+        scheduleId={scheduleId}
       />
     </GenericModal>
   );

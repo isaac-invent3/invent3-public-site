@@ -8,7 +8,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { createColumnHelper } from '@tanstack/react-table';
-import { useFormikContext } from 'formik';
+import { useField } from 'formik';
 import React, { useEffect, useMemo, useState } from 'react';
 import { InfoIcon } from '~/lib/components/CustomIcons';
 import CustomizedPlanModal from '~/lib/components/Maintenance/Plans/Modals/CustomizedplanModal';
@@ -17,8 +17,9 @@ import ErrorMessage from '~/lib/components/UI/ErrorMessage';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import DataTable from '~/lib/components/UI/Table';
 import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
-import { useAppSelector } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useGetAllMaintenancePlansByAssetIdQuery } from '~/lib/redux/services/maintenance/plan.services';
+import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
 const View = (info: MaintenancePlan) => {
@@ -58,8 +59,9 @@ const Plan = () => {
   const columnHelper = createColumnHelper<MaintenancePlan>();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [showCustomizedButton, setShowCustomizedButton] = useState(false);
-  const { setFieldValue, errors, touched, submitCount } =
-    useFormikContext<any>();
+  // eslint-disable-next-line no-unused-vars
+  const [field, meta, helpers] = useField('planId');
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (data?.data) {
@@ -87,10 +89,32 @@ const Plan = () => {
         (value, index) => index === selectedRows[0]
       );
       if (customizedPlan) {
-        setFieldValue('planId', customizedPlan.maintenancePlanId);
+        helpers.setValue(customizedPlan.maintenancePlanId);
+        dispatch(
+          updateScheduleForm({
+            maintenancePlanInfo: {
+              planName: customizedPlan.planName,
+              planStatus: customizedPlan.planStatusName,
+              assetTypeName: customizedPlan.assetTypeName,
+              startDate: customizedPlan.startDate,
+              endDate: customizedPlan.endDate,
+            },
+          })
+        );
       }
     } else {
-      setFieldValue('planId', null);
+      helpers.setValue(null);
+      dispatch(
+        updateScheduleForm({
+          maintenancePlanInfo: {
+            planName: null,
+            planStatus: null,
+            assetTypeName: null,
+            startDate: null,
+            endDate: null,
+          },
+        })
+      );
     }
   }, [selectedRows]);
 
@@ -242,8 +266,8 @@ const Plan = () => {
             </Text>
           </HStack>
         )}
-        {errors.planId && (touched.planId || submitCount > 0) && (
-          <ErrorMessage>{errors.planId as string}</ErrorMessage>
+        {meta.touched && meta.error !== undefined && (
+          <ErrorMessage>{meta.error}</ErrorMessage>
         )}
       </VStack>
       <CustomizedPlanModal

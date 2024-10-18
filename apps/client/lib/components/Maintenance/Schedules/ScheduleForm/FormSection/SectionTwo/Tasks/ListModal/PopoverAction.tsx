@@ -33,6 +33,7 @@ const PopoverAction = (task: taskFormDetails) => {
       (item: taskFormDetails) => item.taskId !== task.taskId
     );
     setFieldValue('tasks', newTasks);
+    setFieldValue('taskCount', values.taskCount - 1);
   };
 
   return (

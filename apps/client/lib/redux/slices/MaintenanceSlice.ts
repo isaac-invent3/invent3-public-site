@@ -18,7 +18,6 @@ const initialScheduleForm = {
   name: null,
   planId: null,
   scheduleId: null,
-  planName: null,
   typeId: null,
   typeName: null,
   assetId: null,
@@ -33,6 +32,14 @@ const initialScheduleForm = {
   scheduledDate: null,
   completionDate: null,
   ticketId: null,
+  maintenancePlanInfo: {
+    planName: null,
+    assetTypeName: null,
+    planStatus: null,
+    startDate: null,
+    endDate: null,
+  },
+  taskCount: 0,
   tasks: [],
   contactDetails: {
     picture: null,

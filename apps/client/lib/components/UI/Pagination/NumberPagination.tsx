@@ -3,7 +3,10 @@
 import { HStack, Icon, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
-import { ChevronLeftIcon, ChevronRightIcon } from '../CustomIcons';
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from '~/lib/components/CustomIcons';
 
 interface IPageNumber {
   isCurrent: boolean;

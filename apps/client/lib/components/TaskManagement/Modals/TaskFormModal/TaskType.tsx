@@ -15,7 +15,7 @@ const TaskType = () => {
     pageNumber,
   });
   const [searchTaskType] = useSearchTaskTypeMutation({});
-  const { setFieldValue } = useFormikContext<any>();
+  const { setFieldValue, values } = useFormikContext<any>();
 
   return (
     <HStack width="full" alignItems="flex-start" spacing="73px">
@@ -36,7 +36,8 @@ const TaskType = () => {
         isLoading={isLoading}
         pageNumber={pageNumber}
         setPageNumber={setPageNumber}
-        handleSelect={(option) => setFieldValue('taskTypeName', option.label)}
+        handleSelect={(option) => setFieldValue('taskType', option.label)}
+        defaultInputValue={values.taskTypeName}
       />
     </HStack>
   );

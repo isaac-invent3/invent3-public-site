@@ -15,19 +15,30 @@ const breadCrumbData = [
     route: '#',
   },
 ];
-const Header = () => {
+
+interface HeaderProps {
+  name?: string;
+  href?: string;
+  handleClick?: () => void;
+}
+const Header = (props: HeaderProps) => {
+  const { name, href, handleClick } = props;
+
   return (
     <VStack spacing="58px" alignItems="flex-start" width="full" pt="12px">
       <GenericBreadCrumb routes={breadCrumbData} />
       <HStack width="full" justifyContent="space-between">
         <PageHeader>Maintenance</PageHeader>
-        <PrimaryButton
-          customStyles={{ width: '227px' }}
-          href="/maintenance/add"
-        >
-          <Icon as={AddIcon} boxSize="18px" color="#D2FEFD" mr="4px" />
-          Add New Schedule
-        </PrimaryButton>
+        {name && (
+          <PrimaryButton
+            customStyles={{ width: '227px' }}
+            href={href}
+            handleClick={handleClick}
+          >
+            <Icon as={AddIcon} boxSize="18px" color="#D2FEFD" mr="4px" />
+            Add New {name}
+          </PrimaryButton>
+        )}
       </HStack>
     </VStack>
   );

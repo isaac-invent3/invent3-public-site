@@ -1,5 +1,5 @@
 import { HStack, Skeleton, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '~/lib/components/UI/Button';
 import BackButton from '~/lib/components/UI/Button/BackButton';
 import GenericModal from '~/lib/components/UI/Modal';
@@ -8,8 +8,9 @@ import {
   MaintenanceSchedule,
 } from '~/lib/interfaces/maintenance.interfaces';
 import InfoSection from './InfoSection';
-import { useGetPlannedMaintenanceByAssetIdQuery } from '~/lib/redux/services/asset/general.services';
 import MaintenanceScheduleCard from '../../../Schedules/MaintenanceScheduleCard';
+import { useGetMaintenanceSchedulesByPlanIdQuery } from '~/lib/redux/services/maintenance/schedule.services';
+import ButtonPagination from '~/lib/components/UI/Pagination/ButtonPagination';
 
 interface PlanDetailsModalProps {
   isOpen: boolean;
@@ -19,8 +20,14 @@ interface PlanDetailsModalProps {
 
 const PlanDetailsModal = (props: PlanDetailsModalProps) => {
   const { isOpen, onClose, data } = props;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize] = useState(25);
   const { data: allMaintenanceSchedule, isLoading } =
-    useGetPlannedMaintenanceByAssetIdQuery({ id: 7 });
+    useGetMaintenanceSchedulesByPlanIdQuery({
+      id: data?.maintenancePlanId,
+      pageSize,
+      pageNumber: currentPage,
+    });
   return (
     <GenericModal
       isOpen={isOpen}
@@ -66,11 +73,25 @@ const PlanDetailsModal = (props: PlanDetailsModalProps) => {
                 />
               ))
           ) : allMaintenanceSchedule?.data?.items.length >= 1 ? (
-            allMaintenanceSchedule?.data?.items.map(
-              (item: MaintenanceSchedule) => (
-                <MaintenanceScheduleCard data={item} key={item.scheduleId} />
-              )
-            )
+            <VStack width="full" spacing="16px">
+              {allMaintenanceSchedule?.data?.items.map(
+                (item: MaintenanceSchedule) => (
+                  <MaintenanceScheduleCard
+                    data={item}
+                    isPartOfDefaultPlan={data?.planTypeName === 'Default'}
+                    key={item.scheduleId}
+                  />
+                )
+              )}
+              {(allMaintenanceSchedule?.data?.hasPreviousPage ||
+                allMaintenanceSchedule?.data?.hasNextPage) && (
+                <ButtonPagination
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                  totalPages={allMaintenanceSchedule?.data?.totalPages}
+                />
+              )}
+            </VStack>
           ) : (
             <Text
               width="full"

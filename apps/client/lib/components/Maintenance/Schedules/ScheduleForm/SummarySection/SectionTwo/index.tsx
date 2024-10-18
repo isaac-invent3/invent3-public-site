@@ -2,6 +2,8 @@ import { Grid, GridItem, HStack, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { dateFormatter } from '~/lib/utils/Formatters';
+import TaskListTable from '../../FormSection/SectionTwo/Tasks/ListModal/TaskListTable';
+import TaskTable from '~/lib/components/TaskManagement/Modals/TaskListModal/TaskListView/TaskTable';
 
 const SectionTwo = () => {
   const formDetails = useAppSelector((state) => state.maintenance.scheduleForm);
@@ -19,24 +21,20 @@ const SectionTwo = () => {
 
   const dateFields = [
     {
-      label: 'Scheduled Date',
+      label: 'Start Date',
       value: formDetails.scheduledDate,
-    },
-    {
-      label: 'Completion Date',
-      value: formDetails.completionDate,
     },
   ];
 
   return (
     <Grid
       templateColumns="repeat(4, 1fr)"
-      gap="16px"
+      rowGap="32px"
+      columnGap={0}
       width="full"
-      height="full"
     >
       <GridItem colSpan={2} width="full">
-        <HStack width="full" alignItems="flex-start" spacing="16px">
+        <HStack width="full" alignItems="flex-start" spacing={0}>
           {contentOne.map((item, index) => (
             <VStack
               alignItems="flex-start"
@@ -44,16 +42,22 @@ const SectionTwo = () => {
               spacing="8px"
               key={index}
             >
-              <Text color="neutral.600">{item.label}</Text>
-              <Text color="black">{item.value}</Text>
+              <Text color="neutral.600" fontWeight={700}>
+                {item.label}
+              </Text>
+              <Text color="black" maxW="80%">
+                {item.value}
+              </Text>
             </VStack>
           ))}
         </HStack>
       </GridItem>
-      <GridItem colSpan={2} width="full" height="full">
+      <GridItem colSpan={2} width="full">
         <HStack spacing="16px" alignItems="flex-start" width="full">
           <VStack width="70%" spacing="8px" alignItems="flex-start">
-            <Text color="neutral.600">Description</Text>
+            <Text color="neutral.600" fontWeight={700}>
+              Description
+            </Text>
             <Text
               color="neutral.700"
               bgColor="#F0F0F0"
@@ -61,6 +65,7 @@ const SectionTwo = () => {
               px="11px"
               minH="103px"
               width="full"
+              rounded="8px"
             >
               {formDetails.description}
             </Text>
@@ -73,7 +78,9 @@ const SectionTwo = () => {
                 spacing="8px"
                 key={index}
               >
-                <Text color="neutral.600">{item.label}</Text>
+                <Text color="neutral.600" fontWeight={700}>
+                  {item.label}
+                </Text>
                 <Text color="black">
                   {dateFormatter(
                     item.value ?? '',
@@ -85,6 +92,22 @@ const SectionTwo = () => {
             ))}
           </VStack>
         </HStack>
+      </GridItem>
+      <GridItem colSpan={4} width="full">
+        <VStack width="full" alignItems="flex-start" spacing="24px">
+          <Text color="neutral.600" fontWeight={700}>
+            Tasks
+          </Text>
+
+          {formDetails?.scheduleId ? (
+            <TaskTable
+              scheduleId={formDetails?.scheduleId}
+              showPopover={true}
+            />
+          ) : (
+            <TaskListTable data={formDetails.tasks} type="summary" />
+          )}
+        </VStack>
       </GridItem>
     </Grid>
   );

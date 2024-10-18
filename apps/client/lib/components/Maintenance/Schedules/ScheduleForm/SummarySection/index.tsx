@@ -10,9 +10,10 @@ import { useSession } from 'next-auth/react';
 import ScheduleSuccessModal from '../SuccessModal';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import {
-  useCreateMaintenanceScheduleMutation,
+  useCreateMaintenanceScheduleAndTasksMutation,
   useUpdateMaintenanceScheduleMutation,
 } from '~/lib/redux/services/maintenance/schedule.services';
+import { baseTaskFormDetail } from '~/lib/interfaces/task.interfaces';
 
 interface SummarySectionProps {
   activeStep: number;
@@ -26,8 +27,8 @@ const SummarySection = (props: SummarySectionProps) => {
     (state) => state.maintenance.scheduleForm
   );
   const { handleSubmit } = useCustomMutation();
-  const [createSchedule, { isLoading: createLoading }] =
-    useCreateMaintenanceScheduleMutation();
+  const [createScheduleAndTasks, { isLoading: createLoading }] =
+    useCreateMaintenanceScheduleAndTasksMutation();
   const [updateSchedule, { isLoading: updateLoading }] =
     useUpdateMaintenanceScheduleMutation();
   const breadCrumbText =
@@ -37,22 +38,17 @@ const SummarySection = (props: SummarySectionProps) => {
   const { data } = useSession();
   const username = data?.user?.username;
 
-  const PAYLOAD = {
+  const maintenanceScheduleDto = {
     planId: scheduleFormDetails.planId,
     scheduleName: scheduleFormDetails.name,
     description: scheduleFormDetails.description,
     comments: scheduleFormDetails.comment,
-    sla: scheduleFormDetails.sla,
     maintenanceTypeId: scheduleFormDetails.typeId,
-    frequencyId: scheduleFormDetails.typeId,
     scheduledDate: moment(
       scheduleFormDetails.scheduledDate,
       'DD/MM/YYYY hh:mmA'
     ).utcOffset(0, true),
-    completionDate: moment(
-      scheduleFormDetails.completionDate,
-      'DD/MM/YYYY hh:mmA'
-    ).utcOffset(0, true),
+    completionDate: null,
     ...(type === 'edit'
       ? {
           scheduleId: scheduleFormDetails.scheduleId,
@@ -61,14 +57,48 @@ const SummarySection = (props: SummarySectionProps) => {
     [`${type === 'create' ? 'createdBy' : 'lastModifiedBy'}`]: username,
   };
 
+  const generateTaskDTo = () => {
+    let allTasks: baseTaskFormDetail[] = [];
+    const formTasks = scheduleFormDetails.tasks;
+    formTasks.forEach((item) =>
+      allTasks.push({
+        taskTypeId: item.taskTypeId,
+        taskName: item.taskName,
+        taskDescription: item.taskDescription,
+        priorityId: item.priorityId,
+        assignedTo: item.assignedTo,
+        dueDate: moment(item.dueDate, 'DD/MM/YYYY').utcOffset(
+          0,
+          true
+        ) as unknown as string,
+        dateCompleted: moment(item.dateCompleted, 'DD/MM/YYYY').utcOffset(
+          0,
+          true
+        ) as unknown as string,
+        costEstimate: item.costEstimate,
+        actualCost: item.actualCost,
+        comments: item.comments,
+        scheduleId: item.scheduleId,
+        [`${type === 'create' ? 'createdBy' : 'lastModifiedBy'}`]: username,
+      })
+    );
+    return allTasks;
+  };
+
+  const PAYLOAD = {
+    createMaintenanceScheduleDto: maintenanceScheduleDto,
+    createTaskDtos: generateTaskDTo(),
+  };
+
   const handleSumbitSchedule = async () => {
     let response;
     if (type === 'create') {
-      response = await handleSubmit(createSchedule, PAYLOAD, '');
+      response = await handleSubmit(createScheduleAndTasks, PAYLOAD, '');
+      // console.log(PAYLOAD);
     } else {
       response = await handleSubmit(
         updateSchedule,
-        { id: scheduleFormDetails.scheduleId, ...PAYLOAD },
+        { id: scheduleFormDetails.scheduleId, ...maintenanceScheduleDto },
         ''
       );
     }
@@ -110,6 +140,7 @@ const SummarySection = (props: SummarySectionProps) => {
           cancelLink="/maintenance"
           totalStep={1}
           activeStep={1}
+          finalText={type === 'create' ? 'Finish' : 'Save Changes'}
           setActiveStep={setActiveStep}
           handleContinue={handleSumbitSchedule}
           isLoading={createLoading || updateLoading}

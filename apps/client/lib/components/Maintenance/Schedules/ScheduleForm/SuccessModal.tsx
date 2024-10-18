@@ -20,7 +20,10 @@ const ScheduleSuccessModal = (props: ScheduleSuccessModalProps) => {
       headingText="Successful!"
       successText={successText}
     >
-      <Button href="/maintenance" customStyles={{ width: '193px', mb: '54px' }}>
+      <Button
+        href="/maintenance?tab=Schedules"
+        customStyles={{ width: '193px', mb: '54px' }}
+      >
         Continue
       </Button>
     </GenericSuccessModal>

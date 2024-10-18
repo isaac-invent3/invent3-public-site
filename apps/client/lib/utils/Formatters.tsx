@@ -19,14 +19,17 @@ function amountFormatter(
 }
 
 const dateFormatter = (
-  date: string | Date,
+  date: string | Date | null,
   format?: string,
   stringFormat?: string
 ) => {
-  if (stringFormat) {
-    return moment(date, stringFormat).format(format ?? 'DD-MM-YYYY');
+  if (date) {
+    if (stringFormat) {
+      return moment(date, stringFormat).format(format ?? 'DD-MM-YYYY');
+    }
+    return moment(date).format(format ?? 'DD-MM-YYYY');
   }
-  return moment(date).format(format ?? 'DD-MM-YYYY');
+  return null;
 };
 
 export { amountFormatter, dateFormatter };

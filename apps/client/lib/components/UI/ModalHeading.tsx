@@ -3,7 +3,7 @@ import React from 'react';
 
 interface ModalHeadingProps {
   heading: string;
-  subheading: string;
+  subheading?: string;
 }
 const ModalHeading = (props: ModalHeadingProps) => {
   const { heading, subheading } = props;

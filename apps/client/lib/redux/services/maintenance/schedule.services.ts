@@ -12,11 +12,12 @@ export const maintenanceScheduleApi = createApi({
     'allMaintenanceSchedule',
     'maintenanceScheduleStats',
     'maintenanceScheduleByArea',
+    'allMaintenanceScheduleByPlanId',
   ],
   endpoints: (builder) => ({
-    createMaintenanceSchedule: builder.mutation({
+    createMaintenanceScheduleAndTasks: builder.mutation({
       query: (body: any) => ({
-        url: `/MaintenanceSchedules`,
+        url: `/Invent3Pro/CreateScheduleAndTasks`,
         method: 'POST',
         headers: getHeaders(),
         body,
@@ -79,6 +80,17 @@ export const maintenanceScheduleApi = createApi({
         headers: getHeaders(),
       }),
     }),
+    getMaintenanceSchedulesByPlanId: builder.query({
+      query: ({ id, ...data }) => ({
+        url: generateQueryStr(
+          `/MaintenanceSchedules/GetMaintenanceSchedulesByPlanId/${id}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allMaintenanceScheduleByPlanId'],
+    }),
     getMaintenanceSchedulesByArea: builder.query({
       query: (data) => ({
         url: generateQueryStr(
@@ -90,7 +102,6 @@ export const maintenanceScheduleApi = createApi({
       }),
       providesTags: ['maintenanceScheduleByArea'],
     }),
-
     searchMaintenanceSchedule: builder.mutation({
       query: (body: any) => ({
         url: `/MaintenanceSchedules/Search`,
@@ -103,7 +114,7 @@ export const maintenanceScheduleApi = createApi({
 });
 
 export const {
-  useCreateMaintenanceScheduleMutation,
+  useCreateMaintenanceScheduleAndTasksMutation,
   useUpdateMaintenanceScheduleMutation,
   useGetAllMaintenanceScheduleQuery,
   useGetMaintenanceScheduleStatsQuery,
@@ -111,5 +122,6 @@ export const {
   useSearchMaintenanceScheduleMutation,
   useGetMaintenanceSchedulesByAreaQuery,
   useGetMaintenanceScheduleByIdQuery,
+  useGetMaintenanceSchedulesByPlanIdQuery,
   useGetMaintenanceSchedulesWithSingleAggregateCountsByAreaQuery,
 } = maintenanceScheduleApi;

@@ -1,16 +1,39 @@
 import { Heading, HStack, Text, VStack } from '@chakra-ui/react';
+import { useSession } from 'next-auth/react';
 import React from 'react';
 import Button from '~/lib/components/UI/Button';
 import GenericModal from '~/lib/components/UI/Modal';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
+import { useDeleteTaskMutation } from '~/lib/redux/services/task/general.services';
 
 interface DeleteTaskModalProps {
   isOpen: boolean;
   onClose: () => void;
-  handleDelete: () => void;
+  handleDelete?: () => void;
+  taskId?: number | null;
 }
 
 const DeleteTaskModal = (props: DeleteTaskModalProps) => {
-  const { isOpen, onClose, handleDelete } = props;
+  const { isOpen, onClose, handleDelete, taskId } = props;
+  const { handleSubmit } = useCustomMutation();
+  const [deleteTask, { isLoading }] = useDeleteTaskMutation({});
+  const { data } = useSession();
+
+  const handleDeleteTask = async () => {
+    if (taskId) {
+      const response = await handleSubmit(
+        deleteTask,
+        { id: taskId, deletedBy: data?.user.username },
+        'Task Deleted Successfully'
+      );
+      if (response?.data) {
+        onClose();
+      }
+    }
+    if (handleDelete) {
+      handleDelete();
+    }
+  };
 
   return (
     <GenericModal
@@ -41,7 +64,9 @@ const DeleteTaskModal = (props: DeleteTaskModalProps) => {
             Cancel
           </Button>
           <Button
-            handleClick={() => handleDelete()}
+            handleClick={() => handleDeleteTask()}
+            isLoading={isLoading}
+            loadingText="Deleting..."
             customStyles={{
               bgColor: '#F73A3A',
               _hover: { bgColor: '#F73A3A' },

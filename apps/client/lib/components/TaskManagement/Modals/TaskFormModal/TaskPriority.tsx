@@ -15,7 +15,7 @@ const TaskPriority = () => {
     pageNumber,
   });
   const [searchTaskPriorities] = useSearchTaskPrioritiesMutation({});
-  const { setFieldValue } = useFormikContext<any>();
+  const { setFieldValue, values } = useFormikContext<any>();
 
   return (
     <HStack width="full" alignItems="flex-start" spacing="73px">
@@ -37,6 +37,7 @@ const TaskPriority = () => {
         pageNumber={pageNumber}
         setPageNumber={setPageNumber}
         handleSelect={(option) => setFieldValue('priorityName', option.label)}
+        defaultInputValue={values.priorityName}
       />
     </HStack>
   );

@@ -8,8 +8,35 @@ const getHeaders = () => ({
 export const taskApi = createApi({
   reducerPath: 'taskApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['allTasks'],
+  tagTypes: ['allTasks', 'allTasksByScheduleId'],
   endpoints: (builder) => ({
+    createTask: builder.mutation({
+      query: (body: any) => ({
+        url: `/Tasks`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allTasksByScheduleId', 'allTasks'],
+    }),
+    updateTask: builder.mutation({
+      query: ({ id, ...body }) => ({
+        url: `/Tasks/${id}`,
+        method: 'PUT',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allTasksByScheduleId', 'allTasks'],
+    }),
+    deleteTask: builder.mutation({
+      query: ({ id, ...body }) => ({
+        url: `/Tasks/${id}`,
+        method: 'DELETE',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allTasksByScheduleId', 'allTasks'],
+    }),
     getAllTasks: builder.query({
       query: (data: any) => ({
         url: generateQueryStr(`/Tasks?`, data),
@@ -17,6 +44,17 @@ export const taskApi = createApi({
         headers: getHeaders(),
       }),
       providesTags: ['allTasks'],
+    }),
+    getAllTasksByScheduleId: builder.query({
+      query: ({ id, ...data }) => ({
+        url: generateQueryStr(
+          `/Tasks/GetTasksByMaintenanceScheduleId/${id}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allTasksByScheduleId'],
     }),
     searchTasks: builder.mutation({
       query: (body: any) => ({
@@ -29,4 +67,11 @@ export const taskApi = createApi({
   }),
 });
 
-export const { useGetAllTasksQuery, useSearchTasksMutation } = taskApi;
+export const {
+  useCreateTaskMutation,
+  useUpdateTaskMutation,
+  useDeleteTaskMutation,
+  useGetAllTasksQuery,
+  useSearchTasksMutation,
+  useGetAllTasksByScheduleIdQuery,
+} = taskApi;

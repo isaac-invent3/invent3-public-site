@@ -99,7 +99,7 @@ const Plans = () => {
     <Flex direction="column" mt="32px">
       <DataTable
         columns={columns}
-        data={data?.data?.items}
+        data={data?.data?.items ?? []}
         showFooter={true}
         emptyLines={15}
         isSelectable={false}

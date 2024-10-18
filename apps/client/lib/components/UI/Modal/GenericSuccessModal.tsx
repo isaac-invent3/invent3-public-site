@@ -8,9 +8,11 @@ interface GenericSuccessModalProps {
   successText: string;
   children: React.ReactNode;
   headingText?: string;
+  customStyle?: { [key: string]: unknown };
 }
 const GenericSuccessModal = (props: GenericSuccessModalProps) => {
-  const { isOpen, onClose, successText, children, headingText } = props;
+  const { isOpen, onClose, successText, children, headingText, customStyle } =
+    props;
   const checkVideoRef = useRef<HTMLVideoElement>(null);
   const [showRibbon, setShowRibbon] = useState(false);
 
@@ -43,7 +45,7 @@ const GenericSuccessModal = (props: GenericSuccessModalProps) => {
         onClose();
         setShowRibbon(false);
       }}
-      contentStyle={{ width: { lg: '526px' } }}
+      contentStyle={{ width: { lg: '526px' }, ...customStyle }}
     >
       <VStack spacing="48px" width="full" pb={{ lg: '40px' }} px="74px">
         {showRibbon && (

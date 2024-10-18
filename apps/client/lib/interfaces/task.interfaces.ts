@@ -1,20 +1,77 @@
-interface taskFormDetails {
-  taskId: number | null;
+interface Task {
+  rowId: number;
+  taskId: number;
+  taskName: string;
+  taskDescription: string;
+  assignedTo: number;
+  assignedToEmployeeName: string;
+  dateCreated: string;
+  dueDate: string;
+  dateCompleted: string;
+  costEstimate: number;
+  actualCost: number;
+  comments: string;
+  isDeleted: boolean;
+  taskTypeId: number;
+  taskType: string;
+  taskPriorityId: number;
+  priorityName: string;
+  status: string;
+  statusId: number;
+  scheduleId: number;
+  assetId: number;
+  assetCode: string;
+  assetSerialNo: string;
+  assetDescription: string;
+  stateId: number;
+  countryId: number;
+  locationId: number;
+  facilityName: string;
+  facilityRef: string;
+  facilityAddress: string;
+  facilityLongitude: number;
+  facilityLatitude: number;
+  buildingName: string;
+  buildingRef: string;
+  buildingAddress: string;
+  buildingLongitude: number;
+  buildingLatitude: number;
+  floor: string;
+  floorRef: string;
+  department: string;
+  departmentRef: string;
+  room: string;
+  roomRef: string;
+  aisle: string;
+  aisleRef: string;
+  shelf: string;
+  shelfRef: string;
+  assetLocation: string;
+}
+
+interface baseTaskFormDetail {
   taskTypeId: number | null;
-  taskTypeName: string | null;
   taskName: string | null;
-  taskDescription: string | null;
-  taskStatusId: number | null;
-  taskStatusName: string | null;
+  taskDescription: string | null | undefined;
   priorityId: number | null;
-  priorityName: string | null;
   assignedTo: number | null;
-  assignedToName: string | null;
   dueDate: string | null;
   dateCompleted: string | null;
   costEstimate: number | null;
   actualCost: number | null;
   comments: string | null;
+  scheduleId: number | null;
 }
 
-export type { taskFormDetails };
+interface FormDetails {
+  taskId: number | null;
+  taskType: string | null;
+  statusId: number | null;
+  status: string | null;
+  priorityName: string | null;
+  assignedToEmployeeName: string | null;
+}
+
+interface taskFormDetails extends baseTaskFormDetail, FormDetails {}
+
+export type { Task, baseTaskFormDetail, taskFormDetails };

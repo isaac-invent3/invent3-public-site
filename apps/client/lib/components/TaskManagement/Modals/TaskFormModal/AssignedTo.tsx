@@ -4,7 +4,7 @@ import EmployeeSelect from '~/lib/components/Common/EmployeeSelect';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 
 const TaskAssignedTo = () => {
-  const { setFieldValue } = useFormikContext<any>();
+  const { setFieldValue, values } = useFormikContext<any>();
   return (
     <HStack width="full" alignItems="flex-start" spacing="73px">
       <Flex width="full" maxW="118px">
@@ -17,7 +17,10 @@ const TaskAssignedTo = () => {
       <EmployeeSelect
         selectName="assignedTo"
         selectTitle="Assigned to"
-        handleSelect={(option) => setFieldValue('assignedToName', option.label)}
+        handleSelect={(option) =>
+          setFieldValue('assignedToEmployeeName', option.label)
+        }
+        defaultName={values?.assignedToName}
       />
     </HStack>
   );

@@ -5,7 +5,7 @@ import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
 
 interface SummaryInfoProps {
   label: string;
-  value: string | number | React.ReactElement;
+  value: string | number | React.ReactElement | null;
   children?: React.ReactNode;
 }
 const SummaryInfo = (props: SummaryInfoProps) => {

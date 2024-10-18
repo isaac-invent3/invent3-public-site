@@ -9,8 +9,8 @@ import {
   Text,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import NumberPagination from '../NumberPagination';
 import { ChevronDownIcon, ChevronUpIcon } from '../../CustomIcons';
+import NumberPagination from '../Pagination/NumberPagination';
 
 interface PaginationProps {
   totalPage: number;

@@ -76,6 +76,7 @@ const TextareaInput = ({
           height="full"
           {...field}
           name={name}
+          value={meta.value ?? ''}
           id={name}
           onFocus={handleFocus}
           onBlur={handleBlur}

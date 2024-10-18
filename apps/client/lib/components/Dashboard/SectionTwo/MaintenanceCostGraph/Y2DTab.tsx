@@ -26,11 +26,9 @@ const Y2DTab = () => {
     year: selectedYear?.value,
     useYearToDateLogic: true,
   });
-  const {
-    monthActual: actual,
-    monthProjected: projected,
-    monthLabels: labels,
-  } = transformCostsData(data?.data?.projectedAndActualCosts);
+  const { actualCost, projectedCost, labels } = transformCostsData(
+    data?.data?.projectedAndActualCosts
+  );
 
   return (
     <VStack width="full" spacing="10px">
@@ -50,8 +48,8 @@ const Y2DTab = () => {
       />
       <LineChart
         labels={labels}
-        actual={actual}
-        projected={projected}
+        actual={actualCost}
+        projected={projectedCost}
         isLoading={isLoading || isFetching}
       />
     </VStack>

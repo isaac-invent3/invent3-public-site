@@ -27,18 +27,14 @@ const YTYTab = () => {
     id: isProperState ? selectedState.value : selectedCountry?.value,
     areaType: isProperState ? AREA_ENUM.state : AREA_ENUM.country,
     year: selectedYear?.value,
-    month: isProperMonth ? selectedMonth?.value : null,
+    monthNo: isProperMonth ? selectedMonth?.value : null,
     useYearToDateLogic: false,
   });
 
-  const {
-    monthActual,
-    monthProjected,
-    monthLabels,
-    weekLabels,
-    weeklyActual,
-    weeklyProjected,
-  } = transformCostsData(data?.data?.projectedAndActualCosts);
+  const { actualCost, projectedCost, labels } = transformCostsData(
+    data?.data?.projectedAndActualCosts,
+    isProperMonth ? true : false
+  );
   return (
     <VStack width="full" spacing="10px">
       <HStack width="full" justifyContent="flex-end">
@@ -63,9 +59,9 @@ const YTYTab = () => {
         isLoading={isLoading || isFetching}
       />
       <LineChart
-        labels={isProperMonth ? weekLabels : monthLabels}
-        actual={isProperMonth ? weeklyActual : monthActual}
-        projected={isProperMonth ? weeklyProjected : monthProjected}
+        labels={labels}
+        actual={actualCost}
+        projected={projectedCost}
         isLoading={isLoading || isFetching}
       />
     </VStack>

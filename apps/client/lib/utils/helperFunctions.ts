@@ -121,7 +121,10 @@ function generateLastFiveYears() {
   return yearsArray;
 }
 
-function transformCostsData(data: ActualProjectedData[] | undefined) {
+function transformCostsData(
+  data: ActualProjectedData[] | undefined,
+  showWeeks: boolean = false
+) {
   const monthLabels = [
     'Jan',
     'Feb',
@@ -136,38 +139,28 @@ function transformCostsData(data: ActualProjectedData[] | undefined) {
     'Nov',
     'Dec',
   ];
-  const weekLabels = ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'];
+  const weekLabels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
 
-  // Initialize month data for projected and actual costs
-  const monthProjected = new Array(12).fill(0);
-  const monthActual = new Array(12).fill(0);
-
-  // Initialize weekly data for each week across all months
-  const weeklyProjected = new Array(5).fill(0);
-  const weeklyActual = new Array(5).fill(0);
-
-  // Loop through the backend data and fill the arrays
-  if (data) {
-    data.forEach((item) => {
-      const monthIndex = item.monthNo - 1; // Convert month number to zero-based index
-
-      monthProjected[monthIndex] = item.projectedCost;
-      monthActual[monthIndex] = item.actualCost;
-
-      // Process weekly costs (for weeks 1-5)
-      const weekIndex = item.weekNo;
-      weeklyProjected[weekIndex] = item.projectedCost;
-      weeklyActual[weekIndex] = item.actualCost;
-    });
+  // Return empty arrays if data is undefined or empty
+  if (!data || data.length === 0) {
+    return { projectedCost: [], actualCost: [], labels: [] };
   }
 
+  const projectedCost = data.map((item) => item.projectedCost);
+  const actualCost = data.map((item) => item.actualCost);
+  const labels = data.map((item) => {
+    if (showWeeks && item.weekId && item.weekId >= 1 && item.weekId <= 4) {
+      return weekLabels[item.weekId - 1]; // Subtract 1 to get 0-based index
+    } else if (item.monthId >= 1 && item.monthId <= 12) {
+      return monthLabels[item.monthId - 1]; // Subtract 1 to get 0-based index
+    }
+    return 'Unknown'; // Fallback label
+  });
+
   return {
-    monthLabels,
-    weekLabels,
-    monthProjected,
-    monthActual,
-    weeklyProjected,
-    weeklyActual,
+    projectedCost,
+    actualCost,
+    labels,
   };
 }
 

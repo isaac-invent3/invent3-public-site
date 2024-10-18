@@ -23,7 +23,7 @@ ChartJS.register(
 );
 
 interface LineChartProps {
-  labels: string[];
+  labels: (string | undefined)[];
   actual: number[];
   projected: number[];
   isLoading: boolean;

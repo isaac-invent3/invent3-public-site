@@ -16,8 +16,9 @@ interface AssetStatistics {
 interface ActualProjectedData {
   projectedCost: number;
   actualCost: number;
-  monthNo: number;
-  weekNo: number;
+  variance: number;
+  monthId: number;
+  weekId: number | null;
   year: number;
 }
 

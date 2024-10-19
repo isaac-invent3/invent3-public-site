@@ -1,6 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { Option } from '~/lib/interfaces/general.interfaces';
-import { ScheduleFormDetails } from '~/lib/interfaces/maintenance.interfaces';
+import {
+  planFormDetails,
+  ScheduleFormDetails,
+} from '~/lib/interfaces/maintenance.interfaces';
 
 interface ScheduleInfo {
   selectedState: Option | null;
@@ -12,6 +15,7 @@ interface ScheduleInfo {
 export interface SliceProps {
   scheduleInfo: ScheduleInfo;
   scheduleForm: ScheduleFormDetails;
+  planForm: planFormDetails;
 }
 
 const initialScheduleForm = {
@@ -34,6 +38,8 @@ const initialScheduleForm = {
   ticketId: null,
   maintenancePlanInfo: {
     planName: null,
+    planType: null,
+    assetName: null,
     assetTypeName: null,
     planStatus: null,
     startDate: null,
@@ -58,9 +64,22 @@ const InitialScheduleInfo = {
   timelineEndDate: null,
 };
 
+const initialPlanForm = {
+  planName: null,
+  planTypeId: null,
+  frequencyId: null,
+  assetId: null,
+  assetTypeId: null,
+  startDate: null,
+  endDate: null,
+  ownerId: null,
+  cost: null,
+};
+
 const initialState: SliceProps = {
   scheduleInfo: InitialScheduleInfo,
   scheduleForm: initialScheduleForm,
+  planForm: initialPlanForm,
 };
 
 export const Maintenance = createSlice({

@@ -13,6 +13,7 @@ interface FormActionButtonsProps {
   loadingText?: string;
   cancelLink: string;
   finalText?: string;
+  disablePrimaryButton?: boolean;
 }
 const FormActionButtons = (props: FormActionButtonsProps) => {
   const {
@@ -24,6 +25,7 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
     loadingText,
     finalText,
     cancelLink,
+    disablePrimaryButton = false,
   } = props;
 
   return (
@@ -71,6 +73,7 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
           customStyles={{ minW: '167px' }}
           isLoading={isLoading}
           loadingText={loadingText}
+          isDisabled={disablePrimaryButton}
         >
           {activeStep < totalStep ? 'Continue' : (finalText ?? 'Finish')}
         </Button>

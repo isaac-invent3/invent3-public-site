@@ -1,25 +1,25 @@
 /* eslint-disable no-unused-vars */
-import { Flex, HStack, Icon, Text, VStack } from '@chakra-ui/react';
-import { Field, FormikProvider, useFormik } from 'formik';
+import { Flex, HStack, VStack } from '@chakra-ui/react';
+import { FormikProvider, useFormik } from 'formik';
 import React from 'react';
 import GenericModal from '~/lib/components/UI/Modal';
 import Button from '~/lib/components/UI/Button';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useSession } from 'next-auth/react';
-import TextInput from '~/lib/components/UI/TextInput';
 import { useCreateMaintenancePlanMutation } from '~/lib/redux/services/maintenance/plan.services';
 import ModalHeading from '~/lib/components/UI/ModalHeading';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
-import CustomDatePicker from '~/lib/components/UI/Form/FormDatePicker';
 import Plan from './PlanType';
 import AssetSelect from '~/lib/components/Common/AssetSelect';
-import { LongBackArrowIcon } from '~/lib/components/CustomIcons';
 import { planSchema } from '~/lib/schemas/maintenance.schema';
 import BackButton from '~/lib/components/UI/Button/BackButton';
 import { MAINTENANCE_PLAN_ENUM } from '~/lib/utils/constants';
 import moment from 'moment';
-import Frequency from '~/lib/components/Common/Frequency';
-import Owner from './Owner';
+import Owner from '../../Common/Owner';
+import PlanTitle from '../../Common/PlanTitle';
+import Frequency from '../../../Common/Frequency';
+import StartDate from '../../Common/StartDate';
+import EndDate from '../../Common/EndDate';
 
 interface CustomizedPlanModalProps {
   isOpen: boolean;
@@ -37,8 +37,9 @@ const CustomizedPlanModal = (props: CustomizedPlanModalProps) => {
       planName: null,
       startDate: null,
       endDate: null,
+      frequencyId: null,
     },
-    validationSchema: planSchema,
+    validationSchema: planSchema(false, false),
     enableReinitialize: true,
     onSubmit: async (values) => {
       const finalValue = {
@@ -80,23 +81,8 @@ const CustomizedPlanModal = (props: CustomizedPlanModalProps) => {
 
             {/* Main Form Starts Here */}
             <VStack width="full" spacing="27px" mt="71px">
-              <HStack width="full" alignItems="flex-start" spacing="73px">
-                <Flex width="full" maxW="118px">
-                  <SectionInfo
-                    title="Plan Title"
-                    info="Add name that users can likely search with"
-                    isRequired
-                  />
-                </Flex>
-
-                <Field
-                  as={TextInput}
-                  name="planName"
-                  type="text"
-                  label="Plan Title"
-                />
-              </HStack>
-              <Frequency />
+              <PlanTitle sectionMaxWidth="118px" spacing="73px" />
+              <Frequency sectionMaxWidth="118px" spacing="73px" />
               {!assetId && (
                 <>
                   <Plan />
@@ -113,33 +99,10 @@ const CustomizedPlanModal = (props: CustomizedPlanModalProps) => {
                   </HStack>
                 </>
               )}
-              <HStack width="full" alignItems="flex-start" spacing="73px">
-                <Flex width="full" maxW="118px">
-                  <SectionInfo
-                    title="Start Date"
-                    info="Add name that users can likely search with"
-                    isRequired
-                  />
-                </Flex>
 
-                <CustomDatePicker
-                  name="startDate"
-                  label="Start Date"
-                  type="date"
-                />
-              </HStack>
-              <HStack width="full" alignItems="flex-start" spacing="73px">
-                <Flex width="full" maxW="118px">
-                  <SectionInfo
-                    title="End Date"
-                    info="Add name that users can likely search with"
-                    isRequired
-                  />
-                </Flex>
-
-                <CustomDatePicker name="endDate" label="End Date" type="date" />
-              </HStack>
-              <Owner />
+              <StartDate sectionMaxWidth="118px" spacing="73px" />
+              <EndDate sectionMaxWidth="118px" spacing="73px" />
+              <Owner sectionMaxWidth="118px" spacing="73px" />
             </VStack>
             {/* Main Form Ends Here */}
             <HStack

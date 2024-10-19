@@ -135,6 +135,17 @@ const monthOptions = [
   },
 ];
 
+const planScopeOptions = [
+  {
+    label: 'Asset',
+    value: 'asset',
+  },
+  {
+    label: 'Asset Type',
+    value: 'asset_type',
+  },
+];
+
 export {
   OPERATORS,
   FORM_ENUM,
@@ -144,4 +155,5 @@ export {
   timeRangeOptions,
   yearOptions,
   monthOptions,
+  planScopeOptions,
 };

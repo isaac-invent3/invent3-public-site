@@ -2,20 +2,19 @@
 
 import { Flex } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import FormStepper from '../../UI/Form/FormStepper';
-import GeneralStep from './GeneralStep';
-import AcquisitionStep from './AcquisitionStep';
-import DocumentStep from './DocumentStep';
-import SummaryStep from './SummaryStep';
-import SlideTransition from '../../UI/SlideTransition';
 import Header from './Header';
+import FormStepper from '~/lib/components/UI/Form/FormStepper';
+import SlideTransition from '~/lib/components/UI/SlideTransition';
+import PlanInfoStep from './PlanInfoStep';
+import ScheduleStep from './ScheduleStep';
+import SummarySection from './SummaryStep';
 
-const STEPS = ['General', 'Acquisition', 'Document', 'Summary'];
+const STEPS = ['Plan Info', 'Schedules', 'Summary'];
 
-interface AssetFormProps {
+interface PlanFormProps {
   type: 'create' | 'edit';
 }
-const AssetForm = (props: AssetFormProps) => {
+const PlanForm = (props: PlanFormProps) => {
   const { type } = props;
   const [activeStep, setActiveStep] = useState(0);
 
@@ -33,21 +32,29 @@ const AssetForm = (props: AssetFormProps) => {
 
   return (
     <Flex width="full" direction="column" pb="24px">
-      <Header type={type} />
+      <Header
+        headingText={
+          type === 'create'
+            ? 'Add New Maintenance Plan'
+            : 'Edit Maintenance Plan'
+        }
+      />
       <Flex width="full" gap="8px" mt="32px" direction="column">
         <FormStepper currentStep={activeStep} steps={STEPS} />
-        <GeneralStep activeStep={activeStep} setActiveStep={setActiveStep} />
+        <PlanInfoStep
+          activeStep={activeStep}
+          setActiveStep={setActiveStep}
+          type={type}
+        />
         <SlideTransition trigger={activeStep === 1}>
-          <AcquisitionStep
+          <ScheduleStep
             activeStep={activeStep}
             setActiveStep={setActiveStep}
+            type={type}
           />
         </SlideTransition>
         <SlideTransition trigger={activeStep === 2}>
-          <DocumentStep activeStep={activeStep} setActiveStep={setActiveStep} />
-        </SlideTransition>
-        <SlideTransition trigger={activeStep === 3}>
-          <SummaryStep
+          <SummarySection
             activeStep={activeStep}
             setActiveStep={setActiveStep}
             type={type}
@@ -58,4 +65,4 @@ const AssetForm = (props: AssetFormProps) => {
   );
 };
 
-export default AssetForm;
+export default PlanForm;

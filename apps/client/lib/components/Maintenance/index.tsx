@@ -69,6 +69,7 @@ const Maintenance = () => {
   const headerInfo = {
     0: {
       name: 'Plan',
+      href: '/maintenance/plans/add',
     },
     1: {
       name: 'Schedules',

@@ -3,10 +3,15 @@ import React from 'react';
 import EmployeeSelect from '~/lib/components/Common/EmployeeSelect';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 
-const Owner = () => {
+interface OwnerProps {
+  sectionMaxWidth: string;
+  spacing: string;
+}
+const Owner = (props: OwnerProps) => {
+  const { sectionMaxWidth, spacing } = props;
   return (
-    <HStack width="full" alignItems="flex-start" spacing="73px">
-      <Flex width="full" maxW="118px">
+    <HStack width="full" alignItems="flex-start" spacing={spacing}>
+      <Flex width="full" maxW={sectionMaxWidth}>
         <SectionInfo
           title="Owner"
           info="Add name that users can likely search with"

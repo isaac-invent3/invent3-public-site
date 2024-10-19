@@ -41,7 +41,7 @@ const View = (info: MaintenancePlan) => {
   );
 };
 const Plan = () => {
-  const { assetId, assetTypeId } = useAppSelector(
+  const { assetId, assetTypeId, assetName } = useAppSelector(
     (state) => state.maintenance.scheduleForm
   );
   const { data, isLoading, isFetching } =
@@ -94,7 +94,9 @@ const Plan = () => {
           updateScheduleForm({
             maintenancePlanInfo: {
               planName: customizedPlan.planName,
+              planType: customizedPlan.planTypeName,
               planStatus: customizedPlan.planStatusName,
+              assetName,
               assetTypeName: customizedPlan.assetTypeName,
               startDate: customizedPlan.startDate,
               endDate: customizedPlan.endDate,
@@ -108,7 +110,9 @@ const Plan = () => {
         updateScheduleForm({
           maintenancePlanInfo: {
             planName: null,
+            planType: null,
             planStatus: null,
+            assetName: null,
             assetTypeName: null,
             startDate: null,
             endDate: null,

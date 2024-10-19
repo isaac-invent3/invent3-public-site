@@ -2,13 +2,6 @@ import { Divider, Flex, HStack, Icon, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { CheckIcon } from '../../CustomIcons';
 
-const steps = [
-  { title: 'STEP 1', description: 'General' },
-  { title: 'STEP 2', description: 'Acquisition' },
-  { title: 'STEP 3', description: 'Document' },
-  { title: 'STEP 4', description: 'Summary' },
-];
-
 const CompletedIcon = () => {
   return (
     <HStack
@@ -31,8 +24,8 @@ const ActiveInactiveIcon = (props: ActiveInactiveIconProps) => {
   const { active, boxIndex } = props;
   return (
     <HStack
-      width="24px"
-      height="24px"
+      minW="24px"
+      minH="24px"
       bgColor="primary.500"
       rounded="4px"
       opacity={active ? 1 : 0.5}
@@ -47,10 +40,11 @@ const ActiveInactiveIcon = (props: ActiveInactiveIconProps) => {
 
 interface FormStepperProps {
   currentStep: number;
+  steps: string[];
 }
 
 const FormStepper = (props: FormStepperProps) => {
-  const { currentStep } = props;
+  const { currentStep, steps } = props;
   return (
     <Flex
       width="full"
@@ -84,11 +78,17 @@ const FormStepper = (props: FormStepperProps) => {
                   fontSize="10px"
                   fontWeight={700}
                   lineHeight="11.88px"
+                  whiteSpace="nowrap"
                 >
-                  {step.title}
+                  STEP {index + 1}
                 </Text>
-                <Text fontSize="md" color="black" fontWeight={700}>
-                  {step.description}
+                <Text
+                  fontSize="md"
+                  color="black"
+                  fontWeight={700}
+                  whiteSpace="nowrap"
+                >
+                  {step}
                 </Text>
               </VStack>
             </HStack>

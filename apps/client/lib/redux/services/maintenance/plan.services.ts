@@ -38,6 +38,13 @@ export const maintenancePlanApi = createApi({
       }),
       providesTags: ['allMaintenancePlansByAssetId'],
     }),
+    getAssetCustomMaintenancePlanByAssetGuid: builder.query({
+      query: (id) => ({
+        url: `/MaintenancePlans/GetAssetCustomMaintenancePlan/${id}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
     searchMaintenancePlan: builder.mutation({
       query: (body: any) => ({
         url: `/MaintenancePlans/Search`,
@@ -54,4 +61,5 @@ export const {
   useGetAllMaintenancePlanQuery,
   useSearchMaintenancePlanMutation,
   useGetAllMaintenancePlansByAssetIdQuery,
+  useGetAssetCustomMaintenancePlanByAssetGuidQuery,
 } = maintenancePlanApi;

@@ -6,7 +6,7 @@ import Type from './Type';
 import Date from './Date';
 import ServiceLevelAgreement from './SLA';
 import Tasks from './Tasks';
-import Frequency from '~/lib/components/Common/Frequency';
+import Frequency from '~/lib/components/Maintenance/Common/Frequency';
 
 const SectionTwo = () => {
   return (
@@ -27,7 +27,7 @@ const SectionTwo = () => {
         spacing="40px"
       >
         <Description />
-        <Frequency />
+        <Frequency sectionMaxWidth="130px" spacing="56px" />
       </SimpleGrid>
       <SimpleGrid
         columns={2}

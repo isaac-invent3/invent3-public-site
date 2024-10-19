@@ -1,15 +1,20 @@
-import { Flex, HStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
-import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { Option } from '~/lib/interfaces/general.interfaces';
 import {
   useGetAllMaintenanceFrequenciesQuery,
   useSearchMaintenanceFrequenciesMutation,
 } from '~/lib/redux/services/maintenance/frequency.services';
-import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';
 
-const Frequency = () => {
+interface FrequencySelectProps {
+  // eslint-disable-next-line no-unused-vars
+  handleSelect?: (options: Option) => void;
+  selectName: string;
+  selectTitle: string;
+  defaultName?: string | null;
+}
+const FrequencySelect = (props: FrequencySelectProps) => {
+  const { handleSelect, selectName, selectTitle, defaultName } = props;
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading } = useGetAllMaintenanceFrequenciesQuery({
     pageSize: 25,
@@ -18,37 +23,22 @@ const Frequency = () => {
   const [searchMaintenanceFrequency] = useSearchMaintenanceFrequenciesMutation(
     {}
   );
-  const dispatch = useAppDispatch();
-  const { frequencyName } = useAppSelector(
-    (state) => state.maintenance.scheduleForm
-  );
 
   return (
-    <HStack width="full" alignItems="flex-start" spacing="56px">
-      <Flex width="full" maxW="130px">
-        <SectionInfo
-          title="Frequency"
-          info="Add name that users can likely search with"
-          isRequired
-        />
-      </Flex>
-      <GenericAsyncSelect
-        selectName="frequencyId"
-        selectTitle="Schedule Frequency"
-        data={data}
-        labelKey="frequencyName"
-        valueKey="frequencyId"
-        defaultInputValue={frequencyName}
-        mutationFn={searchMaintenanceFrequency}
-        isLoading={isLoading}
-        pageNumber={pageNumber}
-        setPageNumber={setPageNumber}
-        handleSelect={(option) =>
-          dispatch(updateScheduleForm({ frequencyName: option.label }))
-        }
-      />
-    </HStack>
+    <GenericAsyncSelect
+      selectName={selectName}
+      selectTitle={selectTitle}
+      data={data}
+      labelKey="frequencyName"
+      valueKey="frequencyId"
+      defaultInputValue={defaultName}
+      mutationFn={searchMaintenanceFrequency}
+      isLoading={isLoading}
+      pageNumber={pageNumber}
+      setPageNumber={setPageNumber}
+      handleSelect={handleSelect}
+    />
   );
 };
 
-export default Frequency;
+export default FrequencySelect;

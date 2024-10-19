@@ -127,22 +127,6 @@ export const assetApi = createApi({
         body,
       }),
     }),
-    getAllAssetTypes: builder.query({
-      query: (data: any) => ({
-        url: generateQueryStr(`/AssetTypes?`, data),
-        method: 'GET',
-        headers: getHeaders(),
-      }),
-      providesTags: ['allAssetTypes'],
-    }),
-    searchAssetTypes: builder.mutation({
-      query: (body: any) => ({
-        url: `/AssetStatus/Search`,
-        method: 'POST',
-        headers: getHeaders(),
-        body,
-      }),
-    }),
   }),
 });
 
@@ -158,9 +142,7 @@ export const {
   useGetMaintenanceHistoryByAssetIdQuery,
   useGetPlannedMaintenanceByAssetIdQuery,
   useGetDocumentsByAssetIdQuery,
-  useGetAllAssetTypesQuery,
   useGetAllStatusQuery,
-  useSearchAssetTypesMutation,
   useSearchStatusMutation,
   useSearchAssetsMutation,
 } = assetApi;

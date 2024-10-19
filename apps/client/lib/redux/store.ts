@@ -32,6 +32,7 @@ import { maintenanceFrequencyApi } from './services/maintenance/frequency.servic
 import { taskApi } from './services/task/general.services';
 import { taskPrioritiesApi } from './services/task/priorities.services';
 import { taskTypeApi } from './services/task/types.services';
+import { assetTypeApi } from './services/asset/types.services';
 
 export const persistConfig = {
   key: 'root',
@@ -43,6 +44,7 @@ const rootReducer = combineReducers({
   [authApi.reducerPath]: authApi.reducer,
   [assetApi.reducerPath]: assetApi.reducer,
   [assetStatsApi.reducerPath]: assetStatsApi.reducer,
+  [assetTypeApi.reducerPath]: assetTypeApi.reducer,
   [categoryApi.reducerPath]: categoryApi.reducer,
   [conditionApi.reducerPath]: conditionApi.reducer,
   [dashboardApi.reducerPath]: dashboardApi.reducer,
@@ -79,6 +81,7 @@ export const makeStore = () => {
         authApi.middleware,
         assetApi.middleware,
         assetStatsApi.middleware,
+        assetTypeApi.middleware,
         dashboardApi.middleware,
         depreciationApi.middleware,
         employeesApi.middleware,

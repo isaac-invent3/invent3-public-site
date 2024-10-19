@@ -1,12 +1,8 @@
 import { Divider, Flex, useDisclosure, VStack } from '@chakra-ui/react';
 import React from 'react';
 import FormActionButtons from '~/lib/components/UI/Form/FormActionButtons';
-import Header from '../Header';
-import SectionOne from './SectionOne';
-import SectionTwo from './SectionTwo';
-import { useAppSelector } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useSession } from 'next-auth/react';
-import ScheduleSuccessModal from '../SuccessModal';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import {
   useCreateMaintenanceScheduleAndTasksMutation,
@@ -16,6 +12,13 @@ import {
   generateMaintenanceScheduleDTO,
   generateTasksArray,
 } from '../../../Common/helperFunctions';
+import SectionTwo from '../../../Schedules/ScheduleForm/SummarySection/SectionTwo';
+import PlanSuccessModal from './PlanSuccessModal';
+import SectionOne from './SectionOne';
+import {
+  clearScheduleForm,
+  updateScheduleForm,
+} from '~/lib/redux/slices/MaintenanceSlice';
 
 interface SummarySectionProps {
   activeStep: number;
@@ -33,12 +36,9 @@ const SummarySection = (props: SummarySectionProps) => {
     useCreateMaintenanceScheduleAndTasksMutation();
   const [updateSchedule, { isLoading: updateLoading }] =
     useUpdateMaintenanceScheduleMutation();
-  const breadCrumbText =
-    type === 'create'
-      ? 'Add New Maintenance Schedule'
-      : 'Edit Maintenance Schedule';
   const { data } = useSession();
   const username = data?.user?.username;
+  const dispatch = useAppDispatch();
 
   const PAYLOAD = {
     createMaintenanceScheduleDto: generateMaintenanceScheduleDTO(
@@ -77,17 +77,24 @@ const SummarySection = (props: SummarySectionProps) => {
     }
   };
 
+  const handleModalButtons = (addAnotherSchedule: boolean) => {
+    if (addAnotherSchedule) {
+      const { planId, maintenancePlanInfo } = scheduleFormDetails;
+      const tempInfo = { planId, maintenancePlanInfo };
+      dispatch(clearScheduleForm());
+      dispatch(updateScheduleForm({ ...tempInfo }));
+      setActiveStep(activeStep - 1);
+      onClose();
+    }
+  };
+
   return (
     <Flex
       width="full"
       height="full"
       direction="column"
-      display={activeStep === 1 ? 'flex' : 'none'}
+      display={activeStep === 2 ? 'flex' : 'none'}
     >
-      <Header
-        headingText="Maintenance Schedule Summary"
-        breadCrumbText={breadCrumbText}
-      />
       <VStack
         spacing="32px"
         width="full"
@@ -118,7 +125,11 @@ const SummarySection = (props: SummarySectionProps) => {
         />
       </Flex>
       {isOpen && (
-        <ScheduleSuccessModal isOpen={isOpen} onClose={onClose} type={type} />
+        <PlanSuccessModal
+          isOpen={isOpen}
+          onClose={handleModalButtons}
+          type={type}
+        />
       )}
     </Flex>
   );

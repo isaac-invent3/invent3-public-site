@@ -97,6 +97,8 @@ interface ScheduleFormDetails {
   ticketId: string | null;
   maintenancePlanInfo: {
     planName: string | null;
+    planType: string | null;
+    assetName: string | null;
     assetTypeName: string | null;
     planStatus: string | null;
     startDate: string | null;
@@ -110,10 +112,23 @@ interface ScheduleFormDetails {
   };
 }
 
+interface planFormDetails {
+  planName: string | null;
+  frequencyId: number | null;
+  assetId: number | null;
+  planTypeId: number | null;
+  assetTypeId: number | null;
+  ownerId: number | null;
+  startDate: string | null;
+  endDate: string | null;
+  cost: number | null;
+}
+
 export type {
   MaintenancePlan,
   MaintenanceScheduleStat,
   AggregateMaintenanceSchedule,
   ScheduleFormDetails,
   MaintenanceSchedule,
+  planFormDetails,
 };

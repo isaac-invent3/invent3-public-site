@@ -9,7 +9,7 @@ import {
 } from '~/lib/redux/services/asset/vendor.services';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
-import AssetTypeSelect from './AssetType';
+import AssetTypeSelect from '~/lib/components/Common/AssetTypeSelect';
 
 const VendorDetails = () => {
   const dispatch = useAppDispatch();
@@ -112,7 +112,13 @@ const VendorDetails = () => {
                 isRequired
               />
             </Flex>
-            <AssetTypeSelect />
+            <AssetTypeSelect
+              selectName="assetTypeId"
+              selectTitle="Asset Type"
+              handleSelect={(option) =>
+                dispatch(updateAssetForm({ assetTypeName: option.label }))
+              }
+            />
           </HStack>
         </GridItem>
       </Grid>

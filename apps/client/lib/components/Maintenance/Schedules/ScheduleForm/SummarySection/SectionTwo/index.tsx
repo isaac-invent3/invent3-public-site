@@ -1,13 +1,23 @@
 import { Grid, GridItem, HStack, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import TaskListTable from '../../FormSection/SectionTwo/Tasks/ListModal/TaskListTable';
-import TaskTable from '~/lib/components/TaskManagement/Modals/TaskListModal/TaskListView/TaskTable';
+import TaskTable from '~/lib/components/TaskManagement/TaskTable';
+import { useGetAllTasksByScheduleIdQuery } from '~/lib/redux/services/task/general.services';
 
 const SectionTwo = () => {
   const formDetails = useAppSelector((state) => state.maintenance.scheduleForm);
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(25);
+  const { data, isLoading, isFetching } = useGetAllTasksByScheduleIdQuery(
+    {
+      id: formDetails?.scheduleId,
+      pageSize,
+      pageNumber: currentPage,
+    },
+    { skip: !formDetails?.scheduleId }
+  );
   const contentOne = [
     {
       label: 'Schedule Title',
@@ -101,8 +111,15 @@ const SectionTwo = () => {
 
           {formDetails?.scheduleId ? (
             <TaskTable
-              scheduleId={formDetails?.scheduleId}
-              showPopover={true}
+              data={data?.data?.items ?? []}
+              isLoading={isLoading}
+              isFetching={isFetching}
+              totalPages={data?.data?.totalPages}
+              setPageNumber={setCurrentPage}
+              pageNumber={currentPage}
+              pageSize={pageSize}
+              setPageSize={setPageSize}
+              isSortable={false}
             />
           ) : (
             <TaskListTable data={formDetails.tasks} type="summary" />

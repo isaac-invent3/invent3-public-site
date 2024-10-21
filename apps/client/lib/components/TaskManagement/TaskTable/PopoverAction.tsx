@@ -38,7 +38,7 @@ const PopoverAction = (task: Task) => {
 
   return (
     <>
-      <GenericPopover width="129px" placement="bottom">
+      <GenericPopover width="129px" placement="bottom-start">
         <VStack width="full" alignItems="flex-start" spacing="16px">
           <Text cursor="pointer" onClick={onOpenEdit}>
             Edit

@@ -1,5 +1,5 @@
 import { createColumnHelper } from '@tanstack/react-table';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import DataTable from '~/lib/components/UI/Table';
 import { Task } from '~/lib/interfaces/task.interfaces';
@@ -7,27 +7,58 @@ import {
   MaintenanceColorCode,
   TaskPriorityColorCode,
 } from '~/lib/utils/ColorCodes';
-import PopoverAction from './PopoverAction';
-import { useGetAllTasksByScheduleIdQuery } from '~/lib/redux/services/task/general.services';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import AssignedTo from '~/lib/components/Common/AssignedTo';
+import PopoverAction from './PopoverAction';
 
 interface TaskTableProps {
-  scheduleId: number;
-  showPopover: boolean;
+  data: Task[];
+  isLoading?: boolean;
+  isFetching?: boolean;
+  emptyText?: string;
+  showFooter?: boolean;
+  emptyLines?: number;
+  pageNumber?: number;
+  pageSize?: number;
+  totalPages?: number;
+  selectedRows?: number[];
+  setSelectedRows?: React.Dispatch<React.SetStateAction<number[]>>;
+  handleSelectRow?: React.Dispatch<React.SetStateAction<any>>;
+  setPageNumber?: React.Dispatch<React.SetStateAction<number>>;
+  setPageSize?: React.Dispatch<React.SetStateAction<number>>;
+  isSelectable?: boolean;
+  isSortable?: boolean;
+  // eslint-disable-next-line no-unused-vars
 }
 const TaskTable = (props: TaskTableProps) => {
-  const { scheduleId, showPopover } = props;
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(25);
-  const { data, isLoading, isFetching } = useGetAllTasksByScheduleIdQuery({
-    id: scheduleId,
-  });
+  const {
+    data,
+    isFetching,
+    isLoading,
+    isSelectable,
+    pageNumber,
+    pageSize,
+    showFooter,
+    emptyText,
+    emptyLines,
+    totalPages,
+    selectedRows,
+    isSortable = true,
+    handleSelectRow,
+    setPageNumber,
+    setPageSize,
+    setSelectedRows,
+  } = props;
 
   const columnHelper = createColumnHelper<Task>();
   const columns = useMemo(
     () => {
       const baseColumns = [
+        columnHelper.accessor('taskId', {
+          cell: (info) => info.getValue(),
+          header: '#',
+          enableSorting: false,
+        }),
         columnHelper.accessor('taskName', {
           cell: (info) => info.getValue(),
           header: 'Task',
@@ -36,6 +67,11 @@ const TaskTable = (props: TaskTableProps) => {
         columnHelper.accessor('taskDescription', {
           cell: (info) => info.getValue(),
           header: 'Description',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('scheduleId', {
+          cell: (info) => info.getValue(),
+          header: 'Schedule ID',
           enableSorting: false,
         }),
         columnHelper.accessor('priorityName', {
@@ -48,36 +84,24 @@ const TaskTable = (props: TaskTableProps) => {
             );
           },
           header: 'Priority',
-          enableSorting: false,
+          enableSorting: isSortable,
         }),
         columnHelper.accessor('dueDate', {
-          cell: (info) => {
-            const value = info.getValue();
-            if (value && !isNaN(new Date(value).getTime())) {
-              return dateFormatter(value, 'DD / MM / YYYY');
-            } else {
-              return 'N/A';
-            }
-          },
+          cell: (info) =>
+            dateFormatter(info.getValue(), 'DD / MM / YYYY') ?? 'N/A',
           header: 'Due Date',
-          enableSorting: false,
+          enableSorting: isSortable,
         }),
         columnHelper.accessor('dateCompleted', {
-          cell: (info) => {
-            const value = info.getValue();
-            if (value && !isNaN(new Date(value).getTime())) {
-              return dateFormatter(value, 'DD / MM / YYYY');
-            } else {
-              return 'N/A';
-            }
-          },
+          cell: (info) =>
+            dateFormatter(info.getValue(), 'DD / MM / YYYY') ?? 'N/A',
           header: 'Completion Date',
-          enableSorting: false,
+          enableSorting: isSortable,
         }),
         columnHelper.accessor('assignedToEmployeeName', {
           cell: (info) => AssignedTo(info.getValue()),
           header: 'Assigned To',
-          enableSorting: false,
+          enableSorting: isSortable,
         }),
         columnHelper.accessor('status', {
           cell: (info) => {
@@ -93,32 +117,36 @@ const TaskTable = (props: TaskTableProps) => {
           header: 'Status',
           enableSorting: false,
         }),
+        columnHelper.accessor('taskType', {
+          cell: (info) => PopoverAction(info.row.original),
+          header: '',
+          enableSorting: isSortable,
+        }),
       ];
-      const popOverColumn = columnHelper.accessor('taskType', {
-        cell: (info) => PopoverAction(info.row.original),
-        header: '',
-        enableSorting: false,
-      });
-
-      if (showPopover) {
-        baseColumns.push(popOverColumn);
-      }
       return baseColumns;
     },
-    [[data?.data?.items]] //eslint-disable-line
+    [[data]] //eslint-disable-line
   );
 
   return (
     <DataTable
       columns={columns}
-      data={data?.data?.items ?? []}
+      data={data ?? []}
       isLoading={isLoading}
       isFetching={isFetching}
-      totalPages={data?.data?.totalPages}
-      setPageNumber={setCurrentPage}
-      pageNumber={currentPage}
+      totalPages={totalPages}
+      setPageNumber={setPageNumber}
+      pageNumber={pageNumber}
       pageSize={pageSize}
       setPageSize={setPageSize}
+      handleSelectRow={handleSelectRow}
+      selectedRows={selectedRows}
+      setSelectedRows={setSelectedRows}
+      showFooter={showFooter}
+      emptyText={emptyText}
+      emptyLines={emptyLines}
+      isSelectable={isSelectable}
+      maxTdWidth="200px"
       customThStyle={{
         paddingLeft: '16px',
         paddingTop: '12px',
@@ -131,8 +159,6 @@ const TaskTable = (props: TaskTableProps) => {
         paddingBottom: '12px',
       }}
       customTableContainerStyle={{ rounded: 'none' }}
-      showFooter={true}
-      maxTdWidth="200px"
     />
   );
 };

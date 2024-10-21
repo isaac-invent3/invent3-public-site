@@ -9,7 +9,12 @@ import {
 } from '~/lib/redux/services/maintenance/type.services';
 import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';
 
-const Type = () => {
+interface TypeProps {
+  sectionMaxWidth: string;
+  spacing: string;
+}
+const Type = (props: TypeProps) => {
+  const { sectionMaxWidth, spacing } = props;
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading } = useGetAllMaintenanceTypeQuery({
     pageSize: 25,
@@ -21,8 +26,8 @@ const Type = () => {
   );
   const dispatch = useAppDispatch();
   return (
-    <HStack width="full" alignItems="flex-start" spacing="56px">
-      <Flex width="full" maxW="130px">
+    <HStack width="full" alignItems="flex-start" spacing={spacing}>
+      <Flex width="full" maxW={sectionMaxWidth}>
         <SectionInfo
           title="Type"
           info="Add name that users can likely search with"

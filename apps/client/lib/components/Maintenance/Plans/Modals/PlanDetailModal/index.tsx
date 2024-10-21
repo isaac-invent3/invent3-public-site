@@ -43,7 +43,10 @@ const PlanDetailsModal = (props: PlanDetailsModalProps) => {
         justifyContent="space-between"
       >
         <BackButton handleClick={onClose} />
-        <Button customStyles={{ width: '138px', height: '35px' }}>
+        <Button
+          customStyles={{ width: '138px', height: '35px' }}
+          href={`/maintenance/plans/${data?.maintenancePlanId}/edit`}
+        >
           Edit Plan
         </Button>
       </HStack>

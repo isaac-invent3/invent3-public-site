@@ -17,8 +17,8 @@ const SectionTwo = () => {
         width="full"
         spacing="40px"
       >
-        <ScheduleTitle />
-        <Type />
+        <ScheduleTitle sectionMaxWidth="141px" spacing="41px" />
+        <Type sectionMaxWidth="130px" spacing="56px" />
       </SimpleGrid>
       <SimpleGrid
         columns={2}
@@ -26,7 +26,7 @@ const SectionTwo = () => {
         width="full"
         spacing="40px"
       >
-        <Description />
+        <Description sectionMaxWidth="141px" spacing="41px" />
         <Frequency sectionMaxWidth="130px" spacing="56px" />
       </SimpleGrid>
       <SimpleGrid
@@ -35,8 +35,8 @@ const SectionTwo = () => {
         width="full"
         spacing="40px"
       >
-        <Date />
-        <ServiceLevelAgreement />
+        <Date sectionMaxWidth="141px" spacing="41px" />
+        <ServiceLevelAgreement sectionMaxWidth="130px" spacing="56px" />
       </SimpleGrid>
       <SimpleGrid
         columns={2}
@@ -44,7 +44,7 @@ const SectionTwo = () => {
         width="full"
         spacing="40px"
       >
-        <Tasks />
+        <Tasks sectionMaxWidth="141px" spacing="41px" />
       </SimpleGrid>
     </VStack>
   );

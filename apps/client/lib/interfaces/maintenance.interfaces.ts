@@ -15,6 +15,7 @@ interface MaintenancePlan {
   assetTypeId: number;
   serialNo: string;
   assetDescription: string;
+  planTypeId: number;
   planTypeName: string;
   planStatusName: string;
   frequencyName: string;
@@ -112,12 +113,17 @@ interface ScheduleFormDetails {
   };
 }
 
-interface planFormDetails {
+interface PlanFormDetails {
+  planId: number | null;
   planName: string | null;
   frequencyId: number | null;
+  frequencyName: string | null;
+  assetName: string | null;
   assetId: number | null;
   planTypeId: number | null;
   assetTypeId: number | null;
+  assetTypeName: string | null;
+  owner: string | null;
   ownerId: number | null;
   startDate: string | null;
   endDate: string | null;
@@ -130,5 +136,5 @@ export type {
   AggregateMaintenanceSchedule,
   ScheduleFormDetails,
   MaintenanceSchedule,
-  planFormDetails,
+  PlanFormDetails,
 };

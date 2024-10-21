@@ -1,15 +1,12 @@
-import { Flex, Icon } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import { createColumnHelper } from '@tanstack/react-table';
 import React, { useMemo, useState } from 'react';
-import { ThreeVerticalDotsIcon } from '~/lib/components/CustomIcons';
 import DataTable from '~/lib/components/UI/Table';
 import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 import { useGetAllMaintenancePlanQuery } from '~/lib/redux/services/maintenance/plan.services';
 import { dateFormatter } from '~/lib/utils/Formatters';
+import PopoverAction from './PopoverAction';
 
-const Dots = () => {
-  return <Icon as={ThreeVerticalDotsIcon} boxSize="14px" color="neutral.700" />;
-};
 const Plans = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(25);
@@ -87,7 +84,7 @@ const Plans = () => {
         enableSorting: false,
       }),
       columnHelper.accessor('rowId', {
-        cell: () => Dots(),
+        cell: (info) => PopoverAction(info.row.original),
         header: '',
         enableSorting: false,
       }),

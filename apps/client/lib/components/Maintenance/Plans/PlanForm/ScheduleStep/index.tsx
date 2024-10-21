@@ -6,6 +6,7 @@ import { scheduleSchema } from '~/lib/schemas/maintenance.schema';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';
 import SectionTwo from '../../../Schedules/ScheduleForm/FormSection/SectionTwo';
+import MaintenanceSchedules from './MaintenanceSchedule';
 
 interface ScheduleStepProps {
   activeStep: number;
@@ -51,7 +52,7 @@ const ScheduleStep = (props: ScheduleStepProps) => {
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
           <VStack
-            spacing="32px"
+            spacing="40px"
             width="full"
             alignItems="flex-start"
             bgColor="white"
@@ -62,6 +63,7 @@ const ScheduleStep = (props: ScheduleStepProps) => {
             rounded="6px"
             minH="60vh"
           >
+            {type === 'edit' && <MaintenanceSchedules />}
             <SectionTwo />
           </VStack>
           <Flex width="full" mt="16px">
@@ -70,7 +72,6 @@ const ScheduleStep = (props: ScheduleStepProps) => {
               totalStep={3}
               activeStep={1}
               setActiveStep={setActiveStep}
-              handleContinue={() => console.log(formik.errors)}
             />
           </Flex>
         </form>

@@ -22,7 +22,10 @@ export const maintenanceScheduleApi = createApi({
         headers: getHeaders(),
         body,
       }),
-      invalidatesTags: ['allMaintenanceSchedule'],
+      invalidatesTags: [
+        'allMaintenanceSchedule',
+        'allMaintenanceScheduleByPlanId',
+      ],
     }),
     updateMaintenanceSchedule: builder.mutation({
       query: ({ id, ...data }) => ({
@@ -31,7 +34,22 @@ export const maintenanceScheduleApi = createApi({
         headers: getHeaders(),
         body: data,
       }),
-      invalidatesTags: ['allMaintenanceSchedule'],
+      invalidatesTags: [
+        'allMaintenanceSchedule',
+        'allMaintenanceScheduleByPlanId',
+      ],
+    }),
+    deleteMaintenanceSchedule: builder.mutation({
+      query: ({ id, ...data }) => ({
+        url: `/MaintenanceSchedules/${id}`,
+        method: 'DELETE',
+        headers: getHeaders(),
+        body: data,
+      }),
+      invalidatesTags: [
+        'allMaintenanceSchedule',
+        'allMaintenanceScheduleByPlanId',
+      ],
     }),
     getAllMaintenanceSchedule: builder.query({
       // eslint-disable-next-line no-unused-vars
@@ -114,6 +132,7 @@ export const maintenanceScheduleApi = createApi({
 });
 
 export const {
+  useDeleteMaintenanceScheduleMutation,
   useCreateMaintenanceScheduleAndTasksMutation,
   useUpdateMaintenanceScheduleMutation,
   useGetAllMaintenanceScheduleQuery,

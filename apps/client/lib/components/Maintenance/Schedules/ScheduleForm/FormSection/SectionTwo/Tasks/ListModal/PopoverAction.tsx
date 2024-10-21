@@ -2,9 +2,9 @@ import { Icon, Text, useDisclosure, VStack } from '@chakra-ui/react';
 import { useFormikContext } from 'formik';
 import React from 'react';
 import { ThreeVerticalDotsIcon } from '~/lib/components/CustomIcons';
-import DeleteTaskModal from '~/lib/components/TaskManagement/Modals/DeleteTaskModal';
 import TaskFormModal from '~/lib/components/TaskManagement/Modals/TaskFormModal';
 import GenericPopover from '~/lib/components/UI/GenericPopover';
+import GenericDeleteModal from '~/lib/components/UI/Modal/GenericDeleteModal';
 import { taskFormDetails } from '~/lib/interfaces/task.interfaces';
 
 const PopoverAction = (task: taskFormDetails) => {
@@ -60,7 +60,7 @@ const PopoverAction = (task: taskFormDetails) => {
         data={task}
         handleData={handleEditTask}
       />
-      <DeleteTaskModal
+      <GenericDeleteModal
         isOpen={isOpenDelete}
         onClose={onCloseDelete}
         handleDelete={handleDelete}

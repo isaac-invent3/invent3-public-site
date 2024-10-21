@@ -4,10 +4,15 @@ import React from 'react';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import TextInput from '~/lib/components/UI/TextInput';
 
-const ScheduleTitle = () => {
+interface ScheduleTitleProps {
+  sectionMaxWidth: string;
+  spacing: string;
+}
+const ScheduleTitle = (props: ScheduleTitleProps) => {
+  const { sectionMaxWidth, spacing } = props;
   return (
-    <HStack width="full" alignItems="flex-start" spacing="41px">
-      <Flex width="full" maxW="141px">
+    <HStack width="full" alignItems="flex-start" spacing={spacing}>
+      <Flex width="full" maxW={sectionMaxWidth}>
         <SectionInfo
           title="Schedule Title"
           info="Add name that users can likely search with"

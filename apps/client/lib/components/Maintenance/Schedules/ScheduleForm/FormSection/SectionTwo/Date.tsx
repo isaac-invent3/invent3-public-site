@@ -3,10 +3,15 @@ import React from 'react';
 import CustomDatePicker from '~/lib/components/UI/Form/FormDatePicker';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 
-const Date = () => {
+interface DateProps {
+  sectionMaxWidth: string;
+  spacing: string;
+}
+const Date = (props: DateProps) => {
+  const { sectionMaxWidth, spacing } = props;
   return (
-    <HStack width="full" alignItems="flex-start" spacing="41px">
-      <Flex width="full" maxW="141px">
+    <HStack width="full" alignItems="flex-start" spacing={spacing}>
+      <Flex width="full" maxW={sectionMaxWidth}>
         <SectionInfo
           title="Start Date and Time"
           info="Add name that users can likely search with"

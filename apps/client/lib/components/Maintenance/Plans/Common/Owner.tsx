@@ -6,9 +6,10 @@ import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 interface OwnerProps {
   sectionMaxWidth: string;
   spacing: string;
+  defaultName?: string | null;
 }
 const Owner = (props: OwnerProps) => {
-  const { sectionMaxWidth, spacing } = props;
+  const { sectionMaxWidth, spacing, defaultName } = props;
   return (
     <HStack width="full" alignItems="flex-start" spacing={spacing}>
       <Flex width="full" maxW={sectionMaxWidth}>
@@ -18,7 +19,11 @@ const Owner = (props: OwnerProps) => {
           isRequired
         />
       </Flex>
-      <EmployeeSelect selectName="ownerId" selectTitle="Owner" />
+      <EmployeeSelect
+        selectName="ownerId"
+        selectTitle="Owner"
+        defaultName={defaultName}
+      />
     </HStack>
   );
 };

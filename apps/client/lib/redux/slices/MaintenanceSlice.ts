@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { Option } from '~/lib/interfaces/general.interfaces';
 import {
-  planFormDetails,
+  PlanFormDetails,
   ScheduleFormDetails,
 } from '~/lib/interfaces/maintenance.interfaces';
 
@@ -15,7 +15,7 @@ interface ScheduleInfo {
 export interface SliceProps {
   scheduleInfo: ScheduleInfo;
   scheduleForm: ScheduleFormDetails;
-  planForm: planFormDetails;
+  planForm: PlanFormDetails;
 }
 
 const initialScheduleForm = {
@@ -65,13 +65,18 @@ const InitialScheduleInfo = {
 };
 
 const initialPlanForm = {
+  planId: null,
   planName: null,
   planTypeId: null,
   frequencyId: null,
+  frequencyName: null,
+  assetName: null,
+  assetTypeName: null,
   assetId: null,
   assetTypeId: null,
   startDate: null,
   endDate: null,
+  owner: null,
   ownerId: null,
   cost: null,
 };
@@ -111,6 +116,18 @@ export const Maintenance = createSlice({
     clearScheduleForm: (state) => {
       state.scheduleForm = initialScheduleForm;
     },
+    setPlanForm: (state, { payload }: PayloadAction<PlanFormDetails>) => {
+      state.planForm = payload;
+    },
+    updatePlanForm: (
+      state,
+      { payload }: PayloadAction<Partial<PlanFormDetails>>
+    ) => {
+      state.planForm = { ...state.planForm, ...payload };
+    },
+    clearPlanForm: (state) => {
+      state.planForm = initialPlanForm;
+    },
   },
 });
 
@@ -120,6 +137,9 @@ export const {
   setScheduleForm,
   updateScheduleForm,
   clearScheduleForm,
+  setPlanForm,
+  updatePlanForm,
+  clearPlanForm,
 } = Maintenance.actions;
 
 export default Maintenance.reducer;

@@ -6,9 +6,10 @@ import FrequencySelect from '../../Common/Frequency';
 interface FrequencyProps {
   sectionMaxWidth: string;
   spacing: string;
+  defaultName?: string | null;
 }
 const Frequency = (props: FrequencyProps) => {
-  const { sectionMaxWidth, spacing } = props;
+  const { sectionMaxWidth, spacing, defaultName } = props;
   return (
     <HStack width="full" alignItems="flex-start" spacing={spacing}>
       <Flex width="full" maxW={sectionMaxWidth}>
@@ -18,7 +19,11 @@ const Frequency = (props: FrequencyProps) => {
           isRequired
         />
       </Flex>
-      <FrequencySelect selectName="frequencyId" selectTitle="Frequency" />
+      <FrequencySelect
+        selectName="frequencyId"
+        selectTitle="Frequency"
+        defaultName={defaultName}
+      />
     </HStack>
   );
 };

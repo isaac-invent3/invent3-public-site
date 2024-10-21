@@ -4,10 +4,15 @@ import React from 'react';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import TextareaInput from '~/lib/components/UI/TextArea';
 
-const Description = () => {
+interface DescriptionProps {
+  sectionMaxWidth: string;
+  spacing: string;
+}
+const Description = (props: DescriptionProps) => {
+  const { sectionMaxWidth, spacing } = props;
   return (
-    <HStack width="full" alignItems="flex-start" spacing="41px">
-      <Flex width="full" maxW="141px">
+    <HStack width="full" alignItems="flex-start" spacing={spacing}>
+      <Flex width="full" maxW={sectionMaxWidth}>
         <SectionInfo
           title="Description"
           info="Add name that users can likely search with"

@@ -212,7 +212,11 @@ function SelectInput(props: SelectInputProps) {
             }),
           }}
           defaultInputValue={defaultInputValue}
-          value={options.find((option) => option.value === meta.value) || null}
+          value={
+            meta.value
+              ? options.find((option) => option.value === meta.value)
+              : null
+          }
           onChange={(selectedOptions) => {
             if (selectedOptions) {
               handleSelect && handleSelect(selectedOptions as Option);

@@ -16,6 +16,7 @@ import { useGetAssetTypeByIdQuery } from '~/lib/redux/services/asset/types.servi
 import {
   useCreateMaintenancePlanMutation,
   useGetAssetCustomMaintenancePlanByAssetGuidQuery,
+  useUpdateMaintenancePlanMutation,
 } from '~/lib/redux/services/maintenance/plan.services';
 import { planSchema } from '~/lib/schemas/maintenance.schema';
 import { MAINTENANCE_PLAN_ENUM, planScopeOptions } from '~/lib/utils/constants';
@@ -41,6 +42,9 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
   const [isDefaultPlan, setIsDefaultPlan] = useState(false);
   const [canProceed, setCanProceed] = useState(false);
   const [createPlan, { isLoading }] = useCreateMaintenancePlanMutation({});
+  const [updatePlan, { isLoading: isUpdating }] =
+    useUpdateMaintenancePlanMutation({});
+
   const { handleSubmit } = useCustomMutation();
   const { data } = useSession();
 
@@ -53,7 +57,7 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
     assetId: plan?.assetId ?? null,
     assetTypeId: plan?.assetTypeId ?? null,
     cost: plan?.cost ?? null,
-    planScope: null,
+    planScope: plan ? (plan?.assetId ? 'asset' : 'asset_type') : null,
   };
 
   const formik = useFormik({
@@ -61,30 +65,63 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
     validationSchema: planSchema(isDefaultPlan, true),
     enableReinitialize: true,
     onSubmit: async (values) => {
-      if (type === 'create' && !maintenanceSlice.scheduleForm.planId) {
-        const finalValue = {
-          planName: values.planName,
-          frequencyId: values.frequencyId,
-          ownerId: values.ownerId,
-          ...(values.planScope === 'asset'
-            ? { assetId: values.assetId }
-            : { assetTypeId: values.assetTypeId }),
-          startDate: moment(values.startDate, 'DD/MM/YYYY').format(
-            'YYYY-MM-DD'
-          ),
-          endDate: moment(values.endDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
-          planTypeId: isDefaultPlan
-            ? MAINTENANCE_PLAN_ENUM.default
-            : MAINTENANCE_PLAN_ENUM.custom,
-          createdBy: data?.user?.username,
-        };
-        const response = await handleSubmit(createPlan, finalValue, '');
+      const info = {
+        planName: values.planName,
+        frequencyId: values.frequencyId,
+        ownerId: values.ownerId,
+        ...(values.planScope === 'asset'
+          ? { assetId: values.assetId }
+          : { assetTypeId: values.assetTypeId }),
+        startDate: moment(values.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+        endDate: moment(values.endDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+        planTypeId: isDefaultPlan
+          ? MAINTENANCE_PLAN_ENUM.default
+          : MAINTENANCE_PLAN_ENUM.custom,
+      };
+      if (type === 'create') {
+        if (!maintenanceSlice.scheduleForm.planId) {
+          const response = await handleSubmit(
+            createPlan,
+            { ...info, createdBy: data?.user?.username },
+            ''
+          );
+          if (response?.data) {
+            const maintenancePlan: MaintenancePlan =
+              response?.data?.data?.maintenancePlanInfoHeader;
+            dispatch(
+              updateScheduleForm({
+                planId: response?.data?.data?.maintenancePlanId,
+                maintenancePlanInfo: {
+                  planName: maintenancePlan?.planName,
+                  planType: maintenancePlan?.planTypeName,
+                  planStatus: maintenancePlan?.planStatusName,
+                  assetName: assetData?.data?.assetName,
+                  assetTypeName: maintenancePlan?.assetTypeName,
+                  startDate: maintenancePlan?.startDate,
+                  endDate: maintenancePlan?.endDate,
+                },
+              })
+            );
+          }
+          setActiveStep(1);
+        }
+      } else {
+        const response = await handleSubmit(
+          updatePlan,
+          {
+            id: plan?.planId,
+            ...info,
+            maintenancePlanId: plan?.planId,
+            lastModifiedBy: data?.user?.username,
+          },
+          ''
+        );
         if (response?.data) {
           const maintenancePlan: MaintenancePlan =
             response?.data?.data?.maintenancePlanInfoHeader;
           dispatch(
             updateScheduleForm({
-              planId: response?.data?.data?.maintenancePlanId,
+              planId: plan?.planId,
               maintenancePlanInfo: {
                 planName: maintenancePlan?.planName,
                 planType: maintenancePlan?.planTypeName,
@@ -96,9 +133,7 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
               },
             })
           );
-          setActiveStep(1);
         }
-      } else {
         setActiveStep(1);
       }
     },
@@ -147,21 +182,28 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
 
   // Proceed if either the asset of asset type selected doesn't have a maintenance plan
   useEffect(() => {
-    if (formik.values.planScope === 'asset') {
-      if (error) {
-        setCanProceed(true);
-      } else {
-        showToast('This Asset already have a customized maintenance plan');
+    if (assetCustomPlans || assetTypeData || error) {
+      if (formik.values.planScope === 'asset') {
+        if (error) {
+          setCanProceed(true);
+        } else if (
+          type === 'create' ||
+          plan?.assetId !== formik.values.assetId
+        ) {
+          showToast('This Asset already have a customized maintenance plan');
+        } else {
+          setCanProceed(true);
+        }
+      }
+      if (formik.values.planScope === 'asset_type') {
+        if (assetTypeData?.data?.maintenancePlanId === null) {
+          setCanProceed(true);
+        } else {
+          showToast('This Asset Type already have a default maintenance plan');
+        }
       }
     }
-    if (formik.values.planScope === 'asset_type') {
-      if (assetTypeData?.data?.maintenancePlanId === null) {
-        setCanProceed(true);
-      } else {
-        showToast('This Asset Type already have a default maintenance plan');
-      }
-    }
-  }, [assetCustomPlans, assetTypeData, error]);
+  }, [assetTypeData, error, assetCustomPlans]);
 
   return (
     <Flex
@@ -225,8 +267,16 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
                   )}
                 </HStack>
               )}
-              <Frequency sectionMaxWidth="141px" spacing="40px" />
-              <Owner sectionMaxWidth="141px" spacing="40px" />
+              <Frequency
+                sectionMaxWidth="141px"
+                spacing="40px"
+                defaultName={plan?.frequencyName}
+              />
+              <Owner
+                sectionMaxWidth="141px"
+                spacing="40px"
+                defaultName={plan?.owner}
+              />
               <StartDate sectionMaxWidth="141px" spacing="40px" />
               <EndDate sectionMaxWidth="141px" spacing="40px" />
             </VStack>
@@ -238,7 +288,7 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
               activeStep={0}
               setActiveStep={setActiveStep}
               disablePrimaryButton={!canProceed}
-              isLoading={isLoading}
+              isLoading={isLoading || isUpdating}
               loadingText="Loading..."
             />
           </Flex>

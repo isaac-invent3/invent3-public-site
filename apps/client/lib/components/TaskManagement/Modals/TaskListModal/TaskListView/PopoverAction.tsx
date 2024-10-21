@@ -1,10 +1,13 @@
 import { Icon, Text, useDisclosure, VStack } from '@chakra-ui/react';
+import { useSession } from 'next-auth/react';
 import React from 'react';
 import { ThreeVerticalDotsIcon } from '~/lib/components/CustomIcons';
-import DeleteTaskModal from '~/lib/components/TaskManagement/Modals/DeleteTaskModal';
 import TaskFormModal from '~/lib/components/TaskManagement/Modals/TaskFormModal';
 import GenericPopover from '~/lib/components/UI/GenericPopover';
+import GenericDeleteModal from '~/lib/components/UI/Modal/GenericDeleteModal';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { Task, taskFormDetails } from '~/lib/interfaces/task.interfaces';
+import { useDeleteTaskMutation } from '~/lib/redux/services/task/general.services';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
 const PopoverAction = (task: Task) => {
@@ -18,6 +21,21 @@ const PopoverAction = (task: Task) => {
     onOpen: onOpenDelete,
     onClose: onCloseDelete,
   } = useDisclosure();
+
+  const { handleSubmit } = useCustomMutation();
+  const [deleteTask, { isLoading }] = useDeleteTaskMutation({});
+  const { data } = useSession();
+
+  const handleDeleteTask = async () => {
+    const response = await handleSubmit(
+      deleteTask,
+      { id: task?.taskId, deletedBy: data?.user.username },
+      'Task Deleted Successfully'
+    );
+    if (response?.data) {
+      onCloseDelete();
+    }
+  };
 
   return (
     <>
@@ -50,11 +68,14 @@ const PopoverAction = (task: Task) => {
         }
         scheduleId={task.scheduleId}
       />
-      <DeleteTaskModal
-        isOpen={isOpenDelete}
-        onClose={onCloseDelete}
-        taskId={task.taskId}
-      />
+      {isOpenDelete && (
+        <GenericDeleteModal
+          isLoading={isLoading}
+          isOpen={isOpenDelete}
+          onClose={onCloseDelete}
+          handleDelete={handleDeleteTask}
+        />
+      )}
     </>
   );
 };

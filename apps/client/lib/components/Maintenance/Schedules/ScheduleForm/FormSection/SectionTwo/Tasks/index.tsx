@@ -10,7 +10,13 @@ import FormTaskListModal from './ListModal';
 import { useAppSelector } from '~/lib/redux/hooks';
 import TaskListView from '~/lib/components/TaskManagement/Modals/TaskListModal/TaskListView';
 
-const Tasks = () => {
+interface DateProps {
+  sectionMaxWidth: string;
+  spacing: string;
+}
+const Tasks = (props: DateProps) => {
+  const { sectionMaxWidth, spacing } = props;
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: isOpenTaskList,
@@ -38,8 +44,8 @@ const Tasks = () => {
   };
 
   return (
-    <HStack width="full" alignItems="flex-start" spacing="41px">
-      <Flex width="full" maxW="141px">
+    <HStack width="full" alignItems="flex-start" spacing={spacing}>
+      <Flex width="full" maxW={sectionMaxWidth}>
         <SectionInfo
           title="Tasks"
           info="Add name that users can likely search with"

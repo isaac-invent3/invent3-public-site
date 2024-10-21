@@ -19,6 +19,15 @@ export const maintenancePlanApi = createApi({
       }),
       invalidatesTags: ['allMaintenancePlan', 'allMaintenancePlansByAssetId'],
     }),
+    updateMaintenancePlan: builder.mutation({
+      query: ({ id, ...body }) => ({
+        url: `/MaintenancePlans/${id}`,
+        method: 'PUT',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allMaintenancePlan', 'allMaintenancePlansByAssetId'],
+    }),
     getAllMaintenancePlan: builder.query({
       query: (data: any) => ({
         url: generateQueryStr(`/MaintenancePlans?`, data),
@@ -26,6 +35,22 @@ export const maintenancePlanApi = createApi({
         headers: getHeaders(),
       }),
       providesTags: ['allMaintenancePlan'],
+    }),
+    getMaintenancePlanById: builder.query({
+      query: (id: any) => ({
+        url: `/MaintenancePlans/${id}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    deleteMaintenancePlan: builder.mutation({
+      query: ({ id, ...body }) => ({
+        url: `/MaintenancePlans/${id}`,
+        method: 'DELETE',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allMaintenancePlan', 'allMaintenancePlansByAssetId'],
     }),
     getAllMaintenancePlansByAssetId: builder.query({
       query: ({ id, ...data }) => ({
@@ -57,7 +82,10 @@ export const maintenancePlanApi = createApi({
 });
 
 export const {
+  useGetMaintenancePlanByIdQuery,
+  useUpdateMaintenancePlanMutation,
   useCreateMaintenancePlanMutation,
+  useDeleteMaintenancePlanMutation,
   useGetAllMaintenancePlanQuery,
   useSearchMaintenancePlanMutation,
   useGetAllMaintenancePlansByAssetIdQuery,

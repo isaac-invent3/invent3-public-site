@@ -49,6 +49,8 @@ export type TableProps<Data extends object> = {
   customTdStyle?: { [key: string]: unknown };
   customTBodyRowStyle?: { [key: string]: unknown };
   customTableContainerStyle?: { [key: string]: unknown };
+  hideSelectAllCheckBox?: boolean;
+  selectMultipleRows?: boolean;
 };
 
 function DataTable<Data extends object>({
@@ -74,6 +76,8 @@ function DataTable<Data extends object>({
   customThStyle,
   customTBodyRowStyle,
   customTableContainerStyle,
+  hideSelectAllCheckBox = false,
+  selectMultipleRows = true,
 }: TableProps<Data>) {
   const [selectAll, setSelectAll] = useState(false);
 
@@ -98,11 +102,18 @@ function DataTable<Data extends object>({
   };
 
   const handleSelectRowCheckbox = (index: number) => {
-    if (selectedRows) {
-      const updatedSelectedRows = selectedRows.includes(index)
-        ? selectedRows.filter((i) => i !== index)
-        : [...selectedRows, index];
-      if (setSelectedRows) {
+    if (selectedRows && setSelectedRows) {
+      // Should only run if select multiple row is true or no row has been selected or the clicked checkbox index is part of the selected row array
+      if (!selectMultipleRows) {
+        const isAlreadyIncluded = selectedRows.includes(index);
+        if (isAlreadyIncluded) {
+          setSelectedRows([]);
+        } else [setSelectedRows([index])];
+      } else {
+        const updatedSelectedRows = selectedRows.includes(index)
+          ? selectedRows.filter((i) => i !== index)
+          : [...selectedRows, index];
+
         setSelectedRows(updatedSelectedRows);
       }
     }
@@ -141,6 +152,11 @@ function DataTable<Data extends object>({
                     <CheckBox
                       isChecked={selectAll}
                       handleChange={handleSelectAll}
+                      customStyle={{
+                        visibility: hideSelectAllCheckBox
+                          ? 'hidden'
+                          : 'visible',
+                      }}
                     />
                   </Th>
                 )}

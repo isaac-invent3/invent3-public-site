@@ -4,10 +4,15 @@ import React from 'react';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import TextInput from '~/lib/components/UI/TextInput';
 
-const ServiceLevelAgreement = () => {
+interface ServiceLevelAgreementProps {
+  sectionMaxWidth: string;
+  spacing: string;
+}
+const ServiceLevelAgreement = (props: ServiceLevelAgreementProps) => {
+  const { sectionMaxWidth, spacing } = props;
   return (
-    <HStack width="full" alignItems="flex-start" spacing="56px">
-      <Flex width="full" maxW="130px">
+    <HStack width="full" alignItems="flex-start" spacing={spacing}>
+      <Flex width="full" maxW={sectionMaxWidth}>
         <SectionInfo
           title="Service Level Agreement"
           info="Add name that users can likely search with"

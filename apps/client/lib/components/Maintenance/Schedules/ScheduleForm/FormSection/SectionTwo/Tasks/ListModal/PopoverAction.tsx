@@ -1,7 +1,6 @@
-import { Icon, Text, useDisclosure, VStack } from '@chakra-ui/react';
+import { Text, useDisclosure, VStack } from '@chakra-ui/react';
 import { useFormikContext } from 'formik';
 import React from 'react';
-import { ThreeVerticalDotsIcon } from '~/lib/components/CustomIcons';
 import TaskFormModal from '~/lib/components/TaskManagement/Modals/TaskFormModal';
 import GenericPopover from '~/lib/components/UI/GenericPopover';
 import GenericDeleteModal from '~/lib/components/UI/Modal/GenericDeleteModal';
@@ -38,13 +37,7 @@ const PopoverAction = (task: taskFormDetails) => {
 
   return (
     <>
-      <GenericPopover
-        width="129px"
-        icon={
-          <Icon as={ThreeVerticalDotsIcon} boxSize="16px" color="#374957" />
-        }
-        placement="bottom"
-      >
+      <GenericPopover width="129px" placement="bottom">
         <VStack width="full" alignItems="flex-start" spacing="16px">
           <Text cursor="pointer" onClick={onOpenEdit}>
             Edit

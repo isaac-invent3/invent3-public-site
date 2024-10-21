@@ -1,7 +1,6 @@
-import { Icon, Text, useDisclosure, VStack } from '@chakra-ui/react';
+import { Text, useDisclosure, VStack } from '@chakra-ui/react';
 import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 import GenericPopover from '../../UI/GenericPopover';
-import { ThreeVerticalDotsIcon } from '../../CustomIcons';
 import PlanDetailsModal from './Modals/PlanDetailModal';
 import GenericDeleteModal from '../../UI/Modal/GenericDeleteModal';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
@@ -37,13 +36,7 @@ const PopoverAction = (plan: MaintenancePlan) => {
 
   return (
     <>
-      <GenericPopover
-        width="129px"
-        icon={
-          <Icon as={ThreeVerticalDotsIcon} boxSize="16px" color="neutral.700" />
-        }
-        placement="bottom-start"
-      >
+      <GenericPopover width="129px" placement="bottom-start">
         <VStack width="full" alignItems="flex-start" spacing="16px">
           <Text
             cursor="pointer"

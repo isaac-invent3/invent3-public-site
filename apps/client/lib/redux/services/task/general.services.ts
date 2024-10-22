@@ -45,6 +45,13 @@ export const taskApi = createApi({
       }),
       providesTags: ['allTasks'],
     }),
+    getTaskById: builder.query({
+      query: (id: any) => ({
+        url: `/Tasks/${id}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
     getAllTasksByScheduleId: builder.query({
       query: ({ id, ...data }) => ({
         url: generateQueryStr(
@@ -72,6 +79,7 @@ export const {
   useUpdateTaskMutation,
   useDeleteTaskMutation,
   useGetAllTasksQuery,
+  useGetTaskByIdQuery,
   useSearchTasksMutation,
   useGetAllTasksByScheduleIdQuery,
 } = taskApi;

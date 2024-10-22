@@ -7,13 +7,14 @@ import Link from 'next/link';
 interface FormActionButtonsProps {
   activeStep: number;
   totalStep: number;
-  setActiveStep: React.Dispatch<React.SetStateAction<number>>;
+  setActiveStep?: React.Dispatch<React.SetStateAction<number>>;
   handleContinue?: () => void;
   isLoading?: boolean;
   loadingText?: string;
   cancelLink: string;
   finalText?: string;
   disablePrimaryButton?: boolean;
+  type?: 'submit' | 'button';
 }
 const FormActionButtons = (props: FormActionButtonsProps) => {
   const {
@@ -26,6 +27,7 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
     finalText,
     cancelLink,
     disablePrimaryButton = false,
+    type,
   } = props;
 
   return (
@@ -40,7 +42,7 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
         minW="96px"
         minH="50px"
         onClick={() => {
-          activeStep > 0 && setActiveStep((prev) => prev - 1);
+          activeStep > 0 && setActiveStep && setActiveStep((prev) => prev - 1);
         }}
       >
         <Icon as={ChevronLeftIcon} boxSize="16px" mb="7px" />
@@ -66,7 +68,7 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
           </Link>
         )}
         <Button
-          type={activeStep < totalStep ? 'submit' : 'button'}
+          type={(type ?? activeStep < totalStep) ? 'submit' : 'button'}
           handleClick={() => {
             handleContinue && handleContinue();
           }}

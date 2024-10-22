@@ -22,6 +22,7 @@ const ListView = () => {
         pageSize={pageSize}
         setPageSize={setPageSize}
         isSortable={true}
+        type="page"
       />
     </Flex>
   );

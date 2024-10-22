@@ -13,11 +13,7 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useGetAssetInfoHeaderByIdQuery } from '~/lib/redux/services/asset/general.services';
 import { useGetAssetTypeByIdQuery } from '~/lib/redux/services/asset/types.services';
-import {
-  useCreateMaintenancePlanMutation,
-  useGetAssetCustomMaintenancePlanByAssetGuidQuery,
-  useUpdateMaintenancePlanMutation,
-} from '~/lib/redux/services/maintenance/plan.services';
+import { useGetAssetCustomMaintenancePlanByAssetGuidQuery } from '~/lib/redux/services/maintenance/plan.services';
 import { planSchema } from '~/lib/schemas/maintenance.schema';
 import { MAINTENANCE_PLAN_ENUM, planScopeOptions } from '~/lib/utils/constants';
 import PlanTitle from '../../Common/PlanTitle';
@@ -25,8 +21,7 @@ import Owner from '../../Common/Owner';
 import StartDate from '../../Common/StartDate';
 import EndDate from '../../Common/EndDate';
 import Frequency from '../../../Common/Frequency';
-import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';
-import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
+import { updatePlanForm } from '~/lib/redux/slices/MaintenanceSlice';
 
 interface PlanInfoStepProps {
   activeStep: number;
@@ -41,12 +36,6 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
   const dispatch = useAppDispatch();
   const [isDefaultPlan, setIsDefaultPlan] = useState(false);
   const [canProceed, setCanProceed] = useState(false);
-  const [createPlan, { isLoading }] = useCreateMaintenancePlanMutation({});
-  const [updatePlan, { isLoading: isUpdating }] =
-    useUpdateMaintenancePlanMutation({});
-
-  const { handleSubmit } = useCustomMutation();
-  const { data } = useSession();
 
   const initialValues = {
     planName: plan?.planName ?? null,
@@ -57,7 +46,7 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
     assetId: plan?.assetId ?? null,
     assetTypeId: plan?.assetTypeId ?? null,
     cost: plan?.cost ?? null,
-    planScope: plan ? (plan?.assetId ? 'asset' : 'asset_type') : null,
+    planScope: plan?.planName ? (plan?.assetId ? 'asset' : 'asset_type') : null,
   };
 
   const formik = useFormik({
@@ -65,77 +54,23 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
     validationSchema: planSchema(isDefaultPlan, true),
     enableReinitialize: true,
     onSubmit: async (values) => {
-      const info = {
-        planName: values.planName,
-        frequencyId: values.frequencyId,
-        ownerId: values.ownerId,
-        ...(values.planScope === 'asset'
-          ? { assetId: values.assetId }
-          : { assetTypeId: values.assetTypeId }),
-        startDate: moment(values.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
-        endDate: moment(values.endDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
-        planTypeId: isDefaultPlan
-          ? MAINTENANCE_PLAN_ENUM.default
-          : MAINTENANCE_PLAN_ENUM.custom,
-      };
-      if (type === 'create') {
-        if (!maintenanceSlice.scheduleForm.planId) {
-          const response = await handleSubmit(
-            createPlan,
-            { ...info, createdBy: data?.user?.username },
-            ''
-          );
-          if (response?.data) {
-            const maintenancePlan: MaintenancePlan =
-              response?.data?.data?.maintenancePlanInfoHeader;
-            dispatch(
-              updateScheduleForm({
-                planId: response?.data?.data?.maintenancePlanId,
-                maintenancePlanInfo: {
-                  planName: maintenancePlan?.planName,
-                  planType: maintenancePlan?.planTypeName,
-                  planStatus: maintenancePlan?.planStatusName,
-                  assetName: assetData?.data?.assetName,
-                  assetTypeName: maintenancePlan?.assetTypeName,
-                  startDate: maintenancePlan?.startDate,
-                  endDate: maintenancePlan?.endDate,
-                },
-              })
-            );
-          }
-          setActiveStep(1);
-        }
-      } else {
-        const response = await handleSubmit(
-          updatePlan,
-          {
-            id: plan?.planId,
-            ...info,
-            maintenancePlanId: plan?.planId,
-            lastModifiedBy: data?.user?.username,
-          },
-          ''
-        );
-        if (response?.data) {
-          const maintenancePlan: MaintenancePlan =
-            response?.data?.data?.maintenancePlanInfoHeader;
-          dispatch(
-            updateScheduleForm({
-              planId: plan?.planId,
-              maintenancePlanInfo: {
-                planName: maintenancePlan?.planName,
-                planType: maintenancePlan?.planTypeName,
-                planStatus: maintenancePlan?.planStatusName,
-                assetName: assetData?.data?.assetName,
-                assetTypeName: maintenancePlan?.assetTypeName,
-                startDate: maintenancePlan?.startDate,
-                endDate: maintenancePlan?.endDate,
-              },
-            })
-          );
-        }
-        setActiveStep(1);
-      }
+      dispatch(
+        updatePlanForm({
+          planName: values.planName,
+          frequencyId: values.frequencyId,
+          ownerId: values.ownerId,
+          ...(values.planScope === 'asset'
+            ? { assetId: values.assetId }
+            : { assetTypeId: values.assetTypeId }),
+          startDate: values.startDate,
+          endDate: values.endDate,
+          planTypeId: isDefaultPlan
+            ? MAINTENANCE_PLAN_ENUM.default
+            : MAINTENANCE_PLAN_ENUM.custom,
+          planTypeName: isDefaultPlan ? 'Default' : 'Custom',
+        })
+      );
+      setActiveStep(1);
     },
   });
 
@@ -258,11 +193,24 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
                     />
                   </Flex>
                   {formik.values.planScope === 'asset' ? (
-                    <AssetSelect selectName="assetId" selectTitle="Asset" />
+                    <AssetSelect
+                      selectName="assetId"
+                      selectTitle="Asset"
+                      defaultInputValue={plan?.assetName}
+                      handleSelect={(option) =>
+                        dispatch(updatePlanForm({ assetName: option.label }))
+                      }
+                    />
                   ) : (
                     <AssetTypeSelect
                       selectName="assetTypeId"
                       selectTitle="Asset Type"
+                      defaultInputValue={plan?.assetTypeName}
+                      handleSelect={(option) =>
+                        dispatch(
+                          updatePlanForm({ assetTypeName: option.label })
+                        )
+                      }
                     />
                   )}
                 </HStack>
@@ -288,8 +236,6 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
               activeStep={0}
               setActiveStep={setActiveStep}
               disablePrimaryButton={!canProceed}
-              isLoading={isLoading || isUpdating}
-              loadingText="Loading..."
             />
           </Flex>
         </form>

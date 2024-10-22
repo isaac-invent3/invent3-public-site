@@ -28,6 +28,7 @@ interface TaskTableProps {
   setPageSize?: React.Dispatch<React.SetStateAction<number>>;
   isSelectable?: boolean;
   isSortable?: boolean;
+  type: 'modal' | 'page';
   // eslint-disable-next-line no-unused-vars
 }
 const TaskTable = (props: TaskTableProps) => {
@@ -48,6 +49,7 @@ const TaskTable = (props: TaskTableProps) => {
     setPageNumber,
     setPageSize,
     setSelectedRows,
+    type,
   } = props;
 
   const columnHelper = createColumnHelper<Task>();
@@ -118,7 +120,7 @@ const TaskTable = (props: TaskTableProps) => {
           enableSorting: false,
         }),
         columnHelper.accessor('taskType', {
-          cell: (info) => PopoverAction(info.row.original),
+          cell: (info) => PopoverAction(info.row.original, type),
           header: '',
           enableSorting: isSortable,
         }),

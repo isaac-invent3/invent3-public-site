@@ -8,9 +8,10 @@ interface TaskSuccessModalProps {
   // eslint-disable-next-line no-unused-vars
   onClose: (addAnotherTask: boolean) => void;
   type: 'create' | 'edit';
+  format: 'modal' | 'page';
 }
 const TaskSuccessModal = (props: TaskSuccessModalProps) => {
-  const { isOpen, onClose, type } = props;
+  const { isOpen, onClose, type, format } = props;
   const successText =
     type === 'create'
       ? 'A new task has been created and added to the schedule successfully'
@@ -28,7 +29,10 @@ const TaskSuccessModal = (props: TaskSuccessModalProps) => {
           <Button
             variant="secondary"
             customStyles={{ width: '96px', height: '30px' }}
-            handleClick={() => onClose(false)}
+            {...(format === 'modal'
+              ? { handleClick: () => onClose(false) }
+              : {})}
+            {...(format === 'page' ? { href: '/task-management' } : {})}
           >
             Back to Page
           </Button>

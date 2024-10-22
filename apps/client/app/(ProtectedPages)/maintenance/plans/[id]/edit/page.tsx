@@ -27,6 +27,7 @@ export default function Page({ params }: { params: { id: string } }) {
         planId: plan?.maintenancePlanId,
         planName: plan?.planName,
         planTypeId: plan?.planTypeId,
+        planTypeName: plan?.planTypeName,
         frequencyId: plan?.frequencyId,
         frequencyName: plan?.frequencyName,
         owner: plan?.owner,

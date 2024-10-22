@@ -9,7 +9,7 @@ import { Task, taskFormDetails } from '~/lib/interfaces/task.interfaces';
 import { useDeleteTaskMutation } from '~/lib/redux/services/task/general.services';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
-const PopoverAction = (task: Task) => {
+const PopoverAction = (task: Task, type: 'modal' | 'page') => {
   const {
     isOpen: isOpenEdit,
     onOpen: onOpenEdit,
@@ -40,7 +40,14 @@ const PopoverAction = (task: Task) => {
     <>
       <GenericPopover width="129px" placement="bottom-start">
         <VStack width="full" alignItems="flex-start" spacing="16px">
-          <Text cursor="pointer" onClick={onOpenEdit}>
+          <Text
+            cursor="pointer"
+            {...(type === 'modal' ? { onClick: () => onOpenEdit() } : {})}
+            as={type === 'page' ? 'a' : 'button'}
+            {...(type === 'page'
+              ? { href: `/task-management/${task.taskId}/edit` }
+              : {})}
+          >
             Edit
           </Text>
           <Text cursor="pointer" onClick={onOpenDelete}>

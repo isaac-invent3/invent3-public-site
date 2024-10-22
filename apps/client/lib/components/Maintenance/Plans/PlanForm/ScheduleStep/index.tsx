@@ -33,7 +33,7 @@ const ScheduleStep = (props: ScheduleStepProps) => {
       tasks: formDetails.tasks ?? [],
       taskCount: formDetails?.taskCount ?? 0,
     },
-    validationSchema: scheduleSchema(type === 'create', false),
+    validationSchema: scheduleSchema(type === 'create', false, false),
     enableReinitialize: true,
 
     onSubmit: async (values) => {

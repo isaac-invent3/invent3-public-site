@@ -120,6 +120,7 @@ const SectionTwo = () => {
               pageSize={pageSize}
               setPageSize={setPageSize}
               isSortable={false}
+              type="modal"
             />
           ) : (
             <TaskListTable data={formDetails.tasks} type="summary" />

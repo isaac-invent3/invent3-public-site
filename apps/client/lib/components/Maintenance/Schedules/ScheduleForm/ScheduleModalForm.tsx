@@ -53,7 +53,7 @@ const ScheduleModalForm = (props: ScheduleModalFormProps) => {
       tasks: [],
       taskCount: null,
     },
-    validationSchema: scheduleSchema(true, false),
+    validationSchema: scheduleSchema(true, false, true),
     enableReinitialize: true,
     onSubmit: async (values, { resetForm }) => {
       const PAYLOAD = {

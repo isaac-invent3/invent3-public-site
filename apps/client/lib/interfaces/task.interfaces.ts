@@ -70,6 +70,9 @@ interface FormDetails {
   status: string | null;
   priorityName: string | null;
   assignedToEmployeeName: string | null;
+  assetId: number | null;
+  assetName: string | null;
+  assetLocation: string | null;
 }
 
 interface taskFormDetails extends baseTaskFormDetail, FormDetails {}

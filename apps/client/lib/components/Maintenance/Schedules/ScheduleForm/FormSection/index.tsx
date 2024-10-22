@@ -39,7 +39,7 @@ const FormSection = (props: FormSectionProps) => {
       tasks: formDetails.tasks ?? [],
       taskCount: formDetails?.taskCount ?? 0,
     },
-    validationSchema: scheduleSchema(type === 'create', true),
+    validationSchema: scheduleSchema(type === 'create', true, true),
     enableReinitialize: true,
 
     onSubmit: async (values, { setTouched }) => {

@@ -8,7 +8,12 @@ import {
   useSearchTaskPrioritiesMutation,
 } from '~/lib/redux/services/task/priorities.services';
 
-const TaskPriority = () => {
+interface TaskPriorityProps {
+  sectionMaxWidth: string;
+  spacing: string;
+}
+const TaskPriority = (props: TaskPriorityProps) => {
+  const { sectionMaxWidth, spacing } = props;
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading } = useGetAllTaskPrioritiesQuery({
     pageSize: 25,
@@ -18,8 +23,8 @@ const TaskPriority = () => {
   const { setFieldValue, values } = useFormikContext<any>();
 
   return (
-    <HStack width="full" alignItems="flex-start" spacing="73px">
-      <Flex width="full" maxW="118px">
+    <HStack width="full" alignItems="flex-start" spacing={spacing}>
+      <Flex width="full" maxW={sectionMaxWidth}>
         <SectionInfo
           title="Priority"
           info="Add name that users can likely search with"

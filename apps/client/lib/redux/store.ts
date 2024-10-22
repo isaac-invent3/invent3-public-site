@@ -27,6 +27,7 @@ import { dashboardApi } from './services/dashboard.services';
 import { maintenancePlanApi } from './services/maintenance/plan.services';
 import { maintenanceScheduleApi } from './services/maintenance/schedule.services';
 import maintenanceSlice from './slices/MaintenanceSlice';
+import taskSlice from './slices/TaskSlice';
 import { maintenanceTypeApi } from './services/maintenance/type.services';
 import { maintenanceFrequencyApi } from './services/maintenance/frequency.services';
 import { taskApi } from './services/task/general.services';
@@ -64,6 +65,7 @@ const rootReducer = combineReducers({
   asset: assetSlice,
   dashboard: dashboardSlice,
   maintenance: maintenanceSlice,
+  task: taskSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

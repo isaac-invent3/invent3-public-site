@@ -1,27 +1,24 @@
 import { SimpleGrid, VStack } from '@chakra-ui/react';
 import React from 'react';
-import Asset from './Asset';
-import AssetLocation from '../../../../../Common/AssetLocation';
-import MaintenancePlan from './MaintenancePlan';
+import AssetField from './Asset';
 import { useAppSelector } from '~/lib/redux/hooks';
+import AssetLocation from '~/lib/components/Common/AssetLocation';
+import AssetSchedules from './AssetSchedules';
 
 const SectionOne = () => {
-  const { assetLocation } = useAppSelector(
-    (state) => state.maintenance.scheduleForm
-  );
+  const { assetLocation } = useAppSelector((state) => state.task.taskForm);
   return (
-    <VStack spacing="45px" width="full" alignItems="flex-start">
+    <VStack spacing="24px" width="full" alignItems="flex-start">
       <SimpleGrid
         columns={2}
         alignItems="flex-start"
         width="full"
-        spacing="40px"
+        spacing="78px"
       >
-        <Asset />
+        <AssetField />
         <AssetLocation value={assetLocation} />
       </SimpleGrid>
-
-      <MaintenancePlan />
+      <AssetSchedules />
     </VStack>
   );
 };

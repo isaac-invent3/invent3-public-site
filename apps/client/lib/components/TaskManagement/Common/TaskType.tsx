@@ -8,7 +8,12 @@ import {
   useSearchTaskTypeMutation,
 } from '~/lib/redux/services/task/types.services';
 
-const TaskType = () => {
+interface TaskTypeProps {
+  sectionMaxWidth: string;
+  spacing: string;
+}
+const TaskType = (props: TaskTypeProps) => {
+  const { sectionMaxWidth, spacing } = props;
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading } = useGetAllTaskTypeQuery({
     pageSize: 25,
@@ -18,8 +23,8 @@ const TaskType = () => {
   const { setFieldValue, values } = useFormikContext<any>();
 
   return (
-    <HStack width="full" alignItems="flex-start" spacing="73px">
-      <Flex width="full" maxW="118px">
+    <HStack width="full" alignItems="flex-start" spacing={spacing}>
+      <Flex width="full" maxW={sectionMaxWidth}>
         <SectionInfo
           title="Type"
           info="Add name that users can likely search with"

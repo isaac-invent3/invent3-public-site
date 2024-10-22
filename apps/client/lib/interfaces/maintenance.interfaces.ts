@@ -121,6 +121,7 @@ interface PlanFormDetails {
   assetName: string | null;
   assetId: number | null;
   planTypeId: number | null;
+  planTypeName: string | null;
   assetTypeId: number | null;
   assetTypeName: string | null;
   owner: string | null;

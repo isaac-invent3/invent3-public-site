@@ -57,7 +57,6 @@ const SummarySection = (props: SummarySectionProps) => {
     let response;
     if (type === 'create') {
       response = await handleSubmit(createScheduleAndTasks, PAYLOAD, '');
-      // console.log(PAYLOAD);
     } else {
       response = await handleSubmit(
         updateSchedule,

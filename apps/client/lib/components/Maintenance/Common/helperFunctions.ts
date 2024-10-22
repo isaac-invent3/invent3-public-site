@@ -1,5 +1,8 @@
 import moment from 'moment';
-import { ScheduleFormDetails } from '~/lib/interfaces/maintenance.interfaces';
+import {
+  PlanFormDetails,
+  ScheduleFormDetails,
+} from '~/lib/interfaces/maintenance.interfaces';
 import {
   baseTaskFormDetail,
   taskFormDetails,
@@ -62,4 +65,24 @@ const generateMaintenanceScheduleDTO = (
   return maintenanceScheduleDto;
 };
 
-export { generateTasksArray, generateMaintenanceScheduleDTO };
+const generatePlanDTO = (
+  type: 'create' | 'edit',
+  formDetail: PlanFormDetails,
+  username: string
+) => {
+  const maintenanceScheduleDto = {
+    planName: formDetail.planName,
+    frequencyId: formDetail.frequencyId,
+    ownerId: formDetail.ownerId,
+    ...(formDetail.assetId
+      ? { assetId: formDetail.assetId }
+      : { assetTypeId: formDetail.assetTypeId }),
+    startDate: moment(formDetail.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+    endDate: moment(formDetail.endDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+    planTypeId: formDetail.planTypeId,
+    [`${type === 'create' ? 'createdBy' : 'lastModifiedBy'}`]: username,
+  };
+  return maintenanceScheduleDto;
+};
+
+export { generateTasksArray, generatePlanDTO, generateMaintenanceScheduleDTO };

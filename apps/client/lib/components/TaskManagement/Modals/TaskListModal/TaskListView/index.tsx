@@ -36,6 +36,7 @@ const TaskListView = (props: TaskListViewProps) => {
         pageSize={pageSize}
         setPageSize={setPageSize}
         isSortable={false}
+        type="modal"
       />
     </TaskListModal>
   );

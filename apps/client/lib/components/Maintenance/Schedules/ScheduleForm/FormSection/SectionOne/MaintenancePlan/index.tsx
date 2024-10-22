@@ -1,20 +1,13 @@
 /* eslint-disable no-unused-vars */
-import {
-  Flex,
-  HStack,
-  Icon,
-  Text,
-  useDisclosure,
-  VStack,
-} from '@chakra-ui/react';
+import { Flex, HStack, Text, useDisclosure, VStack } from '@chakra-ui/react';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useField } from 'formik';
 import React, { useEffect, useMemo, useState } from 'react';
-import { InfoIcon } from '~/lib/components/CustomIcons';
 import CustomizedPlanModal from '~/lib/components/Maintenance/Plans/Modals/CustomizedplanModal';
 import PlanDetailsModal from '~/lib/components/Maintenance/Plans/Modals/PlanDetailModal';
 import ErrorMessage from '~/lib/components/UI/ErrorMessage';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
+import InfoCard from '~/lib/components/UI/InfoCard';
 import DataTable from '~/lib/components/UI/Table';
 import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
@@ -256,19 +249,10 @@ const Plan = () => {
           </Text>
         )}
         {data?.data && !isLoading && !isFetching && (
-          <HStack
-            py="8px"
-            px="16px"
-            rounded="8px"
-            bgColor="#0366EF0D"
-            spacing="16px"
-          >
-            <Icon as={InfoIcon} boxSize="16px" color="#0366EF" />
-            <Text color="#0366EF" mt="2px">
-              Default Plan cannot be edited. A new schedule can only be added to
-              a customized plan
-            </Text>
-          </HStack>
+          <InfoCard
+            infoText="  Default Plan cannot be edited. A new schedule can only be added to
+              a customized plan"
+          />
         )}
         {meta.touched && meta.error !== undefined && (
           <ErrorMessage>{meta.error}</ErrorMessage>

@@ -7,14 +7,9 @@ import Button from '~/lib/components/UI/Button';
 import TextInput from '~/lib/components/UI/TextInput';
 import ModalHeading from '~/lib/components/UI/ModalHeading';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
-import CustomDatePicker from '~/lib/components/UI/Form/FormDatePicker';
 import BackButton from '~/lib/components/UI/Button/BackButton';
-import TaskPriority from './TaskPriority';
-import TextareaInput from '~/lib/components/UI/TextArea';
-import TaskType from './TaskType';
 import { taskBaseSchema } from '~/lib/schemas/task.schema';
 import { taskFormDetails } from '~/lib/interfaces/task.interfaces';
-import TaskAssignedTo from './AssignedTo';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import {
   useCreateTaskMutation,
@@ -23,6 +18,14 @@ import {
 import TaskSuccessModal from '../TaskSuccessModal';
 import { useSession } from 'next-auth/react';
 import moment from 'moment';
+import TaskDescription from '../../Common/TaskDescription';
+import DueDate from '../../Common/DueDate';
+import CompletionDate from '../../Common/CompletionDate';
+import CostEstimate from '../../Common/CostEstimate';
+import TaskAssignedTo from '../../Common/AssignedTo';
+import TaskTitle from '../../Common/TaskTitle';
+import TaskType from '../../Common/TaskType';
+import TaskPriority from '../../Common/TaskPriority';
 
 interface TaskFormModalProps {
   isOpen: boolean;
@@ -112,6 +115,9 @@ const TaskFormModal = (props: TaskFormModalProps) => {
           scheduleId: scheduleId ?? null,
           statusId: null,
           status: 'Not Started',
+          assetId: null,
+          assetName: null,
+          assetLocation: null,
         });
         resetForm();
         onOpenSuccess();
@@ -148,86 +154,14 @@ const TaskFormModal = (props: TaskFormModalProps) => {
 
               {/* Main Form Starts Here */}
               <VStack width="full" spacing="27px" mt="60px">
-                <HStack width="full" alignItems="flex-start" spacing="73px">
-                  <Flex width="full" maxW="118px">
-                    <SectionInfo
-                      title="Task Title"
-                      info="Add name that users can likely search with"
-                      isRequired
-                    />
-                  </Flex>
-                  <Field
-                    as={TextInput}
-                    name="taskName"
-                    type="text"
-                    label="Task Title"
-                  />
-                </HStack>
-                <HStack width="full" alignItems="flex-start" spacing="73px">
-                  <Flex width="full" maxW="118px">
-                    <SectionInfo
-                      title="Description"
-                      info="Add name that users can likely search with"
-                      isRequired
-                    />
-                  </Flex>
-                  <Field
-                    as={TextareaInput}
-                    name="taskDescription"
-                    type="text"
-                    label="Description"
-                    placeholder="Description"
-                    customStyle={{ height: '133px' }}
-                  />
-                </HStack>
-                <TaskType />
-                <TaskPriority />
-                <HStack width="full" alignItems="flex-start" spacing="73px">
-                  <Flex width="full" maxW="118px">
-                    <SectionInfo
-                      title="Due Date"
-                      info="Add name that users can likely search with"
-                      isRequired
-                    />
-                  </Flex>
-
-                  <CustomDatePicker
-                    name="dueDate"
-                    label="Due Date"
-                    type="date"
-                  />
-                </HStack>
-                <HStack width="full" alignItems="flex-start" spacing="73px">
-                  <Flex width="full" maxW="118px">
-                    <SectionInfo
-                      title="Completion Date"
-                      info="Add name that users can likely search with"
-                      isRequired
-                    />
-                  </Flex>
-
-                  <CustomDatePicker
-                    name="dateCompleted"
-                    label="Completion Date"
-                    type="date"
-                  />
-                </HStack>
-                <HStack width="full" alignItems="flex-start" spacing="73px">
-                  <Flex width="full" maxW="118px">
-                    <SectionInfo
-                      title="Cost Estimate"
-                      info="Add name that users can likely search with"
-                      isRequired
-                    />
-                  </Flex>
-                  <Field
-                    as={TextInput}
-                    name="costEstimate"
-                    type="number"
-                    label="Cost Estimate"
-                  />
-                </HStack>
-                <TaskAssignedTo />
+                <TaskTitle sectionMaxWidth="118px" spacing="73px" />
+                <TaskDescription sectionMaxWidth="118px" spacing="73px" />
+                <TaskType sectionMaxWidth="118px" spacing="73px" />
+                <TaskPriority sectionMaxWidth="118px" spacing="73px" />
+                <DueDate sectionMaxWidth="118px" spacing="73px" />
+                <CompletionDate sectionMaxWidth="118px" spacing="73px" />
+                <CostEstimate sectionMaxWidth="118px" spacing="73px" />
+                <TaskAssignedTo sectionMaxWidth="118px" spacing="73px" />
               </VStack>
               {/* Main Form Ends Here */}
               <HStack
@@ -260,6 +194,7 @@ const TaskFormModal = (props: TaskFormModalProps) => {
         isOpen={isOpenSuccess}
         onClose={handleCloseSuccessModal}
         type={data ? 'edit' : 'create'}
+        format="modal"
       />
     </>
   );

@@ -1,12 +1,12 @@
 import { Flex, HStack, Text } from '@chakra-ui/react';
 import React from 'react';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
-import { useAppSelector } from '~/lib/redux/hooks';
 
-const AssetLocation = () => {
-  const { assetLocation } = useAppSelector(
-    (state) => state.maintenance.scheduleForm
-  );
+interface AssetLocationProps {
+  value: string | null;
+}
+const AssetLocation = (props: AssetLocationProps) => {
+  const { value } = props;
 
   return (
     <HStack width="full" alignItems="flex-start" spacing="56px">
@@ -26,7 +26,7 @@ const AssetLocation = () => {
         py="8px"
         px="11px"
       >
-        {assetLocation}
+        {value}
       </Text>
     </HStack>
   );

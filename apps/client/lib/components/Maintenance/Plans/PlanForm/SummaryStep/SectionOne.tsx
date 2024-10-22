@@ -4,26 +4,32 @@ import { useAppSelector } from '~/lib/redux/hooks';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
 const SectionOne = () => {
-  const formDetails = useAppSelector((state) => state.maintenance.scheduleForm);
-  const { planName, assetTypeName, assetName, startDate, endDate, planType } =
-    formDetails.maintenancePlanInfo;
+  const formDetails = useAppSelector((state) => state.maintenance);
+  const {
+    planName,
+    assetTypeName,
+    assetName,
+    startDate,
+    endDate,
+    planTypeName,
+  } = formDetails.planForm;
 
   const details = [
     {
       label: 'Plan Type',
-      value: planType,
+      value: planTypeName,
     },
     {
-      label: `Asset ${planType === 'Default' ? 'Type' : 'Name'}`,
-      value: planType === 'Default' ? assetTypeName : assetName,
+      label: `Asset ${planTypeName === 'Default' ? 'Type' : 'Name'}`,
+      value: planTypeName === 'Default' ? assetTypeName : assetName,
     },
     {
       label: 'Start Date',
-      value: dateFormatter(startDate, 'Do MMM, YYYY'),
+      value: dateFormatter(startDate, 'Do MMM, YYYY', 'DD/MM/YYYY'),
     },
     {
       label: 'End Date',
-      value: dateFormatter(endDate, 'Do MMM, YYYY'),
+      value: dateFormatter(endDate, 'Do MMM, YYYY', 'DD/MM/YYYY'),
     },
   ];
   return (

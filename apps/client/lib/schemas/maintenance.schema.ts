@@ -1,10 +1,13 @@
 import * as Yup from 'yup';
 import { taskBaseSchema } from './task.schema';
 
-const scheduleSchema = (validateTask: boolean, validateAsset: boolean) =>
+const scheduleSchema = (
+  validateTask: boolean,
+  validateAsset: boolean,
+  validatePlanId: boolean
+) =>
   Yup.object().shape({
     name: Yup.string().required('Title is Required'),
-    planId: Yup.number().required('Plan is Required'),
     sla: Yup.number().nullable(),
     typeId: Yup.string().required('Type is Required'),
     frequencyId: Yup.string().required('Frequency is Required'),
@@ -13,6 +16,9 @@ const scheduleSchema = (validateTask: boolean, validateAsset: boolean) =>
     scheduledDate: Yup.string().required('Scheduled Date is Required'),
     completionDate: Yup.string().nullable(),
     ticketId: Yup.number().nullable(),
+    ...(validatePlanId
+      ? { planId: Yup.number().required('Plan is Required') }
+      : { planId: Yup.number().nullable() }),
     ...(validateAsset
       ? { assetId: Yup.number().required('Asset is Required') }
       : { assetId: Yup.number().nullable() }),

@@ -23,4 +23,8 @@ const taskSchema = taskBaseSchema.shape({
   scheduleId: Yup.number().required('Schedule is Required'),
 });
 
-export { taskBaseSchema, taskSchema };
+const markTaskAsCompletedSchema = Yup.object().shape({
+  actualCost: Yup.number().required('Actual cost is Required'),
+});
+
+export { taskBaseSchema, taskSchema, markTaskAsCompletedSchema };

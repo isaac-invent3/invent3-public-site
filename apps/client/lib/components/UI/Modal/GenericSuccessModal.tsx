@@ -5,14 +5,22 @@ import { Heading, Image, Text, VStack } from '@chakra-ui/react';
 interface GenericSuccessModalProps {
   isOpen: boolean;
   onClose: () => void;
-  successText: string;
+  successText?: string;
   children: React.ReactNode;
   headingText?: string;
   customStyle?: { [key: string]: unknown };
+  contentStyle?: { [key: string]: unknown };
 }
 const GenericSuccessModal = (props: GenericSuccessModalProps) => {
-  const { isOpen, onClose, successText, children, headingText, customStyle } =
-    props;
+  const {
+    isOpen,
+    onClose,
+    successText,
+    children,
+    headingText,
+    customStyle,
+    contentStyle,
+  } = props;
   const checkVideoRef = useRef<HTMLVideoElement>(null);
   const [showRibbon, setShowRibbon] = useState(false);
 
@@ -47,7 +55,13 @@ const GenericSuccessModal = (props: GenericSuccessModalProps) => {
       }}
       contentStyle={{ width: { lg: '526px' }, ...customStyle }}
     >
-      <VStack spacing="48px" width="full" pb={{ lg: '40px' }} px="74px">
+      <VStack
+        spacing="48px"
+        width="full"
+        pb={{ lg: '40px' }}
+        px="74px"
+        {...contentStyle}
+      >
         {showRibbon && (
           <Image
             src="/success-ribbon.gif"
@@ -77,9 +91,16 @@ const GenericSuccessModal = (props: GenericSuccessModalProps) => {
             >
               {headingText ?? 'Successful!'}
             </Heading>
-            <Text size="md" color="neutral.600" textAlign="center" maxW="306px">
-              {successText}
-            </Text>
+            {successText && (
+              <Text
+                size="md"
+                color="neutral.600"
+                textAlign="center"
+                maxW="306px"
+              >
+                {successText}
+              </Text>
+            )}
           </VStack>
         </VStack>
         {children}

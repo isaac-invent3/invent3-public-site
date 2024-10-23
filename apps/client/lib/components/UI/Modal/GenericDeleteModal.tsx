@@ -8,10 +8,11 @@ interface GenericDeleteModalProps {
   onClose: () => void;
   handleDelete: () => void;
   isLoading?: boolean;
+  children?: React.ReactNode;
 }
 
 const GenericDeleteModal = (props: GenericDeleteModalProps) => {
-  const { isOpen, onClose, handleDelete, isLoading } = props;
+  const { isOpen, onClose, handleDelete, isLoading, children } = props;
 
   return (
     <GenericModal
@@ -27,7 +28,7 @@ const GenericDeleteModal = (props: GenericDeleteModalProps) => {
         spacing="40px"
         pt="65px"
         pb="50px"
-        px={{ base: '16px', lg: '78px' }}
+        px={{ base: '16px', lg: '32px' }}
       >
         <VStack spacing="8px" width="full">
           <Heading
@@ -38,19 +39,34 @@ const GenericDeleteModal = (props: GenericDeleteModalProps) => {
           >
             Delete?
           </Heading>
-          <Text size="md" color="neutral.700">
-            Are you sure you want to delete the record?
+          <Text
+            size="md"
+            color="neutral.700"
+            maxW="296px"
+            textAlign="center"
+            fontWeight={400}
+          >
+            Are you sure you want to delete the record? You can’t undo the
+            action
           </Text>
         </VStack>
-        <VStack spacing="8px" width="full" alignItems="flex-start">
-          <Text color="#A00000" fontWeight={800} size="md">
-            Warning
-          </Text>
-          <Text color="#A00000" size="md">
-            You can’t undo the action
-          </Text>
-        </VStack>
-        <HStack width="full" spacing="24px">
+        {children && (
+          <VStack
+            spacing="8px"
+            width="full"
+            alignItems="flex-start"
+            bgColor="#F5000012"
+            p="16px"
+            rounded="2px"
+            borderLeft="3px solid #F50000"
+          >
+            <Text color="#A00000" fontWeight={800} size="md">
+              Warning
+            </Text>
+            {children}
+          </VStack>
+        )}
+        <HStack width="full" spacing="24px" justifyContent="center">
           <Button
             handleClick={onClose}
             variant="secondary"

@@ -55,7 +55,7 @@ export const taskApi = createApi({
     getAllTasksByScheduleId: builder.query({
       query: ({ id, ...data }) => ({
         url: generateQueryStr(
-          `/Tasks/GetTasksByMaintenanceScheduleId/${id}?`,
+          `/Tasks/GetTasksByMaintenanceScheduleIdAndStatusId/${id}?`,
           data
         ),
         method: 'GET',

@@ -8,6 +8,8 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { Task, taskFormDetails } from '~/lib/interfaces/task.interfaces';
 import { useDeleteTaskMutation } from '~/lib/redux/services/task/general.services';
 import { dateFormatter } from '~/lib/utils/Formatters';
+import TaskDetailModal from '../Modals/TaskDetailModal';
+import MarkTaskAsCompletedModal from '../Modals/MarkTaskAsCompletedModal';
 
 const PopoverAction = (task: Task, type: 'modal' | 'page') => {
   const {
@@ -19,6 +21,16 @@ const PopoverAction = (task: Task, type: 'modal' | 'page') => {
     isOpen: isOpenDelete,
     onOpen: onOpenDelete,
     onClose: onCloseDelete,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenMarkCompleted,
+    onOpen: onOpenMarkCompleted,
+    onClose: onCloseMarkCompleted,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenViewDetails,
+    onOpen: onOpenViewDetails,
+    onClose: onCloseViewDetails,
   } = useDisclosure();
 
   const { handleSubmit } = useCustomMutation();
@@ -40,6 +52,16 @@ const PopoverAction = (task: Task, type: 'modal' | 'page') => {
     <>
       <GenericPopover width="129px" placement="bottom-start">
         <VStack width="full" alignItems="flex-start" spacing="16px">
+          {type === 'page' && task.status === 'In Progress' && (
+            <Text cursor="pointer" onClick={onOpenMarkCompleted}>
+              Mark Completed
+            </Text>
+          )}
+          {type === 'page' && (
+            <Text cursor="pointer" onClick={onOpenViewDetails}>
+              View Details
+            </Text>
+          )}
           <Text
             cursor="pointer"
             {...(type === 'modal' ? { onClick: () => onOpenEdit() } : {})}
@@ -74,6 +96,20 @@ const PopoverAction = (task: Task, type: 'modal' | 'page') => {
           isOpen={isOpenDelete}
           onClose={onCloseDelete}
           handleDelete={handleDeleteTask}
+        />
+      )}
+      {isOpenViewDetails && (
+        <TaskDetailModal
+          isOpen={isOpenViewDetails}
+          onClose={onCloseViewDetails}
+          data={task}
+        />
+      )}
+      {isOpenMarkCompleted && (
+        <MarkTaskAsCompletedModal
+          isOpen={isOpenMarkCompleted}
+          onClose={onCloseMarkCompleted}
+          data={task}
         />
       )}
     </>

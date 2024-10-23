@@ -17,7 +17,7 @@ const AddAssetSuccessModal = (props: AddAssetSuccessModalProps) => {
       onClose={onClose}
       successText="Asset details added successfully"
     >
-      <VStack spacing="24px" width="full">
+      <VStack spacing="24px" width="full" mt="48px">
         <HStack spacing="16px" width="full">
           <Button
             customStyles={{ width: 'full' }}

@@ -14,7 +14,7 @@ const ModalHeading = (props: ModalHeadingProps) => {
         fontWeight={800}
         fontSize="32px"
         lineHeight="38.02px"
-        color="primary"
+        color="primary.500"
       >
         {heading}
       </Heading>

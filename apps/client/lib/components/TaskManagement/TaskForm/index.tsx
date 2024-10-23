@@ -2,7 +2,7 @@
 
 import { Divider, Flex, useDisclosure, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
-import React, { useEffect } from 'react';
+import React from 'react';
 import FormActionButtons from '~/lib/components/UI/Form/FormActionButtons';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { taskSchema } from '~/lib/schemas/task.schema';
@@ -17,6 +17,7 @@ import Header from './Header';
 import TaskSuccessModal from '../Modals/TaskSuccessModal';
 import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
+import withFormLeaveDialog from '../../UI/Form/FormLeaveDialogProvider';
 
 interface TaskFormProps {
   type: 'create' | 'edit';
@@ -33,18 +34,6 @@ const TaskForm = (props: TaskFormProps) => {
   } = useDisclosure();
   const [createTask, { isLoading: isCreating }] = useCreateTaskMutation({});
   const [updateTask, { isLoading: isUpdating }] = useUpdateTaskMutation({});
-
-  useEffect(() => {
-    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-      event.preventDefault();
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, []);
 
   const defaultHeader = type === 'create' ? 'Add New Task' : 'Edit Task';
 
@@ -159,4 +148,4 @@ const TaskForm = (props: TaskFormProps) => {
   );
 };
 
-export default TaskForm;
+export default withFormLeaveDialog(TaskForm);

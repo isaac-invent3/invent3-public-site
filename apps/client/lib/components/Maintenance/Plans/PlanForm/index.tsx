@@ -1,13 +1,14 @@
 'use client';
 
 import { Flex } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Header from './Header';
 import FormStepper from '~/lib/components/UI/Form/FormStepper';
 import SlideTransition from '~/lib/components/UI/SlideTransition';
 import PlanInfoStep from './PlanInfoStep';
 import ScheduleStep from './ScheduleStep';
 import SummarySection from './SummaryStep';
+import withFormLeaveDialog from '~/lib/components/UI/Form/FormLeaveDialogProvider';
 
 const STEPS = ['Plan Info', 'Schedules', 'Summary'];
 
@@ -17,18 +18,6 @@ interface PlanFormProps {
 const PlanForm = (props: PlanFormProps) => {
   const { type } = props;
   const [activeStep, setActiveStep] = useState(0);
-
-  useEffect(() => {
-    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-      event.preventDefault();
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, []);
 
   return (
     <Flex width="full" direction="column" pb="24px">
@@ -65,4 +54,4 @@ const PlanForm = (props: PlanFormProps) => {
   );
 };
 
-export default PlanForm;
+export default withFormLeaveDialog(PlanForm);

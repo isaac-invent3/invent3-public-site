@@ -1,7 +1,7 @@
 'use client';
 
 import { Flex } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import FormStepper from '../../UI/Form/FormStepper';
 import GeneralStep from './GeneralStep';
 import AcquisitionStep from './AcquisitionStep';
@@ -9,6 +9,7 @@ import DocumentStep from './DocumentStep';
 import SummaryStep from './SummaryStep';
 import SlideTransition from '../../UI/SlideTransition';
 import Header from './Header';
+import withFormLeaveDialog from '../../UI/Form/FormLeaveDialogProvider';
 
 const STEPS = ['General', 'Acquisition', 'Document', 'Summary'];
 
@@ -18,18 +19,6 @@ interface AssetFormProps {
 const AssetForm = (props: AssetFormProps) => {
   const { type } = props;
   const [activeStep, setActiveStep] = useState(0);
-
-  useEffect(() => {
-    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-      event.preventDefault();
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, []);
 
   return (
     <Flex width="full" direction="column" pb="24px">
@@ -58,4 +47,4 @@ const AssetForm = (props: AssetFormProps) => {
   );
 };
 
-export default AssetForm;
+export default withFormLeaveDialog(AssetForm);

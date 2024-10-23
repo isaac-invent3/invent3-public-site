@@ -122,7 +122,7 @@ const TaskTable = (props: TaskTableProps) => {
         columnHelper.accessor('taskType', {
           cell: (info) => PopoverAction(info.row.original, type),
           header: '',
-          enableSorting: isSortable,
+          enableSorting: false,
         }),
       ];
       return baseColumns;

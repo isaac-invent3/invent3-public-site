@@ -44,7 +44,7 @@ const planSchema = (
 ) =>
   Yup.object().shape({
     planName: Yup.string().required('Name is Required'),
-    frequencyId: Yup.number().required('Frequency is Required'),
+    frequencyId: Yup.number().nullable(),
     startDate: Yup.string().required('Start Date is Required'),
     endDate: Yup.string().required('End Date is Required'),
     ownerId: Yup.number().required('Owner is Required'),

@@ -141,8 +141,8 @@ const planScopeOptions = [
     value: 'asset',
   },
   {
-    label: 'Asset Type',
-    value: 'asset_type',
+    label: 'Asset Group',
+    value: 'asset_group',
   },
 ];
 

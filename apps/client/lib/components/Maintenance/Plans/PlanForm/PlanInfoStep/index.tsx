@@ -1,15 +1,18 @@
-/* eslint-disable no-unused-vars */
-import { Flex, HStack, useToast, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  HStack,
+  SimpleGrid,
+  Text,
+  useToast,
+  VStack,
+} from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
-import moment from 'moment';
-import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
 import AssetSelect from '~/lib/components/Common/AssetSelect';
 import AssetTypeSelect from '~/lib/components/Common/AssetTypeSelect';
 import FormActionButtons from '~/lib/components/UI/Form/FormActionButtons';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
-import SelectInput from '~/lib/components/UI/Select';
-import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useGetAssetInfoHeaderByIdQuery } from '~/lib/redux/services/asset/general.services';
 import { useGetAssetTypeByIdQuery } from '~/lib/redux/services/asset/types.services';
@@ -20,8 +23,8 @@ import PlanTitle from '../../Common/PlanTitle';
 import Owner from '../../Common/Owner';
 import StartDate from '../../Common/StartDate';
 import EndDate from '../../Common/EndDate';
-import Frequency from '../../../Common/Frequency';
 import { updatePlanForm } from '~/lib/redux/slices/MaintenanceSlice';
+import TemplateButton from '../../Common/TemplateButton';
 
 interface PlanInfoStepProps {
   activeStep: number;
@@ -46,7 +49,11 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
     assetId: plan?.assetId ?? null,
     assetTypeId: plan?.assetTypeId ?? null,
     cost: plan?.cost ?? null,
-    planScope: plan?.planName ? (plan?.assetId ? 'asset' : 'asset_type') : null,
+    planScope: plan?.planName
+      ? plan?.assetId
+        ? 'asset'
+        : 'asset_group'
+      : 'asset_group',
   };
 
   const formik = useFormik({
@@ -161,72 +168,107 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
             rounded="6px"
             minH="60vh"
           >
-            <VStack width="full" maxW="50%" spacing="36px">
-              <PlanTitle sectionMaxWidth="141px" spacing="40px" />
-
-              <HStack width="full" alignItems="flex-start" spacing="40px">
-                <Flex width="full" maxW="141px">
-                  <SectionInfo
-                    title="Plan Scope"
-                    info="Add name that users can likely search with"
-                    isRequired
-                  />
-                </Flex>
-                <SelectInput
-                  name="planScope"
-                  title="Plan Scope"
-                  options={planScopeOptions}
-                  isSearchable={false}
-                />
-              </HStack>
-              {formik.values.planScope && (
-                <HStack width="full" alignItems="flex-start" spacing="40px">
+            <VStack width="full" spacing="36px">
+              <SimpleGrid columns={2} gap="40px" width="full">
+                <HStack width="full" spacing="40px">
                   <Flex width="full" maxW="141px">
                     <SectionInfo
-                      title={
-                        formik.values.planScope === 'asset'
-                          ? 'Asset'
-                          : 'Asset Type'
-                      }
+                      title="Plan Scope"
                       info="Add name that users can likely search with"
                       isRequired
                     />
                   </Flex>
-                  {formik.values.planScope === 'asset' ? (
-                    <AssetSelect
-                      selectName="assetId"
-                      selectTitle="Asset"
-                      defaultInputValue={plan?.assetName}
-                      handleSelect={(option) =>
-                        dispatch(updatePlanForm({ assetName: option.label }))
-                      }
-                    />
-                  ) : (
-                    <AssetTypeSelect
-                      selectName="assetTypeId"
-                      selectTitle="Asset Type"
-                      defaultInputValue={plan?.assetTypeName}
-                      handleSelect={(option) =>
-                        dispatch(
-                          updatePlanForm({ assetTypeName: option.label })
-                        )
-                      }
-                    />
-                  )}
+                  <HStack spacing="73px">
+                    {planScopeOptions.map((item, index) => (
+                      <HStack key={index} spacing="16px">
+                        <Flex
+                          width="18px"
+                          height="18px"
+                          bgColor="neutral.300"
+                          rounded="full"
+                          justifyContent="center"
+                          alignItems="center"
+                          cursor="pointer"
+                          onClick={() =>
+                            formik.setFieldValue('planScope', item.value)
+                          }
+                        >
+                          {formik.values.planScope === item.value && (
+                            <Box
+                              width="10px"
+                              height="10px"
+                              rounded="full"
+                              bgColor="primary.500"
+                            />
+                          )}
+                        </Flex>
+                        <Text color="black" size="md">
+                          {item.label}
+                        </Text>
+                      </HStack>
+                    ))}
+                  </HStack>
                 </HStack>
+              </SimpleGrid>
+              {formik.values.planScope && (
+                <SimpleGrid columns={2} gap="40px" width="full">
+                  <HStack width="full" alignItems="flex-start" spacing="40px">
+                    <Flex width="full" maxW="141px">
+                      <SectionInfo
+                        title={
+                          formik.values.planScope === 'asset'
+                            ? 'Asset'
+                            : 'Asset Type'
+                        }
+                        info="Add name that users can likely search with"
+                        isRequired
+                      />
+                    </Flex>
+                    {formik.values.planScope === 'asset' ? (
+                      <AssetSelect
+                        selectName="assetId"
+                        selectTitle="Asset"
+                        defaultInputValue={plan?.assetName}
+                        handleSelect={(option) =>
+                          dispatch(updatePlanForm({ assetName: option.label }))
+                        }
+                      />
+                    ) : (
+                      <AssetTypeSelect
+                        selectName="assetTypeId"
+                        selectTitle="Asset Type"
+                        defaultInputValue={plan?.assetTypeName}
+                        handleSelect={(option) =>
+                          dispatch(
+                            updatePlanForm({ assetTypeName: option.label })
+                          )
+                        }
+                      />
+                    )}
+                  </HStack>
+                  <TemplateButton handleClick={() => {}}>
+                    Select from Template
+                  </TemplateButton>
+                </SimpleGrid>
               )}
-              <Frequency
-                sectionMaxWidth="141px"
-                spacing="40px"
-                defaultName={plan?.frequencyName}
-              />
-              <Owner
-                sectionMaxWidth="141px"
-                spacing="40px"
-                defaultName={plan?.owner}
-              />
-              <StartDate sectionMaxWidth="141px" spacing="40px" />
-              <EndDate sectionMaxWidth="141px" spacing="40px" />
+              <HStack width="full" spacing="40px">
+                <PlanTitle sectionMaxWidth="141px" spacing="40px" />
+                {/* <Frequency
+                  sectionMaxWidth="141px"
+                  spacing="40px"
+                  defaultName={plan?.frequencyName}
+                /> */}
+                <Owner
+                  sectionMaxWidth="141px"
+                  spacing="40px"
+                  defaultName={plan?.owner}
+                />
+              </HStack>
+
+              <HStack width="full" spacing="40px">
+                <StartDate sectionMaxWidth="141px" spacing="40px" />
+                <EndDate sectionMaxWidth="141px" spacing="40px" />
+              </HStack>
             </VStack>
           </VStack>
           <Flex width="full" mt="16px">

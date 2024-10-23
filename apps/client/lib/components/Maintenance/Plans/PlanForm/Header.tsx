@@ -2,6 +2,7 @@ import { HStack, VStack } from '@chakra-ui/react';
 import React from 'react';
 import GenericBreadCrumb from '~/lib/components/UI/BreadCrumb';
 import PageHeader from '~/lib/components/UI/PageHeader';
+import TemplateButton from '../Common/TemplateButton';
 
 interface HeaderProps {
   headingText: string;
@@ -33,6 +34,13 @@ const Header = (props: HeaderProps) => {
         alignItems="flex-start"
       >
         <PageHeader>{headingText}</PageHeader>
+
+        <TemplateButton
+          handleClick={() => {}}
+          customStyle={{ px: '24px', py: '15px' }}
+        >
+          Create New from Template
+        </TemplateButton>
       </HStack>
     </VStack>
   );

@@ -51,6 +51,7 @@ export type TableProps<Data extends object> = {
   customTableContainerStyle?: { [key: string]: unknown };
   hideSelectAllCheckBox?: boolean;
   selectMultipleRows?: boolean;
+  showEmptyState?: boolean;
 };
 
 function DataTable<Data extends object>({
@@ -78,6 +79,7 @@ function DataTable<Data extends object>({
   customTableContainerStyle,
   hideSelectAllCheckBox = false,
   selectMultipleRows = true,
+  showEmptyState = true,
 }: TableProps<Data>) {
   const [selectAll, setSelectAll] = useState(false);
 
@@ -338,7 +340,7 @@ function DataTable<Data extends object>({
       </TableContainer>
 
       {/* Empty state */}
-      {!isLoading && data.length < 1 && (
+      {!isLoading && data.length < 1 && showEmptyState && (
         <HStack justifyContent="center" my="77px">
           <Text color="neutral.600" size="md">
             {emptyText}

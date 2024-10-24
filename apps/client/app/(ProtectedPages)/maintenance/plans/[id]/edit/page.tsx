@@ -43,6 +43,7 @@ export default function Page({ params }: { params: { id: string } }) {
           : null,
         ownerId: maintenance?.ownerId,
         cost: plan?.cost,
+        schedules: [],
       })
     );
   }

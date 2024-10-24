@@ -12,13 +12,13 @@ import {
   generateMaintenanceScheduleDTO,
   generateTasksArray,
 } from '../../../Common/helperFunctions';
-import SectionTwo from '../../../Schedules/ScheduleForm/SummarySection/SectionTwo';
 import PlanSuccessModal from './PlanSuccessModal';
 import SectionOne from './SectionOne';
 import {
   clearScheduleForm,
   updateScheduleForm,
 } from '~/lib/redux/slices/MaintenanceSlice';
+import SectionTwo from './SectionTwo';
 
 interface SummarySectionProps {
   activeStep: number;
@@ -95,7 +95,7 @@ const SummarySection = (props: SummarySectionProps) => {
       display={activeStep === 2 ? 'flex' : 'none'}
     >
       <VStack
-        spacing="32px"
+        spacing="34px"
         width="full"
         alignItems="flex-start"
         bgColor="white"
@@ -103,7 +103,6 @@ const SummarySection = (props: SummarySectionProps) => {
         pl="16px"
         pb="32px"
         pr="30px"
-        mt="40px"
         rounded="6px"
         minH="60vh"
         divider={<Divider borderColor="#BBBBBB" />}

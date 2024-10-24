@@ -28,7 +28,7 @@ const PlanForm = (props: PlanFormProps) => {
             : 'Edit Maintenance Plan'
         }
       />
-      <Flex width="full" gap="8px" mt="32px" direction="column">
+      <Flex width="full" mt="32px" direction="column">
         <FormStepper currentStep={activeStep} steps={STEPS} />
         <PlanInfoStep
           activeStep={activeStep}

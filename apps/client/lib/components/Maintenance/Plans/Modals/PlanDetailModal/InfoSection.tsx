@@ -66,7 +66,7 @@ const InfoSection = (props: InfoSectionProps) => {
         fontWeight={800}
         lineHeight="38.02px"
       >
-        {data?.planName}
+        #{data?.maintenancePlanId} {data?.planName}
       </Heading>
 
       <HStack width="full" spacing="75px" alignItems="flex-start">

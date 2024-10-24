@@ -22,6 +22,7 @@ const initialScheduleForm = {
   name: null,
   planId: null,
   scheduleId: null,
+  localId: null,
   typeId: null,
   typeName: null,
   assetId: null,
@@ -47,10 +48,6 @@ const initialScheduleForm = {
   },
   taskCount: 0,
   tasks: [],
-  contactDetails: {
-    picture: null,
-    contactPerson: null,
-  },
 };
 
 const InitialScheduleInfo = {
@@ -80,6 +77,7 @@ const initialPlanForm = {
   owner: null,
   ownerId: null,
   cost: null,
+  schedules: [],
 };
 
 const initialState: SliceProps = {

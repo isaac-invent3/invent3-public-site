@@ -8,7 +8,11 @@ import ServiceLevelAgreement from './SLA';
 import Tasks from './Tasks';
 import Frequency from '~/lib/components/Maintenance/Common/Frequency';
 
-const SectionTwo = () => {
+interface SectionTwoProps {
+  descriptionHeight?: string;
+}
+const SectionTwo = (props: SectionTwoProps) => {
+  const { descriptionHeight } = props;
   return (
     <VStack spacing="45px" width="full" alignItems="flex-start">
       <SimpleGrid
@@ -26,7 +30,11 @@ const SectionTwo = () => {
         width="full"
         spacing="40px"
       >
-        <Description sectionMaxWidth="141px" spacing="41px" />
+        <Description
+          sectionMaxWidth="141px"
+          spacing="41px"
+          descriptionHeight={descriptionHeight}
+        />
         <Frequency sectionMaxWidth="130px" spacing="56px" />
       </SimpleGrid>
       <SimpleGrid

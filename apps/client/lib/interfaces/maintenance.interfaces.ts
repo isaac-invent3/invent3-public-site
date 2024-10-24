@@ -81,6 +81,7 @@ interface MaintenanceScheduleStat {
 interface ScheduleFormDetails {
   name: string | null;
   scheduleId: number | null;
+  localId: number | null;
   planId: number | null;
   typeId: number | null;
   typeName: string | null;
@@ -95,7 +96,7 @@ interface ScheduleFormDetails {
   comment: string | null;
   scheduledDate: string | null;
   completionDate: string | null;
-  ticketId: string | null;
+  ticketId: number | null;
   maintenancePlanInfo: {
     planName: string | null;
     planType: string | null;
@@ -107,10 +108,6 @@ interface ScheduleFormDetails {
   };
   taskCount: number | null;
   tasks: taskFormDetails[];
-  contactDetails: {
-    picture: string | null;
-    contactPerson: string | null;
-  };
 }
 
 interface PlanFormDetails {
@@ -129,6 +126,7 @@ interface PlanFormDetails {
   startDate: string | null;
   endDate: string | null;
   cost: number | null;
+  schedules: ScheduleFormDetails[];
 }
 
 export type {

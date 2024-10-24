@@ -2,6 +2,8 @@ import { Flex, HStack } from '@chakra-ui/react';
 import React from 'react';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import FrequencySelect from '../../Common/Frequency';
+import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';
+import { useAppDispatch } from '~/lib/redux/hooks';
 
 interface FrequencyProps {
   sectionMaxWidth: string;
@@ -10,6 +12,7 @@ interface FrequencyProps {
 }
 const Frequency = (props: FrequencyProps) => {
   const { sectionMaxWidth, spacing, defaultName } = props;
+  const dispatch = useAppDispatch();
   return (
     <HStack width="full" alignItems="flex-start" spacing={spacing}>
       <Flex width="full" maxW={sectionMaxWidth}>
@@ -23,6 +26,9 @@ const Frequency = (props: FrequencyProps) => {
         selectName="frequencyId"
         selectTitle="Frequency"
         defaultName={defaultName}
+        handleSelect={(option) =>
+          dispatch(updateScheduleForm({ frequencyName: option.label }))
+        }
       />
     </HStack>
   );

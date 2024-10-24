@@ -1,12 +1,12 @@
 import { Flex, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
-import React from 'react';
+import React, { useState } from 'react';
 import FormActionButtons from '~/lib/components/UI/Form/FormActionButtons';
-import { scheduleSchema } from '~/lib/schemas/maintenance.schema';
-import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';
-import SectionTwo from '../../../Schedules/ScheduleForm/FormSection/SectionTwo';
-import MaintenanceSchedules from './MaintenanceSchedule';
+import { planScheduleSchema } from '~/lib/schemas/maintenance.schema';
+import { useAppSelector } from '~/lib/redux/hooks';
+import ScheduleList from './ScheduleList';
+import ScheduleForm from './ScheduleForm';
+import SlideTransition from '~/lib/components/UI/SlideTransition';
 
 interface ScheduleStepProps {
   activeStep: number;
@@ -15,29 +15,16 @@ interface ScheduleStepProps {
 }
 const ScheduleStep = (props: ScheduleStepProps) => {
   const { activeStep, setActiveStep, type } = props;
-  const formDetails = useAppSelector((state) => state.maintenance.scheduleForm);
-  const dispatch = useAppDispatch();
-
+  const [showScheduleForm, setShowScheduleForm] = useState(false);
+  const formDetails = useAppSelector((state) => state.maintenance.planForm);
   const formik = useFormik({
     initialValues: {
-      name: formDetails.name ?? null,
-      planId: formDetails.planId ?? null,
-      typeId: formDetails.typeId ?? null,
-      frequencyId: formDetails.frequencyId ?? null,
-      assetId: formDetails.assetId ?? null,
-      sla: formDetails.sla ?? null,
-      description: formDetails.description ?? null,
-      comment: formDetails.comment ?? null,
-      scheduledDate: formDetails.scheduledDate ?? null,
-      completionDate: formDetails.completionDate ?? null,
-      tasks: formDetails.tasks ?? [],
-      taskCount: formDetails?.taskCount ?? 0,
+      schedules: formDetails.schedules ?? [],
     },
-    validationSchema: scheduleSchema(type === 'create', false, false),
+    validationSchema: planScheduleSchema(type === 'create', false, false),
     enableReinitialize: true,
 
-    onSubmit: async (values) => {
-      dispatch(updateScheduleForm(values));
+    onSubmit: async () => {
       setActiveStep(2);
     },
   });
@@ -52,19 +39,27 @@ const ScheduleStep = (props: ScheduleStepProps) => {
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
           <VStack
-            spacing="40px"
+            spacing="24px"
             width="full"
             alignItems="flex-start"
             bgColor="white"
-            pt="37px"
-            pl="16px"
+            pt="8px"
+            pl="25px"
             pb="33px"
-            pr="30px"
+            pr="34px"
             rounded="6px"
             minH="60vh"
           >
-            {type === 'edit' && <MaintenanceSchedules />}
-            <SectionTwo />
+            <ScheduleList
+              type={type}
+              setShowScheduleForm={setShowScheduleForm}
+            />
+            <SlideTransition trigger={showScheduleForm}>
+              <ScheduleForm
+                type={type}
+                setShowScheduleForm={setShowScheduleForm}
+              />
+            </SlideTransition>
           </VStack>
           <Flex width="full" mt="16px">
             <FormActionButtons

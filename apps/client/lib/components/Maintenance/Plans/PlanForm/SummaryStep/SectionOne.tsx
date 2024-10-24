@@ -33,7 +33,7 @@ const SectionOne = () => {
     },
   ];
   return (
-    <Flex width="full" gap="16px">
+    <Flex width="full" gap="16px" maxW="90%">
       <VStack alignItems="flex-start" spacing="8px" width="393px">
         <Text fontWeight={700} color="neutral.600">
           Plan Title

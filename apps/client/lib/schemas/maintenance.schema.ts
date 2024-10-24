@@ -7,6 +7,7 @@ const scheduleSchema = (
   validatePlanId: boolean
 ) =>
   Yup.object().shape({
+    localId: Yup.number().nullable(),
     name: Yup.string().required('Title is Required'),
     sla: Yup.number().nullable(),
     typeId: Yup.string().required('Type is Required'),
@@ -65,4 +66,15 @@ const planSchema = (
     }),
   });
 
-export { scheduleSchema, planSchema };
+const planScheduleSchema = (
+  validateTask: boolean,
+  validateAsset: boolean,
+  validatePlanId: boolean
+) =>
+  Yup.object().shape({
+    schedules: Yup.array()
+      .of(scheduleSchema(validateTask, validateAsset, validatePlanId))
+      .required('Schedule is required')
+      .min(1, 'There must be atleast one schedule'),
+  });
+export { scheduleSchema, planSchema, planScheduleSchema };

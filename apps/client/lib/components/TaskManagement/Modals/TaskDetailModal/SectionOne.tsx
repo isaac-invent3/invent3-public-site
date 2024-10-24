@@ -43,7 +43,7 @@ const SectionOne = ({ data }: SectionOneProps) => {
         color="black"
         fontWeight={800}
       >
-        {data?.taskName}
+        #{data?.taskId} {data?.taskName}
       </Heading>
       <HStack width="full" spacing="32px">
         <VStack alignItems="flex-start" spacing="8px">

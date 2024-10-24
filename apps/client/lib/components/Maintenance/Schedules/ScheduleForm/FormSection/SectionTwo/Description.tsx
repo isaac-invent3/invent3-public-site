@@ -7,9 +7,10 @@ import TextareaInput from '~/lib/components/UI/TextArea';
 interface DescriptionProps {
   sectionMaxWidth: string;
   spacing: string;
+  descriptionHeight?: string;
 }
 const Description = (props: DescriptionProps) => {
-  const { sectionMaxWidth, spacing } = props;
+  const { sectionMaxWidth, spacing, descriptionHeight } = props;
   return (
     <HStack width="full" alignItems="flex-start" spacing={spacing}>
       <Flex width="full" maxW={sectionMaxWidth}>
@@ -24,7 +25,7 @@ const Description = (props: DescriptionProps) => {
         name="description"
         label="Description"
         placeholder="Description"
-        customStyle={{ height: '133px' }}
+        customStyle={{ height: descriptionHeight ?? '133px' }}
       />
     </HStack>
   );

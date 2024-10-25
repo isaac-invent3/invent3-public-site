@@ -52,7 +52,6 @@ const TaskForm = (props: TaskFormProps) => {
       assignedTo: formDetails?.assignedTo ?? null,
       assignedToEmployeeName: formDetails?.assignedToEmployeeName ?? null,
       dueDate: formDetails?.dueDate ?? null,
-      dateCompleted: formDetails?.dateCompleted ?? null,
       costEstimate: formDetails?.costEstimate ?? null,
       actualCost: formDetails?.actualCost ?? null,
       comments: formDetails?.comments ?? null,
@@ -69,10 +68,6 @@ const TaskForm = (props: TaskFormProps) => {
         priorityId: values.priorityId,
         assignedTo: values.assignedTo,
         dueDate: moment(values.dueDate, 'DD/MM/YYYY').utcOffset(0, true),
-        dateCompleted: moment(values.dateCompleted, 'DD/MM/YYYY').utcOffset(
-          0,
-          true
-        ),
         costEstimate: values.costEstimate,
         actualCost: values.actualCost,
         comments: values.comments,

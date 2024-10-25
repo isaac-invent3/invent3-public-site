@@ -184,6 +184,7 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
                         <Flex
                           width="18px"
                           height="18px"
+                          flexShrink={0}
                           bgColor="neutral.300"
                           rounded="full"
                           justifyContent="center"

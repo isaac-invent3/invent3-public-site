@@ -25,10 +25,7 @@ const generateTasksArray = (
         0,
         true
       ) as unknown as string,
-      dateCompleted: moment(item.dateCompleted, 'DD/MM/YYYY').utcOffset(
-        0,
-        true
-      ) as unknown as string,
+      dateCompleted: null,
       costEstimate: item.costEstimate,
       actualCost: item.actualCost,
       comments: item.comments,

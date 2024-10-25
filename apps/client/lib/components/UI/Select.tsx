@@ -11,7 +11,7 @@ import Select, { components } from 'react-select';
 import AsyncSelect from 'react-select/async';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { ChevronDownIcon, InfoIcon } from '../CustomIcons';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 const DropdownIndicator = (props: any) => {
   return (
@@ -93,6 +93,12 @@ function SelectInput(props: SelectInputProps) {
     },
     [callBackFunction]
   );
+
+  useEffect(() => {
+    if (!meta.value) {
+      setIsFocused(false);
+    }
+  }, [meta.value]);
 
   return (
     <Box width={width} position="relative" height="full">

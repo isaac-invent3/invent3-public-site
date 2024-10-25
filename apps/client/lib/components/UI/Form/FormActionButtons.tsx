@@ -14,6 +14,7 @@ interface FormActionButtonsProps {
   cancelLink: string;
   finalText?: string;
   disablePrimaryButton?: boolean;
+  disableBackButton?: boolean;
   type?: 'submit' | 'button';
 }
 const FormActionButtons = (props: FormActionButtonsProps) => {
@@ -27,27 +28,48 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
     finalText,
     cancelLink,
     disablePrimaryButton = false,
+    disableBackButton = false,
     type,
   } = props;
 
   return (
     <HStack width="full" justifyContent="space-between" maxH="50px">
-      <HStack
-        cursor="pointer"
-        px="16px"
-        rounded="8px"
-        spacing="8px"
-        bgColor="#F6F6F666"
-        visibility={activeStep === 0 ? 'hidden' : 'visible'}
-        minW="96px"
-        minH="50px"
-        onClick={() => {
+      <Button
+        customStyles={{
+          px: '16px',
+          spacing: '8px',
+          bgColor: '#F6F6F666',
+          visibility: activeStep === 0 ? 'hidden' : 'visible',
+          width: '96px',
+          minH: '50px',
+          _disabled: {
+            bgColor: '#F6F6F666',
+            cursor: 'not-allowed',
+          },
+          _hover: {
+            bgColor: '#F6F6F666',
+          },
+          _focus: {
+            bgColor: '#F6F6F666',
+          },
+          _active: {
+            bgColor: '#F6F6F666',
+          },
+        }}
+        isDisabled={disableBackButton}
+        handleClick={() => {
           activeStep > 0 && setActiveStep && setActiveStep((prev) => prev - 1);
         }}
       >
-        <Icon as={ChevronLeftIcon} boxSize="16px" mb="7px" />
+        <Icon
+          as={ChevronLeftIcon}
+          boxSize="16px"
+          mb="7px"
+          mr="8px"
+          color="black"
+        />
         <Text color="primary.500">Back</Text>
-      </HStack>
+      </Button>
 
       <HStack spacing="16px" justifySelf="flex-end">
         {activeStep === 0 && (

@@ -85,7 +85,6 @@ const PopoverAction = (task: Task, type: 'modal' | 'page') => {
             ...task,
             priorityId: task.taskPriorityId,
             dueDate: dateFormatter(task.dueDate, 'DD / MM / YYYY'),
-            dateCompleted: dateFormatter(task.dateCompleted, 'DD / MM / YYYY'),
           } as unknown as taskFormDetails
         }
         scheduleId={task.scheduleId}

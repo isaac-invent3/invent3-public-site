@@ -53,7 +53,10 @@ const Tasks = (props: DateProps) => {
         />
       </Flex>
       <VStack mt="20px" width="full" alignItems="flex-start">
-        <HStack width="full" justifyContent="space-between">
+        <VStack width="full" alignItems="flex-start" spacing="17px">
+          <AddButton color="#0366EF" handleClick={onOpen}>
+            Add Task
+          </AddButton>
           {values?.taskCount >= 1 && (
             <HStack spacing="8px">
               <Text
@@ -69,10 +72,7 @@ const Tasks = (props: DateProps) => {
               <Text color="neutral.600">added</Text>
             </HStack>
           )}
-          <AddButton color="#0366EF" handleClick={onOpen}>
-            Add Task
-          </AddButton>
-        </HStack>
+        </VStack>
         {meta.touched && meta.error !== undefined && (
           <ErrorMessage>{meta.error}</ErrorMessage>
         )}

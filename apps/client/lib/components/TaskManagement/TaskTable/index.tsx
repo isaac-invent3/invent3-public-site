@@ -7,7 +7,7 @@ import {
   MaintenanceColorCode,
   TaskPriorityColorCode,
 } from '~/lib/utils/ColorCodes';
-import { dateFormatter } from '~/lib/utils/Formatters';
+import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
 import AssignedTo from '~/lib/components/Common/AssignedTo';
 import PopoverAction from './PopoverAction';
 
@@ -99,6 +99,11 @@ const TaskTable = (props: TaskTableProps) => {
             dateFormatter(info.getValue(), 'DD / MM / YYYY') ?? 'N/A',
           header: 'Completion Date',
           enableSorting: isSortable,
+        }),
+        columnHelper.accessor('costEstimate', {
+          cell: (info) => amountFormatter(info.getValue()),
+          header: 'Estimate Cost',
+          enableSorting: false,
         }),
         columnHelper.accessor('assignedToEmployeeName', {
           cell: (info) => AssignedTo(info.getValue()),

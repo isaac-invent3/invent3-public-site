@@ -7,7 +7,7 @@ import {
   Icon,
 } from '@chakra-ui/react';
 import { useField } from 'formik';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { InfoIcon } from '../CustomIcons';
 
 interface TextAreaProps {
@@ -31,6 +31,12 @@ const TextareaInput = ({
   const handleBlur = () => {
     if (!inputValue) setIsFocused(false);
   };
+
+  useEffect(() => {
+    if (!meta.value) {
+      setIsFocused(false);
+    }
+  }, [meta.value]);
 
   return (
     <FormControl isInvalid={meta.touched && meta.error !== undefined}>

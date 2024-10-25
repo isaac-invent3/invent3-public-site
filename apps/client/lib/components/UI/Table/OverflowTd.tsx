@@ -4,11 +4,12 @@ import { useRef, useState, useEffect } from 'react';
 interface OverflowTdProps {
   children: React.ReactNode | string;
   isNumeric: boolean;
+  customTdStyle?: { [key: string]: unknown };
   maxW: string;
 }
 
 const OverflowTd = (props: OverflowTdProps) => {
-  const { children, isNumeric, maxW } = props;
+  const { children, isNumeric, maxW, customTdStyle } = props;
   const tdRef = useRef<HTMLTableCellElement | null>(null);
   const [isOverflowing, setIsOverflowing] = useState(false);
 
@@ -48,6 +49,7 @@ const OverflowTd = (props: OverflowTdProps) => {
         py="8px"
         pl="10px"
         pr="16px"
+        {...customTdStyle}
         maxW={maxW}
         whiteSpace="nowrap"
         overflow="hidden"

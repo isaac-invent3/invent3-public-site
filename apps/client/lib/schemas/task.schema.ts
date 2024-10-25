@@ -13,7 +13,6 @@ const taskBaseSchema = Yup.object().shape({
   assignedTo: Yup.number().required('Assignee is Required'),
   assignedToEmployeeName: Yup.string().required('Assignee is Required'),
   dueDate: Yup.string().required('Due Date is Required'),
-  dateCompleted: Yup.string().required('Completion Date is Required'),
   costEstimate: Yup.number().required('Cost Estimate is Required'),
   actualCost: Yup.number().nullable(),
   comments: Yup.string().nullable(),

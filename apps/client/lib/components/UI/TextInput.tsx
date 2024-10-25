@@ -10,7 +10,7 @@ import {
   Icon,
 } from '@chakra-ui/react';
 import { useField } from 'formik';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { InfoIcon } from '../CustomIcons';
 
@@ -68,6 +68,12 @@ const TextInput: React.FC<TextInputProps> = ({
 
     helpers.setValue(type === 'number' ? parseFloat(inputValue) : inputValue);
   };
+
+  useEffect(() => {
+    if (!value || !meta.value) {
+      setIsFocused(false);
+    }
+  }, [value, meta.value]);
 
   return (
     <FormControl

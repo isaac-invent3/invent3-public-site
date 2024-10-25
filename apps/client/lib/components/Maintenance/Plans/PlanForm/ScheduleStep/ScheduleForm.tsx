@@ -1,4 +1,4 @@
-import { VStack } from '@chakra-ui/react';
+import { HStack, useDisclosure, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 import React from 'react';
 import { scheduleSchema } from '~/lib/schemas/maintenance.schema';
@@ -9,6 +9,7 @@ import {
 } from '~/lib/redux/slices/MaintenanceSlice';
 import SectionTwo from '../../../Schedules/ScheduleForm/FormSection/SectionTwo';
 import Button from '~/lib/components/UI/Button';
+import GenericLeaveDialogModal from '~/lib/components/UI/Modal/LeaveDialogModal';
 
 interface ScheduleFormProps {
   setShowScheduleForm: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,6 +20,11 @@ const ScheduleForm = (props: ScheduleFormProps) => {
   const formDetails = useAppSelector((state) => state.maintenance.scheduleForm);
   const planDetails = useAppSelector((state) => state.maintenance.planForm);
   const dispatch = useAppDispatch();
+  const {
+    isOpen: isOpenDialog,
+    onOpen: onOpenDialog,
+    onClose: onCloseDialog,
+  } = useDisclosure();
 
   const formik = useFormik({
     initialValues: {
@@ -85,30 +91,51 @@ const ScheduleForm = (props: ScheduleFormProps) => {
     },
   });
 
+  const handleProceedDialog = () => {
+    setShowScheduleForm(false);
+    onCloseDialog();
+  };
+
   return (
-    <FormikProvider value={formik}>
-      <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
-        <VStack
-          spacing="16px"
-          width="full"
-          alignItems="flex-end"
-          bgColor="#E4E4E4"
-          pt="16px"
-          pl="21px"
-          pr="24px"
-          pb="22px"
-          rounded="8px"
-        >
-          <SectionTwo descriptionHeight="83px" />
-          <Button
-            customStyles={{ width: '161px' }}
-            handleClick={formik.handleSubmit}
+    <>
+      <FormikProvider value={formik}>
+        <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
+          <VStack
+            spacing="16px"
+            width="full"
+            alignItems="flex-end"
+            bgColor="#E4E4E4"
+            pt="16px"
+            pl="21px"
+            pr="24px"
+            pb="22px"
+            rounded="8px"
           >
-            {formDetails?.localId ? 'Update' : 'Add'} Schedule
-          </Button>
-        </VStack>
-      </form>
-    </FormikProvider>
+            <SectionTwo descriptionHeight="83px" />
+            <HStack spacing="24px">
+              <Button
+                variant="secondary"
+                customStyles={{ width: '96px' }}
+                handleClick={() => onOpenDialog()}
+              >
+                Cancel
+              </Button>
+              <Button
+                customStyles={{ width: '161px' }}
+                handleClick={formik.handleSubmit}
+              >
+                {formDetails?.localId ? 'Update' : 'Add'} Schedule
+              </Button>
+            </HStack>
+          </VStack>
+        </form>
+      </FormikProvider>
+      <GenericLeaveDialogModal
+        isOpen={isOpenDialog}
+        onClose={onCloseDialog}
+        handleProceed={handleProceedDialog}
+      />
+    </>
   );
 };
 

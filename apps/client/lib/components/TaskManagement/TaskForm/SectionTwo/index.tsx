@@ -4,7 +4,6 @@ import TaskTitle from '../../Common/TaskTitle';
 import TaskPriority from '../../Common/TaskPriority';
 import TaskDescription from '../../Common/TaskDescription';
 import DueDate from '../../Common/DueDate';
-import CompletionDate from '../../Common/CompletionDate';
 import TaskAssignedTo from '../../Common/AssignedTo';
 import TaskType from '../../Common/TaskType';
 import CostEstimate from '../../Common/CostEstimate';
@@ -38,7 +37,7 @@ const SectionTwo = () => {
         spacing="76px"
       >
         <DueDate sectionMaxWidth="118px" spacing="63px" />
-        <CompletionDate sectionMaxWidth="118px" spacing="40px" />
+        <CostEstimate sectionMaxWidth="118px" spacing="63px" />
       </SimpleGrid>
       <SimpleGrid
         columns={2}
@@ -46,8 +45,7 @@ const SectionTwo = () => {
         width="full"
         spacing="76px"
       >
-        <CostEstimate sectionMaxWidth="118px" spacing="63px" />
-        <TaskAssignedTo sectionMaxWidth="118px" spacing="40px" />
+        <TaskAssignedTo sectionMaxWidth="118px" spacing="63px" />
       </SimpleGrid>
     </VStack>
   );

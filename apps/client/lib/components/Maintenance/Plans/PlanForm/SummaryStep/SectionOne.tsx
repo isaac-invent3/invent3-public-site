@@ -1,7 +1,7 @@
 import { Flex, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { useAppSelector } from '~/lib/redux/hooks';
-import { dateFormatter } from '~/lib/utils/Formatters';
+import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
 
 const SectionOne = () => {
   const formDetails = useAppSelector((state) => state.maintenance);
@@ -12,13 +12,21 @@ const SectionOne = () => {
     startDate,
     endDate,
     planTypeName,
+    schedules,
   } = formDetails.planForm;
 
-  const details = [
-    {
-      label: 'Plan Type',
-      value: planTypeName,
+  const totalEstimateCost = formDetails.planForm.schedules.reduce(
+    (totalCost, schedule) => {
+      const scheduleCost = schedule.tasks.reduce(
+        (sum, task) => sum + (task.costEstimate ?? 0),
+        0
+      );
+      return totalCost + scheduleCost;
     },
+    0
+  );
+
+  const details = [
     {
       label: `Asset ${planTypeName === 'Default' ? 'Type' : 'Name'}`,
       value: planTypeName === 'Default' ? assetTypeName : assetName,
@@ -31,9 +39,17 @@ const SectionOne = () => {
       label: 'End Date',
       value: dateFormatter(endDate, 'Do MMM, YYYY', 'DD/MM/YYYY'),
     },
+    {
+      label: 'No. Of Schedules',
+      value: schedules.length?.toLocaleString(),
+    },
+    {
+      label: 'Estimate Cost',
+      value: amountFormatter(totalEstimateCost),
+    },
   ];
   return (
-    <Flex width="full" gap="16px" maxW="90%">
+    <Flex width="full" gap="16px">
       <VStack alignItems="flex-start" spacing="8px" width="393px">
         <Text fontWeight={700} color="neutral.600">
           Plan Title

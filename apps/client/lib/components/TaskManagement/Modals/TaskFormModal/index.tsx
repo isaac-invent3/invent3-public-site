@@ -60,7 +60,6 @@ const TaskFormModal = (props: TaskFormModalProps) => {
       assignedTo: data?.assignedTo ?? null,
       assignedToEmployeeName: data?.assignedToEmployeeName ?? null,
       dueDate: data?.dueDate ?? null,
-      dateCompleted: data?.dateCompleted ?? null,
       costEstimate: data?.costEstimate ?? null,
       actualCost: data?.actualCost ?? null,
       comments: data?.comments ?? null,
@@ -77,10 +76,6 @@ const TaskFormModal = (props: TaskFormModalProps) => {
           priorityId: values.priorityId,
           assignedTo: values.assignedTo,
           dueDate: moment(values.dueDate, 'DD/MM/YYYY').utcOffset(0, true),
-          dateCompleted: moment(values.dateCompleted, 'DD/MM/YYYY').utcOffset(
-            0,
-            true
-          ),
           costEstimate: values.costEstimate,
           actualCost: values.actualCost,
           comments: values.comments,
@@ -118,6 +113,7 @@ const TaskFormModal = (props: TaskFormModalProps) => {
           assetId: null,
           assetName: null,
           assetLocation: null,
+          dateCompleted: null,
         });
         resetForm();
         onOpenSuccess();
@@ -159,7 +155,6 @@ const TaskFormModal = (props: TaskFormModalProps) => {
                 <TaskType sectionMaxWidth="118px" spacing="73px" />
                 <TaskPriority sectionMaxWidth="118px" spacing="73px" />
                 <DueDate sectionMaxWidth="118px" spacing="73px" />
-                <CompletionDate sectionMaxWidth="118px" spacing="73px" />
                 <CostEstimate sectionMaxWidth="118px" spacing="73px" />
                 <TaskAssignedTo sectionMaxWidth="118px" spacing="73px" />
               </VStack>

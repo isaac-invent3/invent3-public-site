@@ -19,14 +19,26 @@ import ActionPopover from './ActionPopover';
 import ScheduleModalForm from '~/lib/components/Maintenance/Schedules/ScheduleForm/ScheduleModalForm';
 import ErrorMessage from '~/lib/components/UI/ErrorMessage';
 import { useField } from 'formik';
+import GenericLeaveDialogModal from '~/lib/components/UI/Modal/LeaveDialogModal';
 
 interface MaintenanceSchedulesProps {
   type: 'create' | 'edit' | 'list';
-  setShowScheduleForm: React.Dispatch<React.SetStateAction<boolean>>;
+  showScheduleInfo: boolean;
+  setShowScheduleInfo: React.Dispatch<React.SetStateAction<boolean>>;
+  selectedRows: number[];
+  setSelectedRows: React.Dispatch<React.SetStateAction<number[]>>;
+  selectMultiple: boolean;
 }
 
 const ScheduleList = (props: MaintenanceSchedulesProps) => {
-  const { type, setShowScheduleForm } = props;
+  const {
+    type,
+    showScheduleInfo,
+    setShowScheduleInfo,
+    selectedRows,
+    setSelectedRows,
+    selectMultiple,
+  } = props;
   let metaProps;
 
   // Check if the component is within a Formik context
@@ -37,13 +49,18 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
   } catch (error) {
     // Do nothing
   }
-  const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { planId, schedules: allPlanSchedules } = useAppSelector(
     (state) => state.maintenance.planForm
   );
+  const {
+    isOpen: isOpenDialog,
+    onOpen: onOpenDialog,
+    onClose: onCloseDialog,
+  } = useDisclosure();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(25);
+  const [action, setAction] = useState<'new' | 'update' | null>(null);
   const dispatch = useAppDispatch();
   const { data, isLoading, isFetching } =
     useGetMaintenanceSchedulesByPlanIdQuery(
@@ -118,13 +135,21 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
         allPlanSchedules[selectedRows?.[0] as number];
       if (schedule) {
         dispatch(updateScheduleForm(schedule));
-        setShowScheduleForm(true);
+        setAction('update');
+        setShowScheduleInfo(true);
       }
-    } else {
+    } else if (action === 'update') {
       dispatch(clearScheduleForm());
-      setShowScheduleForm(false);
+      setShowScheduleInfo(false);
     }
   }, [selectedRows]);
+
+  // Clear selectedRows is showSchedule Info is changed to false
+  useEffect(() => {
+    if (!showScheduleInfo) {
+      setSelectedRows([]);
+    }
+  }, [showScheduleInfo]);
 
   useEffect(() => {
     if (data?.data) {
@@ -179,6 +204,22 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
     }
   }, [data]);
 
+  const handleProceedDialog = () => {
+    setAction('new');
+    setSelectedRows([]);
+    dispatch(clearScheduleForm());
+    setShowScheduleInfo(true);
+    onCloseDialog();
+  };
+
+  const handleAddSchedule = () => {
+    if (selectedRows.length > 0) {
+      onOpenDialog();
+    } else {
+      handleProceedDialog();
+    }
+  };
+
   return (
     <Flex direction="column" width="full" gap="25px" alignItems="start">
       {type === 'edit' && (
@@ -197,7 +238,7 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
         showFooter={type === 'edit'}
         emptyLines={5}
         isSelectable={true}
-        hideSelectAllCheckBox={true}
+        hideSelectAllCheckBox={!selectMultiple}
         isLoading={isLoading}
         isFetching={isFetching}
         pageNumber={currentPage}
@@ -207,7 +248,7 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
         totalPages={data?.data?.totalPages}
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
-        selectMultipleRows={false}
+        selectMultipleRows={selectMultiple}
         showEmptyState={type === 'edit'}
         customThStyle={{
           paddingLeft: '16px',
@@ -227,7 +268,7 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
       {type === 'create' && (
         <Flex width="full" justifyContent="center">
           <AddButton
-            handleClick={() => setShowScheduleForm(true)}
+            handleClick={() => handleAddSchedule()}
             color="#0366EF"
             customStyle={{ spacing: '8px' }}
             customTextStyle={{ fontWeight: 700 }}
@@ -239,6 +280,11 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
       {metaProps && metaProps.touched && metaProps.error !== undefined && (
         <ErrorMessage>{metaProps.error}</ErrorMessage>
       )}
+      <GenericLeaveDialogModal
+        isOpen={isOpenDialog}
+        onClose={onCloseDialog}
+        handleProceed={handleProceedDialog}
+      />
     </Flex>
   );
 };

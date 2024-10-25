@@ -9,6 +9,7 @@ import {
 import PopoverAction from './PopoverAction';
 import DataTable from '~/lib/components/UI/Table';
 import AssignedTo from '~/lib/components/Common/AssignedTo';
+import { amountFormatter } from '~/lib/utils/Formatters';
 
 interface TaskListTableProps {
   data: taskFormDetails[];
@@ -51,6 +52,11 @@ const TaskListTable = (props: TaskListTableProps) => {
         columnHelper.accessor('dateCompleted', {
           cell: (info) => info.getValue(),
           header: 'Completion Date',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('costEstimate', {
+          cell: (info) => amountFormatter(info.getValue() ?? 0),
+          header: 'Estimate Cost',
           enableSorting: false,
         }),
         columnHelper.accessor('assignedToEmployeeName', {

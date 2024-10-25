@@ -302,6 +302,7 @@ function DataTable<Data extends object>({
                               isNumeric={meta?.isNumeric ?? false}
                               key={cell.id}
                               maxW={maxTdWidth}
+                              customTdStyle={customTdStyle}
                             >
                               {flexRender(
                                 cell.column.columnDef.cell,

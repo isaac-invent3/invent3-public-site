@@ -27,7 +27,7 @@ const AssetSelect = (props: AssetSelectProps) => {
       selectName={selectName}
       selectTitle={selectTitle}
       data={data}
-      labelKey="assetName"
+      labelKey="displayName"
       valueKey="assetId"
       mutationFn={searchAsset}
       isLoading={isLoading}

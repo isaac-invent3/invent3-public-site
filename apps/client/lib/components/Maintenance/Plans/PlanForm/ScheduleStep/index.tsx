@@ -15,6 +15,7 @@ interface ScheduleStepProps {
 }
 const ScheduleStep = (props: ScheduleStepProps) => {
   const { activeStep, setActiveStep, type } = props;
+  const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [showScheduleForm, setShowScheduleForm] = useState(false);
   const formDetails = useAppSelector((state) => state.maintenance.planForm);
   const formik = useFormik({
@@ -52,7 +53,11 @@ const ScheduleStep = (props: ScheduleStepProps) => {
           >
             <ScheduleList
               type={type}
-              setShowScheduleForm={setShowScheduleForm}
+              showScheduleInfo={showScheduleForm}
+              setShowScheduleInfo={setShowScheduleForm}
+              selectedRows={selectedRows}
+              setSelectedRows={setSelectedRows}
+              selectMultiple={false}
             />
             <SlideTransition trigger={showScheduleForm}>
               <ScheduleForm
@@ -67,6 +72,8 @@ const ScheduleStep = (props: ScheduleStepProps) => {
               totalStep={3}
               activeStep={1}
               setActiveStep={setActiveStep}
+              disableBackButton={showScheduleForm}
+              disablePrimaryButton={showScheduleForm}
             />
           </Flex>
         </form>

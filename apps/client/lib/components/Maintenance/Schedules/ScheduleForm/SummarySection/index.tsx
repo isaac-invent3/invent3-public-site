@@ -103,7 +103,7 @@ const SummarySection = (props: SummarySectionProps) => {
         divider={<Divider borderColor="#BBBBBB" />}
       >
         <SectionOne />
-        <SectionTwo />
+        <SectionTwo formDetails={scheduleFormDetails} />
       </VStack>
       <Flex width="full" mt="16px">
         <FormActionButtons

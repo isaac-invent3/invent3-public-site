@@ -33,6 +33,7 @@ import { maintenanceFrequencyApi } from './services/maintenance/frequency.servic
 import { taskApi } from './services/task/general.services';
 import { taskPrioritiesApi } from './services/task/priorities.services';
 import { taskTypeApi } from './services/task/types.services';
+import { ticketApi } from './services/ticket.services';
 import { assetTypeApi } from './services/asset/types.services';
 
 export const persistConfig = {
@@ -58,6 +59,7 @@ const rootReducer = combineReducers({
   [taskApi.reducerPath]: taskApi.reducer,
   [taskPrioritiesApi.reducerPath]: taskPrioritiesApi.reducer,
   [taskTypeApi.reducerPath]: taskTypeApi.reducer,
+  [ticketApi.reducerPath]: ticketApi.reducer,
   [locationApi.reducerPath]: locationApi.reducer,
   [utilityApi.reducerPath]: utilityApi.reducer,
   [userApi.reducerPath]: userApi.reducer,
@@ -94,6 +96,7 @@ export const makeStore = () => {
         taskApi.middleware,
         taskPrioritiesApi.middleware,
         taskTypeApi.middleware,
+        ticketApi.middleware,
         locationApi.middleware,
         categoryApi.middleware,
         conditionApi.middleware,

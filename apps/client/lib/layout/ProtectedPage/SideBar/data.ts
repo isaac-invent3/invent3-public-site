@@ -31,7 +31,7 @@ const sideBarData = [
   },
   {
     name: 'Tickets',
-    route: 'tickets',
+    route: 'ticket-management',
     icon: TicketIcon,
   },
   {

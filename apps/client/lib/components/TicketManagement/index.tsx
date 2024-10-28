@@ -14,21 +14,17 @@ import Header from './Header';
 import { useRouter, useSearchParams } from 'next/navigation';
 // import { FilterInput } from '~/lib/interfaces/asset.interfaces';
 import Filters from './Filters';
-import ListView from './ListView';
+import TicketTable from './TicketTable';
 
-const ALlTabs = ['Pending', 'In Progress', 'Completed'];
+const ALlTabs = ['New Tickets', 'Scheduled Tickets', 'Completed'];
 
-const TaskManagement = () => {
+const TicketManagement = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [tabIndex, setTabIndex] = useState(0);
   // eslint-disable-next-line no-unused-vars
   const [search, setSearch] = useState('');
   const { onToggle, isOpen } = useDisclosure();
-  //   const [filterData, setFilterData] = useState<FilterInput>({
-  //     location: [],
-  //     category: [],
-  //   });
 
   // Retrieve the `tab` parameter from URL on mount
   useEffect(() => {
@@ -46,7 +42,7 @@ const TaskManagement = () => {
     setTabIndex(index);
     const tabName = ALlTabs[index];
     if (tabName) {
-      router.push(`/task-management?tab=${tabName}`);
+      router.push(`/ticket-management?tab=${tabName}`);
     }
   };
 
@@ -77,13 +73,13 @@ const TaskManagement = () => {
 
           <TabPanels>
             <TabPanel>
-              <ListView />
+              <TicketTable />
             </TabPanel>
             <TabPanel>
-              <ListView />
+              <TicketTable />
             </TabPanel>
             <TabPanel>
-              <ListView />
+              <TicketTable />
             </TabPanel>
           </TabPanels>
         </Tabs>
@@ -92,4 +88,4 @@ const TaskManagement = () => {
   );
 };
 
-export default TaskManagement;
+export default TicketManagement;

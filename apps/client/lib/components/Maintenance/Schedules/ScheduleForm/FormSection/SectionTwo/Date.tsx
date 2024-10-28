@@ -6,9 +6,11 @@ import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 interface DateProps {
   sectionMaxWidth: string;
   spacing: string;
+  minScheduleDate: Date;
+  maxScheduleDate: Date | undefined;
 }
 const Date = (props: DateProps) => {
-  const { sectionMaxWidth, spacing } = props;
+  const { sectionMaxWidth, spacing, minScheduleDate, maxScheduleDate } = props;
   return (
     <HStack width="full" alignItems="flex-start" spacing={spacing}>
       <Flex width="full" maxW={sectionMaxWidth}>
@@ -22,6 +24,8 @@ const Date = (props: DateProps) => {
         name="scheduledDate"
         label="Schedule Date"
         type="datetime"
+        minDate={minScheduleDate}
+        maxDate={maxScheduleDate}
       />
     </HStack>
   );

@@ -25,6 +25,7 @@ import StartDate from '../../Common/StartDate';
 import EndDate from '../../Common/EndDate';
 import { updatePlanForm } from '~/lib/redux/slices/MaintenanceSlice';
 import TemplateButton from '../../Common/TemplateButton';
+import moment from 'moment';
 
 interface PlanInfoStepProps {
   activeStep: number;
@@ -39,6 +40,9 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
   const dispatch = useAppDispatch();
   const [isDefaultPlan, setIsDefaultPlan] = useState(false);
   const [canProceed, setCanProceed] = useState(false);
+  const [inputtedStartDate, setInputtedStartDate] = useState<
+    string | undefined
+  >(undefined);
 
   const initialValues = {
     planName: plan?.planName ?? null,
@@ -55,16 +59,21 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
         : 'asset_group'
       : 'asset_group',
   };
+  const previousDay = moment().subtract(1, 'days').format('DD/MM/YYYY');
 
   const formik = useFormik({
     initialValues,
-    validationSchema: planSchema(isDefaultPlan, true),
+    validationSchema: planSchema(
+      isDefaultPlan,
+      true,
+      previousDay,
+      inputtedStartDate
+    ),
     enableReinitialize: true,
     onSubmit: async (values) => {
       dispatch(
         updatePlanForm({
           planName: values.planName,
-          frequencyId: values.frequencyId,
           ownerId: values.ownerId,
           ...(values.planScope === 'asset'
             ? { assetId: values.assetId }
@@ -254,11 +263,6 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
               )}
               <HStack width="full" spacing="40px">
                 <PlanTitle sectionMaxWidth="141px" spacing="40px" />
-                {/* <Frequency
-                  sectionMaxWidth="141px"
-                  spacing="40px"
-                  defaultName={plan?.frequencyName}
-                /> */}
                 <Owner
                   sectionMaxWidth="141px"
                   spacing="40px"
@@ -267,8 +271,20 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
               </HStack>
 
               <HStack width="full" spacing="40px">
-                <StartDate sectionMaxWidth="141px" spacing="40px" />
-                <EndDate sectionMaxWidth="141px" spacing="40px" />
+                <StartDate
+                  sectionMaxWidth="141px"
+                  spacing="40px"
+                  handleSelectedDate={(date) => setInputtedStartDate(date)}
+                />
+                <EndDate
+                  sectionMaxWidth="141px"
+                  spacing="40px"
+                  minDate={
+                    inputtedStartDate
+                      ? moment(inputtedStartDate, 'DD/MM/YYYY').toDate()
+                      : new Date()
+                  }
+                />
               </HStack>
             </VStack>
           </VStack>

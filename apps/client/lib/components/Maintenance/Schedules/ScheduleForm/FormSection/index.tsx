@@ -1,6 +1,6 @@
-import { Divider, Flex, VStack } from '@chakra-ui/react';
+import { Divider, Flex, useToast, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import FormActionButtons from '~/lib/components/UI/Form/FormActionButtons';
 import { scheduleSchema } from '~/lib/schemas/maintenance.schema';
 import SectionOne from './SectionOne';
@@ -8,6 +8,8 @@ import SectionTwo from './SectionTwo';
 import Header from '../Header';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';
+import moment from 'moment';
+import { validateFrequencyInstance } from '../../../Common/helperFunctions';
 
 interface FormSectionProps {
   activeStep: number;
@@ -17,12 +19,22 @@ interface FormSectionProps {
 const FormSection = (props: FormSectionProps) => {
   const { activeStep, setActiveStep, type } = props;
   const formDetails = useAppSelector((state) => state.maintenance.scheduleForm);
+  const [hasAScheduleInstance, setHasAScheduleInstance] = useState(false);
+  const toast = useToast();
   const dispatch = useAppDispatch();
 
   const defaultHeader =
     type === 'create'
       ? 'Add New Maintenance Schedule'
       : 'Edit Maintenance Schedule';
+
+  const previousDay = moment(formDetails?.maintenancePlanInfo?.startDate)
+    .subtract(1, 'days')
+    .format('DD/MM/YYYY');
+
+  const planEndDate = moment(formDetails?.maintenancePlanInfo?.endDate).format(
+    'DD/MM/YYYY'
+  );
 
   const formik = useFormik({
     initialValues: {
@@ -39,7 +51,13 @@ const FormSection = (props: FormSectionProps) => {
       tasks: formDetails.tasks ?? [],
       taskCount: formDetails?.taskCount ?? 0,
     },
-    validationSchema: scheduleSchema(type === 'create', true, true),
+    validationSchema: scheduleSchema(
+      type === 'create',
+      true,
+      true,
+      previousDay ?? undefined,
+      planEndDate ?? undefined
+    ),
     enableReinitialize: true,
 
     onSubmit: async (values, { setTouched }) => {
@@ -48,6 +66,31 @@ const FormSection = (props: FormSectionProps) => {
       setActiveStep(1);
     },
   });
+
+  //Validates if the selected Frequency and start date would have an instance
+  useEffect(() => {
+    if (
+      formik.values.scheduledDate &&
+      formik.values.frequencyId &&
+      formDetails.frequencyName
+    ) {
+      const hasAnInstance = validateFrequencyInstance(
+        formDetails.frequencyName,
+        formik.values.scheduledDate,
+        formDetails.maintenancePlanInfo.endDate
+      );
+      if (hasAnInstance) {
+        setHasAScheduleInstance(hasAScheduleInstance);
+      } else {
+        toast({
+          title:
+            "Selected Frequency and Start Date doesn't have a schedule Instance",
+          status: 'error',
+          position: 'top-right',
+        });
+      }
+    }
+  }, [formik.values.scheduledDate, formik.values.frequencyId]);
 
   return (
     <Flex
@@ -74,7 +117,16 @@ const FormSection = (props: FormSectionProps) => {
             divider={<Divider borderColor="#BBBBBB" />}
           >
             <SectionOne />
-            <SectionTwo />
+            <SectionTwo
+              minScheduleDate={moment(
+                formDetails?.maintenancePlanInfo?.startDate ?? moment()
+              ).toDate()}
+              maxScheduleDate={
+                formDetails?.maintenancePlanInfo?.endDate
+                  ? moment(formDetails?.maintenancePlanInfo?.endDate).toDate()
+                  : undefined
+              }
+            />
           </VStack>
           <Flex width="full" mt="16px">
             <FormActionButtons
@@ -82,6 +134,7 @@ const FormSection = (props: FormSectionProps) => {
               totalStep={1}
               activeStep={0}
               setActiveStep={setActiveStep}
+              disablePrimaryButton={!hasAScheduleInstance}
             />
           </Flex>
         </form>

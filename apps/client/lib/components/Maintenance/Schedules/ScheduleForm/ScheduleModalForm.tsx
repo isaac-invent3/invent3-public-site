@@ -24,6 +24,7 @@ import Date from './FormSection/SectionTwo/Date';
 import ServiceLevelAgreement from './FormSection/SectionTwo/SLA';
 import Tasks from './FormSection/SectionTwo/Tasks';
 import { useAppSelector } from '~/lib/redux/hooks';
+import moment from 'moment';
 
 interface ScheduleModalFormProps {
   isOpen: boolean;
@@ -31,12 +32,20 @@ interface ScheduleModalFormProps {
 }
 const ScheduleModalForm = (props: ScheduleModalFormProps) => {
   const { isOpen, onClose } = props;
-  const { planId } = useAppSelector((state) => state.maintenance.planForm);
+  const { planId, startDate, endDate } = useAppSelector(
+    (state) => state.maintenance.planForm
+  );
   const { data: session } = useSession();
   const { handleSubmit } = useCustomMutation();
   const [createScheduleAndTasks, { isLoading }] =
     useCreateMaintenanceScheduleAndTasksMutation();
   const username = session?.user?.username;
+
+  const previousDay = moment(startDate)
+    .subtract(1, 'days')
+    .format('DD/MM/YYYY');
+
+  const planEndDate = moment(endDate).format('DD/MM/YYYY');
 
   const formik = useFormik({
     initialValues: {
@@ -53,7 +62,13 @@ const ScheduleModalForm = (props: ScheduleModalFormProps) => {
       tasks: [],
       taskCount: null,
     },
-    validationSchema: scheduleSchema(true, false, true),
+    validationSchema: scheduleSchema(
+      true,
+      false,
+      true,
+      previousDay ?? undefined,
+      planEndDate ?? undefined
+    ),
     enableReinitialize: true,
     onSubmit: async (values, { resetForm }) => {
       const PAYLOAD = {
@@ -106,7 +121,14 @@ const ScheduleModalForm = (props: ScheduleModalFormProps) => {
                 <Type sectionMaxWidth="118px" spacing="40px" />
                 <Description sectionMaxWidth="118px" spacing="40px" />
                 <Frequency sectionMaxWidth="118px" spacing="40px" />
-                <Date sectionMaxWidth="118px" spacing="40px" />
+                <Date
+                  sectionMaxWidth="118px"
+                  spacing="40px"
+                  minScheduleDate={moment(startDate ?? moment()).toDate()}
+                  maxScheduleDate={
+                    endDate ? moment(endDate).toDate() : undefined
+                  }
+                />
                 <ServiceLevelAgreement sectionMaxWidth="118px" spacing="40px" />
                 <Tasks sectionMaxWidth="118px" spacing="40px" />
               </VStack>

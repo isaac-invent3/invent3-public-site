@@ -12,7 +12,7 @@ const SectionTwo = () => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const { schedules } = useAppSelector((state) => state.maintenance.planForm);
   return (
-    <VStack width="full" spacing="8px">
+    <VStack width="full" spacing="16px">
       <ScheduleList
         type="list"
         showScheduleInfo={showScheduleSummary}

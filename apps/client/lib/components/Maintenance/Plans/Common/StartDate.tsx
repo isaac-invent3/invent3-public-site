@@ -6,9 +6,11 @@ import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 interface StartDateProps {
   sectionMaxWidth: string;
   spacing: string;
+  // eslint-disable-next-line no-unused-vars
+  handleSelectedDate?: (date: string) => void;
 }
 const StartDate = (props: StartDateProps) => {
-  const { sectionMaxWidth, spacing } = props;
+  const { sectionMaxWidth, spacing, handleSelectedDate } = props;
   return (
     <HStack width="full" alignItems="flex-start" spacing={spacing}>
       <Flex width="full" maxW={sectionMaxWidth}>
@@ -19,7 +21,13 @@ const StartDate = (props: StartDateProps) => {
         />
       </Flex>
 
-      <CustomDatePicker name="startDate" label="Start Date" type="date" />
+      <CustomDatePicker
+        name="startDate"
+        label="Start Date"
+        type="date"
+        minDate={new Date()}
+        handleSelectedDate={handleSelectedDate}
+      />
     </HStack>
   );
 };

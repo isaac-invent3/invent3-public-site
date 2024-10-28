@@ -83,6 +83,9 @@ importers:
       '@react-google-maps/api':
         specifier: ^2.19.3
         version: 2.19.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-input/mask':
+        specifier: ^1.2.11
+        version: 1.2.11(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@reduxjs/toolkit':
         specifier: ^2.2.7
         version: 2.2.7(react-redux@9.1.2(@types/react@18.3.5)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
@@ -107,6 +110,9 @@ importers:
       '@types/react-big-calendar':
         specifier: ^1.8.12
         version: 1.8.12
+      '@types/react-input-mask':
+        specifier: ^3.0.5
+        version: 3.0.5
       async-mutex:
         specifier: ^0.5.0
         version: 0.5.0
@@ -188,6 +194,9 @@ importers:
       react-infinite-scroll-component:
         specifier: ^6.1.0
         version: 6.1.0(react@18.3.1)
+      react-input-mask:
+        specifier: ^2.0.4
+        version: 2.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-jsbarcode:
         specifier: ^1.0.1
         version: 1.0.1(react@18.3.1)
@@ -2448,6 +2457,26 @@ packages:
   '@react-google-maps/marker-clusterer@2.19.2':
     resolution: {integrity: sha512-x9ibmsP0ZVqzyCo1Pitbw+4b6iEXRw/r1TCy3vOUR3eKrzWLnHYZMR325BkZW2r8fnuWE/V3Fp4QZOP9qYORCw==}
 
+  '@react-input/core@1.0.18':
+    resolution: {integrity: sha512-P7OCPZkBU3TjwSkk6NBPvAM5k91NFjFw9HD6a0iuE1eADYjPnlxoDmdfP4icVPloryW2wlhVKb2S0LVrkDaFYQ==}
+    peerDependencies:
+      '@types/react': '>=16.8'
+      react: '>=16.8'
+      react-dom: '>=16.8'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+
+  '@react-input/mask@1.2.11':
+    resolution: {integrity: sha512-CakG0tSkDU9ZtvKTri1YQWoM6Y7UpMxrJPHkJfKroMOsVrPaGlc6eEeIv5pUHewQOJArVhG4sfbT1LPjplMUFg==}
+    peerDependencies:
+      '@types/react': '>=16.8'
+      react: '>=16.8'
+      react-dom: '>=16.8'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+
   '@react-leaflet/core@2.1.0':
     resolution: {integrity: sha512-Qk7Pfu8BSarKGqILj4x7bCSZ1pjuAPZ+qmRwH5S7mDS91VSbVVsJSrW4qA+GPrro8t69gFYVMWb1Zc4yFmPiVg==}
     peerDependencies:
@@ -2704,6 +2733,9 @@ packages:
 
   '@types/react-dom@18.3.0':
     resolution: {integrity: sha512-EhwApuTmMBmXuFOikhQLIBUn6uFg81SwLMOAUgodJF14SOBOCMdU04gDoYi0WOJJHD144TL32z4yDqCW3dnkQg==}
+
+  '@types/react-input-mask@3.0.5':
+    resolution: {integrity: sha512-vQ1x6ykwjDrDrJZq1zw5/uQ+nqGHUV6bWscsVZJ/qsNwNXWxZm7KRBHLJ5k6TQt3MHjhpoYHzPH6FwjVSZODHA==}
 
   '@types/react-simple-maps@3.0.6':
     resolution: {integrity: sha512-hR01RXt6VvsE41FxDd+Bqm1PPGdKbYjCYVtCgh38YeBPt46z3SwmWPWu2L3EdCAP6bd6VYEgztucihRw1C0Klg==}
@@ -8394,6 +8426,12 @@ packages:
     peerDependencies:
       react: '>=16.0.0'
 
+  react-input-mask@2.0.4:
+    resolution: {integrity: sha512-1hwzMr/aO9tXfiroiVCx5EtKohKwLk/NT8QlJXHQ4N+yJJFyUuMT+zfTpLBwX/lK3PkuMlievIffncpMZ3HGRQ==}
+    peerDependencies:
+      react: '>=0.14.0'
+      react-dom: '>=0.14.0'
+
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
@@ -13401,6 +13439,21 @@ snapshots:
 
   '@react-google-maps/marker-clusterer@2.19.2': {}
 
+  '@react-input/core@1.0.18(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+    optionalDependencies:
+      '@types/react': 18.3.5
+
+  '@react-input/mask@1.2.11(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@react-input/core': 1.0.18(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+    optionalDependencies:
+      '@types/react': 18.3.5
+
   '@react-leaflet/core@2.1.0(leaflet@1.9.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       leaflet: 1.9.4
@@ -13698,6 +13751,10 @@ snapshots:
       '@types/react': 18.3.5
 
   '@types/react-dom@18.3.0':
+    dependencies:
+      '@types/react': 18.3.5
+
+  '@types/react-input-mask@3.0.5':
     dependencies:
       '@types/react': 18.3.5
 
@@ -20949,6 +21006,13 @@ snapshots:
     dependencies:
       react: 18.3.1
       throttle-debounce: 2.3.0
+
+  react-input-mask@2.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      invariant: 2.2.4
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      warning: 4.0.3
 
   react-is@16.13.1: {}
 

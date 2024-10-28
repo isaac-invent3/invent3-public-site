@@ -100,11 +100,6 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
           header: 'Start Date',
           enableSorting: false,
         }),
-        columnHelper.accessor('completionDate', {
-          cell: (info) => info.getValue(),
-          header: 'End Date',
-          enableSorting: false,
-        }),
       ];
       const scheduleIdColumn = columnHelper.accessor('scheduleId', {
         cell: (info) => info.getValue(),

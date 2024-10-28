@@ -9,6 +9,7 @@ interface DueDateProps {
 }
 const DueDate = (props: DueDateProps) => {
   const { sectionMaxWidth, spacing } = props;
+
   return (
     <HStack width="full" alignItems="flex-start" spacing={spacing}>
       <Flex width="full" maxW={sectionMaxWidth}>
@@ -19,7 +20,12 @@ const DueDate = (props: DueDateProps) => {
         />
       </Flex>
 
-      <CustomDatePicker name="dueDate" label="Due Date" type="date" />
+      <CustomDatePicker
+        name="dueDate"
+        label="Due Date"
+        type="date"
+        minDate={new Date()}
+      />
     </HStack>
   );
 };

@@ -1,10 +1,13 @@
 import * as Yup from 'yup';
 import { taskBaseSchema } from './task.schema';
+import { createDateSchema } from './general.schema';
 
 const scheduleSchema = (
   validateTask: boolean,
   validateAsset: boolean,
-  validatePlanId: boolean
+  validatePlanId: boolean,
+  minScheduleDate?: string,
+  maxScheduleDate?: string
 ) =>
   Yup.object().shape({
     localId: Yup.number().nullable(),
@@ -14,7 +17,12 @@ const scheduleSchema = (
     frequencyId: Yup.string().required('Frequency is Required'),
     description: Yup.string().required('Description is Required'),
     comment: Yup.string().nullable(),
-    scheduledDate: Yup.string().required('Scheduled Date is Required'),
+    scheduledDate: createDateSchema(
+      true,
+      true,
+      minScheduleDate,
+      maxScheduleDate
+    ).required('Schedule Date is Required'),
     completionDate: Yup.string().nullable(),
     ticketId: Yup.number().nullable(),
     ...(validatePlanId
@@ -29,25 +37,28 @@ const scheduleSchema = (
             .required('Tasks is required')
             .min(1, 'There must be atleast one task'),
           tasks: Yup.array()
-            .of(taskBaseSchema)
+            .of(taskBaseSchema(minScheduleDate))
             .required('Tasks are required')
             .min(1, 'There must be atleast one task'),
         }
       : {
           taskCount: Yup.number().nullable(),
-          tasks: Yup.array().of(taskBaseSchema).notRequired(),
+          tasks: Yup.array().of(taskBaseSchema(minScheduleDate)).notRequired(),
         }),
   });
 
 const planSchema = (
   isDefaultPlan: boolean,
-  validateBasedOnPlanScope: boolean
+  validateBasedOnPlanScope: boolean,
+  minStartDate?: string,
+  minEndDate?: string
 ) =>
   Yup.object().shape({
     planName: Yup.string().required('Name is Required'),
-    frequencyId: Yup.number().nullable(),
-    startDate: Yup.string().required('Start Date is Required'),
-    endDate: Yup.string().required('End Date is Required'),
+    startDate: createDateSchema(false, true, minStartDate).required(
+      'Start Date is Required'
+    ),
+    endDate: createDateSchema(false, false, minEndDate).nullable(),
     ownerId: Yup.number().required('Owner is Required'),
     cost: Yup.number().nullable(),
 

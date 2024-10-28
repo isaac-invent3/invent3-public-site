@@ -1,24 +1,20 @@
 import { Divider, Flex, useDisclosure, VStack } from '@chakra-ui/react';
 import React from 'react';
 import FormActionButtons from '~/lib/components/UI/Form/FormActionButtons';
-import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { useAppSelector } from '~/lib/redux/hooks';
 import { useSession } from 'next-auth/react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import {
-  useCreateMaintenanceScheduleAndTasksMutation,
-  useUpdateMaintenanceScheduleMutation,
-} from '~/lib/redux/services/maintenance/schedule.services';
+import { useUpdateMaintenanceScheduleMutation } from '~/lib/redux/services/maintenance/schedule.services';
 import {
   generateMaintenanceScheduleDTO,
+  generatePlanDTO,
   generateTasksArray,
 } from '../../../Common/helperFunctions';
 import PlanSuccessModal from './PlanSuccessModal';
 import SectionOne from './SectionOne';
-import {
-  clearScheduleForm,
-  updateScheduleForm,
-} from '~/lib/redux/slices/MaintenanceSlice';
 import SectionTwo from './SectionTwo';
+import { ScheduleFormDetails } from '~/lib/interfaces/maintenance.interfaces';
+import { useCreateMaintenancePlanWithSchedulesMutation } from '~/lib/redux/services/maintenance/plan.services';
 
 interface SummarySectionProps {
   activeStep: number;
@@ -31,32 +27,41 @@ const SummarySection = (props: SummarySectionProps) => {
   const scheduleFormDetails = useAppSelector(
     (state) => state.maintenance.scheduleForm
   );
+  const planFormDetails = useAppSelector((state) => state.maintenance.planForm);
   const { handleSubmit } = useCustomMutation();
-  const [createScheduleAndTasks, { isLoading: createLoading }] =
-    useCreateMaintenanceScheduleAndTasksMutation();
+  const [createMaintenancePlan, { isLoading: createLoading }] =
+    useCreateMaintenancePlanWithSchedulesMutation();
   const [updateSchedule, { isLoading: updateLoading }] =
     useUpdateMaintenanceScheduleMutation();
   const { data } = useSession();
   const username = data?.user?.username;
-  const dispatch = useAppDispatch();
 
   const PAYLOAD = {
-    createMaintenanceScheduleDto: generateMaintenanceScheduleDTO(
+    createMaintenancePlanDto: generatePlanDTO(
       type,
-      scheduleFormDetails,
+      planFormDetails,
       username as string
     ),
-    createTaskDtos: generateTasksArray(
-      type,
-      scheduleFormDetails.tasks,
-      username as string
+    createMaintenanceScheduleDtos: planFormDetails.schedules.map(
+      (value: ScheduleFormDetails) => ({
+        createMaintenanceScheduleDto: generateMaintenanceScheduleDTO(
+          type,
+          value,
+          username as string
+        ),
+        createTaskDtos: generateTasksArray(
+          type,
+          value.tasks,
+          username as string
+        ),
+      })
     ),
   };
 
   const handleSumbitSchedule = async () => {
     let response;
     if (type === 'create') {
-      response = await handleSubmit(createScheduleAndTasks, PAYLOAD, '');
+      response = await handleSubmit(createMaintenancePlan, PAYLOAD, '');
     } else {
       response = await handleSubmit(
         updateSchedule,
@@ -73,17 +78,6 @@ const SummarySection = (props: SummarySectionProps) => {
     }
     if (response?.data) {
       onOpen();
-    }
-  };
-
-  const handleModalButtons = (addAnotherSchedule: boolean) => {
-    if (addAnotherSchedule) {
-      const { planId, maintenancePlanInfo } = scheduleFormDetails;
-      const tempInfo = { planId, maintenancePlanInfo };
-      dispatch(clearScheduleForm());
-      dispatch(updateScheduleForm({ ...tempInfo }));
-      setActiveStep(activeStep - 1);
-      onClose();
     }
   };
 
@@ -123,11 +117,7 @@ const SummarySection = (props: SummarySectionProps) => {
         />
       </Flex>
       {isOpen && (
-        <PlanSuccessModal
-          isOpen={isOpen}
-          onClose={handleModalButtons}
-          type={type}
-        />
+        <PlanSuccessModal isOpen={isOpen} onClose={onClose} type={type} />
       )}
     </Flex>
   );

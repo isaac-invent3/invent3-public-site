@@ -6,9 +6,10 @@ import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 interface EndDateProps {
   sectionMaxWidth: string;
   spacing: string;
+  minDate?: Date;
 }
 const EndDate = (props: EndDateProps) => {
-  const { sectionMaxWidth, spacing } = props;
+  const { sectionMaxWidth, spacing, minDate } = props;
   return (
     <HStack width="full" alignItems="flex-start" spacing={spacing}>
       <Flex width="full" maxW={sectionMaxWidth}>
@@ -19,7 +20,12 @@ const EndDate = (props: EndDateProps) => {
         />
       </Flex>
 
-      <CustomDatePicker name="endDate" label="End Date" type="date" />
+      <CustomDatePicker
+        name="endDate"
+        label="End Date"
+        type="date"
+        minDate={minDate}
+      />
     </HStack>
   );
 };

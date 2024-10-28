@@ -47,6 +47,7 @@ const generateMaintenanceScheduleDTO = (
     description: formDetail.description,
     comments: formDetail.comment,
     maintenanceTypeId: formDetail.typeId,
+    frequencyId: formDetail.frequencyId,
     scheduledDate: moment(
       formDetail.scheduledDate,
       'DD/MM/YYYY hh:mmA'
@@ -67,7 +68,7 @@ const generatePlanDTO = (
   formDetail: PlanFormDetails,
   username: string
 ) => {
-  const maintenanceScheduleDto = {
+  const maintenancePlanDto = {
     planName: formDetail.planName,
     frequencyId: formDetail.frequencyId,
     ownerId: formDetail.ownerId,
@@ -79,7 +80,46 @@ const generatePlanDTO = (
     planTypeId: formDetail.planTypeId,
     [`${type === 'create' ? 'createdBy' : 'lastModifiedBy'}`]: username,
   };
-  return maintenanceScheduleDto;
+  return maintenancePlanDto;
 };
 
-export { generateTasksArray, generatePlanDTO, generateMaintenanceScheduleDTO };
+function validateFrequencyInstance(
+  frequency: string,
+  startDate: string,
+  endDate: string | null = null
+) {
+  const startMoment = moment(startDate, 'DD/MM/YYYY HH:mm');
+  const endMoment = endDate ? moment(endDate, 'DD/MM/YYYY') : null;
+
+  if (!startMoment.isValid() || (endDate && !endMoment?.isValid())) {
+    return false;
+  }
+
+  if (!endDate) {
+    // No end date means unlimited instances
+    return true;
+  }
+
+  // Calculate at least one instance for each frequency type
+  switch (frequency) {
+    case 'Daily':
+      return startMoment.add(1, 'days').isSameOrBefore(endMoment);
+    case 'Weekly':
+      return startMoment.add(1, 'weeks').isSameOrBefore(endMoment);
+    case 'Monthly':
+      return startMoment.add(1, 'months').isSameOrBefore(endMoment);
+    case 'Quarterly':
+      return startMoment.add(3, 'months').isSameOrBefore(endMoment);
+    case 'Annually':
+      return startMoment.add(1, 'years').isSameOrBefore(endMoment);
+    default:
+      return false;
+  }
+}
+
+export {
+  generateTasksArray,
+  generatePlanDTO,
+  generateMaintenanceScheduleDTO,
+  validateFrequencyInstance,
+};

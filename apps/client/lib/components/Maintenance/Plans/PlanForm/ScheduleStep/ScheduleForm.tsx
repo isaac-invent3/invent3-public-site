@@ -1,6 +1,6 @@
-import { HStack, useDisclosure, VStack } from '@chakra-ui/react';
+import { HStack, useDisclosure, useToast, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { scheduleSchema } from '~/lib/schemas/maintenance.schema';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import {
@@ -10,6 +10,8 @@ import {
 import SectionTwo from '../../../Schedules/ScheduleForm/FormSection/SectionTwo';
 import Button from '~/lib/components/UI/Button';
 import GenericLeaveDialogModal from '~/lib/components/UI/Modal/LeaveDialogModal';
+import moment from 'moment';
+import { validateFrequencyInstance } from '../../../Common/helperFunctions';
 
 interface ScheduleFormProps {
   setShowScheduleForm: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,12 +21,18 @@ const ScheduleForm = (props: ScheduleFormProps) => {
   const { type, setShowScheduleForm } = props;
   const formDetails = useAppSelector((state) => state.maintenance.scheduleForm);
   const planDetails = useAppSelector((state) => state.maintenance.planForm);
+  const [hasAScheduleInstance, setHasAScheduleInstance] = useState(false);
+  const toast = useToast();
   const dispatch = useAppDispatch();
   const {
     isOpen: isOpenDialog,
     onOpen: onOpenDialog,
     onClose: onCloseDialog,
   } = useDisclosure();
+
+  const previousDay = moment(planDetails.startDate, 'DD/MM/YYYY')
+    .subtract(1, 'days')
+    .format('DD/MM/YYYY');
 
   const formik = useFormik({
     initialValues: {
@@ -42,7 +50,13 @@ const ScheduleForm = (props: ScheduleFormProps) => {
       tasks: formDetails.tasks ?? [],
       taskCount: formDetails?.taskCount ?? 0,
     },
-    validationSchema: scheduleSchema(type === 'create', false, false),
+    validationSchema: scheduleSchema(
+      type === 'create',
+      false,
+      false,
+      previousDay,
+      planDetails?.endDate ?? undefined
+    ),
     enableReinitialize: true,
 
     onSubmit: async (values, { resetForm }) => {
@@ -96,6 +110,37 @@ const ScheduleForm = (props: ScheduleFormProps) => {
     onCloseDialog();
   };
 
+  //Validates if the selected Frequency and start date would have an instance
+  useEffect(() => {
+    if (
+      formik.values.scheduledDate &&
+      formik.values.frequencyId &&
+      formDetails.frequencyName
+    ) {
+      console.log({
+        frequency: formDetails.frequencyName,
+        scheduleDate: formik.values.scheduledDate,
+        endDate: planDetails.endDate,
+      });
+      const hasAnInstance = validateFrequencyInstance(
+        formDetails.frequencyName,
+        formik.values.scheduledDate,
+        planDetails.endDate
+      );
+      if (hasAnInstance) {
+        setHasAScheduleInstance(hasAnInstance);
+      } else {
+        setHasAScheduleInstance(false);
+        toast({
+          title:
+            "Selected Frequency and Start Date doesn't have a schedule Instance",
+          status: 'error',
+          position: 'top-right',
+        });
+      }
+    }
+  }, [formik.values.scheduledDate, formik.values.frequencyId]);
+
   return (
     <>
       <FormikProvider value={formik}>
@@ -111,7 +156,18 @@ const ScheduleForm = (props: ScheduleFormProps) => {
             pb="22px"
             rounded="8px"
           >
-            <SectionTwo descriptionHeight="83px" />
+            <SectionTwo
+              descriptionHeight="83px"
+              minScheduleDate={(planDetails.startDate
+                ? moment(planDetails.startDate, 'DD/MM/YYYY')
+                : moment()
+              ).toDate()}
+              maxScheduleDate={
+                planDetails.endDate
+                  ? moment(planDetails.endDate, 'DD/MM/YYYY').toDate()
+                  : undefined
+              }
+            />
             <HStack spacing="24px">
               <Button
                 variant="secondary"
@@ -123,6 +179,7 @@ const ScheduleForm = (props: ScheduleFormProps) => {
               <Button
                 customStyles={{ width: '161px' }}
                 handleClick={formik.handleSubmit}
+                isDisabled={!hasAScheduleInstance}
               >
                 {formDetails?.localId ? 'Update' : 'Add'} Schedule
               </Button>

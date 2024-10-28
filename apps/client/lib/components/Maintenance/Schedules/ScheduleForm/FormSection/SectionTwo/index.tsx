@@ -10,9 +10,11 @@ import Frequency from '~/lib/components/Maintenance/Common/Frequency';
 
 interface SectionTwoProps {
   descriptionHeight?: string;
+  minScheduleDate: Date;
+  maxScheduleDate: Date | undefined;
 }
 const SectionTwo = (props: SectionTwoProps) => {
-  const { descriptionHeight } = props;
+  const { descriptionHeight, minScheduleDate, maxScheduleDate } = props;
   return (
     <VStack spacing="45px" width="full" alignItems="flex-start">
       <SimpleGrid
@@ -43,7 +45,12 @@ const SectionTwo = (props: SectionTwoProps) => {
         width="full"
         spacing="40px"
       >
-        <Date sectionMaxWidth="141px" spacing="41px" />
+        <Date
+          sectionMaxWidth="141px"
+          spacing="41px"
+          minScheduleDate={minScheduleDate}
+          maxScheduleDate={maxScheduleDate}
+        />
         <ServiceLevelAgreement sectionMaxWidth="130px" spacing="56px" />
       </SimpleGrid>
       <SimpleGrid

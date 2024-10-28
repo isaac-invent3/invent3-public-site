@@ -37,6 +37,8 @@ const TaskForm = (props: TaskFormProps) => {
 
   const defaultHeader = type === 'create' ? 'Add New Task' : 'Edit Task';
 
+  const previousDay = moment().subtract(1, 'days').format('DD/MM/YYYY');
+
   const formik = useFormik({
     initialValues: {
       scheduleId: formDetails?.scheduleId ?? null,
@@ -56,7 +58,7 @@ const TaskForm = (props: TaskFormProps) => {
       actualCost: formDetails?.actualCost ?? null,
       comments: formDetails?.comments ?? null,
     },
-    validationSchema: taskSchema,
+    validationSchema: taskSchema(previousDay),
     enableReinitialize: true,
 
     onSubmit: async (values, { resetForm }) => {

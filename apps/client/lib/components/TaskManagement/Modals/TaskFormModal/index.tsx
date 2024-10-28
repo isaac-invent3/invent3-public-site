@@ -5,7 +5,7 @@ import React from 'react';
 import GenericModal from '~/lib/components/UI/Modal';
 import Button from '~/lib/components/UI/Button';
 import TextInput from '~/lib/components/UI/TextInput';
-import ModalHeading from '~/lib/components/UI/ModalHeading';
+import ModalHeading from '~/lib/components/UI/Modal/ModalHeading';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import BackButton from '~/lib/components/UI/Button/BackButton';
 import { taskBaseSchema } from '~/lib/schemas/task.schema';

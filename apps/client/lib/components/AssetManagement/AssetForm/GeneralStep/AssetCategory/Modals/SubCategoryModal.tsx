@@ -7,7 +7,7 @@ import Button from '~/lib/components/UI/Button';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useSession } from 'next-auth/react';
 import TextInput from '~/lib/components/UI/TextInput';
-import ModalHeading from '~/lib/components/UI/ModalHeading';
+import ModalHeading from '~/lib/components/UI/Modal/ModalHeading';
 import { subCategorySchema } from '~/lib/schemas/asset/category.schema';
 import { useCreateSubCategoryMutation } from '~/lib/redux/services/asset/category.services';
 import CategorySelect from '../CategorySelect';

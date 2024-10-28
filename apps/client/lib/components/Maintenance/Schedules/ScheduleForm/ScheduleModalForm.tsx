@@ -4,7 +4,7 @@ import { FormikProvider, useFormik } from 'formik';
 import React from 'react';
 import GenericModal from '~/lib/components/UI/Modal';
 import Button from '~/lib/components/UI/Button';
-import ModalHeading from '~/lib/components/UI/ModalHeading';
+import ModalHeading from '~/lib/components/UI/Modal/ModalHeading';
 import BackButton from '~/lib/components/UI/Button/BackButton';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useSession } from 'next-auth/react';

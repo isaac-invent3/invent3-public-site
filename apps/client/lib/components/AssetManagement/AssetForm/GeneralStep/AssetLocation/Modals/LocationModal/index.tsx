@@ -10,7 +10,7 @@ import {
   FormLocation,
 } from '~/lib/interfaces/asset.interfaces';
 import { Option } from '~/lib/interfaces/general.interfaces';
-import ModalHeading from '../../../../../../UI/ModalHeading';
+import ModalHeading from '../../../../../../UI/Modal/ModalHeading';
 import Facility from './Facility';
 import Building from './Building';
 import Floor from './Floor';

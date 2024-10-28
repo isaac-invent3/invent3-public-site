@@ -4,7 +4,7 @@ import { Field, FormikProvider, useFormik } from 'formik';
 import React from 'react';
 import GenericModal from '~/lib/components/UI/Modal';
 import Button from '~/lib/components/UI/Button';
-import ModalHeading from '../../../../../UI/ModalHeading';
+import ModalHeading from '../../../../../UI/Modal/ModalHeading';
 import { useCreateBuildingMutation } from '~/lib/redux/services/asset/location.services';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useSession } from 'next-auth/react';

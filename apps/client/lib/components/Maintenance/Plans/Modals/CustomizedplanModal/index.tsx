@@ -7,7 +7,7 @@ import Button from '~/lib/components/UI/Button';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useSession } from 'next-auth/react';
 import { useCreateMaintenancePlanMutation } from '~/lib/redux/services/maintenance/plan.services';
-import ModalHeading from '~/lib/components/UI/ModalHeading';
+import ModalHeading from '~/lib/components/UI/Modal/ModalHeading';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import Plan from './PlanType';
 import AssetSelect from '~/lib/components/Common/AssetSelect';

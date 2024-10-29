@@ -1,14 +1,14 @@
 import { Text, useDisclosure, VStack } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import React from 'react';
-import TaskFormModal from '~/lib/components/TaskManagement/Modals/TaskFormModal';
+import TaskFormModal from '~/lib/components/TaskManagement/Drawers/TaskFormDrawer';
 import GenericPopover from '~/lib/components/UI/GenericPopover';
 import GenericDeleteModal from '~/lib/components/UI/Modal/GenericDeleteModal';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { Task, taskFormDetails } from '~/lib/interfaces/task.interfaces';
 import { useDeleteTaskMutation } from '~/lib/redux/services/task/general.services';
 import { dateFormatter } from '~/lib/utils/Formatters';
-import TaskDetailModal from '../Modals/TaskDetailModal';
+import TaskDetailDrawer from '../Drawers/TaskDetailDrawer';
 import MarkTaskAsCompletedModal from '../Modals/MarkTaskAsCompletedModal';
 
 const PopoverAction = (task: Task, type: 'modal' | 'page') => {
@@ -98,7 +98,7 @@ const PopoverAction = (task: Task, type: 'modal' | 'page') => {
         />
       )}
       {isOpenViewDetails && (
-        <TaskDetailModal
+        <TaskDetailDrawer
           isOpen={isOpenViewDetails}
           onClose={onCloseViewDetails}
           data={task}

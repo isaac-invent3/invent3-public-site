@@ -1,14 +1,14 @@
 import { Flex, HStack, Text, useDisclosure, VStack } from '@chakra-ui/react';
 import { useField, useFormikContext } from 'formik';
 import React from 'react';
-import TaskFormModal from '~/lib/components/TaskManagement/Modals/TaskFormModal';
+import TaskFormModal from '~/lib/components/TaskManagement/Drawers/TaskFormDrawer';
 import ErrorMessage from '~/lib/components/UI/ErrorMessage';
 import AddButton from '~/lib/components/UI/Form/FormAddButton';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import { taskFormDetails } from '~/lib/interfaces/task.interfaces';
-import FormTaskListModal from './ListModal';
+import FormTaskListDrawer from './ListDrawer';
 import { useAppSelector } from '~/lib/redux/hooks';
-import TaskListView from '~/lib/components/TaskManagement/Modals/TaskListModal/TaskListView';
+import TaskListView from '~/lib/components/TaskManagement/Drawers/TaskListDrawer/TaskListView';
 
 interface DateProps {
   sectionMaxWidth: string;
@@ -83,7 +83,7 @@ const Tasks = (props: DateProps) => {
         handleData={handleAddTask}
         scheduleId={scheduleId}
       />
-      <FormTaskListModal
+      <FormTaskListDrawer
         isOpen={isOpenFormTaskList}
         onClose={onCloseFormTaskList}
         handleAddTask={handleAddTask}

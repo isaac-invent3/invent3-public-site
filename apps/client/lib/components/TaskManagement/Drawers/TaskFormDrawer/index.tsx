@@ -1,12 +1,15 @@
-/* eslint-disable no-unused-vars */
-import { Flex, HStack, useDisclosure, VStack } from '@chakra-ui/react';
-import { Field, FormikProvider, useFormik } from 'formik';
+import {
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  HStack,
+  useDisclosure,
+  VStack,
+} from '@chakra-ui/react';
+import { FormikProvider, useFormik } from 'formik';
 import React from 'react';
-import GenericModal from '~/lib/components/UI/Modal';
 import Button from '~/lib/components/UI/Button';
-import TextInput from '~/lib/components/UI/TextInput';
 import ModalHeading from '~/lib/components/UI/Modal/ModalHeading';
-import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import BackButton from '~/lib/components/UI/Button/BackButton';
 import { taskBaseSchema } from '~/lib/schemas/task.schema';
 import { taskFormDetails } from '~/lib/interfaces/task.interfaces';
@@ -15,21 +18,22 @@ import {
   useCreateTaskMutation,
   useUpdateTaskMutation,
 } from '~/lib/redux/services/task/general.services';
-import TaskSuccessModal from '../TaskSuccessModal';
+import TaskSuccessModal from '../../Modals/TaskSuccessModal';
 import { useSession } from 'next-auth/react';
 import moment from 'moment';
 import TaskDescription from '../../Common/TaskDescription';
 import DueDate from '../../Common/DueDate';
-import CompletionDate from '../../Common/CompletionDate';
 import CostEstimate from '../../Common/CostEstimate';
 import TaskAssignedTo from '../../Common/AssignedTo';
 import TaskTitle from '../../Common/TaskTitle';
 import TaskType from '../../Common/TaskType';
 import TaskPriority from '../../Common/TaskPriority';
+import GenericDrawer from '~/lib/components/UI/GenericDrawer';
 
 interface TaskFormModalProps {
   isOpen: boolean;
   onClose: () => void;
+  // eslint-disable-next-line no-unused-vars
   handleData?: (task: taskFormDetails) => void;
   data?: taskFormDetails;
   scheduleId?: number | null;
@@ -130,61 +134,58 @@ const TaskFormModal = (props: TaskFormModalProps) => {
 
   return (
     <>
-      <GenericModal
-        isOpen={isOpen}
-        onClose={onClose}
-        contentStyle={{ width: { md: '681px' }, rounded: 'none' }}
-      >
-        <FormikProvider value={formik}>
-          <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
-            <VStack
-              width="full"
-              px="32px"
-              pt="20px"
-              pb="32px"
-              spacing={0}
-              alignItems="flex-start"
-            >
-              <BackButton handleClick={onClose} customStyles={{ mb: '60px' }} />
-              <ModalHeading heading={data ? 'Edit Task' : 'Add New Task'} />
-
-              {/* Main Form Starts Here */}
-              <VStack width="full" spacing="27px" mt="60px">
-                <TaskTitle sectionMaxWidth="118px" spacing="73px" />
-                <TaskDescription sectionMaxWidth="118px" spacing="73px" />
-                <TaskType sectionMaxWidth="118px" spacing="73px" />
-                <TaskPriority sectionMaxWidth="118px" spacing="73px" />
-                <DueDate sectionMaxWidth="118px" spacing="73px" />
-                <CostEstimate sectionMaxWidth="118px" spacing="73px" />
-                <TaskAssignedTo sectionMaxWidth="118px" spacing="73px" />
-              </VStack>
-              {/* Main Form Ends Here */}
-              <HStack
+      <GenericDrawer isOpen={isOpen} onClose={onClose} maxWidth="681px">
+        <DrawerHeader p={0} m={0} px="32px" mt="20px" width="max-content">
+          <BackButton handleClick={onClose} customStyles={{ mb: '60px' }} />
+        </DrawerHeader>
+        <DrawerBody p={0} m={0}>
+          <FormikProvider value={formik}>
+            <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
+              <VStack
                 width="full"
-                spacing="16px"
-                justifyContent="flex-end"
-                mt="16px"
+                px="32px"
+                pb="32px"
+                spacing={0}
+                alignItems="flex-start"
               >
-                <Button
-                  variant="secondary"
-                  customStyles={{ width: '138px' }}
-                  handleClick={onClose}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  customStyles={{ width: '237px' }}
-                  isLoading={isCreating || isUpdating}
-                  loadingText={isCreating ? 'Creating...' : 'Updating...'}
-                >
-                  Save Task
-                </Button>
-              </HStack>
-            </VStack>
-          </form>
-        </FormikProvider>
-      </GenericModal>
+                <ModalHeading heading={data ? 'Edit Task' : 'Add New Task'} />
+
+                {/* Main Form Starts Here */}
+                <VStack width="full" spacing="27px" mt="60px">
+                  <TaskTitle sectionMaxWidth="118px" spacing="73px" />
+                  <TaskDescription sectionMaxWidth="118px" spacing="73px" />
+                  <TaskType sectionMaxWidth="118px" spacing="73px" />
+                  <TaskPriority sectionMaxWidth="118px" spacing="73px" />
+                  <DueDate sectionMaxWidth="118px" spacing="73px" />
+                  <CostEstimate sectionMaxWidth="118px" spacing="73px" />
+                  <TaskAssignedTo sectionMaxWidth="118px" spacing="73px" />
+                </VStack>
+                {/* Main Form Ends Here */}
+              </VStack>
+            </form>
+          </FormikProvider>
+        </DrawerBody>
+        <DrawerFooter pb="38px">
+          <HStack width="full" spacing="16px" justifyContent="flex-end">
+            <Button
+              variant="secondary"
+              customStyles={{ width: '138px' }}
+              handleClick={onClose}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              customStyles={{ width: '237px' }}
+              isLoading={isCreating || isUpdating}
+              loadingText={isCreating ? 'Creating...' : 'Updating...'}
+              handleClick={formik.handleSubmit}
+            >
+              Save Task
+            </Button>
+          </HStack>
+        </DrawerFooter>
+      </GenericDrawer>
       <TaskSuccessModal
         isOpen={isOpenSuccess}
         onClose={handleCloseSuccessModal}

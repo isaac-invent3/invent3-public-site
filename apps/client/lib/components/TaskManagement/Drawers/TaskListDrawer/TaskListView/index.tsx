@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import TaskListModal from '~/lib/components/TaskManagement/Modals/TaskListModal';
+import TaskListDrawer from '~/lib/components/TaskManagement/Drawers/TaskListDrawer';
 import TaskTable from '../../../TaskTable';
 import { useGetAllTasksByScheduleIdQuery } from '~/lib/redux/services/task/general.services';
 
@@ -20,7 +20,7 @@ const TaskListView = (props: TaskListViewProps) => {
   });
 
   return (
-    <TaskListModal
+    <TaskListDrawer
       isOpen={isOpen}
       onClose={onClose}
       showAddTaskButton={showPopover}
@@ -38,7 +38,7 @@ const TaskListView = (props: TaskListViewProps) => {
         isSortable={false}
         type="modal"
       />
-    </TaskListModal>
+    </TaskListDrawer>
   );
 };
 

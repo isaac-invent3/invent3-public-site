@@ -47,7 +47,7 @@ const PopoverAction = (ticket: Ticket) => {
 
   return (
     <>
-      <GenericPopover width="129px" placement="bottom-start">
+      <GenericPopover width="137px" placement="bottom-start">
         <VStack width="full" alignItems="flex-start" spacing="16px">
           <Text cursor="pointer" onClick={onOpenMarkCompleted}>
             Mark Completed

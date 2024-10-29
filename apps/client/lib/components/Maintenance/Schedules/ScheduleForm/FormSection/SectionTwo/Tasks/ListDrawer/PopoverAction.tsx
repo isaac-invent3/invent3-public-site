@@ -1,7 +1,7 @@
 import { Text, useDisclosure, VStack } from '@chakra-ui/react';
 import { useFormikContext } from 'formik';
 import React from 'react';
-import TaskFormModal from '~/lib/components/TaskManagement/Modals/TaskFormModal';
+import TaskFormModal from '~/lib/components/TaskManagement/Drawers/TaskFormDrawer';
 import GenericPopover from '~/lib/components/UI/GenericPopover';
 import GenericDeleteModal from '~/lib/components/UI/Modal/GenericDeleteModal';
 import { taskFormDetails } from '~/lib/interfaces/task.interfaces';

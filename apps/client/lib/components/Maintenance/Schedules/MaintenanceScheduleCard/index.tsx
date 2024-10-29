@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import moment from 'moment';
 import React from 'react';
-import TaskListView from '~/lib/components/TaskManagement/Modals/TaskListModal/TaskListView';
+import TaskListView from '~/lib/components/TaskManagement/Drawers/TaskListDrawer/TaskListView';
 import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
 import { MaintenanceColorCode } from '~/lib/utils/ColorCodes';
 import { dateFormatter } from '~/lib/utils/Formatters';

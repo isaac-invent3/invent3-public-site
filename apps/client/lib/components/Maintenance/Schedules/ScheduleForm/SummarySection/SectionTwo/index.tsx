@@ -1,7 +1,7 @@
 import { Flex, Grid, GridItem, HStack, Text, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { dateFormatter } from '~/lib/utils/Formatters';
-import TaskListTable from '../../FormSection/SectionTwo/Tasks/ListModal/TaskListTable';
+import TaskListTable from '../../FormSection/SectionTwo/Tasks/ListDrawer/TaskListTable';
 import TaskTable from '~/lib/components/TaskManagement/TaskTable';
 import { useGetAllTasksByScheduleIdQuery } from '~/lib/redux/services/task/general.services';
 import InfoCard from '~/lib/components/UI/InfoCard';

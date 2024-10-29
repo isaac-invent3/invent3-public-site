@@ -1,26 +1,15 @@
-import {
-  Drawer,
-  DrawerContent,
-  DrawerOverlay,
-  DrawerBody,
-  DrawerFooter,
-  DrawerHeader,
-  type ResponsiveValue,
-} from '@chakra-ui/react';
+import { Drawer, DrawerContent, DrawerOverlay } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
 interface IGenericDrawer {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
-  title: string;
-  size?: ResponsiveValue<string>;
-  header?: React.ReactNode;
-  footer?: React.ReactNode;
+  maxWidth?: string;
 }
 
 const GenericDrawer = (props: IGenericDrawer) => {
-  const { isOpen, onClose, children, header, footer, size = 'sm' } = props;
+  const { isOpen, onClose, children, maxWidth } = props;
   const [innerHeight, setH] = useState<number>(
     typeof window !== 'undefined' ? window.innerHeight : 100
   );
@@ -45,16 +34,19 @@ const GenericDrawer = (props: IGenericDrawer) => {
       placement="right"
       onClose={onClose}
       closeOnOverlayClick
-      size={size}
     >
       <DrawerOverlay
         height={`${innerHeight}px !important`}
         bgColor="#00000040"
       />
-      <DrawerContent height={`${innerHeight}px !important`} pb="30px">
-        <DrawerHeader>{header}</DrawerHeader>
-        <DrawerBody>{children}</DrawerBody>
-        <DrawerFooter>{footer}</DrawerFooter>
+      <DrawerContent
+        p={0}
+        m={0}
+        height={`${innerHeight}px !important`}
+        sx={{ maxWidth: maxWidth ?? 'full', width: '100%' }}
+        overflow="auto"
+      >
+        {children}
       </DrawerContent>
     </Drawer>
   );

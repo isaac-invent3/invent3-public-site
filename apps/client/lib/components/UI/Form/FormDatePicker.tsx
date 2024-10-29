@@ -44,6 +44,7 @@ const CustomDatePicker = (props: CustomDatePickerProps) => {
         name={name}
         type="text"
         label={label}
+        placeholder={type === 'date' ? 'DD/MM/YYYY' : 'DD/MM/YYYY HH:mm'}
         customStyle={{
           autoComplete: 'off',
           as: InputMask,

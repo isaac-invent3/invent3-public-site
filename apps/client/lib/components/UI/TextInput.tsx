@@ -25,6 +25,7 @@ interface TextInputProps {
   leftElementWidth?: string;
   isDisabled?: boolean;
   variant?: 'primary' | 'secondary';
+  placeholder?: string;
 }
 
 const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
@@ -35,6 +36,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       label,
       customStyle,
       value,
+      placeholder,
       customLeftElement,
       customRightElement,
       leftElementWidth,
@@ -121,7 +123,11 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
             transition="all 0.2s ease-in-out"
             zIndex={1}
           >
-            {label}
+            {placeholder
+              ? isFocused || inputValue || inputValue === 0
+                ? label
+                : placeholder
+              : label}
           </FormLabel>
 
           <Input

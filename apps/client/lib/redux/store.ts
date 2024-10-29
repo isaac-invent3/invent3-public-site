@@ -35,6 +35,8 @@ import { taskPrioritiesApi } from './services/task/priorities.services';
 import { taskTypeApi } from './services/task/types.services';
 import { ticketApi } from './services/ticket.services';
 import { assetTypeApi } from './services/asset/types.services';
+import { assetGroupContextApi } from './services/asset/groupContext.services';
+import { assetGroupTypeApi } from './services/asset/groupType.services';
 
 export const persistConfig = {
   key: 'root',
@@ -47,6 +49,8 @@ const rootReducer = combineReducers({
   [assetApi.reducerPath]: assetApi.reducer,
   [assetStatsApi.reducerPath]: assetStatsApi.reducer,
   [assetTypeApi.reducerPath]: assetTypeApi.reducer,
+  [assetGroupContextApi.reducerPath]: assetGroupContextApi.reducer,
+  [assetGroupTypeApi.reducerPath]: assetGroupTypeApi.reducer,
   [categoryApi.reducerPath]: categoryApi.reducer,
   [conditionApi.reducerPath]: conditionApi.reducer,
   [dashboardApi.reducerPath]: dashboardApi.reducer,
@@ -86,6 +90,8 @@ export const makeStore = () => {
         assetApi.middleware,
         assetStatsApi.middleware,
         assetTypeApi.middleware,
+        assetGroupContextApi.middleware,
+        assetGroupTypeApi.middleware,
         dashboardApi.middleware,
         depreciationApi.middleware,
         employeesApi.middleware,

@@ -67,12 +67,16 @@ const planSchema = (
       planScope: Yup.string().required('Plan Scope is Required'),
       ...(isDefaultPlan
         ? {
-            assetTypeId: Yup.number().required('Asset Type is Required'),
+            assetGroupTypeID: Yup.number().required('Asset Group is Required'),
+            assetGroupContextID: Yup.number().required(
+              'Group Context is Required'
+            ),
             assetId: Yup.number().nullable(),
           }
         : {
             assetId: Yup.number().required('Asset is Required'),
-            assetTypeId: Yup.number().nullable(),
+            assetGroupTypeID: Yup.number().nullable(),
+            assetGroupContextID: Yup.number().nullable(),
           }),
     }),
   });

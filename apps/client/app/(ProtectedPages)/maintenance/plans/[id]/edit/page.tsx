@@ -31,10 +31,12 @@ export default function Page({ params }: { params: { id: string } }) {
         frequencyId: plan?.frequencyId,
         frequencyName: plan?.frequencyName,
         owner: plan?.owner,
-        assetTypeName: plan?.assetTypeName,
+        assetGroupContextID: maintenance?.assetGroupContextID,
+        assetGroupTypeID: maintenance?.assetGroupTypeID,
+        assetGroupTypeName: plan?.groupTypeName,
+        assetGroupContextName: plan?.assetGroupContextName,
         assetName: '',
         assetId: plan?.assetId,
-        assetTypeId: plan?.assetTypeId,
         startDate: plan?.startDate
           ? dateFormatter(plan?.startDate, 'DD/MM/YYYY')
           : null,

@@ -74,7 +74,10 @@ const generatePlanDTO = (
     ownerId: formDetail.ownerId,
     ...(formDetail.assetId
       ? { assetId: formDetail.assetId }
-      : { assetTypeId: formDetail.assetTypeId }),
+      : {
+          assetGroupTypeID: formDetail.assetGroupTypeID,
+          assetGroupContextID: formDetail.assetGroupContextID,
+        }),
     startDate: moment(formDetail.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
     endDate: moment(formDetail.endDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
     planTypeId: formDetail.planTypeId,

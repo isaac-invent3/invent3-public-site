@@ -10,7 +10,6 @@ import {
 import { FormikProvider, useFormik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import AssetSelect from '~/lib/components/Common/AssetSelect';
-import AssetTypeSelect from '~/lib/components/Common/AssetTypeSelect';
 import FormActionButtons from '~/lib/components/UI/Form/FormActionButtons';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
@@ -24,8 +23,9 @@ import Owner from '../../Common/Owner';
 import StartDate from '../../Common/StartDate';
 import EndDate from '../../Common/EndDate';
 import { updatePlanForm } from '~/lib/redux/slices/MaintenanceSlice';
-import TemplateButton from '../../Common/TemplateButton';
 import moment from 'moment';
+import AssetGroupType from './AssetGroupType';
+import AssetGroupContext from './AssetGroupContext';
 
 interface PlanInfoStepProps {
   activeStep: number;
@@ -51,7 +51,8 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
     endDate: plan?.endDate ?? null,
     ownerId: plan?.ownerId ?? null,
     assetId: plan?.assetId ?? null,
-    assetTypeId: plan?.assetTypeId ?? null,
+    assetGroupTypeID: plan?.assetGroupTypeID ?? null,
+    assetGroupContextID: plan?.assetGroupContextID ?? null,
     cost: plan?.cost ?? null,
     planScope: plan?.planName
       ? plan?.assetId
@@ -77,7 +78,10 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
           ownerId: values.ownerId,
           ...(values.planScope === 'asset'
             ? { assetId: values.assetId }
-            : { assetTypeId: values.assetTypeId }),
+            : {
+                assetGroupTypeID: values.assetGroupTypeID,
+                assetGroupContextID: values.assetGroupContextID,
+              }),
           startDate: values.startDate,
           endDate: values.endDate,
           planTypeId: isDefaultPlan
@@ -95,8 +99,8 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
     { skip: !formik.values.assetId }
   );
   const { data: assetTypeData } = useGetAssetTypeByIdQuery(
-    formik.values.assetTypeId,
-    { skip: !formik.values.assetTypeId }
+    formik.values.assetGroupContextID,
+    { skip: !formik.values.assetGroupContextID }
   );
   const { data: assetCustomPlans, error } =
     useGetAssetCustomMaintenancePlanByAssetGuidQuery(assetData?.data?.guid, {
@@ -129,7 +133,7 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
   // Reset Proceed Flag to false if assetId and assetTypeId is changed
   useEffect(() => {
     setCanProceed(false);
-  }, [formik.values.assetId, formik.values.assetTypeId]);
+  }, [formik.values.assetId, formik.values.assetGroupContextID]);
 
   // Proceed if either the asset of asset type selected doesn't have a maintenance plan
   useEffect(() => {
@@ -228,7 +232,7 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
                         title={
                           formik.values.planScope === 'asset'
                             ? 'Asset'
-                            : 'Asset Type'
+                            : 'Group Type'
                         }
                         info="Add name that users can likely search with"
                         isRequired
@@ -244,21 +248,12 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
                         }
                       />
                     ) : (
-                      <AssetTypeSelect
-                        selectName="assetTypeId"
-                        selectTitle="Asset Type"
-                        defaultInputValue={plan?.assetTypeName}
-                        handleSelect={(option) =>
-                          dispatch(
-                            updatePlanForm({ assetTypeName: option.label })
-                          )
-                        }
-                      />
+                      <AssetGroupType />
                     )}
                   </HStack>
-                  <TemplateButton handleClick={() => {}}>
-                    Select from Template
-                  </TemplateButton>
+                  {formik.values.planScope === 'asset_group' && (
+                    <AssetGroupContext />
+                  )}
                 </SimpleGrid>
               )}
               <HStack width="full" spacing="40px">

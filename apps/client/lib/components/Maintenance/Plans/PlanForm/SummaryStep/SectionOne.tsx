@@ -7,8 +7,8 @@ const SectionOne = () => {
   const formDetails = useAppSelector((state) => state.maintenance);
   const {
     planName,
-    assetTypeName,
     assetName,
+    assetGroupTypeName,
     startDate,
     endDate,
     planTypeName,
@@ -28,8 +28,8 @@ const SectionOne = () => {
 
   const details = [
     {
-      label: `Asset ${planTypeName === 'Default' ? 'Type' : 'Name'}`,
-      value: planTypeName === 'Default' ? assetTypeName : assetName,
+      label: `Asset ${planTypeName === 'Default' ? 'Group' : 'Name'}`,
+      value: planTypeName === 'Default' ? assetGroupTypeName : assetName,
     },
     {
       label: 'Start Date',

@@ -25,6 +25,8 @@ interface MaintenancePlan {
   activeSchedules: number;
   openTasks: number;
   assetLocation: string;
+  groupTypeName: 'string' | null;
+  assetGroupContextName: 'string' | null;
 }
 
 interface MaintenanceSchedule {
@@ -119,8 +121,10 @@ interface PlanFormDetails {
   assetId: number | null;
   planTypeId: number | null;
   planTypeName: string | null;
-  assetTypeId: number | null;
-  assetTypeName: string | null;
+  assetGroupTypeID: number | null;
+  assetGroupContextID: number | null;
+  assetGroupTypeName: string | null;
+  assetGroupContextName: string | null;
   owner: string | null;
   ownerId: number | null;
   startDate: string | null;

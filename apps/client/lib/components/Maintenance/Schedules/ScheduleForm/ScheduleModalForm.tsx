@@ -130,7 +130,11 @@ const ScheduleModalForm = (props: ScheduleModalFormProps) => {
                   }
                 />
                 <ServiceLevelAgreement sectionMaxWidth="118px" spacing="40px" />
-                <Tasks sectionMaxWidth="118px" spacing="40px" />
+                <Tasks
+                  sectionMaxWidth="118px"
+                  spacing="40px"
+                  scheduleId={null}
+                />
               </VStack>
               {/* Main Form Ends Here */}
               <HStack

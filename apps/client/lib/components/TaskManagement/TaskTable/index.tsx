@@ -8,7 +8,7 @@ import {
   TaskPriorityColorCode,
 } from '~/lib/utils/ColorCodes';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
-import AssignedTo from '~/lib/components/Common/AssignedTo';
+import AssignedTo from '~/lib/components/Common/UserInfo';
 import PopoverAction from './PopoverAction';
 
 interface TaskTableProps {
@@ -106,7 +106,7 @@ const TaskTable = (props: TaskTableProps) => {
           enableSorting: false,
         }),
         columnHelper.accessor('assignedToEmployeeName', {
-          cell: (info) => AssignedTo(info.getValue()),
+          cell: (info) => <AssignedTo name={info.getValue()} />,
           header: 'Assigned To',
           enableSorting: isSortable,
         }),

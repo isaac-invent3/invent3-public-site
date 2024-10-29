@@ -73,13 +73,13 @@ const TicketManagement = () => {
 
           <TabPanels>
             <TabPanel>
-              <TicketTable />
+              <TicketTable type="new" />
             </TabPanel>
             <TabPanel>
-              <TicketTable />
+              <TicketTable type="scheduled" />
             </TabPanel>
             <TabPanel>
-              <TicketTable />
+              <TicketTable type="completed" />
             </TabPanel>
           </TabPanels>
         </Tabs>

@@ -4,13 +4,17 @@ import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import DataTable from '~/lib/components/UI/Table';
 import { TaskPriorityColorCode } from '~/lib/utils/ColorCodes';
 import { dateFormatter } from '~/lib/utils/Formatters';
-import AssignedTo from '~/lib/components/Common/AssignedTo';
 import PopoverAction from './PopoverAction';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
 import { useGetAllTicketsQuery } from '~/lib/redux/services/ticket.services';
 import { Flex } from '@chakra-ui/react';
+import UserInfo from '~/lib/components/Common/UserInfo';
 
-const TicketTable = () => {
+interface TicketTableProps {
+  type: 'new' | 'scheduled' | 'completed';
+}
+const TicketTable = (props: TicketTableProps) => {
+  const { type } = props;
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(25);
@@ -33,11 +37,15 @@ const TicketTable = () => {
           header: 'Title',
           enableSorting: false,
         }),
-        columnHelper.accessor('issueDescription', {
-          cell: (info) => info.getValue(),
-          header: 'Description',
-          enableSorting: false,
-        }),
+        ...(type === 'new'
+          ? [
+              columnHelper.accessor('issueDescription', {
+                cell: (info) => info.getValue(),
+                header: 'Description',
+                enableSorting: false,
+              }),
+            ]
+          : []),
         columnHelper.accessor('ticketId', {
           cell: () => {
             return (
@@ -49,22 +57,49 @@ const TicketTable = () => {
           },
           header: 'Priority',
         }),
+        ...(type !== 'new'
+          ? [
+              columnHelper.accessor('rowId', {
+                cell: (info) => info.getValue(),
+                header: 'No. Of Tasks',
+                enableSorting: false,
+              }),
+            ]
+          : []),
         columnHelper.accessor('issueReportDate', {
-          cell: (info) => dateFormatter(info.getValue(), 'DD/MM/YYYY'),
-          header: 'Requested Date',
+          cell: (info) => dateFormatter(info.getValue(), 'DD / MM / YYYY'),
+          header: 'Requested Dat e',
           enableSorting: false,
         }),
+        ...(type !== 'new'
+          ? [
+              columnHelper.accessor('resolutionDate', {
+                cell: (info) =>
+                  dateFormatter(info.getValue(), 'DD / MM / YYYY'),
+                header: 'Resolution Date',
+                enableSorting: false,
+              }),
+              columnHelper.accessor('resolvedBy', {
+                cell: (info) => <UserInfo name={info.getValue()} />,
+                header: 'Assigned To',
+                enableSorting: false,
+              }),
+            ]
+          : []),
         columnHelper.accessor('reportedBy', {
-          cell: (info) => AssignedTo(info.getValue()),
-          header: 'Assigned To',
+          cell: (info) => <UserInfo name={info.getValue()} />,
+          header: 'Requested By',
           enableSorting: true,
         }),
         columnHelper.accessor('rowId', {
-          cell: (info) => PopoverAction(info.row.original),
+          cell: (info) => (
+            <PopoverAction ticket={info.row.original} type={type} />
+          ),
           header: '',
           enableSorting: false,
         }),
       ];
+
       return baseColumns;
     },
     [[data?.data?.items]] //eslint-disable-line

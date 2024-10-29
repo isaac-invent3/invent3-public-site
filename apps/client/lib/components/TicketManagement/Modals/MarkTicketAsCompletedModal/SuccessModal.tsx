@@ -6,12 +6,11 @@ import GenericSuccessModal from '~/lib/components/UI/Modal/GenericSuccessModal';
 interface MarkAsCompletedSuccessModalProps {
   isOpen: boolean;
   onClose: () => void;
-  id: number;
 }
 const MarkAsCompletedSuccessModal = (
   props: MarkAsCompletedSuccessModalProps
 ) => {
-  const { isOpen, onClose, id } = props;
+  const { isOpen, onClose } = props;
   return (
     <GenericSuccessModal
       isOpen={isOpen}
@@ -21,11 +20,7 @@ const MarkAsCompletedSuccessModal = (
     >
       <VStack spacing="40px" width="full" mb="48px">
         <Text color="neutral.700" size="md" textAlign="center">
-          You have successfully marked Task{' '}
-          <Text as="span" fontWeight={800}>
-            {id}
-          </Text>{' '}
-          as completed
+          The ticket has been successfully marked as completed
         </Text>
         <Button customStyles={{ width: '193px' }} handleClick={onClose}>
           Continue

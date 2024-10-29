@@ -7,15 +7,15 @@ import AddButton from '~/lib/components/UI/Form/FormAddButton';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import { taskFormDetails } from '~/lib/interfaces/task.interfaces';
 import FormTaskListDrawer from './ListDrawer';
-import { useAppSelector } from '~/lib/redux/hooks';
 import TaskListView from '~/lib/components/TaskManagement/Drawers/TaskListDrawer/TaskListView';
 
 interface DateProps {
   sectionMaxWidth: string;
   spacing: string;
+  scheduleId: number | null;
 }
 const Tasks = (props: DateProps) => {
-  const { sectionMaxWidth, spacing } = props;
+  const { sectionMaxWidth, spacing, scheduleId } = props;
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -28,9 +28,7 @@ const Tasks = (props: DateProps) => {
     onOpen: onOpenFormTaskList,
     onClose: onCloseFormTaskList,
   } = useDisclosure();
-  const { scheduleId } = useAppSelector(
-    (state) => state.maintenance.scheduleForm
-  );
+
   const { setFieldValue, values } = useFormikContext<any>();
   // eslint-disable-next-line no-unused-vars
   const [field, meta, helpers] = useField('taskCount');

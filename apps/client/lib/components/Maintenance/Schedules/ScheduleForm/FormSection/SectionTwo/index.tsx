@@ -7,6 +7,7 @@ import Date from './Date';
 import ServiceLevelAgreement from './SLA';
 import Tasks from './Tasks';
 import Frequency from '~/lib/components/Maintenance/Common/Frequency';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 interface SectionTwoProps {
   descriptionHeight?: string;
@@ -15,6 +16,9 @@ interface SectionTwoProps {
 }
 const SectionTwo = (props: SectionTwoProps) => {
   const { descriptionHeight, minScheduleDate, maxScheduleDate } = props;
+  const { scheduleId } = useAppSelector(
+    (state) => state.maintenance.scheduleForm
+  );
   return (
     <VStack spacing="45px" width="full" alignItems="flex-start">
       <SimpleGrid
@@ -59,7 +63,7 @@ const SectionTwo = (props: SectionTwoProps) => {
         width="full"
         spacing="40px"
       >
-        <Tasks sectionMaxWidth="141px" spacing="41px" />
+        <Tasks sectionMaxWidth="141px" spacing="41px" scheduleId={scheduleId} />
       </SimpleGrid>
     </VStack>
   );

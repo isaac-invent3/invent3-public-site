@@ -7,6 +7,7 @@ import {
   AiOutlineFileImage,
   AiOutlineQuestion,
 } from 'react-icons/ai';
+import { Option } from '../interfaces/general.interfaces';
 
 const OPERATORS = {
   Equals: 1,
@@ -146,6 +147,25 @@ const planScopeOptions = [
   },
 ];
 
+const repeatOptions: Option[] = [
+  {
+    label: 'Daily',
+    value: 1,
+  },
+  {
+    label: 'Weekly',
+    value: 2,
+  },
+  {
+    label: 'Monthly',
+    value: 3,
+  },
+  {
+    label: 'Annually',
+    value: 4,
+  },
+];
+
 export {
   OPERATORS,
   FORM_ENUM,
@@ -156,4 +176,5 @@ export {
   yearOptions,
   monthOptions,
   planScopeOptions,
+  repeatOptions,
 };

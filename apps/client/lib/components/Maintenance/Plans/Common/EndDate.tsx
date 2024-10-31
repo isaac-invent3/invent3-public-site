@@ -1,7 +1,10 @@
-import { Flex, HStack } from '@chakra-ui/react';
+import { Flex, HStack, VStack } from '@chakra-ui/react';
+import { useField } from 'formik';
 import React from 'react';
-import CustomDatePicker from '~/lib/components/UI/Form/FormDatePicker';
+import ConditionalDateSelector from '~/lib/components/UI/DateTimeComponents/Common/ConditionalDateSelector';
+import ErrorMessage from '~/lib/components/UI/ErrorMessage';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
+import { dateFormatter } from '~/lib/utils/Formatters';
 
 interface EndDateProps {
   sectionMaxWidth: string;
@@ -10,6 +13,8 @@ interface EndDateProps {
 }
 const EndDate = (props: EndDateProps) => {
   const { sectionMaxWidth, spacing, minDate } = props;
+  // eslint-disable-next-line no-unused-vars
+  const [field, meta, helpers] = useField('endDate');
   return (
     <HStack width="full" alignItems="flex-start" spacing={spacing}>
       <Flex width="full" maxW={sectionMaxWidth}>
@@ -20,12 +25,17 @@ const EndDate = (props: EndDateProps) => {
         />
       </Flex>
 
-      <CustomDatePicker
-        name="endDate"
-        label="End Date"
-        type="date"
-        minDate={minDate}
-      />
+      <VStack width="full" spacing="4px" alignItems="flex-start">
+        <ConditionalDateSelector
+          handleSelectedDate={(date) => {
+            helpers.setValue(date ? dateFormatter(date, 'DD/MM/YYYY') : date);
+          }}
+          minDate={minDate}
+        />
+        {meta.touched && meta.error !== undefined && (
+          <ErrorMessage>{meta.error}</ErrorMessage>
+        )}
+      </VStack>
     </HStack>
   );
 };

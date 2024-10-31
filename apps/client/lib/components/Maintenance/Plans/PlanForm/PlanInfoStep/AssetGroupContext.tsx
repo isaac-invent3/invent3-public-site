@@ -1,22 +1,24 @@
 import { Flex, HStack } from '@chakra-ui/react';
+import { useFormikContext } from 'formik';
 import React, { useState } from 'react';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import {
-  useGetAllAssetGroupTypesQuery,
-  useSearchAssetGroupTypesMutation,
-} from '~/lib/redux/services/asset/groupType.services';
+import { useGetAllGroupContextRecordsByTypeIdQuery } from '~/lib/redux/services/asset/groupType.services';
 
 import { updatePlanForm } from '~/lib/redux/slices/MaintenanceSlice';
 
 const AssetGroupContext = () => {
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllAssetGroupTypesQuery({
-    pageSize: 25,
-    pageNumber,
-  });
-  const [searchAssetGroupType] = useSearchAssetGroupTypesMutation({});
+  const { values } = useFormikContext<any>();
+  const { data, isLoading } = useGetAllGroupContextRecordsByTypeIdQuery(
+    {
+      id: values?.assetGroupTypeID,
+      pageSize: 25,
+      pageNumber,
+    },
+    { skip: !values?.assetGroupTypeID }
+  );
   const { typeName } = useAppSelector(
     (state) => state.maintenance.scheduleForm
   );
@@ -34,10 +36,9 @@ const AssetGroupContext = () => {
         selectName="assetGroupContextID"
         selectTitle="Group Context"
         data={data}
-        labelKey="groupTypeName"
-        valueKey="groupTypeId"
+        labelKey="groupContextTypeName"
+        valueKey="groupContextID"
         defaultInputValue={typeName}
-        mutationFn={searchAssetGroupType}
         isLoading={isLoading}
         pageNumber={pageNumber}
         setPageNumber={setPageNumber}

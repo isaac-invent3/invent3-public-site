@@ -5,12 +5,19 @@ interface SectionInfoProps {
   title: string;
   info: string;
   isRequired: boolean;
+  maxWidth?: string;
 }
 
 const SectionInfo = (props: SectionInfoProps) => {
-  const { title, info, isRequired } = props;
+  const { title, info, isRequired, maxWidth } = props;
   return (
-    <VStack alignItems="flex-start" spacing="8px" width="full">
+    <VStack
+      alignItems="flex-start"
+      spacing="8px"
+      width="full"
+      maxWidth={maxWidth ?? 'full'}
+      flexShrink={0}
+    >
       <Text size="md" fontWeight={700} color="primary">
         {title}
         {isRequired && (

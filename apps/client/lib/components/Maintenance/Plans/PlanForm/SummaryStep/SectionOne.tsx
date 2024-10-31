@@ -37,7 +37,7 @@ const SectionOne = () => {
     },
     {
       label: 'End Date',
-      value: dateFormatter(endDate, 'Do MMM, YYYY', 'DD/MM/YYYY'),
+      value: dateFormatter(endDate, 'Do MMM, YYYY', 'DD/MM/YYYY') ?? 'N/A',
     },
     {
       label: 'No. Of Schedules',

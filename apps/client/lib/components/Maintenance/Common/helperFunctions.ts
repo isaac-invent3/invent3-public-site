@@ -79,7 +79,9 @@ const generatePlanDTO = (
           assetGroupContextID: formDetail.assetGroupContextID,
         }),
     startDate: moment(formDetail.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
-    endDate: moment(formDetail.endDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+    endDate: formDetail.endDate
+      ? moment(formDetail.endDate, 'DD/MM/YYYY').format('YYYY-MM-DD')
+      : null,
     planTypeId: formDetail.planTypeId,
     [`${type === 'create' ? 'createdBy' : 'lastModifiedBy'}`]: username,
   };

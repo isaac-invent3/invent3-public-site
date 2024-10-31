@@ -1,5 +1,4 @@
 import {
-  Box,
   Flex,
   HStack,
   SimpleGrid,
@@ -26,6 +25,7 @@ import { updatePlanForm } from '~/lib/redux/slices/MaintenanceSlice';
 import moment from 'moment';
 import AssetGroupType from './AssetGroupType';
 import AssetGroupContext from './AssetGroupContext';
+import RadioBox from '~/lib/components/UI/Radio/RadioBox';
 
 interface PlanInfoStepProps {
   activeStep: number;
@@ -40,9 +40,9 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
   const dispatch = useAppDispatch();
   const [isDefaultPlan, setIsDefaultPlan] = useState(false);
   const [canProceed, setCanProceed] = useState(false);
-  const [inputtedStartDate, setInputtedStartDate] = useState<
-    string | undefined
-  >(undefined);
+  const [inputtedStartDate, setInputtedStartDate] = useState<string | null>(
+    null
+  );
 
   const initialValues = {
     planName: plan?.planName ?? null,
@@ -68,7 +68,7 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
       isDefaultPlan,
       true,
       previousDay,
-      inputtedStartDate
+      inputtedStartDate ?? undefined
     ),
     enableReinitialize: true,
     onSubmit: async (values) => {
@@ -121,6 +121,7 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
 
   // Set if it is a default plan to be created or not based on the plan scope (Used for Schema validation)
   useEffect(() => {
+    setCanProceed(false);
     if (formik.values.planScope) {
       if (formik.values.planScope === 'asset') {
         setIsDefaultPlan(false);
@@ -133,10 +134,23 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
   // Reset Proceed Flag to false if assetId and assetTypeId is changed
   useEffect(() => {
     setCanProceed(false);
-  }, [formik.values.assetId, formik.values.assetGroupContextID]);
+  }, [formik.values.assetId]);
+
+  // Temporarily proceed if it's asset group until endpoint to validate is available
+  useEffect(() => {
+    if (formik.values.assetGroupContextID) {
+      setCanProceed(true);
+    }
+  }, [formik.values.assetGroupContextID]);
 
   // Proceed if either the asset of asset type selected doesn't have a maintenance plan
   useEffect(() => {
+    if (
+      formik.values.planScope === 'asset_group' &&
+      formik.values.assetGroupContextID
+    ) {
+      setCanProceed(true);
+    }
     if (assetCustomPlans || assetTypeData || error) {
       if (formik.values.planScope === 'asset') {
         if (error) {
@@ -158,7 +172,7 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
         }
       }
     }
-  }, [assetTypeData, error, assetCustomPlans]);
+  }, [assetTypeData, error, assetCustomPlans, formik.values.planScope]);
 
   return (
     <Flex
@@ -194,28 +208,12 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
                   <HStack spacing="73px">
                     {planScopeOptions.map((item, index) => (
                       <HStack key={index} spacing="16px">
-                        <Flex
-                          width="18px"
-                          height="18px"
-                          flexShrink={0}
-                          bgColor="neutral.300"
-                          rounded="full"
-                          justifyContent="center"
-                          alignItems="center"
-                          cursor="pointer"
-                          onClick={() =>
+                        <RadioBox
+                          handleClick={() =>
                             formik.setFieldValue('planScope', item.value)
                           }
-                        >
-                          {formik.values.planScope === item.value && (
-                            <Box
-                              width="10px"
-                              height="10px"
-                              rounded="full"
-                              bgColor="primary.500"
-                            />
-                          )}
-                        </Flex>
+                          isSelected={formik.values.planScope === item.value}
+                        />
                         <Text color="black" size="md">
                           {item.label}
                         </Text>
@@ -226,46 +224,45 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
               </SimpleGrid>
               {formik.values.planScope && (
                 <SimpleGrid columns={2} gap="40px" width="full">
-                  <HStack width="full" alignItems="flex-start" spacing="40px">
-                    <Flex width="full" maxW="141px">
-                      <SectionInfo
-                        title={
-                          formik.values.planScope === 'asset'
-                            ? 'Asset'
-                            : 'Group Type'
-                        }
-                        info="Add name that users can likely search with"
-                        isRequired
-                      />
-                    </Flex>
-                    {formik.values.planScope === 'asset' ? (
-                      <AssetSelect
-                        selectName="assetId"
-                        selectTitle="Asset"
-                        defaultInputValue={plan?.assetName}
-                        handleSelect={(option) =>
-                          dispatch(updatePlanForm({ assetName: option.label }))
-                        }
-                      />
-                    ) : (
-                      <AssetGroupType />
+                  <VStack width="full" spacing="36px">
+                    <HStack width="full" alignItems="flex-start" spacing="40px">
+                      <Flex width="full" maxW="141px">
+                        <SectionInfo
+                          title={
+                            formik.values.planScope === 'asset'
+                              ? 'Asset'
+                              : 'Group Type'
+                          }
+                          info="Add name that users can likely search with"
+                          isRequired
+                        />
+                      </Flex>
+                      {formik.values.planScope === 'asset' ? (
+                        <AssetSelect
+                          selectName="assetId"
+                          selectTitle="Asset"
+                          defaultInputValue={plan?.assetName}
+                          handleSelect={(option) =>
+                            dispatch(
+                              updatePlanForm({ assetName: option.label })
+                            )
+                          }
+                        />
+                      ) : (
+                        <AssetGroupType />
+                      )}
+                    </HStack>
+                    {formik.values.planScope === 'asset_group' && (
+                      <AssetGroupContext />
                     )}
-                  </HStack>
-                  {formik.values.planScope === 'asset_group' && (
-                    <AssetGroupContext />
-                  )}
+                  </VStack>
                 </SimpleGrid>
               )}
-              <HStack width="full" spacing="40px">
+              <SimpleGrid columns={2} gap="40px" width="full">
                 <PlanTitle sectionMaxWidth="141px" spacing="40px" />
-                <Owner
-                  sectionMaxWidth="141px"
-                  spacing="40px"
-                  defaultName={plan?.owner}
-                />
-              </HStack>
+              </SimpleGrid>
 
-              <HStack width="full" spacing="40px">
+              <SimpleGrid columns={2} gap="40px" width="full">
                 <StartDate
                   sectionMaxWidth="141px"
                   spacing="40px"
@@ -280,7 +277,14 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
                       : new Date()
                   }
                 />
-              </HStack>
+              </SimpleGrid>
+              <SimpleGrid columns={2} gap="40px" width="full">
+                <Owner
+                  sectionMaxWidth="141px"
+                  spacing="40px"
+                  defaultName={plan?.owner}
+                />
+              </SimpleGrid>
             </VStack>
           </VStack>
           <Flex width="full" mt="16px">

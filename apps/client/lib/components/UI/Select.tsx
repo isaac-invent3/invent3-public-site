@@ -14,14 +14,15 @@ import { ChevronDownIcon, InfoIcon } from '../CustomIcons';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 const DropdownIndicator = (props: any) => {
+  const { pb, ...rest } = props;
   return (
-    <components.DropdownIndicator {...props}>
+    <components.DropdownIndicator {...rest}>
       <Icon
         as={ChevronDownIcon}
         color="neutral.800"
         boxSize="16px"
         height="50px"
-        pb="12px"
+        pb={pb}
       />
     </components.DropdownIndicator>
   );
@@ -31,7 +32,9 @@ interface SelectInputProps {
   name: string;
   title: string;
   options: Option[];
+  selectedOption?: Option;
   isSearchable?: boolean;
+  showTitleAfterSelect?: boolean;
   width?: string | { [name: string]: string };
   isLoading?: boolean;
   showAsRelative?: boolean;
@@ -49,10 +52,12 @@ function SelectInput(props: SelectInputProps) {
     name,
     title,
     options,
+    selectedOption,
     isSearchable = false,
     width = 'full',
     isLoading,
     variant = 'primary',
+    showTitleAfterSelect = true,
     isAsync = false,
     defaultInputValue,
     handleSelect,
@@ -62,7 +67,7 @@ function SelectInput(props: SelectInputProps) {
   const [field, meta, helpers] = useField(name);
   const SelectComponent = isAsync ? AsyncSelect : Select;
   const [isFocused, setIsFocused] = useState(false);
-  const inputValue = meta.value;
+  const inputValue = meta.value || selectedOption;
   const handleFocus = () => setIsFocused(true);
   const handleBlur = () => {
     if (!inputValue) setIsFocused(false);
@@ -95,10 +100,10 @@ function SelectInput(props: SelectInputProps) {
   );
 
   useEffect(() => {
-    if (!meta.value) {
+    if (!inputValue) {
       setIsFocused(false);
     }
-  }, [meta.value]);
+  }, [inputValue]);
 
   return (
     <Box width={width} position="relative" height="full">
@@ -106,37 +111,39 @@ function SelectInput(props: SelectInputProps) {
         isInvalid={meta.touched && meta.error !== undefined}
         position="relative"
       >
-        <FormLabel
-          height="50px"
-          justifyContent="center"
-          display="flex"
-          alignItems="center"
-          position="absolute"
-          top={isFocused || inputValue ? '10px' : meta.error ? '40%' : '50%'}
-          transform={
-            isFocused || inputValue
-              ? 'translateY(-40%) scale(0.85)'
-              : 'translateY(-50%)'
-          }
-          transformOrigin="left top"
-          paddingLeft={isFocused || inputValue ? '20px' : '16px'}
-          fontSize={isFocused || inputValue ? '12px' : '14px'}
-          lineHeight={isFocused || inputValue ? '14.26px' : '16.63px'}
-          color={
-            isFocused
-              ? variant === 'primary'
-                ? 'neutral.600'
-                : 'neutral.800'
-              : variant === 'primary'
-                ? 'neutral.300'
-                : 'neutral.700'
-          }
-          pointerEvents="none"
-          transition="all 0.2s ease-in-out"
-          zIndex={1}
-        >
-          {title}
-        </FormLabel>
+        {showTitleAfterSelect && (
+          <FormLabel
+            height="50px"
+            justifyContent="center"
+            display="flex"
+            alignItems="center"
+            position="absolute"
+            top={isFocused || inputValue ? '10px' : meta.error ? '40%' : '50%'}
+            transform={
+              isFocused || inputValue
+                ? 'translateY(-40%) scale(0.85)'
+                : 'translateY(-50%)'
+            }
+            transformOrigin="left top"
+            paddingLeft={isFocused || inputValue ? '20px' : '16px'}
+            fontSize={isFocused || inputValue ? '12px' : '14px'}
+            lineHeight={isFocused || inputValue ? '14.26px' : '16.63px'}
+            color={
+              isFocused
+                ? variant === 'primary'
+                  ? 'neutral.600'
+                  : 'neutral.800'
+                : variant === 'primary'
+                  ? 'neutral.300'
+                  : 'neutral.700'
+            }
+            pointerEvents="none"
+            transition="all 0.2s ease-in-out"
+            zIndex={1}
+          >
+            {title}
+          </FormLabel>
+        )}
         <SelectComponent
           {...field}
           isSearchable={isSearchable}
@@ -147,6 +154,7 @@ function SelectInput(props: SelectInputProps) {
           onMenuScrollToBottom={handleOnMenuScrollToBottom}
           onFocus={handleFocus}
           onBlur={handleBlur}
+          placeholder={title}
           styles={{
             container: (provided) => ({
               ...provided,
@@ -158,7 +166,7 @@ function SelectInput(props: SelectInputProps) {
               borderRadius: '8px',
               fontSize: '14px',
               lineHeight: '17.07px',
-              paddingTop: isFocused || inputValue ? '10px' : '6px',
+              paddingTop: showTitleAfterSelect ? '10px' : '0px',
               ':focus-within': {
                 borderColor: 'transparent',
               },
@@ -193,7 +201,7 @@ function SelectInput(props: SelectInputProps) {
             }),
             placeholder: (provided) => ({
               ...provided,
-              display: 'none',
+              display: showTitleAfterSelect ? 'none' : 'flex',
             }),
             option: (provided) => ({
               ...provided,
@@ -219,9 +227,11 @@ function SelectInput(props: SelectInputProps) {
           }}
           defaultInputValue={defaultInputValue}
           value={
-            meta.value
-              ? options.find((option) => option.value === meta.value)
-              : null
+            selectedOption
+              ? selectedOption
+              : meta.value
+                ? options.find((option) => option.value === meta.value)
+                : null
           }
           onChange={(selectedOptions) => {
             if (selectedOptions) {
@@ -229,7 +239,14 @@ function SelectInput(props: SelectInputProps) {
               helpers.setValue((selectedOptions as Option).value);
             }
           }}
-          components={{ DropdownIndicator }}
+          components={{
+            DropdownIndicator: (props) => (
+              <DropdownIndicator
+                {...props}
+                pb={showTitleAfterSelect ? '12px' : '0px'}
+              />
+            ),
+          }}
         />
 
         <FormErrorMessage

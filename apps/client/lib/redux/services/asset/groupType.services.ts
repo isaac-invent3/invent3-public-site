@@ -8,7 +8,7 @@ const getHeaders = () => ({
 export const assetGroupTypeApi = createApi({
   reducerPath: 'assetGroupTypeApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['allAssetGroupTypes'],
+  tagTypes: ['allAssetGroupTypes', 'allAssetGroupContextRecords'],
   endpoints: (builder) => ({
     getAllAssetGroupTypes: builder.query({
       query: (data: any) => ({
@@ -17,6 +17,17 @@ export const assetGroupTypeApi = createApi({
         headers: getHeaders(),
       }),
       providesTags: ['allAssetGroupTypes'],
+    }),
+    getAllGroupContextRecordsByTypeId: builder.query({
+      query: ({ id, ...data }) => ({
+        url: generateQueryStr(
+          `/AssetGroupTypes/GetGroupTypeContextRecords/${id}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allAssetGroupContextRecords'],
     }),
     searchAssetGroupTypes: builder.mutation({
       query: (body: any) => ({
@@ -31,5 +42,6 @@ export const assetGroupTypeApi = createApi({
 
 export const {
   useGetAllAssetGroupTypesQuery,
+  useGetAllGroupContextRecordsByTypeIdQuery,
   useSearchAssetGroupTypesMutation,
 } = assetGroupTypeApi;

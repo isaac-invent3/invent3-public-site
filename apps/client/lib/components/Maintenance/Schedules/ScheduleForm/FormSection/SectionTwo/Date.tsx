@@ -1,16 +1,28 @@
-import { Flex, HStack } from '@chakra-ui/react';
+import { Flex, HStack, VStack } from '@chakra-ui/react';
+import { useField } from 'formik';
 import React from 'react';
-import CustomDatePicker from '~/lib/components/UI/Form/FormDatePicker';
+import DateTimeButtons from '~/lib/components/UI/DateTimeComponents/DateTimeButtons';
+import ErrorMessage from '~/lib/components/UI/ErrorMessage';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
+import InfoCard from '~/lib/components/UI/InfoCard';
 
 interface DateProps {
   sectionMaxWidth: string;
   spacing: string;
   minScheduleDate: Date;
   maxScheduleDate: Date | undefined;
+  buttonVariant: 'solid' | 'outline';
 }
 const Date = (props: DateProps) => {
-  const { sectionMaxWidth, spacing, minScheduleDate, maxScheduleDate } = props;
+  // eslint-disable-next-line no-unused-vars
+  const [field, meta, helpers] = useField('scheduledDate');
+  const {
+    sectionMaxWidth,
+    spacing,
+    minScheduleDate,
+    maxScheduleDate,
+    buttonVariant,
+  } = props;
   return (
     <HStack width="full" alignItems="flex-start" spacing={spacing}>
       <Flex width="full" maxW={sectionMaxWidth}>
@@ -20,13 +32,23 @@ const Date = (props: DateProps) => {
           isRequired
         />
       </Flex>
-      <CustomDatePicker
-        name="scheduledDate"
-        label="Schedule Date"
-        type="datetime"
-        minDate={minScheduleDate}
-        maxDate={maxScheduleDate}
-      />
+      <VStack width="full" spacing="12px" alignItems="flex-start">
+        <DateTimeButtons
+          showRepeat={false}
+          buttonVariant={buttonVariant}
+          includeTime={true}
+          minDate={minScheduleDate}
+          maxDate={maxScheduleDate}
+          handleDateTimeSelect={(dateTime) => helpers.setValue(dateTime)}
+        />
+        <InfoCard
+          infoText="Start Date has to be within specified Plan Info Date"
+          customStyle={{ width: 'full' }}
+        />
+        {meta.touched && meta.error !== undefined && (
+          <ErrorMessage>{meta.error}</ErrorMessage>
+        )}
+      </VStack>
     </HStack>
   );
 };

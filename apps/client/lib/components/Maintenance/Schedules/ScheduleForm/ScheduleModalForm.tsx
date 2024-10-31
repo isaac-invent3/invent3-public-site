@@ -128,6 +128,7 @@ const ScheduleModalForm = (props: ScheduleModalFormProps) => {
                   maxScheduleDate={
                     endDate ? moment(endDate).toDate() : undefined
                   }
+                  buttonVariant="solid"
                 />
                 <ServiceLevelAgreement sectionMaxWidth="118px" spacing="40px" />
                 <Tasks

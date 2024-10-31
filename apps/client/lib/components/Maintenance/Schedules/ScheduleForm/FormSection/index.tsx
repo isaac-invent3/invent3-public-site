@@ -118,6 +118,7 @@ const FormSection = (props: FormSectionProps) => {
           >
             <SectionOne />
             <SectionTwo
+              dateTimeButtonVariant="solid"
               minScheduleDate={moment(
                 formDetails?.maintenancePlanInfo?.startDate ?? moment()
               ).toDate()}

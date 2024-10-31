@@ -14,7 +14,7 @@ interface BuildingSelectProps {
   selectTitle: string;
   labelKey: string | string[];
   valueKey: string;
-  mutationFn: any;
+  mutationFn?: any;
   pageNumber: number;
   defaultInputValue?: string | null;
   setPageNumber: React.Dispatch<React.SetStateAction<number>>;
@@ -117,7 +117,7 @@ const GenericAsyncSelect = (props: BuildingSelectProps) => {
       isLoading={isLoading}
       defaultInputValue={defaultInputValue ?? undefined}
       callBackFunction={(inputValue: string) => handleSearch(inputValue)}
-      isAsync
+      isAsync={mutationFn ? true : false}
       handleOnMenuScrollToBottom={handlePagination}
       isSearchable
     />

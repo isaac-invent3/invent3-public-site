@@ -45,4 +45,18 @@ interface GeoJSONFeature {
   };
 }
 
-export type { Option, SearchResponse, SearchCriterion, GeoJSONFeature };
+interface FrequencyInfo {
+  interval: number;
+  repeat: Option;
+  startDate: string | null;
+  endDate: string | null;
+  repeatIntervals: (string | number)[];
+}
+
+export type {
+  Option,
+  SearchResponse,
+  SearchCriterion,
+  GeoJSONFeature,
+  FrequencyInfo,
+};

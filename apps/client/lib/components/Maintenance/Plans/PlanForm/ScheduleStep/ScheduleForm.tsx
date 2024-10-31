@@ -117,11 +117,6 @@ const ScheduleForm = (props: ScheduleFormProps) => {
       formik.values.frequencyId &&
       formDetails.frequencyName
     ) {
-      console.log({
-        frequency: formDetails.frequencyName,
-        scheduleDate: formik.values.scheduledDate,
-        endDate: planDetails.endDate,
-      });
       const hasAnInstance = validateFrequencyInstance(
         formDetails.frequencyName,
         formik.values.scheduledDate,
@@ -158,6 +153,7 @@ const ScheduleForm = (props: ScheduleFormProps) => {
           >
             <SectionTwo
               descriptionHeight="83px"
+              dateTimeButtonVariant="outline"
               minScheduleDate={(planDetails.startDate
                 ? moment(planDetails.startDate, 'DD/MM/YYYY')
                 : moment()

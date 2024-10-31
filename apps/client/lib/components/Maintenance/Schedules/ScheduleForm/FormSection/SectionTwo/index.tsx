@@ -13,9 +13,15 @@ interface SectionTwoProps {
   descriptionHeight?: string;
   minScheduleDate: Date;
   maxScheduleDate: Date | undefined;
+  dateTimeButtonVariant: 'solid' | 'outline';
 }
 const SectionTwo = (props: SectionTwoProps) => {
-  const { descriptionHeight, minScheduleDate, maxScheduleDate } = props;
+  const {
+    descriptionHeight,
+    minScheduleDate,
+    maxScheduleDate,
+    dateTimeButtonVariant,
+  } = props;
   const { scheduleId } = useAppSelector(
     (state) => state.maintenance.scheduleForm
   );
@@ -54,6 +60,7 @@ const SectionTwo = (props: SectionTwoProps) => {
           spacing="41px"
           minScheduleDate={minScheduleDate}
           maxScheduleDate={maxScheduleDate}
+          buttonVariant={dateTimeButtonVariant}
         />
         <ServiceLevelAgreement sectionMaxWidth="130px" spacing="56px" />
       </SimpleGrid>

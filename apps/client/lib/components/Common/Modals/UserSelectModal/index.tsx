@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { HStack, VStack } from '@chakra-ui/react';
+import { HStack, ModalBody, VStack } from '@chakra-ui/react';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import GenericModal from '~/lib/components/UI/Modal';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
@@ -41,53 +41,55 @@ const UserSelectModal = (props: UserSelectModalProps) => {
       onClose={onClose}
       contentStyle={{ width: { md: '526px' } }}
     >
-      <FormikProvider value={formik}>
-        <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
-          <VStack
-            width="full"
-            spacing="79px"
-            alignItems="flex-end"
-            pl="32px"
-            pr="50px"
-            pt="56px"
-            pb="32px"
-          >
-            <HStack
+      <ModalBody p={0} m={0} width="full">
+        <FormikProvider value={formik}>
+          <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
+            <VStack
               width="full"
-              justifyContent="space-between"
-              alignItems="flex-start"
+              spacing="79px"
+              alignItems="flex-end"
+              pl="32px"
+              pr="50px"
+              pt="56px"
+              pb="32px"
             >
-              <SectionInfo
-                title="Assign"
-                info={
-                  sectionInfoText ??
-                  'Add name that users can likely search with'
-                }
-                isRequired={false}
-                maxWidth="125px"
-              />
-              <EmployeeSelect
-                selectName="assignee"
-                selectTitle="Enter User"
-                handleSelect={(option) => setSelectedUser(option)}
-                showTitleAfterSelect={false}
-              />
-            </HStack>
-            <HStack spacing="16px">
-              <Button
-                variant="secondary"
-                customStyles={{ width: '116px' }}
-                handleClick={onClose}
+              <HStack
+                width="full"
+                justifyContent="space-between"
+                alignItems="flex-start"
               >
-                Cancel
-              </Button>
-              <Button customStyles={{ width: '116px' }} type="submit">
-                Assign
-              </Button>
-            </HStack>
-          </VStack>
-        </form>
-      </FormikProvider>
+                <SectionInfo
+                  title="Assign"
+                  info={
+                    sectionInfoText ??
+                    'Add name that users can likely search with'
+                  }
+                  isRequired={false}
+                  maxWidth="125px"
+                />
+                <EmployeeSelect
+                  selectName="assignee"
+                  selectTitle="Enter User"
+                  handleSelect={(option) => setSelectedUser(option)}
+                  showTitleAfterSelect={false}
+                />
+              </HStack>
+              <HStack spacing="16px">
+                <Button
+                  variant="secondary"
+                  customStyles={{ width: '116px' }}
+                  handleClick={onClose}
+                >
+                  Cancel
+                </Button>
+                <Button customStyles={{ width: '116px' }} type="submit">
+                  Assign
+                </Button>
+              </HStack>
+            </VStack>
+          </form>
+        </FormikProvider>
+      </ModalBody>
     </GenericModal>
   );
 };

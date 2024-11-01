@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { HStack, VStack } from '@chakra-ui/react';
+import { HStack, ModalBody, VStack } from '@chakra-ui/react';
 import { Field, FormikProvider, useFormik } from 'formik';
 import React from 'react';
 import GenericModal from '~/lib/components/UI/Modal';
@@ -46,46 +46,48 @@ const AisleModal = (props: AisleModalProps) => {
       onClose={onClose}
       contentStyle={{ width: { sm: '450px' } }}
     >
-      <FormikProvider value={formik}>
-        <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
-          <VStack width="full" spacing="32px" p="40px">
-            <ModalHeading
-              heading="Add New Aisle"
-              subheading="Add a new aisle that is not on the system yet"
-            />
+      <ModalBody p={0} m={0} width="full">
+        <FormikProvider value={formik}>
+          <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
+            <VStack width="full" spacing="32px" p="40px">
+              <ModalHeading
+                heading="Add New Aisle"
+                subheading="Add a new aisle that is not on the system yet"
+              />
 
-            {/* Main Form Starts Here */}
-            <VStack width="full" spacing="16px">
-              <RoomSelect type="general" />
-              <Field
-                as={TextInput}
-                name="aisleName"
-                type="text"
-                label="Aisle Name"
-              />
-              <Field
-                as={TextInput}
-                name="aisleRef"
-                type="text"
-                label="Aisle Reference"
-              />
+              {/* Main Form Starts Here */}
+              <VStack width="full" spacing="16px">
+                <RoomSelect type="general" />
+                <Field
+                  as={TextInput}
+                  name="aisleName"
+                  type="text"
+                  label="Aisle Name"
+                />
+                <Field
+                  as={TextInput}
+                  name="aisleRef"
+                  type="text"
+                  label="Aisle Reference"
+                />
+              </VStack>
+              {/* Main Form Ends Here */}
+              <HStack width="full" spacing="24px">
+                <Button
+                  variant="secondary"
+                  customStyles={{ width: '96px' }}
+                  handleClick={onClose}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" isLoading={isLoading}>
+                  Add Aisle
+                </Button>
+              </HStack>
             </VStack>
-            {/* Main Form Ends Here */}
-            <HStack width="full" spacing="24px">
-              <Button
-                variant="secondary"
-                customStyles={{ width: '96px' }}
-                handleClick={onClose}
-              >
-                Cancel
-              </Button>
-              <Button type="submit" isLoading={isLoading}>
-                Add Aisle
-              </Button>
-            </HStack>
-          </VStack>
-        </form>
-      </FormikProvider>
+          </form>
+        </FormikProvider>
+      </ModalBody>
     </GenericModal>
   );
 };

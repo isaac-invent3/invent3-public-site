@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { HStack, VStack } from '@chakra-ui/react';
+import { HStack, ModalBody, VStack } from '@chakra-ui/react';
 import { Field, FormikProvider, useFormik } from 'formik';
 import React from 'react';
 import GenericModal from '~/lib/components/UI/Modal';
@@ -46,46 +46,48 @@ const FloorModal = (props: FloorModalProps) => {
       onClose={onClose}
       contentStyle={{ width: { sm: '450px' } }}
     >
-      <FormikProvider value={formik}>
-        <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
-          <VStack width="full" spacing="32px" p="40px">
-            <ModalHeading
-              heading="Add New Floor"
-              subheading="Add a new floor that is not on the system yet"
-            />
+      <ModalBody p={0} m={0} width="full">
+        <FormikProvider value={formik}>
+          <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
+            <VStack width="full" spacing="32px" p="40px">
+              <ModalHeading
+                heading="Add New Floor"
+                subheading="Add a new floor that is not on the system yet"
+              />
 
-            {/* Main Form Starts Here */}
-            <VStack width="full" spacing="16px">
-              <BuildingSelect type="general" />
-              <Field
-                as={TextInput}
-                name="floorName"
-                type="text"
-                label="Floor Name"
-              />
-              <Field
-                as={TextInput}
-                name="floorRef"
-                type="text"
-                label="Floor Reference"
-              />
+              {/* Main Form Starts Here */}
+              <VStack width="full" spacing="16px">
+                <BuildingSelect type="general" />
+                <Field
+                  as={TextInput}
+                  name="floorName"
+                  type="text"
+                  label="Floor Name"
+                />
+                <Field
+                  as={TextInput}
+                  name="floorRef"
+                  type="text"
+                  label="Floor Reference"
+                />
+              </VStack>
+              {/* Main Form Ends Here */}
+              <HStack width="full" spacing="24px">
+                <Button
+                  variant="secondary"
+                  customStyles={{ width: '96px' }}
+                  handleClick={onClose}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" isLoading={isLoading}>
+                  Add Floor
+                </Button>
+              </HStack>
             </VStack>
-            {/* Main Form Ends Here */}
-            <HStack width="full" spacing="24px">
-              <Button
-                variant="secondary"
-                customStyles={{ width: '96px' }}
-                handleClick={onClose}
-              >
-                Cancel
-              </Button>
-              <Button type="submit" isLoading={isLoading}>
-                Add Floor
-              </Button>
-            </HStack>
-          </VStack>
-        </form>
-      </FormikProvider>
+          </form>
+        </FormikProvider>
+      </ModalBody>
     </GenericModal>
   );
 };

@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Flex, HStack, VStack } from '@chakra-ui/react';
+import { Flex, HStack, ModalBody, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 import React, { useState } from 'react';
 import GenericModal from '~/lib/components/UI/Modal';
@@ -146,89 +146,91 @@ const LocationModal = (props: LocationModalProps) => {
       onClose={onClose}
       contentStyle={{ width: { md: '605px' } }}
     >
-      <FormikProvider value={formik}>
-        <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
-          <VStack width="full" spacing="32px" p="40px">
-            <ModalHeading
-              heading="Add Location"
-              subheading=" You are required to add atleast 4 levels for the asset location"
-            />
+      <ModalBody p={0} m={0} width="full">
+        <FormikProvider value={formik}>
+          <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
+            <VStack width="full" spacing="32px" p="40px">
+              <ModalHeading
+                heading="Add Location"
+                subheading=" You are required to add atleast 4 levels for the asset location"
+              />
 
-            {/* Main Form Starts Here */}
-            <VStack width="full" spacing="16px">
-              <HStack width="full" alignItems="flex-start" spacing="8px">
-                <CountrySelect
-                  handleSelect={(option) => {
-                    setSelectedCountry(option.value as number);
-                    handleReadableLocation(option, 'country');
-                  }}
-                />
-                <StateSelect
-                  countryId={selectedCountry}
-                  handleSelect={(option) => {
-                    setSelectedState(option.value as number);
-                    handleReadableLocation(option, 'state');
-                  }}
-                />
-                <LGASelect
-                  stateId={selectedState}
-                  handleSelect={(option) =>
-                    handleReadableLocation(option, 'lga')
-                  }
-                />
-              </HStack>
-              <HStack width="full" spacing="16px">
-                <Facility handleReadableLocation={handleReadableLocation} />
-                <Building
-                  handleReadableLocation={handleReadableLocation}
-                  facilityId={localLocation.facility.value}
-                />
-              </HStack>
-              <HStack width="full" spacing="16px">
-                <Floor
-                  handleReadableLocation={handleReadableLocation}
-                  buildingId={localLocation.building.value}
-                />
-                <Department
-                  handleReadableLocation={handleReadableLocation}
-                  floorId={localLocation.floor.value}
-                />
-              </HStack>
-              <HStack width="full" spacing="16px">
-                <Room
-                  handleReadableLocation={handleReadableLocation}
-                  departmentId={localLocation.department.value}
-                />
-                <Aisle
-                  handleReadableLocation={handleReadableLocation}
-                  roomId={localLocation.room.value}
-                />
-              </HStack>
-              <HStack width="full" spacing="16px">
-                <Flex width="50%">
-                  <Shelf
-                    handleReadableLocation={handleReadableLocation}
-                    aisleId={localLocation.aisle.value}
+              {/* Main Form Starts Here */}
+              <VStack width="full" spacing="16px">
+                <HStack width="full" alignItems="flex-start" spacing="8px">
+                  <CountrySelect
+                    handleSelect={(option) => {
+                      setSelectedCountry(option.value as number);
+                      handleReadableLocation(option, 'country');
+                    }}
                   />
-                </Flex>
-              </HStack>
+                  <StateSelect
+                    countryId={selectedCountry}
+                    handleSelect={(option) => {
+                      setSelectedState(option.value as number);
+                      handleReadableLocation(option, 'state');
+                    }}
+                  />
+                  <LGASelect
+                    stateId={selectedState}
+                    handleSelect={(option) =>
+                      handleReadableLocation(option, 'lga')
+                    }
+                  />
+                </HStack>
+                <HStack width="full" spacing="16px">
+                  <Facility handleReadableLocation={handleReadableLocation} />
+                  <Building
+                    handleReadableLocation={handleReadableLocation}
+                    facilityId={localLocation.facility.value}
+                  />
+                </HStack>
+                <HStack width="full" spacing="16px">
+                  <Floor
+                    handleReadableLocation={handleReadableLocation}
+                    buildingId={localLocation.building.value}
+                  />
+                  <Department
+                    handleReadableLocation={handleReadableLocation}
+                    floorId={localLocation.floor.value}
+                  />
+                </HStack>
+                <HStack width="full" spacing="16px">
+                  <Room
+                    handleReadableLocation={handleReadableLocation}
+                    departmentId={localLocation.department.value}
+                  />
+                  <Aisle
+                    handleReadableLocation={handleReadableLocation}
+                    roomId={localLocation.room.value}
+                  />
+                </HStack>
+                <HStack width="full" spacing="16px">
+                  <Flex width="50%">
+                    <Shelf
+                      handleReadableLocation={handleReadableLocation}
+                      aisleId={localLocation.aisle.value}
+                    />
+                  </Flex>
+                </HStack>
+              </VStack>
+              {/* Main Form Ends Here */}
+              <Flex width="full" justifyContent="flex-end">
+                <HStack width="370px" spacing="24px">
+                  <Button
+                    variant="secondary"
+                    customStyles={{ width: '96px' }}
+                    handleClick={onClose}
+                  >
+                    Cancel
+                  </Button>
+                  <Button type="submit">Add Location</Button>
+                </HStack>
+              </Flex>
             </VStack>
-            {/* Main Form Ends Here */}
-            <Flex width="full" justifyContent="flex-end">
-              <HStack width="370px" spacing="24px">
-                <Button
-                  variant="secondary"
-                  customStyles={{ width: '96px' }}
-                  handleClick={onClose}
-                >
-                  Cancel
-                </Button>
-                <Button type="submit">Add Location</Button>
-              </HStack>
-            </Flex>
-          </VStack>
-        </form>
-      </FormikProvider>
+          </form>
+        </FormikProvider>
+      </ModalBody>
     </GenericModal>
   );
 };

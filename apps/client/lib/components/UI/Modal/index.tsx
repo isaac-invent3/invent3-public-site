@@ -1,11 +1,10 @@
-import { Modal, ModalOverlay, ModalContent, ModalBody } from '@chakra-ui/react';
+import { Modal, ModalOverlay, ModalContent } from '@chakra-ui/react';
 
 interface IGenericModal {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
   contentStyle?: { [name: string]: unknown };
-  customStyle?: { [name: string]: unknown };
   mainModalStyle?: { [name: string]: unknown };
 }
 function GenericModal({
@@ -13,7 +12,6 @@ function GenericModal({
   onClose,
   children,
   contentStyle,
-  customStyle,
   mainModalStyle,
 }: IGenericModal) {
   return (
@@ -36,9 +34,7 @@ function GenericModal({
         m={0}
         {...contentStyle}
       >
-        <ModalBody p={0} m={0} width="full" {...customStyle}>
-          {children}
-        </ModalBody>
+        {children}
       </ModalContent>
     </Modal>
   );

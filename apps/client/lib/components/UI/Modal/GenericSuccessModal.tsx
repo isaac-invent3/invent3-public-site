@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import GenericModal from '../Modal';
-import { Heading, Image, Text, VStack } from '@chakra-ui/react';
+import { Heading, Image, ModalBody, Text, VStack } from '@chakra-ui/react';
 
 interface GenericSuccessModalProps {
   isOpen: boolean;
@@ -55,56 +55,58 @@ const GenericSuccessModal = (props: GenericSuccessModalProps) => {
       }}
       contentStyle={{ width: { lg: '526px' }, ...customStyle }}
     >
-      <VStack
-        spacing="48px"
-        width="full"
-        pb={{ lg: '40px' }}
-        px="74px"
-        {...contentStyle}
-      >
-        {showRibbon && (
-          <Image
-            src="/success-ribbon.gif"
-            width="290px"
-            minH="full"
-            position="absolute"
-          />
-        )}
-        <VStack width="full" spacing="24px" pt={{ lg: '48px' }}>
-          <VStack width="60px" align="center" position="relative">
-            <video
-              ref={checkVideoRef}
-              style={{ display: 'block' }}
-              src="/success-check.webm"
-              playsInline
-              muted
-              autoPlay
+      <ModalBody p={0} m={0} width="full">
+        <VStack
+          spacing="48px"
+          width="full"
+          pb={{ lg: '40px' }}
+          px="74px"
+          {...contentStyle}
+        >
+          {showRibbon && (
+            <Image
+              src="/success-ribbon.gif"
+              width="290px"
+              minH="full"
+              position="absolute"
             />
-          </VStack>
-          <VStack spacing="8px" width="full">
-            <Heading
-              fontSize="32px"
-              lineHeight="38.02px"
-              fontWeight={800}
-              color="primary.main"
-              textAlign="center"
-            >
-              {headingText ?? 'Successful!'}
-            </Heading>
-            {successText && (
-              <Text
-                size="md"
-                color="neutral.600"
+          )}
+          <VStack width="full" spacing="24px" pt={{ lg: '48px' }}>
+            <VStack width="60px" align="center" position="relative">
+              <video
+                ref={checkVideoRef}
+                style={{ display: 'block' }}
+                src="/success-check.webm"
+                playsInline
+                muted
+                autoPlay
+              />
+            </VStack>
+            <VStack spacing="8px" width="full">
+              <Heading
+                fontSize="32px"
+                lineHeight="38.02px"
+                fontWeight={800}
+                color="primary.main"
                 textAlign="center"
-                maxW="306px"
               >
-                {successText}
-              </Text>
-            )}
+                {headingText ?? 'Successful!'}
+              </Heading>
+              {successText && (
+                <Text
+                  size="md"
+                  color="neutral.600"
+                  textAlign="center"
+                  maxW="306px"
+                >
+                  {successText}
+                </Text>
+              )}
+            </VStack>
           </VStack>
+          {children}
         </VStack>
-        {children}
-      </VStack>
+      </ModalBody>
     </GenericModal>
   );
 };

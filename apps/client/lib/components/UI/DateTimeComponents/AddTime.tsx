@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import GenericModal from '../Modal';
-import { HStack, VStack } from '@chakra-ui/react';
+import { HStack, ModalBody, VStack } from '@chakra-ui/react';
 import Button from '../Button';
 import SectionInfo from '../Form/FormSectionInfo';
 import NumberBox from './Common/NumberBox';
@@ -103,61 +103,66 @@ const AddTime = (props: AddTimeProps) => {
       onClose={onClose}
       contentStyle={{ width: { lg: '526px' } }}
     >
-      <VStack
-        width="full"
-        spacing="54px"
-        alignItems="flex-end"
-        pl="32px"
-        pr="59px"
-        py="32px"
-      >
-        <HStack width="full" justifyContent="space-between">
-          <SectionInfo
-            title="Add a Time"
-            info="Add name that users can likely search with"
-            isRequired={false}
-            maxWidth="130px"
-          />
-          <HStack spacing="8px">
-            <NumberBox
-              handleIncrement={handleHourIncrement}
-              handleDecrement={handleHourDecrement}
-              handleValueChange={(value) => setHours(value)}
-              minNumber={1}
-              maxNumber={12}
-              value={hours}
+      <ModalBody p={0} m={0} width="full">
+        <VStack
+          width="full"
+          spacing="54px"
+          alignItems="flex-end"
+          pl="32px"
+          pr="59px"
+          py="32px"
+        >
+          <HStack width="full" justifyContent="space-between">
+            <SectionInfo
+              title="Add a Time"
+              info="Add name that users can likely search with"
+              isRequired={false}
+              maxWidth="130px"
             />
-            <NumberBox
-              handleIncrement={handleMinuteIncrement}
-              handleDecrement={handleMinuteDecrement}
-              handleValueChange={(value) => setMinutes(value)}
-              minNumber={0}
-              maxNumber={59}
-              value={minutes}
-            />
-            <SelectableButtonGroup
-              options={PERIODS}
-              selectedOptions={[period]}
-              handleSelect={(options) => setPeriod(options[0] as Option)}
-              buttonVariant="secondary"
-              customButtonStyle={{ width: '50px', height: '50px' }}
-              isMultiSelect={false}
-            />
+            <HStack spacing="8px">
+              <NumberBox
+                handleIncrement={handleHourIncrement}
+                handleDecrement={handleHourDecrement}
+                handleValueChange={(value) => setHours(value)}
+                minNumber={1}
+                maxNumber={12}
+                value={hours}
+              />
+              <NumberBox
+                handleIncrement={handleMinuteIncrement}
+                handleDecrement={handleMinuteDecrement}
+                handleValueChange={(value) => setMinutes(value)}
+                minNumber={0}
+                maxNumber={59}
+                value={minutes}
+              />
+              <SelectableButtonGroup
+                options={PERIODS}
+                selectedOptions={[period]}
+                handleSelect={(options) => setPeriod(options[0] as Option)}
+                buttonVariant="secondary"
+                customButtonStyle={{ width: '50px', height: '50px' }}
+                isMultiSelect={false}
+              />
+            </HStack>
           </HStack>
-        </HStack>
-        <HStack spacing="16px">
-          <Button
-            variant="secondary"
-            customStyles={{ width: '116px' }}
-            handleClick={onClose}
-          >
-            Cancel
-          </Button>
-          <Button customStyles={{ width: '116px' }} handleClick={handleSubmit}>
-            Add
-          </Button>
-        </HStack>
-      </VStack>
+          <HStack spacing="16px">
+            <Button
+              variant="secondary"
+              customStyles={{ width: '116px' }}
+              handleClick={onClose}
+            >
+              Cancel
+            </Button>
+            <Button
+              customStyles={{ width: '116px' }}
+              handleClick={handleSubmit}
+            >
+              Add
+            </Button>
+          </HStack>
+        </VStack>
+      </ModalBody>
     </GenericModal>
   );
 };

@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { HStack, VStack } from '@chakra-ui/react';
+import { HStack, ModalBody, VStack } from '@chakra-ui/react';
 import { Field, FormikProvider, useFormik } from 'formik';
 import React from 'react';
 import GenericModal from '~/lib/components/UI/Modal';
@@ -46,46 +46,48 @@ const DepartmentModal = (props: DepartmentModalProps) => {
       onClose={onClose}
       contentStyle={{ width: { sm: '450px' } }}
     >
-      <FormikProvider value={formik}>
-        <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
-          <VStack width="full" spacing="32px" p="40px">
-            <ModalHeading
-              heading="Add New Department"
-              subheading="Add a new department that is not on the system yet"
-            />
+      <ModalBody p={0} m={0} width="full">
+        <FormikProvider value={formik}>
+          <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
+            <VStack width="full" spacing="32px" p="40px">
+              <ModalHeading
+                heading="Add New Department"
+                subheading="Add a new department that is not on the system yet"
+              />
 
-            {/* Main Form Starts Here */}
-            <VStack width="full" spacing="16px">
-              <FloorSelect type="general" />
-              <Field
-                as={TextInput}
-                name="departmentName"
-                type="text"
-                label="Department Name"
-              />
-              <Field
-                as={TextInput}
-                name="departmentRef"
-                type="text"
-                label="Department Reference"
-              />
+              {/* Main Form Starts Here */}
+              <VStack width="full" spacing="16px">
+                <FloorSelect type="general" />
+                <Field
+                  as={TextInput}
+                  name="departmentName"
+                  type="text"
+                  label="Department Name"
+                />
+                <Field
+                  as={TextInput}
+                  name="departmentRef"
+                  type="text"
+                  label="Department Reference"
+                />
+              </VStack>
+              {/* Main Form Ends Here */}
+              <HStack width="full" spacing="24px">
+                <Button
+                  variant="secondary"
+                  customStyles={{ width: '96px' }}
+                  handleClick={onClose}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" isLoading={isLoading}>
+                  Add Department
+                </Button>
+              </HStack>
             </VStack>
-            {/* Main Form Ends Here */}
-            <HStack width="full" spacing="24px">
-              <Button
-                variant="secondary"
-                customStyles={{ width: '96px' }}
-                handleClick={onClose}
-              >
-                Cancel
-              </Button>
-              <Button type="submit" isLoading={isLoading}>
-                Add Department
-              </Button>
-            </HStack>
-          </VStack>
-        </form>
-      </FormikProvider>
+          </form>
+        </FormikProvider>
+      </ModalBody>
     </GenericModal>
   );
 };

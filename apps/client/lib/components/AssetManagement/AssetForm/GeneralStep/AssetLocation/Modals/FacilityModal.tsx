@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { HStack, VStack } from '@chakra-ui/react';
+import { HStack, ModalBody, VStack } from '@chakra-ui/react';
 import { Field, FormikProvider, useFormik } from 'formik';
 import React from 'react';
 import GenericModal from '~/lib/components/UI/Modal';
@@ -45,63 +45,65 @@ const FacilityModal = (props: FacilityModalProps) => {
       onClose={onClose}
       contentStyle={{ width: { sm: '450px' } }}
     >
-      <FormikProvider value={formik}>
-        <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
-          <VStack width="full" spacing="32px" p="40px">
-            <ModalHeading
-              heading="Add New Facility"
-              subheading="Add a new facility that is not on the system yet"
-            />
+      <ModalBody p={0} m={0} width="full">
+        <FormikProvider value={formik}>
+          <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
+            <VStack width="full" spacing="32px" p="40px">
+              <ModalHeading
+                heading="Add New Facility"
+                subheading="Add a new facility that is not on the system yet"
+              />
 
-            {/* Main Form Starts Here */}
-            <VStack width="full" spacing="16px">
-              <Field
-                as={TextInput}
-                name="facilityName"
-                type="text"
-                label="Facility Name"
-              />
-              <Field
-                as={TextInput}
-                name="facilityRef"
-                type="text"
-                label="Facility Reference"
-              />
-              <Field
-                as={TextInput}
-                name="address"
-                type="text"
-                label="Address"
-              />
-              <Field
-                as={TextInput}
-                name="longitude"
-                type="number"
-                label="Longitude"
-              />
-              <Field
-                as={TextInput}
-                name="latitude"
-                type="number"
-                label="Latitude"
-              />
+              {/* Main Form Starts Here */}
+              <VStack width="full" spacing="16px">
+                <Field
+                  as={TextInput}
+                  name="facilityName"
+                  type="text"
+                  label="Facility Name"
+                />
+                <Field
+                  as={TextInput}
+                  name="facilityRef"
+                  type="text"
+                  label="Facility Reference"
+                />
+                <Field
+                  as={TextInput}
+                  name="address"
+                  type="text"
+                  label="Address"
+                />
+                <Field
+                  as={TextInput}
+                  name="longitude"
+                  type="number"
+                  label="Longitude"
+                />
+                <Field
+                  as={TextInput}
+                  name="latitude"
+                  type="number"
+                  label="Latitude"
+                />
+              </VStack>
+              {/* Main Form Ends Here */}
+              <HStack width="full" spacing="24px">
+                <Button
+                  variant="secondary"
+                  customStyles={{ width: '96px' }}
+                  handleClick={onClose}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" isLoading={isLoading}>
+                  Add Facility
+                </Button>
+              </HStack>
             </VStack>
-            {/* Main Form Ends Here */}
-            <HStack width="full" spacing="24px">
-              <Button
-                variant="secondary"
-                customStyles={{ width: '96px' }}
-                handleClick={onClose}
-              >
-                Cancel
-              </Button>
-              <Button type="submit" isLoading={isLoading}>
-                Add Facility
-              </Button>
-            </HStack>
-          </VStack>
-        </form>
-      </FormikProvider>
+          </form>
+        </FormikProvider>
+      </ModalBody>
     </GenericModal>
   );
 };

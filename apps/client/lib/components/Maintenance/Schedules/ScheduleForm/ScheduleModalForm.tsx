@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { HStack, VStack } from '@chakra-ui/react';
+import { HStack, ModalBody, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 import React from 'react';
 import GenericModal from '~/lib/components/UI/Modal';
@@ -102,67 +102,75 @@ const ScheduleModalForm = (props: ScheduleModalFormProps) => {
         onClose={onClose}
         contentStyle={{ width: { md: '681px' }, rounded: 'none' }}
       >
-        <FormikProvider value={formik}>
-          <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
-            <VStack
-              width="full"
-              px="32px"
-              pt="20px"
-              pb="32px"
-              spacing={0}
-              alignItems="flex-start"
-            >
-              <BackButton handleClick={onClose} customStyles={{ mb: '40px' }} />
-              <ModalHeading heading="Add New Schedule" />
-
-              {/* Main Form Starts Here */}
-              <VStack width="full" spacing="27px" mt="40px">
-                <ScheduleTitle sectionMaxWidth="118px" spacing="40px" />
-                <Type sectionMaxWidth="118px" spacing="40px" />
-                <Description sectionMaxWidth="118px" spacing="40px" />
-                <Frequency sectionMaxWidth="118px" spacing="40px" />
-                <Date
-                  sectionMaxWidth="118px"
-                  spacing="40px"
-                  minScheduleDate={moment(startDate ?? moment()).toDate()}
-                  maxScheduleDate={
-                    endDate ? moment(endDate).toDate() : undefined
-                  }
-                  buttonVariant="solid"
-                />
-                <ServiceLevelAgreement sectionMaxWidth="118px" spacing="40px" />
-                <Tasks
-                  sectionMaxWidth="118px"
-                  spacing="40px"
-                  scheduleId={null}
-                />
-              </VStack>
-              {/* Main Form Ends Here */}
-              <HStack
+        <ModalBody p={0} m={0} width="full">
+          <FormikProvider value={formik}>
+            <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
+              <VStack
                 width="full"
-                spacing="16px"
-                justifyContent="flex-end"
-                mt="16px"
+                px="32px"
+                pt="20px"
+                pb="32px"
+                spacing={0}
+                alignItems="flex-start"
               >
-                <Button
-                  variant="secondary"
-                  customStyles={{ width: '138px' }}
+                <BackButton
                   handleClick={onClose}
+                  customStyles={{ mb: '40px' }}
+                />
+                <ModalHeading heading="Add New Schedule" />
+
+                {/* Main Form Starts Here */}
+                <VStack width="full" spacing="27px" mt="40px">
+                  <ScheduleTitle sectionMaxWidth="118px" spacing="40px" />
+                  <Type sectionMaxWidth="118px" spacing="40px" />
+                  <Description sectionMaxWidth="118px" spacing="40px" />
+                  <Frequency sectionMaxWidth="118px" spacing="40px" />
+                  <Date
+                    sectionMaxWidth="118px"
+                    spacing="40px"
+                    minScheduleDate={moment(startDate ?? moment()).toDate()}
+                    maxScheduleDate={
+                      endDate ? moment(endDate).toDate() : undefined
+                    }
+                    buttonVariant="solid"
+                  />
+                  <ServiceLevelAgreement
+                    sectionMaxWidth="118px"
+                    spacing="40px"
+                  />
+                  <Tasks
+                    sectionMaxWidth="118px"
+                    spacing="40px"
+                    scheduleId={null}
+                  />
+                </VStack>
+                {/* Main Form Ends Here */}
+                <HStack
+                  width="full"
+                  spacing="16px"
+                  justifyContent="flex-end"
+                  mt="16px"
                 >
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  customStyles={{ width: '237px' }}
-                  isLoading={isLoading}
-                  loadingText="Creating..."
-                >
-                  Save Schedule
-                </Button>
-              </HStack>
-            </VStack>
-          </form>
-        </FormikProvider>
+                  <Button
+                    variant="secondary"
+                    customStyles={{ width: '138px' }}
+                    handleClick={onClose}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    customStyles={{ width: '237px' }}
+                    isLoading={isLoading}
+                    loadingText="Creating..."
+                  >
+                    Save Schedule
+                  </Button>
+                </HStack>
+              </VStack>
+            </form>
+          </FormikProvider>
+        </ModalBody>
       </GenericModal>
     </>
   );

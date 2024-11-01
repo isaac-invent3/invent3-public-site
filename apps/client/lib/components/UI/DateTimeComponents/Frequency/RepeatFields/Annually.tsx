@@ -1,73 +1,101 @@
-import React from 'react';
-import moment from 'moment';
-import { HStack, SimpleGrid } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
 
-import { Option } from '~/lib/interfaces/general.interfaces';
+import { HStack, Icon, Text, VStack } from '@chakra-ui/react';
+
 import SectionInfo from '../../../Form/FormSectionInfo';
-import Button from '../../../Button';
-// import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import moment from 'moment';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { updateRepeatInterval } from '~/lib/redux/slices/DateSlice';
+import MonthCard from '../../Common/MonthCard';
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from '~/lib/components/CustomIcons';
 
-const months: Option[] = Array.from({ length: 12 }, (_, i) => ({
-  label: moment().month(i).format('MMM'),
+const months = Array.from({ length: 12 }, (_, i) => ({
+  label: moment().month(i).format('MMMM'),
   value: i + 1,
 }));
 
-const Annually = () => {
-  //     const annualInterval = useAppSelector(
-  //         (state) => state.date.info.frequency.repeatIntervals.annually
-  //       );
-  //   const dispatch = useAppDispatch();
+const Monthly = () => {
+  const dateInfo = useAppSelector((state) => state.date.info);
+  const dispatch = useAppDispatch();
+  const annualInterval = dateInfo.frequency.repeatIntervals.annually;
+  const [selectedMonth, setSelectedMonth] = useState(moment().month() + 1);
 
-  //   const handleClick = (item: Option) => {
-  //     const isSelected = frequencyInfo.repeatIntervals.some(
-  //       (option) => option === item.value
-  //     );
-  //     const newSelectedOptions = isSelected
-  //       ? frequencyInfo.repeatIntervals.filter((option) => option !== item.value)
-  //       : [...frequencyInfo.repeatIntervals, item.value];
-  //     setFrequencyInfo((prev) => ({
-  //       ...prev,
-  //       repeatIntervals: newSelectedOptions,
-  //     }));
-  //   };
+  const currentMonthNumber = moment().month() + 1;
+
+  const handleClick = (month: number, day: number) => {
+    const isSelected = annualInterval[month]?.includes(day);
+    const existingDays = annualInterval[month] || [];
+    const newSelectedOptions = isSelected
+      ? existingDays.filter((option) => option !== day)
+      : [...existingDays, day];
+
+    dispatch(
+      updateRepeatInterval({
+        annually: { ...annualInterval, [month]: newSelectedOptions },
+      })
+    );
+  };
+
+  //Sets today in the current month as the default day with a cap of Day 28
+  useEffect(() => {
+    const isAllEmpty = Object.values(annualInterval).every(
+      (arr) => arr.length === 0
+    );
+    if (isAllEmpty) {
+      const dayOfMonth = Math.min(moment().date(), 28);
+      dispatch(
+        updateRepeatInterval({
+          annually: { ...annualInterval, [currentMonthNumber]: [dayOfMonth] },
+        })
+      );
+    }
+  }, []);
 
   return (
     <HStack width="full" spacing="29px" alignItems="flex-start" mb="32px">
       <SectionInfo
-        title="On"
+        title="Days"
         info="Add name that users can likely search with"
         isRequired={false}
         maxWidth="130px"
       />
-      <SimpleGrid
-        columns={3}
-        gap="12px"
-        width="full"
-        border="1px solid #BBBBBB80"
-        bgColor="#F7F7F7"
-        p={2}
-        rounded="8px"
-      >
-        {months.map((month, index) => {
-          const isSelected = false;
-          return (
-            <Button
-              key={index}
-              //   handleClick={() => handleClick(month)}
-              variant={isSelected ? 'primary' : 'outline'}
-              customStyles={{
-                py: '10px',
-                borderColor: isSelected ? 'none' : '#BBBBBB80',
-                color: isSelected ? 'white' : 'black',
-              }}
-            >
-              {month.label}
-            </Button>
-          );
-        })}
-      </SimpleGrid>
+      {months.map(
+        (item, index) =>
+          selectedMonth === item.value && (
+            <VStack width="full" spacing="24px" key={index}>
+              <HStack width="full" justifyContent="space-between">
+                <Icon
+                  as={ChevronLeftIcon}
+                  boxSize="24px"
+                  cursor="pointer"
+                  onClick={() => {
+                    selectedMonth > 1 && setSelectedMonth((prev) => prev - 1);
+                  }}
+                />
+                <Text fontWeight={700} fontSize="lg">
+                  {item.label}
+                </Text>
+                <Icon
+                  as={ChevronRightIcon}
+                  boxSize="24px"
+                  cursor="pointer"
+                  onClick={() => {
+                    selectedMonth < 12 && setSelectedMonth((prev) => prev + 1);
+                  }}
+                />
+              </HStack>
+              <MonthCard
+                selectedDays={annualInterval[item.value] ?? []}
+                handleSelectDay={(day) => handleClick(item.value, day)}
+              />
+            </VStack>
+          )
+      )}
     </HStack>
   );
 };
 
-export default Annually;
+export default Monthly;

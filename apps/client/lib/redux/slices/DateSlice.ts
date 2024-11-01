@@ -13,7 +13,6 @@ export interface SliceProps {
 
 const InitialRepeatInterval = {
   annually: {
-    0: [],
     1: [],
     2: [],
     3: [],

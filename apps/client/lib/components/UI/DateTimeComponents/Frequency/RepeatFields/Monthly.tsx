@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 
-import { HStack, SimpleGrid } from '@chakra-ui/react';
+import { HStack } from '@chakra-ui/react';
 
 import SectionInfo from '../../../Form/FormSectionInfo';
-import Button from '../../../Button';
 import moment from 'moment';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateRepeatInterval } from '~/lib/redux/slices/DateSlice';
+import MonthCard from '../../Common/MonthCard';
 
 const Monthly = () => {
   const dateInfo = useAppSelector((state) => state.date.info);
@@ -38,39 +38,10 @@ const Monthly = () => {
         isRequired={false}
         maxWidth="130px"
       />
-      <SimpleGrid
-        columns={7}
-        rowGap="12px"
-        columnGap="4px"
-        width="full"
-        border="1px solid #BBBBBB80"
-        bgColor="#F7F7F7"
-        py={2}
-        px="4px"
-        rounded="8px"
-      >
-        {Array(28)
-          .fill('')
-          .map((_, index) => {
-            const isSelected = monthlyInterval.some(
-              (option) => option === index + 1
-            );
-            return (
-              <Button
-                key={index}
-                handleClick={() => handleClick(index + 1)}
-                variant={isSelected ? 'primary' : 'outline'}
-                customStyles={{
-                  py: '10px',
-                  borderColor: isSelected ? 'none' : '#BBBBBB80',
-                  color: isSelected ? 'white' : 'black',
-                }}
-              >
-                {index + 1}
-              </Button>
-            );
-          })}
-      </SimpleGrid>
+      <MonthCard
+        selectedDays={monthlyInterval}
+        handleSelectDay={(day) => handleClick(day)}
+      />
     </HStack>
   );
 };

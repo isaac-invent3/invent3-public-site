@@ -12,10 +12,17 @@ interface EmployeeSelectProps {
   selectName: string;
   selectTitle: string;
   defaultName?: string | null;
+  showTitleAfterSelect?: boolean;
 }
 
 const EmployeeSelect = (props: EmployeeSelectProps) => {
-  const { handleSelect, selectName, selectTitle, defaultName } = props;
+  const {
+    handleSelect,
+    selectName,
+    selectTitle,
+    defaultName,
+    showTitleAfterSelect = true,
+  } = props;
   const [searchEmployee] = useSearchEmployeesMutation({});
 
   const [pageNumber, setPageNumber] = useState(1);
@@ -36,6 +43,7 @@ const EmployeeSelect = (props: EmployeeSelectProps) => {
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
       handleSelect={handleSelect}
+      showTitleAfterSelect={showTitleAfterSelect}
     />
   );
 };

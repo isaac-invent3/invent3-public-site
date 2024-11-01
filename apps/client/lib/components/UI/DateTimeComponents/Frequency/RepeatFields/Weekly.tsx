@@ -1,8 +1,9 @@
-import React from 'react';
-import { HStack } from '@chakra-ui/react';
+import React, { useEffect } from 'react';
 import { FrequencyInfo, Option } from '~/lib/interfaces/general.interfaces';
 import SectionInfo from '../../../Form/FormSectionInfo';
+import { HStack } from '@chakra-ui/react';
 import SelectableButtonGroup from '../../../Button/SelectableButtonGroup';
+import moment from 'moment';
 
 const DAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
@@ -13,8 +14,16 @@ interface WeeklyProps {
 const Weekly = (props: WeeklyProps) => {
   const { frequencyInfo, setFrequencyInfo } = props;
 
+  //Sets today as the default day
+  useEffect(() => {
+    if (frequencyInfo.repeatIntervals.length === 0) {
+      const today = moment().day();
+      setFrequencyInfo((prev) => ({ ...prev, repeatIntervals: [today] }));
+    }
+  }, [frequencyInfo]);
+
   return (
-    <HStack width="full" spacing="29px" alignItems="flex-start">
+    <HStack width="full" spacing="29px" alignItems="flex-start" mb="32px">
       <SectionInfo
         title="On days"
         info="Add name that users can likely search with"
@@ -38,7 +47,8 @@ const Weekly = (props: WeeklyProps) => {
         buttonVariant="outline"
         customContainerStyle={{ spacing: '4px' }}
         customButtonStyle={{ width: '42px', height: '42px' }}
-        isMultiSelect={true}
+        isMultiSelect
+        hasAtLeastOneSelected
       />
     </HStack>
   );

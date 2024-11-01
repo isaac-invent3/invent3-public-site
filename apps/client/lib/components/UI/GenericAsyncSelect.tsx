@@ -21,6 +21,7 @@ interface BuildingSelectProps {
   // eslint-disable-next-line no-unused-vars
   specialSearch?: (searchValue: string) => SearchCriterion[];
   fetchKey?: string | number | null | undefined;
+  showTitleAfterSelect?: boolean;
 }
 
 const GenericAsyncSelect = (props: BuildingSelectProps) => {
@@ -38,6 +39,7 @@ const GenericAsyncSelect = (props: BuildingSelectProps) => {
     setPageNumber,
     specialSearch,
     fetchKey,
+    showTitleAfterSelect = true,
   } = props;
   const { handleSubmit } = useCustomMutation();
   const [options, setOptions] = useState<Option[]>([]);
@@ -119,6 +121,7 @@ const GenericAsyncSelect = (props: BuildingSelectProps) => {
       callBackFunction={(inputValue: string) => handleSearch(inputValue)}
       isAsync={mutationFn ? true : false}
       handleOnMenuScrollToBottom={handlePagination}
+      showTitleAfterSelect={showTitleAfterSelect}
       isSearchable
     />
   );

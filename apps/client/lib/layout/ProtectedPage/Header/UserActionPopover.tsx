@@ -91,6 +91,7 @@ const UserActionPopover = () => {
                 height="38px"
                 src=""
                 border="2.4px solid white"
+                name={data?.user.name ?? ''}
               />
               <VStack alignItems="flex-start" spacing="1px">
                 <Text
@@ -158,6 +159,7 @@ const UserActionPopover = () => {
                 height="50px"
                 src=""
                 border="2.4px solid white"
+                name={data?.user.name ?? ''}
               />
               <VStack alignItems="flex-start" spacing={0}>
                 <Text color="white" size="lg" fontWeight={700}>

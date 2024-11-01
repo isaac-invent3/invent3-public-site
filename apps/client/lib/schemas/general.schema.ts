@@ -128,4 +128,8 @@ const createDateSchema = (
     });
 };
 
-export { createDateSchema };
+const assigneeSchema = Yup.object().shape({
+  assignee: Yup.string().required('User is Required'),
+});
+
+export { createDateSchema, assigneeSchema };

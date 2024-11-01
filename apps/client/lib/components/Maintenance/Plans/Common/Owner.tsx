@@ -1,7 +1,10 @@
-import { Flex, HStack } from '@chakra-ui/react';
-import React from 'react';
-import EmployeeSelect from '~/lib/components/Common/EmployeeSelect';
+import { Flex, HStack, VStack } from '@chakra-ui/react';
+import { useField } from 'formik';
+import React, { useState } from 'react';
+import UserDisplayAndAddButton from '~/lib/components/Common/UserDisplayAndAddButton';
+import ErrorMessage from '~/lib/components/UI/ErrorMessage';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
+import { Option } from '~/lib/interfaces/general.interfaces';
 
 interface OwnerProps {
   sectionMaxWidth: string;
@@ -10,6 +13,10 @@ interface OwnerProps {
 }
 const Owner = (props: OwnerProps) => {
   const { sectionMaxWidth, spacing, defaultName } = props;
+  // eslint-disable-next-line no-unused-vars
+  const [field, meta, helpers] = useField('ownerId');
+  const [selectedUser, setSelectedUser] = useState<Option | null>(null);
+
   return (
     <HStack width="full" alignItems="flex-start" spacing={spacing}>
       <Flex width="full" maxW={sectionMaxWidth}>
@@ -19,11 +26,18 @@ const Owner = (props: OwnerProps) => {
           isRequired
         />
       </Flex>
-      <EmployeeSelect
-        selectName="ownerId"
-        selectTitle="Owner"
-        defaultName={defaultName}
-      />
+      <VStack width="full" spacing="4px" alignItems="flex-start">
+        <UserDisplayAndAddButton
+          selectedUser={selectedUser?.label ?? defaultName}
+          handleSelectUser={(user) => {
+            helpers.setValue(user?.value);
+            setSelectedUser(user);
+          }}
+        />
+        {meta.touched && meta.error !== undefined && (
+          <ErrorMessage>{meta.error}</ErrorMessage>
+        )}
+      </VStack>
     </HStack>
   );
 };

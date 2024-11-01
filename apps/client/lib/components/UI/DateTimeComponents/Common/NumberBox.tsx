@@ -38,7 +38,7 @@ const NumberBox = (props: NumberBoxProps) => {
         handleValueChange(newValue);
       }
     } else {
-      handleValueChange(0);
+      handleValueChange(minNumber);
     }
   };
 

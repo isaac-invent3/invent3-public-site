@@ -55,11 +55,10 @@ const Button = (props: ButtonProps) => {
       _hover={{
         bgColor:
           variant === 'outline'
-            ? 'primary.500'
+            ? 'neutral.200'
             : variant === 'primary'
               ? 'primary.accent'
               : 'none',
-        color: variant === 'outline' && 'secondary.pale.500',
       }}
       _active={{
         bgColor:

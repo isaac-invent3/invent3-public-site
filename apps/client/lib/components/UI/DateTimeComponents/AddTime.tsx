@@ -139,7 +139,7 @@ const AddTime = (props: AddTimeProps) => {
               options={PERIODS}
               selectedOptions={[period]}
               handleSelect={(options) => setPeriod(options[0] as Option)}
-              buttonVariant="solid"
+              buttonVariant="secondary"
               customButtonStyle={{ width: '50px', height: '50px' }}
               isMultiSelect={false}
             />

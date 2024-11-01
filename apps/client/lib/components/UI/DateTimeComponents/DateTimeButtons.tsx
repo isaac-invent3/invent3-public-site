@@ -3,11 +3,12 @@ import { HStack, Icon, useDisclosure } from '@chakra-ui/react';
 import moment from 'moment';
 import React, { useState } from 'react';
 import Button from '../Button';
-import { CloseIcon, PenIcon, RepeatIcon } from '../../CustomIcons';
+import { PenIcon, RepeatIcon } from '../../CustomIcons';
 import SlideTransition from '../SlideTransition';
 import AddTime from './AddTime';
 import Frequency from './Frequency';
 import { FrequencyInfo, Option } from '~/lib/interfaces/general.interfaces';
+import DimissibleContainer from '../DimissibleContainer';
 
 const handleCombineDateTime = (date: string, time: string) => {
   const combinedDateTime =
@@ -53,7 +54,7 @@ const DateTimeButtons = (props: DateTimeButtonsProps) => {
     onClose: onCloseFrequency,
   } = useDisclosure();
 
-  const time12Hour = moment(time, ['HH:mm']).format('h:mm A');
+  const time12Hour = moment(time, ['HH:mm']).format('hh:mm A');
 
   const today = moment().utcOffset(0, true);
   const tomorrow = moment().utcOffset(0, true).add(1, 'days');
@@ -91,26 +92,18 @@ const DateTimeButtons = (props: DateTimeButtonsProps) => {
     <>
       <HStack flexWrap="wrap" spacing="16px">
         {selectedDate && (
-          <HStack role="group">
+          <DimissibleContainer
+            handleClose={() => {
+              setSelectedDate(null);
+              handleDateTimeSelect && handleDateTimeSelect(null);
+              setTime(null);
+            }}
+          >
             <Button customStyles={{ height: '37px', py: '10px' }}>
               {prefix ?? ''} {selectedDate?.label}
               {time ? `, ${time12Hour}` : ''}
             </Button>
-            <Icon
-              as={CloseIcon}
-              boxSize="16px"
-              color="black"
-              visibility="hidden"
-              _groupHover={{ visibility: 'visible' }}
-              transition="all 0.3s ease"
-              cursor="pointer"
-              onClick={() => {
-                setSelectedDate(null);
-                handleDateTimeSelect && handleDateTimeSelect(null);
-                setTime(null);
-              }}
-            />
-          </HStack>
+          </DimissibleContainer>
         )}
         {!selectedDate && (
           <SlideTransition trigger={selectedDate ? false : true}>
@@ -182,7 +175,18 @@ const DateTimeButtons = (props: DateTimeButtonsProps) => {
             );
         }}
       />
-      <Frequency isOpen={isOpenFrequency} onClose={onCloseFrequency} />
+      <Frequency
+        isOpen={isOpenFrequency}
+        onClose={onCloseFrequency}
+        selectedDateTime={
+          selectedDate
+            ? handleCombineDateTime(
+                selectedDate?.value as string,
+                time ?? '00:00'
+              )
+            : null
+        }
+      />
     </>
   );
 };

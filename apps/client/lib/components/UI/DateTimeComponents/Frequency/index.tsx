@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import GenericModal from '../../Modal';
 import {
   Flex,
@@ -13,32 +13,49 @@ import Button from '../../Button';
 import SelectInput from '../../Select';
 import NumberBox from '../Common/NumberBox';
 import { FrequencyInfo, Option } from '~/lib/interfaces/general.interfaces';
-import { repeatOptions } from '~/lib/utils/constants';
 import ConditionalDateSelector from '../Common/ConditionalDateSelector';
 import { ClockIcon } from '~/lib/components/CustomIcons';
 import CustomSelectDateButton from '../Common/CustomSelectDateButton';
 import AddTime from '../AddTime';
 import RepeatFields from './RepeatFields';
+import { useGetAllMaintenanceFrequenciesQuery } from '~/lib/redux/services/maintenance/frequency.services';
+import { generateOptions } from '~/lib/utils/helperFunctions';
 
 interface FrequencyProps {
   isOpen: boolean;
   onClose: () => void;
+  selectedDateTime: string | null;
 }
 
 const Frequency = (props: FrequencyProps) => {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, selectedDateTime } = props;
+  const { data, isLoading } = useGetAllMaintenanceFrequenciesQuery({});
   const {
     isOpen: isOpenTime,
     onOpen: onOpenTime,
     onClose: onCloseTime,
   } = useDisclosure();
   const [frequencyInfo, setFrequencyInfo] = useState<FrequencyInfo>({
-    interval: 0,
-    repeat: repeatOptions[0] as Option,
+    interval: 1,
+    repeat: null,
     startDate: null,
     endDate: null,
     repeatIntervals: [],
   });
+
+  // Sets the first Frequency as default
+  useEffect(() => {
+    if (data?.data?.items) {
+      const options = generateOptions(
+        data?.data?.items,
+        'frequencyName',
+        'frequencyId'
+      );
+      if (options.length > 0) {
+        setFrequencyInfo((prev) => ({ ...prev, repeat: options[0] as Option }));
+      }
+    }
+  }, [data]);
 
   return (
     <>
@@ -58,8 +75,8 @@ const Frequency = (props: FrequencyProps) => {
           <Text size="lg" color="primary.500" fontWeight={700}>
             Custom Occurence
           </Text>
-          <VStack width="full" mt="50px" spacing="32px">
-            <HStack width="full" spacing="29px">
+          <VStack width="full" mt="50px" spacing="0px">
+            <HStack width="full" spacing="29px" mb="32px">
               <SectionInfo
                 title="Repeats"
                 info="Add name that users can likely search with"
@@ -69,16 +86,29 @@ const Frequency = (props: FrequencyProps) => {
               <SelectInput
                 name="repeat"
                 title="Repeat"
-                options={repeatOptions}
-                selectedOption={frequencyInfo.repeat}
+                options={generateOptions(
+                  data?.data?.items,
+                  'frequencyName',
+                  'frequencyId'
+                )}
+                isLoading={isLoading}
+                isSearchable
+                selectedOption={frequencyInfo.repeat ?? undefined}
                 showTitleAfterSelect={false}
                 handleSelect={(option) =>
-                  setFrequencyInfo((prev) => ({ ...prev, repeat: option }))
+                  setFrequencyInfo((prev) => ({
+                    ...prev,
+                    repeat: option,
+                    repeatIntervals:
+                      option.value === frequencyInfo.repeat?.value
+                        ? frequencyInfo.repeatIntervals
+                        : [],
+                  }))
                 }
               />
             </HStack>
 
-            <HStack width="full" spacing="29px">
+            <HStack width="full" spacing="29px" mb="32px">
               <SectionInfo
                 title="Interval"
                 info="Add name that users can likely search with"
@@ -88,6 +118,7 @@ const Frequency = (props: FrequencyProps) => {
               <HStack spacing="24px">
                 <NumberBox
                   minNumber={1}
+                  maxNumber={100}
                   value={frequencyInfo.interval}
                   handleValueChange={(value) =>
                     setFrequencyInfo((prev) => ({ ...prev, interval: value }))
@@ -96,7 +127,7 @@ const Frequency = (props: FrequencyProps) => {
                     setFrequencyInfo((prev) => ({
                       ...prev,
                       interval:
-                        frequencyInfo.interval > 0
+                        frequencyInfo.interval > 1
                           ? frequencyInfo.interval - 1
                           : frequencyInfo.interval,
                     }))
@@ -104,22 +135,31 @@ const Frequency = (props: FrequencyProps) => {
                   handleIncrement={() =>
                     setFrequencyInfo((prev) => ({
                       ...prev,
-                      interval: frequencyInfo.interval + 1,
+                      interval:
+                        frequencyInfo.interval < 100
+                          ? frequencyInfo.interval + 1
+                          : frequencyInfo.interval,
                     }))
                   }
                   customStyle={{ bgColor: 'transparent' }}
                 />
                 <Text textTransform="capitalize">
-                  {frequencyInfo.repeat.label}
+                  {frequencyInfo.repeat?.label}
                 </Text>
               </HStack>
             </HStack>
             <RepeatFields
               frequencyInfo={frequencyInfo}
               setFrequencyInfo={setFrequencyInfo}
+              selectedDateTime={selectedDateTime}
             />
 
-            <HStack width="full" spacing="29px" alignItems="flex-start">
+            <HStack
+              width="full"
+              spacing="29px"
+              alignItems="flex-start"
+              mb="32px"
+            >
               <SectionInfo
                 title="Starts"
                 info="Add name that users can likely search with"

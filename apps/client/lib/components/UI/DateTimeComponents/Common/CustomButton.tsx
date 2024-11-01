@@ -6,9 +6,10 @@ import { PenIcon } from '~/lib/components/CustomIcons';
 interface CustomButtonProps {
   buttonVariant: 'solid' | 'outline';
   handleClick: () => void;
+  buttonText?: string;
 }
 const CustomButton = (props: CustomButtonProps) => {
-  const { buttonVariant, handleClick } = props;
+  const { buttonVariant, handleClick, buttonText } = props;
 
   const buttonStyle = {
     py: '10px',
@@ -26,7 +27,7 @@ const CustomButton = (props: CustomButtonProps) => {
   return (
     <Button customStyles={buttonStyle} handleClick={handleClick}>
       <Icon as={PenIcon} boxSize="16px" color="#374957" mr="8px" />
-      Custom
+      {buttonText ?? 'Custom'}
     </Button>
   );
 };

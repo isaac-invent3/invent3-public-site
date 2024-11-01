@@ -8,11 +8,16 @@ interface UserInfoProps {
   children?: React.ReactNode;
 }
 const UserInfo = (props: UserInfoProps) => {
-  const { name, avatar, customBoxStyle, customAvatarStyle, children } = props;
+  const { name, customBoxStyle, customAvatarStyle, children } = props;
 
   return (
     <HStack spacing="8px" {...customBoxStyle}>
-      <Avatar width="30px" height="30px" src={avatar} {...customAvatarStyle} />
+      <Avatar
+        width="30px"
+        height="30px"
+        // name={name ?? ''}
+        {...customAvatarStyle}
+      />
       <Flex direction="column">
         <Text color="black">{name ?? 'N/A'}</Text>
         {children}

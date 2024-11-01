@@ -34,7 +34,7 @@ const Date = (props: DateProps) => {
       </Flex>
       <VStack width="full" spacing="12px" alignItems="flex-start">
         <DateTimeButtons
-          showRepeat={false}
+          showRepeat={true}
           buttonVariant={buttonVariant}
           includeTime={true}
           minDate={minScheduleDate}

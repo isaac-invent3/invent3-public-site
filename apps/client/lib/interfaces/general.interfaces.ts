@@ -47,7 +47,7 @@ interface GeoJSONFeature {
 
 interface FrequencyInfo {
   interval: number;
-  repeat: Option;
+  repeat: Option | null;
   startDate: string | null;
   endDate: string | null;
   repeatIntervals: (string | number)[];

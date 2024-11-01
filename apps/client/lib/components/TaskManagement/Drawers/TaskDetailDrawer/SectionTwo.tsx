@@ -34,7 +34,11 @@ const SectionTwo = ({ data }: SectionTwoProps) => {
             Assign to:
           </Text>
           <HStack spacing="14px">
-            <Avatar width="42px" height="42px" />
+            <Avatar
+              width="42px"
+              height="42px"
+              name={data?.assignedToEmployeeName}
+            />
             <Text size="md" color="black">
               {data?.assignedToEmployeeName}
             </Text>

@@ -21,7 +21,7 @@ function amountFormatter(
 const dateFormatter = (
   date: string | Date | null,
   format?: string,
-  stringFormat?: string
+  stringFormat?: string | string[]
 ) => {
   if (date) {
     if (stringFormat) {

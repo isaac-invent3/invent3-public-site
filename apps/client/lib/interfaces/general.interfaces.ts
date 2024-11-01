@@ -45,12 +45,21 @@ interface GeoJSONFeature {
   };
 }
 
+interface RepeatInterval {
+  annually: {
+    [name: number]: number[];
+  };
+  daily: string[];
+  weekly: number[];
+  monthly: number[];
+}
+
 interface FrequencyInfo {
   interval: number;
   repeat: Option | null;
   startDate: string | null;
   endDate: string | null;
-  repeatIntervals: (string | number)[];
+  repeatIntervals: RepeatInterval;
 }
 
 export type {
@@ -59,4 +68,5 @@ export type {
   SearchCriterion,
   GeoJSONFeature,
   FrequencyInfo,
+  RepeatInterval,
 };

@@ -164,29 +164,33 @@ const DateTimeButtons = (props: DateTimeButtonsProps) => {
           </Button>
         )}
       </HStack>
-      <AddTime
-        isOpen={isOpenTime}
-        onClose={onCloseTime}
-        handleSelectedTime={(time) => {
-          setTime(time);
-          handleDateTimeSelect &&
-            handleDateTimeSelect(
-              handleCombineDateTime(selectedDate?.value as string, time)
-            );
-        }}
-      />
-      <Frequency
-        isOpen={isOpenFrequency}
-        onClose={onCloseFrequency}
-        selectedDateTime={
-          selectedDate
-            ? handleCombineDateTime(
-                selectedDate?.value as string,
-                time ?? '00:00'
-              )
-            : null
-        }
-      />
+      {isOpenTime && (
+        <AddTime
+          isOpen={isOpenTime}
+          onClose={onCloseTime}
+          handleSelectedTime={(time) => {
+            setTime(time);
+            handleDateTimeSelect &&
+              handleDateTimeSelect(
+                handleCombineDateTime(selectedDate?.value as string, time)
+              );
+          }}
+        />
+      )}
+      {isOpenFrequency && (
+        <Frequency
+          isOpen={isOpenFrequency}
+          onClose={onCloseFrequency}
+          selectedDateTime={
+            selectedDate
+              ? handleCombineDateTime(
+                  selectedDate?.value as string,
+                  time ?? '00:00'
+                )
+              : null
+          }
+        />
+      )}
     </>
   );
 };

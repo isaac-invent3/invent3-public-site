@@ -2,41 +2,33 @@ import React, { useEffect } from 'react';
 
 import { HStack, SimpleGrid } from '@chakra-ui/react';
 
-import { FrequencyInfo } from '~/lib/interfaces/general.interfaces';
 import SectionInfo from '../../../Form/FormSectionInfo';
 import Button from '../../../Button';
 import moment from 'moment';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { updateRepeatInterval } from '~/lib/redux/slices/DateSlice';
 
-interface MonthlyProps {
-  frequencyInfo: FrequencyInfo;
-  setFrequencyInfo: React.Dispatch<React.SetStateAction<FrequencyInfo>>;
-}
-const Monthly = (props: MonthlyProps) => {
-  const { frequencyInfo, setFrequencyInfo } = props;
+const Monthly = () => {
+  const dateInfo = useAppSelector((state) => state.date.info);
+  const dispatch = useAppDispatch();
+  const monthlyInterval = dateInfo.frequency.repeatIntervals.monthly;
 
   const handleClick = (item: number) => {
-    const isSelected = frequencyInfo.repeatIntervals.some(
-      (option) => option === item
-    );
+    const isSelected = monthlyInterval.some((option) => option === item);
     const newSelectedOptions = isSelected
-      ? frequencyInfo.repeatIntervals.filter((option) => option !== item)
-      : [...frequencyInfo.repeatIntervals, item];
-    setFrequencyInfo((prev) => ({
-      ...prev,
-      repeatIntervals:
-        newSelectedOptions.length >= 1
-          ? newSelectedOptions
-          : frequencyInfo.repeatIntervals,
-    }));
+      ? monthlyInterval.filter((option) => option !== item)
+      : [...monthlyInterval, item];
+    newSelectedOptions.length >= 1 &&
+      dispatch(updateRepeatInterval({ monthly: newSelectedOptions }));
   };
 
   //Sets today as the default day with a cap of Day 28
   useEffect(() => {
-    if (frequencyInfo.repeatIntervals.length === 0) {
+    if (monthlyInterval.length === 0) {
       const dayOfMonth = Math.min(moment().date(), 28);
-      setFrequencyInfo((prev) => ({ ...prev, repeatIntervals: [dayOfMonth] }));
+      dispatch(updateRepeatInterval({ monthly: [dayOfMonth] }));
     }
-  }, [frequencyInfo]);
+  }, []);
 
   return (
     <HStack width="full" spacing="29px" alignItems="flex-start" mb="32px">
@@ -60,7 +52,7 @@ const Monthly = (props: MonthlyProps) => {
         {Array(28)
           .fill('')
           .map((_, index) => {
-            const isSelected = frequencyInfo.repeatIntervals.some(
+            const isSelected = monthlyInterval.some(
               (option) => option === index + 1
             );
             return (

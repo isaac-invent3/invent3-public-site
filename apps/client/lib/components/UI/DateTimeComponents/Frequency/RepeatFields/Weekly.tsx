@@ -1,26 +1,27 @@
 import React, { useEffect } from 'react';
-import { FrequencyInfo, Option } from '~/lib/interfaces/general.interfaces';
+import { Option } from '~/lib/interfaces/general.interfaces';
 import SectionInfo from '../../../Form/FormSectionInfo';
 import { HStack } from '@chakra-ui/react';
 import SelectableButtonGroup from '../../../Button/SelectableButtonGroup';
 import moment from 'moment';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { updateRepeatInterval } from '~/lib/redux/slices/DateSlice';
 
 const DAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
-interface WeeklyProps {
-  frequencyInfo: FrequencyInfo;
-  setFrequencyInfo: React.Dispatch<React.SetStateAction<FrequencyInfo>>;
-}
-const Weekly = (props: WeeklyProps) => {
-  const { frequencyInfo, setFrequencyInfo } = props;
+const Weekly = () => {
+  const dispatch = useAppDispatch();
+  const weeklyInterval = useAppSelector(
+    (state) => state.date.info.frequency.repeatIntervals.weekly
+  );
 
   //Sets today as the default day
   useEffect(() => {
-    if (frequencyInfo.repeatIntervals.length === 0) {
+    if (weeklyInterval.length === 0) {
       const today = moment().day();
-      setFrequencyInfo((prev) => ({ ...prev, repeatIntervals: [today] }));
+      dispatch(updateRepeatInterval({ weekly: [today] }));
     }
-  }, [frequencyInfo]);
+  }, []);
 
   return (
     <HStack width="full" spacing="29px" alignItems="flex-start" mb="32px">
@@ -35,14 +36,15 @@ const Weekly = (props: WeeklyProps) => {
         options={DAYS.map(
           (item, index) => ({ label: item, value: index }) as Option
         )}
-        selectedOptions={frequencyInfo.repeatIntervals.map(
-          (item) => ({ label: item, value: item }) as Option
+        selectedOptions={weeklyInterval.map(
+          (item) => ({ label: item, value: item }) as unknown as Option
         )}
         handleSelect={(options) =>
-          setFrequencyInfo((prev) => ({
-            ...prev,
-            repeatIntervals: options.map((item) => item.value),
-          }))
+          dispatch(
+            updateRepeatInterval({
+              weekly: options.map((item) => item.value as number),
+            })
+          )
         }
         buttonVariant="outline"
         customContainerStyle={{ spacing: '4px' }}

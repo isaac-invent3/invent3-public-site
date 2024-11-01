@@ -2,34 +2,34 @@ import React from 'react';
 import moment from 'moment';
 import { HStack, SimpleGrid } from '@chakra-ui/react';
 
-import { FrequencyInfo, Option } from '~/lib/interfaces/general.interfaces';
+import { Option } from '~/lib/interfaces/general.interfaces';
 import SectionInfo from '../../../Form/FormSectionInfo';
 import Button from '../../../Button';
+// import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 
 const months: Option[] = Array.from({ length: 12 }, (_, i) => ({
   label: moment().month(i).format('MMM'),
   value: i + 1,
 }));
 
-interface AnnuallyProps {
-  frequencyInfo: FrequencyInfo;
-  setFrequencyInfo: React.Dispatch<React.SetStateAction<FrequencyInfo>>;
-}
-const Annually = (props: AnnuallyProps) => {
-  const { frequencyInfo, setFrequencyInfo } = props;
+const Annually = () => {
+  //     const annualInterval = useAppSelector(
+  //         (state) => state.date.info.frequency.repeatIntervals.annually
+  //       );
+  //   const dispatch = useAppDispatch();
 
-  const handleClick = (item: Option) => {
-    const isSelected = frequencyInfo.repeatIntervals.some(
-      (option) => option === item.value
-    );
-    const newSelectedOptions = isSelected
-      ? frequencyInfo.repeatIntervals.filter((option) => option !== item.value)
-      : [...frequencyInfo.repeatIntervals, item.value];
-    setFrequencyInfo((prev) => ({
-      ...prev,
-      repeatIntervals: newSelectedOptions,
-    }));
-  };
+  //   const handleClick = (item: Option) => {
+  //     const isSelected = frequencyInfo.repeatIntervals.some(
+  //       (option) => option === item.value
+  //     );
+  //     const newSelectedOptions = isSelected
+  //       ? frequencyInfo.repeatIntervals.filter((option) => option !== item.value)
+  //       : [...frequencyInfo.repeatIntervals, item.value];
+  //     setFrequencyInfo((prev) => ({
+  //       ...prev,
+  //       repeatIntervals: newSelectedOptions,
+  //     }));
+  //   };
 
   return (
     <HStack width="full" spacing="29px" alignItems="flex-start" mb="32px">
@@ -49,13 +49,11 @@ const Annually = (props: AnnuallyProps) => {
         rounded="8px"
       >
         {months.map((month, index) => {
-          const isSelected = frequencyInfo.repeatIntervals.some(
-            (option) => option === month.value
-          );
+          const isSelected = false;
           return (
             <Button
               key={index}
-              handleClick={() => handleClick(month)}
+              //   handleClick={() => handleClick(month)}
               variant={isSelected ? 'primary' : 'outline'}
               customStyles={{
                 py: '10px',

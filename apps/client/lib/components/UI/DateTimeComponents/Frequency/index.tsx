@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import GenericModal from '../../Modal';
 import {
   Flex,
@@ -13,7 +13,7 @@ import SectionInfo from '../../Form/FormSectionInfo';
 import Button from '../../Button';
 import SelectInput from '../../Select';
 import NumberBox from '../Common/NumberBox';
-import { FrequencyInfo, Option } from '~/lib/interfaces/general.interfaces';
+import { Option } from '~/lib/interfaces/general.interfaces';
 import ConditionalDateSelector from '../Common/ConditionalDateSelector';
 import { ClockIcon } from '~/lib/components/CustomIcons';
 import CustomSelectDateButton from '../Common/CustomSelectDateButton';
@@ -21,6 +21,8 @@ import AddTime from '../AddTime';
 import RepeatFields from './RepeatFields';
 import { useGetAllMaintenanceFrequenciesQuery } from '~/lib/redux/services/maintenance/frequency.services';
 import { generateOptions } from '~/lib/utils/helperFunctions';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { updateFrequency } from '~/lib/redux/slices/DateSlice';
 
 interface FrequencyProps {
   isOpen: boolean;
@@ -30,19 +32,14 @@ interface FrequencyProps {
 
 const Frequency = (props: FrequencyProps) => {
   const { isOpen, onClose, selectedDateTime } = props;
+  const dispatch = useAppDispatch();
+  const dateInfo = useAppSelector((state) => state.date.info);
   const { data, isLoading } = useGetAllMaintenanceFrequenciesQuery({});
   const {
     isOpen: isOpenTime,
     onOpen: onOpenTime,
     onClose: onCloseTime,
   } = useDisclosure();
-  const [frequencyInfo, setFrequencyInfo] = useState<FrequencyInfo>({
-    interval: 1,
-    repeat: null,
-    startDate: null,
-    endDate: null,
-    repeatIntervals: [],
-  });
 
   // Sets the first Frequency as default
   useEffect(() => {
@@ -53,7 +50,7 @@ const Frequency = (props: FrequencyProps) => {
         'frequencyId'
       );
       if (options.length > 0) {
-        setFrequencyInfo((prev) => ({ ...prev, repeat: options[0] as Option }));
+        dispatch(updateFrequency({ repeat: options[0] as Option }));
       }
     }
   }, [data]);
@@ -95,17 +92,10 @@ const Frequency = (props: FrequencyProps) => {
                   )}
                   isLoading={isLoading}
                   isSearchable
-                  selectedOption={frequencyInfo.repeat ?? undefined}
+                  selectedOption={dateInfo.frequency.repeat ?? undefined}
                   showTitleAfterSelect={false}
                   handleSelect={(option) =>
-                    setFrequencyInfo((prev) => ({
-                      ...prev,
-                      repeat: option,
-                      repeatIntervals:
-                        option.value === frequencyInfo.repeat?.value
-                          ? frequencyInfo.repeatIntervals
-                          : [],
-                    }))
+                    dispatch(updateFrequency({ repeat: option }))
                   }
                 />
               </HStack>
@@ -121,40 +111,34 @@ const Frequency = (props: FrequencyProps) => {
                   <NumberBox
                     minNumber={1}
                     maxNumber={100}
-                    value={frequencyInfo.interval}
+                    value={dateInfo.frequency.interval}
                     handleValueChange={(value) =>
-                      setFrequencyInfo((prev) => ({ ...prev, interval: value }))
+                      dispatch(updateFrequency({ interval: value }))
                     }
                     handleDecrement={() =>
-                      setFrequencyInfo((prev) => ({
-                        ...prev,
-                        interval:
-                          frequencyInfo.interval > 1
-                            ? frequencyInfo.interval - 1
-                            : frequencyInfo.interval,
-                      }))
+                      dateInfo.frequency.interval > 1 &&
+                      dispatch(
+                        updateFrequency({
+                          interval: dateInfo.frequency.interval - 1,
+                        })
+                      )
                     }
                     handleIncrement={() =>
-                      setFrequencyInfo((prev) => ({
-                        ...prev,
-                        interval:
-                          frequencyInfo.interval < 100
-                            ? frequencyInfo.interval + 1
-                            : frequencyInfo.interval,
-                      }))
+                      dateInfo.frequency.interval < 100 &&
+                      dispatch(
+                        updateFrequency({
+                          interval: dateInfo.frequency.interval + 1,
+                        })
+                      )
                     }
                     customStyle={{ bgColor: 'transparent' }}
                   />
                   <Text textTransform="capitalize">
-                    {frequencyInfo.repeat?.label}
+                    {dateInfo.frequency.repeat?.label}
                   </Text>
                 </HStack>
               </HStack>
-              <RepeatFields
-                frequencyInfo={frequencyInfo}
-                setFrequencyInfo={setFrequencyInfo}
-                selectedDateTime={selectedDateTime}
-              />
+              <RepeatFields selectedDateTime={selectedDateTime} />
 
               <HStack
                 width="full"
@@ -188,7 +172,11 @@ const Frequency = (props: FrequencyProps) => {
                 />
                 <ConditionalDateSelector
                   handleSelectedDate={(date) =>
-                    setFrequencyInfo((prev) => ({ ...prev, endDate: date }))
+                    dispatch(
+                      updateFrequency({
+                        endDate: date,
+                      })
+                    )
                   }
                 />
               </HStack>
@@ -207,16 +195,23 @@ const Frequency = (props: FrequencyProps) => {
               >
                 Cancel
               </Button>
-              <Button customStyles={{ width: '116px' }}>Done</Button>
+              <Button
+                customStyles={{ width: '116px' }}
+                handleClick={() => console.log(dateInfo)}
+              >
+                Done
+              </Button>
             </HStack>
           </Flex>
         </ModalBody>
       </GenericModal>
-      <AddTime
-        isOpen={isOpenTime}
-        onClose={onCloseTime}
-        handleSelectedTime={() => {}}
-      />
+      {isOpenTime && (
+        <AddTime
+          isOpen={isOpenTime}
+          onClose={onCloseTime}
+          handleSelectedTime={() => {}}
+        />
+      )}
     </>
   );
 };

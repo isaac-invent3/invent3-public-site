@@ -36,6 +36,7 @@ import { taskTypeApi } from './services/task/types.services';
 import { ticketApi } from './services/ticket.services';
 import { assetTypeApi } from './services/asset/types.services';
 import { assetGroupTypeApi } from './services/asset/groupType.services';
+import dateSlice from './slices/DateSlice';
 
 export const persistConfig = {
   key: 'root',
@@ -70,6 +71,7 @@ const rootReducer = combineReducers({
   dashboard: dashboardSlice,
   maintenance: maintenanceSlice,
   task: taskSlice,
+  date: dateSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

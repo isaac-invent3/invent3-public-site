@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { HStack, useDisclosure } from '@chakra-ui/react';
-import { FrequencyInfo, Option } from '~/lib/interfaces/general.interfaces';
+import { Option } from '~/lib/interfaces/general.interfaces';
 import SectionInfo from '../../../Form/FormSectionInfo';
 import SelectableButtonGroup from '../../../Button/SelectableButtonGroup';
 import CustomButton from '../../Common/CustomButton';
@@ -8,11 +8,14 @@ import AddTime from '../../AddTime';
 import DimissibleContainer from '../../../DimissibleContainer';
 import Button from '../../../Button';
 import { dateFormatter } from '~/lib/utils/Formatters';
+import { generateTimeIntervalsForDay } from '../../Common/helperFunction';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { updateRepeatInterval } from '~/lib/redux/slices/DateSlice';
 
 const StaticIntervals: Option[] = [
   {
     label: '30 Minutes',
-    value: 0.3,
+    value: 0.5,
   },
   {
     label: '1 Hour',
@@ -25,13 +28,15 @@ const StaticIntervals: Option[] = [
 ];
 
 interface DailyProps {
-  frequencyInfo: FrequencyInfo;
-  setFrequencyInfo: React.Dispatch<React.SetStateAction<FrequencyInfo>>;
   selectedDateTime: string | null;
 }
 const Daily = (props: DailyProps) => {
   // eslint-disable-next-line no-unused-vars
-  const { frequencyInfo, setFrequencyInfo, selectedDateTime } = props;
+  const { selectedDateTime } = props;
+  const dailyInterval = useAppSelector(
+    (state) => state.date.info.frequency.repeatIntervals.daily
+  );
+  const dispatch = useAppDispatch();
   const {
     isOpen: isOpenTime,
     onOpen: onOpenTime,
@@ -47,21 +52,22 @@ const Daily = (props: DailyProps) => {
       setType('static');
     }
     setSelectedStaticInterval([interval]);
-    setFrequencyInfo((prev) => ({
-      ...prev,
-      repeatIntervals: [],
-    }));
+    dispatch(
+      updateRepeatInterval({
+        daily: selectedDateTime
+          ? generateTimeIntervalsForDay(
+              selectedDateTime,
+              interval.value as number
+            )
+          : [],
+      })
+    );
   };
 
   const handleDismissCustomTime = (time: string) => {
-    const newRepeatInterval = frequencyInfo.repeatIntervals.filter(
-      (item) => item !== time
-    );
-    setFrequencyInfo((prev) => ({
-      ...prev,
-      repeatIntervals: newRepeatInterval,
-    }));
-    if (frequencyInfo.repeatIntervals.length === 1) {
+    const newRepeatInterval = dailyInterval.filter((item) => item !== time);
+    dispatch(updateRepeatInterval({ daily: newRepeatInterval }));
+    if (dailyInterval.length === 1) {
       setType(null);
     }
   };
@@ -70,17 +76,29 @@ const Daily = (props: DailyProps) => {
     if (type !== 'custom') {
       setType('custom');
     }
-
-    const timeIsInclude = frequencyInfo.repeatIntervals.some(
-      (option) => option === time
-    );
+    const timeIsInclude = dailyInterval.some((option) => option === time);
     if (!timeIsInclude) {
-      setFrequencyInfo((prev) => ({
-        ...prev,
-        repeatIntervals: [...frequencyInfo.repeatIntervals, time],
-      }));
+      dispatch(updateRepeatInterval({ daily: [...dailyInterval, time] }));
     }
   };
+
+  // Regenerate Static Intervals if Selected Date & time changes.
+  useEffect(() => {
+    if (selectedDateTime) {
+      if (selectedStaticInterval.length >= 1) {
+        dispatch(
+          updateRepeatInterval({
+            daily: generateTimeIntervalsForDay(
+              selectedDateTime,
+              selectedStaticInterval[0]?.value as number
+            ),
+          })
+        );
+      } else {
+        dispatch(updateRepeatInterval({ daily: [] }));
+      }
+    }
+  }, [selectedDateTime]);
 
   return (
     <>
@@ -93,7 +111,7 @@ const Daily = (props: DailyProps) => {
         />
         {type === 'custom' ? (
           <HStack width="full" spacing="8px" flexWrap="wrap">
-            {frequencyInfo.repeatIntervals.map((time, index) => (
+            {dailyInterval.map((time, index) => (
               <DimissibleContainer
                 key={index}
                 handleClose={() => handleDismissCustomTime(time as string)}
@@ -122,7 +140,13 @@ const Daily = (props: DailyProps) => {
               isMultiSelect={false}
               hasAtLeastOneSelected
             />
-            <CustomButton handleClick={onOpenTime} buttonVariant="outline" />
+            <CustomButton
+              handleClick={() => {
+                dispatch(updateRepeatInterval({ daily: [] }));
+                onOpenTime();
+              }}
+              buttonVariant="outline"
+            />
           </HStack>
         )}
       </HStack>

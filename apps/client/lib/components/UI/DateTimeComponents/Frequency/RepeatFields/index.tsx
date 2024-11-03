@@ -17,7 +17,7 @@ const RepeatFields = (props: RepeatFieldProps) => {
   return (
     <Flex width="full" height="full">
       {label === 'daily' && <Daily selectedDateTime={selectedDateTime} />}
-      {label === 'monthly' && <Monthly />}
+      {(label === 'monthly' || label === 'quarterly') && <Monthly />}
       {label === 'weekly' && <Weekly />}
       {label === 'annually' && <Annually />}
     </Flex>

@@ -133,11 +133,26 @@ interface PlanFormDetails {
   schedules: ScheduleFormDetails[];
 }
 
+interface MaintenanceFrequency {
+  frequencyId: number;
+  frequencyName: string;
+  intervalValues: number[];
+  createdDate: string;
+  createdBy: string;
+  lastModifiedDate: string | null;
+  lastModifiedBy: string;
+  isDeleted: boolean;
+  deletedDate: string | null;
+  deletedBy: string;
+  guid: string;
+}
+
 export type {
   MaintenancePlan,
   MaintenanceScheduleStat,
   AggregateMaintenanceSchedule,
   ScheduleFormDetails,
   MaintenanceSchedule,
+  MaintenanceFrequency,
   PlanFormDetails,
 };

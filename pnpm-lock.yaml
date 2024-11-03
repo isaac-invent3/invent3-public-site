@@ -128,6 +128,9 @@ importers:
       date-arithmetic:
         specifier: ^4.1.0
         version: 4.1.0
+      date-fns:
+        specifier: ^4.1.0
+        version: 4.1.0
       focus-visible:
         specifier: ^5.2.1
         version: 5.2.1
@@ -4399,6 +4402,9 @@ packages:
 
   date-fns@3.6.0:
     resolution: {integrity: sha512-fRHTG8g/Gif+kSh50gaGEdToemgfj74aRX3swtiouboip5JDLAyDE9F11nHMIcvOaXeOC6D7SpNhi7uFyB7Uww==}
+
+  date-fns@4.1.0:
+    resolution: {integrity: sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg==}
 
   dateformat@3.0.3:
     resolution: {integrity: sha512-jyCETtSl3VMZMWeRo7iY1FL19ges1t55hMo5yaam4Jrsm5EPL89UQkoQRyiI+Yf4k8r2ZpdngkV8hr1lIdjb3Q==}
@@ -15916,6 +15922,8 @@ snapshots:
   date-arithmetic@4.1.0: {}
 
   date-fns@3.6.0: {}
+
+  date-fns@4.1.0: {}
 
   dateformat@3.0.3: {}
 

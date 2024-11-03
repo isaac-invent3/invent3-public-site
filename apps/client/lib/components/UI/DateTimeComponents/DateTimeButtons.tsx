@@ -9,19 +9,11 @@ import AddTime from './AddTime';
 import Frequency from './Frequency';
 import { FrequencyInfo, Option } from '~/lib/interfaces/general.interfaces';
 import DimissibleContainer from '../DimissibleContainer';
-
-const handleCombineDateTime = (date: string, time: string) => {
-  const combinedDateTime =
-    moment(date)
-      .utcOffset(0, true)
-      .set({
-        hour: parseInt(time.split(':')?.[0] ?? '0'),
-        minute: parseInt(time.split(':')?.[1] ?? '0'),
-      })
-      .toISOString() ?? null;
-
-  return combinedDateTime;
-};
+import CustomDate from './CustomDate';
+import { handleCombineDateTime } from './Common/helperFunction';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { dateFormatter } from '~/lib/utils/Formatters';
+import { updateFrequency } from '~/lib/redux/slices/DateSlice';
 
 interface DateTimeButtonsProps {
   showRepeat: boolean;
@@ -40,13 +32,22 @@ const DateTimeButtons = (props: DateTimeButtonsProps) => {
     buttonVariant,
     includeTime,
     handleDateTimeSelect,
+    minDate,
+    maxDate,
   } = props;
+  const dateInfo = useAppSelector((state) => state.date.info);
+  const dispatch = useAppDispatch();
   const [time, setTime] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<Option | null>(null);
   const {
     isOpen: isOpenTime,
     onOpen: onOpenTime,
     onClose: onCloseTime,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenCustomDate,
+    onOpen: onOpenCustomDate,
+    onClose: onCloseCustomDate,
   } = useDisclosure();
   const {
     isOpen: isOpenFrequency,
@@ -105,7 +106,24 @@ const DateTimeButtons = (props: DateTimeButtonsProps) => {
             </Button>
           </DimissibleContainer>
         )}
-        {!selectedDate && (
+        {dateInfo.frequency.startDate && (
+          <DimissibleContainer
+            handleClose={() => {
+              dispatch(updateFrequency({ startDate: null }));
+              handleDateTimeSelect && handleDateTimeSelect(null);
+            }}
+          >
+            <Button
+              customStyles={{ height: '37px', py: '10px' }}
+              handleClick={onOpenCustomDate}
+            >
+              {moment(dateInfo.frequency.startDate).format(
+                'MMM D, YYYY, hh:mm A'
+              )}
+            </Button>
+          </DimissibleContainer>
+        )}
+        {!selectedDate && !dateInfo.frequency.startDate && (
           <SlideTransition trigger={selectedDate ? false : true}>
             <HStack
               flexWrap="wrap"
@@ -124,7 +142,7 @@ const DateTimeButtons = (props: DateTimeButtonsProps) => {
                   {item.label}
                 </Button>
               ))}
-              <Button customStyles={buttonStyle}>
+              <Button customStyles={buttonStyle} handleClick={onOpenCustomDate}>
                 <Icon as={PenIcon} boxSize="16px" color="#374957" mr="8px" />
                 Custom
               </Button>
@@ -157,7 +175,7 @@ const DateTimeButtons = (props: DateTimeButtonsProps) => {
             Add Time
           </Button>
         )}
-        {showRepeat && selectedDate && (
+        {showRepeat && (selectedDate || dateInfo.frequency.startDate) && (
           <Button customStyles={buttonStyle} handleClick={onOpenFrequency}>
             <Icon as={RepeatIcon} boxSize="16px" color="#374957" mr="8px" />
             Repeat
@@ -181,6 +199,7 @@ const DateTimeButtons = (props: DateTimeButtonsProps) => {
         <Frequency
           isOpen={isOpenFrequency}
           onClose={onCloseFrequency}
+          minStartDate={minDate}
           selectedDateTime={
             selectedDate
               ? handleCombineDateTime(
@@ -189,6 +208,18 @@ const DateTimeButtons = (props: DateTimeButtonsProps) => {
                 )
               : null
           }
+        />
+      )}
+
+      {isOpenCustomDate && (
+        <CustomDate
+          isOpen={isOpenCustomDate}
+          onClose={onCloseCustomDate}
+          handleSetDateTime={(dateTime) =>
+            dispatch(updateFrequency({ startDate: dateTime }))
+          }
+          minDate={minDate}
+          maxDate={maxDate}
         />
       )}
     </>

@@ -31,10 +31,11 @@ interface FrequencyProps {
   isOpen: boolean;
   onClose: () => void;
   selectedDateTime: string | null;
+  minStartDate?: Date;
 }
 
 const Frequency = (props: FrequencyProps) => {
-  const { isOpen, onClose, selectedDateTime } = props;
+  const { isOpen, onClose, selectedDateTime, minStartDate } = props;
   const dispatch = useAppDispatch();
   const dateInfo = useAppSelector((state) => state.date.info);
   const [maxInterval, setMaxInterval] = useState(1);
@@ -183,6 +184,15 @@ const Frequency = (props: FrequencyProps) => {
               />
               <HStack spacing="24px" width="full">
                 <CustomSelectDateButton
+                  minDate={minStartDate}
+                  selectedDate={dateInfo.frequency.startDate}
+                  handleSelectedDateTime={(date) =>
+                    dispatch(
+                      updateFrequency({
+                        startDate: date,
+                      })
+                    )
+                  }
                   customStyle={{ width: '179px', height: '50px' }}
                 />
                 <HStack spacing="8px" as="button" onClick={onOpenTime}>
@@ -200,6 +210,8 @@ const Frequency = (props: FrequencyProps) => {
                 maxWidth="130px"
               />
               <ConditionalDateSelector
+                minDate={minStartDate}
+                selectedDate={dateInfo.frequency.endDate}
                 handleSelectedDate={(date) =>
                   dispatch(
                     updateFrequency({
@@ -233,7 +245,7 @@ const Frequency = (props: FrequencyProps) => {
             </Button>
             <Button
               customStyles={{ width: '116px' }}
-              handleClick={() => console.log(dateInfo)}
+              handleClick={() => onClose()}
             >
               Done
             </Button>

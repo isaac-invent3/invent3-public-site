@@ -22,4 +22,16 @@ function generateTimeIntervalsForDay(
   return intervals;
 }
 
-export { generateTimeIntervalsForDay };
+const handleCombineDateTime = (date: string, time: string) => {
+  const combinedDateTime =
+    moment(date)
+      .utcOffset(0, true)
+      .set({
+        hour: parseInt(time.split(':')?.[0] ?? '0'),
+        minute: parseInt(time.split(':')?.[1] ?? '0'),
+      })
+      .toISOString() ?? null;
+
+  return combinedDateTime;
+};
+export { generateTimeIntervalsForDay, handleCombineDateTime };

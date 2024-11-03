@@ -9,11 +9,12 @@ interface ConditionalDateSelectorProps {
   handleSelectedDate: (date: string | null) => void;
   minDate?: Date;
   maxDate?: Date;
+  selectedDate?: string | null;
 }
 
 const ConditionalDateSelector = (props: ConditionalDateSelectorProps) => {
   // eslint-disable-next-line no-unused-vars
-  const { handleSelectedDate, minDate, maxDate } = props;
+  const { handleSelectedDate, minDate, maxDate, selectedDate } = props;
   const [shouldSelectDate, setShouldSelectDate] = useState(false);
 
   return (
@@ -38,6 +39,10 @@ const ConditionalDateSelector = (props: ConditionalDateSelectorProps) => {
         />
         <Text color="black">on</Text>
         <CustomDateButton
+          minDate={minDate}
+          maxDate={maxDate}
+          selectedDate={selectedDate}
+          handleSelectedDateTime={() => {}}
           isDisabled={!shouldSelectDate}
           customStyle={{ width: '130px' }}
         />

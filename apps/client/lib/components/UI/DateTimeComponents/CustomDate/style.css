@@ -6,9 +6,21 @@
     color: #616161 !important;
 }
 
-.react-datepicker__day--keyboard-selected {
+.react-datepicker__day--disabled {
+    color: #ccc !important;
+}
+/* .react-datepicker__day--keyboard-selected {
     color: #ffffff !important;
     background-color: #000000 !important;
+} */
+
+.react-datepicker__day--today {
+    font-weight: 400 !important;
+}
+
+.react-datepicker__day--selected {
+    color: #ffffff !important;
+    background-color: #000000 !important; 
 }
 
 .react-datepicker {

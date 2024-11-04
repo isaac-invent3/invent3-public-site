@@ -1,16 +1,16 @@
 import { Flex, HStack, VStack } from '@chakra-ui/react';
 import { useField } from 'formik';
+import moment from 'moment';
 import React from 'react';
 import DateTimeButtons from '~/lib/components/UI/DateTimeComponents/DateTimeButtons';
 import ErrorMessage from '~/lib/components/UI/ErrorMessage';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
-import { dateFormatter } from '~/lib/utils/Formatters';
 
 interface StartDateProps {
   sectionMaxWidth: string;
   spacing: string;
   // eslint-disable-next-line no-unused-vars
-  handleSelectedDate?: (date: string | null) => void;
+  handleSelectedDate?: (date: Date | undefined) => void;
 }
 const StartDate = (props: StartDateProps) => {
   const { sectionMaxWidth, spacing, handleSelectedDate } = props;
@@ -32,11 +32,12 @@ const StartDate = (props: StartDateProps) => {
           buttonVariant="solid"
           includeTime={false}
           minDate={new Date()}
+          selectedDate={meta.value ?? undefined}
           handleDateTimeSelect={(dateTime) => {
-            helpers.setValue(
-              dateTime ? dateFormatter(dateTime, 'DD/MM/YYYY') : dateTime
-            );
-            handleSelectedDate && handleSelectedDate(dateTime);
+            helpers.setValue(dateTime?.trim() ?? null);
+            if (handleSelectedDate) {
+              handleSelectedDate(moment(dateTime, 'DD/MM/YYYY').toDate());
+            }
           }}
         />
         {meta.touched && meta.error !== undefined && (

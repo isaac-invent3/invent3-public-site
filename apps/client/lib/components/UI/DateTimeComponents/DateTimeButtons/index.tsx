@@ -1,19 +1,17 @@
-/* eslint-disable no-unused-vars */
 import { HStack, Icon, useDisclosure } from '@chakra-ui/react';
 import moment from 'moment';
 import React, { useState } from 'react';
-import Button from '../Button';
-import { PenIcon, RepeatIcon } from '../../CustomIcons';
-import SlideTransition from '../SlideTransition';
-import AddTime from './AddTime';
-import Frequency from './Frequency';
-import { FrequencyInfo, Option } from '~/lib/interfaces/general.interfaces';
-import DimissibleContainer from '../DimissibleContainer';
-import CustomDate from './CustomDate';
-import { handleCombineDateTime } from './Common/helperFunction';
-import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import { dateFormatter } from '~/lib/utils/Formatters';
+import AddTime from '../AddTime';
+import { FrequencyInfo } from '~/lib/interfaces/general.interfaces';
+import CustomDate from '../CustomDate';
+import { useAppDispatch } from '~/lib/redux/hooks';
 import { updateFrequency } from '~/lib/redux/slices/DateSlice';
+import Button from '../../Button';
+import { PenIcon } from '~/lib/components/CustomIcons';
+import { RepeatIcon } from '@chakra-ui/icons';
+import SlideTransition from '../../SlideTransition';
+import Display from './Display';
+import RecurrenceModal from '../RecurrenceModal';
 
 interface DateTimeButtonsProps {
   showRepeat: boolean;
@@ -22,7 +20,11 @@ interface DateTimeButtonsProps {
   prefix?: string;
   minDate?: Date;
   maxDate?: Date;
+  selectedDate?: string | undefined;
+  selectedTime?: string | undefined;
+  // eslint-disable-next-line no-unused-vars
   handleDateTimeSelect?: (dateTime: string | null) => void;
+  // eslint-disable-next-line no-unused-vars
   handleFrequencyInfo?: (info: FrequencyInfo) => void;
 }
 const DateTimeButtons = (props: DateTimeButtonsProps) => {
@@ -31,14 +33,16 @@ const DateTimeButtons = (props: DateTimeButtonsProps) => {
     showRepeat,
     buttonVariant,
     includeTime,
-    handleDateTimeSelect,
     minDate,
     maxDate,
+    selectedDate,
+    selectedTime,
+    handleDateTimeSelect,
   } = props;
-  const dateInfo = useAppSelector((state) => state.date.info);
   const dispatch = useAppDispatch();
-  const [time, setTime] = useState<string | null>(null);
-  const [selectedDate, setSelectedDate] = useState<Option | null>(null);
+  const [time, setTime] = useState<string | undefined>(
+    selectedTime ?? undefined
+  );
   const {
     isOpen: isOpenTime,
     onOpen: onOpenTime,
@@ -50,16 +54,18 @@ const DateTimeButtons = (props: DateTimeButtonsProps) => {
     onClose: onCloseCustomDate,
   } = useDisclosure();
   const {
-    isOpen: isOpenFrequency,
-    onOpen: onOpenFrequency,
-    onClose: onCloseFrequency,
+    isOpen: isOpenRecurrence,
+    onOpen: onOpenRecurrence,
+    onClose: onCloseRecurrence,
   } = useDisclosure();
-
-  const time12Hour = moment(time, ['HH:mm']).format('hh:mm A');
 
   const today = moment().utcOffset(0, true);
   const tomorrow = moment().utcOffset(0, true).add(1, 'days');
   const nextWeek = moment().utcOffset(0, true).add(1, 'week');
+
+  const now = moment().startOf('day');
+  const date = moment(selectedDate).startOf('day');
+  const dayDifference = date.diff(now, 'days');
 
   const buttonStyle = {
     py: '10px',
@@ -92,38 +98,18 @@ const DateTimeButtons = (props: DateTimeButtonsProps) => {
   return (
     <>
       <HStack flexWrap="wrap" spacing="16px">
-        {selectedDate && (
-          <DimissibleContainer
-            handleClose={() => {
-              setSelectedDate(null);
-              handleDateTimeSelect && handleDateTimeSelect(null);
-              setTime(null);
-            }}
-          >
-            <Button customStyles={{ height: '37px', py: '10px' }}>
-              {prefix ?? ''} {selectedDate?.label}
-              {time ? `, ${time12Hour}` : ''}
-            </Button>
-          </DimissibleContainer>
-        )}
-        {dateInfo.frequency.startDate && (
-          <DimissibleContainer
-            handleClose={() => {
-              dispatch(updateFrequency({ startDate: null }));
-              handleDateTimeSelect && handleDateTimeSelect(null);
-            }}
-          >
-            <Button
-              customStyles={{ height: '37px', py: '10px' }}
-              handleClick={onOpenCustomDate}
-            >
-              {moment(dateInfo.frequency.startDate).format(
-                'MMM D, YYYY, hh:mm A'
-              )}
-            </Button>
-          </DimissibleContainer>
-        )}
-        {!selectedDate && !dateInfo.frequency.startDate && (
+        {/* Display Starts Here */}
+        <Display
+          selectedDate={selectedDate}
+          handleDateTimeSelect={handleDateTimeSelect}
+          prefix={prefix}
+          onOpenCustomDate={onOpenCustomDate}
+          includeTime={includeTime}
+          selectedTime={time}
+          setTime={setTime}
+        />
+        {/* Display Ends Here */}
+        {!selectedDate && (
           <SlideTransition trigger={selectedDate ? false : true}>
             <HStack
               flexWrap="wrap"
@@ -135,8 +121,12 @@ const DateTimeButtons = (props: DateTimeButtonsProps) => {
                   customStyles={buttonStyle}
                   key={index}
                   handleClick={() => {
-                    setSelectedDate(item);
-                    handleDateTimeSelect && handleDateTimeSelect(item.value);
+                    dispatch(updateFrequency({ startDate: item.value }));
+                    if (handleDateTimeSelect) {
+                      handleDateTimeSelect(
+                        moment(item.value).format('DD/MM/YYYY')
+                      );
+                    }
                   }}
                 >
                   {item.label}
@@ -149,7 +139,7 @@ const DateTimeButtons = (props: DateTimeButtonsProps) => {
               {showRepeat && (
                 <Button
                   customStyles={buttonStyle}
-                  handleClick={onOpenFrequency}
+                  handleClick={onOpenRecurrence}
                 >
                   <Icon
                     as={RepeatIcon}
@@ -163,7 +153,7 @@ const DateTimeButtons = (props: DateTimeButtonsProps) => {
             </HStack>
           </SlideTransition>
         )}
-        {includeTime && selectedDate && !time && (
+        {includeTime && selectedDate && !time && dayDifference <= 7 && (
           <Button customStyles={buttonStyle} handleClick={onOpenTime}>
             <Icon
               as={PenIcon}
@@ -175,8 +165,8 @@ const DateTimeButtons = (props: DateTimeButtonsProps) => {
             Add Time
           </Button>
         )}
-        {showRepeat && (selectedDate || dateInfo.frequency.startDate) && (
-          <Button customStyles={buttonStyle} handleClick={onOpenFrequency}>
+        {showRepeat && selectedDate && (
+          <Button customStyles={buttonStyle} handleClick={onOpenRecurrence}>
             <Icon as={RepeatIcon} boxSize="16px" color="#374957" mr="8px" />
             Repeat
           </Button>
@@ -189,23 +179,18 @@ const DateTimeButtons = (props: DateTimeButtonsProps) => {
           handleSelectedTime={(time) => {
             setTime(time);
             handleDateTimeSelect &&
-              handleDateTimeSelect(
-                handleCombineDateTime(selectedDate?.value as string, time)
-              );
+              handleDateTimeSelect(`${selectedDate ?? ''} ${time}`);
           }}
         />
       )}
-      {isOpenFrequency && (
-        <Frequency
-          isOpen={isOpenFrequency}
-          onClose={onCloseFrequency}
+      {isOpenRecurrence && (
+        <RecurrenceModal
+          isOpen={isOpenRecurrence}
+          onClose={onCloseRecurrence}
           minStartDate={minDate}
           selectedDateTime={
             selectedDate
-              ? handleCombineDateTime(
-                  selectedDate?.value as string,
-                  time ?? '00:00'
-                )
+              ? moment(selectedDate, 'DD/MM/YYYY').toISOString()
               : null
           }
         />
@@ -213,13 +198,29 @@ const DateTimeButtons = (props: DateTimeButtonsProps) => {
 
       {isOpenCustomDate && (
         <CustomDate
+          shouldIncludeTime={includeTime}
           isOpen={isOpenCustomDate}
           onClose={onCloseCustomDate}
-          handleSetDateTime={(dateTime) =>
-            dispatch(updateFrequency({ startDate: dateTime }))
+          initialDate={
+            selectedDate
+              ? moment(selectedDate, 'DD/MM/YYYY').toDate()
+              : undefined
           }
+          initialTime={time}
           minDate={minDate}
           maxDate={maxDate}
+          handleSetDateTime={(date, time) => {
+            setTime(time);
+            if (handleDateTimeSelect) {
+              const selectedDateTime = `${date ? moment(date).format('DD/MM/YYYY') : ''}${time ? ` ${time}` : ''}`;
+              handleDateTimeSelect(selectedDateTime);
+              if (date) {
+                dispatch(
+                  updateFrequency({ startDate: moment(date).toISOString() })
+                );
+              }
+            }
+          }}
         />
       )}
     </>

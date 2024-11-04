@@ -6,12 +6,12 @@ import CustomDate from '../CustomDate';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
 interface CustomSelectDateButtonProps {
-  selectedDate?: string | null;
+  selectedDate?: Date | null;
   isDisabled?: boolean;
   minDate?: Date;
   maxDate?: Date;
   // eslint-disable-next-line no-unused-vars
-  handleSelectedDateTime: (date: string) => void;
+  handleSelectedDate: (date: Date) => void;
   customStyle?: { [name: string]: unknown };
 }
 const CustomSelectDateButton = (props: CustomSelectDateButtonProps) => {
@@ -19,7 +19,9 @@ const CustomSelectDateButton = (props: CustomSelectDateButtonProps) => {
     selectedDate,
     isDisabled = false,
     customStyle,
-    handleSelectedDateTime,
+    minDate,
+    maxDate,
+    handleSelectedDate,
   } = props;
   const today = moment().format('MMM DD, YYYY');
   const {
@@ -49,9 +51,16 @@ const CustomSelectDateButton = (props: CustomSelectDateButtonProps) => {
       </HStack>
       {isOpenCustomDate && (
         <CustomDate
+          minDate={minDate}
+          maxDate={maxDate}
+          initialDate={selectedDate ?? undefined}
           isOpen={isOpenCustomDate}
           onClose={onCloseCustomDate}
-          handleSetDateTime={(dateTime) => handleSelectedDateTime(dateTime)}
+          handleSetDateTime={(date) => {
+            if (date) {
+              handleSelectedDate(date);
+            }
+          }}
         />
       )}
     </>

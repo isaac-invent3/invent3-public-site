@@ -39,7 +39,10 @@ const Date = (props: DateProps) => {
           includeTime={true}
           minDate={minScheduleDate}
           maxDate={maxScheduleDate}
-          handleDateTimeSelect={(dateTime) => helpers.setValue(dateTime)}
+          selectedDate={meta.value?.split(' ')?.[0] ?? undefined}
+          handleDateTimeSelect={(dateTime) => {
+            helpers.setValue(dateTime);
+          }}
         />
         <InfoCard
           infoText="Start Date has to be within specified Plan Info Date"

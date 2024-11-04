@@ -26,15 +26,16 @@ import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateFrequency } from '~/lib/redux/slices/DateSlice';
 import { MaintenanceFrequency } from '~/lib/interfaces/maintenance.interfaces';
 import Summary from './Summary';
+import moment from 'moment';
 
-interface FrequencyProps {
+interface RecurrenceModalProps {
   isOpen: boolean;
   onClose: () => void;
   selectedDateTime: string | null;
   minStartDate?: Date;
 }
 
-const Frequency = (props: FrequencyProps) => {
+const RecurrenceModal = (props: RecurrenceModalProps) => {
   const { isOpen, onClose, selectedDateTime, minStartDate } = props;
   const dispatch = useAppDispatch();
   const dateInfo = useAppSelector((state) => state.date.info);
@@ -185,11 +186,15 @@ const Frequency = (props: FrequencyProps) => {
               <HStack spacing="24px" width="full">
                 <CustomSelectDateButton
                   minDate={minStartDate}
-                  selectedDate={dateInfo.frequency.startDate}
-                  handleSelectedDateTime={(date) =>
+                  selectedDate={
+                    dateInfo.frequency.startDate
+                      ? moment(dateInfo.frequency.startDate).toDate()
+                      : undefined
+                  }
+                  handleSelectedDate={(date) =>
                     dispatch(
                       updateFrequency({
-                        startDate: date,
+                        startDate: moment(date).toISOString(),
                       })
                     )
                   }
@@ -211,11 +216,15 @@ const Frequency = (props: FrequencyProps) => {
               />
               <ConditionalDateSelector
                 minDate={minStartDate}
-                selectedDate={dateInfo.frequency.endDate}
+                selectedDate={
+                  dateInfo.frequency.endDate
+                    ? moment(dateInfo.frequency.endDate).toDate()
+                    : undefined
+                }
                 handleSelectedDate={(date) =>
                   dispatch(
                     updateFrequency({
-                      endDate: date,
+                      endDate: moment(date).toISOString(),
                     })
                   )
                 }
@@ -263,4 +272,4 @@ const Frequency = (props: FrequencyProps) => {
   );
 };
 
-export default Frequency;
+export default RecurrenceModal;

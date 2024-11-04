@@ -6,10 +6,10 @@ import moment from 'moment';
 
 interface ConditionalDateSelectorProps {
   // eslint-disable-next-line no-unused-vars
-  handleSelectedDate: (date: string | null) => void;
+  handleSelectedDate: (date: Date | null) => void;
   minDate?: Date;
   maxDate?: Date;
-  selectedDate?: string | null;
+  selectedDate?: Date | null;
 }
 
 const ConditionalDateSelector = (props: ConditionalDateSelectorProps) => {
@@ -33,7 +33,7 @@ const ConditionalDateSelector = (props: ConditionalDateSelectorProps) => {
         <RadioBox
           handleClick={() => {
             setShouldSelectDate(true);
-            handleSelectedDate(moment().toISOString());
+            handleSelectedDate(moment().toDate());
           }}
           isSelected={shouldSelectDate}
         />
@@ -42,7 +42,7 @@ const ConditionalDateSelector = (props: ConditionalDateSelectorProps) => {
           minDate={minDate}
           maxDate={maxDate}
           selectedDate={selectedDate}
-          handleSelectedDateTime={() => {}}
+          handleSelectedDate={(date) => handleSelectedDate(date)}
           isDisabled={!shouldSelectDate}
           customStyle={{ width: '130px' }}
         />

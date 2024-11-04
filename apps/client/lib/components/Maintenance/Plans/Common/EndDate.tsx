@@ -1,5 +1,6 @@
 import { Flex, HStack, VStack } from '@chakra-ui/react';
 import { useField } from 'formik';
+import moment from 'moment';
 import React from 'react';
 import ConditionalDateSelector from '~/lib/components/UI/DateTimeComponents/Common/ConditionalDateSelector';
 import ErrorMessage from '~/lib/components/UI/ErrorMessage';
@@ -27,6 +28,9 @@ const EndDate = (props: EndDateProps) => {
 
       <VStack width="full" spacing="4px" alignItems="flex-start">
         <ConditionalDateSelector
+          selectedDate={
+            meta.value ? moment(meta.value, 'DD/MM/YYYY').toDate() : undefined
+          }
           handleSelectedDate={(date) => {
             helpers.setValue(date ? dateFormatter(date, 'DD/MM/YYYY') : date);
           }}

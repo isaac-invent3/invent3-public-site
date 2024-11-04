@@ -12,7 +12,7 @@ const createDateSchema = (
   return Yup.string()
     .matches(
       new RegExp(dateFormat),
-      'Date must be in the format DD/MM/YYYY' + (includeTime ? ' HH:mm' : '')
+      `Date ${includeTime && 'and Time'} is Required`
     ) // Validate the format
     .test('is-valid-date', 'Invalid Date', function (value) {
       const { createError } = this;

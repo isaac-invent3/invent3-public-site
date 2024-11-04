@@ -40,8 +40,8 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
   const dispatch = useAppDispatch();
   const [isDefaultPlan, setIsDefaultPlan] = useState(false);
   const [canProceed, setCanProceed] = useState(false);
-  const [inputtedStartDate, setInputtedStartDate] = useState<string | null>(
-    null
+  const [inputtedStartDate, setInputtedStartDate] = useState<Date | undefined>(
+    undefined
   );
 
   const initialValues = {
@@ -68,7 +68,7 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
       isDefaultPlan,
       true,
       previousDay,
-      inputtedStartDate ?? undefined
+      moment(inputtedStartDate).format('DD/MM/YYYY') ?? undefined
     ),
     enableReinitialize: true,
     onSubmit: async (values) => {
@@ -271,11 +271,7 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
                 <EndDate
                   sectionMaxWidth="141px"
                   spacing="40px"
-                  minDate={
-                    inputtedStartDate
-                      ? moment(inputtedStartDate, 'DD/MM/YYYY').toDate()
-                      : new Date()
-                  }
+                  minDate={inputtedStartDate ?? new Date()}
                 />
               </SimpleGrid>
               <SimpleGrid columns={2} gap="40px" width="full">

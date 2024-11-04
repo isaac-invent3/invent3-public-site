@@ -135,8 +135,15 @@ const TaskFormModal = (props: TaskFormModalProps) => {
   return (
     <>
       <GenericDrawer isOpen={isOpen} onClose={onClose} maxWidth="681px">
-        <DrawerHeader p={0} m={0} px="32px" mt="20px" width="max-content">
-          <BackButton handleClick={onClose} customStyles={{ mb: '60px' }} />
+        <DrawerHeader
+          p={0}
+          m={0}
+          px="32px"
+          mt="20px"
+          mb="10px"
+          width="max-content"
+        >
+          <BackButton handleClick={onClose} />
         </DrawerHeader>
         <DrawerBody p={0} m={0}>
           <FormikProvider value={formik}>
@@ -145,6 +152,7 @@ const TaskFormModal = (props: TaskFormModalProps) => {
                 width="full"
                 px="32px"
                 pb="32px"
+                pt="50px"
                 spacing={0}
                 alignItems="flex-start"
               >

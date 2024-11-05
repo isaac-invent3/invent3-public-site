@@ -132,4 +132,12 @@ const assigneeSchema = Yup.object().shape({
   assignee: Yup.string().required('User is Required'),
 });
 
-export { createDateSchema, assigneeSchema };
+const recurrenceSchema = (minStartDate?: string, minEndDate?: string) =>
+  Yup.object().shape({
+    startDate: createDateSchema(true, true, minStartDate).required(
+      'Start Date is Required'
+    ),
+    endDate: createDateSchema(true, false, minEndDate).nullable(),
+  });
+
+export { createDateSchema, assigneeSchema, recurrenceSchema };

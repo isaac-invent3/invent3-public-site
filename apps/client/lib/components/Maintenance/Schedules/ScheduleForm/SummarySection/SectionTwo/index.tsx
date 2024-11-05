@@ -170,7 +170,7 @@ const SectionTwo = (props: ISectionTwo) => {
                 pageSize={pageSize}
                 setPageSize={setPageSize}
                 isSortable={false}
-                type="modal"
+                type="drawer"
               />
             ) : (
               <TaskListTable data={formDetails.tasks} type="summary" />

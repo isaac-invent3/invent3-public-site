@@ -41,6 +41,14 @@ interface MaintenanceSchedule {
   scheduleId: number;
   scheduleGuid: string;
   scheduledDate: string | null;
+  endDate: string | null;
+  intervalValue: number | null;
+  dayOccurrences: string[];
+  weekOccurrences: number[];
+  monthOccurrences: number[];
+  yearOccurences: {
+    [name: number]: number[];
+  } | null;
   completionDate: string | null;
   durationInHours: number | null;
   scheduleName: string | null;
@@ -97,8 +105,18 @@ interface ScheduleFormDetails {
   description: string | null;
   comment: string | null;
   scheduledDate: string | null;
+  endDate: string | null;
   completionDate: string | null;
   ticketId: number | null;
+  intervalValue: number | null;
+  deletedTaskIDs: number[];
+  updatedTaskIDs: number[];
+  dayOccurrences: string[];
+  weekOccurrences: number[];
+  monthOccurrences: number[];
+  yearOccurences: {
+    [name: number]: number[];
+  } | null;
   maintenancePlanInfo: {
     planName: string | null;
     planType: string | null;
@@ -130,6 +148,8 @@ interface PlanFormDetails {
   startDate: string | null;
   endDate: string | null;
   cost: number | null;
+  deletedScheduleIDs: number[];
+  updatedScheduleIDs: number[];
   schedules: ScheduleFormDetails[];
 }
 

@@ -48,6 +48,7 @@ export default function Page({ params }: { params: { id: string } }) {
         costEstimate: task?.costEstimate ?? null,
         actualCost: task?.actualCost ?? null,
         comments: task?.comments ?? null,
+        localId: task?.taskId,
       })
     );
   }

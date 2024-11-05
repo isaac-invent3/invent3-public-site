@@ -20,7 +20,7 @@ const months = Array.from({ length: 12 }, (_, i) => ({
 const Monthly = () => {
   const dateInfo = useAppSelector((state) => state.date.info);
   const dispatch = useAppDispatch();
-  const annualInterval = dateInfo.frequency.repeatIntervals.annually;
+  const annualInterval = dateInfo.recurrence.repeatIntervals.annually;
   const [selectedMonth, setSelectedMonth] = useState(moment().month() + 1);
 
   const currentMonthNumber = moment().month() + 1;

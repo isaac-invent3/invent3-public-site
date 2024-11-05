@@ -11,7 +11,7 @@ import { dateFormatter } from '~/lib/utils/Formatters';
 import TaskDetailDrawer from '../Drawers/TaskDetailDrawer';
 import MarkTaskAsCompletedModal from '../Modals/MarkTaskAsCompletedModal';
 
-const PopoverAction = (task: Task, type: 'modal' | 'page') => {
+const PopoverAction = (task: Task, type: 'drawer' | 'page') => {
   const {
     isOpen: isOpenEdit,
     onOpen: onOpenEdit,
@@ -64,7 +64,7 @@ const PopoverAction = (task: Task, type: 'modal' | 'page') => {
           )}
           <Text
             cursor="pointer"
-            {...(type === 'modal' ? { onClick: () => onOpenEdit() } : {})}
+            {...(type === 'drawer' ? { onClick: () => onOpenEdit() } : {})}
             as={type === 'page' ? 'a' : 'button'}
             {...(type === 'page'
               ? { href: `/task-management/${task.taskId}/edit` }

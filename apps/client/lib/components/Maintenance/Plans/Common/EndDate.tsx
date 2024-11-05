@@ -31,7 +31,8 @@ const EndDate = (props: EndDateProps) => {
           selectedDate={
             meta.value ? moment(meta.value, 'DD/MM/YYYY').toDate() : undefined
           }
-          handleSelectedDate={(date) => {
+          includeTime={false}
+          handleSelectedDateTime={(date) => {
             helpers.setValue(date ? dateFormatter(date, 'DD/MM/YYYY') : date);
           }}
           minDate={minDate}

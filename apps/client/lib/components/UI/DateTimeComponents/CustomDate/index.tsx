@@ -17,6 +17,7 @@ import { ClockIcon, RemoveIcon } from '~/lib/components/CustomIcons';
 import { enGB } from 'date-fns/locale/en-GB';
 import './style.css';
 import moment from 'moment';
+import 'react-datepicker/dist/react-datepicker.css';
 
 registerLocale('en-GB', enGB);
 

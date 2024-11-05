@@ -34,4 +34,5 @@ const handleCombineDateTime = (date: string, time: string) => {
 
   return combinedDateTime;
 };
+
 export { generateTimeIntervalsForDay, handleCombineDateTime };

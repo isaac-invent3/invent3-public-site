@@ -1,0 +1,88 @@
+import { HStack } from '@chakra-ui/react';
+import React, { useEffect } from 'react';
+import SectionInfo from '../../Form/FormSectionInfo';
+import SelectInput from '../../Select';
+import { generateOptions } from '~/lib/utils/helperFunctions';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { useGetAllMaintenanceFrequenciesQuery } from '~/lib/redux/services/maintenance/frequency.services';
+import { MaintenanceFrequency } from '~/lib/interfaces/maintenance.interfaces';
+import { updateRecurrence } from '~/lib/redux/slices/DateSlice';
+import { Option } from '~/lib/interfaces/general.interfaces';
+
+interface FrequencyProps {
+  setMaxInterval: React.Dispatch<React.SetStateAction<number>>;
+}
+const Frequency = (props: FrequencyProps) => {
+  const { setMaxInterval } = props;
+
+  const dispatch = useAppDispatch();
+  const dateInfo = useAppSelector((state) => state.date.info);
+  const { data, isLoading } = useGetAllMaintenanceFrequenciesQuery({});
+
+  // Sets the first Frequency as default
+  useEffect(() => {
+    if (data?.data?.items) {
+      const options = generateOptions(
+        data?.data?.items,
+        'frequencyName',
+        'frequencyId'
+      );
+      if (options.length > 0) {
+        dispatch(updateRecurrence({ frequency: options[0] as Option }));
+      }
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (dateInfo.recurrence.frequency && data?.data?.items) {
+      const repeat = dateInfo.recurrence.frequency;
+      const frequencyList: MaintenanceFrequency[] = data.data.items;
+      const selectedFrequency = frequencyList.find(
+        (item) => item.frequencyId === repeat.value
+      );
+
+      if (
+        selectedFrequency &&
+        selectedFrequency.intervalValues &&
+        selectedFrequency.intervalValues.length > 1
+      ) {
+        const lastIntervalValue =
+          selectedFrequency.intervalValues[
+            selectedFrequency.intervalValues.length - 1
+          ];
+
+        // If last Interval value exists
+        setMaxInterval(lastIntervalValue ?? 1); // Set fallback value to 1
+      }
+    }
+  }, [dateInfo.recurrence.frequency, data?.data?.items]);
+
+  return (
+    <HStack width="full" spacing="29px" mb="32px">
+      <SectionInfo
+        title="Repeats"
+        info="Add name that users can likely search with"
+        isRequired={false}
+        maxWidth="130px"
+      />
+      <SelectInput
+        name="repeat"
+        title="Repeat"
+        options={generateOptions(
+          data?.data?.items,
+          'frequencyName',
+          'frequencyId'
+        )}
+        isLoading={isLoading}
+        isSearchable
+        selectedOption={dateInfo.recurrence.frequency ?? undefined}
+        showTitleAfterSelect={false}
+        handleSelect={(option) =>
+          dispatch(updateRecurrence({ frequency: option, interval: 1 }))
+        }
+      />
+    </HStack>
+  );
+};
+
+export default Frequency;

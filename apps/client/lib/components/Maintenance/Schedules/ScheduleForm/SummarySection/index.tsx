@@ -44,11 +44,15 @@ const SummarySection = (props: SummarySectionProps) => {
     createMaintenanceScheduleDto: generateMaintenanceScheduleDTO(
       type,
       scheduleFormDetails,
+      [],
+      [],
       username as string
     ),
     createTaskDtos: generateTasksArray(
       type,
       scheduleFormDetails.tasks,
+      [],
+      [],
       username as string
     ),
   };
@@ -66,6 +70,8 @@ const SummarySection = (props: SummarySectionProps) => {
           ...generateMaintenanceScheduleDTO(
             type,
             scheduleFormDetails,
+            [],
+            [],
             username as string
           ),
         },

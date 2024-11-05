@@ -1,7 +1,8 @@
-import { Flex, HStack } from '@chakra-ui/react';
-import { useFormikContext } from 'formik';
-import EmployeeSelect from '~/lib/components/Common/EmployeeSelect';
+import { Flex, HStack, VStack } from '@chakra-ui/react';
+import { useField, useFormikContext } from 'formik';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
+import UserDisplayAndAddButton from '../../Common/UserDisplayAndAddButton';
+import ErrorMessage from '../../UI/ErrorMessage';
 
 interface TaskAssignedToProps {
   sectionMaxWidth: string;
@@ -9,7 +10,10 @@ interface TaskAssignedToProps {
 }
 const TaskAssignedTo = (props: TaskAssignedToProps) => {
   const { sectionMaxWidth, spacing } = props;
-  const { setFieldValue, values } = useFormikContext<any>();
+  const { setFieldValue, values, submitCount } = useFormikContext<any>();
+  // eslint-disable-next-line no-unused-vars
+  const [field, meta, helpers] = useField('assignedTo');
+
   return (
     <HStack width="full" alignItems="flex-start" spacing={spacing}>
       <Flex width="full" maxW={sectionMaxWidth}>
@@ -19,14 +23,18 @@ const TaskAssignedTo = (props: TaskAssignedToProps) => {
           isRequired
         />
       </Flex>
-      <EmployeeSelect
-        selectName="assignedTo"
-        selectTitle="Assigned to"
-        handleSelect={(option) =>
-          setFieldValue('assignedToEmployeeName', option.label)
-        }
-        defaultName={values?.assignedToName}
-      />
+      <VStack width="full" spacing="4px" alignItems="flex-start">
+        <UserDisplayAndAddButton
+          selectedUser={values?.assignedToEmployeeName}
+          handleSelectUser={(user) => {
+            helpers.setValue(user?.value ?? null);
+            setFieldValue('assignedToEmployeeName', user?.label ?? null);
+          }}
+        />
+        {submitCount > 0 && meta.touched && meta.error !== undefined && (
+          <ErrorMessage>{meta.error}</ErrorMessage>
+        )}
+      </VStack>
     </HStack>
   );
 };

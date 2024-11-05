@@ -34,7 +34,7 @@ const Daily = (props: DailyProps) => {
   // eslint-disable-next-line no-unused-vars
   const { selectedDateTime } = props;
   const dailyInterval = useAppSelector(
-    (state) => state.date.info.frequency.repeatIntervals.daily
+    (state) => state.date.info.recurrence.repeatIntervals.daily
   );
   const dispatch = useAppDispatch();
   const {
@@ -136,6 +136,7 @@ const Daily = (props: DailyProps) => {
                 handleStaticInterval(options[0] as Option)
               }
               buttonVariant="outline"
+              customButtonStyle={{ width: 'max-content' }}
               customContainerStyle={{ spacing: '8px' }}
               isMultiSelect={false}
               hasAtLeastOneSelected

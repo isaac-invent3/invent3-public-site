@@ -65,6 +65,7 @@ interface baseTaskFormDetail {
 
 interface FormDetails {
   taskId: number | null;
+  localId: number | null;
   taskType: string | null;
   statusId: number | null;
   status: string | null;

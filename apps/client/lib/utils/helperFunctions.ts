@@ -217,6 +217,14 @@ const getDisplayDate = (date: Date, view: View) => {
   };
 };
 
+const formattedDateTime = (date: Date | null, time: string | null) => {
+  const formatted = time
+    ? moment(`${moment(date).format('YYYY-MM-DD')} ${time}`, 'YYYY-MM-DD HH:mm')
+    : moment(date);
+
+  return formatted;
+};
+
 export {
   generateOptions,
   getDocumentInfo,
@@ -226,4 +234,5 @@ export {
   transformCostsData,
   transformToCalendarEvents,
   getDisplayDate,
+  formattedDateTime,
 };

@@ -4,7 +4,6 @@ import FormActionButtons from '~/lib/components/UI/Form/FormActionButtons';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { useSession } from 'next-auth/react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { useUpdateMaintenanceScheduleMutation } from '~/lib/redux/services/maintenance/schedule.services';
 import {
   generateMaintenanceScheduleDTO,
   generatePlanDTO,
@@ -14,7 +13,10 @@ import PlanSuccessModal from './PlanSuccessModal';
 import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
 import { ScheduleFormDetails } from '~/lib/interfaces/maintenance.interfaces';
-import { useCreateMaintenancePlanWithSchedulesMutation } from '~/lib/redux/services/maintenance/plan.services';
+import {
+  useCreateMaintenancePlanWithSchedulesMutation,
+  useUpdateMaintenancePlanWithSchedulesMutation,
+} from '~/lib/redux/services/maintenance/plan.services';
 
 interface SummarySectionProps {
   activeStep: number;
@@ -22,60 +24,72 @@ interface SummarySectionProps {
   type: 'create' | 'edit';
 }
 const SummarySection = (props: SummarySectionProps) => {
+  const { handleSubmit } = useCustomMutation();
   const { activeStep, setActiveStep, type } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const scheduleFormDetails = useAppSelector(
-    (state) => state.maintenance.scheduleForm
-  );
   const planFormDetails = useAppSelector((state) => state.maintenance.planForm);
-  const { handleSubmit } = useCustomMutation();
   const [createMaintenancePlan, { isLoading: createLoading }] =
     useCreateMaintenancePlanWithSchedulesMutation();
-  const [updateSchedule, { isLoading: updateLoading }] =
-    useUpdateMaintenanceScheduleMutation();
+  const [updateMaintenancePlan, { isLoading: updateLoading }] =
+    useUpdateMaintenancePlanWithSchedulesMutation();
   const { data } = useSession();
   const username = data?.user?.username;
 
+  const getDtoKey = (base: string) =>
+    `${type === 'create' ? `create${base}Dto` : `update${base}Dto`}`;
+
   const PAYLOAD = {
-    createMaintenancePlanDto: generatePlanDTO(
+    [getDtoKey('MaintenancePlan')]: generatePlanDTO(
       type,
       planFormDetails,
       username as string
     ),
-    createMaintenanceScheduleDtos: planFormDetails.schedules.map(
-      (value: ScheduleFormDetails) => ({
-        createMaintenanceScheduleDto: generateMaintenanceScheduleDTO(
+    [type === 'create'
+      ? 'createMaintenanceScheduleDtos'
+      : 'masterUpdateMaintenanceScheduleDto']: planFormDetails.schedules
+      .filter(
+        // Filter for schedules that has been added, updated or deleted
+        (schedule) =>
+          (schedule.scheduleId &&
+            (planFormDetails.updatedScheduleIDs.includes(schedule.scheduleId) ||
+              planFormDetails.deletedScheduleIDs.includes(
+                schedule.scheduleId
+              ))) ||
+          schedule.scheduleId === null
+      )
+      .map((schedule: ScheduleFormDetails) => ({
+        [getDtoKey('MaintenanceSchedule')]: generateMaintenanceScheduleDTO(
           type,
-          value,
+          schedule,
+          planFormDetails.updatedScheduleIDs,
+          planFormDetails.deletedScheduleIDs,
           username as string
         ),
-        createTaskDtos: generateTasksArray(
+        [getDtoKey('Task')]: generateTasksArray(
           type,
-          value.tasks,
+          // Generate for only task that has been added, updated or deleted
+          schedule.tasks.filter(
+            (task) =>
+              (task.taskId &&
+                (schedule.updatedTaskIDs.includes(task.taskId) ||
+                  schedule.deletedTaskIDs.includes(task.taskId))) ||
+              task.taskId === null
+          ),
+          schedule.updatedTaskIDs,
+          schedule.deletedTaskIDs,
           username as string
         ),
-      })
-    ),
+      })),
   };
 
-  const handleSumbitSchedule = async () => {
+  const handleSumbitPlan = async () => {
     let response;
-    if (type === 'create') {
-      response = await handleSubmit(createMaintenancePlan, PAYLOAD, '');
-    } else {
-      response = await handleSubmit(
-        updateSchedule,
-        {
-          id: scheduleFormDetails.scheduleId,
-          ...generateMaintenanceScheduleDTO(
-            type,
-            scheduleFormDetails,
-            username as string
-          ),
-        },
-        ''
-      );
-    }
+    response = await handleSubmit(
+      type === 'create' ? createMaintenancePlan : updateMaintenancePlan,
+      PAYLOAD,
+      ''
+    );
+
     if (response?.data) {
       onOpen();
     }
@@ -111,7 +125,7 @@ const SummarySection = (props: SummarySectionProps) => {
           activeStep={1}
           finalText={type === 'create' ? 'Finish' : 'Save Changes'}
           setActiveStep={setActiveStep}
-          handleContinue={handleSumbitSchedule}
+          handleContinue={handleSumbitPlan}
           isLoading={createLoading || updateLoading}
           loadingText={createLoading ? 'Submitting...' : 'Updating...'}
         />

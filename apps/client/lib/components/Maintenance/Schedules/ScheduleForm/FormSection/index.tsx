@@ -1,6 +1,6 @@
-import { Divider, Flex, useToast, VStack } from '@chakra-ui/react';
+import { Divider, Flex, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import FormActionButtons from '~/lib/components/UI/Form/FormActionButtons';
 import { scheduleSchema } from '~/lib/schemas/maintenance.schema';
 import SectionOne from './SectionOne';
@@ -9,7 +9,6 @@ import Header from '../Header';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';
 import moment from 'moment';
-import { validateFrequencyInstance } from '../../../Common/helperFunctions';
 
 interface FormSectionProps {
   activeStep: number;
@@ -19,8 +18,6 @@ interface FormSectionProps {
 const FormSection = (props: FormSectionProps) => {
   const { activeStep, setActiveStep, type } = props;
   const formDetails = useAppSelector((state) => state.maintenance.scheduleForm);
-  const [hasAScheduleInstance, setHasAScheduleInstance] = useState(false);
-  const toast = useToast();
   const dispatch = useAppDispatch();
 
   const defaultHeader =
@@ -67,31 +64,6 @@ const FormSection = (props: FormSectionProps) => {
     },
   });
 
-  //Validates if the selected Frequency and start date would have an instance
-  useEffect(() => {
-    if (
-      formik.values.scheduledDate &&
-      formik.values.frequencyId &&
-      formDetails.frequencyName
-    ) {
-      const hasAnInstance = validateFrequencyInstance(
-        formDetails.frequencyName,
-        formik.values.scheduledDate,
-        formDetails.maintenancePlanInfo.endDate
-      );
-      if (hasAnInstance) {
-        setHasAScheduleInstance(hasAScheduleInstance);
-      } else {
-        toast({
-          title:
-            "Selected Frequency and Start Date doesn't have a schedule Instance",
-          status: 'error',
-          position: 'top-right',
-        });
-      }
-    }
-  }, [formik.values.scheduledDate, formik.values.frequencyId]);
-
   return (
     <Flex
       width="full"
@@ -118,7 +90,7 @@ const FormSection = (props: FormSectionProps) => {
           >
             <SectionOne />
             <SectionTwo
-              dateTimeButtonVariant="solid"
+              buttonVariant="secondary"
               minScheduleDate={moment(
                 formDetails?.maintenancePlanInfo?.startDate ?? moment()
               ).toDate()}
@@ -135,7 +107,6 @@ const FormSection = (props: FormSectionProps) => {
               totalStep={1}
               activeStep={0}
               setActiveStep={setActiveStep}
-              disablePrimaryButton={!hasAScheduleInstance}
             />
           </Flex>
         </form>

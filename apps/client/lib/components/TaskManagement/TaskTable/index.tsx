@@ -28,7 +28,7 @@ interface TaskTableProps {
   setPageSize?: React.Dispatch<React.SetStateAction<number>>;
   isSelectable?: boolean;
   isSortable?: boolean;
-  type: 'modal' | 'page';
+  type: 'drawer' | 'page';
   // eslint-disable-next-line no-unused-vars
 }
 const TaskTable = (props: TaskTableProps) => {

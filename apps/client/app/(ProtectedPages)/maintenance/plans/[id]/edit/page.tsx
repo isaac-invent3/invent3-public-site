@@ -46,6 +46,8 @@ export default function Page({ params }: { params: { id: string } }) {
         ownerId: maintenance?.ownerId,
         cost: plan?.cost,
         schedules: [],
+        deletedScheduleIDs: [],
+        updatedScheduleIDs: [],
       })
     );
   }

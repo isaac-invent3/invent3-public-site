@@ -1,30 +1,28 @@
-import { Flex, HStack } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import { Flex, HStack, VStack } from '@chakra-ui/react';
+import { useField } from 'formik';
+import React from 'react';
+import SelectableButtonGroup from '~/lib/components/UI/Button/SelectableButtonGroup';
+import ErrorMessage from '~/lib/components/UI/ErrorMessage';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
-import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
-import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import {
-  useGetAllMaintenanceTypeQuery,
-  useSearchMaintenanceTypeMutation,
-} from '~/lib/redux/services/maintenance/type.services';
+import { useAppDispatch } from '~/lib/redux/hooks';
+import { useGetAllMaintenanceTypeQuery } from '~/lib/redux/services/maintenance/type.services';
 import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';
+import { generateOptions } from '~/lib/utils/helperFunctions';
 
 interface TypeProps {
   sectionMaxWidth: string;
   spacing: string;
+  buttonVariant: 'secondary' | 'outline';
 }
 const Type = (props: TypeProps) => {
-  const { sectionMaxWidth, spacing } = props;
-  const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllMaintenanceTypeQuery({
+  const { sectionMaxWidth, spacing, buttonVariant } = props;
+  const { data } = useGetAllMaintenanceTypeQuery({
     pageSize: 25,
-    pageNumber,
   });
-  const [searchMaintenanceType] = useSearchMaintenanceTypeMutation({});
-  const { typeName } = useAppSelector(
-    (state) => state.maintenance.scheduleForm
-  );
+
   const dispatch = useAppDispatch();
+  // eslint-disable-next-line no-unused-vars
+  const [field, meta, helpers] = useField('typeId');
   return (
     <HStack width="full" alignItems="flex-start" spacing={spacing}>
       <Flex width="full" maxW={sectionMaxWidth}>
@@ -34,21 +32,26 @@ const Type = (props: TypeProps) => {
           isRequired
         />
       </Flex>
-      <GenericAsyncSelect
-        selectName="typeId"
-        selectTitle="Schedule Type"
-        data={data}
-        labelKey="typeName"
-        valueKey="maintenanceTypeId"
-        defaultInputValue={typeName}
-        mutationFn={searchMaintenanceType}
-        isLoading={isLoading}
-        pageNumber={pageNumber}
-        setPageNumber={setPageNumber}
-        handleSelect={(option) =>
-          dispatch(updateScheduleForm({ typeName: option.label }))
-        }
-      />
+      <VStack width="full" alignItems="flex-start">
+        <SelectableButtonGroup
+          options={generateOptions(
+            data?.data.items,
+            'typeName',
+            'maintenanceTypeId'
+          )}
+          selectedOptions={[{ value: meta.value, label: meta.value }]}
+          handleSelect={(options) => {
+            helpers.setValue(options[0]?.value);
+            dispatch(updateScheduleForm({ typeName: options[0]?.label }));
+          }}
+          isMultiSelect={false}
+          buttonVariant={buttonVariant}
+          customButtonStyle={{ width: 'max-content' }}
+        />
+        {meta.touched && meta.error !== undefined && (
+          <ErrorMessage>{meta.error}</ErrorMessage>
+        )}
+      </VStack>
     </HStack>
   );
 };

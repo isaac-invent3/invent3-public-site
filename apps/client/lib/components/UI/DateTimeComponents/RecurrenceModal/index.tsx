@@ -1,89 +1,67 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import GenericModal from '../../Modal';
 import {
   HStack,
-  Icon,
   ModalBody,
   ModalFooter,
   ModalHeader,
   Text,
-  useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import SectionInfo from '../../Form/FormSectionInfo';
 import Button from '../../Button';
-import SelectInput from '../../Select';
-import NumberBox from '../Common/NumberBox';
-import { Option } from '~/lib/interfaces/general.interfaces';
-import ConditionalDateSelector from '../Common/ConditionalDateSelector';
-import { ClockIcon } from '~/lib/components/CustomIcons';
-import CustomSelectDateButton from '../Common/CustomSelectDateButton';
-import AddTime from '../AddTime';
-import RepeatFields from './RepeatFields';
-import { useGetAllMaintenanceFrequenciesQuery } from '~/lib/redux/services/maintenance/frequency.services';
-import { generateOptions } from '~/lib/utils/helperFunctions';
-import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import { updateFrequency } from '~/lib/redux/slices/DateSlice';
-import { MaintenanceFrequency } from '~/lib/interfaces/maintenance.interfaces';
+import { RecurrenceInfo } from '~/lib/interfaces/general.interfaces';
+import { useAppSelector } from '~/lib/redux/hooks';
 import Summary from './Summary';
 import moment from 'moment';
+import { FormikProvider, useFormik } from 'formik';
+import { recurrenceSchema } from '~/lib/schemas/general.schema';
+import Frequency from './Frequency';
+import Intervals from './Intervals';
+import StartDateTime from './StartDateTime';
+import EndDateTime from './EndDateTime';
 
 interface RecurrenceModalProps {
   isOpen: boolean;
   onClose: () => void;
-  selectedDateTime: string | null;
   minStartDate?: Date;
+  maxStartDate?: Date;
+  maxEndDate?: Date;
+  isLoading?: boolean;
+  // eslint-disable-next-line no-unused-vars
+  handleSetRecurrence: (info: RecurrenceInfo) => void;
 }
 
 const RecurrenceModal = (props: RecurrenceModalProps) => {
-  const { isOpen, onClose, selectedDateTime, minStartDate } = props;
-  const dispatch = useAppDispatch();
-  const dateInfo = useAppSelector((state) => state.date.info);
-  const [maxInterval, setMaxInterval] = useState(1);
-  const { data, isLoading } = useGetAllMaintenanceFrequenciesQuery({});
   const {
-    isOpen: isOpenTime,
-    onOpen: onOpenTime,
-    onClose: onCloseTime,
-  } = useDisclosure();
+    isOpen,
+    onClose,
+    minStartDate,
+    maxStartDate,
+    maxEndDate,
+    isLoading,
+    handleSetRecurrence,
+  } = props;
+  const recurrence = useAppSelector((state) => state.date.info.recurrence);
+  const [maxInterval, setMaxInterval] = useState(1);
 
-  // Sets the first Frequency as default
-  useEffect(() => {
-    if (data?.data?.items) {
-      const options = generateOptions(
-        data?.data?.items,
-        'frequencyName',
-        'frequencyId'
-      );
-      if (options.length > 0) {
-        dispatch(updateFrequency({ repeat: options[0] as Option }));
-      }
-    }
-  }, [data]);
-
-  useEffect(() => {
-    if (dateInfo.frequency.repeat && data?.data?.items) {
-      const repeat = dateInfo.frequency.repeat;
-      const frequencyList: MaintenanceFrequency[] = data.data.items;
-      const selectedFrequency = frequencyList.find(
-        (item) => item.frequencyId === repeat.value
-      );
-
-      if (
-        selectedFrequency &&
-        selectedFrequency.intervalValues &&
-        selectedFrequency.intervalValues.length > 1
-      ) {
-        const lastIntervalValue =
-          selectedFrequency.intervalValues[
-            selectedFrequency.intervalValues.length - 1
-          ];
-
-        // If last Interval value exists
-        setMaxInterval(lastIntervalValue ?? 1); // Set fallback value to 1
-      }
-    }
-  }, [dateInfo.frequency.repeat, data?.data?.items]);
+  const formik = useFormik({
+    initialValues: {
+      startDate: recurrence.startDate
+        ? `${moment(recurrence.startDate).format('DD/MM/YYYY')}${recurrence.startTime ? ` ${recurrence.startTime}` : ''}`
+        : null,
+      endDate: recurrence.endDate
+        ? `${moment(recurrence.endDate).format('DD/MM/YYYY')}${recurrence.endTime ? ` ${recurrence.endTime}` : ''}`
+        : null,
+    },
+    validationSchema: recurrenceSchema(
+      moment(minStartDate).format('DD/MM/YYYY'),
+      moment(recurrence.startDate).format('DD/MM/YYYY')
+    ),
+    enableReinitialize: true,
+    onSubmit: async () => {
+      handleSetRecurrence(recurrence);
+    },
+  });
 
   return (
     <>
@@ -101,136 +79,30 @@ const RecurrenceModal = (props: RecurrenceModalProps) => {
           p={0}
           m={0}
           width="full"
-          pointerEvents={isLoading ? 'none' : 'initial'}
+          // pointerEvents={isLoading ? 'none' : 'initial'}
           pl="32px"
           pr="27px"
         >
-          <VStack width="full" mt="40px" pb="71px" spacing="0px">
-            <HStack width="full" spacing="29px" mb="32px">
-              <SectionInfo
-                title="Repeats"
-                info="Add name that users can likely search with"
-                isRequired={false}
-                maxWidth="130px"
-              />
-              <SelectInput
-                name="repeat"
-                title="Repeat"
-                options={generateOptions(
-                  data?.data?.items,
-                  'frequencyName',
-                  'frequencyId'
-                )}
-                isLoading={isLoading}
-                isSearchable
-                selectedOption={dateInfo.frequency.repeat ?? undefined}
-                showTitleAfterSelect={false}
-                handleSelect={(option) =>
-                  dispatch(updateFrequency({ repeat: option, interval: 1 }))
-                }
-              />
-            </HStack>
-
-            <HStack width="full" spacing="29px" mb="32px">
-              <SectionInfo
-                title="Interval"
-                info="Add name that users can likely search with"
-                isRequired={false}
-                maxWidth="130px"
-              />
-              <HStack spacing="24px">
-                <NumberBox
-                  minNumber={1}
-                  maxNumber={maxInterval}
-                  value={dateInfo.frequency.interval}
-                  handleValueChange={(value) =>
-                    dispatch(updateFrequency({ interval: value }))
-                  }
-                  handleDecrement={() =>
-                    dateInfo.frequency.interval > 1 &&
-                    dispatch(
-                      updateFrequency({
-                        interval: dateInfo.frequency.interval - 1,
-                      })
-                    )
-                  }
-                  handleIncrement={() =>
-                    dateInfo.frequency.interval < maxInterval &&
-                    dispatch(
-                      updateFrequency({
-                        interval: dateInfo.frequency.interval + 1,
-                      })
-                    )
-                  }
-                  customStyle={{ bgColor: 'transparent' }}
+          <FormikProvider value={formik}>
+            <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
+              <VStack width="full" mt="40px" pb="71px" spacing="0px">
+                <Frequency setMaxInterval={setMaxInterval} />
+                <Intervals maxInterval={maxInterval} />
+                <StartDateTime
+                  minStartDate={minStartDate}
+                  maxStartDate={maxStartDate}
                 />
-                <Text textTransform="capitalize">
-                  {dateInfo.frequency.repeat?.label}
-                </Text>
-              </HStack>
-            </HStack>
-            <RepeatFields selectedDateTime={selectedDateTime} />
-
-            <HStack
-              width="full"
-              spacing="29px"
-              alignItems="flex-start"
-              mb="32px"
-            >
-              <SectionInfo
-                title="Starts"
-                info="Add name that users can likely search with"
-                isRequired={false}
-                maxWidth="130px"
-              />
-              <HStack spacing="24px" width="full">
-                <CustomSelectDateButton
-                  minDate={minStartDate}
-                  selectedDate={
-                    dateInfo.frequency.startDate
-                      ? moment(dateInfo.frequency.startDate).toDate()
+                <EndDateTime
+                  minEndDate={
+                    recurrence.startDate
+                      ? moment(recurrence.startDate).toDate()
                       : undefined
                   }
-                  handleSelectedDate={(date) =>
-                    dispatch(
-                      updateFrequency({
-                        startDate: moment(date).toISOString(),
-                      })
-                    )
-                  }
-                  customStyle={{ width: '179px', height: '50px' }}
+                  maxEndDate={maxEndDate}
                 />
-                <HStack spacing="8px" as="button" onClick={onOpenTime}>
-                  <Icon as={ClockIcon} boxSize="16px" color="#374957" />
-                  <Text color="primary.500">Add a time</Text>
-                </HStack>
-              </HStack>
-            </HStack>
-
-            <HStack width="full" spacing="29px" alignItems="flex-start">
-              <SectionInfo
-                title="Ends"
-                info="Add name that users can likely search with"
-                isRequired={false}
-                maxWidth="130px"
-              />
-              <ConditionalDateSelector
-                minDate={minStartDate}
-                selectedDate={
-                  dateInfo.frequency.endDate
-                    ? moment(dateInfo.frequency.endDate).toDate()
-                    : undefined
-                }
-                handleSelectedDate={(date) =>
-                  dispatch(
-                    updateFrequency({
-                      endDate: moment(date).toISOString(),
-                    })
-                  )
-                }
-              />
-            </HStack>
-          </VStack>
+              </VStack>
+            </form>
+          </FormikProvider>
         </ModalBody>
         <ModalFooter
           p={0}
@@ -253,21 +125,16 @@ const RecurrenceModal = (props: RecurrenceModalProps) => {
               Cancel
             </Button>
             <Button
-              customStyles={{ width: '116px' }}
-              handleClick={() => onClose()}
+              customStyles={{ minW: '116px' }}
+              handleClick={() => formik.handleSubmit()}
+              isLoading={isLoading}
+              loadingText="Validating..."
             >
               Done
             </Button>
           </HStack>
         </ModalFooter>
       </GenericModal>
-      {isOpenTime && (
-        <AddTime
-          isOpen={isOpenTime}
-          onClose={onCloseTime}
-          handleSelectedTime={() => {}}
-        />
-      )}
     </>
   );
 };

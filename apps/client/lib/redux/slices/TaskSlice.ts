@@ -26,6 +26,7 @@ const initialTaskForm = {
   status: null,
   priorityName: null,
   assignedToEmployeeName: null,
+  localId: null,
 };
 
 const initialState: SliceProps = {

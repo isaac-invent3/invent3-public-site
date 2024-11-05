@@ -1,6 +1,6 @@
-import { HStack, useDisclosure, useToast, VStack } from '@chakra-ui/react';
+import { HStack, useDisclosure, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { scheduleSchema } from '~/lib/schemas/maintenance.schema';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import {
@@ -11,18 +11,14 @@ import SectionTwo from '../../../Schedules/ScheduleForm/FormSection/SectionTwo';
 import Button from '~/lib/components/UI/Button';
 import GenericLeaveDialogModal from '~/lib/components/UI/Modal/LeaveDialogModal';
 import moment from 'moment';
-import { validateFrequencyInstance } from '../../../Common/helperFunctions';
 
 interface ScheduleFormProps {
   setShowScheduleForm: React.Dispatch<React.SetStateAction<boolean>>;
-  type: 'create' | 'edit';
 }
 const ScheduleForm = (props: ScheduleFormProps) => {
-  const { type, setShowScheduleForm } = props;
+  const { setShowScheduleForm } = props;
   const formDetails = useAppSelector((state) => state.maintenance.scheduleForm);
   const planDetails = useAppSelector((state) => state.maintenance.planForm);
-  const [hasAScheduleInstance, setHasAScheduleInstance] = useState(false);
-  const toast = useToast();
   const dispatch = useAppDispatch();
   const {
     isOpen: isOpenDialog,
@@ -51,7 +47,7 @@ const ScheduleForm = (props: ScheduleFormProps) => {
       taskCount: formDetails?.taskCount ?? 0,
     },
     validationSchema: scheduleSchema(
-      type === 'create',
+      formDetails.scheduleId === null,
       false,
       false,
       previousDay,
@@ -69,6 +65,14 @@ const ScheduleForm = (props: ScheduleFormProps) => {
         assetLocation: formDetails.assetLocation,
         ticketId: formDetails.ticketId,
         scheduleId: formDetails.scheduleId ?? null,
+        endDate: formDetails.endDate ?? null,
+        intervalValue: formDetails.intervalValue ?? 1,
+        dayOccurrences: formDetails.dayOccurrences ?? [],
+        weekOccurrences: formDetails.weekOccurrences ?? [],
+        monthOccurrences: formDetails.monthOccurrences ?? [],
+        yearOccurences: formDetails.yearOccurences ?? {},
+        deletedTaskIDs: [],
+        updatedTaskIDs: [],
         maintenancePlanInfo: {
           planName: planDetails.planName,
           planType: planDetails.planTypeName,
@@ -80,13 +84,31 @@ const ScheduleForm = (props: ScheduleFormProps) => {
         },
       };
       if (values.localId) {
+        //Update an existing schedule
         const newPlanSchedules = planDetails.schedules.filter(
           (item) => item.localId !== values.localId
         );
         dispatch(
-          updatePlanForm({ schedules: [...newPlanSchedules, newScheduleInfo] })
+          updatePlanForm({
+            schedules: [...newPlanSchedules, newScheduleInfo],
+          })
         );
+        //Mark as updated if schedule Id exist and is not included in the list
+        if (
+          formDetails.scheduleId &&
+          !planDetails.updatedScheduleIDs.includes(formDetails.scheduleId)
+        ) {
+          dispatch(
+            updatePlanForm({
+              updatedScheduleIDs: [
+                ...planDetails.updatedScheduleIDs,
+                formDetails.scheduleId,
+              ],
+            })
+          );
+        }
       } else {
+        // Store the new schedule
         dispatch(
           updatePlanForm({
             schedules: [
@@ -110,32 +132,6 @@ const ScheduleForm = (props: ScheduleFormProps) => {
     onCloseDialog();
   };
 
-  //Validates if the selected Frequency and start date would have an instance
-  useEffect(() => {
-    if (
-      formik.values.scheduledDate &&
-      formik.values.frequencyId &&
-      formDetails.frequencyName
-    ) {
-      const hasAnInstance = validateFrequencyInstance(
-        formDetails.frequencyName,
-        formik.values.scheduledDate,
-        planDetails.endDate
-      );
-      if (hasAnInstance) {
-        setHasAScheduleInstance(hasAnInstance);
-      } else {
-        setHasAScheduleInstance(false);
-        toast({
-          title:
-            "Selected Frequency and Start Date doesn't have a schedule Instance",
-          status: 'error',
-          position: 'top-right',
-        });
-      }
-    }
-  }, [formik.values.scheduledDate, formik.values.frequencyId]);
-
   return (
     <>
       <FormikProvider value={formik}>
@@ -153,7 +149,7 @@ const ScheduleForm = (props: ScheduleFormProps) => {
           >
             <SectionTwo
               descriptionHeight="83px"
-              dateTimeButtonVariant="outline"
+              buttonVariant="outline"
               minScheduleDate={(planDetails.startDate
                 ? moment(planDetails.startDate, 'DD/MM/YYYY')
                 : moment()
@@ -175,7 +171,6 @@ const ScheduleForm = (props: ScheduleFormProps) => {
               <Button
                 customStyles={{ width: '161px' }}
                 handleClick={formik.handleSubmit}
-                isDisabled={!hasAScheduleInstance}
               >
                 {formDetails?.localId ? 'Update' : 'Add'} Schedule
               </Button>

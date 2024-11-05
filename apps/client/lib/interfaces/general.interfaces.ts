@@ -54,11 +54,13 @@ interface RepeatInterval {
   monthly: number[];
 }
 
-interface FrequencyInfo {
+interface RecurrenceInfo {
   interval: number;
-  repeat: Option | null;
+  frequency: Option | null;
   startDate: string | null;
+  startTime: string | null;
   endDate: string | null;
+  endTime: string | null;
   repeatIntervals: RepeatInterval;
 }
 
@@ -67,6 +69,6 @@ export type {
   SearchResponse,
   SearchCriterion,
   GeoJSONFeature,
-  FrequencyInfo,
+  RecurrenceInfo,
   RepeatInterval,
 };

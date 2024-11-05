@@ -7,14 +7,32 @@ import {
   baseTaskFormDetail,
   taskFormDetails,
 } from '~/lib/interfaces/task.interfaces';
+import { FORM_ENUM } from '~/lib/utils/constants';
 
 const generateTasksArray = (
   type: 'create' | 'edit',
   formTasks: taskFormDetails[],
+  updatedTaskIDs: number[],
+  deletedTaskIDs: number[],
   username: string
 ) => {
-  let allTasks: baseTaskFormDetail[] = [];
-  formTasks.forEach((item) =>
+  type formDetails = baseTaskFormDetail & {
+    actionType: (typeof FORM_ENUM)[keyof typeof FORM_ENUM];
+  };
+
+  let allTasks: formDetails[] = [];
+  formTasks.forEach((item) => {
+    let actionType = FORM_ENUM.add;
+
+    if (item.taskId) {
+      if (updatedTaskIDs.includes(item.taskId)) {
+        actionType = FORM_ENUM.update;
+      }
+      if (deletedTaskIDs.includes(item.taskId)) {
+        actionType = FORM_ENUM.delete;
+      }
+    }
+
     allTasks.push({
       taskTypeId: item.taskTypeId,
       taskName: item.taskName,
@@ -30,17 +48,31 @@ const generateTasksArray = (
       actualCost: item.actualCost,
       comments: item.comments,
       scheduleId: item.scheduleId,
+      actionType,
       [`${type === 'create' ? 'createdBy' : 'lastModifiedBy'}`]: username,
-    })
-  );
+    });
+  });
   return allTasks;
 };
 
 const generateMaintenanceScheduleDTO = (
   type: 'create' | 'edit',
   formDetail: ScheduleFormDetails,
+  updatedScheduleIDs: number[],
+  deletedScheduleIDs: number[],
   username: string
 ) => {
+  let actionType = FORM_ENUM.add;
+
+  if (formDetail.scheduleId) {
+    if (updatedScheduleIDs.includes(formDetail.scheduleId)) {
+      actionType = FORM_ENUM.update;
+    }
+    if (deletedScheduleIDs.includes(formDetail.scheduleId)) {
+      actionType = FORM_ENUM.delete;
+    }
+  }
+
   const maintenanceScheduleDto = {
     planId: formDetail.planId,
     scheduleName: formDetail.name,
@@ -53,6 +85,7 @@ const generateMaintenanceScheduleDTO = (
       'DD/MM/YYYY hh:mmA'
     ).utcOffset(0, true),
     completionDate: null,
+    actionType,
     ...(type === 'edit'
       ? {
           scheduleId: formDetail.scheduleId,
@@ -69,6 +102,7 @@ const generatePlanDTO = (
   username: string
 ) => {
   const maintenancePlanDto = {
+    planId: formDetail.planId,
     planName: formDetail.planName,
     frequencyId: formDetail.frequencyId,
     ownerId: formDetail.ownerId,

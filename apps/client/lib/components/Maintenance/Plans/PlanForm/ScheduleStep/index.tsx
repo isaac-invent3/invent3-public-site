@@ -4,9 +4,10 @@ import React, { useState } from 'react';
 import FormActionButtons from '~/lib/components/UI/Form/FormActionButtons';
 import { planScheduleSchema } from '~/lib/schemas/maintenance.schema';
 import { useAppSelector } from '~/lib/redux/hooks';
-import ScheduleList from './ScheduleList';
+// import ScheduleList from './ScheduleList';
 import ScheduleForm from './ScheduleForm';
 import SlideTransition from '~/lib/components/UI/SlideTransition';
+import ScheduleList from './ScheduleList';
 
 interface ScheduleStepProps {
   activeStep: number;
@@ -60,10 +61,7 @@ const ScheduleStep = (props: ScheduleStepProps) => {
               selectMultiple={false}
             />
             <SlideTransition trigger={showScheduleForm}>
-              <ScheduleForm
-                type={type}
-                setShowScheduleForm={setShowScheduleForm}
-              />
+              <ScheduleForm setShowScheduleForm={setShowScheduleForm} />
             </SlideTransition>
           </VStack>
           <Flex width="full" mt="16px">

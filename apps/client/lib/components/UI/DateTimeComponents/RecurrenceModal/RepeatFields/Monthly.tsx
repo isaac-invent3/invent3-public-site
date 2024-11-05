@@ -11,7 +11,7 @@ import MonthCard from '../../Common/MonthCard';
 const Monthly = () => {
   const dateInfo = useAppSelector((state) => state.date.info);
   const dispatch = useAppDispatch();
-  const monthlyInterval = dateInfo.frequency.repeatIntervals.monthly;
+  const monthlyInterval = dateInfo.recurrence.repeatIntervals.monthly;
 
   const handleClick = (item: number) => {
     const isSelected = monthlyInterval.some((option) => option === item);
@@ -33,7 +33,7 @@ const Monthly = () => {
   return (
     <HStack width="full" spacing="29px" alignItems="flex-start" mb="32px">
       <SectionInfo
-        title="Days"
+        title="On Days"
         info="Add name that users can likely search with"
         isRequired={false}
         maxWidth="130px"

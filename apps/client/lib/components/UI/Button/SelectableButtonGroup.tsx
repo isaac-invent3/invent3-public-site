@@ -49,7 +49,7 @@ const SelectableButtonGroup = (props: SelectableButtonGroupProps) => {
   };
 
   return (
-    <HStack spacing="8px" {...customContainerStyle} flex="flex-wrap">
+    <HStack spacing="8px" {...customContainerStyle} flexWrap="wrap">
       {options.map((item, index) => {
         const isSelected = selectedOptions.some(
           (option) => option.value === item.value

@@ -12,8 +12,10 @@ interface RepeatFieldProps {
 
 const RepeatFields = (props: RepeatFieldProps) => {
   const { selectedDateTime } = props;
-  const repeat = useAppSelector((state) => state.date.info.frequency.repeat);
-  const label = repeat?.label?.toLowerCase();
+  const frequency = useAppSelector(
+    (state) => state.date.info.recurrence.frequency
+  );
+  const label = frequency?.label?.toLowerCase();
   return (
     <Flex width="full" height="full">
       {label === 'daily' && <Daily selectedDateTime={selectedDateTime} />}

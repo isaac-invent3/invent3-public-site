@@ -37,6 +37,15 @@ export const maintenancePlanApi = createApi({
       }),
       invalidatesTags: ['allMaintenancePlan', 'allMaintenancePlansByAssetId'],
     }),
+    updateMaintenancePlanWithSchedules: builder.mutation({
+      query: (body: any) => ({
+        url: `/Invent3Pro/UpdateMaintenancePlan`,
+        method: 'PUT',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allMaintenancePlan', 'allMaintenancePlansByAssetId'],
+    }),
     getAllMaintenancePlan: builder.query({
       query: (data: any) => ({
         url: generateQueryStr(`/MaintenancePlans?`, data),
@@ -95,6 +104,7 @@ export const {
   useUpdateMaintenancePlanMutation,
   useCreateMaintenancePlanMutation,
   useCreateMaintenancePlanWithSchedulesMutation,
+  useUpdateMaintenancePlanWithSchedulesMutation,
   useDeleteMaintenancePlanMutation,
   useGetAllMaintenancePlanQuery,
   useSearchMaintenancePlanMutation,

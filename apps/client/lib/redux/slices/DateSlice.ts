@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type {
-  FrequencyInfo,
+  RecurrenceInfo,
   RepeatInterval,
 } from '~/lib/interfaces/general.interfaces';
 
 interface Info {
-  frequency: FrequencyInfo;
+  recurrence: RecurrenceInfo;
 }
 export interface SliceProps {
   info: Info;
@@ -31,16 +31,18 @@ const InitialRepeatInterval = {
   monthly: [],
 };
 
-const initialFrequency = {
+const initialRecurrence = {
   interval: 1,
-  repeat: null,
+  frequency: null,
   startDate: null,
   endDate: null,
+  startTime: null,
+  endTime: null,
   repeatIntervals: InitialRepeatInterval,
 };
 
 const InitialInfo = {
-  frequency: initialFrequency,
+  recurrence: initialRecurrence,
 };
 
 const initialState: SliceProps = {
@@ -60,45 +62,45 @@ export const DateSlice = createSlice({
     clearInfo: (state) => {
       state.info = InitialInfo;
     },
-    setFrequency: (state, { payload }: PayloadAction<FrequencyInfo>) => {
-      state.info.frequency = payload;
+    setRecurrence: (state, { payload }: PayloadAction<RecurrenceInfo>) => {
+      state.info.recurrence = payload;
     },
-    updateFrequency: (
+    updateRecurrence: (
       state,
-      { payload }: PayloadAction<Partial<FrequencyInfo>>
+      { payload }: PayloadAction<Partial<RecurrenceInfo>>
     ) => {
-      state.info.frequency = { ...state.info.frequency, ...payload };
+      state.info.recurrence = { ...state.info.recurrence, ...payload };
     },
-    clearFrequency: (state) => {
-      state.info.frequency = initialFrequency;
+    clearRecurrence: (state) => {
+      state.info.recurrence = initialRecurrence;
     },
     setRepeatInterval: (state, { payload }: PayloadAction<RepeatInterval>) => {
-      state.info.frequency.repeatIntervals = payload;
+      state.info.recurrence.repeatIntervals = payload;
     },
     updateRepeatInterval: (
       state,
       { payload }: PayloadAction<Partial<RepeatInterval>>
     ) => {
-      state.info.frequency.repeatIntervals = {
-        ...state.info.frequency.repeatIntervals,
+      state.info.recurrence.repeatIntervals = {
+        ...state.info.recurrence.repeatIntervals,
         ...payload,
       };
     },
     clearRepeatInterval: (state) => {
-      state.info.frequency.repeatIntervals = InitialRepeatInterval;
+      state.info.recurrence.repeatIntervals = InitialRepeatInterval;
     },
   },
 });
 
 export const {
-  setFrequency,
+  setRecurrence,
   setInfo,
   setRepeatInterval,
   updateInfo,
-  updateFrequency,
+  updateRecurrence,
   updateRepeatInterval,
   clearInfo,
-  clearFrequency,
+  clearRecurrence,
   clearRepeatInterval,
 } = DateSlice.actions;
 

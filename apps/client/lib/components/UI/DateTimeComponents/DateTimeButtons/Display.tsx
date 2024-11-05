@@ -3,7 +3,7 @@ import Button from '../../Button';
 import DimissibleContainer from '../../DimissibleContainer';
 import moment from 'moment';
 import { useAppDispatch } from '~/lib/redux/hooks';
-import { updateFrequency } from '~/lib/redux/slices/DateSlice';
+import { updateRecurrence } from '~/lib/redux/slices/DateSlice';
 
 interface DisplayProps {
   selectedDate?: string | undefined;
@@ -64,7 +64,7 @@ const Display = (props: DisplayProps) => {
       <DimissibleContainer
         handleClose={() => {
           setTime(undefined);
-          dispatch(updateFrequency({ startDate: null }));
+          dispatch(updateRecurrence({ startDate: null }));
           if (handleDateTimeSelect) {
             handleDateTimeSelect(null);
           }

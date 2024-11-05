@@ -1,15 +1,33 @@
-import { Box, Flex, HStack, Text } from '@chakra-ui/react';
-import { Field } from 'formik';
+import { Flex, HStack } from '@chakra-ui/react';
+import { useField } from 'formik';
 import React from 'react';
+import SelectableButtonGroup from '~/lib/components/UI/Button/SelectableButtonGroup';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
-import TextInput from '~/lib/components/UI/TextInput';
+
+const staticSLA = [
+  {
+    label: '2 hours',
+    value: 2,
+  },
+  {
+    label: '10 hours',
+    value: 10,
+  },
+  {
+    label: '1 day',
+    value: 1,
+  },
+];
 
 interface ServiceLevelAgreementProps {
   sectionMaxWidth: string;
   spacing: string;
+  buttonVariant: 'secondary' | 'outline';
 }
 const ServiceLevelAgreement = (props: ServiceLevelAgreementProps) => {
-  const { sectionMaxWidth, spacing } = props;
+  const { sectionMaxWidth, spacing, buttonVariant } = props;
+  // eslint-disable-next-line no-unused-vars
+  const [field, meta, helpers] = useField('sla');
   return (
     <HStack width="full" alignItems="flex-start" spacing={spacing}>
       <Flex width="full" maxW={sectionMaxWidth}>
@@ -19,27 +37,16 @@ const ServiceLevelAgreement = (props: ServiceLevelAgreementProps) => {
           isRequired
         />
       </Flex>
-      <HStack spacing={0} position="relative" width="full">
-        <Field
-          as={TextInput}
-          name="sla"
-          type="number"
-          label="Agreement Max. Hours"
-          customStyle={{ roundedRight: 'none' }}
-          customRightElement={
-            <HStack
-              height="50px"
-              bgColor="neutral.100"
-              pr="16px"
-              spacing="17px"
-              roundedRight="8px"
-            >
-              <Box borderWidth="1px" bgColor="neutral.700" height="24px" />
-              <Text color="neutral.700">Hours</Text>
-            </HStack>
-          }
-        />
-      </HStack>
+      <SelectableButtonGroup
+        options={staticSLA}
+        selectedOptions={[{ value: meta.value, label: meta.value }]}
+        handleSelect={(options) => {
+          helpers.setValue(options[0]?.value);
+        }}
+        isMultiSelect={false}
+        buttonVariant={buttonVariant}
+        customButtonStyle={{ width: 'max-content' }}
+      />
     </HStack>
   );
 };

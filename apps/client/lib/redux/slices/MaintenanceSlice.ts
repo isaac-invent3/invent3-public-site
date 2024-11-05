@@ -35,8 +35,16 @@ const initialScheduleForm = {
   description: null,
   comment: null,
   scheduledDate: null,
+  endDate: null,
   completionDate: null,
   ticketId: null,
+  intervalValue: null,
+  dayOccurrences: [],
+  weekOccurrences: [],
+  monthOccurrences: [],
+  yearOccurences: {},
+  deletedTaskIDs: [],
+  updatedTaskIDs: [],
   maintenancePlanInfo: {
     planName: null,
     planType: null,
@@ -79,6 +87,8 @@ const initialPlanForm = {
   owner: null,
   ownerId: null,
   cost: null,
+  deletedScheduleIDs: [],
+  updatedScheduleIDs: [],
   schedules: [],
 };
 

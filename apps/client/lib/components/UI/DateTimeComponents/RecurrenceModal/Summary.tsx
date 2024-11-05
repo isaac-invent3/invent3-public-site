@@ -22,28 +22,26 @@ function formatAnnualRepeats(annualIntervals: { [name: number]: number[] }) {
 }
 
 const Summary = () => {
-  const frequencyInfo = useAppSelector((state) => state.date.info.frequency);
+  const recurrence = useAppSelector((state) => state.date.info.recurrence);
 
-  const endDateLabel = frequencyInfo.endDate
-    ? `Until ${dateFormatter(frequencyInfo.endDate, 'MMM D, YYYY')}`
+  const endDateLabel = recurrence.endDate
+    ? `Until ${dateFormatter(recurrence.endDate, 'MMM D, YYYY')}`
     : '';
 
   const summaryText = () => {
-    switch (frequencyInfo?.repeat?.label) {
+    switch (recurrence?.frequency?.label) {
       case 'Daily':
-        return `Repeats at ${frequencyInfo.repeatIntervals.daily.map((time) => dateFormatter(time, 'hh:mm A', ['HH:mm'])).join(', ')}. ${frequencyInfo.interval} day interval. ${endDateLabel}`;
+        return `Repeats at ${recurrence.repeatIntervals.daily.map((time) => dateFormatter(time, 'hh:mm A', ['HH:mm'])).join(', ')}. ${recurrence.interval} day interval. ${endDateLabel}`;
       case 'Weekly':
-        return `Repeats on ${frequencyInfo.repeatIntervals.weekly
+        return `Repeats on ${recurrence.repeatIntervals.weekly
           .map((dayNumber) => moment().day(dayNumber).format('dddd'))
-          .join(
-            ', '
-          )}, ${frequencyInfo.interval} week interval. ${endDateLabel}`;
+          .join(', ')}, ${recurrence.interval} week interval. ${endDateLabel}`;
       case 'Monthly':
-        return `Repeats on ${frequencyInfo.repeatIntervals.monthly.map((day) => `Day ${day}`).join(', ')}. ${frequencyInfo.interval} month interval. ${endDateLabel}`;
+        return `Repeats on ${recurrence.repeatIntervals.monthly.map((day) => `Day ${day}`).join(', ')}. ${recurrence.interval} month interval. ${endDateLabel}`;
       case 'Quarterly':
-        return `Repeats on ${frequencyInfo.repeatIntervals.monthly.map((day) => `Day ${day}`).join(', ')}, every ${frequencyInfo.interval} months. ${endDateLabel}`;
+        return `Repeats on ${recurrence.repeatIntervals.monthly.map((day) => `Day ${day}`).join(', ')}, every ${recurrence.interval} months. ${endDateLabel}`;
       case 'Annually':
-        return `Repeats on ${formatAnnualRepeats(frequencyInfo.repeatIntervals.annually)}. ${frequencyInfo.interval} year interval. ${endDateLabel}`;
+        return `Repeats on ${formatAnnualRepeats(recurrence.repeatIntervals.annually)}. ${recurrence.interval} year interval. ${endDateLabel}`;
       default:
         return '';
     }

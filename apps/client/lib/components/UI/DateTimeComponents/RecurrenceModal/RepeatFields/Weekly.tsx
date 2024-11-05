@@ -12,7 +12,7 @@ const DAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 const Weekly = () => {
   const dispatch = useAppDispatch();
   const weeklyInterval = useAppSelector(
-    (state) => state.date.info.frequency.repeatIntervals.weekly
+    (state) => state.date.info.recurrence.repeatIntervals.weekly
   );
 
   //Sets today as the default day

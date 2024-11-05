@@ -6,22 +6,17 @@ import Type from './Type';
 import Date from './Date';
 import ServiceLevelAgreement from './SLA';
 import Tasks from './Tasks';
-import Frequency from '~/lib/components/Maintenance/Common/Frequency';
 import { useAppSelector } from '~/lib/redux/hooks';
 
 interface SectionTwoProps {
   descriptionHeight?: string;
   minScheduleDate: Date;
   maxScheduleDate: Date | undefined;
-  dateTimeButtonVariant: 'solid' | 'outline';
+  buttonVariant: 'secondary' | 'outline';
 }
 const SectionTwo = (props: SectionTwoProps) => {
-  const {
-    descriptionHeight,
-    minScheduleDate,
-    maxScheduleDate,
-    dateTimeButtonVariant,
-  } = props;
+  const { descriptionHeight, minScheduleDate, maxScheduleDate, buttonVariant } =
+    props;
   const { scheduleId } = useAppSelector(
     (state) => state.maintenance.scheduleForm
   );
@@ -34,7 +29,11 @@ const SectionTwo = (props: SectionTwoProps) => {
         spacing="40px"
       >
         <ScheduleTitle sectionMaxWidth="141px" spacing="41px" />
-        <Type sectionMaxWidth="130px" spacing="56px" />
+        <Type
+          sectionMaxWidth="130px"
+          spacing="56px"
+          buttonVariant={buttonVariant}
+        />
       </SimpleGrid>
       <SimpleGrid
         columns={2}
@@ -47,7 +46,11 @@ const SectionTwo = (props: SectionTwoProps) => {
           spacing="41px"
           descriptionHeight={descriptionHeight}
         />
-        <Frequency sectionMaxWidth="130px" spacing="56px" />
+        <ServiceLevelAgreement
+          sectionMaxWidth="130px"
+          spacing="56px"
+          buttonVariant={buttonVariant}
+        />
       </SimpleGrid>
       <SimpleGrid
         columns={2}
@@ -60,16 +63,8 @@ const SectionTwo = (props: SectionTwoProps) => {
           spacing="41px"
           minScheduleDate={minScheduleDate}
           maxScheduleDate={maxScheduleDate}
-          buttonVariant={dateTimeButtonVariant}
+          buttonVariant={buttonVariant}
         />
-        <ServiceLevelAgreement sectionMaxWidth="130px" spacing="56px" />
-      </SimpleGrid>
-      <SimpleGrid
-        columns={2}
-        alignItems="flex-start"
-        width="full"
-        spacing="40px"
-      >
         <Tasks sectionMaxWidth="141px" spacing="41px" scheduleId={scheduleId} />
       </SimpleGrid>
     </VStack>

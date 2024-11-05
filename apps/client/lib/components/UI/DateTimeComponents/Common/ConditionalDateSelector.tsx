@@ -6,16 +6,27 @@ import moment from 'moment';
 
 interface ConditionalDateSelectorProps {
   // eslint-disable-next-line no-unused-vars
-  handleSelectedDate: (date: Date | null) => void;
+  handleSelectedDateTime: (date: Date | null, time: string | null) => void;
   minDate?: Date;
   maxDate?: Date;
   selectedDate?: Date | null;
+  selectedTime?: string | null;
+  includeTime?: boolean;
 }
 
 const ConditionalDateSelector = (props: ConditionalDateSelectorProps) => {
   // eslint-disable-next-line no-unused-vars
-  const { handleSelectedDate, minDate, maxDate, selectedDate } = props;
-  const [shouldSelectDate, setShouldSelectDate] = useState(false);
+  const {
+    handleSelectedDateTime,
+    minDate,
+    maxDate,
+    selectedDate,
+    selectedTime,
+    includeTime = false,
+  } = props;
+  const [shouldSelectDate, setShouldSelectDate] = useState(
+    selectedDate ? true : false
+  );
 
   return (
     <VStack spacing="16px" alignItems="flex-start">
@@ -23,7 +34,7 @@ const ConditionalDateSelector = (props: ConditionalDateSelectorProps) => {
         <RadioBox
           handleClick={() => {
             setShouldSelectDate(false);
-            handleSelectedDate(null);
+            handleSelectedDateTime(null, null);
           }}
           isSelected={!shouldSelectDate}
         />
@@ -33,19 +44,25 @@ const ConditionalDateSelector = (props: ConditionalDateSelectorProps) => {
         <RadioBox
           handleClick={() => {
             setShouldSelectDate(true);
-            handleSelectedDate(moment().toDate());
+            handleSelectedDateTime(moment().toDate(), null);
           }}
           isSelected={shouldSelectDate}
         />
         <Text color="black">on</Text>
-        <CustomDateButton
-          minDate={minDate}
-          maxDate={maxDate}
-          selectedDate={selectedDate}
-          handleSelectedDate={(date) => handleSelectedDate(date)}
-          isDisabled={!shouldSelectDate}
-          customStyle={{ width: '130px' }}
-        />
+        <HStack>
+          <CustomDateButton
+            minDate={minDate}
+            maxDate={maxDate}
+            selectedTime={selectedTime}
+            selectedDate={selectedDate}
+            handleSelectedDateTime={(date, time) =>
+              handleSelectedDateTime(date ?? null, time ?? null)
+            }
+            isDisabled={!shouldSelectDate}
+            customStyle={{ width: '130px' }}
+            includeTimeDisplay={includeTime}
+          />
+        </HStack>
       </HStack>
     </VStack>
   );

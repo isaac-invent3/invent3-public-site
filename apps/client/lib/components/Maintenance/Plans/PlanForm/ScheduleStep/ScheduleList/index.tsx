@@ -1,7 +1,6 @@
-import { Flex, HStack, Text, useDisclosure } from '@chakra-ui/react';
+import { Flex, useDisclosure } from '@chakra-ui/react';
 import { createColumnHelper } from '@tanstack/react-table';
 import React, { useEffect, useMemo, useState } from 'react';
-import AddButton from '~/lib/components/UI/Form/FormAddButton';
 import DataTable from '~/lib/components/UI/Table';
 import {
   MaintenanceSchedule,
@@ -16,10 +15,8 @@ import {
 } from '~/lib/redux/slices/MaintenanceSlice';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import ActionPopover from './ActionPopover';
-import ScheduleModalForm from '~/lib/components/Maintenance/Schedules/ScheduleForm/ScheduleModalForm';
-import ErrorMessage from '~/lib/components/UI/ErrorMessage';
-import { useField } from 'formik';
 import GenericLeaveDialogModal from '~/lib/components/UI/Modal/LeaveDialogModal';
+import AddScheduleButtonWithErrorMessage from './AddScheduleButtonWithErrorMessage';
 
 interface MaintenanceSchedulesProps {
   type: 'create' | 'edit' | 'list';
@@ -39,17 +36,7 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
     setSelectedRows,
     selectMultiple,
   } = props;
-  let metaProps;
 
-  // Check if the component is within a Formik context
-  try {
-    // eslint-disable-next-line no-unused-vars
-    const [field, meta, helpers] = useField('schedules');
-    metaProps = meta;
-  } catch (error) {
-    // Do nothing
-  }
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const { planId, schedules: allPlanSchedules } = useAppSelector(
     (state) => state.maintenance.planForm
   );
@@ -172,6 +159,14 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
               item.scheduledDate,
               'DD/MM/YYYY hh:mmA'
             ),
+            endDate: item.endDate ?? null,
+            intervalValue: item.intervalValue ?? 1,
+            dayOccurrences: item.dayOccurrences ?? [],
+            weekOccurrences: item.weekOccurrences ?? [],
+            monthOccurrences: item.monthOccurrences ?? [],
+            yearOccurences: item.yearOccurences ?? {},
+            deletedTaskIDs: [],
+            updatedTaskIDs: [],
             completionDate: dateFormatter(
               item.completionDate,
               'DD/MM/YYYY hh:mmA'
@@ -217,19 +212,9 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
 
   return (
     <Flex direction="column" width="full" gap="25px" alignItems="start">
-      {type === 'edit' && (
-        <HStack width="full" justifyContent="space-between">
-          <Text color="primary.500" size="md" fontWeight={700}>
-            Select a schedule to edit from the table
-          </Text>
-          <AddButton handleClick={onOpen} color="#0366EF">
-            Add New Schedule
-          </AddButton>
-        </HStack>
-      )}
       <DataTable
         columns={columns}
-        data={allPlanSchedules ?? []}
+        data={allPlanSchedules}
         showFooter={type === 'edit'}
         emptyLines={5}
         isSelectable={true}
@@ -259,21 +244,10 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
         customTBodyRowStyle={{ verticalAlign: 'top' }}
         customTableContainerStyle={{ rounded: 'none' }}
       />
-      <ScheduleModalForm isOpen={isOpen} onClose={onClose} />
-      {type === 'create' && (
-        <Flex width="full" justifyContent="center">
-          <AddButton
-            handleClick={() => handleAddSchedule()}
-            color="#0366EF"
-            customStyle={{ spacing: '8px' }}
-            customTextStyle={{ fontWeight: 700 }}
-          >
-            Add a Schedule
-          </AddButton>
-        </Flex>
-      )}
-      {metaProps && metaProps.touched && metaProps.error !== undefined && (
-        <ErrorMessage>{metaProps.error}</ErrorMessage>
+      {(type === 'create' || type === 'edit') && (
+        <AddScheduleButtonWithErrorMessage
+          handleAddSchedule={handleAddSchedule}
+        />
       )}
       <GenericLeaveDialogModal
         isOpen={isOpenDialog}

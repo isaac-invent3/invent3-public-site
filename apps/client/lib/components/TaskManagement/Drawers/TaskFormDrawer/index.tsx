@@ -118,6 +118,7 @@ const TaskFormModal = (props: TaskFormModalProps) => {
           assetName: null,
           assetLocation: null,
           dateCompleted: null,
+          localId: null,
         });
         resetForm();
         onOpenSuccess();

@@ -22,14 +22,14 @@ const PopoverAction = (task: taskFormDetails) => {
 
   const handleEditTask = (task: taskFormDetails) => {
     const oldTasksExcludedEditedTask = values.tasks.filter(
-      (item: taskFormDetails) => item.taskId !== task.taskId
+      (item: taskFormDetails) => item.localId !== task.localId
     );
     setFieldValue('tasks', [...oldTasksExcludedEditedTask, task]);
   };
 
   const handleDelete = () => {
     const newTasks = values.tasks.filter(
-      (item: taskFormDetails) => item.taskId !== task.taskId
+      (item: taskFormDetails) => item.localId !== task.localId
     );
     setFieldValue('tasks', newTasks);
     setFieldValue('taskCount', values.taskCount - 1);

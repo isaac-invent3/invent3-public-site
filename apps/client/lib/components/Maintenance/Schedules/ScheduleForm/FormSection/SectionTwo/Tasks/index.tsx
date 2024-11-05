@@ -34,9 +34,10 @@ const Tasks = (props: DateProps) => {
   const [field, meta, helpers] = useField('taskCount');
 
   const handleAddTask = (task: taskFormDetails) => {
+    console.log(values.tasks);
     setFieldValue('tasks', [
       ...values.tasks,
-      { ...task, taskId: values.tasks.length + 1 },
+      { ...task, taskId: null, localId: values.tasks.length + 1 },
     ]);
     helpers.setValue(meta.value + 1);
   };
@@ -79,7 +80,7 @@ const Tasks = (props: DateProps) => {
         isOpen={isOpen}
         onClose={onClose}
         handleData={handleAddTask}
-        scheduleId={scheduleId}
+        scheduleId={null}
       />
       <FormTaskListDrawer
         isOpen={isOpenFormTaskList}

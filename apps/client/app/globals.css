@@ -68,15 +68,9 @@ input[type='date']:valid::before {
   content: '' !important;
 }
 
-.hidden-input {
-  height: 0px !important;
-}
-.react-datepicker-wrapper{
-  height: 0px;
-  z-index: 99;
-}
 
 .infinite-scroll-component__outerdiv {
   width: 100%;
 }
+
 

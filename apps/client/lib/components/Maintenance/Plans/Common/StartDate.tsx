@@ -28,8 +28,7 @@ const StartDate = (props: StartDateProps) => {
 
       <VStack width="full" spacing="4px" alignItems="flex-start">
         <DateTimeButtons
-          showRepeat={false}
-          buttonVariant="solid"
+          buttonVariant="secondary"
           includeTime={false}
           minDate={new Date()}
           selectedDate={meta.value ?? undefined}

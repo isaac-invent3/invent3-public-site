@@ -75,11 +75,15 @@ const ScheduleModalForm = (props: ScheduleModalFormProps) => {
         createMaintenanceScheduleDto: generateMaintenanceScheduleDTO(
           'create',
           values as unknown as ScheduleFormDetails,
+          [],
+          [],
           username as string
         ),
         createTaskDtos: generateTasksArray(
           'create',
           values.tasks as unknown as taskFormDetails[],
+          [],
+          [],
           username as string
         ),
       };
@@ -122,7 +126,11 @@ const ScheduleModalForm = (props: ScheduleModalFormProps) => {
                 {/* Main Form Starts Here */}
                 <VStack width="full" spacing="27px" mt="40px">
                   <ScheduleTitle sectionMaxWidth="118px" spacing="40px" />
-                  <Type sectionMaxWidth="118px" spacing="40px" />
+                  <Type
+                    sectionMaxWidth="118px"
+                    spacing="40px"
+                    buttonVariant="secondary"
+                  />
                   <Description sectionMaxWidth="118px" spacing="40px" />
                   <Frequency sectionMaxWidth="118px" spacing="40px" />
                   <Date
@@ -132,11 +140,12 @@ const ScheduleModalForm = (props: ScheduleModalFormProps) => {
                     maxScheduleDate={
                       endDate ? moment(endDate).toDate() : undefined
                     }
-                    buttonVariant="solid"
+                    buttonVariant="secondary"
                   />
                   <ServiceLevelAgreement
                     sectionMaxWidth="118px"
                     spacing="40px"
+                    buttonVariant="secondary"
                   />
                   <Tasks
                     sectionMaxWidth="118px"

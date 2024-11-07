@@ -10,14 +10,13 @@ import {
 import { FORM_ENUM } from '~/lib/utils/constants';
 
 const generateTasksArray = (
-  type: 'create' | 'edit',
   formTasks: taskFormDetails[],
   updatedTaskIDs: number[],
-  deletedTaskIDs: number[],
   username: string
 ) => {
   type formDetails = baseTaskFormDetail & {
     actionType: (typeof FORM_ENUM)[keyof typeof FORM_ENUM];
+    ChangeInitiatedBy: string;
   };
 
   let allTasks: formDetails[] = [];
@@ -28,9 +27,6 @@ const generateTasksArray = (
       if (updatedTaskIDs.includes(item.taskId)) {
         actionType = FORM_ENUM.update;
       }
-      if (deletedTaskIDs.includes(item.taskId)) {
-        actionType = FORM_ENUM.delete;
-      }
     }
 
     allTasks.push({
@@ -39,17 +35,14 @@ const generateTasksArray = (
       taskDescription: item.taskDescription,
       priorityId: item.priorityId,
       assignedTo: item.assignedTo,
-      dueDate: moment(item.dueDate, 'DD/MM/YYYY').utcOffset(
-        0,
-        true
-      ) as unknown as string,
+      estimatedDurationInHours: item.estimatedDurationInHours,
       dateCompleted: null,
       costEstimate: item.costEstimate,
       actualCost: item.actualCost,
       comments: item.comments,
       scheduleId: item.scheduleId,
       actionType,
-      [`${type === 'create' ? 'createdBy' : 'lastModifiedBy'}`]: username,
+      ChangeInitiatedBy: username,
     });
   });
   return allTasks;
@@ -59,7 +52,6 @@ const generateMaintenanceScheduleDTO = (
   type: 'create' | 'edit',
   formDetail: ScheduleFormDetails,
   updatedScheduleIDs: number[],
-  deletedScheduleIDs: number[],
   username: string
 ) => {
   let actionType = FORM_ENUM.add;
@@ -67,9 +59,6 @@ const generateMaintenanceScheduleDTO = (
   if (formDetail.scheduleId) {
     if (updatedScheduleIDs.includes(formDetail.scheduleId)) {
       actionType = FORM_ENUM.update;
-    }
-    if (deletedScheduleIDs.includes(formDetail.scheduleId)) {
-      actionType = FORM_ENUM.delete;
     }
   }
 
@@ -84,6 +73,14 @@ const generateMaintenanceScheduleDTO = (
       formDetail.scheduledDate,
       'DD/MM/YYYY hh:mmA'
     ).utcOffset(0, true),
+    endDate: formDetail.endDate
+      ? moment(formDetail.scheduledDate, 'DD/MM/YYYY hh:mmA').utcOffset(0, true)
+      : null,
+    intervalValue: formDetail.intervalValue,
+    dayOccurrences: formDetail.dayOccurrences ?? null,
+    weekOccurrences: formDetail.weekOccurrences ?? null,
+    monthOccurrences: formDetail.monthOccurrences ?? null,
+    yearOccurrences: formDetail.yearOccurences ?? null,
     completionDate: null,
     actionType,
     ...(type === 'edit'
@@ -91,7 +88,7 @@ const generateMaintenanceScheduleDTO = (
           scheduleId: formDetail.scheduleId,
         }
       : {}),
-    [`${type === 'create' ? 'createdBy' : 'lastModifiedBy'}`]: username,
+    ChangeInitiatedBy: username,
   };
   return maintenanceScheduleDto;
 };

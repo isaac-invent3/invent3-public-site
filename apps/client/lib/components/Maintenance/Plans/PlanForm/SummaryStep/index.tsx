@@ -46,40 +46,49 @@ const SummarySection = (props: SummarySectionProps) => {
     ),
     [type === 'create'
       ? 'createMaintenanceScheduleDtos'
-      : 'masterUpdateMaintenanceScheduleDto']: planFormDetails.schedules
-      .filter(
-        // Filter for schedules that has been added, updated or deleted
-        (schedule) =>
-          (schedule.scheduleId &&
-            (planFormDetails.updatedScheduleIDs.includes(schedule.scheduleId) ||
-              planFormDetails.deletedScheduleIDs.includes(
-                schedule.scheduleId
-              ))) ||
-          schedule.scheduleId === null
-      )
-      .map((schedule: ScheduleFormDetails) => ({
-        [getDtoKey('MaintenanceSchedule')]: generateMaintenanceScheduleDTO(
-          type,
-          schedule,
-          planFormDetails.updatedScheduleIDs,
-          planFormDetails.deletedScheduleIDs,
-          username as string
-        ),
-        [getDtoKey('Task')]: generateTasksArray(
-          type,
-          // Generate for only task that has been added, updated or deleted
-          schedule.tasks.filter(
-            (task) =>
-              (task.taskId &&
-                (schedule.updatedTaskIDs.includes(task.taskId) ||
-                  schedule.deletedTaskIDs.includes(task.taskId))) ||
-              task.taskId === null
-          ),
-          schedule.updatedTaskIDs,
-          schedule.deletedTaskIDs,
-          username as string
-        ),
+      : 'masterUpdateMaintenanceScheduleDto']: [
+      // Deleted schedules
+      planFormDetails.deletedScheduleIDs.map((item) => ({
+        scheduleId: item,
+        ChangeInitiatedBy: username,
       })),
+      planFormDetails.schedules
+        .filter(
+          // Filter for schedules that has been added or updated
+          (schedule) =>
+            (schedule.scheduleId &&
+              planFormDetails.updatedScheduleIDs.includes(
+                schedule.scheduleId
+              )) ||
+            schedule.scheduleId === null
+        )
+        .map((schedule: ScheduleFormDetails) => ({
+          [getDtoKey('MaintenanceSchedule')]: generateMaintenanceScheduleDTO(
+            type,
+            schedule,
+            planFormDetails.updatedScheduleIDs,
+            username as string
+          ),
+          [getDtoKey('Task')]: [
+            // Deleted Task
+            schedule.deletedTaskIDs.map((item) => ({
+              taskId: item,
+              ChangeInitiatedBy: username,
+            })),
+            // Generate for only task that has been added or updated
+            ...generateTasksArray(
+              schedule.tasks.filter(
+                (task) =>
+                  (task.taskId &&
+                    schedule.updatedTaskIDs.includes(task.taskId)) ||
+                  task.taskId === null
+              ),
+              schedule.updatedTaskIDs,
+              username as string
+            ),
+          ],
+        })),
+    ],
   };
 
   const handleSumbitPlan = async () => {

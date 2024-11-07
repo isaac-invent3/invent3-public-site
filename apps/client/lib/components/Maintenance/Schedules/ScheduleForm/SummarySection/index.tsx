@@ -45,16 +45,26 @@ const SummarySection = (props: SummarySectionProps) => {
       type,
       scheduleFormDetails,
       [],
-      [],
       username as string
     ),
-    createTaskDtos: generateTasksArray(
-      type,
-      scheduleFormDetails.tasks,
-      [],
-      [],
-      username as string
-    ),
+    createTaskDtos: [
+      // Deleted Task
+      scheduleFormDetails.deletedTaskIDs.map((item) => ({
+        taskId: item,
+        ChangeInitiatedBy: username,
+      })),
+      // Generate for only task that has been added or updated
+      ...generateTasksArray(
+        scheduleFormDetails.tasks.filter(
+          (task) =>
+            (task.taskId &&
+              scheduleFormDetails.updatedTaskIDs.includes(task.taskId)) ||
+            task.taskId === null
+        ),
+        scheduleFormDetails.updatedTaskIDs,
+        username as string
+      ),
+    ],
   };
 
   const handleSumbitSchedule = async () => {
@@ -70,7 +80,6 @@ const SummarySection = (props: SummarySectionProps) => {
           ...generateMaintenanceScheduleDTO(
             type,
             scheduleFormDetails,
-            [],
             [],
             username as string
           ),

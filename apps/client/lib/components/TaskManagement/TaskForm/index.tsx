@@ -6,7 +6,6 @@ import React from 'react';
 import FormActionButtons from '~/lib/components/UI/Form/FormActionButtons';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { taskSchema } from '~/lib/schemas/task.schema';
-import moment from 'moment';
 import { useSession } from 'next-auth/react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import {
@@ -37,8 +36,6 @@ const TaskForm = (props: TaskFormProps) => {
 
   const defaultHeader = type === 'create' ? 'Add New Task' : 'Edit Task';
 
-  const previousDay = moment().subtract(1, 'days').format('DD/MM/YYYY');
-
   const formik = useFormik({
     initialValues: {
       scheduleId: formDetails?.scheduleId ?? null,
@@ -53,12 +50,11 @@ const TaskForm = (props: TaskFormProps) => {
       taskStatusName: formDetails?.status ?? null,
       assignedTo: formDetails?.assignedTo ?? null,
       assignedToEmployeeName: formDetails?.assignedToEmployeeName ?? null,
-      dueDate: formDetails?.dueDate ?? null,
       costEstimate: formDetails?.costEstimate ?? null,
       actualCost: formDetails?.actualCost ?? null,
       comments: formDetails?.comments ?? null,
     },
-    validationSchema: taskSchema(previousDay),
+    validationSchema: taskSchema,
     enableReinitialize: true,
 
     onSubmit: async (values, { resetForm }) => {
@@ -69,7 +65,6 @@ const TaskForm = (props: TaskFormProps) => {
         taskDescription: values.taskDescription,
         priorityId: values.priorityId,
         assignedTo: values.assignedTo,
-        dueDate: moment(values.dueDate, 'DD/MM/YYYY').utcOffset(0, true),
         costEstimate: values.costEstimate,
         actualCost: values.actualCost,
         comments: values.comments,

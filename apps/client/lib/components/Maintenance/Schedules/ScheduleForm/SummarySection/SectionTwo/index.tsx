@@ -1,9 +1,7 @@
 import { Flex, Grid, GridItem, HStack, Text, VStack } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React from 'react';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import TaskListTable from '../../FormSection/SectionTwo/Tasks/ListDrawer/TaskListTable';
-import TaskTable from '~/lib/components/TaskManagement/TaskTable';
-import { useGetAllTasksByScheduleIdQuery } from '~/lib/redux/services/task/general.services';
 import InfoCard from '~/lib/components/UI/InfoCard';
 import { ScheduleFormDetails } from '~/lib/interfaces/maintenance.interfaces';
 
@@ -12,16 +10,6 @@ interface ISectionTwo {
 }
 const SectionTwo = (props: ISectionTwo) => {
   const { formDetails } = props;
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(25);
-  const { data, isLoading, isFetching } = useGetAllTasksByScheduleIdQuery(
-    {
-      id: formDetails?.scheduleId,
-      pageSize,
-      pageNumber: currentPage,
-    },
-    { skip: !formDetails?.scheduleId }
-  );
   const contentOne = [
     {
       label: 'Schedule Title',
@@ -158,23 +146,11 @@ const SectionTwo = (props: ISectionTwo) => {
             <Text color="neutral.600" fontWeight={700}>
               Tasks
             </Text>
-
-            {formDetails?.scheduleId ? (
-              <TaskTable
-                data={data?.data?.items ?? []}
-                isLoading={isLoading}
-                isFetching={isFetching}
-                totalPages={data?.data?.totalPages}
-                setPageNumber={setCurrentPage}
-                pageNumber={currentPage}
-                pageSize={pageSize}
-                setPageSize={setPageSize}
-                isSortable={false}
-                type="drawer"
-              />
-            ) : (
-              <TaskListTable data={formDetails.tasks} type="summary" />
-            )}
+            <TaskListTable
+              data={formDetails.tasks}
+              displayType="summary"
+              type="list"
+            />
           </VStack>
         </GridItem>
         {/* Row 3 Ends */}

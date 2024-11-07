@@ -1,14 +1,8 @@
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: white;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
 
 html,
 body {
@@ -32,11 +26,6 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-}
 
 .js-focus-visible :focus:not(.focus-visible) {
   outline: none;
@@ -68,6 +57,13 @@ input[type='date']:valid::before {
   content: '' !important;
 }
 
+.hidden-input {
+  height: 0px !important;
+}
+.react-datepicker-wrapper{
+  height: 0px;
+  z-index: 99;
+}
 
 .infinite-scroll-component__outerdiv {
   width: 100%;

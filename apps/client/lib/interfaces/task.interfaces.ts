@@ -6,8 +6,8 @@ interface Task {
   assignedTo: number;
   assignedToEmployeeName: string;
   dateCreated: string;
-  dueDate: string;
   dateCompleted: string;
+  estimatedDurationInHours: number;
   costEstimate: number;
   actualCost: number;
   comments: string;
@@ -55,9 +55,9 @@ interface baseTaskFormDetail {
   taskDescription: string | null | undefined;
   priorityId: number | null;
   assignedTo: number | null;
-  dueDate: string | null;
   dateCompleted: string | null;
   costEstimate: number | null;
+  estimatedDurationInHours: number | null;
   actualCost: number | null;
   comments: string | null;
   scheduleId: number | null;

@@ -34,7 +34,10 @@ const generateImagesArray = (
   existingImages: AssetImage[],
   username: string
 ) => {
-  const images: Image[] = [];
+  type FormImage = Image & {
+    changeInitiatedBy?: string;
+  };
+  const images: FormImage[] = [];
 
   // Handle new images or updates
   formDetails.images.forEach((image) => {
@@ -42,7 +45,7 @@ const generateImagesArray = (
       imageName: image.imageName as string,
       base64PhotoImage: image.base64PhotoImage,
       isPrimaryImage: image.isPrimaryImage,
-      [type === 'create' ? 'createdBy' : 'lastModifiedBy']: username,
+      [type === 'create' ? 'createdBy' : 'changeInitiatedBy']: username,
     };
 
     if (image.imageId) {
@@ -69,7 +72,7 @@ const generateImagesArray = (
           imageName: assetImage.imageName,
           assetId: assetImage.assetId,
           actionType: FORM_ENUM.delete,
-          lastModifiedBy: username,
+          changeInitiatedBy: username,
         });
       }
     });
@@ -84,14 +87,17 @@ const generateDocumentArray = (
   existingDocuments: AssetDocument[],
   username: string
 ) => {
-  const documents: Document[] = [];
+  type FormDocument = Document & {
+    changeInitiatedBy?: string;
+  };
+  const documents: FormDocument[] = [];
 
   // Handle new images or updates
   formDetails.documents.forEach((document) => {
     const documentData: Document = {
       documentName: document.documentName as string,
       base64Document: document.base64Document,
-      [type === 'create' ? 'createdBy' : 'lastModifiedBy']: username,
+      [type === 'create' ? 'createdBy' : 'changeInitiatedBy']: username,
     };
 
     if (document.documentId) {
@@ -120,7 +126,7 @@ const generateDocumentArray = (
           documentName: assetDocument.documentName,
           assetId: assetDocument.assetId,
           actionType: FORM_ENUM.delete,
-          lastModifiedBy: username,
+          changeInitiatedBy: username,
         });
       }
     });

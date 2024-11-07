@@ -23,7 +23,9 @@ const scheduleSchema = (
       minScheduleDate,
       maxScheduleDate
     ).required('Schedule Date is Required'),
+    endDate: createDateSchema(true, false).nullable(),
     completionDate: Yup.string().nullable(),
+    intervalValue: Yup.number().nullable(),
     ticketId: Yup.number().nullable(),
     ...(validatePlanId
       ? { planId: Yup.number().required('Plan is Required') }
@@ -37,14 +39,28 @@ const scheduleSchema = (
             .required('Tasks is required')
             .min(1, 'There must be atleast one task'),
           tasks: Yup.array()
-            .of(taskBaseSchema(minScheduleDate))
+            .of(taskBaseSchema())
             .required('Tasks are required')
             .min(1, 'There must be atleast one task'),
         }
       : {
           taskCount: Yup.number().nullable(),
-          tasks: Yup.array().of(taskBaseSchema(minScheduleDate)).notRequired(),
+          tasks: Yup.array().of(taskBaseSchema()).notRequired(),
         }),
+    dayOccurrences: Yup.array().of(Yup.string()).nullable(),
+    weekOccurrences: Yup.array().of(Yup.number()).nullable(),
+    monthOccurrences: Yup.array().of(Yup.number()).nullable(),
+    yearOccurrences: Yup.object()
+      .shape(
+        Array.from({ length: 12 }, (_, i) => i + 1).reduce(
+          (acc, month) => ({
+            ...acc,
+            [month]: Yup.array().of(Yup.number()).nullable(),
+          }),
+          {}
+        )
+      )
+      .nullable(),
   });
 
 const planSchema = (

@@ -4,6 +4,7 @@ import React from 'react';
 import TaskFormModal from '~/lib/components/TaskManagement/Drawers/TaskFormDrawer';
 import GenericPopover from '~/lib/components/UI/GenericPopover';
 import GenericDeleteModal from '~/lib/components/UI/Modal/GenericDeleteModal';
+import { ScheduleFormDetails } from '~/lib/interfaces/maintenance.interfaces';
 import { taskFormDetails } from '~/lib/interfaces/task.interfaces';
 
 const PopoverAction = (task: taskFormDetails) => {
@@ -18,7 +19,7 @@ const PopoverAction = (task: taskFormDetails) => {
     onClose: onCloseDelete,
   } = useDisclosure();
 
-  const { setFieldValue, values } = useFormikContext<any>();
+  const { setFieldValue, values } = useFormikContext<ScheduleFormDetails>();
 
   const handleEditTask = (task: taskFormDetails) => {
     const oldTasksExcludedEditedTask = values.tasks.filter(
@@ -32,7 +33,7 @@ const PopoverAction = (task: taskFormDetails) => {
       (item: taskFormDetails) => item.localId !== task.localId
     );
     setFieldValue('tasks', newTasks);
-    setFieldValue('taskCount', values.taskCount - 1);
+    setFieldValue('taskCount', values.taskCount && values.taskCount - 1);
   };
 
   return (

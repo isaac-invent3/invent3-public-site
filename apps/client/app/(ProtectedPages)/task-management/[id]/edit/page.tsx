@@ -39,9 +39,7 @@ export default function Page({ params }: { params: { id: string } }) {
         status: task?.status ?? null,
         assignedTo: task?.assignedTo ?? null,
         assignedToEmployeeName: task?.assignedToEmployeeName ?? null,
-        dueDate: task?.dueDate
-          ? dateFormatter(task?.dueDate, 'DD/MM/YYYY')
-          : null,
+        estimatedDurationInHours: task?.estimatedDurationInHours ?? null,
         dateCompleted: task?.dateCompleted
           ? dateFormatter(task?.dateCompleted, 'DD/MM/YYYY')
           : null,

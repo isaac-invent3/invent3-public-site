@@ -3,10 +3,10 @@ import React from 'react';
 import TaskTitle from '../../Common/TaskTitle';
 import TaskPriority from '../../Common/TaskPriority';
 import TaskDescription from '../../Common/TaskDescription';
-import DueDate from '../../Common/DueDate';
 import TaskAssignedTo from '../../Common/AssignedTo';
 import TaskType from '../../Common/TaskType';
 import CostEstimate from '../../Common/CostEstimate';
+import EstimatedDuration from '../../Common/EstimatedDuration';
 
 const SectionTwo = () => {
   return (
@@ -36,7 +36,7 @@ const SectionTwo = () => {
         width="full"
         spacing="76px"
       >
-        <DueDate sectionMaxWidth="118px" spacing="63px" />
+        <EstimatedDuration sectionMaxWidth="118px" spacing="63px" />
         <CostEstimate sectionMaxWidth="118px" spacing="63px" />
       </SimpleGrid>
       <SimpleGrid

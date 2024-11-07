@@ -6,7 +6,6 @@ import {
   MaintenanceColorCode,
   TaskPriorityColorCode,
 } from '~/lib/utils/ColorCodes';
-import { dateFormatter } from '~/lib/utils/Formatters';
 
 interface SectionOneProps {
   data: Task;
@@ -19,11 +18,7 @@ const SectionOne = ({ data }: SectionOneProps) => {
     },
     {
       label: 'Estimated Time',
-      value: '02 hours',
-    },
-    {
-      label: 'Due Date:',
-      value: dateFormatter(data?.dueDate, 'DD / MM / YYYY') ?? 'N/A',
+      value: `${data?.estimatedDurationInHours} ${data?.estimatedDurationInHours > 1 ? 's' : ''}`,
     },
   ];
 

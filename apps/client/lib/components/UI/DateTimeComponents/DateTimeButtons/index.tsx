@@ -54,6 +54,9 @@ const DateTimeButtons = (props: DateTimeButtonsProps) => {
   const date = moment(selectedDate, 'DD/MM/YYYY').startOf('day');
   const dayDifference = date.diff(now, 'days');
 
+  const showStaticDates =
+    (maxDate && moment(maxDate).isAfter(moment())) || maxDate === undefined;
+
   const buttonStyle = {
     py: '10px',
     px: '16px',
@@ -103,21 +106,22 @@ const DateTimeButtons = (props: DateTimeButtonsProps) => {
               spacing="16px"
               display={selectedDate ? 'none' : 'flex'}
             >
-              {mainButtons.map((item, index: number) => (
-                <Button
-                  customStyles={buttonStyle}
-                  key={index}
-                  handleClick={() => {
-                    if (handleDateTimeSelect) {
-                      handleDateTimeSelect(
-                        moment(item.value).format('DD/MM/YYYY')
-                      );
-                    }
-                  }}
-                >
-                  {item.label}
-                </Button>
-              ))}
+              {showStaticDates &&
+                mainButtons.map((item, index: number) => (
+                  <Button
+                    customStyles={buttonStyle}
+                    key={index}
+                    handleClick={() => {
+                      if (handleDateTimeSelect) {
+                        handleDateTimeSelect(
+                          moment(item.value).format('DD/MM/YYYY')
+                        );
+                      }
+                    }}
+                  >
+                    {item.label}
+                  </Button>
+                ))}
               <Button customStyles={buttonStyle} handleClick={onOpenCustomDate}>
                 <Icon as={PenIcon} boxSize="16px" color="#374957" mr="8px" />
                 Custom

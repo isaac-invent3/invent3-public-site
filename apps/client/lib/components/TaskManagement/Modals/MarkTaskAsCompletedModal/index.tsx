@@ -52,7 +52,6 @@ const MarkTaskAsCompletedModal = (props: MarkTaskAsCompletedModalProps) => {
         priorityId: data?.taskPriorityId,
         taskStatusId: 3,
         assignedTo: data?.assignedTo,
-        dueDate: data?.dueDate,
         costEstimate: data?.costEstimate,
         actualCost: values?.actualCost,
         scheduleId: data?.scheduleId,

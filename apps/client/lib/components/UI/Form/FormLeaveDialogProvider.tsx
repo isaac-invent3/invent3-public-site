@@ -7,20 +7,20 @@ const withFormLeaveDialog = <P extends object>(
 ) => {
   const HOC = (props: P) => {
     const { data } = useSession();
+
     useEffect(() => {
-      const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-        // Block initial unload only if an access token exists
-        if (data?.user?.accessToken) {
+      if (data?.user) {
+        const handleBeforeUnload = (event: BeforeUnloadEvent) => {
           event.preventDefault();
-        }
-      };
+        };
 
-      window.addEventListener('beforeunload', handleBeforeUnload);
+        window.addEventListener('beforeunload', handleBeforeUnload);
 
-      return () => {
-        window.removeEventListener('beforeunload', handleBeforeUnload);
-      };
-    }, []);
+        return () => {
+          window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+      }
+    }, [data]);
 
     return (
       <Flex width="full">

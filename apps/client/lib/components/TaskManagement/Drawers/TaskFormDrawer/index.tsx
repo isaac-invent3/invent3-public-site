@@ -20,15 +20,14 @@ import {
 } from '~/lib/redux/services/task/general.services';
 import TaskSuccessModal from '../../Modals/TaskSuccessModal';
 import { useSession } from 'next-auth/react';
-import moment from 'moment';
 import TaskDescription from '../../Common/TaskDescription';
-import DueDate from '../../Common/DueDate';
 import CostEstimate from '../../Common/CostEstimate';
 import TaskAssignedTo from '../../Common/AssignedTo';
 import TaskTitle from '../../Common/TaskTitle';
 import TaskType from '../../Common/TaskType';
 import TaskPriority from '../../Common/TaskPriority';
 import GenericDrawer from '~/lib/components/UI/GenericDrawer';
+import EstimatedDuration from '../../Common/EstimatedDuration';
 
 interface TaskFormModalProps {
   isOpen: boolean;
@@ -63,7 +62,7 @@ const TaskFormModal = (props: TaskFormModalProps) => {
       taskStatusName: data?.status ?? null,
       assignedTo: data?.assignedTo ?? null,
       assignedToEmployeeName: data?.assignedToEmployeeName ?? null,
-      dueDate: data?.dueDate ?? null,
+      estimatedDurationInHours: data?.estimatedDurationInHours ?? null,
       costEstimate: data?.costEstimate ?? null,
       actualCost: data?.actualCost ?? null,
       comments: data?.comments ?? null,
@@ -79,7 +78,7 @@ const TaskFormModal = (props: TaskFormModalProps) => {
           taskDescription: values.taskDescription,
           priorityId: values.priorityId,
           assignedTo: values.assignedTo,
-          dueDate: moment(values.dueDate, 'DD/MM/YYYY').utcOffset(0, true),
+          estimatedDurationInHours: values.estimatedDurationInHours,
           costEstimate: values.costEstimate,
           actualCost: values.actualCost,
           comments: values.comments,
@@ -165,7 +164,7 @@ const TaskFormModal = (props: TaskFormModalProps) => {
                   <TaskDescription sectionMaxWidth="118px" spacing="73px" />
                   <TaskType sectionMaxWidth="118px" spacing="73px" />
                   <TaskPriority sectionMaxWidth="118px" spacing="73px" />
-                  <DueDate sectionMaxWidth="118px" spacing="73px" />
+                  <EstimatedDuration sectionMaxWidth="118px" spacing="73px" />
                   <CostEstimate sectionMaxWidth="118px" spacing="73px" />
                   <TaskAssignedTo sectionMaxWidth="118px" spacing="73px" />
                 </VStack>

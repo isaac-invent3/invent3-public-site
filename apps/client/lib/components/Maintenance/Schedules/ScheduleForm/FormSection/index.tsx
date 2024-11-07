@@ -25,9 +25,16 @@ const FormSection = (props: FormSectionProps) => {
       ? 'Add New Maintenance Schedule'
       : 'Edit Maintenance Schedule';
 
-  const previousDay = moment(formDetails?.maintenancePlanInfo?.startDate)
+  const planStartDate = moment(formDetails?.maintenancePlanInfo?.startDate)
     .subtract(1, 'days')
     .format('DD/MM/YYYY');
+
+  const finalStartDate = moment(planStartDate, 'DD/MM/YYYY').isBefore(
+    moment(),
+    'day'
+  )
+    ? moment().format('DD/MM/YYYY')
+    : planStartDate;
 
   const planEndDate = moment(formDetails?.maintenancePlanInfo?.endDate).format(
     'DD/MM/YYYY'
@@ -41,6 +48,7 @@ const FormSection = (props: FormSectionProps) => {
       frequencyId: formDetails.typeId ?? null,
       assetId: formDetails.assetId ?? null,
       sla: formDetails.sla ?? null,
+      scheduleId: formDetails.scheduleId ?? null,
       description: formDetails.description ?? null,
       comment: formDetails.comment ?? null,
       scheduledDate: formDetails.scheduledDate ?? null,
@@ -52,7 +60,7 @@ const FormSection = (props: FormSectionProps) => {
       type === 'create',
       true,
       true,
-      previousDay ?? undefined,
+      finalStartDate,
       planEndDate ?? undefined
     ),
     enableReinitialize: true,
@@ -91,9 +99,7 @@ const FormSection = (props: FormSectionProps) => {
             <SectionOne />
             <SectionTwo
               buttonVariant="secondary"
-              minScheduleDate={moment(
-                formDetails?.maintenancePlanInfo?.startDate ?? moment()
-              ).toDate()}
+              minScheduleDate={moment(finalStartDate, 'DD/MM/YYYY').toDate()}
               maxScheduleDate={
                 formDetails?.maintenancePlanInfo?.endDate
                   ? moment(formDetails?.maintenancePlanInfo?.endDate).toDate()

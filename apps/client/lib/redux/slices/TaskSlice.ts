@@ -14,7 +14,7 @@ const initialTaskForm = {
   taskDescription: null,
   priorityId: null,
   assignedTo: null,
-  dueDate: null,
+  estimatedDurationInHours: null,
   dateCompleted: null,
   costEstimate: null,
   actualCost: null,

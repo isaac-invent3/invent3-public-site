@@ -68,7 +68,7 @@ const TicketTable = (props: TicketTableProps) => {
           : []),
         columnHelper.accessor('issueReportDate', {
           cell: (info) => dateFormatter(info.getValue(), 'DD / MM / YYYY'),
-          header: 'Requested Dat e',
+          header: 'Requested Date',
           enableSorting: false,
         }),
         ...(type !== 'new'

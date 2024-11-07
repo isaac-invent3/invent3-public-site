@@ -30,6 +30,7 @@ dist
 
 # Debug
 npm-debug.log*
+pnpm-lock.yaml
 yarn-debug.log*
 yarn-error.log*
 

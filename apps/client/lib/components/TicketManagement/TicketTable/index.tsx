@@ -29,7 +29,7 @@ const TicketTable = (props: TicketTableProps) => {
       const baseColumns = [
         columnHelper.accessor('ticketId', {
           cell: (info) => info.getValue(),
-          header: '#',
+          header: 'Ticket ID',
           enableSorting: false,
         }),
         columnHelper.accessor('ticketTitle', {
@@ -46,11 +46,17 @@ const TicketTable = (props: TicketTableProps) => {
               }),
             ]
           : []),
+          // Change to Proper Content
+        columnHelper.accessor('ticketId', {
+          cell: "Incident",
+          header: 'Type',
+          enableSorting: false,
+        }),
         columnHelper.accessor('ticketId', {
           cell: () => {
             return (
               <GenericStatusBox
-                colorCode={TaskPriorityColorCode['High']}
+                colorCode={TaskPriorityColorCode['High'].split("").map((color) => color + "80").join("")}
                 text="High"
               />
             );
@@ -68,7 +74,7 @@ const TicketTable = (props: TicketTableProps) => {
           : []),
         columnHelper.accessor('issueReportDate', {
           cell: (info) => dateFormatter(info.getValue(), 'DD / MM / YYYY'),
-          header: 'Requested Dat e',
+          header: 'Requested Date',
           enableSorting: false,
         }),
         ...(type !== 'new'

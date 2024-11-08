@@ -76,6 +76,44 @@ interface FormDetails {
   assetLocation: string | null;
 }
 
+interface TaskStatus {
+  taskStatusId: number;
+  statusName: string;
+  statusCategoryId: number | null;
+  alias: string | null;
+  displayColorCode: string;
+  isNew: boolean;
+  createdDate: string;
+  createdBy: string | null;
+  lastModifiedDate: string | null;
+  lastModifiedBy: string;
+  isDeleted: boolean;
+  deletedDate: string | null;
+  deletedBy: string;
+  guid: string;
+}
+
+interface TaskPriority {
+  taskPriorityId: number;
+  priority: string;
+  lastModifiedBy: string;
+  lastModifiedDate: string | null;
+  isNew: boolean;
+  isDeleted: boolean;
+  guid: string;
+  displayColorCode: string;
+  deletedDate: string | null;
+  deletedBy: string;
+  createdDate: string;
+  createdBy: string;
+}
+
 interface taskFormDetails extends baseTaskFormDetail, FormDetails {}
 
-export type { Task, baseTaskFormDetail, taskFormDetails };
+export type {
+  Task,
+  baseTaskFormDetail,
+  taskFormDetails,
+  TaskStatus,
+  TaskPriority,
+};

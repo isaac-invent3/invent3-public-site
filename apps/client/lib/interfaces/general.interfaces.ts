@@ -21,6 +21,17 @@ interface SearchCriterion {
   operation: (typeof OPERATORS)[keyof typeof OPERATORS];
 }
 
+interface QueryParams {
+  pageSize?: number;
+  pageNumber?: number;
+}
+
+interface BaseApiResponse<T> {
+  data: T;
+  responseId: string;
+  message: string;
+}
+
 interface GeoJSONFeature {
   type: string;
   properties: {
@@ -65,10 +76,12 @@ interface RecurrenceInfo {
 }
 
 export type {
-  Option,
-  SearchResponse,
-  SearchCriterion,
   GeoJSONFeature,
+  Option,
+  QueryParams,
   RecurrenceInfo,
   RepeatInterval,
+  SearchCriterion,
+  SearchResponse,
+  BaseApiResponse,
 };

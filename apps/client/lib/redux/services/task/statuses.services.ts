@@ -1,4 +1,9 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
+import {
+  BaseApiResponse,
+  QueryParams,
+} from '~/lib/interfaces/general.interfaces';
+import { TaskStatus } from '~/lib/interfaces/task.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
 
@@ -19,7 +24,10 @@ export const taskStatusApi = createApi({
       }),
       invalidatesTags: ['allTaskStatuses'],
     }),
-    getAllTaskStatuses: builder.query({
+    getAllTaskStatuses: builder.query<
+      BaseApiResponse<{ items: TaskStatus[] }>,
+      QueryParams
+    >({
       query: (data: any) => ({
         url: generateQueryStr(`/TaskStatus?`, data),
         method: 'GET',

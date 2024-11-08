@@ -1,7 +1,6 @@
 import * as Yup from 'yup';
-import { createDateSchema } from './general.schema';
 
-const taskBaseSchema = (minDueDate?: string) =>
+const taskBaseSchema = () =>
   Yup.object().shape({
     taskId: Yup.number().nullable(),
     taskTypeId: Yup.number().required('Task Type is Required'),
@@ -14,16 +13,16 @@ const taskBaseSchema = (minDueDate?: string) =>
     taskStatusName: Yup.string().nullable(),
     assignedTo: Yup.number().required('Assignee is Required'),
     assignedToEmployeeName: Yup.string().required('Assignee is Required'),
-    dueDate: createDateSchema(false, true, minDueDate).required(
-      'Due Date is Required'
-    ),
     costEstimate: Yup.number().required('Cost Estimate is Required'),
     actualCost: Yup.number().nullable(),
+    estimatedDurationInHours: Yup.number().required(
+      'Estimated Duration is required'
+    ),
     comments: Yup.string().nullable(),
   });
 
-const taskSchema = (minDueDate?: string) =>
-  taskBaseSchema(minDueDate).shape({
+const taskSchema = () =>
+  taskBaseSchema().shape({
     scheduleId: Yup.number().required('Schedule is Required'),
   });
 

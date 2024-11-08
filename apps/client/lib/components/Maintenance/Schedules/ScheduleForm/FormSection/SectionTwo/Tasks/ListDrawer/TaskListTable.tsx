@@ -13,10 +13,29 @@ import { amountFormatter } from '~/lib/utils/Formatters';
 
 interface TaskListTableProps {
   data: taskFormDetails[];
-  type: 'form' | 'summary';
+  displayType: 'form' | 'summary';
+  type: 'create' | 'edit' | 'list';
+  totalPages?: number;
+  pageNumber?: number;
+  pageSize?: number;
+  setPageNumber?: React.Dispatch<React.SetStateAction<number>>;
+  setPageSize?: React.Dispatch<React.SetStateAction<number>>;
+  isLoading?: boolean;
+  isFetching?: boolean;
 }
 const TaskListTable = (props: TaskListTableProps) => {
-  const { data, type } = props;
+  const {
+    data,
+    displayType,
+    type,
+    totalPages,
+    pageNumber,
+    pageSize,
+    setPageNumber,
+    setPageSize,
+    isFetching,
+    isLoading,
+  } = props;
 
   const columnHelper = createColumnHelper<taskFormDetails>();
   const columns = useMemo(
@@ -44,14 +63,14 @@ const TaskListTable = (props: TaskListTableProps) => {
           header: 'Priority',
           enableSorting: false,
         }),
-        columnHelper.accessor('dueDate', {
-          cell: (info) => info.getValue(),
-          header: 'Due Date',
-          enableSorting: false,
-        }),
-        columnHelper.accessor('dateCompleted', {
-          cell: (info) => info.getValue(),
-          header: 'Completion Date',
+        columnHelper.accessor('estimatedDurationInHours', {
+          cell: (info) => {
+            const value = info.getValue();
+            return value !== null
+              ? `${value} hour${value > 1 ? 's' : ''}`
+              : 'N/A';
+          },
+          header: 'Estimated Duration',
           enableSorting: false,
         }),
         columnHelper.accessor('costEstimate', {
@@ -85,7 +104,7 @@ const TaskListTable = (props: TaskListTableProps) => {
         enableSorting: false,
       });
 
-      if (type === 'form') {
+      if (displayType === 'form') {
         baseColumns.push(popOverColumn);
       }
       return baseColumns;
@@ -109,7 +128,14 @@ const TaskListTable = (props: TaskListTableProps) => {
         paddingBottom: '12px',
       }}
       customTableContainerStyle={{ rounded: 'none' }}
-      showFooter={false}
+      totalPages={totalPages}
+      pageNumber={pageNumber}
+      pageSize={pageSize}
+      setPageNumber={setPageNumber}
+      setPageSize={setPageSize}
+      isFetching={isFetching}
+      isLoading={isLoading}
+      showFooter={type === 'edit'}
       maxTdWidth="200px"
     />
   );

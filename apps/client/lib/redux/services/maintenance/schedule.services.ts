@@ -139,6 +139,14 @@ export const maintenanceScheduleApi = createApi({
         body,
       }),
     }),
+    validateFirstInstanceScheduledDate: builder.mutation({
+      query: (body: any) => ({
+        url: `/Invent3Pro/ValidateFirstInstanceScheduledDate`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
   }),
 });
 
@@ -155,4 +163,5 @@ export const {
   useGetMaintenanceScheduleByIdQuery,
   useGetMaintenanceSchedulesByPlanIdQuery,
   useGetMaintenanceSchedulesWithSingleAggregateCountsByAreaQuery,
+  useValidateFirstInstanceScheduledDateMutation,
 } = maintenanceScheduleApi;

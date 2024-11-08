@@ -17,6 +17,7 @@ import {
   useCreateMaintenancePlanWithSchedulesMutation,
   useUpdateMaintenancePlanWithSchedulesMutation,
 } from '~/lib/redux/services/maintenance/plan.services';
+import { FORM_ENUM } from '~/lib/utils/constants';
 
 interface SummarySectionProps {
   activeStep: number;
@@ -46,40 +47,57 @@ const SummarySection = (props: SummarySectionProps) => {
     ),
     [type === 'create'
       ? 'createMaintenanceScheduleDtos'
-      : 'masterUpdateMaintenanceScheduleDto']: planFormDetails.schedules
-      .filter(
-        // Filter for schedules that has been added, updated or deleted
-        (schedule) =>
-          (schedule.scheduleId &&
-            (planFormDetails.updatedScheduleIDs.includes(schedule.scheduleId) ||
-              planFormDetails.deletedScheduleIDs.includes(
-                schedule.scheduleId
-              ))) ||
-          schedule.scheduleId === null
-      )
-      .map((schedule: ScheduleFormDetails) => ({
-        [getDtoKey('MaintenanceSchedule')]: generateMaintenanceScheduleDTO(
-          type,
-          schedule,
-          planFormDetails.updatedScheduleIDs,
-          planFormDetails.deletedScheduleIDs,
-          username as string
-        ),
-        [getDtoKey('Task')]: generateTasksArray(
-          type,
-          // Generate for only task that has been added, updated or deleted
-          schedule.tasks.filter(
-            (task) =>
-              (task.taskId &&
-                (schedule.updatedTaskIDs.includes(task.taskId) ||
-                  schedule.deletedTaskIDs.includes(task.taskId))) ||
-              task.taskId === null
-          ),
-          schedule.updatedTaskIDs,
-          schedule.deletedTaskIDs,
-          username as string
-        ),
+      : 'masterUpdateMaintenanceScheduleDto']: [
+      // Deleted schedules
+      ...planFormDetails.deletedScheduleIDs.map((item) => ({
+        updateMaintenanceScheduleDto: {
+          scheduleId: item,
+          actionType: FORM_ENUM.delete,
+          changeInitiatedBy: username,
+        },
       })),
+      ...planFormDetails.schedules
+        .filter(
+          // Filter for schedules that has been added or updated
+          (schedule) =>
+            (schedule.scheduleId &&
+              planFormDetails.updatedScheduleIDs.includes(
+                schedule.scheduleId
+              )) ||
+            schedule.scheduleId === null
+        )
+        .map((schedule: ScheduleFormDetails) => ({
+          [getDtoKey('MaintenanceSchedule')]: generateMaintenanceScheduleDTO(
+            type,
+            schedule,
+            planFormDetails.updatedScheduleIDs,
+            username as string
+          ),
+          [type === 'create' ? 'createTaskDtos' : 'updateTaskDtos']: (() => {
+            const tasksArray = [
+              // Deleted Task
+              ...schedule.deletedTaskIDs.map((item) => ({
+                taskId: item,
+                actionType: FORM_ENUM.delete,
+                changeInitiatedBy: username,
+              })),
+              // Generate for only tasks that have been added or updated
+              ...generateTasksArray(
+                schedule.tasks.filter(
+                  (task) =>
+                    (task.taskId &&
+                      schedule.updatedTaskIDs.includes(task.taskId)) ||
+                    task.taskId === null
+                ),
+                schedule.updatedTaskIDs,
+                username as string
+              ),
+            ];
+
+            return tasksArray.length > 0 ? tasksArray : null;
+          })(),
+        })),
+    ],
   };
 
   const handleSumbitPlan = async () => {

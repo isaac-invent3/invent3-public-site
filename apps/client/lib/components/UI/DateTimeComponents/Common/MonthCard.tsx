@@ -15,7 +15,6 @@ const MonthCard = (props: MonthCardProps) => {
       rowGap="12px"
       columnGap="4px"
       width="full"
-      border="1px solid #BBBBBB80"
       bgColor="#F7F7F7"
       py={2}
       px="4px"
@@ -33,13 +32,18 @@ const MonthCard = (props: MonthCardProps) => {
               handleClick={() => handleSelectDay(index + 1)}
               variant={isSelected ? 'primary' : 'outline'}
               customStyles={{
-                py: '10px',
+                py: 0,
+                px: 0,
                 borderColor: isSelected ? 'none' : '#BBBBBB80',
                 color: isSelected ? 'white' : 'black',
+                width: '40px',
+                height: '40px',
+                lineHeight: '0px',
               }}
             >
               {index + 1}
             </Button>
+            // <Box width="32px" height="32px" bgColor="Red" />
           );
         })}
     </SimpleGrid>

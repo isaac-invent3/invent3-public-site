@@ -47,7 +47,7 @@ const Weekly = () => {
           )
         }
         buttonVariant="outline"
-        customContainerStyle={{ spacing: '4px' }}
+        customContainerStyle={{ spacing: '4px', flexWrap: 'nowrap' }}
         customButtonStyle={{ width: '42px', height: '42px' }}
         isMultiSelect
         hasAtLeastOneSelected

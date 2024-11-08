@@ -88,17 +88,21 @@ const TaskTable = (props: TaskTableProps) => {
           header: 'Priority',
           enableSorting: isSortable,
         }),
-        columnHelper.accessor('dueDate', {
-          cell: (info) =>
-            dateFormatter(info.getValue(), 'DD / MM / YYYY') ?? 'N/A',
-          header: 'Due Date',
-          enableSorting: isSortable,
-        }),
         columnHelper.accessor('dateCompleted', {
           cell: (info) =>
             dateFormatter(info.getValue(), 'DD / MM / YYYY') ?? 'N/A',
           header: 'Completion Date',
           enableSorting: isSortable,
+        }),
+        columnHelper.accessor('estimatedDurationInHours', {
+          cell: (info) => {
+            const value = info.getValue();
+            return value !== null
+              ? `${value} hour${value > 1 ? 's' : ''}`
+              : 'N/A';
+          },
+          header: 'Estimated Duration',
+          enableSorting: false,
         }),
         columnHelper.accessor('costEstimate', {
           cell: (info) => amountFormatter(info.getValue()),

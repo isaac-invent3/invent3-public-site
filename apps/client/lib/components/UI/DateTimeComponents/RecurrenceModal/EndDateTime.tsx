@@ -32,6 +32,12 @@ const EndDateTime = (props: EndDateTimeProps) => {
           minDate={minEndDate}
           maxDate={maxEndDate}
           selectedTime={recurrence.endTime}
+          dateDisplay={
+            recurrence.frequency?.label &&
+            recurrence.frequency?.label.toLowerCase() === 'monthly'
+              ? 'MMMM'
+              : null
+          }
           selectedDate={
             recurrence.endDate ? moment(recurrence.endDate).toDate() : undefined
           }

@@ -56,7 +56,7 @@ const SectionOne = () => {
           <Text color="neutral.600">
             Asset Type:{' '}
             <Text as="span" color="black">
-              {assetTypeName}
+              {assetTypeName ?? 'N/A'}
             </Text>
           </Text>
           <Text color="black">

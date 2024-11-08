@@ -183,6 +183,7 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
             },
             taskCount: item.activeTasksCount,
             tasks: [],
+            firstInstanceDate: null,
           });
         });
         dispatch(

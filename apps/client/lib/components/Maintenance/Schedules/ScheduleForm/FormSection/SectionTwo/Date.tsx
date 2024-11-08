@@ -1,4 +1,11 @@
-import { Flex, HStack, Icon, useDisclosure, VStack } from '@chakra-ui/react';
+import {
+  Flex,
+  HStack,
+  Icon,
+  useDisclosure,
+  useToast,
+  VStack,
+} from '@chakra-ui/react';
 import { useFormikContext } from 'formik';
 import moment from 'moment';
 import React from 'react';
@@ -9,9 +16,11 @@ import RecurrenceModal from '~/lib/components/UI/DateTimeComponents/RecurrenceMo
 import ErrorMessage from '~/lib/components/UI/ErrorMessage';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import InfoCard from '~/lib/components/UI/InfoCard';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { RecurrenceInfo } from '~/lib/interfaces/general.interfaces';
 import { ScheduleFormDetails } from '~/lib/interfaces/maintenance.interfaces';
-import { useAppDispatch } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { useValidateFirstInstanceScheduledDateMutation } from '~/lib/redux/services/maintenance/schedule.services';
 import { updateRecurrence } from '~/lib/redux/slices/DateSlice';
 import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';
 
@@ -39,45 +48,73 @@ const Date = (props: DateProps) => {
     onOpen: onOpenRecurrence,
     onClose: onCloseRecurrence,
   } = useDisclosure();
-  // const toast = useToast();
+  const toast = useToast();
+  const { handleSubmit } = useCustomMutation();
+  const [validateScheduleFirstInstanceSchedule, { isLoading }] =
+    useValidateFirstInstanceScheduledDateMutation({});
+  const scheduleForm = useAppSelector(
+    (state) => state.maintenance.scheduleForm
+  );
 
-  const validateRecurrence = (info: RecurrenceInfo) => {
+  const validateRecurrence = async (info: RecurrenceInfo) => {
     const startDateTime = `${moment(info.startDate).format('DD/MM/YYYY')} ${info.startTime}`;
     const endDateTime = info.endDate
       ? `${moment(info.endDate).format('DD/MM/YYYY')} ${info.endTime}`
       : null;
 
-    const frequencyLabel = info.frequency?.label?.toLowerCase();
-
-    setValues({
-      ...values,
-      frequencyId: info.frequency?.value as number,
-      scheduledDate: startDateTime,
-      endDate: endDateTime,
+    const formattedInfo = {
       intervalValue: info.interval,
-      ...(frequencyLabel === 'daily'
-        ? { dayOccurrences: info.repeatIntervals.daily }
-        : {}),
-      ...(frequencyLabel === 'weekly'
-        ? { weekOccurrences: info.repeatIntervals.weekly }
-        : {}),
-      ...(frequencyLabel === 'monthly' || frequencyLabel === 'quaterly'
-        ? { monthOccurrences: info.repeatIntervals.monthly }
-        : {}),
-      ...(frequencyLabel === 'annually'
-        ? { yearOccurences: info.repeatIntervals.annually }
-        : {}),
-    });
-    dispatch(updateScheduleForm({ frequencyName: info.frequency?.label }));
-    onCloseRecurrence();
-    // toast({
-    //   title: 'Error',
-    //   description: 'Selected Recurrence does not have an instance',
-    //   status: 'error',
-    //   duration: 5000,
-    //   isClosable: true,
-    //   position: 'top-right',
-    // });
+      dayOccurrences: info.repeatIntervals.daily,
+      weekOccurrences: info.repeatIntervals.weekly,
+      monthOccurrences: info.repeatIntervals.monthly,
+      yearOccurences: info.repeatIntervals.annually,
+    };
+
+    const response = await handleSubmit(
+      validateScheduleFirstInstanceSchedule,
+      {
+        ...formattedInfo,
+        frequencyId: info.frequency?.value as number,
+        startDate: moment(startDateTime, 'DD/MM/YYYY HH:mm')
+          .utcOffset(0, true)
+          .toISOString(),
+        endDate: endDateTime
+          ? moment(endDateTime, 'DD/MM/YYYY HH:mm')
+              .utcOffset(0, true)
+              .toISOString()
+          : null,
+      },
+      '',
+      () => {},
+      false
+    );
+
+    if (response?.data) {
+      setValues({
+        ...values,
+        ...formattedInfo,
+        frequencyId: info.frequency?.value as number,
+        scheduledDate: startDateTime,
+        endDate: endDateTime,
+      });
+      dispatch(
+        updateScheduleForm({
+          frequencyName: info.frequency?.label,
+          firstInstanceDate: response?.data?.data,
+          ...formattedInfo,
+        })
+      );
+      onCloseRecurrence();
+    } else {
+      toast({
+        title: 'Error',
+        description: 'Selected Recurrence does not have an instance',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'top-right',
+      });
+    }
   };
 
   return (
@@ -97,6 +134,7 @@ const Date = (props: DateProps) => {
             minDate={minScheduleDate}
             maxDate={maxScheduleDate}
             selectedDate={values.scheduledDate?.split(' ')?.[0] ?? undefined}
+            selectedTime={values.scheduledDate?.split(' ')?.[1] ?? undefined}
             handleDateTimeSelect={(dateTime) => {
               setValues({
                 ...values,
@@ -105,6 +143,7 @@ const Date = (props: DateProps) => {
               });
               if (dateTime) {
                 const splittedDateTime = dateTime?.split(' ');
+                dispatch(updateScheduleForm({ firstInstanceDate: null }));
                 dispatch(
                   updateRecurrence({
                     startDate: splittedDateTime?.[0]
@@ -138,6 +177,12 @@ const Date = (props: DateProps) => {
             infoText="Start Date has to be within specified Plan Info Date"
             customStyle={{ width: 'full' }}
           />
+          {scheduleForm.firstInstanceDate && (
+            <InfoCard
+              infoText={`First Instance Date: ${moment(scheduleForm.firstInstanceDate).format('Do MMMM YYYY, hh:mmA')}`}
+              customStyle={{ width: 'full' }}
+            />
+          )}
           {submitCount > 0 && (errors.scheduledDate || errors.frequencyId) && (
             <ErrorMessage>
               {(errors.scheduledDate as string) ?? 'Recurrence is required'}
@@ -152,7 +197,7 @@ const Date = (props: DateProps) => {
         maxStartDate={maxScheduleDate}
         maxEndDate={maxScheduleDate}
         handleSetRecurrence={(info: RecurrenceInfo) => validateRecurrence(info)}
-        isLoading={false}
+        isLoading={isLoading}
       />
     </>
   );

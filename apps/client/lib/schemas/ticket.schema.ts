@@ -9,7 +9,7 @@ const scheduleTicketSchema = (minResolutionDate?: string) =>
       'Resolution Date is Required'
     ),
     tasks: Yup.array()
-      .of(taskBaseSchema(minResolutionDate))
+      .of(taskBaseSchema())
       .required('Tasks are required')
       .min(1, 'There must be atleast one task'),
     taskCount: Yup.number()

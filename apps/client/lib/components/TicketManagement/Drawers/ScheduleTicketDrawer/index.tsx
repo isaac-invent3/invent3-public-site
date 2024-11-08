@@ -77,11 +77,7 @@ const ScheduleTicketDrawer = (props: ScheduleTicketDrawerProps) => {
                 <VStack width="full" spacing="24px" px="24px" mt="22px">
                   <TaskAssignedTo sectionMaxWidth="141px" spacing="24px" />
                   <ResolutionDate />
-                  <Tasks
-                    sectionMaxWidth="141px"
-                    spacing="24px"
-                    scheduleId={null}
-                  />
+                  <Tasks sectionMaxWidth="141px" spacing="24px" />
                 </VStack>
               </form>
             </FormikProvider>

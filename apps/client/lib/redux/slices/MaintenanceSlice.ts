@@ -56,6 +56,7 @@ const initialScheduleForm = {
   },
   taskCount: 0,
   tasks: [],
+  firstInstanceDate: null,
 };
 
 const InitialScheduleInfo = {

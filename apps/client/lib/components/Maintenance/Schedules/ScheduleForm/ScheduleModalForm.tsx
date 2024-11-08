@@ -76,13 +76,10 @@ const ScheduleModalForm = (props: ScheduleModalFormProps) => {
           'create',
           values as unknown as ScheduleFormDetails,
           [],
-          [],
           username as string
         ),
         createTaskDtos: generateTasksArray(
-          'create',
           values.tasks as unknown as taskFormDetails[],
-          [],
           [],
           username as string
         ),
@@ -147,11 +144,7 @@ const ScheduleModalForm = (props: ScheduleModalFormProps) => {
                     spacing="40px"
                     buttonVariant="secondary"
                   />
-                  <Tasks
-                    sectionMaxWidth="118px"
-                    spacing="40px"
-                    scheduleId={null}
-                  />
+                  <Tasks sectionMaxWidth="118px" spacing="40px" />
                 </VStack>
                 {/* Main Form Ends Here */}
                 <HStack

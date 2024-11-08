@@ -53,7 +53,9 @@ const CustomizedPlanModal = (props: CustomizedPlanModalProps) => {
         ...values,
         assetId,
         startDate: moment(values.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
-        endDate: moment(values.endDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+        endDate: values.endDate
+          ? moment(values.endDate, 'DD/MM/YYYY').format('YYYY-MM-DD')
+          : null,
         planTypeId: MAINTENANCE_PLAN_ENUM.custom,
         createdBy: data?.user?.username,
       };
@@ -88,7 +90,6 @@ const CustomizedPlanModal = (props: CustomizedPlanModalProps) => {
               {/* Main Form Starts Here */}
               <VStack width="full" spacing="27px" mt="60px">
                 <PlanTitle sectionMaxWidth="118px" spacing="73px" />
-                <Frequency sectionMaxWidth="118px" spacing="73px" />
                 {!assetId && (
                   <>
                     <Plan />

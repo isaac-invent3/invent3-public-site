@@ -13,6 +13,7 @@ import { Ticket } from '~/lib/interfaces/ticket.interfaces';
 import SectionOne from '../Common/SectionOne';
 import ScheduleInfoHeader from '../Common/ScheduleInfoHeader';
 import MarkTicketAsCompletedModal from '../../Modals/MarkTicketAsCompletedModal';
+import TicketActivity from '../Common/TicketActivity';
 
 interface ScheduledTicketDetailDrawerProps {
   isOpen: boolean;
@@ -67,6 +68,7 @@ const ScheduledTicketDetailDrawer = (
           >
             <ScheduleInfoHeader data={data} />
             <SectionOne data={data} type="scheduled" />
+            <TicketActivity />
           </Flex>
         </DrawerBody>
       </GenericDrawer>

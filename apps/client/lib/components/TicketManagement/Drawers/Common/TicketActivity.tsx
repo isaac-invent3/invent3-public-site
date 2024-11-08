@@ -2,48 +2,86 @@ import {
   Box,
   Step,
   StepDescription,
-  StepIcon,
   StepIndicator,
-  StepNumber,
   StepSeparator,
-  StepStatus,
   StepTitle,
   Stepper,
+  Text,
+  VStack,
   useSteps,
 } from '@chakra-ui/react';
 const steps = [
-  { title: 'First', description: 'Contact Info' },
-  { title: 'Second', description: 'Date & Time' },
-  { title: 'Third', description: 'Select Rooms' },
+  { title: 'Ticket created', description: '23/10/2024', color: '#C4C4C4' },
+  {
+    title: (
+      <p>
+        <strong>George Clooney</strong> Created a schedule for the ticket
+      </p>
+    ),
+    description: '23/10/2024',
+    color: '#FF7A37',
+  },
+  {
+    title: (
+      <p>
+        <strong>George Clooney</strong> assigned the ticket to{' '}
+        <strong>George Clooney</strong>
+      </p>
+    ),
+    description: '23/10/2024',
+    color: '#7DAEF2',
+  },
+  {
+    title: <strong>View more activity</strong>,
+    color: '#C4C4C4',
+  },
 ];
 
 const TicketActivity = () => {
   const { activeStep } = useSteps({
-    index: 1,
+    index: 0,
     count: steps.length,
   });
 
   return (
-    <Stepper index={activeStep} orientation="vertical" height="400px" gap="0">
-      {steps.map((step, index) => (
-        <Step key={index}>
-          <StepIndicator>
-            <StepStatus
-              complete={<StepIcon />}
-              incomplete={<StepNumber />}
-              active={<StepNumber />}
-            />
-          </StepIndicator>
+    <VStack
+      width="full"
+      alignItems="flex-start"
+      spacing="10px"
+      pt="24px"
+      px="24px"
+    >
+      <Text>Ticket Activity</Text>
 
-          <Box flexShrink="0">
-            <StepTitle>{step.title}</StepTitle>
-            <StepDescription>{step.description}</StepDescription>
-          </Box>
+      <Stepper
+        size={'md'}
+        index={activeStep}
+        orientation="vertical"
+        height="230px"
+        gap="0"
+      >
+        {steps.map((step, index) => (
+          <Step key={index}>
+            <StepIndicator border="none">
+              <Box
+                width="30px"
+                height="30px"
+                rounded="full"
+                bgColor={step.color}
+                border={'none'}
+              />
+            </StepIndicator>
 
-          <StepSeparator />
-        </Step>
-      ))}
-    </Stepper>
+            <Box flexShrink="0">
+              <Text>{step.title}</Text>
+              <Text color="#656565" fontSize="11px" fontWeight={500}>{step.description}</Text>
+            </Box>
+
+            <StepSeparator />
+          </Step>
+        ))}
+      </Stepper>
+    </VStack>
   );
 };
 

@@ -20,7 +20,7 @@ import InfoCard from '~/lib/components/UI/InfoCard';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { RecurrenceInfo } from '~/lib/interfaces/general.interfaces';
 import { ScheduleFormDetails } from '~/lib/interfaces/maintenance.interfaces';
-import { useAppDispatch } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useValidateFirstInstanceScheduledDateMutation } from '~/lib/redux/services/maintenance/schedule.services';
 import { updateRecurrence } from '~/lib/redux/slices/DateSlice';
 import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';
@@ -53,6 +53,9 @@ const Date = (props: DateProps) => {
   const { handleSubmit } = useCustomMutation();
   const [validateScheduleFirstInstanceSchedule, { isLoading }] =
     useValidateFirstInstanceScheduledDateMutation({});
+  const scheduleForm = useAppSelector(
+    (state) => state.maintenance.scheduleForm
+  );
 
   const validateRecurrence = async (info: RecurrenceInfo) => {
     const startDateTime = `${moment(info.startDate).format('DD/MM/YYYY')} ${info.startTime}`;
@@ -81,17 +84,23 @@ const Date = (props: DateProps) => {
         : info.repeatIntervals.annually,
     };
 
-    const response = await handleSubmit(validateScheduleFirstInstanceSchedule, {
-      ...formattedInfo,
-      startDate: moment(startDateTime, 'DD/MM/YYYY HH:mm')
-        .utcOffset(0, true)
-        .toISOString(),
-      endDate: endDateTime
-        ? moment(endDateTime, 'DD/MM/YYYY HH:mm')
-            .utcOffset(0, true)
-            .toISOString()
-        : null,
-    });
+    const response = await handleSubmit(
+      validateScheduleFirstInstanceSchedule,
+      {
+        ...formattedInfo,
+        startDate: moment(startDateTime, 'DD/MM/YYYY HH:mm')
+          .utcOffset(0, true)
+          .toISOString(),
+        endDate: endDateTime
+          ? moment(endDateTime, 'DD/MM/YYYY HH:mm')
+              .utcOffset(0, true)
+              .toISOString()
+          : null,
+      },
+      '',
+      () => {},
+      false
+    );
 
     if (response?.data) {
       setValues({
@@ -100,7 +109,12 @@ const Date = (props: DateProps) => {
         scheduledDate: startDateTime,
         endDate: endDateTime,
       });
-      dispatch(updateScheduleForm({ frequencyName: info.frequency?.label }));
+      dispatch(
+        updateScheduleForm({
+          frequencyName: info.frequency?.label,
+          firstInstanceDate: response?.data?.data,
+        })
+      );
       onCloseRecurrence();
     } else {
       toast({
@@ -139,6 +153,7 @@ const Date = (props: DateProps) => {
               });
               if (dateTime) {
                 const splittedDateTime = dateTime?.split(' ');
+                dispatch(updateScheduleForm({ firstInstanceDate: null }));
                 dispatch(
                   updateRecurrence({
                     startDate: splittedDateTime?.[0]
@@ -172,6 +187,12 @@ const Date = (props: DateProps) => {
             infoText="Start Date has to be within specified Plan Info Date"
             customStyle={{ width: 'full' }}
           />
+          {scheduleForm.firstInstanceDate && (
+            <InfoCard
+              infoText={`First Instance Date: ${moment(scheduleForm.firstInstanceDate).format('Do MMMM YYYY, hh:mmA')}`}
+              customStyle={{ width: 'full' }}
+            />
+          )}
           {submitCount > 0 && (errors.scheduledDate || errors.frequencyId) && (
             <ErrorMessage>
               {(errors.scheduledDate as string) ?? 'Recurrence is required'}

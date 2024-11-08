@@ -23,6 +23,7 @@ interface CustomSelectDateButtonProps {
   ) => void;
   customStyle?: { [name: string]: unknown };
   includeTimeDisplay?: boolean;
+  dateDisplay?: string | null;
 }
 const CustomSelectDateButton = (props: CustomSelectDateButtonProps) => {
   const {
@@ -34,6 +35,7 @@ const CustomSelectDateButton = (props: CustomSelectDateButtonProps) => {
     maxDate,
     handleSelectedDateTime,
     includeTimeDisplay = false,
+    dateDisplay,
   } = props;
   const today = moment().format('MMM DD, YYYY');
   const {
@@ -63,7 +65,9 @@ const CustomSelectDateButton = (props: CustomSelectDateButtonProps) => {
           {...customStyle}
         >
           <Text color="primary.500">
-            {selectedDate ? dateFormatter(selectedDate, `MMM DD, YYYY`) : today}
+            {selectedDate
+              ? dateFormatter(selectedDate, dateDisplay ?? `MMM DD, YYYY`)
+              : today}
           </Text>
           <Icon as={ChevronDownIcon} boxSize="16px" />
         </HStack>

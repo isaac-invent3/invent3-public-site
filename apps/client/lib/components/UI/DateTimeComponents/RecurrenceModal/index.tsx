@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import GenericModal from '../../Modal';
 import {
   HStack,
@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 import Button from '../../Button';
 import { RecurrenceInfo } from '~/lib/interfaces/general.interfaces';
-import { useAppSelector } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import Summary from './Summary';
 import moment from 'moment';
 import { FormikProvider, useFormik } from 'formik';
@@ -19,6 +19,7 @@ import Frequency from './Frequency';
 import Intervals from './Intervals';
 import StartDateTime from './StartDateTime';
 import EndDateTime from './EndDateTime';
+import { updateRecurrence } from '~/lib/redux/slices/DateSlice';
 
 interface RecurrenceModalProps {
   isOpen: boolean;
@@ -41,6 +42,7 @@ const RecurrenceModal = (props: RecurrenceModalProps) => {
     isLoading,
     handleSetRecurrence,
   } = props;
+  const dispatch = useAppDispatch();
   const recurrence = useAppSelector((state) => state.date.info.recurrence);
   const [maxInterval, setMaxInterval] = useState(1);
 
@@ -62,6 +64,12 @@ const RecurrenceModal = (props: RecurrenceModalProps) => {
       handleSetRecurrence(recurrence);
     },
   });
+
+  useEffect(() => {
+    if (!recurrence.startDate) {
+      dispatch(updateRecurrence({ startDate: moment().toISOString() }));
+    }
+  }, [recurrence.startDate]);
 
   return (
     <>

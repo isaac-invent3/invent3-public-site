@@ -32,6 +32,12 @@ const StartDateTime = (props: StartDateTimeProps) => {
           minDate={minStartDate}
           maxDate={maxStartDate}
           includeTimeDisplay
+          dateDisplay={
+            recurrence.frequency?.label &&
+            recurrence.frequency?.label.toLowerCase() === 'monthly'
+              ? 'MMMM'
+              : null
+          }
           selectedTime={recurrence.startTime}
           selectedDate={
             recurrence.startDate

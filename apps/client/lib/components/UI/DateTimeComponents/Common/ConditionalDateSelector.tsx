@@ -12,6 +12,7 @@ interface ConditionalDateSelectorProps {
   selectedDate?: Date | null;
   selectedTime?: string | null;
   includeTime?: boolean;
+  dateDisplay?: string | null;
 }
 
 const ConditionalDateSelector = (props: ConditionalDateSelectorProps) => {
@@ -23,6 +24,7 @@ const ConditionalDateSelector = (props: ConditionalDateSelectorProps) => {
     selectedDate,
     selectedTime,
     includeTime = false,
+    dateDisplay,
   } = props;
   const [shouldSelectDate, setShouldSelectDate] = useState(
     selectedDate ? true : false
@@ -53,6 +55,7 @@ const ConditionalDateSelector = (props: ConditionalDateSelectorProps) => {
           <CustomDateButton
             minDate={minDate}
             maxDate={maxDate}
+            dateDisplay={dateDisplay}
             selectedTime={selectedTime}
             selectedDate={selectedDate}
             handleSelectedDateTime={(date, time) =>

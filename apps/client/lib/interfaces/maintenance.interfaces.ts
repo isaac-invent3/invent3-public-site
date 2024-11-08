@@ -128,6 +128,7 @@ interface ScheduleFormDetails {
   };
   taskCount: number | null;
   tasks: taskFormDetails[];
+  firstInstanceDate: string | null;
 }
 
 interface PlanFormDetails {

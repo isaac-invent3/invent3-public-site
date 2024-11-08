@@ -14,6 +14,10 @@ const baseQuery = fetchBaseQuery({
   prepareHeaders: async (headers) => {
     const session = await getSession();
 
+    if (!session) {
+      return handleSignOut();
+    }
+
     if (session?.user?.accessToken) {
       // Attach the access token to the Authorization header
       headers.set('Authorization', `Bearer ${session.user.accessToken}`);

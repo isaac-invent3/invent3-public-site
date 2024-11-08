@@ -38,10 +38,9 @@ export async function handleCredentialsSignin({
 export async function handleSignOut(ref?: string) {
   try {
     const session = await auth();
-    if (!session?.user?.accessToken) {
-      throw new Error('No access token found in session');
+    if (!session) {
+      return;
     }
-
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/logout`,
       {
@@ -66,7 +65,6 @@ export async function handleSignOut(ref?: string) {
       // notifySentry("Could not log out!")
       return;
     }
-
     console.log('Logout successful:', data);
   } catch (error) {
     console.error('An error occurred during logout:', error);

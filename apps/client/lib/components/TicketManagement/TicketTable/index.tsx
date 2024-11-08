@@ -2,13 +2,13 @@ import { createColumnHelper } from '@tanstack/react-table';
 import React, { useMemo, useState } from 'react';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import DataTable from '~/lib/components/UI/Table';
-import { TaskPriorityColorCode } from '~/lib/utils/ColorCodes';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import PopoverAction from './PopoverAction';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
 import { useGetAllTicketsQuery } from '~/lib/redux/services/ticket.services';
 import { Flex } from '@chakra-ui/react';
 import UserInfo from '~/lib/components/Common/UserInfo';
+import { COLOR_CODES_FALLBACK } from '~/lib/utils/constants';
 
 interface TicketTableProps {
   type: 'new' | 'scheduled' | 'completed';
@@ -29,7 +29,7 @@ const TicketTable = (props: TicketTableProps) => {
       const baseColumns = [
         columnHelper.accessor('ticketId', {
           cell: (info) => info.getValue(),
-          header: '#',
+          header: 'Ticket ID',
           enableSorting: false,
         }),
         columnHelper.accessor('ticketTitle', {
@@ -46,13 +46,16 @@ const TicketTable = (props: TicketTableProps) => {
               }),
             ]
           : []),
+          // Change to Proper Content
+        columnHelper.accessor('ticketId', {
+          cell: "Incident",
+          header: 'Type',
+          enableSorting: false,
+        }),
         columnHelper.accessor('ticketId', {
           cell: () => {
             return (
-              <GenericStatusBox
-                colorCode={TaskPriorityColorCode['High']}
-                text="High"
-              />
+              <GenericStatusBox colorCode={COLOR_CODES_FALLBACK.default} text="High" />
             );
           },
           header: 'Priority',

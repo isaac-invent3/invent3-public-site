@@ -37,6 +37,7 @@ import { ticketApi } from './services/ticket.services';
 import { assetTypeApi } from './services/asset/types.services';
 import { assetGroupTypeApi } from './services/asset/groupType.services';
 import dateSlice from './slices/DateSlice';
+import { taskStatusApi } from './services/task/statuses.services';
 
 export const persistConfig = {
   key: 'root',
@@ -62,6 +63,7 @@ const rootReducer = combineReducers({
   [taskApi.reducerPath]: taskApi.reducer,
   [taskPrioritiesApi.reducerPath]: taskPrioritiesApi.reducer,
   [taskTypeApi.reducerPath]: taskTypeApi.reducer,
+  [taskStatusApi.reducerPath]: taskStatusApi.reducer,
   [ticketApi.reducerPath]: ticketApi.reducer,
   [locationApi.reducerPath]: locationApi.reducer,
   [utilityApi.reducerPath]: utilityApi.reducer,
@@ -101,6 +103,7 @@ export const makeStore = () => {
         taskApi.middleware,
         taskPrioritiesApi.middleware,
         taskTypeApi.middleware,
+        taskStatusApi.middleware,
         ticketApi.middleware,
         locationApi.middleware,
         categoryApi.middleware,

@@ -20,6 +20,10 @@ const OPERATORS = {
   EndsWith: 9,
 };
 
+const COLOR_CODES_FALLBACK = {
+  default: '#8595A5',
+};
+
 const FORM_ENUM = {
   add: 1,
   delete: 2,
@@ -162,4 +166,5 @@ export {
   monthOptions,
   planScopeOptions,
   STATUS_CATEGORY_ENUM,
+  COLOR_CODES_FALLBACK,
 };

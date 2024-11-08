@@ -4,7 +4,7 @@ import { Option } from '~/lib/interfaces/general.interfaces';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
 import { useGetAllTaskPrioritiesQuery } from '~/lib/redux/services/task/priorities.services';
 import { useGetAllTaskStatusesQuery } from '~/lib/redux/services/task/statuses.services';
-import { TaskPriorityColorCode } from '~/lib/utils/ColorCodes';
+import { COLOR_CODES_FALLBACK } from '~/lib/utils/constants';
 import { generateOptions } from '~/lib/utils/helperFunctions';
 import TicketInfoDropDown from './TicketInfoDropdown';
 import TicketInfoHeader from './TicketInfoHeader';
@@ -97,7 +97,7 @@ const ScheduleInfoHeader = (props: ScheduleInfoHeaderProps) => {
               handleClick={(option) => setSelectedTaskStatus(option)}
               colorCode={
                 getSelectedTaskStatus?.displayColorCode ??
-                TaskPriorityColorCode['Low']
+                COLOR_CODES_FALLBACK.default
               }
             />
           </VStack>
@@ -113,7 +113,7 @@ const ScheduleInfoHeader = (props: ScheduleInfoHeaderProps) => {
               handleClick={(option) => setSelectedTaskPriority(option)}
               colorCode={
                 getSelectedTaskPriority?.displayColorCode ??
-                TaskPriorityColorCode['Urgent']
+                COLOR_CODES_FALLBACK.default
               }
             />
           </VStack>

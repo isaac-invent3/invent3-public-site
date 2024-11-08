@@ -1,17 +1,8 @@
-import {
-  Box,
-  Step,
-  StepDescription,
-  StepIndicator,
-  StepSeparator,
-  StepTitle,
-  Stepper,
-  Text,
-  VStack,
-  useSteps,
-} from '@chakra-ui/react';
-const steps = [
+import { Box, HStack, Text, VStack } from '@chakra-ui/react';
+
+const timelines = [
   { title: 'Ticket created', description: '23/10/2024', color: '#C4C4C4' },
+
   {
     title: (
       <p>
@@ -38,49 +29,43 @@ const steps = [
 ];
 
 const TicketActivity = () => {
-  const { activeStep } = useSteps({
-    index: 0,
-    count: steps.length,
-  });
+  const afterClass = {
+    content: '""',
+    width: '0px',
+    height: '100%',
+    border: '1px dashed #656565',
+    position: 'absolute',
+    top: '50%',
+    left: '0.9rem',
+    zIndex: -1,
+  };
 
   return (
-    <VStack
-      width="full"
-      alignItems="flex-start"
-      spacing="10px"
-      pt="24px"
-      px="24px"
-    >
+    <VStack width="full" alignItems="flex-start" pt="24px" px="24px">
       <Text>Ticket Activity</Text>
 
-      <Stepper
-        size={'md'}
-        index={activeStep}
-        orientation="vertical"
-        height="230px"
-        gap="0"
-      >
-        {steps.map((step, index) => (
-          <Step key={index}>
-            <StepIndicator border="none">
-              <Box
-                width="30px"
-                height="30px"
-                rounded="full"
-                bgColor={step.color}
-                border={'none'}
-              />
-            </StepIndicator>
+      <Box maxHeight="400px">
+        {timelines.map((timeline, index) => (
+          <HStack
+            position="relative"
+            alignItems="center"
+            gap={3}
+            minHeight="40px"
+            mb={5}
+            _after={index < timelines.length - 1 ? afterClass : undefined}
+          >
+            <Box boxSize={8} rounded="full" bgColor={timeline.color} />
 
-            <Box flexShrink="0">
-              <Text>{step.title}</Text>
-              <Text color="#656565" fontSize="11px" fontWeight={500}>{step.description}</Text>
-            </Box>
+            <VStack gap={1} alignItems={'start'}>
+              <Text>{timeline.title}</Text>
 
-            <StepSeparator />
-          </Step>
+              <Text color="#656565" fontSize="11px" fontWeight={500}>
+                {timeline.description}
+              </Text>
+            </VStack>
+          </HStack>
         ))}
-      </Stepper>
+      </Box>
     </VStack>
   );
 };

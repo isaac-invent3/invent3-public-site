@@ -5,14 +5,13 @@ import {
   HStack,
   useDisclosure,
 } from '@chakra-ui/react';
-import React from 'react';
 import Button from '~/lib/components/UI/Button';
 import BackButton from '~/lib/components/UI/Button/BackButton';
 import GenericDrawer from '~/lib/components/UI/GenericDrawer';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
-import SectionOne from '../Common/SectionOne';
-import ScheduleInfoHeader from '../Common/ScheduleInfoHeader';
 import MarkTicketAsCompletedModal from '../../Modals/MarkTicketAsCompletedModal';
+import ScheduleInfoHeader from '../Common/ScheduleInfoHeader';
+import SectionOne from '../Common/SectionOne';
 import TicketActivity from '../Common/TicketActivity';
 
 interface ScheduledTicketDetailDrawerProps {

@@ -88,7 +88,7 @@ const TicketInfoDropDown = (props: DropDownProps) => {
           {...(hasBorder
             ? {
                 borderWidth: '1px',
-                borderColor: `${colorCode}80`,
+                borderColor: `neutral.800`,
               }
             : {})}
           py="8px"
@@ -113,7 +113,7 @@ const TicketInfoDropDown = (props: DropDownProps) => {
                   onClose();
                 }}
                 cursor="pointer"
-                _hover={{ bgColor: `${colorCode}0D`, color: colorCode }}
+                _hover={{ bgColor: 'neutral.300' }}
                 width="full"
               >
                 {option.label}

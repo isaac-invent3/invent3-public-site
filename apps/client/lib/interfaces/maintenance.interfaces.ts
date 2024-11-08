@@ -111,9 +111,9 @@ interface ScheduleFormDetails {
   intervalValue: number | null;
   deletedTaskIDs: number[];
   updatedTaskIDs: number[];
-  dayOccurrences: string[];
-  weekOccurrences: number[];
-  monthOccurrences: number[];
+  dayOccurrences: string[] | null;
+  weekOccurrences: number[] | null;
+  monthOccurrences: number[] | null;
   yearOccurences: {
     [name: number]: number[];
   } | null;

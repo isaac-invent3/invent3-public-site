@@ -70,7 +70,21 @@ const TaskFormModal = (props: TaskFormModalProps) => {
     validationSchema: taskBaseSchema,
     enableReinitialize: true,
     onSubmit: async (values, { resetForm }) => {
-      if (scheduleId) {
+      if (handleData) {
+        handleData({
+          ...values,
+          scheduleId: data?.scheduleId ?? null,
+          localId: data?.localId ?? null,
+          statusId: data?.statusId ?? null,
+          status: data?.status ?? null,
+          assetId: data?.assetId ?? null,
+          assetName: data?.assetName ?? null,
+          assetLocation: data?.assetLocation ?? null,
+          dateCompleted: data?.dateCompleted ?? null,
+        });
+        resetForm();
+        onOpenSuccess();
+      } else if (scheduleId) {
         let response;
         const info = {
           taskTypeId: values.taskTypeId,
@@ -106,21 +120,6 @@ const TaskFormModal = (props: TaskFormModalProps) => {
           resetForm();
           onOpenSuccess();
         }
-      }
-      if (handleData) {
-        handleData({
-          ...values,
-          scheduleId: scheduleId ?? null,
-          statusId: null,
-          status: 'Not Started',
-          assetId: null,
-          assetName: null,
-          assetLocation: null,
-          dateCompleted: null,
-          localId: null,
-        });
-        resetForm();
-        onOpenSuccess();
       }
     },
   });

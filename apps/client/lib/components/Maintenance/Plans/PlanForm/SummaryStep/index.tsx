@@ -17,6 +17,7 @@ import {
   useCreateMaintenancePlanWithSchedulesMutation,
   useUpdateMaintenancePlanWithSchedulesMutation,
 } from '~/lib/redux/services/maintenance/plan.services';
+import { FORM_ENUM } from '~/lib/utils/constants';
 
 interface SummarySectionProps {
   activeStep: number;
@@ -48,9 +49,12 @@ const SummarySection = (props: SummarySectionProps) => {
       ? 'createMaintenanceScheduleDtos'
       : 'masterUpdateMaintenanceScheduleDto']: [
       // Deleted schedules
-      planFormDetails.deletedScheduleIDs.map((item) => ({
-        scheduleId: item,
-        ChangeInitiatedBy: username,
+      ...planFormDetails.deletedScheduleIDs.map((item) => ({
+        updateMaintenanceScheduleDto: {
+          scheduleId: item,
+          actionType: FORM_ENUM.delete,
+          changeInitiatedBy: username,
+        },
       })),
       planFormDetails.schedules
         .filter(
@@ -71,9 +75,10 @@ const SummarySection = (props: SummarySectionProps) => {
           ),
           [getDtoKey('Task')]: [
             // Deleted Task
-            schedule.deletedTaskIDs.map((item) => ({
+            ...schedule.deletedTaskIDs.map((item) => ({
               taskId: item,
-              ChangeInitiatedBy: username,
+              actionType: FORM_ENUM.delete,
+              changeInitiatedBy: username,
             })),
             // Generate for only task that has been added or updated
             ...generateTasksArray(

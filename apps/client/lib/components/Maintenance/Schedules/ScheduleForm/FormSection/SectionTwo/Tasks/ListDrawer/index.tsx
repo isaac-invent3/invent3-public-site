@@ -5,6 +5,7 @@ import { Task, taskFormDetails } from '~/lib/interfaces/task.interfaces';
 import TaskListTable from './TaskListTable';
 import { ScheduleFormDetails } from '~/lib/interfaces/maintenance.interfaces';
 import { useGetAllTasksByScheduleIdQuery } from '~/lib/redux/services/task/general.services';
+import { STATUS_CATEGORY_ENUM } from '~/lib/utils/constants';
 
 interface FormTaskListDrawerProps {
   isOpen: boolean;
@@ -18,12 +19,16 @@ const FormTaskListDrawer = (props: FormTaskListDrawerProps) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(25);
   const { data, isLoading, isFetching } = useGetAllTasksByScheduleIdQuery(
-    { id: values.scheduleId, pageNumber, pageSize },
+    {
+      id: values.scheduleId,
+      pageNumber,
+      pageSize,
+      statusCategoryId: STATUS_CATEGORY_ENUM.ACTIVE,
+    },
     { skip: !values.scheduleId }
   );
 
   useEffect(() => {
-    console.log({ scheduleId: values.scheduleId });
     if (data?.data) {
       if (data?.data?.items?.length >= 1) {
         const tasks: Task[] = data?.data?.items;
@@ -49,11 +54,10 @@ const FormTaskListDrawer = (props: FormTaskListDrawerProps) => {
             costEstimate: item.costEstimate,
             actualCost: item.actualCost,
             comments: item.comments,
-            estimatedDurationInHours: 0,
+            estimatedDurationInHours: item.estimatedDurationInHours,
             localId: index + 1,
           });
         });
-        console.log({ tasks: [...values.tasks, ...formattedTasks] });
         setFieldValue('tasks', [...values.tasks, ...formattedTasks]);
       }
     }

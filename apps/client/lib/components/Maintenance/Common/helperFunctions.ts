@@ -1,3 +1,4 @@
+import { isEmpty } from 'lodash';
 import moment from 'moment';
 import {
   PlanFormDetails,
@@ -16,7 +17,7 @@ const generateTasksArray = (
 ) => {
   type formDetails = baseTaskFormDetail & {
     actionType: (typeof FORM_ENUM)[keyof typeof FORM_ENUM];
-    ChangeInitiatedBy: string;
+    changeInitiatedBy: string;
   };
 
   let allTasks: formDetails[] = [];
@@ -30,6 +31,7 @@ const generateTasksArray = (
     }
 
     allTasks.push({
+      taskId: item.taskId,
       taskTypeId: item.taskTypeId,
       taskName: item.taskName,
       taskDescription: item.taskDescription,
@@ -42,7 +44,7 @@ const generateTasksArray = (
       comments: item.comments,
       scheduleId: item.scheduleId,
       actionType,
-      ChangeInitiatedBy: username,
+      changeInitiatedBy: username,
     });
   });
   return allTasks;
@@ -77,10 +79,18 @@ const generateMaintenanceScheduleDTO = (
       ? moment(formDetail.scheduledDate, 'DD/MM/YYYY hh:mmA').utcOffset(0, true)
       : null,
     intervalValue: formDetail.intervalValue,
-    dayOccurrences: formDetail.dayOccurrences ?? null,
-    weekOccurrences: formDetail.weekOccurrences ?? null,
-    monthOccurrences: formDetail.monthOccurrences ?? null,
-    yearOccurrences: formDetail.yearOccurences ?? null,
+    dayOccurrences: isEmpty(formDetail.dayOccurrences)
+      ? null
+      : formDetail.dayOccurrences,
+    weekOccurrences: isEmpty(formDetail.weekOccurrences)
+      ? null
+      : formDetail.weekOccurrences,
+    monthOccurrences: isEmpty(formDetail.monthOccurrences)
+      ? null
+      : formDetail.monthOccurrences,
+    yearOccurrences: isEmpty(formDetail.yearOccurences)
+      ? null
+      : formDetail.yearOccurences,
     completionDate: null,
     actionType,
     ...(type === 'edit'
@@ -88,7 +98,7 @@ const generateMaintenanceScheduleDTO = (
           scheduleId: formDetail.scheduleId,
         }
       : {}),
-    ChangeInitiatedBy: username,
+    changeInitiatedBy: username,
   };
   return maintenanceScheduleDto;
 };

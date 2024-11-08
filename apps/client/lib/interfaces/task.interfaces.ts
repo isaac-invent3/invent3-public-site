@@ -50,6 +50,7 @@ interface Task {
 }
 
 interface baseTaskFormDetail {
+  taskId: number | null;
   taskTypeId: number | null;
   taskName: string | null;
   taskDescription: string | null | undefined;
@@ -64,7 +65,6 @@ interface baseTaskFormDetail {
 }
 
 interface FormDetails {
-  taskId: number | null;
   localId: number | null;
   taskType: string | null;
   statusId: number | null;

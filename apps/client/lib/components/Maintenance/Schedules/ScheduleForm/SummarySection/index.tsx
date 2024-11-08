@@ -8,14 +8,13 @@ import { useAppSelector } from '~/lib/redux/hooks';
 import { useSession } from 'next-auth/react';
 import ScheduleSuccessModal from '../SuccessModal';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import {
-  useCreateMaintenanceScheduleAndTasksMutation,
-  useUpdateMaintenanceScheduleMutation,
-} from '~/lib/redux/services/maintenance/schedule.services';
+import { useCreateMaintenanceScheduleAndTasksMutation } from '~/lib/redux/services/maintenance/schedule.services';
 import {
   generateMaintenanceScheduleDTO,
   generateTasksArray,
 } from '../../../Common/helperFunctions';
+import { useUpdateMaintenancePlanWithSchedulesMutation } from '~/lib/redux/services/maintenance/plan.services';
+import { FORM_ENUM } from '~/lib/utils/constants';
 
 interface SummarySectionProps {
   activeStep: number;
@@ -29,10 +28,10 @@ const SummarySection = (props: SummarySectionProps) => {
     (state) => state.maintenance.scheduleForm
   );
   const { handleSubmit } = useCustomMutation();
-  const [createScheduleAndTasks, { isLoading: createLoading }] =
+  const [createScheduleAndTasks, { isLoading: isCreating }] =
     useCreateMaintenanceScheduleAndTasksMutation();
-  const [updateSchedule, { isLoading: updateLoading }] =
-    useUpdateMaintenanceScheduleMutation();
+  const [updateScheduleAndTasks, { isLoading: isUpdating }] =
+    useUpdateMaintenancePlanWithSchedulesMutation();
   const breadCrumbText =
     type === 'create'
       ? 'Add New Maintenance Schedule'
@@ -41,17 +40,20 @@ const SummarySection = (props: SummarySectionProps) => {
   const username = data?.user?.username;
 
   const PAYLOAD = {
-    createMaintenanceScheduleDto: generateMaintenanceScheduleDTO(
+    [type === 'create'
+      ? 'createMaintenanceScheduleDto'
+      : 'updateMaintenanceScheduleDto']: generateMaintenanceScheduleDTO(
       type,
       scheduleFormDetails,
-      [],
+      [scheduleFormDetails.scheduleId as number],
       username as string
     ),
-    createTaskDtos: [
+    [type === 'create' ? 'createTaskDtos' : 'updateTaskDtos']: [
       // Deleted Task
-      scheduleFormDetails.deletedTaskIDs.map((item) => ({
+      ...scheduleFormDetails.deletedTaskIDs.map((item) => ({
         taskId: item,
-        ChangeInitiatedBy: username,
+        actionType: FORM_ENUM.delete,
+        changeInitiatedBy: username,
       })),
       // Generate for only task that has been added or updated
       ...generateTasksArray(
@@ -74,15 +76,13 @@ const SummarySection = (props: SummarySectionProps) => {
       // console.log(PAYLOAD);
     } else {
       response = await handleSubmit(
-        updateSchedule,
+        updateScheduleAndTasks,
         {
-          id: scheduleFormDetails.scheduleId,
-          ...generateMaintenanceScheduleDTO(
-            type,
-            scheduleFormDetails,
-            [],
-            username as string
-          ),
+          updateMaintenancePlanDto: {
+            maintenancePlanId: scheduleFormDetails.planId,
+            lastModifiedBy: username,
+          },
+          masterUpdateMaintenanceScheduleDto: [PAYLOAD],
         },
         ''
       );
@@ -128,8 +128,8 @@ const SummarySection = (props: SummarySectionProps) => {
           finalText={type === 'create' ? 'Finish' : 'Save Changes'}
           setActiveStep={setActiveStep}
           handleContinue={handleSumbitSchedule}
-          isLoading={createLoading || updateLoading}
-          loadingText={createLoading ? 'Submitting...' : 'Updating...'}
+          isLoading={isCreating || isUpdating}
+          loadingText={isCreating ? 'Submitting...' : 'Updating...'}
         />
       </Flex>
       {isOpen && (

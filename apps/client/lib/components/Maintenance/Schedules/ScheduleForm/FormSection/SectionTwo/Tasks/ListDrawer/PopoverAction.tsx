@@ -6,8 +6,13 @@ import GenericPopover from '~/lib/components/UI/GenericPopover';
 import GenericDeleteModal from '~/lib/components/UI/Modal/GenericDeleteModal';
 import { ScheduleFormDetails } from '~/lib/interfaces/maintenance.interfaces';
 import { taskFormDetails } from '~/lib/interfaces/task.interfaces';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';
 
 const PopoverAction = (task: taskFormDetails) => {
+  const dispatch = useAppDispatch();
+  const schedule = useAppSelector((state) => state.maintenance.scheduleForm);
+
   const {
     isOpen: isOpenEdit,
     onOpen: onOpenEdit,
@@ -21,11 +26,19 @@ const PopoverAction = (task: taskFormDetails) => {
 
   const { setFieldValue, values } = useFormikContext<ScheduleFormDetails>();
 
-  const handleEditTask = (task: taskFormDetails) => {
+  const handleEditTask = (updatedTask: taskFormDetails) => {
     const oldTasksExcludedEditedTask = values.tasks.filter(
-      (item: taskFormDetails) => item.localId !== task.localId
+      (item: taskFormDetails) => item.localId !== updatedTask.localId
     );
-    setFieldValue('tasks', [...oldTasksExcludedEditedTask, task]);
+    setFieldValue('tasks', [...oldTasksExcludedEditedTask, updatedTask]);
+    // Add the task ID to updated task array
+    if (task.taskId && !schedule.updatedTaskIDs.includes(task.taskId)) {
+      dispatch(
+        updateScheduleForm({
+          updatedTaskIDs: [...schedule.updatedTaskIDs, task.taskId],
+        })
+      );
+    }
   };
 
   const handleDelete = () => {
@@ -34,6 +47,14 @@ const PopoverAction = (task: taskFormDetails) => {
     );
     setFieldValue('tasks', newTasks);
     setFieldValue('taskCount', values.taskCount && values.taskCount - 1);
+    // Add the task ID to deleted task array
+    if (task.taskId) {
+      dispatch(
+        updateScheduleForm({
+          deletedTaskIDs: [...schedule.deletedTaskIDs, task.taskId],
+        })
+      );
+    }
   };
 
   return (
@@ -53,6 +74,7 @@ const PopoverAction = (task: taskFormDetails) => {
         onClose={onCloseEdit}
         data={task}
         handleData={handleEditTask}
+        scheduleId={null}
       />
       <GenericDeleteModal
         isOpen={isOpenDelete}

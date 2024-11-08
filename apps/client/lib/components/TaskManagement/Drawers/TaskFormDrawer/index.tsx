@@ -76,7 +76,7 @@ const TaskFormModal = (props: TaskFormModalProps) => {
           scheduleId: data?.scheduleId ?? null,
           localId: data?.localId ?? null,
           statusId: data?.statusId ?? null,
-          status: data?.status ?? null,
+          status: data?.status ?? 'Not Started',
           assetId: data?.assetId ?? null,
           assetName: data?.assetName ?? null,
           assetLocation: data?.assetLocation ?? null,

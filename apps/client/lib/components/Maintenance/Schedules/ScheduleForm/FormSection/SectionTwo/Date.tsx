@@ -7,7 +7,6 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { useFormikContext } from 'formik';
-import { isEmpty } from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { RepeatIcon } from '~/lib/components/CustomIcons';
@@ -64,30 +63,18 @@ const Date = (props: DateProps) => {
       : null;
 
     const formattedInfo = {
-      frequencyId: info.frequency?.value as number,
       intervalValue: info.interval,
-
-      dayOccurrences: isEmpty(info.repeatIntervals.daily)
-        ? null
-        : info.repeatIntervals.daily,
-
-      weekOccurrences: isEmpty(info.repeatIntervals.weekly)
-        ? null
-        : info.repeatIntervals.weekly,
-
-      monthOccurrences: isEmpty(info.repeatIntervals.monthly)
-        ? null
-        : info.repeatIntervals.monthly,
-
-      yearOccurences: isEmpty(info.repeatIntervals.annually)
-        ? null
-        : info.repeatIntervals.annually,
+      dayOccurrences: info.repeatIntervals.daily,
+      weekOccurrences: info.repeatIntervals.weekly,
+      monthOccurrences: info.repeatIntervals.monthly,
+      yearOccurences: info.repeatIntervals.annually,
     };
 
     const response = await handleSubmit(
       validateScheduleFirstInstanceSchedule,
       {
         ...formattedInfo,
+        frequencyId: info.frequency?.value as number,
         startDate: moment(startDateTime, 'DD/MM/YYYY HH:mm')
           .utcOffset(0, true)
           .toISOString(),
@@ -106,6 +93,7 @@ const Date = (props: DateProps) => {
       setValues({
         ...values,
         ...formattedInfo,
+        frequencyId: info.frequency?.value as number,
         scheduledDate: startDateTime,
         endDate: endDateTime,
       });
@@ -113,6 +101,7 @@ const Date = (props: DateProps) => {
         updateScheduleForm({
           frequencyName: info.frequency?.label,
           firstInstanceDate: response?.data?.data,
+          ...formattedInfo,
         })
       );
       onCloseRecurrence();
@@ -145,6 +134,7 @@ const Date = (props: DateProps) => {
             minDate={minScheduleDate}
             maxDate={maxScheduleDate}
             selectedDate={values.scheduledDate?.split(' ')?.[0] ?? undefined}
+            selectedTime={values.scheduledDate?.split(' ')?.[1] ?? undefined}
             handleDateTimeSelect={(dateTime) => {
               setValues({
                 ...values,

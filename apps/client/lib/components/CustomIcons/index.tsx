@@ -756,7 +756,7 @@ const RemoveIcon = createIcon({
           x2="8.25"
           y2="6.375"
           stroke="currentColor"
-          stroke-width="0.75"
+          strokeWidth="0.75"
         />
       </g>
       <defs>

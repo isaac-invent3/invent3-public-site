@@ -45,7 +45,7 @@ const FormSection = (props: FormSectionProps) => {
       name: formDetails.name ?? null,
       planId: formDetails.planId ?? null,
       typeId: formDetails.typeId ?? null,
-      frequencyId: formDetails.typeId ?? null,
+      frequencyId: formDetails.frequencyId ?? null,
       assetId: formDetails.assetId ?? null,
       sla: formDetails.sla ?? null,
       scheduleId: formDetails.scheduleId ?? null,

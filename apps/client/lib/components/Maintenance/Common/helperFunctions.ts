@@ -63,6 +63,7 @@ const generateMaintenanceScheduleDTO = (
       actionType = FORM_ENUM.update;
     }
   }
+  console.log(formDetail.dayOccurrences);
 
   const maintenanceScheduleDto = {
     planId: formDetail.planId,
@@ -88,9 +89,11 @@ const generateMaintenanceScheduleDTO = (
     monthOccurrences: isEmpty(formDetail.monthOccurrences)
       ? null
       : formDetail.monthOccurrences,
-    yearOccurrences: isEmpty(formDetail.yearOccurences)
-      ? null
-      : formDetail.yearOccurences,
+    yearOccurrences:
+      formDetail.yearOccurences &&
+      Object.values(formDetail.yearOccurences).every((arr) => arr.length === 0)
+        ? null
+        : formDetail.yearOccurences,
     completionDate: null,
     actionType,
     ...(type === 'edit'
@@ -109,7 +112,7 @@ const generatePlanDTO = (
   username: string
 ) => {
   const maintenancePlanDto = {
-    planId: formDetail.planId,
+    maintenancePlanId: formDetail.planId,
     planName: formDetail.planName,
     frequencyId: formDetail.frequencyId,
     ownerId: formDetail.ownerId,

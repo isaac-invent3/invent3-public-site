@@ -39,10 +39,10 @@ export default function Page({ params }: { params: { id: string } }) {
         comment: schedule?.comments,
         taskCount: schedule?.activeTasksCount,
         scheduledDate: schedule?.scheduledDate
-          ? dateFormatter(schedule?.scheduledDate, 'DD/MM/YYYY hh:mmA')
+          ? dateFormatter(schedule?.scheduledDate, 'DD/MM/YYYY HH:mm')
           : null,
         completionDate: schedule?.completionDate
-          ? dateFormatter(schedule?.completionDate, 'DD/MM/YYYY hh:mmA')
+          ? dateFormatter(schedule?.completionDate, 'DD/MM/YYYY HH:mm')
           : null,
       })
     );

@@ -56,7 +56,7 @@ const SummarySection = (props: SummarySectionProps) => {
           changeInitiatedBy: username,
         },
       })),
-      planFormDetails.schedules
+      ...planFormDetails.schedules
         .filter(
           // Filter for schedules that has been added or updated
           (schedule) =>
@@ -73,25 +73,29 @@ const SummarySection = (props: SummarySectionProps) => {
             planFormDetails.updatedScheduleIDs,
             username as string
           ),
-          [getDtoKey('Task')]: [
-            // Deleted Task
-            ...schedule.deletedTaskIDs.map((item) => ({
-              taskId: item,
-              actionType: FORM_ENUM.delete,
-              changeInitiatedBy: username,
-            })),
-            // Generate for only task that has been added or updated
-            ...generateTasksArray(
-              schedule.tasks.filter(
-                (task) =>
-                  (task.taskId &&
-                    schedule.updatedTaskIDs.includes(task.taskId)) ||
-                  task.taskId === null
+          [type === 'create' ? 'createTaskDtos' : 'updateTaskDtos']: (() => {
+            const tasksArray = [
+              // Deleted Task
+              ...schedule.deletedTaskIDs.map((item) => ({
+                taskId: item,
+                actionType: FORM_ENUM.delete,
+                changeInitiatedBy: username,
+              })),
+              // Generate for only tasks that have been added or updated
+              ...generateTasksArray(
+                schedule.tasks.filter(
+                  (task) =>
+                    (task.taskId &&
+                      schedule.updatedTaskIDs.includes(task.taskId)) ||
+                    task.taskId === null
+                ),
+                schedule.updatedTaskIDs,
+                username as string
               ),
-              schedule.updatedTaskIDs,
-              username as string
-            ),
-          ],
+            ];
+
+            return tasksArray.length > 0 ? tasksArray : null;
+          })(),
         })),
     ],
   };

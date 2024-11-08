@@ -48,25 +48,29 @@ const SummarySection = (props: SummarySectionProps) => {
       [scheduleFormDetails.scheduleId as number],
       username as string
     ),
-    [type === 'create' ? 'createTaskDtos' : 'updateTaskDtos']: [
-      // Deleted Task
-      ...scheduleFormDetails.deletedTaskIDs.map((item) => ({
-        taskId: item,
-        actionType: FORM_ENUM.delete,
-        changeInitiatedBy: username,
-      })),
-      // Generate for only task that has been added or updated
-      ...generateTasksArray(
-        scheduleFormDetails.tasks.filter(
-          (task) =>
-            (task.taskId &&
-              scheduleFormDetails.updatedTaskIDs.includes(task.taskId)) ||
-            task.taskId === null
+    [type === 'create' ? 'createTaskDtos' : 'updateTaskDtos']: (() => {
+      const tasksArray = [
+        // Deleted Task
+        ...scheduleFormDetails.deletedTaskIDs.map((item) => ({
+          taskId: item,
+          actionType: FORM_ENUM.delete,
+          changeInitiatedBy: username,
+        })),
+        // Generate for only task that has been added or updated
+        ...generateTasksArray(
+          scheduleFormDetails.tasks.filter(
+            (task) =>
+              (task.taskId &&
+                scheduleFormDetails.updatedTaskIDs.includes(task.taskId)) ||
+              task.taskId === null
+          ),
+          scheduleFormDetails.updatedTaskIDs,
+          username as string
         ),
-        scheduleFormDetails.updatedTaskIDs,
-        username as string
-      ),
-    ],
+      ];
+
+      return tasksArray.length > 0 ? tasksArray : null;
+    })(),
   };
 
   const handleSumbitSchedule = async () => {

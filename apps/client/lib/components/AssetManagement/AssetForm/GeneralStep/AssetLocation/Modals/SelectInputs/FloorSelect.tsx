@@ -7,7 +7,7 @@ import {
   useGetFloorsByBuildingIdQuery,
   useSearchFloorsMutation,
 } from '~/lib/redux/services/asset/location.services';
-import { OPERATORS } from '~/lib/utils/constants';
+import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 
 interface FloorSelectProps {
   // eslint-disable-next-line no-unused-vars

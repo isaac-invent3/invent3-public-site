@@ -7,19 +7,24 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import React from 'react';
+import { FormikProvider, useFormik } from 'formik';
+import moment from 'moment';
+import { useSession } from 'next-auth/react';
+import { generateTasksArray } from '~/lib/components/Maintenance/Common/helperFunctions';
+import Tasks from '~/lib/components/Maintenance/Schedules/ScheduleForm/FormSection/SectionTwo/Tasks';
+import TaskAssignedTo from '~/lib/components/TaskManagement/Common/AssignedTo';
 import Button from '~/lib/components/UI/Button';
 import BackButton from '~/lib/components/UI/Button/BackButton';
 import GenericDrawer from '~/lib/components/UI/GenericDrawer';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
-import SectionOne from '../Common/SectionOne';
-import { FormikProvider, useFormik } from 'formik';
+import { useScheduleTicketsMutation } from '~/lib/redux/services/ticket.services';
 import { scheduleTicketSchema } from '~/lib/schemas/ticket.schema';
-import TaskAssignedTo from '~/lib/components/TaskManagement/Common/AssignedTo';
-import ResolutionDate from './ResolutionDate';
-import Tasks from '~/lib/components/Maintenance/Schedules/ScheduleForm/FormSection/SectionTwo/Tasks';
+import { FORM_ENUM } from '~/lib/utils/constants';
 import ScheduleTicketSuccessModal from '../../Modals/ScheduleTicketSuccessModal';
 import ScheduleInfoHeader from '../Common/ScheduleInfoHeader';
+import SectionOne from '../Common/SectionOne';
+import ResolutionDate from './ResolutionDate';
 
 interface ScheduleTicketDrawerProps {
   isOpen: boolean;
@@ -35,16 +40,47 @@ const ScheduleTicketDrawer = (props: ScheduleTicketDrawerProps) => {
     onClose: onCloseSuccess,
   } = useDisclosure();
 
+  const [scheduleTicketMutation, { isLoading: isScheduling }] =
+    useScheduleTicketsMutation();
+  const { data: session } = useSession();
+
+  const username = session?.user?.username;
+
+  const { handleSubmit } = useCustomMutation();
+
   const formik = useFormik({
     initialValues: {
       tasks: [],
       assignedTo: null,
-      resolutionDate: null,
+      scheduledDate: null,
       taskCount: 0,
     },
     validationSchema: scheduleTicketSchema,
     enableReinitialize: true,
-    onSubmit: async () => {
+    onSubmit: async (data) => {
+      const response = await handleSubmit(
+        scheduleTicketMutation,
+        {
+          createMaintenanceScheduleDto: {
+            scheduledDate: moment(
+              data.scheduledDate,
+              'DD/MM/YYYY hh:mmA'
+            ).utcOffset(0, true),
+            ticketId: props.data.ticketId,
+            assignedTo: data.assignedTo,
+            actionType: FORM_ENUM.add,
+            changeInitiatedBy: username,
+          },
+          createTaskDtos: generateTasksArray(
+            data.tasks,
+            [],
+            username as string
+          ),
+        },
+        ''
+      );
+
+      console.log({ response });
       onOpenSuccess();
     },
   });
@@ -99,7 +135,11 @@ const ScheduleTicketDrawer = (props: ScheduleTicketDrawerProps) => {
               Cancel
             </Button>
             <Button
-              handleClick={formik.handleSubmit}
+              isLoading={isScheduling}
+              handleClick={() => {
+                console.log('submitting');
+                formik.handleSubmit();
+              }}
               customStyles={{ width: '126px', height: '35px' }}
             >
               Schedule Ticket

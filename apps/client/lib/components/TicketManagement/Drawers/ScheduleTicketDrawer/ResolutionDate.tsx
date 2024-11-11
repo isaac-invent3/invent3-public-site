@@ -7,12 +7,12 @@ import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 const ResolutionDate = () => {
   const { setFieldValue, submitCount, values } = useFormikContext<any>();
   // eslint-disable-next-line no-unused-vars
-  const [field, meta, helpers] = useField('resolutionDate');
+  const [field, meta, helpers] = useField('scheduledDate');
   return (
     <HStack width="full" alignItems="flex-start" spacing="24px">
       <Flex width="full" maxW="141px">
         <SectionInfo
-          title="Resolution Date"
+          title="Start Date"
           info="Add name that users can likely search with"
           isRequired
         />
@@ -23,10 +23,10 @@ const ResolutionDate = () => {
           buttonVariant={'secondary'}
           includeTime={true}
           minDate={new Date()}
-          selectedDate={values.resolutionDate?.split(' ')?.[0] ?? undefined}
+          selectedDate={values.scheduledDate?.split(' ')?.[0] ?? undefined}
           handleDateTimeSelect={(dateTime) => {
             helpers.setValue(dateTime ?? null);
-            setFieldValue('resolutionDate', dateTime ?? null);
+            setFieldValue('scheduledDate', dateTime ?? null);
           }}
         />
 

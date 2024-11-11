@@ -6,6 +6,7 @@ import {
   useGetAllMaintenancePlanQuery,
   useSearchMaintenancePlanMutation,
 } from '~/lib/redux/services/maintenance/plan.services';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 const Plan = () => {
   const [pageNumber, setPageNumber] = useState(1);

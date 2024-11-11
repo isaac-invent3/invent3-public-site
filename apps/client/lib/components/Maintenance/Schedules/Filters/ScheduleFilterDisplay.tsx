@@ -5,6 +5,7 @@ import FilterDisplay from '~/lib/components/UI/Filter/FilterDisplay';
 import FilterDropDown from '~/lib/components/UI/FilterDropDown';
 import { FilterInput } from '~/lib/interfaces/asset.interfaces';
 import { useGetAllAssetCategoryQuery } from '~/lib/redux/services/asset/category.services';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { generateOptions } from '~/lib/utils/helperFunctions';
 
 interface ScheduleFilterDisplayProps {
@@ -18,7 +19,7 @@ type FilterLabel = keyof FilterInput;
 const ScheduleFilterDisplay = (props: ScheduleFilterDisplayProps) => {
   const { filterData, setFilterData, isOpen } = props;
   const { data: assetCategoryData } = useGetAllAssetCategoryQuery({
-    pageSize: DEFAULT_PAGE_SIZE,,
+    pageSize: DEFAULT_PAGE_SIZE,
   });
 
   const handleFilterData = (

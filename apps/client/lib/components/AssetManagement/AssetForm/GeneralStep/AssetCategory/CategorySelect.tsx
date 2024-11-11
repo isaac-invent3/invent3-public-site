@@ -6,6 +6,7 @@ import {
   useGetAllAssetCategoryQuery,
   useSearchCategoriesMutation,
 } from '~/lib/redux/services/asset/category.services';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 interface CategorySelectProps {
   // eslint-disable-next-line no-unused-vars

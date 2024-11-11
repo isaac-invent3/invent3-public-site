@@ -137,6 +137,10 @@ export const config = {
         token.sessionId = user.sessionId;
         token.apiKey = user.apiKey;
         token.role = user.role ?? 'User';
+      }
+
+      // Set accessTokenExpires if not already set, to prevent resetting it on each callback
+      if (!token.accessTokenExpires) {
         token.accessTokenExpires = currentTime + user.expiresIn * 1000;
       }
 

@@ -7,6 +7,7 @@ import {
   AssetImage,
   AssetStatusType,
 } from '~/lib/interfaces/asset.interfaces';
+import { COLOR_CODES_FALLBACK } from '~/lib/utils/constants';
 
 const initialValue = {
   rowId: null,
@@ -91,6 +92,7 @@ const initialValue = {
   roomId: null,
   aisleId: null,
   shelfId: null,
+  displayColorCode: COLOR_CODES_FALLBACK.default
 };
 
 const initialAssetForm = {

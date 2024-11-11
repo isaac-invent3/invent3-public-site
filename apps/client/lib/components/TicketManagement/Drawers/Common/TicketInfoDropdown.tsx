@@ -85,12 +85,6 @@ const TicketInfoDropDown = (props: DropDownProps) => {
           alignItems="flex-start"
           direction="column"
           bgColor="white"
-          {...(hasBorder
-            ? {
-                borderWidth: '1px',
-                borderColor: `neutral.800`,
-              }
-            : {})}
           py="8px"
           rounded="6px"
           mt="5px"

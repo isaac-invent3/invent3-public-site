@@ -1,12 +1,7 @@
 import { HStack, Text, VStack } from '@chakra-ui/react';
-import { useMemo, useState } from 'react';
-import { Option } from '~/lib/interfaces/general.interfaces';
+import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
-import { useGetAllTaskPrioritiesQuery } from '~/lib/redux/services/task/priorities.services';
-import { useGetAllTaskStatusesQuery } from '~/lib/redux/services/task/statuses.services';
-import { COLOR_CODES_FALLBACK, DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
-import { generateOptions } from '~/lib/utils/helperFunctions';
-import TicketInfoDropDown from './TicketInfoDropdown';
+import { COLOR_CODES_FALLBACK } from '~/lib/utils/constants';
 import TicketInfoHeader from './TicketInfoHeader';
 
 interface ScheduleInfoHeaderProps {
@@ -14,68 +9,6 @@ interface ScheduleInfoHeaderProps {
 }
 const ScheduleInfoHeader = (props: ScheduleInfoHeaderProps) => {
   const { data } = props;
-
-  const { data: taskStatuses, isLoading: isFetchingTaskStatuses } =
-    useGetAllTaskStatusesQuery({
-      pageSize: DEFAULT_PAGE_SIZE,
-      pageNumber: 1,
-    });
-
-  const { data: taskPriorities, isLoading: isFetchingTaskPriorities } =
-    useGetAllTaskPrioritiesQuery({
-      pageSize: DEFAULT_PAGE_SIZE,
-      pageNumber: 1,
-    });
-
-  // TODO: Change to FORMIK when API is Ready
-  const [selectedTaskStatus, setSelectedTaskStatus] = useState<Option | null>(
-    null
-  );
-
-  const [selectedTaskPriority, setSelectedTaskPriority] =
-    useState<Option | null>(null);
-
-  const taskStatusesOptions = useMemo(() => {
-    if (!taskStatuses?.data?.items) return [];
-    return generateOptions(
-      taskStatuses.data.items,
-      'statusName',
-      'taskStatusId'
-    );
-  }, [taskStatuses]);
-
-  const getSelectedTaskStatus = useMemo(() => {
-    if (!taskStatuses?.data?.items) return null;
-
-    return taskStatuses.data.items.find(
-      (item) => item?.taskStatusId === selectedTaskStatus?.value
-    );
-  }, [selectedTaskStatus, taskStatuses]);
-
-  const taskPrioritiesOptions = useMemo(() => {
-    if (!taskPriorities?.data?.items) return [];
-
-    return generateOptions(
-      taskPriorities.data.items,
-      'priority',
-      'taskPriorityId'
-    );
-  }, [taskPriorities]);
-
-  const getSelectedTaskPriority = useMemo(() => {
-    if (!taskPriorities?.data?.items) return null;
-
-    return taskPriorities.data.items.find(
-      (item) => item?.taskPriorityId === selectedTaskPriority?.value
-    );
-  }, [selectedTaskPriority, taskPriorities]);
-
-  const ticketTypesOptions = [
-    {
-      label: 'Incident',
-      value: 'incident',
-    },
-  ];
 
   return (
     <TicketInfoHeader data={data}>
@@ -88,48 +21,29 @@ const ScheduleInfoHeader = (props: ScheduleInfoHeaderProps) => {
         <HStack spacing="40px" alignItems="flex-start">
           <VStack alignItems="flex-start" spacing="8px">
             <Text color="neutral.600">Status:</Text>
-            <TicketInfoDropDown
-              label="Status"
+
+            <GenericStatusBox
+              text="In Progress"
               width="120px"
-              options={taskStatusesOptions}
-              isLoading={isFetchingTaskStatuses}
-              selectedOptions={selectedTaskStatus}
-              handleClick={(option) => setSelectedTaskStatus(option)}
-              colorCode={
-                getSelectedTaskStatus?.displayColorCode ??
-                COLOR_CODES_FALLBACK.default
-              }
+              colorCode={COLOR_CODES_FALLBACK.default}
             />
           </VStack>
           <VStack alignItems="flex-start" spacing="8px">
             <Text color="neutral.600">Priority</Text>
 
-            <TicketInfoDropDown
-              label="Priority"
+            <GenericStatusBox
+              text="High"
               width="110px"
-              options={taskPrioritiesOptions}
-              isLoading={isFetchingTaskPriorities}
-              selectedOptions={selectedTaskPriority}
-              handleClick={(option) => setSelectedTaskPriority(option)}
-              colorCode={
-                getSelectedTaskPriority?.displayColorCode ??
-                COLOR_CODES_FALLBACK.default
-              }
+              colorCode={COLOR_CODES_FALLBACK.default}
             />
           </VStack>
         </HStack>
         <VStack alignItems="flex-start" spacing="8px">
           <Text color="neutral.600">Ticket Type</Text>
-          {/* TODO: Change from Dummy data to Api Data when endpoint is ready */}
-          <TicketInfoDropDown
-            options={ticketTypesOptions}
-            label="Ticket Type"
-            handleClick={(option) => console.log(option)}
-            selectedOptions={ticketTypesOptions[0]!}
+          <GenericStatusBox
+            text="Incident"
             width="110px"
-            colorCode="#6E7D8E33"
-            showColorDot={false}
-            hasBorder={false}
+            colorCode={COLOR_CODES_FALLBACK.default}
           />
         </VStack>
       </HStack>

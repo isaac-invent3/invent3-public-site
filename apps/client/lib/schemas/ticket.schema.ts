@@ -2,11 +2,11 @@ import * as Yup from 'yup';
 import { createDateSchema } from './general.schema';
 import { taskBaseSchema } from './task.schema';
 
-const scheduleTicketSchema = (minResolutionDate?: string) =>
+const scheduleTicketSchema = (minScheduledDate?: string) =>
   Yup.object().shape({
     assignedTo: Yup.number().required('Assignee is Required'),
-    resolutionDate: createDateSchema(false, true, minResolutionDate).required(
-      'Resolution Date is Required'
+    scheduledDate: createDateSchema(true, true, minScheduledDate).required(
+      'Start Date is Required'
     ),
     tasks: Yup.array()
       .of(taskBaseSchema())

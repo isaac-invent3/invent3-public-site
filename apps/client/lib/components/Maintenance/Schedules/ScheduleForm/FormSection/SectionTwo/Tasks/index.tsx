@@ -42,7 +42,7 @@ const Tasks = (props: TasksProps) => {
     <HStack width="full" alignItems="flex-start" spacing={spacing}>
       <Flex width="full" maxW={sectionMaxWidth}>
         <SectionInfo
-          title="Tasks"
+          title="Add Tasks"
           info="Add name that users can likely search with"
           isRequired
         />

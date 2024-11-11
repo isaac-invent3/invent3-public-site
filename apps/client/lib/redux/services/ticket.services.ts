@@ -60,6 +60,14 @@ export const ticketApi = createApi({
         body,
       }),
     }),
+    scheduleTickets: builder.mutation({
+      query: (body: any) => ({
+        url: `/Invent3Pro/CreateScheduleAndTasks`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
   }),
 });
 
@@ -70,4 +78,5 @@ export const {
   useGetAllTicketsQuery,
   useGetTicketByIdQuery,
   useSearchTicketsMutation,
+  useScheduleTicketsMutation
 } = ticketApi;

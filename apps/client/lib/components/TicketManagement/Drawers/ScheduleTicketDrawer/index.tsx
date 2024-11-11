@@ -137,7 +137,6 @@ const ScheduleTicketDrawer = (props: ScheduleTicketDrawerProps) => {
             <Button
               isLoading={isScheduling}
               handleClick={() => {
-                console.log('submitting');
                 formik.handleSubmit();
               }}
               customStyles={{ width: '126px', height: '35px' }}

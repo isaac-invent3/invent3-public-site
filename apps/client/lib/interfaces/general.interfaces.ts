@@ -21,9 +21,26 @@ interface SearchCriterion {
   operation: (typeof OPERATORS)[keyof typeof OPERATORS];
 }
 
+interface PaginationInfo {
+  pageNumber: number;
+  totalPages: number;
+  totalItems: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+}
+
 interface QueryParams {
   pageSize?: number;
   pageNumber?: number;
+}
+
+interface ListResponse<T> {
+  items: T[];
+  pageNumber: number;
+  totalPages: number;
+  totalItems: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
 }
 
 interface BaseApiResponse<T> {
@@ -84,4 +101,6 @@ export type {
   SearchCriterion,
   SearchResponse,
   BaseApiResponse,
+  PaginationInfo,
+  ListResponse,
 };

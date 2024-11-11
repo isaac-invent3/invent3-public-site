@@ -9,7 +9,7 @@ import {
   TabPanel,
   useDisclosure,
 } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Header from './Header';
 import ListView from './ListView';
 import Filters from './Filters';
@@ -26,8 +26,9 @@ const AssetManagement = () => {
   const [tabIndex, setTabIndex] = useState(0);
 
   const [filterData, setFilterData] = useState<FilterInput>({
-    location: [],
     category: [],
+    status: [],
+    region: [],
   });
   const [activeFilter, setActiveFilter] = useState<'bulk' | 'general' | null>(
     null
@@ -44,7 +45,7 @@ const AssetManagement = () => {
   }, [activeFilter]);
 
   // Retrieve the `tab` parameter from URL on mount
-  useEffect(() => {
+  useMemo(() => {
     const tab = searchParams.get('tab');
     if (tab === 'map') {
       setTabIndex(1); // Set to the map tab if "map" is in the URL

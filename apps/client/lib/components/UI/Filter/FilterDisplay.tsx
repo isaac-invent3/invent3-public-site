@@ -8,15 +8,15 @@ interface FilterDisplayProps {
 const FilterDisplay = (props: FilterDisplayProps) => {
   const { isOpen, children } = props;
   return (
-    // <Collapse
-    //   startingHeight={0}
-    //   in={isOpen}
-    //   transition={{ enter: { duration: 0 } }}
-    // >
-    <Flex mt="16px" width="full" gap="56px">
-      {children}
-    </Flex>
-    // </Collapse>
+    <Collapse
+      startingHeight={0}
+      in={isOpen}
+      transition={{ enter: { duration: 0 } }}
+    >
+      <Flex mt="16px" width="full" gap="56px">
+        {children}
+      </Flex>
+    </Collapse>
   );
 };
 

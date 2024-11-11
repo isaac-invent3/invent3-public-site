@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import {
-  useGetAllStatusQuery,
+  useGetAllAssetStatusQuery,
   useSearchStatusMutation,
 } from '~/lib/redux/services/asset/general.services';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
@@ -14,7 +14,7 @@ const AssetStatusSelect = () => {
   const [searchStatus] = useSearchStatusMutation({});
 
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllStatusQuery({
+  const { data, isLoading } = useGetAllAssetStatusQuery({
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });

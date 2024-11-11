@@ -1,6 +1,12 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
+import {
+  BaseApiResponse,
+  ListResponse,
+  QueryParams,
+} from '~/lib/interfaces/general.interfaces';
+import { AssetStatus } from '~/lib/interfaces/asset.interfaces';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -111,7 +117,10 @@ export const assetApi = createApi({
       }),
       invalidatesTags: ['allAsset'],
     }),
-    getAllStatus: builder.query({
+    getAllAssetStatus: builder.query<
+      BaseApiResponse<ListResponse<AssetStatus>>,
+      QueryParams
+    >({
       query: (data: any) => ({
         url: generateQueryStr(`/AssetStatus?`, data),
         method: 'GET',
@@ -142,7 +151,7 @@ export const {
   useGetMaintenanceHistoryByAssetIdQuery,
   useGetPlannedMaintenanceByAssetIdQuery,
   useGetDocumentsByAssetIdQuery,
-  useGetAllStatusQuery,
+  useGetAllAssetStatusQuery,
   useSearchStatusMutation,
   useSearchAssetsMutation,
 } = assetApi;

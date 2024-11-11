@@ -221,7 +221,8 @@ interface AssetFormDetails {
 
 interface FilterInput {
   category: (string | number)[];
-  location: (string | number)[];
+  status: (string | number)[];
+  region: (string | number)[];
 }
 
 interface LocationOption {
@@ -377,6 +378,23 @@ interface SingleMapAssetData {
   id: number;
 }
 
+interface AssetStatus {
+  isNew: boolean;
+  createdDate: string;
+  createdBy: string;
+  lastModifiedDate: string;
+  lastModifiedBy: string;
+  isDeleted: boolean;
+  deletedDate: string | null;
+  deletedBy: string | null;
+  guid: string;
+  statusId: number;
+  statusName: string;
+  statusCategoryId: number;
+  alias: string;
+  displayColorCode: string;
+}
+
 export type {
   AssetLocation,
   Asset,
@@ -396,4 +414,5 @@ export type {
   AssetMapStats,
   InfoProps,
   SingleMapAssetData,
+  AssetStatus,
 };

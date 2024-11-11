@@ -1,6 +1,12 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
+import {
+  BaseApiResponse,
+  ListResponse,
+  QueryParams,
+} from '~/lib/interfaces/general.interfaces';
+import { Category } from '~/lib/interfaces/category.interfaces';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -10,7 +16,10 @@ export const categoryApi = createApi({
   baseQuery: baseQueryWithReauth,
   tagTypes: ['allAssetCategory', 'assetSubCategoriesById'],
   endpoints: (builder) => ({
-    getAllAssetCategory: builder.query({
+    getAllAssetCategory: builder.query<
+      BaseApiResponse<ListResponse<Category>>,
+      QueryParams
+    >({
       query: (data: any) => ({
         url: generateQueryStr(`/AssetCategories?`, data),
         method: 'GET',

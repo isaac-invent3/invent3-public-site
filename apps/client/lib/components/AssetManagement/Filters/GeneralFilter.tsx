@@ -1,11 +1,10 @@
 import { HStack } from '@chakra-ui/react';
 import React from 'react';
 import { FilterInput } from '~/lib/interfaces/asset.interfaces';
-import FilterDropDown from '../../UI/FilterDropDown';
 import Button from '../../UI/Button';
-import { useGetAllAssetCategoryQuery } from '~/lib/redux/services/asset/category.services';
-import { generateOptions } from '~/lib/utils/helperFunctions';
-import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import CategoryFilter from './FilterComponents/CategoryFilter';
+import StatusFilter from './FilterComponents/StatusFilter';
+import RegionFilter from './FilterComponents/RegionFilter';
 
 interface GeneralFilterProps {
   filterData: FilterInput;
@@ -16,9 +15,6 @@ type FilterLabel = keyof FilterInput;
 
 const GeneralFilter = (props: GeneralFilterProps) => {
   const { filterData, setFilterData } = props;
-  const { data: assetCategoryData } = useGetAllAssetCategoryQuery({
-    pageSize: DEFAULT_PAGE_SIZE,
-  });
 
   const handleFilterData = (
     value: string | number,
@@ -44,32 +40,28 @@ const GeneralFilter = (props: GeneralFilterProps) => {
   };
 
   return (
-    <HStack spacing="56px">
-      <HStack spacing="7px">
-        <FilterDropDown
-          label="Category"
-          options={generateOptions(
-            assetCategoryData?.data?.items,
-            'categoryName',
-            'categoryId'
-          )}
-          selectedOptions={filterData.category}
-          handleClick={(value) => handleFilterData(value, 'category')}
-        />
-        <FilterDropDown
-          label="Location"
-          options={generateOptions(
-            assetCategoryData?.data?.items,
-            'categoryName',
-            'categoryId'
-          )}
-          selectedOptions={filterData.location}
-          handleClick={(value) => handleFilterData(value, 'location')}
-        />
-      </HStack>
+    <HStack spacing="7px">
+      <CategoryFilter
+        selectedOptions={filterData.category}
+        handleSelectedOption={(value) => handleFilterData(value, 'category')}
+      />
+      <RegionFilter
+        selectedOptions={filterData.region}
+        handleSelectedOption={(value) => handleFilterData(value, 'region')}
+      />
+      <StatusFilter
+        selectedOptions={filterData.status}
+        handleSelectedOption={(value) => handleFilterData(value, 'status')}
+      />
+      <Button customStyles={{ width: '120px', height: '36px' }}>
+        Apply Filter
+      </Button>
       <Button
         variant="outline"
         customStyles={{ width: '120px', height: '36px' }}
+        handleClick={() =>
+          setFilterData({ category: [], region: [], status: [] })
+        }
       >
         Reset Filter
       </Button>

@@ -10,20 +10,21 @@ import {
 } from '~/lib/redux/services/asset/general.services';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { SearchResponse } from '~/lib/interfaces/general.interfaces';
-import { OPERATORS } from '~/lib/utils/constants';
+import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 import AssetTable from './Common/AssetTable';
 import AssetDetail from './AssetDetail';
 
 interface ListViewProps {
   search: string;
 }
+
 const ListView = (props: ListViewProps) => {
   const { search } = props;
   const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(25);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const searchParams = useSearchParams();
   const assetId = searchParams.get('asset');
   const { handleSubmit } = useCustomMutation();

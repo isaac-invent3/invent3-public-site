@@ -6,10 +6,11 @@ import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 import { useGetAllMaintenancePlanQuery } from '~/lib/redux/services/maintenance/plan.services';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import PopoverAction from './PopoverAction';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 const Plans = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(25);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const { data, isLoading, isFetching } = useGetAllMaintenancePlanQuery({
     pageSize,
     pageNumber: currentPage,

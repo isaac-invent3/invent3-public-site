@@ -18,6 +18,7 @@ import MaintenanceScheduleCard from '../../../Schedules/MaintenanceScheduleCard'
 import { useGetMaintenanceSchedulesByPlanIdQuery } from '~/lib/redux/services/maintenance/schedule.services';
 import ButtonPagination from '~/lib/components/UI/Pagination/ButtonPagination';
 import GenericDrawer from '~/lib/components/UI/GenericDrawer';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 interface PlanDetailsModalProps {
   isOpen: boolean;
@@ -28,7 +29,7 @@ interface PlanDetailsModalProps {
 const PlanDetailsModal = (props: PlanDetailsModalProps) => {
   const { isOpen, onClose, data } = props;
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(25);
+  const [pageSize] = useState(DEFAULT_PAGE_SIZE);
   const { data: allMaintenanceSchedule, isLoading } =
     useGetMaintenanceSchedulesByPlanIdQuery({
       id: data?.maintenancePlanId,

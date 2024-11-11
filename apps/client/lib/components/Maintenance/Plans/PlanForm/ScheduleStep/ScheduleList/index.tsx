@@ -17,6 +17,7 @@ import { dateFormatter } from '~/lib/utils/Formatters';
 import ActionPopover from './ActionPopover';
 import GenericLeaveDialogModal from '~/lib/components/UI/Modal/LeaveDialogModal';
 import AddScheduleButtonWithErrorMessage from './AddScheduleButtonWithErrorMessage';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 interface MaintenanceSchedulesProps {
   type: 'create' | 'edit' | 'list';
@@ -46,7 +47,7 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
     onClose: onCloseDialog,
   } = useDisclosure();
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(25);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [action, setAction] = useState<'new' | 'update' | null>(null);
   const dispatch = useAppDispatch();
   const { data, isLoading, isFetching } =

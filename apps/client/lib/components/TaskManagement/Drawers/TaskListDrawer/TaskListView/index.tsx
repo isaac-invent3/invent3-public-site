@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import TaskListDrawer from '~/lib/components/TaskManagement/Drawers/TaskListDrawer';
 import TaskTable from '../../../TaskTable';
 import { useGetAllTasksByScheduleIdQuery } from '~/lib/redux/services/task/general.services';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 interface TaskListViewProps {
   isOpen: boolean;
@@ -12,7 +13,7 @@ interface TaskListViewProps {
 const TaskListView = (props: TaskListViewProps) => {
   const { isOpen, onClose, scheduleId, showPopover } = props;
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(25);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const { data, isLoading, isFetching } = useGetAllTasksByScheduleIdQuery({
     id: scheduleId,
     pageSize,

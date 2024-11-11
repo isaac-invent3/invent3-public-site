@@ -8,6 +8,7 @@ import { useAppSelector } from '~/lib/redux/hooks';
 import DataTable from '~/lib/components/UI/Table';
 import Technician from '../../../Common/Technician';
 import Status from '../../../Common/MaintenanceStatus';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 const Description = (description: string | null) => {
   return (
@@ -27,7 +28,7 @@ const Description = (description: string | null) => {
 const HistoryTab = () => {
   const { assetId } = useAppSelector((state) => state.asset.asset);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(25);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const { data, isLoading } = useGetMaintenanceHistoryByAssetIdQuery(
     { id: assetId, pageSize, pageNumber: currentPage },
     { skip: !assetId }

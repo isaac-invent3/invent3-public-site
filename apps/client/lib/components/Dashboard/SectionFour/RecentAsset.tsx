@@ -2,7 +2,11 @@ import { Flex, HStack, VStack } from '@chakra-ui/react';
 import React, { useCallback, useEffect, useState } from 'react';
 import CardHeader from '../Common/CardHeader';
 import { useSearchAssetsMutation } from '~/lib/redux/services/asset/general.services';
-import { OPERATORS, timeRangeOptions } from '~/lib/utils/constants';
+import {
+  DEFAULT_PAGE_SIZE,
+  OPERATORS,
+  timeRangeOptions,
+} from '~/lib/utils/constants';
 import { Option, SearchResponse } from '~/lib/interfaces/general.interfaces';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import DropDown from '../Common/DropDown';
@@ -17,7 +21,7 @@ const RecentAsset = () => {
   );
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(25);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [selectedTimeRange, setSelectedTimeRange] = useState<Option | null>(
     timeRangeOptions[0] as Option
   );

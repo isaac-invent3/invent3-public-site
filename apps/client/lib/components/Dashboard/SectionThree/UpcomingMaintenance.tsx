@@ -2,7 +2,7 @@ import { Flex, HStack, Text, VStack } from '@chakra-ui/react';
 import React, { useMemo, useState } from 'react';
 import CardHeader from '../Common/CardHeader';
 import DropDown from '../Common/DropDown';
-import { timeRangeOptions } from '~/lib/utils/constants';
+import { DEFAULT_PAGE_SIZE, timeRangeOptions } from '~/lib/utils/constants';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import DataTable from '../../UI/Table';
 import { createColumnHelper } from '@tanstack/react-table';
@@ -41,7 +41,7 @@ const UpcomingMaintenance = () => {
     timeRangeOptions[0] as Option
   );
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(25);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const { data, isLoading } = useGetUpcomingMaintenanceQuery({
     id: selectedCountry?.value,
     ...(selectedState?.value ? { regionId: selectedState?.value } : {}),

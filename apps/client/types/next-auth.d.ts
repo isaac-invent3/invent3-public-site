@@ -7,15 +7,18 @@ import 'next-auth/jwt';
 
 declare module 'next-auth' {
   interface User {
-    id: string;
-    name: string | null | undefined;
+    userId: string;
+    firstName: string | null | undefined;
+    lastName: string | null | undefined;
     username: string | null | undefined;
     email: string | null | undefined;
     role: string;
     accessToken: string;
     refreshToken: string;
+    tokenType: string;
     apiKey: string;
-    accessTokenExpires: number;
+    role: string;
+    expiresIn: number;
     sessionId: number;
   }
   interface Session {

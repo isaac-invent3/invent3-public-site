@@ -44,16 +44,15 @@ async function refreshAccessToken(token) {
     }
 
     console.log('The token has been refreshed successfully.');
-    const decodedAccessToken = JSON.parse(
-      Buffer.from(data.data.accessToken.split('.')[1], 'base64').toString()
-    );
+
+    const currentTime = Date.now(); // Current time in milliseconds
 
     const refreshedToken = {
       ...token,
       accessToken: data.data.accessToken,
       refreshToken: data.data.refreshToken,
       sessionId: data.data.sessionId,
-      accessTokenExpires: decodedAccessToken['exp'] * 1000,
+      accessTokenExpires: currentTime + data.data.expiresIn * 1000,
       error: '',
     };
 
@@ -125,26 +124,20 @@ export const config = {
   },
   callbacks: {
     async jwt({ token, user, trigger, session }) {
+      const currentTime = Date.now(); // Current time in milliseconds
       if (user) {
-        const decodedAccessToken = JSON.parse(
-          Buffer.from(
-            user.accessToken.split('.')[1] as string,
-            'base64'
-          ).toString()
-        );
-
-        if (decodedAccessToken) {
-          token.id = decodedAccessToken.UserId;
-          token.name = decodedAccessToken['nameid'].join(' ');
-          token.email = decodedAccessToken['email'];
-          token.username = user.username;
-          token.accessToken = user.accessToken;
-          token.refreshToken = user.refreshToken;
-          token.sessionId = user.sessionId;
-          token.apiKey = user.apiKey;
-          token.role = decodedAccessToken['role']?.[0] ?? 'User';
-          token.accessTokenExpires = decodedAccessToken['exp'] * 1000;
-        }
+        token.id = user.userId;
+        token.name = `${user.firstName} ${user.lastName}`;
+        token.firstName = user.firstName;
+        token.lastName = user.lastName;
+        token.email = user.email;
+        token.username = user.username;
+        token.accessToken = user.accessToken;
+        token.refreshToken = user.refreshToken;
+        token.sessionId = user.sessionId;
+        token.apiKey = user.apiKey;
+        token.role = user.role ?? 'User';
+        token.accessTokenExpires = currentTime + user.expiresIn * 1000;
       }
 
       // Update token if triggered by 'update'
@@ -183,6 +176,8 @@ export const config = {
         user: {
           ...session.user,
           id: token.id as string,
+          firstName: token.firstName as string,
+          lastName: token.lastName as string,
           email: token.email as string,
           username: token.username as string,
           sessionId: token.sessionId as number,

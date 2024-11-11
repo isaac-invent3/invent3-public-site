@@ -5,11 +5,12 @@ import { useAppSelector } from '~/lib/redux/hooks';
 import { useGetPlannedMaintenanceByAssetIdQuery } from '~/lib/redux/services/asset/general.services';
 import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
 import ButtonPagination from '~/lib/components/UI/Pagination/ButtonPagination';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 const MaintenanceTab = () => {
   const { assetId } = useAppSelector((state) => state.asset.asset);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(25);
+  const [pageSize] = useState(DEFAULT_PAGE_SIZE);
   const { data, isLoading } = useGetPlannedMaintenanceByAssetIdQuery(
     { id: assetId, pageSize, pageNumber: currentPage },
     { skip: !assetId }

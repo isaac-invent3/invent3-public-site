@@ -5,7 +5,7 @@ import { Task, taskFormDetails } from '~/lib/interfaces/task.interfaces';
 import TaskListTable from './TaskListTable';
 import { ScheduleFormDetails } from '~/lib/interfaces/maintenance.interfaces';
 import { useGetAllTasksByScheduleIdQuery } from '~/lib/redux/services/task/general.services';
-import { STATUS_CATEGORY_ENUM } from '~/lib/utils/constants';
+import { DEFAULT_PAGE_SIZE, STATUS_CATEGORY_ENUM } from '~/lib/utils/constants';
 
 interface FormTaskListDrawerProps {
   isOpen: boolean;
@@ -17,7 +17,7 @@ const FormTaskListDrawer = (props: FormTaskListDrawerProps) => {
   const { isOpen, onClose, handleAddTask } = props;
   const { values, setFieldValue } = useFormikContext<ScheduleFormDetails>();
   const [pageNumber, setPageNumber] = useState(1);
-  const [pageSize, setPageSize] = useState(25);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const { data, isLoading, isFetching } = useGetAllTasksByScheduleIdQuery(
     {
       id: values.scheduleId,

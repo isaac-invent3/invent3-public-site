@@ -56,7 +56,7 @@ const Header = () => {
       <HStack width="full" justifyContent="space-between">
         <HStack width="full" spacing="8px" alignItems="flex-end">
           <PageHeader>
-            {`${getGreeting()}, ${data?.user?.name?.split(' ')?.[0]?.toString() ?? ''}!`}
+            {`${getGreeting()}, ${data?.user?.firstName ?? ''}!`}
           </PageHeader>
           <Text
             color="neutral.600"

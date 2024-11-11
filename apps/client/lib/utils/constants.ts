@@ -155,6 +155,8 @@ const STATUS_CATEGORY_ENUM = {
   ACTIVE: 2,
 };
 
+const DEFAULT_PAGE_SIZE = 25;
+
 export {
   OPERATORS,
   FORM_ENUM,
@@ -167,4 +169,5 @@ export {
   planScopeOptions,
   STATUS_CATEGORY_ENUM,
   COLOR_CODES_FALLBACK,
+  DEFAULT_PAGE_SIZE,
 };

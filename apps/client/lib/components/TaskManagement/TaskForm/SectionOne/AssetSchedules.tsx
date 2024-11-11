@@ -10,6 +10,7 @@ import { useGetAllMaintenanceScheduleByAssetIdQuery } from '~/lib/redux/services
 import InfoCard from '~/lib/components/UI/InfoCard';
 import ErrorMessage from '~/lib/components/UI/ErrorMessage';
 import { useField } from 'formik';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 const AssetSchedules = () => {
   const { assetId, scheduleId } = useAppSelector(
@@ -17,7 +18,7 @@ const AssetSchedules = () => {
   );
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(25);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const dispatch = useAppDispatch();
   const { data, isLoading, isFetching } =
     useGetAllMaintenanceScheduleByAssetIdQuery(

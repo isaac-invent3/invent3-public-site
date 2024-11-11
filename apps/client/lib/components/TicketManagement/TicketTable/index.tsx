@@ -8,7 +8,7 @@ import { Ticket } from '~/lib/interfaces/ticket.interfaces';
 import { useGetAllTicketsQuery } from '~/lib/redux/services/ticket.services';
 import { Flex } from '@chakra-ui/react';
 import UserInfo from '~/lib/components/Common/UserInfo';
-import { COLOR_CODES_FALLBACK } from '~/lib/utils/constants';
+import { COLOR_CODES_FALLBACK, DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 interface TicketTableProps {
   type: 'new' | 'scheduled' | 'completed';
@@ -17,7 +17,7 @@ const TicketTable = (props: TicketTableProps) => {
   const { type } = props;
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(25);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const { data, isLoading, isFetching } = useGetAllTicketsQuery({
     pageNumber: currentPage,
     pageSize: pageSize,
@@ -46,16 +46,19 @@ const TicketTable = (props: TicketTableProps) => {
               }),
             ]
           : []),
-          // Change to Proper Content
+        // Change to Proper Content
         columnHelper.accessor('ticketId', {
-          cell: "Incident",
+          cell: 'Incident',
           header: 'Type',
           enableSorting: false,
         }),
         columnHelper.accessor('ticketId', {
           cell: () => {
             return (
-              <GenericStatusBox colorCode={COLOR_CODES_FALLBACK.default} text="High" />
+              <GenericStatusBox
+                colorCode={COLOR_CODES_FALLBACK.default}
+                text="High"
+              />
             );
           },
           header: 'Priority',

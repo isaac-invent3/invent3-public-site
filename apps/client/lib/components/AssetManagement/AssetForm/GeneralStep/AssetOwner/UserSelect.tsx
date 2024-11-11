@@ -5,6 +5,7 @@ import {
   useGetAllUsersQuery,
   useSearchUsersMutation,
 } from '~/lib/redux/services/user.services';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 interface UserSelectProps {
   // eslint-disable-next-line no-unused-vars
@@ -20,7 +21,7 @@ const UserSelect = (props: UserSelectProps) => {
 
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading } = useGetAllUsersQuery({
-    pageSize: 25,
+    pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
   return (

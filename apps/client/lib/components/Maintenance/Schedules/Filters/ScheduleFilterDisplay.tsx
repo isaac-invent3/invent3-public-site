@@ -18,7 +18,7 @@ type FilterLabel = keyof FilterInput;
 const ScheduleFilterDisplay = (props: ScheduleFilterDisplayProps) => {
   const { filterData, setFilterData, isOpen } = props;
   const { data: assetCategoryData } = useGetAllAssetCategoryQuery({
-    pageSize: 25,
+    pageSize: DEFAULT_PAGE_SIZE,,
   });
 
   const handleFilterData = (

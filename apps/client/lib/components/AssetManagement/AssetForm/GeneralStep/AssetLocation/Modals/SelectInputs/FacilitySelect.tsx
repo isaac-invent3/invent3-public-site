@@ -6,6 +6,7 @@ import {
   useGetAllFacilitiesQuery,
   useSearchFacilitiesMutation,
 } from '~/lib/redux/services/asset/location.services';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 interface FacilitySelectProps {
   // eslint-disable-next-line no-unused-vars
@@ -19,7 +20,7 @@ const FacilitySelect = (props: FacilitySelectProps) => {
 
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading } = useGetAllFacilitiesQuery({
-    pageSize: 25,
+    pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
   return (

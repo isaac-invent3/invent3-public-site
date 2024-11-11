@@ -5,6 +5,7 @@ import {
   useGetAllEmployeesQuery,
   useSearchEmployeesMutation,
 } from '~/lib/redux/services/employees.services';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 interface EmployeeSelectProps {
   // eslint-disable-next-line no-unused-vars
@@ -27,7 +28,7 @@ const EmployeeSelect = (props: EmployeeSelectProps) => {
 
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading } = useGetAllEmployeesQuery({
-    pageSize: 25,
+    pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
   return (

@@ -7,6 +7,7 @@ import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { useGetAllMaintenanceTypeQuery } from '~/lib/redux/services/maintenance/type.services';
 import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { generateOptions } from '~/lib/utils/helperFunctions';
 
 interface TypeProps {
@@ -17,7 +18,7 @@ interface TypeProps {
 const Type = (props: TypeProps) => {
   const { sectionMaxWidth, spacing, buttonVariant } = props;
   const { data } = useGetAllMaintenanceTypeQuery({
-    pageSize: 25,
+    pageSize: DEFAULT_PAGE_SIZE,
   });
 
   const dispatch = useAppDispatch();

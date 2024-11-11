@@ -3,7 +3,7 @@ import Image from 'next/image';
 import React from 'react';
 import DetailHeader from '~/lib/components/UI/DetailHeader';
 import { useAppSelector } from '~/lib/redux/hooks';
-import AssetStatus from '../AssetStatus';
+import GenericStatusBox from '../../UI/GenericStatusBox';
 
 interface AssetDetailsProps {
   stackType: 'row' | 'column';
@@ -21,6 +21,7 @@ const AssetDetails = (props: AssetDetailsProps) => {
     brandName,
     primaryImage,
     currentStatus,
+    displayColorCode,
   } = assetData;
 
   const info1 = [
@@ -74,7 +75,12 @@ const AssetDetails = (props: AssetDetailsProps) => {
             <Heading as="h4" fontSize="24px" lineHeight="28.51px" color="black">
               {assetName}
             </Heading>
-            {showStatus && <AssetStatus status={currentStatus} />}
+            {showStatus && (
+              <GenericStatusBox
+                text={currentStatus}
+                colorCode={displayColorCode}
+              />
+            )}
           </HStack>
           <Stack direction={stackType} rowGap="8px" columnGap="72px">
             <VStack spacing="8px" alignItems="flex-start">

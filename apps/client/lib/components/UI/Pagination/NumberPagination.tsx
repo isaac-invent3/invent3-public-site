@@ -1,5 +1,3 @@
-/* eslint-disable no-lone-blocks */
-/* eslint-disable no-plusplus */
 import { HStack, Icon, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
@@ -11,14 +9,15 @@ import {
 interface IPageNumber {
   isCurrent: boolean;
   value: number;
+  onClick: () => void;
 }
-const PageNumber = (props: IPageNumber) => {
-  const { isCurrent, value } = props;
+const PageNumber = ({ isCurrent, value, onClick }: IPageNumber) => {
   return (
     <Text
       color={isCurrent ? 'black' : 'neutral.600'}
-      key={value}
       fontWeight={isCurrent ? 800 : 500}
+      cursor="pointer"
+      onClick={onClick}
     >
       {value}
     </Text>
@@ -35,19 +34,18 @@ const NumberPagination = ({
   totalPage,
   onPageChange,
 }: INumberPagination) => {
-  const pagesToShow = totalPage <= 3 ? 3 : 2;
   const [hasEnded, setEnded] = useState(false);
 
   useEffect(() => {
-    if (currentPage + pagesToShow > totalPage) {
+    // Set `hasEnded` if we are close to the end
+    if (currentPage + 3 >= totalPage) {
       setEnded(true);
-    }
-    if (currentPage - 1 === 1 || currentPage === 1) {
+    } else if (currentPage <= 3) {
       setEnded(false);
     }
-  }, [currentPage, totalPage, pagesToShow]);
+  }, [currentPage, totalPage]);
 
-  // Only Rendered when it has not gotten to the end initially
+  // Render pages before the ellipsis
   const renderBeforeEnd = () => {
     const pages = [];
     const ellipsis = (
@@ -56,27 +54,51 @@ const NumberPagination = ({
       </Text>
     );
 
-    if (currentPage <= pagesToShow) {
-      for (let i = 1; i <= pagesToShow && i <= totalPage; i++) {
-        pages.push(<PageNumber isCurrent={i === currentPage} value={i} />);
+    if (currentPage <= 3) {
+      // Show first three pages
+      for (let i = 1; i <= Math.min(3, totalPage); i++) {
+        pages.push(
+          <PageNumber
+            key={i}
+            isCurrent={i === currentPage}
+            value={i}
+            onClick={() => onPageChange && onPageChange(i)}
+          />
+        );
       }
     } else {
+      // Show two pages before and including the current page
       for (let i = currentPage - 1; i <= currentPage && i <= totalPage; i++) {
-        pages.push(<PageNumber isCurrent={i === currentPage} value={i} />);
+        pages.push(
+          <PageNumber
+            key={i}
+            isCurrent={i === currentPage}
+            value={i}
+            onClick={() => onPageChange && onPageChange(i)}
+          />
+        );
       }
     }
-    {
-      if (totalPage > 3) {
-        pages.push(ellipsis);
 
-        pages.push(<PageNumber isCurrent={false} value={totalPage} />);
+    if (totalPage > 4 && currentPage < totalPage - 2) {
+      // Add ellipsis and the last two pages
+      pages.push(ellipsis);
+      for (let i = totalPage - 1; i <= totalPage; i++) {
+        pages.push(
+          <PageNumber
+            key={i}
+            isCurrent={i === currentPage}
+            value={i}
+            onClick={() => onPageChange && onPageChange(i)}
+          />
+        );
       }
     }
 
     return pages;
   };
 
-  // Only Rendered when it has gotten to the end
+  // Render pages when it has reached the end
   const renderOnEnd = () => {
     const pages = [];
     const ellipsis = (
@@ -84,21 +106,29 @@ const NumberPagination = ({
         ...
       </Text>
     );
-    if (totalPage > 3) {
-      pages.push(<PageNumber isCurrent={false} value={1} />);
+
+    // Show first page, ellipsis, and last two pages
+    if (totalPage > 4) {
+      pages.push(
+        <PageNumber
+          key={1}
+          isCurrent={false}
+          value={1}
+          onClick={() => onPageChange && onPageChange(1)}
+        />
+      );
       pages.push(ellipsis);
-    } else {
-      pages.push(<PageNumber isCurrent={false} value={1} />);
     }
 
-    if (currentPage + 1 >= totalPage) {
-      for (let i = totalPage - 1; i <= totalPage; i++) {
-        pages.push(<PageNumber isCurrent={i === currentPage} value={i} />);
-      }
-    } else {
-      for (let i = currentPage; i <= currentPage + 1 && i <= totalPage; i++) {
-        pages.push(<PageNumber isCurrent={i === currentPage} value={i} />);
-      }
+    for (let i = totalPage - 2; i <= totalPage; i++) {
+      pages.push(
+        <PageNumber
+          key={i}
+          isCurrent={i === currentPage}
+          value={i}
+          onClick={() => onPageChange && onPageChange(i)}
+        />
+      );
     }
 
     return pages;

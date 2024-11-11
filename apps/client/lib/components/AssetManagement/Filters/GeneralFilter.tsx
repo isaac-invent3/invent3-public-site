@@ -1,10 +1,11 @@
 import { HStack } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { FilterInput } from '~/lib/interfaces/asset.interfaces';
 import FilterDropDown from '../../UI/FilterDropDown';
 import Button from '../../UI/Button';
 import { useGetAllAssetCategoryQuery } from '~/lib/redux/services/asset/category.services';
 import { generateOptions } from '~/lib/utils/helperFunctions';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 interface GeneralFilterProps {
   filterData: FilterInput;
@@ -16,7 +17,7 @@ type FilterLabel = keyof FilterInput;
 const GeneralFilter = (props: GeneralFilterProps) => {
   const { filterData, setFilterData } = props;
   const { data: assetCategoryData } = useGetAllAssetCategoryQuery({
-    pageSize: 25,
+    pageSize: DEFAULT_PAGE_SIZE,
   });
 
   const handleFilterData = (
@@ -41,13 +42,6 @@ const GeneralFilter = (props: GeneralFilterProps) => {
       }
     });
   };
-
-  useEffect(() => {
-    console.log(
-      generateOptions(assetCategoryData?.data?.items, 'categoryName', 'id')
-    );
-    console.log(filterData);
-  }, [filterData]);
 
   return (
     <HStack spacing="56px">

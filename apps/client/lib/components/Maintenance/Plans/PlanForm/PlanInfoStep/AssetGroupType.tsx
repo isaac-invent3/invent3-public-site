@@ -7,11 +7,12 @@ import {
 } from '~/lib/redux/services/asset/groupType.services';
 
 import { updatePlanForm } from '~/lib/redux/slices/MaintenanceSlice';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 const AssetGroupType = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading } = useGetAllAssetGroupTypesQuery({
-    pageSize: 25,
+    pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
   const [searchAssetGroupType] = useSearchAssetGroupTypesMutation({});

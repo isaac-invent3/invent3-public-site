@@ -1,30 +1,17 @@
 import React, { useMemo } from 'react';
 import DataTable from '../../UI/Table';
 import { createColumnHelper } from '@tanstack/react-table';
-import { Asset, AssetStatusType } from '~/lib/interfaces/asset.interfaces';
+import { Asset } from '~/lib/interfaces/asset.interfaces';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
-import { Flex, Icon, Text } from '@chakra-ui/react';
-import AssetStatus from '../AssetStatus';
+import { Icon, Text } from '@chakra-ui/react';
 import { ThreeVerticalDotsIcon } from '../../CustomIcons';
+import GenericStatusBox from '../../UI/GenericStatusBox';
 
 const AssetName = (name: string | null) => {
   return (
     <Text fontWeight={700} textDecoration="underline">
       {name}
     </Text>
-  );
-};
-
-const Status = (status: AssetStatusType) => {
-  return (
-    <Flex
-      width="full"
-      justifyContent="flex-start"
-      gap="14px"
-      alignItems="center"
-    >
-      <AssetStatus status={status} />
-    </Flex>
   );
 };
 
@@ -102,7 +89,14 @@ const AssetTable = (props: AssetTableProps) => {
           enableSorting: isSortable,
         }),
         columnHelper.accessor('currentStatus', {
-          cell: (info) => Status(info.getValue()),
+          cell: (info) => {
+            return (
+              <GenericStatusBox
+                text={info.getValue()}
+                colorCode={info.row.original.displayColorCode}
+              />
+            );
+          },
           header: 'Status',
           enableSorting: isSortable,
         }),

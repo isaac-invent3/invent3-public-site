@@ -6,7 +6,7 @@ import {
   useGetAssetSubCatgoriesByCategoryIdQuery,
   useSearchSubCategoryMutation,
 } from '~/lib/redux/services/asset/category.services';
-import { OPERATORS } from '~/lib/utils/constants';
+import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 
 interface SubCategorySelectProps {
   categoryId: number | null;
@@ -23,7 +23,7 @@ const SubCategorySelect = (props: SubCategorySelectProps) => {
     useGetAssetSubCatgoriesByCategoryIdQuery(
       {
         id: categoryId,
-        pageSize: 25,
+        pageSize: DEFAULT_PAGE_SIZE,
         pageNumber,
       },
       { skip: !categoryId }

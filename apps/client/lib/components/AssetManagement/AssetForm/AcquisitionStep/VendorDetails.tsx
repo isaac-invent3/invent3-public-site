@@ -10,6 +10,7 @@ import {
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import AssetTypeSelect from '~/lib/components/Common/AssetTypeSelect';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 const VendorDetails = () => {
   const dispatch = useAppDispatch();
@@ -23,7 +24,7 @@ const VendorDetails = () => {
   });
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading } = useGetAllVendorsQuery({
-    pageSize: 25,
+    pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import SelectInput from '~/lib/components/UI/Select';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { Option, SearchCriterion } from '~/lib/interfaces/general.interfaces';
-import { OPERATORS } from '~/lib/utils/constants';
+import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 import { generateOptions } from '~/lib/utils/helperFunctions';
 
 interface BuildingSelectProps {
@@ -67,7 +67,7 @@ const GenericAsyncSelect = (props: BuildingSelectProps) => {
             },
           ],
       pageNumber: 1,
-      pageSize: 25,
+      pageSize: DEFAULT_PAGE_SIZE,
     };
     const response = await handleSubmit(mutationFn, searchCriterion, '');
     const formattedOptions = generateOptions(

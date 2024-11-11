@@ -5,6 +5,7 @@ import {
   useGetAllMaintenanceFrequenciesQuery,
   useSearchMaintenanceFrequenciesMutation,
 } from '~/lib/redux/services/maintenance/frequency.services';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 interface FrequencySelectProps {
   // eslint-disable-next-line no-unused-vars
@@ -17,7 +18,7 @@ const FrequencySelect = (props: FrequencySelectProps) => {
   const { handleSelect, selectName, selectTitle, defaultName } = props;
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading } = useGetAllMaintenanceFrequenciesQuery({
-    pageSize: 25,
+    pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
   const [searchMaintenanceFrequency] = useSearchMaintenanceFrequenciesMutation(

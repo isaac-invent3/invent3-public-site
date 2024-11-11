@@ -71,7 +71,8 @@ interface Asset {
   parentId: number | null;
   isDeleted: boolean;
   assetType: string | null;
-  currentStatus: AssetStatusType;
+  currentStatus: string;
+  displayColorCode: string;
   assetCategory: string | null;
   assetSubCategory: string | null;
   categoryId: number | null;

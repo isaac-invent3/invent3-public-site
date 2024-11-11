@@ -4,7 +4,7 @@ import { Option } from '~/lib/interfaces/general.interfaces';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
 import { useGetAllTaskPrioritiesQuery } from '~/lib/redux/services/task/priorities.services';
 import { useGetAllTaskStatusesQuery } from '~/lib/redux/services/task/statuses.services';
-import { COLOR_CODES_FALLBACK } from '~/lib/utils/constants';
+import { COLOR_CODES_FALLBACK, DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { generateOptions } from '~/lib/utils/helperFunctions';
 import TicketInfoDropDown from './TicketInfoDropdown';
 import TicketInfoHeader from './TicketInfoHeader';
@@ -17,13 +17,13 @@ const ScheduleInfoHeader = (props: ScheduleInfoHeaderProps) => {
 
   const { data: taskStatuses, isLoading: isFetchingTaskStatuses } =
     useGetAllTaskStatusesQuery({
-      pageSize: 25,
+      pageSize: DEFAULT_PAGE_SIZE,
       pageNumber: 1,
     });
 
   const { data: taskPriorities, isLoading: isFetchingTaskPriorities } =
     useGetAllTaskPrioritiesQuery({
-      pageSize: 25,
+      pageSize: DEFAULT_PAGE_SIZE,
       pageNumber: 1,
     });
 

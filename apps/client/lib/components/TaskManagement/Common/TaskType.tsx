@@ -7,6 +7,7 @@ import {
   useGetAllTaskTypeQuery,
   useSearchTaskTypeMutation,
 } from '~/lib/redux/services/task/types.services';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 interface TaskTypeProps {
   sectionMaxWidth: string;
@@ -16,7 +17,7 @@ const TaskType = (props: TaskTypeProps) => {
   const { sectionMaxWidth, spacing } = props;
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading } = useGetAllTaskTypeQuery({
-    pageSize: 25,
+    pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
   const [searchTaskType] = useSearchTaskTypeMutation({});

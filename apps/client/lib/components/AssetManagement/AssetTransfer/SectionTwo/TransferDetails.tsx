@@ -9,12 +9,13 @@ import {
   useGetAllAssetConditionQuery,
   useSearchConditionMutation,
 } from '~/lib/redux/services/asset/condition.services';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 // import User from '../User';
 
 const TransferDetails = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading } = useGetAllAssetConditionQuery({
-    pageSize: 25,
+    pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
   const [searchCondition] = useSearchConditionMutation({});

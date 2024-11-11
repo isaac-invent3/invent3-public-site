@@ -7,7 +7,7 @@ import {
   useGetAllAislesQuery,
   useSearchAisleMutation,
 } from '~/lib/redux/services/asset/location.services';
-import { OPERATORS } from '~/lib/utils/constants';
+import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 
 interface AisleSelectProps {
   // eslint-disable-next-line no-unused-vars
@@ -24,7 +24,7 @@ const AisleSelect = (props: AisleSelectProps) => {
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading } = useGetAllAislesQuery(
     {
-      pageSize: 25,
+      pageSize: DEFAULT_PAGE_SIZE,
       pageNumber,
     },
     { skip: type === 'specificById' }
@@ -33,7 +33,7 @@ const AisleSelect = (props: AisleSelectProps) => {
     useGetAislesByRoomIdQuery(
       {
         id: roomId,
-        pageSize: 25,
+        pageSize: DEFAULT_PAGE_SIZE,
         pageNumber,
       },
       { skip: !roomId }

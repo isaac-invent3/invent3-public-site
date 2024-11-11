@@ -24,7 +24,7 @@ const FloorSelect = (props: FloorSelectProps) => {
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading } = useGetAllFloorsQuery(
     {
-      pageSize: 25,
+      pageSize: DEFAULT_PAGE_SIZE,
       pageNumber,
     },
     { skip: type === 'specificById' }
@@ -35,7 +35,7 @@ const FloorSelect = (props: FloorSelectProps) => {
   } = useGetFloorsByBuildingIdQuery(
     {
       id: buildingId,
-      pageSize: 25,
+      pageSize: DEFAULT_PAGE_SIZE,
       pageNumber,
     },
     { skip: !buildingId }

@@ -6,6 +6,7 @@ import {
   useSearchStatusMutation,
 } from '~/lib/redux/services/asset/general.services';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 const AssetStatusSelect = () => {
   const { statusName } = useAppSelector((state) => state.asset.assetForm);
@@ -14,7 +15,7 @@ const AssetStatusSelect = () => {
 
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading } = useGetAllStatusQuery({
-    pageSize: 25,
+    pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
   return (

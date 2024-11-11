@@ -6,6 +6,7 @@ import {
   useGetAllCountriesQuery,
   useSearchCountriesMutation,
 } from '~/lib/redux/services/asset/location.services';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 interface CountrySelectProps {
   // eslint-disable-next-line no-unused-vars
@@ -17,7 +18,7 @@ const CountrySelect = ({ handleSelect }: CountrySelectProps) => {
   const { countryName } = useAppSelector((state) => state.asset.assetForm);
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading } = useGetAllCountriesQuery({
-    pageSize: 25,
+    pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
   return (

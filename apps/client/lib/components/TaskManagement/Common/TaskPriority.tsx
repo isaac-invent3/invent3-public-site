@@ -7,6 +7,7 @@ import {
   useGetAllTaskPrioritiesQuery,
   useSearchTaskPrioritiesMutation,
 } from '~/lib/redux/services/task/priorities.services';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 interface TaskPriorityProps {
   sectionMaxWidth: string;
@@ -16,7 +17,7 @@ const TaskPriority = (props: TaskPriorityProps) => {
   const { sectionMaxWidth, spacing } = props;
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading } = useGetAllTaskPrioritiesQuery({
-    pageSize: 25,
+    pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
   const [searchTaskPriorities] = useSearchTaskPrioritiesMutation({});

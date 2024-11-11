@@ -10,11 +10,12 @@ import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import AssetStatusSelect from './AssetStatus';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 const AcquisitionDateConditon = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading } = useGetAllAssetConditionQuery({
-    pageSize: 25,
+    pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
   const [searchCondition] = useSearchConditionMutation({});

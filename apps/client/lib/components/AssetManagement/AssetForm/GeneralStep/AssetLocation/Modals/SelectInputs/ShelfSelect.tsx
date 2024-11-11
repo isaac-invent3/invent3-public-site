@@ -7,7 +7,7 @@ import {
   useGetShelvesByAisleIdQuery,
   useSearchShelfMutation,
 } from '~/lib/redux/services/asset/location.services';
-import { OPERATORS } from '~/lib/utils/constants';
+import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 
 interface ShelfSelectProps {
   // eslint-disable-next-line no-unused-vars
@@ -24,7 +24,7 @@ const ShelfSelect = (props: ShelfSelectProps) => {
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading } = useGetAllShelvesQuery(
     {
-      pageSize: 25,
+      pageSize: DEFAULT_PAGE_SIZE,
       pageNumber,
     },
     { skip: type === 'specificById' }
@@ -33,7 +33,7 @@ const ShelfSelect = (props: ShelfSelectProps) => {
     useGetShelvesByAisleIdQuery(
       {
         id: aisleId,
-        pageSize: 25,
+        pageSize: DEFAULT_PAGE_SIZE,
         pageNumber,
       },
       { skip: !aisleId }

@@ -1,7 +1,7 @@
 import { Flex, Heading, HStack, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
-import AssetStatus from '../../AssetStatus';
 import { ReactBarcode, Renderer } from 'react-jsbarcode';
+import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import { useAppSelector } from '~/lib/redux/hooks';
 
 const Overview = () => {
@@ -16,6 +16,7 @@ const Overview = () => {
     modelRef,
     primaryImage,
     primaryImagePrefix,
+    displayColorCode,
   } = assetData;
 
   const assetInfo1 = [
@@ -80,7 +81,10 @@ const Overview = () => {
               <Text color="neutral.600" width="65px" size="md">
                 Status:
               </Text>
-              <AssetStatus status={currentStatus} />
+              <GenericStatusBox
+                text={currentStatus}
+                colorCode={displayColorCode}
+              />
             </HStack>
             <HStack spacing="8px" alignItems="center">
               <Text size="md" color="neutral.600" width="65px">

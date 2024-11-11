@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useGetAllGroupContextRecordsByTypeIdQuery } from '~/lib/redux/services/asset/groupType.services';
 
 import { updatePlanForm } from '~/lib/redux/slices/MaintenanceSlice';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 const AssetGroupContext = () => {
   const [pageNumber, setPageNumber] = useState(1);
@@ -14,7 +15,7 @@ const AssetGroupContext = () => {
   const { data, isLoading } = useGetAllGroupContextRecordsByTypeIdQuery(
     {
       id: values?.assetGroupTypeID,
-      pageSize: 25,
+      pageSize: DEFAULT_PAGE_SIZE,
       pageNumber,
     },
     { skip: !values?.assetGroupTypeID }

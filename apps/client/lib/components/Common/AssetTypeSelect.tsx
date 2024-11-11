@@ -5,6 +5,7 @@ import {
   useGetAllAssetTypesQuery,
   useSearchAssetTypesMutation,
 } from '~/lib/redux/services/asset/types.services';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 interface AssetTypeSelectProps {
   // eslint-disable-next-line no-unused-vars
@@ -19,7 +20,7 @@ const AssetTypeSelect = (props: AssetTypeSelectProps) => {
   const [searchAssetType] = useSearchAssetTypesMutation({});
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading } = useGetAllAssetTypesQuery({
-    pageSize: 25,
+    pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
   return (

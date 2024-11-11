@@ -7,7 +7,7 @@ import {
   useGetDepartmentsByFloorIdQuery,
   useSearchDepartmentsMutation,
 } from '~/lib/redux/services/asset/location.services';
-import { OPERATORS } from '~/lib/utils/constants';
+import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 
 interface DepartmentSelectProps {
   // eslint-disable-next-line no-unused-vars
@@ -24,7 +24,7 @@ const DepartmentSelect = (props: DepartmentSelectProps) => {
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading } = useGetAllDepartmentsQuery(
     {
-      pageSize: 25,
+      pageSize: DEFAULT_PAGE_SIZE,
       pageNumber,
     },
     { skip: type === 'specificById' }
@@ -35,7 +35,7 @@ const DepartmentSelect = (props: DepartmentSelectProps) => {
   } = useGetDepartmentsByFloorIdQuery(
     {
       id: floorId,
-      pageSize: 25,
+      pageSize: DEFAULT_PAGE_SIZE,
       pageNumber,
     },
     { skip: !floorId }

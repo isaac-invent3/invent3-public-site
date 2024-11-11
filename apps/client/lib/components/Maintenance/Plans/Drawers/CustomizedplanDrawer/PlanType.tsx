@@ -10,7 +10,7 @@ import {
 const Plan = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading } = useGetAllMaintenancePlanQuery({
-    pageSize: 25,
+    pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
   const [searchMaintenancePlan] = useSearchMaintenancePlanMutation({});

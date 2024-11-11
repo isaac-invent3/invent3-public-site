@@ -1,6 +1,6 @@
 import { Heading, HStack, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
-import AssetStatus from '~/lib/components/AssetManagement/AssetStatus';
+import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
@@ -75,7 +75,7 @@ const InfoSection = (props: InfoSectionProps) => {
             <Text size="md" color="neutral.600" minW="50px">
               Status:
             </Text>
-            <AssetStatus status="Active" />
+            <GenericStatusBox text="Active" />
           </HStack>
           {CONTENT1.map((item, index) => (
             <HStack spacing="8px" key={index}>

@@ -24,7 +24,7 @@ import { CloseIcon } from '~/lib/components/CustomIcons';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import Event from '../../Events';
 import { useAppSelector } from '~/lib/redux/hooks';
-import { AREA_ENUM } from '~/lib/utils/constants';
+import { AREA_ENUM, DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { useGetMaintenanceSchedulesByAreaQuery } from '~/lib/redux/services/maintenance/schedule.services';
 
 interface AggregateDetailModalProps {
@@ -48,7 +48,7 @@ const AggregateDetailModal = (props: AggregateDetailModalProps) => {
       startDate: data.scheduledDate,
       endDate: data.maxCompletionDate,
       pageNumber: currentPage,
-      pageSize: 25,
+      pageSize: DEFAULT_PAGE_SIZE,
     });
 
   useEffect(() => {

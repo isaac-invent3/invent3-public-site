@@ -19,7 +19,7 @@ const CategorySelect = (props: CategorySelectProps) => {
 
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading } = useGetAllAssetCategoryQuery({
-    pageSize: 25,
+    pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
   return (

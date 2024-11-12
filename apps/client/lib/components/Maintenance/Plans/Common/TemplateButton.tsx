@@ -1,30 +1,26 @@
-import { HStack, Icon, Text } from '@chakra-ui/react';
+import { HStack, Icon, StackProps, Text } from '@chakra-ui/react';
 import React from 'react';
 import { TemplateIcon } from '~/lib/components/CustomIcons';
 
-interface TemplateButtonProps {
+interface TemplateButtonProps extends StackProps {
   children: React.ReactNode;
-  customStyle?: { [name: string]: unknown };
   handleClick: () => void;
 }
 const TemplateButton = (props: TemplateButtonProps) => {
-  const { children, customStyle, handleClick } = props;
+  const { children, handleClick, ...rest } = props;
 
   return (
     <HStack
-      spacing="16px"
+      spacing="8px"
       bgColor="#0366EF1A"
       rounded="8px"
       p="12px"
-      {...customStyle}
       cursor="pointer"
       onClick={() => handleClick()}
-      width="max-content"
+      {...rest}
     >
-      <Icon as={TemplateIcon} boxSize="20px" color="#004BB3" />
-      <Text size="md" color="#004BB3">
-        {children}
-      </Text>
+      <Icon as={TemplateIcon} boxSize="16px" color="#004BB3" />
+      <Text color="#004BB3">{children}</Text>
     </HStack>
   );
 };

@@ -33,11 +33,6 @@ const Plans = () => {
         header: 'Plan Type',
         enableSorting: false,
       }),
-      columnHelper.accessor('assetTypeName', {
-        cell: (info) => info.getValue(),
-        header: 'Asset Type',
-        enableSorting: false,
-      }),
       columnHelper.accessor('activeSchedules', {
         cell: (info) => info.getValue(),
         header: 'Total Schedules',

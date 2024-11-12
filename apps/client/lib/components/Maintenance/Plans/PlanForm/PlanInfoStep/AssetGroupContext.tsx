@@ -3,6 +3,7 @@ import { useFormikContext } from 'formik';
 import React, { useState } from 'react';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
+import { PlanFormDetails } from '~/lib/interfaces/maintenance.interfaces';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useGetAllGroupContextRecordsByTypeIdQuery } from '~/lib/redux/services/asset/groupType.services';
 
@@ -11,7 +12,10 @@ import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 const AssetGroupContext = () => {
   const [pageNumber, setPageNumber] = useState(1);
-  const { values } = useFormikContext<any>();
+  const { values } = useFormikContext<PlanFormDetails>();
+  const { assetGroupTypeName } = useAppSelector(
+    (state) => state.maintenance.planForm
+  );
   const { data, isLoading } = useGetAllGroupContextRecordsByTypeIdQuery(
     {
       id: values?.assetGroupTypeID,
@@ -28,14 +32,14 @@ const AssetGroupContext = () => {
     <HStack width="full" alignItems="flex-start" spacing="40px">
       <Flex width="full" maxW="141px">
         <SectionInfo
-          title="Group Context"
+          title={assetGroupTypeName ?? ''}
           info="Add name that users can likely search with"
           isRequired
         />
       </Flex>
       <GenericAsyncSelect
         selectName="assetGroupContextID"
-        selectTitle="Group Context"
+        selectTitle={assetGroupTypeName ?? 'Select'}
         data={data}
         labelKey="groupContextTypeName"
         valueKey="groupContextID"

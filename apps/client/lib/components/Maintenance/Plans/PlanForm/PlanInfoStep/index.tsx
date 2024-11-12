@@ -224,38 +224,33 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
               </SimpleGrid>
               {formik.values.planScope && (
                 <SimpleGrid columns={2} gap="40px" width="full">
-                  <VStack width="full" spacing="36px">
-                    <HStack width="full" alignItems="flex-start" spacing="40px">
-                      <Flex width="full" maxW="141px">
-                        <SectionInfo
-                          title={
-                            formik.values.planScope === 'asset'
-                              ? 'Asset'
-                              : 'Group Type'
-                          }
-                          info="Add name that users can likely search with"
-                          isRequired
-                        />
-                      </Flex>
-                      {formik.values.planScope === 'asset' ? (
-                        <AssetSelect
-                          selectName="assetId"
-                          selectTitle="Asset"
-                          defaultInputValue={plan?.assetName}
-                          handleSelect={(option) =>
-                            dispatch(
-                              updatePlanForm({ assetName: option.label })
-                            )
-                          }
-                        />
-                      ) : (
-                        <AssetGroupType />
-                      )}
-                    </HStack>
-                    {formik.values.planScope === 'asset_group' && (
-                      <AssetGroupContext />
+                  <HStack width="full" alignItems="flex-start" spacing="40px">
+                    <Flex width="full" maxW="141px">
+                      <SectionInfo
+                        title={
+                          formik.values.planScope === 'asset'
+                            ? 'Asset'
+                            : 'Group Type'
+                        }
+                        info="Add name that users can likely search with"
+                        isRequired
+                      />
+                    </Flex>
+                    {formik.values.planScope === 'asset' ? (
+                      <AssetSelect
+                        selectName="assetId"
+                        selectTitle="Asset"
+                        defaultInputValue={plan?.assetName}
+                        handleSelect={(option) =>
+                          dispatch(updatePlanForm({ assetName: option.label }))
+                        }
+                      />
+                    ) : (
+                      <AssetGroupType />
                     )}
-                  </VStack>
+                  </HStack>
+                  {formik.values.planScope === 'asset_group' &&
+                    formik.values.assetGroupTypeID && <AssetGroupContext />}
                 </SimpleGrid>
               )}
               <SimpleGrid columns={2} gap="40px" width="full">

@@ -14,10 +14,15 @@ import {
 import { AddIcon, ChevronDownIcon } from '~/lib/components/CustomIcons';
 import Link from 'next/link';
 import TemplateButton from '../Plans/Common/TemplateButton';
+import PlanTemplateModal from '../Plans/PlanTemplateModal';
 
 const PlanButtonPopover = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const {
+    isOpen: isOpenTemplateModal,
+    onOpen: onOpenTemplateModal,
+    onClose: onCloseTemplateModal,
+  } = useDisclosure();
   return (
     <>
       {/* Overlay */}
@@ -85,20 +90,26 @@ const PlanButtonPopover = () => {
             borderColor: 'transparent',
           }}
         >
-          <PopoverBody pt="28px" pb="20px" pl="16px" pr="32px">
-            <VStack spacing="12px" alignItems="flex-start">
+          <PopoverBody pt="28px" pb="20px" pl="16px" pr="16px">
+            <VStack spacing="12px">
               <Link href="/maintenance/plans/add" style={{ width: '100%' }}>
                 <Text color="#0E2642" textAlign="center">
                   Create a New Plan
                 </Text>
               </Link>
-              <TemplateButton handleClick={() => {}}>
+              <TemplateButton handleClick={() => onOpenTemplateModal()}>
                 Create from Template
               </TemplateButton>
             </VStack>
           </PopoverBody>
         </PopoverContent>
       </Popover>
+      {isOpenTemplateModal && (
+        <PlanTemplateModal
+          isOpen={isOpenTemplateModal}
+          onClose={onCloseTemplateModal}
+        />
+      )}
     </>
   );
 };

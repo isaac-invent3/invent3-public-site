@@ -4,11 +4,12 @@ import {
   Icon,
   IconProps,
   Text,
+  StackProps,
 } from '@chakra-ui/react';
 import React from 'react';
 import { ChevronDownIcon } from '../../CustomIcons';
 
-interface FilterButtonProps {
+interface FilterButtonProps extends StackProps {
   isActive: boolean;
   icon: ComponentWithAs<'svg', IconProps>;
   label: string;
@@ -16,12 +17,12 @@ interface FilterButtonProps {
 }
 
 const FilterButton = (props: FilterButtonProps) => {
-  const { isActive, icon, label, handleClick } = props;
+  const { isActive, icon, label, handleClick, ...rest } = props;
 
   return (
     <HStack
       as="button"
-      minH="36px"
+      height="36px"
       minW="min-content"
       py="6px"
       pl="12px"
@@ -33,6 +34,7 @@ const FilterButton = (props: FilterButtonProps) => {
       justifyContent="flex-start"
       spacing="8px"
       transition="background-color 0.3s ease-out"
+      {...rest}
     >
       <HStack spacing="8px">
         <Icon

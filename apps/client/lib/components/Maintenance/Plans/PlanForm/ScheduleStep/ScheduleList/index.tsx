@@ -127,7 +127,7 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
     }
   }, [selectedRows]);
 
-  // Clear selectedRows is showSchedule Info is changed to false
+  // Clear selectedRows if showSchedule Info is changed to false
   useEffect(() => {
     if (!showScheduleInfo) {
       setSelectedRows([]);

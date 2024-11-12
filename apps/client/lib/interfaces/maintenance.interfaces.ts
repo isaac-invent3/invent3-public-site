@@ -125,7 +125,7 @@ interface ScheduleFormDetails {
     planStatus: string | null;
     startDate: string | null;
     endDate: string | null;
-  };
+  } | null;
   taskCount: number | null;
   tasks: taskFormDetails[];
   firstInstanceDate: string | null;

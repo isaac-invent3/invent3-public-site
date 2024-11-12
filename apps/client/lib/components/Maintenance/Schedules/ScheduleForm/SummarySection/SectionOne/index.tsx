@@ -7,8 +7,7 @@ import { dateFormatter } from '~/lib/utils/Formatters';
 
 const SectionOne = () => {
   const formDetails = useAppSelector((state) => state.maintenance.scheduleForm);
-  const { planName, planStatus, assetTypeName, startDate, endDate } =
-    formDetails.maintenancePlanInfo;
+  const planInfo = formDetails.maintenancePlanInfo;
 
   return (
     <Grid
@@ -47,22 +46,26 @@ const SectionOne = () => {
             Maintenance Plan
           </Text>
           <HStack spacing="8px">
-            <Text color="black">{planName}</Text>
+            <Text color="black">{planInfo?.planName}</Text>
             <GenericStatusBox
-              text={planStatus as string}
-              colorCode={MaintenanceColorCode[planStatus as 'Not Started']}
+              text={planInfo?.planStatus as string}
+              colorCode={
+                MaintenanceColorCode[planInfo?.planStatus as 'Not Started']
+              }
             />
           </HStack>
           <Text color="neutral.600">
             Asset Type:{' '}
             <Text as="span" color="black">
-              {assetTypeName ?? 'N/A'}
+              {planInfo?.assetTypeName ?? 'N/A'}
             </Text>
           </Text>
           <Text color="black">
-            {startDate && dateFormatter(startDate, 'Do MMM, YYYY')} {'  '} -
-            {'  '}
-            {endDate && dateFormatter(endDate, 'Do MMM, YYYY')}
+            {planInfo?.startDate &&
+              dateFormatter(planInfo?.startDate, 'Do MMM, YYYY')}{' '}
+            {'  '} -{'  '}
+            {planInfo?.endDate &&
+              dateFormatter(planInfo?.endDate, 'Do MMM, YYYY')}
           </Text>
         </VStack>
       </GridItem>

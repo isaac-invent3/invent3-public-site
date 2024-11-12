@@ -7,9 +7,10 @@ import { ScheduleFormDetails } from '~/lib/interfaces/maintenance.interfaces';
 
 interface ISectionTwo {
   formDetails: ScheduleFormDetails;
+  showTasks?: boolean;
 }
 const SectionTwo = (props: ISectionTwo) => {
-  const { formDetails } = props;
+  const { formDetails, showTasks = true } = props;
   const contentOne = [
     {
       label: 'Schedule Title',
@@ -123,38 +124,39 @@ const SectionTwo = (props: ISectionTwo) => {
                 Service Level Agreement
               </Text>
               <Text color="black" maxW="80%">
-                {formDetails?.sla} hours
+                {formDetails?.sla
+                  ? `${formDetails?.sla} ${formDetails?.sla > 1 ? 'hours' : 'hour'}`
+                  : 'N/A'}
               </Text>
+              <InfoCard infoText="Service Level Agreement is the time required to complete the tasks in the schedule" />
             </VStack>
-            <InfoCard
-              infoText="Service Level Agreement is the time required to complete the tasks in the schedule"
-              customStyle={{ maxW: '263px' }}
-            />
           </HStack>
         </GridItem>
       </Grid>
       {/* Row 2 Ends */}
       {/* Row 3 Starts */}
-      <Grid
-        templateColumns="repeat(4, 1fr)"
-        rowGap="32px"
-        columnGap={0}
-        width="full"
-      >
-        <GridItem colSpan={4} width="full">
-          <VStack width="full" alignItems="flex-start" spacing="24px">
-            <Text color="neutral.600" fontWeight={700}>
-              Tasks
-            </Text>
-            <TaskListTable
-              data={formDetails.tasks}
-              displayType="summary"
-              type="list"
-            />
-          </VStack>
-        </GridItem>
-        {/* Row 3 Ends */}
-      </Grid>
+      {showTasks && (
+        <Grid
+          templateColumns="repeat(4, 1fr)"
+          rowGap="32px"
+          columnGap={0}
+          width="full"
+        >
+          <GridItem colSpan={4} width="full">
+            <VStack width="full" alignItems="flex-start" spacing="24px">
+              <Text color="neutral.600" fontWeight={700}>
+                Tasks
+              </Text>
+              <TaskListTable
+                data={formDetails.tasks}
+                displayType="summary"
+                type="list"
+              />
+            </VStack>
+          </GridItem>
+          {/* Row 3 Ends */}
+        </Grid>
+      )}
     </Flex>
   );
 };

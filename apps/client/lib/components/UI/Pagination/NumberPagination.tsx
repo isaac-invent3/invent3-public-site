@@ -1,6 +1,5 @@
 import { HStack, Icon, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -11,6 +10,7 @@ interface IPageNumber {
   value: number;
   onClick: () => void;
 }
+
 const PageNumber = ({ isCurrent, value, onClick }: IPageNumber) => {
   return (
     <Text
@@ -29,6 +29,7 @@ interface INumberPagination {
   totalPage: number;
   onPageChange: React.Dispatch<React.SetStateAction<number>> | undefined;
 }
+
 const NumberPagination = ({
   currentPage,
   totalPage,
@@ -37,15 +38,18 @@ const NumberPagination = ({
   const [hasEnded, setEnded] = useState(false);
 
   useEffect(() => {
-    // Set `hasEnded` if we are close to the end
-    if (currentPage + 3 >= totalPage) {
-      setEnded(true);
-    } else if (currentPage <= 3) {
-      setEnded(false);
-    }
+    // Update hasEnded based on the current page position
+    setEnded(currentPage >= totalPage - 2);
   }, [currentPage, totalPage]);
 
-  // Render pages before the ellipsis
+  // Helper function to handle page change safely
+  const handlePageChange = (page: number) => {
+    if (onPageChange) {
+      onPageChange(page);
+    }
+  };
+
+  // Render pages for when the current page is not near the end
   const renderBeforeEnd = () => {
     const pages = [];
     const ellipsis = (
@@ -62,19 +66,23 @@ const NumberPagination = ({
             key={i}
             isCurrent={i === currentPage}
             value={i}
-            onClick={() => onPageChange && onPageChange(i)}
+            onClick={() => handlePageChange(i)}
           />
         );
       }
     } else {
       // Show two pages before and including the current page
-      for (let i = currentPage - 1; i <= currentPage && i <= totalPage; i++) {
+      for (
+        let i = Math.max(1, currentPage - 1);
+        i <= currentPage && i <= totalPage;
+        i++
+      ) {
         pages.push(
           <PageNumber
             key={i}
             isCurrent={i === currentPage}
             value={i}
-            onClick={() => onPageChange && onPageChange(i)}
+            onClick={() => handlePageChange(i)}
           />
         );
       }
@@ -89,7 +97,7 @@ const NumberPagination = ({
             key={i}
             isCurrent={i === currentPage}
             value={i}
-            onClick={() => onPageChange && onPageChange(i)}
+            onClick={() => handlePageChange(i)}
           />
         );
       }
@@ -98,7 +106,7 @@ const NumberPagination = ({
     return pages;
   };
 
-  // Render pages when it has reached the end
+  // Render pages for when the current page is near the end
   const renderOnEnd = () => {
     const pages = [];
     const ellipsis = (
@@ -107,26 +115,25 @@ const NumberPagination = ({
       </Text>
     );
 
-    // Show first page, ellipsis, and last two pages
     if (totalPage > 4) {
       pages.push(
         <PageNumber
           key={1}
-          isCurrent={false}
+          isCurrent={1 === currentPage}
           value={1}
-          onClick={() => onPageChange && onPageChange(1)}
+          onClick={() => handlePageChange(1)}
         />
       );
       pages.push(ellipsis);
     }
 
-    for (let i = totalPage - 2; i <= totalPage; i++) {
+    for (let i = Math.max(1, totalPage - 2); i <= totalPage; i++) {
       pages.push(
         <PageNumber
           key={i}
           isCurrent={i === currentPage}
           value={i}
-          onClick={() => onPageChange && onPageChange(i)}
+          onClick={() => handlePageChange(i)}
         />
       );
     }
@@ -145,9 +152,7 @@ const NumberPagination = ({
         boxSize="10px"
         cursor="pointer"
         mb="3px"
-        onClick={() =>
-          onPageChange && currentPage > 1 && onPageChange(currentPage - 1)
-        }
+        onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
       />
 
       {!hasEnded && <HStack spacing="16px">{renderBeforeEnd()}</HStack>}
@@ -158,9 +163,7 @@ const NumberPagination = ({
         boxSize="10px"
         cursor="pointer"
         onClick={() =>
-          onPageChange &&
-          currentPage < totalPage &&
-          onPageChange(currentPage + 1)
+          currentPage < totalPage && handlePageChange(currentPage + 1)
         }
       />
     </HStack>

@@ -120,9 +120,13 @@ const ScheduledTicketTasks = () => {
             <HStack spacing="8px" alignItems="flex-start">
               <CheckBox
                 isChecked={checkedTasks.includes(task.taskId)}
-                handleChange={() =>
-                  setCheckedTasks([...checkedTasks, task.taskId])
-                }
+                handleChange={() => {
+                 setCheckedTasks((prev) =>
+                   prev.includes(task.taskId)
+                     ? prev.filter((item) => item !== task.taskId)
+                     : [...prev, task.taskId]
+                 );
+                }}
               />
               <VStack alignItems="flex-start" spacing="5px">
                 <Text>{task.taskDescription}</Text>
@@ -132,7 +136,7 @@ const ScheduledTicketTasks = () => {
                 </Text>
               </VStack>
             </HStack>
-            <Icon as={DeleteIcon} color="error.500" />
+            <Icon as={DeleteIcon} cursor="pointer" color="error.500" />
           </HStack>
         ))}
       </VStack>

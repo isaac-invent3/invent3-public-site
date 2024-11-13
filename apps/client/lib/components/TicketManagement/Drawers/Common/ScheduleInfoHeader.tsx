@@ -119,6 +119,14 @@ const ScheduleInfoHeader = (props: ScheduleInfoHeaderProps) => {
       label: 'Incident',
       value: 'incident',
     },
+    {
+      label: 'Problem',
+      value: 'problem',
+    },
+    {
+      label: 'Suggestion',
+      value: 'suggestion',
+    },
   ];
 
   return (

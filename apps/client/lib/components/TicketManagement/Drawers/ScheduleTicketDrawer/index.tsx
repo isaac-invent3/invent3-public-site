@@ -147,7 +147,10 @@ const ScheduleTicketDrawer = (props: ScheduleTicketDrawerProps) => {
       </GenericDrawer>
       <ScheduleTicketSuccessModal
         isOpen={isOpenSuccess}
-        onClose={onCloseSuccess}
+        onClose={() => {
+          onCloseSuccess()
+          onClose()
+        }}
       />
     </>
   );

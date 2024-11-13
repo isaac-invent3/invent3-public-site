@@ -9,13 +9,19 @@ interface UserDisplayAndAddButtonProps {
   selectedUser: string | null | undefined;
   // eslint-disable-next-line no-unused-vars
   handleSelectUser: (user: Option | null) => void;
-  sectionInfoText?: string;
   customAvatarStyle?: { [name: string]: unknown };
+  sectionInfoText?: string;
+  sectionInfoTitle?: string;
 }
 
 const UserDisplayAndAddButton = (props: UserDisplayAndAddButtonProps) => {
-  const { selectedUser, handleSelectUser, sectionInfoText, customAvatarStyle } =
-    props;
+  const {
+    selectedUser,
+    handleSelectUser,
+    sectionInfoText,
+    customAvatarStyle,
+    sectionInfoTitle,
+  } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -61,6 +67,7 @@ const UserDisplayAndAddButton = (props: UserDisplayAndAddButtonProps) => {
         onClose={onClose}
         handleSelectUser={handleSelectUser}
         sectionInfoText={sectionInfoText}
+        sectionInfoTitle={sectionInfoTitle}
       />
     </>
   );

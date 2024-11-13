@@ -26,16 +26,16 @@ const AssetForm = (props: AssetFormProps) => {
       <Flex width="full" gap="8px" mt="32px" direction="column">
         <FormStepper currentStep={activeStep} steps={STEPS} />
         <GeneralStep activeStep={activeStep} setActiveStep={setActiveStep} />
-        <SlideTransition trigger={activeStep === 1}>
+        <SlideTransition trigger={activeStep === 2}>
           <AcquisitionStep
             activeStep={activeStep}
             setActiveStep={setActiveStep}
           />
         </SlideTransition>
-        <SlideTransition trigger={activeStep === 2}>
+        <SlideTransition trigger={activeStep === 3}>
           <DocumentStep activeStep={activeStep} setActiveStep={setActiveStep} />
         </SlideTransition>
-        <SlideTransition trigger={activeStep === 3}>
+        <SlideTransition trigger={activeStep === 4}>
           <SummaryStep
             activeStep={activeStep}
             setActiveStep={setActiveStep}

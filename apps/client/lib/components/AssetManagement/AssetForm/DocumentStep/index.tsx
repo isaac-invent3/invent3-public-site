@@ -36,7 +36,7 @@ const DocumentStep = (props: DocumentStepProps) => {
       width="full"
       height="full"
       direction="column"
-      display={activeStep === 2 ? 'flex' : 'none'}
+      display={activeStep === 3 ? 'flex' : 'none'}
     >
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>

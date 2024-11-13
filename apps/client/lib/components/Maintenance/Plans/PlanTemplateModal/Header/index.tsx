@@ -1,8 +1,7 @@
 import { HStack, ModalHeader, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
-import { FilterIcon } from '~/lib/components/CustomIcons';
-import FilterButton from '~/lib/components/UI/Filter/FilterButton';
 import SearchInput from '~/lib/components/UI/SearchInput';
+import FilterPopover from './Filters';
 
 interface HeaderProps {
   setSearch: React.Dispatch<React.SetStateAction<string>>;
@@ -33,13 +32,7 @@ const Header = (props: HeaderProps) => {
               overflow: 'hidden',
             }}
           />
-          <FilterButton
-            icon={FilterIcon}
-            label="Filters"
-            handleClick={() => {}}
-            isActive={false}
-            border="1px solid #DADFE5"
-          />
+          <FilterPopover />
         </HStack>
       </VStack>
     </ModalHeader>

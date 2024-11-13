@@ -2,10 +2,6 @@ import { createColumnHelper } from '@tanstack/react-table';
 import React, { useMemo } from 'react';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import { taskFormDetails } from '~/lib/interfaces/task.interfaces';
-import {
-  MaintenanceColorCode,
-  TaskPriorityColorCode,
-} from '~/lib/utils/ColorCodes';
 import PopoverAction from './PopoverAction';
 import DataTable from '~/lib/components/UI/Table';
 import AssignedTo from '~/lib/components/Common/UserInfo';
@@ -55,7 +51,7 @@ const TaskListTable = (props: TaskListTableProps) => {
           cell: (info) => {
             return (
               <GenericStatusBox
-                colorCode={TaskPriorityColorCode[info.getValue() as 'High']}
+                colorCode={info.row.original.statusColorCode}
                 text={info.getValue() as string}
               />
             );
@@ -87,9 +83,7 @@ const TaskListTable = (props: TaskListTableProps) => {
           cell: (info) => {
             return (
               <GenericStatusBox
-                colorCode={
-                  MaintenanceColorCode[info.getValue() as 'Not Started']
-                }
+                colorCode={info.row.original.statusColorCode}
                 text={info.getValue() as string}
               />
             );

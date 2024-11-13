@@ -100,16 +100,14 @@ const Maintenance = () => {
           </Flex>
 
           <TabPanels>
-            <TabPanel>
-              <Plans />
-            </TabPanel>
+            <TabPanel>{tabIndex === 0 && <Plans />}</TabPanel>
             <TabPanel>
               <ScheduleFilterDisplay
                 isOpen={isOpen}
                 filterData={filterData}
                 setFilterData={setFilterData}
               />
-              <Schedules />
+              {tabIndex === 1 && <Schedules />}
             </TabPanel>
             <TabPanel>
               <History />

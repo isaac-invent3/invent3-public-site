@@ -36,6 +36,7 @@ const ScheduleForm = (props: ScheduleFormProps) => {
       name: formDetails.name ?? null,
       planId: formDetails.planId ?? null,
       typeId: formDetails.typeId ?? null,
+      scheduleId: formDetails.scheduleId ?? null,
       frequencyId: formDetails.frequencyId ?? null,
       assetId: formDetails.assetId ?? null,
       sla: formDetails.sla ?? null,

@@ -37,6 +37,8 @@ export default function Page({ params }: { params: { id: string } }) {
         priorityName: task?.priorityName ?? null,
         statusId: task?.statusId ?? null,
         status: task?.status ?? null,
+        priorityColorCode: task?.priorityColorCode ?? null,
+        statusColorCode: task?.statusColorCode ?? null,
         assignedTo: task?.assignedTo ?? null,
         assignedToEmployeeName: task?.assignedToEmployeeName ?? null,
         estimatedDurationInHours: task?.estimatedDurationInHours ?? null,

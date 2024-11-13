@@ -168,6 +168,12 @@ interface MaintenanceFrequency {
   guid: string;
 }
 
+interface TemplateFilter {
+  createdDate: string | null;
+  owner: number[];
+  apply: boolean;
+}
+
 export type {
   MaintenancePlan,
   MaintenanceScheduleStat,
@@ -176,4 +182,5 @@ export type {
   MaintenanceSchedule,
   MaintenanceFrequency,
   PlanFormDetails,
+  TemplateFilter,
 };

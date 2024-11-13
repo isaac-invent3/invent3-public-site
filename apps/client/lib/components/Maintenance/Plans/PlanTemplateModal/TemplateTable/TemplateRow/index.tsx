@@ -48,6 +48,7 @@ const TemplateRow = (props: TemplateRowProps) => {
           bgColor={isOpen ? 'neutral.200' : 'white'}
           py="16px"
           px={0}
+          transition="all 0.1s ease-in-out"
         >
           <Icon
             as={isOpen ? ChevronUpIcon : ChevronDownIcon}
@@ -56,15 +57,14 @@ const TemplateRow = (props: TemplateRowProps) => {
           />
         </Td>
       </Tr>
-      {isOpen && (
-        <Tr>
-          <Td colSpan={info.length + 1} p={0} border="none">
-            <Collapse in={isOpen} animateOpacity>
-              <Details data={plan} />
-            </Collapse>
-          </Td>
-        </Tr>
-      )}
+
+      <Tr>
+        <Td colSpan={info.length + 1} p={0} border="none">
+          <Collapse in={isOpen} animateOpacity>
+            <Details data={plan} isOpen={isOpen} />
+          </Collapse>
+        </Td>
+      </Tr>
     </>
   );
 };

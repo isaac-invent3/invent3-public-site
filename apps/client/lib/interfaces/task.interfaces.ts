@@ -18,6 +18,8 @@ interface Task {
   priorityName: string;
   status: string;
   statusId: number;
+  priorityColorCode: string;
+  statusColorCode: string;
   scheduleId: number;
   assetId: number;
   assetCode: string;
@@ -74,6 +76,8 @@ interface FormDetails {
   assetId: number | null;
   assetName: string | null;
   assetLocation: string | null;
+  statusColorCode: string | null;
+  priorityColorCode: string | null;
 }
 
 interface TaskStatus {

@@ -56,7 +56,7 @@ const TemplateTable = (props: TemplateTableProps) => {
           width="full"
         >
           {isLoading
-            ? Array(5)
+            ? Array(10)
                 .fill('')
                 .map((_, index) => (
                   <Tr key={index}>

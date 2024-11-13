@@ -81,6 +81,8 @@ const TaskFormModal = (props: TaskFormModalProps) => {
           assetName: data?.assetName ?? null,
           assetLocation: data?.assetLocation ?? null,
           dateCompleted: data?.dateCompleted ?? null,
+          priorityColorCode: null,
+          statusColorCode: null,
         });
         resetForm();
         onOpenSuccess();

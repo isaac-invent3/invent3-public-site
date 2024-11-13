@@ -90,7 +90,7 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
           planTypeName: isDefaultPlan ? 'Default' : 'Custom',
         })
       );
-      setActiveStep(1);
+      setActiveStep(2);
     },
   });
 
@@ -179,7 +179,7 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
       width="full"
       height="full"
       direction="column"
-      display={activeStep === 0 ? 'flex' : 'none'}
+      display={activeStep === 1 ? 'flex' : 'none'}
     >
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
@@ -282,7 +282,7 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
             <FormActionButtons
               cancelLink="/maintenance"
               totalStep={3}
-              activeStep={0}
+              activeStep={1}
               setActiveStep={setActiveStep}
               disablePrimaryButton={!canProceed}
             />

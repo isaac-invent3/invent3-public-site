@@ -47,7 +47,7 @@ const AcquisitionStep = (props: AcquisitionStepProps) => {
     enableReinitialize: true,
     onSubmit: async (values) => {
       dispatch(updateAssetForm(values));
-      setActiveStep(2);
+      setActiveStep(3);
     },
   });
 
@@ -56,7 +56,7 @@ const AcquisitionStep = (props: AcquisitionStepProps) => {
       width="full"
       height="full"
       direction="column"
-      display={activeStep === 1 ? 'flex' : 'none'}
+      display={activeStep === 2 ? 'flex' : 'none'}
     >
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
@@ -83,8 +83,8 @@ const AcquisitionStep = (props: AcquisitionStepProps) => {
           <Flex width="full" mt="16px">
             <FormActionButtons
               cancelLink="/asset-management"
-              totalStep={3}
-              activeStep={1}
+              totalStep={4}
+              activeStep={2}
               setActiveStep={setActiveStep}
             />
           </Flex>

@@ -7,9 +7,10 @@ import Schedule from './Schedules';
 
 interface DetailsProps {
   data: MaintenancePlan;
+  isOpen: boolean;
 }
 const Details = (props: DetailsProps) => {
-  const { data } = props;
+  const { data, isOpen } = props;
   return (
     <VStack
       width="full"
@@ -26,11 +27,16 @@ const Details = (props: DetailsProps) => {
       <Text fontWeight={800}>Template's Detail</Text>
       <VStack width="full" alignItems="flex-start" my="24px" spacing="32px">
         <PlanInfo data={data} />
-        <Schedule plan={data} />
+        <Schedule plan={data} isOpen={isOpen} />
       </VStack>
       <Divider width="full" border="0.5px solid #656565" />
       <Flex width="full" justifyContent="flex-end" pt="16px">
-        <Button customStyles={{ width: '161px' }}>Use Template</Button>
+        <Button
+          customStyles={{ width: '161px' }}
+          href={`/maintenance/plans/add?template=${data.maintenancePlanId}`}
+        >
+          Use Template
+        </Button>
       </Flex>
     </VStack>
   );

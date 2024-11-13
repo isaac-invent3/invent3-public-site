@@ -48,6 +48,8 @@ const FormTaskListDrawer = (props: FormTaskListDrawerProps) => {
             priorityName: item.priorityName,
             statusId: item.statusId,
             status: item.status,
+            priorityColorCode: item.priorityColorCode,
+            statusColorCode: item.statusColorCode,
             assignedTo: item.assignedTo,
             assignedToEmployeeName: item.assignedToEmployeeName,
             dateCompleted: item.dateCompleted,

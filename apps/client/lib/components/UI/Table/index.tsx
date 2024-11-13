@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   Table,
   Thead,
@@ -40,7 +41,7 @@ export type TableProps<Data extends object> = {
   totalPages?: number;
   selectedRows?: number[];
   disabledRows?: number[];
-  setSelectedRows?: React.Dispatch<React.SetStateAction<number[]>>;
+  setSelectedRows?: (items: number[]) => void;
   handleSelectRow?: React.Dispatch<React.SetStateAction<any>>;
   setPageNumber?: React.Dispatch<React.SetStateAction<number>>;
   setPageSize?: React.Dispatch<React.SetStateAction<number>>;

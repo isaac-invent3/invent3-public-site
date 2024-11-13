@@ -60,6 +60,24 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
       { skip: !planId }
     );
   const columnHelper = createColumnHelper<ScheduleFormDetails>();
+
+  const handleProceedDialogForAddSchedule = () => {
+    setAction('new');
+    setSelectedRows([]);
+    dispatch(clearScheduleForm());
+    setShowScheduleInfo(true);
+    onCloseDialog();
+  };
+
+  const handleProceedDialogForSelectedRow = (items: number[]) => {
+    setSelectedRows(items);
+    onCloseDialog();
+  };
+
+  const [handleProceed, setHandleProceed] = useState(
+    () => handleProceedDialogForAddSchedule
+  );
+
   const columns = useMemo(
     () => {
       const baseColumns = [
@@ -196,19 +214,23 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
     }
   }, [data]);
 
-  const handleProceedDialog = () => {
-    setAction('new');
-    setSelectedRows([]);
-    dispatch(clearScheduleForm());
-    setShowScheduleInfo(true);
-    onCloseDialog();
-  };
-
   const handleAddSchedule = () => {
     if (selectedRows.length > 0) {
+      setHandleProceed(() => handleProceedDialogForAddSchedule);
       onOpenDialog();
     } else {
-      handleProceedDialog();
+      handleProceedDialogForAddSchedule();
+    }
+  };
+
+  const handleSetSelectedRows = (items: number[]) => {
+    if (selectedRows.length > 0) {
+      setHandleProceed(() => () => {
+        handleProceedDialogForSelectedRow(items);
+      });
+      onOpenDialog();
+    } else {
+      setSelectedRows(items);
     }
   };
 
@@ -229,7 +251,7 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
         setPageSize={setPageSize}
         totalPages={data?.data?.totalPages}
         selectedRows={selectedRows}
-        setSelectedRows={setSelectedRows}
+        setSelectedRows={(items) => handleSetSelectedRows(items)}
         selectMultipleRows={selectMultiple}
         showEmptyState={type === 'edit'}
         customThStyle={{
@@ -254,7 +276,7 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
       <GenericLeaveDialogModal
         isOpen={isOpenDialog}
         onClose={onCloseDialog}
-        handleProceed={handleProceedDialog}
+        handleProceed={handleProceed}
       />
     </Flex>
   );

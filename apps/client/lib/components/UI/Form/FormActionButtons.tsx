@@ -39,7 +39,7 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
           px: '16px',
           spacing: '8px',
           bgColor: '#F6F6F666',
-          visibility: activeStep === 0 ? 'hidden' : 'visible',
+          visibility: activeStep === 1 ? 'hidden' : 'visible',
           width: '96px',
           minH: '50px',
           _disabled: {
@@ -58,7 +58,7 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
         }}
         isDisabled={disableBackButton}
         handleClick={() => {
-          activeStep > 0 && setActiveStep && setActiveStep((prev) => prev - 1);
+          activeStep > 1 && setActiveStep && setActiveStep((prev) => prev - 1);
         }}
       >
         <Icon
@@ -72,7 +72,7 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
       </Button>
 
       <HStack spacing="16px" justifySelf="flex-end">
-        {activeStep === 0 && (
+        {activeStep === 1 && (
           <Link href={cancelLink}>
             <HStack
               cursor="pointer"

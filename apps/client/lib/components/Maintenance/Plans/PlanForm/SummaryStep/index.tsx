@@ -118,7 +118,7 @@ const SummarySection = (props: SummarySectionProps) => {
       width="full"
       height="full"
       direction="column"
-      display={activeStep === 2 ? 'flex' : 'none'}
+      display={activeStep === 3 ? 'flex' : 'none'}
     >
       <VStack
         spacing="34px"
@@ -139,8 +139,8 @@ const SummarySection = (props: SummarySectionProps) => {
       <Flex width="full" mt="16px">
         <FormActionButtons
           cancelLink="/maintenance"
-          totalStep={1}
-          activeStep={1}
+          totalStep={3}
+          activeStep={3}
           finalText={type === 'create' ? 'Finish' : 'Save Changes'}
           setActiveStep={setActiveStep}
           handleContinue={handleSumbitPlan}

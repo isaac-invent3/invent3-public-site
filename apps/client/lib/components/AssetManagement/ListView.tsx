@@ -71,7 +71,7 @@ const ListView = (props: ListViewProps) => {
   // Reset pagination when clearing the search
   useEffect(() => {
     if (!search) {
-      setPageSize(25);
+      setPageSize(DEFAULT_PAGE_SIZE);
       setCurrentPage(1);
     }
   }, [search]);

@@ -1,6 +1,6 @@
-import { Flex, VStack } from '@chakra-ui/react';
+import { VStack } from '@chakra-ui/react';
 import { createColumnHelper } from '@tanstack/react-table';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import DataTable from '~/lib/components/UI/Table';
 import {
   MaintenancePlan,
@@ -10,13 +10,15 @@ import { useGetMaintenanceSchedulesByPlanIdQuery } from '~/lib/redux/services/ma
 import { dateFormatter } from '~/lib/utils/Formatters';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import ScheduleSummary from '~/lib/components/Maintenance/Schedules/ScheduleForm/SummarySection/SectionTwo';
+import ScheduleTasks from './ScheduleTasks';
 
 interface MaintenanceSchedulesProps {
   plan: MaintenancePlan;
+  isOpen: boolean;
 }
 
 const Schedule = (props: MaintenanceSchedulesProps) => {
-  const { plan } = props;
+  const { plan, isOpen } = props;
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -28,7 +30,7 @@ const Schedule = (props: MaintenanceSchedulesProps) => {
         pageSize,
         pageNumber: currentPage,
       },
-      { skip: !plan.maintenancePlanId }
+      { skip: !plan.maintenancePlanId || !isOpen }
     );
   const columnHelper = createColumnHelper<MaintenanceSchedule>();
   const columns = useMemo(
@@ -76,6 +78,11 @@ const Schedule = (props: MaintenanceSchedulesProps) => {
     [[data]] //eslint-disable-line
   );
 
+  // Empty selected rows array when page size or page number changes
+  useEffect(() => {
+    setSelectedRows([]);
+  }, [pageSize, currentPage]);
+
   return (
     <VStack width="full" alignItems="flex-start" spacing="24px">
       <DataTable
@@ -121,7 +128,14 @@ const Schedule = (props: MaintenanceSchedulesProps) => {
 
           if (schedule) {
             return (
-              <Flex width="full" p="16px" rounded="8px" bgColor="#F5F6F7">
+              <VStack
+                alignItems="flex-start"
+                width="full"
+                p="16px"
+                rounded="8px"
+                bgColor="#F5F6F7"
+                spacing="16px"
+              >
                 <ScheduleSummary
                   showTasks={false}
                   formDetails={{
@@ -145,7 +159,8 @@ const Schedule = (props: MaintenanceSchedulesProps) => {
                   }}
                   key={index}
                 />
-              </Flex>
+                <ScheduleTasks scheduleId={schedule.scheduleId} />
+              </VStack>
             );
           }
           return null;

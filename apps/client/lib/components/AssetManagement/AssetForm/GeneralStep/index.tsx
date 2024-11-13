@@ -63,7 +63,7 @@ const GeneralStep = (props: GeneralStepProps) => {
       width="full"
       height="full"
       direction="column"
-      display={activeStep === 0 ? 'flex' : 'none'}
+      display={activeStep === 1 ? 'flex' : 'none'}
     >
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
@@ -90,8 +90,8 @@ const GeneralStep = (props: GeneralStepProps) => {
           <Flex width="full" mt="16px">
             <FormActionButtons
               cancelLink="/asset-management"
-              totalStep={3}
-              activeStep={0}
+              totalStep={4}
+              activeStep={1}
               setActiveStep={setActiveStep}
             />
           </Flex>

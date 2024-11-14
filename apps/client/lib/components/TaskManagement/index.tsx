@@ -15,6 +15,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 // import { FilterInput } from '~/lib/interfaces/asset.interfaces';
 import Filters from './Filters';
 import ListView from './ListView';
+import { STATUS_CATEGORY_ENUM } from '~/lib/utils/constants';
 
 const ALlTabs = ['Pending', 'In Progress', 'Completed'];
 
@@ -77,13 +78,13 @@ const TaskManagement = () => {
 
           <TabPanels>
             <TabPanel>
-              <ListView />
+              <ListView statusCategoryId={STATUS_CATEGORY_ENUM.INACTIVE} />
             </TabPanel>
             <TabPanel>
-              <ListView />
+              <ListView statusCategoryId={STATUS_CATEGORY_ENUM.ACTIVE} />
             </TabPanel>
             <TabPanel>
-              <ListView />
+              <ListView statusCategoryId={STATUS_CATEGORY_ENUM.ACTIVE} />
             </TabPanel>
           </TabPanels>
         </Tabs>

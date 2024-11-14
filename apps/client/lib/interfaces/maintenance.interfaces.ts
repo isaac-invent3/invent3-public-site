@@ -73,6 +73,28 @@ interface MaintenanceSchedule {
   activeTasksCount: number | null;
 }
 
+interface ScheduleInstance {
+  isNew: boolean;
+  createdDate: string;
+  createdBy: string;
+  lastModifiedDate: string;
+  lastModifiedBy: string;
+  isDeleted: boolean;
+  deletedDate: string;
+  deletedBy: string;
+  guid: string;
+  scheduleInstanceId: number;
+  parentScheduleId: number;
+  scheduledDate: string;
+  scheduleInstanceName: string;
+  sla: number;
+  estimatedDurationInHours: number;
+  completionDate: string;
+  statusId: number;
+  assignedTo: number;
+  comments: string;
+}
+
 interface AggregateMaintenanceSchedule {
   totalScheduleCount: number;
   scheduledDate: string;
@@ -180,6 +202,7 @@ export type {
   AggregateMaintenanceSchedule,
   ScheduleFormDetails,
   MaintenanceSchedule,
+  ScheduleInstance,
   MaintenanceFrequency,
   PlanFormDetails,
   TemplateFilter,

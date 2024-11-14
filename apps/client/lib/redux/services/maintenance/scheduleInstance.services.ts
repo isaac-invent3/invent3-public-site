@@ -1,0 +1,88 @@
+import { createApi } from '@reduxjs/toolkit/query/react';
+import { generateQueryStr } from '~/lib/utils/queryGenerator';
+import baseQueryWithReauth from '../../baseQueryWithReauth';
+import { ScheduleInstance } from '~/lib/interfaces/maintenance.interfaces';
+import {
+  BaseApiResponse,
+  ListResponse,
+} from '~/lib/interfaces/general.interfaces';
+
+const getHeaders = () => ({
+  'Content-Type': 'application/json',
+});
+export const scheduleInstanceApi = createApi({
+  reducerPath: 'scheduleInstance',
+  baseQuery: baseQueryWithReauth,
+  tagTypes: ['allScheduleInstances'],
+  endpoints: (builder) => ({
+    updateScheduleInstance: builder.mutation({
+      query: ({ id, ...data }) => ({
+        url: `/MaintenanceScheduleInstances/${id}`,
+        method: 'PUT',
+        headers: getHeaders(),
+        body: data,
+      }),
+      invalidatesTags: ['allScheduleInstances'],
+    }),
+    deleteMaintenanceSchedule: builder.mutation({
+      query: ({ id, ...data }) => ({
+        url: `/MaintenanceScheduleInstances/${id}`,
+        method: 'DELETE',
+        headers: getHeaders(),
+        body: data,
+      }),
+      invalidatesTags: ['allScheduleInstances'],
+    }),
+    getAllScheduleInstance: builder.query<
+      BaseApiResponse<ListResponse<ScheduleInstance>>,
+      {}
+    >({
+      query: () => ({
+        url: '/MaintenanceScheduleInstances',
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allScheduleInstances'],
+    }),
+    getScheduleInstanceById: builder.query<
+      BaseApiResponse<ScheduleInstance>,
+      { id: number }
+    >({
+      query: (id) => ({
+        url: `/MaintenanceScheduleInstances/${id}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getInstanceScheduleAggregate: builder.query({
+      query: ({ id, ...data }) => ({
+        url: generateQueryStr(
+          `/MaintenanceSchedules/GetMaintenanceScheduleAggregatesByArea/${id}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    searchScheduleInstance: builder.mutation<
+      BaseApiResponse<ListResponse<ScheduleInstance>>,
+      any
+    >({
+      query: (body: any) => ({
+        url: `/MaintenanceScheduleInstances/Search`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
+  }),
+});
+
+export const {
+  useDeleteMaintenanceScheduleMutation,
+  useGetAllScheduleInstanceQuery,
+  useGetInstanceScheduleAggregateQuery,
+  useGetScheduleInstanceByIdQuery,
+  useSearchScheduleInstanceMutation,
+  useUpdateScheduleInstanceMutation,
+} = scheduleInstanceApi;

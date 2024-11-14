@@ -22,6 +22,7 @@ import GenericDrawer from '~/lib/components/UI/GenericDrawer';
 import TextareaInput from '~/lib/components/UI/TextArea';
 import TextInput from '~/lib/components/UI/TextInput';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
+import { Asset } from '~/lib/interfaces/asset.interfaces';
 import { useGetAllTaskPrioritiesQuery } from '~/lib/redux/services/task/priorities.services';
 import { useCreateTicketMutation } from '~/lib/redux/services/ticket.services';
 import { createTicketSchema } from '~/lib/schemas/ticket.schema';
@@ -35,10 +36,11 @@ import TicketTypeSelect from '../Common/TicketTypeSelect';
 interface CreateTicketDrawerProps {
   isOpen: boolean;
   onClose: () => void;
+  asset?: Asset;
 }
 
 const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, asset } = props;
   const {
     isOpen: isOpenSuccess,
     onOpen: onOpenSuccess,
@@ -62,10 +64,11 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
   const initialValues = {
     ticketTitle: null,
     issueDescription: null,
-    assetId: null,
+    assetId: asset?.assetId ?? null,
     reportedByEmployeeId: null,
+    reportedByEmployeeName: null,
     ticketTypeId: null,
-    ticketPriority: null,
+    ticketPriorityId: null,
     issueReportDate: moment(new Date().toISOString()).utcOffset(0, true),
   };
 
@@ -74,16 +77,22 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
     enableReinitialize: false,
     validationSchema: createTicketSchema,
     onSubmit: async (data) => {
-      await handleSubmit(
+      const successMessage = asset
+        ? `Ticket for ${asset.assetName} Created Successfully`
+        : 'Ticket Created Successfully';
+      const response = await handleSubmit(
         createTicketMutation,
         {
           ...data,
           createdBy: username,
         },
-        ''
+        successMessage
       );
 
-      onOpenSuccess();
+      if (response?.data) {
+        formik.resetForm();
+        onOpenSuccess();
+      }
     },
   });
 
@@ -161,7 +170,15 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                     title="Ticket Asset"
                     isRequired
                   >
-                    <AssetSelect selectName="assetId" selectTitle="Asset" />
+                    {asset && (
+                      <Text fontSize={'14px'} color="gray">
+                        {asset.assetName}
+                      </Text>
+                    )}
+
+                    {!asset && (
+                      <AssetSelect selectName="assetId" selectTitle="Asset" />
+                    )}
                   </FormInputWrapper>
 
                   <FormInputWrapper
@@ -196,22 +213,22 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                         )}
                         selectedOptions={[
                           {
-                            value: formik.values.ticketPriority!,
-                            label: formik.values.ticketPriority!,
+                            value: formik.values.ticketPriorityId!,
+                            label: formik.values.ticketPriorityId!,
                           },
                         ]}
                         handleSelect={(options) => {
                           formik.setFieldValue(
-                            'ticketPriority',
+                            'ticketPriorityId',
                             options[0]?.value
                           );
                         }}
                       />
 
                       {formik.submitCount > 0 &&
-                        formik.errors.ticketPriority && (
+                        formik.errors.ticketPriorityId && (
                           <ErrorMessage>
-                            {formik.errors.ticketPriority}
+                            {formik.errors.ticketPriorityId}
                           </ErrorMessage>
                         )}
                     </VStack>
@@ -224,8 +241,18 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                     title="Ticket Raised By"
                   >
                     <UserDisplayAndAddButton
-                      selectedUser={null}
-                      handleSelectUser={(user) => {}}
+                      selectedUser={formik.values.reportedByEmployeeName}
+                      handleSelectUser={(user) => {
+                        formik.setFieldValue(
+                          'reportedByEmployeeId',
+                          user?.value ?? null
+                        );
+
+                        formik.setFieldValue(
+                          'reportedByEmployeeName',
+                          user?.label ?? null
+                        );
+                      }}
                       sectionInfoTitle="Raised By"
                     />
                   </FormInputWrapper>

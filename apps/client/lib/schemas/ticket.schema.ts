@@ -39,6 +39,6 @@ const createTicketSchema = () =>
     assetId: Yup.number().required('Asset is Required'),
     reportedByEmployeeId: Yup.number().nullable(),
     ticketTypeId: Yup.number().required('Ticket Type is Required'),
-    ticketPriority: Yup.number().required('Ticket Priority is Required'),
+    ticketPriorityId: Yup.number().required('Ticket Priority is Required'),
   });
 export { createTicketSchema, scheduleTicketSchema, updateTicketSchema };

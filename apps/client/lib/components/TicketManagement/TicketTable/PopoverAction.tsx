@@ -3,7 +3,6 @@ import { Text, useDisclosure, useToast, VStack } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import GenericPopover from '~/lib/components/UI/GenericPopover';
 import GenericDeleteModal from '~/lib/components/UI/Modal/GenericDeleteModal';
-import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
 import { useDeleteTicketMutation } from '~/lib/redux/services/ticket.services';
 import ScheduledTicketDetailDrawer from '../Drawers/ScheduledTicketDetailDrawer';
@@ -44,7 +43,6 @@ const PopoverAction = (props: PopoverActionProps) => {
   } = useDisclosure();
   const toast = useToast();
 
-  const { handleSubmit } = useCustomMutation();
   const [deleteTicket, { isLoading }] = useDeleteTicketMutation({});
   const { data } = useSession();
 

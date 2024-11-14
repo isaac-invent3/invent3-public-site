@@ -145,6 +145,7 @@ const TicketTable = (props: TicketTableProps) => {
           paddingTop: '12px',
           paddingBottom: '12px',
         }}
+        rowColorKey="priorityColorCode"
         customTableContainerStyle={{ rounded: 'none' }}
       />
     </Flex>

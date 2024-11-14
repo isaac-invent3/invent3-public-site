@@ -52,6 +52,8 @@ export type TableProps<Data extends object> = {
   hideSelectAllCheckBox?: boolean;
   selectMultipleRows?: boolean;
   showEmptyState?: boolean;
+  // Refactor this
+  rowColorKey?: keyof Data;
 };
 
 function DataTable<Data extends object>({
@@ -80,6 +82,7 @@ function DataTable<Data extends object>({
   hideSelectAllCheckBox = false,
   selectMultipleRows = true,
   showEmptyState = true,
+  rowColorKey,
 }: TableProps<Data>) {
   const [selectAll, setSelectAll] = useState(false);
 
@@ -253,9 +256,14 @@ function DataTable<Data extends object>({
                   const isDisabledRow = disabledRows
                     ? disabledRows?.includes(rowIndex)
                     : false;
+
+                  const rowColor =
+                    (rowColorKey && `${row.original[rowColorKey]}0D`) ??
+                    undefined;
                   return (
                     <Tr
                       key={row.id}
+                      bgColor={rowColor}
                       cursor="pointer"
                       onClick={() =>
                         handleSelectRow && handleSelectRow(row.original)

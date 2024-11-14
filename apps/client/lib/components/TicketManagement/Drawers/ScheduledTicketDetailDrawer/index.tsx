@@ -5,6 +5,7 @@ import {
   Heading,
   HStack,
   useDisclosure,
+  useToast,
 } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 import { useSession } from 'next-auth/react';
@@ -14,6 +15,7 @@ import GenericDrawer from '~/lib/components/UI/GenericDrawer';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { Task } from '~/lib/interfaces/task.interfaces';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
+import { useCreateTaskMutation } from '~/lib/redux/services/task/general.services';
 import { useUpdateTicketMutation } from '~/lib/redux/services/ticket.services';
 import MarkTicketAsCompletedModal from '../../Modals/MarkTicketAsCompletedModal';
 import ScheduleInfoHeader from '../Common/ScheduleInfoHeader';
@@ -46,16 +48,18 @@ const ScheduledTicketDetailDrawer = (
     onClose: onCloseMarkAsCompleted,
   } = useDisclosure();
 
+  const toast = useToast();
   const { data: session } = useSession();
+  const { handleSubmit } = useCustomMutation();
 
   const username = session?.user?.username;
 
-  const { handleSubmit } = useCustomMutation();
-
-  const [updateTicketMutation, { isLoading: updatingTicket }] =
+  const [updateTicketMutation, { isLoading: isUpdatingTicket }] =
     useUpdateTicketMutation();
 
-  const formik = useFormik({
+  const [createTask, { isLoading: isCreatingTask }] = useCreateTaskMutation({});
+
+  const formik = useFormik<ScheduleTicketFormDetails>({
     initialValues: {
       tasks: [],
       taskCount: 0,
@@ -74,18 +78,22 @@ const ScheduledTicketDetailDrawer = (
         ticketStatusId: payload.ticketStatusId,
       };
 
-      await handleSubmit(
-        updateTicketMutation,
-        { id: data.ticketId, ...requestBody },
-        'Updated Ticket Successfully'
+      await Promise.all(
+        payload.tasks.map(async (task) => {
+          await handleSubmit(createTask, { ...task, createdBy: username }, '');
+        })
       );
+
+      // Directly using this method instead of the handle submit function, as the latter throws an error when the response is empty, and this request does not return any response.
+      await updateTicketMutation({ id: data.ticketId, ...requestBody });
+
+      toast({
+        title: 'Ticket Was Updated Successfully',
+        status: 'success',
+        position: 'top-right',
+      });
     },
   });
-  /**
-   * TODO: Integrate with API Endpoint
-   * Connect Status and Priority with the Form
-   *
-   */
 
   return (
     <>
@@ -102,7 +110,7 @@ const ScheduledTicketDetailDrawer = (
 
             <HStack spacing="8px">
               <Button
-                isLoading={updatingTicket}
+                isLoading={isUpdatingTicket || isCreatingTask}
                 handleClick={() => formik.handleSubmit()}
                 customStyles={{ width: '107px', height: '35px' }}
               >

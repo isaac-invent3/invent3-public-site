@@ -30,15 +30,6 @@ const ScheduledTicketTasks = (props: ScheduledTicketTasksProps) => {
   // eslint-disable-next-line no-unused-vars
   const [field, meta, helpers] = useField('taskCount');
 
-  const handleAddTask = (task: taskFormDetails) => {
-    setFieldValue('tasks', [
-      ...values.tasks,
-      { ...task, taskId: null, localId: values.tasks.length + 1 },
-    ]);
-    // Increase taskCount by 1
-    helpers.setValue(meta.value + 1);
-  };
-
   // TODO: Change implementation for this when api is ready
   const [checkedTasks, setCheckedTasks] = useState<number[]>([]);
 
@@ -49,6 +40,20 @@ const ScheduledTicketTasks = (props: ScheduledTicketTasksProps) => {
     useGetAllTasksByScheduleIdQuery({
       id: maintenanceSchedule?.data.scheduleId,
     });
+
+  const handleAddTask = (task: taskFormDetails) => {
+    setFieldValue('tasks', [
+      ...values.tasks,
+      {
+        ...task,
+        taskId: null,
+        localId: values.tasks.length + 1,
+        scheduleId: maintenanceSchedule?.data.scheduleId,
+      },
+    ]);
+    // Increase taskCount by 1
+    helpers.setValue(meta.value + 1);
+  };
 
   const isLoading = isFetchingTasks || isFetchingSchedule;
 

@@ -26,6 +26,9 @@ interface Ticket {
   buildingAddress: string;
   buildingLongitude: number;
   buildingLatitude: number;
+  priority: string;
+  priorityColorCode: string;
+  ticketTypeName: string;
   floor: string;
   floorRef: string;
   department: string;

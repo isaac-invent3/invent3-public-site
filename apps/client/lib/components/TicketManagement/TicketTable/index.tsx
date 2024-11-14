@@ -1,14 +1,14 @@
+import { Flex } from '@chakra-ui/react';
 import { createColumnHelper } from '@tanstack/react-table';
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
+import UserInfo from '~/lib/components/Common/UserInfo';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import DataTable from '~/lib/components/UI/Table';
-import { dateFormatter } from '~/lib/utils/Formatters';
-import PopoverAction from './PopoverAction';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
 import { useGetAllTicketsQuery } from '~/lib/redux/services/ticket.services';
-import { background, Flex } from '@chakra-ui/react';
-import UserInfo from '~/lib/components/Common/UserInfo';
 import { COLOR_CODES_FALLBACK, DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import { dateFormatter } from '~/lib/utils/Formatters';
+import PopoverAction from './PopoverAction';
 
 interface TicketTableProps {
   type: 'new' | 'scheduled' | 'completed';
@@ -47,17 +47,22 @@ const TicketTable = (props: TicketTableProps) => {
             ]
           : []),
         // Change to Proper Content
-        columnHelper.accessor('ticketId', {
-          cell: 'Incident',
+        columnHelper.accessor('ticketTypeName', {
+          cell: (info) => info.getValue(),
           header: 'Type',
           enableSorting: false,
         }),
-        columnHelper.accessor('ticketId', {
-          cell: () => {
+        columnHelper.accessor('priority', {
+          cell: (info) => {
+            const ticket = info.row.original;
+
             return (
               <GenericStatusBox
-                colorCode={COLOR_CODES_FALLBACK.default}
-                text="High"
+                colorCode={
+                  ticket.priorityColorCode ?? COLOR_CODES_FALLBACK.default
+                }
+                width="80px"
+                text={ticket.priority}
               />
             );
           },
@@ -98,7 +103,7 @@ const TicketTable = (props: TicketTableProps) => {
           header: 'Requested By',
           enableSorting: true,
         }),
-        columnHelper.accessor('rowId', {
+        columnHelper.accessor('facilityRef', {
           cell: (info) => (
             <PopoverAction ticket={info.row.original} type={type} />
           ),

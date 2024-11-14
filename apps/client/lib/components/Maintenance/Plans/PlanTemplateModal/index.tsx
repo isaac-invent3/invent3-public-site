@@ -1,7 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import GenericModal from '~/lib/components/UI/Modal';
 import Header from './Header';
-import { ModalBody, ModalFooter } from '@chakra-ui/react';
+import {
+  Collapse,
+  Flex,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+} from '@chakra-ui/react';
 import Pagination from '~/lib/components/UI/Table/Pagination';
 import {
   useGetAllMaintenancePlanQuery,
@@ -11,6 +17,10 @@ import TemplateTable from './TemplateTable';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 import { SearchResponse } from '~/lib/interfaces/general.interfaces';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
+import TemplateFilters from './Header/Filters';
+import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
+import SlideTransition from '~/lib/components/UI/SlideTransition';
+import Details from './TemplateTable/Details';
 
 interface PlanTemplateModalProps {
   isOpen: boolean;
@@ -18,6 +28,7 @@ interface PlanTemplateModalProps {
 }
 const PlanTemplateModal = (props: PlanTemplateModalProps) => {
   const { isOpen, onClose } = props;
+  const { isOpen: openFilter, onToggle } = useDisclosure();
   const [search, setSearch] = useState('');
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
@@ -33,6 +44,9 @@ const PlanTemplateModal = (props: PlanTemplateModalProps) => {
     useSearchMaintenancePlanMutation({});
   const [searchData, setSearchData] = useState<SearchResponse | null>(null);
   const { handleSubmit } = useCustomMutation();
+  const [selectedPlan, setSelectedPlan] = useState<MaintenancePlan | null>(
+    null
+  );
 
   const searchCriterion = {
     criterion: [
@@ -72,36 +86,56 @@ const PlanTemplateModal = (props: PlanTemplateModalProps) => {
       onClose={onClose}
       contentStyle={{ maxW: '80vw', width: '1116px', height: '716px' }}
     >
-      <Header setSearch={setSearch} />
+      <Header
+        setSearch={setSearch}
+        openFilter={openFilter}
+        setOpenFilter={onToggle}
+        selectedPlan={selectedPlan}
+        setSelectedPlan={setSelectedPlan}
+      />
       <ModalBody m={0} p={0} px="24px">
-        <TemplateTable
-          isLoading={isLoading || searchLoading}
-          isFetching={isFetching}
-          data={
-            search && searchData ? searchData.items : (data?.data?.items ?? [])
-          }
-        />
+        <Flex id="date-picker-portal" />
+        <Collapse in={openFilter} animateOpacity>
+          {openFilter && <TemplateFilters />}
+        </Collapse>
+        {!selectedPlan && (
+          <TemplateTable
+            isLoading={isLoading || searchLoading}
+            isFetching={isFetching}
+            setSelectedPlan={setSelectedPlan}
+            data={
+              search && searchData
+                ? searchData.items
+                : (data?.data?.items ?? [])
+            }
+          />
+        )}
+        <SlideTransition trigger={selectedPlan !== null}>
+          {selectedPlan && <Details data={selectedPlan} />}
+        </SlideTransition>
       </ModalBody>
-      <ModalFooter
-        m={0}
-        p={0}
-        mb="65px"
-        pt="16px"
-        pr="32px"
-        justifyContent="flex-end"
-      >
-        <Pagination
-          pageNumber={pageNumber}
-          setPageNumber={setPageNumber}
-          pageSize={pageSize}
-          setPageSize={setPageSize}
-          totalPage={
-            search && searchData
-              ? searchData?.totalPages
-              : data?.data?.totalPages
-          }
-        />
-      </ModalFooter>
+      {!selectedPlan && (
+        <ModalFooter
+          m={0}
+          p={0}
+          mb="65px"
+          pt="16px"
+          pr="32px"
+          justifyContent="flex-end"
+        >
+          <Pagination
+            pageNumber={pageNumber}
+            setPageNumber={setPageNumber}
+            pageSize={pageSize}
+            setPageSize={setPageSize}
+            totalPage={
+              search && searchData
+                ? searchData?.totalPages
+                : data?.data?.totalPages
+            }
+          />
+        </ModalFooter>
+      )}
     </GenericModal>
   );
 };

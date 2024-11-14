@@ -1,10 +1,10 @@
-import { HStack, Icon, Text } from '@chakra-ui/react';
+import { HStack, Icon, StackProps, Text } from '@chakra-ui/react';
 import React from 'react';
 import { LongBackArrowIcon } from '../../CustomIcons';
 
 interface BackButtonProps {
   handleClick: () => void;
-  customStyles?: { [key: string]: unknown };
+  customStyles?: StackProps;
 }
 const BackButton = (props: BackButtonProps) => {
   const { handleClick, customStyles } = props;

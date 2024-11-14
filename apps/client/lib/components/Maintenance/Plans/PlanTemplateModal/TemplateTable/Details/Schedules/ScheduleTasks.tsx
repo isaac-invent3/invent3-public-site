@@ -33,7 +33,9 @@ const ScheduleTasks = (props: ScheduleTasksProps) => {
         setPageSize={setPageSize}
         isSortable={false}
         type="page"
-        showFooter
+        showFooter={
+          data?.data ? (data?.data?.totalPages > 1 ? true : false) : false
+        }
         showPopover={false}
         showScheduleId={false}
         emptyLines={3}

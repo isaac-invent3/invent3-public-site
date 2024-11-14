@@ -47,12 +47,13 @@ const PlanButtonPopover = () => {
       >
         <PopoverTrigger>
           <HStack
-            width="150px"
+            width="175px"
             p="16px"
             bgColor="primary.500"
             rounded="8px"
             justifyContent="space-between"
             cursor="pointer"
+            spacing={0}
           >
             <HStack alignItems="center" spacing="4px">
               <Icon
@@ -61,7 +62,7 @@ const PlanButtonPopover = () => {
                 color="secondary.pale.500"
                 mb="2px"
               />
-              <Text color="secondary.pale.500">Add Plan</Text>
+              <Text color="secondary.pale.500">Add New Plan</Text>
             </HStack>
             <Icon
               as={ChevronDownIcon}

@@ -1,16 +1,16 @@
-import { Flex, HStack } from '@chakra-ui/react';
+import { Flex, HStack, StackProps } from '@chakra-ui/react';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 
-interface FormInputWrapperContainerProps {
+type FormInputWrapperProps = {
   sectionMaxWidth: string;
   spacing: string;
   title: string;
   description: string;
   isRequired?: boolean;
   children: React.ReactNode;
-}
+} & StackProps;
 
-const FormInputWrapperContainer = (props: FormInputWrapperContainerProps) => {
+const FormInputWrapper = (props: FormInputWrapperProps) => {
   const {
     sectionMaxWidth,
     spacing,
@@ -18,10 +18,11 @@ const FormInputWrapperContainer = (props: FormInputWrapperContainerProps) => {
     description,
     children,
     isRequired = false,
+    ...rest
   } = props;
 
   return (
-    <HStack width="full" alignItems="flex-start" spacing={spacing}>
+    <HStack width="full" alignItems="flex-start" spacing={spacing} {...rest}>
       <Flex width="full" maxW={sectionMaxWidth}>
         <SectionInfo title={title} info={description} isRequired={isRequired} />
       </Flex>
@@ -31,4 +32,4 @@ const FormInputWrapperContainer = (props: FormInputWrapperContainerProps) => {
   );
 };
 
-export default FormInputWrapperContainer;
+export default FormInputWrapper;

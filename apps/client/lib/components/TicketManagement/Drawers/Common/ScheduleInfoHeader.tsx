@@ -1,12 +1,14 @@
 import { HStack, Text, VStack } from '@chakra-ui/react';
-import { useMemo, useState } from 'react';
+import { useFormikContext } from 'formik';
+import { useEffect, useMemo } from 'react';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
-import { Option } from '~/lib/interfaces/general.interfaces';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
 import { useGetAllTaskPrioritiesQuery } from '~/lib/redux/services/task/priorities.services';
 import { useGetAllTaskStatusesQuery } from '~/lib/redux/services/task/statuses.services';
+import { useGetAllTicketTypesQuery } from '~/lib/redux/services/ticket.services';
 import { COLOR_CODES_FALLBACK, DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { generateOptions } from '~/lib/utils/helperFunctions';
+import { ScheduleTicketFormDetails } from '../ScheduledTicketDetailDrawer';
 import TicketInfoDropDown from './TicketInfoDropdown';
 import TicketInfoHeader from './TicketInfoHeader';
 
@@ -59,6 +61,9 @@ const ScheduleInfoHeader = (props: ScheduleInfoHeaderProps) => {
     );
   }
 
+  const { values, setFieldValue } =
+    useFormikContext<ScheduleTicketFormDetails>();
+
   const { data: taskStatuses, isLoading: isFetchingTaskStatuses } =
     useGetAllTaskStatusesQuery({
       pageSize: DEFAULT_PAGE_SIZE,
@@ -71,63 +76,75 @@ const ScheduleInfoHeader = (props: ScheduleInfoHeaderProps) => {
       pageNumber: 1,
     });
 
-  // TODO: Change to FORMIK when API is Ready
-  const [selectedTaskStatus, setSelectedTaskStatus] = useState<Option | null>(
-    null
-  );
+  const { data: ticketTypes, isLoading: isFetchingTicketTypes } =
+    useGetAllTicketTypesQuery({
+      pageSize: DEFAULT_PAGE_SIZE,
+      pageNumber: 1,
+    });
 
-  const [selectedTaskPriority, setSelectedTaskPriority] =
-    useState<Option | null>(null);
+  const getInitialState = () => {
+    if (taskStatuses?.data?.items) {
+      const selectedItem = taskStatuses.data.items.find(
+        (item) => item?.taskStatusId === data?.taskStatusId
+      );
 
-  const taskStatusesOptions = useMemo(() => {
-    if (!taskStatuses?.data?.items) return [];
-    return generateOptions(
-      taskStatuses.data.items,
-      'statusName',
-      'taskStatusId'
-    );
-  }, [taskStatuses]);
+      selectedItem &&
+        setFieldValue('ticketStatusId', selectedItem.taskStatusId);
+    }
 
-  const getSelectedTaskStatus = useMemo(() => {
-    if (!taskStatuses?.data?.items) return null;
+    if (taskPriorities?.data?.items) {
+      const selectedItem = taskPriorities.data.items.find(
+        (item) => item?.taskPriorityId === data?.taskPriorityId
+      );
 
-    return taskStatuses.data.items.find(
-      (item) => item?.taskStatusId === selectedTaskStatus?.value
-    );
-  }, [selectedTaskStatus, taskStatuses]);
+      selectedItem &&
+        setFieldValue('ticketPriorityId', selectedItem.taskPriorityId);
+    }
 
-  const taskPrioritiesOptions = useMemo(() => {
-    if (!taskPriorities?.data?.items) return [];
+    if (ticketTypes?.data?.items) {
+      const selectedItem = ticketTypes.data.items.find(
+        (item: any) => item?.ticketTypeId === data?.ticketTypeId
+      );
 
-    return generateOptions(
-      taskPriorities.data.items,
-      'priority',
-      'taskPriorityId'
-    );
-  }, [taskPriorities]);
+      selectedItem && setFieldValue('ticketTypeId', selectedItem.ticketTypeId);
+    }
+  };
 
-  const getSelectedTaskPriority = useMemo(() => {
-    if (!taskPriorities?.data?.items) return null;
+  const getItemColorCode = (
+    selectedItemId: number | null,
+    type: 'status' | 'priority'
+  ) => {
+    if (!selectedItemId) return COLOR_CODES_FALLBACK.default;
 
-    return taskPriorities.data.items.find(
-      (item) => item?.taskPriorityId === selectedTaskPriority?.value
-    );
-  }, [selectedTaskPriority, taskPriorities]);
+    if (type === 'status') {
+      if (!taskStatuses?.data?.items) return COLOR_CODES_FALLBACK.default;
 
-  const ticketTypesOptions = [
-    {
-      label: 'Incident',
-      value: 'incident',
-    },
-    {
-      label: 'Problem',
-      value: 'problem',
-    },
-    {
-      label: 'Suggestion',
-      value: 'suggestion',
-    },
-  ];
+      const selectedItem = taskStatuses.data.items.find(
+        (item) => item?.taskStatusId === selectedItemId
+      );
+
+      if (!selectedItem) return COLOR_CODES_FALLBACK.default;
+
+      return selectedItem.displayColorCode;
+    }
+
+    if (type === 'priority') {
+      if (!taskPriorities?.data?.items) return COLOR_CODES_FALLBACK.default;
+
+      const selectedItem = taskPriorities.data.items.find(
+        (item) => item?.taskPriorityId === selectedItemId
+      );
+
+      if (!selectedItem) return COLOR_CODES_FALLBACK.default;
+
+      return selectedItem.displayColorCode;
+    }
+  };
+
+
+  useEffect(() => {
+    getInitialState();
+  }, [taskStatuses, ticketTypes, taskPriorities]);
 
   return (
     <TicketInfoHeader data={data} isUpdateTicket>
@@ -137,50 +154,54 @@ const ScheduleInfoHeader = (props: ScheduleInfoHeaderProps) => {
         alignItems="flex-start"
         justifyContent="space-between"
       >
-        <HStack spacing="20px" alignItems="flex-start">
+        <HStack spacing="20px" alignItems="flex-start" flexWrap="wrap">
           <VStack alignItems="flex-start" spacing="8px">
             <Text color="neutral.600">Status:</Text>
             <TicketInfoDropDown
-              label="Status"
               width="120px"
-              options={taskStatusesOptions}
+              label="Status"
+              name="ticketStatusId"
               isLoading={isFetchingTaskStatuses}
-              selectedOptions={selectedTaskStatus}
-              handleClick={(option) => setSelectedTaskStatus(option)}
-              colorCode={
-                getSelectedTaskStatus?.displayColorCode ??
-                COLOR_CODES_FALLBACK.default
-              }
+              colorCode={getItemColorCode(values.ticketStatusId, 'status')}
+              options={generateOptions(
+                taskStatuses?.data.items,
+                'statusName',
+                'taskStatusId'
+              )}
             />
           </VStack>
+
           <VStack alignItems="flex-start" spacing="8px">
             <Text color="neutral.600">Priority</Text>
 
             <TicketInfoDropDown
-              label="Priority"
               width="110px"
-              options={taskPrioritiesOptions}
+              label="Priority"
+              name="ticketPriorityId"
               isLoading={isFetchingTaskPriorities}
-              selectedOptions={selectedTaskPriority}
-              handleClick={(option) => setSelectedTaskPriority(option)}
-              colorCode={
-                getSelectedTaskPriority?.displayColorCode ??
-                COLOR_CODES_FALLBACK.default
-              }
+              colorCode={getItemColorCode(values.ticketPriorityId, 'priority')}
+              options={generateOptions(
+                taskPriorities?.data.items,
+                'priority',
+                'taskPriorityId'
+              )}
             />
           </VStack>
           <VStack alignItems="flex-start" spacing="8px">
             <Text color="neutral.600">Ticket Type</Text>
-            {/* TODO: Change from Dummy data to Api Data when endpoint is ready */}
             <TicketInfoDropDown
-              options={ticketTypesOptions}
               label="Ticket Type"
-              handleClick={(option) => console.log(option)}
-              selectedOptions={ticketTypesOptions[0]!}
-              width="110px"
+              name="ticketTypeId"
+              isLoading={isFetchingTicketTypes}
+              width="200px"
               colorCode="#6E7D8E33"
               showColorDot={false}
               hasBorder={false}
+              options={generateOptions(
+                ticketTypes?.data.items,
+                'ticketTypeName',
+                'ticketTypeId'
+              )}
             />
           </VStack>
 

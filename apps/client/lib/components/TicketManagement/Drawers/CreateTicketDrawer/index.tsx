@@ -5,20 +5,32 @@ import {
   Flex,
   Heading,
   HStack,
+  Text,
+  useDisclosure,
   VStack,
 } from '@chakra-ui/react';
 import { Field, FormikProvider, useFormik } from 'formik';
+import moment from 'moment';
+import { useSession } from 'next-auth/react';
 import AssetSelect from '~/lib/components/Common/AssetSelect';
 import UserDisplayAndAddButton from '~/lib/components/Common/UserDisplayAndAddButton';
-import AssetField from '~/lib/components/TaskManagement/TaskForm/SectionOne/Asset';
 import Button from '~/lib/components/UI/Button';
 import BackButton from '~/lib/components/UI/Button/BackButton';
 import SelectableButtonGroup from '~/lib/components/UI/Button/SelectableButtonGroup';
-import CustomDatePicker from '~/lib/components/UI/Form/FormDatePicker';
+import ErrorMessage from '~/lib/components/UI/ErrorMessage';
 import GenericDrawer from '~/lib/components/UI/GenericDrawer';
 import TextareaInput from '~/lib/components/UI/TextArea';
 import TextInput from '~/lib/components/UI/TextInput';
-import FormInputWrapperContainer from '../Common/FormInputWrapperContainer';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
+import { useGetAllTaskPrioritiesQuery } from '~/lib/redux/services/task/priorities.services';
+import { useCreateTicketMutation } from '~/lib/redux/services/ticket.services';
+import { createTicketSchema } from '~/lib/schemas/ticket.schema';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import { dateFormatter } from '~/lib/utils/Formatters';
+import { generateOptions } from '~/lib/utils/helperFunctions';
+import FormInputWrapper from '../../../UI/Form/FormInputWrapper';
+import CreateTicketSuccessModal from '../../Modals/CreateTicketSuccessModal';
+import TicketTypeSelect from '../Common/TicketTypeSelect';
 
 interface CreateTicketDrawerProps {
   isOpen: boolean;
@@ -27,44 +39,53 @@ interface CreateTicketDrawerProps {
 
 const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
   const { isOpen, onClose } = props;
+  const {
+    isOpen: isOpenSuccess,
+    onOpen: onOpenSuccess,
+    onClose: onCloseSuccess,
+  } = useDisclosure();
 
-  const formik = useFormik({
-    initialValues: {
-      assignedTo: null,
-    },
-    enableReinitialize: true,
-    onSubmit: async () => {},
+  const { data: session } = useSession();
+
+  const username = session?.user?.username;
+
+  const { handleSubmit } = useCustomMutation();
+
+  const { data: ticketPriorities } = useGetAllTaskPrioritiesQuery({
+    pageSize: DEFAULT_PAGE_SIZE,
+    pageNumber: 1,
   });
 
-  const typeOptions = [
-    {
-      label: 'Incident',
-      value: 'incident',
-    },
-    {
-      label: 'Problem',
-      value: 'problem',
-    },
-    {
-      label: 'Suggestion',
-      value: 'suggestion',
-    },
-  ];
+  const [createTicketMutation, { isLoading: isCreatingTicket }] =
+    useCreateTicketMutation();
 
-  const priorityOptions = [
-    {
-      label: 'High',
-      value: 'high',
+  const initialValues = {
+    ticketTitle: null,
+    issueDescription: null,
+    assetId: null,
+    reportedByEmployeeId: null,
+    ticketTypeId: null,
+    ticketPriority: null,
+    issueReportDate: moment(new Date().toISOString()).utcOffset(0, true),
+  };
+
+  const formik = useFormik({
+    initialValues,
+    enableReinitialize: false,
+    validationSchema: createTicketSchema,
+    onSubmit: async (data) => {
+      await handleSubmit(
+        createTicketMutation,
+        {
+          ...data,
+          createdBy: username,
+        },
+        ''
+      );
+
+      onOpenSuccess();
     },
-    {
-      label: 'Medium',
-      value: 'medium',
-    },
-    {
-      label: 'Low',
-      value: 'low',
-    },
-  ];
+  });
 
   return (
     <>
@@ -80,28 +101,28 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
             <BackButton handleClick={onClose} />
           </HStack>
         </DrawerHeader>
-
-        <DrawerBody p={0}>
-          <Flex
-            direction="column"
-            width="full"
-            alignItems="flex-start"
-            pb="20px"
-          >
-            <Heading
-              fontSize="32px"
-              lineHeight="38.02px"
-              color="black"
-              px="24px"
+        <FormikProvider value={formik}>
+          <DrawerBody p={0}>
+            <Flex
+              direction="column"
+              width="full"
+              alignItems="flex-start"
               pb="20px"
-              fontWeight={800}
             >
-              Add New Ticket
-            </Heading>
-            <FormikProvider value={formik}>
+              <Heading
+                fontSize="32px"
+                lineHeight="38.02px"
+                color="black"
+                px="24px"
+                pb="20px"
+                fontWeight={800}
+              >
+                Add New Ticket
+              </Heading>
+
               <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
                 <VStack width="full" spacing="24px" px="24px" mt="22px">
-                  <FormInputWrapperContainer
+                  <FormInputWrapper
                     sectionMaxWidth="141px"
                     spacing="24px"
                     description="Add name that users can likely search with"
@@ -114,9 +135,9 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                       type="text"
                       label="Ticket Title"
                     />
-                  </FormInputWrapperContainer>
+                  </FormInputWrapper>
 
-                  <FormInputWrapperContainer
+                  <FormInputWrapper
                     sectionMaxWidth="141px"
                     spacing="24px"
                     description="Choose the category and the sub-category"
@@ -125,63 +146,78 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                   >
                     <Field
                       as={TextareaInput}
-                      name="ticketDescription"
+                      name="issueDescription"
                       type="text"
                       label="Description"
                       placeholder="Description"
                       customStyle={{ height: '133px' }}
                     />
-                  </FormInputWrapperContainer>
+                  </FormInputWrapper>
 
-                  <FormInputWrapperContainer
+                  <FormInputWrapper
                     sectionMaxWidth="141px"
                     spacing="24px"
                     description="Choose the category and the sub-category"
                     title="Ticket Asset"
                     isRequired
                   >
-                    <AssetSelect
-                      selectName="assetId"
-                      selectTitle="Asset"
-                      handleSelect={(option) => {}}
-                    />
-                  </FormInputWrapperContainer>
+                    <AssetSelect selectName="assetId" selectTitle="Asset" />
+                  </FormInputWrapper>
 
-                  <FormInputWrapperContainer
+                  <FormInputWrapper
                     sectionMaxWidth="141px"
                     spacing="24px"
                     description="Choose the category and the sub-category"
                     title="Type"
                     isRequired
                   >
-                    <SelectableButtonGroup
-                      options={typeOptions}
-                      selectedOptions={[]}
-                      handleSelect={(options) => {}}
-                      isMultiSelect={false}
-                      buttonVariant="secondary"
-                      customButtonStyle={{ width: 'max-content' }}
+                    <TicketTypeSelect
+                      selectName="ticketTypeId"
+                      selectTitle="Ticket Type"
                     />
-                  </FormInputWrapperContainer>
+                  </FormInputWrapper>
 
-                  <FormInputWrapperContainer
+                  <FormInputWrapper
                     sectionMaxWidth="141px"
                     spacing="24px"
                     description="Choose the category and the sub-category"
                     title="Priority"
                     isRequired
                   >
-                    <SelectableButtonGroup
-                      options={priorityOptions}
-                      selectedOptions={[]}
-                      handleSelect={(options) => {}}
-                      isMultiSelect={false}
-                      buttonVariant="secondary"
-                      customButtonStyle={{ width: 'max-content' }}
-                    />
-                  </FormInputWrapperContainer>
+                    <VStack width="full" spacing="4px" alignItems="flex-start">
+                      <SelectableButtonGroup
+                        isMultiSelect={false}
+                        buttonVariant="secondary"
+                        customButtonStyle={{ width: 'max-content' }}
+                        options={generateOptions(
+                          ticketPriorities?.data.items,
+                          'priority',
+                          'taskPriorityId'
+                        )}
+                        selectedOptions={[
+                          {
+                            value: formik.values.ticketPriority!,
+                            label: formik.values.ticketPriority!,
+                          },
+                        ]}
+                        handleSelect={(options) => {
+                          formik.setFieldValue(
+                            'ticketPriority',
+                            options[0]?.value
+                          );
+                        }}
+                      />
 
-                  <FormInputWrapperContainer
+                      {formik.submitCount > 0 &&
+                        formik.errors.ticketPriority && (
+                          <ErrorMessage>
+                            {formik.errors.ticketPriority}
+                          </ErrorMessage>
+                        )}
+                    </VStack>
+                  </FormInputWrapper>
+
+                  <FormInputWrapper
                     sectionMaxWidth="141px"
                     spacing="24px"
                     description="Add name that users can likely search with"
@@ -192,49 +228,61 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                       handleSelectUser={(user) => {}}
                       sectionInfoTitle="Raised By"
                     />
-                  </FormInputWrapperContainer>
-                  <FormInputWrapperContainer
+                  </FormInputWrapper>
+                  <FormInputWrapper
                     sectionMaxWidth="141px"
                     spacing="24px"
                     description="Choose the category and the sub-category"
                     title="Request Date"
                     isRequired
+                    alignItems="center"
                   >
-                    <CustomDatePicker
-                      name="resolutionDate"
-                      label="Resolution Date"
-                      type="date"
-                      minDate={new Date()}
-                    />
-                  </FormInputWrapperContainer>
+                    <Text fontSize={'14px'} color="gray">
+                      {dateFormatter(new Date(), `DD / MM / YYYY`)}
+                    </Text>
+                  </FormInputWrapper>
                 </VStack>
               </form>
-            </FormikProvider>
-          </Flex>
-        </DrawerBody>
+            </Flex>
+          </DrawerBody>
 
-        <DrawerFooter p={0} m={0}>
-          <HStack
-            spacing="8px"
-            justifyContent="flex-end"
-            mt="8px"
-            px="24px"
-            pb="32px"
-          >
-            <Button
-              customStyles={{ width: '138px', height: '50px' }}
-              variant="secondary"
-              handleClick={onClose}
+          <DrawerFooter p={0} m={0}>
+            <HStack
+              spacing="8px"
+              justifyContent="flex-end"
+              mt="8px"
+              px="24px"
+              pb="32px"
             >
-              Cancel
-            </Button>
+              <Button
+                customStyles={{ width: '138px', height: '50px' }}
+                variant="secondary"
+                handleClick={onClose}
+              >
+                Cancel
+              </Button>
 
-            <Button customStyles={{ width: '237px', height: '50px' }}>
-              Save Ticket
-            </Button>
-          </HStack>
-        </DrawerFooter>
+              <Button
+                isLoading={isCreatingTicket}
+                handleClick={() => {
+                  formik.handleSubmit();
+                }}
+                customStyles={{ width: '237px', height: '50px' }}
+              >
+                Save Ticket
+              </Button>
+            </HStack>
+          </DrawerFooter>
+        </FormikProvider>
       </GenericDrawer>
+
+      <CreateTicketSuccessModal
+        isOpen={isOpenSuccess}
+        onClose={() => {
+          onCloseSuccess();
+          onClose();
+        }}
+      />
     </>
   );
 };

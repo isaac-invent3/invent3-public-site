@@ -8,7 +8,7 @@ const getHeaders = () => ({
 export const ticketApi = createApi({
   reducerPath: 'ticketApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['allTickets'],
+  tagTypes: ['allTickets', 'allTicketTypes'],
   endpoints: (builder) => ({
     createTicket: builder.mutation({
       query: (body: any) => ({
@@ -68,6 +68,23 @@ export const ticketApi = createApi({
         body,
       }),
     }),
+    getAllTicketTypes: builder.query({
+      query: (data: any) => ({
+        url: generateQueryStr(`/TicketTypes?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allTicketTypes'],
+    }),
+
+    searchTicketTypes: builder.mutation({
+      query: (body: any) => ({
+        url: `/TicketTypes/Search`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
   }),
 });
 
@@ -77,6 +94,8 @@ export const {
   useDeleteTicketMutation,
   useGetAllTicketsQuery,
   useGetTicketByIdQuery,
+  useGetAllTicketTypesQuery,
   useSearchTicketsMutation,
-  useScheduleTicketsMutation
+  useScheduleTicketsMutation,
+  useSearchTicketTypesMutation
 } = ticketApi;

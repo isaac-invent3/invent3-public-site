@@ -36,6 +36,9 @@ interface Ticket {
   aisleRef: string;
   shelf: string;
   shelfRef: string;
+  taskPriorityId: number;
+  taskStatusId: number;
+  ticketTypeId: number;
   assetLocation: string;
 }
 

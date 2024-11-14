@@ -12,9 +12,9 @@ import Button from '~/lib/components/UI/Button';
 import BackButton from '~/lib/components/UI/Button/BackButton';
 import GenericDrawer from '~/lib/components/UI/GenericDrawer';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
+import { Task } from '~/lib/interfaces/task.interfaces';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
 import { useUpdateTicketMutation } from '~/lib/redux/services/ticket.services';
-import { updateTicketSchema } from '~/lib/schemas/ticket.schema';
 import MarkTicketAsCompletedModal from '../../Modals/MarkTicketAsCompletedModal';
 import ScheduleInfoHeader from '../Common/ScheduleInfoHeader';
 import SectionOne from '../Common/SectionOne';
@@ -25,6 +25,14 @@ interface ScheduledTicketDetailDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   data: Ticket;
+}
+
+export interface ScheduleTicketFormDetails {
+  tasks: Task[];
+  taskCount: number;
+  ticketStatusId: number | null;
+  ticketPriorityId: number | null;
+  ticketTypeId: number | null;
 }
 
 const ScheduledTicketDetailDrawer = (
@@ -50,32 +58,33 @@ const ScheduledTicketDetailDrawer = (
   const formik = useFormik({
     initialValues: {
       tasks: [],
-      assignedTo: null,
       taskCount: 0,
-      status: null,
-      priority: null,
-      ticketType: null,
+      ticketStatusId: null,
+      ticketPriorityId: null,
+      ticketTypeId: null,
     },
-    validationSchema: updateTicketSchema,
+    // validationSchema: updateTicketSchema,
     enableReinitialize: true,
     onSubmit: async (payload) => {
       const requestBody = {
         ticketId: data.ticketId,
-        ticketTitle: data.ticketTitle,
-        issueDescription: data.issueDescription,
-        issueReportDate: data.issueReportDate,
-        assetId: data.assetId,
         lastModifiedBy: username,
+        ticketTypeId: payload.ticketTypeId,
+        ticketPriorityId: payload.ticketPriorityId,
+        ticketStatusId: payload.ticketStatusId,
       };
 
-      await handleSubmit(updateTicketMutation, requestBody, '');
+      await handleSubmit(
+        updateTicketMutation,
+        { id: data.ticketId, ...requestBody },
+        'Updated Ticket Successfully'
+      );
     },
   });
-
   /**
    * TODO: Integrate with API Endpoint
    * Connect Status and Priority with the Form
-   * 
+   *
    */
 
   return (
@@ -94,6 +103,7 @@ const ScheduledTicketDetailDrawer = (
             <HStack spacing="8px">
               <Button
                 isLoading={updatingTicket}
+                handleClick={() => formik.handleSubmit()}
                 customStyles={{ width: '107px', height: '35px' }}
               >
                 Save Changes
@@ -130,7 +140,7 @@ const ScheduledTicketDetailDrawer = (
                 <ScheduleInfoHeader data={data} isUpdateTicket />
                 <SectionOne data={data} type="scheduled" />
                 <TicketActivity />
-                <ScheduledTicketTasks />
+                <ScheduledTicketTasks data={data} />
               </Flex>
             </form>
           </FormikProvider>

@@ -6,7 +6,7 @@ import { dateFormatter } from '~/lib/utils/Formatters';
 import PopoverAction from './PopoverAction';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
 import { useGetAllTicketsQuery } from '~/lib/redux/services/ticket.services';
-import { Flex } from '@chakra-ui/react';
+import { background, Flex } from '@chakra-ui/react';
 import UserInfo from '~/lib/components/Common/UserInfo';
 import { COLOR_CODES_FALLBACK, DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
@@ -29,7 +29,7 @@ const TicketTable = (props: TicketTableProps) => {
       const baseColumns = [
         columnHelper.accessor('ticketId', {
           cell: (info) => info.getValue(),
-          header: 'Ticket ID',
+          header: '#',
           enableSorting: false,
         }),
         columnHelper.accessor('ticketTitle', {
@@ -73,7 +73,8 @@ const TicketTable = (props: TicketTableProps) => {
             ]
           : []),
         columnHelper.accessor('issueReportDate', {
-          cell: (info) => dateFormatter(info.getValue(), 'DD / MM / YYYY'),
+          cell: (info) =>
+            dateFormatter(info.getValue(), 'DD / MM / YYYY hh:mma'),
           header: 'Requested Date',
           enableSorting: false,
         }),
@@ -81,7 +82,7 @@ const TicketTable = (props: TicketTableProps) => {
           ? [
               columnHelper.accessor('resolutionDate', {
                 cell: (info) =>
-                  dateFormatter(info.getValue(), 'DD / MM / YYYY'),
+                  dateFormatter(info.getValue(), 'DD / MM / YYYY hh:mma'),
                 header: 'Resolution Date',
                 enableSorting: false,
               }),
@@ -125,7 +126,7 @@ const TicketTable = (props: TicketTableProps) => {
         setPageSize={setPageSize}
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
-        emptyLines={5}
+        emptyLines={15}
         isSelectable
         maxTdWidth="200px"
         customThStyle={{

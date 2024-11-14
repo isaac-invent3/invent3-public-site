@@ -32,11 +32,13 @@ const updateTicketSchema = () =>
       .min(1, 'There must be atleast one task'),
   });
 
-  const createTicketSchema = () =>
+const createTicketSchema = () =>
   Yup.object().shape({
     ticketTitle: Yup.string().required('Ticket Title is Required'),
     issueDescription: Yup.string().required('Description is Required'),
     assetId: Yup.number().required('Asset is Required'),
-    reportedByEmployeeId: Yup.number().nullable(),   
+    reportedByEmployeeId: Yup.number().nullable(),
+    ticketTypeId: Yup.number().required('Ticket Type is Required'),
+    ticketPriority: Yup.number().required('Ticket Priority is Required'),
   });
-export { scheduleTicketSchema, updateTicketSchema, createTicketSchema };
+export { createTicketSchema, scheduleTicketSchema, updateTicketSchema };

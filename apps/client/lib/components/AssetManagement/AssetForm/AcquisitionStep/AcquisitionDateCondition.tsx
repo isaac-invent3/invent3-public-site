@@ -32,7 +32,11 @@ const AcquisitionDateConditon = () => {
       </Flex>
       <Grid templateColumns="repeat(3, 1fr)" gap="20px" width="full">
         <GridItem colSpan={1}>
-          <CustomDatePicker name="acquisitionDate" label="Acquisition Date" />
+          <CustomDatePicker
+            name="acquisitionDate"
+            label="Acquisition Date"
+            maxDate={new Date()}
+          />
         </GridItem>
         <GridItem colSpan={1}>
           <HStack width="full" alignItems="flex-start" spacing="0px">

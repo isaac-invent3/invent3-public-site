@@ -60,7 +60,7 @@ const ScheduledTicketTasks = (props: ScheduledTicketTasksProps) => {
   return (
     <VStack width="full" alignItems="flex-start" pt="24px" px="24px">
       <HStack width="full" alignItems="center" justifyContent="space-between">
-        <Text color="#838383" fontWeight={700}>
+        <Text color="neutral.600" fontWeight={700}>
           Tasks
         </Text>
 

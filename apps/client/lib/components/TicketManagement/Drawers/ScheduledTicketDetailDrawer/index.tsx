@@ -35,6 +35,7 @@ export interface ScheduleTicketFormDetails {
   ticketStatusId: number | null;
   ticketPriorityId: number | null;
   ticketTypeId: number | null;
+  assignedTo: number | null
 }
 
 const ScheduledTicketDetailDrawer = (
@@ -66,6 +67,7 @@ const ScheduledTicketDetailDrawer = (
       ticketStatusId: null,
       ticketPriorityId: null,
       ticketTypeId: null,
+      assignedTo: null
     },
     // validationSchema: updateTicketSchema,
     enableReinitialize: true,

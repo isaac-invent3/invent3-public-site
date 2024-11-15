@@ -193,7 +193,7 @@ const ScheduleInfoHeader = (props: ScheduleInfoHeaderProps) => {
               label="Ticket Type"
               name="ticketTypeId"
               isLoading={isFetchingTicketTypes}
-              width="200px"
+              width="150px"
               colorCode="#6E7D8E33"
               showColorDot={false}
               hasBorder={false}

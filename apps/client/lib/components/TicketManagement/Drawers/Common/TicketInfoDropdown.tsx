@@ -86,11 +86,10 @@ const TicketInfoDropDown = (props: DropDownProps) => {
           <Text
             color="black"
             textOverflow="ellipsis"
-            whiteSpace="nowrap"
+            noOfLines={1}
             textTransform="capitalize"
             overflow="hidden"
             flex="1"
-            maxWidth="calc(100% - 5px)"
           >
             {getLabel()}
           </Text>

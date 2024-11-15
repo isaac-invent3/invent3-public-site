@@ -8,7 +8,9 @@ const Description = (props: DescriptionProps) => {
   const { info } = props;
   return (
     <VStack width="full" alignItems="flex-start" spacing="8px">
-      <Text>Description</Text>
+      <Text color="neutral.600" fontWeight={700}>
+        Description
+      </Text>
       <Text
         width="full"
         bgColor="#F0F0F0"

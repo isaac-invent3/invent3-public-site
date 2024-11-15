@@ -45,7 +45,10 @@ function getDocumentInfo(document: AssetFormDocument) {
   const matches = document.base64Document.match(base64WithPrefixPattern);
 
   extensionName =
-    (document.documentName?.split('.')?.[1] as 'pdf') ?? 'invalid';
+    (document.documentName?.substring(
+      document.documentName.lastIndexOf('.') + 1
+    ) as 'pdf') || 'invalid';
+
   if (matches) {
     // Case 1: The base64Document includes the MIME type prefix
     mimeType = matches[1] as string;

@@ -42,7 +42,9 @@ const TicketActivity = () => {
 
   return (
     <VStack width="full" alignItems="flex-start" pt="24px" px="24px">
-      <Text>Ticket Activity</Text>
+      <Text color="neutral.600" fontWeight={700}>
+        Ticket Activity
+      </Text>
 
       <Box maxHeight="400px">
         {timelines.map((timeline, index) => (

@@ -39,7 +39,7 @@ const AddDocument = ({ variant }: AddDocumentProps) => {
 
     if (validFiles.length < files.length) {
       helpers.setError(
-        'Some files are larger than 10MB or not in a supported format (TXT, PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, JPEG)'
+        'Some files could not be uploaded because they are larger than 10MB, have names longer than 100 characters, or are in an unsupported format. Supported formats include: TXT, PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, and JPEG.'
       );
     } else {
       files.forEach((file: File) => {
@@ -82,7 +82,9 @@ const AddDocument = ({ variant }: AddDocumentProps) => {
       const droppedFiles = Array.from(event.dataTransfer.files);
       const validFiles = droppedFiles.filter(
         (file) =>
-          file.size <= 10 * 1024 * 1024 && validFileTypes.includes(file.type)
+          file.size <= 10 * 1024 * 1024 &&
+          validFileTypes.includes(file.type) &&
+          file.name.length <= 100
       );
 
       handleFileChange(droppedFiles, validFiles);
@@ -100,7 +102,8 @@ const AddDocument = ({ variant }: AddDocumentProps) => {
             const validFiles = files.filter(
               (file) =>
                 file.size <= 10 * 1024 * 1024 &&
-                validFileTypes.includes(file.type)
+                validFileTypes.includes(file.type) &&
+                file.name.length <= 100
             );
             handleFileChange(files, validFiles);
           }}

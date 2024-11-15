@@ -58,7 +58,7 @@ const ScheduleTicketDrawer = (props: ScheduleTicketDrawerProps) => {
     validationSchema: scheduleTicketSchema,
     enableReinitialize: true,
     onSubmit: async (data) => {
-      const response = await handleSubmit(
+       await handleSubmit(
         scheduleTicketMutation,
         {
           createMaintenanceScheduleDto: {
@@ -80,7 +80,6 @@ const ScheduleTicketDrawer = (props: ScheduleTicketDrawerProps) => {
         ''
       );
 
-      console.log({ response });
       onOpenSuccess();
     },
   });
@@ -148,7 +147,10 @@ const ScheduleTicketDrawer = (props: ScheduleTicketDrawerProps) => {
       </GenericDrawer>
       <ScheduleTicketSuccessModal
         isOpen={isOpenSuccess}
-        onClose={onCloseSuccess}
+        onClose={() => {
+          onCloseSuccess()
+          onClose()
+        }}
       />
     </>
   );

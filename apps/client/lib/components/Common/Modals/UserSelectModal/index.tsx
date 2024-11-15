@@ -14,10 +14,17 @@ interface UserSelectModalProps {
   // eslint-disable-next-line no-unused-vars
   handleSelectUser: (option: Option) => void;
   sectionInfoText?: string;
+  sectionInfoTitle?: string
 }
 
 const UserSelectModal = (props: UserSelectModalProps) => {
-  const { isOpen, onClose, handleSelectUser, sectionInfoText } = props;
+  const {
+    isOpen,
+    onClose,
+    handleSelectUser,
+    sectionInfoText,
+    sectionInfoTitle,
+  } = props;
   const [selectedUser, setSelectedUser] = useState<Option | null>(null);
 
   const formik = useFormik({
@@ -59,7 +66,7 @@ const UserSelectModal = (props: UserSelectModalProps) => {
                 alignItems="flex-start"
               >
                 <SectionInfo
-                  title="Assign"
+                  title={sectionInfoTitle ?? "Assign"}
                   info={
                     sectionInfoText ??
                     'Add name that users can likely search with'

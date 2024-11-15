@@ -1,9 +1,11 @@
-import { HStack, Text, VStack } from '@chakra-ui/react';
+import { HStack, Text, VStack, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 import UserInfo from '~/lib/components/Common/UserInfo';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import Description from './Description';
+import UserSelectModal from '~/lib/components/Common/Modals/UserSelectModal';
+import { useField } from 'formik';
 
 interface SectionOneProps {
   data: Ticket;
@@ -16,6 +18,9 @@ const SectionOne = (props: SectionOneProps) => {
     width: type === 'new' ? '42px' : '24px',
     height: type === 'new' ? '42px' : '24px',
   };
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
+    // const [field, meta, helpers] = useField('assignedTo');
 
   return (
     <VStack
@@ -53,6 +58,7 @@ const SectionOne = (props: SectionOneProps) => {
                 color="#0366EF"
                 mt="4px"
                 cursor="pointer"
+                onClick={onOpen}
               >
                 Reassign Ticket
               </Text>
@@ -71,6 +77,15 @@ const SectionOne = (props: SectionOneProps) => {
         </VStack>
       </HStack>
       <Description info={data?.issueDescription} />
+
+      <UserSelectModal
+        isOpen={isOpen}
+        onClose={onClose}
+        handleSelectUser={(user) => {
+
+          console.log(user?.value);
+        }}
+      />
     </VStack>
   );
 };

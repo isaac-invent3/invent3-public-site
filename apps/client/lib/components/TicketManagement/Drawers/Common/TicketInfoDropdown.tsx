@@ -11,15 +11,16 @@ import {
   useOutsideClick,
   VStack,
 } from '@chakra-ui/react';
+import { useField } from 'formik';
 import { useRef } from 'react';
 import { Option } from '~/lib/interfaces/general.interfaces';
 
 interface DropDownProps {
   label: string;
   options: Option[];
-  selectedOptions: Option | null;
-  handleClick: (option: Option) => void;
+  name: string;
   width: string;
+  handleClick?: (option: Option) => void;
   isLoading?: boolean;
   colorCode?: string;
   showColorDot?: boolean;
@@ -30,7 +31,7 @@ const TicketInfoDropDown = (props: DropDownProps) => {
   const {
     label,
     options,
-    selectedOptions,
+    name,
     handleClick,
     width,
     isLoading,
@@ -40,10 +41,20 @@ const TicketInfoDropDown = (props: DropDownProps) => {
   } = props;
   const { onToggle, isOpen, onClose } = useDisclosure();
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const [field, meta, helpers] = useField(name);
+
   useOutsideClick({
     ref: containerRef,
     handler: () => onClose(),
   });
+
+  const getLabel = () => {
+    if (meta.value) {
+      return options.find((option) => option.value === meta.value)?.label;
+    }
+
+    return label;
+  };
 
   return (
     <Flex direction="column" width="full" maxW="max-content" ref={containerRef}>
@@ -71,8 +82,16 @@ const TicketInfoDropDown = (props: DropDownProps) => {
           {showColorDot && (
             <Box width="8px" height="8px" rounded="full" bgColor={colorCode} />
           )}
-          <Text color="black" textTransform="capitalize">
-            {selectedOptions ? selectedOptions.label : label}
+          {/* Work on the Ellipsis for this */}
+          <Text
+            color="black"
+            textOverflow="ellipsis"
+            noOfLines={1}
+            textTransform="capitalize"
+            overflow="hidden"
+            flex="1"
+          >
+            {getLabel()}
           </Text>
         </Flex>
 
@@ -103,8 +122,9 @@ const TicketInfoDropDown = (props: DropDownProps) => {
                 py="4px"
                 px="12px"
                 onClick={() => {
-                  handleClick(option);
                   onClose();
+                  handleClick && handleClick(option);
+                  helpers.setValue(option.value);
                 }}
                 cursor="pointer"
                 _hover={{ bgColor: 'neutral.300' }}

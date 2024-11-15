@@ -1,51 +1,215 @@
 import { HStack, Text, VStack } from '@chakra-ui/react';
+import { useFormikContext } from 'formik';
+import { useEffect, useMemo } from 'react';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
-import { COLOR_CODES_FALLBACK } from '~/lib/utils/constants';
+import { useGetAllTaskPrioritiesQuery } from '~/lib/redux/services/task/priorities.services';
+import { useGetAllTaskStatusesQuery } from '~/lib/redux/services/task/statuses.services';
+import { useGetAllTicketTypesQuery } from '~/lib/redux/services/ticket.services';
+import { COLOR_CODES_FALLBACK, DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import { generateOptions } from '~/lib/utils/helperFunctions';
+import { ScheduleTicketFormDetails } from '../ScheduledTicketDetailDrawer';
+import TicketInfoDropDown from './TicketInfoDropdown';
 import TicketInfoHeader from './TicketInfoHeader';
 
 interface ScheduleInfoHeaderProps {
   data: Ticket;
+  isUpdateTicket?: boolean;
 }
 const ScheduleInfoHeader = (props: ScheduleInfoHeaderProps) => {
-  const { data } = props;
+  const { data, isUpdateTicket = false } = props;
+
+  if (!isUpdateTicket) {
+    return (
+      <TicketInfoHeader data={data}>
+        <HStack
+          width="full"
+          mt="24px"
+          alignItems="flex-start"
+          justifyContent="space-between"
+        >
+          <HStack spacing="40px" alignItems="flex-start">
+            <VStack alignItems="flex-start" spacing="8px">
+              <Text color="neutral.600">Status:</Text>
+
+              <GenericStatusBox
+                text="In Progress"
+                width="120px"
+                colorCode={COLOR_CODES_FALLBACK.default}
+              />
+            </VStack>
+            <VStack alignItems="flex-start" spacing="8px">
+              <Text color="neutral.600">Priority</Text>
+
+              <GenericStatusBox
+                text="High"
+                width="110px"
+                colorCode={COLOR_CODES_FALLBACK.default}
+              />
+            </VStack>
+          </HStack>
+          <VStack alignItems="flex-start" spacing="8px">
+            <Text color="neutral.600">Ticket Type</Text>
+            <GenericStatusBox
+              text="Incident"
+              width="110px"
+              colorCode={COLOR_CODES_FALLBACK.default}
+            />
+          </VStack>
+        </HStack>
+      </TicketInfoHeader>
+    );
+  }
+
+  const { values, setFieldValue } =
+    useFormikContext<ScheduleTicketFormDetails>();
+
+  const { data: taskStatuses, isLoading: isFetchingTaskStatuses } =
+    useGetAllTaskStatusesQuery({
+      pageSize: DEFAULT_PAGE_SIZE,
+      pageNumber: 1,
+    });
+
+  const { data: taskPriorities, isLoading: isFetchingTaskPriorities } =
+    useGetAllTaskPrioritiesQuery({
+      pageSize: DEFAULT_PAGE_SIZE,
+      pageNumber: 1,
+    });
+
+  const { data: ticketTypes, isLoading: isFetchingTicketTypes } =
+    useGetAllTicketTypesQuery({
+      pageSize: DEFAULT_PAGE_SIZE,
+      pageNumber: 1,
+    });
+
+  const getInitialState = () => {
+    if (taskStatuses?.data?.items) {
+      const selectedItem = taskStatuses.data.items.find(
+        (item) => item?.taskStatusId === data?.taskStatusId
+      );
+
+      selectedItem &&
+        setFieldValue('ticketStatusId', selectedItem.taskStatusId);
+    }
+
+    if (taskPriorities?.data?.items) {
+      const selectedItem = taskPriorities.data.items.find(
+        (item) => item?.taskPriorityId === data?.taskPriorityId
+      );
+
+      selectedItem &&
+        setFieldValue('ticketPriorityId', selectedItem.taskPriorityId);
+    }
+
+    if (ticketTypes?.data?.items) {
+      const selectedItem = ticketTypes.data.items.find(
+        (item: any) => item?.ticketTypeId === data?.ticketTypeId
+      );
+
+      selectedItem && setFieldValue('ticketTypeId', selectedItem.ticketTypeId);
+    }
+  };
+
+  const getItemColorCode = (
+    selectedItemId: number | null,
+    type: 'status' | 'priority'
+  ) => {
+    if (!selectedItemId) return COLOR_CODES_FALLBACK.default;
+
+    if (type === 'status') {
+      if (!taskStatuses?.data?.items) return COLOR_CODES_FALLBACK.default;
+
+      const selectedItem = taskStatuses.data.items.find(
+        (item) => item?.taskStatusId === selectedItemId
+      );
+
+      if (!selectedItem) return COLOR_CODES_FALLBACK.default;
+
+      return selectedItem.displayColorCode;
+    }
+
+    if (type === 'priority') {
+      if (!taskPriorities?.data?.items) return COLOR_CODES_FALLBACK.default;
+
+      const selectedItem = taskPriorities.data.items.find(
+        (item) => item?.taskPriorityId === selectedItemId
+      );
+
+      if (!selectedItem) return COLOR_CODES_FALLBACK.default;
+
+      return selectedItem.displayColorCode;
+    }
+  };
+
+
+  useEffect(() => {
+    getInitialState();
+  }, [taskStatuses, ticketTypes, taskPriorities]);
 
   return (
-    <TicketInfoHeader data={data}>
+    <TicketInfoHeader data={data} isUpdateTicket>
       <HStack
         width="full"
         mt="24px"
         alignItems="flex-start"
         justifyContent="space-between"
       >
-        <HStack spacing="40px" alignItems="flex-start">
+        <HStack spacing="20px" alignItems="flex-start" flexWrap="wrap">
           <VStack alignItems="flex-start" spacing="8px">
             <Text color="neutral.600">Status:</Text>
-
-            <GenericStatusBox
-              text="In Progress"
+            <TicketInfoDropDown
               width="120px"
-              colorCode={COLOR_CODES_FALLBACK.default}
+              label="Status"
+              name="ticketStatusId"
+              isLoading={isFetchingTaskStatuses}
+              colorCode={getItemColorCode(values.ticketStatusId, 'status')}
+              options={generateOptions(
+                taskStatuses?.data.items,
+                'statusName',
+                'taskStatusId'
+              )}
             />
           </VStack>
+
           <VStack alignItems="flex-start" spacing="8px">
             <Text color="neutral.600">Priority</Text>
 
-            <GenericStatusBox
-              text="High"
+            <TicketInfoDropDown
               width="110px"
-              colorCode={COLOR_CODES_FALLBACK.default}
+              label="Priority"
+              name="ticketPriorityId"
+              isLoading={isFetchingTaskPriorities}
+              colorCode={getItemColorCode(values.ticketPriorityId, 'priority')}
+              options={generateOptions(
+                taskPriorities?.data.items,
+                'priority',
+                'taskPriorityId'
+              )}
             />
           </VStack>
+          <VStack alignItems="flex-start" spacing="8px">
+            <Text color="neutral.600">Ticket Type</Text>
+            <TicketInfoDropDown
+              label="Ticket Type"
+              name="ticketTypeId"
+              isLoading={isFetchingTicketTypes}
+              width="150px"
+              colorCode="#6E7D8E33"
+              showColorDot={false}
+              hasBorder={false}
+              options={generateOptions(
+                ticketTypes?.data.items,
+                'ticketTypeName',
+                'ticketTypeId'
+              )}
+            />
+          </VStack>
+
+          <VStack alignItems="flex-start" spacing="15px">
+            <Text color="neutral.600">Due Date</Text>
+            <Text color="black">23 / 10 / 2024</Text>
+          </VStack>
         </HStack>
-        <VStack alignItems="flex-start" spacing="8px">
-          <Text color="neutral.600">Ticket Type</Text>
-          <GenericStatusBox
-            text="Incident"
-            width="110px"
-            colorCode={COLOR_CODES_FALLBACK.default}
-          />
-        </VStack>
       </HStack>
     </TicketInfoHeader>
   );

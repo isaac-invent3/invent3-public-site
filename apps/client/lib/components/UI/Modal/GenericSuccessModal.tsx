@@ -1,6 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import GenericModal from '../Modal';
-import { Heading, Image, ModalBody, Text, VStack } from '@chakra-ui/react';
+import {
+  Heading,
+  Image,
+  ModalBody,
+  ModalContentProps,
+  StackProps,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 
 interface GenericSuccessModalProps {
   isOpen: boolean;
@@ -8,8 +16,9 @@ interface GenericSuccessModalProps {
   successText?: string;
   children: React.ReactNode;
   headingText?: string;
-  customStyle?: { [key: string]: unknown };
-  contentStyle?: { [key: string]: unknown };
+  customStyle?: ModalContentProps;
+  contentStyle?: StackProps;
+  mainModalStyle?: { [key: string]: unknown };
 }
 const GenericSuccessModal = (props: GenericSuccessModalProps) => {
   const {
@@ -20,6 +29,7 @@ const GenericSuccessModal = (props: GenericSuccessModalProps) => {
     headingText,
     customStyle,
     contentStyle,
+    mainModalStyle,
   } = props;
   const checkVideoRef = useRef<HTMLVideoElement>(null);
   const [showRibbon, setShowRibbon] = useState(false);
@@ -53,6 +63,7 @@ const GenericSuccessModal = (props: GenericSuccessModalProps) => {
         onClose();
         setShowRibbon(false);
       }}
+      mainModalStyle={mainModalStyle}
       contentStyle={{ width: { lg: '526px' }, ...customStyle }}
     >
       <ModalBody p={0} m={0} width="full">

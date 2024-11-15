@@ -26,6 +26,9 @@ interface Ticket {
   buildingAddress: string;
   buildingLongitude: number;
   buildingLatitude: number;
+  priority: string;
+  priorityColorCode: string;
+  ticketTypeName: string;
   floor: string;
   floorRef: string;
   department: string;
@@ -36,6 +39,9 @@ interface Ticket {
   aisleRef: string;
   shelf: string;
   shelfRef: string;
+  taskPriorityId: number;
+  taskStatusId: number;
+  ticketTypeId: number;
   assetLocation: string;
 }
 

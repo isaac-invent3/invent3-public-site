@@ -1,7 +1,8 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
+import { BaseApiResponse } from '~/lib/interfaces/general.interfaces';
+import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
-
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
@@ -13,6 +14,7 @@ export const maintenanceScheduleApi = createApi({
     'maintenanceScheduleStats',
     'maintenanceScheduleByArea',
     'allMaintenanceScheduleByPlanId',
+    'maintenanceScheduleByTicketId',
   ],
   endpoints: (builder) => ({
     createMaintenanceScheduleAndTasks: builder.mutation({
@@ -131,6 +133,17 @@ export const maintenanceScheduleApi = createApi({
       }),
       providesTags: ['maintenanceScheduleByArea'],
     }),
+    getMaintenanceSchedulesByTicketId: builder.query<
+      BaseApiResponse<MaintenanceSchedule>,
+      number
+    >({
+      query: (ticketId) => ({
+        url: `/MaintenanceSchedules/GetMaintenanceSchedulesByTicketId/${ticketId}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['maintenanceScheduleByTicketId'],
+    }),
     searchMaintenanceSchedule: builder.mutation({
       query: (body: any) => ({
         url: `/MaintenanceSchedules/Search`,
@@ -164,4 +177,5 @@ export const {
   useGetMaintenanceSchedulesByPlanIdQuery,
   useGetMaintenanceSchedulesWithSingleAggregateCountsByAreaQuery,
   useValidateFirstInstanceScheduledDateMutation,
+  useGetMaintenanceSchedulesByTicketIdQuery,
 } = maintenanceScheduleApi;

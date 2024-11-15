@@ -1,16 +1,14 @@
 /* eslint-disable no-unused-vars */
-import { Text, useDisclosure, VStack } from '@chakra-ui/react';
+import { Text, useDisclosure, useToast, VStack } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
-import React from 'react';
 import GenericPopover from '~/lib/components/UI/GenericPopover';
 import GenericDeleteModal from '~/lib/components/UI/Modal/GenericDeleteModal';
-import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
-import { useDeleteTaskMutation } from '~/lib/redux/services/task/general.services';
-import TicketDetailsDrawer from '../Drawers/TicketDetailsDrawer';
-import ScheduleTicketDrawer from '../Drawers/ScheduleTicketDrawer';
-import MarkTicketAsCompletedModal from '../Modals/MarkTicketAsCompletedModal';
+import { useDeleteTicketMutation } from '~/lib/redux/services/ticket.services';
 import ScheduledTicketDetailDrawer from '../Drawers/ScheduledTicketDetailDrawer';
+import ScheduleTicketDrawer from '../Drawers/ScheduleTicketDrawer';
+import TicketDetailsDrawer from '../Drawers/TicketDetailsDrawer';
+import MarkTicketAsCompletedModal from '../Modals/MarkTicketAsCompletedModal';
 
 interface PopoverActionProps {
   ticket: Ticket;
@@ -43,20 +41,21 @@ const PopoverAction = (props: PopoverActionProps) => {
     onOpen: onOpenViewDetails,
     onClose: onCloseViewDetails,
   } = useDisclosure();
+  const toast = useToast();
 
-  const { handleSubmit } = useCustomMutation();
-  const [deleteTask, { isLoading }] = useDeleteTaskMutation({});
+  const [deleteTicket, { isLoading }] = useDeleteTicketMutation({});
   const { data } = useSession();
 
   const handleDeleteTask = async () => {
-    const response = await handleSubmit(
-      deleteTask,
-      { id: ticket.ticketId, deletedBy: data?.user.username },
-      'Ticket Deleted Successfully'
-    );
-    if (response?.data) {
-      onCloseDelete();
-    }
+    await deleteTicket({ id: ticket.ticketId, deletedBy: data?.user.username });
+
+    toast({
+      title: 'Ticket Deleted Successfully',
+      status: 'success',
+      position: 'top-right',
+    });
+
+    onCloseDelete();
   };
 
   return (

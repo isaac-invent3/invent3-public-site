@@ -19,6 +19,39 @@ const resetFormikFields = (
     | 'shelfId'
 ) => {
   switch (key) {
+    case 'countryId':
+      return {
+        stateId: null,
+        lgaId: null,
+        facilityId: null,
+        buildingId: null,
+        floorId: null,
+        departmentId: null,
+        roomId: null,
+        aisleId: null,
+        shelfId: null,
+      };
+    case 'stateId':
+      return {
+        lgaId: null,
+        facilityId: null,
+        buildingId: null,
+        floorId: null,
+        departmentId: null,
+        roomId: null,
+        aisleId: null,
+        shelfId: null,
+      };
+    case 'lgaId':
+      return {
+        facilityId: null,
+        buildingId: null,
+        floorId: null,
+        departmentId: null,
+        roomId: null,
+        aisleId: null,
+        shelfId: null,
+      };
     case 'facilityId':
       return {
         buildingId: null,

@@ -1,8 +1,9 @@
-import { HStack, Icon } from '@chakra-ui/react';
+import { HStack, Icon, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 import Button from '../../UI/Button';
 import { CloseIcon } from '../../CustomIcons';
 import { useAppSelector } from '~/lib/redux/hooks';
+import CreateTicketDrawer from '../../TicketManagement/Drawers/CreateTicketDrawer';
 
 interface AssetHeaderProps {
   handleBack: () => void;
@@ -10,6 +11,8 @@ interface AssetHeaderProps {
 const AssetHeader = (props: AssetHeaderProps) => {
   const { handleBack } = props;
   const assetData = useAppSelector((state) => state.asset.asset);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <HStack width="full" justifyContent="space-between">
       <HStack spacing="16px">
@@ -31,6 +34,7 @@ const AssetHeader = (props: AssetHeaderProps) => {
           Edit Asset
         </Button>
         <Button
+          handleClick={onOpen}
           customStyles={{ height: '35px', px: '12px', width: '106px' }}
           variant="outline"
         >
@@ -63,6 +67,8 @@ const AssetHeader = (props: AssetHeaderProps) => {
           Dispose
         </Button>
       </HStack>
+
+      {isOpen && <CreateTicketDrawer asset={assetData} isOpen={isOpen} onClose={onClose} />}
     </HStack>
   );
 };

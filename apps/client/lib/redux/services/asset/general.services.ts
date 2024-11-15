@@ -111,7 +111,7 @@ export const assetApi = createApi({
     updateAsset: builder.mutation({
       query: (body: any) => ({
         url: `/Invent3Pro/Assets/Update`,
-        method: 'POST',
+        method: 'PUT',
         headers: getHeaders(),
         body,
       }),
@@ -136,6 +136,14 @@ export const assetApi = createApi({
         body,
       }),
     }),
+    transferAsset: builder.mutation({
+      query: (body: any) => ({
+        url: `/AssetTransfers`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
   }),
 });
 
@@ -154,4 +162,5 @@ export const {
   useGetAllAssetStatusQuery,
   useSearchStatusMutation,
   useSearchAssetsMutation,
+  useTransferAssetMutation,
 } = assetApi;

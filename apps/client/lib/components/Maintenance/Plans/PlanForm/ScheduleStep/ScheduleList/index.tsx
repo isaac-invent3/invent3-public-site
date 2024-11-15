@@ -102,26 +102,17 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
           enableSorting: false,
         }),
         columnHelper.accessor('scheduledDate', {
-          cell: (info) => info.getValue(),
+          cell: (info) => dateFormatter(info.getValue(), 'DD/MM/YYYY hh:mmA'),
           header: 'Start Date',
           enableSorting: false,
         }),
       ];
-      const scheduleIdColumn = columnHelper.accessor('scheduleId', {
-        cell: (info) => info.getValue(),
-        header: '#',
-        enableSorting: false,
-      });
-
       const popoverColumn = columnHelper.accessor('frequencyId', {
         cell: (info) => ActionPopover(type as 'edit', info.row.original),
         header: '',
         enableSorting: false,
       });
 
-      if (type === 'edit') {
-        baseColumns.unshift(scheduleIdColumn);
-      }
       if (type !== 'list') {
         baseColumns.push(popoverColumn);
       }
@@ -176,7 +167,7 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
             comment: item.comments,
             scheduledDate: dateFormatter(
               item.scheduledDate,
-              'DD/MM/YYYY hh:mmA'
+              'DD/MM/YYYY HH:mm'
             ),
             endDate: item.endDate ?? null,
             intervalValue: item.intervalValue ?? 1,
@@ -188,7 +179,7 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
             updatedTaskIDs: [],
             completionDate: dateFormatter(
               item.completionDate,
-              'DD/MM/YYYY hh:mmA'
+              'DD/MM/YYYY HH:mm'
             ),
             ticketId: item.ticketId,
             maintenancePlanInfo: {
@@ -224,7 +215,8 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
   };
 
   const handleSetSelectedRows = (items: number[]) => {
-    if (selectedRows.length > 0) {
+    // Show the Form Dialog modal only when the type is create or edit
+    if (selectedRows.length > 0 && type !== 'list') {
       setHandleProceed(() => () => {
         handleProceedDialogForSelectedRow(items);
       });

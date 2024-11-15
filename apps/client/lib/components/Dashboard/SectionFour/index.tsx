@@ -6,7 +6,7 @@ import CTA from './CTA';
 const SectionFour = () => {
   return (
     <Flex width="full" gap="16px">
-      <Flex width="71%">
+      <Flex width="full" maxW="calc(100% - 358px)">
         <RecentAsset />
       </Flex>
       <Flex width="29%">

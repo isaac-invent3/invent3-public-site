@@ -28,7 +28,7 @@ const NewOwner = () => {
     >
       <DetailHeader variant="secondary">New Owner</DetailHeader>
       <EmployeeSelect
-        selectName="userId"
+        selectName="newOwnerId"
         selectTitle="User"
         handleSelect={(option) => setSelectedUserId(option.value as number)}
       />

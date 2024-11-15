@@ -89,14 +89,13 @@ const documentSchema = Yup.object().shape({
 });
 
 const assetTransferSchema = Yup.object().shape({
-  newOwner: Yup.string().required('Owner is Required'),
+  newOwnerId: Yup.number().required('Owner is Required'),
   transferDate: createDateSchema(
     false,
     true,
     dateFormatter(new Date(), 'DD/MM/YYYY') as string
   ).required('Transfer Date is required'),
-  condition: Yup.string().required('Condition is Required'),
-  reason: Yup.string(),
+  comments: Yup.string().nullable(),
 });
 
 const assetDisposeSchema = documentSchema.shape({

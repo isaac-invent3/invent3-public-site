@@ -113,7 +113,7 @@ const ListView = (props: ListViewProps) => {
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
         showFooter={true}
-        emptyLines={10}
+        emptyLines={25}
         isSelectable={true}
       />
 

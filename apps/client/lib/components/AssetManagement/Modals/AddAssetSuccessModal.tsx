@@ -16,7 +16,7 @@ const AddAssetSuccessModal = (props: AddAssetSuccessModalProps) => {
       isOpen={isOpen}
       onClose={onClose}
       successText="Asset details added successfully"
-      mainModalStyle={{ closeOnOverlayClick: false }}
+      mainModalStyle={{ closeOnOverlayClick: false, closeOnEsc: false }}
     >
       <VStack spacing="24px" width="full">
         <HStack spacing="16px" width="full">

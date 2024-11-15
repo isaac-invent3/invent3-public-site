@@ -54,7 +54,7 @@ const GeneralStep = (props: GeneralStepProps) => {
     enableReinitialize: true,
     onSubmit: async (values) => {
       dispatch(updateAssetForm(values));
-      setActiveStep(1);
+      setActiveStep(2);
     },
   });
 

@@ -85,6 +85,7 @@ const ScheduleForm = (props: ScheduleFormProps) => {
           endDate: null,
         },
       };
+      console.log({ newScheduleInfo });
       if (values.localId) {
         //Update an existing schedule
         const newPlanSchedules = planDetails.schedules.filter(

@@ -16,6 +16,7 @@ const ChildAssetSuccessModal = (props: ChildAssetSuccessModalProps) => {
       isOpen={isOpen}
       onClose={onClose}
       successText="Asset Child details added successfully"
+      mainModalStyle={{ closeOnOverlayClick: false, closeOnEsc: false }}
     >
       <HStack spacing="16px" width="full" pb="54">
         <Button

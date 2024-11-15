@@ -22,7 +22,7 @@ const TaskSuccessModal = (props: TaskSuccessModalProps) => {
       onClose={() => onClose(false)}
       headingText="Successful!"
       successText={successText}
-      mainModalStyle={{ closeOnOverlayClick: false }}
+      mainModalStyle={{ closeOnOverlayClick: false, closeOnEsc: false }}
     >
       <HStack spacing="24px">
         {type === 'create' && (

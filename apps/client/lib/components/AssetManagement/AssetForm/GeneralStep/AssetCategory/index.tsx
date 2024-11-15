@@ -1,7 +1,7 @@
 import {
   Grid,
   GridItem,
-  HStack,
+  SimpleGrid,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
@@ -30,7 +30,7 @@ const AssetCategory = () => {
   return (
     <Grid templateColumns="repeat(4, 1fr)" gap="11px" width="full">
       <GridItem colSpan={4}>
-        <HStack spacing="11px" alignItems="flex-start">
+        <SimpleGrid columns={2} spacing="11px" alignItems="flex-start">
           <VStack alignItems="flex-end" width="full">
             <CategorySelect
               handleSelect={(option) => {
@@ -55,7 +55,7 @@ const AssetCategory = () => {
               Add New Subcategory
             </AddButton>
           </VStack>
-        </HStack>
+        </SimpleGrid>
       </GridItem>
       <CategoryModal isOpen={isOpen} onClose={onClose} />
       <SubCategoryModal

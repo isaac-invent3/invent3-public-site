@@ -28,7 +28,7 @@ const ListView = (props: ListViewProps) => {
         pageSize={pageSize}
         setPageSize={setPageSize}
         isSortable={true}
-        emptyLines={10}
+        emptyLines={25}
         type="page"
       />
     </Flex>

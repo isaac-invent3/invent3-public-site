@@ -168,7 +168,7 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                       sectionMaxWidth="141px"
                       spacing="24px"
                       description="Choose the category and the sub-category"
-                      title="Ticket Asset"
+                      title="Asset"
                       isRequired
                     >
                       <AssetSelect selectName="assetId" selectTitle="Asset" />

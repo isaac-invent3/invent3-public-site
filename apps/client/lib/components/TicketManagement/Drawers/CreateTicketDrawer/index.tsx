@@ -163,23 +163,17 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                     />
                   </FormInputWrapper>
 
-                  <FormInputWrapper
-                    sectionMaxWidth="141px"
-                    spacing="24px"
-                    description="Choose the category and the sub-category"
-                    title="Ticket Asset"
-                    isRequired
-                  >
-                    {asset && (
-                      <Text fontSize={'14px'} color="gray">
-                        {asset.assetName}
-                      </Text>
-                    )}
-
-                    {!asset && (
+                  {!asset && (
+                    <FormInputWrapper
+                      sectionMaxWidth="141px"
+                      spacing="24px"
+                      description="Choose the category and the sub-category"
+                      title="Ticket Asset"
+                      isRequired
+                    >
                       <AssetSelect selectName="assetId" selectTitle="Asset" />
-                    )}
-                  </FormInputWrapper>
+                    </FormInputWrapper>
+                  )}
 
                   <FormInputWrapper
                     sectionMaxWidth="141px"

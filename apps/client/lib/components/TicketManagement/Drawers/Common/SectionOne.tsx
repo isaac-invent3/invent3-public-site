@@ -20,7 +20,7 @@ const SectionOne = (props: SectionOneProps) => {
   };
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const [field, meta, helpers] = useField('assignedTo');
+    // const [field, meta, helpers] = useField('assignedTo');
 
   return (
     <VStack
@@ -83,7 +83,7 @@ const SectionOne = (props: SectionOneProps) => {
         onClose={onClose}
         handleSelectUser={(user) => {
 
-          helpers.setValue(user?.value);
+          console.log(user?.value);
         }}
       />
     </VStack>

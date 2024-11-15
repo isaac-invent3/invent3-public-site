@@ -35,7 +35,7 @@ export interface ScheduleTicketFormDetails {
   ticketStatusId: number | null;
   ticketPriorityId: number | null;
   ticketTypeId: number | null;
-  assignedTo: number | null
+  assignedTo: number | null;
 }
 
 const ScheduledTicketDetailDrawer = (
@@ -67,7 +67,7 @@ const ScheduledTicketDetailDrawer = (
       ticketStatusId: null,
       ticketPriorityId: null,
       ticketTypeId: null,
-      assignedTo: null
+      assignedTo: null,
     },
     // validationSchema: updateTicketSchema,
     enableReinitialize: true,
@@ -87,13 +87,18 @@ const ScheduledTicketDetailDrawer = (
       );
 
       // Directly using this method instead of the handle submit function, as the latter throws an error when the response is empty, and this request does not return any response.
-      await updateTicketMutation({ id: data.ticketId, ...requestBody });
-
-      toast({
-        title: 'Ticket Was Updated Successfully',
-        status: 'success',
-        position: 'top-right',
+      const response = await updateTicketMutation({
+        id: data.ticketId,
+        ...requestBody,
       });
+
+      if (response) {
+        toast({
+          title: 'Ticket Was Updated Successfully',
+          status: 'success',
+          position: 'top-right',
+        });
+      }
     },
   });
 

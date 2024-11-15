@@ -14,11 +14,10 @@ import TaskFormModal from '~/lib/components/TaskManagement/Drawers/TaskFormDrawe
 import CheckBox from '~/lib/components/UI/CheckBox';
 import AddButton from '~/lib/components/UI/Form/FormAddButton';
 import { ScheduleFormDetails } from '~/lib/interfaces/maintenance.interfaces';
-import { taskFormDetails } from '~/lib/interfaces/task.interfaces';
+import { Task, taskFormDetails } from '~/lib/interfaces/task.interfaces';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
 import { useGetMaintenanceSchedulesByTicketIdQuery } from '~/lib/redux/services/maintenance/schedule.services';
 import { useGetAllTasksByScheduleIdQuery } from '~/lib/redux/services/task/general.services';
-import { dateFormatter } from '~/lib/utils/Formatters';
 
 interface ScheduledTicketTasksProps {
   data: Ticket;
@@ -53,6 +52,23 @@ const ScheduledTicketTasks = (props: ScheduledTicketTasksProps) => {
     ]);
     // Increase taskCount by 1
     helpers.setValue(meta.value + 1);
+  };
+
+  const estimatedDurationInHours = (task: taskFormDetails | Task) => {
+    if (!task?.estimatedDurationInHours) return 'N/A';
+
+    const hours = Math.floor(task.estimatedDurationInHours);
+    const minutes = Math.round((task.estimatedDurationInHours % 1) * 60);
+
+    if (hours > 0 && minutes > 0) {
+      return `${hours} hr ${minutes} mins`;
+    } else if (hours > 0) {
+      return `${hours} hr`;
+    } else if (minutes > 0) {
+      return `${minutes} mins`;
+    }
+
+    return 'N/A';
   };
 
   const isLoading = isFetchingTasks || isFetchingSchedule;
@@ -92,7 +108,7 @@ const ScheduledTicketTasks = (props: ScheduledTicketTasksProps) => {
                 <Text>{task.taskDescription}</Text>
 
                 <Text color="#656565" fontSize="10px" fontWeight={500}>
-                  Due Date: {task.dateCompleted}
+                  Estimated Duration: {estimatedDurationInHours(task)}
                 </Text>
               </VStack>
             </HStack>
@@ -147,8 +163,7 @@ const ScheduledTicketTasks = (props: ScheduledTicketTasksProps) => {
                   <Text>{task.taskDescription}</Text>
 
                   <Text color="#656565" fontSize="10px" fontWeight={500}>
-                    Due Date:
-                    {dateFormatter(task.dateCreated, 'DD / MM / YYYY hh:mm a')}
+                    Estimated Duration: {estimatedDurationInHours(task)}
                   </Text>
                 </VStack>
               </HStack>

@@ -1,5 +1,8 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { BaseApiResponse } from '~/lib/interfaces/general.interfaces';
+import {
+  BaseApiResponse,
+  ListResponse,
+} from '~/lib/interfaces/general.interfaces';
 import { Task } from '~/lib/interfaces/task.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
@@ -55,7 +58,7 @@ export const taskApi = createApi({
       }),
     }),
     getAllTasksByScheduleId: builder.query<
-      BaseApiResponse<{ items: Task[] }>,
+      BaseApiResponse<ListResponse<Task>>,
       any
     >({
       query: ({ id, ...data }) => ({

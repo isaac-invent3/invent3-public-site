@@ -1,10 +1,12 @@
 import * as Yup from 'yup';
 
+//Accepted date format is DD/MM/YYYY
+// If time is included, it is DD/MM/YYYY HH:mm
 const createDateSchema = (
   includeTime: boolean,
   isRequired: boolean,
-  minDate?: string,
-  maxDate?: string
+  minDate?: string, //Format (DD/MM/YYYY)
+  maxDate?: string //Format (DD/MM/YYYY)
 ) => {
   const timePart = includeTime ? ' \\d{2}:\\d{2}' : ''; // Optional time part
   const dateFormat = `^\\d{2}\\/\\d{2}\\/\\d{4}${timePart}$`; // Regex for date format

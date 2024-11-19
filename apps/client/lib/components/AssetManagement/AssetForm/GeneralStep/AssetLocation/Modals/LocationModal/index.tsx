@@ -125,19 +125,21 @@ const LocationModal = (props: LocationModalProps) => {
   });
 
   const handleReadableLocation = (option: Option, key: keyof FormLocation) => {
-    // Update localLocation as before
-    setLocalLocation((prev) => ({
-      ...prev,
-      [key]: option,
-      ...resetDependentFields(key), // Reset dependent fields in localLocation
-    }));
+    if (localLocation[key].value !== option.value) {
+      // Update localLocation as before
+      setLocalLocation((prev) => ({
+        ...prev,
+        [key]: option,
+        ...resetDependentFields(key), // Reset dependent fields in localLocation
+      }));
 
-    // Reset formik fields based on the hierarchy
-    formik.setValues((prevValues) => ({
-      ...prevValues,
-      [key]: option.value, // Set the current key's value
-      ...resetFormikFields(`${key}Id`), // Reset dependent formik fields
-    }));
+      // Reset formik fields based on the hierarchy
+      formik.setValues((prevValues) => ({
+        ...prevValues,
+        [key]: option.value, // Set the current key's value
+        ...resetFormikFields(`${key}Id`), // Reset dependent formik fields
+      }));
+    }
   };
 
   return (

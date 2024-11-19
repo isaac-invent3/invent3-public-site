@@ -1,5 +1,7 @@
 import * as Yup from 'yup';
 import { locationSchema } from './location.schema';
+import { createDateSchema } from '../general.schema';
+import { dateFormatter } from '~/lib/utils/Formatters';
 
 const generalInfoSchema = locationSchema.shape({
   assetName: Yup.string().required('Name is required'),
@@ -35,23 +37,37 @@ const generalInfoSchema = locationSchema.shape({
 });
 
 const acquisitionInfoSchema = Yup.object().shape({
-  acquisitionDate: Yup.string().required('Acquisition Date is required'),
-  purchaseDate: Yup.string(),
+  acquisitionDate: createDateSchema(
+    false,
+    true,
+    undefined,
+    dateFormatter(new Date(), 'DD/MM/YYYY') as string
+  ).required('Acquisition Date is required'),
+  purchaseDate: createDateSchema(
+    false,
+    false,
+    undefined,
+    dateFormatter(new Date(), 'DD/MM/YYYY') as string
+  ),
   conditionId: Yup.string().required('Asset Condition is required'),
   statusId: Yup.string().required('Status is Required'),
   assetTypeId: Yup.string().required('Type is Required'),
   initialValue: Yup.number()
     .required('Purchase Price is required')
     .min(1, 'Price must be greater than 1'),
-  warrantyStartDate: Yup.string().required('Warranty Start Date is required'),
-  warrantyEndDate: Yup.string().required('Warranty End Date is required'),
+  warrantyStartDate: createDateSchema(false, true).required(
+    'Warranty Start Date is required'
+  ),
+  warrantyEndDate: createDateSchema(false, true).required(
+    'Warranty End Date is required'
+  ),
   warrantyDetails: Yup.string().required('Warranty Terms is required'),
   resaleValue: Yup.number().nullable(),
   scrapValue: Yup.number().nullable(),
   currentValue: Yup.number().nullable(),
   lifeExpectancy: Yup.number().nullable(),
   accumulatedDepreciation: Yup.number().nullable(),
-  depreciationStartDate: Yup.string().required(
+  depreciationStartDate: createDateSchema(false, false).required(
     'Depreciation Start Date is required'
   ),
   depreciationMethod: Yup.string().required('Depreciation Method is required'),
@@ -74,13 +90,19 @@ const documentSchema = Yup.object().shape({
 
 const assetTransferSchema = Yup.object().shape({
   newOwner: Yup.string().required('Owner is Required'),
-  transferDate: Yup.string().required('Transfer Date is Required'),
+  transferDate: createDateSchema(
+    false,
+    true,
+    dateFormatter(new Date(), 'DD/MM/YYYY') as string
+  ).required('Transfer Date is required'),
   condition: Yup.string().required('Condition is Required'),
   reason: Yup.string(),
 });
 
 const assetDisposeSchema = documentSchema.shape({
-  disposalDate: Yup.string().required('Transfer Date is Required'),
+  disposalDate: createDateSchema(false, true).required(
+    'Disposal Date is required'
+  ),
   reason: Yup.string().required('Reason is Required'),
   additionalInfo: Yup.string(),
 });

@@ -1,11 +1,16 @@
-import { Modal, ModalOverlay, ModalContent } from '@chakra-ui/react';
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalContentProps,
+} from '@chakra-ui/react';
 
 interface IGenericModal {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
-  contentStyle?: { [name: string]: unknown };
-  mainModalStyle?: { [name: string]: unknown };
+  contentStyle?: ModalContentProps;
+  mainModalStyle?: { [key: string]: unknown };
 }
 function GenericModal({
   isOpen,

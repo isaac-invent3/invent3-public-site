@@ -211,7 +211,7 @@ const SummaryStep = (props: SummaryStepProps) => {
         width="full"
         gap="16px"
         direction="column"
-        display={activeStep === 3 ? 'flex' : 'none'}
+        display={activeStep === 4 ? 'flex' : 'none'}
       >
         <VStack
           width="full"
@@ -230,8 +230,8 @@ const SummaryStep = (props: SummaryStepProps) => {
         </VStack>
         <FormActionButtons
           cancelLink="/asset-management"
-          totalStep={3}
-          activeStep={3}
+          totalStep={4}
+          activeStep={4}
           setActiveStep={setActiveStep}
           handleContinue={handleSumbitAsset}
           isLoading={createLoading || updateLoading}

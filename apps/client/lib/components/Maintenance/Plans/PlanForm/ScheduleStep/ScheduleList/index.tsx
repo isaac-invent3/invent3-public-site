@@ -60,6 +60,24 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
       { skip: !planId }
     );
   const columnHelper = createColumnHelper<ScheduleFormDetails>();
+
+  const handleProceedDialogForAddSchedule = () => {
+    setAction('new');
+    setSelectedRows([]);
+    dispatch(clearScheduleForm());
+    setShowScheduleInfo(true);
+    onCloseDialog();
+  };
+
+  const handleProceedDialogForSelectedRow = (items: number[]) => {
+    setSelectedRows(items);
+    onCloseDialog();
+  };
+
+  const [handleProceed, setHandleProceed] = useState(
+    () => handleProceedDialogForAddSchedule
+  );
+
   const columns = useMemo(
     () => {
       const baseColumns = [
@@ -84,26 +102,17 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
           enableSorting: false,
         }),
         columnHelper.accessor('scheduledDate', {
-          cell: (info) => info.getValue(),
+          cell: (info) => dateFormatter(info.getValue(), 'DD/MM/YYYY hh:mmA'),
           header: 'Start Date',
           enableSorting: false,
         }),
       ];
-      const scheduleIdColumn = columnHelper.accessor('scheduleId', {
-        cell: (info) => info.getValue(),
-        header: '#',
-        enableSorting: false,
-      });
-
       const popoverColumn = columnHelper.accessor('frequencyId', {
         cell: (info) => ActionPopover(type as 'edit', info.row.original),
         header: '',
         enableSorting: false,
       });
 
-      if (type === 'edit') {
-        baseColumns.unshift(scheduleIdColumn);
-      }
       if (type !== 'list') {
         baseColumns.push(popoverColumn);
       }
@@ -127,7 +136,7 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
     }
   }, [selectedRows]);
 
-  // Clear selectedRows is showSchedule Info is changed to false
+  // Clear selectedRows if showSchedule Info is changed to false
   useEffect(() => {
     if (!showScheduleInfo) {
       setSelectedRows([]);
@@ -158,7 +167,7 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
             comment: item.comments,
             scheduledDate: dateFormatter(
               item.scheduledDate,
-              'DD/MM/YYYY hh:mmA'
+              'DD/MM/YYYY HH:mm'
             ),
             endDate: item.endDate ?? null,
             intervalValue: item.intervalValue ?? 1,
@@ -170,7 +179,7 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
             updatedTaskIDs: [],
             completionDate: dateFormatter(
               item.completionDate,
-              'DD/MM/YYYY hh:mmA'
+              'DD/MM/YYYY HH:mm'
             ),
             ticketId: item.ticketId,
             maintenancePlanInfo: {
@@ -196,19 +205,24 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
     }
   }, [data]);
 
-  const handleProceedDialog = () => {
-    setAction('new');
-    setSelectedRows([]);
-    dispatch(clearScheduleForm());
-    setShowScheduleInfo(true);
-    onCloseDialog();
-  };
-
   const handleAddSchedule = () => {
     if (selectedRows.length > 0) {
+      setHandleProceed(() => handleProceedDialogForAddSchedule);
       onOpenDialog();
     } else {
-      handleProceedDialog();
+      handleProceedDialogForAddSchedule();
+    }
+  };
+
+  const handleSetSelectedRows = (items: number[]) => {
+    // Show the Form Dialog modal only when the type is create or edit
+    if (selectedRows.length > 0 && type !== 'list') {
+      setHandleProceed(() => () => {
+        handleProceedDialogForSelectedRow(items);
+      });
+      onOpenDialog();
+    } else {
+      setSelectedRows(items);
     }
   };
 
@@ -229,7 +243,7 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
         setPageSize={setPageSize}
         totalPages={data?.data?.totalPages}
         selectedRows={selectedRows}
-        setSelectedRows={setSelectedRows}
+        setSelectedRows={(items) => handleSetSelectedRows(items)}
         selectMultipleRows={selectMultiple}
         showEmptyState={type === 'edit'}
         customThStyle={{
@@ -254,7 +268,7 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
       <GenericLeaveDialogModal
         isOpen={isOpenDialog}
         onClose={onCloseDialog}
-        handleProceed={handleProceedDialog}
+        handleProceed={handleProceed}
       />
     </Flex>
   );

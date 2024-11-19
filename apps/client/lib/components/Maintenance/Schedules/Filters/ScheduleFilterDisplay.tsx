@@ -66,8 +66,8 @@ const ScheduleFilterDisplay = (props: ScheduleFilterDisplayProps) => {
               'categoryName',
               'categoryId'
             )}
-            selectedOptions={filterData.location}
-            handleClick={(value) => handleFilterData(value, 'location')}
+            selectedOptions={filterData.category}
+            handleClick={(value) => handleFilterData(value, 'category')}
           />
         </HStack>
         <Button

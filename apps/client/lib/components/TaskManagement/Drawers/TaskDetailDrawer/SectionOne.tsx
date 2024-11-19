@@ -2,10 +2,6 @@ import { Heading, HStack, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import { Task } from '~/lib/interfaces/task.interfaces';
-import {
-  MaintenanceColorCode,
-  TaskPriorityColorCode,
-} from '~/lib/utils/ColorCodes';
 
 interface SectionOneProps {
   data: Task;
@@ -58,7 +54,7 @@ const SectionOne = ({ data }: SectionOneProps) => {
             </Text>
             <GenericStatusBox
               text={data?.status}
-              colorCode={MaintenanceColorCode[data?.status as 'Not Started']}
+              colorCode={data?.statusColorCode}
             />
           </HStack>
           <HStack spacing="8px">
@@ -67,7 +63,7 @@ const SectionOne = ({ data }: SectionOneProps) => {
             </Text>
             <GenericStatusBox
               text={data?.priorityName}
-              colorCode={TaskPriorityColorCode[data?.priorityName as 'High']}
+              colorCode={data?.priorityColorCode}
             />
           </HStack>
         </VStack>

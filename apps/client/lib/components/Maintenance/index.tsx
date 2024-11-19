@@ -10,7 +10,6 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import Header from './Header';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Schedules from './Schedules';
 import History from './History';
@@ -18,6 +17,7 @@ import Filters from './Schedules/Filters';
 import ScheduleFilterDisplay from './Schedules/Filters/ScheduleFilterDisplay';
 import { FilterInput } from '~/lib/interfaces/asset.interfaces';
 import Plans from './Plans';
+import Header from './Header';
 
 const ALlTabs = ['Plans', 'Schedules', 'History'];
 
@@ -32,7 +32,8 @@ const Maintenance = () => {
   >(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [filterData, setFilterData] = useState<FilterInput>({
-    location: [],
+    region: [],
+    status: [],
     category: [],
   });
 
@@ -67,10 +68,6 @@ const Maintenance = () => {
   }, [activeFilter]);
 
   const headerInfo = {
-    0: {
-      name: 'Plan',
-      href: '/maintenance/plans/add',
-    },
     1: {
       name: 'Schedules',
       href: '/maintenance/schedules/add',
@@ -79,7 +76,7 @@ const Maintenance = () => {
 
   return (
     <Flex width="full" direction="column" pb="24px">
-      <Header {...headerInfo[tabIndex as 0]} />
+      <Header {...headerInfo[tabIndex as 1]} />
       <Flex direction="column" mt="42px" position="relative">
         <Tabs
           variant="custom"
@@ -103,16 +100,14 @@ const Maintenance = () => {
           </Flex>
 
           <TabPanels>
-            <TabPanel>
-              <Plans />
-            </TabPanel>
+            <TabPanel>{tabIndex === 0 && <Plans />}</TabPanel>
             <TabPanel>
               <ScheduleFilterDisplay
                 isOpen={isOpen}
                 filterData={filterData}
                 setFilterData={setFilterData}
               />
-              <Schedules />
+              {tabIndex === 1 && <Schedules />}
             </TabPanel>
             <TabPanel>
               <History />

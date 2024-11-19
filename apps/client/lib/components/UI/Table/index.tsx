@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   Table,
   Thead,
@@ -12,6 +13,7 @@ import {
   TableContainer,
   VStack,
   Icon,
+  StackProps,
 } from '@chakra-ui/react';
 import {
   useReactTable,
@@ -39,7 +41,7 @@ export type TableProps<Data extends object> = {
   totalPages?: number;
   selectedRows?: number[];
   disabledRows?: number[];
-  setSelectedRows?: React.Dispatch<React.SetStateAction<number[]>>;
+  setSelectedRows?: (items: number[]) => void;
   handleSelectRow?: React.Dispatch<React.SetStateAction<any>>;
   setPageNumber?: React.Dispatch<React.SetStateAction<number>>;
   setPageSize?: React.Dispatch<React.SetStateAction<number>>;
@@ -49,6 +51,7 @@ export type TableProps<Data extends object> = {
   customTdStyle?: { [key: string]: unknown };
   customTBodyRowStyle?: { [key: string]: unknown };
   customTableContainerStyle?: { [key: string]: unknown };
+  paginationStyle?: StackProps;
   hideSelectAllCheckBox?: boolean;
   selectMultipleRows?: boolean;
   showEmptyState?: boolean;
@@ -79,6 +82,7 @@ function DataTable<Data extends object>({
   customThStyle,
   customTBodyRowStyle,
   customTableContainerStyle,
+  paginationStyle,
   hideSelectAllCheckBox = false,
   selectMultipleRows = true,
   showEmptyState = true,
@@ -366,6 +370,7 @@ function DataTable<Data extends object>({
             setPageNumber={setPageNumber}
             pageSize={pageSize}
             setPageSize={setPageSize}
+            customStyles={paginationStyle}
           />
         </Flex>
       )}

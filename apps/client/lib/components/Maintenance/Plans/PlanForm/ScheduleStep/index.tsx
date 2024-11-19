@@ -27,7 +27,7 @@ const ScheduleStep = (props: ScheduleStepProps) => {
     enableReinitialize: true,
 
     onSubmit: async () => {
-      setActiveStep(2);
+      setActiveStep(3);
     },
   });
 
@@ -36,7 +36,7 @@ const ScheduleStep = (props: ScheduleStepProps) => {
       width="full"
       height="full"
       direction="column"
-      display={activeStep === 1 ? 'flex' : 'none'}
+      display={activeStep === 2 ? 'flex' : 'none'}
     >
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
@@ -68,10 +68,11 @@ const ScheduleStep = (props: ScheduleStepProps) => {
             <FormActionButtons
               cancelLink="/maintenance"
               totalStep={3}
-              activeStep={1}
+              activeStep={2}
               setActiveStep={setActiveStep}
               disableBackButton={showScheduleForm}
               disablePrimaryButton={showScheduleForm}
+              handleContinue={() => console.log({ error: formik.errors })}
             />
           </Flex>
         </form>

@@ -101,7 +101,7 @@ const SummarySection = (props: SummarySectionProps) => {
       width="full"
       height="full"
       direction="column"
-      display={activeStep === 1 ? 'flex' : 'none'}
+      display={activeStep === 2 ? 'flex' : 'none'}
     >
       <Header
         headingText="Maintenance Schedule Summary"
@@ -127,8 +127,8 @@ const SummarySection = (props: SummarySectionProps) => {
       <Flex width="full" mt="16px">
         <FormActionButtons
           cancelLink="/maintenance"
-          totalStep={1}
-          activeStep={1}
+          totalStep={2}
+          activeStep={2}
           finalText={type === 'create' ? 'Finish' : 'Save Changes'}
           setActiveStep={setActiveStep}
           handleContinue={handleSumbitSchedule}

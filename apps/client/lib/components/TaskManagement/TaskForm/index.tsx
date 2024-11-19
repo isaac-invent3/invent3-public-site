@@ -121,8 +121,8 @@ const TaskForm = (props: TaskFormProps) => {
             <FormActionButtons
               type="submit"
               cancelLink="/task-management"
-              totalStep={0}
-              activeStep={0}
+              totalStep={1}
+              activeStep={1}
               loadingText={isCreating ? 'Creating...' : 'Updating...'}
               isLoading={isCreating || isUpdating}
               handleContinue={() => console.log(formik.errors)}

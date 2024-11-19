@@ -10,6 +10,10 @@ import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
 import Button from '../../UI/Button';
 import AssetSuccessModal from '../Modals/AssetSuccessModal';
+import moment from 'moment';
+import { useSession } from 'next-auth/react';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
+import { useTransferAssetMutation } from '~/lib/redux/services/asset/general.services';
 
 interface AssetTransferProps {
   data: Asset;
@@ -18,17 +22,35 @@ const AssetTransfer = (props: AssetTransferProps) => {
   const { data } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
+  const { data: session } = useSession();
+  const [transferAsset] = useTransferAssetMutation({});
+  const { handleSubmit } = useCustomMutation();
 
   const formik = useFormik({
     initialValues: {
-      newOwner: '',
-      transferDate: '',
-      condition: '',
-      reason: '',
+      newOwnerId: null,
+      transferDate: null,
+      comments: null,
     },
     validationSchema: assetTransferSchema,
-    onSubmit: async () => {
-      onOpen();
+    onSubmit: async (values) => {
+      const formValues = {
+        ...values,
+        assetId: data?.assetId,
+        transferDate: moment(values.transferDate, 'DD/MM/YYYY').utcOffset(
+          0,
+          true
+        ),
+        previousOwnerId: data?.currentOwnerId,
+        transferredFrom: data?.locationId,
+        transferredTo: null,
+        initiatedBy: session?.user.userId,
+        createdBy: session?.user.username,
+      };
+      const resp = await handleSubmit(transferAsset, formValues, '');
+      if (resp?.data) {
+        onOpen();
+      }
     },
   });
 

@@ -24,6 +24,7 @@ interface FilterDropDownProps {
   hasMoreOptions?: boolean;
   isLoading?: boolean;
   children?: ReactNode;
+  showBorder?: boolean;
 }
 
 const FilterDropDown = ({
@@ -35,6 +36,7 @@ const FilterDropDown = ({
   hasMoreOptions,
   isLoading,
   children,
+  showBorder,
 }: FilterDropDownProps) => {
   const { onToggle, isOpen, onClose } = useDisclosure();
   const buttonRef = useRef<HTMLDivElement | null>(null);
@@ -80,11 +82,12 @@ const FilterDropDown = ({
         cursor="pointer"
         bgColor="white"
         width="full"
-        minH="36px"
+        height="36px"
         py="10px"
         px="12px"
         rounded="6px"
         ref={buttonRef}
+        border={showBorder ? '1px solid #DADFE5' : 'none'}
       >
         <HStack spacing="8px">
           <Text width="full" whiteSpace="nowrap" color="neutral.600">

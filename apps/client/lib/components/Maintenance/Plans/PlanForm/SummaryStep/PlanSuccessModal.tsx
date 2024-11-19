@@ -20,7 +20,7 @@ const PlanSuccessModal = (props: PlanSuccessModalProps) => {
       onClose={() => onClose()}
       headingText="Successful!"
       successText={successText}
-      customStyle={{ closeOnOverlayClick: false }}
+      mainModalStyle={{ closeOnOverlayClick: false, closeOnEsc: false }}
     >
       <HStack>
         <Button customStyles={{ width: '193px' }} href="/maintenance">

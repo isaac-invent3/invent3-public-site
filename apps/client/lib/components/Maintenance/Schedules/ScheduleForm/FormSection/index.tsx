@@ -18,6 +18,7 @@ interface FormSectionProps {
 const FormSection = (props: FormSectionProps) => {
   const { activeStep, setActiveStep, type } = props;
   const formDetails = useAppSelector((state) => state.maintenance.scheduleForm);
+
   const dispatch = useAppDispatch();
 
   const defaultHeader =
@@ -77,7 +78,7 @@ const FormSection = (props: FormSectionProps) => {
       width="full"
       height="full"
       direction="column"
-      display={activeStep === 0 ? 'flex' : 'none'}
+      display={activeStep === 1 ? 'flex' : 'none'}
     >
       <Header headingText={defaultHeader} />
       <FormikProvider value={formik}>
@@ -110,8 +111,8 @@ const FormSection = (props: FormSectionProps) => {
           <Flex width="full" mt="16px">
             <FormActionButtons
               cancelLink="/maintenance"
-              totalStep={1}
-              activeStep={0}
+              totalStep={2}
+              activeStep={1}
               setActiveStep={setActiveStep}
             />
           </Flex>

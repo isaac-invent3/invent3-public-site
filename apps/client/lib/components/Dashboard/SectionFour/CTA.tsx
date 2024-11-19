@@ -8,6 +8,7 @@ const CTA = () => {
       width="full"
       height="full"
       minH="354px"
+      maxW="354px"
       rounded="8px"
       border="1px solid white"
       background="linear-gradient(138.78deg, #1578DC 11.13%, #5AACFF 90.96%)"

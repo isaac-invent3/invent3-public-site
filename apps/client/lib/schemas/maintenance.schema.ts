@@ -10,6 +10,7 @@ const scheduleSchema = (
   maxScheduleDate?: string
 ) =>
   Yup.object().shape({
+    scheduleId: Yup.number().nullable(),
     localId: Yup.number().nullable(),
     name: Yup.string().required('Title is Required'),
     sla: Yup.number().nullable(),

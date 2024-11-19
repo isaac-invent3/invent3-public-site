@@ -1,6 +1,8 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
+import { ListResponse } from '~/lib/interfaces/general.interfaces';
+import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -88,14 +90,16 @@ export const maintenancePlanApi = createApi({
         headers: getHeaders(),
       }),
     }),
-    searchMaintenancePlan: builder.mutation({
-      query: (body: any) => ({
-        url: `/MaintenancePlans/Search`,
-        method: 'POST',
-        headers: getHeaders(),
-        body,
-      }),
-    }),
+    searchMaintenancePlan: builder.mutation<ListResponse<MaintenancePlan>, any>(
+      {
+        query: (body: any) => ({
+          url: `/MaintenancePlans/Search`,
+          method: 'POST',
+          headers: getHeaders(),
+          body,
+        }),
+      }
+    ),
   }),
 });
 

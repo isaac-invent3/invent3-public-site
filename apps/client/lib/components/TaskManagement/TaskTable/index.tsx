@@ -3,10 +3,6 @@ import React, { useMemo } from 'react';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import DataTable from '~/lib/components/UI/Table';
 import { Task } from '~/lib/interfaces/task.interfaces';
-import {
-  MaintenanceColorCode,
-  TaskPriorityColorCode,
-} from '~/lib/utils/ColorCodes';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
 import AssignedTo from '~/lib/components/Common/UserInfo';
 import PopoverAction from './PopoverAction';
@@ -29,7 +25,9 @@ interface TaskTableProps {
   isSelectable?: boolean;
   isSortable?: boolean;
   type: 'drawer' | 'page';
-  // eslint-disable-next-line no-unused-vars
+  showPopover?: boolean;
+  showScheduleId?: boolean;
+  showTableBgColor?: boolean;
 }
 const TaskTable = (props: TaskTableProps) => {
   const {
@@ -50,6 +48,9 @@ const TaskTable = (props: TaskTableProps) => {
     setPageSize,
     setSelectedRows,
     type,
+    showPopover = true,
+    showScheduleId = true,
+    showTableBgColor = true,
   } = props;
 
   const columnHelper = createColumnHelper<Task>();
@@ -71,16 +72,11 @@ const TaskTable = (props: TaskTableProps) => {
           header: 'Description',
           enableSorting: false,
         }),
-        columnHelper.accessor('scheduleId', {
-          cell: (info) => info.getValue(),
-          header: 'Schedule ID',
-          enableSorting: false,
-        }),
         columnHelper.accessor('priorityName', {
           cell: (info) => {
             return (
               <GenericStatusBox
-                colorCode={TaskPriorityColorCode[info.getValue() as 'High']}
+                colorCode={info.row.original.priorityColorCode}
                 text={info.getValue() as string}
               />
             );
@@ -118,9 +114,7 @@ const TaskTable = (props: TaskTableProps) => {
           cell: (info) => {
             return (
               <GenericStatusBox
-                colorCode={
-                  MaintenanceColorCode[info.getValue() as 'Not Started']
-                }
+                colorCode={info.row.original.statusColorCode}
                 text={info.getValue() as string}
               />
             );
@@ -128,12 +122,26 @@ const TaskTable = (props: TaskTableProps) => {
           header: 'Status',
           enableSorting: false,
         }),
-        columnHelper.accessor('taskType', {
-          cell: (info) => PopoverAction(info.row.original, type),
-          header: '',
-          enableSorting: false,
-        }),
       ];
+      const popOverColumns = columnHelper.accessor('taskType', {
+        cell: (info) => PopoverAction(info.row.original, type),
+        header: '',
+        enableSorting: false,
+      });
+
+      const scheduleColumn = columnHelper.accessor('scheduleId', {
+        cell: (info) => info.getValue(),
+        header: 'Schedule ID',
+        enableSorting: false,
+      });
+
+      if (showScheduleId) {
+        baseColumns.splice(3, 0, scheduleColumn);
+      }
+
+      if (showPopover) {
+        baseColumns.push(popOverColumns);
+      }
       return baseColumns;
     },
     [[data]] //eslint-disable-line
@@ -169,7 +177,11 @@ const TaskTable = (props: TaskTableProps) => {
         paddingTop: '12px',
         paddingBottom: '12px',
       }}
-      customTableContainerStyle={{ rounded: 'none' }}
+      customTableContainerStyle={{
+        rounded: 'none',
+        bgColor: showTableBgColor ? 'white' : 'transparent',
+      }}
+      paginationStyle={{ bgColor: showTableBgColor ? 'white' : 'transparent' }}
     />
   );
 };

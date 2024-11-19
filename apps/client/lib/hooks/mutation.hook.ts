@@ -18,7 +18,7 @@ const useCustomMutation = () => {
   ) => {
     try {
       const resp: any = await mutationFn(variables);
-      if (resp.data) {
+      if (!resp.error) {
         if (successMessage) {
           toast({
             title: successMessage,

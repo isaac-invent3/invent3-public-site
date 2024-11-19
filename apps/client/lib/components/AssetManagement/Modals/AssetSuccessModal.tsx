@@ -17,6 +17,7 @@ const AssetSuccessModal = (props: AssetSuccessModalProps) => {
       onClose={onClose}
       headingText={headingText}
       successText={successText}
+      mainModalStyle={{ closeOnOverlayClick: false, closeOnEsc: false }}
     >
       <Button
         href="/asset-management"

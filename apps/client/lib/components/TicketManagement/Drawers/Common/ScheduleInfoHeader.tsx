@@ -1,6 +1,6 @@
 import { HStack, Text, VStack } from '@chakra-ui/react';
 import { useFormikContext } from 'formik';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
 import { useGetAllTaskPrioritiesQuery } from '~/lib/redux/services/task/priorities.services';
@@ -140,7 +140,6 @@ const ScheduleInfoHeader = (props: ScheduleInfoHeaderProps) => {
       return selectedItem.displayColorCode;
     }
   };
-
 
   useEffect(() => {
     getInitialState();

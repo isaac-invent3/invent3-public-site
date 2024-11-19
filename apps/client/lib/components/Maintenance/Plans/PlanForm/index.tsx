@@ -17,7 +17,7 @@ interface PlanFormProps {
 }
 const PlanForm = (props: PlanFormProps) => {
   const { type } = props;
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(1);
 
   return (
     <Flex width="full" direction="column" pb="24px">
@@ -35,14 +35,14 @@ const PlanForm = (props: PlanFormProps) => {
           setActiveStep={setActiveStep}
           type={type}
         />
-        <SlideTransition trigger={activeStep === 1}>
+        <SlideTransition trigger={activeStep === 2}>
           <ScheduleStep
             activeStep={activeStep}
             setActiveStep={setActiveStep}
             type={type}
           />
         </SlideTransition>
-        <SlideTransition trigger={activeStep === 2}>
+        <SlideTransition trigger={activeStep === 3}>
           <SummarySection
             activeStep={activeStep}
             setActiveStep={setActiveStep}

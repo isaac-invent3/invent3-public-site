@@ -6,6 +6,7 @@ import {
   NumberInput,
   NumberInputField,
   NumberInputStepper,
+  StackProps,
   Text,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
@@ -18,9 +19,17 @@ interface PaginationProps {
   setPageNumber?: React.Dispatch<React.SetStateAction<number>>;
   pageSize?: number;
   setPageSize?: React.Dispatch<React.SetStateAction<number>>;
+  customStyles?: StackProps;
 }
 const Pagination = (props: PaginationProps) => {
-  const { pageSize, setPageSize, totalPage, pageNumber, setPageNumber } = props;
+  const {
+    pageSize,
+    setPageSize,
+    totalPage,
+    pageNumber,
+    setPageNumber,
+    customStyles,
+  } = props;
   const [inputValue, setInputValue] = useState(pageSize);
 
   useEffect(() => {
@@ -34,7 +43,14 @@ const Pagination = (props: PaginationProps) => {
   }, [inputValue, setPageSize]);
 
   return (
-    <HStack bgColor="white" py="8px" px="16px" spacing="16px" rounded="6px">
+    <HStack
+      bgColor="white"
+      py="8px"
+      px="16px"
+      spacing="16px"
+      rounded="6px"
+      {...customStyles}
+    >
       <HStack spacing="16px">
         <Text color="neutral.800" whiteSpace="nowrap">
           Rows per page

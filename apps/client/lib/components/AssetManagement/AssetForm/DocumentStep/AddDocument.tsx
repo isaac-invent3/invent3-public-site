@@ -169,8 +169,8 @@ const AddDocument = ({ variant }: AddDocumentProps) => {
         </FormErrorMessage>
       </FormControl>
       <VStack width="full" spacing="4px">
-        {meta.value.map((item: AssetFormDocument) => (
-          <SingleDocument document={item} variant={variant} />
+        {meta.value.map((item: AssetFormDocument, index: number) => (
+          <SingleDocument document={item} variant={variant} key={index} />
         ))}
       </VStack>
     </VStack>

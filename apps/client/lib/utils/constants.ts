@@ -151,8 +151,8 @@ const planScopeOptions = [
 ];
 
 const STATUS_CATEGORY_ENUM = {
-  INACTIVE: 1,
-  ACTIVE: 2,
+  ACTIVE: 1,
+  INACTIVE: 2,
 };
 
 const DEFAULT_PAGE_SIZE = 25;

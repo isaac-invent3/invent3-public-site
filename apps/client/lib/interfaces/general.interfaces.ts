@@ -17,7 +17,7 @@ interface SearchResponse {
 
 interface SearchCriterion {
   columnName: string;
-  columnValue: string;
+  columnValue: string | number;
   operation: (typeof OPERATORS)[keyof typeof OPERATORS];
 }
 

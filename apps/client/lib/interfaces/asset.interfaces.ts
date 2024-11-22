@@ -1,3 +1,5 @@
+import { Option } from './general.interfaces';
+
 interface AssetLocation {
   locationId: number;
   locationGuid: string | null;
@@ -220,9 +222,11 @@ interface AssetFormDetails {
 }
 
 interface FilterInput {
-  category: (string | number)[];
-  status: (string | number)[];
-  region: (string | number)[];
+  category: Option[];
+  status: Option[];
+  region: Option[];
+  area: Option[];
+  branch: Option[];
 }
 
 interface LocationOption {

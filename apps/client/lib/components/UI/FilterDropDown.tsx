@@ -17,9 +17,9 @@ import { useRef, useEffect, ReactNode } from 'react';
 interface FilterDropDownProps {
   label: string;
   options: Option[];
-  selectedOptions: (string | number)[];
+  selectedOptions: Option[];
   // eslint-disable-next-line no-unused-vars
-  handleClick: (value: string | number) => void;
+  handleClick: (option: Option) => void;
   loadMoreOptions?: () => void;
   hasMoreOptions?: boolean;
   isLoading?: boolean;
@@ -129,8 +129,12 @@ const FilterDropDown = ({
             options.map((option) => (
               <HStack key={option.value} spacing="8px">
                 <CheckBox
-                  isChecked={selectedOptions.includes(option.value)}
-                  handleChange={() => handleClick(option.value)}
+                  isChecked={
+                    selectedOptions.find(
+                      (item) => item.value === option.value
+                    ) !== undefined
+                  }
+                  handleChange={() => handleClick(option)}
                 />
                 {<Text color="neutral.800">{option.label}</Text>}
               </HStack>

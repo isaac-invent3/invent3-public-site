@@ -6,9 +6,9 @@ import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { generateOptions } from '~/lib/utils/helperFunctions';
 
 interface CategoryFilterProps {
-  selectedOptions: (string | number)[];
+  selectedOptions: Option[];
   // eslint-disable-next-line no-unused-vars
-  handleSelectedOption: (value: string | number) => void;
+  handleSelectedOption: (option: Option) => void;
 }
 const CategoryFilter = (props: CategoryFilterProps) => {
   const { selectedOptions, handleSelectedOption } = props;

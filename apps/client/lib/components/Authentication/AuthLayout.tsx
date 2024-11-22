@@ -21,9 +21,10 @@ const InfoLearnMore = () => {
         color="white"
         fontSize={{ base: '12px', md: '18px' }}
         lineHeight={{ base: '14.26px', md: '21.38px' }}
-        maxW={{ base: '204px', md: '344px' }}
+        maxW={{ base: '204px', md: '370px' }}
       >
-        A new way to experience managing your assets and facility using AI
+        A new way to experience managing your physical assets and facilities
+        using AI
       </Text>
       <Link href="#">
         <Text

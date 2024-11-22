@@ -13,10 +13,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 import Header from './Header';
 import ListView from './ListView';
 import Filters from './Filters';
-import { FilterInput } from '~/lib/interfaces/asset.interfaces';
 import MapView from './MapView';
 import { useRouter, useSearchParams } from 'next/navigation';
-import AssetFilterDisplay from './Filters/AssetFilterDisplay';
 
 const AssetManagement = () => {
   const [search, setSearch] = useState('');
@@ -24,12 +22,6 @@ const AssetManagement = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [tabIndex, setTabIndex] = useState(0);
-
-  const [filterData, setFilterData] = useState<FilterInput>({
-    category: [],
-    status: [],
-    region: [],
-  });
   const [activeFilter, setActiveFilter] = useState<'bulk' | 'general' | null>(
     null
   );
@@ -89,13 +81,11 @@ const AssetManagement = () => {
 
           <TabPanels>
             <TabPanel>
-              <AssetFilterDisplay
+              <ListView
+                openFilter={isOpen}
                 activeFilter={activeFilter}
-                isOpen={isOpen}
-                filterData={filterData}
-                setFilterData={setFilterData}
+                search={search}
               />
-              <ListView search={search} />
             </TabPanel>
             <TabPanel>{tabIndex === 1 && <MapView />}</TabPanel>
           </TabPanels>

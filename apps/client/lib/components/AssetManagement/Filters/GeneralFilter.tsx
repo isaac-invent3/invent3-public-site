@@ -4,43 +4,39 @@ import { FilterInput } from '~/lib/interfaces/asset.interfaces';
 import Button from '../../UI/Button';
 import CategoryFilter from './FilterComponents/CategoryFilter';
 import StatusFilter from './FilterComponents/StatusFilter';
-import RegionFilter from './FilterComponents/RegionFilter';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import {
+  clearAssetFilter,
+  updateAssetFilter,
+} from '~/lib/redux/slices/AssetSlice';
+import RegionFilter from '../../Common/FilterComponents/RegionFilter';
+import LGAFilter from '../../Common/FilterComponents/LGAFilter';
+import { Option } from '~/lib/interfaces/general.interfaces';
+import BranchFilter from '../../Common/FilterComponents/BranchFilter';
 
 interface GeneralFilterProps {
-  filterData: FilterInput;
-  setFilterData: React.Dispatch<React.SetStateAction<FilterInput>>;
+  handleApplyFilter: () => Promise<void>;
 }
 
 type FilterLabel = keyof FilterInput;
 
 const GeneralFilter = (props: GeneralFilterProps) => {
-  const { filterData, setFilterData } = props;
+  const { handleApplyFilter } = props;
+  const filterData = useAppSelector((state) => state.asset.assetFilter);
+  const dispatch = useAppDispatch();
 
-  const handleFilterData = (
-    value: string | number,
-    filterLabel: FilterLabel
-  ) => {
-    setFilterData((prev) => {
-      const updatedValues = [...prev[filterLabel]];
+  const handleFilterData = (option: Option, filterLabel: FilterLabel) => {
+    const newValue =
+      filterData[filterLabel].find((item) => item.value === option.value) !==
+      undefined
+        ? filterData[filterLabel].filter((item) => item.value !== option.value)
+        : [...filterData[filterLabel], option];
 
-      if (updatedValues.includes(value)) {
-        // Remove the value if it already exists
-        return {
-          ...prev,
-          [filterLabel]: updatedValues.filter((item) => item !== value),
-        };
-      } else {
-        // Add the value if it does not exist
-        return {
-          ...prev,
-          [filterLabel]: [...updatedValues, value],
-        };
-      }
-    });
+    dispatch(updateAssetFilter({ [filterLabel]: newValue }));
   };
 
   return (
-    <HStack spacing="7px">
+    <HStack spacing="7px" overflow="auto">
       <CategoryFilter
         selectedOptions={filterData.category}
         handleSelectedOption={(value) => handleFilterData(value, 'category')}
@@ -49,19 +45,33 @@ const GeneralFilter = (props: GeneralFilterProps) => {
         selectedOptions={filterData.region}
         handleSelectedOption={(value) => handleFilterData(value, 'region')}
       />
+      <LGAFilter
+        regions={filterData.region}
+        selectedOptions={filterData.area}
+        handleSelectedOption={(value) => handleFilterData(value, 'area')}
+      />
+      <BranchFilter
+        areas={filterData.area}
+        selectedOptions={filterData.branch}
+        handleSelectedOption={(value) => handleFilterData(value, 'branch')}
+      />
       <StatusFilter
         selectedOptions={filterData.status}
         handleSelectedOption={(value) => handleFilterData(value, 'status')}
       />
-      <Button customStyles={{ width: '120px', height: '36px' }}>
+      <Button
+        customStyles={{ minW: '120px', height: '36px' }}
+        handleClick={() => handleApplyFilter()}
+      >
         Apply Filter
       </Button>
       <Button
         variant="outline"
-        customStyles={{ width: '120px', height: '36px' }}
-        handleClick={() =>
-          setFilterData({ category: [], region: [], status: [] })
-        }
+        customStyles={{ minW: '120px', height: '36px' }}
+        handleClick={() => {
+          dispatch(clearAssetFilter());
+          handleApplyFilter();
+        }}
       >
         Reset Filter
       </Button>

@@ -16,7 +16,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Filters from './Filters';
 import TicketTable from './TicketTable';
 
-const ALlTabs = ['New Tickets', 'Scheduled Tickets', 'Completed'];
+const ALlTabs = ['New Tickets', 'Assigned Tickets', 'Scheduled Tickets', 'Completed Tickets'];
 
 const TicketManagement = () => {
   const router = useRouter();
@@ -74,6 +74,9 @@ const TicketManagement = () => {
           <TabPanels>
             <TabPanel>
               <TicketTable type="new" />
+            </TabPanel>
+            <TabPanel>
+              <TicketTable type="assigned" />
             </TabPanel>
             <TabPanel>
               <TicketTable type="scheduled" />

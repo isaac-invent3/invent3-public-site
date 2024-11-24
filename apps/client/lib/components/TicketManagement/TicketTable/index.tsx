@@ -5,22 +5,23 @@ import UserInfo from '~/lib/components/Common/UserInfo';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import DataTable from '~/lib/components/UI/Table';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
-import { useGetAllTicketsQuery } from '~/lib/redux/services/ticket.services';
+import { useGetTicketsByTabScopeQuery } from '~/lib/redux/services/ticket.services';
 import { COLOR_CODES_FALLBACK, DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import PopoverAction from './PopoverAction';
 
 interface TicketTableProps {
-  type: 'new' | 'scheduled' | 'completed';
+  type: 'new' | 'assigned' | 'scheduled' | 'completed';
 }
 const TicketTable = (props: TicketTableProps) => {
   const { type } = props;
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const { data, isLoading, isFetching } = useGetAllTicketsQuery({
+  const { data, isLoading, isFetching } = useGetTicketsByTabScopeQuery({
     pageNumber: currentPage,
     pageSize: pageSize,
+    tabScopeName: type,
   });
 
   const columnHelper = createColumnHelper<Ticket>();
@@ -52,7 +53,7 @@ const TicketTable = (props: TicketTableProps) => {
           header: 'Type',
           enableSorting: false,
         }),
-        columnHelper.accessor('priority', {
+        columnHelper.accessor('ticketPriorityName', {
           cell: (info) => {
             const ticket = info.row.original;
 
@@ -62,7 +63,7 @@ const TicketTable = (props: TicketTableProps) => {
                   ticket.priorityColorCode ?? COLOR_CODES_FALLBACK.default
                 }
                 width="80px"
-                text={ticket.priority}
+                text={ticket.ticketPriorityName}
               />
             );
           },

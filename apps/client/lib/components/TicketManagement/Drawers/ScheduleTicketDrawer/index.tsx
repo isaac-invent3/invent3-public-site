@@ -58,29 +58,30 @@ const ScheduleTicketDrawer = (props: ScheduleTicketDrawerProps) => {
     validationSchema: scheduleTicketSchema,
     enableReinitialize: true,
     onSubmit: async (data) => {
-       await handleSubmit(
-        scheduleTicketMutation,
-        {
-          createMaintenanceScheduleDto: {
-            scheduledDate: moment(
-              data.scheduledDate,
-              'DD/MM/YYYY hh:mmA'
-            ).utcOffset(0, true),
-            ticketId: props.data.ticketId,
-            assignedTo: data.assignedTo,
-            actionType: FORM_ENUM.add,
-            changeInitiatedBy: username,
-          },
-          createTaskDtos: generateTasksArray(
-            data.tasks,
-            [],
-            username as string
-          ),
-        },
-        ''
-      );
+       const response = await handleSubmit(
+         scheduleTicketMutation,
+         {
+           createMaintenanceScheduleDto: {
+             scheduleName: props.data.ticketTitle,
+             scheduledDate: moment(
+               data.scheduledDate,
+               'DD/MM/YYYY hh:mmA'
+             ).utcOffset(0, true),
+             ticketId: props.data.ticketId,
+             assignedTo: data.assignedTo,
+             actionType: FORM_ENUM.add,
+             changeInitiatedBy: username,
+           },
+           createTaskDtos: generateTasksArray(
+             data.tasks,
+             [],
+             username as string
+           ),
+         },
+         ''
+       );
 
-      onOpenSuccess();
+      response.data && onOpenSuccess();
     },
   });
 

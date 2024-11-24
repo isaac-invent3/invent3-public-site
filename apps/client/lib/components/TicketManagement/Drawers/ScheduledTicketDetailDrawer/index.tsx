@@ -64,9 +64,9 @@ const ScheduledTicketDetailDrawer = (
     initialValues: {
       tasks: [],
       taskCount: 0,
-      ticketStatusId: null,
-      ticketPriorityId: null,
-      ticketTypeId: null,
+      ticketStatusId: props.data.ticketStatusId,
+      ticketPriorityId: props.data.ticketPriorityId,
+      ticketTypeId: props.data.ticketTypeId,
       assignedTo: null,
     },
     // validationSchema: updateTicketSchema,
@@ -98,6 +98,8 @@ const ScheduledTicketDetailDrawer = (
           status: 'success',
           position: 'top-right',
         });
+
+        onClose()
       }
     },
   });

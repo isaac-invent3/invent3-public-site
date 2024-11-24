@@ -12,7 +12,7 @@ import MarkTicketAsCompletedModal from '../Modals/MarkTicketAsCompletedModal';
 
 interface PopoverActionProps {
   ticket: Ticket;
-  type: 'new' | 'scheduled' | 'completed';
+  type: 'new' | 'assigned' | 'scheduled' | 'completed';
 }
 const PopoverAction = (props: PopoverActionProps) => {
   const { ticket, type } = props;

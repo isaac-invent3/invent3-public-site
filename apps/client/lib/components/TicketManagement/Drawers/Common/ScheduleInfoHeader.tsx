@@ -1,6 +1,5 @@
 import { HStack, Text, VStack } from '@chakra-ui/react';
 import { useFormikContext } from 'formik';
-import { useEffect } from 'react';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
 import { useGetAllTaskPrioritiesQuery } from '~/lib/redux/services/task/priorities.services';
@@ -61,8 +60,7 @@ const ScheduleInfoHeader = (props: ScheduleInfoHeaderProps) => {
     );
   }
 
-  const { values, setFieldValue } =
-    useFormikContext<ScheduleTicketFormDetails>();
+  const { values } = useFormikContext<ScheduleTicketFormDetails>();
 
   const { data: taskStatuses, isLoading: isFetchingTaskStatuses } =
     useGetAllTaskStatusesQuery({
@@ -81,34 +79,6 @@ const ScheduleInfoHeader = (props: ScheduleInfoHeaderProps) => {
       pageSize: DEFAULT_PAGE_SIZE,
       pageNumber: 1,
     });
-
-  const getInitialState = () => {
-    if (taskStatuses?.data?.items) {
-      const selectedItem = taskStatuses.data.items.find(
-        (item) => item?.taskStatusId === data?.taskStatusId
-      );
-
-      selectedItem &&
-        setFieldValue('ticketStatusId', selectedItem.taskStatusId);
-    }
-
-    if (taskPriorities?.data?.items) {
-      const selectedItem = taskPriorities.data.items.find(
-        (item) => item?.taskPriorityId === data?.taskPriorityId
-      );
-
-      selectedItem &&
-        setFieldValue('ticketPriorityId', selectedItem.taskPriorityId);
-    }
-
-    if (ticketTypes?.data?.items) {
-      const selectedItem = ticketTypes.data.items.find(
-        (item: any) => item?.ticketTypeId === data?.ticketTypeId
-      );
-
-      selectedItem && setFieldValue('ticketTypeId', selectedItem.ticketTypeId);
-    }
-  };
 
   const getItemColorCode = (
     selectedItemId: number | null,
@@ -140,10 +110,6 @@ const ScheduleInfoHeader = (props: ScheduleInfoHeaderProps) => {
       return selectedItem.displayColorCode;
     }
   };
-
-  useEffect(() => {
-    getInitialState();
-  }, [taskStatuses, ticketTypes, taskPriorities]);
 
   return (
     <TicketInfoHeader data={data} isUpdateTicket>

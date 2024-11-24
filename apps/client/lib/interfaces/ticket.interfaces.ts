@@ -12,6 +12,8 @@ interface Ticket {
   assetDescription: string;
   reportedBy: string;
   reportedByEmployeeId: number;
+  assignedTo: string;
+  assignedToEmployeeId: number;
   resolvedBy: string;
   resolvedByEmployeeId: number;
   activeSchedules: number;
@@ -26,7 +28,7 @@ interface Ticket {
   buildingAddress: string;
   buildingLongitude: number;
   buildingLatitude: number;
-  priority: string;
+  ticketPriorityName: string;
   priorityColorCode: string;
   ticketTypeName: string;
   floor: string;
@@ -39,7 +41,8 @@ interface Ticket {
   aisleRef: string;
   shelf: string;
   shelfRef: string;
-  taskPriorityId: number;
+  ticketPriorityId: number;
+  ticketStatusId: number;
   taskStatusId: number;
   ticketTypeId: number;
   assetLocation: string;

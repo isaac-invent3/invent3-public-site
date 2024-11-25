@@ -48,4 +48,12 @@ interface Ticket {
   assetLocation: string;
 }
 
-export type { Ticket };
+interface TicketFilterInput {
+  lga: (string | number)[];
+  region: (string | number)[];
+  branch: (string | number)[];
+  fromDate: string | undefined;
+  toDate: string | undefined;
+}
+
+export type { Ticket, TicketFilterInput };

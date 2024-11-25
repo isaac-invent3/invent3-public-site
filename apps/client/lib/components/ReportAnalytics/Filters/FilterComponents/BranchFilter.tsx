@@ -4,13 +4,12 @@ import { Option } from '~/lib/interfaces/general.interfaces';
 import { useGetStatesByCountryIdQuery } from '~/lib/redux/services/asset/location.services';
 import { generateOptions } from '~/lib/utils/helperFunctions';
 
-interface RegionFilterProps {
-  label?: string;
+interface BranchFilterProps {
   selectedOptions: (string | number)[];
   // eslint-disable-next-line no-unused-vars
   handleSelectedOption: (value: string | number) => void;
 }
-const RegionFilter = (props: RegionFilterProps) => {
+const BranchFilter = (props: BranchFilterProps) => {
   const { selectedOptions, handleSelectedOption } = props;
   const [pageNumber, setPageNumber] = useState(1);
   const [options, setOptions] = useState<Option[]>([]);
@@ -33,7 +32,7 @@ const RegionFilter = (props: RegionFilterProps) => {
 
   return (
     <FilterDropDown
-      label={props?.label ?? 'Region:'}
+      label="Location (Branch):"
       options={options}
       selectedOptions={selectedOptions}
       handleClick={(value) => handleSelectedOption(value)}
@@ -46,4 +45,4 @@ const RegionFilter = (props: RegionFilterProps) => {
   );
 };
 
-export default RegionFilter;
+export default BranchFilter;

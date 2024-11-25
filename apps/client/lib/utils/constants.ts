@@ -54,22 +54,29 @@ const FILE_ICONS = {
   invalid: AiOutlineQuestion,
 };
 
+const DATE_PERIOD = {
+  WEEK: 7,
+  MONTH: 30,
+  QUARTER: 90,
+  YEAR: 365,
+};
+
 const timeRangeOptions = [
   {
     label: 'Last 7 days',
-    value: 7,
+    value: DATE_PERIOD.WEEK,
   },
   {
     label: 'Last 30 days',
-    value: 30,
+    value: DATE_PERIOD.MONTH,
   },
   {
     label: 'Last 90 days',
-    value: 90,
+    value: DATE_PERIOD.QUARTER,
   },
   {
     label: 'Last 1 year',
-    value: 365,
+    value: DATE_PERIOD.YEAR,
   },
 ];
 
@@ -163,6 +170,7 @@ export {
   AREA_ENUM,
   FILE_ICONS,
   MAINTENANCE_PLAN_ENUM,
+  DATE_PERIOD,
   timeRangeOptions,
   yearOptions,
   monthOptions,

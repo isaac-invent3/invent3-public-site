@@ -35,11 +35,13 @@ const OwnerFilter = () => {
       showBorder
       label="Owner:"
       options={options}
-      selectedOptions={owner}
-      handleClick={(value) =>
+      selectedOptions={[]}
+      handleClick={(option) =>
         dispatch(
           updateTemplateFilter({
-            owner: owner.includes(+value) ? owner : [...owner, +value],
+            owner: owner.includes(+option.value)
+              ? owner
+              : [...owner, +option.value],
           })
         )
       }

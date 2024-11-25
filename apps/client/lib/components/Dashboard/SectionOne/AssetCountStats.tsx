@@ -63,7 +63,8 @@ const AssetCountStats = () => {
         divider={<StackDivider border="1px solid #BBBBBB" />}
         width="full"
         // maxW="620px"
-        justifyContent="space-between"
+        justifyContent="flex-start"
+        spacing="45px"
       >
         {data.map((item, index) => (
           <Stats {...item} key={index} />

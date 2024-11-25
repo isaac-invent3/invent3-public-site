@@ -1,9 +1,7 @@
 import { Flex, HStack, Text, VStack } from '@chakra-ui/react';
 import React, { useMemo, useState } from 'react';
 import CardHeader from '../Common/CardHeader';
-import DropDown from '../Common/DropDown';
-import { DEFAULT_PAGE_SIZE, timeRangeOptions } from '~/lib/utils/constants';
-import { Option } from '~/lib/interfaces/general.interfaces';
+import { DATE_PERIOD, DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import DataTable from '../../UI/Table';
 import { createColumnHelper } from '@tanstack/react-table';
 import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
@@ -12,6 +10,7 @@ import Technician from '../../AssetManagement/Common/Technician';
 import Status from '../../AssetManagement/Common/MaintenanceStatus';
 import { useGetUpcomingMaintenanceQuery } from '~/lib/redux/services/dashboard.services';
 import { useAppSelector } from '~/lib/redux/hooks';
+import Button from '../../UI/Button';
 
 const ContentDisplay = (
   content: string | React.ReactNode,
@@ -37,9 +36,6 @@ const UpcomingMaintenance = () => {
   const { selectedCountry, selectedState } = useAppSelector(
     (state) => state.dashboard.info
   );
-  const [selectedTimeRange, setSelectedTimeRange] = useState<Option | null>(
-    timeRangeOptions[0] as Option
-  );
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const { data, isLoading } = useGetUpcomingMaintenanceQuery({
@@ -47,7 +43,7 @@ const UpcomingMaintenance = () => {
     ...(selectedState?.value ? { regionId: selectedState?.value } : {}),
     pageSize,
     pageNumber: currentPage,
-    datePeriod: selectedTimeRange?.value,
+    datePeriod: DATE_PERIOD.WEEK,
   });
   const columnHelper = createColumnHelper<MaintenanceSchedule>();
   const columns = useMemo(
@@ -112,19 +108,35 @@ const UpcomingMaintenance = () => {
       pt="21px"
       pb="12px"
       alignItems="flex-start"
-      spacing="24px"
+      spacing="16px"
       bgColor="white"
       rounded="8px"
     >
       <HStack width="full" justifyContent="space-between">
-        <CardHeader>Upcoming Maintenance</CardHeader>
-        <DropDown
-          options={timeRangeOptions}
-          label="Timeline"
-          handleClick={(option) => setSelectedTimeRange(option)}
-          selectedOptions={selectedTimeRange}
-          width="110px"
-        />
+        <HStack width="full" alignItems="center">
+          <CardHeader>Upcoming Maintenance</CardHeader>
+          <Text
+            color="neutral.800"
+            py="6px"
+            px="8px"
+            rounded="4px"
+            bgColor="neutral.200"
+          >
+            Next 7 days
+          </Text>
+        </HStack>
+        <Button
+          href="/maintenance?tab=schedules"
+          customStyles={{
+            py: 0,
+            height: '28px',
+            width: '68px',
+            fontSize: '12px',
+            lineHeight: '14.26px',
+          }}
+        >
+          View All
+        </Button>
       </HStack>
       <Flex width="full" height="full" overflow="auto" maxH="280px">
         <DataTable

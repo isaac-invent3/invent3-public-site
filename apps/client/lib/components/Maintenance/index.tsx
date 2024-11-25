@@ -14,10 +14,11 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Schedules from './Schedules';
 import History from './History';
 import Filters from './Schedules/Filters';
-import ScheduleFilterDisplay from './Schedules/Filters/ScheduleFilterDisplay';
-import { FilterInput } from '~/lib/interfaces/asset.interfaces';
+// import ScheduleFilterDisplay from './Schedules/Filters/ScheduleFilterDisplay';
+// import { FilterInput } from '~/lib/interfaces/asset.interfaces';
 import Plans from './Plans';
 import Header from './Header';
+import _ from 'lodash';
 
 const ALlTabs = ['Plans', 'Schedules', 'History'];
 
@@ -31,17 +32,14 @@ const Maintenance = () => {
     'schedule' | 'plan' | 'history' | null
   >(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [filterData, setFilterData] = useState<FilterInput>({
-    region: [],
-    status: [],
-    category: [],
-  });
 
   // Retrieve the `tab` parameter from URL on mount
   useEffect(() => {
     const tab = searchParams.get('tab');
     if (tab) {
-      const tabIndex = ALlTabs.findIndex((value) => value === tab);
+      const tabIndex = ALlTabs.findIndex(
+        (value) => value === _.capitalize(tab)
+      );
       if (tabIndex !== -1) {
         setTabIndex(tabIndex);
       }
@@ -102,11 +100,11 @@ const Maintenance = () => {
           <TabPanels>
             <TabPanel>{tabIndex === 0 && <Plans />}</TabPanel>
             <TabPanel>
-              <ScheduleFilterDisplay
+              {/* <ScheduleFilterDisplay
                 isOpen={isOpen}
                 filterData={filterData}
                 setFilterData={setFilterData}
-              />
+              /> */}
               {tabIndex === 1 && <Schedules />}
             </TabPanel>
             <TabPanel>

@@ -74,7 +74,7 @@ const SignIn = () => {
             lineHeight={{ base: '16.63px', lg: '17.82px' }}
             fontWeight={500}
           >
-            Have no account?
+            Don't have an account?
             <Link href="#">
               <Text fontWeight={700} as="span" color="brand.500">
                 {' '}
@@ -132,15 +132,11 @@ const SignIn = () => {
           alignItems="center"
           mt={{ base: '54px', lg: '64px' }}
           mb={{ base: '27px', lg: '32px' }}
+          gap="4px"
         >
-          <Text
-            size="lg"
-            fontWeight={400}
-            mr="12px"
-            color="white"
-            whiteSpace="nowrap"
-          >
-            SSO Login
+          <Divider borderColor="white" borderWidth="1px" flexGrow={1} />
+          <Text size="md" fontWeight={400} color="white" whiteSpace="nowrap">
+            Or
           </Text>
           <Divider borderColor="white" borderWidth="1px" flexGrow={1} />
         </Flex>

@@ -22,28 +22,28 @@ const ScheduleFilterDisplay = (props: ScheduleFilterDisplayProps) => {
     pageSize: DEFAULT_PAGE_SIZE,
   });
 
-  const handleFilterData = (
-    value: string | number,
-    filterLabel: FilterLabel
-  ) => {
-    setFilterData((prev) => {
-      const updatedValues = [...prev[filterLabel]];
+  // const handleFilterData = (
+  //   value: string | number,
+  //   filterLabel: FilterLabel
+  // ) => {
+  //   setFilterData((prev) => {
+  //     const updatedValues = [...prev[filterLabel]];
 
-      if (updatedValues.includes(value)) {
-        // Remove the value if it already exists
-        return {
-          ...prev,
-          [filterLabel]: updatedValues.filter((item) => item !== value),
-        };
-      } else {
-        // Add the value if it does not exist
-        return {
-          ...prev,
-          [filterLabel]: [...updatedValues, value],
-        };
-      }
-    });
-  };
+  //     if (updatedValues.includes(value)) {
+  //       // Remove the value if it already exists
+  //       return {
+  //         ...prev,
+  //         [filterLabel]: updatedValues.filter((item) => item !== value),
+  //       };
+  //     } else {
+  //       // Add the value if it does not exist
+  //       return {
+  //         ...prev,
+  //         [filterLabel]: [...updatedValues, value],
+  //       };
+  //     }
+  //   });
+  // };
 
   return (
     <FilterDisplay isOpen={isOpen}>
@@ -57,17 +57,7 @@ const ScheduleFilterDisplay = (props: ScheduleFilterDisplayProps) => {
               'categoryId'
             )}
             selectedOptions={filterData.category}
-            handleClick={(value) => handleFilterData(value, 'category')}
-          />
-          <FilterDropDown
-            label="Location"
-            options={generateOptions(
-              assetCategoryData?.data?.items,
-              'categoryName',
-              'categoryId'
-            )}
-            selectedOptions={filterData.category}
-            handleClick={(value) => handleFilterData(value, 'category')}
+            handleClick={(value) => {}}
           />
         </HStack>
         <Button

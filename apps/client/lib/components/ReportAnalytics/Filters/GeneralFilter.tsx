@@ -22,27 +22,27 @@ const GeneralFilter = (props: GeneralFilterProps) => {
     value: string | number,
     filterLabel: FilterLabel
   ) => {
-    if (typeof filterData[filterLabel] == 'string') {
-      setFilterData({ ...filter, [filterLabel]: value });
-    } else {
-      setFilterData((prev) => {
-        const updatedValues = [...prev[filterLabel]];
+    // if (typeof filterData[filterLabel] == 'string') {
+    //   setFilterData({ ...filter, [filterLabel]: value });
+    // } else {
+    //   setFilterData((prev) => {
+    //     const updatedValues = [...prev[filterLabel]];
 
-        if (updatedValues.includes(value)) {
-          // Remove the value if it already exists
-          return {
-            ...prev,
-            [filterLabel]: updatedValues.filter((item) => item !== value),
-          };
-        } else {
-          // Add the value if it does not exist
-          return {
-            ...prev,
-            [filterLabel]: [...updatedValues, value],
-          };
-        }
-      });
-    }
+    //     if (updatedValues.includes(value)) {
+    //       // Remove the value if it already exists
+    //       return {
+    //         ...prev,
+    //         [filterLabel]: updatedValues.filter((item) => item !== value),
+    //       };
+    //     } else {
+    //       // Add the value if it does not exist
+    //       return {
+    //         ...prev,
+    //         [filterLabel]: [...updatedValues, value],
+    //       };
+    //     }
+    //   });
+    // }
   };
 
   return (

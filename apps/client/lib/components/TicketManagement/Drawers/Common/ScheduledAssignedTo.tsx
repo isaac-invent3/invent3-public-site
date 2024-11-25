@@ -25,7 +25,7 @@ const ScheduledAssignedTo = (props: ScheduledAssignedToProps) => {
           )}
 
           {!isFetchingSchedule && (
-            <>{maintenanceSchedule?.data.assignedTo ?? 'N/A'}</>
+            <>{maintenanceSchedule?.data.contactPerson ?? 'N/A'}</>
           )}
         </Text>
       </Flex>

@@ -9,6 +9,7 @@ import { useGetTicketsByTabScopeQuery } from '~/lib/redux/services/ticket.servic
 import { COLOR_CODES_FALLBACK, DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import PopoverAction from './PopoverAction';
+import ScheduledAssignedTo from '../Drawers/Common/ScheduledAssignedTo';
 
 interface TicketTableProps {
   type: 'new' | 'assigned' | 'scheduled' | 'completed';
@@ -104,10 +105,20 @@ const TicketTable = (props: TicketTableProps) => {
          * We would have a different component for the assigned to for scheduled tickets
          * It would fetch the ticket maintenance schedule and it's the assigned to that would be there
          */
-        ...(type !== 'new'
+        ...(type === 'assigned'
           ? [
               columnHelper.accessor('assignedTo', {
                 cell: (info) => <UserInfo name={info.getValue()} />,
+                header: 'Assigned To',
+                enableSorting: false,
+              }),
+            ]
+          : []),
+
+        ...(type === 'scheduled' || type === 'completed'
+          ? [
+              columnHelper.accessor('ticketId', {
+                cell: (info) => <ScheduledAssignedTo ticketId={info.getValue()} />,
                 header: 'Assigned To',
                 enableSorting: false,
               }),

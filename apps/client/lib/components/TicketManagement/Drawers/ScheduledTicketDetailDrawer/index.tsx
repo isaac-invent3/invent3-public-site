@@ -15,6 +15,7 @@ import GenericDrawer from '~/lib/components/UI/GenericDrawer';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { Task } from '~/lib/interfaces/task.interfaces';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
+import { useGetMaintenanceSchedulesByTicketIdQuery } from '~/lib/redux/services/maintenance/schedule.services';
 import { useCreateTaskMutation } from '~/lib/redux/services/task/general.services';
 import { useUpdateTicketMutation } from '~/lib/redux/services/ticket.services';
 import MarkTicketAsCompletedModal from '../../Modals/MarkTicketAsCompletedModal';
@@ -36,6 +37,7 @@ export interface ScheduleTicketFormDetails {
   ticketPriorityId: number | null;
   ticketTypeId: number | null;
   assignedTo: number | null;
+  assignedToEmployeeName: string | null;
 }
 
 const ScheduledTicketDetailDrawer = (
@@ -58,6 +60,9 @@ const ScheduledTicketDetailDrawer = (
   const [updateTicketMutation, { isLoading: isUpdatingTicket }] =
     useUpdateTicketMutation();
 
+  const { data: maintenanceSchedule } =
+    useGetMaintenanceSchedulesByTicketIdQuery(data.ticketId);
+
   const [createTask, { isLoading: isCreatingTask }] = useCreateTaskMutation({});
 
   const formik = useFormik<ScheduleTicketFormDetails>({
@@ -67,7 +72,10 @@ const ScheduledTicketDetailDrawer = (
       ticketStatusId: props.data.ticketStatusId,
       ticketPriorityId: props.data.ticketPriorityId,
       ticketTypeId: props.data.ticketTypeId,
-      assignedTo: null,
+      assignedTo:
+        maintenanceSchedule?.data.assignedTo ?? props.data.assignedToEmployeeId,
+      assignedToEmployeeName:
+        maintenanceSchedule?.data.contactPerson ?? props.data.assignedTo,
     },
     // validationSchema: updateTicketSchema,
     enableReinitialize: true,
@@ -99,7 +107,7 @@ const ScheduledTicketDetailDrawer = (
           position: 'top-right',
         });
 
-        onClose()
+        onClose();
       }
     },
   });

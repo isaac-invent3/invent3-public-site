@@ -1,4 +1,5 @@
 import { HStack, Text, VStack, useDisclosure } from '@chakra-ui/react';
+import { useFormikContext } from 'formik';
 import UserSelectModal from '~/lib/components/Common/Modals/UserSelectModal';
 import UserInfo from '~/lib/components/Common/UserInfo';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
@@ -18,7 +19,9 @@ const SectionOne = (props: SectionOneProps) => {
   };
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  // const [field, meta, helpers] = useField('assignedTo');
+  const { setFieldValue, values } = useFormikContext<any>();
+
+  
 
   return (
     <VStack
@@ -46,7 +49,7 @@ const SectionOne = (props: SectionOneProps) => {
               Assigned to
             </Text>
             <UserInfo
-              name={data?.assignedTo}
+              name={values?.assignedToEmployeeName}
               customAvatarStyle={AvatarSize}
               customBoxStyle={{ alignItems: 'flex-start' }}
             >
@@ -83,7 +86,9 @@ const SectionOne = (props: SectionOneProps) => {
         isOpen={isOpen}
         onClose={onClose}
         handleSelectUser={(user) => {
-          console.log(user?.value);
+          setFieldValue('assignedTo', user?.value ?? null);
+
+          setFieldValue('assignedToEmployeeName', user?.label ?? null);
         }}
       />
     </VStack>

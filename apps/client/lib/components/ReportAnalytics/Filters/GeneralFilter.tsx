@@ -1,48 +1,44 @@
 import { HStack } from '@chakra-ui/react';
-import { filter } from 'lodash';
 import React from 'react';
+import { Option } from '~/lib/interfaces/general.interfaces';
 import { TicketFilterInput } from '~/lib/interfaces/ticket.interfaces';
+import BranchFilter from '../../Common/FilterComponents/BranchFilter';
+import LGAFilter from '../../Common/FilterComponents/LGAFilter';
+import RegionFilter from '../../Common/FilterComponents/RegionFilter';
 import Button from '../../UI/Button';
-import AreaFilter from './FilterComponents/AreaFilter';
-import BranchFilter from './FilterComponents/BranchFilter';
 import DateFilter from './FilterComponents/DateFilter';
-import RegionFilter from './FilterComponents/RegionFilter';
 
 type FilterLabel = keyof TicketFilterInput;
 
 interface GeneralFilterProps {
   filterData: TicketFilterInput;
   setFilterData: React.Dispatch<React.SetStateAction<TicketFilterInput>>;
+  clearFilters: () => void;
 }
 
 const GeneralFilter = (props: GeneralFilterProps) => {
-  const { filterData, setFilterData } = props;
+  const { filterData, setFilterData, clearFilters } = props;
 
   const handleFilterData = (
-    value: string | number,
+    option: Option | string,
     filterLabel: FilterLabel
   ) => {
-    // if (typeof filterData[filterLabel] == 'string') {
-    //   setFilterData({ ...filter, [filterLabel]: value });
-    // } else {
-    //   setFilterData((prev) => {
-    //     const updatedValues = [...prev[filterLabel]];
+    if (
+      typeof option === 'string' ||
+      typeof filterData[filterLabel] === 'string'
+    ) {
+      setFilterData({ ...filterData, [filterLabel]: option });
+    } else {
+      const newValue =
+        filterData[filterLabel].find((item) => item.value === option.value) !==
+        undefined
+          ? filterData[filterLabel].filter(
+              (item) => item.value !== option.value
+            )
+          : [...filterData[filterLabel], option];
 
-    //     if (updatedValues.includes(value)) {
-    //       // Remove the value if it already exists
-    //       return {
-    //         ...prev,
-    //         [filterLabel]: updatedValues.filter((item) => item !== value),
-    //       };
-    //     } else {
-    //       // Add the value if it does not exist
-    //       return {
-    //         ...prev,
-    //         [filterLabel]: [...updatedValues, value],
-    //       };
-    //     }
-    //   });
-    // }
+      setFilterData({ ...filterData, [filterLabel]: newValue });
+    }
   };
 
   return (
@@ -67,11 +63,13 @@ const GeneralFilter = (props: GeneralFilterProps) => {
         selectedOptions={filterData.region}
         handleSelectedOption={(value) => handleFilterData(value, 'region')}
       />
-      <AreaFilter
-        selectedOptions={filterData.lga}
-        handleSelectedOption={(value) => handleFilterData(value, 'lga')}
+      <LGAFilter
+        regions={filterData.region}
+        selectedOptions={filterData.area}
+        handleSelectedOption={(value) => handleFilterData(value, 'area')}
       />
       <BranchFilter
+        areas={filterData.area}
         selectedOptions={filterData.branch}
         handleSelectedOption={(value) => handleFilterData(value, 'branch')}
       />
@@ -82,15 +80,7 @@ const GeneralFilter = (props: GeneralFilterProps) => {
       <Button
         variant="outline"
         customStyles={{ width: '120px', height: '36px' }}
-        handleClick={() =>
-          setFilterData({
-            region: [],
-            lga: [],
-            branch: [],
-            fromDate: undefined,
-            toDate: undefined,
-          })
-        }
+        handleClick={() => clearFilters()}
       >
         Reset Filter
       </Button>

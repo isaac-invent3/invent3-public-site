@@ -16,11 +16,11 @@ import { dateFormatter } from '~/lib/utils/Formatters';
 
 interface FilterDropDownProps {
   label: string;
+  selectedDate: string | undefined;
   // eslint-disable-next-line no-unused-vars
   handleClick: (date: string) => void;
   minDate?: Date;
   maxDate?: Date | undefined;
-  selectedDate?: string | undefined;
 }
 
 const DateFilter = ({
@@ -59,7 +59,7 @@ const DateFilter = ({
           </Text>
 
           <Text whiteSpace="nowrap">
-            {selectedDate || dateFormatter(new Date(), 'DD-MM-YYYY')}
+            {selectedDate}
           </Text>
         </HStack>
         <Icon as={ChevronDownIcon} boxSize="12px" color="neutral.600" />

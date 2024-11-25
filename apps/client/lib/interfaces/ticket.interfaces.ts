@@ -1,3 +1,5 @@
+import { Option } from './general.interfaces';
+
 interface Ticket {
   rowId: number;
   ticketId: number;
@@ -49,11 +51,11 @@ interface Ticket {
 }
 
 interface TicketFilterInput {
-  lga: (string | number)[];
-  region: (string | number)[];
-  branch: (string | number)[];
-  fromDate: string | undefined;
-  toDate: string | undefined;
+  region: Option[];
+  area: Option[];
+  branch: Option[];
+  fromDate: string;
+  toDate: string;
 }
 
 export type { Ticket, TicketFilterInput };

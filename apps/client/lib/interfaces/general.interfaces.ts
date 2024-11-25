@@ -92,6 +92,12 @@ interface RecurrenceInfo {
   repeatIntervals: RepeatInterval;
 }
 
+interface LocationFilter {
+  region: Option[];
+  area: Option[];
+  branch: Option[];
+}
+
 export type {
   GeoJSONFeature,
   Option,
@@ -103,4 +109,5 @@ export type {
   BaseApiResponse,
   PaginationInfo,
   ListResponse,
+  LocationFilter,
 };

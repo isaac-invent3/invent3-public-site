@@ -1,59 +1,48 @@
 import { Icon } from '@chakra-ui/react';
 import React, { useMemo } from 'react';
-import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 import DataTable from '~/lib/components/UI/Table';
 import { createColumnHelper } from '@tanstack/react-table';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import { ChevronRightIcon } from '~/lib/components/CustomIcons';
+import { Template } from '~/lib/interfaces/template.interfaces';
 
 interface TemplateTableProps {
   isLoading: boolean;
   isFetching: boolean;
-  data: MaintenancePlan[];
-  setSelectedPlan: React.Dispatch<React.SetStateAction<MaintenancePlan | null>>;
+  data: Template[];
+  setSelectedTemplate: React.Dispatch<React.SetStateAction<Template | null>>;
 }
 
 const TemplateTable = (props: TemplateTableProps) => {
-  const { isLoading, isFetching, data, setSelectedPlan } = props;
+  const { isLoading, isFetching, data, setSelectedTemplate } = props;
 
-  const columnHelper = createColumnHelper<MaintenancePlan>();
+  const columnHelper = createColumnHelper<Template>();
   const columns = useMemo(
     () => {
       const baseColumns = [
-        columnHelper.accessor('maintenancePlanId', {
+        columnHelper.accessor('templateId', {
           cell: (info) => info.getValue(),
           header: '#',
           enableSorting: false,
         }),
-        columnHelper.accessor('planName', {
+        columnHelper.accessor('templateName', {
           cell: (info) => info.getValue(),
-          header: 'Template name',
+          header: 'Template Name',
           enableSorting: false,
         }),
-        columnHelper.accessor('activeSchedules', {
-          cell: (info) => info.getValue() ?? 'N/A',
-          header: 'Total Schedule',
-          enableSorting: false,
-        }),
-        columnHelper.accessor('openTasks', {
+        columnHelper.accessor('description', {
           cell: (info) => info.getValue(),
-          header: 'Total Tasks',
+          header: 'Template Description',
           enableSorting: false,
         }),
-
-        columnHelper.accessor('owner', {
-          cell: (info) => info.getValue() ?? 'N/A',
-          header: 'Created by',
-          enableSorting: false,
-        }),
-        columnHelper.accessor('dateCreated', {
+        columnHelper.accessor('createdDate', {
           cell: (info) =>
             dateFormatter(info.getValue(), 'DD / MM / YYYY') ?? 'N/A',
-          header: 'Completion Date',
+          header: 'Date Created',
           enableSorting: false,
         }),
 
-        columnHelper.accessor('planTypeId', {
+        columnHelper.accessor('guid', {
           cell: () => {
             return (
               <Icon as={ChevronRightIcon} boxSize="16px" color="neutral.800" />
@@ -79,7 +68,7 @@ const TemplateTable = (props: TemplateTableProps) => {
       isLoading={isLoading}
       isFetching={isFetching}
       selectMultipleRows={false}
-      handleSelectRow={(value) => setSelectedPlan(value)}
+      handleSelectRow={(value) => setSelectedTemplate(value)}
       customThStyle={{
         paddingLeft: '16px',
         paddingTop: '17px',

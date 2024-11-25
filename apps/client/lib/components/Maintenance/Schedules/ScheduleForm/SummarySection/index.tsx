@@ -129,7 +129,7 @@ const SummarySection = (props: SummarySectionProps) => {
           cancelLink="/maintenance"
           totalStep={2}
           activeStep={2}
-          finalText={type === 'create' ? 'Finish' : 'Save Changes'}
+          finalText={type === 'create' ? 'Save' : 'Save Changes'}
           setActiveStep={setActiveStep}
           handleContinue={handleSumbitSchedule}
           isLoading={isCreating || isUpdating}

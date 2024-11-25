@@ -39,9 +39,11 @@ const BranchFilter = (props: BranchFilterProps) => {
 
       const newbranchOptions: BranchOption[] = [];
 
-      for (const area of areas) {
+      const sortedAreas = _.orderBy(areas, ['label']);
+
+      for (const area of sortedAreas) {
         const result = await dispatch(
-          locationApi.endpoints.getBuildingsByFacilityId.initiate({
+          locationApi.endpoints.getFacilitiesByLGAId.initiate({
             id: area.value,
             pageNumber: 1,
             pageSize: 50,
@@ -94,19 +96,30 @@ const BranchFilter = (props: BranchFilterProps) => {
                 >
                   {item.lgaName}
                 </Text>
-                {item.facilityOptions.map((item, idx) => (
-                  <HStack spacing="8px" key={idx}>
-                    <CheckBox
-                      isChecked={
-                        selectedOptions.find(
-                          (option) => option.value === item.value
-                        ) !== undefined
-                      }
-                      handleChange={() => handleSelectedOption(item)}
-                    />
-                    <Text color="neutral.800">{item.label}</Text>
-                  </HStack>
-                ))}
+                {item.facilityOptions.length > 0 ? (
+                  item.facilityOptions.map((item, idx) => (
+                    <HStack spacing="8px" key={idx}>
+                      <CheckBox
+                        isChecked={
+                          selectedOptions.find(
+                            (option) => option.value === item.value
+                          ) !== undefined
+                        }
+                        handleChange={() => handleSelectedOption(item)}
+                      />
+                      <Text color="neutral.800">{item.label}</Text>
+                    </HStack>
+                  ))
+                ) : (
+                  <Text
+                    my={2}
+                    width="full"
+                    textAlign="center"
+                    color="neutral.300"
+                  >
+                    No Options
+                  </Text>
+                )}
               </VStack>
             ))
           ) : (

@@ -171,7 +171,7 @@ const ListView = (props: ListViewProps) => {
   }, [assetData]);
 
   return (
-    <Flex width="full" direction="column">
+    <Flex width="full" direction="column" pt="16px">
       <Flex width="full" mb="8px">
         <AssetFilterDisplay
           activeFilter={activeFilter}
@@ -181,7 +181,9 @@ const ListView = (props: ListViewProps) => {
       </Flex>
       <AssetTable
         data={
-          search && searchData ? searchData.items : (data?.data?.items ?? [])
+          (search || !isFilterEmpty) && searchData
+            ? searchData.items
+            : (data?.data?.items ?? [])
         }
         isLoading={isLoading}
         isFetching={isFetching || searchLoading}
@@ -190,7 +192,9 @@ const ListView = (props: ListViewProps) => {
         pageSize={pageSize}
         setPageSize={setPageSize}
         totalPages={
-          search && searchData ? searchData?.totalPages : data?.data?.totalPages
+          (search || !isFilterEmpty) && searchData
+            ? searchData?.totalPages
+            : data?.data?.totalPages
         }
         handleSelectRow={setSelectedAsset}
         selectedRows={selectedRows}

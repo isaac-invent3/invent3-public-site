@@ -1,4 +1,4 @@
-import { Option } from './general.interfaces';
+import { LocationFilter, Option } from './general.interfaces';
 
 interface AssetLocation {
   locationId: number;
@@ -221,12 +221,9 @@ interface AssetFormDetails {
   };
 }
 
-interface FilterInput {
+interface FilterInput extends LocationFilter {
   category: Option[];
   status: Option[];
-  region: Option[];
-  area: Option[];
-  branch: Option[];
 }
 
 interface LocationOption {

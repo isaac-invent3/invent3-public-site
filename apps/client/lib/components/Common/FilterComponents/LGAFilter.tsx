@@ -37,8 +37,9 @@ const LGAFilter = (props: LGAFilterProps) => {
       setLoadingStates(true);
 
       const newStateOptions: StateOption[] = [];
+      const sortedRegion = _.orderBy(regions, ['label']);
 
-      for (const state of regions) {
+      for (const state of sortedRegion) {
         const result = await dispatch(
           locationApi.endpoints.getLGAByStateId.initiate({
             id: state.value,
@@ -93,19 +94,30 @@ const LGAFilter = (props: LGAFilterProps) => {
                 >
                   {item.stateName}
                 </Text>
-                {item.lgaOptions.map((item, idx) => (
-                  <HStack spacing="8px" key={idx}>
-                    <CheckBox
-                      isChecked={
-                        selectedOptions.find(
-                          (option) => option.value === item.value
-                        ) !== undefined
-                      }
-                      handleChange={() => handleSelectedOption(item)}
-                    />
-                    <Text color="neutral.800">{item.label}</Text>
-                  </HStack>
-                ))}
+                {item.lgaOptions.length > 0 ? (
+                  item.lgaOptions.map((item, idx) => (
+                    <HStack spacing="8px" key={idx}>
+                      <CheckBox
+                        isChecked={
+                          selectedOptions.find(
+                            (option) => option.value === item.value
+                          ) !== undefined
+                        }
+                        handleChange={() => handleSelectedOption(item)}
+                      />
+                      <Text color="neutral.800">{item.label}</Text>
+                    </HStack>
+                  ))
+                ) : (
+                  <Text
+                    my={2}
+                    width="full"
+                    textAlign="center"
+                    color="neutral.300"
+                  >
+                    No Options
+                  </Text>
+                )}
               </VStack>
             ))
           ) : (

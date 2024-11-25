@@ -3,29 +3,29 @@ import React from 'react';
 import SearchInput from '~/lib/components/UI/SearchInput';
 import FilterButton from '~/lib/components/UI/Filter/FilterButton';
 import { FilterIcon } from '~/lib/components/CustomIcons';
-import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 import BackButton from '~/lib/components/UI/Button/BackButton';
+import { Template } from '~/lib/interfaces/template.interfaces';
 
 interface HeaderProps {
   setSearch: React.Dispatch<React.SetStateAction<string>>;
   openFilter: boolean;
   setOpenFilter: () => void;
-  selectedPlan: MaintenancePlan | null;
-  setSelectedPlan: React.Dispatch<React.SetStateAction<MaintenancePlan | null>>;
+  selectedTemplate: Template | null;
+  setSelectedTemplate: React.Dispatch<React.SetStateAction<Template | null>>;
 }
 const Header = (props: HeaderProps) => {
   const {
     setSearch,
     openFilter,
     setOpenFilter,
-    selectedPlan,
-    setSelectedPlan,
+    selectedTemplate,
+    setSelectedTemplate,
   } = props;
   return (
     <ModalHeader m={0} p={0} mt="32px" mx="24px">
       <VStack
         width="full"
-        spacing={selectedPlan ? '31px' : '26px'}
+        spacing={selectedTemplate ? '31px' : '26px'}
         alignItems="flex-start"
       >
         <Heading
@@ -36,13 +36,13 @@ const Header = (props: HeaderProps) => {
         >
           Plan Templates
         </Heading>
-        {selectedPlan && (
+        {selectedTemplate && (
           <BackButton
-            handleClick={() => setSelectedPlan(null)}
+            handleClick={() => setSelectedTemplate(null)}
             customStyles={{ mb: '24px' }}
           />
         )}
-        {!selectedPlan && (
+        {!selectedTemplate && (
           <HStack
             spacing="16px"
             width="full"

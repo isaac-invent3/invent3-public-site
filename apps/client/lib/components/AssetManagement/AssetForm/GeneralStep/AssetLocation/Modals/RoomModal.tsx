@@ -31,11 +31,12 @@ const RoomModal = (props: RoomModalProps) => {
     },
     validationSchema: roomSchema,
     enableReinitialize: true,
-    onSubmit: async (values) => {
+    onSubmit: async (values, { resetForm }) => {
       const finalValue = { ...values, createdBy: data?.user?.username };
       const response = await handleSubmit(createRoom, finalValue, '');
       if (response?.data) {
         onClose();
+        resetForm();
       }
     },
   });

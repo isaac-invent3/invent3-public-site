@@ -1,3 +1,4 @@
+import { LocationFilter, Option } from './general.interfaces';
 import { taskFormDetails } from './task.interfaces';
 
 interface MaintenancePlan {
@@ -196,6 +197,14 @@ interface TemplateFilter {
   apply: boolean;
 }
 
+interface PlanFilter extends LocationFilter {
+  planType: Option[];
+}
+
+interface ScheduleFilter extends LocationFilter {
+  maintenanceType: Option[];
+}
+
 export type {
   MaintenancePlan,
   MaintenanceScheduleStat,
@@ -206,4 +215,6 @@ export type {
   MaintenanceFrequency,
   PlanFormDetails,
   TemplateFilter,
+  PlanFilter,
+  ScheduleFilter,
 };

@@ -178,10 +178,14 @@ const LocationModal = (props: LocationModalProps) => {
                     handleSelect={(option) =>
                       handleReadableLocation(option, 'lga')
                     }
+                    type="specificById"
                   />
                 </HStack>
                 <HStack width="full" spacing="16px">
-                  <Facility handleReadableLocation={handleReadableLocation} />
+                  <Facility
+                    handleReadableLocation={handleReadableLocation}
+                    lgaId={localLocation.lga.value}
+                  />
                   <Building
                     handleReadableLocation={handleReadableLocation}
                     facilityId={localLocation.facility.value}

@@ -18,6 +18,8 @@ import {
   useUpdateMaintenancePlanWithSchedulesMutation,
 } from '~/lib/redux/services/maintenance/plan.services';
 import { FORM_ENUM } from '~/lib/utils/constants';
+import Button from '~/lib/components/UI/Button';
+import SaveAsTemplateModal from '~/lib/components/Common/Modals/SaveAsTemplateModal';
 
 interface SummarySectionProps {
   activeStep: number;
@@ -28,6 +30,11 @@ const SummarySection = (props: SummarySectionProps) => {
   const { handleSubmit } = useCustomMutation();
   const { activeStep, setActiveStep, type } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenSaveAsTemplate,
+    onOpen: onOpenSaveAsTemplate,
+    onClose: onCloseSaveAsTemplate,
+  } = useDisclosure();
   const planFormDetails = useAppSelector((state) => state.maintenance.planForm);
   const [createMaintenancePlan, { isLoading: createLoading }] =
     useCreateMaintenancePlanWithSchedulesMutation();
@@ -36,75 +43,94 @@ const SummarySection = (props: SummarySectionProps) => {
   const { data } = useSession();
   const username = data?.user?.username;
 
-  const getDtoKey = (base: string) =>
-    `${type === 'create' ? `create${base}Dto` : `update${base}Dto`}`;
-
-  const PAYLOAD = {
-    [getDtoKey('MaintenancePlan')]: generatePlanDTO(
-      type,
-      planFormDetails,
-      username as string
-    ),
-    [type === 'create'
-      ? 'createMaintenanceScheduleDtos'
-      : 'masterUpdateMaintenanceScheduleDto']: [
-      // Deleted schedules
-      ...planFormDetails.deletedScheduleIDs.map((item) => ({
-        updateMaintenanceScheduleDto: {
-          scheduleId: item,
-          actionType: FORM_ENUM.delete,
-          changeInitiatedBy: username,
-        },
-      })),
-      ...planFormDetails.schedules
-        .filter(
-          // Filter for schedules that has been added or updated
-          (schedule) =>
-            (schedule.scheduleId &&
-              planFormDetails.updatedScheduleIDs.includes(
-                schedule.scheduleId
-              )) ||
-            schedule.scheduleId === null
-        )
-        .map((schedule: ScheduleFormDetails) => ({
-          [getDtoKey('MaintenanceSchedule')]: generateMaintenanceScheduleDTO(
-            type,
-            schedule,
-            planFormDetails.updatedScheduleIDs,
-            username as string
-          ),
-          [type === 'create' ? 'createTaskDtos' : 'updateTaskDtos']: (() => {
-            const tasksArray = [
-              // Deleted Task
-              ...schedule.deletedTaskIDs.map((item) => ({
-                taskId: item,
-                actionType: FORM_ENUM.delete,
-                changeInitiatedBy: username,
-              })),
-              // Generate for only tasks that have been added or updated
-              ...generateTasksArray(
-                schedule.tasks.filter(
-                  (task) =>
-                    (task.taskId &&
-                      schedule.updatedTaskIDs.includes(task.taskId)) ||
-                    task.taskId === null
-                ),
-                schedule.updatedTaskIDs,
-                username as string
-              ),
-            ];
-
-            return tasksArray.length > 0 ? tasksArray : null;
-          })(),
-        })),
-    ],
+  const handleSaveAsTemplate = (
+    templateName: string,
+    templateDescription: string
+  ) => {
+    handleSumbitPlan(true, templateName, templateDescription);
   };
 
-  const handleSumbitPlan = async () => {
+  const generatePayload = (
+    saveAsTemplate: boolean,
+    templateName?: string,
+    templateDescription?: string
+  ) => {
+    const getDtoKey = (base: string) =>
+      `${type === 'create' ? `create${base}Dto` : `update${base}Dto`}`;
+
+    const PAYLOAD = {
+      [getDtoKey('MaintenancePlan')]: {
+        ...generatePlanDTO(type, planFormDetails, username as string),
+        saveAsTemplate,
+        templateName,
+        templateDescription,
+      },
+      [type === 'create'
+        ? 'createMaintenanceScheduleDtos'
+        : 'masterUpdateMaintenanceScheduleDto']: [
+        // Deleted schedules
+        ...planFormDetails.deletedScheduleIDs.map((item) => ({
+          updateMaintenanceScheduleDto: {
+            scheduleId: item,
+            actionType: FORM_ENUM.delete,
+            changeInitiatedBy: username,
+          },
+        })),
+        ...planFormDetails.schedules
+          .filter(
+            // Filter for schedules that has been added or updated
+            (schedule) =>
+              (schedule.scheduleId &&
+                planFormDetails.updatedScheduleIDs.includes(
+                  schedule.scheduleId
+                )) ||
+              schedule.scheduleId === null
+          )
+          .map((schedule: ScheduleFormDetails) => ({
+            [getDtoKey('MaintenanceSchedule')]: generateMaintenanceScheduleDTO(
+              type,
+              schedule,
+              planFormDetails.updatedScheduleIDs,
+              username as string
+            ),
+            [type === 'create' ? 'createTaskDtos' : 'updateTaskDtos']: (() => {
+              const tasksArray = [
+                // Deleted Task
+                ...schedule.deletedTaskIDs.map((item) => ({
+                  taskId: item,
+                  actionType: FORM_ENUM.delete,
+                  changeInitiatedBy: username,
+                })),
+                // Generate for only tasks that have been added or updated
+                ...generateTasksArray(
+                  schedule.tasks.filter(
+                    (task) =>
+                      (task.taskId &&
+                        schedule.updatedTaskIDs.includes(task.taskId)) ||
+                      task.taskId === null
+                  ),
+                  schedule.updatedTaskIDs,
+                  username as string
+                ),
+              ];
+
+              return tasksArray.length > 0 ? tasksArray : null;
+            })(),
+          })),
+      ],
+    };
+    return PAYLOAD;
+  };
+
+  const handleSumbitPlan = async (
+    saveAsTemplate: boolean,
+    templateName?: string,
+    templateDescription?: string
+  ) => {
     let response;
     response = await handleSubmit(
       type === 'create' ? createMaintenancePlan : updateMaintenancePlan,
-      PAYLOAD,
+      generatePayload(saveAsTemplate, templateName, templateDescription),
       ''
     );
 
@@ -114,44 +140,55 @@ const SummarySection = (props: SummarySectionProps) => {
   };
 
   return (
-    <Flex
-      width="full"
-      height="full"
-      direction="column"
-      display={activeStep === 3 ? 'flex' : 'none'}
-    >
-      <VStack
-        spacing="34px"
+    <>
+      <Flex
         width="full"
-        alignItems="flex-start"
-        bgColor="white"
-        pt="26px"
-        pl="16px"
-        pb="32px"
-        pr="30px"
-        rounded="6px"
-        minH="60vh"
-        divider={<Divider borderColor="#BBBBBB" />}
+        height="full"
+        direction="column"
+        display={activeStep === 3 ? 'flex' : 'none'}
       >
-        <SectionOne />
-        <SectionTwo />
-      </VStack>
-      <Flex width="full" mt="16px">
-        <FormActionButtons
-          cancelLink="/maintenance"
-          totalStep={3}
-          activeStep={3}
-          finalText={type === 'create' ? 'Finish' : 'Save Changes'}
-          setActiveStep={setActiveStep}
-          handleContinue={handleSumbitPlan}
-          isLoading={createLoading || updateLoading}
-          loadingText={createLoading ? 'Submitting...' : 'Updating...'}
-        />
+        <VStack
+          spacing="34px"
+          width="full"
+          alignItems="flex-start"
+          bgColor="white"
+          pt="26px"
+          pl="16px"
+          pb="32px"
+          pr="30px"
+          rounded="6px"
+          minH="60vh"
+          divider={<Divider borderColor="#BBBBBB" />}
+        >
+          <SectionOne />
+          <SectionTwo />
+        </VStack>
+        <Flex width="full" mt="16px">
+          <FormActionButtons
+            cancelLink="/maintenance"
+            totalStep={3}
+            activeStep={3}
+            finalText={type === 'create' ? 'Save' : 'Save Changes'}
+            setActiveStep={setActiveStep}
+            handleContinue={() => handleSumbitPlan(false, '', '')}
+            isLoading={createLoading || updateLoading}
+            loadingText={createLoading ? 'Submitting...' : 'Updating...'}
+          >
+            <Button variant="outline" handleClick={onOpenSaveAsTemplate}>
+              Save and as Template
+            </Button>
+          </FormActionButtons>
+        </Flex>
+        {isOpen && (
+          <PlanSuccessModal isOpen={isOpen} onClose={onClose} type={type} />
+        )}
       </Flex>
-      {isOpen && (
-        <PlanSuccessModal isOpen={isOpen} onClose={onClose} type={type} />
-      )}
-    </Flex>
+      <SaveAsTemplateModal
+        isOpen={isOpenSaveAsTemplate}
+        onClose={onCloseSaveAsTemplate}
+        handleSave={handleSaveAsTemplate}
+      />
+    </>
   );
 };
 

@@ -1,7 +1,5 @@
-import { HStack } from '@chakra-ui/react';
 import React from 'react';
 import { FilterInput } from '~/lib/interfaces/asset.interfaces';
-import Button from '../../UI/Button';
 import CategoryFilter from './FilterComponents/CategoryFilter';
 import StatusFilter from './FilterComponents/StatusFilter';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
@@ -9,10 +7,9 @@ import {
   clearAssetFilter,
   updateAssetFilter,
 } from '~/lib/redux/slices/AssetSlice';
-import RegionFilter from '../../Common/FilterComponents/RegionFilter';
-import LGAFilter from '../../Common/FilterComponents/LGAFilter';
 import { Option } from '~/lib/interfaces/general.interfaces';
-import BranchFilter from '../../Common/FilterComponents/BranchFilter';
+import CombinedLocationFilter from '../../Common/FilterComponents/CombinedLocationFilter';
+import FilterWrapper from '../../Common/FilterComponents/FilterWrapper';
 
 interface GeneralFilterProps {
   handleApplyFilter: () => Promise<void>;
@@ -36,46 +33,25 @@ const GeneralFilter = (props: GeneralFilterProps) => {
   };
 
   return (
-    <HStack spacing="7px" overflow="auto">
+    <FilterWrapper
+      handleApplyFilter={handleApplyFilter}
+      handleClearFilter={() => dispatch(clearAssetFilter())}
+    >
       <CategoryFilter
         selectedOptions={filterData.category}
         handleSelectedOption={(value) => handleFilterData(value, 'category')}
       />
-      <RegionFilter
-        selectedOptions={filterData.region}
-        handleSelectedOption={(value) => handleFilterData(value, 'region')}
-      />
-      <LGAFilter
-        regions={filterData.region}
-        selectedOptions={filterData.area}
-        handleSelectedOption={(value) => handleFilterData(value, 'area')}
-      />
-      <BranchFilter
-        areas={filterData.area}
-        selectedOptions={filterData.branch}
-        handleSelectedOption={(value) => handleFilterData(value, 'branch')}
+      <CombinedLocationFilter
+        selectedRegion={filterData.region}
+        selectedArea={filterData.area}
+        selectedBranch={filterData.branch}
+        handleSelectedOption={handleFilterData}
       />
       <StatusFilter
         selectedOptions={filterData.status}
         handleSelectedOption={(value) => handleFilterData(value, 'status')}
       />
-      <Button
-        customStyles={{ minW: '120px', height: '36px' }}
-        handleClick={() => handleApplyFilter()}
-      >
-        Apply Filter
-      </Button>
-      <Button
-        variant="outline"
-        customStyles={{ minW: '120px', height: '36px' }}
-        handleClick={() => {
-          dispatch(clearAssetFilter());
-          handleApplyFilter();
-        }}
-      >
-        Reset Filter
-      </Button>
-    </HStack>
+    </FilterWrapper>
   );
 };
 

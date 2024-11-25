@@ -14,7 +14,7 @@ interface Task {
   isDeleted: boolean;
   taskTypeId: number;
   taskType: string;
-  priorityId:number
+  priorityId: number;
   taskPriorityId: number;
   priorityName: string;
   status: string;

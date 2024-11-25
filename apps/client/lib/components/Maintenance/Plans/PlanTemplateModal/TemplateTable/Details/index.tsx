@@ -1,15 +1,19 @@
 import { Flex, Heading, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import Button from '~/lib/components/UI/Button';
-import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 import PlanInfo from './PlanInfo';
 import Schedule from './Schedules';
+import { Template } from '~/lib/interfaces/template.interfaces';
+import { useGetMaintenancePlanByIdQuery } from '~/lib/redux/services/maintenance/plan.services';
 
 interface DetailsProps {
-  data: MaintenancePlan;
+  template: Template;
 }
 const Details = (props: DetailsProps) => {
-  const { data } = props;
+  const { template } = props;
+  const { data } = useGetMaintenancePlanByIdQuery(template.contextId, {
+    skip: !template.contextId,
+  });
   return (
     <VStack
       width="full"
@@ -26,7 +30,7 @@ const Details = (props: DetailsProps) => {
         Template's Detail
       </Heading>
       <VStack width="full" alignItems="flex-start" spacing={0}>
-        <PlanInfo data={data} />
+        {<PlanInfo data={data} />}
         <VStack
           width="full"
           alignItems="flex-start"
@@ -49,7 +53,7 @@ const Details = (props: DetailsProps) => {
           <Flex width="full" justifyContent="flex-end">
             <Button
               customStyles={{ width: '161px' }}
-              href={`/maintenance/plans/add?template=${data.maintenancePlanId}`}
+              href={`/maintenance/plans/add?template=${data.templateId}`}
             >
               Use Template
             </Button>

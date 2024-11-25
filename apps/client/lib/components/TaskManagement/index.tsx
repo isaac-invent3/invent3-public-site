@@ -8,14 +8,16 @@ import {
   Tab,
   TabPanel,
   useDisclosure,
+  HStack,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import { useRouter, useSearchParams } from 'next/navigation';
-// import { FilterInput } from '~/lib/interfaces/asset.interfaces';
-import Filters from './Filters';
 import ListView from './ListView';
 import { STATUS_CATEGORY_ENUM } from '~/lib/utils/constants';
+import SearchInput from '../UI/SearchInput';
+import FilterButton from '../UI/Filter/FilterButton';
+import { FilterIcon } from '../CustomIcons';
 
 const ALlTabs = ['Pending', 'In Progress', 'Completed'];
 
@@ -23,15 +25,8 @@ const TaskManagement = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [tabIndex, setTabIndex] = useState(0);
-  // eslint-disable-next-line no-unused-vars
   const [search, setSearch] = useState('');
   const { onToggle, isOpen } = useDisclosure();
-  //   const [filterData, setFilterData] = useState<FilterInput>({
-  //     location: [],
-  //     category: [],
-  //   });
-
-  // Retrieve the `tab` parameter from URL on mount
   useEffect(() => {
     const tab = searchParams.get('tab');
     if (tab) {
@@ -68,23 +63,42 @@ const TaskManagement = () => {
               ))}
             </TabList>
             <Flex position="absolute" right={0} bottom="8px">
-              <Filters
-                setSearch={setSearch}
-                showFilter={isOpen}
-                setShowFilter={onToggle}
-              />
+              <HStack spacing="16px" width="full">
+                <SearchInput
+                  setSearch={setSearch}
+                  placeholderText="Search..."
+                />
+                <FilterButton
+                  icon={FilterIcon}
+                  label="Filters"
+                  handleClick={() => onToggle()}
+                  isActive={isOpen}
+                />
+              </HStack>
             </Flex>
           </Flex>
 
           <TabPanels>
             <TabPanel>
-              <ListView statusCategoryId={STATUS_CATEGORY_ENUM.INACTIVE} />
+              <ListView
+                statusCategoryId={STATUS_CATEGORY_ENUM.INACTIVE}
+                search={search}
+                openFilter={isOpen}
+              />
             </TabPanel>
             <TabPanel>
-              <ListView statusCategoryId={STATUS_CATEGORY_ENUM.ACTIVE} />
+              <ListView
+                statusCategoryId={STATUS_CATEGORY_ENUM.ACTIVE}
+                search={search}
+                openFilter={isOpen}
+              />
             </TabPanel>
             <TabPanel>
-              <ListView statusCategoryId={STATUS_CATEGORY_ENUM.ACTIVE} />
+              <ListView
+                statusCategoryId={STATUS_CATEGORY_ENUM.ACTIVE}
+                search={search}
+                openFilter={isOpen}
+              />
             </TabPanel>
           </TabPanels>
         </Tabs>

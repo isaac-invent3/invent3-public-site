@@ -16,6 +16,7 @@ export const locationApi = createApi({
     'allRooms',
     'allAisles',
     'allShelves',
+    'facilitiesByLGAId',
     'buildingsByFacilityId',
     'floorsByBuildingId',
     'departmentsByFloorId',
@@ -54,6 +55,13 @@ export const locationApi = createApi({
         body,
       }),
     }),
+    getAllLGAS: builder.query({
+      query: (data: any) => ({
+        url: generateQueryStr(`/StateLgas?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
     getLGAByStateId: builder.query({
       query: ({ id, ...data }) => ({
         url: generateQueryStr(`/StateLgas/GetLGAsByStateId/${id}?`, data),
@@ -77,6 +85,14 @@ export const locationApi = createApi({
       }),
       providesTags: ['allFacilities'],
     }),
+    getFacilitiesByLGAId: builder.query({
+      query: ({ id, ...data }) => ({
+        url: generateQueryStr(`/Facilities/GetFacilitiesByLGAId/${id}?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['facilitiesByLGAId'],
+    }),
     createFacility: builder.mutation({
       query: (body: any) => ({
         url: `/Facilities`,
@@ -84,7 +100,7 @@ export const locationApi = createApi({
         headers: getHeaders(),
         body,
       }),
-      invalidatesTags: ['allFacilities'],
+      invalidatesTags: ['allFacilities', 'facilitiesByLGAId'],
     }),
     searchFacilities: builder.mutation({
       query: (body: any) => ({
@@ -317,6 +333,7 @@ export const {
   useGetAllRoomsQuery,
   useGetAllShelvesQuery,
   useGetAislesByRoomIdQuery,
+  useGetFacilitiesByLGAIdQuery,
   useGetBuildingsByFacilityIdQuery,
   useGetDepartmentsByFloorIdQuery,
   useGetFloorsByBuildingIdQuery,
@@ -335,4 +352,5 @@ export const {
   useSearchCountriesMutation,
   useSearchLGAMutation,
   useSearchStatesMutation,
+  useGetAllLGASQuery,
 } = locationApi;

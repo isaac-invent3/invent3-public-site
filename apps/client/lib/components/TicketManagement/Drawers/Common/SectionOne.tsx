@@ -1,10 +1,9 @@
 import { HStack, Text, VStack, useDisclosure } from '@chakra-ui/react';
-import React from 'react';
+import UserSelectModal from '~/lib/components/Common/Modals/UserSelectModal';
 import UserInfo from '~/lib/components/Common/UserInfo';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import Description from './Description';
-import UserSelectModal from '~/lib/components/Common/Modals/UserSelectModal';
 
 interface SectionOneProps {
   data: Ticket;
@@ -40,13 +39,14 @@ const SectionOne = (props: SectionOneProps) => {
           </Text>
           <UserInfo name={data?.reportedBy} customAvatarStyle={AvatarSize} />
         </VStack>
-        {type === 'scheduled' && (
+
+        {data.assignedTo && (
           <VStack spacing="8px" alignItems="flex-start">
             <Text fontWeight={700} color="neutral.600">
               Assigned to
             </Text>
             <UserInfo
-              name={data?.reportedBy}
+              name={data?.assignedTo}
               customAvatarStyle={AvatarSize}
               customBoxStyle={{ alignItems: 'flex-start' }}
             >
@@ -64,10 +64,12 @@ const SectionOne = (props: SectionOneProps) => {
             </UserInfo>
           </VStack>
         )}
+
         <VStack spacing="8px" alignItems="flex-start">
           <Text fontWeight={700} color="neutral.600">
             {type === 'new' ? 'Requested Date' : 'First Respond Date'}
           </Text>
+
           <Text>
             {dateFormatter(
               type === 'new' ? data?.issueReportDate : data?.resolutionDate

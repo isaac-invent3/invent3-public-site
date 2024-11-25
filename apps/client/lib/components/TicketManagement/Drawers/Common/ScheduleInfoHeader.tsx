@@ -32,26 +32,26 @@ const ScheduleInfoHeader = (props: ScheduleInfoHeaderProps) => {
               <Text color="neutral.600">Status:</Text>
 
               <GenericStatusBox
-                text="In Progress"
+                text={data.statusName}
                 width="120px"
-                colorCode={COLOR_CODES_FALLBACK.default}
+                colorCode={data.statusColorCode}
               />
             </VStack>
             <VStack alignItems="flex-start" spacing="8px">
               <Text color="neutral.600">Priority</Text>
 
               <GenericStatusBox
-                text="High"
+                text={data.ticketPriorityName}
                 width="110px"
-                colorCode={COLOR_CODES_FALLBACK.default}
+                colorCode={data.priorityColorCode}
               />
             </VStack>
           </HStack>
           <VStack alignItems="flex-start" spacing="8px">
             <Text color="neutral.600">Ticket Type</Text>
             <GenericStatusBox
-              text="Incident"
-              width="110px"
+              text={data.ticketTypeName}
+              width="150px"
               colorCode={COLOR_CODES_FALLBACK.default}
             />
           </VStack>

@@ -67,6 +67,8 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
     assetId: asset?.assetId ?? null,
     reportedByEmployeeId: null,
     reportedByEmployeeName: null,
+    assignedTo: null,
+    assignedToEmployeeName: null,
     ticketTypeId: null,
     ticketPriorityId: null,
     issueReportDate: moment(new Date().toISOString()).utcOffset(0, true),
@@ -77,16 +79,13 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
     enableReinitialize: false,
     validationSchema: createTicketSchema,
     onSubmit: async (data) => {
-      const successMessage = asset
-        ? `Ticket for ${asset.assetName} Created Successfully`
-        : 'Ticket Created Successfully';
       const response = await handleSubmit(
         createTicketMutation,
         {
           ...data,
           createdBy: username,
         },
-        successMessage
+        'Ticket Created Successfully'
       );
 
       if (response?.data) {
@@ -233,6 +232,7 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                     spacing="24px"
                     description="Add name that users can likely search with"
                     title="Ticket Raised By"
+                    isRequired
                   >
                     <UserDisplayAndAddButton
                       selectedUser={formik.values.reportedByEmployeeName}
@@ -250,6 +250,28 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                       sectionInfoTitle="Raised By"
                     />
                   </FormInputWrapper>
+
+                  <FormInputWrapper
+                    sectionMaxWidth="141px"
+                    spacing="24px"
+                    description="Add name that users can likely search with"
+                    title="Ticket Assigned To"
+                    isRequired
+                  >
+                    <UserDisplayAndAddButton
+                      selectedUser={formik.values.assignedToEmployeeName}
+                      handleSelectUser={(user) => {
+                        formik.setFieldValue('assignedTo', user?.value ?? null);
+
+                        formik.setFieldValue(
+                          'assignedToEmployeeName',
+                          user?.label ?? null
+                        );
+                      }}
+                      sectionInfoTitle="Assigned To"
+                    />
+                  </FormInputWrapper>
+
                   <FormInputWrapper
                     sectionMaxWidth="141px"
                     spacing="24px"

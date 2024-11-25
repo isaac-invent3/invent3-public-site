@@ -43,6 +43,8 @@ interface Ticket {
   shelfRef: string;
   ticketPriorityId: number;
   ticketStatusId: number;
+  statusColorCode: string;
+  statusName: string;
   taskStatusId: number;
   ticketTypeId: number;
   assetLocation: string;

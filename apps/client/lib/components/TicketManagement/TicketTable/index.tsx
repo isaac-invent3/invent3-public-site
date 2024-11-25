@@ -84,17 +84,12 @@ const TicketTable = (props: TicketTableProps) => {
           header: 'Requested Date',
           enableSorting: false,
         }),
-        ...(type !== 'new'
+        ...(type === 'completed'
           ? [
               columnHelper.accessor('resolutionDate', {
                 cell: (info) =>
                   dateFormatter(info.getValue(), 'DD / MM / YYYY hh:mma'),
                 header: 'Resolution Date',
-                enableSorting: false,
-              }),
-              columnHelper.accessor('resolvedBy', {
-                cell: (info) => <UserInfo name={info.getValue()} />,
-                header: 'Assigned To',
                 enableSorting: false,
               }),
             ]
@@ -104,6 +99,20 @@ const TicketTable = (props: TicketTableProps) => {
           header: 'Requested By',
           enableSorting: true,
         }),
+        /**
+         * Reason for the separation from above
+         * We would have a different component for the assigned to for scheduled tickets
+         * It would fetch the ticket maintenance schedule and it's the assigned to that would be there
+         */
+        ...(type !== 'new'
+          ? [
+              columnHelper.accessor('assignedTo', {
+                cell: (info) => <UserInfo name={info.getValue()} />,
+                header: 'Assigned To',
+                enableSorting: false,
+              }),
+            ]
+          : []),
         columnHelper.accessor('facilityRef', {
           cell: (info) => (
             <PopoverAction ticket={info.row.original} type={type} />

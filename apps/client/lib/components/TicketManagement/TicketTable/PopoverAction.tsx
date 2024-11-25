@@ -62,7 +62,7 @@ const PopoverAction = (props: PopoverActionProps) => {
     <>
       <GenericPopover width="137px" placement="bottom-start">
         <VStack width="full" alignItems="flex-start" spacing="16px">
-          {type === 'new' && (
+          {(type === 'new' || type === 'assigned') && (
             <VStack width="full" alignItems="flex-start" spacing="16px">
               <Text cursor="pointer" onClick={onOpenScheduleTicket}>
                 Schedule Ticket

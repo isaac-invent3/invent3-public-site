@@ -4,6 +4,7 @@ import TicketInfoHeader from '../Common/TicketInfoHeader';
 import { HStack, Text, VStack } from '@chakra-ui/react';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import { TaskPriorityColorCode } from '~/lib/utils/ColorCodes';
+import { COLOR_CODES_FALLBACK } from '~/lib/utils/constants';
 
 interface InfoHeaderProps {
   data: Ticket;
@@ -23,21 +24,27 @@ const InfoHeader = (props: InfoHeaderProps) => {
           <VStack alignItems="flex-start" spacing="8px">
             <Text color="neutral.600">Status:</Text>
             <GenericStatusBox
-              text="In Progress"
-              colorCode={TaskPriorityColorCode['Medium']}
+              text={data.statusName}
+              width="120px"
+              colorCode={data.statusColorCode}
             />
           </VStack>
           <VStack alignItems="flex-start" spacing="8px">
             <Text color="neutral.600">Priority</Text>
             <GenericStatusBox
-              text="High"
-              colorCode={TaskPriorityColorCode['Low']}
+              text={data.ticketPriorityName}
+              width="110px"
+              colorCode={data.priorityColorCode}
             />
           </VStack>
         </HStack>
         <VStack alignItems="flex-start" spacing="8px">
           <Text color="neutral.600">Ticket Type</Text>
-          <Text color="black">Incident</Text>
+          <GenericStatusBox
+            text={data.ticketTypeName}
+            width="150px"
+            colorCode={COLOR_CODES_FALLBACK.default}
+          />
         </VStack>
       </HStack>
     </TicketInfoHeader>

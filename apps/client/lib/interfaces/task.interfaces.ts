@@ -113,10 +113,34 @@ interface TaskPriority {
   createdBy: string;
 }
 
+interface TaskInstance {
+  taskInstanceId: number;
+  taskInstanceName: string;
+  parentTaskId: number | null;
+  scheduleInstanceId: number | null;
+  dateCreated: string;
+  dueDate: string;
+  dateCompleted: string | null;
+  actualCost: number | null;
+  assignedTo: number | null;
+  comments: string | null;
+  taskStatusId: number;
+  isNew: boolean;
+  createdDate: string;
+  createdBy: string;
+  lastModifiedDate: string | null;
+  lastModifiedBy: string | null;
+  isDeleted: boolean;
+  deletedDate: string | null;
+  deletedBy: string | null;
+  guid: string;
+}
+
 interface taskFormDetails extends baseTaskFormDetail, FormDetails {}
 
 export type {
   Task,
+  TaskInstance,
   baseTaskFormDetail,
   taskFormDetails,
   TaskStatus,

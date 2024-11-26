@@ -13,11 +13,12 @@ import {
 import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import { useRouter, useSearchParams } from 'next/navigation';
-import ListView from './ListView';
 import { STATUS_CATEGORY_ENUM } from '~/lib/utils/constants';
 import SearchInput from '../UI/SearchInput';
 import FilterButton from '../UI/Filter/FilterButton';
 import { FilterIcon } from '../CustomIcons';
+import PendingAndInProgressTab from './TabTableViews/PendingAndInProgressTab';
+import CompletedTab from './TabTableViews/CompletedTab';
 
 const ALlTabs = ['Pending', 'In Progress', 'Completed'];
 
@@ -80,25 +81,21 @@ const TaskManagement = () => {
 
           <TabPanels>
             <TabPanel>
-              <ListView
+              <PendingAndInProgressTab
                 statusCategoryId={STATUS_CATEGORY_ENUM.INACTIVE}
                 search={search}
                 openFilter={isOpen}
               />
             </TabPanel>
             <TabPanel>
-              <ListView
+              <PendingAndInProgressTab
                 statusCategoryId={STATUS_CATEGORY_ENUM.ACTIVE}
                 search={search}
                 openFilter={isOpen}
               />
             </TabPanel>
             <TabPanel>
-              <ListView
-                statusCategoryId={STATUS_CATEGORY_ENUM.ACTIVE}
-                search={search}
-                openFilter={isOpen}
-              />
+              <CompletedTab search={search} openFilter={isOpen} />
             </TabPanel>
           </TabPanels>
         </Tabs>

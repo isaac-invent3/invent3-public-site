@@ -29,7 +29,7 @@ const Schedule = (props: MaintenanceSchedulesProps) => {
         pageSize,
         pageNumber: currentPage,
       },
-      { skip: !plan.maintenancePlanId }
+      { skip: !plan?.maintenancePlanId }
     );
   const columnHelper = createColumnHelper<MaintenanceSchedule>();
   const columns = useMemo(

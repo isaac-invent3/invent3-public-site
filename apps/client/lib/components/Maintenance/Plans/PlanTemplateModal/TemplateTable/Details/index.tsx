@@ -1,4 +1,4 @@
-import { Flex, Heading, Text, VStack } from '@chakra-ui/react';
+import { Flex, Heading, Skeleton, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import Button from '~/lib/components/UI/Button';
 import PlanInfo from './PlanInfo';
@@ -11,9 +11,12 @@ interface DetailsProps {
 }
 const Details = (props: DetailsProps) => {
   const { template } = props;
-  const { data } = useGetMaintenancePlanByIdQuery(template.contextId, {
-    skip: !template.contextId,
-  });
+  const { data, isLoading } = useGetMaintenancePlanByIdQuery(
+    template.contextId,
+    {
+      skip: !template.contextId,
+    }
+  );
   return (
     <VStack
       width="full"
@@ -29,37 +32,41 @@ const Details = (props: DetailsProps) => {
       <Heading fontWeight={800} fontSize="18px" lineHeight="21.38px">
         Template's Detail
       </Heading>
-      <VStack width="full" alignItems="flex-start" spacing={0}>
-        {<PlanInfo data={data} />}
-        <VStack
-          width="full"
-          alignItems="flex-start"
-          pt="26px"
-          spacing="16px"
-          px="8px"
-          pb="8px"
-          borderTop="0px"
-          borderWidth="1px"
-          borderColor="neutral.300"
-          borderBottomRadius="8px"
-        >
-          <VStack alignItems="flex-start" width="full" spacing="8px">
-            <Text fontWeight={700} color="neutral.800">
-              Select a Schedule to see the details
-            </Text>
-            <Schedule plan={data} />
-          </VStack>
+      {isLoading ? (
+        <Skeleton width="full" height="400px" rounded="8px" />
+      ) : (
+        <VStack width="full" alignItems="flex-start" spacing={0}>
+          {<PlanInfo data={data?.data} />}
+          <VStack
+            width="full"
+            alignItems="flex-start"
+            pt="26px"
+            spacing="16px"
+            px="8px"
+            pb="8px"
+            borderTop="0px"
+            borderWidth="1px"
+            borderColor="neutral.300"
+            borderBottomRadius="8px"
+          >
+            <VStack alignItems="flex-start" width="full" spacing="8px">
+              <Text fontWeight={700} color="neutral.800">
+                Select a Schedule to see the details
+              </Text>
+              <Schedule plan={data?.data} />
+            </VStack>
 
-          <Flex width="full" justifyContent="flex-end">
-            <Button
-              customStyles={{ width: '161px' }}
-              href={`/maintenance/plans/add?template=${data.templateId}`}
-            >
-              Use Template
-            </Button>
-          </Flex>
+            <Flex width="full" justifyContent="flex-end">
+              <Button
+                customStyles={{ width: '161px' }}
+                href={`/maintenance/plans/add?template=${template.contextId}`}
+              >
+                Use Template
+              </Button>
+            </Flex>
+          </VStack>
         </VStack>
-      </VStack>
+      )}
     </VStack>
   );
 };

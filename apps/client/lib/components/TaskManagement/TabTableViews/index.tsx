@@ -1,18 +1,20 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import _ from 'lodash';
-import TaskTable from './TaskTable';
-import { useGetAllTasksQuery } from '~/lib/redux/services/task/general.services';
+import { useSearchTasksMutation } from '~/lib/redux/services/task/general.services';
 import { Flex } from '@chakra-ui/react';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 import {
+  ListResponse,
   LocationFilter,
+  SearchCriterion,
   SearchResponse,
 } from '~/lib/interfaces/general.interfaces';
-import FilterDisplay from '../UI/Filter/FilterDisplay';
-import Filters from './Filters';
 import { generateSearchCriterion } from '~/lib/utils/helperFunctions';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { useSearchMaintenancePlanMutation } from '~/lib/redux/services/maintenance/plan.services';
+import TaskTable from '../TaskTable';
+import FilterDisplay from '../../UI/Filter/FilterDisplay';
+import { Task } from '~/lib/interfaces/task.interfaces';
+import Filters from './Filters';
 
 export const initialFilterData = {
   region: [],
@@ -20,23 +22,34 @@ export const initialFilterData = {
   branch: [],
 };
 
-interface ListViewProps {
-  statusCategoryId: number;
+interface TabTableViewProps {
   search: string;
   openFilter: boolean;
+  data: ListResponse<Task> | undefined;
+  isLoading: boolean;
+  isFetching: boolean;
+  pageSize: number;
+  currentPage: number;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  setPageSize: React.Dispatch<React.SetStateAction<number>>;
+  specificSearchCriterion: SearchCriterion;
 }
 
-const ListView = (props: ListViewProps) => {
-  const { statusCategoryId, search, openFilter } = props;
+const TabTableView = (props: TabTableViewProps) => {
+  const {
+    data,
+    search,
+    openFilter,
+    isLoading,
+    isFetching,
+    pageSize,
+    currentPage,
+    setCurrentPage,
+    setPageSize,
+    specificSearchCriterion,
+  } = props;
   const [filterData, setFilterData] =
     useState<LocationFilter>(initialFilterData);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const { data, isLoading, isFetching } = useGetAllTasksQuery({
-    pageSize,
-    pageNumber: currentPage,
-    statusCategoryId,
-  });
   const { handleSubmit } = useCustomMutation();
 
   // Checks if all filterdata is empty
@@ -45,8 +58,7 @@ const ListView = (props: ListViewProps) => {
     (value) => _.isArray(value) && _.isEmpty(value)
   );
 
-  const [searchPlan, { isLoading: searchLoading }] =
-    useSearchMaintenancePlanMutation({});
+  const [searchPlan, { isLoading: searchLoading }] = useSearchTasksMutation({});
   const [searchData, setSearchData] = useState<SearchResponse | null>(null);
 
   // Search Criterion
@@ -59,6 +71,7 @@ const ListView = (props: ListViewProps) => {
               columnValue: search,
               operation: OPERATORS.Contains,
             },
+            specificSearchCriterion,
           ],
         }
       : {}),
@@ -139,12 +152,12 @@ const ListView = (props: ListViewProps) => {
         data={
           (search || !isFilterEmpty) && searchData
             ? searchData.items
-            : (data?.data?.items ?? [])
+            : (data?.items ?? [])
         }
         totalPages={
           (search || !isFilterEmpty) && searchData
             ? searchData?.totalPages
-            : data?.data?.totalPages
+            : data?.totalPages
         }
         isLoading={isLoading}
         isFetching={isFetching || searchLoading}
@@ -160,4 +173,4 @@ const ListView = (props: ListViewProps) => {
   );
 };
 
-export default ListView;
+export default TabTableView;

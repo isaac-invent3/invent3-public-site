@@ -12,9 +12,10 @@ interface MarkTaskAsCompletedModalProps {
   onClose: () => void;
   // eslint-disable-next-line no-unused-vars
   handleSave: (templateName: string, templateDescription: string) => void;
+  isLoading: boolean;
 }
 const SaveAsTemplateModal = (props: MarkTaskAsCompletedModalProps) => {
-  const { isOpen, onClose, handleSave } = props;
+  const { isOpen, onClose, handleSave, isLoading } = props;
 
   const formik = useFormik({
     initialValues: {
@@ -33,6 +34,7 @@ const SaveAsTemplateModal = (props: MarkTaskAsCompletedModalProps) => {
       isOpen={isOpen}
       onClose={onClose}
       contentStyle={{ width: { md: '526px' } }}
+      mainModalStyle={{ closeOnOverlayClick: false, closeOnEsc: false }}
     >
       <ModalBody p={0} m={0} width="full">
         <FormikProvider value={formik}>
@@ -80,7 +82,12 @@ const SaveAsTemplateModal = (props: MarkTaskAsCompletedModalProps) => {
                 >
                   Cancel
                 </Button>
-                <Button type="submit" customStyles={{ width: '250px' }}>
+                <Button
+                  type="submit"
+                  customStyles={{ width: '250px' }}
+                  isLoading={isLoading}
+                  loadingText="Saving..."
+                >
                   Save Template
                 </Button>
               </HStack>

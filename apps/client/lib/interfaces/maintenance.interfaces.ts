@@ -12,6 +12,7 @@ interface MaintenancePlan {
   isDeleted: boolean;
   owner: string;
   assetId: number;
+  assetName: string;
   assetCode: string;
   assetTypeId: number;
   serialNo: string;

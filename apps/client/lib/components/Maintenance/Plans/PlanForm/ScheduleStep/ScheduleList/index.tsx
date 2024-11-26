@@ -92,7 +92,7 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
           enableSorting: false,
         }),
         columnHelper.accessor('frequencyName', {
-          cell: (info) => info.getValue(),
+          cell: (info) => info.getValue() ?? 'N/A',
           header: 'Frequency',
           enableSorting: false,
         }),
@@ -102,7 +102,12 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
           enableSorting: false,
         }),
         columnHelper.accessor('scheduledDate', {
-          cell: (info) => dateFormatter(info.getValue(), 'DD/MM/YYYY hh:mmA'),
+          cell: (info) =>
+            dateFormatter(
+              info.getValue(),
+              'DD/MM/YYYY hh:mmA',
+              'DD/MM/YYYY HH:mm'
+            ),
           header: 'Start Date',
           enableSorting: false,
         }),

@@ -1,5 +1,5 @@
 import { Divider, Flex, useDisclosure, VStack } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
 import FormActionButtons from '~/lib/components/UI/Form/FormActionButtons';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { useSession } from 'next-auth/react';
@@ -17,9 +17,10 @@ import {
   useCreateMaintenancePlanWithSchedulesMutation,
   useUpdateMaintenancePlanWithSchedulesMutation,
 } from '~/lib/redux/services/maintenance/plan.services';
-import { FORM_ENUM } from '~/lib/utils/constants';
+import { FORM_ENUM, SYSTEM_CONTEXT_TYPE } from '~/lib/utils/constants';
 import Button from '~/lib/components/UI/Button';
 import SaveAsTemplateModal from '~/lib/components/Common/Modals/SaveAsTemplateModal';
+import { useGetTemplateInfoBySystemContextTypeAndContextIdQuery } from '~/lib/redux/services/template.services';
 
 interface SummarySectionProps {
   activeStep: number;
@@ -36,17 +37,27 @@ const SummarySection = (props: SummarySectionProps) => {
     onClose: onCloseSaveAsTemplate,
   } = useDisclosure();
   const planFormDetails = useAppSelector((state) => state.maintenance.planForm);
+  const { isSuccess, isLoading } =
+    useGetTemplateInfoBySystemContextTypeAndContextIdQuery(
+      {
+        systemContextTypeId: SYSTEM_CONTEXT_TYPE.MAINTENANCE_PLANS,
+        contextId: planFormDetails?.planId,
+      },
+      { skip: !planFormDetails?.planId }
+    );
   const [createMaintenancePlan, { isLoading: createLoading }] =
     useCreateMaintenancePlanWithSchedulesMutation();
   const [updateMaintenancePlan, { isLoading: updateLoading }] =
     useUpdateMaintenancePlanWithSchedulesMutation();
   const { data } = useSession();
   const username = data?.user?.username;
+  const [saveAsTemplate, setSaveAsTemplate] = useState(false);
 
   const handleSaveAsTemplate = (
     templateName: string,
     templateDescription: string
   ) => {
+    setSaveAsTemplate(true);
     handleSumbitPlan(true, templateName, templateDescription);
   };
 
@@ -135,6 +146,7 @@ const SummarySection = (props: SummarySectionProps) => {
     );
 
     if (response?.data) {
+      setSaveAsTemplate(false);
       onOpen();
     }
   };
@@ -171,12 +183,18 @@ const SummarySection = (props: SummarySectionProps) => {
             finalText={type === 'create' ? 'Save' : 'Save Changes'}
             setActiveStep={setActiveStep}
             handleContinue={() => handleSumbitPlan(false, '', '')}
-            isLoading={createLoading || updateLoading}
+            isLoading={saveAsTemplate ? false : createLoading || updateLoading}
             loadingText={createLoading ? 'Submitting...' : 'Updating...'}
           >
-            <Button variant="outline" handleClick={onOpenSaveAsTemplate}>
-              Save and as Template
-            </Button>
+            {!isLoading ? (
+              !isSuccess && (
+                <Button variant="outline" handleClick={onOpenSaveAsTemplate}>
+                  Save and as Template
+                </Button>
+              )
+            ) : (
+              <></>
+            )}
           </FormActionButtons>
         </Flex>
         {isOpen && (
@@ -187,6 +205,7 @@ const SummarySection = (props: SummarySectionProps) => {
         isOpen={isOpenSaveAsTemplate}
         onClose={onCloseSaveAsTemplate}
         handleSave={handleSaveAsTemplate}
+        isLoading={createLoading || updateLoading}
       />
     </>
   );

@@ -28,10 +28,20 @@ export const templateApi = createApi({
     }),
     searchTemplates: builder.mutation({
       query: (body: any) => ({
-        url: `//api/Templates/Search`,
+        url: `/Templates/Search`,
         method: 'POST',
         headers: getHeaders(),
         body,
+      }),
+    }),
+    getTemplateInfoBySystemContextTypeAndContextId: builder.query<
+      BaseApiResponse<Template>,
+      { systemContextTypeId: number; contextId: number | null }
+    >({
+      query: (data) => ({
+        url: `/Templates/GetTemplateBySystemContextTypeIdAndContextId/${data.systemContextTypeId}?contextId=${data.contextId}`,
+        method: 'GET',
+        headers: getHeaders(),
       }),
     }),
   }),
@@ -40,4 +50,5 @@ export const templateApi = createApi({
 export const {
   useGetMaintenancePlanTemplateQuery,
   useSearchTemplatesMutation,
+  useGetTemplateInfoBySystemContextTypeAndContextIdQuery,
 } = templateApi;

@@ -50,4 +50,20 @@ interface Ticket {
   assetLocation: string;
 }
 
-export type { Ticket };
+type SelectedTicketAction =
+  | 'schedule'
+  | 'assign'
+  | 'edit'
+  | 'view'
+  | 'delete'
+  | 'markAsCompleted';
+
+type TicketCategory =
+  | 'new'
+  | 'assigned'
+  | 'scheduled'
+  | 'in-progress'
+  | 'completed'
+
+
+export type { SelectedTicketAction, Ticket, TicketCategory };

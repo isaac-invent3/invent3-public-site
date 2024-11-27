@@ -1,131 +1,83 @@
 /* eslint-disable no-unused-vars */
-import { Text, useDisclosure, useToast, VStack } from '@chakra-ui/react';
-import { useSession } from 'next-auth/react';
+import { Text, VStack } from '@chakra-ui/react';
 import GenericPopover from '~/lib/components/UI/GenericPopover';
-import GenericDeleteModal from '~/lib/components/UI/Modal/GenericDeleteModal';
-import { Ticket } from '~/lib/interfaces/ticket.interfaces';
-import { useDeleteTicketMutation } from '~/lib/redux/services/ticket.services';
-import ScheduledTicketDetailDrawer from '../Drawers/ScheduledTicketDetailDrawer';
-import ScheduleTicketDrawer from '../Drawers/ScheduleTicketDrawer';
-import TicketDetailsDrawer from '../Drawers/TicketDetailsDrawer';
-import MarkTicketAsCompletedModal from '../Modals/MarkTicketAsCompletedModal';
+import {
+  SelectedTicketAction,
+  Ticket,
+  TicketCategory,
+} from '~/lib/interfaces/ticket.interfaces';
+
+import { useAppDispatch } from '~/lib/redux/hooks';
+import { setSelectedTicket } from '~/lib/redux/slices/TicketSlice';
 
 interface PopoverActionProps {
   ticket: Ticket;
-  type: 'new' | 'assigned' | 'scheduled' | 'completed';
+  category: TicketCategory;
 }
 const PopoverAction = (props: PopoverActionProps) => {
-  const { ticket, type } = props;
-  const {
-    isOpen: isOpenEdit,
-    onOpen: onOpenEdit,
-    onClose: onCloseEdit,
-  } = useDisclosure();
-  const {
-    isOpen: isOpenScheduleTicket,
-    onOpen: onOpenScheduleTicket,
-    onClose: onCloseScheduleTicket,
-  } = useDisclosure();
-  const {
-    isOpen: isOpenDelete,
-    onOpen: onOpenDelete,
-    onClose: onCloseDelete,
-  } = useDisclosure();
-  const {
-    isOpen: isOpenMarkCompleted,
-    onOpen: onOpenMarkCompleted,
-    onClose: onCloseMarkCompleted,
-  } = useDisclosure();
-  const {
-    isOpen: isOpenViewDetails,
-    onOpen: onOpenViewDetails,
-    onClose: onCloseViewDetails,
-  } = useDisclosure();
-  const toast = useToast();
+  const { ticket, category } = props;
 
-  const [deleteTicket, { isLoading }] = useDeleteTicketMutation({});
-  const { data } = useSession();
+  const dispatch = useAppDispatch();
 
-  const handleDeleteTask = async () => {
-    await deleteTicket({ id: ticket.ticketId, deletedBy: data?.user.username });
-
-    toast({
-      title: 'Ticket Deleted Successfully',
-      status: 'success',
-      position: 'top-right',
-    });
-
-    onCloseDelete();
+  const openModal = (action: SelectedTicketAction) => {
+    dispatch(
+      setSelectedTicket({
+        action: [action],
+        category,
+        data: ticket,
+      })
+    );
   };
 
   return (
     <>
       <GenericPopover width="137px" placement="bottom-start">
         <VStack width="full" alignItems="flex-start" spacing="16px">
-          {(type === 'new' || type === 'assigned') && (
+          {category === 'new' && (
             <VStack width="full" alignItems="flex-start" spacing="16px">
-              <Text cursor="pointer" onClick={onOpenScheduleTicket}>
+              <Text cursor="pointer" onClick={() => openModal('assign')}>
+                Assign Ticket
+              </Text>
+              <Text cursor="pointer" onClick={() => openModal('schedule')}>
                 Schedule Ticket
               </Text>
-
-              <Text cursor="pointer" onClick={onOpenViewDetails}>
+              <Text cursor="pointer" onClick={() => openModal('view')}>
                 View Details
               </Text>
             </VStack>
           )}
-          {type === 'scheduled' && (
+
+          {category === 'assigned' && (
             <VStack width="full" alignItems="flex-start" spacing="16px">
-              <Text cursor="pointer" onClick={onOpenEdit}>
+              <Text cursor="pointer" onClick={() => openModal('schedule')}>
+                Schedule Ticket
+              </Text>
+              <Text cursor="pointer" onClick={() => openModal('view')}>
+                View Details
+              </Text>
+            </VStack>
+          )}
+
+          {category === 'scheduled' && (
+            <VStack width="full" alignItems="flex-start" spacing="16px">
+              <Text cursor="pointer" onClick={() => openModal('edit')}>
                 Edit Ticket
               </Text>
-              <Text cursor="pointer" onClick={onOpenMarkCompleted}>
+
+              <Text
+                cursor="pointer"
+                onClick={() => openModal('markAsCompleted')}
+              >
                 Mark Completed
               </Text>
             </VStack>
           )}
-          <Text cursor="pointer" onClick={onOpenDelete}>
+
+          <Text cursor="pointer" onClick={() => openModal('delete')}>
             Delete
           </Text>
         </VStack>
       </GenericPopover>
-      {isOpenScheduleTicket && (
-        <ScheduleTicketDrawer
-          isOpen={isOpenScheduleTicket}
-          onClose={onCloseScheduleTicket}
-          data={ticket}
-        />
-      )}
-
-      {isOpenDelete && (
-        <GenericDeleteModal
-          isLoading={isLoading}
-          isOpen={isOpenDelete}
-          onClose={onCloseDelete}
-          handleDelete={handleDeleteTask}
-        />
-      )}
-
-      <MarkTicketAsCompletedModal
-        isOpen={isOpenMarkCompleted}
-        onClose={onCloseMarkCompleted}
-        data={ticket}
-      />
-
-      {isOpenViewDetails && (
-        <TicketDetailsDrawer
-          isOpen={isOpenViewDetails}
-          onClose={onCloseViewDetails}
-          data={ticket}
-        />
-      )}
-
-      {isOpenEdit && (
-        <ScheduledTicketDetailDrawer
-          isOpen={isOpenEdit}
-          onClose={onCloseEdit}
-          data={ticket}
-        />
-      )}
     </>
   );
 };

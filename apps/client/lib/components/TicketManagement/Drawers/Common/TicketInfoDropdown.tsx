@@ -49,6 +49,8 @@ const TicketInfoDropDown = (props: DropDownProps) => {
   });
 
   const getLabel = () => {
+    if (isLoading) return 'Loading ...';
+
     if (meta.value) {
       return options.find((option) => option.value === meta.value)?.label;
     }

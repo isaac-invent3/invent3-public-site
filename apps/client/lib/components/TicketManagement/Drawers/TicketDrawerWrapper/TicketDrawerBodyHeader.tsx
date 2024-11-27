@@ -1,24 +1,33 @@
 import { HStack, Text, VStack } from '@chakra-ui/react';
 import { useFormikContext } from 'formik';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
-import { Ticket } from '~/lib/interfaces/ticket.interfaces';
+import {
+  SelectedTicketAction,
+  Ticket,
+} from '~/lib/interfaces/ticket.interfaces';
 import { useGetAllTaskPrioritiesQuery } from '~/lib/redux/services/task/priorities.services';
 import { useGetAllTaskStatusesQuery } from '~/lib/redux/services/task/statuses.services';
 import { useGetAllTicketTypesQuery } from '~/lib/redux/services/ticket.services';
 import { COLOR_CODES_FALLBACK, DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { generateOptions } from '~/lib/utils/helperFunctions';
-import { ScheduleTicketFormDetails } from '../ScheduledTicketDetailDrawer';
-import TicketInfoDropDown from './TicketInfoDropdown';
-import TicketInfoHeader from './TicketInfoHeader';
+import TicketInfoDropDown from '../Common/TicketInfoDropdown';
+import TicketInfoHeader from '../Common/TicketInfoHeader';
 
-interface ScheduleInfoHeaderProps {
+interface TicketDrawerBodyHeaderProps {
   data: Ticket;
-  isUpdateTicket?: boolean;
+  action: SelectedTicketAction;
 }
-const ScheduleInfoHeader = (props: ScheduleInfoHeaderProps) => {
-  const { data, isUpdateTicket = false } = props;
 
-  if (!isUpdateTicket) {
+export interface GenricTicketFormDetails {
+  ticketStatusId: number | null;
+  ticketPriorityId: number | null;
+  ticketTypeId: number | null;
+}
+
+const TicketDrawerBodyHeader = (props: TicketDrawerBodyHeaderProps) => {
+  const { data, action } = props;
+
+  if (action === 'view' || action === 'assign') {
     return (
       <TicketInfoHeader data={data}>
         <HStack
@@ -27,7 +36,7 @@ const ScheduleInfoHeader = (props: ScheduleInfoHeaderProps) => {
           alignItems="flex-start"
           justifyContent="space-between"
         >
-          <HStack spacing="40px" alignItems="flex-start">
+          <HStack spacing="20px" alignItems="flex-start">
             <VStack alignItems="flex-start" spacing="8px">
               <Text color="neutral.600">Status:</Text>
 
@@ -37,6 +46,7 @@ const ScheduleInfoHeader = (props: ScheduleInfoHeaderProps) => {
                 colorCode={data.statusColorCode}
               />
             </VStack>
+
             <VStack alignItems="flex-start" spacing="8px">
               <Text color="neutral.600">Priority</Text>
 
@@ -47,20 +57,17 @@ const ScheduleInfoHeader = (props: ScheduleInfoHeaderProps) => {
               />
             </VStack>
           </HStack>
+
           <VStack alignItems="flex-start" spacing="8px">
             <Text color="neutral.600">Ticket Type</Text>
-            <GenericStatusBox
-              text={data.ticketTypeName}
-              width="150px"
-              colorCode={COLOR_CODES_FALLBACK.default}
-            />
+            <Text>{data.ticketTypeName}</Text>
           </VStack>
         </HStack>
       </TicketInfoHeader>
     );
   }
 
-  const { values } = useFormikContext<ScheduleTicketFormDetails>();
+  const { values } = useFormikContext<GenricTicketFormDetails>();
 
   const { data: taskStatuses, isLoading: isFetchingTaskStatuses } =
     useGetAllTaskStatusesQuery({
@@ -112,53 +119,65 @@ const ScheduleInfoHeader = (props: ScheduleInfoHeaderProps) => {
   };
 
   return (
-    <TicketInfoHeader data={data} isUpdateTicket>
+    <TicketInfoHeader data={data} isUpdateTicket={action === 'edit'}>
       <HStack
         width="full"
         mt="24px"
         alignItems="flex-start"
         justifyContent="space-between"
       >
-        <HStack spacing="20px" alignItems="flex-start" flexWrap="wrap">
-          <VStack alignItems="flex-start" spacing="8px">
-            <Text color="neutral.600">Status:</Text>
-            <TicketInfoDropDown
-              width="120px"
-              label="Status"
-              name="ticketStatusId"
-              isLoading={isFetchingTaskStatuses}
-              colorCode={getItemColorCode(values.ticketStatusId, 'status')}
-              options={generateOptions(
-                taskStatuses?.data.items,
-                'statusName',
-                'taskStatusId'
-              )}
-            />
-          </VStack>
+        <HStack
+          spacing="20px"
+          alignItems="flex-start"
+          justifyContent="space-between"
+          flexWrap="wrap"
+          width="full"
+        >
+          <HStack spacing="16px">
+            <VStack alignItems="flex-start" spacing="8px">
+              <Text color="neutral.600">Status:</Text>
+              <TicketInfoDropDown
+                width="120px"
+                label="Status"
+                name="ticketStatusId"
+                isLoading={isFetchingTaskStatuses}
+                colorCode={getItemColorCode(values.ticketStatusId, 'status')}
+                options={generateOptions(
+                  taskStatuses?.data.items,
+                  'statusName',
+                  'taskStatusId'
+                )}
+              />
+            </VStack>
 
-          <VStack alignItems="flex-start" spacing="8px">
-            <Text color="neutral.600">Priority</Text>
+            <VStack alignItems="flex-start" spacing="8px">
+              <Text color="neutral.600">Priority</Text>
 
-            <TicketInfoDropDown
-              width="110px"
-              label="Priority"
-              name="ticketPriorityId"
-              isLoading={isFetchingTaskPriorities}
-              colorCode={getItemColorCode(values.ticketPriorityId, 'priority')}
-              options={generateOptions(
-                taskPriorities?.data.items,
-                'priority',
-                'taskPriorityId'
-              )}
-            />
-          </VStack>
+              <TicketInfoDropDown
+                width="110px"
+                label="Priority"
+                name="ticketPriorityId"
+                isLoading={isFetchingTaskPriorities}
+                colorCode={getItemColorCode(
+                  values.ticketPriorityId,
+                  'priority'
+                )}
+                options={generateOptions(
+                  taskPriorities?.data.items,
+                  'priority',
+                  'taskPriorityId'
+                )}
+              />
+            </VStack>
+          </HStack>
+
           <VStack alignItems="flex-start" spacing="8px">
             <Text color="neutral.600">Ticket Type</Text>
             <TicketInfoDropDown
               label="Ticket Type"
               name="ticketTypeId"
               isLoading={isFetchingTicketTypes}
-              width="150px"
+              width={action === 'edit' ? '110px' : '150px'}
               colorCode="#6E7D8E33"
               showColorDot={false}
               hasBorder={false}
@@ -170,14 +189,17 @@ const ScheduleInfoHeader = (props: ScheduleInfoHeaderProps) => {
             />
           </VStack>
 
-          <VStack alignItems="flex-start" spacing="15px">
-            <Text color="neutral.600">Due Date</Text>
-            <Text color="black">23 / 10 / 2024</Text>
-          </VStack>
+          {action === 'edit' && (
+            <VStack alignItems="flex-start" spacing="15px">
+              <Text color="neutral.600">Due Date</Text>
+              {/* TODO: Insert End Date here */}
+              {/* <Text color="black">{data.resolutionDate}</Text> */}
+            </VStack>
+          )}
         </HStack>
       </HStack>
     </TicketInfoHeader>
   );
 };
 
-export default ScheduleInfoHeader;
+export default TicketDrawerBodyHeader;

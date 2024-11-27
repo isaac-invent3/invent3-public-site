@@ -135,10 +135,14 @@ export const maintenanceScheduleApi = createApi({
     }),
     getMaintenanceSchedulesByTicketId: builder.query<
       BaseApiResponse<MaintenanceSchedule>,
-      number
+      { ticketId: number } & Record<string, any>
     >({
-      query: (ticketId) => ({
-        url: `/MaintenanceSchedules/GetMaintenanceSchedulesByTicketId/${ticketId}`,
+      query: ({ ticketId, ...data }) => ({
+        // url: `/MaintenanceSchedules/GetMaintenanceSchedulesByTicketId/${ticketId}`,
+        url: generateQueryStr(
+          `/MaintenanceSchedules/GetMaintenanceSchedulesByTicketId/${ticketId}`,
+          data
+        ),
         method: 'GET',
         headers: getHeaders(),
       }),

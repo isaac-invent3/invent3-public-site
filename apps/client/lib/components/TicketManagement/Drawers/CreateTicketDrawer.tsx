@@ -29,9 +29,9 @@ import { createTicketSchema } from '~/lib/schemas/ticket.schema';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import { generateOptions } from '~/lib/utils/helperFunctions';
-import FormInputWrapper from '../../../UI/Form/FormInputWrapper';
-import CreateTicketSuccessModal from '../../Modals/CreateTicketSuccessModal';
-import TicketTypeSelect from '../Common/TicketTypeSelect';
+import FormInputWrapper from '../../UI/Form/FormInputWrapper';
+import CreateTicketSuccessModal from '../Modals/CreateTicketSuccessModal';
+import TicketTypeSelect from './Common/TicketTypeSelect';
 
 interface CreateTicketDrawerProps {
   isOpen: boolean;
@@ -85,7 +85,7 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
           ...data,
           createdBy: username,
         },
-        'Ticket Created Successfully'
+        ''
       );
 
       if (response?.data) {
@@ -232,7 +232,6 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                     spacing="24px"
                     description="Add name that users can likely search with"
                     title="Ticket Raised By"
-                    isRequired
                   >
                     <UserDisplayAndAddButton
                       selectedUser={formik.values.reportedByEmployeeName}
@@ -256,7 +255,6 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                     spacing="24px"
                     description="Add name that users can likely search with"
                     title="Ticket Assigned To"
-                    isRequired
                   >
                     <UserDisplayAndAddButton
                       selectedUser={formik.values.assignedToEmployeeName}
@@ -277,7 +275,6 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                     spacing="24px"
                     description="Choose the category and the sub-category"
                     title="Request Date"
-                    isRequired
                     alignItems="center"
                   >
                     <Text fontSize={'14px'} color="gray">

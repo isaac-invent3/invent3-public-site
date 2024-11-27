@@ -3,7 +3,7 @@ import {
   BaseApiResponse,
   ListResponse,
 } from '~/lib/interfaces/general.interfaces';
-import { Task } from '~/lib/interfaces/task.interfaces';
+import { TaskInstance } from '~/lib/interfaces/task.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
 
@@ -52,7 +52,7 @@ export const taskInstanceApi = createApi({
       ],
     }),
     getAllTaskInstances: builder.query<
-      BaseApiResponse<ListResponse<Task>>,
+      BaseApiResponse<ListResponse<TaskInstance>>,
       any
     >({
       query: (data: any) => ({
@@ -63,7 +63,7 @@ export const taskInstanceApi = createApi({
       providesTags: ['allTaskInstances'],
     }),
     getAllCompletedTaskInstances: builder.query<
-      BaseApiResponse<ListResponse<Task>>,
+      BaseApiResponse<ListResponse<TaskInstance>>,
       any
     >({
       query: (data: any) => ({
@@ -81,7 +81,7 @@ export const taskInstanceApi = createApi({
       }),
     }),
     getAllTaskInstancesByScheduleInstanceId: builder.query<
-      BaseApiResponse<ListResponse<Task>>,
+      BaseApiResponse<ListResponse<TaskInstance>>,
       any
     >({
       query: ({ id, ...data }) => ({

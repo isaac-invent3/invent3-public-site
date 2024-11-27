@@ -25,7 +25,7 @@ const ALlTabs = ['Pending', 'In Progress', 'Completed'];
 const TaskManagement = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [tabIndex, setTabIndex] = useState(0);
+  const [tabIndex, setTabIndex] = useState<number | undefined>(undefined);
   const [search, setSearch] = useState('');
   const { onToggle, isOpen } = useDisclosure();
   useEffect(() => {
@@ -35,6 +35,8 @@ const TaskManagement = () => {
       if (tabIndex !== -1) {
         setTabIndex(tabIndex);
       }
+    } else {
+      setTabIndex(0);
     }
   }, [searchParams]);
 
@@ -81,21 +83,27 @@ const TaskManagement = () => {
 
           <TabPanels>
             <TabPanel>
-              <PendingAndInProgressTab
-                statusCategoryId={STATUS_CATEGORY_ENUM.INACTIVE}
-                search={search}
-                openFilter={isOpen}
-              />
+              {tabIndex === 0 && (
+                <PendingAndInProgressTab
+                  statusCategoryId={STATUS_CATEGORY_ENUM.INACTIVE}
+                  search={search}
+                  openFilter={isOpen}
+                />
+              )}
             </TabPanel>
             <TabPanel>
-              <PendingAndInProgressTab
-                statusCategoryId={STATUS_CATEGORY_ENUM.ACTIVE}
-                search={search}
-                openFilter={isOpen}
-              />
+              {tabIndex === 1 && (
+                <PendingAndInProgressTab
+                  statusCategoryId={STATUS_CATEGORY_ENUM.ACTIVE}
+                  search={search}
+                  openFilter={isOpen}
+                />
+              )}
             </TabPanel>
             <TabPanel>
-              <CompletedTab search={search} openFilter={isOpen} />
+              {tabIndex === 2 && (
+                <CompletedTab search={search} openFilter={isOpen} />
+              )}
             </TabPanel>
           </TabPanels>
         </Tabs>

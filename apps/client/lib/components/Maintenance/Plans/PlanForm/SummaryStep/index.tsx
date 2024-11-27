@@ -58,7 +58,7 @@ const SummarySection = (props: SummarySectionProps) => {
     templateDescription: string
   ) => {
     setSaveAsTemplate(true);
-    handleSumbitPlan(true, templateName, templateDescription);
+    handleSubmitPlan(true, templateName, templateDescription);
   };
 
   const generatePayload = (
@@ -133,7 +133,7 @@ const SummarySection = (props: SummarySectionProps) => {
     return PAYLOAD;
   };
 
-  const handleSumbitPlan = async (
+  const handleSubmitPlan = async (
     saveAsTemplate: boolean,
     templateName?: string,
     templateDescription?: string
@@ -182,14 +182,14 @@ const SummarySection = (props: SummarySectionProps) => {
             activeStep={3}
             finalText={type === 'create' ? 'Save' : 'Save Changes'}
             setActiveStep={setActiveStep}
-            handleContinue={() => handleSumbitPlan(false, '', '')}
+            handleContinue={() => handleSubmitPlan(false, '', '')}
             isLoading={saveAsTemplate ? false : createLoading || updateLoading}
             loadingText={createLoading ? 'Submitting...' : 'Updating...'}
           >
             {!isLoading ? (
               !isSuccess && (
                 <Button variant="outline" handleClick={onOpenSaveAsTemplate}>
-                  Save and as Template
+                  Save and Create Template
                 </Button>
               )
             ) : (

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import TaskListDrawer from '~/lib/components/TaskManagement/Drawers/TaskListDrawer';
-import TaskTable from '../../../TaskTable';
+import TaskTable from '../../../Tables/TaskTable';
 import { useGetAllTasksByScheduleIdQuery } from '~/lib/redux/services/task/general.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 

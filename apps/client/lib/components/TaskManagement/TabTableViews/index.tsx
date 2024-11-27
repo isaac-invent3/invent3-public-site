@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import _ from 'lodash';
-import { useSearchTasksMutation } from '~/lib/redux/services/task/general.services';
 import { Flex } from '@chakra-ui/react';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 import {
@@ -11,10 +10,11 @@ import {
 } from '~/lib/interfaces/general.interfaces';
 import { generateSearchCriterion } from '~/lib/utils/helperFunctions';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import TaskTable from '../TaskTable';
 import FilterDisplay from '../../UI/Filter/FilterDisplay';
-import { Task } from '~/lib/interfaces/task.interfaces';
+import { TaskInstance } from '~/lib/interfaces/task.interfaces';
 import Filters from './Filters';
+import TaskInstanceTable from '../Tables/TaskInstanceTable';
+import { useSearchTaskInstancesMutation } from '~/lib/redux/services/task/instance.services';
 
 export const initialFilterData = {
   region: [],
@@ -25,7 +25,7 @@ export const initialFilterData = {
 interface TabTableViewProps {
   search: string;
   openFilter: boolean;
-  data: ListResponse<Task> | undefined;
+  data: ListResponse<TaskInstance> | undefined;
   isLoading: boolean;
   isFetching: boolean;
   pageSize: number;
@@ -58,7 +58,8 @@ const TabTableView = (props: TabTableViewProps) => {
     (value) => _.isArray(value) && _.isEmpty(value)
   );
 
-  const [searchPlan, { isLoading: searchLoading }] = useSearchTasksMutation({});
+  const [searchPlan, { isLoading: searchLoading }] =
+    useSearchTaskInstancesMutation({});
   const [searchData, setSearchData] = useState<SearchResponse | null>(null);
 
   // Search Criterion
@@ -148,7 +149,7 @@ const TabTableView = (props: TabTableViewProps) => {
           )}
         </FilterDisplay>
       </Flex>
-      <TaskTable
+      <TaskInstanceTable
         data={
           (search || !isFilterEmpty) && searchData
             ? searchData.items

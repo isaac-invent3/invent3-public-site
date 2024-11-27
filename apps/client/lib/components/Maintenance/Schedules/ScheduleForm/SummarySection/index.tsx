@@ -1,5 +1,5 @@
 import { Divider, Flex, useDisclosure, VStack } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
 import FormActionButtons from '~/lib/components/UI/Form/FormActionButtons';
 import Header from '../Header';
 import SectionOne from './SectionOne';
@@ -14,7 +14,10 @@ import {
   generateTasksArray,
 } from '../../../Common/helperFunctions';
 import { useUpdateMaintenancePlanWithSchedulesMutation } from '~/lib/redux/services/maintenance/plan.services';
-import { FORM_ENUM } from '~/lib/utils/constants';
+import { FORM_ENUM, SYSTEM_CONTEXT_TYPE } from '~/lib/utils/constants';
+import Button from '~/lib/components/UI/Button';
+import SaveAsTemplateModal from '~/lib/components/Common/Modals/SaveAsTemplateModal';
+import { useGetTemplateInfoBySystemContextTypeAndContextIdQuery } from '~/lib/redux/services/template.services';
 
 interface SummarySectionProps {
   activeStep: number;
@@ -24,6 +27,11 @@ interface SummarySectionProps {
 const SummarySection = (props: SummarySectionProps) => {
   const { activeStep, setActiveStep, type } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenSaveAsTemplate,
+    onOpen: onOpenSaveAsTemplate,
+    onClose: onCloseSaveAsTemplate,
+  } = useDisclosure();
   const scheduleFormDetails = useAppSelector(
     (state) => state.maintenance.scheduleForm
   );
@@ -32,6 +40,14 @@ const SummarySection = (props: SummarySectionProps) => {
     useCreateMaintenanceScheduleAndTasksMutation();
   const [updateScheduleAndTasks, { isLoading: isUpdating }] =
     useUpdateMaintenancePlanWithSchedulesMutation();
+  const { isSuccess, isLoading } =
+    useGetTemplateInfoBySystemContextTypeAndContextIdQuery(
+      {
+        systemContextTypeId: SYSTEM_CONTEXT_TYPE.MAINTENANCE_SCHEDULES,
+        contextId: scheduleFormDetails?.scheduleId,
+      },
+      { skip: !scheduleFormDetails?.scheduleId }
+    );
   const breadCrumbText =
     type === 'create'
       ? 'Add New Maintenance Schedule'
@@ -39,44 +55,74 @@ const SummarySection = (props: SummarySectionProps) => {
   const { data } = useSession();
   const username = data?.user?.username;
 
-  const PAYLOAD = {
-    [type === 'create'
-      ? 'createMaintenanceScheduleDto'
-      : 'updateMaintenanceScheduleDto']: generateMaintenanceScheduleDTO(
-      type,
-      scheduleFormDetails,
-      [scheduleFormDetails.scheduleId as number],
-      username as string
-    ),
-    [type === 'create' ? 'createTaskDtos' : 'updateTaskDtos']: (() => {
-      const tasksArray = [
-        // Deleted Task
-        ...scheduleFormDetails.deletedTaskIDs.map((item) => ({
-          taskId: item,
-          actionType: FORM_ENUM.delete,
-          changeInitiatedBy: username,
-        })),
-        // Generate for only task that has been added or updated
-        ...generateTasksArray(
-          scheduleFormDetails.tasks.filter(
-            (task) =>
-              (task.taskId &&
-                scheduleFormDetails.updatedTaskIDs.includes(task.taskId)) ||
-              task.taskId === null
-          ),
-          scheduleFormDetails.updatedTaskIDs,
-          username as string
-        ),
-      ];
+  const [saveAsTemplate, setSaveAsTemplate] = useState(false);
 
-      return tasksArray.length > 0 ? tasksArray : null;
-    })(),
+  const handleSaveAsTemplate = (
+    templateName: string,
+    templateDescription: string
+  ) => {
+    setSaveAsTemplate(true);
+    handleSubmitSchedule(true, templateName, templateDescription);
   };
 
-  const handleSumbitSchedule = async () => {
+  const generatePayload = (
+    saveAsTemplate: boolean,
+    templateName?: string,
+    templateDescription?: string
+  ) => {
+    const PAYLOAD = {
+      [type === 'create'
+        ? 'createMaintenanceScheduleDto'
+        : 'updateMaintenanceScheduleDto']: {
+        ...generateMaintenanceScheduleDTO(
+          type,
+          scheduleFormDetails,
+          [scheduleFormDetails.scheduleId as number],
+          username as string
+        ),
+        saveAsTemplate,
+        templateName,
+        templateDescription,
+      },
+      [type === 'create' ? 'createTaskDtos' : 'updateTaskDtos']: (() => {
+        const tasksArray = [
+          // Deleted Task
+          ...scheduleFormDetails.deletedTaskIDs.map((item) => ({
+            taskId: item,
+            actionType: FORM_ENUM.delete,
+            changeInitiatedBy: username,
+          })),
+          // Generate for only task that has been added or updated
+          ...generateTasksArray(
+            scheduleFormDetails.tasks.filter(
+              (task) =>
+                (task.taskId &&
+                  scheduleFormDetails.updatedTaskIDs.includes(task.taskId)) ||
+                task.taskId === null
+            ),
+            scheduleFormDetails.updatedTaskIDs,
+            username as string
+          ),
+        ];
+
+        return tasksArray.length > 0 ? tasksArray : null;
+      })(),
+    };
+    return PAYLOAD;
+  };
+
+  const handleSubmitSchedule = async (
+    saveAsTemplate: boolean,
+    templateName?: string,
+    templateDescription?: string
+  ) => {
     let response;
     if (type === 'create') {
-      response = await handleSubmit(createScheduleAndTasks, PAYLOAD, '');
+      response = await handleSubmit(
+        createScheduleAndTasks,
+        generatePayload(saveAsTemplate, templateName, templateDescription),
+        ''
+      );
       // console.log(PAYLOAD);
     } else {
       response = await handleSubmit(
@@ -86,12 +132,17 @@ const SummarySection = (props: SummarySectionProps) => {
             maintenancePlanId: scheduleFormDetails.planId,
             lastModifiedBy: username,
           },
-          masterUpdateMaintenanceScheduleDto: [PAYLOAD],
+          masterUpdateMaintenanceScheduleDto: generatePayload(
+            saveAsTemplate,
+            templateName,
+            templateDescription
+          ),
         },
         ''
       );
     }
     if (response?.data) {
+      setSaveAsTemplate(false);
       onOpen();
     }
   };
@@ -131,14 +182,30 @@ const SummarySection = (props: SummarySectionProps) => {
           activeStep={2}
           finalText={type === 'create' ? 'Save' : 'Save Changes'}
           setActiveStep={setActiveStep}
-          handleContinue={handleSumbitSchedule}
-          isLoading={isCreating || isUpdating}
+          handleContinue={() => handleSubmitSchedule(false)}
+          isLoading={saveAsTemplate ? false : isCreating || isUpdating}
           loadingText={isCreating ? 'Submitting...' : 'Updating...'}
-        />
+        >
+          {!isLoading ? (
+            !isSuccess && (
+              <Button variant="outline" handleClick={onOpenSaveAsTemplate}>
+                Save and Create Template
+              </Button>
+            )
+          ) : (
+            <></>
+          )}
+        </FormActionButtons>
       </Flex>
       {isOpen && (
         <ScheduleSuccessModal isOpen={isOpen} onClose={onClose} type={type} />
       )}
+      <SaveAsTemplateModal
+        isOpen={isOpenSaveAsTemplate}
+        onClose={onCloseSaveAsTemplate}
+        handleSave={handleSaveAsTemplate}
+        isLoading={isCreating || isUpdating}
+      />
     </Flex>
   );
 };

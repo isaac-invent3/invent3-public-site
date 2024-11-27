@@ -51,6 +51,8 @@ const ReportAnalytics = () => {
     { title: 'Total Tasks', value: '650', link: 'View Report' },
   ];
 
+  // TODO: Split it into Custom Components
+
   return (
     <Flex width="full" direction="column" pb="24px">
       <Header />
@@ -93,7 +95,11 @@ const ReportAnalytics = () => {
                 justifyContent="space-between"
               >
                 <VStack align="start" spacing="16px">
-                  <Text color="#42403D" fontWeight={500} fontSize="14px">
+                  <Text
+                    color={card.color ?? '#42403D'}
+                    fontWeight={500}
+                    fontSize="14px"
+                  >
                     {card.title}
                   </Text>
 
@@ -101,7 +107,7 @@ const ReportAnalytics = () => {
                     fontSize="36px"
                     lineHeight="38.02px"
                     fontWeight={800}
-                    color="#0E2642"
+                    color={card.color ?? '#0E2642'}
                   >
                     {card.value}
                   </Heading>
@@ -189,7 +195,7 @@ const ReportAnalytics = () => {
         </HStack>
       </VStack>
 
-      <VStack mt="10">
+      <VStack mt="5">
         <HStack
           alignItems="center"
           justifyContent="space-between"
@@ -201,7 +207,7 @@ const ReportAnalytics = () => {
           </Text>
 
           <Link color="#0366EF" fontWeight="700" fontSize="12px" href="#">
-            See all Default Reports
+            See all Saved Templates
           </Link>
         </HStack>
 

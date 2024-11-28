@@ -2,6 +2,7 @@ import { HStack, useToast } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import { useSession } from 'next-auth/react';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
+import { useAppDispatch } from '~/lib/redux/hooks';
 import { useUpdateTicketMutation } from '~/lib/redux/services/ticket.services';
 import { assignTicketSchema } from '~/lib/schemas/ticket.schema';
 import UserDisplayAndAddButton from '../../Common/UserDisplayAndAddButton';
@@ -9,6 +10,7 @@ import Button from '../../UI/Button';
 import ErrorMessage from '../../UI/ErrorMessage';
 import FormInputWrapper from '../../UI/Form/FormInputWrapper';
 import TicketDrawerWrapper from './TicketDrawerWrapper';
+import { clearSelectedTicket } from '~/lib/redux/slices/TicketSlice';
 
 interface AssignTicketDrawerProps {
   isOpen: boolean;
@@ -27,9 +29,9 @@ const AssignTicketDrawer = (props: AssignTicketDrawerProps) => {
   const [updateTicketMutation, { isLoading: isUpdatingTicket }] =
     useUpdateTicketMutation();
 
-  const { data: session } = useSession();
-
   const toast = useToast();
+  const dispatch = useAppDispatch();
+  const { data: session } = useSession();
 
   const username = session?.user?.username;
 
@@ -54,6 +56,8 @@ const AssignTicketDrawer = (props: AssignTicketDrawerProps) => {
           status: 'success',
           position: 'top-right',
         });
+
+        dispatch(clearSelectedTicket());
 
         onClose();
       }

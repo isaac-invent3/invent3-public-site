@@ -107,7 +107,7 @@ const AssetTable = (props: AssetTableProps) => {
         }),
         columnHelper.accessor('modelRef', {
           cell: (info) => info.getValue() ?? 'N/A',
-          header: 'Model Reference',
+          header: 'Model',
           enableSorting: isSortable,
         }),
         columnHelper.accessor('currentOwner', {

@@ -14,16 +14,16 @@ import Button from '~/lib/components/UI/Button';
 import TextInput from '~/lib/components/UI/TextInput';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import { markTaskAsCompletedSchema } from '~/lib/schemas/task.schema';
-import { Task } from '~/lib/interfaces/task.interfaces';
+import { TaskInstance } from '~/lib/interfaces/task.interfaces';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { useUpdateTaskMutation } from '~/lib/redux/services/task/general.services';
 import { useSession } from 'next-auth/react';
 import MarkAsCompletedSuccessModal from './SuccessModal';
+import { useUpdateTaskInstanceMutation } from '~/lib/redux/services/task/instance.services';
 
 interface MarkTaskAsCompletedModalProps {
   isOpen: boolean;
   onClose: () => void;
-  data?: Task;
+  data?: TaskInstance;
 }
 const MarkTaskAsCompletedModal = (props: MarkTaskAsCompletedModalProps) => {
   const { isOpen, onClose, data } = props;
@@ -34,7 +34,9 @@ const MarkTaskAsCompletedModal = (props: MarkTaskAsCompletedModalProps) => {
     onOpen: onOpenSuccess,
     onClose: onCloseSuccess,
   } = useDisclosure();
-  const [updateTask, { isLoading: isUpdating }] = useUpdateTaskMutation({});
+  const [updateTask, { isLoading: isUpdating }] = useUpdateTaskInstanceMutation(
+    {}
+  );
 
   const formik = useFormik({
     initialValues: {
@@ -45,9 +47,9 @@ const MarkTaskAsCompletedModal = (props: MarkTaskAsCompletedModalProps) => {
     onSubmit: async (values) => {
       let response;
       const info = {
-        taskId: data?.taskId,
+        taskInstanceId: data?.taskInstanceId,
         taskTypeId: data?.taskTypeId,
-        taskName: data?.taskName,
+        taskInstanceName: data?.taskInstanceName,
         taskDescription: data?.taskDescription ?? undefined,
         priorityId: data?.taskPriorityId,
         taskStatusId: 3,
@@ -59,7 +61,7 @@ const MarkTaskAsCompletedModal = (props: MarkTaskAsCompletedModalProps) => {
       };
       response = await handleSubmit(
         updateTask,
-        { id: data?.taskId, ...info },
+        { id: data?.taskInstanceId, ...info },
         'Task Marked as Completed Successfully!'
       );
       if (response?.data) {
@@ -103,7 +105,7 @@ const MarkTaskAsCompletedModal = (props: MarkTaskAsCompletedModalProps) => {
                   <Text color="neutral.700" size="md">
                     You are about to mark this{' '}
                     <Text as="span" fontWeight={800}>
-                      {data?.taskId}
+                      {data?.taskInstanceId}
                     </Text>{' '}
                     as completed
                   </Text>
@@ -157,7 +159,7 @@ const MarkTaskAsCompletedModal = (props: MarkTaskAsCompletedModalProps) => {
         <MarkAsCompletedSuccessModal
           isOpen={isOpenSuccess}
           onClose={handleCloseSuccessModal}
-          id={data.taskId}
+          id={data.taskInstanceId}
         />
       )}
     </>

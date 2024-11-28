@@ -25,11 +25,11 @@ const Schedule = (props: MaintenanceSchedulesProps) => {
   const { data, isLoading, isFetching } =
     useGetMaintenanceSchedulesByPlanIdQuery(
       {
-        id: plan.maintenancePlanId,
+        id: plan?.maintenancePlanId,
         pageSize,
         pageNumber: currentPage,
       },
-      { skip: !plan.maintenancePlanId }
+      { skip: !plan?.maintenancePlanId }
     );
   const columnHelper = createColumnHelper<MaintenanceSchedule>();
   const columns = useMemo(

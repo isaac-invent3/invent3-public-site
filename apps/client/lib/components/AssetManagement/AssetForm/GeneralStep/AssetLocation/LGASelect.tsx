@@ -3,26 +3,35 @@ import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { Option, SearchCriterion } from '~/lib/interfaces/general.interfaces';
 import { useAppSelector } from '~/lib/redux/hooks';
 import {
+  useGetAllLGASQuery,
   useGetLGAByStateIdQuery,
   useSearchLGAMutation,
 } from '~/lib/redux/services/asset/location.services';
-import { OPERATORS } from '~/lib/utils/constants';
+import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 
 interface LGASelectProps {
-  stateId: number | null;
   // eslint-disable-next-line no-unused-vars
   handleSelect?: (options: Option) => void;
+  type: 'general' | 'specificById';
+  stateId?: number | null;
 }
 
 const LGASelect = (props: LGASelectProps) => {
-  const { stateId, handleSelect } = props;
+  const { stateId, handleSelect, type } = props;
   const { lgaName } = useAppSelector((state) => state.asset.assetForm);
   const [searchLga] = useSearchLGAMutation({});
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading, isFetching } = useGetLGAByStateIdQuery(
+  const { data: allLgasData, isLoading: isLoadingAllLGAS } = useGetAllLGASQuery(
+    {
+      pageSize: DEFAULT_PAGE_SIZE,
+      pageNumber,
+    },
+    { skip: type === 'specificById' }
+  );
+  const { data, isLoading } = useGetLGAByStateIdQuery(
     {
       id: stateId,
-      pageSize: 45,
+      pageSize: 47,
       pageNumber,
     },
     { skip: !stateId }
@@ -48,17 +57,17 @@ const LGASelect = (props: LGASelectProps) => {
     <GenericAsyncSelect
       selectName="lgaId"
       selectTitle="LGA"
-      data={isFetching ? [] : data}
+      data={type === 'general' ? allLgasData : stateId ? data : []}
       labelKey="lgaName"
       valueKey="lgaId"
       defaultInputValue={lgaName}
       mutationFn={searchLga}
-      isLoading={isLoading}
+      isLoading={isLoading || isLoadingAllLGAS}
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
-      specialSearch={lgaSearchCriterion}
-      fetchKey={stateId}
       handleSelect={handleSelect}
+      fetchKey={stateId}
+      specialSearch={type === 'specificById' ? lgaSearchCriterion : undefined}
     />
   );
 };

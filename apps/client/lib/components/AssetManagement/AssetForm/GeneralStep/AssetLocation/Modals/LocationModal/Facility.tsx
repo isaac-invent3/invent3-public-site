@@ -9,19 +9,22 @@ import FacilitySelect from '../SelectInputs/FacilitySelect';
 
 interface FacilityProps {
   handleReadableLocation: (option: Option, key: keyof FormLocation) => void;
+  lgaId: number | null;
 }
 const Facility = (props: FacilityProps) => {
-  const { handleReadableLocation } = props;
+  const { handleReadableLocation, lgaId } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
       <VStack alignItems="flex-end" width="full">
         <FacilitySelect
           handleSelect={(option) => handleReadableLocation(option, 'facility')}
+          lgaId={lgaId}
+          type="specificById"
         />
         <AddButton handleClick={onOpen}>Add New Facility</AddButton>
       </VStack>
-      <FacilityModal isOpen={isOpen} onClose={onClose} />
+      <FacilityModal isOpen={isOpen} onClose={onClose} defaultLGAId={lgaId} />
     </>
   );
 };

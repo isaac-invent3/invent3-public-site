@@ -1,5 +1,6 @@
 import { Flex, useDisclosure } from '@chakra-ui/react';
 import { useCallback, useEffect, useState } from 'react';
+import _ from 'lodash';
 
 import { useSearchParams } from 'next/navigation';
 import { Asset } from '~/lib/interfaces/asset.interfaces';
@@ -13,13 +14,18 @@ import { SearchResponse } from '~/lib/interfaces/general.interfaces';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 import AssetTable from './Common/AssetTable';
 import AssetDetail from './AssetDetail';
+import AssetFilterDisplay from './Filters/AssetFilterDisplay';
+import { generateSearchCriterion } from '~/lib/utils/helperFunctions';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 interface ListViewProps {
   search: string;
+  openFilter: boolean;
+  activeFilter: 'bulk' | 'general' | null;
 }
 
 const ListView = (props: ListViewProps) => {
-  const { search } = props;
+  const { search, activeFilter, openFilter } = props;
   const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -28,6 +34,14 @@ const ListView = (props: ListViewProps) => {
   const searchParams = useSearchParams();
   const assetId = searchParams.get('asset');
   const { handleSubmit } = useCustomMutation();
+  const filterData = useAppSelector((state) => state.asset.assetFilter);
+
+  // Checks if all filterdata is empty
+  const isFilterEmpty = _.every(
+    filterData,
+    (value) => _.isArray(value) && _.isEmpty(value)
+  );
+
   const [searchAsset, { isLoading: searchLoading }] = useSearchAssetsMutation(
     {}
   );
@@ -41,24 +55,83 @@ const ListView = (props: ListViewProps) => {
       pageNumber: currentPage,
       pageSize: pageSize,
     },
-    { skip: search !== '' }
+    { skip: search !== '' || !isFilterEmpty }
   );
 
+  // Search Criterion
   const searchCriterion = {
-    criterion: [
-      {
-        columnName: 'assetName',
-        columnValue: search,
-        operation: OPERATORS.Contains,
-      },
-    ],
+    ...(search
+      ? {
+          criterion: [
+            {
+              columnName: 'assetName',
+              columnValue: search,
+              operation: OPERATORS.Contains,
+            },
+          ],
+        }
+      : {}),
+    ...(!isFilterEmpty
+      ? {
+          orCriterion: [
+            ...(filterData.category.map((item) => item.value).length > 0
+              ? [
+                  generateSearchCriterion(
+                    'categoryId',
+                    filterData.category.map((item) => item.value),
+                    OPERATORS.Equals
+                  ),
+                ]
+              : []),
+            ...(filterData.status.map((item) => item.value).length > 0
+              ? [
+                  generateSearchCriterion(
+                    'statusId',
+                    filterData.status.map((item) => item.value),
+                    OPERATORS.Equals
+                  ),
+                ]
+              : []),
+            ...(filterData.region.map((item) => item.value).length > 0
+              ? [
+                  generateSearchCriterion(
+                    'stateId',
+                    filterData.region.map((item) => item.value),
+                    OPERATORS.Equals
+                  ),
+                ]
+              : []),
+            ...(filterData.area.map((item) => item.value).length > 0
+              ? [
+                  generateSearchCriterion(
+                    'lgaId',
+                    filterData.area.map((item) => item.value),
+                    OPERATORS.Equals
+                  ),
+                ]
+              : []),
+            ...(filterData.branch.map((item) => item.value).length > 0
+              ? [
+                  generateSearchCriterion(
+                    'facilityId',
+                    filterData.branch.map((item) => item.value),
+                    OPERATORS.Equals
+                  ),
+                ]
+              : []),
+          ],
+        }
+      : {}),
     pageNumber: currentPage,
     pageSize: pageSize,
   };
 
+  // Function that handles search/filters
   const handleSearch = useCallback(async () => {
-    const response = await handleSubmit(searchAsset, searchCriterion, '');
-    setSearchData(response?.data?.data);
+    if (search || !isFilterEmpty) {
+      const response = await handleSubmit(searchAsset, searchCriterion, '');
+      setSearchData(response?.data?.data);
+    }
   }, [searchAsset, searchCriterion]);
 
   // Trigger search when search input changes or pagination updates
@@ -68,26 +141,29 @@ const ListView = (props: ListViewProps) => {
     }
   }, [search, currentPage, pageSize]);
 
-  // Reset pagination when clearing the search
+  // Reset pagination when the search input is cleared or apply filter flag is false
   useEffect(() => {
-    if (!search) {
+    if (!search && isFilterEmpty) {
       setPageSize(DEFAULT_PAGE_SIZE);
       setCurrentPage(1);
     }
-  }, [search]);
+  }, [search, isFilterEmpty]);
 
+  // Open the drawer if there is a selected asset
   useEffect(() => {
     if (selectedAsset) {
       onOpen();
     }
   }, [selectedAsset]);
 
+  // Remove selected asset once the drawer is closed.
   useEffect(() => {
     if (!isOpen) {
       setSelectedAsset(null);
     }
   }, [isOpen]);
 
+  // Set if an assetData asset exist, mark it as selected
   useEffect(() => {
     if (assetData?.data) {
       setSelectedAsset(assetData?.data);
@@ -95,10 +171,19 @@ const ListView = (props: ListViewProps) => {
   }, [assetData]);
 
   return (
-    <Flex width="full" mt="8px">
+    <Flex width="full" direction="column" pt="16px">
+      <Flex width="full" mb="8px">
+        <AssetFilterDisplay
+          activeFilter={activeFilter}
+          isOpen={openFilter}
+          handleApplyFilter={handleSearch}
+        />
+      </Flex>
       <AssetTable
         data={
-          search && searchData ? searchData.items : (data?.data?.items ?? [])
+          (search || !isFilterEmpty) && searchData
+            ? searchData.items
+            : (data?.data?.items ?? [])
         }
         isLoading={isLoading}
         isFetching={isFetching || searchLoading}
@@ -107,7 +192,9 @@ const ListView = (props: ListViewProps) => {
         pageSize={pageSize}
         setPageSize={setPageSize}
         totalPages={
-          search && searchData ? searchData?.totalPages : data?.data?.totalPages
+          (search || !isFilterEmpty) && searchData
+            ? searchData?.totalPages
+            : data?.data?.totalPages
         }
         handleSelectRow={setSelectedAsset}
         selectedRows={selectedRows}

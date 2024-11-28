@@ -1,17 +1,18 @@
 import { HStack, Skeleton, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
-import { Task } from '~/lib/interfaces/task.interfaces';
-import { useGetAllTasksByScheduleIdQuery } from '~/lib/redux/services/task/general.services';
+import { TaskInstance } from '~/lib/interfaces/task.interfaces';
+import { useGetAllTaskInstancesByScheduleInstanceIdQuery } from '~/lib/redux/services/task/instance.services';
 import { MaintenanceColorCode } from '~/lib/utils/ColorCodes';
 
 interface OtherRelatedTasksProps {
-  data: Task;
+  data: TaskInstance;
 }
 const OtherRelatedTasks = ({ data }: OtherRelatedTasksProps) => {
-  const { data: otherTasks, isLoading } = useGetAllTasksByScheduleIdQuery({
-    id: data?.scheduleId,
-  });
+  const { data: otherTasks, isLoading } =
+    useGetAllTaskInstancesByScheduleInstanceIdQuery({
+      id: data?.scheduleInstanceId,
+    });
 
   return (
     <VStack
@@ -39,10 +40,13 @@ const OtherRelatedTasks = ({ data }: OtherRelatedTasksProps) => {
                 <Skeleton height="18px" rounded="4px" width="58px" />
               </HStack>
             ))
-        ) : otherTasks?.data && otherTasks?.data?.items.length >= 1 ? (
+        ) : otherTasks?.data &&
+          otherTasks?.data?.items.filter(
+            (item) => item.taskInstanceId !== data?.taskInstanceId
+          ).length >= 1 ? (
           otherTasks?.data?.items
-            .filter((item: Task) => item.taskId !== data?.taskId)
-            .map((item: Task, index: number) => (
+            .filter((item) => item.taskInstanceId !== data?.taskInstanceId)
+            .map((item, index: number) => (
               <HStack
                 width="full"
                 justifyContent="space-between"
@@ -50,7 +54,7 @@ const OtherRelatedTasks = ({ data }: OtherRelatedTasksProps) => {
                 key={index}
               >
                 <Text color="black" width="full" maxW="60%">
-                  {item.taskName}
+                  {item.taskInstanceName}
                 </Text>
                 <GenericStatusBox
                   text={data?.status}

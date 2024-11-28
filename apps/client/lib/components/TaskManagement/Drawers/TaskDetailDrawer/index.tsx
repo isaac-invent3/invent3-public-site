@@ -8,7 +8,7 @@ import {
 import React from 'react';
 import Button from '~/lib/components/UI/Button';
 import BackButton from '~/lib/components/UI/Button/BackButton';
-import { Task } from '~/lib/interfaces/task.interfaces';
+import { TaskInstance } from '~/lib/interfaces/task.interfaces';
 import MarkTaskAsCompletedModal from '../../Modals/MarkTaskAsCompletedModal';
 import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
@@ -18,7 +18,7 @@ import GenericDrawer from '~/lib/components/UI/GenericDrawer';
 interface TaskDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
-  data: Task;
+  data: TaskInstance;
 }
 
 const TaskDetailModal = (props: TaskDetailModalProps) => {

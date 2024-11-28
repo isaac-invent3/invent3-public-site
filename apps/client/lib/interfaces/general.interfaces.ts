@@ -17,7 +17,7 @@ interface SearchResponse {
 
 interface SearchCriterion {
   columnName: string;
-  columnValue: string;
+  columnValue: string | number;
   operation: (typeof OPERATORS)[keyof typeof OPERATORS];
 }
 
@@ -92,6 +92,12 @@ interface RecurrenceInfo {
   repeatIntervals: RepeatInterval;
 }
 
+interface LocationFilter {
+  region: Option[];
+  area: Option[];
+  branch: Option[];
+}
+
 export type {
   GeoJSONFeature,
   Option,
@@ -103,4 +109,5 @@ export type {
   BaseApiResponse,
   PaginationInfo,
   ListResponse,
+  LocationFilter,
 };

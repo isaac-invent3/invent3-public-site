@@ -28,6 +28,10 @@ import TaskType from '../../Common/TaskType';
 import TaskPriority from '../../Common/TaskPriority';
 import GenericDrawer from '~/lib/components/UI/GenericDrawer';
 import EstimatedDuration from '../../Common/EstimatedDuration';
+import {
+  useCreateTaskInstanceMutation,
+  useUpdateTaskInstanceMutation,
+} from '~/lib/redux/services/task/instance.services';
 
 interface TaskFormModalProps {
   isOpen: boolean;
@@ -36,9 +40,17 @@ interface TaskFormModalProps {
   handleData?: (task: taskFormDetails) => void;
   data?: taskFormDetails;
   scheduleId?: number | null;
+  type?: 'main' | 'instance';
 }
 const TaskFormModal = (props: TaskFormModalProps) => {
-  const { isOpen, onClose, handleData, data, scheduleId } = props;
+  const {
+    isOpen,
+    onClose,
+    handleData,
+    data,
+    scheduleId,
+    type = 'main',
+  } = props;
   const { data: session } = useSession();
   const { handleSubmit } = useCustomMutation();
   const {
@@ -46,8 +58,21 @@ const TaskFormModal = (props: TaskFormModalProps) => {
     onOpen: onOpenSuccess,
     onClose: onCloseSuccess,
   } = useDisclosure();
-  const [createTask, { isLoading: isCreating }] = useCreateTaskMutation({});
-  const [updateTask, { isLoading: isUpdating }] = useUpdateTaskMutation({});
+  const [createTask, { isLoading: isCreatingTask }] = useCreateTaskMutation({});
+  const [updateTask, { isLoading: isUpdatingTask }] = useUpdateTaskMutation({});
+  const [createTaskInstance, { isLoading: isCreatingTaskInstance }] =
+    useCreateTaskInstanceMutation({});
+  const [updateTaskInstance, { isLoading: isUpdatingTaskInstance }] =
+    useUpdateTaskInstanceMutation({});
+
+  const isLoading =
+    isCreatingTask ||
+    isUpdatingTask ||
+    isCreatingTaskInstance ||
+    isUpdatingTaskInstance;
+
+  const isCreating = isCreatingTask || isCreatingTaskInstance;
+  const isInstance = type === 'instance';
 
   const formik = useFormik({
     initialValues: {
@@ -90,7 +115,7 @@ const TaskFormModal = (props: TaskFormModalProps) => {
         let response;
         const info = {
           taskTypeId: values.taskTypeId,
-          taskName: values.taskName,
+          [isInstance ? 'taskInstanceName' : 'taskName']: values.taskName,
           taskDescription: values.taskDescription,
           priorityId: values.priorityId,
           assignedTo: values.assignedTo,
@@ -98,22 +123,23 @@ const TaskFormModal = (props: TaskFormModalProps) => {
           costEstimate: values.costEstimate,
           actualCost: values.actualCost,
           comments: values.comments,
-          scheduleId: scheduleId,
+          [isInstance ? 'scheduleInstanceId' : 'scheduleId']: scheduleId,
+          ...(isInstance ? { parentTaskId: data?.parentTaskId } : {}),
         };
         if (data) {
           response = await handleSubmit(
-            updateTask,
+            type === 'main' ? updateTask : updateTaskInstance,
             {
               ...info,
               id: values.taskId,
-              taskId: values.taskId,
+              [isInstance ? 'taskInstanceName' : 'taskName']: values.taskId,
               lastModifiedBy: session?.user.id,
             },
             ''
           );
         } else {
           response = await handleSubmit(
-            createTask,
+            type === 'main' ? createTask : createTaskInstance,
             { ...info, createdBy: session?.user.id },
             ''
           );
@@ -186,7 +212,7 @@ const TaskFormModal = (props: TaskFormModalProps) => {
             <Button
               type="submit"
               customStyles={{ width: '237px' }}
-              isLoading={isCreating || isUpdating}
+              isLoading={isLoading}
               loadingText={isCreating ? 'Creating...' : 'Updating...'}
               handleClick={formik.handleSubmit}
             >

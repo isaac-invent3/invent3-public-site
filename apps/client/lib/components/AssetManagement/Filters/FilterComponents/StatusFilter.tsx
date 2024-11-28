@@ -8,9 +8,9 @@ import { useGetAllAssetStatusQuery } from '~/lib/redux/services/asset/general.se
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 interface StatusFilterProps {
-  selectedOptions: (string | number)[];
+  selectedOptions: Option[];
   // eslint-disable-next-line no-unused-vars
-  handleSelectedOption: (value: string | number) => void;
+  handleSelectedOption: (option: Option) => void;
 }
 
 interface DisplayCode {
@@ -54,8 +54,11 @@ const StatusFilter = (props: StatusFilterProps) => {
       {options.map((item, index) => (
         <HStack spacing="8px" key={index}>
           <CheckBox
-            isChecked={selectedOptions.includes(item.value)}
-            handleChange={() => handleSelectedOption(item.value)}
+            isChecked={
+              selectedOptions.find((option) => option.value === item.value) !==
+              undefined
+            }
+            handleChange={() => handleSelectedOption(item)}
           />
           <GenericStatusBox
             text={item.label}

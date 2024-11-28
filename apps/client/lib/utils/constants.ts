@@ -54,22 +54,29 @@ const FILE_ICONS = {
   invalid: AiOutlineQuestion,
 };
 
+const DATE_PERIOD = {
+  WEEK: 7,
+  MONTH: 30,
+  QUARTER: 90,
+  YEAR: 365,
+};
+
 const timeRangeOptions = [
   {
     label: 'Last 7 days',
-    value: 7,
+    value: DATE_PERIOD.WEEK,
   },
   {
     label: 'Last 30 days',
-    value: 30,
+    value: DATE_PERIOD.MONTH,
   },
   {
     label: 'Last 90 days',
-    value: 90,
+    value: DATE_PERIOD.QUARTER,
   },
   {
     label: 'Last 1 year',
-    value: 365,
+    value: DATE_PERIOD.YEAR,
   },
 ];
 
@@ -155,6 +162,18 @@ const STATUS_CATEGORY_ENUM = {
   INACTIVE: 2,
 };
 
+const SYSTEM_CONTEXT_TYPE = {
+  ASSETS: 1,
+  TASKS: 2,
+  TICKETS: 3,
+  MAINTENANCE_PLANS: 4,
+  MAINTENANCE_SCHEDULES: 5,
+  USERS: 6,
+  MAINTENANCE_SCHEDULE_INSTANCES: 40,
+  TASKS_INSTANCES: 61,
+  NOTES: 43,
+};
+
 const DEFAULT_PAGE_SIZE = 25;
 
 export {
@@ -163,6 +182,7 @@ export {
   AREA_ENUM,
   FILE_ICONS,
   MAINTENANCE_PLAN_ENUM,
+  DATE_PERIOD,
   timeRangeOptions,
   yearOptions,
   monthOptions,
@@ -170,4 +190,5 @@ export {
   STATUS_CATEGORY_ENUM,
   COLOR_CODES_FALLBACK,
   DEFAULT_PAGE_SIZE,
+  SYSTEM_CONTEXT_TYPE,
 };

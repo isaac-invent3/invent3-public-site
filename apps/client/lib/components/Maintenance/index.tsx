@@ -8,40 +8,37 @@ import {
   Tab,
   TabPanel,
   useDisclosure,
+  HStack,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Schedules from './Schedules';
 import History from './History';
-import Filters from './Schedules/Filters';
-import ScheduleFilterDisplay from './Schedules/Filters/ScheduleFilterDisplay';
-import { FilterInput } from '~/lib/interfaces/asset.interfaces';
 import Plans from './Plans';
 import Header from './Header';
+import _ from 'lodash';
+import SearchInput from '../UI/SearchInput';
+import FilterButton from '../UI/Filter/FilterButton';
+import { FilterIcon } from '../CustomIcons';
 
 const ALlTabs = ['Plans', 'Schedules', 'History'];
 
+export type MaintenanceTabs = 'Schedules' | 'Plans' | 'History';
 const Maintenance = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [tabIndex, setTabIndex] = useState(0);
   // eslint-disable-next-line no-unused-vars
   const [search, setSearch] = useState('');
-  const [activeFilter, setActiveFilter] = useState<
-    'schedule' | 'plan' | 'history' | null
-  >(null);
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [filterData, setFilterData] = useState<FilterInput>({
-    region: [],
-    status: [],
-    category: [],
-  });
+  const { isOpen, onClose, onToggle } = useDisclosure();
 
   // Retrieve the `tab` parameter from URL on mount
   useEffect(() => {
     const tab = searchParams.get('tab');
     if (tab) {
-      const tabIndex = ALlTabs.findIndex((value) => value === tab);
+      const tabIndex = ALlTabs.findIndex(
+        (value) => value === _.capitalize(tab)
+      );
       if (tabIndex !== -1) {
         setTabIndex(tabIndex);
       }
@@ -51,21 +48,12 @@ const Maintenance = () => {
   // Update the URL whenever the tab is changed
   const handleTabChange = (index: number) => {
     setTabIndex(index);
+    onClose();
     const tabName = ALlTabs[index];
     if (tabName) {
       router.push(`/maintenance?tab=${tabName}`);
     }
   };
-
-  // Handles Toggling the  Filter
-  useEffect(() => {
-    if (activeFilter && !isOpen) {
-      onOpen();
-    }
-    if (!activeFilter) {
-      onClose();
-    }
-  }, [activeFilter]);
 
   const headerInfo = {
     1: {
@@ -91,24 +79,26 @@ const Maintenance = () => {
               <Tab>History</Tab>
             </TabList>
             <Flex position="absolute" right={0} bottom="8px">
-              <Filters
-                setSearch={setSearch}
-                activeFilter={activeFilter}
-                setActiveFilter={setActiveFilter}
-              />
+              <HStack spacing="16px" width="full">
+                <SearchInput
+                  setSearch={setSearch}
+                  placeholderText="Search..."
+                />
+                <FilterButton
+                  icon={FilterIcon}
+                  label="Filter"
+                  handleClick={onToggle}
+                  isActive={isOpen}
+                />
+              </HStack>
             </Flex>
           </Flex>
 
           <TabPanels>
-            <TabPanel>{tabIndex === 0 && <Plans />}</TabPanel>
             <TabPanel>
-              <ScheduleFilterDisplay
-                isOpen={isOpen}
-                filterData={filterData}
-                setFilterData={setFilterData}
-              />
-              {tabIndex === 1 && <Schedules />}
+              {tabIndex === 0 && <Plans search={search} openFilter={isOpen} />}
             </TabPanel>
+            <TabPanel>{tabIndex === 1 && <Schedules />}</TabPanel>
             <TabPanel>
               <History />
             </TabPanel>

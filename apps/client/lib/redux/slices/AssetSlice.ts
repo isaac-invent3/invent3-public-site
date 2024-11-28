@@ -6,6 +6,7 @@ import {
   AssetFormDetails,
   AssetImage,
   AssetStatusType,
+  FilterInput,
 } from '~/lib/interfaces/asset.interfaces';
 import { COLOR_CODES_FALLBACK } from '~/lib/utils/constants';
 
@@ -92,7 +93,7 @@ const initialValue = {
   roomId: null,
   aisleId: null,
   shelfId: null,
-  displayColorCode: COLOR_CODES_FALLBACK.default
+  displayColorCode: COLOR_CODES_FALLBACK.default,
 };
 
 const initialAssetForm = {
@@ -172,12 +173,21 @@ const initialAssetForm = {
   },
 };
 
+const initialAssetFilter = {
+  category: [],
+  status: [],
+  region: [],
+  area: [],
+  branch: [],
+};
+
 export interface SliceProps {
   asset: Asset;
   assetForm: AssetFormDetails;
   assetImages: AssetImage[];
   assetDocuments: AssetDocument[];
   reinitializeAssetForm: boolean;
+  assetFilter: FilterInput;
 }
 
 const initialState: SliceProps = {
@@ -186,6 +196,7 @@ const initialState: SliceProps = {
   assetImages: [],
   assetDocuments: [],
   reinitializeAssetForm: false,
+  assetFilter: initialAssetFilter,
 };
 
 export const AssetSlice = createSlice({
@@ -222,6 +233,15 @@ export const AssetSlice = createSlice({
     clearAssetForm: (state) => {
       state.assetForm = initialAssetForm;
     },
+    updateAssetFilter: (
+      state,
+      { payload }: PayloadAction<Partial<FilterInput>>
+    ) => {
+      state.assetFilter = { ...state.assetFilter, ...payload };
+    },
+    clearAssetFilter: (state) => {
+      state.assetFilter = initialAssetFilter;
+    },
   },
 });
 
@@ -235,6 +255,8 @@ export const {
   clearAssetImages,
   setAssetDocuments,
   clearAssetDocuments,
+  updateAssetFilter,
+  clearAssetFilter,
 } = AssetSlice.actions;
 
 export default AssetSlice.reducer;

@@ -5,9 +5,9 @@ import { useGetStatesByCountryIdQuery } from '~/lib/redux/services/asset/locatio
 import { generateOptions } from '~/lib/utils/helperFunctions';
 
 interface RegionFilterProps {
-  selectedOptions: (string | number)[];
+  selectedOptions: Option[];
   // eslint-disable-next-line no-unused-vars
-  handleSelectedOption: (value: string | number) => void;
+  handleSelectedOption: (option: Option) => void;
 }
 const RegionFilter = (props: RegionFilterProps) => {
   const { selectedOptions, handleSelectedOption } = props;
@@ -32,7 +32,7 @@ const RegionFilter = (props: RegionFilterProps) => {
 
   return (
     <FilterDropDown
-      label="Region:"
+      label="Location(Region):"
       options={options}
       selectedOptions={selectedOptions}
       handleClick={(value) => handleSelectedOption(value)}

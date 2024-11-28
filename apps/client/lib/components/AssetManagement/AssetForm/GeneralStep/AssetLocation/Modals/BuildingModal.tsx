@@ -34,11 +34,12 @@ const BuildingModal = (props: BuildingModalProps) => {
     },
     validationSchema: buildingSchema,
     enableReinitialize: true,
-    onSubmit: async (values) => {
+    onSubmit: async (values, { resetForm }) => {
       const finalValue = { ...values, createdBy: data?.user?.username };
       const response = await handleSubmit(createBuilding, finalValue, '');
       if (response?.data) {
         onClose();
+        resetForm();
       }
     },
   });
@@ -60,7 +61,7 @@ const BuildingModal = (props: BuildingModalProps) => {
 
               {/* Main Form Starts Here */}
               <VStack width="full" spacing="16px">
-                <FacilitySelect />
+                <FacilitySelect type="general" />
                 <Field
                   as={TextInput}
                   name="buildingName"

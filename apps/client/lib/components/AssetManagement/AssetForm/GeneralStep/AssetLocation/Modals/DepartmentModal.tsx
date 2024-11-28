@@ -31,11 +31,12 @@ const DepartmentModal = (props: DepartmentModalProps) => {
     },
     validationSchema: departmentSchema,
     enableReinitialize: true,
-    onSubmit: async (values) => {
+    onSubmit: async (values, { resetForm }) => {
       const finalValue = { ...values, createdBy: data?.user?.username };
       const response = await handleSubmit(createDepartment, finalValue, '');
       if (response?.data) {
         onClose();
+        resetForm();
       }
     },
   });

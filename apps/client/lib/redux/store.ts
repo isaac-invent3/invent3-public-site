@@ -32,8 +32,10 @@ import taskSlice from './slices/TaskSlice';
 import { maintenanceTypeApi } from './services/maintenance/type.services';
 import { maintenanceFrequencyApi } from './services/maintenance/frequency.services';
 import { taskApi } from './services/task/general.services';
+import { taskInstanceApi } from './services/task/instance.services';
 import { taskPrioritiesApi } from './services/task/priorities.services';
 import { taskTypeApi } from './services/task/types.services';
+import { templateApi } from './services/template.services';
 import { ticketApi } from './services/ticket.services';
 import { assetTypeApi } from './services/asset/types.services';
 import { assetGroupTypeApi } from './services/asset/groupType.services';
@@ -64,9 +66,11 @@ const rootReducer = combineReducers({
   [maintenanceTypeApi.reducerPath]: maintenanceTypeApi.reducer,
   [scheduleInstanceApi.reducerPath]: scheduleInstanceApi.reducer,
   [taskApi.reducerPath]: taskApi.reducer,
+  [taskInstanceApi.reducerPath]: taskInstanceApi.reducer,
   [taskPrioritiesApi.reducerPath]: taskPrioritiesApi.reducer,
   [taskTypeApi.reducerPath]: taskTypeApi.reducer,
   [taskStatusApi.reducerPath]: taskStatusApi.reducer,
+  [templateApi.reducerPath]: templateApi.reducer,
   [ticketApi.reducerPath]: ticketApi.reducer,
   [locationApi.reducerPath]: locationApi.reducer,
   [utilityApi.reducerPath]: utilityApi.reducer,
@@ -106,9 +110,11 @@ export const makeStore = () => {
         maintenanceTypeApi.middleware,
         scheduleInstanceApi.middleware,
         taskApi.middleware,
+        taskInstanceApi.middleware,
         taskPrioritiesApi.middleware,
         taskTypeApi.middleware,
         taskStatusApi.middleware,
+        templateApi.middleware,
         ticketApi.middleware,
         locationApi.middleware,
         categoryApi.middleware,

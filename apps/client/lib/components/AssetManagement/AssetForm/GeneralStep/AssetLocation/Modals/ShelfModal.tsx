@@ -31,11 +31,12 @@ const ShelfModal = (props: ShelfModalProps) => {
     },
     validationSchema: shelfSchema,
     enableReinitialize: true,
-    onSubmit: async (values) => {
+    onSubmit: async (values, { resetForm }) => {
       const finalValue = { ...values, createdBy: data?.user?.username };
       const response = await handleSubmit(createShelf, finalValue, '');
       if (response?.data) {
         onClose();
+        resetForm();
       }
     },
   });

@@ -23,7 +23,7 @@ const FormTaskListDrawer = (props: FormTaskListDrawerProps) => {
       id: values.scheduleId,
       pageNumber,
       pageSize,
-      statusCategoryId: STATUS_CATEGORY_ENUM.ACTIVE,
+      statusCategoryId: STATUS_CATEGORY_ENUM.INACTIVE,
     },
     { skip: !values.scheduleId }
   );

@@ -55,7 +55,7 @@ const SectionOne = ({ data }: SectionOneProps) => {
               Status:
             </Text>
             <GenericStatusBox
-              text={data?.status}
+              text={data?.currentStatus}
               colorCode={data?.statusColorCode}
             />
           </HStack>

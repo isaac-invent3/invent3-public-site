@@ -3,25 +3,27 @@ import React from 'react';
 import Button from '~/lib/components/UI/Button';
 
 interface ModalButtonsProps {
-  id: string;
+  planId: number | null;
+  scheduleInstanceGuid: string;
 }
 const ModalButtons = (props: ModalButtonsProps) => {
-  const { id } = props;
+  const { scheduleInstanceGuid, planId } = props;
   return (
     <HStack width="full" justifyContent="flex-end">
       <HStack width="min-content" spacing="8px">
         <Button
-          customStyles={{ height: '50px', width: '137px', px: '16px' }}
+          customStyles={{ height: '50px', width: '165px', px: '16px' }}
           variant="secondary"
-          href={`/maintenance/schedules/${id}/edit`}
+          href={`/maintenance/plans/${planId}/edit`}
         >
-          Edit Schedule
+          Edit Maintenance Plan
         </Button>
         <Button
-          customStyles={{ height: '50px', px: '12px', width: '137px' }}
+          customStyles={{ height: '50px', px: '12px', width: '173px' }}
           variant="outline"
+          href={`/maintenance/schedules/instances/${scheduleInstanceGuid}/edit`}
         >
-          Reschedule
+          Edit Schedule Instance
         </Button>
         <Button
           customStyles={{

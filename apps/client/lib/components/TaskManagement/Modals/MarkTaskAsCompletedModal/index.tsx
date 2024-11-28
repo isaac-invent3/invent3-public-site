@@ -56,7 +56,7 @@ const MarkTaskAsCompletedModal = (props: MarkTaskAsCompletedModalProps) => {
         assignedTo: data?.assignedTo,
         costEstimate: data?.costEstimate,
         actualCost: values?.actualCost,
-        scheduleId: data?.scheduleId,
+        scheduleId: data?.scheduleInstanceId,
         lastModifiedBy: session?.user.id,
       };
       response = await handleSubmit(

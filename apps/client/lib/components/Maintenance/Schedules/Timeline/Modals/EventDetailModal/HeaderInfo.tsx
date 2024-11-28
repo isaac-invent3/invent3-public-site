@@ -1,12 +1,12 @@
 import { Heading, HStack, Text, VStack } from '@chakra-ui/react';
 import moment from 'moment';
 import React from 'react';
-import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
+import { MaintenanceScheduleInstance } from '~/lib/interfaces/maintenance.interfaces';
 import { MaintenanceColorCode } from '~/lib/utils/ColorCodes';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
 interface HeaderInfoProps {
-  data: MaintenanceSchedule;
+  data: MaintenanceScheduleInstance;
 }
 const HeaderInfo = (props: HeaderInfoProps) => {
   const { data } = props;
@@ -30,7 +30,7 @@ const HeaderInfo = (props: HeaderInfoProps) => {
             lineHeight="23.76px"
             fontWeight={800}
           >
-            {data.planName}
+            {data.scheduleInstanceName}
           </Heading>
           <Text color="neutral.600">{data?.maintenanceType}</Text>
         </VStack>

@@ -8,14 +8,20 @@ import ServiceLevelAgreement from './SLA';
 import Tasks from './Tasks';
 
 interface SectionTwoProps {
+  scheduleType?: 'main' | 'instance';
   descriptionHeight?: string;
   minScheduleDate: Date;
   maxScheduleDate: Date | undefined;
   buttonVariant: 'secondary' | 'outline';
 }
 const SectionTwo = (props: SectionTwoProps) => {
-  const { descriptionHeight, minScheduleDate, maxScheduleDate, buttonVariant } =
-    props;
+  const {
+    scheduleType = 'main',
+    descriptionHeight,
+    minScheduleDate,
+    maxScheduleDate,
+    buttonVariant,
+  } = props;
   return (
     <VStack spacing="45px" width="full" alignItems="flex-start">
       <SimpleGrid
@@ -61,7 +67,11 @@ const SectionTwo = (props: SectionTwoProps) => {
           maxScheduleDate={maxScheduleDate}
           buttonVariant={buttonVariant}
         />
-        <Tasks sectionMaxWidth="141px" spacing="41px" />
+        <Tasks
+          scheduleType={scheduleType}
+          sectionMaxWidth="141px"
+          spacing="41px"
+        />
       </SimpleGrid>
     </VStack>
   );

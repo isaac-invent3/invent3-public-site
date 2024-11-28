@@ -1,10 +1,10 @@
 import { Flex, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import DetailHeader from '~/lib/components/UI/DetailHeader';
-import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
+import { MaintenanceScheduleInstance } from '~/lib/interfaces/maintenance.interfaces';
 
 interface OtherInfoProps {
-  data: MaintenanceSchedule;
+  data: MaintenanceScheduleInstance;
 }
 const OtherInfo = (props: OtherInfoProps) => {
   const { data } = props;
@@ -17,7 +17,9 @@ const OtherInfo = (props: OtherInfoProps) => {
         >
           Description
         </DetailHeader>
-        <Text color="neutral.600">{data?.comments}</Text>
+        <Text color="neutral.600">
+          {data?.comments.length > 0 ? data?.comments : 'N/A'}
+        </Text>
       </VStack>
       <VStack width="30%" alignItems="flex-start" spacing="4px">
         <DetailHeader
@@ -26,7 +28,7 @@ const OtherInfo = (props: OtherInfoProps) => {
         >
           Asset Location
         </DetailHeader>
-        <Text color="neutral.600">{data?.assetLocation}</Text>
+        <Text color="neutral.600">{data?.assetLocation ?? 'N/A'}</Text>
       </VStack>
       <VStack width="27%" alignItems="flex-start" spacing="4px">
         <DetailHeader

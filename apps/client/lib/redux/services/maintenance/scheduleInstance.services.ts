@@ -1,7 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
-import { ScheduleInstance } from '~/lib/interfaces/maintenance.interfaces';
+import { MaintenanceScheduleInstance } from '~/lib/interfaces/maintenance.interfaces';
 import {
   BaseApiResponse,
   ListResponse,
@@ -34,7 +34,7 @@ export const scheduleInstanceApi = createApi({
       invalidatesTags: ['allScheduleInstances'],
     }),
     getAllScheduleInstance: builder.query<
-      BaseApiResponse<ListResponse<ScheduleInstance>>,
+      BaseApiResponse<ListResponse<MaintenanceScheduleInstance>>,
       {}
     >({
       query: () => ({
@@ -44,11 +44,11 @@ export const scheduleInstanceApi = createApi({
       }),
       providesTags: ['allScheduleInstances'],
     }),
-    getScheduleInstanceById: builder.query<
-      BaseApiResponse<ScheduleInstance>,
-      { id: number }
+    getScheduleInstanceByGuid: builder.query<
+      BaseApiResponse<MaintenanceScheduleInstance>,
+      { id: number | string }
     >({
-      query: (id) => ({
+      query: ({ id }) => ({
         url: `/MaintenanceScheduleInstances/${id}`,
         method: 'GET',
         headers: getHeaders(),
@@ -65,7 +65,7 @@ export const scheduleInstanceApi = createApi({
       }),
     }),
     searchScheduleInstance: builder.mutation<
-      BaseApiResponse<ListResponse<ScheduleInstance>>,
+      BaseApiResponse<ListResponse<MaintenanceScheduleInstance>>,
       any
     >({
       query: (body: any) => ({
@@ -82,7 +82,7 @@ export const {
   useDeleteMaintenanceScheduleMutation,
   useGetAllScheduleInstanceQuery,
   useGetInstanceScheduleAggregateQuery,
-  useGetScheduleInstanceByIdQuery,
+  useGetScheduleInstanceByGuidQuery,
   useSearchScheduleInstanceMutation,
   useUpdateScheduleInstanceMutation,
 } = scheduleInstanceApi;

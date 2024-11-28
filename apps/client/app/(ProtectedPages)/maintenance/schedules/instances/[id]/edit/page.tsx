@@ -3,15 +3,16 @@
 import { Skeleton } from '@chakra-ui/react';
 import { notFound } from 'next/navigation';
 
-import ScheduleForm from '~/lib/components/Maintenance/Schedules/ScheduleForm';
-import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
+import ScheduleInstanceForm from '~/lib/components/Maintenance/Schedules/ScheduleInstanceForm';
 import { useAppDispatch } from '~/lib/redux/hooks';
-import { useGetMaintenanceScheduleByGuidQuery } from '~/lib/redux/services/maintenance/schedule.services';
+import { useGetScheduleInstanceByGuidQuery } from '~/lib/redux/services/maintenance/scheduleInstance.services';
 import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
 export default function Page({ params }: { params: { id: string } }) {
-  const { data, isLoading } = useGetMaintenanceScheduleByGuidQuery(params.id);
+  const { data, isLoading } = useGetScheduleInstanceByGuidQuery({
+    id: params.id,
+  });
   const dispatch = useAppDispatch();
 
   if (isLoading) {
@@ -20,11 +21,11 @@ export default function Page({ params }: { params: { id: string } }) {
   if (!data?.data) return notFound();
 
   if (data?.data) {
-    const schedule: MaintenanceSchedule = data?.data;
+    const schedule = data?.data;
     dispatch(
       updateScheduleForm({
-        name: schedule?.scheduleName,
-        scheduleId: schedule?.scheduleId,
+        name: schedule?.scheduleInstanceName,
+        scheduleId: schedule?.scheduleInstanceId,
         planId: schedule?.maintenancePlanId,
         typeId: schedule?.maintenanceTypeId,
         typeName: schedule?.maintenanceType,
@@ -48,5 +49,5 @@ export default function Page({ params }: { params: { id: string } }) {
     );
   }
 
-  return <ScheduleForm type="edit" />;
+  return <ScheduleInstanceForm />;
 }

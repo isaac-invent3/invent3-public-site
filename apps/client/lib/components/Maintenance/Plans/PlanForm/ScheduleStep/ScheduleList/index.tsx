@@ -175,11 +175,11 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
               'DD/MM/YYYY HH:mm'
             ),
             endDate: item.endDate ?? null,
-            intervalValue: item.intervalValue ?? 1,
-            dayOccurrences: item.dayOccurrences ?? [],
-            weekOccurrences: item.weekOccurrences ?? [],
-            monthOccurrences: item.monthOccurrences ?? [],
-            yearOccurences: item.yearOccurences ?? {},
+            intervalValue: 1,
+            dayOccurrences: [],
+            weekOccurrences: [],
+            monthOccurrences: [],
+            yearOccurences: {},
             deletedTaskIDs: [],
             updatedTaskIDs: [],
             completionDate: dateFormatter(

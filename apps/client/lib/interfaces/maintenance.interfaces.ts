@@ -31,70 +31,66 @@ interface MaintenancePlan {
   assetGroupContextName: 'string' | null;
 }
 
-interface MaintenanceSchedule {
+interface BaseMaintenanceSchedule {
   rowId: number;
-  assetId: number | null;
-  assetTypeId: number | null;
-  assetName: string | null;
-  countryId: number | null;
-  stateId: number | null;
-  maintenancePlanId: number | null;
-  planName: string | null;
-  scheduleId: number;
-  scheduleGuid: string;
-  scheduledDate: string | null;
-  endDate: string | null;
-  intervalValue: number | null;
-  dayOccurrences: string[];
-  weekOccurrences: number[];
-  monthOccurrences: number[];
-  yearOccurences: {
-    [name: number]: number[];
-  } | null;
-  completionDate: string | null;
-  durationInHours: number | null;
-  scheduleName: string | null;
-  description: string | null;
-  sla: number | null;
-  maintenanceTypeId: number | null;
-  isDeleted: boolean | null;
-  comments: string | null;
-  ticketId: number | null;
-  assignedTo: number | null;
-  statusId: number | null;
-  currentStatus: string | null;
-  contactPerson: string | null;
-  contactPersonPhoneNo: string | null;
-  contactPersonEmail: string | null;
-  maintenanceType: string | null;
-  frequencyName: string | null;
-  frequencyId: number | null;
-  createdBy: string | null;
-  totalCost: number | null;
-  assetLocation: string | null;
-  activeTasksCount: number | null;
+  assetId: number;
+  assetName: string;
+  assetTypeId: number;
+  countryId: number;
+  stateId: number;
+  frequencyId: number;
+  maintenancePlanId: number;
+  planName: string;
+  frequencyName: string;
+  scheduledDate: string; // ISO 8601 format
+  completionDate: string; // ISO 8601 format
+  durationInHours: number;
+  description: string;
+  maintenanceTypeId: number;
+  isDeleted: boolean;
+  sla: number;
+  comments: string;
+  assignedTo: number;
+  currentStatus: string;
+  contactPerson: string;
+  contactPersonPhoneNo: string;
+  contactPersonEmail: string;
+  maintenanceType: string;
+  activeTasksCount: number;
+  createdBy: string;
+  locationId: number;
+  facilityId: number;
+  buildingId: number;
+  floorId: number;
+  departmentId: number;
+  roomId: number;
+  aisleId: number;
+  shelfId: number;
+  lgaId: number;
+  totalCost: number;
+  assetLocation: string;
 }
 
-interface ScheduleInstance {
-  isNew: boolean;
-  createdDate: string;
-  createdBy: string;
-  lastModifiedDate: string;
-  lastModifiedBy: string;
-  isDeleted: boolean;
-  deletedDate: string;
-  deletedBy: string;
-  guid: string;
-  scheduleInstanceId: number;
-  parentScheduleId: number;
-  scheduledDate: string;
-  scheduleInstanceName: string;
-  sla: number;
-  estimatedDurationInHours: number;
-  completionDate: string;
+interface MaintenanceSchedule extends BaseMaintenanceSchedule {
+  scheduleId: number;
+  scheduleGuid: string;
+  endDate: string; // ISO 8601 format
+  scheduleName: string;
+  ticketId: number;
   statusId: number;
-  assignedTo: number;
-  comments: string;
+  displayColorCode: string;
+}
+
+interface MaintenanceScheduleInstance extends BaseMaintenanceSchedule {
+  scheduleInstanceId: number;
+  scheduleInstanceName: string;
+  estimatedDurationInHours: number;
+  scheduleInstanceGuid: string;
+  parentScheduleId: number;
+  currentStatusId: number;
+  statusDisplayColorCode: string;
+  statusCategoryId: number;
+  statusCategoryName: string;
 }
 
 interface AggregateMaintenanceSchedule {
@@ -212,7 +208,7 @@ export type {
   AggregateMaintenanceSchedule,
   ScheduleFormDetails,
   MaintenanceSchedule,
-  ScheduleInstance,
+  MaintenanceScheduleInstance,
   MaintenanceFrequency,
   PlanFormDetails,
   TemplateFilter,

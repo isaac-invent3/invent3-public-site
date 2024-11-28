@@ -62,7 +62,7 @@ type TicketCategory =
   | 'new'
   | 'assigned'
   | 'scheduled'
-  | 'in-progress'
+  | 'in_progress'
   | 'completed'
 
 

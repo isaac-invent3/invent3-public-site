@@ -74,7 +74,7 @@ const AssignTicketDrawer = (props: AssignTicketDrawerProps) => {
         pb="32px"
       >
         <Button
-          customStyles={{ width: '84px', height: '35px' }}
+          customStyles={{ width: '108px', height: '35px' }}
           variant="secondary"
           handleClick={onClose}
         >
@@ -84,7 +84,7 @@ const AssignTicketDrawer = (props: AssignTicketDrawerProps) => {
         <Button
           isLoading={isUpdatingTicket}
           handleClick={() => formik.handleSubmit()}
-          customStyles={{ width: '126px', height: '35px' }}
+          customStyles={{ width: '161px', height: '35px' }}
         >
           Assign Ticket
         </Button>

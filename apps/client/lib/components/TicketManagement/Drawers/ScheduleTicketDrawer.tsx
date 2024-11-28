@@ -20,6 +20,8 @@ import ErrorMessage from '../../UI/ErrorMessage';
 import FormInputWrapper from '../../UI/Form/FormInputWrapper';
 import ScheduleTicketSuccessModal from '../Modals/ScheduleTicketSuccessModal';
 import TicketDrawerWrapper from './TicketDrawerWrapper';
+import { useAppDispatch } from '~/lib/redux/hooks';
+import { clearSelectedTicket } from '~/lib/redux/slices/TicketSlice';
 
 interface AssignTicketDrawerProps {
   isOpen: boolean;
@@ -51,6 +53,7 @@ const ScheduleTicketDrawer = (props: AssignTicketDrawerProps) => {
   const { data: session } = useSession();
 
   const { handleSubmit } = useCustomMutation();
+  const dispatch = useAppDispatch()
 
   const username = session?.user?.username;
 
@@ -72,7 +75,10 @@ const ScheduleTicketDrawer = (props: AssignTicketDrawerProps) => {
       ticketTypeId: data.ticketTypeId ?? null,
     },
 
-    validationSchema: scheduleTicketSchema,
+    validationSchema: scheduleTicketSchema(
+      moment(moment()).format('DD/MM/YYYY') ??
+        undefined
+    ),
     enableReinitialize: true,
 
     onSubmit: async (payload) => {
@@ -195,6 +201,7 @@ const ScheduleTicketDrawer = (props: AssignTicketDrawerProps) => {
         onClose={() => {
           onCloseSuccess();
           onClose();
+          dispatch(clearSelectedTicket())
         }}
       />
     </>

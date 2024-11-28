@@ -16,6 +16,12 @@ interface TicketDrawerBodySubSectionProps {
   action: SelectedTicketAction;
 }
 
+export interface AssignedToFormDetails {
+  assignedToEmployeeName: string | null;
+  assignedTo: number | null;
+}
+
+
 const TicketDrawerBodySubSection = (props: TicketDrawerBodySubSectionProps) => {
   const { data, category, action } = props;
 
@@ -25,7 +31,7 @@ const TicketDrawerBodySubSection = (props: TicketDrawerBodySubSectionProps) => {
   };
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const formikContext = useFormikContext<any>();
+  const formikContext = useFormikContext<AssignedToFormDetails>();
 
   return (
     <VStack width="full" alignItems="flex-start" spacing="32px" py="24px">

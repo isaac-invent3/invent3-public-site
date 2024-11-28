@@ -5,10 +5,12 @@ import {
   SelectedTicketAction,
   Ticket,
 } from '~/lib/interfaces/ticket.interfaces';
+import { useGetMaintenanceSchedulesByTicketIdQuery } from '~/lib/redux/services/maintenance/schedule.services';
 import { useGetAllTaskPrioritiesQuery } from '~/lib/redux/services/task/priorities.services';
 import { useGetAllTaskStatusesQuery } from '~/lib/redux/services/task/statuses.services';
 import { useGetAllTicketTypesQuery } from '~/lib/redux/services/ticket.services';
 import { COLOR_CODES_FALLBACK, DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import { dateFormatter } from '~/lib/utils/Formatters';
 import { generateOptions } from '~/lib/utils/helperFunctions';
 import TicketInfoDropDown from '../Common/TicketInfoDropdown';
 import TicketInfoHeader from '../Common/TicketInfoHeader';
@@ -85,6 +87,11 @@ const TicketDrawerBodyHeader = (props: TicketDrawerBodyHeaderProps) => {
     useGetAllTicketTypesQuery({
       pageSize: DEFAULT_PAGE_SIZE,
       pageNumber: 1,
+    });
+
+  const { data: maintenanceSchedule, isLoading: isFetchingSchedule } =
+    useGetMaintenanceSchedulesByTicketIdQuery({
+      ticketId: data.ticketId,
     });
 
   const getItemColorCode = (
@@ -193,7 +200,14 @@ const TicketDrawerBodyHeader = (props: TicketDrawerBodyHeaderProps) => {
             <VStack alignItems="flex-start" spacing="15px">
               <Text color="neutral.600">Due Date</Text>
               {/* TODO: Insert End Date here */}
-              {/* <Text color="black">{data.resolutionDate}</Text> */}
+              <Text color="black">
+                {isFetchingSchedule
+                  ? 'Loading ...'
+                  : dateFormatter(
+                      maintenanceSchedule?.data.endDate,
+                      'DD-MM-YYYY '
+                    )}
+              </Text>
             </VStack>
           )}
         </HStack>

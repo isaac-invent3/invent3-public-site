@@ -44,7 +44,7 @@ const TicketDrawerHeader = (props: TicketDrawerHeaderProps) => {
       <HStack spacing="8px">
         {children}
 
-        {action === 'view' && (
+        {(action === 'view' || action === 'assign') && (
           <>
             <Button
               handleClick={() => openModal('schedule')}
@@ -53,7 +53,7 @@ const TicketDrawerHeader = (props: TicketDrawerHeaderProps) => {
               Schedule Ticket
             </Button>
 
-            {category === 'new' && (
+            {(category === 'new' && action === 'view') && (
               <Button
                 handleClick={() => openModal('assign')}
                 variant="outline"

@@ -84,7 +84,7 @@ const TicketTable = (props: TicketTableProps) => {
             ]
           : []),
 
-        ...(category === 'in-progress'
+        ...(category === 'in_progress'
           ? [
               columnHelper.accessor('rowId', {
                 cell: (info) => info.getValue(),

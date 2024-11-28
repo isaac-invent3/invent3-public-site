@@ -86,7 +86,7 @@ const TicketManagement = () => {
               {tabIndex === 2 && <TicketTable category="scheduled" />}
             </TabPanel>
             <TabPanel>
-              {tabIndex === 3 && <TicketTable category="in-progress" />}
+              {tabIndex === 3 && <TicketTable category="in_progress" />}
             </TabPanel>
             <TabPanel>
               {tabIndex === 4 && <TicketTable category="completed" />}

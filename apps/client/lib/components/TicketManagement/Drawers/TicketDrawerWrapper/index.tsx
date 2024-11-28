@@ -20,13 +20,6 @@ import TicketDrawerBodyHeader from './TicketDrawerBodyHeader';
 import TicketDrawerBodySubSection from './TicketDrawerBodySubSection';
 import TicketDrawerHeader from './TicketDrawerHeader';
 
-interface ActionButtonProps {
-  label: string;
-  handleClick: () => void;
-  loading?: boolean;
-  styles?: Record<string, unknown>;
-}
-
 interface TicketDrawerPropsBase<T = any> {
   isOpen: boolean;
   onClose: () => void;

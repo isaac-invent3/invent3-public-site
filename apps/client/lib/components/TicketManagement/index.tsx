@@ -35,14 +35,8 @@ const TicketManagement = () => {
   // Retrieve the `tab` parameter from URL on mount
   useEffect(() => {
     const tab = searchParams.get('tab');
-    if (tab) {
-      const tabIndex = ALlTabs.findIndex((value) => value === tab);
-      if (tabIndex !== -1) {
-        setTabIndex(tabIndex);
-      } else {
-        setTabIndex(0);
-      }
-    }
+    const tabIndex = tab ? ALlTabs.findIndex((value) => value === tab) : -1;
+    setTabIndex(tabIndex !== -1 ? tabIndex : 0);
   }, [searchParams]);
 
   // Update the URL whenever the tab is changed

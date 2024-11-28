@@ -29,9 +29,9 @@ import { createTicketSchema } from '~/lib/schemas/ticket.schema';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import { generateOptions } from '~/lib/utils/helperFunctions';
-import FormInputWrapper from '../../../UI/Form/FormInputWrapper';
-import CreateTicketSuccessModal from '../../Modals/CreateTicketSuccessModal';
-import TicketTypeSelect from '../Common/TicketTypeSelect';
+import FormInputWrapper from '../../UI/Form/FormInputWrapper';
+import CreateTicketSuccessModal from '../Modals/CreateTicketSuccessModal';
+import TicketTypeSelect from './Common/TicketTypeSelect';
 
 interface CreateTicketDrawerProps {
   isOpen: boolean;
@@ -67,6 +67,8 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
     assetId: asset?.assetId ?? null,
     reportedByEmployeeId: null,
     reportedByEmployeeName: null,
+    assignedTo: null,
+    assignedToEmployeeName: null,
     ticketTypeId: null,
     ticketPriorityId: null,
     issueReportDate: moment(new Date().toISOString()).utcOffset(0, true),
@@ -77,16 +79,13 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
     enableReinitialize: false,
     validationSchema: createTicketSchema,
     onSubmit: async (data) => {
-      const successMessage = asset
-        ? `Ticket for ${asset.assetName} Created Successfully`
-        : 'Ticket Created Successfully';
       const response = await handleSubmit(
         createTicketMutation,
         {
           ...data,
           createdBy: username,
         },
-        successMessage
+        ''
       );
 
       if (response?.data) {
@@ -168,7 +167,7 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                       sectionMaxWidth="141px"
                       spacing="24px"
                       description="Choose the category and the sub-category"
-                      title="Ticket Asset"
+                      title="Asset"
                       isRequired
                     >
                       <AssetSelect selectName="assetId" selectTitle="Asset" />
@@ -250,12 +249,32 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                       sectionInfoTitle="Raised By"
                     />
                   </FormInputWrapper>
+
+                  <FormInputWrapper
+                    sectionMaxWidth="141px"
+                    spacing="24px"
+                    description="Add name that users can likely search with"
+                    title="Ticket Assigned To"
+                  >
+                    <UserDisplayAndAddButton
+                      selectedUser={formik.values.assignedToEmployeeName}
+                      handleSelectUser={(user) => {
+                        formik.setFieldValue('assignedTo', user?.value ?? null);
+
+                        formik.setFieldValue(
+                          'assignedToEmployeeName',
+                          user?.label ?? null
+                        );
+                      }}
+                      sectionInfoTitle="Assigned To"
+                    />
+                  </FormInputWrapper>
+
                   <FormInputWrapper
                     sectionMaxWidth="141px"
                     spacing="24px"
                     description="Choose the category and the sub-category"
                     title="Request Date"
-                    isRequired
                     alignItems="center"
                   >
                     <Text fontSize={'14px'} color="gray">

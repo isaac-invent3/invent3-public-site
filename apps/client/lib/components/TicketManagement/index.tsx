@@ -2,26 +2,32 @@
 
 import {
   Flex,
-  Tabs,
-  TabList,
-  TabPanels,
   Tab,
+  TabList,
   TabPanel,
+  TabPanels,
+  Tabs,
   useDisclosure,
 } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
-import Header from './Header';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import Header from './Header';
 // import { FilterInput } from '~/lib/interfaces/asset.interfaces';
 import Filters from './Filters';
 import TicketTable from './TicketTable';
 
-const ALlTabs = ['New Tickets', 'Scheduled Tickets', 'Completed'];
+const ALlTabs = [
+  'New Tickets',
+  'Assigned',
+  'Scheduled Tickets',
+  'In Progress',
+  'Completed',
+];
 
 const TicketManagement = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [tabIndex, setTabIndex] = useState(0);
+  const [tabIndex, setTabIndex] = useState<number | undefined>(undefined);
   // eslint-disable-next-line no-unused-vars
   const [search, setSearch] = useState('');
   const { onToggle, isOpen } = useDisclosure();
@@ -29,12 +35,8 @@ const TicketManagement = () => {
   // Retrieve the `tab` parameter from URL on mount
   useEffect(() => {
     const tab = searchParams.get('tab');
-    if (tab) {
-      const tabIndex = ALlTabs.findIndex((value) => value === tab);
-      if (tabIndex !== -1) {
-        setTabIndex(tabIndex);
-      }
-    }
+    const tabIndex = tab ? ALlTabs.findIndex((value) => value === tab) : -1;
+    setTabIndex(tabIndex !== -1 ? tabIndex : 0);
   }, [searchParams]);
 
   // Update the URL whenever the tab is changed
@@ -73,13 +75,21 @@ const TicketManagement = () => {
 
           <TabPanels>
             <TabPanel>
-              <TicketTable type="new" />
+              {tabIndex === 0 && <TicketTable category="new" />}
+            </TabPanel>
+
+            <TabPanel>
+              {tabIndex === 1 && <TicketTable category="assigned" />}
+            </TabPanel>
+
+            <TabPanel>
+              {tabIndex === 2 && <TicketTable category="scheduled" />}
             </TabPanel>
             <TabPanel>
-              <TicketTable type="scheduled" />
+              {tabIndex === 3 && <TicketTable category="in_progress" />}
             </TabPanel>
             <TabPanel>
-              <TicketTable type="completed" />
+              {tabIndex === 4 && <TicketTable category="completed" />}
             </TabPanel>
           </TabPanels>
         </Tabs>

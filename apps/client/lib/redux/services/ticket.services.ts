@@ -37,9 +37,9 @@ export const ticketApi = createApi({
       }),
       invalidatesTags: ['allTickets'],
     }),
-    getAllTickets: builder.query({
+    getTicketsByTabScope: builder.query({
       query: (data: any) => ({
-        url: generateQueryStr(`/Tickets?`, data),
+        url: generateQueryStr(`/Tickets/GetTicketsByTabScope?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -67,6 +67,7 @@ export const ticketApi = createApi({
         headers: getHeaders(),
         body,
       }),
+      invalidatesTags: ['allTickets'],
     }),
     getAllTicketTypes: builder.query({
       query: (data: any) => ({
@@ -92,7 +93,7 @@ export const {
   useCreateTicketMutation,
   useUpdateTicketMutation,
   useDeleteTicketMutation,
-  useGetAllTicketsQuery,
+  useGetTicketsByTabScopeQuery,
   useGetTicketByIdQuery,
   useGetAllTicketTypesQuery,
   useSearchTicketsMutation,

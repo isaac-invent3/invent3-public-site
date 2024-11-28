@@ -4,23 +4,25 @@ import { useMemo, useState } from 'react';
 import UserInfo from '~/lib/components/Common/UserInfo';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import DataTable from '~/lib/components/UI/Table';
-import { Ticket } from '~/lib/interfaces/ticket.interfaces';
-import { useGetAllTicketsQuery } from '~/lib/redux/services/ticket.services';
+import { Ticket, TicketCategory } from '~/lib/interfaces/ticket.interfaces';
+import { useGetTicketsByTabScopeQuery } from '~/lib/redux/services/ticket.services';
 import { COLOR_CODES_FALLBACK, DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { dateFormatter } from '~/lib/utils/Formatters';
+import TicketOverlays from '../Overlays';
 import PopoverAction from './PopoverAction';
 
 interface TicketTableProps {
-  type: 'new' | 'scheduled' | 'completed';
+  category: TicketCategory;
 }
 const TicketTable = (props: TicketTableProps) => {
-  const { type } = props;
+  const { category } = props;
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const { data, isLoading, isFetching } = useGetAllTicketsQuery({
+  const { data, isLoading, isFetching } = useGetTicketsByTabScopeQuery({
     pageNumber: currentPage,
     pageSize: pageSize,
+    tabScopeName: category,
   });
 
   const columnHelper = createColumnHelper<Ticket>();
@@ -32,12 +34,14 @@ const TicketTable = (props: TicketTableProps) => {
           header: '#',
           enableSorting: false,
         }),
+
         columnHelper.accessor('ticketTitle', {
           cell: (info) => info.getValue(),
           header: 'Title',
           enableSorting: false,
         }),
-        ...(type === 'new'
+
+        ...(category === 'new'
           ? [
               columnHelper.accessor('issueDescription', {
                 cell: (info) => info.getValue(),
@@ -46,13 +50,14 @@ const TicketTable = (props: TicketTableProps) => {
               }),
             ]
           : []),
-        // Change to Proper Content
+
         columnHelper.accessor('ticketTypeName', {
           cell: (info) => info.getValue(),
           header: 'Type',
           enableSorting: false,
         }),
-        columnHelper.accessor('priority', {
+
+        columnHelper.accessor('ticketPriorityName', {
           cell: (info) => {
             const ticket = info.row.original;
 
@@ -62,13 +67,14 @@ const TicketTable = (props: TicketTableProps) => {
                   ticket.priorityColorCode ?? COLOR_CODES_FALLBACK.default
                 }
                 width="80px"
-                text={ticket.priority}
+                text={ticket.ticketPriorityName}
               />
             );
           },
           header: 'Priority',
         }),
-        ...(type !== 'new'
+
+        ...(category === 'scheduled'
           ? [
               columnHelper.accessor('rowId', {
                 cell: (info) => info.getValue(),
@@ -77,13 +83,25 @@ const TicketTable = (props: TicketTableProps) => {
               }),
             ]
           : []),
+
+        ...(category === 'in_progress'
+          ? [
+              columnHelper.accessor('rowId', {
+                cell: (info) => info.getValue(),
+                header: 'Tasks Progress',
+                enableSorting: false,
+              }),
+            ]
+          : []),
+
         columnHelper.accessor('issueReportDate', {
           cell: (info) =>
             dateFormatter(info.getValue(), 'DD / MM / YYYY hh:mma'),
           header: 'Requested Date',
           enableSorting: false,
         }),
-        ...(type !== 'new'
+
+        ...(category === 'completed'
           ? [
               columnHelper.accessor('resolutionDate', {
                 cell: (info) =>
@@ -91,21 +109,29 @@ const TicketTable = (props: TicketTableProps) => {
                 header: 'Resolution Date',
                 enableSorting: false,
               }),
-              columnHelper.accessor('resolvedBy', {
+            ]
+          : []),
+
+        columnHelper.accessor('reportedBy', {
+          cell: (info) => <UserInfo name={info.getValue()} />,
+          header: 'Requested By',
+          enableSorting: true,
+        }),
+
+        ...(category !== 'new'
+          ? [
+              columnHelper.accessor('assignedTo', {
                 cell: (info) => <UserInfo name={info.getValue()} />,
                 header: 'Assigned To',
                 enableSorting: false,
               }),
             ]
           : []),
-        columnHelper.accessor('reportedBy', {
-          cell: (info) => <UserInfo name={info.getValue()} />,
-          header: 'Requested By',
-          enableSorting: true,
-        }),
+
+
         columnHelper.accessor('facilityRef', {
           cell: (info) => (
-            <PopoverAction ticket={info.row.original} type={type} />
+            <PopoverAction ticket={info.row.original} category={category} />
           ),
           header: '',
           enableSorting: false,
@@ -119,6 +145,8 @@ const TicketTable = (props: TicketTableProps) => {
 
   return (
     <Flex width="full" mt="24px">
+      <TicketOverlays />
+
       <DataTable
         columns={columns}
         data={data?.data?.items ?? []}

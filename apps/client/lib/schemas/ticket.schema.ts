@@ -2,11 +2,11 @@ import * as Yup from 'yup';
 import { createDateSchema } from './general.schema';
 import { taskBaseSchema } from './task.schema';
 
-const scheduleTicketSchema = (minScheduledDate?: string) =>
+const scheduleTicketSchema = (minResolutionDate?: string) =>
   Yup.object().shape({
     assignedTo: Yup.number().required('Assignee is Required'),
-    scheduledDate: createDateSchema(true, true, minScheduledDate).required(
-      'Start Date is Required'
+    resolutionDate: createDateSchema(true, true, minResolutionDate).required(
+      'Resolution Date is Required'
     ),
     tasks: Yup.array()
       .of(taskBaseSchema())
@@ -32,6 +32,11 @@ const updateTicketSchema = () =>
       .min(1, 'There must be atleast one task'),
   });
 
+const assignTicketSchema = () =>
+  Yup.object().shape({
+    assignedTo: Yup.number().required('Assignee is Required'),
+  });
+
 const createTicketSchema = () =>
   Yup.object().shape({
     ticketTitle: Yup.string().required('Ticket Title is Required'),
@@ -41,4 +46,9 @@ const createTicketSchema = () =>
     ticketTypeId: Yup.number().required('Ticket Type is Required'),
     ticketPriorityId: Yup.number().required('Ticket Priority is Required'),
   });
-export { createTicketSchema, scheduleTicketSchema, updateTicketSchema };
+export {
+  createTicketSchema,
+  scheduleTicketSchema,
+  updateTicketSchema,
+  assignTicketSchema,
+};

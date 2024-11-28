@@ -41,7 +41,7 @@ const TicketActivity = () => {
   };
 
   return (
-    <VStack width="full" alignItems="flex-start" pt="24px" px="24px">
+    <VStack width="full" alignItems="flex-start" pt="24px">
       <Text color="neutral.600" fontWeight={700}>
         Ticket Activity
       </Text>

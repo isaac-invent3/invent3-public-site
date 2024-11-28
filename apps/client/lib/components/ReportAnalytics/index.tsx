@@ -1,11 +1,12 @@
 'use client';
 
-import { Flex } from '@chakra-ui/react';
+import { Flex, HStack } from '@chakra-ui/react';
 import { useState } from 'react';
 import { TicketFilterInput } from '~/lib/interfaces/ticket.interfaces';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import GeneralFilter from './Filters/GeneralFilter';
 import Header from './Header';
+import ReportCard from './Common/ReportCard';
 
 const ReportAnalytics = () => {
   const getTodayDate = () => {
@@ -36,6 +37,16 @@ const ReportAnalytics = () => {
         setFilterData={setFilterData}
         clearFilters={clearFilters}
       />
+
+   
+
+      <ReportCard
+        title="Total Assets"
+        value="108,098"
+        onViewReport={() => alert('View Report Clicked')}
+      />
+
+      
     </Flex>
   );
 };

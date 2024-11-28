@@ -34,6 +34,8 @@ const GenericDrawer = (props: IGenericDrawer) => {
       placement="right"
       onClose={onClose}
       closeOnOverlayClick
+      blockScrollOnMount={false}
+      preserveScrollBarGap={true}
     >
       <DrawerOverlay
         height={`${innerHeight}px !important`}

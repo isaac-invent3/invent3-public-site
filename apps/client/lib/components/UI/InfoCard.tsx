@@ -16,7 +16,7 @@ const InfoCard = (props: InfoCardProps) => {
       bgColor="#0366EF0D"
       spacing="16px"
       alignItems="flex-start"
-      width="max-content"
+      width="full"
       {...customStyle}
     >
       <Icon as={InfoIcon} boxSize="16px" color="#0366EF" />

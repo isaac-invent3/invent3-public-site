@@ -16,6 +16,7 @@ interface FormActionButtonsProps {
   disablePrimaryButton?: boolean;
   disableBackButton?: boolean;
   type?: 'submit' | 'button';
+  children?: React.ReactNode;
 }
 const FormActionButtons = (props: FormActionButtonsProps) => {
   const {
@@ -30,6 +31,7 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
     disablePrimaryButton = false,
     disableBackButton = false,
     type,
+    children,
   } = props;
 
   return (
@@ -89,6 +91,7 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
             </HStack>
           </Link>
         )}
+        {children}
         <Button
           type={(type ?? activeStep < totalStep) ? 'submit' : 'button'}
           handleClick={() => {
@@ -99,7 +102,7 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
           loadingText={loadingText}
           isDisabled={disablePrimaryButton}
         >
-          {activeStep < totalStep ? 'Continue' : (finalText ?? 'Finish')}
+          {activeStep < totalStep ? 'Continue' : (finalText ?? 'Save')}
         </Button>
       </HStack>
     </HStack>

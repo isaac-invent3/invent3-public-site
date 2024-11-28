@@ -33,7 +33,7 @@ const SectionOne = () => {
     },
     {
       label: 'Start Date',
-      value: dateFormatter(startDate, 'Do MMM, YYYY', 'DD/MM/YYYY'),
+      value: dateFormatter(startDate, 'Do MMM, YYYY', 'DD/MM/YYYY') ?? 'N/A',
     },
     {
       label: 'End Date',

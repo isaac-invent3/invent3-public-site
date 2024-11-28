@@ -14,6 +14,7 @@ const locationSchema = Yup.object().shape({
 });
 
 const facilitySchema = Yup.object().shape({
+  lgaId: Yup.number().required('LGA is Required'),
   facilityName: Yup.string().required('Name is Required'),
   facilityRef: Yup.string().nullable(),
   address: Yup.string().nullable(),

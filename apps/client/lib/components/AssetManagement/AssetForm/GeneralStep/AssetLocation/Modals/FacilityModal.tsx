@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
 import { Field, FormikProvider, useFormik } from 'formik';
-import React from 'react';
+import React, { useEffect } from 'react';
 import GenericModal from '~/lib/components/UI/Modal';
 import Button from '~/lib/components/UI/Button';
 import ModalHeading from '../../../../../UI/Modal/ModalHeading';
@@ -10,19 +10,22 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useSession } from 'next-auth/react';
 import { facilitySchema } from '~/lib/schemas/asset/location.schema';
 import TextInput from '~/lib/components/UI/TextInput';
+import LGASelect from '../LGASelect';
 
 interface FacilityModalProps {
   isOpen: boolean;
   onClose: () => void;
+  defaultLGAId: number | null;
 }
 const FacilityModal = (props: FacilityModalProps) => {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, defaultLGAId } = props;
   const [createFacility, { isLoading }] = useCreateFacilityMutation({});
   const { handleSubmit } = useCustomMutation();
   const { data } = useSession();
 
   const formik = useFormik({
     initialValues: {
+      lgaId: defaultLGAId ?? null,
       facilityName: null,
       facilityRef: null,
       address: null,
@@ -30,11 +33,13 @@ const FacilityModal = (props: FacilityModalProps) => {
       latitude: 0,
     },
     validationSchema: facilitySchema,
-    onSubmit: async (values) => {
+    enableReinitialize: true,
+    onSubmit: async (values, { resetForm }) => {
       const finalValue = { ...values, createdBy: data?.user?.username };
       const response = await handleSubmit(createFacility, finalValue, '');
       if (response?.data) {
         onClose();
+        resetForm();
       }
     },
   });
@@ -56,6 +61,7 @@ const FacilityModal = (props: FacilityModalProps) => {
 
               {/* Main Form Starts Here */}
               <VStack width="full" spacing="16px">
+                <LGASelect type="general" />
                 <Field
                   as={TextInput}
                   name="facilityName"

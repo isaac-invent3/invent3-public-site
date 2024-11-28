@@ -117,7 +117,7 @@ const SectionTwo = (props: ISectionTwo) => {
             </Text>
           </VStack>
         </GridItem>
-        <GridItem colSpan={2}>
+        <GridItem colSpan={3}>
           <HStack alignItems="flex-start" spacing="24px">
             <VStack alignItems="flex-start" spacing="8px">
               <Text color="neutral.600" fontWeight={700} whiteSpace="nowrap">

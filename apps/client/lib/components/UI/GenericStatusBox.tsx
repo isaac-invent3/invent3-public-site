@@ -1,4 +1,4 @@
-import { Box, HStack, Text, StackProps } from '@chakra-ui/react';
+import { Box, HStack, StackProps, Text } from '@chakra-ui/react';
 
 interface GenericStatusBoxProps extends StackProps {
   colorCode?: string | null;
@@ -24,7 +24,14 @@ const GenericStatusBox = (props: GenericStatusBoxProps) => {
         bgColor={colorCode ?? '#8595A5'}
         flexShrink={0}
       />
-      <Text color="black" textTransform="capitalize">
+      <Text
+        color="black"
+        textOverflow="ellipsis"
+        noOfLines={1}
+        textTransform="capitalize"
+        overflow="hidden"
+        flex="1"
+      >
         {text}
       </Text>
     </HStack>

@@ -14,7 +14,7 @@ interface Task {
   isDeleted: boolean;
   taskTypeId: number;
   taskType: string;
-  priorityId:number
+  priorityId: number;
   taskPriorityId: number;
   priorityName: string;
   status: string;
@@ -79,6 +79,7 @@ interface FormDetails {
   assetLocation: string | null;
   statusColorCode: string | null;
   priorityColorCode: string | null;
+  parentTaskId?: number | null;
 }
 
 interface TaskStatus {
@@ -113,10 +114,76 @@ interface TaskPriority {
   createdBy: string;
 }
 
+interface TaskInstance {
+  taskInstanceId: number;
+  taskInstanceName: string;
+  parentTaskId: number | null;
+  scheduleInstanceId: number | null;
+  dateCreated: string;
+  dueDate: string;
+  dateCompleted: string | null;
+  actualCost: number | null;
+  taskDescription: string;
+  assignedTo: number | null;
+  comments: string | null;
+  taskStatusId: number;
+  assignedToEmployeeName: string;
+  estimatedDurationInHours: number;
+  costEstimate: number;
+  isDeleted: boolean;
+  taskTypeId: number;
+  taskType: string;
+  priorityId: number;
+  taskPriorityId: number;
+  priorityName: string;
+  status: string;
+  statusId: number;
+  priorityColorCode: string;
+  statusColorCode: string;
+  scheduleId: number;
+  assetId: number;
+  assetCode: string;
+  assetSerialNo: string;
+  assetDescription: string;
+  stateId: number;
+  countryId: number;
+  locationId: number;
+  facilityName: string;
+  facilityRef: string;
+  facilityAddress: string;
+  facilityLongitude: number;
+  facilityLatitude: number;
+  buildingName: string;
+  buildingRef: string;
+  buildingAddress: string;
+  buildingLongitude: number;
+  buildingLatitude: number;
+  floor: string;
+  floorRef: string;
+  department: string;
+  departmentRef: string;
+  room: string;
+  roomRef: string;
+  aisle: string;
+  aisleRef: string;
+  shelf: string;
+  shelfRef: string;
+  assetLocation: string;
+  isNew: boolean;
+  createdDate: string;
+  createdBy: string;
+  lastModifiedDate: string | null;
+  lastModifiedBy: string | null;
+  deletedDate: string | null;
+  deletedBy: string | null;
+  guid: string;
+}
+
 interface taskFormDetails extends baseTaskFormDetail, FormDetails {}
 
 export type {
   Task,
+  TaskInstance,
   baseTaskFormDetail,
   taskFormDetails,
   TaskStatus,

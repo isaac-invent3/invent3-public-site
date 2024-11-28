@@ -1,0 +1,13 @@
+Remove the Re assign Button on the scheduled ticket screen
+A Way to assign a new Ticket to a person
+Do New and Assigned Tickets need to be Edited?
+
+Flows (Ticket):
+There are two types of Assignment for Tickets
+The Ticket Assignment and the Ticket Schedule Assignment 
+Analogy - (Front Desk - Team Lead - Team Member)
+
+Under scheduled Ticket, the Assigned To that shows is the Assigned to for the Ticket Schedule
+
+ReportAnalytics
+Update Filter Wrapper component so there's apply filters and reset filters

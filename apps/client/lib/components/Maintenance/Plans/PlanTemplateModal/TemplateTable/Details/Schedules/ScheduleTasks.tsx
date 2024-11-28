@@ -1,6 +1,6 @@
 import { Text, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import TaskTable from '~/lib/components/TaskManagement/TaskTable';
+import TaskTable from '~/lib/components/TaskManagement/Tables/TaskTable';
 import { useGetAllTasksByScheduleIdQuery } from '~/lib/redux/services/task/general.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 

@@ -35,7 +35,7 @@ export default function Page({ params }: { params: { id: string } }) {
         assetGroupTypeID: maintenance?.assetGroupTypeID,
         assetGroupTypeName: plan?.groupTypeName,
         assetGroupContextName: plan?.assetGroupContextName,
-        assetName: '',
+        assetName: plan?.assetName,
         assetId: plan?.assetId,
         startDate: plan?.startDate
           ? dateFormatter(plan?.startDate, 'DD/MM/YYYY')

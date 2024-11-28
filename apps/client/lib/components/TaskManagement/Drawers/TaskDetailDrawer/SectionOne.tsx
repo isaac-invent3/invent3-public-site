@@ -1,20 +1,22 @@
 import { Heading, HStack, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
-import { Task } from '~/lib/interfaces/task.interfaces';
+import { TaskInstance } from '~/lib/interfaces/task.interfaces';
 
 interface SectionOneProps {
-  data: Task;
+  data: TaskInstance;
 }
 const SectionOne = ({ data }: SectionOneProps) => {
   const info = [
     {
       label: 'Task ID:',
-      value: data?.taskId,
+      value: data?.taskInstanceId,
     },
     {
       label: 'Estimated Time',
-      value: `${data?.estimatedDurationInHours} ${data?.estimatedDurationInHours > 1 ? 's' : ''}`,
+      value: data?.estimatedDurationInHours
+        ? `${data?.estimatedDurationInHours} ${data?.estimatedDurationInHours > 1 ? 's' : ''}`
+        : 'N/A',
     },
   ];
 
@@ -34,7 +36,7 @@ const SectionOne = ({ data }: SectionOneProps) => {
         color="black"
         fontWeight={800}
       >
-        #{data?.taskId} {data?.taskName}
+        #{data?.taskInstanceId} {data?.taskInstanceName}
       </Heading>
       <HStack width="full" spacing="32px">
         <VStack alignItems="flex-start" spacing="8px">

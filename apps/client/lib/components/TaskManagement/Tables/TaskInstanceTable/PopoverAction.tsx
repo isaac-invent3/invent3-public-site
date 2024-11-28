@@ -5,12 +5,15 @@ import TaskFormModal from '~/lib/components/TaskManagement/Drawers/TaskFormDrawe
 import GenericPopover from '~/lib/components/UI/GenericPopover';
 import GenericDeleteModal from '~/lib/components/UI/Modal/GenericDeleteModal';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { Task, taskFormDetails } from '~/lib/interfaces/task.interfaces';
-import { useDeleteTaskMutation } from '~/lib/redux/services/task/general.services';
-import TaskDetailDrawer from '../Drawers/TaskDetailDrawer';
-import MarkTaskAsCompletedModal from '../Modals/MarkTaskAsCompletedModal';
+import {
+  taskFormDetails,
+  TaskInstance,
+} from '~/lib/interfaces/task.interfaces';
+import TaskDetailDrawer from '../../Drawers/TaskDetailDrawer';
+import MarkTaskAsCompletedModal from '../../Modals/MarkTaskAsCompletedModal';
+import { useDeleteTaskInstanceMutation } from '~/lib/redux/services/task/instance.services';
 
-const PopoverAction = (task: Task, type: 'drawer' | 'page') => {
+const PopoverAction = (task: TaskInstance, type: 'drawer' | 'page') => {
   const {
     isOpen: isOpenEdit,
     onOpen: onOpenEdit,
@@ -33,13 +36,13 @@ const PopoverAction = (task: Task, type: 'drawer' | 'page') => {
   } = useDisclosure();
 
   const { handleSubmit } = useCustomMutation();
-  const [deleteTask, { isLoading }] = useDeleteTaskMutation({});
+  const [deleteTaskInstance, { isLoading }] = useDeleteTaskInstanceMutation({});
   const { data } = useSession();
 
-  const handleDeleteTask = async () => {
+  const handleDeleteTaskInstance = async () => {
     const response = await handleSubmit(
-      deleteTask,
-      { id: task?.taskId, deletedBy: data?.user.username },
+      deleteTaskInstance,
+      { id: task?.taskInstanceId, deletedBy: data?.user.username },
       'Task Deleted Successfully'
     );
     if (response?.data) {
@@ -66,7 +69,7 @@ const PopoverAction = (task: Task, type: 'drawer' | 'page') => {
             {...(type === 'drawer' ? { onClick: () => onOpenEdit() } : {})}
             as={type === 'page' ? 'a' : 'button'}
             {...(type === 'page'
-              ? { href: `/task-management/${task.taskId}/edit` }
+              ? { href: `/task-management/${task.taskInstanceId}/edit` }
               : {})}
           >
             Edit
@@ -82,17 +85,20 @@ const PopoverAction = (task: Task, type: 'drawer' | 'page') => {
         data={
           {
             ...task,
-            priorityId: task.taskPriorityId,
+            priorityId: 1,
+            parentTaskId: task.parentTaskId,
+            taskId: task.taskInstanceId,
+            scheduleId: task.scheduleInstanceId,
           } as unknown as taskFormDetails
         }
-        scheduleId={task.scheduleId}
+        scheduleId={task.scheduleInstanceId}
       />
       {isOpenDelete && (
         <GenericDeleteModal
           isLoading={isLoading}
           isOpen={isOpenDelete}
           onClose={onCloseDelete}
-          handleDelete={handleDeleteTask}
+          handleDelete={handleDeleteTaskInstance}
         />
       )}
       {isOpenViewDetails && (

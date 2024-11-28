@@ -1,4 +1,5 @@
 import {
+  Flex,
   HStack,
   Icon,
   NumberDecrementStepper,
@@ -42,7 +43,7 @@ const Pagination = (props: PaginationProps) => {
     return () => clearTimeout(timeoutId);
   }, [inputValue, setPageSize]);
 
-  return (
+  return totalPage > 0 ? (
     <HStack
       bgColor="white"
       py="8px"
@@ -99,6 +100,8 @@ const Pagination = (props: PaginationProps) => {
         totalPage={totalPage}
       />
     </HStack>
+  ) : (
+    <Flex />
   );
 };
 

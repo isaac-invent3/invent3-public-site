@@ -33,7 +33,9 @@ const ScheduledTicketTasks = (props: ScheduledTicketTasksProps) => {
   const [checkedTasks, setCheckedTasks] = useState<number[]>([]);
 
   const { data: maintenanceSchedule, isLoading: isFetchingSchedule } =
-    useGetMaintenanceSchedulesByTicketIdQuery(props.data.ticketId!);
+    useGetMaintenanceSchedulesByTicketIdQuery({
+      ticketId: props.data.ticketId!,
+    });
 
   const { data: tasks, isLoading: isFetchingTasks } =
     useGetAllTasksByScheduleIdQuery({
@@ -74,7 +76,7 @@ const ScheduledTicketTasks = (props: ScheduledTicketTasksProps) => {
   const isLoading = isFetchingTasks || isFetchingSchedule;
 
   return (
-    <VStack width="full" alignItems="flex-start" pt="24px" px="24px">
+    <VStack width="full" alignItems="flex-start" pt="24px">
       <HStack width="full" alignItems="center" justifyContent="space-between">
         <Text color="neutral.600" fontWeight={700}>
           Tasks

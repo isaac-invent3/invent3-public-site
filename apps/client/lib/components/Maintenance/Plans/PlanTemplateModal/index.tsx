@@ -9,18 +9,18 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import Pagination from '~/lib/components/UI/Table/Pagination';
-import {
-  useGetAllMaintenancePlanQuery,
-  useSearchMaintenancePlanMutation,
-} from '~/lib/redux/services/maintenance/plan.services';
 import TemplateTable from './TemplateTable';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 import { SearchResponse } from '~/lib/interfaces/general.interfaces';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import TemplateFilters from './Header/Filters';
-import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 import SlideTransition from '~/lib/components/UI/SlideTransition';
 import Details from './TemplateTable/Details';
+import {
+  useGetMaintenancePlanTemplateQuery,
+  useSearchTemplatesMutation,
+} from '~/lib/redux/services/template.services';
+import { Template } from '~/lib/interfaces/template.interfaces';
 
 interface PlanTemplateModalProps {
   isOpen: boolean;
@@ -32,7 +32,7 @@ const PlanTemplateModal = (props: PlanTemplateModalProps) => {
   const [search, setSearch] = useState('');
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const { data, isLoading, isFetching } = useGetAllMaintenancePlanQuery(
+  const { data, isLoading, isFetching } = useGetMaintenancePlanTemplateQuery(
     {
       pageNumber,
       pageSize,
@@ -40,18 +40,19 @@ const PlanTemplateModal = (props: PlanTemplateModalProps) => {
     { skip: search !== '' }
   );
 
-  const [searchPlan, { isLoading: searchLoading }] =
-    useSearchMaintenancePlanMutation({});
+  const [searchPlan, { isLoading: searchLoading }] = useSearchTemplatesMutation(
+    {}
+  );
   const [searchData, setSearchData] = useState<SearchResponse | null>(null);
   const { handleSubmit } = useCustomMutation();
-  const [selectedPlan, setSelectedPlan] = useState<MaintenancePlan | null>(
+  const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(
     null
   );
 
   const searchCriterion = {
     criterion: [
       {
-        columnName: 'planName',
+        columnName: 'templateName',
         columnValue: search,
         operation: OPERATORS.Contains,
       },
@@ -90,19 +91,19 @@ const PlanTemplateModal = (props: PlanTemplateModalProps) => {
         setSearch={setSearch}
         openFilter={openFilter}
         setOpenFilter={onToggle}
-        selectedPlan={selectedPlan}
-        setSelectedPlan={setSelectedPlan}
+        selectedTemplate={selectedTemplate}
+        setSelectedTemplate={setSelectedTemplate}
       />
       <ModalBody m={0} p={0} px="24px">
         <Flex id="date-picker-portal" />
         <Collapse in={openFilter} animateOpacity>
           {openFilter && <TemplateFilters />}
         </Collapse>
-        {!selectedPlan && (
+        {!selectedTemplate && (
           <TemplateTable
             isLoading={isLoading || searchLoading}
             isFetching={isFetching}
-            setSelectedPlan={setSelectedPlan}
+            setSelectedTemplate={setSelectedTemplate}
             data={
               search && searchData
                 ? searchData.items
@@ -110,11 +111,11 @@ const PlanTemplateModal = (props: PlanTemplateModalProps) => {
             }
           />
         )}
-        <SlideTransition trigger={selectedPlan !== null}>
-          {selectedPlan && <Details data={selectedPlan} />}
+        <SlideTransition trigger={selectedTemplate !== null}>
+          {selectedTemplate && <Details template={selectedTemplate} />}
         </SlideTransition>
       </ModalBody>
-      {!selectedPlan && (
+      {!selectedTemplate && (
         <ModalFooter
           m={0}
           p={0}
@@ -131,7 +132,7 @@ const PlanTemplateModal = (props: PlanTemplateModalProps) => {
             totalPage={
               search && searchData
                 ? searchData?.totalPages
-                : data?.data?.totalPages
+                : (data?.data?.totalPages ?? 0)
             }
           />
         </ModalFooter>

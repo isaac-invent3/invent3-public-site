@@ -1,10 +1,10 @@
 import { Avatar, HStack, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
-import { Task } from '~/lib/interfaces/task.interfaces';
+import { TaskInstance } from '~/lib/interfaces/task.interfaces';
 import { amountFormatter } from '~/lib/utils/Formatters';
 
 interface SectionTwoProps {
-  data: Task;
+  data: TaskInstance;
 }
 const SectionTwo = ({ data }: SectionTwoProps) => {
   return (
@@ -16,9 +16,9 @@ const SectionTwo = ({ data }: SectionTwoProps) => {
           </Text>
           <Text color="neutral.600" size="md">
             <Text as="span" color="black">
-              {data?.scheduleId}
+              {data?.scheduleInstanceId}
             </Text>{' '}
-            - {data?.taskName}
+            - {data?.taskInstanceId}
           </Text>
         </VStack>
         <VStack width="full" spacing="8px" alignItems="flex-start">
@@ -40,7 +40,7 @@ const SectionTwo = ({ data }: SectionTwoProps) => {
               name={data?.assignedToEmployeeName}
             />
             <Text size="md" color="black">
-              {data?.assignedToEmployeeName}
+              {data?.assignedToEmployeeName ?? 'N/A'}
             </Text>
           </HStack>
         </VStack>
@@ -52,14 +52,15 @@ const SectionTwo = ({ data }: SectionTwoProps) => {
         <Text
           bgColor="#F0F0F0"
           color="neutral.700"
-          size="md"
+          size={!data?.taskDescription ? 'base' : 'md'}
           rounded="8px"
-          pt="8px"
           px="11px"
           pb="38px"
+          pt={!data?.taskDescription ? '38px' : '8px'}
           width="full"
+          textAlign={data?.taskDescription ? 'left' : 'center'}
         >
-          {data?.taskDescription}
+          {data?.taskDescription ?? 'No Description'}
         </Text>
       </VStack>
     </VStack>

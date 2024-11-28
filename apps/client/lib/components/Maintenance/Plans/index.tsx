@@ -1,20 +1,141 @@
 import { Flex } from '@chakra-ui/react';
+import _ from 'lodash';
 import { createColumnHelper } from '@tanstack/react-table';
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import DataTable from '~/lib/components/UI/Table';
-import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
-import { useGetAllMaintenancePlanQuery } from '~/lib/redux/services/maintenance/plan.services';
+import {
+  MaintenancePlan,
+  PlanFilter,
+} from '~/lib/interfaces/maintenance.interfaces';
+import {
+  useGetAllMaintenancePlanQuery,
+  useSearchMaintenancePlanMutation,
+} from '~/lib/redux/services/maintenance/plan.services';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import PopoverAction from './PopoverAction';
-import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
+import Filters from './Filters';
+import { SearchResponse } from '~/lib/interfaces/general.interfaces';
+import { generateSearchCriterion } from '~/lib/utils/helperFunctions';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
+import FilterDisplay from '../../UI/Filter/FilterDisplay';
 
-const Plans = () => {
+export const initialFilterData = {
+  planType: [],
+  region: [],
+  area: [],
+  branch: [],
+};
+
+interface PlansProp {
+  search: string;
+  openFilter: boolean;
+}
+
+const Plans = (props: PlansProp) => {
+  const { search, openFilter } = props;
+  const [filterData, setFilterData] = useState<PlanFilter>(initialFilterData);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const { data, isLoading, isFetching } = useGetAllMaintenancePlanQuery({
     pageSize,
     pageNumber: currentPage,
   });
+  const { handleSubmit } = useCustomMutation();
+
+  // Checks if all filterdata is empty
+  const isFilterEmpty = _.every(
+    filterData,
+    (value) => _.isArray(value) && _.isEmpty(value)
+  );
+
+  const [searchPlan, { isLoading: searchLoading }] =
+    useSearchMaintenancePlanMutation({});
+  const [searchData, setSearchData] = useState<SearchResponse | null>(null);
+
+  // Search Criterion
+  const searchCriterion = {
+    ...(search
+      ? {
+          criterion: [
+            {
+              columnName: 'planName',
+              columnValue: search,
+              operation: OPERATORS.Contains,
+            },
+          ],
+        }
+      : {}),
+    ...(!isFilterEmpty
+      ? {
+          orCriterion: [
+            ...(filterData.planType.map((item) => item.value).length > 0
+              ? [
+                  generateSearchCriterion(
+                    'planTypeId',
+                    filterData.planType.map((item) => item.value),
+                    OPERATORS.Equals
+                  ),
+                ]
+              : []),
+
+            ...(filterData.region.map((item) => item.value).length > 0
+              ? [
+                  generateSearchCriterion(
+                    'stateId',
+                    filterData.region.map((item) => item.value),
+                    OPERATORS.Equals
+                  ),
+                ]
+              : []),
+            ...(filterData.area.map((item) => item.value).length > 0
+              ? [
+                  generateSearchCriterion(
+                    'lgaId',
+                    filterData.area.map((item) => item.value),
+                    OPERATORS.Equals
+                  ),
+                ]
+              : []),
+            ...(filterData.branch.map((item) => item.value).length > 0
+              ? [
+                  generateSearchCriterion(
+                    'facilityId',
+                    filterData.branch.map((item) => item.value),
+                    OPERATORS.Equals
+                  ),
+                ]
+              : []),
+          ],
+        }
+      : {}),
+    pageNumber: currentPage,
+    pageSize: pageSize,
+  };
+
+  // Function that handles search/filters
+  const handleSearch = useCallback(async () => {
+    if (search || !isFilterEmpty) {
+      const response = await handleSubmit(searchPlan, searchCriterion, '');
+      setSearchData(response?.data?.data);
+    }
+  }, [searchPlan, searchCriterion]);
+
+  // Trigger search when search input changes or pagination updates
+  useEffect(() => {
+    if (search) {
+      handleSearch();
+    }
+  }, [search, currentPage, pageSize]);
+
+  // Reset pagination when the search input is cleared or apply filter flag is false
+  useEffect(() => {
+    if (!search && isFilterEmpty) {
+      setPageSize(DEFAULT_PAGE_SIZE);
+      setCurrentPage(1);
+    }
+  }, [search, isFilterEmpty]);
+
   const columnHelper = createColumnHelper<MaintenancePlan>();
   const columns = useMemo(
     () => [
@@ -89,20 +210,39 @@ const Plans = () => {
   );
 
   return (
-    <Flex direction="column" mt="32px">
+    <Flex direction="column" pt="16px">
+      <Flex width="full" mb="8px">
+        <FilterDisplay isOpen={openFilter}>
+          {openFilter && (
+            <Filters
+              filterData={filterData}
+              setFilterData={setFilterData}
+              handleApplyFilter={handleSearch}
+            />
+          )}
+        </FilterDisplay>
+      </Flex>
       <DataTable
         columns={columns}
-        data={data?.data?.items ?? []}
+        data={
+          (search || !isFilterEmpty) && searchData
+            ? searchData.items
+            : (data?.data?.items ?? [])
+        }
+        totalPages={
+          (search || !isFilterEmpty) && searchData
+            ? searchData?.totalPages
+            : data?.data?.totalPages
+        }
         showFooter={true}
         emptyLines={15}
         isSelectable={false}
         isLoading={isLoading}
-        isFetching={isFetching}
+        isFetching={isFetching || searchLoading}
         pageNumber={currentPage}
         setPageNumber={setCurrentPage}
         pageSize={pageSize}
         setPageSize={setPageSize}
-        totalPages={data?.data?.totalPages}
         customThStyle={{
           paddingLeft: '16px',
           paddingTop: '17px',

@@ -16,6 +16,7 @@ import { TicketFilterInput } from '~/lib/interfaces/ticket.interfaces';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import GeneralFilter from './Filters/GeneralFilter';
 import Header from './Header';
+import TopBranchesChart from './TestChart';
 
 const ReportAnalytics = () => {
   const getTodayDate = () => {
@@ -70,6 +71,7 @@ const ReportAnalytics = () => {
         paddingBottom="2rem"
         borderBottomWidth={1}
         borderBottomColor="#BBBBBB"
+        justifyContent="space-between"
       >
         <Grid
           templateColumns={{
@@ -121,7 +123,7 @@ const ReportAnalytics = () => {
           ))}
         </Grid>
 
-        {/* <TopBranchesChart /> */}
+        <TopBranchesChart />
       </HStack>
 
       <VStack>

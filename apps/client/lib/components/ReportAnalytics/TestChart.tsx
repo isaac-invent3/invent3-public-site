@@ -1,14 +1,25 @@
+import { Box, HStack, Text, VStack } from '@chakra-ui/react';
 import {
-  Box,
-  Text,
-  VStack,
-  HStack,
-} from '@chakra-ui/react';
+  BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  LinearScale,
+  LineElement,
+  PointElement,
+  Title,
+  Tooltip,
+} from 'chart.js';
+import { Bar } from 'react-chartjs-2';
 
-const growAnimation = `
-  from { width: 0; }
-  to { width: 100%; }
-`;
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  BarElement
+);
 
 interface Branch {
   name: string;
@@ -33,123 +44,77 @@ const branches: Branch[] = [
 ];
 
 export default function BranchAssetsChart() {
-  const maxValue = Math.max(...branches.map((branch) => branch.value));
+  const labels = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+  ];
+
+  const data = {
+    labels: labels,
+    datasets: [
+      {
+        axis: 'y',
+        label: 'My First Dataset',
+        data: [65, 59, 80, 81, 56, 55, 40],
+        fill: false,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+          'rgba(255, 205, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(201, 203, 207, 0.2)',
+        ],
+        borderColor: [
+          'rgb(255, 99, 132)',
+          'rgb(255, 159, 64)',
+          'rgb(255, 205, 86)',
+          'rgb(75, 192, 192)',
+          'rgb(54, 162, 235)',
+          'rgb(153, 102, 255)',
+          'rgb(201, 203, 207)',
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
 
   return (
     <Box
+      width="48%"
       bg="white"
-      borderRadius="xl"
-      p={8}
-      boxShadow="0px 4px 20px rgba(0, 0, 0, 0.05)"
-      width="100%"
-      maxW="1200px"
+      p="16px"
+      borderRadius="md"
+      border="1px solid #F2F1F1"
+      height="100%"
     >
-      <VStack align="stretch" spacing={8}>
-        {/* Header Section */}
-        <Box>
-          <Text fontSize="2xl" fontWeight="medium" color="gray.800" mb={4}>
+      <HStack alignItems="start" height="100%">
+        <VStack justifyContent="space-between" alignItems="start" height="30%">
+          <Text fontSize="14px" color="#42403D" mb="10">
             Top 5 branches with most Assets
           </Text>
-          <Text fontSize="5xl" fontWeight="bold" color="gray.900">
-            750k
-          </Text>
-          <Text fontSize="xl" color="gray.500">
-            Total Assets
-          </Text>
+
+          <Box>
+            <Text fontSize="28px" fontWeight="800" color="#0E2642">
+              750k
+            </Text>
+
+            <Text fontWeight="700" color="#838383" mt="2">
+              Total Assets
+            </Text>
+          </Box>
+        </VStack>
+
+        <Box width="full" height="full">
+          <Bar data={data} options={{ indexAxis: 'y' }}  />
         </Box>
-
-        {/* Chart Section */}
-        <Box position="relative">
-          {/* Y-axis arrow */}
-          <Box
-            position="absolute"
-            left={0}
-            top="-20px"
-            height="calc(100% + 40px)"
-            width="1px"
-            bg="gray.300"
-            _after={{
-              content: '""',
-              position: 'absolute',
-              top: '-6px',
-              left: '-4px',
-              borderLeft: '4px solid transparent',
-              borderRight: '4px solid transparent',
-              borderBottom: '6px solid',
-              borderBottomColor: 'gray.300',
-              transform: 'rotate(180deg)',
-            }}
-          />
-
-          {/* Bars */}
-          <VStack spacing={6} pl={40}>
-            {branches.map((branch, index) => (
-              <HStack key={branch.name} width="100%" spacing={4}>
-                <Text
-                  width="200px"
-                  textAlign="right"
-                  color="gray.500"
-                  fontSize="md"
-                  position="absolute"
-                  left="0"
-                >
-                  {branch.name}
-                </Text>
-                <Box
-                  height="40px"
-                  bg={branch.color}
-                  borderRadius="sm"
-                  width={`${(branch.value / maxValue) * 100}%`}
-                  position="relative"
-                  animation={`${growAnimation} 1s ease-out`}
-                >
-                  <Text
-                    position="absolute"
-                    right={4}
-                    top="50%"
-                    transform="translateY(-50%)"
-                    fontWeight="semibold"
-                    fontSize="lg"
-                  >
-                    {branch.value}k
-                  </Text>
-                </Box>
-              </HStack>
-            ))}
-          </VStack>
-
-          {/* X-axis arrow */}
-          <Box
-            position="absolute"
-            bottom="-20px"
-            left="0"
-            width="calc(100% + 20px)"
-            height="1px"
-            bg="gray.300"
-            _after={{
-              content: '""',
-              position: 'absolute',
-              right: '-6px',
-              top: '-4px',
-              borderTop: '4px solid transparent',
-              borderBottom: '4px solid transparent',
-              borderLeft: '6px solid',
-              borderLeftColor: 'gray.300',
-            }}
-          />
-
-          {/* X-axis label */}
-          <Text
-            position="absolute"
-            bottom="-40px"
-            right="0"
-            color="gray.500"
-            fontSize="md"
-          >
-            Asset Total
-          </Text>
-        </Box>
-      </VStack>
+      </HStack>
     </Box>
   );
 }

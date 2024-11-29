@@ -24,6 +24,14 @@ export const scheduleInstanceApi = createApi({
       }),
       invalidatesTags: ['allScheduleInstances'],
     }),
+    updateScheduleInstanceandTaskInstances: builder.mutation({
+      query: ({ id, ...data }) => ({
+        url: `/Invent3Pro/UpdateScheduleAndTaskInstances/${id}`,
+        method: 'PUT',
+        headers: getHeaders(),
+        body: data,
+      }),
+    }),
     deleteMaintenanceSchedule: builder.mutation({
       query: ({ id, ...data }) => ({
         url: `/MaintenanceScheduleInstances/${id}`,
@@ -85,4 +93,5 @@ export const {
   useGetScheduleInstanceByGuidQuery,
   useSearchScheduleInstanceMutation,
   useUpdateScheduleInstanceMutation,
+  useUpdateScheduleInstanceandTaskInstancesMutation,
 } = scheduleInstanceApi;

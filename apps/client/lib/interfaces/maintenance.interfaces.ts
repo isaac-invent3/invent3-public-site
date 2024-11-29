@@ -134,7 +134,7 @@ interface ScheduleFormDetails {
   dayOccurrences: string[] | null;
   weekOccurrences: number[] | null;
   monthOccurrences: number[] | null;
-  yearOccurences: {
+  yearOccurrences: {
     [name: number]: number[];
   } | null;
   maintenancePlanInfo: {

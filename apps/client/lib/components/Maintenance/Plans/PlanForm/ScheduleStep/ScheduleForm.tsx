@@ -71,7 +71,7 @@ const ScheduleForm = (props: ScheduleFormProps) => {
         dayOccurrences: formDetails.dayOccurrences ?? null,
         weekOccurrences: formDetails.weekOccurrences ?? null,
         monthOccurrences: formDetails.monthOccurrences ?? null,
-        yearOccurences: formDetails.yearOccurences ?? null,
+        yearOccurrences: formDetails.yearOccurrences ?? null,
         firstInstanceDate: formDetails.firstInstanceDate ?? null,
         deletedTaskIDs: [],
         updatedTaskIDs: [],
@@ -85,7 +85,6 @@ const ScheduleForm = (props: ScheduleFormProps) => {
           endDate: null,
         },
       };
-      console.log({ newScheduleInfo });
       if (values.localId) {
         //Update an existing schedule
         const newPlanSchedules = planDetails.schedules.filter(

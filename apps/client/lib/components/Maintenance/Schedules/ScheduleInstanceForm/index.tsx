@@ -1,5 +1,5 @@
 import { Flex, VStack } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Header from './Header';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { FormikProvider, useFormik } from 'formik';
@@ -43,10 +43,6 @@ const ScheduleInstanceForm = () => {
       setSaveOnlyThisInstance(false);
     },
   });
-
-  useEffect(() => {
-    console.log('It came here');
-  }, []);
 
   return (
     <Flex width="full" height="full" direction="column" gap="40px" pb="25px">

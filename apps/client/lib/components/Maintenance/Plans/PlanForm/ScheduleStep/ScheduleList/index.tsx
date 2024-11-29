@@ -179,7 +179,7 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
             dayOccurrences: [],
             weekOccurrences: [],
             monthOccurrences: [],
-            yearOccurences: {},
+            yearOccurrences: {},
             deletedTaskIDs: [],
             updatedTaskIDs: [],
             completionDate: dateFormatter(

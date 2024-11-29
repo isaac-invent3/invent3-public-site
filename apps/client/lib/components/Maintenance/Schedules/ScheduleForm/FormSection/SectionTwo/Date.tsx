@@ -3,7 +3,7 @@ import {
   HStack,
   Icon,
   useDisclosure,
-  useToast,
+  // useToast,
   VStack,
 } from '@chakra-ui/react';
 import { useFormikContext } from 'formik';
@@ -48,7 +48,7 @@ const Date = (props: DateProps) => {
     onOpen: onOpenRecurrence,
     onClose: onCloseRecurrence,
   } = useDisclosure();
-  const toast = useToast();
+  // const toast = useToast();
   const { handleSubmit } = useCustomMutation();
   const [validateScheduleFirstInstanceSchedule, { isLoading }] =
     useValidateFirstInstanceScheduledDateMutation({});
@@ -67,7 +67,12 @@ const Date = (props: DateProps) => {
       dayOccurrences: info.repeatIntervals.daily,
       weekOccurrences: info.repeatIntervals.weekly,
       monthOccurrences: info.repeatIntervals.monthly,
-      yearOccurences: info.repeatIntervals.annually,
+      yearOccurrences: Object.fromEntries(
+        Object.entries(info.repeatIntervals.annually).filter(
+          // eslint-disable-next-line no-unused-vars
+          ([_, value]) => value.length > 0
+        )
+      ),
     };
 
     const response = await handleSubmit(
@@ -89,32 +94,32 @@ const Date = (props: DateProps) => {
       false
     );
 
-    if (!response?.data) {
-      setValues({
-        ...values,
+    // if (!response?.data) {
+    setValues({
+      ...values,
+      ...formattedInfo,
+      frequencyId: info.frequency?.value as number,
+      scheduledDate: startDateTime,
+      endDate: endDateTime,
+    });
+    dispatch(
+      updateScheduleForm({
+        frequencyName: info.frequency?.label,
+        firstInstanceDate: response?.data?.data,
         ...formattedInfo,
-        frequencyId: info.frequency?.value as number,
-        scheduledDate: startDateTime,
-        endDate: endDateTime,
-      });
-      dispatch(
-        updateScheduleForm({
-          frequencyName: info.frequency?.label,
-          firstInstanceDate: response?.data?.data,
-          ...formattedInfo,
-        })
-      );
-      onCloseRecurrence();
-    } else {
-      toast({
-        title: 'Error',
-        description: 'Selected Recurrence does not have an instance',
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-        position: 'top-right',
-      });
-    }
+      })
+    );
+    onCloseRecurrence();
+    // } else {
+    //   toast({
+    //     title: 'Error',
+    //     description: 'Selected Recurrence does not have an instance',
+    //     status: 'error',
+    //     duration: 5000,
+    //     isClosable: true,
+    //     position: 'top-right',
+    //   });
+    // }
   };
 
   return (

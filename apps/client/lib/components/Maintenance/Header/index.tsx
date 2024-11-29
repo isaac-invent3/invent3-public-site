@@ -1,11 +1,11 @@
-import { HStack, Icon, VStack } from '@chakra-ui/react';
+import { HStack, useDisclosure, VStack } from '@chakra-ui/react';
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import { AddIcon } from '~/lib/components/CustomIcons';
 import GenericBreadCrumb from '~/lib/components/UI/BreadCrumb';
-import Button from '~/lib/components/UI/Button';
 import PageHeader from '~/lib/components/UI/PageHeader';
-import PlanButtonPopover from './PlanButton';
+import PlanTemplateModal from '../Plans/PlanTemplateModal';
+import ActionButtonPopover from './ActionButtonsPopover';
+import ScheduleTemplateModal from '../Schedules/ScheduleTemplateModal';
 
 const breadCrumbData = [
   {
@@ -18,23 +18,27 @@ const breadCrumbData = [
   },
 ];
 
-interface HeaderProps {
-  name?: string;
-  href?: string;
-  handleClick?: () => void;
-}
-const Header = (props: HeaderProps) => {
-  const { name, href, handleClick } = props;
+const Header = () => {
   const searchParams = useSearchParams();
-  const [isPlan, setIsPlan] = useState(false);
+  const [tabName, setTabName] = useState<string | null>(null);
+  const {
+    isOpen: isOpenPlanTemplate,
+    onClose: onClosePlanTemplate,
+    onOpen: onOpenPlanTemplate,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenScheduleTemplate,
+    onClose: onCloseScheduleTemplate,
+    onOpen: onOpenScheduleTemplate,
+  } = useDisclosure();
 
   // Retrieve the `tab` parameter from URL on mount
   useEffect(() => {
     const tab = searchParams.get('tab');
-    if (tab === 'Plans' || !tab) {
-      setIsPlan(true);
+    if (tab) {
+      setTabName(tab);
     } else {
-      setIsPlan(false);
+      setTabName('Plans');
     }
   }, [searchParams]);
 
@@ -43,19 +47,33 @@ const Header = (props: HeaderProps) => {
       <GenericBreadCrumb routes={breadCrumbData} />
       <HStack width="full" justifyContent="space-between">
         <PageHeader>Maintenance</PageHeader>
-        {isPlan ? (
-          <PlanButtonPopover />
-        ) : (
-          name && (
-            <Button
-              customStyles={{ width: '227px' }}
-              href={href}
-              handleClick={handleClick}
-            >
-              <Icon as={AddIcon} boxSize="18px" color="#D2FEFD" mr="4px" />
-              Add New {name}
-            </Button>
-          )
+        {tabName?.toLowerCase() === 'plans' && (
+          <ActionButtonPopover
+            onOpenTemplateModal={onOpenPlanTemplate}
+            newRoute="/maintenance/plans/add"
+            suffix="Plan"
+          >
+            {isOpenPlanTemplate && (
+              <PlanTemplateModal
+                isOpen={isOpenPlanTemplate}
+                onClose={onClosePlanTemplate}
+              />
+            )}
+          </ActionButtonPopover>
+        )}
+        {tabName?.toLowerCase() === 'schedules' && (
+          <ActionButtonPopover
+            onOpenTemplateModal={onOpenScheduleTemplate}
+            newRoute="/maintenance/schedules/add"
+            suffix="Schedule"
+          >
+            {isOpenScheduleTemplate && (
+              <ScheduleTemplateModal
+                isOpen={isOpenScheduleTemplate}
+                onClose={onCloseScheduleTemplate}
+              />
+            )}
+          </ActionButtonPopover>
         )}
       </HStack>
     </VStack>

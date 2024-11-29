@@ -63,7 +63,6 @@ const generateMaintenanceScheduleDTO = (
       actionType = FORM_ENUM.update;
     }
   }
-  console.log(formDetail.dayOccurrences);
 
   const maintenanceScheduleDto = {
     planId: formDetail.planId,
@@ -90,10 +89,10 @@ const generateMaintenanceScheduleDTO = (
       ? null
       : formDetail.monthOccurrences,
     yearOccurrences:
-      formDetail.yearOccurences &&
-      Object.values(formDetail.yearOccurences).every((arr) => arr.length === 0)
+      formDetail.yearOccurrences &&
+      Object.values(formDetail.yearOccurrences).every((arr) => arr.length === 0)
         ? null
-        : formDetail.yearOccurences,
+        : formDetail.yearOccurrences,
     completionDate: null,
     actionType,
     ...(type === 'edit'
@@ -132,43 +131,4 @@ const generatePlanDTO = (
   return maintenancePlanDto;
 };
 
-function validateFrequencyInstance(
-  frequency: string,
-  startDate: string,
-  endDate: string | null = null
-) {
-  const startMoment = moment(startDate, 'DD/MM/YYYY HH:mm');
-  const endMoment = endDate ? moment(endDate, 'DD/MM/YYYY') : null;
-
-  if (!startMoment.isValid() || (endDate && !endMoment?.isValid())) {
-    return false;
-  }
-
-  if (!endDate) {
-    // No end date means unlimited instances
-    return true;
-  }
-
-  // Calculate at least one instance for each frequency type
-  switch (frequency) {
-    case 'Daily':
-      return startMoment.add(1, 'days').isSameOrBefore(endMoment);
-    case 'Weekly':
-      return startMoment.add(1, 'weeks').isSameOrBefore(endMoment);
-    case 'Monthly':
-      return startMoment.add(1, 'months').isSameOrBefore(endMoment);
-    case 'Quarterly':
-      return startMoment.add(3, 'months').isSameOrBefore(endMoment);
-    case 'Annually':
-      return startMoment.add(1, 'years').isSameOrBefore(endMoment);
-    default:
-      return false;
-  }
-}
-
-export {
-  generateTasksArray,
-  generatePlanDTO,
-  generateMaintenanceScheduleDTO,
-  validateFrequencyInstance,
-};
+export { generateTasksArray, generatePlanDTO, generateMaintenanceScheduleDTO };

@@ -87,7 +87,6 @@ function SelectInput(props: SelectInputProps) {
         debounceRef.current = setTimeout(async () => {
           if (callBackFunction && inputValue.length >= 3) {
             const options = await callBackFunction(inputValue);
-            console.log({ newOptions: options });
             resolve(options);
           } else {
             resolve([]);

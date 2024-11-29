@@ -72,7 +72,6 @@ const ScheduleStep = (props: ScheduleStepProps) => {
               setActiveStep={setActiveStep}
               disableBackButton={showScheduleForm}
               disablePrimaryButton={showScheduleForm}
-              handleContinue={() => console.log({ error: formik.errors })}
             />
           </Flex>
         </form>

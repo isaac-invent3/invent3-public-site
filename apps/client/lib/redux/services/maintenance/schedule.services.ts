@@ -73,9 +73,9 @@ export const maintenanceScheduleApi = createApi({
       }),
       providesTags: ['allMaintenanceSchedule'],
     }),
-    getMaintenanceScheduleById: builder.query({
-      query: (id) => ({
-        url: `/MaintenanceSchedules/${id}`,
+    getMaintenanceScheduleByGuid: builder.query({
+      query: (guid) => ({
+        url: `/MaintenanceSchedules/${guid}`,
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -177,7 +177,7 @@ export const {
   useGetMaintenanceScheduleAggregateQuery,
   useSearchMaintenanceScheduleMutation,
   useGetMaintenanceSchedulesByAreaQuery,
-  useGetMaintenanceScheduleByIdQuery,
+  useGetMaintenanceScheduleByGuidQuery,
   useGetMaintenanceSchedulesByPlanIdQuery,
   useGetMaintenanceSchedulesWithSingleAggregateCountsByAreaQuery,
   useValidateFirstInstanceScheduledDateMutation,

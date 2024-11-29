@@ -13,47 +13,53 @@ import './style.css';
 import CustomToolbar from './CustomToolBar';
 import Event from './Events';
 import CustomDateHeader from './CustomDateHeader';
-import {
-  useGetMaintenanceScheduleAggregateQuery,
-  useGetMaintenanceSchedulesWithSingleAggregateCountsByAreaQuery,
-} from '~/lib/redux/services/maintenance/schedule.services';
+import {} from // useGetMaintenanceScheduleAggregateQuery,
+// useGetMaintenanceSchedulesWithSingleAggregateCountsByAreaQuery,
+'~/lib/redux/services/maintenance/schedule.services';
 import {
   getDisplayDate,
   transformToCalendarEvents,
 } from '~/lib/utils/helperFunctions';
-import { AREA_ENUM } from '~/lib/utils/constants';
-import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+// import { AREA_ENUM } from '~/lib/utils/constants';
+import { useAppDispatch } from '~/lib/redux/hooks';
 import { updateScheduleInfo } from '~/lib/redux/slices/MaintenanceSlice';
+import { useGetAllScheduleInstanceQuery } from '~/lib/redux/services/maintenance/scheduleInstance.services';
 
 const mLocalizer = momentLocalizer(moment);
 
 const ScheduleTimeline = () => {
-  const { selectedCountry, selectedState } = useAppSelector(
-    (state) => state.maintenance.scheduleInfo
-  );
+  // const { selectedCountry, selectedState } = useAppSelector(
+  //   (state) => state.maintenance.scheduleInfo
+  // );
   const dispatch = useAppDispatch();
   const [date, setDate] = useState(new Date());
   const [view, setView] = useState<View>(Views.WEEK);
   const [eventData, setEventData] = useState<EventType[]>([]);
-  const { startDate, endDate } = getDisplayDate(date, view);
-  const isProperState = selectedState?.label && selectedState?.label !== 'All';
+  // const { startDate, endDate } = getDisplayDate(date, view);
+  // const isProperState = selectedState?.label && selectedState?.label !== 'All';
+  // // const {
+  // //   data: singleAggregateCountData,
+  // //   isLoading: isLoadingSingle,
+  // //   isFetching: isFetchingSingle,
+  // // } = useGetMaintenanceSchedulesWithSingleAggregateCountsByAreaQuery({
+  // //   id: isProperState ? selectedState.value : selectedCountry?.value,
+  // //   areaType: isProperState ? AREA_ENUM.state : AREA_ENUM.country,
+  // //   startDate,
+  // //   endDate,
+  // // });
+  // To be removed
   const {
-    data: singleAggregateCountData,
-    isLoading: isLoadingSingle,
-    isFetching: isFetchingSingle,
-  } = useGetMaintenanceSchedulesWithSingleAggregateCountsByAreaQuery({
-    id: isProperState ? selectedState.value : selectedCountry?.value,
-    areaType: isProperState ? AREA_ENUM.state : AREA_ENUM.country,
-    startDate,
-    endDate,
-  });
-  const { data, isLoading, isFetching } =
-    useGetMaintenanceScheduleAggregateQuery({
-      id: isProperState ? selectedState.value : selectedCountry?.value,
-      areaType: isProperState ? AREA_ENUM.state : AREA_ENUM.country,
-      startDate,
-      endDate,
-    });
+    data: scheduleInstanceData,
+    isLoading,
+    isFetching,
+  } = useGetAllScheduleInstanceQuery({});
+  // const { data, isLoading, isFetching } =
+  //   useGetMaintenanceScheduleAggregateQuery({
+  //     id: isProperState ? selectedState.value : selectedCountry?.value,
+  //     areaType: isProperState ? AREA_ENUM.state : AREA_ENUM.country,
+  //     startDate,
+  //     endDate,
+  //   });
 
   useEffect(() => {
     if (date) {
@@ -96,29 +102,21 @@ const ScheduleTimeline = () => {
   };
 
   useEffect(() => {
-    if (data?.data?.items) {
-      setEventData(transformToCalendarEvents(data?.data?.items));
+    if (scheduleInstanceData?.data?.items) {
+      setEventData((prev) => [
+        ...prev,
+        ...transformToCalendarEvents(scheduleInstanceData?.data?.items),
+      ]);
     }
-    if (singleAggregateCountData?.data?.items) {
-      setEventData(
-        transformToCalendarEvents(singleAggregateCountData?.data?.items)
-      );
-    }
-  }, [data, singleAggregateCountData]);
+  }, [scheduleInstanceData]);
 
   return (
     <Flex
       width="full"
       height="full"
       direction="column"
-      pointerEvents={
-        isFetching || isLoading || isLoadingSingle || isFetchingSingle
-          ? 'none'
-          : 'initial'
-      }
-      opacity={
-        isLoading || isFetching || isLoadingSingle || isFetchingSingle ? 0.7 : 1
-      }
+      pointerEvents={isFetching || isLoading ? 'none' : 'initial'}
+      opacity={isLoading || isFetching ? 0.7 : 1}
     >
       <Calendar
         date={date}

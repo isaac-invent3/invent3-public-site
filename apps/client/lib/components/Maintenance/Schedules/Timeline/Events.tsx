@@ -70,7 +70,7 @@ const Event = ({ event }: { event: EventType }) => {
           zIndex={99}
         >
           <Text color="neutral.250">
-            {formatNumberShort(event.resource?.totalScheduleCount)}
+            {formatNumberShort(event.resource?.totalScheduleCount ?? 0)}
           </Text>
         </Flex>
       )}
@@ -106,8 +106,8 @@ const Event = ({ event }: { event: EventType }) => {
           noOfLines={1}
           textOverflow="ellipsis"
         >
-          {event?.resource?.planName ??
-            `${formatNumberShort(event?.resource?.totalScheduleCount)} Schedule${event?.resource?.totalScheduleCount > 1 ? 's' : ''}`}
+          {event?.resource?.scheduleInstanceName ??
+            `${formatNumberShort(event?.resource?.totalScheduleCount ?? 0)} Schedule${event?.resource?.totalScheduleCount > 1 ? 's' : ''}`}
         </Text>
         <Text
           color="neutral.800"
@@ -127,11 +127,13 @@ const Event = ({ event }: { event: EventType }) => {
         />
       )}
 
-      <AggregateDetailModal
-        isOpen={isOpenAggregate}
-        onClose={onCloseAggregate}
-        data={event.resource}
-      />
+      {isOpenAggregate && (
+        <AggregateDetailModal
+          isOpen={isOpenAggregate}
+          onClose={onCloseAggregate}
+          data={event.resource}
+        />
+      )}
     </Flex>
   );
 };

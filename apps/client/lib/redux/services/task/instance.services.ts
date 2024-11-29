@@ -86,7 +86,7 @@ export const taskInstanceApi = createApi({
     >({
       query: ({ id, ...data }) => ({
         url: generateQueryStr(
-          `/TaskInstances/GetTasksByMaintenanceScheduleInstanceIdAndStatusId/${id}?`,
+          `/TaskInstances/GetTaskInstancesByMaintenanceScheduleInstanceIdAndStatusId/${id}?`,
           data
         ),
         method: 'GET',

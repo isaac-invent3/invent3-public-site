@@ -3,41 +3,31 @@ import { createColumnHelper } from '@tanstack/react-table';
 import React, { useMemo } from 'react';
 import DetailHeader from '~/lib/components/UI/DetailHeader';
 import DataTable from '~/lib/components/UI/Table';
-import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
+import { MaintenanceScheduleInstance } from '~/lib/interfaces/maintenance.interfaces';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
 
 interface PlanDetailProps {
-  data: MaintenanceSchedule;
+  data: MaintenanceScheduleInstance;
 }
 const PlanDetail = (props: PlanDetailProps) => {
   const { data } = props;
-  const columnHelper = createColumnHelper<MaintenanceSchedule>();
+  const columnHelper = createColumnHelper<MaintenanceScheduleInstance>();
 
   const columns = useMemo(
     () => [
       columnHelper.accessor('maintenancePlanId', {
-        cell: (info) => info.getValue(),
+        cell: (info) => info.getValue() ?? 'N/A',
         header: '#',
         enableSorting: false,
       }),
-      columnHelper.accessor('maintenanceType', {
-        cell: (info) => info.getValue(),
-        header: 'Plan Type',
-        enableSorting: false,
-      }),
-      columnHelper.accessor('frequencyName', {
-        cell: (info) => info.getValue(),
-        header: 'Frequency',
-        enableSorting: false,
-      }),
-      columnHelper.accessor('assetId', {
-        cell: (info) => info.getValue(),
-        header: 'Asset ID',
+      columnHelper.accessor('planName', {
+        cell: (info) => info.getValue() ?? 'N/A',
+        header: 'Plan Name',
         enableSorting: false,
       }),
       columnHelper.accessor('contactPerson', {
         cell: (info) => info.getValue(),
-        header: 'Owner ID',
+        header: 'Owner',
         enableSorting: false,
       }),
       columnHelper.accessor('totalCost', {

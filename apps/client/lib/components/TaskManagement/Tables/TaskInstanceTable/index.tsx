@@ -111,7 +111,7 @@ const TaskInstanceTable = (props: TaskInstanceTableProps) => {
           header: 'Assigned To',
           enableSorting: isSortable,
         }),
-        columnHelper.accessor('status', {
+        columnHelper.accessor('currentStatus', {
           cell: (info) => {
             return (
               <GenericStatusBox
@@ -124,7 +124,7 @@ const TaskInstanceTable = (props: TaskInstanceTableProps) => {
           enableSorting: false,
         }),
       ];
-      const popOverColumns = columnHelper.accessor('guid', {
+      const popOverColumns = columnHelper.accessor('taskInstanceGuid', {
         cell: (info) => PopoverAction(info.row.original, type),
         header: '',
         enableSorting: false,

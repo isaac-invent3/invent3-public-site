@@ -3,7 +3,6 @@ import React from 'react';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import { TaskInstance } from '~/lib/interfaces/task.interfaces';
 import { useGetAllTaskInstancesByScheduleInstanceIdQuery } from '~/lib/redux/services/task/instance.services';
-import { MaintenanceColorCode } from '~/lib/utils/ColorCodes';
 
 interface OtherRelatedTasksProps {
   data: TaskInstance;
@@ -57,10 +56,8 @@ const OtherRelatedTasks = ({ data }: OtherRelatedTasksProps) => {
                   {item.taskInstanceName}
                 </Text>
                 <GenericStatusBox
-                  text={data?.status}
-                  colorCode={
-                    MaintenanceColorCode[data?.status as 'Not Started']
-                  }
+                  text={data?.currentStatus}
+                  colorCode={data?.statusColorCode}
                 />
               </HStack>
             ))

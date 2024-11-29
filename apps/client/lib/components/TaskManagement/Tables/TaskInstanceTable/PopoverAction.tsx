@@ -12,6 +12,7 @@ import {
 import TaskDetailDrawer from '../../Drawers/TaskDetailDrawer';
 import MarkTaskAsCompletedModal from '../../Modals/MarkTaskAsCompletedModal';
 import { useDeleteTaskInstanceMutation } from '~/lib/redux/services/task/instance.services';
+import { STATUS_CATEGORY_ENUM } from '~/lib/utils/constants';
 
 const PopoverAction = (task: TaskInstance, type: 'drawer' | 'page') => {
   const {
@@ -54,11 +55,12 @@ const PopoverAction = (task: TaskInstance, type: 'drawer' | 'page') => {
     <>
       <GenericPopover width="129px" placement="bottom-start">
         <VStack width="full" alignItems="flex-start" spacing="16px">
-          {type === 'page' && task.status === 'In Progress' && (
-            <Text cursor="pointer" onClick={onOpenMarkCompleted}>
-              Mark Completed
-            </Text>
-          )}
+          {type === 'page' &&
+            task.statusCategoryId === STATUS_CATEGORY_ENUM.ACTIVE && (
+              <Text cursor="pointer" onClick={onOpenMarkCompleted}>
+                Mark Completed
+              </Text>
+            )}
           {type === 'page' && (
             <Text cursor="pointer" onClick={onOpenViewDetails}>
               View Details

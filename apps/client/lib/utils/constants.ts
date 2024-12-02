@@ -30,6 +30,11 @@ const FORM_ENUM = {
   update: 3,
 };
 
+const INSTANCE_UPDATE_ENUM = {
+  ONLY_THIS_INSTANCE: 1,
+  CURRENT_AND_FUTURE_INSTANCES: 2,
+};
+
 const AREA_ENUM = {
   country: 1,
   state: 2,
@@ -191,4 +196,5 @@ export {
   COLOR_CODES_FALLBACK,
   DEFAULT_PAGE_SIZE,
   SYSTEM_CONTEXT_TYPE,
+  INSTANCE_UPDATE_ENUM,
 };

@@ -55,16 +55,9 @@ const Maintenance = () => {
     }
   };
 
-  const headerInfo = {
-    1: {
-      name: 'Schedules',
-      href: '/maintenance/schedules/add',
-    },
-  };
-
   return (
     <Flex width="full" direction="column" pb="24px">
-      <Header {...headerInfo[tabIndex as 1]} />
+      <Header />
       <Flex direction="column" mt="42px" position="relative">
         <Tabs
           variant="custom"

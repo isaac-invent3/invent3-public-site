@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import TaskListDrawer from '~/lib/components/TaskManagement/Drawers/TaskListDrawer';
-import TaskTable from '../../../Tables/TaskTable';
-import { useGetAllTasksByScheduleIdQuery } from '~/lib/redux/services/task/general.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import { useGetAllTaskInstancesByScheduleInstanceIdQuery } from '~/lib/redux/services/task/instance.services';
+import TaskInstanceTable from '../../../Tables/TaskInstanceTable';
 
 interface TaskListViewProps {
   isOpen: boolean;
@@ -14,11 +14,12 @@ const TaskListView = (props: TaskListViewProps) => {
   const { isOpen, onClose, scheduleId, showPopover } = props;
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const { data, isLoading, isFetching } = useGetAllTasksByScheduleIdQuery({
-    id: scheduleId,
-    pageSize,
-    pageNumber: currentPage,
-  });
+  const { data, isLoading, isFetching } =
+    useGetAllTaskInstancesByScheduleInstanceIdQuery({
+      id: scheduleId,
+      pageSize,
+      pageNumber: currentPage,
+    });
 
   return (
     <TaskListDrawer
@@ -27,7 +28,7 @@ const TaskListView = (props: TaskListViewProps) => {
       showAddTaskButton={showPopover}
       scheduleId={scheduleId}
     >
-      <TaskTable
+      <TaskInstanceTable
         data={data?.data?.items ?? []}
         isLoading={isLoading}
         isFetching={isFetching}

@@ -35,7 +35,6 @@ const SignIn = () => {
         console.error(result.error);
       } else {
         router.push(ref ?? '/dashboard');
-        console.log('Logged in successfully!');
       }
       setSubmitting(false);
     },

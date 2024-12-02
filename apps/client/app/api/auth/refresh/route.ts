@@ -6,7 +6,6 @@ export async function POST(request: Request) {
     refreshToken: body.refreshToken,
     apiKey: body.apiKey,
   };
-  console.log({ refreshPayLoad: payload });
   const res = await fetch(`${process.env.API_BASE_URL}/refresh-tokens`, {
     method: 'POST',
     headers: {

@@ -44,7 +44,7 @@ const initialScheduleForm = {
   dayOccurrences: [],
   weekOccurrences: [],
   monthOccurrences: [],
-  yearOccurences: {},
+  yearOccurrences: {},
   deletedTaskIDs: [],
   updatedTaskIDs: [],
   maintenancePlanInfo: {

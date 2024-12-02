@@ -2,23 +2,20 @@ import React from 'react';
 import Button from '~/lib/components/UI/Button';
 import GenericSuccessModal from '~/lib/components/UI/Modal/GenericSuccessModal';
 
-interface ScheduleSuccessModalProps {
+interface ScheduleInstanceSuccessModalProps {
   isOpen: boolean;
   onClose: () => void;
-  type: 'create' | 'edit';
 }
-const ScheduleSuccessModal = (props: ScheduleSuccessModalProps) => {
-  const { isOpen, onClose, type } = props;
-  const successText =
-    type === 'create'
-      ? 'A new maintenance schedule has been created successfully'
-      : 'Your maintenance schedule has been updated successfully';
+const ScheduleInstanceSuccessModal = (
+  props: ScheduleInstanceSuccessModalProps
+) => {
+  const { isOpen, onClose } = props;
   return (
     <GenericSuccessModal
       isOpen={isOpen}
       onClose={onClose}
       headingText="Successful!"
-      successText={successText}
+      successText="All changes made to the Schedule instance has been successfully saved for this instance"
       mainModalStyle={{ closeOnOverlayClick: false, closeOnEsc: false }}
     >
       <Button
@@ -31,4 +28,4 @@ const ScheduleSuccessModal = (props: ScheduleSuccessModalProps) => {
   );
 };
 
-export default ScheduleSuccessModal;
+export default ScheduleInstanceSuccessModal;

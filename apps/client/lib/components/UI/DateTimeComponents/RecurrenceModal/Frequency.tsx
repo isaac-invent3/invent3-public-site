@@ -6,7 +6,10 @@ import { generateOptions } from '~/lib/utils/helperFunctions';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useGetAllMaintenanceFrequenciesQuery } from '~/lib/redux/services/maintenance/frequency.services';
 import { MaintenanceFrequency } from '~/lib/interfaces/maintenance.interfaces';
-import { updateRecurrence } from '~/lib/redux/slices/DateSlice';
+import {
+  clearRepeatInterval,
+  updateRecurrence,
+} from '~/lib/redux/slices/DateSlice';
 import { Option } from '~/lib/interfaces/general.interfaces';
 
 interface FrequencyProps {
@@ -77,9 +80,10 @@ const Frequency = (props: FrequencyProps) => {
         isSearchable
         selectedOption={dateInfo.recurrence.frequency ?? undefined}
         showTitleAfterSelect={false}
-        handleSelect={(option) =>
-          dispatch(updateRecurrence({ frequency: option, interval: 1 }))
-        }
+        handleSelect={(option) => {
+          dispatch(clearRepeatInterval());
+          dispatch(updateRecurrence({ frequency: option, interval: 1 }));
+        }}
       />
     </HStack>
   );

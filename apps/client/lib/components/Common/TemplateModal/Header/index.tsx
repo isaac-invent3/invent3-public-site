@@ -7,6 +7,7 @@ import BackButton from '~/lib/components/UI/Button/BackButton';
 import { Template } from '~/lib/interfaces/template.interfaces';
 
 interface HeaderProps {
+  headerName: string;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
   openFilter: boolean;
   setOpenFilter: () => void;
@@ -15,6 +16,7 @@ interface HeaderProps {
 }
 const Header = (props: HeaderProps) => {
   const {
+    headerName,
     setSearch,
     openFilter,
     setOpenFilter,
@@ -34,7 +36,7 @@ const Header = (props: HeaderProps) => {
           fontSize="32px"
           lineHeight="38.02px"
         >
-          Plan Templates
+          {headerName}
         </Heading>
         {selectedTemplate && (
           <BackButton

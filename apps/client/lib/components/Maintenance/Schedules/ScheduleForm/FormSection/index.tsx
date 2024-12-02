@@ -69,7 +69,7 @@ const FormSection = (props: FormSectionProps) => {
     onSubmit: async (values, { setTouched }) => {
       setTouched({ planId: true });
       dispatch(updateScheduleForm(values));
-      setActiveStep(1);
+      setActiveStep(2);
     },
   });
 

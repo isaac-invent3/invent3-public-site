@@ -26,6 +26,19 @@ export const templateApi = createApi({
         headers: getHeaders(),
       }),
     }),
+    getMaintenanceScheduleTemplate: builder.query<
+      BaseApiResponse<ListResponse<Template>>,
+      QueryParams
+    >({
+      query: (data) => ({
+        url: generateQueryStr(
+          `/Templates/GetMaintenanceScheduleTemplates?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
     searchTemplates: builder.mutation({
       query: (body: any) => ({
         url: `/Templates/Search`,
@@ -49,6 +62,7 @@ export const templateApi = createApi({
 
 export const {
   useGetMaintenancePlanTemplateQuery,
+  useGetMaintenanceScheduleTemplateQuery,
   useSearchTemplatesMutation,
   useGetTemplateInfoBySystemContextTypeAndContextIdQuery,
 } = templateApi;

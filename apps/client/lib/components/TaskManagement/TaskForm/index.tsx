@@ -125,7 +125,6 @@ const TaskForm = (props: TaskFormProps) => {
               activeStep={1}
               loadingText={isCreating ? 'Creating...' : 'Updating...'}
               isLoading={isCreating || isUpdating}
-              handleContinue={() => console.log(formik.errors)}
             />
           </Flex>
         </form>

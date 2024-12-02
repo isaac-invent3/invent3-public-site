@@ -123,7 +123,6 @@ const SummarySection = (props: SummarySectionProps) => {
         generatePayload(saveAsTemplate, templateName, templateDescription),
         ''
       );
-      // console.log(PAYLOAD);
     } else {
       response = await handleSubmit(
         updateScheduleAndTasks,

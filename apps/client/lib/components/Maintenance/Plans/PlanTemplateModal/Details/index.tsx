@@ -35,37 +35,39 @@ const Details = (props: DetailsProps) => {
       {isLoading ? (
         <Skeleton width="full" height="400px" rounded="8px" />
       ) : (
-        <VStack width="full" alignItems="flex-start" spacing={0}>
-          {<PlanInfo data={data?.data} />}
-          <VStack
-            width="full"
-            alignItems="flex-start"
-            pt="26px"
-            spacing="16px"
-            px="8px"
-            pb="8px"
-            borderTop="0px"
-            borderWidth="1px"
-            borderColor="neutral.300"
-            borderBottomRadius="8px"
-          >
-            <VStack alignItems="flex-start" width="full" spacing="8px">
-              <Text fontWeight={700} color="neutral.800">
-                Select a Schedule to see the details
-              </Text>
-              <Schedule plan={data?.data} />
-            </VStack>
+        data?.data && (
+          <VStack width="full" alignItems="flex-start" spacing={0}>
+            {<PlanInfo data={data?.data} />}
+            <VStack
+              width="full"
+              alignItems="flex-start"
+              pt="26px"
+              spacing="16px"
+              px="8px"
+              pb="8px"
+              borderTop="0px"
+              borderWidth="1px"
+              borderColor="neutral.300"
+              borderBottomRadius="8px"
+            >
+              <VStack alignItems="flex-start" width="full" spacing="8px">
+                <Text fontWeight={700} color="neutral.800">
+                  Select a Schedule to see the details
+                </Text>
+                <Schedule plan={data?.data} />
+              </VStack>
 
-            <Flex width="full" justifyContent="flex-end">
-              <Button
-                customStyles={{ width: '161px' }}
-                href={`/maintenance/plans/add?template=${template.contextId}`}
-              >
-                Use Template
-              </Button>
-            </Flex>
+              <Flex width="full" justifyContent="flex-end">
+                <Button
+                  customStyles={{ width: '161px' }}
+                  href={`/maintenance/plans/add?template=${template.contextId}`}
+                >
+                  Use Template
+                </Button>
+              </Flex>
+            </VStack>
           </VStack>
-        </VStack>
+        )
       )}
     </VStack>
   );

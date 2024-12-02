@@ -37,6 +37,7 @@ const PlanInfo = (props: PlanInfoProps) => {
       bgColor="primary.500"
       p="16px"
       roundedTop="8px"
+      alignItems="flex-start"
     >
       {info.map((item, index) => (
         <VStack alignItems="flex-start" spacing="8px" key={index}>

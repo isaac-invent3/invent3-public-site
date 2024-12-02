@@ -165,7 +165,7 @@ const Schedule = (props: MaintenanceSchedulesProps) => {
                       dayOccurrences: [],
                       weekOccurrences: [],
                       monthOccurrences: [],
-                      yearOccurences: {},
+                      yearOccurrences: {},
                       firstInstanceDate: '',
                       maintenancePlanInfo: null,
                       scheduledDate: dateFormatter(

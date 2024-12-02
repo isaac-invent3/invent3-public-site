@@ -64,8 +64,9 @@ const SectionOne = () => {
             {planInfo?.startDate &&
               dateFormatter(planInfo?.startDate, 'Do MMM, YYYY')}{' '}
             {'  '} -{'  '}
-            {planInfo?.endDate &&
-              dateFormatter(planInfo?.endDate, 'Do MMM, YYYY')}
+            {planInfo?.endDate
+              ? dateFormatter(planInfo?.endDate, 'Do MMM, YYYY')
+              : 'N/A'}
           </Text>
         </VStack>
       </GridItem>

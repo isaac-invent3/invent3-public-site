@@ -4,36 +4,33 @@ import {
   PlanFormDetails,
   ScheduleFormDetails,
 } from '~/lib/interfaces/maintenance.interfaces';
-import {
-  baseTaskFormDetail,
-  taskFormDetails,
-} from '~/lib/interfaces/task.interfaces';
-import { FORM_ENUM } from '~/lib/utils/constants';
+import { taskFormDetails } from '~/lib/interfaces/task.interfaces';
+import { FORM_ENUM, INSTANCE_UPDATE_ENUM } from '~/lib/utils/constants';
 
 const generateTasksArray = (
   formTasks: taskFormDetails[],
   updatedTaskIDs: number[],
-  username: string
+  username: string,
+  instanceUpdateType?: (typeof INSTANCE_UPDATE_ENUM)[keyof typeof INSTANCE_UPDATE_ENUM],
+  type: 'main' | 'instance' = 'main'
 ) => {
-  type formDetails = baseTaskFormDetail & {
-    actionType: (typeof FORM_ENUM)[keyof typeof FORM_ENUM];
-    changeInitiatedBy: string;
-  };
+  const isMainTask = type === 'main';
 
-  let allTasks: formDetails[] = [];
-  formTasks.forEach((item) => {
-    let actionType = FORM_ENUM.add;
+  // Precompute dynamic keys for main vs instance tasks
+  const idKey = isMainTask ? 'taskId' : 'taskInstanceId';
+  const scheduleKey = isMainTask ? 'scheduleId' : 'scheduleInstanceId';
+  const nameKey = isMainTask ? 'taskName' : 'taskInstanceName';
+  const userKey = isMainTask ? 'changeInitiatedBy' : 'lastModifiedBy';
 
-    if (item.taskId) {
-      if (updatedTaskIDs.includes(item.taskId)) {
-        actionType = FORM_ENUM.update;
-      }
-    }
+  // Transform formTasks into allTasks array
+  const allTasks = formTasks.map((item) => {
+    const actionType =
+      item.taskId && updatedTaskIDs.includes(item.taskId)
+        ? FORM_ENUM.update
+        : FORM_ENUM.add;
 
-    allTasks.push({
-      taskId: item.taskId,
+    return {
       taskTypeId: item.taskTypeId,
-      taskName: item.taskName,
       taskDescription: item.taskDescription,
       priorityId: item.priorityId,
       assignedTo: item.assignedTo,
@@ -42,11 +39,17 @@ const generateTasksArray = (
       costEstimate: item.costEstimate,
       actualCost: item.actualCost,
       comments: item.comments,
-      scheduleId: item.scheduleId,
       actionType,
-      changeInitiatedBy: username,
-    });
+      [idKey]: item.taskId,
+      [scheduleKey]: item.scheduleId,
+      [nameKey]: item.taskName,
+      [userKey]: username,
+      ...(isMainTask
+        ? {}
+        : { updateType: instanceUpdateType, parentTaskId: item?.parentTaskId }),
+    };
   });
+
   return allTasks;
 };
 

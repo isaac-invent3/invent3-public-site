@@ -39,6 +39,9 @@ export default function Page({ params }: { params: { id: string } }) {
         description: schedule?.description,
         comment: schedule?.comments,
         taskCount: schedule?.activeTasksCount,
+        contactPerson: schedule?.contactPerson,
+        contactPersonEmail: schedule?.contactPersonEmail,
+        contactPersonPhoneNo: schedule?.contactPersonPhoneNo,
         scheduledDate: schedule?.scheduledDate
           ? dateFormatter(schedule?.scheduledDate, 'DD/MM/YYYY HH:mm')
           : null,

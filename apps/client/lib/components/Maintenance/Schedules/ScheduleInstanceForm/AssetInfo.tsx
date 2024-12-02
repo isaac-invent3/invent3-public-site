@@ -3,9 +3,13 @@ import React from 'react';
 import { useAppSelector } from '~/lib/redux/hooks';
 
 const AssetInfo = () => {
-  const { assetName, assetLocation } = useAppSelector(
-    (state) => state.maintenance.scheduleForm
-  );
+  const {
+    assetName,
+    assetLocation,
+    contactPerson,
+    contactPersonEmail,
+    contactPersonPhoneNo,
+  } = useAppSelector((state) => state.maintenance.scheduleForm);
   return (
     <HStack
       width="full"
@@ -28,11 +32,15 @@ const AssetInfo = () => {
           {assetLocation ?? 'N/A'}
         </Text>
       </VStack>
-      <VStack spacing="8px" alignItems="flex-start" maxW="236px">
+      <VStack spacing="4px" alignItems="flex-start" maxW="201px">
         <Text color="neutral.300">Engineer/Contact Person</Text>
-        <Text size="md" color="white">
-          N/A
-        </Text>
+        {[contactPerson, contactPersonEmail, contactPersonPhoneNo]
+          .filter(Boolean)
+          .map((detail, index) => (
+            <Text size="md" color="white" key={index}>
+              {detail}
+            </Text>
+          ))}
       </VStack>
     </HStack>
   );

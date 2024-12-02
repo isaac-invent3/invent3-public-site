@@ -18,7 +18,7 @@ const OtherInfo = (props: OtherInfoProps) => {
           Description
         </DetailHeader>
         <Text color="neutral.600">
-          {data?.comments.length > 0 ? data?.comments : 'N/A'}
+          {data?.comments ? data?.comments : 'N/A'}
         </Text>
       </VStack>
       <VStack width="30%" alignItems="flex-start" spacing="4px">

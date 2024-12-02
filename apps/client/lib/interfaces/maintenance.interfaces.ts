@@ -149,6 +149,9 @@ interface ScheduleFormDetails {
   taskCount: number | null;
   tasks: taskFormDetails[];
   firstInstanceDate: string | null;
+  contactPerson?: string | null;
+  contactPersonPhoneNo?: string | null;
+  contactPersonEmail?: string | null;
 }
 
 interface PlanFormDetails {

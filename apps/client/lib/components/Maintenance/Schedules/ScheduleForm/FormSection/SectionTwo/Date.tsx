@@ -30,7 +30,7 @@ interface DateProps {
   minScheduleDate: Date;
   maxScheduleDate: Date | undefined;
   buttonVariant: 'secondary' | 'outline';
-  scheduleType: 'main' | 'instance';
+  scheduleType?: 'main' | 'instance';
 }
 const Date = (props: DateProps) => {
   // eslint-disable-next-line no-unused-vars
@@ -43,7 +43,7 @@ const Date = (props: DateProps) => {
     minScheduleDate,
     maxScheduleDate,
     buttonVariant,
-    scheduleType,
+    scheduleType = 'main',
   } = props;
   const {
     isOpen: isOpenRecurrence,

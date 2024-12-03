@@ -66,6 +66,7 @@ const SectionTwo = (props: SectionTwoProps) => {
           minScheduleDate={minScheduleDate}
           maxScheduleDate={maxScheduleDate}
           buttonVariant={buttonVariant}
+          scheduleType={scheduleType}
         />
         <Tasks
           scheduleType={scheduleType}

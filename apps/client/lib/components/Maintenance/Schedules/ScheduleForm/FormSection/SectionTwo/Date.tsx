@@ -30,6 +30,7 @@ interface DateProps {
   minScheduleDate: Date;
   maxScheduleDate: Date | undefined;
   buttonVariant: 'secondary' | 'outline';
+  scheduleType: 'main' | 'instance';
 }
 const Date = (props: DateProps) => {
   // eslint-disable-next-line no-unused-vars
@@ -42,6 +43,7 @@ const Date = (props: DateProps) => {
     minScheduleDate,
     maxScheduleDate,
     buttonVariant,
+    scheduleType,
   } = props;
   const {
     isOpen: isOpenRecurrence,
@@ -55,6 +57,7 @@ const Date = (props: DateProps) => {
   const scheduleForm = useAppSelector(
     (state) => state.maintenance.scheduleForm
   );
+  const isMainSchedule = scheduleType === 'main';
 
   const validateRecurrence = async (info: RecurrenceInfo) => {
     const startDateTime = `${moment(info.startDate).format('DD/MM/YYYY')} ${info.startTime}`;
@@ -127,7 +130,7 @@ const Date = (props: DateProps) => {
       <HStack width="full" alignItems="flex-start" spacing={spacing}>
         <Flex width="full" maxW={sectionMaxWidth}>
           <SectionInfo
-            title="Start Date and Time"
+            title={isMainSchedule ? 'Start Date and Time' : 'Instance Date'}
             info="Add name that users can likely search with"
             isRequired
           />
@@ -165,18 +168,20 @@ const Date = (props: DateProps) => {
               }
             }}
           >
-            <Button
-              handleClick={onOpenRecurrence}
-              variant={buttonVariant}
-              customStyles={{
-                height: '37px',
-                width: 'max-content',
-                borderColor: '#898989',
-              }}
-            >
-              <Icon as={RepeatIcon} boxSize="16px" color="#374957" mr="8px" />
-              Repeat
-            </Button>
+            {isMainSchedule && (
+              <Button
+                handleClick={onOpenRecurrence}
+                variant={buttonVariant}
+                customStyles={{
+                  height: '37px',
+                  width: 'max-content',
+                  borderColor: '#898989',
+                }}
+              >
+                <Icon as={RepeatIcon} boxSize="16px" color="#374957" mr="8px" />
+                Repeat
+              </Button>
+            )}
           </DateTimeButtons>
           <InfoCard
             infoText="Start Date has to be within specified Plan Info Date"

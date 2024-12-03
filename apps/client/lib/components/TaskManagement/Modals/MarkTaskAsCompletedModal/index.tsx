@@ -16,7 +16,7 @@ import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import { markTaskAsCompletedSchema } from '~/lib/schemas/task.schema';
 import { TaskInstance } from '~/lib/interfaces/task.interfaces';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 import MarkAsCompletedSuccessModal from './SuccessModal';
 import { useUpdateTaskInstanceMutation } from '~/lib/redux/services/task/instance.services';
 
@@ -27,7 +27,6 @@ interface MarkTaskAsCompletedModalProps {
 }
 const MarkTaskAsCompletedModal = (props: MarkTaskAsCompletedModalProps) => {
   const { isOpen, onClose, data } = props;
-  const { data: session } = useSession();
   const { handleSubmit } = useCustomMutation();
   const {
     isOpen: isOpenSuccess,
@@ -45,6 +44,7 @@ const MarkTaskAsCompletedModal = (props: MarkTaskAsCompletedModalProps) => {
     validationSchema: markTaskAsCompletedSchema,
     enableReinitialize: true,
     onSubmit: async (values) => {
+      const session = await getSession();
       let response;
       const info = {
         taskInstanceId: data?.taskInstanceId,
@@ -57,7 +57,7 @@ const MarkTaskAsCompletedModal = (props: MarkTaskAsCompletedModalProps) => {
         costEstimate: data?.costEstimate,
         actualCost: values?.actualCost,
         scheduleId: data?.scheduleInstanceId,
-        lastModifiedBy: session?.user.id,
+        lastModifiedBy: session?.user.username,
       };
       response = await handleSubmit(
         updateTask,
@@ -145,7 +145,7 @@ const MarkTaskAsCompletedModal = (props: MarkTaskAsCompletedModalProps) => {
                   <Button
                     type="submit"
                     customStyles={{ width: '193px' }}
-                    isLoading={isUpdating}
+                    isLoading={isUpdating || formik.isSubmitting}
                   >
                     Continue
                   </Button>

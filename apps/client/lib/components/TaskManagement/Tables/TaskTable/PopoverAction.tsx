@@ -1,7 +1,7 @@
 import { Text, useDisclosure, VStack } from '@chakra-ui/react';
-import { useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 import React from 'react';
-import TaskFormModal from '~/lib/components/TaskManagement/Drawers/TaskFormDrawer';
+import TaskFormDrawer from '~/lib/components/TaskManagement/Drawers/TaskFormDrawer';
 import GenericPopover from '~/lib/components/UI/GenericPopover';
 import GenericDeleteModal from '~/lib/components/UI/Modal/GenericDeleteModal';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
@@ -21,12 +21,12 @@ const PopoverAction = (task: Task, type: 'drawer' | 'page') => {
 
   const { handleSubmit } = useCustomMutation();
   const [deleteTask, { isLoading }] = useDeleteTaskMutation({});
-  const { data } = useSession();
 
   const handleDeleteTask = async () => {
+    const session = await getSession();
     const response = await handleSubmit(
       deleteTask,
-      { id: task?.taskId, deletedBy: data?.user.username },
+      { id: task?.taskId, deletedBy: session?.user.username },
       'Task Deleted Successfully'
     );
     if (response?.data) {
@@ -53,7 +53,7 @@ const PopoverAction = (task: Task, type: 'drawer' | 'page') => {
           </Text>
         </VStack>
       </GenericPopover>
-      <TaskFormModal
+      <TaskFormDrawer
         isOpen={isOpenEdit}
         onClose={onCloseEdit}
         data={

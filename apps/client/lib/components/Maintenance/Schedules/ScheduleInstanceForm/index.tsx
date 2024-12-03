@@ -142,7 +142,10 @@ const ScheduleInstanceForm = () => {
                   totalStep={1}
                   activeStep={1}
                   finalText="Save This Instance"
-                  isLoading={isLoading && formik.values.saveOnlyThisInstance}
+                  isLoading={
+                    (isLoading || formik.isSubmitting) &&
+                    formik.values.saveOnlyThisInstance
+                  }
                   type="submit"
                   loadingText="Saving..."
                   handleContinue={() =>
@@ -155,7 +158,10 @@ const ScheduleInstanceForm = () => {
                       formik.setFieldValue('saveOnlyThisInstance', false);
                       formik.handleSubmit();
                     }}
-                    isLoading={!formik.values.saveOnlyThisInstance && isLoading}
+                    isLoading={
+                      !formik.values.saveOnlyThisInstance &&
+                      (isLoading || formik.isSubmitting)
+                    }
                     loadingText="Saving..."
                     customStyles={{ minW: '234px' }}
                   >

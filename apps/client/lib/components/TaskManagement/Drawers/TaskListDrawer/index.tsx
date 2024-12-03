@@ -9,7 +9,7 @@ import {
 import React from 'react';
 import Button from '~/lib/components/UI/Button';
 import BackButton from '~/lib/components/UI/Button/BackButton';
-import TaskFormModal from '../TaskFormDrawer';
+import TaskFormDrawer from '../TaskFormDrawer';
 import { taskFormDetails } from '~/lib/interfaces/task.interfaces';
 import GenericDrawer from '~/lib/components/UI/GenericDrawer';
 
@@ -73,7 +73,7 @@ const TaskListDrawer = (props: TaskListDrawerProps) => {
           </Heading>
           {children}
         </VStack>
-        <TaskFormModal
+        <TaskFormDrawer
           isOpen={isOpenForm}
           onClose={onCLoseForm}
           handleData={handleAddTask}

@@ -7,7 +7,7 @@ import Button from '~/lib/components/UI/Button';
 import ModalHeading from '~/lib/components/UI/Modal/ModalHeading';
 import BackButton from '~/lib/components/UI/Button/BackButton';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 import { scheduleSchema } from '~/lib/schemas/maintenance.schema';
 import {
   generateMaintenanceScheduleDTO,
@@ -35,11 +35,9 @@ const ScheduleModalForm = (props: ScheduleModalFormProps) => {
   const { planId, startDate, endDate } = useAppSelector(
     (state) => state.maintenance.planForm
   );
-  const { data: session } = useSession();
   const { handleSubmit } = useCustomMutation();
   const [createScheduleAndTasks, { isLoading }] =
     useCreateMaintenanceScheduleAndTasksMutation();
-  const username = session?.user?.username;
 
   const previousDay = moment(startDate)
     .subtract(1, 'days')
@@ -71,17 +69,18 @@ const ScheduleModalForm = (props: ScheduleModalFormProps) => {
     ),
     enableReinitialize: true,
     onSubmit: async (values, { resetForm }) => {
+      const session = await getSession();
       const PAYLOAD = {
         createMaintenanceScheduleDto: generateMaintenanceScheduleDTO(
           'create',
           values as unknown as ScheduleFormDetails,
           [],
-          username as string
+          session?.user?.username as string
         ),
         createTaskDtos: generateTasksArray(
           values.tasks as unknown as taskFormDetails[],
           [],
-          username as string
+          session?.user?.username as string
         ),
       };
       handleSubmit(
@@ -163,7 +162,7 @@ const ScheduleModalForm = (props: ScheduleModalFormProps) => {
                   <Button
                     type="submit"
                     customStyles={{ width: '237px' }}
-                    isLoading={isLoading}
+                    isLoading={isLoading || formik.isSubmitting}
                     loadingText="Creating..."
                   >
                     Save Schedule

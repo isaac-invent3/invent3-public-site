@@ -2,7 +2,7 @@ import { Divider, Flex, useDisclosure, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import FormActionButtons from '~/lib/components/UI/Form/FormActionButtons';
 import { useAppSelector } from '~/lib/redux/hooks';
-import { useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import {
   generateMaintenanceScheduleDTO,
@@ -49,8 +49,6 @@ const SummarySection = (props: SummarySectionProps) => {
     useCreateMaintenancePlanWithSchedulesMutation();
   const [updateMaintenancePlan, { isLoading: updateLoading }] =
     useUpdateMaintenancePlanWithSchedulesMutation();
-  const { data } = useSession();
-  const username = data?.user?.username;
   const [saveAsTemplate, setSaveAsTemplate] = useState(false);
 
   const handleSaveAsTemplate = (
@@ -61,11 +59,13 @@ const SummarySection = (props: SummarySectionProps) => {
     handleSubmitPlan(true, templateName, templateDescription);
   };
 
-  const generatePayload = (
+  const generatePayload = async (
     saveAsTemplate: boolean,
     templateName?: string,
     templateDescription?: string
   ) => {
+    const session = await getSession();
+    const username = session?.user?.username;
     const getDtoKey = (base: string) =>
       `${type === 'create' ? `create${base}Dto` : `update${base}Dto`}`;
 

@@ -6,7 +6,7 @@ import React from 'react';
 import FormActionButtons from '~/lib/components/UI/Form/FormActionButtons';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { taskSchema } from '~/lib/schemas/task.schema';
-import { useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import {
   useCreateTaskMutation,
@@ -24,7 +24,6 @@ interface TaskFormProps {
 const TaskForm = (props: TaskFormProps) => {
   const { type } = props;
   const formDetails = useAppSelector((state) => state.task.taskForm);
-  const { data: session } = useSession();
   const { handleSubmit } = useCustomMutation();
   const {
     isOpen: isOpenSuccess,
@@ -58,6 +57,7 @@ const TaskForm = (props: TaskFormProps) => {
     enableReinitialize: true,
 
     onSubmit: async (values, { resetForm }) => {
+      const session = await getSession();
       let response;
       const info = {
         taskTypeId: values.taskTypeId,
@@ -77,7 +77,7 @@ const TaskForm = (props: TaskFormProps) => {
             ...info,
             id: values.taskId,
             taskId: values.taskId,
-            lastModifiedBy: session?.user.id,
+            lastModifiedBy: session?.user?.username,
           },
           ''
         );
@@ -124,7 +124,7 @@ const TaskForm = (props: TaskFormProps) => {
               totalStep={1}
               activeStep={1}
               loadingText={isCreating ? 'Creating...' : 'Updating...'}
-              isLoading={isCreating || isUpdating}
+              isLoading={isCreating || isUpdating || formik.isSubmitting}
             />
           </Flex>
         </form>

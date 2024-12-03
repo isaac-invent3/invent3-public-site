@@ -1,7 +1,7 @@
 import { Text, useDisclosure, VStack } from '@chakra-ui/react';
 import { useFormikContext } from 'formik';
 import React from 'react';
-import TaskFormModal from '~/lib/components/TaskManagement/Drawers/TaskFormDrawer';
+import TaskFormDrawer from '~/lib/components/TaskManagement/Drawers/TaskFormDrawer';
 import GenericPopover from '~/lib/components/UI/GenericPopover';
 import GenericDeleteModal from '~/lib/components/UI/Modal/GenericDeleteModal';
 import { ScheduleFormDetails } from '~/lib/interfaces/maintenance.interfaces';
@@ -69,7 +69,7 @@ const PopoverAction = (task: taskFormDetails) => {
           </Text>
         </VStack>
       </GenericPopover>
-      <TaskFormModal
+      <TaskFormDrawer
         isOpen={isOpenEdit}
         onClose={onCloseEdit}
         data={task}

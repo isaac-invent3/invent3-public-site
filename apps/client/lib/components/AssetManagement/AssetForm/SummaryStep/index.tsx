@@ -1,5 +1,5 @@
 import { Flex, useDisclosure, VStack } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Asset } from '~/lib/interfaces/asset.interfaces';
 import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
@@ -39,6 +39,9 @@ const SummaryStep = (props: SummaryStepProps) => {
   const { handleSubmit } = useCustomMutation();
   const [createAsset, { isLoading: createLoading }] = useCreateAssetMutation();
   const [updateAsset, { isLoading: updateLoading }] = useUpdateAssetMutation();
+  const [username, setUsername] = useState<string | undefined | null>(
+    undefined
+  );
   const {
     isOpen: isOpenEditModal,
     onClose: onCloseEditModal,
@@ -55,7 +58,13 @@ const SummaryStep = (props: SummaryStepProps) => {
     onOpen: onOpenChildModal,
   } = useDisclosure();
   const { data } = useSession();
-  const username = data?.user?.username;
+
+  //Store Username so that it is retained in the state.
+  useEffect(() => {
+    if (data) {
+      setUsername(data?.user?.username);
+    }
+  }, [data]);
 
   const LOCATION = {
     lgaId: assetFormDetails.lgaId,

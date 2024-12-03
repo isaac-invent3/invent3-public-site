@@ -1,7 +1,7 @@
 import { Flex, HStack, Text, useDisclosure, VStack } from '@chakra-ui/react';
 import { useField, useFormikContext } from 'formik';
 import React from 'react';
-import TaskFormModal from '~/lib/components/TaskManagement/Drawers/TaskFormDrawer';
+import TaskFormDrawer from '~/lib/components/TaskManagement/Drawers/TaskFormDrawer';
 import ErrorMessage from '~/lib/components/UI/ErrorMessage';
 import AddButton from '~/lib/components/UI/Form/FormAddButton';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
@@ -87,7 +87,7 @@ const Tasks = (props: TasksProps) => {
             )
           )}
       </VStack>
-      <TaskFormModal
+      <TaskFormDrawer
         isOpen={isOpen}
         onClose={onClose}
         handleData={handleAddTask}

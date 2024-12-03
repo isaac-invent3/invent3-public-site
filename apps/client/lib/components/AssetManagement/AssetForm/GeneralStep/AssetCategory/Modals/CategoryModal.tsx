@@ -5,7 +5,7 @@ import React from 'react';
 import GenericModal from '~/lib/components/UI/Modal';
 import Button from '~/lib/components/UI/Button';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 import TextInput from '~/lib/components/UI/TextInput';
 import ModalHeading from '~/lib/components/UI/Modal/ModalHeading';
 import { categorySchema } from '~/lib/schemas/asset/category.schema';
@@ -19,7 +19,6 @@ const CategoryModal = (props: CategoryModalProps) => {
   const { isOpen, onClose } = props;
   const [createCategory, { isLoading }] = useCreateCategoryMutation({});
   const { handleSubmit } = useCustomMutation();
-  const { data } = useSession();
 
   const formik = useFormik({
     initialValues: {
@@ -27,7 +26,8 @@ const CategoryModal = (props: CategoryModalProps) => {
     },
     validationSchema: categorySchema,
     onSubmit: async (values) => {
-      const finalValue = { ...values, createdBy: data?.user?.username };
+      const session = await getSession();
+      const finalValue = { ...values, createdBy: session?.user?.username };
       const response = await handleSubmit(createCategory, finalValue, '');
       if (response?.data) {
         onClose();
@@ -68,7 +68,10 @@ const CategoryModal = (props: CategoryModalProps) => {
                 >
                   Cancel
                 </Button>
-                <Button type="submit" isLoading={isLoading}>
+                <Button
+                  type="submit"
+                  isLoading={isLoading || formik.isSubmitting}
+                >
                   Add Category
                 </Button>
               </HStack>

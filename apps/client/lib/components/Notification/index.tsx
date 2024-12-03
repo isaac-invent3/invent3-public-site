@@ -117,8 +117,9 @@ const NotificationPopover = () => {
                 alignItems="flex-start"
               >
                 <HStack spacing="10.67px" height="full" alignItems="stretch">
-                  {Tabs.map((item) => (
+                  {Tabs.map((item, index) => (
                     <TabButton
+                      key={index}
                       tab={item}
                       activeTab={activeTab}
                       setActiveTab={setActiveTab}

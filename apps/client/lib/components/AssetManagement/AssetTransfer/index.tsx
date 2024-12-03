@@ -11,7 +11,7 @@ import SectionTwo from './SectionTwo';
 import Button from '../../UI/Button';
 import AssetSuccessModal from '../Modals/AssetSuccessModal';
 import moment from 'moment';
-import { useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useTransferAssetMutation } from '~/lib/redux/services/asset/general.services';
 
@@ -22,8 +22,7 @@ const AssetTransfer = (props: AssetTransferProps) => {
   const { data } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
-  const { data: session } = useSession();
-  const [transferAsset] = useTransferAssetMutation({});
+  const [transferAsset, { isLoading }] = useTransferAssetMutation({});
   const { handleSubmit } = useCustomMutation();
 
   const formik = useFormik({
@@ -34,6 +33,7 @@ const AssetTransfer = (props: AssetTransferProps) => {
     },
     validationSchema: assetTransferSchema,
     onSubmit: async (values) => {
+      const session = await getSession();
       const formValues = {
         ...values,
         assetId: data?.assetId,
@@ -96,7 +96,11 @@ const AssetTransfer = (props: AssetTransferProps) => {
                 </Text>
               </HStack>
 
-              <Button type="submit" customStyles={{ width: '161px' }}>
+              <Button
+                type="submit"
+                customStyles={{ width: '161px' }}
+                isLoading={formik.isSubmitting || isLoading}
+              >
                 Transfer
               </Button>
             </HStack>

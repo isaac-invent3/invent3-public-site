@@ -33,7 +33,8 @@ export default function Page({ params }: { params: { id: string } }) {
         assetName: schedule?.assetName,
         assetTypeId: schedule?.assetTypeId,
         sla: schedule?.sla,
-        frequencyId: schedule?.frequencyId,
+        // TODO: Default frequency is to be removed
+        frequencyId: schedule?.frequencyId ?? 1,
         frequencyName: schedule?.frequencyName,
         assetLocation: schedule?.assetLocation,
         description: schedule?.description,

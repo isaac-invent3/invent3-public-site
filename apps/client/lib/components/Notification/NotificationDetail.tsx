@@ -163,7 +163,7 @@ const NotificationDetail = (props: NotificationDetailProps) => {
           <NotificationText notification={notification} />
         </HStack>
       </HStack>
-      <Text color="neutral.600" {...textStyle}>
+      <Text color="neutral.600" {...textStyle} whiteSpace="nowrap">
         {formatDate(createdDate)}
       </Text>
     </HStack>

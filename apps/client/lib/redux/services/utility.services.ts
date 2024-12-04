@@ -17,7 +17,14 @@ export const utilityApi = createApi({
         body,
       }),
     }),
+    getAppConfigValues: builder.query({
+      query: () => ({
+        url: '/Invent3Pro/GetDefaultAppConfigValues',
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
   }),
 });
 
-export const { useSearchApiMutation } = utilityApi;
+export const { useSearchApiMutation, useGetAppConfigValuesQuery } = utilityApi;

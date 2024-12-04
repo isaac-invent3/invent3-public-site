@@ -97,6 +97,7 @@ const MapView = () => {
           <Flex
             width="full"
             height="full"
+            maxH="60%"
             zIndex={99}
             alignItems="flex-start"
             justifyContent="center"
@@ -128,17 +129,19 @@ const MapView = () => {
                 {selectedState?.name}
               </Text>
             </Flex>
-            <MapViewComponent
-              selectedState={selectedState}
-              setSelectedState={setSelectedState}
-              assetData={generateAssetCountOption(
-                selectedState?.id
-                  ? lgaAssetCount?.data?.items
-                  : stateAssetCount?.data?.items
-              )}
-              currentAssetStatus={currentAssetStatus}
-              type={statType}
-            />
+            <Flex width={{ base: '100%', '2xl': '67%' }}>
+              <MapViewComponent
+                selectedState={selectedState}
+                setSelectedState={setSelectedState}
+                assetData={generateAssetCountOption(
+                  selectedState?.id
+                    ? lgaAssetCount?.data?.items
+                    : stateAssetCount?.data?.items
+                )}
+                currentAssetStatus={currentAssetStatus}
+                type={statType}
+              />
+            </Flex>
           </Flex>
         )}
       </Flex>

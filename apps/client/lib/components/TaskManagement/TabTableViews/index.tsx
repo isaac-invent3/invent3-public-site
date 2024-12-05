@@ -138,17 +138,17 @@ const TabTableView = (props: TabTableViewProps) => {
 
   return (
     <Flex width="full" direction="column" mt="16px">
-      <Flex width="full" mb="8px">
-        <FilterDisplay isOpen={openFilter}>
-          {openFilter && (
+      {openFilter && (
+        <Flex width="full" mb="16px">
+          <FilterDisplay isOpen={openFilter}>
             <Filters
               filterData={filterData}
               setFilterData={setFilterData}
               handleApplyFilter={handleSearch}
             />
-          )}
-        </FilterDisplay>
-      </Flex>
+          </FilterDisplay>
+        </Flex>
+      )}
       <TaskInstanceTable
         data={
           (search || !isFilterEmpty) && searchData

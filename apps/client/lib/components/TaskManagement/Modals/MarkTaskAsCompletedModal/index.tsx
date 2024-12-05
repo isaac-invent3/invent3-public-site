@@ -19,6 +19,7 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';
 import MarkAsCompletedSuccessModal from './SuccessModal';
 import { useUpdateTaskInstanceMutation } from '~/lib/redux/services/task/instance.services';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 interface MarkTaskAsCompletedModalProps {
   isOpen: boolean;
@@ -36,6 +37,9 @@ const MarkTaskAsCompletedModal = (props: MarkTaskAsCompletedModalProps) => {
   const [updateTask, { isLoading: isUpdating }] = useUpdateTaskInstanceMutation(
     {}
   );
+  const appConfigValue = useAppSelector(
+    (state) => state.general.appConfigValues
+  );
 
   const formik = useFormik({
     initialValues: {
@@ -52,7 +56,10 @@ const MarkTaskAsCompletedModal = (props: MarkTaskAsCompletedModalProps) => {
         taskInstanceName: data?.taskInstanceName,
         taskDescription: data?.taskDescription ?? undefined,
         priorityId: data?.taskPriorityId,
-        taskStatusId: 3,
+        taskStatusId:
+          typeof appConfigValue?.DEFAULT_COMPLETED_TASK_STATUS_ID === 'string'
+            ? +appConfigValue?.DEFAULT_COMPLETED_TASK_STATUS_ID
+            : null,
         assignedTo: data?.assignedTo,
         costEstimate: data?.costEstimate,
         actualCost: values?.actualCost,

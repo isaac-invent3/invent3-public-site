@@ -139,9 +139,14 @@ const SummarySection = (props: SummarySectionProps) => {
     templateDescription?: string
   ) => {
     let response;
+    const PAYLOAD = await generatePayload(
+      saveAsTemplate,
+      templateName,
+      templateDescription
+    );
     response = await handleSubmit(
       type === 'create' ? createMaintenancePlan : updateMaintenancePlan,
-      generatePayload(saveAsTemplate, templateName, templateDescription),
+      PAYLOAD,
       ''
     );
 

@@ -326,7 +326,6 @@ function DataTable<Data extends object>({
                           return (
                             <Td
                               key={cell.id}
-                              isNumeric={meta?.isNumeric}
                               borderColor="neutral.300"
                               color={isDisabledRow ? 'neutral.300' : 'black'}
                               cursor={isDisabledRow ? 'not-allowed' : 'pointer'}
@@ -335,6 +334,7 @@ function DataTable<Data extends object>({
                               lineHeight="14.26px"
                               py="23px"
                               px="16px"
+                              textAlign={meta?.isNumeric ? 'center' : 'left'}
                               {...customTdStyle}
                             >
                               {flexRender(

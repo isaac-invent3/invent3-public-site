@@ -13,9 +13,9 @@ const SectionOne = ({ data }: SectionOneProps) => {
       value: data?.taskInstanceId,
     },
     {
-      label: 'Estimated Time',
+      label: 'Estimated Time:',
       value: data?.estimatedDurationInHours
-        ? `${data?.estimatedDurationInHours} ${data?.estimatedDurationInHours > 1 ? 's' : ''}`
+        ? `${data?.estimatedDurationInHours} ${data?.estimatedDurationInHours > 1 ? 'Hours' : 'Hour'}`
         : 'N/A',
     },
   ];
@@ -42,7 +42,7 @@ const SectionOne = ({ data }: SectionOneProps) => {
         <VStack alignItems="flex-start" spacing="8px">
           {info.map((item, index) => (
             <HStack spacing="16px" key={index}>
-              <Text width="99px" size="md" color="neutral.600">
+              <Text width="107px" size="md" color="neutral.600">
                 {item.label}
               </Text>
               <Text color="black">{item.value}</Text>

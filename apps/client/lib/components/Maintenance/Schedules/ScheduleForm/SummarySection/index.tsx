@@ -121,11 +121,12 @@ const SummarySection = (props: SummarySectionProps) => {
     const username = session?.user?.username;
     let response;
     if (type === 'create') {
-      response = await handleSubmit(
-        createScheduleAndTasks,
-        generatePayload(saveAsTemplate, templateName, templateDescription),
-        ''
+      const PAYLOAD = await generatePayload(
+        saveAsTemplate,
+        templateName,
+        templateDescription
       );
+      response = await handleSubmit(createScheduleAndTasks, PAYLOAD, '');
     } else {
       response = await handleSubmit(
         updateScheduleAndTasks,
@@ -184,7 +185,10 @@ const SummarySection = (props: SummarySectionProps) => {
           activeStep={2}
           finalText={type === 'create' ? 'Save' : 'Save Changes'}
           setActiveStep={setActiveStep}
-          handleContinue={() => handleSubmitSchedule(false)}
+          handleContinue={() => {
+            setSaveAsTemplate(false);
+            handleSubmitSchedule(false);
+          }}
           isLoading={saveAsTemplate ? false : isCreating || isUpdating}
           loadingText={isCreating ? 'Submitting...' : 'Updating...'}
         >

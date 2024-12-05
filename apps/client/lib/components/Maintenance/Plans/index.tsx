@@ -154,10 +154,27 @@ const Plans = (props: PlansProp) => {
         header: 'Plan Type',
         enableSorting: false,
       }),
+      columnHelper.accessor('assetName', {
+        cell: (info) =>
+          info.getValue() ?? info.row.original.groupTypeName ?? 'N/A',
+        header: 'Plan Scope',
+        enableSorting: false,
+      }),
+      columnHelper.accessor('activeSchedules', {
+        cell: (info) => info.getValue() ?? 'N/A',
+        header: 'No. Of Assets.',
+        enableSorting: false,
+        meta: {
+          isNumeric: true,
+        },
+      }),
       columnHelper.accessor('activeSchedules', {
         cell: (info) => info.getValue(),
-        header: 'Total Schedules',
+        header: 'Active Schedules',
         enableSorting: false,
+        meta: {
+          isNumeric: true,
+        },
       }),
       columnHelper.accessor('startDate', {
         cell: (info) => {
@@ -211,17 +228,17 @@ const Plans = (props: PlansProp) => {
 
   return (
     <Flex direction="column" pt="16px">
-      <Flex width="full" mb="8px">
-        <FilterDisplay isOpen={openFilter}>
-          {openFilter && (
+      {openFilter && (
+        <Flex width="full" mb="16px">
+          <FilterDisplay isOpen={openFilter}>
             <Filters
               filterData={filterData}
               setFilterData={setFilterData}
               handleApplyFilter={handleSearch}
             />
-          )}
-        </FilterDisplay>
-      </Flex>
+          </FilterDisplay>
+        </Flex>
+      )}
       <DataTable
         columns={columns}
         data={

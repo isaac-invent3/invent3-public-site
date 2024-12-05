@@ -71,7 +71,7 @@ const LGAFilter = (props: LGAFilterProps) => {
 
   return (
     <FilterDropDown
-      label="Location(Area):"
+      label="Location (Area):"
       options={[]}
       selectedOptions={selectedOptions}
       handleClick={(value) => handleSelectedOption(value)}

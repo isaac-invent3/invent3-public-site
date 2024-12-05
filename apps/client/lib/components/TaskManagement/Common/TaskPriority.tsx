@@ -1,13 +1,12 @@
 import { Flex, HStack } from '@chakra-ui/react';
 import { useFormikContext } from 'formik';
-import React, { useState } from 'react';
+import React from 'react';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
-import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
-import {
-  useGetAllTaskPrioritiesQuery,
-  useSearchTaskPrioritiesMutation,
-} from '~/lib/redux/services/task/priorities.services';
+import { useGetAllTaskPrioritiesQuery } from '~/lib/redux/services/task/priorities.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import SelectableButtonGroup from '../../UI/Button/SelectableButtonGroup';
+import { generateOptions } from '~/lib/utils/helperFunctions';
+import { taskFormDetails } from '~/lib/interfaces/task.interfaces';
 
 interface TaskPriorityProps {
   sectionMaxWidth: string;
@@ -15,13 +14,10 @@ interface TaskPriorityProps {
 }
 const TaskPriority = (props: TaskPriorityProps) => {
   const { sectionMaxWidth, spacing } = props;
-  const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading } = useGetAllTaskPrioritiesQuery({
     pageSize: DEFAULT_PAGE_SIZE,
-    pageNumber,
   });
-  const [searchTaskPriorities] = useSearchTaskPrioritiesMutation({});
-  const { setFieldValue, values } = useFormikContext<any>();
+  const { setFieldValue, values } = useFormikContext<taskFormDetails>();
 
   return (
     <HStack width="full" alignItems="flex-start" spacing={spacing}>
@@ -32,18 +28,26 @@ const TaskPriority = (props: TaskPriorityProps) => {
           isRequired
         />
       </Flex>
-      <GenericAsyncSelect
-        selectName="priorityId"
-        selectTitle="Task Priority"
-        data={data}
-        labelKey="priority"
-        valueKey="taskPriorityId"
-        mutationFn={searchTaskPriorities}
+      <SelectableButtonGroup
+        options={generateOptions(
+          data?.data.items,
+          'priority',
+          'taskPriorityId'
+        )}
+        selectedOptions={[
+          {
+            value: values.priorityId as number,
+            label: values.priorityName as string,
+          },
+        ]}
+        handleSelect={(options) => {
+          setFieldValue('priorityId', options[0]?.value);
+          setFieldValue('priorityName', options[0]?.label);
+        }}
+        isMultiSelect={false}
         isLoading={isLoading}
-        pageNumber={pageNumber}
-        setPageNumber={setPageNumber}
-        handleSelect={(option) => setFieldValue('priorityName', option.label)}
-        defaultInputValue={values.priorityName}
+        buttonVariant="secondary"
+        customButtonStyle={{ width: 'max-content' }}
       />
     </HStack>
   );

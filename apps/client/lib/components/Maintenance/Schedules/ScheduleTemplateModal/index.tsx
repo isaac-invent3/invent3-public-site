@@ -4,6 +4,7 @@ import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { useGetMaintenanceScheduleTemplateQuery } from '~/lib/redux/services/template.services';
 import TemplateModal from '~/lib/components/Common/TemplateModal';
 import { Template } from '~/lib/interfaces/template.interfaces';
+import Details from './Details';
 
 interface PlanTemplateModalProps {
   isOpen: boolean;
@@ -43,7 +44,7 @@ const ScheduleTemplateModal = (props: PlanTemplateModalProps) => {
       setPageNumber={setPageNumber}
       setPageSize={setPageSize}
     >
-      {selectedTemplate && <></>}
+      {selectedTemplate && <Details template={selectedTemplate} />}
     </TemplateModal>
   );
 };

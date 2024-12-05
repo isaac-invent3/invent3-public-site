@@ -2,7 +2,7 @@ import { Flex, Heading, Skeleton, VStack } from '@chakra-ui/react';
 import React from 'react';
 import Button from '~/lib/components/UI/Button';
 import { Template } from '~/lib/interfaces/template.interfaces';
-import { useGetMaintenanceScheduleByGuidQuery } from '~/lib/redux/services/maintenance/schedule.services';
+import { useGetMaintenenanceScheduleInfoHeaderByScheduleIDQuery } from '~/lib/redux/services/maintenance/schedule.services';
 import ScheduleInfo from './ScheduleInfo';
 import HeaderInfo from './HeaderInfo';
 
@@ -11,12 +11,13 @@ interface DetailsProps {
 }
 const Details = (props: DetailsProps) => {
   const { template } = props;
-  const { data, isLoading } = useGetMaintenanceScheduleByGuidQuery(
-    template.contextId,
-    {
-      skip: !template.contextId,
-    }
-  );
+  const { data, isLoading } =
+    useGetMaintenenanceScheduleInfoHeaderByScheduleIDQuery(
+      { id: template.contextId },
+      {
+        skip: !template.contextId,
+      }
+    );
   return (
     <VStack
       width="full"
@@ -44,7 +45,7 @@ const Details = (props: DetailsProps) => {
               pt="26px"
               spacing="16px"
               px="8px"
-              pb="8px"
+              pb="32px"
               borderTop="0px"
               borderWidth="1px"
               borderColor="neutral.300"
@@ -57,7 +58,7 @@ const Details = (props: DetailsProps) => {
               <Flex width="full" justifyContent="flex-end">
                 <Button
                   customStyles={{ width: '161px' }}
-                  href={`/maintenance/schedules/add?template=${template.contextId}`}
+                  href={`/maintenance/schedules/add?template=${data?.data?.scheduleGuid}`}
                 >
                   Use Template
                 </Button>

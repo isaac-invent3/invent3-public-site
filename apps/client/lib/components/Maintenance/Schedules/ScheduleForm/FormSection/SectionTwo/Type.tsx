@@ -17,7 +17,7 @@ interface TypeProps {
 }
 const Type = (props: TypeProps) => {
   const { sectionMaxWidth, spacing, buttonVariant } = props;
-  const { data } = useGetAllMaintenanceTypeQuery({
+  const { data, isLoading } = useGetAllMaintenanceTypeQuery({
     pageSize: DEFAULT_PAGE_SIZE,
   });
 
@@ -48,6 +48,7 @@ const Type = (props: TypeProps) => {
           isMultiSelect={false}
           buttonVariant={buttonVariant}
           customButtonStyle={{ width: 'max-content' }}
+          isLoading={isLoading}
         />
         {meta.touched && meta.error !== undefined && (
           <ErrorMessage>{meta.error}</ErrorMessage>

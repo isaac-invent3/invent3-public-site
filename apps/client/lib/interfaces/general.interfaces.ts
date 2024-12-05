@@ -98,6 +98,11 @@ interface LocationFilter {
   branch: Option[];
 }
 
+interface AppConfig {
+  DEFAULT_COMPLETED_TASK_STATUS_ID: string | null;
+  DEFAULT_ESTIMATED_TASK_DURATION_IN_HOURS: string | null;
+}
+
 export type {
   GeoJSONFeature,
   Option,
@@ -110,4 +115,5 @@ export type {
   PaginationInfo,
   ListResponse,
   LocationFilter,
+  AppConfig,
 };

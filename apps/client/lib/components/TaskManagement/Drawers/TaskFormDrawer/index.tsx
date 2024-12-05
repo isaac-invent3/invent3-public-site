@@ -33,6 +33,7 @@ import {
   useUpdateTaskInstanceMutation,
 } from '~/lib/redux/services/task/instance.services';
 import { INSTANCE_UPDATE_ENUM } from '~/lib/utils/constants';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 interface TaskFormDrawerProps {
   isOpen: boolean;
@@ -58,6 +59,9 @@ const TaskFormDrawer = (props: TaskFormDrawerProps) => {
     onOpen: onOpenSuccess,
     onClose: onCloseSuccess,
   } = useDisclosure();
+  const appConfigValues = useAppSelector(
+    (state) => state.general.appConfigValues
+  );
   const [createTask, { isLoading: isCreatingTask }] = useCreateTaskMutation({});
   const [updateTask, { isLoading: isUpdatingTask }] = useUpdateTaskMutation({});
   const [createTaskInstance, { isLoading: isCreatingTaskInstance }] =
@@ -87,7 +91,15 @@ const TaskFormDrawer = (props: TaskFormDrawerProps) => {
       taskStatusName: data?.status ?? null,
       assignedTo: data?.assignedTo ?? null,
       assignedToEmployeeName: data?.assignedToEmployeeName ?? null,
-      estimatedDurationInHours: data?.estimatedDurationInHours ?? null,
+      estimatedDurationInHours:
+        data?.estimatedDurationInHours ??
+        (typeof appConfigValues.DEFAULT_ESTIMATED_TASK_DURATION_IN_HOURS ===
+        'string'
+          ? parseInt(
+              appConfigValues.DEFAULT_ESTIMATED_TASK_DURATION_IN_HOURS,
+              10
+            )
+          : null),
       costEstimate: data?.costEstimate ?? null,
       actualCost: data?.actualCost ?? null,
       comments: data?.comments ?? null,

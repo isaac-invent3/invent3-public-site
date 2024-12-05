@@ -2,13 +2,17 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { AppConfig } from '~/lib/interfaces/general.interfaces';
 
 interface SliceProps {
-  appConfigValues: null | any;
+  appConfigValues: AppConfig;
 }
 
 const initialState: SliceProps = {
-  appConfigValues: null,
+  appConfigValues: {
+    DEFAULT_COMPLETED_TASK_STATUS_ID: null,
+    DEFAULT_ESTIMATED_TASK_DURATION_IN_HOURS: null,
+  },
 };
 
 export const GeneralSlice = createSlice({

@@ -1,5 +1,9 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import baseQueryWithReauth from '../baseQueryWithReauth';
+import {
+  AppConfig,
+  BaseApiResponse,
+} from '~/lib/interfaces/general.interfaces';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -17,7 +21,7 @@ export const utilityApi = createApi({
         body,
       }),
     }),
-    getAppConfigValues: builder.query({
+    getAppConfigValues: builder.query<BaseApiResponse<AppConfig>, {}>({
       query: () => ({
         url: '/Invent3Pro/GetDefaultAppConfigValues',
         method: 'GET',

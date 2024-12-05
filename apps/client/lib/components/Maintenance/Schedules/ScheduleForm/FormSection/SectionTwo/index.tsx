@@ -69,7 +69,7 @@ const SectionTwo = (props: SectionTwoProps) => {
           scheduleType={scheduleType}
         />
         <Tasks
-          scheduleType={scheduleType}
+          showTaskCount={scheduleType === 'main'}
           sectionMaxWidth="141px"
           spacing="41px"
         />

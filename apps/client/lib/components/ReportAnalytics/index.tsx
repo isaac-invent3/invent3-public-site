@@ -14,8 +14,8 @@ import {
 import { useState } from 'react';
 import { TicketFilterInput } from '~/lib/interfaces/ticket.interfaces';
 import { dateFormatter } from '~/lib/utils/Formatters';
-import GeneralFilter from './Filters/GeneralFilter';
 import Header from './Header';
+import GeneralFilter from './PageFilters';
 import TopBranchesChart from './TestChart';
 
 const ReportAnalytics = () => {
@@ -188,7 +188,12 @@ const ReportAnalytics = () => {
                   </Text>
                 </VStack>
 
-                <Link color="#0366EF" fontWeight="500" fontSize="12px" href="#">
+                <Link
+                  color="#0366EF"
+                  fontWeight="500"
+                  fontSize="12px"
+                  href={`/report-analytics/${index}`}
+                >
                   View Report
                 </Link>
               </VStack>

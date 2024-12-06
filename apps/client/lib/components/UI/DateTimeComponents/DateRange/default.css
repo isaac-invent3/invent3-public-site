@@ -377,8 +377,7 @@
   margin: 0 auto 1em;
 
 }
-
-.rdrDayWeekend .rdrDayNumber span {
+.rdrDayWeekend:not(.rdrDayPassive) .rdrDayNumber span {
   color: #1270b0;
 }
 

@@ -35,12 +35,6 @@ const MaintenanceTab = () => {
       direction="column"
       my="16px"
     >
-      {/* <Button
-        customStyles={{ width: 'min-content', minH: '28px' }}
-        variant="secondary"
-      >
-        Edit Maintenance Schedule
-      </Button> */}
       <VStack width="full" spacing="16px" mb={4}>
         {data?.data?.items.length >= 1 ? (
           data?.data?.items.map((item: MaintenanceSchedule) => (

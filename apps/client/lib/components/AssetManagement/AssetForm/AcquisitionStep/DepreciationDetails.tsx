@@ -16,10 +16,11 @@ const DepreciationDetails = () => {
         />
       </Flex>
       <Grid templateColumns="repeat(3, 1fr)" gap="16px" width="full">
-        <GridItem colSpan={3} width="full">
+        <GridItem colSpan={1}>
+          <CustomDatePicker name="depreciationStartDate" label="Select Date" />
+        </GridItem>
+        <GridItem colSpan={2} width="full">
           <HStack width="full" alignItems="flex-start" spacing="16px">
-            <CustomDatePicker name="depreciationStartDate" label="Start Date" />
-
             <Field
               as={TextInput}
               name="depreciationMethod"

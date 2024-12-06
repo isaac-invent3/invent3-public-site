@@ -28,6 +28,7 @@ interface CustomDateProps {
   maxDate?: Date;
   initialDate?: Date;
   initialTime?: string;
+  headerLabel?: string;
   shouldIncludeTime?: boolean;
   handleSetDateTime?: (
     date: Date | undefined,
@@ -45,6 +46,7 @@ const CustomDate = (props: CustomDateProps) => {
     initialTime,
     handleSetDateTime,
     shouldIncludeTime,
+    headerLabel,
   } = props;
   const [time, setTime] = useState<string | undefined>(
     initialTime ?? undefined
@@ -68,7 +70,7 @@ const CustomDate = (props: CustomDateProps) => {
         <ModalBody m={0} p={0} py="32px" pl="32px" pr="27px" width="full">
           <VStack width="full" alignItems="flex-start" spacing="51px">
             <Text size="lg" color="primary.500" fontWeight={700}>
-              Custom Date
+              {headerLabel ?? 'Custom Date'}
             </Text>
             <HStack
               width="full"

@@ -19,6 +19,9 @@ interface DateTimeButtonsProps {
   // eslint-disable-next-line no-unused-vars
   handleDateTimeSelect?: (dateTime: string | null) => void;
   children?: React.ReactNode;
+  showPredefinedDates?: boolean;
+  customButtonLabel?: string;
+  customDateHeader?: string;
 }
 const DateTimeButtons = (props: DateTimeButtonsProps) => {
   const {
@@ -31,6 +34,9 @@ const DateTimeButtons = (props: DateTimeButtonsProps) => {
     selectedTime,
     handleDateTimeSelect,
     children,
+    showPredefinedDates = true,
+    customButtonLabel,
+    customDateHeader,
   } = props;
   const [time, setTime] = useState<string | undefined>(
     selectedTime ?? undefined
@@ -106,7 +112,8 @@ const DateTimeButtons = (props: DateTimeButtonsProps) => {
               spacing="16px"
               display={selectedDate ? 'none' : 'flex'}
             >
-              {showStaticDates &&
+              {showPredefinedDates &&
+                showStaticDates &&
                 mainButtons.map((item, index: number) => (
                   <Button
                     customStyles={buttonStyle}
@@ -124,7 +131,7 @@ const DateTimeButtons = (props: DateTimeButtonsProps) => {
                 ))}
               <Button customStyles={buttonStyle} handleClick={onOpenCustomDate}>
                 <Icon as={PenIcon} boxSize="16px" color="#374957" mr="8px" />
-                Custom
+                {customButtonLabel ?? 'Custom'}
               </Button>
               {children}
             </HStack>
@@ -158,6 +165,7 @@ const DateTimeButtons = (props: DateTimeButtonsProps) => {
 
       {isOpenCustomDate && (
         <CustomDate
+          headerLabel={customDateHeader}
           shouldIncludeTime={includeTime}
           isOpen={isOpenCustomDate}
           onClose={onCloseCustomDate}

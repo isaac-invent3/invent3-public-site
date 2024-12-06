@@ -10,12 +10,23 @@ import {
 import moment from 'moment';
 import React from 'react';
 import TaskListView from '~/lib/components/TaskManagement/Drawers/TaskListDrawer/TaskListView';
-import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
 import { MaintenanceColorCode } from '~/lib/utils/ColorCodes';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
+interface GenericScheduleData {
+  scheduleId: number;
+  scheduledDate: string;
+  scheduleName: string;
+  durationInHours: number;
+  contactPerson: string;
+  contactPersonPhoneNo: string;
+  contactPersonEmail: string;
+  maintenanceType: string;
+  currentStatus: string;
+  createdBy: string;
+}
 interface MaintenanceScheduleCardProps {
-  data: MaintenanceSchedule;
+  data: GenericScheduleData;
   isPartOfDefaultPlan?: boolean;
 }
 const MaintenanceScheduleCard = (props: MaintenanceScheduleCardProps) => {

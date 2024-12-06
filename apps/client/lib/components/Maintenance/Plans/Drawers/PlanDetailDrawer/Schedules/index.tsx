@@ -30,13 +30,7 @@ const Schedules = (props: SchedulesProps) => {
         alignItems="flex-start"
         spacing="16px"
       >
-        <Text
-          size="md"
-          fontWeight={700}
-          width="full"
-          pb="4px"
-          borderBottom="1px solid #BBBBBB80"
-        >
+        <Text size="md" fontWeight={700} width="full" pb="4px">
           Maintenance Schedule
         </Text>
         {isLoading ? (

@@ -1,18 +1,23 @@
 import { Flex, Skeleton, Text, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import MaintenanceScheduleCard from '../../../../Maintenance/Schedules/MaintenanceScheduleCard';
 import { useAppSelector } from '~/lib/redux/hooks';
-import { useGetPlannedMaintenanceByAssetIdQuery } from '~/lib/redux/services/asset/general.services';
-import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
+import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 import ButtonPagination from '~/lib/components/UI/Pagination/ButtonPagination';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import { useGetAllMaintenancePlansByAssetIdQuery } from '~/lib/redux/services/maintenance/plan.services';
+import PlanCard from '~/lib/components/Maintenance/Plans/PlanCard';
 
 const MaintenanceTab = () => {
-  const { assetId } = useAppSelector((state) => state.asset.asset);
+  const { assetId, assetTypeId } = useAppSelector((state) => state.asset.asset);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(DEFAULT_PAGE_SIZE);
-  const { data, isLoading } = useGetPlannedMaintenanceByAssetIdQuery(
-    { id: assetId, pageSize, pageNumber: currentPage },
+  const { data, isLoading } = useGetAllMaintenancePlansByAssetIdQuery(
+    {
+      id: assetId,
+      assetTypeId: assetTypeId,
+      pageSize,
+      pageNumber: currentPage,
+    },
     { skip: !assetId }
   );
 
@@ -33,12 +38,12 @@ const MaintenanceTab = () => {
       alignItems="flex-end"
       gap="16px"
       direction="column"
-      my="16px"
+      my="32px"
     >
       <VStack width="full" spacing="16px" mb={4}>
-        {data?.data?.items.length >= 1 ? (
-          data?.data?.items.map((item: MaintenanceSchedule) => (
-            <MaintenanceScheduleCard data={item} key={item.scheduleId} />
+        {data?.data?.items?.length >= 1 ? (
+          data?.data?.items?.map((item: MaintenancePlan) => (
+            <PlanCard data={item} key={item.maintenancePlanId} />
           ))
         ) : (
           <Text
@@ -50,7 +55,7 @@ const MaintenanceTab = () => {
             color="neutral.600"
             textAlign="center"
           >
-            No Planned Maintenance at the moment.
+            No Maintenance Plan for this asset at the moment.
           </Text>
         )}
       </VStack>

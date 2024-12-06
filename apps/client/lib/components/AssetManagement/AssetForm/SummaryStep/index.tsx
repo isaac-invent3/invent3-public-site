@@ -139,12 +139,16 @@ const SummaryStep = (props: SummaryStepProps) => {
 
   const WARRANTY = {
     warrantyDetails: assetFormDetails.warrantyDetails,
-    startDate: moment(assetFormDetails.warrantyStartDate, 'DD/MM/YYYY').format(
-      'YYYY-MM-DD'
-    ),
-    expiryDate: moment(assetFormDetails.warrantyEndDate, 'DD/MM/YYYY').format(
-      'YYYY-MM-DD'
-    ),
+    startDate: assetFormDetails.warrantyStartDate
+      ? moment(assetFormDetails.warrantyStartDate, 'DD/MM/YYYY').format(
+          'YYYY-MM-DD'
+        )
+      : null,
+    expiryDate: assetFormDetails.warrantyEndDate
+      ? moment(assetFormDetails.warrantyEndDate, 'DD/MM/YYYY').format(
+          'YYYY-MM-DD'
+        )
+      : null,
     ...(type === 'edit'
       ? {
           assetId: assetFormDetails.assetId,

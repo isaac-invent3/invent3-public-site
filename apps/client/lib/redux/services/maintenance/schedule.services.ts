@@ -56,7 +56,7 @@ export const maintenanceScheduleApi = createApi({
     getAllMaintenanceSchedule: builder.query({
       // eslint-disable-next-line no-unused-vars
       query: ({ id, ...data }) => ({
-        url: generateQueryStr(`/MaintenanceSchedules`, data),
+        url: generateQueryStr(`/MaintenanceSchedules?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -150,7 +150,7 @@ export const maintenanceScheduleApi = createApi({
       query: ({ ticketId, ...data }) => ({
         // url: `/MaintenanceSchedules/GetMaintenanceSchedulesByTicketId/${ticketId}`,
         url: generateQueryStr(
-          `/MaintenanceSchedules/GetMaintenanceSchedulesByTicketId/${ticketId}`,
+          `/MaintenanceSchedules/GetMaintenanceSchedulesByTicketId/${ticketId}?`,
           data
         ),
         method: 'GET',

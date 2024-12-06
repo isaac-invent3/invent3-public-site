@@ -109,15 +109,27 @@ const MaintenanceScheduleCard = (props: MaintenanceScheduleCardProps) => {
             <Text size="md" color="black">
               Contact Person
             </Text>
-            <Text size="md" color="neutral.600">
-              {data?.contactPerson ?? 'N/A'}
-            </Text>
-            <Text size="md" color="neutral.600">
-              {data?.contactPersonPhoneNo ?? 'N/A'}
-            </Text>
-            <Text size="md" color="neutral.600">
-              {data?.contactPersonEmail ?? 'N/A'}
-            </Text>
+            {[
+              data?.contactPerson,
+              data?.contactPersonPhoneNo,
+              data?.contactPersonEmail,
+            ].filter(Boolean).length >= 1 ? (
+              <VStack spacing="4px" alignItems="flex-start">
+                <Text size="md" color="neutral.600">
+                  {data?.contactPerson ?? 'N/A'}
+                </Text>
+                <Text size="md" color="neutral.600">
+                  {data?.contactPersonPhoneNo ?? 'N/A'}
+                </Text>
+                <Text size="md" color="neutral.600">
+                  {data?.contactPersonEmail ?? 'N/A'}
+                </Text>
+              </VStack>
+            ) : (
+              <Text size="md" color="neutral.600">
+                N/A
+              </Text>
+            )}
           </VStack>
         </GridItem>
         {/* Contact Ends Here */}
@@ -151,12 +163,14 @@ const MaintenanceScheduleCard = (props: MaintenanceScheduleCardProps) => {
         </GridItem>
         {/* Status and Action Button */}
       </Grid>
-      <TaskListView
-        isOpen={isOpen}
-        onClose={onClose}
-        scheduleId={data?.scheduleId}
-        showPopover={!isPartOfDefaultPlan}
-      />
+      {isOpen && (
+        <TaskListView
+          isOpen={isOpen}
+          onClose={onClose}
+          scheduleId={data?.scheduleId}
+          showPopover={!isPartOfDefaultPlan}
+        />
+      )}
     </>
   );
 };

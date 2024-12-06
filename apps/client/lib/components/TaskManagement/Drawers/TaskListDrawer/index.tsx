@@ -21,6 +21,7 @@ interface TaskListDrawerProps {
   showAddTaskButton?: boolean;
   scheduleId?: number;
   children: React.ReactNode;
+  taskType: 'main' | 'instance';
 }
 
 const TaskListDrawer = (props: TaskListDrawerProps) => {
@@ -31,6 +32,7 @@ const TaskListDrawer = (props: TaskListDrawerProps) => {
     showAddTaskButton = true,
     children,
     scheduleId,
+    taskType,
   } = props;
   const {
     isOpen: isOpenForm,
@@ -78,6 +80,7 @@ const TaskListDrawer = (props: TaskListDrawerProps) => {
           onClose={onCLoseForm}
           handleData={handleAddTask}
           scheduleId={scheduleId}
+          type={taskType}
         />
       </DrawerBody>
     </GenericDrawer>

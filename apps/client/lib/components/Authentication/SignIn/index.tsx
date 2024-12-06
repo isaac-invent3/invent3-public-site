@@ -7,13 +7,13 @@ import { loginSchema } from '~/lib/schemas/auth.schema';
 import { Field, FormikProvider, useFormik } from 'formik';
 import AuthLayout from '../AuthLayout';
 import TextInput from '../../UI/TextInput';
-import PrimaryButton from '../../UI/Button';
 import SSOLogin from './SSOLogin';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { utilityApi } from '~/lib/redux/services/utility.services';
 import { setCredentials } from '~/lib/redux/slices/GeneralSlice';
+import { Button } from '@repo/ui/components';
 
 const SignIn = () => {
   const router = useRouter();
@@ -130,13 +130,13 @@ const SignIn = () => {
               </Flex>
             </VStack>
 
-            <PrimaryButton
+            <Button
               isLoading={formik.isSubmitting}
               loadingText="Logging In..."
               type="submit"
             >
               Sign in
-            </PrimaryButton>
+            </Button>
           </form>
         </FormikProvider>
         <Flex

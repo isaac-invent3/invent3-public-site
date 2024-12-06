@@ -18,7 +18,7 @@ interface AssetFormProps {
 }
 const AssetForm = (props: AssetFormProps) => {
   const { type } = props;
-  const [activeStep, setActiveStep] = useState(2);
+  const [activeStep, setActiveStep] = useState(1);
 
   return (
     <Flex width="full" direction="column" pb="24px">

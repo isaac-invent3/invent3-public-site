@@ -5,13 +5,14 @@
   "module": "src/index.ts",
   "types": "src/index.ts",
   "exports": {
-    ".": {
-      "import": "./src/index.ts",
-      "require": "./src/index.ts"
-    },
     "./components": {
       "import": "./src/components/index.ts",
       "require": "./src/components/index.ts"
+    },
+    "./button": "./src/button.tsx",
+    ".": {
+      "import": "./src/index.ts",
+      "require": "./src/index.ts"
     },
     "./theme": {
       "import": "./src/theme/index.ts",
@@ -35,6 +36,7 @@
   },
   "dependencies": {
     "@chakra-ui/anatomy": "^2.2.2",
+    "@chakra-ui/icons": "2.1.1",
     "@chakra-ui/next-js": "^2.2.0",
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.13.3",

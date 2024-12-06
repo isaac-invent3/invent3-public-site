@@ -107,8 +107,8 @@ const Overview = () => {
                 {assetCategory}
               </Text>
             </HStack>
-            {assetInfo1.map((info) => (
-              <HStack spacing="8px" alignItems="center">
+            {assetInfo1.map((info, index) => (
+              <HStack spacing="8px" alignItems="center" key={index}>
                 <Text color="neutral.600" width="65px" size="md">
                   {info.label}
                 </Text>
@@ -119,8 +119,8 @@ const Overview = () => {
             ))}
           </VStack>
           <VStack alignItems="flex-start" spacing="8px">
-            {assetInfo2.map((info) => (
-              <HStack spacing="12px" alignItems="center">
+            {assetInfo2.map((info, index) => (
+              <HStack spacing="12px" alignItems="center" key={index}>
                 <Text color="neutral.600" width="95px" size="md">
                   {info.label}
                 </Text>

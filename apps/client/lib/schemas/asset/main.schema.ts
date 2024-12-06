@@ -55,12 +55,8 @@ const acquisitionInfoSchema = Yup.object().shape({
   initialValue: Yup.number()
     .required('Purchase Price is required')
     .min(1, 'Price must be greater than 1'),
-  warrantyStartDate: createDateSchema(false, true).required(
-    'Warranty Start Date is required'
-  ),
-  warrantyEndDate: createDateSchema(false, true).required(
-    'Warranty End Date is required'
-  ),
+  warrantyStartDate: createDateSchema(false, false).nullable(),
+  warrantyEndDate: createDateSchema(false, false).nullable(),
   warrantyDetails: Yup.string().required('Warranty Terms is required'),
   resaleValue: Yup.number().nullable(),
   scrapValue: Yup.number().nullable(),

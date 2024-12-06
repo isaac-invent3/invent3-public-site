@@ -45,8 +45,8 @@ export const scheduleInstanceApi = createApi({
       BaseApiResponse<ListResponse<MaintenanceScheduleInstance>>,
       {}
     >({
-      query: () => ({
-        url: '/MaintenanceScheduleInstances',
+      query: (data) => ({
+        url: generateQueryStr('/MaintenanceScheduleInstances?', data),
         method: 'GET',
         headers: getHeaders(),
       }),

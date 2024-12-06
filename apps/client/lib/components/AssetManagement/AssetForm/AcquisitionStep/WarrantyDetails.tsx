@@ -12,7 +12,7 @@ const WarrantyDetails = () => {
         <SectionInfo
           title="Warranty Details"
           info="Choose the category and the sub-category"
-          isRequired
+          isRequired={false}
         />
       </Flex>
       <Grid templateColumns="repeat(3, 1fr)" gap="16px" width="full">

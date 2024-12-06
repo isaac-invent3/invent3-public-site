@@ -13,6 +13,7 @@ import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useGetAllMaintenancePlansByAssetIdQuery } from '~/lib/redux/services/maintenance/plan.services';
 import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
 const View = (info: MaintenancePlan) => {
@@ -37,11 +38,15 @@ const Plan = () => {
   const { assetId, assetTypeId, assetName } = useAppSelector(
     (state) => state.maintenance.scheduleForm
   );
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const { data, isLoading, isFetching } =
     useGetAllMaintenancePlansByAssetIdQuery(
       {
         id: assetId,
         assetTypeId,
+        pageSize,
+        pageNumber,
       },
       { skip: !assetId || !assetTypeId }
     );
@@ -58,7 +63,7 @@ const Plan = () => {
 
   useEffect(() => {
     if (data?.data) {
-      const items: MaintenancePlan[] = data?.data;
+      const items: MaintenancePlan[] = data?.data?.items;
       const customizedPlan = items.find(
         (item) => item.planTypeName === 'Custom'
       );
@@ -77,7 +82,7 @@ const Plan = () => {
 
   useEffect(() => {
     if (selectedRows.length >= 1) {
-      const items: MaintenancePlan[] = data?.data;
+      const items: MaintenancePlan[] = data?.data?.items;
       const customizedPlan = items.find(
         (value, index) => index === selectedRows[0]
       );
@@ -177,11 +182,11 @@ const Plan = () => {
         enableSorting: false,
       }),
     ],
-    [[data?.data]] //eslint-disable-line
+    [[data?.data?.items]] //eslint-disable-line
   );
 
   const defaultPlanIndices = data?.data
-    ? data?.data
+    ? data?.data?.items
         ?.map((item: MaintenancePlan, index: number) =>
           item.planTypeName === 'Default' ? index : -1
         ) // Get index or -1
@@ -205,12 +210,17 @@ const Plan = () => {
       >
         <DataTable
           columns={columns}
-          data={data?.data ?? []}
+          data={data?.data?.items ?? []}
           isLoading={isLoading || isFetching}
           handleSelectRow={setSelectedPlan}
+          pageSize={pageSize}
+          setPageSize={setPageSize}
+          pageNumber={pageNumber}
+          setPageNumber={setPageNumber}
           selectedRows={selectedRows}
           setSelectedRows={setSelectedRows}
-          showFooter={false}
+          totalPages={data?.data.totalPages}
+          showFooter={data?.data?.hasPreviousPage || data?.data?.hasNextPage}
           emptyLines={2}
           isSelectable={true}
           disabledRows={defaultPlanIndices}

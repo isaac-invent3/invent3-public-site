@@ -26,7 +26,7 @@ const AssetTabs = () => {
       component: <AcquisitionTab />,
     },
     {
-      label: 'Planned Maintenance',
+      label: 'Maintenance Plan',
       component: <MaintenanceTab />,
     },
     {
@@ -51,13 +51,17 @@ const AssetTabs = () => {
       >
         <TabList>
           {AllTabs.map((item) => (
-            <Tab paddingBottom="10px">{item.label}</Tab>
+            <Tab paddingBottom="10px" key={item.label}>
+              {item.label}
+            </Tab>
           ))}
         </TabList>
 
         <TabPanels>
           {AllTabs.map((item, index) => (
-            <TabPanel>{index === tabIndex && item.component}</TabPanel>
+            <TabPanel key={item.label}>
+              {index === tabIndex && item.component}
+            </TabPanel>
           ))}
         </TabPanels>
       </Tabs>

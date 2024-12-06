@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import { HStack, ModalBody, ModalFooter, Text, VStack } from '@chakra-ui/react';
 import { addDays } from 'date-fns';
 import { useState } from 'react';
@@ -6,6 +6,7 @@ import { DateRangePicker, Range } from 'react-date-range';
 import Button from '../../Button';
 import GenericModal from '../../Modal';
 import './styles.css';
+import TimezoneDropdown from './TimeZoneDropdown';
 
 interface DateRangeModalProps {
   isOpen: boolean;
@@ -92,9 +93,14 @@ const DateRangeModal = (props: DateRangeModalProps) => {
           pr="27px"
           mb="19px"
           mt="10px"
-          alignItems="flex-start"
+          alignItems="center"
         >
-          <div>Helo</div>
+          <TimezoneDropdown
+            width="250px"
+            label="West Africa Standard Time"
+            name="ticketStatusId"
+            options={[]}
+          />
 
           <HStack spacing="16px" width="full" justifyContent="flex-end">
             <Button

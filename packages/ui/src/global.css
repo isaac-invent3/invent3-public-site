@@ -22,21 +22,21 @@
 
   @font-face {
     font-family: 'Creato Display';
-    src: url('/fonts/CreatoDisplay-Bold.otf') format('opentype');
+    src: url('/fonts/CreatoDisplay-Medium.otf') format('opentype');
     font-weight: 600;
     font-style: normal;
   }
 
   @font-face {
     font-family: 'Creato Display';
-    src: url('/fonts/CreatoDisplay-ExtraBold.otf') format('opentype');
+    src: url('/fonts/CreatoDisplay-Bold.otf') format('opentype');
     font-weight: 700;
     font-style: normal;
   }
 
   @font-face {
     font-family: 'Creato Display';
-    src: url('/fonts/CreatoDisplay-Black.otf') format('opentype');
+    src: url('/fonts/CreatoDisplay-ExtraBold.otf') format('opentype');
     font-weight: 800;
     font-style: normal;
   }

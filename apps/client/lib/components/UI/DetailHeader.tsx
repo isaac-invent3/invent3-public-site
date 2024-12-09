@@ -11,11 +11,10 @@ const DetailHeader = (props: DetailHeaderProps) => {
   return (
     <Text
       width="full"
-      size="lg"
-      fontWeight={700}
+      size="md"
       pt={variant === 'primary' ? '0px' : '4px'}
       pb={variant === 'primary' ? '8px' : '4px'}
-      color={variant === 'primary' ? 'primary.main' : 'neutral.800'}
+      color={variant === 'primary' ? 'primary.500' : 'neutral.800'}
       borderBottomWidth="1px"
       borderColor="#BBBBBB80"
       {...customStyles}

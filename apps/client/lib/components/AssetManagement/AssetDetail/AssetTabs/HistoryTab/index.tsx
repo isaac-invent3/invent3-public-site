@@ -54,7 +54,7 @@ const HistoryTab = () => {
         enableSorting: false,
       }),
       columnHelper.accessor('maintenanceType', {
-        cell: (info) => info.getValue(),
+        cell: (info) => info.getValue() ?? 'N/A',
         header: 'Maintenance Type',
         enableSorting: false,
       }),

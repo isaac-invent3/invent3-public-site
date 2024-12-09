@@ -179,7 +179,7 @@ function DataTable<Data extends object>({
                       textTransform="capitalize"
                       fontSize="12px"
                       lineHeight="14.26px"
-                      fontWeight={600}
+                      fontWeight={700}
                       color="black"
                       pl="10px"
                       pr="16px"

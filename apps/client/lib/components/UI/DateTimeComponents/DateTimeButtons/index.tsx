@@ -7,6 +7,8 @@ import Button from '../../Button';
 import { PenIcon } from '~/lib/components/CustomIcons';
 import SlideTransition from '../../SlideTransition';
 import Display from './Display';
+import { Range } from 'react-date-range';
+import DateRangeModal from '../DateRange';
 
 interface DateTimeButtonsProps {
   includeTime: boolean;
@@ -18,6 +20,10 @@ interface DateTimeButtonsProps {
   selectedTime?: string | undefined;
   // eslint-disable-next-line no-unused-vars
   handleDateTimeSelect?: (dateTime: string | null) => void;
+  isRange?: boolean;
+  range?: Range;
+  // eslint-disable-next-line no-unused-vars
+  handleRange?: (info: Range) => void;
   children?: React.ReactNode;
   showPredefinedDates?: boolean;
   customButtonLabel?: string;
@@ -33,7 +39,10 @@ const DateTimeButtons = (props: DateTimeButtonsProps) => {
     selectedDate,
     selectedTime,
     handleDateTimeSelect,
+    handleRange,
     children,
+    isRange = false,
+    range,
     showPredefinedDates = true,
     customButtonLabel,
     customDateHeader,
@@ -50,6 +59,11 @@ const DateTimeButtons = (props: DateTimeButtonsProps) => {
     isOpen: isOpenCustomDate,
     onOpen: onOpenCustomDate,
     onClose: onCloseCustomDate,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenDateRange,
+    onOpen: onOpenDateRange,
+    onClose: onCloseDateRange,
   } = useDisclosure();
 
   const today = moment().utcOffset(0, true);
@@ -98,14 +112,17 @@ const DateTimeButtons = (props: DateTimeButtonsProps) => {
         <Display
           selectedDate={selectedDate}
           handleDateTimeSelect={handleDateTimeSelect}
+          handleRange={handleRange}
           prefix={prefix}
-          onOpenCustomDate={onOpenCustomDate}
+          onOpenCustomDate={isRange ? onOpenDateRange : onOpenCustomDate}
           includeTime={includeTime}
           selectedTime={time}
           setTime={setTime}
+          isRange={isRange}
+          range={range}
         />
         {/* Display Ends Here */}
-        {!selectedDate && (
+        {!selectedDate && !range?.startDate && (
           <SlideTransition trigger={selectedDate ? false : true}>
             <HStack
               flexWrap="wrap"
@@ -129,7 +146,10 @@ const DateTimeButtons = (props: DateTimeButtonsProps) => {
                     {item.label}
                   </Button>
                 ))}
-              <Button customStyles={buttonStyle} handleClick={onOpenCustomDate}>
+              <Button
+                customStyles={buttonStyle}
+                handleClick={isRange ? onOpenDateRange : onOpenCustomDate}
+              >
                 <Icon as={PenIcon} boxSize="16px" color="#374957" mr="8px" />
                 {customButtonLabel ?? 'Custom'}
               </Button>
@@ -184,6 +204,17 @@ const DateTimeButtons = (props: DateTimeButtonsProps) => {
               handleDateTimeSelect(selectedDateTime);
             }
           }}
+        />
+      )}
+      {isOpenDateRange && (
+        <DateRangeModal
+          isOpen={isOpenDateRange}
+          onClose={onCloseDateRange}
+          minStartDate={minDate}
+          maxEndDate={maxDate}
+          dateRange={range}
+          handleChangeDate={(info) => handleRange && handleRange(info)}
+          headerLabel={customDateHeader}
         />
       )}
     </>

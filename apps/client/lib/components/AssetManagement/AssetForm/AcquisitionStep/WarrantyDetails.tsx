@@ -1,11 +1,14 @@
 import { Flex, Grid, GridItem, HStack } from '@chakra-ui/react';
 import React from 'react';
 import SectionInfo from '../../../UI/Form/FormSectionInfo';
-import { Field } from 'formik';
+import { Field, useFormikContext } from 'formik';
 import TextInput from '~/lib/components/UI/TextInput';
-import CustomDatePicker from '../../../UI/Form/FormDatePicker';
+import DateTimeButtons from '~/lib/components/UI/DateTimeComponents/DateTimeButtons';
+import { AssetFormDetails } from '~/lib/interfaces/asset.interfaces';
+import moment from 'moment';
 
 const WarrantyDetails = () => {
+  const { setFieldValue, values } = useFormikContext<AssetFormDetails>();
   return (
     <HStack width="full" alignItems="flex-start" spacing="78px">
       <Flex width="full" maxW="144px">
@@ -17,11 +20,34 @@ const WarrantyDetails = () => {
       </Flex>
       <Grid templateColumns="repeat(3, 1fr)" gap="16px" width="full">
         <GridItem colSpan={1}>
-          <CustomDatePicker
-            name="warrantyStartDate"
-            label="Select Start & End Date"
+          <DateTimeButtons
+            buttonVariant="secondary"
+            includeTime={false}
+            isRange
+            customDateHeader="Date"
+            customButtonLabel="Select Start & End Date"
+            showPredefinedDates={false}
+            range={{
+              startDate: values.warrantyStartDate
+                ? moment(values.warrantyStartDate, 'DD/MM/YYYY').toDate()
+                : undefined,
+              endDate: values.warrantyEndDate
+                ? moment(values.warrantyEndDate, 'DD/MM/YYYY').toDate()
+                : undefined,
+            }}
+            handleRange={(info) => {
+              setFieldValue(
+                'warrantyStartDate',
+                info.startDate
+                  ? moment(info.startDate).format('DD/MM/YYYY')
+                  : null
+              );
+              setFieldValue(
+                'warrantyEndDate',
+                info.endDate ? moment(info.endDate).format('DD/MM/YYYY') : null
+              );
+            }}
           />
-          {/* <CustomDatePicker name="warrantyEndDate" label="End Date" /> */}
         </GridItem>
         <GridItem colSpan={2}>
           <HStack width="full" alignItems="flex-start" spacing="0px">

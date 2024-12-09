@@ -1,6 +1,7 @@
-import { Heading, HStack, VStack } from '@chakra-ui/react';
+import { HStack, VStack } from '@chakra-ui/react';
 import React from 'react';
 import Button from '../../UI/Button';
+import CardHeader from '../Common/CardHeader';
 
 const LinkData = [
   {
@@ -31,21 +32,14 @@ const QuickLinks = () => {
       bgColor="white"
       rounded="8px"
     >
-      <Heading
-        color="Neutral.800"
-        fontSize="16px"
-        lineHeight="19.01px"
-        fontWeight={700}
-      >
-        Quick Links:
-      </Heading>
+      <CardHeader>Quick Links:</CardHeader>
       <HStack flexWrap="wrap">
         {LinkData.map((item, index) => (
           <Button
             key={index}
             href={item.href}
             customStyles={{
-              color: 'primary.main',
+              color: 'primary.500',
               bgColor: 'neutral.300',
               height: '37px',
               minW: '75px',

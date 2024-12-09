@@ -14,7 +14,7 @@ import DatePicker, { registerLocale } from 'react-datepicker';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import AddTime from '../AddTime';
 import { ClockIcon, RemoveIcon } from '~/lib/components/CustomIcons';
-import { enGB } from 'date-fns/locale/en-GB';
+import enGB from 'date-fns/locale/en-GB';
 import './style.css';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';

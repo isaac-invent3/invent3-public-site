@@ -98,7 +98,7 @@ const GenericSuccessModal = (props: GenericSuccessModalProps) => {
                 fontSize="32px"
                 lineHeight="38.02px"
                 fontWeight={800}
-                color="primary.main"
+                color="primary.500"
                 textAlign="center"
               >
                 {headingText ?? 'Successful!'}

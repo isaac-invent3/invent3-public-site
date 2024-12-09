@@ -30,7 +30,7 @@ const ParentAsset = () => {
   return (
     <HStack spacing="13px" alignItems="flex-start">
       <VStack alignItems="flex-start" spacing="8px" maxW="120px">
-        <Text size="md" fontWeight={700} color="primary.main">
+        <Text size="md" fontWeight={700} color="primary.500">
           Parent Asset
         </Text>
         <Text color="neutral.600">

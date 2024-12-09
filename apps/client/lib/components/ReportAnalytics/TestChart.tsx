@@ -8,7 +8,6 @@ import {
   PointElement,
   Title,
   Tooltip,
-  Chart
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
@@ -52,11 +51,9 @@ export default function BranchAssetsChart() {
     ],
   };
 
-  
-
   return (
     <Box
-      width="48%"
+      ml="16px"
       bg="white"
       p="16px"
       borderRadius="md"
@@ -85,7 +82,6 @@ export default function BranchAssetsChart() {
             data={data}
             options={{
               indexAxis: 'y',
-              
             }}
           />
         </Box>

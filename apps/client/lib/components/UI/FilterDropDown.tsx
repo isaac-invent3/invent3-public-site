@@ -1,20 +1,21 @@
 import {
+  Collapse,
+  Flex,
   HStack,
   Icon,
-  Text,
-  VStack,
-  Flex,
-  useDisclosure,
-  Collapse,
-  useOutsideClick,
   Spinner,
+  StackProps,
+  Text,
+  useDisclosure,
+  useOutsideClick,
+  VStack,
 } from '@chakra-ui/react';
+import { ReactNode, useEffect, useRef } from 'react';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { ChevronDownIcon } from '../CustomIcons';
 import CheckBox from './CheckBox';
-import { useRef, useEffect, ReactNode } from 'react';
 
-interface FilterDropDownProps {
+type FilterDropDownProps = {
   label: string;
   options: Option[];
   selectedOptions: Option[];
@@ -25,7 +26,8 @@ interface FilterDropDownProps {
   isLoading?: boolean;
   children?: ReactNode;
   showBorder?: boolean;
-}
+  labelStyles?: StackProps;
+};
 
 const FilterDropDown = ({
   label,
@@ -37,6 +39,7 @@ const FilterDropDown = ({
   isLoading,
   children,
   showBorder,
+  labelStyles,
 }: FilterDropDownProps) => {
   const { onToggle, isOpen, onClose } = useDisclosure();
   const buttonRef = useRef<HTMLDivElement | null>(null);
@@ -88,6 +91,7 @@ const FilterDropDown = ({
         rounded="6px"
         ref={buttonRef}
         border={showBorder ? '1px solid #DADFE5' : 'none'}
+        {...labelStyles}
       >
         <HStack spacing="8px">
           <Text width="full" whiteSpace="nowrap" color="neutral.600">
@@ -102,6 +106,7 @@ const FilterDropDown = ({
             <Text>Selected</Text>
           </HStack>
         </HStack>
+
         <Icon as={ChevronDownIcon} boxSize="12px" color="neutral.600" />
       </HStack>
 

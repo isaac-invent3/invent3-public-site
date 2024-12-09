@@ -1,10 +1,10 @@
 import { HStack } from '@chakra-ui/react';
 import React from 'react';
+import CombinedLocationFilter from '~/lib/components/Common/FilterComponents/CombinedLocationFilter';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { TicketFilterInput } from '~/lib/interfaces/ticket.interfaces';
-import CombinedLocationFilter from '../Common/FilterComponents/CombinedLocationFilter';
-import FilterWrapper from '../Common/FilterComponents/FilterWrapper';
-import DateFilter from './Common/DateFilter';
+import FilterWrapper from '../../Common/FilterComponents/FilterWrapper';
+import DateRangeFilter from './DateFilter';
 
 type FilterLabel = keyof TicketFilterInput;
 
@@ -50,14 +50,14 @@ const GeneralFilter = (props: GeneralFilterProps) => {
         selected "From" date is not later than the "To" date. 
         */}
 
-        <DateFilter
+        <DateRangeFilter
           label="From: "
           selectedDate={filterData.fromDate}
           handleClick={(date) => {
             handleFilterData(date, 'fromDate');
           }}
         />
-        <DateFilter
+        <DateRangeFilter
           label="To: "
           selectedDate={filterData.toDate}
           handleClick={(date) => {

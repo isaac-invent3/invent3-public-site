@@ -14,8 +14,8 @@ import {
 import { useState } from 'react';
 import { TicketFilterInput } from '~/lib/interfaces/ticket.interfaces';
 import { dateFormatter } from '~/lib/utils/Formatters';
+import GeneralFilter from './Filters/GeneralFilter';
 import Header from './Header';
-import GeneralFilter from './PageFilters';
 import TopBranchesChart from './TestChart';
 
 const ReportAnalytics = () => {
@@ -68,9 +68,8 @@ const ReportAnalytics = () => {
         alignItems="center"
         width="full"
         mt={10}
-        paddingBottom="2rem"
-        borderBottomWidth={1}
-        borderBottomColor="#BBBBBB"
+        paddingBlock="2rem"
+        borderBlock="1px solid #BBBBBB"
         justifyContent="space-between"
       >
         <Grid

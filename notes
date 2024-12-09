@@ -11,3 +11,4 @@ Under scheduled Ticket, the Assigned To that shows is the Assigned to for the Ti
 
 ReportAnalytics
 Update Filter Wrapper component so there's apply filters and reset filters
+Validation for the from and to for the report filters

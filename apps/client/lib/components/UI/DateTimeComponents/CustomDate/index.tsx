@@ -90,6 +90,9 @@ const CustomDate = (props: CustomDateProps) => {
                 maxDate={maxDate}
                 selected={selectedDate}
                 inline
+                selectsEnd
+                startDate={selectedDate}
+                endDate={maxDate}
                 locale="en-GB"
                 weekDayClassName={(date) =>
                   moment(date).format('dd') == 'Sa' ||

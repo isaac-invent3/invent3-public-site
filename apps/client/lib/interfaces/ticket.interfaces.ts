@@ -1,3 +1,5 @@
+import { Option } from './general.interfaces';
+
 interface Ticket {
   rowId: number;
   ticketId: number;
@@ -50,6 +52,14 @@ interface Ticket {
   assetLocation: string;
 }
 
+interface TicketFilterInput {
+  region: Option[];
+  area: Option[];
+  branch: Option[];
+  fromDate: string;
+  toDate: string;
+}
+
 type SelectedTicketAction =
   | 'schedule'
   | 'assign'
@@ -66,4 +76,4 @@ type TicketCategory =
   | 'completed'
 
 
-export type { SelectedTicketAction, Ticket, TicketCategory };
+export type { SelectedTicketAction, Ticket, TicketCategory, TicketFilterInput };

@@ -26,6 +26,7 @@ function GenericModal({
       closeOnOverlayClick
       isCentered
       scrollBehavior="inside"
+      trapFocus={false}
       {...mainModalStyle}
     >
       <ModalOverlay />

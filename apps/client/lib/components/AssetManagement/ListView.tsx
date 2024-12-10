@@ -1,9 +1,8 @@
-import { Flex, useDisclosure } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import { useCallback, useEffect, useState } from 'react';
 import _ from 'lodash';
 
 import { useSearchParams } from 'next/navigation';
-import { Asset } from '~/lib/interfaces/asset.interfaces';
 import {
   useGetallAssetQuery,
   useGetAssetInfoHeaderByIdQuery,
@@ -13,10 +12,10 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { SearchResponse } from '~/lib/interfaces/general.interfaces';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 import AssetTable from './Common/AssetTable';
-import AssetDetail from './AssetDetail';
 import AssetFilterDisplay from './Filters/AssetFilterDisplay';
 import { generateSearchCriterion } from '~/lib/utils/helperFunctions';
-import { useAppSelector } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { setAsset } from '~/lib/redux/slices/AssetSlice';
 
 interface ListViewProps {
   search: string;
@@ -26,15 +25,14 @@ interface ListViewProps {
 
 const ListView = (props: ListViewProps) => {
   const { search, activeFilter, openFilter } = props;
-  const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const searchParams = useSearchParams();
   const assetId = searchParams.get('asset');
   const { handleSubmit } = useCustomMutation();
   const filterData = useAppSelector((state) => state.asset.assetFilter);
+  const dispatch = useAppDispatch();
 
   // Checks if all filterdata is empty
   const isFilterEmpty = _.every(
@@ -149,24 +147,10 @@ const ListView = (props: ListViewProps) => {
     }
   }, [search, isFilterEmpty]);
 
-  // Open the drawer if there is a selected asset
-  useEffect(() => {
-    if (selectedAsset) {
-      onOpen();
-    }
-  }, [selectedAsset]);
-
-  // Remove selected asset once the drawer is closed.
-  useEffect(() => {
-    if (!isOpen) {
-      setSelectedAsset(null);
-    }
-  }, [isOpen]);
-
   // Set if an assetData asset exist, mark it as selected
   useEffect(() => {
     if (assetData?.data) {
-      setSelectedAsset(assetData?.data);
+      dispatch(setAsset(assetData?.data));
     }
   }, [assetData]);
 
@@ -196,17 +180,13 @@ const ListView = (props: ListViewProps) => {
             ? searchData?.totalPages
             : data?.data?.totalPages
         }
-        handleSelectRow={setSelectedAsset}
+        handleSelectRow={(row) => dispatch(setAsset(row))}
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
         showFooter={true}
         emptyLines={25}
         isSelectable={true}
       />
-
-      {selectedAsset && (
-        <AssetDetail data={selectedAsset} onClose={onClose} isOpen={isOpen} />
-      )}
     </Flex>
   );
 };

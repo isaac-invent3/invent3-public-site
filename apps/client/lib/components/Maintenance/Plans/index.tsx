@@ -160,7 +160,7 @@ const Plans = (props: PlansProp) => {
         header: 'Plan Scope',
         enableSorting: false,
       }),
-      columnHelper.accessor('activeSchedules', {
+      columnHelper.accessor('openTasks', {
         cell: (info) => info.getValue() ?? 'N/A',
         header: 'No. Of Assets.',
         enableSorting: false,

@@ -47,7 +47,7 @@ const InfoTwo = (props: InfoTwoProps) => {
   ];
 
   return (
-    <Grid templateColumns="repeat(3, 1fr)" gap="100px" width="full">
+    <Grid templateColumns="repeat(3, 1fr)" gap="66px" width="full">
       <GridItem colSpan={1} width="full">
         <Flex minW="full">
           <Skeleton isLoaded={!isLoading} width="full">

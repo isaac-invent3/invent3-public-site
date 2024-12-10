@@ -54,6 +54,7 @@ const Instances = (props: InstancesProps) => {
                   createdBy,
                   maintenanceType,
                   currentStatus,
+                  sla,
                 } = item;
                 return (
                   <MaintenanceScheduleCard
@@ -68,6 +69,7 @@ const Instances = (props: InstancesProps) => {
                       maintenanceType,
                       currentStatus,
                       createdBy,
+                      sla,
                     }}
                     isPartOfDefaultPlan={false}
                     key={item.scheduleInstanceId}

@@ -15,6 +15,9 @@ import ListView from './ListView';
 import Filters from './Filters';
 import MapView from './MapView';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import AssetDetail from './AssetDetail';
+import { clearAsset } from '~/lib/redux/slices/AssetSlice';
 
 const AssetManagement = () => {
   const [search, setSearch] = useState('');
@@ -25,6 +28,8 @@ const AssetManagement = () => {
   const [activeFilter, setActiveFilter] = useState<'bulk' | 'general' | null>(
     null
   );
+  const selectedAsset = useAppSelector((state) => state.asset.asset);
+  const dispatch = useAppDispatch();
 
   // Handles Toggling the  Filter
   useEffect(() => {
@@ -54,42 +59,53 @@ const AssetManagement = () => {
   };
 
   return (
-    <Flex width="full" direction="column" pb="24px">
-      <Header />
-      <Flex direction="column" mt="42px" position="relative">
-        <Tabs
-          variant="custom"
-          width={'full'}
-          onChange={(index) => handleTabChange(index)}
-          index={tabIndex}
-        >
-          <Flex width="full" position="relative">
-            <TabList>
-              <Tab>List View</Tab>
-              <Tab>Map View</Tab>
-            </TabList>
-            {tabIndex === 0 && (
-              <Flex position="absolute" right={0} bottom="8px">
-                <Filters
-                  setSearch={setSearch}
-                  activeFilter={activeFilter}
-                  setActiveFilter={setActiveFilter}
-                />
-              </Flex>
-            )}
-          </Flex>
+    <Flex direction="column" width="full" height="full" position="relative">
+      <Flex width="full" direction="column" pb="24px">
+        <Header />
+        <Flex direction="column" mt="42px" position="relative">
+          <Tabs
+            variant="custom"
+            width={'full'}
+            onChange={(index) => handleTabChange(index)}
+            index={tabIndex}
+          >
+            <Flex width="full" position="relative">
+              <TabList>
+                <Tab>List View</Tab>
+                <Tab>Map View</Tab>
+              </TabList>
+              {tabIndex === 0 && (
+                <Flex position="absolute" right={0} bottom="8px">
+                  <Filters
+                    setSearch={setSearch}
+                    activeFilter={activeFilter}
+                    setActiveFilter={setActiveFilter}
+                  />
+                </Flex>
+              )}
+            </Flex>
 
-          <TabPanels>
-            <TabPanel>
-              <ListView
-                openFilter={isOpen}
-                activeFilter={activeFilter}
-                search={search}
-              />
-            </TabPanel>
-            <TabPanel>{tabIndex === 1 && <MapView />}</TabPanel>
-          </TabPanels>
-        </Tabs>
+            <TabPanels>
+              <TabPanel>
+                <ListView
+                  openFilter={isOpen}
+                  activeFilter={activeFilter}
+                  search={search}
+                />
+              </TabPanel>
+              <TabPanel>{tabIndex === 1 && <MapView />}</TabPanel>
+            </TabPanels>
+          </Tabs>
+        </Flex>
+      </Flex>
+      <Flex position="absolute">
+        {selectedAsset.assetId && (
+          <AssetDetail
+            data={selectedAsset}
+            onClose={() => dispatch(clearAsset())}
+            isOpen={selectedAsset.assetId !== null}
+          />
+        )}
       </Flex>
     </Flex>
   );

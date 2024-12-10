@@ -128,7 +128,6 @@ const TicketTable = (props: TicketTableProps) => {
             ]
           : []),
 
-
         columnHelper.accessor('facilityRef', {
           cell: (info) => (
             <PopoverAction ticket={info.row.original} category={category} />

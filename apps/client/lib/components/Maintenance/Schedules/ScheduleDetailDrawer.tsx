@@ -3,18 +3,15 @@ import {
   DrawerHeader,
   Heading,
   HStack,
-  Text,
   VStack,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import BackButton from '~/lib/components/UI/Button/BackButton';
 import GenericDrawer from '~/lib/components/UI/GenericDrawer';
-import MaintenanceScheduleCard from './MaintenanceScheduleCard';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { useGetMaintenanceSchedulesByPlanIdQuery } from '~/lib/redux/services/maintenance/schedule.services';
 import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import ScheduleSkeletonLoader from './ScheduleSkeletonLoader';
+import ScheduleList from './ScheduleList';
 
 interface ScheduleDetailDrawerProps {
   isOpen: boolean;
@@ -77,11 +74,7 @@ const ScheduleDetailDrawer = (props: ScheduleDetailDrawerProps) => {
             alignItems="flex-start"
             spacing="16px"
           >
-            <InfiniteScroll
-              dataLength={localSchedules.length}
-              next={() => {
-                setCurrentPage((prev) => prev + 1);
-              }}
+            <ScheduleList
               hasMore={
                 (allSchedules?.data &&
                   allSchedules.data.pageNumber <
@@ -89,59 +82,10 @@ const ScheduleDetailDrawer = (props: ScheduleDetailDrawerProps) => {
                 false
               }
               scrollableTarget="allSchedulesDiv"
-              loader={<ScheduleSkeletonLoader />}
-            >
-              {isLoading ? (
-                <ScheduleSkeletonLoader />
-              ) : localSchedules.length >= 1 ? (
-                <VStack width="full" spacing="16px">
-                  {localSchedules.map((item: MaintenanceSchedule) => {
-                    const {
-                      scheduleId,
-                      scheduledDate,
-                      scheduleName,
-                      durationInHours,
-                      contactPerson,
-                      contactPersonEmail,
-                      contactPersonPhoneNo,
-                      createdBy,
-                      maintenanceType,
-                      currentStatus,
-                    } = item;
-                    return (
-                      <MaintenanceScheduleCard
-                        data={{
-                          scheduleId,
-                          scheduledDate,
-                          scheduleName,
-                          durationInHours,
-                          contactPerson,
-                          contactPersonPhoneNo,
-                          contactPersonEmail,
-                          maintenanceType,
-                          currentStatus,
-                          createdBy,
-                        }}
-                        isPartOfDefaultPlan={false}
-                        key={item.scheduleId}
-                      />
-                    );
-                  })}
-                </VStack>
-              ) : (
-                <Text
-                  width="full"
-                  size="md"
-                  fontWeight={400}
-                  fontStyle="italic"
-                  my="41px"
-                  color="neutral.600"
-                  textAlign="center"
-                >
-                  No Maintenance Schedule at the moment.
-                </Text>
-              )}
-            </InfiniteScroll>
+              isLoading={isLoading}
+              allSchedules={localSchedules}
+              setCurrentPage={setCurrentPage}
+            />
           </VStack>
         </VStack>
       </DrawerBody>

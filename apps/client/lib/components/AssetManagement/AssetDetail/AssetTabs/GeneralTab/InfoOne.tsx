@@ -77,7 +77,7 @@ const InfoOne = () => {
       <VStack alignItems="flex-start" spacing="8px">
         <DetailSection details={details} minWidth="77px" />
       </VStack>
-      <VStack alignItems="flex-start" spacing="18px">
+      <VStack alignItems="flex-start" spacing="20px">
         <VStack width="full" spacing="8px" alignItems="flex-start">
           <DetailHeader variant="secondary">Description:</DetailHeader>
           <Text size="md" color="neutral.800" fontWeight={400}>

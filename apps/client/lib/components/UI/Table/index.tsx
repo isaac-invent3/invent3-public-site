@@ -42,7 +42,7 @@ export type TableProps<Data extends object> = {
   selectedRows?: number[];
   disabledRows?: number[];
   setSelectedRows?: (items: number[]) => void;
-  handleSelectRow?: React.Dispatch<React.SetStateAction<any>>;
+  handleSelectRow?: (row: Data) => void;
   setPageNumber?: React.Dispatch<React.SetStateAction<number>>;
   setPageSize?: React.Dispatch<React.SetStateAction<number>>;
   isSelectable?: boolean;

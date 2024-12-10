@@ -1,16 +1,6 @@
-import {
-  Flex,
-  Grid,
-  GridItem,
-  HStack,
-  Text,
-  useDisclosure,
-  VStack,
-} from '@chakra-ui/react';
-import moment from 'moment';
+import { Flex, HStack, Text, useDisclosure, VStack } from '@chakra-ui/react';
 import React from 'react';
 import TaskListView from '~/lib/components/TaskManagement/Drawers/TaskListDrawer/TaskListView';
-import { MaintenanceColorCode } from '~/lib/utils/ColorCodes';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
 interface GenericScheduleData {
@@ -24,6 +14,7 @@ interface GenericScheduleData {
   maintenanceType: string;
   currentStatus: string;
   createdBy: string;
+  sla: number;
 }
 interface MaintenanceScheduleCardProps {
   data: GenericScheduleData;
@@ -31,138 +22,114 @@ interface MaintenanceScheduleCardProps {
 }
 const MaintenanceScheduleCard = (props: MaintenanceScheduleCardProps) => {
   const { data, isPartOfDefaultPlan = false } = props;
-  const endTime = data?.durationInHours
-    ? moment(data?.scheduledDate).add(data?.durationInHours, 'hours') // Add the duration if available
-    : null;
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-      <Grid
-        templateAreas={`"description contact status"`}
-        gridTemplateRows="auto auto auto"
-        gridTemplateColumns="30% 1fr 1fr"
+      <HStack
         height="full"
         width="full"
         p="8px"
         border="1px solid #BBBBBB80"
         rounded="8px"
         justifyContent="space-between"
-        gridColumnGap="81px"
         alignItems="flex-start"
+        position="relative"
       >
-        {/* Description Starts Here */}
-        <GridItem area="description">
-          <HStack spacing="22px" alignItems="flex-start">
-            <VStack spacing="2px">
-              <Text color="neutral.600" size="md" fontWeight={500}>
-                {data?.scheduledDate
-                  ? dateFormatter(data?.scheduledDate, 'ddd')
-                  : 'N/A'}
-              </Text>
+        {/* Date Starts Here */}
+        <VStack spacing="8px" alignItems="flex-start">
+          <Text color="neutral.600" fontWeight={700}>
+            Start Date
+          </Text>
+          <VStack alignItems="flex-start" spacing="4px" maxW="140px">
+            <Text color="neutral.800" fontWeight={800} whiteSpace="nowrap">
+              {data?.scheduledDate
+                ? dateFormatter(data?.scheduledDate, 'Do MMM, YYYY hh:mmA')
+                : 'N/A'}
+            </Text>
+            <Text color="neutral.600">
+              Monthly on day 29, until 10th Feb, 2025
+            </Text>
+          </VStack>
+        </VStack>
+        {/* Date Ends Here */}
 
-              <Text
-                color="neutral.800"
-                fontSize="24px"
-                lineHeight="28.51px"
-                fontWeight={800}
-              >
-                {data?.scheduledDate
-                  ? dateFormatter(data?.scheduledDate, 'DD')
-                  : 'N/A'}
-              </Text>
-              <Text
-                color="neutral.800"
-                fontWeight={800}
-                letterSpacing="0.1em"
-                textTransform="uppercase"
-              >
-                {data?.scheduledDate
-                  ? dateFormatter(data?.scheduledDate, 'MMM')
-                  : 'N/A'}
-              </Text>
-            </VStack>
-            <VStack spacing="8px" alignItems="flex-start">
-              <VStack alignItems="flex-start" spacing="2px">
-                <Text color="neutral.800" size="lg" fontWeight={800}>
-                  {data?.scheduleName}
-                </Text>
-                <Text color="neutral.600">{data?.maintenanceType}</Text>
-              </VStack>
-              <VStack alignItems="flex-start" spacing="2px">
-                <Text color="neutral.600">
-                  {data?.scheduledDate
-                    ? dateFormatter(data?.scheduledDate, 'HH:mm')
-                    : 'N/A'}{' '}
-                  - {endTime ? endTime.format('HH:mm') : 'N/A'}
-                </Text>
-                <Text color="neutral.600">
-                  Created By: {data?.createdBy ?? 'N/A'}
-                </Text>
-              </VStack>
-            </VStack>
-          </HStack>
-        </GridItem>
+        {/* Description Starts Here */}
+        <VStack spacing="8px" alignItems="flex-start">
+          <Text color="neutral.600" fontWeight={700}>
+            Title
+          </Text>
+          <VStack alignItems="flex-start" spacing="4px">
+            <Text color="neutral.800" size="md" fontWeight={800}>
+              {data?.scheduleName}
+            </Text>
+            <Text color="neutral.600">{data?.maintenanceType}</Text>
+          </VStack>
+        </VStack>
         {/* Description Ends Here */}
         {/* Contact Starts Here */}
-        <GridItem area="contact">
-          <VStack spacing="4px" alignItems="flex-start">
-            <Text size="md" color="black">
-              Contact Person
-            </Text>
-            {[
-              data?.contactPerson,
-              data?.contactPersonPhoneNo,
-              data?.contactPersonEmail,
-            ].filter(Boolean).length >= 1 ? (
-              <VStack spacing="4px" alignItems="flex-start">
-                <Text size="md" color="neutral.600">
-                  {data?.contactPerson ?? 'N/A'}
-                </Text>
-                <Text size="md" color="neutral.600">
-                  {data?.contactPersonPhoneNo ?? 'N/A'}
-                </Text>
-                <Text size="md" color="neutral.600">
-                  {data?.contactPersonEmail ?? 'N/A'}
-                </Text>
-              </VStack>
-            ) : (
-              <Text size="md" color="neutral.600">
-                N/A
-              </Text>
-            )}
-          </VStack>
-        </GridItem>
-        {/* Contact Ends Here */}
-        {/* Status and Action Button */}
-        <GridItem area="status" height="full">
-          <Flex
-            direction="column"
-            height="full"
-            justifyContent="space-between"
-            alignItems="flex-start"
-          >
+        <VStack spacing="8px" alignItems="flex-start">
+          <Text color="neutral.600" fontWeight={700}>
+            Engineer / Contact Person
+          </Text>
+          {[
+            data?.contactPerson,
+            data?.contactPersonPhoneNo,
+            data?.contactPersonEmail,
+          ].filter(Boolean).length >= 1 ? (
             <VStack spacing="4px" alignItems="flex-start">
-              <Text color="neutral.700">Status:</Text>
-              <Text
-                fontWeight={800}
-                color={MaintenanceColorCode[data?.currentStatus as 'Completed']}
-              >
-                {data?.currentStatus ?? 'N/A'}
-              </Text>
+              {data?.contactPerson && (
+                <Text size="md" fontWeight={800} color="neutral.800">
+                  {data?.contactPerson}
+                </Text>
+              )}
+              {data?.contactPersonPhoneNo && (
+                <Text color="neutral.800">{data?.contactPersonPhoneNo}</Text>
+              )}
+              {data?.contactPersonEmail && (
+                <Text color="neutral.800">{data?.contactPersonEmail}</Text>
+              )}
             </VStack>
-            <Text
-              color="primary.500"
-              fontWeight={700}
-              textDecoration="underline"
-              cursor="pointer"
-              onClick={() => onOpen()}
-            >
-              View Schedule Tasks
+          ) : (
+            <Text color="neutral.600">N/A</Text>
+          )}
+        </VStack>
+        {/* Contact Ends Here */}
+        {/* SLA and Action Button */}
+        <Flex
+          direction="column"
+          height="full"
+          justifyContent="space-between"
+          alignItems="flex-start"
+          width="min-content"
+        >
+          <VStack spacing="8px" alignItems="flex-start" minW="70px">
+            <Text color="neutral.600" fontWeight={700}>
+              SLA:
             </Text>
-          </Flex>
-        </GridItem>
+            <Text fontWeight={800}>
+              {data?.sla
+                ? `${data?.sla} Hour ${data?.sla > 1 ? 's' : ''}`
+                : 'N/A'}
+            </Text>
+          </VStack>
+          <Text
+            color="blue.500"
+            fontWeight={700}
+            textDecoration="underline"
+            cursor="pointer"
+            onClick={() => onOpen()}
+            position="absolute"
+            bottom={0}
+            right={0}
+            mr="8px"
+            mb="8px"
+            minW="70px"
+          >
+            View Tasks
+          </Text>
+        </Flex>
         {/* Status and Action Button */}
-      </Grid>
+      </HStack>
       {isOpen && (
         <TaskListView
           isOpen={isOpen}

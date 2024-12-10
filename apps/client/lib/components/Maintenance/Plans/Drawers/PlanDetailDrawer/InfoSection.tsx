@@ -17,7 +17,11 @@ const InfoSection = (props: InfoSectionProps) => {
     },
     {
       label: 'Type:',
-      value: data?.maintenancePlanId,
+      value: data?.planTypeName,
+    },
+    {
+      label: 'No. Of Asset:',
+      value: 'N/A',
     },
   ];
 
@@ -28,43 +32,40 @@ const InfoSection = (props: InfoSectionProps) => {
         data?.activeSchedules && data?.activeSchedules < 9
           ? `0${data?.activeSchedules}`
           : data?.activeSchedules,
-      isLabelBolden: false,
     },
     {
-      label: 'Asset Type:',
-      value: data?.maintenancePlanId,
-      isLabelBolden: false,
+      label: 'Plan Scope:',
+      value: data?.assetName ? 'Asset' : data?.groupTypeName,
     },
     {
       label: 'Start Date:',
       value: data?.startDate
         ? dateFormatter(data?.startDate, 'DD / MM / YYYY')
         : 'N/A',
-      isLabelBolden: true,
     },
     {
       label: 'End Date:',
       value: data?.startDate
         ? dateFormatter(data?.startDate, 'DD / MM / YYYY')
         : 'N/A',
-      isLabelBolden: true,
     },
   ];
   return (
     <VStack
       width="full"
       bgColor="#B4BFCA4D"
-      py="24px"
+      pt="24px"
+      pb="16px"
       pl="42px"
       pr="24px"
-      spacing="16px"
+      spacing="18px"
       alignItems="flex-start"
     >
       <Heading
         color="black"
-        fontSize="32px"
+        fontSize="30px"
         fontWeight={800}
-        lineHeight="38.02px"
+        lineHeight="35.64px"
       >
         #{data?.maintenancePlanId} {data?.planName}
       </Heading>
@@ -72,31 +73,24 @@ const InfoSection = (props: InfoSectionProps) => {
       <HStack width="full" spacing="75px" alignItems="flex-start">
         <VStack spacing="8px" alignItems="flex-start">
           <HStack spacing="8px">
-            <Text size="md" color="neutral.600" minW="50px">
+            <Text size="md" color="neutral.600" minW="81px">
               Status:
             </Text>
             <GenericStatusBox text="Active" />
           </HStack>
           {CONTENT1.map((item, index) => (
             <HStack spacing="8px" key={index}>
-              <Text size="md" color="neutral.600" minW="50px" fontWeight={800}>
+              <Text size="md" color="neutral.600" minW="81px">
                 {item.label}
               </Text>
-              <Text size="md" color="black" fontWeight={800}>
-                {item.value}
-              </Text>
+              <Text color="black">{item.value}</Text>
             </HStack>
           ))}
         </VStack>
         <VStack spacing="8px" alignItems="flex-start">
           {CONTENT2.map((item, index) => (
             <HStack spacing="8px" key={index}>
-              <Text
-                size="md"
-                color="neutral.600"
-                minW="102px"
-                fontWeight={item.isLabelBolden ? 800 : 500}
-              >
+              <Text size="md" color="neutral.600" minW="102px">
                 {item.label}
               </Text>
               <Text color="black">{item.value}</Text>

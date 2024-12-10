@@ -42,7 +42,7 @@ const InfoOne = (props: InfoOneProps) => {
     },
   ];
   return (
-    <Grid templateColumns="repeat(3, 1fr)" gap="100px" width="full">
+    <Grid templateColumns="repeat(3, 1fr)" gap="66px" width="full">
       <GridItem colSpan={1}>
         <Flex width="max-content" whiteSpace="nowrap">
           <Skeleton isLoaded={!isLoading} width="full">

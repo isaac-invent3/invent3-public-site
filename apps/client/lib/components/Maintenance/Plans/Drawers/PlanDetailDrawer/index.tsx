@@ -35,7 +35,7 @@ const PlanDetailsModal = (props: PlanDetailsModalProps) => {
           </Button>
         </HStack>
       </DrawerHeader>
-      <DrawerBody p={0}>
+      <DrawerBody p={0} id="allSchedulesDiv">
         <InfoSection data={data} />
         <Schedules planId={data?.maintenancePlanId} />
       </DrawerBody>

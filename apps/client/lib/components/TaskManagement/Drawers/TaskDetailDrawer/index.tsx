@@ -15,13 +15,13 @@ import SectionTwo from './SectionTwo';
 import OtherRelatedTasks from './OtherRelatedTasks';
 import GenericDrawer from '~/lib/components/UI/GenericDrawer';
 
-interface TaskDetailModalProps {
+interface TaskDetailDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   data: TaskInstance;
 }
 
-const TaskDetailModal = (props: TaskDetailModalProps) => {
+const TaskDetailDrawer = (props: TaskDetailDrawerProps) => {
   const { isOpen, onClose, data } = props;
   const {
     isOpen: isOpenMarkAsCompleted,
@@ -66,4 +66,4 @@ const TaskDetailModal = (props: TaskDetailModalProps) => {
   );
 };
 
-export default TaskDetailModal;
+export default TaskDetailDrawer;

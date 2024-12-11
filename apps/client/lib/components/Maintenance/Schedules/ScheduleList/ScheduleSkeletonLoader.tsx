@@ -17,7 +17,7 @@ const ScheduleSkeletonLoader = (props: ScheduleSkeletonLoaderProps) => {
       {Array(numberOfSkeleton ?? 3)
         .fill('')
         .map((_, index) => (
-          <Skeleton width="full" rounded="8px" key={index} height="97px" />
+          <Skeleton width="full" rounded="8px" key={index} height="163px" />
         ))}
     </VStack>
   );

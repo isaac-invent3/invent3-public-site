@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react';
+import { Flex, useDisclosure } from '@chakra-ui/react';
 import { useCallback, useEffect, useState } from 'react';
 import _ from 'lodash';
 
@@ -16,6 +16,7 @@ import AssetFilterDisplay from './Filters/AssetFilterDisplay';
 import { generateSearchCriterion } from '~/lib/utils/helperFunctions';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { setAsset } from '~/lib/redux/slices/AssetSlice';
+import AssetDetail from './AssetDetail';
 
 interface ListViewProps {
   search: string;
@@ -31,8 +32,11 @@ const ListView = (props: ListViewProps) => {
   const searchParams = useSearchParams();
   const assetId = searchParams.get('asset');
   const { handleSubmit } = useCustomMutation();
-  const filterData = useAppSelector((state) => state.asset.assetFilter);
+  const { assetFilter: filterData, asset } = useAppSelector(
+    (state) => state.asset
+  );
   const dispatch = useAppDispatch();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   // Checks if all filterdata is empty
   const isFilterEmpty = _.every(
@@ -151,43 +155,50 @@ const ListView = (props: ListViewProps) => {
   useEffect(() => {
     if (assetData?.data) {
       dispatch(setAsset(assetData?.data));
+      onOpen();
     }
   }, [assetData]);
 
   return (
-    <Flex width="full" direction="column" pt="16px">
-      <Flex width="full" mb="8px">
-        <AssetFilterDisplay
-          activeFilter={activeFilter}
-          isOpen={openFilter}
-          handleApplyFilter={handleSearch}
+    <>
+      <Flex width="full" direction="column" pt="16px">
+        <Flex width="full" mb="8px">
+          <AssetFilterDisplay
+            activeFilter={activeFilter}
+            isOpen={openFilter}
+            handleApplyFilter={handleSearch}
+          />
+        </Flex>
+        <AssetTable
+          data={
+            (search || !isFilterEmpty) && searchData
+              ? searchData.items
+              : (data?.data?.items ?? [])
+          }
+          isLoading={isLoading}
+          isFetching={isFetching || searchLoading}
+          pageNumber={currentPage}
+          setPageNumber={setCurrentPage}
+          pageSize={pageSize}
+          setPageSize={setPageSize}
+          totalPages={
+            (search || !isFilterEmpty) && searchData
+              ? searchData?.totalPages
+              : data?.data?.totalPages
+          }
+          handleSelectRow={(row) => {
+            onOpen();
+            dispatch(setAsset(row));
+          }}
+          selectedRows={selectedRows}
+          setSelectedRows={setSelectedRows}
+          showFooter={true}
+          emptyLines={25}
+          isSelectable={true}
         />
       </Flex>
-      <AssetTable
-        data={
-          (search || !isFilterEmpty) && searchData
-            ? searchData.items
-            : (data?.data?.items ?? [])
-        }
-        isLoading={isLoading}
-        isFetching={isFetching || searchLoading}
-        pageNumber={currentPage}
-        setPageNumber={setCurrentPage}
-        pageSize={pageSize}
-        setPageSize={setPageSize}
-        totalPages={
-          (search || !isFilterEmpty) && searchData
-            ? searchData?.totalPages
-            : data?.data?.totalPages
-        }
-        handleSelectRow={(row) => dispatch(setAsset(row))}
-        selectedRows={selectedRows}
-        setSelectedRows={setSelectedRows}
-        showFooter={true}
-        emptyLines={25}
-        isSelectable={true}
-      />
-    </Flex>
+      <AssetDetail data={asset} onClose={onClose} isOpen={isOpen} />
+    </>
   );
 };
 

@@ -79,6 +79,11 @@ interface MaintenanceSchedule extends BaseMaintenanceSchedule {
   ticketId: number;
   statusId: number;
   displayColorCode: string;
+  frequencyId: number;
+  frequencyName: string;
+  intervalId: number;
+  intervalValue: number;
+  occurrences: string;
 }
 
 interface MaintenanceScheduleInstance extends BaseMaintenanceSchedule {

@@ -30,34 +30,9 @@ const ScheduleList = (props: ScheduleListProps) => {
       ) : allSchedules.length >= 1 ? (
         <VStack width="full" spacing="16px">
           {allSchedules.map((item: MaintenanceSchedule) => {
-            const {
-              scheduleId,
-              scheduledDate,
-              scheduleName,
-              durationInHours,
-              contactPerson,
-              contactPersonEmail,
-              contactPersonPhoneNo,
-              createdBy,
-              maintenanceType,
-              currentStatus,
-              sla,
-            } = item;
             return (
               <MaintenanceScheduleCard
-                data={{
-                  scheduleId,
-                  scheduledDate,
-                  scheduleName,
-                  durationInHours,
-                  contactPerson,
-                  contactPersonPhoneNo,
-                  contactPersonEmail,
-                  maintenanceType,
-                  currentStatus,
-                  createdBy,
-                  sla,
-                }}
+                data={item}
                 isPartOfDefaultPlan={false}
                 key={item.rowId}
               />

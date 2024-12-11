@@ -8,7 +8,7 @@ import {
   updatePlanForm,
 } from '~/lib/redux/slices/MaintenanceSlice';
 import SectionTwo from '../../../Schedules/ScheduleForm/FormSection/SectionTwo';
-import Button from '~/lib/components/UI/Button';
+import { Button } from '@repo/ui/components';
 import GenericLeaveDialogModal from '~/lib/components/UI/Modal/LeaveDialogModal';
 import moment from 'moment';
 

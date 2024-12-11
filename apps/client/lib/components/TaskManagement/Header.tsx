@@ -2,7 +2,7 @@ import { HStack, Icon, VStack } from '@chakra-ui/react';
 import React from 'react';
 import GenericBreadCrumb from '../UI/BreadCrumb';
 import PageHeader from '../UI/PageHeader';
-import PrimaryButton from '../UI/Button';
+import { Button } from '@repo/ui/components';
 import { AddIcon } from '../CustomIcons';
 
 const breadCrumbData = [
@@ -22,13 +22,10 @@ const Header = () => {
       <GenericBreadCrumb routes={breadCrumbData} />
       <HStack width="full" justifyContent="space-between">
         <PageHeader>Task Management</PageHeader>
-        <PrimaryButton
-          customStyles={{ width: '227px' }}
-          href="/task-management/add"
-        >
+        <Button customStyles={{ width: '227px' }} href="/task-management/add">
           <Icon as={AddIcon} boxSize="18px" color="#D2FEFD" mr="4px" />
           Add New Task
-        </PrimaryButton>
+        </Button>
       </HStack>
     </VStack>
   );

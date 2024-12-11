@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 import React from 'react';
-import Button from '~/lib/components/UI/Button';
+import { BackButton, Button } from '@repo/ui/components';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';
 import { useCreateMaintenancePlanMutation } from '~/lib/redux/services/maintenance/plan.services';
@@ -18,7 +18,6 @@ import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import Plan from './PlanType';
 import AssetSelect from '~/lib/components/Common/AssetSelect';
 import { planSchema } from '~/lib/schemas/maintenance.schema';
-import BackButton from '~/lib/components/UI/Button/BackButton';
 import { MAINTENANCE_PLAN_ENUM } from '~/lib/utils/constants';
 import moment from 'moment';
 import Owner from '../../Common/Owner';

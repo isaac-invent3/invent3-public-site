@@ -8,7 +8,7 @@ import { useAppDispatch } from '~/lib/redux/hooks';
 import { clearAsset, setAsset } from '~/lib/redux/slices/AssetSlice';
 import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
-import Button from '../../UI/Button';
+import { Button } from '@repo/ui/components';
 import AssetSuccessModal from '../Modals/AssetSuccessModal';
 import moment from 'moment';
 import { getSession } from 'next-auth/react';

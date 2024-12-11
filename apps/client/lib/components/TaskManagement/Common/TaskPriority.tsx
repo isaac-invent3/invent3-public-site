@@ -4,7 +4,7 @@ import React from 'react';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import { useGetAllTaskPrioritiesQuery } from '~/lib/redux/services/task/priorities.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
-import SelectableButtonGroup from '../../UI/Button/SelectableButtonGroup';
+import { SelectableButtonGroup } from '@repo/ui/components';
 import { generateOptions } from '~/lib/utils/helperFunctions';
 import { taskFormDetails } from '~/lib/interfaces/task.interfaces';
 

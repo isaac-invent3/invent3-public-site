@@ -6,8 +6,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import React from 'react';
-import Button from '~/lib/components/UI/Button';
-import BackButton from '~/lib/components/UI/Button/BackButton';
+import { BackButton, Button } from '@repo/ui/components';
 import { TaskInstance } from '~/lib/interfaces/task.interfaces';
 import MarkTaskAsCompletedModal from '../../Modals/MarkTaskAsCompletedModal';
 import SectionOne from './SectionOne';

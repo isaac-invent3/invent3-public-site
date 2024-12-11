@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '../Button';
+import { Button } from '@repo/ui/components';
 import { Flex } from '@chakra-ui/react';
 
 interface ButtonPaginationProps {

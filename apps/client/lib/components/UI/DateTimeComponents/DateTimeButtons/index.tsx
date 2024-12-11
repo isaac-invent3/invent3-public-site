@@ -3,7 +3,7 @@ import moment from 'moment';
 import React, { useState } from 'react';
 import AddTime from '../AddTime';
 import CustomDate from '../CustomDate';
-import Button from '../../Button';
+import { Button } from '@repo/ui/components';
 import { PenIcon } from '~/lib/components/CustomIcons';
 import SlideTransition from '../../SlideTransition';
 import Display from './Display';

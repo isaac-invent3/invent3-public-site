@@ -3,7 +3,7 @@ import { HStack, ModalBody, VStack } from '@chakra-ui/react';
 import { Field, FormikProvider, useFormik } from 'formik';
 import React from 'react';
 import GenericModal from '~/lib/components/UI/Modal';
-import Button from '~/lib/components/UI/Button';
+import { Button } from '@repo/ui/components';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import TextInput from '~/lib/components/UI/TextInput';
 import ModalHeading from '~/lib/components/UI/Modal/ModalHeading';

@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '../../Button';
+import { Button } from '@repo/ui/components';
 import DimissibleContainer from '../../DimissibleContainer';
 import moment from 'moment';
 import { useAppDispatch } from '~/lib/redux/hooks';

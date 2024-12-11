@@ -6,7 +6,7 @@ import { FormikProvider, useFormik } from 'formik';
 import { assetDisposeSchema } from '~/lib/schemas/asset/main.schema';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { clearAsset, setAsset } from '~/lib/redux/slices/AssetSlice';
-import Button from '../../UI/Button';
+import { Button } from '@repo/ui/components';
 import AssetSuccessModal from '../Modals/AssetSuccessModal';
 import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';

@@ -1,6 +1,6 @@
 import { Flex, Heading, Skeleton, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
-import Button from '~/lib/components/UI/Button';
+import { Button } from '@repo/ui/components';
 import PlanInfo from './PlanInfo';
 import Schedule from './Schedules';
 import { Template } from '~/lib/interfaces/template.interfaces';

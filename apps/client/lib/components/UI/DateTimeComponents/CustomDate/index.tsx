@@ -9,7 +9,7 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import Button from '../../Button';
+import { Button } from '@repo/ui/components';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import AddTime from '../AddTime';

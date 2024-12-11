@@ -5,7 +5,7 @@ import { useAppSelector } from '~/lib/redux/hooks';
 import { FormikProvider, useFormik } from 'formik';
 import { scheduleSchema } from '~/lib/schemas/maintenance.schema';
 import FormActionButtons from '~/lib/components/UI/Form/FormActionButtons';
-import Button from '~/lib/components/UI/Button';
+import { Button } from '@repo/ui/components';
 import { useUpdateScheduleInstanceMutation } from '~/lib/redux/services/maintenance/scheduleInstance.services';
 import SectionTwo from '../ScheduleForm/FormSection/SectionTwo';
 import moment from 'moment';

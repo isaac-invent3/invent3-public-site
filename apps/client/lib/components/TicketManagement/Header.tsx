@@ -1,7 +1,7 @@
 import { HStack, Icon, useDisclosure, VStack } from '@chakra-ui/react';
 import { AddIcon } from '../CustomIcons';
 import GenericBreadCrumb from '../UI/BreadCrumb';
-import PrimaryButton from '../UI/Button';
+import { Button } from '@repo/ui/components';
 import PageHeader from '../UI/PageHeader';
 import CreateTicketDrawer from './Drawers/CreateTicketDrawer';
 
@@ -23,10 +23,10 @@ const Header = () => {
       <GenericBreadCrumb routes={breadCrumbData} />
       <HStack width="full" justifyContent="space-between">
         <PageHeader>Ticket Management</PageHeader>
-        <PrimaryButton handleClick={onOpen} customStyles={{ width: '186px' }}>
+        <Button handleClick={onOpen} customStyles={{ width: '186px' }}>
           <Icon as={AddIcon} boxSize="18px" color="#D2FEFD" mr="4px" />
           Add New Ticket
-        </PrimaryButton>
+        </Button>
       </HStack>
 
       {isOpen && <CreateTicketDrawer isOpen={isOpen} onClose={onClose} />}

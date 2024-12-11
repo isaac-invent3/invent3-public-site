@@ -3,7 +3,7 @@ import { HStack, ModalBody, ModalFooter, Text, VStack } from '@chakra-ui/react';
 import { addDays } from 'date-fns';
 import { useState } from 'react';
 import { DateRangePicker, Range } from 'react-date-range';
-import Button from '../../Button';
+import { Button } from '@repo/ui/components';
 import GenericModal from '../../Modal';
 import './styles.css';
 

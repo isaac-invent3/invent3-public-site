@@ -10,7 +10,7 @@ import { useFormikContext } from 'formik';
 import moment from 'moment';
 import React from 'react';
 import { RepeatIcon } from '~/lib/components/CustomIcons';
-import Button from '~/lib/components/UI/Button';
+import { Button } from '@repo/ui/components';
 import DateTimeButtons from '~/lib/components/UI/DateTimeComponents/DateTimeButtons';
 import RecurrenceModal from '~/lib/components/UI/DateTimeComponents/RecurrenceModal';
 import ErrorMessage from '~/lib/components/UI/ErrorMessage';

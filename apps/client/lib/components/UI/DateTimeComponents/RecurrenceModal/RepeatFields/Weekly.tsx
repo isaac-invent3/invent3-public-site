@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import SectionInfo from '../../../Form/FormSectionInfo';
 import { HStack } from '@chakra-ui/react';
-import SelectableButtonGroup from '../../../Button/SelectableButtonGroup';
+import { SelectableButtonGroup } from '@repo/ui/components';
 import moment from 'moment';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateRepeatInterval } from '~/lib/redux/slices/DateSlice';

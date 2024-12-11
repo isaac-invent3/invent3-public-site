@@ -3,7 +3,7 @@ import { useFormikContext } from 'formik';
 import React from 'react';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import { useGetAllTaskTypeQuery } from '~/lib/redux/services/task/types.services';
-import SelectableButtonGroup from '../../UI/Button/SelectableButtonGroup';
+import { SelectableButtonGroup } from '@repo/ui/components';
 import { generateOptions } from '~/lib/utils/helperFunctions';
 import { taskFormDetails } from '~/lib/interfaces/task.interfaces';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';

@@ -2,7 +2,7 @@ import { Heading, HStack, ModalBody, VStack } from '@chakra-ui/react';
 import { Field, FormikProvider, useFormik } from 'formik';
 import React from 'react';
 import GenericModal from '~/lib/components/UI/Modal';
-import Button from '~/lib/components/UI/Button';
+import { Button } from '@repo/ui/components';
 import TextInput from '~/lib/components/UI/TextInput';
 import { templateSchema } from '~/lib/schemas/general.schema';
 import TextareaInput from '../../UI/TextArea';

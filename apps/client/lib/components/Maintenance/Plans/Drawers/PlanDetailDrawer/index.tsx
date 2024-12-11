@@ -1,7 +1,6 @@
 import { DrawerBody, DrawerHeader, HStack } from '@chakra-ui/react';
 import React from 'react';
-import Button from '~/lib/components/UI/Button';
-import BackButton from '~/lib/components/UI/Button/BackButton';
+import { BackButton, Button } from '@repo/ui/components';
 import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 import InfoSection from './InfoSection';
 import GenericDrawer from '~/lib/components/UI/GenericDrawer';

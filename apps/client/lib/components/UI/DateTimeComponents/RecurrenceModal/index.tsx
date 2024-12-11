@@ -8,7 +8,7 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import Button from '../../Button';
+import { Button } from '@repo/ui/components';
 import { RecurrenceInfo } from '~/lib/interfaces/general.interfaces';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import Summary from './Summary';

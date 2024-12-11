@@ -4,7 +4,7 @@ import { FormikProvider, useFormik } from 'formik';
 import React, { useState } from 'react';
 import GenericModal from '~/lib/components/UI/Modal';
 import { locationSchema } from '~/lib/schemas/asset/location.schema';
-import Button from '~/lib/components/UI/Button';
+import { Button } from '@repo/ui/components';
 import {
   AssetFormDetails,
   FormLocation,

@@ -16,7 +16,7 @@ import {
 import { useGetImagesByAssetIdQuery } from '~/lib/redux/services/asset/general.services';
 import { useAppSelector } from '~/lib/redux/hooks';
 import DetailHeader from '~/lib/components/UI/DetailHeader';
-import Button from '~/lib/components/UI/Button';
+import { Button } from '@repo/ui/components';
 import { AssetImage } from '~/lib/interfaces/asset.interfaces';
 
 const PhotoViewer = () => {

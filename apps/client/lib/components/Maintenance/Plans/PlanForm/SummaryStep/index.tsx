@@ -18,7 +18,7 @@ import {
   useUpdateMaintenancePlanWithSchedulesMutation,
 } from '~/lib/redux/services/maintenance/plan.services';
 import { FORM_ENUM, SYSTEM_CONTEXT_TYPE } from '~/lib/utils/constants';
-import Button from '~/lib/components/UI/Button';
+import { Button } from '@repo/ui/components';
 import SaveAsTemplateModal from '~/lib/components/Common/Modals/SaveAsTemplateModal';
 import { useGetTemplateInfoBySystemContextTypeAndContextIdQuery } from '~/lib/redux/services/template.services';
 

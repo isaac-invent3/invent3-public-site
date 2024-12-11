@@ -1,6 +1,5 @@
 import { Heading, Text, VStack } from '@chakra-ui/react';
-import { Button } from '@repo/ui/components';
-import GenericSuccessModal from '~/lib/components/UI/Modal/GenericSuccessModal';
+import { Button, GenericSuccessModal } from '@repo/ui/components';
 
 interface SaveReportTemplateSuccessModalProps {
   isOpen: boolean;

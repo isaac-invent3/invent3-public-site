@@ -1,6 +1,6 @@
 import { Heading, HStack, Text, useDisclosure, VStack } from '@chakra-ui/react';
 import moment from 'moment';
-import React from 'react';
+
 import TaskInstanceListView from '~/lib/components/TaskManagement/Drawers/TaskListDrawer/TaskInstanceListView';
 import { MaintenanceScheduleInstance } from '~/lib/interfaces/maintenance.interfaces';
 import { MaintenanceColorCode } from '~/lib/utils/ColorCodes';

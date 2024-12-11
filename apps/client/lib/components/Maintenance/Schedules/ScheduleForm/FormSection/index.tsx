@@ -1,6 +1,6 @@
 import { Divider, Flex, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
-import React from 'react';
+
 import FormActionButtons from '~/lib/components/UI/Form/FormActionButtons';
 import { scheduleSchema } from '~/lib/schemas/maintenance.schema';
 import SectionOne from './SectionOne';

@@ -1,5 +1,5 @@
 import { Heading, HStack, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 import { dateFormatter } from '~/lib/utils/Formatters';

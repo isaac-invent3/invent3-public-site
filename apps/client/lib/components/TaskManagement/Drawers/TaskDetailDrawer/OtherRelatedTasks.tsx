@@ -1,5 +1,5 @@
 import { HStack, Skeleton, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import { TaskInstance } from '~/lib/interfaces/task.interfaces';
 import { useGetAllTaskInstancesByScheduleInstanceIdQuery } from '~/lib/redux/services/task/instance.services';

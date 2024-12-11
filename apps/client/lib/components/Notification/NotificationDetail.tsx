@@ -1,5 +1,5 @@
 import { Avatar, Flex, HStack, Icon, Text } from '@chakra-ui/react';
-import React from 'react';
+
 import { INotification } from '~/lib/interfaces/notification.interfaces';
 import { NotificationInfoIcon } from '../CustomIcons';
 import moment from 'moment';

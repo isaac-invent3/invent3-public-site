@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
-import GenericSuccessModal from '../../UI/Modal/GenericSuccessModal';
-import { Button } from '@repo/ui/components';
+
+import { Button, GenericSuccessModal } from '@repo/ui/components';
 import { HStack, VStack } from '@chakra-ui/react';
 
 interface AddAssetSuccessModalProps {

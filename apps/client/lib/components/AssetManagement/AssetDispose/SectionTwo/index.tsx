@@ -1,5 +1,5 @@
 import { Flex } from '@chakra-ui/react';
-import React from 'react';
+
 import CurrentOwner from './CurrentOwner';
 import DisposalDetails from './DisposalDetails';
 import SupportingDocuments from './SupportingDocuments';

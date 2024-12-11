@@ -1,5 +1,5 @@
 import { Flex } from '@chakra-ui/react';
-import React from 'react';
+
 import Weekly from './Weekly';
 import Annually from './Annually';
 import Daily from './Daily';

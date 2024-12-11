@@ -1,5 +1,4 @@
 import { Button, HStack } from '@chakra-ui/react';
-import React from 'react';
 
 const BulkActions = () => {
   return (

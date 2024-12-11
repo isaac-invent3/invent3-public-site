@@ -1,5 +1,5 @@
 import { Flex, HStack } from '@chakra-ui/react';
-import React from 'react';
+
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import FrequencySelect from '../../Common/Frequency';
 import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';

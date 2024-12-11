@@ -1,5 +1,5 @@
 import { Flex, Grid, GridItem, HStack, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import { dateFormatter } from '~/lib/utils/Formatters';
 import TaskListTable from '../../FormSection/SectionTwo/Tasks/ListDrawer/TaskListTable';
 import InfoCard from '~/lib/components/UI/InfoCard';

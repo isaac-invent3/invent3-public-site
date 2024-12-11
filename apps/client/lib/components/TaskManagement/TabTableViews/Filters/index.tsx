@@ -1,4 +1,3 @@
-import React from 'react';
 import CombinedLocationFilter from '~/lib/components/Common/FilterComponents/CombinedLocationFilter';
 import FilterWrapper from '~/lib/components/Common/FilterComponents/FilterWrapper';
 import { LocationFilter, Option } from '~/lib/interfaces/general.interfaces';

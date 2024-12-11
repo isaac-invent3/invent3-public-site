@@ -2,7 +2,7 @@ import { useToast } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
 import { useDeleteTicketMutation } from '~/lib/redux/services/ticket.services';
-import GenericDeleteModal from '../../UI/Modal/GenericDeleteModal';
+import { GenericDeleteModal } from '@repo/ui/components';
 
 interface DeleteTicketSuccessModalProps {
   isOpen: boolean;

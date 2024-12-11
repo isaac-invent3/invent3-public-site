@@ -1,6 +1,6 @@
 import { Flex, HStack } from '@chakra-ui/react';
 import { useFormikContext } from 'formik';
-import React from 'react';
+
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import { useGetAllTaskPrioritiesQuery } from '~/lib/redux/services/task/priorities.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';

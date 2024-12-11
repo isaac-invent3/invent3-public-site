@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import GenericModal from '~/lib/components/UI/Modal';
+import { GenericModal } from '@repo/ui/components';
 import Header from './Header';
 import {
   Collapse,

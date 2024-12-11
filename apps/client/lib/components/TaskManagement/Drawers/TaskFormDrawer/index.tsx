@@ -7,9 +7,8 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
-import React from 'react';
-import { BackButton, Button } from '@repo/ui/components';
-import ModalHeading from '~/lib/components/UI/Modal/ModalHeading';
+
+import { BackButton, Button, ModalHeading } from '@repo/ui/components';
 import { taskBaseSchema } from '~/lib/schemas/task.schema';
 import { taskFormDetails } from '~/lib/interfaces/task.interfaces';
 import useCustomMutation from '~/lib/hooks/mutation.hook';

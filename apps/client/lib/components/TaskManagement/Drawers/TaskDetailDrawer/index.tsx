@@ -5,7 +5,7 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import React from 'react';
+
 import { BackButton, Button } from '@repo/ui/components';
 import { TaskInstance } from '~/lib/interfaces/task.interfaces';
 import MarkTaskAsCompletedModal from '../../Modals/MarkTaskAsCompletedModal';

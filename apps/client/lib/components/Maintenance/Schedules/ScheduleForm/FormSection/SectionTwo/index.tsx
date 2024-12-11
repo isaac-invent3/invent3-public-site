@@ -1,5 +1,5 @@
 import { SimpleGrid, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import ScheduleTitle from './Title';
 import Description from './Description';
 import Type from './Type';

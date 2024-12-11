@@ -1,6 +1,6 @@
 import { Flex, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
-import React from 'react';
+
 import { acquisitionInfoSchema } from '~/lib/schemas/asset/main.schema';
 import FormActionButtons from '../../../UI/Form/FormActionButtons';
 import AcquisitionDateConditon from './AcquisitionDateCondition';

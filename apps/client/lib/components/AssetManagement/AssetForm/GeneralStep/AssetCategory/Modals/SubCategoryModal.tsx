@@ -1,12 +1,10 @@
 /* eslint-disable no-unused-vars */
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
 import { Field, FormikProvider, useFormik } from 'formik';
-import React from 'react';
-import GenericModal from '~/lib/components/UI/Modal';
-import { Button } from '@repo/ui/components';
+
+import { Button, GenericModal, ModalHeading } from '@repo/ui/components';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import TextInput from '~/lib/components/UI/TextInput';
-import ModalHeading from '~/lib/components/UI/Modal/ModalHeading';
 import { subCategorySchema } from '~/lib/schemas/asset/category.schema';
 import { useCreateSubCategoryMutation } from '~/lib/redux/services/asset/category.services';
 import CategorySelect from '../CategorySelect';

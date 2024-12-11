@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import { Divider, Flex, Heading, Text, VStack } from '@chakra-ui/react';
 import Link from 'next/link';
 import { loginSchema } from '~/lib/schemas/auth.schema';

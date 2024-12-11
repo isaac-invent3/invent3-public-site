@@ -1,5 +1,5 @@
 import { Heading, HStack, Skeleton, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import { SingleMapAssetData } from '~/lib/interfaces/asset.interfaces';
 
 interface AssetCountListProps {

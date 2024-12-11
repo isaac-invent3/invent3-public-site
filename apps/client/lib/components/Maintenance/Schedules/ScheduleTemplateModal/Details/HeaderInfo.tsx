@@ -1,5 +1,5 @@
 import { HStack, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
 
 interface HeaderInfoProps {

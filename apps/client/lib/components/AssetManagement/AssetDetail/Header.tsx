@@ -1,5 +1,4 @@
 import { HStack, Icon, useDisclosure } from '@chakra-ui/react';
-import React from 'react';
 import { Button } from '@repo/ui/components';
 import { CloseIcon } from '../../CustomIcons';
 import { useAppSelector } from '~/lib/redux/hooks';

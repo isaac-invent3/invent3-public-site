@@ -1,5 +1,4 @@
 import { HStack, Icon, VStack } from '@chakra-ui/react';
-import React from 'react';
 import GenericBreadCrumb from '../UI/BreadCrumb';
 import PageHeader from '../UI/PageHeader';
 import { Button } from '@repo/ui/components';

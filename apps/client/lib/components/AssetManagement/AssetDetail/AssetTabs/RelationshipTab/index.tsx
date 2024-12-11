@@ -1,5 +1,5 @@
 import { Text, Flex, VStack, Skeleton } from '@chakra-ui/react';
-import React from 'react';
+
 import { useGetAssetComponentInfoByAssetGuidQuery } from '~/lib/redux/services/asset/general.services';
 import { useAppSelector } from '~/lib/redux/hooks';
 import ComponentBox from './ComponentBox';

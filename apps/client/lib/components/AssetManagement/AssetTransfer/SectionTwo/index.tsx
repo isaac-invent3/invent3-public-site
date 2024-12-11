@@ -1,5 +1,5 @@
 import { Flex, HStack } from '@chakra-ui/react';
-import React from 'react';
+
 import NewOwner from './NewOwner';
 import TransferDetails from './TransferDetails';
 

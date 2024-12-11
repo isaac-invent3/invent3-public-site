@@ -1,4 +1,3 @@
-import React from 'react';
 import { Button } from '@repo/ui/components';
 import DimissibleContainer from '../../DimissibleContainer';
 import moment from 'moment';

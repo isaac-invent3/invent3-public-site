@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
-import GenericModal from '../Modal';
+import { useEffect, useRef, useState } from 'react';
+import GenericModal from '.';
 import {
   Heading,
-  Image,
+  Image as ChakraImage,
   ModalBody,
   ModalContentProps,
   StackProps,
-  Text,
+  Text as ChakraText,
   VStack,
 } from '@chakra-ui/react';
 
@@ -75,7 +75,7 @@ const GenericSuccessModal = (props: GenericSuccessModalProps) => {
           {...contentStyle}
         >
           {showRibbon && (
-            <Image
+            <ChakraImage
               src="/success-ribbon.gif"
               width="290px"
               minH="full"
@@ -104,14 +104,14 @@ const GenericSuccessModal = (props: GenericSuccessModalProps) => {
                 {headingText ?? 'Successful!'}
               </Heading>
               {successText && (
-                <Text
+                <ChakraText
                   size="md"
                   color="neutral.600"
                   textAlign="center"
                   maxW="306px"
                 >
                   {successText}
-                </Text>
+                </ChakraText>
               )}
             </VStack>
           </VStack>

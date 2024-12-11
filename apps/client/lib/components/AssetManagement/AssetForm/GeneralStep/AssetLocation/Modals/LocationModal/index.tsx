@@ -1,16 +1,14 @@
 /* eslint-disable no-unused-vars */
 import { Flex, HStack, ModalBody, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
-import React, { useState } from 'react';
-import GenericModal from '~/lib/components/UI/Modal';
+import { useState } from 'react';
 import { locationSchema } from '~/lib/schemas/asset/location.schema';
-import { Button } from '@repo/ui/components';
+import { Button, GenericModal, ModalHeading } from '@repo/ui/components';
 import {
   AssetFormDetails,
   FormLocation,
 } from '~/lib/interfaces/asset.interfaces';
 import { Option } from '~/lib/interfaces/general.interfaces';
-import ModalHeading from '../../../../../../UI/Modal/ModalHeading';
 import Facility from './Facility';
 import Building from './Building';
 import Floor from './Floor';

@@ -1,5 +1,5 @@
 import { HStack, Icon, Text, Tooltip } from '@chakra-ui/react';
-import React from 'react';
+
 import { summaryText } from '~/lib/components/Common/HelperFunctions/RecurrenceSummary';
 import { InfoIcon } from '~/lib/components/CustomIcons';
 import { useAppSelector } from '~/lib/redux/hooks';

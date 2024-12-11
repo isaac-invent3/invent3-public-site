@@ -1,5 +1,5 @@
 import { HStack, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 import { MAINTENANCE_PLAN_ENUM } from '~/lib/utils/constants';
 import { dateFormatter } from '~/lib/utils/Formatters';

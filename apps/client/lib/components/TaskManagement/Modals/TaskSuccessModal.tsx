@@ -1,7 +1,6 @@
 import { HStack } from '@chakra-ui/react';
-import React from 'react';
-import { Button } from '@repo/ui/components';
-import GenericSuccessModal from '~/lib/components/UI/Modal/GenericSuccessModal';
+
+import { Button, GenericSuccessModal } from '@repo/ui/components';
 
 interface TaskSuccessModalProps {
   isOpen: boolean;

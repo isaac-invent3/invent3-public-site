@@ -1,5 +1,4 @@
 import { SimpleGrid, VStack } from '@chakra-ui/react';
-import React from 'react';
 import DetailSection from '../../../DetailSection';
 import { useAppSelector } from '~/lib/redux/hooks';
 import MapView from './MapView';

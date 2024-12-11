@@ -1,4 +1,3 @@
-import React from 'react';
 import ScheduleTimeline from './Timeline';
 import { Flex } from '@chakra-ui/react';
 import ScheduleStats from './Stats';

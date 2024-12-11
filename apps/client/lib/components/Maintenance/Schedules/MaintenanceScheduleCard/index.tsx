@@ -1,5 +1,5 @@
 import { VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
 import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';

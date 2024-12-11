@@ -1,5 +1,6 @@
-import { Divider, Flex, HStack, Icon, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
+import { Divider, Flex, HStack, Icon, Text, VStack } from '@chakra-ui/react';
+
 import { CheckIcon } from '../../CustomIcons';
 
 const CompletedIcon = () => {

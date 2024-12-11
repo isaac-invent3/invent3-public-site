@@ -1,5 +1,4 @@
 import { Avatar, Heading, HStack, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
 
 interface UserProps {
   name: string | null;

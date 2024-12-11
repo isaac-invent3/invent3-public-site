@@ -1,6 +1,6 @@
 import { Flex, HStack } from '@chakra-ui/react';
 import { useField } from 'formik';
-import React from 'react';
+
 import { SelectableButtonGroup } from '@repo/ui/components';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 

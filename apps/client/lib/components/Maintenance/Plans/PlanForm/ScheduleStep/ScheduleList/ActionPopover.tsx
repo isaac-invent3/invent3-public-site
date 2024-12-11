@@ -1,5 +1,5 @@
 import { Text, useDisclosure } from '@chakra-ui/react';
-import GenericDeleteModal from '~/lib/components/UI/Modal/GenericDeleteModal';
+import { GenericDeleteModal } from '@repo/ui/components';
 import { ScheduleFormDetails } from '~/lib/interfaces/maintenance.interfaces';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updatePlanForm } from '~/lib/redux/slices/MaintenanceSlice';

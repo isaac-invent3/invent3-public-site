@@ -1,5 +1,5 @@
 import { HStack, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import GenericBreadCrumb from '~/lib/components/UI/BreadCrumb';
 import PageHeader from '~/lib/components/UI/PageHeader';
 

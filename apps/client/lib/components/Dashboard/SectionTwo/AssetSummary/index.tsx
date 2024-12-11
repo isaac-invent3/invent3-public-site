@@ -1,5 +1,5 @@
 import { HStack, Icon, Skeleton, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import AssetSummaryCard from './AssetSummaryCard';
 import {
   AssetBoxIcon,

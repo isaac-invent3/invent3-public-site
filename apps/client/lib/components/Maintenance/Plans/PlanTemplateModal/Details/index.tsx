@@ -1,5 +1,5 @@
 import { Flex, Heading, Skeleton, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import { Button } from '@repo/ui/components';
 import PlanInfo from './PlanInfo';
 import Schedule from './Schedules';

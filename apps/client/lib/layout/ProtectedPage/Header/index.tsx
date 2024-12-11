@@ -1,5 +1,5 @@
 import { HStack } from '@chakra-ui/react';
-import React from 'react';
+
 import HeaderIcon from './HeaderIcon';
 import { SearchIcon, SettingsIcon } from '~/lib/components/CustomIcons/layout';
 import UserActionPopover from './UserActionPopover';

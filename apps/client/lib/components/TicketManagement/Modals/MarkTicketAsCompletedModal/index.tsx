@@ -1,8 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { Heading, HStack, ModalBody, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
-import GenericModal from '~/lib/components/UI/Modal';
-import { Button } from '@repo/ui/components';
+
+import { Button, GenericModal } from '@repo/ui/components';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useSession } from 'next-auth/react';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';

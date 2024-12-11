@@ -1,5 +1,4 @@
-import { Heading, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
+import { Heading, Text as ChakraText, VStack } from '@chakra-ui/react';
 
 interface ModalHeadingProps {
   heading: string;
@@ -18,9 +17,9 @@ const ModalHeading = (props: ModalHeadingProps) => {
       >
         {heading}
       </Heading>
-      <Text size="md" fontWeight={400} color="neutral.600">
+      <ChakraText size="md" fontWeight={400} color="neutral.600">
         {subheading}
-      </Text>
+      </ChakraText>
     </VStack>
   );
 };

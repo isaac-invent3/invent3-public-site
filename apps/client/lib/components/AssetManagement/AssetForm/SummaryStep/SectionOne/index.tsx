@@ -1,5 +1,5 @@
 import { Flex } from '@chakra-ui/react';
-import React from 'react';
+
 import Images from './Images';
 import Description from './Description';
 import Documents from './Documents';

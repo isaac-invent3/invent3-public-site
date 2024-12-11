@@ -1,5 +1,5 @@
 import { Flex, useDisclosure, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import Header from './Header';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { FormikProvider, useFormik } from 'formik';

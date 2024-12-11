@@ -1,5 +1,4 @@
 import { HStack, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
 import DetailHeader from '../../UI/DetailHeader';
 
 interface DetailSectionProps {

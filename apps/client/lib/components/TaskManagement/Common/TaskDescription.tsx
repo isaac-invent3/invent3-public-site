@@ -1,5 +1,5 @@
 import { Flex, HStack } from '@chakra-ui/react';
-import React from 'react';
+
 import SectionInfo from '../../UI/Form/FormSectionInfo';
 import { Field } from 'formik';
 import TextareaInput from '../../UI/TextArea';

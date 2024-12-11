@@ -1,5 +1,4 @@
 import { Flex, Heading, HStack, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
 import { ReactBarcode, Renderer } from 'react-jsbarcode';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import { useAppSelector } from '~/lib/redux/hooks';

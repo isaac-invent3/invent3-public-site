@@ -1,5 +1,5 @@
 import { Flex } from '@chakra-ui/react';
-import React from 'react';
+
 import MeanTime from './MeanTime';
 import MaintenanceCostGraph from './MaintenanceCostGraph';
 import AssetSummary from './AssetSummary';

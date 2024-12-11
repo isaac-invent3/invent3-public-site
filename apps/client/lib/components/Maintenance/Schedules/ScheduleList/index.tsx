@@ -1,5 +1,5 @@
 import { Text, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import InfiniteScroll from 'react-infinite-scroll-component';
 import ScheduleSkeletonLoader from './ScheduleSkeletonLoader';
 import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';

@@ -1,7 +1,12 @@
-import { Heading, HStack, ModalBody, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
+import {
+  Heading,
+  HStack,
+  ModalBody,
+  Text as ChakraText,
+  VStack,
+} from '@chakra-ui/react';
 import { Button } from '@repo/ui/components';
-import GenericModal from '~/lib/components/UI/Modal';
+import GenericModal from '.';
 
 interface GenericDeleteModalProps {
   isOpen: boolean;
@@ -40,7 +45,7 @@ const GenericDeleteModal = (props: GenericDeleteModalProps) => {
             >
               Delete?
             </Heading>
-            <Text
+            <ChakraText
               size="md"
               color="neutral.700"
               maxW="296px"
@@ -49,7 +54,7 @@ const GenericDeleteModal = (props: GenericDeleteModalProps) => {
             >
               Are you sure you want to delete the record? You can’t undo the
               action
-            </Text>
+            </ChakraText>
           </VStack>
           {children && (
             <VStack
@@ -61,9 +66,9 @@ const GenericDeleteModal = (props: GenericDeleteModalProps) => {
               rounded="2px"
               borderLeft="3px solid #F50000"
             >
-              <Text color="#A00000" fontWeight={800} size="md">
+              <ChakraText color="#A00000" fontWeight={800} size="md">
                 Warning
-              </Text>
+              </ChakraText>
               {children}
             </VStack>
           )}

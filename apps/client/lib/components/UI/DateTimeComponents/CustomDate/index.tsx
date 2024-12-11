@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
-import GenericModal from '../../Modal';
 import {
   HStack,
   Icon,
@@ -9,7 +8,7 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import { Button } from '@repo/ui/components';
+import { Button, GenericModal } from '@repo/ui/components';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import AddTime from '../AddTime';

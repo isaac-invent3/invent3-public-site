@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react';
 import { useFormikContext } from 'formik';
 import moment from 'moment';
-import React from 'react';
+
 import { RepeatIcon } from '~/lib/components/CustomIcons';
 import { Button } from '@repo/ui/components';
 import DateTimeButtons from '~/lib/components/UI/DateTimeComponents/DateTimeButtons';

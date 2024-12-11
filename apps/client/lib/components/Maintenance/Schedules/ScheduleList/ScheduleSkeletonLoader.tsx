@@ -1,5 +1,4 @@
 import { Skeleton, VStack } from '@chakra-ui/react';
-import React from 'react';
 
 interface ScheduleSkeletonLoaderProps {
   numberOfSkeleton?: number;

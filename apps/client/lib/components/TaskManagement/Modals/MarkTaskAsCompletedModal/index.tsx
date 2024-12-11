@@ -8,9 +8,8 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { Field, FormikProvider, useFormik } from 'formik';
-import React from 'react';
-import GenericModal from '~/lib/components/UI/Modal';
-import { Button } from '@repo/ui/components';
+
+import { Button, GenericModal } from '@repo/ui/components';
 import TextInput from '~/lib/components/UI/TextInput';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import { markTaskAsCompletedSchema } from '~/lib/schemas/task.schema';

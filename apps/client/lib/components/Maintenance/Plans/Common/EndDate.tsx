@@ -1,7 +1,7 @@
 import { Flex, HStack, VStack } from '@chakra-ui/react';
 import { useField } from 'formik';
 import moment from 'moment';
-import React from 'react';
+
 import ConditionalDateSelector from '~/lib/components/UI/DateTimeComponents/Common/ConditionalDateSelector';
 import ErrorMessage from '~/lib/components/UI/ErrorMessage';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';

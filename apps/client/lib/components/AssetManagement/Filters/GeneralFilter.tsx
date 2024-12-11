@@ -1,4 +1,3 @@
-import React from 'react';
 import { FilterInput } from '~/lib/interfaces/asset.interfaces';
 import CategoryFilter from './FilterComponents/CategoryFilter';
 import StatusFilter from './FilterComponents/StatusFilter';

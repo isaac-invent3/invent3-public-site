@@ -6,7 +6,7 @@ import {
   Text,
   StackProps,
 } from '@chakra-ui/react';
-import React from 'react';
+
 import { ChevronDownIcon } from '../../CustomIcons';
 
 interface FilterButtonProps extends StackProps {

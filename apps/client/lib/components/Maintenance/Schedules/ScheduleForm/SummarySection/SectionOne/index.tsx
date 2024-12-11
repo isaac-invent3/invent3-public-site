@@ -1,5 +1,5 @@
 import { Grid, GridItem, HStack, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { MaintenanceColorCode } from '~/lib/utils/ColorCodes';

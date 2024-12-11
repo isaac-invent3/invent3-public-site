@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
 import { Option } from '~/lib/interfaces/general.interfaces';
-import GenericModal from '~/lib/components/UI/Modal';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
-import { Button } from '@repo/ui/components';
+import { Button, GenericModal } from '@repo/ui/components';
 import { FormikProvider, useFormik } from 'formik';
 import EmployeeSelect from '../../EmployeeSelect';
 import { assigneeSchema } from '~/lib/schemas/general.schema';

@@ -1,4 +1,3 @@
-import React from 'react';
 import FilterDropDown from '~/lib/components/UI/FilterDropDown';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { MAINTENANCE_PLAN_ENUM } from '~/lib/utils/constants';

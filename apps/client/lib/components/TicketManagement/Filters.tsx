@@ -1,5 +1,5 @@
 import { HStack } from '@chakra-ui/react';
-import React from 'react';
+
 import { FilterIcon } from '~/lib/components/CustomIcons';
 import FilterButton from '~/lib/components/UI/Filter/FilterButton';
 import SearchInput from '~/lib/components/UI/SearchInput';

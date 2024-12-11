@@ -1,6 +1,5 @@
 import { Avatar, Collapse, Flex, HStack, Text, VStack } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
-import React from 'react';
 
 interface FooterSectionProps {
   isCollapse: boolean;

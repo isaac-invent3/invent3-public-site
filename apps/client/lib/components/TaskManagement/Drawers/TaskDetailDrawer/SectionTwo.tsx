@@ -1,5 +1,5 @@
 import { Avatar, HStack, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import { TaskInstance } from '~/lib/interfaces/task.interfaces';
 import { amountFormatter } from '~/lib/utils/Formatters';
 

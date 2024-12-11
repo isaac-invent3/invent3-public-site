@@ -1,5 +1,5 @@
 import { Heading, HStack, ModalHeader, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import SearchInput from '~/lib/components/UI/SearchInput';
 import FilterButton from '~/lib/components/UI/Filter/FilterButton';
 import { FilterIcon } from '~/lib/components/CustomIcons';

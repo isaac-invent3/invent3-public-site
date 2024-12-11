@@ -1,5 +1,4 @@
 import { Heading, HStack, StackDivider, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
 import DetailHeader from '../../../../../UI/DetailHeader';
 import { AcquisitionInfo } from '~/lib/interfaces/asset.interfaces';
 

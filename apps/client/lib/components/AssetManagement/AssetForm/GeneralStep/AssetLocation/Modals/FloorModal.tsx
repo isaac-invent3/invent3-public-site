@@ -1,10 +1,8 @@
 /* eslint-disable no-unused-vars */
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
 import { Field, FormikProvider, useFormik } from 'formik';
-import React from 'react';
-import GenericModal from '~/lib/components/UI/Modal';
-import { Button } from '@repo/ui/components';
-import ModalHeading from '../../../../../UI/Modal/ModalHeading';
+
+import { Button, GenericModal, ModalHeading } from '@repo/ui/components';
 import { useCreateFloorMutation } from '~/lib/redux/services/asset/location.services';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';

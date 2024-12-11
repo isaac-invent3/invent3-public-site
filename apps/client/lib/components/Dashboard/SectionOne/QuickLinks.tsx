@@ -1,5 +1,5 @@
 import { HStack, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import { Button } from '@repo/ui/components';
 import CardHeader from '../Common/CardHeader';
 

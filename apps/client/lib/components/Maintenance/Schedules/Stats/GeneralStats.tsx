@@ -1,5 +1,5 @@
 import { HStack, SimpleGrid, Skeleton, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import { MaintenanceScheduleStat } from '~/lib/interfaces/maintenance.interfaces';
 import { formatNumberShort } from '~/lib/utils/helperFunctions';
 

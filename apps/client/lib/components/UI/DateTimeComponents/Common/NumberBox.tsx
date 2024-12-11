@@ -1,5 +1,5 @@
 import { Icon, Input, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import { ChevronDownIcon, ChevronUpIcon } from '~/lib/components/CustomIcons';
 
 const formatValue = (value: number) => {

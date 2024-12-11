@@ -1,5 +1,4 @@
 import { Flex, Grid, GridItem, Skeleton } from '@chakra-ui/react';
-import React from 'react';
 import DetailSection from '../../DetailSection';
 import { AcquisitionInfo } from '~/lib/interfaces/asset.interfaces';
 import { dateFormatter } from '~/lib/utils/Formatters';

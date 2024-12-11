@@ -1,5 +1,5 @@
 import { HStack, Icon, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import { DowntrendIcon, UptrendIcon } from '~/lib/components/CustomIcons';
 
 interface InfoProps {

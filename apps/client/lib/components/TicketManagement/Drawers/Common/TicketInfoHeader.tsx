@@ -1,11 +1,11 @@
 import { Flex, Heading } from '@chakra-ui/react';
-import React from 'react';
+
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
 
 interface TicketInfoHeaderProps {
   data: Ticket;
   children?: React.ReactNode;
-  isUpdateTicket?: boolean
+  isUpdateTicket?: boolean;
 }
 const TicketInfoHeader = (props: TicketInfoHeaderProps) => {
   const { data, children, isUpdateTicket } = props;
@@ -20,8 +20,8 @@ const TicketInfoHeader = (props: TicketInfoHeaderProps) => {
       direction="column"
     >
       <Heading
-        fontSize={isUpdateTicket ? "24px" : "32px"}
-        lineHeight={isUpdateTicket ? "28.51px" : "38.02px"}
+        fontSize={isUpdateTicket ? '24px' : '32px'}
+        lineHeight={isUpdateTicket ? '28.51px' : '38.02px'}
         color="black"
         fontWeight={isUpdateTicket ? 700 : 800}
       >

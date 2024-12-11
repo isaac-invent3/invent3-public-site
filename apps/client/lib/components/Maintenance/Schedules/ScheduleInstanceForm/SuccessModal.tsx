@@ -1,6 +1,4 @@
-import React from 'react';
-import { Button } from '@repo/ui/components';
-import GenericSuccessModal from '~/lib/components/UI/Modal/GenericSuccessModal';
+import { Button, GenericSuccessModal } from '@repo/ui/components';
 
 interface ScheduleInstanceSuccessModalProps {
   isOpen: boolean;

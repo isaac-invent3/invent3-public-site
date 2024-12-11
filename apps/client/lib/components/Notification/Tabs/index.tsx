@@ -1,5 +1,5 @@
 import { Text, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import MOCK_NOTIFICATION from '~/lib/utils/MockData/notification';
 import NotificationDetail from '../NotificationDetail';
 

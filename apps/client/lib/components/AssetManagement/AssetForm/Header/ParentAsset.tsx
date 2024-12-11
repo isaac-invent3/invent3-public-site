@@ -1,6 +1,6 @@
 import { Flex, Heading, HStack, Text, VStack } from '@chakra-ui/react';
 import Image from 'next/image';
-import React from 'react';
+
 import { useAppSelector } from '~/lib/redux/hooks';
 
 const ParentAsset = () => {

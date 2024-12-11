@@ -1,4 +1,3 @@
-import React from 'react';
 import ScheduleSummary from '~/lib/components/Maintenance/Schedules/ScheduleForm/SummarySection/SectionTwo';
 import { VStack } from '@chakra-ui/react';
 import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';

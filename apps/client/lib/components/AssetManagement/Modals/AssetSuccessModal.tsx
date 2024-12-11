@@ -1,6 +1,4 @@
-import React from 'react';
-import GenericSuccessModal from '../../UI/Modal/GenericSuccessModal';
-import { Button } from '@repo/ui/components';
+import { Button, GenericSuccessModal } from '@repo/ui/components';
 
 interface AssetSuccessModalProps {
   isOpen: boolean;

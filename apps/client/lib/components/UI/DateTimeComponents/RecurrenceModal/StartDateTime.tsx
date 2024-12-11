@@ -1,5 +1,5 @@
 import { HStack, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import SectionInfo from '../../Form/FormSectionInfo';
 import CustomSelectDateButton from '../Common/CustomSelectDateButton';
 import moment from 'moment';

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useDisclosure, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import SelectInput from '~/lib/components/UI/Select';
 import AddButton from '../../../../../../UI/Form/FormAddButton';
 import { Option } from '~/lib/interfaces/general.interfaces';

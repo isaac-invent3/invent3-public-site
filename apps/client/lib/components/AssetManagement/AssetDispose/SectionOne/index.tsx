@@ -1,5 +1,5 @@
 import { Box, HStack, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import AssetDetails from '../../Common/AssetDetail';
 import { Button } from '@repo/ui/components';
 import { useAppSelector } from '~/lib/redux/hooks';

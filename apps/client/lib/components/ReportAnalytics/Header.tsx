@@ -15,12 +15,18 @@ const breadCrumbData = [
   },
 ];
 
-const Header = ({ showGenerate = true }: { showGenerate?: boolean }) => {
+const Header = ({
+  showGenerate = true,
+  header,
+}: {
+  showGenerate?: boolean;
+  header?: string;
+}) => {
   return (
     <VStack spacing="58px" alignItems="flex-start" width="full" pt="12px">
       <GenericBreadCrumb routes={breadCrumbData} />
       <HStack width="full" justifyContent="space-between">
-        <PageHeader>Reports & Analytics</PageHeader>
+        <PageHeader>{header ?? 'Reports & Analytics'}</PageHeader>
 
         {showGenerate && (
           <PrimaryButton

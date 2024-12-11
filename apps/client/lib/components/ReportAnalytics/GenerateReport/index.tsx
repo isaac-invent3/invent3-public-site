@@ -1,5 +1,5 @@
 'use client';
-import { Box, Flex, HStack, Icon, Text, VStack } from '@chakra-ui/react';
+import { Box, Flex, Grid, Icon, Text, VStack } from '@chakra-ui/react';
 
 import { FormikProvider, useFormik } from 'formik';
 import AssetSelect from '../../Common/AssetSelect';
@@ -9,6 +9,7 @@ import DateTimeButtons from '../../UI/DateTimeComponents/DateTimeButtons';
 import FilterDropDown from '../../UI/FilterDropDown';
 import FormInputWrapper from '../../UI/Form/FormInputWrapper';
 import Header from '../Header';
+import DynamicConditions from './Condition';
 
 const GenerateReport = () => {
   const initialValues = {
@@ -24,51 +25,25 @@ const GenerateReport = () => {
   return (
     <div>
       <Flex width="full" direction="column" pb="24px" pt="12px">
-        <Header showGenerate={false} />
-
-        <Button
-          customStyles={{
-            px: '16px',
-            spacing: '8px',
-            bgColor: '#F6F6F6',
-            width: '85px',
-            height: '32px',
-            display: 'flex',
-            alignItems: 'center',
-            marginTop: '24px',
-            _disabled: {
-              bgColor: '#F6F6F666',
-              cursor: 'not-allowed',
-            },
-            _hover: {
-              bgColor: '#F6F6F666',
-            },
-            _focus: {
-              bgColor: '#F6F6F6',
-            },
-          }}
-        >
-          <Icon
-            as={ChevronLeftIcon}
-            boxSize="16px"
-            mb="7px"
-            mr="8px"
-            color="black"
-          />
-          <Text color="primary.500">Back</Text>
-        </Button>
+        <Header showGenerate={false} header="Generate Report" />
 
         <FormikProvider value={formik}>
-          <Box p="16px" bg="white" borderRadius="6px" mt="20px">
+          <Box p="16px" bg="white"  borderRadius="6px" mt="20px" height="100%">
             <Text fontWeight={400} color="#0E2642" fontSize="14px">
               Generate a Report
             </Text>
 
-            <HStack
-              alignItems="center"
-              justifyContent="space-between"
-              gap="24px"
+            <Grid
+              templateColumns={{
+                base: '1fr',
+                md: 'repeat(2, 1fr)',
+                xl: '1.2fr 1fr 1.2fr',
+              }}
+              gap="32px"
               mt={10}
+              height="100%"
+              paddingBottom="2rem"
+              borderBottom="1px solid #BBBBBB"
             >
               <FormInputWrapper
                 sectionMaxWidth="141px"
@@ -76,7 +51,6 @@ const GenerateReport = () => {
                 description="Add name that users can likely search with"
                 title="Select from Table"
                 isRequired
-                flex={1}
               >
                 <AssetSelect selectName="assetId" selectTitle="Asset" />
               </FormInputWrapper>
@@ -87,25 +61,23 @@ const GenerateReport = () => {
                 description="Find and select the asset you require"
                 title="Column"
                 isRequired
-                flex={1}
               >
-                <VStack
-                  // borderWidth={1}
-                  // borderColor="red"
-                  width="full"
-                  spacing="12px"
-                  alignItems="flex-start"
-                >
+                <VStack width="full" spacing="12px" alignItems="flex-start">
                   <FilterDropDown
                     label=""
                     options={[]}
                     handleClick={(value) => console.log(value)}
                     selectedOptions={[]}
-                    showBorder
+                    containerStyles={{
+                      maxW: 'none',
+                    }}
                     labelStyles={{
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
+                    }}
+                    chevronStyles={{
+                      boxSize: '16px',
                     }}
                   />
                 </VStack>
@@ -117,7 +89,6 @@ const GenerateReport = () => {
                 description="Add name that users can likely search with"
                 title="Date Range"
                 isRequired
-                flex={1}
               >
                 <VStack width="full" spacing="12px" alignItems="flex-start">
                   <DateTimeButtons
@@ -127,8 +98,62 @@ const GenerateReport = () => {
                   />
                 </VStack>
               </FormInputWrapper>
-            </HStack>
+
+              <VStack gridColumn="span 2">
+                <DynamicConditions />
+              </VStack>
+              <Button
+                variant="primary"
+                customStyles={{
+                  width: '169px',
+                  alignSelf: 'end',
+                }}
+              >
+                Generate
+              </Button>
+            </Grid>
+
+            <VStack justifyContent="center" height="33vh">
+              <Text fontWeight={700} fontSize="14x" color="#0E2642">
+                No Report Generated Yet
+              </Text>
+              <Text color="#838383" width="200px" margin="0 auto" textAlign="center">
+                Select your output with conditions above to generate your report
+              </Text>
+            </VStack>
           </Box>
+
+          <Button
+            customStyles={{
+              px: '16px',
+              spacing: '8px',
+              bgColor: '#F6F6F6',
+              width: '85px',
+              height: '32px',
+              display: 'flex',
+              alignItems: 'center',
+              marginTop: '24px',
+              _disabled: {
+                bgColor: '#F6F6F666',
+                cursor: 'not-allowed',
+              },
+              _hover: {
+                bgColor: '#F6F6F666',
+              },
+              _focus: {
+                bgColor: '#F6F6F6',
+              },
+            }}
+          >
+            <Icon
+              as={ChevronLeftIcon}
+              boxSize="16px"
+              mb="7px"
+              mr="8px"
+              color="black"
+            />
+            <Text color="primary.500">Back</Text>
+          </Button>
         </FormikProvider>
       </Flex>
     </div>

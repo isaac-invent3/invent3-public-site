@@ -1,8 +1,10 @@
 import {
   Collapse,
   Flex,
+  FlexProps,
   HStack,
   Icon,
+  IconProps,
   Spinner,
   StackProps,
   Text,
@@ -27,6 +29,8 @@ type FilterDropDownProps = {
   children?: ReactNode;
   showBorder?: boolean;
   labelStyles?: StackProps;
+  containerStyles?: FlexProps;
+  chevronStyles?: IconProps;
 };
 
 const FilterDropDown = ({
@@ -40,6 +44,8 @@ const FilterDropDown = ({
   children,
   showBorder,
   labelStyles,
+  containerStyles,
+  chevronStyles,
 }: FilterDropDownProps) => {
   const { onToggle, isOpen, onClose } = useDisclosure();
   const buttonRef = useRef<HTMLDivElement | null>(null);
@@ -79,7 +85,13 @@ const FilterDropDown = ({
   }, [hasMoreOptions, handleScroll]);
 
   return (
-    <Flex direction="column" width="full" maxW="max-content" ref={containerRef}>
+    <Flex
+      direction="column"
+      width="full"
+      maxW="max-content"
+      ref={containerRef}
+      {...containerStyles}
+    >
       <HStack
         onClick={onToggle}
         cursor="pointer"
@@ -107,7 +119,12 @@ const FilterDropDown = ({
           </HStack>
         </HStack>
 
-        <Icon as={ChevronDownIcon} boxSize="12px" color="neutral.600" />
+        <Icon
+          as={ChevronDownIcon}
+          boxSize="12px"
+          color="neutral.600"
+          {...chevronStyles}
+        />
       </HStack>
 
       <Collapse in={isOpen}>

@@ -6,7 +6,7 @@ import AssetInfo from './AssetInfo';
 import AssetTabs from './AssetTabs';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { clearAsset, setAsset } from '~/lib/redux/slices/AssetSlice';
-import GenericDrawer from '../../UI/GenericDrawer';
+import { GenericDrawer } from '@repo/ui/components';
 
 interface AssetDetailProps {
   data: Asset;

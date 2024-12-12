@@ -1,9 +1,8 @@
 import { Flex, HStack } from '@chakra-ui/react';
 import { useFormikContext } from 'formik';
 
-import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import { useGetAllTaskTypeQuery } from '~/lib/redux/services/task/types.services';
-import { SelectableButtonGroup } from '@repo/ui/components';
+import { FormSectionInfo, SelectableButtonGroup } from '@repo/ui/components';
 import { generateOptions } from '~/lib/utils/helperFunctions';
 import { taskFormDetails } from '~/lib/interfaces/task.interfaces';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
@@ -22,7 +21,7 @@ const TaskType = (props: TaskTypeProps) => {
   return (
     <HStack width="full" alignItems="flex-start" spacing={spacing}>
       <Flex width="full" maxW={sectionMaxWidth}>
-        <SectionInfo
+        <FormSectionInfo
           title="Type"
           info="Add name that users can likely search with"
           isRequired

@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { Asset } from '~/lib/interfaces/asset.interfaces';
 import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
-import FormActionButtons from '../../../UI/Form/FormActionButtons';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useSession } from 'next-auth/react';
 import moment from 'moment';
@@ -21,6 +20,7 @@ import {
   setAsset,
 } from '~/lib/redux/slices/AssetSlice';
 import { generateDocumentArray, generateImagesArray } from './helperFunction';
+import { FormActionButtons } from '@repo/ui/components';
 
 interface SummaryStepProps {
   activeStep: number;

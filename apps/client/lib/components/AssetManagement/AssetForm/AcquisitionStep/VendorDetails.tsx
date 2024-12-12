@@ -1,6 +1,5 @@
 import { Flex, Grid, GridItem, HStack, Text, VStack } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import SectionInfo from '../../../UI/Form/FormSectionInfo';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import {
   useGetAllVendorsQuery,
@@ -11,6 +10,7 @@ import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import AssetTypeSelect from '~/lib/components/Common/AssetTypeSelect';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import { FormSectionInfo } from '@repo/ui/components';
 
 const VendorDetails = () => {
   const dispatch = useAppDispatch();
@@ -46,7 +46,7 @@ const VendorDetails = () => {
   return (
     <HStack width="full" alignItems="flex-start" spacing="78px">
       <Flex width="full" maxW="144px">
-        <SectionInfo
+        <FormSectionInfo
           title="Vendor Details"
           info="Add name that users can likely search with"
           isRequired
@@ -107,7 +107,7 @@ const VendorDetails = () => {
         <GridItem colSpan={1}>
           <HStack width="full" alignItems="flex-start" spacing="0px">
             <Flex width="full" maxW="130px">
-              <SectionInfo
+              <FormSectionInfo
                 title="Asset Type"
                 info="Add name that users can likely search with"
                 isRequired

@@ -2,11 +2,15 @@
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
 import { Field, FormikProvider, useFormik } from 'formik';
 
-import { Button, GenericModal, ModalHeading } from '@repo/ui/components';
+import {
+  Button,
+  FormTextInput,
+  GenericModal,
+  ModalHeading,
+} from '@repo/ui/components';
 import { useCreateFacilityMutation } from '~/lib/redux/services/asset/location.services';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { facilitySchema } from '~/lib/schemas/asset/location.schema';
-import TextInput from '~/lib/components/UI/TextInput';
 import LGASelect from '../LGASelect';
 import { getSession } from 'next-auth/react';
 
@@ -61,31 +65,31 @@ const FacilityModal = (props: FacilityModalProps) => {
               <VStack width="full" spacing="16px">
                 <LGASelect type="general" />
                 <Field
-                  as={TextInput}
+                  as={FormTextInput}
                   name="facilityName"
                   type="text"
                   label="Facility Name"
                 />
                 <Field
-                  as={TextInput}
+                  as={FormTextInput}
                   name="facilityRef"
                   type="text"
                   label="Facility Reference"
                 />
                 <Field
-                  as={TextInput}
+                  as={FormTextInput}
                   name="address"
                   type="text"
                   label="Address"
                 />
                 <Field
-                  as={TextInput}
+                  as={FormTextInput}
                   name="longitude"
                   type="number"
                   label="Longitude"
                 />
                 <Field
-                  as={TextInput}
+                  as={FormTextInput}
                   name="latitude"
                   type="number"
                   label="Latitude"

@@ -1,18 +1,20 @@
 import { Flex, Grid, GridItem, HStack } from '@chakra-ui/react';
 
-import SectionInfo from '../../../UI/Form/FormSectionInfo';
 import { Field, useFormikContext } from 'formik';
-import TextInput from '~/lib/components/UI/TextInput';
-import DateTimeButtons from '~/lib/components/UI/DateTimeComponents/DateTimeButtons';
 import { AssetFormDetails } from '~/lib/interfaces/asset.interfaces';
 import moment from 'moment';
+import {
+  FormSectionInfo,
+  DateTimeButtons,
+  FormTextInput,
+} from '@repo/ui/components';
 
 const WarrantyDetails = () => {
   const { setFieldValue, values } = useFormikContext<AssetFormDetails>();
   return (
     <HStack width="full" alignItems="flex-start" spacing="78px">
       <Flex width="full" maxW="144px">
-        <SectionInfo
+        <FormSectionInfo
           title="Warranty Details"
           info="Choose the category and the sub-category"
           isRequired={false}
@@ -52,14 +54,14 @@ const WarrantyDetails = () => {
         <GridItem colSpan={2}>
           <HStack width="full" alignItems="flex-start" spacing="0px">
             <Flex width="full" maxW="130px">
-              <SectionInfo
+              <FormSectionInfo
                 title="Life Expectancy"
                 info="Add name that users can likely search with"
                 isRequired
               />
             </Flex>
             <Field
-              as={TextInput}
+              as={FormTextInput}
               name="lifeExpectancy"
               type="number"
               label="Life Expectancy"
@@ -68,7 +70,7 @@ const WarrantyDetails = () => {
         </GridItem>
         <GridItem colSpan={1}>
           <Field
-            as={TextInput}
+            as={FormTextInput}
             name="warrantyDetails"
             type="text"
             label="Warranty Terms"

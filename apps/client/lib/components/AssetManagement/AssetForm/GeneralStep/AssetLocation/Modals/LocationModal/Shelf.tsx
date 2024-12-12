@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { useDisclosure, VStack } from '@chakra-ui/react';
 
-import AddButton from '../../../../../../UI/Form/FormAddButton';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { FormLocation } from '~/lib/interfaces/asset.interfaces';
 import ShelfModal from '../ShelfModal';
 import ShelfSelect from '../SelectInputs/ShelfSelect';
+import { FormAddButton } from '@repo/ui/components';
 
 interface ShelfProps {
   handleReadableLocation: (option: Option, key: keyof FormLocation) => void;
@@ -22,7 +22,7 @@ const Shelf = (props: ShelfProps) => {
           aisleId={aisleId}
           type="specificById"
         />
-        <AddButton handleClick={onOpen}>Add New Shelf</AddButton>
+        <FormAddButton handleClick={onOpen}>Add New Shelf</FormAddButton>
       </VStack>
       <ShelfModal isOpen={isOpen} onClose={onClose} defaultAisleId={aisleId} />
     </>

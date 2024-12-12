@@ -1,5 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { GenericModal } from '@repo/ui/components';
+import {
+  GenericModal,
+  TablePagination,
+  SlideTransition,
+} from '@repo/ui/components';
 import Header from './Header';
 import {
   Collapse,
@@ -8,7 +12,6 @@ import {
   ModalFooter,
   useDisclosure,
 } from '@chakra-ui/react';
-import Pagination from '~/lib/components/UI/Table/Pagination';
 import TemplateTable from './TemplateTable';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 import {
@@ -17,7 +20,6 @@ import {
 } from '~/lib/interfaces/general.interfaces';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import TemplateFilters from './Header/Filters';
-import SlideTransition from '~/lib/components/UI/SlideTransition';
 import { useSearchTemplatesMutation } from '~/lib/redux/services/template.services';
 import { Template } from '~/lib/interfaces/template.interfaces';
 
@@ -134,7 +136,7 @@ const TemplateModal = (props: TemplateModalProps) => {
           pr="32px"
           justifyContent="flex-end"
         >
-          <Pagination
+          <TablePagination
             pageNumber={pageNumber}
             setPageNumber={setPageNumber}
             pageSize={pageSize}

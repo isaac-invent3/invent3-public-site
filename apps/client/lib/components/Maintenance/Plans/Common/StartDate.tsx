@@ -2,9 +2,11 @@ import { Flex, HStack, VStack } from '@chakra-ui/react';
 import { useField } from 'formik';
 import moment from 'moment';
 
-import DateTimeButtons from '~/lib/components/UI/DateTimeComponents/DateTimeButtons';
-import ErrorMessage from '~/lib/components/UI/ErrorMessage';
-import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
+import {
+  DateTimeButtons,
+  ErrorMessage,
+  FormSectionInfo,
+} from '@repo/ui/components';
 
 interface StartDateProps {
   sectionMaxWidth: string;
@@ -19,7 +21,7 @@ const StartDate = (props: StartDateProps) => {
   return (
     <HStack width="full" alignItems="flex-start" spacing={spacing}>
       <Flex width="full" maxW={sectionMaxWidth}>
-        <SectionInfo
+        <FormSectionInfo
           title="Start Date"
           info="Add name that users can likely search with"
           isRequired

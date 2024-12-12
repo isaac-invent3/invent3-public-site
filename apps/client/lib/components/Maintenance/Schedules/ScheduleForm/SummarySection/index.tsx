@@ -1,6 +1,5 @@
 import { Divider, Flex, useDisclosure, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import FormActionButtons from '~/lib/components/UI/Form/FormActionButtons';
 import Header from '../Header';
 import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
@@ -14,7 +13,7 @@ import {
 } from '../../../Common/helperFunctions';
 import { useUpdateMaintenancePlanWithSchedulesMutation } from '~/lib/redux/services/maintenance/plan.services';
 import { FORM_ENUM, SYSTEM_CONTEXT_TYPE } from '~/lib/utils/constants';
-import { Button } from '@repo/ui/components';
+import { Button, FormActionButtons } from '@repo/ui/components';
 import SaveAsTemplateModal from '~/lib/components/Common/Modals/SaveAsTemplateModal';
 import { useGetTemplateInfoBySystemContextTypeAndContextIdQuery } from '~/lib/redux/services/template.services';
 import { getSession } from 'next-auth/react';

@@ -3,7 +3,7 @@ import { createColumnHelper } from '@tanstack/react-table';
 import { useMemo, useState } from 'react';
 import UserInfo from '~/lib/components/Common/UserInfo';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
-import DataTable from '~/lib/components/UI/Table';
+import { DataTable } from '@repo/ui/components';
 import { Ticket, TicketCategory } from '~/lib/interfaces/ticket.interfaces';
 import { useGetTicketsByTabScopeQuery } from '~/lib/redux/services/ticket.services';
 import { COLOR_CODES_FALLBACK, DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';

@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import { taskFormDetails } from '~/lib/interfaces/task.interfaces';
 import PopoverAction from './PopoverAction';
-import DataTable from '~/lib/components/UI/Table';
+import { DataTable } from '@repo/ui/components';
 import AssignedTo from '~/lib/components/Common/UserInfo';
 import { amountFormatter } from '~/lib/utils/Formatters';
 

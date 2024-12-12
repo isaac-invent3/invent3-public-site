@@ -1,12 +1,12 @@
 import { Flex, HStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import {
   useGetAllMaintenancePlanQuery,
   useSearchMaintenancePlanMutation,
 } from '~/lib/redux/services/maintenance/plan.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import { FormSectionInfo } from '@repo/ui/components';
 
 const Plan = () => {
   const [pageNumber, setPageNumber] = useState(1);
@@ -19,7 +19,7 @@ const Plan = () => {
   return (
     <HStack width="full" alignItems="flex-start" spacing="73px">
       <Flex width="full" maxW="118px">
-        <SectionInfo
+        <FormSectionInfo
           title="Plan Type"
           info="Add name that users can likely search with"
           isRequired

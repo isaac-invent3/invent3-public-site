@@ -2,14 +2,16 @@
 
 import { Flex } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import FormStepper from '../../UI/Form/FormStepper';
 import GeneralStep from './GeneralStep';
 import AcquisitionStep from './AcquisitionStep';
 import DocumentStep from './DocumentStep';
 import SummaryStep from './SummaryStep';
-import SlideTransition from '../../UI/SlideTransition';
+import {
+  SlideTransition,
+  FormStepper,
+  withFormLeaveDialog,
+} from '@repo/ui/components';
 import Header from './Header';
-import withFormLeaveDialog from '../../UI/Form/FormLeaveDialogProvider';
 
 const STEPS = ['General', 'Acquisition', 'Document', 'Summary'];
 

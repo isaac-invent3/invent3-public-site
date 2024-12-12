@@ -2,7 +2,7 @@ import { Flex } from '@chakra-ui/react';
 import _ from 'lodash';
 import { createColumnHelper } from '@tanstack/react-table';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import DataTable from '~/lib/components/UI/Table';
+import { DataTable } from '@repo/ui/components';
 import {
   MaintenancePlan,
   PlanFilter,
@@ -18,7 +18,7 @@ import Filters from './Filters';
 import { SearchResponse } from '~/lib/interfaces/general.interfaces';
 import { generateSearchCriterion } from '~/lib/utils/helperFunctions';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import FilterDisplay from '../../UI/Filter/FilterDisplay';
+import { FilterDisplay } from '@repo/ui/components';
 
 export const initialFilterData = {
   planType: [],

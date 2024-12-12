@@ -1,9 +1,7 @@
 import { Heading, HStack, ModalHeader, VStack } from '@chakra-ui/react';
 
-import SearchInput from '~/lib/components/UI/SearchInput';
-import FilterButton from '~/lib/components/UI/Filter/FilterButton';
 import { FilterIcon } from '~/lib/components/CustomIcons';
-import { BackButton } from '@repo/ui/components';
+import { BackButton, SearchInput, FilterButton } from '@repo/ui/components';
 import { Template } from '~/lib/interfaces/template.interfaces';
 
 interface HeaderProps {

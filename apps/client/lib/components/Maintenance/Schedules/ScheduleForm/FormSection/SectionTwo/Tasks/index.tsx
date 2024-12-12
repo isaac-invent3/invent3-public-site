@@ -2,9 +2,11 @@ import { Flex, HStack, Text, useDisclosure, VStack } from '@chakra-ui/react';
 import { useField, useFormikContext } from 'formik';
 
 import TaskFormDrawer from '~/lib/components/TaskManagement/Drawers/TaskFormDrawer';
-import ErrorMessage from '~/lib/components/UI/ErrorMessage';
-import AddButton from '~/lib/components/UI/Form/FormAddButton';
-import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
+import {
+  ErrorMessage,
+  FormAddButton,
+  FormSectionInfo,
+} from '@repo/ui/components';
 import { taskFormDetails } from '~/lib/interfaces/task.interfaces';
 import FormTaskListDrawer from './ListDrawer';
 import { ScheduleFormDetails } from '~/lib/interfaces/maintenance.interfaces';
@@ -42,7 +44,7 @@ const Tasks = (props: TasksProps) => {
   return (
     <HStack width="full" alignItems="flex-start" spacing={spacing}>
       <Flex width="full" maxW={sectionMaxWidth}>
-        <SectionInfo
+        <FormSectionInfo
           title="Add Tasks"
           info="Add name that users can likely search with"
           isRequired
@@ -50,9 +52,9 @@ const Tasks = (props: TasksProps) => {
       </Flex>
       <VStack mt="20px" width="full" alignItems="flex-start">
         <VStack width="full" alignItems="flex-start" spacing="17px">
-          <AddButton color="#0366EF" handleClick={onOpen}>
+          <FormAddButton color="#0366EF" handleClick={onOpen}>
             Add Task
-          </AddButton>
+          </FormAddButton>
           {values?.taskCount && values?.taskCount >= 1 && (
             <HStack spacing="8px">
               <Text

@@ -1,6 +1,6 @@
 import { Icon } from '@chakra-ui/react';
 import React, { useMemo } from 'react';
-import DataTable from '~/lib/components/UI/Table';
+import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import { ChevronRightIcon } from '~/lib/components/CustomIcons';

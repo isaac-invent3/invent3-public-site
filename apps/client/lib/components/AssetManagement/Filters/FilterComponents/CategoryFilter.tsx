@@ -1,5 +1,5 @@
+import { FilterDropDown } from '@repo/ui/components';
 import React, { useEffect, useState } from 'react';
-import FilterDropDown from '~/lib/components/UI/FilterDropDown';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { useGetAllAssetCategoryQuery } from '~/lib/redux/services/asset/category.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';

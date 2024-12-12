@@ -1,12 +1,16 @@
 /* eslint-disable no-unused-vars */
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
 import { Field, FormikProvider, useFormik } from 'formik';
-import { Button, GenericModal, ModalHeading } from '@repo/ui/components';
+import {
+  Button,
+  FormTextInput,
+  GenericModal,
+  ModalHeading,
+} from '@repo/ui/components';
 import { useCreateShelfMutation } from '~/lib/redux/services/asset/location.services';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';
 import { shelfSchema } from '~/lib/schemas/asset/location.schema';
-import TextInput from '~/lib/components/UI/TextInput';
 import AisleSelect from './SelectInputs/AisleSelect';
 
 interface ShelfModalProps {
@@ -57,13 +61,13 @@ const ShelfModal = (props: ShelfModalProps) => {
               <VStack width="full" spacing="16px">
                 <AisleSelect type="general" />
                 <Field
-                  as={TextInput}
+                  as={FormTextInput}
                   name="shelfName"
                   type="text"
                   label="Shelf Name"
                 />
                 <Field
-                  as={TextInput}
+                  as={FormTextInput}
                   name="shelfRef"
                   type="text"
                   label="Shelf Reference"

@@ -1,9 +1,12 @@
 import { Heading, HStack, ModalBody, VStack } from '@chakra-ui/react';
 import { Field, FormikProvider, useFormik } from 'formik';
-import { Button, GenericModal } from '@repo/ui/components';
-import TextInput from '~/lib/components/UI/TextInput';
+import {
+  Button,
+  FormTextAreaInput,
+  FormTextInput,
+  GenericModal,
+} from '@repo/ui/components';
 import { templateSchema } from '~/lib/schemas/general.schema';
-import TextareaInput from '../../UI/TextArea';
 
 interface MarkTaskAsCompletedModalProps {
   isOpen: boolean;
@@ -59,13 +62,13 @@ const SaveAsTemplateModal = (props: MarkTaskAsCompletedModalProps) => {
               {/* Main Form Starts Here */}
               <VStack width="full" spacing="24px">
                 <Field
-                  as={TextInput}
+                  as={FormTextInput}
                   name="templateName"
                   type="text"
                   label="Template Name"
                 />
                 <Field
-                  as={TextareaInput}
+                  as={FormTextAreaInput}
                   name="templateDescription"
                   type="text"
                   label="Template Description"

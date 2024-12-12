@@ -9,9 +9,12 @@ import {
 } from '@chakra-ui/react';
 import { Field, FormikProvider, useFormik } from 'formik';
 
-import { Button, GenericModal } from '@repo/ui/components';
-import TextInput from '~/lib/components/UI/TextInput';
-import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
+import {
+  Button,
+  FormSectionInfo,
+  FormTextInput,
+  GenericModal,
+} from '@repo/ui/components';
 import { markTaskAsCompletedSchema } from '~/lib/schemas/task.schema';
 import { TaskInstance } from '~/lib/interfaces/task.interfaces';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
@@ -125,14 +128,14 @@ const MarkTaskAsCompletedModal = (props: MarkTaskAsCompletedModalProps) => {
                   </Text>
                   <HStack width="full" alignItems="flex-start" spacing="31px">
                     <Flex width="full" maxW="132px">
-                      <SectionInfo
+                      <FormSectionInfo
                         title="Actual Cost"
                         info="Add name that users can likely search with"
                         isRequired
                       />
                     </Flex>
                     <Field
-                      as={TextInput}
+                      as={FormTextInput}
                       name="actualCost"
                       type="number"
                       label="Actual"

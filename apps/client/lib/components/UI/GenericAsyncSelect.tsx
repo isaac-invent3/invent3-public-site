@@ -1,11 +1,11 @@
+import { FormSelect } from '@repo/ui/components';
 import React, { useEffect, useState } from 'react';
-import SelectInput from '~/lib/components/UI/Select';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { Option, SearchCriterion } from '~/lib/interfaces/general.interfaces';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 import { generateOptions } from '~/lib/utils/helperFunctions';
 
-interface BuildingSelectProps {
+interface GenericAsyncSelectProps {
   // eslint-disable-next-line no-unused-vars
   handleSelect?: (options: Option) => void;
   data: any;
@@ -24,7 +24,7 @@ interface BuildingSelectProps {
   showTitleAfterSelect?: boolean;
 }
 
-const GenericAsyncSelect = (props: BuildingSelectProps) => {
+const GenericAsyncSelect = (props: GenericAsyncSelectProps) => {
   const {
     handleSelect,
     data,
@@ -111,11 +111,11 @@ const GenericAsyncSelect = (props: BuildingSelectProps) => {
   }, [data, fetchKey]);
 
   return (
-    <SelectInput
+    <FormSelect
       name={selectName}
       title={selectTitle}
       options={options}
-      handleSelect={(option) => handleSelect && handleSelect(option)}
+      onSelect={(option) => handleSelect && handleSelect(option)}
       isLoading={isLoading}
       defaultInputValue={defaultInputValue ?? undefined}
       callBackFunction={(inputValue: string) => handleSearch(inputValue)}

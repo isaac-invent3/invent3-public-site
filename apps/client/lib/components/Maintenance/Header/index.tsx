@@ -1,7 +1,7 @@
 import { HStack, useDisclosure, VStack } from '@chakra-ui/react';
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import GenericBreadCrumb from '~/lib/components/UI/BreadCrumb';
+import { GenericBreadCrumb } from '@repo/ui/components';
 import PageHeader from '~/lib/components/UI/PageHeader';
 import PlanTemplateModal from '../Plans/PlanTemplateModal';
 import ActionButtonPopover from './ActionButtonsPopover';

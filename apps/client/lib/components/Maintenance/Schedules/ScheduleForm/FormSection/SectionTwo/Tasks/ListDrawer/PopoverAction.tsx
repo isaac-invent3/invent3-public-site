@@ -2,8 +2,7 @@ import { Text, useDisclosure, VStack } from '@chakra-ui/react';
 import { useFormikContext } from 'formik';
 
 import TaskFormDrawer from '~/lib/components/TaskManagement/Drawers/TaskFormDrawer';
-import GenericPopover from '~/lib/components/UI/GenericPopover';
-import { GenericDeleteModal } from '@repo/ui/components';
+import { GenericDeleteModal, GenericPopover } from '@repo/ui/components';
 import { ScheduleFormDetails } from '~/lib/interfaces/maintenance.interfaces';
 import { taskFormDetails } from '~/lib/interfaces/task.interfaces';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';

@@ -14,11 +14,16 @@ import moment from 'moment';
 import { useSession } from 'next-auth/react';
 import AssetSelect from '~/lib/components/Common/AssetSelect';
 import UserDisplayAndAddButton from '~/lib/components/Common/UserDisplayAndAddButton';
-import { Button, BackButton, SelectableButtonGroup } from '@repo/ui/components';
-import ErrorMessage from '~/lib/components/UI/ErrorMessage';
-import GenericDrawer from '~/lib/components/UI/GenericDrawer';
-import TextareaInput from '~/lib/components/UI/TextArea';
-import TextInput from '~/lib/components/UI/TextInput';
+import {
+  Button,
+  BackButton,
+  ErrorMessage,
+  SelectableButtonGroup,
+  GenericDrawer,
+  FormInputWrapper,
+  FormTextInput,
+  FormTextAreaInput,
+} from '@repo/ui/components';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { Asset } from '~/lib/interfaces/asset.interfaces';
 import { useGetAllTaskPrioritiesQuery } from '~/lib/redux/services/task/priorities.services';
@@ -27,7 +32,6 @@ import { createTicketSchema } from '~/lib/schemas/ticket.schema';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import { generateOptions } from '~/lib/utils/helperFunctions';
-import FormInputWrapper from '../../UI/Form/FormInputWrapper';
 import CreateTicketSuccessModal from '../Modals/CreateTicketSuccessModal';
 import TicketTypeSelect from './Common/TicketTypeSelect';
 
@@ -136,7 +140,7 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                     isRequired
                   >
                     <Field
-                      as={TextInput}
+                      as={FormTextInput}
                       name="ticketTitle"
                       type="text"
                       label="Ticket Title"
@@ -151,7 +155,7 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                     isRequired
                   >
                     <Field
-                      as={TextareaInput}
+                      as={FormTextAreaInput}
                       name="issueDescription"
                       type="text"
                       label="Description"

@@ -2,7 +2,6 @@ import { Flex, HStack, Text, VStack } from '@chakra-ui/react';
 import React, { useMemo, useState } from 'react';
 import CardHeader from '../Common/CardHeader';
 import { DATE_PERIOD, DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
-import DataTable from '../../UI/Table';
 import { createColumnHelper } from '@tanstack/react-table';
 import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
 import { dateFormatter } from '~/lib/utils/Formatters';
@@ -10,7 +9,7 @@ import Technician from '../../AssetManagement/Common/Technician';
 import Status from '../../AssetManagement/Common/MaintenanceStatus';
 import { useGetUpcomingMaintenanceQuery } from '~/lib/redux/services/dashboard.services';
 import { useAppSelector } from '~/lib/redux/hooks';
-import { Button } from '@repo/ui/components';
+import { Button, DataTable } from '@repo/ui/components';
 
 const ContentDisplay = (
   content: string | React.ReactNode,

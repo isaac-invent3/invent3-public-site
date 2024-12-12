@@ -1,9 +1,7 @@
 import { Flex, HStack, VStack } from '@chakra-ui/react';
 
-import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
-import DateTimeButtons from '../../UI/DateTimeComponents/DateTimeButtons';
 import { useField } from 'formik';
-import ErrorMessage from '../../UI/ErrorMessage';
+import { DateTimeButtons, ErrorMessage, FormSectionInfo } from '@repo/ui/components';
 
 interface DueDateProps {
   sectionMaxWidth: string;
@@ -17,7 +15,7 @@ const DueDate = (props: DueDateProps) => {
   return (
     <HStack width="full" alignItems="flex-start" spacing={spacing}>
       <Flex width="full" maxW={sectionMaxWidth}>
-        <SectionInfo
+        <FormSectionInfo
           title="Due Date"
           info="Add name that users can likely search with"
           isRequired

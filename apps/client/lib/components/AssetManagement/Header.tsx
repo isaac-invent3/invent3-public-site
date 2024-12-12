@@ -1,7 +1,6 @@
 import { HStack, Icon, VStack } from '@chakra-ui/react';
-import GenericBreadCrumb from '../UI/BreadCrumb';
 import PageHeader from '../UI/PageHeader';
-import { Button } from '@repo/ui/components';
+import { Button, GenericBreadCrumb } from '@repo/ui/components';
 import { AddIcon } from '../CustomIcons';
 
 const breadCrumbData = [

@@ -2,7 +2,6 @@ import { Flex, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 
 import { acquisitionInfoSchema } from '~/lib/schemas/asset/main.schema';
-import FormActionButtons from '../../../UI/Form/FormActionButtons';
 import AcquisitionDateConditon from './AcquisitionDateCondition';
 import Purchase from './Purchase';
 import WarrantyDetails from './WarrantyDetails';
@@ -10,6 +9,7 @@ import DepreciationDetails from './DepreciationDetails';
 import VendorDetails from './VendorDetails';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
+import { FormActionButtons } from '@repo/ui/components';
 
 interface AcquisitionStepProps {
   activeStep: number;

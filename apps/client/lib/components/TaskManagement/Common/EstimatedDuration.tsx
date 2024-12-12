@@ -1,8 +1,7 @@
 import { Divider, Flex, HStack, Text } from '@chakra-ui/react';
 
-import SectionInfo from '../../UI/Form/FormSectionInfo';
 import { Field } from 'formik';
-import TextInput from '../../UI/TextInput';
+import { FormSectionInfo, FormTextInput } from '@repo/ui/components';
 
 interface EstimatedDurationProps {
   sectionMaxWidth: string;
@@ -13,14 +12,14 @@ const EstimatedDuration = (props: EstimatedDurationProps) => {
   return (
     <HStack width="full" alignItems="flex-start" spacing={spacing}>
       <Flex width="full" maxW={sectionMaxWidth}>
-        <SectionInfo
+        <FormSectionInfo
           title="Estimated Duration"
           info="Add name that users can likely search with"
           isRequired
         />
       </Flex>
       <Field
-        as={TextInput}
+        as={FormTextInput}
         name="estimatedDurationInHours"
         type="number"
         label="Estimated Duration"

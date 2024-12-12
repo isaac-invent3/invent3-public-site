@@ -1,9 +1,8 @@
 import { Flex, HStack, SimpleGrid } from '@chakra-ui/react';
-import SectionInfo from '../../../../UI/Form/FormSectionInfo';
 import { Field } from 'formik';
-import TextInput from '~/lib/components/UI/TextInput';
 import { useState } from 'react';
 import DimensionDropDown from './DimensionDropDown';
+import { FormSectionInfo, FormTextInput } from '@repo/ui/components';
 
 const sampleDimensions = [
   { value: 'kg', label: 'Kg' },
@@ -25,16 +24,22 @@ const AssetDimension = () => {
       position="relative"
     >
       <Flex width="full" maxW="118px">
-        <SectionInfo
+        <FormSectionInfo
           title="Dimension"
           info="Choose the category and the sub-category"
           isRequired
         />
       </Flex>
-      <SimpleGrid width="full" columns={4} gap="11px" position="relative">
+      <SimpleGrid
+        width="full"
+        columns={4}
+        gap="11px"
+        position="relative"
+        alignItems="flex-start"
+      >
         <HStack spacing={0} position="relative">
           <Field
-            as={TextInput}
+            as={FormTextInput}
             name="lengthCm"
             type="number"
             label="Length"
@@ -50,7 +55,7 @@ const AssetDimension = () => {
         </HStack>
         <HStack spacing={0} position="relative">
           <Field
-            as={TextInput}
+            as={FormTextInput}
             name="widthCm"
             type="number"
             label="Width"
@@ -67,7 +72,7 @@ const AssetDimension = () => {
 
         <HStack spacing={0} position="relative">
           <Field
-            as={TextInput}
+            as={FormTextInput}
             name="heightCm"
             type="number"
             label="Height"
@@ -83,7 +88,7 @@ const AssetDimension = () => {
         </HStack>
         <HStack spacing={0} position="relative">
           <Field
-            as={TextInput}
+            as={FormTextInput}
             name="weightKg"
             type="number"
             label="Weight"

@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { useDisclosure, VStack } from '@chakra-ui/react';
 
-import AddButton from '../../../../../../UI/Form/FormAddButton';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { FormLocation } from '~/lib/interfaces/asset.interfaces';
 import FacilityModal from '../FacilityModal';
 import FacilitySelect from '../SelectInputs/FacilitySelect';
+import { FormAddButton } from '@repo/ui/components';
 
 interface FacilityProps {
   handleReadableLocation: (option: Option, key: keyof FormLocation) => void;
@@ -22,7 +22,7 @@ const Facility = (props: FacilityProps) => {
           lgaId={lgaId}
           type="specificById"
         />
-        <AddButton handleClick={onOpen}>Add New Facility</AddButton>
+        <FormAddButton handleClick={onOpen}>Add New Facility</FormAddButton>
       </VStack>
       <FacilityModal isOpen={isOpen} onClose={onClose} defaultLGAId={lgaId} />
     </>

@@ -2,9 +2,13 @@
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
 import { Field, FormikProvider, useFormik } from 'formik';
 
-import { Button, GenericModal, ModalHeading } from '@repo/ui/components';
+import {
+  Button,
+  FormTextInput,
+  GenericModal,
+  ModalHeading,
+} from '@repo/ui/components';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import TextInput from '~/lib/components/UI/TextInput';
 import { subCategorySchema } from '~/lib/schemas/asset/category.schema';
 import { useCreateSubCategoryMutation } from '~/lib/redux/services/asset/category.services';
 import CategorySelect from '../CategorySelect';
@@ -56,7 +60,7 @@ const SubCategoryModal = (props: SubCategoryModalProps) => {
               <VStack width="full" spacing="16px">
                 <CategorySelect />
                 <Field
-                  as={TextInput}
+                  as={FormTextInput}
                   name="subCategoryName"
                   type="text"
                   label="Name"

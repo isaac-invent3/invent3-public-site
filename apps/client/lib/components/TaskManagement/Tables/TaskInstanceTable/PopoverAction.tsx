@@ -2,8 +2,7 @@ import { Text, useDisclosure, VStack } from '@chakra-ui/react';
 import { getSession } from 'next-auth/react';
 
 import TaskFormDrawer from '~/lib/components/TaskManagement/Drawers/TaskFormDrawer';
-import GenericPopover from '~/lib/components/UI/GenericPopover';
-import { GenericDeleteModal } from '@repo/ui/components';
+import { GenericDeleteModal, GenericPopover } from '@repo/ui/components';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import {
   taskFormDetails,

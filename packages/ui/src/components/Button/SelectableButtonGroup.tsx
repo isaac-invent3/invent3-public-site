@@ -2,12 +2,12 @@ import { HStack, Skeleton } from '@chakra-ui/react';
 
 import Button from '.';
 // eslint-disable-next-line no-redeclare
-import { Option } from '../../../../interfaces/general.interfaces';
+import { Option } from '../../interfaces/general.interfaces';
 
 interface SelectableButtonGroupProps {
   options: Option[];
   selectedOptions: Option[];
-  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars, no-unused-vars
   handleSelect: (options: Option[]) => void;
   customContainerStyle?: { [name: string]: unknown };
   customButtonStyle?: { [name: string]: unknown };

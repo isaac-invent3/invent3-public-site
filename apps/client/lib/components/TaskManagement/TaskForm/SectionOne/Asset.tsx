@@ -1,7 +1,7 @@
 import { Flex, HStack } from '@chakra-ui/react';
+import { FormSectionInfo } from '@repo/ui/components';
 import React, { useEffect, useState } from 'react';
 import AssetSelect from '~/lib/components/Common/AssetSelect';
-import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import { Asset } from '~/lib/interfaces/asset.interfaces';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
@@ -44,7 +44,7 @@ const AssetField = () => {
   return (
     <HStack width="full" alignItems="flex-start" spacing="81px">
       <Flex width="full" maxW="130px">
-        <SectionInfo
+        <FormSectionInfo
           title="Asset"
           info="Add name that users can likely search with"
           isRequired

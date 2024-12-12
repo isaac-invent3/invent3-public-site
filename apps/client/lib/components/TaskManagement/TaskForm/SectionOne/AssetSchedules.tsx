@@ -1,14 +1,14 @@
 import { Flex } from '@chakra-ui/react';
 import { createColumnHelper } from '@tanstack/react-table';
 import React, { useEffect, useMemo, useState } from 'react';
-import DataTable from '~/lib/components/UI/Table';
+import { DataTable } from '@repo/ui/components';
 import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import { updateTaskForm } from '~/lib/redux/slices/TaskSlice';
 import { useGetAllMaintenanceScheduleByAssetIdQuery } from '~/lib/redux/services/maintenance/schedule.services';
 import InfoCard from '~/lib/components/UI/InfoCard';
-import ErrorMessage from '~/lib/components/UI/ErrorMessage';
+import { ErrorMessage } from '@repo/ui/components';
 import { useField } from 'formik';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 

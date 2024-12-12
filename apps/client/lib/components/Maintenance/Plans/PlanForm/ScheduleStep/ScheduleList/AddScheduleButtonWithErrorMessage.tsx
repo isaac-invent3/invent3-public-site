@@ -2,8 +2,7 @@ import { Flex, VStack } from '@chakra-ui/react';
 import { useField } from 'formik';
 import { isArray } from 'lodash';
 
-import ErrorMessage from '~/lib/components/UI/ErrorMessage';
-import AddButton from '~/lib/components/UI/Form/FormAddButton';
+import { ErrorMessage, FormAddButton } from '@repo/ui/components';
 
 interface AddScheduleButtonWithErrorMessageProps {
   handleAddSchedule: () => void;
@@ -17,14 +16,14 @@ const AddScheduleButtonWithErrorMessage = (
   return (
     <VStack width="full" alignItems="flex-start">
       <Flex width="full" justifyContent="center">
-        <AddButton
+        <FormAddButton
           handleClick={() => handleAddSchedule()}
           color="#0366EF"
           customStyle={{ spacing: '8px' }}
           customTextStyle={{ fontWeight: 700 }}
         >
           Add a Schedule
-        </AddButton>
+        </FormAddButton>
       </Flex>
       {meta.touched && meta.error !== undefined && (
         <VStack width="full">

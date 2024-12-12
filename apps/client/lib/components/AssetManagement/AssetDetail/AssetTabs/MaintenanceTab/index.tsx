@@ -2,7 +2,7 @@ import { Flex, Skeleton, Text, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
-import ButtonPagination from '~/lib/components/UI/Pagination/ButtonPagination';
+import { ButtonPagination } from '@repo/ui/components';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { useGetAllMaintenancePlansByAssetIdQuery } from '~/lib/redux/services/maintenance/plan.services';
 import PlanCard from '~/lib/components/Maintenance/Plans/PlanCard';

@@ -2,8 +2,7 @@ import { Flex, HStack, VStack } from '@chakra-ui/react';
 import { useField } from 'formik';
 import React, { useState } from 'react';
 import UserDisplayAndAddButton from '~/lib/components/Common/UserDisplayAndAddButton';
-import ErrorMessage from '~/lib/components/UI/ErrorMessage';
-import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
+import { ErrorMessage, FormSectionInfo } from '@repo/ui/components';
 import { Option } from '~/lib/interfaces/general.interfaces';
 
 interface OwnerProps {
@@ -20,7 +19,7 @@ const Owner = (props: OwnerProps) => {
   return (
     <HStack width="full" alignItems="flex-start" spacing={spacing}>
       <Flex width="full" maxW={sectionMaxWidth}>
-        <SectionInfo
+        <FormSectionInfo
           title="Owner"
           info="Add name that users can likely search with"
           isRequired

@@ -2,12 +2,16 @@
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
 import { Field, FormikProvider, useFormik } from 'formik';
 
-import { Button, GenericModal, ModalHeading } from '@repo/ui/components';
+import {
+  Button,
+  FormTextInput,
+  GenericModal,
+  ModalHeading,
+} from '@repo/ui/components';
 import { useCreateFloorMutation } from '~/lib/redux/services/asset/location.services';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';
 import { floorSchema } from '~/lib/schemas/asset/location.schema';
-import TextInput from '~/lib/components/UI/TextInput';
 import BuildingSelect from './SelectInputs/BuildingSelect';
 
 interface FloorModalProps {
@@ -58,13 +62,13 @@ const FloorModal = (props: FloorModalProps) => {
               <VStack width="full" spacing="16px">
                 <BuildingSelect type="general" />
                 <Field
-                  as={TextInput}
+                  as={FormTextInput}
                   name="floorName"
                   type="text"
                   label="Floor Name"
                 />
                 <Field
-                  as={TextInput}
+                  as={FormTextInput}
                   name="floorRef"
                   type="text"
                   label="Floor Reference"

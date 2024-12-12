@@ -2,10 +2,14 @@
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
 import { Field, FormikProvider, useFormik } from 'formik';
 
-import { Button, GenericModal, ModalHeading } from '@repo/ui/components';
+import {
+  Button,
+  FormTextInput,
+  GenericModal,
+  ModalHeading,
+} from '@repo/ui/components';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';
-import TextInput from '~/lib/components/UI/TextInput';
 import { categorySchema } from '~/lib/schemas/asset/category.schema';
 import { useCreateCategoryMutation } from '~/lib/redux/services/asset/category.services';
 
@@ -51,7 +55,7 @@ const CategoryModal = (props: CategoryModalProps) => {
               {/* Main Form Starts Here */}
               <VStack width="full" spacing="16px">
                 <Field
-                  as={TextInput}
+                  as={FormTextInput}
                   name="categoryName"
                   type="text"
                   label="Category Name"

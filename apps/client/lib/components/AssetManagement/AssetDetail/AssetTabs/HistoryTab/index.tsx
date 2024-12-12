@@ -5,7 +5,7 @@ import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
 import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
 import { useGetMaintenanceHistoryByAssetIdQuery } from '~/lib/redux/services/asset/general.services';
 import { useAppSelector } from '~/lib/redux/hooks';
-import DataTable from '~/lib/components/UI/Table';
+import { DataTable } from '@repo/ui/components';
 import Technician from '../../../Common/Technician';
 import Status from '../../../Common/MaintenanceStatus';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';

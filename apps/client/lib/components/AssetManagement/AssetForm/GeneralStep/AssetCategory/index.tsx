@@ -5,7 +5,6 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import AddButton from '../../../../UI/Form/FormAddButton';
 import CategorySelect from './CategorySelect';
 import CategoryModal from './Modals/CategoryModal';
 import SubCategoryModal from './Modals/SubCategoryModal';
@@ -13,6 +12,7 @@ import SubCategorySelect from './SubCategorySelect';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import { useState } from 'react';
+import { FormAddButton } from '@repo/ui/components';
 
 const AssetCategory = () => {
   const dispatch = useAppDispatch();
@@ -42,7 +42,7 @@ const AssetCategory = () => {
                 );
               }}
             />
-            <AddButton handleClick={onOpen}>Add New Category</AddButton>
+            <FormAddButton handleClick={onOpen}>Add New Category</FormAddButton>
           </VStack>
           <VStack alignItems="flex-end" width="full">
             <SubCategorySelect
@@ -51,9 +51,9 @@ const AssetCategory = () => {
                 dispatch(updateAssetForm({ subCategoryName: option.label }));
               }}
             />
-            <AddButton handleClick={onOpenSubCategory}>
+            <FormAddButton handleClick={onOpenSubCategory}>
               Add New Subcategory
-            </AddButton>
+            </FormAddButton>
           </VStack>
         </SimpleGrid>
       </GridItem>

@@ -1,7 +1,6 @@
 import { HStack } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import CheckBox from '~/lib/components/UI/CheckBox';
-import FilterDropDown from '~/lib/components/UI/FilterDropDown';
+import { CheckBox, FilterDropDown } from '@repo/ui/components';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { useGetAllAssetStatusQuery } from '~/lib/redux/services/asset/general.services';

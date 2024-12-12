@@ -1,9 +1,8 @@
 import { DrawerBody, DrawerHeader, HStack } from '@chakra-ui/react';
 
-import { BackButton, Button } from '@repo/ui/components';
+import { BackButton, Button, GenericDrawer } from '@repo/ui/components';
 import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 import InfoSection from './InfoSection';
-import GenericDrawer from '~/lib/components/UI/GenericDrawer';
 import Schedules from './Schedules';
 
 interface PlanDetailsModalProps {

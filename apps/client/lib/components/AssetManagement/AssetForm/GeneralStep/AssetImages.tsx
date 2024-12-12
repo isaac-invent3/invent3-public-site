@@ -10,7 +10,6 @@ import {
   Badge,
 } from '@chakra-ui/react';
 import React, { useMemo } from 'react';
-import SectionInfo from '../../../UI/Form/FormSectionInfo';
 import { useField } from 'formik';
 import {
   AddIcon,
@@ -19,6 +18,7 @@ import {
   InfoIcon,
 } from '~/lib/components/CustomIcons';
 import { AssetFormImage } from '~/lib/interfaces/asset.interfaces';
+import { FormSectionInfo } from '@repo/ui/components';
 
 const AssetImages = () => {
   const [field, meta, helpers] = useField('images'); //eslint-disable-line
@@ -41,7 +41,7 @@ const AssetImages = () => {
     () => (
       <HStack width="full" alignItems="flex-start" spacing="104px">
         <Flex width="full" maxW="118px">
-          <SectionInfo
+          <FormSectionInfo
             title="Asset Images"
             info="Size max: 10MB each Format: JPG, PNG"
             isRequired

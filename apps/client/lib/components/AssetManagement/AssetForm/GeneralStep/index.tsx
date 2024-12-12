@@ -7,11 +7,11 @@ import AssetDetail from './AssetDetails';
 import AssetDimension from './AssetDimension';
 import AssetOwner from './AssetOwner';
 import AssetNameCodeDescription from './AssetNameCodeDescription';
-import FormActionButtons from '../../../UI/Form/FormActionButtons';
 import AssetLocation from './AssetLocation';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import ParentAsset from './ParentAsset';
+import { FormActionButtons } from '@repo/ui/components';
 
 interface GeneralStepProps {
   activeStep: number;

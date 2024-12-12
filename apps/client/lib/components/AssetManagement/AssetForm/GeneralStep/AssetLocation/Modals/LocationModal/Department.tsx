@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { useDisclosure, VStack } from '@chakra-ui/react';
 
-import AddButton from '../../../../../../UI/Form/FormAddButton';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { FormLocation } from '~/lib/interfaces/asset.interfaces';
 import DepartmentModal from '../DepartmentModal';
 import DepartmentSelect from '../SelectInputs/DepartmentSelect';
+import { FormAddButton } from '@repo/ui/components';
 
 interface DepartmentProps {
   handleReadableLocation: (option: Option, key: keyof FormLocation) => void;
@@ -24,7 +24,7 @@ const Department = (props: DepartmentProps) => {
           floorId={floorId}
           type="specificById"
         />
-        <AddButton handleClick={onOpen}>Add New Department</AddButton>
+        <FormAddButton handleClick={onOpen}>Add New Department</FormAddButton>
       </VStack>
       <DepartmentModal
         isOpen={isOpen}

@@ -4,12 +4,14 @@ import Header from './Header';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { FormikProvider, useFormik } from 'formik';
 import { scheduleSchema } from '~/lib/schemas/maintenance.schema';
-import FormActionButtons from '~/lib/components/UI/Form/FormActionButtons';
-import { Button } from '@repo/ui/components';
+import {
+  Button,
+  FormActionButtons,
+  withFormLeaveDialog,
+} from '@repo/ui/components';
 import { useUpdateScheduleInstanceMutation } from '~/lib/redux/services/maintenance/scheduleInstance.services';
 import SectionTwo from '../ScheduleForm/FormSection/SectionTwo';
 import moment from 'moment';
-import withFormLeaveDialog from '~/lib/components/UI/Form/FormLeaveDialogProvider';
 import AssetInfo from './AssetInfo';
 import Tasks from './Tasks';
 import { getSession } from 'next-auth/react';

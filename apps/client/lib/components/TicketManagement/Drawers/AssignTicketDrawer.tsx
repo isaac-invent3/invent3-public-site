@@ -6,9 +6,7 @@ import { useAppDispatch } from '~/lib/redux/hooks';
 import { useUpdateTicketMutation } from '~/lib/redux/services/ticket.services';
 import { assignTicketSchema } from '~/lib/schemas/ticket.schema';
 import UserDisplayAndAddButton from '../../Common/UserDisplayAndAddButton';
-import { Button } from '@repo/ui/components';
-import ErrorMessage from '../../UI/ErrorMessage';
-import FormInputWrapper from '../../UI/Form/FormInputWrapper';
+import { Button, ErrorMessage, FormInputWrapper } from '@repo/ui/components';
 import TicketDrawerWrapper from './TicketDrawerWrapper';
 import { clearSelectedTicket } from '~/lib/redux/slices/TicketSlice';
 

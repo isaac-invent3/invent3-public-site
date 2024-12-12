@@ -1,9 +1,8 @@
 import { VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import DetailHeader from '~/lib/components/UI/DetailHeader';
-import CustomDatePicker from '../../../UI/Form/FormDatePicker';
 import { Field } from 'formik';
-import TextareaInput from '~/lib/components/UI/TextArea';
+import { FormDatePicker, FormTextAreaInput } from '@repo/ui/components';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import {
   useGetAllAssetConditionQuery,
@@ -23,7 +22,7 @@ const DisposalDetails = () => {
     <VStack spacing="16px" alignItems="flex-start" width="full">
       <DetailHeader variant="secondary">Disposal Details</DetailHeader>
       <VStack width="full" spacing="16px">
-        <CustomDatePicker name="disposalDate" label="Disposal Date" />
+        <FormDatePicker name="disposalDate" label="Disposal Date" />
         <GenericAsyncSelect
           selectName="reason"
           selectTitle="Reason"
@@ -36,7 +35,7 @@ const DisposalDetails = () => {
           setPageNumber={setPageNumber}
         />
         <Field
-          as={TextareaInput}
+          as={FormTextAreaInput}
           name="additionalInformation"
           type="text"
           label="Additional Information"

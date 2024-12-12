@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import DataTable from '../../UI/Table';
+import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import { Asset } from '~/lib/interfaces/asset.interfaces';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';

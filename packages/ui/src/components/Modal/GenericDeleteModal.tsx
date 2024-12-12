@@ -5,7 +5,7 @@ import {
   Text as ChakraText,
   VStack,
 } from '@chakra-ui/react';
-import { Button } from '@repo/ui/components';
+import Button from '../Button';
 import GenericModal from '.';
 
 interface GenericDeleteModalProps {

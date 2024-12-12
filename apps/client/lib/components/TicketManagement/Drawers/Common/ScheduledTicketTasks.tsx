@@ -11,8 +11,7 @@ import { useField, useFormikContext } from 'formik';
 import { useState } from 'react';
 import { DeleteIcon } from '~/lib/components/CustomIcons';
 import TaskFormModal from '~/lib/components/TaskManagement/Drawers/TaskFormDrawer';
-import CheckBox from '~/lib/components/UI/CheckBox';
-import AddButton from '~/lib/components/UI/Form/FormAddButton';
+import { CheckBox, FormAddButton } from '@repo/ui/components';
 import { ScheduleFormDetails } from '~/lib/interfaces/maintenance.interfaces';
 import { Task, taskFormDetails } from '~/lib/interfaces/task.interfaces';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
@@ -82,9 +81,9 @@ const ScheduledTicketTasks = (props: ScheduledTicketTasksProps) => {
           Tasks
         </Text>
 
-        <AddButton color="#0366EF" handleClick={onOpen}>
+        <FormAddButton color="#0366EF" handleClick={onOpen}>
           Add Task
-        </AddButton>
+        </FormAddButton>
       </HStack>
 
       {values?.tasks &&

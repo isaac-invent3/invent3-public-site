@@ -1,12 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { useDisclosure, VStack } from '@chakra-ui/react';
 
-import { useGetAllAislesQuery } from '~/lib/redux/services/asset/location.services';
-import AddButton from '../../../../../../UI/Form/FormAddButton';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { FormLocation } from '~/lib/interfaces/asset.interfaces';
 import AisleModal from '../AisleModal';
 import AisleSelect from '../SelectInputs/AisleSelect';
+import { FormAddButton } from '@repo/ui/components';
 
 interface AisleProps {
   handleReadableLocation: (option: Option, key: keyof FormLocation) => void;
@@ -24,7 +23,7 @@ const Aisle = (props: AisleProps) => {
           type="specificById"
           roomId={roomId}
         />
-        <AddButton handleClick={onOpen}>Add New Aisle</AddButton>
+        <FormAddButton handleClick={onOpen}>Add New Aisle</FormAddButton>
       </VStack>
       <AisleModal isOpen={isOpen} onClose={onClose} defaultRoomId={roomId} />
     </>

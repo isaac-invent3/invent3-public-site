@@ -1,8 +1,7 @@
 import { Flex, HStack } from '@chakra-ui/react';
 
-import SectionInfo from '../../UI/Form/FormSectionInfo';
 import { Field } from 'formik';
-import TextInput from '../../UI/TextInput';
+import { FormSectionInfo, FormTextInput } from '@repo/ui/components';
 
 interface TaskTitleProps {
   sectionMaxWidth: string;
@@ -13,13 +12,18 @@ const TaskTitle = (props: TaskTitleProps) => {
   return (
     <HStack width="full" alignItems="flex-start" spacing={spacing}>
       <Flex width="full" maxW={sectionMaxWidth}>
-        <SectionInfo
+        <FormSectionInfo
           title="Task Title"
           info="Add name that users can likely search with"
           isRequired
         />
       </Flex>
-      <Field as={TextInput} name="taskName" type="text" label="Task Title" />
+      <Field
+        as={FormTextInput}
+        name="taskName"
+        type="text"
+        label="Task Title"
+      />
     </HStack>
   );
 };

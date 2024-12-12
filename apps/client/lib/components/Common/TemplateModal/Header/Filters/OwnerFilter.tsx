@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import FilterDropDown from '~/lib/components/UI/FilterDropDown';
+import { FilterDropDown } from '@repo/ui/components';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useGetAllEmployeesQuery } from '~/lib/redux/services/employees.services';

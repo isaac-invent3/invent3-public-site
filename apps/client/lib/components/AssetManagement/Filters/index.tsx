@@ -1,9 +1,7 @@
 import { HStack, Icon } from '@chakra-ui/react';
 
-import SearchInput from '../../UI/SearchInput';
-import { Button } from '@repo/ui/components';
+import { Button, SearchInput, FilterButton } from '@repo/ui/components';
 import { BulkSearchIcon, DownloadIcon, FilterIcon } from '../../CustomIcons';
-import FilterButton from '../../UI/Filter/FilterButton';
 
 interface FiltersProps {
   setSearch: React.Dispatch<React.SetStateAction<string>>;

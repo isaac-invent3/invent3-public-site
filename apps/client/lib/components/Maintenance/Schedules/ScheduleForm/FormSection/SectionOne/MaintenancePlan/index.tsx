@@ -5,10 +5,8 @@ import { useField } from 'formik';
 import React, { useEffect, useMemo, useState } from 'react';
 import CustomizedPlanModal from '~/lib/components/Maintenance/Plans/Drawers/CustomizedplanDrawer';
 import PlanDetailsModal from '~/lib/components/Maintenance/Plans/Drawers/PlanDetailDrawer';
-import ErrorMessage from '~/lib/components/UI/ErrorMessage';
-import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import InfoCard from '~/lib/components/UI/InfoCard';
-import DataTable from '~/lib/components/UI/Table';
+import { DataTable, ErrorMessage, FormSectionInfo } from '@repo/ui/components';
 import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useGetAllMaintenancePlansByAssetIdQuery } from '~/lib/redux/services/maintenance/plan.services';
@@ -196,7 +194,7 @@ const Plan = () => {
   return (
     <HStack width="full" alignItems="flex-start" spacing="81px">
       <Flex width="full" maxW="130px">
-        <SectionInfo
+        <FormSectionInfo
           title="Maintenance Plan"
           info="Add name that users can likely search with"
           isRequired

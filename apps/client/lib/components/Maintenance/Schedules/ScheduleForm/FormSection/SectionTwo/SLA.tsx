@@ -1,8 +1,7 @@
 import { Flex, HStack } from '@chakra-ui/react';
 import { useField } from 'formik';
 
-import { SelectableButtonGroup } from '@repo/ui/components';
-import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
+import { FormSectionInfo, SelectableButtonGroup } from '@repo/ui/components';
 
 const staticSLA = [
   {
@@ -31,7 +30,7 @@ const ServiceLevelAgreement = (props: ServiceLevelAgreementProps) => {
   return (
     <HStack width="full" alignItems="flex-start" spacing={spacing}>
       <Flex width="full" maxW={sectionMaxWidth}>
-        <SectionInfo
+        <FormSectionInfo
           title="Service Level Agreement"
           info="Add name that users can likely search with"
           isRequired

@@ -9,8 +9,6 @@ import {
 import { FormikProvider, useFormik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import AssetSelect from '~/lib/components/Common/AssetSelect';
-import FormActionButtons from '~/lib/components/UI/Form/FormActionButtons';
-import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useGetAssetInfoHeaderByIdQuery } from '~/lib/redux/services/asset/general.services';
 import { useGetAssetTypeByIdQuery } from '~/lib/redux/services/asset/types.services';
@@ -25,7 +23,11 @@ import { updatePlanForm } from '~/lib/redux/slices/MaintenanceSlice';
 import moment from 'moment';
 import AssetGroupType from './AssetGroupType';
 import AssetGroupContext from './AssetGroupContext';
-import RadioBox from '~/lib/components/UI/Radio/RadioBox';
+import {
+  FormActionButtons,
+  FormSectionInfo,
+  RadioBox,
+} from '@repo/ui/components';
 
 interface PlanInfoStepProps {
   activeStep: number;
@@ -199,7 +201,7 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
               <SimpleGrid columns={2} gap="40px" width="full">
                 <HStack width="full" spacing="40px">
                   <Flex width="full" maxW="141px">
-                    <SectionInfo
+                    <FormSectionInfo
                       title="Plan Scope"
                       info="Add name that users can likely search with"
                       isRequired
@@ -226,7 +228,7 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
                 <SimpleGrid columns={2} gap="40px" width="full">
                   <HStack width="full" alignItems="flex-start" spacing="40px">
                     <Flex width="full" maxW="141px">
-                      <SectionInfo
+                      <FormSectionInfo
                         title={
                           formik.values.planScope === 'asset'
                             ? 'Asset'

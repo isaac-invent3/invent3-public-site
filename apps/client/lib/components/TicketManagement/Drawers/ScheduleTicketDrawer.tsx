@@ -14,10 +14,12 @@ import {
 import { scheduleTicketSchema } from '~/lib/schemas/ticket.schema';
 import { FORM_ENUM } from '~/lib/utils/constants';
 import { generateTasksArray } from '../../Maintenance/Common/helperFunctions';
-import { Button } from '@repo/ui/components';
-import DateTimeButtons from '../../UI/DateTimeComponents/DateTimeButtons';
-import ErrorMessage from '../../UI/ErrorMessage';
-import FormInputWrapper from '../../UI/Form/FormInputWrapper';
+import {
+  Button,
+  DateTimeButtons,
+  ErrorMessage,
+  FormInputWrapper,
+} from '@repo/ui/components';
 import ScheduleTicketSuccessModal from '../Modals/ScheduleTicketSuccessModal';
 import TicketDrawerWrapper from './TicketDrawerWrapper';
 import { useAppDispatch } from '~/lib/redux/hooks';

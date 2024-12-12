@@ -6,13 +6,12 @@ import {
   VStack,
 } from '@chakra-ui/react';
 
-import { BackButton, Button } from '@repo/ui/components';
+import { BackButton, Button, GenericDrawer } from '@repo/ui/components';
 import { TaskInstance } from '~/lib/interfaces/task.interfaces';
 import MarkTaskAsCompletedModal from '../../Modals/MarkTaskAsCompletedModal';
 import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
 import OtherRelatedTasks from './OtherRelatedTasks';
-import GenericDrawer from '~/lib/components/UI/GenericDrawer';
 
 interface TaskDetailDrawerProps {
   isOpen: boolean;

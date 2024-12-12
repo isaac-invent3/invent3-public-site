@@ -1,8 +1,9 @@
 import { Box, HStack, Link, VStack } from '@chakra-ui/react';
 import { keyframes } from '@emotion/react';
 import { useState } from 'react';
-import DropDown from '../../Dashboard/Common/DropDown';
+import { Option } from '~/lib/interfaces/general.interfaces';
 import FormInputWrapper from '../../UI/Form/FormInputWrapper';
+import SelectInput from '../../UI/Select';
 import OperatorDropdown from './OperationDropdown';
 
 type Operator = 'Equals' | 'Less than' | 'Greater than';
@@ -46,13 +47,11 @@ const DynamicConditions = () => {
     { column: '', operator: 'Equals', value: '', conditionJoin: null },
   ]);
 
-  
-
   const [removingIndex, setRemovingIndex] = useState<number | null>(null);
 
   // Add a new condition
   const addCondition = (index: number) => {
-    const newCondition: Condition = {
+    let newCondition: Condition = {
       column: '',
       operator: 'Equals',
       value: '',
@@ -60,26 +59,16 @@ const DynamicConditions = () => {
     };
 
     if (index >= 0 && index < conditions.length) {
-      const updatedConditions = [...conditions];
-      const currentCondition = updatedConditions[index];
-
-      if (!currentCondition) return;
-
-      updatedConditions[index] = {
-        column: currentCondition.column,
-        operator: currentCondition.operator,
-        value: currentCondition.value,
+      newCondition = {
+        column: '',
+        operator: 'Equals',
+        value: '',
         conditionJoin: {
-          condition: index + 1,
+          condition: index,
           join: 'AND',
         },
       };
 
-      updatedConditions.splice(index + 1, 0, newCondition);
-
-      console.log(conditions);
-
-      return setConditions(updatedConditions);
     }
 
     const updatedConditions = [...conditions];
@@ -114,6 +103,26 @@ const DynamicConditions = () => {
     }
   };
 
+  const operators: Option[] = [
+    {
+      label: '< Less Than',
+      value: 'Less Than',
+    },
+    {
+      label: '= Equals',
+      value: 'Equals',
+    },
+    {
+      label: '> Greater Than',
+      value: 'Greater Than',
+    },
+  ];
+
+  const getSelectedOperator = (index: number): Option | undefined => {
+    return operators.find((item) => item.value === conditions[index]?.operator);
+  };
+
+
   return (
     <FormInputWrapper
       sectionMaxWidth="118px"
@@ -127,16 +136,14 @@ const DynamicConditions = () => {
         transition="all 0.5s ease"
         align="stretch"
         width="full"
-        spacing="16px"
+        spacing="24px"
         style={{
           marginLeft: conditions.length > 1 ? '40px' : '0px',
         }}
- 
       >
         {conditions.map((condition, index) => (
           <Box
             position="relative"
-            zIndex={1}
             animation={
               removingIndex === index
                 ? `${exitAnimation} 0.3s forwards`
@@ -161,10 +168,10 @@ const DynamicConditions = () => {
                   transform="translateY(-5%)"
                   border="1px solid #BBBBBB"
                   borderRight="none"
-                  borderRadius="8px"
+                  borderTopLeftRadius="8px"
+                  borderBottomLeftRadius="8px"
                   height="80px"
-                  width="80px"
-                  zIndex={-1}
+                  width="40px"
                 />
               </>
             )}
@@ -173,78 +180,60 @@ const DynamicConditions = () => {
               alignItems="center"
               spacing={4}
               justifyContent="space-between"
-              zIndex={2}
               height="66px"
               bg="#F7F7F7"
               p="8px"
               borderRadius="8px"
             >
-              <DropDown
-                options={[
-                  {
-                    label: 'Testing',
-                    value: '1',
-                  },
-                ]}
-                label="Column"
-                handleClick={(option) => console.log(option)}
-                selectedOptions={null}
-                labelStyles={{
-                  border: '1px solid #D4D4D4',
-                  background: 'transparent',
-                  height: '50px',
-                  borderRadius: '8px',
-                }}
+              <SelectInput
+                name="Column"
+                title="Column"
+                options={operators}
+                handleSelect={(option) => console.log(option)}
+                showTitleAfterSelect={true}
                 containerStyles={{
                   flex: 1,
-                  maxW: 'none',
-                }}
-                chevronStyles={{
-                  boxSize: '24px',
-                  color: '#42403D',
+                  border: '1px solid #D4D4D4',
+                  background: 'transparent',
+                  borderRadius: '8px',
+                  height: 'auto',
+                  alignItems: 'center',
                 }}
               />
 
-              <DropDown
-                options={[]}
-                label="Column"
-                handleClick={(option) => console.log(option)}
-                selectedOptions={null}
-                labelStyles={{
-                  border: '1px solid #D4D4D4',
-                  background: 'transparent',
-                  height: '50px',
-                  borderRadius: '8px',
-                }}
+              <SelectInput
+                name="Operator"
+                title="Operator"
+                options={operators}
+                selectedOption={getSelectedOperator(index)}
+                handleSelect={(option) =>
+                  updateCondition(index, 'operator', option.value as string)
+                }
+                showTitleAfterSelect={true}
                 containerStyles={{
                   flex: 0.5,
-                  maxW: 'none',
-                }}
-                chevronStyles={{
-                  boxSize: '24px',
-                  color: '#42403D',
-                }}
-              />
-              <DropDown
-                options={[]}
-                label="Column"
-                handleClick={(option) => console.log(option)}
-                selectedOptions={null}
-                labelStyles={{
                   border: '1px solid #D4D4D4',
                   background: 'transparent',
-                  height: '50px',
                   borderRadius: '8px',
-                }}
-                containerStyles={{
-                  flex: 1,
-                  maxW: 'none',
-                }}
-                chevronStyles={{
-                  boxSize: '24px',
-                  color: '#42403D',
+                  height: 'auto',
                 }}
               />
+
+              <SelectInput
+                name="Column"
+                title="Column"
+                options={operators}
+                handleSelect={(option) => console.log(option)}
+                showTitleAfterSelect={true}
+                containerStyles={{
+                  flex: 1,
+                  border: '1px solid #D4D4D4',
+                  background: 'transparent',
+                  borderRadius: '8px',
+                  height: 'auto',
+                }}
+              />
+
               <VStack flex={0.5} alignItems="flex-start">
                 <Link
                   color="#0366EF"

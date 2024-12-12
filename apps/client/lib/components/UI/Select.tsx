@@ -1,5 +1,6 @@
 import {
   Box,
+  BoxProps,
   Flex,
   FormControl,
   FormErrorMessage,
@@ -7,11 +8,11 @@ import {
   Icon,
 } from '@chakra-ui/react';
 import { useField } from 'formik';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Select, { components } from 'react-select';
 import AsyncSelect from 'react-select/async';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { ChevronDownIcon, InfoIcon } from '../CustomIcons';
-import { useCallback, useEffect, useRef, useState } from 'react';
 
 const DropdownIndicator = (props: any) => {
   const { pb, ...rest } = props;
@@ -46,6 +47,7 @@ interface SelectInputProps {
   callBackFunction?: (inputValue: string) => Promise<Option[]>;
   variant?: 'primary' | 'secondary';
   isAsync?: boolean;
+  containerStyles?: BoxProps;
 }
 function SelectInput(props: SelectInputProps) {
   const {
@@ -63,6 +65,7 @@ function SelectInput(props: SelectInputProps) {
     handleSelect,
     callBackFunction,
     handleOnMenuScrollToBottom,
+    containerStyles,
   } = props;
   const [field, meta, helpers] = useField(name);
   const SelectComponent = isAsync ? AsyncSelect : Select;
@@ -105,7 +108,7 @@ function SelectInput(props: SelectInputProps) {
   }, [inputValue]);
 
   return (
-    <Box width={width} position="relative" height="full">
+    <Box width={width} position="relative" height="full" {...containerStyles}>
       <FormControl
         isInvalid={meta.touched && meta.error !== undefined}
         position="relative"

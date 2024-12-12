@@ -1,10 +1,11 @@
 'use client';
 import { Box, Flex, Grid, Icon, Text, VStack } from '@chakra-ui/react';
 
+import { Button } from '@repo/ui/components';
 import { FormikProvider, useFormik } from 'formik';
+import moment from 'moment';
 import AssetSelect from '../../Common/AssetSelect';
 import { ChevronLeftIcon } from '../../CustomIcons';
-import Button from '../../UI/Button';
 import DateTimeButtons from '../../UI/DateTimeComponents/DateTimeButtons';
 import FilterDropDown from '../../UI/FilterDropDown';
 import FormInputWrapper from '../../UI/Form/FormInputWrapper';
@@ -14,6 +15,10 @@ import DynamicConditions from './Condition';
 const GenerateReport = () => {
   const initialValues = {
     tableTitle: null,
+    columns: [],
+    startDate: '',
+    endDate: '',
+    conditions: [],
   };
 
   const formik = useFormik({
@@ -28,7 +33,7 @@ const GenerateReport = () => {
         <Header showGenerate={false} header="Generate Report" />
 
         <FormikProvider value={formik}>
-          <Box p="16px" bg="white"  borderRadius="6px" mt="20px" height="100%">
+          <Box p="16px" bg="white" borderRadius="6px" mt="20px" height="100%">
             <Text fontWeight={400} color="#0E2642" fontSize="14px">
               Generate a Report
             </Text>
@@ -92,9 +97,35 @@ const GenerateReport = () => {
               >
                 <VStack width="full" spacing="12px" alignItems="flex-start">
                   <DateTimeButtons
-                    buttonVariant={'secondary'}
-                    includeTime={true}
-                    minDate={new Date()}
+                    buttonVariant="secondary"
+                    includeTime={false}
+                    isRange
+                    customDateHeader="Date"
+                    customButtonLabel="Select Start & End Date"
+                    showPredefinedDates={false}
+                    range={{
+                      startDate: formik.values.startDate
+                        ? moment(formik.values.startDate, 'DD/MM/YYYY').toDate()
+                        : undefined,
+                      endDate: formik.values.endDate
+                        ? moment(formik.values.endDate, 'DD/MM/YYYY').toDate()
+                        : undefined,
+                    }}
+                    handleRange={(info) => {
+                      formik.setFieldValue(
+                        'startDate',
+                        info.startDate
+                          ? moment(info.startDate).format('DD/MM/YYYY')
+                          : null
+                      );
+
+                      formik.setFieldValue(
+                        'endDate',
+                        info.endDate
+                          ? moment(info.endDate).format('DD/MM/YYYY')
+                          : null
+                      );
+                    }}
                   />
                 </VStack>
               </FormInputWrapper>
@@ -117,7 +148,12 @@ const GenerateReport = () => {
               <Text fontWeight={700} fontSize="14x" color="#0E2642">
                 No Report Generated Yet
               </Text>
-              <Text color="#838383" width="200px" margin="0 auto" textAlign="center">
+              <Text
+                color="#838383"
+                width="200px"
+                margin="0 auto"
+                textAlign="center"
+              >
                 Select your output with conditions above to generate your report
               </Text>
             </VStack>

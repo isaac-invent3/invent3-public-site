@@ -8,7 +8,7 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import React from 'react';
+
 import CardHeader from '../../Common/CardHeader';
 import { useAppSelector } from '~/lib/redux/hooks';
 

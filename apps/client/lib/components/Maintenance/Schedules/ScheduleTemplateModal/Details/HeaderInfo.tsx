@@ -1,5 +1,5 @@
 import { HStack, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
 
 interface HeaderInfoProps {
@@ -29,17 +29,11 @@ const HeaderInfo = (props: HeaderInfoProps) => {
       alignItems="flex-start"
       justifyContent="space-between"
     >
-      <HStack spacing="40px">
+      <HStack spacing="40px" alignItems="flex-start">
         {firstInfo.map((item, index) => (
           <VStack alignItems="flex-start" spacing="8px" key={index}>
             <Text color="neutral.300">{item.label}</Text>
-            <Text
-              color="white"
-              fontWeight={700}
-              fontSize="14px"
-              lineHeight="22px"
-              maxW="278px"
-            >
+            <Text color="white" fontSize="14px" lineHeight="22px" maxW="350px">
               {item.value}
             </Text>
           </VStack>
@@ -48,13 +42,7 @@ const HeaderInfo = (props: HeaderInfoProps) => {
       <VStack alignItems="flex-start" spacing="4px">
         <Text color="neutral.300">Maintenance Plan</Text>
         <HStack spacing="8px">
-          <Text
-            color="white"
-            fontWeight={700}
-            fontSize="14px"
-            lineHeight="22px"
-            maxW="278px"
-          >
+          <Text color="white" fontSize="14px" lineHeight="22px" maxW="278px">
             {data?.planName}
           </Text>
         </HStack>

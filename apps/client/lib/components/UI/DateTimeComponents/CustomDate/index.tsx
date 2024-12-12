@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
-import GenericModal from '../../Modal';
 import {
   HStack,
   Icon,
@@ -9,12 +8,12 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import Button from '../../Button';
+import { Button, GenericModal } from '@repo/ui/components';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import AddTime from '../AddTime';
 import { ClockIcon, RemoveIcon } from '~/lib/components/CustomIcons';
-import { enGB } from 'date-fns/locale/en-GB';
+import enGB from 'date-fns/locale/en-GB';
 import './style.css';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -28,6 +27,7 @@ interface CustomDateProps {
   maxDate?: Date;
   initialDate?: Date;
   initialTime?: string;
+  headerLabel?: string;
   shouldIncludeTime?: boolean;
   handleSetDateTime?: (
     date: Date | undefined,
@@ -45,6 +45,7 @@ const CustomDate = (props: CustomDateProps) => {
     initialTime,
     handleSetDateTime,
     shouldIncludeTime,
+    headerLabel,
   } = props;
   const [time, setTime] = useState<string | undefined>(
     initialTime ?? undefined
@@ -68,7 +69,7 @@ const CustomDate = (props: CustomDateProps) => {
         <ModalBody m={0} p={0} py="32px" pl="32px" pr="27px" width="full">
           <VStack width="full" alignItems="flex-start" spacing="51px">
             <Text size="lg" color="primary.500" fontWeight={700}>
-              Custom Date
+              {headerLabel ?? 'Custom Date'}
             </Text>
             <HStack
               width="full"

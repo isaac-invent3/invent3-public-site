@@ -2,10 +2,10 @@ import { Text, useDisclosure, VStack } from '@chakra-ui/react';
 import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 import GenericPopover from '../../UI/GenericPopover';
 import PlanDetailsModal from './Drawers/PlanDetailDrawer';
-import GenericDeleteModal from '../../UI/Modal/GenericDeleteModal';
+import { GenericDeleteModal } from '@repo/ui/components';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useDeleteMaintenancePlanMutation } from '~/lib/redux/services/maintenance/plan.services';
-import { useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 
 const PopoverAction = (plan: MaintenancePlan) => {
   const {
@@ -21,12 +21,12 @@ const PopoverAction = (plan: MaintenancePlan) => {
 
   const { handleSubmit } = useCustomMutation();
   const [deleteTask, { isLoading }] = useDeleteMaintenancePlanMutation({});
-  const { data } = useSession();
 
   const handleDeletePlan = async () => {
+    const session = await getSession();
     const response = await handleSubmit(
       deleteTask,
-      { id: plan?.maintenancePlanId, deletedBy: data?.user.username },
+      { id: plan?.maintenancePlanId, deletedBy: session?.user.username },
       'Task Deleted Successfully'
     );
     if (response?.data) {

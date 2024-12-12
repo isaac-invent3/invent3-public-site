@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import TaskListDrawer from '~/lib/components/TaskManagement/Drawers/TaskListDrawer';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { useGetAllTaskInstancesByScheduleInstanceIdQuery } from '~/lib/redux/services/task/instance.services';
-import TaskInstanceTable from '../../../Tables/TaskInstanceTable';
+import TaskInstanceTable from '../../Tables/TaskInstanceTable';
 
-interface TaskListViewProps {
+interface TaskInstanceListViewProps {
   isOpen: boolean;
   onClose: () => void;
   scheduleId: number;
   showPopover: boolean;
 }
-const TaskListView = (props: TaskListViewProps) => {
+const TaskInstanceListView = (props: TaskInstanceListViewProps) => {
   const { isOpen, onClose, scheduleId, showPopover } = props;
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
@@ -27,6 +27,7 @@ const TaskListView = (props: TaskListViewProps) => {
       onClose={onClose}
       showAddTaskButton={showPopover}
       scheduleId={scheduleId}
+      taskType="instance"
     >
       <TaskInstanceTable
         data={data?.data?.items ?? []}
@@ -44,4 +45,4 @@ const TaskListView = (props: TaskListViewProps) => {
   );
 };
 
-export default TaskListView;
+export default TaskInstanceListView;

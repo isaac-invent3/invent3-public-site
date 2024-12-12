@@ -197,7 +197,7 @@ const AssetImages = () => {
                       ? 'error.200'
                       : '#F6F6F6'
                   }
-                  color="primary.main"
+                  color="primary.500"
                   width="140px"
                   height="75px"
                   rounded="8px"

@@ -8,17 +8,17 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { Field, FormikProvider, useFormik } from 'formik';
-import React from 'react';
-import GenericModal from '~/lib/components/UI/Modal';
-import Button from '~/lib/components/UI/Button';
+
+import { Button, GenericModal } from '@repo/ui/components';
 import TextInput from '~/lib/components/UI/TextInput';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import { markTaskAsCompletedSchema } from '~/lib/schemas/task.schema';
 import { TaskInstance } from '~/lib/interfaces/task.interfaces';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 import MarkAsCompletedSuccessModal from './SuccessModal';
 import { useUpdateTaskInstanceMutation } from '~/lib/redux/services/task/instance.services';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 interface MarkTaskAsCompletedModalProps {
   isOpen: boolean;
@@ -27,7 +27,6 @@ interface MarkTaskAsCompletedModalProps {
 }
 const MarkTaskAsCompletedModal = (props: MarkTaskAsCompletedModalProps) => {
   const { isOpen, onClose, data } = props;
-  const { data: session } = useSession();
   const { handleSubmit } = useCustomMutation();
   const {
     isOpen: isOpenSuccess,
@@ -37,6 +36,9 @@ const MarkTaskAsCompletedModal = (props: MarkTaskAsCompletedModalProps) => {
   const [updateTask, { isLoading: isUpdating }] = useUpdateTaskInstanceMutation(
     {}
   );
+  const appConfigValue = useAppSelector(
+    (state) => state.general.appConfigValues
+  );
 
   const formik = useFormik({
     initialValues: {
@@ -45,6 +47,7 @@ const MarkTaskAsCompletedModal = (props: MarkTaskAsCompletedModalProps) => {
     validationSchema: markTaskAsCompletedSchema,
     enableReinitialize: true,
     onSubmit: async (values) => {
+      const session = await getSession();
       let response;
       const info = {
         taskInstanceId: data?.taskInstanceId,
@@ -52,12 +55,15 @@ const MarkTaskAsCompletedModal = (props: MarkTaskAsCompletedModalProps) => {
         taskInstanceName: data?.taskInstanceName,
         taskDescription: data?.taskDescription ?? undefined,
         priorityId: data?.taskPriorityId,
-        taskStatusId: 3,
+        taskStatusId:
+          typeof appConfigValue?.DEFAULT_COMPLETED_TASK_STATUS_ID === 'string'
+            ? +appConfigValue?.DEFAULT_COMPLETED_TASK_STATUS_ID
+            : null,
         assignedTo: data?.assignedTo,
         costEstimate: data?.costEstimate,
         actualCost: values?.actualCost,
         scheduleId: data?.scheduleInstanceId,
-        lastModifiedBy: session?.user.id,
+        lastModifiedBy: session?.user.username,
       };
       response = await handleSubmit(
         updateTask,
@@ -145,7 +151,7 @@ const MarkTaskAsCompletedModal = (props: MarkTaskAsCompletedModalProps) => {
                   <Button
                     type="submit"
                     customStyles={{ width: '193px' }}
-                    isLoading={isUpdating}
+                    isLoading={isUpdating || formik.isSubmitting}
                   >
                     Continue
                   </Button>

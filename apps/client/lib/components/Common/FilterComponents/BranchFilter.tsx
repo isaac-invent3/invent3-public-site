@@ -73,7 +73,7 @@ const BranchFilter = (props: BranchFilterProps) => {
 
   return (
     <FilterDropDown
-      label="Location(Branch):"
+      label="Location (Branch):"
       options={[]}
       selectedOptions={selectedOptions}
       handleClick={(value) => handleSelectedOption(value)}

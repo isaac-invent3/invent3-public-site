@@ -32,7 +32,7 @@ const RegionFilter = (props: RegionFilterProps) => {
 
   return (
     <FilterDropDown
-      label="Location(Region):"
+      label="Location (Region):"
       options={options}
       selectedOptions={selectedOptions}
       handleClick={(value) => handleSelectedOption(value)}

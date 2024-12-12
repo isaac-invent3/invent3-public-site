@@ -1,7 +1,12 @@
-import { Heading, HStack, ModalBody, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
-import Button from '~/lib/components/UI/Button';
-import GenericModal from '~/lib/components/UI/Modal';
+import {
+  Heading,
+  HStack,
+  ModalBody,
+  Text as ChakraText,
+  VStack,
+} from '@chakra-ui/react';
+import { Button } from '@repo/ui/components';
+import GenericModal from '.';
 
 interface GenericDeleteModalProps {
   isOpen: boolean;
@@ -9,7 +14,7 @@ interface GenericDeleteModalProps {
   handleProceed: () => void;
 }
 
-const GenericLeaveDialogModal = (props: GenericDeleteModalProps) => {
+const LeaveDialogModal = (props: GenericDeleteModalProps) => {
   const { isOpen, onClose, handleProceed } = props;
 
   return (
@@ -38,7 +43,7 @@ const GenericLeaveDialogModal = (props: GenericDeleteModalProps) => {
             >
               Leave Form?
             </Heading>
-            <Text
+            <ChakraText
               size="md"
               color="neutral.700"
               maxW="296px"
@@ -46,7 +51,7 @@ const GenericLeaveDialogModal = (props: GenericDeleteModalProps) => {
               fontWeight={400}
             >
               Changes you made may not be saved.
-            </Text>
+            </ChakraText>
           </VStack>
           <HStack width="full" spacing="24px" justifyContent="center">
             <Button
@@ -69,4 +74,4 @@ const GenericLeaveDialogModal = (props: GenericDeleteModalProps) => {
   );
 };
 
-export default GenericLeaveDialogModal;
+export default LeaveDialogModal;

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import GenericModal from '../Modal';
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
-import Button from '../Button';
+import {
+  Button,
+  GenericModal,
+  SelectableButtonGroup,
+} from '@repo/ui/components';
 import SectionInfo from '../Form/FormSectionInfo';
 import NumberBox from './Common/NumberBox';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import moment from 'moment';
-import SelectableButtonGroup from '../Button/SelectableButtonGroup';
 
 const PERIODS = [
   {

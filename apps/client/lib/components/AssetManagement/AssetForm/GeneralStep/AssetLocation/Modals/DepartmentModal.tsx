@@ -1,13 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
 import { Field, FormikProvider, useFormik } from 'formik';
-import React from 'react';
-import GenericModal from '~/lib/components/UI/Modal';
-import Button from '~/lib/components/UI/Button';
-import ModalHeading from '../../../../../UI/Modal/ModalHeading';
+
+import { Button, GenericModal, ModalHeading } from '@repo/ui/components';
 import { useCreateDepartmentMutation } from '~/lib/redux/services/asset/location.services';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 import { departmentSchema } from '~/lib/schemas/asset/location.schema';
 import TextInput from '~/lib/components/UI/TextInput';
 import FloorSelect from './SelectInputs/FloorSelect';
@@ -21,7 +19,6 @@ const DepartmentModal = (props: DepartmentModalProps) => {
   const { isOpen, onClose, defaultFloorId } = props;
   const [createDepartment, { isLoading }] = useCreateDepartmentMutation({});
   const { handleSubmit } = useCustomMutation();
-  const { data } = useSession();
 
   const formik = useFormik({
     initialValues: {
@@ -32,7 +29,9 @@ const DepartmentModal = (props: DepartmentModalProps) => {
     validationSchema: departmentSchema,
     enableReinitialize: true,
     onSubmit: async (values, { resetForm }) => {
-      const finalValue = { ...values, createdBy: data?.user?.username };
+      const session = await getSession();
+
+      const finalValue = { ...values, createdBy: session?.user?.username };
       const response = await handleSubmit(createDepartment, finalValue, '');
       if (response?.data) {
         onClose();
@@ -81,7 +80,10 @@ const DepartmentModal = (props: DepartmentModalProps) => {
                 >
                   Cancel
                 </Button>
-                <Button type="submit" isLoading={isLoading}>
+                <Button
+                  type="submit"
+                  isLoading={isLoading || formik.isSubmitting}
+                >
                   Add Department
                 </Button>
               </HStack>

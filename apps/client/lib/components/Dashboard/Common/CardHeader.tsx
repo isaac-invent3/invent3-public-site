@@ -1,5 +1,4 @@
 import { Heading } from '@chakra-ui/react';
-import React from 'react';
 
 interface CardHeaderProps {
   children: React.ReactNode;
@@ -8,10 +7,10 @@ interface CardHeaderProps {
 const CardHeader = ({ children, color }: CardHeaderProps) => {
   return (
     <Heading
-      color={color ?? 'Neutral.800'}
-      fontSize="16px"
-      lineHeight="19.01px"
-      fontWeight={700}
+      color={color ?? 'neutral.800'}
+      fontSize="14px"
+      lineHeight="16.63px"
+      fontWeight={500}
     >
       {children}
     </Heading>

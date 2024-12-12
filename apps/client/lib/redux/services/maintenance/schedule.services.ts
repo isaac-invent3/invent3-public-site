@@ -56,7 +56,7 @@ export const maintenanceScheduleApi = createApi({
     getAllMaintenanceSchedule: builder.query({
       // eslint-disable-next-line no-unused-vars
       query: ({ id, ...data }) => ({
-        url: generateQueryStr(`/MaintenanceSchedules`, data),
+        url: generateQueryStr(`/MaintenanceSchedules?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -133,6 +133,16 @@ export const maintenanceScheduleApi = createApi({
       }),
       providesTags: ['maintenanceScheduleByArea'],
     }),
+    getMaintenenanceScheduleInfoHeaderByScheduleID: builder.query<
+      BaseApiResponse<MaintenanceSchedule>,
+      { id: string | number | null }
+    >({
+      query: ({ id }) => ({
+        url: `/MaintenanceSchedules/GetMaintenanceScheduleInfoHeaderRecordByScheduleId/${id}?`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
     getMaintenanceSchedulesByTicketId: builder.query<
       BaseApiResponse<MaintenanceSchedule>,
       { ticketId: number } & Record<string, any>
@@ -140,7 +150,7 @@ export const maintenanceScheduleApi = createApi({
       query: ({ ticketId, ...data }) => ({
         // url: `/MaintenanceSchedules/GetMaintenanceSchedulesByTicketId/${ticketId}`,
         url: generateQueryStr(
-          `/MaintenanceSchedules/GetMaintenanceSchedulesByTicketId/${ticketId}`,
+          `/MaintenanceSchedules/GetMaintenanceSchedulesByTicketId/${ticketId}?`,
           data
         ),
         method: 'GET',
@@ -180,6 +190,7 @@ export const {
   useGetMaintenanceScheduleByGuidQuery,
   useGetMaintenanceSchedulesByPlanIdQuery,
   useGetMaintenanceSchedulesWithSingleAggregateCountsByAreaQuery,
+  useGetMaintenenanceScheduleInfoHeaderByScheduleIDQuery,
   useValidateFirstInstanceScheduledDateMutation,
   useGetMaintenanceSchedulesByTicketIdQuery,
 } = maintenanceScheduleApi;

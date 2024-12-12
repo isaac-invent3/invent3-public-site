@@ -8,22 +8,19 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
-import React from 'react';
-import Button from '~/lib/components/UI/Button';
+
+import { BackButton, Button, ModalHeading } from '@repo/ui/components';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 import { useCreateMaintenancePlanMutation } from '~/lib/redux/services/maintenance/plan.services';
-import ModalHeading from '~/lib/components/UI/Modal/ModalHeading';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import Plan from './PlanType';
 import AssetSelect from '~/lib/components/Common/AssetSelect';
 import { planSchema } from '~/lib/schemas/maintenance.schema';
-import BackButton from '~/lib/components/UI/Button/BackButton';
 import { MAINTENANCE_PLAN_ENUM } from '~/lib/utils/constants';
 import moment from 'moment';
 import Owner from '../../Common/Owner';
 import PlanTitle from '../../Common/PlanTitle';
-import Frequency from '../../../Common/Frequency';
 import StartDate from '../../Common/StartDate';
 import EndDate from '../../Common/EndDate';
 import GenericDrawer from '~/lib/components/UI/GenericDrawer';
@@ -37,7 +34,6 @@ const CustomizedPlanModal = (props: CustomizedPlanModalProps) => {
   const { isOpen, onClose, assetId } = props;
   const [createPlan, { isLoading }] = useCreateMaintenancePlanMutation({});
   const { handleSubmit } = useCustomMutation();
-  const { data } = useSession();
 
   const formik = useFormik({
     initialValues: {
@@ -49,6 +45,7 @@ const CustomizedPlanModal = (props: CustomizedPlanModalProps) => {
     validationSchema: planSchema(false, false),
     enableReinitialize: true,
     onSubmit: async (values) => {
+      const session = await getSession();
       const finalValue = {
         ...values,
         assetId,
@@ -57,7 +54,7 @@ const CustomizedPlanModal = (props: CustomizedPlanModalProps) => {
           ? moment(values.endDate, 'DD/MM/YYYY').format('YYYY-MM-DD')
           : null,
         planTypeId: MAINTENANCE_PLAN_ENUM.custom,
-        createdBy: data?.user?.username,
+        createdBy: session?.user?.username,
       };
       const response = await handleSubmit(createPlan, finalValue, '');
       if (response?.data) {
@@ -128,7 +125,7 @@ const CustomizedPlanModal = (props: CustomizedPlanModalProps) => {
           <Button
             type="submit"
             customStyles={{ width: '237px' }}
-            isLoading={isLoading}
+            isLoading={isLoading || formik.isSubmitting}
             handleClick={formik.handleSubmit}
           >
             Save Plan

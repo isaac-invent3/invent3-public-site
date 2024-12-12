@@ -1,5 +1,5 @@
 import { SimpleGrid, Skeleton } from '@chakra-ui/react';
-import React from 'react';
+
 import PieChartWithInfo from './PieChartWIthInfo';
 import { AssetStats } from '~/lib/interfaces/asset.interfaces';
 

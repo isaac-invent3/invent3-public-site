@@ -1,11 +1,11 @@
 import { Flex, useDisclosure, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import Header from './Header';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { FormikProvider, useFormik } from 'formik';
 import { scheduleSchema } from '~/lib/schemas/maintenance.schema';
 import FormActionButtons from '~/lib/components/UI/Form/FormActionButtons';
-import Button from '~/lib/components/UI/Button';
+import { Button } from '@repo/ui/components';
 import { useUpdateScheduleInstanceMutation } from '~/lib/redux/services/maintenance/scheduleInstance.services';
 import SectionTwo from '../ScheduleForm/FormSection/SectionTwo';
 import moment from 'moment';
@@ -142,7 +142,10 @@ const ScheduleInstanceForm = () => {
                   totalStep={1}
                   activeStep={1}
                   finalText="Save This Instance"
-                  isLoading={isLoading && formik.values.saveOnlyThisInstance}
+                  isLoading={
+                    (isLoading || formik.isSubmitting) &&
+                    formik.values.saveOnlyThisInstance
+                  }
                   type="submit"
                   loadingText="Saving..."
                   handleContinue={() =>
@@ -155,7 +158,10 @@ const ScheduleInstanceForm = () => {
                       formik.setFieldValue('saveOnlyThisInstance', false);
                       formik.handleSubmit();
                     }}
-                    isLoading={!formik.values.saveOnlyThisInstance && isLoading}
+                    isLoading={
+                      !formik.values.saveOnlyThisInstance &&
+                      (isLoading || formik.isSubmitting)
+                    }
                     loadingText="Saving..."
                     customStyles={{ minW: '234px' }}
                   >

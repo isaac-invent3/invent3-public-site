@@ -1,5 +1,5 @@
 import { VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import GeneralStats from './GeneralStats';
 import StatusCount from './StatusCount';
 import { useGetMaintenanceScheduleStatsQuery } from '~/lib/redux/services/maintenance/schedule.services';

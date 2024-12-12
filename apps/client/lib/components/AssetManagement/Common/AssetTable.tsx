@@ -31,7 +31,8 @@ interface AssetTableProps {
   totalPages?: number;
   selectedRows?: number[];
   setSelectedRows?: React.Dispatch<React.SetStateAction<number[]>>;
-  handleSelectRow?: React.Dispatch<React.SetStateAction<any>>;
+  // eslint-disable-next-line no-unused-vars
+  handleSelectRow?: (row: Asset) => void;
   setPageNumber?: React.Dispatch<React.SetStateAction<number>>;
   setPageSize?: React.Dispatch<React.SetStateAction<number>>;
   isSelectable?: boolean;

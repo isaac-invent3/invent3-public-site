@@ -1,5 +1,5 @@
 import { SimpleGrid, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import Asset from './Asset';
 import AssetLocation from '../../../../../Common/AssetLocation';
 import MaintenancePlan from './MaintenancePlan';

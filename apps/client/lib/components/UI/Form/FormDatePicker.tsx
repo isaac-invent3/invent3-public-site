@@ -1,13 +1,7 @@
-import { Flex, Icon } from '@chakra-ui/react';
+import { VStack } from '@chakra-ui/react';
 import { useField } from 'formik';
-import { useRef } from 'react';
-import DatePicker from 'react-datepicker';
-
-import 'react-datepicker/dist/react-datepicker.css';
-import InputMask from 'react-input-mask';
-import { CalendarIcon } from '~/lib/components/CustomIcons';
-import TextInput from '~/lib/components/UI/TextInput';
-import { dateFormatter } from '~/lib/utils/Formatters';
+import ErrorMessage from '../ErrorMessage';
+import DateTimeButtons from '../DateTimeComponents/DateTimeButtons';
 
 interface CustomDatePickerProps {
   name: string;
@@ -17,71 +11,36 @@ interface CustomDatePickerProps {
   maxDate?: Date | undefined;
   // eslint-disable-next-line no-unused-vars
   handleSelectedDate?: (date: string) => void;
+  includeTime?: boolean;
 }
 
 const CustomDatePicker = (props: CustomDatePickerProps) => {
-  const {
-    name,
-    label,
-    type = 'date',
-    minDate,
-    maxDate,
-    handleSelectedDate,
-  } = props;
-  const pickerRef = useRef<DatePicker | null>(null);
+  const { name, label, minDate, maxDate, handleSelectedDate } = props;
   // eslint-disable-next-line no-unused-vars
   const [field, meta, helpers] = useField(name);
 
-  const handleButtonClick = () => {
-    if (pickerRef.current) {
-      pickerRef.current.setFocus();
-    }
-  };
-
   return (
-    <Flex width="full" direction="column">
-      <TextInput
-        name={name}
-        type="text"
-        label={label}
-        placeholder={type === 'date' ? 'DD/MM/YYYY' : 'DD/MM/YYYY HH:mm'}
-        customStyle={{
-          autoComplete: 'off',
-          as: InputMask,
-          mask: type === 'date' ? '99/99/9999' : '99/99/9999 99:99',
-        }}
-        customRightElement={
-          <Icon
-            as={CalendarIcon}
-            boxSize="20px"
-            color="#374957"
-            cursor="pointer"
-            onClick={() => handleButtonClick()}
-          />
-        }
-      />
-      <DatePicker
-        onChange={(date) => {
-          const inputtedDate = dateFormatter(
-            date as Date,
-            `DD/MM/YYYY${type === 'datetime' ? ' HH:mm' : ''}`
-          );
-          helpers.setValue(inputtedDate);
-          if (inputtedDate && handleSelectedDate) {
-            handleSelectedDate(inputtedDate);
-          }
-        }}
-        dateFormat="mm/dd/yyyy"
-        showMonthDropdown
-        showYearDropdown
+    <VStack width="full" alignItems="flex-start" spacing="4px">
+      <DateTimeButtons
+        buttonVariant="secondary"
+        includeTime={false}
         minDate={minDate}
         maxDate={maxDate}
-        showTimeSelect={type === 'datetime'}
-        showTimeInput={type === 'datetime'}
-        ref={pickerRef}
-        className="hidden-input"
+        selectedDate={meta.value}
+        selectedTime={undefined}
+        customDateHeader="Date"
+        customButtonLabel={label ?? 'Select Date'}
+        showPredefinedDates={false}
+        handleDateTimeSelect={(dateTime) => {
+          const splittedDateTime = dateTime?.split(' ');
+          helpers.setValue(splittedDateTime?.[0] ?? null);
+          if (handleSelectedDate && splittedDateTime?.[0]) {
+            handleSelectedDate(splittedDateTime?.[0]);
+          }
+        }}
       />
-    </Flex>
+      {meta.touched && meta.error && <ErrorMessage>{meta.error}</ErrorMessage>}
+    </VStack>
   );
 };
 

@@ -13,53 +13,28 @@ import './style.css';
 import CustomToolbar from './CustomToolBar';
 import Event from './Events';
 import CustomDateHeader from './CustomDateHeader';
-import {} from // useGetMaintenanceScheduleAggregateQuery,
-// useGetMaintenanceSchedulesWithSingleAggregateCountsByAreaQuery,
-'~/lib/redux/services/maintenance/schedule.services';
+('~/lib/redux/services/maintenance/schedule.services');
 import {
   getDisplayDate,
   transformToCalendarEvents,
 } from '~/lib/utils/helperFunctions';
-// import { AREA_ENUM } from '~/lib/utils/constants';
-import { useAppDispatch } from '~/lib/redux/hooks';
+import { AREA_ENUM } from '~/lib/utils/constants';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateScheduleInfo } from '~/lib/redux/slices/MaintenanceSlice';
-import { useGetAllScheduleInstanceQuery } from '~/lib/redux/services/maintenance/scheduleInstance.services';
+import { scheduleInstanceApi } from '~/lib/redux/services/maintenance/scheduleInstance.services';
 
 const mLocalizer = momentLocalizer(moment);
 
 const ScheduleTimeline = () => {
-  // const { selectedCountry, selectedState } = useAppSelector(
-  //   (state) => state.maintenance.scheduleInfo
-  // );
+  const { selectedCountry, selectedState } = useAppSelector(
+    (state) => state.maintenance.scheduleInfo
+  );
   const dispatch = useAppDispatch();
   const [date, setDate] = useState(new Date());
   const [view, setView] = useState<View>(Views.WEEK);
   const [eventData, setEventData] = useState<EventType[]>([]);
-  // const { startDate, endDate } = getDisplayDate(date, view);
-  // const isProperState = selectedState?.label && selectedState?.label !== 'All';
-  // // const {
-  // //   data: singleAggregateCountData,
-  // //   isLoading: isLoadingSingle,
-  // //   isFetching: isFetchingSingle,
-  // // } = useGetMaintenanceSchedulesWithSingleAggregateCountsByAreaQuery({
-  // //   id: isProperState ? selectedState.value : selectedCountry?.value,
-  // //   areaType: isProperState ? AREA_ENUM.state : AREA_ENUM.country,
-  // //   startDate,
-  // //   endDate,
-  // // });
-  // To be removed
-  const {
-    data: scheduleInstanceData,
-    isLoading,
-    isFetching,
-  } = useGetAllScheduleInstanceQuery({});
-  // const { data, isLoading, isFetching } =
-  //   useGetMaintenanceScheduleAggregateQuery({
-  //     id: isProperState ? selectedState.value : selectedCountry?.value,
-  //     areaType: isProperState ? AREA_ENUM.state : AREA_ENUM.country,
-  //     startDate,
-  //     endDate,
-  //   });
+  const { startDate, endDate } = getDisplayDate(date, view);
+  const isProperState = selectedState?.label && selectedState?.label !== 'All';
 
   useEffect(() => {
     if (date) {
@@ -101,23 +76,72 @@ const ScheduleTimeline = () => {
     setView(newView);
   };
 
+  //Fetches Single Instances with aggregate count of one
   useEffect(() => {
-    if (scheduleInstanceData?.data?.items) {
-      setEventData((prev) => [
-        ...prev,
-        ...transformToCalendarEvents(scheduleInstanceData?.data?.items),
-      ]);
-    }
-  }, [scheduleInstanceData]);
+    const fetchInstancesWithSingleAggregateCount = async () => {
+      let hasNextPage = true;
+      while (hasNextPage && selectedCountry) {
+        const result = await dispatch(
+          scheduleInstanceApi.endpoints.getMaintenanceScheduleInstancesWithSingleAggregateCountsByArea.initiate(
+            {
+              areaId: isProperState
+                ? selectedState.value
+                : selectedCountry.value,
+              areaType: isProperState ? AREA_ENUM.state : AREA_ENUM.country,
+              startDate,
+              endDate,
+              pageNumber: 1,
+              pageSize: 50,
+            }
+          )
+        );
+
+        if (result.data?.data?.items) {
+          setEventData((prev) => [
+            ...prev,
+            ...transformToCalendarEvents(result.data?.data.items as any[]),
+          ]);
+        }
+        hasNextPage = result.data?.data.hasNextPage ?? false;
+      }
+    };
+    fetchInstancesWithSingleAggregateCount();
+  }, [isProperState, startDate, endDate, selectedState, selectedCountry]);
+
+  //Fetches Instances Aggregate Info with count of more than 1
+  useEffect(() => {
+    const fetchInstanceAggregate = async () => {
+      let hasNextPage = true;
+      while (hasNextPage && selectedCountry) {
+        const result = await dispatch(
+          scheduleInstanceApi.endpoints.getMaintenanceScheduleInstanceAggregate.initiate(
+            {
+              areaId: isProperState
+                ? selectedState.value
+                : selectedCountry.value,
+              areaType: isProperState ? AREA_ENUM.state : AREA_ENUM.country,
+              startDate,
+              endDate,
+              pageNumber: 1,
+              pageSize: 50,
+            }
+          )
+        );
+
+        if (result.data?.data?.items) {
+          setEventData((prev) => [
+            ...prev,
+            ...transformToCalendarEvents(result.data?.data.items as any[]),
+          ]);
+        }
+        hasNextPage = result.data?.data.hasNextPage ?? false;
+      }
+    };
+    fetchInstanceAggregate();
+  }, [isProperState, startDate, endDate, selectedState, selectedCountry]);
 
   return (
-    <Flex
-      width="full"
-      height="full"
-      direction="column"
-      pointerEvents={isFetching || isLoading ? 'none' : 'initial'}
-      opacity={isLoading || isFetching ? 0.7 : 1}
-    >
+    <Flex width="full" height="full" direction="column">
       <Calendar
         date={date}
         events={events}

@@ -1,11 +1,10 @@
 import { Heading, Text, VStack } from '@chakra-ui/react';
-import Button from '~/lib/components/UI/Button';
-import GenericSuccessModal from '~/lib/components/UI/Modal/GenericSuccessModal';
+import { Button, GenericSuccessModal } from '@repo/ui/components';
 
 interface ScheduleReportSuccessModalProps {
   isOpen: boolean;
   onClose: () => void;
-  date:string
+  date: string;
 }
 const ScheduleReportSuccessModal = (props: ScheduleReportSuccessModalProps) => {
   const { isOpen, onClose } = props;

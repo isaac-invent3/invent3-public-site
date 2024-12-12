@@ -1,7 +1,7 @@
 import { Flex, HStack, VStack } from '@chakra-ui/react';
 import { useField } from 'formik';
-import React from 'react';
-import SelectableButtonGroup from '~/lib/components/UI/Button/SelectableButtonGroup';
+
+import { SelectableButtonGroup } from '@repo/ui/components';
 import ErrorMessage from '~/lib/components/UI/ErrorMessage';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import { useAppDispatch } from '~/lib/redux/hooks';
@@ -17,7 +17,7 @@ interface TypeProps {
 }
 const Type = (props: TypeProps) => {
   const { sectionMaxWidth, spacing, buttonVariant } = props;
-  const { data } = useGetAllMaintenanceTypeQuery({
+  const { data, isLoading } = useGetAllMaintenanceTypeQuery({
     pageSize: DEFAULT_PAGE_SIZE,
   });
 
@@ -48,6 +48,7 @@ const Type = (props: TypeProps) => {
           isMultiSelect={false}
           buttonVariant={buttonVariant}
           customButtonStyle={{ width: 'max-content' }}
+          isLoading={isLoading}
         />
         {meta.touched && meta.error !== undefined && (
           <ErrorMessage>{meta.error}</ErrorMessage>

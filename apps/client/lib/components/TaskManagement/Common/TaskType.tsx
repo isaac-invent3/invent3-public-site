@@ -1,12 +1,11 @@
 import { Flex, HStack } from '@chakra-ui/react';
 import { useFormikContext } from 'formik';
-import React, { useState } from 'react';
+
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
-import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
-import {
-  useGetAllTaskTypeQuery,
-  useSearchTaskTypeMutation,
-} from '~/lib/redux/services/task/types.services';
+import { useGetAllTaskTypeQuery } from '~/lib/redux/services/task/types.services';
+import { SelectableButtonGroup } from '@repo/ui/components';
+import { generateOptions } from '~/lib/utils/helperFunctions';
+import { taskFormDetails } from '~/lib/interfaces/task.interfaces';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 interface TaskTypeProps {
@@ -15,13 +14,10 @@ interface TaskTypeProps {
 }
 const TaskType = (props: TaskTypeProps) => {
   const { sectionMaxWidth, spacing } = props;
-  const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading } = useGetAllTaskTypeQuery({
     pageSize: DEFAULT_PAGE_SIZE,
-    pageNumber,
   });
-  const [searchTaskType] = useSearchTaskTypeMutation({});
-  const { setFieldValue, values } = useFormikContext<any>();
+  const { setFieldValue, values } = useFormikContext<taskFormDetails>();
 
   return (
     <HStack width="full" alignItems="flex-start" spacing={spacing}>
@@ -32,18 +28,22 @@ const TaskType = (props: TaskTypeProps) => {
           isRequired
         />
       </Flex>
-      <GenericAsyncSelect
-        selectName="taskTypeId"
-        selectTitle="Task Type"
-        data={data}
-        labelKey="typeName"
-        valueKey="taskTypeId"
-        mutationFn={searchTaskType}
+      <SelectableButtonGroup
+        options={generateOptions(data?.data.items, 'typeName', 'taskTypeId')}
+        selectedOptions={[
+          {
+            value: values.taskTypeId as number,
+            label: values.taskType as string,
+          },
+        ]}
+        handleSelect={(options) => {
+          setFieldValue('taskTypeId', options[0]?.value);
+          setFieldValue('taskType', options[0]?.label);
+        }}
+        isMultiSelect={false}
         isLoading={isLoading}
-        pageNumber={pageNumber}
-        setPageNumber={setPageNumber}
-        handleSelect={(option) => setFieldValue('taskType', option.label)}
-        defaultInputValue={values.taskTypeName}
+        buttonVariant="secondary"
+        customButtonStyle={{ width: 'max-content' }}
       />
     </HStack>
   );

@@ -1,16 +1,14 @@
 /* eslint-disable no-unused-vars */
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
 import { Field, FormikProvider, useFormik } from 'formik';
-import React, { useEffect } from 'react';
-import GenericModal from '~/lib/components/UI/Modal';
-import Button from '~/lib/components/UI/Button';
-import ModalHeading from '../../../../../UI/Modal/ModalHeading';
+
+import { Button, GenericModal, ModalHeading } from '@repo/ui/components';
 import { useCreateFacilityMutation } from '~/lib/redux/services/asset/location.services';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { useSession } from 'next-auth/react';
 import { facilitySchema } from '~/lib/schemas/asset/location.schema';
 import TextInput from '~/lib/components/UI/TextInput';
 import LGASelect from '../LGASelect';
+import { getSession } from 'next-auth/react';
 
 interface FacilityModalProps {
   isOpen: boolean;
@@ -21,7 +19,6 @@ const FacilityModal = (props: FacilityModalProps) => {
   const { isOpen, onClose, defaultLGAId } = props;
   const [createFacility, { isLoading }] = useCreateFacilityMutation({});
   const { handleSubmit } = useCustomMutation();
-  const { data } = useSession();
 
   const formik = useFormik({
     initialValues: {
@@ -35,7 +32,8 @@ const FacilityModal = (props: FacilityModalProps) => {
     validationSchema: facilitySchema,
     enableReinitialize: true,
     onSubmit: async (values, { resetForm }) => {
-      const finalValue = { ...values, createdBy: data?.user?.username };
+      const session = await getSession();
+      const finalValue = { ...values, createdBy: session?.user?.username };
       const response = await handleSubmit(createFacility, finalValue, '');
       if (response?.data) {
         onClose();
@@ -102,7 +100,10 @@ const FacilityModal = (props: FacilityModalProps) => {
                 >
                   Cancel
                 </Button>
-                <Button type="submit" isLoading={isLoading}>
+                <Button
+                  type="submit"
+                  isLoading={isLoading || formik.isSubmitting}
+                >
                   Add Facility
                 </Button>
               </HStack>

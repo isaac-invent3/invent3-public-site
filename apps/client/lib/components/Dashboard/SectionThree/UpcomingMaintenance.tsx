@@ -10,7 +10,7 @@ import Technician from '../../AssetManagement/Common/Technician';
 import Status from '../../AssetManagement/Common/MaintenanceStatus';
 import { useGetUpcomingMaintenanceQuery } from '~/lib/redux/services/dashboard.services';
 import { useAppSelector } from '~/lib/redux/hooks';
-import Button from '../../UI/Button';
+import { Button } from '@repo/ui/components';
 
 const ContentDisplay = (
   content: string | React.ReactNode,

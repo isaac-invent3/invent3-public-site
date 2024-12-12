@@ -1,7 +1,7 @@
 import { HStack, Icon, VStack } from '@chakra-ui/react';
 import { AddIcon } from '../CustomIcons';
 import GenericBreadCrumb from '../UI/BreadCrumb';
-import PrimaryButton from '../UI/Button';
+import {  Button} from '@repo/ui/components';
 import PageHeader from '../UI/PageHeader';
 
 const breadCrumbData = [
@@ -29,13 +29,13 @@ const Header = ({
         <PageHeader>{header ?? 'Reports & Analytics'}</PageHeader>
 
         {showGenerate && (
-          <PrimaryButton
+          <Button
             customStyles={{ width: '227px' }}
             href="/report-analytics/generate"
           >
             <Icon as={AddIcon} boxSize="18px" color="#D2FEFD" mr="4px" />
             Generate a Report
-          </PrimaryButton>
+          </Button>
         )}
       </HStack>
     </VStack>

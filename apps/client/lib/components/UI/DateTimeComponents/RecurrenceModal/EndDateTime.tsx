@@ -1,5 +1,5 @@
 import { HStack, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import SectionInfo from '../../Form/FormSectionInfo';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useField } from 'formik';

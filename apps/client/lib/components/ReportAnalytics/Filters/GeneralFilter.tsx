@@ -1,5 +1,5 @@
 import { HStack } from '@chakra-ui/react';
-import React from 'react';
+
 import CombinedLocationFilter from '~/lib/components/Common/FilterComponents/CombinedLocationFilter';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { TicketFilterInput } from '~/lib/interfaces/ticket.interfaces';

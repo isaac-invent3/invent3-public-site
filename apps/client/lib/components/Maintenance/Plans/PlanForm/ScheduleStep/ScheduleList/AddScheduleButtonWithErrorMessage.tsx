@@ -1,7 +1,7 @@
 import { Flex, VStack } from '@chakra-ui/react';
 import { useField } from 'formik';
 import { isArray } from 'lodash';
-import React from 'react';
+
 import ErrorMessage from '~/lib/components/UI/ErrorMessage';
 import AddButton from '~/lib/components/UI/Form/FormAddButton';
 

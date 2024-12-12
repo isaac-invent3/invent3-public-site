@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { HStack, StackProps } from '@chakra-ui/react';
-import React from 'react';
+
 import RegionFilter from './RegionFilter';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import LGAFilter from './LGAFilter';

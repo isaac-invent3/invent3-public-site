@@ -70,6 +70,7 @@ const FormTaskListDrawer = (props: FormTaskListDrawerProps) => {
       onClose={onClose}
       showAddTaskButton={true}
       handleAddTask={handleAddTask}
+      taskType="main"
     >
       <TaskListTable
         data={values.tasks}

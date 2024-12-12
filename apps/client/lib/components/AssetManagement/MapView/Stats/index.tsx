@@ -1,5 +1,5 @@
 import { Divider, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import AssetCountList from './AssetCountList';
 import PieChartStats from './PieChartStats';
 import {

@@ -1,6 +1,6 @@
 import { HStack, Icon, Text } from '@chakra-ui/react';
-import React from 'react';
-import Button from '../Button';
+
+import { Button } from '@repo/ui/components';
 import { ChevronLeftIcon } from '../../CustomIcons';
 import Link from 'next/link';
 

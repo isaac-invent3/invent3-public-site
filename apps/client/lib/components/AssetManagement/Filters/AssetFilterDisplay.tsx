@@ -1,4 +1,3 @@
-import React from 'react';
 import FilterDisplay from '../../UI/Filter/FilterDisplay';
 import BulkActions from './BulkActions';
 import GeneralFilter from './GeneralFilter';

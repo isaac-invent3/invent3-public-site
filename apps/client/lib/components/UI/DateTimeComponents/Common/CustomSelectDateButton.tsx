@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { HStack, Icon, Text, useDisclosure, VStack } from '@chakra-ui/react';
 import moment from 'moment';
-import React from 'react';
+
 import {
   ChevronDownIcon,
   ClockIcon,

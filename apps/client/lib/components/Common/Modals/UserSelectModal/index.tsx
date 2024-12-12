@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
 import { Option } from '~/lib/interfaces/general.interfaces';
-import GenericModal from '~/lib/components/UI/Modal';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
-import Button from '~/lib/components/UI/Button';
+import { Button, GenericModal } from '@repo/ui/components';
 import { FormikProvider, useFormik } from 'formik';
 import EmployeeSelect from '../../EmployeeSelect';
 import { assigneeSchema } from '~/lib/schemas/general.schema';
@@ -14,7 +13,7 @@ interface UserSelectModalProps {
   // eslint-disable-next-line no-unused-vars
   handleSelectUser: (option: Option) => void;
   sectionInfoText?: string;
-  sectionInfoTitle?: string
+  sectionInfoTitle?: string;
 }
 
 const UserSelectModal = (props: UserSelectModalProps) => {
@@ -66,7 +65,7 @@ const UserSelectModal = (props: UserSelectModalProps) => {
                 alignItems="flex-start"
               >
                 <SectionInfo
-                  title={sectionInfoTitle ?? "Assign"}
+                  title={sectionInfoTitle ?? 'Assign'}
                   info={
                     sectionInfoText ??
                     'Add name that users can likely search with'

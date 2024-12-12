@@ -1,6 +1,6 @@
 import { Flex, HStack, Icon, Text } from '@chakra-ui/react';
 import { useField } from 'formik';
-import React from 'react';
+
 import { CircularCloseIcon } from '~/lib/components/CustomIcons';
 import { AssetFormDocument } from '~/lib/interfaces/asset.interfaces';
 import { FILE_ICONS } from '~/lib/utils/constants';

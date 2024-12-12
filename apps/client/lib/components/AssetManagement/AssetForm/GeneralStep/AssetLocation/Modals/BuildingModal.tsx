@@ -1,13 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
 import { Field, FormikProvider, useFormik } from 'formik';
-import React from 'react';
-import GenericModal from '~/lib/components/UI/Modal';
-import Button from '~/lib/components/UI/Button';
-import ModalHeading from '../../../../../UI/Modal/ModalHeading';
+
+import { Button, GenericModal, ModalHeading } from '@repo/ui/components';
 import { useCreateBuildingMutation } from '~/lib/redux/services/asset/location.services';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 import { buildingSchema } from '~/lib/schemas/asset/location.schema';
 import TextInput from '~/lib/components/UI/TextInput';
 import FacilitySelect from './SelectInputs/FacilitySelect';
@@ -21,7 +19,6 @@ const BuildingModal = (props: BuildingModalProps) => {
   const { isOpen, onClose, defaultFacilityId } = props;
   const [createBuilding, { isLoading }] = useCreateBuildingMutation({});
   const { handleSubmit } = useCustomMutation();
-  const { data } = useSession();
 
   const formik = useFormik({
     initialValues: {
@@ -35,7 +32,8 @@ const BuildingModal = (props: BuildingModalProps) => {
     validationSchema: buildingSchema,
     enableReinitialize: true,
     onSubmit: async (values, { resetForm }) => {
-      const finalValue = { ...values, createdBy: data?.user?.username };
+      const session = await getSession();
+      const finalValue = { ...values, createdBy: session?.user?.username };
       const response = await handleSubmit(createBuilding, finalValue, '');
       if (response?.data) {
         onClose();
@@ -102,7 +100,10 @@ const BuildingModal = (props: BuildingModalProps) => {
                 >
                   Cancel
                 </Button>
-                <Button type="submit" isLoading={isLoading}>
+                <Button
+                  type="submit"
+                  isLoading={isLoading || formik.isSubmitting}
+                >
                   Add Building
                 </Button>
               </HStack>

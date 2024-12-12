@@ -1,5 +1,5 @@
 import { HStack, Icon, StackProps, Text } from '@chakra-ui/react';
-import React from 'react';
+
 import { TemplateIcon } from '~/lib/components/CustomIcons';
 
 interface TemplateButtonProps extends StackProps {

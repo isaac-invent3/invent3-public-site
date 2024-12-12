@@ -2,7 +2,7 @@ import { Divider, Flex, useDisclosure, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import FormActionButtons from '~/lib/components/UI/Form/FormActionButtons';
 import { useAppSelector } from '~/lib/redux/hooks';
-import { useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import {
   generateMaintenanceScheduleDTO,
@@ -18,7 +18,7 @@ import {
   useUpdateMaintenancePlanWithSchedulesMutation,
 } from '~/lib/redux/services/maintenance/plan.services';
 import { FORM_ENUM, SYSTEM_CONTEXT_TYPE } from '~/lib/utils/constants';
-import Button from '~/lib/components/UI/Button';
+import { Button } from '@repo/ui/components';
 import SaveAsTemplateModal from '~/lib/components/Common/Modals/SaveAsTemplateModal';
 import { useGetTemplateInfoBySystemContextTypeAndContextIdQuery } from '~/lib/redux/services/template.services';
 
@@ -49,8 +49,6 @@ const SummarySection = (props: SummarySectionProps) => {
     useCreateMaintenancePlanWithSchedulesMutation();
   const [updateMaintenancePlan, { isLoading: updateLoading }] =
     useUpdateMaintenancePlanWithSchedulesMutation();
-  const { data } = useSession();
-  const username = data?.user?.username;
   const [saveAsTemplate, setSaveAsTemplate] = useState(false);
 
   const handleSaveAsTemplate = (
@@ -61,11 +59,13 @@ const SummarySection = (props: SummarySectionProps) => {
     handleSubmitPlan(true, templateName, templateDescription);
   };
 
-  const generatePayload = (
+  const generatePayload = async (
     saveAsTemplate: boolean,
     templateName?: string,
     templateDescription?: string
   ) => {
+    const session = await getSession();
+    const username = session?.user?.username;
     const getDtoKey = (base: string) =>
       `${type === 'create' ? `create${base}Dto` : `update${base}Dto`}`;
 
@@ -139,9 +139,14 @@ const SummarySection = (props: SummarySectionProps) => {
     templateDescription?: string
   ) => {
     let response;
+    const PAYLOAD = await generatePayload(
+      saveAsTemplate,
+      templateName,
+      templateDescription
+    );
     response = await handleSubmit(
       type === 'create' ? createMaintenancePlan : updateMaintenancePlan,
-      generatePayload(saveAsTemplate, templateName, templateDescription),
+      PAYLOAD,
       ''
     );
 

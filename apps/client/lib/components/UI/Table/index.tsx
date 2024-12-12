@@ -42,7 +42,7 @@ export type TableProps<Data extends object> = {
   selectedRows?: number[];
   disabledRows?: number[];
   setSelectedRows?: (items: number[]) => void;
-  handleSelectRow?: React.Dispatch<React.SetStateAction<any>>;
+  handleSelectRow?: (row: Data) => void;
   setPageNumber?: React.Dispatch<React.SetStateAction<number>>;
   setPageSize?: React.Dispatch<React.SetStateAction<number>>;
   isSelectable?: boolean;
@@ -179,7 +179,7 @@ function DataTable<Data extends object>({
                       textTransform="capitalize"
                       fontSize="12px"
                       lineHeight="14.26px"
-                      fontWeight={600}
+                      fontWeight={700}
                       color="black"
                       pl="10px"
                       pr="16px"
@@ -326,7 +326,6 @@ function DataTable<Data extends object>({
                           return (
                             <Td
                               key={cell.id}
-                              isNumeric={meta?.isNumeric}
                               borderColor="neutral.300"
                               color={isDisabledRow ? 'neutral.300' : 'black'}
                               cursor={isDisabledRow ? 'not-allowed' : 'pointer'}
@@ -335,6 +334,7 @@ function DataTable<Data extends object>({
                               lineHeight="14.26px"
                               py="23px"
                               px="16px"
+                              textAlign={meta?.isNumeric ? 'center' : 'left'}
                               {...customTdStyle}
                             >
                               {flexRender(

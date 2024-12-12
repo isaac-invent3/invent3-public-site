@@ -1,7 +1,5 @@
 import { Text, VStack } from '@chakra-ui/react';
-import React from 'react';
-import Button from '~/lib/components/UI/Button';
-import GenericSuccessModal from '~/lib/components/UI/Modal/GenericSuccessModal';
+import { Button, GenericSuccessModal } from '@repo/ui/components';
 
 interface MarkAsCompletedSuccessModalProps {
   isOpen: boolean;

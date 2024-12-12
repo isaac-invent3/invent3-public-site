@@ -1,4 +1,3 @@
-import React from 'react';
 import LgaMap from './LgaMap';
 // import LgaMap from './templeaflet';
 import StateMap from './StateMap';

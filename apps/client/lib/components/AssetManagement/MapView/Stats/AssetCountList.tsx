@@ -1,5 +1,5 @@
 import { Heading, HStack, Skeleton, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import { SingleMapAssetData } from '~/lib/interfaces/asset.interfaces';
 
 interface AssetCountListProps {
@@ -15,7 +15,7 @@ const AssetCountList = (props: AssetCountListProps) => {
   return (
     <VStack width="full" spacing="8px" alignItems="flex-start">
       <Heading
-        color="primary.main"
+        color="primary.500"
         fontWeight={700}
         fontSize="16px"
         lineHeight="19.01px"

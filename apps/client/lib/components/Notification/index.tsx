@@ -13,12 +13,15 @@ import {
   Text,
   Flex,
   Icon,
+  Divider,
 } from '@chakra-ui/react';
 import {
   NotificationIcon,
   PreferenceIcon,
 } from '~/lib/components/CustomIcons/layout';
 import HeaderIcon from '~/lib/layout/ProtectedPage/Header/HeaderIcon';
+import TabButton from './Tabs/TabButton';
+import { NotifcationTabs } from './Tabs';
 
 const NotificationPopover = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -62,16 +65,11 @@ const NotificationPopover = () => {
         placement="bottom-start"
       >
         <PopoverTrigger>
-          <HeaderIcon
-            icon={NotificationIcon}
-            size="24px"
-            handleClick={() => onOpen()}
-          />
+          <HeaderIcon icon={NotificationIcon} size="24px" />
         </PopoverTrigger>
         <PopoverContent
           p={0}
           m={0}
-          mt="45px"
           position="relative"
           zIndex="999"
           width="347.33px"
@@ -91,7 +89,7 @@ const NotificationPopover = () => {
             borderColor: 'transparent',
           }}
         >
-          <PopoverHeader py="20px" px="16px" border="none">
+          <PopoverHeader p={0} mt="20px" px="16px" border="none">
             <VStack width="full" spacing="31px">
               <HStack width="full" justifyContent="space-between">
                 <Heading
@@ -118,32 +116,41 @@ const NotificationPopover = () => {
                 borderBottom="1px solid #BBBBBB"
                 alignItems="flex-start"
               >
-                <HStack spacing="10.67px">
-                  {Tabs.map((item) => (
-                    <Text
-                      role="button"
-                      color={
-                        item.label === activeTab ? 'primary.500' : 'neutral.600'
-                      }
-                      pb="9px"
-                      borderBottom={
-                        item.label === activeTab ? '2px solid #0E2642' : 'none'
-                      }
-                      onClick={() => setActiveTab(item.label)}
-                    >
-                      {item.label}
-                      {item.count > 0 ? `(${item.count})` : ''}
-                    </Text>
+                <HStack spacing="10.67px" height="full" alignItems="stretch">
+                  {Tabs.map((item, index) => (
+                    <TabButton
+                      key={index}
+                      tab={item}
+                      activeTab={activeTab}
+                      setActiveTab={setActiveTab}
+                    />
                   ))}
+                  <Divider
+                    orientation="vertical"
+                    borderColor="neutral.600"
+                    borderWidth="1px"
+                    height="12px"
+                  />
+                  <TabButton
+                    tab={{ label: 'Archived', count: 0 }}
+                    activeTab={activeTab}
+                    setActiveTab={setActiveTab}
+                  />
                 </HStack>
-                <Text role="button" fontWeight={800} color="#0366EF">
+                <Text
+                  role="button"
+                  fontSize="9.33px"
+                  lineHeight="11.09px"
+                  fontWeight={800}
+                  color="#0366EF"
+                >
                   Mark all as read
                 </Text>
               </HStack>
             </VStack>
           </PopoverHeader>
-          <PopoverBody py="24px" px="20px">
-            <Text>Hello</Text>
+          <PopoverBody pt="20px" px="20px" overflowY="auto">
+            <NotifcationTabs />
           </PopoverBody>
         </PopoverContent>
       </Popover>

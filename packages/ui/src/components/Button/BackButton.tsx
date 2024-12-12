@@ -1,6 +1,6 @@
+// eslint-disable-next-line no-redeclare
 import { HStack, Icon, StackProps, Text } from '@chakra-ui/react';
-import React from 'react';
-import { LongBackArrowIcon } from '../../CustomIcons';
+import { LongBackArrowIcon } from '../CustomIcons';
 
 interface BackButtonProps {
   handleClick: () => void;

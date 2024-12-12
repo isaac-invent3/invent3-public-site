@@ -1,5 +1,5 @@
 import { Flex, HStack } from '@chakra-ui/react';
-import React from 'react';
+
 import CustomDatePicker from '~/lib/components/UI/Form/FormDatePicker';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 

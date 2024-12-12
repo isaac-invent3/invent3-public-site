@@ -1,5 +1,5 @@
 import { Flex, HStack, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import DateTimeButtons from '../../UI/DateTimeComponents/DateTimeButtons';
 import { useField } from 'formik';

@@ -1,5 +1,5 @@
 import { Text, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import DetailHeader from '~/lib/components/UI/DetailHeader';
 import { useAppSelector } from '~/lib/redux/hooks';
 

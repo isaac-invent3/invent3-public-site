@@ -8,7 +8,7 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import React from 'react';
+
 import { ChevronDownIcon, HamburgerIcon } from '~/lib/components/CustomIcons';
 
 interface ComponentBoxProps {

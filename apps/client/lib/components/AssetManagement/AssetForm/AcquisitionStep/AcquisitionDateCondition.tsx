@@ -34,7 +34,7 @@ const AcquisitionDateConditon = () => {
         <GridItem colSpan={1}>
           <CustomDatePicker
             name="acquisitionDate"
-            label="Acquisition Date"
+            label="Select Date"
             maxDate={new Date()}
           />
         </GridItem>

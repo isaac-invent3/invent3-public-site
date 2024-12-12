@@ -1,6 +1,6 @@
 import { Icon } from '@chakra-ui/react';
-import React from 'react';
-import Button from '../../Button';
+
+import { Button } from '@repo/ui/components';
 import { PenIcon } from '~/lib/components/CustomIcons';
 
 interface CustomButtonProps {

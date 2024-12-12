@@ -1,7 +1,7 @@
 import { Flex, HStack } from '@chakra-ui/react';
-import React from 'react';
+
 import CurrentOwner from './CurrentOwner';
-import Button from '~/lib/components/UI/Button';
+import { Button } from '@repo/ui/components';
 import { useAppSelector } from '~/lib/redux/hooks';
 import AssetDetails from '../../Common/AssetDetail';
 

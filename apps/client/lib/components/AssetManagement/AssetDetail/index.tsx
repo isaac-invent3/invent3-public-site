@@ -26,7 +26,7 @@ const AssetDetail = (props: AssetDetailProps) => {
   }, [data]);
 
   return (
-    <GenericDrawer isOpen={isOpen} onClose={onClose} maxWidth="802px">
+    <GenericDrawer isOpen={isOpen} onClose={onClose} maxWidth="850px">
       <DrawerHeader px="32px" pt="16px" pb="29px">
         <AssetHeader handleBack={onClose} />
       </DrawerHeader>

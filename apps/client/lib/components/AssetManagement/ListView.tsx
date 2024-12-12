@@ -3,7 +3,6 @@ import { useCallback, useEffect, useState } from 'react';
 import _ from 'lodash';
 
 import { useSearchParams } from 'next/navigation';
-import { Asset } from '~/lib/interfaces/asset.interfaces';
 import {
   useGetallAssetQuery,
   useGetAssetInfoHeaderByIdQuery,
@@ -13,10 +12,11 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { SearchResponse } from '~/lib/interfaces/general.interfaces';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 import AssetTable from './Common/AssetTable';
-import AssetDetail from './AssetDetail';
 import AssetFilterDisplay from './Filters/AssetFilterDisplay';
 import { generateSearchCriterion } from '~/lib/utils/helperFunctions';
-import { useAppSelector } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { setAsset } from '~/lib/redux/slices/AssetSlice';
+import AssetDetail from './AssetDetail';
 
 interface ListViewProps {
   search: string;
@@ -26,15 +26,17 @@ interface ListViewProps {
 
 const ListView = (props: ListViewProps) => {
   const { search, activeFilter, openFilter } = props;
-  const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const searchParams = useSearchParams();
   const assetId = searchParams.get('asset');
   const { handleSubmit } = useCustomMutation();
-  const filterData = useAppSelector((state) => state.asset.assetFilter);
+  const { assetFilter: filterData, asset } = useAppSelector(
+    (state) => state.asset
+  );
+  const dispatch = useAppDispatch();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   // Checks if all filterdata is empty
   const isFilterEmpty = _.every(
@@ -149,65 +151,54 @@ const ListView = (props: ListViewProps) => {
     }
   }, [search, isFilterEmpty]);
 
-  // Open the drawer if there is a selected asset
-  useEffect(() => {
-    if (selectedAsset) {
-      onOpen();
-    }
-  }, [selectedAsset]);
-
-  // Remove selected asset once the drawer is closed.
-  useEffect(() => {
-    if (!isOpen) {
-      setSelectedAsset(null);
-    }
-  }, [isOpen]);
-
   // Set if an assetData asset exist, mark it as selected
   useEffect(() => {
     if (assetData?.data) {
-      setSelectedAsset(assetData?.data);
+      dispatch(setAsset(assetData?.data));
+      onOpen();
     }
   }, [assetData]);
 
   return (
-    <Flex width="full" direction="column" pt="16px">
-      <Flex width="full" mb="8px">
-        <AssetFilterDisplay
-          activeFilter={activeFilter}
-          isOpen={openFilter}
-          handleApplyFilter={handleSearch}
+    <>
+      <Flex width="full" direction="column" pt="16px">
+        <Flex width="full" mb="8px">
+          <AssetFilterDisplay
+            activeFilter={activeFilter}
+            isOpen={openFilter}
+            handleApplyFilter={handleSearch}
+          />
+        </Flex>
+        <AssetTable
+          data={
+            (search || !isFilterEmpty) && searchData
+              ? searchData.items
+              : (data?.data?.items ?? [])
+          }
+          isLoading={isLoading}
+          isFetching={isFetching || searchLoading}
+          pageNumber={currentPage}
+          setPageNumber={setCurrentPage}
+          pageSize={pageSize}
+          setPageSize={setPageSize}
+          totalPages={
+            (search || !isFilterEmpty) && searchData
+              ? searchData?.totalPages
+              : data?.data?.totalPages
+          }
+          handleSelectRow={(row) => {
+            onOpen();
+            dispatch(setAsset(row));
+          }}
+          selectedRows={selectedRows}
+          setSelectedRows={setSelectedRows}
+          showFooter={true}
+          emptyLines={25}
+          isSelectable={true}
         />
       </Flex>
-      <AssetTable
-        data={
-          (search || !isFilterEmpty) && searchData
-            ? searchData.items
-            : (data?.data?.items ?? [])
-        }
-        isLoading={isLoading}
-        isFetching={isFetching || searchLoading}
-        pageNumber={currentPage}
-        setPageNumber={setCurrentPage}
-        pageSize={pageSize}
-        setPageSize={setPageSize}
-        totalPages={
-          (search || !isFilterEmpty) && searchData
-            ? searchData?.totalPages
-            : data?.data?.totalPages
-        }
-        handleSelectRow={setSelectedAsset}
-        selectedRows={selectedRows}
-        setSelectedRows={setSelectedRows}
-        showFooter={true}
-        emptyLines={25}
-        isSelectable={true}
-      />
-
-      {selectedAsset && (
-        <AssetDetail data={selectedAsset} onClose={onClose} isOpen={isOpen} />
-      )}
-    </Flex>
+      <AssetDetail data={asset} onClose={onClose} isOpen={isOpen} />
+    </>
   );
 };
 

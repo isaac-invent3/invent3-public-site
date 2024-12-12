@@ -1,6 +1,6 @@
 import { HStack, useDisclosure, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
-import React from 'react';
+
 import { scheduleSchema } from '~/lib/schemas/maintenance.schema';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import {
@@ -8,8 +8,7 @@ import {
   updatePlanForm,
 } from '~/lib/redux/slices/MaintenanceSlice';
 import SectionTwo from '../../../Schedules/ScheduleForm/FormSection/SectionTwo';
-import Button from '~/lib/components/UI/Button';
-import GenericLeaveDialogModal from '~/lib/components/UI/Modal/LeaveDialogModal';
+import { Button, LeaveDialogModal } from '@repo/ui/components';
 import moment from 'moment';
 
 interface ScheduleFormProps {
@@ -180,7 +179,7 @@ const ScheduleForm = (props: ScheduleFormProps) => {
           </VStack>
         </form>
       </FormikProvider>
-      <GenericLeaveDialogModal
+      <LeaveDialogModal
         isOpen={isOpenDialog}
         onClose={onCloseDialog}
         handleProceed={handleProceedDialog}

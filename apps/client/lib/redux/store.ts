@@ -14,7 +14,7 @@ import { assetApi } from './services/asset/general.services';
 import { authApi } from './services/auth.services';
 import assetSlice from './slices/AssetSlice';
 import dashboardSlice from './slices/DashboardSlice';
-import ticketSlice from './slices/TicketSlice'
+import ticketSlice from './slices/TicketSlice';
 import { utilityApi } from './services/utility.services';
 import { locationApi } from './services/asset/location.services';
 import { categoryApi } from './services/asset/category.services';
@@ -40,13 +40,14 @@ import { ticketApi } from './services/ticket.services';
 import { assetTypeApi } from './services/asset/types.services';
 import { assetGroupTypeApi } from './services/asset/groupType.services';
 import dateSlice from './slices/DateSlice';
+import generalSlice from './slices/GeneralSlice';
 import { taskStatusApi } from './services/task/statuses.services';
 import { scheduleInstanceApi } from './services/maintenance/scheduleInstance.services';
 
 export const persistConfig = {
   key: 'root',
   storage,
-  whitelist: [''],
+  whitelist: ['general'],
 };
 
 const rootReducer = combineReducers({
@@ -77,6 +78,7 @@ const rootReducer = combineReducers({
   [userApi.reducerPath]: userApi.reducer,
   [vendorsApi.reducerPath]: vendorsApi.reducer,
   asset: assetSlice,
+  general: generalSlice,
   dashboard: dashboardSlice,
   maintenance: maintenanceSlice,
   task: taskSlice,

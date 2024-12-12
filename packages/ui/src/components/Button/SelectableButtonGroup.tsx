@@ -1,6 +1,8 @@
-import { HStack } from '@chakra-ui/react';
-import { Option } from '~/lib/interfaces/general.interfaces';
+import { HStack, Skeleton } from '@chakra-ui/react';
+
 import Button from '.';
+// eslint-disable-next-line no-redeclare
+import { Option } from '../../../../interfaces/general.interfaces';
 
 interface SelectableButtonGroupProps {
   options: Option[];
@@ -12,6 +14,7 @@ interface SelectableButtonGroupProps {
   buttonVariant: 'secondary' | 'outline';
   isMultiSelect: boolean;
   hasAtLeastOneSelected?: boolean;
+  isLoading?: boolean;
 }
 
 const SelectableButtonGroup = (props: SelectableButtonGroupProps) => {
@@ -24,6 +27,7 @@ const SelectableButtonGroup = (props: SelectableButtonGroupProps) => {
     buttonVariant,
     isMultiSelect,
     hasAtLeastOneSelected = false,
+    isLoading,
   } = props;
 
   const handleClick = (item: Option) => {
@@ -47,6 +51,18 @@ const SelectableButtonGroup = (props: SelectableButtonGroupProps) => {
       handleSelect(finalValue);
     }
   };
+
+  if (isLoading) {
+    return (
+      <HStack spacing="8px">
+        {Array(3)
+          .fill('')
+          .map((_, index) => (
+            <Skeleton width="62px" height="36px" rounded="8px" key={index} />
+          ))}
+      </HStack>
+    );
+  }
 
   return (
     <HStack spacing="8px" flexWrap="wrap" {...customContainerStyle}>

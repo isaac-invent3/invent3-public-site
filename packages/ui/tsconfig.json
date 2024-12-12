@@ -3,6 +3,10 @@
   "compilerOptions": {
     "outDir": "dist"
   },
-  "include": ["src"],
+  "baseUrl": ".",
+  "paths": {
+    "~/*": ["./*"]
+  },
+  "include": ["src", "../interfaces"],
   "exclude": ["node_modules", "dist"]
 }

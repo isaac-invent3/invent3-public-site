@@ -6,7 +6,7 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from '~/lib/components/CustomIcons';
-import Button from '~/lib/components/UI/Button';
+import { Button } from '@repo/ui/components';
 import { getDisplayDate } from '~/lib/utils/helperFunctions';
 
 interface CustomToolbarProps {

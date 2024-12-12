@@ -1,5 +1,5 @@
 import { HStack, Icon, IconButton, useDisclosure } from '@chakra-ui/react';
-import React from 'react';
+
 import { AddIcon, CloseIcon } from '../CustomIcons';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import UserInfo from './UserInfo';

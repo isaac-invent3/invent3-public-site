@@ -1,5 +1,4 @@
 import { Flex, Grid, GridItem, Skeleton } from '@chakra-ui/react';
-import React from 'react';
 import DetailSection from '../../../DetailSection';
 import VendorDetails from './VendorDetails';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
@@ -42,7 +41,7 @@ const InfoOne = (props: InfoOneProps) => {
     },
   ];
   return (
-    <Grid templateColumns="repeat(3, 1fr)" gap="100px" width="full">
+    <Grid templateColumns="repeat(3, 1fr)" gap="66px" width="full">
       <GridItem colSpan={1}>
         <Flex width="max-content" whiteSpace="nowrap">
           <Skeleton isLoaded={!isLoading} width="full">

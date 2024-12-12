@@ -15,7 +15,7 @@ import {
 } from '~/lib/redux/slices/MaintenanceSlice';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import ActionPopover from './ActionPopover';
-import GenericLeaveDialogModal from '~/lib/components/UI/Modal/LeaveDialogModal';
+import { LeaveDialogModal } from '@repo/ui/components';
 import AddScheduleButtonWithErrorMessage from './AddScheduleButtonWithErrorMessage';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
@@ -270,7 +270,7 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
           handleAddSchedule={handleAddSchedule}
         />
       )}
-      <GenericLeaveDialogModal
+      <LeaveDialogModal
         isOpen={isOpenDialog}
         onClose={onCloseDialog}
         handleProceed={handleProceed}

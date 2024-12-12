@@ -45,8 +45,8 @@ export const scheduleInstanceApi = createApi({
       BaseApiResponse<ListResponse<MaintenanceScheduleInstance>>,
       {}
     >({
-      query: () => ({
-        url: '/MaintenanceScheduleInstances',
+      query: (data) => ({
+        url: generateQueryStr('/MaintenanceScheduleInstances?', data),
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -62,16 +62,37 @@ export const scheduleInstanceApi = createApi({
         headers: getHeaders(),
       }),
     }),
-    getInstanceScheduleAggregate: builder.query({
-      query: ({ id, ...data }) => ({
+    getMaintenanceScheduleInstanceAggregate: builder.query({
+      query: ({ areaId, ...data }) => ({
         url: generateQueryStr(
-          `/MaintenanceSchedules/GetMaintenanceScheduleAggregatesByArea/${id}?`,
+          `/MaintenanceScheduleInstances/GetMaintenanceScheduleInstanceAggregatesByArea/${areaId}?`,
           data
         ),
         method: 'GET',
         headers: getHeaders(),
       }),
     }),
+    getMaintenanceScheduleInstancesWithSingleAggregateCountsByArea:
+      builder.query<
+        BaseApiResponse<ListResponse<MaintenanceScheduleInstance>>,
+        {
+          areaId: string | number;
+          areaType: string | number;
+          startDate: string;
+          endDate: string;
+          pageNumber: number;
+          pageSize: number;
+        }
+      >({
+        query: ({ areaId, ...data }) => ({
+          url: generateQueryStr(
+            `/MaintenanceScheduleInstances/GetMaintenanceScheduleInstancesWithSingleAggregateCountsByArea/${areaId}?`,
+            data
+          ),
+          method: 'GET',
+          headers: getHeaders(),
+        }),
+      }),
     searchScheduleInstance: builder.mutation<
       BaseApiResponse<ListResponse<MaintenanceScheduleInstance>>,
       any
@@ -89,9 +110,10 @@ export const scheduleInstanceApi = createApi({
 export const {
   useDeleteMaintenanceScheduleMutation,
   useGetAllScheduleInstanceQuery,
-  useGetInstanceScheduleAggregateQuery,
   useGetScheduleInstanceByGuidQuery,
   useSearchScheduleInstanceMutation,
   useUpdateScheduleInstanceMutation,
   useUpdateScheduleInstanceandTaskInstancesMutation,
+  useGetMaintenanceScheduleInstanceAggregateQuery,
+  useGetMaintenanceScheduleInstancesWithSingleAggregateCountsByAreaQuery,
 } = scheduleInstanceApi;

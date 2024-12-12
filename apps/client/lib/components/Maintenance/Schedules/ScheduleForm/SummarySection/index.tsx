@@ -5,7 +5,6 @@ import Header from '../Header';
 import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
 import { useAppSelector } from '~/lib/redux/hooks';
-import { useSession } from 'next-auth/react';
 import ScheduleSuccessModal from '../SuccessModal';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useCreateMaintenanceScheduleAndTasksMutation } from '~/lib/redux/services/maintenance/schedule.services';
@@ -15,9 +14,10 @@ import {
 } from '../../../Common/helperFunctions';
 import { useUpdateMaintenancePlanWithSchedulesMutation } from '~/lib/redux/services/maintenance/plan.services';
 import { FORM_ENUM, SYSTEM_CONTEXT_TYPE } from '~/lib/utils/constants';
-import Button from '~/lib/components/UI/Button';
+import { Button } from '@repo/ui/components';
 import SaveAsTemplateModal from '~/lib/components/Common/Modals/SaveAsTemplateModal';
 import { useGetTemplateInfoBySystemContextTypeAndContextIdQuery } from '~/lib/redux/services/template.services';
+import { getSession } from 'next-auth/react';
 
 interface SummarySectionProps {
   activeStep: number;
@@ -52,8 +52,6 @@ const SummarySection = (props: SummarySectionProps) => {
     type === 'create'
       ? 'Add New Maintenance Schedule'
       : 'Edit Maintenance Schedule';
-  const { data } = useSession();
-  const username = data?.user?.username;
 
   const [saveAsTemplate, setSaveAsTemplate] = useState(false);
 
@@ -65,11 +63,14 @@ const SummarySection = (props: SummarySectionProps) => {
     handleSubmitSchedule(true, templateName, templateDescription);
   };
 
-  const generatePayload = (
+  const generatePayload = async (
     saveAsTemplate: boolean,
     templateName?: string,
     templateDescription?: string
   ) => {
+    const session = await getSession();
+    const username = session?.user?.username;
+
     const PAYLOAD = {
       [type === 'create'
         ? 'createMaintenanceScheduleDto'
@@ -116,13 +117,16 @@ const SummarySection = (props: SummarySectionProps) => {
     templateName?: string,
     templateDescription?: string
   ) => {
+    const session = await getSession();
+    const username = session?.user?.username;
     let response;
     if (type === 'create') {
-      response = await handleSubmit(
-        createScheduleAndTasks,
-        generatePayload(saveAsTemplate, templateName, templateDescription),
-        ''
+      const PAYLOAD = await generatePayload(
+        saveAsTemplate,
+        templateName,
+        templateDescription
       );
+      response = await handleSubmit(createScheduleAndTasks, PAYLOAD, '');
     } else {
       response = await handleSubmit(
         updateScheduleAndTasks,
@@ -181,7 +185,10 @@ const SummarySection = (props: SummarySectionProps) => {
           activeStep={2}
           finalText={type === 'create' ? 'Save' : 'Save Changes'}
           setActiveStep={setActiveStep}
-          handleContinue={() => handleSubmitSchedule(false)}
+          handleContinue={() => {
+            setSaveAsTemplate(false);
+            handleSubmitSchedule(false);
+          }}
           isLoading={saveAsTemplate ? false : isCreating || isUpdating}
           loadingText={isCreating ? 'Submitting...' : 'Updating...'}
         >

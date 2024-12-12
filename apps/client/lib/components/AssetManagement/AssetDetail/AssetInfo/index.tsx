@@ -1,5 +1,4 @@
 import { Flex, VStack } from '@chakra-ui/react';
-import React from 'react';
 import Overview from './Overview';
 import Summary from './Summary';
 

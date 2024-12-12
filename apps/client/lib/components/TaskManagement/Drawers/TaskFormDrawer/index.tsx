@@ -7,10 +7,8 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
-import React from 'react';
-import Button from '~/lib/components/UI/Button';
-import ModalHeading from '~/lib/components/UI/Modal/ModalHeading';
-import BackButton from '~/lib/components/UI/Button/BackButton';
+
+import { BackButton, Button, ModalHeading } from '@repo/ui/components';
 import { taskBaseSchema } from '~/lib/schemas/task.schema';
 import { taskFormDetails } from '~/lib/interfaces/task.interfaces';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
@@ -19,7 +17,7 @@ import {
   useUpdateTaskMutation,
 } from '~/lib/redux/services/task/general.services';
 import TaskSuccessModal from '../../Modals/TaskSuccessModal';
-import { useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 import TaskDescription from '../../Common/TaskDescription';
 import CostEstimate from '../../Common/CostEstimate';
 import TaskAssignedTo from '../../Common/AssignedTo';
@@ -32,8 +30,10 @@ import {
   useCreateTaskInstanceMutation,
   useUpdateTaskInstanceMutation,
 } from '~/lib/redux/services/task/instance.services';
+import { INSTANCE_UPDATE_ENUM } from '~/lib/utils/constants';
+import { useAppSelector } from '~/lib/redux/hooks';
 
-interface TaskFormModalProps {
+interface TaskFormDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   // eslint-disable-next-line no-unused-vars
@@ -42,7 +42,7 @@ interface TaskFormModalProps {
   scheduleId?: number | null;
   type?: 'main' | 'instance';
 }
-const TaskFormModal = (props: TaskFormModalProps) => {
+const TaskFormDrawer = (props: TaskFormDrawerProps) => {
   const {
     isOpen,
     onClose,
@@ -51,13 +51,15 @@ const TaskFormModal = (props: TaskFormModalProps) => {
     scheduleId,
     type = 'main',
   } = props;
-  const { data: session } = useSession();
   const { handleSubmit } = useCustomMutation();
   const {
     isOpen: isOpenSuccess,
     onOpen: onOpenSuccess,
     onClose: onCloseSuccess,
   } = useDisclosure();
+  const appConfigValues = useAppSelector(
+    (state) => state.general.appConfigValues
+  );
   const [createTask, { isLoading: isCreatingTask }] = useCreateTaskMutation({});
   const [updateTask, { isLoading: isUpdatingTask }] = useUpdateTaskMutation({});
   const [createTaskInstance, { isLoading: isCreatingTaskInstance }] =
@@ -87,7 +89,15 @@ const TaskFormModal = (props: TaskFormModalProps) => {
       taskStatusName: data?.status ?? null,
       assignedTo: data?.assignedTo ?? null,
       assignedToEmployeeName: data?.assignedToEmployeeName ?? null,
-      estimatedDurationInHours: data?.estimatedDurationInHours ?? null,
+      estimatedDurationInHours:
+        data?.estimatedDurationInHours ??
+        (typeof appConfigValues.DEFAULT_ESTIMATED_TASK_DURATION_IN_HOURS ===
+        'string'
+          ? parseInt(
+              appConfigValues.DEFAULT_ESTIMATED_TASK_DURATION_IN_HOURS,
+              10
+            )
+          : null),
       costEstimate: data?.costEstimate ?? null,
       actualCost: data?.actualCost ?? null,
       comments: data?.comments ?? null,
@@ -95,6 +105,7 @@ const TaskFormModal = (props: TaskFormModalProps) => {
     validationSchema: taskBaseSchema,
     enableReinitialize: true,
     onSubmit: async (values, { resetForm }) => {
+      const session = await getSession();
       if (handleData) {
         handleData({
           ...values,
@@ -115,6 +126,7 @@ const TaskFormModal = (props: TaskFormModalProps) => {
         let response;
         const info = {
           taskTypeId: values.taskTypeId,
+          [isInstance ? 'taskInstanceId' : 'taskId']: values.taskId,
           [isInstance ? 'taskInstanceName' : 'taskName']: values.taskName,
           taskDescription: values.taskDescription,
           priorityId: values.priorityId,
@@ -124,7 +136,12 @@ const TaskFormModal = (props: TaskFormModalProps) => {
           actualCost: values.actualCost,
           comments: values.comments,
           [isInstance ? 'scheduleInstanceId' : 'scheduleId']: scheduleId,
-          ...(isInstance ? { parentTaskId: data?.parentTaskId } : {}),
+          ...(isInstance
+            ? {
+                parentTaskId: data?.parentTaskId,
+                updateType: INSTANCE_UPDATE_ENUM.ONLY_THIS_INSTANCE,
+              }
+            : {}),
         };
         if (data) {
           response = await handleSubmit(
@@ -132,15 +149,14 @@ const TaskFormModal = (props: TaskFormModalProps) => {
             {
               ...info,
               id: values.taskId,
-              [isInstance ? 'taskInstanceName' : 'taskName']: values.taskId,
-              lastModifiedBy: session?.user.id,
+              lastModifiedBy: session?.user?.username,
             },
             ''
           );
         } else {
           response = await handleSubmit(
             type === 'main' ? createTask : createTaskInstance,
-            { ...info, createdBy: session?.user.id },
+            { ...info, createdBy: session?.user.username },
             ''
           );
         }
@@ -212,7 +228,7 @@ const TaskFormModal = (props: TaskFormModalProps) => {
             <Button
               type="submit"
               customStyles={{ width: '237px' }}
-              isLoading={isLoading}
+              isLoading={isLoading || formik.isSubmitting}
               loadingText={isCreating ? 'Creating...' : 'Updating...'}
               handleClick={formik.handleSubmit}
             >
@@ -231,4 +247,4 @@ const TaskFormModal = (props: TaskFormModalProps) => {
   );
 };
 
-export default TaskFormModal;
+export default TaskFormDrawer;

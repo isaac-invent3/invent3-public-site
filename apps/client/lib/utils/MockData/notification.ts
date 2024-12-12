@@ -1,0 +1,77 @@
+import { INotification } from '~/lib/interfaces/notification.interfaces';
+
+const MOCK_NOTIFICATION: INotification[] = [
+  {
+    isRead: false,
+    createdDate: '2024-12-03T10:51:51.847Z',
+    createdBy: 'bwilliam',
+    type: 1,
+    contextID: 12,
+    title: 'Spillage on the Foyer',
+    user: 'Rita Jones',
+    userProfilePicture: null,
+  },
+
+  {
+    isRead: false,
+    createdDate: '2024-12-03T10:51:51.847Z',
+    createdBy: 'bwilliam',
+    type: 3,
+    contextID: 12,
+    title: 'Spillage on the Foyer',
+    user: 'John Doe',
+    userProfilePicture: null,
+  },
+  {
+    isRead: true,
+    createdDate: '2024-12-03T10:51:51.847Z',
+    createdBy: 'bwilliam',
+    type: 4,
+    contextID: 12,
+    title: 'Spillage on the Foyer',
+    user: null,
+    userProfilePicture: null,
+  },
+  {
+    isRead: true,
+    createdDate: '2024-12-03T10:51:51.847Z',
+    createdBy: 'bwilliam',
+    type: 1,
+    contextID: 12,
+    title: 'Spillage on the Foyer',
+    user: 'John Doe',
+    userProfilePicture: null,
+  },
+  {
+    isRead: true,
+    createdDate: '2024-12-03T10:51:51.847Z',
+    createdBy: 'bwilliam',
+    type: 1,
+    contextID: 12,
+    title: 'Spillage on the Foyer',
+    user: 'John Doe',
+    userProfilePicture: null,
+  },
+  {
+    isRead: true,
+    createdDate: '2024-12-03T10:51:51.847Z',
+    createdBy: 'bwilliam',
+    type: 1,
+    contextID: 12,
+    title: 'Spillage on the Foyer',
+    user: 'John Doe',
+    userProfilePicture: null,
+  },
+  {
+    isRead: true,
+    createdDate: '2024-12-03T10:51:51.847Z',
+    createdBy: 'bwilliam',
+    type: 2,
+    contextID: 12,
+    title: 'Spillage on the Foyer',
+    user: 'Rita Jones',
+    userProfilePicture: null,
+  },
+];
+
+export default MOCK_NOTIFICATION;

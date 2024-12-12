@@ -1,5 +1,5 @@
 import { HStack, Skeleton, StackDivider, Text } from '@chakra-ui/react';
-import React from 'react';
+
 import { useAppSelector } from '~/lib/redux/hooks';
 
 interface StatsProps {

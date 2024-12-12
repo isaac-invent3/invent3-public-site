@@ -1,6 +1,5 @@
 import { Box, Button, HStack } from '@chakra-ui/react';
 import Image from 'next/image';
-import React from 'react';
 
 const SSOLogin = () => {
   const providers = [
@@ -21,12 +20,13 @@ const SSOLogin = () => {
       {providers.map((provider) => (
         <Button
           bgColor="white"
+          color="primary.500"
           py="15px"
           minH="50px"
           rounded="8px"
           key={provider.label}
           width="full"
-          fontWeight={400}
+          fontWeight={500}
           fontSize="14px"
           lineHeight="16.63px"
           gap="8px"

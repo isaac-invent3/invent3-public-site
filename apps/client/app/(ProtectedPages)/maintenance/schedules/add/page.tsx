@@ -1,7 +1,7 @@
 'use client';
 
 import { Skeleton } from '@chakra-ui/react';
-import { useSearchParams } from 'next/navigation';
+import { notFound, useSearchParams } from 'next/navigation';
 
 import ScheduleForm from '~/lib/components/Maintenance/Schedules/ScheduleForm';
 import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
@@ -21,7 +21,7 @@ export default function Page() {
     if (isLoading) {
       return <Skeleton width="full" rounded="8px" height="250px" mt="80px" />;
     }
-    // if (!data?.data) return notFound();
+    if (!data?.data) return notFound();
 
     if (data?.data) {
       const schedule: MaintenanceSchedule = data?.data;

@@ -3,19 +3,16 @@ import { HStack, ModalBody, ModalFooter, Text, VStack } from '@chakra-ui/react';
 import { addDays } from 'date-fns';
 import { useState } from 'react';
 import { DateRangePicker, Range } from 'react-date-range';
-import Button from '../../Button';
-import GenericModal from '../../Modal';
+import { Button, GenericModal } from '@repo/ui/components';
 import './styles.css';
-import TimezoneDropdown from './TimeZoneDropdown';
 
 interface DateRangeModalProps {
   isOpen: boolean;
   onClose: () => void;
-
   minStartDate?: Date;
   maxEndDate?: Date;
   dateRange?: Range | undefined;
-  isLoading?: boolean;
+  headerLabel?: string;
   // eslint-disable-next-line no-unused-vars
   handleChangeDate?: (info: Range) => void;
 }
@@ -26,13 +23,13 @@ const DateRangeModal = (props: DateRangeModalProps) => {
     onClose,
     minStartDate,
     maxEndDate,
-    isLoading,
     dateRange,
     handleChangeDate,
+    headerLabel,
   } = props;
 
   const getInitialDateRange = (): Range[] => {
-    if (dateRange) {
+    if (dateRange && dateRange?.startDate && dateRange?.endDate) {
       return [dateRange];
     }
     return [
@@ -58,18 +55,12 @@ const DateRangeModal = (props: DateRangeModalProps) => {
         <ModalBody m={0} p={0} py="32px" pl="32px" pr="27px" width="full">
           <VStack width="full" alignItems="flex-start" spacing="24px">
             <Text size="lg" color="primary.500" fontWeight={500}>
-              Custom Date
+              {headerLabel ?? 'Custom Date'}
             </Text>
 
             <DateRangePicker
               onChange={(item: any) => {
-                if (!item.selection) return;
-
-                setSelectedDateRange([item.selection]);
-
-                if (handleChangeDate) {
-                  handleChangeDate(item.selection);
-                }
+                setSelectedDateRange([item?.selection ?? item?.range1]);
               }}
               showPreview
               moveRangeOnFirstSelection={false}
@@ -88,20 +79,13 @@ const DateRangeModal = (props: DateRangeModalProps) => {
           p={0}
           m={0}
           width="full"
-          justifyContent="space-between"
+          justifyContent="flex-end"
           pl="32px"
           pr="27px"
           mb="19px"
           mt="10px"
           alignItems="center"
         >
-          <TimezoneDropdown
-            width="250px"
-            label="West Africa Standard Time"
-            name="ticketStatusId"
-            options={[]}
-          />
-
           <HStack spacing="16px" width="full" justifyContent="flex-end">
             <Button
               variant="secondary"
@@ -112,9 +96,14 @@ const DateRangeModal = (props: DateRangeModalProps) => {
             </Button>
             <Button
               customStyles={{ w: '116px' }}
-              handleClick={() => console.log()}
-              isLoading={isLoading}
-              loadingText="Validating..."
+              handleClick={() => {
+                if (handleChangeDate && selectedDateRange.length > 0) {
+                  handleChangeDate(
+                    selectedDateRange[selectedDateRange.length - 1] as Range
+                  );
+                }
+                onClose();
+              }}
             >
               Done
             </Button>

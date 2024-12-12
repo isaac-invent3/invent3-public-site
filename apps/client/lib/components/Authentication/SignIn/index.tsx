@@ -1,21 +1,24 @@
 'use client';
 
-import React from 'react';
 import { Divider, Flex, Heading, Text, VStack } from '@chakra-ui/react';
 import Link from 'next/link';
 import { loginSchema } from '~/lib/schemas/auth.schema';
 import { Field, FormikProvider, useFormik } from 'formik';
 import AuthLayout from '../AuthLayout';
 import TextInput from '../../UI/TextInput';
-import PrimaryButton from '../../UI/Button';
 import SSOLogin from './SSOLogin';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
+import { useAppDispatch } from '~/lib/redux/hooks';
+import { utilityApi } from '~/lib/redux/services/utility.services';
+import { setCredentials } from '~/lib/redux/slices/GeneralSlice';
+import { Button } from '@repo/ui/components';
 
 const SignIn = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const ref = searchParams.get('ref');
+  const dispatch = useAppDispatch();
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -34,6 +37,14 @@ const SignIn = () => {
         // Handle error
         console.error(result.error);
       } else {
+        const result = await dispatch(
+          utilityApi.endpoints.getAppConfigValues.initiate({})
+        );
+        dispatch(
+          setCredentials({
+            appConfigValues: result?.data?.data,
+          })
+        );
         router.push(ref ?? '/dashboard');
       }
       setSubmitting(false);
@@ -118,13 +129,13 @@ const SignIn = () => {
               </Flex>
             </VStack>
 
-            <PrimaryButton
+            <Button
               isLoading={formik.isSubmitting}
               loadingText="Logging In..."
               type="submit"
             >
               Sign in
-            </PrimaryButton>
+            </Button>
           </form>
         </FormikProvider>
         <Flex

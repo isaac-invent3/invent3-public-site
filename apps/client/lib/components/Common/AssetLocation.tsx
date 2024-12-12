@@ -1,5 +1,5 @@
 import { Flex, HStack, Text } from '@chakra-ui/react';
-import React from 'react';
+
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 
 interface AssetLocationProps {

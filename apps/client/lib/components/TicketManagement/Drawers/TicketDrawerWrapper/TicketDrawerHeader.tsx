@@ -1,5 +1,5 @@
 import { HStack } from '@chakra-ui/react';
-import Button from '~/lib/components/UI/Button';
+import { Button } from '@repo/ui/components';
 import {
   SelectedTicketAction,
   Ticket,
@@ -53,7 +53,7 @@ const TicketDrawerHeader = (props: TicketDrawerHeaderProps) => {
               Schedule Ticket
             </Button>
 
-            {(category === 'new' && action === 'view') && (
+            {category === 'new' && action === 'view' && (
               <Button
                 handleClick={() => openModal('assign')}
                 variant="outline"

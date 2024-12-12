@@ -1,7 +1,7 @@
 import { HStack, Icon } from '@chakra-ui/react';
-import React from 'react';
+
 import SearchInput from '../../UI/SearchInput';
-import Button from '../../UI/Button';
+import { Button } from '@repo/ui/components';
 import { BulkSearchIcon, DownloadIcon, FilterIcon } from '../../CustomIcons';
 import FilterButton from '../../UI/Filter/FilterButton';
 

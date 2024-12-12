@@ -5,9 +5,8 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import React from 'react';
-import Button from '~/lib/components/UI/Button';
-import BackButton from '~/lib/components/UI/Button/BackButton';
+
+import { BackButton, Button } from '@repo/ui/components';
 import { TaskInstance } from '~/lib/interfaces/task.interfaces';
 import MarkTaskAsCompletedModal from '../../Modals/MarkTaskAsCompletedModal';
 import SectionOne from './SectionOne';
@@ -15,13 +14,13 @@ import SectionTwo from './SectionTwo';
 import OtherRelatedTasks from './OtherRelatedTasks';
 import GenericDrawer from '~/lib/components/UI/GenericDrawer';
 
-interface TaskDetailModalProps {
+interface TaskDetailDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   data: TaskInstance;
 }
 
-const TaskDetailModal = (props: TaskDetailModalProps) => {
+const TaskDetailDrawer = (props: TaskDetailDrawerProps) => {
   const { isOpen, onClose, data } = props;
   const {
     isOpen: isOpenMarkAsCompleted,
@@ -66,4 +65,4 @@ const TaskDetailModal = (props: TaskDetailModalProps) => {
   );
 };
 
-export default TaskDetailModal;
+export default TaskDetailDrawer;

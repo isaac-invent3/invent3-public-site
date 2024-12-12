@@ -1,16 +1,14 @@
 /* eslint-disable no-unused-vars */
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
 import { Field, FormikProvider, useFormik } from 'formik';
-import React from 'react';
-import GenericModal from '~/lib/components/UI/Modal';
-import Button from '~/lib/components/UI/Button';
+
+import { Button, GenericModal, ModalHeading } from '@repo/ui/components';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { useSession } from 'next-auth/react';
 import TextInput from '~/lib/components/UI/TextInput';
-import ModalHeading from '~/lib/components/UI/Modal/ModalHeading';
 import { subCategorySchema } from '~/lib/schemas/asset/category.schema';
 import { useCreateSubCategoryMutation } from '~/lib/redux/services/asset/category.services';
 import CategorySelect from '../CategorySelect';
+import { getSession } from 'next-auth/react';
 
 interface SubCategoryModalProps {
   isOpen: boolean;
@@ -21,7 +19,6 @@ const SubCategoryModal = (props: SubCategoryModalProps) => {
   const { isOpen, onClose, defaultCategory } = props;
   const [createSubCategory, { isLoading }] = useCreateSubCategoryMutation({});
   const { handleSubmit } = useCustomMutation();
-  const { data } = useSession();
 
   const formik = useFormik({
     initialValues: {
@@ -31,7 +28,8 @@ const SubCategoryModal = (props: SubCategoryModalProps) => {
     validationSchema: subCategorySchema,
     enableReinitialize: true,
     onSubmit: async (values) => {
-      const finalValue = { ...values, createdBy: data?.user?.username };
+      const session = await getSession();
+      const finalValue = { ...values, createdBy: session?.user?.username };
       const response = await handleSubmit(createSubCategory, finalValue, '');
       if (response?.data) {
         onClose();
@@ -73,7 +71,10 @@ const SubCategoryModal = (props: SubCategoryModalProps) => {
                 >
                   Cancel
                 </Button>
-                <Button type="submit" isLoading={isLoading}>
+                <Button
+                  type="submit"
+                  isLoading={isLoading || formik.isSubmitting}
+                >
                   Add Subcategory
                 </Button>
               </HStack>

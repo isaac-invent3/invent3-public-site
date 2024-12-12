@@ -6,10 +6,9 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import React from 'react';
-import Button from '~/lib/components/UI/Button';
-import BackButton from '~/lib/components/UI/Button/BackButton';
-import TaskFormModal from '../TaskFormDrawer';
+
+import { BackButton, Button } from '@repo/ui/components';
+import TaskFormDrawer from '../TaskFormDrawer';
 import { taskFormDetails } from '~/lib/interfaces/task.interfaces';
 import GenericDrawer from '~/lib/components/UI/GenericDrawer';
 
@@ -21,6 +20,7 @@ interface TaskListDrawerProps {
   showAddTaskButton?: boolean;
   scheduleId?: number;
   children: React.ReactNode;
+  taskType: 'main' | 'instance';
 }
 
 const TaskListDrawer = (props: TaskListDrawerProps) => {
@@ -31,6 +31,7 @@ const TaskListDrawer = (props: TaskListDrawerProps) => {
     showAddTaskButton = true,
     children,
     scheduleId,
+    taskType,
   } = props;
   const {
     isOpen: isOpenForm,
@@ -73,11 +74,12 @@ const TaskListDrawer = (props: TaskListDrawerProps) => {
           </Heading>
           {children}
         </VStack>
-        <TaskFormModal
+        <TaskFormDrawer
           isOpen={isOpenForm}
           onClose={onCLoseForm}
           handleData={handleAddTask}
           scheduleId={scheduleId}
+          type={taskType}
         />
       </DrawerBody>
     </GenericDrawer>

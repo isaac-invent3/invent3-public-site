@@ -1,5 +1,5 @@
 import { HStack, Text } from '@chakra-ui/react';
-import React from 'react';
+
 import SectionInfo from '../../Form/FormSectionInfo';
 import NumberBox from '../Common/NumberBox';
 import RepeatFields from './RepeatFields';

@@ -1,5 +1,4 @@
 import { Box, VStack, Text } from '@chakra-ui/react';
-import React from 'react';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import L, { LatLngExpression } from 'leaflet';
 

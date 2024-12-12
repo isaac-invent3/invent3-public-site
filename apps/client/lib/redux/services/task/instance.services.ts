@@ -13,7 +13,11 @@ const getHeaders = () => ({
 export const taskInstanceApi = createApi({
   reducerPath: 'taskInstanceApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['allTaskInstances', 'allTaskInstancesByScheduleInstanceId'],
+  tagTypes: [
+    'allTaskInstances',
+    'allTaskInstancesByScheduleInstanceId',
+    'allCompletedTaskInstances',
+  ],
   endpoints: (builder) => ({
     createTaskInstance: builder.mutation({
       query: (body: any) => ({
@@ -71,7 +75,7 @@ export const taskInstanceApi = createApi({
         method: 'GET',
         headers: getHeaders(),
       }),
-      providesTags: ['allTaskInstances'],
+      providesTags: ['allCompletedTaskInstances'],
     }),
     getTaskInstanceById: builder.query({
       query: (id: any) => ({

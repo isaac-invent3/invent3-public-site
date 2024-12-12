@@ -14,7 +14,7 @@ import {
 import { scheduleTicketSchema } from '~/lib/schemas/ticket.schema';
 import { FORM_ENUM } from '~/lib/utils/constants';
 import { generateTasksArray } from '../../Maintenance/Common/helperFunctions';
-import Button from '../../UI/Button';
+import { Button } from '@repo/ui/components';
 import DateTimeButtons from '../../UI/DateTimeComponents/DateTimeButtons';
 import ErrorMessage from '../../UI/ErrorMessage';
 import FormInputWrapper from '../../UI/Form/FormInputWrapper';
@@ -53,7 +53,7 @@ const ScheduleTicketDrawer = (props: AssignTicketDrawerProps) => {
   const { data: session } = useSession();
 
   const { handleSubmit } = useCustomMutation();
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   const username = session?.user?.username;
 
@@ -76,8 +76,7 @@ const ScheduleTicketDrawer = (props: AssignTicketDrawerProps) => {
     },
 
     validationSchema: scheduleTicketSchema(
-      moment(moment()).format('DD/MM/YYYY') ??
-        undefined
+      moment(moment()).format('DD/MM/YYYY') ?? undefined
     ),
     enableReinitialize: true,
 
@@ -201,7 +200,7 @@ const ScheduleTicketDrawer = (props: AssignTicketDrawerProps) => {
         onClose={() => {
           onCloseSuccess();
           onClose();
-          dispatch(clearSelectedTicket())
+          dispatch(clearSelectedTicket());
         }}
       />
     </>

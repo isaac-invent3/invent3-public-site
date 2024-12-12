@@ -6,7 +6,7 @@ import {
   ModalOverlay,
   VStack,
 } from '@chakra-ui/react';
-import React from 'react';
+
 import { MaintenanceScheduleInstance } from '~/lib/interfaces/maintenance.interfaces';
 import HeaderInfo from './HeaderInfo';
 import OtherInfo from './OtherInfo';

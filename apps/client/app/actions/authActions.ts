@@ -41,37 +41,25 @@ export async function handleSignOut(ref?: string) {
     if (!session) {
       return;
     }
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/logout`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          accessToken: session.user.accessToken,
-          apiKey: session.user.apiKey,
-          sessionId: session.user.sessionId,
-        }),
-      }
-    );
 
-    const data = await response.json();
+    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/logout`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        accessToken: session.user.accessToken,
+        apiKey: session.user.apiKey,
+        sessionId: session.user.sessionId,
+      }),
+    }).catch((error) => {
+      console.error('Error sending logout request:', error);
+    });
 
-    if (!response.ok) {
-      // If the response isn't OK, log the error and notify Sentry
-      console.error('Failed to log out', data);
-      // Optionally notify Sentry here
-      // notifySentry("Could not log out!")
-      return;
-    }
-    console.log('Logout successful:', data);
+    console.log('Logout request sent.');
   } catch (error) {
     console.error('An error occurred during logout:', error);
-    // Optionally notify Sentry here
-    // notifySentry(error)
   } finally {
-    // Ensure the user is signed out and redirected, even if an error occurs
     const redirectUrl = ref ? `/?ref=${ref}` : '/';
     await signOut({ redirectTo: redirectUrl });
   }

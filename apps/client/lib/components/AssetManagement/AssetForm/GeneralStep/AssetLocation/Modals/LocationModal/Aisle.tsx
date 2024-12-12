@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useDisclosure, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import { useGetAllAislesQuery } from '~/lib/redux/services/asset/location.services';
 import AddButton from '../../../../../../UI/Form/FormAddButton';
 import { Option } from '~/lib/interfaces/general.interfaces';

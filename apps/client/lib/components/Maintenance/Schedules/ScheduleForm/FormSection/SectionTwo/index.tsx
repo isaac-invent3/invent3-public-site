@@ -1,5 +1,5 @@
 import { SimpleGrid, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import ScheduleTitle from './Title';
 import Description from './Description';
 import Type from './Type';
@@ -66,9 +66,10 @@ const SectionTwo = (props: SectionTwoProps) => {
           minScheduleDate={minScheduleDate}
           maxScheduleDate={maxScheduleDate}
           buttonVariant={buttonVariant}
+          scheduleType={scheduleType}
         />
         <Tasks
-          scheduleType={scheduleType}
+          showTaskCount={scheduleType === 'main'}
           sectionMaxWidth="141px"
           spacing="41px"
         />

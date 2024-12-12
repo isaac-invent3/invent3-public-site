@@ -1,5 +1,5 @@
 import { HStack, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
+
 import { useAppSelector } from '~/lib/redux/hooks';
 
 const AssetInfo = () => {
@@ -26,7 +26,7 @@ const AssetInfo = () => {
           {assetName ?? 'N/A'}
         </Text>
       </VStack>
-      <VStack spacing="8px" alignItems="flex-start" maxW="176px">
+      <VStack spacing="8px" alignItems="flex-start" maxW="300px">
         <Text color="neutral.300">Asset Location</Text>
         <Text size="md" color="white">
           {assetLocation ?? 'N/A'}

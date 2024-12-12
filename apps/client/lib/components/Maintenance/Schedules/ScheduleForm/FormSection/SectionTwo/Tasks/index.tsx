@@ -1,7 +1,7 @@
 import { Flex, HStack, Text, useDisclosure, VStack } from '@chakra-ui/react';
 import { useField, useFormikContext } from 'formik';
-import React from 'react';
-import TaskFormModal from '~/lib/components/TaskManagement/Drawers/TaskFormDrawer';
+
+import TaskFormDrawer from '~/lib/components/TaskManagement/Drawers/TaskFormDrawer';
 import ErrorMessage from '~/lib/components/UI/ErrorMessage';
 import AddButton from '~/lib/components/UI/Form/FormAddButton';
 import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
@@ -13,10 +13,10 @@ import { isArray } from 'lodash';
 interface TasksProps {
   sectionMaxWidth: string;
   spacing: string;
-  scheduleType?: 'main' | 'instance';
+  showTaskCount?: boolean;
 }
 const Tasks = (props: TasksProps) => {
-  const { scheduleType, sectionMaxWidth, spacing } = props;
+  const { showTaskCount, sectionMaxWidth, spacing } = props;
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -29,8 +29,6 @@ const Tasks = (props: TasksProps) => {
     useFormikContext<ScheduleFormDetails>();
   // eslint-disable-next-line no-unused-vars
   const [field, meta, helpers] = useField('taskCount');
-
-  const isMainScheduleType = scheduleType === 'main';
 
   const handleAddTask = (task: taskFormDetails) => {
     setFieldValue('tasks', [
@@ -58,11 +56,11 @@ const Tasks = (props: TasksProps) => {
           {values?.taskCount && values?.taskCount >= 1 && (
             <HStack spacing="8px">
               <Text
-                color={isMainScheduleType ? '#0366EF' : 'primary.500'}
+                color={showTaskCount ? '#0366EF' : 'primary.500'}
                 fontWeight={700}
                 size="md"
-                textDecoration={isMainScheduleType ? 'underline' : 'none'}
-                cursor={isMainScheduleType ? 'pointer' : 'initial'}
+                textDecoration={showTaskCount ? 'underline' : 'none'}
+                cursor={showTaskCount ? 'pointer' : 'initial'}
                 onClick={() => {
                   onOpenFormTaskList;
                 }}
@@ -87,7 +85,7 @@ const Tasks = (props: TasksProps) => {
             )
           )}
       </VStack>
-      <TaskFormModal
+      <TaskFormDrawer
         isOpen={isOpen}
         onClose={onClose}
         handleData={handleAddTask}

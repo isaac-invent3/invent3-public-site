@@ -1,30 +1,37 @@
-import React from 'react';
-import Button from '../../Button';
+import { Button } from '@repo/ui/components';
 import DimissibleContainer from '../../DimissibleContainer';
 import moment from 'moment';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { updateRecurrence } from '~/lib/redux/slices/DateSlice';
+import { Range } from 'react-date-range';
 
 interface DisplayProps {
   selectedDate?: string | undefined;
   selectedTime: string | undefined;
   // eslint-disable-next-line no-unused-vars
   handleDateTimeSelect?: (dateTime: string | null) => void;
+  // eslint-disable-next-line no-unused-vars
+  handleRange?: (info: Range) => void;
   prefix?: string;
   onOpenCustomDate: () => void;
   includeTime: boolean;
   setTime: React.Dispatch<React.SetStateAction<string | undefined>>;
+  isRange: boolean;
+  range?: Range;
 }
 
 const Display = (props: DisplayProps) => {
   const {
     handleDateTimeSelect,
+    handleRange,
     onOpenCustomDate,
     includeTime,
     selectedDate,
     selectedTime,
     prefix,
     setTime,
+    isRange,
+    range,
   } = props;
   const dispatch = useAppDispatch();
 
@@ -59,7 +66,7 @@ const Display = (props: DisplayProps) => {
     }
   };
 
-  if (selectedDate) {
+  if (selectedDate || range?.startDate) {
     return (
       <DimissibleContainer
         handleClose={() => {
@@ -68,13 +75,20 @@ const Display = (props: DisplayProps) => {
           if (handleDateTimeSelect) {
             handleDateTimeSelect(null);
           }
+          if (handleRange) {
+            handleRange({ startDate: undefined, endDate: undefined });
+          }
         }}
       >
         <Button
           customStyles={{ height: '37px', py: '10px' }}
           handleClick={onOpenCustomDate}
         >
-          {getDisplayText()}
+          {!isRange
+            ? getDisplayText()
+            : range
+              ? `${moment(range.startDate).format('D MMM YYYY')} - ${moment(range.endDate).format('D MMM YYYY')}`
+              : ''}
         </Button>
       </DimissibleContainer>
     );

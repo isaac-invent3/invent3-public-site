@@ -38,7 +38,7 @@ const Button = (props: ButtonProps) => {
             ? 'primary.500'
             : '#F6F6F6'
       }
-      color={variant === 'primary' ? 'secondary.pale.500' : 'primary.main'}
+      color={variant === 'primary' ? 'secondary.pale.500' : ''}
       rounded="8px"
       fontSize="14px"
       lineHeight="16.63px"

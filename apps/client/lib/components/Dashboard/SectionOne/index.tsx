@@ -1,5 +1,5 @@
 import { SimpleGrid } from '@chakra-ui/react';
-import React from 'react';
+
 import QuickLinks from './QuickLinks';
 import AssetCountStats from './AssetCountStats';
 

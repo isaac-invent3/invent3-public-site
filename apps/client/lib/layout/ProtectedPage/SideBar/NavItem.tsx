@@ -7,7 +7,6 @@ import {
   Link,
 } from '@chakra-ui/react';
 import { usePathname } from 'next/navigation';
-import React from 'react';
 
 interface NavItemProps {
   name: string;

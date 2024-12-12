@@ -6,7 +6,7 @@ import {
   Tabs,
   VStack,
 } from '@chakra-ui/react';
-import React from 'react';
+
 import CardHeader from '../../Common/CardHeader';
 import Y2DTab from './Y2DTab';
 import YTYTab from './YTYTab';

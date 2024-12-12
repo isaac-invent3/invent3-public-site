@@ -1,9 +1,9 @@
 import { Text, useDisclosure, VStack } from '@chakra-ui/react';
-import { useSession } from 'next-auth/react';
-import React from 'react';
-import TaskFormModal from '~/lib/components/TaskManagement/Drawers/TaskFormDrawer';
+import { getSession } from 'next-auth/react';
+
+import TaskFormDrawer from '~/lib/components/TaskManagement/Drawers/TaskFormDrawer';
 import GenericPopover from '~/lib/components/UI/GenericPopover';
-import GenericDeleteModal from '~/lib/components/UI/Modal/GenericDeleteModal';
+import { GenericDeleteModal } from '@repo/ui/components';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import {
   taskFormDetails,
@@ -38,12 +38,12 @@ const PopoverAction = (task: TaskInstance, type: 'drawer' | 'page') => {
 
   const { handleSubmit } = useCustomMutation();
   const [deleteTaskInstance, { isLoading }] = useDeleteTaskInstanceMutation({});
-  const { data } = useSession();
 
   const handleDeleteTaskInstance = async () => {
+    const session = await getSession();
     const response = await handleSubmit(
       deleteTaskInstance,
-      { id: task?.taskInstanceId, deletedBy: data?.user.username },
+      { id: task?.taskInstanceId, deletedBy: session?.user.username },
       'Task Deleted Successfully'
     );
     if (response?.data) {
@@ -66,14 +66,7 @@ const PopoverAction = (task: TaskInstance, type: 'drawer' | 'page') => {
               View Details
             </Text>
           )}
-          <Text
-            cursor="pointer"
-            {...(type === 'drawer' ? { onClick: () => onOpenEdit() } : {})}
-            as={type === 'page' ? 'a' : 'button'}
-            {...(type === 'page'
-              ? { href: `/task-management/${task.taskInstanceId}/edit` }
-              : {})}
-          >
+          <Text cursor="pointer" onClick={() => onOpenEdit()}>
             Edit
           </Text>
           <Text cursor="pointer" onClick={onOpenDelete}>
@@ -81,18 +74,21 @@ const PopoverAction = (task: TaskInstance, type: 'drawer' | 'page') => {
           </Text>
         </VStack>
       </GenericPopover>
-      <TaskFormModal
+      <TaskFormDrawer
         isOpen={isOpenEdit}
         onClose={onCloseEdit}
         data={
           {
             ...task,
-            priorityId: 1,
+            priorityId: task.taskPriorityId,
             parentTaskId: task.parentTaskId,
             taskId: task.taskInstanceId,
+            taskName: task.taskInstanceName,
             scheduleId: task.scheduleInstanceId,
+            assignedTo: task.assignedToEmployeeId,
           } as unknown as taskFormDetails
         }
+        type="instance"
         scheduleId={task.scheduleInstanceId}
       />
       {isOpenDelete && (

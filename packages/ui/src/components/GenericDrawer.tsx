@@ -1,4 +1,9 @@
-import { Drawer, DrawerContent, DrawerOverlay } from '@chakra-ui/react';
+import {
+  Drawer,
+  DrawerContent,
+  DrawerOverlay,
+  DrawerProps,
+} from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
 interface IGenericDrawer {
@@ -6,6 +11,7 @@ interface IGenericDrawer {
   onClose: () => void;
   children: React.ReactNode;
   maxWidth?: string;
+  customStyle?: Omit<DrawerProps, 'onClose' | 'isOpen' | 'children'>;
 }
 
 const GenericDrawer = (props: IGenericDrawer) => {

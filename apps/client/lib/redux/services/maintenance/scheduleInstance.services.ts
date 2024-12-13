@@ -17,7 +17,7 @@ export const scheduleInstanceApi = createApi({
   endpoints: (builder) => ({
     updateScheduleInstance: builder.mutation({
       query: ({ id, ...data }) => ({
-        url: `/MaintenanceScheduleInstances/${id}`,
+        url: `/Invent3Pro/UpdateScheduleAndTaskInstances/${id}`,
         method: 'PUT',
         headers: getHeaders(),
         body: data,
@@ -25,8 +25,8 @@ export const scheduleInstanceApi = createApi({
       invalidatesTags: ['allScheduleInstances'],
     }),
     updateScheduleInstanceandTaskInstances: builder.mutation({
-      query: ({ id, ...data }) => ({
-        url: `/Invent3Pro/UpdateScheduleAndTaskInstances/${id}`,
+      query: (data) => ({
+        url: `/Invent3Pro/UpdateScheduleAndTaskInstances`,
         method: 'PUT',
         headers: getHeaders(),
         body: data,

@@ -4,8 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { GenericBreadCrumb } from '@repo/ui/components';
 import PageHeader from '~/lib/components/UI/PageHeader';
 import PlanTemplateModal from '../Plans/PlanTemplateModal';
-import ActionButtonPopover from './ActionButtonsPopover';
 import ScheduleTemplateModal from '../Schedules/ScheduleTemplateModal';
+import ActionButtonPopover from '../../UI/ActionButtonsPopover';
 
 const breadCrumbData = [
   {
@@ -51,7 +51,9 @@ const Header = () => {
           <ActionButtonPopover
             onOpenTemplateModal={onOpenPlanTemplate}
             newRoute="/maintenance/plans/add"
-            suffix="Plan"
+            buttonLabel="Create New Plan"
+            linkLabel="Create a New Plan"
+            modalLabel="Create From Template"
           >
             {isOpenPlanTemplate && (
               <PlanTemplateModal
@@ -65,7 +67,9 @@ const Header = () => {
           <ActionButtonPopover
             onOpenTemplateModal={onOpenScheduleTemplate}
             newRoute="/maintenance/schedules/add"
-            suffix="Schedule"
+            buttonLabel="Create New Schedule"
+            linkLabel="Create a New Schedule"
+            modalLabel="Create From Template"
           >
             {isOpenScheduleTemplate && (
               <ScheduleTemplateModal

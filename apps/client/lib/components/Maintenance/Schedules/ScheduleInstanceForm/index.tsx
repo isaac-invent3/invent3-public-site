@@ -9,7 +9,7 @@ import {
   FormActionButtons,
   withFormLeaveDialog,
 } from '@repo/ui/components';
-import { useUpdateScheduleInstanceMutation } from '~/lib/redux/services/maintenance/scheduleInstance.services';
+import { useUpdateScheduleInstanceandTaskInstancesMutation } from '~/lib/redux/services/maintenance/scheduleInstance.services';
 import SectionTwo from '../ScheduleForm/FormSection/SectionTwo';
 import moment from 'moment';
 import AssetInfo from './AssetInfo';
@@ -24,7 +24,7 @@ const ScheduleInstanceForm = () => {
   const formDetails = useAppSelector((state) => state.maintenance.scheduleForm);
   const { handleSubmit } = useCustomMutation();
   const [updateScheduleInstance, { isLoading }] =
-    useUpdateScheduleInstanceMutation({});
+    useUpdateScheduleInstanceandTaskInstancesMutation({});
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const formik = useFormik({
@@ -54,7 +54,6 @@ const ScheduleInstanceForm = () => {
         ? INSTANCE_UPDATE_ENUM.ONLY_THIS_INSTANCE
         : INSTANCE_UPDATE_ENUM.CURRENT_AND_FUTURE_INSTANCES;
       const finalData = {
-        id: values.scheduleId,
         updateMaintenanceScheduleInstanceDto: {
           scheduleInstanceId: values.scheduleId,
           scheduledDate: moment(

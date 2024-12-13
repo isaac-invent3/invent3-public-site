@@ -1,17 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import {
-  GenericModal,
-  TablePagination,
-  SlideTransition,
-} from '@repo/ui/components';
-import Header from './Header';
-import {
-  Collapse,
-  Flex,
-  ModalBody,
-  ModalFooter,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { SlideTransition } from '@repo/ui/components';
+import { Flex } from '@chakra-ui/react';
 import TemplateTable from './TemplateTable';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 import {
@@ -19,9 +8,10 @@ import {
   SearchResponse,
 } from '~/lib/interfaces/general.interfaces';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import TemplateFilters from './Header/Filters';
+import TemplateFilters from './Filters';
 import { useSearchTemplatesMutation } from '~/lib/redux/services/template.services';
 import { Template } from '~/lib/interfaces/template.interfaces';
+import GenericTemplateModal from '../GenericTemplateModal';
 
 interface TemplateModalProps {
   isOpen: boolean;
@@ -58,11 +48,11 @@ const TemplateModal = (props: TemplateModalProps) => {
     setSelectedTemplate,
     children,
   } = props;
-  const { isOpen: openFilter, onToggle } = useDisclosure();
   const [searchTemplate, { isLoading: searchLoading }] =
     useSearchTemplatesMutation({});
   const [searchData, setSearchData] = useState<SearchResponse | null>(null);
   const { handleSubmit } = useCustomMutation();
+  const [showDetails, setShowDetails] = useState(false);
 
   const searchCriterion = {
     criterion: [
@@ -96,26 +86,34 @@ const TemplateModal = (props: TemplateModalProps) => {
     }
   }, [search]);
 
+  // handle showing of details
+  useEffect(() => {
+    if (selectedTemplate) {
+      setShowDetails(true);
+    } else {
+      setShowDetails(false);
+    }
+  }, [selectedTemplate]);
+
   return (
-    <GenericModal
+    <GenericTemplateModal
       isOpen={isOpen}
       onClose={onClose}
-      contentStyle={{ maxW: '80vw', width: '1116px', height: '716px' }}
+      headerName={headerName}
+      pageSize={pageSize}
+      pageNumber={pageNumber}
+      totalPages={
+        search && searchData ? searchData.totalPages : (data?.totalPages ?? 0)
+      }
+      showDetails={showDetails}
+      setShowDetails={setShowDetails}
+      setSearch={setSearch}
+      setPageNumber={setPageNumber}
+      setPageSize={setPageSize}
+      filters={<TemplateFilters />}
     >
-      <Header
-        headerName={headerName}
-        setSearch={setSearch}
-        openFilter={openFilter}
-        setOpenFilter={onToggle}
-        selectedTemplate={selectedTemplate}
-        setSelectedTemplate={setSelectedTemplate}
-      />
-      <ModalBody m={0} p={0} px="24px">
-        <Flex id="date-picker-portal" />
-        <Collapse in={openFilter} animateOpacity>
-          {openFilter && <TemplateFilters />}
-        </Collapse>
-        {!selectedTemplate && (
+      <Flex width="full" direction="column">
+        {!showDetails && (
           <TemplateTable
             isLoading={isLoading || searchLoading}
             isFetching={isFetching}
@@ -123,33 +121,11 @@ const TemplateModal = (props: TemplateModalProps) => {
             data={search && searchData ? searchData.items : (data?.items ?? [])}
           />
         )}
-        <SlideTransition trigger={selectedTemplate !== null}>
-          {selectedTemplate && children}
+        <SlideTransition trigger={showDetails}>
+          {showDetails && children}
         </SlideTransition>
-      </ModalBody>
-      {!selectedTemplate && (
-        <ModalFooter
-          m={0}
-          p={0}
-          mb="65px"
-          pt="16px"
-          pr="32px"
-          justifyContent="flex-end"
-        >
-          <TablePagination
-            pageNumber={pageNumber}
-            setPageNumber={setPageNumber}
-            pageSize={pageSize}
-            setPageSize={setPageSize}
-            totalPage={
-              search && searchData
-                ? searchData?.totalPages
-                : (data?.totalPages ?? 0)
-            }
-          />
-        </ModalFooter>
-      )}
-    </GenericModal>
+      </Flex>
+    </GenericTemplateModal>
   );
 };
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { Skeleton } from '@chakra-ui/react';
-import { notFound, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import PlanForm from '~/lib/components/Maintenance/Plans/PlanForm';
 import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 import { useAppDispatch } from '~/lib/redux/hooks';
@@ -20,7 +20,6 @@ export default function Page() {
     if (isLoading) {
       return <Skeleton width="full" rounded="8px" height="250px" mt="80px" />;
     }
-    if (!data?.data) return notFound();
 
     if (data?.data) {
       const maintenance = data?.data;

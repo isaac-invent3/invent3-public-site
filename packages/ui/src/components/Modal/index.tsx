@@ -3,6 +3,7 @@ import {
   ModalOverlay,
   ModalContent,
   ModalContentProps,
+  ModalProps,
 } from '@chakra-ui/react';
 
 interface IGenericModal {
@@ -10,7 +11,7 @@ interface IGenericModal {
   onClose: () => void;
   children: React.ReactNode;
   contentStyle?: ModalContentProps;
-  mainModalStyle?: { [key: string]: unknown };
+  mainModalStyle?: Omit<ModalProps, 'onClose' | 'isOpen' | 'children'>;
 }
 function GenericModal({
   isOpen,
@@ -26,6 +27,8 @@ function GenericModal({
       closeOnOverlayClick
       isCentered
       scrollBehavior="inside"
+      blockScrollOnMount={false}
+      preserveScrollBarGap={true}
       trapFocus={false}
       {...mainModalStyle}
     >

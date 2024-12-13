@@ -2,15 +2,15 @@ import { Heading, HStack, ModalHeader, VStack } from '@chakra-ui/react';
 
 import { FilterIcon } from '~/lib/components/CustomIcons';
 import { BackButton, SearchInput, FilterButton } from '@repo/ui/components';
-import { Template } from '~/lib/interfaces/template.interfaces';
 
 interface HeaderProps {
   headerName: string;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
   openFilter: boolean;
   setOpenFilter: () => void;
-  selectedTemplate: Template | null;
-  setSelectedTemplate: React.Dispatch<React.SetStateAction<Template | null>>;
+  setShowDetails: React.Dispatch<React.SetStateAction<boolean>>;
+  showDetails: boolean;
+  hasFilters: boolean;
 }
 const Header = (props: HeaderProps) => {
   const {
@@ -18,14 +18,15 @@ const Header = (props: HeaderProps) => {
     setSearch,
     openFilter,
     setOpenFilter,
-    selectedTemplate,
-    setSelectedTemplate,
+    showDetails,
+    setShowDetails,
+    hasFilters,
   } = props;
   return (
     <ModalHeader m={0} p={0} mt="32px" mx="24px">
       <VStack
         width="full"
-        spacing={selectedTemplate ? '31px' : '26px'}
+        spacing={showDetails ? '31px' : '26px'}
         alignItems="flex-start"
       >
         <Heading
@@ -36,13 +37,13 @@ const Header = (props: HeaderProps) => {
         >
           {headerName}
         </Heading>
-        {selectedTemplate && (
+        {showDetails && (
           <BackButton
-            handleClick={() => setSelectedTemplate(null)}
+            handleClick={() => setShowDetails(false)}
             customStyles={{ mb: '24px' }}
           />
         )}
-        {!selectedTemplate && (
+        {!showDetails && (
           <HStack
             spacing="16px"
             width="full"
@@ -61,13 +62,15 @@ const Header = (props: HeaderProps) => {
                 overflow: 'hidden',
               }}
             />
-            <FilterButton
-              icon={FilterIcon}
-              label="Filters"
-              handleClick={setOpenFilter}
-              isActive={openFilter}
-              border="1px solid #DADFE5"
-            />
+            {hasFilters && (
+              <FilterButton
+                icon={FilterIcon}
+                label="Filters"
+                handleClick={setOpenFilter}
+                isActive={openFilter}
+                border="1px solid #DADFE5"
+              />
+            )}
           </HStack>
         )}
       </VStack>

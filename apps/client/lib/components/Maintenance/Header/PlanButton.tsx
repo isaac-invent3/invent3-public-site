@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { AddIcon, ChevronDownIcon } from '~/lib/components/CustomIcons';
 import Link from 'next/link';
-import TemplateButton from '../Plans/Common/TemplateButton';
+import TemplateButton from '../../UI/TemplateButton';
 import PlanTemplateModal from '../Plans/PlanTemplateModal';
 
 const PlanButtonPopover = () => {

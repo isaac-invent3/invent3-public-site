@@ -12,9 +12,10 @@ interface AssetDetailProps {
   data: Asset;
   isOpen: boolean;
   onClose: () => void;
+  type?: 'template' | 'main';
 }
 const AssetDetail = (props: AssetDetailProps) => {
-  const { data, isOpen, onClose } = props;
+  const { data, isOpen, onClose, type = 'main' } = props;
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -26,9 +27,14 @@ const AssetDetail = (props: AssetDetailProps) => {
   }, [data]);
 
   return (
-    <GenericDrawer isOpen={isOpen} onClose={onClose} maxWidth="850px">
+    <GenericDrawer
+      isOpen={isOpen}
+      onClose={onClose}
+      maxWidth="850px"
+      customStyle={{ trapFocus: true }}
+    >
       <DrawerHeader px="32px" pt="16px" pb="29px">
-        <AssetHeader handleBack={onClose} />
+        <AssetHeader handleBack={onClose} type={type} />
       </DrawerHeader>
       <DrawerBody p={0}>
         <VStack width="full" alignItems="flex-start" spacing="24px">

@@ -12,17 +12,26 @@ import {
 } from '@chakra-ui/react';
 import { AddIcon, ChevronDownIcon } from '~/lib/components/CustomIcons';
 import Link from 'next/link';
-import TemplateButton from '../Plans/Common/TemplateButton';
+import TemplateButton from './TemplateButton';
 
 interface ActionButtonPopoverProps {
   newRoute: string;
   onOpenTemplateModal: () => void;
   children: React.ReactNode;
-  suffix: string;
+  buttonLabel: string;
+  linkLabel: string;
+  modalLabel: string;
 }
 
 const ActionButtonPopover = (props: ActionButtonPopoverProps) => {
-  const { newRoute, onOpenTemplateModal, children, suffix } = props;
+  const {
+    newRoute,
+    onOpenTemplateModal,
+    children,
+    buttonLabel,
+    linkLabel,
+    modalLabel,
+  } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
@@ -63,7 +72,7 @@ const ActionButtonPopover = (props: ActionButtonPopoverProps) => {
                 color="secondary.pale.500"
                 mb="2px"
               />
-              <Text color="secondary.pale.500">Add New {suffix}</Text>
+              <Text color="secondary.pale.500">{buttonLabel}</Text>
             </HStack>
             <Icon
               as={ChevronDownIcon}
@@ -96,11 +105,11 @@ const ActionButtonPopover = (props: ActionButtonPopoverProps) => {
             <VStack spacing="12px">
               <Link href={newRoute} style={{ width: '100%' }}>
                 <Text color="#0E2642" textAlign="center">
-                  Create a New {suffix}
+                  {linkLabel}
                 </Text>
               </Link>
               <TemplateButton handleClick={() => onOpenTemplateModal()}>
-                Create from Template
+                {modalLabel}
               </TemplateButton>
             </VStack>
           </PopoverBody>

@@ -141,7 +141,7 @@ interface AssetFormImage {
 interface AssetFormDocument {
   documentId: number | null;
   documentName: string | null;
-  base64Document: string;
+  base64Document: string | null;
   base64Prefix: string | null;
 }
 

@@ -37,13 +37,16 @@ function generateOptions(
 }
 
 function getDocumentInfo(document: AssetFormDocument) {
-  let mimeType: string;
-  let base64Data: string;
+  let mimeType: string | null = null;
+  let base64Data: string | null = null;
   let extensionName: keyof typeof FILE_ICONS;
 
   // Check if the base64 string has a prefix like 'data:application/pdf;base64,'
   const base64WithPrefixPattern = /^data:(.+);base64,(.+)$/;
-  const matches = document.base64Document.match(base64WithPrefixPattern);
+  let matches;
+  if (document?.base64Document) {
+    matches = document?.base64Document.match(base64WithPrefixPattern);
+  }
 
   extensionName =
     (document.documentName?.substring(
@@ -58,14 +61,13 @@ function getDocumentInfo(document: AssetFormDocument) {
     // Case 2: No MIME type in the base64Document, use base64Prefix
     mimeType = document.base64Prefix;
     base64Data = document.base64Document;
-  } else {
-    throw new Error('No valid MIME type found.');
   }
 
   // Calculate the document size in bytes
-  const sizeInBytes =
-    (base64Data.length * 3) / 4 -
-    (base64Data.endsWith('==') ? 2 : base64Data.endsWith('=') ? 1 : 0);
+  const sizeInBytes = base64Data
+    ? (base64Data.length * 3) / 4 -
+      (base64Data.endsWith('==') ? 2 : base64Data.endsWith('=') ? 1 : 0)
+    : 0;
 
   // Convert size from bytes to MB
   const sizeInMB = sizeInBytes / (1024 * 1024);

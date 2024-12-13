@@ -22,6 +22,7 @@ interface GenericTemplateModalProps {
   setPageSize: React.Dispatch<React.SetStateAction<number>>;
   children: React.ReactNode;
   filters?: React.ReactNode;
+  footer?: React.ReactNode;
 }
 const GenericTemplateModal = (props: GenericTemplateModalProps) => {
   const {
@@ -38,6 +39,7 @@ const GenericTemplateModal = (props: GenericTemplateModalProps) => {
     setShowDetails,
     filters,
     totalPages,
+    footer,
   } = props;
   const { isOpen: openFilter, onToggle } = useDisclosure();
   const modalBodyRef = useRef<HTMLDivElement | null>(null);
@@ -80,13 +82,15 @@ const GenericTemplateModal = (props: GenericTemplateModalProps) => {
           pr="32px"
           justifyContent="flex-end"
         >
-          <TablePagination
-            pageNumber={pageNumber}
-            setPageNumber={setPageNumber}
-            pageSize={pageSize}
-            setPageSize={setPageSize}
-            totalPage={totalPages}
-          />
+          {footer ?? (
+            <TablePagination
+              pageNumber={pageNumber}
+              setPageNumber={setPageNumber}
+              pageSize={pageSize}
+              setPageSize={setPageSize}
+              totalPage={totalPages}
+            />
+          )}
         </ModalFooter>
       )}
     </GenericModal>

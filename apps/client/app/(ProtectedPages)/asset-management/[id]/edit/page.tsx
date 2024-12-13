@@ -11,10 +11,10 @@ import {
   AssetImage,
 } from '~/lib/interfaces/asset.interfaces';
 import { useAppDispatch } from '~/lib/redux/hooks';
+import { useGetAssetDocumentsByAssetIdQuery } from '~/lib/redux/services/asset/document.services';
 import {
   useGetAcquisitionInfoByAssetIdQuery,
   useGetAssetInfoHeaderByIdQuery,
-  useGetDocumentsByAssetIdQuery,
   useGetImagesByAssetIdQuery,
 } from '~/lib/redux/services/asset/general.services';
 import {
@@ -29,7 +29,7 @@ export default function Page({ params }: { params: { id: string } }) {
   const { data: assetImagesData, isLoading: imagesLoading } =
     useGetImagesByAssetIdQuery({ id: params.id, pageSize: 25 });
   const { data: assetDocumentData, isLoading: documentsLoading } =
-    useGetDocumentsByAssetIdQuery({ id: params.id, pageSize: 25 });
+    useGetAssetDocumentsByAssetIdQuery({ id: params.id, pageSize: 25 });
   const { data: acquisitionData, isLoading: acquisitionLoading } =
     useGetAcquisitionInfoByAssetIdQuery({ id: params.id });
   const dispatch = useAppDispatch();

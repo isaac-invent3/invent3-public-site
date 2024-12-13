@@ -24,6 +24,7 @@ import { depreciationApi } from './services/asset/depreciation.services';
 import { vendorsApi } from './services/asset/vendor.services';
 import { employeesApi } from './services/employees.services';
 import { assetStatsApi } from './services/asset/stats.services';
+import { assetDocumentApi } from './services/asset/document.services';
 import { dashboardApi } from './services/dashboard.services';
 import { maintenancePlanApi } from './services/maintenance/plan.services';
 import { maintenanceScheduleApi } from './services/maintenance/schedule.services';
@@ -53,6 +54,7 @@ export const persistConfig = {
 const rootReducer = combineReducers({
   [authApi.reducerPath]: authApi.reducer,
   [assetApi.reducerPath]: assetApi.reducer,
+  [assetDocumentApi.reducerPath]: assetDocumentApi.reducer,
   [assetStatsApi.reducerPath]: assetStatsApi.reducer,
   [assetTypeApi.reducerPath]: assetTypeApi.reducer,
   [assetGroupTypeApi.reducerPath]: assetGroupTypeApi.reducer,
@@ -100,6 +102,7 @@ export const makeStore = () => {
       }).concat([
         authApi.middleware,
         assetApi.middleware,
+        assetDocumentApi.middleware,
         assetStatsApi.middleware,
         assetTypeApi.middleware,
         assetGroupTypeApi.middleware,

@@ -98,6 +98,24 @@ interface LocationFilter {
   branch: Option[];
 }
 
+interface SearchQuery {
+  criterion?: SearchCriterion[];
+  orCriterion?: SearchCriterion[][];
+  orderByCriteria?: {
+    columnName?: string;
+    operation?: number;
+  };
+  datePeriodCriteria?: {
+    columnName?: string;
+    operation?: number;
+    useFutureLogic?: boolean;
+  };
+  pageNumber: number;
+  pageSize: number;
+  includeDeleted?: boolean;
+  useOrLogic?: boolean;
+}
+
 interface AppConfig {
   DEFAULT_COMPLETED_TASK_STATUS_ID: string | null;
   DEFAULT_ESTIMATED_TASK_DURATION_IN_HOURS: string | null;
@@ -116,4 +134,5 @@ export type {
   ListResponse,
   LocationFilter,
   AppConfig,
+  SearchQuery,
 };

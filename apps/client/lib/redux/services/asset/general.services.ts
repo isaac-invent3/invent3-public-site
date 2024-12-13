@@ -81,17 +81,6 @@ export const assetApi = createApi({
         headers: getHeaders(),
       }),
     }),
-    getDocumentsByAssetId: builder.query({
-      query: ({ id, ...data }) => ({
-        url: generateQueryStr(
-          `/AssetDocuments/GetDocumentsByAssetId/${id}?`,
-          data
-        ),
-        method: 'GET',
-        headers: getHeaders(),
-      }),
-    }),
-
     GetAssetComponentInfoByAssetGuid: builder.query({
       query: ({ id }) => ({
         url: `/GetAssetComponentInfo/${id}`,
@@ -158,7 +147,6 @@ export const {
   useGetImagesByAssetIdQuery,
   useGetMaintenanceHistoryByAssetIdQuery,
   useGetPlannedMaintenanceByAssetIdQuery,
-  useGetDocumentsByAssetIdQuery,
   useGetAllAssetStatusQuery,
   useSearchStatusMutation,
   useSearchAssetsMutation,

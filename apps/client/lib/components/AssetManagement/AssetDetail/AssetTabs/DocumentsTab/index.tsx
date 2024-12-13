@@ -3,15 +3,15 @@ import React, { useState } from 'react';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { Button } from '@repo/ui/components';
 import { AssetDocument } from '~/lib/interfaces/asset.interfaces';
-import { useGetDocumentsByAssetIdQuery } from '~/lib/redux/services/asset/general.services';
 import { FILE_ICONS } from '~/lib/utils/constants';
 import { getDocumentInfo } from '~/lib/utils/helperFunctions';
+import { useGetAssetDocumentsByAssetIdQuery } from '~/lib/redux/services/asset/document.services';
 
 const DocumentsTab = () => {
   const { assetId } = useAppSelector((state) => state.asset.asset);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(5);
-  const { data, isLoading } = useGetDocumentsByAssetIdQuery(
+  const { data, isLoading } = useGetAssetDocumentsByAssetIdQuery(
     { id: assetId, pageSize, pageNumber: currentPage },
     { skip: !assetId }
   );
@@ -45,7 +45,7 @@ const DocumentsTab = () => {
       my="16px"
     >
       <HStack width="full" spacing="24px" wrap="wrap" alignItems="flex-start">
-        {data?.data?.items.length >= 1 ? (
+        {data?.data && data?.data?.items.length >= 1 ? (
           data?.data?.items.map((item: AssetDocument, index: number) => {
             const { extensionName } = getDocumentInfo({
               base64Document: item.document,

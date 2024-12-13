@@ -117,7 +117,9 @@ const AssetTemplateModal = (props: AssetTemplateModalProps) => {
         pageSize={pageSize}
         pageNumber={pageNumber}
         totalPages={
-          search && searchData ? searchData.totalPages : (data?.totalPages ?? 0)
+          search && searchData
+            ? searchData.totalPages
+            : (data?.data?.totalPages ?? 0)
         }
         showDetails={showDetails}
         setShowDetails={setShowDetails}

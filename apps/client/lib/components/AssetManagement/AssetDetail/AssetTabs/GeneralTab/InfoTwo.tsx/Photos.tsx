@@ -1,23 +1,10 @@
 import { useEffect, useState } from 'react';
-import {
-  VStack,
-  Flex,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalBody,
-  ModalCloseButton,
-  Image,
-  useDisclosure,
-  Skeleton,
-  Text,
-  ModalFooter,
-} from '@chakra-ui/react';
+import { VStack, Flex, useDisclosure, Skeleton, Text } from '@chakra-ui/react';
 import { useGetImagesByAssetIdQuery } from '~/lib/redux/services/asset/general.services';
 import { useAppSelector } from '~/lib/redux/hooks';
 import DetailHeader from '~/lib/components/UI/DetailHeader';
-import { Button } from '@repo/ui/components';
 import { AssetImage } from '~/lib/interfaces/asset.interfaces';
+import PhotoViewerModal from '~/lib/components/AssetManagement/Common/PhotoViewerModal';
 
 const PhotoViewer = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -37,20 +24,6 @@ const PhotoViewer = () => {
   const closeModal = () => {
     setCurrentIndex(null);
     onClose();
-  };
-
-  const goNext = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex !== null && prevIndex < photos.length - 1
-        ? prevIndex + 1
-        : prevIndex
-    );
-  };
-
-  const goPrev = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex !== null && prevIndex > 0 ? prevIndex - 1 : prevIndex
-    );
   };
 
   useEffect(() => {
@@ -101,48 +74,15 @@ const PhotoViewer = () => {
         )}
       </Flex>
 
-      {/* Modal for displaying large photo */}
-      <Modal isOpen={isOpen} onClose={closeModal} size="xl" isCentered>
-        <ModalOverlay />
-        <ModalContent height="500px">
-          <ModalCloseButton p={4} />
-          <ModalBody px={8} pt={16}>
-            {currentIndex !== null && (
-              <Flex
-                flexDirection="column"
-                alignItems="center"
-                justifyContent="center"
-                height="90%"
-              >
-                <Image
-                  src={`${photos[currentIndex]?.base64Prefix}${photos[currentIndex]?.photoImage}`}
-                  alt={`Photo ${currentIndex + 1}`}
-                />
-              </Flex>
-            )}
-          </ModalBody>
-          <ModalFooter>
-            <Flex justifyContent="space-between" width="full">
-              <Button
-                variant="secondary"
-                handleClick={goPrev}
-                isDisabled={currentIndex === 0}
-                customStyles={{ width: '100px' }}
-              >
-                Previous
-              </Button>
-              <Button
-                variant="secondary"
-                handleClick={goNext}
-                isDisabled={currentIndex === photos.length - 1}
-                customStyles={{ width: '100px' }}
-              >
-                Next
-              </Button>
-            </Flex>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <PhotoViewerModal
+        currentIndex={currentIndex}
+        setCurrentIndex={setCurrentIndex}
+        isOpen={isOpen}
+        onClose={closeModal}
+        photos={photos.map(
+          (photo) => `${photo?.base64Prefix}${photo?.photoImage}`
+        )}
+      />
     </VStack>
   );
 };

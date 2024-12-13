@@ -156,6 +156,7 @@ function SelectInput(props: SelectInputProps) {
               width: '100%',
               borderRadius: '8px',
               fontSize: '14px',
+              fontWeight: 500,
               lineHeight: '17.07px',
               paddingTop: showTitleAfterSelect ? '10px' : '0px',
               ':focus-within': {

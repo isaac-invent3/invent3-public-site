@@ -9,7 +9,6 @@
       "import": "./src/components/index.ts",
       "require": "./src/components/index.ts"
     },
-    "./button": "./src/button.tsx",
     ".": {
       "import": "./src/index.ts",
       "require": "./src/index.ts"

@@ -1,9 +1,9 @@
-import { Text } from '@chakra-ui/react';
+import { Text, TextProps } from '@chakra-ui/react';
 
 interface DetailHeaderProps {
   children: React.ReactNode;
   variant: 'primary' | 'secondary';
-  customStyles?: { [key: string]: unknown };
+  customStyles?: TextProps;
 }
 const DetailHeader = (props: DetailHeaderProps) => {
   const { children, variant, customStyles } = props;

@@ -6,17 +6,26 @@ interface UserProps {
   location?: string | null;
   department?: string | null;
   variant?: 'fullDetails' | 'userDetails';
+  minWidth?: string;
+  spacing?: string;
 }
 const User = (props: UserProps) => {
-  const { name, role, department, location, variant = 'fullDetails' } = props;
+  const {
+    name,
+    role,
+    department,
+    location,
+    variant = 'fullDetails',
+    minWidth,
+  } = props;
 
   const info = [
     {
-      label: 'Department',
+      label: 'Department:',
       value: department ?? 'N/A',
     },
     {
-      label: 'Location',
+      label: 'Location:',
       value: location ?? 'N/A',
     },
   ];
@@ -44,8 +53,8 @@ const User = (props: UserProps) => {
         {variant === 'fullDetails' && (
           <VStack alignItems="flex-start" spacing="8px">
             {info.map((item) => (
-              <HStack width="full" justifyContent="space-between">
-                <Text size="md" color="neutral.600" minW="78px">
+              <HStack width="full">
+                <Text size="md" color="neutral.600" minW={minWidth ?? '78px'}>
                   {item.label}
                 </Text>
                 <Text size="md" color="black">

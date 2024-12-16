@@ -12,10 +12,18 @@ interface CustomDatePickerProps {
   // eslint-disable-next-line no-unused-vars
   handleSelectedDate?: (date: string) => void;
   includeTime?: boolean;
+  showPredefinedDate?: boolean;
 }
 
 const CustomDatePicker = (props: CustomDatePickerProps) => {
-  const { name, label, minDate, maxDate, handleSelectedDate } = props;
+  const {
+    name,
+    label,
+    minDate,
+    maxDate,
+    handleSelectedDate,
+    showPredefinedDate = false,
+  } = props;
   // eslint-disable-next-line no-unused-vars
   const [field, meta, helpers] = useField(name);
 
@@ -30,7 +38,7 @@ const CustomDatePicker = (props: CustomDatePickerProps) => {
         selectedTime={undefined}
         customDateHeader="Date"
         customButtonLabel={label ?? 'Select Date'}
-        showPredefinedDates={false}
+        showPredefinedDates={showPredefinedDate}
         handleDateTimeSelect={(dateTime) => {
           const splittedDateTime = dateTime?.split(' ');
           helpers.setValue(splittedDateTime?.[0] ?? null);

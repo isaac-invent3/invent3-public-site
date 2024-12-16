@@ -93,6 +93,7 @@ const initialValue = {
   roomId: null,
   aisleId: null,
   shelfId: null,
+  assetLocation: null,
   displayColorCode: COLOR_CODES_FALLBACK.default,
 };
 

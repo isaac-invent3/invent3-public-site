@@ -73,7 +73,7 @@ const AssetTransfer = (props: AssetTransferProps) => {
               py="32px"
               px="25px"
               direction="column"
-              gap="40px"
+              gap="31px"
               rounded="6px"
               bgColor="white"
               minH="70vh"

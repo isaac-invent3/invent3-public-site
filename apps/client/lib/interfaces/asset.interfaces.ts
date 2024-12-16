@@ -129,6 +129,7 @@ interface Asset {
   currentCost: number | null;
   maintenanceCost: number | null;
   y2dmaintenanceCost: number | null;
+  assetLocation: string | null;
 }
 
 interface AssetFormImage {

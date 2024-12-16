@@ -142,7 +142,15 @@ const ExistingDocumentModal = (props: ExistingDocumentModalProps) => {
         });
       }
     });
-    helpers.setValue([...meta.value, ...selectedDocuments]);
+    helpers.setValue([
+      ...meta.value,
+      ...selectedDocuments.filter(
+        (item) =>
+          !meta.value
+            ?.map((item: AssetFormDocument) => item.documentId)
+            .includes(item.documentId)
+      ),
+    ]);
     onClose();
   };
 
@@ -176,7 +184,9 @@ const ExistingDocumentModal = (props: ExistingDocumentModalProps) => {
       <DataTable
         columns={columns}
         data={
-          search && searchData ? searchData.items : (data?.data?.items ?? [])
+          search && searchData
+            ? searchData.items.filter((item) => item.document !== null)
+            : (data?.data?.items.filter((item) => item.document !== null) ?? [])
         }
         showFooter={true}
         emptyLines={3}

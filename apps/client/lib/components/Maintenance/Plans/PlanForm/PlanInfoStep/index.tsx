@@ -97,7 +97,7 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
   });
 
   const { data: assetData } = useGetAssetInfoHeaderByIdQuery(
-    formik.values.assetId,
+    { id: formik.values.assetId ?? undefined },
     { skip: !formik.values.assetId }
   );
   const { data: assetTypeData } = useGetAssetTypeByIdQuery(
@@ -105,9 +105,12 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
     { skip: !formik.values.assetGroupContextID }
   );
   const { data: assetCustomPlans, error } =
-    useGetAssetCustomMaintenancePlanByAssetGuidQuery(assetData?.data?.guid, {
-      skip: !assetData?.data?.guid,
-    });
+    useGetAssetCustomMaintenancePlanByAssetGuidQuery(
+      { assetGuid: assetData?.data?.guid ?? undefined },
+      {
+        skip: !assetData?.data?.guid,
+      }
+    );
 
   // Handles Toast Error
   const showToast = (description: string) => {

@@ -17,6 +17,7 @@ import {
   useGetAssetInfoHeaderByIdQuery,
   useGetImagesByAssetIdQuery,
 } from '~/lib/redux/services/asset/general.services';
+import { useGetAssetCustomMaintenancePlanByAssetGuidQuery } from '~/lib/redux/services/maintenance/plan.services';
 import {
   setAssetDocuments,
   setAssetImages,
@@ -27,9 +28,12 @@ import { dateFormatter } from '~/lib/utils/Formatters';
 export default function Page() {
   const searchParams = useSearchParams();
   const assetId = searchParams.get('assetId');
-  const { data, isLoading } = useGetAssetInfoHeaderByIdQuery(assetId, {
-    skip: !assetId,
-  });
+  const { data, isLoading } = useGetAssetInfoHeaderByIdQuery(
+    { id: assetId ?? undefined },
+    {
+      skip: !assetId,
+    }
+  );
   const { data: assetImagesData, isLoading: imagesLoading } =
     useGetImagesByAssetIdQuery(
       { id: assetId, pageSize: 25 },
@@ -41,10 +45,21 @@ export default function Page() {
       { skip: !assetId }
     );
   const { data: acquisitionData, isLoading: acquisitionLoading } =
-    useGetAcquisitionInfoByAssetIdQuery({ id: assetId });
+    useGetAcquisitionInfoByAssetIdQuery({ id: assetId }, { skip: !assetId });
+  const { data: assetCustomMaintenancePlan, isLoading: planLoading } =
+    useGetAssetCustomMaintenancePlanByAssetGuidQuery(
+      { assetGuid: data?.data.guid ?? undefined },
+      { skip: !data?.data.guid }
+    );
   const dispatch = useAppDispatch();
 
-  if (isLoading || imagesLoading || acquisitionLoading || documentsLoading) {
+  if (
+    isLoading ||
+    imagesLoading ||
+    acquisitionLoading ||
+    documentsLoading ||
+    planLoading
+  ) {
     return <Skeleton width="full" rounded="8px" height="250px" mt="80px" />;
   }
 
@@ -139,7 +154,8 @@ export default function Page() {
         categoryName: asset.assetCategory,
         subCategoryName: asset.assetSubCategory,
         currentOwnerName: asset.currentOwner,
-        responsibleForName: asset.responsibleFor,
+        responsibleForName: asset.employeeResponsible,
+        assignedToName: asset.assignedTo,
         currentOwner: asset.currentOwnerId,
         responsibleFor: asset.employeeResponsibleId,
         assignedTo: asset.assignedToEmployeeId,
@@ -167,6 +183,7 @@ export default function Page() {
         initialValue: asset.initialValue,
         images: formImages,
         documents: formDocuments,
+        maintenancePlans: assetCustomMaintenancePlan?.data.items ?? [],
         ...acquisitionInfo,
       })
     );

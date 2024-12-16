@@ -6,10 +6,17 @@ interface OverflowTdProps {
   isNumeric: boolean;
   customTdStyle?: { [key: string]: unknown };
   maxW: string;
+  isDisabledRow?: boolean;
 }
 
 const OverflowTd = (props: OverflowTdProps) => {
-  const { children, isNumeric, maxW, customTdStyle } = props;
+  const {
+    children,
+    isNumeric,
+    maxW,
+    customTdStyle,
+    isDisabledRow = false,
+  } = props;
   const tdRef = useRef<HTMLTableCellElement | null>(null);
   const [isOverflowing, setIsOverflowing] = useState(false);
 
@@ -40,9 +47,9 @@ const OverflowTd = (props: OverflowTdProps) => {
     >
       <Td
         ref={tdRef}
-        isNumeric={isNumeric}
+        textAlign={isNumeric ? 'center' : 'left'}
         borderColor="neutral.300"
-        color="black"
+        color={isDisabledRow ? 'neutral.300' : 'black'}
         fontSize="12px"
         fontWeight={500}
         lineHeight="14.26px"

@@ -30,7 +30,7 @@ const initialValue = {
   acquisitionDate: null,
   currentOwner: null,
   assignedTo: null,
-  responsibleFor: null,
+  employeeResponsible: null,
   purchaseDate: null,
   initialValue: null,
   resalevalue: null,
@@ -165,6 +165,7 @@ const initialAssetForm = {
   lgaName: null,
   stateName: null,
   countryName: null,
+  maintenancePlans: [],
   vendorDetails: {
     vendorName: null,
     address: null,

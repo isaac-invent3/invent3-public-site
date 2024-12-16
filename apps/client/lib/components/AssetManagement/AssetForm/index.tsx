@@ -12,8 +12,15 @@ import {
   withFormLeaveDialog,
 } from '@repo/ui/components';
 import Header from './Header';
+import MaintenancePlanStep from './MaintenancePlanStep';
 
-const STEPS = ['General', 'Acquisition', 'Document', 'Summary'];
+const STEPS = [
+  'General',
+  'Acquisition',
+  'Maintenance Plan',
+  'Document',
+  'Summary',
+];
 
 interface AssetFormProps {
   type: 'create' | 'edit';
@@ -35,9 +42,15 @@ const AssetForm = (props: AssetFormProps) => {
           />
         </SlideTransition>
         <SlideTransition trigger={activeStep === 3}>
-          <DocumentStep activeStep={activeStep} setActiveStep={setActiveStep} />
+          <MaintenancePlanStep
+            activeStep={activeStep}
+            setActiveStep={setActiveStep}
+          />
         </SlideTransition>
         <SlideTransition trigger={activeStep === 4}>
+          <DocumentStep activeStep={activeStep} setActiveStep={setActiveStep} />
+        </SlideTransition>
+        <SlideTransition trigger={activeStep === 5}>
           <SummaryStep
             activeStep={activeStep}
             setActiveStep={setActiveStep}

@@ -9,10 +9,11 @@ interface PlanDetailsModalProps {
   isOpen: boolean;
   onClose: () => void;
   data: MaintenancePlan;
+  viewOnly?: boolean;
 }
 
 const PlanDetailsModal = (props: PlanDetailsModalProps) => {
-  const { isOpen, onClose, data } = props;
+  const { isOpen, onClose, data, viewOnly = false } = props;
   return (
     <GenericDrawer isOpen={isOpen} onClose={onClose} maxWidth="690px">
       <DrawerHeader p={0} m={0}>
@@ -25,12 +26,14 @@ const PlanDetailsModal = (props: PlanDetailsModalProps) => {
           justifyContent="space-between"
         >
           <BackButton handleClick={onClose} />
-          <Button
-            customStyles={{ width: '138px', height: '35px' }}
-            href={`/maintenance/plans/${data?.maintenancePlanId}/edit`}
-          >
-            Edit Plan
-          </Button>
+          {!viewOnly && (
+            <Button
+              customStyles={{ width: '138px', height: '35px' }}
+              href={`/maintenance/plans/${data?.maintenancePlanId}/edit`}
+            >
+              Edit Plan
+            </Button>
+          )}
         </HStack>
       </DrawerHeader>
       <DrawerBody p={0} id="allSchedulesDiv">

@@ -21,6 +21,7 @@ import {
 } from '~/lib/redux/slices/AssetSlice';
 import { generateDocumentArray, generateImagesArray } from './helperFunction';
 import { FormActionButtons } from '@repo/ui/components';
+import SectionThree from './SectionThree';
 
 interface SummaryStepProps {
   activeStep: number;
@@ -224,12 +225,12 @@ const SummaryStep = (props: SummaryStepProps) => {
         width="full"
         gap="16px"
         direction="column"
-        display={activeStep === 4 ? 'flex' : 'none'}
+        display={activeStep === 5 ? 'flex' : 'none'}
       >
         <VStack
           width="full"
           alignItems="flex-start"
-          spacing="39px"
+          spacing="40px"
           bgColor="white"
           pt="16px"
           pl="16px"
@@ -240,11 +241,12 @@ const SummaryStep = (props: SummaryStepProps) => {
         >
           <SectionOne />
           <SectionTwo />
+          <SectionThree />
         </VStack>
         <FormActionButtons
           cancelLink="/asset-management"
-          totalStep={4}
-          activeStep={4}
+          totalStep={5}
+          activeStep={5}
           setActiveStep={setActiveStep}
           handleContinue={handleSumbitAsset}
           isLoading={createLoading || updateLoading}

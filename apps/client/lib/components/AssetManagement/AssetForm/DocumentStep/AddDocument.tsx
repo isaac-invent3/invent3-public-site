@@ -154,7 +154,7 @@ const AddDocument = ({ variant }: AddDocumentProps) => {
                 <label htmlFor="document">
                   <Text
                     size="md"
-                    color="primary.500"
+                    color="blue.500"
                     fontWeight={800}
                     role="button"
                   >
@@ -166,7 +166,7 @@ const AddDocument = ({ variant }: AddDocumentProps) => {
                 </Text>
                 <Text
                   size="md"
-                  color="primary.500"
+                  color="blue.500"
                   fontWeight={800}
                   role="button"
                   onClick={onOpen}

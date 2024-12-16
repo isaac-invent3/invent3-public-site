@@ -315,6 +315,7 @@ function DataTable<Data extends object>({
                               key={cell.id}
                               maxW={maxTdWidth}
                               customTdStyle={customTdStyle}
+                              isDisabledRow={isDisabledRow}
                             >
                               {flexRender(
                                 cell.column.columnDef.cell,

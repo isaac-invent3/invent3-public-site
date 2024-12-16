@@ -67,7 +67,7 @@ const FormStepper = (props: FormStepperProps) => {
         alignItems="center"
         justifyContent="space-between"
         w="100%"
-        maxW="85%"
+        maxW="95%"
       >
         {steps.map((step, index) => (
           <React.Fragment key={index}>

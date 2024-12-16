@@ -83,7 +83,7 @@ const AcquisitionStep = (props: AcquisitionStepProps) => {
           <Flex width="full" mt="16px">
             <FormActionButtons
               cancelLink="/asset-management"
-              totalStep={4}
+              totalStep={5}
               activeStep={2}
               setActiveStep={setActiveStep}
             />

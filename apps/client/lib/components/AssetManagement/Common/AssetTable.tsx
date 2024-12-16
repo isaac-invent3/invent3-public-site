@@ -124,7 +124,7 @@ const AssetTable = (props: AssetTableProps) => {
           header: 'Assigned To',
           enableSorting: false,
         }),
-        columnHelper.accessor('responsibleFor', {
+        columnHelper.accessor('employeeResponsible', {
           cell: (info) => info.getValue() ?? 'N/A',
           header: 'Responsible For',
           enableSorting: false,

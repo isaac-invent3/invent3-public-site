@@ -10,9 +10,12 @@ import { updateTaskForm } from '~/lib/redux/slices/TaskSlice';
 
 const AssetField = () => {
   const [selectedAsset, setSelectedAsset] = useState<Option | null>(null);
-  const { data } = useGetAssetInfoHeaderByIdQuery(selectedAsset?.value, {
-    skip: !selectedAsset?.value,
-  });
+  const { data } = useGetAssetInfoHeaderByIdQuery(
+    { id: selectedAsset?.value ?? undefined },
+    {
+      skip: !selectedAsset?.value,
+    }
+  );
   const dispatch = useAppDispatch();
   const { assetName } = useAppSelector((state) => state.task.taskForm);
 

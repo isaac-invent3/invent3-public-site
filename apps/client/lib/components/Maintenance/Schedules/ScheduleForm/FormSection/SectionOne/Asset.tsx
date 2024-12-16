@@ -10,9 +10,12 @@ import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';
 
 const AssetField = () => {
   const [selectedAsset, setSelectedAsset] = useState<Option | null>(null);
-  const { data } = useGetAssetInfoHeaderByIdQuery(selectedAsset?.value, {
-    skip: !selectedAsset?.value,
-  });
+  const { data } = useGetAssetInfoHeaderByIdQuery(
+    { id: selectedAsset?.value ?? undefined },
+    {
+      skip: !selectedAsset?.value,
+    }
+  );
   const dispatch = useAppDispatch();
   const { assetName } = useAppSelector(
     (state) => state.maintenance.scheduleForm

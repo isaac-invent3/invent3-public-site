@@ -1,4 +1,5 @@
 import { LocationFilter, Option } from './general.interfaces';
+import { MaintenancePlan } from './maintenance.interfaces';
 
 interface AssetLocation {
   locationId: number;
@@ -61,7 +62,7 @@ interface Asset {
   acquisitionDate: string | null;
   currentOwner: string | null;
   assignedTo: string | null;
-  responsibleFor: string | null;
+  employeeResponsible: string | null;
   currentOwnerId: number | null;
   assignedToEmployeeId: number | null;
   employeeResponsibleId: number | null;
@@ -213,6 +214,7 @@ interface AssetFormDetails {
   lgaName: string | null;
   stateName: string | null;
   countryName: string | null;
+  maintenancePlans: MaintenancePlan[];
   vendorDetails: {
     vendorName: string | null;
     address: string | null;

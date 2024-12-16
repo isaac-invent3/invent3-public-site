@@ -5,7 +5,7 @@ import MapView from './MapView';
 
 const InfoTwo = () => {
   const assetData = useAppSelector((state) => state.asset.asset);
-  const { currentOwner, departmentName, assignedTo, responsibleFor } =
+  const { currentOwner, departmentName, assignedTo, employeeResponsible } =
     assetData;
   const details = [
     {
@@ -18,7 +18,7 @@ const InfoTwo = () => {
     },
     {
       label: 'Responsible for',
-      value: responsibleFor ?? 'N/A',
+      value: employeeResponsible ?? 'N/A',
     },
     {
       label: 'Assigned to',

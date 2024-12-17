@@ -27,9 +27,8 @@ const ExistingMaintenancePlanModal = (
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const dispatch = useAppDispatch();
-  const existingSelectedPlans = useAppSelector(
-    (state) => state.asset.assetForm.maintenancePlans
-  );
+  const { maintenancePlans: existingSelectedPlans, newMaintenancePlanIds } =
+    useAppSelector((state) => state.asset.assetForm);
   const { data, isLoading, isFetching } = useGetAllMaintenancePlanQuery(
     {
       pageNumber,
@@ -94,16 +93,21 @@ const ExistingMaintenancePlanModal = (
         selectedMaintenancePlans.push(plan);
       }
     });
+
+    //Filter out plans already existing
+    const newPlans = selectedMaintenancePlans.filter(
+      (item) =>
+        !existingSelectedPlans
+          .map((plan) => plan.maintenancePlanId)
+          .includes(item.maintenancePlanId)
+    );
+    console.log({ newPlans });
     dispatch(
       updateAssetForm({
-        maintenancePlans: [
-          ...existingSelectedPlans,
-          ...selectedMaintenancePlans.filter(
-            (item) =>
-              !existingSelectedPlans
-                .map((plan) => plan.maintenancePlanId)
-                .includes(item.maintenancePlanId)
-          ),
+        maintenancePlans: [...existingSelectedPlans, ...newPlans],
+        newMaintenancePlanIds: [
+          ...newMaintenancePlanIds,
+          ...newPlans.map((item) => item.maintenancePlanId),
         ],
       })
     );

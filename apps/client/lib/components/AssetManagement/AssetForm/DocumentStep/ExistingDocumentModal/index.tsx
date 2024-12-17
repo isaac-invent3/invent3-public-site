@@ -17,6 +17,8 @@ import { dateFormatter } from '~/lib/utils/Formatters';
 import { Button, DataTable } from '@repo/ui/components';
 import { getDocumentInfo } from '~/lib/utils/helperFunctions';
 import { useField } from 'formik';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 
 interface ExistingDocumentModalProps {
   isOpen: boolean;
@@ -43,6 +45,10 @@ const ExistingDocumentModal = (props: ExistingDocumentModalProps) => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   // eslint-disable-next-line no-unused-vars
   const [field, meta, helpers] = useField('documents');
+  const existingDocumentsIds = useAppSelector(
+    (state) => state.asset.assetForm.existingDocumentsIds
+  );
+  const dispatch = useAppDispatch();
 
   const searchCriterion = {
     criterion: [
@@ -142,15 +148,23 @@ const ExistingDocumentModal = (props: ExistingDocumentModalProps) => {
         });
       }
     });
-    helpers.setValue([
-      ...meta.value,
-      ...selectedDocuments.filter(
-        (item) =>
-          !meta.value
-            ?.map((item: AssetFormDocument) => item.documentId)
-            .includes(item.documentId)
-      ),
-    ]);
+    //Filter out documents already existing
+    const newDocuments = selectedDocuments.filter(
+      (item) =>
+        !meta.value
+          ?.map((item: AssetDocument) => item.documentId)
+          .includes(item.documentId)
+    );
+
+    helpers.setValue([...meta.value, ...newDocuments]);
+    dispatch(
+      updateAssetForm({
+        existingDocumentsIds: [
+          ...existingDocumentsIds,
+          ...newDocuments.map((item) => item.documentId as number),
+        ],
+      })
+    );
     onClose();
   };
 

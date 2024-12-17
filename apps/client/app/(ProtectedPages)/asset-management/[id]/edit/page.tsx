@@ -18,11 +18,7 @@ import {
   useGetImagesByAssetIdQuery,
 } from '~/lib/redux/services/asset/general.services';
 import { useGetAssetCustomMaintenancePlanByAssetGuidQuery } from '~/lib/redux/services/maintenance/plan.services';
-import {
-  setAssetDocuments,
-  setAssetImages,
-  updateAssetForm,
-} from '~/lib/redux/slices/AssetSlice';
+import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
 export default function Page({ params }: { params: { id: string } }) {
@@ -56,7 +52,6 @@ export default function Page({ params }: { params: { id: string } }) {
     const asset: Asset = data?.data;
     //Populating Asset Images
     if (assetImagesData?.data) {
-      dispatch(setAssetImages(assetImagesData?.data?.items));
       formImages = assetImagesData.data.items.map((image: AssetImage) => ({
         imageId: image.imageId || null,
         imageName: image.imageName || null,
@@ -67,7 +62,6 @@ export default function Page({ params }: { params: { id: string } }) {
     }
     //Populating Asset Documents
     if (assetDocumentData?.data) {
-      dispatch(setAssetDocuments(assetDocumentData?.data?.items));
       formDocuments = assetDocumentData.data.items.map(
         (document: AssetDocument) => ({
           documentId: document.documentId || null,
@@ -168,8 +162,8 @@ export default function Page({ params }: { params: { id: string } }) {
         countryName: asset.countryName,
         lifeExpectancy: asset.lifeExpectancy,
         initialValue: asset.initialValue,
-        images: formImages,
-        documents: formDocuments,
+        images: formImages ?? [],
+        documents: formDocuments ?? [],
         maintenancePlans: assetCustomMaintenancePlan?.data.items ?? [],
         ...acquisitionInfo,
       })

@@ -215,7 +215,12 @@ interface AssetFormDetails {
   lgaName: string | null;
   stateName: string | null;
   countryName: string | null;
+  deletedImageIds: number[];
   maintenancePlans: MaintenancePlan[];
+  newMaintenancePlanIds: number[];
+  deletedMaintenancePlanIds: number[];
+  existingDocumentsIds: number[];
+  deletedExistingDocumentIds: number[];
   vendorDetails: {
     vendorName: string | null;
     address: string | null;

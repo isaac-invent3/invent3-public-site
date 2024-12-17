@@ -19,9 +19,14 @@ import {
   clearAssetForm,
   setAsset,
 } from '~/lib/redux/slices/AssetSlice';
-import { generateDocumentArray, generateImagesArray } from './helperFunction';
+import {
+  generateDocumentArray,
+  generateImagesArray,
+  mapIdsToObject,
+} from './helperFunction';
 import { FormActionButtons } from '@repo/ui/components';
 import SectionThree from './SectionThree';
+import { FORM_ENUM } from '~/lib/utils/constants';
 
 interface SummaryStepProps {
   activeStep: number;
@@ -32,8 +37,6 @@ interface SummaryStepProps {
 const SummaryStep = (props: SummaryStepProps) => {
   const { activeStep, setActiveStep, type } = props;
   const assetData = useAppSelector((state) => state.asset.asset);
-  const assetImages = useAppSelector((state) => state.asset.assetImages);
-  const assetDocuments = useAppSelector((state) => state.asset.assetDocuments);
   const [assetResponse, setAssetResponse] = useState<Asset | null>(null);
   const assetFormDetails = useAppSelector((state) => state.asset.assetForm);
   const dispatch = useAppDispatch();
@@ -165,23 +168,42 @@ const SummaryStep = (props: SummaryStepProps) => {
   const PAYLOAD = {
     [getDtoKey('Location')]: LOCATION,
     [getDtoKey('Asset')]: ASSET,
-    [type === 'create' ? 'createAssetImageDto' : 'multiPurposeAssetImageDto']:
-      generateImagesArray(
-        type,
-        assetFormDetails,
-        assetImages,
-        username as string
-      ),
+    [type === 'create' ? 'createAssetImageDto' : 'multiPurposeAssetImageDto']: [
+      // Deleted Images
+      ...assetFormDetails.deletedImageIds.map((item) => ({
+        imageId: item,
+        actionType: FORM_ENUM.delete,
+        changeInitiatedBy: username,
+      })),
+      //Updated or New Images
+      ...generateImagesArray(type, assetFormDetails, username as string),
+    ],
     [type === 'create'
       ? 'createAssetDocumentsDto'
-      : 'multiPurposeAssetDocumentDto']: generateDocumentArray(
-      type,
-      assetFormDetails,
-      assetDocuments,
-      username as string
-    ),
+      : 'multiPurposeAssetDocumentDto']: [
+      // TODO
+      // Deleted Document
+      //Updated or New Documents
+      ...generateDocumentArray(type, assetFormDetails, username as string),
+    ],
     [getDtoKey('AssetWarranty')]: WARRANTY,
     [getDtoKey('AssetDepreciation')]: DEPRECIATION,
+    ...(type === 'create'
+      ? {
+          maintenancePlanIds:
+            assetFormDetails.newMaintenancePlanIds.length > 0
+              ? assetFormDetails.newMaintenancePlanIds
+              : null,
+        }
+      : {}),
+    ...(type === 'edit'
+      ? {
+          assetPlans: mapIdsToObject(
+            assetFormDetails.newMaintenancePlanIds,
+            assetFormDetails.deletedMaintenancePlanIds
+          ),
+        }
+      : {}),
   };
 
   const handleModalAction = (type: 'childAsset' | 'parentAsset') => {

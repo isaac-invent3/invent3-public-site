@@ -2,9 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import {
   Asset,
-  AssetDocument,
   AssetFormDetails,
-  AssetImage,
   FilterInput,
 } from '~/lib/interfaces/asset.interfaces';
 
@@ -77,7 +75,12 @@ const initialAssetForm = {
   lgaName: null,
   stateName: null,
   countryName: null,
+  deletedImageIds: [],
   maintenancePlans: [],
+  newMaintenancePlanIds: [],
+  deletedMaintenancePlanIds: [],
+  existingDocumentsIds: [],
+  deletedExistingDocumentIds: [],
   vendorDetails: {
     vendorName: null,
     address: null,
@@ -97,9 +100,6 @@ const initialAssetFilter = {
 export interface SliceProps {
   asset: Asset | null;
   assetForm: AssetFormDetails;
-  assetImages: AssetImage[];
-  assetDocuments: AssetDocument[];
-  reinitializeAssetForm: boolean;
   assetFilter: FilterInput;
   selectedAssetIds: number[];
 }
@@ -107,9 +107,6 @@ export interface SliceProps {
 const initialState: SliceProps = {
   asset: null,
   assetForm: initialAssetForm,
-  assetImages: [],
-  assetDocuments: [],
-  reinitializeAssetForm: false,
   assetFilter: initialAssetFilter,
   selectedAssetIds: [],
 };
@@ -123,18 +120,6 @@ export const AssetSlice = createSlice({
     },
     clearAsset: (state) => {
       state.asset = null;
-    },
-    setAssetImages: (state, { payload }: PayloadAction<AssetImage[]>) => {
-      state.assetImages = payload;
-    },
-    clearAssetImages: (state) => {
-      state.assetImages = [];
-    },
-    setAssetDocuments: (state, { payload }: PayloadAction<AssetDocument[]>) => {
-      state.assetDocuments = payload;
-    },
-    clearAssetDocuments: (state) => {
-      state.assetDocuments = [];
     },
     setAssetForm: (state, { payload }: PayloadAction<AssetFormDetails>) => {
       state.assetForm = payload;
@@ -172,10 +157,6 @@ export const {
   setAssetForm,
   clearAssetForm,
   updateAssetForm,
-  setAssetImages,
-  clearAssetImages,
-  setAssetDocuments,
-  clearAssetDocuments,
   updateAssetFilter,
   clearAssetFilter,
   updateSelectedAssetIds,

@@ -1,10 +1,9 @@
 import { Flex, HStack } from '@chakra-ui/react';
 import { useFormikContext } from 'formik';
 
-import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import { useGetAllTaskPrioritiesQuery } from '~/lib/redux/services/task/priorities.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
-import { SelectableButtonGroup } from '@repo/ui/components';
+import { FormSectionInfo, SelectableButtonGroup } from '@repo/ui/components';
 import { generateOptions } from '~/lib/utils/helperFunctions';
 import { taskFormDetails } from '~/lib/interfaces/task.interfaces';
 
@@ -22,7 +21,7 @@ const TaskPriority = (props: TaskPriorityProps) => {
   return (
     <HStack width="full" alignItems="flex-start" spacing={spacing}>
       <Flex width="full" maxW={sectionMaxWidth}>
-        <SectionInfo
+        <FormSectionInfo
           title="Priority"
           info="Add name that users can likely search with"
           isRequired

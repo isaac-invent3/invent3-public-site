@@ -1,8 +1,7 @@
 import { Flex, HStack, VStack } from '@chakra-ui/react';
 import { useField, useFormikContext } from 'formik';
-import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import UserDisplayAndAddButton from '../../Common/UserDisplayAndAddButton';
-import ErrorMessage from '../../UI/ErrorMessage';
+import { ErrorMessage, FormSectionInfo } from '@repo/ui/components';
 
 interface TaskAssignedToProps {
   sectionMaxWidth: string;
@@ -17,7 +16,7 @@ const TaskAssignedTo = (props: TaskAssignedToProps) => {
   return (
     <HStack width="full" alignItems="flex-start" spacing={spacing}>
       <Flex width="full" maxW={sectionMaxWidth}>
-        <SectionInfo
+        <FormSectionInfo
           title="Assigned to"
           info="Add name that users can likely search with"
           isRequired

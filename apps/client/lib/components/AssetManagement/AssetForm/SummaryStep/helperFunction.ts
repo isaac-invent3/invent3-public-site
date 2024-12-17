@@ -22,7 +22,7 @@ interface BaseImage {
 interface BaseDocument {
   documentId?: number;
   documentName: string;
-  base64Document?: string;
+  base64Document?: string | null;
 }
 
 interface Image extends Base, BaseImage {}

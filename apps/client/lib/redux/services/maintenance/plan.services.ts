@@ -1,7 +1,10 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
-import { ListResponse } from '~/lib/interfaces/general.interfaces';
+import {
+  BaseApiResponse,
+  ListResponse,
+} from '~/lib/interfaces/general.interfaces';
 import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 
 const getHeaders = () => ({
@@ -48,7 +51,13 @@ export const maintenancePlanApi = createApi({
       }),
       invalidatesTags: ['allMaintenancePlan', 'allMaintenancePlansByAssetId'],
     }),
-    getAllMaintenancePlan: builder.query({
+    getAllMaintenancePlan: builder.query<
+      BaseApiResponse<ListResponse<MaintenancePlan>>,
+      {
+        pageSize: number;
+        pageNumber?: number;
+      }
+    >({
       query: (data: any) => ({
         url: generateQueryStr(`/MaintenancePlans?`, data),
         method: 'GET',
@@ -83,9 +92,26 @@ export const maintenancePlanApi = createApi({
       }),
       providesTags: ['allMaintenancePlansByAssetId'],
     }),
-    getAssetCustomMaintenancePlanByAssetGuid: builder.query({
-      query: (id) => ({
-        url: `/MaintenancePlans/GetAssetCustomMaintenancePlan/${id}`,
+    getAllMaintenancePlansByGroupContextIdAndGroupTypeId: builder.query<
+      BaseApiResponse<MaintenancePlan>,
+      { groupContextId: number | undefined; groupTypeId: number | undefined }
+    >({
+      query: ({ groupContextId, ...data }) => ({
+        url: generateQueryStr(
+          `/MaintenancePlans/GetAssetGroupPlan/${groupContextId}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allMaintenancePlansByAssetId'],
+    }),
+    getAssetCustomMaintenancePlanByAssetGuid: builder.query<
+      BaseApiResponse<ListResponse<MaintenancePlan>>,
+      { assetGuid: string | undefined }
+    >({
+      query: ({ assetGuid }) => ({
+        url: `/MaintenancePlans/GetAssetCustomMaintenancePlan/${assetGuid}`,
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -114,4 +140,5 @@ export const {
   useSearchMaintenancePlanMutation,
   useGetAllMaintenancePlansByAssetIdQuery,
   useGetAssetCustomMaintenancePlanByAssetGuidQuery,
+  useGetAllMaintenancePlansByGroupContextIdAndGroupTypeIdQuery,
 } = maintenancePlanApi;

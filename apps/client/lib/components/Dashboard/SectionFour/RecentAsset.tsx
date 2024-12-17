@@ -10,7 +10,7 @@ import {
 import { Option, SearchResponse } from '~/lib/interfaces/general.interfaces';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import DropDown from '../Common/DropDown';
-import SearchInput from '../../UI/SearchInput';
+import { SearchInput } from '@repo/ui/components';
 import AssetTable from '../../AssetManagement/Common/AssetTable';
 import { useGetRecentAssetsQuery } from '~/lib/redux/services/dashboard.services';
 import { useAppSelector } from '~/lib/redux/hooks';

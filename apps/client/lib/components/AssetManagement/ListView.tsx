@@ -49,9 +49,12 @@ const ListView = (props: ListViewProps) => {
   );
   const [searchData, setSearchData] = useState<SearchResponse | null>(null);
 
-  const { data: assetData } = useGetAssetInfoHeaderByIdQuery(assetId, {
-    skip: !assetId,
-  });
+  const { data: assetData } = useGetAssetInfoHeaderByIdQuery(
+    { id: assetId ?? undefined },
+    {
+      skip: !assetId,
+    }
+  );
   const { data, isLoading, isFetching } = useGetallAssetQuery(
     {
       pageNumber: currentPage,

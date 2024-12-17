@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import DataTable from '../../UI/Table';
+import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import { Asset } from '~/lib/interfaces/asset.interfaces';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
@@ -38,6 +38,8 @@ interface AssetTableProps {
   isSelectable?: boolean;
   isSortable?: boolean;
   showPopover?: boolean;
+  // eslint-disable-next-line no-unused-vars
+  PopoverComponent?: (data: Asset) => JSX.Element;
 }
 const AssetTable = (props: AssetTableProps) => {
   const columnHelper = createColumnHelper<Asset>();
@@ -59,6 +61,7 @@ const AssetTable = (props: AssetTableProps) => {
     setPageNumber,
     setPageSize,
     setSelectedRows,
+    PopoverComponent,
   } = props;
 
   const columns = useMemo(
@@ -121,7 +124,7 @@ const AssetTable = (props: AssetTableProps) => {
           header: 'Assigned To',
           enableSorting: false,
         }),
-        columnHelper.accessor('responsibleFor', {
+        columnHelper.accessor('employeeResponsible', {
           cell: (info) => info.getValue() ?? 'N/A',
           header: 'Responsible For',
           enableSorting: false,
@@ -276,10 +279,16 @@ const AssetTable = (props: AssetTableProps) => {
         }),
       ];
       const popOverColumn = columnHelper.accessor('rowId', {
-        cell: () => Dots(),
+        cell: (info) => {
+          if (PopoverComponent) {
+            return PopoverComponent(info.row.original);
+          }
+          return <Dots />;
+        },
         header: '',
         enableSorting: false,
       });
+
       if (showPopover) {
         baseColumns.push(popOverColumn);
       }

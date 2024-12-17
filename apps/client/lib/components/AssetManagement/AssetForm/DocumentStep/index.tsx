@@ -2,11 +2,10 @@ import { Flex, HStack, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 
 import { documentSchema } from '~/lib/schemas/asset/main.schema';
-import FormActionButtons from '../../../UI/Form/FormActionButtons';
 import AddDocument from './AddDocument';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
-import SectionInfo from '../../../UI/Form/FormSectionInfo';
+import { FormActionButtons, FormSectionInfo } from '@repo/ui/components';
 
 interface DocumentStepProps {
   activeStep: number;
@@ -27,16 +26,15 @@ const DocumentStep = (props: DocumentStepProps) => {
     enableReinitialize: true,
     onSubmit: async (values) => {
       dispatch(updateAssetForm(values));
-      setActiveStep(4);
+      setActiveStep(5);
     },
   });
 
   return (
     <Flex
       width="full"
-      height="full"
       direction="column"
-      display={activeStep === 3 ? 'flex' : 'none'}
+      display={activeStep === 4 ? 'flex' : 'none'}
     >
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
@@ -55,7 +53,7 @@ const DocumentStep = (props: DocumentStepProps) => {
           >
             <HStack width="full" alignItems="flex-start" spacing="81px">
               <Flex width="full" maxW="141px">
-                <SectionInfo
+                <FormSectionInfo
                   title="Upload Documents"
                   info="Size max: 10MB each Format: TXT, PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, JPEG"
                   isRequired={false}
@@ -67,8 +65,8 @@ const DocumentStep = (props: DocumentStepProps) => {
           <Flex width="full" mt="16px">
             <FormActionButtons
               cancelLink="/asset-management"
-              totalStep={4}
-              activeStep={3}
+              totalStep={5}
+              activeStep={4}
               setActiveStep={setActiveStep}
             />
           </Flex>

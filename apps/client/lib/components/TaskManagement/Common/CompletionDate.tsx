@@ -1,7 +1,5 @@
 import { Flex, HStack } from '@chakra-ui/react';
-
-import CustomDatePicker from '~/lib/components/UI/Form/FormDatePicker';
-import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
+import { FormDatePicker, FormSectionInfo } from '@repo/ui/components';
 
 interface CompletionDateProps {
   sectionMaxWidth: string;
@@ -12,14 +10,14 @@ const CompletionDate = (props: CompletionDateProps) => {
   return (
     <HStack width="full" alignItems="flex-start" spacing={spacing}>
       <Flex width="full" maxW={sectionMaxWidth}>
-        <SectionInfo
+        <FormSectionInfo
           title="Completion Date"
           info="Add name that users can likely search with"
           isRequired
         />
       </Flex>
 
-      <CustomDatePicker
+      <FormDatePicker
         name="dateCompleted"
         label="Completion Date"
         type="date"

@@ -30,7 +30,7 @@ const initialValue = {
   acquisitionDate: null,
   currentOwner: null,
   assignedTo: null,
-  responsibleFor: null,
+  employeeResponsible: null,
   purchaseDate: null,
   initialValue: null,
   resalevalue: null,
@@ -93,6 +93,7 @@ const initialValue = {
   roomId: null,
   aisleId: null,
   shelfId: null,
+  assetLocation: null,
   displayColorCode: COLOR_CODES_FALLBACK.default,
 };
 
@@ -165,6 +166,7 @@ const initialAssetForm = {
   lgaName: null,
   stateName: null,
   countryName: null,
+  maintenancePlans: [],
   vendorDetails: {
     vendorName: null,
     address: null,

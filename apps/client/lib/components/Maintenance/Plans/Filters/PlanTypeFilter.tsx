@@ -1,4 +1,4 @@
-import FilterDropDown from '~/lib/components/UI/FilterDropDown';
+import { FilterDropDown } from '@repo/ui/components';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { MAINTENANCE_PLAN_ENUM } from '~/lib/utils/constants';
 

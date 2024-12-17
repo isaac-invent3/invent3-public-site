@@ -5,8 +5,8 @@ import {
   Text as ChakraText,
   VStack,
 } from '@chakra-ui/react';
-import Button from '../Button';
 import GenericModal from '.';
+import Button from '../Button';
 
 interface GenericDeleteModalProps {
   isOpen: boolean;

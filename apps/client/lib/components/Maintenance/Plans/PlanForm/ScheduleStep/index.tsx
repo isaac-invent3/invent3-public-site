@@ -1,13 +1,12 @@
 import { Flex, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 import React, { useState } from 'react';
-import FormActionButtons from '~/lib/components/UI/Form/FormActionButtons';
 import { planScheduleSchema } from '~/lib/schemas/maintenance.schema';
 import { useAppSelector } from '~/lib/redux/hooks';
 // import ScheduleList from './ScheduleList';
 import ScheduleForm from './ScheduleForm';
-import SlideTransition from '~/lib/components/UI/SlideTransition';
 import ScheduleList from './ScheduleList';
+import { FormActionButtons, SlideTransition } from '@repo/ui/components';
 
 interface ScheduleStepProps {
   activeStep: number;

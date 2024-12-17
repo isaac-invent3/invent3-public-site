@@ -2,16 +2,25 @@
 
 import { Flex } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import FormStepper from '../../UI/Form/FormStepper';
 import GeneralStep from './GeneralStep';
 import AcquisitionStep from './AcquisitionStep';
 import DocumentStep from './DocumentStep';
 import SummaryStep from './SummaryStep';
-import SlideTransition from '../../UI/SlideTransition';
+import {
+  SlideTransition,
+  FormStepper,
+  withFormLeaveDialog,
+} from '@repo/ui/components';
 import Header from './Header';
-import withFormLeaveDialog from '../../UI/Form/FormLeaveDialogProvider';
+import MaintenancePlanStep from './MaintenancePlanStep';
 
-const STEPS = ['General', 'Acquisition', 'Document', 'Summary'];
+const STEPS = [
+  'General',
+  'Acquisition',
+  'Maintenance Plan',
+  'Document',
+  'Summary',
+];
 
 interface AssetFormProps {
   type: 'create' | 'edit';
@@ -33,9 +42,15 @@ const AssetForm = (props: AssetFormProps) => {
           />
         </SlideTransition>
         <SlideTransition trigger={activeStep === 3}>
-          <DocumentStep activeStep={activeStep} setActiveStep={setActiveStep} />
+          <MaintenancePlanStep
+            activeStep={activeStep}
+            setActiveStep={setActiveStep}
+          />
         </SlideTransition>
         <SlideTransition trigger={activeStep === 4}>
+          <DocumentStep activeStep={activeStep} setActiveStep={setActiveStep} />
+        </SlideTransition>
+        <SlideTransition trigger={activeStep === 5}>
           <SummaryStep
             activeStep={activeStep}
             setActiveStep={setActiveStep}

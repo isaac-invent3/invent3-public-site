@@ -1,8 +1,6 @@
 import { Flex, HStack } from '@chakra-ui/react';
+import { FormSectionInfo, FormTextAreaInput } from '@repo/ui/components';
 import { Field } from 'formik';
-
-import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
-import TextareaInput from '~/lib/components/UI/TextArea';
 
 interface DescriptionProps {
   sectionMaxWidth: string;
@@ -14,14 +12,14 @@ const Description = (props: DescriptionProps) => {
   return (
     <HStack width="full" alignItems="flex-start" spacing={spacing}>
       <Flex width="full" maxW={sectionMaxWidth}>
-        <SectionInfo
+        <FormSectionInfo
           title="Description"
           info="Add name that users can likely search with"
           isRequired
         />
       </Flex>
       <Field
-        as={TextareaInput}
+        as={FormTextAreaInput}
         name="description"
         label="Description"
         placeholder="Description"

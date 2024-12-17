@@ -2,7 +2,7 @@ import { VStack } from '@chakra-ui/react';
 import { createColumnHelper } from '@tanstack/react-table';
 import React, { useMemo } from 'react';
 import DetailHeader from '~/lib/components/UI/DetailHeader';
-import DataTable from '~/lib/components/UI/Table';
+import { DataTable } from '@repo/ui/components';
 import { MaintenanceScheduleInstance } from '~/lib/interfaces/maintenance.interfaces';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
 

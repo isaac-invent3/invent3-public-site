@@ -6,9 +6,10 @@ import CreateTicketDrawer from '../../TicketManagement/Drawers/CreateTicketDrawe
 
 interface AssetHeaderProps {
   handleBack: () => void;
+  type: 'template' | 'main';
 }
 const AssetHeader = (props: AssetHeaderProps) => {
-  const { handleBack } = props;
+  const { handleBack, type } = props;
   const assetData = useAppSelector((state) => state.asset.asset);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -24,48 +25,58 @@ const AssetHeader = (props: AssetHeaderProps) => {
           Back
         </Button>
       </HStack>
-      <HStack width="min-content" spacing="8px">
+      {type === 'main' ? (
+        <HStack width="min-content" spacing="8px">
+          <Button
+            customStyles={{ height: '35px', width: '106px', px: '16px' }}
+            variant="primary"
+            href={`/asset-management/${assetData.assetId}/edit`}
+          >
+            Edit Asset
+          </Button>
+          <Button
+            handleClick={onOpen}
+            customStyles={{ height: '35px', px: '12px', width: '106px' }}
+            variant="outline"
+          >
+            Raise Ticket
+          </Button>
+          <Button
+            customStyles={{
+              height: '35px',
+              width: '106px',
+              px: '8px',
+              fontSize: '14px',
+              lineHeight: '16.63px',
+            }}
+            variant="secondary"
+            href={`/asset-management/${assetData.assetId}/transfer`}
+          >
+            Transfer
+          </Button>
+          <Button
+            customStyles={{
+              height: '35px',
+              width: '106px',
+              px: '8px',
+              fontSize: '14px',
+              lineHeight: '16.63px',
+            }}
+            variant="secondary"
+            href={`/asset-management/${assetData.assetId}/dispose`}
+          >
+            Dispose
+          </Button>
+        </HStack>
+      ) : (
         <Button
-          customStyles={{ height: '35px', width: '106px', px: '16px' }}
+          customStyles={{ height: '35px', width: 'min-content', px: '16px' }}
           variant="primary"
-          href={`/asset-management/${assetData.assetId}/edit`}
+          href={`/asset-management/add?assetId=${assetData.assetId}`}
         >
-          Edit Asset
+          Use As Template
         </Button>
-        <Button
-          handleClick={onOpen}
-          customStyles={{ height: '35px', px: '12px', width: '106px' }}
-          variant="outline"
-        >
-          Raise Ticket
-        </Button>
-        <Button
-          customStyles={{
-            height: '35px',
-            width: '106px',
-            px: '8px',
-            fontSize: '14px',
-            lineHeight: '16.63px',
-          }}
-          variant="secondary"
-          href={`/asset-management/${assetData.assetId}/transfer`}
-        >
-          Transfer
-        </Button>
-        <Button
-          customStyles={{
-            height: '35px',
-            width: '106px',
-            px: '8px',
-            fontSize: '14px',
-            lineHeight: '16.63px',
-          }}
-          variant="secondary"
-          href={`/asset-management/${assetData.assetId}/dispose`}
-        >
-          Dispose
-        </Button>
-      </HStack>
+      )}
 
       {isOpen && (
         <CreateTicketDrawer

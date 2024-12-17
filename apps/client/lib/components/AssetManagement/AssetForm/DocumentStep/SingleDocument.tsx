@@ -42,7 +42,7 @@ const SingleDocument = (props: SingleDocumentProps) => {
             color="neutral.800"
             width={variant === 'primary' ? '150px' : 'full'}
           >
-            {document.documentName}
+            {document?.documentName}
           </Text>
         </HStack>
         {variant === 'primary' && (
@@ -61,7 +61,7 @@ const SingleDocument = (props: SingleDocumentProps) => {
         )}
         {variant === 'primary' && (
           <Text size="md" fontWeight={700}>
-            {sizeInMB.toFixed(2)}MB
+            {sizeInMB?.toFixed(2)}MB
           </Text>
         )}
       </HStack>

@@ -26,7 +26,9 @@ const NewOwner = () => {
       width="full"
       height="max-content"
     >
-      <DetailHeader variant="secondary">New Owner</DetailHeader>
+      <DetailHeader variant="secondary" customStyles={{ fontWeight: 700 }}>
+        New Owner
+      </DetailHeader>
       <EmployeeSelect
         selectName="newOwnerId"
         selectTitle="User"
@@ -38,6 +40,7 @@ const NewOwner = () => {
           role="Operation Manager"
           location={null}
           department={null}
+          minWidth="100px"
         />
       )}
     </VStack>

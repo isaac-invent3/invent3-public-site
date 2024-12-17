@@ -3,7 +3,6 @@
 import { Divider, Flex, useDisclosure, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 
-import FormActionButtons from '~/lib/components/UI/Form/FormActionButtons';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { taskSchema } from '~/lib/schemas/task.schema';
 import { getSession } from 'next-auth/react';
@@ -16,7 +15,7 @@ import Header from './Header';
 import TaskSuccessModal from '../Modals/TaskSuccessModal';
 import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
-import withFormLeaveDialog from '../../UI/Form/FormLeaveDialogProvider';
+import { FormActionButtons, withFormLeaveDialog } from '@repo/ui/components';
 
 interface TaskFormProps {
   type: 'create' | 'edit';

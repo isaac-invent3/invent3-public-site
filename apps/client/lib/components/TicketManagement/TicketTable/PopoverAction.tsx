@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { Text, VStack } from '@chakra-ui/react';
-import GenericPopover from '~/lib/components/UI/GenericPopover';
+import { GenericPopover } from '@repo/ui/components';
 import {
   SelectedTicketAction,
   Ticket,

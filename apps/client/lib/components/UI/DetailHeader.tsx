@@ -1,9 +1,9 @@
-import { Text } from '@chakra-ui/react';
+import { Text, TextProps } from '@chakra-ui/react';
 
 interface DetailHeaderProps {
   children: React.ReactNode;
   variant: 'primary' | 'secondary';
-  customStyles?: { [key: string]: unknown };
+  customStyles?: TextProps;
 }
 const DetailHeader = (props: DetailHeaderProps) => {
   const { children, variant, customStyles } = props;
@@ -13,6 +13,7 @@ const DetailHeader = (props: DetailHeaderProps) => {
       size="md"
       pt={variant === 'primary' ? '0px' : '4px'}
       pb={variant === 'primary' ? '8px' : '4px'}
+      fontWeight={variant === 'primary' ? 700 : 500}
       color={variant === 'primary' ? 'primary.500' : 'neutral.800'}
       borderBottomWidth="1px"
       borderColor="#BBBBBB80"

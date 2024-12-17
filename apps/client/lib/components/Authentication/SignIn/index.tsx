@@ -5,14 +5,13 @@ import Link from 'next/link';
 import { loginSchema } from '~/lib/schemas/auth.schema';
 import { Field, FormikProvider, useFormik } from 'formik';
 import AuthLayout from '../AuthLayout';
-import TextInput from '../../UI/TextInput';
 import SSOLogin from './SSOLogin';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { utilityApi } from '~/lib/redux/services/utility.services';
 import { setCredentials } from '~/lib/redux/slices/GeneralSlice';
-import { Button } from '@repo/ui/components';
+import { Button, FormTextInput } from '@repo/ui/components';
 
 const SignIn = () => {
   const router = useRouter();
@@ -101,7 +100,7 @@ const SignIn = () => {
               mb={{ base: '34px', lg: '40px' }}
             >
               <Field
-                as={TextInput}
+                as={FormTextInput}
                 name="username"
                 type="text"
                 label="Username"
@@ -111,7 +110,7 @@ const SignIn = () => {
 
               <Flex direction="column" w="full" gap="16px">
                 <Field
-                  as={TextInput}
+                  as={FormTextInput}
                   name="password"
                   type="password"
                   label="Password"

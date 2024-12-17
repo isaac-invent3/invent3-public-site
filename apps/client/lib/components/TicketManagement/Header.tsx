@@ -1,7 +1,6 @@
 import { HStack, Icon, useDisclosure, VStack } from '@chakra-ui/react';
 import { AddIcon } from '../CustomIcons';
-import GenericBreadCrumb from '../UI/BreadCrumb';
-import { Button } from '@repo/ui/components';
+import { Button, GenericBreadCrumb } from '@repo/ui/components';
 import PageHeader from '../UI/PageHeader';
 import CreateTicketDrawer from './Drawers/CreateTicketDrawer';
 

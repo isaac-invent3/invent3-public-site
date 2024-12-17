@@ -7,11 +7,11 @@ import AssetDetail from './AssetDetails';
 import AssetDimension from './AssetDimension';
 import AssetOwner from './AssetOwner';
 import AssetNameCodeDescription from './AssetNameCodeDescription';
-import FormActionButtons from '../../../UI/Form/FormActionButtons';
 import AssetLocation from './AssetLocation';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import ParentAsset from './ParentAsset';
+import { FormActionButtons } from '@repo/ui/components';
 
 interface GeneralStepProps {
   activeStep: number;
@@ -90,7 +90,7 @@ const GeneralStep = (props: GeneralStepProps) => {
           <Flex width="full" mt="16px">
             <FormActionButtons
               cancelLink="/asset-management"
-              totalStep={4}
+              totalStep={5}
               activeStep={1}
               setActiveStep={setActiveStep}
             />

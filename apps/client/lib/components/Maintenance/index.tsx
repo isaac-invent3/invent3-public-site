@@ -17,8 +17,7 @@ import History from './History';
 import Plans from './Plans';
 import Header from './Header';
 import _ from 'lodash';
-import SearchInput from '../UI/SearchInput';
-import FilterButton from '../UI/Filter/FilterButton';
+import { FilterButton, SearchInput } from '@repo/ui/components';
 import { FilterIcon } from '../CustomIcons';
 
 const ALlTabs = ['Plans', 'Schedules', 'History'];

@@ -4,12 +4,14 @@ import Header from './Header';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { FormikProvider, useFormik } from 'formik';
 import { scheduleSchema } from '~/lib/schemas/maintenance.schema';
-import FormActionButtons from '~/lib/components/UI/Form/FormActionButtons';
-import { Button } from '@repo/ui/components';
-import { useUpdateScheduleInstanceMutation } from '~/lib/redux/services/maintenance/scheduleInstance.services';
+import {
+  Button,
+  FormActionButtons,
+  withFormLeaveDialog,
+} from '@repo/ui/components';
+import { useUpdateScheduleInstanceandTaskInstancesMutation } from '~/lib/redux/services/maintenance/scheduleInstance.services';
 import SectionTwo from '../ScheduleForm/FormSection/SectionTwo';
 import moment from 'moment';
-import withFormLeaveDialog from '~/lib/components/UI/Form/FormLeaveDialogProvider';
 import AssetInfo from './AssetInfo';
 import Tasks from './Tasks';
 import { getSession } from 'next-auth/react';
@@ -22,7 +24,7 @@ const ScheduleInstanceForm = () => {
   const formDetails = useAppSelector((state) => state.maintenance.scheduleForm);
   const { handleSubmit } = useCustomMutation();
   const [updateScheduleInstance, { isLoading }] =
-    useUpdateScheduleInstanceMutation({});
+    useUpdateScheduleInstanceandTaskInstancesMutation({});
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const formik = useFormik({
@@ -52,7 +54,6 @@ const ScheduleInstanceForm = () => {
         ? INSTANCE_UPDATE_ENUM.ONLY_THIS_INSTANCE
         : INSTANCE_UPDATE_ENUM.CURRENT_AND_FUTURE_INSTANCES;
       const finalData = {
-        id: values.scheduleId,
         updateMaintenanceScheduleInstanceDto: {
           scheduleInstanceId: values.scheduleId,
           scheduledDate: moment(

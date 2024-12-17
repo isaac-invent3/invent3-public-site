@@ -7,10 +7,9 @@ import {
   VStack,
 } from '@chakra-ui/react';
 
-import { BackButton, Button } from '@repo/ui/components';
+import { BackButton, Button, GenericDrawer } from '@repo/ui/components';
 import TaskFormDrawer from '../TaskFormDrawer';
 import { taskFormDetails } from '~/lib/interfaces/task.interfaces';
-import GenericDrawer from '~/lib/components/UI/GenericDrawer';
 
 interface TaskListDrawerProps {
   isOpen: boolean;

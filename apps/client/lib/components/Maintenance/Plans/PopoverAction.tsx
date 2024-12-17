@@ -1,8 +1,7 @@
 import { Text, useDisclosure, VStack } from '@chakra-ui/react';
 import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
-import GenericPopover from '../../UI/GenericPopover';
 import PlanDetailsModal from './Drawers/PlanDetailDrawer';
-import { GenericDeleteModal } from '@repo/ui/components';
+import { GenericDeleteModal, GenericPopover } from '@repo/ui/components';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useDeleteMaintenancePlanMutation } from '~/lib/redux/services/maintenance/plan.services';
 import { getSession } from 'next-auth/react';

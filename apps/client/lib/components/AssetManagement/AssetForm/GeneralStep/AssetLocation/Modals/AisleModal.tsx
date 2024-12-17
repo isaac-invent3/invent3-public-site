@@ -2,12 +2,16 @@
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
 import { Field, FormikProvider, useFormik } from 'formik';
 
-import { Button, GenericModal, ModalHeading } from '@repo/ui/components';
+import {
+  Button,
+  FormTextInput,
+  GenericModal,
+  ModalHeading,
+} from '@repo/ui/components';
 import { useCreateAisleMutation } from '~/lib/redux/services/asset/location.services';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';
 import { aisleSchema } from '~/lib/schemas/asset/location.schema';
-import TextInput from '~/lib/components/UI/TextInput';
 import RoomSelect from './SelectInputs/RoomSelect';
 
 interface AisleModalProps {
@@ -58,13 +62,13 @@ const AisleModal = (props: AisleModalProps) => {
               <VStack width="full" spacing="16px">
                 <RoomSelect type="general" />
                 <Field
-                  as={TextInput}
+                  as={FormTextInput}
                   name="aisleName"
                   type="text"
                   label="Aisle Name"
                 />
                 <Field
-                  as={TextInput}
+                  as={FormTextInput}
                   name="aisleRef"
                   type="text"
                   label="Aisle Reference"

@@ -9,8 +9,11 @@ const CurrentOwner = () => {
     useAppSelector((state) => state.asset.asset);
   return (
     <VStack spacing="16px" alignItems="flex-start" width="full">
-      <DetailHeader variant="secondary">Current Owner</DetailHeader>
+      <DetailHeader variant="secondary" customStyles={{ fontWeight: 700 }}>
+        Current Owner
+      </DetailHeader>
       <User
+        minWidth="120px"
         name={currentOwner}
         department={departmentName}
         location={[buildingName, floorName].filter(Boolean).join(', ')}

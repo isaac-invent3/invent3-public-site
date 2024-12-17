@@ -1,15 +1,13 @@
 import { Flex, Grid, GridItem, HStack } from '@chakra-ui/react';
+import { FormSectionInfo, FormTextInput } from '@repo/ui/components';
 
-import SectionInfo from '../../../UI/Form/FormSectionInfo';
 import { Field } from 'formik';
-import TextInput from '~/lib/components/UI/TextInput';
-// import CustomDatePicker from './DatePicker';
 
 const PurchasePrice = () => {
   return (
     <HStack width="full" alignItems="flex-start" spacing="78px">
       <Flex width="full" maxW="144px">
-        <SectionInfo
+        <FormSectionInfo
           title="Purchase Price"
           info="Add name that users can likely search with"
           isRequired
@@ -19,21 +17,21 @@ const PurchasePrice = () => {
         <GridItem colSpan={3} width="full">
           <HStack width="full" alignItems="flex-start" spacing="16px">
             <Field
-              as={TextInput}
+              as={FormTextInput}
               name="initialValue"
               type="number"
               label="Purchase Price"
             />
             <HStack width="full" alignItems="flex-start" spacing="0px">
               <Flex width="full" maxW="130px">
-                <SectionInfo
+                <FormSectionInfo
                   title="Resale Value"
                   info="Add name that users can likely search with"
                   isRequired
                 />
               </Flex>
               <Field
-                as={TextInput}
+                as={FormTextInput}
                 name="resaleValue"
                 type="number"
                 label="Resale Value"
@@ -41,14 +39,14 @@ const PurchasePrice = () => {
             </HStack>
             <HStack width="full" alignItems="flex-start" spacing="0px">
               <Flex width="full" maxW="130px">
-                <SectionInfo
+                <FormSectionInfo
                   title="Scrap Value"
                   info="Add name that users can likely search with"
                   isRequired
                 />
               </Flex>
               <Field
-                as={TextInput}
+                as={FormTextInput}
                 name="scrapValue"
                 type="number"
                 label="Scrap Value"
@@ -60,7 +58,7 @@ const PurchasePrice = () => {
           <HStack width="full" alignItems="flex-start" spacing="16px">
             <CustomDatePicker name="purchaseDate" label="Purchase Date" />
             <Field
-              as={TextInput}
+              as={FormTextInput}
               name="currentValue"
               type="number"
               label="Current Value"

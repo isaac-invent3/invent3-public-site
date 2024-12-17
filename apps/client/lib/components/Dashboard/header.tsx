@@ -1,6 +1,6 @@
 import { HStack, Text, VStack } from '@chakra-ui/react';
 
-import GenericBreadCrumb from '../UI/BreadCrumb';
+import { GenericBreadCrumb } from '@repo/ui/components';
 import PageHeader from '../UI/PageHeader';
 import { useSession } from 'next-auth/react';
 import { dateFormatter } from '~/lib/utils/Formatters';

@@ -6,8 +6,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { BackButton } from '@repo/ui/components';
-import GenericDrawer from '~/lib/components/UI/GenericDrawer';
+import { BackButton, GenericDrawer } from '@repo/ui/components';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { useGetMaintenanceSchedulesByPlanIdQuery } from '~/lib/redux/services/maintenance/schedule.services';
 import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';

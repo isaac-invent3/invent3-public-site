@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
 import { Option } from '~/lib/interfaces/general.interfaces';
-import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
-import { Button, GenericModal } from '@repo/ui/components';
+import { Button, FormSectionInfo, GenericModal } from '@repo/ui/components';
 import { FormikProvider, useFormik } from 'formik';
 import EmployeeSelect from '../../EmployeeSelect';
 import { assigneeSchema } from '~/lib/schemas/general.schema';
@@ -64,7 +63,7 @@ const UserSelectModal = (props: UserSelectModalProps) => {
                 justifyContent="space-between"
                 alignItems="flex-start"
               >
-                <SectionInfo
+                <FormSectionInfo
                   title={sectionInfoTitle ?? 'Assign'}
                   info={
                     sectionInfoText ??

@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { useDisclosure, VStack } from '@chakra-ui/react';
 
-import AddButton from '../../../../../../UI/Form/FormAddButton';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { FormLocation } from '~/lib/interfaces/asset.interfaces';
 import RoomSelect from '../SelectInputs/RoomSelect';
 import RoomModal from '../RoomModal';
+import { FormAddButton } from '@repo/ui/components';
 
 interface RoomProps {
   handleReadableLocation: (option: Option, key: keyof FormLocation) => void;
@@ -22,7 +22,7 @@ const Room = (props: RoomProps) => {
           departmentId={departmentId}
           type="specificById"
         />
-        <AddButton handleClick={onOpen}>Add New Room</AddButton>
+        <FormAddButton handleClick={onOpen}>Add New Room</FormAddButton>
       </VStack>
       <RoomModal
         isOpen={isOpen}

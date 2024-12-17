@@ -10,11 +10,11 @@ import {
 } from '~/lib/interfaces/general.interfaces';
 import { generateSearchCriterion } from '~/lib/utils/helperFunctions';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import FilterDisplay from '../../UI/Filter/FilterDisplay';
 import { TaskInstance } from '~/lib/interfaces/task.interfaces';
 import Filters from './Filters';
 import TaskInstanceTable from '../Tables/TaskInstanceTable';
 import { useSearchTaskInstancesMutation } from '~/lib/redux/services/task/instance.services';
+import { FilterDisplay } from '@repo/ui/components';
 
 export const initialFilterData = {
   region: [],

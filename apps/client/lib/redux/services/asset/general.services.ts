@@ -6,7 +6,7 @@ import {
   ListResponse,
   QueryParams,
 } from '~/lib/interfaces/general.interfaces';
-import { AssetStatus } from '~/lib/interfaces/asset.interfaces';
+import { Asset, AssetStatus } from '~/lib/interfaces/asset.interfaces';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -40,8 +40,11 @@ export const assetApi = createApi({
       }),
       providesTags: ['singleAsset'],
     }),
-    getAssetInfoHeaderById: builder.query({
-      query: (id: any) => ({
+    getAssetInfoHeaderById: builder.query<
+      BaseApiResponse<Asset>,
+      { id: number | string | undefined }
+    >({
+      query: ({ id }) => ({
         url: `/Assets/GetAssetInfoHeader/${id}`,
         method: 'GET',
         headers: getHeaders(),
@@ -81,17 +84,6 @@ export const assetApi = createApi({
         headers: getHeaders(),
       }),
     }),
-    getDocumentsByAssetId: builder.query({
-      query: ({ id, ...data }) => ({
-        url: generateQueryStr(
-          `/AssetDocuments/GetDocumentsByAssetId/${id}?`,
-          data
-        ),
-        method: 'GET',
-        headers: getHeaders(),
-      }),
-    }),
-
     GetAssetComponentInfoByAssetGuid: builder.query({
       query: ({ id }) => ({
         url: `/GetAssetComponentInfo/${id}`,
@@ -158,7 +150,6 @@ export const {
   useGetImagesByAssetIdQuery,
   useGetMaintenanceHistoryByAssetIdQuery,
   useGetPlannedMaintenanceByAssetIdQuery,
-  useGetDocumentsByAssetIdQuery,
   useGetAllAssetStatusQuery,
   useSearchStatusMutation,
   useSearchAssetsMutation,

@@ -1,24 +1,18 @@
 import { Flex } from '@chakra-ui/react';
 import _ from 'lodash';
-import { createColumnHelper } from '@tanstack/react-table';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import DataTable from '~/lib/components/UI/Table';
-import {
-  MaintenancePlan,
-  PlanFilter,
-} from '~/lib/interfaces/maintenance.interfaces';
+import React, { useCallback, useEffect, useState } from 'react';
+import { PlanFilter } from '~/lib/interfaces/maintenance.interfaces';
 import {
   useGetAllMaintenancePlanQuery,
   useSearchMaintenancePlanMutation,
 } from '~/lib/redux/services/maintenance/plan.services';
-import { dateFormatter } from '~/lib/utils/Formatters';
-import PopoverAction from './PopoverAction';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 import Filters from './Filters';
 import { SearchResponse } from '~/lib/interfaces/general.interfaces';
 import { generateSearchCriterion } from '~/lib/utils/helperFunctions';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import FilterDisplay from '../../UI/Filter/FilterDisplay';
+import { FilterDisplay } from '@repo/ui/components';
+import MaintenancePlanTable from './PlanTable';
 
 export const initialFilterData = {
   planType: [],
@@ -136,96 +130,6 @@ const Plans = (props: PlansProp) => {
     }
   }, [search, isFilterEmpty]);
 
-  const columnHelper = createColumnHelper<MaintenancePlan>();
-  const columns = useMemo(
-    () => [
-      columnHelper.accessor('maintenancePlanId', {
-        cell: (info) => info.getValue(),
-        header: '#',
-        enableSorting: false,
-      }),
-      columnHelper.accessor('planName', {
-        cell: (info) => info.getValue(),
-        header: 'Plan Name',
-        enableSorting: false,
-      }),
-      columnHelper.accessor('planTypeName', {
-        cell: (info) => info.getValue(),
-        header: 'Plan Type',
-        enableSorting: false,
-      }),
-      columnHelper.accessor('assetName', {
-        cell: (info) =>
-          info.getValue() ?? info.row.original.groupTypeName ?? 'N/A',
-        header: 'Plan Scope',
-        enableSorting: false,
-      }),
-      columnHelper.accessor('openTasks', {
-        cell: (info) => info.getValue() ?? 'N/A',
-        header: 'No. Of Assets.',
-        enableSorting: false,
-        meta: {
-          isNumeric: true,
-        },
-      }),
-      columnHelper.accessor('activeSchedules', {
-        cell: (info) => info.getValue(),
-        header: 'Active Schedules',
-        enableSorting: false,
-        meta: {
-          isNumeric: true,
-        },
-      }),
-      columnHelper.accessor('startDate', {
-        cell: (info) => {
-          const value = info.getValue();
-          if (value && !isNaN(new Date(value).getTime())) {
-            return dateFormatter(value, 'DD / MM / YYYY');
-          } else {
-            return 'N/A';
-          }
-        },
-        header: 'Start Date',
-        enableSorting: false,
-      }),
-      columnHelper.accessor('endDate', {
-        cell: (info) => {
-          const value = info.getValue();
-          if (value && !isNaN(new Date(value).getTime())) {
-            return dateFormatter(value, 'DD / MM / YYYY');
-          } else {
-            return 'N/A';
-          }
-        },
-        header: 'End Date',
-        enableSorting: false,
-      }),
-      columnHelper.accessor('planStatusName', {
-        cell: (info) => info.getValue(),
-        header: 'Status',
-        enableSorting: false,
-      }),
-      columnHelper.accessor('dateCreated', {
-        cell: (info) => {
-          const value = info.getValue();
-          if (value && !isNaN(new Date(value).getTime())) {
-            return dateFormatter(value, 'DD / MM / YYYY');
-          } else {
-            return 'N/A';
-          }
-        },
-        header: 'Created Date',
-        enableSorting: false,
-      }),
-      columnHelper.accessor('rowId', {
-        cell: (info) => PopoverAction(info.row.original),
-        header: '',
-        enableSorting: false,
-      }),
-    ],
-    [[data?.data?.items]] //eslint-disable-line
-  );
-
   return (
     <Flex direction="column" pt="16px">
       {openFilter && (
@@ -239,8 +143,7 @@ const Plans = (props: PlansProp) => {
           </FilterDisplay>
         </Flex>
       )}
-      <DataTable
-        columns={columns}
+      <MaintenancePlanTable
         data={
           (search || !isFilterEmpty) && searchData
             ? searchData.items
@@ -260,19 +163,6 @@ const Plans = (props: PlansProp) => {
         setPageNumber={setCurrentPage}
         pageSize={pageSize}
         setPageSize={setPageSize}
-        customThStyle={{
-          paddingLeft: '16px',
-          paddingTop: '17px',
-          paddingBottom: '17px',
-          fontWeight: 700,
-        }}
-        customTdStyle={{
-          paddingLeft: '16px',
-          paddingTop: '16px',
-          paddingBottom: '16px',
-        }}
-        customTBodyRowStyle={{ verticalAlign: 'top' }}
-        customTableContainerStyle={{ rounded: 'none' }}
       />
     </Flex>
   );

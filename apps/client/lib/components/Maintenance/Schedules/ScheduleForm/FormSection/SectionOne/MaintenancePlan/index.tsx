@@ -1,20 +1,17 @@
 /* eslint-disable no-unused-vars */
 import { Flex, HStack, Text, useDisclosure, VStack } from '@chakra-ui/react';
-import { createColumnHelper } from '@tanstack/react-table';
 import { useField } from 'formik';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CustomizedPlanModal from '~/lib/components/Maintenance/Plans/Drawers/CustomizedplanDrawer';
 import PlanDetailsModal from '~/lib/components/Maintenance/Plans/Drawers/PlanDetailDrawer';
-import ErrorMessage from '~/lib/components/UI/ErrorMessage';
-import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import InfoCard from '~/lib/components/UI/InfoCard';
-import DataTable from '~/lib/components/UI/Table';
+import { ErrorMessage, FormSectionInfo } from '@repo/ui/components';
 import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useGetAllMaintenancePlansByAssetIdQuery } from '~/lib/redux/services/maintenance/plan.services';
 import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
-import { dateFormatter } from '~/lib/utils/Formatters';
+import MaintenancePlanTable from '~/lib/components/Maintenance/Plans/PlanTable';
 
 const View = (info: MaintenancePlan) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -54,7 +51,6 @@ const Plan = () => {
     null
   );
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
-  const columnHelper = createColumnHelper<MaintenancePlan>();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [showCustomizedButton, setShowCustomizedButton] = useState(false);
   // eslint-disable-next-line no-unused-vars
@@ -63,6 +59,7 @@ const Plan = () => {
 
   useEffect(() => {
     if (data?.data) {
+      setSelectedRows([]);
       const items: MaintenancePlan[] = data?.data?.items;
       const customizedPlan = items.find(
         (item) => item.planTypeName === 'Custom'
@@ -120,71 +117,6 @@ const Plan = () => {
     }
   }, [selectedRows]);
 
-  const columns = useMemo(
-    () => [
-      columnHelper.accessor('maintenancePlanId', {
-        cell: (info) => info.getValue(),
-        header: '#',
-        enableSorting: false,
-      }),
-      columnHelper.accessor('planName', {
-        cell: (info) => info.getValue(),
-        header: 'Plan Name',
-        enableSorting: false,
-      }),
-      columnHelper.accessor('planTypeName', {
-        cell: (info) => info.getValue(),
-        header: 'Plan Type',
-        enableSorting: false,
-      }),
-      columnHelper.accessor('assetTypeName', {
-        cell: (info) => info.getValue(),
-        header: 'Asset Type',
-        enableSorting: false,
-      }),
-      columnHelper.accessor('activeSchedules', {
-        cell: (info) => info.getValue(),
-        header: 'Total Schedules',
-        enableSorting: false,
-      }),
-      columnHelper.accessor('startDate', {
-        cell: (info) => {
-          const value = info.getValue();
-          if (value && !isNaN(new Date(value).getTime())) {
-            return dateFormatter(value, 'DD / MM / YYYY');
-          } else {
-            return 'N/A';
-          }
-        },
-        header: 'Start Date',
-        enableSorting: false,
-      }),
-      columnHelper.accessor('endDate', {
-        cell: (info) => {
-          const value = info.getValue();
-          if (value && !isNaN(new Date(value).getTime())) {
-            return dateFormatter(value, 'DD / MM / YYYY');
-          } else {
-            return 'N/A';
-          }
-        },
-        header: 'End Date',
-        enableSorting: false,
-      }),
-      columnHelper.accessor('planStatusName', {
-        cell: (info) => info.getValue(),
-        header: 'Status',
-        enableSorting: false,
-      }),
-      columnHelper.accessor('rowId', {
-        cell: (info) => View(info.row.original),
-        header: '',
-        enableSorting: false,
-      }),
-    ],
-    [[data?.data?.items]] //eslint-disable-line
-  );
-
   const defaultPlanIndices = data?.data
     ? data?.data?.items
         ?.map((item: MaintenancePlan, index: number) =>
@@ -196,7 +128,7 @@ const Plan = () => {
   return (
     <HStack width="full" alignItems="flex-start" spacing="81px">
       <Flex width="full" maxW="130px">
-        <SectionInfo
+        <FormSectionInfo
           title="Maintenance Plan"
           info="Add name that users can likely search with"
           isRequired
@@ -208,8 +140,7 @@ const Plan = () => {
         spacing="27px"
         overflowX="auto"
       >
-        <DataTable
-          columns={columns}
+        <MaintenancePlanTable
           data={data?.data?.items ?? []}
           isLoading={isLoading || isFetching}
           handleSelectRow={setSelectedPlan}
@@ -224,19 +155,8 @@ const Plan = () => {
           emptyLines={2}
           isSelectable={true}
           disabledRows={defaultPlanIndices}
-          customThStyle={{
-            paddingLeft: '16px',
-            paddingTop: '17px',
-            paddingBottom: '17px',
-            fontWeight: 700,
-          }}
-          customTdStyle={{
-            paddingLeft: '16px',
-            paddingTop: '16px',
-            paddingBottom: '16px',
-          }}
-          customTBodyRowStyle={{ verticalAlign: 'top' }}
-          customTableContainerStyle={{ rounded: 'none' }}
+          PopoverComponent={(data) => View(data)}
+          showEmptyState={false}
         />
         {data?.data && !isLoading && !isFetching && showCustomizedButton && (
           <Text

@@ -1,7 +1,6 @@
 import { Divider, Flex, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 
-import FormActionButtons from '~/lib/components/UI/Form/FormActionButtons';
 import { scheduleSchema } from '~/lib/schemas/maintenance.schema';
 import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
@@ -9,6 +8,7 @@ import Header from '../Header';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';
 import moment from 'moment';
+import { FormActionButtons } from '@repo/ui/components';
 
 interface FormSectionProps {
   activeStep: number;

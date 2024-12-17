@@ -1,6 +1,6 @@
 import { HStack, VStack } from '@chakra-ui/react';
 
-import GenericBreadCrumb from '../../UI/BreadCrumb';
+import { GenericBreadCrumb } from '@repo/ui/components';
 import PageHeader from '../../UI/PageHeader';
 
 const breadCrumbData = [

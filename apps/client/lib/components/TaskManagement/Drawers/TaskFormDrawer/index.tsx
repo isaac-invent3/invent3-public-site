@@ -24,7 +24,7 @@ import TaskAssignedTo from '../../Common/AssignedTo';
 import TaskTitle from '../../Common/TaskTitle';
 import TaskType from '../../Common/TaskType';
 import TaskPriority from '../../Common/TaskPriority';
-import GenericDrawer from '~/lib/components/UI/GenericDrawer';
+import { GenericDrawer } from '@repo/ui/components';
 import EstimatedDuration from '../../Common/EstimatedDuration';
 import {
   useCreateTaskInstanceMutation,

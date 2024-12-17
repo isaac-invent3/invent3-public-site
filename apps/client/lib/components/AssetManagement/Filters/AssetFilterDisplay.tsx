@@ -1,4 +1,4 @@
-import FilterDisplay from '../../UI/Filter/FilterDisplay';
+import { FilterDisplay } from '@repo/ui/components';
 import BulkActions from './BulkActions';
 import GeneralFilter from './GeneralFilter';
 

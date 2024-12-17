@@ -1,4 +1,5 @@
 import { LocationFilter, Option } from './general.interfaces';
+import { MaintenancePlan } from './maintenance.interfaces';
 
 interface AssetLocation {
   locationId: number;
@@ -61,7 +62,7 @@ interface Asset {
   acquisitionDate: string | null;
   currentOwner: string | null;
   assignedTo: string | null;
-  responsibleFor: string | null;
+  employeeResponsible: string | null;
   currentOwnerId: number | null;
   assignedToEmployeeId: number | null;
   employeeResponsibleId: number | null;
@@ -128,6 +129,7 @@ interface Asset {
   currentCost: number | null;
   maintenanceCost: number | null;
   y2dmaintenanceCost: number | null;
+  assetLocation: string | null;
 }
 
 interface AssetFormImage {
@@ -141,7 +143,7 @@ interface AssetFormImage {
 interface AssetFormDocument {
   documentId: number | null;
   documentName: string | null;
-  base64Document: string;
+  base64Document: string | null;
   base64Prefix: string | null;
 }
 
@@ -213,6 +215,7 @@ interface AssetFormDetails {
   lgaName: string | null;
   stateName: string | null;
   countryName: string | null;
+  maintenancePlans: MaintenancePlan[];
   vendorDetails: {
     vendorName: string | null;
     address: string | null;

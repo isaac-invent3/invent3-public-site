@@ -8,8 +8,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { FormikContextType, FormikProvider } from 'formik';
-import { BackButton, Button } from '@repo/ui/components';
-import GenericDrawer from '~/lib/components/UI/GenericDrawer';
+import { BackButton, Button, GenericDrawer } from '@repo/ui/components';
 import {
   SelectedTicketAction,
   Ticket,

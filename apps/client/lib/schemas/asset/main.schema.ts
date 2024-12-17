@@ -84,6 +84,10 @@ const documentSchema = Yup.object().shape({
   ),
 });
 
+const assetMaintenancePlanSchema = Yup.object().shape({
+  maintenancePlans: Yup.array().of(Yup.string()),
+});
+
 const assetTransferSchema = Yup.object().shape({
   newOwnerId: Yup.number().required('Owner is Required'),
   transferDate: createDateSchema(
@@ -99,7 +103,7 @@ const assetDisposeSchema = documentSchema.shape({
     'Disposal Date is required'
   ),
   reason: Yup.string().required('Reason is Required'),
-  additionalInfo: Yup.string(),
+  additionalInfo: Yup.number(),
 });
 
 export {
@@ -109,4 +113,5 @@ export {
   assetTransferSchema,
   locationSchema,
   assetDisposeSchema,
+  assetMaintenancePlanSchema,
 };

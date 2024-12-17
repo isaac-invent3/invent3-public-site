@@ -1,9 +1,11 @@
 import { Flex, HStack, VStack } from '@chakra-ui/react';
 import { useField } from 'formik';
 
-import { SelectableButtonGroup } from '@repo/ui/components';
-import ErrorMessage from '~/lib/components/UI/ErrorMessage';
-import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
+import {
+  SelectableButtonGroup,
+  ErrorMessage,
+  FormSectionInfo,
+} from '@repo/ui/components';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { useGetAllMaintenanceTypeQuery } from '~/lib/redux/services/maintenance/type.services';
 import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';
@@ -27,7 +29,7 @@ const Type = (props: TypeProps) => {
   return (
     <HStack width="full" alignItems="flex-start" spacing={spacing}>
       <Flex width="full" maxW={sectionMaxWidth}>
-        <SectionInfo
+        <FormSectionInfo
           title="Type"
           info="Add name that users can likely search with"
           isRequired

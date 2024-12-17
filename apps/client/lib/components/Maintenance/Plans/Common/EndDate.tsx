@@ -2,9 +2,11 @@ import { Flex, HStack, VStack } from '@chakra-ui/react';
 import { useField } from 'formik';
 import moment from 'moment';
 
-import ConditionalDateSelector from '~/lib/components/UI/DateTimeComponents/Common/ConditionalDateSelector';
-import ErrorMessage from '~/lib/components/UI/ErrorMessage';
-import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
+import {
+  ConditionalDateSelector,
+  ErrorMessage,
+  FormSectionInfo,
+} from '@repo/ui/components';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
 interface EndDateProps {
@@ -19,7 +21,7 @@ const EndDate = (props: EndDateProps) => {
   return (
     <HStack width="full" alignItems="flex-start" spacing={spacing}>
       <Flex width="full" maxW={sectionMaxWidth}>
-        <SectionInfo
+        <FormSectionInfo
           title="End Date"
           info="Add name that users can likely search with"
           isRequired

@@ -1,11 +1,10 @@
 import { HStack, Text, VStack } from '@chakra-ui/react';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
-import FilterDropDown from '~/lib/components/UI/FilterDropDown';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { locationApi } from '~/lib/redux/services/asset/location.services';
 import { generateOptions } from '~/lib/utils/helperFunctions';
-import CheckBox from '../../UI/CheckBox';
+import { CheckBox, FilterDropDown } from '@repo/ui/components';
 import { useAppDispatch } from '~/lib/redux/hooks';
 
 interface StateOption {

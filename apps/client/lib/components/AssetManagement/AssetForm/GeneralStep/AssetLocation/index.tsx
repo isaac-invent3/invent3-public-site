@@ -8,11 +8,13 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import SectionInfo from '../../../../UI/Form/FormSectionInfo';
-import AddButton from '../../../../UI/Form/FormAddButton';
 import LocationModal from './Modals/LocationModal';
 import { AssetFormDetails } from '~/lib/interfaces/asset.interfaces';
-import ErrorMessage from '~/lib/components/UI/ErrorMessage';
+import {
+  ErrorMessage,
+  FormAddButton,
+  FormSectionInfo,
+} from '@repo/ui/components';
 import { useField } from 'formik';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { useEffect } from 'react';
@@ -54,7 +56,7 @@ const AssetLocation = (props: AssetLocationProps) => {
       position="relative"
     >
       <Flex width="full" maxW="118px">
-        <SectionInfo
+        <FormSectionInfo
           title="Location"
           info="Specify where the asset is located"
           isRequired
@@ -97,9 +99,9 @@ const AssetLocation = (props: AssetLocationProps) => {
                 justifyContent="center"
                 height="full"
               >
-                <AddButton handleClick={onOpen}>
+                <FormAddButton handleClick={onOpen}>
                   {facilityName ? 'Edit' : 'Add'} Location
-                </AddButton>
+                </FormAddButton>
                 {meta.touched && meta.error !== undefined && (
                   <ErrorMessage>Location is required</ErrorMessage>
                 )}

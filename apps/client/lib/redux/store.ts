@@ -46,6 +46,7 @@ import ticketSlice from './slices/TicketSlice';
 
 import { scheduleInstanceApi } from './services/maintenance/scheduleInstance.services';
 import { systemContextTypesApi } from './services/systemcontexttypes.services';
+import { assetDocumentApi } from './services/asset/document.services';
 
 export const persistConfig = {
   key: 'root',
@@ -56,6 +57,7 @@ export const persistConfig = {
 const rootReducer = combineReducers({
   [authApi.reducerPath]: authApi.reducer,
   [assetApi.reducerPath]: assetApi.reducer,
+  [assetDocumentApi.reducerPath]: assetDocumentApi.reducer,
   [assetStatsApi.reducerPath]: assetStatsApi.reducer,
   [assetTypeApi.reducerPath]: assetTypeApi.reducer,
   [assetGroupTypeApi.reducerPath]: assetGroupTypeApi.reducer,
@@ -105,6 +107,7 @@ export const makeStore = () => {
       }).concat([
         authApi.middleware,
         assetApi.middleware,
+        assetDocumentApi.middleware,
         assetStatsApi.middleware,
         assetTypeApi.middleware,
         assetGroupTypeApi.middleware,

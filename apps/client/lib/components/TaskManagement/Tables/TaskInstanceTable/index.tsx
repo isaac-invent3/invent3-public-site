@@ -1,7 +1,7 @@
 import { createColumnHelper } from '@tanstack/react-table';
 import React, { useMemo } from 'react';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
-import DataTable from '~/lib/components/UI/Table';
+import { DataTable } from '@repo/ui/components';
 import { TaskInstance } from '~/lib/interfaces/task.interfaces';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
 import AssignedTo from '~/lib/components/Common/UserInfo';

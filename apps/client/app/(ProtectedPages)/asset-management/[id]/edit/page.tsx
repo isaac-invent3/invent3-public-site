@@ -11,12 +11,13 @@ import {
   AssetImage,
 } from '~/lib/interfaces/asset.interfaces';
 import { useAppDispatch } from '~/lib/redux/hooks';
+import { useGetAssetDocumentsByAssetIdQuery } from '~/lib/redux/services/asset/document.services';
 import {
   useGetAcquisitionInfoByAssetIdQuery,
   useGetAssetInfoHeaderByIdQuery,
-  useGetDocumentsByAssetIdQuery,
   useGetImagesByAssetIdQuery,
 } from '~/lib/redux/services/asset/general.services';
+import { useGetAssetCustomMaintenancePlanByAssetGuidQuery } from '~/lib/redux/services/maintenance/plan.services';
 import {
   setAssetDocuments,
   setAssetImages,
@@ -25,16 +26,27 @@ import {
 import { dateFormatter } from '~/lib/utils/Formatters';
 
 export default function Page({ params }: { params: { id: string } }) {
-  const { data, isLoading } = useGetAssetInfoHeaderByIdQuery(params.id);
+  const { data, isLoading } = useGetAssetInfoHeaderByIdQuery({ id: params.id });
   const { data: assetImagesData, isLoading: imagesLoading } =
     useGetImagesByAssetIdQuery({ id: params.id, pageSize: 25 });
   const { data: assetDocumentData, isLoading: documentsLoading } =
-    useGetDocumentsByAssetIdQuery({ id: params.id, pageSize: 25 });
+    useGetAssetDocumentsByAssetIdQuery({ id: params.id, pageSize: 25 });
   const { data: acquisitionData, isLoading: acquisitionLoading } =
     useGetAcquisitionInfoByAssetIdQuery({ id: params.id });
   const dispatch = useAppDispatch();
+  const { data: assetCustomMaintenancePlan, isLoading: planLoading } =
+    useGetAssetCustomMaintenancePlanByAssetGuidQuery(
+      { assetGuid: data?.data.guid ?? undefined },
+      { skip: !data?.data.guid }
+    );
 
-  if (isLoading || imagesLoading || acquisitionLoading || documentsLoading) {
+  if (
+    isLoading ||
+    imagesLoading ||
+    acquisitionLoading ||
+    documentsLoading ||
+    planLoading
+  ) {
     return <Skeleton width="full" rounded="8px" height="250px" mt="80px" />;
   }
   if (!data?.data) return notFound();
@@ -129,7 +141,8 @@ export default function Page({ params }: { params: { id: string } }) {
         categoryName: asset.assetCategory,
         subCategoryName: asset.assetSubCategory,
         currentOwnerName: asset.currentOwner,
-        responsibleForName: asset.responsibleFor,
+        responsibleForName: asset.employeeResponsible,
+        assignedToName: asset.assignedTo,
         currentOwner: asset.currentOwnerId,
         responsibleFor: asset.employeeResponsibleId,
         assignedTo: asset.assignedToEmployeeId,
@@ -157,6 +170,7 @@ export default function Page({ params }: { params: { id: string } }) {
         initialValue: asset.initialValue,
         images: formImages,
         documents: formDocuments,
+        maintenancePlans: assetCustomMaintenancePlan?.data.items ?? [],
         ...acquisitionInfo,
       })
     );

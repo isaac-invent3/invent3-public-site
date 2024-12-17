@@ -1,34 +1,39 @@
-import { Flex, HStack } from '@chakra-ui/react';
+import { Flex, HStack, Text, VStack } from '@chakra-ui/react';
 
 import CurrentOwner from './CurrentOwner';
-import { Button } from '@repo/ui/components';
-import { useAppSelector } from '~/lib/redux/hooks';
 import AssetDetails from '../../Common/AssetDetail';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 const SectionOne = () => {
-  const { assetId } = useAppSelector((state) => state.asset.asset);
+  const { assetLocation, currentCondition } = useAppSelector(
+    (state) => state.asset.asset
+  );
   return (
-    <Flex gap="112px" width="full">
+    <Flex gap="44px" width="full">
       <Flex width="40%">
         <CurrentOwner />
       </Flex>
       <Flex width="60%">
-        <HStack width="full" alignItems="flex-end" spacing="45px">
-          <Flex width="max-content" maxW="max-content">
-            <AssetDetails stackType="column" showStatus={false} />
-          </Flex>
-          <Button
-            variant="secondary"
-            customStyles={{
-              height: '28px',
-              width: 'max-content',
-              paddingX: '12px',
-            }}
-            href={`/asset-management?asset=${assetId}`}
-          >
-            View Full Asset Details
-          </Button>
-        </HStack>
+        <AssetDetails stackType="column" showStatus={false}>
+          <HStack alignItems="flex-start" spacing="56px">
+            <HStack alignItems="flex-start" spacing="24px">
+              <Text color="neutral.600" size="md">
+                Location:
+              </Text>
+              <Text color="black" size="md" lineHeight="22px">
+                {assetLocation ?? 'N/A'}
+              </Text>
+            </HStack>
+            <VStack spacing="8px" alignItems="flex-start">
+              <Text color="neutral.600" size="md">
+                Condition:
+              </Text>
+              <Text color="black" size="md" lineHeight="22px">
+                {currentCondition ?? 'N/A'}
+              </Text>
+            </VStack>
+          </HStack>
+        </AssetDetails>
       </Flex>
     </Flex>
   );

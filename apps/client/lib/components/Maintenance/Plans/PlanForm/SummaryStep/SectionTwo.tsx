@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import ScheduleSummary from '../../../Schedules/ScheduleForm/SummarySection/SectionTwo';
 import { Flex, VStack } from '@chakra-ui/react';
 import ScheduleList from '../ScheduleStep/ScheduleList';
-import SlideTransition from '~/lib/components/UI/SlideTransition';
+import { SlideTransition } from '@repo/ui/components';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { ScheduleFormDetails } from '~/lib/interfaces/maintenance.interfaces';
 

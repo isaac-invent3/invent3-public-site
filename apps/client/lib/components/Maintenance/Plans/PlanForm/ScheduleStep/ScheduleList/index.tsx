@@ -1,7 +1,6 @@
 import { Flex, useDisclosure } from '@chakra-ui/react';
 import { createColumnHelper } from '@tanstack/react-table';
 import React, { useEffect, useMemo, useState } from 'react';
-import DataTable from '~/lib/components/UI/Table';
 import {
   MaintenanceSchedule,
   ScheduleFormDetails,
@@ -15,7 +14,7 @@ import {
 } from '~/lib/redux/slices/MaintenanceSlice';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import ActionPopover from './ActionPopover';
-import { LeaveDialogModal } from '@repo/ui/components';
+import { LeaveDialogModal, DataTable } from '@repo/ui/components';
 import AddScheduleButtonWithErrorMessage from './AddScheduleButtonWithErrorMessage';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 

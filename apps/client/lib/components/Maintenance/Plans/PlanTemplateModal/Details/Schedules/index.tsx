@@ -1,7 +1,7 @@
 import { Heading, VStack } from '@chakra-ui/react';
 import { createColumnHelper } from '@tanstack/react-table';
 import React, { useEffect, useMemo, useState } from 'react';
-import DataTable from '~/lib/components/UI/Table';
+import { DataTable } from '@repo/ui/components';
 import {
   MaintenancePlan,
   MaintenanceSchedule,

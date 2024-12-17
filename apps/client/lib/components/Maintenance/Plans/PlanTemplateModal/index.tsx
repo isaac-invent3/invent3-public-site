@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import Details from './Details';
 import { useGetMaintenancePlanTemplateQuery } from '~/lib/redux/services/template.services';
-import TemplateModal from '~/lib/components/Common/TemplateModal';
+import DefaultTemplateModal from '~/lib/components/Common/Modals/DefaultTemplateModal';
 import { Template } from '~/lib/interfaces/template.interfaces';
 
 interface PlanTemplateModalProps {
@@ -26,7 +26,7 @@ const PlanTemplateModal = (props: PlanTemplateModalProps) => {
   );
 
   return (
-    <TemplateModal
+    <DefaultTemplateModal
       isOpen={isOpen}
       onClose={onClose}
       data={data?.data}
@@ -43,7 +43,7 @@ const PlanTemplateModal = (props: PlanTemplateModalProps) => {
       setPageSize={setPageSize}
     >
       {selectedTemplate && <Details template={selectedTemplate} />}
-    </TemplateModal>
+    </DefaultTemplateModal>
   );
 };
 

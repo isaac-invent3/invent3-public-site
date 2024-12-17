@@ -1,9 +1,9 @@
 import { Flex, HStack } from '@chakra-ui/react';
 
-import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import FrequencySelect from '../../Common/Frequency';
 import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';
 import { useAppDispatch } from '~/lib/redux/hooks';
+import { FormSectionInfo } from '@repo/ui/components';
 
 interface FrequencyProps {
   sectionMaxWidth: string;
@@ -16,7 +16,7 @@ const Frequency = (props: FrequencyProps) => {
   return (
     <HStack width="full" alignItems="flex-start" spacing={spacing}>
       <Flex width="full" maxW={sectionMaxWidth}>
-        <SectionInfo
+        <FormSectionInfo
           title="Frequency"
           info="Add name that users can likely search with"
           isRequired

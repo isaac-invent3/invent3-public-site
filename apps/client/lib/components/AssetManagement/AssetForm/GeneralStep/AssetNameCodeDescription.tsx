@@ -1,21 +1,23 @@
 import { Flex, Grid, GridItem, HStack, VStack } from '@chakra-ui/react';
 import { Field } from 'formik';
 
-import TextareaInput from '~/lib/components/UI/TextArea';
 import AssetCategory from './AssetCategory';
-import TextInput from '~/lib/components/UI/TextInput';
-import SectionInfo from '../../../UI/Form/FormSectionInfo';
+import {
+  FormSectionInfo,
+  FormTextAreaInput,
+  FormTextInput,
+} from '@repo/ui/components';
 
 const AssetNameCodeDescription = () => {
   return (
     <HStack width="full" alignItems="flex-start" spacing="104px">
       <Flex width="full" maxW="118px" direction="column" gap="14px">
-        <SectionInfo
+        <FormSectionInfo
           title="Asset Name"
           info="Add name that users can likely search with"
           isRequired
         />
-        <SectionInfo
+        <FormSectionInfo
           title="Category"
           info="Choose the category and the sub-category"
           isRequired
@@ -30,7 +32,7 @@ const AssetNameCodeDescription = () => {
             height="full"
           >
             <Field
-              as={TextInput}
+              as={FormTextInput}
               name="assetName"
               type="text"
               label="Name"
@@ -41,7 +43,7 @@ const AssetNameCodeDescription = () => {
         </GridItem>
         <GridItem colSpan={2}>
           <Field
-            as={TextareaInput}
+            as={FormTextAreaInput}
             name="description"
             type="text"
             label="Description"

@@ -9,11 +9,15 @@ import {
 } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 
-import { BackButton, Button, ModalHeading } from '@repo/ui/components';
+import {
+  BackButton,
+  Button,
+  ModalHeading,
+  FormSectionInfo,
+} from '@repo/ui/components';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';
 import { useCreateMaintenancePlanMutation } from '~/lib/redux/services/maintenance/plan.services';
-import SectionInfo from '~/lib/components/UI/Form/FormSectionInfo';
 import Plan from './PlanType';
 import AssetSelect from '~/lib/components/Common/AssetSelect';
 import { planSchema } from '~/lib/schemas/maintenance.schema';
@@ -23,7 +27,7 @@ import Owner from '../../Common/Owner';
 import PlanTitle from '../../Common/PlanTitle';
 import StartDate from '../../Common/StartDate';
 import EndDate from '../../Common/EndDate';
-import GenericDrawer from '~/lib/components/UI/GenericDrawer';
+import { GenericDrawer } from '@repo/ui/components';
 
 interface CustomizedPlanModalProps {
   isOpen: boolean;
@@ -92,7 +96,7 @@ const CustomizedPlanModal = (props: CustomizedPlanModalProps) => {
                     <Plan />
                     <HStack width="full" alignItems="flex-start" spacing="73px">
                       <Flex width="full" maxW="118px">
-                        <SectionInfo
+                        <FormSectionInfo
                           title="Asset"
                           info="Add name that users can likely search with"
                           isRequired

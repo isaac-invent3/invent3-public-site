@@ -1,8 +1,8 @@
-import { HStack, Icon, VStack } from '@chakra-ui/react';
-import GenericBreadCrumb from '../UI/BreadCrumb';
+import { HStack, useDisclosure, VStack } from '@chakra-ui/react';
 import PageHeader from '../UI/PageHeader';
-import { Button } from '@repo/ui/components';
-import { AddIcon } from '../CustomIcons';
+import { GenericBreadCrumb } from '@repo/ui/components';
+import ActionButtonPopover from '../UI/ActionButtonsPopover';
+import AssetTemplateModal from './Modals/AssetTemplateModal';
 
 const breadCrumbData = [
   {
@@ -15,15 +15,21 @@ const breadCrumbData = [
   },
 ];
 const Header = () => {
+  const { isOpen, onClose, onOpen } = useDisclosure();
   return (
     <VStack spacing="58px" alignItems="flex-start" width="full" pt="12px">
       <GenericBreadCrumb routes={breadCrumbData} />
       <HStack width="full" justifyContent="space-between">
         <PageHeader>Asset Management</PageHeader>
-        <Button href="/asset-management/add" customStyles={{ width: '227px' }}>
-          <Icon as={AddIcon} boxSize="18px" color="#D2FEFD" mr="4px" />
-          Add Asset
-        </Button>
+        <ActionButtonPopover
+          onOpenTemplateModal={onOpen}
+          newRoute="/asset-management/add"
+          buttonLabel="Create New Asset"
+          linkLabel="Create a New Asset"
+          modalLabel="Create From Existing"
+        >
+          <AssetTemplateModal isOpen={isOpen} onClose={onClose} />
+        </ActionButtonPopover>
       </HStack>
     </VStack>
   );

@@ -1,9 +1,9 @@
 import { Flex, HStack, SimpleGrid } from '@chakra-ui/react';
 
-import SectionInfo from '../../../../UI/Form/FormSectionInfo';
 import EmployeeSelect from '../../../../Common/EmployeeSelect';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
+import { FormSectionInfo } from '@repo/ui/components';
 
 const AssetOwner = () => {
   const dispatch = useAppDispatch();
@@ -13,7 +13,7 @@ const AssetOwner = () => {
   return (
     <HStack width="full" alignItems="flex-start" spacing="104px">
       <Flex width="full" maxW="118px">
-        <SectionInfo
+        <FormSectionInfo
           title="Owner's Info"
           info="Choose the category and the sub-category"
           isRequired

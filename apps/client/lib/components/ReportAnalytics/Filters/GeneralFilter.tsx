@@ -4,7 +4,7 @@ import CombinedLocationFilter from '~/lib/components/Common/FilterComponents/Com
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { TicketFilterInput } from '~/lib/interfaces/ticket.interfaces';
 import FilterWrapper from '../../Common/FilterComponents/FilterWrapper';
-import DateRangeFilter from './DateFilter';
+import DateRangeFilter from './DateRangeFilter';
 
 type FilterLabel = keyof TicketFilterInput;
 
@@ -25,7 +25,7 @@ const GeneralFilter = (props: GeneralFilterProps) => {
       typeof option === 'string' ||
       typeof filterData[filterLabel] === 'string'
     ) {
-      setFilterData({ ...filterData, [filterLabel]: option });
+      setFilterData((prevData) => ({ ...prevData, [filterLabel]: option }));
     } else {
       const newValue =
         filterData[filterLabel].find((item) => item.value === option.value) !==
@@ -45,24 +45,10 @@ const GeneralFilter = (props: GeneralFilterProps) => {
         handleApplyFilter={() => {}}
         handleClearFilter={() => clearFilters()}
       >
-        {/** * Validates the Combined From and To filters. * Ensures that the
-        selected "To" date is not earlier than the "From" date, * and that the
-        selected "From" date is not later than the "To" date. 
-        */}
-
         <DateRangeFilter
-          label="From: "
-          selectedDate={filterData.fromDate}
-          handleClick={(date) => {
-            handleFilterData(date, 'fromDate');
-          }}
-        />
-        <DateRangeFilter
-          label="To: "
-          selectedDate={filterData.toDate}
-          handleClick={(date) => {
-            handleFilterData(date, 'toDate');
-          }}
+          fromDate={filterData.fromDate}
+          toDate={filterData.toDate}
+          handleSelectedOption={handleFilterData}
         />
         <CombinedLocationFilter
           selectedRegion={filterData.region}

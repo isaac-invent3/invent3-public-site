@@ -60,8 +60,6 @@ const ReportAnalytics = () => {
     pageNumber,
   });
 
-  console.log({data})
-
   // TODO: Split it into Custom Components
 
   return (

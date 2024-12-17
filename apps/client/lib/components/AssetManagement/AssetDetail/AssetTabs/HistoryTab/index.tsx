@@ -26,7 +26,12 @@ const Description = (description: string | null) => {
 };
 
 const HistoryTab = () => {
-  const { assetId } = useAppSelector((state) => state.asset.asset);
+  const assetData = useAppSelector((state) => state.asset.asset);
+
+  if (!assetData) {
+    return null;
+  }
+  const { assetId } = assetData;
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const { data, isLoading } = useGetMaintenanceHistoryByAssetIdQuery(

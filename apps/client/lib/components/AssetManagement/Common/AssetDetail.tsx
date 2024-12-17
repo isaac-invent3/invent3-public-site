@@ -25,6 +25,9 @@ interface AssetDetailsProps {
 const AssetDetails = (props: AssetDetailsProps) => {
   const { stackType, showStatus, customStyle, children } = props;
   const assetData = useAppSelector((state) => state.asset.asset);
+  if (!assetData) {
+    return null;
+  }
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     assetName,

@@ -8,7 +8,13 @@ import { getDocumentInfo } from '~/lib/utils/helperFunctions';
 import { useGetAssetDocumentsByAssetIdQuery } from '~/lib/redux/services/asset/document.services';
 
 const DocumentsTab = () => {
-  const { assetId } = useAppSelector((state) => state.asset.asset);
+  const assetData = useAppSelector((state) => state.asset.asset);
+
+  if (!assetData) {
+    return null;
+  }
+
+  const { assetId } = assetData;
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(5);
   const { data, isLoading } = useGetAssetDocumentsByAssetIdQuery(

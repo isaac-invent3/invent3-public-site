@@ -9,7 +9,7 @@ import { clearAsset, setAsset } from '~/lib/redux/slices/AssetSlice';
 import { GenericDrawer } from '@repo/ui/components';
 
 interface AssetDetailProps {
-  data: Asset;
+  data: Asset | null;
   isOpen: boolean;
   onClose: () => void;
   type?: 'template' | 'main';
@@ -19,7 +19,9 @@ const AssetDetail = (props: AssetDetailProps) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(setAsset(data));
+    if (data) {
+      dispatch(setAsset(data));
+    }
 
     return () => {
       dispatch(clearAsset());

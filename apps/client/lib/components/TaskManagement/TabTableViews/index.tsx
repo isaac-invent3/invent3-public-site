@@ -60,7 +60,8 @@ const TabTableView = (props: TabTableViewProps) => {
 
   const [searchPlan, { isLoading: searchLoading }] =
     useSearchTaskInstancesMutation({});
-  const [searchData, setSearchData] = useState<SearchResponse | null>(null);
+  const [searchData, setSearchData] =
+    useState<SearchResponse<TaskInstance> | null>(null);
 
   // Search Criterion
   const searchCriterion = {

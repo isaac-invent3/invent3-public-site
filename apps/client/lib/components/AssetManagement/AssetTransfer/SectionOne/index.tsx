@@ -5,9 +5,11 @@ import AssetDetails from '../../Common/AssetDetail';
 import { useAppSelector } from '~/lib/redux/hooks';
 
 const SectionOne = () => {
-  const { assetLocation, currentCondition } = useAppSelector(
-    (state) => state.asset.asset
-  );
+  const assetData = useAppSelector((state) => state.asset.asset);
+  if (!assetData) {
+    return null;
+  }
+  const { assetLocation, currentCondition } = assetData;
   return (
     <Flex gap="44px" width="full">
       <Flex width="40%">

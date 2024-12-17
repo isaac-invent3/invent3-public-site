@@ -4,7 +4,7 @@ import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 import { SearchResponse } from '~/lib/interfaces/general.interfaces';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import {
-  useGetallAssetQuery,
+  useGetAllAssetQuery,
   useSearchAssetsMutation,
 } from '~/lib/redux/services/asset/general.services';
 import GenericTemplateModal from '~/lib/components/Common/Modals/GenericTemplateModal';
@@ -62,7 +62,7 @@ const AssetTemplateModal = (props: AssetTemplateModalProps) => {
     onClose: onCloseDetail,
     onOpen: onOpenDetail,
   } = useDisclosure();
-  const { data, isLoading, isFetching } = useGetallAssetQuery(
+  const { data, isLoading, isFetching } = useGetAllAssetQuery(
     {
       pageNumber,
       pageSize,
@@ -72,7 +72,9 @@ const AssetTemplateModal = (props: AssetTemplateModalProps) => {
   const [searchAsset, { isLoading: searchLoading }] = useSearchAssetsMutation(
     {}
   );
-  const [searchData, setSearchData] = useState<SearchResponse | null>(null);
+  const [searchData, setSearchData] = useState<SearchResponse<Asset> | null>(
+    null
+  );
   const { handleSubmit } = useCustomMutation();
   const [showDetails, setShowDetails] = useState(false);
 

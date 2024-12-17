@@ -1,11 +1,11 @@
 'use client';
 import { Flex, VStack } from '@chakra-ui/react';
-import { useGetallAssetQuery } from '~/lib/redux/services/asset/general.services';
+import { useGetAllAssetQuery } from '~/lib/redux/services/asset/general.services';
 import AssetTable from '../../AssetManagement/Common/AssetTable';
 import Header from '../Header';
 
 const ReportView = () => {
-  const { data, isLoading, isFetching } = useGetallAssetQuery({
+  const { data, isLoading, isFetching } = useGetAllAssetQuery({
     pageNumber: 1,
     pageSize: 30,
   });

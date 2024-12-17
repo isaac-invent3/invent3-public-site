@@ -5,6 +5,11 @@ import MapView from './MapView';
 
 const InfoTwo = () => {
   const assetData = useAppSelector((state) => state.asset.asset);
+
+  if (!assetData) {
+    return null;
+  }
+
   const { currentOwner, departmentName, assignedTo, employeeResponsible } =
     assetData;
   const details = [

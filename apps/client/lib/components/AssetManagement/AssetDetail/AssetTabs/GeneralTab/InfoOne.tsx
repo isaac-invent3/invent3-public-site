@@ -6,6 +6,11 @@ import PhotoViewer from './InfoTwo.tsx/Photos';
 
 const InfoOne = () => {
   const assetData = useAppSelector((state) => state.asset.asset);
+
+  if (!assetData) {
+    return null;
+  }
+
   const {
     countryName,
     stateName,

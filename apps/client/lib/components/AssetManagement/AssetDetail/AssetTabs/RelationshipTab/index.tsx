@@ -39,6 +39,10 @@ const GenerateAssetTable = ({ asset }: { asset: Asset }) => {
 
 const RelationshipTab = () => {
   const assetData = useAppSelector((state) => state.asset.asset);
+
+  if (!assetData) {
+    return null;
+  }
   const { data, isLoading } = useGetAssetComponentInfoByAssetGuidQuery(
     { id: assetData.guid },
     { skip: !assetData.guid }

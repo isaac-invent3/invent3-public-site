@@ -9,7 +9,13 @@ import PhotoViewerModal from '~/lib/components/AssetManagement/Common/PhotoViewe
 const PhotoViewer = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [currentIndex, setCurrentIndex] = useState<number | null>(null);
-  const { assetId } = useAppSelector((state) => state.asset.asset);
+  const assetData = useAppSelector((state) => state.asset.asset);
+
+  if (!assetData) {
+    return null;
+  }
+
+  const { assetId } = assetData;
   const [photos, setPhotos] = useState<AssetImage[]>([]);
   const { data, isLoading } = useGetImagesByAssetIdQuery(
     { id: assetId },

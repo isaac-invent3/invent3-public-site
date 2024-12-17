@@ -5,97 +5,8 @@ import {
   AssetDocument,
   AssetFormDetails,
   AssetImage,
-  AssetStatusType,
   FilterInput,
 } from '~/lib/interfaces/asset.interfaces';
-import { COLOR_CODES_FALLBACK } from '~/lib/utils/constants';
-
-const initialValue = {
-  rowId: null,
-  guid: null,
-  primaryImage: null,
-  currentOwnerId: null,
-  assignedToEmployeeId: null,
-  employeeResponsibleId: null,
-  primaryImagePrefix: null,
-  assetId: null,
-  assetName: null,
-  brandName: null,
-  modelRef: null,
-  assetCode: null,
-  assetTag: null,
-  rfidtag: null,
-  serialNo: null,
-  lifeExpectancy: null,
-  acquisitionDate: null,
-  currentOwner: null,
-  assignedTo: null,
-  employeeResponsible: null,
-  purchaseDate: null,
-  initialValue: null,
-  resalevalue: null,
-  dateCreated: null,
-  scrapvalue: null,
-  parentId: null,
-  isDeleted: false,
-  assetType: null,
-  currentStatus: 'Inactive' as AssetStatusType,
-  assetCategory: null,
-  assetSubCategory: null,
-  conditionId: null,
-  currentCondition: null,
-  weightKg: null,
-  lengthCm: null,
-  widthCm: null,
-  heightCm: null,
-  lgaid: null,
-  lganame: null,
-  stateId: null,
-  stateName: null,
-  countryId: null,
-  countryName: null,
-  facilityName: null,
-  facilityRef: null,
-  facilityAddress: null,
-  facilityLongitude: null,
-  facilityLatitude: null,
-  buildingName: null,
-  buildingRef: null,
-  buildingAddress: null,
-  buildingLongitude: null,
-  buildingLatitude: null,
-  floorName: null,
-  floorRef: null,
-  departmentName: null,
-  departmentRef: null,
-  roomName: null,
-  roomRef: null,
-  aisleName: null,
-  aisleRef: null,
-  shelfName: null,
-  shelfRef: null,
-  description: null,
-  assetComponentId: null,
-  lastMaintenanceDate: null,
-  nextMaintenanceDate: null,
-  currentCost: null,
-  maintenanceCost: null,
-  y2dmaintenanceCost: null,
-  categoryId: null,
-  subCategoryId: null,
-  statusId: null,
-  assetTypeId: null,
-  locationId: null,
-  facilityId: null,
-  buildingId: null,
-  floorId: null,
-  departmentId: null,
-  roomId: null,
-  aisleId: null,
-  shelfId: null,
-  assetLocation: null,
-  displayColorCode: COLOR_CODES_FALLBACK.default,
-};
 
 const initialAssetForm = {
   images: [],
@@ -184,21 +95,23 @@ const initialAssetFilter = {
 };
 
 export interface SliceProps {
-  asset: Asset;
+  asset: Asset | null;
   assetForm: AssetFormDetails;
   assetImages: AssetImage[];
   assetDocuments: AssetDocument[];
   reinitializeAssetForm: boolean;
   assetFilter: FilterInput;
+  selectedAssetIds: number[];
 }
 
 const initialState: SliceProps = {
-  asset: initialValue,
+  asset: null,
   assetForm: initialAssetForm,
   assetImages: [],
   assetDocuments: [],
   reinitializeAssetForm: false,
   assetFilter: initialAssetFilter,
+  selectedAssetIds: [],
 };
 
 export const AssetSlice = createSlice({
@@ -209,7 +122,7 @@ export const AssetSlice = createSlice({
       state.asset = payload;
     },
     clearAsset: (state) => {
-      state.asset = initialValue;
+      state.asset = null;
     },
     setAssetImages: (state, { payload }: PayloadAction<AssetImage[]>) => {
       state.assetImages = payload;
@@ -244,6 +157,12 @@ export const AssetSlice = createSlice({
     clearAssetFilter: (state) => {
       state.assetFilter = initialAssetFilter;
     },
+    updateSelectedAssetIds: (state, { payload }: PayloadAction<number[]>) => {
+      state.selectedAssetIds = payload;
+    },
+    clearSelectedAssetIds: (state) => {
+      state.selectedAssetIds = [];
+    },
   },
 });
 
@@ -259,6 +178,8 @@ export const {
   clearAssetDocuments,
   updateAssetFilter,
   clearAssetFilter,
+  updateSelectedAssetIds,
+  clearSelectedAssetIds,
 } = AssetSlice.actions;
 
 export default AssetSlice.reducer;

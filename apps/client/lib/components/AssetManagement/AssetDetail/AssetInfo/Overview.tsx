@@ -5,6 +5,11 @@ import { useAppSelector } from '~/lib/redux/hooks';
 
 const Overview = () => {
   const assetData = useAppSelector((state) => state.asset.asset);
+
+  if (!assetData) {
+    return null;
+  }
+
   const {
     serialNo,
     currentStatus,

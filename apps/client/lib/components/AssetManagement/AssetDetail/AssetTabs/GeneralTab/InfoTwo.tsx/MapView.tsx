@@ -16,6 +16,10 @@ const customIcon = new L.Icon({
 
 const MapView = () => {
   const assetData = useAppSelector((state) => state.asset.asset);
+
+  if (!assetData) {
+    return null;
+  }
   const { facilityLatitude, facilityLongitude } = assetData;
 
   const hasCoordinates = facilityLatitude && facilityLongitude;

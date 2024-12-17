@@ -1,7 +1,10 @@
 import { Flex } from '@chakra-ui/react';
 import _ from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
-import { PlanFilter } from '~/lib/interfaces/maintenance.interfaces';
+import {
+  MaintenancePlan,
+  PlanFilter,
+} from '~/lib/interfaces/maintenance.interfaces';
 import {
   useGetAllMaintenancePlanQuery,
   useSearchMaintenancePlanMutation,
@@ -45,7 +48,8 @@ const Plans = (props: PlansProp) => {
 
   const [searchPlan, { isLoading: searchLoading }] =
     useSearchMaintenancePlanMutation({});
-  const [searchData, setSearchData] = useState<SearchResponse | null>(null);
+  const [searchData, setSearchData] =
+    useState<SearchResponse<MaintenancePlan> | null>(null);
 
   // Search Criterion
   const searchCriterion = {

@@ -16,7 +16,10 @@ export const assetApi = createApi({
   baseQuery: baseQueryWithReauth,
   tagTypes: ['allAsset', 'singleAsset', 'allStatuses', 'allAssetTypes'],
   endpoints: (builder) => ({
-    getallAsset: builder.query({
+    getAllAsset: builder.query<
+      BaseApiResponse<ListResponse<Asset>>,
+      QueryParams
+    >({
       query: (data: any) => ({
         url: generateQueryStr(`/Assets?`, data),
         method: 'GET',
@@ -128,6 +131,22 @@ export const assetApi = createApi({
         body,
       }),
     }),
+    updateAssetStatus: builder.mutation<
+      undefined,
+      {
+        assetIds: number[];
+        statusId: number | undefined;
+        lastModifiedBy: string | undefined;
+      }
+    >({
+      query: (body) => ({
+        url: `/Assets/UpdateAssetsStatuses`,
+        method: 'PUT',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allAsset'],
+    }),
     transferAsset: builder.mutation({
       query: (body: any) => ({
         url: `/AssetTransfers`,
@@ -144,7 +163,7 @@ export const {
   useUpdateAssetMutation,
   useGetAssetByIdQuery,
   useGetAssetInfoHeaderByIdQuery,
-  useGetallAssetQuery,
+  useGetAllAssetQuery,
   useGetAcquisitionInfoByAssetIdQuery,
   useGetAssetComponentInfoByAssetGuidQuery,
   useGetImagesByAssetIdQuery,
@@ -154,4 +173,5 @@ export const {
   useSearchStatusMutation,
   useSearchAssetsMutation,
   useTransferAssetMutation,
+  useUpdateAssetStatusMutation,
 } = assetApi;

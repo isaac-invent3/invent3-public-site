@@ -6,8 +6,8 @@ interface Option {
   value: string | number;
 }
 
-interface SearchResponse {
-  items: any[];
+interface SearchResponse<T> {
+  items: T[];
   pageNumber: number;
   totalPages: number;
   totalItems: number;

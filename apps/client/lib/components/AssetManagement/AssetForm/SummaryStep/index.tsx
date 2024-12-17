@@ -133,7 +133,7 @@ const SummaryStep = (props: SummaryStepProps) => {
     initialValue: assetFormDetails.initialValue,
     resalevalue: assetFormDetails.resaleValue,
     scrapvalue: assetFormDetails.scrapValue,
-    parentId: assetData.assetId ?? assetFormDetails.parentId,
+    parentId: assetData?.assetId ?? assetFormDetails.parentId,
     subCategoryId: assetFormDetails.subCategoryId,
     [`${type === 'create' ? 'createdBy' : 'lastModifiedBy'}`]: username,
   };
@@ -186,7 +186,7 @@ const SummaryStep = (props: SummaryStepProps) => {
 
   const handleModalAction = (type: 'childAsset' | 'parentAsset') => {
     if (type === 'childAsset') {
-      if (!assetData.assetId && assetResponse) {
+      if (!assetData?.assetId && assetResponse) {
         dispatch(setAsset(assetResponse));
       }
     }
@@ -205,7 +205,7 @@ const SummaryStep = (props: SummaryStepProps) => {
       const response = await handleSubmit(createAsset, PAYLOAD, '');
       if (response?.data) {
         setAssetResponse(response?.data?.data);
-        if (assetData.assetId) {
+        if (assetData?.assetId) {
           onOpenChildModal();
         } else {
           onOpenAddModal();

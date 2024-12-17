@@ -50,7 +50,9 @@ const TemplateModal = (props: TemplateModalProps) => {
   } = props;
   const [searchTemplate, { isLoading: searchLoading }] =
     useSearchTemplatesMutation({});
-  const [searchData, setSearchData] = useState<SearchResponse | null>(null);
+  const [searchData, setSearchData] = useState<SearchResponse<Template> | null>(
+    null
+  );
   const { handleSubmit } = useCustomMutation();
   const [showDetails, setShowDetails] = useState(false);
 

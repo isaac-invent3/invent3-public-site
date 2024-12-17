@@ -46,11 +46,11 @@ type AssetStatusType =
   | 'Out of Service';
 
 interface Asset {
-  rowId: number | null;
-  guid: string | null;
+  rowId: number;
+  guid: string;
   primaryImage: string | null;
   primaryImagePrefix: string | null;
-  assetId: number | null;
+  assetId: number;
   brandName: string | null;
   modelRef: string | null;
   assetName: string | null;

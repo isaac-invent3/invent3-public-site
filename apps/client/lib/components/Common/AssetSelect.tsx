@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import {
-  useGetallAssetQuery,
+  useGetAllAssetQuery,
   useSearchAssetsMutation,
 } from '~/lib/redux/services/asset/general.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
@@ -19,7 +19,7 @@ const AssetSelect = (props: AssetSelectProps) => {
   const { handleSelect, selectName, selectTitle, defaultInputValue } = props;
   const [searchAsset] = useSearchAssetsMutation({});
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetallAssetQuery({
+  const { data, isLoading } = useGetAllAssetQuery({
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });

@@ -5,7 +5,7 @@ import { Button } from '@repo/ui/components';
 import { useAppSelector } from '~/lib/redux/hooks';
 
 const SectionOne = () => {
-  const { assetId } = useAppSelector((state) => state.asset.asset);
+  const assetData = useAppSelector((state) => state.asset.asset);
   return (
     <HStack width="full" spacing="24px" justifyContent="space-between">
       <Box width="full" maxW="70%">
@@ -22,7 +22,9 @@ const SectionOne = () => {
         <Button
           customStyles={{ widht: '203px', height: '42px' }}
           variant="outline"
-          href={`/asset-management?asset=${assetId}`}
+          href={
+            assetData ? `/asset-management?asset=${assetData?.assetId}` : '#'
+          }
         >
           View Full Asset Details
         </Button>

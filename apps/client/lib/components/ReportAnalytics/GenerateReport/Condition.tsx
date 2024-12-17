@@ -124,142 +124,133 @@ const DynamicConditions = () => {
 
 
   return (
-    <FormInputWrapper
-      sectionMaxWidth="118px"
+    <VStack
+      transition="all 0.5s ease"
+      align="stretch"
+      width="full"
       spacing="24px"
-      description="Add name that users can likely search with"
-      title="Condition"
-      isRequired
+      style={{
+        marginLeft: conditions.length > 1 ? '40px' : '0px',
+      }}
     >
-      {/* TODO: set Max Height */}
-      <VStack
-        transition="all 0.5s ease"
-        align="stretch"
-        width="full"
-        spacing="24px"
-        style={{
-          marginLeft: conditions.length > 1 ? '40px' : '0px',
-        }}
-      >
-        {conditions.map((condition, index) => (
-          <Box
-            position="relative"
-            animation={
-              removingIndex === index
-                ? `${exitAnimation} 0.3s forwards`
-                : index > 1
-                  ? `${entryAnimation} 0.3s ease-out`
-                  : `${entryAnimation} 1s ease-out`
-            }
+      {conditions.map((condition, index) => (
+        <Box
+          position="relative"
+          animation={
+            removingIndex === index
+              ? `${exitAnimation} 0.3s forwards`
+              : index > 1
+                ? `${entryAnimation} 0.3s ease-out`
+                : `${entryAnimation} 1s ease-out`
+          }
+        >
+          {index + 1 < conditions.length && (
+            <>
+              <OperatorDropdown
+                position="absolute"
+                top="90%"
+                left="-9%"
+                zIndex={3}
+                bg="#F7F7F7"
+              />
+              <Box
+                position="absolute"
+                top="50%"
+                left="-5%"
+                transform="translateY(-5%)"
+                border="1px solid #BBBBBB"
+                borderRight="none"
+                borderTopLeftRadius="8px"
+                borderBottomLeftRadius="8px"
+                height="80px"
+                width="40px"
+              />
+            </>
+          )}
+
+          <HStack
+            alignItems="center"
+            spacing={4}
+            justifyContent="space-between"
+            height="66px"
+            bg="#F7F7F7"
+            p="8px"
+            borderRadius="8px"
           >
-            {index + 1 < conditions.length && (
-              <>
-                <OperatorDropdown
-                  position="absolute"
-                  top="90%"
-                  left="-9%"
-                  zIndex={3}
-                  bg="#F7F7F7"
-                />
-                <Box
-                  position="absolute"
-                  top="50%"
-                  left="-5%"
-                  transform="translateY(-5%)"
-                  border="1px solid #BBBBBB"
-                  borderRight="none"
-                  borderTopLeftRadius="8px"
-                  borderBottomLeftRadius="8px"
-                  height="80px"
-                  width="40px"
-                />
-              </>
-            )}
+            <SelectInput
+              name="Column"
+              title="Column"
+              options={operators}
+              handleSelect={(option) => console.log(option)}
+              showTitleAfterSelect={true}
+              containerStyles={{
+                flex: 1,
+                border: '1px solid #D4D4D4',
+                background: 'transparent',
+                borderRadius: '8px',
+                height: 'auto',
+                alignItems: 'center',
+              }}
+            />
 
-            <HStack
-              alignItems="center"
-              spacing={4}
-              justifyContent="space-between"
-              height="66px"
-              bg="#F7F7F7"
-              p="8px"
-              borderRadius="8px"
-            >
-              <SelectInput
-                name="Column"
-                title="Column"
-                options={operators}
-                handleSelect={(option) => console.log(option)}
-                showTitleAfterSelect={true}
-                containerStyles={{
-                  flex: 1,
-                  border: '1px solid #D4D4D4',
-                  background: 'transparent',
-                  borderRadius: '8px',
-                  height: 'auto',
-                  alignItems: 'center',
-                }}
-              />
+            <SelectInput
+              name="Operator"
+              title="Operator"
+              options={operators}
+              selectedOption={getSelectedOperator(index)}
+              handleSelect={(option) =>
+                updateCondition(index, 'operator', option.value as string)
+              }
+              showTitleAfterSelect={true}
+              containerStyles={{
+                flex: 0.5,
+                border: '1px solid #D4D4D4',
+                background: 'transparent',
+                borderRadius: '8px',
+                height: 'auto',
+              }}
+            />
 
-              <SelectInput
-                name="Operator"
-                title="Operator"
-                options={operators}
-                selectedOption={getSelectedOperator(index)}
-                handleSelect={(option) =>
-                  updateCondition(index, 'operator', option.value as string)
-                }
-                showTitleAfterSelect={true}
-                containerStyles={{
-                  flex: 0.5,
-                  border: '1px solid #D4D4D4',
-                  background: 'transparent',
-                  borderRadius: '8px',
-                  height: 'auto',
-                }}
-              />
+            <SelectInput
+              name="Column"
+              title="Column"
+              options={operators}
+              handleSelect={(option) => console.log(option)}
+              showTitleAfterSelect={true}
+              containerStyles={{
+                flex: 1,
+                border: '1px solid #D4D4D4',
+                background: 'transparent',
+                borderRadius: '8px',
+                height: 'auto',
+              }}
+            />
 
-              <SelectInput
-                name="Column"
-                title="Column"
-                options={operators}
-                handleSelect={(option) => console.log(option)}
-                showTitleAfterSelect={true}
-                containerStyles={{
-                  flex: 1,
-                  border: '1px solid #D4D4D4',
-                  background: 'transparent',
-                  borderRadius: '8px',
-                  height: 'auto',
-                }}
-              />
+            <VStack flex={0.5} alignItems="flex-start">
+              <Link
+                color="#0366EF"
+                onClick={() => addCondition(index)}
+                fontSize="12px"
+                fontWeight={500}
+              >
+                + Add Condition
+              </Link>
 
-              <VStack flex={0.5} alignItems="flex-start">
+              {index >= 1 && (
                 <Link
-                  color="#0366EF"
-                  onClick={() => addCondition(index)}
+                  color="#F50000"
+                  onClick={() => removeCondition(index)}
                   fontSize="12px"
                   fontWeight={500}
                 >
-                  + Add Condition
+                  - Remove Condition
                 </Link>
-
-                {index >= 1 && (
-                  <Link
-                    color="#F50000"
-                    onClick={() => removeCondition(index)}
-                    fontSize="12px"
-                    fontWeight={500}
-                  >
-                    - Remove Condition
-                  </Link>
-                )}
-              </VStack>
-            </HStack>
-          </Box>
-        ))}
-      </VStack>
-    </FormInputWrapper>
+              )}
+            </VStack>
+          </HStack>
+        </Box>
+      ))}
+    </VStack>
   );
 };
 

@@ -1,48 +1,51 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import {
   FLUSH,
-  REHYDRATE,
   PAUSE,
   PERSIST,
   PURGE,
   REGISTER,
+  REHYDRATE,
   persistReducer,
 } from 'redux-persist';
 
 import storage from './customStorage';
-import { assetApi } from './services/asset/general.services';
-import { authApi } from './services/auth.services';
-import assetSlice from './slices/AssetSlice';
-import dashboardSlice from './slices/DashboardSlice';
-import ticketSlice from './slices/TicketSlice';
-import { utilityApi } from './services/utility.services';
-import { locationApi } from './services/asset/location.services';
 import { categoryApi } from './services/asset/category.services';
 import { conditionApi } from './services/asset/condition.services';
-import { userApi } from './services/user.services';
 import { depreciationApi } from './services/asset/depreciation.services';
-import { vendorsApi } from './services/asset/vendor.services';
-import { employeesApi } from './services/employees.services';
+import { assetApi } from './services/asset/general.services';
+import { assetGroupTypeApi } from './services/asset/groupType.services';
+import { locationApi } from './services/asset/location.services';
 import { assetStatsApi } from './services/asset/stats.services';
+import { assetTypeApi } from './services/asset/types.services';
+import { vendorsApi } from './services/asset/vendor.services';
+import { authApi } from './services/auth.services';
 import { dashboardApi } from './services/dashboard.services';
+import { employeesApi } from './services/employees.services';
+import { maintenanceFrequencyApi } from './services/maintenance/frequency.services';
 import { maintenancePlanApi } from './services/maintenance/plan.services';
 import { maintenanceScheduleApi } from './services/maintenance/schedule.services';
-import maintenanceSlice from './slices/MaintenanceSlice';
-import taskSlice from './slices/TaskSlice';
 import { maintenanceTypeApi } from './services/maintenance/type.services';
-import { maintenanceFrequencyApi } from './services/maintenance/frequency.services';
+import { reportApi } from './services/reports.services';
 import { taskApi } from './services/task/general.services';
 import { taskInstanceApi } from './services/task/instance.services';
 import { taskPrioritiesApi } from './services/task/priorities.services';
+import { taskStatusApi } from './services/task/statuses.services';
 import { taskTypeApi } from './services/task/types.services';
 import { templateApi } from './services/template.services';
 import { ticketApi } from './services/ticket.services';
-import { assetTypeApi } from './services/asset/types.services';
-import { assetGroupTypeApi } from './services/asset/groupType.services';
+import { userApi } from './services/user.services';
+import { utilityApi } from './services/utility.services';
+import assetSlice from './slices/AssetSlice';
+import dashboardSlice from './slices/DashboardSlice';
 import dateSlice from './slices/DateSlice';
 import generalSlice from './slices/GeneralSlice';
-import { taskStatusApi } from './services/task/statuses.services';
+import maintenanceSlice from './slices/MaintenanceSlice';
+import taskSlice from './slices/TaskSlice';
+import ticketSlice from './slices/TicketSlice';
+
 import { scheduleInstanceApi } from './services/maintenance/scheduleInstance.services';
+import { systemContextTypesApi } from './services/systemcontexttypes.services';
 
 export const persistConfig = {
   key: 'root',
@@ -73,10 +76,12 @@ const rootReducer = combineReducers({
   [taskStatusApi.reducerPath]: taskStatusApi.reducer,
   [templateApi.reducerPath]: templateApi.reducer,
   [ticketApi.reducerPath]: ticketApi.reducer,
+  [reportApi.reducerPath]: reportApi.reducer,
   [locationApi.reducerPath]: locationApi.reducer,
   [utilityApi.reducerPath]: utilityApi.reducer,
   [userApi.reducerPath]: userApi.reducer,
   [vendorsApi.reducerPath]: vendorsApi.reducer,
+  [systemContextTypesApi.reducerPath]: systemContextTypesApi.reducer,
   asset: assetSlice,
   general: generalSlice,
   dashboard: dashboardSlice,
@@ -118,12 +123,14 @@ export const makeStore = () => {
         taskStatusApi.middleware,
         templateApi.middleware,
         ticketApi.middleware,
+        reportApi.middleware,
         locationApi.middleware,
         categoryApi.middleware,
         conditionApi.middleware,
         utilityApi.middleware,
         userApi.middleware,
         vendorsApi.middleware,
+        systemContextTypesApi.middleware
       ]),
   });
 };

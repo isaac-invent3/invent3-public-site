@@ -13,6 +13,8 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { TicketFilterInput } from '~/lib/interfaces/ticket.interfaces';
+import { useGetAllSavedReportsQuery } from '~/lib/redux/services/reports.services';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import GeneralFilter from './Filters/GeneralFilter';
 import Header from './Header';
@@ -51,6 +53,14 @@ const ReportAnalytics = () => {
     { title: 'Total Maintenance Plan', value: '425', link: 'View Report' },
     { title: 'Total Tasks', value: '650', link: 'View Report' },
   ];
+
+  const [pageNumber, setPageNumber] = useState(1);
+  const { data, isLoading } = useGetAllSavedReportsQuery({
+    pageSize: DEFAULT_PAGE_SIZE,
+    pageNumber,
+  });
+
+  console.log({data})
 
   // TODO: Split it into Custom Components
 

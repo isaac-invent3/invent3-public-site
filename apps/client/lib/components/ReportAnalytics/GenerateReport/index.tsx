@@ -4,13 +4,13 @@ import { Box, Flex, Grid, Icon, Text, VStack } from '@chakra-ui/react';
 import { Button } from '@repo/ui/components';
 import { FormikProvider, useFormik } from 'formik';
 import moment from 'moment';
-import AssetSelect from '../../Common/AssetSelect';
 import { ChevronLeftIcon } from '../../CustomIcons';
 import DateTimeButtons from '../../UI/DateTimeComponents/DateTimeButtons';
-import FilterDropDown from '../../UI/FilterDropDown';
 import FormInputWrapper from '../../UI/Form/FormInputWrapper';
 import Header from '../Header';
 import DynamicConditions from './Condition';
+import SystemContextColumnsSelect from './SystemContextColumnsSelect';
+import SystemContextSelect from './SystemContextSelect';
 
 const GenerateReport = () => {
   const initialValues = {
@@ -19,6 +19,7 @@ const GenerateReport = () => {
     startDate: '',
     endDate: '',
     conditions: [],
+    selectedTable: undefined,
   };
 
   const formik = useFormik({
@@ -26,6 +27,8 @@ const GenerateReport = () => {
     enableReinitialize: false,
     onSubmit: async () => {},
   });
+
+  const { values, setFieldValue } = formik;
 
   return (
     <div>
@@ -57,7 +60,13 @@ const GenerateReport = () => {
                 title="Select from Table"
                 isRequired
               >
-                <AssetSelect selectName="assetId" selectTitle="Asset" />
+                <SystemContextSelect
+                  selectName="systemContextTypeId"
+                  selectTitle="Select from Table"
+                  handleSelect={(option) =>
+                    setFieldValue('selectedTable', option.value)
+                  }
+                />
               </FormInputWrapper>
 
               <FormInputWrapper
@@ -68,22 +77,10 @@ const GenerateReport = () => {
                 isRequired
               >
                 <VStack width="full" spacing="12px" alignItems="flex-start">
-                  <FilterDropDown
-                    label=""
-                    options={[]}
-                    handleClick={(value) => console.log(value)}
+                  <SystemContextColumnsSelect
+                    handleSelect={(value) => console.log(value)}
                     selectedOptions={[]}
-                    containerStyles={{
-                      maxW: 'none',
-                    }}
-                    labelStyles={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                    }}
-                    chevronStyles={{
-                      boxSize: '16px',
-                    }}
+                    selectedContextTypeId={values.selectedTable}
                   />
                 </VStack>
               </FormInputWrapper>
@@ -131,8 +128,17 @@ const GenerateReport = () => {
               </FormInputWrapper>
 
               <VStack gridColumn="span 2">
-                <DynamicConditions />
+                <FormInputWrapper
+                  sectionMaxWidth="118px"
+                  spacing="24px"
+                  description="Add name that users can likely search with"
+                  title="Condition"
+                  isRequired
+                >
+                  <DynamicConditions />
+                </FormInputWrapper>
               </VStack>
+
               <Button
                 variant="primary"
                 customStyles={{

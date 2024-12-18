@@ -161,21 +161,32 @@ const AddDocument = ({ variant }: AddDocumentProps) => {
                     Click to browse (Up to 10MB)
                   </Text>
                 </label>
-                <Text size="md" color="neutral.600">
-                  Or
-                </Text>
-                <Text
-                  size="md"
-                  color="blue.500"
-                  fontWeight={800}
-                  role="button"
-                  onClick={onOpen}
-                >
-                  Link Existing Document(s)
-                </Text>
+                {variant === 'primary' && (
+                  <HStack spacing="8px">
+                    {' '}
+                    <Text size="md" color="neutral.600">
+                      Or
+                    </Text>
+                    <Text
+                      size="md"
+                      color="blue.500"
+                      fontWeight={800}
+                      role="button"
+                      onClick={onOpen}
+                    >
+                      Link Existing Document(s)
+                    </Text>{' '}
+                  </HStack>
+                )}
               </HStack>
             </VStack>
-            <Text size="md" color="neutral.600" width="full" textAlign="center">
+            <Text
+              size="md"
+              color="neutral.600"
+              width="full"
+              textAlign="center"
+              px="10px"
+            >
               TXT, PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, JPEG are supported
             </Text>
           </VStack>

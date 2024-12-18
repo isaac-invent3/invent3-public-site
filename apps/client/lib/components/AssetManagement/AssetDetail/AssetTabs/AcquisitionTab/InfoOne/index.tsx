@@ -45,7 +45,7 @@ const InfoOne = (props: InfoOneProps) => {
       <GridItem colSpan={1}>
         <Flex width="max-content" whiteSpace="nowrap">
           <Skeleton isLoaded={!isLoading} width="full">
-            <DetailSection minWidth="105px" details={details} />
+            <DetailSection labelMinWidth="105px" details={details} />
           </Skeleton>
         </Flex>
       </GridItem>

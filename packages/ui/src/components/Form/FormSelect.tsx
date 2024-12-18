@@ -21,8 +21,8 @@ const FormSelect = (props: FormSelectProps) => {
       errorMessage={meta.error}
       selectedOption={meta.value}
       handleSelect={(option) => {
-        helpers.setValue(option?.value);
         props.onSelect && props.onSelect(option);
+        helpers.setValue(option?.value);
       }}
     />
   );

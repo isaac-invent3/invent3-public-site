@@ -10,7 +10,7 @@ import { FormikProvider, useFormik } from 'formik';
 import { Button, GenericModal } from '@repo/ui/components';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';
-import { useAppSelector } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import StatusSuccessModal from './SuccessModal';
 import {
   useGetAllAssetStatusQuery,
@@ -21,6 +21,7 @@ import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { useState } from 'react';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { bulkStatusActionSchema } from '~/lib/schemas/asset/main.schema';
+import { updateSelectedAssetIds } from '~/lib/redux/slices/AssetSlice';
 
 interface ChangeAssetStatusModalProps {
   isOpen: boolean;
@@ -48,6 +49,7 @@ const ChangeAssetStatusModal = (props: ChangeAssetStatusModalProps) => {
   const selectedAssetIds = useAppSelector(
     (state) => state.asset.selectedAssetIds
   );
+  const dispatch = useAppDispatch();
 
   const formik = useFormik({
     initialValues: {
@@ -71,6 +73,7 @@ const ChangeAssetStatusModal = (props: ChangeAssetStatusModalProps) => {
   });
 
   const handleCloseSuccessModal = () => {
+    dispatch(updateSelectedAssetIds([]));
     onCloseSuccess();
     onClose();
   };

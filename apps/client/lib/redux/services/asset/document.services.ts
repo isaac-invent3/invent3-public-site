@@ -38,7 +38,7 @@ export const assetDocumentApi = createApi({
     >({
       query: ({ id, ...data }) => ({
         url: generateQueryStr(
-          `/AssetDocuments/GetDocumentsByAssetId/${id}?`,
+          `/AssetDocuments/GetAssetDocumentsByAssetId/${id}?`,
           data
         ),
         method: 'GET',

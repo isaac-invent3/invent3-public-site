@@ -79,7 +79,7 @@ const InfoOne = () => {
       justifyContent="space-between"
     >
       <VStack alignItems="flex-start" spacing="8px">
-        <DetailSection details={details} minWidth="77px" />
+        <DetailSection details={details} labelMinWidth="77px" />
       </VStack>
       <VStack alignItems="flex-start" spacing="20px">
         <VStack width="full" spacing="8px" alignItems="flex-start">

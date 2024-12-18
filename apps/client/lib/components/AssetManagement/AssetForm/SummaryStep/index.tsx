@@ -194,6 +194,10 @@ const SummaryStep = (props: SummaryStepProps) => {
             assetFormDetails.newMaintenancePlanIds.length > 0
               ? assetFormDetails.newMaintenancePlanIds
               : null,
+          assetDocumentIds:
+            assetFormDetails.existingDocumentsIds.length > 0
+              ? assetFormDetails.existingDocumentsIds
+              : null,
         }
       : {}),
     ...(type === 'edit'
@@ -201,6 +205,10 @@ const SummaryStep = (props: SummaryStepProps) => {
           assetPlans: mapIdsToObject(
             assetFormDetails.newMaintenancePlanIds,
             assetFormDetails.deletedMaintenancePlanIds
+          ),
+          assetDocuments: mapIdsToObject(
+            assetFormDetails.existingDocumentsIds,
+            assetFormDetails.deletedExistingDocumentIds
           ),
         }
       : {}),

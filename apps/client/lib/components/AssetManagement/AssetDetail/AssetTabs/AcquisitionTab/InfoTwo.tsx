@@ -52,7 +52,7 @@ const InfoTwo = (props: InfoTwoProps) => {
           <Skeleton isLoaded={!isLoading} width="full">
             <DetailSection
               details={details1}
-              minWidth="103px"
+              labelMinWidth="103px"
               header="Warranty Details"
             />
           </Skeleton>
@@ -63,7 +63,7 @@ const InfoTwo = (props: InfoTwoProps) => {
           <Skeleton isLoaded={!isLoading} width="full">
             <DetailSection
               details={details2}
-              minWidth="151px"
+              labelMinWidth="151px"
               header="Depreciation Details"
             />
           </Skeleton>

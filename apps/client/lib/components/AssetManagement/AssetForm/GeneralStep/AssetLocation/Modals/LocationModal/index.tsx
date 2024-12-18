@@ -4,10 +4,8 @@ import { FormikProvider, useFormik } from 'formik';
 import { useState } from 'react';
 import { locationSchema } from '~/lib/schemas/asset/location.schema';
 import { Button, GenericModal, ModalHeading } from '@repo/ui/components';
-import {
-  AssetFormDetails,
-  FormLocation,
-} from '~/lib/interfaces/asset.interfaces';
+import { AssetFormDetails } from '~/lib/interfaces/asset.interfaces';
+import { FormLocation } from '~/lib/interfaces/location.interfaces';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import Facility from './Facility';
 import Building from './Building';
@@ -36,25 +34,18 @@ const LocationModal = (props: LocationModalProps) => {
   const { isOpen, onClose, setFieldValue } = props;
   const assetFormDetails = useAppSelector((state) => state.asset.assetForm);
   const dispatch = useAppDispatch();
-  const { countryId, stateId } = useAppSelector(
-    (state) => state.asset.assetForm
-  );
-  const [selectedCountry, setSelectedCountry] = useState<number | null>(
-    countryId
-  );
-  const [selectedState, setSelectedState] = useState<number | null>(stateId);
   const [localLocation, setLocalLocation] = useState<FormLocation>({
     country: {
       label: assetFormDetails.countryName,
       value: assetFormDetails.countryId,
     },
     state: {
-      label: assetFormDetails.facilityName,
-      value: assetFormDetails.facilityId,
+      label: assetFormDetails.stateName,
+      value: assetFormDetails.stateId,
     },
     lga: {
-      label: assetFormDetails.facilityName,
-      value: assetFormDetails.facilityId,
+      label: assetFormDetails.lgaName,
+      value: assetFormDetails.lgaId,
     },
     facility: {
       label: assetFormDetails.facilityName,
@@ -160,19 +151,17 @@ const LocationModal = (props: LocationModalProps) => {
                 <HStack width="full" alignItems="flex-start" spacing="8px">
                   <CountrySelect
                     handleSelect={(option) => {
-                      setSelectedCountry(option.value as number);
                       handleReadableLocation(option, 'country');
                     }}
                   />
                   <StateSelect
-                    countryId={selectedCountry}
+                    countryId={localLocation.country.value}
                     handleSelect={(option) => {
-                      setSelectedState(option.value as number);
                       handleReadableLocation(option, 'state');
                     }}
                   />
                   <LGASelect
-                    stateId={selectedState}
+                    stateId={localLocation.state.value}
                     handleSelect={(option) =>
                       handleReadableLocation(option, 'lga')
                     }

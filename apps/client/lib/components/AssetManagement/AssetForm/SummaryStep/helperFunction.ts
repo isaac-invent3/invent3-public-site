@@ -38,7 +38,7 @@ const generateImagesArray = (
   formDetails.images.forEach((image) => {
     const imageData: Image = {
       imageName: image.imageName as string,
-      base64PhotoImage: image.base64PhotoImage,
+      base64PhotoImage: `${image.base64Prefix ?? ''}${image.base64PhotoImage}`,
       isPrimaryImage: image.isPrimaryImage,
       [type === 'create' ? 'createdBy' : 'changeInitiatedBy']: username,
     };
@@ -101,7 +101,10 @@ const generateDocumentArray = (
 const mapIdsToObject = (
   addedIds: number[],
   removedIds: number[]
-): Record<number, number> => {
+): Record<number, number> | null => {
+  if (addedIds.length === 0 && removedIds.length === 0) {
+    return null;
+  }
   const addedIdsMapping = addedIds.reduce(
     (acc, id) => {
       acc[id] = FORM_ENUM.add; // FORM_ENUM.add represents "Add"

@@ -40,7 +40,7 @@ const InfoTwo = () => {
     >
       <VStack alignItems="flex-start" spacing="16px">
         <DetailSection
-          minWidth="101px"
+          labelMinWidth="101px"
           details={details}
           header="Owner's Info"
         />

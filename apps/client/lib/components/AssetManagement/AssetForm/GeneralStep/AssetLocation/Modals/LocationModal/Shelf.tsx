@@ -2,7 +2,7 @@
 import { useDisclosure, VStack } from '@chakra-ui/react';
 
 import { Option } from '~/lib/interfaces/general.interfaces';
-import { FormLocation } from '~/lib/interfaces/asset.interfaces';
+import { FormLocation } from '~/lib/interfaces/location.interfaces';
 import ShelfModal from '../ShelfModal';
 import ShelfSelect from '../SelectInputs/ShelfSelect';
 import { FormAddButton } from '@repo/ui/components';

@@ -234,24 +234,6 @@ interface FilterInput extends LocationFilter {
   status: Option[];
 }
 
-interface LocationOption {
-  label: string | null;
-  value: number | null;
-}
-
-interface FormLocation {
-  country: LocationOption;
-  state: LocationOption;
-  lga: LocationOption;
-  facility: LocationOption;
-  building: LocationOption;
-  floor: LocationOption;
-  department: LocationOption;
-  room: LocationOption;
-  aisle: LocationOption;
-  shelf: LocationOption;
-}
-
 interface AcquisitionInfo {
   rowId: number;
   assetId: number;
@@ -410,7 +392,6 @@ export type {
   AssetFormDetails,
   FilterInput,
   AssetStatusType,
-  FormLocation,
   AcquisitionInfo,
   ContractDocument,
   AssetImage,

@@ -20,7 +20,9 @@ const DisposalDetails = () => {
   const [searchCondition] = useSearchConditionMutation({});
   return (
     <VStack spacing="16px" alignItems="flex-start" width="full">
-      <DetailHeader variant="secondary">Disposal Details</DetailHeader>
+      <DetailHeader variant="secondary" customStyles={{ fontWeight: 700 }}>
+        Disposal Details
+      </DetailHeader>
       <VStack width="full" spacing="16px">
         <FormDatePicker name="disposalDate" label="Disposal Date" />
         <GenericAsyncSelect

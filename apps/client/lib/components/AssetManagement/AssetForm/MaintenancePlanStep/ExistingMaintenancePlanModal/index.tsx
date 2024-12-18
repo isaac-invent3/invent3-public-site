@@ -101,7 +101,6 @@ const ExistingMaintenancePlanModal = (
           .map((plan) => plan.maintenancePlanId)
           .includes(item.maintenancePlanId)
     );
-    console.log({ newPlans });
     dispatch(
       updateAssetForm({
         maintenancePlans: [...existingSelectedPlans, ...newPlans],

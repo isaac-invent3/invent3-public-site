@@ -66,7 +66,7 @@ export default function Page() {
     //Populating Asset Images
     if (assetImagesData?.data) {
       formImages = assetImagesData.data.items.map((image: AssetImage) => ({
-        imageId: image.imageId || null,
+        imageId: null,
         imageName: image.imageName || null,
         base64PhotoImage: image.photoImage,
         base64Prefix: image.base64Prefix,

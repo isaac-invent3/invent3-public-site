@@ -64,6 +64,28 @@ const DynamicConditions = () => {
     join: 1,
   };
 
+  const selectedColumns = values.contextTypeColumns;
+
+
+  // TODO: There's a type issue here with the Column name being a number rather than a string, fix this
+  const getFilteredColumns = (index: number) => {
+    const selectedValues = values.criterion.map(
+      (criterion) => criterion.columnName
+    );
+
+    return selectedColumns.filter(
+      (option) =>
+        !selectedValues.includes(option.value as string) ||
+        option.value === values.criterion[index]?.columnName
+    );
+  };
+
+  const getSelectedColumn = (index: number): Option | undefined => {
+    return selectedColumns.find(
+      (item) => item.value === values.criterion[index]?.columnName
+    );
+  };
+
   return (
     <VStack
       transition="all 0.5s ease"
@@ -131,8 +153,14 @@ const DynamicConditions = () => {
                     >
                       <Select
                         title="Column"
-                        options={operators}
-                        handleSelect={(option) => console.log(option)}
+                        options={getFilteredColumns(index)}
+                        selectedOption={getSelectedColumn(index)}
+                        handleSelect={(option) => {
+                          setFieldValue(
+                            `criterion[${index}].columnName`,
+                            option?.value
+                          );
+                        }}
                         showTitleAfterSelect={true}
                         containerStyles={{
                           flex: 1,
@@ -164,9 +192,14 @@ const DynamicConditions = () => {
                       />
 
                       <Select
-                        title="Column"
-                        options={operators}
-                        handleSelect={(option) => console.log(option)}
+                        title="Value"
+                        options={[]}
+                        handleSelect={(option) => {
+                          setFieldValue(
+                            `criterion[${index}].columnValue`,
+                            option?.value
+                          );
+                        }}
                         showTitleAfterSelect={true}
                         containerStyles={{
                           flex: 1,

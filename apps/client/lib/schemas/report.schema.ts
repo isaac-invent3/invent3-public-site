@@ -8,7 +8,9 @@ const generateReportSchema = () =>
           columnName: Yup.string().required('Column Name is Required'),
           columnValue: Yup.string().required('Column Value is Required'),
           operation: Yup.number().required('Operation is Required'),
-          join: Yup.number().required('Join is Required'), // this is either and or OR ... /the last one doesn't need to be required
+          join: Yup.number().when(['$isLast'], (value: any[], schema: Yup.NumberSchema) => {
+            return value[0] ? schema : schema.required('Join is Required');
+          }),
         })
       )
       .required('Criterion is Required'),

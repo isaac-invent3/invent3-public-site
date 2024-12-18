@@ -14,19 +14,19 @@ const SystemContextColumnsSelect = (props: SystemContextColumnsSelectProps) => {
 
   const selectedItems = () => {
     switch (selectedContextTypeId) {
-      case 1:
+      case 70:
         return assetColumns;
 
-      case 2:
+      case 74:
         return tasksColumns;
 
-      case 3:
+      case 75:
         return ticketColumns;
 
-      case 4:
+      case 71:
         return maintenancePlanColumns;
 
-      case 5:
+      case 76:
         return maintenanceScheduleColumns;
 
       default:

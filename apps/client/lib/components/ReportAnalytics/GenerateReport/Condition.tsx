@@ -10,20 +10,6 @@ import {
 } from '~/lib/interfaces/report.interfaces';
 import OperatorDropdown from './OperationDropdown';
 
-type Operator = 'Equals' | 'Less than' | 'Greater than';
-type JOIN = 'AND' | 'OR';
-type ConditionJoin = {
-  join: JOIN;
-  condition: number;
-};
-
-type Condition<T extends Operator = 'Equals'> = {
-  column: string;
-  operator: Operator;
-  value: T extends 'Equals' ? string | number : number;
-  conditionJoin: ConditionJoin | null;
-};
-
 const entryAnimation = keyframes`
   from {
     opacity: 0;
@@ -46,69 +32,8 @@ const exitAnimation = keyframes`
   }
 `;
 
-const DynamicConditions = ({
-  criterion,
-}: {
-  criterion: GenerateReportCriterion[];
-}) => {
-  const [conditions, setConditions] = useState<Condition[]>([
-    { column: '', operator: 'Equals', value: '', conditionJoin: null },
-  ]);
-
+const DynamicConditions = () => {
   const [removingIndex, setRemovingIndex] = useState<number | null>(null);
-
-  // Add a new condition
-  const addCondition = (index: number) => {
-    let newCondition: Condition = {
-      column: '',
-      operator: 'Equals',
-      value: '',
-      conditionJoin: null,
-    };
-
-    if (index >= 0 && index < conditions.length) {
-      newCondition = {
-        column: '',
-        operator: 'Equals',
-        value: '',
-        conditionJoin: {
-          condition: index,
-          join: 'AND',
-        },
-      };
-    }
-
-    const updatedConditions = [...conditions];
-    updatedConditions.splice(index + 1, 0, newCondition);
-    setConditions(updatedConditions);
-  };
-
-  // Remove a condition
-  const removeCondition = (index: number) => {
-    setRemovingIndex(index);
-
-    setTimeout(() => {
-      const updatedConditions = conditions.filter((_, i) => i !== index);
-      setConditions(updatedConditions);
-      setRemovingIndex(null);
-    }, 300);
-  };
-
-  // Update a condition
-  const updateCondition = (
-    index: number,
-    key: keyof Condition,
-    value: string
-  ) => {
-    const updatedConditions = [...conditions];
-    if (updatedConditions[index]) {
-      updatedConditions[index] = {
-        ...updatedConditions[index],
-        [key]: value,
-      };
-      setConditions(updatedConditions);
-    }
-  };
 
   const operators: Option[] = [
     {
@@ -144,16 +69,15 @@ const DynamicConditions = ({
       transition="all 0.5s ease"
       align="stretch"
       width="full"
-      spacing="24px"
       style={{
-        marginLeft: conditions.length > 1 ? '40px' : '0px',
+        marginLeft: values.criterion.length > 1 ? '40px' : '0px',
       }}
     >
       <Form>
         <FieldArray name="criterion">
-          {({ move, swap, push, insert, unshift, pop, form, remove }) => {
+          {({ insert, remove }) => {
             return (
-              <div>
+              <VStack transition="all 0.5s ease" align="stretch" spacing="24px">
                 {values.criterion.map((criterion, index) => (
                   <Box
                     position="relative"
@@ -255,7 +179,7 @@ const DynamicConditions = ({
                       <VStack flex={0.5} alignItems="flex-start">
                         <Link
                           color="#0366EF"
-                          onClick={() => push(newCriterion)}
+                          onClick={() => insert(index + 1, newCriterion)}
                           fontSize="12px"
                           fontWeight={500}
                         >
@@ -283,7 +207,7 @@ const DynamicConditions = ({
                     </HStack>
                   </Box>
                 ))}
-              </div>
+              </VStack>
             );
           }}
         </FieldArray>

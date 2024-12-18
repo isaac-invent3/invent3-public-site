@@ -147,7 +147,7 @@ const GenerateReport = () => {
                   title="Condition"
                   isRequired
                 >
-                  <DynamicConditions criterion={[]} />
+                  <DynamicConditions />
                 </FormInputWrapper>
               </VStack>
 

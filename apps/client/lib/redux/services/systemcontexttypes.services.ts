@@ -3,6 +3,7 @@ import {
   BaseApiResponse,
   ListResponse,
   QueryParams,
+  SearchQuery,
 } from '~/lib/interfaces/general.interfaces';
 import { Report } from '~/lib/interfaces/report.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
@@ -18,7 +19,7 @@ export const systemContextTypesApi = createApi({
   endpoints: (builder) => ({
     getReportableSystemContextTypes: builder.query<
       BaseApiResponse<ListResponse<Report>>,
-      QueryParams
+      SearchQuery
     >({
       query: (data) => ({
         url: generateQueryStr(
@@ -31,7 +32,10 @@ export const systemContextTypesApi = createApi({
       providesTags: ['reportableSystemContextTypes'],
     }),
 
-    searchContextTypes: builder.mutation({
+    searchContextTypes: builder.mutation<
+      BaseApiResponse<ListResponse<Report>>,
+      SearchQuery
+    >({
       query: (body: any) => ({
         url: `/SystemContextTypes/Search`,
         method: 'POST',

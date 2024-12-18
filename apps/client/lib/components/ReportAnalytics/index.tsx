@@ -151,13 +151,12 @@ const ReportAnalytics = () => {
 
         <HStack
           gap="16px"
-          overflowX="scroll"
           maxW="full"
           justifyContent="space-between"
           alignItems="start"
           mt="10px"
         >
-          {Array.from({ length: 10 }, (_, index) => (
+          {Array.from({ length: 7 }, (_, index) => (
             <Box
               key={index}
               bg="white"
@@ -227,13 +226,12 @@ const ReportAnalytics = () => {
 
         <HStack
           gap="16px"
-          overflowX="scroll"
           maxW="full"
           justifyContent="space-between"
           alignItems="start"
           mt="10px"
         >
-          {Array.from({ length: 10 }, (_, index) => (
+          {Array.from({ length: 7 }, (_, index) => (
             <Box
               key={index}
               bg="white"

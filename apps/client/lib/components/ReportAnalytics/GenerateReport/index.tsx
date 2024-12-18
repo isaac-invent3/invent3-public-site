@@ -1,34 +1,52 @@
 'use client';
 import { Box, Flex, Grid, Icon, Text, VStack } from '@chakra-ui/react';
-
 import { Button } from '@repo/ui/components';
 import { FormikProvider, useFormik } from 'formik';
 import moment from 'moment';
 import { ChevronLeftIcon } from '../../CustomIcons';
-import DateTimeButtons from '../../UI/DateTimeComponents/DateTimeButtons';
-import FormInputWrapper from '../../UI/Form/FormInputWrapper';
 import Header from '../Header';
 import DynamicConditions from './Condition';
 import SystemContextColumnsSelect from './SystemContextColumnsSelect';
 import SystemContextSelect from './SystemContextSelect';
 
+import { DateTimeButtons, FormInputWrapper } from '@repo/ui/components';
+import { GenerateReportDetails } from '~/lib/interfaces/report.interfaces';
+import { generateReportSchema } from '~/lib/schemas/report.schema';
+
 const GenerateReport = () => {
-  const initialValues = {
-    tableTitle: null,
-    columns: [],
+  const initialValues: GenerateReportDetails = {
+    criterion: [
+      {
+        columnName: 'string',
+        columnValue: 'string',
+        operation: 1,
+        join: 1,
+      },
+    ],
+    contextTypeId: undefined,
+    contextTypeColumns: [],
+    contextTypeName: undefined,
     startDate: '',
     endDate: '',
-    conditions: [],
-    selectedTable: undefined,
   };
 
   const formik = useFormik({
     initialValues,
     enableReinitialize: false,
+    validationSchema: generateReportSchema,
     onSubmit: async () => {},
   });
 
   const { values, setFieldValue } = formik;
+
+  const formatDate = (date: Date | undefined) => {
+    if (!date) return null;
+    return moment(date).format('DD/MM/YYYY');
+  };
+
+  const parseDate = (dateString: string | null) => {
+    return dateString ? moment(dateString, 'DD/MM/YYYY').toDate() : undefined;
+  };
 
   return (
     <div>
@@ -63,9 +81,9 @@ const GenerateReport = () => {
                 <SystemContextSelect
                   selectName="systemContextTypeId"
                   selectTitle="Select from Table"
-                  handleSelect={(option) =>
-                    setFieldValue('selectedTable', option.value)
-                  }
+                  handleSelect={(option) => {
+                    setFieldValue('contextTypeId', option.value);
+                  }}
                 />
               </FormInputWrapper>
 
@@ -78,9 +96,14 @@ const GenerateReport = () => {
               >
                 <VStack width="full" spacing="12px" alignItems="flex-start">
                   <SystemContextColumnsSelect
-                    handleSelect={(value) => console.log(value)}
-                    selectedOptions={[]}
-                    selectedContextTypeId={values.selectedTable}
+                    selectedOptions={values.contextTypeColumns}
+                    selectedContextTypeId={values.contextTypeId}
+                    handleSelect={(value) =>
+                      setFieldValue('contextTypeColumns', [
+                        ...values.contextTypeColumns,
+                        value,
+                      ])
+                    }
                   />
                 </VStack>
               </FormInputWrapper>
@@ -101,27 +124,16 @@ const GenerateReport = () => {
                     customButtonLabel="Select Start & End Date"
                     showPredefinedDates={false}
                     range={{
-                      startDate: formik.values.startDate
-                        ? moment(formik.values.startDate, 'DD/MM/YYYY').toDate()
-                        : undefined,
-                      endDate: formik.values.endDate
-                        ? moment(formik.values.endDate, 'DD/MM/YYYY').toDate()
-                        : undefined,
+                      startDate: parseDate(formik.values.startDate),
+                      endDate: parseDate(formik.values.endDate),
                     }}
                     handleRange={(info) => {
                       formik.setFieldValue(
                         'startDate',
-                        info.startDate
-                          ? moment(info.startDate).format('DD/MM/YYYY')
-                          : null
+                        formatDate(info.startDate)
                       );
 
-                      formik.setFieldValue(
-                        'endDate',
-                        info.endDate
-                          ? moment(info.endDate).format('DD/MM/YYYY')
-                          : null
-                      );
+                      formik.setFieldValue('endDate', formatDate(info.endDate));
                     }}
                   />
                 </VStack>
@@ -135,7 +147,7 @@ const GenerateReport = () => {
                   title="Condition"
                   isRequired
                 >
-                  <DynamicConditions />
+                  <DynamicConditions criterion={[]} />
                 </FormInputWrapper>
               </VStack>
 

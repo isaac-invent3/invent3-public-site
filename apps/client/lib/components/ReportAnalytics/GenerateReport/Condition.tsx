@@ -1,9 +1,13 @@
 import { Box, HStack, Link, VStack } from '@chakra-ui/react';
 import { keyframes } from '@emotion/react';
+import { Select } from '@repo/ui/components';
+import { FieldArray, Form, useFormikContext } from 'formik';
 import { useState } from 'react';
 import { Option } from '~/lib/interfaces/general.interfaces';
-import FormInputWrapper from '../../UI/Form/FormInputWrapper';
-import SelectInput from '../../UI/Select';
+import {
+  GenerateReportCriterion,
+  GenerateReportDetails,
+} from '~/lib/interfaces/report.interfaces';
 import OperatorDropdown from './OperationDropdown';
 
 type Operator = 'Equals' | 'Less than' | 'Greater than';
@@ -42,7 +46,11 @@ const exitAnimation = keyframes`
   }
 `;
 
-const DynamicConditions = () => {
+const DynamicConditions = ({
+  criterion,
+}: {
+  criterion: GenerateReportCriterion[];
+}) => {
   const [conditions, setConditions] = useState<Condition[]>([
     { column: '', operator: 'Equals', value: '', conditionJoin: null },
   ]);
@@ -68,7 +76,6 @@ const DynamicConditions = () => {
           join: 'AND',
         },
       };
-
     }
 
     const updatedConditions = [...conditions];
@@ -117,11 +124,20 @@ const DynamicConditions = () => {
       value: 'Greater Than',
     },
   ];
+  const { setFieldValue, values } = useFormikContext<GenerateReportDetails>();
 
   const getSelectedOperator = (index: number): Option | undefined => {
-    return operators.find((item) => item.value === conditions[index]?.operator);
+    return operators.find(
+      (item) => item.value === values.criterion[index]?.operation
+    );
   };
 
+  const newCriterion: GenerateReportCriterion = {
+    columnName: '',
+    columnValue: '',
+    operation: 1,
+    join: 1,
+  };
 
   return (
     <VStack
@@ -133,123 +149,145 @@ const DynamicConditions = () => {
         marginLeft: conditions.length > 1 ? '40px' : '0px',
       }}
     >
-      {conditions.map((condition, index) => (
-        <Box
-          position="relative"
-          animation={
-            removingIndex === index
-              ? `${exitAnimation} 0.3s forwards`
-              : index > 1
-                ? `${entryAnimation} 0.3s ease-out`
-                : `${entryAnimation} 1s ease-out`
-          }
-        >
-          {index + 1 < conditions.length && (
-            <>
-              <OperatorDropdown
-                position="absolute"
-                top="90%"
-                left="-9%"
-                zIndex={3}
-                bg="#F7F7F7"
-              />
-              <Box
-                position="absolute"
-                top="50%"
-                left="-5%"
-                transform="translateY(-5%)"
-                border="1px solid #BBBBBB"
-                borderRight="none"
-                borderTopLeftRadius="8px"
-                borderBottomLeftRadius="8px"
-                height="80px"
-                width="40px"
-              />
-            </>
-          )}
+      <Form>
+        <FieldArray name="criterion">
+          {({ move, swap, push, insert, unshift, pop, form, remove }) => {
+            return (
+              <div>
+                {values.criterion.map((criterion, index) => (
+                  <Box
+                    position="relative"
+                    animation={
+                      removingIndex === index
+                        ? `${exitAnimation} 0.3s forwards`
+                        : index > 1
+                          ? `${entryAnimation} 0.3s ease-out`
+                          : `${entryAnimation} 1s ease-out`
+                    }
+                  >
+                    {index + 1 < values.criterion.length && (
+                      <>
+                        <OperatorDropdown
+                          position="absolute"
+                          top="90%"
+                          left="-9%"
+                          zIndex={3}
+                          bg="#F7F7F7"
+                          selectedValue={values.criterion[index]?.join}
+                          handleClick={(option) => {
+                            setFieldValue(
+                              `criterion[${index}].join`,
+                              option?.value
+                            );
+                          }}
+                        />
+                        <Box
+                          position="absolute"
+                          top="50%"
+                          left="-5%"
+                          transform="translateY(-5%)"
+                          border="1px solid #BBBBBB"
+                          borderRight="none"
+                          borderTopLeftRadius="8px"
+                          borderBottomLeftRadius="8px"
+                          height="80px"
+                          width="40px"
+                        />
+                      </>
+                    )}
 
-          <HStack
-            alignItems="center"
-            spacing={4}
-            justifyContent="space-between"
-            height="66px"
-            bg="#F7F7F7"
-            p="8px"
-            borderRadius="8px"
-          >
-            <SelectInput
-              name="Column"
-              title="Column"
-              options={operators}
-              handleSelect={(option) => console.log(option)}
-              showTitleAfterSelect={true}
-              containerStyles={{
-                flex: 1,
-                border: '1px solid #D4D4D4',
-                background: 'transparent',
-                borderRadius: '8px',
-                height: 'auto',
-                alignItems: 'center',
-              }}
-            />
+                    <HStack
+                      alignItems="center"
+                      spacing={4}
+                      justifyContent="space-between"
+                      height="66px"
+                      bg="#F7F7F7"
+                      p="8px"
+                      borderRadius="8px"
+                    >
+                      <Select
+                        title="Column"
+                        options={operators}
+                        handleSelect={(option) => console.log(option)}
+                        showTitleAfterSelect={true}
+                        containerStyles={{
+                          flex: 1,
+                          border: '1px solid #D4D4D4',
+                          background: 'transparent',
+                          borderRadius: '8px',
+                          height: 'auto',
+                          alignItems: 'center',
+                        }}
+                      />
+                      <Select
+                        title="Operator"
+                        options={operators}
+                        selectedOption={getSelectedOperator(index)}
+                        handleSelect={(option) => {
+                          setFieldValue(
+                            `criterion[${index}].operation`,
+                            option?.value
+                          );
+                        }}
+                        showTitleAfterSelect={true}
+                        containerStyles={{
+                          width: '155px',
+                          border: '1px solid #D4D4D4',
+                          background: 'transparent',
+                          borderRadius: '8px',
+                          height: 'auto',
+                        }}
+                      />
 
-            <SelectInput
-              name="Operator"
-              title="Operator"
-              options={operators}
-              selectedOption={getSelectedOperator(index)}
-              handleSelect={(option) =>
-                updateCondition(index, 'operator', option.value as string)
-              }
-              showTitleAfterSelect={true}
-              containerStyles={{
-                flex: 0.5,
-                border: '1px solid #D4D4D4',
-                background: 'transparent',
-                borderRadius: '8px',
-                height: 'auto',
-              }}
-            />
+                      <Select
+                        title="Column"
+                        options={operators}
+                        handleSelect={(option) => console.log(option)}
+                        showTitleAfterSelect={true}
+                        containerStyles={{
+                          flex: 1,
+                          border: '1px solid #D4D4D4',
+                          background: 'transparent',
+                          borderRadius: '8px',
+                          height: 'auto',
+                        }}
+                      />
+                      <VStack flex={0.5} alignItems="flex-start">
+                        <Link
+                          color="#0366EF"
+                          onClick={() => push(newCriterion)}
+                          fontSize="12px"
+                          fontWeight={500}
+                        >
+                          + Add Condition
+                        </Link>
 
-            <SelectInput
-              name="Column"
-              title="Column"
-              options={operators}
-              handleSelect={(option) => console.log(option)}
-              showTitleAfterSelect={true}
-              containerStyles={{
-                flex: 1,
-                border: '1px solid #D4D4D4',
-                background: 'transparent',
-                borderRadius: '8px',
-                height: 'auto',
-              }}
-            />
+                        {index >= 1 && (
+                          <Link
+                            color="#F50000"
+                            onClick={() => {
+                              setRemovingIndex(index);
 
-            <VStack flex={0.5} alignItems="flex-start">
-              <Link
-                color="#0366EF"
-                onClick={() => addCondition(index)}
-                fontSize="12px"
-                fontWeight={500}
-              >
-                + Add Condition
-              </Link>
-
-              {index >= 1 && (
-                <Link
-                  color="#F50000"
-                  onClick={() => removeCondition(index)}
-                  fontSize="12px"
-                  fontWeight={500}
-                >
-                  - Remove Condition
-                </Link>
-              )}
-            </VStack>
-          </HStack>
-        </Box>
-      ))}
+                              setTimeout(() => {
+                                remove(index);
+                                setRemovingIndex(null);
+                              }, 300);
+                            }}
+                            fontSize="12px"
+                            fontWeight={500}
+                          >
+                            - Remove Condition
+                          </Link>
+                        )}
+                      </VStack>
+                    </HStack>
+                  </Box>
+                ))}
+              </div>
+            );
+          }}
+        </FieldArray>
+      </Form>
     </VStack>
   );
 };

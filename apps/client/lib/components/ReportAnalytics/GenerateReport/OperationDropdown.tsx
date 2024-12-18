@@ -15,23 +15,27 @@ import { useRef } from 'react';
 import { Option } from '~/lib/interfaces/general.interfaces';
 
 type OperatorDropdownProps = {
+  selectedValue: number | undefined;
   handleClick?: (option: Option) => void;
 } & FlexProps;
 
 const OperatorDropdown = (props: OperatorDropdownProps) => {
-  const { handleClick, ...rest } = props;
+  const options: Option[] = [
+    { label: 'And', value: 1 },
+    { label: 'Or', value: 2 },
+  ];
+
+  const { handleClick, selectedValue, ...rest } = props;
   const { onToggle, isOpen, onClose } = useDisclosure();
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const getSelectedOperator = (): Option | undefined => {
+    return options.find((item) => item.value === selectedValue);
+  };
 
   useOutsideClick({
     ref: containerRef,
     handler: () => onClose(),
   });
-
-  const options: Option[] = [
-    { label: 'And', value: 'and' },
-    { label: 'Or', value: 'or' },
-  ];
 
   return (
     <Flex
@@ -55,14 +59,14 @@ const OperatorDropdown = (props: OperatorDropdownProps) => {
       >
         <Flex alignItems="center" gap={2}>
           <Text color="black" fontSize="10px">
-            Operator
+            {getSelectedOperator() ? getSelectedOperator()?.label : 'Operator'}
           </Text>
         </Flex>
 
         <Icon as={ChevronDownIcon} boxSize="12px" color="#42403D" />
       </HStack>
 
-      <Collapse in={isOpen} style={{ zIndex: 99 , background:"white"}}>
+      <Collapse in={isOpen} style={{ zIndex: 99, background: 'white' }}>
         <VStack
           spacing="8px"
           alignItems="flex-start"

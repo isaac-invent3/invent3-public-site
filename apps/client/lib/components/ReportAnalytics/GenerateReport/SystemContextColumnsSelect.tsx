@@ -1,35 +1,43 @@
+import { FilterDropDown } from '@repo/ui/components';
 import { Option } from '~/lib/interfaces/general.interfaces';
-import FilterDropDown from '../../UI/FilterDropDown';
+import { generateOptions } from '~/lib/utils/helperFunctions';
+import { assetColumns, tasksColumns, ticketColumns,maintenancePlanColumns,maintenanceScheduleColumns } from './dummyData';
 
 interface SystemContextColumnsSelectProps {
   // eslint-disable-next-line no-unused-vars
   handleSelect: (options: Option) => void;
-  selectedContextTypeId: number | undefined
+  selectedContextTypeId: number | undefined;
   selectedOptions: Option[];
 }
 const SystemContextColumnsSelect = (props: SystemContextColumnsSelectProps) => {
-  const { handleSelect, selectedOptions} = props;
+  const { handleSelect, selectedOptions, selectedContextTypeId } = props;
 
-  const dummyColumns: Option[] = [
-    { label: 'Asset Name', value: 1 },
-    { label: 'Asset Type', value: 2 },
-    { label: 'Asset ID', value: 3 },
-    { label: 'Acquisition Date', value: 4 },
-    { label: 'Purchase Price', value: 5 },
-    { label: 'Current Value', value: 6 },
-    { label: 'Depreciation Rate', value: 7 },
-    { label: 'Location', value: 8 },
-    { label: 'Assigned To', value: 9 },
-    { label: 'Maintenance Date', value: 10 },
-    { label: 'Warranty Expiration', value: 11 },
-    { label: 'Status', value: 12 },
-    { label: 'Supplier Name', value: 13 },
-  ];
+  const selectedItems = () => {
+    switch (selectedContextTypeId) {
+      case 1:
+        return assetColumns;
+
+      case 2:
+        return tasksColumns;
+
+      case 3:
+        return ticketColumns;
+
+      case 4:
+        return maintenancePlanColumns;
+
+      case 5:
+        return maintenanceScheduleColumns;
+
+      default:
+        return [];
+    }
+  };
 
   return (
     <FilterDropDown
       label=""
-      options={dummyColumns}
+      options={generateOptions(selectedItems(), 'columnName', 'columnId')}
       handleClick={handleSelect}
       selectedOptions={selectedOptions}
       containerStyles={{

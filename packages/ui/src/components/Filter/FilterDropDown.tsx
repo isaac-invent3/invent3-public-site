@@ -1,9 +1,11 @@
 import {
   Collapse,
   Flex,
+  FlexProps,
   HStack,
   Icon,
   Spinner,
+  StackProps,
   Text,
   useDisclosure,
   useOutsideClick,
@@ -13,6 +15,7 @@ import { ReactNode, useEffect, useRef } from 'react';
 import { Option } from 'src/interfaces/general.interfaces';
 import CheckBox from '../CheckBox';
 import { ChevronDownIcon } from '../CustomIcons';
+import { IconProps } from '@chakra-ui/icons';
 
 interface FilterDropDownProps {
   label: string;
@@ -25,6 +28,9 @@ interface FilterDropDownProps {
   isLoading?: boolean;
   children?: ReactNode;
   showBorder?: boolean;
+  labelStyles?: StackProps;
+  containerStyles?: FlexProps;
+  chevronStyles?: IconProps;
 }
 
 const FilterDropDown = ({
@@ -37,6 +43,9 @@ const FilterDropDown = ({
   isLoading,
   children,
   showBorder,
+  labelStyles,
+  containerStyles,
+  chevronStyles,
 }: FilterDropDownProps) => {
   const { onToggle, isOpen, onClose } = useDisclosure();
   const buttonRef = useRef<HTMLDivElement | null>(null);
@@ -76,7 +85,13 @@ const FilterDropDown = ({
   }, [hasMoreOptions, handleScroll]);
 
   return (
-    <Flex direction="column" width="full" maxW="max-content" ref={containerRef}>
+    <Flex
+      direction="column"
+      width="full"
+      maxW="max-content"
+      ref={containerRef}
+      {...containerStyles}
+    >
       <HStack
         onClick={onToggle}
         cursor="pointer"
@@ -88,6 +103,7 @@ const FilterDropDown = ({
         rounded="6px"
         ref={buttonRef}
         border={showBorder ? '1px solid #DADFE5' : 'none'}
+        {...labelStyles}
       >
         <HStack spacing="8px">
           <Text width="full" whiteSpace="nowrap" color="neutral.600">
@@ -102,7 +118,12 @@ const FilterDropDown = ({
             <Text>Selected</Text>
           </HStack>
         </HStack>
-        <Icon as={ChevronDownIcon} boxSize="12px" color="neutral.600" />
+        <Icon
+          as={ChevronDownIcon}
+          boxSize="12px"
+          color="neutral.600"
+          {...chevronStyles}
+        />
       </HStack>
 
       <Collapse in={isOpen}>

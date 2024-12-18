@@ -1,17 +1,12 @@
-import {
-  Box,
-  Flex,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Icon,
-} from '@chakra-ui/react';
-import { useField } from 'formik';
+
+import { Box, BoxProps, FormControl, FormLabel, Icon } from '@chakra-ui/react';
 import Select, { components } from 'react-select';
 import AsyncSelect from 'react-select/async';
-import { ChevronDownIcon, InfoIcon } from '../CustomIcons';
+// eslint-disable-next-line no-redeclare
+import { Option } from '../../interfaces/general.interfaces';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Option } from 'src/interfaces/general.interfaces';
+import { ChevronDownIcon } from '../CustomIcons';
+import ErrorMessage from '../ErrorMessage';
 
 const DropdownIndicator = (props: any) => {
   const { pb, ...rest } = props;
@@ -28,28 +23,29 @@ const DropdownIndicator = (props: any) => {
   );
 };
 
-interface SelectInputProps {
-  name: string;
+export interface SelectInputProps {
   title: string;
   options: Option[];
-  selectedOption?: Option;
+  selectedOption?: Option | string | number;
   isSearchable?: boolean;
+  isInvalid?: boolean;
   showTitleAfterSelect?: boolean;
   width?: string | { [name: string]: string };
   isLoading?: boolean;
   showAsRelative?: boolean;
   defaultInputValue?: string;
+  errorMessage?: string;
   // eslint-disable-next-line no-unused-vars
   handleSelect?: (options: Option) => void;
   handleOnMenuScrollToBottom?: () => void;
   // eslint-disable-next-line no-unused-vars
-  callBackFunction?: (inputValue: string) => Promise<Option[]>;
+  callBackFunction?: (selectedOption: string) => Promise<Option[]>;
   variant?: 'primary' | 'secondary';
   isAsync?: boolean;
+  containerStyles?: BoxProps;
 }
 function SelectInput(props: SelectInputProps) {
   const {
-    name,
     title,
     options,
     selectedOption,
@@ -63,14 +59,15 @@ function SelectInput(props: SelectInputProps) {
     handleSelect,
     callBackFunction,
     handleOnMenuScrollToBottom,
+    isInvalid,
+    errorMessage,
+    containerStyles,
   } = props;
-  const [field, meta, helpers] = useField(name);
   const SelectComponent = isAsync ? AsyncSelect : Select;
   const [isFocused, setIsFocused] = useState(false);
-  const inputValue = meta.value || selectedOption;
   const handleFocus = () => setIsFocused(true);
   const handleBlur = () => {
-    if (!inputValue) setIsFocused(false);
+    setIsFocused(!!selectedOption);
   };
 
   // Debounce ref
@@ -78,15 +75,15 @@ function SelectInput(props: SelectInputProps) {
 
   // Debounce the promiseOptions function
   const promiseOptions = useCallback(
-    (inputValue: string) => {
+    (selectedOption: string) => {
       return new Promise<Option[]>((resolve) => {
         if (debounceRef.current) {
           clearTimeout(debounceRef.current);
         }
 
         debounceRef.current = setTimeout(async () => {
-          if (callBackFunction && inputValue.length >= 3) {
-            const options = await callBackFunction(inputValue);
+          if (callBackFunction && selectedOption.length >= 3) {
+            const options = await callBackFunction(selectedOption);
             resolve(options);
           } else {
             resolve([]);
@@ -99,17 +96,14 @@ function SelectInput(props: SelectInputProps) {
   );
 
   useEffect(() => {
-    if (!inputValue) {
+    if (!selectedOption) {
       setIsFocused(false);
     }
-  }, [inputValue]);
+  }, [selectedOption]);
 
   return (
-    <Box width={width} position="relative" height="full">
-      <FormControl
-        isInvalid={meta.touched && meta.error !== undefined}
-        position="relative"
-      >
+    <Box width={width} position="relative" height="full" {...containerStyles}>
+      <FormControl isInvalid={isInvalid} position="relative">
         {showTitleAfterSelect && (
           <FormLabel
             height="50px"
@@ -117,16 +111,18 @@ function SelectInput(props: SelectInputProps) {
             display="flex"
             alignItems="center"
             position="absolute"
-            top={isFocused || inputValue ? '10px' : meta.error ? '40%' : '50%'}
+            top={
+              isFocused || selectedOption ? '10px' : isInvalid ? '40%' : '50%'
+            }
             transform={
-              isFocused || inputValue
+              isFocused || selectedOption
                 ? 'translateY(-40%) scale(0.85)'
                 : 'translateY(-50%)'
             }
             transformOrigin="left top"
-            paddingLeft={isFocused || inputValue ? '20px' : '16px'}
-            fontSize={isFocused || inputValue ? '12px' : '14px'}
-            lineHeight={isFocused || inputValue ? '14.26px' : '16.63px'}
+            paddingLeft={isFocused || selectedOption ? '20px' : '16px'}
+            fontSize={isFocused || selectedOption ? '12px' : '14px'}
+            lineHeight={isFocused || selectedOption ? '14.26px' : '16.63px'}
             color={
               isFocused
                 ? variant === 'primary'
@@ -144,7 +140,6 @@ function SelectInput(props: SelectInputProps) {
           </FormLabel>
         )}
         <SelectComponent
-          {...field}
           isSearchable={isSearchable}
           options={options}
           isLoading={isLoading || false}
@@ -164,6 +159,7 @@ function SelectInput(props: SelectInputProps) {
               width: '100%',
               borderRadius: '8px',
               fontSize: '14px',
+              fontWeight: 500,
               lineHeight: '17.07px',
               paddingTop: showTitleAfterSelect ? '10px' : '0px',
               ':focus-within': {
@@ -174,10 +170,8 @@ function SelectInput(props: SelectInputProps) {
               },
               boxShadow: 'none',
               paddingLeft: '8px',
-              backgroundColor:
-                meta.error && meta.touched ? '#FFDCDC' : '#F7F7F7',
-              borderColor:
-                meta.error && meta.touched ? '#FD3C3C' : 'transparent',
+              backgroundColor: isInvalid ? '#FFDCDC' : '#F7F7F7',
+              borderColor: isInvalid ? '#FD3C3C' : 'transparent',
             }),
             menu: (provided) => ({
               ...provided,
@@ -222,20 +216,21 @@ function SelectInput(props: SelectInputProps) {
               fontSize: '14px',
               width: '100%',
               lineHeight: '16.63px',
+              fontWeight: 500,
             }),
           }}
           defaultInputValue={defaultInputValue}
           value={
             selectedOption
-              ? selectedOption
-              : meta.value
-                ? options.find((option) => option.value === meta.value)
-                : null
+              ? typeof selectedOption === 'string' ||
+                typeof selectedOption === 'number'
+                ? options.find((option) => option.value === selectedOption)
+                : selectedOption
+              : null
           }
           onChange={(selectedOptions) => {
             if (selectedOptions) {
               handleSelect && handleSelect(selectedOptions as Option);
-              helpers.setValue((selectedOptions as Option).value);
             }
           }}
           components={{
@@ -248,18 +243,9 @@ function SelectInput(props: SelectInputProps) {
           }}
         />
 
-        <FormErrorMessage
-          color="error.500"
-          fontSize="12px"
-          fontWeight={500}
-          lineHeight="14.26px"
-          mt="4px"
-        >
-          <Flex width="full" gap="8px">
-            <Icon as={InfoIcon} color="error.500" />
-            {meta.error}
-          </Flex>
-        </FormErrorMessage>
+        {isInvalid && errorMessage && (
+          <ErrorMessage mt="4px">{errorMessage}</ErrorMessage>
+        )}
       </FormControl>
     </Box>
   );

@@ -2,10 +2,14 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import {
   BaseApiResponse,
   ListResponse,
-  QueryParams,
   SearchQuery,
 } from '~/lib/interfaces/general.interfaces';
 import { Report } from '~/lib/interfaces/report.interfaces';
+import {
+  GetSystemContextTypeColumnsPayload,
+  SystemContextType,
+  SystemContextTypeColumns,
+} from '~/lib/interfaces/systemContextType.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../baseQueryWithReauth';
 
@@ -18,7 +22,7 @@ export const systemContextTypesApi = createApi({
   tagTypes: ['reportableSystemContextTypes'],
   endpoints: (builder) => ({
     getReportableSystemContextTypes: builder.query<
-      BaseApiResponse<ListResponse<Report>>,
+      BaseApiResponse<ListResponse<SystemContextType>>,
       SearchQuery
     >({
       query: (data) => ({
@@ -30,6 +34,20 @@ export const systemContextTypesApi = createApi({
         headers: getHeaders(),
       }),
       providesTags: ['reportableSystemContextTypes'],
+    }),
+
+    getSystemContextTypeColumnsInfo: builder.query<
+      BaseApiResponse<ListResponse<SystemContextTypeColumns>>,
+      GetSystemContextTypeColumnsPayload
+    >({
+      query: ({ systemContextTypeId, ...data }) => ({
+        url: generateQueryStr(
+          `/SystemContextTypes/GetSystemContextTypeColumnsInfo/${systemContextTypeId}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
     }),
 
     searchContextTypes: builder.mutation<
@@ -46,5 +64,8 @@ export const systemContextTypesApi = createApi({
   }),
 });
 
-export const { useGetReportableSystemContextTypesQuery ,useSearchContextTypesMutation} =
-  systemContextTypesApi;
+export const {
+  useGetReportableSystemContextTypesQuery,
+  useSearchContextTypesMutation,
+  useGetSystemContextTypeColumnsInfoQuery
+} = systemContextTypesApi;

@@ -1,7 +1,8 @@
 import { FilterDropDown } from '@repo/ui/components';
 import { Option } from '~/lib/interfaces/general.interfaces';
+import { useGetSystemContextTypeColumnsInfoQuery } from '~/lib/redux/services/systemcontexttypes.services';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { generateOptions } from '~/lib/utils/helperFunctions';
-import { assetColumns, tasksColumns, ticketColumns,maintenancePlanColumns,maintenanceScheduleColumns } from './dummyData';
 
 interface SystemContextColumnsSelectProps {
   // eslint-disable-next-line no-unused-vars
@@ -12,32 +13,17 @@ interface SystemContextColumnsSelectProps {
 const SystemContextColumnsSelect = (props: SystemContextColumnsSelectProps) => {
   const { handleSelect, selectedOptions, selectedContextTypeId } = props;
 
-  const selectedItems = () => {
-    switch (selectedContextTypeId) {
-      case 70:
-        return assetColumns;
-
-      case 74:
-        return tasksColumns;
-
-      case 75:
-        return ticketColumns;
-
-      case 71:
-        return maintenancePlanColumns;
-
-      case 76:
-        return maintenanceScheduleColumns;
-
-      default:
-        return [];
-    }
-  };
+  const { data, isLoading } = useGetSystemContextTypeColumnsInfoQuery({
+    systemContextTypeId: selectedContextTypeId!,
+    pageNumber: 1,
+    pageSize: DEFAULT_PAGE_SIZE,
+  });
 
   return (
     <FilterDropDown
       label=""
-      options={generateOptions(selectedItems(), 'columnName', 'columnId')}
+      isLoading={isLoading}
+      options={generateOptions(data?.data.items, 'columnName', 'columnName')}
       handleClick={handleSelect}
       selectedOptions={selectedOptions}
       containerStyles={{

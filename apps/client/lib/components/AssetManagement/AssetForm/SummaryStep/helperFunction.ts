@@ -38,7 +38,7 @@ const generateImagesArray = (
   formDetails.images.forEach((image) => {
     const imageData: Image = {
       imageName: image.imageName as string,
-      base64PhotoImage: `${image.base64Prefix ?? ''}${image.base64PhotoImage}`,
+      base64PhotoImage: image.base64PhotoImage,
       isPrimaryImage: image.isPrimaryImage,
       [type === 'create' ? 'createdBy' : 'changeInitiatedBy']: username,
     };

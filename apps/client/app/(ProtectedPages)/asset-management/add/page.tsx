@@ -68,8 +68,8 @@ export default function Page() {
       formImages = assetImagesData.data.items.map((image: AssetImage) => ({
         imageId: null,
         imageName: image.imageName || null,
-        base64PhotoImage: image.photoImage,
-        base64Prefix: image.base64Prefix,
+        base64PhotoImage: `${image.base64Prefix}${image.photoImage}`,
+        base64Prefix: null,
         isPrimaryImage: image.isPrimaryImage,
       }));
     }

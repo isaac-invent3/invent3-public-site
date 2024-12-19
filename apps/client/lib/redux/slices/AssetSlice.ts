@@ -4,7 +4,7 @@ import {
   Asset,
   AssetFormDetails,
   FilterInput,
-} from '~/lib/interfaces/asset.interfaces';
+} from '~/lib/interfaces/asset/general.interface';
 
 const initialAssetForm = {
   images: [],

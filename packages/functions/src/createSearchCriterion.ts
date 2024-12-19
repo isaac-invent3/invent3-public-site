@@ -1,12 +1,12 @@
 import { OPERATORS } from '@repo/constants';
-import { Criterion, SearchCriterion } from '@repo/interfaces';
+import { SearchCriterion, SearchQuery } from '@repo/interfaces';
 
 const generateSearchCriterion = (
   columnName: string,
   columnValues: (string | number)[],
   operator: (typeof OPERATORS)[keyof typeof OPERATORS]
 ) => {
-  const finalSearchCriterion: Criterion[] = [];
+  const finalSearchCriterion: SearchCriterion[] = [];
 
   columnValues.forEach((item) =>
     finalSearchCriterion.push({
@@ -34,8 +34,8 @@ const createSearchCriterion = ({
   includeDeleted?: boolean;
   useOrLogic?: boolean;
   isLogicalOperatorSpecified?: boolean;
-}): SearchCriterion => {
-  const searchCriteria: SearchCriterion = {
+}): SearchQuery => {
+  const searchCriteria: SearchQuery = {
     ...(andCriterions && Object.keys(andCriterions).length > 0
       ? {
           criterion: Object.entries(andCriterions).flatMap(([key, items]) =>
@@ -53,7 +53,7 @@ const createSearchCriterion = ({
                 : null;
             })
             .filter(
-              (criterion): criterion is Criterion[] => criterion !== null
+              (criterion): criterion is SearchCriterion[] => criterion !== null
             ),
         }
       : {}),

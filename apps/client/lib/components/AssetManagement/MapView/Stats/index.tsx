@@ -6,7 +6,7 @@ import {
   useGetCumulativeAssetStatusCountByCountryIdQuery,
   useGetCumulativeAssetStatusCountByStateIdQuery,
 } from '~/lib/redux/services/asset/stats.services';
-import { SingleMapAssetData } from '~/lib/interfaces/asset.interfaces';
+import { SingleMapAssetData } from '~/lib/interfaces/asset/general.interface';
 import SummaryCardStats from './SummardCardStats';
 
 interface StatsProps {
@@ -33,11 +33,14 @@ const Stats = (props: StatsProps) => {
     setStatType,
   } = props;
   const { data: countryStats, isLoading: isLoadingCountryStats } =
-    useGetCumulativeAssetStatusCountByCountryIdQuery(1);
+    useGetCumulativeAssetStatusCountByCountryIdQuery({ id: 1 });
   const { data: stateStats, isLoading: isLoadingStateStats } =
-    useGetCumulativeAssetStatusCountByStateIdQuery(selectedState?.id, {
-      skip: !selectedState?.id,
-    });
+    useGetCumulativeAssetStatusCountByStateIdQuery(
+      { id: selectedState?.id },
+      {
+        skip: !selectedState?.id,
+      }
+    );
 
   const finalData = selectedState?.id ? stateStats?.data : countryStats?.data;
 

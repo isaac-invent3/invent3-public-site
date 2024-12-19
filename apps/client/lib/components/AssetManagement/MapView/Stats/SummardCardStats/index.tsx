@@ -1,7 +1,7 @@
 import { Box, Flex, HStack, Text, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import SummaryCard from './SummaryCard';
-import { InfoProps } from '~/lib/interfaces/asset.interfaces';
+import { InfoProps } from '~/lib/interfaces/asset/general.interface';
 
 interface SummaryCardStatsProps {
   // eslint-disable-next-line no-unused-vars

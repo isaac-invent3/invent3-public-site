@@ -1,6 +1,13 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
+import {
+  BaseApiResponse,
+  ListResponse,
+  QueryParams,
+  SearchQuery,
+} from '@repo/interfaces';
+import { AssetType } from '~/lib/interfaces/asset/type.interface';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -10,30 +17,38 @@ export const assetTypeApi = createApi({
   baseQuery: baseQueryWithReauth,
   tagTypes: ['allAssetTypes'],
   endpoints: (builder) => ({
-    getAllAssetTypes: builder.query({
-      query: (data: any) => ({
+    getAllAssetTypes: builder.query<
+      BaseApiResponse<ListResponse<AssetType>>,
+      QueryParams
+    >({
+      query: (data) => ({
         url: generateQueryStr(`/AssetTypes?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
       providesTags: ['allAssetTypes'],
     }),
-    getAssetTypeById: builder.query({
-      query: (id: any) => ({
+    getAssetTypeById: builder.query<
+      BaseApiResponse<AssetType>,
+      { id: number | undefined }
+    >({
+      query: ({ id }) => ({
         url: `/AssetTypes/${id}`,
         method: 'GET',
         headers: getHeaders(),
       }),
     }),
 
-    searchAssetTypes: builder.mutation({
-      query: (body: any) => ({
-        url: `/AssetStatus/Search`,
-        method: 'POST',
-        headers: getHeaders(),
-        body,
-      }),
-    }),
+    searchAssetTypes: builder.mutation<BaseApiResponse<AssetType>, SearchQuery>(
+      {
+        query: (body) => ({
+          url: `/AssetStatus/Search`,
+          method: 'POST',
+          headers: getHeaders(),
+          body,
+        }),
+      }
+    ),
   }),
 });
 

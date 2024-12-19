@@ -5,7 +5,7 @@ import { useAppSelector } from '~/lib/redux/hooks';
 import {
   useGetAllCountriesQuery,
   useSearchCountriesMutation,
-} from '~/lib/redux/services/asset/location.services';
+} from '~/lib/redux/services/location/country.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 interface CountrySelectProps {

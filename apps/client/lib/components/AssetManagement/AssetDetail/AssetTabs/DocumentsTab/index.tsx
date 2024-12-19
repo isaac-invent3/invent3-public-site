@@ -2,7 +2,7 @@ import { Flex, HStack, Icon, Skeleton, Text, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { Button } from '@repo/ui/components';
-import { AssetDocument } from '~/lib/interfaces/asset.interfaces';
+import { AssetDocument } from '~/lib/interfaces/asset/general.interface';
 import { FILE_ICONS } from '~/lib/utils/constants';
 import { getDocumentInfo } from '~/lib/utils/helperFunctions';
 import { useGetAssetDocumentsByAssetIdQuery } from '~/lib/redux/services/asset/document.services';

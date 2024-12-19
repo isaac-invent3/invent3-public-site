@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { AssetFormDocument } from '../interfaces/asset.interfaces';
+import { AssetFormDocument } from '~/lib/interfaces/asset/general.interface';
 import { ActualProjectedData } from '../interfaces/dashboard.interfaces';
 import { FILE_ICONS, OPERATORS } from './constants';
 import nigeriaStatesByLandSize from './NigeriaCordinates/landSize';

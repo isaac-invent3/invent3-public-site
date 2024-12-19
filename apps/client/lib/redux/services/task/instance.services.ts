@@ -1,8 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import {
-  BaseApiResponse,
-  ListResponse,
-} from '~/lib/interfaces/general.interfaces';
+import { BaseApiResponse, ListResponse } from '@repo/interfaces';
 import { TaskInstance } from '~/lib/interfaces/task.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../../baseQueryWithReauth';

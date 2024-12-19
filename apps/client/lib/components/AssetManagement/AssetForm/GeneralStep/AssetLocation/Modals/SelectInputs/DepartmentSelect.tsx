@@ -6,7 +6,7 @@ import {
   useGetAllDepartmentsQuery,
   useGetDepartmentsByFloorIdQuery,
   useSearchDepartmentsMutation,
-} from '~/lib/redux/services/asset/location.services';
+} from '~/lib/redux/services/location/department.services';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 
 interface DepartmentSelectProps {
@@ -34,7 +34,7 @@ const DepartmentSelect = (props: DepartmentSelectProps) => {
     isLoading: isLoadingDepartmentsByFloorIdData,
   } = useGetDepartmentsByFloorIdQuery(
     {
-      id: floorId,
+      id: floorId ?? undefined,
       pageSize: DEFAULT_PAGE_SIZE,
       pageNumber,
     },

@@ -2,11 +2,11 @@ import { Flex, Grid, GridItem, Skeleton } from '@chakra-ui/react';
 import DetailSection from '../../../DetailSection';
 import VendorDetails from './VendorDetails';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
-import { AcquisitionInfo } from '~/lib/interfaces/asset.interfaces';
+import { AcquisitionInfo } from '~/lib/interfaces/asset/general.interface';
 
 interface InfoOneProps {
   isLoading: boolean;
-  data: AcquisitionInfo;
+  data: AcquisitionInfo | undefined;
 }
 const InfoOne = (props: InfoOneProps) => {
   const { isLoading, data } = props;
@@ -20,20 +20,15 @@ const InfoOne = (props: InfoOneProps) => {
     },
     {
       label: 'Purchase Price:',
-      value:
-        data?.initialValue !== null
-          ? amountFormatter(data?.initialValue)
-          : 'N/A',
+      value: data?.initialValue ? amountFormatter(data?.initialValue) : 'N/A',
     },
     {
       label: 'Resale Value:',
-      value:
-        data?.resalevalue !== null ? amountFormatter(data?.resalevalue) : 'N/A',
+      value: data?.resalevalue ? amountFormatter(data?.resalevalue) : 'N/A',
     },
     {
       label: 'Scrap Value:',
-      value:
-        data?.scrapvalue !== null ? amountFormatter(data?.scrapvalue) : 'N/A',
+      value: data?.scrapvalue ? amountFormatter(data?.scrapvalue) : 'N/A',
     },
     {
       label: 'Condition:',

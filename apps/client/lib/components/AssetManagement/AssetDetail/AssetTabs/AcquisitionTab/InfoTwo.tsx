@@ -1,11 +1,11 @@
 import { Flex, Grid, GridItem, Skeleton } from '@chakra-ui/react';
 import DetailSection from '../../DetailSection';
-import { AcquisitionInfo } from '~/lib/interfaces/asset.interfaces';
+import { AcquisitionInfo } from '~/lib/interfaces/asset/general.interface';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
 interface InfoTwoProps {
   isLoading: boolean;
-  data: AcquisitionInfo;
+  data: AcquisitionInfo | undefined;
 }
 const InfoTwo = (props: InfoTwoProps) => {
   const { isLoading, data } = props;

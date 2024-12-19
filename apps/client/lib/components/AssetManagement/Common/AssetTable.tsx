@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
-import { Asset } from '~/lib/interfaces/asset.interfaces';
+import { Asset } from '~/lib/interfaces/asset/general.interface';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
 import { Icon, Text } from '@chakra-ui/react';
 import { ThreeVerticalDotsIcon } from '../../CustomIcons';

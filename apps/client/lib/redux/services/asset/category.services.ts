@@ -5,8 +5,13 @@ import {
   BaseApiResponse,
   ListResponse,
   QueryParams,
-} from '~/lib/interfaces/general.interfaces';
-import { Category } from '~/lib/interfaces/category.interfaces';
+  SearchQuery,
+} from '@repo/interfaces';
+import {
+  Category,
+  GetAssetSubCatgoriesByCategoryIdQuery,
+  SubCategory,
+} from '~/lib/interfaces/asset/category.interfaces';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -20,15 +25,18 @@ export const categoryApi = createApi({
       BaseApiResponse<ListResponse<Category>>,
       QueryParams
     >({
-      query: (data: any) => ({
+      query: (data) => ({
         url: generateQueryStr(`/AssetCategories?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
       providesTags: ['allAssetCategory'],
     }),
-    createCategory: builder.mutation({
-      query: (body: any) => ({
+    createCategory: builder.mutation<
+      BaseApiResponse<Category>,
+      { categoryName: string; createdBy: string }
+    >({
+      query: (body) => ({
         url: `/AssetCategories`,
         method: 'POST',
         headers: getHeaders(),
@@ -36,25 +44,34 @@ export const categoryApi = createApi({
       }),
       invalidatesTags: ['allAssetCategory'],
     }),
-    searchCategories: builder.mutation({
-      query: (body: any) => ({
+    searchCategories: builder.mutation<
+      BaseApiResponse<ListResponse<Category>>,
+      SearchQuery
+    >({
+      query: (body) => ({
         url: `/AssetCategories/Search`,
         method: 'POST',
         headers: getHeaders(),
         body,
       }),
     }),
-    getAllAssetSubCategory: builder.query({
-      query: (data: any) => ({
+    getAllAssetSubCategory: builder.query<
+      BaseApiResponse<ListResponse<SubCategory>>,
+      QueryParams
+    >({
+      query: (data) => ({
         url: generateQueryStr(`/AssetSubCategories`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
     }),
-    getAssetSubCatgoriesByCategoryId: builder.query({
-      query: ({ id, ...data }) => ({
+    getAssetSubCatgoriesByCategoryId: builder.query<
+      BaseApiResponse<ListResponse<SubCategory>>,
+      GetAssetSubCatgoriesByCategoryIdQuery
+    >({
+      query: ({ categoryId, ...data }) => ({
         url: generateQueryStr(
-          `/AssetSubCategories/GetSubCategoryByCategoryId/${id}?`,
+          `/AssetSubCategories/GetSubCategoryByCategoryId/${categoryId}?`,
           data
         ),
         method: 'GET',
@@ -62,8 +79,11 @@ export const categoryApi = createApi({
       }),
       providesTags: ['assetSubCategoriesById'],
     }),
-    createSubCategory: builder.mutation({
-      query: (body: any) => ({
+    createSubCategory: builder.mutation<
+      BaseApiResponse<SubCategory>,
+      { subCategoryName: string; createdBy: string; categoryId: number }
+    >({
+      query: (body) => ({
         url: `/AssetSubCategories`,
         method: 'POST',
         headers: getHeaders(),
@@ -71,8 +91,11 @@ export const categoryApi = createApi({
       }),
       invalidatesTags: ['assetSubCategoriesById'],
     }),
-    searchSubCategory: builder.mutation({
-      query: (body: any) => ({
+    searchSubCategory: builder.mutation<
+      BaseApiResponse<ListResponse<SubCategory>>,
+      SearchQuery
+    >({
+      query: (body) => ({
         url: `/AssetSubCategories/Search`,
         method: 'POST',
         headers: getHeaders(),

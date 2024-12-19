@@ -6,7 +6,7 @@ import {
   useGetAllBuildingsQuery,
   useGetBuildingsByFacilityIdQuery,
   useSearchBuildingMutation,
-} from '~/lib/redux/services/asset/location.services';
+} from '~/lib/redux/services/location/building.services';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 
 interface BuildingSelectProps {
@@ -34,7 +34,7 @@ const BuildingSelect = (props: BuildingSelectProps) => {
     isLoading: isLoadingBuildingByFacilityId,
   } = useGetBuildingsByFacilityIdQuery(
     {
-      id: facilityId,
+      id: facilityId ?? undefined,
       pageSize: DEFAULT_PAGE_SIZE,
       pageNumber,
     },

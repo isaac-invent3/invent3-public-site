@@ -24,12 +24,15 @@ const CategoryModal = (props: CategoryModalProps) => {
 
   const formik = useFormik({
     initialValues: {
-      categoryName: null,
+      categoryName: '',
     },
     validationSchema: categorySchema,
     onSubmit: async (values) => {
       const session = await getSession();
-      const finalValue = { ...values, createdBy: session?.user?.username };
+      const finalValue = {
+        ...values,
+        createdBy: session?.user?.username ?? '',
+      };
       const response = await handleSubmit(createCategory, finalValue, '');
       if (response?.data) {
         onClose();

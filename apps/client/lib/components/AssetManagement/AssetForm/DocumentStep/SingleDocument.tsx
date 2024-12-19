@@ -2,7 +2,7 @@ import { Flex, HStack, Icon, Text } from '@chakra-ui/react';
 import { useField } from 'formik';
 
 import { CircularCloseIcon } from '~/lib/components/CustomIcons';
-import { AssetFormDocument } from '~/lib/interfaces/asset.interfaces';
+import { AssetFormDocument } from '~/lib/interfaces/asset/general.interface';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import { FILE_ICONS } from '~/lib/utils/constants';

@@ -1,6 +1,6 @@
 import { OPERATORS } from '@repo/constants';
 
-interface Criterion {
+interface SearchCriterion {
   columnName: string;
   columnValue: string | number;
   operation: (typeof OPERATORS)[keyof typeof OPERATORS];
@@ -15,9 +15,9 @@ interface FilterInput {
   [name: string]: Option[];
 }
 
-interface SearchCriterion {
-  criterion?: Criterion[];
-  orCriterion?: Criterion[][];
+interface SearchQuery {
+  criterion?: SearchCriterion[];
+  orCriterion?: SearchCriterion[][];
   orderByCriteria?: {
     columnName: string;
     operation: number;
@@ -34,4 +34,4 @@ interface SearchCriterion {
   isLogicalOperatorSpecified?: boolean;
 }
 
-export type { Criterion, Option, FilterInput, SearchCriterion };
+export type { SearchCriterion, Option, FilterInput, SearchQuery };

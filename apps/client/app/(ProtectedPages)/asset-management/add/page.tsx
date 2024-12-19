@@ -8,8 +8,7 @@ import {
   AcquisitionInfo,
   Asset,
   AssetDocument,
-  AssetImage,
-} from '~/lib/interfaces/asset.interfaces';
+} from '~/lib/interfaces/asset/general.interface';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { useGetAssetDocumentsByAssetIdQuery } from '~/lib/redux/services/asset/document.services';
 import {
@@ -23,25 +22,29 @@ import { dateFormatter } from '~/lib/utils/Formatters';
 
 export default function Page() {
   const searchParams = useSearchParams();
-  const assetId = searchParams.get('assetId');
+  const assetIdString = searchParams.get('assetId');
+  const assetId = assetIdString ? Number(assetIdString) : undefined;
   const { data, isLoading } = useGetAssetInfoHeaderByIdQuery(
-    { id: assetId ?? undefined },
+    { id: assetId },
     {
-      skip: !assetId,
+      skip: assetId === undefined,
     }
   );
   const { data: assetImagesData, isLoading: imagesLoading } =
     useGetImagesByAssetIdQuery(
-      { id: assetId, pageSize: 25 },
-      { skip: !assetId }
+      { assetId: assetId, pageSize: 25 },
+      { skip: assetId === undefined }
     );
   const { data: assetDocumentData, isLoading: documentsLoading } =
     useGetAssetDocumentsByAssetIdQuery(
       { id: assetId, pageSize: 25 },
-      { skip: !assetId }
+      { skip: assetId === undefined }
     );
   const { data: acquisitionData, isLoading: acquisitionLoading } =
-    useGetAcquisitionInfoByAssetIdQuery({ id: assetId }, { skip: !assetId });
+    useGetAcquisitionInfoByAssetIdQuery(
+      { id: assetId },
+      { skip: assetId === undefined }
+    );
   const { data: assetCustomMaintenancePlan, isLoading: planLoading } =
     useGetAssetCustomMaintenancePlanByAssetGuidQuery(
       { assetGuid: data?.data.guid ?? undefined },
@@ -65,7 +68,7 @@ export default function Page() {
     const asset: Asset = data?.data;
     //Populating Asset Images
     if (assetImagesData?.data) {
-      formImages = assetImagesData.data.items.map((image: AssetImage) => ({
+      formImages = assetImagesData.data.items.map((image) => ({
         imageId: null,
         imageName: image.imageName || null,
         base64PhotoImage: `${image.base64Prefix}${image.photoImage}`,

@@ -1,6 +1,6 @@
 import { DrawerBody, DrawerHeader, VStack } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
-import { Asset } from '~/lib/interfaces/asset.interfaces';
+import { Asset } from '~/lib/interfaces/asset/general.interface';
 import AssetHeader from './Header';
 import AssetInfo from './AssetInfo';
 import AssetTabs from './AssetTabs';

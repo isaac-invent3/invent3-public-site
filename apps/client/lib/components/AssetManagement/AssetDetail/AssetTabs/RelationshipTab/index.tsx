@@ -4,7 +4,7 @@ import { useGetAssetComponentInfoByAssetGuidQuery } from '~/lib/redux/services/a
 import { useAppSelector } from '~/lib/redux/hooks';
 import ComponentBox from './ComponentBox';
 import AssetTable from '../../../Common/AssetTable';
-import { Asset } from '~/lib/interfaces/asset.interfaces';
+import { Asset } from '~/lib/interfaces/asset/general.interface';
 
 const EmptyState = ({ text }: { text: string }) => {
   return (
@@ -44,12 +44,12 @@ const RelationshipTab = () => {
     return null;
   }
   const { data, isLoading } = useGetAssetComponentInfoByAssetGuidQuery(
-    { id: assetData.guid },
+    { assetGuid: assetData.guid },
     { skip: !assetData.guid }
   );
 
   // Determine if any parent and child component exists
-  const hasParent = data && data?.data?.parent !== null;
+  const hasParent = data ? data?.data?.parent !== null : false;
   const hasChildren =
     data &&
     data?.data?.childComponents &&
@@ -72,7 +72,9 @@ const RelationshipTab = () => {
           nodeType="Parent"
           hasParent={false}
         >
-          <GenerateAssetTable asset={data?.data?.parent} />
+          {data?.data && data?.data?.parent && (
+            <GenerateAssetTable asset={data?.data?.parent} />
+          )}
         </ComponentBox>
       )}
       <ComponentBox
@@ -81,21 +83,22 @@ const RelationshipTab = () => {
         assetName={data?.data?.asset?.assetName}
         nodeType="Asset"
       >
-        <GenerateAssetTable asset={data?.data?.asset} />
+        {data?.data && <GenerateAssetTable asset={data?.data?.asset} />}
       </ComponentBox>
       {hasChildren && (
         <VStack spacing={0} pl={hasParent ? '56px' : '0px'}>
-          {data?.data?.childComponents.map((item: Asset, index: number) => (
-            <ComponentBox
-              isPrimary={false}
-              hasParent
-              assetName={item.assetName as string}
-              nodeType="Child"
-              key={index}
-            >
-              <GenerateAssetTable asset={item} />
-            </ComponentBox>
-          ))}
+          {data?.data?.childComponents &&
+            data?.data?.childComponents.map((item: Asset, index: number) => (
+              <ComponentBox
+                isPrimary={false}
+                hasParent
+                assetName={item.assetName as string}
+                nodeType="Child"
+                key={index}
+              >
+                <GenerateAssetTable asset={item} />
+              </ComponentBox>
+            ))}
         </VStack>
       )}
     </Flex>

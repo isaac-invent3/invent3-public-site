@@ -1,7 +1,7 @@
 import { Flex, Grid, GridItem, HStack } from '@chakra-ui/react';
 
 import { Field, useFormikContext } from 'formik';
-import { AssetFormDetails } from '~/lib/interfaces/asset.interfaces';
+import { AssetFormDetails } from '~/lib/interfaces/asset/general.interface';
 import moment from 'moment';
 import {
   FormSectionInfo,

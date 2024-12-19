@@ -8,7 +8,7 @@ import {
   GenericModal,
   ModalHeading,
 } from '@repo/ui/components';
-import { useCreateFloorMutation } from '~/lib/redux/services/asset/location.services';
+import { useCreateFloorMutation } from '~/lib/redux/services/location/floor.services';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';
 import { floorSchema } from '~/lib/schemas/asset/location.schema';
@@ -26,9 +26,9 @@ const FloorModal = (props: FloorModalProps) => {
 
   const formik = useFormik({
     initialValues: {
-      buildingId: defaultBuildingId ?? null,
-      floorName: null,
-      floorRef: null,
+      buildingId: defaultBuildingId ?? undefined,
+      floorName: '',
+      floorRef: '',
     },
     validationSchema: floorSchema,
     enableReinitialize: true,

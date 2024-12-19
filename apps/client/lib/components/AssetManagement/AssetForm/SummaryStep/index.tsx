@@ -1,6 +1,6 @@
 import { Flex, useDisclosure, VStack } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { Asset } from '~/lib/interfaces/asset.interfaces';
+import { Asset } from '~/lib/interfaces/asset/general.interface';
 import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';

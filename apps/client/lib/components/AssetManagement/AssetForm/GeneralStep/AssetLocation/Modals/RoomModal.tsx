@@ -8,7 +8,7 @@ import {
   GenericModal,
   ModalHeading,
 } from '@repo/ui/components';
-import { useCreateRoomMutation } from '~/lib/redux/services/asset/location.services';
+import { useCreateRoomMutation } from '~/lib/redux/services/location/room.services';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { roomSchema } from '~/lib/schemas/asset/location.schema';
 import DepartmentSelect from './SelectInputs/DepartmentSelect';
@@ -26,9 +26,9 @@ const RoomModal = (props: RoomModalProps) => {
 
   const formik = useFormik({
     initialValues: {
-      departmentId: defaultDepartmentId ?? null,
-      roomName: null,
-      roomRef: null,
+      departmentId: defaultDepartmentId ?? undefined,
+      roomName: '',
+      roomRef: '',
     },
     validationSchema: roomSchema,
     enableReinitialize: true,

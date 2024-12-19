@@ -9,7 +9,6 @@ import {
   useSearchAssetsMutation,
 } from '~/lib/redux/services/asset/general.services';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { SearchResponse } from '~/lib/interfaces/general.interfaces';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 import AssetTable from './Common/AssetTable';
 import AssetFilterDisplay from './Filters/AssetFilterDisplay';
@@ -20,7 +19,8 @@ import {
   updateSelectedAssetIds,
 } from '~/lib/redux/slices/AssetSlice';
 import AssetDetail from './AssetDetail';
-import { Asset } from '~/lib/interfaces/asset.interfaces';
+import { Asset } from '~/lib/interfaces/asset/general.interface';
+import { ListResponse } from '@repo/interfaces';
 
 interface ListViewProps {
   search: string;
@@ -34,7 +34,8 @@ const ListView = (props: ListViewProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const searchParams = useSearchParams();
-  const assetId = searchParams.get('asset');
+  const assetIdString = searchParams.get('asset');
+  const assetId = assetIdString ? Number(assetIdString) : undefined;
   const { handleSubmit } = useCustomMutation();
   const {
     assetFilter: filterData,
@@ -53,7 +54,7 @@ const ListView = (props: ListViewProps) => {
   const [searchAsset, { isLoading: searchLoading }] = useSearchAssetsMutation(
     {}
   );
-  const [searchData, setSearchData] = useState<SearchResponse<Asset> | null>(
+  const [searchData, setSearchData] = useState<ListResponse<Asset> | null>(
     null
   );
 

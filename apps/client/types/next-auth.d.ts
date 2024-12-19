@@ -7,10 +7,10 @@ import 'next-auth/jwt';
 
 declare module 'next-auth' {
   interface User {
-    userId: string;
+    userId: number;
     firstName: string | null | undefined;
     lastName: string | null | undefined;
-    username: string | null | undefined;
+    username: string | undefined;
     email: string | null | undefined;
     role: string;
     accessToken: string;

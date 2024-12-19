@@ -17,7 +17,7 @@ import {
   CircularCloseIcon,
   InfoIcon,
 } from '~/lib/components/CustomIcons';
-import { AssetFormImage } from '~/lib/interfaces/asset.interfaces';
+import { AssetFormImage } from '~/lib/interfaces/asset/general.interface';
 import { FormSectionInfo } from '@repo/ui/components';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';

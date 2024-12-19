@@ -1,4 +1,4 @@
-import { AssetFormDetails } from '~/lib/interfaces/asset.interfaces';
+import { AssetFormDetails } from '~/lib/interfaces/asset/general.interface';
 import { FORM_ENUM } from '~/lib/utils/constants';
 
 interface Base {

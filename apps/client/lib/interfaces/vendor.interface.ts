@@ -1,13 +1,6 @@
-interface Vendor {
-  isNew: boolean;
-  createdDate: string;
-  createdBy: string;
-  lastModifiedDate: string;
-  lastModifiedBy: string;
-  isDeleted: boolean;
-  deletedDate: string;
-  deletedBy: string;
-  guid: string;
+import { BaseEntity } from '@repo/interfaces';
+
+interface Vendor extends BaseEntity {
   vendorId: number;
   vendorName: string;
   address: string;

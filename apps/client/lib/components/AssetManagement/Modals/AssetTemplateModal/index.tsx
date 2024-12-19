@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Flex, Text, useDisclosure, VStack } from '@chakra-ui/react';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
-import { SearchResponse } from '~/lib/interfaces/general.interfaces';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import {
   useGetAllAssetQuery,
@@ -13,8 +12,9 @@ import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import AssetDetail from '../../AssetDetail';
 import { setAsset } from '~/lib/redux/slices/AssetSlice';
 import { GenericPopover } from '@repo/ui/components';
-import { Asset } from '~/lib/interfaces/asset.interfaces';
+import { Asset } from '~/lib/interfaces/asset/general.interface';
 import Link from 'next/link';
+import { ListResponse } from '@repo/interfaces';
 
 interface TablePopoverProps {
   data: Asset;
@@ -72,7 +72,7 @@ const AssetTemplateModal = (props: AssetTemplateModalProps) => {
   const [searchAsset, { isLoading: searchLoading }] = useSearchAssetsMutation(
     {}
   );
-  const [searchData, setSearchData] = useState<SearchResponse<Asset> | null>(
+  const [searchData, setSearchData] = useState<ListResponse<Asset> | null>(
     null
   );
   const { handleSubmit } = useCustomMutation();

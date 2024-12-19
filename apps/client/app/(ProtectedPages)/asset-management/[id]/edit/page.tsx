@@ -8,8 +8,8 @@ import {
   AcquisitionInfo,
   Asset,
   AssetDocument,
-  AssetImage,
-} from '~/lib/interfaces/asset.interfaces';
+} from '~/lib/interfaces/asset/general.interface';
+import { AssetImage } from '~/lib/interfaces/asset/image.interfaces';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { useGetAssetDocumentsByAssetIdQuery } from '~/lib/redux/services/asset/document.services';
 import {
@@ -21,14 +21,23 @@ import { useGetAssetCustomMaintenancePlanByAssetGuidQuery } from '~/lib/redux/se
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
-export default function Page({ params }: { params: { id: string } }) {
+export default function Page({ params }: { params: { id: number } }) {
   const { data, isLoading } = useGetAssetInfoHeaderByIdQuery({ id: params.id });
   const { data: assetImagesData, isLoading: imagesLoading } =
-    useGetImagesByAssetIdQuery({ id: params.id, pageSize: 25 });
+    useGetImagesByAssetIdQuery(
+      { assetId: params.id, pageSize: 25 },
+      { skip: params.id === undefined }
+    );
   const { data: assetDocumentData, isLoading: documentsLoading } =
-    useGetAssetDocumentsByAssetIdQuery({ id: params.id, pageSize: 25 });
+    useGetAssetDocumentsByAssetIdQuery(
+      { id: params.id, pageSize: 25 },
+      { skip: params.id === undefined }
+    );
   const { data: acquisitionData, isLoading: acquisitionLoading } =
-    useGetAcquisitionInfoByAssetIdQuery({ id: params.id });
+    useGetAcquisitionInfoByAssetIdQuery(
+      { id: params.id },
+      { skip: params.id === undefined }
+    );
   const dispatch = useAppDispatch();
   const { data: assetCustomMaintenancePlan, isLoading: planLoading } =
     useGetAssetCustomMaintenancePlanByAssetGuidQuery(

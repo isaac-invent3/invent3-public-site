@@ -1,4 +1,4 @@
-import { FilterInput } from '~/lib/interfaces/asset.interfaces';
+import { FilterInput } from '~/lib/interfaces/asset/general.interface';
 import CategoryFilter from './FilterComponents/CategoryFilter';
 import StatusFilter from './FilterComponents/StatusFilter';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';

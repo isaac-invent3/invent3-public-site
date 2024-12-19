@@ -6,7 +6,7 @@ import {
   useGetAislesByRoomIdQuery,
   useGetAllAislesQuery,
   useSearchAisleMutation,
-} from '~/lib/redux/services/asset/location.services';
+} from '~/lib/redux/services/location/aisle.services';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 
 interface AisleSelectProps {
@@ -32,7 +32,7 @@ const AisleSelect = (props: AisleSelectProps) => {
   const { data: aislesByRoomIdData, isLoading: isLoadingAislesByRoomId } =
     useGetAislesByRoomIdQuery(
       {
-        id: roomId,
+        id: roomId ?? undefined,
         pageSize: DEFAULT_PAGE_SIZE,
         pageNumber,
       },

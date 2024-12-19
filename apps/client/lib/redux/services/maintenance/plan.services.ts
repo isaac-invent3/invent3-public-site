@@ -1,10 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
-import {
-  BaseApiResponse,
-  ListResponse,
-} from '~/lib/interfaces/general.interfaces';
+import { BaseApiResponse, ListResponse } from '@repo/interfaces';
 import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 
 const getHeaders = () => ({

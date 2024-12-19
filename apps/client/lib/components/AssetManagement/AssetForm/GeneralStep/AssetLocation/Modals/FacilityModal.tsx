@@ -8,7 +8,7 @@ import {
   GenericModal,
   ModalHeading,
 } from '@repo/ui/components';
-import { useCreateFacilityMutation } from '~/lib/redux/services/asset/location.services';
+import { useCreateFacilityMutation } from '~/lib/redux/services/location/facility.services';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { facilitySchema } from '~/lib/schemas/asset/location.schema';
 import LGASelect from '../LGASelect';
@@ -26,10 +26,10 @@ const FacilityModal = (props: FacilityModalProps) => {
 
   const formik = useFormik({
     initialValues: {
-      lgaId: defaultLGAId ?? null,
-      facilityName: null,
-      facilityRef: null,
-      address: null,
+      lgaId: defaultLGAId ?? undefined,
+      facilityName: '',
+      facilityRef: '',
+      address: '',
       longitude: 0,
       latitude: 0,
     },

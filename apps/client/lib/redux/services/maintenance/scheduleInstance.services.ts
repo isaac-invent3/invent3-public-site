@@ -2,10 +2,7 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
 import { MaintenanceScheduleInstance } from '~/lib/interfaces/maintenance.interfaces';
-import {
-  BaseApiResponse,
-  ListResponse,
-} from '~/lib/interfaces/general.interfaces';
+import { BaseApiResponse, ListResponse } from '@repo/interfaces';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',

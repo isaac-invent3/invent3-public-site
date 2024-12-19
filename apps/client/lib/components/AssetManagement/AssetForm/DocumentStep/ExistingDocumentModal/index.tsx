@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
-import { ListResponse } from '~/lib/interfaces/general.interfaces';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import GenericTemplateModal from '~/lib/components/Common/Modals/GenericTemplateModal';
 
@@ -12,13 +11,14 @@ import { createColumnHelper } from '@tanstack/react-table';
 import {
   AssetDocument,
   AssetFormDocument,
-} from '~/lib/interfaces/asset.interfaces';
+} from '~/lib/interfaces/asset/general.interface';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import { Button, DataTable } from '@repo/ui/components';
 import { getDocumentInfo } from '~/lib/utils/helperFunctions';
 import { useField } from 'formik';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
+import { ListResponse } from '@repo/interfaces';
 
 interface ExistingDocumentModalProps {
   isOpen: boolean;

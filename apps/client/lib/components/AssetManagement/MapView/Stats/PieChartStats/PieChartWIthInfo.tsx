@@ -5,9 +5,9 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 interface PieChartWithInfoProps {
-  label: string;
-  mainValue: number;
-  totalValue: number;
+  label: string | undefined;
+  mainValue: number | undefined;
+  totalValue: number | undefined;
 }
 
 const PieChartWithInfo = (props: PieChartWithInfoProps) => {

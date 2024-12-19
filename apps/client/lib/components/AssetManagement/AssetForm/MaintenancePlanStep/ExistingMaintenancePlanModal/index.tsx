@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
-import { ListResponse } from '~/lib/interfaces/general.interfaces';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import GenericTemplateModal from '~/lib/components/Common/Modals/GenericTemplateModal';
 
@@ -14,6 +13,7 @@ import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import MaintenancePlanTable from '~/lib/components/Maintenance/Plans/PlanTable';
+import { ListResponse } from '@repo/interfaces';
 
 interface ExistingMaintenancePlanModalProps {
   isOpen: boolean;

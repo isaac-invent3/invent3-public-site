@@ -11,11 +11,11 @@ import {
 } from '~/lib/redux/services/maintenance/plan.services';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 import Filters from './Filters';
-import { SearchResponse } from '~/lib/interfaces/general.interfaces';
 import { generateSearchCriterion } from '~/lib/utils/helperFunctions';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { FilterDisplay } from '@repo/ui/components';
 import MaintenancePlanTable from './PlanTable';
+import { ListResponse } from '@repo/interfaces';
 
 export const initialFilterData = {
   planType: [],
@@ -49,7 +49,7 @@ const Plans = (props: PlansProp) => {
   const [searchPlan, { isLoading: searchLoading }] =
     useSearchMaintenancePlanMutation({});
   const [searchData, setSearchData] =
-    useState<SearchResponse<MaintenancePlan> | null>(null);
+    useState<ListResponse<MaintenancePlan> | null>(null);
 
   // Search Criterion
   const searchCriterion = {

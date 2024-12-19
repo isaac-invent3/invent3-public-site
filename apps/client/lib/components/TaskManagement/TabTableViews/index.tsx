@@ -3,10 +3,8 @@ import _ from 'lodash';
 import { Flex } from '@chakra-ui/react';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 import {
-  ListResponse,
   LocationFilter,
   SearchCriterion,
-  SearchResponse,
 } from '~/lib/interfaces/general.interfaces';
 import { generateSearchCriterion } from '~/lib/utils/helperFunctions';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
@@ -15,6 +13,7 @@ import Filters from './Filters';
 import TaskInstanceTable from '../Tables/TaskInstanceTable';
 import { useSearchTaskInstancesMutation } from '~/lib/redux/services/task/instance.services';
 import { FilterDisplay } from '@repo/ui/components';
+import { ListResponse } from '@repo/interfaces';
 
 export const initialFilterData = {
   region: [],
@@ -61,7 +60,7 @@ const TabTableView = (props: TabTableViewProps) => {
   const [searchPlan, { isLoading: searchLoading }] =
     useSearchTaskInstancesMutation({});
   const [searchData, setSearchData] =
-    useState<SearchResponse<TaskInstance> | null>(null);
+    useState<ListResponse<TaskInstance> | null>(null);
 
   // Search Criterion
   const searchCriterion = {

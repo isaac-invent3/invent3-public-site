@@ -1,11 +1,11 @@
 import { SimpleGrid, Skeleton } from '@chakra-ui/react';
 
 import PieChartWithInfo from './PieChartWIthInfo';
-import { AssetStats } from '~/lib/interfaces/asset.interfaces';
+import { AssetStatsCummalative } from '~/lib/interfaces/asset/stats.interfaces';
 
 interface PieChartStatsProps {
   isLoading: boolean;
-  data: AssetStats;
+  data: AssetStatsCummalative | undefined;
 }
 const PieChartStats = (props: PieChartStatsProps) => {
   const { isLoading, data: assetInfo } = props;
@@ -41,7 +41,8 @@ const PieChartStats = (props: PieChartStatsProps) => {
         ? Array(4)
             .fill('')
             .map((_, idx) => <Skeleton width="full" height="45px" key={idx} />)
-        : data.map((item, index) => <PieChartWithInfo {...item} key={index} />)}
+        : data &&
+          data.map((item, index) => <PieChartWithInfo {...item} key={index} />)}
     </SimpleGrid>
   );
 };

@@ -8,7 +8,7 @@ import CustomMarker from './CustomMarker';
 import NIGERIA_CORDINATES from '~/lib/utils/NigeriaCordinates';
 import LoadingSpinner from './LoadingSpinner';
 import { getScaleByStateSize } from '~/lib/utils/helperFunctions';
-import { SingleMapAssetData } from '~/lib/interfaces/asset.interfaces';
+import { SingleMapAssetData } from '~/lib/interfaces/asset/general.interface';
 
 interface GeoJSONData {
   type: GeoJsonTypes;

@@ -15,7 +15,7 @@ interface ComponentBoxProps {
   isPrimary: boolean;
   hasParent: boolean;
   children: React.ReactNode;
-  assetName: string;
+  assetName: string | null | undefined;
   nodeType: 'Parent' | 'Asset' | 'Child';
 }
 

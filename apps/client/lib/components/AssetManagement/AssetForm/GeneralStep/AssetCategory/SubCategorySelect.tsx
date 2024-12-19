@@ -22,7 +22,7 @@ const SubCategorySelect = (props: SubCategorySelectProps) => {
   const { data, isLoading, isFetching } =
     useGetAssetSubCatgoriesByCategoryIdQuery(
       {
-        id: categoryId,
+        categoryId: categoryId ?? 0,
         pageSize: DEFAULT_PAGE_SIZE,
         pageNumber,
       },

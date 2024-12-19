@@ -15,13 +15,16 @@ import { FormSectionInfo } from '@repo/ui/components';
 const VendorDetails = () => {
   const dispatch = useAppDispatch();
   const { vendorDetails } = useAppSelector((state) => state.asset.assetForm);
-  const [selectedVendor, setSelectedVendor] = useState<number | null | string>(
-    null
+  const [selectedVendor, setSelectedVendor] = useState<number | undefined>(
+    undefined
   );
   const [searchVendor] = useSearchVendorsMutation({});
-  const { data: vendorData } = useGetVendorByIdQuery(selectedVendor, {
-    skip: !selectedVendor,
-  });
+  const { data: vendorData } = useGetVendorByIdQuery(
+    { id: selectedVendor },
+    {
+      skip: !selectedVendor,
+    }
+  );
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading } = useGetAllVendorsQuery({
     pageSize: DEFAULT_PAGE_SIZE,
@@ -65,7 +68,9 @@ const VendorDetails = () => {
             isLoading={isLoading}
             pageNumber={pageNumber}
             setPageNumber={setPageNumber}
-            handleSelect={(option) => setSelectedVendor(option.value)}
+            handleSelect={(option) =>
+              setSelectedVendor(Number(option.value) ?? undefined)
+            }
           />
         </GridItem>
         <GridItem colSpan={1}>

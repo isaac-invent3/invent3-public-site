@@ -12,7 +12,7 @@ import {
 import React, { useState } from 'react';
 import { useField } from 'formik';
 import { DocumentIcon, InfoIcon } from '~/lib/components/CustomIcons';
-import { AssetFormDocument } from '~/lib/interfaces/asset.interfaces';
+import { AssetFormDocument } from '~/lib/interfaces/asset/general.interface';
 import ExistingDocumentModal from './ExistingDocumentModal';
 import SingleDocument from './SingleDocument';
 

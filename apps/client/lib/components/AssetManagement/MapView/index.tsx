@@ -8,10 +8,8 @@ import {
 import Stats from './Stats';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
 import LoadingSpinner from './Map/LoadingSpinner';
-import {
-  AssetMapStats,
-  SingleMapAssetData,
-} from '~/lib/interfaces/asset.interfaces';
+import { SingleMapAssetData } from '~/lib/interfaces/asset/general.interface';
+import { AssetMapStats } from '~/lib/interfaces/asset/stats.interfaces';
 
 const generateAssetCountOption = (
   data: AssetMapStats[] | undefined

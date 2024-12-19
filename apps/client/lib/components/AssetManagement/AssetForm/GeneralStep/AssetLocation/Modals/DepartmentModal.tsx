@@ -8,7 +8,7 @@ import {
   GenericModal,
   ModalHeading,
 } from '@repo/ui/components';
-import { useCreateDepartmentMutation } from '~/lib/redux/services/asset/location.services';
+import { useCreateDepartmentMutation } from '~/lib/redux/services/location/department.services';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';
 import { departmentSchema } from '~/lib/schemas/asset/location.schema';
@@ -26,9 +26,9 @@ const DepartmentModal = (props: DepartmentModalProps) => {
 
   const formik = useFormik({
     initialValues: {
-      floorId: defaultFloorId ?? null,
-      departmentName: null,
-      departmentRef: null,
+      floorId: defaultFloorId ?? undefined,
+      departmentName: '',
+      departmentRef: '',
     },
     validationSchema: departmentSchema,
     enableReinitialize: true,

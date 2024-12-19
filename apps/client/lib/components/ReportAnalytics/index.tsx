@@ -1,15 +1,12 @@
 'use client';
 
 import { Flex, Grid, HStack, Link, Text, VStack } from '@chakra-ui/react';
-import { useState } from 'react';
-import { TicketFilterInput } from '~/lib/interfaces/ticket.interfaces';
 import {
   useGetAllDefaultReportsQuery,
   useGetAllSavedReportsQuery,
   useGetReportDasboardValuesQuery,
 } from '~/lib/redux/services/reports.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
-import { dateFormatter } from '~/lib/utils/Formatters';
 import GeneralFilter from './Filters/GeneralFilter';
 import Header from './Header';
 import BranchesWithTopAssetsChart from './ReportDashboard/BranchesWithTopAssetsChart';
@@ -19,25 +16,6 @@ import ReportCard from './ReportDashboard/ReportCard';
 import SavedTemplate from './ReportDashboard/SavedTemplate';
 
 const ReportAnalytics = () => {
-  const getTodayDate = () => {
-    return dateFormatter(new Date(), 'DD-MM-YYYY') as string;
-  };
-
-  const initialFilters = {
-    region: [],
-    area: [],
-    branch: [],
-    fromDate: getTodayDate(),
-    toDate: getTodayDate(),
-  };
-
-  const [filterData, setFilterData] =
-    useState<TicketFilterInput>(initialFilters);
-
-  const clearFilters = () => {
-    setFilterData(initialFilters);
-  };
-
   const { data: defaultReports, isLoading: defaultReportsLoading } =
     useGetAllDefaultReportsQuery({
       pageSize: DEFAULT_PAGE_SIZE,
@@ -89,11 +67,7 @@ const ReportAnalytics = () => {
     <Flex width="full" direction="column" pb="24px">
       <Header />
 
-      <GeneralFilter
-        filterData={filterData}
-        setFilterData={setFilterData}
-        clearFilters={clearFilters}
-      />
+      <GeneralFilter />
 
       <HStack
         alignItems="center"

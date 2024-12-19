@@ -2,8 +2,9 @@
 import { Flex, HStack, Skeleton, Text, VStack } from '@chakra-ui/react';
 import { DataTable, GenericBreadCrumb } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ViewReportTableData } from '~/lib/interfaces/report.interfaces';
+import { useAppSelector } from '~/lib/redux/hooks';
 import {
   useGetReportByIdQuery,
   useViewReportByIdQuery,
@@ -12,6 +13,7 @@ import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import PageHeader from '../../UI/PageHeader';
 import ReportViewFilters from '../Filters/ReportViewFilters';
+import moment from 'moment';
 
 interface ReportViewProps {
   id: string;
@@ -22,6 +24,7 @@ const ReportView = (props: ReportViewProps) => {
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
 
   const [activeFilter, setActiveFilter] = useState<'general' | null>(null);
+  const { filters } = useAppSelector((state) => state.report);
 
   const breadCrumbData = [
     {
@@ -37,8 +40,19 @@ const ReportView = (props: ReportViewProps) => {
   const { data: reportInfo, isLoading: loadingReportInfo } =
     useGetReportByIdQuery(props.id);
 
+
   const { data: reportTableData, isLoading: loadingReportTableData } =
-    useViewReportByIdQuery(props.id);
+    useViewReportByIdQuery({
+      reportId: props.id,
+      startDate: moment(filters.fromDate, 'DD/MM/YYYY HH:mm')
+        .utcOffset(0, true)
+        .toISOString(),
+      endDate: moment(filters.toDate, 'DD/MM/YYYY HH:mm')
+        .utcOffset(0, true)
+        .toISOString(),
+      pageNumber: 1,
+      pageSize: DEFAULT_PAGE_SIZE,
+    });
 
   const columnHelper = createColumnHelper<any>();
 
@@ -46,11 +60,11 @@ const ReportView = (props: ReportViewProps) => {
     if (!data || data.length === 0) return [];
 
     // Get keys from the first record to generate columns dynamically
-    const dynamicKeys = Object.keys(data[0]?.model?.data || {});
+    const dynamicKeys = Object.keys(data[0]?.reportValues || {});
 
     return dynamicKeys.map((key) => {
       return columnHelper.accessor(key, {
-        cell: (info) => info.row.original.model.data[key],
+        cell: (info) => info.row.original.reportValues[key],
         header: key.replace(/([A-Z])/g, ' $1').toUpperCase(), // Format key to readable header
         enableSorting: false,
       });

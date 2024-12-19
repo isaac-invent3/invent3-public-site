@@ -1,4 +1,4 @@
-import { Option } from './general.interfaces';
+import { Option, SearchQuery } from './general.interfaces';
 
 interface CreateReportPayload {
   reportName: string;
@@ -48,6 +48,12 @@ interface GenerateReportDetails {
   endDate: string;
 }
 
+interface ViewReportTableDataPayload extends SearchQuery {
+  reportId:string
+  startDate: string;
+  endDate: string;
+}
+
 interface ReportDashboardValuesResponse {
   newAssets: number;
   topFiveBranchesWithAssets: Record<string, number> | undefined;
@@ -59,10 +65,7 @@ interface ReportDashboardValuesResponse {
 }
 
 interface ViewReportTableData {
-  model: {
-    data: Record<string, any>;
-    message: string;
-  };
+  reportValues: Record<string, any>;
 }
 
 interface ScheduleReportPayload {
@@ -81,6 +84,14 @@ interface ScheduleReportPayload {
   createdBy: string;
 }
 
+interface ReportFilterInput {
+  region: Option[];
+  area: Option[];
+  branch: Option[];
+  fromDate: string;
+  toDate: string;
+}
+
 export type {
   ContextTypeColumn,
   CreateReportPayload,
@@ -88,6 +99,8 @@ export type {
   GenerateReportDetails,
   Report,
   ReportDashboardValuesResponse,
-  ViewReportTableData,
+  ReportFilterInput,
   ScheduleReportPayload,
+  ViewReportTableData,
+  ViewReportTableDataPayload,
 };

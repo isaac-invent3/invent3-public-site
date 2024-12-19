@@ -9,6 +9,7 @@ import {
   ReportDashboardValuesResponse,
   ScheduleReportPayload,
   ViewReportTableData,
+  ViewReportTableDataPayload,
 } from '~/lib/interfaces/report.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../baseQueryWithReauth';
@@ -67,10 +68,10 @@ export const reportApi = createApi({
 
     viewReportById: builder.query<
       BaseApiResponse<ListResponse<ViewReportTableData>>,
-      string
+      ViewReportTableDataPayload
     >({
-      query: (id: string) => ({
-        url: `/Invent3Pro/ViewReport/${id}`,
+      query: ({ reportId, ...data }) => ({
+        url: generateQueryStr(`/Reports/ViewReport/${reportId}?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -96,5 +97,5 @@ export const {
   useGetReportDasboardValuesQuery,
   useGetReportByIdQuery,
   useViewReportByIdQuery,
-  useScheduleReportMutation
+  useScheduleReportMutation,
 } = reportApi;

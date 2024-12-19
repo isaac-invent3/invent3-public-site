@@ -43,6 +43,8 @@ import generalSlice from './slices/GeneralSlice';
 import maintenanceSlice from './slices/MaintenanceSlice';
 import taskSlice from './slices/TaskSlice';
 import ticketSlice from './slices/TicketSlice';
+import reportSlice from './slices/ReportSlice';
+
 
 import { scheduleInstanceApi } from './services/maintenance/scheduleInstance.services';
 import { systemContextTypesApi } from './services/systemcontexttypes.services';
@@ -51,7 +53,7 @@ import { assetDocumentApi } from './services/asset/document.services';
 export const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['general'],
+  whitelist: ['general', 'report'],
 };
 
 const rootReducer = combineReducers({
@@ -91,6 +93,7 @@ const rootReducer = combineReducers({
   task: taskSlice,
   date: dateSlice,
   ticket: ticketSlice,
+  report: reportSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

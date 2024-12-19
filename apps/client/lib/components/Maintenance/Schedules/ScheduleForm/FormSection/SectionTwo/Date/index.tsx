@@ -24,7 +24,7 @@ import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useValidateFirstInstanceScheduledDateMutation } from '~/lib/redux/services/maintenance/schedule.services';
 import { updateRecurrence } from '~/lib/redux/slices/DateSlice';
 import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';
-import RecurrenceModal from '~/lib/components/Maintenance/Schedules/ScheduleForm/FormSection/SectionTwo/Date/RecurrenceModal';
+import RecurrenceModal from '~/lib/components/Common/RecurrenceComponents/RecurrenceModal';
 
 interface DateProps {
   sectionMaxWidth: string;

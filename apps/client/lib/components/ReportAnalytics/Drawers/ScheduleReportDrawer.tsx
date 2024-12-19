@@ -19,15 +19,15 @@ import {
 import { Field, FormikProvider, useFormik } from 'formik';
 import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
+import EndDateTime from '~/lib/components/Common/RecurrenceComponents/EndDateTime';
+import Frequency from '~/lib/components/Common/RecurrenceComponents/Frequency';
+import Intervals from '~/lib/components/Common/RecurrenceComponents/Intervals';
+import StartDateTime from '~/lib/components/Common/RecurrenceComponents/StartDateTime';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { RecurrenceInfo } from '~/lib/interfaces/general.interfaces';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { useScheduleReportMutation } from '~/lib/redux/services/reports.services';
 import { scheduleReportSchema } from '~/lib/schemas/report.schema';
-import EndDateTime from '../../Maintenance/Schedules/ScheduleForm/FormSection/SectionTwo/Date/RecurrenceModal/EndDateTime';
-import Frequency from '../../Maintenance/Schedules/ScheduleForm/FormSection/SectionTwo/Date/RecurrenceModal/Frequency';
-import Intervals from '../../Maintenance/Schedules/ScheduleForm/FormSection/SectionTwo/Date/RecurrenceModal/Intervals';
-import StartDateTime from '../../Maintenance/Schedules/ScheduleForm/FormSection/SectionTwo/Date/RecurrenceModal/StartDateTime';
 
 interface ScheduleReportDrawerProps {
   isOpen: boolean;

@@ -1,60 +1,38 @@
 import { HStack } from '@chakra-ui/react';
 
 import CombinedLocationFilter from '~/lib/components/Common/FilterComponents/CombinedLocationFilter';
-import { Option } from '~/lib/interfaces/general.interfaces';
-import { TicketFilterInput } from '~/lib/interfaces/ticket.interfaces';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import {
+  resetReportFilters,
+  updateReportFilters,
+} from '~/lib/redux/slices/ReportSlice';
 import FilterWrapper from '../../Common/FilterComponents/FilterWrapper';
 import DateRangeFilter from './DateRangeFilter';
 
-type FilterLabel = keyof TicketFilterInput;
-
-interface GeneralFilterProps {
-  filterData: TicketFilterInput;
-  setFilterData: React.Dispatch<React.SetStateAction<TicketFilterInput>>;
-  clearFilters: () => void;
-}
-
-const GeneralFilter = (props: GeneralFilterProps) => {
-  const { filterData, setFilterData, clearFilters } = props;
-
-  const handleFilterData = (
-    option: Option | string,
-    filterLabel: FilterLabel
-  ) => {
-    if (
-      typeof option === 'string' ||
-      typeof filterData[filterLabel] === 'string'
-    ) {
-      setFilterData((prevData) => ({ ...prevData, [filterLabel]: option }));
-    } else {
-      const newValue =
-        filterData[filterLabel].find((item) => item.value === option.value) !==
-        undefined
-          ? filterData[filterLabel].filter(
-              (item) => item.value !== option.value
-            )
-          : [...filterData[filterLabel], option];
-
-      setFilterData({ ...filterData, [filterLabel]: newValue });
-    }
-  };
+const GeneralFilter = () => {
+  const { filters } = useAppSelector((state) => state.report);
+  const dispatch = useAppDispatch();
 
   return (
     <HStack spacing="7px" mt="42px">
       <FilterWrapper
         handleApplyFilter={() => {}}
-        handleClearFilter={() => clearFilters()}
+        handleClearFilter={() => dispatch(resetReportFilters())}
       >
         <DateRangeFilter
-          fromDate={filterData.fromDate}
-          toDate={filterData.toDate}
-          handleSelectedOption={handleFilterData}
+          fromDate={filters.fromDate}
+          toDate={filters.toDate}
+          handleSelectedOption={(option, key) => {
+            dispatch(updateReportFilters({ filterLabel: key, option }));
+          }}
         />
         <CombinedLocationFilter
-          selectedRegion={filterData.region}
-          selectedArea={filterData.area}
-          selectedBranch={filterData.branch}
-          handleSelectedOption={handleFilterData}
+          selectedRegion={filters.region}
+          selectedArea={filters.area}
+          selectedBranch={filters.branch}
+          handleSelectedOption={(option, key) => {
+            dispatch(updateReportFilters({ filterLabel: key, option }));
+          }}
         />
       </FilterWrapper>
     </HStack>

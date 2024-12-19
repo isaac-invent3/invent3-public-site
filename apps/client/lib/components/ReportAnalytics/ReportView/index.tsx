@@ -4,9 +4,9 @@ import { useState } from 'react';
 import { useGetallAssetQuery } from '~/lib/redux/services/asset/general.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import AssetTable from '../../AssetManagement/Common/AssetTable';
-import GenericBreadCrumb from '../../UI/BreadCrumb';
 import PageHeader from '../../UI/PageHeader';
 import ReportViewFilters from '../Filters/ReportViewFilters';
+import { GenericBreadCrumb } from '@repo/ui/components';
 
 const ReportView = () => {
   const { data, isLoading, isFetching } = useGetallAssetQuery({

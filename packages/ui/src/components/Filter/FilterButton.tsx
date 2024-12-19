@@ -14,10 +14,11 @@ interface FilterButtonProps extends StackProps {
   icon: ComponentWithAs<'svg', IconProps>;
   label: string;
   handleClick: () => void;
+  chevron?: boolean;
 }
 
 const FilterButton = (props: FilterButtonProps) => {
-  const { isActive, icon, label, handleClick, ...rest } = props;
+  const { isActive, icon, label, handleClick, chevron = true, ...rest } = props;
 
   return (
     <HStack
@@ -46,13 +47,15 @@ const FilterButton = (props: FilterButtonProps) => {
           {label}
         </Text>
       </HStack>
-      <Icon
-        as={ChevronDownIcon}
-        boxSize="16px"
-        color={isActive ? 'white' : 'neutral.800'}
-        transition="transform 0.3s ease-out"
-        transform={isActive ? 'rotate(-180deg)' : 'rotate(0deg)'}
-      />
+      {chevron && (
+        <Icon
+          as={ChevronDownIcon}
+          boxSize="16px"
+          color={isActive ? 'white' : 'neutral.800'}
+          transition="transform 0.3s ease-out"
+          transform={isActive ? 'rotate(-180deg)' : 'rotate(0deg)'}
+        />
+      )}
     </HStack>
   );
 };

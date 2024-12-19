@@ -1,9 +1,9 @@
 import { HStack, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 import { CalendarIcon, FilterIcon } from '../../CustomIcons';
-import FilterButton from '../../UI/Filter/FilterButton';
 import ScheduleReportDrawer from '../Drawers/ScheduleReportDrawer';
 import ShareReportPopover from '../ReportView/ShareReportPopover';
+import { FilterButton } from '@repo/ui/components';
 
 interface ReportViewFiltersProps {
   activeFilter: 'general' | null;

@@ -14,9 +14,9 @@ import {
 } from '@chakra-ui/react';
 import { useRef } from 'react';
 
+import { Button } from '@repo/ui/components';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { DownloadIcon } from '../../CustomIcons';
-import Button from '../../UI/Button';
 
 type SelectedReportActions = 'download-pdf' | 'download-csv' | 'share-email';
 

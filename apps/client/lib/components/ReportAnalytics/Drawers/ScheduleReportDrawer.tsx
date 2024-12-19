@@ -8,18 +8,20 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
+import {
+  BackButton,
+  Button,
+  CheckBox,
+  FormInputWrapper,
+  GenericDrawer,
+  TextInput,
+} from '@repo/ui/components';
 import { Field, FormikProvider, useFormik } from 'formik';
 import { useState } from 'react';
-import Button from '../../UI/Button';
-import BackButton from '../../UI/Button/BackButton';
-import CheckBox from '../../UI/CheckBox';
-import EndDateTime from '../../UI/DateTimeComponents/RecurrenceModal/EndDateTime';
-import Frequency from '../../UI/DateTimeComponents/RecurrenceModal/Frequency';
-import Intervals from '../../UI/DateTimeComponents/RecurrenceModal/Intervals';
-import StartDateTime from '../../UI/DateTimeComponents/RecurrenceModal/StartDateTime';
-import FormInputWrapper from '../../UI/Form/FormInputWrapper';
-import GenericDrawer from '../../UI/GenericDrawer';
-import TextInput from '../../UI/TextInput';
+import EndDateTime from '../../Maintenance/Schedules/ScheduleForm/FormSection/SectionTwo/Date/RecurrenceModal/EndDateTime';
+import Frequency from '../../Maintenance/Schedules/ScheduleForm/FormSection/SectionTwo/Date/RecurrenceModal/Frequency';
+import Intervals from '../../Maintenance/Schedules/ScheduleForm/FormSection/SectionTwo/Date/RecurrenceModal/Intervals';
+import StartDateTime from '../../Maintenance/Schedules/ScheduleForm/FormSection/SectionTwo/Date/RecurrenceModal/StartDateTime';
 
 interface ScheduleReportDrawerProps {
   isOpen: boolean;

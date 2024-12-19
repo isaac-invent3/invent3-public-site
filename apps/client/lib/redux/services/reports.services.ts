@@ -7,6 +7,8 @@ import {
 import {
   Report,
   ReportDashboardValuesResponse,
+  ScheduleReportPayload,
+  ViewReportTableData,
 } from '~/lib/interfaces/report.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../baseQueryWithReauth';
@@ -54,8 +56,45 @@ export const reportApi = createApi({
       }),
       providesTags: ['reportDashboardValues'],
     }),
+
+    getReportById: builder.query<BaseApiResponse<Report>, string>({
+      query: (id: string) => ({
+        url: `/Reports/${id}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+
+    viewReportById: builder.query<
+      BaseApiResponse<ListResponse<ViewReportTableData>>,
+      string
+    >({
+      query: (id: string) => ({
+        url: `/Invent3Pro/ViewReport/${id}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+
+    scheduleReport: builder.mutation<
+      BaseApiResponse<ListResponse<ViewReportTableData>>,
+      ScheduleReportPayload
+    >({
+      query: (body: any) => ({
+        url: `/ReportSchedules`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useGetAllSavedReportsQuery,useGetAllDefaultReportsQuery, useGetReportDasboardValuesQuery } =
-  reportApi;
+export const {
+  useGetAllSavedReportsQuery,
+  useGetAllDefaultReportsQuery,
+  useGetReportDasboardValuesQuery,
+  useGetReportByIdQuery,
+  useViewReportByIdQuery,
+  useScheduleReportMutation
+} = reportApi;

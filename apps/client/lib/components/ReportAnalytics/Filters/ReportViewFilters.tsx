@@ -1,23 +1,24 @@
 import { HStack, useDisclosure } from '@chakra-ui/react';
+import { FilterButton } from '@repo/ui/components';
 import React from 'react';
+import { Report } from '~/lib/interfaces/report.interfaces';
 import { CalendarIcon, FilterIcon } from '../../CustomIcons';
 import ScheduleReportDrawer from '../Drawers/ScheduleReportDrawer';
 import ShareReportPopover from '../ReportView/ShareReportPopover';
-import { FilterButton } from '@repo/ui/components';
 
 interface ReportViewFiltersProps {
   activeFilter: 'general' | null;
   setActiveFilter: React.Dispatch<React.SetStateAction<'general' | null>>;
+  report: Report;
 }
 const ReportViewFilters = (props: ReportViewFiltersProps) => {
-  const { activeFilter, setActiveFilter } = props;
+  const { activeFilter, setActiveFilter, report } = props;
 
-
-    const {
-      isOpen: isOpenSchedule,
-      onOpen: onOpenSchedule,
-      onClose: onCloseSchedule,
-    } = useDisclosure();
+  const {
+    isOpen: isOpenSchedule,
+    onOpen: onOpenSchedule,
+    onClose: onCloseSchedule,
+  } = useDisclosure();
 
   return (
     <HStack spacing="16px">
@@ -40,7 +41,11 @@ const ReportViewFilters = (props: ReportViewFiltersProps) => {
 
       <ShareReportPopover report={[]} />
 
-      <ScheduleReportDrawer isOpen={isOpenSchedule} onClose={onCloseSchedule} />
+      <ScheduleReportDrawer
+        isOpen={isOpenSchedule}
+        onClose={onCloseSchedule}
+        reportId={report.reportId}
+      />
     </HStack>
   );
 };

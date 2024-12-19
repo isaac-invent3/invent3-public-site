@@ -13,11 +13,10 @@ import { dateFormatter } from '~/lib/utils/Formatters';
 interface SavedTemplateProps {
   isLoading?: boolean;
   report: Report;
-  index: number;
 }
 
 const SavedTemplate = (props: SavedTemplateProps) => {
-  const { report, isLoading, index } = props;
+  const { report, isLoading } = props;
   return (
     <GridItem>
       <Skeleton isLoaded={!isLoading} width="full" height="full">
@@ -61,7 +60,7 @@ const SavedTemplate = (props: SavedTemplateProps) => {
               color="#0366EF"
               fontWeight="500"
               fontSize="12px"
-              href={`/report-analytics/${index}`}
+              href={`/report-analytics/${report.reportId}`}
             >
               Generate Report
             </Link>

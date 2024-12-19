@@ -23,4 +23,26 @@ const generateReportSchema = () =>
     pageSize: Yup.number().min(0, 'Page Size must be 0 or greater'),
   });
 
-export { generateReportSchema };
+const scheduleReportSchema = () =>
+  Yup.object().shape({
+    reportId: Yup.number().required('Report ID is required'),
+    frequencyId: Yup.string().required('Frequency ID is Required'),
+    intervalValue: Yup.number().nullable(),
+    dayOccurrences: Yup.array().of(Yup.string()).nullable(),
+    weekOccurrences: Yup.array().of(Yup.number()).nullable(),
+    monthOccurrences: Yup.array().of(Yup.number()).nullable(),
+    yearOccurrences: Yup.object()
+      .shape(
+        Array.from({ length: 12 }, (_, i) => i + 1).reduce(
+          (acc, month) => ({
+            ...acc,
+            [month]: Yup.array().of(Yup.number()).nullable(),
+          }),
+          {}
+        )
+      )
+      .nullable(),
+  });
+
+
+export { generateReportSchema, scheduleReportSchema };

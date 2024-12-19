@@ -58,6 +58,29 @@ interface ReportDashboardValuesResponse {
   totalTasks: number;
 }
 
+interface ViewReportTableData {
+  model: {
+    data: Record<string, any>;
+    message: string;
+  };
+}
+
+interface ScheduleReportPayload {
+  reportId: number;
+  frequencyId: number | null;
+  intervalValue: number | null;
+  dayOccurrences: string[];
+  weekOccurrences: string[];
+  monthOccurrences: string[];
+  // yearOccurrences: {
+  //   additionalProp1: [0];
+  //   additionalProp2: [0];
+  //   additionalProp3: [0];
+  // };
+  recipientIds: string[];
+  createdBy: string;
+}
+
 export type {
   ContextTypeColumn,
   CreateReportPayload,
@@ -65,4 +88,6 @@ export type {
   GenerateReportDetails,
   Report,
   ReportDashboardValuesResponse,
+  ViewReportTableData,
+  ScheduleReportPayload,
 };

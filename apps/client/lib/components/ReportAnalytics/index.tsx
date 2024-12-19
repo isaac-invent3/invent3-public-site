@@ -152,12 +152,11 @@ const ReportAnalytics = () => {
           mt="10px"
         >
           {defaultReportsLoading && (
-            <DefaultReport index={0} report={dummyReport} isLoading={true} />
+            <DefaultReport report={dummyReport} isLoading={true} />
           )}
 
           {defaultReports?.data.items.map((report, index) => (
             <DefaultReport
-              index={index}
               key={index}
               report={report}
               isLoading={defaultReportsLoading}
@@ -189,11 +188,11 @@ const ReportAnalytics = () => {
           mt="10px"
         >
           {savedReportsLoading && (
-            <SavedTemplate index={0} report={dummyReport} isLoading={true} />
+            <SavedTemplate report={dummyReport} isLoading={true} />
           )}
 
           {savedReports?.data.items.map((report, index) => (
-            <SavedTemplate index={index} key={index} report={report} />
+            <SavedTemplate key={index} report={report} />
           ))}
         </Grid>
       </VStack>

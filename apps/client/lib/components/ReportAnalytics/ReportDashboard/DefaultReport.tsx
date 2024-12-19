@@ -5,11 +5,10 @@ import { dateFormatter } from '~/lib/utils/Formatters';
 interface DefaultReportProps {
   isLoading?: boolean;
   report: Report;
-  index: number;
 }
 
 const DefaultReport = (props: DefaultReportProps) => {
-  const { report, isLoading, index } = props;
+  const { report, isLoading } = props;
   return (
     <GridItem>
       <Skeleton isLoaded={!isLoading} width="full" height="full">
@@ -53,7 +52,7 @@ const DefaultReport = (props: DefaultReportProps) => {
               color="#0366EF"
               fontWeight="500"
               fontSize="12px"
-              href={`/report-analytics/${index}`}
+              href={`/report-analytics/${report.reportId}`}
             >
               View Report
             </Link>

@@ -17,7 +17,13 @@ import {
   TextInput,
 } from '@repo/ui/components';
 import { Field, FormikProvider, useFormik } from 'formik';
-import { useState } from 'react';
+import { getSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
+import { RecurrenceInfo } from '~/lib/interfaces/general.interfaces';
+import { useAppSelector } from '~/lib/redux/hooks';
+import { useScheduleReportMutation } from '~/lib/redux/services/reports.services';
+import { scheduleReportSchema } from '~/lib/schemas/report.schema';
 import EndDateTime from '../../Maintenance/Schedules/ScheduleForm/FormSection/SectionTwo/Date/RecurrenceModal/EndDateTime';
 import Frequency from '../../Maintenance/Schedules/ScheduleForm/FormSection/SectionTwo/Date/RecurrenceModal/Frequency';
 import Intervals from '../../Maintenance/Schedules/ScheduleForm/FormSection/SectionTwo/Date/RecurrenceModal/Intervals';
@@ -26,24 +32,80 @@ import StartDateTime from '../../Maintenance/Schedules/ScheduleForm/FormSection/
 interface ScheduleReportDrawerProps {
   isOpen: boolean;
   onClose: () => void;
+  reportId: number;
 }
 
 const ScheduleReportDrawer = (props: ScheduleReportDrawerProps) => {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, reportId } = props;
 
-  //   TODO: Fill form details
+  const recurrence = useAppSelector((state) => state.date.info.recurrence);
+
+  const [scheduleReport, { isLoading: isSchedulingReport }] =
+    useScheduleReportMutation({});
+
+  const { handleSubmit } = useCustomMutation();
+
   const formik = useFormik({
     initialValues: {
-      startDate: null,
-      endDate: null,
+      reportId,
+      frequencyId: null,
+      intervalValue: null,
+      dayOccurrences: [],
+      weekOccurrences: [],
+      monthOccurrences: [],
+      yearOccurrences: [],
+      recipientIds: [],
     },
 
     enableReinitialize: true,
-    onSubmit: async () => {},
+    validationSchema: scheduleReportSchema,
+    onSubmit: async (data, { resetForm }) => {
+      const session = await getSession();
+
+      const payload = { ...data, createdBy: session?.user.id! };
+
+      const response = await handleSubmit(
+        scheduleReport,
+        payload,
+        'Report Scheduled Successfully'
+      );
+
+      if (response?.data) {
+        resetForm();
+        // onClose();
+      }
+    },
   });
 
   const [maxInterval, setMaxInterval] = useState(1);
 
+  const updateForm = (recurrence: RecurrenceInfo) => {
+    formik.setFieldValue('frequencyId', recurrence.frequency?.value);
+    formik.setFieldValue('intervalValue', recurrence.interval);
+    formik.setFieldValue('dayOccurrences', recurrence.repeatIntervals.daily);
+    formik.setFieldValue('weekOccurrences', recurrence.repeatIntervals.weekly);
+    formik.setFieldValue(
+      'monthOccurrences',
+      recurrence.repeatIntervals.monthly
+    );
+    formik.setFieldValue(
+      'yearOccurrences',
+      Object.fromEntries(
+        Object.entries(recurrence.repeatIntervals.annually).filter(
+          // eslint-disable-next-line no-unused-vars
+          ([_, value]) => value.length > 0
+        )
+      )
+    );
+  };
+
+  useEffect(() => {
+    updateForm(recurrence);
+  }, [recurrence]);
+
+  useEffect(() => {
+    console.log({ values: formik.values, errors: formik.errors });
+  }, [formik.errors, formik.values]);
   return (
     <GenericDrawer isOpen={isOpen} onClose={onClose} maxWidth="507px">
       <DrawerHeader p={0} m={0}>
@@ -141,6 +203,7 @@ const ScheduleReportDrawer = (props: ScheduleReportDrawerProps) => {
               handleClick={() => {
                 formik.handleSubmit();
               }}
+              isLoading={isSchedulingReport}
               customStyles={{ width: '137px', height: '50px' }}
             >
               Schedule Report

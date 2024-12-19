@@ -13,12 +13,12 @@ const generateReportSchema = () =>
           }),
         })
       )
-      .required('Criterion is Required'),
+      .required('Criterion is Required').min(1),
     contextTypeId: Yup.number().required('Context Type ID is Required'),
-    orderByCriteria: Yup.object().shape({
-      columnName: Yup.string().required('Column Name is Required'),
-      operation: Yup.number().required('Operation is Required'),
-    }),
+    // orderByCriteria: Yup.object().shape({
+    //   columnName: Yup.string().required('Column Name is Required'),
+    //   operation: Yup.number().required('Operation is Required'),
+    // }).nullable(),
     pageNumber: Yup.number().min(0, 'Page Number must be 0 or greater'),
     pageSize: Yup.number().min(0, 'Page Size must be 0 or greater'),
   });

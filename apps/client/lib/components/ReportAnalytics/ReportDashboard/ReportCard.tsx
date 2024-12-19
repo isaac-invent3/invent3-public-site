@@ -1,0 +1,62 @@
+import {
+  GridItem,
+  Heading,
+  Link,
+  Skeleton,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
+import { formatNumberShort } from '~/lib/utils/helperFunctions';
+
+type Card = {
+  title: string;
+  value?: number;
+  link: string;
+  color?: string;
+};
+
+interface ReportCardProps {
+  isLoading?: boolean;
+  card: Card;
+}
+
+const ReportCard = (props: ReportCardProps) => {
+  const { isLoading, card } = props;
+  return (
+    <GridItem
+      bg="white"
+      p="16px"
+      borderRadius="md"
+      border="1px solid #F2F1F1"
+      height="144px"
+    >
+      <VStack align="start" height="100%" justifyContent="space-between">
+        <Skeleton isLoaded={!isLoading} width="full" height="full">
+          <VStack align="start" spacing="16px">
+            <Text
+              color={card.color ?? '#42403D'}
+              fontWeight={500}
+              fontSize="14px"
+            >
+              {card.title}
+            </Text>
+            <Heading
+              fontSize="36px"
+              lineHeight="38.02px"
+              fontWeight={800}
+              color={card.color ?? '#0E2642'}
+            >
+              {card.value && formatNumberShort(card.value)}
+            </Heading>
+          </VStack>
+
+          <Link color="#0366EF" fontWeight="500" fontSize="12px" href="#">
+            {card.link}
+          </Link>
+        </Skeleton>
+      </VStack>
+    </GridItem>
+  );
+};
+
+export default ReportCard;

@@ -1,4 +1,4 @@
-import { Option } from "./general.interfaces";
+import { Option } from './general.interfaces';
 
 interface CreateReportPayload {
   reportName: string;
@@ -26,16 +26,17 @@ interface Report {
 }
 
 type GenerateReportCriterion = {
-  columnName: string;
-  columnValue: string;
-  operation: number;
+  columnName: string | null;
+  columnValue: string | null;
+  operation: number | null;
   join: number;
 };
 
 type ContextTypeColumn = {
   columnId: number;
   columnName: string;
-  columnType: 'string' | 'number' | 'boolean';
+  columnType: 'string' | 'number' | 'boolean' | 'select';
+  relativeUrl?: string;
 };
 
 interface GenerateReportDetails {
@@ -47,10 +48,21 @@ interface GenerateReportDetails {
   endDate: string;
 }
 
+interface ReportDashboardValuesResponse {
+  newAssets: number;
+  topFiveBranchesWithAssets: Record<string, number> | undefined;
+  totalAssets: number;
+  totalCost: number;
+  totalDisposedAssets: number;
+  totalMaintenancePlans: number;
+  totalTasks: number;
+}
+
 export type {
+  ContextTypeColumn,
   CreateReportPayload,
   GenerateReportCriterion,
   GenerateReportDetails,
   Report,
-  ContextTypeColumn,
+  ReportDashboardValuesResponse,
 };

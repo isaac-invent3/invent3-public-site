@@ -153,7 +153,7 @@ const DynamicConditions = () => {
                     >
                       <Select
                         title="Column"
-                        options={getFilteredColumns(index)}
+                        options={selectedColumns}
                         selectedOption={getSelectedColumn(index)}
                         handleSelect={(option) => {
                           setFieldValue(

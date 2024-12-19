@@ -4,7 +4,10 @@ import {
   ListResponse,
   QueryParams,
 } from '~/lib/interfaces/general.interfaces';
-import { Report } from '~/lib/interfaces/report.interfaces';
+import {
+  Report,
+  ReportDashboardValuesResponse,
+} from '~/lib/interfaces/report.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../baseQueryWithReauth';
 
@@ -14,7 +17,7 @@ const getHeaders = () => ({
 export const reportApi = createApi({
   reducerPath: 'reportApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['allSavedReports', 'allDefaultReports'],
+  tagTypes: ['allSavedReports', 'allDefaultReports', 'reportDashboardValues'],
   endpoints: (builder) => ({
     getAllSavedReports: builder.query<
       BaseApiResponse<ListResponse<Report>>,
@@ -39,7 +42,20 @@ export const reportApi = createApi({
       }),
       providesTags: ['allDefaultReports'],
     }),
+
+    getReportDasboardValues: builder.query<
+      BaseApiResponse<ReportDashboardValuesResponse>,
+      QueryParams
+    >({
+      query: () => ({
+        url: `/Reports/GetReportDashboardValues`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['reportDashboardValues'],
+    }),
   }),
 });
 
-export const { useGetAllSavedReportsQuery } = reportApi;
+export const { useGetAllSavedReportsQuery,useGetAllDefaultReportsQuery, useGetReportDasboardValuesQuery } =
+  reportApi;

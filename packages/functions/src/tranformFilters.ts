@@ -1,4 +1,4 @@
-import { FilterInput } from './interfaces/common.interface';
+import { FilterInput } from '@repo/interfaces';
 
 const transformFilters = (filters: FilterInput) => {
   return Object.fromEntries(

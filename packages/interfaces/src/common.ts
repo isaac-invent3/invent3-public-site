@@ -1,4 +1,4 @@
-import { OPERATORS } from '../constants';
+import { OPERATORS } from '@repo/constants';
 
 interface Criterion {
   columnName: string;

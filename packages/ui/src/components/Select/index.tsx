@@ -2,7 +2,7 @@ import { Box, FormControl, FormLabel, Icon } from '@chakra-ui/react';
 import Select, { components } from 'react-select';
 import AsyncSelect from 'react-select/async';
 // eslint-disable-next-line no-redeclare
-import { Option } from '../../interfaces/general.interfaces';
+import { Option } from '@repo/interfaces';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ChevronDownIcon } from '../CustomIcons';
 import ErrorMessage from '../ErrorMessage';

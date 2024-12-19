@@ -10,4 +10,4 @@ const OPERATORS = {
   EndsWith: 9,
 };
 
-export { OPERATORS };
+export default OPERATORS;

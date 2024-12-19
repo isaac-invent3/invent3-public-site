@@ -1,7 +1,7 @@
 import { useField } from 'formik';
 import SelectInput, { SelectInputProps } from '../Select';
 // eslint-disable-next-line no-redeclare
-import { Option } from '../../interfaces/general.interfaces';
+import { Option } from '@repo/interfaces';
 
 interface FormSelectProps
   extends Omit<SelectInputProps, 'selectedOptions' | 'handleSelect'> {

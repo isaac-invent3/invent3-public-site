@@ -89,9 +89,15 @@ importers:
       '@reduxjs/toolkit':
         specifier: ^2.2.7
         version: 2.2.7(react-redux@9.1.2(@types/react@18.3.5)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
-      '@repo/helpers':
+      '@repo/constants':
         specifier: workspace:*
-        version: link:../../packages/helpers
+        version: link:../../packages/constants
+      '@repo/functions':
+        specifier: workspace:*
+        version: link:../../packages/functions
+      '@repo/interfaces':
+        specifier: workspace:*
+        version: link:../../packages/interfaces
       '@repo/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -268,6 +274,15 @@ importers:
         specifier: ^5
         version: 5.6.2
 
+  packages/constants:
+    devDependencies:
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      typescript:
+        specifier: latest
+        version: 5.7.2
+
   packages/eslint-config:
     devDependencies:
       '@typescript-eslint/eslint-plugin':
@@ -292,7 +307,32 @@ importers:
         specifier: ^5.3.3
         version: 5.6.2
 
-  packages/helpers: {}
+  packages/functions:
+    devDependencies:
+      '@repo/constants':
+        specifier: workspace:*
+        version: link:../constants
+      '@repo/interfaces':
+        specifier: workspace:*
+        version: link:../interfaces
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      typescript:
+        specifier: latest
+        version: 5.7.2
+
+  packages/interfaces:
+    devDependencies:
+      '@repo/constants':
+        specifier: workspace:*
+        version: link:../constants
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      typescript:
+        specifier: latest
+        version: 5.7.2
 
   packages/typescript-config: {}
 
@@ -359,6 +399,9 @@ importers:
       '@repo/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
+      '@repo/interfaces':
+        specifier: workspace:*
+        version: link:../interfaces
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
@@ -9832,6 +9875,11 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
+  typescript@5.7.2:
+    resolution: {integrity: sha512-i5t66RHxDvVN40HfDd1PsEThGNnlMCMT3jMUuoh9/0TaqWevNontacunWyN02LA9/fIbEWlcHZcgTKb9QoaLfg==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
   typewise-core@1.2.0:
     resolution: {integrity: sha512-2SCC/WLzj2SbUwzFOzqMCkz5amXLlxtJqDKTICqg30x+2DZxcfZN2MvQZmGfXWKNWaKK9pBPsvkcwv8bF/gxKg==}
 
@@ -13189,9 +13237,7 @@ snapshots:
       source-map: 0.6.1
       string-length: 2.0.0
     transitivePeerDependencies:
-      - bufferutil
       - supports-color
-      - utf-8-validate
 
   '@jest/source-map@24.9.0':
     dependencies:
@@ -22653,6 +22699,8 @@ snapshots:
   typedarray@0.0.6: {}
 
   typescript@5.6.2: {}
+
+  typescript@5.7.2: {}
 
   typewise-core@1.2.0: {}
 

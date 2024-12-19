@@ -4,7 +4,7 @@ import FormSectionInfo from '../Form/FormSectionInfo';
 import NumberBox from '../NumberBox';
 import moment from 'moment';
 // eslint-disable-next-line no-redeclare
-import { Option } from '../../interfaces/general.interfaces';
+import { Option } from '@repo/interfaces';
 import SelectableButtonGroup from '../Button/SelectableButtonGroup';
 import Button from '../Button';
 import GenericModal from '../Modal';

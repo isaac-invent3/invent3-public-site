@@ -12,7 +12,7 @@ import {
 import { ChevronDownIcon } from '../CustomIcons';
 import { useRef, useEffect, ReactNode } from 'react';
 // eslint-disable-next-line no-redeclare
-import { Option } from '../../interfaces/general.interfaces';
+import { Option } from '@repo/interfaces';
 import CheckBox from '../CheckBox';
 
 interface FilterDropDownProps {

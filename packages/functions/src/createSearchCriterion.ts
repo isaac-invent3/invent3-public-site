@@ -1,5 +1,5 @@
-import { OPERATORS } from './constants';
-import { Criterion, SearchCriterion } from './interfaces/common.interface';
+import { OPERATORS } from '@repo/constants';
+import { Criterion, SearchCriterion } from '@repo/interfaces';
 
 const generateSearchCriterion = (
   columnName: string,

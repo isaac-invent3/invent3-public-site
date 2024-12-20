@@ -5,6 +5,7 @@ import {
   QueryParams,
 } from '~/lib/interfaces/general.interfaces';
 import {
+  GenerateReportPayload,
   Report,
   ReportDashboardValuesResponse,
   ScheduleReportPayload,
@@ -91,10 +92,10 @@ export const reportApi = createApi({
 
     generateReport: builder.mutation<
       BaseApiResponse<ListResponse<ViewReportTableData>>,
-      ScheduleReportPayload
+      GenerateReportPayload
     >({
-      query: (body: any) => ({
-        url: `/ReportSchedules`,
+      query: (body) => ({
+        url: `/Invent3Pro/GenerateReport`,
         method: 'POST',
         headers: getHeaders(),
         body,
@@ -110,4 +111,5 @@ export const {
   useGetReportByIdQuery,
   useViewReportByIdQuery,
   useScheduleReportMutation,
+  useGenerateReportMutation
 } = reportApi;

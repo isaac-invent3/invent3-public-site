@@ -1,6 +1,6 @@
 'use client';
 import { Box, Flex, Grid, Icon, Text, VStack } from '@chakra-ui/react';
-import { Button } from '@repo/ui/components';
+import { Button, ErrorMessage } from '@repo/ui/components';
 import { FormikProvider, useFormik } from 'formik';
 import moment from 'moment';
 import { ChevronLeftIcon } from '../../CustomIcons';
@@ -10,7 +10,10 @@ import SystemContextColumnsSelect from './SystemContextColumnsSelect';
 import SystemContextSelect from './SystemContextSelect';
 
 import { DateTimeButtons, FormInputWrapper } from '@repo/ui/components';
+import { getSession } from 'next-auth/react';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { GenerateReportDetails } from '~/lib/interfaces/report.interfaces';
+import { useGenerateReportMutation } from '~/lib/redux/services/reports.services';
 import { generateReportSchema } from '~/lib/schemas/report.schema';
 
 const GenerateReport = () => {
@@ -30,11 +33,29 @@ const GenerateReport = () => {
     endDate: '',
   };
 
+  const [generateReport, { isLoading: isGeneratingReport }] =
+    useGenerateReportMutation({});
+
+  const { handleSubmit } = useCustomMutation();
+
   const formik = useFormik({
     initialValues,
     enableReinitialize: false,
     validationSchema: generateReportSchema,
-    onSubmit: async () => {},
+    onSubmit: async (data) => {
+
+      const payload = {
+        ...data,
+      };
+
+      const response = await handleSubmit(
+        generateReport,
+        payload,
+        'Report Generated Successfully'
+      );
+
+      console.log(response)
+    },
   });
 
   const { values, setFieldValue } = formik;
@@ -75,13 +96,23 @@ const GenerateReport = () => {
                   title="Select from Table"
                   isRequired
                 >
-                  <SystemContextSelect
-                    selectName="systemContextTypeId"
-                    selectTitle="Select from Table"
-                    handleSelect={(option) => {
-                      setFieldValue('contextTypeId', option.value);
-                    }}
-                  />
+                  <VStack width="full" spacing="4px" alignItems="flex-start">
+                    <SystemContextSelect
+                      selectName="systemContextTypeId"
+                      selectTitle="Select from Table"
+                      isInvalid={
+                        formik.submitCount > 0 && formik.errors.contextTypeId
+                          ? true
+                          : false
+                      }
+                      handleSelect={(option) => {
+                        setFieldValue('contextTypeId', option.value);
+                      }}
+                    />
+                    {formik.submitCount > 0 && formik.errors.contextTypeId && (
+                      <ErrorMessage>{formik.errors.contextTypeId}</ErrorMessage>
+                    )}
+                  </VStack>
                 </FormInputWrapper>
 
                 <FormInputWrapper
@@ -95,12 +126,6 @@ const GenerateReport = () => {
                     <SystemContextColumnsSelect
                       selectedOptions={values.contextTypeColumns}
                       selectedContextTypeId={values.contextTypeId}
-                      handleSelect={(value) =>
-                        setFieldValue('contextTypeColumns', [
-                          ...values.contextTypeColumns,
-                          value,
-                        ])
-                      }
                     />
                   </VStack>
                 </FormInputWrapper>
@@ -154,6 +179,7 @@ const GenerateReport = () => {
                 <Button
                   variant="primary"
                   type="submit"
+                  isLoading={isGeneratingReport}
                   customStyles={{
                     width: '169px',
                     alignSelf: 'end',

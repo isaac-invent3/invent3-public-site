@@ -22,6 +22,7 @@ interface GenericAsyncSelectProps {
   specialSearch?: (searchValue: string) => SearchCriterion[];
   fetchKey?: string | number | null | undefined;
   showTitleAfterSelect?: boolean;
+  isInvalid?: boolean;
 }
 
 const GenericAsyncSelect = (props: GenericAsyncSelectProps) => {
@@ -40,6 +41,7 @@ const GenericAsyncSelect = (props: GenericAsyncSelectProps) => {
     specialSearch,
     fetchKey,
     showTitleAfterSelect = true,
+    isInvalid,
   } = props;
   const { handleSubmit } = useCustomMutation();
   const [options, setOptions] = useState<Option[]>([]);
@@ -123,6 +125,7 @@ const GenericAsyncSelect = (props: GenericAsyncSelectProps) => {
       handleOnMenuScrollToBottom={handlePagination}
       showTitleAfterSelect={showTitleAfterSelect}
       isSearchable
+      isInvalid={isInvalid}
     />
   );
 };

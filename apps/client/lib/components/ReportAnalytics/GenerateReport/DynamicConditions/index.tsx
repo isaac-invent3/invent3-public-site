@@ -1,9 +1,12 @@
 import { Box, HStack, Link, VStack } from '@chakra-ui/react';
-import { Select } from '@repo/ui/components';
-import { FieldArray, Form, useFormikContext } from 'formik';
+import { ErrorMessage, Select } from '@repo/ui/components';
+import { FieldArray, Form, getIn, useFormikContext } from 'formik';
 import { useState } from 'react';
 import { Option } from '~/lib/interfaces/general.interfaces';
-import { GenerateReportDetails } from '~/lib/interfaces/report.interfaces';
+import {
+  GenerateReportCriterion,
+  GenerateReportDetails,
+} from '~/lib/interfaces/report.interfaces';
 import { SystemContextTypeColumns } from '~/lib/interfaces/systemContextType.interfaces';
 import { useGetSystemContextTypeColumnsInfoQuery } from '~/lib/redux/services/systemcontexttypes.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
@@ -20,7 +23,8 @@ import DynamicConditionValue from './ValueComponent';
 const DynamicConditions = () => {
   const [removingIndex, setRemovingIndex] = useState<number | null>(null);
 
-  const { setFieldValue, values } = useFormikContext<GenerateReportDetails>();
+  const { setFieldValue, values, submitCount } =
+    useFormikContext<GenerateReportDetails>();
 
   const { data, isLoading } = useGetSystemContextTypeColumnsInfoQuery({
     systemContextTypeId: values.contextTypeId!,
@@ -55,7 +59,19 @@ const DynamicConditions = () => {
     >
       <Form>
         <FieldArray name="criterion">
-          {({ insert, remove }) => {
+          {({ insert, remove, form }) => {
+            const getErrorMessage = (
+              key: keyof GenerateReportCriterion,
+              index: number
+            ) => {
+              const name = `criterion[${index}][${key}]`;
+              const error = getIn(form.errors, name);
+
+              return {
+                status: submitCount > 0 && error,
+                message: error,
+              };
+            };
             return (
               <VStack transition="all 0.5s ease" align="stretch" spacing="24px">
                 {values.criterion.map((criterion, index) => (
@@ -109,78 +125,91 @@ const DynamicConditions = () => {
                       p="8px"
                       borderRadius="8px"
                     >
-                      <Select
-                        title="Column"
-                        isLoading={isLoading}
-                        options={selectedColumns}
-                        showTitleAfterSelect={true}
-                        selectedOption={getSelectedColumnOption(index)}
-                        handleSelect={(option) => {
-                          setFieldValue(
-                            `criterion[${index}].columnName`,
-                            option?.value
-                          );
-                        }}
-                        containerStyles={{
-                          flex: 1,
-                          border: '1px solid #D4D4D4',
-                          background: 'transparent',
-                          borderRadius: '8px',
-                          height: 'auto',
-                          alignItems: 'center',
-                        }}
-                      />
+                      <VStack
+                        spacing="4px"
+                        alignItems="flex-start"
+                        flex={1}
+                        position="relative"
+                      >
+                        <Select
+                          title="Column"
+                          isLoading={isLoading}
+                          options={selectedColumns}
+                          showTitleAfterSelect={true}
+                          selectedOption={getSelectedColumnOption(index)}
+                          isInvalid={
+                            getErrorMessage('columnName', index).status
+                          }
+                          handleSelect={(option) => {
+                            setFieldValue(
+                              `criterion[${index}].columnName`,
+                              option?.value
+                            );
+                          }}
+                          containerStyles={{
+                            borderRadius: '8px',
+                            height: 'auto',
+                            alignItems: 'center',
+                            border: '1px solid #D4D4D4',
+                            background: 'transparent',
+                          }}
+                        />
 
-                      <Select
-                        title="Operator"
-                        showTitleAfterSelect={true}
-                        options={getRelationalOperators(
-                          getSelectedColumnData(index)?.dataType
+                        {getErrorMessage('columnName', index).status && (
+                          <ErrorMessage
+                            position="absolute"
+                            left={0}
+                            bottom={-5}
+                          >
+                            {getErrorMessage('columnName', index).message}
+                          </ErrorMessage>
                         )}
-                        selectedOption={getSelectedOperatorOption(
-                          getSelectedColumnData(index)?.dataType,
-                          values.criterion[index]?.operation
+                      </VStack>
+                      <VStack
+                        spacing="4px"
+                        alignItems="flex-start"
+                        width="155px"
+                        position="relative"
+                      >
+                        <Select
+                          title="Operator"
+                          showTitleAfterSelect={true}
+                          options={getRelationalOperators(
+                            getSelectedColumnData(index)?.dataType
+                          )}
+                          selectedOption={getSelectedOperatorOption(
+                            getSelectedColumnData(index)?.dataType,
+                            values.criterion[index]?.operation
+                          )}
+                          isInvalid={getErrorMessage('operation', index).status}
+                          handleSelect={(option) => {
+                            setFieldValue(
+                              `criterion[${index}].operation`,
+                              option?.value
+                            );
+                          }}
+                          containerStyles={{
+                            border: '1px solid #D4D4D4',
+                            background: 'transparent',
+                            borderRadius: '8px',
+                            height: 'auto',
+                          }}
+                        />
+
+                        {getErrorMessage('operation', index).status && (
+                          <ErrorMessage
+                            position="absolute"
+                            left={0}
+                            bottom={-5}
+                          >
+                            {getErrorMessage('operation', index).message}
+                          </ErrorMessage>
                         )}
-                        handleSelect={(option) => {
-                          setFieldValue(
-                            `criterion[${index}].operation`,
-                            option?.value
-                          );
-                        }}
-                        containerStyles={{
-                          width: '155px',
-                          border: '1px solid #D4D4D4',
-                          background: 'transparent',
-                          borderRadius: '8px',
-                          height: 'auto',
-                        }}
-                      />
+                      </VStack>
                       <DynamicConditionValue
-                        selectedContextTypeColumn={getSelectedColumnData(
-                          index
-                        )}
+                        selectedContextTypeColumn={getSelectedColumnData(index)}
                         index={index}
                       />
-
-                      {/* <Select
-                        title="Value"
-                        options={[]}
-                        isLoading={isLoading}
-                        showTitleAfterSelect={true}
-                        handleSelect={(option) => {
-                          setFieldValue(
-                            `criterion[${index}].columnValue`,
-                            option?.value
-                          );
-                        }}
-                        containerStyles={{
-                          flex: 1,
-                          border: '1px solid #D4D4D4',
-                          background: 'transparent',
-                          borderRadius: '8px',
-                          height: 'auto',
-                        }}
-                      /> */}
 
                       <VStack flex={0.5} alignItems="flex-start">
                         <Link

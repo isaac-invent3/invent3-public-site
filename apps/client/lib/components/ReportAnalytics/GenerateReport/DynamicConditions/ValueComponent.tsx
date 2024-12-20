@@ -1,6 +1,7 @@
 import { Select, TextInput } from '@repo/ui/components';
 import { useFormikContext } from 'formik';
 import { useEffect, useState } from 'react';
+import { Option } from '~/lib/interfaces/general.interfaces';
 import { GenerateReportDetails } from '~/lib/interfaces/report.interfaces';
 import { SystemContextTypeColumns } from '~/lib/interfaces/systemContextType.interfaces';
 import baseQueryWithReauth from '~/lib/redux/baseQueryWithReauth';
@@ -56,7 +57,7 @@ const DynamicConditionValue = (props: DynamicConditionValueProps) => {
           abort: () => {},
           extra: undefined,
           endpoint: '',
-          type: 'query'
+          type: 'query',
         },
         {}
       );
@@ -83,17 +84,24 @@ const DynamicConditionValue = (props: DynamicConditionValueProps) => {
   }
 
   if (selectedContextTypeColumn && selectedContextTypeColumn.relativeListUrl) {
+    const options:Option[] = generateOptions(
+      dropdownData || [],
+      getRelativeUrlLabelValue(selectedContextTypeColumn?.relativeListUrl)
+        .label,
+      getRelativeUrlLabelValue(selectedContextTypeColumn?.relativeListUrl).value
+    );
+
+    const getSelectedOption = (value:any) => {
+      return options.find((item) => item.value === value);
+    };
+
+    // Change to Generic Async Select so i can search
     return (
       <Select
         title="Value"
         isLoading={isFetching}
-        options={generateOptions(
-          dropdownData || [],
-          getRelativeUrlLabelValue(selectedContextTypeColumn?.relativeListUrl)
-            .label,
-          getRelativeUrlLabelValue(selectedContextTypeColumn?.relativeListUrl)
-            .value
-        )}
+        options={options}
+        selectedOption={getSelectedOption(meta.value)}
         showTitleAfterSelect={true}
         handleSelect={(option) => {
           setFieldValue(`criterion[${index}].columnValue`, option?.value);

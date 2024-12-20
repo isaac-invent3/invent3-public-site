@@ -13,12 +13,20 @@ interface SystemContextSelectProps {
   selectName: string;
   selectTitle: string;
   defaultInputValue?: string | null;
+  isInvalid?: boolean;
 }
 
 const SystemContextSelect = (props: SystemContextSelectProps) => {
-  const { handleSelect, selectName, selectTitle, defaultInputValue } = props;
+  const {
+    handleSelect,
+    selectName,
+    selectTitle,
+    defaultInputValue,
+    isInvalid,
+  } = props;
   const [searchAsset] = useSearchContextTypesMutation({});
   const [pageNumber, setPageNumber] = useState(1);
+  
   const { data, isLoading } = useGetReportableSystemContextTypesQuery({
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
@@ -56,6 +64,7 @@ const SystemContextSelect = (props: SystemContextSelectProps) => {
       handleSelect={handleSelect}
       defaultInputValue={defaultInputValue}
       specialSearch={searchReportableContextTypesCriterion}
+      isInvalid={isInvalid}
     />
   );
 };

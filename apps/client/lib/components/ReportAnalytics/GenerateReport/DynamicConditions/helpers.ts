@@ -6,7 +6,7 @@ import { SystemContextTypeColumnDataType } from '~/lib/interfaces/systemContextT
 const newCriterion: GenerateReportCriterion = {
   columnName: '',
   columnValue: '',
-  operation: 1,
+  operation: null,
   join: 1,
 };
 
@@ -16,7 +16,7 @@ const getRelationalOperators = (
   const baseOperators: Option[] = [
     {
       label: '= Equals',
-      value: 'Equals',
+      value: 1,
     },
   ];
 
@@ -29,11 +29,11 @@ const getRelationalOperators = (
       additionalOperators.push(
         {
           label: '< Less Than',
-          value: 'Less Than',
+          value: 2,
         },
         {
           label: '> Greater Than',
-          value: 'Greater Than',
+          value: 3,
         }
       );
     }

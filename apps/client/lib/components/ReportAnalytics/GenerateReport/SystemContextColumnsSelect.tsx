@@ -1,17 +1,20 @@
 import { FilterDropDown } from '@repo/ui/components';
+import { useFormikContext } from 'formik';
+import { useEffect } from 'react';
 import { Option } from '~/lib/interfaces/general.interfaces';
+import { GenerateReportDetails } from '~/lib/interfaces/report.interfaces';
 import { useGetSystemContextTypeColumnsInfoQuery } from '~/lib/redux/services/systemcontexttypes.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { generateOptions } from '~/lib/utils/helperFunctions';
 
 interface SystemContextColumnsSelectProps {
-  // eslint-disable-next-line no-unused-vars
-  handleSelect: (options: Option) => void;
   selectedContextTypeId: number | undefined;
   selectedOptions: Option[];
 }
 const SystemContextColumnsSelect = (props: SystemContextColumnsSelectProps) => {
-  const { handleSelect, selectedOptions, selectedContextTypeId } = props;
+  const { selectedOptions, selectedContextTypeId } = props;
+
+  const { setFieldValue, values } = useFormikContext<GenerateReportDetails>();
 
   const { data, isLoading } = useGetSystemContextTypeColumnsInfoQuery({
     systemContextTypeId: selectedContextTypeId!,
@@ -19,12 +22,21 @@ const SystemContextColumnsSelect = (props: SystemContextColumnsSelectProps) => {
     pageSize: DEFAULT_PAGE_SIZE,
   });
 
+  useEffect(() => {
+    setFieldValue('contextTypeColumns', []);
+  }, [values.contextTypeId]);
+
   return (
     <FilterDropDown
       label=""
       isLoading={isLoading}
       options={generateOptions(data?.data.items, 'columnName', 'columnName')}
-      handleClick={handleSelect}
+      handleClick={(value) => {
+        setFieldValue('contextTypeColumns', [
+          ...values.contextTypeColumns,
+          value,
+        ]);
+      }}
       selectedOptions={selectedOptions}
       containerStyles={{
         maxW: 'none',

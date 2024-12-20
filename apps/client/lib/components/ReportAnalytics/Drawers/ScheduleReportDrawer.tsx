@@ -6,6 +6,7 @@ import {
   Heading,
   HStack,
   Text,
+  useDisclosure,
   VStack,
 } from '@chakra-ui/react';
 import {
@@ -28,6 +29,7 @@ import { RecurrenceInfo } from '~/lib/interfaces/general.interfaces';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { useScheduleReportMutation } from '~/lib/redux/services/reports.services';
 import { scheduleReportSchema } from '~/lib/schemas/report.schema';
+import ScheduleReportSuccessModal from '../Modals/ScheduleReportSuccessModal';
 
 interface ScheduleReportDrawerProps {
   isOpen: boolean;
@@ -45,6 +47,8 @@ const ScheduleReportDrawer = (props: ScheduleReportDrawerProps) => {
 
   const { handleSubmit } = useCustomMutation();
 
+  const {isOpen:isScheduleSuccessModalOpen,onClose:onScheduleSuccessClose,onOpen:onScheduleSuccessOpen} = useDisclosure()
+
   const formik = useFormik({
     initialValues: {
       reportId,
@@ -54,7 +58,7 @@ const ScheduleReportDrawer = (props: ScheduleReportDrawerProps) => {
       weekOccurrences: [],
       monthOccurrences: [],
       yearOccurrences: [],
-      recipientIds: [],
+      recipientIds: [1],
     },
 
     enableReinitialize: true,
@@ -67,11 +71,14 @@ const ScheduleReportDrawer = (props: ScheduleReportDrawerProps) => {
       const response = await handleSubmit(
         scheduleReport,
         payload,
-        'Report Scheduled Successfully'
+        ''
       );
+
+      console.log(response)
 
       if (response?.data) {
         resetForm();
+        onScheduleSuccessOpen();
         // onClose();
       }
     },
@@ -211,6 +218,12 @@ const ScheduleReportDrawer = (props: ScheduleReportDrawerProps) => {
           </HStack>
         </DrawerFooter>
       </FormikProvider>
+
+      <ScheduleReportSuccessModal
+        isOpen={isScheduleSuccessModalOpen}
+        onClose={onScheduleSuccessClose}
+        date=""
+      />
     </GenericDrawer>
   );
 };

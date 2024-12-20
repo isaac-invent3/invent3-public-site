@@ -1,3 +1,4 @@
+import { IconProps } from '@chakra-ui/icons';
 import {
   Collapse,
   Flex,
@@ -11,11 +12,10 @@ import {
   useOutsideClick,
   VStack,
 } from '@chakra-ui/react';
-import { ReactNode, useEffect, useRef } from 'react';
 import { Option } from '@repo/interfaces';
+import { ReactNode, useEffect, useRef } from 'react';
 import CheckBox from '../CheckBox';
 import { ChevronDownIcon } from '../CustomIcons';
-import { IconProps } from '@chakra-ui/icons';
 
 interface FilterDropDownProps {
   label: string;
@@ -146,7 +146,17 @@ const FilterDropDown = ({
           maxH="200px"
           overflow="auto"
         >
-          {children ??
+          {children && !isLoading && children}
+
+          {!isLoading && !children && options.length <= 0 && (
+            <Text color="neutral.800" width="full" textAlign="center" py="20px">
+              No Options
+            </Text>
+          )}
+
+          {!isLoading &&
+            !children &&
+            options.length > 0 &&
             options.map((option) => (
               <HStack key={option.value} spacing="8px">
                 <CheckBox
@@ -160,8 +170,9 @@ const FilterDropDown = ({
                 {<Text color="neutral.800">{option.label}</Text>}
               </HStack>
             ))}
+
           {isLoading && (
-            <HStack justify="center" w="full">
+            <HStack justify="center" w="full" py="20px">
               <Text>Loading...</Text>
               <Spinner size="sm" />
             </HStack>

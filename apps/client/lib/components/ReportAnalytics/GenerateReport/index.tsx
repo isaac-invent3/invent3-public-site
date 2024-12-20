@@ -87,8 +87,8 @@ const GenerateReport = () => {
               <Grid
                 templateColumns={{
                   base: '1fr',
-                  md: 'repeat(2, 1fr)',
-                  xl: '1.2fr 1fr 1.2fr',
+                  md: 'repeat(4, 1fr)',
+                  // xl: '1.2fr 1fr 1.2fr',
                 }}
                 gap="32px"
                 mt={10}
@@ -102,6 +102,7 @@ const GenerateReport = () => {
                   description="Add name that users can likely search with"
                   title="Select from Table"
                   isRequired
+                  gridColumn="span 2"
                 >
                   <VStack width="full" spacing="4px" alignItems="flex-start">
                     <SystemContextSelect
@@ -128,6 +129,7 @@ const GenerateReport = () => {
                   description="Find and select the asset you require"
                   title="Column"
                   isRequired
+                  gridColumn="span 2"
                 >
                   <VStack width="full" spacing="12px" alignItems="flex-start">
                     <SystemContextColumnsSelect
@@ -137,7 +139,7 @@ const GenerateReport = () => {
                   </VStack>
                 </FormInputWrapper>
 
-                <FormInputWrapper
+                {/* <FormInputWrapper
                   sectionMaxWidth="141px"
                   spacing="24px"
                   description="Add name that users can likely search with"
@@ -169,9 +171,9 @@ const GenerateReport = () => {
                       }}
                     />
                   </VStack>
-                </FormInputWrapper>
+                </FormInputWrapper> */}
 
-                <VStack gridColumn="span 2">
+                <VStack gridColumn="span 3">
                   <FormInputWrapper
                     sectionMaxWidth="118px"
                     spacing="24px"

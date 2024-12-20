@@ -16,26 +16,47 @@ const SystemContextColumnsSelect = (props: SystemContextColumnsSelectProps) => {
 
   const { setFieldValue, values } = useFormikContext<GenerateReportDetails>();
 
-  const { data, isLoading } = useGetSystemContextTypeColumnsInfoQuery({
-    systemContextTypeId: selectedContextTypeId!,
-    pageNumber: 1,
-    pageSize: DEFAULT_PAGE_SIZE,
-  });
+  const { data, isLoading } = useGetSystemContextTypeColumnsInfoQuery(
+    {
+      systemContextTypeId: selectedContextTypeId!,
+      pageNumber: 1,
+      pageSize: DEFAULT_PAGE_SIZE,
+    },
+    { skip: typeof selectedContextTypeId !== 'number' }
+  );
+
+  const allOptions = generateOptions(
+    data?.data.items,
+    'columnName',
+    'columnName'
+  );
+
+  const containsOptions = (array: Option[], obj: Option) => {
+    return array.some((item) => item.value === obj.value);
+  };
 
   useEffect(() => {
     setFieldValue('contextTypeColumns', []);
   }, [values.contextTypeId]);
 
+  useEffect(() => {
+    setFieldValue('contextTypeColumns', allOptions);
+  }, [data]);
+
   return (
     <FilterDropDown
       label=""
       isLoading={isLoading}
-      options={generateOptions(data?.data.items, 'columnName', 'columnName')}
+      options={allOptions}
       handleClick={(value) => {
-        setFieldValue('contextTypeColumns', [
-          ...values.contextTypeColumns,
-          value,
-        ]);
+        if (containsOptions(selectedOptions, value)) {
+          setFieldValue(
+            'contextTypeColumns',
+            selectedOptions.filter((item) => item.value !== value.value)
+          );
+        } else {
+          setFieldValue('contextTypeColumns', [...selectedOptions, value]);
+        }
       }}
       selectedOptions={selectedOptions}
       containerStyles={{

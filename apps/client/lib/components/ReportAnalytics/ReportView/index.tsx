@@ -2,7 +2,8 @@
 import { Flex, HStack, Skeleton, Text, VStack } from '@chakra-ui/react';
 import { DataTable, GenericBreadCrumb } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
-import { useEffect, useMemo, useState } from 'react';
+import moment from 'moment';
+import { useMemo, useState } from 'react';
 import { ViewReportTableData } from '~/lib/interfaces/report.interfaces';
 import { useAppSelector } from '~/lib/redux/hooks';
 import {
@@ -13,7 +14,6 @@ import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import PageHeader from '../../UI/PageHeader';
 import ReportViewFilters from '../Filters/ReportViewFilters';
-import moment from 'moment';
 
 interface ReportViewProps {
   id: string;
@@ -24,7 +24,7 @@ const ReportView = (props: ReportViewProps) => {
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
 
   const [activeFilter, setActiveFilter] = useState<'general' | null>(null);
-  const { filters } = useAppSelector((state) => state.report);
+  const { filters } = useAppSelector(state=>state.report);
 
   const breadCrumbData = [
     {
@@ -39,7 +39,6 @@ const ReportView = (props: ReportViewProps) => {
 
   const { data: reportInfo, isLoading: loadingReportInfo } =
     useGetReportByIdQuery(props.id);
-
 
   const { data: reportTableData, isLoading: loadingReportTableData } =
     useViewReportByIdQuery({

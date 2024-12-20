@@ -106,6 +106,14 @@ const assetDisposeSchema = documentSchema.shape({
   additionalInfo: Yup.number(),
 });
 
+const bulkStatusActionSchema = Yup.object().shape({
+  statusId: Yup.string().required('Status is Required'),
+  assetIds: Yup.array()
+    .of(Yup.number())
+    .required('Assets are required')
+    .min(1, 'There must be atleast one asset selected'),
+});
+
 export {
   generalInfoSchema,
   acquisitionInfoSchema,
@@ -114,4 +122,5 @@ export {
   locationSchema,
   assetDisposeSchema,
   assetMaintenancePlanSchema,
+  bulkStatusActionSchema,
 };

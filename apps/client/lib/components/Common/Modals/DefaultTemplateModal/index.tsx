@@ -3,15 +3,12 @@ import { SlideTransition } from '@repo/ui/components';
 import { Flex } from '@chakra-ui/react';
 import TemplateTable from './TemplateTable';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
-import {
-  ListResponse,
-  SearchResponse,
-} from '~/lib/interfaces/general.interfaces';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import TemplateFilters from './Filters';
 import { useSearchTemplatesMutation } from '~/lib/redux/services/template.services';
 import { Template } from '~/lib/interfaces/template.interfaces';
 import GenericTemplateModal from '../GenericTemplateModal';
+import { ListResponse } from '@repo/interfaces';
 
 interface TemplateModalProps {
   isOpen: boolean;
@@ -50,7 +47,9 @@ const TemplateModal = (props: TemplateModalProps) => {
   } = props;
   const [searchTemplate, { isLoading: searchLoading }] =
     useSearchTemplatesMutation({});
-  const [searchData, setSearchData] = useState<SearchResponse | null>(null);
+  const [searchData, setSearchData] = useState<ListResponse<Template> | null>(
+    null
+  );
   const { handleSubmit } = useCustomMutation();
   const [showDetails, setShowDetails] = useState(false);
 

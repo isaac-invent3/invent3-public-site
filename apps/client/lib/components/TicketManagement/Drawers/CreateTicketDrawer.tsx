@@ -25,7 +25,7 @@ import {
   FormTextAreaInput,
 } from '@repo/ui/components';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { Asset } from '~/lib/interfaces/asset.interfaces';
+import { Asset } from '~/lib/interfaces/asset/general.interface';
 import { useGetAllTaskPrioritiesQuery } from '~/lib/redux/services/task/priorities.services';
 import { useCreateTicketMutation } from '~/lib/redux/services/ticket.services';
 import { createTicketSchema } from '~/lib/schemas/ticket.schema';

@@ -1,12 +1,8 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
-import {
-  BaseApiResponse,
-  ListResponse,
-  SearchQuery,
-} from '~/lib/interfaces/general.interfaces';
-import { AssetDocument } from '~/lib/interfaces/asset.interfaces';
+import { BaseApiResponse, ListResponse, SearchQuery } from '@repo/interfaces';
+import { AssetDocument } from '~/lib/interfaces/asset/general.interface';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -20,7 +16,7 @@ export const assetDocumentApi = createApi({
       BaseApiResponse<ListResponse<AssetDocument>>,
       { pageSize: number; pageNumber?: number }
     >({
-      query: (data: any) => ({
+      query: (data) => ({
         url: generateQueryStr(`/AssetDocuments?`, data),
         method: 'GET',
         headers: getHeaders(),
@@ -32,13 +28,13 @@ export const assetDocumentApi = createApi({
       {
         pageSize: number;
         pageNumber?: number;
-        id: number | string | null;
+        id: number | undefined;
         includeDeleted?: boolean;
       }
     >({
       query: ({ id, ...data }) => ({
         url: generateQueryStr(
-          `/AssetDocuments/GetDocumentsByAssetId/${id}?`,
+          `/AssetDocuments/GetAssetDocumentsByAssetId/${id}?`,
           data
         ),
         method: 'GET',

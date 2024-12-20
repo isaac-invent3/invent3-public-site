@@ -1,9 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import baseQueryWithReauth from '../baseQueryWithReauth';
-import {
-  AppConfig,
-  BaseApiResponse,
-} from '~/lib/interfaces/general.interfaces';
+import { AppConfig } from '~/lib/interfaces/general.interfaces';
+import { BaseApiResponse } from '@repo/interfaces';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',

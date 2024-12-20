@@ -30,7 +30,7 @@ const AssetHeader = (props: AssetHeaderProps) => {
           <Button
             customStyles={{ height: '35px', width: '106px', px: '16px' }}
             variant="primary"
-            href={`/asset-management/${assetData.assetId}/edit`}
+            href={`/asset-management/${assetData?.assetId}/edit`}
           >
             Edit Asset
           </Button>
@@ -50,7 +50,7 @@ const AssetHeader = (props: AssetHeaderProps) => {
               lineHeight: '16.63px',
             }}
             variant="secondary"
-            href={`/asset-management/${assetData.assetId}/transfer`}
+            href={`/asset-management/${assetData?.assetId}/transfer`}
           >
             Transfer
           </Button>
@@ -63,7 +63,7 @@ const AssetHeader = (props: AssetHeaderProps) => {
               lineHeight: '16.63px',
             }}
             variant="secondary"
-            href={`/asset-management/${assetData.assetId}/dispose`}
+            href={`/asset-management/${assetData?.assetId}/dispose`}
           >
             Dispose
           </Button>
@@ -72,7 +72,7 @@ const AssetHeader = (props: AssetHeaderProps) => {
         <Button
           customStyles={{ height: '35px', width: 'min-content', px: '16px' }}
           variant="primary"
-          href={`/asset-management/add?assetId=${assetData.assetId}`}
+          href={`/asset-management/add?assetId=${assetData?.assetId}`}
         >
           Use As Template
         </Button>
@@ -80,7 +80,7 @@ const AssetHeader = (props: AssetHeaderProps) => {
 
       {isOpen && (
         <CreateTicketDrawer
-          asset={assetData}
+          asset={assetData ?? undefined}
           isOpen={isOpen}
           onClose={onClose}
         />

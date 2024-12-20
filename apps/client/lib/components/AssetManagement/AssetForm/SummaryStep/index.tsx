@@ -1,6 +1,6 @@
 import { Flex, useDisclosure, VStack } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { Asset } from '~/lib/interfaces/asset.interfaces';
+import { Asset } from '~/lib/interfaces/asset/general.interface';
 import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
@@ -19,9 +19,14 @@ import {
   clearAssetForm,
   setAsset,
 } from '~/lib/redux/slices/AssetSlice';
-import { generateDocumentArray, generateImagesArray } from './helperFunction';
+import {
+  generateDocumentArray,
+  generateImagesArray,
+  mapIdsToObject,
+} from './helperFunction';
 import { FormActionButtons } from '@repo/ui/components';
 import SectionThree from './SectionThree';
+import { FORM_ENUM } from '~/lib/utils/constants';
 
 interface SummaryStepProps {
   activeStep: number;
@@ -32,8 +37,6 @@ interface SummaryStepProps {
 const SummaryStep = (props: SummaryStepProps) => {
   const { activeStep, setActiveStep, type } = props;
   const assetData = useAppSelector((state) => state.asset.asset);
-  const assetImages = useAppSelector((state) => state.asset.assetImages);
-  const assetDocuments = useAppSelector((state) => state.asset.assetDocuments);
   const [assetResponse, setAssetResponse] = useState<Asset | null>(null);
   const assetFormDetails = useAppSelector((state) => state.asset.assetForm);
   const dispatch = useAppDispatch();
@@ -133,7 +136,7 @@ const SummaryStep = (props: SummaryStepProps) => {
     initialValue: assetFormDetails.initialValue,
     resalevalue: assetFormDetails.resaleValue,
     scrapvalue: assetFormDetails.scrapValue,
-    parentId: assetData.assetId ?? assetFormDetails.parentId,
+    parentId: assetData?.assetId ?? assetFormDetails.parentId,
     subCategoryId: assetFormDetails.subCategoryId,
     [`${type === 'create' ? 'createdBy' : 'lastModifiedBy'}`]: username,
   };
@@ -165,28 +168,55 @@ const SummaryStep = (props: SummaryStepProps) => {
   const PAYLOAD = {
     [getDtoKey('Location')]: LOCATION,
     [getDtoKey('Asset')]: ASSET,
-    [type === 'create' ? 'createAssetImageDto' : 'multiPurposeAssetImageDto']:
-      generateImagesArray(
-        type,
-        assetFormDetails,
-        assetImages,
-        username as string
-      ),
+    [type === 'create' ? 'createAssetImageDto' : 'multiPurposeAssetImageDto']: [
+      // Deleted Images
+      ...assetFormDetails.deletedImageIds.map((item) => ({
+        imageId: item,
+        actionType: FORM_ENUM.delete,
+        changeInitiatedBy: username,
+      })),
+      //Updated or New Images
+      ...generateImagesArray(type, assetFormDetails, username as string),
+    ],
     [type === 'create'
       ? 'createAssetDocumentsDto'
-      : 'multiPurposeAssetDocumentDto']: generateDocumentArray(
-      type,
-      assetFormDetails,
-      assetDocuments,
-      username as string
-    ),
+      : 'multiPurposeAssetDocumentDto']: [
+      // TODO
+      // Deleted Document
+      //Updated or New Documents
+      ...generateDocumentArray(type, assetFormDetails, username as string),
+    ],
     [getDtoKey('AssetWarranty')]: WARRANTY,
     [getDtoKey('AssetDepreciation')]: DEPRECIATION,
+    ...(type === 'create'
+      ? {
+          maintenancePlanIds:
+            assetFormDetails.newMaintenancePlanIds.length > 0
+              ? assetFormDetails.newMaintenancePlanIds
+              : null,
+          assetDocumentIds:
+            assetFormDetails.existingDocumentsIds.length > 0
+              ? assetFormDetails.existingDocumentsIds
+              : null,
+        }
+      : {}),
+    ...(type === 'edit'
+      ? {
+          assetPlans: mapIdsToObject(
+            assetFormDetails.newMaintenancePlanIds,
+            assetFormDetails.deletedMaintenancePlanIds
+          ),
+          assetDocuments: mapIdsToObject(
+            assetFormDetails.existingDocumentsIds,
+            assetFormDetails.deletedExistingDocumentIds
+          ),
+        }
+      : {}),
   };
 
   const handleModalAction = (type: 'childAsset' | 'parentAsset') => {
     if (type === 'childAsset') {
-      if (!assetData.assetId && assetResponse) {
+      if (!assetData?.assetId && assetResponse) {
         dispatch(setAsset(assetResponse));
       }
     }
@@ -205,7 +235,7 @@ const SummaryStep = (props: SummaryStepProps) => {
       const response = await handleSubmit(createAsset, PAYLOAD, '');
       if (response?.data) {
         setAssetResponse(response?.data?.data);
-        if (assetData.assetId) {
+        if (assetData?.assetId) {
           onOpenChildModal();
         } else {
           onOpenAddModal();

@@ -101,8 +101,8 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
     { skip: !formik.values.assetId }
   );
   const { data: assetTypeData } = useGetAssetTypeByIdQuery(
-    formik.values.assetGroupContextID,
-    { skip: !formik.values.assetGroupContextID }
+    { id: formik.values.assetGroupContextID ?? undefined },
+    { skip: formik.values.assetGroupContextID === undefined }
   );
   const { data: assetCustomPlans, error } =
     useGetAssetCustomMaintenancePlanByAssetGuidQuery(
@@ -170,7 +170,9 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
         }
       }
       if (formik.values.planScope === 'asset_type') {
-        if (assetTypeData?.data?.maintenancePlanId === null) {
+        //TODO: Confirm from George if there is anything like maintenancePlanId in the assetType data
+        // if (assetTypeData?.data?.maintenancePlanId === null) {
+        if (assetTypeData?.data === null) {
           setCanProceed(true);
         } else {
           showToast('This Asset Type already have a default maintenance plan');

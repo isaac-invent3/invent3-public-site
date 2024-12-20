@@ -5,7 +5,7 @@ import { useAppSelector } from '~/lib/redux/hooks';
 import {
   useGetStatesByCountryIdQuery,
   useSearchStatesMutation,
-} from '~/lib/redux/services/asset/location.services';
+} from '~/lib/redux/services/location/state.services';
 import { OPERATORS } from '~/lib/utils/constants';
 
 interface StateSelectProps {
@@ -21,7 +21,7 @@ const StateSelect = (props: StateSelectProps) => {
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading } = useGetStatesByCountryIdQuery(
     {
-      id: countryId,
+      id: countryId ?? undefined,
       pageSize: 37,
       pageNumber,
     },

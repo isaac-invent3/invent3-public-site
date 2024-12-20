@@ -1,7 +1,7 @@
 import LgaMap from './LgaMap';
 // import LgaMap from './templeaflet';
 import StateMap from './StateMap';
-import { SingleMapAssetData } from '~/lib/interfaces/asset.interfaces';
+import { SingleMapAssetData } from '~/lib/interfaces/asset/general.interface';
 
 interface MapViewComponentProps {
   selectedState: SingleMapAssetData | null;

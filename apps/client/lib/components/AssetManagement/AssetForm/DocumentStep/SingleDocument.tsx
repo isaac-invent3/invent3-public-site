@@ -2,7 +2,9 @@ import { Flex, HStack, Icon, Text } from '@chakra-ui/react';
 import { useField } from 'formik';
 
 import { CircularCloseIcon } from '~/lib/components/CustomIcons';
-import { AssetFormDocument } from '~/lib/interfaces/asset.interfaces';
+import { AssetFormDocument } from '~/lib/interfaces/asset/general.interface';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import { FILE_ICONS } from '~/lib/utils/constants';
 import { getDocumentInfo } from '~/lib/utils/helperFunctions';
 
@@ -14,12 +16,34 @@ interface SingleDocumentProps {
 const SingleDocument = (props: SingleDocumentProps) => {
   const { document, variant = 'primary' } = props;
   const [field, meta, helpers] = useField('documents'); //eslint-disable-line
+  const dispatch = useAppDispatch();
+  const { existingDocumentsIds, deletedExistingDocumentIds } = useAppSelector(
+    (state) => state.asset.assetForm
+  );
 
-  const handleRemoveDocument = (document: any) => {
-    const newValue = meta.value.filter(
-      (old: { documentName: string }) => old !== document
+  const handleRemoveDocument = (document: AssetFormDocument) => {
+    const updatedDocuments: AssetFormDocument[] = meta.value.filter(
+      (old: AssetFormDocument) => old !== document
     );
-    helpers.setValue(newValue);
+    helpers.setValue(updatedDocuments);
+
+    const isInExistingDocumentArray = existingDocumentsIds.includes(
+      document.documentId as number
+    );
+
+    const updatedDeletedDocuments = isInExistingDocumentArray
+      ? deletedExistingDocumentIds
+      : [...deletedExistingDocumentIds, document.documentId as number];
+
+    // Dispatch the updated state
+    dispatch(
+      updateAssetForm({
+        existingDocumentsIds: existingDocumentsIds.filter(
+          (item) => item != (document.documentId as number)
+        ),
+        deletedExistingDocumentIds: updatedDeletedDocuments,
+      })
+    );
   };
   const { extensionName, sizeInMB } = getDocumentInfo(document);
 

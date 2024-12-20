@@ -1,7 +1,7 @@
 import { Flex, HStack, Text, useDisclosure } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import Header from './Header';
-import { Asset } from '~/lib/interfaces/asset.interfaces';
+import { Asset } from '~/lib/interfaces/asset/general.interface';
 import { FormikProvider, useFormik } from 'formik';
 import { assetTransferSchema } from '~/lib/schemas/asset/main.schema';
 import { useAppDispatch } from '~/lib/redux/hooks';
@@ -27,9 +27,9 @@ const AssetTransfer = (props: AssetTransferProps) => {
 
   const formik = useFormik({
     initialValues: {
-      newOwnerId: null,
+      newOwnerId: undefined,
       transferDate: null,
-      comments: null,
+      comments: undefined,
     },
     validationSchema: assetTransferSchema,
     onSubmit: async (values) => {
@@ -37,15 +37,14 @@ const AssetTransfer = (props: AssetTransferProps) => {
       const formValues = {
         ...values,
         assetId: data?.assetId,
-        transferDate: moment(values.transferDate, 'DD/MM/YYYY').utcOffset(
-          0,
-          true
-        ),
-        previousOwnerId: data?.currentOwnerId,
-        transferredFrom: data?.locationId,
-        transferredTo: null,
-        initiatedBy: session?.user.userId,
-        createdBy: session?.user.username,
+        transferDate: moment(values.transferDate, 'DD/MM/YYYY')
+          .utcOffset(0, true)
+          .toISOString(),
+        previousOwnerId: data?.currentOwnerId ?? undefined,
+        transferredFrom: data?.locationId ?? undefined,
+        transferredTo: undefined,
+        initiatedBy: session?.user.userId ?? undefined,
+        createdBy: session?.user.username ?? undefined,
       };
       const resp = await handleSubmit(transferAsset, formValues, '');
       if (resp?.data) {

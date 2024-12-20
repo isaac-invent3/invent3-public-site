@@ -7,13 +7,15 @@ import {
   OPERATORS,
   timeRangeOptions,
 } from '~/lib/utils/constants';
-import { Option, SearchResponse } from '~/lib/interfaces/general.interfaces';
+import { Option } from '~/lib/interfaces/general.interfaces';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import DropDown from '../Common/DropDown';
 import { SearchInput } from '@repo/ui/components';
 import AssetTable from '../../AssetManagement/Common/AssetTable';
 import { useGetRecentAssetsQuery } from '~/lib/redux/services/dashboard.services';
 import { useAppSelector } from '~/lib/redux/hooks';
+import { Asset } from '~/lib/interfaces/asset/general.interface';
+import { ListResponse } from '@repo/interfaces';
 
 const RecentAsset = () => {
   const { selectedCountry, selectedState } = useAppSelector(
@@ -29,7 +31,9 @@ const RecentAsset = () => {
   const [searchAsset, { isLoading: searchLoading }] = useSearchAssetsMutation(
     {}
   );
-  const [searchData, setSearchData] = useState<SearchResponse | null>(null);
+  const [searchData, setSearchData] = useState<ListResponse<Asset> | null>(
+    null
+  );
   const { data, isLoading, isFetching } = useGetRecentAssetsQuery(
     {
       id: selectedCountry?.value,

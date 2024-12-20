@@ -1,4 +1,4 @@
-import { HStack, Text, VStack } from '@chakra-ui/react';
+import { HStack, StackProps, Text, TextProps, VStack } from '@chakra-ui/react';
 import DetailHeader from '../../UI/DetailHeader';
 
 interface DetailSectionProps {
@@ -6,22 +6,59 @@ interface DetailSectionProps {
     label: string;
     value: string | number | React.ReactNode;
   }[];
-  minWidth: string;
+  labelMinWidth: string;
   header?: string;
+  labelStyle?: TextProps;
+  valueStyle?: TextProps;
+  itemContainerStyle?: StackProps;
+  outerContainerStyle?: StackProps;
+  wrapperStyle?: StackProps;
 }
 
 const DetailSection = (props: DetailSectionProps) => {
-  const { details, minWidth, header } = props;
+  const {
+    details,
+    labelMinWidth,
+    header,
+    labelStyle,
+    valueStyle,
+    itemContainerStyle,
+    outerContainerStyle,
+    wrapperStyle,
+  } = props;
+
   return (
-    <VStack alignItems="flex-start" spacing="16px" width="full">
+    <VStack
+      alignItems="flex-start"
+      spacing="16px"
+      width="full"
+      {...wrapperStyle}
+    >
       {header && <DetailHeader variant="secondary">{header}</DetailHeader>}
-      <VStack alignItems="flex-start" spacing="8px" width="full">
+      <VStack
+        alignItems="flex-start"
+        spacing="8px"
+        width="full"
+        {...outerContainerStyle}
+      >
         {details.map((item, index) => (
-          <HStack spacing="8px" alignItems="flex-start" key={index}>
-            <Text size="md" minW={minWidth} color="neutral.600">
+          <HStack
+            key={index}
+            spacing="8px"
+            alignItems="flex-start"
+            {...itemContainerStyle}
+          >
+            <Text
+              size="md"
+              minW={labelMinWidth}
+              color="neutral.600"
+              {...labelStyle}
+            >
               {item.label}
             </Text>
-            <Text size="md">{item.value}</Text>
+            <Text size="md" {...valueStyle}>
+              {item.value}
+            </Text>
           </HStack>
         ))}
       </VStack>

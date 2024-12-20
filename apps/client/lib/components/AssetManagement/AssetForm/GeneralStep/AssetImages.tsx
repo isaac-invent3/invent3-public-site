@@ -17,20 +17,32 @@ import {
   CircularCloseIcon,
   InfoIcon,
 } from '~/lib/components/CustomIcons';
-import { AssetFormImage } from '~/lib/interfaces/asset.interfaces';
+import { AssetFormImage } from '~/lib/interfaces/asset/general.interface';
 import { FormSectionInfo } from '@repo/ui/components';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 
 const AssetImages = () => {
+  const dispatch = useAppDispatch();
+  const existingDeletedImages = useAppSelector(
+    (state) => state.asset.assetForm.deletedImageIds
+  );
   const [field, meta, helpers] = useField('images'); //eslint-disable-line
-  const handleRemoveImage = (image: any) => {
-    const newValue = meta.value.filter(
-      (old: { name: string }) => old !== image
-    );
+
+  const handleRemoveImage = (image: AssetFormImage) => {
+    const newValue = meta.value.filter((old: AssetFormImage) => old !== image);
     helpers.setValue(newValue);
+    if (image.imageId) {
+      dispatch(
+        updateAssetForm({
+          deletedImageIds: [...existingDeletedImages, image.imageId],
+        })
+      );
+    }
   };
 
-  const handleSetPrimaryImage = (image: any) => {
-    const updatedImages = meta.value.map((img: any) => ({
+  const handleSetPrimaryImage = (image: AssetFormImage) => {
+    const updatedImages = meta.value.map((img: AssetFormImage) => ({
       ...img,
       isPrimaryImage: img === image,
     }));
@@ -220,25 +232,6 @@ const AssetImages = () => {
                 </Flex>
               </FormErrorMessage>
             </FormControl>
-            {/* {meta.value.length >= 1 && (
-              <HStack
-                spacing="8px"
-                p="8px"
-                rounded="8px"
-                bgColor="#0366EF0D"
-                whiteSpace="nowrap"
-              >
-                <Icon as={InfoIcon} color="#0366EF" boxSize="12px" />
-                <Text
-                  fontSize="10px"
-                  lineHeight="11.88px"
-                  fontWeight={500}
-                  color="#0366EF"
-                >
-                  Hover the image to select a default
-                </Text>
-              </HStack>
-            )} */}
           </HStack>
         </HStack>
       </HStack>

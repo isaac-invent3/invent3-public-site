@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FilterDropDown } from '@repo/ui/components';
 import { Option } from '~/lib/interfaces/general.interfaces';
-import { useGetStatesByCountryIdQuery } from '~/lib/redux/services/asset/location.services';
+import { useGetStatesByCountryIdQuery } from '~/lib/redux/services/location/state.services';
 import { generateOptions } from '~/lib/utils/helperFunctions';
 
 interface RegionFilterProps {

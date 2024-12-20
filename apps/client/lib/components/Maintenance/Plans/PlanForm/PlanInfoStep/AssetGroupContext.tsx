@@ -18,7 +18,7 @@ const AssetGroupContext = () => {
   );
   const { data, isLoading } = useGetAllGroupContextRecordsByTypeIdQuery(
     {
-      id: values?.assetGroupTypeID,
+      groupTypeId: values?.assetGroupTypeID ?? undefined,
       pageSize: DEFAULT_PAGE_SIZE,
       pageNumber,
     },

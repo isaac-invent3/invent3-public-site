@@ -1,6 +1,6 @@
 import { HStack, Icon, Skeleton, Text, VStack } from '@chakra-ui/react';
 import { AssetIcon } from '~/lib/components/CustomIcons';
-import { InfoProps } from '~/lib/interfaces/asset.interfaces';
+import { InfoProps } from '~/lib/interfaces/asset/general.interface';
 import { formatNumberShort } from '~/lib/utils/helperFunctions';
 
 interface SummaryCardProps {

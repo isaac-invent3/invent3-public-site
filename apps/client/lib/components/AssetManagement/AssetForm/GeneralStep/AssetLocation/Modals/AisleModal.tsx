@@ -8,7 +8,7 @@ import {
   GenericModal,
   ModalHeading,
 } from '@repo/ui/components';
-import { useCreateAisleMutation } from '~/lib/redux/services/asset/location.services';
+import { useCreateAisleMutation } from '~/lib/redux/services/location/aisle.services';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';
 import { aisleSchema } from '~/lib/schemas/asset/location.schema';
@@ -26,15 +26,18 @@ const AisleModal = (props: AisleModalProps) => {
 
   const formik = useFormik({
     initialValues: {
-      roomId: defaultRoomId ?? null,
-      aisleName: null,
-      aisleRef: null,
+      roomId: defaultRoomId ?? undefined,
+      aisleName: '',
+      aisleRef: '',
     },
     validationSchema: aisleSchema,
     enableReinitialize: true,
     onSubmit: async (values, { resetForm }) => {
       const session = await getSession();
-      const finalValue = { ...values, createdBy: session?.user?.username };
+      const finalValue = {
+        ...values,
+        createdBy: session?.user?.username,
+      };
       const response = await handleSubmit(createAisle, finalValue, '');
       if (response?.data) {
         onClose();

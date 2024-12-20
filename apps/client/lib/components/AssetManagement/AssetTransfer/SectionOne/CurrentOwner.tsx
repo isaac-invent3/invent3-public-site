@@ -5,8 +5,11 @@ import User from '../../Common/User';
 import { useAppSelector } from '~/lib/redux/hooks';
 
 const CurrentOwner = () => {
-  const { currentOwner, departmentName, buildingName, floorName } =
-    useAppSelector((state) => state.asset.asset);
+  const assetData = useAppSelector((state) => state.asset.asset);
+  if (!assetData) {
+    return null;
+  }
+  const { currentOwner, departmentName, buildingName, floorName } = assetData;
   return (
     <VStack spacing="16px" alignItems="flex-start" width="full">
       <DetailHeader variant="secondary" customStyles={{ fontWeight: 700 }}>

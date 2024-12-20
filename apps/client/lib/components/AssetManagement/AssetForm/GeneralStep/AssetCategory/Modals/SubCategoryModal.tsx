@@ -26,14 +26,18 @@ const SubCategoryModal = (props: SubCategoryModalProps) => {
 
   const formik = useFormik({
     initialValues: {
-      categoryId: defaultCategory ?? null,
-      categoryName: null,
+      categoryId: defaultCategory,
+      subCategoryName: '',
     },
     validationSchema: subCategorySchema,
     enableReinitialize: true,
     onSubmit: async (values) => {
       const session = await getSession();
-      const finalValue = { ...values, createdBy: session?.user?.username };
+      const finalValue = {
+        ...values,
+        categoryId: values.categoryId ?? 0,
+        createdBy: session?.user?.username ?? '',
+      };
       const response = await handleSubmit(createSubCategory, finalValue, '');
       if (response?.data) {
         onClose();

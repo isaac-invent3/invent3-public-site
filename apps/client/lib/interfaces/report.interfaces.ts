@@ -1,4 +1,4 @@
-import { Option, SearchQuery } from './general.interfaces';
+import { Option, SearchQuery } from '@repo/interfaces';
 
 interface CreateReportPayload {
   reportName: string;
@@ -55,7 +55,7 @@ interface GenerateReportPayload {
 }
 
 interface ViewReportTableDataPayload extends SearchQuery {
-  reportId:string
+  reportId: string;
   startDate: string;
   endDate: string;
 }
@@ -98,16 +98,21 @@ interface ReportFilterInput {
   toDate: string;
 }
 
+interface GenerateReportResponse {
+  model: Record<string, any>;
+}
+
 export type {
   ContextTypeColumn,
   CreateReportPayload,
   GenerateReportCriterion,
   GenerateReportDetails,
+  GenerateReportPayload,
   Report,
   ReportDashboardValuesResponse,
   ReportFilterInput,
   ScheduleReportPayload,
   ViewReportTableData,
   ViewReportTableDataPayload,
-  GenerateReportPayload,
+  GenerateReportResponse,
 };

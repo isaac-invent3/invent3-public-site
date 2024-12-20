@@ -1,6 +1,6 @@
 import { Heading } from '@chakra-ui/react';
 
-const PageHeader = ({ children }: { children: string }) => {
+const PageHeader = ({ children }: { children: string | React.ReactNode }) => {
   return (
     <Heading
       as="h3"

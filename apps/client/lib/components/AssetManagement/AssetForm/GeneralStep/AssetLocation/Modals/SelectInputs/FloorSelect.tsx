@@ -6,7 +6,7 @@ import {
   useGetAllFloorsQuery,
   useGetFloorsByBuildingIdQuery,
   useSearchFloorsMutation,
-} from '~/lib/redux/services/asset/location.services';
+} from '~/lib/redux/services/location/floor.services';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 
 interface FloorSelectProps {
@@ -34,7 +34,7 @@ const FloorSelect = (props: FloorSelectProps) => {
     isLoading: isLoadingFloorsByBuildingIdData,
   } = useGetFloorsByBuildingIdQuery(
     {
-      id: buildingId,
+      id: buildingId ?? undefined,
       pageSize: DEFAULT_PAGE_SIZE,
       pageNumber,
     },

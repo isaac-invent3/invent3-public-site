@@ -1,8 +1,4 @@
-import {
-  AssetDocument,
-  AssetFormDetails,
-  AssetImage,
-} from '~/lib/interfaces/asset.interfaces';
+import { AssetFormDetails } from '~/lib/interfaces/asset/general.interface';
 import { FORM_ENUM } from '~/lib/utils/constants';
 
 interface Base {
@@ -31,7 +27,6 @@ interface Document extends Base, BaseDocument {}
 const generateImagesArray = (
   type: 'create' | 'edit',
   formDetails: AssetFormDetails,
-  existingImages: AssetImage[],
   username: string
 ) => {
   type FormImage = Image & {
@@ -60,31 +55,12 @@ const generateImagesArray = (
     images.push(imageData);
   });
 
-  // Handle deletions in edit mode
-  if (type === 'edit') {
-    existingImages.forEach((assetImage) => {
-      const imageExists = images.some(
-        (image) => image.imageId === assetImage.imageId
-      );
-      if (!imageExists) {
-        images.push({
-          imageId: assetImage.imageId,
-          imageName: assetImage.imageName,
-          assetId: assetImage.assetId,
-          actionType: FORM_ENUM.delete,
-          changeInitiatedBy: username,
-        });
-      }
-    });
-  }
-
   return images;
 };
 
 const generateDocumentArray = (
   type: 'create' | 'edit',
   formDetails: AssetFormDetails,
-  existingDocuments: AssetDocument[],
   username: string
 ) => {
   type FormDocument = Document & {
@@ -92,47 +68,60 @@ const generateDocumentArray = (
   };
   const documents: FormDocument[] = [];
 
-  // Handle new images or updates
-  formDetails.documents.forEach((document) => {
-    const documentData: Document = {
-      documentName: document.documentName as string,
-      base64Document: document.base64Document,
-      [type === 'create' ? 'createdBy' : 'changeInitiatedBy']: username,
-    };
+  // Handle new images or updates that is not part of the linked existing documents array
+  formDetails.documents
+    .filter(
+      (item) =>
+        !formDetails.existingDocumentsIds.includes(item.documentId as number)
+    )
+    .forEach((document) => {
+      const documentData: Document = {
+        documentName: document.documentName as string,
+        base64Document: document.base64Document,
+        [type === 'create' ? 'createdBy' : 'changeInitiatedBy']: username,
+      };
 
-    if (document.documentId) {
-      documentData.documentId = document.documentId;
-    }
-
-    if (type === 'edit') {
-      documentData.assetId = formDetails.assetId as number;
-      documentData.actionType = document.documentId
-        ? FORM_ENUM.update
-        : FORM_ENUM.add;
-    }
-
-    documents.push(documentData);
-  });
-
-  // Handle deletions in edit mode
-  if (type === 'edit') {
-    existingDocuments.forEach((assetDocument) => {
-      const documentExists = documents.some(
-        (document) => document.documentId === assetDocument.documentId
-      );
-      if (!documentExists) {
-        documents.push({
-          documentId: assetDocument.documentId,
-          documentName: assetDocument.documentName,
-          assetId: assetDocument.assetId,
-          actionType: FORM_ENUM.delete,
-          changeInitiatedBy: username,
-        });
+      if (document.documentId) {
+        documentData.documentId = document.documentId;
       }
+
+      if (type === 'edit') {
+        documentData.assetId = formDetails.assetId as number;
+        documentData.actionType = document.documentId
+          ? FORM_ENUM.update
+          : FORM_ENUM.add;
+      }
+
+      documents.push(documentData);
     });
-  }
 
   return documents;
 };
 
-export { generateImagesArray, generateDocumentArray };
+const mapIdsToObject = (
+  addedIds: number[],
+  removedIds: number[]
+): Record<number, number> | null => {
+  if (addedIds.length === 0 && removedIds.length === 0) {
+    return null;
+  }
+  const addedIdsMapping = addedIds.reduce(
+    (acc, id) => {
+      acc[id] = FORM_ENUM.add; // FORM_ENUM.add represents "Add"
+      return acc;
+    },
+    {} as Record<number, number>
+  );
+
+  const removedIdsMapping = removedIds.reduce(
+    (acc, id) => {
+      acc[id] = FORM_ENUM.delete; // FORM_ENUM.delete represents "Delete"
+      return acc;
+    },
+    {} as Record<number, number>
+  );
+
+  return { ...addedIdsMapping, ...removedIdsMapping };
+};
+
+export { generateImagesArray, generateDocumentArray, mapIdsToObject };

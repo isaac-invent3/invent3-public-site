@@ -9,7 +9,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import LocationModal from './Modals/LocationModal';
-import { AssetFormDetails } from '~/lib/interfaces/asset.interfaces';
+import { AssetFormDetails } from '~/lib/interfaces/asset/general.interface';
 import {
   ErrorMessage,
   FormAddButton,

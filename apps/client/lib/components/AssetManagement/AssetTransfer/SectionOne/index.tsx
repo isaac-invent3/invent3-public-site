@@ -1,39 +1,88 @@
-import { Flex, HStack, Text, VStack } from '@chakra-ui/react';
+import { Flex, HStack, Stack, Text, VStack } from '@chakra-ui/react';
 
 import CurrentOwner from './CurrentOwner';
-import AssetDetails from '../../Common/AssetDetail';
+import AssetDetailWrapper from '../../Common/AssetDetailWrapper';
 import { useAppSelector } from '~/lib/redux/hooks';
+import DetailSection from '../../AssetDetail/DetailSection';
 
 const SectionOne = () => {
-  const { assetLocation, currentCondition } = useAppSelector(
-    (state) => state.asset.asset
-  );
+  const assetData = useAppSelector((state) => state.asset.asset);
+  if (!assetData) {
+    return null;
+  }
+  const {
+    assetId,
+    assetLocation,
+    currentCondition,
+    assetCategory,
+    brandName,
+    modelRef,
+  } = assetData;
+
+  const info1 = [
+    {
+      label: 'Asset ID:',
+      value: assetId ?? 'N/A',
+    },
+    {
+      label: 'Category:',
+      value: assetCategory ?? 'N/A',
+    },
+  ];
+
+  const info2 = [
+    {
+      label: 'Make:',
+      value: brandName ?? 'N/A',
+    },
+    {
+      label: 'Model:',
+      value: modelRef ?? 'N/A',
+    },
+  ];
   return (
     <Flex gap="44px" width="full">
       <Flex width="40%">
         <CurrentOwner />
       </Flex>
       <Flex width="60%">
-        <AssetDetails stackType="column" showStatus={false}>
-          <HStack alignItems="flex-start" spacing="56px">
-            <HStack alignItems="flex-start" spacing="24px">
-              <Text color="neutral.600" size="md">
-                Location:
-              </Text>
-              <Text color="black" size="md" lineHeight="22px">
-                {assetLocation ?? 'N/A'}
-              </Text>
+        <AssetDetailWrapper showStatus={false}>
+          <HStack
+            width="full"
+            columnGap="56px"
+            rowGap="8px"
+            alignItems="flex-start"
+            flexWrap="wrap"
+          >
+            <Stack direction="column" rowGap="8px">
+              <DetailSection
+                details={info1}
+                labelMinWidth="65px"
+                labelStyle={{ fontWeight: 800 }}
+                valueStyle={{ fontWeight: 800 }}
+              />
+              <DetailSection details={info2} labelMinWidth="65px" />
+            </Stack>
+            <HStack alignItems="flex-start" spacing="56px">
+              <HStack alignItems="flex-start" spacing="24px">
+                <Text color="neutral.600" size="md">
+                  Location:
+                </Text>
+                <Text color="black" size="md" lineHeight="22px">
+                  {assetLocation ?? 'N/A'}
+                </Text>
+              </HStack>
+              <VStack spacing="8px" alignItems="flex-start">
+                <Text color="neutral.600" size="md">
+                  Condition:
+                </Text>
+                <Text color="black" size="md" lineHeight="22px">
+                  {currentCondition ?? 'N/A'}
+                </Text>
+              </VStack>
             </HStack>
-            <VStack spacing="8px" alignItems="flex-start">
-              <Text color="neutral.600" size="md">
-                Condition:
-              </Text>
-              <Text color="black" size="md" lineHeight="22px">
-                {currentCondition ?? 'N/A'}
-              </Text>
-            </VStack>
           </HStack>
-        </AssetDetails>
+        </AssetDetailWrapper>
       </Flex>
     </Flex>
   );

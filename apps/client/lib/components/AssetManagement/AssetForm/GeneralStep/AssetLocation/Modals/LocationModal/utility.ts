@@ -1,4 +1,4 @@
-import { FormLocation } from '~/lib/interfaces/asset.interfaces';
+import { FormLocation } from '~/lib/interfaces/location.interfaces';
 
 const intialState = {
   label: null,

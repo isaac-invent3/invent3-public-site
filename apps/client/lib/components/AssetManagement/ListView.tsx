@@ -4,19 +4,23 @@ import _ from 'lodash';
 
 import { useSearchParams } from 'next/navigation';
 import {
-  useGetallAssetQuery,
+  useGetAllAssetQuery,
   useGetAssetInfoHeaderByIdQuery,
   useSearchAssetsMutation,
 } from '~/lib/redux/services/asset/general.services';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { SearchResponse } from '~/lib/interfaces/general.interfaces';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 import AssetTable from './Common/AssetTable';
 import AssetFilterDisplay from './Filters/AssetFilterDisplay';
 import { generateSearchCriterion } from '~/lib/utils/helperFunctions';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import { setAsset } from '~/lib/redux/slices/AssetSlice';
+import {
+  setAsset,
+  updateSelectedAssetIds,
+} from '~/lib/redux/slices/AssetSlice';
 import AssetDetail from './AssetDetail';
+import { Asset } from '~/lib/interfaces/asset/general.interface';
+import { ListResponse } from '@repo/interfaces';
 
 interface ListViewProps {
   search: string;
@@ -30,11 +34,14 @@ const ListView = (props: ListViewProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const searchParams = useSearchParams();
-  const assetId = searchParams.get('asset');
+  const assetIdString = searchParams.get('asset');
+  const assetId = assetIdString ? Number(assetIdString) : undefined;
   const { handleSubmit } = useCustomMutation();
-  const { assetFilter: filterData, asset } = useAppSelector(
-    (state) => state.asset
-  );
+  const {
+    assetFilter: filterData,
+    asset,
+    selectedAssetIds,
+  } = useAppSelector((state) => state.asset);
   const dispatch = useAppDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -47,7 +54,9 @@ const ListView = (props: ListViewProps) => {
   const [searchAsset, { isLoading: searchLoading }] = useSearchAssetsMutation(
     {}
   );
-  const [searchData, setSearchData] = useState<SearchResponse | null>(null);
+  const [searchData, setSearchData] = useState<ListResponse<Asset> | null>(
+    null
+  );
 
   const { data: assetData } = useGetAssetInfoHeaderByIdQuery(
     { id: assetId ?? undefined },
@@ -55,7 +64,7 @@ const ListView = (props: ListViewProps) => {
       skip: !assetId,
     }
   );
-  const { data, isLoading, isFetching } = useGetallAssetQuery(
+  const { data, isLoading, isFetching } = useGetAllAssetQuery(
     {
       pageNumber: currentPage,
       pageSize: pageSize,
@@ -161,6 +170,24 @@ const ListView = (props: ListViewProps) => {
       onOpen();
     }
   }, [assetData]);
+
+  // Reset Selected Row when SelectedAssetIds array is emptied
+  useEffect(() => {
+    if (selectedAssetIds.length == 0) {
+      setSelectedRows([]);
+    }
+  }, [selectedAssetIds]);
+
+  // Update SelectedAssetIds array when selected row is greater than 1
+  useEffect(() => {
+    if (selectedRows.length > 0) {
+      const sourceItems = searchData?.items || data?.data?.items || [];
+      const assetIds = selectedRows
+        .map((rowId) => sourceItems[rowId]?.assetId) // Access by index and get assetId
+        .filter((id): id is number => id !== undefined); // Filter out undefined values
+      dispatch(updateSelectedAssetIds(assetIds));
+    }
+  }, [selectedRows]);
 
   return (
     <>

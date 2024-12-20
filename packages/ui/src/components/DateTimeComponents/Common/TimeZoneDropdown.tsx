@@ -11,7 +11,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { useRef } from 'react';
-import { Option as IOption } from '../../../interfaces/general.interfaces';
+import { Option as IOption } from '@repo/interfaces';
 
 interface DropDownProps {
   label: string;

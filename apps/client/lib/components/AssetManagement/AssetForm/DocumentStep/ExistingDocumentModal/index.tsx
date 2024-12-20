@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
-import { ListResponse } from '~/lib/interfaces/general.interfaces';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import GenericTemplateModal from '~/lib/components/Common/Modals/GenericTemplateModal';
 
@@ -12,11 +11,14 @@ import { createColumnHelper } from '@tanstack/react-table';
 import {
   AssetDocument,
   AssetFormDocument,
-} from '~/lib/interfaces/asset.interfaces';
+} from '~/lib/interfaces/asset/general.interface';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import { Button, DataTable } from '@repo/ui/components';
 import { getDocumentInfo } from '~/lib/utils/helperFunctions';
 import { useField } from 'formik';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
+import { ListResponse } from '@repo/interfaces';
 
 interface ExistingDocumentModalProps {
   isOpen: boolean;
@@ -43,6 +45,10 @@ const ExistingDocumentModal = (props: ExistingDocumentModalProps) => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   // eslint-disable-next-line no-unused-vars
   const [field, meta, helpers] = useField('documents');
+  const existingDocumentsIds = useAppSelector(
+    (state) => state.asset.assetForm.existingDocumentsIds
+  );
+  const dispatch = useAppDispatch();
 
   const searchCriterion = {
     criterion: [
@@ -142,15 +148,23 @@ const ExistingDocumentModal = (props: ExistingDocumentModalProps) => {
         });
       }
     });
-    helpers.setValue([
-      ...meta.value,
-      ...selectedDocuments.filter(
-        (item) =>
-          !meta.value
-            ?.map((item: AssetFormDocument) => item.documentId)
-            .includes(item.documentId)
-      ),
-    ]);
+    //Filter out documents already existing
+    const newDocuments = selectedDocuments.filter(
+      (item) =>
+        !meta.value
+          ?.map((item: AssetDocument) => item.documentId)
+          .includes(item.documentId)
+    );
+
+    helpers.setValue([...meta.value, ...newDocuments]);
+    dispatch(
+      updateAssetForm({
+        existingDocumentsIds: [
+          ...existingDocumentsIds,
+          ...newDocuments.map((item) => item.documentId as number),
+        ],
+      })
+    );
     onClose();
   };
 

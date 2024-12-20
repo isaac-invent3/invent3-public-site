@@ -1,7 +1,7 @@
 import { Flex, HStack, Text, useDisclosure } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import Header from './Header';
-import { Asset } from '~/lib/interfaces/asset.interfaces';
+import { Asset } from '~/lib/interfaces/asset/general.interface';
 import { FormikProvider, useFormik } from 'formik';
 import { assetDisposeSchema } from '~/lib/schemas/asset/main.schema';
 import { useAppDispatch } from '~/lib/redux/hooks';

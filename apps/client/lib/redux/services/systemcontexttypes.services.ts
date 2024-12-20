@@ -3,7 +3,7 @@ import {
   BaseApiResponse,
   ListResponse,
   SearchQuery,
-} from '~/lib/interfaces/general.interfaces';
+} from '@repo/interfaces';
 import { Report } from '~/lib/interfaces/report.interfaces';
 import {
   GetSystemContextTypeColumnsPayload,

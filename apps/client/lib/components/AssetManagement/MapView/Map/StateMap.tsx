@@ -3,7 +3,7 @@ import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
 import NIGERIA_CORDINATES from '~/lib/utils/NigeriaCordinates';
 import LoadingSpinner from './LoadingSpinner';
 import CustomMarker from './CustomMarker';
-import { SingleMapAssetData } from '~/lib/interfaces/asset.interfaces';
+import { SingleMapAssetData } from '~/lib/interfaces/asset/general.interface';
 
 interface GeoJSONData {
   type: string;

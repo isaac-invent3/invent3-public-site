@@ -8,8 +8,8 @@ import {
   AcquisitionInfo,
   Asset,
   AssetDocument,
-  AssetImage,
-} from '~/lib/interfaces/asset.interfaces';
+} from '~/lib/interfaces/asset/general.interface';
+import { AssetImage } from '~/lib/interfaces/asset/image.interfaces';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { useGetAssetDocumentsByAssetIdQuery } from '~/lib/redux/services/asset/document.services';
 import {
@@ -18,21 +18,26 @@ import {
   useGetImagesByAssetIdQuery,
 } from '~/lib/redux/services/asset/general.services';
 import { useGetAssetCustomMaintenancePlanByAssetGuidQuery } from '~/lib/redux/services/maintenance/plan.services';
-import {
-  setAssetDocuments,
-  setAssetImages,
-  updateAssetForm,
-} from '~/lib/redux/slices/AssetSlice';
+import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
-export default function Page({ params }: { params: { id: string } }) {
+export default function Page({ params }: { params: { id: number } }) {
   const { data, isLoading } = useGetAssetInfoHeaderByIdQuery({ id: params.id });
   const { data: assetImagesData, isLoading: imagesLoading } =
-    useGetImagesByAssetIdQuery({ id: params.id, pageSize: 25 });
+    useGetImagesByAssetIdQuery(
+      { assetId: params.id, pageSize: 25 },
+      { skip: params.id === undefined }
+    );
   const { data: assetDocumentData, isLoading: documentsLoading } =
-    useGetAssetDocumentsByAssetIdQuery({ id: params.id, pageSize: 25 });
+    useGetAssetDocumentsByAssetIdQuery(
+      { id: params.id, pageSize: 25 },
+      { skip: params.id === undefined }
+    );
   const { data: acquisitionData, isLoading: acquisitionLoading } =
-    useGetAcquisitionInfoByAssetIdQuery({ id: params.id });
+    useGetAcquisitionInfoByAssetIdQuery(
+      { id: params.id },
+      { skip: params.id === undefined }
+    );
   const dispatch = useAppDispatch();
   const { data: assetCustomMaintenancePlan, isLoading: planLoading } =
     useGetAssetCustomMaintenancePlanByAssetGuidQuery(
@@ -56,7 +61,6 @@ export default function Page({ params }: { params: { id: string } }) {
     const asset: Asset = data?.data;
     //Populating Asset Images
     if (assetImagesData?.data) {
-      dispatch(setAssetImages(assetImagesData?.data?.items));
       formImages = assetImagesData.data.items.map((image: AssetImage) => ({
         imageId: image.imageId || null,
         imageName: image.imageName || null,
@@ -67,7 +71,6 @@ export default function Page({ params }: { params: { id: string } }) {
     }
     //Populating Asset Documents
     if (assetDocumentData?.data) {
-      dispatch(setAssetDocuments(assetDocumentData?.data?.items));
       formDocuments = assetDocumentData.data.items.map(
         (document: AssetDocument) => ({
           documentId: document.documentId || null,
@@ -168,8 +171,8 @@ export default function Page({ params }: { params: { id: string } }) {
         countryName: asset.countryName,
         lifeExpectancy: asset.lifeExpectancy,
         initialValue: asset.initialValue,
-        images: formImages,
-        documents: formDocuments,
+        images: formImages ?? [],
+        documents: formDocuments ?? [],
         maintenancePlans: assetCustomMaintenancePlan?.data.items ?? [],
         ...acquisitionInfo,
       })

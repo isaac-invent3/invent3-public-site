@@ -12,7 +12,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { ReactNode, useEffect, useRef } from 'react';
-import { Option } from 'src/interfaces/general.interfaces';
+import { Option } from '@repo/interfaces';
 import CheckBox from '../CheckBox';
 import { ChevronDownIcon } from '../CustomIcons';
 import { IconProps } from '@chakra-ui/icons';

@@ -6,7 +6,7 @@ import {
   useGetAllFacilitiesQuery,
   useGetFacilitiesByLGAIdQuery,
   useSearchFacilitiesMutation,
-} from '~/lib/redux/services/asset/location.services';
+} from '~/lib/redux/services/location/facility.services';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 
 interface FacilitySelectProps {
@@ -32,7 +32,7 @@ const FacilitySelect = (props: FacilitySelectProps) => {
   const { data: facilitiesByLGAIDData, isLoading: isLoadingFacilitiesByLGAId } =
     useGetFacilitiesByLGAIdQuery(
       {
-        id: lgaId,
+        id: lgaId ?? undefined,
         pageSize: DEFAULT_PAGE_SIZE,
         pageNumber,
       },

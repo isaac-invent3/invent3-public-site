@@ -12,7 +12,7 @@ import {
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Header from './Header';
-// import { FilterInput } from '~/lib/interfaces/asset.interfaces';
+// import { FilterInput } from '~/lib/interfaces/asset/general.interface';
 import Filters from './Filters';
 import TicketTable from './TicketTable';
 

@@ -2,7 +2,7 @@
 import { useDisclosure, VStack } from '@chakra-ui/react';
 
 import { Option } from '~/lib/interfaces/general.interfaces';
-import { FormLocation } from '~/lib/interfaces/asset.interfaces';
+import { FormLocation } from '~/lib/interfaces/location.interfaces';
 import BuildingModal from '../BuildingModal';
 import BuildingSelect from '../SelectInputs/BuildingSelect';
 import { FormAddButton } from '@repo/ui/components';

@@ -1,9 +1,9 @@
 import { Heading, HStack, StackDivider, Text, VStack } from '@chakra-ui/react';
 import DetailHeader from '../../../../../UI/DetailHeader';
-import { AcquisitionInfo } from '~/lib/interfaces/asset.interfaces';
+import { AcquisitionInfo } from '~/lib/interfaces/asset/general.interface';
 
 interface VendorTextsProps {
-  data: AcquisitionInfo;
+  data: AcquisitionInfo | undefined;
 }
 const VendorTexts = (props: VendorTextsProps) => {
   const { data } = props;

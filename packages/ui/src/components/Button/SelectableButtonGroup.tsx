@@ -2,7 +2,7 @@ import { HStack, Skeleton } from '@chakra-ui/react';
 
 import Button from '.';
 // eslint-disable-next-line no-redeclare
-import { Option } from '../../interfaces/general.interfaces';
+import { Option } from '@repo/interfaces';
 
 interface SelectableButtonGroupProps {
   options: Option[];

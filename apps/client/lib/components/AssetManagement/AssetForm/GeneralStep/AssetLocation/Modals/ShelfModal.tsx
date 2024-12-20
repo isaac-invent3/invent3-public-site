@@ -7,7 +7,7 @@ import {
   GenericModal,
   ModalHeading,
 } from '@repo/ui/components';
-import { useCreateShelfMutation } from '~/lib/redux/services/asset/location.services';
+import { useCreateShelfMutation } from '~/lib/redux/services/location/shelf.services';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';
 import { shelfSchema } from '~/lib/schemas/asset/location.schema';
@@ -25,9 +25,9 @@ const ShelfModal = (props: ShelfModalProps) => {
 
   const formik = useFormik({
     initialValues: {
-      aisleId: defaultAisleId ?? null,
-      shelfName: null,
-      shelfRef: null,
+      aisleId: defaultAisleId ?? undefined,
+      shelfName: '',
+      shelfRef: '',
     },
     validationSchema: shelfSchema,
     enableReinitialize: true,

@@ -5,6 +5,9 @@ import { useAppSelector } from '~/lib/redux/hooks';
 
 const ParentAsset = () => {
   const assetData = useAppSelector((state) => state.asset.asset);
+  if (!assetData) {
+    return null;
+  }
   const {
     assetName,
     assetId,

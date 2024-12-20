@@ -3,9 +3,10 @@ import {
   BaseApiResponse,
   ListResponse,
   QueryParams,
-} from '~/lib/interfaces/general.interfaces';
+} from '@repo/interfaces';
 import {
   GenerateReportPayload,
+  GenerateReportResponse,
   Report,
   ReportDashboardValuesResponse,
   ScheduleReportPayload,
@@ -91,7 +92,7 @@ export const reportApi = createApi({
     }),
 
     generateReport: builder.mutation<
-      BaseApiResponse<ListResponse<ViewReportTableData>>,
+      BaseApiResponse<ListResponse<GenerateReportResponse>>,
       GenerateReportPayload
     >({
       query: (body) => ({

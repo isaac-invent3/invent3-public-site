@@ -25,6 +25,11 @@ const SummaryInfo = (props: SummaryInfoProps) => {
 
 const Summary = () => {
   const assetData = useAppSelector((state) => state.asset.asset);
+
+  if (!assetData) {
+    return null;
+  }
+
   const {
     lastMaintenanceDate,
     nextMaintenanceDate,

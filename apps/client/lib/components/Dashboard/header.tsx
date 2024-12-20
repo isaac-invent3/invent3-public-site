@@ -6,10 +6,8 @@ import { useSession } from 'next-auth/react';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import DropDown from './Common/DropDown';
 import { generateOptions } from '~/lib/utils/helperFunctions';
-import {
-  useGetAllCountriesQuery,
-  useGetStatesByCountryIdQuery,
-} from '~/lib/redux/services/asset/location.services';
+import { useGetStatesByCountryIdQuery } from '~/lib/redux/services/location/state.services';
+import { useGetAllCountriesQuery } from '~/lib/redux/services/location/country.services';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateInfo } from '~/lib/redux/slices/DashboardSlice';
 
@@ -49,7 +47,10 @@ const Header = () => {
   const { data: allCountries, isLoading: isLoadingCountries } =
     useGetAllCountriesQuery({});
   const { data: allStates, isLoading: isLoadingStates } =
-    useGetStatesByCountryIdQuery({ id: selectedCountry?.value, pageSize: 37 });
+    useGetStatesByCountryIdQuery(
+      { id: Number(selectedCountry?.value) ?? undefined, pageSize: 37 },
+      { skip: !selectedCountry?.value }
+    );
   return (
     <VStack spacing="45px" alignItems="flex-start" width="full" pt="12px">
       <GenericBreadCrumb routes={breadCrumbData} />

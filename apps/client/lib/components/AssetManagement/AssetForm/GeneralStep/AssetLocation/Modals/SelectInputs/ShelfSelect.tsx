@@ -6,7 +6,7 @@ import {
   useGetAllShelvesQuery,
   useGetShelvesByAisleIdQuery,
   useSearchShelfMutation,
-} from '~/lib/redux/services/asset/location.services';
+} from '~/lib/redux/services/location/shelf.services';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 
 interface ShelfSelectProps {
@@ -32,7 +32,7 @@ const ShelfSelect = (props: ShelfSelectProps) => {
   const { data: shelvesByAisleIdData, isLoading: isLoadingShelvesByAisleId } =
     useGetShelvesByAisleIdQuery(
       {
-        id: aisleId,
+        id: aisleId ?? undefined,
         pageSize: DEFAULT_PAGE_SIZE,
         pageNumber,
       },

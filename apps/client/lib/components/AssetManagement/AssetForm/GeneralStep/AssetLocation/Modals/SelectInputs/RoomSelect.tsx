@@ -6,7 +6,7 @@ import {
   useGetAllRoomsQuery,
   useGetRoomsByDepartmentIdQuery,
   useSearchRoomsMutation,
-} from '~/lib/redux/services/asset/location.services';
+} from '~/lib/redux/services/location/room.services';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 
 interface RoomSelectProps {
@@ -34,7 +34,7 @@ const RoomSelect = (props: RoomSelectProps) => {
     isLoading: isLoadingRoomsByDepartmentIdData,
   } = useGetRoomsByDepartmentIdQuery(
     {
-      id: departmentId,
+      id: departmentId ?? undefined,
       pageSize: DEFAULT_PAGE_SIZE,
       pageNumber,
     },

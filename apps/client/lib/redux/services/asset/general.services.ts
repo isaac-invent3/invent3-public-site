@@ -5,8 +5,22 @@ import {
   BaseApiResponse,
   ListResponse,
   QueryParams,
-} from '~/lib/interfaces/general.interfaces';
-import { Asset, AssetStatus } from '~/lib/interfaces/asset.interfaces';
+  SearchQuery,
+} from '@repo/interfaces';
+import {
+  AcquisitionInfo,
+  Asset,
+  AssetStatus,
+} from '~/lib/interfaces/asset/general.interface';
+import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
+import {
+  AssetTransfer,
+  AssetTransferQuery,
+} from '~/lib/interfaces/asset/transfer.interfaces';
+import {
+  AssetImage,
+  AssetImageQuery,
+} from '~/lib/interfaces/asset/image.interfaces';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -16,24 +30,33 @@ export const assetApi = createApi({
   baseQuery: baseQueryWithReauth,
   tagTypes: ['allAsset', 'singleAsset', 'allStatuses', 'allAssetTypes'],
   endpoints: (builder) => ({
-    getallAsset: builder.query({
-      query: (data: any) => ({
+    getAllAsset: builder.query<
+      BaseApiResponse<ListResponse<Asset>>,
+      QueryParams
+    >({
+      query: (data) => ({
         url: generateQueryStr(`/Assets?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
       providesTags: ['allAsset'],
     }),
-    searchAssets: builder.mutation({
-      query: (body: any) => ({
+    searchAssets: builder.mutation<
+      BaseApiResponse<ListResponse<Asset>>,
+      SearchQuery
+    >({
+      query: (body) => ({
         url: `/Assets/Search`,
         method: 'POST',
         headers: getHeaders(),
         body,
       }),
     }),
-    getAssetById: builder.query({
-      query: (id: any) => ({
+    getAssetById: builder.query<
+      BaseApiResponse<Asset>,
+      { id: number | undefined }
+    >({
+      query: (id) => ({
         url: `/Assets/${id}`,
         method: 'GET',
         headers: getHeaders(),
@@ -42,7 +65,7 @@ export const assetApi = createApi({
     }),
     getAssetInfoHeaderById: builder.query<
       BaseApiResponse<Asset>,
-      { id: number | string | undefined }
+      { id: number | undefined }
     >({
       query: ({ id }) => ({
         url: `/Assets/GetAssetInfoHeader/${id}`,
@@ -50,21 +73,33 @@ export const assetApi = createApi({
         headers: getHeaders(),
       }),
     }),
-    getAcquisitionInfoByAssetId: builder.query({
+    getAcquisitionInfoByAssetId: builder.query<
+      BaseApiResponse<AcquisitionInfo>,
+      { id: number | undefined }
+    >({
       query: ({ id }) => ({
         url: `/Assets/GetAcquisitionInfo/${id}`,
         method: 'GET',
         headers: getHeaders(),
       }),
     }),
-    getImagesByAssetId: builder.query({
-      query: ({ id }) => ({
-        url: `/AssetImages/GetImagesbyAssetId/${id}`,
+    getImagesByAssetId: builder.query<
+      BaseApiResponse<ListResponse<AssetImage>>,
+      AssetImageQuery
+    >({
+      query: ({ assetId, ...data }) => ({
+        url: generateQueryStr(
+          `/AssetImages/GetImagesbyAssetId/${assetId}`,
+          data
+        ),
         method: 'GET',
         headers: getHeaders(),
       }),
     }),
-    getPlannedMaintenanceByAssetId: builder.query({
+    getPlannedMaintenanceByAssetId: builder.query<
+      BaseApiResponse<ListResponse<MaintenanceSchedule>>,
+      { id: number | undefined }
+    >({
       query: ({ id, ...data }) => ({
         url: generateQueryStr(
           `/MaintenanceSchedules/GetAssetPlannedMaintenanceInfo/${id}?`,
@@ -74,7 +109,15 @@ export const assetApi = createApi({
         headers: getHeaders(),
       }),
     }),
-    getMaintenanceHistoryByAssetId: builder.query({
+    getMaintenanceHistoryByAssetId: builder.query<
+      BaseApiResponse<ListResponse<MaintenanceSchedule>>,
+      {
+        id: number | undefined;
+        pageSize?: number;
+        pageNumber?: number;
+        includeDeleted?: boolean;
+      }
+    >({
       query: ({ id, ...data }) => ({
         url: generateQueryStr(
           `/MaintenanceSchedules/GetAssetMaintenanceHistory/${id}?`,
@@ -84,15 +127,22 @@ export const assetApi = createApi({
         headers: getHeaders(),
       }),
     }),
-    GetAssetComponentInfoByAssetGuid: builder.query({
-      query: ({ id }) => ({
-        url: `/GetAssetComponentInfo/${id}`,
+    GetAssetComponentInfoByAssetGuid: builder.query<
+      BaseApiResponse<{
+        parent?: Asset;
+        asset: Asset;
+        childComponents?: Asset[];
+      }>,
+      { assetGuid: string | undefined }
+    >({
+      query: ({ assetGuid }) => ({
+        url: `/GetAssetComponentInfo/${assetGuid}`,
         method: 'GET',
         headers: getHeaders(),
       }),
     }),
     createAsset: builder.mutation({
-      query: (body: any) => ({
+      query: (body) => ({
         url: `/Invent3Pro/Assets/Create`,
         method: 'POST',
         headers: getHeaders(),
@@ -101,7 +151,7 @@ export const assetApi = createApi({
       invalidatesTags: ['allAsset'],
     }),
     updateAsset: builder.mutation({
-      query: (body: any) => ({
+      query: (body) => ({
         url: `/Invent3Pro/Assets/Update`,
         method: 'PUT',
         headers: getHeaders(),
@@ -113,23 +163,45 @@ export const assetApi = createApi({
       BaseApiResponse<ListResponse<AssetStatus>>,
       QueryParams
     >({
-      query: (data: any) => ({
+      query: (data) => ({
         url: generateQueryStr(`/AssetStatus?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
       providesTags: ['allStatuses'],
     }),
-    searchStatus: builder.mutation({
-      query: (body: any) => ({
+    searchStatus: builder.mutation<
+      BaseApiResponse<ListResponse<AssetStatus>>,
+      SearchQuery
+    >({
+      query: (body) => ({
         url: `/AssetStatus/Search`,
         method: 'POST',
         headers: getHeaders(),
         body,
       }),
     }),
-    transferAsset: builder.mutation({
-      query: (body: any) => ({
+    updateAssetStatus: builder.mutation<
+      void,
+      {
+        assetIds: number[];
+        statusId: number | undefined;
+        lastModifiedBy: string | undefined;
+      }
+    >({
+      query: (body) => ({
+        url: `/Assets/UpdateAssetsStatuses`,
+        method: 'PUT',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allAsset'],
+    }),
+    transferAsset: builder.mutation<
+      BaseApiResponse<AssetTransfer>,
+      AssetTransferQuery
+    >({
+      query: (body) => ({
         url: `/AssetTransfers`,
         method: 'POST',
         headers: getHeaders(),
@@ -144,7 +216,7 @@ export const {
   useUpdateAssetMutation,
   useGetAssetByIdQuery,
   useGetAssetInfoHeaderByIdQuery,
-  useGetallAssetQuery,
+  useGetAllAssetQuery,
   useGetAcquisitionInfoByAssetIdQuery,
   useGetAssetComponentInfoByAssetGuidQuery,
   useGetImagesByAssetIdQuery,
@@ -154,4 +226,5 @@ export const {
   useSearchStatusMutation,
   useSearchAssetsMutation,
   useTransferAssetMutation,
+  useUpdateAssetStatusMutation,
 } = assetApi;

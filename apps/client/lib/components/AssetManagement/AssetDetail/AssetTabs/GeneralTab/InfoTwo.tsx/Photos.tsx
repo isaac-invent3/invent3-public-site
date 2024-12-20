@@ -3,16 +3,22 @@ import { VStack, Flex, useDisclosure, Skeleton, Text } from '@chakra-ui/react';
 import { useGetImagesByAssetIdQuery } from '~/lib/redux/services/asset/general.services';
 import { useAppSelector } from '~/lib/redux/hooks';
 import DetailHeader from '~/lib/components/UI/DetailHeader';
-import { AssetImage } from '~/lib/interfaces/asset.interfaces';
+import { AssetImage } from '~/lib/interfaces/asset/image.interfaces';
 import PhotoViewerModal from '~/lib/components/AssetManagement/Common/PhotoViewerModal';
 
 const PhotoViewer = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [currentIndex, setCurrentIndex] = useState<number | null>(null);
-  const { assetId } = useAppSelector((state) => state.asset.asset);
+  const assetData = useAppSelector((state) => state.asset.asset);
+
+  if (!assetData) {
+    return null;
+  }
+
+  const { assetId } = assetData;
   const [photos, setPhotos] = useState<AssetImage[]>([]);
   const { data, isLoading } = useGetImagesByAssetIdQuery(
-    { id: assetId },
+    { assetId: assetId },
     { skip: !assetId }
   );
 

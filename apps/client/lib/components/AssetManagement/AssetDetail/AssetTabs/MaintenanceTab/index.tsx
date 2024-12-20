@@ -8,7 +8,12 @@ import { useGetAllMaintenancePlansByAssetIdQuery } from '~/lib/redux/services/ma
 import PlanCard from '~/lib/components/Maintenance/Plans/PlanCard';
 
 const MaintenanceTab = () => {
-  const { assetId, assetTypeId } = useAppSelector((state) => state.asset.asset);
+  const assetData = useAppSelector((state) => state.asset.asset);
+
+  if (!assetData) {
+    return null;
+  }
+  const { assetId, assetTypeId } = assetData;
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(DEFAULT_PAGE_SIZE);
   const { data, isLoading } = useGetAllMaintenancePlansByAssetIdQuery(

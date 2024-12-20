@@ -6,7 +6,7 @@ import {
   useGetAllLGASQuery,
   useGetLGAByStateIdQuery,
   useSearchLGAMutation,
-} from '~/lib/redux/services/asset/location.services';
+} from '~/lib/redux/services/location/lga.services';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 
 interface LGASelectProps {
@@ -30,7 +30,7 @@ const LGASelect = (props: LGASelectProps) => {
   );
   const { data, isLoading } = useGetLGAByStateIdQuery(
     {
-      id: stateId,
+      id: stateId ?? undefined,
       pageSize: 47,
       pageNumber,
     },

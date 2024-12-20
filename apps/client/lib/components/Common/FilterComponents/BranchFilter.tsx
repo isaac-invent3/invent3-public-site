@@ -2,7 +2,7 @@ import { HStack, Text, VStack } from '@chakra-ui/react';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Option } from '~/lib/interfaces/general.interfaces';
-import { locationApi } from '~/lib/redux/services/asset/location.services';
+import { facilityApi } from '~/lib/redux/services/location/facility.services';
 import { generateOptions } from '~/lib/utils/helperFunctions';
 import { CheckBox, FilterDropDown } from '@repo/ui/components';
 import { useAppDispatch } from '~/lib/redux/hooks';
@@ -42,8 +42,8 @@ const BranchFilter = (props: BranchFilterProps) => {
 
       for (const area of sortedAreas) {
         const result = await dispatch(
-          locationApi.endpoints.getFacilitiesByLGAId.initiate({
-            id: area.value,
+          facilityApi.endpoints.getFacilitiesByLGAId.initiate({
+            id: Number(area.value) ?? undefined,
             pageNumber: 1,
             pageSize: 50,
           })

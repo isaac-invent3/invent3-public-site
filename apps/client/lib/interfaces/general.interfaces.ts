@@ -6,47 +6,10 @@ interface Option {
   value: string | number;
 }
 
-interface SearchResponse {
-  items: any[];
-  pageNumber: number;
-  totalPages: number;
-  totalItems: number;
-  hasPreviousPage: boolean;
-  hasNextPage: boolean;
-}
-
 interface SearchCriterion {
   columnName: string;
   columnValue: string | number;
   operation: (typeof OPERATORS)[keyof typeof OPERATORS];
-}
-
-interface PaginationInfo {
-  pageNumber: number;
-  totalPages: number;
-  totalItems: number;
-  hasPreviousPage: boolean;
-  hasNextPage: boolean;
-}
-
-interface QueryParams {
-  pageSize?: number;
-  pageNumber?: number;
-}
-
-interface ListResponse<T> {
-  items: T[];
-  pageNumber: number;
-  totalPages: number;
-  totalItems: number;
-  hasPreviousPage: boolean;
-  hasNextPage: boolean;
-}
-
-interface BaseApiResponse<T> {
-  data: T;
-  responseId: string;
-  message: string;
 }
 
 interface GeoJSONFeature {
@@ -98,24 +61,6 @@ interface LocationFilter {
   branch: Option[];
 }
 
-interface SearchQuery {
-  criterion?: SearchCriterion[];
-  orCriterion?: SearchCriterion[][];
-  orderByCriteria?: {
-    columnName?: string;
-    operation?: number;
-  };
-  datePeriodCriteria?: {
-    columnName?: string;
-    operation?: number;
-    useFutureLogic?: boolean;
-  };
-  pageNumber: number;
-  pageSize: number;
-  includeDeleted?: boolean;
-  useOrLogic?: boolean;
-}
-
 interface AppConfig {
   DEFAULT_COMPLETED_TASK_STATUS_ID: string | null;
   DEFAULT_ESTIMATED_TASK_DURATION_IN_HOURS: string | null;
@@ -124,15 +69,9 @@ interface AppConfig {
 export type {
   GeoJSONFeature,
   Option,
-  QueryParams,
   RecurrenceInfo,
   RepeatInterval,
   SearchCriterion,
-  SearchResponse,
-  BaseApiResponse,
-  PaginationInfo,
-  ListResponse,
   LocationFilter,
   AppConfig,
-  SearchQuery,
 };

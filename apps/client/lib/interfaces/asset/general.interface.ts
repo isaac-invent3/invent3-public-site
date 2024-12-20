@@ -1,5 +1,6 @@
-import { LocationFilter, Option } from './general.interfaces';
-import { MaintenancePlan } from './maintenance.interfaces';
+import { BaseEntity, Option } from '@repo/interfaces';
+import { LocationFilter } from '../general.interfaces';
+import { MaintenancePlan } from '../maintenance.interfaces';
 
 interface AssetLocation {
   locationId: number;
@@ -33,24 +34,12 @@ interface AssetLocation {
   shelfRef: string;
 }
 
-type AssetStatusType =
-  | 'Active'
-  | 'Inactive'
-  | 'Under Maintenance'
-  | 'Decommissioned'
-  | 'Pending Disposal'
-  | 'In Storage'
-  | 'Operational'
-  | 'Non-Operational'
-  | 'Scheduled for Maintenance'
-  | 'Out of Service';
-
 interface Asset {
-  rowId: number | null;
-  guid: string | null;
+  rowId: number;
+  guid: string;
   primaryImage: string | null;
   primaryImagePrefix: string | null;
-  assetId: number | null;
+  assetId: number;
   brandName: string | null;
   modelRef: string | null;
   assetName: string | null;
@@ -215,7 +204,12 @@ interface AssetFormDetails {
   lgaName: string | null;
   stateName: string | null;
   countryName: string | null;
+  deletedImageIds: number[];
   maintenancePlans: MaintenancePlan[];
+  newMaintenancePlanIds: number[];
+  deletedMaintenancePlanIds: number[];
+  existingDocumentsIds: number[];
+  deletedExistingDocumentIds: number[];
   vendorDetails: {
     vendorName: string | null;
     address: string | null;
@@ -227,24 +221,6 @@ interface AssetFormDetails {
 interface FilterInput extends LocationFilter {
   category: Option[];
   status: Option[];
-}
-
-interface LocationOption {
-  label: string | null;
-  value: number | null;
-}
-
-interface FormLocation {
-  country: LocationOption;
-  state: LocationOption;
-  lga: LocationOption;
-  facility: LocationOption;
-  building: LocationOption;
-  floor: LocationOption;
-  department: LocationOption;
-  room: LocationOption;
-  aisle: LocationOption;
-  shelf: LocationOption;
 }
 
 interface AcquisitionInfo {
@@ -288,37 +264,13 @@ interface ContractDocument {
   vendorName: string;
 }
 
-interface BaseAsset {
-  isNew: boolean;
-  createdDate: string;
-  createdBy: string;
-  lastModifiedDate: string;
-  lastModifiedBy: string;
-  isDeleted: boolean;
-  deletedDate: string;
-  deletedBy: string;
-  guid: string;
-}
-
-interface Images {
-  imageId: number;
-  imageName: string;
-  photoImage: string;
-  base64Prefix: string;
-  isPrimaryImage: true;
-  assetId: number;
-}
-
-interface Document {
+interface AssetDocument extends BaseEntity {
   documentId: number;
   documentName: string;
   document: string;
   base64Prefix: string;
   assetId: number;
 }
-
-interface AssetImage extends BaseAsset, Images {}
-interface AssetDocument extends BaseAsset, Document {}
 
 interface StateAssetCount {
   rowId: number;
@@ -335,32 +287,6 @@ interface LGAAssetCount {
   lgaName: string;
   stateId: number;
 }
-
-interface AssetStats {
-  activeAssets: number;
-  inActiveAssets: number;
-  assetsUnderMaintenance: number;
-  decommissionedAssets: number;
-  assetsPendingDisposal: number;
-  assetsInStorage: number;
-  operationalAssets: number;
-  assetsScheduledForMaintenance: number;
-  assetsOutOfService: number;
-  assetsNotInUse: number;
-  totalAssets: number;
-  totalAssetValue: number;
-  assetsNotInUseTotalValue: number;
-  activeAssetsTotalValue: number;
-}
-
-interface MapStats {
-  stateId?: number;
-  stateName?: string;
-  lgaId?: number;
-  lgaName?: string;
-}
-
-interface AssetMapStats extends AssetStats, MapStats {}
 
 interface InfoProps {
   iconColor: string;
@@ -399,23 +325,102 @@ interface AssetStatus {
   displayColorCode: string;
 }
 
+export interface CreateAssetQuery {
+  createLocationDto: CreateLocationDto;
+  createAssetDto: CreateAssetDto;
+  createAssetImageDto: CreateAssetImageDto[];
+  createAssetWarrantyDto: CreateAssetWarrantyDto;
+  createAssetDepreciationDto: CreateAssetDepreciationDto;
+  createAssetDocumentsDto: CreateAssetDocumentsDto[] | null;
+  maintenancePlanIds?: number[];
+  assetDocumentIds?: number[];
+}
+
+export interface CreateAssetDepreciationDto {
+  assetId: number | undefined;
+  depreciationDate: string;
+  depreciationMethod: string | null;
+  depreciationRate: number | null;
+  initialValue: number | null;
+  accumulatedDepreciation: number | null;
+  currentValue: number | null;
+  createdBy: string | undefined;
+}
+
+export interface CreateAssetDocumentsDto {
+  documentName: string;
+  base64Document: string;
+  createdBy: string | undefined;
+}
+
+export interface CreateAssetDto {
+  assetName: string | null;
+  brandName: string | null;
+  modelRef: string | null;
+  serialNo: string | null;
+  description: string | null;
+  weightKg: number | null;
+  lengthCm: number | null;
+  widthCm: number | null;
+  heightCm: number | null;
+  purchaseDate: string | null;
+  lifeExpectancy: number | null;
+  assetTypeId: number | null;
+  statusId: number | null;
+  categoryId: number | null;
+  currentOwner: number | null;
+  responsibleFor: number | null;
+  assignedTo: number | null;
+  conditionId: number | null;
+  acquisitionDate: string | null;
+  initialValue: number | null;
+  resalevalue: number | null;
+  scrapvalue: number | null;
+  parentId: number | null;
+  subCategoryId: number | null;
+  createdBy: string | undefined;
+}
+
+export interface CreateAssetImageDto {
+  imageName: string;
+  base64PhotoImage: string;
+  isPrimaryImage: boolean;
+  assetId: number | null;
+  createdBy: string | undefined;
+}
+
+export interface CreateAssetWarrantyDto {
+  warrantyDetails: string;
+  startDate: string;
+  expiryDate: string;
+  assetId: number | undefined;
+  createdBy: string | undefined;
+}
+
+export interface CreateLocationDto {
+  lgaId: number | null;
+  facilityId: number | null;
+  buildingId: number | null;
+  floorId: number | null;
+  departmentId: number | null;
+  roomId: number | null;
+  aisleId: number | null;
+  shelfId: number | null;
+  createdBy: string | undefined;
+}
+
 export type {
   AssetLocation,
   Asset,
   AssetFormDetails,
   FilterInput,
-  AssetStatusType,
-  FormLocation,
   AcquisitionInfo,
   ContractDocument,
-  AssetImage,
   AssetDocument,
   AssetFormImage,
   AssetFormDocument,
   StateAssetCount,
   LGAAssetCount,
-  AssetStats,
-  AssetMapStats,
   InfoProps,
   SingleMapAssetData,
   AssetStatus,

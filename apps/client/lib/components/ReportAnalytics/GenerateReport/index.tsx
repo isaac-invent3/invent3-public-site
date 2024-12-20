@@ -9,12 +9,17 @@ import DynamicConditions from './DynamicConditions';
 import SystemContextColumnsSelect from './SystemContextColumnsSelect';
 import SystemContextSelect from './SystemContextSelect';
 
+import { ListResponse } from '@repo/interfaces';
 import { DateTimeButtons, FormInputWrapper } from '@repo/ui/components';
-import { getSession } from 'next-auth/react';
+import { useState } from 'react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { GenerateReportDetails } from '~/lib/interfaces/report.interfaces';
+import {
+  GenerateReportDetails,
+  GenerateReportResponse,
+} from '~/lib/interfaces/report.interfaces';
 import { useGenerateReportMutation } from '~/lib/redux/services/reports.services';
 import { generateReportSchema } from '~/lib/schemas/report.schema';
+import GeneratedReport from './GeneratedReport';
 
 const GenerateReport = () => {
   const initialValues: GenerateReportDetails = {
@@ -38,12 +43,14 @@ const GenerateReport = () => {
 
   const { handleSubmit } = useCustomMutation();
 
+  const [generatedReport, setGeneratedReport] =
+    useState<ListResponse<GenerateReportResponse> | null>(null);
+
   const formik = useFormik({
     initialValues,
     enableReinitialize: false,
     validationSchema: generateReportSchema,
     onSubmit: async (data) => {
-
       const payload = {
         ...data,
       };
@@ -54,7 +61,7 @@ const GenerateReport = () => {
         'Report Generated Successfully'
       );
 
-      console.log(response)
+      response?.data && setGeneratedReport(response?.data.data);
     },
   });
 
@@ -189,20 +196,26 @@ const GenerateReport = () => {
                 </Button>
               </Grid>
 
-              <VStack justifyContent="center" height="33vh">
-                <Text fontWeight={700} fontSize="14x" color="#0E2642">
-                  No Report Generated Yet
-                </Text>
-                <Text
-                  color="#838383"
-                  width="200px"
-                  margin="0 auto"
-                  textAlign="center"
-                >
-                  Select your output with conditions above to generate your
-                  report
-                </Text>
-              </VStack>
+              {!generatedReport && (
+                <VStack justifyContent="center" height="33vh">
+                  <Text fontWeight={700} fontSize="14x" color="#0E2642">
+                    No Report Generated Yet
+                  </Text>
+                  <Text
+                    color="#838383"
+                    width="200px"
+                    margin="0 auto"
+                    textAlign="center"
+                  >
+                    Select your output with conditions above to generate your
+                    report
+                  </Text>
+                </VStack>
+              )}
+
+              {generatedReport && (
+                <GeneratedReport response={generatedReport} />
+              )}
             </Box>
           </form>
 

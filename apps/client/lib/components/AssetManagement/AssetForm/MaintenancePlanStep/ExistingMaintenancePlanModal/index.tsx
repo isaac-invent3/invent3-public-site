@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
-import { ListResponse } from '~/lib/interfaces/general.interfaces';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import GenericTemplateModal from '~/lib/components/Common/Modals/GenericTemplateModal';
 
@@ -14,6 +13,7 @@ import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import MaintenancePlanTable from '~/lib/components/Maintenance/Plans/PlanTable';
+import { ListResponse } from '@repo/interfaces';
 
 interface ExistingMaintenancePlanModalProps {
   isOpen: boolean;
@@ -27,9 +27,8 @@ const ExistingMaintenancePlanModal = (
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const dispatch = useAppDispatch();
-  const existingSelectedPlans = useAppSelector(
-    (state) => state.asset.assetForm.maintenancePlans
-  );
+  const { maintenancePlans: existingSelectedPlans, newMaintenancePlanIds } =
+    useAppSelector((state) => state.asset.assetForm);
   const { data, isLoading, isFetching } = useGetAllMaintenancePlanQuery(
     {
       pageNumber,
@@ -94,16 +93,20 @@ const ExistingMaintenancePlanModal = (
         selectedMaintenancePlans.push(plan);
       }
     });
+
+    //Filter out plans already existing
+    const newPlans = selectedMaintenancePlans.filter(
+      (item) =>
+        !existingSelectedPlans
+          .map((plan) => plan.maintenancePlanId)
+          .includes(item.maintenancePlanId)
+    );
     dispatch(
       updateAssetForm({
-        maintenancePlans: [
-          ...existingSelectedPlans,
-          ...selectedMaintenancePlans.filter(
-            (item) =>
-              !existingSelectedPlans
-                .map((plan) => plan.maintenancePlanId)
-                .includes(item.maintenancePlanId)
-          ),
+        maintenancePlans: [...existingSelectedPlans, ...newPlans],
+        newMaintenancePlanIds: [
+          ...newMaintenancePlanIds,
+          ...newPlans.map((item) => item.maintenancePlanId),
         ],
       })
     );

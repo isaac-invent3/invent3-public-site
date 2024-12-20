@@ -6,7 +6,9 @@ import AddDocument from '../../AssetForm/DocumentStep/AddDocument';
 const SupportingDocuments = () => {
   return (
     <VStack spacing="16px" alignItems="flex-start" width="full">
-      <DetailHeader variant="secondary">Supporting Documents</DetailHeader>
+      <DetailHeader variant="secondary" customStyles={{ fontWeight: 700 }}>
+        Supporting Documents
+      </DetailHeader>
       <AddDocument variant="secondary" />
     </VStack>
   );

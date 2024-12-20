@@ -24,17 +24,35 @@ interface PopoverProps {
 const Popover = (props: PopoverProps) => {
   const { data } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const selectedMaintenancePlans = useAppSelector(
-    (state) => state.asset.assetForm.maintenancePlans
-  );
+  const {
+    maintenancePlans: selectedMaintenancePlans,
+    newMaintenancePlanIds,
+    deletedMaintenancePlanIds,
+  } = useAppSelector((state) => state.asset.assetForm);
   const dispatch = useAppDispatch();
 
+  const isInNewPlanArray = newMaintenancePlanIds.includes(
+    data.maintenancePlanId
+  );
+
   const handleDeletePlan = () => {
+    // Filter out the maintenance plan to be deleted
+    const updatedMaintenancePlans = selectedMaintenancePlans.filter(
+      (plan) => plan.maintenancePlanId !== data.maintenancePlanId
+    );
+
+    const updatedDeletedPlans = isInNewPlanArray
+      ? deletedMaintenancePlanIds
+      : [...deletedMaintenancePlanIds, data.maintenancePlanId];
+
+    // Dispatch the updated state
     dispatch(
       updateAssetForm({
-        maintenancePlans: selectedMaintenancePlans.filter(
-          (plan) => plan.maintenancePlanId !== data.maintenancePlanId
+        maintenancePlans: updatedMaintenancePlans,
+        newMaintenancePlanIds: newMaintenancePlanIds.filter(
+          (item) => item != data.maintenancePlanId
         ),
+        deletedMaintenancePlanIds: updatedDeletedPlans,
       })
     );
   };
@@ -97,7 +115,7 @@ const PlanList = (props: PlanListProps) => {
 
   return (
     <VStack width="full" alignItems="flex-start" spacing="8px">
-      <HStack spacing="10px" alignItems="flex-start">
+      <HStack spacing="10px" alignItems="flex-start" width="full">
         {!viewOnly &&
           assetTypePlans.length > 0 &&
           !isLoading &&

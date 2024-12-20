@@ -2,7 +2,7 @@ import { HStack, Text, VStack } from '@chakra-ui/react';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Option } from '~/lib/interfaces/general.interfaces';
-import { locationApi } from '~/lib/redux/services/asset/location.services';
+import { lgaApi } from '~/lib/redux/services/location/lga.services';
 import { generateOptions } from '~/lib/utils/helperFunctions';
 import { CheckBox, FilterDropDown } from '@repo/ui/components';
 import { useAppDispatch } from '~/lib/redux/hooks';
@@ -40,8 +40,8 @@ const LGAFilter = (props: LGAFilterProps) => {
 
       for (const state of sortedRegion) {
         const result = await dispatch(
-          locationApi.endpoints.getLGAByStateId.initiate({
-            id: state.value,
+          lgaApi.endpoints.getLGAByStateId.initiate({
+            id: Number(state.value) ?? undefined,
             pageNumber: 1,
             pageSize: 50,
           })

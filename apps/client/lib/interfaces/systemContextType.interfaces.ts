@@ -1,4 +1,4 @@
-import { SearchQuery } from './general.interfaces';
+import { SearchQuery } from "@repo/interfaces";
 
 interface GetSystemContextTypeColumnsPayload extends SearchQuery {
   systemContextTypeId: number;

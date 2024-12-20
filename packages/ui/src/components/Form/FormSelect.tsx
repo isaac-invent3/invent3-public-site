@@ -1,7 +1,7 @@
 import { useField } from 'formik';
 import SelectInput, { SelectInputProps } from '../Select';
 // eslint-disable-next-line no-redeclare
-import { Option } from '../../interfaces/general.interfaces';
+import { Option } from '@repo/interfaces';
 
 interface FormSelectProps
   extends Omit<SelectInputProps, 'selectedOptions' | 'handleSelect'> {
@@ -21,8 +21,8 @@ const FormSelect = (props: FormSelectProps) => {
       errorMessage={meta.error}
       selectedOption={meta.value}
       handleSelect={(option) => {
-        helpers.setValue(option?.value);
         props.onSelect && props.onSelect(option);
+        helpers.setValue(option?.value);
       }}
     />
   );

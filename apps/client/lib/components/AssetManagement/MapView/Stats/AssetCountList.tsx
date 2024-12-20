@@ -1,6 +1,6 @@
 import { Heading, HStack, Skeleton, Text, VStack } from '@chakra-ui/react';
 
-import { SingleMapAssetData } from '~/lib/interfaces/asset.interfaces';
+import { SingleMapAssetData } from '~/lib/interfaces/asset/general.interface';
 
 interface AssetCountListProps {
   type: 'state' | 'lga';

@@ -5,7 +5,13 @@ import { useAppSelector } from '~/lib/redux/hooks';
 import { useGetAcquisitionInfoByAssetIdQuery } from '~/lib/redux/services/asset/general.services';
 
 const AcquisitionTab = () => {
-  const { assetId } = useAppSelector((state) => state.asset.asset);
+  const assetData = useAppSelector((state) => state.asset.asset);
+
+  if (!assetData) {
+    return null;
+  }
+  const { assetId } = assetData;
+
   const { data, isLoading } = useGetAcquisitionInfoByAssetIdQuery(
     { id: assetId },
     { skip: !assetId }

@@ -14,16 +14,15 @@ const baseQuery = fetchBaseQuery({
   prepareHeaders: async (headers) => {
     const session = await getSession();
 
-    if (!session) {
+    if (session?.error) {
       return handleSignOut();
     }
 
-    if (session?.user?.accessToken) {
+    if (session?.user) {
       // Attach the access token to the Authorization header
       headers.set('Authorization', `Bearer ${session.user.accessToken}`);
       headers.set('ApiKey', `${session.user.apiKey}`);
     }
-
     return headers;
   },
 });

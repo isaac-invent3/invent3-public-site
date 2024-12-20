@@ -8,7 +8,7 @@ import {
   GenericModal,
   ModalHeading,
 } from '@repo/ui/components';
-import { useCreateBuildingMutation } from '~/lib/redux/services/asset/location.services';
+import { useCreateBuildingMutation } from '~/lib/redux/services/location/building.services';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';
 import { buildingSchema } from '~/lib/schemas/asset/location.schema';
@@ -26,10 +26,10 @@ const BuildingModal = (props: BuildingModalProps) => {
 
   const formik = useFormik({
     initialValues: {
-      facilityId: defaultFacilityId ?? null,
-      buildingName: null,
-      buildingRef: null,
-      address: null,
+      facilityId: defaultFacilityId ?? undefined,
+      buildingName: '',
+      buildingRef: '',
+      address: '',
       longitude: 0,
       latitude: 0,
     },
@@ -37,7 +37,10 @@ const BuildingModal = (props: BuildingModalProps) => {
     enableReinitialize: true,
     onSubmit: async (values, { resetForm }) => {
       const session = await getSession();
-      const finalValue = { ...values, createdBy: session?.user?.username };
+      const finalValue = {
+        ...values,
+        createdBy: session?.user?.username ?? '',
+      };
       const response = await handleSubmit(createBuilding, finalValue, '');
       if (response?.data) {
         onClose();

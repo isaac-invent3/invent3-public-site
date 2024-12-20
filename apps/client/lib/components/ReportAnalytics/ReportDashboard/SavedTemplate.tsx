@@ -34,18 +34,13 @@ const SavedTemplate = (props: SavedTemplateProps) => {
             justifyContent="space-between"
           >
             <VStack alignItems="start">
-              <Heading
-                fontSize={14}
-                fontWeight={700}
-                color="#0E2642"
-                lineHeight="16.63px"
-              >
+              <Heading fontWeight={700} color="#0E2642" size="md">
                 {report.reportName}
               </Heading>
 
               <Text
                 color="#838383"
-                fontSize="14px"
+                size="md"
                 fontWeight="700"
                 lineHeight="16.63px"
               >

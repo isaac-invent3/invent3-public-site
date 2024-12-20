@@ -223,7 +223,7 @@ const SummaryStep = (props: SummaryStepProps) => {
     if (type === 'parentAsset') {
       dispatch(clearAsset());
     }
-    setActiveStep(0);
+    setActiveStep(1);
     dispatch(clearAssetForm());
     onCloseAddModal();
     onCloseChildModal();

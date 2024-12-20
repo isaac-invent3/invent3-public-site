@@ -69,7 +69,7 @@ interface Asset {
   assetSubCategory: string | null;
   categoryId: number | null;
   subCategoryId: number | null;
-  statusId: number | null;
+  assetStatusId: number | null;
   assetTypeId: number | null;
   conditionId: number | null;
   currentCondition: string | null;
@@ -325,7 +325,7 @@ interface AssetStatus {
   displayColorCode: string;
 }
 
-export interface CreateAssetQuery {
+interface CreateAssetQuery {
   createLocationDto: CreateLocationDto;
   createAssetDto: CreateAssetDto;
   createAssetImageDto: CreateAssetImageDto[];
@@ -336,7 +336,7 @@ export interface CreateAssetQuery {
   assetDocumentIds?: number[];
 }
 
-export interface CreateAssetDepreciationDto {
+interface CreateAssetDepreciationDto {
   assetId: number | undefined;
   depreciationDate: string;
   depreciationMethod: string | null;
@@ -347,13 +347,13 @@ export interface CreateAssetDepreciationDto {
   createdBy: string | undefined;
 }
 
-export interface CreateAssetDocumentsDto {
-  documentName: string;
-  base64Document: string;
+interface CreateAssetDocumentsDto {
+  documentName: string | undefined;
+  base64Document: string | undefined;
   createdBy: string | undefined;
 }
 
-export interface CreateAssetDto {
+interface CreateAssetDto {
   assetName: string | null;
   brandName: string | null;
   modelRef: string | null;
@@ -381,7 +381,7 @@ export interface CreateAssetDto {
   createdBy: string | undefined;
 }
 
-export interface CreateAssetImageDto {
+interface CreateAssetImageDto {
   imageName: string;
   base64PhotoImage: string;
   isPrimaryImage: boolean;
@@ -389,7 +389,7 @@ export interface CreateAssetImageDto {
   createdBy: string | undefined;
 }
 
-export interface CreateAssetWarrantyDto {
+interface CreateAssetWarrantyDto {
   warrantyDetails: string;
   startDate: string;
   expiryDate: string;
@@ -397,7 +397,7 @@ export interface CreateAssetWarrantyDto {
   createdBy: string | undefined;
 }
 
-export interface CreateLocationDto {
+interface CreateLocationDto {
   lgaId: number | null;
   facilityId: number | null;
   buildingId: number | null;
@@ -424,4 +424,10 @@ export type {
   InfoProps,
   SingleMapAssetData,
   AssetStatus,
+  CreateAssetQuery,
+  CreateAssetDepreciationDto,
+  CreateAssetDocumentsDto,
+  CreateAssetImageDto,
+  CreateAssetWarrantyDto,
+  CreateLocationDto,
 };

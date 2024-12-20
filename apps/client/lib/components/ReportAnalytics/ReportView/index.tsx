@@ -24,7 +24,7 @@ const ReportView = (props: ReportViewProps) => {
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
 
   const [activeFilter, setActiveFilter] = useState<'general' | null>(null);
-  const { filters } = useAppSelector(state=>state.report);
+  const { filters } = useAppSelector((state) => state.report);
 
   const breadCrumbData = [
     {
@@ -118,7 +118,7 @@ const ReportView = (props: ReportViewProps) => {
               <HStack>
                 <Text
                   color="#838383"
-                  fontSize="14px"
+                  size="md"
                   fontWeight="700"
                   lineHeight="16.63px"
                   textTransform="capitalize"
@@ -126,12 +126,7 @@ const ReportView = (props: ReportViewProps) => {
                   Created by: {reportInfo?.data.createdBy}
                 </Text>
 
-                <Text
-                  color="#838383"
-                  fontSize="12px"
-                  lineHeight="14.26px"
-                  fontWeight="500"
-                >
+                <Text color="#838383" fontWeight="500">
                   |{' '}
                   {dateFormatter(
                     reportInfo?.data.createdDate,
@@ -143,7 +138,7 @@ const ReportView = (props: ReportViewProps) => {
 
             <Text
               color="#0E2642"
-              fontSize="14px"
+              size="md"
               fontWeight="500"
               lineHeight="16.63px"
             >

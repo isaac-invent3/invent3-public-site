@@ -86,7 +86,7 @@ interface ScheduleReportPayload {
   //   additionalProp2: [0];
   //   additionalProp3: [0];
   // };
-  recipientIds: string[];
+  recipientIds: number[] | string[];
   createdBy: string;
 }
 

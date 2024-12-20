@@ -74,8 +74,6 @@ const ScheduleReportDrawer = (props: ScheduleReportDrawerProps) => {
         ''
       );
 
-      console.log(response)
-
       if (response?.data) {
         resetForm();
         onScheduleSuccessOpen();
@@ -109,10 +107,6 @@ const ScheduleReportDrawer = (props: ScheduleReportDrawerProps) => {
   useEffect(() => {
     updateForm(recurrence);
   }, [recurrence]);
-
-  useEffect(() => {
-    console.log({ values: formik.values, errors: formik.errors });
-  }, [formik.errors, formik.values]);
   return (
     <GenericDrawer isOpen={isOpen} onClose={onClose} maxWidth="507px">
       <DrawerHeader p={0} m={0}>

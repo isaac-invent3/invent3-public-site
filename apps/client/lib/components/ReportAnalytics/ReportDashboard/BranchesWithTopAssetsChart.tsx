@@ -70,7 +70,7 @@ const BranchesWithTopAssetsChart = (props: BranchesWithTopAssetsProps) => {
     >
       <HStack alignItems="start" height="100%">
         <VStack justifyContent="space-between" alignItems="start" height="30%">
-          <Text fontSize="14px" color="#42403D" mb="10">
+          <Text size="md" color="#42403D" mb="10">
             Top 5 branches with most Assets
           </Text>
 

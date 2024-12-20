@@ -126,7 +126,7 @@ export const config = {
     async jwt({ token, user, trigger, session }) {
       const currentTime = Date.now(); // Current time in milliseconds
       if (user) {
-        token.id = user.userId.toString();
+        token.id = user.userId;
         token.name = `${user.firstName} ${user.lastName}`;
         token.firstName = user.firstName;
         token.lastName = user.lastName;
@@ -179,7 +179,8 @@ export const config = {
         ...session,
         user: {
           ...session.user,
-          id: token.id as string,
+          id: token.id.toString(),
+          userId: token.id,
           firstName: token.firstName as string,
           lastName: token.lastName as string,
           email: token.email as string,

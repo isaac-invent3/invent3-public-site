@@ -33,11 +33,7 @@ const ReportCard = (props: ReportCardProps) => {
       <VStack align="start" height="100%" justifyContent="space-between">
         <Skeleton isLoaded={!isLoading} width="full" height="full">
           <VStack align="start" spacing="16px">
-            <Text
-              color={card.color ?? '#42403D'}
-              fontWeight={500}
-              fontSize="14px"
-            >
+            <Text color={card.color ?? '#42403D'} fontWeight={500} size="md">
               {card.title}
             </Text>
             <Heading

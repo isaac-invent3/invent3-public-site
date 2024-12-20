@@ -22,7 +22,7 @@ const SystemContextColumnsSelect = (props: SystemContextColumnsSelectProps) => {
       pageNumber: 1,
       pageSize: DEFAULT_PAGE_SIZE,
     },
-    { skip: typeof selectedContextTypeId !== 'number' }
+    { skip: selectedContextTypeId === undefined }
   );
 
   const allOptions = generateOptions(
@@ -41,7 +41,7 @@ const SystemContextColumnsSelect = (props: SystemContextColumnsSelectProps) => {
 
   useEffect(() => {
     setFieldValue('contextTypeColumns', allOptions);
-  }, [data]);
+  }, [data, values.contextTypeId]);
 
   return (
     <FilterDropDown

@@ -16,16 +16,16 @@ import { dateFormatter } from '~/lib/utils/Formatters';
 import { Button, DataTable } from '@repo/ui/components';
 import { getDocumentInfo } from '~/lib/utils/helperFunctions';
 import { useField } from 'formik';
-import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import { ListResponse } from '@repo/interfaces';
 
 interface ExistingDocumentModalProps {
   isOpen: boolean;
   onClose: () => void;
+  // eslint-disable-next-line no-unused-vars
+  handleNewExistingDocumentsIds: (ids: number[]) => void;
 }
 const ExistingDocumentModal = (props: ExistingDocumentModalProps) => {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, handleNewExistingDocumentsIds } = props;
   const [search, setSearch] = useState('');
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
@@ -45,10 +45,6 @@ const ExistingDocumentModal = (props: ExistingDocumentModalProps) => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   // eslint-disable-next-line no-unused-vars
   const [field, meta, helpers] = useField('documents');
-  const existingDocumentsIds = useAppSelector(
-    (state) => state.asset.assetForm.existingDocumentsIds
-  );
-  const dispatch = useAppDispatch();
 
   const searchCriterion = {
     criterion: [
@@ -134,11 +130,10 @@ const ExistingDocumentModal = (props: ExistingDocumentModalProps) => {
 
   const handleAddDocuments = () => {
     const selectedDocuments: AssetFormDocument[] = [];
+    const sourceItems =
+      search && searchData ? searchData.items : (data?.data?.items ?? []);
     selectedRows.forEach((row) => {
-      const document =
-        search && searchData
-          ? searchData.items.find((_, index) => index === row)
-          : data?.data?.items.find((_, index) => index === row);
+      const document = sourceItems.find((_, index) => index === row);
       if (document) {
         selectedDocuments.push({
           documentId: document.documentId,
@@ -157,14 +152,11 @@ const ExistingDocumentModal = (props: ExistingDocumentModalProps) => {
     );
 
     helpers.setValue([...meta.value, ...newDocuments]);
-    dispatch(
-      updateAssetForm({
-        existingDocumentsIds: [
-          ...existingDocumentsIds,
-          ...newDocuments.map((item) => item.documentId as number),
-        ],
-      })
+
+    handleNewExistingDocumentsIds(
+      newDocuments.map((item) => item.documentId as number)
     );
+
     onClose();
   };
 

@@ -37,7 +37,7 @@ const DefaultReport = (props: DefaultReportProps) => {
 
               <Text
                 color="#838383"
-                fontSize="14px"
+                size="md"
                 fontWeight="700"
                 lineHeight="16.63px"
               >

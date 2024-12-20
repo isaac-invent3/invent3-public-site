@@ -12,7 +12,16 @@ const SectionOne = () => {
   }
   const {
     assetId,
-    assetLocation,
+    countryName,
+    stateName,
+    lganame,
+    facilityName,
+    buildingName,
+    floorName,
+    departmentName,
+    roomName,
+    aisleName,
+    shelfName,
     currentCondition,
     assetCategory,
     brandName,
@@ -42,7 +51,7 @@ const SectionOne = () => {
   ];
   return (
     <Flex gap="44px" width="full">
-      <Flex width="40%">
+      <Flex width="40%" pt="14px">
         <CurrentOwner />
       </Flex>
       <Flex width="60%">
@@ -64,12 +73,25 @@ const SectionOne = () => {
               <DetailSection details={info2} labelMinWidth="65px" />
             </Stack>
             <HStack alignItems="flex-start" spacing="56px">
-              <HStack alignItems="flex-start" spacing="24px">
+              <HStack alignItems="flex-start" spacing="16px">
                 <Text color="neutral.600" size="md">
                   Location:
                 </Text>
-                <Text color="black" size="md" lineHeight="22px">
-                  {assetLocation ?? 'N/A'}
+                <Text color="black" size="md" lineHeight="22px" maxW="157px">
+                  {[
+                    countryName,
+                    stateName,
+                    lganame,
+                    facilityName,
+                    buildingName,
+                    floorName,
+                    departmentName,
+                    roomName,
+                    aisleName,
+                    shelfName,
+                  ]
+                    .filter(Boolean)
+                    .join(', ') ?? 'N/A'}
                 </Text>
               </HStack>
               <VStack spacing="8px" alignItems="flex-start">

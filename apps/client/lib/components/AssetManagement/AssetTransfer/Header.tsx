@@ -22,7 +22,7 @@ const Header = () => {
     <VStack spacing="58px" alignItems="flex-start" width="full" pt="12px">
       <GenericBreadCrumb routes={breadCrumbData} />
       <HStack width="full" justifyContent="space-between">
-        <PageHeader>Asset Transfer</PageHeader>
+        <PageHeader>Asset Transfer Request</PageHeader>
       </HStack>
     </VStack>
   );

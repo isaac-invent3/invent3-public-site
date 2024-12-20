@@ -200,7 +200,7 @@ const GenerateReport = () => {
 
               {!generatedReport && (
                 <VStack justifyContent="center" height="33vh">
-                  <Text fontWeight={700} fontSize="14x" color="#0E2642">
+                  <Text fontWeight={700} size="md" color="#0E2642">
                     No Report Generated Yet
                   </Text>
                   <Text

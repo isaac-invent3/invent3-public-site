@@ -1,7 +1,10 @@
 import { Flex, HStack, Text, useDisclosure } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import Header from './Header';
-import { Asset } from '~/lib/interfaces/asset/general.interface';
+import {
+  Asset,
+  AssetFormDocument,
+} from '~/lib/interfaces/asset/general.interface';
 import { FormikProvider, useFormik } from 'formik';
 import { assetDisposeSchema } from '~/lib/schemas/asset/main.schema';
 import { useAppDispatch } from '~/lib/redux/hooks';
@@ -10,6 +13,10 @@ import { Button } from '@repo/ui/components';
 import AssetSuccessModal from '../Modals/AssetSuccessModal';
 import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
+import { useRequestAssetDisposalMutation } from '~/lib/redux/services/asset/disposal.services';
+import { getSession } from 'next-auth/react';
+import moment from 'moment';
 
 interface AssetDisposeProps {
   data: Asset;
@@ -18,17 +25,63 @@ const AssetDispose = (props: AssetDisposeProps) => {
   const { data } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
+  const [requestAssetDisposal, { isLoading }] = useRequestAssetDisposalMutation(
+    {}
+  );
+  const { handleSubmit } = useCustomMutation();
 
   const formik = useFormik({
     initialValues: {
       disposalDate: '',
-      reason: '',
-      additionalInfo: '',
+      disposalReasonId: undefined,
+      comments: undefined,
       documents: [],
     },
     validationSchema: assetDisposeSchema,
-    onSubmit: async () => {
-      onOpen();
+    onSubmit: async (values) => {
+      const session = await getSession();
+      const createAssetDisposalRequestDto = {
+        ...values,
+        assetId: data?.assetId,
+        disposalDate: moment(values.disposalDate, 'DD/MM/YYYY')
+          .utcOffset(0, true)
+          .toISOString(),
+        currentOwner: data?.currentOwnerId ?? undefined,
+        disposalRequestedBy: session?.user?.userId,
+        createdBy: session?.user?.username,
+      };
+      const uploadedDocuments: AssetFormDocument[] = values.documents.filter(
+        (item: AssetFormDocument) => item.documentId === null
+      );
+
+      const existingDocuments: AssetFormDocument[] = values.documents.filter(
+        (item: AssetFormDocument) => item.documentId !== null
+      );
+      const createAssetDocumentsDto =
+        uploadedDocuments.length > 0
+          ? uploadedDocuments.map((item) => ({
+              documentName: item.documentName ?? undefined,
+              base64Document: item.base64Document ?? undefined,
+              createdBy: session?.user?.username,
+            }))
+          : null;
+
+      const assetDocumentIds =
+        existingDocuments.length > 0
+          ? existingDocuments
+              .filter((item) => item.documentId !== null)
+              .map((item) => item.documentId as number)
+          : null;
+
+      const finalQuery = {
+        createAssetDisposalRequestDto,
+        createAssetDocumentsDto,
+        assetDocumentIds,
+      };
+      const resp = await handleSubmit(requestAssetDisposal, finalQuery, '');
+      if (resp?.data) {
+        onOpen();
+      }
     },
   });
 
@@ -74,7 +127,11 @@ const AssetDispose = (props: AssetDisposeProps) => {
                 </Text>
               </HStack>
 
-              <Button type="submit" customStyles={{ width: '161px' }}>
+              <Button
+                type="submit"
+                customStyles={{ width: '161px' }}
+                isLoading={formik.isSubmitting || isLoading}
+              >
                 Dispose
               </Button>
             </HStack>

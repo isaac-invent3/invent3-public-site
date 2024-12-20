@@ -46,8 +46,8 @@ const AssetDispose = (props: AssetDisposeProps) => {
         disposalDate: moment(values.disposalDate, 'DD/MM/YYYY')
           .utcOffset(0, true)
           .toISOString(),
-        currentOwner: data?.currentOwnerId ?? undefined,
-        disposalRequestedBy: session?.user?.userId,
+        currentOwner: data?.currentOwnerId!,
+        disposalRequestedBy: data?.currentOwnerId!,
         createdBy: session?.user?.username,
       };
       const uploadedDocuments: AssetFormDocument[] = values.documents.filter(

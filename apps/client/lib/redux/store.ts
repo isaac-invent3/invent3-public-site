@@ -180,6 +180,9 @@ export const makeStore = () => {
         categoryApi.middleware,
         conditionApi.middleware,
 
+        // Dashboard APIs
+        dashboardApi.middleware,
+
         // Depreciation APIs
         depreciationApi.middleware,
 

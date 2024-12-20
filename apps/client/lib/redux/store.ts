@@ -1,48 +1,50 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import {
   FLUSH,
-  REHYDRATE,
   PAUSE,
   PERSIST,
   PURGE,
   REGISTER,
+  REHYDRATE,
   persistReducer,
 } from 'redux-persist';
 
 import storage from './customStorage';
-import { assetApi } from './services/asset/general.services';
-import { authApi } from './services/auth.services';
-import assetSlice from './slices/AssetSlice';
-import dashboardSlice from './slices/DashboardSlice';
-import ticketSlice from './slices/TicketSlice';
-import { utilityApi } from './services/utility.services';
 import { categoryApi } from './services/asset/category.services';
 import { conditionApi } from './services/asset/condition.services';
-import { userApi } from './services/user.services';
 import { depreciationApi } from './services/asset/depreciation.services';
-import { vendorsApi } from './services/asset/vendor.services';
-import { employeesApi } from './services/employees.services';
+import { assetApi } from './services/asset/general.services';
+import { assetGroupTypeApi } from './services/asset/groupType.services';
 import { assetStatsApi } from './services/asset/stats.services';
-import { assetDocumentApi } from './services/asset/document.services';
+import { assetTypeApi } from './services/asset/types.services';
+import { vendorsApi } from './services/asset/vendor.services';
+import { authApi } from './services/auth.services';
 import { dashboardApi } from './services/dashboard.services';
+import { employeesApi } from './services/employees.services';
+import { maintenanceFrequencyApi } from './services/maintenance/frequency.services';
 import { maintenancePlanApi } from './services/maintenance/plan.services';
 import { maintenanceScheduleApi } from './services/maintenance/schedule.services';
-import maintenanceSlice from './slices/MaintenanceSlice';
-import taskSlice from './slices/TaskSlice';
 import { maintenanceTypeApi } from './services/maintenance/type.services';
-import { maintenanceFrequencyApi } from './services/maintenance/frequency.services';
+import { reportApi } from './services/reports.services';
 import { taskApi } from './services/task/general.services';
 import { taskInstanceApi } from './services/task/instance.services';
 import { taskPrioritiesApi } from './services/task/priorities.services';
+import { taskStatusApi } from './services/task/statuses.services';
 import { taskTypeApi } from './services/task/types.services';
 import { templateApi } from './services/template.services';
 import { ticketApi } from './services/ticket.services';
-import { assetTypeApi } from './services/asset/types.services';
-import { assetGroupTypeApi } from './services/asset/groupType.services';
+import { userApi } from './services/user.services';
+import { utilityApi } from './services/utility.services';
+import assetSlice from './slices/AssetSlice';
+import dashboardSlice from './slices/DashboardSlice';
 import dateSlice from './slices/DateSlice';
 import generalSlice from './slices/GeneralSlice';
-import { taskStatusApi } from './services/task/statuses.services';
-import { scheduleInstanceApi } from './services/maintenance/scheduleInstance.services';
+import maintenanceSlice from './slices/MaintenanceSlice';
+import reportSlice from './slices/ReportSlice';
+import taskSlice from './slices/TaskSlice';
+import ticketSlice from './slices/TicketSlice';
+
+import { assetDocumentApi } from './services/asset/document.services';
 import { aisleApi } from './services/location/aisle.services';
 import { buildingApi } from './services/location/building.services';
 import { countryApi } from './services/location/country.services';
@@ -54,11 +56,13 @@ import { roomApi } from './services/location/room.services';
 import { shelfApi } from './services/location/shelf.services';
 import { stateApi } from './services/location/state.services';
 import { assetDisposalApi } from './services/asset/disposal.services';
+import { scheduleInstanceApi } from './services/maintenance/scheduleInstance.services';
+import { systemContextTypesApi } from './services/systemcontexttypes.services';
 
 export const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['general'],
+  whitelist: ['general', 'report'],
 };
 
 const rootReducer = combineReducers({
@@ -105,6 +109,8 @@ const rootReducer = combineReducers({
 
   // Ticket APIs
   [ticketApi.reducerPath]: ticketApi.reducer,
+  [utilityApi.reducerPath]: utilityApi.reducer,
+  [userApi.reducerPath]: userApi.reducer,
 
   // Location-related APIs
   [aisleApi.reducerPath]: aisleApi.reducer,
@@ -118,12 +124,12 @@ const rootReducer = combineReducers({
   [shelfApi.reducerPath]: shelfApi.reducer,
   [stateApi.reducerPath]: stateApi.reducer,
 
-  // Utility and user APIs
-  [utilityApi.reducerPath]: utilityApi.reducer,
-  [userApi.reducerPath]: userApi.reducer,
+  // Report APIS
+  [reportApi.reducerPath]: reportApi.reducer,
 
   // Vendor-related APIs
   [vendorsApi.reducerPath]: vendorsApi.reducer,
+  [systemContextTypesApi.reducerPath]: systemContextTypesApi.reducer,
   asset: assetSlice,
   general: generalSlice,
   dashboard: dashboardSlice,
@@ -131,6 +137,7 @@ const rootReducer = combineReducers({
   task: taskSlice,
   date: dateSlice,
   ticket: ticketSlice,
+  report: reportSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -168,12 +175,8 @@ export const makeStore = () => {
         taskInstanceApi.middleware,
         taskPrioritiesApi.middleware,
         taskStatusApi.middleware,
-        taskTypeApi.middleware,
-
-        // Dashboard-related APIs
-        dashboardApi.middleware,
-
-        // Category and condition APIs
+        templateApi.middleware,
+        ticketApi.middleware,
         categoryApi.middleware,
         conditionApi.middleware,
 
@@ -207,6 +210,10 @@ export const makeStore = () => {
 
         // Vendor-related APIs
         vendorsApi.middleware,
+        systemContextTypesApi.middleware,
+
+        // Report Apis
+        reportApi.middleware,
       ]),
   });
 };

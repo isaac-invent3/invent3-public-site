@@ -52,13 +52,7 @@ interface Ticket {
   assetLocation: string;
 }
 
-interface TicketFilterInput {
-  region: Option[];
-  area: Option[];
-  branch: Option[];
-  fromDate: string;
-  toDate: string;
-}
+
 
 type SelectedTicketAction =
   | 'schedule'
@@ -76,4 +70,4 @@ type TicketCategory =
   | 'completed'
 
 
-export type { SelectedTicketAction, Ticket, TicketCategory, TicketFilterInput };
+export type { SelectedTicketAction, Ticket, TicketCategory };

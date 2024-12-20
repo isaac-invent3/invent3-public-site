@@ -5,4 +5,6 @@ export const metadata: Metadata = {
   title: 'Report and Analytics',
 };
 
-export default ReportView;
+export default function Page({ params }: { params: { id: string } }) {
+  return <ReportView id={params.id} />;
+}

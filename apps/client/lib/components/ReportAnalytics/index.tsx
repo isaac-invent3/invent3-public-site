@@ -1,76 +1,80 @@
 'use client';
 
+import { Flex, Grid, HStack, Link, Text, VStack } from '@chakra-ui/react';
 import {
-  Box,
-  Flex,
-  Grid,
-  GridItem,
-  Heading,
-  HStack,
-  Link,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
-import { useState } from 'react';
-import { TicketFilterInput } from '~/lib/interfaces/ticket.interfaces';
-import { dateFormatter } from '~/lib/utils/Formatters';
+  useGetAllDefaultReportsQuery,
+  useGetAllSavedReportsQuery,
+  useGetReportDasboardValuesQuery,
+} from '~/lib/redux/services/reports.services';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import GeneralFilter from './Filters/GeneralFilter';
 import Header from './Header';
-import GeneralFilter from './PageFilters';
-import TopBranchesChart from './TestChart';
+import BranchesWithTopAssetsChart from './ReportDashboard/BranchesWithTopAssetsChart';
+import DefaultReport from './ReportDashboard/DefaultReport';
+import { dummyReport } from './ReportDashboard/dummyData';
+import ReportCard from './ReportDashboard/ReportCard';
+import SavedTemplate from './ReportDashboard/SavedTemplate';
 
 const ReportAnalytics = () => {
-  const getTodayDate = () => {
-    return dateFormatter(new Date(), 'DD-MM-YYYY') as string;
-  };
+  const { data: defaultReports, isLoading: defaultReportsLoading } =
+    useGetAllDefaultReportsQuery({
+      pageSize: DEFAULT_PAGE_SIZE,
+    });
 
-  const initialFilters = {
-    region: [],
-    area: [],
-    branch: [],
-    fromDate: getTodayDate(),
-    toDate: getTodayDate(),
-  };
+  const { data: savedReports, isLoading: savedReportsLoading } =
+    useGetAllSavedReportsQuery({
+      pageSize: DEFAULT_PAGE_SIZE,
+    });
 
-  const [filterData, setFilterData] =
-    useState<TicketFilterInput>(initialFilters);
-
-  const clearFilters = () => {
-    setFilterData(initialFilters);
-  };
+  const { data: reportDashboardValues, isLoading: reportDashboardLoading } =
+    useGetReportDasboardValuesQuery({});
 
   const cardData = [
-    { title: 'Total Assets', value: '108,098', link: 'View Report' },
-    { title: 'New Assets Added', value: '12', link: 'View Report' },
+    {
+      title: 'Total Assets',
+      value: reportDashboardValues?.data.totalAssets,
+      link: 'View Report',
+    },
+    {
+      title: 'New Assets Added',
+      value: reportDashboardValues?.data.newAssets,
+      link: 'View Report',
+    },
     {
       title: 'Total Assets Disposed',
-      value: '12',
+      value: reportDashboardValues?.data.totalDisposedAssets,
       link: 'View Report',
       color: 'red.500',
     },
-    { title: 'Maintenance Cost', value: '$9,500', link: 'View Report' },
-    { title: 'Total Maintenance Plan', value: '425', link: 'View Report' },
-    { title: 'Total Tasks', value: '650', link: 'View Report' },
+    {
+      title: 'Maintenance Cost',
+      value: reportDashboardValues?.data.totalCost,
+      link: 'View Report',
+    },
+    {
+      title: 'Total Maintenance Plan',
+      value: reportDashboardValues?.data.totalMaintenancePlans,
+      link: 'View Report',
+    },
+    {
+      title: 'Total Tasks',
+      value: reportDashboardValues?.data.totalTasks,
+      link: 'View Report',
+    },
   ];
-
-  // TODO: Split it into Custom Components
 
   return (
     <Flex width="full" direction="column" pb="24px">
       <Header />
 
-      <GeneralFilter
-        filterData={filterData}
-        setFilterData={setFilterData}
-        clearFilters={clearFilters}
-      />
+      <GeneralFilter />
 
       <HStack
         alignItems="center"
         width="full"
         mt={10}
-        paddingBottom="2rem"
-        borderBottomWidth={1}
-        borderBottomColor="#BBBBBB"
+        paddingBlock="2rem"
+        borderBlock="1px solid #BBBBBB"
         justifyContent="space-between"
       >
         <Grid
@@ -83,47 +87,20 @@ const ReportAnalytics = () => {
           gap="16px"
         >
           {cardData.map((card, index) => (
-            <GridItem
+            <ReportCard
+              isLoading={reportDashboardLoading}
+              card={card}
               key={index}
-              bg="white"
-              p="16px"
-              borderRadius="md"
-              border="1px solid #F2F1F1"
-              height="144px"
-            >
-              <VStack
-                align="start"
-                height="100%"
-                justifyContent="space-between"
-              >
-                <VStack align="start" spacing="16px">
-                  <Text
-                    color={card.color ?? '#42403D'}
-                    fontWeight={500}
-                    fontSize="14px"
-                  >
-                    {card.title}
-                  </Text>
-
-                  <Heading
-                    fontSize="36px"
-                    lineHeight="38.02px"
-                    fontWeight={800}
-                    color={card.color ?? '#0E2642'}
-                  >
-                    {card.value}
-                  </Heading>
-                </VStack>
-
-                <Link color="#0366EF" fontWeight="500" fontSize="12px" href="#">
-                  {card.link}
-                </Link>
-              </VStack>
-            </GridItem>
+            />
           ))}
         </Grid>
 
-        <TopBranchesChart />
+        <BranchesWithTopAssetsChart
+          totalAssets={reportDashboardValues?.data.totalAssets}
+          topFiveBranchesWithAssets={
+            reportDashboardValues?.data.topFiveBranchesWithAssets
+          }
+        />
       </HStack>
 
       <VStack>
@@ -142,64 +119,24 @@ const ReportAnalytics = () => {
           </Link>
         </HStack>
 
-        <HStack
+        <Grid
+          templateColumns="repeat(7, 1fr)"
+          width="100%"
           gap="16px"
-          overflowX="scroll"
-          maxW="full"
-          justifyContent="space-between"
-          alignItems="start"
           mt="10px"
         >
-          {Array.from({ length: 10 }, (_, index) => (
-            <Box
+          {defaultReportsLoading && (
+            <DefaultReport report={dummyReport} isLoading={true} />
+          )}
+
+          {defaultReports?.data.items.map((report, index) => (
+            <DefaultReport
               key={index}
-              bg="white"
-              p="12px"
-              borderRadius="md"
-              border="1px solid #F2F1F1"
-              height="200px"
-              minWidth={200}
-            >
-              <VStack
-                alignItems="start"
-                height="full"
-                justifyContent="space-between"
-              >
-                <VStack alignItems="start">
-                  <Heading
-                    fontSize={14}
-                    fontWeight={700}
-                    color="#0E2642"
-                    lineHeight="16.63px"
-                  >
-                    Total Assets with no usage over the last month
-                  </Heading>
-
-                  <Text
-                    color="#838383"
-                    fontSize="14px"
-                    fontWeight="700"
-                    lineHeight="16.63px"
-                  >
-                    Created by: Admin
-                  </Text>
-                  <Text lineHeight="14.26px" fontWeight="500">
-                    12th Nov 2024
-                  </Text>
-                </VStack>
-
-                <Link
-                  color="#0366EF"
-                  fontWeight="500"
-                  fontSize="12px"
-                  href={`/report-analytics/${index}`}
-                >
-                  View Report
-                </Link>
-              </VStack>
-            </Box>
+              report={report}
+              isLoading={defaultReportsLoading}
+            />
           ))}
-        </HStack>
+        </Grid>
       </VStack>
 
       <VStack mt="5">
@@ -218,59 +155,20 @@ const ReportAnalytics = () => {
           </Link>
         </HStack>
 
-        <HStack
+        <Grid
+          templateColumns="repeat(7, 1fr)"
+          width="100%"
           gap="16px"
-          overflowX="scroll"
-          maxW="full"
-          justifyContent="space-between"
-          alignItems="start"
           mt="10px"
         >
-          {Array.from({ length: 10 }, (_, index) => (
-            <Box
-              key={index}
-              bg="white"
-              p="12px"
-              borderRadius="md"
-              border="1px solid #F2F1F1"
-              height="200px"
-              minWidth={200}
-            >
-              <VStack
-                alignItems="start"
-                height="full"
-                justifyContent="space-between"
-              >
-                <VStack alignItems="start">
-                  <Heading
-                    fontSize={14}
-                    fontWeight={700}
-                    color="#0E2642"
-                    lineHeight="16.63px"
-                  >
-                    Total Assets with no usage over the last month
-                  </Heading>
+          {savedReportsLoading && (
+            <SavedTemplate report={dummyReport} isLoading={true} />
+          )}
 
-                  <Text
-                    color="#838383"
-                    fontSize="14px"
-                    fontWeight="700"
-                    lineHeight="16.63px"
-                  >
-                    Created by: Admin
-                  </Text>
-                  <Text lineHeight="14.26px" fontWeight="500">
-                    12th Nov 2024
-                  </Text>
-                </VStack>
-
-                <Link color="#0366EF" fontWeight="500" fontSize="12px" href="#">
-                  Generate Report
-                </Link>
-              </VStack>
-            </Box>
+          {savedReports?.data.items.map((report, index) => (
+            <SavedTemplate key={index} report={report} />
           ))}
-        </HStack>
+        </Grid>
       </VStack>
     </Flex>
   );

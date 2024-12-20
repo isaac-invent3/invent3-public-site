@@ -8,9 +8,9 @@ import {
   PointElement,
   Title,
   Tooltip,
-  Chart
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import { formatNumberShort } from '~/lib/utils/helperFunctions';
 
 ChartJS.register(
   CategoryScale,
@@ -22,14 +22,21 @@ ChartJS.register(
   BarElement
 );
 
-export default function BranchAssetsChart() {
-  const labels = [
-    'Lekki - Admiralty Road',
-    'Lekki - Admiralty Way',
-    'Oniru',
-    'Chisco',
-    'Chevron',
-  ];
+interface BranchesWithTopAssetsProps {
+  topFiveBranchesWithAssets: Record<string, number> | undefined;
+  totalAssets: number | undefined
+}
+
+const BranchesWithTopAssetsChart = (props: BranchesWithTopAssetsProps) => {
+  const { topFiveBranchesWithAssets, totalAssets } = props;
+
+  const labels = topFiveBranchesWithAssets
+    ? Object.keys(topFiveBranchesWithAssets)
+    : [];
+
+  const dataValues = topFiveBranchesWithAssets
+    ? Object.values(topFiveBranchesWithAssets)
+    : [];
 
   const data = {
     labels: labels,
@@ -37,7 +44,7 @@ export default function BranchAssetsChart() {
       {
         axis: 'y',
         label: 'My First Dataset',
-        data: [25, 20, 15, 10, 5],
+        data: dataValues,
         fill: true,
         backgroundColor: [
           '#98FEFE',
@@ -52,11 +59,9 @@ export default function BranchAssetsChart() {
     ],
   };
 
-  
-
   return (
     <Box
-      width="48%"
+      ml="16px"
       bg="white"
       p="16px"
       borderRadius="md"
@@ -65,13 +70,13 @@ export default function BranchAssetsChart() {
     >
       <HStack alignItems="start" height="100%">
         <VStack justifyContent="space-between" alignItems="start" height="30%">
-          <Text fontSize="14px" color="#42403D" mb="10">
+          <Text size="md" color="#42403D" mb="10">
             Top 5 branches with most Assets
           </Text>
 
           <Box>
             <Text fontSize="28px" fontWeight="800" color="#0E2642">
-              750k
+              {totalAssets && formatNumberShort(totalAssets)}
             </Text>
 
             <Text fontWeight="700" color="#838383" mt="2">
@@ -85,11 +90,12 @@ export default function BranchAssetsChart() {
             data={data}
             options={{
               indexAxis: 'y',
-              
             }}
           />
         </Box>
       </HStack>
     </Box>
   );
-}
+};
+
+export default BranchesWithTopAssetsChart;

@@ -6,9 +6,9 @@ import CustomDate from '../CustomDate';
 import SlideTransition from '../../SlideTransition';
 import Display from './Display';
 import { Range as DateRange } from 'react-date-range';
-import DateRangeModal from '../DateRange';
 import { PenIcon } from '../../CustomIcons';
 import Button from '../../Button';
+import DateRangeModal from '../DateRange/DateRangeModal';
 
 interface DateTimeButtonsProps {
   includeTime: boolean;

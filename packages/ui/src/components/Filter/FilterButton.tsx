@@ -1,22 +1,24 @@
 import {
-  HStack,
   ComponentWithAs,
+  HStack,
   Icon,
   IconProps,
-  Text as ChakraText,
   StackProps,
+  Text,
 } from '@chakra-ui/react';
-import { ChevronDownIcon } from '../CustomIcons';
+
+import { ChevronDownIcon } from '../../components/CustomIcons';
 
 interface FilterButtonProps extends StackProps {
   isActive: boolean;
   icon: ComponentWithAs<'svg', IconProps>;
   label: string;
   handleClick: () => void;
+  chevron?: boolean;
 }
 
 const FilterButton = (props: FilterButtonProps) => {
-  const { isActive, icon, label, handleClick, ...rest } = props;
+  const { isActive, icon, label, handleClick, chevron = true, ...rest } = props;
 
   return (
     <HStack
@@ -41,17 +43,19 @@ const FilterButton = (props: FilterButtonProps) => {
           boxSize="24px"
           color={isActive ? 'white' : 'neutral.800'}
         />
-        <ChakraText width="full" whiteSpace="nowrap">
+        <Text width="full" whiteSpace="nowrap">
           {label}
-        </ChakraText>
+        </Text>
       </HStack>
-      <Icon
-        as={ChevronDownIcon}
-        boxSize="16px"
-        color={isActive ? 'white' : 'neutral.800'}
-        transition="transform 0.3s ease-out"
-        transform={isActive ? 'rotate(-180deg)' : 'rotate(0deg)'}
-      />
+      {chevron && (
+        <Icon
+          as={ChevronDownIcon}
+          boxSize="16px"
+          color={isActive ? 'white' : 'neutral.800'}
+          transition="transform 0.3s ease-out"
+          transform={isActive ? 'rotate(-180deg)' : 'rotate(0deg)'}
+        />
+      )}
     </HStack>
   );
 };

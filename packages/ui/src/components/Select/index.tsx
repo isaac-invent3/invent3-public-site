@@ -1,4 +1,5 @@
-import { Box, FormControl, FormLabel, Icon } from '@chakra-ui/react';
+
+import { Box, BoxProps, FormControl, FormLabel, Icon } from '@chakra-ui/react';
 import Select, { components } from 'react-select';
 import AsyncSelect from 'react-select/async';
 // eslint-disable-next-line no-redeclare
@@ -41,6 +42,7 @@ export interface SelectInputProps {
   callBackFunction?: (selectedOption: string) => Promise<Option[]>;
   variant?: 'primary' | 'secondary';
   isAsync?: boolean;
+  containerStyles?: BoxProps;
 }
 function SelectInput(props: SelectInputProps) {
   const {
@@ -59,6 +61,7 @@ function SelectInput(props: SelectInputProps) {
     handleOnMenuScrollToBottom,
     isInvalid,
     errorMessage,
+    containerStyles,
   } = props;
   const SelectComponent = isAsync ? AsyncSelect : Select;
   const [isFocused, setIsFocused] = useState(false);
@@ -99,7 +102,7 @@ function SelectInput(props: SelectInputProps) {
   }, [selectedOption]);
 
   return (
-    <Box width={width} position="relative" height="full">
+    <Box width={width} position="relative" height="full" {...containerStyles}>
       <FormControl isInvalid={isInvalid} position="relative">
         {showTitleAfterSelect && (
           <FormLabel

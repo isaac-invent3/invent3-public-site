@@ -8,6 +8,9 @@ import {
   useDisclosure,
   Collapse,
   useOutsideClick,
+  StackProps,
+  FlexProps,
+  IconProps,
 } from '@chakra-ui/react';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { useRef } from 'react';
@@ -18,13 +21,25 @@ interface DropDownProps {
   options: Option[];
   selectedOptions: Option | null;
   handleClick: (option: Option) => void;
-  width: string;
+  width?: string;
   isLoading?: boolean;
+  labelStyles?: StackProps;
+  containerStyles?: FlexProps;
+  chevronStyles?: IconProps;
 }
 
 const DropDown = (props: DropDownProps) => {
-  const { label, options, selectedOptions, handleClick, width, isLoading } =
-    props;
+  const {
+    label,
+    options,
+    selectedOptions,
+    handleClick,
+    width,
+    isLoading,
+    labelStyles,
+    containerStyles,
+    chevronStyles,
+  } = props;
   const { onToggle, isOpen, onClose } = useDisclosure();
   const containerRef = useRef<HTMLDivElement | null>(null);
   useOutsideClick({
@@ -33,7 +48,13 @@ const DropDown = (props: DropDownProps) => {
   });
 
   return (
-    <Flex direction="column" width="full" maxW="max-content" ref={containerRef}>
+    <Flex
+      direction="column"
+      width="full"
+      maxW="max-content"
+      ref={containerRef}
+      {...containerStyles}
+    >
       <HStack
         onClick={onToggle}
         cursor="pointer"
@@ -45,11 +66,17 @@ const DropDown = (props: DropDownProps) => {
         rounded="5px"
         alignItems="center"
         justifyContent="space-between"
+        {...labelStyles}
       >
         <Text color={selectedOptions ? 'neutral.800' : 'neutral.300'}>
           {selectedOptions ? selectedOptions.label : label}
         </Text>
-        <Icon as={ChevronDownIcon} boxSize="16px" color="neutral.800" />
+        <Icon
+          as={ChevronDownIcon}
+          boxSize="16px"
+          color="neutral.800"
+          {...chevronStyles}
+        />
       </HStack>
 
       <Collapse in={isOpen}>

@@ -85,8 +85,8 @@ const ScheduleTimeline = () => {
           scheduleInstanceApi.endpoints.getMaintenanceScheduleInstancesWithSingleAggregateCountsByArea.initiate(
             {
               areaId: isProperState
-                ? selectedState.value
-                : selectedCountry.value,
+                ? (selectedState.value as number)
+                : (selectedCountry.value as number),
               areaType: isProperState ? AREA_ENUM.state : AREA_ENUM.country,
               startDate,
               endDate,
@@ -117,8 +117,8 @@ const ScheduleTimeline = () => {
           scheduleInstanceApi.endpoints.getMaintenanceScheduleInstanceAggregate.initiate(
             {
               areaId: isProperState
-                ? selectedState.value
-                : selectedCountry.value,
+                ? (selectedState.value as number)
+                : (selectedCountry.value as number),
               areaType: isProperState ? AREA_ENUM.state : AREA_ENUM.country,
               startDate,
               endDate,

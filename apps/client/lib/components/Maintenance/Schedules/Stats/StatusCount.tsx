@@ -29,7 +29,7 @@ const Stats = (props: StatsProps) => {
 
 interface StatusCountProps {
   isLoading: boolean;
-  data: MaintenanceScheduleStat;
+  data: MaintenanceScheduleStat | undefined;
 }
 
 const StatusCount = (props: StatusCountProps) => {
@@ -38,17 +38,17 @@ const StatusCount = (props: StatusCountProps) => {
   const data = [
     {
       label: 'Completed',
-      value: info?.completed ?? 0,
+      value: info?.completedSchedules ?? 0,
       color: '#07CC3B',
     },
     {
       label: 'Pending',
-      value: info?.pending ?? 0,
+      value: info?.pendingSchedules ?? 0,
       color: '#0366EF',
     },
     {
       label: 'Missed',
-      value: info?.missed ?? 0,
+      value: info?.missedSchedules ?? 0,
       color: '#F50000',
     },
   ];

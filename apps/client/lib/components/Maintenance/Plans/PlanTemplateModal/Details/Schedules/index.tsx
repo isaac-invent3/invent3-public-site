@@ -3,8 +3,8 @@ import { createColumnHelper } from '@tanstack/react-table';
 import React, { useEffect, useMemo, useState } from 'react';
 import { DataTable } from '@repo/ui/components';
 import {
-  MaintenancePlan,
   MaintenanceSchedule,
+  SingleMaintenancePlan,
 } from '~/lib/interfaces/maintenance.interfaces';
 import { useGetMaintenanceSchedulesByPlanIdQuery } from '~/lib/redux/services/maintenance/schedule.services';
 import { dateFormatter } from '~/lib/utils/Formatters';
@@ -13,7 +13,7 @@ import ScheduleSummary from '~/lib/components/Maintenance/Schedules/ScheduleForm
 import ScheduleTasks from './ScheduleTasks';
 
 interface MaintenanceSchedulesProps {
-  plan: MaintenancePlan;
+  plan: SingleMaintenancePlan;
 }
 
 const Schedule = (props: MaintenanceSchedulesProps) => {

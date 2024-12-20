@@ -30,7 +30,6 @@ import {
   useCreateTaskInstanceMutation,
   useUpdateTaskInstanceMutation,
 } from '~/lib/redux/services/task/instance.services';
-import { INSTANCE_UPDATE_ENUM } from '~/lib/utils/constants';
 import { useAppSelector } from '~/lib/redux/hooks';
 
 interface TaskFormDrawerProps {
@@ -74,7 +73,6 @@ const TaskFormDrawer = (props: TaskFormDrawerProps) => {
     isUpdatingTaskInstance;
 
   const isCreating = isCreatingTask || isCreatingTaskInstance;
-  const isInstance = type === 'instance';
 
   const formik = useFormik({
     initialValues: {
@@ -124,41 +122,73 @@ const TaskFormDrawer = (props: TaskFormDrawerProps) => {
         onOpenSuccess();
       } else if (scheduleId) {
         let response;
-        const info = {
-          taskTypeId: values.taskTypeId,
-          [isInstance ? 'taskInstanceId' : 'taskId']: values.taskId,
-          [isInstance ? 'taskInstanceName' : 'taskName']: values.taskName,
-          taskDescription: values.taskDescription,
-          priorityId: values.priorityId,
-          assignedTo: values.assignedTo,
-          estimatedDurationInHours: values.estimatedDurationInHours,
-          costEstimate: values.costEstimate,
-          actualCost: values.actualCost,
-          comments: values.comments,
-          [isInstance ? 'scheduleInstanceId' : 'scheduleId']: scheduleId,
-          ...(isInstance
-            ? {
-                parentTaskId: data?.parentTaskId,
-                updateType: INSTANCE_UPDATE_ENUM.ONLY_THIS_INSTANCE,
-              }
-            : {}),
+        const baseInfo = {
+          taskTypeId: values.taskTypeId!,
+          priorityId: values.priorityId!,
+          assignedTo: values.assignedTo!,
+          estimatedDurationInHours: values.estimatedDurationInHours!,
+          costEstimate: values.costEstimate!,
+          comments: values.comments!,
         };
+
+        const baseTaskInfo = {
+          ...baseInfo,
+          taskInstanceId: values.taskId!,
+          taskDescription: values.taskDescription!,
+          taskName: values.taskName!,
+          scheduleId: scheduleId!,
+        };
+        const baseTaskInstanceInfo = {
+          ...baseInfo,
+          taskId: values.taskId!,
+          description: values.taskDescription!,
+          taskInstanceName: values.taskName!,
+          scheduleInstanceId: scheduleId!,
+          parentTaskId: data?.parentTaskId!,
+          createdBy: session?.user.username!,
+        };
+
         if (data) {
-          response = await handleSubmit(
-            type === 'main' ? updateTask : updateTaskInstance,
-            {
-              ...info,
-              id: values.taskId,
-              lastModifiedBy: session?.user?.username,
-            },
-            ''
-          );
+          // Update mode
+          if (type === 'main') {
+            response = await handleSubmit(
+              updateTask,
+              {
+                ...baseTaskInfo,
+                taskId: values.taskId!,
+                actualCost: values.actualCost!,
+                lastModifiedBy: session?.user?.username!,
+              },
+              ''
+            );
+          } else {
+            response = await handleSubmit(
+              updateTaskInstance,
+              {
+                ...baseTaskInstanceInfo,
+                taskInstanceId: values.taskId!,
+                actualCost: values.actualCost!,
+                taskStatusId: values.taskStatusId!,
+                lastModifiedBy: session?.user?.username!,
+              },
+              ''
+            );
+          }
         } else {
-          response = await handleSubmit(
-            type === 'main' ? createTask : createTaskInstance,
-            { ...info, createdBy: session?.user.username },
-            ''
-          );
+          // Creation Mode
+          if (type === 'main') {
+            response = await handleSubmit(
+              createTask,
+              { ...baseTaskInfo, createdBy: session?.user.username! },
+              ''
+            );
+          } else {
+            response = await handleSubmit(
+              createTaskInstance,
+              { ...baseTaskInstanceInfo, createdBy: session?.user.username! },
+              ''
+            );
+          }
         }
         if (response?.data) {
           resetForm();

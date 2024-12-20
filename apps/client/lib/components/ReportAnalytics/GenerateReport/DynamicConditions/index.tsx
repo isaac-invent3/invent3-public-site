@@ -26,11 +26,14 @@ const DynamicConditions = () => {
   const { setFieldValue, values, submitCount } =
     useFormikContext<GenerateReportDetails>();
 
-  const { data, isLoading } = useGetSystemContextTypeColumnsInfoQuery({
-    systemContextTypeId: values.contextTypeId!,
-    pageNumber: 1,
-    pageSize: DEFAULT_PAGE_SIZE,
-  });
+  const { data, isLoading } = useGetSystemContextTypeColumnsInfoQuery(
+    {
+      systemContextTypeId: values.contextTypeId!,
+      pageNumber: 1,
+      pageSize: DEFAULT_PAGE_SIZE,
+    },
+    { skip: !values.contextTypeId }
+  );
 
   const selectedColumns = values.contextTypeColumns;
 

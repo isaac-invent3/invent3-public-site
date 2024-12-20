@@ -1,6 +1,16 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { BaseApiResponse, ListResponse } from '@repo/interfaces';
-import { TaskInstance } from '~/lib/interfaces/task.interfaces';
+import {
+  BaseApiResponse,
+  ListResponse,
+  QueryParams,
+  SearchQuery,
+} from '@repo/interfaces';
+import {
+  CreateTaskInstancePayload,
+  TaskInstance,
+  TaskInstanceModel,
+  UpdateTaskInstancePayload,
+} from '~/lib/interfaces/task.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
 
@@ -16,8 +26,11 @@ export const taskInstanceApi = createApi({
     'allCompletedTaskInstances',
   ],
   endpoints: (builder) => ({
-    createTaskInstance: builder.mutation({
-      query: (body: any) => ({
+    createTaskInstance: builder.mutation<
+      BaseApiResponse<TaskInstanceModel>,
+      CreateTaskInstancePayload
+    >({
+      query: (body) => ({
         url: `/TaskInstances`,
         method: 'POST',
         headers: getHeaders(),
@@ -28,9 +41,9 @@ export const taskInstanceApi = createApi({
         'allTaskInstances',
       ],
     }),
-    updateTaskInstance: builder.mutation({
-      query: ({ id, ...body }) => ({
-        url: `/TaskInstances/${id}`,
+    updateTaskInstance: builder.mutation<void, UpdateTaskInstancePayload>({
+      query: (body) => ({
+        url: `/TaskInstances/${body.taskInstanceId}`,
         method: 'PUT',
         headers: getHeaders(),
         body,
@@ -40,7 +53,10 @@ export const taskInstanceApi = createApi({
         'allTaskInstances',
       ],
     }),
-    deleteTaskInstance: builder.mutation({
+    deleteTaskInstance: builder.mutation<
+      void,
+      { id: number; deletedBy: string }
+    >({
       query: ({ id, ...body }) => ({
         url: `/TaskInstances/${id}`,
         method: 'DELETE',
@@ -54,9 +70,12 @@ export const taskInstanceApi = createApi({
     }),
     getAllTaskInstances: builder.query<
       BaseApiResponse<ListResponse<TaskInstance>>,
-      any
+      {
+        taskStatusId?: number;
+        statusCategoryId?: number;
+      } & QueryParams
     >({
-      query: (data: any) => ({
+      query: (data) => ({
         url: generateQueryStr(`/TaskInstances?`, data),
         method: 'GET',
         headers: getHeaders(),
@@ -65,17 +84,17 @@ export const taskInstanceApi = createApi({
     }),
     getAllCompletedTaskInstances: builder.query<
       BaseApiResponse<ListResponse<TaskInstance>>,
-      any
+      QueryParams
     >({
-      query: (data: any) => ({
+      query: (data) => ({
         url: generateQueryStr(`/TaskInstances/GetCompletedTasks?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
       providesTags: ['allCompletedTaskInstances'],
     }),
-    getTaskInstanceById: builder.query({
-      query: (id: any) => ({
+    getTaskInstanceById: builder.query<BaseApiResponse<TaskInstance>, number>({
+      query: (id) => ({
         url: `/TaskInstances/${id}`,
         method: 'GET',
         headers: getHeaders(),
@@ -83,7 +102,11 @@ export const taskInstanceApi = createApi({
     }),
     getAllTaskInstancesByScheduleInstanceId: builder.query<
       BaseApiResponse<ListResponse<TaskInstance>>,
-      any
+      {
+        id: number;
+        taskStatusId?: number;
+        statusCategoryId?: number;
+      } & QueryParams
     >({
       query: ({ id, ...data }) => ({
         url: generateQueryStr(
@@ -95,8 +118,11 @@ export const taskInstanceApi = createApi({
       }),
       providesTags: ['allTaskInstancesByScheduleInstanceId'],
     }),
-    searchTaskInstances: builder.mutation({
-      query: (body: any) => ({
+    searchTaskInstances: builder.mutation<
+      BaseApiResponse<ListResponse<TaskInstance>>,
+      SearchQuery
+    >({
+      query: (body) => ({
         url: `/TaskInstances/Search`,
         method: 'POST',
         headers: getHeaders(),

@@ -1,9 +1,11 @@
+import { BaseEntity } from '@repo/interfaces';
 import { LocationFilter, Option } from './general.interfaces';
 import { taskFormDetails } from './task.interfaces';
 
 interface MaintenancePlan {
   rowId: number;
   maintenancePlanId: number;
+  planGuid: string;
   planName: string;
   startDate: string;
   endDate: string;
@@ -13,22 +15,38 @@ interface MaintenancePlan {
   owner: string;
   assetId: number;
   assetName: string;
+  assetGuid: string;
   assetCode: string;
   assetTypeId: number;
   serialNo: string;
   assetDescription: string;
   planTypeId: number;
+  planStatusId: number;
   planTypeName: string;
   planStatusName: string;
-  frequencyName: string;
-  frequencyId: number;
-  assetTypeName: string;
+  groupTypeName: string;
   ownedByAssetType: number;
+  assetGroupContextName: string;
   activeSchedules: number;
   openTasks: number;
+  totalMemberAssetsCount: number;
   assetLocation: string;
-  groupTypeName: 'string' | null;
-  assetGroupContextName: 'string' | null;
+}
+interface SingleMaintenancePlan extends BaseEntity {
+  guid: string;
+  maintenancePlanId: number;
+  planName: string;
+  planTypeId: number;
+  planStatusId: number;
+  startDate: string;
+  endDate: string;
+  sla: number;
+  dateCreated: string;
+  cost: number;
+  ownerId: number;
+  assetGroupTypeID: number;
+  assetGroupContextID: number;
+  maintenancePlanInfoHeader: MaintenancePlan;
 }
 
 interface BaseMaintenanceSchedule {
@@ -42,8 +60,8 @@ interface BaseMaintenanceSchedule {
   maintenancePlanId: number;
   planName: string;
   frequencyName: string;
-  scheduledDate: string; // ISO 8601 format
-  completionDate: string; // ISO 8601 format
+  scheduledDate: string;
+  completionDate: string;
   durationInHours: number;
   description: string;
   maintenanceTypeId: number;
@@ -74,7 +92,7 @@ interface BaseMaintenanceSchedule {
 interface MaintenanceSchedule extends BaseMaintenanceSchedule {
   scheduleId: number;
   scheduleGuid: string;
-  endDate: string; // ISO 8601 format
+  endDate: string;
   scheduleName: string;
   ticketId: number;
   statusId: number;
@@ -108,9 +126,9 @@ interface MaintenanceScheduleStat {
   totalSchedules: number;
   totalHours: number;
   totalCost: number;
-  completed: number;
-  pending: number;
-  missed: number;
+  completedSchedules: number;
+  pendingSchedules: number;
+  missedSchedules: number;
 }
 
 interface ScheduleFormDetails {
@@ -162,8 +180,6 @@ interface ScheduleFormDetails {
 interface PlanFormDetails {
   planId: number | null;
   planName: string | null;
-  frequencyId: number | null;
-  frequencyName: string | null;
   assetName: string | null;
   assetId: number | null;
   planTypeId: number | null;
@@ -182,18 +198,15 @@ interface PlanFormDetails {
   schedules: ScheduleFormDetails[];
 }
 
-interface MaintenanceFrequency {
+interface MaintenanceFrequency extends BaseEntity {
   frequencyId: number;
   frequencyName: string;
   intervalValues: number[];
-  createdDate: string;
-  createdBy: string;
-  lastModifiedDate: string | null;
-  lastModifiedBy: string;
-  isDeleted: boolean;
-  deletedDate: string | null;
-  deletedBy: string;
-  guid: string;
+}
+
+interface MaintenanceType extends BaseEntity {
+  maintenanceTypeId: number;
+  typeName: string;
 }
 
 interface TemplateFilter {
@@ -222,4 +235,6 @@ export type {
   TemplateFilter,
   PlanFilter,
   ScheduleFilter,
+  MaintenanceType,
+  SingleMaintenancePlan,
 };

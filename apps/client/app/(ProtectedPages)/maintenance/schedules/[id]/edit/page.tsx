@@ -4,7 +4,6 @@ import { Skeleton } from '@chakra-ui/react';
 import { notFound } from 'next/navigation';
 
 import ScheduleForm from '~/lib/components/Maintenance/Schedules/ScheduleForm';
-import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { useGetMaintenanceScheduleByGuidQuery } from '~/lib/redux/services/maintenance/schedule.services';
 import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';
@@ -20,7 +19,7 @@ export default function Page({ params }: { params: { id: string } }) {
   if (!data?.data) return notFound();
 
   if (data?.data) {
-    const schedule: MaintenanceSchedule = data?.data;
+    const schedule = data?.data;
     dispatch(
       updateScheduleForm({
         name: schedule?.scheduleName,

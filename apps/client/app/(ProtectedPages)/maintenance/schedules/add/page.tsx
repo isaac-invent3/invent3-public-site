@@ -12,7 +12,7 @@ import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';
 export default function Page() {
   const searchParams = useSearchParams();
   const template = searchParams.get('template');
-  const { data, isLoading } = useGetMaintenanceScheduleByGuidQuery(template, {
+  const { data, isLoading } = useGetMaintenanceScheduleByGuidQuery(template!, {
     skip: !template,
   });
   const dispatch = useAppDispatch();

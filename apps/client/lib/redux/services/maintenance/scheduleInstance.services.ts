@@ -2,7 +2,12 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
 import { MaintenanceScheduleInstance } from '~/lib/interfaces/maintenance.interfaces';
-import { BaseApiResponse, ListResponse } from '@repo/interfaces';
+import {
+  BaseApiResponse,
+  ListResponse,
+  QueryParams,
+  SearchQuery,
+} from '@repo/interfaces';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -29,7 +34,10 @@ export const scheduleInstanceApi = createApi({
         body: data,
       }),
     }),
-    deleteMaintenanceSchedule: builder.mutation({
+    deleteMaintenanceSchedule: builder.mutation<
+      void,
+      { id: number | undefined; deletedBy: string | undefined }
+    >({
       query: ({ id, ...data }) => ({
         url: `/MaintenanceScheduleInstances/${id}`,
         method: 'DELETE',
@@ -40,7 +48,7 @@ export const scheduleInstanceApi = createApi({
     }),
     getAllScheduleInstance: builder.query<
       BaseApiResponse<ListResponse<MaintenanceScheduleInstance>>,
-      {}
+      QueryParams
     >({
       query: (data) => ({
         url: generateQueryStr('/MaintenanceScheduleInstances?', data),
@@ -51,15 +59,25 @@ export const scheduleInstanceApi = createApi({
     }),
     getScheduleInstanceByGuid: builder.query<
       BaseApiResponse<MaintenanceScheduleInstance>,
-      { id: number | string }
+      { instanceGuid: number | undefined }
     >({
-      query: ({ id }) => ({
-        url: `/MaintenanceScheduleInstances/${id}`,
+      query: ({ instanceGuid }) => ({
+        url: `/MaintenanceScheduleInstances/${instanceGuid}`,
         method: 'GET',
         headers: getHeaders(),
       }),
     }),
-    getMaintenanceScheduleInstanceAggregate: builder.query({
+    getMaintenanceScheduleInstanceAggregate: builder.query<
+      BaseApiResponse<ListResponse<MaintenanceScheduleInstance>>,
+      {
+        areaId: number;
+        areaType: number;
+        startDate: string;
+        endDate: string;
+        pageNumber?: number;
+        pageSize?: number;
+      }
+    >({
       query: ({ areaId, ...data }) => ({
         url: generateQueryStr(
           `/MaintenanceScheduleInstances/GetMaintenanceScheduleInstanceAggregatesByArea/${areaId}?`,
@@ -73,8 +91,8 @@ export const scheduleInstanceApi = createApi({
       builder.query<
         BaseApiResponse<ListResponse<MaintenanceScheduleInstance>>,
         {
-          areaId: string | number;
-          areaType: string | number;
+          areaId: number;
+          areaType: number;
           startDate: string;
           endDate: string;
           pageNumber: number;
@@ -92,9 +110,9 @@ export const scheduleInstanceApi = createApi({
       }),
     searchScheduleInstance: builder.mutation<
       BaseApiResponse<ListResponse<MaintenanceScheduleInstance>>,
-      any
+      SearchQuery
     >({
-      query: (body: any) => ({
+      query: (body) => ({
         url: `/MaintenanceScheduleInstances/Search`,
         method: 'POST',
         headers: getHeaders(),

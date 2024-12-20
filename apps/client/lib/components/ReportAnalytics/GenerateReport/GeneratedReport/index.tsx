@@ -5,7 +5,6 @@ import { createColumnHelper } from '@tanstack/react-table';
 import { useMemo, useState } from 'react';
 import { GenerateReportResponse } from '~/lib/interfaces/report.interfaces';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
-import ReportViewFilters from '../../Filters/ReportViewFilters';
 
 interface GeneratedReportProps {
   response: ListResponse<GenerateReportResponse>;
@@ -17,8 +16,6 @@ const GeneratedReport = (props: GeneratedReportProps) => {
   const columnHelper = createColumnHelper<any>();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-    const [activeFilter, setActiveFilter] = useState<'general' | null>(null);
-
 
   const generateDynamicColumns = (data: GenerateReportResponse[]) => {
     if (!data || data.length === 0) return [];

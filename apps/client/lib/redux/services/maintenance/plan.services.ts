@@ -1,8 +1,16 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
-import { BaseApiResponse, ListResponse } from '@repo/interfaces';
-import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
+import {
+  BaseApiResponse,
+  ListResponse,
+  QueryParams,
+  SearchQuery,
+} from '@repo/interfaces';
+import {
+  MaintenancePlan,
+  SingleMaintenancePlan,
+} from '~/lib/interfaces/maintenance.interfaces';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -13,7 +21,7 @@ export const maintenancePlanApi = createApi({
   tagTypes: ['allMaintenancePlan', 'allMaintenancePlansByAssetId'],
   endpoints: (builder) => ({
     createMaintenancePlan: builder.mutation({
-      query: (body: any) => ({
+      query: (body) => ({
         url: `/MaintenancePlans`,
         method: 'POST',
         headers: getHeaders(),
@@ -22,7 +30,7 @@ export const maintenancePlanApi = createApi({
       invalidatesTags: ['allMaintenancePlan', 'allMaintenancePlansByAssetId'],
     }),
     createMaintenancePlanWithSchedules: builder.mutation({
-      query: (body: any) => ({
+      query: (body) => ({
         url: `/Invent3Pro/CreateMaintenancePlan`,
         method: 'POST',
         headers: getHeaders(),
@@ -40,7 +48,7 @@ export const maintenancePlanApi = createApi({
       invalidatesTags: ['allMaintenancePlan', 'allMaintenancePlansByAssetId'],
     }),
     updateMaintenancePlanWithSchedules: builder.mutation({
-      query: (body: any) => ({
+      query: (body) => ({
         url: `/Invent3Pro/UpdateMaintenancePlan`,
         method: 'PUT',
         headers: getHeaders(),
@@ -50,26 +58,29 @@ export const maintenancePlanApi = createApi({
     }),
     getAllMaintenancePlan: builder.query<
       BaseApiResponse<ListResponse<MaintenancePlan>>,
-      {
-        pageSize: number;
-        pageNumber?: number;
-      }
+      QueryParams
     >({
-      query: (data: any) => ({
+      query: (data) => ({
         url: generateQueryStr(`/MaintenancePlans?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
       providesTags: ['allMaintenancePlan'],
     }),
-    getMaintenancePlanById: builder.query({
-      query: (id: any) => ({
+    getMaintenancePlanById: builder.query<
+      BaseApiResponse<SingleMaintenancePlan>,
+      { id: number }
+    >({
+      query: ({ id }) => ({
         url: `/MaintenancePlans/${id}`,
         method: 'GET',
         headers: getHeaders(),
       }),
     }),
-    deleteMaintenancePlan: builder.mutation({
+    deleteMaintenancePlan: builder.mutation<
+      void,
+      { id: number; deletedBy: string }
+    >({
       query: ({ id, ...body }) => ({
         url: `/MaintenancePlans/${id}`,
         method: 'DELETE',
@@ -78,7 +89,10 @@ export const maintenancePlanApi = createApi({
       }),
       invalidatesTags: ['allMaintenancePlan', 'allMaintenancePlansByAssetId'],
     }),
-    getAllMaintenancePlansByAssetId: builder.query({
+    getAllMaintenancePlansByAssetId: builder.query<
+      BaseApiResponse<ListResponse<MaintenancePlan>>,
+      { id: number; assetTypeId: number } & QueryParams
+    >({
       query: ({ id, ...data }) => ({
         url: generateQueryStr(
           `/MaintenancePlans/GetAssetMaintenancePlans/${id}?`,
@@ -91,7 +105,7 @@ export const maintenancePlanApi = createApi({
     }),
     getAllMaintenancePlansByGroupContextIdAndGroupTypeId: builder.query<
       BaseApiResponse<MaintenancePlan>,
-      { groupContextId: number | undefined; groupTypeId: number | undefined }
+      { groupContextId: number; groupTypeId: number }
     >({
       query: ({ groupContextId, ...data }) => ({
         url: generateQueryStr(
@@ -113,16 +127,17 @@ export const maintenancePlanApi = createApi({
         headers: getHeaders(),
       }),
     }),
-    searchMaintenancePlan: builder.mutation<ListResponse<MaintenancePlan>, any>(
-      {
-        query: (body: any) => ({
-          url: `/MaintenancePlans/Search`,
-          method: 'POST',
-          headers: getHeaders(),
-          body,
-        }),
-      }
-    ),
+    searchMaintenancePlan: builder.mutation<
+      ListResponse<MaintenancePlan>,
+      SearchQuery
+    >({
+      query: (body) => ({
+        url: `/MaintenancePlans/Search`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
   }),
 });
 

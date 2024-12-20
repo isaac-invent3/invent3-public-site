@@ -65,7 +65,23 @@ const EditTicketDrawer = (props: EditTicketDrawerProps) => {
 
       await Promise.all(
         payload.tasks.map(async (task) => {
-          await handleSubmit(createTask, { ...task, createdBy: username }, '');
+          await handleSubmit(
+            createTask,
+            {
+              taskInstanceId: task.taskId!,
+              taskDescription: task.taskDescription!,
+              taskName: task.taskName!,
+              scheduleId: task.scheduleId!,
+              taskTypeId: task.taskTypeId!,
+              priorityId: task.priorityId!,
+              assignedTo: task.assignedTo!,
+              estimatedDurationInHours: task.estimatedDurationInHours!,
+              costEstimate: task.costEstimate!,
+              comments: task.comments!,
+              createdBy: username!,
+            },
+            ''
+          );
         })
       );
 

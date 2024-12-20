@@ -1,6 +1,16 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { BaseApiResponse, ListResponse } from '@repo/interfaces';
-import { Task } from '~/lib/interfaces/task.interfaces';
+import {
+  BaseApiResponse,
+  ListResponse,
+  QueryParams,
+  SearchQuery,
+} from '@repo/interfaces';
+import {
+  CreateTaskPayload,
+  SingleTask,
+  Task,
+  UpdateTaskPayload,
+} from '~/lib/interfaces/task.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
 
@@ -12,8 +22,11 @@ export const taskApi = createApi({
   baseQuery: baseQueryWithReauth,
   tagTypes: ['allTasks', 'allTasksByScheduleId'],
   endpoints: (builder) => ({
-    createTask: builder.mutation({
-      query: (body: any) => ({
+    createTask: builder.mutation<
+      BaseApiResponse<SingleTask>,
+      CreateTaskPayload
+    >({
+      query: (body) => ({
         url: `/Tasks`,
         method: 'POST',
         headers: getHeaders(),
@@ -21,16 +34,19 @@ export const taskApi = createApi({
       }),
       invalidatesTags: ['allTasksByScheduleId', 'allTasks'],
     }),
-    updateTask: builder.mutation({
-      query: ({ id, ...body }) => ({
-        url: `/Tasks/${id}`,
+    updateTask: builder.mutation<
+      BaseApiResponse<SingleTask>,
+      UpdateTaskPayload
+    >({
+      query: (body) => ({
+        url: `/Tasks/${body.taskId}`,
         method: 'PUT',
         headers: getHeaders(),
         body,
       }),
       invalidatesTags: ['allTasksByScheduleId', 'allTasks'],
     }),
-    deleteTask: builder.mutation({
+    deleteTask: builder.mutation<void, { id: number; deletedBy: string }>({
       query: ({ id, ...body }) => ({
         url: `/Tasks/${id}`,
         method: 'DELETE',
@@ -39,16 +55,19 @@ export const taskApi = createApi({
       }),
       invalidatesTags: ['allTasksByScheduleId', 'allTasks'],
     }),
-    getAllTasks: builder.query({
-      query: (data: any) => ({
+    getAllTasks: builder.query<
+      BaseApiResponse<ListResponse<Task>>,
+      { taskStatusId?: number; statusCategoryId?: number } & QueryParams
+    >({
+      query: (data) => ({
         url: generateQueryStr(`/Tasks?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
       providesTags: ['allTasks'],
     }),
-    getTaskById: builder.query({
-      query: (id: any) => ({
+    getTaskById: builder.query<BaseApiResponse<SingleTask>, number>({
+      query: (id) => ({
         url: `/Tasks/${id}`,
         method: 'GET',
         headers: getHeaders(),
@@ -56,7 +75,7 @@ export const taskApi = createApi({
     }),
     getAllTasksByScheduleId: builder.query<
       BaseApiResponse<ListResponse<Task>>,
-      any
+      { id: number } & QueryParams
     >({
       query: ({ id, ...data }) => ({
         url: generateQueryStr(
@@ -68,8 +87,11 @@ export const taskApi = createApi({
       }),
       providesTags: ['allTasksByScheduleId'],
     }),
-    searchTasks: builder.mutation({
-      query: (body: any) => ({
+    searchTasks: builder.mutation<
+      BaseApiResponse<ListResponse<Task>>,
+      SearchQuery
+    >({
+      query: (body) => ({
         url: `/Tasks/Search`,
         method: 'POST',
         headers: getHeaders(),

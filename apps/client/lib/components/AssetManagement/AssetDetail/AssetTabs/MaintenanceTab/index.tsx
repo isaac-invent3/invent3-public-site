@@ -19,7 +19,7 @@ const MaintenanceTab = () => {
   const { data, isLoading } = useGetAllMaintenancePlansByAssetIdQuery(
     {
       id: assetId,
-      assetTypeId: assetTypeId,
+      assetTypeId: assetTypeId!,
       pageSize,
       pageNumber: currentPage,
     },
@@ -46,7 +46,7 @@ const MaintenanceTab = () => {
       my="32px"
     >
       <VStack width="full" spacing="16px" mb={4}>
-        {data?.data?.items?.length >= 1 ? (
+        {data?.data && data?.data?.items?.length >= 1 ? (
           data?.data?.items?.map((item: MaintenancePlan) => (
             <PlanCard data={item} key={item.maintenancePlanId} />
           ))

@@ -3,8 +3,7 @@ import { useState } from 'react';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import AssetTable from '../../AssetManagement/Common/AssetTable';
 
-interface ReportTableProps {}
-const ReportTable = (props: ReportTableProps) => {
+const ReportTable = () => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);

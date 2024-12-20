@@ -1,5 +1,3 @@
-import { Option } from './general.interfaces';
-
 interface Ticket {
   rowId: number;
   ticketId: number;
@@ -52,8 +50,6 @@ interface Ticket {
   assetLocation: string;
 }
 
-
-
 type SelectedTicketAction =
   | 'schedule'
   | 'assign'
@@ -67,7 +63,6 @@ type TicketCategory =
   | 'assigned'
   | 'scheduled'
   | 'in_progress'
-  | 'completed'
-
+  | 'completed';
 
 export type { SelectedTicketAction, Ticket, TicketCategory };

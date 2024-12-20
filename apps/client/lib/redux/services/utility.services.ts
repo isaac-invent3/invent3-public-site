@@ -11,14 +11,6 @@ export const utilityApi = createApi({
   baseQuery: baseQueryWithReauth,
   tagTypes: [],
   endpoints: (builder) => ({
-    searchApi: builder.mutation({
-      query: (body: any) => ({
-        url: `/Search`,
-        method: 'POST',
-        headers: getHeaders(),
-        body,
-      }),
-    }),
     getAppConfigValues: builder.query<BaseApiResponse<AppConfig>, {}>({
       query: () => ({
         url: '/Invent3Pro/GetDefaultAppConfigValues',
@@ -29,4 +21,4 @@ export const utilityApi = createApi({
   }),
 });
 
-export const { useSearchApiMutation, useGetAppConfigValuesQuery } = utilityApi;
+export const { useGetAppConfigValuesQuery } = utilityApi;

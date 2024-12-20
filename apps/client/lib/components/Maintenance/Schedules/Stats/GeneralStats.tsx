@@ -37,7 +37,7 @@ const Stats = (props: StatsProps) => {
 
 interface GeneralStatsProps {
   isLoading: boolean;
-  data: MaintenanceScheduleStat;
+  data: MaintenanceScheduleStat | undefined;
 }
 const GeneralStats = (props: GeneralStatsProps) => {
   const { data: info, isLoading } = props;

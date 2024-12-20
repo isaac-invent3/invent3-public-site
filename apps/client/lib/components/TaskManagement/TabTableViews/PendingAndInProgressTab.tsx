@@ -16,7 +16,7 @@ const PendingAndInProgressTab = (props: PendingAndInProgressTabProps) => {
   const { data, isLoading, isFetching } = useGetAllTaskInstancesQuery({
     pageSize,
     pageNumber: currentPage,
-    statusCategoryId,
+    statusCategoryId: statusCategoryId,
   });
 
   const searchCriterion = {

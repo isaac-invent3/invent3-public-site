@@ -5,7 +5,7 @@ import { Task, taskFormDetails } from '~/lib/interfaces/task.interfaces';
 import TaskListTable from './TaskListTable';
 import { ScheduleFormDetails } from '~/lib/interfaces/maintenance.interfaces';
 import { useGetAllTasksByScheduleIdQuery } from '~/lib/redux/services/task/general.services';
-import { DEFAULT_PAGE_SIZE, STATUS_CATEGORY_ENUM } from '~/lib/utils/constants';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 interface FormTaskListDrawerProps {
   isOpen: boolean;
@@ -20,10 +20,11 @@ const FormTaskListDrawer = (props: FormTaskListDrawerProps) => {
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const { data, isLoading, isFetching } = useGetAllTasksByScheduleIdQuery(
     {
-      id: values.scheduleId,
+      id: values.scheduleId!,
       pageNumber,
       pageSize,
-      statusCategoryId: STATUS_CATEGORY_ENUM.INACTIVE,
+      //TODO: George needs to provide status category filter
+      // statusCategoryId: STATUS_CATEGORY_ENUM.INACTIVE,
     },
     { skip: !values.scheduleId }
   );

@@ -23,7 +23,7 @@ const AssetSchedules = () => {
   const { data, isLoading, isFetching } =
     useGetAllMaintenanceScheduleByAssetIdQuery(
       {
-        id: assetId,
+        id: assetId!,
         pageSize,
         pageNumber: currentPage,
       },
@@ -72,8 +72,7 @@ const AssetSchedules = () => {
 
   useEffect(() => {
     if (selectedRows.length >= 1) {
-      const schedule: MaintenanceSchedule =
-        data?.data?.items[selectedRows?.[0] as number];
+      const schedule = data?.data?.items[selectedRows?.[0] as number];
       if (schedule) {
         dispatch(
           updateTaskForm({

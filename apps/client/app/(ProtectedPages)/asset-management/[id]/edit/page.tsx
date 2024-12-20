@@ -19,18 +19,19 @@ import {
 } from '~/lib/redux/services/asset/general.services';
 import { useGetAssetCustomMaintenancePlanByAssetGuidQuery } from '~/lib/redux/services/maintenance/plan.services';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
 export default function Page({ params }: { params: { id: number } }) {
   const { data, isLoading } = useGetAssetInfoHeaderByIdQuery({ id: params.id });
   const { data: assetImagesData, isLoading: imagesLoading } =
     useGetImagesByAssetIdQuery(
-      { assetId: params.id, pageSize: 25 },
+      { assetId: params.id, pageSize: DEFAULT_PAGE_SIZE },
       { skip: params.id === undefined }
     );
   const { data: assetDocumentData, isLoading: documentsLoading } =
     useGetAssetDocumentsByAssetIdQuery(
-      { id: params.id, pageSize: 25 },
+      { id: params.id, pageSize: DEFAULT_PAGE_SIZE },
       { skip: params.id === undefined }
     );
   const { data: acquisitionData, isLoading: acquisitionLoading } =

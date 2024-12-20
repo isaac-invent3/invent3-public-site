@@ -48,7 +48,6 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
 
   const initialValues = {
     planName: plan?.planName ?? null,
-    frequencyId: plan?.frequencyId ?? null,
     startDate: plan?.startDate ?? null,
     endDate: plan?.endDate ?? null,
     ownerId: plan?.ownerId ?? null,

@@ -40,8 +40,8 @@ const Plan = () => {
   const { data, isLoading, isFetching } =
     useGetAllMaintenancePlansByAssetIdQuery(
       {
-        id: assetId,
-        assetTypeId,
+        id: assetId!,
+        assetTypeId: assetTypeId!,
         pageSize,
         pageNumber,
       },
@@ -79,10 +79,9 @@ const Plan = () => {
 
   useEffect(() => {
     if (selectedRows.length >= 1) {
-      const items: MaintenancePlan[] = data?.data?.items;
-      const customizedPlan = items.find(
-        (value, index) => index === selectedRows[0]
-      );
+      const items = data?.data?.items;
+      const customizedPlan =
+        items && items.find((value, index) => index === selectedRows[0]);
       if (customizedPlan) {
         helpers.setValue(customizedPlan.maintenancePlanId);
         dispatch(
@@ -92,7 +91,7 @@ const Plan = () => {
               planType: customizedPlan.planTypeName,
               planStatus: customizedPlan.planStatusName,
               assetName,
-              assetTypeName: customizedPlan.assetTypeName,
+              assetTypeName: null,
               startDate: customizedPlan.startDate,
               endDate: customizedPlan.endDate,
             },

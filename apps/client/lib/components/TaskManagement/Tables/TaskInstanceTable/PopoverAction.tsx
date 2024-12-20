@@ -42,7 +42,7 @@ const PopoverAction = (task: TaskInstance, type: 'drawer' | 'page') => {
     const session = await getSession();
     const response = await handleSubmit(
       deleteTaskInstance,
-      { id: task?.taskInstanceId, deletedBy: session?.user.username },
+      { id: task?.taskInstanceId, deletedBy: session?.user.username! },
       'Task Deleted Successfully'
     );
     if (response?.data) {

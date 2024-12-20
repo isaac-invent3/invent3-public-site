@@ -116,7 +116,6 @@ const generatePlanDTO = (
   const maintenancePlanDto = {
     maintenancePlanId: formDetail.planId,
     planName: formDetail.planName,
-    frequencyId: formDetail.frequencyId,
     ownerId: formDetail.ownerId,
     ...(formDetail.assetId
       ? { assetId: formDetail.assetId }

@@ -10,8 +10,8 @@ import { useGetTaskByIdQuery } from '~/lib/redux/services/task/general.services'
 import { setTaskForm } from '~/lib/redux/slices/TaskSlice';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
-export default function Page({ params }: { params: { id: string } }) {
-  const { data, isLoading } = useGetTaskByIdQuery(params.id);
+export default function Page({ params }: { params: { id: number } }) {
+  const { data, isLoading } = useGetTaskByIdQuery(params.id!);
   const dispatch = useAppDispatch();
 
   if (isLoading) {

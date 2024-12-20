@@ -88,6 +88,18 @@ export const reportApi = createApi({
         body,
       }),
     }),
+
+    generateReport: builder.mutation<
+      BaseApiResponse<ListResponse<ViewReportTableData>>,
+      ScheduleReportPayload
+    >({
+      query: (body: any) => ({
+        url: `/ReportSchedules`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
   }),
 });
 

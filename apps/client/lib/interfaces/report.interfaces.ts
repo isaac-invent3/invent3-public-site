@@ -48,6 +48,12 @@ interface GenerateReportDetails {
   endDate: string;
 }
 
+interface GenerateReportPayload {
+  criterion: GenerateReportCriterion[];
+  contextTypeId: number | undefined;
+  contextTypeColumns: Option[];
+}
+
 interface ViewReportTableDataPayload extends SearchQuery {
   reportId:string
   startDate: string;
@@ -103,4 +109,5 @@ export type {
   ScheduleReportPayload,
   ViewReportTableData,
   ViewReportTableDataPayload,
+  GenerateReportPayload,
 };

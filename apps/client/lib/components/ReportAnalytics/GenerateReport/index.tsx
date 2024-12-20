@@ -5,12 +5,11 @@ import { FormikProvider, useFormik } from 'formik';
 import moment from 'moment';
 import { ChevronLeftIcon } from '../../CustomIcons';
 import Header from '../Header';
-import DynamicConditions from './Condition';
+import DynamicConditions from './DynamicConditions';
 import SystemContextColumnsSelect from './SystemContextColumnsSelect';
 import SystemContextSelect from './SystemContextSelect';
 
 import { DateTimeButtons, FormInputWrapper } from '@repo/ui/components';
-import { useEffect } from 'react';
 import { GenerateReportDetails } from '~/lib/interfaces/report.interfaces';
 import { generateReportSchema } from '~/lib/schemas/report.schema';
 
@@ -49,10 +48,6 @@ const GenerateReport = () => {
     return dateString ? moment(dateString, 'DD/MM/YYYY').toDate() : undefined;
   };
 
-  useEffect(() => {
-    console.log({ errors: formik.errors });
-  }, [formik.errors]);
-
   return (
     <div>
       <Flex width="full" direction="column" pb="24px" pt="12px">
@@ -61,10 +56,6 @@ const GenerateReport = () => {
         <FormikProvider value={formik}>
           <form onSubmit={formik.handleSubmit}>
             <Box p="16px" bg="white" borderRadius="6px" mt="20px" height="100%">
-              <Text fontWeight={400} color="#0E2642" fontSize="14px">
-                Generate a Report
-              </Text>
-
               <Grid
                 templateColumns={{
                   base: '1fr',

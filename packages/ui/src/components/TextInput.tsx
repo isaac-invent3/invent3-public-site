@@ -6,6 +6,8 @@ import {
   FormLabel,
   InputLeftElement,
   Icon,
+  InputProps,
+  FormControlProps,
 } from '@chakra-ui/react';
 import { useState, forwardRef } from 'react';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
@@ -17,7 +19,8 @@ export interface TextInputProps {
   label: string;
   value?: string | number;
   placeholder?: string;
-  customStyle?: { [key: string]: unknown };
+  customStyle?: InputProps;
+  formControlWrapperStyles?: FormControlProps
   customLeftElement?: React.ReactNode;
   customRightElement?: React.ReactNode;
   leftElementWidth?: string;
@@ -50,6 +53,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>((props, ref) => {
     onChange,
     onBlur,
     onFocus,
+    formControlWrapperStyles,
   } = props;
 
   const [show, setShow] = useState(false);
@@ -68,8 +72,8 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>((props, ref) => {
   };
 
   return (
-    <FormControl isInvalid={isInvalid}>
-      <InputGroup>
+    <FormControl isInvalid={isInvalid} {...formControlWrapperStyles}>
+      <InputGroup flex={1}>
         {customLeftElement && (
           <InputLeftElement textAlign="center" height="full">
             {customLeftElement}

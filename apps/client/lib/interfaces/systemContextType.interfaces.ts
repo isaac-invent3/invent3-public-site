@@ -20,20 +20,23 @@ interface SystemContextType {
   systemContextTypeName: string | null;
 }
 
+type SystemContextTypeColumnDataType =
+  | 'int'
+  | 'nvarchar'
+  | 'datetime2'
+  | 'money'
+  | 'uniqueidentifier'
+  | 'decimal';
+
 interface SystemContextTypeColumns {
   columnName: string;
-  dataType:
-    | 'int'
-    | 'nvarchar'
-    | 'datetime2'
-    | 'money'
-    | 'uniqueidentifier'
-    | 'decimal';
+  dataType: SystemContextTypeColumnDataType;
   relativeListUrl: string;
 }
 
 export type {
   GetSystemContextTypeColumnsPayload,
   SystemContextType,
+  SystemContextTypeColumnDataType,
   SystemContextTypeColumns,
 };

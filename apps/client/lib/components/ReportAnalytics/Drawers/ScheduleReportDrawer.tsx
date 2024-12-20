@@ -62,7 +62,7 @@ const ScheduleReportDrawer = (props: ScheduleReportDrawerProps) => {
     onSubmit: async (data, { resetForm }) => {
       const session = await getSession();
 
-      const payload = { ...data, createdBy: session?.user.id! };
+      const payload = { ...data, createdBy: session?.user.username! };
 
       const response = await handleSubmit(
         scheduleReport,

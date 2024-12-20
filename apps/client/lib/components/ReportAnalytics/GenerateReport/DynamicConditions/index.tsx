@@ -1,88 +1,46 @@
 import { Box, HStack, Link, VStack } from '@chakra-ui/react';
-import { keyframes } from '@emotion/react';
 import { Select } from '@repo/ui/components';
 import { FieldArray, Form, useFormikContext } from 'formik';
 import { useState } from 'react';
 import { Option } from '~/lib/interfaces/general.interfaces';
+import { GenerateReportDetails } from '~/lib/interfaces/report.interfaces';
+import { SystemContextTypeColumns } from '~/lib/interfaces/systemContextType.interfaces';
+import { useGetSystemContextTypeColumnsInfoQuery } from '~/lib/redux/services/systemcontexttypes.services';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import OperatorDropdown from '../OperationDropdown';
 import {
-  GenerateReportCriterion,
-  GenerateReportDetails,
-} from '~/lib/interfaces/report.interfaces';
-import OperatorDropdown from './OperationDropdown';
-
-const entryAnimation = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
-
-const exitAnimation = keyframes`
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-`;
+  entryAnimation,
+  exitAnimation,
+  getRelationalOperators,
+  getSelectedOperatorOption,
+  newCriterion,
+} from './helpers';
+import DynamicConditionValue from './ValueComponent';
 
 const DynamicConditions = () => {
   const [removingIndex, setRemovingIndex] = useState<number | null>(null);
 
-  const operators: Option[] = [
-    {
-      label: '< Less Than',
-      value: 'Less Than',
-    },
-    {
-      label: '= Equals',
-      value: 'Equals',
-    },
-    {
-      label: '> Greater Than',
-      value: 'Greater Than',
-    },
-  ];
   const { setFieldValue, values } = useFormikContext<GenerateReportDetails>();
 
-  const getSelectedOperator = (index: number): Option | undefined => {
-    return operators.find(
-      (item) => item.value === values.criterion[index]?.operation
-    );
-  };
-
-  const newCriterion: GenerateReportCriterion = {
-    columnName: '',
-    columnValue: '',
-    operation: 1,
-    join: 1,
-  };
+  const { data, isLoading } = useGetSystemContextTypeColumnsInfoQuery({
+    systemContextTypeId: values.contextTypeId!,
+    pageNumber: 1,
+    pageSize: DEFAULT_PAGE_SIZE,
+  });
 
   const selectedColumns = values.contextTypeColumns;
 
-
-  // TODO: There's a type issue here with the Column name being a number rather than a string, fix this
-  const getFilteredColumns = (index: number) => {
-    const selectedValues = values.criterion.map(
-      (criterion) => criterion.columnName
-    );
-
-    return selectedColumns.filter(
-      (option) =>
-        !selectedValues.includes(option.value as string) ||
-        option.value === values.criterion[index]?.columnName
+  const getSelectedColumnOption = (index: number): Option | undefined => {
+    return selectedColumns.find(
+      (item) => item.value === values.criterion[index]?.columnName
     );
   };
 
-  const getSelectedColumn = (index: number): Option | undefined => {
-    return selectedColumns.find(
-      (item) => item.value === values.criterion[index]?.columnName
+  const getSelectedColumnData = (
+    index: number
+  ): SystemContextTypeColumns | undefined => {
+    return data?.data.items.find(
+      (item) => item.columnName === values.criterion[index]?.columnName
     );
   };
 
@@ -153,15 +111,16 @@ const DynamicConditions = () => {
                     >
                       <Select
                         title="Column"
+                        isLoading={isLoading}
                         options={selectedColumns}
-                        selectedOption={getSelectedColumn(index)}
+                        showTitleAfterSelect={true}
+                        selectedOption={getSelectedColumnOption(index)}
                         handleSelect={(option) => {
                           setFieldValue(
                             `criterion[${index}].columnName`,
                             option?.value
                           );
                         }}
-                        showTitleAfterSelect={true}
                         containerStyles={{
                           flex: 1,
                           border: '1px solid #D4D4D4',
@@ -171,17 +130,23 @@ const DynamicConditions = () => {
                           alignItems: 'center',
                         }}
                       />
+
                       <Select
                         title="Operator"
-                        options={operators}
-                        selectedOption={getSelectedOperator(index)}
+                        showTitleAfterSelect={true}
+                        options={getRelationalOperators(
+                          getSelectedColumnData(index)?.dataType
+                        )}
+                        selectedOption={getSelectedOperatorOption(
+                          getSelectedColumnData(index)?.dataType,
+                          values.criterion[index]?.operation
+                        )}
                         handleSelect={(option) => {
                           setFieldValue(
                             `criterion[${index}].operation`,
                             option?.value
                           );
                         }}
-                        showTitleAfterSelect={true}
                         containerStyles={{
                           width: '155px',
                           border: '1px solid #D4D4D4',
@@ -190,17 +155,24 @@ const DynamicConditions = () => {
                           height: 'auto',
                         }}
                       />
+                      <DynamicConditionValue
+                        selectedContextTypeColumn={getSelectedColumnData(
+                          index
+                        )}
+                        index={index}
+                      />
 
-                      <Select
+                      {/* <Select
                         title="Value"
                         options={[]}
+                        isLoading={isLoading}
+                        showTitleAfterSelect={true}
                         handleSelect={(option) => {
                           setFieldValue(
                             `criterion[${index}].columnValue`,
                             option?.value
                           );
                         }}
-                        showTitleAfterSelect={true}
                         containerStyles={{
                           flex: 1,
                           border: '1px solid #D4D4D4',
@@ -208,7 +180,8 @@ const DynamicConditions = () => {
                           borderRadius: '8px',
                           height: 'auto',
                         }}
-                      />
+                      /> */}
+
                       <VStack flex={0.5} alignItems="flex-start">
                         <Link
                           color="#0366EF"

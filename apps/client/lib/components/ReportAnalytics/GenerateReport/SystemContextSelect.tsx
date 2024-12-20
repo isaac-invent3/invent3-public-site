@@ -34,7 +34,7 @@ const SystemContextSelect = (props: SystemContextSelectProps) => {
         operation: OPERATORS.Equals,
       },
       {
-        columnName: 'systemContextTypeName',
+        columnName: 'displayName',
         columnValue: searchValue,
         operation: OPERATORS.Contains,
       },
@@ -47,7 +47,7 @@ const SystemContextSelect = (props: SystemContextSelectProps) => {
       selectName={selectName}
       selectTitle={selectTitle}
       data={data}
-      labelKey="systemContextTypeName"
+      labelKey="displayName"
       valueKey="systemContextTypeId"
       mutationFn={searchAsset}
       isLoading={isLoading}

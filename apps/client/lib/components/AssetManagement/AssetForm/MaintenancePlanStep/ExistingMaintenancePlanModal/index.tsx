@@ -67,6 +67,26 @@ const ExistingMaintenancePlanModal = (
     setSearchData(response?.data?.data);
   }, [searchMaintenancePlan, searchCriterion]);
 
+  // Removes Plans Duplicate
+  const removeDuplicate = (
+    plans: MaintenancePlan[] | undefined
+  ): MaintenancePlan[] => {
+    if (!plans) {
+      return [];
+    }
+
+    const seenPlanIds = new Set<number>();
+    const uniqueMaintenancePlans = plans.filter((item) => {
+      if (seenPlanIds.has(item.maintenancePlanId)) {
+        return false;
+      }
+      seenPlanIds.add(item.maintenancePlanId);
+      return true; // Keep unique items
+    });
+
+    return uniqueMaintenancePlans;
+  };
+
   // Trigger search when search input changes or pagination updates
   useEffect(() => {
     if (search) {
@@ -84,11 +104,11 @@ const ExistingMaintenancePlanModal = (
 
   const handleAddDocuments = () => {
     const selectedMaintenancePlans: MaintenancePlan[] = [];
+    const sourceItems = removeDuplicate(
+      search && searchData ? searchData?.items : data?.data?.items || []
+    );
     selectedRows.forEach((row) => {
-      const plan =
-        search && searchData
-          ? searchData.items.find((_, index) => index === row)
-          : data?.data?.items.find((_, index) => index === row);
+      const plan = sourceItems.find((_, index) => index === row);
       if (plan) {
         selectedMaintenancePlans.push(plan);
       }
@@ -145,9 +165,9 @@ const ExistingMaintenancePlanModal = (
       }
     >
       <MaintenancePlanTable
-        data={
+        data={removeDuplicate(
           search && searchData ? searchData.items : (data?.data?.items ?? [])
-        }
+        )}
         showFooter={true}
         emptyLines={3}
         isLoading={isLoading}

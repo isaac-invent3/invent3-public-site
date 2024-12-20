@@ -2,9 +2,9 @@ import {
   Flex,
   FormControl,
   FormErrorMessage,
-  HStack,
   Icon,
   Input,
+  Stack,
   Text,
   useDisclosure,
   VStack,
@@ -18,9 +18,12 @@ import SingleDocument from './SingleDocument';
 
 interface AddDocumentProps {
   variant?: 'primary' | 'secondary';
+  // eslint-disable-next-line no-unused-vars
+  handleNewExistingDocumentsIds?: (ids: number[]) => void;
 }
 
-const AddDocument = ({ variant }: AddDocumentProps) => {
+const AddDocument = (props: AddDocumentProps) => {
+  const { variant, handleNewExistingDocumentsIds } = props;
   const [field, meta, helpers] = useField('documents'); // eslint-disable-line
   const [isDragging, setIsDragging] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -150,7 +153,13 @@ const AddDocument = ({ variant }: AddDocumentProps) => {
               <Text size="md" color="neutral.600">
                 Drop file in here or
               </Text>
-              <HStack spacing="8px">
+              <Stack
+                direction={variant === 'primary' ? 'row' : 'column'}
+                spacing="8px"
+                flexWrap="wrap"
+                justifyContent="center"
+                alignItems="center"
+              >
                 <label htmlFor="document">
                   <Text
                     size="md"
@@ -161,24 +170,20 @@ const AddDocument = ({ variant }: AddDocumentProps) => {
                     Click to browse (Up to 10MB)
                   </Text>
                 </label>
-                {variant === 'primary' && (
-                  <HStack spacing="8px">
-                    {' '}
-                    <Text size="md" color="neutral.600">
-                      Or
-                    </Text>
-                    <Text
-                      size="md"
-                      color="blue.500"
-                      fontWeight={800}
-                      role="button"
-                      onClick={onOpen}
-                    >
-                      Link Existing Document(s)
-                    </Text>{' '}
-                  </HStack>
-                )}
-              </HStack>
+                <Text size="md" color="neutral.600">
+                  Or
+                </Text>
+
+                <Text
+                  size="md"
+                  color="blue.500"
+                  fontWeight={800}
+                  role="button"
+                  onClick={onOpen}
+                >
+                  Link Existing Document(s)
+                </Text>
+              </Stack>
             </VStack>
             <Text
               size="md"
@@ -209,7 +214,13 @@ const AddDocument = ({ variant }: AddDocumentProps) => {
           ))}
         </VStack>
       </VStack>
-      <ExistingDocumentModal isOpen={isOpen} onClose={onClose} />
+      <ExistingDocumentModal
+        isOpen={isOpen}
+        onClose={onClose}
+        handleNewExistingDocumentsIds={(ids) =>
+          handleNewExistingDocumentsIds && handleNewExistingDocumentsIds(ids)
+        }
+      />
     </>
   );
 };

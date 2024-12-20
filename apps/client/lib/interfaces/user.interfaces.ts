@@ -14,6 +14,7 @@ interface Employee {
   deletedDate: string | null;
   deletedBy: string;
   guid: string;
+  locationId: number | null;
 }
 
 export type { Employee };

@@ -5,17 +5,31 @@ import EmployeeSelect from '../../../Common/EmployeeSelect';
 import { Employee } from '~/lib/interfaces/user.interfaces';
 import { useGetEmployeeByIdQuery } from '~/lib/redux/services/employees.services';
 import User from '../../Common/User';
+import { useField } from 'formik';
 
-const NewOwner = () => {
+interface NewOwnerProps {
+  setNewLocation: React.Dispatch<React.SetStateAction<string>>;
+}
+const NewOwner = (props: NewOwnerProps) => {
+  const { setNewLocation } = props;
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [user, setUser] = useState<Employee | null>(null);
-  const { data } = useGetEmployeeByIdQuery(selectedUserId, {
-    skip: !selectedUserId,
-  });
+  const { data } = useGetEmployeeByIdQuery(
+    { id: selectedUserId ?? undefined },
+    {
+      skip: !selectedUserId,
+    }
+  );
+  // eslint-disable-next-line no-unused-vars
+  const [field, meta, helpers] = useField('transferredTo');
 
   useEffect(() => {
     if (data?.data) {
       setUser(data?.data);
+      helpers.setValue(data?.data?.locationId);
+      if (data?.data?.locationId) {
+        setNewLocation(data?.data?.locationId?.toString());
+      }
     }
   }, [data]);
 

@@ -89,7 +89,7 @@ export const assetApi = createApi({
     >({
       query: ({ assetId, ...data }) => ({
         url: generateQueryStr(
-          `/AssetImages/GetImagesbyAssetId/${assetId}`,
+          `/AssetImages/GetImagesbyAssetId/${assetId}?`,
           data
         ),
         method: 'GET',

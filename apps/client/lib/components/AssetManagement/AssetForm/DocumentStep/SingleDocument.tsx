@@ -60,7 +60,10 @@ const SingleDocument = (props: SingleDocumentProps) => {
     >
       <HStack spacing={variant === 'primary' ? '64px' : '0px'} flexWrap="wrap">
         <HStack spacing="16px">
-          <Icon as={FILE_ICONS[extensionName ?? 'invalid']} boxSize="34px" />
+          <Icon
+            as={FILE_ICONS[(extensionName.toLowerCase() as 'pdf') ?? 'invalid']}
+            boxSize="34px"
+          />
           <Text
             size="lg"
             color="neutral.800"

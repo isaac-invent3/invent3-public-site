@@ -33,6 +33,7 @@ const SummaryCardStats = (props: SummaryCardStatsProps) => {
       bgColor="white"
       position="relative"
       rounded="8px"
+      alignItems="flex-start"
     >
       <VStack
         width="full"
@@ -50,6 +51,7 @@ const SummaryCardStats = (props: SummaryCardStatsProps) => {
           position="absolute"
           right={0}
           mr="8px"
+          mt="4px"
         >
           <Text
             color={
@@ -96,7 +98,7 @@ const SummaryCardStats = (props: SummaryCardStatsProps) => {
             {infoTwoSwitchText}
           </Text>
         </HStack>
-        <VStack alignItems="flex-start" pt="8px">
+        <VStack alignItems="flex-start">
           {localCurrentInfo === infoOneSwitchText && (
             <SummaryCard info={info.infoOne} isLoading={isLoading} />
           )}

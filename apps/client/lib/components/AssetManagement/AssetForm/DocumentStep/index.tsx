@@ -59,7 +59,19 @@ const DocumentStep = (props: DocumentStepProps) => {
                   isRequired={false}
                 />
               </Flex>
-              <AddDocument />
+              <AddDocument
+                variant="primary"
+                handleNewExistingDocumentsIds={(ids) =>
+                  dispatch(
+                    updateAssetForm({
+                      existingDocumentsIds: [
+                        ...formDetails.existingDocumentsIds,
+                        ...ids,
+                      ],
+                    })
+                  )
+                }
+              />
             </HStack>
           </VStack>
           <Flex width="full" mt="16px">

@@ -53,6 +53,7 @@ import { lgaApi } from './services/location/lga.services';
 import { roomApi } from './services/location/room.services';
 import { shelfApi } from './services/location/shelf.services';
 import { stateApi } from './services/location/state.services';
+import { assetDisposalApi } from './services/asset/disposal.services';
 
 export const persistConfig = {
   key: 'root',
@@ -67,6 +68,7 @@ const rootReducer = combineReducers({
   // Asset-related APIs
   [assetApi.reducerPath]: assetApi.reducer,
   [assetDocumentApi.reducerPath]: assetDocumentApi.reducer,
+  [assetDisposalApi.reducerPath]: assetDisposalApi.reducer,
   [assetGroupTypeApi.reducerPath]: assetGroupTypeApi.reducer,
   [assetStatsApi.reducerPath]: assetStatsApi.reducer,
   [assetTypeApi.reducerPath]: assetTypeApi.reducer,
@@ -152,6 +154,7 @@ export const makeStore = () => {
         assetGroupTypeApi.middleware,
         assetStatsApi.middleware,
         assetTypeApi.middleware,
+        assetDisposalApi.middleware,
 
         // Maintenance-related APIs
         maintenanceFrequencyApi.middleware,

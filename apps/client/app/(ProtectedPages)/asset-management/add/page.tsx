@@ -145,7 +145,7 @@ export default function Page() {
         subCategoryId: asset.subCategoryId,
         assetTypeId: asset.assetTypeId,
         assetTypeName: asset.assetType,
-        statusId: asset.statusId,
+        statusId: asset.assetStatusId,
         statusName: asset.currentStatus,
         locationId: asset.locationId,
         categoryName: asset.assetCategory,

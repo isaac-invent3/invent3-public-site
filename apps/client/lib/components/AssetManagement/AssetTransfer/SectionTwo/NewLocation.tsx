@@ -1,4 +1,6 @@
 import { HStack, Icon, Text, VStack } from '@chakra-ui/react';
+import { ErrorMessage } from '@repo/ui/components';
+import { useField } from 'formik';
 import React from 'react';
 import { AddIcon, PenIcon } from '~/lib/components/CustomIcons';
 import DetailHeader from '~/lib/components/UI/DetailHeader';
@@ -8,6 +10,8 @@ interface NewLocationProps {
 }
 const NewLocation = (props: NewLocationProps) => {
   const { newLocation } = props;
+  // eslint-disable-next-line no-unused-vars
+  const [field, meta] = useField('transferredTo');
 
   return (
     <VStack spacing="32px" alignItems="flex-start" width="full">
@@ -39,6 +43,9 @@ const NewLocation = (props: NewLocationProps) => {
           {newLocation ? 'Edit' : 'Add'} Location
         </Text>
       </HStack>
+      {meta.touched && meta.error !== undefined && (
+        <ErrorMessage>{meta.error}</ErrorMessage>
+      )}
     </VStack>
   );
 };

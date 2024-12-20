@@ -90,6 +90,7 @@ const assetMaintenancePlanSchema = Yup.object().shape({
 
 const assetTransferSchema = Yup.object().shape({
   newOwnerId: Yup.number().required('Owner is Required'),
+  transferredTo: Yup.number().required('New Location is Required'),
   transferDate: createDateSchema(
     false,
     true,
@@ -102,8 +103,16 @@ const assetDisposeSchema = documentSchema.shape({
   disposalDate: createDateSchema(false, true).required(
     'Disposal Date is required'
   ),
-  reason: Yup.string().required('Reason is Required'),
-  additionalInfo: Yup.number(),
+  disposalReasonId: Yup.number().required('Reason is Required'),
+  comments: Yup.number(),
+  documents: Yup.array().of(
+    Yup.object().shape({
+      documentId: Yup.number().nullable(),
+      documentName: Yup.string().required(),
+      base64Document: Yup.string().required(),
+      base64Prefix: Yup.string().nullable(),
+    })
+  ),
 });
 
 const bulkStatusActionSchema = Yup.object().shape({

@@ -28,7 +28,8 @@ const AssetTransfer = (props: AssetTransferProps) => {
   const formik = useFormik({
     initialValues: {
       newOwnerId: undefined,
-      transferDate: null,
+      transferDate: undefined,
+      transferredTo: undefined,
       comments: undefined,
     },
     validationSchema: assetTransferSchema,
@@ -42,9 +43,8 @@ const AssetTransfer = (props: AssetTransferProps) => {
           .toISOString(),
         previousOwnerId: data?.currentOwnerId ?? undefined,
         transferredFrom: data?.locationId ?? undefined,
-        transferredTo: undefined,
-        initiatedBy: session?.user.userId ?? undefined,
-        createdBy: session?.user.username ?? undefined,
+        initiatedBy: session?.user.userId,
+        createdBy: session?.user.username,
       };
       const resp = await handleSubmit(transferAsset, formValues, '');
       if (resp?.data) {

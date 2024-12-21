@@ -1,4 +1,4 @@
-import { Icon, Input, VStack } from '@chakra-ui/react';
+import { Icon, Input, InputProps, VStack } from '@chakra-ui/react';
 
 import { ChevronDownIcon, ChevronUpIcon } from './CustomIcons';
 
@@ -14,7 +14,7 @@ interface NumberBoxProps {
   value: number;
   maxNumber?: number;
   minNumber?: number;
-  customStyle?: { [name: string]: unknown };
+  customStyle?: InputProps;
 }
 
 const NumberBox = (props: NumberBoxProps) => {

@@ -6,13 +6,13 @@ import {
   LocationFilter,
   SearchCriterion,
 } from '~/lib/interfaces/general.interfaces';
-import { generateSearchCriterion } from '~/lib/utils/helperFunctions';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { TaskInstance } from '~/lib/interfaces/task.interfaces';
 import Filters from './Filters';
 import TaskInstanceTable from '../Tables/TaskInstanceTable';
 import { useSearchTaskInstancesMutation } from '~/lib/redux/services/task/instance.services';
 import { FilterDisplay } from '@repo/ui/components';
+import { generateSearchCriterion } from '@repo/functions';
 import { ListResponse } from '@repo/interfaces';
 
 export const initialFilterData = {
@@ -64,51 +64,33 @@ const TabTableView = (props: TabTableViewProps) => {
 
   // Search Criterion
   const searchCriterion = {
-    ...(search
-      ? {
-          criterion: [
-            {
-              columnName: 'taskName',
-              columnValue: search,
-              operation: OPERATORS.Contains,
-            },
-            specificSearchCriterion,
-          ],
-        }
-      : {}),
-    ...(!isFilterEmpty
-      ? {
-          orCriterion: [
-            ...(filterData.region.map((item) => item.value).length > 0
-              ? [
-                  generateSearchCriterion(
-                    'stateId',
-                    filterData.region.map((item) => item.value),
-                    OPERATORS.Equals
-                  ),
-                ]
-              : []),
-            ...(filterData.area.map((item) => item.value).length > 0
-              ? [
-                  generateSearchCriterion(
-                    'lgaId',
-                    filterData.area.map((item) => item.value),
-                    OPERATORS.Equals
-                  ),
-                ]
-              : []),
-            ...(filterData.branch.map((item) => item.value).length > 0
-              ? [
-                  generateSearchCriterion(
-                    'facilityId',
-                    filterData.branch.map((item) => item.value),
-                    OPERATORS.Equals
-                  ),
-                ]
-              : []),
-          ],
-        }
-      : {}),
+    ...(search && {
+      criterion: [
+        {
+          columnName: 'taskName',
+          columnValue: search,
+          operation: OPERATORS.Contains,
+        },
+        specificSearchCriterion,
+      ],
+    }),
+    ...(!isFilterEmpty && {
+      orCriterion: [
+        ...filterData.region.map((item) => [
+          ...generateSearchCriterion('stateId', [item.value], OPERATORS.Equals),
+        ]),
+        ...filterData.area.map((item) => [
+          ...generateSearchCriterion('lgaId', [item.value], OPERATORS.Equals),
+        ]),
+        ...filterData.branch.map((item) => [
+          ...generateSearchCriterion(
+            'facilityId',
+            [item.value],
+            OPERATORS.Equals
+          ),
+        ]),
+      ],
+    }),
     pageNumber: currentPage,
     pageSize: pageSize,
   };

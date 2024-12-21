@@ -1,10 +1,9 @@
 import moment from 'moment';
 import { AssetFormDocument } from '~/lib/interfaces/asset/general.interface';
 import { ActualProjectedData } from '../interfaces/dashboard.interfaces';
-import { FILE_ICONS, OPERATORS } from './constants';
+import { FILE_ICONS } from './constants';
 import nigeriaStatesByLandSize from './NigeriaCordinates/landSize';
 import { Event as EventType, View } from 'react-big-calendar';
-import { SearchCriterion } from '../interfaces/general.interfaces';
 
 interface IOption {
   [key: string]: any;
@@ -234,23 +233,6 @@ const formattedDateTime = (date: Date | null, time: string | null) => {
   return formatted;
 };
 
-const generateSearchCriterion = (
-  columnName: string,
-  columnValues: (string | number)[],
-  operator: (typeof OPERATORS)[keyof typeof OPERATORS]
-) => {
-  const finalSearchCriterion: SearchCriterion[] = [];
-
-  columnValues.forEach((item) =>
-    finalSearchCriterion.push({
-      columnName,
-      columnValue: item,
-      operation: operator,
-    })
-  );
-  return finalSearchCriterion;
-};
-
 export {
   generateOptions,
   getDocumentInfo,
@@ -261,5 +243,4 @@ export {
   transformToCalendarEvents,
   getDisplayDate,
   formattedDateTime,
-  generateSearchCriterion,
 };

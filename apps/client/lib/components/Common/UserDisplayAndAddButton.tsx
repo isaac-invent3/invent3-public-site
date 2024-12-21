@@ -1,4 +1,10 @@
-import { HStack, Icon, IconButton, useDisclosure } from '@chakra-ui/react';
+import {
+  AvatarProps,
+  HStack,
+  Icon,
+  IconButton,
+  useDisclosure,
+} from '@chakra-ui/react';
 
 import { AddIcon, CloseIcon } from '../CustomIcons';
 import { Option } from '~/lib/interfaces/general.interfaces';
@@ -9,7 +15,7 @@ interface UserDisplayAndAddButtonProps {
   selectedUser: string | null | undefined;
   // eslint-disable-next-line no-unused-vars
   handleSelectUser: (user: Option | null) => void;
-  customAvatarStyle?: { [name: string]: unknown };
+  customAvatarStyle?: AvatarProps;
   sectionInfoText?: string;
   sectionInfoTitle?: string;
 }

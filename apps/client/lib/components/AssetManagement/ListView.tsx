@@ -12,7 +12,6 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 import AssetTable from './Common/AssetTable';
 import AssetFilterDisplay from './Filters/AssetFilterDisplay';
-import { generateSearchCriterion } from '~/lib/utils/helperFunctions';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import {
   setAsset,
@@ -21,6 +20,7 @@ import {
 import AssetDetail from './AssetDetail';
 import { Asset } from '~/lib/interfaces/asset/general.interface';
 import { ListResponse } from '@repo/interfaces';
+import { generateSearchCriterion } from '@repo/functions';
 
 interface ListViewProps {
   search: string;
@@ -74,68 +74,46 @@ const ListView = (props: ListViewProps) => {
 
   // Search Criterion
   const searchCriterion = {
-    ...(search
-      ? {
-          criterion: [
-            {
-              columnName: 'assetName',
-              columnValue: search,
-              operation: OPERATORS.Contains,
-            },
-          ],
-        }
-      : {}),
-    ...(!isFilterEmpty
-      ? {
-          orCriterion: [
-            ...(filterData.category.map((item) => item.value).length > 0
-              ? [
-                  generateSearchCriterion(
-                    'categoryId',
-                    filterData.category.map((item) => item.value),
-                    OPERATORS.Equals
-                  ),
-                ]
-              : []),
-            ...(filterData.status.map((item) => item.value).length > 0
-              ? [
-                  generateSearchCriterion(
-                    'statusId',
-                    filterData.status.map((item) => item.value),
-                    OPERATORS.Equals
-                  ),
-                ]
-              : []),
-            ...(filterData.region.map((item) => item.value).length > 0
-              ? [
-                  generateSearchCriterion(
-                    'stateId',
-                    filterData.region.map((item) => item.value),
-                    OPERATORS.Equals
-                  ),
-                ]
-              : []),
-            ...(filterData.area.map((item) => item.value).length > 0
-              ? [
-                  generateSearchCriterion(
-                    'lgaId',
-                    filterData.area.map((item) => item.value),
-                    OPERATORS.Equals
-                  ),
-                ]
-              : []),
-            ...(filterData.branch.map((item) => item.value).length > 0
-              ? [
-                  generateSearchCriterion(
-                    'facilityId',
-                    filterData.branch.map((item) => item.value),
-                    OPERATORS.Equals
-                  ),
-                ]
-              : []),
-          ],
-        }
-      : {}),
+    ...(search && {
+      criterion: [
+        {
+          columnName: 'assetName',
+          columnValue: search,
+          operation: OPERATORS.Contains,
+        },
+      ],
+    }),
+    ...(!isFilterEmpty && {
+      orCriterion: [
+        ...filterData.category.map((item) => [
+          ...generateSearchCriterion(
+            'categoryId',
+            [item.value],
+            OPERATORS.Equals
+          ),
+        ]),
+        ...filterData.status.map((item) => [
+          ...generateSearchCriterion(
+            'statusId',
+            [item.value],
+            OPERATORS.Equals
+          ),
+        ]),
+        ...filterData.region.map((item) => [
+          ...generateSearchCriterion('stateId', [item.value], OPERATORS.Equals),
+        ]),
+        ...filterData.area.map((item) => [
+          ...generateSearchCriterion('lgaId', [item.value], OPERATORS.Equals),
+        ]),
+        ...filterData.branch.map((item) => [
+          ...generateSearchCriterion(
+            'facilityId',
+            [item.value],
+            OPERATORS.Equals
+          ),
+        ]),
+      ].filter((criterion) => criterion.length > 0),
+    }),
     pageNumber: currentPage,
     pageSize: pageSize,
   };

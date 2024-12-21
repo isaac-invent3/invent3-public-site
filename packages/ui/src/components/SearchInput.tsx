@@ -1,4 +1,12 @@
-import { Icon, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
+import {
+  Icon,
+  Input,
+  InputGroup,
+  InputGroupProps,
+  InputLeftElement,
+  InputLeftElementProps,
+  InputProps,
+} from '@chakra-ui/react';
 import { useState, useMemo } from 'react';
 import { debounce } from 'lodash';
 import { SearchIcon } from './CustomIcons';
@@ -7,9 +15,9 @@ interface ISearchInput {
   setSearch: React.Dispatch<React.SetStateAction<string>>;
   placeholderText?: string;
   width?: string;
-  customStyle?: { [key: string]: unknown };
-  containerStyle?: { [key: string]: unknown };
-  leftElementStyle?: { [key: string]: unknown };
+  customStyle?: InputProps;
+  containerStyle?: InputGroupProps;
+  leftElementStyle?: InputLeftElementProps;
   iconSize?: string;
 }
 

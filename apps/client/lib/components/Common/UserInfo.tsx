@@ -1,10 +1,17 @@
-import { Avatar, Flex, HStack, Text } from '@chakra-ui/react';
+import {
+  Avatar,
+  AvatarProps,
+  Flex,
+  HStack,
+  StackProps,
+  Text,
+} from '@chakra-ui/react';
 
 interface UserInfoProps {
   name: string | null;
   avatar?: string;
-  customAvatarStyle?: { [name: string]: unknown };
-  customBoxStyle?: { [name: string]: unknown };
+  customAvatarStyle?: AvatarProps;
+  customBoxStyle?: StackProps;
   children?: React.ReactNode;
 }
 const UserInfo = (props: UserInfoProps) => {

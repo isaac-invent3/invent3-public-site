@@ -5,6 +5,7 @@ import {
   Text as ChakraText,
   useDisclosure,
   VStack,
+  StackProps,
 } from '@chakra-ui/react';
 import moment from 'moment';
 
@@ -23,7 +24,7 @@ interface CustomSelectDateButtonProps {
     date: Date | undefined,
     time: string | undefined
   ) => void;
-  customStyle?: { [name: string]: unknown };
+  customStyle?: StackProps;
   includeTimeDisplay?: boolean;
   dateDisplay?: string | null;
 }

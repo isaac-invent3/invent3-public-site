@@ -1,4 +1,11 @@
-import { Flex, Heading, HStack, useDisclosure, VStack } from '@chakra-ui/react';
+import {
+  Flex,
+  Heading,
+  HStack,
+  StackProps,
+  useDisclosure,
+  VStack,
+} from '@chakra-ui/react';
 import Image from 'next/image';
 
 import DetailHeader from '~/lib/components/UI/DetailHeader';
@@ -11,7 +18,7 @@ import AssetDetail from '../AssetDetail';
 interface AssetDetailWrapperProps {
   showStatus: boolean;
   showMaintenanceHistoryButton?: boolean;
-  customStyle?: { [key: string]: unknown };
+  customStyle?: StackProps;
   children?: React.ReactNode;
 }
 const AssetDetailWrapper = (props: AssetDetailWrapperProps) => {

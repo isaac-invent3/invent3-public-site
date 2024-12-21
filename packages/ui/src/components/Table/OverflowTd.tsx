@@ -1,10 +1,10 @@
-import { Td, Tooltip } from '@chakra-ui/react';
+import { TableCellProps, Td, Tooltip } from '@chakra-ui/react';
 import { useRef, useState, useEffect } from 'react';
 
 interface OverflowTdProps {
   children: React.ReactNode | string;
   isNumeric: boolean;
-  customTdStyle?: { [key: string]: unknown };
+  customTdStyle?: TableCellProps;
   maxW: string;
   isDisabledRow?: boolean;
 }

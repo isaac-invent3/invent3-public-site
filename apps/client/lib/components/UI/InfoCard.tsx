@@ -1,10 +1,10 @@
-import { HStack, Icon, Text } from '@chakra-ui/react';
+import { HStack, Icon, StackProps, Text } from '@chakra-ui/react';
 
 import { InfoIcon } from '../CustomIcons';
 
 interface InfoCardProps {
   infoText: string;
-  customStyle?: { [name: string]: unknown };
+  customStyle?: StackProps;
 }
 const InfoCard = (props: InfoCardProps) => {
   const { infoText, customStyle } = props;

@@ -11,11 +11,11 @@ import {
 } from '~/lib/redux/services/maintenance/plan.services';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 import Filters from './Filters';
-import { generateSearchCriterion } from '~/lib/utils/helperFunctions';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { FilterDisplay } from '@repo/ui/components';
 import MaintenancePlanTable from './PlanTable';
 import { ListResponse } from '@repo/interfaces';
+import { generateSearchCriterion } from '@repo/functions';
 
 export const initialFilterData = {
   planType: [],
@@ -53,60 +53,39 @@ const Plans = (props: PlansProp) => {
 
   // Search Criterion
   const searchCriterion = {
-    ...(search
-      ? {
-          criterion: [
-            {
-              columnName: 'planName',
-              columnValue: search,
-              operation: OPERATORS.Contains,
-            },
-          ],
-        }
-      : {}),
-    ...(!isFilterEmpty
-      ? {
-          orCriterion: [
-            ...(filterData.planType.map((item) => item.value).length > 0
-              ? [
-                  generateSearchCriterion(
-                    'planTypeId',
-                    filterData.planType.map((item) => item.value),
-                    OPERATORS.Equals
-                  ),
-                ]
-              : []),
-
-            ...(filterData.region.map((item) => item.value).length > 0
-              ? [
-                  generateSearchCriterion(
-                    'stateId',
-                    filterData.region.map((item) => item.value),
-                    OPERATORS.Equals
-                  ),
-                ]
-              : []),
-            ...(filterData.area.map((item) => item.value).length > 0
-              ? [
-                  generateSearchCriterion(
-                    'lgaId',
-                    filterData.area.map((item) => item.value),
-                    OPERATORS.Equals
-                  ),
-                ]
-              : []),
-            ...(filterData.branch.map((item) => item.value).length > 0
-              ? [
-                  generateSearchCriterion(
-                    'facilityId',
-                    filterData.branch.map((item) => item.value),
-                    OPERATORS.Equals
-                  ),
-                ]
-              : []),
-          ],
-        }
-      : {}),
+    ...(search && {
+      criterion: [
+        {
+          columnName: 'planName',
+          columnValue: search,
+          operation: OPERATORS.Contains,
+        },
+      ],
+    }),
+    ...(!isFilterEmpty && {
+      orCriterion: [
+        ...filterData.planType.map((item) => [
+          ...generateSearchCriterion(
+            'planTypeId',
+            [item.value],
+            OPERATORS.Equals
+          ),
+        ]),
+        ...filterData.region.map((item) => [
+          ...generateSearchCriterion('stateId', [item.value], OPERATORS.Equals),
+        ]),
+        ...filterData.area.map((item) => [
+          ...generateSearchCriterion('lgaId', [item.value], OPERATORS.Equals),
+        ]),
+        ...filterData.branch.map((item) => [
+          ...generateSearchCriterion(
+            'facilityId',
+            [item.value],
+            OPERATORS.Equals
+          ),
+        ]),
+      ],
+    }),
     pageNumber: currentPage,
     pageSize: pageSize,
   };

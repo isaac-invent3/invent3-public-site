@@ -1,1 +1,4 @@
-export { default as createSearchCriterion } from './createSearchCriterion';
+export {
+  default as createSearchCriterion,
+  generateSearchCriterion,
+} from './createSearchCriterion';

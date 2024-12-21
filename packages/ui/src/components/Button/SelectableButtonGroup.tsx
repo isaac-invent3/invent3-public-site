@@ -1,4 +1,4 @@
-import { HStack, Skeleton } from '@chakra-ui/react';
+import { ButtonProps, HStack, Skeleton, StackProps } from '@chakra-ui/react';
 
 import Button from '.';
 // eslint-disable-next-line no-redeclare
@@ -9,8 +9,8 @@ interface SelectableButtonGroupProps {
   selectedOptions: Option[];
   // eslint-disable-next-line no-unused-vars, no-unused-vars
   handleSelect: (options: Option[]) => void;
-  customContainerStyle?: { [name: string]: unknown };
-  customButtonStyle?: { [name: string]: unknown };
+  customContainerStyle?: StackProps;
+  customButtonStyle?: ButtonProps;
   buttonVariant: 'secondary' | 'outline';
   isMultiSelect: boolean;
   hasAtLeastOneSelected?: boolean;

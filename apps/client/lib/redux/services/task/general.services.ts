@@ -6,10 +6,9 @@ import {
   SearchQuery,
 } from '@repo/interfaces';
 import {
-  CreateTaskPayload,
   SingleTask,
   Task,
-  UpdateTaskPayload,
+  TaskPayload,
 } from '~/lib/interfaces/task.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
@@ -22,10 +21,7 @@ export const taskApi = createApi({
   baseQuery: baseQueryWithReauth,
   tagTypes: ['allTasks', 'allTasksByScheduleId'],
   endpoints: (builder) => ({
-    createTask: builder.mutation<
-      BaseApiResponse<SingleTask>,
-      CreateTaskPayload
-    >({
+    createTask: builder.mutation<BaseApiResponse<SingleTask>, TaskPayload>({
       query: (body) => ({
         url: `/Tasks`,
         method: 'POST',
@@ -34,10 +30,7 @@ export const taskApi = createApi({
       }),
       invalidatesTags: ['allTasksByScheduleId', 'allTasks'],
     }),
-    updateTask: builder.mutation<
-      BaseApiResponse<SingleTask>,
-      UpdateTaskPayload
-    >({
+    updateTask: builder.mutation<BaseApiResponse<SingleTask>, TaskPayload>({
       query: (body) => ({
         url: `/Tasks/${body.taskId}`,
         method: 'PUT',

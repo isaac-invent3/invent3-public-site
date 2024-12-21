@@ -8,8 +8,11 @@ import {
   SearchQuery,
 } from '@repo/interfaces';
 import {
+  CreateMaintenancePlanWithSchedulesPayload,
   MaintenancePlan,
+  PlanPayload,
   SingleMaintenancePlan,
+  UpdateMaintenancePlanWithSchedulesPayload,
 } from '~/lib/interfaces/maintenance.interfaces';
 
 const getHeaders = () => ({
@@ -20,7 +23,10 @@ export const maintenancePlanApi = createApi({
   baseQuery: baseQueryWithReauth,
   tagTypes: ['allMaintenancePlan', 'allMaintenancePlansByAssetId'],
   endpoints: (builder) => ({
-    createMaintenancePlan: builder.mutation({
+    createMaintenancePlan: builder.mutation<
+      BaseApiResponse<SingleMaintenancePlan>,
+      PlanPayload
+    >({
       query: (body) => ({
         url: `/MaintenancePlans`,
         method: 'POST',
@@ -29,7 +35,10 @@ export const maintenancePlanApi = createApi({
       }),
       invalidatesTags: ['allMaintenancePlan', 'allMaintenancePlansByAssetId'],
     }),
-    createMaintenancePlanWithSchedules: builder.mutation({
+    createMaintenancePlanWithSchedules: builder.mutation<
+      BaseApiResponse<MaintenancePlan>,
+      CreateMaintenancePlanWithSchedulesPayload
+    >({
       query: (body) => ({
         url: `/Invent3Pro/CreateMaintenancePlan`,
         method: 'POST',
@@ -38,16 +47,10 @@ export const maintenancePlanApi = createApi({
       }),
       invalidatesTags: ['allMaintenancePlan', 'allMaintenancePlansByAssetId'],
     }),
-    updateMaintenancePlan: builder.mutation({
-      query: ({ id, ...body }) => ({
-        url: `/MaintenancePlans/${id}`,
-        method: 'PUT',
-        headers: getHeaders(),
-        body,
-      }),
-      invalidatesTags: ['allMaintenancePlan', 'allMaintenancePlansByAssetId'],
-    }),
-    updateMaintenancePlanWithSchedules: builder.mutation({
+    updateMaintenancePlanWithSchedules: builder.mutation<
+      void,
+      UpdateMaintenancePlanWithSchedulesPayload
+    >({
       query: (body) => ({
         url: `/Invent3Pro/UpdateMaintenancePlan`,
         method: 'PUT',
@@ -143,7 +146,6 @@ export const maintenancePlanApi = createApi({
 
 export const {
   useGetMaintenancePlanByIdQuery,
-  useUpdateMaintenancePlanMutation,
   useCreateMaintenancePlanMutation,
   useCreateMaintenancePlanWithSchedulesMutation,
   useUpdateMaintenancePlanWithSchedulesMutation,

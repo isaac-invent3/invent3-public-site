@@ -1,4 +1,5 @@
 import { BaseEntity } from '@repo/interfaces';
+import { FORM_ENUM } from '../utils/constants';
 
 export interface BaseMainTask extends BaseEntity {
   taskId: number;
@@ -172,60 +173,29 @@ interface TaskMetadata {
   costEstimate: number;
   estimatedDurationInHours: number;
   comments?: string | null;
-}
-
-// Optional Fields for Task Completion
-interface TaskCompletionDetails {
+  createdBy?: string;
+  lastModifiedBy?: string;
+  changeInitiatedBy?: string;
+  actionType?: (typeof FORM_ENUM)[keyof typeof FORM_ENUM];
   actualCost?: number | null;
-  dateCompleted?: string; // ISO string format
+  dateCompleted?: string;
 }
 
-// Base Task Interface
-interface BaseTaskPayload extends TaskMetadata {
+interface TaskPayload extends TaskMetadata {
+  taskId?: number;
   taskName: string;
   taskDescription: string;
   scheduleId: number;
 }
 
-// Base Task Instance Interface
-interface BaseTaskInstancePayload extends TaskMetadata {
+interface TaskInstancePayload extends TaskMetadata {
+  taskInstanceId?: number;
+  taskStatusId?: number;
   taskInstanceName: string;
   description: string;
   scheduleInstanceId: number;
   parentTaskId: number;
-  dueDate?: string; // ISO string format
-}
-
-// Create and Update Interfaces
-interface CreatedByInfo {
-  createdBy: string;
-}
-
-interface ModifiedByInfo {
-  lastModifiedBy: string;
-}
-
-// Task Payloads
-interface CreateTaskPayload extends BaseTaskPayload, CreatedByInfo {}
-
-interface UpdateTaskPayload
-  extends BaseTaskPayload,
-    TaskCompletionDetails,
-    ModifiedByInfo {
-  taskId: number;
-}
-
-// Task Instance Payloads
-interface CreateTaskInstancePayload
-  extends BaseTaskInstancePayload,
-    CreatedByInfo {}
-
-interface UpdateTaskInstancePayload
-  extends BaseTaskInstancePayload,
-    TaskCompletionDetails,
-    ModifiedByInfo {
-  taskInstanceId: number;
-  taskStatusId: number;
+  dueDate?: string;
 }
 
 export type {
@@ -238,8 +208,6 @@ export type {
   TaskPriority,
   TaskType,
   SingleTask,
-  CreateTaskPayload,
-  UpdateTaskPayload,
-  CreateTaskInstancePayload,
-  UpdateTaskInstancePayload,
+  TaskPayload,
+  TaskInstancePayload,
 };

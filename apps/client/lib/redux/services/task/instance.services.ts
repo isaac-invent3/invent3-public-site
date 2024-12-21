@@ -6,10 +6,9 @@ import {
   SearchQuery,
 } from '@repo/interfaces';
 import {
-  CreateTaskInstancePayload,
   TaskInstance,
   TaskInstanceModel,
-  UpdateTaskInstancePayload,
+  TaskInstancePayload,
 } from '~/lib/interfaces/task.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
@@ -28,7 +27,7 @@ export const taskInstanceApi = createApi({
   endpoints: (builder) => ({
     createTaskInstance: builder.mutation<
       BaseApiResponse<TaskInstanceModel>,
-      CreateTaskInstancePayload
+      TaskInstancePayload
     >({
       query: (body) => ({
         url: `/TaskInstances`,
@@ -41,7 +40,7 @@ export const taskInstanceApi = createApi({
         'allTaskInstances',
       ],
     }),
-    updateTaskInstance: builder.mutation<void, UpdateTaskInstancePayload>({
+    updateTaskInstance: builder.mutation<void, TaskInstancePayload>({
       query: (body) => ({
         url: `/TaskInstances/${body.taskInstanceId}`,
         method: 'PUT',

@@ -17,6 +17,7 @@ import { Button, FormActionButtons } from '@repo/ui/components';
 import SaveAsTemplateModal from '~/lib/components/Common/Modals/SaveAsTemplateModal';
 import { useGetTemplateInfoBySystemContextTypeAndContextIdQuery } from '~/lib/redux/services/template.services';
 import { getSession } from 'next-auth/react';
+import { TaskPayload } from '~/lib/interfaces/task.interfaces';
 
 interface SummarySectionProps {
   activeStep: number;
@@ -70,45 +71,41 @@ const SummarySection = (props: SummarySectionProps) => {
     const session = await getSession();
     const username = session?.user?.username;
 
-    const PAYLOAD = {
-      [type === 'create'
-        ? 'createMaintenanceScheduleDto'
-        : 'updateMaintenanceScheduleDto']: {
-        ...generateMaintenanceScheduleDTO(
-          type,
-          scheduleFormDetails,
-          [scheduleFormDetails.scheduleId as number],
-          username as string
-        ),
-        saveAsTemplate,
-        templateName,
-        templateDescription,
-      },
-      [type === 'create' ? 'createTaskDtos' : 'updateTaskDtos']: (() => {
-        const tasksArray = [
-          // Deleted Task
-          ...scheduleFormDetails.deletedTaskIDs.map((item) => ({
-            taskId: item,
-            actionType: FORM_ENUM.delete,
-            changeInitiatedBy: username,
-          })),
-          // Generate for only task that has been added or updated
-          ...generateTasksArray(
-            scheduleFormDetails.tasks.filter(
-              (task) =>
-                (task.taskId &&
-                  scheduleFormDetails.updatedTaskIDs.includes(task.taskId)) ||
-                task.taskId === null
-            ),
-            scheduleFormDetails.updatedTaskIDs,
-            username as string
-          ),
-        ];
-
-        return tasksArray.length > 0 ? tasksArray : null;
-      })(),
+    const schedule = {
+      ...generateMaintenanceScheduleDTO(
+        type,
+        scheduleFormDetails,
+        [scheduleFormDetails.scheduleId as number],
+        username as string
+      ),
+      saveAsTemplate,
+      templateName,
+      templateDescription,
     };
-    return PAYLOAD;
+
+    const tasksArray = [
+      // Deleted Task
+      ...scheduleFormDetails.deletedTaskIDs.map((item) => ({
+        taskId: item,
+        actionType: FORM_ENUM.delete,
+        changeInitiatedBy: username,
+      })),
+      // Generate for only task that has been added or updated
+      ...generateTasksArray(
+        scheduleFormDetails.tasks.filter(
+          (task) =>
+            (task.taskId &&
+              scheduleFormDetails.updatedTaskIDs.includes(task.taskId)) ||
+            task.taskId === null
+        ),
+        scheduleFormDetails.updatedTaskIDs,
+        username as string
+      ),
+    ];
+
+    const tasks = tasksArray.length > 0 ? (tasksArray as TaskPayload[]) : null;
+
+    return { schedule, tasks };
   };
 
   const handleSubmitSchedule = async (
@@ -119,26 +116,31 @@ const SummarySection = (props: SummarySectionProps) => {
     const session = await getSession();
     const username = session?.user?.username;
     let response;
+    const { schedule, tasks } = await generatePayload(
+      saveAsTemplate,
+      templateName,
+      templateDescription
+    );
     if (type === 'create') {
-      const PAYLOAD = await generatePayload(
-        saveAsTemplate,
-        templateName,
-        templateDescription
+      response = await handleSubmit(
+        createScheduleAndTasks,
+        {
+          createMaintenanceScheduleDto: schedule,
+          createTaskDtos: tasks,
+        },
+        ''
       );
-      response = await handleSubmit(createScheduleAndTasks, PAYLOAD, '');
     } else {
       response = await handleSubmit(
         updateScheduleAndTasks,
         {
           updateMaintenancePlanDto: {
-            maintenancePlanId: scheduleFormDetails.planId,
+            maintenancePlanId: scheduleFormDetails.planId!,
             lastModifiedBy: username,
           },
-          masterUpdateMaintenanceScheduleDto: generatePayload(
-            saveAsTemplate,
-            templateName,
-            templateDescription
-          ),
+          masterUpdateMaintenanceScheduleDto: [
+            { updateMaintenanceScheduleDto: schedule, updateTaskDtos: tasks },
+          ],
         },
         ''
       );

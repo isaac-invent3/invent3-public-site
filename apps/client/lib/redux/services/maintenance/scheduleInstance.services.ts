@@ -1,7 +1,10 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
-import { MaintenanceScheduleInstance } from '~/lib/interfaces/maintenance.interfaces';
+import {
+  MaintenanceScheduleInstance,
+  UpdateScheduleInstanceAndTasksPayload,
+} from '~/lib/interfaces/maintenance.interfaces';
 import {
   BaseApiResponse,
   ListResponse,
@@ -17,16 +20,10 @@ export const scheduleInstanceApi = createApi({
   baseQuery: baseQueryWithReauth,
   tagTypes: ['allScheduleInstances'],
   endpoints: (builder) => ({
-    updateScheduleInstance: builder.mutation({
-      query: ({ id, ...data }) => ({
-        url: `/Invent3Pro/UpdateScheduleAndTaskInstances/${id}`,
-        method: 'PUT',
-        headers: getHeaders(),
-        body: data,
-      }),
-      invalidatesTags: ['allScheduleInstances'],
-    }),
-    updateScheduleInstanceandTaskInstances: builder.mutation({
+    updateScheduleInstanceandTaskInstances: builder.mutation<
+      void,
+      UpdateScheduleInstanceAndTasksPayload
+    >({
       query: (data) => ({
         url: `/Invent3Pro/UpdateScheduleAndTaskInstances`,
         method: 'PUT',
@@ -127,7 +124,6 @@ export const {
   useGetAllScheduleInstanceQuery,
   useGetScheduleInstanceByGuidQuery,
   useSearchScheduleInstanceMutation,
-  useUpdateScheduleInstanceMutation,
   useUpdateScheduleInstanceandTaskInstancesMutation,
   useGetMaintenanceScheduleInstanceAggregateQuery,
   useGetMaintenanceScheduleInstancesWithSingleAggregateCountsByAreaQuery,

@@ -1,6 +1,10 @@
 import { BaseEntity } from '@repo/interfaces';
 import { LocationFilter, Option } from './general.interfaces';
-import { taskFormDetails } from './task.interfaces';
+import {
+  taskFormDetails,
+  TaskInstancePayload,
+  TaskPayload,
+} from './task.interfaces';
 
 interface MaintenancePlan {
   rowId: number;
@@ -32,6 +36,7 @@ interface MaintenancePlan {
   totalMemberAssetsCount: number;
   assetLocation: string;
 }
+
 interface SingleMaintenancePlan extends BaseEntity {
   guid: string;
   maintenancePlanId: number;
@@ -157,9 +162,7 @@ interface ScheduleFormDetails {
   dayOccurrences: string[] | null;
   weekOccurrences: number[] | null;
   monthOccurrences: number[] | null;
-  yearOccurrences: {
-    [name: number]: number[];
-  } | null;
+  yearOccurrences: Record<number, number[]> | null;
   maintenancePlanInfo: {
     planName: string | null;
     planType: string | null;
@@ -223,6 +226,89 @@ interface ScheduleFilter extends LocationFilter {
   maintenanceType: Option[];
 }
 
+interface PlanPayload {
+  maintenancePlanId?: number;
+  planName?: string;
+  planTypeId?: number;
+  startDate?: string;
+  endDate?: string | null;
+  cost?: number;
+  assetId?: number;
+  ownerId?: number;
+  assetGroupTypeID?: number;
+  assetGroupContextID?: number;
+  saveAsTemplate?: boolean;
+  templateName?: string;
+  templateDescription?: string;
+  createdBy?: string;
+  lastModifiedBy?: string;
+}
+
+interface SchedulePayload {
+  scheduleId?: number;
+  planId?: number;
+  scheduleName?: string;
+  description?: string;
+  maintenanceTypeId?: number;
+  frequencyId?: number;
+  sla?: number;
+  comments?: string;
+  scheduledDate?: string;
+  completionDate?: string | null;
+  endDate?: string | null;
+  intervalValue?: number;
+  dayOccurrences?: string[] | null;
+  weekOccurrences?: number[] | null;
+  monthOccurrences?: number[] | null;
+  yearOccurrences?: Record<number, number[]> | null;
+  statusId?: number;
+  ticketId?: number;
+  assignedTo?: number;
+  saveAsTemplate?: boolean;
+  templateName?: string;
+  templateDescription?: string;
+  actionType?: number;
+  changeInitiatedBy?: string;
+}
+
+interface ScheduleInstancePayload {
+  scheduleInstanceId: number;
+  scheduledDate?: string;
+  scheduleInstanceName: string;
+  sla?: number;
+  completionDate?: string;
+  statusId?: number;
+  assignedTo?: number;
+  comments?: string;
+  updateType: number;
+  lastModifiedBy?: string;
+}
+
+interface UpdateScheduleInstanceAndTasksPayload {
+  updateMaintenanceScheduleInstanceDto: ScheduleInstancePayload;
+  updateTaskInstanceDtos: TaskInstancePayload[] | null;
+}
+
+interface CreateScheduleAndTasksPayload {
+  createMaintenanceScheduleDto: SchedulePayload;
+  createTaskDtos: TaskPayload[] | null;
+}
+
+interface UpdateScheduleAndTasksPayload {
+  updateMaintenanceScheduleDto: SchedulePayload;
+  updateTaskDtos?: TaskPayload[] | null;
+}
+
+interface CreateMaintenancePlanWithSchedulesPayload {
+  createMaintenancePlanDto: PlanPayload;
+  createMaintenanceScheduleDtos: CreateScheduleAndTasksPayload[] | null;
+}
+
+interface UpdateMaintenancePlanWithSchedulesPayload {
+  updateMaintenancePlanDto: PlanPayload;
+  masterUpdateMaintenanceScheduleDto: UpdateScheduleAndTasksPayload[] | null;
+}
+
 export type {
   MaintenancePlan,
   MaintenanceScheduleStat,
@@ -237,4 +323,9 @@ export type {
   ScheduleFilter,
   MaintenanceType,
   SingleMaintenancePlan,
+  PlanPayload,
+  UpdateScheduleInstanceAndTasksPayload,
+  CreateScheduleAndTasksPayload,
+  CreateMaintenancePlanWithSchedulesPayload,
+  UpdateMaintenancePlanWithSchedulesPayload,
 };

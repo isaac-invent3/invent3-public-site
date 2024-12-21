@@ -4,7 +4,11 @@ import {
   PlanFormDetails,
   ScheduleFormDetails,
 } from '~/lib/interfaces/maintenance.interfaces';
-import { taskFormDetails } from '~/lib/interfaces/task.interfaces';
+import {
+  taskFormDetails,
+  TaskInstancePayload,
+  TaskPayload,
+} from '~/lib/interfaces/task.interfaces';
 import { FORM_ENUM, INSTANCE_UPDATE_ENUM } from '~/lib/utils/constants';
 
 const generateTasksArray = (
@@ -14,40 +18,51 @@ const generateTasksArray = (
   instanceUpdateType?: (typeof INSTANCE_UPDATE_ENUM)[keyof typeof INSTANCE_UPDATE_ENUM],
   type: 'main' | 'instance' = 'main'
 ) => {
-  const isMainTask = type === 'main';
-
-  // Precompute dynamic keys for main vs instance tasks
-  const idKey = isMainTask ? 'taskId' : 'taskInstanceId';
-  const scheduleKey = isMainTask ? 'scheduleId' : 'scheduleInstanceId';
-  const nameKey = isMainTask ? 'taskName' : 'taskInstanceName';
-  const userKey = isMainTask ? 'changeInitiatedBy' : 'lastModifiedBy';
-
   // Transform formTasks into allTasks array
   const allTasks = formTasks.map((item) => {
     const actionType =
       item.taskId && updatedTaskIDs.includes(item.taskId)
         ? FORM_ENUM.update
-        : FORM_ENUM.add;
+        : FORM_ENUM.add!;
 
-    return {
-      taskTypeId: item.taskTypeId,
-      taskDescription: item.taskDescription,
-      priorityId: item.priorityId,
-      assignedTo: item.assignedTo,
-      estimatedDurationInHours: item.estimatedDurationInHours,
-      dateCompleted: null,
-      costEstimate: item.costEstimate,
-      actualCost: item.actualCost,
-      comments: item.comments,
-      actionType,
-      [idKey]: item.taskId,
-      [scheduleKey]: item.scheduleId,
-      [nameKey]: item.taskName,
-      [userKey]: username,
-      ...(isMainTask
-        ? {}
-        : { updateType: instanceUpdateType, parentTaskId: item?.parentTaskId }),
+    const BaseData = {
+      taskTypeId: item.taskTypeId!,
+      priorityId: item.priorityId!,
+      assignedTo: item.assignedTo!,
+      estimatedDurationInHours: item.estimatedDurationInHours!,
+      dateCompleted: item.dateCompleted!,
+      costEstimate: item.costEstimate!,
+      actualCost: item.actualCost!,
+      comments: item.comments!,
     };
+
+    const MainTask = {
+      ...BaseData,
+      taskId: item.taskId!,
+      taskDescription: item.taskDescription!,
+      scheduleId: item.scheduleId!,
+      taskName: item.taskName!,
+      changeInitiatedBy: username!,
+      actionType: actionType,
+    };
+
+    const TaskInstance = {
+      ...BaseData,
+      taskStatusId: item.statusId,
+      taskInstanceId: item.taskId!,
+      description: item.taskDescription!,
+      scheduleInstanceId: item.scheduleId!,
+      taskInstanceName: item.taskName!,
+      actionType: actionType,
+      lastModifiedBy: username!,
+      updateType: instanceUpdateType!,
+      parentTaskId: item?.parentTaskId!,
+    };
+
+    if (type === 'instance') {
+      return TaskInstance as TaskInstancePayload;
+    }
+    return MainTask as TaskPayload;
   });
 
   return allTasks;
@@ -68,20 +83,21 @@ const generateMaintenanceScheduleDTO = (
   }
 
   const maintenanceScheduleDto = {
-    planId: formDetail.planId,
-    scheduleName: formDetail.name,
-    description: formDetail.description,
-    comments: formDetail.comment,
-    maintenanceTypeId: formDetail.typeId,
-    frequencyId: formDetail.frequencyId,
-    scheduledDate: moment(
-      formDetail.scheduledDate,
-      'DD/MM/YYYY hh:mmA'
-    ).utcOffset(0, true),
+    planId: formDetail.planId!,
+    scheduleName: formDetail.name!,
+    description: formDetail.description!,
+    comments: formDetail.comment!,
+    maintenanceTypeId: formDetail.typeId!,
+    frequencyId: formDetail.frequencyId!,
+    scheduledDate: moment(formDetail.scheduledDate, 'DD/MM/YYYY hh:mmA')
+      .utcOffset(0, true)
+      .toISOString(),
     endDate: formDetail.endDate
-      ? moment(formDetail.scheduledDate, 'DD/MM/YYYY hh:mmA').utcOffset(0, true)
+      ? moment(formDetail.scheduledDate, 'DD/MM/YYYY hh:mmA')
+          .utcOffset(0, true)
+          .toISOString()
       : null,
-    intervalValue: formDetail.intervalValue,
+    intervalValue: formDetail.intervalValue!,
     dayOccurrences: isEmpty(formDetail.dayOccurrences)
       ? null
       : formDetail.dayOccurrences,
@@ -100,10 +116,10 @@ const generateMaintenanceScheduleDTO = (
     actionType,
     ...(type === 'edit'
       ? {
-          scheduleId: formDetail.scheduleId,
+          scheduleId: formDetail.scheduleId!,
         }
       : {}),
-    changeInitiatedBy: username,
+    changeInitiatedBy: username!,
   };
   return maintenanceScheduleDto;
 };
@@ -114,21 +130,21 @@ const generatePlanDTO = (
   username: string
 ) => {
   const maintenancePlanDto = {
-    maintenancePlanId: formDetail.planId,
-    planName: formDetail.planName,
-    ownerId: formDetail.ownerId,
+    maintenancePlanId: formDetail.planId!,
+    planName: formDetail.planName!,
+    ownerId: formDetail.ownerId!,
     ...(formDetail.assetId
       ? { assetId: formDetail.assetId }
       : {
-          assetGroupTypeID: formDetail.assetGroupTypeID,
-          assetGroupContextID: formDetail.assetGroupContextID,
+          assetGroupTypeID: formDetail.assetGroupTypeID!,
+          assetGroupContextID: formDetail.assetGroupContextID!,
         }),
-    startDate: moment(formDetail.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+    startDate: moment(formDetail.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD')!,
     endDate: formDetail.endDate
       ? moment(formDetail.endDate, 'DD/MM/YYYY').format('YYYY-MM-DD')
       : null,
-    planTypeId: formDetail.planTypeId,
-    [`${type === 'create' ? 'createdBy' : 'lastModifiedBy'}`]: username,
+    planTypeId: formDetail.planTypeId!,
+    [`${type === 'create' ? 'createdBy' : 'lastModifiedBy'}`]: username!,
   };
   return maintenancePlanDto;
 };

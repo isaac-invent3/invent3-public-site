@@ -6,6 +6,7 @@ import {
   SearchQuery,
 } from '@repo/interfaces';
 import {
+  CreateScheduleAndTasksPayload,
   MaintenanceSchedule,
   MaintenanceScheduleStat,
 } from '~/lib/interfaces/maintenance.interfaces';
@@ -25,24 +26,15 @@ export const maintenanceScheduleApi = createApi({
     'maintenanceScheduleByTicketId',
   ],
   endpoints: (builder) => ({
-    createMaintenanceScheduleAndTasks: builder.mutation({
+    createMaintenanceScheduleAndTasks: builder.mutation<
+      BaseApiResponse<MaintenanceSchedule>,
+      CreateScheduleAndTasksPayload
+    >({
       query: (body) => ({
         url: `/Invent3Pro/CreateScheduleAndTasks`,
         method: 'POST',
         headers: getHeaders(),
         body,
-      }),
-      invalidatesTags: [
-        'allMaintenanceSchedule',
-        'allMaintenanceScheduleByPlanId',
-      ],
-    }),
-    updateMaintenanceSchedule: builder.mutation({
-      query: ({ id, ...data }) => ({
-        url: `/MaintenanceSchedules/${id}`,
-        method: 'PUT',
-        headers: getHeaders(),
-        body: data,
       }),
       invalidatesTags: [
         'allMaintenanceSchedule',
@@ -212,7 +204,6 @@ export const {
   useGetAllMaintenanceScheduleByAssetIdQuery,
   useDeleteMaintenanceScheduleMutation,
   useCreateMaintenanceScheduleAndTasksMutation,
-  useUpdateMaintenanceScheduleMutation,
   useGetAllMaintenanceScheduleQuery,
   useGetMaintenanceScheduleStatsQuery,
   useSearchMaintenanceScheduleMutation,

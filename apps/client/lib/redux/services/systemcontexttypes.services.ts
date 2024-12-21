@@ -51,7 +51,7 @@ export const systemContextTypesApi = createApi({
     }),
 
     searchContextTypes: builder.mutation<
-      BaseApiResponse<ListResponse<Report>>,
+      BaseApiResponse<ListResponse<SystemContextType>>,
       SearchQuery
     >({
       query: (body: any) => ({

@@ -1,23 +1,23 @@
-import { Option } from './general.interfaces';
-
 interface Ticket {
   rowId: number;
   ticketId: number;
   ticketTitle: string;
   issueDescription: string;
   issueReportDate: string;
-  resolutionDate: string;
+  resolutionDate: string | null;
+  dateCreated: string;
+  isScheduled: boolean;
   isDeleted: boolean;
   assetId: number;
   assetCode: string;
-  serialNo: string;
+  serialNo: string | null;
   assetDescription: string;
-  reportedBy: string;
-  reportedByEmployeeId: number;
-  assignedTo: string;
-  assignedToEmployeeId: number;
-  resolvedBy: string;
-  resolvedByEmployeeId: number;
+  reportedBy: string | null;
+  reportedByEmployeeId: number | null;
+  resolvedBy: string | null;
+  resolvedByEmployeeId: number | null;
+  assignedTo: string | null;
+  assignedToEmployeeId: number | null;
   activeSchedules: number;
   openTasks: number;
   facilityName: string;
@@ -30,9 +30,6 @@ interface Ticket {
   buildingAddress: string;
   buildingLongitude: number;
   buildingLatitude: number;
-  ticketPriorityName: string;
-  priorityColorCode: string;
-  ticketTypeName: string;
   floor: string;
   floorRef: string;
   department: string;
@@ -44,14 +41,50 @@ interface Ticket {
   shelf: string;
   shelfRef: string;
   ticketPriorityId: number;
+  ticketPriorityName: string;
+  priorityColorCode: string;
   ticketStatusId: number;
-  statusColorCode: string;
   statusName: string;
-  taskStatusId: number;
+  statusColorCode: string;
   ticketTypeId: number;
-  assetLocation: string;
+  ticketTypeName: string;
+  totalTasksCount: number | null;
+  activeTasksCount: number | null;
+  completedTasksCount: number | null;
+  assetLocation: string | null; // Assuming this continues from "assetLocat" in the provided data
 }
 
+interface CreateTicketPayload {
+  ticketTitle: string;
+  issueDescription: string;
+  issueReportDate: string;
+  assetId: number | null;
+  reportedByEmployeeId: number | null;
+  ticketTypeId: number | null;
+  ticketPriorityId: number | null;
+  assignedTo: number | null;
+  createdBy?: string;
+}
+
+interface CreateTicketForm extends Omit<CreateTicketPayload, 'createdBy'> {
+  reportedByEmployeeName: string | null;
+  assignedToEmployeeName: string | null;
+}
+
+interface TicketTypeDetails {
+  createdBy: string;
+  createdDate: string;
+  deletedBy: string;
+  deletedDate: string | null;
+  description: string;
+  guid: string;
+  isDeleted: boolean;
+  isNew: boolean;
+  lastModifiedBy: string;
+  lastModifiedDate: string | null;
+  ticketTypeId: number;
+  ticketTypeName: string;
+}
 
 
 type SelectedTicketAction =
@@ -67,7 +100,13 @@ type TicketCategory =
   | 'assigned'
   | 'scheduled'
   | 'in_progress'
-  | 'completed'
+  | 'completed';
 
-
-export type { SelectedTicketAction, Ticket, TicketCategory };
+export type {
+  CreateTicketForm,
+  CreateTicketPayload,
+  SelectedTicketAction,
+  Ticket,
+  TicketCategory,
+  TicketTypeDetails,
+};

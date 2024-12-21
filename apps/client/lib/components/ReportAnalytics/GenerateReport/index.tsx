@@ -2,7 +2,6 @@
 import { Box, Flex, Grid, Icon, Text, VStack } from '@chakra-ui/react';
 import { Button, ErrorMessage } from '@repo/ui/components';
 import { FormikProvider, useFormik } from 'formik';
-import moment from 'moment';
 import { ChevronLeftIcon } from '../../CustomIcons';
 import Header from '../Header';
 import DynamicConditions from './DynamicConditions';
@@ -10,7 +9,7 @@ import SystemContextColumnsSelect from './SystemContextColumnsSelect';
 import SystemContextSelect from './SystemContextSelect';
 
 import { ListResponse } from '@repo/interfaces';
-import { DateTimeButtons, FormInputWrapper } from '@repo/ui/components';
+import { FormInputWrapper } from '@repo/ui/components';
 import { useState } from 'react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import {
@@ -66,15 +65,6 @@ const GenerateReport = () => {
   });
 
   const { values, setFieldValue } = formik;
-
-  const formatDate = (date: Date | undefined) => {
-    if (!date) return null;
-    return moment(date).format('DD/MM/YYYY');
-  };
-
-  const parseDate = (dateString: string | null) => {
-    return dateString ? moment(dateString, 'DD/MM/YYYY').toDate() : undefined;
-  };
 
   return (
     <div>

@@ -1,10 +1,11 @@
+import { Option } from '@repo/interfaces';
 import moment from 'moment';
+import { Event as EventType, View } from 'react-big-calendar';
 import { AssetFormDocument } from '~/lib/interfaces/asset/general.interface';
 import { ActualProjectedData } from '../interfaces/dashboard.interfaces';
+import { SearchCriterion } from '../interfaces/general.interfaces';
 import { FILE_ICONS, OPERATORS } from './constants';
 import nigeriaStatesByLandSize from './NigeriaCordinates/landSize';
-import { Event as EventType, View } from 'react-big-calendar';
-import { SearchCriterion } from '../interfaces/general.interfaces';
 
 interface IOption {
   [key: string]: any;
@@ -34,6 +35,14 @@ function generateOptions(
   }
 
   return selectOptions;
+}
+
+function getSelectedOption(options: Option[], value: number | string) {
+  const selectedOption = options.find((item) => item.value === value);
+
+  if (selectedOption) return selectedOption;
+
+  return { value: '', label: '' };
 }
 
 function getDocumentInfo(document: AssetFormDocument) {
@@ -252,14 +261,15 @@ const generateSearchCriterion = (
 };
 
 export {
+  formatNumberShort,
+  formattedDateTime,
+  generateLastFiveYears,
   generateOptions,
+  generateSearchCriterion,
+  getDisplayDate,
   getDocumentInfo,
   getScaleByStateSize,
-  formatNumberShort,
-  generateLastFiveYears,
+  getSelectedOption,
   transformCostsData,
   transformToCalendarEvents,
-  getDisplayDate,
-  formattedDateTime,
-  generateSearchCriterion,
 };

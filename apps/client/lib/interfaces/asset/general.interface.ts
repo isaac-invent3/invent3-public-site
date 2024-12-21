@@ -1,6 +1,7 @@
 import { BaseEntity, Option } from '@repo/interfaces';
 import { LocationFilter } from '../general.interfaces';
 import { MaintenancePlan } from '../maintenance.interfaces';
+import { FORM_ENUM } from '~/lib/utils/constants';
 
 interface AssetLocation {
   locationId: number;
@@ -250,6 +251,7 @@ interface AcquisitionInfo {
   warrantyId: number | null;
   depreciationId: number | null;
   currentDepreciationValue: number | null;
+  assetComponentId?: number | null;
 }
 
 interface ContractDocument {
@@ -325,88 +327,112 @@ interface AssetStatus {
   displayColorCode: string;
 }
 
-interface CreateAssetQuery {
-  createLocationDto: CreateLocationDto;
-  createAssetDto: CreateAssetDto;
-  createAssetImageDto: CreateAssetImageDto[];
-  createAssetWarrantyDto: CreateAssetWarrantyDto;
-  createAssetDepreciationDto: CreateAssetDepreciationDto;
-  createAssetDocumentsDto: CreateAssetDocumentsDto[] | null;
-  maintenancePlanIds?: number[];
-  assetDocumentIds?: number[];
+// Create and Update API Payload
+
+interface BaseDto {
+  createdBy?: string;
+  lastModifiedBy?: string;
+  actionType?: (typeof FORM_ENUM)[keyof typeof FORM_ENUM];
 }
 
-interface CreateAssetDepreciationDto {
-  assetId: number | undefined;
+interface AssetDepreciationDto extends BaseDto {
+  assetId?: number | null;
   depreciationDate: string;
   depreciationMethod: string | null;
   depreciationRate: number | null;
   initialValue: number | null;
   accumulatedDepreciation: number | null;
   currentValue: number | null;
-  createdBy: string | undefined;
 }
 
-interface CreateAssetDocumentsDto {
-  documentName: string | undefined;
-  base64Document: string | undefined;
-  createdBy: string | undefined;
+interface AssetDocumentsDto extends BaseDto {
+  documentId?: number;
+  documentName?: string;
+  base64Document?: string;
 }
 
-interface CreateAssetDto {
-  assetName: string | null;
-  brandName: string | null;
-  modelRef: string | null;
-  serialNo: string | null;
-  description: string | null;
-  weightKg: number | null;
-  lengthCm: number | null;
-  widthCm: number | null;
-  heightCm: number | null;
-  purchaseDate: string | null;
-  lifeExpectancy: number | null;
-  assetTypeId: number | null;
-  statusId: number | null;
-  categoryId: number | null;
-  currentOwner: number | null;
-  responsibleFor: number | null;
-  assignedTo: number | null;
-  conditionId: number | null;
-  acquisitionDate: string | null;
-  initialValue: number | null;
-  resalevalue: number | null;
-  scrapvalue: number | null;
-  parentId: number | null;
-  subCategoryId: number | null;
-  createdBy: string | undefined;
+interface AssetDto extends BaseDto {
+  assetId?: number | null;
+  assetName: string;
+  brandName: string;
+  modelRef: string;
+  serialNo: string;
+  description: string;
+  weightKg: number;
+  lengthCm: number;
+  widthCm: number;
+  heightCm: number;
+  purchaseDate: string;
+  lifeExpectancy: number;
+  assetTypeId: number;
+  statusId: number;
+  categoryId: number;
+  currentOwner: number;
+  responsibleFor: number;
+  assignedTo: number;
+  conditionId: number;
+  acquisitionDate: string;
+  initialValue: number;
+  resalevalue: number;
+  scrapvalue: number;
+  parentId: number;
+  subCategoryId: number;
 }
 
-interface CreateAssetImageDto {
-  imageName: string;
-  base64PhotoImage: string;
-  isPrimaryImage: boolean;
-  assetId: number | null;
-  createdBy: string | undefined;
+interface AssetImageDto extends BaseDto {
+  imageId?: number;
+  imageName?: string;
+  base64PhotoImage?: string;
+  isPrimaryImage?: boolean;
+  assetId?: number | null;
 }
 
-interface CreateAssetWarrantyDto {
+interface AssetWarrantyDto extends BaseDto {
   warrantyDetails: string;
-  startDate: string;
-  expiryDate: string;
-  assetId: number | undefined;
-  createdBy: string | undefined;
+  startDate: string | null;
+  expiryDate: string | null;
+  assetId?: number | null;
+  warrantyId?: number | null;
 }
 
-interface CreateLocationDto {
+interface LocationDto extends BaseDto {
   lgaId: number | null;
   facilityId: number | null;
   buildingId: number | null;
   floorId: number | null;
   departmentId: number | null;
   roomId: number | null;
+  locationId?: number | null;
   aisleId: number | null;
   shelfId: number | null;
-  createdBy: string | undefined;
+}
+
+interface CreateAssetPayload {
+  createLocationDto: LocationDto;
+  createAssetDto: AssetDto;
+  createAssetImageDto: AssetImageDto[];
+  createAssetWarrantyDto: AssetWarrantyDto;
+  createAssetDepreciationDto: AssetDepreciationDto;
+  createAssetDocumentsDto: AssetDocumentsDto[] | null;
+  maintenancePlanIds?: number[] | null;
+  assetDocumentIds?: number[] | null;
+}
+
+interface UpdateAssetPayload {
+  updateLocationDto: LocationDto;
+  updateAssetDto: AssetDto;
+  multiPurposeAssetImageDto: AssetImageDto[];
+  updateAssetWarrantyDto: AssetWarrantyDto;
+  updateAssetDepreciationDto: AssetDepreciationDto;
+  multiPurposeAssetDocumentDto: AssetDocumentsDto[] | null;
+  assetPlans?: Record<
+    number,
+    typeof FORM_ENUM.add | typeof FORM_ENUM.delete
+  > | null;
+  assetDocuments?: Record<
+    number,
+    typeof FORM_ENUM.add | typeof FORM_ENUM.delete
+  > | null;
 }
 
 export type {
@@ -424,10 +450,8 @@ export type {
   InfoProps,
   SingleMapAssetData,
   AssetStatus,
-  CreateAssetQuery,
-  CreateAssetDepreciationDto,
-  CreateAssetDocumentsDto,
-  CreateAssetImageDto,
-  CreateAssetWarrantyDto,
-  CreateLocationDto,
+  AssetImageDto,
+  AssetDocumentsDto,
+  CreateAssetPayload,
+  UpdateAssetPayload,
 };

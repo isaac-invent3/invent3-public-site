@@ -25,26 +25,23 @@ export default function Page() {
   const assetIdString = searchParams.get('assetId');
   const assetId = assetIdString ? Number(assetIdString) : undefined;
   const { data, isLoading } = useGetAssetInfoHeaderByIdQuery(
-    { id: assetId },
+    { id: assetId! },
     {
-      skip: assetId === undefined,
+      skip: !assetId,
     }
   );
   const { data: assetImagesData, isLoading: imagesLoading } =
     useGetImagesByAssetIdQuery(
       { assetId: assetId, pageSize: 25 },
-      { skip: assetId === undefined }
+      { skip: !assetId }
     );
   const { data: assetDocumentData, isLoading: documentsLoading } =
     useGetAssetDocumentsByAssetIdQuery(
       { id: assetId, pageSize: 25 },
-      { skip: assetId === undefined }
+      { skip: !assetId }
     );
   const { data: acquisitionData, isLoading: acquisitionLoading } =
-    useGetAcquisitionInfoByAssetIdQuery(
-      { id: assetId },
-      { skip: assetId === undefined }
-    );
+    useGetAcquisitionInfoByAssetIdQuery({ id: assetId! }, { skip: !assetId });
   const { data: assetCustomMaintenancePlan, isLoading: planLoading } =
     useGetAssetCustomMaintenancePlanByAssetGuidQuery(
       { assetGuid: data?.data.guid ?? undefined },

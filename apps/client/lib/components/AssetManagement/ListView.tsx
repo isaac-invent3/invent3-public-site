@@ -59,7 +59,7 @@ const ListView = (props: ListViewProps) => {
   );
 
   const { data: assetData } = useGetAssetInfoHeaderByIdQuery(
-    { id: assetId ?? undefined },
+    { id: assetId! },
     {
       skip: !assetId,
     }

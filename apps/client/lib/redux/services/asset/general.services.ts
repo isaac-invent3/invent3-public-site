@@ -11,6 +11,8 @@ import {
   AcquisitionInfo,
   Asset,
   AssetStatus,
+  CreateAssetPayload,
+  UpdateAssetPayload,
 } from '~/lib/interfaces/asset/general.interface';
 import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
 import {
@@ -52,20 +54,9 @@ export const assetApi = createApi({
         body,
       }),
     }),
-    getAssetById: builder.query<
-      BaseApiResponse<Asset>,
-      { id: number | undefined }
-    >({
-      query: (id) => ({
-        url: `/Assets/${id}`,
-        method: 'GET',
-        headers: getHeaders(),
-      }),
-      providesTags: ['singleAsset'],
-    }),
     getAssetInfoHeaderById: builder.query<
       BaseApiResponse<Asset>,
-      { id: number | undefined }
+      { id: number }
     >({
       query: ({ id }) => ({
         url: `/Assets/GetAssetInfoHeader/${id}`,
@@ -75,7 +66,7 @@ export const assetApi = createApi({
     }),
     getAcquisitionInfoByAssetId: builder.query<
       BaseApiResponse<AcquisitionInfo>,
-      { id: number | undefined }
+      { id: number }
     >({
       query: ({ id }) => ({
         url: `/Assets/GetAcquisitionInfo/${id}`,
@@ -98,7 +89,7 @@ export const assetApi = createApi({
     }),
     getPlannedMaintenanceByAssetId: builder.query<
       BaseApiResponse<ListResponse<MaintenanceSchedule>>,
-      { id: number | undefined }
+      { id: number }
     >({
       query: ({ id, ...data }) => ({
         url: generateQueryStr(
@@ -112,7 +103,7 @@ export const assetApi = createApi({
     getMaintenanceHistoryByAssetId: builder.query<
       BaseApiResponse<ListResponse<MaintenanceSchedule>>,
       {
-        id: number | undefined;
+        id: number;
         pageSize?: number;
         pageNumber?: number;
         includeDeleted?: boolean;
@@ -133,7 +124,7 @@ export const assetApi = createApi({
         asset: Asset;
         childComponents?: Asset[];
       }>,
-      { assetGuid: string | undefined }
+      { assetGuid: string }
     >({
       query: ({ assetGuid }) => ({
         url: `/GetAssetComponentInfo/${assetGuid}`,
@@ -141,7 +132,7 @@ export const assetApi = createApi({
         headers: getHeaders(),
       }),
     }),
-    createAsset: builder.mutation({
+    createAsset: builder.mutation<BaseApiResponse<Asset>, CreateAssetPayload>({
       query: (body) => ({
         url: `/Invent3Pro/Assets/Create`,
         method: 'POST',
@@ -150,7 +141,7 @@ export const assetApi = createApi({
       }),
       invalidatesTags: ['allAsset'],
     }),
-    updateAsset: builder.mutation({
+    updateAsset: builder.mutation<void, UpdateAssetPayload>({
       query: (body) => ({
         url: `/Invent3Pro/Assets/Update`,
         method: 'PUT',
@@ -185,8 +176,8 @@ export const assetApi = createApi({
       void,
       {
         assetIds: number[];
-        statusId: number | undefined;
-        lastModifiedBy: string | undefined;
+        statusId: number;
+        lastModifiedBy: string;
       }
     >({
       query: (body) => ({
@@ -214,7 +205,6 @@ export const assetApi = createApi({
 export const {
   useCreateAssetMutation,
   useUpdateAssetMutation,
-  useGetAssetByIdQuery,
   useGetAssetInfoHeaderByIdQuery,
   useGetAllAssetQuery,
   useGetAcquisitionInfoByAssetIdQuery,

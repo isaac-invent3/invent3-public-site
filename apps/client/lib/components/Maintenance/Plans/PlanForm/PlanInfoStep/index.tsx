@@ -96,7 +96,7 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
   });
 
   const { data: assetData } = useGetAssetInfoHeaderByIdQuery(
-    { id: formik.values.assetId ?? undefined },
+    { id: formik.values.assetId! },
     { skip: !formik.values.assetId }
   );
   const { data: assetTypeData } = useGetAssetTypeByIdQuery(

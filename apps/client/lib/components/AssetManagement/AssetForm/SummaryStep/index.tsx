@@ -108,41 +108,41 @@ const SummaryStep = (props: SummaryStepProps) => {
 
   const ASSET = {
     ...(type === 'edit' ? { assetId: assetFormDetails.assetId } : {}),
-    assetName: assetFormDetails.assetName,
-    brandName: assetFormDetails.brandName,
-    modelRef: assetFormDetails.modelRef,
-    serialNo: assetFormDetails.serialNo,
-    description: assetFormDetails.description,
-    weightKg: assetFormDetails.weightKg,
-    lengthCm: assetFormDetails.lengthCm,
-    widthCm: assetFormDetails.widthCm,
-    heightCm: assetFormDetails.heightCm,
-    // purchaseDate: moment(
-    //   assetFormDetails.purchaseDate,
-    //   'DD/MM/YYYY'
-    // ).toISOString(),
-    lifeExpectancy: assetFormDetails.lifeExpectancy,
-    assetTypeId: assetFormDetails.assetTypeId,
-    statusId: assetFormDetails.statusId,
-    categoryId: assetFormDetails.categoryId,
-    currentOwner: assetFormDetails.currentOwner,
-    responsibleFor: assetFormDetails.responsibleFor,
-    assignedTo: assetFormDetails.assignedTo,
-    conditionId: assetFormDetails.conditionId,
+    assetName: assetFormDetails.assetName!,
+    brandName: assetFormDetails.brandName!,
+    modelRef: assetFormDetails.modelRef!,
+    serialNo: assetFormDetails.serialNo!,
+    description: assetFormDetails.description!,
+    weightKg: assetFormDetails.weightKg!,
+    lengthCm: assetFormDetails.lengthCm!,
+    widthCm: assetFormDetails.widthCm!,
+    heightCm: assetFormDetails.heightCm!,
+    purchaseDate: moment(
+      assetFormDetails.purchaseDate,
+      'DD/MM/YYYY'
+    ).toISOString()!,
+    lifeExpectancy: assetFormDetails.lifeExpectancy!,
+    assetTypeId: assetFormDetails.assetTypeId!,
+    statusId: assetFormDetails.statusId!,
+    categoryId: assetFormDetails.categoryId!,
+    currentOwner: assetFormDetails.currentOwner!,
+    responsibleFor: assetFormDetails.responsibleFor!,
+    assignedTo: assetFormDetails.assignedTo!,
+    conditionId: assetFormDetails.conditionId!,
     acquisitionDate: moment(
       assetFormDetails.acquisitionDate,
       'DD/MM/YYYY'
-    ).toISOString(),
-    initialValue: assetFormDetails.initialValue,
-    resalevalue: assetFormDetails.resaleValue,
-    scrapvalue: assetFormDetails.scrapValue,
-    parentId: assetData?.assetId ?? assetFormDetails.parentId,
-    subCategoryId: assetFormDetails.subCategoryId,
+    ).toISOString()!,
+    initialValue: assetFormDetails.initialValue!,
+    resalevalue: assetFormDetails.resaleValue!,
+    scrapvalue: assetFormDetails.scrapValue!,
+    parentId: assetData?.assetId! ?? assetFormDetails.parentId!,
+    subCategoryId: assetFormDetails.subCategoryId!,
     [`${type === 'create' ? 'createdBy' : 'lastModifiedBy'}`]: username,
   };
 
   const WARRANTY = {
-    warrantyDetails: assetFormDetails.warrantyDetails,
+    warrantyDetails: assetFormDetails.warrantyDetails!,
     startDate: assetFormDetails.warrantyStartDate
       ? moment(assetFormDetails.warrantyStartDate, 'DD/MM/YYYY').format(
           'YYYY-MM-DD'
@@ -162,56 +162,56 @@ const SummaryStep = (props: SummaryStepProps) => {
     [`${type === 'create' ? 'createdBy' : 'lastModifiedBy'}`]: username,
   };
 
-  const getDtoKey = (base: string) =>
-    `${type === 'create' ? `create${base}Dto` : `update${base}Dto`}`;
+  const IMAGES = generateImagesArray(
+    type,
+    assetFormDetails,
+    username as string
+  );
+  const DOCUMENTS = generateDocumentArray(
+    type,
+    assetFormDetails,
+    username as string
+  );
 
-  const PAYLOAD = {
-    [getDtoKey('Location')]: LOCATION,
-    [getDtoKey('Asset')]: ASSET,
-    [type === 'create' ? 'createAssetImageDto' : 'multiPurposeAssetImageDto']: [
-      // Deleted Images
+  const createAssetPayload = {
+    createLocationDto: LOCATION,
+    createAssetDto: ASSET,
+    createAssetWarrantyDto: WARRANTY,
+    createAssetDepreciationDto: DEPRECIATION,
+    createAssetImageDto: IMAGES,
+    createAssetDocumentsDto: DOCUMENTS.length > 0 ? DOCUMENTS : null,
+    maintenancePlanIds:
+      assetFormDetails.newMaintenancePlanIds.length > 0
+        ? assetFormDetails.newMaintenancePlanIds
+        : null,
+    assetDocumentIds:
+      assetFormDetails.existingDocumentsIds.length > 0
+        ? assetFormDetails.existingDocumentsIds
+        : null,
+  };
+
+  const updateAssetPayload = {
+    updateLocationDto: LOCATION,
+    updateAssetDto: ASSET,
+    updateAssetWarrantyDto: WARRANTY,
+    updateAssetDepreciationDto: DEPRECIATION,
+    multiPurposeAssetImageDto: [
+      ...IMAGES,
       ...assetFormDetails.deletedImageIds.map((item) => ({
         imageId: item,
         actionType: FORM_ENUM.delete,
         changeInitiatedBy: username,
       })),
-      //Updated or New Images
-      ...generateImagesArray(type, assetFormDetails, username as string),
     ],
-    [type === 'create'
-      ? 'createAssetDocumentsDto'
-      : 'multiPurposeAssetDocumentDto']: [
-      // TODO
-      // Deleted Document
-      //Updated or New Documents
-      ...generateDocumentArray(type, assetFormDetails, username as string),
-    ],
-    [getDtoKey('AssetWarranty')]: WARRANTY,
-    [getDtoKey('AssetDepreciation')]: DEPRECIATION,
-    ...(type === 'create'
-      ? {
-          maintenancePlanIds:
-            assetFormDetails.newMaintenancePlanIds.length > 0
-              ? assetFormDetails.newMaintenancePlanIds
-              : null,
-          assetDocumentIds:
-            assetFormDetails.existingDocumentsIds.length > 0
-              ? assetFormDetails.existingDocumentsIds
-              : null,
-        }
-      : {}),
-    ...(type === 'edit'
-      ? {
-          assetPlans: mapIdsToObject(
-            assetFormDetails.newMaintenancePlanIds,
-            assetFormDetails.deletedMaintenancePlanIds
-          ),
-          assetDocuments: mapIdsToObject(
-            assetFormDetails.existingDocumentsIds,
-            assetFormDetails.deletedExistingDocumentIds
-          ),
-        }
-      : {}),
+    multiPurposeAssetDocumentDto: DOCUMENTS.length > 0 ? DOCUMENTS : null,
+    assetPlans: mapIdsToObject(
+      assetFormDetails.newMaintenancePlanIds,
+      assetFormDetails.deletedMaintenancePlanIds
+    )!,
+    assetDocuments: mapIdsToObject(
+      assetFormDetails.existingDocumentsIds,
+      assetFormDetails.deletedExistingDocumentIds
+    )!,
   };
 
   const handleModalAction = (type: 'childAsset' | 'parentAsset') => {
@@ -232,7 +232,7 @@ const SummaryStep = (props: SummaryStepProps) => {
 
   const handleSumbitAsset = async () => {
     if (type === 'create') {
-      const response = await handleSubmit(createAsset, PAYLOAD, '');
+      const response = await handleSubmit(createAsset, createAssetPayload, '');
       if (response?.data) {
         setAssetResponse(response?.data?.data);
         if (assetData?.assetId) {
@@ -242,7 +242,7 @@ const SummaryStep = (props: SummaryStepProps) => {
         }
       }
     } else {
-      const response = await handleSubmit(updateAsset, PAYLOAD, '');
+      const response = await handleSubmit(updateAsset, updateAssetPayload, '');
       if (response?.data) {
         onOpenEditModal();
       }

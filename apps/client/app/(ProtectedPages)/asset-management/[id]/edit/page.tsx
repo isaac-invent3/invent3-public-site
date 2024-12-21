@@ -27,17 +27,17 @@ export default function Page({ params }: { params: { id: number } }) {
   const { data: assetImagesData, isLoading: imagesLoading } =
     useGetImagesByAssetIdQuery(
       { assetId: params.id, pageSize: DEFAULT_PAGE_SIZE },
-      { skip: params.id === undefined }
+      { skip: !params.id }
     );
   const { data: assetDocumentData, isLoading: documentsLoading } =
     useGetAssetDocumentsByAssetIdQuery(
       { id: params.id, pageSize: DEFAULT_PAGE_SIZE },
-      { skip: params.id === undefined }
+      { skip: !params.id }
     );
   const { data: acquisitionData, isLoading: acquisitionLoading } =
     useGetAcquisitionInfoByAssetIdQuery(
       { id: params.id },
-      { skip: params.id === undefined }
+      { skip: !params.id }
     );
   const dispatch = useAppDispatch();
   const { data: assetCustomMaintenancePlan, isLoading: planLoading } =

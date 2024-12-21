@@ -15,7 +15,7 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { FilterDisplay } from '@repo/ui/components';
 import MaintenancePlanTable from './PlanTable';
 import { ListResponse } from '@repo/interfaces';
-import { generateSearchCriterion } from '@repo/functions';
+import { generateSearchCriterion } from '@repo/utils';
 
 export const initialFilterData = {
   planType: [],

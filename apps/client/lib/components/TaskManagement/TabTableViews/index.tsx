@@ -12,7 +12,7 @@ import Filters from './Filters';
 import TaskInstanceTable from '../Tables/TaskInstanceTable';
 import { useSearchTaskInstancesMutation } from '~/lib/redux/services/task/instance.services';
 import { FilterDisplay } from '@repo/ui/components';
-import { generateSearchCriterion } from '@repo/functions';
+import { generateSearchCriterion } from '@repo/utils';
 import { ListResponse } from '@repo/interfaces';
 
 export const initialFilterData = {

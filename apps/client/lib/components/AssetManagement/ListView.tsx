@@ -20,7 +20,7 @@ import {
 import AssetDetail from './AssetDetail';
 import { Asset } from '~/lib/interfaces/asset/general.interface';
 import { ListResponse } from '@repo/interfaces';
-import { generateSearchCriterion } from '@repo/functions';
+import { generateSearchCriterion } from '@repo/utils';
 
 interface ListViewProps {
   search: string;

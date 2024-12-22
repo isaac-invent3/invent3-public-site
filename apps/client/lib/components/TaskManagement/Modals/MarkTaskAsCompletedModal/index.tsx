@@ -53,24 +53,23 @@ const MarkTaskAsCompletedModal = (props: MarkTaskAsCompletedModalProps) => {
       const session = await getSession();
       let response;
       const info = {
-        taskInstanceId: data?.taskInstanceId,
-        taskTypeId: data?.taskTypeId,
-        taskInstanceName: data?.taskInstanceName,
-        taskDescription: data?.taskDescription ?? undefined,
-        priorityId: data?.taskPriorityId,
-        taskStatusId:
-          typeof appConfigValue?.DEFAULT_COMPLETED_TASK_STATUS_ID === 'string'
-            ? +appConfigValue?.DEFAULT_COMPLETED_TASK_STATUS_ID
-            : null,
-        assignedTo: data?.assignedTo,
-        costEstimate: data?.costEstimate,
-        actualCost: values?.actualCost,
-        scheduleId: data?.scheduleInstanceId,
-        lastModifiedBy: session?.user.username,
+        taskInstanceId: data?.taskInstanceId!,
+        taskTypeId: data?.taskTypeId!,
+        taskInstanceName: data?.taskInstanceName!,
+        description: data?.taskDescription!,
+        priorityId: data?.taskPriorityId!,
+        taskStatusId: +appConfigValue?.DEFAULT_COMPLETED_TASK_STATUS_ID!,
+        assignedTo: data?.assignedTo!,
+        costEstimate: data?.costEstimate!,
+        actualCost: values?.actualCost!,
+        scheduleInstanceId: data?.scheduleInstanceId!,
+        parentTaskId: data?.parentTaskId!,
+        estimatedDurationInHours: data?.estimatedDurationInHours!,
+        lastModifiedBy: session?.user.username!,
       };
       response = await handleSubmit(
         updateTask,
-        { id: data?.taskInstanceId, ...info },
+        info,
         'Task Marked as Completed Successfully!'
       );
       if (response?.data) {

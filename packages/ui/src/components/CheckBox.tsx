@@ -1,9 +1,9 @@
-import { Checkbox as ChakraCheckbox } from '@chakra-ui/react';
+import { Checkbox as ChakraCheckbox, CheckboxProps } from '@chakra-ui/react';
 
 interface CheckBoxProps {
   isChecked: boolean;
   handleChange: () => void;
-  customStyle?: { [key: string]: unknown };
+  customStyle?: CheckboxProps;
 }
 
 const CheckBox = (props: CheckBoxProps) => {

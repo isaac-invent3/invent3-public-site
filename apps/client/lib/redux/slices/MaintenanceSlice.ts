@@ -77,8 +77,6 @@ const initialPlanForm = {
   planName: null,
   planTypeId: null,
   planTypeName: null,
-  frequencyId: null,
-  frequencyName: null,
   assetName: null,
   assetGroupTypeID: null,
   assetGroupContextID: null,

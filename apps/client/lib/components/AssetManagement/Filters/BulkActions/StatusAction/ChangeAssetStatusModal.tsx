@@ -62,8 +62,9 @@ const ChangeAssetStatusModal = (props: ChangeAssetStatusModalProps) => {
       const session = await getSession();
       let response;
       const info = {
-        ...values,
-        lastModifiedBy: session?.user.username ?? undefined,
+        assetIds: values.assetIds,
+        statusId: values.statusId!,
+        lastModifiedBy: session?.user.username!,
       };
       response = await handleSubmit(updateAssetStatus, info, '');
       if (response?.data) {

@@ -10,13 +10,17 @@ import { setPlanForm } from '~/lib/redux/slices/MaintenanceSlice';
 
 export default function Page() {
   const searchParams = useSearchParams();
-  const template = searchParams.get('template');
-  const { data, isLoading } = useGetMaintenancePlanByIdQuery(template, {
-    skip: !template,
-  });
+  const templateString = searchParams.get('template');
+  const templateId = templateString ? Number(templateString) : undefined;
+  const { data, isLoading } = useGetMaintenancePlanByIdQuery(
+    { id: templateId! },
+    {
+      skip: !templateId,
+    }
+  );
   const dispatch = useAppDispatch();
 
-  if (template) {
+  if (templateId) {
     if (isLoading) {
       return <Skeleton width="full" rounded="8px" height="250px" mt="80px" />;
     }
@@ -30,8 +34,6 @@ export default function Page() {
           planName: null,
           planTypeId: plan?.planTypeId,
           planTypeName: plan?.planTypeName,
-          frequencyId: plan?.frequencyId,
-          frequencyName: plan?.frequencyName,
           owner: plan?.owner,
           assetGroupContextID: null,
           assetGroupTypeID: null,

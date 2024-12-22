@@ -1,4 +1,7 @@
-import { Button as ChakraButton } from '@chakra-ui/react';
+import {
+  Button as ChakraButton,
+  ButtonProps as ChakraButtonProps,
+} from '@chakra-ui/react';
 
 interface ButtonProps {
   children?: React.ReactNode;
@@ -6,7 +9,7 @@ interface ButtonProps {
   type?: 'button' | 'reset' | 'submit';
   isLoading?: boolean;
   loadingText?: string;
-  customStyles?: { [key: string]: unknown };
+  customStyles?: ChakraButtonProps;
   isDisabled?: boolean;
   href?: string;
   variant?: 'primary' | 'secondary' | 'outline';

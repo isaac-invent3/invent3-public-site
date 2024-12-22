@@ -44,21 +44,20 @@ const CustomizedPlanModal = (props: CustomizedPlanModalProps) => {
       planName: null,
       startDate: null,
       endDate: null,
-      frequencyId: null,
     },
     validationSchema: planSchema(false, false),
     enableReinitialize: true,
     onSubmit: async (values) => {
       const session = await getSession();
       const finalValue = {
-        ...values,
-        assetId,
+        planName: values.planName!,
+        assetId: assetId!,
         startDate: moment(values.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
         endDate: values.endDate
           ? moment(values.endDate, 'DD/MM/YYYY').format('YYYY-MM-DD')
           : null,
-        planTypeId: MAINTENANCE_PLAN_ENUM.custom,
-        createdBy: session?.user?.username,
+        planTypeId: MAINTENANCE_PLAN_ENUM.custom!,
+        createdBy: session?.user?.username!,
       };
       const response = await handleSubmit(createPlan, finalValue, '');
       if (response?.data) {

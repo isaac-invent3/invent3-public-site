@@ -12,7 +12,7 @@ interface DetailsProps {
 const Details = (props: DetailsProps) => {
   const { template } = props;
   const { data, isLoading } = useGetMaintenancePlanByIdQuery(
-    template.contextId,
+    { id: template.contextId },
     {
       skip: !template.contextId,
     }

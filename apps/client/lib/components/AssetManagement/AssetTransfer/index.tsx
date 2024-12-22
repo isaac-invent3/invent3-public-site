@@ -43,7 +43,7 @@ const AssetTransfer = (props: AssetTransferProps) => {
           .toISOString(),
         previousOwnerId: data?.currentOwnerId ?? undefined,
         transferredFrom: data?.locationId ?? undefined,
-        initiatedBy: session?.user.userId,
+        initiatedBy: values.newOwnerId,
         createdBy: session?.user.username,
       };
       const resp = await handleSubmit(transferAsset, formValues, '');
@@ -111,7 +111,7 @@ const AssetTransfer = (props: AssetTransferProps) => {
           isOpen={isOpen}
           onClose={onClose}
           buttonWidth="193px"
-          successText="Asset Transfer Successful"
+          successText="Asset Transfer Request Successful"
         />
       )}
     </Flex>

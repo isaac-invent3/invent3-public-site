@@ -41,14 +41,15 @@ const AssetDispose = (props: AssetDisposeProps) => {
     onSubmit: async (values) => {
       const session = await getSession();
       const createAssetDisposalRequestDto = {
-        ...values,
-        assetId: data?.assetId,
+        disposalReasonId: values.disposalReasonId!,
+        comments: values.comments!,
+        assetId: data?.assetId!,
         disposalDate: moment(values.disposalDate, 'DD/MM/YYYY')
           .utcOffset(0, true)
-          .toISOString(),
-        currentOwner: data?.currentOwnerId ?? undefined,
-        disposalRequestedBy: session?.user?.userId,
-        createdBy: session?.user?.username,
+          .toISOString()!,
+        currentOwner: data?.currentOwnerId!,
+        disposalRequestedBy: data?.currentOwnerId!,
+        createdBy: session?.user?.username!,
       };
       const uploadedDocuments: AssetFormDocument[] = values.documents.filter(
         (item: AssetFormDocument) => item.documentId === null

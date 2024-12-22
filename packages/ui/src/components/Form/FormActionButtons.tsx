@@ -38,7 +38,6 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
       <Button
         customStyles={{
           px: '16px',
-          spacing: '8px',
           bgColor: '#F6F6F666',
           visibility: activeStep === 1 ? 'hidden' : 'visible',
           width: '96px',

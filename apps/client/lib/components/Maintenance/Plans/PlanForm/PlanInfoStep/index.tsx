@@ -48,7 +48,6 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
 
   const initialValues = {
     planName: plan?.planName ?? null,
-    frequencyId: plan?.frequencyId ?? null,
     startDate: plan?.startDate ?? null,
     endDate: plan?.endDate ?? null,
     ownerId: plan?.ownerId ?? null,
@@ -97,7 +96,7 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
   });
 
   const { data: assetData } = useGetAssetInfoHeaderByIdQuery(
-    { id: formik.values.assetId ?? undefined },
+    { id: formik.values.assetId! },
     { skip: !formik.values.assetId }
   );
   const { data: assetTypeData } = useGetAssetTypeByIdQuery(

@@ -52,7 +52,7 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
   const { data, isLoading, isFetching } =
     useGetMaintenanceSchedulesByPlanIdQuery(
       {
-        id: planId,
+        id: planId!,
         pageSize,
         pageNumber: currentPage,
       },

@@ -17,7 +17,7 @@ import {
 } from '../../Common/helperFunctions';
 import { useCreateMaintenanceScheduleAndTasksMutation } from '~/lib/redux/services/maintenance/schedule.services';
 import { ScheduleFormDetails } from '~/lib/interfaces/maintenance.interfaces';
-import { taskFormDetails } from '~/lib/interfaces/task.interfaces';
+import { taskFormDetails, TaskPayload } from '~/lib/interfaces/task.interfaces';
 import ScheduleTitle from './FormSection/SectionTwo/Title';
 import Type from './FormSection/SectionTwo/Type';
 import Description from './FormSection/SectionTwo/Description';
@@ -83,7 +83,7 @@ const ScheduleModalForm = (props: ScheduleModalFormProps) => {
           values.tasks as unknown as taskFormDetails[],
           [],
           session?.user?.username as string
-        ),
+        ) as TaskPayload[],
       };
       handleSubmit(
         createScheduleAndTasks,

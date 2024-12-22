@@ -20,6 +20,7 @@ import { FORM_ENUM, SYSTEM_CONTEXT_TYPE } from '~/lib/utils/constants';
 import { Button, FormActionButtons } from '@repo/ui/components';
 import SaveAsTemplateModal from '~/lib/components/Common/Modals/SaveAsTemplateModal';
 import { useGetTemplateInfoBySystemContextTypeAndContextIdQuery } from '~/lib/redux/services/template.services';
+import { TaskPayload } from '~/lib/interfaces/task.interfaces';
 
 interface SummarySectionProps {
   activeStep: number;
@@ -58,26 +59,61 @@ const SummarySection = (props: SummarySectionProps) => {
     handleSubmitPlan(true, templateName, templateDescription);
   };
 
-  const generatePayload = async (
+  const generateCreatePayload = async (
     saveAsTemplate: boolean,
     templateName?: string,
     templateDescription?: string
   ) => {
     const session = await getSession();
     const username = session?.user?.username;
-    const getDtoKey = (base: string) =>
-      `${type === 'create' ? `create${base}Dto` : `update${base}Dto`}`;
 
     const PAYLOAD = {
-      [getDtoKey('MaintenancePlan')]: {
+      createMaintenancePlanDto: {
         ...generatePlanDTO(type, planFormDetails, username as string),
         saveAsTemplate,
         templateName,
         templateDescription,
       },
-      [type === 'create'
-        ? 'createMaintenanceScheduleDtos'
-        : 'masterUpdateMaintenanceScheduleDto']: [
+      createMaintenanceScheduleDtos: [
+        ...planFormDetails.schedules.map((schedule: ScheduleFormDetails) => ({
+          createMaintenanceScheduleDto: generateMaintenanceScheduleDTO(
+            type,
+            schedule,
+            planFormDetails.updatedScheduleIDs,
+            username as string
+          ),
+          createTaskDtos: (() => {
+            const tasksArray = [
+              ...generateTasksArray(
+                schedule.tasks,
+                schedule.updatedTaskIDs,
+                username as string
+              ),
+            ];
+
+            return tasksArray.length > 0 ? (tasksArray as TaskPayload[]) : null;
+          })(),
+        })),
+      ],
+    };
+    return PAYLOAD;
+  };
+
+  const generateUpdatePayload = async (
+    saveAsTemplate: boolean,
+    templateName?: string,
+    templateDescription?: string
+  ) => {
+    const session = await getSession();
+    const username = session?.user?.username;
+    const PAYLOAD = {
+      updateMaintenancePlanDto: {
+        ...generatePlanDTO(type, planFormDetails, username as string),
+        saveAsTemplate,
+        templateName,
+        templateDescription,
+      },
+      masterUpdateMaintenanceScheduleDto: [
         // Deleted schedules
         ...planFormDetails.deletedScheduleIDs.map((item) => ({
           updateMaintenanceScheduleDto: {
@@ -97,13 +133,13 @@ const SummarySection = (props: SummarySectionProps) => {
               schedule.scheduleId === null
           )
           .map((schedule: ScheduleFormDetails) => ({
-            [getDtoKey('MaintenanceSchedule')]: generateMaintenanceScheduleDTO(
+            updateMaintenanceScheduleDto: generateMaintenanceScheduleDTO(
               type,
               schedule,
               planFormDetails.updatedScheduleIDs,
               username as string
             ),
-            [type === 'create' ? 'createTaskDtos' : 'updateTaskDtos']: (() => {
+            updateTaskDtos: (() => {
               const tasksArray = [
                 // Deleted Task
                 ...schedule.deletedTaskIDs.map((item) => ({
@@ -124,7 +160,9 @@ const SummarySection = (props: SummarySectionProps) => {
                 ),
               ];
 
-              return tasksArray.length > 0 ? tasksArray : null;
+              return tasksArray.length > 0
+                ? (tasksArray as TaskPayload[])
+                : null;
             })(),
           })),
       ],
@@ -138,16 +176,30 @@ const SummarySection = (props: SummarySectionProps) => {
     templateDescription?: string
   ) => {
     let response;
-    const PAYLOAD = await generatePayload(
+    const createPlanPayload = await generateCreatePayload(
       saveAsTemplate,
       templateName,
       templateDescription
     );
-    response = await handleSubmit(
-      type === 'create' ? createMaintenancePlan : updateMaintenancePlan,
-      PAYLOAD,
-      ''
+    const updatePlanPayload = await generateUpdatePayload(
+      saveAsTemplate,
+      templateName,
+      templateDescription
     );
+    if (type === 'create') {
+      response = await handleSubmit(
+        createMaintenancePlan,
+        createPlanPayload,
+        ''
+      );
+    }
+    if (type === 'edit') {
+      response = await handleSubmit(
+        updateMaintenancePlan,
+        updatePlanPayload,
+        ''
+      );
+    }
 
     if (response?.data) {
       setSaveAsTemplate(false);

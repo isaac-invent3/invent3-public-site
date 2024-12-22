@@ -1,12 +1,18 @@
-import { HStack, Icon, Text as ChakraText } from '@chakra-ui/react';
+import {
+  HStack,
+  Icon,
+  Text as ChakraText,
+  StackProps,
+  TextProps,
+} from '@chakra-ui/react';
 import { AddIcon } from '../CustomIcons';
 
 interface AddButtonProps {
   children: React.ReactNode;
   handleClick: () => void;
   color?: string;
-  customStyle?: { [name: string]: unknown };
-  customTextStyle?: { [name: string]: unknown };
+  customStyle?: StackProps;
+  customTextStyle?: TextProps;
 }
 const AddButton = (props: AddButtonProps) => {
   const {

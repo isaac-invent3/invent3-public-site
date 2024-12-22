@@ -14,6 +14,10 @@ import {
   VStack,
   Icon,
   StackProps,
+  TableColumnHeaderProps,
+  TableCellProps,
+  TableRowProps,
+  TableContainerProps,
 } from '@chakra-ui/react';
 import {
   useReactTable,
@@ -47,10 +51,10 @@ export type TableProps<Data extends object> = {
   setPageSize?: React.Dispatch<React.SetStateAction<number>>;
   isSelectable?: boolean;
   maxTdWidth?: string;
-  customThStyle?: { [key: string]: unknown };
-  customTdStyle?: { [key: string]: unknown };
-  customTBodyRowStyle?: { [key: string]: unknown };
-  customTableContainerStyle?: { [key: string]: unknown };
+  customThStyle?: TableColumnHeaderProps;
+  customTdStyle?: TableCellProps;
+  customTBodyRowStyle?: TableRowProps;
+  customTableContainerStyle?: TableContainerProps;
   paginationStyle?: StackProps;
   hideSelectAllCheckBox?: boolean;
   selectMultipleRows?: boolean;

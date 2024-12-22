@@ -51,7 +51,7 @@ interface Ticket {
   totalTasksCount: number | null;
   activeTasksCount: number | null;
   completedTasksCount: number | null;
-  assetLocation: string | null; // Assuming this continues from "assetLocat" in the provided data
+  assetLocation: string | null;
 }
 
 interface CreateTicketPayload {
@@ -85,7 +85,6 @@ interface TicketTypeDetails {
   ticketTypeId: number;
   ticketTypeName: string;
 }
-
 
 type SelectedTicketAction =
   | 'schedule'

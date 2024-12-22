@@ -8,6 +8,7 @@ import {
   StackProps,
   Text as ChakraText,
   VStack,
+  ModalProps,
 } from '@chakra-ui/react';
 
 interface GenericSuccessModalProps {
@@ -18,7 +19,7 @@ interface GenericSuccessModalProps {
   headingText?: string;
   customStyle?: ModalContentProps;
   contentStyle?: StackProps;
-  mainModalStyle?: { [key: string]: unknown };
+  mainModalStyle?: Omit<ModalProps, 'isOpen' | 'onClose' | 'children'>;
 }
 const GenericSuccessModal = (props: GenericSuccessModalProps) => {
   const {

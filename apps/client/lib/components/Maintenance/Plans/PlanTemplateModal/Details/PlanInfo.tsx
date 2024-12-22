@@ -1,11 +1,11 @@
 import { HStack, Text, VStack } from '@chakra-ui/react';
 
-import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
+import { SingleMaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 import { MAINTENANCE_PLAN_ENUM } from '~/lib/utils/constants';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
 interface PlanInfoProps {
-  data: MaintenancePlan;
+  data: SingleMaintenancePlan;
 }
 
 const PlanInfo = (props: PlanInfoProps) => {
@@ -13,8 +13,12 @@ const PlanInfo = (props: PlanInfoProps) => {
   const isCustomPlan = data?.planTypeId === MAINTENANCE_PLAN_ENUM.custom;
   const info = [
     {
-      label: isCustomPlan ? 'Asset' : data?.groupTypeName,
-      value: isCustomPlan ? 'N/A' : data?.assetGroupContextName,
+      label: isCustomPlan
+        ? 'Asset'
+        : data?.maintenancePlanInfoHeader?.groupTypeName,
+      value: isCustomPlan
+        ? 'N/A'
+        : data?.maintenancePlanInfoHeader?.assetGroupContextName,
     },
     {
       label: 'Start Date',

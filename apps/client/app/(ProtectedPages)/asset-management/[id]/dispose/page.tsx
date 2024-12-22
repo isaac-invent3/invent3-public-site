@@ -8,7 +8,7 @@ import { useGetAssetInfoHeaderByIdQuery } from '~/lib/redux/services/asset/gener
 
 export default function Page({ params }: { params: { id: number } }) {
   const { data, isLoading } = useGetAssetInfoHeaderByIdQuery(
-    { id: params.id },
+    { id: params.id! },
     { skip: params.id === undefined }
   );
 

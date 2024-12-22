@@ -1,9 +1,15 @@
+import { BaseEntity } from '@repo/interfaces';
 import { LocationFilter, Option } from './general.interfaces';
-import { taskFormDetails } from './task.interfaces';
+import {
+  taskFormDetails,
+  TaskInstancePayload,
+  TaskPayload,
+} from './task.interfaces';
 
 interface MaintenancePlan {
   rowId: number;
   maintenancePlanId: number;
+  planGuid: string;
   planName: string;
   startDate: string;
   endDate: string;
@@ -13,22 +19,39 @@ interface MaintenancePlan {
   owner: string;
   assetId: number;
   assetName: string;
+  assetGuid: string;
   assetCode: string;
   assetTypeId: number;
   serialNo: string;
   assetDescription: string;
   planTypeId: number;
+  planStatusId: number;
   planTypeName: string;
   planStatusName: string;
-  frequencyName: string;
-  frequencyId: number;
-  assetTypeName: string;
+  groupTypeName: string;
   ownedByAssetType: number;
+  assetGroupContextName: string;
   activeSchedules: number;
   openTasks: number;
+  totalMemberAssetsCount: number;
   assetLocation: string;
-  groupTypeName: 'string' | null;
-  assetGroupContextName: 'string' | null;
+}
+
+interface SingleMaintenancePlan extends BaseEntity {
+  guid: string;
+  maintenancePlanId: number;
+  planName: string;
+  planTypeId: number;
+  planStatusId: number;
+  startDate: string;
+  endDate: string;
+  sla: number;
+  dateCreated: string;
+  cost: number;
+  ownerId: number;
+  assetGroupTypeID: number;
+  assetGroupContextID: number;
+  maintenancePlanInfoHeader: MaintenancePlan;
 }
 
 interface BaseMaintenanceSchedule {
@@ -42,8 +65,8 @@ interface BaseMaintenanceSchedule {
   maintenancePlanId: number;
   planName: string;
   frequencyName: string;
-  scheduledDate: string; // ISO 8601 format
-  completionDate: string; // ISO 8601 format
+  scheduledDate: string;
+  completionDate: string;
   durationInHours: number;
   description: string;
   maintenanceTypeId: number;
@@ -74,7 +97,7 @@ interface BaseMaintenanceSchedule {
 interface MaintenanceSchedule extends BaseMaintenanceSchedule {
   scheduleId: number;
   scheduleGuid: string;
-  endDate: string; // ISO 8601 format
+  endDate: string;
   scheduleName: string;
   ticketId: number;
   statusId: number;
@@ -108,9 +131,9 @@ interface MaintenanceScheduleStat {
   totalSchedules: number;
   totalHours: number;
   totalCost: number;
-  completed: number;
-  pending: number;
-  missed: number;
+  completedSchedules: number;
+  pendingSchedules: number;
+  missedSchedules: number;
 }
 
 interface ScheduleFormDetails {
@@ -139,9 +162,7 @@ interface ScheduleFormDetails {
   dayOccurrences: string[] | null;
   weekOccurrences: number[] | null;
   monthOccurrences: number[] | null;
-  yearOccurrences: {
-    [name: number]: number[];
-  } | null;
+  yearOccurrences: Record<number, number[]> | null;
   maintenancePlanInfo: {
     planName: string | null;
     planType: string | null;
@@ -162,8 +183,6 @@ interface ScheduleFormDetails {
 interface PlanFormDetails {
   planId: number | null;
   planName: string | null;
-  frequencyId: number | null;
-  frequencyName: string | null;
   assetName: string | null;
   assetId: number | null;
   planTypeId: number | null;
@@ -182,18 +201,15 @@ interface PlanFormDetails {
   schedules: ScheduleFormDetails[];
 }
 
-interface MaintenanceFrequency {
+interface MaintenanceFrequency extends BaseEntity {
   frequencyId: number;
   frequencyName: string;
   intervalValues: number[];
-  createdDate: string;
-  createdBy: string;
-  lastModifiedDate: string | null;
-  lastModifiedBy: string;
-  isDeleted: boolean;
-  deletedDate: string | null;
-  deletedBy: string;
-  guid: string;
+}
+
+interface MaintenanceType extends BaseEntity {
+  maintenanceTypeId: number;
+  typeName: string;
 }
 
 interface TemplateFilter {
@@ -210,6 +226,89 @@ interface ScheduleFilter extends LocationFilter {
   maintenanceType: Option[];
 }
 
+interface PlanPayload {
+  maintenancePlanId?: number;
+  planName?: string;
+  planTypeId?: number;
+  startDate?: string;
+  endDate?: string | null;
+  cost?: number;
+  assetId?: number;
+  ownerId?: number;
+  assetGroupTypeID?: number;
+  assetGroupContextID?: number;
+  saveAsTemplate?: boolean;
+  templateName?: string;
+  templateDescription?: string;
+  createdBy?: string;
+  lastModifiedBy?: string;
+}
+
+interface SchedulePayload {
+  scheduleId?: number;
+  planId?: number;
+  scheduleName?: string;
+  description?: string;
+  maintenanceTypeId?: number;
+  frequencyId?: number;
+  sla?: number;
+  comments?: string;
+  scheduledDate?: string;
+  completionDate?: string | null;
+  endDate?: string | null;
+  intervalValue?: number;
+  dayOccurrences?: string[] | null;
+  weekOccurrences?: number[] | null;
+  monthOccurrences?: number[] | null;
+  yearOccurrences?: Record<number, number[]> | null;
+  statusId?: number;
+  ticketId?: number;
+  assignedTo?: number;
+  saveAsTemplate?: boolean;
+  templateName?: string;
+  templateDescription?: string;
+  actionType?: number;
+  changeInitiatedBy?: string;
+}
+
+interface ScheduleInstancePayload {
+  scheduleInstanceId: number;
+  scheduledDate?: string;
+  scheduleInstanceName: string;
+  sla?: number;
+  completionDate?: string;
+  statusId?: number;
+  assignedTo?: number;
+  comments?: string;
+  updateType: number;
+  lastModifiedBy?: string;
+}
+
+interface UpdateScheduleInstanceAndTasksPayload {
+  updateMaintenanceScheduleInstanceDto: ScheduleInstancePayload;
+  updateTaskInstanceDtos: TaskInstancePayload[] | null;
+}
+
+interface CreateScheduleAndTasksPayload {
+  createMaintenanceScheduleDto: SchedulePayload;
+  createTaskDtos: TaskPayload[] | null;
+}
+
+interface UpdateScheduleAndTasksPayload {
+  updateMaintenanceScheduleDto: SchedulePayload;
+  updateTaskDtos?: TaskPayload[] | null;
+}
+
+interface CreateMaintenancePlanWithSchedulesPayload {
+  createMaintenancePlanDto: PlanPayload;
+  createMaintenanceScheduleDtos: CreateScheduleAndTasksPayload[] | null;
+}
+
+interface UpdateMaintenancePlanWithSchedulesPayload {
+  updateMaintenancePlanDto: PlanPayload;
+  masterUpdateMaintenanceScheduleDto: UpdateScheduleAndTasksPayload[] | null;
+}
+
 export type {
   MaintenancePlan,
   MaintenanceScheduleStat,
@@ -222,4 +321,11 @@ export type {
   TemplateFilter,
   PlanFilter,
   ScheduleFilter,
+  MaintenanceType,
+  SingleMaintenancePlan,
+  PlanPayload,
+  UpdateScheduleInstanceAndTasksPayload,
+  CreateScheduleAndTasksPayload,
+  CreateMaintenancePlanWithSchedulesPayload,
+  UpdateMaintenancePlanWithSchedulesPayload,
 };

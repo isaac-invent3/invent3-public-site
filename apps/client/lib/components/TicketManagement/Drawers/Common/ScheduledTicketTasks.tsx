@@ -38,7 +38,7 @@ const ScheduledTicketTasks = (props: ScheduledTicketTasksProps) => {
 
   const { data: tasks, isLoading: isFetchingTasks } =
     useGetAllTasksByScheduleIdQuery({
-      id: maintenanceSchedule?.data.scheduleId,
+      id: maintenanceSchedule?.data.scheduleId!,
     });
 
   const handleAddTask = (task: taskFormDetails) => {

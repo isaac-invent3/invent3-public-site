@@ -14,7 +14,7 @@ const AssetField = () => {
     ? Number(selectedAsset?.value)
     : undefined;
   const { data } = useGetAssetInfoHeaderByIdQuery(
-    { id: assetId },
+    { id: assetId! },
     {
       skip: assetId === undefined,
     }

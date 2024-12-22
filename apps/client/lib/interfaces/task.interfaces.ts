@@ -1,4 +1,25 @@
+import { BaseEntity } from '@repo/interfaces';
+import { FORM_ENUM } from '../utils/constants';
+
+export interface BaseMainTask extends BaseEntity {
+  taskId: number;
+  taskTypeId: number;
+  taskName: string;
+  taskDescription: string;
+  priorityId: number;
+  taskStatusId: number;
+  assignedTo: number;
+  dateCreated: string;
+  dateCompleted: string;
+  costEstimate: number;
+  actualCost: number;
+  estimatedDurationInHours: number;
+  comments: string;
+  scheduleId: number;
+}
+
 interface BaseTask {
+  rowId: number;
   dateCreated: string;
   dateCompleted: string | null;
   actualCost: number | null;
@@ -48,6 +69,25 @@ interface BaseTask {
   statusCategoryId: number;
 }
 
+interface TaskInstanceModel extends BaseEntity {
+  taskInstanceId: number;
+  taskInstanceName: string;
+  parentTaskId: number;
+  scheduleInstanceId: number;
+  taskTypeId: number;
+  description: string;
+  priorityId: number;
+  costEstimate: number;
+  dateCreated: string;
+  dueDate: string;
+  dateCompleted: string;
+  actualCost: number;
+  estimatedDurationInHours: number;
+  assignedTo: number;
+  comments: string;
+  taskStatusId: number;
+}
+
 interface Task extends BaseTask {
   taskId: number;
   taskName: string;
@@ -68,6 +108,10 @@ interface TaskInstance extends BaseTask {
   assignedToEmployeeId: number;
   statusAlias: string;
   categoryName: string;
+}
+
+interface SingleTask extends BaseMainTask {
+  taskInfoHeader: Task;
 }
 
 interface baseTaskFormDetail {
@@ -100,45 +144,70 @@ interface FormDetails {
   parentTaskId?: number | null;
 }
 
-interface TaskStatus {
+interface TaskStatus extends BaseEntity {
   taskStatusId: number;
   statusName: string;
   statusCategoryId: number | null;
   alias: string | null;
   displayColorCode: string;
-  isNew: boolean;
-  createdDate: string;
-  createdBy: string | null;
-  lastModifiedDate: string | null;
-  lastModifiedBy: string;
-  isDeleted: boolean;
-  deletedDate: string | null;
-  deletedBy: string;
-  guid: string;
 }
 
-interface TaskPriority {
+interface TaskPriority extends BaseEntity {
   taskPriorityId: number;
   priority: string;
-  lastModifiedBy: string;
-  lastModifiedDate: string | null;
-  isNew: boolean;
-  isDeleted: boolean;
-  guid: string;
   displayColorCode: string;
-  deletedDate: string | null;
-  deletedBy: string;
-  createdDate: string;
-  createdBy: string;
+}
+
+interface TaskType extends BaseEntity {
+  taskTypeId: number;
+  typeName: string;
 }
 
 interface taskFormDetails extends baseTaskFormDetail, FormDetails {}
 
+// Common Payload for Task Metadata
+interface TaskMetadata {
+  taskTypeId: number;
+  priorityId: number;
+  assignedTo: number;
+  costEstimate: number;
+  estimatedDurationInHours: number;
+  comments?: string | null;
+  createdBy?: string;
+  lastModifiedBy?: string;
+  changeInitiatedBy?: string;
+  actionType?: (typeof FORM_ENUM)[keyof typeof FORM_ENUM];
+  actualCost?: number | null;
+  dateCompleted?: string;
+}
+
+interface TaskPayload extends TaskMetadata {
+  taskId?: number;
+  taskName: string;
+  taskDescription: string;
+  scheduleId: number;
+}
+
+interface TaskInstancePayload extends TaskMetadata {
+  taskInstanceId?: number;
+  taskStatusId?: number;
+  taskInstanceName: string;
+  description: string;
+  scheduleInstanceId: number;
+  parentTaskId: number;
+  dueDate?: string;
+}
+
 export type {
   Task,
+  TaskInstanceModel,
   TaskInstance,
   baseTaskFormDetail,
   taskFormDetails,
   TaskStatus,
   TaskPriority,
+  TaskType,
+  SingleTask,
+  TaskPayload,
+  TaskInstancePayload,
 };

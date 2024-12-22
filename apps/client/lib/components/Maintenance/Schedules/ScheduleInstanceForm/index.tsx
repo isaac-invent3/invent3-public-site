@@ -19,6 +19,7 @@ import { INSTANCE_UPDATE_ENUM } from '~/lib/utils/constants';
 import { generateTasksArray } from '../../Common/helperFunctions';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import ScheduleInstanceSuccessModal from './SuccessModal';
+import { TaskInstancePayload } from '~/lib/interfaces/task.interfaces';
 
 const ScheduleInstanceForm = () => {
   const formDetails = useAppSelector((state) => state.maintenance.scheduleForm);
@@ -55,14 +56,13 @@ const ScheduleInstanceForm = () => {
         : INSTANCE_UPDATE_ENUM.CURRENT_AND_FUTURE_INSTANCES;
       const finalData = {
         updateMaintenanceScheduleInstanceDto: {
-          scheduleInstanceId: values.scheduleId,
-          scheduledDate: moment(
-            values.scheduledDate,
-            'DD/MM/YYYY hh:mmA'
-          ).utcOffset(0, true),
-          scheduleInstanceName: values.name,
-          updateType: instanceUpdateType,
-          lastModifiedBy: session?.user?.username,
+          scheduleInstanceId: values.scheduleId!,
+          scheduledDate: moment(values.scheduledDate, 'DD/MM/YYYY hh:mmA')
+            .utcOffset(0, true)
+            .toISOString()!,
+          scheduleInstanceName: values.name!,
+          updateType: instanceUpdateType!,
+          lastModifiedBy: session?.user?.username!,
         },
         updateTaskInstanceDtos: (() => {
           const tasksArray = [
@@ -80,7 +80,9 @@ const ScheduleInstanceForm = () => {
               'instance'
             ),
           ];
-          return tasksArray.length > 0 ? tasksArray : null;
+          return tasksArray.length > 0
+            ? (tasksArray as TaskInstancePayload[])
+            : null;
         })(),
       };
       const response = await handleSubmit(

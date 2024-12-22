@@ -1,6 +1,15 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { BaseApiResponse } from '@repo/interfaces';
-import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
+import {
+  BaseApiResponse,
+  ListResponse,
+  QueryParams,
+  SearchQuery,
+} from '@repo/interfaces';
+import {
+  CreateScheduleAndTasksPayload,
+  MaintenanceSchedule,
+  MaintenanceScheduleStat,
+} from '~/lib/interfaces/maintenance.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
 const getHeaders = () => ({
@@ -17,8 +26,11 @@ export const maintenanceScheduleApi = createApi({
     'maintenanceScheduleByTicketId',
   ],
   endpoints: (builder) => ({
-    createMaintenanceScheduleAndTasks: builder.mutation({
-      query: (body: any) => ({
+    createMaintenanceScheduleAndTasks: builder.mutation<
+      BaseApiResponse<MaintenanceSchedule>,
+      CreateScheduleAndTasksPayload
+    >({
+      query: (body) => ({
         url: `/Invent3Pro/CreateScheduleAndTasks`,
         method: 'POST',
         headers: getHeaders(),
@@ -29,19 +41,10 @@ export const maintenanceScheduleApi = createApi({
         'allMaintenanceScheduleByPlanId',
       ],
     }),
-    updateMaintenanceSchedule: builder.mutation({
-      query: ({ id, ...data }) => ({
-        url: `/MaintenanceSchedules/${id}`,
-        method: 'PUT',
-        headers: getHeaders(),
-        body: data,
-      }),
-      invalidatesTags: [
-        'allMaintenanceSchedule',
-        'allMaintenanceScheduleByPlanId',
-      ],
-    }),
-    deleteMaintenanceSchedule: builder.mutation({
+    deleteMaintenanceSchedule: builder.mutation<
+      void,
+      { id: number; deletedBy: string }
+    >({
       query: ({ id, ...data }) => ({
         url: `/MaintenanceSchedules/${id}`,
         method: 'DELETE',
@@ -53,16 +56,22 @@ export const maintenanceScheduleApi = createApi({
         'allMaintenanceScheduleByPlanId',
       ],
     }),
-    getAllMaintenanceSchedule: builder.query({
+    getAllMaintenanceSchedule: builder.query<
+      BaseApiResponse<ListResponse<MaintenanceSchedule>>,
+      QueryParams
+    >({
       // eslint-disable-next-line no-unused-vars
-      query: ({ id, ...data }) => ({
+      query: (data) => ({
         url: generateQueryStr(`/MaintenanceSchedules?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
       providesTags: ['allMaintenanceSchedule'],
     }),
-    getAllMaintenanceScheduleByAssetId: builder.query({
+    getAllMaintenanceScheduleByAssetId: builder.query<
+      BaseApiResponse<ListResponse<MaintenanceSchedule>>,
+      { id: number; pageSize?: number; pageNumber?: number }
+    >({
       query: ({ id, ...data }) => ({
         url: generateQueryStr(
           `/MaintenanceSchedules/GetMaintenanceSchedulesByAssetId/${id}?`,
@@ -73,17 +82,28 @@ export const maintenanceScheduleApi = createApi({
       }),
       providesTags: ['allMaintenanceSchedule'],
     }),
-    getMaintenanceScheduleByGuid: builder.query({
+    getMaintenanceScheduleByGuid: builder.query<
+      BaseApiResponse<MaintenanceSchedule>,
+      string
+    >({
       query: (guid) => ({
         url: `/MaintenanceSchedules/${guid}`,
         method: 'GET',
         headers: getHeaders(),
       }),
     }),
-    getMaintenanceScheduleStats: builder.query({
-      query: ({ id, ...data }) => ({
+    getMaintenanceScheduleStats: builder.query<
+      BaseApiResponse<MaintenanceScheduleStat>,
+      {
+        areaId: number;
+        areaType: number;
+        startDate: string;
+        endDate: string;
+      }
+    >({
+      query: ({ areaId, ...data }) => ({
         url: generateQueryStr(
-          `/MaintenanceSchedules/GetAssetMaintenanceSchedulesStats/${id}?`,
+          `/MaintenanceSchedules/GetAssetMaintenanceSchedulesStats/${areaId}?`,
           data
         ),
         method: 'GET',
@@ -91,27 +111,10 @@ export const maintenanceScheduleApi = createApi({
       }),
       providesTags: ['maintenanceScheduleStats'],
     }),
-    getMaintenanceScheduleAggregate: builder.query({
-      query: ({ id, ...data }) => ({
-        url: generateQueryStr(
-          `/MaintenanceSchedules/GetMaintenanceScheduleAggregatesByArea/${id}?`,
-          data
-        ),
-        method: 'GET',
-        headers: getHeaders(),
-      }),
-    }),
-    getMaintenanceSchedulesWithSingleAggregateCountsByArea: builder.query({
-      query: ({ id, ...data }) => ({
-        url: generateQueryStr(
-          `/MaintenanceSchedules/GetMaintenanceSchedulesWithSingleAggregateCountsByArea/${id}?`,
-          data
-        ),
-        method: 'GET',
-        headers: getHeaders(),
-      }),
-    }),
-    getMaintenanceSchedulesByPlanId: builder.query({
+    getMaintenanceSchedulesByPlanId: builder.query<
+      BaseApiResponse<ListResponse<MaintenanceSchedule>>,
+      { id: number; pageSize?: number; pageNumber: number }
+    >({
       query: ({ id, ...data }) => ({
         url: generateQueryStr(
           `/MaintenanceSchedules/GetMaintenanceSchedulesByPlanId/${id}?`,
@@ -122,7 +125,15 @@ export const maintenanceScheduleApi = createApi({
       }),
       providesTags: ['allMaintenanceScheduleByPlanId'],
     }),
-    getMaintenanceSchedulesByArea: builder.query({
+    getMaintenanceSchedulesByArea: builder.query<
+      BaseApiResponse<ListResponse<MaintenanceSchedule>>,
+      {
+        areaId: number;
+        areaType: number;
+        startDate: string;
+        endDate: string;
+      } & QueryParams
+    >({
       query: (data) => ({
         url: generateQueryStr(
           '/MaintenanceSchedules/GetSchedulesByArea?',
@@ -135,7 +146,7 @@ export const maintenanceScheduleApi = createApi({
     }),
     getMaintenenanceScheduleInfoHeaderByScheduleID: builder.query<
       BaseApiResponse<MaintenanceSchedule>,
-      { id: string | number | null }
+      { id: number }
     >({
       query: ({ id }) => ({
         url: `/MaintenanceSchedules/GetMaintenanceScheduleInfoHeaderRecordByScheduleId/${id}?`,
@@ -145,29 +156,41 @@ export const maintenanceScheduleApi = createApi({
     }),
     getMaintenanceSchedulesByTicketId: builder.query<
       BaseApiResponse<MaintenanceSchedule>,
-      { ticketId: number } & Record<string, any>
+      { ticketId: number }
     >({
-      query: ({ ticketId, ...data }) => ({
-        // url: `/MaintenanceSchedules/GetMaintenanceSchedulesByTicketId/${ticketId}`,
-        url: generateQueryStr(
-          `/MaintenanceSchedules/GetMaintenanceSchedulesByTicketId/${ticketId}?`,
-          data
-        ),
+      query: ({ ticketId }) => ({
+        url: `/MaintenanceSchedules/GetMaintenanceSchedulesByTicketId/${ticketId}`,
+
         method: 'GET',
         headers: getHeaders(),
       }),
       providesTags: ['maintenanceScheduleByTicketId'],
     }),
-    searchMaintenanceSchedule: builder.mutation({
-      query: (body: any) => ({
+    searchMaintenanceSchedule: builder.mutation<
+      BaseApiResponse<ListResponse<MaintenanceSchedule>>,
+      SearchQuery
+    >({
+      query: (body) => ({
         url: `/MaintenanceSchedules/Search`,
         method: 'POST',
         headers: getHeaders(),
         body,
       }),
     }),
-    validateFirstInstanceScheduledDate: builder.mutation({
-      query: (body: any) => ({
+    validateFirstInstanceScheduledDate: builder.mutation<
+      void,
+      {
+        frequencyId: number;
+        intervalValue: number;
+        startDate: string;
+        dayOccurrences?: string[];
+        weekOccurrences?: number[];
+        monthOccurences?: number[];
+        yearOccurences?: { [name: string]: number[] };
+        endDate: string | null;
+      }
+    >({
+      query: (body) => ({
         url: `/Invent3Pro/ValidateFirstInstanceScheduledDate`,
         method: 'POST',
         headers: getHeaders(),
@@ -181,15 +204,12 @@ export const {
   useGetAllMaintenanceScheduleByAssetIdQuery,
   useDeleteMaintenanceScheduleMutation,
   useCreateMaintenanceScheduleAndTasksMutation,
-  useUpdateMaintenanceScheduleMutation,
   useGetAllMaintenanceScheduleQuery,
   useGetMaintenanceScheduleStatsQuery,
-  useGetMaintenanceScheduleAggregateQuery,
   useSearchMaintenanceScheduleMutation,
   useGetMaintenanceSchedulesByAreaQuery,
   useGetMaintenanceScheduleByGuidQuery,
   useGetMaintenanceSchedulesByPlanIdQuery,
-  useGetMaintenanceSchedulesWithSingleAggregateCountsByAreaQuery,
   useGetMaintenenanceScheduleInfoHeaderByScheduleIDQuery,
   useValidateFirstInstanceScheduledDateMutation,
   useGetMaintenanceSchedulesByTicketIdQuery,

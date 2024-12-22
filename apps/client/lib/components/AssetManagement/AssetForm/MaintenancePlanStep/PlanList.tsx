@@ -98,7 +98,7 @@ const PlanList = (props: PlanListProps) => {
     isSuccess,
   } = useGetAllMaintenancePlansByGroupContextIdAndGroupTypeIdQuery(
     {
-      groupContextId: assetForm.assetTypeId ?? undefined,
+      groupContextId: assetForm.assetTypeId!,
       groupTypeId: ASSET_GROUP_TYPE.ASSET_TYPE,
     },
     { skip: !assetForm.assetTypeId }

@@ -1,5 +1,10 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { BaseApiResponse, QueryParams } from '@repo/interfaces';
+import {
+  BaseApiResponse,
+  ListResponse,
+  QueryParams,
+  SearchQuery,
+} from '@repo/interfaces';
 import { TaskStatus } from '~/lib/interfaces/task.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
@@ -12,53 +17,22 @@ export const taskStatusApi = createApi({
   baseQuery: baseQueryWithReauth,
   tagTypes: ['allTaskStatuses'],
   endpoints: (builder) => ({
-    createTaskStatus: builder.mutation({
-      query: (body: any) => ({
-        url: `/TaskStatus`,
-        method: 'POST',
-        headers: getHeaders(),
-        body,
-      }),
-      invalidatesTags: ['allTaskStatuses'],
-    }),
     getAllTaskStatuses: builder.query<
-      BaseApiResponse<{ items: TaskStatus[] }>,
+      BaseApiResponse<ListResponse<TaskStatus>>,
       QueryParams
     >({
-      query: (data: any) => ({
+      query: (data) => ({
         url: generateQueryStr(`/TaskStatus?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
       providesTags: ['allTaskStatuses'],
     }),
-    getTaskStatusById: builder.query({
-      query: (id: any) => ({
-        url: `/TaskStatus/${id}`,
-        method: 'GET',
-        headers: getHeaders(),
-      }),
-    }),
-    updateTaskStatus: builder.mutation({
-      query: ({ id, ...body }) => ({
-        url: `/TaskStatus/${id}`,
-        method: 'PUT',
-        headers: getHeaders(),
-        body,
-      }),
-      invalidatesTags: ['allTaskStatuses'],
-    }),
-    deleteTaskStatus: builder.mutation({
-      query: ({ id, ...body }) => ({
-        url: `/TaskStatus/${id}`,
-        method: 'DELETE',
-        headers: getHeaders(),
-        body,
-      }),
-      invalidatesTags: ['allTaskStatuses'],
-    }),
-    searchTaskStatuses: builder.mutation({
-      query: (body: any) => ({
+    searchTaskStatuses: builder.mutation<
+      BaseApiResponse<ListResponse<TaskStatus>>,
+      SearchQuery
+    >({
+      query: (body) => ({
         url: `/TaskStatus/Search`,
         method: 'POST',
         headers: getHeaders(),
@@ -68,11 +42,5 @@ export const taskStatusApi = createApi({
   }),
 });
 
-export const {
-  useCreateTaskStatusMutation,
-  useGetAllTaskStatusesQuery,
-  useGetTaskStatusByIdQuery,
-  useUpdateTaskStatusMutation,
-  useDeleteTaskStatusMutation,
-  useSearchTaskStatusesMutation,
-} = taskStatusApi;
+export const { useGetAllTaskStatusesQuery, useSearchTaskStatusesMutation } =
+  taskStatusApi;

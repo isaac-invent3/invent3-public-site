@@ -49,6 +49,7 @@ const TaskForm = (props: TaskFormProps) => {
       assignedTo: formDetails?.assignedTo ?? null,
       assignedToEmployeeName: formDetails?.assignedToEmployeeName ?? null,
       costEstimate: formDetails?.costEstimate ?? null,
+      estimatedDurationInHours: formDetails?.estimatedDurationInHours ?? null,
       actualCost: formDetails?.actualCost ?? null,
       comments: formDetails?.comments ?? null,
     },
@@ -59,31 +60,31 @@ const TaskForm = (props: TaskFormProps) => {
       const session = await getSession();
       let response;
       const info = {
-        taskTypeId: values.taskTypeId,
-        taskName: values.taskName,
-        taskDescription: values.taskDescription,
-        priorityId: values.priorityId,
-        assignedTo: values.assignedTo,
-        costEstimate: values.costEstimate,
-        actualCost: values.actualCost,
+        taskTypeId: values.taskTypeId!,
+        taskName: values.taskName!,
+        taskDescription: values.taskDescription!,
+        priorityId: values.priorityId!,
+        assignedTo: values.assignedTo!,
+        costEstimate: values.costEstimate!,
         comments: values.comments,
-        scheduleId: values.scheduleId,
+        scheduleId: values.scheduleId!,
+        estimatedDurationInHours: values.estimatedDurationInHours!,
       };
       if (type === 'edit') {
         response = await handleSubmit(
           updateTask,
           {
             ...info,
-            id: values.taskId,
-            taskId: values.taskId,
-            lastModifiedBy: session?.user?.username,
+            taskId: values.taskId!,
+            actualCost: values.actualCost!,
+            lastModifiedBy: session?.user?.username!,
           },
           ''
         );
       } else {
         response = await handleSubmit(
           createTask,
-          { ...info, createdBy: session?.user.id },
+          { ...info, createdBy: session?.user?.username! },
           ''
         );
       }

@@ -1,20 +1,21 @@
 import { OPERATORS } from '@repo/constants';
 import { SearchCriterion, SearchQuery } from '@repo/interfaces';
 
-const generateSearchCriterion = (
+export const generateSearchCriterion = (
   columnName: string,
   columnValues: (string | number)[],
   operator: (typeof OPERATORS)[keyof typeof OPERATORS]
 ) => {
   const finalSearchCriterion: SearchCriterion[] = [];
-
-  columnValues.forEach((item) =>
-    finalSearchCriterion.push({
-      columnName,
-      columnValue: item,
-      operation: operator,
-    })
-  );
+  if (columnValues.length > 0) {
+    columnValues.forEach((item) =>
+      finalSearchCriterion.push({
+        columnName,
+        columnValue: item,
+        operation: operator,
+      })
+    );
+  }
   return finalSearchCriterion;
 };
 

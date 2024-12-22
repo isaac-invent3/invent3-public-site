@@ -10,8 +10,8 @@ import { useGetMaintenancePlanByIdQuery } from '~/lib/redux/services/maintenance
 import { setPlanForm } from '~/lib/redux/slices/MaintenanceSlice';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
-export default function Page({ params }: { params: { id: string } }) {
-  const { data, isLoading } = useGetMaintenancePlanByIdQuery(params.id);
+export default function Page({ params }: { params: { id: number } }) {
+  const { data, isLoading } = useGetMaintenancePlanByIdQuery({ id: params.id });
   const dispatch = useAppDispatch();
 
   if (isLoading) {
@@ -28,8 +28,6 @@ export default function Page({ params }: { params: { id: string } }) {
         planName: plan?.planName,
         planTypeId: plan?.planTypeId,
         planTypeName: plan?.planTypeName,
-        frequencyId: plan?.frequencyId,
-        frequencyName: plan?.frequencyName,
         owner: plan?.owner,
         assetGroupContextID: maintenance?.assetGroupContextID,
         assetGroupTypeID: maintenance?.assetGroupTypeID,

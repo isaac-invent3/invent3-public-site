@@ -1,4 +1,4 @@
-import { CreateAssetDocumentsDto } from './general.interface';
+import { AssetDocumentsDto } from './general.interface';
 
 interface AssetDisposalReason {
   isNew: boolean;
@@ -36,18 +36,18 @@ interface AssetDisposal {
 
 interface AssetDisposalQuery {
   createAssetDisposalRequestDto: CreateAssetDisposalRequestDto;
-  createAssetDocumentsDto?: CreateAssetDocumentsDto[] | null;
+  createAssetDocumentsDto?: AssetDocumentsDto[] | null;
   assetDocumentIds?: number[] | null;
 }
 
 interface CreateAssetDisposalRequestDto {
-  currentOwner: number | undefined;
-  disposalReasonId: number | undefined;
-  disposalDate: string | undefined;
-  assetId: number | undefined;
+  currentOwner: number;
+  disposalReasonId: number;
+  disposalDate: string;
+  assetId: number;
   comments?: string;
-  disposalRequestedBy: number | undefined;
-  createdBy: string | undefined;
+  disposalRequestedBy: number;
+  createdBy: string;
 }
 
 export type {

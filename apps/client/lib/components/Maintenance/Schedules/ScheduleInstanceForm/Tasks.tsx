@@ -13,7 +13,7 @@ const Tasks = () => {
   const { data, isLoading, isFetching } =
     useGetAllTaskInstancesByScheduleInstanceIdQuery(
       {
-        id: values.scheduleId,
+        id: values.scheduleId!,
         pageNumber,
         pageSize,
         statusCategoryId: STATUS_CATEGORY_ENUM.INACTIVE,
@@ -36,7 +36,7 @@ const Tasks = () => {
             taskTypeId: item?.taskTypeId,
             taskType: item?.taskType,
             taskName: item?.taskInstanceName,
-            taskDescription: item?.taskDescription ?? undefined,
+            taskDescription: item?.taskDescription!,
             priorityId: item?.taskPriorityId,
             priorityName: item?.priorityName,
             statusId: item?.currentStatusId,

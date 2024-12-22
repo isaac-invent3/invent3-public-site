@@ -43,7 +43,7 @@ const AggregateDetailModal = (props: AggregateDetailModalProps) => {
   );
   const { data: allSchedules, isLoading } =
     useGetMaintenanceSchedulesByAreaQuery({
-      areaId: selectedCountry?.value,
+      areaId: selectedCountry?.value as number,
       areaType: AREA_ENUM.country,
       startDate: data.scheduledDate,
       endDate: data.maxCompletionDate,

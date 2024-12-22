@@ -12,16 +12,18 @@ const ScheduleStats = () => {
   const isProperState = selectedState?.label && selectedState?.label !== 'All';
   const { data, isLoading, isFetching } = useGetMaintenanceScheduleStatsQuery(
     {
-      id: isProperState ? selectedState.value : selectedCountry?.value,
+      areaId: isProperState
+        ? (selectedState.value as number)
+        : (selectedCountry?.value as number),
       areaType: isProperState ? AREA_ENUM.state : AREA_ENUM.country,
-      startDate: timelineStartDate,
-      endDate: timelineEndDate,
+      startDate: timelineStartDate!,
+      endDate: timelineEndDate!,
     },
     { skip: !timelineStartDate }
   );
   return (
     <VStack width="full" spacing="16px">
-      <GeneralStats isLoading={isLoading || isFetching} data={data?.data} />
+      {<GeneralStats isLoading={isLoading || isFetching} data={data?.data} />}
       <StatusCount isLoading={isLoading || isFetching} data={data?.data} />
     </VStack>
   );

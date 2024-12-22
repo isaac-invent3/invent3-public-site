@@ -66,6 +66,7 @@ const GenerateReport = () => {
 
   const { values, setFieldValue } = formik;
 
+
   return (
     <div>
       <Flex width="full" direction="column" pb="24px" pt="12px">
@@ -214,7 +215,6 @@ const GenerateReport = () => {
           <Button
             customStyles={{
               px: '16px',
-              spacing: '8px',
               bgColor: '#F6F6F6',
               width: '85px',
               height: '32px',

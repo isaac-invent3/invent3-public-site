@@ -18,7 +18,6 @@ import { assetGroupTypeApi } from './services/asset/groupType.services';
 import { assetStatsApi } from './services/asset/stats.services';
 import { assetTypeApi } from './services/asset/types.services';
 import { vendorsApi } from './services/asset/vendor.services';
-import { authApi } from './services/auth.services';
 import { dashboardApi } from './services/dashboard.services';
 import { employeesApi } from './services/employees.services';
 import { maintenanceFrequencyApi } from './services/maintenance/frequency.services';
@@ -66,9 +65,6 @@ export const persistConfig = {
 };
 
 const rootReducer = combineReducers({
-  // Auth-related APIs
-  [authApi.reducerPath]: authApi.reducer,
-
   // Asset-related APIs
   [assetApi.reducerPath]: assetApi.reducer,
   [assetDocumentApi.reducerPath]: assetDocumentApi.reducer,
@@ -152,9 +148,6 @@ export const makeStore = () => {
           ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
         },
       }).concat([
-        // Auth-related APIs
-        authApi.middleware,
-
         // Asset-related APIs
         assetApi.middleware,
         assetDocumentApi.middleware,
@@ -179,6 +172,9 @@ export const makeStore = () => {
         ticketApi.middleware,
         categoryApi.middleware,
         conditionApi.middleware,
+
+        // Dashboard APIs
+        dashboardApi.middleware,
 
         // Depreciation APIs
         depreciationApi.middleware,

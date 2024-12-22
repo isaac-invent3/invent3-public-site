@@ -3,8 +3,7 @@ import moment from 'moment';
 import { Event as EventType, View } from 'react-big-calendar';
 import { AssetFormDocument } from '~/lib/interfaces/asset/general.interface';
 import { ActualProjectedData } from '../interfaces/dashboard.interfaces';
-import { SearchCriterion } from '../interfaces/general.interfaces';
-import { FILE_ICONS, OPERATORS } from './constants';
+import { FILE_ICONS } from './constants';
 import nigeriaStatesByLandSize from './NigeriaCordinates/landSize';
 
 interface IOption {
@@ -243,29 +242,11 @@ const formattedDateTime = (date: Date | null, time: string | null) => {
   return formatted;
 };
 
-const generateSearchCriterion = (
-  columnName: string,
-  columnValues: (string | number)[],
-  operator: (typeof OPERATORS)[keyof typeof OPERATORS]
-) => {
-  const finalSearchCriterion: SearchCriterion[] = [];
-
-  columnValues.forEach((item) =>
-    finalSearchCriterion.push({
-      columnName,
-      columnValue: item,
-      operation: operator,
-    })
-  );
-  return finalSearchCriterion;
-};
-
 export {
   formatNumberShort,
   formattedDateTime,
   generateLastFiveYears,
   generateOptions,
-  generateSearchCriterion,
   getDisplayDate,
   getDocumentInfo,
   getScaleByStateSize,

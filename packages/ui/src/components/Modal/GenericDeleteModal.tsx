@@ -89,7 +89,6 @@ const GenericDeleteModal = (props: GenericDeleteModalProps) => {
                 width: '193px',
                 _hover: { bgolor: '#F50000' },
                 _active: { bgColor: '#F50000' },
-                _focused: { bgColor: '#F50000' },
               }}
             >
               Delete

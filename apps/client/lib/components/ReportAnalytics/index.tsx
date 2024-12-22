@@ -14,6 +14,7 @@ import DefaultReport from './ReportDashboard/DefaultReport';
 import { dummyReport } from './ReportDashboard/dummyData';
 import ReportCard from './ReportDashboard/ReportCard';
 import SavedTemplate from './ReportDashboard/SavedTemplate';
+import { useGetAllUsersQuery } from '~/lib/redux/services/user.services';
 
 const ReportAnalytics = () => {
   const { data: defaultReports, isLoading: defaultReportsLoading } =
@@ -28,6 +29,11 @@ const ReportAnalytics = () => {
 
   const { data: reportDashboardValues, isLoading: reportDashboardLoading } =
     useGetReportDasboardValuesQuery({});
+
+      const { data, isLoading } = useGetAllUsersQuery({
+        pageSize: DEFAULT_PAGE_SIZE,
+        pageNumber:1,
+      });
 
   const cardData = [
     {

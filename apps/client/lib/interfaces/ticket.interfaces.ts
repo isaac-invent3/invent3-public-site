@@ -66,6 +66,17 @@ interface CreateTicketPayload {
   createdBy?: string;
 }
 
+interface UpdateTicketPayload extends Partial<CreateTicketPayload> {
+  id: number;
+  ticketId: number;
+  lastModifiedBy?: string;
+}
+
+interface DeleteTicketPayload {
+  id: number;
+  deletedBy?: string;
+}
+
 interface CreateTicketForm extends Omit<CreateTicketPayload, 'createdBy'> {
   reportedByEmployeeName: string | null;
   assignedToEmployeeName: string | null;
@@ -108,4 +119,6 @@ export type {
   Ticket,
   TicketCategory,
   TicketTypeDetails,
+  UpdateTicketPayload,
+  DeleteTicketPayload,
 };

@@ -7,8 +7,10 @@ import {
 } from '@repo/interfaces';
 import {
   CreateTicketPayload,
+  DeleteTicketPayload,
   Ticket,
   TicketTypeDetails,
+  UpdateTicketPayload,
 } from '~/lib/interfaces/ticket.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../baseQueryWithReauth';
@@ -33,7 +35,10 @@ export const ticketApi = createApi({
       }),
       invalidatesTags: ['allTickets'],
     }),
-    updateTicket: builder.mutation({
+    updateTicket: builder.mutation<
+      BaseApiResponse<Ticket>,
+      UpdateTicketPayload
+    >({
       query: ({ id, ...body }) => ({
         url: `/Tickets/${id}`,
         method: 'PUT',
@@ -42,7 +47,7 @@ export const ticketApi = createApi({
       }),
       invalidatesTags: ['allTickets'],
     }),
-    deleteTicket: builder.mutation({
+    deleteTicket: builder.mutation<BaseApiResponse<null>, DeleteTicketPayload>({
       query: ({ id, ...body }) => ({
         url: `/Tickets/${id}`,
         method: 'DELETE',

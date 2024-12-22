@@ -9,6 +9,7 @@ import {
   CreateTicketPayload,
   DeleteTicketPayload,
   Ticket,
+  TicketCategory,
   TicketTypeDetails,
   UpdateTicketPayload,
 } from '~/lib/interfaces/ticket.interfaces';
@@ -58,7 +59,7 @@ export const ticketApi = createApi({
     }),
     getTicketsByTabScope: builder.query<
       BaseApiResponse<ListResponse<Ticket>>,
-      QueryParams
+      { tabScopeName: TicketCategory } & QueryParams
     >({
       query: (data: any) => ({
         url: generateQueryStr(`/Tickets/GetTicketsByTabScope?`, data),

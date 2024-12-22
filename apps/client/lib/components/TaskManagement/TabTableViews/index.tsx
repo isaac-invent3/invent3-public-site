@@ -99,7 +99,7 @@ const TabTableView = (props: TabTableViewProps) => {
   const handleSearch = useCallback(async () => {
     if (search || !isFilterEmpty) {
       const response = await handleSubmit(searchPlan, searchCriterion, '');
-      setSearchData(response?.data?.data);
+      response?.data?.data && setSearchData(response?.data?.data);
     }
   }, [searchPlan, searchCriterion]);
 

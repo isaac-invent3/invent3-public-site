@@ -122,7 +122,7 @@ const ListView = (props: ListViewProps) => {
   const handleSearch = useCallback(async () => {
     if (search || !isFilterEmpty) {
       const response = await handleSubmit(searchAsset, searchCriterion, '');
-      setSearchData(response?.data?.data);
+      response?.data?.data && setSearchData(response?.data?.data);
     }
   }, [searchAsset, searchCriterion]);
 

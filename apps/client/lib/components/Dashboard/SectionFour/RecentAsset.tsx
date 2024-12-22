@@ -60,9 +60,7 @@ const RecentAsset = () => {
   const handleSearch = useCallback(async () => {
     const response = await handleSubmit(searchAsset, searchCriterion, '');
 
-    if (response?.data?.data) {
-      setSearchData(response?.data?.data);
-    }
+    response?.data?.data && setSearchData(response?.data?.data);
   }, [searchAsset, searchCriterion]);
 
   // Trigger search when search input changes or pagination updates

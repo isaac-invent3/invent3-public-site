@@ -69,6 +69,9 @@ interface CreateTicketPayload {
 interface UpdateTicketPayload extends Partial<CreateTicketPayload> {
   id: number;
   ticketId: number;
+  ticketStatusId?: number | null;
+  ticketTypeId?: number | null;
+  ticketPriorityId?: number | null;
   lastModifiedBy?: string;
 }
 
@@ -115,10 +118,10 @@ type TicketCategory =
 export type {
   CreateTicketForm,
   CreateTicketPayload,
+  DeleteTicketPayload,
   SelectedTicketAction,
   Ticket,
   TicketCategory,
   TicketTypeDetails,
   UpdateTicketPayload,
-  DeleteTicketPayload,
 };

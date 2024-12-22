@@ -1,20 +1,20 @@
-import React, { useCallback, useEffect, useState } from 'react';
 import { Flex, Text, useDisclosure, VStack } from '@chakra-ui/react';
-import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
+import { ListResponse } from '@repo/interfaces';
+import { GenericPopover } from '@repo/ui/components';
+import Link from 'next/link';
+import { useCallback, useEffect, useState } from 'react';
+import GenericTemplateModal from '~/lib/components/Common/Modals/GenericTemplateModal';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
+import { Asset } from '~/lib/interfaces/asset/general.interface';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import {
   useGetAllAssetQuery,
   useSearchAssetsMutation,
 } from '~/lib/redux/services/asset/general.services';
-import GenericTemplateModal from '~/lib/components/Common/Modals/GenericTemplateModal';
-import AssetTable from '../../Common/AssetTable';
-import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import AssetDetail from '../../AssetDetail';
 import { setAsset } from '~/lib/redux/slices/AssetSlice';
-import { GenericPopover } from '@repo/ui/components';
-import { Asset } from '~/lib/interfaces/asset/general.interface';
-import Link from 'next/link';
-import { ListResponse } from '@repo/interfaces';
+import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
+import AssetDetail from '../../AssetDetail';
+import AssetTable from '../../Common/AssetTable';
 
 interface TablePopoverProps {
   data: Asset;
@@ -92,7 +92,7 @@ const AssetTemplateModal = (props: AssetTemplateModalProps) => {
 
   const handleSearch = useCallback(async () => {
     const response = await handleSubmit(searchAsset, searchCriterion, '');
-    setSearchData(response?.data?.data);
+    response?.data?.data && setSearchData(response?.data?.data);
   }, [searchAsset, searchCriterion]);
 
   // Trigger search when search input changes or pagination updates

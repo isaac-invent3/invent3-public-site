@@ -13,6 +13,16 @@ interface AssetStatistics {
   totalAssetsPercentageChange: number;
 }
 
+interface AssetInRegion {
+  assetCount: number;
+  countryId: number;
+  lgaId: number | null;
+  lgaName: string | null;
+  rowId: number;
+  stateId: number;
+  stateName: string;
+  totalAssetValue: number | null;
+}
 interface ActualProjectedData {
   projectedCost: number;
   actualCost: number;
@@ -22,4 +32,15 @@ interface ActualProjectedData {
   year: number;
 }
 
-export type { AssetStatistics, ActualProjectedData };
+interface ProjectedAndActualCostsByArea {
+  percentageChange: number;
+  projectedAndActualCosts: ActualProjectedData[];
+  totalMaintenanceCost:number
+}
+
+export type {
+  AssetStatistics,
+  ActualProjectedData,
+  AssetInRegion,
+  ProjectedAndActualCostsByArea,
+};

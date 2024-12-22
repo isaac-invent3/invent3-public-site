@@ -1,16 +1,29 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
+import { BaseApiResponse, ListResponse, QueryParams } from '@repo/interfaces';
+import { Asset } from '~/lib/interfaces/asset/general.interface';
+import {
+  AssetInRegion,
+  AssetStatistics,
+  ProjectedAndActualCostsByArea,
+} from '~/lib/interfaces/dashboard.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../baseQueryWithReauth';
+import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
+
+type ID = string | number | undefined;
 export const dashboardApi = createApi({
   reducerPath: 'dashboardApi',
   baseQuery: baseQueryWithReauth,
   tagTypes: [],
   endpoints: (builder) => ({
-    getRecentAssets: builder.query({
+    getRecentAssets: builder.query<
+      BaseApiResponse<ListResponse<Asset>>,
+      { id: ID; datePeriod: ID } & QueryParams
+    >({
       query: ({ id, ...data }) => ({
         url: generateQueryStr(
           `/Invent3Pro/GetRecentAssetsDashBoardComponent/${id}?`,
@@ -20,7 +33,10 @@ export const dashboardApi = createApi({
         headers: getHeaders(),
       }),
     }),
-    getUpcomingMaintenance: builder.query({
+    getUpcomingMaintenance: builder.query<
+      BaseApiResponse<ListResponse<MaintenanceSchedule>>,
+      { id: ID; datePeriod: number } & QueryParams
+    >({
       query: ({ id, ...data }) => ({
         url: generateQueryStr(
           `/Invent3Pro/GetUpcomingMaintenanceDashBoardComponent/${id}?`,
@@ -30,7 +46,10 @@ export const dashboardApi = createApi({
         headers: getHeaders(),
       }),
     }),
-    getAssetsInRegion: builder.query({
+    getAssetsInRegion: builder.query<
+      BaseApiResponse<ListResponse<AssetInRegion>>,
+      { id: ID } & QueryParams
+    >({
       query: ({ id, ...data }) => ({
         url: generateQueryStr(
           `/Invent3Pro/GetAssetsInRegionDashBoardComponent/${id}?`,
@@ -41,7 +60,10 @@ export const dashboardApi = createApi({
       }),
       keepUnusedDataFor: 0,
     }),
-    getDashboardStats: builder.query({
+    getDashboardStats: builder.query<
+      BaseApiResponse<AssetStatistics>,
+      { id: ID } & QueryParams
+    >({
       query: ({ id, ...data }) => ({
         url: generateQueryStr(
           `/Invent3Pro/GetCountRelatedDashBoardComponents/${id}?`,
@@ -51,7 +73,16 @@ export const dashboardApi = createApi({
         headers: getHeaders(),
       }),
     }),
-    getMaintenanceCostStats: builder.query({
+    getMaintenanceCostStats: builder.query<
+      BaseApiResponse<ProjectedAndActualCostsByArea>,
+      {
+        id: ID;
+        areaType: number;
+        year: ID;
+        useYearToDateLogic: boolean;
+        monthNo?: ID;
+      } & QueryParams
+    >({
       query: ({ id, ...data }) => ({
         url: generateQueryStr(
           `/MaintenanceSchedules/GetProjectedAndActualCostsByArea/${id}?`,

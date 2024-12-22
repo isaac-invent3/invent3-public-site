@@ -1,21 +1,21 @@
 import { Flex, HStack, VStack } from '@chakra-ui/react';
-import React, { useCallback, useEffect, useState } from 'react';
-import CardHeader from '../Common/CardHeader';
+import { ListResponse } from '@repo/interfaces';
+import { SearchInput } from '@repo/ui/components';
+import { useCallback, useEffect, useState } from 'react';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
+import { Asset } from '~/lib/interfaces/asset/general.interface';
+import { Option } from '~/lib/interfaces/general.interfaces';
+import { useAppSelector } from '~/lib/redux/hooks';
 import { useSearchAssetsMutation } from '~/lib/redux/services/asset/general.services';
+import { useGetRecentAssetsQuery } from '~/lib/redux/services/dashboard.services';
 import {
   DEFAULT_PAGE_SIZE,
   OPERATORS,
   timeRangeOptions,
 } from '~/lib/utils/constants';
-import { Option } from '~/lib/interfaces/general.interfaces';
-import useCustomMutation from '~/lib/hooks/mutation.hook';
-import DropDown from '../Common/DropDown';
-import { SearchInput } from '@repo/ui/components';
 import AssetTable from '../../AssetManagement/Common/AssetTable';
-import { useGetRecentAssetsQuery } from '~/lib/redux/services/dashboard.services';
-import { useAppSelector } from '~/lib/redux/hooks';
-import { Asset } from '~/lib/interfaces/asset/general.interface';
-import { ListResponse } from '@repo/interfaces';
+import CardHeader from '../Common/CardHeader';
+import DropDown from '../Common/DropDown';
 
 const RecentAsset = () => {
   const { selectedCountry, selectedState } = useAppSelector(
@@ -59,7 +59,10 @@ const RecentAsset = () => {
 
   const handleSearch = useCallback(async () => {
     const response = await handleSubmit(searchAsset, searchCriterion, '');
-    setSearchData(response?.data?.data);
+
+    if (response?.data?.data) {
+      setSearchData(response?.data?.data);
+    }
   }, [searchAsset, searchCriterion]);
 
   // Trigger search when search input changes or pagination updates

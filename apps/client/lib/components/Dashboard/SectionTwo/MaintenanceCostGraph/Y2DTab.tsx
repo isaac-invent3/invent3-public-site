@@ -42,8 +42,8 @@ const Y2DTab = () => {
         />
       </HStack>
       <Info
-        value={data?.data?.totalMaintenanceCost}
-        valueChange={data?.data?.percentageChange}
+        value={data?.data?.totalMaintenanceCost ?? 0}
+        valueChange={data?.data?.percentageChange ?? 0}
         isLoading={isLoading || isFetching}
       />
       <LineChart

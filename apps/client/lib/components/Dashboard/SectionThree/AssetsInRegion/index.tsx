@@ -1,25 +1,16 @@
 import { Box, Skeleton, Text, VStack } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
 import { Map, Marker, Point } from 'pigeon-maps';
-import { useGetAssetsInRegionQuery } from '~/lib/redux/services/dashboard.services';
+import { useEffect, useState } from 'react';
+import { AssetInRegion } from '~/lib/interfaces/dashboard.interfaces';
 import { useAppSelector } from '~/lib/redux/hooks';
+import { useGetAssetsInRegionQuery } from '~/lib/redux/services/dashboard.services';
+import NIGERIA_CORDINATES from '~/lib/utils/NigeriaCordinates';
 import CardHeader from '../../Common/CardHeader';
 import CountMarker from './CountMarker';
-import NIGERIA_CORDINATES from '~/lib/utils/NigeriaCordinates';
-
-interface RegionData {
-  rowId: number;
-  assetCount: number;
-  lgaId: number | null;
-  lgaName: string | null;
-  stateId: number | null;
-  countryId: number;
-  stateName: string | null;
-}
 
 const AssetsInRegion = () => {
   const [hoveredName, setHoveredName] = useState<string | null>(null);
-  const [sortedAssetData, setSortedAssetData] = useState<RegionData[]>([]);
+  const [sortedAssetData, setSortedAssetData] = useState<AssetInRegion[]>([]);
   const { selectedCountry, selectedState } = useAppSelector(
     (state) => state.dashboard.info
   );
@@ -43,7 +34,7 @@ const AssetsInRegion = () => {
   useEffect(() => {
     if (data?.data?.items) {
       const sortedData = [...data.data.items].sort(
-        (a: RegionData, b: RegionData) => {
+        (a: AssetInRegion, b: AssetInRegion) => {
           const nameA = isProperState ? a.lgaName : a.stateName;
           const nameB = isProperState ? b.lgaName : b.stateName;
 
@@ -82,7 +73,7 @@ const AssetsInRegion = () => {
               defaultZoom={isProperState ? 9 : 6}
               attribution={false}
             >
-              {sortedAssetData.map((item: RegionData, index: number) => {
+              {sortedAssetData.map((item: AssetInRegion, index: number) => {
                 const anchor = isProperState
                   ? NIGERIA_CORDINATES?.[selectedState?.label as 'Abia']?.[
                       item.lgaName as 'Abia North'

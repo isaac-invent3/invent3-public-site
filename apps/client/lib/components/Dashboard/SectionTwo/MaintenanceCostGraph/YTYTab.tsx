@@ -1,16 +1,16 @@
 import { HStack, VStack } from '@chakra-ui/react';
-import React, { useState } from 'react';
-import Info from './Info';
-import LineChart from './LineGraph';
-import DropDown from '../../Common/DropDown';
-import { AREA_ENUM, monthOptions } from '~/lib/utils/constants';
+import { useState } from 'react';
 import { Option } from '~/lib/interfaces/general.interfaces';
+import { useAppSelector } from '~/lib/redux/hooks';
+import { useGetMaintenanceCostStatsQuery } from '~/lib/redux/services/dashboard.services';
+import { AREA_ENUM, monthOptions } from '~/lib/utils/constants';
 import {
   generateLastFiveYears,
   transformCostsData,
 } from '~/lib/utils/helperFunctions';
-import { useAppSelector } from '~/lib/redux/hooks';
-import { useGetMaintenanceCostStatsQuery } from '~/lib/redux/services/dashboard.services';
+import DropDown from '../../Common/DropDown';
+import Info from './Info';
+import LineChart from './LineGraph';
 
 const YTYTab = () => {
   const [selectedMonth, setSelectMonth] = useState<Option | null>(null);
@@ -27,7 +27,7 @@ const YTYTab = () => {
     id: isProperState ? selectedState.value : selectedCountry?.value,
     areaType: isProperState ? AREA_ENUM.state : AREA_ENUM.country,
     year: selectedYear?.value,
-    monthNo: isProperMonth ? selectedMonth?.value : null,
+    monthNo: isProperMonth ? selectedMonth?.value : undefined,
     useYearToDateLogic: false,
   });
 
@@ -54,8 +54,8 @@ const YTYTab = () => {
         />
       </HStack>
       <Info
-        value={data?.data?.totalMaintenanceCost}
-        valueChange={data?.data?.percentageChange}
+        value={data?.data?.totalMaintenanceCost ?? 0}
+        valueChange={data?.data?.percentageChange ?? 0}
         isLoading={isLoading || isFetching}
       />
       <LineChart

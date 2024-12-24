@@ -9,29 +9,33 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
+import {
+  BackButton,
+  Button,
+  ErrorMessage,
+  FormInputWrapper,
+  FormTextAreaInput,
+  FormTextInput,
+  GenericDrawer,
+  SelectableButtonGroup,
+} from '@repo/ui/components';
 import { Field, FormikProvider, useFormik } from 'formik';
 import moment from 'moment';
-import { useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 import AssetSelect from '~/lib/components/Common/AssetSelect';
 import UserDisplayAndAddButton from '~/lib/components/Common/UserDisplayAndAddButton';
-import {
-  Button,
-  BackButton,
-  ErrorMessage,
-  SelectableButtonGroup,
-  GenericDrawer,
-  FormInputWrapper,
-  FormTextInput,
-  FormTextAreaInput,
-} from '@repo/ui/components';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { Asset } from '~/lib/interfaces/asset/general.interface';
+import { CreateTicketForm } from '~/lib/interfaces/ticket.interfaces';
 import { useGetAllTaskPrioritiesQuery } from '~/lib/redux/services/task/priorities.services';
 import { useCreateTicketMutation } from '~/lib/redux/services/ticket.services';
 import { createTicketSchema } from '~/lib/schemas/ticket.schema';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { dateFormatter } from '~/lib/utils/Formatters';
-import { generateOptions } from '~/lib/utils/helperFunctions';
+import {
+  generateOptions,
+  getSelectedOption,
+} from '~/lib/utils/helperFunctions';
 import CreateTicketSuccessModal from '../Modals/CreateTicketSuccessModal';
 import TicketTypeSelect from './Common/TicketTypeSelect';
 
@@ -49,10 +53,6 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
     onClose: onCloseSuccess,
   } = useDisclosure();
 
-  const { data: session } = useSession();
-
-  const username = session?.user?.username;
-
   const { handleSubmit } = useCustomMutation();
 
   const { data: ticketPriorities } = useGetAllTaskPrioritiesQuery({
@@ -64,8 +64,8 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
     useCreateTicketMutation();
 
   const initialValues = {
-    ticketTitle: null,
-    issueDescription: null,
+    ticketTitle: '',
+    issueDescription: '',
     assetId: asset?.assetId ?? null,
     reportedByEmployeeId: null,
     reportedByEmployeeName: null,
@@ -73,19 +73,28 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
     assignedToEmployeeName: null,
     ticketTypeId: null,
     ticketPriorityId: null,
-    issueReportDate: moment(new Date().toISOString()).utcOffset(0, true),
+    issueReportDate: moment(new Date().toISOString()).utcOffset(
+      0,
+      true
+    ) as unknown as string,
   };
 
-  const formik = useFormik({
+  const formik = useFormik<CreateTicketForm>({
     initialValues,
     enableReinitialize: false,
     validationSchema: createTicketSchema,
     onSubmit: async (data) => {
+      const session = await getSession();
+
+      /* eslint-disable no-unused-vars */
+      const { assignedToEmployeeName, reportedByEmployeeName, ...payload } =
+        data;
+
       const response = await handleSubmit(
         createTicketMutation,
         {
-          ...data,
-          createdBy: username,
+          ...payload,
+          createdBy: session?.user.id,
         },
         ''
       );
@@ -96,6 +105,12 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
       }
     },
   });
+
+  const ticketPriorityOptions = generateOptions(
+    ticketPriorities?.data.items,
+    'priority',
+    'taskPriorityId'
+  );
 
   return (
     <>
@@ -201,16 +216,12 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                         isMultiSelect={false}
                         buttonVariant="secondary"
                         customButtonStyle={{ width: 'max-content' }}
-                        options={generateOptions(
-                          ticketPriorities?.data.items,
-                          'priority',
-                          'taskPriorityId'
-                        )}
+                        options={ticketPriorityOptions}
                         selectedOptions={[
-                          {
-                            value: formik.values.ticketPriorityId!,
-                            label: formik.values.ticketPriorityId!,
-                          },
+                          getSelectedOption(
+                            ticketPriorityOptions,
+                            formik.values.ticketPriorityId!
+                          ),
                         ]}
                         handleSelect={(options) => {
                           formik.setFieldValue(

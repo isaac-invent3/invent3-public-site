@@ -1,4 +1,18 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
+import {
+  BaseApiResponse,
+  ListResponse,
+  QueryParams,
+  SearchQuery,
+} from '@repo/interfaces';
+import {
+  CreateTicketPayload,
+  DeleteTicketPayload,
+  Ticket,
+  TicketCategory,
+  TicketTypeDetails,
+  UpdateTicketPayload,
+} from '~/lib/interfaces/ticket.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../baseQueryWithReauth';
 
@@ -10,7 +24,10 @@ export const ticketApi = createApi({
   baseQuery: baseQueryWithReauth,
   tagTypes: ['allTickets', 'allTicketTypes'],
   endpoints: (builder) => ({
-    createTicket: builder.mutation({
+    createTicket: builder.mutation<
+      BaseApiResponse<Ticket>,
+      CreateTicketPayload
+    >({
       query: (body: any) => ({
         url: `/Tickets`,
         method: 'POST',
@@ -19,7 +36,10 @@ export const ticketApi = createApi({
       }),
       invalidatesTags: ['allTickets'],
     }),
-    updateTicket: builder.mutation({
+    updateTicket: builder.mutation<
+      BaseApiResponse<Ticket>,
+      UpdateTicketPayload
+    >({
       query: ({ id, ...body }) => ({
         url: `/Tickets/${id}`,
         method: 'PUT',
@@ -28,7 +48,7 @@ export const ticketApi = createApi({
       }),
       invalidatesTags: ['allTickets'],
     }),
-    deleteTicket: builder.mutation({
+    deleteTicket: builder.mutation<BaseApiResponse<null>, DeleteTicketPayload>({
       query: ({ id, ...body }) => ({
         url: `/Tickets/${id}`,
         method: 'DELETE',
@@ -37,7 +57,10 @@ export const ticketApi = createApi({
       }),
       invalidatesTags: ['allTickets'],
     }),
-    getTicketsByTabScope: builder.query({
+    getTicketsByTabScope: builder.query<
+      BaseApiResponse<ListResponse<Ticket>>,
+      { tabScopeName: TicketCategory } & QueryParams
+    >({
       query: (data: any) => ({
         url: generateQueryStr(`/Tickets/GetTicketsByTabScope?`, data),
         method: 'GET',
@@ -45,14 +68,17 @@ export const ticketApi = createApi({
       }),
       providesTags: ['allTickets'],
     }),
-    getTicketById: builder.query({
+    getTicketById: builder.query<BaseApiResponse<Ticket>, SearchQuery>({
       query: (id: any) => ({
         url: `/Tickets/${id}`,
         method: 'GET',
         headers: getHeaders(),
       }),
     }),
-    searchTickets: builder.mutation({
+    searchTickets: builder.mutation<
+      BaseApiResponse<ListResponse<Ticket>>,
+      SearchQuery
+    >({
       query: (body: any) => ({
         url: `/Tickets/Search`,
         method: 'POST',
@@ -69,7 +95,10 @@ export const ticketApi = createApi({
       }),
       invalidatesTags: ['allTickets'],
     }),
-    getAllTicketTypes: builder.query({
+    getAllTicketTypes: builder.query<
+      BaseApiResponse<ListResponse<TicketTypeDetails>>,
+      QueryParams
+    >({
       query: (data: any) => ({
         url: generateQueryStr(`/TicketTypes?`, data),
         method: 'GET',
@@ -78,7 +107,10 @@ export const ticketApi = createApi({
       providesTags: ['allTicketTypes'],
     }),
 
-    searchTicketTypes: builder.mutation({
+    searchTicketTypes: builder.mutation<
+      BaseApiResponse<ListResponse<TicketTypeDetails>>,
+      SearchQuery
+    >({
       query: (body: any) => ({
         url: `/TicketTypes/Search`,
         method: 'POST',
@@ -98,5 +130,5 @@ export const {
   useGetAllTicketTypesQuery,
   useSearchTicketsMutation,
   useScheduleTicketsMutation,
-  useSearchTicketTypesMutation
+  useSearchTicketTypesMutation,
 } = ticketApi;

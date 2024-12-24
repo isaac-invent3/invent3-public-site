@@ -94,7 +94,7 @@ const Plans = (props: PlansProp) => {
   const handleSearch = useCallback(async () => {
     if (search || !isFilterEmpty) {
       const response = await handleSubmit(searchPlan, searchCriterion, '');
-      setSearchData(response?.data?.data);
+      response?.data && setSearchData(response?.data);
     }
   }, [searchPlan, searchCriterion]);
 

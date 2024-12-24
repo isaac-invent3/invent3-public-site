@@ -9,13 +9,14 @@ import {
 import { useFormikContext } from 'formik';
 import moment from 'moment';
 
-import { RepeatIcon } from '~/lib/components/CustomIcons';
 import {
   Button,
   DateTimeButtons,
   ErrorMessage,
   FormSectionInfo,
 } from '@repo/ui/components';
+import RecurrenceModal from '~/lib/components/Common/RecurrenceComponents/RecurrenceModal';
+import { RepeatIcon } from '~/lib/components/CustomIcons';
 import InfoCard from '~/lib/components/UI/InfoCard';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { RecurrenceInfo } from '~/lib/interfaces/general.interfaces';
@@ -24,7 +25,6 @@ import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useValidateFirstInstanceScheduledDateMutation } from '~/lib/redux/services/maintenance/schedule.services';
 import { updateRecurrence } from '~/lib/redux/slices/DateSlice';
 import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';
-import RecurrenceModal from '~/lib/components/Common/RecurrenceComponents/RecurrenceModal';
 
 interface DateProps {
   sectionMaxWidth: string;
@@ -80,7 +80,7 @@ const Date = (props: DateProps) => {
       ),
     };
 
-    const response = await handleSubmit(
+    const response: any = await handleSubmit(
       validateScheduleFirstInstanceSchedule,
       {
         ...formattedInfo,

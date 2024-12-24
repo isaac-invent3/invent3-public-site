@@ -72,7 +72,17 @@ const DynamicConditionValue = (props: DynamicConditionValueProps) => {
     }
   };
 
-  function getRelativeUrlLabelValue(inputStr: string) {
+  function getRelativeUrlLabelValue() {
+    if (
+      selectedContextTypeColumn?.relatedNameColumn &&
+      selectedContextTypeColumn?.primaryKeyColumn
+    )
+      return {
+        label: selectedContextTypeColumn?.relatedNameColumn,
+        value: selectedContextTypeColumn?.primaryKeyColumn,
+      };
+
+    const inputStr = selectedContextTypeColumn?.relativeListUrl ?? '';
     // Remove the leading '/' and trailing 's'
     const cleaned = inputStr.replace(/^\//, '').replace(/s$/, '');
 
@@ -80,18 +90,20 @@ const DynamicConditionValue = (props: DynamicConditionValueProps) => {
     const label = `${cleaned.charAt(0).toLowerCase() + cleaned.slice(1)}Name`;
     const value = `${cleaned.charAt(0).toLowerCase() + cleaned.slice(1)}Id`;
 
-    return { label, value };
+    return {
+      label,
+      value,
+    };
   }
 
   if (selectedContextTypeColumn && selectedContextTypeColumn.relativeListUrl) {
-    const options:Option[] = generateOptions(
+    const options: Option[] = generateOptions(
       dropdownData || [],
-      getRelativeUrlLabelValue(selectedContextTypeColumn?.relativeListUrl)
-        .label,
-      getRelativeUrlLabelValue(selectedContextTypeColumn?.relativeListUrl).value
+      getRelativeUrlLabelValue().label,
+      getRelativeUrlLabelValue().value
     );
 
-    const getSelectedOption = (value:any) => {
+    const getSelectedOption = (value: any) => {
       return options.find((item) => item.value === value);
     };
 

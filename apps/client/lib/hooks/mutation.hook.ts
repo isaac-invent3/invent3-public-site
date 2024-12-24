@@ -15,10 +15,10 @@ const useCustomMutation = () => {
     successMessage?: string,
     successFn?: () => void,
     showError: boolean = true
-  ) => {
+  ): Promise<TResult> => {
     try {
-      const resp: any = await mutationFn(variables);
-      if (!resp.error) {
+      const resp: TResult = await mutationFn(variables);
+      if (!(resp as any).error) {
         if (successMessage) {
           toast({
             title: successMessage,
@@ -33,7 +33,7 @@ const useCustomMutation = () => {
         // eslint-disable-next-line no-lonely-if
         if (showError) {
           toast({
-            title: resp?.error?.data?.message || 'An error occured',
+            title: (resp as any)?.error?.data?.message || 'An error occured',
             status: 'error',
             position: 'top-right',
           });
@@ -46,7 +46,8 @@ const useCustomMutation = () => {
         status: 'error',
         position: 'top-right',
       });
-      return {};
+      
+      throw error;
     }
   };
 

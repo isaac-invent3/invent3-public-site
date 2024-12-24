@@ -66,14 +66,6 @@ const GenerateReport = () => {
 
   const { values, setFieldValue } = formik;
 
-  // const formatDate = (date: Date | undefined) => {
-  //   if (!date) return null;
-  //   return moment(date).format('DD/MM/YYYY');
-  // };
-
-  // const parseDate = (dateString: string | null) => {
-  //   return dateString ? moment(dateString, 'DD/MM/YYYY').toDate() : undefined;
-  // };
 
   return (
     <div>

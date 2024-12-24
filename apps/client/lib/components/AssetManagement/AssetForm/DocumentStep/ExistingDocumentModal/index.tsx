@@ -64,7 +64,8 @@ const ExistingDocumentModal = (props: ExistingDocumentModalProps) => {
       searchCriterion,
       ''
     );
-    setSearchData(response?.data?.data);
+
+    response?.data?.data && setSearchData(response?.data?.data);
   }, [searchAssetDocument, searchCriterion]);
 
   // Trigger search when search input changes or pagination updates

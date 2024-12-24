@@ -21,7 +21,9 @@ type SystemContextTypeColumnDataType =
 interface SystemContextTypeColumns {
   columnName: string;
   dataType: SystemContextTypeColumnDataType;
-  relativeListUrl: string;
+  relativeListUrl: string | null
+  relatedNameColumn: string | null;
+  primaryKeyColumn:string | null
 }
 
 export type {

@@ -71,9 +71,9 @@ const GenericAsyncSelect = (props: GenericAsyncSelectProps) => {
       pageNumber: 1,
       pageSize: DEFAULT_PAGE_SIZE,
     };
-    const response = await handleSubmit(mutationFn, searchCriterion, '');
+    const response: any = await handleSubmit(mutationFn, searchCriterion, '');
     const formattedOptions = generateOptions(
-      response?.data?.data.items,
+      response?.data?.data?.items,
       labelKey,
       valueKey
     );

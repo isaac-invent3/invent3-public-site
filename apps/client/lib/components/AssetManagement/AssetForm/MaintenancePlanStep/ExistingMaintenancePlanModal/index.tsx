@@ -64,7 +64,7 @@ const ExistingMaintenancePlanModal = (
       searchCriterion,
       ''
     );
-    setSearchData(response?.data?.data);
+    response?.data && setSearchData(response?.data);
   }, [searchMaintenancePlan, searchCriterion]);
 
   // Removes Plans Duplicate

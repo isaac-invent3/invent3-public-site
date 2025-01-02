@@ -51,7 +51,7 @@ const GenericPopover = (props: GenericPopoverProps) => {
           boxShadow="0px 4px 32px 0px #00000026"
           rounded="8px"
         >
-          <PopoverBody m={0} p="16px">
+          <PopoverBody m={0} p="16px" onClick={onClose}>
             {children}
           </PopoverBody>
         </PopoverContent>

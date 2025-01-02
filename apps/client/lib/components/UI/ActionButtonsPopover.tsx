@@ -101,7 +101,13 @@ const ActionButtonPopover = (props: ActionButtonPopoverProps) => {
             borderColor: 'transparent',
           }}
         >
-          <PopoverBody pt="28px" pb="20px" pl="16px" pr="16px">
+          <PopoverBody
+            pt="28px"
+            pb="20px"
+            pl="16px"
+            pr="16px"
+            onClick={onClose}
+          >
             <VStack spacing="12px">
               <Link href={newRoute} style={{ width: '100%' }}>
                 <Text color="#0E2642" textAlign="center">

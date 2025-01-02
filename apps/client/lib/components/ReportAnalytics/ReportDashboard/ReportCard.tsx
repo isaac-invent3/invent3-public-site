@@ -11,8 +11,8 @@ import { formatNumberShort } from '~/lib/utils/helperFunctions';
 type Card = {
   title: string;
   value?: number;
-  link: string;
   color?: string;
+  reportId?: number;
 };
 
 interface ReportCardProps {
@@ -46,8 +46,13 @@ const ReportCard = (props: ReportCardProps) => {
             </Heading>
           </VStack>
 
-          <Link color="#0366EF" fontWeight="500" fontSize="12px" href="#">
-            {card.link}
+          <Link
+            color="#0366EF"
+            fontWeight="500"
+            fontSize="12px"
+            href={`/report-analytics/${card.reportId}`}
+          >
+            View Report
           </Link>
         </Skeleton>
       </VStack>

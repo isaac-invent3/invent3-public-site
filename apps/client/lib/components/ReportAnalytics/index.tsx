@@ -1,6 +1,8 @@
 'use client';
 
 import { Flex, Grid, HStack, Link, Text, VStack } from '@chakra-ui/react';
+import moment from 'moment';
+import { useAppSelector } from '~/lib/redux/hooks';
 import {
   useGetAllDefaultReportsQuery,
   useGetAllSavedReportsQuery,
@@ -21,45 +23,54 @@ const ReportAnalytics = () => {
       pageSize: DEFAULT_PAGE_SIZE,
     });
 
+  const { filters } = useAppSelector((state) => state.report);
+
   const { data: savedReports, isLoading: savedReportsLoading } =
     useGetAllSavedReportsQuery({
       pageSize: DEFAULT_PAGE_SIZE,
     });
 
   const { data: reportDashboardValues, isLoading: reportDashboardLoading } =
-    useGetReportDasboardValuesQuery({});
+    useGetReportDasboardValuesQuery({
+      startDate: moment(filters.fromDate, 'DD/MM/YYYY HH:mm')
+        .utcOffset(0, true)
+        .toISOString(),
+      endDate: moment(filters.toDate, 'DD/MM/YYYY HH:mm')
+        .utcOffset(0, true)
+        .toISOString(),
+    });
 
   const cardData = [
     {
       title: 'Total Assets',
-      value: reportDashboardValues?.data.totalAssets,
-      link: 'View Report',
+      value: reportDashboardValues?.data.totalAssets?.statValue,
+      reportId: reportDashboardValues?.data.totalAssets?.reportId,
     },
     {
       title: 'New Assets Added',
-      value: reportDashboardValues?.data.newAssets,
-      link: 'View Report',
+      value: reportDashboardValues?.data.newAssets?.statValue,
+      reportId: reportDashboardValues?.data.newAssets?.reportId,
     },
     {
       title: 'Total Assets Disposed',
-      value: reportDashboardValues?.data.totalDisposedAssets,
-      link: 'View Report',
+      value: reportDashboardValues?.data.totalAssetsDisposed?.statValue,
       color: 'red.500',
+      reportId: reportDashboardValues?.data.totalAssetsDisposed?.reportId,
     },
     {
       title: 'Maintenance Cost',
-      value: reportDashboardValues?.data.totalCost,
-      link: 'View Report',
+      value: reportDashboardValues?.data.totalMaintenanceCost?.statValue,
+      reportId: reportDashboardValues?.data.totalMaintenanceCost?.reportId,
     },
     {
       title: 'Total Maintenance Plan',
-      value: reportDashboardValues?.data.totalMaintenancePlans,
-      link: 'View Report',
+      value: reportDashboardValues?.data.totalMaintenancePlans?.statValue,
+      reportId: reportDashboardValues?.data.totalMaintenancePlans?.reportId,
     },
     {
       title: 'Total Tasks',
-      value: reportDashboardValues?.data.totalTasks,
-      link: 'View Report',
+      value: reportDashboardValues?.data.totalTasks?.statValue,
+      reportId: reportDashboardValues?.data.totalTasks?.reportId,
     },
   ];
 
@@ -96,7 +107,7 @@ const ReportAnalytics = () => {
         </Grid>
 
         <BranchesWithTopAssetsChart
-          totalAssets={reportDashboardValues?.data.totalAssets}
+          totalAssets={reportDashboardValues?.data.totalAssets?.statValue}
           topFiveBranchesWithAssets={
             reportDashboardValues?.data.topFiveBranchesWithAssets
           }

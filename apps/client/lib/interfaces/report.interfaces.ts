@@ -41,7 +41,7 @@ type ContextTypeColumn = {
 
 interface GenerateReportDetails {
   criterion: GenerateReportCriterion[];
-  contextTypeId: number | undefined;
+  systemContextTypeId: number | undefined;
   contextTypeColumns: Option[];
   contextTypeName: string | undefined;
   startDate: string;
@@ -50,7 +50,7 @@ interface GenerateReportDetails {
 
 interface GenerateReportPayload {
   criterion: GenerateReportCriterion[];
-  contextTypeId: number | undefined;
+  systemContextTypeId: number | undefined;
   contextTypeColumns: Option[];
 }
 
@@ -60,14 +60,18 @@ interface ViewReportTableDataPayload extends SearchQuery {
   endDate: string;
 }
 
+type DashboardValuesObj = {
+  reportId: number;
+  statValue: number;
+};
 interface ReportDashboardValuesResponse {
-  newAssets: number;
+  newAssets: DashboardValuesObj;
   topFiveBranchesWithAssets: Record<string, number> | undefined;
-  totalAssets: number;
-  totalCost: number;
-  totalDisposedAssets: number;
-  totalMaintenancePlans: number;
-  totalTasks: number;
+  totalAssets: DashboardValuesObj;
+  totalMaintenanceCost: DashboardValuesObj;
+  totalAssetsDisposed: DashboardValuesObj;
+  totalMaintenancePlans: DashboardValuesObj;
+  totalTasks: DashboardValuesObj;
 }
 
 interface ViewReportTableData {

@@ -1,9 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import {
-  BaseApiResponse,
-  ListResponse,
-  QueryParams,
-} from '@repo/interfaces';
+import { BaseApiResponse, ListResponse, QueryParams } from '@repo/interfaces';
 import {
   GenerateReportPayload,
   GenerateReportResponse,
@@ -50,10 +46,10 @@ export const reportApi = createApi({
 
     getReportDasboardValues: builder.query<
       BaseApiResponse<ReportDashboardValuesResponse>,
-      QueryParams
+      QueryParams & { startDate: string; endDate: string }
     >({
-      query: () => ({
-        url: `/Reports/GetReportDashboardValues`,
+      query: (data) => ({
+        url: generateQueryStr(`/Reports/GetReportDashboardValues?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -112,5 +108,5 @@ export const {
   useGetReportByIdQuery,
   useViewReportByIdQuery,
   useScheduleReportMutation,
-  useGenerateReportMutation
+  useGenerateReportMutation,
 } = reportApi;

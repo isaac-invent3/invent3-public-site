@@ -37,11 +37,11 @@ const SystemContextColumnsSelect = (props: SystemContextColumnsSelectProps) => {
 
   useEffect(() => {
     setFieldValue('contextTypeColumns', []);
-  }, [values.contextTypeId]);
+  }, [values.systemContextTypeId]);
 
   useEffect(() => {
     setFieldValue('contextTypeColumns', allOptions);
-  }, [data, values.contextTypeId]);
+  }, [data, values.systemContextTypeId]);
 
   return (
     <FilterDropDown

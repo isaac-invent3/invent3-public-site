@@ -30,7 +30,7 @@ const GenerateReport = () => {
         join: 1,
       },
     ],
-    contextTypeId: undefined,
+    systemContextTypeId: undefined,
     contextTypeColumns: [],
     contextTypeName: undefined,
     startDate: '',
@@ -66,7 +66,6 @@ const GenerateReport = () => {
 
   const { values, setFieldValue } = formik;
 
-
   return (
     <div>
       <Flex width="full" direction="column" pb="24px" pt="12px">
@@ -100,7 +99,8 @@ const GenerateReport = () => {
                       selectName="systemContextTypeId"
                       selectTitle="Select from Table"
                       isInvalid={
-                        formik.submitCount > 0 && formik.errors.contextTypeId
+                        formik.submitCount > 0 &&
+                        formik.errors.systemContextTypeId
                           ? true
                           : false
                       }
@@ -108,9 +108,12 @@ const GenerateReport = () => {
                         setFieldValue('contextTypeId', option.value);
                       }}
                     />
-                    {formik.submitCount > 0 && formik.errors.contextTypeId && (
-                      <ErrorMessage>{formik.errors.contextTypeId}</ErrorMessage>
-                    )}
+                    {formik.submitCount > 0 &&
+                      formik.errors.systemContextTypeId && (
+                        <ErrorMessage>
+                          {formik.errors.systemContextTypeId}
+                        </ErrorMessage>
+                      )}
                   </VStack>
                 </FormInputWrapper>
 
@@ -125,44 +128,10 @@ const GenerateReport = () => {
                   <VStack width="full" spacing="12px" alignItems="flex-start">
                     <SystemContextColumnsSelect
                       selectedOptions={values.contextTypeColumns}
-                      selectedContextTypeId={values.contextTypeId}
+                      selectedContextTypeId={values.systemContextTypeId}
                     />
                   </VStack>
                 </FormInputWrapper>
-
-                {/* <FormInputWrapper
-                  sectionMaxWidth="141px"
-                  spacing="24px"
-                  description="Add name that users can likely search with"
-                  title="Date Range"
-                  isRequired
-                >
-                  <VStack width="full" spacing="12px" alignItems="flex-start">
-                    <DateTimeButtons
-                      buttonVariant="secondary"
-                      includeTime={false}
-                      isRange
-                      customDateHeader="Date"
-                      customButtonLabel="Select Start & End Date"
-                      showPredefinedDates={false}
-                      range={{
-                        startDate: parseDate(formik.values.startDate),
-                        endDate: parseDate(formik.values.endDate),
-                      }}
-                      handleRange={(info) => {
-                        formik.setFieldValue(
-                          'startDate',
-                          formatDate(info.startDate)
-                        );
-
-                        formik.setFieldValue(
-                          'endDate',
-                          formatDate(info.endDate)
-                        );
-                      }}
-                    />
-                  </VStack>
-                </FormInputWrapper> */}
 
                 <VStack gridColumn="span 3">
                   <FormInputWrapper

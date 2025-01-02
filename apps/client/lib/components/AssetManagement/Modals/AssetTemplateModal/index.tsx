@@ -15,6 +15,9 @@ import { setAsset } from '~/lib/redux/slices/AssetSlice';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 import AssetDetail from '../../AssetDetail';
 import AssetTable from '../../Common/AssetTable';
+import GeneralFilter from '../../Filters/GeneralFilter';
+import _ from 'lodash';
+import { generateSearchCriterion } from '@repo/utils';
 
 interface TablePopoverProps {
   data: Asset;
@@ -56,7 +59,6 @@ const AssetTemplateModal = (props: AssetTemplateModalProps) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const dispatch = useAppDispatch();
-  const asset = useAppSelector((state) => state.asset.asset);
   const {
     isOpen: isOpenDetail,
     onClose: onCloseDetail,
@@ -77,17 +79,60 @@ const AssetTemplateModal = (props: AssetTemplateModalProps) => {
   );
   const { handleSubmit } = useCustomMutation();
   const [showDetails, setShowDetails] = useState(false);
+  const { assetFilter: filterData, asset } = useAppSelector(
+    (state) => state.asset
+  );
 
+  // Checks if all filterdata is empty
+  const isFilterEmpty = _.every(
+    filterData,
+    (value) => _.isArray(value) && _.isEmpty(value)
+  );
+
+  // Search Criterion
   const searchCriterion = {
-    criterion: [
-      {
-        columnName: 'assetName',
-        columnValue: search,
-        operation: OPERATORS.Contains,
-      },
-    ],
-    pageNumber,
-    pageSize,
+    ...(search && {
+      criterion: [
+        {
+          columnName: 'assetName',
+          columnValue: search,
+          operation: OPERATORS.Contains,
+        },
+      ],
+    }),
+    ...(!isFilterEmpty && {
+      orCriterion: [
+        ...filterData.category.map((item) => [
+          ...generateSearchCriterion(
+            'categoryId',
+            [item.value],
+            OPERATORS.Equals
+          ),
+        ]),
+        ...filterData.status.map((item) => [
+          ...generateSearchCriterion(
+            'statusId',
+            [item.value],
+            OPERATORS.Equals
+          ),
+        ]),
+        ...filterData.region.map((item) => [
+          ...generateSearchCriterion('stateId', [item.value], OPERATORS.Equals),
+        ]),
+        ...filterData.area.map((item) => [
+          ...generateSearchCriterion('lgaId', [item.value], OPERATORS.Equals),
+        ]),
+        ...filterData.branch.map((item) => [
+          ...generateSearchCriterion(
+            'facilityId',
+            [item.value],
+            OPERATORS.Equals
+          ),
+        ]),
+      ].filter((criterion) => criterion.length > 0),
+    }),
+    pageNumber: pageNumber,
+    pageSize: pageSize,
   };
 
   const handleSearch = useCallback(async () => {
@@ -128,11 +173,16 @@ const AssetTemplateModal = (props: AssetTemplateModalProps) => {
         setSearch={setSearch}
         setPageNumber={setPageNumber}
         setPageSize={setPageSize}
+        filters={
+          <Flex width="full" pb="16px">
+            <GeneralFilter handleApplyFilter={handleSearch} />
+          </Flex>
+        }
       >
         <Flex width="full" direction="column">
           <AssetTable
             data={
-              search && searchData
+              (search || !isFilterEmpty) && searchData
                 ? searchData.items
                 : (data?.data?.items ?? [])
             }

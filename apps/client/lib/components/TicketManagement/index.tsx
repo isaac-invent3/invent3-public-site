@@ -12,9 +12,13 @@ import {
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Header from './Header';
-// import { FilterInput } from '~/lib/interfaces/asset/general.interface';
 import Filters from './Filters';
 import TicketTable from './TicketTable';
+import TicketOverlays from './Overlays';
+import { useGetTicketByIdQuery } from '~/lib/redux/services/ticket.services';
+import { useAppDispatch } from '~/lib/redux/hooks';
+import { setSelectedTicket } from '~/lib/redux/slices/TicketSlice';
+import { Ticket } from '~/lib/interfaces/ticket.interfaces';
 
 const ALlTabs = [
   'New Tickets',
@@ -24,6 +28,16 @@ const ALlTabs = [
   'Completed',
 ];
 
+const getTicketCategory = (data: Ticket) => {
+  if (data.isScheduled) {
+    return 'scheduled';
+  }
+  if (data.assignedTo) {
+    return 'assigned';
+  }
+  return 'new';
+};
+
 const TicketManagement = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -31,6 +45,12 @@ const TicketManagement = () => {
   // eslint-disable-next-line no-unused-vars
   const [search, setSearch] = useState('');
   const { onToggle, isOpen } = useDisclosure();
+  const ticketId = searchParams.get('id');
+  const dispatch = useAppDispatch();
+  const { data } = useGetTicketByIdQuery(
+    { id: +ticketId! },
+    { skip: !ticketId }
+  );
 
   // Retrieve the `tab` parameter from URL on mount
   useEffect(() => {
@@ -47,6 +67,19 @@ const TicketManagement = () => {
       router.push(`/ticket-management?tab=${tabName}`);
     }
   };
+
+  // Display Ticket based on the search param id if it exists
+  useEffect(() => {
+    if (data?.data) {
+      dispatch(
+        setSelectedTicket({
+          action: ['view'],
+          category: getTicketCategory(data?.data),
+          data: data?.data,
+        })
+      );
+    }
+  }, [data]);
 
   return (
     <Flex width="full" direction="column" pb="24px">
@@ -94,6 +127,7 @@ const TicketManagement = () => {
           </TabPanels>
         </Tabs>
       </Flex>
+      <TicketOverlays />
     </Flex>
   );
 };

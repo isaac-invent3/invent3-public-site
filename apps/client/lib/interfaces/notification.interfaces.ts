@@ -11,4 +11,32 @@ interface INotification {
   userProfilePicture: string | null;
 }
 
-export type { INotification };
+interface Notification {
+  rowId: number;
+  notificationId: number;
+  guid: string;
+  systemContextTypeId: number;
+  contextId: number;
+  isRead: boolean;
+  readAt: string;
+  message: string;
+  isDeleted: boolean;
+  dateCreated: string;
+  notificationTypeId: number;
+  notificationTypeName: string;
+  notificationPriorityId: number;
+  notificationPriorityName: string;
+  deliveryMethodId: number;
+  deliveryMethod: string;
+  notificationTriggerId: number;
+  notificationTriggerEventTypeId: number;
+  notificationTriggerEventTypeName: string;
+  notificationTriggerTypeId: number;
+  notificationTriggerTypeName: string;
+  userId: number;
+  username: string;
+  firstName: string;
+  lastName: string;
+}
+
+export type { INotification, Notification };

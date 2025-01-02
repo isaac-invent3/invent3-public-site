@@ -150,7 +150,7 @@ const NotificationPopover = () => {
             </VStack>
           </PopoverHeader>
           <PopoverBody pt="20px" px="20px" overflowY="auto">
-            <NotifcationTabs />
+            {isOpen && <NotifcationTabs />}
           </PopoverBody>
         </PopoverContent>
       </Popover>

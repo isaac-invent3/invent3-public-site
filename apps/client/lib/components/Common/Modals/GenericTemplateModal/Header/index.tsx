@@ -11,6 +11,7 @@ interface HeaderProps {
   setShowDetails: React.Dispatch<React.SetStateAction<boolean>>;
   showDetails: boolean;
   hasFilters: boolean;
+  searchPlaceholder?: string;
 }
 const Header = (props: HeaderProps) => {
   const {
@@ -21,6 +22,7 @@ const Header = (props: HeaderProps) => {
     showDetails,
     setShowDetails,
     hasFilters,
+    searchPlaceholder,
   } = props;
   return (
     <ModalHeader m={0} p={0} mt="32px" mx="24px">
@@ -55,7 +57,7 @@ const Header = (props: HeaderProps) => {
           >
             <SearchInput
               setSearch={setSearch}
-              placeholderText="Search"
+              placeholderText={searchPlaceholder ?? 'Search'}
               containerStyle={{
                 border: '1px solid #DADFE5',
                 rounded: '8px',

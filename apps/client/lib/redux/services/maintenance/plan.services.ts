@@ -131,7 +131,7 @@ export const maintenancePlanApi = createApi({
       }),
     }),
     searchMaintenancePlan: builder.mutation<
-      ListResponse<MaintenancePlan>,
+      BaseApiResponse<ListResponse<MaintenancePlan>>,
       SearchQuery
     >({
       query: (body) => ({

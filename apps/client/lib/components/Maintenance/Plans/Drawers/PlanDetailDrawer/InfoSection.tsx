@@ -21,7 +21,10 @@ const InfoSection = (props: InfoSectionProps) => {
     },
     {
       label: 'No. Of Asset:',
-      value: 'N/A',
+      value:
+        data?.totalMemberAssetsCount && data?.totalMemberAssetsCount < 9
+          ? `0${data?.totalMemberAssetsCount}`
+          : data?.totalMemberAssetsCount,
     },
   ];
 
@@ -45,8 +48,8 @@ const InfoSection = (props: InfoSectionProps) => {
     },
     {
       label: 'End Date:',
-      value: data?.startDate
-        ? dateFormatter(data?.startDate, 'DD / MM / YYYY')
+      value: data?.endDate
+        ? dateFormatter(data?.endDate, 'DD / MM / YYYY')
         : 'N/A',
     },
   ];

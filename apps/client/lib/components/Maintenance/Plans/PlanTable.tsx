@@ -2,13 +2,7 @@ import React, { useMemo } from 'react';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import { dateFormatter } from '~/lib/utils/Formatters';
-import { Icon } from '@chakra-ui/react';
-import { ThreeVerticalDotsIcon } from '../../CustomIcons';
 import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
-
-const Dots = () => {
-  return <Icon as={ThreeVerticalDotsIcon} boxSize="14px" color="neutral.700" />;
-};
 
 interface MaintenancePlanProps {
   data: MaintenancePlan[];
@@ -83,7 +77,7 @@ const MaintenancePlanTable = (props: MaintenancePlanProps) => {
           header: 'Plan Scope',
           enableSorting: false,
         }),
-        columnHelper.accessor('openTasks', {
+        columnHelper.accessor('totalMemberAssetsCount', {
           cell: (info) => info.getValue() ?? 'N/A',
           header: 'No. Of Assets.',
           enableSorting: false,
@@ -146,7 +140,6 @@ const MaintenancePlanTable = (props: MaintenancePlanProps) => {
           if (PopoverComponent) {
             return PopoverComponent(info.row.original);
           }
-          return <Dots />;
         },
         header: '',
         enableSorting: false,

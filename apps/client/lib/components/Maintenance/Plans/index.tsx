@@ -16,6 +16,7 @@ import { FilterDisplay } from '@repo/ui/components';
 import MaintenancePlanTable from './PlanTable';
 import { ListResponse } from '@repo/interfaces';
 import { generateSearchCriterion } from '@repo/utils';
+import PopoverAction from './PopoverAction';
 
 export const initialFilterData = {
   planType: [],
@@ -94,7 +95,7 @@ const Plans = (props: PlansProp) => {
   const handleSearch = useCallback(async () => {
     if (search || !isFilterEmpty) {
       const response = await handleSubmit(searchPlan, searchCriterion, '');
-      response?.data && setSearchData(response?.data);
+      response?.data?.data && setSearchData(response?.data?.data);
     }
   }, [searchPlan, searchCriterion]);
 
@@ -146,6 +147,7 @@ const Plans = (props: PlansProp) => {
         setPageNumber={setCurrentPage}
         pageSize={pageSize}
         setPageSize={setPageSize}
+        PopoverComponent={(plan) => PopoverAction(plan)}
       />
     </Flex>
   );

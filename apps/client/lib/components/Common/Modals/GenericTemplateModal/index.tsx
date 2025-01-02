@@ -23,6 +23,7 @@ interface GenericTemplateModalProps {
   children: React.ReactNode;
   filters?: React.ReactNode;
   footer?: React.ReactNode;
+  searchPlaceholder?: string;
 }
 const GenericTemplateModal = (props: GenericTemplateModalProps) => {
   const {
@@ -40,6 +41,7 @@ const GenericTemplateModal = (props: GenericTemplateModalProps) => {
     filters,
     totalPages,
     footer,
+    searchPlaceholder,
   } = props;
   const { isOpen: openFilter, onToggle } = useDisclosure();
   const modalBodyRef = useRef<HTMLDivElement | null>(null);
@@ -65,6 +67,7 @@ const GenericTemplateModal = (props: GenericTemplateModalProps) => {
         showDetails={showDetails}
         setShowDetails={setShowDetails}
         hasFilters={!!filters}
+        searchPlaceholder={searchPlaceholder}
       />
       <ModalBody m={0} p={0} px="24px" ref={modalBodyRef}>
         <Flex />

@@ -28,7 +28,7 @@ export const ticketApi = createApi({
       BaseApiResponse<Ticket>,
       CreateTicketPayload
     >({
-      query: (body: any) => ({
+      query: (body) => ({
         url: `/Tickets`,
         method: 'POST',
         headers: getHeaders(),
@@ -61,15 +61,15 @@ export const ticketApi = createApi({
       BaseApiResponse<ListResponse<Ticket>>,
       { tabScopeName: TicketCategory } & QueryParams
     >({
-      query: (data: any) => ({
+      query: (data) => ({
         url: generateQueryStr(`/Tickets/GetTicketsByTabScope?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
       providesTags: ['allTickets'],
     }),
-    getTicketById: builder.query<BaseApiResponse<Ticket>, SearchQuery>({
-      query: (id: any) => ({
+    getTicketById: builder.query<BaseApiResponse<Ticket>, { id: number }>({
+      query: ({ id }) => ({
         url: `/Tickets/${id}`,
         method: 'GET',
         headers: getHeaders(),
@@ -79,7 +79,7 @@ export const ticketApi = createApi({
       BaseApiResponse<ListResponse<Ticket>>,
       SearchQuery
     >({
-      query: (body: any) => ({
+      query: (body) => ({
         url: `/Tickets/Search`,
         method: 'POST',
         headers: getHeaders(),
@@ -87,7 +87,7 @@ export const ticketApi = createApi({
       }),
     }),
     scheduleTickets: builder.mutation({
-      query: (body: any) => ({
+      query: (body) => ({
         url: `/Invent3Pro/CreateScheduleAndTasks`,
         method: 'POST',
         headers: getHeaders(),
@@ -99,7 +99,7 @@ export const ticketApi = createApi({
       BaseApiResponse<ListResponse<TicketTypeDetails>>,
       QueryParams
     >({
-      query: (data: any) => ({
+      query: (data) => ({
         url: generateQueryStr(`/TicketTypes?`, data),
         method: 'GET',
         headers: getHeaders(),
@@ -111,7 +111,7 @@ export const ticketApi = createApi({
       BaseApiResponse<ListResponse<TicketTypeDetails>>,
       SearchQuery
     >({
-      query: (body: any) => ({
+      query: (body) => ({
         url: `/TicketTypes/Search`,
         method: 'POST',
         headers: getHeaders(),

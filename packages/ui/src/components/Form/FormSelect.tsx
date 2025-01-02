@@ -16,8 +16,10 @@ const FormSelect = (props: FormSelectProps) => {
   return (
     <SelectInput
       {...field}
-      isInvalid={meta.touched && !!meta.error}
       {...props}
+      isInvalid={
+        props.isInvalid ? props.isInvalid : meta.touched && !!meta.error
+      }
       errorMessage={meta.error}
       selectedOption={meta.value}
       handleSelect={(option) => {

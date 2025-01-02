@@ -9,11 +9,19 @@ import {
   useGetAllMaintenancePlanQuery,
   useSearchMaintenancePlanMutation,
 } from '~/lib/redux/services/maintenance/plan.services';
-import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
+import {
+  MaintenancePlan,
+  PlanFilter,
+} from '~/lib/interfaces/maintenance.interfaces';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import MaintenancePlanTable from '~/lib/components/Maintenance/Plans/PlanTable';
 import { ListResponse } from '@repo/interfaces';
+import { initialFilterData } from '~/lib/components/Maintenance/Plans';
+import { Flex } from '@chakra-ui/react';
+import Filters from '~/lib/components/Maintenance/Plans/Filters';
+import { generateSearchCriterion } from '@repo/utils';
+import _ from 'lodash';
 
 interface ExistingMaintenancePlanModalProps {
   isOpen: boolean;
@@ -45,17 +53,50 @@ const ExistingMaintenancePlanModal = (
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   // eslint-disable-next-line no-unused-vars
   const [field, meta, helpers] = useField('maintenancePlans');
+  const [filterData, setFilterData] = useState<PlanFilter>(initialFilterData);
+
+  // Checks if all filterdata is empty
+  const isFilterEmpty = _.every(
+    filterData,
+    (value) => _.isArray(value) && _.isEmpty(value)
+  );
 
   const searchCriterion = {
-    criterion: [
-      {
-        columnName: 'planName',
-        columnValue: search,
-        operation: OPERATORS.Contains,
-      },
-    ],
-    pageNumber,
-    pageSize,
+    ...(search && {
+      criterion: [
+        {
+          columnName: 'planName',
+          columnValue: search,
+          operation: OPERATORS.Contains,
+        },
+      ],
+    }),
+    ...(!isFilterEmpty && {
+      orCriterion: [
+        ...filterData.planType.map((item) => [
+          ...generateSearchCriterion(
+            'planTypeId',
+            [item.value],
+            OPERATORS.Equals
+          ),
+        ]),
+        ...filterData.region.map((item) => [
+          ...generateSearchCriterion('stateId', [item.value], OPERATORS.Equals),
+        ]),
+        ...filterData.area.map((item) => [
+          ...generateSearchCriterion('lgaId', [item.value], OPERATORS.Equals),
+        ]),
+        ...filterData.branch.map((item) => [
+          ...generateSearchCriterion(
+            'facilityId',
+            [item.value],
+            OPERATORS.Equals
+          ),
+        ]),
+      ],
+    }),
+    pageNumber: pageNumber,
+    pageSize: pageSize,
   };
 
   const handleSearch = useCallback(async () => {
@@ -64,7 +105,7 @@ const ExistingMaintenancePlanModal = (
       searchCriterion,
       ''
     );
-    response?.data && setSearchData(response?.data);
+    response?.data?.data && setSearchData(response?.data?.data);
   }, [searchMaintenancePlan, searchCriterion]);
 
   // Removes Plans Duplicate
@@ -163,10 +204,21 @@ const ExistingMaintenancePlanModal = (
           Add Plan{selectedRows.length > 1 ? 's' : ''}
         </Button>
       }
+      filters={
+        <Flex width="full" pb="16px">
+          <Filters
+            filterData={filterData}
+            setFilterData={setFilterData}
+            handleApplyFilter={handleSearch}
+          />
+        </Flex>
+      }
     >
       <MaintenancePlanTable
         data={removeDuplicate(
-          search && searchData ? searchData.items : (data?.data?.items ?? [])
+          (search || !isFilterEmpty) && searchData
+            ? searchData.items
+            : (data?.data?.items ?? [])
         )}
         showFooter={true}
         emptyLines={3}

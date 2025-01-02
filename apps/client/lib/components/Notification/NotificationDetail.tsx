@@ -1,9 +1,10 @@
 import { Avatar, Flex, HStack, Icon, Text } from '@chakra-ui/react';
 
-import { INotification } from '~/lib/interfaces/notification.interfaces';
+import { Notification } from '~/lib/interfaces/notification.interfaces';
 import { NotificationInfoIcon } from '../CustomIcons';
 import moment from 'moment';
 import Link from 'next/link';
+import { NOTIFICATION_EVENT_TYPE_ENUM } from '~/lib/utils/constants';
 
 const textStyle = { fontSize: '9.33px', lineHeight: '11.09px' };
 
@@ -20,18 +21,15 @@ function formatDate(date: string) {
   }
 }
 
-const NotificationText = ({
-  notification,
-}: {
-  notification: INotification;
-}) => {
-  const { isRead, user, title, contextID } = notification;
+const NotificationText = ({ notification }: { notification: Notification }) => {
+  const { isRead, firstName, lastName, message, contextId } = notification;
   const keyTextColor = !isRead ? 'black' : 'neutral.600';
+  const name = `${firstName} ${lastName}`;
 
-  switch (notification.type) {
-    case 1:
+  switch (notification.notificationTriggerEventTypeId) {
+    case NOTIFICATION_EVENT_TYPE_ENUM.TICKET_CREATED:
       return (
-        <Link href={`/ticket?id=${contextID}`}>
+        <Link href={`/ticket-management?id=${contextId}`}>
           <Text color="neutral.600" {...textStyle}>
             <Text
               color={keyTextColor}
@@ -39,7 +37,7 @@ const NotificationText = ({
               fontWeight={800}
               {...textStyle}
             >
-              {user}
+              {name}
             </Text>{' '}
             created a new ticket{' '}
             <Text
@@ -48,7 +46,7 @@ const NotificationText = ({
               as="span"
               {...textStyle}
             >
-              {title}
+              {message}
             </Text>
           </Text>
         </Link>
@@ -56,11 +54,11 @@ const NotificationText = ({
 
     case 2:
       return (
-        <Link href={`/ticket?id=${contextID}`}>
+        <Link href={`/ticket?id=${contextId}`}>
           <Text color="neutral.600" {...textStyle}>
             A new ticket{' '}
             <Text color={keyTextColor} as="span" {...textStyle}>
-              {title}
+              {message}
             </Text>{' '}
             has been assigned to you
           </Text>
@@ -69,7 +67,7 @@ const NotificationText = ({
 
     case 3:
       return (
-        <Link href={`/ticket?id=${contextID}`}>
+        <Link href={`/ticket?id=${contextId}`}>
           <Text color="neutral.600" {...textStyle}>
             <Text
               color={keyTextColor}
@@ -77,7 +75,7 @@ const NotificationText = ({
               fontWeight={800}
               {...textStyle}
             >
-              {user}
+              {name}
             </Text>{' '}
             scheduled the ticket{' '}
             <Text
@@ -86,7 +84,7 @@ const NotificationText = ({
               {...textStyle}
               fontWeight={600}
             >
-              {title}
+              {message}
             </Text>
           </Text>
         </Link>
@@ -94,7 +92,7 @@ const NotificationText = ({
 
     case 4:
       return (
-        <Link href={`/ticket?id=${contextID}`}>
+        <Link href={`/ticket?id=${contextId}`}>
           <Text color="neutral.600" {...textStyle}>
             A new ticket{' '}
             <Text
@@ -103,7 +101,7 @@ const NotificationText = ({
               fontWeight={800}
               {...textStyle}
             >
-              {title}
+              {message}
             </Text>{' '}
             has been assigned to you.
           </Text>
@@ -113,18 +111,19 @@ const NotificationText = ({
     default:
       return (
         <Text color="neutral.600" {...textStyle}>
-          {notification.title}
+          {notification.message}
         </Text>
       );
   }
 };
 
 interface NotificationDetailProps {
-  notification: INotification;
+  notification: Notification;
 }
 const NotificationDetail = (props: NotificationDetailProps) => {
   const { notification } = props;
-  const { isRead, user, createdDate } = notification;
+  const { isRead, firstName, lastName, dateCreated } = notification;
+  const name = `${firstName} ${lastName}`;
 
   return (
     <HStack
@@ -145,7 +144,7 @@ const NotificationDetail = (props: NotificationDetailProps) => {
           visibility={isRead ? 'hidden' : 'visible'}
         />
         <HStack spacing="10.67px">
-          {user ? (
+          {name ? (
             <Avatar width="26.67px" height="26.67px" />
           ) : (
             <Flex
@@ -164,7 +163,7 @@ const NotificationDetail = (props: NotificationDetailProps) => {
         </HStack>
       </HStack>
       <Text color="neutral.600" {...textStyle} whiteSpace="nowrap">
-        {formatDate(createdDate)}
+        {formatDate(dateCreated)}
       </Text>
     </HStack>
   );

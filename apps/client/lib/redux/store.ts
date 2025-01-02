@@ -24,6 +24,7 @@ import { maintenanceFrequencyApi } from './services/maintenance/frequency.servic
 import { maintenancePlanApi } from './services/maintenance/plan.services';
 import { maintenanceScheduleApi } from './services/maintenance/schedule.services';
 import { maintenanceTypeApi } from './services/maintenance/type.services';
+import { notificationApi } from './services/notification.services';
 import { reportApi } from './services/reports.services';
 import { taskApi } from './services/task/general.services';
 import { taskInstanceApi } from './services/task/instance.services';
@@ -125,7 +126,13 @@ const rootReducer = combineReducers({
 
   // Vendor-related APIs
   [vendorsApi.reducerPath]: vendorsApi.reducer,
+
+  // Notification APIs
+  [notificationApi.reducerPath]: notificationApi.reducer,
+
+  // Utlis APIS
   [systemContextTypesApi.reducerPath]: systemContextTypesApi.reducer,
+
   asset: assetSlice,
   general: generalSlice,
   dashboard: dashboardSlice,
@@ -162,6 +169,9 @@ export const makeStore = () => {
         maintenanceScheduleApi.middleware,
         maintenanceTypeApi.middleware,
         scheduleInstanceApi.middleware,
+
+        // Notification APIs
+        notificationApi.middleware,
 
         // Task-related APIs
         taskApi.middleware,

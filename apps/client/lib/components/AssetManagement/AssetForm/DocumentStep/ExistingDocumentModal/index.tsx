@@ -47,12 +47,21 @@ const ExistingDocumentModal = (props: ExistingDocumentModalProps) => {
   const [field, meta, helpers] = useField('documents');
 
   const searchCriterion = {
-    criterion: [
-      {
-        columnName: 'documentName',
-        columnValue: search,
-        operation: OPERATORS.Contains,
-      },
+    orCriterion: [
+      [
+        {
+          columnName: 'documentName',
+          columnValue: search,
+          operation: OPERATORS.Contains,
+        },
+      ],
+      [
+        {
+          columnName: 'createdBy',
+          columnValue: search,
+          operation: OPERATORS.Contains,
+        },
+      ],
     ],
     pageNumber,
     pageSize,
@@ -178,6 +187,7 @@ const ExistingDocumentModal = (props: ExistingDocumentModalProps) => {
       setSearch={setSearch}
       setPageNumber={setPageNumber}
       setPageSize={setPageSize}
+      searchPlaceholder={'Search by name or creator'}
       footer={
         <Button
           customStyles={{ width: 'max-content', mt: '20px' }}

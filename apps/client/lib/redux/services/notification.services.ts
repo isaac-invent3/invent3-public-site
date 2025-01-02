@@ -17,7 +17,7 @@ export const notificationApi = createApi({
       BaseApiResponse<ListResponse<Notification>>,
       QueryParams
     >({
-      query: (data: any) => ({
+      query: (data) => ({
         url: generateQueryStr(`/Notifications?`, data),
         method: 'GET',
         headers: getHeaders(),

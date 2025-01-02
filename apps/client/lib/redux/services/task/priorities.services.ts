@@ -32,7 +32,7 @@ export const taskPrioritiesApi = createApi({
       BaseApiResponse<ListResponse<TaskPriority>>,
       SearchQuery
     >({
-      query: (body: any) => ({
+      query: (body) => ({
         url: `/TaskPriorities/Search`,
         method: 'POST',
         headers: getHeaders(),

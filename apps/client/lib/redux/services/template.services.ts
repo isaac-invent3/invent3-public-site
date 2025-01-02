@@ -36,7 +36,7 @@ export const templateApi = createApi({
       }),
     }),
     searchTemplates: builder.mutation({
-      query: (body: any) => ({
+      query: (body) => ({
         url: `/Templates/Search`,
         method: 'POST',
         headers: getHeaders(),

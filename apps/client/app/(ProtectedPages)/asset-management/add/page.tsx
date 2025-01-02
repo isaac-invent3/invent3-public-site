@@ -136,7 +136,7 @@ export default function Page() {
         description: asset.description,
         brandName: asset.brandName,
         modelRef: asset.modelRef,
-        serialNo: asset.serialNo,
+        serialNo: null,
         conditionId: asset.conditionId,
         categoryId: asset.categoryId,
         subCategoryId: asset.subCategoryId,

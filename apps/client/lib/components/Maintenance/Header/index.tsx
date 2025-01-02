@@ -51,7 +51,7 @@ const Header = () => {
           <ActionButtonPopover
             onOpenTemplateModal={onOpenPlanTemplate}
             newRoute="/maintenance/plans/add"
-            buttonLabel="Create New Plan"
+            buttonLabel="Add New Plan"
             linkLabel="Create a New Plan"
             modalLabel="Create From Template"
           >
@@ -67,7 +67,7 @@ const Header = () => {
           <ActionButtonPopover
             onOpenTemplateModal={onOpenScheduleTemplate}
             newRoute="/maintenance/schedules/add"
-            buttonLabel="Create New Schedule"
+            buttonLabel="Add New Schedule"
             linkLabel="Create a New Schedule"
             modalLabel="Create From Template"
           >

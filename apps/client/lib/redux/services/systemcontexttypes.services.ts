@@ -1,9 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import {
-  BaseApiResponse,
-  ListResponse,
-  SearchQuery,
-} from '@repo/interfaces';
+import { BaseApiResponse, ListResponse, SearchQuery } from '@repo/interfaces';
 import { Report } from '~/lib/interfaces/report.interfaces';
 import {
   GetSystemContextTypeColumnsPayload,
@@ -54,7 +50,7 @@ export const systemContextTypesApi = createApi({
       BaseApiResponse<ListResponse<SystemContextType>>,
       SearchQuery
     >({
-      query: (body: any) => ({
+      query: (body) => ({
         url: `/SystemContextTypes/Search`,
         method: 'POST',
         headers: getHeaders(),
@@ -67,5 +63,5 @@ export const systemContextTypesApi = createApi({
 export const {
   useGetReportableSystemContextTypesQuery,
   useSearchContextTypesMutation,
-  useGetSystemContextTypeColumnsInfoQuery
+  useGetSystemContextTypeColumnsInfoQuery,
 } = systemContextTypesApi;

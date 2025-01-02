@@ -24,7 +24,7 @@ const Header = () => {
         <ActionButtonPopover
           onOpenTemplateModal={onOpen}
           newRoute="/asset-management/add"
-          buttonLabel="Create New Asset"
+          buttonLabel="Add New Asset"
           linkLabel="Create a New Asset"
           modalLabel="Create From Existing"
         >

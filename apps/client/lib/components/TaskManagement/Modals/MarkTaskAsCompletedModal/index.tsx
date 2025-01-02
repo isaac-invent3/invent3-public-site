@@ -110,7 +110,7 @@ const MarkTaskAsCompletedModal = (props: MarkTaskAsCompletedModalProps) => {
                   >
                     Mark as completed?
                   </Heading>
-                  <Text color="neutral.700" size="md">
+                  <Text color="neutral.700" fontWeight={400}>
                     You are about to mark this{' '}
                     <Text as="span" fontWeight={800}>
                       {data?.taskInstanceId}
@@ -121,7 +121,7 @@ const MarkTaskAsCompletedModal = (props: MarkTaskAsCompletedModalProps) => {
 
                 {/* Main Form Starts Here */}
                 <VStack width="full" spacing="24px">
-                  <Text color="neutral.700" size="md">
+                  <Text color="neutral.700" fontWeight={400}>
                     Kindly specify how much is the actual cost of completing
                     this task
                   </Text>

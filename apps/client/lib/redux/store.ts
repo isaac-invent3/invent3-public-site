@@ -177,6 +177,7 @@ export const makeStore = () => {
         taskApi.middleware,
         taskInstanceApi.middleware,
         taskPrioritiesApi.middleware,
+        taskTypeApi.middleware,
         taskStatusApi.middleware,
         templateApi.middleware,
         ticketApi.middleware,

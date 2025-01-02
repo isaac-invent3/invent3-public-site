@@ -39,6 +39,7 @@ const BulkActions = () => {
           fontWeight={700}
           pl="12px"
           pr="8px"
+          onClick={() => handleBulkActionButtonClick(() => {})}
         >
           Transfer Assets
         </Button>
@@ -51,6 +52,7 @@ const BulkActions = () => {
           fontWeight={700}
           pl="12px"
           pr="8px"
+          onClick={() => handleBulkActionButtonClick(() => {})}
         >
           Dispose Assets
         </Button>

@@ -1,7 +1,12 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../baseQueryWithReauth';
-import { BaseApiResponse, ListResponse, QueryParams, SearchQuery } from '@repo/interfaces';
+import {
+  BaseApiResponse,
+  ListResponse,
+  QueryParams,
+  SearchQuery,
+} from '@repo/interfaces';
 import { User } from '~/lib/interfaces/user.interfaces';
 
 const getHeaders = () => ({
@@ -16,7 +21,7 @@ export const userApi = createApi({
       BaseApiResponse<ListResponse<User>>,
       QueryParams
     >({
-      query: (data: any) => ({
+      query: (data) => ({
         url: generateQueryStr(`/Users?`, data),
         method: 'GET',
         headers: getHeaders(),
@@ -27,7 +32,7 @@ export const userApi = createApi({
       BaseApiResponse<ListResponse<User>>,
       SearchQuery
     >({
-      query: (body: any) => ({
+      query: (body) => ({
         url: `/Users/Search`,
         method: 'POST',
         headers: getHeaders(),

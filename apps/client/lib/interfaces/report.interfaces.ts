@@ -85,11 +85,6 @@ interface ScheduleReportPayload {
   dayOccurrences: string[];
   weekOccurrences: string[];
   monthOccurrences: string[];
-  // yearOccurrences: {
-  //   additionalProp1: [0];
-  //   additionalProp2: [0];
-  //   additionalProp3: [0];
-  // };
   recipientIds: number[] | string[];
   createdBy: string;
 }
@@ -106,17 +101,29 @@ interface GenerateReportResponse {
   model: Record<string, any>;
 }
 
+interface SaveReportPayload {
+  reportName: string;
+  description: string;
+  isDefaultReport: boolean;
+  systemContextTypeId: number;
+  executedSearchRequest: {
+    criterion: GenerateReportCriterion[];
+  };
+  createdBy: string;
+}
+
 export type {
   ContextTypeColumn,
   CreateReportPayload,
   GenerateReportCriterion,
   GenerateReportDetails,
   GenerateReportPayload,
+  GenerateReportResponse,
   Report,
   ReportDashboardValuesResponse,
   ReportFilterInput,
+  SaveReportPayload,
   ScheduleReportPayload,
   ViewReportTableData,
   ViewReportTableDataPayload,
-  GenerateReportResponse,
 };

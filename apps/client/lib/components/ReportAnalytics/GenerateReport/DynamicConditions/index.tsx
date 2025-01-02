@@ -28,11 +28,11 @@ const DynamicConditions = () => {
 
   const { data, isLoading } = useGetSystemContextTypeColumnsInfoQuery(
     {
-      systemContextTypeId: values.contextTypeId!,
+      systemContextTypeId: values.systemContextTypeId!,
       pageNumber: 1,
       pageSize: DEFAULT_PAGE_SIZE,
     },
-    { skip: !values.contextTypeId }
+    { skip: !values.systemContextTypeId }
   );
 
   const selectedColumns = values.contextTypeColumns;

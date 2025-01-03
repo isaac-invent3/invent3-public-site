@@ -64,9 +64,15 @@ type DashboardValuesObj = {
   reportId: number;
   statValue: number;
 };
+type FacilityWithTopAssets = {
+  facilityId: number;
+  facilityName: string
+  totalAssets: number;
+};
+
 interface ReportDashboardValuesResponse {
   newAssets: DashboardValuesObj;
-  topFiveBranchesWithAssets: Record<string, number> | undefined;
+  topFiveFacilitiesWithAssets: FacilityWithTopAssets[]
   totalAssets: DashboardValuesObj;
   totalMaintenanceCost: DashboardValuesObj;
   totalAssetsDisposed: DashboardValuesObj;
@@ -126,4 +132,5 @@ export type {
   ScheduleReportPayload,
   ViewReportTableData,
   ViewReportTableDataPayload,
+  FacilityWithTopAssets,
 };

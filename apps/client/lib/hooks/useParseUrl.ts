@@ -11,8 +11,7 @@ interface ParseUrlDataResponse {
 type SystemContextDetail =
   (typeof SYSTEM_CONTEXT_DETAILS)[keyof typeof SYSTEM_CONTEXT_DETAILS];
 
-
-  /**
+/**
  * Custom hook to parse URL data and extract relevant context information.
  *
  * This hook processes the provided `FormattedUrl` object to determine the system context
@@ -55,7 +54,6 @@ const useParseUrlData = (
 
   for (let i = searchParamKeys.length - 1; i >= 0; i--) {
     const key = searchParamKeys[i];
-    console.log({ key });
 
     if (!key || !searchParams[key]) continue;
 
@@ -71,11 +69,26 @@ const useParseUrlData = (
 
   for (let i = pathnames.length - 1; i >= 0; i--) {
     const segment = pathnames[i];
+
     if (!segment) continue;
 
     const systemContextDetail = getSystemContextDetail(segment, 'route');
 
     if (systemContextDetail) {
+      if (systemContextDetail.route === 'maintenance') {
+        switch (searchParams['tab']) {
+          case 'Schedules':
+            return {
+              systemContextId: SYSTEM_CONTEXT_DETAILS.MAINTENANCE_SCHEDULES.id,
+              contextId: null,
+            };
+          default:
+            return {
+              systemContextId: SYSTEM_CONTEXT_DETAILS.MAINTENANCE_PLANS.id,
+              contextId: null,
+            };
+        }
+      }
       return {
         systemContextId: systemContextDetail.id,
         contextId: null,

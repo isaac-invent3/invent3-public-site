@@ -197,6 +197,11 @@ const SYSTEM_CONTEXT_DETAILS = {
     route: 'schedules',
     slug: 'maintenanceScheduleId',
   },
+  MAINTENANCE_SCHEDULE_INSTANCE: {
+    id: SYSTEM_CONTEXT_TYPE.MAINTENANCE_SCHEDULE_INSTANCES,
+    route: 'schedules',
+    slug: 'maintenanceScheduleInstanceId',
+  },
   TASKS: {
     id: SYSTEM_CONTEXT_TYPE.TASKS,
     route: 'task-management',

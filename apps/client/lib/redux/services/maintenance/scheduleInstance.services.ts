@@ -56,7 +56,7 @@ export const scheduleInstanceApi = createApi({
     }),
     getScheduleInstanceByGuid: builder.query<
       BaseApiResponse<MaintenanceScheduleInstance>,
-      { instanceGuid: number | undefined }
+      { instanceGuid: string }
     >({
       query: ({ instanceGuid }) => ({
         url: `/MaintenanceScheduleInstances/${instanceGuid}`,

@@ -10,7 +10,13 @@ const GenericErrorState = (props: GenericErrorStateProps) => {
   const { title, subtitle } = props;
 
   return (
-    <VStack width="full" spacing="16px" height="full" justifyContent="center">
+    <VStack
+      width="full"
+      spacing="16px"
+      height="full"
+      minH="inherit"
+      justifyContent="center"
+    >
       <Icon as={InfoIcon} color="error.500" boxSize="40px" />
       <VStack width="full" spacing="8px">
         <Heading fontSize="32px" lineHeight="38.02px">

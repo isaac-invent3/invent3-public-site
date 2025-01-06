@@ -7,29 +7,45 @@ import {
   VStack,
 } from '@chakra-ui/react';
 
-import { MaintenanceScheduleInstance } from '~/lib/interfaces/maintenance.interfaces';
 import HeaderInfo from './HeaderInfo';
 import OtherInfo from './OtherInfo';
 import PlanDetail from './PlanDetail';
 import ModalButtons from './ModalButtons';
 import { CloseIcon } from '~/lib/components/CustomIcons';
+import { useGetScheduleInstanceByGuidQuery } from '~/lib/redux/services/maintenance/scheduleInstance.services';
+import { LoadingSpinner } from '@repo/ui/components';
+import GenericErrorState from '~/lib/components/UI/GenericErrorState';
+import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 
 interface EventDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
-  data: MaintenanceScheduleInstance;
+  scheduleInstanceGuid: string | null;
 }
 const EventDetailModal = (props: EventDetailModalProps) => {
-  const { isOpen, onClose, data } = props;
+  const { isOpen, onClose, scheduleInstanceGuid } = props;
+  const { data, isLoading, isError } = useGetScheduleInstanceByGuidQuery(
+    {
+      instanceGuid: scheduleInstanceGuid!,
+    },
+    { skip: !scheduleInstanceGuid }
+  );
+  const { removeSearchParam } = useCustomSearchParams();
+
+  const handleClose = () => {
+    removeSearchParam('maintenanceScheduleInstanceId');
+    onClose();
+  };
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose} isCentered>
+    <Modal isOpen={isOpen} onClose={handleClose} isCentered>
       <ModalOverlay />
       <ModalContent
         minW={{ base: '90%', lg: '729px' }}
         maxHeight="90%"
         rounded="4px"
       >
-        <ModalBody p={0} m={0} position="relative">
+        <ModalBody p={0} m={0} position="relative" minH="579px">
           <Icon
             as={CloseIcon}
             boxSize="24px"
@@ -41,32 +57,40 @@ const EventDetailModal = (props: EventDetailModalProps) => {
             cursor="pointer"
             onClick={() => onClose()}
           />
-          <VStack
-            width="full"
-            spacing="40px"
-            bgColor="#0366EF14"
-            alignItems="flex-start"
-            pt="16px"
-            px="16px"
-            pb="20px"
-          >
-            <HeaderInfo data={data} />
-            <OtherInfo data={data} />
-          </VStack>
-          <VStack
-            width="full"
-            alignItems="flex-start"
-            spacing="68px"
-            mt="28px"
-            px="16px"
-            pb="26px"
-          >
-            <PlanDetail data={data} />
-            <ModalButtons
-              planId={data?.maintenancePlanId}
-              scheduleInstanceGuid={data?.scheduleInstanceGuid}
-            />
-          </VStack>
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : data?.data ? (
+            <VStack>
+              <VStack
+                width="full"
+                spacing="40px"
+                bgColor="#0366EF14"
+                alignItems="flex-start"
+                pt="16px"
+                px="16px"
+                pb="20px"
+              >
+                <HeaderInfo data={data?.data} />
+                <OtherInfo data={data?.data} />
+              </VStack>
+              <VStack
+                width="full"
+                alignItems="flex-start"
+                spacing="68px"
+                mt="28px"
+                px="16px"
+                pb="26px"
+              >
+                <PlanDetail data={data?.data} />
+                <ModalButtons
+                  planId={data?.data?.maintenancePlanId}
+                  scheduleInstanceGuid={data?.data?.scheduleInstanceGuid}
+                />
+              </VStack>
+            </VStack>
+          ) : (
+            isError && <GenericErrorState subtitle="Invalid Schedule" />
+          )}
         </ModalBody>
       </ModalContent>
     </Modal>

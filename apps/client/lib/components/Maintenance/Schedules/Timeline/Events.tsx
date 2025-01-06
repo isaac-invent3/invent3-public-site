@@ -3,7 +3,7 @@ import { Flex, Text, useDisclosure, VStack } from '@chakra-ui/react';
 import { Event as EventType } from 'react-big-calendar';
 import { formatNumberShort } from '~/lib/utils/helperFunctions';
 import AggregateDetailModal from './Modals/AggregateModal';
-import EventDetailModal from './Modals/EventDetailModal';
+import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 
 const getEventStyle = (event: EventType) => {
   switch (event.resource?.currentStatus?.toLowerCase()) {
@@ -32,7 +32,7 @@ const getEventStyle = (event: EventType) => {
 
 const Event = ({ event }: { event: EventType }) => {
   const { backgroundColor, borderColor } = getEventStyle(event);
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  const { updateSearchParam } = useCustomSearchParams();
   const {
     isOpen: isOpenAggregate,
     onClose: onCloseAggregate,
@@ -43,7 +43,10 @@ const Event = ({ event }: { event: EventType }) => {
     if (event.resource.totalScheduleCount) {
       onOpenAggregate();
     } else {
-      onOpen();
+      updateSearchParam(
+        'maintenanceScheduleInstanceId',
+        event?.resource?.scheduleInstanceGuid
+      );
     }
   };
 
@@ -119,13 +122,6 @@ const Event = ({ event }: { event: EventType }) => {
           {event?.resource?.maintenanceType}
         </Text>
       </VStack>
-      {isOpen && (
-        <EventDetailModal
-          isOpen={isOpen}
-          onClose={onClose}
-          data={event.resource}
-        />
-      )}
 
       {isOpenAggregate && (
         <AggregateDetailModal

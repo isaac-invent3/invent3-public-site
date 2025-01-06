@@ -72,23 +72,11 @@ const useParseUrlData = (
 
     if (!segment) continue;
 
-    const systemContextDetail = getSystemContextDetail(segment, 'route');
+    const key = segment === 'maintenance' ? 'plans' : segment;
+
+    const systemContextDetail = getSystemContextDetail(key, 'route');
 
     if (systemContextDetail) {
-      if (systemContextDetail.route === 'maintenance') {
-        switch (searchParams['tab']) {
-          case 'Schedules':
-            return {
-              systemContextId: SYSTEM_CONTEXT_DETAILS.MAINTENANCE_SCHEDULES.id,
-              contextId: null,
-            };
-          default:
-            return {
-              systemContextId: SYSTEM_CONTEXT_DETAILS.MAINTENANCE_PLANS.id,
-              contextId: null,
-            };
-        }
-      }
       return {
         systemContextId: systemContextDetail.id,
         contextId: null,

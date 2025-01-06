@@ -189,12 +189,12 @@ const SYSTEM_CONTEXT_DETAILS = {
 
   MAINTENANCE_PLANS: {
     id: SYSTEM_CONTEXT_TYPE.MAINTENANCE_PLANS,
-    route: 'maintenance',
+    route: 'plans',
     slug: 'maintenancePlanId',
   },
   MAINTENANCE_SCHEDULES: {
     id: SYSTEM_CONTEXT_TYPE.MAINTENANCE_SCHEDULES,
-    route: 'maintenance',
+    route: 'schedules',
     slug: 'maintenanceScheduleId',
   },
   TASKS: {

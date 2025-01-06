@@ -6,12 +6,13 @@ import {
   TabPanels,
   Tabs,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
-import GeneralTab from './GeneralTab';
+import { useEffect, useState } from 'react';
+import useUpdateSearchParams from '~/lib/hooks/useUpdateSearchParams';
 import AcquisitionTab from './AcquisitionTab';
-import MaintenanceTab from './MaintenanceTab';
 import DocumentsTab from './DocumentsTab';
+import GeneralTab from './GeneralTab';
 import HistoryTab from './HistoryTab';
+import MaintenanceTab from './MaintenanceTab';
 import RelationshipTab from './RelationshipTab';
 
 const AssetTabs = () => {
@@ -19,39 +20,62 @@ const AssetTabs = () => {
   const AllTabs = [
     {
       label: 'General',
+      slug: 'general',
       component: <GeneralTab />,
     },
     {
       label: 'Acquisition',
+      slug: 'acquisition',
       component: <AcquisitionTab />,
     },
     {
       label: 'Maintenance Plan',
+      slug: 'maintenancePlan',
       component: <MaintenanceTab />,
     },
     {
       label: 'Maintenance History',
+      slug: 'maintenanceHistory',
       component: <HistoryTab />,
     },
     {
       label: 'Documents',
+      slug: 'assetDocuments',
       component: <DocumentsTab />,
     },
     {
       label: 'Components',
+      slug: 'assetComponents',
       component: <RelationshipTab />,
     },
   ];
+
+  const { updateSearchParam, getSearchParam } = useUpdateSearchParams();
+
+  useEffect(() => {
+    const tabSelected = getSearchParam('tabSelected');
+
+    if (tabSelected) {
+      const foundIndex = AllTabs.findIndex((tab) => tab.slug === tabSelected);
+
+      setTabIndex(foundIndex !== -1 ? foundIndex : 0);
+    }
+  }, []);
   return (
     <Flex width="full" px="32px">
       <Tabs
         variant="custom"
         onChange={(index) => setTabIndex(index)}
         width={'full'}
+        index={tabIndex}
       >
         <TabList>
           {AllTabs.map((item) => (
-            <Tab paddingBottom="10px" key={item.label}>
+            <Tab
+              paddingBottom="10px"
+              key={item.label}
+              onClick={() => updateSearchParam('tabSelected', item.slug)}
+            >
               {item.label}
             </Tab>
           ))}

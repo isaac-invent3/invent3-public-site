@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import TaskListDrawer from '~/lib/components/TaskManagement/Drawers/TaskListDrawer';
-import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import {
+  DEFAULT_PAGE_SIZE,
+  SYSTEM_CONTEXT_DETAILS,
+} from '~/lib/utils/constants';
 import { useGetAllTasksByScheduleIdQuery } from '~/lib/redux/services/task/general.services';
 import TaskTable from '../../Tables/TaskTable';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
@@ -27,7 +30,7 @@ const TaskListView = (props: TaskListViewProps) => {
     });
 
   const handleClose = () => {
-    removeSearchParam('maintenanceScheduleId');
+    removeSearchParam(SYSTEM_CONTEXT_DETAILS.MAINTENANCE_SCHEDULES.slug);
     onClose();
   };
 

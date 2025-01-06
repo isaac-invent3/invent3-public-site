@@ -15,6 +15,7 @@ import GenericErrorState from '~/lib/components/UI/GenericErrorState';
 import { useGetMaintenancePlanByIdQuery } from '~/lib/redux/services/maintenance/plan.services';
 import { useEffect, useState } from 'react';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
+import { SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
 
 interface PlanDetailsModalProps {
   isOpen: boolean;
@@ -44,7 +45,7 @@ const PlanDetailsModal = (props: PlanDetailsModalProps) => {
   }, [planDetail]);
 
   const handleClose = () => {
-    removeSearchParam('maintenancePlanId');
+    removeSearchParam(SYSTEM_CONTEXT_DETAILS.MAINTENANCE_PLANS.slug);
     onClose();
   };
 

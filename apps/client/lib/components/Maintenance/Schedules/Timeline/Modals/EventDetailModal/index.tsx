@@ -16,6 +16,7 @@ import { useGetScheduleInstanceByGuidQuery } from '~/lib/redux/services/maintena
 import { LoadingSpinner } from '@repo/ui/components';
 import GenericErrorState from '~/lib/components/UI/GenericErrorState';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
+import { SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
 
 interface EventDetailModalProps {
   isOpen: boolean;
@@ -33,7 +34,9 @@ const EventDetailModal = (props: EventDetailModalProps) => {
   const { removeSearchParam } = useCustomSearchParams();
 
   const handleClose = () => {
-    removeSearchParam('maintenanceScheduleInstanceId');
+    removeSearchParam(
+      SYSTEM_CONTEXT_DETAILS.MAINTENANCE_SCHEDULE_INSTANCE.slug
+    );
     onClose();
   };
 

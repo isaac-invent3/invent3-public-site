@@ -14,6 +14,7 @@ import Schedules from './Schedules';
 import GenericErrorState from '~/lib/components/UI/GenericErrorState';
 import { useGetMaintenancePlanByIdQuery } from '~/lib/redux/services/maintenance/plan.services';
 import { useEffect, useState } from 'react';
+import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 
 interface PlanDetailsModalProps {
   isOpen: boolean;
@@ -25,7 +26,12 @@ interface PlanDetailsModalProps {
 
 const PlanDetailsModal = (props: PlanDetailsModalProps) => {
   const { isOpen, onClose, planId, data, viewOnly = false } = props;
-  const { data: planDetail, isLoading } = useGetMaintenancePlanByIdQuery(
+  const { removeSearchParam } = useCustomSearchParams();
+  const {
+    data: planDetail,
+    isLoading,
+    isError,
+  } = useGetMaintenancePlanByIdQuery(
     { id: +planId! },
     { skip: !planId || data !== null }
   );
@@ -37,8 +43,13 @@ const PlanDetailsModal = (props: PlanDetailsModalProps) => {
     }
   }, [planDetail]);
 
+  const handleClose = () => {
+    removeSearchParam('maintenancePlanId');
+    onClose();
+  };
+
   return (
-    <GenericDrawer isOpen={isOpen} onClose={onClose} maxWidth="690px">
+    <GenericDrawer isOpen={isOpen} onClose={handleClose} maxWidth="690px">
       <DrawerHeader p={0} m={0}>
         <HStack
           pt="16px"
@@ -48,7 +59,7 @@ const PlanDetailsModal = (props: PlanDetailsModalProps) => {
           width="full"
           justifyContent="space-between"
         >
-          <BackButton handleClick={onClose} />
+          <BackButton handleClick={handleClose} />
           {!viewOnly && plan && (
             <Button
               customStyles={{ width: '138px', height: '35px' }}
@@ -75,7 +86,7 @@ const PlanDetailsModal = (props: PlanDetailsModalProps) => {
             <Schedules planId={plan?.maintenancePlanId} />
           </Flex>
         ) : (
-          <GenericErrorState subtitle="Maintenance plan not found" />
+          isError && <GenericErrorState subtitle="Maintenance plan not found" />
         )}
       </DrawerBody>
     </GenericDrawer>

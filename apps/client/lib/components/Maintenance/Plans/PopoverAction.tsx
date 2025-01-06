@@ -1,17 +1,12 @@
 import { Text, useDisclosure, VStack } from '@chakra-ui/react';
 import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
-import PlanDetailsModal from './Drawers/PlanDetailDrawer';
 import { GenericDeleteModal, GenericPopover } from '@repo/ui/components';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useDeleteMaintenancePlanMutation } from '~/lib/redux/services/maintenance/plan.services';
 import { getSession } from 'next-auth/react';
+import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 
 const PopoverAction = (plan: MaintenancePlan) => {
-  const {
-    isOpen: isOpenView,
-    onOpen: onOpenView,
-    onClose: onCloseView,
-  } = useDisclosure();
   const {
     isOpen: isOpenDelete,
     onOpen: onOpenDelete,
@@ -19,6 +14,7 @@ const PopoverAction = (plan: MaintenancePlan) => {
   } = useDisclosure();
 
   const { handleSubmit } = useCustomMutation();
+  const { updateSearchParam } = useCustomSearchParams();
   const [deleteTask, { isLoading }] = useDeleteMaintenancePlanMutation({});
 
   const handleDeletePlan = async () => {
@@ -44,7 +40,12 @@ const PopoverAction = (plan: MaintenancePlan) => {
           >
             Edit
           </Text>
-          <Text cursor="pointer" onClick={onOpenView}>
+          <Text
+            cursor="pointer"
+            onClick={() => {
+              updateSearchParam('maintenancePlanId', plan?.maintenancePlanId);
+            }}
+          >
             View
           </Text>
           <Text cursor="pointer" onClick={onOpenDelete} color="#F50000">
@@ -52,13 +53,6 @@ const PopoverAction = (plan: MaintenancePlan) => {
           </Text>
         </VStack>
       </GenericPopover>
-      {isOpenView && (
-        <PlanDetailsModal
-          isOpen={isOpenView}
-          onClose={onCloseView}
-          data={plan}
-        />
-      )}
       {isOpenDelete && (
         <GenericDeleteModal
           isOpen={isOpenDelete}

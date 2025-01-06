@@ -18,7 +18,7 @@ import { ListResponse } from '@repo/interfaces';
 import { generateSearchCriterion } from '@repo/utils';
 import PopoverAction from './PopoverAction';
 import PlanDetailsModal from './Drawers/PlanDetailDrawer';
-import { useSearchParams } from 'next/navigation';
+import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 
 export const initialFilterData = {
   planType: [],
@@ -42,8 +42,8 @@ const Plans = (props: PlansProp) => {
     pageNumber: currentPage,
   });
   const { handleSubmit } = useCustomMutation();
-  const searchParams = useSearchParams();
-  const maintenancePlanId = searchParams.get('maintenancePlanId');
+  const { getSearchParam } = useCustomSearchParams();
+  const maintenancePlanId = getSearchParam('maintenancePlanId');
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   // Checks if all filterdata is empty

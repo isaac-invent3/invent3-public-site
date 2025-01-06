@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 /**
  * Custom hook for managing URL search parameters
  */
-const useUpdateSearchParams = () => {
+const useCustomSearchParams = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -77,4 +77,4 @@ const useUpdateSearchParams = () => {
   };
 };
 
-export default useUpdateSearchParams;
+export default useCustomSearchParams;

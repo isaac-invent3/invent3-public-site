@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import _ from 'lodash';
 
 import { useSearchParams } from 'next/navigation';
-import useUpdateSearchParams from '~/lib/hooks/useUpdateSearchParams';
+import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import {
   useGetAllAssetQuery,
   useSearchAssetsMutation,
@@ -40,7 +40,7 @@ const ListView = (props: ListViewProps) => {
   const searchParams = useSearchParams();
   const assetIdString = searchParams.get(SYSTEM_CONTEXT_DETAILS.ASSETS.slug);
   const { handleSubmit } = useCustomMutation();
-  const { updateSearchParam } = useUpdateSearchParams();
+  const { updateSearchParam } = useCustomSearchParams();
 
   const {
     assetFilter: filterData,

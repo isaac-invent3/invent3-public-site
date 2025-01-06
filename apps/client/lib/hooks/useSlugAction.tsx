@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import useUpdateSearchParams from './useUpdateSearchParams';
+import useCustomSearchParams from './useCustomSearchParams';
 
 interface UseSlugActionProps {
   slugName: string;
@@ -10,7 +10,7 @@ interface UseSlugActionProps {
 const useSlugAction = (props: UseSlugActionProps) => {
   const { slugName, slugAction, slugComparator, onCloseHandler } = props;
   const { updateSearchParam, getSearchParam, clearSearchParamsAfter } =
-    useUpdateSearchParams();
+    useCustomSearchParams();
 
   const slugValue = getSearchParam(slugName);
 

@@ -1,7 +1,7 @@
 import { DrawerBody, DrawerHeader, Spinner, VStack } from '@chakra-ui/react';
 import { GenericDrawer } from '@repo/ui/components';
 import { useMemo } from 'react';
-import useUpdateSearchParams from '~/lib/hooks/useUpdateSearchParams';
+import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import { Asset } from '~/lib/interfaces/asset/general.interface';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useGetAssetInfoHeaderByIdQuery } from '~/lib/redux/services/asset/general.services';
@@ -23,7 +23,7 @@ const AssetDetail = ({ isOpen, onClose, type = 'main' }: AssetDetailProps) => {
   const dispatch = useAppDispatch();
   const assetSlug = SYSTEM_CONTEXT_DETAILS.ASSETS.slug;
   const selectedAsset = useAppSelector((state) => state.asset.asset);
-  const { getSearchParam, clearSearchParamsAfter } = useUpdateSearchParams();
+  const { getSearchParam, clearSearchParamsAfter } = useCustomSearchParams();
 
   const assetId = getSearchParam(assetSlug)
     ? Number(getSearchParam(assetSlug))

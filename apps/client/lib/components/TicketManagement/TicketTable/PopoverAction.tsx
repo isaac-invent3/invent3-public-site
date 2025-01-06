@@ -58,7 +58,7 @@ const PopoverAction = (props: PopoverActionProps) => {
             </VStack>
           )}
 
-          {category === 'scheduled' && (
+          {(category === 'scheduled' || category === 'in_progress') && (
             <VStack width="full" alignItems="flex-start" spacing="16px">
               <Text cursor="pointer" onClick={() => openModal('edit')}>
                 Edit Ticket

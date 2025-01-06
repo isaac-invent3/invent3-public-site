@@ -10,6 +10,7 @@ import {
   Tooltip,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import { FacilityWithTopAssets } from '~/lib/interfaces/report.interfaces';
 import { formatNumberShort } from '~/lib/utils/helperFunctions';
 
 ChartJS.register(
@@ -23,20 +24,16 @@ ChartJS.register(
 );
 
 interface BranchesWithTopAssetsProps {
-  topFiveBranchesWithAssets: Record<string, number> | undefined;
-  totalAssets: number | undefined
+  topFiveBranchesWithAssets: FacilityWithTopAssets[];
+  totalAssets: number | undefined;
 }
 
 const BranchesWithTopAssetsChart = (props: BranchesWithTopAssetsProps) => {
   const { topFiveBranchesWithAssets, totalAssets } = props;
 
-  const labels = topFiveBranchesWithAssets
-    ? Object.keys(topFiveBranchesWithAssets)
-    : [];
+  const labels = topFiveBranchesWithAssets.map((item) => item.facilityName);
 
-  const dataValues = topFiveBranchesWithAssets
-    ? Object.values(topFiveBranchesWithAssets)
-    : [];
+  const dataValues = topFiveBranchesWithAssets.map((item) => item.totalAssets);
 
   const data = {
     labels: labels,

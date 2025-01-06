@@ -1,32 +1,42 @@
-import { Heading, HStack, ModalBody, VStack } from '@chakra-ui/react';
-import { Field, FormikProvider, useFormik } from 'formik';
+import { Heading, HStack, ModalBody, Text, VStack } from '@chakra-ui/react';
 import {
   Button,
+  CheckBox,
   FormTextAreaInput,
   FormTextInput,
   GenericModal,
 } from '@repo/ui/components';
+import { Field, FormikProvider, useFormik } from 'formik';
 import { templateSchema } from '~/lib/schemas/general.schema';
 
-interface MarkTaskAsCompletedModalProps {
+export interface SaveAsTemplatePayload {
+  templateName: string;
+  templateDescription: string;
+  isDefaultReport: boolean;
+}
+
+interface SaveReportAsTemplateModalProps {
   isOpen: boolean;
   onClose: () => void;
   // eslint-disable-next-line no-unused-vars
-  handleSave: (templateName: string, templateDescription: string) => void;
+  handleSave: (payload: SaveAsTemplatePayload) => void;
   isLoading: boolean;
 }
-const SaveAsTemplateModal = (props: MarkTaskAsCompletedModalProps) => {
+
+const SaveAsTemplateModal = (props: SaveReportAsTemplateModalProps) => {
   const { isOpen, onClose, handleSave, isLoading } = props;
 
-  const formik = useFormik({
+  const formik = useFormik<SaveAsTemplatePayload>({
     initialValues: {
       templateName: '',
       templateDescription: '',
+      isDefaultReport: false,
     },
     validationSchema: templateSchema,
     enableReinitialize: true,
-    onSubmit: async (values) => {
-      handleSave(values.templateName, values.templateDescription);
+    onSubmit: async (values, { resetForm }) => {
+      handleSave(values);
+      resetForm();
     },
   });
 
@@ -73,6 +83,18 @@ const SaveAsTemplateModal = (props: MarkTaskAsCompletedModalProps) => {
                   type="text"
                   label="Template Description"
                 />
+                <HStack spacing="8px" alignSelf="flex-start">
+                  <CheckBox
+                    isChecked={formik.values.isDefaultReport}
+                    handleChange={() =>
+                      formik.setFieldValue(
+                        'isDefaultReport',
+                        !formik.values.isDefaultReport
+                      )
+                    }
+                  />
+                  <Text color="neutral.800">Is Default Report?</Text>
+                </HStack>
               </VStack>
               {/* Main Form Ends Here */}
               <HStack width="full" spacing="24px" justifyContent="center">

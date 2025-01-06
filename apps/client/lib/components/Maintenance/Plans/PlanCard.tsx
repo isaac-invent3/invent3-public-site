@@ -1,9 +1,13 @@
 import { HStack, Text, useDisclosure, VStack } from '@chakra-ui/react';
 
+import useSlugAction from '~/lib/hooks/useSlugAction';
 import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
-import GenericStatusBox from '../../UI/GenericStatusBox';
 import { dateFormatter } from '~/lib/utils/Formatters';
-import { MAINTENANCE_PLAN_ENUM } from '~/lib/utils/constants';
+import {
+  MAINTENANCE_PLAN_ENUM,
+  SYSTEM_CONTEXT_DETAILS,
+} from '~/lib/utils/constants';
+import GenericStatusBox from '../../UI/GenericStatusBox';
 import ScheduleDetailDrawer from '../Schedules/ScheduleDetailDrawer';
 
 interface PlanCardProps {
@@ -12,6 +16,13 @@ interface PlanCardProps {
 const PlanCard = (props: PlanCardProps) => {
   const { data } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const { closeAction, openAction } = useSlugAction({
+    slugAction: onOpen,
+    slugName: SYSTEM_CONTEXT_DETAILS.MAINTENANCE_PLANS.slug,
+    slugComparator: data.maintenancePlanId,
+    onCloseHandler: onClose,
+  });
 
   return (
     <>
@@ -76,7 +87,7 @@ const PlanCard = (props: PlanCardProps) => {
                 textDecoration="underline"
                 role="button"
                 color="#0366EF"
-                onClick={onOpen}
+                onClick={openAction}
               >
                 {data?.activeSchedules < 10 ? 0 : ''}
                 {data?.activeSchedules}
@@ -108,7 +119,7 @@ const PlanCard = (props: PlanCardProps) => {
       {isOpen && (
         <ScheduleDetailDrawer
           isOpen={isOpen}
-          onClose={onClose}
+          onClose={closeAction}
           planId={data?.maintenancePlanId}
         />
       )}

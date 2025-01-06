@@ -23,8 +23,7 @@ const AssetDetail = ({ isOpen, onClose, type = 'main' }: AssetDetailProps) => {
   const dispatch = useAppDispatch();
   const assetSlug = SYSTEM_CONTEXT_DETAILS.ASSETS.slug;
   const selectedAsset = useAppSelector((state) => state.asset.asset);
-  const { removeSearchParam, getSearchParam, clearSearchParamsAfter } =
-    useUpdateSearchParams();
+  const { getSearchParam, clearSearchParamsAfter } = useUpdateSearchParams();
 
   const assetId = getSearchParam(assetSlug)
     ? Number(getSearchParam(assetSlug))
@@ -38,7 +37,7 @@ const AssetDetail = ({ isOpen, onClose, type = 'main' }: AssetDetailProps) => {
   );
 
   const closeDrawer = () => {
-    removeSearchParam([assetSlug, 'tabSelected']);
+    clearSearchParamsAfter(assetSlug, { removeSelf: true });
     onClose();
   };
 

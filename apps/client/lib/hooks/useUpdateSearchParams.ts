@@ -34,7 +34,15 @@ const useUpdateSearchParams = () => {
    * Clear all search parameters after the specified parameter
    * @param key The parameter key after which all params should be cleared
    */
-  const clearSearchParamsAfter = (key: string) => {
+
+  interface ClearSearchParamsAfterOptions {
+    removeSelf: boolean;
+  }
+
+  const clearSearchParamsAfter = (
+    key: string,
+    options?: Partial<ClearSearchParamsAfterOptions>
+  ) => {
     const params = new URLSearchParams(searchParams?.toString());
     const keys = Array.from(params.keys());
 
@@ -42,8 +50,11 @@ const useUpdateSearchParams = () => {
     const keyIndex = keys.indexOf(key);
 
     if (keyIndex !== -1) {
-      // Remove all parameters after the specified key
-      for (let i = keyIndex + 1; i < keys.length; i++) {
+      // Start clearing from the current key if removeSelf is true
+      const startIndex = options?.removeSelf ? keyIndex : keyIndex + 1;
+
+      // Remove all parameters starting from the determined index
+      for (let i = startIndex; i < keys.length; i++) {
         const key = keys[i];
         if (key) {
           params.delete(key);

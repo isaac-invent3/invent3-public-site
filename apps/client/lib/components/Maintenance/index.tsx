@@ -10,47 +10,35 @@ import {
   useDisclosure,
   HStack,
 } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Schedules from './Schedules';
 import History from './History';
 import Plans from './Plans';
 import Header from './Header';
-import _ from 'lodash';
 import { FilterButton, SearchInput } from '@repo/ui/components';
 import { FilterIcon } from '../CustomIcons';
 
-const ALlTabs = ['Plans', 'Schedules', 'History'];
+const AllTabs = ['plans', 'schedules', 'history'];
 
-export type MaintenanceTabs = 'Schedules' | 'Plans' | 'History';
-const Maintenance = () => {
+interface MaintenanceProps {
+  activeTab: number;
+}
+const Maintenance = (props: MaintenanceProps) => {
+  const { activeTab = 0 } = props;
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const [tabIndex, setTabIndex] = useState(0);
+  const [tabIndex, setTabIndex] = useState(activeTab);
   // eslint-disable-next-line no-unused-vars
   const [search, setSearch] = useState('');
   const { isOpen, onClose, onToggle } = useDisclosure();
-
-  // Retrieve the `tab` parameter from URL on mount
-  useEffect(() => {
-    const tab = searchParams.get('tab');
-    if (tab) {
-      const tabIndex = ALlTabs.findIndex(
-        (value) => value === _.capitalize(tab)
-      );
-      if (tabIndex !== -1) {
-        setTabIndex(tabIndex);
-      }
-    }
-  }, [searchParams]);
 
   // Update the URL whenever the tab is changed
   const handleTabChange = (index: number) => {
     setTabIndex(index);
     onClose();
-    const tabName = ALlTabs[index];
+    const tabName = AllTabs[index];
     if (tabName) {
-      router.push(`/maintenance?tab=${tabName}`);
+      router.push(`/maintenance/${tabName}`);
     }
   };
 

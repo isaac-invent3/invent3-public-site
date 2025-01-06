@@ -9,7 +9,7 @@ import { useGetScheduleInstanceByGuidQuery } from '~/lib/redux/services/maintena
 import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
-export default function Page({ params }: { params: { id: number } }) {
+export default function Page({ params }: { params: { id: string } }) {
   const { data, isLoading } = useGetScheduleInstanceByGuidQuery({
     instanceGuid: params.id!,
   });

@@ -3,13 +3,17 @@ import { useCallback, useEffect, useState } from 'react';
 import _ from 'lodash';
 
 import { useSearchParams } from 'next/navigation';
+import useUpdateSearchParams from '~/lib/hooks/useUpdateSearchParams';
 import {
   useGetAllAssetQuery,
-  useGetAssetInfoHeaderByIdQuery,
   useSearchAssetsMutation,
 } from '~/lib/redux/services/asset/general.services';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
+import {
+  DEFAULT_PAGE_SIZE,
+  OPERATORS,
+  SYSTEM_CONTEXT_DETAILS,
+} from '~/lib/utils/constants';
 import AssetTable from './Common/AssetTable';
 import AssetFilterDisplay from './Filters/AssetFilterDisplay';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
@@ -34,9 +38,10 @@ const ListView = (props: ListViewProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const searchParams = useSearchParams();
-  const assetIdString = searchParams.get('asset');
-  const assetId = assetIdString ? Number(assetIdString) : undefined;
+  const assetIdString = searchParams.get(SYSTEM_CONTEXT_DETAILS.ASSETS.slug);
   const { handleSubmit } = useCustomMutation();
+  const { updateSearchParam } = useUpdateSearchParams();
+
   const {
     assetFilter: filterData,
     asset,
@@ -58,12 +63,6 @@ const ListView = (props: ListViewProps) => {
     null
   );
 
-  const { data: assetData } = useGetAssetInfoHeaderByIdQuery(
-    { id: assetId! },
-    {
-      skip: !assetId,
-    }
-  );
   const { data, isLoading, isFetching } = useGetAllAssetQuery(
     {
       pageNumber: currentPage,
@@ -141,13 +140,9 @@ const ListView = (props: ListViewProps) => {
     }
   }, [search, isFilterEmpty]);
 
-  // Set if an assetData asset exist, mark it as selected
   useEffect(() => {
-    if (assetData?.data) {
-      dispatch(setAsset(assetData?.data));
-      onOpen();
-    }
-  }, [assetData]);
+    if (assetIdString) onOpen();
+  }, [assetIdString]);
 
   // Reset Selected Row when SelectedAssetIds array is emptied
   useEffect(() => {
@@ -197,6 +192,7 @@ const ListView = (props: ListViewProps) => {
           handleSelectRow={(row) => {
             onOpen();
             dispatch(setAsset(row));
+            updateSearchParam(SYSTEM_CONTEXT_DETAILS.ASSETS.slug, row.assetId);
           }}
           selectedRows={selectedRows}
           setSelectedRows={setSelectedRows}

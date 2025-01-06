@@ -7,7 +7,7 @@ import {
   Tabs,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import useUpdateSearchParams from '~/lib/hooks/useUpdateSearchParams';
+import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import AcquisitionTab from './AcquisitionTab';
 import DocumentsTab from './DocumentsTab';
 import GeneralTab from './GeneralTab';
@@ -50,7 +50,7 @@ const AssetTabs = () => {
     },
   ];
 
-  const { updateSearchParam, getSearchParam } = useUpdateSearchParams();
+  const { updateSearchParam, getSearchParam } = useCustomSearchParams();
 
   useEffect(() => {
     const tabSelected = getSearchParam('tabSelected');

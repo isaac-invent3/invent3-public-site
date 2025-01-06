@@ -26,7 +26,7 @@ const PopoverAction = (plan: MaintenancePlan) => {
     const response = await handleSubmit(
       deleteTask,
       { id: plan?.maintenancePlanId, deletedBy: session?.user.username! },
-      'Task Deleted Successfully'
+      'Plan Deleted Successfully'
     );
     if (response?.data) {
       onCloseDelete();

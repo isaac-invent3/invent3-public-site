@@ -80,6 +80,16 @@ export const maintenancePlanApi = createApi({
         headers: getHeaders(),
       }),
     }),
+    getMaintenancePlanInfoHeaderById: builder.query<
+      BaseApiResponse<MaintenancePlan>,
+      { id: number }
+    >({
+      query: ({ id }) => ({
+        url: `/MaintenancePlans/GetMaintenancePlanInfoHeader/${id}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
     deleteMaintenancePlan: builder.mutation<
       void,
       { id: number; deletedBy: string }
@@ -146,6 +156,7 @@ export const maintenancePlanApi = createApi({
 
 export const {
   useGetMaintenancePlanByIdQuery,
+  useGetMaintenancePlanInfoHeaderByIdQuery,
   useCreateMaintenancePlanMutation,
   useCreateMaintenancePlanWithSchedulesMutation,
   useUpdateMaintenancePlanWithSchedulesMutation,

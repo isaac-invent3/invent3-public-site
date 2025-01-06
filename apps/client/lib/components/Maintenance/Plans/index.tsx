@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react';
+import { Flex, useDisclosure } from '@chakra-ui/react';
 import _ from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
@@ -7,6 +7,7 @@ import {
 } from '~/lib/interfaces/maintenance.interfaces';
 import {
   useGetAllMaintenancePlanQuery,
+  useGetMaintenancePlanByIdQuery,
   useSearchMaintenancePlanMutation,
 } from '~/lib/redux/services/maintenance/plan.services';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
@@ -17,6 +18,8 @@ import MaintenancePlanTable from './PlanTable';
 import { ListResponse } from '@repo/interfaces';
 import { generateSearchCriterion } from '@repo/utils';
 import PopoverAction from './PopoverAction';
+import PlanDetailsModal from './Drawers/PlanDetailDrawer';
+import { useSearchParams } from 'next/navigation';
 
 export const initialFilterData = {
   planType: [],
@@ -40,6 +43,14 @@ const Plans = (props: PlansProp) => {
     pageNumber: currentPage,
   });
   const { handleSubmit } = useCustomMutation();
+  const searchParams = useSearchParams();
+  const planId = searchParams.get('planId');
+  const { data: planDetail } = useGetMaintenancePlanByIdQuery(
+    { id: +planId! },
+    { skip: !planId }
+  );
+  const [plan, setPlan] = useState<MaintenancePlan | null>(null);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   // Checks if all filterdata is empty
   const isFilterEmpty = _.every(
@@ -114,6 +125,14 @@ const Plans = (props: PlansProp) => {
     }
   }, [search, isFilterEmpty]);
 
+  //Open Plan detail drawer if plan exists
+  useEffect(() => {
+    if (planDetail?.data) {
+      setPlan(planDetail?.data?.maintenancePlanInfoHeader);
+      onOpen();
+    }
+  }, [planDetail]);
+
   return (
     <Flex direction="column" pt="16px">
       {openFilter && (
@@ -149,6 +168,9 @@ const Plans = (props: PlansProp) => {
         setPageSize={setPageSize}
         PopoverComponent={(plan) => PopoverAction(plan)}
       />
+      {plan && (
+        <PlanDetailsModal isOpen={isOpen} onClose={onClose} data={plan} />
+      )}
     </Flex>
   );
 };

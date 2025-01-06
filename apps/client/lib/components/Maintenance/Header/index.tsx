@@ -1,5 +1,5 @@
 import { HStack, useDisclosure, VStack } from '@chakra-ui/react';
-import { useSearchParams } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { GenericBreadCrumb } from '@repo/ui/components';
 import PageHeader from '~/lib/components/UI/PageHeader';
@@ -19,7 +19,7 @@ const breadCrumbData = [
 ];
 
 const Header = () => {
-  const searchParams = useSearchParams();
+  const pathname = usePathname();
   const [tabName, setTabName] = useState<string | null>(null);
   const {
     isOpen: isOpenPlanTemplate,
@@ -32,15 +32,20 @@ const Header = () => {
     onOpen: onOpenScheduleTemplate,
   } = useDisclosure();
 
-  // Retrieve the `tab` parameter from URL on mount
   useEffect(() => {
-    const tab = searchParams.get('tab');
-    if (tab) {
-      setTabName(tab);
-    } else {
-      setTabName('Plans');
-    }
-  }, [searchParams]);
+    // Define a mapping for the paths to tab names
+    const tabMapping: Record<string, string> = {
+      plans: 'Plans',
+      maintenance: 'Plans',
+      schedules: 'Schedules',
+    };
+
+    // Get the last segment of the pathname
+    const lastPath = pathname.split('/').pop() || ''; // Add fallback to an empty string in case `pop()` is undefined
+
+    // Set the tab name based on the mapping or default to null
+    setTabName(tabMapping[lastPath] ?? null);
+  }, [pathname]);
 
   return (
     <VStack spacing="58px" alignItems="flex-start" width="full" pt="12px">

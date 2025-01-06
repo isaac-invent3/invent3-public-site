@@ -4,6 +4,7 @@ import { BackButton, Button, GenericDrawer } from '@repo/ui/components';
 import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 import InfoSection from './InfoSection';
 import Schedules from './Schedules';
+import GenericErrorState from '~/lib/components/UI/GenericErrorState';
 
 interface PlanDetailsModalProps {
   isOpen: boolean;
@@ -37,8 +38,9 @@ const PlanDetailsModal = (props: PlanDetailsModalProps) => {
         </HStack>
       </DrawerHeader>
       <DrawerBody p={0} id="allSchedulesDiv">
-        <InfoSection data={data} />
-        <Schedules planId={data?.maintenancePlanId} />
+        <GenericErrorState />
+        {/* <InfoSection data={data} />
+        <Schedules planId={data?.maintenancePlanId} /> */}
       </DrawerBody>
     </GenericDrawer>
   );

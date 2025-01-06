@@ -1,10 +1,10 @@
 import {
-  AiOutlineFilePdf,
-  AiOutlineFileWord,
   AiOutlineFileExcel,
+  AiOutlineFileImage,
+  AiOutlineFilePdf,
   AiOutlineFilePpt,
   AiOutlineFileText,
-  AiOutlineFileImage,
+  AiOutlineFileWord,
   AiOutlineQuestion,
 } from 'react-icons/ai';
 
@@ -180,6 +180,35 @@ const SYSTEM_CONTEXT_TYPE = {
   NOTES: 43,
 };
 
+const SYSTEM_CONTEXT_DETAILS = {
+  ASSETS: {
+    id: SYSTEM_CONTEXT_TYPE.ASSETS,
+    route: 'asset-management',
+    slug: 'assetId',
+  },
+
+  MAINTENANCE_PLANS: {
+    id: SYSTEM_CONTEXT_TYPE.MAINTENANCE_PLANS,
+    route: 'plans',
+    slug: 'maintenancePlanId',
+  },
+  MAINTENANCE_SCHEDULES: {
+    id: SYSTEM_CONTEXT_TYPE.MAINTENANCE_SCHEDULES,
+    route: 'schedules',
+    slug: 'maintenanceScheduleId',
+  },
+  TASKS: {
+    id: SYSTEM_CONTEXT_TYPE.TASKS,
+    route: 'task-management',
+    slug: 'taskId',
+  },
+  TICKETS: {
+    id: SYSTEM_CONTEXT_TYPE.TICKETS,
+    route: 'ticket-management',
+    slug: 'ticketId',
+  },
+};
+
 const NOTIFICATION_EVENT_TYPE_ENUM = {
   TICKET_CREATED: 3,
 };
@@ -191,21 +220,22 @@ const ASSET_GROUP_TYPE = {
 const DEFAULT_PAGE_SIZE = 25;
 
 export {
-  OPERATORS,
-  FORM_ENUM,
   AREA_ENUM,
-  FILE_ICONS,
-  MAINTENANCE_PLAN_ENUM,
+  ASSET_GROUP_TYPE,
+  COLOR_CODES_FALLBACK,
   DATE_PERIOD,
-  timeRangeOptions,
-  yearOptions,
+  DEFAULT_PAGE_SIZE,
+  FILE_ICONS,
+  FORM_ENUM,
+  INSTANCE_UPDATE_ENUM,
+  MAINTENANCE_PLAN_ENUM,
   monthOptions,
+  NOTIFICATION_EVENT_TYPE_ENUM,
+  OPERATORS,
   planScopeOptions,
   STATUS_CATEGORY_ENUM,
-  COLOR_CODES_FALLBACK,
-  DEFAULT_PAGE_SIZE,
   SYSTEM_CONTEXT_TYPE,
-  INSTANCE_UPDATE_ENUM,
-  ASSET_GROUP_TYPE,
-  NOTIFICATION_EVENT_TYPE_ENUM,
+  SYSTEM_CONTEXT_DETAILS,
+  timeRangeOptions,
+  yearOptions,
 };

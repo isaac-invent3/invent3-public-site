@@ -7,7 +7,6 @@ import {
 } from '~/lib/interfaces/maintenance.interfaces';
 import {
   useGetAllMaintenancePlanQuery,
-  useGetMaintenancePlanByIdQuery,
   useSearchMaintenancePlanMutation,
 } from '~/lib/redux/services/maintenance/plan.services';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
@@ -44,12 +43,7 @@ const Plans = (props: PlansProp) => {
   });
   const { handleSubmit } = useCustomMutation();
   const searchParams = useSearchParams();
-  const planId = searchParams.get('planId');
-  const { data: planDetail } = useGetMaintenancePlanByIdQuery(
-    { id: +planId! },
-    { skip: !planId }
-  );
-  const [plan, setPlan] = useState<MaintenancePlan | null>(null);
+  const maintenancePlanId = searchParams.get('maintenancePlanId');
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   // Checks if all filterdata is empty
@@ -125,13 +119,12 @@ const Plans = (props: PlansProp) => {
     }
   }, [search, isFilterEmpty]);
 
-  //Open Plan detail drawer if plan exists
+  //Open Plan detail drawer if plan id exists
   useEffect(() => {
-    if (planDetail?.data) {
-      setPlan(planDetail?.data?.maintenancePlanInfoHeader);
+    if (maintenancePlanId !== undefined) {
       onOpen();
     }
-  }, [planDetail]);
+  }, [maintenancePlanId]);
 
   return (
     <Flex direction="column" pt="16px">
@@ -168,8 +161,13 @@ const Plans = (props: PlansProp) => {
         setPageSize={setPageSize}
         PopoverComponent={(plan) => PopoverAction(plan)}
       />
-      {plan && (
-        <PlanDetailsModal isOpen={isOpen} onClose={onClose} data={plan} />
+      {maintenancePlanId && (
+        <PlanDetailsModal
+          isOpen={isOpen}
+          onClose={onClose}
+          data={null}
+          planId={+maintenancePlanId}
+        />
       )}
     </Flex>
   );

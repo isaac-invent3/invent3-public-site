@@ -72,8 +72,8 @@ const GenerateReport = () => {
         <Header showGenerate={false} header="Generate Report" />
 
         <FormikProvider value={formik}>
-          <form onSubmit={formik.handleSubmit}>
-            <Box p="16px" bg="white" borderRadius="6px" mt="20px" height="100%">
+          <Box p="16px" bg="white" borderRadius="6px" mt="20px" height="100%">
+            <form onSubmit={formik.handleSubmit}>
               <Grid
                 templateColumns={{
                   base: '1fr',
@@ -149,6 +149,9 @@ const GenerateReport = () => {
                   variant="primary"
                   type="submit"
                   isLoading={isGeneratingReport}
+                  isDisabled={
+                    Object.keys(formik.errors).length > 0 ? true : false
+                  }
                   customStyles={{
                     width: '169px',
                     alignSelf: 'end',
@@ -157,29 +160,32 @@ const GenerateReport = () => {
                   Generate
                 </Button>
               </Grid>
+            </form>
 
-              {!generatedReport && (
-                <VStack justifyContent="center" height="33vh">
-                  <Text fontWeight={700} size="md" color="#0E2642">
-                    No Report Generated Yet
-                  </Text>
-                  <Text
-                    color="#838383"
-                    width="200px"
-                    margin="0 auto"
-                    textAlign="center"
-                  >
-                    Select your output with conditions above to generate your
-                    report
-                  </Text>
-                </VStack>
-              )}
+            {!generatedReport && (
+              <VStack justifyContent="center" height="33vh">
+                <Text fontWeight={700} size="md" color="#0E2642">
+                  No Report Generated Yet
+                </Text>
+                <Text
+                  color="#838383"
+                  width="200px"
+                  margin="0 auto"
+                  textAlign="center"
+                >
+                  Select your output with conditions above to generate your
+                  report
+                </Text>
+              </VStack>
+            )}
 
-              {generatedReport && (
-                <GeneratedReport response={generatedReport} />
-              )}
-            </Box>
-          </form>
+            {generatedReport && (
+              <GeneratedReport
+                response={generatedReport}
+                generatePayload={formik.values}
+              />
+            )}
+          </Box>
 
           <Button
             customStyles={{

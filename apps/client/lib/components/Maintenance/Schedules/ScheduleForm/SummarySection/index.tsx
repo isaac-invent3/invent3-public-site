@@ -14,7 +14,7 @@ import {
 import { useUpdateMaintenancePlanWithSchedulesMutation } from '~/lib/redux/services/maintenance/plan.services';
 import { FORM_ENUM, SYSTEM_CONTEXT_TYPE } from '~/lib/utils/constants';
 import { Button, FormActionButtons } from '@repo/ui/components';
-import SaveAsTemplateModal from '~/lib/components/Common/Modals/SaveAsTemplateModal';
+import SaveAsTemplateModal, { SaveAsTemplatePayload } from '~/lib/components/Common/Modals/SaveAsTemplateModal';
 import { useGetTemplateInfoBySystemContextTypeAndContextIdQuery } from '~/lib/redux/services/template.services';
 import { getSession } from 'next-auth/react';
 import { TaskPayload } from '~/lib/interfaces/task.interfaces';
@@ -55,12 +55,9 @@ const SummarySection = (props: SummarySectionProps) => {
 
   const [saveAsTemplate, setSaveAsTemplate] = useState(false);
 
-  const handleSaveAsTemplate = (
-    templateName: string,
-    templateDescription: string
-  ) => {
+  const handleSaveAsTemplate = (data: SaveAsTemplatePayload) => {
     setSaveAsTemplate(true);
-    handleSubmitSchedule(true, templateName, templateDescription);
+    handleSubmitSchedule(true, data.templateName, data.templateDescription);
   };
 
   const generatePayload = async (

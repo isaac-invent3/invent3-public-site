@@ -109,7 +109,7 @@ const ReportAnalytics = () => {
         <BranchesWithTopAssetsChart
           totalAssets={reportDashboardValues?.data.totalAssets?.statValue}
           topFiveBranchesWithAssets={
-            reportDashboardValues?.data.topFiveBranchesWithAssets
+            reportDashboardValues?.data.topFiveFacilitiesWithAssets ?? []
           }
         />
       </HStack>

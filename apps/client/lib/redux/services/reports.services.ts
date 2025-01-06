@@ -5,6 +5,7 @@ import {
   GenerateReportResponse,
   Report,
   ReportDashboardValuesResponse,
+  SaveReportPayload,
   ScheduleReportPayload,
   ViewReportTableData,
   ViewReportTableDataPayload,
@@ -98,9 +99,22 @@ export const reportApi = createApi({
         body,
       }),
     }),
+
+    saveReportAsTemplate: builder.mutation<
+      BaseApiResponse<Report>,
+      SaveReportPayload
+    >({
+      query: (body) => ({
+        url: `/Reports`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
   }),
 });
 
+;
 export const {
   useGetAllSavedReportsQuery,
   useGetAllDefaultReportsQuery,
@@ -109,4 +123,5 @@ export const {
   useViewReportByIdQuery,
   useScheduleReportMutation,
   useGenerateReportMutation,
+  useSaveReportAsTemplateMutation
 } = reportApi;

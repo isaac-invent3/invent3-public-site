@@ -6,8 +6,10 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import TaskListView from '~/lib/components/TaskManagement/Drawers/TaskListDrawer/TaskListView';
-import { dateFormatter } from '~/lib/utils/Formatters';
+import useSlugAction from '~/lib/hooks/useSlugAction';
 import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
+import { SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
+import { dateFormatter } from '~/lib/utils/Formatters';
 
 interface SectionTwoProps {
   data: MaintenanceSchedule;
@@ -31,6 +33,13 @@ const SectionTwo = (props: SectionTwoProps) => {
       value: null,
     },
   ];
+
+  const { closeAction, openAction } = useSlugAction({
+    slugAction: onOpen,
+    slugName: SYSTEM_CONTEXT_DETAILS.MAINTENANCE_SCHEDULES.slug,
+    slugComparator: data?.scheduleId,
+    onCloseHandler: onClose,
+  });
 
   return (
     <>
@@ -66,7 +75,7 @@ const SectionTwo = (props: SectionTwoProps) => {
           textDecoration="underline"
           color="primary.500"
           role="button"
-          onClick={onOpen}
+          onClick={openAction}
           whiteSpace="nowrap"
         >
           View Tasks
@@ -75,7 +84,7 @@ const SectionTwo = (props: SectionTwoProps) => {
       {isOpen && (
         <TaskListView
           isOpen={isOpen}
-          onClose={onClose}
+          onClose={closeAction}
           scheduleId={data?.scheduleId}
           showPopover={!isPartOfDefaultPlan}
         />

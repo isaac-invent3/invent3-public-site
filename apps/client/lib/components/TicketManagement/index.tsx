@@ -9,16 +9,16 @@ import {
   Tabs,
   useDisclosure,
 } from '@chakra-ui/react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Header from './Header';
 import Filters from './Filters';
 import TicketTable from './TicketTable';
 import TicketOverlays from './Overlays';
-import { useGetTicketByIdQuery } from '~/lib/redux/services/ticket.services';
-import { useAppDispatch } from '~/lib/redux/hooks';
-import { setSelectedTicket } from '~/lib/redux/slices/TicketSlice';
-import { Ticket } from '~/lib/interfaces/ticket.interfaces';
+import TicketDrawerWrapper from './Drawers/TicketDrawerWrapper';
+import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
+import { SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 const ALlTabs = [
   'New Tickets',
@@ -28,36 +28,33 @@ const ALlTabs = [
   'Completed',
 ];
 
-const getTicketCategory = (data: Ticket) => {
-  if (data.isScheduled) {
-    return 'scheduled';
-  }
-  if (data.assignedTo) {
-    return 'assigned';
-  }
-  return 'new';
-};
-
 const TicketManagement = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const { getSearchParam } = useCustomSearchParams();
   const [tabIndex, setTabIndex] = useState<number | undefined>(undefined);
   // eslint-disable-next-line no-unused-vars
   const [search, setSearch] = useState('');
   const { onToggle, isOpen } = useDisclosure();
-  const ticketId = searchParams.get('id');
-  const dispatch = useAppDispatch();
-  const { data } = useGetTicketByIdQuery(
-    { id: +ticketId! },
-    { skip: !ticketId }
-  );
+  const {
+    isOpen: isOpenView,
+    onClose: onCloseView,
+    onOpen: onOpenView,
+  } = useDisclosure();
+  const ticketId = getSearchParam(SYSTEM_CONTEXT_DETAILS.TICKETS.slug);
+  const tab = getSearchParam('tab');
+  const selectedTicket = useAppSelector((state) => state.ticket.selectedTicket);
 
-  // Retrieve the `tab` parameter from URL on mount
+  // Open ticket detail if ticket id params exists
   useEffect(() => {
-    const tab = searchParams.get('tab');
+    if (ticketId && !selectedTicket?.data) {
+      onOpenView();
+    }
+  }, [ticketId]);
+
+  useEffect(() => {
     const tabIndex = tab ? ALlTabs.findIndex((value) => value === tab) : -1;
     setTabIndex(tabIndex !== -1 ? tabIndex : 0);
-  }, [searchParams]);
+  }, [tab]);
 
   // Update the URL whenever the tab is changed
   const handleTabChange = (index: number) => {
@@ -67,19 +64,6 @@ const TicketManagement = () => {
       router.push(`/ticket-management?tab=${tabName}`);
     }
   };
-
-  // Display Ticket based on the search param id if it exists
-  useEffect(() => {
-    if (data?.data) {
-      dispatch(
-        setSelectedTicket({
-          action: ['view'],
-          category: getTicketCategory(data?.data),
-          data: data?.data,
-        })
-      );
-    }
-  }, [data]);
 
   return (
     <Flex width="full" direction="column" pb="24px">
@@ -128,6 +112,13 @@ const TicketManagement = () => {
         </Tabs>
       </Flex>
       <TicketOverlays />
+      <TicketDrawerWrapper
+        isOpen={isOpenView}
+        onClose={onCloseView}
+        data={null}
+        category="new"
+        action="view"
+      />
     </Flex>
   );
 };

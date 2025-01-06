@@ -5,6 +5,7 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useDeleteMaintenancePlanMutation } from '~/lib/redux/services/maintenance/plan.services';
 import { getSession } from 'next-auth/react';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
+import { SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
 
 const PopoverAction = (plan: MaintenancePlan) => {
   const {
@@ -43,7 +44,10 @@ const PopoverAction = (plan: MaintenancePlan) => {
           <Text
             cursor="pointer"
             onClick={() => {
-              updateSearchParam('maintenancePlanId', plan?.maintenancePlanId);
+              updateSearchParam(
+                SYSTEM_CONTEXT_DETAILS.MAINTENANCE_PLANS.slug,
+                plan?.maintenancePlanId
+              );
             }}
           >
             View

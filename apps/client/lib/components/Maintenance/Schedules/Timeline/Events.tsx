@@ -4,6 +4,7 @@ import { Event as EventType } from 'react-big-calendar';
 import { formatNumberShort } from '~/lib/utils/helperFunctions';
 import AggregateDetailModal from './Modals/AggregateModal';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
+import { SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
 
 const getEventStyle = (event: EventType) => {
   switch (event.resource?.currentStatus?.toLowerCase()) {
@@ -44,7 +45,7 @@ const Event = ({ event }: { event: EventType }) => {
       onOpenAggregate();
     } else {
       updateSearchParam(
-        'maintenanceScheduleInstanceId',
+        SYSTEM_CONTEXT_DETAILS.MAINTENANCE_SCHEDULE_INSTANCE.slug,
         event?.resource?.scheduleInstanceGuid
       );
     }

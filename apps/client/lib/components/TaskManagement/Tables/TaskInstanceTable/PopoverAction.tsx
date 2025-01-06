@@ -1,17 +1,22 @@
 import { Text, useDisclosure, VStack } from '@chakra-ui/react';
 import { getSession } from 'next-auth/react';
 
-import TaskFormDrawer from '~/lib/components/TaskManagement/Drawers/TaskFormDrawer';
 import { GenericDeleteModal, GenericPopover } from '@repo/ui/components';
+import { useEffect } from 'react';
+import TaskFormDrawer from '~/lib/components/TaskManagement/Drawers/TaskFormDrawer';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
+import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import {
   taskFormDetails,
   TaskInstance,
 } from '~/lib/interfaces/task.interfaces';
+import { useDeleteTaskInstanceMutation } from '~/lib/redux/services/task/instance.services';
+import {
+  STATUS_CATEGORY_ENUM,
+  SYSTEM_CONTEXT_DETAILS,
+} from '~/lib/utils/constants';
 import TaskDetailDrawer from '../../Drawers/TaskDetailDrawer';
 import MarkTaskAsCompletedModal from '../../Modals/MarkTaskAsCompletedModal';
-import { useDeleteTaskInstanceMutation } from '~/lib/redux/services/task/instance.services';
-import { STATUS_CATEGORY_ENUM } from '~/lib/utils/constants';
 
 const PopoverAction = (task: TaskInstance, type: 'drawer' | 'page') => {
   const {
@@ -36,7 +41,20 @@ const PopoverAction = (task: TaskInstance, type: 'drawer' | 'page') => {
   } = useDisclosure();
 
   const { handleSubmit } = useCustomMutation();
+
   const [deleteTaskInstance, { isLoading }] = useDeleteTaskInstanceMutation({});
+  const { getSearchParam, updateSearchParam, clearSearchParamsAfter } =
+    useCustomSearchParams();
+  const taskSlug = SYSTEM_CONTEXT_DETAILS.TASKS.slug;
+  const taskId = getSearchParam(taskSlug);
+
+  useEffect(() => {
+    if (taskId && (taskId === task?.taskInstanceGuid || !task)) {
+      onOpenViewDetails();
+    } else {
+      clearSearchParamsAfter(taskSlug, { removeSelf: true });
+    }
+  }, [taskId]);
 
   const handleDeleteTaskInstance = async () => {
     const session = await getSession();
@@ -61,7 +79,13 @@ const PopoverAction = (task: TaskInstance, type: 'drawer' | 'page') => {
               </Text>
             )}
           {type === 'page' && (
-            <Text cursor="pointer" onClick={onOpenViewDetails}>
+            <Text
+              cursor="pointer"
+              onClick={() => {
+                onOpenViewDetails();
+                updateSearchParam(taskSlug, task.taskInstanceGuid);
+              }}
+            >
               View Details
             </Text>
           )}

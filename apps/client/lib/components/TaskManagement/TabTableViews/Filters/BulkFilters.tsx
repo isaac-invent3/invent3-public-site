@@ -23,6 +23,7 @@ const BulkActions = ({ selectedTaskIds }: { selectedTaskIds: number[] }) => {
       });
     }
   };
+  // Contemplating Using One modal and one Button for all three options
   return (
     <>
       <HStack spacing="7px" width="full">
@@ -38,6 +39,32 @@ const BulkActions = ({ selectedTaskIds }: { selectedTaskIds: number[] }) => {
           onClick={() => handleBulkActionButtonClick(onOpenChangeStatus)}
         >
           Change Status
+        </Button>
+        <Button
+          minH="36px"
+          bgColor="white"
+          color="neutral.800"
+          fontSize="12px"
+          lineHeight="14.26px"
+          fontWeight={700}
+          pl="12px"
+          pr="8px"
+          onClick={() => handleBulkActionButtonClick(onOpenChangeStatus)}
+        >
+          Change Priority
+        </Button>
+        <Button
+          minH="36px"
+          bgColor="white"
+          color="neutral.800"
+          fontSize="12px"
+          lineHeight="14.26px"
+          fontWeight={700}
+          pl="12px"
+          pr="8px"
+          onClick={() => handleBulkActionButtonClick(onOpenChangeStatus)}
+        >
+          Change Assigned To
         </Button>
       </HStack>
     </>

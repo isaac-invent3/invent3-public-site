@@ -238,7 +238,7 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
                             ? 'Asset'
                             : 'Group Type'
                         }
-                        info={`${formik.values.planScope === 'asset' ? 'Choose the category and the sub-category' : 'Select the relevant group for the plan'}`}
+                        info={`${formik.values.planScope === 'asset' ? 'Choose the type of asset for maintenance.' : 'Select the relevant group for the plan'}`}
                         isRequired
                       />
                     </Flex>

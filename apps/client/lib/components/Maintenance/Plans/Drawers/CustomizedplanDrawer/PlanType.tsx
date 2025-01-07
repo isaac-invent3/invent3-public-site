@@ -21,7 +21,7 @@ const Plan = () => {
       <Flex width="full" maxW="118px">
         <FormSectionInfo
           title="Plan Type"
-          info="Add name that users can likely search with"
+          info="Select the category for this maintenance plan"
           isRequired
         />
       </Flex>

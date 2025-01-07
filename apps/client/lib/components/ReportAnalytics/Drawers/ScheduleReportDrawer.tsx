@@ -149,7 +149,7 @@ const ScheduleReportDrawer = (props: ScheduleReportDrawerProps) => {
                   sectionMaxWidth="130px"
                   mt="32px"
                   spacing="29px"
-                  description="Choose the category and the sub-category"
+                  description="Select and add emails to send the report to"
                   title="Send To"
                   isRequired
                 >

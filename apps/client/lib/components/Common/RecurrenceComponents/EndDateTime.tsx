@@ -25,7 +25,7 @@ const EndDateTime = (props: EndDateTimeProps) => {
     <HStack width="full" spacing="29px" alignItems="flex-start">
       <FormSectionInfo
         title="Ends"
-        info="Add name that users can likely search with"
+        info="Define when the repeat schedule should stop"
         isRequired={false}
         maxWidth="130px"
       />

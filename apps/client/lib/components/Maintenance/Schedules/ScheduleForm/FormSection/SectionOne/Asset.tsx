@@ -55,7 +55,7 @@ const AssetField = () => {
       <Flex width="full" maxW="130px">
         <FormSectionInfo
           title="Asset"
-          info="Add name that users can likely search with"
+          info="Choose the type of asset for maintenance."
           isRequired
         />
       </Flex>

@@ -89,15 +89,15 @@ const GenerateReport = () => {
                 <FormInputWrapper
                   sectionMaxWidth="141px"
                   spacing="24px"
-                  description="Add name that users can likely search with"
-                  title="Select from Table"
+                  description="Choose the context for this report"
+                  title="Select from Context"
                   isRequired
                   gridColumn="span 2"
                 >
                   <VStack width="full" spacing="4px" alignItems="flex-start">
                     <SystemContextSelect
                       selectName="systemContextTypeId"
-                      selectTitle="Select from Table"
+                      selectTitle="Select from Context"
                       isInvalid={
                         formik.submitCount > 0 &&
                         formik.errors.systemContextTypeId
@@ -120,7 +120,7 @@ const GenerateReport = () => {
                 <FormInputWrapper
                   sectionMaxWidth="141px"
                   spacing="8px"
-                  description="Find and select the asset you require"
+                  description="Pick the relevant column for data selection."
                   title="Column"
                   isRequired
                   gridColumn="span 2"
@@ -137,7 +137,7 @@ const GenerateReport = () => {
                   <FormInputWrapper
                     sectionMaxWidth="118px"
                     spacing="24px"
-                    description="Add name that users can likely search with"
+                    description="Specify the condition for this report"
                     title="Condition"
                     isRequired
                   >

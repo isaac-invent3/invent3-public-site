@@ -97,7 +97,7 @@ const CustomizedPlanModal = (props: CustomizedPlanModalProps) => {
                       <Flex width="full" maxW="118px">
                         <FormSectionInfo
                           title="Asset"
-                          info="Add name that users can likely search with"
+                          info="AChoose the type of asset"
                           isRequired
                         />
                       </Flex>

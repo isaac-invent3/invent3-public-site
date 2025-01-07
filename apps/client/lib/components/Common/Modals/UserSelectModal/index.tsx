@@ -67,7 +67,7 @@ const UserSelectModal = (props: UserSelectModalProps) => {
                   title={sectionInfoTitle ?? 'Assign'}
                   info={
                     sectionInfoText ??
-                    'Add name that users can likely search with'
+                    'Select the person tasked with this responsibility'
                   }
                   isRequired={false}
                   maxWidth="125px"

@@ -25,7 +25,7 @@ const StartDateTime = (props: StartDateTimeProps) => {
     <HStack width="full" spacing="29px" alignItems="flex-start" mb="32px">
       <FormSectionInfo
         title="Starts"
-        info="Add name that users can likely search with"
+        info="Specify the start date and time for the repeats"
         isRequired={false}
         maxWidth="130px"
       />

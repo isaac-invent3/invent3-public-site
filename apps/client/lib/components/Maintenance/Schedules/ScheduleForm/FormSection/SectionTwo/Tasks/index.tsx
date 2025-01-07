@@ -46,7 +46,7 @@ const Tasks = (props: TasksProps) => {
       <Flex width="full" maxW={sectionMaxWidth}>
         <FormSectionInfo
           title="Add Tasks"
-          info="Add name that users can likely search with"
+          info="List all tasks for this maintenance schedule"
           isRequired
         />
       </Flex>

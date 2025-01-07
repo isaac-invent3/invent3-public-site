@@ -57,6 +57,7 @@ const AssetImages = () => {
             title="Asset Images"
             info="Size max: 10MB each Format: JPG, PNG"
             isRequired
+            maxWidth="118px"
           />
         </Flex>
         <HStack spacing="12px" alignItems="flex-start" width="full">

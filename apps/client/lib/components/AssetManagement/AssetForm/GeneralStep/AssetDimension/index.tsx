@@ -26,7 +26,7 @@ const AssetDimension = () => {
       <Flex width="full" maxW="118px">
         <FormSectionInfo
           title="Dimension"
-          info="Choose the category and the sub-category"
+          info="Enter the size or measurements of the asset."
           isRequired
         />
       </Flex>

@@ -12,7 +12,7 @@ const AssetLocation = (props: AssetLocationProps) => {
       <Flex width="full" maxW="130px">
         <FormSectionInfo
           title="Asset Location"
-          info="Add name that users can likely search with"
+          info="Specify where the asset is located"
           isRequired
         />
       </Flex>

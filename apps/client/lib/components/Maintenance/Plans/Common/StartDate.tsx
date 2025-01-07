@@ -23,7 +23,7 @@ const StartDate = (props: StartDateProps) => {
       <Flex width="full" maxW={sectionMaxWidth}>
         <FormSectionInfo
           title="Start Date"
-          info="Add name that users can likely search with"
+          info="Set the starting date for the maintenance"
           isRequired
         />
       </Flex>

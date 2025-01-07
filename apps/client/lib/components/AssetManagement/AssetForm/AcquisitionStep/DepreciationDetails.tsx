@@ -13,7 +13,7 @@ const DepreciationDetails = () => {
       <Flex width="full" maxW="144px">
         <FormSectionInfo
           title="Depreciation Details"
-          info="Add name that users can likely search with"
+          info="Provide the asset's depreciation method"
           isRequired
         />
       </Flex>

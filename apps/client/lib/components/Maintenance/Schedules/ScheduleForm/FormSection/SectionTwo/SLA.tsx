@@ -32,7 +32,7 @@ const ServiceLevelAgreement = (props: ServiceLevelAgreementProps) => {
       <Flex width="full" maxW={sectionMaxWidth}>
         <FormSectionInfo
           title="Service Level Agreement"
-          info="Add name that users can likely search with"
+          info="Specify the terms of service for maintenance"
           isRequired
         />
       </Flex>

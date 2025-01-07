@@ -6,28 +6,28 @@ import {
   useToast,
   VStack,
 } from '@chakra-ui/react';
+import {
+  FormActionButtons,
+  FormSectionInfo,
+  RadioBox,
+} from '@repo/ui/components';
 import { FormikProvider, useFormik } from 'formik';
+import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import AssetSelect from '~/lib/components/Common/AssetSelect';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useGetAssetInfoHeaderByIdQuery } from '~/lib/redux/services/asset/general.services';
 import { useGetAssetTypeByIdQuery } from '~/lib/redux/services/asset/types.services';
 import { useGetAssetCustomMaintenancePlanByAssetGuidQuery } from '~/lib/redux/services/maintenance/plan.services';
+import { updatePlanForm } from '~/lib/redux/slices/MaintenanceSlice';
 import { planSchema } from '~/lib/schemas/maintenance.schema';
 import { MAINTENANCE_PLAN_ENUM, planScopeOptions } from '~/lib/utils/constants';
-import PlanTitle from '../../Common/PlanTitle';
-import Owner from '../../Common/Owner';
-import StartDate from '../../Common/StartDate';
 import EndDate from '../../Common/EndDate';
-import { updatePlanForm } from '~/lib/redux/slices/MaintenanceSlice';
-import moment from 'moment';
-import AssetGroupType from './AssetGroupType';
+import Owner from '../../Common/Owner';
+import PlanTitle from '../../Common/PlanTitle';
+import StartDate from '../../Common/StartDate';
 import AssetGroupContext from './AssetGroupContext';
-import {
-  FormActionButtons,
-  FormSectionInfo,
-  RadioBox,
-} from '@repo/ui/components';
+import AssetGroupType from './AssetGroupType';
 
 interface PlanInfoStepProps {
   activeStep: number;
@@ -207,7 +207,7 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
                   <Flex width="full" maxW="141px">
                     <FormSectionInfo
                       title="Plan Scope"
-                      info="Add name that users can likely search with"
+                      info="Define the coverage and objectives of the plan."
                       isRequired
                     />
                   </Flex>
@@ -238,7 +238,7 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
                             ? 'Asset'
                             : 'Group Type'
                         }
-                        info="Add name that users can likely search with"
+                        info={`${formik.values.planScope === 'asset' ? 'Choose the type of asset for maintenance.' : 'Select the relevant group for the plan'}`}
                         isRequired
                       />
                     </Flex>

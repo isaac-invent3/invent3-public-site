@@ -21,13 +21,14 @@ const Owner = (props: OwnerProps) => {
       <Flex width="full" maxW={sectionMaxWidth}>
         <FormSectionInfo
           title="Owner"
-          info="Add name that users can likely search with"
+          info="Identify the person responsible for this plan"
           isRequired
         />
       </Flex>
       <VStack width="full" spacing="4px" alignItems="flex-start">
         <UserDisplayAndAddButton
           selectedUser={selectedUser?.label ?? defaultName}
+          sectionInfoText="Choose a contact or enter an email address. You can also assign a task to yourself."
           handleSelectUser={(user) => {
             helpers.setValue(user?.value);
             setSelectedUser(user);

@@ -18,7 +18,7 @@ const Frequency = (props: FrequencyProps) => {
       <Flex width="full" maxW={sectionMaxWidth}>
         <FormSectionInfo
           title="Frequency"
-          info="Add name that users can likely search with"
+          info="Choose how often the occurence will repeat"
           isRequired
         />
       </Flex>

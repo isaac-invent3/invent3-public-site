@@ -25,7 +25,7 @@ const SectionInfo = (props: SectionInfoProps) => {
           </ChakraText>
         )}
       </ChakraText>
-      <ChakraText color="neutral.600" maxW="90%">
+      <ChakraText color="neutral.600" >
         {info}
       </ChakraText>
     </VStack>

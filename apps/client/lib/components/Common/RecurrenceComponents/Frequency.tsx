@@ -63,7 +63,7 @@ const Frequency = (props: FrequencyProps) => {
     <HStack width="full" spacing="29px" mb="32px">
       <FormSectionInfo
         title="Repeats"
-        info="Add name that users can likely search with"
+        info="Choose how often the occurence will repeat"
         isRequired={false}
         maxWidth="130px"
       />

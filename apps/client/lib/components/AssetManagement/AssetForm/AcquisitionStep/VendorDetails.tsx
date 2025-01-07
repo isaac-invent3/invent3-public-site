@@ -51,7 +51,7 @@ const VendorDetails = () => {
       <Flex width="full" maxW="144px">
         <FormSectionInfo
           title="Vendor Details"
-          info="Add name that users can likely search with"
+          info="Enter vendor name and contact information"
           isRequired
         />
       </Flex>
@@ -114,7 +114,7 @@ const VendorDetails = () => {
             <Flex width="full" maxW="130px">
               <FormSectionInfo
                 title="Asset Type"
-                info="Add name that users can likely search with"
+                info="Select the category of this asset"
                 isRequired
               />
             </Flex>

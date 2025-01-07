@@ -133,7 +133,7 @@ const Date = (props: DateProps) => {
         <Flex width="full" maxW={sectionMaxWidth}>
           <FormSectionInfo
             title={isMainSchedule ? 'Start Date and Time' : 'Instance Date'}
-            info="Add name that users can likely search with"
+            info="Choose when the maintenance will begin"
             isRequired
           />
         </Flex>

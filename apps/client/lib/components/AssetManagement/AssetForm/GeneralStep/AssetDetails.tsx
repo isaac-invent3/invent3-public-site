@@ -9,7 +9,7 @@ const AssetDetail = () => {
       <Flex width="full" maxW="118px">
         <FormSectionInfo
           title="Details"
-          info="Choose the category and the sub-category"
+          info="Provide essential information about the asset being added."
           isRequired
         />
       </Flex>

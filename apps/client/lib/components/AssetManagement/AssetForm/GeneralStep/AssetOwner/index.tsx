@@ -15,7 +15,7 @@ const AssetOwner = () => {
       <Flex width="full" maxW="118px">
         <FormSectionInfo
           title="Owner's Info"
-          info="Choose the category and the sub-category"
+          info="Enter details of the person responsible for the asset."
           isRequired
         />
       </Flex>

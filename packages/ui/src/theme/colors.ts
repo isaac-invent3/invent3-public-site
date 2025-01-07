@@ -28,6 +28,7 @@ type ExtendedColors = {
   brand?: CustomColorShades;
   error?: CustomColorShades;
   blue?: CustomColorShades;
+  green?: CustomColorShades;
 };
 
 /** extend additional color here */
@@ -68,6 +69,9 @@ const extendedColors: DeepPartial<ExtendedColors> = {
   },
   blue: {
     500: '#0366EF',
+  },
+  green: {
+    500: '#00A129',
   },
 };
 

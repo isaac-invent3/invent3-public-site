@@ -1,19 +1,18 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import _ from 'lodash';
 import { Flex } from '@chakra-ui/react';
-import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
+import { ListResponse } from '@repo/interfaces';
+import { generateSearchCriterion } from '@repo/utils';
+import _ from 'lodash';
+import React, { useCallback, useEffect, useState } from 'react';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
 import {
   LocationFilter,
   SearchCriterion,
 } from '~/lib/interfaces/general.interfaces';
-import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { TaskInstance } from '~/lib/interfaces/task.interfaces';
-import Filters from './Filters';
-import TaskInstanceTable from '../Tables/TaskInstanceTable';
 import { useSearchTaskInstancesMutation } from '~/lib/redux/services/task/instance.services';
-import { FilterDisplay } from '@repo/ui/components';
-import { generateSearchCriterion } from '@repo/utils';
-import { ListResponse } from '@repo/interfaces';
+import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
+import TaskInstanceTable from '../Tables/TaskInstanceTable';
+import Filters from './Filters';
 
 export const initialFilterData = {
   region: [],
@@ -24,6 +23,7 @@ export const initialFilterData = {
 interface TabTableViewProps {
   search: string;
   openFilter: boolean;
+  activeFilter: 'bulk' | 'general' | null;
   data: ListResponse<TaskInstance> | undefined;
   isLoading: boolean;
   isFetching: boolean;
@@ -32,6 +32,10 @@ interface TabTableViewProps {
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
   setPageSize: React.Dispatch<React.SetStateAction<number>>;
   specificSearchCriterion: SearchCriterion;
+  selectedRows?: number[];
+  setSelectedRows?: React.Dispatch<React.SetStateAction<number[]>>;
+  // eslint-disable-next-line no-unused-vars
+  handleSelectRow?: (row: TaskInstance) => void;
 }
 
 const TabTableView = (props: TabTableViewProps) => {
@@ -39,6 +43,7 @@ const TabTableView = (props: TabTableViewProps) => {
     data,
     search,
     openFilter,
+    activeFilter,
     isLoading,
     isFetching,
     pageSize,
@@ -46,6 +51,9 @@ const TabTableView = (props: TabTableViewProps) => {
     setCurrentPage,
     setPageSize,
     specificSearchCriterion,
+    selectedRows,
+    handleSelectRow,
+    setSelectedRows,
   } = props;
   const [filterData, setFilterData] =
     useState<LocationFilter>(initialFilterData);
@@ -120,17 +128,16 @@ const TabTableView = (props: TabTableViewProps) => {
 
   return (
     <Flex width="full" direction="column" mt="16px">
-      {openFilter && (
-        <Flex width="full" mb="16px">
-          <FilterDisplay isOpen={openFilter}>
-            <Filters
-              filterData={filterData}
-              setFilterData={setFilterData}
-              handleApplyFilter={handleSearch}
-            />
-          </FilterDisplay>
-        </Flex>
-      )}
+      <Flex width="full" mb="16px">
+        <Filters
+          filterData={filterData}
+          setFilterData={setFilterData}
+          handleApplyFilter={handleSearch}
+          activeFilter={activeFilter}
+          isOpen={openFilter}
+          selectedTaskIds={selectedRows ?? []}
+        />
+      </Flex>
       <TaskInstanceTable
         data={
           (search || !isFilterEmpty) && searchData
@@ -151,6 +158,10 @@ const TabTableView = (props: TabTableViewProps) => {
         isSortable={true}
         emptyLines={25}
         type="page"
+        isSelectable
+        handleSelectRow={handleSelectRow}
+        selectedRows={selectedRows}
+        setSelectedRows={setSelectedRows}
       />
     </Flex>
   );

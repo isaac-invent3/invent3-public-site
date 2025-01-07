@@ -14,19 +14,19 @@ const InfoTwo = () => {
     assetData;
   const details = [
     {
-      label: 'Owner',
+      label: 'Owner:',
       value: currentOwner ?? 'N/A',
     },
     {
-      label: 'Department',
+      label: 'Department:',
       value: departmentName ?? 'N/A',
     },
     {
-      label: 'Responsible for',
+      label: 'Responsible for:',
       value: employeeResponsible ?? 'N/A',
     },
     {
-      label: 'Assigned to',
+      label: 'Assigned to:',
       value: assignedTo ?? 'N/A',
     },
   ];

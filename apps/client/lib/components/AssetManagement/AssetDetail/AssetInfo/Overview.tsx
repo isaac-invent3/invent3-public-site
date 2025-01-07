@@ -82,7 +82,7 @@ const Overview = () => {
         <HStack width="full" spacing="42px" alignItems="flex-start">
           <VStack alignItems="flex-start" spacing="8px">
             <HStack spacing="8px" alignItems="center">
-              <Text color="neutral.600" width="65px" size="md">
+              <Text color="neutral.600" minW="65px" size="md">
                 Status:
               </Text>
               <GenericStatusBox
@@ -91,7 +91,7 @@ const Overview = () => {
               />
             </HStack>
             <HStack spacing="8px" alignItems="center">
-              <Text size="md" color="neutral.600" width="65px">
+              <Text size="md" color="neutral.600" minW="65px">
                 Asset ID:
               </Text>
               <Text size="md" color="black">
@@ -102,7 +102,7 @@ const Overview = () => {
               <Text
                 color="neutral.600"
                 size="md"
-                width="65px"
+                minW="65px"
                 whiteSpace="nowrap"
               >
                 Category:
@@ -113,7 +113,7 @@ const Overview = () => {
             </HStack>
             {assetInfo1.map((info, index) => (
               <HStack spacing="8px" alignItems="center" key={index}>
-                <Text color="neutral.600" width="65px" size="md">
+                <Text color="neutral.600" minW="65px" size="md">
                   {info.label}
                 </Text>
                 <Text color="black" size="md">

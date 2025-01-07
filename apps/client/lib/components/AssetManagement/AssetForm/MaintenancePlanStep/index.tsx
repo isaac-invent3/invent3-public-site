@@ -59,7 +59,7 @@ const MaintenancePlanStep = (props: MaintenancePlanStepProps) => {
               <Flex width="full" maxW="118px">
                 <FormSectionInfo
                   title="Maintenance Plan"
-                  info="Plans attached to the selected asset"
+                  info="Specify the Plan for asset upkeep"
                   isRequired={false}
                 />
               </Flex>

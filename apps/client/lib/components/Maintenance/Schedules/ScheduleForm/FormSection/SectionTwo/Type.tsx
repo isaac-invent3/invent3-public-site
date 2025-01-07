@@ -31,7 +31,7 @@ const Type = (props: TypeProps) => {
       <Flex width="full" maxW={sectionMaxWidth}>
         <FormSectionInfo
           title="Type"
-          info="Add name that users can likely search with"
+          info="Select the maintenance type from the options."
           isRequired
         />
       </Flex>

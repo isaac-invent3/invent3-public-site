@@ -13,7 +13,7 @@ const PlanTitle = (props: PlanTitleProps) => {
       <Flex width="full" maxW={sectionMaxWidth}>
         <FormSectionInfo
           title="Plan Title"
-          info="Add name that users can likely search with"
+          info="Give a title for this maintenance plan"
           isRequired
         />
       </Flex>

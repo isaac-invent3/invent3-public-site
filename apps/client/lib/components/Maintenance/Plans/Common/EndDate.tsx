@@ -23,7 +23,7 @@ const EndDate = (props: EndDateProps) => {
       <Flex width="full" maxW={sectionMaxWidth}>
         <FormSectionInfo
           title="End Date"
-          info="Add name that users can likely search with"
+          info="Specify when the maintenance plan will end"
           isRequired
         />
       </Flex>

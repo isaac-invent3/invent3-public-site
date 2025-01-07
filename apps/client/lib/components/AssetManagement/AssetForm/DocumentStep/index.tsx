@@ -55,7 +55,7 @@ const DocumentStep = (props: DocumentStepProps) => {
               <Flex width="full" maxW="141px">
                 <FormSectionInfo
                   title="Upload Documents"
-                  info="Size max: 10MB each Format: TXT, PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, JPEG"
+                  info="Attach related files for this asset"
                   isRequired={false}
                 />
               </Flex>

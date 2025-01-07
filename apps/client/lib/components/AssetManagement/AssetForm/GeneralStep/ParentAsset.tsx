@@ -9,7 +9,7 @@ const ParentAsset = () => {
       <Flex width="full" maxW="118px">
         <FormSectionInfo
           title="Parent Asset"
-          info="Select a Parent you choose to link to"
+          info="Select the Parent Asset if there is any"
           isRequired
         />
       </Flex>

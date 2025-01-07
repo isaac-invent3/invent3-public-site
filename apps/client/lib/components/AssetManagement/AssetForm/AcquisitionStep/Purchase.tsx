@@ -9,7 +9,7 @@ const PurchasePrice = () => {
       <Flex width="full" maxW="144px">
         <FormSectionInfo
           title="Purchase Price"
-          info="Add name that users can likely search with"
+          info="Enter the initial cost of the asset."
           isRequired
         />
       </Flex>
@@ -26,7 +26,7 @@ const PurchasePrice = () => {
               <Flex width="full" maxW="130px">
                 <FormSectionInfo
                   title="Resale Value"
-                  info="Add name that users can likely search with"
+                  info="Specify the estimated value for resale."
                   isRequired
                 />
               </Flex>
@@ -41,7 +41,7 @@ const PurchasePrice = () => {
               <Flex width="full" maxW="130px">
                 <FormSectionInfo
                   title="Scrap Value"
-                  info="Add name that users can likely search with"
+                  info="Enter the value if disposed as scrap"
                   isRequired
                 />
               </Flex>

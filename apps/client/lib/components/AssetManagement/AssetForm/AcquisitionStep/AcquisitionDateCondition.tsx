@@ -25,7 +25,7 @@ const AcquisitionDateConditon = () => {
       <Flex width="full" maxW="144px">
         <FormSectionInfo
           title="Acquisition Date"
-          info="Add name that users can likely search with"
+          info="Enter the date the asset was acquired"
           isRequired
         />
       </Flex>
@@ -42,7 +42,7 @@ const AcquisitionDateConditon = () => {
             <Flex width="full" maxW="130px">
               <FormSectionInfo
                 title="Asset Condition"
-                info="Add name that users can likely search with"
+                info="Describe the current state of the asset"
                 isRequired
               />
             </Flex>
@@ -68,7 +68,7 @@ const AcquisitionDateConditon = () => {
             <Flex width="full" maxW="130px">
               <FormSectionInfo
                 title="Asset Status"
-                info="Add name that users can likely search with"
+                info="Select the asset's operational status"
                 isRequired
               />
             </Flex>

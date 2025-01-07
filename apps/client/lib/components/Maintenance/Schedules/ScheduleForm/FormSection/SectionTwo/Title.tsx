@@ -13,7 +13,7 @@ const ScheduleTitle = (props: ScheduleTitleProps) => {
       <Flex width="full" maxW={sectionMaxWidth}>
         <FormSectionInfo
           title="Schedule Title"
-          info="Add name that users can likely search with"
+          info="Provide a title for this maintenance schedule."
           isRequired
         />
       </Flex>

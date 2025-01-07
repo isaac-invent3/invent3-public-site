@@ -14,7 +14,7 @@ const Description = (props: DescriptionProps) => {
       <Flex width="full" maxW={sectionMaxWidth}>
         <FormSectionInfo
           title="Description"
-          info="Add name that users can likely search with"
+          info="Add details about the maintenance schedule."
           isRequired
         />
       </Flex>

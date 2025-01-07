@@ -18,7 +18,7 @@ const TaskAssignedTo = (props: TaskAssignedToProps) => {
       <Flex width="full" maxW={sectionMaxWidth}>
         <FormSectionInfo
           title="Assigned to"
-          info="Add name that users can likely search with"
+          info="Select the person responsible for this task"
           isRequired
         />
       </Flex>

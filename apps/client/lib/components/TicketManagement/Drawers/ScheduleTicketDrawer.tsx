@@ -168,7 +168,7 @@ const ScheduleTicketDrawer = (props: AssignTicketDrawerProps) => {
           <FormInputWrapper
             sectionMaxWidth="141px"
             spacing="24px"
-            description="Add name that users can likely search with"
+            description="Specify the deadline for task completion"
             title="Resolution Date"
             isRequired
           >

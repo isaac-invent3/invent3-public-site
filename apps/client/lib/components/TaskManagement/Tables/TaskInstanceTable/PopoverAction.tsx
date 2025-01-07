@@ -43,18 +43,6 @@ const PopoverAction = (task: TaskInstance, type: 'drawer' | 'page') => {
   const { handleSubmit } = useCustomMutation();
 
   const [deleteTaskInstance, { isLoading }] = useDeleteTaskInstanceMutation({});
-  const { getSearchParam, updateSearchParam, clearSearchParamsAfter } =
-    useCustomSearchParams();
-  const taskSlug = SYSTEM_CONTEXT_DETAILS.TASKS.slug;
-  const taskId = getSearchParam(taskSlug);
-
-  useEffect(() => {
-    if (taskId && (taskId === task?.taskInstanceGuid || !task)) {
-      onOpenViewDetails();
-    } else {
-      clearSearchParamsAfter(taskSlug, { removeSelf: true });
-    }
-  }, [taskId]);
 
   const handleDeleteTaskInstance = async () => {
     const session = await getSession();
@@ -68,6 +56,28 @@ const PopoverAction = (task: TaskInstance, type: 'drawer' | 'page') => {
     }
   };
 
+  const { updateSearchParam, getSearchParam, clearSearchParamsAfter } =
+    useCustomSearchParams();
+
+  const taskSlugName = SYSTEM_CONTEXT_DETAILS.TASKS.slug;
+  const slugValue = getSearchParam(taskSlugName);
+
+  useEffect(() => {
+    if (slugValue && slugValue == task?.taskInstanceGuid) {
+      onOpenViewDetails();
+    }
+  }, []);
+
+  const closeAction = () => {
+    onCloseViewDetails();
+
+    clearSearchParamsAfter(taskSlugName, { removeSelf: true });
+  };
+
+  const openAction = () => {
+    updateSearchParam(taskSlugName, task?.taskInstanceGuid);
+  };
+
   return (
     <>
       <GenericPopover width="129px" placement="bottom-start">
@@ -79,13 +89,7 @@ const PopoverAction = (task: TaskInstance, type: 'drawer' | 'page') => {
               </Text>
             )}
           {type === 'page' && (
-            <Text
-              cursor="pointer"
-              onClick={() => {
-                onOpenViewDetails();
-                updateSearchParam(taskSlug, task.taskInstanceGuid);
-              }}
-            >
+            <Text cursor="pointer" onClick={openAction}>
               View Details
             </Text>
           )}
@@ -125,7 +129,7 @@ const PopoverAction = (task: TaskInstance, type: 'drawer' | 'page') => {
       {isOpenViewDetails && (
         <TaskDetailDrawer
           isOpen={isOpenViewDetails}
-          onClose={onCloseViewDetails}
+          onClose={closeAction}
           data={task}
         />
       )}

@@ -1,6 +1,5 @@
 import { SimpleGrid, VStack } from '@chakra-ui/react';
 
-import TaskTitle from '../../Common/TaskTitle';
 import TaskPriority from '../../Common/TaskPriority';
 import TaskDescription from '../../Common/TaskDescription';
 import TaskAssignedTo from '../../Common/AssignedTo';
@@ -17,8 +16,8 @@ const SectionTwo = () => {
         width="full"
         spacing="76px"
       >
-        <TaskTitle sectionMaxWidth="118px" spacing="63px" />
-        <TaskType sectionMaxWidth="118px" spacing="40px" />
+        <TaskDescription sectionMaxWidth="141px" spacing="47px" />
+        <TaskType sectionMaxWidth="141px" spacing="40px" />
       </SimpleGrid>
       <SimpleGrid
         columns={2}
@@ -26,9 +25,8 @@ const SectionTwo = () => {
         width="full"
         spacing="76px"
       >
-        <TaskDescription sectionMaxWidth="118px" spacing="63px" />
-
-        <TaskPriority sectionMaxWidth="118px" spacing="40px" />
+        <EstimatedDuration sectionMaxWidth="141px" spacing="47px" />
+        <CostEstimate sectionMaxWidth="141px" spacing="47px" />
       </SimpleGrid>
       <SimpleGrid
         columns={2}
@@ -36,16 +34,8 @@ const SectionTwo = () => {
         width="full"
         spacing="76px"
       >
-        <EstimatedDuration sectionMaxWidth="118px" spacing="63px" />
-        <CostEstimate sectionMaxWidth="118px" spacing="63px" />
-      </SimpleGrid>
-      <SimpleGrid
-        columns={2}
-        alignItems="flex-start"
-        width="full"
-        spacing="76px"
-      >
-        <TaskAssignedTo sectionMaxWidth="118px" spacing="63px" />
+        <TaskPriority sectionMaxWidth="141px" spacing="40px" />
+        <TaskAssignedTo sectionMaxWidth="141px" spacing="47px" />
       </SimpleGrid>
     </VStack>
   );

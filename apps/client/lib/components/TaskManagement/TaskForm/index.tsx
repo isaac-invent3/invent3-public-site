@@ -23,6 +23,9 @@ interface TaskFormProps {
 const TaskForm = (props: TaskFormProps) => {
   const { type } = props;
   const formDetails = useAppSelector((state) => state.task.taskForm);
+  const appConfigValues = useAppSelector(
+    (state) => state.general.appConfigValues
+  );
   const { handleSubmit } = useCustomMutation();
   const {
     isOpen: isOpenSuccess,
@@ -49,7 +52,15 @@ const TaskForm = (props: TaskFormProps) => {
       assignedTo: formDetails?.assignedTo ?? null,
       assignedToEmployeeName: formDetails?.assignedToEmployeeName ?? null,
       costEstimate: formDetails?.costEstimate ?? null,
-      estimatedDurationInHours: formDetails?.estimatedDurationInHours ?? null,
+      estimatedDurationInHours:
+        formDetails?.estimatedDurationInHours ??
+        (typeof appConfigValues.DEFAULT_ESTIMATED_TASK_DURATION_IN_HOURS ===
+        'string'
+          ? parseInt(
+              appConfigValues.DEFAULT_ESTIMATED_TASK_DURATION_IN_HOURS,
+              10
+            )
+          : null),
       actualCost: formDetails?.actualCost ?? null,
       comments: formDetails?.comments ?? null,
     },

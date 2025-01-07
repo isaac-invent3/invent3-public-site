@@ -13,7 +13,7 @@ const CostEstimate = (props: CostEstimateProps) => {
       <Flex width="full" maxW={sectionMaxWidth}>
         <FormSectionInfo
           title="Cost Estimate"
-          info="Add name that users can likely search with"
+          info="Enter the estimate cost for this task"
           isRequired
         />
       </Flex>

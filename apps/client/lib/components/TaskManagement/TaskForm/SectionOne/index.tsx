@@ -1,12 +1,10 @@
 import { SimpleGrid, VStack } from '@chakra-ui/react';
 
 import AssetField from './Asset';
-import { useAppSelector } from '~/lib/redux/hooks';
-import AssetLocation from '~/lib/components/Common/AssetLocation';
 import AssetSchedules from './AssetSchedules';
+import TaskTitle from '../../Common/TaskTitle';
 
 const SectionOne = () => {
-  const { assetLocation } = useAppSelector((state) => state.task.taskForm);
   return (
     <VStack spacing="24px" width="full" alignItems="flex-start">
       <SimpleGrid
@@ -15,8 +13,8 @@ const SectionOne = () => {
         width="full"
         spacing="78px"
       >
+        <TaskTitle sectionMaxWidth="141px" spacing="47px" />
         <AssetField />
-        <AssetLocation value={assetLocation} />
       </SimpleGrid>
       <AssetSchedules />
     </VStack>

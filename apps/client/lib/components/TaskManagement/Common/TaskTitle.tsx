@@ -14,7 +14,7 @@ const TaskTitle = (props: TaskTitleProps) => {
       <Flex width="full" maxW={sectionMaxWidth}>
         <FormSectionInfo
           title="Task Title"
-          info="Add name that users can likely search with"
+          info="Enter a clear title for this task"
           isRequired
         />
       </Flex>

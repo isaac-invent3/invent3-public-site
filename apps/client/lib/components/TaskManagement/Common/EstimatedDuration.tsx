@@ -14,7 +14,7 @@ const EstimatedDuration = (props: EstimatedDurationProps) => {
       <Flex width="full" maxW={sectionMaxWidth}>
         <FormSectionInfo
           title="Estimated Duration"
-          info="Add name that users can likely search with"
+          info="Enter the approximate hours to complete the task"
           isRequired
         />
       </Flex>

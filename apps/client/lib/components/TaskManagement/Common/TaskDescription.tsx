@@ -14,7 +14,7 @@ const TaskDescription = (props: TaskDescriptionProps) => {
       <Flex width="full" maxW={sectionMaxWidth}>
         <FormSectionInfo
           title="Description"
-          info="Add name that users can likely search with"
+          info="Provide details about the task objective"
           isRequired
         />
       </Flex>
@@ -23,7 +23,7 @@ const TaskDescription = (props: TaskDescriptionProps) => {
         name="taskDescription"
         type="text"
         label="Description"
-        placeholder="Description"
+        placeholder="What’s the task about?"
         customStyle={{ height: '133px' }}
       />
     </HStack>

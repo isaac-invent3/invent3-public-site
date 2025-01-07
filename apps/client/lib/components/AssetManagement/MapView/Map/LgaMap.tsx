@@ -6,9 +6,9 @@ import { GeoJSONFeature } from '~/lib/interfaces/general.interfaces';
 
 import CustomMarker from './CustomMarker';
 import NIGERIA_CORDINATES from '~/lib/utils/NigeriaCordinates';
-import LoadingSpinner from './LoadingSpinner';
 import { getScaleByStateSize } from '~/lib/utils/helperFunctions';
 import { SingleMapAssetData } from '~/lib/interfaces/asset/general.interface';
+import { LoadingSpinner } from '@repo/ui/components';
 
 interface GeoJSONData {
   type: GeoJsonTypes;

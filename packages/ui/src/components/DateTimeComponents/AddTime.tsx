@@ -116,7 +116,7 @@ const AddTime = (props: AddTimeProps) => {
           <HStack width="full" justifyContent="space-between">
             <FormSectionInfo
               title="Add a Time"
-              info="Add name that users can likely search with"
+              info="Add a specific time"
               isRequired={false}
               maxWidth="130px"
             />

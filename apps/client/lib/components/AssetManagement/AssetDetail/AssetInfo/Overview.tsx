@@ -82,7 +82,7 @@ const Overview = () => {
         <HStack width="full" spacing="42px" alignItems="flex-start">
           <VStack alignItems="flex-start" spacing="8px">
             <HStack spacing="8px" alignItems="center">
-              <Text color="neutral.600" width="65px" size="md">
+              <Text color="neutral.600" minW="65px" size="md">
                 Status:
               </Text>
               <GenericStatusBox
@@ -90,19 +90,19 @@ const Overview = () => {
                 colorCode={displayColorCode}
               />
             </HStack>
-            <HStack spacing="8px" alignItems="center">
-              <Text size="md" color="neutral.600" width="65px">
+            <HStack spacing="8px" alignItems="flex-start">
+              <Text size="md" color="neutral.600" minW="65px">
                 Asset ID:
               </Text>
               <Text size="md" color="black">
                 {assetId}
               </Text>
             </HStack>
-            <HStack spacing="8px" alignItems="center">
+            <HStack spacing="8px" alignItems="flex-start">
               <Text
                 color="neutral.600"
                 size="md"
-                width="65px"
+                minW="65px"
                 whiteSpace="nowrap"
               >
                 Category:
@@ -112,8 +112,8 @@ const Overview = () => {
               </Text>
             </HStack>
             {assetInfo1.map((info, index) => (
-              <HStack spacing="8px" alignItems="center" key={index}>
-                <Text color="neutral.600" width="65px" size="md">
+              <HStack spacing="8px" alignItems="flex-start" key={index}>
+                <Text color="neutral.600" minW="65px" size="md">
                   {info.label}
                 </Text>
                 <Text color="black" size="md">
@@ -124,7 +124,7 @@ const Overview = () => {
           </VStack>
           <VStack alignItems="flex-start" spacing="8px">
             {assetInfo2.map((info, index) => (
-              <HStack spacing="12px" alignItems="center" key={index}>
+              <HStack spacing="12px" alignItems="flex-start" key={index}>
                 <Text color="neutral.600" width="95px" size="md">
                   {info.label}
                 </Text>

@@ -7,6 +7,13 @@ interface VendorTextsProps {
 }
 const VendorTexts = (props: VendorTextsProps) => {
   const { data } = props;
+  const someFieldExists = [
+    data?.vendorName,
+    data?.vendorAddress,
+    data?.vendorContactEmail,
+    data?.vendorContactNo,
+  ].some(Boolean);
+
   return (
     <VStack
       width="full"
@@ -17,47 +24,56 @@ const VendorTexts = (props: VendorTextsProps) => {
       spacing="16px"
     >
       <DetailHeader variant="secondary">Vendor's Details</DetailHeader>
-      <HStack
-        spacing="24px"
-        alignItems="flex-start"
-        divider={
-          data?.vendorName ? <StackDivider borderColor="#BBBBBB80" /> : <></>
-        }
-      >
-        <VStack spacing="4px" alignItems="flex-start">
-          <Heading
-            as="h5"
-            fontSize="16px"
-            lineHeight="19.01px"
-            color="black"
-            fontWeight={700}
-          >
-            {data?.vendorName}
-          </Heading>
-          <Text size="md" color="neutral.600">
-            {data?.vendorAddress}
-          </Text>
-          {/* <Text size="md" color="neutral.600">
-            www.techsolutions.com
-          </Text> */}
-        </VStack>
-        <VStack spacing="4px" alignItems="flex-start">
-          {data?.vendorName && (
-            <Text size="md" color="black">
-              Contact Person
+      {someFieldExists ? (
+        <HStack
+          spacing="24px"
+          alignItems="flex-start"
+          divider={
+            data?.vendorName ? <StackDivider borderColor="#BBBBBB80" /> : <></>
+          }
+        >
+          <VStack spacing="4px" alignItems="flex-start">
+            <Heading
+              as="h5"
+              fontSize="16px"
+              lineHeight="19.01px"
+              color="black"
+              fontWeight={700}
+            >
+              {data?.vendorName}
+            </Heading>
+            <Text size="md" color="neutral.600">
+              {data?.vendorAddress}
             </Text>
-          )}
-          <Text size="md" color="neutral.600">
-            {data?.vendorName}
-          </Text>
-          <Text size="md" color="neutral.600">
-            {data?.vendorContactNo}
-          </Text>
-          <Text size="md" color="neutral.600">
-            {data?.vendorContactEmail}
-          </Text>
-        </VStack>
-      </HStack>
+          </VStack>
+          <VStack spacing="4px" alignItems="flex-start">
+            {data?.vendorName && (
+              <Text size="md" color="black">
+                Contact Person
+              </Text>
+            )}
+            <Text size="md" color="neutral.600">
+              {data?.vendorName}
+            </Text>
+            <Text size="md" color="neutral.600">
+              {data?.vendorContactNo}
+            </Text>
+            <Text size="md" color="neutral.600">
+              {data?.vendorContactEmail}
+            </Text>
+          </VStack>
+        </HStack>
+      ) : (
+        <Text
+          textAlign="center"
+          size="md"
+          width="full"
+          color="neutral.600"
+          my="20px"
+        >
+          No data found.
+        </Text>
+      )}
     </VStack>
   );
 };

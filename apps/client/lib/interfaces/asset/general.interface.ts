@@ -118,7 +118,7 @@ interface Asset {
   nextMaintenanceDate: string | null;
   currentCost: number | null;
   maintenanceCost: number | null;
-  y2dmaintenanceCost: number | null;
+  y2DMaintenanceCost: number | null;
   assetLocation: string | null;
 }
 

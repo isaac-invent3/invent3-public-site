@@ -12,7 +12,7 @@ const CompletionDate = (props: CompletionDateProps) => {
       <Flex width="full" maxW={sectionMaxWidth}>
         <FormSectionInfo
           title="Completion Date"
-          info="Add name that users can likely search with"
+          info="Select the completion date"
           isRequired
         />
       </Flex>

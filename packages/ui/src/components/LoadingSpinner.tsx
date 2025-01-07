@@ -2,7 +2,7 @@ import { Spinner, VStack } from '@chakra-ui/react';
 
 const LoadingSpinner = () => {
   return (
-    <VStack width="full" minH="50vh" justifyContent="center">
+    <VStack width="full" height="full" minH="inherit" justifyContent="center">
       <Spinner
         thickness="4px"
         speed="0.65s"

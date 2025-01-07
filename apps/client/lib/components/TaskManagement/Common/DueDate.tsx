@@ -1,7 +1,11 @@
 import { Flex, HStack, VStack } from '@chakra-ui/react';
 
 import { useField } from 'formik';
-import { DateTimeButtons, ErrorMessage, FormSectionInfo } from '@repo/ui/components';
+import {
+  DateTimeButtons,
+  ErrorMessage,
+  FormSectionInfo,
+} from '@repo/ui/components';
 
 interface DueDateProps {
   sectionMaxWidth: string;
@@ -17,7 +21,7 @@ const DueDate = (props: DueDateProps) => {
       <Flex width="full" maxW={sectionMaxWidth}>
         <FormSectionInfo
           title="Due Date"
-          info="Add name that users can likely search with"
+          info="Select the date when the task would be due"
           isRequired
         />
       </Flex>

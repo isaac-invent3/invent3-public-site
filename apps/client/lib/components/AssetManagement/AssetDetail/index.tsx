@@ -1,5 +1,5 @@
-import { DrawerBody, DrawerHeader, Spinner, VStack } from '@chakra-ui/react';
-import { GenericDrawer } from '@repo/ui/components';
+import { DrawerBody, DrawerHeader, VStack } from '@chakra-ui/react';
+import { GenericDrawer, LoadingSpinner } from '@repo/ui/components';
 import { useMemo } from 'react';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import { Asset } from '~/lib/interfaces/asset/general.interface';
@@ -71,13 +71,7 @@ const AssetDetail = ({ isOpen, onClose, type = 'main' }: AssetDetailProps) => {
 
       {isLoading && !asset && (
         <VStack width="full" minH="100vh" justifyContent="center">
-          <Spinner
-            thickness="4px"
-            speed="0.65s"
-            emptyColor="gray.200"
-            color="primary.500"
-            size="xl"
-          />
+          <LoadingSpinner />
         </VStack>
       )}
 

@@ -34,7 +34,7 @@ const Summary = () => {
     lastMaintenanceDate,
     nextMaintenanceDate,
     initialValue,
-    y2dmaintenanceCost,
+    y2DMaintenanceCost,
   } = assetData;
   const Summary1 = [
     // {
@@ -48,15 +48,15 @@ const Summary = () => {
     {
       label: 'Maintenance Cost (YTD)',
       value:
-        y2dmaintenanceCost !== null
-          ? amountFormatter(y2dmaintenanceCost)
+        y2DMaintenanceCost !== null
+          ? amountFormatter(y2DMaintenanceCost)
           : 'N/A',
     },
   ];
 
   const Summary2 = [
     {
-      label: 'Last Repair Date',
+      label: 'Last Maintenance Date',
       value:
         lastMaintenanceDate !== null
           ? dateFormatter(lastMaintenanceDate, 'Do MMM, YYYY')

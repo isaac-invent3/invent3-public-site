@@ -1,8 +1,12 @@
-import { Flex, HStack } from '@chakra-ui/react';
-import { useFormikContext } from 'formik';
+import { Flex, HStack, VStack } from '@chakra-ui/react';
+import { useField, useFormikContext } from 'formik';
 
 import { useGetAllTaskTypeQuery } from '~/lib/redux/services/task/types.services';
-import { FormSectionInfo, SelectableButtonGroup } from '@repo/ui/components';
+import {
+  ErrorMessage,
+  FormSectionInfo,
+  SelectableButtonGroup,
+} from '@repo/ui/components';
 import { generateOptions } from '~/lib/utils/helperFunctions';
 import { taskFormDetails } from '~/lib/interfaces/task.interfaces';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
@@ -16,6 +20,8 @@ const TaskType = (props: TaskTypeProps) => {
   const { data, isLoading } = useGetAllTaskTypeQuery({
     pageSize: DEFAULT_PAGE_SIZE,
   });
+  // eslint-disable-next-line no-unused-vars
+  const [field, meta, helpers] = useField('taskTypeId');
   const { setFieldValue, values } = useFormikContext<taskFormDetails>();
 
   return (
@@ -23,27 +29,32 @@ const TaskType = (props: TaskTypeProps) => {
       <Flex width="full" maxW={sectionMaxWidth}>
         <FormSectionInfo
           title="Type"
-          info="Add name that users can likely search with"
+          info="Add the type of this task"
           isRequired
         />
       </Flex>
-      <SelectableButtonGroup
-        options={generateOptions(data?.data.items, 'typeName', 'taskTypeId')}
-        selectedOptions={[
-          {
-            value: values.taskTypeId as number,
-            label: values.taskType as string,
-          },
-        ]}
-        handleSelect={(options) => {
-          setFieldValue('taskTypeId', options[0]?.value);
-          setFieldValue('taskType', options[0]?.label);
-        }}
-        isMultiSelect={false}
-        isLoading={isLoading}
-        buttonVariant="secondary"
-        customButtonStyle={{ width: 'max-content' }}
-      />
+      <VStack width="full" spacing="8px">
+        <SelectableButtonGroup
+          options={generateOptions(data?.data.items, 'typeName', 'taskTypeId')}
+          selectedOptions={[
+            {
+              value: values.taskTypeId as number,
+              label: values.taskType as string,
+            },
+          ]}
+          handleSelect={(options) => {
+            setFieldValue('taskTypeId', options[0]?.value);
+            setFieldValue('taskType', options[0]?.label);
+          }}
+          isMultiSelect={false}
+          isLoading={isLoading}
+          buttonVariant="secondary"
+          customButtonStyle={{ width: 'max-content' }}
+        />
+        {meta.touched && meta.error !== undefined && (
+          <ErrorMessage>{meta.error}</ErrorMessage>
+        )}
+      </VStack>
     </HStack>
   );
 };

@@ -1,13 +1,11 @@
-import {
-  DrawerBody,
-  DrawerHeader,
-  Flex,
-  HStack,
-  Spinner,
-  VStack,
-} from '@chakra-ui/react';
+import { DrawerBody, DrawerHeader, Flex, HStack } from '@chakra-ui/react';
 
-import { BackButton, Button, GenericDrawer } from '@repo/ui/components';
+import {
+  BackButton,
+  Button,
+  GenericDrawer,
+  LoadingSpinner,
+} from '@repo/ui/components';
 import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 import InfoSection from './InfoSection';
 import Schedules from './Schedules';
@@ -73,14 +71,7 @@ const PlanDetailsModal = (props: PlanDetailsModalProps) => {
       </DrawerHeader>
       <DrawerBody p={0} id="allSchedulesDiv">
         {isLoading ? (
-          <VStack width="full" height="full" justifyContent="center">
-            <Spinner
-              thickness="4px"
-              size="lg"
-              color="primary.500"
-              emptyColor="gray.200"
-            />
-          </VStack>
+          <LoadingSpinner />
         ) : plan ? (
           <Flex direction="column">
             <InfoSection data={plan} />

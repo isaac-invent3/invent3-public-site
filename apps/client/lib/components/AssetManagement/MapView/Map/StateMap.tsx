@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
 import NIGERIA_CORDINATES from '~/lib/utils/NigeriaCordinates';
-import LoadingSpinner from './LoadingSpinner';
 import CustomMarker from './CustomMarker';
 import { SingleMapAssetData } from '~/lib/interfaces/asset/general.interface';
+import { LoadingSpinner } from '@repo/ui/components';
 
 interface GeoJSONData {
   type: string;

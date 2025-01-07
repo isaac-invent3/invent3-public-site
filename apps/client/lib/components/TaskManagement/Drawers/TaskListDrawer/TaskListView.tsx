@@ -7,8 +7,8 @@ import {
 import { useGetAllTasksByScheduleIdQuery } from '~/lib/redux/services/task/general.services';
 import TaskTable from '../../Tables/TaskTable';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
-import { Spinner, VStack } from '@chakra-ui/react';
 import GenericErrorState from '~/lib/components/UI/GenericErrorState';
+import { LoadingSpinner } from '@repo/ui/components';
 
 interface TaskListViewProps {
   isOpen: boolean;
@@ -43,14 +43,7 @@ const TaskListView = (props: TaskListViewProps) => {
       taskType="main"
     >
       {isLoading ? (
-        <VStack width="full" height="full" justifyContent="center">
-          <Spinner
-            thickness="4px"
-            size="lg"
-            color="primary.500"
-            emptyColor="gray.200"
-          />
-        </VStack>
+        <LoadingSpinner />
       ) : data?.data ? (
         <TaskTable
           data={data?.data?.items ?? []}

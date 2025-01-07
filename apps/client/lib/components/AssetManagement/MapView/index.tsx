@@ -7,9 +7,9 @@ import {
 } from '~/lib/redux/services/asset/stats.services';
 import Stats from './Stats';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
-import LoadingSpinner from './Map/LoadingSpinner';
 import { SingleMapAssetData } from '~/lib/interfaces/asset/general.interface';
 import { AssetMapStats } from '~/lib/interfaces/asset/stats.interfaces';
+import { LoadingSpinner } from '@repo/ui/components';
 
 const generateAssetCountOption = (
   data: AssetMapStats[] | undefined
@@ -90,7 +90,9 @@ const MapView = () => {
           )}
         </HStack>
         {isLoadingLGAAssetCount || isLoadingStateAssetCount ? (
-          <LoadingSpinner />
+          <VStack justifyContent="center" minHeight="50vh" width="full">
+            <LoadingSpinner />
+          </VStack>
         ) : (
           <Flex
             width="full"

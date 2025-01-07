@@ -3,7 +3,10 @@ export { default as BackButton } from './Button/BackButton';
 export { default as CheckBox } from './CheckBox';
 export { default as AddTime } from './DateTimeComponents/AddTime';
 export { default as ConditionalDateSelector } from './DateTimeComponents/Common/ConditionalDateSelector';
-export { default as DateRange, default as DateRangeModal } from './DateTimeComponents/DateRange/DateRangeModal';
+export {
+  default as DateRange,
+  default as DateRangeModal,
+} from './DateTimeComponents/DateRange/DateRangeModal';
 export { default as DateRangePopover } from './DateTimeComponents/DateRange/DateRangePopover';
 export { default as ButtonPagination } from './Pagination/ButtonPagination';
 export { default as GenericBreadCrumb } from './BreadCrumb';
@@ -29,6 +32,7 @@ export { default as FormTextAreaInput } from './Form/FormTextAreaInput';
 export { default as FormTextInput } from './Form/FormTextInput';
 export { default as GenericDrawer } from './GenericDrawer';
 export { default as GenericPopover } from './GenericPopover';
+export { default as LoadingSpinner } from './LoadingSpinner';
 export { default as GenericModal } from './Modal';
 export { default as GenericDeleteModal } from './Modal/GenericDeleteModal';
 export { default as GenericSuccessModal } from './Modal/GenericSuccessModal';
@@ -44,4 +48,3 @@ export { default as DataTable } from './Table';
 export { default as TablePagination } from './Table/Pagination';
 export { default as TextArea } from './TextArea';
 export { default as TextInput } from './TextInput';
-

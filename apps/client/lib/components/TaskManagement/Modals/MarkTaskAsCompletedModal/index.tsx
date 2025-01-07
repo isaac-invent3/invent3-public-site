@@ -129,7 +129,7 @@ const MarkTaskAsCompletedModal = (props: MarkTaskAsCompletedModalProps) => {
                     <Flex width="full" maxW="132px">
                       <FormSectionInfo
                         title="Actual Cost"
-                        info="Add name that users can likely search with"
+                        info="Enter the actual cost for this task"
                         isRequired
                       />
                     </Flex>

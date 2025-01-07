@@ -90,7 +90,7 @@ const Overview = () => {
                 colorCode={displayColorCode}
               />
             </HStack>
-            <HStack spacing="8px" alignItems="center">
+            <HStack spacing="8px" alignItems="flex-start">
               <Text size="md" color="neutral.600" minW="65px">
                 Asset ID:
               </Text>
@@ -98,7 +98,7 @@ const Overview = () => {
                 {assetId}
               </Text>
             </HStack>
-            <HStack spacing="8px" alignItems="center">
+            <HStack spacing="8px" alignItems="flex-start">
               <Text
                 color="neutral.600"
                 size="md"
@@ -112,7 +112,7 @@ const Overview = () => {
               </Text>
             </HStack>
             {assetInfo1.map((info, index) => (
-              <HStack spacing="8px" alignItems="center" key={index}>
+              <HStack spacing="8px" alignItems="flex-start" key={index}>
                 <Text color="neutral.600" minW="65px" size="md">
                   {info.label}
                 </Text>
@@ -124,7 +124,7 @@ const Overview = () => {
           </VStack>
           <VStack alignItems="flex-start" spacing="8px">
             {assetInfo2.map((info, index) => (
-              <HStack spacing="12px" alignItems="center" key={index}>
+              <HStack spacing="12px" alignItems="flex-start" key={index}>
                 <Text color="neutral.600" width="95px" size="md">
                   {info.label}
                 </Text>

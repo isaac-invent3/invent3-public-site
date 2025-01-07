@@ -35,26 +35,33 @@ const PlanCard = (props: PlanCardProps) => {
         justifyContent="space-between"
       >
         {/* First Section Starts */}
-        <HStack alignItems="flex-start" spacing="24px">
-          <VStack spacing="2px" alignItems="flex-start">
-            <Text color="neutral.700" size="md" width="120px">
-              Start Date:{' '}
-            </Text>
+        <HStack alignItems="flex-start" spacing="16px">
+          <VStack
+            spacing="2px"
+            alignItems="flex-start"
+            minW="110px"
+            whiteSpace="nowrap"
+          >
+            <Text color="neutral.700">Start Date: </Text>
             <Text color="neutral.800" fontWeight={700}>
               {dateFormatter(data?.endDate, 'Do MMMM, YYYY') ?? 'N/A'}
             </Text>
           </VStack>
           <Text
             color="neutral.800"
-            width="140px"
-            maxW="140px"
             fontWeight={800}
+            width="181px"
+            maxW="1810px"
             fontSize="14px"
             lineHeight="21px"
           >
             {data?.planName}
           </Text>
+        </HStack>
+        {/* First Section Ends */}
 
+        {/* Second Section Starts */}
+        <HStack alignItems="flex-start" spacing="24px">
           <VStack
             alignItems="flex-start"
             spacing="8px"
@@ -62,7 +69,7 @@ const PlanCard = (props: PlanCardProps) => {
             maxW="140px"
           >
             <HStack spacing="8px">
-              <Text width="78px" size="md" fontWeight={800} color="neutral.600">
+              <Text width="78px" color="neutral.700">
                 Plan Type:{' '}
               </Text>
               <Text>
@@ -72,14 +79,14 @@ const PlanCard = (props: PlanCardProps) => {
               </Text>
             </HStack>
             <HStack spacing="8px">
-              <Text width="78px" size="md" fontWeight={800} color="neutral.600">
+              <Text width="78px" color="neutral.700">
                 Plan Scope:
               </Text>
               <Text>{data?.assetName ? 'Asset' : data?.groupTypeName}</Text>
             </HStack>
             :
             <HStack spacing="8px">
-              <Text width="78px" size="md" fontWeight={800} color="neutral.600">
+              <Text width="78px" color="neutral.700">
                 Schedules:
               </Text>
               <Text
@@ -94,27 +101,23 @@ const PlanCard = (props: PlanCardProps) => {
               </Text>
             </HStack>
           </VStack>
+          <VStack spacing="4px" alignItems="flex-start">
+            <Text color="neutral.700">Status: </Text>
+            <GenericStatusBox text={data?.planStatusName} width="100px" />
+          </VStack>
+          <VStack
+            spacing="2px"
+            alignItems="flex-start"
+            width="151px"
+            maxW="115px"
+          >
+            <Text color="neutral.700">End Date: </Text>
+            <Text color="neutral.800" fontWeight={700}>
+              {dateFormatter(data?.endDate, 'Do MMMM, YYYY') ?? 'N/A'}
+            </Text>
+          </VStack>
         </HStack>
-        {/* First Section Ends */}
-        <VStack spacing="4px" alignItems="flex-start" width="100px">
-          <Text color="neutral.700" size="md">
-            Status:{' '}
-          </Text>
-          <GenericStatusBox text={data?.planStatusName} />
-        </VStack>
-        <VStack
-          spacing="2px"
-          alignItems="flex-start"
-          width="151px"
-          maxW="120px"
-        >
-          <Text color="neutral.700" size="md">
-            End Date:{' '}
-          </Text>
-          <Text color="neutral.800" fontWeight={700}>
-            {dateFormatter(data?.endDate, 'Do MMMM, YYYY') ?? 'N/A'}
-          </Text>
-        </VStack>
+        {/* Second Section Ends */}
       </HStack>
       {isOpen && (
         <ScheduleDetailDrawer

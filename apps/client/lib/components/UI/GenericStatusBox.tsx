@@ -27,7 +27,7 @@ const GenericStatusBox = (props: GenericStatusBoxProps) => {
       <Text
         color="black"
         textOverflow="ellipsis"
-        noOfLines={1}
+        noOfLines={2}
         textTransform="capitalize"
         overflow="hidden"
         flex="1"

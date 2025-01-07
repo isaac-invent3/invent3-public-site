@@ -29,7 +29,7 @@ const TaskType = (props: TaskTypeProps) => {
       <Flex width="full" maxW={sectionMaxWidth}>
         <FormSectionInfo
           title="Type"
-          info="Add name that users can likely search with"
+          info="Add the type of this task"
           isRequired
         />
       </Flex>

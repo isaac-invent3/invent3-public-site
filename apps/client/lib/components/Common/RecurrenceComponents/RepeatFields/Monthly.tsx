@@ -34,7 +34,7 @@ const Monthly = () => {
     <HStack width="full" spacing="29px" alignItems="flex-start" mb="32px">
       <FormSectionInfo
         title="On Days"
-        info="Add name that users can likely search with"
+        info="Select specific days for the occurence schedule"
         isRequired={false}
         maxWidth="130px"
       />

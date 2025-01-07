@@ -92,9 +92,9 @@ export const taskInstanceApi = createApi({
       }),
       providesTags: ['allCompletedTaskInstances'],
     }),
-    getTaskInstanceById: builder.query<BaseApiResponse<TaskInstance>, number>({
-      query: (id) => ({
-        url: `/TaskInstances/${id}`,
+    getTaskInstanceById: builder.query<BaseApiResponse<TaskInstance>, string>({
+      query: (guid) => ({
+        url: `/TaskInstances/${guid}`,
         method: 'GET',
         headers: getHeaders(),
       }),

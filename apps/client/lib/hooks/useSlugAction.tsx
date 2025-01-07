@@ -18,7 +18,7 @@ const useSlugAction = (props: UseSlugActionProps) => {
     if (slugValue && slugValue == slugComparator) {
       slugAction();
     }
-  }, [slugValue]);
+  }, []);
 
   const closeAction = () => {
     onCloseHandler && onCloseHandler();

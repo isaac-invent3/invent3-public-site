@@ -1,17 +1,22 @@
 import { Text, useDisclosure, VStack } from '@chakra-ui/react';
 import { getSession } from 'next-auth/react';
 
-import TaskFormDrawer from '~/lib/components/TaskManagement/Drawers/TaskFormDrawer';
 import { GenericDeleteModal, GenericPopover } from '@repo/ui/components';
+import { useEffect } from 'react';
+import TaskFormDrawer from '~/lib/components/TaskManagement/Drawers/TaskFormDrawer';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
+import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import {
   taskFormDetails,
   TaskInstance,
 } from '~/lib/interfaces/task.interfaces';
+import { useDeleteTaskInstanceMutation } from '~/lib/redux/services/task/instance.services';
+import {
+  STATUS_CATEGORY_ENUM,
+  SYSTEM_CONTEXT_DETAILS,
+} from '~/lib/utils/constants';
 import TaskDetailDrawer from '../../Drawers/TaskDetailDrawer';
 import MarkTaskAsCompletedModal from '../../Modals/MarkTaskAsCompletedModal';
-import { useDeleteTaskInstanceMutation } from '~/lib/redux/services/task/instance.services';
-import { STATUS_CATEGORY_ENUM } from '~/lib/utils/constants';
 
 const PopoverAction = (task: TaskInstance, type: 'drawer' | 'page') => {
   const {
@@ -36,6 +41,7 @@ const PopoverAction = (task: TaskInstance, type: 'drawer' | 'page') => {
   } = useDisclosure();
 
   const { handleSubmit } = useCustomMutation();
+
   const [deleteTaskInstance, { isLoading }] = useDeleteTaskInstanceMutation({});
 
   const handleDeleteTaskInstance = async () => {
@@ -50,6 +56,28 @@ const PopoverAction = (task: TaskInstance, type: 'drawer' | 'page') => {
     }
   };
 
+  const { updateSearchParam, getSearchParam, clearSearchParamsAfter } =
+    useCustomSearchParams();
+
+  const taskSlugName = SYSTEM_CONTEXT_DETAILS.TASKS.slug;
+  const slugValue = getSearchParam(taskSlugName);
+
+  useEffect(() => {
+    if (slugValue && slugValue == task?.taskInstanceGuid) {
+      onOpenViewDetails();
+    }
+  }, []);
+
+  const closeAction = () => {
+    onCloseViewDetails();
+
+    clearSearchParamsAfter(taskSlugName, { removeSelf: true });
+  };
+
+  const openAction = () => {
+    updateSearchParam(taskSlugName, task?.taskInstanceGuid);
+  };
+
   return (
     <>
       <GenericPopover width="129px" placement="bottom-start">
@@ -61,7 +89,7 @@ const PopoverAction = (task: TaskInstance, type: 'drawer' | 'page') => {
               </Text>
             )}
           {type === 'page' && (
-            <Text cursor="pointer" onClick={onOpenViewDetails}>
+            <Text cursor="pointer" onClick={openAction}>
               View Details
             </Text>
           )}
@@ -101,7 +129,7 @@ const PopoverAction = (task: TaskInstance, type: 'drawer' | 'page') => {
       {isOpenViewDetails && (
         <TaskDetailDrawer
           isOpen={isOpenViewDetails}
-          onClose={onCloseViewDetails}
+          onClose={closeAction}
           data={task}
         />
       )}

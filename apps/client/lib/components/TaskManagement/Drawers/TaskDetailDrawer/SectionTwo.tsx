@@ -1,4 +1,4 @@
-import { Avatar, HStack, Text, VStack } from '@chakra-ui/react';
+import { Avatar, HStack, SimpleGrid, Text, VStack } from '@chakra-ui/react';
 
 import { TaskInstance } from '~/lib/interfaces/task.interfaces';
 import { amountFormatter } from '~/lib/utils/Formatters';
@@ -9,7 +9,7 @@ interface SectionTwoProps {
 const SectionTwo = ({ data }: SectionTwoProps) => {
   return (
     <VStack width="full" spacing="34px" pl="32px" pr="28px">
-      <HStack width="full" spacing="57px" alignItems="flex-start">
+      <SimpleGrid width="full" spacing="57px" columns={3}>
         <VStack width="full" spacing="8px" alignItems="flex-start">
           <Text color="neutral.600" fontWeight={700}>
             Schedule ID
@@ -44,7 +44,33 @@ const SectionTwo = ({ data }: SectionTwoProps) => {
             </Text>
           </HStack>
         </VStack>
-      </HStack>
+      </SimpleGrid>
+      <SimpleGrid width="full" spacing="57px" columns={3}>
+        <VStack width="full" spacing="8px" alignItems="flex-start">
+          <Text color="neutral.600" fontWeight={700}>
+            Asset Name
+          </Text>
+          <VStack alignItems="flex-start">
+            {data?.assetCode && (
+              <Text color="neutral.600" size="md">
+                ({data?.assetCode})
+              </Text>
+            )}
+            <Text color="black" size="md">
+              MacBook M1 2024
+            </Text>
+          </VStack>
+        </VStack>
+
+        <VStack width="full" spacing="8px" alignItems="flex-start">
+          <Text color="neutral.600" fontWeight={700}>
+            Asset Location
+          </Text>
+          <Text color="black" size="md">
+            {data?.assetLocation ?? 'N/A'}
+          </Text>
+        </VStack>
+      </SimpleGrid>
       <VStack width="full" spacing="8px" alignItems="flex-start">
         <Text color="neutral.600" fontWeight={700}>
           Description:

@@ -94,6 +94,12 @@ const TemplateModal = (props: TemplateModalProps) => {
     }
   }, [selectedTemplate]);
 
+  useEffect(() => {
+    if (!showDetails) {
+      setSelectedTemplate(null);
+    }
+  }, [showDetails]);
+
   return (
     <GenericTemplateModal
       isOpen={isOpen}

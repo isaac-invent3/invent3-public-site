@@ -20,9 +20,15 @@ const SectionWrapper = (props: SectionWrapperProps) => {
       width="full"
       alignItems="flex-start"
       justifyContent="space-between"
+      spacing={0}
       {...rest}
     >
-      <VStack alignItems="flex-start" spacing="8px" width={sectionInfoWidth}>
+      <VStack
+        alignItems="flex-start"
+        spacing="8px"
+        width="full"
+        maxW={sectionInfoWidth}
+      >
         <Text color="black" size="md">
           {title}
         </Text>

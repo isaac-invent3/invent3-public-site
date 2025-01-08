@@ -1,5 +1,10 @@
-import { VStack } from '@chakra-ui/react';
+import { Divider, VStack } from '@chakra-ui/react';
 import React from 'react';
+import WhenToNotify from './WhenToNotify';
+import EnableNotificationType from './EnableNotificationType';
+import Notes from './Notes';
+import Reminders from './Reminders';
+import Approvals from './Approvals';
 
 const Notification = () => {
   return (
@@ -12,7 +17,14 @@ const Notification = () => {
       pt="32px"
       rounded="6px"
       minH="60vh"
-    />
+      divider={<Divider borderColor="neutral.700" />}
+    >
+      <WhenToNotify />
+      <EnableNotificationType />
+      <Notes />
+      <Reminders />
+      <Approvals />
+    </VStack>
   );
 };
 

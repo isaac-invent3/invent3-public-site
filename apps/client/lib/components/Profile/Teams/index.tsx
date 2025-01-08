@@ -1,5 +1,7 @@
-import { VStack } from '@chakra-ui/react';
+import { Divider, VStack } from '@chakra-ui/react';
 import React from 'react';
+import MyTeam from './MyTeam';
+import TeamMembers from './TeamMembers';
 
 const Teams = () => {
   return (
@@ -12,7 +14,11 @@ const Teams = () => {
       pt="32px"
       rounded="6px"
       minH="60vh"
-    />
+      divider={<Divider borderColor="neutral.700" />}
+    >
+      <MyTeam />
+      <TeamMembers />
+    </VStack>
   );
 };
 

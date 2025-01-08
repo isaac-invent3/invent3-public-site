@@ -11,6 +11,7 @@ import {
 import { Button, GenericModal } from '@repo/ui/components';
 import { getSession } from 'next-auth/react';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
+import { useAppSelector } from '~/lib/redux/hooks';
 import { useUpdateTicketMutation } from '~/lib/redux/services/ticket.services';
 import MarkAsCompletedSuccessModal from './SuccessModal';
 
@@ -22,6 +23,10 @@ interface MarkTicketAsCompletedModalProps {
 const MarkTicketAsCompletedModal = (props: MarkTicketAsCompletedModalProps) => {
   const { isOpen, onClose, data } = props;
   const [updateTicketMutation, { isLoading }] = useUpdateTicketMutation();
+  // Isaac, when i used this, it threw an error that useContext was not found
+  // const { DEFAULT_COMPLETED_TASK_STATUS_ID } = useAppSelector(
+  //   (state) => state.general.appConfigValues
+  // );
   const {
     isOpen: isMarkAsCompletedSuccessOpen,
     onClose: onMarkAsCompletedSuccessClose,
@@ -36,7 +41,7 @@ const MarkTicketAsCompletedModal = (props: MarkTicketAsCompletedModalProps) => {
     const response = await updateTicketMutation({
       id: data.ticketId,
       ticketId: data.ticketId,
-      ticketStatusId: 1,
+      ticketStatusId:  3,
       lastModifiedBy: session?.user?.username,
     });
 

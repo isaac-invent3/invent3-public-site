@@ -9,6 +9,7 @@ import {
   TaskInstance,
   TaskInstanceModel,
   TaskInstancePayload,
+  UpdateTaskInstanceMetadataPayload,
 } from '~/lib/interfaces/task.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
@@ -46,6 +47,24 @@ export const taskInstanceApi = createApi({
         method: 'PUT',
         headers: getHeaders(),
         body,
+      }),
+      invalidatesTags: [
+        'allTaskInstancesByScheduleInstanceId',
+        'allTaskInstances',
+      ],
+    }),
+    updateTaskInstanceMetadataIds: builder.mutation<
+      void,
+      UpdateTaskInstanceMetadataPayload
+    >({
+      query: (data) => ({
+        url: generateQueryStr(
+          `/TaskInstances/UpdateTaskInstanceMetadataIds?`,
+          data
+        ),
+
+        method: 'PUT',
+        headers: getHeaders(),
       }),
       invalidatesTags: [
         'allTaskInstancesByScheduleInstanceId',
@@ -140,4 +159,5 @@ export const {
   useUpdateTaskInstanceMutation,
   useSearchTaskInstancesMutation,
   useGetAllCompletedTaskInstancesQuery,
+  useUpdateTaskInstanceMetadataIdsMutation
 } = taskInstanceApi;

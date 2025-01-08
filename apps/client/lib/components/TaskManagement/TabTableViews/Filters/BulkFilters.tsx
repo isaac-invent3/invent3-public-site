@@ -1,12 +1,13 @@
 import { Button, HStack, useDisclosure, useToast } from '@chakra-ui/react';
+import UpdateMultipleTaskModal from '../../Modals/UpdateMultipleTaskModal';
 
 const BulkActions = ({ selectedTaskIds }: { selectedTaskIds: number[] }) => {
   const toast = useToast();
 
   const {
-    isOpen: isOpenChangeStatus,
-    onOpen: onOpenChangeStatus,
-    onClose: onCloseChangeStatus,
+    isOpen: isOpenUpdateTask,
+    onOpen: onOpenUpdateTask,
+    onClose: onCloseUpdateTask,
   } = useDisclosure();
 
   const handleBulkActionButtonClick = (buttonCallback: () => void) => {
@@ -36,36 +37,16 @@ const BulkActions = ({ selectedTaskIds }: { selectedTaskIds: number[] }) => {
           fontWeight={700}
           pl="12px"
           pr="8px"
-          onClick={() => handleBulkActionButtonClick(onOpenChangeStatus)}
+          onClick={() => handleBulkActionButtonClick(onOpenUpdateTask)}
         >
-          Change Status
+          Update Task
         </Button>
-        <Button
-          minH="36px"
-          bgColor="white"
-          color="neutral.800"
-          fontSize="12px"
-          lineHeight="14.26px"
-          fontWeight={700}
-          pl="12px"
-          pr="8px"
-          onClick={() => handleBulkActionButtonClick(onOpenChangeStatus)}
-        >
-          Change Priority
-        </Button>
-        <Button
-          minH="36px"
-          bgColor="white"
-          color="neutral.800"
-          fontSize="12px"
-          lineHeight="14.26px"
-          fontWeight={700}
-          pl="12px"
-          pr="8px"
-          onClick={() => handleBulkActionButtonClick(onOpenChangeStatus)}
-        >
-          Change Assigned To
-        </Button>
+
+        <UpdateMultipleTaskModal
+          isOpen={isOpenUpdateTask}
+          onClose={onCloseUpdateTask}
+          selectedTaskIds={selectedTaskIds}
+        />
       </HStack>
     </>
   );

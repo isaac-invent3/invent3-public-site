@@ -39,7 +39,7 @@ interface AssetTableProps {
   isSortable?: boolean;
   showPopover?: boolean;
   // eslint-disable-next-line no-unused-vars
-  PopoverComponent?: (data: Asset) => JSX.Element;
+  PopoverComponent?: (data: Asset) => JSX.Element | undefined;
 }
 const AssetTable = (props: AssetTableProps) => {
   const columnHelper = createColumnHelper<Asset>();

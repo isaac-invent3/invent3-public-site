@@ -6,6 +6,7 @@ const scheduleSchema = (
   validateTask: boolean,
   validateAsset: boolean,
   validatePlanId: boolean,
+  validateFrequency?: boolean,
   minScheduleDate?: string,
   maxScheduleDate?: string
 ) =>
@@ -15,7 +16,9 @@ const scheduleSchema = (
     name: Yup.string().required('Title is Required'),
     sla: Yup.number().nullable(),
     typeId: Yup.string().required('Type is Required'),
-    frequencyId: Yup.string().required('Frequency is Required'),
+    ...(validateFrequency
+      ? { frequencyId: Yup.string().required('Frequency is Required') }
+      : { frequencyId: Yup.number().nullable() }),
     description: Yup.string().required('Description is Required'),
     comment: Yup.string().nullable(),
     scheduledDate: createDateSchema(

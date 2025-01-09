@@ -10,7 +10,7 @@ const ParentAsset = () => {
         <FormSectionInfo
           title="Parent Asset"
           info="Select the Parent Asset if there is any"
-          isRequired
+          isRequired={false}
         />
       </Flex>
       <Grid templateColumns="repeat(4, 1fr)" gap="11px" width="full">

@@ -29,7 +29,7 @@ const NotificationText = ({ notification }: { notification: Notification }) => {
   switch (notification.notificationTriggerEventTypeId) {
     case NOTIFICATION_EVENT_TYPE_ENUM.TICKET_CREATED:
       return (
-        <Link href={`/ticket-management?id=${contextId}`}>
+        <Link href={`/ticket-management?ticketId=${contextId}`}>
           <Text color="neutral.600" {...textStyle}>
             <Text
               color={keyTextColor}

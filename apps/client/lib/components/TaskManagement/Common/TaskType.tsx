@@ -33,7 +33,7 @@ const TaskType = (props: TaskTypeProps) => {
           isRequired
         />
       </Flex>
-      <VStack width="full" spacing="8px">
+      <VStack width="full" spacing="8px" alignItems="flex-start">
         <SelectableButtonGroup
           options={generateOptions(data?.data.items, 'typeName', 'taskTypeId')}
           selectedOptions={[

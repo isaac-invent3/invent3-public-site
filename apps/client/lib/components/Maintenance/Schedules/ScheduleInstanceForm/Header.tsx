@@ -11,7 +11,7 @@ const Header = () => {
     },
     {
       label: 'Maintenance Schedule',
-      route: '/maintenance?tab=Schedules',
+      route: '/maintenance/schedules',
     },
     {
       label: 'Edit Maintenance Schedule',

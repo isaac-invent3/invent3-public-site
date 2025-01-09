@@ -28,7 +28,7 @@ const PlanInfo = (props: PlanInfoProps) => {
     },
     {
       label: 'End Date',
-      value: data?.startDate
+      value: data?.endDate
         ? dateFormatter(data?.endDate, 'Do MMM, YYYY')
         : 'N/A',
     },

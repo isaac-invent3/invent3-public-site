@@ -125,7 +125,7 @@ const UpcomingMaintenance = () => {
           </Text>
         </HStack>
         <Button
-          href="/maintenance?tab=schedules"
+          href="/maintenance/schedules"
           customStyles={{
             py: 0,
             height: '28px',

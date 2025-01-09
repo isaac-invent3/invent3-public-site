@@ -61,6 +61,7 @@ const FormSection = (props: FormSectionProps) => {
       type === 'create',
       true,
       true,
+      true,
       finalStartDate,
       planEndDate ?? undefined
     ),

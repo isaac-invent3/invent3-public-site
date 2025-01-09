@@ -48,7 +48,7 @@ const EventDetailModal = (props: EventDetailModalProps) => {
         maxHeight="90%"
         rounded="4px"
       >
-        <ModalBody p={0} m={0} position="relative" minH="579px">
+        <ModalBody p={0} m={0} position="relative">
           <Icon
             as={CloseIcon}
             boxSize="24px"
@@ -61,7 +61,9 @@ const EventDetailModal = (props: EventDetailModalProps) => {
             onClick={() => onClose()}
           />
           {isLoading ? (
-            <LoadingSpinner />
+            <VStack my="220px" width="full" alignItems="center">
+              <LoadingSpinner />
+            </VStack>
           ) : data?.data ? (
             <VStack>
               <VStack

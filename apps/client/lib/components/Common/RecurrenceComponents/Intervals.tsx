@@ -19,7 +19,7 @@ const Intervals = (props: IntervalsProps) => {
       <HStack width="full" spacing="29px" mb="32px">
         <FormSectionInfo
           title="Interval"
-          info="Select specific days for the occurence schedule"
+          info="Set the interval between occurrences"
           isRequired={false}
           maxWidth="130px"
         />

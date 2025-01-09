@@ -45,7 +45,14 @@ const ScheduleInstanceForm = () => {
       taskCount: formDetails?.taskCount ?? 0,
       saveOnlyThisInstance: true,
     },
-    validationSchema: scheduleSchema(false, false, false, undefined, undefined),
+    validationSchema: scheduleSchema(
+      false,
+      false,
+      false,
+      false,
+      undefined,
+      undefined
+    ),
     enableReinitialize: true,
 
     onSubmit: async (values) => {

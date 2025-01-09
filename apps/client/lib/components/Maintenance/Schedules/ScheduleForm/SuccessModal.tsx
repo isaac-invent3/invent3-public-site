@@ -20,7 +20,7 @@ const ScheduleSuccessModal = (props: ScheduleSuccessModalProps) => {
       mainModalStyle={{ closeOnOverlayClick: false, closeOnEsc: false }}
     >
       <Button
-        href="/maintenance?tab=Schedules"
+        href="/maintenance/schedules"
         customStyles={{ width: '193px', mb: '54px' }}
       >
         Continue

@@ -66,6 +66,7 @@ const ScheduleModalForm = (props: ScheduleModalFormProps) => {
       true,
       false,
       true,
+      true,
       previousDay ?? undefined,
       planEndDate ?? undefined
     ),

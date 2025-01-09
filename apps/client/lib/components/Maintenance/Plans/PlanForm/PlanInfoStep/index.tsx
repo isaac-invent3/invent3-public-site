@@ -1,11 +1,4 @@
-import {
-  Flex,
-  HStack,
-  SimpleGrid,
-  Text,
-  useToast,
-  VStack,
-} from '@chakra-ui/react';
+import { Flex, HStack, SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import {
   FormActionButtons,
   FormSectionInfo,
@@ -16,9 +9,7 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import AssetSelect from '~/lib/components/Common/AssetSelect';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import { useGetAssetInfoHeaderByIdQuery } from '~/lib/redux/services/asset/general.services';
 import { useGetAssetTypeByIdQuery } from '~/lib/redux/services/asset/types.services';
-import { useGetAssetCustomMaintenancePlanByAssetGuidQuery } from '~/lib/redux/services/maintenance/plan.services';
 import { updatePlanForm } from '~/lib/redux/slices/MaintenanceSlice';
 import { planSchema } from '~/lib/schemas/maintenance.schema';
 import { MAINTENANCE_PLAN_ENUM, planScopeOptions } from '~/lib/utils/constants';
@@ -35,13 +26,13 @@ interface PlanInfoStepProps {
   type: 'create' | 'edit';
 }
 const PlanInfoStep = (props: PlanInfoStepProps) => {
-  const { activeStep, setActiveStep, type } = props;
+  const { activeStep, setActiveStep } = props;
   const maintenanceSlice = useAppSelector((state) => state.maintenance);
   const plan = maintenanceSlice.planForm;
-  const toast = useToast();
   const dispatch = useAppDispatch();
   const [isDefaultPlan, setIsDefaultPlan] = useState(false);
-  const [canProceed, setCanProceed] = useState(false);
+  // eslint-disable-next-line no-unused-vars
+  const [_, setCanProceed] = useState(true);
   const [inputtedStartDate, setInputtedStartDate] = useState<Date | undefined>(
     undefined
   );
@@ -95,33 +86,10 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
     },
   });
 
-  const { data: assetData } = useGetAssetInfoHeaderByIdQuery(
-    { id: formik.values.assetId! },
-    { skip: !formik.values.assetId }
-  );
   const { data: assetTypeData } = useGetAssetTypeByIdQuery(
     { id: formik.values.assetGroupContextID ?? undefined },
     { skip: formik.values.assetGroupContextID === undefined }
   );
-  const { data: assetCustomPlans, error } =
-    useGetAssetCustomMaintenancePlanByAssetGuidQuery(
-      { assetGuid: assetData?.data?.guid ?? undefined },
-      {
-        skip: !assetData?.data?.guid,
-      }
-    );
-
-  // Handles Toast Error
-  const showToast = (description: string) => {
-    toast({
-      title: 'Error',
-      description,
-      status: 'error',
-      duration: 5000,
-      isClosable: true,
-      position: 'top-right',
-    });
-  };
 
   // Set if it is a default plan to be created or not based on the plan scope (Used for Schema validation)
   useEffect(() => {
@@ -134,11 +102,6 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
       }
     }
   }, [formik.values.planScope]);
-
-  // Reset Proceed Flag to false if assetId and assetTypeId is changed
-  useEffect(() => {
-    setCanProceed(false);
-  }, [formik.values.assetId]);
 
   // Temporarily proceed if it's asset group until endpoint to validate is available
   useEffect(() => {
@@ -155,30 +118,7 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
     ) {
       setCanProceed(true);
     }
-    if (assetCustomPlans || assetTypeData || error) {
-      if (formik.values.planScope === 'asset') {
-        if (error) {
-          setCanProceed(true);
-        } else if (
-          type === 'create' ||
-          plan?.assetId !== formik.values.assetId
-        ) {
-          showToast('This Asset already have a customized maintenance plan');
-        } else {
-          setCanProceed(true);
-        }
-      }
-      if (formik.values.planScope === 'asset_type') {
-        //TODO: Confirm from George if there is anything like maintenancePlanId in the assetType data
-        // if (assetTypeData?.data?.maintenancePlanId === null) {
-        if (assetTypeData?.data === null) {
-          setCanProceed(true);
-        } else {
-          showToast('This Asset Type already have a default maintenance plan');
-        }
-      }
-    }
-  }, [assetTypeData, error, assetCustomPlans, formik.values.planScope]);
+  }, [assetTypeData, formik.values.planScope]);
 
   return (
     <Flex
@@ -290,7 +230,6 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
               totalStep={3}
               activeStep={1}
               setActiveStep={setActiveStep}
-              disablePrimaryButton={!canProceed}
             />
           </Flex>
         </form>

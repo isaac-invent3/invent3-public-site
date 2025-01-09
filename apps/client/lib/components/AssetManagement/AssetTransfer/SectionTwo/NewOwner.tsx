@@ -28,7 +28,7 @@ const NewOwner = (props: NewOwnerProps) => {
       setUser(data?.data);
       helpers.setValue(data?.data?.locationId);
       if (data?.data?.locationId) {
-        setNewLocation(data?.data?.locationId?.toString());
+        setNewLocation(data?.data?.employeeLocation);
       }
     }
   }, [data]);

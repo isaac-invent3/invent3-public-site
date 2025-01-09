@@ -1,6 +1,13 @@
 'use client';
 
-import { Divider, Flex, Heading, Text, VStack } from '@chakra-ui/react';
+import {
+  Divider,
+  Flex,
+  Heading,
+  Text,
+  useToast,
+  VStack,
+} from '@chakra-ui/react';
 import Link from 'next/link';
 import { loginSchema } from '~/lib/schemas/auth.schema';
 import { Field, FormikProvider, useFormik } from 'formik';
@@ -17,6 +24,7 @@ const SignIn = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const ref = searchParams.get('ref');
+  const toast = useToast();
   const dispatch = useAppDispatch();
   const formik = useFormik({
     initialValues: {
@@ -34,7 +42,12 @@ const SignIn = () => {
 
       if (result?.error) {
         // Handle error
-        console.error(result.error);
+        toast({
+          title: 'Invalid credentials',
+          description: 'Invalid Username or Password',
+          status: 'error',
+          position: 'top-right',
+        });
       } else {
         const result = await dispatch(
           utilityApi.endpoints.getAppConfigValues.initiate({})

@@ -15,6 +15,7 @@ interface Employee {
   deletedBy: string;
   guid: string;
   locationId: number | null;
+  employeeLocation: string;
 }
 
 interface User {

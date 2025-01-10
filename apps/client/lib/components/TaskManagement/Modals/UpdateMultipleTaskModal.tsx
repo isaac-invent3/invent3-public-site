@@ -1,22 +1,20 @@
+import { Flex, HStack, ModalBody, useToast, VStack } from '@chakra-ui/react';
 import {
-  Heading,
-  HStack,
-  ModalBody,
-  Text,
-  useToast,
-  VStack,
-} from '@chakra-ui/react';
-import { Button, GenericModal } from '@repo/ui/components';
+  Button,
+  FormSectionInfo,
+  GenericModal,
+  ModalHeading,
+} from '@repo/ui/components';
 import { FormikProvider, useFormik } from 'formik';
 import { getSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
-import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
+import { useState } from 'react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useUpdateTaskInstanceMetadataIdsMutation } from '~/lib/redux/services/task/instance.services';
 import { useGetAllTaskPrioritiesQuery } from '~/lib/redux/services/task/priorities.services';
 import { useGetAllTaskStatusesQuery } from '~/lib/redux/services/task/statuses.services';
 import { updateTaskInstanceMetadataSchema } from '~/lib/schemas/task.schema';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import PlanList from '../../AssetManagement/AssetForm/MaintenancePlanStep/PlanList';
 
 interface UpdateMultipleTaskModalProps {
   isOpen: boolean;
@@ -80,58 +78,36 @@ const UpdateMultipleTaskModal = (props: UpdateMultipleTaskModalProps) => {
       <GenericModal
         isOpen={isOpen}
         onClose={onClose}
-        contentStyle={{ width: { md: '606px' } }}
+        contentStyle={{ maxW: '80vw', width: '1116px', height: '716px' }}
       >
         <ModalBody p={0} m={0} width="full">
           <FormikProvider value={formik}>
             <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
               <VStack
                 width="full"
-                px="32px"
-                pt="56px"
-                pb="34px"
+                px="24px"
+                py="32px"
                 spacing="48px"
                 alignItems="center"
               >
-                <VStack spacing="8px">
-                  <Heading
-                    fontWeight={800}
-                    fontSize="32px"
-                    lineHeight="38.02px"
-                    color="primary.500"
-                  >
-                    Update Tasks
-                  </Heading>
-                  <Text color="neutral.700" size="md">
-                    Kindly fill the Fields below you want to update the Task(s)
-                    to
-                  </Text>
-                </VStack>
+                <ModalHeading heading="Bulk Task Update" />
 
-                {/* Main Form Starts Here */}
-                <HStack width="full" spacing="24px">
-                  <GenericAsyncSelect
-                    selectName="taskStatusId"
-                    selectTitle="Status"
-                    data={taskStatuses}
-                    labelKey="statusName"
-                    valueKey="taskStatusId"
-                    isLoading={isFetchingTaskStatuses}
-                    pageNumber={pageNumber}
-                    setPageNumber={setPageNumber}
-                  />
+                <HStack width="full" alignItems="flex-start" spacing="64px">
+                  <Flex width="full" maxW="118px">
+                    <FormSectionInfo
+                      title="Maintenance Plan"
+                      info="Specify the Plan for asset upkeep"
+                      isRequired={false}
+                    />
+                  </Flex>
 
-                  <GenericAsyncSelect
-                    selectName="taskPriorityId"
-                    selectTitle="Priority"
-                    data={taskPriorities}
-                    labelKey="priority"
-                    valueKey="taskPriorityId"
-                    isLoading={isFetchingTaskPriorities}
-                    pageNumber={pageNumber}
-                    setPageNumber={setPageNumber}
-                  />
+                  <VStack width="full" spacing="27px" overflow="auto">
+                    <VStack width="full" spacing="8px" overflow="auto">
+                      <PlanList />
+                    </VStack>
+                  </VStack>
                 </HStack>
+
                 {/* Main Form Ends Here */}
                 <HStack width="full" spacing="24px" justifyContent="center">
                   <Button

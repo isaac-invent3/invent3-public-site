@@ -43,11 +43,10 @@ const AssetDispose = (props: AssetDisposeProps) => {
       const createAssetDisposalRequestDto = {
         disposalReasonId: values.disposalReasonId!,
         comments: values.comments!,
-        assetId: data?.assetId!,
+        assetIds: [data?.assetId],
         disposalDate: moment(values.disposalDate, 'DD/MM/YYYY')
           .utcOffset(0, true)
           .toISOString()!,
-        currentOwner: data?.currentOwnerId!,
         disposalRequestedBy: data?.currentOwnerId!,
         createdBy: session?.user?.username!,
       };
@@ -75,7 +74,7 @@ const AssetDispose = (props: AssetDisposeProps) => {
           : null;
 
       const finalQuery = {
-        createAssetDisposalRequestDto,
+        createBulkAssetDisposalRequestDto: createAssetDisposalRequestDto,
         createAssetDocumentsDto,
         assetDocumentIds,
       };

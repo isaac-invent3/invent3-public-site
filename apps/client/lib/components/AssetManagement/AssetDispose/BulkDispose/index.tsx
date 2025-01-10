@@ -14,6 +14,10 @@ import SectionTwo from './SectionTwo';
 import { useRequestAssetDisposalMutation } from '~/lib/redux/services/asset/disposal.services';
 import { AssetFormDocument } from '~/lib/interfaces/asset/general.interface';
 import { assetDisposeSchema } from '~/lib/schemas/asset/main.schema';
+import {
+  getSelectedAssetIds,
+  removeSelectedAssetIds,
+} from '../../Common/utils';
 
 const BulkDispose = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -31,14 +35,13 @@ const BulkDispose = () => {
     validationSchema: assetDisposeSchema,
     onSubmit: async (values) => {
       const session = await getSession();
-      const createAssetDisposalRequestDto = {
+      const createBulkAssetDisposalRequestDto = {
         disposalReasonId: values.disposalReasonId!,
         comments: values.comments!,
-        assetId: 2,
+        assetIds: getSelectedAssetIds(),
         disposalDate: moment(values.disposalDate, 'DD/MM/YYYY')
           .utcOffset(0, true)
           .toISOString()!,
-        currentOwner: 1,
         disposalRequestedBy: 1,
         createdBy: session?.user?.username!,
       };
@@ -66,12 +69,13 @@ const BulkDispose = () => {
           : null;
 
       const finalQuery = {
-        createAssetDisposalRequestDto,
+        createBulkAssetDisposalRequestDto,
         createAssetDocumentsDto,
         assetDocumentIds,
       };
       const resp = await handleSubmit(requestAssetDisposal, finalQuery, '');
       if (resp?.data) {
+        removeSelectedAssetIds();
         onOpen();
       }
     },

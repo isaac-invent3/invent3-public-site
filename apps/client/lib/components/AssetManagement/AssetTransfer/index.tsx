@@ -30,21 +30,21 @@ const AssetTransfer = (props: AssetTransferProps) => {
       newOwnerId: undefined,
       transferDate: undefined,
       transferredTo: undefined,
-      comments: undefined,
+      comments: null,
     },
     validationSchema: assetTransferSchema,
     onSubmit: async (values) => {
       const session = await getSession();
       const formValues = {
-        ...values,
-        assetId: data?.assetId,
+        newOwnerId: values?.newOwnerId!,
+        transferredTo: values?.transferredTo!,
+        comments: values?.comments!,
+        assetIds: [data?.assetId],
         transferDate: moment(values.transferDate, 'DD/MM/YYYY')
           .utcOffset(0, true)
           .toISOString(),
-        previousOwnerId: data?.currentOwnerId ?? undefined,
-        transferredFrom: data?.locationId ?? undefined,
-        initiatedBy: values.newOwnerId,
-        createdBy: session?.user.username,
+        initiatedBy: values.newOwnerId!,
+        createdBy: session?.user.username!,
       };
       const resp = await handleSubmit(transferAsset, formValues, '');
       if (resp?.data) {

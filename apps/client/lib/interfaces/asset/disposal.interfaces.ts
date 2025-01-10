@@ -35,17 +35,16 @@ interface AssetDisposal {
 }
 
 interface AssetDisposalQuery {
-  createAssetDisposalRequestDto: CreateAssetDisposalRequestDto;
+  createBulkAssetDisposalRequestDto: CreateAssetDisposalRequestDto;
   createAssetDocumentsDto?: AssetDocumentsDto[] | null;
   assetDocumentIds?: number[] | null;
 }
 
 interface CreateAssetDisposalRequestDto {
-  currentOwner: number;
   disposalReasonId: number;
   disposalDate: string;
-  assetId: number;
-  comments?: string;
+  assetIds: number[];
+  comments: string | null;
   disposalRequestedBy: number;
   createdBy: string;
 }

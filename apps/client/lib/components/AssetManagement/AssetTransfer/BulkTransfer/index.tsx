@@ -13,6 +13,10 @@ import AssetSuccessModal from '../../Modals/AssetSuccessModal';
 import SectionTwo from '../SectionTwo';
 import BulkAssetTable from '../../Common/BulkAssetTable';
 import { Button } from '@repo/ui/components';
+import {
+  getSelectedAssetIds,
+  removeSelectedAssetIds,
+} from '../../Common/utils';
 
 const BulkTransfer = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -29,18 +33,19 @@ const BulkTransfer = () => {
     onSubmit: async (values) => {
       const session = await getSession();
       const formValues = {
-        ...values,
-        assetId: undefined!,
+        newOwnerId: values?.newOwnerId!,
+        transferredTo: values?.transferredTo!,
+        comments: values?.comments!,
+        assetIds: getSelectedAssetIds(),
         transferDate: moment(values.transferDate, 'DD/MM/YYYY')
           .utcOffset(0, true)
           .toISOString(),
-        previousOwnerId: undefined,
-        transferredFrom: undefined,
-        initiatedBy: values.newOwnerId,
-        createdBy: session?.user.username,
+        initiatedBy: values.newOwnerId!,
+        createdBy: session?.user.username!,
       };
       const resp = await handleSubmit(transferAsset, formValues, '');
       if (resp?.data) {
+        removeSelectedAssetIds();
         onOpen();
       }
     },

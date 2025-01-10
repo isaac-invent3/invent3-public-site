@@ -58,6 +58,7 @@ const TabTableView = (props: TabTableViewProps) => {
   const [filterData, setFilterData] =
     useState<LocationFilter>(initialFilterData);
   const { handleSubmit } = useCustomMutation();
+  const [selectedTaskIds, setSelectedTaskIds] = useState<number[]>([]);
 
   // Checks if all filterdata is empty
   const isFilterEmpty = _.every(
@@ -126,6 +127,18 @@ const TabTableView = (props: TabTableViewProps) => {
     }
   }, [search, isFilterEmpty]);
 
+  useEffect(() => {
+    if (selectedRows && selectedRows.length > 0) {
+      const sourceItems = searchData?.items || data?.items || [];
+
+      const taskInstanceIds = selectedRows
+        .map((rowId) => sourceItems[rowId]?.taskInstanceId)
+        .filter((id): id is number => id !== undefined);
+
+      setSelectedTaskIds(taskInstanceIds);
+    }
+  }, [selectedRows]);
+
   return (
     <Flex width="full" direction="column" mt="16px">
       <Flex width="full" mb="16px">
@@ -135,7 +148,7 @@ const TabTableView = (props: TabTableViewProps) => {
           handleApplyFilter={handleSearch}
           activeFilter={activeFilter}
           isOpen={openFilter}
-          selectedTaskIds={selectedRows ?? []}
+          selectedTaskIds={selectedTaskIds ?? []}
         />
       </Flex>
       <TaskInstanceTable

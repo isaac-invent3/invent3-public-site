@@ -100,6 +100,22 @@ export const taskInstanceApi = createApi({
       }),
       providesTags: ['allTaskInstances'],
     }),
+    getTaskInstancesByListOfIds: builder.query<
+      BaseApiResponse<ListResponse<TaskInstance>>,
+      {
+        taskInstanceIds: number[];
+      } & QueryParams
+    >({
+      query: (data) => ({
+        url: generateQueryStr(
+          `/TaskInstances/GetTaskInstancesByListOfIds?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allTaskInstances'],
+    }),
     getAllCompletedTaskInstances: builder.query<
       BaseApiResponse<ListResponse<TaskInstance>>,
       QueryParams
@@ -155,9 +171,10 @@ export const {
   useDeleteTaskInstanceMutation,
   useGetAllTaskInstancesByScheduleInstanceIdQuery,
   useGetAllTaskInstancesQuery,
+  useGetTaskInstancesByListOfIdsQuery,
   useGetTaskInstanceByIdQuery,
   useUpdateTaskInstanceMutation,
   useSearchTaskInstancesMutation,
   useGetAllCompletedTaskInstancesQuery,
-  useUpdateTaskInstanceMetadataIdsMutation
+  useUpdateTaskInstanceMetadataIdsMutation,
 } = taskInstanceApi;

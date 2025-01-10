@@ -75,7 +75,7 @@ const ScheduleInstanceForm = () => {
           const tasksArray = [
             // Generate for only task that has been added or updated
             ...generateTasksArray(
-              formDetails.tasks.filter(
+              values.tasks.filter(
                 (task) =>
                   (task.taskId &&
                     formDetails.updatedTaskIDs.includes(task.taskId)) ||

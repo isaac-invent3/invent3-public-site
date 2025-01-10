@@ -5,13 +5,13 @@ import { notFound } from 'next/navigation';
 
 import ScheduleInstanceForm from '~/lib/components/Maintenance/Schedules/ScheduleInstanceForm';
 import { useAppDispatch } from '~/lib/redux/hooks';
-import { useGetScheduleInstanceByGuidQuery } from '~/lib/redux/services/maintenance/scheduleInstance.services';
+import { useGetScheduleInstanceByIdQuery } from '~/lib/redux/services/maintenance/scheduleInstance.services';
 import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
 export default function Page({ params }: { params: { id: string } }) {
-  const { data, isLoading } = useGetScheduleInstanceByGuidQuery({
-    instanceGuid: params.id!,
+  const { data, isLoading } = useGetScheduleInstanceByIdQuery({
+    instanceId: +params.id!,
   });
   const dispatch = useAppDispatch();
 

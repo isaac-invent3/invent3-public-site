@@ -12,7 +12,7 @@ import OtherInfo from './OtherInfo';
 import PlanDetail from './PlanDetail';
 import ModalButtons from './ModalButtons';
 import { CloseIcon } from '~/lib/components/CustomIcons';
-import { useGetScheduleInstanceByGuidQuery } from '~/lib/redux/services/maintenance/scheduleInstance.services';
+import { useGetScheduleInstanceByIdQuery } from '~/lib/redux/services/maintenance/scheduleInstance.services';
 import { LoadingSpinner } from '@repo/ui/components';
 import GenericErrorState from '~/lib/components/UI/GenericErrorState';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
@@ -21,15 +21,15 @@ import { SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
 interface EventDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
-  scheduleInstanceGuid: string | null;
+  scheduleInstanceId: number | null;
 }
 const EventDetailModal = (props: EventDetailModalProps) => {
-  const { isOpen, onClose, scheduleInstanceGuid } = props;
-  const { data, isLoading, isError } = useGetScheduleInstanceByGuidQuery(
+  const { isOpen, onClose, scheduleInstanceId } = props;
+  const { data, isLoading, isError } = useGetScheduleInstanceByIdQuery(
     {
-      instanceGuid: scheduleInstanceGuid!,
+      instanceId: scheduleInstanceId!,
     },
-    { skip: !scheduleInstanceGuid }
+    { skip: !scheduleInstanceId }
   );
   const { removeSearchParam } = useCustomSearchParams();
 
@@ -89,7 +89,7 @@ const EventDetailModal = (props: EventDetailModalProps) => {
                 <PlanDetail data={data?.data} />
                 <ModalButtons
                   planId={data?.data?.maintenancePlanId}
-                  scheduleInstanceGuid={data?.data?.scheduleInstanceGuid}
+                  scheduleInstanceId={data?.data?.scheduleInstanceId}
                 />
               </VStack>
             </VStack>

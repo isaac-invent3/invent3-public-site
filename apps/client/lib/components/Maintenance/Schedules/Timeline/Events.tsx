@@ -46,7 +46,7 @@ const Event = ({ event }: { event: EventType }) => {
     } else {
       updateSearchParam(
         SYSTEM_CONTEXT_DETAILS.MAINTENANCE_SCHEDULE_INSTANCE.slug,
-        event?.resource?.scheduleInstanceGuid
+        event?.resource?.scheduleInstanceId
       );
     }
   };

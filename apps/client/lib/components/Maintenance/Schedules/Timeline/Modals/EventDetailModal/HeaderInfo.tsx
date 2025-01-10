@@ -49,7 +49,7 @@ const HeaderInfo = (props: HeaderInfoProps) => {
                   textDecoration="underline"
                   cursor="pointer"
                 >
-                  {data?.activeTasksCount}{' '}
+                  {data?.activeTasksCount ?? 0}{' '}
                   {`Task${data?.activeTasksCount > 1 ? 's' : ''}`}
                 </Text>
                 <Text color="neutral.600">added</Text>

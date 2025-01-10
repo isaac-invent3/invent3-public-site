@@ -2,7 +2,7 @@ const saveSelectedAssetIds = (selectedAssetIds: number[]) => {
   localStorage.setItem('assetIds', JSON.stringify(selectedAssetIds));
 };
 
-const getSelectedAssetIds = () => {
+const getSelectedAssetIds = (): number[] => {
   const savedAsset = localStorage.getItem('assetIds');
   return savedAsset ? JSON.parse(savedAsset) : [];
 };

@@ -89,6 +89,7 @@ const BulkTransfer = () => {
                 type="submit"
                 customStyles={{ width: '161px' }}
                 isLoading={formik.isSubmitting || isLoading}
+                isDisabled={getSelectedAssetIds().length < 1}
               >
                 Bulk Transfer
               </Button>

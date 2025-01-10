@@ -54,12 +54,12 @@ export const scheduleInstanceApi = createApi({
       }),
       providesTags: ['allScheduleInstances'],
     }),
-    getScheduleInstanceByGuid: builder.query<
+    getScheduleInstanceById: builder.query<
       BaseApiResponse<MaintenanceScheduleInstance>,
-      { instanceGuid: string }
+      { instanceId: number }
     >({
-      query: ({ instanceGuid }) => ({
-        url: `/MaintenanceScheduleInstances/${instanceGuid}`,
+      query: ({ instanceId }) => ({
+        url: `/MaintenanceScheduleInstances/${instanceId}`,
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -122,7 +122,7 @@ export const scheduleInstanceApi = createApi({
 export const {
   useDeleteMaintenanceScheduleMutation,
   useGetAllScheduleInstanceQuery,
-  useGetScheduleInstanceByGuidQuery,
+  useGetScheduleInstanceByIdQuery,
   useSearchScheduleInstanceMutation,
   useUpdateScheduleInstanceandTaskInstancesMutation,
   useGetMaintenanceScheduleInstanceAggregateQuery,

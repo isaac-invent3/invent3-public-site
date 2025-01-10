@@ -259,7 +259,13 @@ const TaskFormDrawer = (props: TaskFormDrawerProps) => {
               type="submit"
               customStyles={{ width: '237px' }}
               isLoading={isLoading || formik.isSubmitting}
-              loadingText={isCreating ? 'Creating...' : 'Updating...'}
+              loadingText={
+                handleData
+                  ? 'Submitting...'
+                  : isCreating
+                    ? 'Creating...'
+                    : 'Updating...'
+              }
               handleClick={formik.handleSubmit}
             >
               Save Task

@@ -29,8 +29,8 @@ const Schedules = () => {
       <EventDetailModal
         isOpen={isOpen}
         onClose={onClose}
-        scheduleInstanceGuid={
-          maintenanceScheduleInstanceId ? maintenanceScheduleInstanceId : null
+        scheduleInstanceId={
+          maintenanceScheduleInstanceId ? +maintenanceScheduleInstanceId : null
         }
       />
     </Flex>

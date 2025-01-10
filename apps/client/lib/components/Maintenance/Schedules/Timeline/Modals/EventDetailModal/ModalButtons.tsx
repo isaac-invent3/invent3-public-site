@@ -4,10 +4,10 @@ import { Button } from '@repo/ui/components';
 
 interface ModalButtonsProps {
   planId: number | null;
-  scheduleInstanceGuid: string;
+  scheduleInstanceId: number;
 }
 const ModalButtons = (props: ModalButtonsProps) => {
-  const { scheduleInstanceGuid, planId } = props;
+  const { scheduleInstanceId, planId } = props;
   return (
     <HStack width="full" justifyContent="flex-end">
       <HStack width="min-content" spacing="8px">
@@ -21,7 +21,7 @@ const ModalButtons = (props: ModalButtonsProps) => {
         <Button
           customStyles={{ height: '50px', px: '12px', width: '173px' }}
           variant="outline"
-          href={`/maintenance/schedules/instances/${scheduleInstanceGuid}/edit`}
+          href={`/maintenance/schedules/instances/${scheduleInstanceId}/edit`}
         >
           Edit Schedule Instance
         </Button>

@@ -43,6 +43,17 @@ export const assetApi = createApi({
       }),
       providesTags: ['allAsset'],
     }),
+    getAssetsByListOfIds: builder.query<
+      BaseApiResponse<ListResponse<Asset>>,
+      QueryParams & { assetIds: number[] }
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/Assets/GetAssetsByListOfIds?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allAsset'],
+    }),
     searchAssets: builder.mutation<
       BaseApiResponse<ListResponse<Asset>>,
       SearchQuery
@@ -207,6 +218,7 @@ export const {
   useUpdateAssetMutation,
   useGetAssetInfoHeaderByIdQuery,
   useGetAllAssetQuery,
+  useGetAssetsByListOfIdsQuery,
   useGetAcquisitionInfoByAssetIdQuery,
   useGetAssetComponentInfoByAssetGuidQuery,
   useGetImagesByAssetIdQuery,

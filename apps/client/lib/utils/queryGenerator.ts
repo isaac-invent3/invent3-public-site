@@ -9,7 +9,12 @@ const generateQueryStr = (
         // eslint-disable-next-line no-unused-vars
         ([_, value]) => value !== null && value !== '' && value !== undefined
       )
-      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+      .flatMap(([key, value]) => {
+        if (Array.isArray(value)) {
+          return value.map((item) => `${key}=${encodeURIComponent(item)}`);
+        }
+        return `${key}=${encodeURIComponent(value)}`;
+      })
       .join('&');
   return queryString;
 };

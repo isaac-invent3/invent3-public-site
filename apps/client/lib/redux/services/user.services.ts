@@ -7,7 +7,10 @@ import {
   QueryParams,
   SearchQuery,
 } from '@repo/interfaces';
-import { User } from '~/lib/interfaces/user.interfaces';
+import {
+  User,
+  UserPasswordChangeQuery,
+} from '~/lib/interfaces/user.interfaces';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -15,7 +18,7 @@ const getHeaders = () => ({
 export const userApi = createApi({
   reducerPath: 'userApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['allUsers'],
+  tagTypes: ['allUsers', 'userProfile'],
   endpoints: (builder) => ({
     getAllUsers: builder.query<
       BaseApiResponse<ListResponse<User>>,
@@ -28,6 +31,17 @@ export const userApi = createApi({
       }),
       providesTags: ['allUsers'],
     }),
+    getUserProfileByUserId: builder.query<
+      BaseApiResponse<User>,
+      { userId: number }
+    >({
+      query: ({ userId }) => ({
+        url: `/Users/GetUserProfileDetails/${userId}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['userProfile'],
+    }),
     searchUsers: builder.mutation<
       BaseApiResponse<ListResponse<User>>,
       SearchQuery
@@ -39,7 +53,20 @@ export const userApi = createApi({
         body,
       }),
     }),
+    changeUserPassword: builder.mutation<void, UserPasswordChangeQuery>({
+      query: (body) => ({
+        url: `/Users/ChangePassword`,
+        method: 'PUT',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useGetAllUsersQuery, useSearchUsersMutation } = userApi;
+export const {
+  useGetAllUsersQuery,
+  useSearchUsersMutation,
+  useGetUserProfileByUserIdQuery,
+  useChangeUserPasswordMutation,
+} = userApi;

@@ -3,8 +3,17 @@ import React from 'react';
 import EditButton from '../Common/EditButton';
 import { useSession } from 'next-auth/react';
 import Detail from './Detail';
+import { User } from '~/lib/interfaces/user.interfaces';
 
-const PersonalInformation = () => {
+interface PersonalInformationProps {
+  user: User | undefined;
+  isLoading: boolean;
+}
+
+const PersonalInformation = ({
+  user: LoadedUser,
+  isLoading,
+}: PersonalInformationProps) => {
   const data = useSession();
   const user = data?.data?.user;
   const infoOne = [
@@ -41,7 +50,11 @@ const PersonalInformation = () => {
           </Grid>
           <Grid templateColumns="repeat(3, 1fr)" gap="66px" width="full">
             <GridItem colSpan={1} width="full">
-              <Detail label="Phone Number" value={null} />
+              <Detail
+                label="Phone Number"
+                value={LoadedUser?.phoneNumber}
+                isLoading={isLoading}
+              />
             </GridItem>
             <GridItem colSpan={2}>
               <VStack width="full" alignItems="flex-start" spacing="8px">

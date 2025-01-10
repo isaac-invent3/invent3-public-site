@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 
 import { useToast } from '@chakra-ui/react';
+import { isArray, isObject } from 'lodash';
 
 const useCustomMutation = () => {
   const toast = useToast();
@@ -32,21 +33,34 @@ const useCustomMutation = () => {
       } else {
         // eslint-disable-next-line no-lonely-if
         if (showError) {
+          const response = (resp as any)?.error?.data;
+          const allErrors =
+            response?.data && isObject(response?.data)
+              ? Object.values(response?.data?.errors).flat()
+              : response?.data;
+
+          const validationError =
+            isArray(allErrors) && allErrors.length > 0
+              ? allErrors[0]
+              : allErrors;
+          const message = response?.message;
+
+          const displayError = validationError || message;
           toast({
-            title: (resp as any)?.error?.data?.message || 'An error occured',
+            title: displayError || 'An error occured',
             status: 'error',
             position: 'top-right',
           });
         }
       }
       return resp;
-    } catch (error: any) {
+    } catch (error) {
       toast({
-        title: error.response?.error?.data?.message || 'An error occured',
+        title: 'An error occured',
         status: 'error',
         position: 'top-right',
       });
-      
+
       throw error;
     }
   };

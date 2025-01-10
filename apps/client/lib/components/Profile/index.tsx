@@ -36,7 +36,7 @@ const Profile = () => {
   };
 
   return (
-    <Flex width="full" direction="column">
+    <Flex width="full" direction="column" pb="40px">
       <Header />
       <Tabs
         variant="custom"

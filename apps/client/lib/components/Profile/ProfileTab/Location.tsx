@@ -1,39 +1,42 @@
 import { Grid, GridItem, HStack, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import EditButton from '../Common/EditButton';
-import { useSession } from 'next-auth/react';
 import Detail from './Detail';
+import { User } from '~/lib/interfaces/user.interfaces';
 
-const Location = () => {
-  const data = useSession();
-  const user = data?.data?.user;
+interface LocationProps {
+  user: User | undefined;
+  isLoading: boolean;
+}
+
+const Location = ({ user, isLoading }: LocationProps) => {
   const infoOne = [
     {
       label: 'Country',
-      value: user?.firstName,
+      value: user?.countryName,
     },
     {
       label: 'City/State',
-      value: user?.lastName,
+      value: user?.stateName,
     },
     {
       label: 'Postal/Zip Code',
-      value: user?.email,
+      value: 'N/A',
     },
   ];
 
   const infoTwo = [
     {
       label: 'Region',
-      value: user?.firstName,
+      value: user?.stateName,
     },
     {
       label: 'Area',
-      value: user?.lastName,
+      value: user?.lganame,
     },
     {
       label: 'Location',
-      value: user?.email,
+      value: user?.residentialAddress,
     },
   ];
   return (
@@ -50,14 +53,14 @@ const Location = () => {
           <Grid templateColumns="repeat(3, 1fr)" gap="66px" width="full">
             {infoOne.map((item, index) => (
               <GridItem colSpan={1} width="full" key={index}>
-                <Detail {...item} />
+                <Detail {...item} isLoading={isLoading} />
               </GridItem>
             ))}
           </Grid>
           <Grid templateColumns="repeat(3, 1fr)" gap="66px" width="full">
             {infoTwo.map((item, index) => (
               <GridItem colSpan={1} width="full" key={index}>
-                <Detail {...item} />
+                <Detail {...item} isLoading={isLoading} />
               </GridItem>
             ))}
           </Grid>

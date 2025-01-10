@@ -57,6 +57,13 @@ const SignIn = () => {
             appConfigValues: result?.data?.data,
           })
         );
+        toast({
+          title: 'Success',
+          description: 'Login Successful',
+          status: 'success',
+          position: 'top-right',
+          duration: 2000,
+        });
         router.push(ref ?? '/dashboard');
       }
       setSubmitting(false);

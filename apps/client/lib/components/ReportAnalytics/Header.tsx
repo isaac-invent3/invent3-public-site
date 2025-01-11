@@ -1,18 +1,7 @@
 import { HStack, Icon, VStack } from '@chakra-ui/react';
 import { AddIcon } from '../CustomIcons';
-import { GenericBreadCrumb, Button } from '@repo/ui/components';
+import { Button } from '@repo/ui/components';
 import PageHeader from '../UI/PageHeader';
-
-const breadCrumbData = [
-  {
-    label: 'Dashboard',
-    route: '/',
-  },
-  {
-    label: 'Report & Analytics',
-    route: '#',
-  },
-];
 
 const Header = ({
   showGenerate = true,
@@ -23,7 +12,6 @@ const Header = ({
 }) => {
   return (
     <VStack spacing="58px" alignItems="flex-start" width="full" pt="12px">
-      <GenericBreadCrumb routes={breadCrumbData} />
       <HStack width="full" justifyContent="space-between">
         <PageHeader>{header ?? 'Reports & Analytics'}</PageHeader>
 

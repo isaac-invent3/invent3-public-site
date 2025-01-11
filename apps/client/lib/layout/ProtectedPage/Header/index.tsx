@@ -4,17 +4,25 @@ import HeaderIcon from './HeaderIcon';
 import { SearchIcon, SettingsIcon } from '~/lib/components/CustomIcons/layout';
 import UserActionPopover from './UserActionPopover';
 import NotificationPopover from '~/lib/components/Notification';
+import { getBreadcrumb } from './BreadCrumb';
+import { usePathname } from 'next/navigation';
+import { GenericBreadCrumb } from '@repo/ui/components';
 
 const Header = () => {
+  const pathname = usePathname();
+  const pathSegments = pathname.split('/').filter(Boolean);
+  const breadCrumbData = getBreadcrumb(pathSegments);
+
   return (
-    <>
-      <HStack spacing="24px" position="absolute" right={0} pr="24px">
+    <HStack width="full" justifyContent="space-between" mb="40px">
+      <GenericBreadCrumb routes={breadCrumbData} />
+      <HStack spacing="24px" pr="24px">
         <HeaderIcon icon={SearchIcon} size="20px" />
         <HeaderIcon icon={SettingsIcon} size="24px" />
         <NotificationPopover />
         <UserActionPopover />
       </HStack>
-    </>
+    </HStack>
   );
 };
 

@@ -10,11 +10,11 @@ import {
 import React, { useEffect, useState } from 'react';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import ProfileTab from './ProfileTab';
-import Header from './Header';
 import SecurityTab from './SecurityTab';
 import GeneralTab from './GeneralTab';
 import Notification from './Notification';
 import Teams from './Teams';
+import PageHeader from '../UI/PageHeader';
 
 const ALlTabs = ['Profile', 'Security', 'Notification', 'Teams', 'General'];
 
@@ -37,7 +37,7 @@ const Profile = () => {
 
   return (
     <Flex width="full" direction="column" pb="40px">
-      <Header />
+      <PageHeader>Settings</PageHeader>
       <Tabs
         variant="custom"
         width={'full'}

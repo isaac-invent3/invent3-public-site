@@ -2,7 +2,6 @@
 
 import { Flex, HStack, Text, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
-import Header from './Header';
 import { FormikProvider, useFormik } from 'formik';
 import { assetTransferSchema } from '~/lib/schemas/asset/main.schema';
 import { getSession } from 'next-auth/react';
@@ -17,6 +16,7 @@ import {
   getSelectedAssetIds,
   removeSelectedAssetIds,
 } from '../../Common/utils';
+import PageHeader from '~/lib/components/UI/PageHeader';
 
 const BulkTransfer = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -53,7 +53,7 @@ const BulkTransfer = () => {
 
   return (
     <Flex width="full" direction="column" pb="24px">
-      <Header />
+      <PageHeader>Bulk Asset Transfer Request</PageHeader>
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
           <Flex width="full" direction="column" gap="24px" mt="32px">

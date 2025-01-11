@@ -1,6 +1,5 @@
-import { HStack, Text, VStack } from '@chakra-ui/react';
+import { HStack, Text } from '@chakra-ui/react';
 
-import { GenericBreadCrumb } from '@repo/ui/components';
 import PageHeader from '../UI/PageHeader';
 import { useSession } from 'next-auth/react';
 import { dateFormatter } from '~/lib/utils/Formatters';
@@ -10,17 +9,6 @@ import { useGetStatesByCountryIdQuery } from '~/lib/redux/services/location/stat
 import { useGetAllCountriesQuery } from '~/lib/redux/services/location/country.services';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateInfo } from '~/lib/redux/slices/DashboardSlice';
-
-const breadCrumbData = [
-  {
-    label: 'Dashboard',
-    route: '/',
-  },
-  {
-    label: 'Overview',
-    route: '#',
-  },
-];
 
 function getGreeting() {
   const now = new Date();
@@ -52,55 +40,48 @@ const Header = () => {
       { skip: !selectedCountry?.value }
     );
   return (
-    <VStack spacing="45px" alignItems="flex-start" width="full" pt="12px">
-      <GenericBreadCrumb routes={breadCrumbData} />
-      <HStack width="full" justifyContent="space-between">
-        <HStack width="full" spacing="8px" alignItems="flex-end">
-          <PageHeader>
-            {`${getGreeting()}, ${data?.user?.firstName ?? ''}!`}
-          </PageHeader>
-          <Text
-            color="neutral.600"
-            fontWeight={700}
-          >{`It's ${dateFormatter(now, 'dddd D, MMMM YYYY')}`}</Text>
-        </HStack>
-        <HStack spacing="8px">
-          <DropDown
-            options={
-              generateOptions(
-                allCountries?.data?.items,
-                'countryName',
-                'countryId'
-              ) ?? []
-            }
-            isLoading={isLoadingCountries}
-            label="Country"
-            handleClick={(option) =>
-              dispatch(updateInfo({ selectedCountry: option }))
-            }
-            selectedOptions={selectedCountry}
-            width="150px"
-          />
-          <DropDown
-            options={[
-              { label: 'All', value: null },
-              ...generateOptions(
-                allStates?.data?.items,
-                'stateName',
-                'stateId'
-              ),
-            ]}
-            isLoading={isLoadingStates}
-            label="Region"
-            handleClick={(option) =>
-              dispatch(updateInfo({ selectedState: option }))
-            }
-            selectedOptions={selectedState}
-            width="150px"
-          />
-        </HStack>
+    <HStack width="full" justifyContent="space-between">
+      <HStack width="full" spacing="8px" alignItems="flex-end">
+        <PageHeader>
+          {`${getGreeting()}, ${data?.user?.firstName ?? ''}!`}
+        </PageHeader>
+        <Text
+          color="neutral.600"
+          fontWeight={700}
+        >{`It's ${dateFormatter(now, 'dddd D, MMMM YYYY')}`}</Text>
       </HStack>
-    </VStack>
+      <HStack spacing="8px">
+        <DropDown
+          options={
+            generateOptions(
+              allCountries?.data?.items,
+              'countryName',
+              'countryId'
+            ) ?? []
+          }
+          isLoading={isLoadingCountries}
+          label="Country"
+          handleClick={(option) =>
+            dispatch(updateInfo({ selectedCountry: option }))
+          }
+          selectedOptions={selectedCountry}
+          width="150px"
+        />
+        <DropDown
+          options={[
+            { label: 'All', value: null },
+            ...generateOptions(allStates?.data?.items, 'stateName', 'stateId'),
+          ]}
+          isLoading={isLoadingStates}
+          label="Region"
+          handleClick={(option) =>
+            dispatch(updateInfo({ selectedState: option }))
+          }
+          selectedOptions={selectedState}
+          width="150px"
+        />
+      </HStack>
+    </HStack>
   );
 };
 

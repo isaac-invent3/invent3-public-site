@@ -11,11 +11,11 @@ import {
   useCreateTaskMutation,
   useUpdateTaskMutation,
 } from '~/lib/redux/services/task/general.services';
-import Header from './Header';
 import TaskSuccessModal from '../Modals/TaskSuccessModal';
 import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
 import { FormActionButtons, withFormLeaveDialog } from '@repo/ui/components';
+import PageHeader from '../../UI/PageHeader';
 
 interface TaskFormProps {
   type: 'create' | 'edit';
@@ -108,7 +108,7 @@ const TaskForm = (props: TaskFormProps) => {
 
   return (
     <Flex width="full" direction="column" pb="24px">
-      <Header headingText={defaultHeader} />
+      <PageHeader>{defaultHeader}</PageHeader>
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
           <VStack

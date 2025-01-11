@@ -2,7 +2,6 @@
 
 import { Flex, HStack, Text, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
-import Header from './Header';
 import { FormikProvider, useFormik } from 'formik';
 import { getSession } from 'next-auth/react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
@@ -18,6 +17,7 @@ import {
   getSelectedAssetIds,
   removeSelectedAssetIds,
 } from '../../Common/utils';
+import PageHeader from '~/lib/components/UI/PageHeader';
 
 const BulkDispose = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -83,7 +83,7 @@ const BulkDispose = () => {
 
   return (
     <Flex width="full" direction="column" pb="24px">
-      <Header />
+      <PageHeader>Bulk Asset Dispose Request</PageHeader>
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
           <Flex width="full" direction="column" gap="24px" mt="32px">

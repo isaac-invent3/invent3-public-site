@@ -1,6 +1,5 @@
 import { Flex, HStack, Text, useDisclosure } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
-import Header from './Header';
 import { Asset } from '~/lib/interfaces/asset/general.interface';
 import { FormikProvider, useFormik } from 'formik';
 import { assetTransferSchema } from '~/lib/schemas/asset/main.schema';
@@ -14,6 +13,7 @@ import moment from 'moment';
 import { getSession } from 'next-auth/react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useTransferAssetMutation } from '~/lib/redux/services/asset/general.services';
+import PageHeader from '../../UI/PageHeader';
 
 interface AssetTransferProps {
   data: Asset;
@@ -63,7 +63,7 @@ const AssetTransfer = (props: AssetTransferProps) => {
 
   return (
     <Flex width="full" direction="column" pb="24px">
-      <Header />
+      <PageHeader>Asset Transfer Request</PageHeader>
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
           <Flex width="full" direction="column" gap="24px" mt="32px">

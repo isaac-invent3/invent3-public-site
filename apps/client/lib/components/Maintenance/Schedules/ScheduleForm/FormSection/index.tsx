@@ -4,11 +4,11 @@ import { FormikProvider, useFormik } from 'formik';
 import { scheduleSchema } from '~/lib/schemas/maintenance.schema';
 import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
-import Header from '../Header';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';
 import moment from 'moment';
 import { FormActionButtons } from '@repo/ui/components';
+import PageHeader from '~/lib/components/UI/PageHeader';
 
 interface FormSectionProps {
   activeStep: number;
@@ -81,7 +81,7 @@ const FormSection = (props: FormSectionProps) => {
       direction="column"
       display={activeStep === 1 ? 'flex' : 'none'}
     >
-      <Header headingText={defaultHeader} />
+      <PageHeader>{defaultHeader}</PageHeader>
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
           <VStack

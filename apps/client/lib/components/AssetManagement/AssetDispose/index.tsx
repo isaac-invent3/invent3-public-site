@@ -1,6 +1,5 @@
 import { Flex, HStack, Text, useDisclosure } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
-import Header from './Header';
 import {
   Asset,
   AssetFormDocument,
@@ -18,6 +17,7 @@ import { useRequestAssetDisposalMutation } from '~/lib/redux/services/asset/disp
 import { getSession } from 'next-auth/react';
 import moment from 'moment';
 import { getSelectedAssetIds } from '../Common/utils';
+import PageHeader from '../../UI/PageHeader';
 
 interface AssetDisposeProps {
   data: Asset;
@@ -96,7 +96,7 @@ const AssetDispose = (props: AssetDisposeProps) => {
 
   return (
     <Flex width="full" direction="column" pb="24px">
-      <Header />
+      <PageHeader>Asset Dispose Request</PageHeader>
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
           <Flex width="full" direction="column" gap="24px" mt="32px">

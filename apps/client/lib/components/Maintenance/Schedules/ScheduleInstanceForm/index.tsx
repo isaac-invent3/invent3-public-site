@@ -1,6 +1,5 @@
 import { Flex, useDisclosure, VStack } from '@chakra-ui/react';
 
-import Header from './Header';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { FormikProvider, useFormik } from 'formik';
 import { scheduleSchema } from '~/lib/schemas/maintenance.schema';
@@ -20,6 +19,7 @@ import { generateTasksArray } from '../../Common/helperFunctions';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import ScheduleInstanceSuccessModal from './SuccessModal';
 import { TaskInstancePayload } from '~/lib/interfaces/task.interfaces';
+import PageHeader from '~/lib/components/UI/PageHeader';
 
 const ScheduleInstanceForm = () => {
   const formDetails = useAppSelector((state) => state.maintenance.scheduleForm);
@@ -106,7 +106,7 @@ const ScheduleInstanceForm = () => {
   return (
     <>
       <Flex width="full" height="full" direction="column" gap="40px" pb="25px">
-        <Header />
+        <PageHeader>Edit Maintenance Schedule Instance</PageHeader>
         <Flex
           width="full"
           direction="column"

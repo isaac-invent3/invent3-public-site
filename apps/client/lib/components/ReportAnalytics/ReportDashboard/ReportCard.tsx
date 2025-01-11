@@ -6,6 +6,7 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
+import { ROUTES } from '~/lib/utils/constants';
 import { formatNumberShort } from '~/lib/utils/helperFunctions';
 
 type Card = {
@@ -50,7 +51,7 @@ const ReportCard = (props: ReportCardProps) => {
             color="#0366EF"
             fontWeight="500"
             fontSize="12px"
-            href={`/report-analytics/${card.reportId}`}
+            href={`/${ROUTES.REPORT}/${card.reportId}`}
           >
             View Report
           </Link>

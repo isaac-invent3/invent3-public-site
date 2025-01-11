@@ -9,6 +9,7 @@ import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';
 import moment from 'moment';
 import { FormActionButtons } from '@repo/ui/components';
 import PageHeader from '~/lib/components/UI/PageHeader';
+import { ROUTES } from '~/lib/utils/constants';
 
 interface FormSectionProps {
   activeStep: number;
@@ -111,7 +112,7 @@ const FormSection = (props: FormSectionProps) => {
           </VStack>
           <Flex width="full" mt="16px">
             <FormActionButtons
-              cancelLink="/maintenance"
+              cancelLink={`/${ROUTES.MAINTENANCE}`}
               totalStep={2}
               activeStep={1}
               setActiveStep={setActiveStep}

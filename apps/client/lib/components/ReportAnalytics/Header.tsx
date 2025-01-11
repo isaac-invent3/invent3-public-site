@@ -2,6 +2,7 @@ import { HStack, Icon, VStack } from '@chakra-ui/react';
 import { AddIcon } from '../CustomIcons';
 import { Button } from '@repo/ui/components';
 import PageHeader from '../UI/PageHeader';
+import { ROUTES } from '~/lib/utils/constants';
 
 const Header = ({
   showGenerate = true,
@@ -18,7 +19,7 @@ const Header = ({
         {showGenerate && (
           <Button
             customStyles={{ width: '227px' }}
-            href="/report-analytics/generate"
+            href={`/${ROUTES.REPORT}/generate`}
           >
             <Icon as={AddIcon} boxSize="18px" color="#D2FEFD" mr="4px" />
             Generate a Report

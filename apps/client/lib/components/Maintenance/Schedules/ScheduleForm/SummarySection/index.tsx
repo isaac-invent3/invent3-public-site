@@ -11,7 +11,7 @@ import {
   generateTasksArray,
 } from '../../../Common/helperFunctions';
 import { useUpdateMaintenancePlanWithSchedulesMutation } from '~/lib/redux/services/maintenance/plan.services';
-import { FORM_ENUM, SYSTEM_CONTEXT_TYPE } from '~/lib/utils/constants';
+import { FORM_ENUM, ROUTES, SYSTEM_CONTEXT_TYPE } from '~/lib/utils/constants';
 import { Button, FormActionButtons } from '@repo/ui/components';
 import SaveAsTemplateModal, {
   SaveAsTemplatePayload,
@@ -173,7 +173,7 @@ const SummarySection = (props: SummarySectionProps) => {
       </VStack>
       <Flex width="full" mt="16px">
         <FormActionButtons
-          cancelLink="/maintenance"
+          cancelLink={`/${ROUTES.MAINTENANCE}`}
           totalStep={2}
           activeStep={2}
           finalText={type === 'create' ? 'Save' : 'Save Changes'}

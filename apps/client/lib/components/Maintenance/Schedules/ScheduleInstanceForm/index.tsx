@@ -14,7 +14,7 @@ import moment from 'moment';
 import AssetInfo from './AssetInfo';
 import Tasks from './Tasks';
 import { getSession } from 'next-auth/react';
-import { INSTANCE_UPDATE_ENUM } from '~/lib/utils/constants';
+import { INSTANCE_UPDATE_ENUM, ROUTES } from '~/lib/utils/constants';
 import { generateTasksArray } from '../../Common/helperFunctions';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import ScheduleInstanceSuccessModal from './SuccessModal';
@@ -148,7 +148,7 @@ const ScheduleInstanceForm = () => {
                   </Flex>
                 </VStack>
                 <FormActionButtons
-                  cancelLink="/maintenance"
+                  cancelLink={`/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_SCHEDULES}`}
                   totalStep={1}
                   activeStep={1}
                   finalText="Save This Instance"

@@ -2,6 +2,7 @@
 
 import { signIn, signOut, auth } from '~/auth';
 import { AuthError } from 'next-auth';
+import { ROUTES } from '~/lib/utils/constants';
 
 export async function handleCredentialsSignin({
   username,
@@ -16,7 +17,7 @@ export async function handleCredentialsSignin({
     await signIn('credentials', {
       username,
       password,
-      redirectTo: callbackUrl ?? '/dashboard',
+      redirectTo: callbackUrl ?? `/${ROUTES.DASHBOARD}`,
     });
   } catch (error) {
     if (error instanceof AuthError) {

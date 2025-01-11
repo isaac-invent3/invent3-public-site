@@ -16,6 +16,7 @@ import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
 import { FormActionButtons, withFormLeaveDialog } from '@repo/ui/components';
 import PageHeader from '../../UI/PageHeader';
+import { ROUTES } from '~/lib/utils/constants';
 
 interface TaskFormProps {
   type: 'create' | 'edit';
@@ -131,7 +132,7 @@ const TaskForm = (props: TaskFormProps) => {
           <Flex width="full" mt="16px">
             <FormActionButtons
               type="submit"
-              cancelLink="/task-management"
+              cancelLink={`/${ROUTES.TASKS}`}
               totalStep={1}
               activeStep={1}
               loadingText={isCreating ? 'Creating...' : 'Updating...'}

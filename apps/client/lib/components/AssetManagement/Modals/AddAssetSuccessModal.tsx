@@ -2,6 +2,7 @@
 
 import { Button, GenericSuccessModal } from '@repo/ui/components';
 import { HStack, VStack } from '@chakra-ui/react';
+import { ROUTES } from '~/lib/utils/constants';
 
 interface AddAssetSuccessModalProps {
   isOpen: boolean;
@@ -34,7 +35,7 @@ const AddAssetSuccessModal = (props: AddAssetSuccessModalProps) => {
           </Button>
         </HStack>
         <Button
-          href="/asset-management"
+          href={`/${ROUTES.ASSETS}`}
           variant="secondary"
           customStyles={{ height: '30px', maxW: 'max-content' }}
         >

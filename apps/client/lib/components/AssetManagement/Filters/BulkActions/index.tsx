@@ -3,6 +3,7 @@ import { useAppSelector } from '~/lib/redux/hooks';
 import ChangeAssetStatusModal from './StatusAction/ChangeAssetStatusModal';
 import { useRouter } from 'next/navigation';
 import { saveSelectedAssetIds } from '../../Common/utils';
+import { ROUTES } from '~/lib/utils/constants';
 
 const BulkActions = () => {
   const toast = useToast();
@@ -46,7 +47,7 @@ const BulkActions = () => {
           onClick={() =>
             handleBulkActionButtonClick(() => {
               saveSelectedAssetIds(selectedAssetIds);
-              router.push('/asset-management/bulk-transfer');
+              router.push(`/${ROUTES.ASSETS}/bulk-transfer`);
             })
           }
         >
@@ -64,7 +65,7 @@ const BulkActions = () => {
           onClick={() =>
             handleBulkActionButtonClick(() => {
               saveSelectedAssetIds(selectedAssetIds);
-              router.push('/asset-management/bulk-dispose');
+              router.push(`/${ROUTES.ASSETS}/bulk-dispose`);
             })
           }
         >

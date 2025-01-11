@@ -1,5 +1,14 @@
-import { Box, GridItem, Heading, Link, Skeleton, Text, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  GridItem,
+  Heading,
+  Link,
+  Skeleton,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 import { Report } from '~/lib/interfaces/report.interfaces';
+import { ROUTES } from '~/lib/utils/constants';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
 interface DefaultReportProps {
@@ -52,7 +61,7 @@ const DefaultReport = (props: DefaultReportProps) => {
               color="#0366EF"
               fontWeight="500"
               fontSize="12px"
-              href={`/report-analytics/${report.reportId}`}
+              href={`/${ROUTES.REPORT}/${report.reportId}`}
             >
               View Report
             </Link>

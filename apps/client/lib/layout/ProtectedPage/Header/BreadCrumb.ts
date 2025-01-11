@@ -95,7 +95,7 @@ const breadcrumbMap: Record<string, BreadcrumbNode> = {
 const getBreadcrumb = (pathSegments: string[]): breadCrumbRoute[] => {
   let currentMap = breadcrumbMap;
   const breadcrumbs: breadCrumbRoute[] = [
-    { label: 'Dashboard', route: '/dashboard' },
+    { label: 'Dashboard', route: `/${ROUTES.DASHBOARD}` },
   ];
 
   for (const segment of pathSegments) {

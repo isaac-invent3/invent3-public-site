@@ -17,7 +17,7 @@ import TicketTable from './TicketTable';
 import TicketOverlays from './Overlays';
 import TicketDrawerWrapper from './Drawers/TicketDrawerWrapper';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
-import { SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
+import { ROUTES, SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
 import { useAppSelector } from '~/lib/redux/hooks';
 
 const ALlTabs = [
@@ -61,7 +61,7 @@ const TicketManagement = () => {
     setTabIndex(index);
     const tabName = ALlTabs[index];
     if (tabName) {
-      router.push(`/ticket-management?tab=${tabName}`);
+      router.push(`/${ROUTES.TICKETS}?tab=${tabName}`);
     }
   };
 

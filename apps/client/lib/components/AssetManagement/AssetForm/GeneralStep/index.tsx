@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import ParentAsset from './ParentAsset';
 import { FormActionButtons } from '@repo/ui/components';
+import { ROUTES } from '~/lib/utils/constants';
 
 interface GeneralStepProps {
   activeStep: number;
@@ -89,7 +90,7 @@ const GeneralStep = (props: GeneralStepProps) => {
           </VStack>
           <Flex width="full" mt="16px">
             <FormActionButtons
-              cancelLink="/asset-management"
+              cancelLink={`/${ROUTES.ASSETS}`}
               totalStep={5}
               activeStep={1}
               setActiveStep={setActiveStep}

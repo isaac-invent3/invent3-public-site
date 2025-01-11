@@ -1,4 +1,5 @@
 import { Button, GenericSuccessModal } from '@repo/ui/components';
+import { ROUTES } from '~/lib/utils/constants';
 
 interface AssetSuccessModalProps {
   isOpen: boolean;
@@ -18,7 +19,7 @@ const AssetSuccessModal = (props: AssetSuccessModalProps) => {
       mainModalStyle={{ closeOnOverlayClick: false, closeOnEsc: false }}
     >
       <Button
-        href="/asset-management"
+        href={`/${ROUTES.ASSETS}`}
         customStyles={{ width: buttonWidth, mb: '54px' }}
       >
         Continue

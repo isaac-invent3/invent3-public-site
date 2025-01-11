@@ -13,7 +13,7 @@ import GenericErrorState from '~/lib/components/UI/GenericErrorState';
 import { useGetMaintenancePlanByIdQuery } from '~/lib/redux/services/maintenance/plan.services';
 import { useEffect, useState } from 'react';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
-import { SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
+import { ROUTES, SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
 
 interface PlanDetailsModalProps {
   isOpen: boolean;
@@ -62,7 +62,7 @@ const PlanDetailsModal = (props: PlanDetailsModalProps) => {
           {!viewOnly && plan && (
             <Button
               customStyles={{ width: '138px', height: '35px' }}
-              href={`/maintenance/plans/${plan?.maintenancePlanId}/edit`}
+              href={`/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_PLANS}/${plan?.maintenancePlanId}/edit`}
             >
               Edit Plan
             </Button>

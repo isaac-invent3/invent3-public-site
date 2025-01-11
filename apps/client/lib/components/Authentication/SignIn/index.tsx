@@ -19,6 +19,7 @@ import { useAppDispatch } from '~/lib/redux/hooks';
 import { utilityApi } from '~/lib/redux/services/utility.services';
 import { setCredentials } from '~/lib/redux/slices/GeneralSlice';
 import { Button, FormTextInput } from '@repo/ui/components';
+import { ROUTES } from '~/lib/utils/constants';
 
 const SignIn = () => {
   const router = useRouter();
@@ -64,7 +65,7 @@ const SignIn = () => {
           position: 'top-right',
           duration: 2000,
         });
-        router.push(ref ?? '/dashboard');
+        router.push(ref ?? `/${ROUTES.DASHBOARD}`);
       }
       setSubmitting(false);
     },

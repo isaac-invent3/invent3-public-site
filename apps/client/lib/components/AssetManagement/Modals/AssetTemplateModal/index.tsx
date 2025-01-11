@@ -9,6 +9,7 @@ import { setAsset } from '~/lib/redux/slices/AssetSlice';
 import AssetDetail from '../../AssetDetail';
 
 import useAssetTemplateInfo from '../../Common/useAssetTemplateInfo';
+import { ROUTES } from '~/lib/utils/constants';
 
 interface TablePopoverProps {
   data: Asset;
@@ -29,7 +30,7 @@ const TablePopover = (props: TablePopoverProps) => {
             View Details
           </Text>
           <Link
-            href={`/asset-management/add?assetId=${data?.assetId}`}
+            href={`/${ROUTES.ASSETS}/add?assetId=${data?.assetId}`}
             style={{ width: '100%' }}
           >
             <Text cursor="pointer">Use as Template</Text>

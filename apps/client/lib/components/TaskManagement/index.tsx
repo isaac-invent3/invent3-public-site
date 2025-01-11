@@ -13,7 +13,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { STATUS_CATEGORY_ENUM } from '~/lib/utils/constants';
+import { ROUTES, STATUS_CATEGORY_ENUM } from '~/lib/utils/constants';
 import { FilterButton, SearchInput } from '@repo/ui/components';
 import { FilterIcon } from '../CustomIcons';
 import PendingAndInProgressTab from './TabTableViews/PendingAndInProgressTab';
@@ -44,7 +44,7 @@ const TaskManagement = () => {
     setTabIndex(index);
     const tabName = ALlTabs[index];
     if (tabName) {
-      router.push(`/task-management?tab=${tabName}`);
+      router.push(`/${ROUTES.TASKS}?tab=${tabName}`);
     }
   };
 

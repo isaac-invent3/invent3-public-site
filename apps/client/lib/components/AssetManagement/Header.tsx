@@ -2,6 +2,7 @@ import { HStack, useDisclosure } from '@chakra-ui/react';
 import PageHeader from '../UI/PageHeader';
 import ActionButtonPopover from '../UI/ActionButtonsPopover';
 import AssetTemplateModal from './Modals/AssetTemplateModal';
+import { ROUTES } from '~/lib/utils/constants';
 
 const Header = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -10,7 +11,7 @@ const Header = () => {
       <PageHeader>Asset Management</PageHeader>
       <ActionButtonPopover
         onOpenTemplateModal={onOpen}
-        newRoute="/asset-management/add"
+        newRoute={`/${ROUTES.ASSETS}/add`}
         buttonLabel="Add New Asset"
         linkLabel="Create a New Asset"
         modalLabel="Create From Existing"

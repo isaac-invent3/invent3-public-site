@@ -14,7 +14,7 @@ import {
   useUpdateMaintenancePlanWithSchedulesMutation,
 } from '~/lib/redux/services/maintenance/plan.services';
 import { useGetTemplateInfoBySystemContextTypeAndContextIdQuery } from '~/lib/redux/services/template.services';
-import { FORM_ENUM, SYSTEM_CONTEXT_TYPE } from '~/lib/utils/constants';
+import { FORM_ENUM, ROUTES, SYSTEM_CONTEXT_TYPE } from '~/lib/utils/constants';
 import {
   generateMaintenanceScheduleDTO,
   generatePlanDTO,
@@ -232,7 +232,7 @@ const SummarySection = (props: SummarySectionProps) => {
         </VStack>
         <Flex width="full" mt="16px">
           <FormActionButtons
-            cancelLink="/maintenance"
+            cancelLink={`/${ROUTES.MAINTENANCE}`}
             totalStep={3}
             activeStep={3}
             finalText={type === 'create' ? 'Save' : 'Save Changes'}

@@ -5,6 +5,7 @@ import PageHeader from '~/lib/components/UI/PageHeader';
 import PlanTemplateModal from '../Plans/PlanTemplateModal';
 import ScheduleTemplateModal from '../Schedules/ScheduleTemplateModal';
 import ActionButtonPopover from '../../UI/ActionButtonsPopover';
+import { ROUTES } from '~/lib/utils/constants';
 
 const Header = () => {
   const pathname = usePathname();
@@ -41,7 +42,7 @@ const Header = () => {
       {tabName?.toLowerCase() === 'plans' && (
         <ActionButtonPopover
           onOpenTemplateModal={onOpenPlanTemplate}
-          newRoute="/maintenance/plans/add"
+          newRoute={`/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_PLANS}/add`}
           buttonLabel="Add New Plan"
           linkLabel="Create a New Plan"
           modalLabel="Create From Template"
@@ -57,7 +58,7 @@ const Header = () => {
       {tabName?.toLowerCase() === 'schedules' && (
         <ActionButtonPopover
           onOpenTemplateModal={onOpenScheduleTemplate}
-          newRoute="/maintenance/schedules/add"
+          newRoute={`/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_SCHEDULES}/add`}
           buttonLabel="Add New Schedule"
           linkLabel="Create a New Schedule"
           modalLabel="Create From Template"

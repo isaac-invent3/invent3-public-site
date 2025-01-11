@@ -1,5 +1,6 @@
 import { HStack } from '@chakra-ui/react';
 import { Button, GenericSuccessModal } from '@repo/ui/components';
+import { ROUTES } from '~/lib/utils/constants';
 
 interface PlanSuccessModalProps {
   isOpen: boolean;
@@ -21,7 +22,10 @@ const PlanSuccessModal = (props: PlanSuccessModalProps) => {
       mainModalStyle={{ closeOnOverlayClick: false, closeOnEsc: false }}
     >
       <HStack>
-        <Button customStyles={{ width: '193px' }} href="/maintenance">
+        <Button
+          customStyles={{ width: '193px' }}
+          href={`/${ROUTES.MAINTENANCE}`}
+        >
           Continue
         </Button>
       </HStack>

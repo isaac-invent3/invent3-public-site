@@ -12,7 +12,11 @@ import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useGetAssetTypeByIdQuery } from '~/lib/redux/services/asset/types.services';
 import { updatePlanForm } from '~/lib/redux/slices/MaintenanceSlice';
 import { planSchema } from '~/lib/schemas/maintenance.schema';
-import { MAINTENANCE_PLAN_ENUM, planScopeOptions } from '~/lib/utils/constants';
+import {
+  MAINTENANCE_PLAN_ENUM,
+  planScopeOptions,
+  ROUTES,
+} from '~/lib/utils/constants';
 import EndDate from '../../Common/EndDate';
 import Owner from '../../Common/Owner';
 import PlanTitle from '../../Common/PlanTitle';
@@ -226,7 +230,7 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
           </VStack>
           <Flex width="full" mt="16px">
             <FormActionButtons
-              cancelLink="/maintenance"
+              cancelLink={`/${ROUTES.MAINTENANCE}`}
               totalStep={3}
               activeStep={1}
               setActiveStep={setActiveStep}

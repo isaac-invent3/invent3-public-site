@@ -47,8 +47,8 @@ const TaskPriority = (props: TaskPriorityProps) => {
             },
           ]}
           handleSelect={(options) => {
-            setFieldValue('priorityId', options[0]?.value);
             setFieldValue('priorityName', options[0]?.label);
+            setFieldValue('priorityId', options[0]?.value);
           }}
           isMultiSelect={false}
           isLoading={isLoading}

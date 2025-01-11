@@ -80,7 +80,7 @@ const TaskFormDrawer = (props: TaskFormDrawerProps) => {
       taskTypeId: data?.taskTypeId ?? null,
       taskType: data?.taskType ?? null,
       taskName: data?.taskName ?? null,
-      taskDescription: data?.taskDescription ?? undefined,
+      taskDescription: data?.taskDescription ?? '',
       priorityId: data?.priorityId ?? null,
       priorityName: data?.priorityName ?? null,
       taskStatusId: data?.statusId ?? null,

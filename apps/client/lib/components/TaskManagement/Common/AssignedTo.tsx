@@ -26,8 +26,8 @@ const TaskAssignedTo = (props: TaskAssignedToProps) => {
         <UserDisplayAndAddButton
           selectedUser={values?.assignedToEmployeeName}
           handleSelectUser={(user) => {
-            helpers.setValue(user?.value ?? null);
             setFieldValue('assignedToEmployeeName', user?.label ?? null);
+            helpers.setValue(user?.value ?? null);
           }}
         />
         {submitCount > 0 && meta.touched && meta.error !== undefined && (

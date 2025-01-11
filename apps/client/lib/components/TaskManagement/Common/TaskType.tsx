@@ -43,8 +43,8 @@ const TaskType = (props: TaskTypeProps) => {
             },
           ]}
           handleSelect={(options) => {
-            setFieldValue('taskTypeId', options[0]?.value);
             setFieldValue('taskType', options[0]?.label);
+            setFieldValue('taskTypeId', options[0]?.value);
           }}
           isMultiSelect={false}
           isLoading={isLoading}

@@ -23,7 +23,7 @@ const Frequency = (props: FrequencyProps) => {
 
   // Sets the first Frequency as default
   useEffect(() => {
-    if (data?.data?.items) {
+    if (data?.data?.items && !dateInfo.recurrence.frequency?.value) {
       const options = generateOptions(
         data?.data?.items,
         'frequencyName',

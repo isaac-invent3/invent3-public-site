@@ -91,7 +91,7 @@ const GeneratedReport = (props: GeneratedReportProps) => {
       reportName: data.templateName,
       description: data.templateDescription,
       createdBy: session?.user.username!,
-      isDefaultReport: data.isDefaultReport,
+      isDefaultReport: false,
       systemContextTypeId: generatePayload.systemContextTypeId!,
       executedSearchRequest: {
         criterion: generatePayload.criterion ?? [],

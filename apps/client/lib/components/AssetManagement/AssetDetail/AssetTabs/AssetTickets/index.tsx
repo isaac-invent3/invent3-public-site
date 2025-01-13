@@ -1,14 +1,16 @@
 import { Flex } from '@chakra-ui/react';
+import { OPERATORS } from '@repo/constants';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import UserInfo from '~/lib/components/Common/UserInfo';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
 import { useAppSelector } from '~/lib/redux/hooks';
-import { useGetTicketsByTabScopeQuery } from '~/lib/redux/services/ticket.services';
+import { useSearchTicketsMutation } from '~/lib/redux/services/ticket.services';
 import { COLOR_CODES_FALLBACK } from '~/lib/utils/constants';
 import { dateFormatter } from '~/lib/utils/Formatters';
+import PopoverAction from './PopoverAction';
 
 const AssetTickets = () => {
   const assetData = useAppSelector((state) => state.asset.asset);
@@ -16,15 +18,29 @@ const AssetTickets = () => {
   if (!assetData) {
     return null;
   }
-  const { assetId, assetTypeId } = assetData;
+  const { assetId } = assetData;
 
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
-  const { data, isLoading, isFetching } = useGetTicketsByTabScopeQuery({
+
+  const searchCriterion = {
+    criterion: [
+      {
+        columnName: 'assetId',
+        columnValue: assetId,
+        operation: OPERATORS.Equals,
+      },
+    ],
     pageNumber: currentPage,
     pageSize: pageSize,
-    tabScopeName: 'in_progress',
-  });
+  };
+
+  const [searchTicketMutation, { isLoading, data }] =
+    useSearchTicketsMutation();
+
+  useEffect(() => {
+    searchTicketMutation(searchCriterion);
+  }, []);
 
   const columnHelper = createColumnHelper<Ticket>();
   const columns = useMemo(
@@ -77,6 +93,14 @@ const AssetTickets = () => {
           header: 'Requested By',
           enableSorting: true,
         }),
+
+        columnHelper.accessor('facilityRef', {
+          cell: (info) => (
+            <PopoverAction ticket={info.row.original} category="in_progress" />
+          ),
+          header: '',
+          enableSorting: false,
+        }),
       ];
 
       return baseColumns;
@@ -96,7 +120,6 @@ const AssetTickets = () => {
         columns={columns}
         data={data?.data?.items ?? []}
         isLoading={isLoading}
-        isFetching={isFetching}
         totalPages={data?.data?.totalPages}
         setPageNumber={setCurrentPage}
         pageNumber={currentPage}
@@ -116,6 +139,9 @@ const AssetTickets = () => {
           paddingTop: '12px',
           paddingBottom: '12px',
         }}
+        showFooter={Boolean(
+          data?.data?.totalPages && data?.data?.totalPages > 1
+        )}
         rowColorKey="priorityColorCode"
         customTableContainerStyle={{ rounded: 'none' }}
       />

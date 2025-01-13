@@ -12,7 +12,7 @@ import { Button, FormSectionInfo } from '@repo/ui/components';
 import { FormikProvider, useFormik } from 'formik';
 import { getSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import PageHeader from '~/lib/components/UI/PageHeader';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import {
@@ -75,7 +75,8 @@ const BulkTaskUpdate = () => {
     onSubmit: async (values, { resetForm }) => {
       const session = await getSession();
 
-      const { assignedToEmployeeName: _, ...payload } = values;
+      // eslint-disable-next-line no-unused-vars
+      const { assignedToEmployeeName, ...payload } = values;
 
       const formValues = {
         ...payload,
@@ -95,6 +96,15 @@ const BulkTaskUpdate = () => {
     },
   });
 
+  const submitButtonDisabled = useMemo(() => {
+    return (
+      getSelectedTaskIds().length < 1 ||
+      (!formik.values.taskPriorityId &&
+        !formik.values.taskStatusId &&
+        !formik.values.assignedTo)
+    );
+  }, [formik]);
+
   const handleClose = () => {
     removeSelectedTaskIds();
     onClose();
@@ -107,7 +117,7 @@ const BulkTaskUpdate = () => {
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
           <Flex width="full" direction="column" gap="24px" mt="32px">
-            <HStack width="full" alignItems="flex-start" spacing="64px">
+            <HStack width="full" alignItems="flex-start" spacing="16px">
               <Flex width="full" maxW="118px">
                 <FormSectionInfo
                   title="Bulk Tasks"
@@ -225,25 +235,20 @@ const BulkTaskUpdate = () => {
             </Grid>
 
             <HStack spacing="16px" justifyContent="flex-end" width="full">
-              <HStack
-                as="button"
-                px="16px"
-                rounded="8px"
-                bgColor="#F6F6F6B2"
-                minH="50px"
-                minW="96px"
-                justifyContent="center"
+              <Button
+                type="button"
+                customStyles={{ width: '96px', bgColor: '#F6F6F6B2' }}
+                variant="secondary"
+                handleClick={handleClose}
               >
-                <Text size="md" color="primary.500">
-                  Cancel
-                </Text>
-              </HStack>
+                Cancel
+              </Button>
 
               <Button
                 type="submit"
                 customStyles={{ width: '161px' }}
                 isLoading={formik.isSubmitting || isLoading}
-                isDisabled={getSelectedTaskIds().length < 1}
+                isDisabled={submitButtonDisabled}
               >
                 Bulk Update
               </Button>

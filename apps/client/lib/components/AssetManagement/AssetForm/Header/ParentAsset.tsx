@@ -14,6 +14,7 @@ const ParentAsset = () => {
     assetCategory,
     primaryImage,
     primaryImagePrefix,
+    noOfChildAssets,
   } = assetData;
 
   const assetInfo = [
@@ -27,7 +28,7 @@ const ParentAsset = () => {
     },
     {
       label: 'No. of Child Asset',
-      value: 1,
+      value: noOfChildAssets ?? 0,
     },
   ];
   return (

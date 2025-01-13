@@ -118,7 +118,7 @@ const MaintenancePlanTable = (props: MaintenancePlanProps) => {
           enableSorting: false,
         }),
         columnHelper.accessor('planStatusName', {
-          cell: (info) => info.getValue(),
+          cell: (info) => info.getValue() ?? 'N/A',
           header: 'Status',
           enableSorting: false,
         }),

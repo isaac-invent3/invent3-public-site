@@ -14,13 +14,11 @@ export interface AssetTransfer extends BaseEntity {
 }
 
 export interface AssetTransferQuery {
-  transferredTo: number | undefined;
-  transferredFrom: number | undefined;
-  newOwnerId: number | undefined;
-  previousOwnerId: number | undefined;
-  initiatedBy: number | undefined;
+  transferredTo: number;
+  newOwnerId: number;
+  initiatedBy: number;
   transferDate: string;
-  assetId: number;
-  comments?: string;
-  createdBy: string | undefined;
+  assetIds: number[];
+  comments: string | null;
+  createdBy: string;
 }

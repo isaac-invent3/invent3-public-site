@@ -4,7 +4,7 @@ import { Notification } from '~/lib/interfaces/notification.interfaces';
 import { NotificationInfoIcon } from '../CustomIcons';
 import moment from 'moment';
 import Link from 'next/link';
-import { NOTIFICATION_EVENT_TYPE_ENUM } from '~/lib/utils/constants';
+import { NOTIFICATION_EVENT_TYPE_ENUM, ROUTES } from '~/lib/utils/constants';
 
 const textStyle = { fontSize: '9.33px', lineHeight: '11.09px' };
 
@@ -29,7 +29,7 @@ const NotificationText = ({ notification }: { notification: Notification }) => {
   switch (notification.notificationTriggerEventTypeId) {
     case NOTIFICATION_EVENT_TYPE_ENUM.TICKET_CREATED:
       return (
-        <Link href={`/ticket-management?id=${contextId}`}>
+        <Link href={`/${ROUTES.TICKETS}?ticketId=${contextId}`}>
           <Text color="neutral.600" {...textStyle}>
             <Text
               color={keyTextColor}

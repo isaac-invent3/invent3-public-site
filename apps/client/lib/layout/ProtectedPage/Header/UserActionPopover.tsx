@@ -17,11 +17,13 @@ import {
 } from '@chakra-ui/react';
 import {
   ChevronDownIcon,
+  ExitIcon,
   Setting2Icon,
   UserProfileIcon,
 } from '~/lib/components/CustomIcons/layout';
 import { handleSignOut } from '~/app/actions/authActions';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 interface ActionButtonProps {
   icon: ComponentWithAs<'svg', IconProps>;
@@ -38,7 +40,7 @@ const ActionButton = (props: ActionButtonProps) => {
       cursor="pointer"
       onClick={handleClick}
     >
-      <Icon as={icon} boxSize="24px" bgColor="#F9F9F9F9" rounded="8px" />
+      <Icon as={icon} boxSize="26px" color="neutral.600" rounded="8px" />
 
       <Text size="md" color="primary.500">
         {name}
@@ -50,6 +52,7 @@ const ActionButton = (props: ActionButtonProps) => {
 const UserActionPopover = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { data } = useSession();
+  const router = useRouter();
 
   return (
     <>
@@ -175,15 +178,20 @@ const UserActionPopover = () => {
               </VStack>
             </HStack>
           </PopoverHeader>
-          <PopoverBody py="24px" px="20px">
+          <PopoverBody pt="32px" pb="20px" px="20px">
             <VStack alignItems="flex-start" spacing="8px">
               <ActionButton
                 icon={UserProfileIcon}
                 name="User Profile"
-                handleClick={() => {}}
+                handleClick={() => router.push('/profile')}
               />
               <ActionButton
                 icon={Setting2Icon}
+                name="Settings"
+                handleClick={() => router.push('/profile')}
+              />
+              <ActionButton
+                icon={ExitIcon}
                 name="Logout"
                 handleClick={() => handleSignOut()}
               />

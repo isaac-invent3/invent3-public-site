@@ -1,6 +1,13 @@
 'use client';
 
-import { Divider, Flex, Heading, Text, VStack } from '@chakra-ui/react';
+import {
+  Divider,
+  Flex,
+  Heading,
+  Text,
+  useToast,
+  VStack,
+} from '@chakra-ui/react';
 import Link from 'next/link';
 import { loginSchema } from '~/lib/schemas/auth.schema';
 import { Field, FormikProvider, useFormik } from 'formik';
@@ -12,11 +19,13 @@ import { useAppDispatch } from '~/lib/redux/hooks';
 import { utilityApi } from '~/lib/redux/services/utility.services';
 import { setCredentials } from '~/lib/redux/slices/GeneralSlice';
 import { Button, FormTextInput } from '@repo/ui/components';
+import { ROUTES } from '~/lib/utils/constants';
 
 const SignIn = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const ref = searchParams.get('ref');
+  const toast = useToast();
   const dispatch = useAppDispatch();
   const formik = useFormik({
     initialValues: {
@@ -34,7 +43,12 @@ const SignIn = () => {
 
       if (result?.error) {
         // Handle error
-        console.error(result.error);
+        toast({
+          title: 'Invalid credentials',
+          description: 'Invalid Username or Password',
+          status: 'error',
+          position: 'top-right',
+        });
       } else {
         const result = await dispatch(
           utilityApi.endpoints.getAppConfigValues.initiate({})
@@ -44,7 +58,14 @@ const SignIn = () => {
             appConfigValues: result?.data?.data,
           })
         );
-        router.push(ref ?? '/dashboard');
+        toast({
+          title: 'Success',
+          description: 'Login Successful',
+          status: 'success',
+          position: 'top-right',
+          duration: 2000,
+        });
+        router.push(ref ?? `/${ROUTES.DASHBOARD}`);
       }
       setSubmitting(false);
     },

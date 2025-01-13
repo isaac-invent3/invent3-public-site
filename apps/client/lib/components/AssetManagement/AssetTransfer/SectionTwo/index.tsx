@@ -8,18 +8,12 @@ import { useState } from 'react';
 const SectionTwo = () => {
   const [newLocation, setNewLocation] = useState('');
   return (
-    <Flex gap="44px" width="full">
-      <Flex width="40%">
-        <NewOwner setNewLocation={setNewLocation} />
-      </Flex>
-      <Flex width="60%" gap="24px">
-        <Flex width="48%">
-          <NewLocation newLocation={newLocation} />
-        </Flex>
-        <Flex width="52%">
-          <TransferDetails />
-        </Flex>
-      </Flex>
+    <Flex gap="32px" width="full">
+      <NewOwner setNewLocation={setNewLocation} />
+
+      <NewLocation newLocation={newLocation} />
+
+      <TransferDetails />
     </Flex>
   );
 };

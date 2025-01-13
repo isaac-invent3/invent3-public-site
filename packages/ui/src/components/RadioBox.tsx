@@ -1,11 +1,12 @@
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Flex, FlexProps } from '@chakra-ui/react';
 
-interface RadioBoxProps {
+interface RadioBoxProps extends FlexProps {
   handleClick: () => void;
   isSelected: boolean;
+  boxStyle?: FlexProps;
 }
 const RadioBox = (props: RadioBoxProps) => {
-  const { handleClick, isSelected } = props;
+  const { handleClick, isSelected, boxStyle, ...rest } = props;
   return (
     <Flex
       width="18px"
@@ -18,9 +19,16 @@ const RadioBox = (props: RadioBoxProps) => {
       alignItems="center"
       cursor="pointer"
       onClick={() => handleClick()}
+      {...rest}
     >
       {isSelected && (
-        <Box width="10px" height="10px" rounded="full" bgColor="primary.500" />
+        <Box
+          width="8px"
+          height="8px"
+          rounded="full"
+          bgColor="primary.500"
+          {...boxStyle}
+        />
       )}
     </Flex>
   );

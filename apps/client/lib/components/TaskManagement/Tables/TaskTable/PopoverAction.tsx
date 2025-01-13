@@ -6,6 +6,7 @@ import { GenericDeleteModal, GenericPopover } from '@repo/ui/components';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { Task, taskFormDetails } from '~/lib/interfaces/task.interfaces';
 import { useDeleteTaskMutation } from '~/lib/redux/services/task/general.services';
+import { ROUTES } from '~/lib/utils/constants';
 
 const PopoverAction = (task: Task, type: 'drawer' | 'page') => {
   const {
@@ -43,7 +44,7 @@ const PopoverAction = (task: Task, type: 'drawer' | 'page') => {
             {...(type === 'drawer' ? { onClick: () => onOpenEdit() } : {})}
             as={type === 'page' ? 'a' : 'button'}
             {...(type === 'page'
-              ? { href: `/task-management/${task.taskId}/edit` }
+              ? { href: `/${ROUTES.TASKS}/${task.taskId}/edit` }
               : {})}
           >
             Edit

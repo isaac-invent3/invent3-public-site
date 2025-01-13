@@ -8,10 +8,11 @@ interface HeaderProps {
   setSearch: React.Dispatch<React.SetStateAction<string>>;
   openFilter: boolean;
   setOpenFilter: () => void;
-  setShowDetails: React.Dispatch<React.SetStateAction<boolean>>;
-  showDetails: boolean;
+  setShowDetails?: React.Dispatch<React.SetStateAction<boolean>>;
+  showDetails?: boolean;
   hasFilters: boolean;
   searchPlaceholder?: string;
+  hideOtherInfoWhenDetailsIsShown?: boolean;
 }
 const Header = (props: HeaderProps) => {
   const {
@@ -23,6 +24,7 @@ const Header = (props: HeaderProps) => {
     setShowDetails,
     hasFilters,
     searchPlaceholder,
+    hideOtherInfoWhenDetailsIsShown,
   } = props;
   return (
     <ModalHeader m={0} p={0} mt="32px" mx="24px">
@@ -41,11 +43,12 @@ const Header = (props: HeaderProps) => {
         </Heading>
         {showDetails && (
           <BackButton
-            handleClick={() => setShowDetails(false)}
-            customStyles={{ mb: '24px' }}
+            handleClick={() => setShowDetails && setShowDetails(false)}
+            customStyles={{ mb: hideOtherInfoWhenDetailsIsShown ? '24px' : 0 }}
           />
         )}
-        {!showDetails && (
+        {(!showDetails ||
+          (showDetails && !hideOtherInfoWhenDetailsIsShown)) && (
           <HStack
             spacing="16px"
             width="full"

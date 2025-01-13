@@ -2,7 +2,6 @@
 
 import { Flex } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import Header from './Header';
 import PlanInfoStep from './PlanInfoStep';
 import ScheduleStep from './ScheduleStep';
 import SummarySection from './SummaryStep';
@@ -11,6 +10,7 @@ import {
   withFormLeaveDialog,
   SlideTransition,
 } from '@repo/ui/components';
+import PageHeader from '~/lib/components/UI/PageHeader';
 
 const STEPS = ['Plan Info', 'Schedules', 'Summary'];
 
@@ -23,13 +23,11 @@ const PlanForm = (props: PlanFormProps) => {
 
   return (
     <Flex width="full" direction="column" pb="24px">
-      <Header
-        headingText={
-          type === 'create'
-            ? 'Add New Maintenance Plan'
-            : 'Edit Maintenance Plan'
-        }
-      />
+      <PageHeader>
+        {type === 'create'
+          ? 'Add New Maintenance Plan'
+          : 'Edit Maintenance Plan'}
+      </PageHeader>
       <Flex width="full" mt="32px" direction="column">
         <FormStepper currentStep={activeStep} steps={STEPS} />
         <PlanInfoStep

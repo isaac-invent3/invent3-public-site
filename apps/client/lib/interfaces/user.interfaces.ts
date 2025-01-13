@@ -15,32 +15,40 @@ interface Employee {
   deletedBy: string;
   guid: string;
   locationId: number | null;
+  employeeLocation: string;
 }
 
 interface User {
-  apikey: string | null;
-  companyId: string | null;
-  createdBy: string;
-  createdDate: string;
-  deletedBy: string;
-  deletedDate: string | null;
-  email: string;
-  emailVerificationDate: string | null;
-  emailVerificationToken: string | null;
-  firstName: string;
-  guid: string;
-  isDeleted: boolean;
-  isEmailVerified: boolean;
-  isNew: boolean;
-  lastModifiedBy: string;
-  lastModifiedDate: string | null;
-  lastName: string;
-  passwordHash: string;
-  userGroups: string[] | null;
+  rowId: number;
   userId: number;
-  userPermissions: string[] | null;
-  userRoles: string[] | null;
+  guid: string;
+  firstName: string;
+  lastName: string;
   username: string;
+  email: string;
+  isDeleted: boolean;
+  phoneNumber: string;
+  residentialAddress: string;
+  facilityName: string;
+  facilityRef: string;
+  buildingName: string;
+  buildingRef: string;
+  floorName: string;
+  floorRef: string;
+  departmentName: string;
+  departmentRef: string;
+  roomName: string;
+  roomRef: string;
+  lganame: string;
+  stateName: string;
+  countryName: string;
 }
 
-export type { Employee, User };
+interface UserPasswordChangeQuery {
+  userId: number;
+  currentPassword: string;
+  newPassword: string;
+  lastModifiedBy: string;
+}
+
+export type { Employee, User, UserPasswordChangeQuery };

@@ -180,36 +180,49 @@ const SYSTEM_CONTEXT_TYPE = {
   NOTES: 43,
 };
 
+const ROUTES = {
+  ASSETS: 'asset-management',
+  DASHBOARD: 'dashboard',
+  MAINTENANCE: 'maintenance',
+  MAINTENANCE_HISTORY: 'history',
+  MAINTENANCE_PLANS: 'plans',
+  MAINTENANCE_SCHEDULES: 'schedules',
+  PROFILE: 'profile',
+  REPORT: 'report-analytics',
+  TASKS: 'task-management',
+  TICKETS: 'ticket-management',
+};
+
 const SYSTEM_CONTEXT_DETAILS = {
   ASSETS: {
     id: SYSTEM_CONTEXT_TYPE.ASSETS,
-    route: 'asset-management',
+    route: ROUTES.ASSETS,
     slug: 'assetId',
   },
 
   MAINTENANCE_PLANS: {
     id: SYSTEM_CONTEXT_TYPE.MAINTENANCE_PLANS,
-    route: 'plans',
+    route: ROUTES.MAINTENANCE_PLANS,
     slug: 'maintenancePlanId',
   },
   MAINTENANCE_SCHEDULES: {
     id: SYSTEM_CONTEXT_TYPE.MAINTENANCE_SCHEDULES,
-    route: 'schedules',
+    route: ROUTES.MAINTENANCE_SCHEDULES,
     slug: 'maintenanceScheduleId',
   },
   MAINTENANCE_SCHEDULE_INSTANCE: {
     id: SYSTEM_CONTEXT_TYPE.MAINTENANCE_SCHEDULE_INSTANCES,
-    route: 'schedules',
+    route: ROUTES.MAINTENANCE_SCHEDULES,
     slug: 'maintenanceScheduleInstanceId',
   },
   TASKS: {
     id: SYSTEM_CONTEXT_TYPE.TASKS,
-    route: 'task-management',
+    route: ROUTES.TASKS,
     slug: 'taskId',
   },
   TICKETS: {
     id: SYSTEM_CONTEXT_TYPE.TICKETS,
-    route: 'ticket-management',
+    route: ROUTES.TICKETS,
     slug: 'ticketId',
   },
 };
@@ -238,6 +251,7 @@ export {
   NOTIFICATION_EVENT_TYPE_ENUM,
   OPERATORS,
   planScopeOptions,
+  ROUTES,
   STATUS_CATEGORY_ENUM,
   SYSTEM_CONTEXT_TYPE,
   SYSTEM_CONTEXT_DETAILS,

@@ -1,7 +1,7 @@
 import { Flex, HStack, Text, VStack } from '@chakra-ui/react';
 import React, { useMemo, useState } from 'react';
 import CardHeader from '../Common/CardHeader';
-import { DATE_PERIOD, DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import { DATE_PERIOD, DEFAULT_PAGE_SIZE, ROUTES } from '~/lib/utils/constants';
 import { createColumnHelper } from '@tanstack/react-table';
 import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
 import { dateFormatter } from '~/lib/utils/Formatters';
@@ -125,7 +125,7 @@ const UpcomingMaintenance = () => {
           </Text>
         </HStack>
         <Button
-          href="/maintenance?tab=schedules"
+          href={`/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_SCHEDULES}`}
           customStyles={{
             py: 0,
             height: '28px',

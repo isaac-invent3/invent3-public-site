@@ -50,6 +50,7 @@ const ScheduleForm = (props: ScheduleFormProps) => {
       formDetails.scheduleId === null,
       false,
       false,
+      true,
       previousDay,
       planDetails?.endDate ?? undefined
     ),

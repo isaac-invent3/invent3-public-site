@@ -5,6 +5,7 @@ import { Template } from '~/lib/interfaces/template.interfaces';
 import { useGetMaintenenanceScheduleInfoHeaderByScheduleIDQuery } from '~/lib/redux/services/maintenance/schedule.services';
 import ScheduleInfo from './ScheduleInfo';
 import HeaderInfo from './HeaderInfo';
+import { ROUTES } from '~/lib/utils/constants';
 
 interface DetailsProps {
   template: Template;
@@ -58,7 +59,7 @@ const Details = (props: DetailsProps) => {
               <Flex width="full" justifyContent="flex-end">
                 <Button
                   customStyles={{ width: '161px' }}
-                  href={`/maintenance/schedules/add?template=${data?.data?.scheduleGuid}`}
+                  href={`/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_SCHEDULES}/add?template=${data?.data?.scheduleGuid}`}
                 >
                   Use Template
                 </Button>

@@ -1,23 +1,15 @@
 import { Flex, Text, useDisclosure, VStack } from '@chakra-ui/react';
-import { ListResponse } from '@repo/interfaces';
 import { GenericPopover } from '@repo/ui/components';
 import Link from 'next/link';
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import GenericTemplateModal from '~/lib/components/Common/Modals/GenericTemplateModal';
-import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { Asset } from '~/lib/interfaces/asset/general.interface';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import {
-  useGetAllAssetQuery,
-  useSearchAssetsMutation,
-} from '~/lib/redux/services/asset/general.services';
 import { setAsset } from '~/lib/redux/slices/AssetSlice';
-import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 import AssetDetail from '../../AssetDetail';
-import AssetTable from '../../Common/AssetTable';
-import GeneralFilter from '../../Filters/GeneralFilter';
-import _ from 'lodash';
-import { generateSearchCriterion } from '@repo/utils';
+
+import useAssetTemplateInfo from '../../Common/useAssetTemplateInfo';
+import { ROUTES } from '~/lib/utils/constants';
 
 interface TablePopoverProps {
   data: Asset;
@@ -38,7 +30,7 @@ const TablePopover = (props: TablePopoverProps) => {
             View Details
           </Text>
           <Link
-            href={`/asset-management/add?assetId=${data?.assetId}`}
+            href={`/${ROUTES.ASSETS}/add?assetId=${data?.assetId}`}
             style={{ width: '100%' }}
           >
             <Text cursor="pointer">Use as Template</Text>
@@ -55,105 +47,35 @@ interface AssetTemplateModalProps {
 }
 const AssetTemplateModal = (props: AssetTemplateModalProps) => {
   const { isOpen, onClose } = props;
-  const [search, setSearch] = useState('');
-  const [pageNumber, setPageNumber] = useState(1);
-  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const dispatch = useAppDispatch();
   const {
     isOpen: isOpenDetail,
     onClose: onCloseDetail,
     onOpen: onOpenDetail,
   } = useDisclosure();
-  const { data, isLoading, isFetching } = useGetAllAssetQuery(
-    {
-      pageNumber,
-      pageSize,
-    },
-    { skip: search !== '' }
-  );
-  const [searchAsset, { isLoading: searchLoading }] = useSearchAssetsMutation(
-    {}
-  );
-  const [searchData, setSearchData] = useState<ListResponse<Asset> | null>(
-    null
-  );
-  const { handleSubmit } = useCustomMutation();
-  const [showDetails, setShowDetails] = useState(false);
-  const { assetFilter: filterData, asset } = useAppSelector(
-    (state) => state.asset
-  );
 
-  // Checks if all filterdata is empty
-  const isFilterEmpty = _.every(
-    filterData,
-    (value) => _.isArray(value) && _.isEmpty(value)
-  );
-
-  // Search Criterion
-  const searchCriterion = {
-    ...(search && {
-      criterion: [
-        {
-          columnName: 'assetName',
-          columnValue: search,
-          operation: OPERATORS.Contains,
-        },
-      ],
-    }),
-    ...(!isFilterEmpty && {
-      orCriterion: [
-        ...filterData.category.map((item) => [
-          ...generateSearchCriterion(
-            'categoryId',
-            [item.value],
-            OPERATORS.Equals
-          ),
-        ]),
-        ...filterData.status.map((item) => [
-          ...generateSearchCriterion(
-            'statusId',
-            [item.value],
-            OPERATORS.Equals
-          ),
-        ]),
-        ...filterData.region.map((item) => [
-          ...generateSearchCriterion('stateId', [item.value], OPERATORS.Equals),
-        ]),
-        ...filterData.area.map((item) => [
-          ...generateSearchCriterion('lgaId', [item.value], OPERATORS.Equals),
-        ]),
-        ...filterData.branch.map((item) => [
-          ...generateSearchCriterion(
-            'facilityId',
-            [item.value],
-            OPERATORS.Equals
-          ),
-        ]),
-      ].filter((criterion) => criterion.length > 0),
-    }),
-    pageNumber: pageNumber,
-    pageSize: pageSize,
+  const handleSelectRow = (data: Asset) => {
+    dispatch(setAsset(data));
+    onOpenDetail();
   };
+  const { asset } = useAppSelector((state) => state.asset);
 
-  const handleSearch = useCallback(async () => {
-    const response = await handleSubmit(searchAsset, searchCriterion, '');
-    response?.data?.data && setSearchData(response?.data?.data);
-  }, [searchAsset, searchCriterion]);
-
-  // Trigger search when search input changes or pagination updates
-  useEffect(() => {
-    if (search) {
-      handleSearch();
-    }
-  }, [search, pageNumber, pageSize]);
-
-  // Reset pagination when clearing the search
-  useEffect(() => {
-    if (!search) {
-      setPageSize(DEFAULT_PAGE_SIZE);
-      setPageNumber(1);
-    }
-  }, [search]);
+  const [search, setSearch] = useState('');
+  const {
+    AssetTemplateTable,
+    totalPages,
+    pageSize,
+    pageNumber,
+    setPageSize,
+    setPageNumber,
+    Filter,
+  } = useAssetTemplateInfo({
+    handleSelectRow,
+    search,
+    PopoverComponent: (data) => (
+      <TablePopover data={data} handleViewDetails={onOpenDetail} />
+    ),
+  });
 
   return (
     <>
@@ -163,52 +85,13 @@ const AssetTemplateModal = (props: AssetTemplateModalProps) => {
         headerName={'Assets'}
         pageSize={pageSize}
         pageNumber={pageNumber}
-        totalPages={
-          search && searchData
-            ? searchData.totalPages
-            : (data?.data?.totalPages ?? 0)
-        }
-        showDetails={showDetails}
-        setShowDetails={setShowDetails}
+        totalPages={totalPages}
         setSearch={setSearch}
         setPageNumber={setPageNumber}
         setPageSize={setPageSize}
-        filters={
-          <Flex width="full" pb="16px">
-            <GeneralFilter handleApplyFilter={handleSearch} />
-          </Flex>
-        }
+        filters={Filter}
       >
-        <Flex width="full" direction="column">
-          <AssetTable
-            data={
-              (search || !isFilterEmpty) && searchData
-                ? searchData.items
-                : (data?.data?.items ?? [])
-            }
-            isLoading={isLoading}
-            isFetching={isFetching || searchLoading}
-            pageNumber={pageNumber}
-            setPageNumber={setPageNumber}
-            pageSize={pageSize}
-            setPageSize={setPageSize}
-            totalPages={
-              search && searchData
-                ? searchData?.totalPages
-                : data?.data?.totalPages
-            }
-            handleSelectRow={(row) => {
-              dispatch(setAsset(row));
-              onOpenDetail();
-            }}
-            showFooter={false}
-            emptyLines={25}
-            isSelectable={false}
-            PopoverComponent={(data) => (
-              <TablePopover data={data} handleViewDetails={onOpenDetail} />
-            )}
-          />
-        </Flex>
+        {AssetTemplateTable}
       </GenericTemplateModal>
       <AssetDetail
         data={asset}

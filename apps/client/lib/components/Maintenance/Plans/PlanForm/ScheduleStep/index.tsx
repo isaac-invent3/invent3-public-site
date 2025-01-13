@@ -7,6 +7,7 @@ import { useAppSelector } from '~/lib/redux/hooks';
 import ScheduleForm from './ScheduleForm';
 import ScheduleList from './ScheduleList';
 import { FormActionButtons, SlideTransition } from '@repo/ui/components';
+import { ROUTES } from '~/lib/utils/constants';
 
 interface ScheduleStepProps {
   activeStep: number;
@@ -65,7 +66,7 @@ const ScheduleStep = (props: ScheduleStepProps) => {
           </VStack>
           <Flex width="full" mt="16px">
             <FormActionButtons
-              cancelLink="/maintenance"
+              cancelLink={`/${ROUTES.MAINTENANCE}`}
               totalStep={3}
               activeStep={2}
               setActiveStep={setActiveStep}

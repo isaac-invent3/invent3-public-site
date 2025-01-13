@@ -3,6 +3,7 @@ import { Button } from '@repo/ui/components';
 import { CloseIcon } from '../../CustomIcons';
 import { useAppSelector } from '~/lib/redux/hooks';
 import CreateTicketDrawer from '../../TicketManagement/Drawers/CreateTicketDrawer';
+import { ROUTES } from '~/lib/utils/constants';
 
 interface AssetHeaderProps {
   handleBack: () => void;
@@ -30,7 +31,7 @@ const AssetHeader = (props: AssetHeaderProps) => {
           <Button
             customStyles={{ height: '35px', width: '106px', px: '16px' }}
             variant="primary"
-            href={`/asset-management/${assetData?.assetId}/edit`}
+            href={`/${ROUTES.ASSETS}/${assetData?.assetId}/edit`}
           >
             Edit Asset
           </Button>
@@ -50,7 +51,7 @@ const AssetHeader = (props: AssetHeaderProps) => {
               lineHeight: '16.63px',
             }}
             variant="secondary"
-            href={`/asset-management/${assetData?.assetId}/transfer`}
+            href={`/${ROUTES.ASSETS}/${assetData?.assetId}/transfer`}
           >
             Transfer
           </Button>
@@ -63,7 +64,7 @@ const AssetHeader = (props: AssetHeaderProps) => {
               lineHeight: '16.63px',
             }}
             variant="secondary"
-            href={`/asset-management/${assetData?.assetId}/dispose`}
+            href={`/${ROUTES.ASSETS}/${assetData?.assetId}/dispose`}
           >
             Dispose
           </Button>
@@ -72,7 +73,7 @@ const AssetHeader = (props: AssetHeaderProps) => {
         <Button
           customStyles={{ height: '35px', width: 'min-content', px: '16px' }}
           variant="primary"
-          href={`/asset-management/add?assetId=${assetData?.assetId}`}
+          href={`/${ROUTES.ASSETS}/add?assetId=${assetData?.assetId}`}
         >
           Use As Template
         </Button>

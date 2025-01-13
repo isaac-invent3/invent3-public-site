@@ -1,6 +1,5 @@
 import { Flex, HStack, Text, useDisclosure } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
-import Header from './Header';
 import {
   Asset,
   AssetFormDocument,
@@ -17,6 +16,8 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useRequestAssetDisposalMutation } from '~/lib/redux/services/asset/disposal.services';
 import { getSession } from 'next-auth/react';
 import moment from 'moment';
+import { getSelectedAssetIds } from '../Common/utils';
+import PageHeader from '../../UI/PageHeader';
 
 interface AssetDisposeProps {
   data: Asset;
@@ -43,11 +44,10 @@ const AssetDispose = (props: AssetDisposeProps) => {
       const createAssetDisposalRequestDto = {
         disposalReasonId: values.disposalReasonId!,
         comments: values.comments!,
-        assetId: data?.assetId!,
+        assetIds: [data?.assetId],
         disposalDate: moment(values.disposalDate, 'DD/MM/YYYY')
           .utcOffset(0, true)
           .toISOString()!,
-        currentOwner: data?.currentOwnerId!,
         disposalRequestedBy: data?.currentOwnerId!,
         createdBy: session?.user?.username!,
       };
@@ -75,7 +75,7 @@ const AssetDispose = (props: AssetDisposeProps) => {
           : null;
 
       const finalQuery = {
-        createAssetDisposalRequestDto,
+        createBulkAssetDisposalRequestDto: createAssetDisposalRequestDto,
         createAssetDocumentsDto,
         assetDocumentIds,
       };
@@ -96,7 +96,7 @@ const AssetDispose = (props: AssetDisposeProps) => {
 
   return (
     <Flex width="full" direction="column" pb="24px">
-      <Header />
+      <PageHeader>Asset Dispose Request</PageHeader>
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
           <Flex width="full" direction="column" gap="24px" mt="32px">
@@ -132,6 +132,7 @@ const AssetDispose = (props: AssetDisposeProps) => {
                 type="submit"
                 customStyles={{ width: '161px' }}
                 isLoading={formik.isSubmitting || isLoading}
+                isDisabled={getSelectedAssetIds().length < 1}
               >
                 Dispose
               </Button>

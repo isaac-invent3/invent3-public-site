@@ -6,6 +6,7 @@ import AddDocument from './AddDocument';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import { FormActionButtons, FormSectionInfo } from '@repo/ui/components';
+import { ROUTES } from '~/lib/utils/constants';
 
 interface DocumentStepProps {
   activeStep: number;
@@ -76,7 +77,7 @@ const DocumentStep = (props: DocumentStepProps) => {
           </VStack>
           <Flex width="full" mt="16px">
             <FormActionButtons
-              cancelLink="/asset-management"
+              cancelLink={`/${ROUTES.ASSETS}`}
               totalStep={5}
               activeStep={4}
               setActiveStep={setActiveStep}

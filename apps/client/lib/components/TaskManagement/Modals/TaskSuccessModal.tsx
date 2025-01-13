@@ -1,6 +1,7 @@
 import { HStack } from '@chakra-ui/react';
 
 import { Button, GenericSuccessModal } from '@repo/ui/components';
+import { ROUTES } from '~/lib/utils/constants';
 
 interface TaskSuccessModalProps {
   isOpen: boolean;
@@ -31,7 +32,7 @@ const TaskSuccessModal = (props: TaskSuccessModalProps) => {
             {...(format === 'modal'
               ? { handleClick: () => onClose(false) }
               : {})}
-            {...(format === 'page' ? { href: '/task-management' } : {})}
+            {...(format === 'page' ? { href: `/${ROUTES.TASKS}` } : {})}
           >
             Back to Page
           </Button>

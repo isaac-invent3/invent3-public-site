@@ -13,7 +13,7 @@ import {
 import { FilterButton, SearchInput } from '@repo/ui/components';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { STATUS_CATEGORY_ENUM } from '~/lib/utils/constants';
+import { ROUTES, STATUS_CATEGORY_ENUM } from '~/lib/utils/constants';
 import { BulkSearchIcon, FilterIcon } from '../CustomIcons';
 import Header from './Header';
 import CompletedTab from './TabTableViews/CompletedTab';
@@ -57,7 +57,7 @@ const TaskManagement = () => {
     setTabIndex(index);
     const tabName = ALlTabs[index];
     if (tabName) {
-      router.push(`/task-management?tab=${tabName}`);
+      router.push(`/${ROUTES.TASKS}?tab=${tabName}`);
     }
   };
 

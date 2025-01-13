@@ -9,6 +9,7 @@ import {
 import { assetMaintenancePlanSchema } from '~/lib/schemas/asset/main.schema';
 import ExistingMaintenancePlanModal from './ExistingMaintenancePlanModal';
 import PlanList from './PlanList';
+import { ROUTES } from '~/lib/utils/constants';
 
 interface MaintenancePlanStepProps {
   activeStep: number;
@@ -79,7 +80,7 @@ const MaintenancePlanStep = (props: MaintenancePlanStepProps) => {
           </VStack>
           <Flex width="full" mt="16px">
             <FormActionButtons
-              cancelLink="/asset-management"
+              cancelLink={`/${ROUTES.ASSETS}`}
               totalStep={5}
               activeStep={3}
               setActiveStep={setActiveStep}

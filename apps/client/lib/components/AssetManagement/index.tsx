@@ -15,6 +15,7 @@ import ListView from './ListView';
 import Filters from './Filters';
 import MapView from './MapView';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { ROUTES } from '~/lib/utils/constants';
 
 const AssetManagement = () => {
   const [search, setSearch] = useState('');
@@ -50,7 +51,7 @@ const AssetManagement = () => {
   const handleTabChange = (index: number) => {
     setTabIndex(index);
     const tabName = index === 1 ? 'map' : 'list';
-    router.push(`/asset-management?tab=${tabName}`);
+    router.push(`/${ROUTES.ASSETS}?tab=${tabName}`);
   };
 
   return (

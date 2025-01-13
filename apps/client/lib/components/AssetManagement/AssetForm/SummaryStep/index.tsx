@@ -26,7 +26,7 @@ import {
 } from './helperFunction';
 import { FormActionButtons } from '@repo/ui/components';
 import SectionThree from './SectionThree';
-import { FORM_ENUM } from '~/lib/utils/constants';
+import { FORM_ENUM, ROUTES } from '~/lib/utils/constants';
 
 interface SummaryStepProps {
   activeStep: number;
@@ -274,7 +274,7 @@ const SummaryStep = (props: SummaryStepProps) => {
           <SectionThree />
         </VStack>
         <FormActionButtons
-          cancelLink="/asset-management"
+          cancelLink={`/${ROUTES.ASSETS}`}
           totalStep={5}
           activeStep={5}
           setActiveStep={setActiveStep}

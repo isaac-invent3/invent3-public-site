@@ -1,6 +1,5 @@
 import { Divider, Flex, useDisclosure, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import Header from '../Header';
 import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
 import { useAppSelector } from '~/lib/redux/hooks';
@@ -12,12 +11,15 @@ import {
   generateTasksArray,
 } from '../../../Common/helperFunctions';
 import { useUpdateMaintenancePlanWithSchedulesMutation } from '~/lib/redux/services/maintenance/plan.services';
-import { FORM_ENUM, SYSTEM_CONTEXT_TYPE } from '~/lib/utils/constants';
+import { FORM_ENUM, ROUTES, SYSTEM_CONTEXT_TYPE } from '~/lib/utils/constants';
 import { Button, FormActionButtons } from '@repo/ui/components';
-import SaveAsTemplateModal, { SaveAsTemplatePayload } from '~/lib/components/Common/Modals/SaveAsTemplateModal';
+import SaveAsTemplateModal, {
+  SaveAsTemplatePayload,
+} from '~/lib/components/Common/Modals/SaveAsTemplateModal';
 import { useGetTemplateInfoBySystemContextTypeAndContextIdQuery } from '~/lib/redux/services/template.services';
 import { getSession } from 'next-auth/react';
 import { TaskPayload } from '~/lib/interfaces/task.interfaces';
+import PageHeader from '~/lib/components/UI/PageHeader';
 
 interface SummarySectionProps {
   activeStep: number;
@@ -48,10 +50,6 @@ const SummarySection = (props: SummarySectionProps) => {
       },
       { skip: !scheduleFormDetails?.scheduleId }
     );
-  const breadCrumbText =
-    type === 'create'
-      ? 'Add New Maintenance Schedule'
-      : 'Edit Maintenance Schedule';
 
   const [saveAsTemplate, setSaveAsTemplate] = useState(false);
 
@@ -155,10 +153,7 @@ const SummarySection = (props: SummarySectionProps) => {
       direction="column"
       display={activeStep === 2 ? 'flex' : 'none'}
     >
-      <Header
-        headingText="Maintenance Schedule Summary"
-        breadCrumbText={breadCrumbText}
-      />
+      <PageHeader>Maintenance Schedule Summary</PageHeader>
       <VStack
         spacing="32px"
         width="full"
@@ -178,7 +173,7 @@ const SummarySection = (props: SummarySectionProps) => {
       </VStack>
       <Flex width="full" mt="16px">
         <FormActionButtons
-          cancelLink="/maintenance"
+          cancelLink={`/${ROUTES.MAINTENANCE}`}
           totalStep={2}
           activeStep={2}
           finalText={type === 'create' ? 'Save' : 'Save Changes'}

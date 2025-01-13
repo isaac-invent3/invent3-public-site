@@ -2,23 +2,24 @@ import { HStack, VStack } from '@chakra-ui/react';
 
 import { Button } from '@repo/ui/components';
 import CardHeader from '../Common/CardHeader';
+import { ROUTES } from '~/lib/utils/constants';
 
 const LinkData = [
   {
     label: 'Asset Management',
-    href: '/asset-management',
+    href: `/${ROUTES.ASSETS}`,
   },
   {
     label: 'Maintenance',
-    href: '/maintenance',
+    href: `/${ROUTES.MAINTENANCE}`,
   },
   {
     label: 'Tasks',
-    href: '#',
+    href: `/${ROUTES.TASKS}`,
   },
   {
     label: 'Report',
-    href: '#',
+    href: `/${ROUTES.REPORT}`,
   },
 ];
 const QuickLinks = () => {

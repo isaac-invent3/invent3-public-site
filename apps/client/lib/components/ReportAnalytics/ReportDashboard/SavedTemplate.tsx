@@ -8,6 +8,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { Report } from '~/lib/interfaces/report.interfaces';
+import { ROUTES } from '~/lib/utils/constants';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
 interface SavedTemplateProps {
@@ -60,7 +61,7 @@ const SavedTemplate = (props: SavedTemplateProps) => {
               color="#0366EF"
               fontWeight="500"
               fontSize="12px"
-              href={`/report-analytics/${report.reportId}`}
+              href={`/${ROUTES.REPORT}/${report.reportId}`}
             >
               Generate Report
             </Link>

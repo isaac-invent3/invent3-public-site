@@ -7,36 +7,37 @@ import {
   TaskIcon,
   TicketIcon,
 } from '~/lib/components/CustomIcons/layout';
+import { ROUTES } from '~/lib/utils/constants';
 
 const sideBarData = [
   {
     name: 'Dashboard',
-    route: 'dashboard',
+    route: ROUTES.DASHBOARD,
     icon: DashboardIcon,
   },
   {
     name: 'Asset Management',
-    route: 'asset-management',
+    route: ROUTES.ASSETS,
     icon: AssetManagementIcon,
   },
   {
     name: 'Task Management',
-    route: 'task-management',
+    route: ROUTES.TASKS,
     icon: TaskIcon,
   },
   {
     name: 'Maintenance',
-    route: 'maintenance',
+    route: ROUTES.MAINTENANCE,
     icon: MaintenanceIcon,
   },
   {
     name: 'Tickets',
-    route: 'ticket-management',
+    route: ROUTES.TICKETS,
     icon: TicketIcon,
   },
   {
     name: 'Report & Analytics',
-    route: 'report-analytics',
+    route: ROUTES.REPORT,
     icon: AnalyticsIcon,
   },
   {

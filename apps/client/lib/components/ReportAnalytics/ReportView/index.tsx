@@ -1,6 +1,6 @@
 'use client';
 import { Flex, HStack, Skeleton, Text, VStack } from '@chakra-ui/react';
-import { DataTable, GenericBreadCrumb } from '@repo/ui/components';
+import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import moment from 'moment';
 import { useMemo, useState } from 'react';
@@ -25,17 +25,6 @@ const ReportView = (props: ReportViewProps) => {
 
   const [activeFilter, setActiveFilter] = useState<'general' | null>(null);
   const { filters } = useAppSelector((state) => state.report);
-
-  const breadCrumbData = [
-    {
-      label: 'Dashboard',
-      route: '/',
-    },
-    {
-      label: 'Report & Analytics',
-      route: '#',
-    },
-  ];
 
   const { data: reportInfo, isLoading: loadingReportInfo } =
     useGetReportByIdQuery(props.id);
@@ -92,7 +81,6 @@ const ReportView = (props: ReportViewProps) => {
         paddingBottom="16px"
         marginBottom="16px"
       >
-        <GenericBreadCrumb routes={breadCrumbData} />
         <Skeleton isLoaded={!loadingReportInfo} width="full" height="full">
           <HStack
             width="full"

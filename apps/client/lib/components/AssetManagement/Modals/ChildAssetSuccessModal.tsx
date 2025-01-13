@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { Button, GenericSuccessModal } from '@repo/ui/components';
 import { HStack } from '@chakra-ui/react';
+import { ROUTES } from '~/lib/utils/constants';
 
 interface ChildAssetSuccessModalProps {
   isOpen: boolean;
@@ -18,7 +19,7 @@ const ChildAssetSuccessModal = (props: ChildAssetSuccessModalProps) => {
     >
       <HStack spacing="16px" width="full" pb="54">
         <Button
-          href="/asset-management"
+          href={`/${ROUTES.ASSETS}`}
           variant="secondary"
           customStyles={{ height: '30px', maxW: 'max-content' }}
         >

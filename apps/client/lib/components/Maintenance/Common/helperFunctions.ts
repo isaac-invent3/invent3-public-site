@@ -54,7 +54,7 @@ const generateTasksArray = (
       scheduleInstanceId: item.scheduleId!,
       taskInstanceName: item.taskName!,
       actionType: actionType,
-      lastModifiedBy: username!,
+      changeInitiatedBy: username!,
       updateType: instanceUpdateType!,
       parentTaskId: item?.parentTaskId!,
     };

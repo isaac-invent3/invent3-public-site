@@ -80,7 +80,7 @@ const TaskFormDrawer = (props: TaskFormDrawerProps) => {
       taskTypeId: data?.taskTypeId ?? null,
       taskType: data?.taskType ?? null,
       taskName: data?.taskName ?? null,
-      taskDescription: data?.taskDescription ?? undefined,
+      taskDescription: data?.taskDescription ?? '',
       priorityId: data?.priorityId ?? null,
       priorityName: data?.priorityName ?? null,
       taskStatusId: data?.statusId ?? null,
@@ -259,7 +259,13 @@ const TaskFormDrawer = (props: TaskFormDrawerProps) => {
               type="submit"
               customStyles={{ width: '237px' }}
               isLoading={isLoading || formik.isSubmitting}
-              loadingText={isCreating ? 'Creating...' : 'Updating...'}
+              loadingText={
+                handleData
+                  ? 'Submitting...'
+                  : isCreating
+                    ? 'Creating...'
+                    : 'Updating...'
+              }
               handleClick={formik.handleSubmit}
             >
               Save Task

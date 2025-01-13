@@ -10,6 +10,7 @@ import VendorDetails from './VendorDetails';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import { FormActionButtons } from '@repo/ui/components';
+import { ROUTES } from '~/lib/utils/constants';
 
 interface AcquisitionStepProps {
   activeStep: number;
@@ -82,7 +83,7 @@ const AcquisitionStep = (props: AcquisitionStepProps) => {
           </VStack>
           <Flex width="full" mt="16px">
             <FormActionButtons
-              cancelLink="/asset-management"
+              cancelLink={`/${ROUTES.ASSETS}`}
               totalStep={5}
               activeStep={2}
               setActiveStep={setActiveStep}

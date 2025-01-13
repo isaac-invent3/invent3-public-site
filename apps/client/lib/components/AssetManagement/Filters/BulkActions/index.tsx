@@ -1,9 +1,13 @@
 import { Button, HStack, useDisclosure, useToast } from '@chakra-ui/react';
 import { useAppSelector } from '~/lib/redux/hooks';
 import ChangeAssetStatusModal from './StatusAction/ChangeAssetStatusModal';
+import { useRouter } from 'next/navigation';
+import { saveSelectedAssetIds } from '../../Common/utils';
+import { ROUTES } from '~/lib/utils/constants';
 
 const BulkActions = () => {
   const toast = useToast();
+  const router = useRouter();
   const selectedAssetIds = useAppSelector(
     (state) => state.asset.selectedAssetIds
   );
@@ -27,6 +31,7 @@ const BulkActions = () => {
       });
     }
   };
+
   return (
     <>
       <HStack spacing="7px" width="full">
@@ -39,7 +44,12 @@ const BulkActions = () => {
           fontWeight={700}
           pl="12px"
           pr="8px"
-          onClick={() => handleBulkActionButtonClick(() => {})}
+          onClick={() =>
+            handleBulkActionButtonClick(() => {
+              saveSelectedAssetIds(selectedAssetIds);
+              router.push(`/${ROUTES.ASSETS}/bulk-transfer`);
+            })
+          }
         >
           Transfer Assets
         </Button>
@@ -52,7 +62,12 @@ const BulkActions = () => {
           fontWeight={700}
           pl="12px"
           pr="8px"
-          onClick={() => handleBulkActionButtonClick(() => {})}
+          onClick={() =>
+            handleBulkActionButtonClick(() => {
+              saveSelectedAssetIds(selectedAssetIds);
+              router.push(`/${ROUTES.ASSETS}/bulk-dispose`);
+            })
+          }
         >
           Dispose Assets
         </Button>

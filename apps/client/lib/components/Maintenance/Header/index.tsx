@@ -1,22 +1,11 @@
-import { HStack, useDisclosure, VStack } from '@chakra-ui/react';
+import { HStack, useDisclosure } from '@chakra-ui/react';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import { GenericBreadCrumb } from '@repo/ui/components';
 import PageHeader from '~/lib/components/UI/PageHeader';
 import PlanTemplateModal from '../Plans/PlanTemplateModal';
 import ScheduleTemplateModal from '../Schedules/ScheduleTemplateModal';
 import ActionButtonPopover from '../../UI/ActionButtonsPopover';
-
-const breadCrumbData = [
-  {
-    label: 'Dashboard',
-    route: '/',
-  },
-  {
-    label: 'Maintenance',
-    route: '#',
-  },
-];
+import { ROUTES } from '~/lib/utils/constants';
 
 const Header = () => {
   const pathname = usePathname();
@@ -48,44 +37,41 @@ const Header = () => {
   }, [pathname]);
 
   return (
-    <VStack spacing="58px" alignItems="flex-start" width="full" pt="12px">
-      <GenericBreadCrumb routes={breadCrumbData} />
-      <HStack width="full" justifyContent="space-between">
-        <PageHeader>Maintenance</PageHeader>
-        {tabName?.toLowerCase() === 'plans' && (
-          <ActionButtonPopover
-            onOpenTemplateModal={onOpenPlanTemplate}
-            newRoute="/maintenance/plans/add"
-            buttonLabel="Add New Plan"
-            linkLabel="Create a New Plan"
-            modalLabel="Create From Template"
-          >
-            {isOpenPlanTemplate && (
-              <PlanTemplateModal
-                isOpen={isOpenPlanTemplate}
-                onClose={onClosePlanTemplate}
-              />
-            )}
-          </ActionButtonPopover>
-        )}
-        {tabName?.toLowerCase() === 'schedules' && (
-          <ActionButtonPopover
-            onOpenTemplateModal={onOpenScheduleTemplate}
-            newRoute="/maintenance/schedules/add"
-            buttonLabel="Add New Schedule"
-            linkLabel="Create a New Schedule"
-            modalLabel="Create From Template"
-          >
-            {isOpenScheduleTemplate && (
-              <ScheduleTemplateModal
-                isOpen={isOpenScheduleTemplate}
-                onClose={onCloseScheduleTemplate}
-              />
-            )}
-          </ActionButtonPopover>
-        )}
-      </HStack>
-    </VStack>
+    <HStack width="full" justifyContent="space-between">
+      <PageHeader>Maintenance</PageHeader>
+      {tabName?.toLowerCase() === 'plans' && (
+        <ActionButtonPopover
+          onOpenTemplateModal={onOpenPlanTemplate}
+          newRoute={`/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_PLANS}/add`}
+          buttonLabel="Add New Plan"
+          linkLabel="Create a New Plan"
+          modalLabel="Create From Template"
+        >
+          {isOpenPlanTemplate && (
+            <PlanTemplateModal
+              isOpen={isOpenPlanTemplate}
+              onClose={onClosePlanTemplate}
+            />
+          )}
+        </ActionButtonPopover>
+      )}
+      {tabName?.toLowerCase() === 'schedules' && (
+        <ActionButtonPopover
+          onOpenTemplateModal={onOpenScheduleTemplate}
+          newRoute={`/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_SCHEDULES}/add`}
+          buttonLabel="Add New Schedule"
+          linkLabel="Create a New Schedule"
+          modalLabel="Create From Template"
+        >
+          {isOpenScheduleTemplate && (
+            <ScheduleTemplateModal
+              isOpen={isOpenScheduleTemplate}
+              onClose={onCloseScheduleTemplate}
+            />
+          )}
+        </ActionButtonPopover>
+      )}
+    </HStack>
   );
 };
 

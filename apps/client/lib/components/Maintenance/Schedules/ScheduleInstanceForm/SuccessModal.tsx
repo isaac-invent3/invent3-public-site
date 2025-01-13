@@ -1,4 +1,5 @@
 import { Button, GenericSuccessModal } from '@repo/ui/components';
+import { ROUTES } from '~/lib/utils/constants';
 
 interface ScheduleInstanceSuccessModalProps {
   isOpen: boolean;
@@ -17,7 +18,7 @@ const ScheduleInstanceSuccessModal = (
       mainModalStyle={{ closeOnOverlayClick: false, closeOnEsc: false }}
     >
       <Button
-        href="/maintenance?tab=Schedules"
+        href={`/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_SCHEDULES}`}
         customStyles={{ width: '193px', mb: '54px' }}
       >
         Continue

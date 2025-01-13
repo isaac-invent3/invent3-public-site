@@ -1,7 +1,6 @@
-import { Heading, HStack, ModalBody, Text, VStack } from '@chakra-ui/react';
+import { Heading, HStack, ModalBody, VStack } from '@chakra-ui/react';
 import {
   Button,
-  CheckBox,
   FormTextAreaInput,
   FormTextInput,
   GenericModal,
@@ -12,7 +11,6 @@ import { templateSchema } from '~/lib/schemas/general.schema';
 export interface SaveAsTemplatePayload {
   templateName: string;
   templateDescription: string;
-  isDefaultReport: boolean;
 }
 
 interface SaveReportAsTemplateModalProps {
@@ -30,7 +28,6 @@ const SaveAsTemplateModal = (props: SaveReportAsTemplateModalProps) => {
     initialValues: {
       templateName: '',
       templateDescription: '',
-      isDefaultReport: false,
     },
     validationSchema: templateSchema,
     enableReinitialize: true,
@@ -83,18 +80,6 @@ const SaveAsTemplateModal = (props: SaveReportAsTemplateModalProps) => {
                   type="text"
                   label="Template Description"
                 />
-                <HStack spacing="8px" alignSelf="flex-start">
-                  <CheckBox
-                    isChecked={formik.values.isDefaultReport}
-                    handleChange={() =>
-                      formik.setFieldValue(
-                        'isDefaultReport',
-                        !formik.values.isDefaultReport
-                      )
-                    }
-                  />
-                  <Text color="neutral.800">Is Default Report?</Text>
-                </HStack>
               </VStack>
               {/* Main Form Ends Here */}
               <HStack width="full" spacing="24px" justifyContent="center">

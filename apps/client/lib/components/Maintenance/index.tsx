@@ -18,6 +18,7 @@ import Plans from './Plans';
 import Header from './Header';
 import { FilterButton, SearchInput } from '@repo/ui/components';
 import { FilterIcon } from '../CustomIcons';
+import { ROUTES } from '~/lib/utils/constants';
 
 const AllTabs = ['plans', 'schedules', 'history'];
 
@@ -38,7 +39,7 @@ const Maintenance = (props: MaintenanceProps) => {
     onClose();
     const tabName = AllTabs[index];
     if (tabName) {
-      router.push(`/maintenance/${tabName}`);
+      router.push(`/${ROUTES.MAINTENANCE}/${tabName}`);
     }
   };
 

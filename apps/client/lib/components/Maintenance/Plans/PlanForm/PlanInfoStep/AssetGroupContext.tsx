@@ -33,7 +33,7 @@ const AssetGroupContext = () => {
       <Flex width="full" maxW="141px">
         <FormSectionInfo
           title={assetGroupTypeName ?? ''}
-          info="Add name that users can likely search with"
+          info="Select an option"
           isRequired
         />
       </Flex>

@@ -4,11 +4,12 @@ import { FormikProvider, useFormik } from 'formik';
 import { scheduleSchema } from '~/lib/schemas/maintenance.schema';
 import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
-import Header from '../Header';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';
 import moment from 'moment';
 import { FormActionButtons } from '@repo/ui/components';
+import PageHeader from '~/lib/components/UI/PageHeader';
+import { ROUTES } from '~/lib/utils/constants';
 
 interface FormSectionProps {
   activeStep: number;
@@ -61,6 +62,7 @@ const FormSection = (props: FormSectionProps) => {
       type === 'create',
       true,
       true,
+      true,
       finalStartDate,
       planEndDate ?? undefined
     ),
@@ -80,7 +82,7 @@ const FormSection = (props: FormSectionProps) => {
       direction="column"
       display={activeStep === 1 ? 'flex' : 'none'}
     >
-      <Header headingText={defaultHeader} />
+      <PageHeader>{defaultHeader}</PageHeader>
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
           <VStack
@@ -110,7 +112,7 @@ const FormSection = (props: FormSectionProps) => {
           </VStack>
           <Flex width="full" mt="16px">
             <FormActionButtons
-              cancelLink="/maintenance"
+              cancelLink={`/${ROUTES.MAINTENANCE}`}
               totalStep={2}
               activeStep={1}
               setActiveStep={setActiveStep}

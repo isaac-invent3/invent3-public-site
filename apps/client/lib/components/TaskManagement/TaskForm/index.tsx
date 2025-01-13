@@ -11,11 +11,12 @@ import {
   useCreateTaskMutation,
   useUpdateTaskMutation,
 } from '~/lib/redux/services/task/general.services';
-import Header from './Header';
 import TaskSuccessModal from '../Modals/TaskSuccessModal';
 import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
 import { FormActionButtons, withFormLeaveDialog } from '@repo/ui/components';
+import PageHeader from '../../UI/PageHeader';
+import { ROUTES } from '~/lib/utils/constants';
 
 interface TaskFormProps {
   type: 'create' | 'edit';
@@ -108,7 +109,7 @@ const TaskForm = (props: TaskFormProps) => {
 
   return (
     <Flex width="full" direction="column" pb="24px">
-      <Header headingText={defaultHeader} />
+      <PageHeader>{defaultHeader}</PageHeader>
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
           <VStack
@@ -131,7 +132,7 @@ const TaskForm = (props: TaskFormProps) => {
           <Flex width="full" mt="16px">
             <FormActionButtons
               type="submit"
-              cancelLink="/task-management"
+              cancelLink={`/${ROUTES.TASKS}`}
               totalStep={1}
               activeStep={1}
               loadingText={isCreating ? 'Creating...' : 'Updating...'}

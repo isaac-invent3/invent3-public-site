@@ -1,6 +1,5 @@
 import { Flex, useDisclosure, VStack } from '@chakra-ui/react';
 
-import Header from './Header';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { FormikProvider, useFormik } from 'formik';
 import { scheduleSchema } from '~/lib/schemas/maintenance.schema';
@@ -15,11 +14,12 @@ import moment from 'moment';
 import AssetInfo from './AssetInfo';
 import Tasks from './Tasks';
 import { getSession } from 'next-auth/react';
-import { INSTANCE_UPDATE_ENUM } from '~/lib/utils/constants';
+import { INSTANCE_UPDATE_ENUM, ROUTES } from '~/lib/utils/constants';
 import { generateTasksArray } from '../../Common/helperFunctions';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import ScheduleInstanceSuccessModal from './SuccessModal';
 import { TaskInstancePayload } from '~/lib/interfaces/task.interfaces';
+import PageHeader from '~/lib/components/UI/PageHeader';
 
 const ScheduleInstanceForm = () => {
   const formDetails = useAppSelector((state) => state.maintenance.scheduleForm);
@@ -45,7 +45,14 @@ const ScheduleInstanceForm = () => {
       taskCount: formDetails?.taskCount ?? 0,
       saveOnlyThisInstance: true,
     },
-    validationSchema: scheduleSchema(false, false, false, undefined, undefined),
+    validationSchema: scheduleSchema(
+      false,
+      false,
+      false,
+      false,
+      undefined,
+      undefined
+    ),
     enableReinitialize: true,
 
     onSubmit: async (values) => {
@@ -68,7 +75,7 @@ const ScheduleInstanceForm = () => {
           const tasksArray = [
             // Generate for only task that has been added or updated
             ...generateTasksArray(
-              formDetails.tasks.filter(
+              values.tasks.filter(
                 (task) =>
                   (task.taskId &&
                     formDetails.updatedTaskIDs.includes(task.taskId)) ||
@@ -99,7 +106,7 @@ const ScheduleInstanceForm = () => {
   return (
     <>
       <Flex width="full" height="full" direction="column" gap="40px" pb="25px">
-        <Header />
+        <PageHeader>Edit Maintenance Schedule Instance</PageHeader>
         <Flex
           width="full"
           direction="column"
@@ -141,7 +148,7 @@ const ScheduleInstanceForm = () => {
                   </Flex>
                 </VStack>
                 <FormActionButtons
-                  cancelLink="/maintenance"
+                  cancelLink={`/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_SCHEDULES}`}
                   totalStep={1}
                   activeStep={1}
                   finalText="Save This Instance"

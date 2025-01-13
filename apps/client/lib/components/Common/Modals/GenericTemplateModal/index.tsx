@@ -15,8 +15,9 @@ interface GenericTemplateModalProps {
   pageSize: number;
   pageNumber: number;
   totalPages: number;
-  showDetails: boolean;
-  setShowDetails: React.Dispatch<React.SetStateAction<boolean>>;
+  showDetails?: boolean;
+  hideOtherInfoWhenDetailsIsShown?: boolean;
+  setShowDetails?: React.Dispatch<React.SetStateAction<boolean>>;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
   setPageNumber: React.Dispatch<React.SetStateAction<number>>;
   setPageSize: React.Dispatch<React.SetStateAction<number>>;
@@ -42,6 +43,7 @@ const GenericTemplateModal = (props: GenericTemplateModalProps) => {
     totalPages,
     footer,
     searchPlaceholder,
+    hideOtherInfoWhenDetailsIsShown = true,
   } = props;
   const { isOpen: openFilter, onToggle } = useDisclosure();
   const modalBodyRef = useRef<HTMLDivElement | null>(null);
@@ -68,6 +70,7 @@ const GenericTemplateModal = (props: GenericTemplateModalProps) => {
         setShowDetails={setShowDetails}
         hasFilters={!!filters}
         searchPlaceholder={searchPlaceholder}
+        hideOtherInfoWhenDetailsIsShown={hideOtherInfoWhenDetailsIsShown}
       />
       <ModalBody m={0} p={0} px="24px" ref={modalBodyRef}>
         <Flex />
@@ -76,7 +79,7 @@ const GenericTemplateModal = (props: GenericTemplateModalProps) => {
         </Collapse>
         {children}
       </ModalBody>
-      {!showDetails && (
+      {(!showDetails || (showDetails && !hideOtherInfoWhenDetailsIsShown)) && (
         <ModalFooter
           m={0}
           p={0}

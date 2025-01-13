@@ -14,6 +14,7 @@ import GeneralTab from './GeneralTab';
 import HistoryTab from './HistoryTab';
 import MaintenanceTab from './MaintenanceTab';
 import RelationshipTab from './RelationshipTab';
+import AssetTickets from './AssetTickets';
 
 const AssetTabs = () => {
   const [tabIndex, setTabIndex] = useState(0);
@@ -47,6 +48,11 @@ const AssetTabs = () => {
       label: 'Components',
       slug: 'assetComponents',
       component: <RelationshipTab />,
+    },
+    {
+      label: 'Open Tickets',
+      slug: 'openTickets',
+      component: <AssetTickets />,
     },
   ];
 

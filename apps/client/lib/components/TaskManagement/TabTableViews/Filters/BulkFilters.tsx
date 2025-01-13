@@ -1,14 +1,11 @@
-import { Button, HStack, useDisclosure, useToast } from '@chakra-ui/react';
-import UpdateMultipleTaskModal from '../../Modals/UpdateMultipleTaskModal';
+import { Button, HStack, useToast } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+import { ROUTES } from '~/lib/utils/constants';
+import { saveSelectedTaskIds } from '../../Common/utils';
 
 const BulkActions = ({ selectedTaskIds }: { selectedTaskIds: number[] }) => {
   const toast = useToast();
-
-  const {
-    isOpen: isOpenUpdateTask,
-    onOpen: onOpenUpdateTask,
-    onClose: onCloseUpdateTask,
-  } = useDisclosure();
+  const router = useRouter();
 
   const handleBulkActionButtonClick = (buttonCallback: () => void) => {
     if (selectedTaskIds.length > 0) {
@@ -37,16 +34,15 @@ const BulkActions = ({ selectedTaskIds }: { selectedTaskIds: number[] }) => {
           fontWeight={700}
           pl="12px"
           pr="8px"
-          onClick={() => handleBulkActionButtonClick(onOpenUpdateTask)}
+          onClick={() =>
+            handleBulkActionButtonClick(() => {
+              saveSelectedTaskIds(selectedTaskIds);
+              router.push(`/${ROUTES.TASKS}/bulk-update`);
+            })
+          }
         >
           Update Task
         </Button>
-
-        <UpdateMultipleTaskModal
-          isOpen={isOpenUpdateTask}
-          onClose={onCloseUpdateTask}
-          selectedTaskIds={selectedTaskIds}
-        />
       </HStack>
     </>
   );

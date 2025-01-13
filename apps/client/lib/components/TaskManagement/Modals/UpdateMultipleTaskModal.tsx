@@ -92,7 +92,7 @@ const UpdateMultipleTaskModal = (props: UpdateMultipleTaskModalProps) => {
       if (response?.data) {
         resetForm();
 
-        onClose()
+        onClose();
 
         toast({
           title: 'Tasks Updated Successfully',

@@ -78,6 +78,7 @@ const UpdateMultipleTaskModal = (props: UpdateMultipleTaskModalProps) => {
     onSubmit: async (values, { resetForm }) => {
       const session = await getSession();
 
+      // eslint-disable-next-line no-unused-vars
       const { assignedToEmployeeName: _, ...payload } = values;
 
       const response = await handleSubmit(

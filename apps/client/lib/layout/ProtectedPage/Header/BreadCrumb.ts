@@ -67,6 +67,11 @@ const tasksBreadcrumb: BreadcrumbNode = {
   },
 };
 
+const templateBreadcrumb: BreadcrumbNode = {
+  route: `/${ROUTES.TEMPLATES}`,
+  label: 'Template Management',
+};
+
 const ticketsBreadcrumb: BreadcrumbNode = {
   route: `/${ROUTES.TICKETS}`,
   label: 'Ticket Management',
@@ -90,6 +95,7 @@ const breadcrumbMap: Record<string, BreadcrumbNode> = {
   [ROUTES.TICKETS]: ticketsBreadcrumb,
   [ROUTES.PROFILE]: profileBreadcrumb,
   [ROUTES.REPORT]: reportBreadcrumb,
+  [ROUTES.TEMPLATES]: templateBreadcrumb,
 };
 
 const getBreadcrumb = (pathSegments: string[]): breadCrumbRoute[] => {

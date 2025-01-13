@@ -10,8 +10,19 @@ const getHeaders = () => ({
 export const templateApi = createApi({
   reducerPath: 'templateApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['allMaintenancePlanTemplates'],
+  tagTypes: ['allMaintenancePlanTemplates', 'allTemplates'],
   endpoints: (builder) => ({
+    getAllTemplates: builder.query<
+      BaseApiResponse<ListResponse<Template>>,
+      QueryParams
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/Templates?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allTemplates'],
+    }),
     getMaintenancePlanTemplate: builder.query<
       BaseApiResponse<ListResponse<Template>>,
       QueryParams
@@ -53,12 +64,23 @@ export const templateApi = createApi({
         headers: getHeaders(),
       }),
     }),
+    deleteTemplate: builder.mutation<void, { id: number; deletedBy: string }>({
+      query: ({ id, ...body }) => ({
+        url: `/Templates/${id}`,
+        method: 'DELETE',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allTemplates'],
+    }),
   }),
 });
 
 export const {
+  useGetAllTemplatesQuery,
   useGetMaintenancePlanTemplateQuery,
   useGetMaintenanceScheduleTemplateQuery,
   useSearchTemplatesMutation,
   useGetTemplateInfoBySystemContextTypeAndContextIdQuery,
+  useDeleteTemplateMutation,
 } = templateApi;

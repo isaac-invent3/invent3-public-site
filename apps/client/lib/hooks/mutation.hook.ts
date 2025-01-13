@@ -40,7 +40,7 @@ const useCustomMutation = () => {
               : response?.data;
 
           const validationError =
-            isArray(allErrors) && allErrors.length > 0
+            allErrors && isArray(allErrors) && allErrors.length > 0
               ? allErrors[0]
               : allErrors;
           const message = response?.message;

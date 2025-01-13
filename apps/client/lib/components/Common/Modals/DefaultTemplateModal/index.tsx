@@ -1,14 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { SlideTransition } from '@repo/ui/components';
 import { Flex } from '@chakra-ui/react';
-import TemplateTable from './TemplateTable';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import TemplateFilters from './Filters';
+import TemplateFilters from '../../../TemplateManagement/Filters';
 import { useSearchTemplatesMutation } from '~/lib/redux/services/template.services';
 import { Template } from '~/lib/interfaces/template.interfaces';
 import GenericTemplateModal from '../GenericTemplateModal';
 import { ListResponse } from '@repo/interfaces';
+import TemplateTable from '~/lib/components/TemplateManagement/TemplateTable';
 
 interface TemplateModalProps {
   isOpen: boolean;
@@ -115,15 +115,21 @@ const TemplateModal = (props: TemplateModalProps) => {
       setSearch={setSearch}
       setPageNumber={setPageNumber}
       setPageSize={setPageSize}
-      filters={<TemplateFilters />}
+      filters={
+        <Flex width="full" mb="16px">
+          <TemplateFilters handleApplyFilter={handleSearch} type="modal" />
+        </Flex>
+      }
     >
       <Flex width="full" direction="column">
         {!showDetails && (
           <TemplateTable
+            data={search && searchData ? searchData.items : (data?.items ?? [])}
             isLoading={isLoading || searchLoading}
             isFetching={isFetching}
             setSelectedTemplate={setSelectedTemplate}
-            data={search && searchData ? searchData.items : (data?.items ?? [])}
+            type="modal"
+            showFooter={false}
           />
         )}
         <SlideTransition trigger={showDetails}>

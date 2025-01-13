@@ -8,4 +8,10 @@ interface Template extends BaseEntity {
   description: string;
 }
 
-export type { Template };
+interface TemplateFilter {
+  contextTypeId: number[];
+  owner: number[];
+  createdDate: string | null;
+}
+
+export type { Template, TemplateFilter };

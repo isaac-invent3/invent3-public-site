@@ -1,6 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { BaseApiResponse, ListResponse, SearchQuery } from '@repo/interfaces';
-import { Report } from '~/lib/interfaces/report.interfaces';
 import {
   GetSystemContextTypeColumnsPayload,
   SystemContextType,

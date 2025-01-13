@@ -2,19 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { FilterDropDown } from '@repo/ui/components';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import { useGetAllEmployeesQuery } from '~/lib/redux/services/employees.services';
-import { updateTemplateFilter } from '~/lib/redux/slices/MaintenanceSlice';
+import { updateTemplateFilter } from '~/lib/redux/slices/TemplateSlice';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { generateOptions } from '~/lib/utils/helperFunctions';
+import { useGetReportableSystemContextTypesQuery } from '~/lib/redux/services/systemcontexttypes.services';
 
-const OwnerFilter = () => {
+const ContextTypeFilter = () => {
   const dispatch = useAppDispatch();
-  const { owner } = useAppSelector(
-    (state) => state.maintenance.templateFilters
+  const { contextTypeId } = useAppSelector(
+    (state) => state.template.templateFilters
   );
   const [pageNumber, setPageNumber] = useState(1);
   const [options, setOptions] = useState<Option[]>([]);
-  const { data, isLoading } = useGetAllEmployeesQuery({
+  const { data, isLoading } = useGetReportableSystemContextTypesQuery({
     pageNumber: pageNumber,
     pageSize: DEFAULT_PAGE_SIZE,
   });
@@ -23,8 +23,8 @@ const OwnerFilter = () => {
     if (data?.data?.items) {
       const newCategories = generateOptions(
         data?.data?.items,
-        'employeeName',
-        'employeeId'
+        'displayName',
+        'systemContextTypeId'
       );
       setOptions((prev) => [...prev, ...newCategories]);
     }
@@ -33,15 +33,18 @@ const OwnerFilter = () => {
   return (
     <FilterDropDown
       showBorder
-      label="Owner:"
+      label="Context Type:"
       options={options}
-      selectedOptions={[]}
+      selectedOptions={contextTypeId.map((item) => ({
+        value: item,
+        label: item.toString(),
+      }))}
       handleClick={(option) =>
         dispatch(
           updateTemplateFilter({
-            owner: owner.includes(+option.value)
-              ? owner
-              : [...owner, +option.value],
+            contextTypeId: contextTypeId.includes(+option.value)
+              ? contextTypeId
+              : [...contextTypeId, +option.value],
           })
         )
       }
@@ -52,4 +55,4 @@ const OwnerFilter = () => {
   );
 };
 
-export default OwnerFilter;
+export default ContextTypeFilter;

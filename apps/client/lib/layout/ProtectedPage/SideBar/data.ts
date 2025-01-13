@@ -42,7 +42,7 @@ const sideBarData = [
   },
   {
     name: 'Compliance',
-    route: 'compliance',
+    route: 'template-management',
     icon: ComplianceIcon,
   },
 ];

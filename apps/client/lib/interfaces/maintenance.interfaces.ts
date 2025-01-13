@@ -212,12 +212,6 @@ interface MaintenanceType extends BaseEntity {
   typeName: string;
 }
 
-interface TemplateFilter {
-  createdDate: string | null;
-  owner: number[];
-  apply: boolean;
-}
-
 interface PlanFilter extends LocationFilter {
   planType: Option[];
 }
@@ -318,7 +312,6 @@ export type {
   MaintenanceScheduleInstance,
   MaintenanceFrequency,
   PlanFormDetails,
-  TemplateFilter,
   PlanFilter,
   ScheduleFilter,
   MaintenanceType,

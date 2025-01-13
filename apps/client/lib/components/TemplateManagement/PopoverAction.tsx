@@ -1,13 +1,11 @@
 import { Text, useDisclosure, VStack } from '@chakra-ui/react';
-import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
+import { Template } from '~/lib/interfaces/template.interfaces';
 import { GenericDeleteModal, GenericPopover } from '@repo/ui/components';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { useDeleteMaintenancePlanMutation } from '~/lib/redux/services/maintenance/plan.services';
 import { getSession } from 'next-auth/react';
-import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
-import { ROUTES, SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
+import { useDeleteTemplateMutation } from '~/lib/redux/services/template.services';
 
-const PopoverAction = (plan: MaintenancePlan) => {
+const PopoverAction = (template: Template) => {
   const {
     isOpen: isOpenDelete,
     onOpen: onOpenDelete,
@@ -15,15 +13,14 @@ const PopoverAction = (plan: MaintenancePlan) => {
   } = useDisclosure();
 
   const { handleSubmit } = useCustomMutation();
-  const { updateSearchParam } = useCustomSearchParams();
-  const [deletePlan, { isLoading }] = useDeleteMaintenancePlanMutation({});
+  const [deleteTemplate, { isLoading }] = useDeleteTemplateMutation({});
 
   const handleDeletePlan = async () => {
     const session = await getSession();
     const response = await handleSubmit(
-      deletePlan,
-      { id: plan?.maintenancePlanId, deletedBy: session?.user.username! },
-      'Plan Deleted Successfully'
+      deleteTemplate,
+      { id: template?.templateId, deletedBy: session?.user.username! },
+      'Template Deleted Successfully'
     );
     if (response?.data) {
       onCloseDelete();
@@ -34,24 +31,6 @@ const PopoverAction = (plan: MaintenancePlan) => {
     <>
       <GenericPopover width="129px" placement="bottom-start">
         <VStack width="full" alignItems="flex-start" spacing="16px">
-          <Text
-            cursor="pointer"
-            as="a"
-            href={`/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_PLANS}/${plan.maintenancePlanId}/edit`}
-          >
-            Edit
-          </Text>
-          <Text
-            cursor="pointer"
-            onClick={() => {
-              updateSearchParam(
-                SYSTEM_CONTEXT_DETAILS.MAINTENANCE_PLANS.slug,
-                plan?.maintenancePlanId
-              );
-            }}
-          >
-            View
-          </Text>
           <Text cursor="pointer" onClick={onOpenDelete} color="#F50000">
             Delete
           </Text>

@@ -14,14 +14,14 @@ const FilterWrapper = (props: FilterWrapperProps) => {
     <HStack spacing="7px" overflow="auto">
       {children}
       <Button
-        customStyles={{ minW: '120px', height: '36px' }}
+        customStyles={{ minW: '120px', width: 'max-content', height: '36px' }}
         handleClick={() => handleApplyFilter()}
       >
         Apply Filter
       </Button>
       <Button
         variant="outline"
-        customStyles={{ minW: '120px', height: '36px' }}
+        customStyles={{ minW: '120px', width: 'max-content', height: '36px' }}
         handleClick={() => {
           handleClearFilter();
           handleApplyFilter();

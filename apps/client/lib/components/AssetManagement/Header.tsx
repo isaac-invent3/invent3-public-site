@@ -7,7 +7,7 @@ import { ROUTES } from '~/lib/utils/constants';
 const Header = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   return (
-    <HStack width="full" justifyContent="space-between" pt="40px">
+    <HStack width="full" justifyContent="space-between">
       <PageHeader>Asset Management</PageHeader>
       <ActionButtonPopover
         onOpenTemplateModal={onOpen}

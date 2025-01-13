@@ -190,6 +190,7 @@ const ROUTES = {
   PROFILE: 'profile',
   REPORT: 'report-analytics',
   TASKS: 'task-management',
+  TEMPLATES: 'template-management',
   TICKETS: 'ticket-management',
 };
 

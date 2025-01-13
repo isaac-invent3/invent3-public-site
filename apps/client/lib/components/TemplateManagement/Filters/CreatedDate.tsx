@@ -4,14 +4,14 @@ import DatePicker from 'react-datepicker';
 import { ChevronDownIcon } from '~/lib/components/CustomIcons';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import 'react-datepicker/dist/react-datepicker.css';
-import { updateTemplateFilter } from '~/lib/redux/slices/MaintenanceSlice';
+import { updateTemplateFilter } from '~/lib/redux/slices/TemplateSlice';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import moment from 'moment';
 
 const CreatedDate = () => {
   const dispatch = useAppDispatch();
   const { createdDate } = useAppSelector(
-    (state) => state.maintenance.templateFilters
+    (state) => state.template.templateFilters
   );
   const pickerRef = useRef<DatePicker | null>(null);
 

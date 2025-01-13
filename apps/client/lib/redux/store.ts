@@ -42,6 +42,7 @@ import generalSlice from './slices/GeneralSlice';
 import maintenanceSlice from './slices/MaintenanceSlice';
 import reportSlice from './slices/ReportSlice';
 import taskSlice from './slices/TaskSlice';
+import templateSlice from './slices/TemplateSlice';
 import ticketSlice from './slices/TicketSlice';
 
 import { assetDocumentApi } from './services/asset/document.services';
@@ -139,6 +140,7 @@ const rootReducer = combineReducers({
   maintenance: maintenanceSlice,
   task: taskSlice,
   date: dateSlice,
+  template: templateSlice,
   ticket: ticketSlice,
   report: reportSlice,
 });

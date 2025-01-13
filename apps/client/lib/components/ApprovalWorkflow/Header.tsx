@@ -1,0 +1,107 @@
+import {
+  Flex,
+  HStack,
+  Tab,
+  TabList,
+  Tabs,
+  Text,
+  useDisclosure,
+} from '@chakra-ui/react';
+import { FilterButton } from '@repo/ui/components';
+import { FilterIcon } from '../CustomIcons';
+import PageHeader from '../UI/PageHeader';
+
+interface ApprovalHeaderProps {
+  tabIndex: number;
+  setTabIndex: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const Header = (props: ApprovalHeaderProps) => {
+  const { isOpen, onClose, onOpen } = useDisclosure();
+  const { setTabIndex, tabIndex } = props;
+
+  const tabs = [
+    {
+      name: 'All',
+      count: 8,
+    },
+    {
+      name: 'Disposal',
+      count: 0,
+    },
+    {
+      name: 'Transfer',
+      count: 16,
+    },
+  ];
+
+  return (
+    <HStack width="full" justifyContent="space-between" pt="40px">
+      <PageHeader width="50%">Approval Requests</PageHeader>
+
+      <Flex width="50%" alignItems="center" justifyContent="space-between">
+        <HStack spacing="16px" alignItems="flex-start">
+          <Text
+            color="#42403D"
+            fontWeight="700"
+            fontSize="16px"
+            lineHeight="19.01px"
+          >
+            Type:
+          </Text>
+
+          <Tabs
+            variant="custom"
+            width={'full'}
+            onChange={(index) => setTabIndex(index)}
+            index={tabIndex}
+          >
+            <TabList>
+              {tabs.map((tab, index) => {
+                const tabActive = tabIndex === index;
+
+                return (
+                  <Tab paddingBottom="8px" key={index}>
+                    <HStack>
+                      <Text
+                        color={tabActive ? '#0E2642' : '#838383'}
+                        fontWeight={tabActive ? 800 : 500}
+                        transition="all 300ms ease-in-out"
+                        fontSize="14px"
+                      >
+                        {tab.name}
+                      </Text>
+
+                      <Flex
+                        color={tabActive ? 'white' : 'black'}
+                        bgColor={tabActive ? '#0E2642' : '#BBBBBB'}
+                        fontSize={tabActive ? '14px' : '12px'}
+                        transition="all 300ms ease-in-out"
+                        borderRadius="16px"
+                        width="30px"
+                        height="22px"
+                        alignItems="center"
+                        justifyContent="center"
+                        ml="8px"
+                      >
+                        {tab.count}
+                      </Flex>
+                    </HStack>
+                  </Tab>
+                );
+              })}
+            </TabList>
+          </Tabs>
+        </HStack>
+        <FilterButton
+          icon={FilterIcon}
+          label="Filters"
+          handleClick={() => console.log('hey')}
+          isActive={false}
+        />
+      </Flex>
+    </HStack>
+  );
+};
+
+export default Header;

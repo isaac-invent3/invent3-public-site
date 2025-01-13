@@ -191,6 +191,7 @@ const ROUTES = {
   REPORT: 'report-analytics',
   TASKS: 'task-management',
   TICKETS: 'ticket-management',
+  APPROVAL:'approval-flow'
 };
 
 const SYSTEM_CONTEXT_DETAILS = {

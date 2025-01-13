@@ -82,6 +82,11 @@ const reportBreadcrumb: BreadcrumbNode = {
   label: 'Reports & Analytics',
 };
 
+const approvalBreadcrumb: BreadcrumbNode = {
+  route: `/${ROUTES.APPROVAL}`,
+  label: 'Approval Workflow',
+};
+
 const breadcrumbMap: Record<string, BreadcrumbNode> = {
   [ROUTES.DASHBOARD]: dashboardBreadcrumb,
   [ROUTES.ASSETS]: assetsBreadcrumb,
@@ -90,6 +95,7 @@ const breadcrumbMap: Record<string, BreadcrumbNode> = {
   [ROUTES.TICKETS]: ticketsBreadcrumb,
   [ROUTES.PROFILE]: profileBreadcrumb,
   [ROUTES.REPORT]: reportBreadcrumb,
+  [ROUTES.APPROVAL]: approvalBreadcrumb,
 };
 
 const getBreadcrumb = (pathSegments: string[]): breadCrumbRoute[] => {

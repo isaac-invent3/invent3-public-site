@@ -1,10 +1,11 @@
 import {
+  Box,
   ComponentWithAs,
   HStack,
   Icon,
   IconProps,
-  Text,
   Link,
+  Text,
 } from '@chakra-ui/react';
 import { usePathname } from 'next/navigation';
 
@@ -13,10 +14,11 @@ interface NavItemProps {
   route: string;
   icon: ComponentWithAs<'svg', IconProps>;
   isCollapse: boolean;
+  count?: number;
 }
 
 const NavItem = (props: NavItemProps) => {
-  const { name, route, icon, isCollapse } = props;
+  const { name, route, icon, isCollapse, count } = props;
 
   const path = usePathname();
   const splittedPathname = path.split('/');
@@ -26,7 +28,34 @@ const NavItem = (props: NavItemProps) => {
       textDecoration="none !important"
       width={isCollapse ? 'max-content' : 'full'}
       role="group"
+      position="relative"
     >
+      {count && (
+        <Box
+          bgColor="#17A1FA"
+          border="1px solid #0E2642"
+          borderRadius="100%"
+          width="18px"
+          height="18px"
+          position="absolute"
+          right={isCollapse ? 0.5 : 1}
+          top={isCollapse ? 0.5 : 1}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Text
+            as="span"
+            color="#42403D"
+            fontWeight={700}
+            fontSize="10px"
+            lineHeight="11.88px"
+          >
+            {count}
+          </Text>
+        </Box>
+      )}
+
       <HStack
         rounded="8px"
         bgColor={splittedPathname[1] === route ? '#6E7D8E80' : 'none'}

@@ -4,6 +4,7 @@ import {
   ComplianceIcon,
   DashboardIcon,
   MaintenanceIcon,
+  ShuffleIcon,
   TaskIcon,
   TicketIcon,
 } from '~/lib/components/CustomIcons/layout';
@@ -44,6 +45,12 @@ const sideBarData = [
     name: 'Compliance',
     route: 'compliance',
     icon: ComplianceIcon,
+  },
+  {
+    name: 'Approval Flow',
+    route: 'approval-flow',
+    icon: ShuffleIcon,
+    count: 12,
   },
 ];
 

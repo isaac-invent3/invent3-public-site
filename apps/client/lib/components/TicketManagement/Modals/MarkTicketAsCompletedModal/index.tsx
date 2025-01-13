@@ -1,10 +1,19 @@
 /* eslint-disable no-unused-vars */
-import { Heading, HStack, ModalBody, Text, VStack } from '@chakra-ui/react';
+import {
+  Heading,
+  HStack,
+  ModalBody,
+  Text,
+  useDisclosure,
+  VStack,
+} from '@chakra-ui/react';
 
 import { Button, GenericModal } from '@repo/ui/components';
-import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
+import { useAppSelector } from '~/lib/redux/hooks';
+import { useUpdateTicketMutation } from '~/lib/redux/services/ticket.services';
+import MarkAsCompletedSuccessModal from './SuccessModal';
 
 interface MarkTicketAsCompletedModalProps {
   isOpen: boolean;
@@ -13,11 +22,33 @@ interface MarkTicketAsCompletedModalProps {
 }
 const MarkTicketAsCompletedModal = (props: MarkTicketAsCompletedModalProps) => {
   const { isOpen, onClose, data } = props;
-  const { data: session } = useSession();
-  const { handleSubmit } = useCustomMutation();
-  // const [updateTask, { isLoading: isUpdating }] = useUpdateTaskMutation({});
+  const [updateTicketMutation, { isLoading }] = useUpdateTicketMutation();
+  // Isaac, when i used this, it threw an error that useContext was not found
+  // const { DEFAULT_COMPLETED_TASK_STATUS_ID } = useAppSelector(
+  //   (state) => state.general.appConfigValues
+  // );
+  const {
+    isOpen: isMarkAsCompletedSuccessOpen,
+    onClose: onMarkAsCompletedSuccessClose,
+    onOpen: onMarkAsCompletedSuccessOpen,
+  } = useDisclosure();
 
-  const handleMarkAsCompleted = () => {};
+  const handleMarkAsCompleted = async () => {
+    const session = await getSession();
+
+    if (!data) return;
+
+    const response = await updateTicketMutation({
+      id: data.ticketId,
+      ticketId: data.ticketId,
+      ticketStatusId:  3,
+      lastModifiedBy: session?.user?.username,
+    });
+
+    if (response) {
+      onMarkAsCompletedSuccessOpen();
+    }
+  };
 
   return (
     <>
@@ -61,6 +92,7 @@ const MarkTicketAsCompletedModal = (props: MarkTicketAsCompletedModalProps) => {
                 Cancel
               </Button>
               <Button
+                isLoading={isLoading}
                 customStyles={{ width: '193px' }}
                 handleClick={handleMarkAsCompleted}
               >
@@ -70,6 +102,14 @@ const MarkTicketAsCompletedModal = (props: MarkTicketAsCompletedModalProps) => {
           </VStack>
         </ModalBody>
       </GenericModal>
+
+      <MarkAsCompletedSuccessModal
+        isOpen={isMarkAsCompletedSuccessOpen}
+        onClose={() => {
+          onMarkAsCompletedSuccessClose();
+          onClose();
+        }}
+      />
     </>
   );
 };

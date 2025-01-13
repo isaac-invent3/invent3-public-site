@@ -2,31 +2,35 @@
 
 import {
   Flex,
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-  useDisclosure,
   HStack,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  useDisclosure,
 } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
-import Header from './Header';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { ROUTES, STATUS_CATEGORY_ENUM } from '~/lib/utils/constants';
 import { FilterButton, SearchInput } from '@repo/ui/components';
-import { FilterIcon } from '../CustomIcons';
-import PendingAndInProgressTab from './TabTableViews/PendingAndInProgressTab';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { ROUTES, STATUS_CATEGORY_ENUM } from '~/lib/utils/constants';
+import { BulkSearchIcon, FilterIcon } from '../CustomIcons';
+import Header from './Header';
 import CompletedTab from './TabTableViews/CompletedTab';
+import PendingAndInProgressTab from './TabTableViews/PendingAndInProgressTab';
 
 const ALlTabs = ['Pending', 'In Progress', 'Completed'];
 
 const TaskManagement = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [tabIndex, setTabIndex] = useState<number | undefined>(undefined);
   const [search, setSearch] = useState('');
-  const { onToggle, isOpen } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [tabIndex, setTabIndex] = useState<number | undefined>(undefined);
+  const [activeFilter, setActiveFilter] = useState<'bulk' | 'general' | null>(
+    null
+  );
+
   useEffect(() => {
     const tab = searchParams.get('tab');
     if (tab) {
@@ -38,6 +42,15 @@ const TaskManagement = () => {
       setTabIndex(0);
     }
   }, [searchParams]);
+
+  useEffect(() => {
+    if (activeFilter && !isOpen) {
+      onOpen();
+    }
+    if (!activeFilter) {
+      onClose();
+    }
+  }, [activeFilter]);
 
   // Update the URL whenever the tab is changed
   const handleTabChange = (index: number) => {
@@ -70,11 +83,24 @@ const TaskManagement = () => {
                   setSearch={setSearch}
                   placeholderText="Search..."
                 />
+
+                <FilterButton
+                  icon={BulkSearchIcon}
+                  label="Bulk Actions"
+                  handleClick={() =>
+                    setActiveFilter((prev) => (prev === 'bulk' ? null : 'bulk'))
+                  }
+                  isActive={activeFilter === 'bulk'}
+                />
                 <FilterButton
                   icon={FilterIcon}
                   label="Filters"
-                  handleClick={() => onToggle()}
-                  isActive={isOpen}
+                  handleClick={() =>
+                    setActiveFilter((prev) =>
+                      prev === 'general' ? null : 'general'
+                    )
+                  }
+                  isActive={activeFilter === 'general'}
                 />
               </HStack>
             </Flex>
@@ -86,6 +112,7 @@ const TaskManagement = () => {
                 <PendingAndInProgressTab
                   statusCategoryId={STATUS_CATEGORY_ENUM.INACTIVE}
                   search={search}
+                  activeFilter={activeFilter}
                   openFilter={isOpen}
                 />
               )}
@@ -96,12 +123,17 @@ const TaskManagement = () => {
                   statusCategoryId={STATUS_CATEGORY_ENUM.ACTIVE}
                   search={search}
                   openFilter={isOpen}
+                  activeFilter={activeFilter}
                 />
               )}
             </TabPanel>
             <TabPanel>
               {tabIndex === 2 && (
-                <CompletedTab search={search} openFilter={isOpen} />
+                <CompletedTab
+                  search={search}
+                  openFilter={isOpen}
+                  activeFilter={activeFilter}
+                />
               )}
             </TabPanel>
           </TabPanels>

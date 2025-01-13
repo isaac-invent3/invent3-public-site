@@ -198,6 +198,14 @@ interface TaskInstancePayload extends TaskMetadata {
   dueDate?: string;
 }
 
+interface UpdateTaskInstanceMetadataPayload {
+  taskInstanceIds: number[];
+  taskStatusId?: number;
+  taskPriorityId?: number;
+  assignedTo?: number;
+  lastModifiedBy:string
+}
+
 export type {
   Task,
   TaskInstanceModel,
@@ -210,4 +218,5 @@ export type {
   SingleTask,
   TaskPayload,
   TaskInstancePayload,
+  UpdateTaskInstanceMetadataPayload,
 };

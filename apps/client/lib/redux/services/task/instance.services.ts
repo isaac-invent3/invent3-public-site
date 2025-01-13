@@ -9,6 +9,7 @@ import {
   TaskInstance,
   TaskInstanceModel,
   TaskInstancePayload,
+  UpdateTaskInstanceMetadataPayload,
 } from '~/lib/interfaces/task.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
@@ -52,6 +53,24 @@ export const taskInstanceApi = createApi({
         'allTaskInstances',
       ],
     }),
+    updateTaskInstanceMetadataIds: builder.mutation<
+      void,
+      UpdateTaskInstanceMetadataPayload
+    >({
+      query: (data) => ({
+        url: generateQueryStr(
+          `/TaskInstances/UpdateTaskInstanceMetadataIds?`,
+          data
+        ),
+
+        method: 'PUT',
+        headers: getHeaders(),
+      }),
+      invalidatesTags: [
+        'allTaskInstancesByScheduleInstanceId',
+        'allTaskInstances',
+      ],
+    }),
     deleteTaskInstance: builder.mutation<
       void,
       { id: number; deletedBy: string }
@@ -76,6 +95,22 @@ export const taskInstanceApi = createApi({
     >({
       query: (data) => ({
         url: generateQueryStr(`/TaskInstances?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allTaskInstances'],
+    }),
+    getTaskInstancesByListOfIds: builder.query<
+      BaseApiResponse<ListResponse<TaskInstance>>,
+      {
+        taskInstanceIds: number[];
+      } & QueryParams
+    >({
+      query: (data) => ({
+        url: generateQueryStr(
+          `/TaskInstances/GetTaskInstancesByListOfIds?`,
+          data
+        ),
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -136,8 +171,10 @@ export const {
   useDeleteTaskInstanceMutation,
   useGetAllTaskInstancesByScheduleInstanceIdQuery,
   useGetAllTaskInstancesQuery,
+  useGetTaskInstancesByListOfIdsQuery,
   useGetTaskInstanceByIdQuery,
   useUpdateTaskInstanceMutation,
   useSearchTaskInstancesMutation,
   useGetAllCompletedTaskInstancesQuery,
+  useUpdateTaskInstanceMetadataIdsMutation,
 } = taskInstanceApi;

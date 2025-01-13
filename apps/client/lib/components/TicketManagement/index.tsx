@@ -21,9 +21,9 @@ import { ROUTES, SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
 import { useAppSelector } from '~/lib/redux/hooks';
 
 const ALlTabs = [
-  'New Tickets',
+  'New',
   'Assigned',
-  'Scheduled Tickets',
+  'Scheduled',
   'In Progress',
   'Completed',
 ];

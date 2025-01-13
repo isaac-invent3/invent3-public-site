@@ -14,7 +14,7 @@ const AssetNameCodeDescription = () => {
       <Flex width="full" maxW="118px" direction="column" gap="14px">
         <FormSectionInfo
           title="Asset Name"
-          info="Add name that users can likely search with"
+          info="Find and select the asset you require"
           isRequired
         />
         <FormSectionInfo

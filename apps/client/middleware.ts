@@ -25,5 +25,5 @@ export default auth((request: NextRequest) => {
 });
 
 export const config = {
-  matcher: ['/', '/forgot-password', '/dashboard', '/asset-management/:path*'],
+  matcher: ['/', '/forgot-password', `/dashboard`, `/asset-management/:path*`],
 };

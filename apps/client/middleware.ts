@@ -1,6 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { auth } from 'auth';
-import { ROUTES } from './lib/utils/constants';
+import { NextRequest, NextResponse } from 'next/server';
 
 const publicRoutes = ['/', '/forgot-password'];
 
@@ -12,9 +11,7 @@ export default auth((request: NextRequest) => {
   const isLoggedIn = !!auth;
   if (isLoggedIn) {
     if (publicRoutes.includes(pathname)) {
-      return NextResponse.redirect(
-        new URL(`/${ROUTES.DASHBOARD}`, request.url)
-      );
+      return NextResponse.redirect(new URL(`/dashboard`, request.url));
     }
     return NextResponse.next();
   }
@@ -28,10 +25,5 @@ export default auth((request: NextRequest) => {
 });
 
 export const config = {
-  matcher: [
-    '/',
-    '/forgot-password',
-    `/${ROUTES.DASHBOARD}`,
-    `/${ROUTES.ASSETS}/:path*`,
-  ],
+  matcher: ['/', '/forgot-password', '/dashboard', '/asset-management/:path*'],
 };

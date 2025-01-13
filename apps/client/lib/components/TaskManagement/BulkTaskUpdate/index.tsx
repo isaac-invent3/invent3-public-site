@@ -11,6 +11,7 @@ import {
 import { Button, FormSectionInfo } from '@repo/ui/components';
 import { FormikProvider, useFormik } from 'formik';
 import { getSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import PageHeader from '~/lib/components/UI/PageHeader';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
@@ -21,10 +22,11 @@ import {
 import { useGetAllTaskPrioritiesQuery } from '~/lib/redux/services/task/priorities.services';
 import { useGetAllTaskStatusesQuery } from '~/lib/redux/services/task/statuses.services';
 import { updateTaskInstanceMetadataSchema } from '~/lib/schemas/task.schema';
-import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import { DEFAULT_PAGE_SIZE, ROUTES } from '~/lib/utils/constants';
 import UserDisplayAndAddButton from '../../Common/UserDisplayAndAddButton';
 import GenericAsyncSelect from '../../UI/GenericAsyncSelect';
 import { getSelectedTaskIds, removeSelectedTaskIds } from '../Common/utils';
+import TaskSuccessModal from '../Modals/TaskSuccessModal';
 import TaskInstanceTable from '../Tables/TaskInstanceTable';
 
 const BulkTaskUpdate = () => {
@@ -34,6 +36,7 @@ const BulkTaskUpdate = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
+  const router = useRouter();
 
   const [updateTaskInstanceMetadata, { isLoading }] =
     useUpdateTaskInstanceMetadataIdsMutation({});
@@ -66,6 +69,7 @@ const BulkTaskUpdate = () => {
       taskPriorityId: undefined,
       assignedTo: undefined,
       assignedToEmployeeName: '',
+      taskInstanceIds: getSelectedTaskIds(),
     },
     validationSchema: updateTaskInstanceMetadataSchema,
     onSubmit: async (values, { resetForm }) => {
@@ -76,7 +80,6 @@ const BulkTaskUpdate = () => {
       const formValues = {
         ...payload,
         lastModifiedBy: session?.user.username!,
-        taskInstanceIds: getSelectedTaskIds(),
       };
 
       const response = await handleSubmit(
@@ -86,12 +89,17 @@ const BulkTaskUpdate = () => {
       );
 
       if (response?.data) {
-        removeSelectedTaskIds();
         resetForm();
         onOpen();
       }
     },
   });
+
+  const handleClose = () => {
+    removeSelectedTaskIds();
+    onClose();
+    router.push(`/${ROUTES.TASKS}`);
+  };
 
   return (
     <Flex width="full" direction="column" pb="24px">
@@ -243,6 +251,16 @@ const BulkTaskUpdate = () => {
           </Flex>
         </form>
       </FormikProvider>
+
+      {isOpen && (
+        <TaskSuccessModal
+          isOpen={isOpen}
+          onClose={handleClose}
+          format="modal"
+          type="edit"
+          text="Bulk Task Update Request Successful"
+        />
+      )}
     </Flex>
   );
 };

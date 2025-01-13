@@ -9,9 +9,10 @@ interface TaskSuccessModalProps {
   onClose: (addAnotherTask: boolean) => void;
   type: 'create' | 'edit';
   format: 'modal' | 'page';
+  text?:string
 }
 const TaskSuccessModal = (props: TaskSuccessModalProps) => {
-  const { isOpen, onClose, type, format } = props;
+  const { isOpen, onClose, type, format, text } = props;
   const successText =
     type === 'create'
       ? 'A new task has been created and added to the schedule successfully'
@@ -21,7 +22,7 @@ const TaskSuccessModal = (props: TaskSuccessModalProps) => {
       isOpen={isOpen}
       onClose={() => onClose(false)}
       headingText="Successful!"
-      successText={successText}
+      successText={text ?? successText}
       mainModalStyle={{ closeOnOverlayClick: false, closeOnEsc: false }}
     >
       <HStack spacing="24px">

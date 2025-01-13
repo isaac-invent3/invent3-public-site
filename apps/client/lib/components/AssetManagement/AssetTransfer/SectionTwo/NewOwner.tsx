@@ -40,7 +40,10 @@ const NewOwner = (props: NewOwnerProps) => {
       width="full"
       height="max-content"
     >
-      <DetailHeader variant="secondary" customStyles={{ fontWeight: 700 }}>
+      <DetailHeader
+        variant="secondary"
+        customStyles={{ size: 'lg', fontWeight: 700 }}
+      >
         New Owner
       </DetailHeader>
       <EmployeeSelect

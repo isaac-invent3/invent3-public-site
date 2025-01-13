@@ -7,7 +7,10 @@ import { FormDatePicker, FormTextAreaInput } from '@repo/ui/components';
 const TransferDetails = () => {
   return (
     <VStack spacing="16px" alignItems="flex-start" width="full">
-      <DetailHeader variant="secondary" customStyles={{ fontWeight: 700 }}>
+      <DetailHeader
+        variant="secondary"
+        customStyles={{ size: 'lg', fontWeight: 700 }}
+      >
         Transfer Details
       </DetailHeader>
       <VStack width="full" spacing="40px">

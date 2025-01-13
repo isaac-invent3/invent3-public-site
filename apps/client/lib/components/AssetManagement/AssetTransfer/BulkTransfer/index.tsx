@@ -1,6 +1,6 @@
 'use client';
 
-import { Flex, HStack, Text, useDisclosure } from '@chakra-ui/react';
+import { Flex, HStack, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 import { FormikProvider, useFormik } from 'formik';
 import { assetTransferSchema } from '~/lib/schemas/asset/main.schema';
@@ -17,11 +17,14 @@ import {
   removeSelectedAssetIds,
 } from '../../Common/utils';
 import PageHeader from '~/lib/components/UI/PageHeader';
+import { ROUTES } from '~/lib/utils/constants';
+import { useRouter } from 'next/navigation';
 
 const BulkTransfer = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [transferAsset, { isLoading }] = useTransferAssetMutation({});
   const { handleSubmit } = useCustomMutation();
+  const router = useRouter();
   const formik = useFormik({
     initialValues: {
       newOwnerId: undefined,
@@ -51,6 +54,12 @@ const BulkTransfer = () => {
     },
   });
 
+  const handleClose = () => {
+    removeSelectedAssetIds();
+    onClose();
+    router.push(`/${ROUTES.ASSETS}`);
+  };
+
   return (
     <Flex width="full" direction="column" pb="24px">
       <PageHeader>Bulk Asset Transfer Request</PageHeader>
@@ -71,19 +80,14 @@ const BulkTransfer = () => {
               <SectionTwo />
             </Flex>
             <HStack spacing="16px" justifyContent="flex-end" width="full">
-              <HStack
-                as="button"
-                px="16px"
-                rounded="8px"
-                bgColor="#F6F6F6B2"
-                minH="50px"
-                minW="96px"
-                justifyContent="center"
+              <Button
+                type="button"
+                customStyles={{ width: '96px', bgColor: '#F6F6F6B2' }}
+                variant="secondary"
+                handleClick={handleClose}
               >
-                <Text size="md" color="primary.500">
-                  Cancel
-                </Text>
-              </HStack>
+                Cancel
+              </Button>
 
               <Button
                 type="submit"

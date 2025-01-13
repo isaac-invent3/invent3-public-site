@@ -19,7 +19,10 @@ const DisposalDetails = () => {
   const [searchDisposalReason] = useSearchAssetDisposalMutation({});
   return (
     <VStack spacing="16px" alignItems="flex-start" width="full">
-      <DetailHeader variant="secondary" customStyles={{ fontWeight: 700 }}>
+      <DetailHeader
+        variant="secondary"
+        customStyles={{ size: 'lg', fontWeight: 700 }}
+      >
         Disposal Details
       </DetailHeader>
       <VStack width="full" spacing="16px">

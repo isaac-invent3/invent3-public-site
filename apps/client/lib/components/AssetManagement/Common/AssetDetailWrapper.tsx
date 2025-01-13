@@ -48,7 +48,7 @@ const AssetDetailWrapper = (props: AssetDetailWrapperProps) => {
         >
           <DetailHeader
             variant="secondary"
-            customStyles={{ fontWeight: 700, borderBottom: 'none' }}
+            customStyles={{ size: 'lg', fontWeight: 700, borderBottom: 'none' }}
           >
             Asset Details
           </DetailHeader>

@@ -56,7 +56,7 @@ export default function Page() {
     documentsLoading ||
     planLoading
   ) {
-    return <Skeleton width="full" rounded="8px" height="250px" mt="80px" />;
+    return <Skeleton width="full" rounded="8px" height="250px" />;
   }
 
   if (data?.data) {

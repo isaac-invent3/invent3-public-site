@@ -16,7 +16,7 @@ export default function Page({ params }: { params: { id: string } }) {
   const dispatch = useAppDispatch();
 
   if (isLoading) {
-    return <Skeleton width="full" rounded="8px" height="250px" mt="80px" />;
+    return <Skeleton width="full" rounded="8px" height="250px" />;
   }
   if (!data?.data) return notFound();
 

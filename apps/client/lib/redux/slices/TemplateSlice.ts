@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TemplateFilter } from '~/lib/interfaces/template.interfaces';
+import { Template, TemplateFilter } from '~/lib/interfaces/template.interfaces';
 
 const initialTemplateFilter = {
   contextTypeId: [],
@@ -9,16 +9,24 @@ const initialTemplateFilter = {
 
 export interface SliceProps {
   templateFilters: TemplateFilter;
+  template?: Template | null;
 }
 
 const initialState: SliceProps = {
   templateFilters: initialTemplateFilter,
+  template: null,
 };
 
-export const Template = createSlice({
+export const TemplateSlice = createSlice({
   name: 'templateReducer',
   initialState,
   reducers: {
+    setTemplate: (state, { payload }: PayloadAction<Template>) => {
+      state.template = payload;
+    },
+    clearTemplate: (state) => {
+      state.template = null;
+    },
     updateTemplateFilter: (
       state,
       { payload }: PayloadAction<Partial<TemplateFilter>>
@@ -31,6 +39,11 @@ export const Template = createSlice({
   },
 });
 
-export const { updateTemplateFilter, clearTemplateFilter } = Template.actions;
+export const {
+  setTemplate,
+  clearTemplate,
+  updateTemplateFilter,
+  clearTemplateFilter,
+} = TemplateSlice.actions;
 
-export default Template.reducer;
+export default TemplateSlice.reducer;

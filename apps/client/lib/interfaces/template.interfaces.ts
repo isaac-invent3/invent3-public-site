@@ -1,11 +1,15 @@
-import { BaseEntity } from '@repo/interfaces';
-
-interface Template extends BaseEntity {
+interface Template {
+  rowId: number;
   templateId: number;
+  guid: string;
   contextId: number;
-  contextTypeId: number;
   templateName: string;
+  isDeleted: boolean;
   description: string;
+  systemContextTypeId: number;
+  systemContextTypeDisplayName: string;
+  createdBy: string;
+  dateCreated: string;
 }
 
 interface TemplateFilter {

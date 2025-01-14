@@ -23,6 +23,13 @@ export const templateApi = createApi({
       }),
       providesTags: ['allTemplates'],
     }),
+    getTemplateById: builder.query<BaseApiResponse<Template>, { id: number }>({
+      query: ({ id }) => ({
+        url: `/Templates/${id}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
     getMaintenancePlanTemplate: builder.query<
       BaseApiResponse<ListResponse<Template>>,
       QueryParams
@@ -78,6 +85,7 @@ export const templateApi = createApi({
 
 export const {
   useGetAllTemplatesQuery,
+  useGetTemplateByIdQuery,
   useGetMaintenancePlanTemplateQuery,
   useGetMaintenanceScheduleTemplateQuery,
   useSearchTemplatesMutation,

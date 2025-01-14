@@ -71,11 +71,11 @@ const TemplateTable = (props: TemplateTableProps) => {
           enableSorting: false,
         }),
         columnHelper.accessor('createdBy', {
-          cell: (info) => info.getValue(),
+          cell: (info) => info.getValue() ?? 'N/A',
           header: 'Created By',
           enableSorting: false,
         }),
-        columnHelper.accessor('createdDate', {
+        columnHelper.accessor('dateCreated', {
           cell: (info) =>
             dateFormatter(info.getValue(), 'DD / MM / YYYY') ?? 'N/A',
           header: 'Date Created',
@@ -84,7 +84,7 @@ const TemplateTable = (props: TemplateTableProps) => {
       ];
 
       const pageColumns = [
-        columnHelper.accessor('contextTypeId', {
+        columnHelper.accessor('systemContextTypeDisplayName', {
           cell: (info) => info.getValue(),
           header: 'Context Type',
           enableSorting: false,

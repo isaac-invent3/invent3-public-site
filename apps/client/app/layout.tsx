@@ -1,3 +1,4 @@
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata } from 'next';
 import AppProviders from '~/lib/layout/Provider';
 import './globals.css';
@@ -24,6 +25,7 @@ export default async function RootLayout({
     <html lang="en">
       <body>
         <AppProviders>{children}</AppProviders>
+        <SpeedInsights />
       </body>
     </html>
   );

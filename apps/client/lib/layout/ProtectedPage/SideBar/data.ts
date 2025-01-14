@@ -1,10 +1,10 @@
 import {
   AnalyticsIcon,
   AssetManagementIcon,
-  ComplianceIcon,
   DashboardIcon,
   MaintenanceIcon,
   TaskIcon,
+  TemplateIcon,
   TicketIcon,
 } from '~/lib/components/CustomIcons/layout';
 import { ROUTES } from '~/lib/utils/constants';
@@ -41,9 +41,9 @@ const sideBarData = [
     icon: AnalyticsIcon,
   },
   {
-    name: 'Compliance',
-    route: 'template-management',
-    icon: ComplianceIcon,
+    name: 'Template Management',
+    route: ROUTES.TEMPLATES,
+    icon: TemplateIcon,
   },
 ];
 

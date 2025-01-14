@@ -16,7 +16,6 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useRequestAssetDisposalMutation } from '~/lib/redux/services/asset/disposal.services';
 import { getSession } from 'next-auth/react';
 import moment from 'moment';
-import { getSelectedAssetIds } from '../Common/utils';
 import PageHeader from '../../UI/PageHeader';
 import { ROUTES } from '~/lib/utils/constants';
 
@@ -127,7 +126,6 @@ const AssetDispose = (props: AssetDisposeProps) => {
                 type="submit"
                 customStyles={{ width: '161px' }}
                 isLoading={formik.isSubmitting || isLoading}
-                isDisabled={getSelectedAssetIds().length < 1}
               >
                 Dispose
               </Button>

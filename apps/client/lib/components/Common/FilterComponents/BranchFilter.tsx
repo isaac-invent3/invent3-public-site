@@ -25,8 +25,8 @@ const BranchFilter = (props: BranchFilterProps) => {
   const [loadingBranch, setLoadingBranch] = useState(true);
   const dispatch = useAppDispatch();
 
-  // Checks if all filterdata is empty
-  const noLGAs = _.every(
+  // Checks if there are LGAs
+  const noBranch = _.every(
     branchOptions,
     (value) =>
       _.isArray(value.facilityOptions) && _.isEmpty(value.facilityOptions)
@@ -82,7 +82,7 @@ const BranchFilter = (props: BranchFilterProps) => {
     >
       <VStack width="full" spacing="16px" alignItems="flex-start">
         {!loadingBranch &&
-          (!noLGAs ? (
+          (!noBranch ? (
             branchOptions.map((item, index) => (
               <VStack width="full" spacing="8px" alignItems="flex-start">
                 <Text

@@ -2,13 +2,13 @@ import { HStack, Icon, useDisclosure } from '@chakra-ui/react';
 import moment from 'moment';
 import { useState } from 'react';
 import AddTime from '../AddTime';
-import CustomDate from '../CustomDate';
 import SlideTransition from '../../SlideTransition';
 import Display from './Display';
 import { Range as DateRange } from 'react-date-range';
 import { PenIcon } from '../../CustomIcons';
 import Button from '../../Button';
 import DateRangeModal from '../DateRange/DateRangeModal';
+import CustomDate from '../CustomDate';
 
 interface DateTimeButtonsProps {
   includeTime: boolean;

@@ -9,6 +9,7 @@ import NIGERIA_CORDINATES from '~/lib/utils/NigeriaCordinates';
 import { getScaleByStateSize } from '~/lib/utils/helperFunctions';
 import { SingleMapAssetData } from '~/lib/interfaces/asset/general.interface';
 import { LoadingSpinner } from '@repo/ui/components';
+import { VStack } from '@chakra-ui/react';
 
 interface GeoJSONData {
   type: GeoJsonTypes;
@@ -61,7 +62,11 @@ const LgaMap = (props: LgaMapProps) => {
   }, []);
 
   if (isLoading) {
-    return <LoadingSpinner />;
+    return (
+      <VStack justifyContent="center" minHeight="50vh" width="full">
+        <LoadingSpinner />
+      </VStack>
+    );
   }
 
   return (

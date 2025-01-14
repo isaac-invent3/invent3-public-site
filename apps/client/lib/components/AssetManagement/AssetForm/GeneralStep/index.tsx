@@ -20,6 +20,7 @@ interface GeneralStepProps {
 }
 const GeneralStep = (props: GeneralStepProps) => {
   const { activeStep, setActiveStep } = props;
+  const asset = useAppSelector((state) => state.asset.asset);
   const formDetails = useAppSelector((state) => state.asset.assetForm);
   const dispatch = useAppDispatch();
 
@@ -83,7 +84,7 @@ const GeneralStep = (props: GeneralStepProps) => {
             <AssetImages />
             <AssetNameCodeDescription />
             <AssetDetail />
-            <ParentAsset />
+            {asset === null && <ParentAsset />}
             <AssetDimension />
             <AssetLocation setFieldValue={formik.setFieldValue} />
             <AssetOwner />

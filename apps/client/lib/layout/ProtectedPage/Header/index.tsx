@@ -16,7 +16,7 @@ const Header = () => {
   return (
     <HStack width="full" justifyContent="space-between" mb="40px">
       <GenericBreadCrumb routes={breadCrumbData} />
-      <HStack spacing="24px" pr="24px">
+      <HStack spacing="24px">
         <HeaderIcon icon={SearchIcon} size="20px" />
         <HeaderIcon icon={SettingsIcon} size="24px" />
         <NotificationPopover />

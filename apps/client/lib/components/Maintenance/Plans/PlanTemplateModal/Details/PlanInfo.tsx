@@ -6,11 +6,14 @@ import { dateFormatter } from '~/lib/utils/Formatters';
 
 interface PlanInfoProps {
   data: SingleMaintenancePlan;
+  type?: 'primary' | 'secondary';
 }
 
 const PlanInfo = (props: PlanInfoProps) => {
-  const { data } = props;
+  const { data, type = 'primary' } = props;
   const isCustomPlan = data?.planTypeId === MAINTENANCE_PLAN_ENUM.custom;
+  const isPrimary = type === 'primary';
+  const prefix = !isPrimary ? 'Plan' : '';
   const info = [
     {
       label: isCustomPlan
@@ -21,13 +24,13 @@ const PlanInfo = (props: PlanInfoProps) => {
         : data?.maintenancePlanInfoHeader?.assetGroupContextName,
     },
     {
-      label: 'Start Date',
+      label: `${prefix} Start Date`,
       value: data?.startDate
         ? dateFormatter(data?.startDate, 'Do MMM, YYYY')
         : 'N/A',
     },
     {
-      label: 'End Date',
+      label: `${prefix} End Date`,
       value: data?.endDate
         ? dateFormatter(data?.endDate, 'Do MMM, YYYY')
         : 'N/A',
@@ -38,16 +41,18 @@ const PlanInfo = (props: PlanInfoProps) => {
     <HStack
       width="full"
       spacing="47px"
-      bgColor="primary.500"
-      p="16px"
+      bgColor={isPrimary ? 'primary.500' : 'none'}
+      p={isPrimary ? '16px' : '0px'}
       roundedTop="8px"
       alignItems="flex-start"
     >
       {info.map((item, index) => (
         <VStack alignItems="flex-start" spacing="8px" key={index}>
-          <Text color="neutral.300">{item.label}</Text>
+          <Text color={isPrimary ? 'neutral.300' : 'neutral.600'}>
+            {item.label}
+          </Text>
           <Text
-            color="white"
+            color={isPrimary ? 'white' : 'black'}
             fontWeight={700}
             fontSize="14px"
             lineHeight="22px"

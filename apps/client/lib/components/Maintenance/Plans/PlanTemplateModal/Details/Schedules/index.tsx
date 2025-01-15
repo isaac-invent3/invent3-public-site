@@ -66,7 +66,7 @@ const Schedule = (props: MaintenanceSchedulesProps) => {
         }),
 
         columnHelper.accessor('activeTasksCount', {
-          cell: (info) => info.getValue(),
+          cell: (info) => info.getValue() ?? 'N/A',
           header: 'No. Of Tasks',
           enableSorting: false,
         }),

@@ -70,6 +70,9 @@ const tasksBreadcrumb: BreadcrumbNode = {
 const templateBreadcrumb: BreadcrumbNode = {
   route: `/${ROUTES.TEMPLATES}`,
   label: 'Template Management',
+  children: {
+    detail: { label: 'Template Detail' },
+  },
 };
 
 const ticketsBreadcrumb: BreadcrumbNode = {

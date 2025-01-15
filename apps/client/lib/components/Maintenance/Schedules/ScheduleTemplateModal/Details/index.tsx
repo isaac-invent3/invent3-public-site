@@ -39,7 +39,7 @@ const Details = (props: DetailsProps) => {
       ) : (
         data?.data && (
           <VStack width="full" alignItems="flex-start" spacing={0}>
-            <HeaderInfo data={data?.data} />
+            <HeaderInfo data={data?.data} type="secondary" />
             <VStack
               width="full"
               alignItems="flex-start"

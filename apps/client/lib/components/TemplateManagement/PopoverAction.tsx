@@ -35,7 +35,7 @@ const PopoverAction = (template: Template) => {
           <Text
             cursor="pointer"
             as="a"
-            href={`/${ROUTES.TEMPLATES}/${template.templateId}`}
+            href={`/${ROUTES.TEMPLATES}/${template.templateId}/detail`}
           >
             View
           </Text>

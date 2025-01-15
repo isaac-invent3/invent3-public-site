@@ -131,7 +131,7 @@ const TemplateManagement = () => {
             : data?.data?.totalPages
         }
         showFooter={true}
-        emptyLines={10}
+        emptyLines={25}
         isSelectable={false}
         pageNumber={pageNumber}
         setPageNumber={setPageNumber}

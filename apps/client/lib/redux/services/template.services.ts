@@ -25,7 +25,7 @@ export const templateApi = createApi({
     }),
     getTemplateById: builder.query<BaseApiResponse<Template>, { id: number }>({
       query: ({ id }) => ({
-        url: `/Templates/${id}`,
+        url: `/Templates/GetTemplateInfoHeader/${id}`,
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -71,6 +71,23 @@ export const templateApi = createApi({
         headers: getHeaders(),
       }),
     }),
+    updateTemplate: builder.mutation<
+      void,
+      {
+        templateId: number;
+        templateName: string;
+        description: string;
+        lastModifiedBy: string;
+      }
+    >({
+      query: (body) => ({
+        url: `/Templates/${body.templateId}`,
+        method: 'PUT',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allTemplates'],
+    }),
     deleteTemplate: builder.mutation<void, { id: number; deletedBy: string }>({
       query: ({ id, ...body }) => ({
         url: `/Templates/${id}`,
@@ -90,5 +107,6 @@ export const {
   useGetMaintenanceScheduleTemplateQuery,
   useSearchTemplatesMutation,
   useGetTemplateInfoBySystemContextTypeAndContextIdQuery,
+  useUpdateTemplateMutation,
   useDeleteTemplateMutation,
 } = templateApi;

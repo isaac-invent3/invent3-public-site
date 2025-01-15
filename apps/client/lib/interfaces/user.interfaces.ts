@@ -44,6 +44,31 @@ interface User {
   countryName: string;
 }
 
+interface UserGroup {
+  userGroupId: number;
+  userId: number;
+  groupId: number;
+  groupName: string;
+  groupDescription: string;
+  dateCreated: string;
+  isDeleted: boolean;
+}
+
+interface UserGroupMember {
+  rowId: number;
+  userId: number;
+  guid: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  isDeleted: boolean;
+  lastActive: string;
+  employeeStatusId: null;
+  groupId: number;
+  employeeStatus: null;
+  dateAdded: string;
+}
+
 interface UserPasswordChangeQuery {
   userId: number;
   currentPassword: string;
@@ -51,4 +76,10 @@ interface UserPasswordChangeQuery {
   lastModifiedBy: string;
 }
 
-export type { Employee, User, UserPasswordChangeQuery };
+export type {
+  Employee,
+  User,
+  UserPasswordChangeQuery,
+  UserGroup,
+  UserGroupMember,
+};

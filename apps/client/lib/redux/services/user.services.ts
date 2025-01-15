@@ -9,6 +9,8 @@ import {
 } from '@repo/interfaces';
 import {
   User,
+  UserGroup,
+  UserGroupMember,
   UserPasswordChangeQuery,
 } from '~/lib/interfaces/user.interfaces';
 
@@ -26,6 +28,28 @@ export const userApi = createApi({
     >({
       query: (data) => ({
         url: generateQueryStr(`/Users?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allUsers'],
+    }),
+    getUserGroups: builder.query<
+      BaseApiResponse<ListResponse<UserGroup>>,
+      QueryParams & { userId: number }
+    >({
+      query: ({ userId, ...data }) => ({
+        url: generateQueryStr(`/Users/GetUserGroupsInfo/${userId}?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allUsers'],
+    }),
+    getUserGroupMembers: builder.query<
+      BaseApiResponse<ListResponse<UserGroupMember>>,
+      QueryParams & { userId: number; groupId: number }
+    >({
+      query: ({ userId, ...data }) => ({
+        url: generateQueryStr(`/Users/GetGroupMembersInfo/${userId}?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -66,6 +90,8 @@ export const userApi = createApi({
 
 export const {
   useGetAllUsersQuery,
+  useGetUserGroupsQuery,
+  useGetUserGroupMembersQuery,
   useSearchUsersMutation,
   useGetUserProfileByUserIdQuery,
   useChangeUserPasswordMutation,

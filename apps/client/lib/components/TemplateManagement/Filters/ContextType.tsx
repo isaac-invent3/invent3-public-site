@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateTemplateFilter } from '~/lib/redux/slices/TemplateSlice';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { generateOptions } from '~/lib/utils/helperFunctions';
-import { useGetReportableSystemContextTypesQuery } from '~/lib/redux/services/systemcontexttypes.services';
+import { useGetAllSystemContextTypeQuery } from '~/lib/redux/services/systemcontexttypes.services';
 
 const ContextTypeFilter = () => {
   const dispatch = useAppDispatch();
@@ -14,9 +14,10 @@ const ContextTypeFilter = () => {
   );
   const [pageNumber, setPageNumber] = useState(1);
   const [options, setOptions] = useState<Option[]>([]);
-  const { data, isLoading } = useGetReportableSystemContextTypesQuery({
+  const { data, isLoading } = useGetAllSystemContextTypeQuery({
     pageNumber: pageNumber,
     pageSize: DEFAULT_PAGE_SIZE,
+    isOnlyTemplateAllowed: true,
   });
 
   useEffect(() => {

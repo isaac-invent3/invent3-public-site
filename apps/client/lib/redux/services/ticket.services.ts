@@ -68,6 +68,18 @@ export const ticketApi = createApi({
       }),
       providesTags: ['allTickets'],
     }),
+
+    getAssetOpenTickets: builder.query<
+      BaseApiResponse<ListResponse<Ticket>>,
+      { assetId: number } & QueryParams
+    >({
+      query: ({ assetId, ...data }) => ({
+        url: generateQueryStr(`/Tickets/GetAssetOpenTickets/${assetId}?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allTickets'],
+    }),
     getTicketById: builder.query<BaseApiResponse<Ticket>, { id: number }>({
       query: ({ id }) => ({
         url: `/Tickets/${id}`,
@@ -131,4 +143,5 @@ export const {
   useSearchTicketsMutation,
   useScheduleTicketsMutation,
   useSearchTicketTypesMutation,
+  useGetAssetOpenTicketsQuery
 } = ticketApi;

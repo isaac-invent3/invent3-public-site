@@ -1,6 +1,6 @@
 import { Grid, GridItem, HStack, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
-import EditButton from '../Common/EditButton';
+// import EditButton from '../Common/EditButton';
 import { useSession } from 'next-auth/react';
 import Detail from './Detail';
 import { User } from '~/lib/interfaces/user.interfaces';
@@ -64,7 +64,7 @@ const PersonalInformation = ({
             </GridItem>
           </Grid>
         </VStack>
-        <EditButton />
+        {/* <EditButton /> */}
       </HStack>
     </VStack>
   );

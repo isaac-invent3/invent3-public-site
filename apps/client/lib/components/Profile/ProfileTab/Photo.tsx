@@ -1,6 +1,6 @@
 import { Avatar, HStack, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
-import EditButton from '../Common/EditButton';
+// import EditButton from '../Common/EditButton';
 import { useSession } from 'next-auth/react';
 
 const Photo = () => {
@@ -17,7 +17,7 @@ const Photo = () => {
           height="67px"
           name={user ? `${user?.firstName} ${user?.lastName}` : undefined}
         />
-        <EditButton />
+        {/* <EditButton /> */}
       </HStack>
     </VStack>
   );

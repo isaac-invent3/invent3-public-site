@@ -1,8 +1,12 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
+import { BaseApiResponse, ListResponse } from '@repo/interfaces';
+import {
+  GetUserNotificationQueryParams,
+  MarkAllNotificationsAsReadParams,
+  Notification,
+} from '~/lib/interfaces/notification.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../baseQueryWithReauth';
-import { BaseApiResponse, ListResponse, QueryParams } from '@repo/interfaces';
-import { Notification } from '~/lib/interfaces/notification.interfaces';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -13,18 +17,39 @@ export const notificationApi = createApi({
   baseQuery: baseQueryWithReauth,
   tagTypes: ['allNotifications'],
   endpoints: (builder) => ({
-    getAllNotification: builder.query<
+    getUserNotification: builder.query<
       BaseApiResponse<ListResponse<Notification>>,
-      QueryParams
+      GetUserNotificationQueryParams
     >({
-      query: (data) => ({
-        url: generateQueryStr(`/Notifications?`, data),
+      query: ({ userId, ...data }) => ({
+        url: generateQueryStr(
+          `/Notifications/GetNotifications/${userId}?`,
+          data
+        ),
         method: 'GET',
         headers: getHeaders(),
       }),
       providesTags: ['allNotifications'],
     }),
+
+    markAllNotificationsAsRead: builder.mutation<
+      BaseApiResponse<string>,
+      MarkAllNotificationsAsReadParams
+    >({
+      query: ({ userId, ...data }) => ({
+        url: generateQueryStr(
+          `/Notifications/MarkAllNotificationsAsRead/${userId}?`,
+          data
+        ),
+        method: 'PUT',
+        headers: getHeaders(),
+      }),
+      invalidatesTags: ['allNotifications'],
+    }),
   }),
 });
 
-export const { useGetAllNotificationQuery } = notificationApi;
+export const {
+  useGetUserNotificationQuery,
+  useMarkAllNotificationsAsReadMutation,
+} = notificationApi;

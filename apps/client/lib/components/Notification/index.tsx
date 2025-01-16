@@ -1,31 +1,39 @@
-import React, { useState } from 'react';
 import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  useDisclosure,
   Box,
-  VStack,
+  Button,
+  Divider,
+  Flex,
   HStack,
   Heading,
-  Text,
-  Flex,
   Icon,
-  Divider,
+  Popover,
+  PopoverBody,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTrigger,
+  Spinner,
+  VStack,
+  useDisclosure,
+  useToast,
 } from '@chakra-ui/react';
+import { getSession } from 'next-auth/react';
+import { useState } from 'react';
 import {
   NotificationIcon,
   PreferenceIcon,
 } from '~/lib/components/CustomIcons/layout';
 import HeaderIcon from '~/lib/layout/ProtectedPage/Header/HeaderIcon';
-import TabButton from './Tabs/TabButton';
+import { useMarkAllNotificationsAsReadMutation } from '~/lib/redux/services/notification.services';
 import { NotifcationTabs } from './Tabs';
+import TabButton from './Tabs/TabButton';
 
 const NotificationPopover = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [activeTab, setActiveTab] = useState('All');
+  const toast = useToast();
+
+  const [markAllAsReadMutation, { isLoading }] =
+    useMarkAllNotificationsAsReadMutation();
 
   const Tabs = [
     {
@@ -41,6 +49,17 @@ const NotificationPopover = () => {
       count: 0,
     },
   ];
+
+  const handleMarkNotificationsAsRead = async () => {
+    const session = await getSession();
+
+    if (!session?.user?.userId) return;
+
+    await markAllAsReadMutation({
+      userId: session?.user.userId,
+      lastModifiedBy: session?.user.userId,
+    });
+  };
 
   return (
     <>
@@ -137,20 +156,28 @@ const NotificationPopover = () => {
                     setActiveTab={setActiveTab}
                   />
                 </HStack>
-                <Text
-                  role="button"
-                  fontSize="9.33px"
-                  lineHeight="11.09px"
-                  fontWeight={800}
-                  color="#0366EF"
-                >
-                  Mark all as read
-                </Text>
+                <HStack gap="8px">
+                  {isLoading && <Spinner color="#0366EF" size="sm" />}
+
+                  <Button
+                    fontSize="9.33px"
+                    lineHeight="11.09px"
+                    fontWeight={800}
+                    color="#0366EF"
+                    onClick={handleMarkNotificationsAsRead}
+                    padding={0}
+                    background={'none'}
+                    height="auto"
+                    isDisabled={isLoading}
+                  >
+                    Mark all as read
+                  </Button>
+                </HStack>
               </HStack>
             </VStack>
           </PopoverHeader>
           <PopoverBody pt="20px" px="20px" overflowY="auto">
-            {isOpen && <NotifcationTabs />}
+            {isOpen && <NotifcationTabs activeTab={activeTab} />}
           </PopoverBody>
         </PopoverContent>
       </Popover>

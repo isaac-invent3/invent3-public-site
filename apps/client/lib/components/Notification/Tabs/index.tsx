@@ -1,17 +1,26 @@
 import { Text, VStack } from '@chakra-ui/react';
 
-import NotificationDetail from '../NotificationDetail';
-import { useGetAllNotificationQuery } from '~/lib/redux/services/notification.services';
+import { useSession } from 'next-auth/react';
+import { useGetUserNotificationQuery } from '~/lib/redux/services/notification.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import NotifcationSkeletion from '../NotifcationSkeletion';
+import NotificationDetail from '../NotificationDetail';
 
 // const textStyle = { fontSize: '9.33px', lineHeight: '11.09px' };
 
-export const NotifcationTabs = () => {
-  const { data, isLoading } = useGetAllNotificationQuery({
-    pageSize: DEFAULT_PAGE_SIZE,
-    pageNumber: 1,
-  });
+export const NotifcationTabs = ({ activeTab }: { activeTab: string }) => {
+  const session = useSession();
+
+  const { data, isLoading } = useGetUserNotificationQuery(
+    {
+      pageSize: DEFAULT_PAGE_SIZE,
+      pageNumber: 1,
+      userId: session?.data?.user?.userId!,
+      isRead: activeTab === 'Unread' ? false : undefined,
+      isArchived: activeTab === 'Archived' ? true : undefined,
+    },
+    { skip: !session?.data?.user?.userId }
+  );
 
   if (isLoading) {
     return <NotifcationSkeletion noOfskeleton={7} />;

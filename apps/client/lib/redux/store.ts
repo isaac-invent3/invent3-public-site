@@ -8,6 +8,7 @@ import {
   REHYDRATE,
   persistReducer,
 } from 'redux-persist';
+import { createWrapper } from 'next-redux-wrapper';
 
 import storage from './customStorage';
 import { categoryApi } from './services/asset/category.services';
@@ -44,6 +45,7 @@ import reportSlice from './slices/ReportSlice';
 import taskSlice from './slices/TaskSlice';
 import templateSlice from './slices/TemplateSlice';
 import ticketSlice from './slices/TicketSlice';
+import userSlice from './slices/UserSlice';
 
 import { assetDocumentApi } from './services/asset/document.services';
 import { aisleApi } from './services/location/aisle.services';
@@ -141,6 +143,7 @@ const rootReducer = combineReducers({
   task: taskSlice,
   date: dateSlice,
   template: templateSlice,
+  user: userSlice,
   ticket: ticketSlice,
   report: reportSlice,
 });
@@ -230,3 +233,5 @@ export const makeStore = () => {
 export type AppStore = ReturnType<typeof makeStore>;
 export type RootState = ReturnType<AppStore['getState']>;
 export type AppDispatch = AppStore['dispatch'];
+
+export const wrapper = createWrapper<AppStore>(makeStore, { debug: true });

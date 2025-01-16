@@ -1,30 +1,28 @@
-import React, { useState } from 'react';
+import React from 'react';
 import SectionWrapper from '../Common/SectionWrapper';
 import { VStack } from '@chakra-ui/react';
 import NotificationRadioGroup from './NotificationRadioGroup';
+import { APPROVAL_NOTIFICATION } from '../utils';
 
 const INFO = [
   {
     title: 'Do not nofity me',
     subtitle: '',
-    key: 1,
+    key: APPROVAL_NOTIFICATION.APPROVAL_NO_NOTIFICATIONS,
   },
   {
     title: 'Mentions only',
     subtitle: 'Only notify me if the approval is directed to me.',
-    key: 2,
+    key: APPROVAL_NOTIFICATION.APPROVAL_MENTIONS_ONLY,
   },
   {
     title: 'All Approvals',
     subtitle: 'Notify me to for all approvals',
-    key: 3,
+    key: APPROVAL_NOTIFICATION.APPROVAL_ALL,
   },
 ];
 
 const Approvals = () => {
-  const [markedKey, setMarkedKey] = useState<number | null>(
-    INFO?.[0]?.key ?? null
-  );
   return (
     <SectionWrapper
       title="Approvals"
@@ -36,8 +34,8 @@ const Approvals = () => {
       <VStack alignItems="flex-start" spacing="16px" width="full">
         <NotificationRadioGroup
           data={INFO}
-          selectedOption={markedKey}
-          handleSelect={setMarkedKey}
+          optionsObject={APPROVAL_NOTIFICATION}
+          defaultOption={APPROVAL_NOTIFICATION.APPROVAL_NO_NOTIFICATIONS}
         />
       </VStack>
     </SectionWrapper>

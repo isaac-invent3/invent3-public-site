@@ -183,12 +183,18 @@ const UserActionPopover = () => {
               <ActionButton
                 icon={UserProfileIcon}
                 name="User Profile"
-                handleClick={() => router.push('/profile')}
+                handleClick={() => {
+                  router.push('/profile');
+                  onClose();
+                }}
               />
               <ActionButton
                 icon={Setting2Icon}
                 name="Settings"
-                handleClick={() => router.push('/profile')}
+                handleClick={() => {
+                  router.push('/profile');
+                  onClose();
+                }}
               />
               <ActionButton
                 icon={ExitIcon}

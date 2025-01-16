@@ -29,7 +29,7 @@ const Profile = () => {
   const session = useSession();
   const dispatch = useAppDispatch();
   const { data, isLoading } = useGetUserConfigurationOptionsQuery(
-    { userId: session?.data?.user?.userId! },
+    { userId: session?.data?.user?.userId!, pageSize: 30 },
     { skip: !session?.data?.user?.userId }
   );
 

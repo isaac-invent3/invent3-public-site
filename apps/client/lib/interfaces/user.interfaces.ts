@@ -1,3 +1,5 @@
+import { FORM_ENUM } from '../utils/constants';
+
 interface Employee {
   employeeId: number;
   employeeName: string;
@@ -76,10 +78,41 @@ interface UserPasswordChangeQuery {
   lastModifiedBy: string;
 }
 
+interface UserConfigurationOption {
+  rowId: number;
+  userId: number;
+  firstName: string;
+  lastName: string;
+  userConfigurationOptionId: number;
+  guid: string;
+  systemConfigurationOptionId: number;
+  systemConfigurationOptionName: string;
+  systemConfigurationOptionTypeId: number;
+  systemConfigurationOptionTypeName: string;
+  systemConfigurationContextTypeId: number;
+  systemConfigurationContextTypeName: string;
+}
+
+interface UserConfigurationObject {
+  userConfigurationOptionId: number | null;
+  systemConfigurationOptionId: number;
+}
+
+interface UserConfigurationPayload {
+  userId: number;
+  userConfigurationOptionId: number | null;
+  systemConfigurationOptionId: number;
+  actionType: typeof FORM_ENUM.add | typeof FORM_ENUM.delete;
+  changeInitiatedBy: string;
+}
+
 export type {
   Employee,
   User,
   UserPasswordChangeQuery,
   UserGroup,
   UserGroupMember,
+  UserConfigurationOption,
+  UserConfigurationObject,
+  UserConfigurationPayload,
 };

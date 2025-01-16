@@ -53,11 +53,13 @@ const SignIn = () => {
         const result = await dispatch(
           utilityApi.endpoints.getAppConfigValues.initiate({})
         );
-        dispatch(
-          setCredentials({
-            appConfigValues: result?.data?.data,
-          })
-        );
+        if (result?.data?.data) {
+          dispatch(
+            setCredentials({
+              appConfigValues: result?.data?.data,
+            })
+          );
+        }
         toast({
           title: 'Success',
           description: 'Login Successful',

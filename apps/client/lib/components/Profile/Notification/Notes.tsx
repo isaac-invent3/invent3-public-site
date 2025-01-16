@@ -1,30 +1,28 @@
-import React, { useState } from 'react';
+import React from 'react';
 import SectionWrapper from '../Common/SectionWrapper';
 import { VStack } from '@chakra-ui/react';
 import NotificationRadioGroup from './NotificationRadioGroup';
+import { NOTES_NOTIFICATION } from '../utils';
 
 const INFO = [
   {
     title: 'Do not nofity me',
     subtitle: '',
-    key: 1,
+    key: NOTES_NOTIFICATION.NOTES_NO_NOTIFICATIONS,
   },
   {
     title: 'Mentions only',
     subtitle: 'Only notify me if I’m mentioned in a note',
-    key: 2,
+    key: NOTES_NOTIFICATION.NOTES_MENTIONS_ONLY,
   },
   {
     title: 'All Notes',
     subtitle: 'Notify me for all notes',
-    key: 3,
+    key: NOTES_NOTIFICATION.NOTES_ALL_NOTES,
   },
 ];
 
 const Notes = () => {
-  const [markedKey, setMarkedKey] = useState<number | null>(
-    INFO?.[0]?.key ?? null
-  );
   return (
     <SectionWrapper
       title="Notes"
@@ -36,8 +34,8 @@ const Notes = () => {
       <VStack alignItems="flex-start" spacing="16px" width="full">
         <NotificationRadioGroup
           data={INFO}
-          selectedOption={markedKey}
-          handleSelect={setMarkedKey}
+          optionsObject={NOTES_NOTIFICATION}
+          defaultOption={NOTES_NOTIFICATION.NOTES_NO_NOTIFICATIONS}
         />
       </VStack>
     </SectionWrapper>

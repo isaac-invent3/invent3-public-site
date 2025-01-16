@@ -21,7 +21,9 @@ export const GeneralSlice = createSlice({
   reducers: {
     setCredentials: (
       state,
-      { payload: { appConfigValues } }: PayloadAction<{ appConfigValues: any }>
+      {
+        payload: { appConfigValues },
+      }: PayloadAction<{ appConfigValues: AppConfig }>
     ) => {
       state.appConfigValues = appConfigValues;
     },

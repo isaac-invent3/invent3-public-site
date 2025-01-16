@@ -182,6 +182,9 @@ importers:
       next-auth:
         specifier: 5.0.0-beta.18
         version: 5.0.0-beta.18(next@14.1.1(@babel/core@7.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+      next-redux-wrapper:
+        specifier: ^8.1.0
+        version: 8.1.0(next@14.1.1(@babel/core@7.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-redux@9.2.0(@types/react@18.3.18)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
       pigeon-maps:
         specifier: ^0.21.6
         version: 0.21.6(react@18.3.1)
@@ -6903,6 +6906,13 @@ packages:
         optional: true
       nodemailer:
         optional: true
+
+  next-redux-wrapper@8.1.0:
+    resolution: {integrity: sha512-2hIau0hcI6uQszOtrvAFqgc0NkZegKYhBB7ZAKiG3jk7zfuQb4E7OV9jfxViqqojh3SEHdnFfPkN9KErttUKuw==}
+    peerDependencies:
+      next: '>=9'
+      react: '*'
+      react-redux: '*'
 
   next-tick@1.1.0:
     resolution: {integrity: sha512-CXdUiJembsNjuToQvxayPZF9Vqht7hewsvy2sOWafLvi2awflj9mOC6bHIg50orX8IJvWKY9wYQ/zB2kogPslQ==}
@@ -17533,7 +17543,9 @@ snapshots:
       pretty-format: 24.9.0
       throat: 4.1.0
     transitivePeerDependencies:
+      - bufferutil
       - supports-color
+      - utf-8-validate
 
   jest-leak-detector@24.9.0:
     dependencies:
@@ -18494,6 +18506,12 @@ snapshots:
       '@auth/core': 0.31.0
       next: 14.1.1(@babel/core@7.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
+
+  next-redux-wrapper@8.1.0(next@14.1.1(@babel/core@7.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-redux@9.2.0(@types/react@18.3.18)(react@18.3.1)(redux@5.0.1))(react@18.3.1):
+    dependencies:
+      next: 14.1.1(@babel/core@7.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react: 18.3.1
+      react-redux: 9.2.0(@types/react@18.3.18)(react@18.3.1)(redux@5.0.1)
 
   next-tick@1.1.0: {}
 

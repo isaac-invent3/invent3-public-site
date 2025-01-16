@@ -9,6 +9,8 @@ import {
 } from '@repo/interfaces';
 import {
   User,
+  UserConfigurationOption,
+  UserConfigurationPayload,
   UserGroup,
   UserGroupMember,
   UserPasswordChangeQuery,
@@ -20,7 +22,7 @@ const getHeaders = () => ({
 export const userApi = createApi({
   reducerPath: 'userApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['allUsers', 'userProfile'],
+  tagTypes: ['allUsers', 'userProfile', 'allUserConfigurationOptions'],
   endpoints: (builder) => ({
     getAllUsers: builder.query<
       BaseApiResponse<ListResponse<User>>,
@@ -66,6 +68,20 @@ export const userApi = createApi({
       }),
       providesTags: ['userProfile'],
     }),
+    getUserConfigurationOptions: builder.query<
+      BaseApiResponse<ListResponse<UserConfigurationOption>>,
+      QueryParams & { userId: number }
+    >({
+      query: ({ userId, ...data }) => ({
+        url: generateQueryStr(
+          `/UserConfigurationOptions/GetUserConfigurationOptionsByUserId/${userId}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allUserConfigurationOptions'],
+    }),
     searchUsers: builder.mutation<
       BaseApiResponse<ListResponse<User>>,
       SearchQuery
@@ -85,6 +101,17 @@ export const userApi = createApi({
         body,
       }),
     }),
+    updateUserConfigurationOptions: builder.mutation<
+      void,
+      UserConfigurationPayload[]
+    >({
+      query: (body) => ({
+        url: `/Invent3Pro/UpdateUserConfigurationOptions`,
+        method: 'PUT',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
   }),
 });
 
@@ -95,4 +122,6 @@ export const {
   useSearchUsersMutation,
   useGetUserProfileByUserIdQuery,
   useChangeUserPasswordMutation,
+  useGetUserConfigurationOptionsQuery,
+  useUpdateUserConfigurationOptionsMutation,
 } = userApi;

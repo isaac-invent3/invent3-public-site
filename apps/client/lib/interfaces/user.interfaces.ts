@@ -106,9 +106,25 @@ interface UserConfigurationPayload {
   changeInitiatedBy: string;
 }
 
+interface UserAuth {
+  userId: number;
+  firstName: string;
+  lastName: string;
+  username: string;
+  email: string;
+  role: string;
+  accessToken: string;
+  refreshToken: string;
+  tokenType: string;
+  apiKey: string;
+  expiresIn: number;
+  sessionId: number;
+}
+
 export type {
   Employee,
   User,
+  UserAuth,
   UserPasswordChangeQuery,
   UserGroup,
   UserGroupMember,

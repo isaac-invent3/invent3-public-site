@@ -1,17 +1,18 @@
 import { auth } from 'auth';
 import { NextRequest, NextResponse } from 'next/server';
+import { doesRoleHaveAccessToURL } from './lib/utils/roleAccess';
 
 const publicRoutes = ['/', '/forgot-password'];
 
 // @ts-ignore
 export default auth((request: NextRequest) => {
   // @ts-ignore
-  const { auth } = request;
+  const { auth } = request as { auth: { user: { role: string } } };
   const { pathname } = request.nextUrl;
   const isLoggedIn = !!auth;
   if (isLoggedIn) {
-    if (publicRoutes.includes(pathname)) {
-      return NextResponse.redirect(new URL(`/dashboard`, request.url));
+    if (!doesRoleHaveAccessToURL([2], pathname)) {
+      return NextResponse.rewrite(new URL('/404', request.url));
     }
     return NextResponse.next();
   }
@@ -25,5 +26,16 @@ export default auth((request: NextRequest) => {
 });
 
 export const config = {
-  matcher: ['/', '/forgot-password', `/dashboard`, `/asset-management/:path*`],
+  matcher: [
+    '/',
+    '/forgot-password',
+    '/dashboard',
+    '/asset-management/:path*',
+    '/maintenance/:path*',
+    '/task-management/:path*',
+    '/ticket-management/:path*',
+    '/template-management/:path*',
+    '/profile/:path*',
+    '/report-analytics/:path*',
+  ],
 };

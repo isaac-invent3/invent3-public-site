@@ -17,7 +17,6 @@ declare module 'next-auth' {
     refreshToken: string;
     tokenType: string;
     apiKey: string;
-    role: string;
     expiresIn: number;
     sessionId: number;
   }

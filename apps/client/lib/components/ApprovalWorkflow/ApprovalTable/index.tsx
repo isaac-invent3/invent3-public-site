@@ -1,12 +1,17 @@
 import { Flex, HStack, Text } from '@chakra-ui/react';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
+import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import UserInfo from '~/lib/components/Common/UserInfo';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
 import { useGetTicketsByTabScopeQuery } from '~/lib/redux/services/ticket.services';
-import { COLOR_CODES_FALLBACK, DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import {
+  COLOR_CODES_FALLBACK,
+  DEFAULT_PAGE_SIZE,
+  ROUTES,
+} from '~/lib/utils/constants';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import PopoverAction from './PopoverAction';
 
@@ -17,6 +22,7 @@ interface ApprovalTableProps {
 const ApprovalTable = (props: ApprovalTableProps) => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const { approvalCategory } = props;
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const { data, isLoading, isFetching } = useGetTicketsByTabScopeQuery({
@@ -121,6 +127,9 @@ const ApprovalTable = (props: ApprovalTableProps) => {
         setPageSize={setPageSize}
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
+        handleSelectRow={(row) => {
+          router.push(`/${ROUTES.APPROVAL}/${row.assetId}`);
+        }}
         emptyLines={15}
         isSelectable
         maxTdWidth="200px"

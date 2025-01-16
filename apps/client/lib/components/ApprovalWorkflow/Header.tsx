@@ -1,6 +1,7 @@
 import {
   Flex,
   HStack,
+  StackDivider,
   Tab,
   TabList,
   Tabs,
@@ -57,39 +58,49 @@ const Header = (props: ApprovalHeaderProps) => {
             index={tabIndex}
           >
             <TabList>
-              {tabs.map((tab, index) => {
-                const tabActive = tabIndex === index;
+              <HStack
+                divider={
+                  <StackDivider
+                    borderColor="#A6A6A6"
+                    height="20px"
+                    alignSelf="center"
+                  />
+                }
+              >
+                {tabs.map((tab, index) => {
+                  const tabActive = tabIndex === index;
 
-                return (
-                  <Tab paddingBottom="8px" key={index}>
-                    <HStack>
-                      <Text
-                        color={tabActive ? '#0E2642' : '#838383'}
-                        fontWeight={tabActive ? 800 : 500}
-                        transition="all 300ms ease-in-out"
-                        fontSize="14px"
-                      >
-                        {tab.name}
-                      </Text>
+                  return (
+                    <Tab paddingBottom="8px" key={index}>
+                      <HStack>
+                        <Text
+                          color={tabActive ? '#0E2642' : '#838383'}
+                          fontWeight={tabActive ? 800 : 500}
+                          transition="all 300ms ease-in-out"
+                          size="md"
+                        >
+                          {tab.name}
+                        </Text>
 
-                      <Flex
-                        color={tabActive ? 'white' : 'black'}
-                        bgColor={tabActive ? '#0E2642' : '#BBBBBB'}
-                        fontSize={tabActive ? '14px' : '12px'}
-                        transition="all 300ms ease-in-out"
-                        borderRadius="16px"
-                        width="30px"
-                        height="22px"
-                        alignItems="center"
-                        justifyContent="center"
-                        ml="8px"
-                      >
-                        {tab.count}
-                      </Flex>
-                    </HStack>
-                  </Tab>
-                );
-              })}
+                        <Flex
+                          color={tabActive ? 'white' : 'black'}
+                          bgColor={tabActive ? '#0E2642' : '#BBBBBB'}
+                          fontSize={tabActive ? '14px' : '12px'}
+                          transition="all 300ms ease-in-out"
+                          borderRadius="16px"
+                          width="30px"
+                          height="22px"
+                          alignItems="center"
+                          justifyContent="center"
+                          ml="8px"
+                        >
+                          {tab.count}
+                        </Flex>
+                      </HStack>
+                    </Tab>
+                  );
+                })}
+              </HStack>
             </TabList>
           </Tabs>
         </HStack>

@@ -14,7 +14,6 @@ import {
   Spinner,
   VStack,
   useDisclosure,
-  useToast,
 } from '@chakra-ui/react';
 import { getSession } from 'next-auth/react';
 import { useState } from 'react';
@@ -30,7 +29,6 @@ import TabButton from './Tabs/TabButton';
 const NotificationPopover = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [activeTab, setActiveTab] = useState('All');
-  const toast = useToast();
 
   const [markAllAsReadMutation, { isLoading }] =
     useMarkAllNotificationsAsReadMutation();

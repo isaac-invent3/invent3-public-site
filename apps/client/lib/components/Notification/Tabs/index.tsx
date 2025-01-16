@@ -33,7 +33,7 @@ export const NotifcationTabs = ({ activeTab }: { activeTab: string }) => {
           Last 7 days
         </Text> */}
         <VStack width="full" alignItems="flex-start">
-          {data?.data && data?.data?.items.length < 0 ? (
+          {data?.data && data?.data?.items.length < 1 ? (
             <Text width="full" textAlign="center" color="neutral.600" my="20px">
               No Notifications at the moment
             </Text>

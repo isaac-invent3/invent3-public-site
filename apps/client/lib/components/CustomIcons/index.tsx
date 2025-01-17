@@ -334,6 +334,33 @@ const CalendarIcon = createIcon({
   ),
 });
 
+const CursorIcon = createIcon({
+  displayName: 'CursorIcon',
+  viewBox: '0 0 14 14',
+
+  path: (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="14"
+      height="14"
+      fill="none"
+      viewBox="0 0 14 14"
+    >
+      <g clipPath="url(#clip0_3526_8471)">
+        <path
+          fill="currentColor"
+          d="M5.245 14a1.75 1.75 0 0 0 1.564-.954l1.824-3.911 2.066 1.804a.584.584 0 0 0 .967-.439V1.738a1.75 1.75 0 0 0-2.91-1.31L2.514 6.4a.583.583 0 0 0 .35 1.003l2.606.238-1.787 3.831A1.75 1.75 0 0 0 5.245 14m3.188-6.398a.583.583 0 0 0-.53.337L5.76 12.533a.583.583 0 1 1-1.031-.548l2.148-4.603a.583.583 0 0 0-.476-.828l-2.158-.197 5.303-5.07a.57.57 0 0 1 .61-.08.58.58 0 0 1 .343.531v7.479l-1.683-1.47a.58.58 0 0 0-.383-.145"
+        ></path>
+      </g>
+      <defs>
+        <clipPath id="clip0_3526_8471">
+          <path fill="#fff" d="M14 0H0v14h14z"></path>
+        </clipPath>
+      </defs>
+    </svg>
+  ),
+});
+
 const DocumentIcon = createIcon({
   displayName: 'DocumentIcon',
   viewBox: '0 0 25 24',
@@ -911,12 +938,13 @@ export {
   LongBackArrowIcon,
   NairaIcon,
   NotificationInfoIcon,
+  PDFIcon,
   PenIcon,
   RemoveIcon,
   RepeatIcon,
+  RightArrowIcon,
   TemplateIcon,
   ThreeVerticalDotsIcon,
   UptrendIcon,
-  RightArrowIcon,
-  PDFIcon,
+  CursorIcon,
 };

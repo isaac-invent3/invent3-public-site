@@ -1,8 +1,9 @@
 'use client';
 
 import { Flex, Text } from '@chakra-ui/react';
+import 'reactflow/dist/style.css';
 import PageHeader from '../../UI/PageHeader';
-import ApprovalDetailsPanel from './ApprovalDetailsPanel';
+import ApprovalFlowChart from './ApprovalFlowChart';
 
 // Change the interface
 interface IApprovalDetail {
@@ -24,12 +25,12 @@ const ApprovalDetail = (props: ApprovalDetailProps) => {
         fontSize="18px"
         lineHeight="21.38px"
         mt="8px"
-        mb='24px'
+        mb="24px"
       >
         #WRK00098 - Bulk Asset Transfer
       </Text>
 
-      <ApprovalDetailsPanel />
+      <ApprovalFlowChart />
     </Flex>
   );
 };

@@ -4,7 +4,6 @@ import ReactFlow from 'reactflow';
 import 'reactflow/dist/style.css';
 import ApprovalDetailsPanel from '../ApprovalDetailsPanel';
 import ApprovalNode from './ApprovalNode';
-import ButtonEdge from './edges/ButtonEdge';
 
 const ApprovalFlowChart = () => {
   const initialNodes: Node[] = [
@@ -75,7 +74,6 @@ const ApprovalFlowChart = () => {
         height: 30,
         color: '#656565',
       },
-  
     },
     {
       id: 'edge-2',
@@ -134,10 +132,6 @@ const ApprovalFlowChart = () => {
     approvalNode: ApprovalNode,
   } as any;
 
-  const edgeTypes = {
-    buttonedge: ButtonEdge,
-  };
-
   return (
     <Box position="relative" width="100%">
       <Box height="75vh" width="85vw">
@@ -146,7 +140,6 @@ const ApprovalFlowChart = () => {
             nodes={initialNodes}
             edges={initialEdges}
             nodeTypes={nodeTypes}
-            edgeTypes={edgeTypes}
             minZoom={0.5}
           />
         </ReactFlowProvider>

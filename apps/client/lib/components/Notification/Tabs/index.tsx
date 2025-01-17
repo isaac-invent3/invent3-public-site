@@ -1,11 +1,9 @@
 import { Text, VStack } from '@chakra-ui/react';
-
 import { useSession } from 'next-auth/react';
 import { useGetUserNotificationQuery } from '~/lib/redux/services/notification.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import NotifcationSkeletion from '../NotifcationSkeletion';
 import NotificationDetail from '../NotificationDetail';
-
 // const textStyle = { fontSize: '9.33px', lineHeight: '11.09px' };
 
 export const NotifcationTabs = ({ activeTab }: { activeTab: string }) => {

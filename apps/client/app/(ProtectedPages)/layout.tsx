@@ -1,4 +1,5 @@
 'use client';
+import Chat from '~/lib/components/Notification/Tabs/test';
 import useFormatUrl from '~/lib/hooks/useFormatUrl';
 import useParseUrlData from '~/lib/hooks/useParseUrl';
 import Layout from '~/lib/layout/ProtectedPage';
@@ -12,7 +13,13 @@ const ProtectedLayout = ({ children }: RootLayoutProps) => {
 
   useParseUrlData(formattedUrl);
 
-  return <Layout>{children}</Layout>;
+  return (
+    <Layout>
+      <Chat />
+
+      {children}
+    </Layout>
+  );
 };
 
 export default ProtectedLayout;

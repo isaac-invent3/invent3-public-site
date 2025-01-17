@@ -16,6 +16,7 @@
     "@deck.gl/layers": "^9.0.31",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
+    "@microsoft/signalr": "^8.0.7",
     "@react-google-maps/api": "^2.19.3",
     "@react-input/mask": "^1.2.11",
     "@reduxjs/toolkit": "^2.2.7",

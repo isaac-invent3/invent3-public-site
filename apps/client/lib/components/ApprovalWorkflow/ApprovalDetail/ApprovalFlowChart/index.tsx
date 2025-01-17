@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react';
-import { Edge, Node, ReactFlowProvider } from '@xyflow/react';
+import { Edge, MarkerType, Node, ReactFlowProvider } from '@xyflow/react';
 import ReactFlow from 'reactflow';
 import 'reactflow/dist/style.css';
 import ApprovalDetailsPanel from '../ApprovalDetailsPanel';
@@ -10,9 +10,9 @@ const ApprovalFlowChart = () => {
   const initialNodes: Node[] = [
     {
       id: '1',
-      position: { x: 0, y: 0 },
+      position: { x: 0, y: 166 },
       data: {
-        status: 'In Progress',
+        status: 'completed',
         currentProcess: 'Requested By',
         role: 'Operational Manager',
         approvee: 'Jerome Bell',
@@ -22,12 +22,37 @@ const ApprovalFlowChart = () => {
 
     {
       id: '2',
-      position: { x: 300, y: 300 },
+      position: { x: 288, y: 61 },
       data: {
-        status: 'In Progress',
-        currentProcess: 'Requires to Approve',
+        status: 'pending',
+        currentProcess: 'Require to Approve',
         role: 'Operational Manager',
         approvee: 'Jerome Bell',
+        date: 'June 20, 2024',
+      },
+      type: 'approvalNode',
+    },
+
+    {
+      id: '3',
+      position: { x: 288, y: 290 },
+      data: {
+        status: 'not-started',
+        currentProcess: 'Inform when Approved',
+        role: 'Operational Manager',
+        approvee: 'George Washington',
+      },
+      type: 'approvalNode',
+    },
+
+    {
+      id: '4',
+      position: { x: 588, y: 166 },
+      data: {
+        status: 'not-started',
+        currentProcess: 'Require to Approve',
+        role: 'Regional Manager',
+        approvee: 'Tasha Bell',
       },
       type: 'approvalNode',
     },
@@ -39,7 +64,69 @@ const ApprovalFlowChart = () => {
       source: '1',
       target: '2',
       sourceHandle: 'output',
-      type: 'buttonedge',
+      type: 'smoothstep',
+      style: {
+        stroke: '#656565',
+        strokeWidth: 1,
+      },
+      markerEnd: {
+        type: MarkerType.Arrow,
+        width: 30,
+        height: 30,
+        color: '#656565',
+      },
+  
+    },
+    {
+      id: 'edge-2',
+      source: '1',
+      target: '3',
+      sourceHandle: 'output',
+      type: 'smoothstep',
+      style: {
+        stroke: '#656565',
+        strokeWidth: 1,
+      },
+      markerEnd: {
+        type: MarkerType.Arrow,
+        width: 30,
+        height: 30,
+        color: '#656565',
+      },
+    },
+    {
+      id: 'edge-3',
+      source: '2',
+      target: '4',
+      sourceHandle: 'output',
+      type: 'smoothstep',
+      style: {
+        stroke: '#656565',
+        strokeWidth: 1,
+      },
+      markerEnd: {
+        type: MarkerType.Arrow,
+        width: 30,
+        height: 30,
+        color: '#656565',
+      },
+    },
+    {
+      id: 'edge-4',
+      source: '3',
+      target: '4',
+      sourceHandle: 'output',
+      type: 'smoothstep',
+      style: {
+        stroke: '#656565',
+        strokeWidth: 1,
+      },
+      markerEnd: {
+        type: MarkerType.Arrow,
+        width: 30,
+        height: 30,
+        color: '#656565',
+      },
     },
   ];
 
@@ -60,7 +147,7 @@ const ApprovalFlowChart = () => {
             edges={initialEdges}
             nodeTypes={nodeTypes}
             edgeTypes={edgeTypes}
-            fitView
+            minZoom={0.5}
           />
         </ReactFlowProvider>
       </Box>

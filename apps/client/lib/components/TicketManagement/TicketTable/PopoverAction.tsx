@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { Text, VStack } from '@chakra-ui/react';
 import { GenericPopover } from '@repo/ui/components';
+import { useMemo } from 'react';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import {
   SelectedTicketAction,
@@ -14,7 +15,7 @@ import { SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
 
 interface PopoverActionProps {
   ticket: Ticket;
-  category: TicketCategory;
+  category?: TicketCategory;
 }
 const PopoverAction = (props: PopoverActionProps) => {
   const { ticket, category } = props;
@@ -36,12 +37,29 @@ const PopoverAction = (props: PopoverActionProps) => {
     openModal('view');
     updateSearchParam(SYSTEM_CONTEXT_DETAILS.TICKETS.slug, ticket.ticketId);
   };
+  const ticketCategory: TicketCategory = useMemo(() => {
+    if (category) return category;
+
+    if(ticket.ticketStatusId === 3) {
+      return 'completed'
+    }
+
+    if (ticket.isScheduled) {
+      return 'scheduled';
+    }
+
+    if (ticket.assignedTo) {
+      return 'assigned';
+    }
+
+    return 'new';
+  }, [ticket, category]);
 
   return (
     <>
       <GenericPopover width="137px" placement="bottom-start">
         <VStack width="full" alignItems="flex-start" spacing="16px">
-          {category === 'new' && (
+          {ticketCategory === 'new' && (
             <VStack width="full" alignItems="flex-start" spacing="16px">
               <Text cursor="pointer" onClick={() => openModal('assign')}>
                 Assign Ticket
@@ -55,7 +73,7 @@ const PopoverAction = (props: PopoverActionProps) => {
             </VStack>
           )}
 
-          {category === 'assigned' && (
+          {ticketCategory === 'assigned' && (
             <VStack width="full" alignItems="flex-start" spacing="16px">
               <Text cursor="pointer" onClick={() => openModal('schedule')}>
                 Schedule Ticket
@@ -66,7 +84,7 @@ const PopoverAction = (props: PopoverActionProps) => {
             </VStack>
           )}
 
-          {(category === 'scheduled' || category === 'in_progress') && (
+          {(ticketCategory === 'scheduled' || ticketCategory === 'in_progress') && (
             <VStack width="full" alignItems="flex-start" spacing="16px">
               <Text cursor="pointer" onClick={() => openModal('edit')}>
                 Edit Ticket

@@ -8,7 +8,7 @@ import {
 
 interface SelectedTicket {
   data: Ticket;
-  category: TicketCategory;
+  category?: TicketCategory;
   action: SelectedTicketAction[];
 }
 

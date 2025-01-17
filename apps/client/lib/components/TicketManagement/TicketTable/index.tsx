@@ -1,30 +1,39 @@
 import { Flex } from '@chakra-ui/react';
+import { BaseApiResponse, ListResponse } from '@repo/interfaces';
+import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
-import { useMemo, useState } from 'react';
+import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import UserInfo from '~/lib/components/Common/UserInfo';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
-import { DataTable } from '@repo/ui/components';
 import { Ticket, TicketCategory } from '~/lib/interfaces/ticket.interfaces';
-import { useGetTicketsByTabScopeQuery } from '~/lib/redux/services/ticket.services';
-import { COLOR_CODES_FALLBACK, DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import { COLOR_CODES_FALLBACK } from '~/lib/utils/constants';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import TicketOverlays from '../Overlays';
 import PopoverAction from './PopoverAction';
 
 interface TicketTableProps {
-  category: TicketCategory;
+  category?: TicketCategory;
+  data: BaseApiResponse<ListResponse<Ticket>> | undefined;
+  isLoading: boolean;
+  isFetching: boolean;
+  currentPage: number;
+  setCurrentPage: Dispatch<SetStateAction<number>>;
+  pageSize: number;
+  setPageSize: Dispatch<SetStateAction<number>>;
 }
 const TicketTable = (props: TicketTableProps) => {
-  const { category } = props;
-  const [selectedRows, setSelectedRows] = useState<number[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const { data, isLoading, isFetching } = useGetTicketsByTabScopeQuery({
-    pageNumber: currentPage,
-    pageSize: pageSize,
-    tabScopeName: category,
-  });
+  const {
+    category,
+    data,
+    isFetching,
+    isLoading,
+    currentPage,
+    pageSize,
+    setCurrentPage,
+    setPageSize,
+  } = props;
 
+  const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const columnHelper = createColumnHelper<Ticket>();
   const columns = useMemo(
     () => {

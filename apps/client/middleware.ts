@@ -14,6 +14,9 @@ export default auth((request: NextRequest) => {
     if (!doesRoleHaveAccessToURL([2], pathname)) {
       return NextResponse.rewrite(new URL('/404', request.url));
     }
+    if (publicRoutes.includes(pathname)) {
+      return NextResponse.redirect(new URL(`/dashboard`, request.url));
+    }
     return NextResponse.next();
   }
 

@@ -1,12 +1,14 @@
 import { ROUTES, SYSTEM_ROLES } from './constants';
 
 const MANAGER_ROUTES = [
+  `/`,
   `/${ROUTES.DASHBOARD}`,
   `/${ROUTES.ASSETS}`,
   `/${ROUTES.ASSETS}/add`,
   `/${ROUTES.ASSETS}/[id]`,
   `/${ROUTES.ASSETS}/[id]/dispose`,
   `/${ROUTES.ASSETS}/[id]/transfer`,
+  `/${ROUTES.MAINTENANCE}`,
   `/${ROUTES.MAINTENANCE_PLANS}`,
   `/${ROUTES.MAINTENANCE_PLANS}/[id]`,
   `/${ROUTES.MAINTENANCE_PLANS}/[id]/edit`,
@@ -26,8 +28,10 @@ const MANAGER_ROUTES = [
 ];
 
 const FRONTDESK_ROUTE = [
+  `/`,
   `/${ROUTES.DASHBOARD}`,
-  //   `/${ROUTES.ASSETS}`,
+  `/${ROUTES.ASSETS}`,
+  `/${ROUTES.MAINTENANCE}`,
   `/${ROUTES.MAINTENANCE_PLANS}`,
   `/${ROUTES.MAINTENANCE_SCHEDULES}`,
   `/${ROUTES.TASKS}`,
@@ -60,4 +64,4 @@ function doesRoleHaveAccessToURL(roles: number[], url: string) {
   });
 }
 
-export { doesRoleHaveAccessToURL };
+export { doesRoleHaveAccessToURL, roleAccessMap };

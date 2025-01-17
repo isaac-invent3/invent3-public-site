@@ -8,6 +8,7 @@ import {
   TicketIcon,
 } from '~/lib/components/CustomIcons/layout';
 import { ROUTES } from '~/lib/utils/constants';
+import { roleAccessMap } from '~/lib/utils/roleAccess';
 
 const sideBarData = [
   {
@@ -47,4 +48,14 @@ const sideBarData = [
   },
 ];
 
-export default sideBarData;
+function filterSideBarData(userRoles: number[]) {
+  // Get all accessible routes for the user's roles
+  const accessibleRoutes = new Set(
+    userRoles.flatMap((role) => roleAccessMap[role] || [])
+  );
+
+  // Filter the sidebar data based on accessible routes
+  return sideBarData.filter((item) => accessibleRoutes.has(`/${item.route}`));
+}
+
+export { sideBarData, filterSideBarData };

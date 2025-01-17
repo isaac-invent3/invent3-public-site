@@ -3,14 +3,12 @@ import _ from 'lodash';
 import { getSession } from 'next-auth/react';
 import { useState } from 'react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { useAppSelector } from '~/lib/redux/hooks';
 import { useUpdateUserConfigurationOptionsMutation } from '~/lib/redux/services/user.services';
-import { setInitialOptions } from '~/lib/redux/slices/UserSlice';
 import { FORM_ENUM } from '~/lib/utils/constants';
 
 const useUpdateConfigurationOptions = () => {
   const { handleSubmit } = useCustomMutation();
-  const dispatch = useAppDispatch();
   const [updateOptions, { isLoading }] =
     useUpdateUserConfigurationOptionsMutation({});
   const [localIsLoading, setLocalIsLoading] = useState(false);
@@ -32,19 +30,6 @@ const useUpdateConfigurationOptions = () => {
     'systemConfigurationOptionId'
   );
 
-  // Remove deleted options from userConfigurationOptions
-  const updatedUserConfigurationOptions = _.differenceBy(
-    userConfigurationOptions,
-    deletedConfigurationOptions,
-    'systemConfigurationOptionId'
-  );
-
-  // Add newly added options
-  const newUserConfigurationGroup = _.concat(
-    updatedUserConfigurationOptions,
-    newlyAddedConfigurationOptions
-  );
-
   const handleUpdateOptions = async () => {
     const session = await getSession();
     const user = session?.user;
@@ -64,7 +49,7 @@ const useUpdateConfigurationOptions = () => {
       }));
 
     setLocalIsLoading(true);
-    const response = await handleSubmit(
+    await handleSubmit(
       updateOptions,
       [
         ...newlyAddedConfigurationOptionsPayload,
@@ -72,10 +57,6 @@ const useUpdateConfigurationOptions = () => {
       ],
       'Changes saved successfully'
     );
-    if (response?.data) {
-      //Updates the initial options
-      dispatch(setInitialOptions(newUserConfigurationGroup));
-    }
     setLocalIsLoading(false);
   };
 

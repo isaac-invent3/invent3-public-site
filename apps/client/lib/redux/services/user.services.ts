@@ -111,6 +111,7 @@ export const userApi = createApi({
         headers: getHeaders(),
         body,
       }),
+      invalidatesTags: ['allUserConfigurationOptions'],
     }),
   }),
 });

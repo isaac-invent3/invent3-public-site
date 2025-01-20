@@ -4,29 +4,28 @@ import {
   Flex,
   Tab,
   TabList,
-  TabPanel,
   TabPanels,
   Tabs,
   useDisclosure,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import Header from './Header';
-import Filters from './Filters';
-import TicketTable from './TicketTable';
-import TicketOverlays from './Overlays';
-import TicketDrawerWrapper from './Drawers/TicketDrawerWrapper';
+import { useEffect, useMemo, useState } from 'react';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
-import { ROUTES, SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
+import { TicketCategory } from '~/lib/interfaces/ticket.interfaces';
 import { useAppSelector } from '~/lib/redux/hooks';
+import { useGetTicketsByTabScopeQuery } from '~/lib/redux/services/ticket.services';
+import {
+  DEFAULT_PAGE_SIZE,
+  ROUTES,
+  SYSTEM_CONTEXT_DETAILS,
+} from '~/lib/utils/constants';
+import TicketDrawerWrapper from './Drawers/TicketDrawerWrapper';
+import Filters from './Filters';
+import Header from './Header';
+import TicketOverlays from './Overlays';
+import TicketTable from './TicketTable';
 
-const ALlTabs = [
-  'New',
-  'Assigned',
-  'Scheduled',
-  'In Progress',
-  'Completed',
-];
+const ALlTabs = ['New', 'Assigned', 'Scheduled', 'In Progress', 'Completed'];
 
 const TicketManagement = () => {
   const router = useRouter();
@@ -65,6 +64,24 @@ const TicketManagement = () => {
     }
   };
 
+  const getTicketCategory: TicketCategory = useMemo(() => {
+    if (tabIndex === 0) return 'new';
+    if (tabIndex === 1) return 'assigned';
+    if (tabIndex === 2) return 'scheduled';
+    if (tabIndex === 3) return 'in_progress';
+    if (tabIndex === 4) return 'completed';
+
+    return 'new';
+  }, [tabIndex]);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+  const { data, isLoading, isFetching } = useGetTicketsByTabScopeQuery({
+    pageNumber: currentPage,
+    pageSize: pageSize,
+    tabScopeName: getTicketCategory,
+  });
+
   return (
     <Flex width="full" direction="column" pb="24px">
       <Header />
@@ -91,23 +108,17 @@ const TicketManagement = () => {
           </Flex>
 
           <TabPanels>
-            <TabPanel>
-              {tabIndex === 0 && <TicketTable category="new" />}
-            </TabPanel>
-
-            <TabPanel>
-              {tabIndex === 1 && <TicketTable category="assigned" />}
-            </TabPanel>
-
-            <TabPanel>
-              {tabIndex === 2 && <TicketTable category="scheduled" />}
-            </TabPanel>
-            <TabPanel>
-              {tabIndex === 3 && <TicketTable category="in_progress" />}
-            </TabPanel>
-            <TabPanel>
-              {tabIndex === 4 && <TicketTable category="completed" />}
-            </TabPanel>
+            <TicketTable
+              category={getTicketCategory}
+              data={data}
+              isLoading={isLoading}
+              isFetching={isFetching}
+              isSelectable
+              currentPage={currentPage}
+              pageSize={pageSize}
+              setCurrentPage={setCurrentPage}
+              setPageSize={setPageSize}
+            />
           </TabPanels>
         </Tabs>
       </Flex>

@@ -16,6 +16,7 @@ interface TicketTableProps {
   data: BaseApiResponse<ListResponse<Ticket>> | undefined;
   isLoading: boolean;
   isFetching: boolean;
+  isSelectable?: boolean;
   currentPage: number;
   setCurrentPage: Dispatch<SetStateAction<number>>;
   pageSize: number;
@@ -27,6 +28,7 @@ const TicketTable = (props: TicketTableProps) => {
     data,
     isFetching,
     isLoading,
+    isSelectable,
     currentPage,
     pageSize,
     setCurrentPage,
@@ -168,7 +170,7 @@ const TicketTable = (props: TicketTableProps) => {
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
         emptyLines={15}
-        isSelectable
+        isSelectable={isSelectable}
         maxTdWidth="200px"
         customThStyle={{
           paddingLeft: '16px',

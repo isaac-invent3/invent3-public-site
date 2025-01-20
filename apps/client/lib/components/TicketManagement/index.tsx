@@ -113,6 +113,7 @@ const TicketManagement = () => {
               data={data}
               isLoading={isLoading}
               isFetching={isFetching}
+              isSelectable
               currentPage={currentPage}
               pageSize={pageSize}
               setCurrentPage={setCurrentPage}

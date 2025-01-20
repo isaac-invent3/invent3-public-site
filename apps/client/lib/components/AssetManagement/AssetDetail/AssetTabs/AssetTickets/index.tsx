@@ -27,12 +27,13 @@ const AssetTickets = () => {
       alignItems="flex-end"
       gap="16px"
       direction="column"
-      my="32px"
+      mb="32px"
     >
       <TicketTable
         data={data}
         isLoading={isLoading}
         isFetching={isFetching}
+        isSelectable={false}
         currentPage={currentPage}
         pageSize={pageSize}
         setCurrentPage={setCurrentPage}

@@ -9,7 +9,7 @@ import {
   TicketCategory,
 } from '~/lib/interfaces/ticket.interfaces';
 
-import { useAppDispatch } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { setSelectedTicket } from '~/lib/redux/slices/TicketSlice';
 import { SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
 
@@ -20,6 +20,7 @@ interface PopoverActionProps {
 const PopoverAction = (props: PopoverActionProps) => {
   const { ticket, category } = props;
   const { updateSearchParam } = useCustomSearchParams();
+  const appConfig = useAppSelector((state) => state.general.appConfigValues);
 
   const dispatch = useAppDispatch();
 
@@ -40,8 +41,11 @@ const PopoverAction = (props: PopoverActionProps) => {
   const ticketCategory: TicketCategory = useMemo(() => {
     if (category) return category;
 
-    if(ticket.ticketStatusId === 3) {
-      return 'completed'
+    if (
+      appConfig?.DEFAULT_COMPLETED_TASK_STATUS_ID &&
+      ticket.ticketStatusId === +appConfig?.DEFAULT_COMPLETED_TASK_STATUS_ID
+    ) {
+      return 'completed';
     }
 
     if (ticket.isScheduled) {
@@ -84,7 +88,8 @@ const PopoverAction = (props: PopoverActionProps) => {
             </VStack>
           )}
 
-          {(ticketCategory === 'scheduled' || ticketCategory === 'in_progress') && (
+          {(ticketCategory === 'scheduled' ||
+            ticketCategory === 'in_progress') && (
             <VStack width="full" alignItems="flex-start" spacing="16px">
               <Text cursor="pointer" onClick={() => openModal('edit')}>
                 Edit Ticket

@@ -15,8 +15,6 @@ const ProtectedLayout = ({ children }: RootLayoutProps) => {
 
   return (
     <Layout>
-      <Chat />
-
       {children}
     </Layout>
   );

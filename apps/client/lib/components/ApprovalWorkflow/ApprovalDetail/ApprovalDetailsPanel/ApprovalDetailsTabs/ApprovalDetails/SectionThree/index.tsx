@@ -67,7 +67,11 @@ const SectionThree = () => {
             <Text color="#D30000">Reject</Text>
           </Button>
 
-          <Button background="#008321" height="35px">
+          <Button
+            background="#008321"
+            height="35px"
+            _hover={{ background: '#008321F0' }}
+          >
             <Text color="#D2FEFD">Approve</Text>
           </Button>
         </Flex>

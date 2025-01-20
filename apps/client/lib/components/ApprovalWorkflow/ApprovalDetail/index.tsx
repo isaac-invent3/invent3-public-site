@@ -1,7 +1,6 @@
 'use client';
 
 import { Flex, Text } from '@chakra-ui/react';
-import 'reactflow/dist/style.css';
 import PageHeader from '../../UI/PageHeader';
 import ApprovalFlowChart from './ApprovalFlowChart';
 

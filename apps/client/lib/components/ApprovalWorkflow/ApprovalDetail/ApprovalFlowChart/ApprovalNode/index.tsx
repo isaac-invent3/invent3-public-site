@@ -105,7 +105,9 @@ const ApprovalNode = ({
               rounded="6px"
               minWidth="90px"
             >
-              <Text color={statusStyles.textColor}>{statusStyles.displayName}</Text>
+              <Text color={statusStyles.textColor}>
+                {statusStyles.displayName}
+              </Text>
             </Box>
           )}
 
@@ -125,6 +127,12 @@ const ApprovalNode = ({
             name={approvee}
             textStyle={{
               color: '#0366EF',
+              cursor: 'pointer',
+              transition: 'all 200ms ease-in-out',
+              _hover: {
+                textDecoration: 'underline',
+                textUnderlineOffset: 2,
+              },
             }}
             customAvatarStyle={{
               width: '24px',

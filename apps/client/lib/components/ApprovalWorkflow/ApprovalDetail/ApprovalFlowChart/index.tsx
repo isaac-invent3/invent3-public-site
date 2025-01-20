@@ -1,7 +1,12 @@
 import { Box } from '@chakra-ui/react';
-import { Edge, MarkerType, Node, ReactFlowProvider } from '@xyflow/react';
-import ReactFlow from 'reactflow';
-import 'reactflow/dist/style.css';
+import {
+  Edge,
+  MarkerType,
+  Node,
+  ReactFlowProvider,
+  ReactFlow,
+} from '@xyflow/react';
+import '@xyflow/react/dist/style.css';
 import ApprovalDetailsPanel from '../ApprovalDetailsPanel';
 import ApprovalNode from './ApprovalNode';
 

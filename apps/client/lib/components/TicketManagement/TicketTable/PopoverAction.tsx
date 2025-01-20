@@ -24,20 +24,6 @@ const PopoverAction = (props: PopoverActionProps) => {
 
   const dispatch = useAppDispatch();
 
-  const openModal = (action: SelectedTicketAction) => {
-    dispatch(
-      setSelectedTicket({
-        action: [action],
-        category,
-        data: ticket,
-      })
-    );
-  };
-
-  const handleViewDetails = () => {
-    openModal('view');
-    updateSearchParam(SYSTEM_CONTEXT_DETAILS.TICKETS.slug, ticket.ticketId);
-  };
   const ticketCategory: TicketCategory = useMemo(() => {
     if (category) return category;
 
@@ -58,6 +44,21 @@ const PopoverAction = (props: PopoverActionProps) => {
 
     return 'new';
   }, [ticket, category]);
+
+  const openModal = (action: SelectedTicketAction) => {
+    dispatch(
+      setSelectedTicket({
+        action: [action],
+        category: ticketCategory,
+        data: ticket,
+      })
+    );
+  };
+
+  const handleViewDetails = () => {
+    openModal('view');
+    updateSearchParam(SYSTEM_CONTEXT_DETAILS.TICKETS.slug, ticket.ticketId);
+  };
 
   return (
     <>

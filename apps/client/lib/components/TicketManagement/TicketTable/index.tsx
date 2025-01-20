@@ -2,7 +2,7 @@ import { Flex } from '@chakra-ui/react';
 import { BaseApiResponse, ListResponse } from '@repo/interfaces';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
-import { Dispatch, SetStateAction, useMemo, useState } from 'react';
+import { Dispatch, SetStateAction, useMemo } from 'react';
 import UserInfo from '~/lib/components/Common/UserInfo';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import { Ticket, TicketCategory } from '~/lib/interfaces/ticket.interfaces';
@@ -21,6 +21,11 @@ interface TicketTableProps {
   setCurrentPage: Dispatch<SetStateAction<number>>;
   pageSize: number;
   setPageSize: Dispatch<SetStateAction<number>>;
+  selectedRows?: number[];
+  setSelectedRows?: React.Dispatch<React.SetStateAction<number[]>>;
+  emptyLines?: number;
+  shouldHideFooter?: boolean;
+  showPopover?: boolean;
 }
 const TicketTable = (props: TicketTableProps) => {
   const {
@@ -33,9 +38,12 @@ const TicketTable = (props: TicketTableProps) => {
     pageSize,
     setCurrentPage,
     setPageSize,
+    selectedRows,
+    setSelectedRows,
+    emptyLines,
+    shouldHideFooter,
+    showPopover = true,
   } = props;
-
-  const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const columnHelper = createColumnHelper<Ticket>();
   const columns = useMemo(
     () => {
@@ -138,15 +146,19 @@ const TicketTable = (props: TicketTableProps) => {
               }),
             ]
           : []),
-
-        columnHelper.accessor('facilityRef', {
-          cell: (info) => (
-            <PopoverAction ticket={info.row.original} category={category} />
-          ),
-          header: '',
-          enableSorting: false,
-        }),
       ];
+
+      const Popover = columnHelper.accessor('facilityRef', {
+        cell: (info) => (
+          <PopoverAction ticket={info.row.original} category={category} />
+        ),
+        header: '',
+        enableSorting: false,
+      });
+
+      if (showPopover) {
+        baseColumns.push(Popover);
+      }
 
       return baseColumns;
     },
@@ -154,9 +166,8 @@ const TicketTable = (props: TicketTableProps) => {
   );
 
   return (
-    <Flex width="full" mt="24px">
+    <Flex width="full">
       <TicketOverlays />
-
       <DataTable
         columns={columns}
         data={data?.data?.items ?? []}
@@ -169,8 +180,11 @@ const TicketTable = (props: TicketTableProps) => {
         setPageSize={setPageSize}
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
-        emptyLines={15}
+        emptyLines={emptyLines}
         isSelectable={isSelectable}
+        showFooter={
+          shouldHideFooter && data?.data?.totalPages === 1 ? true : false
+        }
         maxTdWidth="200px"
         customThStyle={{
           paddingLeft: '16px',

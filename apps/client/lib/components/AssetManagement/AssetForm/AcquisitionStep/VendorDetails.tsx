@@ -8,7 +8,7 @@ import {
 } from '~/lib/redux/services/asset/vendor.services';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
-import AssetTypeSelect from '~/lib/components/Common/AssetTypeSelect';
+import AssetTypeSelect from '~/lib/components/Common/SelectComponents/AssetTypeSelect';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { FormSectionInfo } from '@repo/ui/components';
 

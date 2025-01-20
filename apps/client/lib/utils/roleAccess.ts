@@ -25,6 +25,7 @@ const MANAGER_ROUTES = [
   `/${ROUTES.TASKS}/[id]`,
   `/${ROUTES.TASKS}/[id]/edit`,
   `/${ROUTES.TICKETS}`,
+  `/${ROUTES.TICKETS}/bulk-update`,
   `/${ROUTES.REPORT}`,
   `/${ROUTES.REPORT}/[id]`,
   `/${ROUTES.REPORT}/generate`,

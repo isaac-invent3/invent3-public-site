@@ -22,7 +22,7 @@ import {
 import { Field, FormikProvider, useFormik } from 'formik';
 import moment from 'moment';
 import { getSession } from 'next-auth/react';
-import AssetSelect from '~/lib/components/Common/AssetSelect';
+import AssetSelect from '~/lib/components/Common/SelectComponents/AssetSelect';
 import UserDisplayAndAddButton from '~/lib/components/Common/UserDisplayAndAddButton';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { Asset } from '~/lib/interfaces/asset/general.interface';

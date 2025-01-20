@@ -1,56 +1,60 @@
 'use client';
 
 import { Flex, Grid, HStack, useDisclosure, VStack } from '@chakra-ui/react';
-import { Button, FormSectionInfo } from '@repo/ui/components';
+import {
+  Button,
+  FormSectionInfo,
+  GenericSuccessModal,
+} from '@repo/ui/components';
 import { FormikProvider, useFormik } from 'formik';
 import { getSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import PageHeader from '~/lib/components/UI/PageHeader';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import {
-  useGetTaskInstancesByListOfIdsQuery,
-  useUpdateTaskInstanceMetadataIdsMutation,
-} from '~/lib/redux/services/task/instance.services';
-import { updateTaskInstanceMetadataSchema } from '~/lib/schemas/task.schema';
 import { ROUTES } from '~/lib/utils/constants';
 import UserDisplayAndAddButton from '../../Common/UserDisplayAndAddButton';
-import { getSelectedTaskIds, removeSelectedTaskIds } from '../Common/utils';
-import TaskSuccessModal from '../Modals/TaskSuccessModal';
-import TaskInstanceTable from '../Tables/TaskInstanceTable';
+import { getSelectedTicketIds, removeSelectedTicketIds } from '../utils';
+import TicketTable from '../TicketTable';
+import {
+  useGetTicketsByListOfIdsQuery,
+  useUpdateTicketMetadataPayloadMutation,
+} from '~/lib/redux/services/ticket.services';
+import { updateTicketMetadataSchema } from '~/lib/schemas/ticket.schema';
 import DetailHeader from '../../UI/DetailHeader';
-import TaskPrioritySelect from '../../Common/SelectComponents/TaskPrioritySelect';
 import TaskStatusSelect from '../../Common/SelectComponents/TaskStatusSelect';
+import TaskPrioritySelect from '../../Common/SelectComponents/TaskPrioritySelect';
 
-const BulkTaskUpdate = () => {
+const BulkTicketUpdate = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   const { handleSubmit } = useCustomMutation();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
   const router = useRouter();
 
-  const [updateTaskInstanceMetadata, { isLoading }] =
-    useUpdateTaskInstanceMetadataIdsMutation({});
+  const [updateTicketMetadata, { isLoading }] =
+    useUpdateTicketMetadataPayloadMutation({});
 
   const {
     data,
-    isLoading: taskInstanceLoading,
+    isLoading: ticketLoading,
     isFetching,
-  } = useGetTaskInstancesByListOfIdsQuery({
+  } = useGetTicketsByListOfIdsQuery({
     pageSize,
     pageNumber: currentPage,
-    taskInstanceIds: getSelectedTaskIds(),
+    ticketIds: getSelectedTicketIds(),
   });
 
   const formik = useFormik({
     initialValues: {
-      taskStatusId: undefined,
-      taskPriorityId: undefined,
+      ticketStatusId: undefined,
+      ticketPriorityId: undefined,
       assignedTo: undefined,
       assignedToEmployeeName: '',
-      taskInstanceIds: getSelectedTaskIds(),
+      ticketIds: getSelectedTicketIds(),
     },
-    validationSchema: updateTaskInstanceMetadataSchema,
+    validationSchema: updateTicketMetadataSchema,
     onSubmit: async (values, { resetForm }) => {
       const session = await getSession();
 
@@ -62,11 +66,7 @@ const BulkTaskUpdate = () => {
         lastModifiedBy: session?.user.username!,
       };
 
-      const response = await handleSubmit(
-        updateTaskInstanceMetadata,
-        formValues,
-        ''
-      );
+      const response = await handleSubmit(updateTicketMetadata, formValues, '');
 
       if (response?.data) {
         resetForm();
@@ -77,22 +77,22 @@ const BulkTaskUpdate = () => {
 
   const submitButtonDisabled = useMemo(() => {
     return (
-      getSelectedTaskIds().length < 1 ||
-      (!formik.values.taskPriorityId &&
-        !formik.values.taskStatusId &&
+      getSelectedTicketIds().length < 1 ||
+      (!formik.values.ticketPriorityId &&
+        !formik.values.ticketStatusId &&
         !formik.values.assignedTo)
     );
   }, [formik]);
 
   const handleClose = () => {
-    removeSelectedTaskIds();
+    removeSelectedTicketIds();
     onClose();
-    router.push(`/${ROUTES.TASKS}`);
+    router.push(`/${ROUTES.TICKETS}`);
   };
 
   return (
     <Flex width="full" direction="column" pb="24px">
-      <PageHeader>Bulk Task Update</PageHeader>
+      <PageHeader>Bulk Ticket Update</PageHeader>
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
           <Flex width="full" direction="column" gap="24px" mt="32px">
@@ -108,26 +108,27 @@ const BulkTaskUpdate = () => {
               <HStack width="full" alignItems="flex-start" spacing="16px">
                 <Flex width="full" maxW="118px">
                   <FormSectionInfo
-                    title="Bulk Tasks"
-                    info="List of tasks to be updated."
+                    title="Bulk Tickets"
+                    info="List of tickets to be updated."
                     isRequired={false}
                   />
                 </Flex>
-                <TaskInstanceTable
-                  data={data?.data?.items ?? []}
-                  totalPages={data?.data?.totalPages}
-                  isLoading={taskInstanceLoading}
-                  isFetching={isFetching}
-                  setPageNumber={setCurrentPage}
-                  pageNumber={currentPage}
-                  pageSize={pageSize}
-                  setPageSize={setPageSize}
-                  isSortable={true}
-                  emptyLines={pageSize}
-                  showPopover={false}
-                  showFooter={data?.data?.totalPages === 1 ? false : true}
-                  type="page"
-                />
+
+                <VStack width="full" spacing="27px" overflow="auto">
+                  <VStack width="full" spacing="8px" overflow="auto">
+                    <TicketTable
+                      data={data}
+                      isLoading={ticketLoading}
+                      isFetching={isFetching}
+                      setCurrentPage={setCurrentPage}
+                      currentPage={currentPage}
+                      pageSize={pageSize}
+                      setPageSize={setPageSize}
+                      isSelectable={false}
+                      showPopover={false}
+                    />
+                  </VStack>
+                </VStack>
               </HStack>
 
               <Grid
@@ -146,6 +147,7 @@ const BulkTaskUpdate = () => {
                   >
                     Assign To
                   </DetailHeader>
+
                   <UserDisplayAndAddButton
                     selectedUser={formik.values?.assignedToEmployeeName}
                     handleSelectUser={(user) => {
@@ -166,7 +168,7 @@ const BulkTaskUpdate = () => {
                   </DetailHeader>
                   <TaskStatusSelect
                     selectTitle="Status"
-                    selectName="taskStatusId"
+                    selectName="ticketStatusId"
                   />
                 </VStack>
 
@@ -179,7 +181,7 @@ const BulkTaskUpdate = () => {
                   </DetailHeader>
                   <TaskPrioritySelect
                     selectTitle="Priority"
-                    selectName="taskPriorityId"
+                    selectName="ticketPriorityId"
                   />
                 </VStack>
               </Grid>
@@ -209,16 +211,22 @@ const BulkTaskUpdate = () => {
       </FormikProvider>
 
       {isOpen && (
-        <TaskSuccessModal
+        <GenericSuccessModal
           isOpen={isOpen}
-          onClose={handleClose}
-          format="modal"
-          type="edit"
-          text="Bulk Task Update Request Successful"
-        />
+          onClose={onClose}
+          successText="Bulk Ticket Update Successful"
+          mainModalStyle={{ closeOnOverlayClick: false, closeOnEsc: false }}
+        >
+          <Button
+            handleClick={handleClose}
+            customStyles={{ width: '193px', mb: '54px' }}
+          >
+            Continue
+          </Button>
+        </GenericSuccessModal>
       )}
     </Flex>
   );
 };
 
-export default BulkTaskUpdate;
+export default BulkTicketUpdate;

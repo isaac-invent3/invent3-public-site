@@ -1,7 +1,7 @@
 import { Flex, HStack } from '@chakra-ui/react';
 import { FormSectionInfo } from '@repo/ui/components';
 import React, { useEffect, useState } from 'react';
-import AssetSelect from '~/lib/components/Common/AssetSelect';
+import AssetSelect from '~/lib/components/Common/SelectComponents/AssetSelect';
 import { Asset } from '~/lib/interfaces/asset/general.interface';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';

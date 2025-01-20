@@ -24,6 +24,8 @@ const assetsBreadcrumb: BreadcrumbNode = {
     add: { label: 'Add New Asset' },
     transfer: { label: 'Asset Transfer Request' },
     dispose: { label: 'Dispose Asset Request' },
+    'bulk-dispose': { label: 'Bulk Dispose' },
+    'bulk-transfer': { label: 'Bulk Transfer' },
   },
 };
 
@@ -64,6 +66,7 @@ const tasksBreadcrumb: BreadcrumbNode = {
   label: 'Task Management',
   children: {
     add: { label: 'Add New Task' },
+    'bulk-update': { label: 'Bulk Update' },
   },
 };
 
@@ -78,6 +81,9 @@ const templateBreadcrumb: BreadcrumbNode = {
 const ticketsBreadcrumb: BreadcrumbNode = {
   route: `/${ROUTES.TICKETS}`,
   label: 'Ticket Management',
+  children: {
+    'bulk-update': { label: 'Bulk Update' },
+  },
 };
 
 const profileBreadcrumb: BreadcrumbNode = {

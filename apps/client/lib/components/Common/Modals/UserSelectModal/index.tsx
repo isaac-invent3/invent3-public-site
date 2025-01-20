@@ -3,7 +3,7 @@ import { HStack, ModalBody, VStack } from '@chakra-ui/react';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { Button, FormSectionInfo, GenericModal } from '@repo/ui/components';
 import { FormikProvider, useFormik } from 'formik';
-import EmployeeSelect from '../../EmployeeSelect';
+import EmployeeSelect from '../../SelectComponents/EmployeeSelect';
 import { assigneeSchema } from '~/lib/schemas/general.schema';
 
 interface UserSelectModalProps {

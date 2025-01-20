@@ -18,4 +18,12 @@ interface TemplateFilter {
   createdDate: string | null;
 }
 
-export type { Template, TemplateFilter };
+interface UpdateTicketMetadataPayload {
+  ticketIds: number[];
+  ticketStatusId?: number;
+  ticketPriorityId?: number;
+  assignedTo?: number;
+  lastModifiedBy: string;
+}
+
+export type { Template, TemplateFilter, UpdateTicketMetadataPayload };

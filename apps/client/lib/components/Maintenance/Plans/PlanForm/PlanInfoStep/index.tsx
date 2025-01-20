@@ -7,7 +7,7 @@ import {
 import { FormikProvider, useFormik } from 'formik';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import AssetSelect from '~/lib/components/Common/AssetSelect';
+import AssetSelect from '~/lib/components/Common/SelectComponents/AssetSelect';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useGetAssetTypeByIdQuery } from '~/lib/redux/services/asset/types.services';
 import { updatePlanForm } from '~/lib/redux/slices/MaintenanceSlice';

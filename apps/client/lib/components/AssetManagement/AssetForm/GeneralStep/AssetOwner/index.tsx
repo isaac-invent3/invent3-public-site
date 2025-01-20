@@ -1,6 +1,6 @@
 import { Flex, HStack, SimpleGrid } from '@chakra-ui/react';
 
-import EmployeeSelect from '../../../../Common/EmployeeSelect';
+import EmployeeSelect from '../../../../Common/SelectComponents/EmployeeSelect';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import { FormSectionInfo } from '@repo/ui/components';

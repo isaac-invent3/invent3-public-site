@@ -27,6 +27,7 @@ const AssetTickets = () => {
       alignItems="flex-end"
       gap="16px"
       direction="column"
+      mt="24px"
       mb="32px"
     >
       <TicketTable
@@ -38,6 +39,7 @@ const AssetTickets = () => {
         pageSize={pageSize}
         setCurrentPage={setCurrentPage}
         setPageSize={setPageSize}
+        emptyLines={4}
       />
     </Flex>
   );

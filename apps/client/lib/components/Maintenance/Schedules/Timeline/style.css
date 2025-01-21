@@ -76,4 +76,9 @@
   display: none;
 }
        
+
+.rbc-month-row {
+  /* overflow: visible !important; */
+  min-height: 60px !important;
+}
   

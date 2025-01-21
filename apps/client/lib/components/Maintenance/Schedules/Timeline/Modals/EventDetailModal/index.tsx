@@ -58,7 +58,7 @@ const EventDetailModal = (props: EventDetailModalProps) => {
             right={0}
             color="primary.500"
             cursor="pointer"
-            onClick={() => onClose()}
+            onClick={() => handleClose()}
           />
           {isLoading ? (
             <VStack my="220px" width="full" alignItems="center">

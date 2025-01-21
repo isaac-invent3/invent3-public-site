@@ -1,3 +1,4 @@
+/* eslint-disable no-redeclare */
 import { IconProps } from '@chakra-ui/icons';
 import {
   Collapse,

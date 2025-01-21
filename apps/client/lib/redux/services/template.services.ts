@@ -1,7 +1,12 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../baseQueryWithReauth';
-import { BaseApiResponse, ListResponse, QueryParams } from '@repo/interfaces';
+import {
+  BaseApiResponse,
+  ListResponse,
+  QueryParams,
+  SearchQuery,
+} from '@repo/interfaces';
 import { Template } from '~/lib/interfaces/template.interfaces';
 
 const getHeaders = () => ({
@@ -53,7 +58,10 @@ export const templateApi = createApi({
         headers: getHeaders(),
       }),
     }),
-    searchTemplates: builder.mutation({
+    searchTemplates: builder.mutation<
+      BaseApiResponse<ListResponse<Template>>,
+      SearchQuery
+    >({
       query: (body) => ({
         url: `/Templates/Search`,
         method: 'POST',

@@ -81,7 +81,7 @@ const Maintenance = (props: MaintenanceProps) => {
             </TabPanel>
             <TabPanel>{tabIndex === 1 && <Schedules />}</TabPanel>
             <TabPanel>
-              <History />
+              <History search={search} openFilter={isOpen} />
             </TabPanel>
           </TabPanels>
         </Tabs>

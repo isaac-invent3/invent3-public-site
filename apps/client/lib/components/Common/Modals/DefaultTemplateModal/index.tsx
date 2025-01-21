@@ -9,6 +9,9 @@ import { Template } from '~/lib/interfaces/template.interfaces';
 import GenericTemplateModal from '../GenericTemplateModal';
 import { ListResponse } from '@repo/interfaces';
 import TemplateTable from '~/lib/components/TemplateManagement/TemplateTable';
+import { generateSearchCriterion } from '@repo/utils';
+import { useAppSelector } from '~/lib/redux/hooks';
+import _ from 'lodash';
 
 interface TemplateModalProps {
   isOpen: boolean;
@@ -47,11 +50,14 @@ const TemplateModal = (props: TemplateModalProps) => {
   } = props;
   const [searchTemplate, { isLoading: searchLoading }] =
     useSearchTemplatesMutation({});
-  const [searchData, setSearchData] = useState<ListResponse<Template> | null>(
-    null
-  );
+  const [searchData, setSearchData] = useState<
+    ListResponse<Template> | undefined
+  >(undefined);
   const { handleSubmit } = useCustomMutation();
   const [showDetails, setShowDetails] = useState(false);
+  const filterData = useAppSelector((state) => state.template.templateFilters);
+  // Checks if all filterdata is empty
+  const isFilterEmpty = _.every(filterData, (value) => _.isEmpty(value));
 
   const searchCriterion = {
     criterion: [
@@ -61,6 +67,22 @@ const TemplateModal = (props: TemplateModalProps) => {
         operation: OPERATORS.Contains,
       },
     ],
+    ...(!isFilterEmpty && {
+      orCriterion: [
+        ...filterData.owner.map((item) => [
+          ...generateSearchCriterion('createdBy', [item], OPERATORS.Equals),
+        ]),
+        ...[filterData.createdDate]
+          .filter(Boolean)
+          .map((item) => [
+            ...generateSearchCriterion(
+              'dateCreated',
+              [item as string],
+              OPERATORS.Contains
+            ),
+          ]),
+      ],
+    }),
     pageNumber,
     pageSize,
   };
@@ -121,7 +143,7 @@ const TemplateModal = (props: TemplateModalProps) => {
         </Flex>
       }
     >
-      <Flex width="full" direction="column">
+      <Flex width="full" direction="column" id="date-picker-portal">
         {!showDetails && (
           <TemplateTable
             data={search && searchData ? searchData.items : (data?.items ?? [])}

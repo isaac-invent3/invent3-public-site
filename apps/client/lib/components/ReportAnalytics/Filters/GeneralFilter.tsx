@@ -7,7 +7,7 @@ import {
   updateReportFilters,
 } from '~/lib/redux/slices/ReportSlice';
 import FilterWrapper from '../../Common/FilterComponents/FilterWrapper';
-import DateRangeFilter from './DateRangeFilter';
+import DateRangeFilter from '../../Common/DateRangeFilter';
 
 const GeneralFilter = () => {
   const { filters } = useAppSelector((state) => state.report);
@@ -22,8 +22,17 @@ const GeneralFilter = () => {
         <DateRangeFilter
           fromDate={filters.fromDate}
           toDate={filters.toDate}
-          handleSelectedOption={(option, key) => {
-            dispatch(updateReportFilters({ filterLabel: key, option }));
+          handleSelectedOption={(option) => {
+            dispatch(
+              updateReportFilters({
+                filterLabel: 'fromDate',
+                option: option.fromDate,
+              })
+            );
+            updateReportFilters({
+              filterLabel: 'toDate',
+              option: option.toDate,
+            });
           }}
         />
         <CombinedLocationFilter

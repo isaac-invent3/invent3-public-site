@@ -214,6 +214,8 @@ interface MaintenanceType extends BaseEntity {
 
 interface PlanFilter extends LocationFilter {
   planType: Option[];
+  startDate: string | undefined;
+  endDate: string | undefined;
 }
 
 interface ScheduleFilter extends LocationFilter {
@@ -303,6 +305,8 @@ interface UpdateMaintenancePlanWithSchedulesPayload {
   masterUpdateMaintenanceScheduleDto: UpdateScheduleAndTasksPayload[] | null;
 }
 
+type PlanTableType = 'history' | 'current';
+
 export type {
   MaintenancePlan,
   MaintenanceScheduleStat,
@@ -321,4 +325,5 @@ export type {
   CreateScheduleAndTasksPayload,
   CreateMaintenancePlanWithSchedulesPayload,
   UpdateMaintenancePlanWithSchedulesPayload,
+  PlanTableType,
 };

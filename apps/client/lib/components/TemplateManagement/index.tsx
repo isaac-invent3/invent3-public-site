@@ -42,9 +42,9 @@ const TemplateManagement = () => {
   const [search, setSearch] = useState('');
   const { isOpen, onToggle } = useDisclosure();
   const filterData = useAppSelector((state) => state.template.templateFilters);
-  const [searchData, setSearchData] = useState<ListResponse<Template> | null>(
-    null
-  );
+  const [searchData, setSearchData] = useState<
+    ListResponse<Template> | undefined
+  >(undefined);
   const { handleSubmit } = useCustomMutation();
   const [searchTemplate, { isLoading: searchLoading }] =
     useSearchTemplatesMutation({});
@@ -70,6 +70,15 @@ const TemplateManagement = () => {
         ...filterData.owner.map((item) => [
           ...generateSearchCriterion('createdBy', [item], OPERATORS.Equals),
         ]),
+        ...[filterData.createdDate]
+          .filter(Boolean)
+          .map((item) => [
+            ...generateSearchCriterion(
+              'createdDate',
+              [item as string],
+              OPERATORS.Contains
+            ),
+          ]),
       ],
     }),
     pageNumber,

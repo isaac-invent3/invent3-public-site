@@ -13,12 +13,12 @@ import {
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Schedules from './Schedules';
-import History from './History';
 import Plans from './Plans';
 import Header from './Header';
 import { FilterButton, SearchInput } from '@repo/ui/components';
 import { FilterIcon } from '../CustomIcons';
 import { ROUTES } from '~/lib/utils/constants';
+import MaintenanceHistory from './History';
 
 const AllTabs = ['plans', 'schedules', 'history'];
 
@@ -81,7 +81,9 @@ const Maintenance = (props: MaintenanceProps) => {
             </TabPanel>
             <TabPanel>{tabIndex === 1 && <Schedules />}</TabPanel>
             <TabPanel>
-              <History search={search} openFilter={isOpen} />
+              {tabIndex === 2 && (
+                <MaintenanceHistory search={search} openFilter={isOpen} />
+              )}
             </TabPanel>
           </TabPanels>
         </Tabs>

@@ -1,8 +1,8 @@
 import { HStack, VStack } from '@chakra-ui/react';
 
 import { Button } from '@repo/ui/components';
-import CardHeader from '../Common/CardHeader';
 import { ROUTES } from '~/lib/utils/constants';
+import CardHeader from '../../Common/CardHeader';
 
 const LinkData = [
   {

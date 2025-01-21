@@ -1,11 +1,11 @@
 import { Flex, HStack, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import DropDown from '../../Common/DropDown';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { timeRangeOptions } from '~/lib/utils/constants';
-import CardHeader from '../../Common/CardHeader';
 import Info from './Info';
 import RadarChart from './RadarChart';
+import CardHeader from '../../../Common/CardHeader';
+import DropDown from '../../../Common/DropDown';
 
 const MeanTime = () => {
   const [selectedTimeRange, setSelectedTimeRange] = useState<Option | null>(

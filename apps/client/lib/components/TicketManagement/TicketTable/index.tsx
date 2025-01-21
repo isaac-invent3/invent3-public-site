@@ -17,10 +17,10 @@ interface TicketTableProps {
   isLoading: boolean;
   isFetching: boolean;
   isSelectable?: boolean;
-  currentPage: number;
-  setCurrentPage: Dispatch<SetStateAction<number>>;
-  pageSize: number;
-  setPageSize: Dispatch<SetStateAction<number>>;
+  currentPage?: number;
+  setCurrentPage?: Dispatch<SetStateAction<number>>;
+  pageSize?: number;
+  setPageSize?: Dispatch<SetStateAction<number>>;
   selectedRows?: number[];
   setSelectedRows?: React.Dispatch<React.SetStateAction<number[]>>;
   emptyLines?: number;

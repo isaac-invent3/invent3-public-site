@@ -7,9 +7,9 @@ import {
   VStack,
 } from '@chakra-ui/react';
 
-import CardHeader from '../../Common/CardHeader';
 import Y2DTab from './Y2DTab';
 import YTYTab from './YTYTab';
+import CardHeader from '../../../Common/CardHeader';
 
 const MaintenanceCostGraph = () => {
   return (

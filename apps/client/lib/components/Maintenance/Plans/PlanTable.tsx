@@ -2,7 +2,10 @@ import React, { useMemo } from 'react';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import { dateFormatter } from '~/lib/utils/Formatters';
-import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
+import {
+  MaintenancePlan,
+  PlanTableType,
+} from '~/lib/interfaces/maintenance.interfaces';
 
 interface MaintenancePlanProps {
   data: MaintenancePlan[];
@@ -27,6 +30,7 @@ interface MaintenancePlanProps {
   showEmptyState?: boolean;
   // eslint-disable-next-line no-unused-vars
   PopoverComponent?: (data: MaintenancePlan) => JSX.Element;
+  type?: PlanTableType;
 }
 const MaintenancePlanTable = (props: MaintenancePlanProps) => {
   const columnHelper = createColumnHelper<MaintenancePlan>();
@@ -51,6 +55,7 @@ const MaintenancePlanTable = (props: MaintenancePlanProps) => {
     setPageSize,
     setSelectedRows,
     PopoverComponent,
+    type = 'current',
   } = props;
 
   const columns = useMemo(
@@ -117,11 +122,6 @@ const MaintenancePlanTable = (props: MaintenancePlanProps) => {
           header: 'End Date',
           enableSorting: false,
         }),
-        columnHelper.accessor('planStatusName', {
-          cell: (info) => info.getValue() ?? 'N/A',
-          header: 'Status',
-          enableSorting: false,
-        }),
         columnHelper.accessor('dateCreated', {
           cell: (info) => {
             const value = info.getValue();
@@ -144,6 +144,16 @@ const MaintenancePlanTable = (props: MaintenancePlanProps) => {
         header: '',
         enableSorting: false,
       });
+
+      const statusCOlumn = columnHelper.accessor('planStatusName', {
+        cell: (info) => info.getValue() ?? 'N/A',
+        header: 'Status',
+        enableSorting: false,
+      });
+
+      if (type === 'current') {
+        baseColumns.splice(8, 0, statusCOlumn);
+      }
 
       if (showPopover) {
         baseColumns.push(popOverColumn);

@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import {
   MaintenancePlan,
   PlanFilter,
+  PlanTableType,
 } from '~/lib/interfaces/maintenance.interfaces';
 import {
   useGetAllMaintenancePlanQuery,
@@ -25,15 +26,18 @@ export const initialFilterData = {
   region: [],
   area: [],
   branch: [],
+  startDate: undefined,
+  endDate: undefined,
 };
 
 interface PlansProp {
   search: string;
   openFilter: boolean;
+  type?: PlanTableType;
 }
 
 const Plans = (props: PlansProp) => {
-  const { search, openFilter } = props;
+  const { search, openFilter, type = 'current' } = props;
   const [filterData, setFilterData] = useState<PlanFilter>(initialFilterData);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
@@ -90,6 +94,24 @@ const Plans = (props: PlansProp) => {
             OPERATORS.Equals
           ),
         ]),
+        ...[filterData.startDate]
+          .filter(Boolean)
+          .map((item) => [
+            ...generateSearchCriterion(
+              'startDate',
+              [item as string],
+              OPERATORS.Contains
+            ),
+          ]),
+        ...[filterData.endDate]
+          .filter(Boolean)
+          .map((item) => [
+            ...generateSearchCriterion(
+              'endDate',
+              [item as string],
+              OPERATORS.Contains
+            ),
+          ]),
       ],
     }),
     pageNumber: currentPage,
@@ -159,7 +181,8 @@ const Plans = (props: PlansProp) => {
         setPageNumber={setCurrentPage}
         pageSize={pageSize}
         setPageSize={setPageSize}
-        PopoverComponent={(plan) => PopoverAction(plan)}
+        PopoverComponent={(plan) => PopoverAction(plan, 'history')}
+        type={type}
       />
       {maintenancePlanId && (
         <PlanDetailsModal

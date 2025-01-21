@@ -13,9 +13,9 @@ import {
   OPERATORS,
   timeRangeOptions,
 } from '~/lib/utils/constants';
-import AssetTable from '../../AssetManagement/Common/AssetTable';
-import CardHeader from '../Common/CardHeader';
-import DropDown from '../Common/DropDown';
+import AssetTable from '../../../AssetManagement/Common/AssetTable';
+import CardHeader from '../../Common/CardHeader';
+import DropDown from '../../Common/DropDown';
 
 const RecentAsset = () => {
   const { selectedCountry, selectedState } = useAppSelector(

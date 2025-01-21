@@ -60,7 +60,7 @@ export const ticketApi = createApi({
     }),
     getTicketsByTabScope: builder.query<
       BaseApiResponse<ListResponse<Ticket>>,
-      { tabScopeName: TicketCategory } & QueryParams
+      { tabScopeName?: TicketCategory } & QueryParams
     >({
       query: (data) => ({
         url: generateQueryStr(`/Tickets/GetTicketsByTabScope?`, data),

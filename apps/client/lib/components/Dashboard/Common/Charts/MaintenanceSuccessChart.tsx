@@ -1,10 +1,10 @@
 import { HStack, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { generateLastFiveYears } from '~/lib/utils/helperFunctions';
-import CardHeader from '../../../Common/CardHeader';
-import DropDown from '../../../Common/DropDown';
-import ChartLegend from '../../../Common/Charts/ChartLegend';
-import MaintenancePieChart from './PieChart';
+import CardHeader from '../CardHeader';
+import DropDown from '../DropDown';
+import ChartLegend from './ChartLegend';
+import PieChart from './PieChart';
 
 const chartLegendItems = [
   {
@@ -45,11 +45,19 @@ const chartLegendItems = [
   },
 ];
 
-const MaintenanceSuccess = () => {
+interface MaintenanceSuccessChartProps {
+  missedColorCode: string;
+  completedColorCode: string;
+}
+
+const MaintenanceSuccessChart = ({
+  missedColorCode,
+  completedColorCode,
+}: MaintenanceSuccessChartProps) => {
   return (
     <VStack
       width="full"
-      height="full"
+      minH="full"
       p="20px"
       alignItems="flex-start"
       spacing="16px"
@@ -68,10 +76,15 @@ const MaintenanceSuccess = () => {
       </HStack>
       <VStack width="full" alignItems="flex-start" spacing="37px">
         <ChartLegend chartLegendItems={chartLegendItems} />
-        <MaintenancePieChart value={[300, 700]} />
+        <PieChart
+          dataValues={[300, 700]}
+          labels={['Missed', 'Completed']}
+          pieLabel="Maintenance"
+          backgroundColors={[missedColorCode, completedColorCode]}
+        />
       </VStack>
     </VStack>
   );
 };
 
-export default MaintenanceSuccess;
+export default MaintenanceSuccessChart;

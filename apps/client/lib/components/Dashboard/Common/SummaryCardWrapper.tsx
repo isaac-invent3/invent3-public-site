@@ -11,7 +11,7 @@ import CardHeader from './CardHeader';
 
 interface SummaryCardWrapperProps {
   title: string;
-  icon: ComponentWithAs<'svg', IconProps>;
+  icon?: ComponentWithAs<'svg', IconProps>;
   children: React.ReactNode;
   containerStyle?: StackProps;
 }
@@ -36,7 +36,9 @@ const SummaryCardWrapper = (props: SummaryCardWrapperProps) => {
         position="relative"
       >
         <CardHeader>{title}</CardHeader>
-        <Icon as={icon} boxSize="24px" position="absolute" right={0} />
+        {icon && (
+          <Icon as={icon} boxSize="24px" position="absolute" right={0} />
+        )}
       </HStack>
       {children}
     </VStack>

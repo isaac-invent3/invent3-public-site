@@ -3,13 +3,14 @@ import React from 'react';
 import { Button } from '@repo/ui/components';
 import { ROUTES } from '~/lib/utils/constants';
 import CardHeader from '../../Common/CardHeader';
-import TaskInstanceTable from '~/lib/components/TaskManagement/Tables/TaskInstanceTable';
-import { useGetAllTaskInstancesQuery } from '~/lib/redux/services/task/instance.services';
+import { useGetTicketsByTabScopeQuery } from '~/lib/redux/services/ticket.services';
+import TicketTable from '~/lib/components/TicketManagement/TicketTable';
 
-const Tasks = () => {
-  const { data, isLoading, isFetching } = useGetAllTaskInstancesQuery({
+const AssignedTickets = () => {
+  const { data, isLoading, isFetching } = useGetTicketsByTabScopeQuery({
     pageNumber: 1,
     pageSize: 5,
+    tabScopeName: 'assigned',
   });
 
   return (
@@ -27,7 +28,7 @@ const Tasks = () => {
     >
       <HStack width="full" justifyContent="space-between">
         <HStack width="full" alignItems="center">
-          <CardHeader>Tasks</CardHeader>
+          <CardHeader>Tickets Assigned</CardHeader>
           <Text
             color="neutral.800"
             py="6px"
@@ -39,7 +40,7 @@ const Tasks = () => {
           </Text>
         </HStack>
         <Button
-          href={`/${ROUTES.TASKS}`}
+          href={`/${ROUTES.TICKETS}`}
           customStyles={{
             py: 0,
             height: '28px',
@@ -51,16 +52,16 @@ const Tasks = () => {
           View All
         </Button>
       </HStack>
-      <TaskInstanceTable
-        data={data?.data?.items ?? []}
+      <TicketTable
+        data={data}
         isLoading={isLoading}
         isFetching={isFetching}
         isSelectable={false}
         emptyLines={4}
-        type="page"
+        shouldHideFooter
       />
     </VStack>
   );
 };
 
-export default Tasks;
+export default AssignedTickets;

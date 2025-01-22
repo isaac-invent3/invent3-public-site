@@ -12,30 +12,36 @@ import { Flex, Skeleton } from '@chakra-ui/react';
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
+interface ItemProps {
+  label: string;
+  values: number[];
+  color: string;
+}
 interface StackedBarChartProps {
   labels: (string | undefined)[];
-  completed: number[];
-  not_completed: number[];
+  firstStack: ItemProps;
+  secondStack: ItemProps;
   isLoading: boolean;
+  height?: string;
 }
 const StackedBarChart = (props: StackedBarChartProps) => {
-  const { labels, completed, not_completed, isLoading } = props;
+  const { labels, firstStack, secondStack, isLoading, height } = props;
   const data = {
     labels: labels,
     datasets: [
       {
-        label: 'Completed',
-        data: completed,
-        backgroundColor: '#033376',
+        label: firstStack.label,
+        data: firstStack.values,
+        backgroundColor: firstStack.color,
         // borderRadius: {
         //   topLeft: 3.48,
         //   topRight: 3.48,
         // },
       },
       {
-        label: 'Not Completed',
-        data: not_completed,
-        backgroundColor: '#00A129',
+        label: secondStack.label,
+        data: secondStack.values,
+        backgroundColor: secondStack.color,
         // borderRadius: {
         //   topLeft: 3.48,
         //   topRight: 3.48,
@@ -85,7 +91,7 @@ const StackedBarChart = (props: StackedBarChartProps) => {
 
   return (
     <Skeleton isLoaded={!isLoading} width="full">
-      <Flex width="full" height="250px">
+      <Flex height={height ?? '250px'} width="full">
         <Bar data={data} options={options} />
       </Flex>
     </Skeleton>

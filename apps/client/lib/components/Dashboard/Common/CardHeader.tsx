@@ -10,7 +10,7 @@ const CardHeader = ({ children, color }: CardHeaderProps) => {
       color={color ?? 'neutral.800'}
       fontSize="14px"
       lineHeight="16.63px"
-      fontWeight={500}
+      fontWeight={800}
     >
       {children}
     </Heading>

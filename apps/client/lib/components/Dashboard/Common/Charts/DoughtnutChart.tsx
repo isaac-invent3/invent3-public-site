@@ -16,9 +16,10 @@ interface DoughtnutChartProps {
   datasets: ChartDataset<'doughnut'>[];
   type: 'half' | 'full';
   height?: string;
+  cutout?: string;
 }
 const DoughtnutChart = (props: DoughtnutChartProps) => {
-  const { labels, datasets, type, height } = props;
+  const { labels, datasets, type, height, cutout } = props;
   const data = {
     labels: labels,
     datasets,
@@ -27,7 +28,7 @@ const DoughtnutChart = (props: DoughtnutChartProps) => {
   const options = {
     rotation: -90, // Starts from the top
     circumference: type === 'full' ? 360 : 180, // Limits to a half circle
-    cutout: type === 'full' ? '0%' : '70%',
+    cutout,
     responsive: true,
     maintainAspectRatio: false,
     plugins: {

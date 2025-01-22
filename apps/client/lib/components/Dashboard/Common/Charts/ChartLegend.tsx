@@ -1,4 +1,12 @@
-import { Box, HStack, StackProps, Text, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  HStack,
+  Stack,
+  StackProps,
+  Text,
+  TextProps,
+  VStack,
+} from '@chakra-ui/react';
 import React from 'react';
 
 interface ChartLegendProps {
@@ -8,14 +16,16 @@ interface ChartLegendProps {
     children?: React.ReactNode;
   }[];
   containerStyle?: StackProps;
+  textStyle?: TextProps;
 }
 
 const ChartLegend = ({
   chartLegendItems,
   containerStyle,
+  textStyle,
 }: ChartLegendProps) => {
   return (
-    <HStack spacing="16px" {...containerStyle}>
+    <Stack spacing="16px" direction="row" {...containerStyle}>
       {chartLegendItems.map((item, index) => (
         <HStack spacing="8px" key={index} alignItems="flex-start">
           <Box
@@ -27,14 +37,14 @@ const ChartLegend = ({
             mt="1px"
           />
           <VStack alignItems="flex-start" spacing="4px" m={0} p={0}>
-            <Text color="neutral.600" fontWeight={700}>
+            <Text color="neutral.600" fontWeight={700} {...textStyle}>
               {item.label}
             </Text>
             {item.children}
           </VStack>
         </HStack>
       ))}
-    </HStack>
+    </Stack>
   );
 };
 

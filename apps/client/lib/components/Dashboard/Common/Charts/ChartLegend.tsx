@@ -1,15 +1,22 @@
 import { Box, HStack, StackProps, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 
-interface ChartKeyProps {
-  chartKeyItems: { label: string; color: string; children?: React.ReactNode }[];
+interface ChartLegendProps {
+  chartLegendItems: {
+    label: string;
+    color: string;
+    children?: React.ReactNode;
+  }[];
   containerStyle?: StackProps;
 }
 
-const ChartKey = ({ chartKeyItems, containerStyle }: ChartKeyProps) => {
+const ChartLegend = ({
+  chartLegendItems,
+  containerStyle,
+}: ChartLegendProps) => {
   return (
     <HStack spacing="16px" {...containerStyle}>
-      {chartKeyItems.map((item, index) => (
+      {chartLegendItems.map((item, index) => (
         <HStack spacing="8px" key={index} alignItems="flex-start">
           <Box
             flexShrink={0}
@@ -31,4 +38,4 @@ const ChartKey = ({ chartKeyItems, containerStyle }: ChartKeyProps) => {
   );
 };
 
-export default ChartKey;
+export default ChartLegend;

@@ -219,7 +219,10 @@ interface PlanFilter extends LocationFilter {
 }
 
 interface ScheduleFilter extends LocationFilter {
+  planType: Option[];
   maintenanceType: Option[];
+  scheduleDate: string | undefined;
+  completionDate: string | undefined;
 }
 
 interface PlanPayload {

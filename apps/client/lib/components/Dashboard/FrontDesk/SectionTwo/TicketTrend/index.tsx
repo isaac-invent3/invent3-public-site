@@ -11,9 +11,9 @@ import DropDown from '../../../Common/DropDown';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { useGetMaintenanceCostStatsQuery } from '~/lib/redux/services/dashboard.services';
 import { Option } from '@repo/interfaces';
-import ChartKey from '../../../Common/ChartKey';
+import ChartLegend from '../../../Common/Charts/ChartLegend';
 
-const chartKeyItems = [
+const chartLegendItems = [
   {
     label: 'Opened',
     color: '#0366EF',
@@ -67,7 +67,7 @@ const TicketTrend = () => {
         spacing="34px"
         justifyContent="space-between"
       >
-        <ChartKey chartKeyItems={chartKeyItems} />
+        <ChartLegend chartLegendItems={chartLegendItems} />
         <LineChart
           labels={labels}
           opened={[10, 20, 60, 50, 10, 20, 40, 35, 10, 20, 25, 15, 10]}

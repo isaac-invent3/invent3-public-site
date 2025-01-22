@@ -6,14 +6,14 @@ import {
 } from '~/lib/utils/helperFunctions';
 import CardHeader from '../../../Common/CardHeader';
 import DropDown from '../../../Common/DropDown';
-import ChartKey from '../../../Common/ChartKey';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { Option } from '@repo/interfaces';
 import { useGetMaintenanceCostStatsQuery } from '~/lib/redux/services/dashboard.services';
 import { AREA_ENUM } from '~/lib/utils/constants';
 import StackedBarChart from './StackedBarChart';
+import ChartLegend from '../../../Common/Charts/ChartLegend';
 
-const chartKeyItems = [
+const chartLegendItems = [
   {
     label: 'Not Completed',
     color: '#00A129',
@@ -69,7 +69,7 @@ const TaskCompletionRate = () => {
         spacing="31px"
         justifyContent="space-between"
       >
-        <ChartKey chartKeyItems={chartKeyItems} />
+        <ChartLegend chartLegendItems={chartLegendItems} />
         <StackedBarChart
           labels={labels}
           completed={[10, 20, 60, 50, 10, 20, 40, 35, 10, 20, 25, 15, 10]}

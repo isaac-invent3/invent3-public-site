@@ -48,6 +48,7 @@ const TicketSummary = () => {
                 ]}
                 type="half"
                 height="90px"
+                cutout="70%"
               />
             </Flex>
             <VStack spacing="4px" position="absolute" top="50px">

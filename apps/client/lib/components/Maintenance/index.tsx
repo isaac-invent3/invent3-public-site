@@ -59,20 +59,22 @@ const Maintenance = (props: MaintenanceProps) => {
               <Tab>Schedules</Tab>
               <Tab>History</Tab>
             </TabList>
-            <Flex position="absolute" right={0} bottom="8px">
-              <HStack spacing="16px" width="full">
-                <SearchInput
-                  setSearch={setSearch}
-                  placeholderText="Search..."
-                />
-                <FilterButton
-                  icon={FilterIcon}
-                  label="Filter"
-                  handleClick={onToggle}
-                  isActive={isOpen}
-                />
-              </HStack>
-            </Flex>
+            {tabIndex !== 1 && (
+              <Flex position="absolute" right={0} bottom="8px">
+                <HStack spacing="16px" width="full">
+                  <SearchInput
+                    setSearch={setSearch}
+                    placeholderText="Search..."
+                  />
+                  <FilterButton
+                    icon={FilterIcon}
+                    label="Filter"
+                    handleClick={onToggle}
+                    isActive={isOpen}
+                  />
+                </HStack>
+              </Flex>
+            )}
           </Flex>
 
           <TabPanels>

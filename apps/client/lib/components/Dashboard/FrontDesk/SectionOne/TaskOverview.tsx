@@ -14,11 +14,11 @@ const TaskOverview = () => {
   const ticketValue = 437;
   return (
     <SummaryCardWrapper
-      title="Upcoming Maintenance"
+      title="Task Overview"
       icon={TaskIcon}
       containerStyle={{ minH: '164px' }}
     >
-      <HStack>
+      <HStack spacing="23px">
         <VStack
           justifyContent="space-between"
           alignItems="flex-start"
@@ -42,8 +42,8 @@ const TaskOverview = () => {
             </Text>
           </HStack>
           <VStack alignItems="flex-start" spacing="11px">
-            <Text color="neutral.600">130 Task Completed</Text>
-            <Text color="neutral.600">330 Task NotCompleted</Text>
+            <Text color="neutral.600">130 Completed</Text>
+            <Text color="neutral.600">330 Not Completed</Text>
           </VStack>
         </VStack>
         <CircularProgress

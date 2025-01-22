@@ -1,15 +1,38 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useMemo, useState } from 'react';
-import { DataTable } from '@repo/ui/components';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { DataTable, FilterDisplay } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import { dateFormatter } from '~/lib/utils/Formatters';
-import { MaintenanceScheduleInstance } from '~/lib/interfaces/maintenance.interfaces';
+import {
+  MaintenanceScheduleInstance,
+  ScheduleFilter,
+} from '~/lib/interfaces/maintenance.interfaces';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
-import { useGetAllScheduleInstanceQuery } from '~/lib/redux/services/maintenance/scheduleInstance.services';
+import {
+  useGetAllScheduleInstanceQuery,
+  useSearchScheduleInstanceMutation,
+} from '~/lib/redux/services/maintenance/scheduleInstance.services';
 import PopoverAction from './PopoverAction';
 import { Flex, useDisclosure } from '@chakra-ui/react';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import TaskInstanceListView from '../../TaskManagement/Drawers/TaskListDrawer/TaskInstanceListView';
+import { generateSearchCriterion } from '@repo/utils';
+import { OPERATORS } from '@repo/constants';
+import { ListResponse } from '@repo/interfaces';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
+import _ from 'lodash';
+import Filters from './Filters';
+import { useAppSelector } from '~/lib/redux/hooks';
+
+export const initialFilterData = {
+  planType: [],
+  maintenanceType: [],
+  region: [],
+  area: [],
+  branch: [],
+  scheduleDate: undefined,
+  completionDate: undefined,
+};
 
 interface MaintenanceHistoryProp {
   search: string;
@@ -20,16 +43,121 @@ const MaintenanceHistory = (props: MaintenanceHistoryProp) => {
   const { search, openFilter } = props;
   const columnHelper = createColumnHelper<MaintenanceScheduleInstance>();
   const [currentPage, setCurrentPage] = useState(1);
+  const appConfigValues = useAppSelector(
+    (state) => state.general.appConfigValues
+  );
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const { data, isLoading, isFetching } = useGetAllScheduleInstanceQuery({
     pageSize,
     pageNumber: currentPage,
+    statusId: +appConfigValues?.DEFAULT_COMPLETED_TASK_STATUS_ID!,
   });
+  const [filterData, setFilterData] =
+    useState<ScheduleFilter>(initialFilterData);
   const { getSearchParam } = useCustomSearchParams();
   const maintenanceScheduleInstanceId = getSearchParam(
     'maintenanceScheduleInstanceId'
   );
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { handleSubmit } = useCustomMutation();
+
+  // Checks if all filterdata is empty
+  const isFilterEmpty = _.every(
+    filterData,
+    (value) => _.isArray(value) && _.isEmpty(value)
+  );
+
+  const [searchPlan, { isLoading: searchLoading }] =
+    useSearchScheduleInstanceMutation({});
+  const [searchData, setSearchData] =
+    useState<ListResponse<MaintenanceScheduleInstance> | null>(null);
+
+  // Search Criterion
+  const searchCriterion = {
+    ...(search && {
+      criterion: [
+        {
+          columnName: 'scheduleInstanceName',
+          columnValue: search,
+          operation: OPERATORS.Contains,
+        },
+      ],
+    }),
+    ...((!isFilterEmpty || search) && {
+      orCriterion: [
+        ...filterData.planType.map((item) => [
+          ...generateSearchCriterion(
+            'planTypeId',
+            [item.value],
+            OPERATORS.Equals
+          ),
+        ]),
+        ...filterData.maintenanceType.map((item) => [
+          ...generateSearchCriterion(
+            'maintenanceTypeId',
+            [item.value],
+            OPERATORS.Equals
+          ),
+        ]),
+        ...filterData.region.map((item) => [
+          ...generateSearchCriterion('stateId', [item.value], OPERATORS.Equals),
+        ]),
+        ...filterData.area.map((item) => [
+          ...generateSearchCriterion('lgaId', [item.value], OPERATORS.Equals),
+        ]),
+        ...filterData.branch.map((item) => [
+          ...generateSearchCriterion(
+            'facilityId',
+            [item.value],
+            OPERATORS.Equals
+          ),
+        ]),
+        ...[filterData.scheduleDate]
+          .filter(Boolean)
+          .map((item) => [
+            ...generateSearchCriterion(
+              'scheduleDate',
+              [item as string],
+              OPERATORS.Contains
+            ),
+          ]),
+        ...[filterData.completionDate]
+          .filter(Boolean)
+          .map((item) => [
+            ...generateSearchCriterion(
+              'completionDate',
+              [item as string],
+              OPERATORS.Contains
+            ),
+          ]),
+      ],
+    }),
+    pageNumber: currentPage,
+    pageSize: pageSize,
+  };
+
+  // Function that handles search/filters
+  const handleSearch = useCallback(async () => {
+    if (search || !isFilterEmpty) {
+      const response = await handleSubmit(searchPlan, searchCriterion, '');
+      response?.data?.data && setSearchData(response?.data?.data);
+    }
+  }, [searchPlan, searchCriterion]);
+
+  // Trigger search when search input changes or pagination updates
+  useEffect(() => {
+    if (search) {
+      handleSearch();
+    }
+  }, [search, currentPage, pageSize]);
+
+  // Reset pagination when the search input is cleared or apply filter flag is false
+  useEffect(() => {
+    if (!search && isFilterEmpty) {
+      setPageSize(DEFAULT_PAGE_SIZE);
+      setCurrentPage(1);
+    }
+  }, [search, isFilterEmpty]);
 
   useEffect(() => {
     if (maintenanceScheduleInstanceId) {
@@ -41,18 +169,23 @@ const MaintenanceHistory = (props: MaintenanceHistoryProp) => {
     () => {
       const baseColumns = [
         columnHelper.accessor('maintenancePlanId', {
-          cell: (info) => info.getValue(),
-          header: '#',
+          cell: (info) => info.getValue() ?? 'N/A',
+          header: 'Plan ID',
           enableSorting: false,
         }),
         columnHelper.accessor('planName', {
-          cell: (info) => info.getValue(),
+          cell: (info) => info.getValue() ?? 'N/A',
           header: 'Plan Name',
           enableSorting: false,
         }),
         columnHelper.accessor('scheduleInstanceName', {
           cell: (info) => info.getValue(),
           header: 'Plan Type',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('maintenanceType', {
+          cell: (info) => info.getValue() ?? 'N/A',
+          header: 'Maintenance Type',
           enableSorting: false,
         }),
         columnHelper.accessor('assetName', {
@@ -108,12 +241,31 @@ const MaintenanceHistory = (props: MaintenanceHistoryProp) => {
   );
   return (
     <Flex width="full" direction="column" mt="24px">
+      {openFilter && (
+        <Flex width="full" mb="16px">
+          <FilterDisplay isOpen={openFilter}>
+            <Filters
+              filterData={filterData}
+              setFilterData={setFilterData}
+              handleApplyFilter={handleSearch}
+            />
+          </FilterDisplay>
+        </Flex>
+      )}
       <DataTable
         columns={columns}
-        data={data?.data?.items ?? []}
+        data={
+          (search || !isFilterEmpty) && searchData
+            ? searchData.items
+            : (data?.data?.items ?? [])
+        }
+        totalPages={
+          (search || !isFilterEmpty) && searchData
+            ? searchData?.totalPages
+            : data?.data?.totalPages
+        }
         isLoading={isLoading}
-        isFetching={isFetching}
-        totalPages={data?.data?.totalPages}
+        isFetching={isFetching || searchLoading}
         setPageNumber={setCurrentPage}
         pageNumber={currentPage}
         pageSize={pageSize}

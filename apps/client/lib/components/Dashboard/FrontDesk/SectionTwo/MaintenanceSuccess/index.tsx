@@ -3,10 +3,10 @@ import React from 'react';
 import { generateLastFiveYears } from '~/lib/utils/helperFunctions';
 import CardHeader from '../../../Common/CardHeader';
 import DropDown from '../../../Common/DropDown';
-import ChartKey from '../../../Common/ChartKey';
+import ChartLegend from '../../../Common/Charts/ChartLegend';
 import MaintenancePieChart from './PieChart';
 
-const chartKeyItems = [
+const chartLegendItems = [
   {
     label: 'Missed',
     color: '#00A129',
@@ -67,7 +67,7 @@ const MaintenanceSuccess = () => {
         />
       </HStack>
       <VStack width="full" alignItems="flex-start" spacing="37px">
-        <ChartKey chartKeyItems={chartKeyItems} />
+        <ChartLegend chartLegendItems={chartLegendItems} />
         <MaintenancePieChart value={[300, 700]} />
       </VStack>
     </VStack>

@@ -1,7 +1,6 @@
 import { HStack, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import Info from './Info';
-import LineChart from './LineGraph';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import {
   generateLastFiveYears,
@@ -11,6 +10,7 @@ import { useAppSelector } from '~/lib/redux/hooks';
 import { useGetMaintenanceCostStatsQuery } from '~/lib/redux/services/dashboard.services';
 import { AREA_ENUM } from '~/lib/utils/constants';
 import DropDown from '../../../Common/DropDown';
+import LineChart from '../../../Common/Charts/LineChart';
 
 const Y2DTab = () => {
   const [selectedYear, setSelectedYear] = useState<Option | null>(
@@ -48,8 +48,29 @@ const Y2DTab = () => {
       />
       <LineChart
         labels={labels}
-        actual={actualCost}
-        projected={projectedCost}
+        datasets={[
+          {
+            label: 'Actual',
+            data: actualCost,
+            borderColor: '#8D35F1',
+            pointBorderColor: '#fff',
+            pointBackgroundColor: '#8D35F1',
+            pointRadius: 6,
+            borderWidth: 3,
+            tension: 0.4,
+            fill: false,
+          },
+          {
+            label: 'Projected',
+            data: projectedCost,
+            borderColor: '#FF7A3766',
+            borderDash: [8, 4],
+            pointRadius: 0,
+            fill: false,
+            tension: 0.4,
+            borderWidth: 3,
+          },
+        ]}
         isLoading={isLoading || isFetching}
       />
     </VStack>

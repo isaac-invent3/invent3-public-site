@@ -218,4 +218,34 @@ const AssetBoxIcon = createIcon({
     </svg>
   ),
 });
-export { TicketIcon, AssetBoxIcon, MaintenanceIcon, TaskIcon };
+
+const ClockIcon = createIcon({
+  displayName: 'ClockIcon',
+  viewBox: '0 0 12 12',
+
+  path: (
+    <svg
+      width="12"
+      height="12"
+      viewBox="0 0 12 12"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M10.5938 6.00001C10.5938 3.46296 8.53706 1.40627 6 1.40627C3.46294 1.40627 1.40625 3.46296 1.40625 6.00001C1.40625 8.53707 3.46294 10.5938 6 10.5938C8.53706 10.5938 10.5938 8.53707 10.5938 6.00001Z"
+        stroke="currentColor"
+        strokeWidth="1.2"
+        strokeMiterlimit="10"
+      />
+      <path
+        d="M5.67188 3.34752V6.60627L7.8786 7.87499"
+        stroke="currentColor"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
+});
+
+export { TicketIcon, AssetBoxIcon, MaintenanceIcon, TaskIcon, ClockIcon };

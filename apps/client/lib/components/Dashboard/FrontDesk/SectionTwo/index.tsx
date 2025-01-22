@@ -1,8 +1,8 @@
 import { Flex, HStack } from '@chakra-ui/react';
 import React from 'react';
 import TicketTrend from './TicketTrend';
-import TaskCompletionRate from './TaskCompletionRate';
-import MaintenanceSuccess from './MaintenanceSuccess';
+import TaskCompletionRateChart from '../../Common/Charts/TaskCompletionRateChart';
+import MaintenanceSuccessChart from '../../Common/Charts/MaintenanceSuccessChart';
 
 const SectionTwo = () => {
   return (
@@ -11,10 +11,16 @@ const SectionTwo = () => {
         <TicketTrend />
       </Flex>
       <Flex width="28.7%" height="full">
-        <TaskCompletionRate />
+        <TaskCompletionRateChart
+          notCompletedColorCode="#00A129"
+          completedColorCode="#033376"
+        />
       </Flex>
       <Flex width="29.7%" height="full">
-        <MaintenanceSuccess />
+        <MaintenanceSuccessChart
+          missedColorCode="#00A129"
+          completedColorCode="#033376"
+        />
       </Flex>
     </HStack>
   );

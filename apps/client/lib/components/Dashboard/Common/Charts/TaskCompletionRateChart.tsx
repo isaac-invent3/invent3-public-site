@@ -4,27 +4,22 @@ import {
   generateLastFiveYears,
   transformCostsData,
 } from '~/lib/utils/helperFunctions';
-import CardHeader from '../../../Common/CardHeader';
-import DropDown from '../../../Common/DropDown';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { Option } from '@repo/interfaces';
 import { useGetMaintenanceCostStatsQuery } from '~/lib/redux/services/dashboard.services';
 import { AREA_ENUM } from '~/lib/utils/constants';
+import CardHeader from '../CardHeader';
+import DropDown from '../DropDown';
+import ChartLegend from './ChartLegend';
 import StackedBarChart from './StackedBarChart';
-import ChartLegend from '../../../Common/Charts/ChartLegend';
 
-const chartLegendItems = [
-  {
-    label: 'Not Completed',
-    color: '#00A129',
-  },
-  {
-    label: 'Completed',
-    color: '#033376',
-  },
-];
+interface TaskCompletionRateChartProps {
+  completedColorCode: string;
+  notCompletedColorCode: string;
+}
 
-const TaskCompletionRate = () => {
+const TaskCompletionRateChart = (props: TaskCompletionRateChartProps) => {
+  const { completedColorCode, notCompletedColorCode } = props;
   const [selectedYear, setSelectedYear] = useState<Option | null>(
     generateLastFiveYears()[0] as Option
   );
@@ -40,9 +35,19 @@ const TaskCompletionRate = () => {
   });
   const { labels } = transformCostsData(data?.data?.projectedAndActualCosts);
 
+  const chartLegendItems = [
+    {
+      label: 'Not Completed',
+      color: notCompletedColorCode,
+    },
+    {
+      label: 'Completed',
+      color: completedColorCode,
+    },
+  ];
+
   return (
     <VStack
-      width="full"
       height="full"
       p="20px"
       alignItems="flex-start"
@@ -72,8 +77,16 @@ const TaskCompletionRate = () => {
         <ChartLegend chartLegendItems={chartLegendItems} />
         <StackedBarChart
           labels={labels}
-          completed={[10, 20, 60, 50, 10, 20, 40, 35, 10, 20, 25, 15, 10]}
-          not_completed={[5, 30, 30, 40, 5, 30, 30, 40, 5, 30, 30]}
+          firstStack={{
+            label: 'Completed',
+            values: [10, 20, 60, 50, 10, 20, 40, 35, 10, 20, 25, 15, 10],
+            color: completedColorCode,
+          }}
+          secondStack={{
+            label: 'Not Completed',
+            values: [5, 30, 30, 40, 5, 30, 30, 40, 5, 30, 30],
+            color: notCompletedColorCode,
+          }}
           isLoading={isLoading || isFetching}
         />
       </VStack>
@@ -81,4 +94,4 @@ const TaskCompletionRate = () => {
   );
 };
 
-export default TaskCompletionRate;
+export default TaskCompletionRateChart;

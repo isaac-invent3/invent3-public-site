@@ -4,7 +4,6 @@ import {
   generateLastFiveYears,
   transformCostsData,
 } from '~/lib/utils/helperFunctions';
-import LineChart from './LineGraph';
 import { AREA_ENUM } from '~/lib/utils/constants';
 import CardHeader from '../../../Common/CardHeader';
 import DropDown from '../../../Common/DropDown';
@@ -12,6 +11,7 @@ import { useAppSelector } from '~/lib/redux/hooks';
 import { useGetMaintenanceCostStatsQuery } from '~/lib/redux/services/dashboard.services';
 import { Option } from '@repo/interfaces';
 import ChartLegend from '../../../Common/Charts/ChartLegend';
+import LineChart from '../../../Common/Charts/LineChart';
 
 const chartLegendItems = [
   {
@@ -70,8 +70,29 @@ const TicketTrend = () => {
         <ChartLegend chartLegendItems={chartLegendItems} />
         <LineChart
           labels={labels}
-          opened={[10, 20, 60, 50, 10, 20, 40, 35, 10, 20, 25, 15, 10]}
-          resolved={[5, 30, 30, 40, 5, 30, 30, 40, 5, 30, 30]}
+          datasets={[
+            {
+              label: 'Opened',
+              data: [10, 20, 60, 50, 10, 20, 40, 35, 10, 20, 25, 15, 10],
+              borderColor: '#0366EF',
+              pointBorderColor: '#fff',
+              pointBackgroundColor: '#0366EF',
+              pointRadius: 6,
+              borderWidth: 2,
+              tension: 0.4,
+              fill: false,
+            },
+            {
+              label: 'Resolved',
+              data: [5, 30, 30, 40, 5, 30, 30, 40, 5, 30, 30],
+              borderColor: '#00A129',
+              borderDash: [8, 4],
+              pointRadius: 0,
+              fill: false,
+              tension: 0.4,
+              borderWidth: 2,
+            },
+          ]}
           isLoading={isLoading || isFetching}
         />
       </VStack>

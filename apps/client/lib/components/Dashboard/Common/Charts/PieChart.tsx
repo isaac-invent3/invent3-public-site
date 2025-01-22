@@ -5,17 +5,27 @@ import { Flex } from '@chakra-ui/react';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-interface MaintenancePieChartProps {
-  value: [number, number];
+interface PieChartProps {
+  dataValues: number[];
+  labels: string[];
+  pieLabel: string;
+  backgroundColors: string[];
+  height?: string;
 }
-const MaintenancePieChart = ({ value }: MaintenancePieChartProps) => {
+const PieChart = ({
+  dataValues,
+  labels,
+  backgroundColors,
+  //   height,
+  pieLabel,
+}: PieChartProps) => {
   const data = {
-    labels: ['Missed', 'Completed'],
+    labels,
     datasets: [
       {
-        label: 'Maintenance',
-        data: value,
-        backgroundColor: ['#00A129', '#0F2540'],
+        label: pieLabel,
+        data: dataValues,
+        backgroundColor: backgroundColors,
         borderWidth: 0,
       },
     ],
@@ -31,10 +41,10 @@ const MaintenancePieChart = ({ value }: MaintenancePieChartProps) => {
   };
 
   return (
-    <Flex width="full" height="200px">
+    <Flex width="full" height="full">
       <Pie data={data} options={options} />
     </Flex>
   );
 };
 
-export default MaintenancePieChart;
+export default PieChart;

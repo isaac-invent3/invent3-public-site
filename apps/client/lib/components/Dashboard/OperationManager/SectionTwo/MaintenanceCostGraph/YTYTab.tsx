@@ -9,8 +9,8 @@ import {
   transformCostsData,
 } from '~/lib/utils/helperFunctions';
 import Info from './Info';
-import LineChart from './LineGraph';
 import DropDown from '../../../Common/DropDown';
+import LineChart from '../../../Common/Charts/LineChart';
 
 const YTYTab = () => {
   const [selectedMonth, setSelectMonth] = useState<Option | null>(null);
@@ -60,8 +60,29 @@ const YTYTab = () => {
       />
       <LineChart
         labels={labels}
-        actual={actualCost}
-        projected={projectedCost}
+        datasets={[
+          {
+            label: 'Actual',
+            data: actualCost,
+            borderColor: '#8D35F1',
+            pointBorderColor: '#fff',
+            pointBackgroundColor: '#8D35F1',
+            pointRadius: 6,
+            borderWidth: 3,
+            tension: 0.4,
+            fill: false,
+          },
+          {
+            label: 'Projected',
+            data: projectedCost,
+            borderColor: '#FF7A3766',
+            borderDash: [8, 4],
+            pointRadius: 0,
+            fill: false,
+            tension: 0.4,
+            borderWidth: 3,
+          },
+        ]}
         isLoading={isLoading || isFetching}
       />
     </VStack>

@@ -8,6 +8,7 @@ import {
   Filler,
   Tooltip,
   Legend,
+  ChartDataset,
 } from 'chart.js';
 import { Flex, Skeleton } from '@chakra-ui/react';
 
@@ -23,44 +24,16 @@ ChartJS.register(
 
 interface LineChartProps {
   labels: (string | undefined)[];
-  actual: number[];
-  projected: number[];
   isLoading: boolean;
+  datasets: ChartDataset<'line'>[];
+  height?: string;
 }
 const LineChart = (props: LineChartProps) => {
-  const { labels, actual, projected, isLoading } = props;
+  const { labels, datasets, isLoading, height } = props;
 
   const data = {
     labels,
-    datasets: [
-      {
-        label: 'Actual',
-        data: actual,
-        borderColor: '#8D35F1',
-        pointBorderColor: '#fff',
-        pointBackgroundColor: '#8D35F1',
-        pointRadius: 6,
-        borderWidth: 3,
-        tension: 0.4,
-        fill: false,
-        shadow: {
-          enabled: true,
-          color: 'rgba(0, 0, 0, 0.4)',
-          offset: { x: 0, y: 2 },
-          blur: 4,
-        },
-      },
-      {
-        label: 'Projected',
-        data: projected,
-        borderColor: '#FF7A3766',
-        borderDash: [8, 4],
-        pointRadius: 0,
-        fill: false,
-        tension: 0.4,
-        borderWidth: 3,
-      },
-    ],
+    datasets,
   };
 
   const options = {
@@ -74,7 +47,7 @@ const LineChart = (props: LineChartProps) => {
         enabled: true,
         callbacks: {
           label: function (tooltipItem: any) {
-            return `₦${tooltipItem.raw.toLocaleString()}`;
+            return `${tooltipItem.raw.toLocaleString()}`;
           },
         },
       },
@@ -94,7 +67,7 @@ const LineChart = (props: LineChartProps) => {
           display: false,
         },
         ticks: {
-          display: false,
+          color: '#838383',
         },
       },
     },
@@ -102,7 +75,7 @@ const LineChart = (props: LineChartProps) => {
 
   return (
     <Skeleton isLoaded={!isLoading} width="full">
-      <Flex width="full" height="150px">
+      <Flex width="full" height={height ?? '250px'}>
         <Line data={data} options={options} />
       </Flex>
     </Skeleton>

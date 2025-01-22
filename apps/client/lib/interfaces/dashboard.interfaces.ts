@@ -35,12 +35,15 @@ interface ActualProjectedData {
 interface ProjectedAndActualCostsByArea {
   percentageChange: number;
   projectedAndActualCosts: ActualProjectedData[];
-  totalMaintenanceCost:number
+  totalMaintenanceCost: number;
 }
+
+type WeekType = 'this' | 'last' | 'next';
 
 export type {
   AssetStatistics,
   ActualProjectedData,
   AssetInRegion,
   ProjectedAndActualCostsByArea,
+  WeekType,
 };

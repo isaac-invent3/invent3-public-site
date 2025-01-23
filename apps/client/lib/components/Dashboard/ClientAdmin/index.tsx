@@ -4,6 +4,8 @@ import { Flex, VStack } from '@chakra-ui/react';
 import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
 import SectionThree from './SectionThree';
+import RecentApprovalRequest from './RecentApprovalRequest';
+import SectionFive from './SectionFive';
 
 const ClientAdmin = () => {
   return (
@@ -13,6 +15,8 @@ const ClientAdmin = () => {
         <SectionOne />
         <SectionTwo />
         <SectionThree />
+        <RecentApprovalRequest />
+        <SectionFive />
       </VStack>
     </Flex>
   );

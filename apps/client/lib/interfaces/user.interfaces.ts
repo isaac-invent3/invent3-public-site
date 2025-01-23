@@ -121,6 +121,26 @@ interface UserAuth {
   sessionId: number;
 }
 
+interface UserPermission {
+  isNew: boolean;
+  createdDate: string;
+  createdBy: string;
+  lastModifiedDate: string;
+  lastModifiedBy: string;
+  isDeleted: boolean;
+  deletedDate: string;
+  deletedBy: string;
+  guid: string;
+  roleRouteId: number;
+  roleId: number;
+  routeId: number;
+  routeSetId: number;
+  createPermission: boolean;
+  readPermission: boolean;
+  updatePermission: boolean;
+  deletePermission: boolean;
+}
+
 export type {
   Employee,
   User,
@@ -131,4 +151,5 @@ export type {
   UserConfigurationOption,
   UserConfigurationObject,
   UserConfigurationPayload,
+  UserPermission,
 };

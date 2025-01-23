@@ -66,6 +66,26 @@ interface AppConfig {
   DEFAULT_ESTIMATED_TASK_DURATION_IN_HOURS: string | null;
 }
 
+interface GenericTableProps {
+  isLoading?: boolean;
+  isFetching?: boolean;
+  emptyText?: string;
+  showFooter?: boolean;
+  emptyLines?: number;
+  pageNumber?: number;
+  pageSize?: number;
+  totalPages?: number;
+  selectedRows?: number[];
+  disabledRows?: number[];
+  setSelectedRows?: React.Dispatch<React.SetStateAction<number[]>>;
+  setPageNumber?: React.Dispatch<React.SetStateAction<number>>;
+  setPageSize?: React.Dispatch<React.SetStateAction<number>>;
+  isSelectable?: boolean;
+  selectMultipleRows?: boolean;
+  showPopover?: boolean;
+  showEmptyState?: boolean;
+}
+
 export type {
   GeoJSONFeature,
   Option,
@@ -74,4 +94,5 @@ export type {
   SearchCriterion,
   LocationFilter,
   AppConfig,
+  GenericTableProps,
 };

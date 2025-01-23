@@ -1,6 +1,6 @@
 import { BaseEntity } from '@repo/interfaces';
 
-interface Vendor extends BaseEntity {
+interface AssetVendor extends BaseEntity {
   vendorId: number;
   vendorName: string;
   address: string;
@@ -8,4 +8,4 @@ interface Vendor extends BaseEntity {
   emailAddress: string;
 }
 
-export type { Vendor };
+export type { AssetVendor };

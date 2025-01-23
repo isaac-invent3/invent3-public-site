@@ -3,17 +3,17 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 // import OperationManager from './OperationManager';
-import FrontDesk from './FrontDesk';
+// import FrontDesk from './FrontDesk';
 // import FieldEngineer from './FieldEngineer';
-// import ClientAdmin from './ClientAdmin';
+import ClientAdmin from './ClientAdmin';
 
 const Dashboard = () => {
   return (
     <Flex width="full" direction="column">
       {/* <OperationManager /> */}
-      <FrontDesk />
+      {/* <FrontDesk /> */}
       {/* <FieldEngineer /> */}
-      {/* <ClientAdmin /> */}
+      <ClientAdmin />
     </Flex>
   );
 };

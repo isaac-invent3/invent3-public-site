@@ -5,14 +5,30 @@ import OpenTicketSummary from '../../Common/Summaries/OpenTicketSummary';
 import SummaryCardWrapper from '../../Common/SummaryCardWrapper';
 import ProgressIndicator from '../../Common/ProgressIndicator';
 import PendingTask from './PendingTask';
+import { useSession } from 'next-auth/react';
+import { useGetFrontdeskDashboardStatQuery } from '~/lib/redux/services/dashboard/frontdesk.services';
 
 const SectionOne = () => {
-  const isLoading = false;
+  const session = useSession();
+  const user = session?.data?.user;
+  const { data, isLoading } = useGetFrontdeskDashboardStatQuery(
+    { userId: user?.userId! },
+    { skip: !user?.userId }
+  );
   const ticketValue = 600;
   return (
     <SimpleGrid width="full" spacing="16px" columns={5}>
-      <TotalAssetSummary isLoading={false} />
-      <OpenTicketSummary isLoading={false} />
+      <TotalAssetSummary
+        isLoading={isLoading}
+        assetInUse={data?.data?.assetsInUseCount}
+        assetNotInUse={data?.data?.assetsNotInUseCount}
+        percentChange={data?.data?.assetsInUsePercentageChange}
+      />
+      <OpenTicketSummary
+        isLoading={isLoading}
+        ticketCount={data?.data?.openTickets}
+        percentChange={data?.data?.openTicketsPercentageChange}
+      />
       <PendingTask isLoading={false} />
       <SummaryCardWrapper
         title="Total Number of Vendors"

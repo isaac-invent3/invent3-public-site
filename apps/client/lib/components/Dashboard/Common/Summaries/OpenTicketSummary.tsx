@@ -6,10 +6,11 @@ import { TicketIcon } from '~/lib/components/CustomIcons/Dashboard';
 
 interface OpenTicketSummaryProps {
   isLoading: boolean;
+  ticketCount: number | undefined;
+  percentChange: number | undefined;
 }
 const OpenTicketSummary = (props: OpenTicketSummaryProps) => {
-  const { isLoading } = props;
-  const ticketValue = 900;
+  const { isLoading, ticketCount, percentChange } = props;
   return (
     <SummaryCardWrapper
       title="Open Ticket"
@@ -30,7 +31,7 @@ const OpenTicketSummary = (props: OpenTicketSummaryProps) => {
               fontWeight={800}
               color="primary.500"
             >
-              {ticketValue !== undefined ? ticketValue.toLocaleString() : '-'}
+              {ticketCount?.toLocaleString() ?? '-'}
             </Text>
           </Skeleton>
           <Text color="neutral.600" fontWeight={700} mb="4px">
@@ -38,7 +39,9 @@ const OpenTicketSummary = (props: OpenTicketSummaryProps) => {
           </Text>
         </HStack>
         <HStack spacing="4px">
-          <ProgressIndicator valueChange={0} />
+          <Skeleton isLoaded={!isLoading}>
+            <ProgressIndicator valueChange={percentChange ?? 0} />
+          </Skeleton>
           <Text color="neutral.600" fontWeight={700}>
             Compared to last month
           </Text>

@@ -6,12 +6,14 @@ import ProgressIndicator from '../ProgressIndicator';
 
 interface TotalAssetSummaryProps {
   isLoading: boolean;
+  assetInUse: number | undefined;
+  assetNotInUse: number | undefined;
+  percentChange: number | undefined;
 }
 
 const TotalAssetSummary = (props: TotalAssetSummaryProps) => {
-  const { isLoading } = props;
+  const { isLoading, assetInUse, assetNotInUse, percentChange } = props;
 
-  const ticketValue = 500;
   return (
     <SummaryCardWrapper
       title="Assets in Use"
@@ -25,16 +27,19 @@ const TotalAssetSummary = (props: TotalAssetSummaryProps) => {
       >
         <VStack alignItems="flex-start" spacing="8px">
           <HStack spacing="4px">
-            <Text
-              mt="8px"
-              fontSize="24px"
-              lineHeight="28.51px"
-              fontWeight={800}
-              color="primary.500"
-            >
-              {ticketValue !== undefined ? ticketValue.toLocaleString() : '-'}
-            </Text>
-            <ProgressIndicator valueChange={-10} />
+            <Skeleton isLoaded={!isLoading}>
+              <Text
+                fontSize="24px"
+                lineHeight="28.51px"
+                fontWeight={800}
+                color="primary.500"
+              >
+                {assetInUse?.toLocaleString() ?? '-'}
+              </Text>
+            </Skeleton>
+            <Skeleton isLoaded={!isLoading}>
+              <ProgressIndicator valueChange={percentChange ?? 0} />
+            </Skeleton>
           </HStack>
           <Text color="neutral.600" fontWeight={700}>
             This month
@@ -50,7 +55,7 @@ const TotalAssetSummary = (props: TotalAssetSummaryProps) => {
               bgColor="#0366EF1A"
               fontWeight={700}
             >
-              {90}
+              {assetNotInUse?.toLocaleString() ?? '-'}
             </Text>
           </Skeleton>
           <Text color="neutral.600" fontWeight={700}>

@@ -10,15 +10,28 @@ import {
   VStack,
 } from '@chakra-ui/react';
 
-const TaskOverview = () => {
-  const ticketValue = 437;
+interface TaskOverviewProps {
+  isLoading: boolean;
+  taskCount: number | undefined;
+  completedTaskCount: number | undefined;
+  notCompletedTaskCount: number | undefined;
+  percentageCompleted: number | undefined;
+}
+const TaskOverview = (props: TaskOverviewProps) => {
+  const {
+    isLoading,
+    taskCount,
+    completedTaskCount,
+    notCompletedTaskCount,
+    percentageCompleted,
+  } = props;
   return (
     <SummaryCardWrapper
       title="Task Overview"
       icon={TaskIcon}
       containerStyle={{ minH: '164px' }}
     >
-      <HStack spacing="23px">
+      <HStack width="full" spacing="23px" justifyContent="space-between">
         <VStack
           justifyContent="space-between"
           alignItems="flex-start"
@@ -26,7 +39,7 @@ const TaskOverview = () => {
           spacing="28px"
         >
           <HStack alignItems="flex-end" spacing="4px">
-            <Skeleton isLoaded={true}>
+            <Skeleton isLoaded={!isLoading}>
               <Text
                 mt="8px"
                 fontSize="24px"
@@ -34,20 +47,26 @@ const TaskOverview = () => {
                 fontWeight={800}
                 color="primary.500"
               >
-                {ticketValue !== undefined ? ticketValue.toLocaleString() : '-'}
+                {taskCount?.toLocaleString() ?? '-'}
               </Text>
             </Skeleton>
             <Text color="neutral.600" fontWeight={700} mb="4px">
               This month
             </Text>
           </HStack>
-          <VStack alignItems="flex-start" spacing="11px">
-            <Text color="neutral.600">130 Completed</Text>
-            <Text color="neutral.600">330 Not Completed</Text>
-          </VStack>
+          <Skeleton isLoaded={!isLoading}>
+            <VStack alignItems="flex-start" spacing="11px">
+              <Text color="neutral.600">
+                {completedTaskCount?.toLocaleString() ?? '-'} Completed
+              </Text>
+              <Text color="neutral.600">
+                {notCompletedTaskCount?.toLocaleString() ?? '-'} Not Completed
+              </Text>
+            </VStack>
+          </Skeleton>
         </VStack>
         <CircularProgress
-          value={40}
+          value={percentageCompleted ?? 0}
           color="primary.500"
           thickness="16px"
           size="100px"
@@ -58,7 +77,7 @@ const TaskOverview = () => {
             lineHeight="15.44px"
             fontWeight={700}
           >
-            40%
+            {percentageCompleted ?? 0}%
           </CircularProgressLabel>
         </CircularProgress>
       </HStack>

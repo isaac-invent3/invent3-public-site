@@ -1,6 +1,7 @@
 import {
   Box,
   HStack,
+  Skeleton,
   Stack,
   StackProps,
   Text,
@@ -10,6 +11,7 @@ import {
 import React from 'react';
 
 interface ChartLegendProps {
+  isLoading?: boolean;
   chartLegendItems: {
     label: string;
     color: string;
@@ -23,6 +25,7 @@ const ChartLegend = ({
   chartLegendItems,
   containerStyle,
   textStyle,
+  isLoading,
 }: ChartLegendProps) => {
   return (
     <Stack spacing="16px" direction="row" {...containerStyle}>
@@ -40,7 +43,7 @@ const ChartLegend = ({
             <Text color="neutral.600" fontWeight={700} {...textStyle}>
               {item.label}
             </Text>
-            {item.children}
+            <Skeleton isLoaded={!isLoading}>{item.children}</Skeleton>
           </VStack>
         </HStack>
       ))}

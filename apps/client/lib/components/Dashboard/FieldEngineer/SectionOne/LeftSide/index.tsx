@@ -1,11 +1,24 @@
 import { Flex, Grid, GridItem } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
 import TicketSummary from './TicketSummary';
 import MaintenanceSuccessChart from '../../../Common/Charts/MaintenanceSuccessChart';
 import TaskCompletionRateChart from '../../../Common/Charts/TaskCompletionRateChart';
 import AssetSummary from './AssetSummary';
+import { useSession } from 'next-auth/react';
+import { useGetFrontdeskChartDataQuery } from '~/lib/redux/services/dashboard/frontdesk.services';
+import { generateLastFiveYears } from '~/lib/utils/helperFunctions';
+import { Option } from '~/lib/interfaces/general.interfaces';
 
 const LeftSide = () => {
+  const session = useSession();
+  const user = session?.data?.user;
+  const [selectedYear, setSelectedYear] = useState<Option | undefined>(
+    generateLastFiveYears()[0] as Option
+  );
+  const { data, isLoading, isFetching } = useGetFrontdeskChartDataQuery({
+    userId: user?.userId!,
+    year: +selectedYear?.value!,
+  });
   return (
     <Flex direction="column" gap="16px" width="full">
       <Flex gap="16px" width="full" height="full">
@@ -16,20 +29,6 @@ const LeftSide = () => {
           <AssetSummary />
         </Flex>
       </Flex>
-      {/* <Flex gap="16px" width="full" alignItems="flex-start">
-        <Flex width="45%" height="full">
-          <TaskCompletionRateChart
-            notCompletedColorCode="#EABC30"
-            completedColorCode="#033376"
-          />
-        </Flex>
-        <Flex width="55%" minH="full">
-          <MaintenanceSuccessChart
-            missedColorCode="#EABC30"
-            completedColorCode="#033376"
-          />
-        </Flex>
-      </Flex> */}
       <Grid
         templateColumns="repeat(3, 1fr)"
         gap="16px"
@@ -40,6 +39,10 @@ const LeftSide = () => {
           <TaskCompletionRateChart
             notCompletedColorCode="#EABC30"
             completedColorCode="#033376"
+            data={data?.data?.completeAndIncompleteTasks ?? []}
+            isLoading={isLoading || isFetching}
+            selectedYear={selectedYear}
+            setSelectedYear={setSelectedYear}
           />
         </GridItem>
 

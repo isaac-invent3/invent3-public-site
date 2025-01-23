@@ -21,6 +21,7 @@ import { assetTypeApi } from './services/asset/types.services';
 import { vendorsApi } from './services/asset/vendor.services';
 import { dashboardApi } from './services/dashboard.services';
 import { employeesApi } from './services/employees.services';
+import { frontdeskDashboardApi } from './services/dashboard/frontdesk.services';
 import { maintenanceFrequencyApi } from './services/maintenance/frequency.services';
 import { maintenancePlanApi } from './services/maintenance/plan.services';
 import { maintenanceScheduleApi } from './services/maintenance/schedule.services';
@@ -94,6 +95,7 @@ const rootReducer = combineReducers({
 
   // Dashboard-related APIs
   [dashboardApi.reducerPath]: dashboardApi.reducer,
+  [frontdeskDashboardApi.reducerPath]: frontdeskDashboardApi.reducer,
 
   // Category and condition APIs
   [categoryApi.reducerPath]: categoryApi.reducer,
@@ -191,6 +193,7 @@ export const makeStore = () => {
 
         // Dashboard APIs
         dashboardApi.middleware,
+        frontdeskDashboardApi.middleware,
 
         // Depreciation APIs
         depreciationApi.middleware,

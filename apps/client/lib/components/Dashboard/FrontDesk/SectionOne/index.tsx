@@ -1,20 +1,35 @@
 import { HStack, SimpleGrid, Skeleton, Text, VStack } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React from 'react';
 import SummaryCardWrapper from '../../Common/SummaryCardWrapper';
 import { MaintenanceIcon } from '~/lib/components/CustomIcons/Dashboard';
 import TaskOverview from './TaskOverview';
 import OpenTicketSummary from '../../Common/Summaries/OpenTicketSummary';
 import TotalAssetSummary from '../../Common/Summaries/TotalAssetSummary';
+import { useGetFrontdeskDashboardStatQuery } from '~/lib/redux/services/dashboard/frontdesk.services';
+import { useSession } from 'next-auth/react';
 
 const SectionOne = () => {
-  const [isLoading] = useState(false);
-  const ticketValue = 900;
+  const session = useSession();
+  const user = session?.data?.user;
+  const { data, isLoading } = useGetFrontdeskDashboardStatQuery(
+    { userId: user?.userId! },
+    { skip: !user?.userId }
+  );
   return (
     <SimpleGrid width="full" columns={4} columnGap="16px">
       {/* Open Ticket */}
-      <OpenTicketSummary isLoading={false} />
+      <OpenTicketSummary
+        isLoading={isLoading}
+        ticketCount={data?.data?.openTickets}
+        percentChange={data?.data?.openTicketsPercentageChange}
+      />
       {/* Open Ticket */}
-      <TotalAssetSummary isLoading={false} />
+      <TotalAssetSummary
+        isLoading={isLoading}
+        assetInUse={data?.data?.assetsInUseCount}
+        assetNotInUse={data?.data?.assetsNotInUseCount}
+        percentChange={data?.data?.assetsInUsePercentageChange}
+      />
       {/* Upcoming Maintenance */}
       <SummaryCardWrapper
         title="Upcoming Maintenance"
@@ -35,11 +50,11 @@ const SectionOne = () => {
                 fontWeight={800}
                 color="primary.500"
               >
-                {ticketValue !== undefined ? ticketValue.toLocaleString() : '-'}
+                {data?.data?.upcomingMaintenanceByWeek.toLocaleString() ?? '-'}
               </Text>
             </Skeleton>
             <Text color="neutral.600" fontWeight={700} mb="4px">
-              This month
+              This week
             </Text>
           </HStack>
           <HStack spacing="4px">
@@ -52,7 +67,7 @@ const SectionOne = () => {
                 bgColor="#07CC3B0D"
                 fontWeight={700}
               >
-                05
+                {data?.data?.upcomingMaintenanceByDay?.toLocaleString() ?? '-'}
               </Text>
             </Skeleton>
             <Text color="neutral.600" fontWeight={700}>
@@ -62,7 +77,13 @@ const SectionOne = () => {
         </VStack>
       </SummaryCardWrapper>
       {/* Upcoming Maintenance */}
-      <TaskOverview />
+      <TaskOverview
+        isLoading={isLoading}
+        taskCount={data?.data.totalTasksCount}
+        completedTaskCount={data?.data.completedTask}
+        notCompletedTaskCount={data?.data.incompleteTask}
+        percentageCompleted={data?.data?.completeTaskPercentageChange}
+      />
     </SimpleGrid>
   );
 };

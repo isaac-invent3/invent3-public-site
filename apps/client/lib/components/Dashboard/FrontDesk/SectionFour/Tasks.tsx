@@ -58,6 +58,7 @@ const Tasks = () => {
         isSelectable={false}
         emptyLines={4}
         type="page"
+        showFooter={false}
       />
     </VStack>
   );

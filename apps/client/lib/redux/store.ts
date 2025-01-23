@@ -18,7 +18,7 @@ import { assetApi } from './services/asset/general.services';
 import { assetGroupTypeApi } from './services/asset/groupType.services';
 import { assetStatsApi } from './services/asset/stats.services';
 import { assetTypeApi } from './services/asset/types.services';
-import { vendorsApi } from './services/asset/vendor.services';
+import { assetVendorsApi } from './services/asset/vendors.services';
 import { dashboardApi } from './services/dashboard.services';
 import { employeesApi } from './services/employees.services';
 import { frontdeskDashboardApi } from './services/dashboard/frontdesk.services';
@@ -62,6 +62,7 @@ import { stateApi } from './services/location/state.services';
 import { assetDisposalApi } from './services/asset/disposal.services';
 import { scheduleInstanceApi } from './services/maintenance/scheduleInstance.services';
 import { systemContextTypesApi } from './services/systemcontexttypes.services';
+import { vendorApi } from './services/vendor.services';
 
 export const persistConfig = {
   key: 'root',
@@ -78,6 +79,7 @@ const rootReducer = combineReducers({
   [assetStatsApi.reducerPath]: assetStatsApi.reducer,
   [assetTypeApi.reducerPath]: assetTypeApi.reducer,
   [conditionApi.reducerPath]: conditionApi.reducer,
+  [assetVendorsApi.reducerPath]: assetVendorsApi.reducer,
 
   // Maintenance-related APIs
   [maintenanceFrequencyApi.reducerPath]: maintenanceFrequencyApi.reducer,
@@ -130,7 +132,7 @@ const rootReducer = combineReducers({
   [reportApi.reducerPath]: reportApi.reducer,
 
   // Vendor-related APIs
-  [vendorsApi.reducerPath]: vendorsApi.reducer,
+  [vendorApi.reducerPath]: vendorApi.reducer,
 
   // Notification APIs
   [notificationApi.reducerPath]: notificationApi.reducer,
@@ -169,6 +171,7 @@ export const makeStore = () => {
         assetStatsApi.middleware,
         assetTypeApi.middleware,
         assetDisposalApi.middleware,
+        // assetVendorsApi.middleware,
 
         // Maintenance-related APIs
         maintenanceFrequencyApi.middleware,
@@ -224,7 +227,7 @@ export const makeStore = () => {
         userApi.middleware,
 
         // Vendor-related APIs
-        vendorsApi.middleware,
+        vendorApi.middleware,
         systemContextTypesApi.middleware,
 
         // Report Apis

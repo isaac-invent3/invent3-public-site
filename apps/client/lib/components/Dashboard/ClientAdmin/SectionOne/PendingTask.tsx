@@ -36,6 +36,7 @@ const PendingTask = (props: PendingTaskProps) => {
         justifyContent="space-between"
         alignItems="flex-start"
         height="full"
+        spacing={0}
       >
         <HStack alignItems="flex-end" spacing="4px">
           <Skeleton isLoaded={!isLoading}>
@@ -58,7 +59,8 @@ const PendingTask = (props: PendingTaskProps) => {
             chartLegendItems={chartLegendItems}
             containerStyle={{
               direction: 'column',
-              spacing: '16px',
+              spacing: '6px',
+              mt: '13px',
             }}
             textStyle={{
               whiteSpace: 'nowrap',

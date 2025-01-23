@@ -1,19 +1,19 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+import baseQueryWithReauth from '../baseQueryWithReauth';
 import {
   BaseApiResponse,
   ListResponse,
   QueryParams,
   SearchQuery,
 } from '@repo/interfaces';
-import { Vendor } from '~/lib/interfaces/vendor.interface';
+import { Vendor } from '~/lib/interfaces/vendor.interfaces';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const vendorsApi = createApi({
-  reducerPath: 'vendorsApi',
+export const vendorApi = createApi({
+  reducerPath: 'vendorApi',
   baseQuery: baseQueryWithReauth,
   tagTypes: ['allVendors'],
   endpoints: (builder) => ({
@@ -39,21 +39,7 @@ export const vendorsApi = createApi({
         body,
       }),
     }),
-    getVendorById: builder.query<
-      BaseApiResponse<Vendor>,
-      { id: number | undefined }
-    >({
-      query: ({ id }) => ({
-        url: `/Vendors/${id}?`,
-        method: 'GET',
-        headers: getHeaders(),
-      }),
-    }),
   }),
 });
 
-export const {
-  useGetAllVendorsQuery,
-  useSearchVendorsMutation,
-  useGetVendorByIdQuery,
-} = vendorsApi;
+export const { useGetAllVendorsQuery, useSearchVendorsMutation } = vendorApi;

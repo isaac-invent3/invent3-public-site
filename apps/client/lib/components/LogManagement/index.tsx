@@ -1,0 +1,179 @@
+'use client';
+
+import { Flex, HStack, Icon, useDisclosure } from '@chakra-ui/react';
+import React, { useCallback, useEffect, useState } from 'react';
+import PageHeader from '../UI/PageHeader';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
+import { ListResponse } from '@repo/interfaces';
+import { OPERATORS } from '@repo/constants';
+import {
+  Button,
+  FilterButton,
+  SearchInput,
+  SlideTransition,
+} from '@repo/ui/components';
+import { DownloadIcon, FilterIcon } from '../CustomIcons';
+import _ from 'lodash';
+import { generateSearchCriterion } from '@repo/utils';
+import LogTable from './LogTable';
+import {
+  useGetAllLogsQuery,
+  useSearchLogMutation,
+} from '~/lib/redux/services/log.services';
+import { AuditLog, LogFilter } from '~/lib/interfaces/log.interfaces';
+import Filters from './LogTable/Filters';
+
+export const initialFilterData = {
+  userIds: [],
+  systemContextTypeIds: [],
+  startDate: undefined,
+  endDate: undefined,
+};
+
+const LogManagement = () => {
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+  const { data, isLoading, isFetching } = useGetAllLogsQuery({
+    pageNumber,
+    pageSize,
+  });
+  const [search, setSearch] = useState('');
+  const { isOpen, onToggle } = useDisclosure();
+
+  const [searchData, setSearchData] = useState<
+    ListResponse<AuditLog> | undefined
+  >(undefined);
+  const { handleSubmit } = useCustomMutation();
+  const [searchLog, { isLoading: searchLoading }] = useSearchLogMutation({});
+  const [filterData, setFilterData] = useState<LogFilter>(initialFilterData);
+
+  // Checks if all filterdata is empty
+  const isFilterEmpty = _.every(filterData, (value) => _.isEmpty(value));
+
+  const searchCriterion = {
+    ...((search || filterData.startDate || filterData.endDate) && {
+      criterion: [
+        {
+          columnName: 'logMessage',
+          columnValue: search,
+          operation: OPERATORS.Contains,
+        },
+      ],
+    }),
+    ...(!isFilterEmpty && {
+      orCriterion: [
+        ...filterData.systemContextTypeIds.map((item) => [
+          ...generateSearchCriterion(
+            'systemContextTypeId',
+            [item],
+            OPERATORS.Equals
+          ),
+        ]),
+        ...[filterData.startDate]
+          .filter(Boolean)
+          .map((item) => [
+            ...generateSearchCriterion(
+              'createdDate',
+              [item as string],
+              OPERATORS.GreaterThan
+            ),
+          ]),
+        ...[filterData.endDate]
+          .filter(Boolean)
+          .map((item) => [
+            ...generateSearchCriterion(
+              'createdDate',
+              [item as string],
+              OPERATORS.LessThanOrEquals
+            ),
+          ]),
+      ],
+    }),
+    pageNumber,
+    pageSize,
+  };
+
+  const handleSearch = useCallback(async () => {
+    const response = await handleSubmit(searchLog, searchCriterion, '');
+    setSearchData(response?.data?.data);
+  }, [searchLog, searchCriterion]);
+
+  // Trigger search when search input changes or pagination updates
+  useEffect(() => {
+    if (search) {
+      handleSearch();
+    }
+  }, [search, pageNumber, pageSize]);
+
+  // Reset pagination when clearing the search
+  useEffect(() => {
+    if (!search) {
+      setPageSize(DEFAULT_PAGE_SIZE);
+      setPageNumber(1);
+    }
+  }, [search]);
+
+  return (
+    <Flex width="full" direction="column" pb="24px" gap="32px">
+      <HStack width="full" justifyContent="space-between">
+        <PageHeader>Log Management</PageHeader>
+        <HStack spacing="16px">
+          <SearchInput setSearch={setSearch} placeholderText="Search..." />
+          <FilterButton
+            icon={FilterIcon}
+            label="Filter"
+            handleClick={onToggle}
+            isActive={isOpen}
+          />
+          <Button
+            customStyles={{
+              minH: '36px',
+              p: '0px',
+              px: '8px',
+              minW: '100px',
+              justifyContent: 'flex-start',
+            }}
+          >
+            <Icon as={DownloadIcon} boxSize="24px" mr="8px" />
+            Export
+          </Button>
+        </HStack>
+      </HStack>
+      {isOpen && (
+        <SlideTransition trigger={isOpen} direction="bottom">
+          {isOpen && (
+            <Filters
+              handleApplyFilter={handleSearch}
+              setFilterData={setFilterData}
+              filterData={filterData}
+            />
+          )}
+        </SlideTransition>
+      )}
+
+      <LogTable
+        data={
+          search && searchData ? searchData.items : (data?.data?.items ?? [])
+        }
+        isLoading={isLoading}
+        isFetching={isFetching || searchLoading}
+        totalPages={
+          (search || !isFilterEmpty) && searchData
+            ? searchData?.totalPages
+            : data?.data?.totalPages
+        }
+        showFooter={true}
+        emptyLines={25}
+        isSelectable
+        pageNumber={pageNumber}
+        setPageNumber={setPageNumber}
+        pageSize={pageSize}
+        setPageSize={setPageSize}
+        showPopover
+      />
+    </Flex>
+  );
+};
+
+export default LogManagement;

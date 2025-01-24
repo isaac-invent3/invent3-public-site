@@ -86,6 +86,8 @@ interface GenericTableProps {
   showEmptyState?: boolean;
 }
 
+type ActionType = 'bulk' | 'filter' | null;
+
 export type {
   GeoJSONFeature,
   Option,
@@ -95,4 +97,5 @@ export type {
   LocationFilter,
   AppConfig,
   GenericTableProps,
+  ActionType,
 };

@@ -63,6 +63,7 @@ import { assetDisposalApi } from './services/asset/disposal.services';
 import { scheduleInstanceApi } from './services/maintenance/scheduleInstance.services';
 import { systemContextTypesApi } from './services/systemcontexttypes.services';
 import { vendorApi } from './services/vendor.services';
+import { logApi } from './services/log.services';
 
 export const persistConfig = {
   key: 'root',
@@ -139,6 +140,9 @@ const rootReducer = combineReducers({
 
   // Utlis APIS
   [systemContextTypesApi.reducerPath]: systemContextTypesApi.reducer,
+
+  // Log APIS
+  [logApi.reducerPath]: logApi.reducer,
 
   asset: assetSlice,
   general: generalSlice,
@@ -232,6 +236,9 @@ export const makeStore = () => {
 
         // Report Apis
         reportApi.middleware,
+
+        // Log Apis
+        logApi.middleware,
       ]),
   });
 };

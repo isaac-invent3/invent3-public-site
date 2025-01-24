@@ -67,7 +67,7 @@ const DateRangeFilter = ({
         <HStack
           onClick={onToggle}
           cursor="pointer"
-          width="full"
+          width="max-content"
           height="36px"
           rounded="6px"
           border="none"

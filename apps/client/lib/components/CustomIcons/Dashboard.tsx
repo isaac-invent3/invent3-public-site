@@ -25,7 +25,7 @@ const TicketIcon = createIcon({
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
-        stroke-dasharray="5 5"
+        strokeDasharray="5 5"
       />
     </svg>
   ),

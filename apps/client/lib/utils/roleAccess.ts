@@ -1,3 +1,4 @@
+import { UserPermission } from '~/types/next-auth';
 import { ROUTES, SYSTEM_ROLES } from './constants';
 
 const MANAGER_ROUTES = [
@@ -32,6 +33,8 @@ const MANAGER_ROUTES = [
   `/${ROUTES.TEMPLATES}`,
   `/${ROUTES.TEMPLATES}/[id]/detail`,
   `/${ROUTES.PROFILE}`,
+  `/${ROUTES.USERS}`,
+  `/${ROUTES.AUDIT_LOG}`,
 ];
 
 const FRONTDESK_ROUTE = [
@@ -54,20 +57,17 @@ const roleAccessMap = {
   [SYSTEM_ROLES.FRONT_DESK]: FRONTDESK_ROUTE,
 };
 
-function doesRoleHaveAccessToURL(roles: number[], url: string) {
-  // Ensure roles is always an array
-  const roleArray = Array.isArray(roles) ? roles : [roles];
-  return roleArray.some((role) => {
-    const accessibleRoutes = roleAccessMap[role] || [];
-
-    return accessibleRoutes.some((route) => {
-      // Create a regex from the route by replacing dynamic segments
-      const regexPattern = route
-        .replace(/\[.*?\]/g, '[^/]+')
-        .replace('/', '\\/');
-      const regex = new RegExp(`^${regexPattern}$`);
-      return regex.test(url);
-    });
+function doesRoleHaveAccessToURL(
+  roleRoutePermissions: UserPermission[],
+  url: string
+) {
+  return roleRoutePermissions.some((permission) => {
+    // Create a regex from the route by replacing dynamic segments
+    const regexPattern = permission.routePath
+      .replace(/\[.*?\]/g, '[^/]+')
+      .replace('/', '\\/');
+    const regex = new RegExp(`^${regexPattern}$`);
+    return regex.test(url);
   });
 }
 

@@ -42,11 +42,9 @@ const ListView = (props: ListViewProps) => {
   const { handleSubmit } = useCustomMutation();
   const { updateSearchParam } = useCustomSearchParams();
 
-  const {
-    assetFilter: filterData,
-    asset,
-    selectedAssetIds,
-  } = useAppSelector((state) => state.asset);
+  const { assetFilter: filterData, selectedAssetIds } = useAppSelector(
+    (state) => state.asset
+  );
   const dispatch = useAppDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -140,6 +138,7 @@ const ListView = (props: ListViewProps) => {
     }
   }, [search, isFilterEmpty]);
 
+  // Open Detail Modal if assetId exists
   useEffect(() => {
     if (assetIdString) onOpen();
   }, [assetIdString]);
@@ -201,7 +200,7 @@ const ListView = (props: ListViewProps) => {
           isSelectable={true}
         />
       </Flex>
-      <AssetDetail data={asset} onClose={onClose} isOpen={isOpen} />
+      <AssetDetail onClose={onClose} isOpen={isOpen} />
     </>
   );
 };

@@ -2,7 +2,6 @@ import { DrawerBody, DrawerHeader, VStack } from '@chakra-ui/react';
 import { GenericDrawer, LoadingSpinner } from '@repo/ui/components';
 import { useMemo } from 'react';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
-import { Asset } from '~/lib/interfaces/asset/general.interface';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useGetAssetInfoHeaderByIdQuery } from '~/lib/redux/services/asset/general.services';
 import { setAsset } from '~/lib/redux/slices/AssetSlice';
@@ -13,7 +12,6 @@ import AssetTabs from './AssetTabs';
 import AssetHeader from './Header';
 
 interface AssetDetailProps {
-  data: Asset | null;
   isOpen: boolean;
   onClose: () => void;
   type?: 'template' | 'main';

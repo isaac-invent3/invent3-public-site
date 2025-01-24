@@ -2,14 +2,19 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { UserConfigurationObject } from '~/lib/interfaces/user.interfaces';
+import {
+  User,
+  UserConfigurationObject,
+} from '~/lib/interfaces/user.interfaces';
 
 interface SliceProps {
+  user: User | null;
   userConfigurationOptions: UserConfigurationObject[];
   formConfigurationOptions: UserConfigurationObject[];
 }
 
 const initialState: SliceProps = {
+  user: null,
   userConfigurationOptions: [],
   formConfigurationOptions: [],
 };
@@ -18,6 +23,12 @@ export const UserSlice = createSlice({
   name: 'userReducer',
   initialState,
   reducers: {
+    setUser: (state, { payload }: PayloadAction<User>) => {
+      state.user = payload;
+    },
+    clearUser: (state) => {
+      state.user = null;
+    },
     setInitialOptions: (
       state,
       { payload }: PayloadAction<UserConfigurationObject[]>
@@ -58,7 +69,11 @@ export const UserSlice = createSlice({
   },
 });
 
-export const { setInitialOptions, updateFormConfigurationOptions } =
-  UserSlice.actions;
+export const {
+  setUser,
+  clearUser,
+  setInitialOptions,
+  updateFormConfigurationOptions,
+} = UserSlice.actions;
 
 export default UserSlice.reducer;

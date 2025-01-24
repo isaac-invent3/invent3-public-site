@@ -5,6 +5,10 @@ const CustomText: ComponentStyleConfig = {
     fontWeight: 500,
   },
   sizes: {
+    xs: {
+      fontSize: '10px',
+      lineHeight: '11.88px',
+    },
     base: {
       fontSize: '12px',
       lineHeight: '14.26px',

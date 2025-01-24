@@ -112,7 +112,7 @@ const UserTable = (props: UserTableProps) => {
         }),
 
         columnHelper.accessor('guid', {
-          cell: () => <PopoverAction />,
+          cell: (info) => <PopoverAction user={info.row.original} />,
           header: '',
           enableSorting: false,
         }),

@@ -228,6 +228,11 @@ const SYSTEM_CONTEXT_DETAILS = {
     route: ROUTES.TICKETS,
     slug: 'ticketId',
   },
+  USER: {
+    id: SYSTEM_CONTEXT_TYPE.USERS,
+    route: ROUTES.USERS,
+    slug: 'userId',
+  },
 };
 
 const NOTIFICATION_EVENT_TYPE_ENUM = {

@@ -117,7 +117,7 @@ const AssetDetailWrapper = (props: AssetDetailWrapperProps) => {
           </VStack>
         </HStack>
       </VStack>
-      <AssetDetail data={assetData} onClose={onClose} isOpen={isOpen} />
+      <AssetDetail onClose={onClose} isOpen={isOpen} />
     </>
   );
 };

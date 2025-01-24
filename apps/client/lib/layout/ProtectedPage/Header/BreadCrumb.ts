@@ -106,6 +106,14 @@ const auditLogBreadcrumb: BreadcrumbNode = {
   label: 'Audit Log',
 };
 
+const roleManagementBreadcrumb: BreadcrumbNode = {
+  route: `/${ROUTES.ROLES}`,
+  label: 'Role Management',
+  children: {
+    detail: { label: 'Role Details' },
+  },
+};
+
 const breadcrumbMap: Record<string, BreadcrumbNode> = {
   [ROUTES.DASHBOARD]: dashboardBreadcrumb,
   [ROUTES.ASSETS]: assetsBreadcrumb,
@@ -116,6 +124,7 @@ const breadcrumbMap: Record<string, BreadcrumbNode> = {
   [ROUTES.REPORT]: reportBreadcrumb,
   [ROUTES.TEMPLATES]: templateBreadcrumb,
   [ROUTES.USERS]: userManagementBreadcrumb,
+  [ROUTES.ROLES]: roleManagementBreadcrumb,
   [ROUTES.AUDIT_LOG]: auditLogBreadcrumb,
 };
 

@@ -35,6 +35,7 @@ const MANAGER_ROUTES = [
   `/${ROUTES.PROFILE}`,
   `/${ROUTES.USERS}`,
   `/${ROUTES.AUDIT_LOG}`,
+  `/${ROUTES.ROLES}`,
 ];
 
 const FRONTDESK_ROUTE = [

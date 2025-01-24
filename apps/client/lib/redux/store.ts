@@ -64,6 +64,7 @@ import { scheduleInstanceApi } from './services/maintenance/scheduleInstance.ser
 import { systemContextTypesApi } from './services/systemcontexttypes.services';
 import { vendorApi } from './services/vendor.services';
 import { logApi } from './services/log.services';
+import { rolesApi } from './services/role.services';
 
 export const persistConfig = {
   key: 'root',
@@ -143,6 +144,9 @@ const rootReducer = combineReducers({
 
   // Log APIS
   [logApi.reducerPath]: logApi.reducer,
+
+  // Roles APIS
+  [rolesApi.reducerPath]: rolesApi.reducer,
 
   asset: assetSlice,
   general: generalSlice,
@@ -239,6 +243,9 @@ export const makeStore = () => {
 
         // Log Apis
         logApi.middleware,
+
+        // Roles Apis
+        rolesApi.middleware,
       ]),
   });
 };

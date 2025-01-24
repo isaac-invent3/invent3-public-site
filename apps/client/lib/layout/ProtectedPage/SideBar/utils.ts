@@ -4,6 +4,7 @@ import {
   AuditLogIcon,
   DashboardIcon,
   MaintenanceIcon,
+  RoleManagementIcon,
   TaskIcon,
   TemplateIcon,
   TicketIcon,
@@ -52,6 +53,12 @@ const sideBarData = [
     name: 'User Management',
     route: ROUTES.USERS,
     icon: UserManagementIcon,
+  },
+
+  {
+    name: 'Role Management',
+    route: ROUTES.ROLES,
+    icon: RoleManagementIcon,
   },
   {
     name: 'Audit Logs',

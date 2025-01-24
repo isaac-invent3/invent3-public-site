@@ -194,6 +194,7 @@ const ROUTES = {
   TICKETS: 'ticket-management',
   USERS: 'user-management',
   AUDIT_LOG: 'log-management',
+  ROLES: 'role-management',
 };
 
 const SYSTEM_CONTEXT_DETAILS = {

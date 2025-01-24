@@ -51,7 +51,7 @@ const UserManagement = () => {
     undefined
   );
   const { handleSubmit } = useCustomMutation();
-  const [searchLog, { isLoading: searchLoading }] = useSearchUsersMutation({});
+  const [searchUser, { isLoading: searchLoading }] = useSearchUsersMutation({});
   const [filterData, setFilterData] = useState<UserFilter>(initialFilterData);
   const searchParams = useSearchParams();
   const userId = searchParams.get(SYSTEM_CONTEXT_DETAILS.USER.slug);
@@ -101,9 +101,9 @@ const UserManagement = () => {
   };
 
   const handleSearch = useCallback(async () => {
-    const response = await handleSubmit(searchLog, searchCriterion, '');
+    const response = await handleSubmit(searchUser, searchCriterion, '');
     setSearchData(response?.data?.data);
-  }, [searchLog, searchCriterion]);
+  }, [searchUser, searchCriterion]);
 
   // Trigger search when search input changes or pagination updates
   useEffect(() => {

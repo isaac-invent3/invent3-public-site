@@ -192,6 +192,8 @@ const ROUTES = {
   TASKS: 'task-management',
   TEMPLATES: 'template-management',
   TICKETS: 'ticket-management',
+  USERS: 'user-management',
+  AUDIT_LOG: 'log-management',
 };
 
 const SYSTEM_CONTEXT_DETAILS = {

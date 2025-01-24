@@ -122,23 +122,25 @@ interface UserAuth {
 }
 
 interface UserPermission {
-  isNew: boolean;
-  createdDate: string;
-  createdBy: string;
-  lastModifiedDate: string;
-  lastModifiedBy: string;
-  isDeleted: boolean;
-  deletedDate: string;
-  deletedBy: string;
-  guid: string;
+  rowId: number;
+  routeName: string;
+  routePath: string;
   roleRouteId: number;
-  roleId: number;
-  routeId: number;
-  routeSetId: number;
+  roleRouteGuid: string;
   createPermission: boolean;
   readPermission: boolean;
   updatePermission: boolean;
   deletePermission: boolean;
+  isDeleted: boolean;
+  roleId: number;
+  roleName: string;
+  routeSetId: number;
+  routeSetName: string;
+}
+
+interface UserFilter {
+  startDate: string | undefined;
+  endDate: string | undefined;
 }
 
 export type {
@@ -152,4 +154,5 @@ export type {
   UserConfigurationObject,
   UserConfigurationPayload,
   UserPermission,
+  UserFilter,
 };

@@ -96,6 +96,16 @@ const reportBreadcrumb: BreadcrumbNode = {
   label: 'Reports & Analytics',
 };
 
+const userManagementBreadcrumb: BreadcrumbNode = {
+  route: `/${ROUTES.USERS}`,
+  label: 'User Management',
+};
+
+const auditLogBreadcrumb: BreadcrumbNode = {
+  route: `/${ROUTES.AUDIT_LOG}`,
+  label: 'Audit Log',
+};
+
 const breadcrumbMap: Record<string, BreadcrumbNode> = {
   [ROUTES.DASHBOARD]: dashboardBreadcrumb,
   [ROUTES.ASSETS]: assetsBreadcrumb,
@@ -105,6 +115,8 @@ const breadcrumbMap: Record<string, BreadcrumbNode> = {
   [ROUTES.PROFILE]: profileBreadcrumb,
   [ROUTES.REPORT]: reportBreadcrumb,
   [ROUTES.TEMPLATES]: templateBreadcrumb,
+  [ROUTES.USERS]: userManagementBreadcrumb,
+  [ROUTES.AUDIT_LOG]: auditLogBreadcrumb,
 };
 
 const getBreadcrumb = (pathSegments: string[]): breadCrumbRoute[] => {

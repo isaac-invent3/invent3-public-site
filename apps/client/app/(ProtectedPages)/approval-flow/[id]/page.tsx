@@ -1,10 +1,8 @@
 'use client';
 
 import { Skeleton } from '@chakra-ui/react';
-import { notFound } from 'next/navigation';
 import ApprovalDetail from '~/lib/components/ApprovalWorkflow/ApprovalDetail';
 
-import AssetTransfer from '~/lib/components/AssetManagement/AssetTransfer';
 import { useGetAssetInfoHeaderByIdQuery } from '~/lib/redux/services/asset/general.services';
 
 export default function Page({ params }: { params: { id: number } }) {

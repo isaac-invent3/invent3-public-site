@@ -19,7 +19,7 @@ const INFO = [
     subtitle: 'Notify me to for all approvals',
     key: 3,
   },
-];
+];ap
 
 const Approvals = () => {
   const [markedKey, setMarkedKey] = useState<number | null>(

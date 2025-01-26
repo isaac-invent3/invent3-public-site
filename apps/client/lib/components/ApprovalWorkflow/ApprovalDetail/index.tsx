@@ -4,7 +4,6 @@ import { Flex, Text } from '@chakra-ui/react';
 import PageHeader from '../../UI/PageHeader';
 import ApprovalFlowChart from './ApprovalFlowChart';
 
-// Change the interface
 interface IApprovalDetail {
   id: string;
   type: string;

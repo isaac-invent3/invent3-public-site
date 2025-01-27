@@ -248,4 +248,155 @@ const ClockIcon = createIcon({
   ),
 });
 
-export { TicketIcon, AssetBoxIcon, MaintenanceIcon, TaskIcon, ClockIcon };
+const CompanyIcon = createIcon({
+  displayName: 'CompanyIcon',
+  viewBox: '0 0 16 16',
+
+  path: (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M8.3325 14.6668H2.71917C1.94583 14.6668 1.3125 14.0468 1.3125 13.2868V3.39342C1.3125 1.64676 2.6125 0.853424 4.20583 1.63342L7.16583 3.08676C7.80583 3.40009 8.3325 4.23342 8.3325 4.94009V14.6668Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M14.6493 10.04V12.56C14.6493 14 13.9826 14.6667 12.5426 14.6667H8.33594V6.94672L8.64927 7.01338L11.6493 7.68672L13.0026 7.98672C13.8826 8.18005 14.6026 8.63338 14.6426 9.91338C14.6493 9.95338 14.6493 9.99338 14.6493 10.04Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M3.66406 6.00006H5.9774"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M3.66406 8.66675H5.9774"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M11.6484 7.68676V9.83343C11.6484 10.6601 10.9751 11.3334 10.1484 11.3334C9.32177 11.3334 8.64844 10.6601 8.64844 9.83343V7.01343L11.6484 7.68676Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M14.6418 9.91343C14.6018 10.7001 13.9484 11.3334 13.1484 11.3334C12.3218 11.3334 11.6484 10.6601 11.6484 9.83343V7.68677L13.0018 7.98677C13.8818 8.1801 14.6018 8.63343 14.6418 9.91343Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
+});
+
+const CardIcon = createIcon({
+  displayName: 'CardIcon',
+  viewBox: '0 0 16 16',
+
+  path: (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect
+        x="0.601562"
+        y="3"
+        width="14.8"
+        height="10"
+        rx="1"
+        stroke="currentColor"
+        strokeWidth="1.2"
+      />
+      <path
+        d="M2 11H4"
+        stroke="currentColor"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M6 11H9"
+        stroke="currentColor"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+      />
+      <rect
+        x="1.5"
+        y="5.5"
+        width="13"
+        height="1"
+        fill="currentColor"
+        stroke="currentColor"
+      />
+    </svg>
+  ),
+});
+
+const EditIcon = createIcon({
+  displayName: 'EditIcon',
+  viewBox: '0 0 16 16',
+
+  path: (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M7.33594 1.33331H6.0026C2.66927 1.33331 1.33594 2.66665 1.33594 5.99998V9.99998C1.33594 13.3333 2.66927 14.6666 6.0026 14.6666H10.0026C13.3359 14.6666 14.6693 13.3333 14.6693 9.99998V8.66665"
+        stroke="#0E2642"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M10.6972 2.01332L5.44383 7.26665C5.24383 7.46665 5.04383 7.85999 5.00383 8.14665L4.71716 10.1533C4.61049 10.88 5.12383 11.3867 5.85049 11.2867L7.85716 11C8.13716 10.96 8.53049 10.76 8.73716 10.56L13.9905 5.30665C14.8972 4.39999 15.3238 3.34665 13.9905 2.01332C12.6572 0.679985 11.6038 1.10665 10.6972 2.01332Z"
+        stroke="#0E2642"
+        strokeWidth="1.5"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M9.9375 2.76666C10.3842 4.36 11.6308 5.60666 13.2308 6.06"
+        stroke="#0E2642"
+        strokeWidth="1.5"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
+});
+
+export {
+  TicketIcon,
+  AssetBoxIcon,
+  MaintenanceIcon,
+  TaskIcon,
+  ClockIcon,
+  CompanyIcon,
+  EditIcon,
+  CardIcon,
+};

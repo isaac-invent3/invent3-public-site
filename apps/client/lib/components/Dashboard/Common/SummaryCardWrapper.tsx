@@ -1,5 +1,6 @@
 import {
   ComponentWithAs,
+  HeadingProps,
   HStack,
   Icon,
   IconProps,
@@ -14,10 +15,21 @@ interface SummaryCardWrapperProps {
   icon?: ComponentWithAs<'svg', IconProps>;
   children: React.ReactNode;
   containerStyle?: StackProps;
+  iconStyle?: IconProps;
+  headerStyle?: HeadingProps;
+  iconWrapperStyle?: StackProps;
 }
 
 const SummaryCardWrapper = (props: SummaryCardWrapperProps) => {
-  const { title, icon, children, containerStyle } = props;
+  const {
+    title,
+    icon,
+    children,
+    containerStyle,
+    headerStyle,
+    iconStyle,
+    iconWrapperStyle,
+  } = props;
 
   return (
     <VStack
@@ -35,9 +47,17 @@ const SummaryCardWrapper = (props: SummaryCardWrapperProps) => {
         justifyContent="space-between"
         position="relative"
       >
-        <CardHeader>{title}</CardHeader>
+        <CardHeader customStyle={headerStyle}>{title}</CardHeader>
         {icon && (
-          <Icon as={icon} boxSize="24px" position="absolute" right={0} />
+          <HStack width="24px" height="24px" {...iconWrapperStyle}>
+            <Icon
+              as={icon}
+              boxSize="24px"
+              position="absolute"
+              right={0}
+              {...iconStyle}
+            />
+          </HStack>
         )}
       </HStack>
       {children}

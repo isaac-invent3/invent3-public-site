@@ -5,18 +5,46 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import {
   User,
   UserConfigurationObject,
+  UserFormDetails,
 } from '~/lib/interfaces/user.interfaces';
+
+const initialUserForm = {
+  picture: null,
+  firstName: null,
+  middleName: null,
+  lastName: null,
+  dob: null,
+  mobileNumber: null,
+  personalEmail: null,
+  workEmail: null,
+  gender: null,
+  address1: null,
+  address2: null,
+  country: null,
+  state: null,
+  city: null,
+  postalCode: null,
+  documents: [],
+  employmentType: null,
+  branch: null,
+  jobTitle: null,
+  team: null,
+  userRole: null,
+  userGroup: [],
+};
 
 interface SliceProps {
   user: User | null;
   userConfigurationOptions: UserConfigurationObject[];
   formConfigurationOptions: UserConfigurationObject[];
+  userForm: UserFormDetails;
 }
 
 const initialState: SliceProps = {
   user: null,
   userConfigurationOptions: [],
   formConfigurationOptions: [],
+  userForm: initialUserForm,
 };
 
 export const UserSlice = createSlice({
@@ -28,6 +56,18 @@ export const UserSlice = createSlice({
     },
     clearUser: (state) => {
       state.user = null;
+    },
+    setUserForm: (state, { payload }: PayloadAction<UserFormDetails>) => {
+      state.userForm = payload;
+    },
+    updateUserForm: (
+      state,
+      { payload }: PayloadAction<Partial<UserFormDetails>>
+    ) => {
+      state.userForm = { ...state.userForm, ...payload };
+    },
+    clearUserForm: (state) => {
+      state.userForm = initialUserForm;
     },
     setInitialOptions: (
       state,
@@ -72,6 +112,9 @@ export const UserSlice = createSlice({
 export const {
   setUser,
   clearUser,
+  setUserForm,
+  updateUserForm,
+  clearUserForm,
   setInitialOptions,
   updateFormConfigurationOptions,
 } = UserSlice.actions;

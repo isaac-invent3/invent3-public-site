@@ -1,4 +1,5 @@
 import { FORM_ENUM } from '../utils/constants';
+import { Document } from './general.interfaces';
 
 interface Employee {
   employeeId: number;
@@ -143,6 +144,38 @@ interface UserFilter {
   endDate: string | undefined;
 }
 
+interface UserPicture {
+  imageId: number | null;
+  imageName: string | null;
+  base64PhotoImage: string;
+  base64Prefix: string | null;
+}
+
+interface UserFormDetails {
+  picture: UserPicture | null;
+  firstName: string | null;
+  middleName: string | null;
+  lastName: string | null;
+  dob: string | null;
+  mobileNumber: string | null;
+  personalEmail: string | null;
+  workEmail: string | null;
+  gender: string | null;
+  address1: string | null;
+  address2: string | null;
+  country: number | null;
+  state: number | null;
+  city: number | null;
+  postalCode: string | null;
+  documents: Document[];
+  employmentType: string | null;
+  branch: string | null;
+  jobTitle: string | null;
+  team: string | null;
+  userRole: string | null;
+  userGroup: string[];
+}
+
 export type {
   Employee,
   User,
@@ -155,4 +188,5 @@ export type {
   UserConfigurationPayload,
   UserPermission,
   UserFilter,
+  UserFormDetails,
 };

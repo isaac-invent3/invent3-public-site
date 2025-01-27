@@ -4,7 +4,7 @@ import { Flex, VStack } from '@chakra-ui/react';
 import PageHeader from '../../UI/PageHeader';
 import { Role } from '~/lib/interfaces/role.interfaces';
 import RoleInfo from './RoleInfo';
-import Permissions from './Permissions';
+import Permissions from '../Permissions';
 
 interface RoleDetailsProps {
   role: Role;

@@ -10,7 +10,7 @@ import {
 import { AddIcon } from '~/lib/components/CustomIcons';
 
 interface EdgeData extends Record<string, unknown> {
-  onAddNode: (id: string, orientation: 'vertical' | 'horizontal') => void;
+  onAddNode: (id: string, orientation: 'vertical' | 'horizontal', position?:'left'|'right') => void;
 }
 export default function CustomEdge({
   id,
@@ -104,7 +104,7 @@ export default function CustomEdge({
       const edges = getEdges();
       const targetEdges = edges.filter((edge) => edge.target === target);
 
-      return source === targetEdges[targetEdges.length - 1]?.source;
+      return source === targetEdges[0]?.source;
     }
 
     return true;
@@ -131,7 +131,8 @@ export default function CustomEdge({
           onClick={() =>
             data?.onAddNode(
               id,
-              countOutgoingEdges(source) > 1 ? 'vertical' : 'horizontal'
+              countOutgoingEdges(source) > 1 ? 'vertical' : 'horizontal',
+
             )
           }
           transform={`translate(-50%, -50%) translate(${calculateIconPositionX()}px, ${calculateIconPositionY()}px)`}

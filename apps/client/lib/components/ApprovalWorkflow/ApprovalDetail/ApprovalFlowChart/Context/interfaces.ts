@@ -1,5 +1,5 @@
+import { Edge, Node } from '@xyflow/react';
 import { Dispatch, SetStateAction } from 'react';
-
 interface Position {
   x: number;
   y: number;
@@ -37,7 +37,7 @@ type GroupApproveeInfo = {
 
 type ApproveeInfo = IndividualApproveeInfo | GroupApproveeInfo;
 
-type NodeData = ApproveeInfo & {
+type CustomNodeData = ApproveeInfo & {
   actionStatus: ApprovalStatus;
   actionId: number;
   actionName: string;
@@ -52,10 +52,10 @@ type NodeData = ApproveeInfo & {
   ) => void;
 };
 
-interface Node {
+interface CustomNode extends Node {
   id: string;
   type?: string;
-  data: NodeData;
+  data: CustomNodeData;
   position: Position;
   style?: NodeStyle;
   target_position?: string;
@@ -64,7 +64,7 @@ interface Node {
   mergeNodeOfParentId?: string;
 }
 
-interface EdgeData {
+interface EdgeData extends Record<string, unknown> {
   title?: string;
   disabled?: boolean;
   isAddButtonHidden?: boolean;
@@ -72,7 +72,7 @@ interface EdgeData {
   onAddNodeCallback?: NodeCallback;
 }
 
-interface Edge {
+interface CustomEdge extends Edge {
   id: string;
   source: string;
   target: string;
@@ -90,7 +90,8 @@ interface ContextValue {
 export type {
   ApprovalFlowInitialElement,
   ContextValue,
-  Edge,
-  Node,
+  CustomEdge,
+  CustomNode,
   NodeCallback,
+  CustomNodeData,
 };

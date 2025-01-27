@@ -1,5 +1,7 @@
+import { MarkerType } from '@xyflow/react';
 import _ from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
+import { splitNodesAndEdges } from '../Components/Utils/splitNodesAndEdges';
 import {
   ApprovalFlowInitialElement,
   Edge,
@@ -12,6 +14,7 @@ interface NodeUpdateParams {
   elements: ApprovalFlowInitialElement[];
   targetEdgeId: string;
   orientation: 'vertical' | 'horizontal';
+  position: 'left' | 'right';
   onDeleteNodeCallback: NodeCallback;
   onNodeClickCallback: NodeCallback;
   onAddNodeCallback: NodeCallback;
@@ -24,16 +27,16 @@ interface NodeUpdateParams {
  * @returns {ApprovalFlowInitialElement} - A new node object.
  */
 const createNewNode = (
-  onDeleteNodeCallback: NodeCallback,
-  onNodeClickCallback: NodeCallback
+  onDeleteNode: NodeCallback,
+  onNodeClick: NodeCallback
 ): ApprovalFlowInitialElement => {
   return {
     id: uuidv4(),
     position: DEFAULT_POSITION,
     type: 'approvalNode',
     data: {
-      onNodeClickCallback,
-      onDeleteNodeCallback,
+      onNodeClick,
+      onDeleteNode,
     },
   };
 };
@@ -48,14 +51,25 @@ const createNewNode = (
 const createNewEdge = (
   sourceNodeId: string,
   targetNodeId: string,
-  onAddNodeCallback: NodeCallback
+  onAddNode: NodeCallback
 ): Edge => {
   return {
     id: uuidv4(),
     source: sourceNodeId,
     target: targetNodeId,
     type: 'condition',
-    data: { onAddNodeCallback },
+    sourceHandle: 'output',
+    style: {
+      stroke: '#656565',
+      strokeWidth: 1,
+    },
+    markerEnd: {
+      type: MarkerType.Arrow,
+      width: 30,
+      height: 30,
+      color: '#656565',
+    },
+    data: { onAddNode },
   };
 };
 
@@ -67,12 +81,15 @@ const createNewEdge = (
 const updateElementsWithNewNode = ({
   elements,
   orientation,
+  position,
   targetEdgeId,
   onDeleteNodeCallback,
   onNodeClickCallback,
   onAddNodeCallback,
 }: NodeUpdateParams): ApprovalFlowInitialElement[] | undefined => {
   const newNode = createNewNode(onDeleteNodeCallback, onNodeClickCallback);
+
+  console.log({ orientation, targetEdgeId });
 
   const clonedElements = _.cloneDeep(elements);
 
@@ -83,18 +100,60 @@ const updateElementsWithNewNode = ({
   if (targetEdgeIndex === -1) return undefined;
 
   const targetEdge = clonedElements[targetEdgeIndex] as Edge;
- 
-  const updatedTargetEdge = { ...targetEdge, target: newNode.id };
-  clonedElements[targetEdgeIndex] = updatedTargetEdge;
+
+  if (orientation === 'horizontal') {
+    const updatedTargetEdge = { ...targetEdge, target: newNode.id };
+
+    // Create a new edge from the new node to the original target
+    const newRightEdge = createNewEdge(
+      newNode.id,
+      targetEdge.target,
+      onAddNodeCallback
+    );
+
+    console.log({ updatedTargetEdge, newRightEdge });
+
+    clonedElements[targetEdgeIndex] = updatedTargetEdge;
+    clonedElements.push(newRightEdge);
+
+    console.log({ clonedElements });
+  } else if (orientation === 'vertical') {
+    const newVerticalEdge = createNewEdge(
+      targetEdge.source,
+      newNode.id,
+      onAddNodeCallback
+    );
+
+    clonedElements.push(newVerticalEdge);
+
+    const edges = splitNodesAndEdges(clonedElements).edges;
+
+    const selectedTarget = edges.find(
+      (element) => targetEdge.target === element.source
+    );
+
+    if (!selectedTarget) return;
+
+    const newEdge = createNewEdge(
+      newNode.id,
+      selectedTarget.target,
+      onAddNodeCallback
+    );
+
+    clonedElements.push(newEdge);
+  }
+
   clonedElements.push(newNode);
 
-  const newEdge = createNewEdge(
-    newNode.id,
-    targetEdge.target,
-    onAddNodeCallback
-  );
+//   if (orientation === 'horizontal') {
+//     const newEdge = createNewEdge(
+//       newNode.id,
+//       targetEdge.target,
+//       onAddNodeCallback
+//     );
 
-  clonedElements.push(newEdge);
+//     clonedElements.push(newEdge);
+//   }
 
   return clonedElements;
 };

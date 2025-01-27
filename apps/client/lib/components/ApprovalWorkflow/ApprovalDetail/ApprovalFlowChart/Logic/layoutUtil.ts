@@ -2,7 +2,7 @@ import { Position } from '@xyflow/react';
 import dagre from 'dagre';
 import _ from 'lodash';
 import { isNode } from 'react-flow-renderer';
-import { ApprovalFlowInitialElement, Edge } from '../Context/interfaces';
+import { ApprovalFlowInitialElement, CustomEdge } from '../Context/interfaces';
 
 const nodeWidth = 250;
 const nodeHeight = 180;
@@ -16,12 +16,13 @@ const getLayoutedElements = (_elements: ApprovalFlowInitialElement[]) => {
 
   elements.forEach((el) => {
     if (isNode(el)) {
+        console.log({el})
       dagreGraph.setNode(el.id, {
         width: el.width || nodeWidth,
         height: el.height || nodeHeight,
       });
     } else {
-      const edge = el as Edge;
+      const edge = el as CustomEdge;
       dagreGraph.setEdge(edge.source, edge.target);
     }
   });

@@ -1,7 +1,7 @@
 import { getIncomers, getOutgoers } from '@xyflow/react';
 import _ from 'lodash';
 import { useApprovalFlowContext } from '../Context';
-import { Edge, Node } from '../Context/interfaces';
+import { CustomNodeData, Edge, Node } from '../Context/interfaces';
 import { updateElementsWithNewNode } from './util';
 
 /**
@@ -80,6 +80,31 @@ const useNodeActions = () => {
     alert(`You clicked the "${nodeId}" node`);
   };
 
+  const handleUpdateNode = (nodeId: string, data: Partial<CustomNodeData>) => {
+    setElements((elements) => {
+      const clonedElements = _.cloneDeep(elements);
+
+      const currentNodeIndex = clonedElements.findIndex(
+        (element) => element.id === nodeId
+      );
+
+      if (currentNodeIndex === -1) return elements;
+
+      const currentNode = clonedElements[currentNodeIndex];
+
+      if (!currentNode) return elements;
+
+      const updatedNode = {
+        ...currentNode,
+        data: { ...currentNode.data, ...data },
+      };
+
+      clonedElements[currentNodeIndex] = updatedNode;
+
+      return clonedElements;
+    });
+  };
+
   /**
    * Adds a new node connected to the specified edge.
    * @param {string} edgeId - ID of the edge where the new node will be added.
@@ -108,6 +133,7 @@ const useNodeActions = () => {
     onDeleteNode: handleDeleteNode,
     onNodeClick: handleNodeClick,
     onAddNode: handleAddNode,
+    onUpdateNode: handleUpdateNode,
   };
 };
 

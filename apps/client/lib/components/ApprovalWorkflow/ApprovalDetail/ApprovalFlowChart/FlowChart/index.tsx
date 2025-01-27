@@ -182,6 +182,7 @@ const FlowChart = () => {
   }, []);
 
   useEffect(() => {
+    console.log({elements})
     setLayoutElements(getLayoutedElements(elements));
   }, [elements]);
 

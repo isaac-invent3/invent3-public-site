@@ -92,6 +92,7 @@ const UserActivity = () => {
         data={data?.data?.items ?? []}
         isLoading={isLoading}
         isFetching={isFetching}
+        showFooter={false}
         maxTdWidth="200px"
         customThStyle={{
           paddingLeft: '16px',

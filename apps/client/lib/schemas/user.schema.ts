@@ -40,4 +40,19 @@ const occupationInfoSchema = Yup.object().shape({
   userGroup: Yup.array().of(Yup.string()).nullable(),
 });
 
-export { changePasswordSchema, employeeInfoSchema, occupationInfoSchema };
+const userRoleSchema = Yup.object().shape({
+  roleName: Yup.string().required('Role name is required'),
+});
+
+const userGroupSchema = Yup.object().shape({
+  groupName: Yup.string().required('Role name is required'),
+  users: Yup.array().of(Yup.number()).required('Users are required'),
+});
+
+export {
+  changePasswordSchema,
+  employeeInfoSchema,
+  occupationInfoSchema,
+  userRoleSchema,
+  userGroupSchema,
+};

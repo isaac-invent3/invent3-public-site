@@ -111,6 +111,9 @@ const roleManagementBreadcrumb: BreadcrumbNode = {
   label: 'Role Management',
   children: {
     detail: { label: 'Role Details' },
+    group: { label: 'User Group' },
+    role: { label: 'User Role' },
+    add: { label: 'Add' },
   },
 };
 

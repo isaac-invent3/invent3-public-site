@@ -481,6 +481,145 @@ const TemplateIcon = createIcon({
   ),
 });
 
+const AuditLogIcon = createIcon({
+  displayName: 'AuditLogIcon',
+  viewBox: '0 0 18 18',
+
+  path: (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 18 18"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M9.27734 6.66016H13.2148"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M4.78516 6.66016L5.34766 7.22266L7.03516 5.53516"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M9.27734 11.9102H13.2148"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M4.78516 11.9102L5.34766 12.4727L7.03516 10.7852"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M6.75 16.5H11.25C15 16.5 16.5 15 16.5 11.25V6.75C16.5 3 15 1.5 11.25 1.5H6.75C3 1.5 1.5 3 1.5 6.75V11.25C1.5 15 3 16.5 6.75 16.5Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
+});
+
+const UserManagementIcon = createIcon({
+  displayName: 'UserManagementIcon',
+  viewBox: '0 0 18 18',
+
+  path: (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 18 18"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M9 9C11.0711 9 12.75 7.32107 12.75 5.25C12.75 3.17893 11.0711 1.5 9 1.5C6.92893 1.5 5.25 3.17893 5.25 5.25C5.25 7.32107 6.92893 9 9 9Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M15.4426 16.5C15.4426 13.5975 12.5551 11.25 9.00011 11.25C5.44511 11.25 2.55762 13.5975 2.55762 16.5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
+});
+
+const RoleManagementIcon = createIcon({
+  displayName: 'RoleManagementIcon',
+  viewBox: '0 0 18 18',
+
+  path: (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 18 18"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12.75 15.75H5.25C2.25 15.75 1.5 15 1.5 12V6C1.5 3 2.25 2.25 5.25 2.25H12.75C15.75 2.25 16.5 3 16.5 6V12C16.5 15 15.75 15.75 12.75 15.75Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M10.5 6H14.25"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M11.25 9H14.25"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M12.75 12H14.25"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M6.37508 8.46793C7.1248 8.46793 7.73258 7.86016 7.73258 7.11043C7.73258 6.3607 7.1248 5.75293 6.37508 5.75293C5.62535 5.75293 5.01758 6.3607 5.01758 7.11043C5.01758 7.86016 5.62535 8.46793 6.37508 8.46793Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M9 12.2478C8.895 11.1603 8.0325 10.3053 6.945 10.2078C6.57 10.1703 6.1875 10.1703 5.805 10.2078C4.7175 10.3128 3.855 11.1603 3.75 12.2478"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
+});
+
 export {
   DashboardIcon,
   AssetManagementIcon,
@@ -500,4 +639,7 @@ export {
   PreferenceIcon,
   ExitIcon,
   TemplateIcon,
+  AuditLogIcon,
+  UserManagementIcon,
+  RoleManagementIcon,
 };

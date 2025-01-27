@@ -22,7 +22,12 @@ const getHeaders = () => ({
 export const userApi = createApi({
   reducerPath: 'userApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['allUsers', 'userProfile', 'allUserConfigurationOptions'],
+  tagTypes: [
+    'allUsers',
+    'userProfile',
+    'allUserConfigurationOptions',
+    'userDetail',
+  ],
   endpoints: (builder) => ({
     getAllUsers: builder.query<
       BaseApiResponse<ListResponse<User>>,
@@ -68,6 +73,14 @@ export const userApi = createApi({
       }),
       providesTags: ['userProfile'],
     }),
+    getUserById: builder.query<BaseApiResponse<User>, { userId: number }>({
+      query: ({ userId }) => ({
+        url: `/Users/${userId}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['userDetail'],
+    }),
     getUserConfigurationOptions: builder.query<
       BaseApiResponse<ListResponse<UserConfigurationOption>>,
       QueryParams & { userId: number }
@@ -111,6 +124,7 @@ export const userApi = createApi({
         headers: getHeaders(),
         body,
       }),
+      invalidatesTags: ['allUserConfigurationOptions'],
     }),
   }),
 });
@@ -121,6 +135,7 @@ export const {
   useGetUserGroupMembersQuery,
   useSearchUsersMutation,
   useGetUserProfileByUserIdQuery,
+  useGetUserByIdQuery,
   useChangeUserPasswordMutation,
   useGetUserConfigurationOptionsQuery,
   useUpdateUserConfigurationOptionsMutation,

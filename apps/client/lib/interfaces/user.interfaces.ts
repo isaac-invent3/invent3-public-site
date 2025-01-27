@@ -121,6 +121,28 @@ interface UserAuth {
   sessionId: number;
 }
 
+interface UserPermission {
+  rowId: number;
+  routeName: string;
+  routePath: string;
+  roleRouteId: number;
+  roleRouteGuid: string;
+  createPermission: boolean;
+  readPermission: boolean;
+  updatePermission: boolean;
+  deletePermission: boolean;
+  isDeleted: boolean;
+  roleId: number;
+  roleName: string;
+  routeSetId: number;
+  routeSetName: string;
+}
+
+interface UserFilter {
+  startDate: string | undefined;
+  endDate: string | undefined;
+}
+
 export type {
   Employee,
   User,
@@ -131,4 +153,6 @@ export type {
   UserConfigurationOption,
   UserConfigurationObject,
   UserConfigurationPayload,
+  UserPermission,
+  UserFilter,
 };

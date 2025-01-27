@@ -1,5 +1,8 @@
 import { Text, useDisclosure, VStack } from '@chakra-ui/react';
-import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
+import {
+  MaintenancePlan,
+  PlanTableType,
+} from '~/lib/interfaces/maintenance.interfaces';
 import { GenericDeleteModal, GenericPopover } from '@repo/ui/components';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useDeleteMaintenancePlanMutation } from '~/lib/redux/services/maintenance/plan.services';
@@ -7,7 +10,10 @@ import { getSession } from 'next-auth/react';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import { ROUTES, SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
 
-const PopoverAction = (plan: MaintenancePlan) => {
+const PopoverAction = (
+  plan: MaintenancePlan,
+  type: PlanTableType = 'current'
+) => {
   const {
     isOpen: isOpenDelete,
     onOpen: onOpenDelete,
@@ -34,13 +40,15 @@ const PopoverAction = (plan: MaintenancePlan) => {
     <>
       <GenericPopover width="129px" placement="bottom-start">
         <VStack width="full" alignItems="flex-start" spacing="16px">
-          <Text
-            cursor="pointer"
-            as="a"
-            href={`/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_PLANS}/${plan.maintenancePlanId}/edit`}
-          >
-            Edit
-          </Text>
+          {type === 'current' && (
+            <Text
+              cursor="pointer"
+              as="a"
+              href={`/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_PLANS}/${plan.maintenancePlanId}/edit`}
+            >
+              Edit
+            </Text>
+          )}
           <Text
             cursor="pointer"
             onClick={() => {
@@ -52,9 +60,11 @@ const PopoverAction = (plan: MaintenancePlan) => {
           >
             View
           </Text>
-          <Text cursor="pointer" onClick={onOpenDelete} color="#F50000">
-            Delete
-          </Text>
+          {type === 'current' && (
+            <Text cursor="pointer" onClick={onOpenDelete} color="#F50000">
+              Delete
+            </Text>
+          )}
         </VStack>
       </GenericPopover>
       {isOpenDelete && (

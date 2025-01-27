@@ -2,6 +2,7 @@ import NextAuth from 'next-auth';
 import type { NextAuthConfig } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { Mutex } from 'async-mutex';
+// import { UserPermission } from './types/next-auth';
 
 // Create a shared mutex for controlling access to the refresh token process
 const refreshTokenMutex = new Mutex();
@@ -92,7 +93,7 @@ export const config = {
           password: credentials.password,
         };
 
-        // external api for users to log in, change it with your own endpoint
+        // external api for users to log in
         const res = await fetch(`${process.env.API_BASE_URL}/login`, {
           method: 'POST',
           headers: {
@@ -137,6 +138,7 @@ export const config = {
         token.sessionId = user.sessionId;
         token.apiKey = user.apiKey;
         token.role = user.role ?? 'User';
+        // token.roleRoutePermissions = user.roleRoutePermissions;
       }
 
       // Set accessTokenExpires if not already set, to prevent resetting it on each callback
@@ -190,6 +192,7 @@ export const config = {
           accessToken: token.accessToken as string,
           accessTokenExpires: token.accessTokenExpires as number,
           role: token.role as string,
+          // roleRoutePermissions: token.roleRoutePermissions as UserPermission[],
         },
         error: token.error,
       };

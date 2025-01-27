@@ -19,7 +19,7 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';
 import { useCreateMaintenancePlanMutation } from '~/lib/redux/services/maintenance/plan.services';
 import Plan from './PlanType';
-import AssetSelect from '~/lib/components/Common/AssetSelect';
+import AssetSelect from '~/lib/components/Common/SelectComponents/AssetSelect';
 import { planSchema } from '~/lib/schemas/maintenance.schema';
 import { MAINTENANCE_PLAN_ENUM } from '~/lib/utils/constants';
 import moment from 'moment';

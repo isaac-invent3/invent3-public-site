@@ -58,11 +58,8 @@ export const taskInstanceApi = createApi({
       UpdateTaskInstanceMetadataPayload
     >({
       query: (data) => ({
-        url: generateQueryStr(
-          `/TaskInstances/UpdateTaskInstanceMetadataIds?`,
-          data
-        ),
-
+        url: '/TaskInstances/UpdateTaskInstanceMetadataIds',
+        body: data,
         method: 'PUT',
         headers: getHeaders(),
       }),
@@ -114,7 +111,6 @@ export const taskInstanceApi = createApi({
         method: 'GET',
         headers: getHeaders(),
       }),
-      providesTags: ['allTaskInstances'],
     }),
     getAllCompletedTaskInstances: builder.query<
       BaseApiResponse<ListResponse<TaskInstance>>,

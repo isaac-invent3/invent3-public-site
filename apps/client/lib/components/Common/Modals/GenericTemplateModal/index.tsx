@@ -1,7 +1,6 @@
 import { GenericModal, TablePagination } from '@repo/ui/components';
 import {
   Collapse,
-  Flex,
   ModalBody,
   ModalFooter,
   useDisclosure,
@@ -73,7 +72,6 @@ const GenericTemplateModal = (props: GenericTemplateModalProps) => {
         hideOtherInfoWhenDetailsIsShown={hideOtherInfoWhenDetailsIsShown}
       />
       <ModalBody m={0} p={0} px="24px" ref={modalBodyRef}>
-        <Flex />
         <Collapse in={openFilter} animateOpacity>
           {openFilter && filters}
         </Collapse>

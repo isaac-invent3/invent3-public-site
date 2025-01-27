@@ -192,6 +192,9 @@ const ROUTES = {
   TASKS: 'task-management',
   TEMPLATES: 'template-management',
   TICKETS: 'ticket-management',
+  USERS: 'user-management',
+  AUDIT_LOG: 'log-management',
+  ROLES: 'role-management',
 };
 
 const SYSTEM_CONTEXT_DETAILS = {
@@ -225,6 +228,11 @@ const SYSTEM_CONTEXT_DETAILS = {
     id: SYSTEM_CONTEXT_TYPE.TICKETS,
     route: ROUTES.TICKETS,
     slug: 'ticketId',
+  },
+  USER: {
+    id: SYSTEM_CONTEXT_TYPE.USERS,
+    route: ROUTES.USERS,
+    slug: 'userId',
   },
 };
 

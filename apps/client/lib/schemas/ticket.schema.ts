@@ -46,9 +46,17 @@ const createTicketSchema = () =>
     ticketTypeId: Yup.number().required('Ticket Type is Required'),
     ticketPriorityId: Yup.number().required('Ticket Priority is Required'),
   });
+
+const updateTicketMetadataSchema = Yup.object().shape({
+  taskStatusId: Yup.string(),
+  taskPriorityId: Yup.string(),
+  assignedToId: Yup.string(),
+});
+
 export {
   createTicketSchema,
   scheduleTicketSchema,
   updateTicketSchema,
   assignTicketSchema,
+  updateTicketMetadataSchema,
 };

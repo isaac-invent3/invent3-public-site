@@ -2,13 +2,13 @@ import { Flex, Grid, GridItem, HStack, Text, VStack } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import {
-  useGetAllVendorsQuery,
-  useGetVendorByIdQuery,
-  useSearchVendorsMutation,
-} from '~/lib/redux/services/asset/vendor.services';
+  useGetAllAssetVendorsQuery,
+  useGetAssetVendorByIdQuery,
+  useSearchAssetVendorsMutation,
+} from '~/lib/redux/services/asset/vendors.services';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
-import AssetTypeSelect from '~/lib/components/Common/AssetTypeSelect';
+import AssetTypeSelect from '~/lib/components/Common/SelectComponents/AssetTypeSelect';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { FormSectionInfo } from '@repo/ui/components';
 
@@ -18,15 +18,15 @@ const VendorDetails = () => {
   const [selectedVendor, setSelectedVendor] = useState<number | undefined>(
     undefined
   );
-  const [searchVendor] = useSearchVendorsMutation({});
-  const { data: vendorData } = useGetVendorByIdQuery(
+  const [searchVendor] = useSearchAssetVendorsMutation({});
+  const { data: vendorData } = useGetAssetVendorByIdQuery(
     { id: selectedVendor },
     {
       skip: !selectedVendor,
     }
   );
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllVendorsQuery({
+  const { data, isLoading } = useGetAllAssetVendorsQuery({
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });

@@ -1,6 +1,6 @@
 import { Flex, Grid, GridItem, HStack } from '@chakra-ui/react';
 
-import AssetSelect from '~/lib/components/Common/AssetSelect';
+import AssetSelect from '~/lib/components/Common/SelectComponents/AssetSelect';
 import { FormSectionInfo } from '@repo/ui/components';
 
 const ParentAsset = () => {

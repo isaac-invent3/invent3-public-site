@@ -18,6 +18,7 @@ import {
 } from '~/lib/interfaces/report.interfaces';
 import { useGenerateReportMutation } from '~/lib/redux/services/reports.services';
 import { generateReportSchema } from '~/lib/schemas/report.schema';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import GeneratedReport from './GeneratedReport';
 
 const GenerateReport = () => {
@@ -50,13 +51,12 @@ const GenerateReport = () => {
     enableReinitialize: false,
     validationSchema: generateReportSchema,
     onSubmit: async (data) => {
-      const payload = {
-        ...data,
-      };
-
       const response = await handleSubmit(
         generateReport,
-        payload,
+        {
+          ...data,
+          pageSize: DEFAULT_PAGE_SIZE,
+        },
         'Report Generated Successfully'
       );
 

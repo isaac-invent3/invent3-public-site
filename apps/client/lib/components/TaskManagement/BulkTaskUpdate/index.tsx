@@ -1,13 +1,6 @@
 'use client';
 
-import {
-  Flex,
-  Grid,
-  HStack,
-  Text,
-  useDisclosure,
-  VStack,
-} from '@chakra-ui/react';
+import { Flex, Grid, HStack, useDisclosure, VStack } from '@chakra-ui/react';
 import { Button, FormSectionInfo } from '@repo/ui/components';
 import { FormikProvider, useFormik } from 'formik';
 import { getSession } from 'next-auth/react';
@@ -19,39 +12,25 @@ import {
   useGetTaskInstancesByListOfIdsQuery,
   useUpdateTaskInstanceMetadataIdsMutation,
 } from '~/lib/redux/services/task/instance.services';
-import { useGetAllTaskPrioritiesQuery } from '~/lib/redux/services/task/priorities.services';
-import { useGetAllTaskStatusesQuery } from '~/lib/redux/services/task/statuses.services';
 import { updateTaskInstanceMetadataSchema } from '~/lib/schemas/task.schema';
-import { DEFAULT_PAGE_SIZE, ROUTES } from '~/lib/utils/constants';
+import { ROUTES } from '~/lib/utils/constants';
 import UserDisplayAndAddButton from '../../Common/UserDisplayAndAddButton';
-import GenericAsyncSelect from '../../UI/GenericAsyncSelect';
 import { getSelectedTaskIds, removeSelectedTaskIds } from '../Common/utils';
 import TaskSuccessModal from '../Modals/TaskSuccessModal';
 import TaskInstanceTable from '../Tables/TaskInstanceTable';
+import DetailHeader from '../../UI/DetailHeader';
+import TaskPrioritySelect from '../../Common/SelectComponents/TaskPrioritySelect';
+import TaskStatusSelect from '../../Common/SelectComponents/TaskStatusSelect';
 
 const BulkTaskUpdate = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   const { handleSubmit } = useCustomMutation();
-  const [pageNumber, setPageNumber] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
   const router = useRouter();
 
   const [updateTaskInstanceMetadata, { isLoading }] =
     useUpdateTaskInstanceMetadataIdsMutation({});
-
-  const { data: taskStatuses, isLoading: isFetchingTaskStatuses } =
-    useGetAllTaskStatusesQuery({
-      pageSize: DEFAULT_PAGE_SIZE,
-      pageNumber: 1,
-    });
-
-  const { data: taskPriorities, isLoading: isFetchingTaskPriorities } =
-    useGetAllTaskPrioritiesQuery({
-      pageSize: DEFAULT_PAGE_SIZE,
-      pageNumber: 1,
-    });
 
   const {
     data,
@@ -117,122 +96,94 @@ const BulkTaskUpdate = () => {
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
           <Flex width="full" direction="column" gap="24px" mt="32px">
-            <HStack width="full" alignItems="flex-start" spacing="16px">
-              <Flex width="full" maxW="118px">
-                <FormSectionInfo
-                  title="Bulk Tasks"
-                  info="List of tasks to be updated."
-                  isRequired={false}
+            <Flex
+              width="full"
+              py="32px"
+              px="25px"
+              direction="column"
+              gap="50px"
+              rounded="6px"
+              bgColor="white"
+            >
+              <HStack width="full" alignItems="flex-start" spacing="16px">
+                <Flex width="full" maxW="118px">
+                  <FormSectionInfo
+                    title="Bulk Tasks"
+                    info="List of tasks to be updated."
+                    isRequired={false}
+                  />
+                </Flex>
+                <TaskInstanceTable
+                  data={data?.data?.items ?? []}
+                  totalPages={data?.data?.totalPages}
+                  isLoading={taskInstanceLoading}
+                  isFetching={isFetching}
+                  setPageNumber={setCurrentPage}
+                  pageNumber={currentPage}
+                  pageSize={pageSize}
+                  setPageSize={setPageSize}
+                  isSortable={true}
+                  emptyLines={pageSize}
+                  showPopover={false}
+                  showFooter={data?.data?.totalPages === 1 ? false : true}
+                  type="page"
                 />
-              </Flex>
+              </HStack>
 
-              <VStack width="full" spacing="27px" overflow="auto">
-                <VStack width="full" spacing="8px" overflow="auto">
-                  <TaskInstanceTable
-                    data={data?.data?.items ?? []}
-                    totalPages={data?.data?.totalPages}
-                    isLoading={taskInstanceLoading}
-                    isFetching={isFetching}
-                    setPageNumber={setCurrentPage}
-                    pageNumber={currentPage}
-                    pageSize={pageSize}
-                    setPageSize={setPageSize}
-                    isSortable={true}
-                    emptyLines={pageSize}
-                    showPopover={false}
-                    type="page"
+              <Grid
+                templateColumns={{
+                  base: '1fr',
+                  md: 'repeat(3, 1fr)',
+                }}
+                gap="32px"
+                width="full"
+                height="full"
+              >
+                <VStack spacing="12px" alignItems="flex-start">
+                  <DetailHeader
+                    variant="secondary"
+                    customStyles={{ size: 'lg', fontWeight: 700 }}
+                  >
+                    Assign To
+                  </DetailHeader>
+                  <UserDisplayAndAddButton
+                    selectedUser={formik.values?.assignedToEmployeeName}
+                    handleSelectUser={(user) => {
+                      formik.setFieldValue('assignedTo', user?.value ?? null);
+                      formik.setFieldValue(
+                        'assignedToEmployeeName',
+                        user?.label ?? null
+                      );
+                    }}
                   />
                 </VStack>
-              </VStack>
-            </HStack>
+                <VStack spacing="12px" alignItems="flex-start">
+                  <DetailHeader
+                    variant="secondary"
+                    customStyles={{ size: 'lg', fontWeight: 700 }}
+                  >
+                    New Status
+                  </DetailHeader>
+                  <TaskStatusSelect
+                    selectTitle="Status"
+                    selectName="taskStatusId"
+                  />
+                </VStack>
 
-            <Grid
-              templateColumns={{
-                base: '1fr',
-                md: 'repeat(3, 1fr)',
-              }}
-              gap="32px"
-              mt={10}
-              width="full"
-              height="full"
-              paddingTop="2rem"
-              borderTop="1px solid #BBBBBB"
-            >
-              <VStack spacing="12px" alignItems="flex-start">
-                <Text
-                  color="#42403D"
-                  fontWeight="700"
-                  lineHeight="19.01px"
-                  fontSize="16px"
-                  borderBottom="0.7px solid #BBBBBB"
-                  paddingBottom="5px"
-                  width="full"
-                >
-                  New Status
-                </Text>
-
-                <GenericAsyncSelect
-                  selectName="taskStatusId"
-                  selectTitle="Status"
-                  data={taskStatuses}
-                  labelKey="statusName"
-                  valueKey="taskStatusId"
-                  isLoading={isFetchingTaskStatuses}
-                  pageNumber={pageNumber}
-                  setPageNumber={setPageNumber}
-                />
-              </VStack>
-
-              <VStack spacing="12px" alignItems="flex-start">
-                <Text
-                  color="#42403D"
-                  fontWeight="700"
-                  lineHeight="19.01px"
-                  fontSize="16px"
-                  borderBottom="0.7px solid #BBBBBB"
-                  paddingBottom="5px"
-                  width="full"
-                >
-                  New Priority
-                </Text>
-
-                <GenericAsyncSelect
-                  selectName="taskPriorityId"
-                  selectTitle="Priority"
-                  data={taskPriorities}
-                  labelKey="priority"
-                  valueKey="taskPriorityId"
-                  isLoading={isFetchingTaskPriorities}
-                  pageNumber={pageNumber}
-                  setPageNumber={setPageNumber}
-                />
-              </VStack>
-
-              <VStack spacing="12px" alignItems="flex-start">
-                <Text
-                  color="#42403D"
-                  fontWeight="700"
-                  lineHeight="19.01px"
-                  fontSize="16px"
-                  borderBottom="0.7px solid #BBBBBB"
-                  paddingBottom="5px"
-                  width="full"
-                >
-                  New Owner
-                </Text>
-
-                <UserDisplayAndAddButton
-                  selectedUser={formik.values?.assignedToEmployeeName}
-                  handleSelectUser={(user) => {
-                    formik.setFieldValue('assignedTo', user?.value ?? null);
-                    formik.setFieldValue(
-                      'assignedToEmployeeName',
-                      user?.label ?? null
-                    );
-                  }}
-                />
-              </VStack>
-            </Grid>
+                <VStack spacing="12px" alignItems="flex-start">
+                  <DetailHeader
+                    variant="secondary"
+                    customStyles={{ size: 'lg', fontWeight: 700 }}
+                  >
+                    New Priority
+                  </DetailHeader>
+                  <TaskPrioritySelect
+                    selectTitle="Priority"
+                    selectName="taskPriorityId"
+                  />
+                </VStack>
+              </Grid>
+            </Flex>
 
             <HStack spacing="16px" justifyContent="flex-end" width="full">
               <Button

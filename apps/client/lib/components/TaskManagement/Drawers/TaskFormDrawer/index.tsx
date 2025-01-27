@@ -89,10 +89,10 @@ const TaskFormDrawer = (props: TaskFormDrawerProps) => {
       assignedToEmployeeName: data?.assignedToEmployeeName ?? null,
       estimatedDurationInHours:
         data?.estimatedDurationInHours ??
-        (typeof appConfigValues.DEFAULT_ESTIMATED_TASK_DURATION_IN_HOURS ===
+        (typeof appConfigValues?.DEFAULT_ESTIMATED_TASK_DURATION_IN_HOURS ===
         'string'
           ? parseInt(
-              appConfigValues.DEFAULT_ESTIMATED_TASK_DURATION_IN_HOURS,
+              appConfigValues?.DEFAULT_ESTIMATED_TASK_DURATION_IN_HOURS,
               10
             )
           : null),

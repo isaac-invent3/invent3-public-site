@@ -1,12 +1,14 @@
 import { Flex, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import sideBarData from './data';
+import { filterSideBarData } from './utils';
 import NavItem from './NavItem';
 import LogoSection from './LogoSection';
 import FooterSection from './FooterSection';
+import { SYSTEM_ROLES } from '~/lib/utils/constants';
 
 const SideBar = () => {
   const [isCollapse, setIsCollapse] = useState(true);
+  const sideBarData = filterSideBarData([SYSTEM_ROLES.ADMIN]);
 
   return (
     <Flex

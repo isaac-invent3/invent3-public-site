@@ -24,6 +24,8 @@ const assetsBreadcrumb: BreadcrumbNode = {
     add: { label: 'Add New Asset' },
     transfer: { label: 'Asset Transfer Request' },
     dispose: { label: 'Dispose Asset Request' },
+    'bulk-dispose': { label: 'Bulk Dispose' },
+    'bulk-transfer': { label: 'Bulk Transfer' },
   },
 };
 
@@ -64,6 +66,7 @@ const tasksBreadcrumb: BreadcrumbNode = {
   label: 'Task Management',
   children: {
     add: { label: 'Add New Task' },
+    'bulk-update': { label: 'Bulk Update' },
   },
 };
 
@@ -78,6 +81,9 @@ const templateBreadcrumb: BreadcrumbNode = {
 const ticketsBreadcrumb: BreadcrumbNode = {
   route: `/${ROUTES.TICKETS}`,
   label: 'Ticket Management',
+  children: {
+    'bulk-update': { label: 'Bulk Update' },
+  },
 };
 
 const profileBreadcrumb: BreadcrumbNode = {
@@ -90,6 +96,24 @@ const reportBreadcrumb: BreadcrumbNode = {
   label: 'Reports & Analytics',
 };
 
+const userManagementBreadcrumb: BreadcrumbNode = {
+  route: `/${ROUTES.USERS}`,
+  label: 'User Management',
+};
+
+const auditLogBreadcrumb: BreadcrumbNode = {
+  route: `/${ROUTES.AUDIT_LOG}`,
+  label: 'Audit Log',
+};
+
+const roleManagementBreadcrumb: BreadcrumbNode = {
+  route: `/${ROUTES.ROLES}`,
+  label: 'Role Management',
+  children: {
+    detail: { label: 'Role Details' },
+  },
+};
+
 const breadcrumbMap: Record<string, BreadcrumbNode> = {
   [ROUTES.DASHBOARD]: dashboardBreadcrumb,
   [ROUTES.ASSETS]: assetsBreadcrumb,
@@ -99,6 +123,9 @@ const breadcrumbMap: Record<string, BreadcrumbNode> = {
   [ROUTES.PROFILE]: profileBreadcrumb,
   [ROUTES.REPORT]: reportBreadcrumb,
   [ROUTES.TEMPLATES]: templateBreadcrumb,
+  [ROUTES.USERS]: userManagementBreadcrumb,
+  [ROUTES.ROLES]: roleManagementBreadcrumb,
+  [ROUTES.AUDIT_LOG]: auditLogBreadcrumb,
 };
 
 const getBreadcrumb = (pathSegments: string[]): breadCrumbRoute[] => {

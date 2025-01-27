@@ -35,7 +35,62 @@ interface ActualProjectedData {
 interface ProjectedAndActualCostsByArea {
   percentageChange: number;
   projectedAndActualCosts: ActualProjectedData[];
-  totalMaintenanceCost:number
+  totalMaintenanceCost: number;
+}
+
+type WeekType = 'this' | 'last' | 'next';
+export interface FrontdeskDashboardStat {
+  data: { [key: string]: number };
+  message: string;
+  responseId: string;
+}
+
+interface FrontendDashboardStats {
+  openTickets: number;
+  assetsInUseCount: number;
+  assetsNotInUseCount: number;
+  upcomingMaintenanceByWeek: number;
+  upcomingMaintenanceByDay: number;
+  totalTasksCount: number;
+  completedTask: number;
+  incompleteTask: number;
+  completeTaskPercentageChange: number;
+  assetsInUsePercentageChange: number;
+  openTicketsPercentageChange: number;
+}
+
+interface FrontendDashboardChartData {
+  openedAndResolvedTickets: OpenedAndResolvedTicket[];
+  completeAndIncompleteTasks: CompleteAndIncompleteTask[];
+}
+
+interface CompleteAndIncompleteTask {
+  complete: number;
+  inComplete: number;
+  variance: number;
+  monthId: number;
+  weekId: number;
+  year: number;
+}
+
+interface OpenedAndResolvedTicket {
+  open: number;
+  resolved: number;
+  variance: number;
+  monthId: number;
+  weekId: number;
+  year: number;
+}
+
+interface MaintenanceSuccessChartData {
+  missed: number;
+  completed: number;
+  percentageMissed: number;
+  percentageCompleted: number;
+  variance: null;
+  monthId: number;
+  weekId: number;
+  year: number;
 }
 
 export type {
@@ -43,4 +98,10 @@ export type {
   ActualProjectedData,
   AssetInRegion,
   ProjectedAndActualCostsByArea,
+  WeekType,
+  FrontendDashboardStats,
+  FrontendDashboardChartData,
+  MaintenanceSuccessChartData,
+  OpenedAndResolvedTicket,
+  CompleteAndIncompleteTask,
 };

@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import {
   Avatar,
-  Button,
   Flex,
   HStack,
   Icon,
@@ -90,51 +89,79 @@ const AddApprovalUserModal = (props: SubCategoryModalProps) => {
 
           <TabPanels>
             <TabPanel mt="24px">
-              <VStack>
+              <VStack alignItems="start" gap="8px" w="full">
                 {data?.data.items.map((item) => (
-                  <HStack spacing="8px">
-                    <Avatar
-                      width="30px"
-                      height="30px"
-                      // name={name ?? ''}
-                    />
+                  <HStack
+                    w="full"
+                    cursor="pointer"
+                    transition="all 200ms ease-in-out"
+                    py="12px"
+                    px="8px"
+                    rounded="8px"
+                    _hover={{
+                      bgColor: '#F7F7F7',
+                    }}
+                    onClick={() => {
+                      onUpdateNode(nodeId, {
+                        approveeId: item.employeeId,
+                        approveeType: 'individual',
+                        approveeName: item.employeeName,
+                        approveeRole: 'Operational Manager',
+                      });
+                      onClose();
+                    }}
+                  >
+                    <Avatar width="40px" height="40px" />
                     <Flex direction="column">
-                      <Text color="black">{item.employeeName}</Text>
-                      <Text color="black">{item.employeeId}</Text>
+                      <Text color="black" size="md" fontWeight={700}>
+                        {item.employeeName}
+                      </Text>
+                      <Text color="#838383" fontSize="10px" fontWeight={400}>
+                        {item.emailAddress}
+                      </Text>
                     </Flex>
                   </HStack>
                 ))}
               </VStack>
             </TabPanel>
 
-            <TabPanel mt="24px"></TabPanel>
+            <TabPanel mt="24px">
+              <VStack alignItems="start" gap="8px" w="full">
+                {data?.data.items.map((item) => (
+                  <HStack
+                    w="full"
+                    cursor="pointer"
+                    transition="all 200ms ease-in-out"
+                    py="12px"
+                    px="8px"
+                    rounded="8px"
+                    _hover={{
+                      bgColor: '#F7F7F7',
+                    }}
+                    onClick={() => {
+                      onUpdateNode(nodeId, {
+                        approveeId: item.employeeId,
+                        approveeType: 'group',
+                        approveeGroupName: 'HR Department',
+                      });
+                      onClose();
+                    }}
+                  >
+                    <Avatar width="40px" height="40px" />
+                    <Flex direction="column">
+                      <Text color="black" size="md" fontWeight={700}>
+                        {item.employeeName}
+                      </Text>
+                      <Text color="#838383" fontSize="10px" fontWeight={400}>
+                        {item.emailAddress}
+                      </Text>
+                    </Flex>
+                  </HStack>
+                ))}
+              </VStack>
+            </TabPanel>
           </TabPanels>
         </Tabs>
-
-        <VStack w="full" gap="8px">
-          {actionGroups.map((actionGroup) => (
-            <Button
-              key={actionGroup.actionId}
-              w="full"
-              bgColor="#F7F7F7"
-              color="primary.500"
-              py="16px"
-              px="8px"
-              justifyContent="start"
-              onClick={() => {
-                onUpdateNode(nodeId, {
-                  actionId: actionGroup.actionId,
-                  actionName: actionGroup.actionName,
-                });
-                onClose();
-              }}
-            >
-              <Text size="md" fontWeight={700}>
-                {actionGroup.actionName}
-              </Text>
-            </Button>
-          ))}
-        </VStack>
       </ModalBody>
     </GenericModal>
   );

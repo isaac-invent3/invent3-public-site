@@ -2,8 +2,9 @@
 
 import { Flex } from '@chakra-ui/react';
 
-import SideBar from './SideBar';
 import Header from './Header';
+import Notes from './Notes';
+import SideBar from './SideBar';
 
 interface ProtectedLayoutProps {
   children: React.ReactNode;
@@ -24,6 +25,8 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
         <Header />
         {children}
       </Flex>
+
+     <Notes />
     </Flex>
   );
 };

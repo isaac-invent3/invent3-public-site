@@ -6,7 +6,6 @@ import {
   TabList,
   Tabs,
   Text,
-  useDisclosure,
 } from '@chakra-ui/react';
 import { FilterButton } from '@repo/ui/components';
 import { FilterIcon } from '../CustomIcons';
@@ -18,7 +17,6 @@ interface ApprovalHeaderProps {
 }
 
 const Header = (props: ApprovalHeaderProps) => {
-  const { isOpen, onClose, onOpen } = useDisclosure();
   const { setTabIndex, tabIndex } = props;
 
   const tabs = [

@@ -12,8 +12,8 @@ import {
   CursorIcon,
   ThreeVerticalDotsIcon,
 } from '~/lib/components/CustomIcons';
-import AddApprovalActionModal from '../../../Components/UI/Modals/AddActionModal';
-import { CustomNodeData } from '../../../Context/interfaces';
+import { CustomNodeData } from '../../../Interfaces';
+import AddApprovalActionModal from '../../Modals/AddActionModal';
 
 const Action = (props: { data: CustomNodeData; nodeId: string }) => {
   const { data, nodeId } = props;

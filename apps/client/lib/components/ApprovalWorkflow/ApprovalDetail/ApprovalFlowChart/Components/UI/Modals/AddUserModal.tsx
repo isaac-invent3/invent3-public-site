@@ -21,7 +21,7 @@ import { useState } from 'react';
 import { CloseIcon } from '~/lib/components/CustomIcons';
 import { useGetAllEmployeesQuery } from '~/lib/redux/services/employees.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
-import useNodeActions from '../../../Logic/useNodeActions';
+import useNodeActions from '../../Logic/useNodeActions';
 
 interface SubCategoryModalProps {
   isOpen: boolean;
@@ -41,8 +41,8 @@ const AddApprovalUserModal = (props: SubCategoryModalProps) => {
 
   const { onUpdateNode } = useNodeActions();
 
-  const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllEmployeesQuery({
+  const [pageNumber] = useState(1);
+  const { data } = useGetAllEmployeesQuery({
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });

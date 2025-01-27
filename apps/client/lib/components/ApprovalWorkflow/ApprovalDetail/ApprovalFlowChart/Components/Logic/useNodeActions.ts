@@ -1,13 +1,9 @@
 import { getIncomers, getOutgoers } from '@xyflow/react';
 import _ from 'lodash';
 import { useApprovalFlowContext } from '../Context';
-import { CustomNodeData, Edge, Node } from '../Context/interfaces';
-import { updateElementsWithNewNode } from './util';
+import { CustomEdge, CustomNode, CustomNodeData } from '../Interfaces';
+import { updateElementsWithNewNode } from './updateApprovalFlowElements';
 
-/**
- * Custom hook for managing node actions within the approval flow.
- * @returns {object} - Object containing node action callbacks.
- */
 const useNodeActions = () => {
   const { setElements } = useApprovalFlowContext();
 
@@ -20,34 +16,29 @@ const useNodeActions = () => {
       const clonedElements = _.cloneDeep(elements);
 
       const incomingEdges = clonedElements.filter(
-        (element): element is Edge =>
+        (element): element is CustomEdge =>
           'target' in element && element.target === nodeId
       );
       const outgoingEdges = clonedElements.filter(
-        (element): element is Edge =>
+        (element): element is CustomEdge =>
           'source' in element && element.source === nodeId
       );
 
-      // Update incoming edges to point to the outgoing edge's target node.
       const updatedIncomingEdges = incomingEdges.map((edge) => ({
         ...edge,
-        target: outgoingEdges[0]?.target,
+        target: outgoingEdges[0]?.target ?? nodeId,
       }));
 
-      // Remove the deleted node and its edges from the elements.
-      const filteredElements = clonedElements.filter(
-        (element) =>
-          element.id !== nodeId &&
-          (!('target' in element) ||
-            element.target !== incomingEdges[0]?.target) &&
-          (!('source' in element) ||
-            element.source !== outgoingEdges[0]?.source)
-      );
+      const filteredElements = clonedElements.filter((element) => {
+        const isNotNode = element.id !== nodeId;
+        const isNotIncomingTarget =
+          !('target' in element) || element.target !== incomingEdges[0]?.target;
+        const isNotOutgoingSource =
+          !('source' in element) || element.source !== outgoingEdges[0]?.source;
 
-      // Return original elements if no updates are made.
-      if (!updatedIncomingEdges) return elements;
+        return isNotNode && isNotIncomingTarget && isNotOutgoingSource;
+      });
 
-      // Add updated incoming edges to the filtered elements.
       filteredElements.push(...updatedIncomingEdges);
       return filteredElements;
     });
@@ -63,10 +54,11 @@ const useNodeActions = () => {
       if (!currentNode) return elements;
 
       const nodes = elements.filter(
-        (element): element is Node => 'position' in element
+        (element): element is CustomNode => 'position' in element
       );
       const edges = elements.filter(
-        (element): element is Edge => 'source' in element && 'target' in element
+        (element): element is CustomEdge =>
+          'source' in element && 'target' in element
       );
 
       console.error({
@@ -76,10 +68,13 @@ const useNodeActions = () => {
 
       return elements;
     });
-
-    alert(`You clicked the "${nodeId}" node`);
   };
 
+  /**
+   * Updates the data of a node with the given ID.
+   * @param {string} nodeId - ID of the node to update.
+   * @param {Partial<CustomNodeData>} data - Data to merge into the node's current data.
+   */
   const handleUpdateNode = (nodeId: string, data: Partial<CustomNodeData>) => {
     setElements((elements) => {
       const clonedElements = _.cloneDeep(elements);
@@ -108,6 +103,7 @@ const useNodeActions = () => {
   /**
    * Adds a new node connected to the specified edge.
    * @param {string} edgeId - ID of the edge where the new node will be added.
+   * @param {"vertical" | "horizontal"} orientation - Orientation of the new node.
    */
   const handleAddNode = (
     edgeId: string,
@@ -118,9 +114,6 @@ const useNodeActions = () => {
         elements,
         orientation,
         targetEdgeId: edgeId,
-        onAddNodeCallback: handleAddNode,
-        onDeleteNodeCallback: handleDeleteNode,
-        onNodeClickCallback: handleNodeClick,
       });
 
       console.log({ updatedElements });

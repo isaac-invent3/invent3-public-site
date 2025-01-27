@@ -1,7 +1,7 @@
 import { Box, Card, StackDivider, VStack } from '@chakra-ui/react';
 import type { Node, NodeProps } from '@xyflow/react';
 import { Handle, Position } from '@xyflow/react';
-import { CustomNodeData } from '../../Context/interfaces';
+import { CustomNodeData } from '../../Interfaces';
 import Action from './Sections/Action';
 import Approval from './Sections/Approval';
 

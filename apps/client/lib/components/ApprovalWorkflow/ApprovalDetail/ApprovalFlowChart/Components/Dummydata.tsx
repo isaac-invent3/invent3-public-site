@@ -1,8 +1,12 @@
-import { ApprovalFlowInitialElement, Edge, Node } from '../Context/interfaces';
+import {
+  ApprovalFlowElement,
+  CustomEdge,
+  CustomNode,
+} from './Interfaces';
 
 const position = { x: 0, y: 0 };
 
-const nodes: Node[] = [
+const nodes: CustomNode[] = [
   {
     id: '1',
     data: {
@@ -41,7 +45,6 @@ const nodes: Node[] = [
       actionId: 4,
       actionName: 'Policy Update Review',
       date: '2024-12-20',
-      onAddNodeCallback: () => console.log('Add callback triggered'),
     },
     position,
   },
@@ -55,7 +58,6 @@ const nodes: Node[] = [
       actionId: 4,
       actionName: 'Policy Update Review',
       date: '2024-12-20',
-      onAddNodeCallback: () => console.log('Add callback triggered'),
     },
     position,
   },
@@ -69,7 +71,6 @@ const nodes: Node[] = [
       actionId: 4,
       actionName: 'Policy Update Review',
       date: '2024-12-20',
-      onAddNodeCallback: () => console.log('Add callback triggered'),
     },
     position,
   },
@@ -83,13 +84,12 @@ const nodes: Node[] = [
       actionId: 4,
       actionName: 'Policy Update Review',
       date: '2024-12-20',
-      onAddNodeCallback: () => console.log('Add callback triggered'),
     },
     position,
   },
 ];
 
-const edges: Edge[] = [
+const edges: CustomEdge[] = [
   {
     id: 'e1-2',
     source: '1',
@@ -124,7 +124,4 @@ const edges: Edge[] = [
   },
 ];
 
-export const initialElements: ApprovalFlowInitialElement[] = [
-  ...nodes,
-  ...edges,
-];
+export const initialElements: ApprovalFlowElement[] = [...nodes, ...edges];

@@ -8,11 +8,9 @@ import {
   type EdgeProps,
 } from '@xyflow/react';
 import { AddIcon } from '~/lib/components/CustomIcons';
+import useNodeActions from '../../Logic/useNodeActions';
 
-interface EdgeData extends Record<string, unknown> {
-  onAddNode: (id: string, orientation: 'vertical' | 'horizontal', position?:'left'|'right') => void;
-}
-export default function CustomEdge({
+const ConditionEdge = ({
   id,
   source,
   target,
@@ -24,8 +22,7 @@ export default function CustomEdge({
   targetPosition,
   style = {},
   markerEnd,
-  data,
-}: EdgeProps<Edge<EdgeData>>) {
+}: EdgeProps<Edge>) => {
   const { getEdges } = useReactFlow();
 
   /**
@@ -110,6 +107,8 @@ export default function CustomEdge({
     return true;
   };
 
+  const { onAddNode } = useNodeActions();
+
   return (
     <>
       <BaseEdge path={edgePath} markerEnd={markerEnd} style={style} />
@@ -129,10 +128,9 @@ export default function CustomEdge({
           pointerEvents="all"
           background="white"
           onClick={() =>
-            data?.onAddNode(
+            onAddNode(
               id,
-              countOutgoingEdges(source) > 1 ? 'vertical' : 'horizontal',
-
+              countOutgoingEdges(source) > 1 ? 'vertical' : 'horizontal'
             )
           }
           transform={`translate(-50%, -50%) translate(${calculateIconPositionX()}px, ${calculateIconPositionY()}px)`}
@@ -142,4 +140,5 @@ export default function CustomEdge({
       </EdgeLabelRenderer>
     </>
   );
-}
+};
+export default ConditionEdge;

@@ -11,7 +11,7 @@ import {
 
 import { GenericModal } from '@repo/ui/components';
 import { CloseIcon } from '~/lib/components/CustomIcons';
-import useNodeActions from '../../../Logic/useNodeActions';
+import useNodeActions from '../../Logic/useNodeActions';
 
 interface SubCategoryModalProps {
   isOpen: boolean;

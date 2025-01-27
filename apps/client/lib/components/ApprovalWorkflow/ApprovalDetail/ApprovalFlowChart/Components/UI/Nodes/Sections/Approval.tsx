@@ -1,8 +1,8 @@
 import { AddIcon, CalendarIcon } from '@chakra-ui/icons';
 import { HStack, Icon, Text, useDisclosure, VStack } from '@chakra-ui/react';
 import UserInfo from '~/lib/components/Common/UserInfo';
-import { CustomNodeData } from '../../../Context/interfaces';
-import AddApprovalUserModal from '../../../Components/UI/Modals/AddUserModal';
+import { CustomNodeData } from '../../../Interfaces';
+import AddApprovalUserModal from '../../Modals/AddUserModal';
 
 const Approval = (props: { data: CustomNodeData; nodeId: string }) => {
   const { data, nodeId } = props;
@@ -36,7 +36,7 @@ const Approval = (props: { data: CustomNodeData; nodeId: string }) => {
     );
   }
 
-  const {  approveeType } = data;
+  const { approveeType } = data;
 
   return (
     <VStack alignItems="flex-start" gap="12px" w="full">

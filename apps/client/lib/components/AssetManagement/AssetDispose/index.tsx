@@ -1,9 +1,6 @@
 import { Flex, HStack, useDisclosure } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
-import {
-  Asset,
-  AssetFormDocument,
-} from '~/lib/interfaces/asset/general.interface';
+import { Asset } from '~/lib/interfaces/asset/general.interface';
 import { FormikProvider, useFormik } from 'formik';
 import { assetDisposeSchema } from '~/lib/schemas/asset/main.schema';
 import { useAppDispatch } from '~/lib/redux/hooks';
@@ -18,6 +15,7 @@ import { getSession } from 'next-auth/react';
 import moment from 'moment';
 import PageHeader from '../../UI/PageHeader';
 import { ROUTES } from '~/lib/utils/constants';
+import { Document } from '~/lib/interfaces/general.interfaces';
 
 interface AssetDisposeProps {
   data: Asset;
@@ -51,12 +49,12 @@ const AssetDispose = (props: AssetDisposeProps) => {
         disposalRequestedBy: data?.currentOwnerId!,
         createdBy: session?.user?.username!,
       };
-      const uploadedDocuments: AssetFormDocument[] = values.documents.filter(
-        (item: AssetFormDocument) => item.documentId === null
+      const uploadedDocuments: Document[] = values.documents.filter(
+        (item: Document) => item.documentId === null
       );
 
-      const existingDocuments: AssetFormDocument[] = values.documents.filter(
-        (item: AssetFormDocument) => item.documentId !== null
+      const existingDocuments: Document[] = values.documents.filter(
+        (item: Document) => item.documentId !== null
       );
       const createAssetDocumentsDto =
         uploadedDocuments.length > 0

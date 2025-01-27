@@ -1,5 +1,5 @@
 import { BaseEntity, Option } from '@repo/interfaces';
-import { LocationFilter } from '../general.interfaces';
+import { Document, LocationFilter } from '../general.interfaces';
 import { MaintenancePlan } from '../maintenance.interfaces';
 import { FORM_ENUM } from '~/lib/utils/constants';
 
@@ -131,13 +131,6 @@ interface AssetFormImage {
   base64Prefix: string | null;
 }
 
-interface AssetFormDocument {
-  documentId: number | null;
-  documentName: string | null;
-  base64Document: string | null;
-  base64Prefix: string | null;
-}
-
 interface AssetFormDetails {
   images: AssetFormImage[];
   parentId: number | null;
@@ -167,7 +160,7 @@ interface AssetFormDetails {
   depreciationMethod: string | null;
   depreciationRate: number | null;
   vendorId: number | null;
-  documents: AssetFormDocument[];
+  documents: Document[];
   locationId: number | null;
   facilityId: number | null;
   buildingId: number | null;
@@ -445,7 +438,6 @@ export type {
   ContractDocument,
   AssetDocument,
   AssetFormImage,
-  AssetFormDocument,
   StateAssetCount,
   LGAAssetCount,
   InfoProps,

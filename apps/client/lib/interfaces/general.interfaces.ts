@@ -86,6 +86,13 @@ interface GenericTableProps {
   showEmptyState?: boolean;
 }
 
+interface Document {
+  documentId: number | null;
+  documentName: string | null;
+  base64Document: string | null;
+  base64Prefix: string | null;
+}
+
 type ActionType = 'bulk' | 'filter' | null;
 
 export type {
@@ -98,4 +105,5 @@ export type {
   AppConfig,
   GenericTableProps,
   ActionType,
+  Document,
 };

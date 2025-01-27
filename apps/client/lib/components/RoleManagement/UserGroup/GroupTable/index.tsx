@@ -1,21 +1,20 @@
-import { Flex, Text } from '@chakra-ui/react';
+import { Avatar, AvatarGroup, Flex } from '@chakra-ui/react';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useMemo } from 'react';
 import PopoverAction from './PopoverAction';
 import { GenericTableProps } from '~/lib/interfaces/general.interfaces';
-import { User } from '~/lib/interfaces/user.interfaces';
-import GenericStatusBox from '../../UI/GenericStatusBox';
-import { Role } from '~/lib/interfaces/role.interfaces';
+import { User, UserGroup } from '~/lib/interfaces/user.interfaces';
+import GenericStatusBox from '../../../UI/GenericStatusBox';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
-interface RoleTableProps extends GenericTableProps {
-  data: Role[];
+interface UserGroupTableProps extends GenericTableProps {
+  data: UserGroup[];
   // eslint-disable-next-line no-unused-vars
   handleSelectRow?: (row: User) => void;
 }
 
-const RoleTable = (props: RoleTableProps) => {
+const UserGroupTable = (props: UserGroupTableProps) => {
   const {
     data,
     isFetching,
@@ -27,34 +26,56 @@ const RoleTable = (props: RoleTableProps) => {
     setPageSize,
   } = props;
 
-  const columnHelper = createColumnHelper<Role>();
+  const columnHelper = createColumnHelper<UserGroup>();
   const columns = useMemo(
     () => {
       const baseColumns = [
-        columnHelper.accessor('roleName', {
+        columnHelper.accessor('groupName', {
           cell: (info) => info.getValue(),
-          header: 'Role',
+          header: 'User Group',
           enableSorting: false,
         }),
 
-        columnHelper.accessor('lastModifiedDate', {
-          cell: () => <Text color="blue.500">10</Text>,
-          header: 'Accounts',
+        columnHelper.accessor('groupId', {
+          cell: () => {
+            return (
+              <AvatarGroup size="sm" max={4}>
+                <Avatar
+                  name="Ryan Florence"
+                  src="https://bit.ly/ryan-florence"
+                />
+                <Avatar
+                  name="Segun Adebayo"
+                  src="https://bit.ly/sage-adebayo"
+                />
+                <Avatar name="Kent Dodds" src="https://bit.ly/kent-c-dodds" />
+                <Avatar
+                  name="Prosper Otemuyiwa"
+                  src="https://bit.ly/prosper-baba"
+                />
+                <Avatar
+                  name="Christian Nwamba"
+                  src="https://bit.ly/code-beast"
+                />
+              </AvatarGroup>
+            );
+          },
+          header: 'Users',
           enableSorting: false,
         }),
 
-        columnHelper.accessor('isNew', {
-          cell: () => '05',
-          header: 'Modules',
+        columnHelper.accessor('userGroupId', {
+          cell: () => 'John Doe',
+          header: 'Owner',
           enableSorting: true,
         }),
-        columnHelper.accessor('createdDate', {
+        columnHelper.accessor('dateCreated', {
           cell: (info) =>
             dateFormatter(info.getValue(), 'DD / MM / YYYY') ?? 'N/A',
           header: 'Date Created',
           enableSorting: false,
         }),
-        columnHelper.accessor('roleId', {
+        columnHelper.accessor('groupId', {
           cell: () => {
             return <GenericStatusBox text="Active" colorCode="#07CC3B" />;
           },
@@ -62,8 +83,8 @@ const RoleTable = (props: RoleTableProps) => {
           enableSorting: false,
         }),
 
-        columnHelper.accessor('guid', {
-          cell: (info) => <PopoverAction role={info.row.original} />,
+        columnHelper.accessor('userId', {
+          cell: (info) => <PopoverAction group={info.row.original} />,
           header: '',
           enableSorting: false,
         }),
@@ -105,4 +126,4 @@ const RoleTable = (props: RoleTableProps) => {
   );
 };
 
-export default RoleTable;
+export default UserGroupTable;

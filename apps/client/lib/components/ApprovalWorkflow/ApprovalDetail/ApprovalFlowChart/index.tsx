@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApprovalFlowProvider } from './ApprovalContext';
+import { ApprovalFlowProvider } from './Context';
 import FlowChart from './FlowChart';
 
 const ApprovalFlowChart = () => {

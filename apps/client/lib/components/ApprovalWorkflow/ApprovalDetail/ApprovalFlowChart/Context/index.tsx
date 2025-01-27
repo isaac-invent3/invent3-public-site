@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext, useState } from 'react';
-import { ContextValue } from './interfaces';
+import { ApprovalFlowInitialElement, ContextValue } from './interfaces';
 
 const ApprovalFlowContext = createContext<ContextValue | undefined>(undefined);
 
@@ -20,7 +20,7 @@ interface ApprovalFlowProviderProps {
 }
 
 const ApprovalFlowProvider = ({ children }: ApprovalFlowProviderProps) => {
-  const [elements, setElements] = useState<any[]>([]);
+  const [elements, setElements] = useState<ApprovalFlowInitialElement[]>([]);
 
   const onAddNodeCallback = () => {};
 

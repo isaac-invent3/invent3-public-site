@@ -35,6 +35,7 @@
     "chart.js": "^4.4.4",
     "createWebStorage": "link:redux-persist/lib/storage/createWebStorage",
     "d3-geo": "^3.1.1",
+    "dagre": "^0.8.5",
     "date-arithmetic": "^4.1.0",
     "date-fns": "^4.1.0",
     "focus-visible": "^5.2.1",
@@ -71,11 +72,13 @@
     "react-simple-maps": "^3.0.0",
     "react-tooltip": "^5.28.0",
     "redux-persist": "^6.0.0",
+    "uuid": "^11.0.5",
     "yup": "^1.4.0"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
+    "@types/dagre": "^0.7.52",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-date-range": "^1.4.9",

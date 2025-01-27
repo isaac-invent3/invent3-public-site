@@ -3,11 +3,18 @@ import {
   Edge,
   MarkerType,
   Node,
-  ReactFlowProvider,
   ReactFlow,
+  ReactFlowProvider,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import ApprovalDetailsPanel from './ApprovalDetailsPanel';
+import { useEffect, useState } from 'react';
+import { splitNodesAndEdges } from '../Components/Utils/splitNodesAndEdges';
+import { useApprovalFlowContext } from '../Context';
+import { initialElements } from '../Data/Elements1';
+import { getLayoutedElements } from '../Logic/layoutUtil';
+import useNodeActions from '../Logic/useNodeActions';
+import ApprovalDetailsPanel from '../RightPanel';
+import CustomEdge from './Edges';
 import ApprovalNode from './Nodes';
 // import { edgeTypes } from './Edges';
 
@@ -138,15 +145,61 @@ const FlowChart = () => {
     approvalNode: ApprovalNode,
   } as any;
 
+  const edgeTypes = {
+    condition: CustomEdge,
+  };
+
+  const { onAddNode, onDeleteNode, onNodeClick } = useNodeActions();
+  const { setElements, elements } = useApprovalFlowContext();
+
+  const [layoutElements, setLayoutElements] = useState<any[]>([]);
+
+  useEffect(() => {
+    const nodes = splitNodesAndEdges(initialElements).nodes.map((x) => ({
+      ...x,
+      type: 'approvalNode',
+      data: { ...x.data, onDeleteNode, onNodeClick },
+    }));
+
+    const edges = splitNodesAndEdges(initialElements).edges.map((x) => ({
+      ...x,
+      type: 'condition',
+      sourceHandle: 'output',
+      style: {
+        stroke: '#656565',
+        strokeWidth: 1,
+      },
+      markerEnd: {
+        type: MarkerType.Arrow,
+        width: 30,
+        height: 30,
+        color: '#656565',
+      },
+      data: { ...x.data, onAddNode },
+    }));
+
+    setElements([...nodes, ...edges]);
+  }, []);
+
+  useEffect(() => {
+    setLayoutElements(getLayoutedElements(elements));
+  }, [elements]);
+
+  const layoutNodes = layoutElements.filter((x) => x.position);
+  const layoutEdges = layoutElements.filter((x) => !x.position);
+
   return (
     <Box position="relative" width="100%">
       <Box height="75vh" width="85vw">
         <ReactFlowProvider>
           <ReactFlow
-            nodes={initialNodes}
-            edges={initialEdges}
+            nodes={layoutNodes}
+            edges={layoutEdges}
             nodeTypes={nodeTypes}
-            // edgeTypes={edgeTypes}
+            edgeTypes={edgeTypes}
+            nodesDraggable={false}
+            nodesConnectable={false}
+            panOnScroll
             minZoom={0.5}
           />
         </ReactFlowProvider>

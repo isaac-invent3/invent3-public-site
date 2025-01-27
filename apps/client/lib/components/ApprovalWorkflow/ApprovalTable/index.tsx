@@ -42,10 +42,13 @@ const ApprovalTable = (props: ApprovalTableProps) => {
         }),
 
         columnHelper.accessor('ticketTitle', {
-          cell: () =>
-            approvalCategory === 'disposal'
-              ? 'Bulk Asset Disposal'
-              : 'Bulk Asset Transfer',
+          cell: () => (
+            <Text fontWeight={800} color='black' >
+              {approvalCategory === 'disposal'
+                ? 'Bulk Asset Disposal'
+                : 'Bulk Asset Transfer'}
+            </Text>
+          ),
           header: 'Approval Type',
           enableSorting: false,
         }),

@@ -40,12 +40,7 @@ const Header = (props: ApprovalHeaderProps) => {
 
       <Flex width="50%" alignItems="center" justifyContent="space-between">
         <HStack spacing="16px" alignItems="flex-start">
-          <Text
-            color="#42403D"
-            fontWeight="700"
-            fontSize="16px"
-            lineHeight="19.01px"
-          >
+          <Text color="neutral.800" fontWeight="700" size="lg">
             Type:
           </Text>
 
@@ -73,7 +68,7 @@ const Header = (props: ApprovalHeaderProps) => {
                       <HStack>
                         <Text
                           color={tabActive ? '#0E2642' : '#838383'}
-                          fontWeight={tabActive ? 800 : 500}
+                          fontWeight={tabActive ? 700 : 500}
                           transition="all 300ms ease-in-out"
                           size="md"
                         >
@@ -83,7 +78,6 @@ const Header = (props: ApprovalHeaderProps) => {
                         <Flex
                           color={tabActive ? 'white' : 'black'}
                           bgColor={tabActive ? '#0E2642' : '#BBBBBB'}
-                          fontSize={tabActive ? '14px' : '12px'}
                           transition="all 300ms ease-in-out"
                           borderRadius="16px"
                           width="30px"
@@ -91,8 +85,11 @@ const Header = (props: ApprovalHeaderProps) => {
                           alignItems="center"
                           justifyContent="center"
                           ml="8px"
+                          opacity={tabActive ? 1 : 0.5}
                         >
-                          {tab.count}
+                          <Text size={tabActive ? 'md' : 'base'}>
+                            {tab.count}
+                          </Text>
                         </Flex>
                       </HStack>
                     </Tab>

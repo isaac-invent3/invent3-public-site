@@ -15,13 +15,13 @@ const renderComments = (comments: Comment[], depth = 0) => {
       spacing="24px"
       key={comment.id}
       align="start"
-      pl={`${depth * 30}px`}
+      pl={`${depth * 48}px`}
       w="full"
     >
-      <HStack align="start">
+      <HStack align="start" spacing='8px'>
         <Avatar width="40px" height="40px" />
 
-        <VStack align="start" spacing={1} mt="10px">
+        <VStack align="start" spacing='11.5px' mt="11.5px" >
           <HStack spacing={2}>
             <Text color="neutral.800" size="md" fontWeight={700}>
               {comment.userName}

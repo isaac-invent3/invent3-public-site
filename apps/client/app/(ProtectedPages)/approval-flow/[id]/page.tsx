@@ -14,10 +14,8 @@ export default function Page({ params }: { params: { id: number } }) {
   );
 
   if (isLoading) {
-    return <Skeleton width="full" rounded="8px" height="250px" mt="80px" />;
+    return <Skeleton width="full" rounded="8px" height="250px" />;
   }
-
-  // if (!data?.data) return notFound();
 
   return <ApprovalDetail data={data?.data as any} />;
 }

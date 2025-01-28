@@ -67,6 +67,7 @@ import { systemContextTypesApi } from './services/systemcontexttypes.services';
 import { vendorApi } from './services/vendor.services';
 import { logApi } from './services/log.services';
 import { rolesApi } from './services/role.services';
+import { moduleApi } from './services/modules.services';
 import { notesApi } from './services/notes.services';
 
 export const persistConfig = {
@@ -153,6 +154,9 @@ const rootReducer = combineReducers({
 
   // Company APIS
   [companyApi.reducerPath]: companyApi.reducer,
+
+  // Module APIS
+  [moduleApi.reducerPath]: moduleApi.reducer,
 
   // Notes APIS
   [notesApi.reducerPath]: notesApi.reducer,
@@ -259,6 +263,9 @@ export const makeStore = () => {
 
         // Company APIs
         companyApi.middleware,
+
+        // Module APIs
+        moduleApi.middleware,
 
         // Notes Apis
         notesApi.middleware,

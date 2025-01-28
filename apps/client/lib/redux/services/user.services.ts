@@ -11,6 +11,7 @@ import {
   User,
   UserConfigurationOption,
   UserConfigurationPayload,
+  UserDesignation,
   UserGroup,
   UserGroupMember,
   UserPasswordChangeQuery,
@@ -35,6 +36,28 @@ export const userApi = createApi({
     >({
       query: (data) => ({
         url: generateQueryStr(`/Users?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allUsers'],
+    }),
+    getAllUserGroups: builder.query<
+      BaseApiResponse<ListResponse<UserGroup>>,
+      QueryParams
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/UserGroups?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allUsers'],
+    }),
+    getAllUserDesignations: builder.query<
+      BaseApiResponse<ListResponse<UserDesignation>>,
+      QueryParams
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/UserDesignations?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -106,6 +129,17 @@ export const userApi = createApi({
         body,
       }),
     }),
+    searchUserDesignation: builder.mutation<
+      BaseApiResponse<ListResponse<UserDesignation>>,
+      SearchQuery
+    >({
+      query: (body) => ({
+        url: `/UserDesignations`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
     changeUserPassword: builder.mutation<void, UserPasswordChangeQuery>({
       query: (body) => ({
         url: `/Users/ChangePassword`,
@@ -139,4 +173,7 @@ export const {
   useChangeUserPasswordMutation,
   useGetUserConfigurationOptionsQuery,
   useUpdateUserConfigurationOptionsMutation,
+  useGetAllUserDesignationsQuery,
+  useSearchUserDesignationMutation,
+  useGetAllUserGroupsQuery,
 } = userApi;

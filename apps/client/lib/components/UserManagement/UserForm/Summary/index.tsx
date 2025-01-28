@@ -3,7 +3,8 @@ import React from 'react';
 import { ROUTES } from '~/lib/utils/constants';
 import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
-import { Flex, VStack } from '@chakra-ui/react';
+import { Flex, useDisclosure, VStack } from '@chakra-ui/react';
+import UserSuccessModal from './SuccessModal';
 
 interface SummaryStepProps {
   activeStep: number;
@@ -12,7 +13,8 @@ interface SummaryStepProps {
 }
 
 const SummaryStep = (props: SummaryStepProps) => {
-  const { activeStep, setActiveStep } = props;
+  const { activeStep, setActiveStep, type } = props;
+  const { isOpen, onClose, onOpen } = useDisclosure();
   return (
     <>
       <Flex
@@ -41,8 +43,18 @@ const SummaryStep = (props: SummaryStepProps) => {
           totalStep={4}
           activeStep={4}
           setActiveStep={setActiveStep}
+          handleContinue={onOpen}
         />
       </Flex>
+      <UserSuccessModal
+        isOpen={isOpen}
+        onClose={onClose}
+        successText={
+          type === 'create'
+            ? 'User Created Successfully!'
+            : 'User Updated Sucessfully'
+        }
+      />
     </>
   );
 };

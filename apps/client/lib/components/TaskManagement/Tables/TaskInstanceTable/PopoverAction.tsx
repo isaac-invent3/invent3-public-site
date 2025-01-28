@@ -17,8 +17,12 @@ import {
 } from '~/lib/utils/constants';
 import TaskDetailDrawer from '../../Drawers/TaskDetailDrawer';
 import MarkTaskAsCompletedModal from '../../Modals/MarkTaskAsCompletedModal';
+import usePermissionAccess from '~/lib/hooks/useRoleAccess';
 
 const PopoverAction = (task: TaskInstance, type: 'drawer' | 'page') => {
+  const canEditTask = usePermissionAccess('task:edit');
+  const canMarkTaskAsCompleted = usePermissionAccess('task:mark_completed');
+  const canDeleteTask = usePermissionAccess('task:delete');
   const {
     isOpen: isOpenEdit,
     onOpen: onOpenEdit,
@@ -83,6 +87,7 @@ const PopoverAction = (task: TaskInstance, type: 'drawer' | 'page') => {
       <GenericPopover width="129px" placement="bottom-start">
         <VStack width="full" alignItems="flex-start" spacing="16px">
           {type === 'page' &&
+            canMarkTaskAsCompleted &&
             task.statusCategoryId === STATUS_CATEGORY_ENUM.ACTIVE && (
               <Text cursor="pointer" onClick={onOpenMarkCompleted}>
                 Mark Completed
@@ -93,12 +98,16 @@ const PopoverAction = (task: TaskInstance, type: 'drawer' | 'page') => {
               View Details
             </Text>
           )}
-          <Text cursor="pointer" onClick={() => onOpenEdit()}>
-            Edit
-          </Text>
-          <Text cursor="pointer" onClick={onOpenDelete}>
-            Delete
-          </Text>
+          {canEditTask && (
+            <Text cursor="pointer" onClick={() => onOpenEdit()}>
+              Edit
+            </Text>
+          )}
+          {canDeleteTask && (
+            <Text cursor="pointer" onClick={onOpenDelete}>
+              Delete
+            </Text>
+          )}
         </VStack>
       </GenericPopover>
       <TaskFormDrawer

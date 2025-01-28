@@ -3,6 +3,7 @@ import { AddIcon } from '../CustomIcons';
 import { Button } from '@repo/ui/components';
 import PageHeader from '../UI/PageHeader';
 import { ROUTES } from '~/lib/utils/constants';
+import usePermissionAccess from '~/lib/hooks/useRoleAccess';
 
 const Header = ({
   showGenerate = true,
@@ -11,12 +12,13 @@ const Header = ({
   showGenerate?: boolean;
   header?: string;
 }) => {
+  const canGenerateReport = usePermissionAccess('report:generate');
   return (
     <VStack spacing="58px" alignItems="flex-start" width="full" pt="12px">
       <HStack width="full" justifyContent="space-between">
         <PageHeader>{header ?? 'Reports & Analytics'}</PageHeader>
 
-        {showGenerate && (
+        {showGenerate && canGenerateReport && (
           <Button
             customStyles={{ width: '227px' }}
             href={`/${ROUTES.REPORT}/generate`}

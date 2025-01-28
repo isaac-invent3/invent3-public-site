@@ -1,5 +1,7 @@
 import { GeoJsonTypes } from 'geojson';
 import { OPERATORS } from '../utils/constants';
+import { ComponentWithAs, IconProps } from '@chakra-ui/react';
+import { PermissionKey } from './role.interfaces';
 
 interface Option {
   label: string;
@@ -95,6 +97,13 @@ interface Document {
 
 type ActionType = 'bulk' | 'filter' | null;
 
+interface SideBarData {
+  name: string;
+  route: string;
+  icon: ComponentWithAs<'svg', IconProps>;
+  permissionKey: PermissionKey;
+}
+
 export type {
   GeoJSONFeature,
   Option,
@@ -106,4 +115,5 @@ export type {
   GenericTableProps,
   ActionType,
   Document,
+  SideBarData,
 };

@@ -1,41 +1,21 @@
 import { useSession } from 'next-auth/react';
-import { usePathname } from 'next/navigation';
+import { PermissionKey } from '../interfaces/role.interfaces';
+import Cookies from 'js-cookie';
 
-interface Permission {
-  create: boolean;
-  read: boolean;
-  update: boolean;
-  delete: boolean;
-}
-const defaultPermission = {
-  create: false,
-  read: false,
-  update: false,
-  delete: false,
-};
-
-const usePermissionAccess = ({
-  page,
-  role,
-}: {
-  page?: string;
-  role?: string | null;
-}): Permission => {
+const usePermissionAccess = (key: PermissionKey): boolean => {
   const session = useSession();
-  const pathname = usePathname();
-
+  const permissionData = Cookies.get('permissionData');
+  const permissions: string[] = permissionData
+    ? JSON.parse(permissionData)
+    : [];
   if (session.status === 'loading' || session.status === 'unauthenticated')
-    return defaultPermission;
+    return false;
 
-  if (!role) {
-    role = session.data && session.data.user.role;
+  if (permissions.includes(key)) {
+    return true;
   }
 
-  if (!page) page = pathname;
-
-  //Get permission from user based on the role and the page and return
-
-  return { create: true, read: true, update: true, delete: true };
+  return false;
 };
 
 export default usePermissionAccess;

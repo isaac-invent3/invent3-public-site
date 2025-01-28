@@ -3,6 +3,7 @@ import { Text, VStack } from '@chakra-ui/react';
 import { GenericPopover } from '@repo/ui/components';
 import { useMemo } from 'react';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
+import usePermissionAccess from '~/lib/hooks/useRoleAccess';
 import {
   SelectedTicketAction,
   Ticket,
@@ -21,6 +22,10 @@ const PopoverAction = (props: PopoverActionProps) => {
   const { ticket, category } = props;
   const { updateSearchParam } = useCustomSearchParams();
   const appConfig = useAppSelector((state) => state.general.appConfigValues);
+  const canAssignTicket = usePermissionAccess('ticket:assign');
+  const canEditTicket = usePermissionAccess('ticket:edit');
+  const canDeleteTicket = usePermissionAccess('ticket:delete');
+  const canScheduleTicket = usePermissionAccess('ticket:schedule');
 
   const dispatch = useAppDispatch();
 
@@ -66,12 +71,16 @@ const PopoverAction = (props: PopoverActionProps) => {
         <VStack width="full" alignItems="flex-start" spacing="16px">
           {ticketCategory === 'new' && (
             <VStack width="full" alignItems="flex-start" spacing="16px">
-              <Text cursor="pointer" onClick={() => openModal('assign')}>
-                Assign Ticket
-              </Text>
-              <Text cursor="pointer" onClick={() => openModal('schedule')}>
-                Schedule Ticket
-              </Text>
+              {
+                <Text cursor="pointer" onClick={() => openModal('assign')}>
+                  Assign Ticket
+                </Text>
+              }
+              {canScheduleTicket && (
+                <Text cursor="pointer" onClick={() => openModal('schedule')}>
+                  Schedule Ticket
+                </Text>
+              )}
               <Text cursor="pointer" onClick={handleViewDetails}>
                 View Details
               </Text>
@@ -80,9 +89,11 @@ const PopoverAction = (props: PopoverActionProps) => {
 
           {ticketCategory === 'assigned' && (
             <VStack width="full" alignItems="flex-start" spacing="16px">
-              <Text cursor="pointer" onClick={() => openModal('schedule')}>
-                Schedule Ticket
-              </Text>
+              {canScheduleTicket && (
+                <Text cursor="pointer" onClick={() => openModal('schedule')}>
+                  Schedule Ticket
+                </Text>
+              )}
               <Text cursor="pointer" onClick={handleViewDetails}>
                 View Details
               </Text>
@@ -92,9 +103,11 @@ const PopoverAction = (props: PopoverActionProps) => {
           {(ticketCategory === 'scheduled' ||
             ticketCategory === 'in_progress') && (
             <VStack width="full" alignItems="flex-start" spacing="16px">
-              <Text cursor="pointer" onClick={() => openModal('edit')}>
-                Edit Ticket
-              </Text>
+              {canEditTicket && (
+                <Text cursor="pointer" onClick={() => openModal('edit')}>
+                  Edit Ticket
+                </Text>
+              )}
 
               <Text
                 cursor="pointer"
@@ -104,10 +117,11 @@ const PopoverAction = (props: PopoverActionProps) => {
               </Text>
             </VStack>
           )}
-
-          <Text cursor="pointer" onClick={() => openModal('delete')}>
-            Delete
-          </Text>
+          {canDeleteTicket && (
+            <Text cursor="pointer" onClick={() => openModal('delete')}>
+              Delete
+            </Text>
+          )}
         </VStack>
       </GenericPopover>
     </>

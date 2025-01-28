@@ -183,7 +183,7 @@ export const makeStore = () => {
         assetStatsApi.middleware,
         assetTypeApi.middleware,
         assetDisposalApi.middleware,
-        // assetVendorsApi.middleware,
+        assetVendorsApi.middleware,
 
         // Maintenance-related APIs
         maintenanceFrequencyApi.middleware,

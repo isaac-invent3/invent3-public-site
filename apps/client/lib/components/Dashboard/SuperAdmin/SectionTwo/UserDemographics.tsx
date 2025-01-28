@@ -5,10 +5,90 @@ import { Option } from '@repo/interfaces';
 import DropDown from '../../Common/DropDown';
 import CardHeader from '../../Common/CardHeader';
 
+import { Radar } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  RadialLinearScale,
+  PointElement,
+  LineElement,
+  Filler,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import { Flex } from '@chakra-ui/react';
+
+ChartJS.register(
+  RadialLinearScale,
+  PointElement,
+  LineElement,
+  Filler,
+  Tooltip,
+  Legend
+);
+
 const UserDemographics = () => {
   const [selectedYear, setSelectedYear] = useState<Option | undefined>(
     generateLastFiveYears()[0] as Option
   );
+
+  const data = {
+    labels: ['Abia', 'Delta', 'Benue', 'Rivers', 'Kogi', 'Abuja'],
+    datasets: [
+      {
+        label: 'Performance',
+        data: [20, 25, 35, 40, 30, 36],
+        backgroundColor: '#00A12933',
+        borderColor: '#6CF892',
+        borderWidth: 2,
+        pointBackgroundColor: '#6CF892',
+        pointBorderColor: '#07CC3B1A',
+        pointBorderWidth: 1,
+        pointRadius: 3,
+        fill: true,
+      },
+    ],
+  };
+
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      r: {
+        angleLines: {
+          display: true,
+          color: '#BBBBBB',
+        },
+        grid: {
+          color: '#BBBBBB',
+        },
+        ticks: {
+          display: false,
+          stepSize: 10,
+        },
+        suggestedMin: 0,
+        suggestedMax: 40,
+        pointLabels: {
+          color: '#656565',
+          font: {
+            size: 11,
+          },
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        display: false,
+      },
+      tooltip: {
+        enabled: true,
+        callbacks: {
+          label: function (tooltipItem: any) {
+            return `Value: ${tooltipItem.raw}`;
+          },
+        },
+      },
+    },
+  };
 
   return (
     <VStack
@@ -31,6 +111,10 @@ const UserDemographics = () => {
           width="100px"
         />
       </HStack>
+
+      <Flex width="full" height="full">
+        <Radar data={data} options={options} />
+      </Flex>
     </VStack>
   );
 };

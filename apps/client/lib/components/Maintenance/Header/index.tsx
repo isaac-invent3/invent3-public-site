@@ -6,6 +6,7 @@ import PlanTemplateModal from '../Plans/PlanTemplateModal';
 import ScheduleTemplateModal from '../Schedules/ScheduleTemplateModal';
 import ActionButtonPopover from '../../UI/ActionButtonsPopover';
 import { ROUTES } from '~/lib/utils/constants';
+import usePermissionAccess from '~/lib/hooks/useRoleAccess';
 
 const Header = () => {
   const pathname = usePathname();
@@ -20,6 +21,8 @@ const Header = () => {
     onClose: onCloseScheduleTemplate,
     onOpen: onOpenScheduleTemplate,
   } = useDisclosure();
+  const canCreatePlan = usePermissionAccess('maintenance_plan:create');
+  const canCreateSchedule = usePermissionAccess('maintenance_schedule:create');
 
   useEffect(() => {
     // Define a mapping for the paths to tab names
@@ -39,7 +42,7 @@ const Header = () => {
   return (
     <HStack width="full" justifyContent="space-between">
       <PageHeader>Maintenance</PageHeader>
-      {tabName?.toLowerCase() === 'plans' && (
+      {tabName?.toLowerCase() === 'plans' && canCreatePlan && (
         <ActionButtonPopover
           onOpenTemplateModal={onOpenPlanTemplate}
           newRoute={`/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_PLANS}/add`}
@@ -55,7 +58,7 @@ const Header = () => {
           )}
         </ActionButtonPopover>
       )}
-      {tabName?.toLowerCase() === 'schedules' && (
+      {tabName?.toLowerCase() === 'schedules' && canCreateSchedule && (
         <ActionButtonPopover
           onOpenTemplateModal={onOpenScheduleTemplate}
           newRoute={`/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_SCHEDULES}/add`}

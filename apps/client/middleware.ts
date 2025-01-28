@@ -1,28 +1,29 @@
-import { auth } from 'auth';
+import { auth } from '~/auth';
 import { NextRequest, NextResponse } from 'next/server';
-// import { doesRoleHaveAccessToURL } from './lib/utils/roleAccess';
-import { UserPermission } from './types/next-auth';
+import { checkPermission } from './app/actions/permissionAction';
 
 const publicRoutes = ['/', '/forgot-password'];
 
-// @ts-ignore
-export default auth((request: NextRequest) => {
-  // @ts-ignore
-  const { auth } = request as {
-    auth: { user: { role: string; roleRoutePermissions: UserPermission[] } };
-  };
+export async function middleware(request: NextRequest) {
+  const session = await auth();
   const { pathname } = request.nextUrl;
-  const isLoggedIn = !!auth;
-  if (isLoggedIn) {
-    // if (
-    //   !doesRoleHaveAccessToURL(auth.user.roleRoutePermissions ?? [], pathname)
-    // ) {
-    //   return NextResponse.rewrite(new URL('/404', request.url));
-    // }
+  if (session) {
+    const permissionData = await checkPermission({ path: pathname });
+
+    if (!permissionData) {
+      return NextResponse.rewrite(new URL('/404', request.url));
+    }
+    let response: NextResponse;
+    response = NextResponse.next();
+    response.cookies.set(
+      'permissionData',
+      JSON.stringify(permissionData?.permissionKeys)
+    );
+
     if (publicRoutes.includes(pathname)) {
       return NextResponse.redirect(new URL(`/dashboard`, request.url));
     }
-    return NextResponse.next();
+    return response;
   }
 
   if (publicRoutes.includes(pathname)) {
@@ -31,7 +32,7 @@ export default auth((request: NextRequest) => {
   return NextResponse.redirect(
     new URL(`/?ref=${request.nextUrl.pathname}`, request.url)
   );
-});
+}
 
 export const config = {
   matcher: [
@@ -45,5 +46,7 @@ export const config = {
     '/template-management/:path*',
     '/profile/:path*',
     '/report-analytics/:path*',
+    '/role-management/:path*',
+    '/user-management/:path*',
   ],
 };

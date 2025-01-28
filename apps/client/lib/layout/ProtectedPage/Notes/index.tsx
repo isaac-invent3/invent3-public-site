@@ -1,8 +1,9 @@
 import { HStack, Icon, Text, useDisclosure } from '@chakra-ui/react';
 import { FolderIcon } from '~/lib/components/CustomIcons';
+import AllNotes from '~/lib/components/Notes/AllNotes';
 
 const Notes = () => {
-  const {} = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <HStack
       px="12px"
@@ -19,6 +20,7 @@ const Notes = () => {
       cursor="pointer"
       transition="all 300ms ease-in-out"
       background="white"
+      role="group"
       sx={{
         boxShadow: `
       0px 3px 6px rgba(0, 0, 0, 0.1),
@@ -31,12 +33,19 @@ const Notes = () => {
       _hover={{
         transform: 'scale(1.1)',
       }}
+      onClick={onOpen}
     >
-      <Icon as={FolderIcon} />
+      <Icon
+        as={FolderIcon}
+        transition="all 300ms ease-in-out"
+        _groupHover={{ transform: 'rotate(15deg) scale(1.2)' }}
+      />
 
       <Text color="#838383" size="md" fontWeight={700}>
         Notes
       </Text>
+
+      <AllNotes onClose={onClose} isOpen={isOpen} />
     </HStack>
   );
 };

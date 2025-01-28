@@ -47,6 +47,7 @@ import taskSlice from './slices/TaskSlice';
 import templateSlice from './slices/TemplateSlice';
 import ticketSlice from './slices/TicketSlice';
 import userSlice from './slices/UserSlice';
+import notesSlice from './slices/NoteSlice'
 
 import { assetDocumentApi } from './services/asset/document.services';
 import { aisleApi } from './services/location/aisle.services';
@@ -65,6 +66,7 @@ import { systemContextTypesApi } from './services/systemcontexttypes.services';
 import { vendorApi } from './services/vendor.services';
 import { logApi } from './services/log.services';
 import { rolesApi } from './services/role.services';
+import { notesApi } from './services/notes.services';
 
 export const persistConfig = {
   key: 'root',
@@ -148,6 +150,9 @@ const rootReducer = combineReducers({
   // Roles APIS
   [rolesApi.reducerPath]: rolesApi.reducer,
 
+  // Notes APIS
+  [notesApi.reducerPath]: notesApi.reducer,
+
   asset: assetSlice,
   general: generalSlice,
   dashboard: dashboardSlice,
@@ -158,6 +163,7 @@ const rootReducer = combineReducers({
   user: userSlice,
   ticket: ticketSlice,
   report: reportSlice,
+  notes: notesSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -246,6 +252,9 @@ export const makeStore = () => {
 
         // Roles Apis
         rolesApi.middleware,
+
+        // Notes Apis
+        notesApi.middleware
       ]),
   });
 };

@@ -6,9 +6,12 @@ import CountrySelect from '~/lib/components/Common/SelectComponents/Location/Cou
 import LGASelect from '~/lib/components/Common/SelectComponents/Location/LGASelect';
 import StateSelect from '~/lib/components/Common/SelectComponents/Location/StateSelect';
 import { UserFormDetails } from '~/lib/interfaces/user.interfaces';
+import { useAppDispatch } from '~/lib/redux/hooks';
+import { updateUserForm } from '~/lib/redux/slices/UserSlice';
 
 const Address = () => {
   const { setFieldValue, values } = useFormikContext<UserFormDetails>();
+  const dispatch = useAppDispatch();
   return (
     <FormInputWrapper
       sectionMaxWidth="157px"
@@ -36,19 +39,22 @@ const Address = () => {
         <SimpleGrid width="full" gap="16px" columns={4}>
           <CountrySelect
             handleSelect={(option) => {
-              setFieldValue('country', option.value);
+              setFieldValue('countryId', option.value);
+              dispatch(updateUserForm({ countryName: option.label }));
             }}
           />
           <StateSelect
-            countryId={values.country}
+            countryId={values.countryId}
             handleSelect={(option) => {
-              setFieldValue('state', option.value);
+              setFieldValue('stateId', option.value);
+              dispatch(updateUserForm({ stateName: option.label }));
             }}
           />
           <LGASelect
-            stateId={values.state}
+            stateId={values.stateId}
             handleSelect={(option) => {
-              setFieldValue('city', option.value);
+              setFieldValue('cityId', option.value);
+              dispatch(updateUserForm({ cityName: option.label }));
             }}
             type="specificById"
           />

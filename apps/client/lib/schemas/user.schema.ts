@@ -25,19 +25,19 @@ const employeeInfoSchema = Yup.object().shape({
   gender: Yup.string().nullable(),
   address1: Yup.string().nullable(),
   address2: Yup.string().nullable(),
-  country: Yup.string().nullable(),
-  state: Yup.string().nullable(),
-  city: Yup.string().nullable(),
+  countryId: Yup.number().nullable(),
+  stateId: Yup.number().nullable(),
+  cityId: Yup.number().nullable(),
   postalCode: Yup.string().nullable(),
 });
 
 const occupationInfoSchema = Yup.object().shape({
-  employmentType: Yup.string().nullable(),
-  branch: Yup.string().nullable(),
-  jobTitle: Yup.string().nullable(),
-  team: Yup.string().nullable(),
-  userRole: Yup.string().nullable(),
-  userGroup: Yup.array().of(Yup.string()).nullable(),
+  employmentTypeId: Yup.string().nullable(),
+  branchId: Yup.string().nullable(),
+  jobTitleId: Yup.string().nullable(),
+  teamId: Yup.string().nullable(),
+  userRoleId: Yup.string().nullable(),
+  userGroupIds: Yup.array().of(Yup.string()).nullable(),
 });
 
 const userRoleSchema = Yup.object().shape({

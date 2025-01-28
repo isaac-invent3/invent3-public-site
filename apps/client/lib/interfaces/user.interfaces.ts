@@ -163,17 +163,41 @@ interface UserFormDetails {
   gender: string | null;
   address1: string | null;
   address2: string | null;
-  country: number | null;
-  state: number | null;
-  city: number | null;
+  countryId: number | null;
+  stateId: number | null;
+  cityId: number | null;
+  cityName: string | null;
+  countryName: string | null;
+  stateName: string | null;
   postalCode: string | null;
   documents: Document[];
-  employmentType: string | null;
-  branch: string | null;
-  jobTitle: string | null;
-  team: string | null;
-  userRole: string | null;
-  userGroup: string[];
+  employmentTypeId: number | null;
+  employmentTypeName: string | null;
+  branchId: number | null;
+  branchName: string | null;
+  jobTitleId: number | null;
+  jobTitleName: string | null;
+  teamId: number | null;
+  teamName: string | null;
+  userRoleId: number | null;
+  userRoleName: string | null;
+  userGroupIds: number[];
+  userGroupNames: string[];
+}
+
+interface UserDesignation {
+  isNew: boolean;
+  createdDate: string;
+  createdBy: string;
+  lastModifiedDate: string;
+  lastModifiedBy: string;
+  isDeleted: boolean;
+  deletedDate: string;
+  deletedBy: string;
+  guid: string;
+  userDesignationId: number;
+  employeeId: number;
+  designationId: number;
 }
 
 export type {
@@ -189,4 +213,5 @@ export type {
   UserPermission,
   UserFilter,
   UserFormDetails,
+  UserDesignation,
 };

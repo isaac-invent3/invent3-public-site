@@ -2,10 +2,13 @@ import { VStack } from '@chakra-ui/react';
 import { ErrorMessage, FormInputWrapper } from '@repo/ui/components';
 import { useField } from 'formik';
 import React from 'react';
-import CountrySelect from '~/lib/components/Common/SelectComponents/Location/CountrySelect';
+import UserGroupSelect from '~/lib/components/Common/SelectComponents/UserGroup';
+import { useAppDispatch } from '~/lib/redux/hooks';
+import { updateUserForm } from '~/lib/redux/slices/UserSlice';
 
 const Team = () => {
-  const [field, meta, helpers] = useField('team'); //eslint-disable-line
+  const [field, meta, helpers] = useField('teamId'); //eslint-disable-line
+  const dispatch = useAppDispatch();
   return (
     <FormInputWrapper
       sectionMaxWidth="141px"
@@ -14,9 +17,12 @@ const Team = () => {
       title="Team"
     >
       <VStack width="full" spacing="4px">
-        <CountrySelect
+        <UserGroupSelect
+          selectTitle="Team"
+          selectName="teamId"
           handleSelect={(option) => {
             helpers.setValue(option.value);
+            dispatch(updateUserForm({ userGroupNames: [option.label] }));
           }}
         />
         {meta.touched && meta.error !== undefined && (

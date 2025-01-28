@@ -2,10 +2,14 @@ import { VStack } from '@chakra-ui/react';
 import { ErrorMessage, FormInputWrapper } from '@repo/ui/components';
 import { useField } from 'formik';
 import React from 'react';
-import CountrySelect from '~/lib/components/Common/SelectComponents/Location/CountrySelect';
+import FacilitySelect from '~/lib/components/AssetManagement/AssetForm/GeneralStep/AssetLocation/Modals/SelectInputs/FacilitySelect';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { updateUserForm } from '~/lib/redux/slices/UserSlice';
 
 const Branch = () => {
   const [field, meta, helpers] = useField('branch'); //eslint-disable-line
+  const { cityId } = useAppSelector((state) => state.user.userForm);
+  const dispatch = useAppDispatch();
   return (
     <FormInputWrapper
       sectionMaxWidth="141px"
@@ -14,9 +18,12 @@ const Branch = () => {
       title="Branch"
     >
       <VStack width="full" spacing="4px">
-        <CountrySelect
+        <FacilitySelect
+          type="specificById"
+          lgaId={cityId}
           handleSelect={(option) => {
             helpers.setValue(option.value);
+            dispatch(updateUserForm({ branchName: option.label }));
           }}
         />
         {meta.touched && meta.error !== undefined && (

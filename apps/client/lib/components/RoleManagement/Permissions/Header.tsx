@@ -1,9 +1,7 @@
-import { HStack, SimpleGrid, Text } from '@chakra-ui/react';
+import { HStack, Text } from '@chakra-ui/react';
 import React from 'react';
 
 const Header = () => {
-  const permissionTypes = ['Create', 'Read', 'Update', 'Delete'];
-
   return (
     <HStack
       width="full"
@@ -15,13 +13,9 @@ const Header = () => {
       <Text color="black" fontWeight={700} size="md" width="60%">
         Modules
       </Text>
-      <SimpleGrid width="40%" columns={4}>
-        {permissionTypes.map((item, index) => (
-          <Text color="black" key={index}>
-            {item}
-          </Text>
-        ))}
-      </SimpleGrid>
+      <Text color="black" fontWeight={700} size="md" width="40%">
+        Description
+      </Text>
     </HStack>
   );
 };

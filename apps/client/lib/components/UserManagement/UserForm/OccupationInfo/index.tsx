@@ -24,12 +24,12 @@ const OccupationInfo = (props: OccupationInfoProps) => {
 
   const formik = useFormik({
     initialValues: {
-      employmentType: formDetails?.employmentType ?? null,
-      branch: formDetails?.branch ?? null,
-      jobTitle: formDetails?.jobTitle ?? null,
-      team: formDetails?.team ?? null,
-      userRole: formDetails?.userRole ?? null,
-      userGroup: formDetails?.userGroup ?? null,
+      employmentTypeId: formDetails?.employmentTypeId ?? null,
+      branchId: formDetails?.branchId ?? null,
+      jobTitleId: formDetails?.jobTitleId ?? null,
+      teamId: formDetails?.teamId ?? null,
+      userRoleId: formDetails?.userRoleId ?? null,
+      userGroupsId: formDetails?.userGroupIds ?? null,
     },
     validationSchema: occupationInfoSchema,
     enableReinitialize: true,
@@ -79,7 +79,6 @@ const OccupationInfo = (props: OccupationInfoProps) => {
               totalStep={4}
               activeStep={2}
               setActiveStep={setActiveStep}
-              handleContinue={() => console.log({ error: formik.errors })}
             />
           </Flex>
         </form>

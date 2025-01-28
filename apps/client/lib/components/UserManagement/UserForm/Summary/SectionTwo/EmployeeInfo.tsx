@@ -17,9 +17,9 @@ const EmployeeInfo = () => {
     workEmail,
     address1,
     address2,
-    country,
-    state,
-    city,
+    countryName,
+    stateName,
+    cityName,
     postalCode,
   } = useAppSelector((state) => state.user.userForm);
 
@@ -38,7 +38,7 @@ const EmployeeInfo = () => {
     },
     {
       label: 'Date of Birth',
-      value: dob ? dateFormatter(dob, 'MMMM, Do, YYYY', 'DD/MM/YYY') : 'N/A',
+      value: dob ? dateFormatter(dob, 'Do MMMM, YYYY', 'DD/MM/YYYY') : 'N/A',
     },
     {
       label: 'Gender',
@@ -69,15 +69,15 @@ const EmployeeInfo = () => {
     },
     {
       label: 'Country',
-      value: country,
+      value: countryName,
     },
     {
       label: 'State',
-      value: state,
+      value: stateName,
     },
     {
       label: 'City',
-      value: city,
+      value: cityName,
     },
     {
       label: 'Postal/Zip Code',

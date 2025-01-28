@@ -23,6 +23,7 @@ interface GenericAsyncSelectProps {
   fetchKey?: string | number | null | undefined;
   showTitleAfterSelect?: boolean;
   isInvalid?: boolean;
+  isMultiSelect?: boolean;
 }
 
 const GenericAsyncSelect = (props: GenericAsyncSelectProps) => {
@@ -42,6 +43,7 @@ const GenericAsyncSelect = (props: GenericAsyncSelectProps) => {
     fetchKey,
     showTitleAfterSelect = true,
     isInvalid,
+    isMultiSelect,
   } = props;
   const { handleSubmit } = useCustomMutation();
   const [options, setOptions] = useState<Option[]>([]);
@@ -126,6 +128,7 @@ const GenericAsyncSelect = (props: GenericAsyncSelectProps) => {
       showTitleAfterSelect={showTitleAfterSelect}
       isSearchable
       isInvalid={isInvalid}
+      isMultiSelect={isMultiSelect}
     />
   );
 };

@@ -66,6 +66,7 @@ import { systemContextTypesApi } from './services/systemcontexttypes.services';
 import { vendorApi } from './services/vendor.services';
 import { logApi } from './services/log.services';
 import { rolesApi } from './services/role.services';
+import { moduleApi } from './services/modules.services';
 
 export const persistConfig = {
   key: 'root',
@@ -151,6 +152,9 @@ const rootReducer = combineReducers({
 
   // Company APIS
   [companyApi.reducerPath]: companyApi.reducer,
+
+  // Module APIS
+  [moduleApi.reducerPath]: moduleApi.reducer,
 
   asset: assetSlice,
   general: generalSlice,
@@ -253,6 +257,9 @@ export const makeStore = () => {
 
         // Company APIs
         companyApi.middleware,
+
+        // Module APIs
+        moduleApi.middleware,
       ]),
   });
 };

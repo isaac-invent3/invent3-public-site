@@ -2,7 +2,7 @@ import {
   Collapse,
   HStack,
   Icon,
-  SimpleGrid,
+  Skeleton,
   Text,
   useDisclosure,
   VStack,
@@ -11,9 +11,16 @@ import { CheckBox } from '@repo/ui/components';
 import React from 'react';
 import { ChevronDownIcon } from '~/lib/components/CustomIcons';
 import { Permission } from './Permission';
+import { Module } from '~/lib/interfaces/module.interfaces';
+import { useGetAllSubModulesQuery } from '~/lib/redux/services/modules.services';
 
-const Module = () => {
+const ModuleItem = ({ data }: { data: Module }) => {
+  const { moduleContextTypeName, description } = data;
   const { onToggle, isOpen } = useDisclosure();
+  const { data: submodules, isLoading } = useGetAllSubModulesQuery(
+    { pageSize: 50 },
+    { skip: !isOpen }
+  );
   return (
     <VStack width="full">
       <HStack
@@ -28,22 +35,13 @@ const Module = () => {
         <HStack spacing="16px" width="60%">
           <CheckBox isChecked={false} handleChange={() => {}} />
           <Text color="black" fontWeight={700}>
-            Modules
+            {moduleContextTypeName}
           </Text>
         </HStack>
-        <HStack width="40%" ml="24px" position="relative">
-          <SimpleGrid width="full" columns={4}>
-            {Array(4)
-              .fill('')
-              .map((_, index) => (
-                <CheckBox
-                  isChecked={false}
-                  handleChange={() => {}}
-                  key={index}
-                  customStyle={{ width: 'max-content' }}
-                />
-              ))}
-          </SimpleGrid>
+        <HStack width="40%" position="relative" justifyContent="flex-start">
+          <Text maxW="90%" textAlign="left">
+            {description}
+          </Text>
           <Icon
             as={ChevronDownIcon}
             boxSize="16px"
@@ -64,21 +62,19 @@ const Module = () => {
           py="24px"
           px="32px"
         >
-          {Array(5)
-            .fill('')
-            .map((_, index) => (
-              <Permission
-                title="Transfer Assets"
-                description="Make your account extra secure. Along with your password, you'll need to enter a code"
-                keyName="asset:create"
-                isChecked
-                key={index}
-              />
-            ))}
+          {isLoading
+            ? Array(4)
+                .fill('')
+                .map((_, index) => (
+                  <Skeleton width="250px" height="120px" key={index} />
+                ))
+            : submodules?.data?.items.map((data, index) => (
+                <Permission data={data} key={index} />
+              ))}
         </HStack>
       </Collapse>
     </VStack>
   );
 };
 
-export default Module;
+export default ModuleItem;

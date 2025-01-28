@@ -10,9 +10,9 @@ export async function middleware(request: NextRequest) {
   if (session) {
     const permissionData = await checkPermission({ path: pathname });
 
-    if (!permissionData) {
-      return NextResponse.rewrite(new URL('/404', request.url));
-    }
+    // if (!permissionData) {
+    //   return NextResponse.rewrite(new URL('/404', request.url));
+    // }
     let response: NextResponse;
     response = NextResponse.next();
     response.cookies.set(

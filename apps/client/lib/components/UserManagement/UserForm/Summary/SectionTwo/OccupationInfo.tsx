@@ -5,25 +5,31 @@ import DetailHeader from '~/lib/components/UI/DetailHeader';
 import { useAppSelector } from '~/lib/redux/hooks';
 
 const OccupationInfo = () => {
-  const { employmentType, branch, jobTitle, team, userRole, userGroup } =
-    useAppSelector((state) => state.user.userForm);
+  const {
+    employmentTypeName,
+    branchName,
+    jobTitleName,
+    teamName,
+    userRoleName,
+    userGroupNames,
+  } = useAppSelector((state) => state.user.userForm);
 
   const infoOne = [
     {
       label: 'Employment Type',
-      value: employmentType,
+      value: employmentTypeName,
     },
     {
       label: 'Branch',
-      value: branch,
+      value: branchName,
     },
     {
       label: 'Job Title',
-      value: jobTitle,
+      value: jobTitleName,
     },
     {
       label: 'Team',
-      value: team,
+      value: teamName,
     },
   ];
   return (
@@ -36,13 +42,13 @@ const OccupationInfo = () => {
           ))}
         </SimpleGrid>
         <SimpleGrid width="full" gap="20px" columns={2}>
-          <SummaryInfo label="User Role" value={userRole} />
+          <SummaryInfo label="User Role" value={userRoleName} />
 
           <VStack width="full" spacing="4px" alignItems="flex-start">
             <Text color="neutral.600">User Group</Text>
             <HStack wrap="wrap" spacing="8px">
-              {userGroup.length > 0 ? (
-                userGroup.map((item, index) => (
+              {userGroupNames.length > 0 ? (
+                userGroupNames.map((item, index) => (
                   <Text
                     key={index}
                     size="md"

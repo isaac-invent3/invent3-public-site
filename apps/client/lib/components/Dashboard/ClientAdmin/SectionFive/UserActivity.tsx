@@ -71,6 +71,7 @@ const UserActivity = () => {
       alignItems="flex-start"
       bgColor="white"
       rounded="8px"
+      spacing="16px"
     >
       <HStack width="full" justifyContent="space-between">
         <CardHeader>User Activity</CardHeader>

@@ -12,6 +12,7 @@ import { createWrapper } from 'next-redux-wrapper';
 
 import storage from './customStorage';
 import { categoryApi } from './services/asset/category.services';
+import { companyApi } from './services/company.services';
 import { conditionApi } from './services/asset/condition.services';
 import { depreciationApi } from './services/asset/depreciation.services';
 import { assetApi } from './services/asset/general.services';
@@ -148,6 +149,9 @@ const rootReducer = combineReducers({
   // Roles APIS
   [rolesApi.reducerPath]: rolesApi.reducer,
 
+  // Company APIS
+  [companyApi.reducerPath]: companyApi.reducer,
+
   asset: assetSlice,
   general: generalSlice,
   dashboard: dashboardSlice,
@@ -246,6 +250,9 @@ export const makeStore = () => {
 
         // Roles Apis
         rolesApi.middleware,
+
+        // Company APIs
+        companyApi.middleware,
       ]),
   });
 };

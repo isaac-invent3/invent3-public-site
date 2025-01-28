@@ -195,6 +195,7 @@ const ROUTES = {
   USERS: 'user-management',
   AUDIT_LOG: 'log-management',
   ROLES: 'role-management',
+  COMPANY: 'company-management',
 };
 
 const SYSTEM_CONTEXT_DETAILS = {

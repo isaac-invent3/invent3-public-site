@@ -1,36 +1,29 @@
-import { HStack, VStack } from '@chakra-ui/react';
-import React, { useState } from 'react';
-import { generateLastFiveYears } from '~/lib/utils/helperFunctions';
-import { Option } from '@repo/interfaces';
-import DropDown from '../../Common/DropDown';
+import { Flex, VStack } from '@chakra-ui/react';
+import React from 'react';
 import CardHeader from '../../Common/CardHeader';
+import { Map } from 'pigeon-maps';
 
 const CompanyDistribution = () => {
-  const [selectedYear, setSelectedYear] = useState<Option | undefined>(
-    generateLastFiveYears()[0] as Option
-  );
-
   return (
     <VStack
       height="full"
-      p="20px"
+      // p="20px"
       alignItems="flex-start"
       spacing="16px"
       bgColor="white"
       rounded="8px"
+      position="relative"
+      overflow="hidden"
     >
-      <HStack width="full" justifyContent="space-between">
+      <Flex width="full" position="absolute" zIndex={99} py="15px" px="10px">
         <CardHeader>Company Distribution</CardHeader>
-        <DropDown
-          options={generateLastFiveYears()}
-          label="Year"
-          handleClick={(option) => {
-            setSelectedYear && setSelectedYear(option);
-          }}
-          selectedOptions={selectedYear ?? null}
-          width="100px"
-        />
-      </HStack>
+      </Flex>
+      <Map
+        height={382}
+        defaultCenter={[9.082, 8.6753]}
+        defaultZoom={6}
+        attribution={false}
+      />
     </VStack>
   );
 };

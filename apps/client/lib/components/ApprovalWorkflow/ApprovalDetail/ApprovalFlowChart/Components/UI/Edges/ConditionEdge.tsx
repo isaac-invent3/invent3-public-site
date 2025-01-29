@@ -113,7 +113,7 @@ const ConditionEdge = ({
     <>
       <BaseEdge path={edgePath} markerEnd={markerEnd} style={style} />
 
-      <EdgeLabelRenderer>
+      {/* <EdgeLabelRenderer>
         <Box
           position="absolute"
           w="18px"
@@ -137,7 +137,7 @@ const ConditionEdge = ({
         >
           <Icon as={AddIcon} boxSize="14px" color="#374957" />
         </Box>
-      </EdgeLabelRenderer>
+      </EdgeLabelRenderer> */}
     </>
   );
 };

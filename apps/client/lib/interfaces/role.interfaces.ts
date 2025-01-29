@@ -36,7 +36,7 @@ interface RoleModulePermission {
   systemSubModuleContextTypeId: number | null;
 }
 
-type PermissionKey =
+type ModuleKey =
   | 'dashboard'
   | 'asset'
   | 'role'
@@ -50,7 +50,9 @@ type PermissionKey =
   | 'vendor'
   | 'compliance'
   | 'approval'
-  | 'profile'
+  | 'profile';
+
+type SubModuleKey =
   | 'asset:create'
   | 'asset:edit'
   | 'asset:delete'
@@ -72,6 +74,7 @@ type PermissionKey =
   | 'ticket:assign'
   | 'ticket:schedule'
   | 'ticket:delete'
+  | 'ticket:mark_completed'
   | 'template:edit'
   | 'template:delete'
   | 'report:generate'
@@ -86,6 +89,8 @@ type PermissionKey =
   | 'user:deactivate'
   | 'approval:approve'
   | 'approval:delete';
+
+type PermissionKey = ModuleKey | SubModuleKey;
 
 interface RoleSystemModuleContextPermissionDtos {
   roleSystemModuleContextPermissionId: number | null;
@@ -124,6 +129,8 @@ interface updateRoleModulePermissionPayload {
 
 export type {
   Role,
+  ModuleKey,
+  SubModuleKey,
   PermissionKey,
   RoleSystemModuleContextPermission,
   RoleModulePermission,

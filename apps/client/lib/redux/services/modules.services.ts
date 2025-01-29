@@ -33,6 +33,19 @@ export const moduleApi = createApi({
         headers: getHeaders(),
       }),
     }),
+    getAllSubModulesKeyByModuleId: builder.query<
+      BaseApiResponse<ListResponse<{ keyName: string }>>,
+      QueryParams & { moduleId?: number }
+    >({
+      query: ({ moduleId, ...data }) => ({
+        url: generateQueryStr(
+          `/SystemSubModuleContextTypes/GetSystemSubModuleKeyValuesByParentModuleId/${moduleId}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
     getSubModulesByModuleId: builder.query<
       BaseApiResponse<SubModule>,
       { id: number }
@@ -50,4 +63,5 @@ export const {
   useGetSubModulesByModuleIdQuery,
   useGetAllSubModulesQuery,
   useGetAllModulesQuery,
+  useGetAllSubModulesKeyByModuleIdQuery,
 } = moduleApi;

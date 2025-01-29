@@ -92,32 +92,62 @@ const FlowChart = () => {
   const onNodeDragStart = (_: any, node: CustomNode) => {
     setDraggingNodeId(node.id);
 
+    const { position } = node;
+    const posX = position.x;
+
     const connectedEdges = edges.filter(
       (edge) => edge.source === node.id || edge.target === node.id
     );
 
-    if (connectedEdges.length <= 2) {
-      return setEdges((eds) =>
-        eds.filter((edge) => !connectedEdges.includes(edge))
-      );
-    }
-
-    const outgoingEdges = edges.filter((edge) => edge.source === node.id);
-
     let previousNodeId: string | null = null;
+    let nextNodeId: string | null = null;
 
     connectedEdges.forEach((edge) => {
       if (edge.target === node.id) {
         previousNodeId = edge.source;
       }
+      if (edge.source === node.id) {
+        nextNodeId = edge.target;
+      }
     });
 
-    // If there is a previous connected node, update the outgoing edges
-    if (previousNodeId) {
-      setEdges((eds) => {
-        let updatedEdges = [...eds];
+    const outgoingEdges = edges.filter((edge) => edge.source === node.id);
+    const incomingEdges = edges.filter((edge) => edge.target === node.id);
 
-        // Reconnect the outgoing edges to the previous node
+    // Group nodes by X position to detect vertical stacks
+    const groupedByX: Record<number, CustomNode[]> = {};
+
+    nodes.forEach((n) => {
+      if (!groupedByX[n.position.x]) groupedByX[n.position.x] = [];
+      groupedByX[n.position.x].push(n);
+    });
+
+    const stackedNodes = groupedByX[posX] || [];
+    const isPartOfStack = stackedNodes.length > 1;
+
+    // If node is in a stack with others, just remove its edges and return
+    if (isPartOfStack) {
+      return setEdges((eds) =>
+        eds.filter((edge) => !connectedEdges.includes(edge))
+      );
+    }
+
+    setEdges((eds) => {
+      let updatedEdges = [...eds];
+
+      if (nextNodeId) {
+        incomingEdges.forEach((edge) => {
+          updatedEdges = addEdge(
+            {
+              ...edge,
+              target: nextNodeId!,
+            },
+            updatedEdges
+          );
+        });
+      }
+
+      if (previousNodeId) {
         outgoingEdges.forEach((edge) => {
           updatedEdges = addEdge(
             {
@@ -127,12 +157,17 @@ const FlowChart = () => {
             updatedEdges
           );
         });
+      }
 
-        return updatedEdges;
-      });
+      return updatedEdges;
+    });
+
+    if (connectedEdges.length <= 2) {
+      return setEdges((eds) =>
+        eds.filter((edge) => !connectedEdges.includes(edge))
+      );
     }
 
-    // Remove all edges connected to the dragged node
     const remainingConnectedEdges = edges.filter(
       (edge) => edge.source === node.id || edge.target === node.id
     );
@@ -348,6 +383,7 @@ const FlowChart = () => {
             onNodeDragStart={onNodeDragStart}
             onNodeDragStop={onNodeDragStop}
             minZoom={0.5}
+            fitView
             style={{
               ...(isLoading || isFetching ? { opacity: 0.3 } : { opacity: 1 }),
             }}

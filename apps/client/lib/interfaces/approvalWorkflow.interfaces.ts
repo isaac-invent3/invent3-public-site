@@ -54,10 +54,10 @@ interface ApprovalWorkflowPartyInstance {
   userId: number;
   firstName: string;
   lastName: string;
-  phoneNumber: string | null;
+  phoneNumber?: string | null;
   email: string;
-  selectedApprovalOptionId: number | null;
-  selectedApprovalOptionName: string | null;
+  selectedApprovalOptionId?: number | null;
+  selectedApprovalOptionName?: string | null;
   currentStatusId: number;
   currentStatusName: string;
   approvalRequestId: number;

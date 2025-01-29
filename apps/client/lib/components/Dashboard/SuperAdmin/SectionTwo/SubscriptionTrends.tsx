@@ -6,9 +6,11 @@ import DropDown from '../../Common/DropDown';
 import ChartLegend from '../../Common/Charts/ChartLegend';
 import StackedBarChart from '../../Common/Charts/StackedBarChart';
 import CardHeader from '../../Common/CardHeader';
+import { transformMonthIdsToShortNames } from '../../Common/utils';
+import { useGetSuperAdminSubscriptionTrendQuery } from '~/lib/redux/services/dashboard/superadmin.services';
 
 const SubscriptionTrends = () => {
-  const isLoading = false;
+  const { data, isLoading } = useGetSuperAdminSubscriptionTrendQuery();
   const [selectedYear, setSelectedYear] = useState<Option | undefined>(
     generateLastFiveYears()[0] as Option
   );
@@ -53,15 +55,21 @@ const SubscriptionTrends = () => {
       >
         <ChartLegend chartLegendItems={chartLegendItems} />
         <StackedBarChart
-          labels={['Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']}
+          labels={
+            data?.data
+              ? transformMonthIdsToShortNames(
+                  data?.data.map((item) => item.monthId)
+                )
+              : []
+          }
           firstStack={{
             label: 'Paid',
-            values: [10, 20, 30, 40, 50, 60],
+            values: data?.data?.map((item) => item.paid) ?? [],
             color: '#0E2642',
           }}
           secondStack={{
             label: 'Free',
-            values: [5, 10, 35, 35, 50, 40],
+            values: data?.data?.map((item) => item.free) ?? [],
             color: '#98FEFE',
           }}
           isLoading={isLoading}

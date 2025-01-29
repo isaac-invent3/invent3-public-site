@@ -7,39 +7,41 @@ import {
   EditIcon,
 } from '~/lib/components/CustomIcons/Dashboard';
 import { UserManagementIcon } from '~/lib/components/CustomIcons/layout';
+import { useGetSuperAdminDashboardStatQuery } from '~/lib/redux/services/dashboard/superadmin.services';
 
 const SectionOne = () => {
+  const { data, isLoading } = useGetSuperAdminDashboardStatQuery();
   return (
     <SimpleGrid width="full" gap="16px" columns={5}>
       <SummaryCard
         title="Total Companies"
         icon={CompanyIcon}
-        value={2000}
-        isLoading={false}
+        value={data?.data?.totalCompaniesUnderMgt}
+        isLoading={isLoading}
         showRange={false}
       />
       <SummaryCard
         title="New Onboarded Companies"
         icon={CompanyIcon}
-        value={500}
-        isLoading={false}
-        percentChange={20}
+        value={data?.data?.newOnboardedCompaniesByMonth}
+        isLoading={isLoading}
+        percentChange={data?.data?.newOnboardedCompaniesPercentageChange}
       />
       <SummaryCard
         title="Active Subscription"
         icon={CardIcon}
-        value={550}
-        isLoading={false}
-        percentChange={20}
+        value={data?.data?.activeSubscriptionsByMonth}
+        isLoading={isLoading}
+        percentChange={data?.data?.activeSubscriptionsPercentageChange}
       />
       <SummaryCard
         title="Total Users"
         icon={UserManagementIcon}
-        value={550}
-        isLoading={false}
+        value={data?.data?.totalUsers}
+        isLoading={isLoading}
       >
         <HStack spacing="4px">
-          <Skeleton isLoaded={true}>
+          <Skeleton isLoaded={!isLoading}>
             <Text
               color="#17A1FA"
               py="4px"
@@ -48,7 +50,7 @@ const SectionOne = () => {
               bgColor="#17A1FA1A"
               fontWeight={700}
             >
-              {500}
+              {data?.data?.totalInactiveUsersByMonth}
             </Text>
           </Skeleton>
           <Text color="neutral.600" fontWeight={700}>
@@ -63,9 +65,9 @@ const SectionOne = () => {
       <SummaryCard
         title="Pending Feedbacks"
         icon={EditIcon}
-        value={100}
-        isLoading={false}
-        percentChange={-10}
+        value={data?.data?.pendingFeedbacks}
+        isLoading={isLoading}
+        percentChange={data?.data?.pendingFeedbacksPercentageChange}
       />
     </SimpleGrid>
   );

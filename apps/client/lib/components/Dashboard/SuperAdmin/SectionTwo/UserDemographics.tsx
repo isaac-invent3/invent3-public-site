@@ -16,6 +16,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Flex } from '@chakra-ui/react';
+import { useGetSuperAdminUserDemographicsQuery } from '~/lib/redux/services/dashboard/superadmin.services';
 
 ChartJS.register(
   RadialLinearScale,
@@ -27,16 +28,17 @@ ChartJS.register(
 );
 
 const UserDemographics = () => {
+  const { data: demographics } = useGetSuperAdminUserDemographicsQuery();
   const [selectedYear, setSelectedYear] = useState<Option | undefined>(
     generateLastFiveYears()[0] as Option
   );
 
   const data = {
-    labels: ['Abia', 'Delta', 'Benue', 'Rivers', 'Kogi', 'Abuja'],
+    labels: demographics?.data?.map((item) => item.stateName) ?? [],
     datasets: [
       {
         label: 'Performance',
-        data: [20, 25, 35, 40, 30, 36],
+        data: demographics?.data?.map((item) => item.usersCount) ?? [],
         backgroundColor: '#00A12933',
         borderColor: '#6CF892',
         borderWidth: 2,
@@ -66,7 +68,7 @@ const UserDemographics = () => {
           stepSize: 10,
         },
         suggestedMin: 0,
-        suggestedMax: 40,
+        suggestedMax: 1000,
         pointLabels: {
           color: '#656565',
           font: {

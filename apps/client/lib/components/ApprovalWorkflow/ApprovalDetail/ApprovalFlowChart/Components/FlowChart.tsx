@@ -80,10 +80,86 @@ const FlowChart = () => {
   const [edges, setEdges, onEdgesChange] = useEdgesState(layoutElements.edges);
   const [draggingNodeId, setDraggingNodeId] = useState<string | null>(null);
 
+  /**
+   * Handles the start of a node drag event.
+   * - Updates the dragging node's ID.
+   * - Removes or updates edges connected to the dragged node.
+   * - Replaces outgoing edges with updated connections based on the dragged node's previous connections.
+   *
+   * @param {any} _ - The event data (unused in this implementation).
+   * @param {CustomNode} node - The node that is being dragged.
+   */
+  const onNodeDragStart = (_: any, node: CustomNode) => {
+    setDraggingNodeId(node.id);
+
+    const connectedEdges = edges.filter(
+      (edge) => edge.source === node.id || edge.target === node.id
+    );
+
+    if (connectedEdges.length <= 2) {
+      return setEdges((eds) =>
+        eds.filter((edge) => !connectedEdges.includes(edge))
+      );
+    }
+
+    const outgoingEdges = edges.filter((edge) => edge.source === node.id);
+
+    let previousNodeId: string | null = null;
+
+    connectedEdges.forEach((edge) => {
+      if (edge.target === node.id) {
+        previousNodeId = edge.source;
+      }
+    });
+
+    // If there is a previous connected node, update the outgoing edges
+    if (previousNodeId) {
+      setEdges((eds) => {
+        let updatedEdges = [...eds];
+
+        // Reconnect the outgoing edges to the previous node
+        outgoingEdges.forEach((edge) => {
+          updatedEdges = addEdge(
+            {
+              ...edge,
+              source: previousNodeId!,
+            },
+            updatedEdges
+          );
+        });
+
+        return updatedEdges;
+      });
+    }
+
+    // Remove all edges connected to the dragged node
+    const remainingConnectedEdges = edges.filter(
+      (edge) => edge.source === node.id || edge.target === node.id
+    );
+
+    setEdges((eds) =>
+      eds.filter((edge) => !remainingConnectedEdges.includes(edge))
+    );
+  };
+
+  /**
+   * Finds the closest nodes to the current node based on its position.
+   * - Identifies overlapping nodes within a defined threshold.
+   * - Groups nodes by their X-axis positions.
+   * - Determines the closest nodes on the left and right sides of the current node.
+   *
+   * @param {CustomNode} currentNode - The node whose closest nodes are being searched.
+   * @returns {Object} - An object containing:
+   *   - `leftNodes`: The closest nodes to the left of the current node.
+   *   - `rightNodes`: The closest nodes to the right of the current node.
+   *   - `overlappingNode`: The node that overlaps with the current node, if any.
+   */
   const findClosestNodes = (currentNode: CustomNode) => {
-    const { id: currentNodeId } = currentNode;
-    const { x: posX } = currentNode.position;
-    const overlapThreshold = 50;
+    const {
+      id: currentNodeId,
+      position: { x: posX },
+    } = currentNode;
+    const overlapThreshold = 50; // Distance threshold to consider nodes as overlapping
 
     let leftNodes: CustomNode[] = [];
     let rightNodes: CustomNode[] = [];
@@ -93,22 +169,23 @@ const FlowChart = () => {
 
     const groupedByX: Record<number, CustomNode[]> = {};
 
+    // Group nodes by their X position
     nodes.forEach((node) => {
       if (node.id === currentNodeId) return;
 
       const isOverlapping = Math.abs(node.position.x - posX) < overlapThreshold;
-
       if (isOverlapping) {
         overlappingNode = node;
       }
 
+      // Group nodes with the same X position
       if (!groupedByX[node.position.x]) {
         groupedByX[node.position.x] = [];
       }
       groupedByX[node.position.x].push(node);
     });
 
-    // Find closest left and right nodes
+    // Find the closest left and right nodes based on X position
     Object.entries(groupedByX).forEach(([xStr, stackedNodes]) => {
       const x = parseFloat(xStr);
       const distance = x - posX;
@@ -127,71 +204,16 @@ const FlowChart = () => {
     return { leftNodes, rightNodes, overlappingNode };
   };
 
-  const onNodeDragStart = (_: any, node: CustomNode) => {
-    setDraggingNodeId(node.id);
-
- 
-    // Remove only these edges
-    // setEdges((eds) => eds.filter((edge) => !connectedEdges.includes(edge)));
-
-
-
-
-      const connectedEdges = edges.filter(
-        (edge) => edge.source === node.id || edge.target === node.id
-      );
-
-       const incomingEdges = edges.filter(
-        (edge) => edge.target === node.id
-      );
-
-      const outgoingEdges = edges.filter(
-        (edge) => edge.source === node.id
-      );
-
-            console.log({ connectedEdges, incomingEdges, outgoingEdges });
-
-
-
-      setEdges((eds) => eds.filter((edge) => !connectedEdges.includes(edge)));
-
-
-      // // Identify previous and next nodes
-      // let previousNodeId: string | null = null;
-      // let nextNodeId: string | null = null;
-
-      // connectedEdges.forEach((edge) => {
-      //   if (edge.target === node.id) {
-      //     previousNodeId = edge.source;
-      //   }
-      //   if (edge.source === node.id) {
-      //     nextNodeId = edge.target;
-      //   }
-      // });
-
-      // // Remove edges connected to the dragged node
-      // setEdges((eds) => eds.filter((edge) => !connectedEdges.includes(edge)));
-
-      // // If both previous and next nodes exist, create a new edge between them
-      // if (previousNodeId && nextNodeId) {
-      //   setEdges((eds) => [
-      //     ...eds,
-      //     {
-      //       // id: `${previousNodeId}-${nextNodeId}`,
-      //       // source: previousNodeId,
-      //       // target: nextNodeId,
-
-      //       ...createNewEdge(previousNodeId, nextNodeId),
-      //     },
-      //   ]);
-      // }
-  };
-
-  // When node stops dragging, snap to the nearest node
+  /**
+   * Handles the end of a node drag event and adjusts edges accordingly.
+   * - Snap the dragged node to the nearest overlapping or closest nodes.
+   * - Updates edges by removing, adding, or reconnecting them based on the dragged node's new position.
+   *
+   * @param {any} _ - The event data (unused in this implementation).
+   * @param {CustomNode} node - The node that was dragged and released.
+   */
   const onNodeDragStop = (_: any, node: CustomNode) => {
     if (!draggingNodeId) return;
-
- 
 
     const { leftNodes, rightNodes, overlappingNode } = findClosestNodes(node);
 
@@ -199,87 +221,86 @@ const FlowChart = () => {
       const incomingEdges = edges.filter(
         (edge) => edge.target === overlappingNode.id
       );
-
       const outgoingEdges = edges.filter(
         (edge) => edge.source === overlappingNode.id
       );
 
       return setEdges((eds) => {
-        let newEdges = [...eds];
+        let updatedEdges = [...eds];
 
         incomingEdges.forEach((edge) => {
-          newEdges = addEdge(
+          updatedEdges = addEdge(
             {
-              ...createNewEdge(edge?.source, node.id),
+              ...createNewEdge(edge.source, node.id),
             },
-            newEdges
+            updatedEdges
           );
         });
 
         outgoingEdges.forEach((edge) => {
-          newEdges = addEdge(
+          updatedEdges = addEdge(
             {
-              ...createNewEdge(node?.id, edge.target),
+              ...createNewEdge(node.id, edge.target),
             },
-            newEdges
+            updatedEdges
           );
         });
 
-        return newEdges;
+        return updatedEdges;
       });
     }
 
-
+    // If no overlapping node, adjust edges based on left and right nodes
     setEdges((eds) => {
-      let newEdges = [...eds];
+      let updatedEdges = [...eds];
+      let edgesToRemove: string[] = [];
 
-      let edgeToBeRemoved: string[] = [];
-
-      for (let edge of newEdges) {
-        for (let node of leftNodes) {
-          if (edge.source === node.id) {
-            !edgeToBeRemoved.includes(edge.id) && edgeToBeRemoved.push(edge.id);
+      // Identify edges to remove based on left and right nodes
+      updatedEdges.forEach((edge) => {
+        leftNodes.forEach((leftNode) => {
+          if (edge.source === leftNode.id && !edgesToRemove.includes(edge.id)) {
+            edgesToRemove.push(edge.id);
           }
-        }
+        });
 
-        for (let node of rightNodes) {
-          if (edge.target === node.id) {
-            !edgeToBeRemoved.includes(edge.id) && edgeToBeRemoved.push(edge.id);
+        rightNodes.forEach((rightNode) => {
+          if (
+            edge.target === rightNode.id &&
+            !edgesToRemove.includes(edge.id)
+          ) {
+            edgesToRemove.push(edge.id);
           }
-        }
-      }
+        });
+      });
 
-      console.log({ edgeToBeRemoved });
+      updatedEdges = updatedEdges.filter(
+        (edge) => !edgesToRemove.includes(edge.id)
+      );
 
-      newEdges = newEdges.filter((edge) => !edgeToBeRemoved.includes(edge.id));
-      edgeToBeRemoved = [];
-      console.log(newEdges);
-      // Reconnect previous sources to the new left nodes
+      // Reconnect edges to the left and right nodes
       leftNodes.forEach((leftNode) => {
-        newEdges = addEdge(
+        updatedEdges = addEdge(
           {
-            ...createNewEdge(leftNode?.id, node.id),
+            ...createNewEdge(leftNode.id, node.id),
           },
-          newEdges
+          updatedEdges
         );
       });
 
-      // Connect dragged node to the right nodes
       rightNodes.forEach((rightNode) => {
-        newEdges = addEdge(
+        updatedEdges = addEdge(
           {
-            ...createNewEdge(node?.id, rightNode.id),
+            ...createNewEdge(node.id, rightNode.id),
           },
-          newEdges
+          updatedEdges
         );
       });
 
-      return newEdges;
+      return updatedEdges;
     });
 
+    // Reset dragging state
     setDraggingNodeId(null);
-
- 
   };
 
   const onConnect = useCallback(

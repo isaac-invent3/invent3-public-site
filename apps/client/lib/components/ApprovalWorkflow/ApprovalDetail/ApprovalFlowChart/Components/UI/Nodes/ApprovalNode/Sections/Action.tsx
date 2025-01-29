@@ -13,7 +13,7 @@ import {
   ThreeVerticalDotsIcon,
 } from '~/lib/components/CustomIcons';
 import { ApprovalWorkflowPartyInstance } from '~/lib/interfaces/approvalWorkflow.interfaces';
-import AddApprovalActionModal from '../../Modals/AddActionModal';
+import AddApprovalActionModal from '../../../Modals/AddActionModal';
 
 const Action = (props: {
   data: ApprovalWorkflowPartyInstance;

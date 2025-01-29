@@ -105,9 +105,31 @@ const useNodeActions = () => {
    * @param {string} edgeId - ID of the edge where the new node will be added.
    * @param {"vertical" | "horizontal"} orientation - Orientation of the new node.
    */
-  const handleAddNode = (
+  const handleAddNodeByEdge = (
     edgeId: string,
     orientation: 'vertical' | 'horizontal'
+  ) => {
+    setElements((elements) => {
+      const updatedElements = updateElementsWithNewNode({
+        elements,
+        orientation,
+        targetEdgeId: edgeId,
+      });
+
+      console.log({ updatedElements });
+
+      return updatedElements ?? elements;
+    });
+  };
+
+  /**
+   * Adds a new node connected to the specified edge.
+   * @param {string} edgeId - ID of the edge where the new node will be added.
+   * @param {"vertical" | "horizontal"} orientation - Orientation of the new node.
+   */
+  const handleAddNodeByNode = (
+    nodeId: string,
+    location: 'left' | 'right' | 'top' | 'bottom'
   ) => {
     setElements((elements) => {
       const updatedElements = updateElementsWithNewNode({
@@ -125,7 +147,7 @@ const useNodeActions = () => {
   return {
     onDeleteNode: handleDeleteNode,
     onNodeClick: handleNodeClick,
-    onAddNode: handleAddNode,
+    onAddNode: handleAddNodeByEdge,
     onUpdateNode: handleUpdateNode,
   };
 };

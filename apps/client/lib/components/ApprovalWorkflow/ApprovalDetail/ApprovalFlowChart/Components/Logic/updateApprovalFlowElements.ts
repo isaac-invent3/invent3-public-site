@@ -1,8 +1,8 @@
 import { MarkerType } from '@xyflow/react';
 import _ from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
+import { ApprovalFlowElement, CustomEdge, CustomNode } from '../Interfaces';
 import { splitNodesAndEdges } from './splitNodesAndEdges';
-import { ApprovalFlowElement, CustomEdge } from '../Interfaces';
 
 const DEFAULT_POSITION = { x: 0, y: 0 };
 
@@ -16,10 +16,10 @@ interface NodeUpdateParams {
  * Creates a new node with default properties.
  * @returns {ApprovalFlowElement} - A new node object.
  */
-const createNewNode = (): ApprovalFlowElement => ({
+export const createNewNode = (type?: string): CustomNode => ({
   id: uuidv4(),
   position: DEFAULT_POSITION,
-  type: 'approvalNode',
+  type: type ?? 'approvalNode',
   data: {},
 });
 

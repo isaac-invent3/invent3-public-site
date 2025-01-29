@@ -18,7 +18,10 @@ import { dummyApprovalPartyInstances } from './Dummydata';
 import { CustomEdge, CustomNode } from './Interfaces';
 import { createNodeAndEdgesFromBaseElements } from './Logic/formatApprovalPartyToNode';
 import { layoutApprovalFlowElements } from './Logic/layoutApprovalFlowElements';
-import { createNewEdge } from './Logic/updateApprovalFlowElements';
+import {
+  createNewEdge,
+  createNewNode,
+} from './Logic/updateApprovalFlowElements';
 import edgeTypes from './UI/Edges';
 import nodeTypes from './UI/Nodes';
 
@@ -56,6 +59,13 @@ const FlowChart = () => {
       dummyApprovalPartyInstances
     );
 
+    const node: CustomNode = {
+      data: {},
+      id: '234',
+      position: { x: 400, y: 0 },
+      type: 'stackJoiner',
+    };
+
     setElements([...nodes, ...edges]);
   }, [data]);
 
@@ -79,6 +89,133 @@ const FlowChart = () => {
 
   const [edges, setEdges, onEdgesChange] = useEdgesState(layoutElements.edges);
   const [draggingNodeId, setDraggingNodeId] = useState<string | null>(null);
+
+
+  // type StackJoinerHelpers = {
+  //   createStackJoiner: (
+  //     node: Node,
+  //     nodes: Node[],
+  //     edges: Edge[],
+  //     createNewNode: (type: string) => Node
+  //   ) => { newNodes: Node[]; newEdges: Edge[] };
+  //   checkAndRemoveStackJoiners: (
+  //     nodes: Node[],
+  //     edges: Edge[]
+  //   ) => { nodes: Node[]; edges: Edge[] };
+  //   replaceStackJoinerWithNode: (
+  //     newNode: Node,
+  //     nodes: Node[],
+  //     edges: Edge[]
+  //   ) => { nodes: Node[]; edges: Edge[] };
+  // };
+
+  const stackJoinerHelpers = {
+    createStackJoiner: (node, nodes, edges, createNewNode) => {
+      const incomingEdges = edges.filter((e) => e.target === node.id);
+      const outgoingEdges = edges.filter((e) => e.source === node.id);
+
+      if (incomingEdges.length <= 1 || outgoingEdges.length <= 1) {
+        return { newNodes: nodes, newEdges: edges };
+      }
+
+      const newNode = createNewNode('stackJoiner');
+      const newNodes = [...nodes, newNode];
+
+      const updatedEdges = edges
+        .map((edge) => {
+          if (edge.target === node.id) return { ...edge, target: newNode.id };
+          if (edge.source === node.id) return { ...edge, source: newNode.id };
+          return edge;
+        })
+        .filter((edge) => edge.source !== node.id && edge.target !== node.id);
+
+      return { newNodes, newEdges: updatedEdges };
+    },
+
+    checkAndRemoveStackJoiners: (nodes, edges) => {
+      const stackJoiners = nodes.filter((n) => n.type === 'stackJoiner');
+      let newEdges = [...edges];
+      let newNodes = [...nodes];
+
+      stackJoiners.forEach((joiner) => {
+        const incoming = newEdges.filter((e) => e.target === joiner.id);
+        const outgoing = newEdges.filter((e) => e.source === joiner.id);
+
+        // Check incoming side
+        const incomingSources = [...new Set(incoming.map((e) => e.source))];
+        if (incomingSources.length === 1) {
+          const sourceId = incomingSources[0];
+          outgoing.forEach((e) => {
+            if (
+              !newEdges.some(
+                (ne) => ne.source === sourceId && ne.target === e.target
+              )
+            ) {
+              newEdges.push({ ...e, source: sourceId });
+            }
+          });
+          newEdges = newEdges.filter(
+            (e) => !(e.source === joiner.id || e.target === joiner.id)
+          );
+          newNodes = newNodes.filter((n) => n.id !== joiner.id);
+        }
+
+        // Check outgoing side
+        const outgoingTargets = [...new Set(outgoing.map((e) => e.target))];
+        if (outgoingTargets.length === 1) {
+          const targetId = outgoingTargets[0];
+          incoming.forEach((e) => {
+            if (
+              !newEdges.some(
+                (ne) => ne.source === e.source && ne.target === targetId
+              )
+            ) {
+              newEdges.push({ ...e, target: targetId });
+            }
+          });
+          newEdges = newEdges.filter(
+            (e) => !(e.source === joiner.id || e.target === joiner.id)
+          );
+          newNodes = newNodes.filter((n) => n.id !== joiner.id);
+        }
+      });
+
+      return { nodes: newNodes, edges: newEdges };
+    },
+
+    replaceStackJoinerWithNode: (newNode, nodes, edges) => {
+      const stackJoiners = nodes.filter((n) => n.type === 'stackJoiner');
+      let newEdges = [...edges];
+      let newNodes = [...nodes];
+
+      stackJoiners.forEach((joiner) => {
+        const incoming = newEdges.filter((e) => e.target === joiner.id);
+        const outgoing = newEdges.filter((e) => e.source === joiner.id);
+
+        // Check if new node fully replaces the stackJoiner
+        const isFullReplacement =
+          incoming.every((e) =>
+            newEdges.some(
+              (ne) => ne.source === e.source && ne.target === newNode.id
+            )
+          ) &&
+          outgoing.every((e) =>
+            newEdges.some(
+              (ne) => ne.source === newNode.id && ne.target === e.target
+            )
+          );
+
+        if (isFullReplacement) {
+          newEdges = newEdges.filter(
+            (e) => !(e.source === joiner.id || e.target === joiner.id)
+          );
+          newNodes = newNodes.filter((n) => n.id !== joiner.id);
+        }
+      });
+
+      return { nodes: newNodes, edges: newEdges };
+    },
+  };
 
   /**
    * Handles the start of a node drag event.
@@ -124,6 +261,59 @@ const FlowChart = () => {
 
     const stackedNodes = groupedByX[posX] || [];
     const isPartOfStack = stackedNodes.length > 1;
+
+    // if (incomingEdges.length > 1 && outgoingEdges.length > 1) {
+    //   const newNode = createNewNode('stackJoiner');
+
+    //   setNodes((nds) => [...nds, newNode]);
+
+    //   setEdges((eds) => {
+    //     let updatedEdges = [...eds];
+
+    //     incomingEdges.forEach((edge) => {
+    //       updatedEdges = addEdge(
+    //         {
+    //           ...edge,
+    //           target: newNode.id!,
+    //         },
+    //         updatedEdges
+    //       );
+    //     });
+
+    //     outgoingEdges.forEach((edge) => {
+    //       updatedEdges = addEdge(
+    //         {
+    //           ...edge,
+    //           source: newNode.id!,
+    //         },
+    //         updatedEdges
+    //       );
+    //     });
+
+    //     updatedEdges = updatedEdges.filter(
+    //       (edge) => edge.source !== node.id && edge.target !== node.id
+    //     );
+
+    //     console.log({ updatedEdges });
+
+    //     return updatedEdges;
+    //   });
+
+    //   return;
+    // }
+
+    if (incomingEdges.length > 1 && outgoingEdges.length > 1) {
+      const { newNodes, newEdges } = stackJoinerHelpers.createStackJoiner(
+        node,
+        nodes,
+        edges,
+        createNewNode
+      );
+
+      setNodes(newNodes);
+      setEdges(newEdges);
+      return;
+    }
 
     // If node is in a stack with others, just remove its edges and return
     if (isPartOfStack) {
@@ -331,7 +521,12 @@ const FlowChart = () => {
         );
       });
 
-      return updatedEdges;
+      const { nodes: updatedNodes, edges: cleanedEdges } =
+        stackJoinerHelpers.checkAndRemoveStackJoiners(nodes, updatedEdges);
+
+      setNodes(updatedNodes);
+
+      return cleanedEdges;
     });
 
     // Reset dragging state

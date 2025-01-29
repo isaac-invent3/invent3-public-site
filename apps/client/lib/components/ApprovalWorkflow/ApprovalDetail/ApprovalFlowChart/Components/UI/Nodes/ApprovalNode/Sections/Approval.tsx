@@ -2,7 +2,7 @@ import { AddIcon, CalendarIcon } from '@chakra-ui/icons';
 import { HStack, Icon, Text, useDisclosure, VStack } from '@chakra-ui/react';
 import UserInfo from '~/lib/components/Common/UserInfo';
 import { ApprovalWorkflowPartyInstance } from '~/lib/interfaces/approvalWorkflow.interfaces';
-import AddApprovalUserModal from '../../Modals/AddUserModal';
+import AddApprovalUserModal from '../../../Modals/AddUserModal';
 
 const Approval = (props: {
   data: ApprovalWorkflowPartyInstance;

@@ -2,6 +2,7 @@ import {
   Collapse,
   HStack,
   Icon,
+  SimpleGrid,
   Skeleton,
   Text,
   useDisclosure,
@@ -13,27 +14,48 @@ import { ChevronDownIcon } from '~/lib/components/CustomIcons';
 import { Permission } from './Permission';
 import { Module } from '~/lib/interfaces/module.interfaces';
 import { useGetAllSubModulesQuery } from '~/lib/redux/services/modules.services';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { checkIfModuleIsSelected } from '../../utils';
+import { updateFormRoleModules } from '~/lib/redux/slices/RoleSlice';
 
 const ModuleItem = ({ data }: { data: Module }) => {
-  const { moduleContextTypeName, description } = data;
+  const { systemModuleContextTypeId, moduleContextTypeName, description } =
+    data;
   const { onToggle, isOpen } = useDisclosure();
   const { data: submodules, isLoading } = useGetAllSubModulesQuery(
-    { pageSize: 50 },
+    { pageSize: 50, systemModuleContextTypeId: data.systemModuleContextTypeId },
     { skip: !isOpen }
   );
+  const dispatch = useAppDispatch();
+  const formRoleModules = useAppSelector((state) => state.role.formRoleModules);
+
   return (
     <VStack width="full">
       <HStack
         width="full"
         justifyContent="space-between"
-        as="button"
+        cursor="pointer"
         onClick={onToggle}
         bgColor={isOpen ? 'neutral.200' : 'white'}
         py="20px"
         px="32px"
       >
         <HStack spacing="16px" width="60%">
-          <CheckBox isChecked={false} handleChange={() => {}} />
+          <CheckBox
+            isChecked={checkIfModuleIsSelected(formRoleModules, {
+              systemModuleContextTypeId,
+              systemSubModuleContextTypeId: null,
+            })}
+            handleChange={() =>
+              dispatch(
+                updateFormRoleModules({
+                  roleSystemModuleContextPermissionId: null,
+                  systemSubModuleContextTypeId: null,
+                  systemModuleContextTypeId,
+                })
+              )
+            }
+          />
           <Text color="black" fontWeight={700}>
             {moduleContextTypeName}
           </Text>
@@ -53,14 +75,15 @@ const ModuleItem = ({ data }: { data: Module }) => {
           />
         </HStack>
       </HStack>
-      <Collapse in={isOpen}>
-        <HStack
+      <Collapse in={isOpen} style={{ width: '100%' }}>
+        <SimpleGrid
           width="full"
           spacing="74px"
-          flexWrap="wrap"
           rowGap="20px"
           py="24px"
           px="32px"
+          columns={2}
+          maxW="80%"
         >
           {isLoading
             ? Array(4)
@@ -69,9 +92,13 @@ const ModuleItem = ({ data }: { data: Module }) => {
                   <Skeleton width="250px" height="120px" key={index} />
                 ))
             : submodules?.data?.items.map((data, index) => (
-                <Permission data={data} key={index} />
+                <Permission
+                  data={data}
+                  key={index}
+                  systemModuleContextTypeId={systemModuleContextTypeId}
+                />
               ))}
-        </HStack>
+        </SimpleGrid>
       </Collapse>
     </VStack>
   );

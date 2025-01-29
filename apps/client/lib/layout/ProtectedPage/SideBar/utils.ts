@@ -38,7 +38,7 @@ const sideBarData: SideBarData[] = [
     name: 'Maintenance',
     route: ROUTES.MAINTENANCE,
     icon: MaintenanceIcon,
-    permissionKey: 'maintenance_plan',
+    permissionKey: 'maintenance',
   },
   {
     name: 'Tickets',

@@ -48,6 +48,7 @@ import taskSlice from './slices/TaskSlice';
 import templateSlice from './slices/TemplateSlice';
 import ticketSlice from './slices/TicketSlice';
 import userSlice from './slices/UserSlice';
+import roleSlice from './slices/RoleSlice';
 import notesSlice from './slices/NoteSlice';
 
 import { assetDocumentApi } from './services/asset/document.services';
@@ -171,6 +172,7 @@ const rootReducer = combineReducers({
   user: userSlice,
   ticket: ticketSlice,
   report: reportSlice,
+  role: roleSlice,
   notes: notesSlice,
 });
 

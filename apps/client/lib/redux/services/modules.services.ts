@@ -25,7 +25,7 @@ export const moduleApi = createApi({
     }),
     getAllSubModules: builder.query<
       BaseApiResponse<ListResponse<SubModule>>,
-      QueryParams
+      QueryParams & { systemModuleContextTypeId?: number }
     >({
       query: (data) => ({
         url: generateQueryStr(`/SystemSubModuleContextTypes?`, data),

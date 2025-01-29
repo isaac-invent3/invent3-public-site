@@ -3,11 +3,17 @@ import { NextRequest, NextResponse } from 'next/server';
 import { checkPermission } from './app/actions/permissionAction';
 
 const publicRoutes = ['/', '/forgot-password'];
+const protectedGlobalRoute = ['/dashboard', '/profile'];
 
 export async function middleware(request: NextRequest) {
   const session = await auth();
   const { pathname } = request.nextUrl;
   if (session) {
+    // Don't check permission for protected global route
+    if (protectedGlobalRoute.includes(pathname)) {
+      return NextResponse.next();
+    }
+
     const permissionData = await checkPermission({ path: pathname });
 
     // if (!permissionData) {

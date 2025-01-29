@@ -7,7 +7,12 @@ import {
   QueryParams,
   SearchQuery,
 } from '@repo/interfaces';
-import { Role } from '~/lib/interfaces/role.interfaces';
+import {
+  createRoleModulePermissionPayload,
+  Role,
+  RoleSystemModuleContextPermission,
+  updateRoleModulePermissionPayload,
+} from '~/lib/interfaces/role.interfaces';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -35,6 +40,39 @@ export const rolesApi = createApi({
         headers: getHeaders(),
       }),
     }),
+    createRoleModulePermission: builder.mutation<
+      void,
+      createRoleModulePermissionPayload
+    >({
+      query: (body) => ({
+        url: `/Invent3Pro/CreateRoleModulePermissions`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
+    updateRoleModulePermission: builder.mutation<
+      void,
+      updateRoleModulePermissionPayload
+    >({
+      query: (body) => ({
+        url: `/Invent3Pro/UpdateRoleModulePermissions`,
+        method: 'PUT',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
+    getAllRoleSystemModuleContextPermissions: builder.query<
+      BaseApiResponse<ListResponse<RoleSystemModuleContextPermission>>,
+      QueryParams & { roleIds?: number[] }
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/RoleSystemModuleContextPermissions?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allRoles'],
+    }),
     searchRoles: builder.mutation<
       BaseApiResponse<ListResponse<Role>>,
       SearchQuery
@@ -46,6 +84,15 @@ export const rolesApi = createApi({
         body,
       }),
     }),
+    deleteRole: builder.mutation<void, { id: number; deletedBy: string }>({
+      query: ({ id, ...body }) => ({
+        url: `/Roles/${id}`,
+        method: 'DELETE',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allRoles'],
+    }),
   }),
 });
 
@@ -53,4 +100,8 @@ export const {
   useGetAllRolesQuery,
   useGetRoleByIdQuery,
   useSearchRolesMutation,
+  useGetAllRoleSystemModuleContextPermissionsQuery,
+  useCreateRoleModulePermissionMutation,
+  useUpdateRoleModulePermissionMutation,
+  useDeleteRoleMutation,
 } = rolesApi;

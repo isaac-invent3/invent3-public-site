@@ -21,8 +21,8 @@ const Header = () => {
     onClose: onCloseScheduleTemplate,
     onOpen: onOpenScheduleTemplate,
   } = useDisclosure();
-  const canCreatePlan = usePermissionAccess('maintenance_plan:create');
-  const canCreateSchedule = usePermissionAccess('maintenance_schedule:create');
+  const canCreatePlan = usePermissionAccess('maintenance:plan_create');
+  const canCreateSchedule = usePermissionAccess('maintenance:schedule_create');
 
   useEffect(() => {
     // Define a mapping for the paths to tab names

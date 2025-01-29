@@ -34,11 +34,6 @@ export async function checkPermission({
       return;
     }
 
-    //No need to check for permission for dashboard
-    if (basePath === 'dashboard') {
-      return { permissionKeys: ['dashboard'] };
-    }
-
     const basePathPermissionKey = getPathPermissionKey(`/${basePath}`);
 
     const currentPathPermissionKey = getPathPermissionKey(path);
@@ -62,7 +57,7 @@ export async function checkPermission({
     const [key] = routeInfo;
 
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/RoleSystemModuleContextPermissions/GetSystemSubModulesByParentModuleId/${key}?pageSize=50`,
+      `${process.env.NEXT_PUBLIC_API_URL}/SystemSubModuleContextTypes/GetSystemSubModuleKeyValuesByParentModuleId/${key}?pageSize=50`,
       {
         method: 'GET',
         headers: {

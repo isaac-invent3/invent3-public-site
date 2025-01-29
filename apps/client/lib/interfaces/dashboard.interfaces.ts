@@ -93,6 +93,52 @@ interface MaintenanceSuccessChartData {
   year: number;
 }
 
+interface SuperAdminDashboardStats {
+  totalCompaniesUnderMgt: number;
+  newOnboardedCompaniesByMonth: number;
+  activeSubscriptionsByMonth: number;
+  totalUsers: number;
+  totalInactiveUsersByMonth: number;
+  pendingFeedbacks: number;
+  newOnboardedCompaniesPercentageChange: number;
+  activeSubscriptionsPercentageChange: number;
+  pendingFeedbacksPercentageChange: number;
+}
+
+interface SubscriptionTrend {
+  free: number;
+  paid: number;
+  variance: number;
+  monthId: number;
+  weekId: number;
+  year: number;
+}
+
+interface UserDemographics {
+  usersCount: number;
+  lgaId: number;
+  countryId: number;
+  stateId: number;
+  lgaName: string;
+  stateName: string;
+}
+
+interface TrafficCount {
+  trafficCount: number;
+  monthId: number;
+  weekId: number;
+  year: number;
+}
+
+interface CompanyDistritution {
+  companyCount: number;
+  lgaId: number;
+  countryId: number;
+  stateId: number;
+  lgaName: string;
+  stateName: string;
+}
+
 export type {
   AssetStatistics,
   ActualProjectedData,
@@ -104,4 +150,9 @@ export type {
   MaintenanceSuccessChartData,
   OpenedAndResolvedTicket,
   CompleteAndIncompleteTask,
+  SuperAdminDashboardStats,
+  SubscriptionTrend,
+  UserDemographics,
+  TrafficCount,
+  CompanyDistritution,
 };

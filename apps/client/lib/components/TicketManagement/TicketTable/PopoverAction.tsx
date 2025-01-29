@@ -71,11 +71,11 @@ const PopoverAction = (props: PopoverActionProps) => {
         <VStack width="full" alignItems="flex-start" spacing="16px">
           {ticketCategory === 'new' && (
             <VStack width="full" alignItems="flex-start" spacing="16px">
-              {
+              {canAssignTicket && (
                 <Text cursor="pointer" onClick={() => openModal('assign')}>
                   Assign Ticket
                 </Text>
-              }
+              )}
               {canScheduleTicket && (
                 <Text cursor="pointer" onClick={() => openModal('schedule')}>
                   Schedule Ticket

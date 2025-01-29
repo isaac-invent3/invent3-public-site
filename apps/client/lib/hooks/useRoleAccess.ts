@@ -1,8 +1,8 @@
 import { useSession } from 'next-auth/react';
-import { PermissionKey } from '../interfaces/role.interfaces';
+import { SubModuleKey } from '../interfaces/role.interfaces';
 import Cookies from 'js-cookie';
 
-const usePermissionAccess = (key: PermissionKey): boolean => {
+const usePermissionAccess = (key: SubModuleKey): boolean => {
   const session = useSession();
   const permissionData = Cookies.get('permissionData');
   const permissions: string[] = permissionData

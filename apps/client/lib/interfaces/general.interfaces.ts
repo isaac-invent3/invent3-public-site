@@ -1,7 +1,7 @@
 import { GeoJsonTypes } from 'geojson';
-import { OPERATORS } from '../utils/constants';
+import { OPERATORS, ROUTES, SYSTEM_CONTEXT_TYPE } from '../utils/constants';
 import { ComponentWithAs, IconProps } from '@chakra-ui/react';
-import { PermissionKey } from './role.interfaces';
+import { ModuleKey } from './role.interfaces';
 
 interface Option {
   label: string;
@@ -101,7 +101,23 @@ interface SideBarData {
   name: string;
   route: string;
   icon: ComponentWithAs<'svg', IconProps>;
-  permissionKey: PermissionKey;
+  permissionKey: ModuleKey;
+}
+
+type ContextKey =
+  | 'ASSETS'
+  | 'MAINTENANCE_PLANS'
+  | 'MAINTENANCE_SCHEDULES'
+  | 'MAINTENANCE_SCHEDULE_INSTANCE'
+  | 'TASKS'
+  | 'TICKETS'
+  | 'USER';
+
+interface SystemContextDetail {
+  id: (typeof SYSTEM_CONTEXT_TYPE)[keyof typeof SYSTEM_CONTEXT_TYPE];
+  route: (typeof ROUTES)[keyof typeof ROUTES];
+  slug: string;
+  relatedPermissionKeys?: ModuleKey[];
 }
 
 export type {
@@ -116,4 +132,6 @@ export type {
   ActionType,
   Document,
   SideBarData,
+  SystemContextDetail,
+  ContextKey,
 };

@@ -138,7 +138,7 @@ const RoleDetails = ({ role }: RoleDetailsProps) => {
       >
         <Button
           customStyles={{ width: '193px' }}
-          handleClick={() => router.push(`${ROUTES.ROLES}`)}
+          handleClick={() => router.push(`/${ROUTES.ROLES}`)}
         >
           Continue
         </Button>

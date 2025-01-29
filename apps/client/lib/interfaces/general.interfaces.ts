@@ -111,13 +111,21 @@ type ContextKey =
   | 'MAINTENANCE_SCHEDULE_INSTANCE'
   | 'TASKS'
   | 'TICKETS'
-  | 'USER';
+  | 'USER'
+  | 'VENDOR';
 
 interface SystemContextDetail {
   id: (typeof SYSTEM_CONTEXT_TYPE)[keyof typeof SYSTEM_CONTEXT_TYPE];
   route: (typeof ROUTES)[keyof typeof ROUTES];
   slug: string;
   relatedPermissionKeys?: ModuleKey[];
+}
+
+interface ImageObject {
+  imageId: number | null;
+  imageName: string | null;
+  base64PhotoImage: string;
+  base64Prefix: string | null;
 }
 
 export type {
@@ -134,4 +142,5 @@ export type {
   SideBarData,
   SystemContextDetail,
   ContextKey,
+  ImageObject,
 };

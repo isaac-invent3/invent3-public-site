@@ -620,6 +620,64 @@ const RoleManagementIcon = createIcon({
   ),
 });
 
+const VendorManagementIcon = createIcon({
+  displayName: 'VendorManagementIcon',
+  viewBox: '0 0 18 18',
+
+  path: (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 18 18"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M13.5025 5.37C13.4575 5.3625 13.405 5.3625 13.36 5.37C12.325 5.3325 11.5 4.485 11.5 3.435C11.5 2.3625 12.3625 1.5 13.435 1.5C14.5075 1.5 15.37 2.37 15.37 3.435C15.3625 4.485 14.5375 5.3325 13.5025 5.37Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M12.7334 10.8301C13.7609 11.0026 14.8934 10.8226 15.6884 10.2901C16.7459 9.58512 16.7459 8.43012 15.6884 7.72512C14.8859 7.19262 13.7384 7.01262 12.7109 7.19262"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M4.47688 5.37C4.52188 5.3625 4.57438 5.3625 4.61938 5.37C5.65438 5.3325 6.47937 4.485 6.47937 3.435C6.47937 2.3625 5.61688 1.5 4.54438 1.5C3.47188 1.5 2.60938 2.37 2.60938 3.435C2.61687 4.485 3.44188 5.3325 4.47688 5.37Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M5.24812 10.8301C4.22062 11.0026 3.08812 10.8226 2.29313 10.2901C1.23563 9.58512 1.23563 8.43012 2.29313 7.72512C3.09563 7.19262 4.24312 7.01262 5.27062 7.19262"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M9.0025 10.9725C8.9575 10.965 8.905 10.965 8.86 10.9725C7.825 10.935 7 10.0875 7 9.03754C7 7.96504 7.8625 7.10254 8.935 7.10254C10.0075 7.10254 10.87 7.97254 10.87 9.03754C10.8625 10.0875 10.0375 10.9425 9.0025 10.9725Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M6.81656 13.3355C5.75906 14.0405 5.75906 15.1955 6.81656 15.9005C8.01656 16.703 9.98156 16.703 11.1816 15.9005C12.2391 15.1955 12.2391 14.0405 11.1816 13.3355C9.98906 12.5405 8.01656 12.5405 6.81656 13.3355Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
+});
+
 export {
   DashboardIcon,
   AssetManagementIcon,
@@ -642,4 +700,5 @@ export {
   AuditLogIcon,
   UserManagementIcon,
   RoleManagementIcon,
+  VendorManagementIcon,
 };

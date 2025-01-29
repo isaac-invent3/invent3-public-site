@@ -17,7 +17,7 @@ export default function Page({ params }: { params: { id: number } }) {
   const { data, isLoading } = useGetRoleByIdQuery({ id: params.id! });
   const { data: rolePermissions, isLoading: isLoadingPermissions } =
     useGetAllRoleSystemModuleContextPermissionsQuery(
-      { roleIds: [params.id] },
+      { roleIds: [params.id], pageSize: 100 },
       { skip: !data?.data.roleId }
     );
 

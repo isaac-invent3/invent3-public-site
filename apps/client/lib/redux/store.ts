@@ -49,6 +49,7 @@ import templateSlice from './slices/TemplateSlice';
 import ticketSlice from './slices/TicketSlice';
 import userSlice from './slices/UserSlice';
 import roleSlice from './slices/RoleSlice';
+import vendorSlice from './slices/VendorSlice';
 
 import { assetDocumentApi } from './services/asset/document.services';
 import { aisleApi } from './services/location/aisle.services';
@@ -164,6 +165,7 @@ const rootReducer = combineReducers({
   task: taskSlice,
   date: dateSlice,
   template: templateSlice,
+  vendor: vendorSlice,
   user: userSlice,
   ticket: ticketSlice,
   report: reportSlice,

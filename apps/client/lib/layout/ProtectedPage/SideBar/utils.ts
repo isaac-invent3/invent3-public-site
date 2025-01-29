@@ -10,6 +10,7 @@ import {
   TemplateIcon,
   TicketIcon,
   UserManagementIcon,
+  VendorManagementIcon,
 } from '~/lib/components/CustomIcons/layout';
 import { SideBarData } from '~/lib/interfaces/general.interfaces';
 import { ROUTES } from '~/lib/utils/constants';
@@ -76,6 +77,12 @@ const sideBarData: SideBarData[] = [
     route: ROUTES.AUDIT_LOG,
     icon: AuditLogIcon,
     permissionKey: 'audit',
+  },
+  {
+    name: 'Vendor Management',
+    route: ROUTES.VENDOR,
+    icon: VendorManagementIcon,
+    permissionKey: 'vendor',
   },
 ];
 

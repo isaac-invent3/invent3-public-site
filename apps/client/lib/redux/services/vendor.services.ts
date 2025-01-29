@@ -15,7 +15,7 @@ const getHeaders = () => ({
 export const vendorApi = createApi({
   reducerPath: 'vendorApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['allVendors'],
+  tagTypes: ['allVendors', 'vendorDetail'],
   endpoints: (builder) => ({
     getAllVendors: builder.query<
       BaseApiResponse<ListResponse<Vendor>>,
@@ -28,6 +28,16 @@ export const vendorApi = createApi({
       }),
       providesTags: ['allVendors'],
     }),
+    getVendorById: builder.query<BaseApiResponse<Vendor>, { vendorId: number }>(
+      {
+        query: ({ vendorId }) => ({
+          url: `/Vendors/${vendorId}`,
+          method: 'GET',
+          headers: getHeaders(),
+        }),
+        providesTags: ['vendorDetail'],
+      }
+    ),
     searchVendors: builder.mutation<
       BaseApiResponse<ListResponse<Vendor>>,
       SearchQuery
@@ -39,7 +49,21 @@ export const vendorApi = createApi({
         body,
       }),
     }),
+    deleteVendor: builder.mutation<void, { id: number; deletedBy: string }>({
+      query: ({ id, ...body }) => ({
+        url: `/Vendors/${id}`,
+        method: 'DELETE',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allVendors'],
+    }),
   }),
 });
 
-export const { useGetAllVendorsQuery, useSearchVendorsMutation } = vendorApi;
+export const {
+  useGetAllVendorsQuery,
+  useSearchVendorsMutation,
+  useDeleteVendorMutation,
+  useGetVendorByIdQuery,
+} = vendorApi;

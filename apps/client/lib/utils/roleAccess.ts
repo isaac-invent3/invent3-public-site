@@ -37,6 +37,9 @@ const ROUTES_PERMISSION_KEY: { [name: string]: PermissionKey } = {
   [`/${ROUTES.USERS}/add`]: 'user:create',
   [`/${ROUTES.AUDIT_LOG}`]: 'audit',
   [`/${ROUTES.ROLES}`]: 'role',
+  [`/${ROUTES.VENDOR}`]: 'vendor',
+  [`/${ROUTES.VENDOR}/add`]: 'vendor:create',
+  [`/${ROUTES.VENDOR}/[id]/edit`]: 'vendor:edit',
 };
 
 function getPathPermissionKey(pathname: string): PermissionKey | undefined {

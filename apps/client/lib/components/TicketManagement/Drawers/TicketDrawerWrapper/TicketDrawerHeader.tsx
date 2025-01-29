@@ -1,5 +1,6 @@
 import { HStack } from '@chakra-ui/react';
 import { Button } from '@repo/ui/components';
+import usePermissionAccess from '~/lib/hooks/useRoleAccess';
 import {
   SelectedTicketAction,
   Ticket,
@@ -20,6 +21,10 @@ interface TicketDrawerHeaderProps {
 
 const TicketDrawerHeader = (props: TicketDrawerHeaderProps) => {
   const { action, category, data, children } = props;
+  const canAssignTicket = usePermissionAccess('ticket:assign');
+  const canMarkTicketAsCompleted = usePermissionAccess('ticket:mark_completed');
+  const canDeleteTicket = usePermissionAccess('ticket:delete');
+  const canScheduleTicket = usePermissionAccess('ticket:schedule');
 
   const dispatch = useAppDispatch();
 
@@ -46,14 +51,16 @@ const TicketDrawerHeader = (props: TicketDrawerHeaderProps) => {
 
         {(action === 'view' || action === 'assign') && (
           <>
-            <Button
-              handleClick={() => openModal('schedule')}
-              customStyles={{ width: '126px', height: '35px' }}
-            >
-              Schedule Ticket
-            </Button>
+            {canScheduleTicket && (
+              <Button
+                handleClick={() => openModal('schedule')}
+                customStyles={{ width: '126px', height: '35px' }}
+              >
+                Schedule Ticket
+              </Button>
+            )}
 
-            {category === 'new' && action === 'view' && (
+            {category === 'new' && action === 'view' && canAssignTicket && (
               <Button
                 handleClick={() => openModal('assign')}
                 variant="outline"
@@ -63,17 +70,19 @@ const TicketDrawerHeader = (props: TicketDrawerHeaderProps) => {
               </Button>
             )}
 
-            <Button
-              customStyles={{ width: '84px', height: '35px' }}
-              variant="secondary"
-              handleClick={() => openModal('delete')}
-            >
-              Delete
-            </Button>
+            {canDeleteTicket && (
+              <Button
+                customStyles={{ width: '84px', height: '35px' }}
+                variant="secondary"
+                handleClick={() => openModal('delete')}
+              >
+                Delete
+              </Button>
+            )}
           </>
         )}
 
-        {action === 'edit' && (
+        {action === 'edit' && canMarkTicketAsCompleted && (
           <Button
             customStyles={{ width: '139px', height: '35px' }}
             variant="secondary"

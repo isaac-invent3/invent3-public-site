@@ -1,16 +1,12 @@
 'use client';
 
 import { Flex, Text } from '@chakra-ui/react';
+import { ApprovalWorkflowRequest } from '~/lib/interfaces/approvalWorkflow.interfaces';
 import PageHeader from '../../UI/PageHeader';
 import ApprovalFlowChart from './ApprovalFlowChart';
 
-interface IApprovalDetail {
-  id: string;
-  type: string;
-}
-
 interface ApprovalDetailProps {
-  data: IApprovalDetail;
+  data: ApprovalWorkflowRequest;
 }
 
 const ApprovalDetail = (props: ApprovalDetailProps) => {
@@ -25,7 +21,7 @@ const ApprovalDetail = (props: ApprovalDetailProps) => {
         mt="8px"
         mb="24px"
       >
-        #WRK00098 - Bulk Asset Transfer
+        #{props.data.approvalRequestId} - {props.data.approvalTypeName}
       </Text>
 
       <ApprovalFlowChart />

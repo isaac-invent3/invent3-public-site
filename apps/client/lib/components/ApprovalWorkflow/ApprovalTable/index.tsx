@@ -5,8 +5,11 @@ import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import UserInfo from '~/lib/components/Common/UserInfo';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
-import { Ticket } from '~/lib/interfaces/ticket.interfaces';
-import { useGetTicketsByTabScopeQuery } from '~/lib/redux/services/ticket.services';
+import {
+  ApprovalWorkflowRequest,
+  ApprovalWorkflowType,
+} from '~/lib/interfaces/approvalWorkflow.interfaces';
+import { useGetAllApprovalWorkflowRequestsQuery } from '~/lib/redux/services/approval-workflow/requests.services';
 import {
   COLOR_CODES_FALLBACK,
   DEFAULT_PAGE_SIZE,
@@ -16,56 +19,64 @@ import { dateFormatter } from '~/lib/utils/Formatters';
 import PopoverAction from './PopoverAction';
 
 interface ApprovalTableProps {
-  approvalCategory: 'disposal' | 'transfer' | 'all';
+  selectedApprovalType: ApprovalWorkflowType | null;
 }
 
 const ApprovalTable = (props: ApprovalTableProps) => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
-  const { approvalCategory } = props;
+  const { selectedApprovalType } = props;
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const { data, isLoading, isFetching } = useGetTicketsByTabScopeQuery({
-    pageNumber: currentPage,
-    pageSize: pageSize,
-    tabScopeName: 'scheduled',
-  });
 
-  const columnHelper = createColumnHelper<Ticket>();
+  const { data, isLoading, isFetching } =
+    useGetAllApprovalWorkflowRequestsQuery({
+      pageNumber: currentPage,
+      pageSize: pageSize,
+      approvalTypeId: selectedApprovalType?.approvalTypeId ?? undefined,
+    });
+
+  const columnHelper = createColumnHelper<ApprovalWorkflowRequest>();
   const columns = useMemo(
     () => {
       const baseColumns = [
-        columnHelper.accessor('ticketId', {
+        columnHelper.accessor('approvalRequestId', {
           cell: (info) => info.getValue(),
           header: 'ID',
           enableSorting: false,
         }),
 
-        columnHelper.accessor('ticketTitle', {
-          cell: () => (
-            <Text fontWeight={800} color='black' >
-              {approvalCategory === 'disposal'
-                ? 'Bulk Asset Disposal'
-                : 'Bulk Asset Transfer'}
+        columnHelper.accessor('approvalTypeName', {
+          cell: (info) => (
+            <Text fontWeight={800} color="black">
+              {info.getValue()}
             </Text>
           ),
           header: 'Approval Type',
           enableSorting: false,
         }),
 
-        columnHelper.accessor('reportedBy', {
-          cell: (info) => <UserInfo name={info.getValue()} />,
+        columnHelper.accessor('requestedByUserFirstName', {
+          cell: (info) => {
+            const approvalRequest = info.row.original;
+
+            return (
+              <UserInfo
+                name={`${approvalRequest.requestedByUserFirstName} ${approvalRequest.requestedByUserLastName}`}
+              />
+            );
+          },
           header: 'Requestor',
           enableSorting: true,
         }),
 
-        columnHelper.accessor('rowId', {
+        columnHelper.accessor('numberOfApprovalLevels', {
           cell: (info) => info.getValue(),
           header: 'No of Approval Level',
           enableSorting: false,
         }),
 
-        columnHelper.accessor('issueReportDate', {
+        columnHelper.accessor('dateRequested', {
           cell: (info) =>
             dateFormatter(info.getValue(), 'DD / MM / YYYY hh:mma'),
           header: 'Date Requested',
@@ -87,24 +98,20 @@ const ApprovalTable = (props: ApprovalTableProps) => {
           enableSorting: false,
         }),
 
-        columnHelper.accessor('ticketPriorityName', {
+        columnHelper.accessor('currentStatusName', {
           cell: (info) => {
-            const ticket = info.row.original;
-
             return (
               <GenericStatusBox
-                colorCode={
-                  ticket.priorityColorCode ?? COLOR_CODES_FALLBACK.default
-                }
-                width="90px"
-                text="Incomplete"
+                colorCode={COLOR_CODES_FALLBACK.default}
+                width="100px"
+                text={info.getValue()}
               />
             );
           },
           header: 'Status',
         }),
 
-        columnHelper.accessor('facilityRef', {
+        columnHelper.accessor('approvalTypeId', {
           cell: () => <PopoverAction />,
           header: '',
           enableSorting: false,
@@ -131,7 +138,7 @@ const ApprovalTable = (props: ApprovalTableProps) => {
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
         handleSelectRow={(row) => {
-          router.push(`/${ROUTES.APPROVAL}/${row.assetId}`);
+          router.push(`/${ROUTES.APPROVAL}/${row.approvalRequestId}`);
         }}
         emptyLines={15}
         isSelectable

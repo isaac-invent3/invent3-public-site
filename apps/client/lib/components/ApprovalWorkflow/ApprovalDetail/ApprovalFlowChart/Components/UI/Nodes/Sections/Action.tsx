@@ -12,14 +12,17 @@ import {
   CursorIcon,
   ThreeVerticalDotsIcon,
 } from '~/lib/components/CustomIcons';
-import { CustomNodeData } from '../../../Interfaces';
+import { ApprovalWorkflowPartyInstance } from '~/lib/interfaces/approvalWorkflow.interfaces';
 import AddApprovalActionModal from '../../Modals/AddActionModal';
 
-const Action = (props: { data: CustomNodeData; nodeId: string }) => {
+const Action = (props: {
+  data: ApprovalWorkflowPartyInstance;
+  nodeId: string;
+}) => {
   const { data, nodeId } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  if (!data.actionId) {
+  if (!data.approvalActionId) {
     return (
       <>
         <HStack w="full" justifyContent="space-between">
@@ -63,11 +66,11 @@ const Action = (props: { data: CustomNodeData; nodeId: string }) => {
     );
   }
 
-  const { actionName, actionStatus, approveeType } = data;
+  const { requiredAction, employeeDesignation, currentStatusId } = data;
 
   const getStatus = () => {
-    switch (actionStatus) {
-      case 'pending':
+    switch (currentStatusId) {
+      case 3:
         return {
           borderColor: '#EABC3080',
           backgroundColor: '#EABC300D',
@@ -75,7 +78,7 @@ const Action = (props: { data: CustomNodeData; nodeId: string }) => {
           displayName: 'In Progress',
         };
 
-      case 'not-started':
+      case 1:
         return {
           borderColor: '#65656533',
           backgroundColor: '#6565651A',
@@ -97,7 +100,7 @@ const Action = (props: { data: CustomNodeData; nodeId: string }) => {
 
   return (
     <VStack alignItems="flex-start" gap="12px" w="full">
-      {actionStatus === 'completed' && (
+      {currentStatusId === 3 && (
         <Flex
           alignItems="center"
           justifyContent="center"
@@ -110,7 +113,7 @@ const Action = (props: { data: CustomNodeData; nodeId: string }) => {
         </Flex>
       )}
 
-      {actionStatus !== 'completed' && (
+      {currentStatusId !== 3 && (
         <Box
           padding="6px"
           borderWidth="1px"
@@ -125,15 +128,13 @@ const Action = (props: { data: CustomNodeData; nodeId: string }) => {
       )}
 
       <Text size="md" color="primary.500">
-        {actionName}
+        {requiredAction}
       </Text>
 
       <HStack alignItems="center" gap="16px">
         <Icon as={CursorIcon} />
 
-        <Text color="neutral.600">
-          {approveeType === 'individual' ? data.approveeRole : 'Group'}
-        </Text>
+        <Text color="neutral.600">{employeeDesignation}</Text>
       </HStack>
     </VStack>
   );

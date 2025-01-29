@@ -1,5 +1,6 @@
 import { Edge, Node } from '@xyflow/react';
 import { Dispatch, SetStateAction } from 'react';
+import { ApprovalWorkflowPartyInstance } from '~/lib/interfaces/approvalWorkflow.interfaces';
 interface Position {
   x: number;
   y: number;
@@ -40,7 +41,7 @@ type CustomNodeData = ApproveeInfo & {
 interface CustomNode extends Node {
   id: string;
   type?: string;
-  data: Partial<CustomNodeData>;
+  data: Partial<ApprovalWorkflowPartyInstance>;
   position: Position;
   style?: NodeStyle;
   target_position?: string;

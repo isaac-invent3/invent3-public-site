@@ -1,14 +1,17 @@
 import { AddIcon, CalendarIcon } from '@chakra-ui/icons';
 import { HStack, Icon, Text, useDisclosure, VStack } from '@chakra-ui/react';
 import UserInfo from '~/lib/components/Common/UserInfo';
-import { CustomNodeData } from '../../../Interfaces';
+import { ApprovalWorkflowPartyInstance } from '~/lib/interfaces/approvalWorkflow.interfaces';
 import AddApprovalUserModal from '../../Modals/AddUserModal';
 
-const Approval = (props: { data: CustomNodeData; nodeId: string }) => {
+const Approval = (props: {
+  data: ApprovalWorkflowPartyInstance;
+  nodeId: string;
+}) => {
   const { data, nodeId } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  if (!data.approveeId) {
+  if (!data.userId) {
     return (
       <>
         <HStack
@@ -36,16 +39,12 @@ const Approval = (props: { data: CustomNodeData; nodeId: string }) => {
     );
   }
 
-  const { approveeType } = data;
+  const { firstName, lastName } = data;
 
   return (
     <VStack alignItems="flex-start" gap="12px" w="full">
       <UserInfo
-        name={
-          approveeType === 'individual'
-            ? data.approveeName
-            : data.approveeGroupName
-        }
+        name={`${firstName} ${lastName}`}
         textStyle={{
           color: '#0366EF',
           cursor: 'pointer',
@@ -68,7 +67,7 @@ const Approval = (props: { data: CustomNodeData; nodeId: string }) => {
         <Icon as={CalendarIcon} />
 
         <Text color="neutral.600" isTruncated>
-          {data.date ?? '- -'}
+          {/* {data.date ?? '- -'} */}
         </Text>
       </HStack>
     </VStack>

@@ -1,6 +1,7 @@
 import {
   Flex,
   HStack,
+  Skeleton,
   StackDivider,
   Tab,
   TabList,
@@ -8,37 +9,34 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { FilterButton } from '@repo/ui/components';
+import { useState } from 'react';
+import { ApprovalWorkflowType } from '~/lib/interfaces/approvalWorkflow.interfaces';
+import { useGetAllApprovalWorkflowTypesQuery } from '~/lib/redux/services/approval-workflow/types.services';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { FilterIcon } from '../CustomIcons';
 import PageHeader from '../UI/PageHeader';
 
 interface ApprovalHeaderProps {
-  tabIndex: number;
-  setTabIndex: React.Dispatch<React.SetStateAction<number>>;
+  setSelectedApprovalType: React.Dispatch<
+    React.SetStateAction<ApprovalWorkflowType | null>
+  >;
 }
 
 const Header = (props: ApprovalHeaderProps) => {
-  const { setTabIndex, tabIndex } = props;
+  const [tabIndex, setTabIndex] = useState(0);
 
-  const tabs = [
-    {
-      name: 'All',
-      count: 8,
-    },
-    {
-      name: 'Disposal',
-      count: 0,
-    },
-    {
-      name: 'Transfer',
-      count: 16,
-    },
-  ];
+  const { setSelectedApprovalType } = props;
+
+  const { data, isLoading } = useGetAllApprovalWorkflowTypesQuery({
+    pageNumber: 1,
+    pageSize: DEFAULT_PAGE_SIZE,
+  });
 
   return (
     <HStack width="full" justifyContent="space-between" pt="40px">
-      <PageHeader width="50%">Approval Requests</PageHeader>
+      <PageHeader>Approval Requests</PageHeader>
 
-      <Flex width="50%" alignItems="center" justifyContent="space-between">
+      <Flex alignItems="center" justifyContent="space-between">
         <HStack spacing="16px" alignItems="flex-start">
           <Text color="neutral.800" fontWeight="700" size="lg">
             Type:
@@ -60,22 +58,27 @@ const Header = (props: ApprovalHeaderProps) => {
                   />
                 }
               >
-                {tabs.map((tab, index) => {
+                {data?.data.items.map((tab, index) => {
                   const tabActive = tabIndex === index;
 
                   return (
-                    <Tab paddingBottom="8px" key={index}>
-                      <HStack>
-                        <Text
-                          color={tabActive ? '#0E2642' : '#838383'}
-                          fontWeight={tabActive ? 700 : 500}
-                          transition="all 300ms ease-in-out"
-                          size="md"
-                        >
-                          {tab.name}
-                        </Text>
+                    <Skeleton isLoaded={!isLoading}>
+                      <Tab
+                        paddingBottom="8px"
+                        key={index}
+                        onClick={() => setSelectedApprovalType(tab)}
+                      >
+                        <HStack>
+                          <Text
+                            color={tabActive ? '#0E2642' : '#838383'}
+                            fontWeight={tabActive ? 700 : 500}
+                            transition="all 300ms ease-in-out"
+                            size="md"
+                          >
+                            {tab.approvalTypeName}
+                          </Text>
 
-                        <Flex
+                          {/* <Flex
                           color={tabActive ? 'white' : 'black'}
                           bgColor={tabActive ? '#0E2642' : '#BBBBBB'}
                           transition="all 300ms ease-in-out"
@@ -90,9 +93,10 @@ const Header = (props: ApprovalHeaderProps) => {
                           <Text size={tabActive ? 'md' : 'base'}>
                             {tab.count}
                           </Text>
-                        </Flex>
-                      </HStack>
-                    </Tab>
+                        </Flex> */}
+                        </HStack>
+                      </Tab>
+                    </Skeleton>
                   );
                 })}
               </HStack>

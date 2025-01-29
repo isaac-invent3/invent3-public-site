@@ -29,7 +29,7 @@ const createNewNode = (): ApprovalFlowElement => ({
  * @param {string} targetNodeId - ID of the target node.
  * @returns {CustomEdge} - A new edge object.
  */
-const createNewEdge = (
+export const createNewEdge = (
   sourceNodeId: string,
   targetNodeId: string
 ): CustomEdge => ({

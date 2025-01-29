@@ -34,4 +34,6 @@ interface SearchQuery {
   isLogicalOperatorSpecified?: boolean;
 }
 
+
+
 export type { SearchCriterion, Option, FilterInput, SearchQuery };

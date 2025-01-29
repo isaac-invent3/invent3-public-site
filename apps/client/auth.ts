@@ -137,7 +137,7 @@ export const config = {
         token.refreshToken = user.refreshToken;
         token.sessionId = user.sessionId;
         token.apiKey = user.apiKey;
-        token.role = user.role ?? 'User';
+        token.role = user.role;
         token.roleSystemModuleContextPermissions =
           user.roleSystemModuleContextPermissions;
       }
@@ -192,7 +192,7 @@ export const config = {
           apiKey: token.apiKey as string,
           accessToken: token.accessToken as string,
           accessTokenExpires: token.accessTokenExpires as number,
-          role: token.role as string,
+          role: token.role as string[],
           roleSystemModuleContextPermissions:
             token.roleSystemModuleContextPermissions as AccessibleRoute,
         },

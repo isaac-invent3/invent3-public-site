@@ -182,6 +182,7 @@ const SYSTEM_CONTEXT_TYPE = {
   MAINTENANCE_SCHEDULE_INSTANCES: 40,
   TASKS_INSTANCES: 61,
   NOTES: 43,
+  VENDOR: 68,
 };
 
 const ROUTES = {
@@ -200,6 +201,7 @@ const ROUTES = {
   AUDIT_LOG: 'log-management',
   ROLES: 'role-management',
   COMPANY: 'company-management',
+  VENDOR: 'vendor-management',
 };
 
 const SYSTEM_CONTEXT_DETAILS: Record<ContextKey, SystemContextDetail> = {
@@ -243,6 +245,11 @@ const SYSTEM_CONTEXT_DETAILS: Record<ContextKey, SystemContextDetail> = {
     id: SYSTEM_CONTEXT_TYPE.USERS,
     route: ROUTES.USERS,
     slug: 'userId',
+  },
+  VENDOR: {
+    id: SYSTEM_CONTEXT_TYPE.VENDOR,
+    route: ROUTES.VENDOR,
+    slug: 'vendorId',
   },
 };
 

@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { checkPermission } from './app/actions/permissionAction';
 
 const publicRoutes = ['/', '/forgot-password'];
-const protectedGlobalRoute = ['/dashboard', '/profile'];
+const protectedGlobalRoute = ['/', '/dashboard', '/profile'];
 
 export async function middleware(request: NextRequest) {
   const session = await auth();
@@ -16,9 +16,9 @@ export async function middleware(request: NextRequest) {
 
     const permissionData = await checkPermission({ path: pathname });
 
-    // if (!permissionData) {
-    //   return NextResponse.rewrite(new URL('/404', request.url));
-    // }
+    if (!permissionData) {
+      return NextResponse.rewrite(new URL('/404', request.url));
+    }
     let response: NextResponse;
     response = NextResponse.next();
     response.cookies.set(
@@ -54,5 +54,6 @@ export const config = {
     '/report-analytics/:path*',
     '/role-management/:path*',
     '/user-management/:path*',
+    '/vendor-management/:path*',
   ],
 };

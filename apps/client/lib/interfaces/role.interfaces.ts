@@ -88,7 +88,10 @@ type SubModuleKey =
   | 'user:reset_password'
   | 'user:deactivate'
   | 'approval:approve'
-  | 'approval:delete';
+  | 'approval:delete'
+  | 'vendor:create'
+  | 'vendor:edit'
+  | 'vendor:delete';
 
 type PermissionKey = ModuleKey | SubModuleKey;
 

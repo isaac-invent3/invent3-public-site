@@ -147,6 +147,13 @@ const templateSchema = Yup.object().shape({
   templateDescription: Yup.string().required('Description is Required'),
 });
 
+const singleDocumentSchema = Yup.object().shape({
+  documentId: Yup.number().nullable(),
+  documentName: Yup.string().required(),
+  base64Document: Yup.string().required(),
+  base64Prefix: Yup.string().nullable(),
+});
+
 const documentSchema = Yup.object().shape({
   documents: Yup.array().of(
     Yup.object().shape({
@@ -164,4 +171,5 @@ export {
   recurrenceSchema,
   templateSchema,
   documentSchema,
+  singleDocumentSchema,
 };

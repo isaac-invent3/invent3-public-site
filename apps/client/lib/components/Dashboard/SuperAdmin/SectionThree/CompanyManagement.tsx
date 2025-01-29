@@ -111,7 +111,7 @@ const CompanyManagement = () => {
           View All
         </Button>
       </HStack>
-      <Flex>
+      <Flex width="full">
         <DataTable
           columns={columns}
           data={data?.data?.items ?? []}

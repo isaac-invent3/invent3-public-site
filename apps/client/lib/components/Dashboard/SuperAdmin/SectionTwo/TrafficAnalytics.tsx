@@ -5,6 +5,8 @@ import { Option } from '@repo/interfaces';
 import DropDown from '../../Common/DropDown';
 import CardHeader from '../../Common/CardHeader';
 import LineChart from '../../Common/Charts/LineChart';
+import { useGetSuperAdminTrafficCountGraphQuery } from '~/lib/redux/services/dashboard/superadmin.services';
+import { transformMonthIdsToShortNames } from '../../Common/utils';
 
 const rangeOptions = [
   {
@@ -17,6 +19,7 @@ const rangeOptions = [
   },
 ];
 const TrafficAnalytics = () => {
+  const { data, isLoading } = useGetSuperAdminTrafficCountGraphQuery();
   const [selectedRange, setSelectedRange] = useState<Option | undefined>(
     rangeOptions[0] as Option
   );
@@ -44,11 +47,17 @@ const TrafficAnalytics = () => {
         />
       </HStack>
       <LineChart
-        labels={['Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']}
+        labels={
+          data?.data
+            ? transformMonthIdsToShortNames(
+                data?.data.map((item) => item.monthId)
+              )
+            : []
+        }
         datasets={[
           {
             label: 'Opened',
-            data: [0, 10, 30, 0, 20, 10, 60],
+            data: data?.data?.map((item) => item.trafficCount) ?? [],
             borderColor: '#0366EF',
             pointBorderColor: '#fff',
             pointBackgroundColor: '#0366EF',
@@ -58,7 +67,7 @@ const TrafficAnalytics = () => {
             fill: false,
           },
         ]}
-        isLoading={false}
+        isLoading={isLoading}
         showXGrid={false}
         showYGrid
       />

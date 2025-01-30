@@ -21,6 +21,7 @@ export const createNewNode = (type?: string): CustomNode => ({
   position: DEFAULT_POSITION,
   type: type ?? 'approvalNode',
   data: {},
+  draggable: type === 'stackJoiner' ? false : true,
 });
 
 /**

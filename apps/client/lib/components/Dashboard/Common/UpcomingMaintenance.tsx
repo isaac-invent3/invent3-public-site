@@ -159,7 +159,6 @@ const UpcomingMaintenance = () => {
             paddingBottom: '8px',
           }}
           customTBodyRowStyle={{ verticalAlign: 'top' }}
-          customTableContainerStyle={{ rounded: 'none' }}
         />
       </Flex>
     </VStack>

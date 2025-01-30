@@ -1,4 +1,5 @@
 import { Stack, StackProps, Text, TextProps } from '@chakra-ui/react';
+import { isEmpty } from 'lodash';
 import React from 'react';
 
 interface DetailProps {
@@ -7,7 +8,7 @@ interface DetailProps {
   itemContainerStyle?: StackProps;
   labelMinWidth: string;
   label: string;
-  value: string | number | React.ReactNode;
+  value?: string | number | React.ReactNode;
   children?: React.ReactNode;
 }
 const Detail = (props: DetailProps) => {
@@ -34,7 +35,7 @@ const Detail = (props: DetailProps) => {
         children
       ) : (
         <Text size="md" {...valueStyle}>
-          {value}
+          {isEmpty(value) ? 'N/A' : value}
         </Text>
       )}
     </Stack>

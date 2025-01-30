@@ -197,7 +197,6 @@ const useExistingDocumentTable = (props: UseExistingDocumentTableProps) => {
         paddingBottom: '16px',
       }}
       customTBodyRowStyle={{ verticalAlign: 'top' }}
-      customTableContainerStyle={{ rounded: 'none' }}
     />
   );
 

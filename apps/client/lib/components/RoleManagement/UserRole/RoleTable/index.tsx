@@ -99,7 +99,6 @@ const RoleTable = (props: RoleTableProps) => {
           paddingTop: '12px',
           paddingBottom: '12px',
         }}
-        customTableContainerStyle={{ rounded: 'none' }}
       />
     </Flex>
   );

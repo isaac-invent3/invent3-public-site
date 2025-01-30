@@ -50,6 +50,7 @@ import ticketSlice from './slices/TicketSlice';
 import userSlice from './slices/UserSlice';
 import roleSlice from './slices/RoleSlice';
 import vendorSlice from './slices/VendorSlice';
+import auditLogSlice from './slices/AuditLogSlice';
 
 import { assetDocumentApi } from './services/asset/document.services';
 import { aisleApi } from './services/location/aisle.services';
@@ -163,6 +164,7 @@ const rootReducer = combineReducers({
   [moduleApi.reducerPath]: moduleApi.reducer,
 
   asset: assetSlice,
+  auditLog: auditLogSlice,
   general: generalSlice,
   dashboard: dashboardSlice,
   maintenance: maintenanceSlice,

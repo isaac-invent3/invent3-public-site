@@ -183,6 +183,7 @@ const SYSTEM_CONTEXT_TYPE = {
   TASKS_INSTANCES: 61,
   NOTES: 43,
   VENDOR: 68,
+  AUDIT: 73,
 };
 
 const ROUTES = {
@@ -250,6 +251,11 @@ const SYSTEM_CONTEXT_DETAILS: Record<ContextKey, SystemContextDetail> = {
     id: SYSTEM_CONTEXT_TYPE.VENDOR,
     route: ROUTES.VENDOR,
     slug: 'vendorId',
+  },
+  AUDIT: {
+    id: SYSTEM_CONTEXT_TYPE.AUDIT,
+    route: ROUTES.AUDIT_LOG,
+    slug: 'logId',
   },
 };
 

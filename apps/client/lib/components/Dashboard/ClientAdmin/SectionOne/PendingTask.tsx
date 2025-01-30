@@ -1,7 +1,7 @@
 import { Flex, HStack, Skeleton, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { TaskIcon } from '~/lib/components/CustomIcons/Dashboard';
-import SummaryCardWrapper from '../../Common/SummaryCardWrapper';
+import SummaryCardWrapper from '../../../Common/SummaryCardWrapper';
 import ChartLegend from '../../Common/Charts/ChartLegend';
 import DoughtnutChart from '../../Common/Charts/DoughtnutChart';
 

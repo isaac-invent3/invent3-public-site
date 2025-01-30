@@ -1,7 +1,7 @@
 import { HStack, Skeleton, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import ProgressIndicator from '../ProgressIndicator';
-import SummaryCardWrapper from '../SummaryCardWrapper';
+import SummaryCardWrapper from '../../../Common/SummaryCardWrapper';
 import { TicketIcon } from '~/lib/components/CustomIcons/Dashboard';
 
 interface OpenTicketSummaryProps {

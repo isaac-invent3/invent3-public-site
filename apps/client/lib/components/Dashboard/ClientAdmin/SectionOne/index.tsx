@@ -2,7 +2,7 @@ import { HStack, SimpleGrid, Skeleton, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import TotalAssetSummary from '../../Common/Summaries/TotalAssetSummary';
 import OpenTicketSummary from '../../Common/Summaries/OpenTicketSummary';
-import SummaryCardWrapper from '../../Common/SummaryCardWrapper';
+import SummaryCardWrapper from '../../../Common/SummaryCardWrapper';
 import ProgressIndicator from '../../Common/ProgressIndicator';
 import PendingTask from './PendingTask';
 import { useGetDashboardStatQuery } from '~/lib/redux/services/dashboard/clientadmin.services';

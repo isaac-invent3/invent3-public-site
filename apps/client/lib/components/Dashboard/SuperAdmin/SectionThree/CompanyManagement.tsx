@@ -129,7 +129,6 @@ const CompanyManagement = () => {
             paddingBottom: '16px',
           }}
           customTBodyRowStyle={{ verticalAlign: 'top' }}
-          customTableContainerStyle={{ rounded: 'none' }}
           maxTdWidth="250px"
         />
       </Flex>

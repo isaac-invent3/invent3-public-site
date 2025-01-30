@@ -157,7 +157,6 @@ const UserTable = (props: UserTableProps) => {
           paddingTop: '12px',
           paddingBottom: '12px',
         }}
-        customTableContainerStyle={{ rounded: 'none' }}
       />
     </Flex>
   );

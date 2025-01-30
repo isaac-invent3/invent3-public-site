@@ -262,7 +262,6 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
           paddingBottom: '16px',
         }}
         customTBodyRowStyle={{ verticalAlign: 'top' }}
-        customTableContainerStyle={{ rounded: 'none' }}
       />
       {(type === 'create' || type === 'edit') && (
         <AddScheduleButtonWithErrorMessage

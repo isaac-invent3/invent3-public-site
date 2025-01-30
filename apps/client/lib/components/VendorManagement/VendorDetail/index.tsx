@@ -8,6 +8,10 @@ import GenericErrorState from '../../UI/GenericErrorState';
 import VendorHeader from './Header';
 import { useGetVendorByIdQuery } from '~/lib/redux/services/vendor.services';
 import { setVendor } from '~/lib/redux/slices/VendorSlice';
+import Overview from './Overview';
+import ContractOverview from './ContractOverview';
+import PerformanceMetrics from './PerformanceMetrics';
+import RecentActivities from './RecentActivities';
 
 interface VendorDetailProps {
   isOpen: boolean;
@@ -76,7 +80,16 @@ const VendorDetail = ({ isOpen, onClose }: VendorDetailProps) => {
           <DrawerHeader px="32px" pt="16px" pb="29px">
             <VendorHeader handleBack={closeDrawer} />
           </DrawerHeader>
-          <DrawerBody p={0} />
+          <DrawerBody p={0}>
+            <VStack width="full" spacing="24px">
+              <Overview />
+              <VStack width="full" px="32px" spacing="24px" pb="24px">
+                <ContractOverview />
+                <PerformanceMetrics />
+                <RecentActivities />
+              </VStack>
+            </VStack>
+          </DrawerBody>
         </>
       )}
     </GenericDrawer>

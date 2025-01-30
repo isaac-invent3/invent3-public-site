@@ -196,7 +196,6 @@ const MaintenancePlanTable = (props: MaintenancePlanProps) => {
         paddingBottom: '16px',
       }}
       customTBodyRowStyle={{ verticalAlign: 'top' }}
-      customTableContainerStyle={{ rounded: 'none' }}
     />
   );
 };

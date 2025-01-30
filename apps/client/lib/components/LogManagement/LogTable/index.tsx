@@ -146,7 +146,6 @@ const LogTable = (props: LogTableProps) => {
           paddingTop: '12px',
           paddingBottom: '12px',
         }}
-        customTableContainerStyle={{ rounded: 'none' }}
       />
     </Flex>
   );

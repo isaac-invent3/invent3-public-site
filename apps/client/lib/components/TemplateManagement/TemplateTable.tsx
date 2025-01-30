@@ -150,7 +150,6 @@ const TemplateTable = (props: TemplateTableProps) => {
         paddingBottom: '16px',
       }}
       customTBodyRowStyle={{ verticalAlign: 'top' }}
-      customTableContainerStyle={{ rounded: 'none' }}
       maxTdWidth="250px"
     />
   );

@@ -134,7 +134,6 @@ const VendorTable = (props: VendorTableProps) => {
           paddingTop: '12px',
           paddingBottom: '12px',
         }}
-        customTableContainerStyle={{ rounded: 'none' }}
       />
     </Flex>
   );

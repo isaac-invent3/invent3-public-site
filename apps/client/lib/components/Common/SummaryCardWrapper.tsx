@@ -8,7 +8,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import React from 'react';
-import CardHeader from './CardHeader';
+import CardHeader from '../Dashboard/Common/CardHeader';
 
 interface SummaryCardWrapperProps {
   title: string;

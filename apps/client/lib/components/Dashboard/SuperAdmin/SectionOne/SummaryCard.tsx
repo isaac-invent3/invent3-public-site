@@ -7,7 +7,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import React from 'react';
-import SummaryCardWrapper from '../../Common/SummaryCardWrapper';
+import SummaryCardWrapper from '../../../Common/SummaryCardWrapper';
 import ProgressIndicator from '../../Common/ProgressIndicator';
 
 interface SummaryCardProps {

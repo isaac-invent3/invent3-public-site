@@ -1,5 +1,5 @@
 import React from 'react';
-import SummaryCardWrapper from '../../Common/SummaryCardWrapper';
+import SummaryCardWrapper from '../../../Common/SummaryCardWrapper';
 import { TaskIcon } from '~/lib/components/CustomIcons/Dashboard';
 import {
   CircularProgress,

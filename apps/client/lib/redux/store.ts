@@ -51,6 +51,7 @@ import userSlice from './slices/UserSlice';
 import roleSlice from './slices/RoleSlice';
 import vendorSlice from './slices/VendorSlice';
 import notesSlice from './slices/NoteSlice';
+import auditLogSlice from './slices/AuditLogSlice';
 
 import { assetDocumentApi } from './services/asset/document.services';
 import { aisleApi } from './services/location/aisle.services';
@@ -168,6 +169,7 @@ const rootReducer = combineReducers({
   [notesApi.reducerPath]: notesApi.reducer,
 
   asset: assetSlice,
+  auditLog: auditLogSlice,
   general: generalSlice,
   dashboard: dashboardSlice,
   maintenance: maintenanceSlice,

@@ -39,7 +39,14 @@ const LeftSide = () => {
           <TaskCompletionRateChart
             notCompletedColorCode="#EABC30"
             completedColorCode="#033376"
-            data={data?.data?.completeAndIncompleteTasks ?? []}
+            data={
+              data?.data?.completeAndIncompleteTasks.map((item) => ({
+                complete: item.complete,
+                inComplete: item.inComplete,
+                monthId: item.monthId,
+                year: item.year,
+              })) ?? []
+            }
             isLoading={isLoading || isFetching}
             selectedYear={selectedYear}
             setSelectedYear={setSelectedYear}

@@ -6,11 +6,14 @@ import SectionTwo from './SectionTwo';
 import SectionThree from './SectionThree';
 import RecentApprovalRequest from './RecentApprovalRequest';
 import SectionFive from './SectionFive';
+import Filter from '../Header/Filter';
 
 const ClientAdmin = () => {
   return (
     <Flex width="full" direction="column" pb="24px">
-      <Header />
+      <Header>
+        <Filter />
+      </Header>
       <VStack width="full" mt="32px" spacing="16px">
         <SectionOne />
         <SectionTwo />

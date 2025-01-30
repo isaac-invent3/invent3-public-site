@@ -5,8 +5,8 @@ import React from 'react';
 // import OperationManager from './OperationManager';
 // import FrontDesk from './FrontDesk';
 // import FieldEngineer from './FieldEngineer';
-// import ClientAdmin from './ClientAdmin';
-import SuperAdmin from './SuperAdmin';
+import ClientAdmin from './ClientAdmin';
+// import SuperAdmin from './SuperAdmin';
 
 const Dashboard = () => {
   return (
@@ -14,8 +14,8 @@ const Dashboard = () => {
       {/* <OperationManager /> */}
       {/* <FrontDesk /> */}
       {/* <FieldEngineer /> */}
-      {/* <ClientAdmin /> */}
-      <SuperAdmin />
+      <ClientAdmin />
+      {/* <SuperAdmin /> */}
     </Flex>
   );
 };

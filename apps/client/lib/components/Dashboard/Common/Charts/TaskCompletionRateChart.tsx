@@ -5,7 +5,7 @@ import CardHeader from '../CardHeader';
 import DropDown from '../DropDown';
 import ChartLegend from './ChartLegend';
 import StackedBarChart from './StackedBarChart';
-import { CompleteAndIncompleteTask } from '~/lib/interfaces/dashboard.interfaces';
+import { GenericTaskCompleteData } from '~/lib/interfaces/dashboard.interfaces';
 import { Option } from '@repo/interfaces';
 import { transformMonthIdsToShortNames } from '../utils';
 
@@ -13,7 +13,7 @@ interface TaskCompletionRateChartProps {
   completedColorCode: string;
   notCompletedColorCode: string;
   isLoading: boolean;
-  data: CompleteAndIncompleteTask[];
+  data: GenericTaskCompleteData[];
   selectedYear?: Option;
   setSelectedYear?: React.Dispatch<React.SetStateAction<Option | undefined>>;
 }

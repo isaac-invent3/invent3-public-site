@@ -139,6 +139,13 @@ interface CompanyDistritution {
   stateName: string;
 }
 
+interface GenericTaskCompleteData {
+  inComplete: number;
+  complete: number;
+  monthId: number;
+  year: number;
+}
+
 export type {
   AssetStatistics,
   ActualProjectedData,
@@ -155,4 +162,5 @@ export type {
   UserDemographics,
   TrafficCount,
   CompanyDistritution,
+  GenericTaskCompleteData,
 };

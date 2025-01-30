@@ -5,31 +5,37 @@ import OpenTicketSummary from '../../Common/Summaries/OpenTicketSummary';
 import SummaryCardWrapper from '../../Common/SummaryCardWrapper';
 import ProgressIndicator from '../../Common/ProgressIndicator';
 import PendingTask from './PendingTask';
-import { useSession } from 'next-auth/react';
-import { useGetFrontdeskDashboardStatQuery } from '~/lib/redux/services/dashboard/frontdesk.services';
+import { useGetDashboardStatQuery } from '~/lib/redux/services/dashboard/clientadmin.services';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 const SectionOne = () => {
-  const session = useSession();
-  const user = session?.data?.user;
-  const { data, isLoading } = useGetFrontdeskDashboardStatQuery(
-    { userId: user?.userId! },
-    { skip: !user?.userId }
+  const { selectedCountry, selectedState } = useAppSelector(
+    (state) => state.dashboard.info
   );
-  const ticketValue = 600;
+  const { data, isLoading } = useGetDashboardStatQuery({
+    countryId: +selectedCountry?.value!,
+    regionId: (selectedState?.value as number) ?? undefined,
+  });
   return (
     <SimpleGrid width="full" spacing="16px" columns={5}>
       <TotalAssetSummary
         isLoading={isLoading}
-        assetInUse={data?.data?.assetsInUseCount}
-        assetNotInUse={data?.data?.assetsNotInUseCount}
-        percentChange={data?.data?.assetsInUsePercentageChange}
+        assetInUse={data?.data?.totalAssets}
+        assetNotInUse={data?.data?.assetsNotInUse}
+        percentChange={data?.data?.totalAssetsPercentageChange}
       />
       <OpenTicketSummary
         isLoading={isLoading}
         ticketCount={data?.data?.openTickets}
         percentChange={data?.data?.openTicketsPercentageChange}
       />
-      <PendingTask isLoading={false} />
+      <PendingTask
+        isLoading={false}
+        totalTask={data?.data?.pendingTasks}
+        highPriority={data?.data?.highPriorityPendingTasksPercentage}
+        mediumPriority={data?.data?.mediumPriorityPendingTasksPercentage}
+        lowPriority={data?.data?.lowPriorityPendingTasksPercentage}
+      />
       <SummaryCardWrapper
         title="Total Number of Vendors"
         containerStyle={{ minH: '164px' }}
@@ -48,7 +54,7 @@ const SectionOne = () => {
                 fontWeight={800}
                 color="primary.500"
               >
-                {ticketValue !== undefined ? ticketValue.toLocaleString() : '-'}
+                {data?.data?.totalNoOfVendors?.toLocaleString() ?? '-'}
               </Text>
             </Skeleton>
             <Text color="neutral.600" fontWeight={700} mb="4px">
@@ -56,7 +62,9 @@ const SectionOne = () => {
             </Text>
           </HStack>
           <HStack spacing="4px">
-            <ProgressIndicator valueChange={0} />
+            <ProgressIndicator
+              valueChange={data?.data?.totalNoOfVendorsPercentageChange ?? 0}
+            />
             <Text color="neutral.600" fontWeight={700}>
               Compared to last month
             </Text>
@@ -81,7 +89,7 @@ const SectionOne = () => {
                 fontWeight={800}
                 color="primary.500"
               >
-                {ticketValue !== undefined ? ticketValue.toLocaleString() : '-'}
+                {data?.data?.noOfOpenApprovals.toLocaleString() ?? '-'}
               </Text>
             </Skeleton>
             <Text color="neutral.600" fontWeight={700} mb="4px">
@@ -89,7 +97,9 @@ const SectionOne = () => {
             </Text>
           </HStack>
           <HStack spacing="4px">
-            <ProgressIndicator valueChange={0} />
+            <ProgressIndicator
+              valueChange={data?.data?.noOfOpenApprovalsPercentageChange ?? 0}
+            />
             <Text color="neutral.600" fontWeight={700}>
               Compared to last month
             </Text>

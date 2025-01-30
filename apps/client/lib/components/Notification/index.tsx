@@ -31,11 +31,11 @@ import TabButton from './Tabs/TabButton';
 const NotificationPopover = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [activeTab, setActiveTab] = useState('All');
-  const connectionState = useSignalR();
+  const connectionState = useSignalR('asset-hub');
 
   useSignalREventHandler({
     callback: (message) => console.log(message),
-    eventName: 'ReceiveNotification',
+    eventName: 'ReceiveAsset',
     connectionState,
   });
   const [markAllAsReadMutation, { isLoading }] =

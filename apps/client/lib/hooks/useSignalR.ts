@@ -12,7 +12,7 @@ export interface SignalRConnectionState {
   state: HubConnectionState;
 }
 
-const useSignalR = () => {
+const useSignalR = (path: string = 'notification-hub') => {
   const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const [connectionState, setConnectionState] =
@@ -24,7 +24,7 @@ const useSignalR = () => {
   const { data: session } = useSession();
 
   const hubConnection = new HubConnectionBuilder()
-    .withUrl('https://localhost:54728/Invent3Pro/notification-hub', {
+    .withUrl(`https://localhost:54728/Invent3Pro/${path}`, {
       withCredentials: false,
       headers: {
         Authorization: `Bearer ${session?.user.accessToken}`,

@@ -2,6 +2,7 @@ import { Box } from '@chakra-ui/react';
 import {
   addEdge,
   Connection,
+  Controls,
   ReactFlow,
   ReactFlowProvider,
   useEdgesState,
@@ -723,12 +724,12 @@ const FlowChart = () => {
             edgeTypes={edgeTypes}
             onNodeDragStart={onNodeDragStart}
             onNodeDragStop={onNodeDragStop}
-            minZoom={0.5}
             fitView
             style={{
               ...(isLoading || isFetching ? { opacity: 0.3 } : { opacity: 1 }),
             }}
-          />
+          >
+          </ReactFlow>
         </ReactFlowProvider>
       </Box>
 

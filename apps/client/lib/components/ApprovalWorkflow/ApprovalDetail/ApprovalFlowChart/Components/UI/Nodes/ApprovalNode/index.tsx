@@ -185,45 +185,6 @@ const ApprovalNode = ({
     );
 
     if (position === 'top') {
-      // if (overlappingNode.type === 'stackJoiner') {
-      //   console.log(overlappingNode.id);
-      //   setEdges((eds) => {
-      //     let updatedEdges = [...eds];
-
-      //     incomingEdges.forEach((edge) => {
-      //       updatedEdges = addEdge(
-      //         {
-      //           ...edge,
-      //           target: node.id!,
-      //         },
-      //         updatedEdges
-      //       );
-      //     });
-
-      //     outgoingEdges.forEach((edge) => {
-      //       updatedEdges = addEdge(
-      //         {
-      //           ...edge,
-      //           source: node.id!,
-      //         },
-      //         updatedEdges
-      //       );
-      //     });
-
-      //     updatedEdges = updatedEdges.filter(
-      //       (edge) =>
-      //         edge.source !== overlappingNode.id &&
-      //         edge.target !== overlappingNode.id
-      //     );
-
-      //     return updatedEdges;
-      //   });
-
-      //   return setNodes((nds) =>
-      //     nds.filter((n) => n.id !== overlappingNode.id)
-      //   );
-      // }
-
       if (incomingEdges.length > 1 || outgoingEdges.length > 1) {
         if (incomingEdges.length > 1) {
           const newNodeLeft = createNewNode('stackJoiner');
@@ -247,7 +208,6 @@ const ApprovalNode = ({
               );
             });
 
-        
             updatedEdges = addEdge(
               {
                 ...createNewEdge(newNodeLeft.id, currentNode.id),
@@ -316,7 +276,7 @@ const ApprovalNode = ({
           });
         }
 
-        onClose()
+        onClose();
 
         return;
       }
@@ -350,13 +310,6 @@ const ApprovalNode = ({
       setEdges((eds) => {
         let updatedEdges = [...eds];
 
-        updatedEdges = addEdge(
-          {
-            ...createNewEdge(currentNode.id, newNode.id),
-          },
-          updatedEdges
-        );
-
         outgoingEdges.forEach((edge) => {
           updatedEdges = addEdge(
             {
@@ -367,6 +320,13 @@ const ApprovalNode = ({
           );
         });
 
+        updatedEdges = addEdge(
+          {
+            ...createNewEdge(currentNode.id, newNode.id),
+          },
+          updatedEdges
+        );
+
         return updatedEdges;
       });
     }
@@ -374,13 +334,6 @@ const ApprovalNode = ({
     if (position === 'left') {
       setEdges((eds) => {
         let updatedEdges = [...eds];
-
-        updatedEdges = addEdge(
-          {
-            ...createNewEdge(newNode.id, currentNode.id),
-          },
-          updatedEdges
-        );
 
         incomingEdges.forEach((edge) => {
           updatedEdges = addEdge(
@@ -391,6 +344,13 @@ const ApprovalNode = ({
             updatedEdges
           );
         });
+
+        updatedEdges = addEdge(
+          {
+            ...createNewEdge(newNode.id, currentNode.id),
+          },
+          updatedEdges
+        );
 
         return updatedEdges;
       });

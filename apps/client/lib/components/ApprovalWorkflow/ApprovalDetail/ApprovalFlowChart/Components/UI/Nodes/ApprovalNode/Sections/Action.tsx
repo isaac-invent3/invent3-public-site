@@ -14,6 +14,7 @@ import {
 } from '~/lib/components/CustomIcons';
 import { ApprovalWorkflowPartyInstance } from '~/lib/interfaces/approvalWorkflow.interfaces';
 import AddApprovalActionModal from '../../../Modals/AddActionModal';
+import NodeFormModal from '../../../Modals/NodeFormModal';
 
 const Action = (props: {
   data: ApprovalWorkflowPartyInstance;
@@ -57,10 +58,11 @@ const Action = (props: {
           </Text>
         </HStack>
 
-        <AddApprovalActionModal
+        <NodeFormModal
           nodeId={nodeId}
           isOpen={isOpen}
           onClose={onClose}
+          type='add'
         />
       </>
     );

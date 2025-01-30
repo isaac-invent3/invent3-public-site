@@ -124,7 +124,7 @@ const MaintenanceSuccessChart = ({
           (chartData.filter(Boolean).length > 0 ? (
             <PieChart
               dataValues={chartData}
-              labels={['Missed', 'Completed']}
+              labels={chartLegendItems.map((item) => item.label)}
               pieLabel="Maintenance"
               backgroundColors={[missedColorCode, completedColorCode]}
             />

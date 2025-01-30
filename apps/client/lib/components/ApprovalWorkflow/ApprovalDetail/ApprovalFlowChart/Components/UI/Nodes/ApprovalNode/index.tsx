@@ -53,29 +53,30 @@ const ApprovalNode = ({
     handler: onClose,
   });
 
-  const { getNodes, setNodes, setEdges } = useReactFlow();
+  const { getNodes, setNodes, setEdges, getEdges } = useReactFlow();
 
   const nodes = getNodes();
+  const edges = getEdges();
 
-  const isPartOfStack = () => {
-    const currentNode = nodes.find((item) => item.id == id);
+  // const isPartOfStack = () => {
+  //   const currentNode = nodes.find((item) => item.id == id);
 
-    if (!currentNode) return false;
+  //   if (!currentNode) return false;
 
-    const posX = currentNode.position.x;
+  //   const posX = currentNode.position.x;
 
-    const groupedByX: Record<number, CustomNode[]> = {};
+  //   const groupedByX: Record<number, CustomNode[]> = {};
 
-    nodes.forEach((n) => {
-      if (!groupedByX[n.position.x]) groupedByX[n.position.x] = [];
-      groupedByX[n.position.x].push(n);
-    });
+  //   nodes.forEach((n) => {
+  //     if (!groupedByX[n.position.x]) groupedByX[n.position.x] = [];
+  //     groupedByX[n.position.x].push(n);
+  //   });
 
-    const stackedNodes = groupedByX[posX] || [];
-    const isPartOfStack = stackedNodes.length > 1;
+  //   const stackedNodes = groupedByX[posX] || [];
+  //   const isPartOfStack = stackedNodes.length > 1;
 
-    return isPartOfStack;
-  };
+  //   return isPartOfStack;
+  // };
 
   const addNode = useCallback(
     (nodeId: string, direction: 'left' | 'right') => {
@@ -117,8 +118,289 @@ const ApprovalNode = ({
     };
   }, [onClose]);
 
+  const findClosestNodes = (currentNode: CustomNode) => {
+    const {
+      id: currentNodeId,
+      position: { x: posX },
+    } = currentNode;
+    const overlapThreshold = 50; // Distance threshold to consider nodes as overlapping
+
+    let leftNodes: CustomNode[] = [];
+    let rightNodes: CustomNode[] = [];
+    let overlappingNode: CustomNode | null = null;
+    let minLeftDistance = Infinity;
+    let minRightDistance = Infinity;
+
+    const groupedByX: Record<number, CustomNode[]> = {};
+
+    // Group nodes by their X position
+    nodes.forEach((node) => {
+      if (node.id === currentNodeId) return;
+
+      const isOverlapping = Math.abs(node.position.x - posX) < overlapThreshold;
+      if (isOverlapping) {
+        overlappingNode = node;
+      }
+
+      // Group nodes with the same X position
+      if (!groupedByX[node.position.x]) {
+        groupedByX[node.position.x] = [];
+      }
+      groupedByX[node.position.x].push(node);
+    });
+
+    // Find the closest left and right nodes based on X position
+    Object.entries(groupedByX).forEach(([xStr, stackedNodes]) => {
+      const x = parseFloat(xStr);
+      const distance = x - posX;
+
+      if (distance < 0 && Math.abs(distance) < minLeftDistance) {
+        minLeftDistance = Math.abs(distance);
+        leftNodes = stackedNodes;
+      }
+
+      if (distance > 0 && Math.abs(distance) < minRightDistance) {
+        minRightDistance = Math.abs(distance);
+        rightNodes = stackedNodes;
+      }
+    });
+
+    return { leftNodes, rightNodes, overlappingNode };
+  };
+
+  const onNodeDragStop = (position: 'right' | 'left' | 'top' | 'bottom') => {
+    const currentNode = nodes.find((item) => item.id === id);
+
+    if (!currentNode) return;
+
+    const newNode = createNewNode();
+
+    setNodes((nds) => [...nds, newNode]);
+
+    const incomingEdges = edges.filter(
+      (edge) => edge.target === currentNode.id
+    );
+    const outgoingEdges = edges.filter(
+      (edge) => edge.source === currentNode.id
+    );
+
+    if (position === 'top') {
+      // if (overlappingNode.type === 'stackJoiner') {
+      //   console.log(overlappingNode.id);
+      //   setEdges((eds) => {
+      //     let updatedEdges = [...eds];
+
+      //     incomingEdges.forEach((edge) => {
+      //       updatedEdges = addEdge(
+      //         {
+      //           ...edge,
+      //           target: node.id!,
+      //         },
+      //         updatedEdges
+      //       );
+      //     });
+
+      //     outgoingEdges.forEach((edge) => {
+      //       updatedEdges = addEdge(
+      //         {
+      //           ...edge,
+      //           source: node.id!,
+      //         },
+      //         updatedEdges
+      //       );
+      //     });
+
+      //     updatedEdges = updatedEdges.filter(
+      //       (edge) =>
+      //         edge.source !== overlappingNode.id &&
+      //         edge.target !== overlappingNode.id
+      //     );
+
+      //     return updatedEdges;
+      //   });
+
+      //   return setNodes((nds) =>
+      //     nds.filter((n) => n.id !== overlappingNode.id)
+      //   );
+      // }
+
+      if (incomingEdges.length > 1 || outgoingEdges.length > 1) {
+        if (incomingEdges.length > 1) {
+          const newNodeLeft = createNewNode('stackJoiner');
+
+          setNodes((nds) => [...nds, newNodeLeft]);
+
+          setEdges((eds) => {
+            let updatedEdges = [...eds];
+
+            updatedEdges = updatedEdges.filter(
+              (edge) => edge.target !== currentNode.id
+            );
+
+            incomingEdges.forEach((edge) => {
+              updatedEdges = addEdge(
+                {
+                  ...edge,
+                  target: newNodeLeft.id!,
+                },
+                updatedEdges
+              );
+            });
+
+        
+            updatedEdges = addEdge(
+              {
+                ...createNewEdge(newNodeLeft.id, currentNode.id),
+              },
+              updatedEdges
+            );
+            updatedEdges = addEdge(
+              {
+                ...createNewEdge(newNodeLeft.id, newNode.id),
+              },
+              updatedEdges
+            );
+
+            return updatedEdges;
+          });
+        }
+
+        if (outgoingEdges.length > 1) {
+          const newNodeRight = createNewNode('stackJoiner');
+
+          setNodes((nds) => [...nds, newNodeRight]);
+
+          setEdges((eds) => {
+            let updatedEdges = [...eds];
+
+            updatedEdges = updatedEdges.filter(
+              (edge) => edge.source !== currentNode.id
+            );
+
+            outgoingEdges.forEach((edge) => {
+              updatedEdges = addEdge(
+                {
+                  ...edge,
+                  source: newNodeRight.id!,
+                },
+                updatedEdges
+              );
+            });
+
+            updatedEdges = addEdge(
+              {
+                ...createNewEdge(currentNode.id, newNodeRight.id),
+              },
+              updatedEdges
+            );
+
+            if (incomingEdges.length == 1) {
+              incomingEdges.forEach((edge) => {
+                updatedEdges = addEdge(
+                  {
+                    ...createNewEdge(edge.source, newNode.id),
+                  },
+                  updatedEdges
+                );
+              });
+            }
+
+            updatedEdges = addEdge(
+              {
+                ...createNewEdge(newNode.id, newNodeRight.id),
+              },
+              updatedEdges
+            );
+
+            return updatedEdges;
+          });
+        }
+
+        onClose()
+
+        return;
+      }
+
+      setEdges((eds) => {
+        let updatedEdges = [...eds];
+
+        incomingEdges.forEach((edge) => {
+          updatedEdges = addEdge(
+            {
+              ...createNewEdge(edge.source, newNode.id),
+            },
+            updatedEdges
+          );
+        });
+
+        outgoingEdges.forEach((edge) => {
+          updatedEdges = addEdge(
+            {
+              ...createNewEdge(newNode.id, edge.target),
+            },
+            updatedEdges
+          );
+        });
+
+        return updatedEdges;
+      });
+    }
+
+    if (position === 'right') {
+      setEdges((eds) => {
+        let updatedEdges = [...eds];
+
+        updatedEdges = addEdge(
+          {
+            ...createNewEdge(currentNode.id, newNode.id),
+          },
+          updatedEdges
+        );
+
+        outgoingEdges.forEach((edge) => {
+          updatedEdges = addEdge(
+            {
+              ...edge,
+              source: newNode.id!,
+            },
+            updatedEdges
+          );
+        });
+
+        return updatedEdges;
+      });
+    }
+
+    if (position === 'left') {
+      setEdges((eds) => {
+        let updatedEdges = [...eds];
+
+        updatedEdges = addEdge(
+          {
+            ...createNewEdge(newNode.id, currentNode.id),
+          },
+          updatedEdges
+        );
+
+        incomingEdges.forEach((edge) => {
+          updatedEdges = addEdge(
+            {
+              ...edge,
+              target: newNode.id!,
+            },
+            updatedEdges
+          );
+        });
+
+        return updatedEdges;
+      });
+    }
+
+    onClose();
+  };
+
   return (
-    <Box ref={popoverRef} h="110px">
+    <Box ref={popoverRef} position="relative" zIndex={1}>
       <Popover
         placement="right-start"
         autoFocus={false}
@@ -132,6 +414,7 @@ const ApprovalNode = ({
             background={approvalActionId ? 'white' : '#e7f6fe'}
             overflowY="scroll"
             w="185px"
+            h="210px"
             transition="all 300ms ease-in-out"
             onContextMenu={handleContextMenu}
             zIndex={1}
@@ -183,10 +466,16 @@ const ApprovalNode = ({
           width="150px"
           boxShadow="0px 4px 32px 0px #00000026"
           rounded="8px"
-          zIndex={100}
+          zIndex={9999} // Very high z-index
+          position="relative"
         >
           <PopoverBody m={0} px="8px">
-            <VStack width="full" alignItems="flex-start" spacing="4px">
+            <VStack
+              width="full"
+              alignItems="flex-start"
+              spacing="4px"
+              zIndex={100}
+            >
               <HStack
                 w="full"
                 cursor="pointer"
@@ -198,19 +487,10 @@ const ApprovalNode = ({
                 _hover={{
                   bgColor: 'neutral.200',
                 }}
-                onClick={() => addNode(id, 'left')}
+                onClick={() => onNodeDragStop('top')}
               >
-                {isPartOfStack() ? (
-                  <>
-                    <Icon as={ArrowUpIcon} boxSize="12px" />
-                    <Text>Add Node Above </Text>
-                  </>
-                ) : (
-                  <>
-                    <Icon as={ArrowLeftIcon} boxSize="10px" />
-                    <Text>Add Node Before </Text>
-                  </>
-                )}
+                <Icon as={ArrowUpIcon} boxSize="12px" />
+                <Text>Add Node Above </Text>
               </HStack>
               <HStack
                 w="full"
@@ -223,21 +503,44 @@ const ApprovalNode = ({
                 _hover={{
                   bgColor: 'neutral.200',
                 }}
-                onClick={() => addNode(id, 'right')}
+                onClick={() => onNodeDragStop('bottom')}
               >
-                {isPartOfStack() ? (
-                  <>
-                    <Icon as={ArrowDownIcon} boxSize="12px" />
-                    <Text>Add Node Below </Text>
-                  </>
-                ) : (
-                  <>
-                    <Icon as={ArrowRightIcon} boxSize="10px" />
-                    <Text>Add Node After </Text>
-                  </>
-                )}
+                <Icon as={ArrowDownIcon} boxSize="12px" />
+                <Text>Add Node Below </Text>
+              </HStack>
+              <HStack
+                w="full"
+                cursor="pointer"
+                color="primary.500"
+                px="8px"
+                py="8px"
+                rounded="8px"
+                transition="all 200ms ease-in-out"
+                _hover={{
+                  bgColor: 'neutral.200',
+                }}
+                onClick={() => onNodeDragStop('left')}
+              >
+                <Icon as={ArrowLeftIcon} boxSize="10px" />
+                <Text>Add Node Before </Text>
               </HStack>
 
+              <HStack
+                w="full"
+                cursor="pointer"
+                color="primary.500"
+                px="8px"
+                py="8px"
+                rounded="8px"
+                transition="all 200ms ease-in-out"
+                _hover={{
+                  bgColor: 'neutral.200',
+                }}
+                onClick={() => onNodeDragStop('right')}
+              >
+                <Icon as={ArrowRightIcon} boxSize="10px" />
+                <Text>Add Node After </Text>
+              </HStack>
               <HStack
                 w="full"
                 cursor="pointer"
@@ -253,7 +556,6 @@ const ApprovalNode = ({
                 <Icon as={EditIcon} boxSize="10px" />
                 <Text>Edit Node</Text>
               </HStack>
-
               <HStack
                 w="full"
                 cursor="pointer"

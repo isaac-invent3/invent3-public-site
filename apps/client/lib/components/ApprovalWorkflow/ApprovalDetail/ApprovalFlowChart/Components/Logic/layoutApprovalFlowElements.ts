@@ -4,7 +4,7 @@ import { cloneDeep } from 'lodash';
 import { isNode } from 'react-flow-renderer';
 import { ApprovalFlowElement, CustomEdge } from '../Interfaces';
 
-const NODE_WIDTH = 250;
+const NODE_WIDTH = 300;
 const NODE_HEIGHT = 180;
 
 /**

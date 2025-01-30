@@ -28,10 +28,7 @@ export const logApi = createApi({
       }),
       providesTags: ['allLogs'],
     }),
-    getLogById: builder.query<
-      BaseApiResponse<AuditLog>,
-      { id: number | undefined }
-    >({
+    getLogById: builder.query<BaseApiResponse<AuditLog>, { id: number }>({
       query: ({ id }) => ({
         url: `/AuditLogMessages/${id}`,
         method: 'GET',

@@ -1,5 +1,5 @@
 import React from 'react';
-import SummaryCardWrapper from '../../../Common/SummaryCardWrapper';
+import SummaryCardWrapper from '../../../../Common/SummaryCardWrapper';
 import { HStack, Skeleton, StackDivider, Text, VStack } from '@chakra-ui/react';
 import ProgressIndicator from '../../../Common/ProgressIndicator';
 

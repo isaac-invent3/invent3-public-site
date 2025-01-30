@@ -1,6 +1,6 @@
 import { HStack, SimpleGrid, Skeleton, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
-import SummaryCardWrapper from '../../Common/SummaryCardWrapper';
+import SummaryCardWrapper from '../../../Common/SummaryCardWrapper';
 import { MaintenanceIcon } from '~/lib/components/CustomIcons/Dashboard';
 import TaskOverview from './TaskOverview';
 import OpenTicketSummary from '../../Common/Summaries/OpenTicketSummary';

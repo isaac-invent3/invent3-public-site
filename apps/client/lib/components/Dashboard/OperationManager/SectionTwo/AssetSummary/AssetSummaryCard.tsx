@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react';
 
 import { useAppSelector } from '~/lib/redux/hooks';
-import SummaryCardWrapper from '../../../Common/SummaryCardWrapper';
+import SummaryCardWrapper from '../../../../Common/SummaryCardWrapper';
 
 interface AssetSummaryCardProps {
   title: string;

@@ -1,5 +1,5 @@
 import React from 'react';
-import SummaryCardWrapper from '../SummaryCardWrapper';
+import SummaryCardWrapper from '../../../Common/SummaryCardWrapper';
 import { AssetBoxIcon } from '~/lib/components/CustomIcons/Dashboard';
 import { HStack, Skeleton, Text, VStack } from '@chakra-ui/react';
 import ProgressIndicator from '../ProgressIndicator';

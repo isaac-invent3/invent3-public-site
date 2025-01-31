@@ -32,9 +32,9 @@ const SectionOne = () => {
       <PendingTask
         isLoading={false}
         totalTask={data?.data?.pendingTasks}
-        highPriority={data?.data?.highPriorityPendingTasksPercentage}
-        mediumPriority={data?.data?.mediumPriorityPendingTasksPercentage}
-        lowPriority={data?.data?.lowPriorityPendingTasksPercentage}
+        highPriority={data?.data?.highPriorityPendingTasks}
+        mediumPriority={data?.data?.mediumPriorityPendingTasks}
+        lowPriority={data?.data?.lowPriorityPendingTasks}
       />
       <SummaryCardWrapper
         title="Total Number of Vendors"

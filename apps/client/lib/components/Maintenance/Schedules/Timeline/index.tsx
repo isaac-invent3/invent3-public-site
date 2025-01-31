@@ -76,68 +76,85 @@ const ScheduleTimeline = () => {
     setView(newView);
   };
 
-  //Fetches Single Instances with aggregate count of one
-  useEffect(() => {
-    const fetchInstancesWithSingleAggregateCount = async () => {
-      let hasNextPage = true;
-      while (hasNextPage && selectedCountry) {
-        const result = await dispatch(
-          scheduleInstanceApi.endpoints.getMaintenanceScheduleInstancesWithSingleAggregateCountsByArea.initiate(
-            {
-              areaId: isProperState
-                ? (selectedState.value as number)
-                : (selectedCountry.value as number),
-              areaType: isProperState ? AREA_ENUM.state : AREA_ENUM.country,
-              startDate,
-              endDate,
-              pageNumber: 1,
-              pageSize: 50,
-            }
-          )
-        );
+  const fetchInstanceAggregate = async (): Promise<EventType[]> => {
+    let hasNextPage = true;
+    let allEvents: EventType[] = [];
 
-        if (result.data?.data?.items) {
-          setEventData((prev) => [
-            ...prev,
-            ...transformToCalendarEvents(result.data?.data.items as any[]),
-          ]);
-        }
-        hasNextPage = result.data?.data.hasNextPage ?? false;
+    while (hasNextPage && selectedCountry) {
+      const result = await dispatch(
+        scheduleInstanceApi.endpoints.getMaintenanceScheduleInstanceAggregate.initiate(
+          {
+            areaId: isProperState
+              ? (selectedState.value as number)
+              : (selectedCountry.value as number),
+            areaType: isProperState ? AREA_ENUM.state : AREA_ENUM.country,
+            startDate,
+            endDate,
+            pageNumber: 1,
+            pageSize: 50,
+          }
+        )
+      );
+
+      if (result.data?.data?.items) {
+        allEvents = [
+          ...allEvents,
+          ...transformToCalendarEvents(result.data?.data.items as any[]),
+        ];
       }
-    };
-    fetchInstancesWithSingleAggregateCount();
-  }, [isProperState, startDate, endDate, selectedState, selectedCountry]);
+      hasNextPage = result.data?.data.hasNextPage ?? false;
+    }
 
-  //Fetches Instances Aggregate Info with count of more than 1
-  useEffect(() => {
-    const fetchInstanceAggregate = async () => {
-      let hasNextPage = true;
-      while (hasNextPage && selectedCountry) {
-        const result = await dispatch(
-          scheduleInstanceApi.endpoints.getMaintenanceScheduleInstanceAggregate.initiate(
-            {
-              areaId: isProperState
-                ? (selectedState.value as number)
-                : (selectedCountry.value as number),
-              areaType: isProperState ? AREA_ENUM.state : AREA_ENUM.country,
-              startDate,
-              endDate,
-              pageNumber: 1,
-              pageSize: 50,
-            }
-          )
-        );
+    return allEvents;
+  };
 
-        if (result.data?.data?.items) {
-          setEventData((prev) => [
-            ...prev,
-            ...transformToCalendarEvents(result.data?.data.items as any[]),
-          ]);
-        }
-        hasNextPage = result.data?.data.hasNextPage ?? false;
+  const fetchInstancesWithSingleAggregateCount = async (): Promise<
+    EventType[]
+  > => {
+    let hasNextPage = true;
+    let allEvents: EventType[] = [];
+
+    while (hasNextPage && selectedCountry) {
+      const result = await dispatch(
+        scheduleInstanceApi.endpoints.getMaintenanceScheduleInstancesWithSingleAggregateCountsByArea.initiate(
+          {
+            areaId: isProperState
+              ? (selectedState.value as number)
+              : (selectedCountry.value as number),
+            areaType: isProperState ? AREA_ENUM.state : AREA_ENUM.country,
+            startDate,
+            endDate,
+            pageNumber: 1,
+            pageSize: 50,
+          }
+        )
+      );
+
+      if (result.data?.data?.items) {
+        allEvents = [
+          ...allEvents,
+          ...transformToCalendarEvents(result.data?.data.items as any[]),
+        ];
       }
+      hasNextPage = result.data?.data.hasNextPage ?? false;
+    }
+
+    return allEvents;
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setEventData([]); // Clear existing data before fetching new
+
+      const [singleAggregateEvents, aggregateEvents] = await Promise.all([
+        fetchInstancesWithSingleAggregateCount(),
+        fetchInstanceAggregate(),
+      ]);
+
+      setEventData([...singleAggregateEvents, ...aggregateEvents]);
     };
-    fetchInstanceAggregate();
+
+    fetchData();
   }, [isProperState, startDate, endDate, selectedState, selectedCountry]);
 
   return (

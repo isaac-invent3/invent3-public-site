@@ -4,13 +4,20 @@ import { Flex } from '@chakra-ui/react';
 
 import SideBar from './SideBar';
 import Header from './Header';
+// import CountDownTimer from './CountDownTimer';
 
 interface ProtectedLayoutProps {
   children: React.ReactNode;
 }
 const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
   return (
-    <Flex width="full" height="100vh" bgColor="#D9D9D9" overflowY="scroll">
+    <Flex
+      width="full"
+      height="100vh"
+      bgColor="#D9D9D9"
+      overflowY="scroll"
+      position="relative"
+    >
       <SideBar />
       <Flex
         width="calc(100vw - 73px)"
@@ -24,6 +31,7 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
         <Header />
         {children}
       </Flex>
+      {/* <CountDownTimer /> */}
     </Flex>
   );
 };

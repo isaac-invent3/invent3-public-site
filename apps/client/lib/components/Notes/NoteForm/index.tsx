@@ -42,7 +42,6 @@ const NoteForm = (props: NoteFormModalProps) => {
   const { isOpen, onClose, type } = props;
 
   const session = useSession();
-  const user = session?.data?.user;
 
   const getSystemContextId = (): number => {
     return 0;
@@ -52,6 +51,7 @@ const NoteForm = (props: NoteFormModalProps) => {
 
   const [createNoteMutation, { isLoading: isCreatingNote }] =
     useCreateNoteMutation();
+
   const {
     isOpen: isOpenSelectUser,
     onOpen: onOpenSelectUser,

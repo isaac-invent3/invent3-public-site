@@ -11,7 +11,14 @@ const PopoverAction = () => {
         icon={AiOutlineEllipsis}
       >
         <VStack width="full" alignItems="flex-start" spacing="16px">
-          <Text cursor="pointer">Edit Note</Text>
+          <Text
+            cursor="pointer"
+            _hover={{
+              background: 'red',
+            }}
+          >
+            Edit Note
+          </Text>
           <Text cursor="pointer">Duplicate</Text>
           <Text cursor="pointer">Pin this Note</Text>
           <Text cursor="pointer">Set as Priority</Text>

@@ -1,5 +1,5 @@
 import { Avatar, Box, Card, HStack, Icon, Text } from '@chakra-ui/react';
-import { AiFillStar, AiOutlineEllipsis } from 'react-icons/ai';
+import { AiFillStar } from 'react-icons/ai';
 import { Note } from '~/lib/interfaces/notes.interfaces';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import PopoverAction from './PopoverAction';
@@ -14,7 +14,20 @@ const NoteCard = (props: NoteCardProps) => {
   const { isPinned } = props;
 
   return (
-    <Card p="8px" rounded="8px" bgColor="white" position="relative" h="180px">
+    <Card
+      cursor="pointer"
+      p="8px"
+      rounded="8px"
+      bgColor="white"
+      position="relative"
+      h="180px"
+      transition="all 300ms ease-in-out"
+      _hover={{
+        boxShadow:
+          '0 4px 10px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1)',
+        marginTop: '-0.2em',
+      }}
+    >
       <HStack w="full" justifyContent="space-between" gap="8px">
         <Text fontWeight={800}>Test</Text>
 
@@ -121,7 +134,6 @@ const NoteCard = (props: NoteCardProps) => {
             {dateFormatter(lastModifiedDate, 'DD/MM/YYYY')}
           </Text>
 
-          {/* <Icon as={AiOutlineEllipsis} /> */}
           <PopoverAction />
         </HStack>
       </Box>

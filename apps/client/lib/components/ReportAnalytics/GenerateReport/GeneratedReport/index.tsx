@@ -153,7 +153,6 @@ const GeneratedReport = (props: GeneratedReportProps) => {
           paddingTop: '12px',
           paddingBottom: '12px',
         }}
-        customTableContainerStyle={{ rounded: 'none' }}
       />
 
       <ScheduleReportDrawer

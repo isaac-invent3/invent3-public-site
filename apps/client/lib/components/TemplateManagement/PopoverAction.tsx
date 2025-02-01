@@ -5,6 +5,7 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';
 import { useDeleteTemplateMutation } from '~/lib/redux/services/template.services';
 import { ROUTES } from '~/lib/utils/constants';
+import usePermissionAccess from '~/lib/hooks/useRoleAccess';
 
 const PopoverAction = (template: Template) => {
   const {
@@ -15,6 +16,7 @@ const PopoverAction = (template: Template) => {
 
   const { handleSubmit } = useCustomMutation();
   const [deleteTemplate, { isLoading }] = useDeleteTemplateMutation({});
+  const canDeleteTemplate = usePermissionAccess('template:delete');
 
   const handleDeletePlan = async () => {
     const session = await getSession();
@@ -39,9 +41,11 @@ const PopoverAction = (template: Template) => {
           >
             View
           </Text>
-          <Text cursor="pointer" onClick={onOpenDelete} color="#F50000">
-            Delete
-          </Text>
+          {canDeleteTemplate && (
+            <Text cursor="pointer" onClick={onOpenDelete} color="#F50000">
+              Delete
+            </Text>
+          )}
         </VStack>
       </GenericPopover>
       {isOpenDelete && (

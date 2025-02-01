@@ -5,10 +5,8 @@ import { createColumnHelper } from '@tanstack/react-table';
 import { useField } from 'formik';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import {
-  AssetDocument,
-  AssetFormDocument,
-} from '~/lib/interfaces/asset/general.interface';
+import { AssetDocument } from '~/lib/interfaces/asset/general.interface';
+import { Document } from '~/lib/interfaces/general.interfaces';
 import {
   useGetAssetDocumentsByAssetIdQuery,
   useSearchAssetDocumentsMutation,
@@ -139,7 +137,7 @@ const useExistingDocumentTable = (props: UseExistingDocumentTableProps) => {
   );
 
   const handleAddDocuments = () => {
-    const selectedDocuments: AssetFormDocument[] = [];
+    const selectedDocuments: Document[] = [];
     const sourceItems =
       search && searchData ? searchData.items : (data?.data?.items ?? []);
     selectedRows.forEach((row) => {
@@ -199,7 +197,6 @@ const useExistingDocumentTable = (props: UseExistingDocumentTableProps) => {
         paddingBottom: '16px',
       }}
       customTBodyRowStyle={{ verticalAlign: 'top' }}
-      customTableContainerStyle={{ rounded: 'none' }}
     />
   );
 

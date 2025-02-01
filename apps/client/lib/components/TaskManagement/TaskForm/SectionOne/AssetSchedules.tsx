@@ -139,7 +139,6 @@ const AssetSchedules = () => {
             paddingBottom: '16px',
           }}
           customTBodyRowStyle={{ verticalAlign: 'top' }}
-          customTableContainerStyle={{ rounded: 'none' }}
         />
 
         {data?.data && data?.data?.items.length > 0 && (

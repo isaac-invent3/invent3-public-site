@@ -6,6 +6,7 @@ import React from 'react';
 // import FrontDesk from './FrontDesk';
 // import FieldEngineer from './FieldEngineer';
 import ClientAdmin from './ClientAdmin';
+// import SuperAdmin from './SuperAdmin';
 
 const Dashboard = () => {
   return (
@@ -14,6 +15,7 @@ const Dashboard = () => {
       {/* <FrontDesk /> */}
       {/* <FieldEngineer /> */}
       <ClientAdmin />
+      {/* <SuperAdmin /> */}
     </Flex>
   );
 };

@@ -116,7 +116,6 @@ const HistoryTab = () => {
           paddingBottom: '8px',
         }}
         customTBodyRowStyle={{ verticalAlign: 'top' }}
-        customTableContainerStyle={{ rounded: 'none' }}
       />
     </Flex>
   );

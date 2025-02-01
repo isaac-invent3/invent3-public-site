@@ -1,11 +1,13 @@
 'use client';
 
+import { PermissionKey } from '../interfaces/role.interfaces';
 import { SYSTEM_CONTEXT_DETAILS } from '../utils/constants';
 import { FormattedUrl } from './useFormatUrl';
 
 interface ParseUrlDataResponse {
   systemContextId: number;
   contextId: number | string | null;
+  permissionKeys?: PermissionKey[];
 }
 
 type SystemContextDetail =
@@ -80,6 +82,7 @@ const useParseUrlData = (
       return {
         systemContextId: systemContextDetail.id,
         contextId: null,
+        permissionKeys: systemContextDetail.relatedPermissionKeys,
       };
     }
   }

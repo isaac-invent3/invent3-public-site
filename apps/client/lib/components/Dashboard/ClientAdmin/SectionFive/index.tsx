@@ -6,7 +6,7 @@ import UserActivity from './UserActivity';
 const SectionFive = () => {
   return (
     <HStack spacing="16px" width="full" minH="382px">
-      <Flex width="55%" height="full">
+      <Flex width="54%" height="full">
         <VendorManagement />
       </Flex>
       <Flex width="45%" height="full">

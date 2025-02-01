@@ -1,5 +1,7 @@
 import { GeoJsonTypes } from 'geojson';
-import { OPERATORS } from '../utils/constants';
+import { OPERATORS, ROUTES, SYSTEM_CONTEXT_TYPE } from '../utils/constants';
+import { ComponentWithAs, IconProps } from '@chakra-ui/react';
+import { ModuleKey } from './role.interfaces';
 
 interface Option {
   label: string;
@@ -86,7 +88,46 @@ interface GenericTableProps {
   showEmptyState?: boolean;
 }
 
+interface Document {
+  documentId: number | null;
+  documentName: string | null;
+  base64Document: string | null;
+  base64Prefix: string | null;
+}
+
 type ActionType = 'bulk' | 'filter' | null;
+
+interface SideBarData {
+  name: string;
+  route: string;
+  icon: ComponentWithAs<'svg', IconProps>;
+  permissionKey: ModuleKey;
+}
+
+type ContextKey =
+  | 'ASSETS'
+  | 'MAINTENANCE_PLANS'
+  | 'MAINTENANCE_SCHEDULES'
+  | 'MAINTENANCE_SCHEDULE_INSTANCE'
+  | 'TASKS'
+  | 'TICKETS'
+  | 'USER'
+  | 'VENDOR'
+  | 'AUDIT';
+
+interface SystemContextDetail {
+  id: (typeof SYSTEM_CONTEXT_TYPE)[keyof typeof SYSTEM_CONTEXT_TYPE];
+  route: (typeof ROUTES)[keyof typeof ROUTES];
+  slug: string;
+  relatedPermissionKeys?: ModuleKey[];
+}
+
+interface ImageObject {
+  imageId: number | null;
+  imageName: string | null;
+  base64PhotoImage: string;
+  base64Prefix: string | null;
+}
 
 export type {
   GeoJSONFeature,
@@ -98,4 +139,9 @@ export type {
   AppConfig,
   GenericTableProps,
   ActionType,
+  Document,
+  SideBarData,
+  SystemContextDetail,
+  ContextKey,
+  ImageObject,
 };

@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react';
+import { Flex, Text, VStack } from '@chakra-ui/react';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useMemo } from 'react';
@@ -6,7 +6,23 @@ import { dateFormatter } from '~/lib/utils/Formatters';
 import PopoverAction from './PopoverAction';
 import { GenericTableProps } from '~/lib/interfaces/general.interfaces';
 import { Vendor } from '~/lib/interfaces/vendor.interfaces';
+import UserInfo from '../../Common/UserInfo';
+import GenericStatusBox from '../../UI/GenericStatusBox';
 
+const ContactPerson = (vendor: Vendor) => {
+  const { emailAddress, phoneNumber } = vendor;
+  return (
+    <VStack alignItems="flex-start" spacing="2px">
+      <Text color="black">Contact Person</Text>
+      <Text size="sm" color="neutral.600">
+        {emailAddress}
+      </Text>
+      <Text size="sm" color="neutral.600">
+        {phoneNumber}
+      </Text>
+    </VStack>
+  );
+};
 interface VendorTableProps extends GenericTableProps {
   data: Vendor[];
   // eslint-disable-next-line no-unused-vars
@@ -46,37 +62,34 @@ const VendorTable = (props: VendorTableProps) => {
         }),
 
         columnHelper.accessor('vendorName', {
-          cell: (info) => info.getValue(),
+          cell: (info) => UserInfo({ name: info.getValue() }),
           header: 'Vendor Name',
+          enableSorting: true,
+        }),
+        columnHelper.accessor('vendorName', {
+          cell: (info) => ContactPerson(info.row.original),
+          header: 'Contact Person',
           enableSorting: false,
         }),
-
         columnHelper.accessor('emailAddress', {
-          cell: (info) => info.getValue(),
-          header: 'Email Address',
+          cell: () => 'Maintenance',
+          header: 'Category',
           enableSorting: true,
         }),
 
-        columnHelper.accessor('phoneNumber', {
-          cell: (info) => info.getValue(),
-          header: 'Phone Number',
-          enableSorting: false,
-        }),
-        columnHelper.accessor('address', {
-          cell: (info) => info.getValue(),
-          header: 'Address',
-          enableSorting: false,
-        }),
-
         columnHelper.accessor('createdDate', {
-          cell: (info) =>
-            dateFormatter(info.getValue(), 'DD / MM / YYYY hh:mma'),
-          header: 'Date Requested',
+          cell: (info) => dateFormatter(info.getValue(), 'DD / MM / YYYY'),
+          header: 'Contract Expiry Date',
           enableSorting: false,
         }),
 
+        columnHelper.accessor('lastModifiedBy', {
+          cell: () => <GenericStatusBox text="Active" colorCode="#07CC3B" />,
+          header: 'Status',
+          enableSorting: false,
+        }),
         columnHelper.accessor('guid', {
-          cell: () => <PopoverAction />,
+          cell: (info) => <PopoverAction vendor={info.row.original} />,
           header: '',
           enableSorting: false,
         }),
@@ -121,7 +134,6 @@ const VendorTable = (props: VendorTableProps) => {
           paddingTop: '12px',
           paddingBottom: '12px',
         }}
-        customTableContainerStyle={{ rounded: 'none' }}
       />
     </Flex>
   );

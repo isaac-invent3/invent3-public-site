@@ -12,6 +12,7 @@ import { createWrapper } from 'next-redux-wrapper';
 
 import storage from './customStorage';
 import { categoryApi } from './services/asset/category.services';
+import { companyApi } from './services/company.services';
 import { conditionApi } from './services/asset/condition.services';
 import { depreciationApi } from './services/asset/depreciation.services';
 import { assetApi } from './services/asset/general.services';
@@ -47,7 +48,10 @@ import taskSlice from './slices/TaskSlice';
 import templateSlice from './slices/TemplateSlice';
 import ticketSlice from './slices/TicketSlice';
 import userSlice from './slices/UserSlice';
-import notesSlice from './slices/NoteSlice'
+import roleSlice from './slices/RoleSlice';
+import vendorSlice from './slices/VendorSlice';
+import notesSlice from './slices/NoteSlice';
+import auditLogSlice from './slices/AuditLogSlice';
 
 import { assetDocumentApi } from './services/asset/document.services';
 import { aisleApi } from './services/location/aisle.services';
@@ -66,6 +70,9 @@ import { systemContextTypesApi } from './services/systemcontexttypes.services';
 import { vendorApi } from './services/vendor.services';
 import { logApi } from './services/log.services';
 import { rolesApi } from './services/role.services';
+import { moduleApi } from './services/modules.services';
+import { superAdminApi } from './services/dashboard/superadmin.services';
+import { clientAdminApi } from './services/dashboard/clientadmin.services';
 import { notesApi } from './services/notes.services';
 
 export const persistConfig = {
@@ -102,6 +109,8 @@ const rootReducer = combineReducers({
   // Dashboard-related APIs
   [dashboardApi.reducerPath]: dashboardApi.reducer,
   [frontdeskDashboardApi.reducerPath]: frontdeskDashboardApi.reducer,
+  [superAdminApi.reducerPath]: superAdminApi.reducer,
+  [clientAdminApi.reducerPath]: clientAdminApi.reducer,
 
   // Category and condition APIs
   [categoryApi.reducerPath]: categoryApi.reducer,
@@ -150,19 +159,28 @@ const rootReducer = combineReducers({
   // Roles APIS
   [rolesApi.reducerPath]: rolesApi.reducer,
 
+  // Company APIS
+  [companyApi.reducerPath]: companyApi.reducer,
+
+  // Module APIS
+  [moduleApi.reducerPath]: moduleApi.reducer,
+
   // Notes APIS
   [notesApi.reducerPath]: notesApi.reducer,
 
   asset: assetSlice,
+  auditLog: auditLogSlice,
   general: generalSlice,
   dashboard: dashboardSlice,
   maintenance: maintenanceSlice,
   task: taskSlice,
   date: dateSlice,
   template: templateSlice,
+  vendor: vendorSlice,
   user: userSlice,
   ticket: ticketSlice,
   report: reportSlice,
+  role: roleSlice,
   notes: notesSlice,
 });
 
@@ -185,7 +203,7 @@ export const makeStore = () => {
         assetStatsApi.middleware,
         assetTypeApi.middleware,
         assetDisposalApi.middleware,
-        // assetVendorsApi.middleware,
+        assetVendorsApi.middleware,
 
         // Maintenance-related APIs
         maintenanceFrequencyApi.middleware,
@@ -211,6 +229,8 @@ export const makeStore = () => {
         // Dashboard APIs
         dashboardApi.middleware,
         frontdeskDashboardApi.middleware,
+        superAdminApi.middleware,
+        clientAdminApi.middleware,
 
         // Depreciation APIs
         depreciationApi.middleware,
@@ -253,8 +273,14 @@ export const makeStore = () => {
         // Roles Apis
         rolesApi.middleware,
 
+        // Company APIs
+        companyApi.middleware,
+
+        // Module APIs
+        moduleApi.middleware,
+
         // Notes Apis
-        notesApi.middleware
+        notesApi.middleware,
       ]),
   });
 };

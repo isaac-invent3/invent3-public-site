@@ -153,7 +153,6 @@ const BulkAssetTable = (props: BulkAssetTableProps) => {
           paddingBottom: '16px',
         }}
         customTBodyRowStyle={{ verticalAlign: 'top' }}
-        customTableContainerStyle={{ rounded: 'none' }}
       />
     </HStack>
   );

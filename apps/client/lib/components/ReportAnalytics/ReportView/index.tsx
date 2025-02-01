@@ -168,7 +168,6 @@ const ReportView = (props: ReportViewProps) => {
           paddingTop: '12px',
           paddingBottom: '12px',
         }}
-        customTableContainerStyle={{ rounded: 'none' }}
       />
     </Flex>
   );

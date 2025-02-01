@@ -12,11 +12,11 @@ import {
   BackButton,
   Button,
   CheckBox,
-  FilterDropDown,
   GenericModal,
 } from '@repo/ui/components';
-import { AddIcon, InfoIcon } from '../../CustomIcons';
 import UserInfo from '../../Common/UserInfo';
+import { AddIcon, InfoIcon } from '../../CustomIcons';
+import NoteComments from './Comments';
 interface NoteFormModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -201,6 +201,19 @@ const NoteDetails = (props: NoteFormModalProps) => {
                     />
                   </Box>
                 </HStack>
+              </VStack>
+
+              <VStack
+                bgColor="white"
+                p="20px"
+                spacing="16px"
+                rounded="12px"
+                alignItems="start"
+                w="full"
+                h="460px"
+                overflowY="scroll"
+              >
+                <NoteComments />
               </VStack>
             </VStack>
           </HStack>

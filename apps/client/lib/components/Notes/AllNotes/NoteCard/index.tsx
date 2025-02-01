@@ -2,6 +2,7 @@ import { Avatar, Box, Card, HStack, Icon, Text } from '@chakra-ui/react';
 import { AiFillStar, AiOutlineEllipsis } from 'react-icons/ai';
 import { Note } from '~/lib/interfaces/notes.interfaces';
 import { dateFormatter } from '~/lib/utils/Formatters';
+import PopoverAction from './PopoverAction';
 
 interface NoteCardProps {
   data: Note;
@@ -22,7 +23,7 @@ const NoteCard = (props: NoteCardProps) => {
         )}
       </HStack>
 
-      {notePriorityId === 1 &&!isPinned&& (
+      {notePriorityId === 1 && !isPinned && (
         <Box position="absolute" right="-8px">
           <Box
             display="flex"
@@ -120,7 +121,8 @@ const NoteCard = (props: NoteCardProps) => {
             {dateFormatter(lastModifiedDate, 'DD/MM/YYYY')}
           </Text>
 
-          <Icon as={AiOutlineEllipsis} />
+          {/* <Icon as={AiOutlineEllipsis} /> */}
+          <PopoverAction />
         </HStack>
       </Box>
     </Card>

@@ -30,11 +30,11 @@ interface CreateNotePayload {
   systemContextTypeId: number;
   systemContextId: number;
   authorId: number;
-  content: 'string';
-  isPrivate: true;
-  parentId: 0;
-  notePriorityId: 0;
-  createdBy: "\\CGnJd:n!Gu}d6ah0GU9!Mf}2+.Ipavt'ommVWS<V9qOrLKL2)@]]nL}2mcqJ!x7m(.QU!E'\\yIOJb<U=v3:6{`";
+  content: string;
+  isPrivate: boolean;
+  parentId: number;
+  notePriorityId: number;
+  createdBy: string;
 }
 
 interface GetAllPinnedNotesQueryParams extends QueryParams {

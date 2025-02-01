@@ -19,7 +19,7 @@ import CheckBox from '../CheckBox';
 import { ChevronDownIcon } from '../CustomIcons';
 
 interface FilterDropDownProps {
-  label: string;
+  label?: string;
   options: Option[];
   selectedOptions: Option[];
   // eslint-disable-next-line no-unused-vars
@@ -107,9 +107,11 @@ const FilterDropDown = ({
         {...labelStyles}
       >
         <HStack spacing="8px">
-          <Text width="full" whiteSpace="nowrap" color="neutral.600">
-            {label}
-          </Text>
+          {label && (
+            <Text width="full" whiteSpace="nowrap" color="neutral.600">
+              {label}
+            </Text>
+          )}
           <HStack spacing="4px" fontWeight={700}>
             <Text py="1px" px="4px" rounded="3px" border="1px solid #BBBBBB">
               {options.length >= 1 && options.length === selectedOptions.length

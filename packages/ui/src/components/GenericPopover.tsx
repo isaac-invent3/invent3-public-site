@@ -6,6 +6,7 @@ import {
   Icon,
   Popover,
   PopoverBody,
+  PopoverBodyProps,
   PopoverContent,
   PopoverTrigger,
   useDisclosure,
@@ -20,11 +21,18 @@ interface GenericPopoverProps {
   children: React.ReactNode;
   width?: string;
   placement?: PlacementWithLogical;
-  icon?: ComponentWithAs<'svg', IconProps> | IconType
+  icon?: ComponentWithAs<'svg', IconProps> | IconType;
+  popoverBodyStyles?: PopoverBodyProps
 }
 
 const GenericPopover = (props: GenericPopoverProps) => {
-  const { children, width = '240px', placement = 'auto', icon } = props;
+  const {
+    children,
+    width = '240px',
+    placement = 'auto',
+    icon,
+    popoverBodyStyles,
+  } = props;
   const popoverRef = useRef(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   useOutsideClick({
@@ -55,7 +63,7 @@ const GenericPopover = (props: GenericPopoverProps) => {
           boxShadow="0px 4px 32px 0px #00000026"
           rounded="8px"
         >
-          <PopoverBody m={0} p="16px" onClick={onClose}>
+          <PopoverBody m={0} p="16px" onClick={onClose} {...popoverBodyStyles}>
             {children}
           </PopoverBody>
         </PopoverContent>

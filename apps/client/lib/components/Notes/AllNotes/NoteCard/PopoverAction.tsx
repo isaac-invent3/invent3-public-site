@@ -9,20 +9,79 @@ const PopoverAction = () => {
         width="129px"
         placement="bottom-start"
         icon={AiOutlineEllipsis}
+        popoverBodyStyles={{ padding: '0px' }}
       >
-        <VStack width="full" alignItems="flex-start" spacing="16px">
+        <VStack width="full" alignItems="flex-start" spacing="4px">
           <Text
+            w="full"
             cursor="pointer"
+            color="primary.500"
+            px="16px"
+            py="10px"
+            rounded="4px"
+            transition="all 200ms ease-in-out"
             _hover={{
-              background: 'red',
+              bgColor: 'neutral.200',
             }}
           >
             Edit Note
           </Text>
-          <Text cursor="pointer">Duplicate</Text>
-          <Text cursor="pointer">Pin this Note</Text>
-          <Text cursor="pointer">Set as Priority</Text>
-          <Text cursor="pointer">Delete</Text>
+          <Text
+            w="full"
+            cursor="pointer"
+            color="primary.500"
+            px="16px"
+            py="10px"
+            rounded="4px"
+            transition="all 200ms ease-in-out"
+            _hover={{
+              bgColor: 'neutral.200',
+            }}
+          >
+            Duplicate
+          </Text>
+          <Text
+            w="full"
+            cursor="pointer"
+            color="primary.500"
+            px="16px"
+            py="10px"
+            rounded="4px"
+            transition="all 200ms ease-in-out"
+            _hover={{
+              bgColor: 'neutral.200',
+            }}
+          >
+            Pin this Note
+          </Text>
+          <Text
+            w="full"
+            cursor="pointer"
+            color="primary.500"
+            px="16px"
+            py="10px"
+            rounded="4px"
+            transition="all 200ms ease-in-out"
+            _hover={{
+              bgColor: 'neutral.200',
+            }}
+          >
+            Set as Priority
+          </Text>
+          <Text
+            w="full"
+            cursor="pointer"
+            color="primary.500"
+            px="16px"
+            py="10px"
+            rounded="4px"
+            transition="all 200ms ease-in-out"
+            _hover={{
+              bgColor: 'neutral.200',
+            }}
+          >
+            Delete Note
+          </Text>
         </VStack>
       </GenericPopover>
     </>

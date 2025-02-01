@@ -2,7 +2,7 @@ import { Checkbox as ChakraCheckbox, CheckboxProps } from '@chakra-ui/react';
 
 interface CheckBoxProps {
   isChecked: boolean;
-  handleChange: () => void;
+  handleChange?: () => void;
   customStyle?: CheckboxProps;
 }
 

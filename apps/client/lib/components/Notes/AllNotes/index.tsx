@@ -3,19 +3,29 @@ import {
   Divider,
   Grid,
   HStack,
+  Icon,
   ModalBody,
   ModalHeader,
   Skeleton,
   Text,
+  Tooltip,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import { Button, GenericModal } from '@repo/ui/components';
+import {
+  Button,
+  FilterButton,
+  FilterDropDown,
+  GenericModal,
+  SearchInput,
+} from '@repo/ui/components';
 import { useSession } from 'next-auth/react';
+import { useState } from 'react';
 import {
   useGetAllUserNotesQuery,
   useGetPinnedNotesQuery,
 } from '~/lib/redux/services/notes.services';
+import { FilterIcon, GridIcon, InfoIcon, ListIcon } from '../../CustomIcons';
 import NoteForm from '../NoteForm';
 import NoteCard from './NoteCard';
 import { dummyNotes } from './dummyData';
@@ -27,6 +37,7 @@ interface AllNotesModalProps {
 
 const AllNotes = (props: AllNotesModalProps) => {
   const { isOpen, onClose } = props;
+  const [search, setSearch] = useState('');
 
   const {
     isOpen: isNoteFormOpened,
@@ -82,7 +93,113 @@ const AllNotes = (props: AllNotesModalProps) => {
             maxH="550px"
             overflowY="scroll"
           >
-            <HStack></HStack>
+            <HStack gap="1em" w="full" justifyContent="space-between" mt="1em">
+              <HStack alignItems="start" spacing="40px">
+                <VStack alignItems="start">
+                  <HStack>
+                    <Text size="md" fontWeight={800}>
+                      System Context
+                    </Text>
+
+                    <Tooltip
+                      label="Default Plans are automatically added to an asset based on the selected asset type"
+                      placement="top"
+                      bgColor="#CADBF2"
+                      color="blue.500"
+                      width="181px"
+                      rounded="4px"
+                      py="8px"
+                      px="16px"
+                      fontSize="12px"
+                    >
+                      <HStack justifyContent="center" flexShrink={0}>
+                        <Icon as={InfoIcon} boxSize="14px" color="blue.500" />
+                      </HStack>
+                    </Tooltip>
+                  </HStack>
+
+                  <Text color="neutral.700" size="lg" fontWeight={400}>
+                    Asset Management
+                  </Text>
+                </VStack>
+
+                <VStack alignItems="start">
+                  <HStack>
+                    <Text size="md" fontWeight={800}>
+                      System Context Type
+                    </Text>
+
+                    <Tooltip
+                      label="Default Plans are automatically added to an asset based on the selected asset type"
+                      placement="top"
+                      bgColor="#CADBF2"
+                      color="blue.500"
+                      width="181px"
+                      rounded="4px"
+                      py="8px"
+                      px="16px"
+                      fontSize="12px"
+                    >
+                      <HStack justifyContent="center" flexShrink={0}>
+                        <Icon as={InfoIcon} boxSize="14px" color="blue.500" />
+                      </HStack>
+                    </Tooltip>
+                  </HStack>
+
+                  <FilterDropDown
+                    options={[]}
+                    selectedOptions={[]}
+                    handleClick={(option) => console.log(option)}
+                    labelStyles={{
+                      background: 'none',
+                      padding: '0px',
+                      color: '#0366EF !important',
+                      height: 'auto',
+                    }}
+                    chevronStyles={{ display: 'none' }}
+                  />
+                </VStack>
+              </HStack>
+
+              <HStack spacing="16px">
+                <SearchInput
+                  setSearch={setSearch}
+                  placeholderText="Search"
+                />
+
+                <FilterButton
+                  icon={FilterIcon}
+                  label="Filters"
+                  handleClick={() => console.log('')}
+                  isActive={false}
+                />
+
+                <HStack>
+                  <Box
+                    rounded="4px"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    bgColor="primary.500"
+                    boxSize="32px"
+                    cursor="pointer"
+                  >
+                    <Icon as={GridIcon} color="white" />
+                  </Box>
+
+                  <Box
+                    rounded="4px"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    boxSize="32px"
+                    cursor="pointer"
+                  >
+                    <Icon as={ListIcon} color="primary.500" />
+                  </Box>
+                </HStack>
+              </HStack>
+            </HStack>
 
             <Box w="full">
               <Text size="md" color="black" fontWeight={800} mb="1em">

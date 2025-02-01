@@ -893,38 +893,87 @@ const StarIcon = createIcon({
   ),
 });
 
+const GridIcon = createIcon({
+  displayName: 'GridIcon',
+  viewBox: '0 0 16 16',
+
+  path: (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      fill="none"
+      viewBox="0 0 16 16"
+    >
+      <g fill="currentColor" clipPath="url(#clip0_3949_12567)">
+        <path d="M4.667 0h-2A2.667 2.667 0 0 0 0 2.667v2a2.667 2.667 0 0 0 2.667 2.666h2a2.667 2.667 0 0 0 2.666-2.666v-2A2.667 2.667 0 0 0 4.667 0M6 4.667A1.333 1.333 0 0 1 4.667 6h-2a1.333 1.333 0 0 1-1.334-1.333v-2a1.333 1.333 0 0 1 1.334-1.334h2A1.333 1.333 0 0 1 6 2.667zM13.33 0h-2a2.667 2.667 0 0 0-2.666 2.667v2a2.667 2.667 0 0 0 2.667 2.666h2a2.667 2.667 0 0 0 2.666-2.666v-2A2.667 2.667 0 0 0 13.331 0m1.334 4.667A1.333 1.333 0 0 1 13.331 6h-2a1.333 1.333 0 0 1-1.334-1.333v-2a1.334 1.334 0 0 1 1.334-1.334h2a1.333 1.333 0 0 1 1.333 1.334zM4.667 8.667h-2A2.667 2.667 0 0 0 0 11.333v2A2.667 2.667 0 0 0 2.667 16h2a2.667 2.667 0 0 0 2.666-2.667v-2a2.667 2.667 0 0 0-2.666-2.666M6 13.333a1.334 1.334 0 0 1-1.333 1.334h-2a1.334 1.334 0 0 1-1.334-1.334v-2A1.333 1.333 0 0 1 2.667 10h2A1.334 1.334 0 0 1 6 11.333zM13.33 8.667h-2a2.667 2.667 0 0 0-2.666 2.666v2A2.667 2.667 0 0 0 11.331 16h2a2.666 2.666 0 0 0 2.666-2.667v-2a2.667 2.667 0 0 0-2.666-2.666m1.334 4.666a1.333 1.333 0 0 1-1.333 1.334h-2a1.334 1.334 0 0 1-1.334-1.334v-2A1.334 1.334 0 0 1 11.331 10h2a1.333 1.333 0 0 1 1.333 1.333z"></path>
+      </g>
+      <defs>
+        <clipPath id="clip0_3949_12567">
+          <path fill="currentColor" d="M0 0h16v16H0z"></path>
+        </clipPath>
+      </defs>
+    </svg>
+  ),
+});
+
+const ListIcon = createIcon({
+  displayName: 'ListIcon',
+  viewBox: '0 0 16 16',
+
+  path: (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      fill="none"
+      viewBox="0 0 16 16"
+    >
+      <g fill="currentColor" clipPath="url(#clip0_3949_12569)">
+        <path d="M4.667 4h10.666a.667.667 0 1 0 0-1.333H4.667a.667.667 0 0 0 0 1.333M15.333 7.333H4.667a.667.667 0 0 0 0 1.333h10.666a.667.667 0 1 0 0-1.333M15.333 12H4.667a.666.666 0 1 0 0 1.333h10.666a.667.667 0 1 0 0-1.333M1.333 4.667a1.333 1.333 0 1 0 0-2.667 1.333 1.333 0 0 0 0 2.667M1.333 9.334a1.333 1.333 0 1 0 0-2.667 1.333 1.333 0 0 0 0 2.667M1.333 14a1.333 1.333 0 1 0 0-2.667 1.333 1.333 0 0 0 0 2.667"></path>
+      </g>
+      <defs>
+        <clipPath id="clip0_3949_12569">
+          <path fill="#fff" d="M0 0h16v16H0z"></path>
+        </clipPath>
+      </defs>
+    </svg>
+  ),
+});
 export {
-  InfoIcon,
+  AddIcon,
+  AssetIcon,
+  AttachmentIcon,
+  BulkSearchIcon,
+  CalendarIcon,
+  ChevronDownIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-  ChevronDownIcon,
   ChevronUpIcon,
-  CloseIcon,
-  BulkSearchIcon,
-  FilterIcon,
-  DownloadIcon,
   CircularCloseIcon,
-  AddIcon,
-  CalendarIcon,
-  DocumentIcon,
-  ThreeVerticalDotsIcon,
-  AttachmentIcon,
-  AssetIcon,
-  HamburgerIcon,
-  InUseIcon,
-  UptrendIcon,
-  DowntrendIcon,
-  NairaIcon,
-  LongBackArrowIcon,
-  TemplateIcon,
-  RepeatIcon,
   ClockIcon,
-  RemoveIcon,
+  CloseIcon,
   DeleteIcon,
+  DocumentIcon,
+  DownloadIcon,
+  DowntrendIcon,
+  FilterIcon,
+  FolderIcon,
+  GridIcon,
+  HamburgerIcon,
+  InfoIcon,
+  InUseIcon,
+  ListIcon,
+  LongBackArrowIcon,
+  NairaIcon,
   NotificationInfoIcon,
   PenIcon,
+  RemoveIcon,
+  RepeatIcon,
+  StarIcon,
   TeamIconOne,
   TeamIconTwo,
-  StarIcon,
-  FolderIcon,
+  TemplateIcon,
+  ThreeVerticalDotsIcon,
+  UptrendIcon,
 };

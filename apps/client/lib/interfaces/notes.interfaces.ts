@@ -28,11 +28,11 @@ interface GetAllNotesQueryParams extends QueryParams {
 
 interface CreateNotePayload {
   systemContextTypeId: number;
-  systemContextId: number;
+  systemContextId?: number;
   authorId: number;
   content: string;
   isPrivate: boolean;
-  parentId: number;
+  parentId?: number;
   notePriorityId: number;
   createdBy: string;
 }

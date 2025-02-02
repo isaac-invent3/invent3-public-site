@@ -21,6 +21,10 @@ import {
 } from '@repo/ui/components';
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
+import useFormatUrl from '~/lib/hooks/useFormatUrl';
+import useParseUrlData, {
+  findSystemContextDetailById,
+} from '~/lib/hooks/useParseUrl';
 import {
   useGetAllUserNotesQuery,
   useGetPinnedNotesQuery,
@@ -37,6 +41,8 @@ interface AllNotesModalProps {
 
 const AllNotes = (props: AllNotesModalProps) => {
   const { isOpen, onClose } = props;
+  const formattedUrl = useFormatUrl();
+  const data = useParseUrlData(formattedUrl);
   const [search, setSearch] = useState('');
 
   const {
@@ -48,12 +54,12 @@ const AllNotes = (props: AllNotesModalProps) => {
   const session = useSession();
   const user = session?.data?.user;
 
-  const getSystemContextId = (): number => {
-    return 0;
-  };
   const { data: notes, isLoading: isGettingNotes } = useGetAllUserNotesQuery(
-    { systemContextTypeId: getSystemContextId(), systemContextIds: [] },
-    { skip: !user?.userId || !getSystemContextId() }
+    {
+      systemContextTypeId: data?.systemContextId!,
+      systemContextIds: [],
+    },
+    { skip: !user?.userId || !data?.systemContextId }
   );
 
   const { data: pinnedNotes, isLoading: isGettingPinnedNotes } =
@@ -119,7 +125,8 @@ const AllNotes = (props: AllNotesModalProps) => {
                   </HStack>
 
                   <Text color="neutral.700" size="lg" fontWeight={400}>
-                    Asset Management
+                    {findSystemContextDetailById(data?.systemContextId)
+                      ?.displayName ?? 'N/A'}
                   </Text>
                 </VStack>
 
@@ -162,10 +169,7 @@ const AllNotes = (props: AllNotesModalProps) => {
               </HStack>
 
               <HStack spacing="16px">
-                <SearchInput
-                  setSearch={setSearch}
-                  placeholderText="Search"
-                />
+                <SearchInput setSearch={setSearch} placeholderText="Search" />
 
                 <FilterButton
                   icon={FilterIcon}
@@ -249,7 +253,6 @@ const AllNotes = (props: AllNotesModalProps) => {
       <NoteForm
         onClose={onNoteFormClose}
         isOpen={isNoteFormOpened}
-        type="add"
       />
     </>
   );

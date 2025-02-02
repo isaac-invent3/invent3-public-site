@@ -21,9 +21,11 @@ import {
   GenericModal,
 } from '@repo/ui/components';
 import { Field, FieldArray, FormikProvider, useFormik } from 'formik';
-import { getSession, useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { CreateNotePayload } from '~/lib/interfaces/notes.interfaces';
+import useFormatUrl from '~/lib/hooks/useFormatUrl';
+import useParseUrlData, { findSystemContextDetailById } from '~/lib/hooks/useParseUrl';
+import { CreateNotePayload, Note } from '~/lib/interfaces/notes.interfaces';
 import { useCreateNoteMutation } from '~/lib/redux/services/notes.services';
 import UserSelectModal from '../../Common/Modals/UserSelectModal';
 import UserInfo from '../../Common/UserInfo';
@@ -31,7 +33,7 @@ import { AddIcon, InfoIcon } from '../../CustomIcons';
 interface NoteFormModalProps {
   isOpen: boolean;
   onClose: () => void;
-  type: 'add' | 'edit';
+  note?:Note
 }
 
 interface CreateNoteForm extends Partial<CreateNotePayload> {
@@ -39,13 +41,7 @@ interface CreateNoteForm extends Partial<CreateNotePayload> {
 }
 
 const NoteForm = (props: NoteFormModalProps) => {
-  const { isOpen, onClose, type } = props;
-
-  const session = useSession();
-
-  const getSystemContextId = (): number => {
-    return 0;
-  };
+  const { isOpen, onClose } = props;
 
   const { handleSubmit } = useCustomMutation();
 
@@ -58,11 +54,13 @@ const NoteForm = (props: NoteFormModalProps) => {
     onClose: onCloseSelectUser,
   } = useDisclosure();
 
+  const formattedUrl = useFormatUrl();
+  const parsedUrl = useParseUrlData(formattedUrl);
+
   const initialValues: CreateNoteForm = {
     content: '',
     isPrivate: false,
     notePriorityId: 0,
-    createdBy: '',
     taggedPeople: [],
   };
 
@@ -71,6 +69,24 @@ const NoteForm = (props: NoteFormModalProps) => {
     enableReinitialize: false,
     onSubmit: async (data) => {
       const session = await getSession();
+
+      if (!parsedUrl?.systemContextId || !session?.user.id) return;
+
+      const payload = {
+        createdBy: session?.user?.username,
+        systemContextTypeId: parsedUrl?.systemContextId,
+        authorId: Number(session?.user.id),
+        ...data,
+      };
+
+      console.log({payload})
+
+      const response = await handleSubmit(createNoteMutation, payload, '');
+
+      if (response?.data) {
+        formik.resetForm();
+        console.log('hey');
+      }
     },
   });
 
@@ -283,7 +299,8 @@ const NoteForm = (props: NoteFormModalProps) => {
                   </HStack>
 
                   <Text color="neutral.700" size="lg" fontWeight={400}>
-                    Asset Management
+                    {findSystemContextDetailById(parsedUrl?.systemContextId)
+                      ?.displayName ?? 'N/A'}
                   </Text>
                 </VStack>
 

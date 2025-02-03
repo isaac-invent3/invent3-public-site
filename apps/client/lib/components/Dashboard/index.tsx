@@ -5,7 +5,8 @@ import React from 'react';
 // import OperationManager from './OperationManager';
 // import FrontDesk from './FrontDesk';
 // import FieldEngineer from './FieldEngineer';
-import ClientAdmin from './ClientAdmin';
+// import ClientAdmin from './ClientAdmin';
+import Executive from './Executive';
 // import SuperAdmin from './SuperAdmin';
 
 const Dashboard = () => {
@@ -14,8 +15,9 @@ const Dashboard = () => {
       {/* <OperationManager /> */}
       {/* <FrontDesk /> */}
       {/* <FieldEngineer /> */}
-      <ClientAdmin />
+      {/* <ClientAdmin /> */}
       {/* <SuperAdmin /> */}
+      <Executive />
     </Flex>
   );
 };

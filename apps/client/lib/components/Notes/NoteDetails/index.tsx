@@ -17,13 +17,16 @@ import {
 import UserInfo from '../../Common/UserInfo';
 import { AddIcon, InfoIcon } from '../../CustomIcons';
 import NoteComments from './Comments';
+import { Note } from '~/lib/interfaces/notes.interfaces';
+import { dateFormatter } from '~/lib/utils/Formatters';
 interface NoteFormModalProps {
   isOpen: boolean;
   onClose: () => void;
+  note:Note
 }
 
 const NoteDetails = (props: NoteFormModalProps) => {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose , note} = props;
 
   return (
     <>
@@ -95,7 +98,7 @@ const NoteDetails = (props: NoteFormModalProps) => {
                   </HStack>
 
                   <HStack spacing="8px">
-                    <CheckBox isChecked={true} />
+                    <CheckBox isChecked={note.notePriorityId === 1} />
                     <Text color="neutral.800">Set as Priority</Text>
                   </HStack>
                 </HStack>
@@ -113,32 +116,7 @@ const NoteDetails = (props: NoteFormModalProps) => {
                   pl="1em"
                   mt="1em"
                 >
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Impedit aperiam hic rerum, cupiditate autem perferendis soluta
-                  quo reprehenderit modi quis, dolorem maxime ratione vel odio,
-                  temporibus cumque unde numquam. Sunt molestias nemo
-                  perspiciatis expedita, totam veritatis vero enim vitae sint et
-                  iusto itaque cum! Non quas quasi molestiae laborum,
-                  perspiciatis labore veritatis eum nemo quibusdam voluptas
-                  error iste numquam architecto autem accusamus vitae adipisci
-                  magnam rem, itaque temporibus, tempora quaerat. Doloremque
-                  voluptate tempore perferendis, maiores eum iusto iure fugiat
-                  nihil nemo tempora ex, nam magnam accusamus! Repellat libero
-                  cumque quam neque similique, inventore, in, voluptatibus est
-                  delectus non unde tenetur tempore consectetur? Non molestiae
-                  quis ipsam unde saepe vel quod ipsa voluptate quidem, iste
-                  culpa soluta perspiciatis neque laborum architecto inventore
-                  sunt aliquid repudiandae omnis deleniti voluptates, possimus
-                  vitae dolore. Sunt asperiores deleniti nesciunt repudiandae
-                  adipisci saepe. Corporis minima consectetur incidunt
-                  architecto tempore quam doloribus optio modi voluptas
-                  inventore minus odit officiis excepturi rem unde beatae,
-                  dolores distinctio, nesciunt, consequatur sequi quasi aliquam?
-                  Rem blanditiis suscipit sit quam quas repellat ipsam saepe
-                  veritatis at sed cumque voluptatibus amet nulla fugit eum,
-                  minima aliquid quis, possimus obcaecati fuga deleniti odio!
-                  Esse nostrum dolorem totam commodi cupiditate adipisci,
-                  recusandae repellendus minus sed!
+                  {note.content}
                 </Text>
               </Card>
             </VStack>
@@ -165,7 +143,8 @@ const NoteDetails = (props: NoteFormModalProps) => {
                     }}
                   />
                   <Text color="neutral.600" size="xs" fontWeight={700}>
-                    WED, 26 APR 2024
+                    {/* WED, 26 APR 2024 */}
+                    {dateFormatter(note.dateCreated, 'DD MM YYYY')}
                   </Text>
                 </HStack>
               </VStack>
@@ -213,7 +192,7 @@ const NoteDetails = (props: NoteFormModalProps) => {
                 h="460px"
                 overflowY="scroll"
               >
-                <NoteComments />
+                <NoteComments noteId={note.noteId} />
               </VStack>
             </VStack>
           </HStack>

@@ -72,7 +72,7 @@ const NoteForm = (props: NoteFormModalProps) => {
 
       if (!parsedUrl?.systemContextId || !session?.user.id) return;
 
-      const payload = {
+      const payload:any = {
         createdBy: session?.user?.username,
         systemContextTypeId: parsedUrl?.systemContextId,
         authorId: Number(session?.user.id),

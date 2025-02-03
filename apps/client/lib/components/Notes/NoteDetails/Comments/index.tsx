@@ -2,11 +2,14 @@ import {
   Avatar,
   Box,
   HStack,
+  Skeleton,
   StackDivider,
   Text,
   VStack,
 } from '@chakra-ui/react';
 import { TextInput } from '@repo/ui/components';
+import { useGetNoteCommentsQuery } from '~/lib/redux/services/notes.services';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { Comment, comments } from './dummyComments';
 
 const renderComments = (comments: Comment[], depth = 0) => {
@@ -43,7 +46,13 @@ const renderComments = (comments: Comment[], depth = 0) => {
   ));
 };
 
-const NoteComments = () => {
+const NoteComments = ({ noteId }: { noteId: number }) => {
+  const { data: notes, isLoading: isGettingNotes } = useGetNoteCommentsQuery({
+    noteId,
+    pageNumber: 1,
+    pageSize: DEFAULT_PAGE_SIZE,
+  });
+
   return (
     <VStack
       spacing="12px"
@@ -72,7 +81,7 @@ const NoteComments = () => {
         />
       </HStack>
 
-      {renderComments(comments)}
+      <Skeleton isLoaded={!isGettingNotes}>{renderComments(comments)}</Skeleton>
     </VStack>
   );
 };

@@ -12,6 +12,7 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
+import { OPERATORS } from '@repo/constants';
 import {
   Button,
   FilterButton,
@@ -20,7 +21,8 @@ import {
   SearchInput,
 } from '@repo/ui/components';
 import { useSession } from 'next-auth/react';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
 import useFormatUrl from '~/lib/hooks/useFormatUrl';
 import useParseUrlData, {
   findSystemContextDetailById,
@@ -28,7 +30,9 @@ import useParseUrlData, {
 import {
   useGetAllUserNotesQuery,
   useGetPinnedNotesQuery,
+  useSearchNotesMutation,
 } from '~/lib/redux/services/notes.services';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { FilterIcon, GridIcon, InfoIcon, ListIcon } from '../../CustomIcons';
 import NoteForm from '../NoteForm';
 import NoteCard from './NoteCard';
@@ -59,7 +63,12 @@ const AllNotes = (props: AllNotesModalProps) => {
       systemContextTypeId: data?.systemContextId!,
       systemContextIds: [],
     },
-    { skip: !user?.userId || !data?.systemContextId }
+    { skip: !user?.userId || !data?.systemContextId || search !== '' }
+  );
+  const { handleSubmit } = useCustomMutation();
+
+  const [searchNotes] = useSearchNotesMutation(
+    {}
   );
 
   const { data: pinnedNotes, isLoading: isGettingPinnedNotes } =
@@ -67,6 +76,29 @@ const AllNotes = (props: AllNotesModalProps) => {
       { userId: user?.userId!, pageSize: 5 },
       { skip: !user?.userId }
     );
+
+  // Search Criterion
+  const searchCriterion = {
+    ...(search && {
+      criterion: [
+        {
+          columnName: 'noteTitle',
+          columnValue: search,
+          operation: OPERATORS.Contains,
+        },
+      ],
+    }),
+
+    pageNumber: 1,
+    pageSize: DEFAULT_PAGE_SIZE,
+  };
+
+  const handleSearch = useCallback(async () => {
+    if (search) {
+      const response = await handleSubmit(searchNotes, searchCriterion, '');
+      response?.data?.data && console.log(response?.data?.data);
+    }
+  }, [searchNotes, searchCriterion]);
 
   return (
     <>
@@ -250,10 +282,7 @@ const AllNotes = (props: AllNotesModalProps) => {
         </ModalBody>
       </GenericModal>
 
-      <NoteForm
-        onClose={onNoteFormClose}
-        isOpen={isNoteFormOpened}
-      />
+      <NoteForm onClose={onNoteFormClose} isOpen={isNoteFormOpened} />
     </>
   );
 };

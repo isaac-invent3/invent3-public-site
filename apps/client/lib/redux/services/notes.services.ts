@@ -1,5 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { BaseApiResponse, ListResponse, SearchQuery } from '@repo/interfaces';
+import { BaseApiResponse, ListResponse, QueryParams, SearchQuery } from '@repo/interfaces';
 import {
   CreateNotePayload,
   GetAllNotesQueryParams,
@@ -16,7 +16,7 @@ const getHeaders = () => ({
 export const notesApi = createApi({
   reducerPath: 'notesApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['allNotes', 'pinnedNotes'],
+  tagTypes: ['allNotes', 'pinnedNotes', 'noteComments'],
   endpoints: (builder) => ({
     getAllUserNotes: builder.query<
       BaseApiResponse<ListResponse<Note>>,
@@ -84,12 +84,24 @@ export const notesApi = createApi({
       BaseApiResponse<ListResponse<Note>>,
       GetAllPinnedNotesQueryParams
     >({
-      query: (userId) => ({
-        url: `/Notes/GetPinnedNotes/${userId}`,
+      query: ({ userId, ...data }) => ({
+        url: generateQueryStr(`/Notes/GetPinnedNotes/${userId}`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
       providesTags: ['pinnedNotes'],
+    }),
+
+    getNoteComments: builder.query<
+      BaseApiResponse<ListResponse<Note>>,
+      { noteId: number } & QueryParams
+    >({
+      query: ({ noteId, ...data }) => ({
+        url: generateQueryStr(`/Notes/GetNoteComments/${noteId}`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['noteComments'],
     }),
 
     searchNotes: builder.mutation<
@@ -114,4 +126,5 @@ export const {
   useGetPinnedNotesQuery,
   usePinNoteMutation,
   useSearchNotesMutation,
+  useGetNoteCommentsQuery
 } = notesApi;

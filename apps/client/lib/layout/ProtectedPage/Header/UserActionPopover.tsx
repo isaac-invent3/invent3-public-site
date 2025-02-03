@@ -78,30 +78,39 @@ const UserActionPopover = () => {
       >
         <PopoverTrigger>
           <HStack
-            p="7px"
-            pl={0}
+            p={{ md: '7px' }}
+            pl={{ base: 0, md: 0 }}
             height="40px"
+            justifyContent={{ base: 'center', md: 'space-between' }}
+            width={{ base: '40px', md: 'min-content' }}
             rounded="full"
             bgColor="white"
             spacing="20px"
             cursor="pointer"
             textTransform="capitalize"
+            flexShrink={0}
           >
             <HStack spacing="10px">
               <Avatar
+                size={{ base: 'sm', md: 'md' }}
                 width="38px"
                 height="38px"
                 src=""
                 border="2.4px solid white"
                 name={data?.user.name ?? ''}
               />
-              <VStack alignItems="flex-start" spacing="1px">
+              <VStack
+                alignItems="flex-start"
+                spacing="1px"
+                display={{ base: 'none', md: 'flex' }}
+              >
                 <Text
                   color="neutral.800"
                   fontSize="11.18px"
                   lineHeight="13.28px"
                   letterSpacing="0.05em"
                   fontWeight={700}
+                  whiteSpace="nowrap"
                 >
                   {data?.user?.name}
                 </Text>
@@ -123,6 +132,7 @@ const UserActionPopover = () => {
               rounded="full"
               justifyContent="center"
               alignItems="center"
+              display={{ base: 'none', md: 'flex' }}
             >
               <Icon as={ChevronDownIcon} boxSize="7px" />
             </Flex>

@@ -59,6 +59,7 @@ const ActionButtonPopover = (props: ActionButtonPopoverProps) => {
           <HStack
             width="175px"
             p="16px"
+            height={{ base: '36px', md: 'min-content' }}
             bgColor="primary.500"
             rounded="8px"
             justifyContent="space-between"

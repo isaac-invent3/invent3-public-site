@@ -1,25 +1,11 @@
-import {
-  Box,
-  Collapse,
-  Flex,
-  HStack,
-  Icon,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, Collapse, Flex, HStack, Text, VStack } from '@chakra-ui/react';
 import Image from 'next/image';
-
-import {
-  CaretLeftIcon,
-  CaretRightIcon,
-} from '~/lib/components/CustomIcons/layout';
 
 interface LogoSectionProps {
   isCollapse: boolean;
-  setIsCollapse: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const LogoSection = (props: LogoSectionProps) => {
-  const { isCollapse, setIsCollapse } = props;
+  const { isCollapse } = props;
   return (
     <VStack
       alignItems="flex-start"
@@ -50,15 +36,6 @@ const LogoSection = (props: LogoSectionProps) => {
             />
           </Flex>
         </Flex>
-        <Icon
-          position="absolute"
-          mr="8px"
-          as={isCollapse ? CaretRightIcon : CaretLeftIcon}
-          boxSize="20px"
-          right={0}
-          cursor="pointer"
-          onClick={() => setIsCollapse((prev) => !prev)}
-        />
       </HStack>
       <Box height="25px" width="full">
         <Collapse

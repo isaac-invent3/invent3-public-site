@@ -24,7 +24,7 @@ const FilterButton = (props: FilterButtonProps) => {
     <HStack
       as="button"
       height="36px"
-      minW="min-content"
+      width="max-content"
       py="6px"
       pl="12px"
       pr="10px"

@@ -1,15 +1,22 @@
 'use client';
 
-import { Flex } from '@chakra-ui/react';
+import { Flex, HStack, Icon } from '@chakra-ui/react';
 
 import SideBar from './SideBar';
 import Header from './Header';
+import { useState } from 'react';
 // import CountDownTimer from './CountDownTimer';
+
+import {
+  CaretLeftIcon,
+  CaretRightIcon,
+} from '~/lib/components/CustomIcons/layout';
 
 interface ProtectedLayoutProps {
   children: React.ReactNode;
 }
 const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
+  const [isCollapse, setIsCollapse] = useState(true);
   return (
     <Flex
       width="full"
@@ -18,17 +25,40 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
       overflowY="scroll"
       position="relative"
     >
-      <SideBar />
+      <HStack position="relative">
+        <SideBar isCollapse={isCollapse} setIsCollapse={setIsCollapse} />
+
+        {!isCollapse && (
+          <Flex
+            position="absolute"
+            right="-270px"
+            width="30px"
+            height="30px"
+            rounded="full"
+            bgColor="primary.500"
+            justifyContent="center"
+            alignItems="center"
+            top="55px"
+            zIndex={9999}
+          >
+            <Icon
+              as={isCollapse ? CaretRightIcon : CaretLeftIcon}
+              boxSize="20px"
+              cursor="pointer"
+              onClick={() => setIsCollapse((prev) => !prev)}
+            />
+          </Flex>
+        )}
+      </HStack>
       <Flex
-        width="calc(100vw - 73px)"
-        ml="73px"
+        width={{ base: 'full', md: 'calc(100vw - 73px)' }}
+        ml={{ md: '73px' }}
         px="24px"
         pt="32px"
         direction="column"
-        position="relative"
         height="full"
       >
-        <Header />
+        <Header setIsCollapse={setIsCollapse} />
         {children}
       </Flex>
       {/* <CountDownTimer /> */}

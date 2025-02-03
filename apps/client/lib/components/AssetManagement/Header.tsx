@@ -1,4 +1,4 @@
-import { HStack, useDisclosure } from '@chakra-ui/react';
+import { Stack, useDisclosure } from '@chakra-ui/react';
 import PageHeader from '../UI/PageHeader';
 import ActionButtonPopover from '../UI/ActionButtonsPopover';
 import AssetTemplateModal from './Modals/AssetTemplateModal';
@@ -9,7 +9,12 @@ const Header = () => {
   const canCreateAsset = usePermissionAccess('asset:create');
   const { isOpen, onClose, onOpen } = useDisclosure();
   return (
-    <HStack width="full" justifyContent="space-between">
+    <Stack
+      width="full"
+      justifyContent="space-between"
+      direction={{ base: 'column', sm: 'row' }}
+      spacing="16px"
+    >
       <PageHeader>Asset Management</PageHeader>
       {canCreateAsset && (
         <ActionButtonPopover
@@ -22,7 +27,7 @@ const Header = () => {
           <AssetTemplateModal isOpen={isOpen} onClose={onClose} />
         </ActionButtonPopover>
       )}
-    </HStack>
+    </Stack>
   );
 };
 

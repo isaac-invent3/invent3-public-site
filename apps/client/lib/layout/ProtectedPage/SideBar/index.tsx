@@ -1,14 +1,19 @@
-import { Flex, VStack } from '@chakra-ui/react';
-import React, { useLayoutEffect, useState } from 'react';
+import { Flex, useOutsideClick, VStack } from '@chakra-ui/react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import { filterSidebarData } from './utils';
 import NavItem from './NavItem';
 import LogoSection from './LogoSection';
 import FooterSection from './FooterSection';
 import { SideBarData } from '~/lib/interfaces/general.interfaces';
 
-const SideBar = () => {
-  const [isCollapse, setIsCollapse] = useState(true);
+interface SideBarProps {
+  isCollapse: boolean;
+  setIsCollapse: React.Dispatch<React.SetStateAction<boolean>>;
+}
+const SideBar = (props: SideBarProps) => {
+  const { isCollapse, setIsCollapse } = props;
   const [sideBarData, setSideBarData] = useState<SideBarData[]>([]);
+  const flexRef = useRef(null);
 
   useLayoutEffect(() => {
     const getSideBarData = async () => {
@@ -18,10 +23,16 @@ const SideBar = () => {
     getSideBarData();
   }, []);
 
+  useOutsideClick({ ref: flexRef, handler: () => setIsCollapse(true) });
+
   return (
     <Flex
+      ref={flexRef}
       direction="column"
-      width={isCollapse ? '65px' : '249px'}
+      width={{
+        base: isCollapse ? '0px' : '249px',
+        md: isCollapse ? '65px' : '249px',
+      }}
       mt="8px"
       ml="8px"
       pt="42px"
@@ -29,19 +40,19 @@ const SideBar = () => {
       height="calc(100vh - 16px)"
       justifyContent="space-between"
       borderTop="1px solid #F3F3F3"
-      position="fixed"
+      position={{ base: 'absolute', md: 'fixed' }}
       overflowY="auto"
       rounded="16px"
       transition="width 0.4s ease"
       bgImage="/layout-bg.png"
       bgSize="cover"
-      zIndex={9999}
+      zIndex={999}
       onMouseEnter={() => setIsCollapse(false)}
       onMouseLeave={() => setIsCollapse(true)}
     >
       <Flex direction="column">
         {/* Logo Section Starts */}
-        <LogoSection isCollapse={isCollapse} setIsCollapse={setIsCollapse} />
+        <LogoSection isCollapse={isCollapse} />
         {/* Logo Section Ends */}
         {/* Navigation Menu */}
         <VStack width="full" spacing="8px" px={isCollapse ? '0' : '24px'}>

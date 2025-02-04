@@ -14,6 +14,7 @@ const Header = () => {
       justifyContent="space-between"
       direction={{ base: 'column', sm: 'row' }}
       spacing="16px"
+      px={{ base: '16px', md: 0 }}
     >
       <PageHeader>Asset Management</PageHeader>
       {canCreateAsset && (

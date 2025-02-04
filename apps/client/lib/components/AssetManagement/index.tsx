@@ -65,7 +65,7 @@ const AssetManagement = () => {
           index={tabIndex}
         >
           <Flex width="full" position="relative">
-            <TabList>
+            <TabList mx={{ base: '16px', md: 0 }} width="full">
               <Tab>List View</Tab>
               <Tab>Map View</Tab>
             </TabList>

@@ -18,6 +18,7 @@ const Filters = (props: FiltersProps) => {
       spacing="16px"
       width="full"
       direction={{ base: 'column', lg: 'row' }}
+      px={{ base: '16px', md: 0 }}
     >
       <SearchInput
         setSearch={setSearch}

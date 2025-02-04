@@ -3,7 +3,7 @@ import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import { Asset } from '~/lib/interfaces/asset/general.interface';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
-import { Icon, Text } from '@chakra-ui/react';
+import { Icon, Text, useMediaQuery } from '@chakra-ui/react';
 import { ThreeVerticalDotsIcon } from '../../CustomIcons';
 import GenericStatusBox from '../../UI/GenericStatusBox';
 
@@ -42,6 +42,7 @@ interface AssetTableProps {
   PopoverComponent?: (data: Asset) => JSX.Element | undefined;
 }
 const AssetTable = (props: AssetTableProps) => {
+  const [isMobile] = useMediaQuery('(max-width: 480px)');
   const columnHelper = createColumnHelper<Asset>();
   const {
     data,
@@ -63,6 +64,56 @@ const AssetTable = (props: AssetTableProps) => {
     setSelectedRows,
     PopoverComponent,
   } = props;
+
+  const mobileColumns = useMemo(
+    () => {
+      const baseColumns = [
+        columnHelper.accessor('assetId', {
+          cell: (info) => info.getValue() ?? 'N/A',
+          header: '#',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('assetName', {
+          cell: (info) => AssetName(info.getValue()),
+          header: 'Asset Name',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('assetCategory', {
+          cell: (info) => info.getValue() ?? 'N/A',
+          header: 'Category',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('currentStatus', {
+          cell: (info) => {
+            return (
+              <GenericStatusBox
+                text={info.getValue()}
+                colorCode={info.row.original.displayColorCode}
+              />
+            );
+          },
+          header: 'Status',
+          enableSorting: isSortable,
+        }),
+      ];
+      const popOverColumn = columnHelper.accessor('rowId', {
+        cell: (info) => {
+          if (PopoverComponent) {
+            return PopoverComponent(info.row.original);
+          }
+          return <Dots />;
+        },
+        header: '',
+        enableSorting: false,
+      });
+
+      if (showPopover) {
+        baseColumns.push(popOverColumn);
+      }
+      return baseColumns;
+    },
+    [data] //eslint-disable-line
+  );
 
   const columns = useMemo(
     () => {
@@ -298,7 +349,7 @@ const AssetTable = (props: AssetTableProps) => {
   );
   return (
     <DataTable
-      columns={columns}
+      columns={isMobile ? mobileColumns : columns}
       data={data ?? []}
       isLoading={isLoading}
       isFetching={isFetching}

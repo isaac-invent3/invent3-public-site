@@ -11,7 +11,7 @@ const SectionTwo = () => {
   return (
     <VStack spacing="45px" width="full" alignItems="flex-start">
       <SimpleGrid
-        columns={2}
+        columns={{ base: 1, md: 2 }}
         alignItems="flex-start"
         width="full"
         spacing="76px"
@@ -20,7 +20,7 @@ const SectionTwo = () => {
         <TaskType sectionMaxWidth="141px" spacing="40px" />
       </SimpleGrid>
       <SimpleGrid
-        columns={2}
+        columns={{ base: 1, md: 2 }}
         alignItems="flex-start"
         width="full"
         spacing="76px"
@@ -29,7 +29,7 @@ const SectionTwo = () => {
         <CostEstimate sectionMaxWidth="141px" spacing="47px" />
       </SimpleGrid>
       <SimpleGrid
-        columns={2}
+        columns={{ base: 1, md: 2 }}
         alignItems="flex-start"
         width="full"
         spacing="76px"

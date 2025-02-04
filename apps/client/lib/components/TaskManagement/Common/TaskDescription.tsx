@@ -1,7 +1,5 @@
-import { Flex, HStack } from '@chakra-ui/react';
-
+import { FormInputWrapper, FormTextAreaInput } from '@repo/ui/components';
 import { Field } from 'formik';
-import { FormSectionInfo, FormTextAreaInput } from '@repo/ui/components';
 
 interface TaskDescriptionProps {
   sectionMaxWidth: string;
@@ -10,14 +8,13 @@ interface TaskDescriptionProps {
 const TaskDescription = (props: TaskDescriptionProps) => {
   const { sectionMaxWidth, spacing } = props;
   return (
-    <HStack width="full" alignItems="flex-start" spacing={spacing}>
-      <Flex width="full" maxW={sectionMaxWidth}>
-        <FormSectionInfo
-          title="Description"
-          info="Provide details about the task objective"
-          isRequired
-        />
-      </Flex>
+    <FormInputWrapper
+      sectionMaxWidth={sectionMaxWidth}
+      spacing={spacing}
+      title="Description"
+      description="Provide details about the task objective"
+      isRequired
+    >
       <Field
         as={FormTextAreaInput}
         name="taskDescription"
@@ -26,7 +23,7 @@ const TaskDescription = (props: TaskDescriptionProps) => {
         placeholder="What’s the task about?"
         customStyle={{ height: '133px' }}
       />
-    </HStack>
+    </FormInputWrapper>
   );
 };
 

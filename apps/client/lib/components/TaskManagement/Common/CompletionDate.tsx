@@ -1,5 +1,4 @@
-import { Flex, HStack } from '@chakra-ui/react';
-import { FormDatePicker, FormSectionInfo } from '@repo/ui/components';
+import { FormDatePicker, FormInputWrapper } from '@repo/ui/components';
 
 interface CompletionDateProps {
   sectionMaxWidth: string;
@@ -8,21 +7,19 @@ interface CompletionDateProps {
 const CompletionDate = (props: CompletionDateProps) => {
   const { sectionMaxWidth, spacing } = props;
   return (
-    <HStack width="full" alignItems="flex-start" spacing={spacing}>
-      <Flex width="full" maxW={sectionMaxWidth}>
-        <FormSectionInfo
-          title="Completion Date"
-          info="Select the completion date"
-          isRequired
-        />
-      </Flex>
-
+    <FormInputWrapper
+      sectionMaxWidth={sectionMaxWidth}
+      spacing={spacing}
+      title="Completion Date"
+      description="Select the completion date"
+      isRequired
+    >
       <FormDatePicker
         name="dateCompleted"
         label="Completion Date"
         type="date"
       />
-    </HStack>
+    </FormInputWrapper>
   );
 };
 

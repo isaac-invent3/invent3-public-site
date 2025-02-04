@@ -1,4 +1,4 @@
-import { Heading, HStack, Text, VStack } from '@chakra-ui/react';
+import { Heading, HStack, Stack, Text, VStack } from '@chakra-ui/react';
 
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import { TaskInstance } from '~/lib/interfaces/task.interfaces';
@@ -24,24 +24,29 @@ const SectionOne = ({ data }: SectionOneProps) => {
     <VStack
       bgColor="#B4BFCA4D"
       pt="24px"
-      px="42px"
+      px={{ base: '24px', md: '42px' }}
       pb="49px"
       spacing="16px"
       width="full"
       alignItems="flex-start"
     >
       <Heading
-        fontSize="32px"
-        lineHeight="38.02px"
         color="black"
-        fontWeight={800}
+        lineHeight={{ base: '28.51px', md: '38.02px' }}
+        fontSize={{ base: '24px', md: '32px' }}
+        fontWeight={{ base: 700, md: 800 }}
       >
         #{data?.taskInstanceId} {data?.taskInstanceName}
       </Heading>
-      <HStack width="full" spacing="32px">
-        <VStack alignItems="flex-start" spacing="8px">
+      <Stack
+        direction={{ base: 'column', md: 'row' }}
+        spacing={{ base: '16px', md: '32px' }}
+        alignItems={{ base: 'start', md: 'center' }}
+        width="full"
+      >
+        <VStack alignItems="flex-start" spacing={{ base: '20px', md: '8px' }}>
           {info.map((item, index) => (
-            <HStack spacing="16px" key={index}>
+            <HStack spacing={{ base: '20px', md: '16px' }} key={index}>
               <Text width="107px" size="md" color="neutral.600">
                 {item.label}
               </Text>
@@ -49,8 +54,9 @@ const SectionOne = ({ data }: SectionOneProps) => {
             </HStack>
           ))}
         </VStack>
+
         <VStack alignItems="flex-start" spacing="8px">
-          <HStack spacing="8px">
+          <HStack spacing={{ base: '64px', md: '8px' }}>
             <Text width="62px" size="md" color="neutral.600">
               Status:
             </Text>
@@ -59,7 +65,8 @@ const SectionOne = ({ data }: SectionOneProps) => {
               colorCode={data?.statusColorCode}
             />
           </HStack>
-          <HStack spacing="8px">
+
+          <HStack spacing={{ base: '64px', md: '8px' }}>
             <Text width="62px" size="md" color="neutral.600">
               Priority:
             </Text>
@@ -69,7 +76,7 @@ const SectionOne = ({ data }: SectionOneProps) => {
             />
           </HStack>
         </VStack>
-      </HStack>
+      </Stack>
     </VStack>
   );
 };

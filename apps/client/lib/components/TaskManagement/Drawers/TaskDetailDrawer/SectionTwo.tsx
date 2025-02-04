@@ -8,8 +8,17 @@ interface SectionTwoProps {
 }
 const SectionTwo = ({ data }: SectionTwoProps) => {
   return (
-    <VStack width="full" spacing="34px" pl="32px" pr="28px">
-      <SimpleGrid width="full" spacing="57px" columns={3}>
+    <VStack
+      width="full"
+      spacing="34px"
+      pl={{ base: '24px', md: '42px' }}
+      pr="28px"
+    >
+      <SimpleGrid
+        width="full"
+        spacing={{ base: '30px', md: '57px' }}
+        columns={{ base: 2, md: 3 }}
+      >
         <VStack width="full" spacing="8px" alignItems="flex-start">
           <Text color="neutral.600" fontWeight={700}>
             Schedule ID
@@ -45,7 +54,7 @@ const SectionTwo = ({ data }: SectionTwoProps) => {
           </HStack>
         </VStack>
       </SimpleGrid>
-      <SimpleGrid width="full" spacing="57px" columns={3}>
+      <SimpleGrid width="full" spacing="57px" columns={{ base: 1, md: 3 }}>
         <VStack width="full" spacing="8px" alignItems="flex-start">
           <Text color="neutral.600" fontWeight={700}>
             Asset Name

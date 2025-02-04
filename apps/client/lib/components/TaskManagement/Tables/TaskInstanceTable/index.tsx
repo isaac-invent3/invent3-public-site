@@ -1,10 +1,13 @@
+import { useMediaQuery } from '@chakra-ui/react';
+import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import React, { useMemo } from 'react';
-import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
-import { DataTable } from '@repo/ui/components';
-import { TaskInstance } from '~/lib/interfaces/task.interfaces';
-import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
 import AssignedTo from '~/lib/components/Common/UserInfo';
+import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
+import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
+import { TaskInstance } from '~/lib/interfaces/task.interfaces';
+import { SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
+import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
 import PopoverAction from './PopoverAction';
 
 interface TaskInstanceTableProps {
@@ -54,6 +57,8 @@ const TaskInstanceTable = (props: TaskInstanceTableProps) => {
   } = props;
 
   const columnHelper = createColumnHelper<TaskInstance>();
+  const [isMobile] = useMediaQuery('(max-width: 480px)');
+
   const columns = useMemo(
     () => {
       const baseColumns = [
@@ -148,42 +153,86 @@ const TaskInstanceTable = (props: TaskInstanceTableProps) => {
     [[data]] //eslint-disable-line
   );
 
+  const mobileColumns = useMemo(
+    () => {
+      const baseColumns = [
+        columnHelper.accessor('taskInstanceId', {
+          cell: (info) => info.getValue(),
+          header: '#',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('taskInstanceName', {
+          cell: (info) => info.getValue(),
+          header: 'Task',
+          enableSorting: false,
+        }),
+
+        columnHelper.accessor('assignedToEmployeeName', {
+          cell: (info) => <AssignedTo name={info.getValue()} />,
+          header: 'Assigned To',
+          enableSorting: isSortable,
+        }),
+      ];
+      const popOverColumns = columnHelper.accessor('taskInstanceGuid', {
+        cell: (info) => PopoverAction(info.row.original, type),
+        header: '',
+        enableSorting: false,
+      });
+
+      if (showPopover) {
+        baseColumns.push(popOverColumns);
+      }
+      return baseColumns;
+    },
+    [[data]] //eslint-disable-line
+  );
+
+  const { updateSearchParam } = useCustomSearchParams();
   return (
-    <DataTable
-      columns={columns}
-      data={data ?? []}
-      isLoading={isLoading}
-      isFetching={isFetching}
-      totalPages={totalPages}
-      setPageNumber={setPageNumber}
-      pageNumber={pageNumber}
-      pageSize={pageSize}
-      setPageSize={setPageSize}
-      handleSelectRow={handleSelectRow}
-      selectedRows={selectedRows}
-      setSelectedRows={setSelectedRows}
-      showFooter={showFooter}
-      emptyText={emptyText}
-      emptyLines={emptyLines}
-      isSelectable={isSelectable}
-      maxTdWidth="200px"
-      customThStyle={{
-        paddingLeft: '16px',
-        paddingTop: '12px',
-        paddingBottom: '12px',
-        fontWeight: 700,
-      }}
-      customTdStyle={{
-        paddingLeft: '16px',
-        paddingTop: '12px',
-        paddingBottom: '12px',
-      }}
-      customTableContainerStyle={{
-        rounded: 'none',
-        bgColor: showTableBgColor ? 'white' : 'transparent',
-      }}
-      paginationStyle={{ bgColor: showTableBgColor ? 'white' : 'transparent' }}
-    />
+    <>
+      <DataTable
+        columns={isMobile ? mobileColumns : columns}
+        data={data ?? []}
+        isLoading={isLoading}
+        isFetching={isFetching}
+        totalPages={totalPages}
+        setPageNumber={setPageNumber}
+        pageNumber={pageNumber}
+        pageSize={pageSize}
+        setPageSize={setPageSize}
+        handleSelectRow={(row) => {
+          handleSelectRow && handleSelectRow(row);
+          const taskSlugName = SYSTEM_CONTEXT_DETAILS.TASKS.slug;
+
+          updateSearchParam(taskSlugName, row?.taskInstanceGuid);
+        }}
+        selectedRows={selectedRows}
+        setSelectedRows={setSelectedRows}
+        showFooter={showFooter}
+        emptyText={emptyText}
+        emptyLines={emptyLines}
+        isSelectable={isSelectable}
+        maxTdWidth="200px"
+        customThStyle={{
+          paddingLeft: '16px',
+          paddingTop: '12px',
+          paddingBottom: '12px',
+          fontWeight: 700,
+        }}
+        customTdStyle={{
+          paddingLeft: '16px',
+          paddingTop: '12px',
+          paddingBottom: '12px',
+        }}
+        customTableContainerStyle={{
+          rounded: 'none',
+          bgColor: showTableBgColor ? 'white' : 'transparent',
+        }}
+        paginationStyle={{
+          bgColor: showTableBgColor ? 'white' : 'transparent',
+        }}
+      />
+    </>
   );
 };
 

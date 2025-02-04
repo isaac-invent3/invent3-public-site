@@ -1,8 +1,8 @@
-import { Flex, HStack, VStack } from '@chakra-ui/react';
+import { VStack } from '@chakra-ui/react';
+import { ErrorMessage, FormInputWrapper } from '@repo/ui/components';
 import { useField } from 'formik';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import UserDisplayAndAddButton from '~/lib/components/Common/UserDisplayAndAddButton';
-import { ErrorMessage, FormSectionInfo } from '@repo/ui/components';
 import { Option } from '~/lib/interfaces/general.interfaces';
 
 interface OwnerProps {
@@ -17,14 +17,13 @@ const Owner = (props: OwnerProps) => {
   const [selectedUser, setSelectedUser] = useState<Option | null>(null);
 
   return (
-    <HStack width="full" alignItems="flex-start" spacing={spacing}>
-      <Flex width="full" maxW={sectionMaxWidth}>
-        <FormSectionInfo
-          title="Owner"
-          info="Identify the person responsible for this plan"
-          isRequired
-        />
-      </Flex>
+    <FormInputWrapper
+      sectionMaxWidth={sectionMaxWidth}
+      spacing={spacing}
+      title="Owner"
+      description="Identify the person responsible for this plan"
+      isRequired
+    >
       <VStack width="full" spacing="4px" alignItems="flex-start">
         <UserDisplayAndAddButton
           selectedUser={selectedUser?.label ?? defaultName}
@@ -38,7 +37,7 @@ const Owner = (props: OwnerProps) => {
           <ErrorMessage>{meta.error}</ErrorMessage>
         )}
       </VStack>
-    </HStack>
+    </FormInputWrapper>
   );
 };
 

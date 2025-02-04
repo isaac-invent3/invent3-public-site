@@ -7,7 +7,6 @@ import {
   PlanTableType,
 } from '~/lib/interfaces/maintenance.interfaces';
 import { useMediaQuery } from '@chakra-ui/react';
-import React from 'react';
 
 interface MaintenancePlanProps {
   data: MaintenancePlan[];

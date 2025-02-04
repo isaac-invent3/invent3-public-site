@@ -1,5 +1,4 @@
-import { Flex, HStack } from '@chakra-ui/react';
-import { FormSectionInfo, FormTextInput } from '@repo/ui/components';
+import { FormInputWrapper, FormTextInput } from '@repo/ui/components';
 import { Field } from 'formik';
 
 interface ScheduleTitleProps {
@@ -9,21 +8,20 @@ interface ScheduleTitleProps {
 const ScheduleTitle = (props: ScheduleTitleProps) => {
   const { sectionMaxWidth, spacing } = props;
   return (
-    <HStack width="full" alignItems="flex-start" spacing={spacing}>
-      <Flex width="full" maxW={sectionMaxWidth}>
-        <FormSectionInfo
-          title="Schedule Title"
-          info="Provide a title for this maintenance schedule."
-          isRequired
-        />
-      </Flex>
+    <FormInputWrapper
+      sectionMaxWidth={sectionMaxWidth}
+      spacing={spacing}
+      title="Schedule Title"
+      description="Provide a title for this maintenance schedule."
+      isRequired
+    >
       <Field
         as={FormTextInput}
         name="name"
         type="text"
         label="Schedule Title"
       />
-    </HStack>
+    </FormInputWrapper>
   );
 };
 

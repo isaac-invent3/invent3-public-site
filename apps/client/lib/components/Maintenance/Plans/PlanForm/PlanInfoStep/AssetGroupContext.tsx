@@ -1,7 +1,6 @@
-import { Flex, HStack } from '@chakra-ui/react';
-import { FormSectionInfo } from '@repo/ui/components';
+import { FormInputWrapper } from '@repo/ui/components';
 import { useFormikContext } from 'formik';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { PlanFormDetails } from '~/lib/interfaces/maintenance.interfaces';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
@@ -29,14 +28,13 @@ const AssetGroupContext = () => {
   );
   const dispatch = useAppDispatch();
   return (
-    <HStack width="full" alignItems="flex-start" spacing="40px">
-      <Flex width="full" maxW="141px">
-        <FormSectionInfo
-          title={assetGroupTypeName ?? ''}
-          info="Select an option"
-          isRequired
-        />
-      </Flex>
+    <FormInputWrapper
+      sectionMaxWidth="141px"
+      spacing="40px"
+      title={assetGroupTypeName ?? ''}
+      description="Select an option"
+      isRequired
+    >
       <GenericAsyncSelect
         selectName="assetGroupContextID"
         selectTitle={assetGroupTypeName ?? 'Select'}
@@ -51,7 +49,7 @@ const AssetGroupContext = () => {
           dispatch(updatePlanForm({ assetGroupContextName: option.label }))
         }
       />
-    </HStack>
+    </FormInputWrapper>
   );
 };
 

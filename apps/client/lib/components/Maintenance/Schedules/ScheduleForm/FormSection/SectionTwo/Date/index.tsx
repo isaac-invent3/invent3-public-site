@@ -1,6 +1,4 @@
 import {
-  Flex,
-  HStack,
   Icon,
   useDisclosure,
   // useToast,
@@ -13,7 +11,7 @@ import {
   Button,
   DateTimeButtons,
   ErrorMessage,
-  FormSectionInfo,
+  FormInputWrapper,
 } from '@repo/ui/components';
 import RecurrenceModal from '~/lib/components/Common/RecurrenceComponents/RecurrenceModal';
 import { RepeatIcon } from '~/lib/components/CustomIcons';
@@ -129,14 +127,13 @@ const Date = (props: DateProps) => {
 
   return (
     <>
-      <HStack width="full" alignItems="flex-start" spacing={spacing}>
-        <Flex width="full" maxW={sectionMaxWidth}>
-          <FormSectionInfo
-            title={isMainSchedule ? 'Start Date and Time' : 'Instance Date'}
-            info="Choose when the maintenance will begin"
-            isRequired
-          />
-        </Flex>
+      <FormInputWrapper
+        sectionMaxWidth={sectionMaxWidth}
+        spacing={spacing}
+        title={isMainSchedule ? 'Start Date and Time' : 'Instance Date'}
+        description="Choose when the maintenance will begin"
+        isRequired
+      >
         <VStack width="full" spacing="12px" alignItems="flex-start">
           <DateTimeButtons
             buttonVariant={buttonVariant}
@@ -201,7 +198,7 @@ const Date = (props: DateProps) => {
             </ErrorMessage>
           )}
         </VStack>
-      </HStack>
+      </FormInputWrapper>
       <RecurrenceModal
         isOpen={isOpenRecurrence}
         onClose={onCloseRecurrence}

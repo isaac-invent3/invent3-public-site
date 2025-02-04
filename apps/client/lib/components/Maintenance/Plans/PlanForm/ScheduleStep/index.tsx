@@ -46,9 +46,9 @@ const ScheduleStep = (props: ScheduleStepProps) => {
             alignItems="flex-start"
             bgColor="white"
             pt="8px"
-            pl="25px"
+            pl="16px"
             pb="33px"
-            pr="34px"
+            pr="16px"
             rounded="6px"
             minH="60vh"
           >

@@ -53,7 +53,7 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
       <Flex
         width={{ base: 'full', md: 'calc(100vw - 73px)' }}
         ml={{ md: '73px' }}
-        px="24px"
+        px={{ base: 0, md: '24px' }}
         pt="32px"
         direction="column"
         height="full"

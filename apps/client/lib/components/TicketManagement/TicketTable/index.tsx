@@ -50,7 +50,7 @@ const TicketTable = (props: TicketTableProps) => {
     shouldHideFooter,
     showPopover = true,
   } = props;
-  const [isMobile] = useMediaQuery('(max-width: 480px)');
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
   const { updateSearchParam } = useCustomSearchParams();
   const dispatch = useAppDispatch();
   const columnHelper = createColumnHelper<Ticket>();

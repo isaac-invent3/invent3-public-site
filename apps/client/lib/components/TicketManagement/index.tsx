@@ -211,8 +211,9 @@ const TicketManagement = () => {
             width="full"
             position="relative"
             direction={{ base: 'column', lg: 'row' }}
+            px={{ base: '16px', md: 0 }}
           >
-            <TabList mx={{ base: '16px', md: 0 }}>
+            <TabList>
               {ALlTabs.map((item, index) => (
                 <Tab key={index}>{item}</Tab>
               ))}
@@ -227,7 +228,6 @@ const TicketManagement = () => {
                 spacing="16px"
                 width="full"
                 direction={{ base: 'column', lg: 'row' }}
-                px={{ base: '16px', md: 0 }}
               >
                 <SearchInput
                   setSearch={setSearch}
@@ -263,7 +263,7 @@ const TicketManagement = () => {
 
           <TabPanels>
             {isOpen && (
-              <Flex width="full" mt="16px">
+              <Flex width="full" mt="16px" px={{ base: '16px', md: 0 }}>
                 <TableActions
                   filterData={filterData}
                   setFilterData={setFilterData}

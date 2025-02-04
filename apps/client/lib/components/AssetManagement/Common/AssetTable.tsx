@@ -42,7 +42,7 @@ interface AssetTableProps {
   PopoverComponent?: (data: Asset) => JSX.Element | undefined;
 }
 const AssetTable = (props: AssetTableProps) => {
-  const [isMobile] = useMediaQuery('(max-width: 480px)');
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
   const columnHelper = createColumnHelper<Asset>();
   const {
     data,

@@ -30,6 +30,7 @@ const customVariant = definePartsStyle(() => {
       p: 0,
       borderColor: 'neutral.300',
       overflow: 'auto',
+      width: 'full',
     },
     indicator: {
       height: '50px',

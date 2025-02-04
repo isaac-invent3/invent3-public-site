@@ -137,7 +137,7 @@ function DataTable<Data extends object>({
       <TableContainer
         overflowY="auto"
         bgColor="white"
-        rounded="4px"
+        rounded="none"
         sx={{
           '::-webkit-scrollbar': {
             width: '12px', // Adjust width as needed
@@ -161,7 +161,13 @@ function DataTable<Data extends object>({
               <Tr key={headerGroup.id}>
                 {/* Checkbox for selecting all rows */}
                 {isSelectable && (
-                  <Th key="selectAll" px="16px" {...customThStyle}>
+                  <Th
+                    key="selectAll"
+                    px="16px"
+                    py="12px"
+                    fontWeight={700}
+                    {...customThStyle}
+                  >
                     <CheckBox
                       isChecked={selectAll}
                       handleChange={handleSelectAll}
@@ -185,9 +191,8 @@ function DataTable<Data extends object>({
                       lineHeight="14.26px"
                       fontWeight={700}
                       color="black"
-                      pl="10px"
-                      pr="16px"
-                      py="16px"
+                      px="16px"
+                      py="12px"
                       {...customThStyle}
                     >
                       <Flex

@@ -11,7 +11,6 @@ import BulkAssetTable from '../../Common/BulkAssetTable';
 import { Button } from '@repo/ui/components';
 import SectionTwo from './SectionTwo';
 import { useRequestAssetDisposalMutation } from '~/lib/redux/services/asset/disposal.services';
-import { AssetFormDocument } from '~/lib/interfaces/asset/general.interface';
 import { assetDisposeSchema } from '~/lib/schemas/asset/main.schema';
 import {
   getSelectedAssetIds,
@@ -20,6 +19,7 @@ import {
 import PageHeader from '~/lib/components/UI/PageHeader';
 import { ROUTES } from '~/lib/utils/constants';
 import { useRouter } from 'next/navigation';
+import { Document } from '~/lib/interfaces/general.interfaces';
 
 const BulkDispose = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -48,12 +48,12 @@ const BulkDispose = () => {
         disposalRequestedBy: 1,
         createdBy: session?.user?.username!,
       };
-      const uploadedDocuments: AssetFormDocument[] = values.documents.filter(
-        (item: AssetFormDocument) => item.documentId === null
+      const uploadedDocuments: Document[] = values.documents.filter(
+        (item: Document) => item.documentId === null
       );
 
-      const existingDocuments: AssetFormDocument[] = values.documents.filter(
-        (item: AssetFormDocument) => item.documentId !== null
+      const existingDocuments: Document[] = values.documents.filter(
+        (item: Document) => item.documentId !== null
       );
       const createAssetDocumentsDto =
         uploadedDocuments.length > 0

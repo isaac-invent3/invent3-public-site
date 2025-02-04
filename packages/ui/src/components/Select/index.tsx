@@ -43,6 +43,7 @@ export interface SelectInputProps {
   isAsync?: boolean;
   containerStyles?: BoxProps;
   selectStyles?: CSSObjectWithLabel;
+  isMultiSelect?: boolean;
 }
 function SelectInput(props: SelectInputProps) {
   const {
@@ -63,6 +64,7 @@ function SelectInput(props: SelectInputProps) {
     errorMessage,
     containerStyles,
     selectStyles,
+    isMultiSelect,
   } = props;
   const SelectComponent = isAsync ? AsyncSelect : Select;
   const [isFocused, setIsFocused] = useState(false);
@@ -150,6 +152,7 @@ function SelectInput(props: SelectInputProps) {
           onFocus={handleFocus}
           onBlur={handleBlur}
           placeholder={title}
+          isMulti={isMultiSelect}
           styles={{
             container: (provided) => ({
               ...provided,

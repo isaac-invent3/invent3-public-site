@@ -70,7 +70,12 @@ const AssetManagement = () => {
               <Tab>Map View</Tab>
             </TabList>
             {tabIndex === 0 && (
-              <Flex position="absolute" right={0} bottom="8px">
+              <Flex
+                position="absolute"
+                right={0}
+                bottom="8px"
+                display={{ base: 'none', lg: 'flex' }}
+              >
                 <Filters
                   setSearch={setSearch}
                   activeFilter={activeFilter}
@@ -82,6 +87,13 @@ const AssetManagement = () => {
 
           <TabPanels>
             <TabPanel>
+              <Flex display={{ base: 'flex', lg: 'none' }} mt="16px">
+                <Filters
+                  setSearch={setSearch}
+                  activeFilter={activeFilter}
+                  setActiveFilter={setActiveFilter}
+                />
+              </Flex>
               <ListView
                 openFilter={isOpen}
                 activeFilter={activeFilter}

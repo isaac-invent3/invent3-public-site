@@ -1,31 +1,39 @@
 import { Flex, HStack, Skeleton, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { TaskIcon } from '~/lib/components/CustomIcons/Dashboard';
-import SummaryCardWrapper from '../../Common/SummaryCardWrapper';
+import SummaryCardWrapper from '../../../Common/SummaryCardWrapper';
 import ChartLegend from '../../Common/Charts/ChartLegend';
 import DoughtnutChart from '../../Common/Charts/DoughtnutChart';
 
-const chartLegendItems = [
-  {
-    label: 'High Priority',
-    color: '#F50000',
-  },
-  {
-    label: 'Medium Priority',
-    color: '#EABC30',
-  },
-  {
-    label: 'Low Priority',
-    color: '#07CC3B',
-  },
-];
-
 interface PendingTaskProps {
   isLoading: boolean;
+  highPriority?: number;
+  mediumPriority?: number;
+  lowPriority?: number;
+  totalTask?: number;
 }
 const PendingTask = (props: PendingTaskProps) => {
-  const { isLoading } = props;
-  const ticketValue = 900;
+  const { isLoading, highPriority, mediumPriority, lowPriority, totalTask } =
+    props;
+
+  const chartLegendItems = [
+    {
+      label: 'High Priority',
+      color: '#F50000',
+      value: highPriority,
+    },
+    {
+      label: 'Medium Priority',
+      color: '#EABC30',
+      value: mediumPriority,
+    },
+    {
+      label: 'Low Priority',
+      color: '#07CC3B',
+      value: lowPriority,
+    },
+  ];
+
   return (
     <SummaryCardWrapper
       title="Pending Tasks"
@@ -47,7 +55,7 @@ const PendingTask = (props: PendingTaskProps) => {
               fontWeight={800}
               color="primary.500"
             >
-              {ticketValue !== undefined ? ticketValue.toLocaleString() : '-'}
+              {totalTask !== undefined ? totalTask.toLocaleString() : '-'}
             </Text>
           </Skeleton>
           <Text color="neutral.600" fontWeight={700} mb="4px">
@@ -71,7 +79,7 @@ const PendingTask = (props: PendingTaskProps) => {
               labels={chartLegendItems.map((item) => item.label)}
               datasets={[
                 {
-                  data: [70, 30, 40],
+                  data: chartLegendItems.map((item) => item.value ?? 0),
                   backgroundColor: chartLegendItems.map((item) => item.color),
                   borderWidth: 0,
                 },

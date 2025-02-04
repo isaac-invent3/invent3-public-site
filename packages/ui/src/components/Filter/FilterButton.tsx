@@ -4,7 +4,7 @@ import {
   Icon,
   IconProps,
   StackProps,
-  Text,
+  Text as ChakraText,
 } from '@chakra-ui/react';
 
 import { ChevronDownIcon } from '../../components/CustomIcons';
@@ -24,7 +24,7 @@ const FilterButton = (props: FilterButtonProps) => {
     <HStack
       as="button"
       height="36px"
-      minW="min-content"
+      width="max-content"
       py="6px"
       pl="12px"
       pr="10px"
@@ -43,9 +43,9 @@ const FilterButton = (props: FilterButtonProps) => {
           boxSize="24px"
           color={isActive ? 'white' : 'neutral.800'}
         />
-        <Text width="full" whiteSpace="nowrap">
+        <ChakraText width="full" whiteSpace="nowrap">
           {label}
-        </Text>
+        </ChakraText>
       </HStack>
       {chevron && (
         <Icon

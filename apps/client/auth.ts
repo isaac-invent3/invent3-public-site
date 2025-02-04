@@ -2,7 +2,7 @@ import NextAuth from 'next-auth';
 import type { NextAuthConfig } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { Mutex } from 'async-mutex';
-// import { UserPermission } from './types/next-auth';
+import { AccessibleRoute } from './types/next-auth';
 
 // Create a shared mutex for controlling access to the refresh token process
 const refreshTokenMutex = new Mutex();
@@ -137,8 +137,9 @@ export const config = {
         token.refreshToken = user.refreshToken;
         token.sessionId = user.sessionId;
         token.apiKey = user.apiKey;
-        token.role = user.role ?? 'User';
-        // token.roleRoutePermissions = user.roleRoutePermissions;
+        token.role = user.role;
+        token.roleSystemModuleContextPermissions =
+          user.roleSystemModuleContextPermissions;
       }
 
       // Set accessTokenExpires if not already set, to prevent resetting it on each callback
@@ -191,8 +192,9 @@ export const config = {
           apiKey: token.apiKey as string,
           accessToken: token.accessToken as string,
           accessTokenExpires: token.accessTokenExpires as number,
-          role: token.role as string,
-          // roleRoutePermissions: token.roleRoutePermissions as UserPermission[],
+          role: token.role as string[],
+          roleSystemModuleContextPermissions:
+            token.roleSystemModuleContextPermissions as AccessibleRoute,
         },
         error: token.error,
       };

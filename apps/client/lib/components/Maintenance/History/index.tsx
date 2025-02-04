@@ -285,7 +285,6 @@ const MaintenanceHistory = (props: MaintenanceHistoryProp) => {
           paddingBottom: '16px',
         }}
         customTBodyRowStyle={{ verticalAlign: 'top' }}
-        customTableContainerStyle={{ rounded: 'none' }}
       />
       {maintenanceScheduleInstanceId && (
         <TaskInstanceListView

@@ -74,7 +74,6 @@ const PlanDetail = (props: PlanDetailProps) => {
           paddingBottom: '12px',
         }}
         customTBodyRowStyle={{ verticalAlign: 'top' }}
-        customTableContainerStyle={{ rounded: 'none' }}
         showFooter={false}
       />
     </VStack>

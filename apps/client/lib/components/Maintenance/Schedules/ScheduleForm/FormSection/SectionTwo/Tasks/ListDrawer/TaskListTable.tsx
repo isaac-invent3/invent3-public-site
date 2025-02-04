@@ -121,7 +121,6 @@ const TaskListTable = (props: TaskListTableProps) => {
         paddingTop: '12px',
         paddingBottom: '12px',
       }}
-      customTableContainerStyle={{ rounded: 'none' }}
       totalPages={totalPages}
       pageNumber={pageNumber}
       pageSize={pageSize}

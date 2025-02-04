@@ -72,11 +72,11 @@ const FormStepper = (props: FormStepperProps) => {
         {steps.map((step, index) => (
           <React.Fragment key={index}>
             <HStack spacing="12px" mr="32px">
-              {currentStep > index && <CompletedIcon />}
-              {currentStep <= index && (
+              {currentStep > index + 1 && <CompletedIcon />}
+              {currentStep <= index + 1 && (
                 <ActiveInactiveIcon
                   boxIndex={index}
-                  active={index === currentStep}
+                  active={index + 1 === currentStep}
                 />
               )}
               <VStack spacing="4px" alignItems="flex-start">

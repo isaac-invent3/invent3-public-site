@@ -1,4 +1,4 @@
-import { Flex, HStack, StackProps } from '@chakra-ui/react';
+import { Flex, Stack, StackProps } from '@chakra-ui/react';
 import { FormSectionInfo } from '..';
 
 type FormInputWrapperProps = {
@@ -22,8 +22,14 @@ const FormInputWrapper = (props: FormInputWrapperProps) => {
   } = props;
 
   return (
-    <HStack width="full" alignItems="flex-start" spacing={spacing} {...rest}>
-      <Flex width="full" maxW={sectionMaxWidth}>
+    <Stack
+      width="full"
+      alignItems="flex-start"
+      spacing={{ base: '1.5em', md: spacing }}
+      direction={{ base: 'column', md: 'row' }}
+      {...rest}
+    >
+      <Flex width="full" maxW={{ base: 'auto', md: sectionMaxWidth }}>
         <FormSectionInfo
           title={title}
           info={description}
@@ -32,7 +38,7 @@ const FormInputWrapper = (props: FormInputWrapperProps) => {
       </Flex>
 
       {children}
-    </HStack>
+    </Stack>
   );
 };
 

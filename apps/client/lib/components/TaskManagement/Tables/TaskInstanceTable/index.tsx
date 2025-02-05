@@ -202,9 +202,10 @@ const TaskInstanceTable = (props: TaskInstanceTableProps) => {
         setPageSize={setPageSize}
         handleSelectRow={(row) => {
           handleSelectRow && handleSelectRow(row);
-          const taskSlugName = SYSTEM_CONTEXT_DETAILS.TASKS.slug;
+          // Commenting this out because it affects the clicking of the popover action
+          // const taskSlugName = SYSTEM_CONTEXT_DETAILS.TASKS.slug;
 
-          updateSearchParam(taskSlugName, row?.taskInstanceGuid);
+          // updateSearchParam(taskSlugName, row?.taskInstanceGuid);
         }}
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}

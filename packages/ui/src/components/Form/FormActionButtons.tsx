@@ -1,7 +1,7 @@
-import { HStack, Icon, Text as ChakraText, Link } from '@chakra-ui/react';
+import { Text as ChakraText, HStack, Icon, Link } from '@chakra-ui/react';
 
-import { ChevronLeftIcon } from '../CustomIcons';
 import Button from '../Button';
+import { ChevronLeftIcon } from '../CustomIcons';
 
 interface FormActionButtonsProps {
   activeStep: number;
@@ -39,7 +39,7 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
         customStyles={{
           px: '16px',
           bgColor: '#F6F6F666',
-          visibility: activeStep === 1 ? 'hidden' : 'visible',
+          display: activeStep === 1 ? 'none' : 'flex',
           width: '96px',
           minH: '50px',
           _disabled: {
@@ -71,7 +71,11 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
         <ChakraText color="primary.500">Back</ChakraText>
       </Button>
 
-      <HStack spacing="16px" justifySelf="flex-end">
+      <HStack
+        spacing="16px"
+        w={activeStep === 1 ? 'full' : 'auto'}
+        justifyContent={{ base: 'space-between', md: 'flex-end' }}
+      >
         {activeStep === 1 && (
           <Link href={cancelLink} textDecoration="none">
             <HStack
@@ -95,7 +99,7 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
           handleClick={() => {
             handleContinue && handleContinue();
           }}
-          customStyles={{ minW: '167px' }}
+          customStyles={{ w: '167px' }}
           isLoading={isLoading}
           loadingText={loadingText}
           isDisabled={disablePrimaryButton}

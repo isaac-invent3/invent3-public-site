@@ -71,8 +71,8 @@ const GenericSuccessModal = (props: GenericSuccessModalProps) => {
         <VStack
           spacing="48px"
           width="full"
-          pb={{ lg: '40px' }}
-          px="74px"
+          py={{ base: '24px', md: '40px' }}
+          px={{ base: '32px', md: '74px' }}
           {...contentStyle}
         >
           {showRibbon && (
@@ -83,7 +83,7 @@ const GenericSuccessModal = (props: GenericSuccessModalProps) => {
               position="absolute"
             />
           )}
-          <VStack width="full" spacing="24px" pt={{ lg: '48px' }}>
+          <VStack width="full" spacing="24px">
             <VStack width="60px" align="center" position="relative">
               <video
                 ref={checkVideoRef}
@@ -124,3 +124,4 @@ const GenericSuccessModal = (props: GenericSuccessModalProps) => {
 };
 
 export default GenericSuccessModal;
+

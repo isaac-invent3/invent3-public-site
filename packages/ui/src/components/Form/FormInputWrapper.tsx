@@ -25,11 +25,11 @@ const FormInputWrapper = (props: FormInputWrapperProps) => {
     <Stack
       width="full"
       alignItems="flex-start"
-      spacing={{ base: '1em', md: spacing }}
+      spacing={{ base: '1em', lg: spacing }}
       direction={{ base: 'column', lg: 'row' }}
       {...rest}
     >
-      <Flex width="full" maxW={{ base: 'auto', md: sectionMaxWidth }}>
+      <Flex width="full" maxW={{ base: 'auto', lg: sectionMaxWidth }}>
         <FormSectionInfo
           title={title}
           info={description}

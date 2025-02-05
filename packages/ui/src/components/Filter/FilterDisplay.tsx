@@ -12,7 +12,7 @@ const FilterDisplay = (props: FilterDisplayProps) => {
       in={isOpen}
       transition={{ enter: { duration: 0 } }}
     >
-      <Flex width="full" gap="56px">
+      <Flex width="full" gap="56px" px={{ base: '16px', md: 0 }}>
         {children}
       </Flex>
     </Collapse>

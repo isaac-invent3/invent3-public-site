@@ -9,12 +9,16 @@ import EstimatedDuration from '../../Common/EstimatedDuration';
 
 const SectionTwo = () => {
   return (
-    <VStack spacing="45px" width="full" alignItems="flex-start">
+    <VStack
+      spacing={{ base: '30px', md: '45px' }}
+      width="full"
+      alignItems="flex-start"
+    >
       <SimpleGrid
         columns={{ base: 1, md: 2 }}
         alignItems="flex-start"
         width="full"
-        spacing="76px"
+        spacing={{ base: '30px', md: '78px' }}
       >
         <TaskDescription sectionMaxWidth="141px" spacing="47px" />
         <TaskType sectionMaxWidth="141px" spacing="40px" />
@@ -23,7 +27,7 @@ const SectionTwo = () => {
         columns={{ base: 1, md: 2 }}
         alignItems="flex-start"
         width="full"
-        spacing="76px"
+        spacing={{ base: '30px', md: '78px' }}
       >
         <EstimatedDuration sectionMaxWidth="141px" spacing="47px" />
         <CostEstimate sectionMaxWidth="141px" spacing="47px" />
@@ -32,7 +36,7 @@ const SectionTwo = () => {
         columns={{ base: 1, md: 2 }}
         alignItems="flex-start"
         width="full"
-        spacing="76px"
+        spacing={{ base: '30px', md: '78px' }}
       >
         <TaskPriority sectionMaxWidth="141px" spacing="40px" />
         <TaskAssignedTo sectionMaxWidth="141px" spacing="47px" />

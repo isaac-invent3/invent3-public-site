@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
-import { Option } from '~/lib/interfaces/general.interfaces';
-import { Button, FormSectionInfo, GenericModal } from '@repo/ui/components';
+import { Button, FormInputWrapper, GenericModal } from '@repo/ui/components';
 import { FormikProvider, useFormik } from 'formik';
-import EmployeeSelect from '../../SelectComponents/EmployeeSelect';
+import { useState } from 'react';
+import { Option } from '~/lib/interfaces/general.interfaces';
 import { assigneeSchema } from '~/lib/schemas/general.schema';
+import EmployeeSelect from '../../SelectComponents/EmployeeSelect';
 
 interface UserSelectModalProps {
   isOpen: boolean;
@@ -53,32 +53,29 @@ const UserSelectModal = (props: UserSelectModalProps) => {
               width="full"
               spacing="79px"
               alignItems="flex-end"
-              pl="32px"
-              pr="50px"
+              pl={{ base: '24px', md: '32px' }}
+              pr={{ base: '24px', md: '50px' }}
               pt="56px"
               pb="32px"
             >
-              <HStack
-                width="full"
-                justifyContent="space-between"
-                alignItems="flex-start"
+              <FormInputWrapper
+                isRequired={false}
+                sectionMaxWidth="125px"
+                title={sectionInfoTitle ?? 'Assign'}
+                spacing="40px"
+                description={
+                  sectionInfoText ??
+                  'Select the person tasked with this responsibility'
+                }
               >
-                <FormSectionInfo
-                  title={sectionInfoTitle ?? 'Assign'}
-                  info={
-                    sectionInfoText ??
-                    'Select the person tasked with this responsibility'
-                  }
-                  isRequired={false}
-                  maxWidth="125px"
-                />
                 <EmployeeSelect
                   selectName="assignee"
                   selectTitle="Enter User"
                   handleSelect={(option) => setSelectedUser(option)}
                   showTitleAfterSelect={false}
                 />
-              </HStack>
+              </FormInputWrapper>
+
               <HStack spacing="16px">
                 <Button
                   variant="secondary"

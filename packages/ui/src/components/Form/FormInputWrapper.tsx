@@ -25,8 +25,8 @@ const FormInputWrapper = (props: FormInputWrapperProps) => {
     <Stack
       width="full"
       alignItems="flex-start"
-      spacing={{ base: '1.5em', md: spacing }}
-      direction={{ base: 'column', md: 'row' }}
+      spacing={{ base: '1em', md: spacing }}
+      direction={{ base: 'column', lg: 'row' }}
       {...rest}
     >
       <Flex width="full" maxW={{ base: 'auto', md: sectionMaxWidth }}>

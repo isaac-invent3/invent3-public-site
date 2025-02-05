@@ -1,9 +1,9 @@
-import { Flex, HStack, SimpleGrid } from '@chakra-ui/react';
+import { SimpleGrid } from '@chakra-ui/react';
 
 import EmployeeSelect from '../../../../Common/SelectComponents/EmployeeSelect';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
-import { FormSectionInfo } from '@repo/ui/components';
+import { FormInputWrapper } from '@repo/ui/components';
 
 const AssetOwner = () => {
   const dispatch = useAppDispatch();
@@ -11,15 +11,14 @@ const AssetOwner = () => {
     useAppSelector((state) => state.asset.assetForm);
 
   return (
-    <HStack width="full" alignItems="flex-start" spacing="104px">
-      <Flex width="full" maxW="118px">
-        <FormSectionInfo
-          title="Owner's Info"
-          info="Enter details of the person responsible for the asset."
-          isRequired
-        />
-      </Flex>
-      <SimpleGrid columns={4} gap="11px" width="full">
+    <FormInputWrapper
+      sectionMaxWidth="118px"
+      spacing="104px"
+      description="Enter details of the person responsible for the asset."
+      title="Owner's Info"
+      isRequired
+    >
+      <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} gap="11px" width="full">
         <EmployeeSelect
           selectName="currentOwner"
           selectTitle="Owner"
@@ -45,7 +44,7 @@ const AssetOwner = () => {
           }
         />
       </SimpleGrid>
-    </HStack>
+    </FormInputWrapper>
   );
 };
 

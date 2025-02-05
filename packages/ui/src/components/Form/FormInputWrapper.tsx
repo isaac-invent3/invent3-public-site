@@ -25,7 +25,7 @@ const FormInputWrapper = (props: FormInputWrapperProps) => {
     <Stack
       width="full"
       alignItems="flex-start"
-      spacing={{ base: '1em', md: spacing }}
+      spacing={{ base: '1em', lg: spacing }}
       direction={{ base: 'column', md: 'row' }}
       {...rest}
     >

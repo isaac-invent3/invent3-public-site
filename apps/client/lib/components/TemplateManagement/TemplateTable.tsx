@@ -3,6 +3,7 @@ import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import { Template } from '~/lib/interfaces/template.interfaces';
+import { useMediaQuery } from '@chakra-ui/react';
 
 interface TemplateTableProps {
   isLoading: boolean;
@@ -52,6 +53,46 @@ const TemplateTable = (props: TemplateTableProps) => {
   } = props;
 
   const columnHelper = createColumnHelper<Template>();
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
+
+  const mobileColumns = useMemo(
+    () => {
+      const baseColumns = [
+        columnHelper.accessor('templateId', {
+          cell: (info) => info.getValue(),
+          header: '#',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('templateName', {
+          cell: (info) => info.getValue(),
+          header: 'Template Name',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('systemContextTypeDisplayName', {
+          cell: (info) => info.getValue(),
+          header: 'Context Type',
+          enableSorting: false,
+        }),
+      ];
+
+      const popOverColumn = columnHelper.accessor('guid', {
+        cell: (info) => {
+          if (PopoverComponent) {
+            return PopoverComponent(info.row.original);
+          }
+        },
+        header: '',
+        enableSorting: false,
+      });
+
+      if (showPopover) {
+        baseColumns.push(popOverColumn);
+      }
+      return baseColumns;
+    },
+    [[data]] //eslint-disable-line
+  );
+
   const columns = useMemo(
     () => {
       const baseColumns = [
@@ -119,7 +160,7 @@ const TemplateTable = (props: TemplateTableProps) => {
 
   return (
     <DataTable
-      columns={columns}
+      columns={isMobile ? mobileColumns : columns}
       data={data ?? []}
       isLoading={isLoading}
       isFetching={isFetching}

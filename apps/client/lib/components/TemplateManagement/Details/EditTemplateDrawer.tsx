@@ -80,7 +80,7 @@ const EditTemplateDrawer = (props: EditTemplateDrawerProps) => {
         <DrawerHeader
           p={0}
           m={0}
-          px="32px"
+          px={{ base: '16px', md: '32px' }}
           mt="20px"
           mb="10px"
           width="max-content"
@@ -92,17 +92,21 @@ const EditTemplateDrawer = (props: EditTemplateDrawerProps) => {
             <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
               <VStack
                 width="full"
-                px="32px"
-                pb="32px"
-                pt="50px"
+                px={{ base: '16px', md: '32px' }}
+                pb={{ base: '16px', md: '32px' }}
+                pt={{ base: '20px', md: '50px' }}
                 spacing={0}
                 alignItems="flex-start"
               >
                 <ModalHeading heading="Edit Template" />
 
                 {/* Main Form Starts Here */}
-                <VStack width="full" spacing="96px" mt="60px">
-                  <VStack width="full" spacing="16px">
+                <VStack
+                  width="full"
+                  spacing={{ base: '24px', md: '96px' }}
+                  mt={{ base: '34px', md: '60px' }}
+                >
+                  <VStack width="full" spacing={{ base: '24px', lg: '16px' }}>
                     <FormInputWrapper
                       sectionMaxWidth="118px"
                       spacing="47px"
@@ -160,7 +164,7 @@ const EditTemplateDrawer = (props: EditTemplateDrawerProps) => {
                       spacing="47px"
                       description="Date when this template was created"
                       title="Created Date"
-                      alignItems="center"
+                      alignItems={{ lg: 'center' }}
                     >
                       <DateTimeButtons
                         selectedDate={moment(template?.dateCreated).format(

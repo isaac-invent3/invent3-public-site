@@ -1,4 +1,4 @@
-import { HStack, useDisclosure } from '@chakra-ui/react';
+import { HStack, Stack, useDisclosure } from '@chakra-ui/react';
 import { Button, GenericDeleteModal } from '@repo/ui/components';
 import { getSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -41,15 +41,18 @@ const DetailHeader = () => {
   };
   return (
     <>
-      <HStack
+      <Stack
         width="full"
+        direction={{ base: 'column', md: 'row' }}
         justifyContent="space-between"
-        pb="16px"
-        borderBottomWidth="1px"
+        pb={{ base: '12px', lg: '16px' }}
+        borderBottomWidth={{ lg: '1px' }}
         borderColor="neutral.300"
+        spacing="24px"
+        px={{ base: '16px', md: 0 }}
       >
         <PageHeader>Template Detail</PageHeader>
-        <HStack spacing="8px">
+        <HStack spacing="8px" alignSelf={{ base: 'flex-end' }}>
           <Button
             customStyles={{ height: '35px', width: '117px', px: '8px' }}
             variant="primary"
@@ -65,7 +68,7 @@ const DetailHeader = () => {
             Delete Template
           </Button>
         </HStack>
-      </HStack>
+      </Stack>
       {isOpenDelete && (
         <GenericDeleteModal
           isOpen={isOpenDelete}

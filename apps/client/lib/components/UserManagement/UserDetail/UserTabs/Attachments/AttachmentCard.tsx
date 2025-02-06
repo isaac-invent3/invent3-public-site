@@ -9,7 +9,7 @@ interface AttachmentCardProps {
 const AttachmentCard = (props: AttachmentCardProps) => {
   const { title, date } = props;
   return (
-    <VStack width="182px" spacing={0}>
+    <VStack width={{ base: 'full', sm: '182px' }} spacing={0}>
       <Flex height="114px" width="full" bgColor="neutral.100" />
       <VStack
         width="full"

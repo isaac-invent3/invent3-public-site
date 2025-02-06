@@ -1,7 +1,7 @@
 import { Flex, HStack } from '@chakra-ui/react';
 import { useField } from 'formik';
 
-import { FormSectionInfo, SelectableButtonGroup } from '@repo/ui/components';
+import { FormInputWrapper, FormSectionInfo, SelectableButtonGroup } from '@repo/ui/components';
 
 const staticSLA = [
   {
@@ -28,14 +28,13 @@ const ServiceLevelAgreement = (props: ServiceLevelAgreementProps) => {
   // eslint-disable-next-line no-unused-vars
   const [field, meta, helpers] = useField('sla');
   return (
-    <HStack width="full" alignItems="flex-start" spacing={spacing}>
-      <Flex width="full" maxW={sectionMaxWidth}>
-        <FormSectionInfo
-          title="Service Level Agreement"
-          info="Specify the terms of service for maintenance"
-          isRequired
-        />
-      </Flex>
+    <FormInputWrapper
+      sectionMaxWidth={sectionMaxWidth}
+      customSpacing={spacing}
+      title="Service Level Agreement"
+      description="Specify the terms of service for maintenance"
+      isRequired
+    >
       <SelectableButtonGroup
         options={staticSLA}
         selectedOptions={[{ value: meta.value, label: meta.value }]}
@@ -46,7 +45,7 @@ const ServiceLevelAgreement = (props: ServiceLevelAgreementProps) => {
         buttonVariant={buttonVariant}
         customButtonStyle={{ width: 'max-content' }}
       />
-    </HStack>
+    </FormInputWrapper>
   );
 };
 

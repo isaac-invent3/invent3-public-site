@@ -11,6 +11,7 @@ import { Field, FormikProvider, useFormik } from 'formik';
 
 import {
   Button,
+  FormInputWrapper,
   FormSectionInfo,
   FormTextInput,
   GenericModal,
@@ -125,21 +126,20 @@ const MarkTaskAsCompletedModal = (props: MarkTaskAsCompletedModalProps) => {
                     Kindly specify how much is the actual cost of completing
                     this task
                   </Text>
-                  <HStack width="full" alignItems="flex-start" spacing="31px">
-                    <Flex width="full" maxW="132px">
-                      <FormSectionInfo
-                        title="Actual Cost"
-                        info="Enter the actual cost for this task"
-                        isRequired
-                      />
-                    </Flex>
+                  <FormInputWrapper
+                    title="Actual Cost"
+                    description="Enter the actual cost for this task"
+                    isRequired
+                    customSpacing="31px"
+                    sectionMaxWidth="132px"
+                  >
                     <Field
                       as={FormTextInput}
                       name="actualCost"
                       type="number"
                       label="Actual"
                     />
-                  </HStack>
+                  </FormInputWrapper>
                 </VStack>
                 {/* Main Form Ends Here */}
                 <HStack width="full" spacing="24px" justifyContent="center">

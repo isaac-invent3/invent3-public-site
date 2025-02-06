@@ -1,15 +1,15 @@
-import { Flex, HStack, VStack } from '@chakra-ui/react';
+import { VStack } from '@chakra-ui/react';
 import { useField, useFormikContext } from 'formik';
 
-import { useGetAllTaskTypeQuery } from '~/lib/redux/services/task/types.services';
 import {
   ErrorMessage,
-  FormSectionInfo,
+  FormInputWrapper,
   SelectableButtonGroup,
 } from '@repo/ui/components';
-import { generateOptions } from '~/lib/utils/helperFunctions';
 import { taskFormDetails } from '~/lib/interfaces/task.interfaces';
+import { useGetAllTaskTypeQuery } from '~/lib/redux/services/task/types.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import { generateOptions } from '~/lib/utils/helperFunctions';
 
 interface TaskTypeProps {
   sectionMaxWidth: string;
@@ -25,14 +25,13 @@ const TaskType = (props: TaskTypeProps) => {
   const { setFieldValue, values } = useFormikContext<taskFormDetails>();
 
   return (
-    <HStack width="full" alignItems="flex-start" spacing={spacing}>
-      <Flex width="full" maxW={sectionMaxWidth}>
-        <FormSectionInfo
-          title="Type"
-          info="Add the type of this task"
-          isRequired
-        />
-      </Flex>
+    <FormInputWrapper
+      sectionMaxWidth={sectionMaxWidth}
+      customSpacing={spacing}
+      title="Type"
+      description="Add the type of this task"
+      isRequired
+    >
       <VStack width="full" spacing="8px" alignItems="flex-start">
         <SelectableButtonGroup
           options={generateOptions(data?.data.items, 'typeName', 'taskTypeId')}
@@ -55,7 +54,7 @@ const TaskType = (props: TaskTypeProps) => {
           <ErrorMessage>{meta.error}</ErrorMessage>
         )}
       </VStack>
-    </HStack>
+    </FormInputWrapper>
   );
 };
 

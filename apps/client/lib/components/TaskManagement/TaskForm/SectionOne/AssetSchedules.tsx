@@ -1,15 +1,14 @@
-import { Flex, HStack } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
+import { DataTable, ErrorMessage, FormInputWrapper } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
-import React, { useEffect, useMemo, useState } from 'react';
-import { DataTable, FormSectionInfo } from '@repo/ui/components';
+import { useField } from 'formik';
+import { useEffect, useMemo, useState } from 'react';
+import InfoCard from '~/lib/components/UI/InfoCard';
 import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
 import { useAppSelector } from '~/lib/redux/hooks';
-import { dateFormatter } from '~/lib/utils/Formatters';
 import { useGetAllMaintenanceScheduleByAssetIdQuery } from '~/lib/redux/services/maintenance/schedule.services';
-import InfoCard from '~/lib/components/UI/InfoCard';
-import { ErrorMessage } from '@repo/ui/components';
-import { useField } from 'formik';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import { dateFormatter } from '~/lib/utils/Formatters';
 
 const AssetSchedules = () => {
   const { assetId, scheduleId } = useAppSelector(
@@ -100,14 +99,13 @@ const AssetSchedules = () => {
   }, [data?.data?.items]);
 
   return (
-    <HStack width="full" alignItems="flex-start" spacing="47px">
-      <Flex width="full" maxW="141px">
-        <FormSectionInfo
-          title="Select a Schedule"
-          info="Plans attached to the selected asset"
-          isRequired
-        />
-      </Flex>
+    <FormInputWrapper
+      sectionMaxWidth="141px"
+      customSpacing="47px"
+      title="Select a Schedule"
+      description="Plans attached to the selected asset"
+      isRequired
+    >
       <Flex direction="column" width="full" gap="8px">
         <DataTable
           columns={columns}
@@ -151,7 +149,7 @@ const AssetSchedules = () => {
           <ErrorMessage>{meta.error}</ErrorMessage>
         )}
       </Flex>
-    </HStack>
+    </FormInputWrapper>
   );
 };
 

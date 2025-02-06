@@ -65,6 +65,7 @@ const ActionButtonPopover = (props: ActionButtonPopoverProps) => {
             justifyContent="space-between"
             cursor="pointer"
             spacing={0}
+            alignSelf='end'
           >
             <HStack alignItems="center" spacing="4px">
               <Icon

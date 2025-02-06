@@ -1,4 +1,5 @@
 'use client';
+import Cookies from 'js-cookie';
 import { getSession } from 'next-auth/react';
 import { useEffect } from 'react';
 import useFormatUrl from '~/lib/hooks/useFormatUrl';
@@ -6,7 +7,6 @@ import useParseUrlData from '~/lib/hooks/useParseUrl';
 import Layout from '~/lib/layout/ProtectedPage';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { moduleApi } from '~/lib/redux/services/modules.services';
-import Cookies from 'js-cookie';
 
 type RootLayoutProps = {
   children: React.ReactNode;

@@ -1,4 +1,4 @@
-import { HStack, useDisclosure } from '@chakra-ui/react';
+import { HStack, Stack, useDisclosure } from '@chakra-ui/react';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import PageHeader from '~/lib/components/UI/PageHeader';
@@ -40,7 +40,13 @@ const Header = () => {
   }, [pathname]);
 
   return (
-    <HStack width="full" justifyContent="space-between">
+    <Stack
+      width="full"
+      justifyContent="space-between"
+      spacing="10px"
+      direction={{ base: 'column', md: 'row' }}
+      px={{ base: '16px', md: 0 }}
+    >
       <PageHeader>Maintenance</PageHeader>
       {tabName?.toLowerCase() === 'plans' && canCreatePlan && (
         <ActionButtonPopover
@@ -74,7 +80,7 @@ const Header = () => {
           )}
         </ActionButtonPopover>
       )}
-    </HStack>
+    </Stack>
   );
 };
 

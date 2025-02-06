@@ -1,9 +1,17 @@
-import { Flex, Grid, GridItem, HStack, Text, VStack } from '@chakra-ui/react';
+import {
+  Flex,
+  Grid,
+  GridItem,
+  HStack,
+  Stack,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 
-import { dateFormatter } from '~/lib/utils/Formatters';
-import TaskListTable from '../../FormSection/SectionTwo/Tasks/ListDrawer/TaskListTable';
 import InfoCard from '~/lib/components/UI/InfoCard';
 import { ScheduleFormDetails } from '~/lib/interfaces/maintenance.interfaces';
+import { dateFormatter } from '~/lib/utils/Formatters';
+import TaskListTable from '../../FormSection/SectionTwo/Tasks/ListDrawer/TaskListTable';
 
 interface ISectionTwo {
   formDetails: ScheduleFormDetails;
@@ -32,14 +40,19 @@ const SectionTwo = (props: ISectionTwo) => {
   return (
     <Flex width="full" gap="32px" direction="column">
       <Grid
-        templateColumns="repeat(4, 1fr)"
+        templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(4, 1fr)' }}
         rowGap="32px"
         columnGap={0}
         width="full"
       >
         {/* Row 1 Starts */}
-        <GridItem colSpan={2} width="full">
-          <HStack width="full" alignItems="flex-start" spacing={0}>
+        <GridItem colSpan={{ base: 1, md: 2 }} width="full">
+          <Stack
+            flexDir={{ base: 'column', md: 'row' }}
+            width="full"
+            alignItems="flex-start"
+            spacing={{ base: '2em', md: 0 }}
+          >
             {contentOne.map((item, index) => (
               <VStack
                 alignItems="flex-start"
@@ -55,11 +68,20 @@ const SectionTwo = (props: ISectionTwo) => {
                 </Text>
               </VStack>
             ))}
-          </HStack>
+          </Stack>
         </GridItem>
-        <GridItem colSpan={2} width="full">
-          <HStack spacing="48px" alignItems="flex-start" width="full">
-            <VStack width="70%" spacing="8px" alignItems="flex-start">
+        <GridItem colSpan={{ base: 1, md: 2 }} width="full">
+          <Stack
+            flexDir={{ base: 'column', md: 'row' }}
+            spacing={{ base: '2em', md: '48px' }}
+            alignItems="flex-start"
+            width="full"
+          >
+            <VStack
+              width={{ md: '70%', base: 'full' }}
+              spacing="8px"
+              alignItems="flex-start"
+            >
               <Text color="neutral.600" fontWeight={700}>
                 Description
               </Text>
@@ -75,7 +97,11 @@ const SectionTwo = (props: ISectionTwo) => {
                 {formDetails.description}
               </Text>
             </VStack>
-            <VStack width="30%" height="full" spacing="16px">
+            <VStack
+              width={{ md: '30%', base: 'full' }}
+              height="full"
+              spacing="16px"
+            >
               {dateFields.map((item, index) => (
                 <VStack
                   alignItems="flex-start"
@@ -96,13 +122,13 @@ const SectionTwo = (props: ISectionTwo) => {
                 </VStack>
               ))}
             </VStack>
-          </HStack>
+          </Stack>
         </GridItem>
       </Grid>
       {/* Row 1 Ends */}
       {/* Row 2 Starts */}
       <Grid
-        templateColumns="repeat(4, 1fr)"
+        templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(4, 1fr)' }}
         rowGap="32px"
         columnGap={0}
         width="full"

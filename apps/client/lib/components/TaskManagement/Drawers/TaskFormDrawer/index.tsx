@@ -211,7 +211,7 @@ const TaskFormDrawer = (props: TaskFormDrawerProps) => {
         <DrawerHeader
           p={0}
           m={0}
-          px="32px"
+          px={{ base: '24px', md: '32px' }}
           mt="20px"
           mb="10px"
           width="max-content"
@@ -223,7 +223,7 @@ const TaskFormDrawer = (props: TaskFormDrawerProps) => {
             <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
               <VStack
                 width="full"
-                px="32px"
+                px={{ base: '24px', md: '32px' }}
                 pb="32px"
                 pt="50px"
                 spacing={0}

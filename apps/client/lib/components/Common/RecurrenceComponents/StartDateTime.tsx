@@ -1,14 +1,14 @@
-import { HStack, VStack } from '@chakra-ui/react';
+import { VStack } from '@chakra-ui/react';
 
-import moment from 'moment';
-import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import {
   CustomSelectDateButton,
   ErrorMessage,
-  FormSectionInfo,
+  FormInputWrapper,
 } from '@repo/ui/components';
-import { updateRecurrence } from '~/lib/redux/slices/DateSlice';
 import { useField } from 'formik';
+import moment from 'moment';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { updateRecurrence } from '~/lib/redux/slices/DateSlice';
 import { formattedDateTime } from '~/lib/utils/helperFunctions';
 
 interface StartDateTimeProps {
@@ -22,13 +22,14 @@ const StartDateTime = (props: StartDateTimeProps) => {
   // eslint-disable-next-line no-unused-vars
   const [field, meta, helpers] = useField('startDate');
   return (
-    <HStack width="full" spacing="29px" alignItems="flex-start" mb="32px">
-      <FormSectionInfo
-        title="Starts"
-        info="Specify the start date and time for the repeats"
-        isRequired={false}
-        maxWidth="130px"
-      />
+    <FormInputWrapper
+      title="Starts"
+      description="Specify the start date and time for the repeats"
+      isRequired={false}
+      sectionMaxWidth="130px"
+      customSpacing="29px"
+      mb="32px"
+    >
       <VStack width="full" alignItems="flex-start" spacing="8px">
         <CustomSelectDateButton
           minDate={minStartDate}
@@ -67,7 +68,7 @@ const StartDateTime = (props: StartDateTimeProps) => {
           <ErrorMessage>{meta.error}</ErrorMessage>
         )}
       </VStack>
-    </HStack>
+    </FormInputWrapper>
   );
 };
 

@@ -6,7 +6,7 @@ import {
   useSearchMaintenancePlanMutation,
 } from '~/lib/redux/services/maintenance/plan.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
-import { FormSectionInfo } from '@repo/ui/components';
+import { FormInputWrapper, FormSectionInfo } from '@repo/ui/components';
 
 const Plan = () => {
   const [pageNumber, setPageNumber] = useState(1);
@@ -17,14 +17,13 @@ const Plan = () => {
   const [searchMaintenancePlan] = useSearchMaintenancePlanMutation({});
 
   return (
-    <HStack width="full" alignItems="flex-start" spacing="73px">
-      <Flex width="full" maxW="118px">
-        <FormSectionInfo
-          title="Plan Type"
-          info="Select the category for this maintenance plan"
-          isRequired
-        />
-      </Flex>
+    <FormInputWrapper
+      title="Plan Type"
+      description="Select the category for this maintenance plan"
+      isRequired
+      sectionMaxWidth="118px"
+      customSpacing="73px"
+    >
       <GenericAsyncSelect
         selectName="planTypeId"
         selectTitle="Maintenance Plan"
@@ -36,7 +35,7 @@ const Plan = () => {
         pageNumber={pageNumber}
         setPageNumber={setPageNumber}
       />
-    </HStack>
+    </FormInputWrapper>
   );
 };
 

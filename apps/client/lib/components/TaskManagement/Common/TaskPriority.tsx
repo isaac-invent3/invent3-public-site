@@ -1,15 +1,16 @@
-import { Flex, HStack, VStack } from '@chakra-ui/react';
+import { Flex, Stack, VStack } from '@chakra-ui/react';
 import { useField, useFormikContext } from 'formik';
 
-import { useGetAllTaskPrioritiesQuery } from '~/lib/redux/services/task/priorities.services';
-import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import {
   ErrorMessage,
+  FormInputWrapper,
   FormSectionInfo,
   SelectableButtonGroup,
 } from '@repo/ui/components';
-import { generateOptions } from '~/lib/utils/helperFunctions';
 import { taskFormDetails } from '~/lib/interfaces/task.interfaces';
+import { useGetAllTaskPrioritiesQuery } from '~/lib/redux/services/task/priorities.services';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import { generateOptions } from '~/lib/utils/helperFunctions';
 
 interface TaskPriorityProps {
   sectionMaxWidth: string;
@@ -25,14 +26,13 @@ const TaskPriority = (props: TaskPriorityProps) => {
   const { setFieldValue, values } = useFormikContext<taskFormDetails>();
 
   return (
-    <HStack width="full" alignItems="flex-start" spacing={spacing}>
-      <Flex width="full" maxW={sectionMaxWidth}>
-        <FormSectionInfo
-          title="Priority"
-          info="Set the urgency level for this task"
-          isRequired
-        />
-      </Flex>
+    <FormInputWrapper
+      sectionMaxWidth={sectionMaxWidth}
+      customSpacing={spacing}
+      title="Priority"
+      description="Set the urgency level for this task"
+      isRequired
+    >
       <VStack width="full" spacing="8px" alignItems="flex-start">
         <SelectableButtonGroup
           options={generateOptions(
@@ -59,7 +59,7 @@ const TaskPriority = (props: TaskPriorityProps) => {
           <ErrorMessage>{meta.error}</ErrorMessage>
         )}
       </VStack>
-    </HStack>
+    </FormInputWrapper>
   );
 };
 

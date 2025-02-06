@@ -1,7 +1,7 @@
 import { HStack, Icon, Text as ChakraText, Stack } from '@chakra-ui/react';
 
-import { ChevronLeftIcon } from '../CustomIcons';
 import Button from '../Button';
+import { ChevronLeftIcon } from '../CustomIcons';
 
 interface FormActionButtonsProps {
   activeStep: number;

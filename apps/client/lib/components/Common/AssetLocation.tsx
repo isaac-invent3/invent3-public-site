@@ -1,5 +1,5 @@
-import { Flex, HStack, Text } from '@chakra-ui/react';
-import { FormInputWrapper, FormSectionInfo } from '@repo/ui/components';
+import { Text } from '@chakra-ui/react';
+import { FormInputWrapper } from '@repo/ui/components';
 
 interface AssetLocationProps {
   value: string | null;

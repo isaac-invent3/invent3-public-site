@@ -1,5 +1,4 @@
 import {
-  Flex,
   Heading,
   HStack,
   ModalBody,
@@ -12,7 +11,6 @@ import { Field, FormikProvider, useFormik } from 'formik';
 import {
   Button,
   FormInputWrapper,
-  FormSectionInfo,
   FormTextInput,
   GenericModal,
 } from '@repo/ui/components';

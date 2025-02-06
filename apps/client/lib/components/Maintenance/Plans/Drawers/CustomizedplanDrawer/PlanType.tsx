@@ -1,4 +1,3 @@
-import { Flex, HStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import {
@@ -6,7 +5,7 @@ import {
   useSearchMaintenancePlanMutation,
 } from '~/lib/redux/services/maintenance/plan.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
-import { FormInputWrapper, FormSectionInfo } from '@repo/ui/components';
+import { FormInputWrapper } from '@repo/ui/components';
 
 const Plan = () => {
   const [pageNumber, setPageNumber] = useState(1);

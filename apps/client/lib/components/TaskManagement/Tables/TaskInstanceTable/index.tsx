@@ -4,9 +4,7 @@ import { createColumnHelper } from '@tanstack/react-table';
 import React, { useMemo } from 'react';
 import AssignedTo from '~/lib/components/Common/UserInfo';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
-import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import { TaskInstance } from '~/lib/interfaces/task.interfaces';
-import { SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
 import PopoverAction from './PopoverAction';
 
@@ -186,8 +184,6 @@ const TaskInstanceTable = (props: TaskInstanceTableProps) => {
     },
     [[data]] //eslint-disable-line
   );
-
-  const { updateSearchParam } = useCustomSearchParams();
   return (
     <>
       <DataTable

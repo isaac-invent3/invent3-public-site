@@ -1,9 +1,7 @@
-import { Flex, HStack } from '@chakra-ui/react';
-
 import FrequencySelect from '../../Common/Frequency';
 import { updateScheduleForm } from '~/lib/redux/slices/MaintenanceSlice';
 import { useAppDispatch } from '~/lib/redux/hooks';
-import { FormInputWrapper, FormSectionInfo } from '@repo/ui/components';
+import { FormInputWrapper } from '@repo/ui/components';
 
 interface FrequencyProps {
   sectionMaxWidth: string;

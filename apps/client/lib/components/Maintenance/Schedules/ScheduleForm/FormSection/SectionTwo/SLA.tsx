@@ -1,7 +1,6 @@
-import { Flex, HStack } from '@chakra-ui/react';
 import { useField } from 'formik';
 
-import { FormInputWrapper, FormSectionInfo, SelectableButtonGroup } from '@repo/ui/components';
+import { FormInputWrapper, SelectableButtonGroup } from '@repo/ui/components';
 
 const staticSLA = [
   {

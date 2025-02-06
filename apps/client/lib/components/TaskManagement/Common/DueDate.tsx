@@ -19,7 +19,7 @@ const DueDate = (props: DueDateProps) => {
   return (
     <FormInputWrapper
       sectionMaxWidth={sectionMaxWidth}
-      spacing={spacing}
+      customSpacing={spacing}
       title="Due Date"
       description="Select the date when the task would be due"
       isRequired

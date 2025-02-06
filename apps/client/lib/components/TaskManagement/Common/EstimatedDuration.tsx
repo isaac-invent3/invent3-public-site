@@ -12,7 +12,7 @@ const EstimatedDuration = (props: EstimatedDurationProps) => {
   return (
     <FormInputWrapper
       sectionMaxWidth={sectionMaxWidth}
-      spacing={spacing}
+      customSpacing={spacing}
       title="Estimated Duration"
       description="Enter the approximate hours to complete the task"
       isRequired

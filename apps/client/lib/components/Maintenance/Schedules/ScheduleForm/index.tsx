@@ -14,7 +14,12 @@ const ScheduleForm = (props: ScheduleFormProps) => {
   const [activeStep, setActiveStep] = useState(1);
 
   return (
-    <Flex width="full" direction="column" pb="24px">
+    <Flex
+      width="full"
+      direction="column"
+      pb="24px"
+      px={{ base: '16px', md: 0 }}
+    >
       <FormSection
         activeStep={activeStep}
         setActiveStep={setActiveStep}

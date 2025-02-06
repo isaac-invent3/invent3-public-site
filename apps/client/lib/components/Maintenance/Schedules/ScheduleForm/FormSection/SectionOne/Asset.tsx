@@ -1,5 +1,5 @@
 import { Flex, HStack } from '@chakra-ui/react';
-import { FormSectionInfo } from '@repo/ui/components';
+import { FormInputWrapper, FormSectionInfo } from '@repo/ui/components';
 import React, { useEffect, useState } from 'react';
 import AssetSelect from '~/lib/components/Common/SelectComponents/AssetSelect';
 import { Asset } from '~/lib/interfaces/asset/general.interface';
@@ -51,14 +51,13 @@ const AssetField = () => {
     }
   }, [data]);
   return (
-    <HStack width="full" alignItems="flex-start" spacing="81px">
-      <Flex width="full" maxW="130px">
-        <FormSectionInfo
-          title="Asset"
-          info="Choose the type of asset for maintenance."
-          isRequired
-        />
-      </Flex>
+    <FormInputWrapper
+      title="Asset"
+      description="Choose the type of asset for maintenance."
+      isRequired
+      customSpacing="81px"
+      sectionMaxWidth="130px"
+    >
       <AssetSelect
         selectName="assetId"
         selectTitle="Asset"
@@ -68,7 +67,7 @@ const AssetField = () => {
           dispatch(updateScheduleForm({ assetName: option.label }));
         }}
       />
-    </HStack>
+    </FormInputWrapper>
   );
 };
 

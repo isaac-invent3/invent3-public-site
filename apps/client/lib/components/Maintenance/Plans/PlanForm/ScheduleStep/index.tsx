@@ -1,13 +1,13 @@
 import { Flex, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 import React, { useState } from 'react';
-import { planScheduleSchema } from '~/lib/schemas/maintenance.schema';
 import { useAppSelector } from '~/lib/redux/hooks';
+import { planScheduleSchema } from '~/lib/schemas/maintenance.schema';
 // import ScheduleList from './ScheduleList';
-import ScheduleForm from './ScheduleForm';
-import ScheduleList from './ScheduleList';
 import { FormActionButtons, SlideTransition } from '@repo/ui/components';
 import { ROUTES } from '~/lib/utils/constants';
+import ScheduleForm from './ScheduleForm';
+import ScheduleList from './ScheduleList';
 
 interface ScheduleStepProps {
   activeStep: number;
@@ -60,9 +60,15 @@ const ScheduleStep = (props: ScheduleStepProps) => {
               setSelectedRows={setSelectedRows}
               selectMultiple={false}
             />
-            <SlideTransition trigger={showScheduleForm}>
-              <ScheduleForm setShowScheduleForm={setShowScheduleForm} />
-            </SlideTransition>
+
+            {showScheduleForm && (
+              <SlideTransition
+                style={{ width: '100%' }}
+                trigger={showScheduleForm}
+              >
+                <ScheduleForm setShowScheduleForm={setShowScheduleForm} />
+              </SlideTransition>
+            )}
           </VStack>
           <Flex width="full" mt="16px">
             <FormActionButtons

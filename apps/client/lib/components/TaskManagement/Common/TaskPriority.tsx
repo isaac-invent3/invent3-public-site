@@ -28,7 +28,7 @@ const TaskPriority = (props: TaskPriorityProps) => {
   return (
     <FormInputWrapper
       sectionMaxWidth={sectionMaxWidth}
-      spacing={spacing}
+      customSpacing={spacing}
       title="Priority"
       description="Set the urgency level for this task"
       isRequired

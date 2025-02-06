@@ -11,7 +11,7 @@ const Description = (props: DescriptionProps) => {
   return (
     <FormInputWrapper
       sectionMaxWidth={sectionMaxWidth}
-      spacing={spacing}
+      customSpacing={spacing}
       title="Description"
       description="Add details about the maintenance schedule."
       isRequired

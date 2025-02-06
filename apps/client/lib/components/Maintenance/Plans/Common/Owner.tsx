@@ -19,7 +19,7 @@ const Owner = (props: OwnerProps) => {
   return (
     <FormInputWrapper
       sectionMaxWidth={sectionMaxWidth}
-      spacing={spacing}
+      customSpacing={spacing}
       title="Owner"
       description="Identify the person responsible for this plan"
       isRequired

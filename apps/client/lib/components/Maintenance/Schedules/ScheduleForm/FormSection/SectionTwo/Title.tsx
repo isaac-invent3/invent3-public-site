@@ -10,7 +10,7 @@ const ScheduleTitle = (props: ScheduleTitleProps) => {
   return (
     <FormInputWrapper
       sectionMaxWidth={sectionMaxWidth}
-      spacing={spacing}
+      customSpacing={spacing}
       title="Schedule Title"
       description="Provide a title for this maintenance schedule."
       isRequired

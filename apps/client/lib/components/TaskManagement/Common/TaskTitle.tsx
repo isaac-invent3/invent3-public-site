@@ -10,7 +10,7 @@ const TaskTitle = (props: TaskTitleProps) => {
   return (
     <FormInputWrapper
       sectionMaxWidth={sectionMaxWidth}
-      spacing={spacing}
+      customSpacing={spacing}
       title="Task Title"
       description="Enter a clear title for this task"
       isRequired

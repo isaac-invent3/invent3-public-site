@@ -11,7 +11,7 @@ const SectionOne = () => {
 
   return (
     <Grid
-      templateColumns="repeat(4, 1fr)"
+      templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(4, 1fr)' }}
       rowGap="32px"
       columnGap={0}
       width="full"
@@ -40,7 +40,7 @@ const SectionOne = () => {
         </VStack>
       </GridItem>
 
-      <GridItem colSpan={2} width="full">
+      <GridItem colSpan={{base:1, md:2}} width="full">
         <VStack alignItems="flex-start" spacing="8px">
           <Text color="neutral.600" fontWeight={700}>
             Maintenance Plan

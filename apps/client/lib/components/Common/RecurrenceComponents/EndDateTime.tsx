@@ -1,14 +1,14 @@
-import { HStack, VStack } from '@chakra-ui/react';
+import { VStack } from '@chakra-ui/react';
 
-import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import { useField } from 'formik';
-import moment from 'moment';
-import { updateRecurrence } from '~/lib/redux/slices/DateSlice';
 import {
   ConditionalDateSelector,
   ErrorMessage,
-  FormSectionInfo,
+  FormInputWrapper,
 } from '@repo/ui/components';
+import { useField } from 'formik';
+import moment from 'moment';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { updateRecurrence } from '~/lib/redux/slices/DateSlice';
 import { formattedDateTime } from '~/lib/utils/helperFunctions';
 
 interface EndDateTimeProps {
@@ -22,13 +22,14 @@ const EndDateTime = (props: EndDateTimeProps) => {
   // eslint-disable-next-line no-unused-vars
   const [field, meta, helpers] = useField('endDate');
   return (
-    <HStack width="full" spacing="29px" alignItems="flex-start">
-      <FormSectionInfo
-        title="Ends"
-        info="Define when the repeat schedule should stop"
-        isRequired={false}
-        maxWidth="130px"
-      />
+    <FormInputWrapper
+      title="Ends"
+      description="Define when the repeat schedule should stop"
+      isRequired={false}
+      sectionMaxWidth="130px"
+      customSpacing="29px"
+      mb="32px"
+    >
       <VStack width="full" alignItems="flex-start" spacing="8px">
         <ConditionalDateSelector
           minDate={minEndDate}
@@ -66,7 +67,7 @@ const EndDateTime = (props: EndDateTimeProps) => {
           <ErrorMessage>{meta.error}</ErrorMessage>
         )}
       </VStack>
-    </HStack>
+    </FormInputWrapper>
   );
 };
 

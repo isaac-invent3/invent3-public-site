@@ -1,11 +1,9 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
-import { HStack } from '@chakra-ui/react';
-
+import { FormInputWrapper } from '@repo/ui/components';
 import moment from 'moment';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateRepeatInterval } from '~/lib/redux/slices/DateSlice';
-import { FormSectionInfo } from '@repo/ui/components';
 import MonthCard from '../MonthCard';
 
 const Monthly = () => {
@@ -31,18 +29,19 @@ const Monthly = () => {
   }, []);
 
   return (
-    <HStack width="full" spacing="29px" alignItems="flex-start" mb="32px">
-      <FormSectionInfo
-        title="On Days"
-        info="Select specific days for the occurence schedule"
-        isRequired={false}
-        maxWidth="130px"
-      />
+    <FormInputWrapper
+      title="On Days"
+      description="Select specific days for the occurence schedule"
+      isRequired={false}
+      sectionMaxWidth="130px"
+      customSpacing="29px"
+      mb="32px"
+    >
       <MonthCard
         selectedDays={monthlyInterval}
         handleSelectDay={(day) => handleClick(day)}
       />
-    </HStack>
+    </FormInputWrapper>
   );
 };
 

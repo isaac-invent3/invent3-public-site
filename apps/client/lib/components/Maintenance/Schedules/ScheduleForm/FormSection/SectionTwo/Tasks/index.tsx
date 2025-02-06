@@ -45,7 +45,7 @@ const Tasks = (props: TasksProps) => {
     <>
       <FormInputWrapper
         sectionMaxWidth={sectionMaxWidth}
-        spacing={spacing}
+        customSpacing={spacing}
         title="Add Tasks"
         description="List all tasks for this maintenance schedule"
         isRequired

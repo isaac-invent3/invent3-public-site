@@ -27,7 +27,7 @@ const TaskType = (props: TaskTypeProps) => {
   return (
     <FormInputWrapper
       sectionMaxWidth={sectionMaxWidth}
-      spacing={spacing}
+      customSpacing={spacing}
       title="Type"
       description="Add the type of this task"
       isRequired

@@ -30,7 +30,7 @@ const AssetGroupContext = () => {
   return (
     <FormInputWrapper
       sectionMaxWidth="141px"
-      spacing="40px"
+      customSpacing="40px"
       title={assetGroupTypeName ?? ''}
       description="Select an option"
       isRequired

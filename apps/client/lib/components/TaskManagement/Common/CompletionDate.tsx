@@ -9,7 +9,7 @@ const CompletionDate = (props: CompletionDateProps) => {
   return (
     <FormInputWrapper
       sectionMaxWidth={sectionMaxWidth}
-      spacing={spacing}
+      customSpacing={spacing}
       title="Completion Date"
       description="Select the completion date"
       isRequired

@@ -101,7 +101,7 @@ const AssetSchedules = () => {
   return (
     <FormInputWrapper
       sectionMaxWidth="141px"
-      spacing="47px"
+      customSpacing="47px"
       title="Select a Schedule"
       description="Plans attached to the selected asset"
       isRequired

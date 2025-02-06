@@ -16,7 +16,7 @@ const TaskAssignedTo = (props: TaskAssignedToProps) => {
   return (
     <FormInputWrapper
       sectionMaxWidth={sectionMaxWidth}
-      spacing={spacing}
+      customSpacing={spacing}
       title="Assigned to"
       description="Select the person responsible for this task"
       isRequired

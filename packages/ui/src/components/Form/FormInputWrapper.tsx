@@ -3,7 +3,7 @@ import { FormSectionInfo } from '..';
 
 type FormInputWrapperProps = {
   sectionMaxWidth: string;
-  customSpacing: string;
+  customSpacing?: string;
   title: string;
   description: string;
   isRequired?: boolean;
@@ -25,7 +25,7 @@ const FormInputWrapper = (props: FormInputWrapperProps) => {
     <Stack
       width="full"
       alignItems="flex-start"
-      spacing={{ base: '1em', lg: customSpacing }}
+      spacing={{ base: '1em', lg: customSpacing ?? '24px' }}
       direction={{ base: 'column', lg: 'row' }}
       {...rest}
     >

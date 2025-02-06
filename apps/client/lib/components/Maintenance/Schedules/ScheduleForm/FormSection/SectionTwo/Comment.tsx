@@ -5,7 +5,7 @@ const Comment = () => {
   return (
     <FormInputWrapper
       sectionMaxWidth="130px"
-      spacing="56px"
+      customSpacing="56px"
       title="Comment"
       description="Add a comment"
       isRequired

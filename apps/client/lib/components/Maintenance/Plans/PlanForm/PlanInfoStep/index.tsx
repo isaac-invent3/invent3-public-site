@@ -148,7 +148,7 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
             <VStack width="full" spacing="36px">
               <FormInputWrapper
                 sectionMaxWidth="141px"
-                spacing="40px"
+                customSpacing="40px"
                 title="Plan Scope"
                 description="Define the coverage and objectives of the plan."
                 isRequired
@@ -178,7 +178,7 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
                 >
                   <FormInputWrapper
                     sectionMaxWidth="141px"
-                    spacing="40px"
+                    customSpacing="40px"
                     title={
                       formik.values.planScope === 'asset'
                         ? 'Asset'

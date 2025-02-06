@@ -10,7 +10,7 @@ const PlanTitle = (props: PlanTitleProps) => {
   return (
     <FormInputWrapper
       sectionMaxWidth={sectionMaxWidth}
-      spacing={spacing}
+      customSpacing={spacing}
       title="Plan Title"
       description="Give a title for this maintenance plan"
       isRequired

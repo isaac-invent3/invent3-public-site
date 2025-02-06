@@ -129,7 +129,7 @@ const Date = (props: DateProps) => {
     <>
       <FormInputWrapper
         sectionMaxWidth={sectionMaxWidth}
-        spacing={spacing}
+        customSpacing={spacing}
         title={isMainSchedule ? 'Start Date and Time' : 'Instance Date'}
         description="Choose when the maintenance will begin"
         isRequired

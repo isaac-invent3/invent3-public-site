@@ -29,7 +29,7 @@ const Type = (props: TypeProps) => {
   return (
     <FormInputWrapper
       sectionMaxWidth={sectionMaxWidth}
-      spacing={spacing}
+      customSpacing={spacing}
       title="Type"
       description="Select the maintenance type from the options."
       isRequired

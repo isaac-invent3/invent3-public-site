@@ -62,7 +62,7 @@ const UserSelectModal = (props: UserSelectModalProps) => {
                 isRequired={false}
                 sectionMaxWidth="125px"
                 title={sectionInfoTitle ?? 'Assign'}
-                spacing="40px"
+                customSpacing="40px"
                 description={
                   sectionInfoText ??
                   'Select the person tasked with this responsibility'

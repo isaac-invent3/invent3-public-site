@@ -21,7 +21,7 @@ const EndDate = (props: EndDateProps) => {
   return (
     <FormInputWrapper
       sectionMaxWidth={sectionMaxWidth}
-      spacing={spacing}
+      customSpacing={spacing}
       title="End Date"
       description="Specify when the maintenance plan will end"
       isRequired

@@ -1,4 +1,4 @@
-import { HStack, Icon, Text as ChakraText, Link } from '@chakra-ui/react';
+import { HStack, Icon, Text as ChakraText, Stack } from '@chakra-ui/react';
 
 import Button from '../Button';
 import { ChevronLeftIcon } from '../CustomIcons';
@@ -102,7 +102,7 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
           handleClick={() => {
             handleContinue && handleContinue();
           }}
-          customStyles={{ minW: '167px' }}
+          customStyles={{ width: { base: 'full', md: '167px' } }}
           isLoading={isLoading}
           loadingText={loadingText}
           isDisabled={disablePrimaryButton}

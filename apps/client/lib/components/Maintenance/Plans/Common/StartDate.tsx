@@ -21,7 +21,7 @@ const StartDate = (props: StartDateProps) => {
   return (
     <FormInputWrapper
       sectionMaxWidth={sectionMaxWidth}
-      spacing={spacing}
+      customSpacing={spacing}
       title="Start Date"
       description="Set the starting date for the maintenance"
       isRequired

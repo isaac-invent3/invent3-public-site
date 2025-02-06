@@ -10,7 +10,7 @@ const CostEstimate = (props: CostEstimateProps) => {
   return (
     <FormInputWrapper
       sectionMaxWidth={sectionMaxWidth}
-      spacing={spacing}
+      customSpacing={spacing}
       title="Cost Estimate"
       description="Enter the estimate cost for this task"
       isRequired

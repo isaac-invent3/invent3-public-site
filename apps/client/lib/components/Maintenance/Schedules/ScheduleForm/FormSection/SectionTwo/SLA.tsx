@@ -30,7 +30,7 @@ const ServiceLevelAgreement = (props: ServiceLevelAgreementProps) => {
   return (
     <FormInputWrapper
       sectionMaxWidth={sectionMaxWidth}
-      spacing={spacing}
+      customSpacing={spacing}
       title="Service Level Agreement"
       description="Specify the terms of service for maintenance"
       isRequired

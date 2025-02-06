@@ -53,7 +53,7 @@ const AssetImages = () => {
     () => (
       <FormInputWrapper
         sectionMaxWidth="118px"
-        spacing="104px"
+        customSpacing="104px"
         description="Size max: 10MB each Format: JPG, PNG"
         title="Asset Images"
         isRequired

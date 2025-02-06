@@ -19,7 +19,7 @@ const AssetDimension = () => {
   return (
     <FormInputWrapper
       sectionMaxWidth="118px"
-      spacing="104px"
+      customSpacing="104px"
       description="Enter the size or measurements of the asset."
       title="Dimension"
       isRequired

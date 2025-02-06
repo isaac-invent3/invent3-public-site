@@ -154,7 +154,7 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                 >
                   <FormInputWrapper
                     sectionMaxWidth="141px"
-                    spacing="24px"
+                    customSpacing="24px"
                     description="Enter a clear title for this ticket"
                     title="Ticket Title"
                     isRequired
@@ -169,7 +169,7 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
 
                   <FormInputWrapper
                     sectionMaxWidth="141px"
-                    spacing="24px"
+                    customSpacing="24px"
                     description="Provide details about the Ticket objective"
                     title="Ticket Description"
                     isRequired
@@ -187,7 +187,7 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                   {!asset && (
                     <FormInputWrapper
                       sectionMaxWidth="141px"
-                      spacing="24px"
+                      customSpacing="24px"
                       description="Select the Asset to which this ticket relates to"
                       title="Asset"
                       isRequired
@@ -198,7 +198,7 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
 
                   <FormInputWrapper
                     sectionMaxWidth="141px"
-                    spacing="24px"
+                    customSpacing="24px"
                     description="Choose the category this ticket belongs to"
                     title="Type"
                     isRequired
@@ -211,7 +211,7 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
 
                   <FormInputWrapper
                     sectionMaxWidth="141px"
-                    spacing="24px"
+                    customSpacing="24px"
                     description="Set the urgency level for this ticket"
                     title="Priority"
                     isRequired
@@ -247,7 +247,7 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
 
                   <FormInputWrapper
                     sectionMaxWidth="141px"
-                    spacing="24px"
+                    customSpacing="24px"
                     description="Name of user that initiated the ticket"
                     title="Ticket Raised By"
                   >
@@ -270,7 +270,7 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
 
                   <FormInputWrapper
                     sectionMaxWidth="141px"
-                    spacing="24px"
+                    customSpacing="24px"
                     description="Name of user that the ticket is assigned to"
                     title="Ticket Assigned To"
                   >
@@ -290,7 +290,7 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
 
                   <FormInputWrapper
                     sectionMaxWidth="141px"
-                    spacing="24px"
+                    customSpacing="24px"
                     description="Specify the date when this ticket was raised"
                     title="Request Date"
                     alignItems={{ lg: 'center' }}

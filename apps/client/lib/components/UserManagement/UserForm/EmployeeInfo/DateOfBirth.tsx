@@ -5,7 +5,7 @@ const DateOfBirth = () => {
   return (
     <FormInputWrapper
       sectionMaxWidth="157px"
-      spacing="65px"
+      customSpacing="65px"
       description="Select Date of Birth"
       title="Date of Birth"
     >

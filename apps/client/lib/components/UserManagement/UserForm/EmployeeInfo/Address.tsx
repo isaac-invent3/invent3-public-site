@@ -15,7 +15,7 @@ const Address = () => {
   return (
     <FormInputWrapper
       sectionMaxWidth="157px"
-      spacing="65px"
+      customSpacing="65px"
       description="User's Address"
       title="Address"
     >

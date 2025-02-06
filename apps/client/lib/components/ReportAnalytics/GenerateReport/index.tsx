@@ -88,7 +88,7 @@ const GenerateReport = () => {
               >
                 <FormInputWrapper
                   sectionMaxWidth="141px"
-                  spacing="24px"
+                  customSpacing="24px"
                   description="Choose the context for this report"
                   title="Select from Context"
                   isRequired
@@ -119,7 +119,7 @@ const GenerateReport = () => {
 
                 <FormInputWrapper
                   sectionMaxWidth="141px"
-                  spacing="8px"
+                  customSpacing="8px"
                   description="Pick the relevant column for data selection."
                   title="Column"
                   isRequired
@@ -136,7 +136,7 @@ const GenerateReport = () => {
                 <VStack gridColumn="span 3">
                   <FormInputWrapper
                     sectionMaxWidth="118px"
-                    spacing="24px"
+                    customSpacing="24px"
                     description="Specify the condition for this report"
                     title="Condition"
                     isRequired

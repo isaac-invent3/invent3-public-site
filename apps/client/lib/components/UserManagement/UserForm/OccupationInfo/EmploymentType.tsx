@@ -25,7 +25,7 @@ const EmploymentType = () => {
   return (
     <FormInputWrapper
       sectionMaxWidth="141px"
-      spacing="81px"
+      customSpacing="81px"
       description="Select Employment Type"
       title="Employment Type"
     >

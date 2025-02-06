@@ -109,7 +109,7 @@ const EditTemplateDrawer = (props: EditTemplateDrawerProps) => {
                   <VStack width="full" spacing={{ base: '24px', lg: '16px' }}>
                     <FormInputWrapper
                       sectionMaxWidth="118px"
-                      spacing="47px"
+                      customSpacing="47px"
                       description="Enter a clear title for this template"
                       title="Template Name"
                       isRequired
@@ -124,7 +124,7 @@ const EditTemplateDrawer = (props: EditTemplateDrawerProps) => {
 
                     <FormInputWrapper
                       sectionMaxWidth="118px"
-                      spacing="47px"
+                      customSpacing="47px"
                       description="Provide details about the Template"
                       title="Description"
                       isRequired
@@ -148,7 +148,7 @@ const EditTemplateDrawer = (props: EditTemplateDrawerProps) => {
                   >
                     <FormInputWrapper
                       sectionMaxWidth="118px"
-                      spacing="47px"
+                      customSpacing="47px"
                       description="Name of user that the ticket is assigned to"
                       title="Created By"
                     >
@@ -161,7 +161,7 @@ const EditTemplateDrawer = (props: EditTemplateDrawerProps) => {
 
                     <FormInputWrapper
                       sectionMaxWidth="118px"
-                      spacing="47px"
+                      customSpacing="47px"
                       description="Date when this template was created"
                       title="Created Date"
                       alignItems={{ lg: 'center' }}

@@ -13,7 +13,7 @@ const AssetOwner = () => {
   return (
     <FormInputWrapper
       sectionMaxWidth="118px"
-      spacing="104px"
+      customSpacing="104px"
       description="Enter details of the person responsible for the asset."
       title="Owner's Info"
       isRequired

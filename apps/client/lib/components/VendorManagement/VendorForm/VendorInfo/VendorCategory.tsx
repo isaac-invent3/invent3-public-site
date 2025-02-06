@@ -24,7 +24,7 @@ const VendorCategory = () => {
   return (
     <FormInputWrapper
       sectionMaxWidth="133px"
-      spacing="17px"
+      customSpacing="17px"
       description="Select Vendor Category"
       title="Vendor Category"
       isRequired

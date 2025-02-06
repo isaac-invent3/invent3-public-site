@@ -7,7 +7,7 @@ const ContractStartEndDate = () => {
     <SimpleGrid width="full" columns={2} spacing="27px">
       <FormInputWrapper
         sectionMaxWidth="141px"
-        spacing="24px"
+        customSpacing="24px"
         description="Choose when the Contract will begin"
         title="Contract Start Date"
         isRequired
@@ -21,7 +21,7 @@ const ContractStartEndDate = () => {
       </FormInputWrapper>
       <FormInputWrapper
         sectionMaxWidth="141px"
-        spacing="24px"
+        customSpacing="24px"
         description="Provide essential information about the contact person being added."
         title="Contract Expiry Date"
         isRequired

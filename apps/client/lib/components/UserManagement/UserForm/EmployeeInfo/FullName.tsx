@@ -6,7 +6,7 @@ const FullName = () => {
   return (
     <FormInputWrapper
       sectionMaxWidth="157px"
-      spacing="65px"
+      customSpacing="65px"
       description="Provide User's Full name"
       title="Full Name"
       isRequired

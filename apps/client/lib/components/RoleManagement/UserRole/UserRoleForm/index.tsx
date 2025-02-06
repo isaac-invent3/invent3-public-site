@@ -97,7 +97,7 @@ const UserRoleForm = () => {
                 <SimpleGrid columns={2} width="full" px="24px">
                   <FormInputWrapper
                     sectionMaxWidth="141px"
-                    spacing="40px"
+                    customSpacing="40px"
                     description="Provide a title for this role"
                     title="Role Name"
                     isRequired

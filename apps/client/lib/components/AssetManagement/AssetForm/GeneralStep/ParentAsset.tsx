@@ -7,7 +7,7 @@ const ParentAsset = () => {
   return (
     <FormInputWrapper
       sectionMaxWidth="118px"
-      spacing="104px"
+      customSpacing="104px"
       description="Select the Parent Asset if there is any"
       title="Parent Asset"
       isRequired

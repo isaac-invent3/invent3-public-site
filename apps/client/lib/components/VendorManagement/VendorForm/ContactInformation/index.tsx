@@ -68,7 +68,7 @@ const ContactInformation = (props: ContactInformationProps) => {
             <SimpleGrid width="full" columns={2} spacing="50px">
               <FormInputWrapper
                 sectionMaxWidth="157px"
-                spacing="65px"
+                customSpacing="65px"
                 description="Provide the person’s email"
                 title="Primary Contact Email"
                 isRequired
@@ -83,7 +83,7 @@ const ContactInformation = (props: ContactInformationProps) => {
               </FormInputWrapper>
               <FormInputWrapper
                 sectionMaxWidth="141px"
-                spacing="24px"
+                customSpacing="24px"
                 description="Provide the person’s Phone Number"
                 title="Primary Phone Number"
                 isRequired

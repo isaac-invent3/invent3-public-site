@@ -7,7 +7,7 @@ const Email = () => {
     <SimpleGrid columns={2} spacing="72px" width="full">
       <FormInputWrapper
         sectionMaxWidth="157px"
-        spacing="65px"
+        customSpacing="65px"
         description="Personal Email"
         title="Personal Email"
       >
@@ -21,7 +21,7 @@ const Email = () => {
       </FormInputWrapper>
       <FormInputWrapper
         sectionMaxWidth="141px"
-        spacing="25px"
+        customSpacing="25px"
         description="Work Email"
         title="Work Email"
       >

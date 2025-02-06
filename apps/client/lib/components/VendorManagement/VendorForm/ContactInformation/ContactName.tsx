@@ -8,7 +8,7 @@ const ContactName = () => {
     <SimpleGrid width="full" columns={2} spacing="50px">
       <FormInputWrapper
         sectionMaxWidth="157px"
-        spacing="65px"
+        customSpacing="65px"
         description="Provide essential information about the contact person being added."
         title="Primary Contact Name"
         isRequired

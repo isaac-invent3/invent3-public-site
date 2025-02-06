@@ -14,7 +14,7 @@ const ContractValueAndVendorStatus = () => {
     <VStack spacing="35px" alignItems="flex-start">
       <FormInputWrapper
         sectionMaxWidth="141px"
-        spacing="24px"
+        customSpacing="24px"
         description="Provide essential information about the contact person being added."
         title="Contract Value"
         isRequired
@@ -29,7 +29,7 @@ const ContractValueAndVendorStatus = () => {
       </FormInputWrapper>
       <FormInputWrapper
         sectionMaxWidth="141px"
-        spacing="24px"
+        customSpacing="24px"
         description="Toggle the button to activate this vendor or deactivate."
         title="Vendor Status"
         isRequired

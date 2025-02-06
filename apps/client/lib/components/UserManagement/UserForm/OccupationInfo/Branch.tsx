@@ -13,7 +13,7 @@ const Branch = () => {
   return (
     <FormInputWrapper
       sectionMaxWidth="141px"
-      spacing="81px"
+      customSpacing="81px"
       description="Select Branch"
       title="Branch"
     >

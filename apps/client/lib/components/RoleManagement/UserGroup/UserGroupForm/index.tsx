@@ -48,7 +48,7 @@ const UserGroupForm = () => {
               <SimpleGrid columns={2} width="full" px="24px" gap="73px">
                 <FormInputWrapper
                   sectionMaxWidth="141px"
-                  spacing="40px"
+                  customSpacing="40px"
                   description="Provide a title for this role"
                   title="Role Name"
                   isRequired
@@ -65,7 +65,7 @@ const UserGroupForm = () => {
                 </FormInputWrapper>
                 <FormInputWrapper
                   sectionMaxWidth="141px"
-                  spacing="40px"
+                  customSpacing="40px"
                   description="Assign responsible team member for the tasks."
                   title="Add Users"
                   isRequired

@@ -47,7 +47,11 @@ const ScheduleReportDrawer = (props: ScheduleReportDrawerProps) => {
 
   const { handleSubmit } = useCustomMutation();
 
-  const {isOpen:isScheduleSuccessModalOpen,onClose:onScheduleSuccessClose,onOpen:onScheduleSuccessOpen} = useDisclosure()
+  const {
+    isOpen: isScheduleSuccessModalOpen,
+    onClose: onScheduleSuccessClose,
+    onOpen: onScheduleSuccessOpen,
+  } = useDisclosure();
 
   const formik = useFormik({
     initialValues: {
@@ -68,11 +72,7 @@ const ScheduleReportDrawer = (props: ScheduleReportDrawerProps) => {
 
       const payload = { ...data, createdBy: session?.user.username! };
 
-      const response = await handleSubmit(
-        scheduleReport,
-        payload,
-        ''
-      );
+      const response = await handleSubmit(scheduleReport, payload, '');
 
       if (response?.data) {
         resetForm();
@@ -148,7 +148,7 @@ const ScheduleReportDrawer = (props: ScheduleReportDrawerProps) => {
                 <FormInputWrapper
                   sectionMaxWidth="130px"
                   mt="32px"
-                  spacing="29px"
+                  customSpacing="29px"
                   description="Select and add emails to send the report to"
                   title="Send To"
                   isRequired

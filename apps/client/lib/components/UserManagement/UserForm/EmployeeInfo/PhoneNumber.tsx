@@ -6,7 +6,7 @@ const PhoneNumber = () => {
   return (
     <FormInputWrapper
       sectionMaxWidth="157px"
-      spacing="65px"
+      customSpacing="65px"
       description="User's Phone Number"
       title="Phone Number"
     >

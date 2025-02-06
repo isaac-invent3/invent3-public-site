@@ -12,7 +12,7 @@ const UserGroup = () => {
   return (
     <FormInputWrapper
       sectionMaxWidth="141px"
-      spacing="81px"
+      customSpacing="81px"
       description="Select User Group"
       title="User Group"
     >

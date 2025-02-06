@@ -6,7 +6,7 @@ const VendorDescription = () => {
   return (
     <FormInputWrapper
       sectionMaxWidth="133px"
-      spacing="17px"
+      customSpacing="17px"
       description="Enter Description about the vendor"
       title="Description"
       isRequired

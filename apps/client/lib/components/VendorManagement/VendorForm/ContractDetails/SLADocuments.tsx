@@ -16,7 +16,7 @@ const SLADocuments = () => {
   return (
     <FormInputWrapper
       sectionMaxWidth="141px"
-      spacing="24px"
+      customSpacing="24px"
       description="Attach related files to this vendor"
       title="Upload Service Agreement"
       isRequired

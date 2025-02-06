@@ -43,7 +43,7 @@ const AssetLocation = (props: AssetLocationProps) => {
   return (
     <FormInputWrapper
       sectionMaxWidth="118px"
-      spacing="104px"
+      customSpacing="104px"
       description="Specify where the asset is located"
       title="Location"
       isRequired

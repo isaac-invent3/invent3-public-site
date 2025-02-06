@@ -7,7 +7,7 @@ const AssetDetail = () => {
   return (
     <FormInputWrapper
       sectionMaxWidth="118px"
-      spacing="104px"
+      customSpacing="104px"
       description="Provide essential information about the asset being added."
       title="Details"
       isRequired

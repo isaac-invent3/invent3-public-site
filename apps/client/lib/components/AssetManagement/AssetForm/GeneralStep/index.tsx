@@ -79,7 +79,7 @@ const GeneralStep = (props: GeneralStepProps) => {
             pb={{ base: '16px', lg: '33px' }}
             pr={{ md: '24px', lg: '44px' }}
             rounded="6px"
-            minH="60vh"
+            minH={{ lg: '60vh' }}
           >
             <AssetImages />
             <AssetNameCodeDescription />

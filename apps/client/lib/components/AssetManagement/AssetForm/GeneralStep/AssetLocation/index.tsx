@@ -47,6 +47,7 @@ const AssetLocation = (props: AssetLocationProps) => {
       description="Specify where the asset is located"
       title="Location"
       isRequired
+      direction={{ base: 'column', md: 'row' }}
     >
       <Grid templateColumns="repeat(4, 1fr)" gap="16px" width="full">
         <GridItem colSpan={4}>

@@ -23,6 +23,7 @@ const AssetDimension = () => {
       description="Enter the size or measurements of the asset."
       title="Dimension"
       isRequired
+      direction={{ base: 'column', md: 'row' }}
     >
       <SimpleGrid
         width="full"

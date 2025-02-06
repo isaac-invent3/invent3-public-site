@@ -36,7 +36,7 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
   return (
     <Stack
       width="full"
-      direction={{ base: 'column', md: 'row' }}
+      direction={{ base: 'row' }}
       justifyContent={{ base: 'space-between' }}
       alignItems={{ base: 'center', md: 'space-between' }}
     >
@@ -44,8 +44,8 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
         customStyles={{
           px: '16px',
           bgColor: '#F6F6F666',
-          visibility: activeStep === 1 ? 'hidden' : 'visible',
-          width: '96px',
+          display: activeStep === 1 ? 'none' : 'flex',
+          width: { base: 'full', md: '96px' },
           minH: '50px',
           _disabled: {
             bgColor: '#F6F6F666',
@@ -60,7 +60,6 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
           _active: {
             bgColor: '#F6F6F666',
           },
-          order: { base: 1, md: 0 },
         }}
         isDisabled={disableBackButton}
         handleClick={() => {
@@ -77,12 +76,7 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
         <ChakraText color="primary.500">Back</ChakraText>
       </Button>
 
-      <HStack
-        width="full"
-        spacing="16px"
-        justifyContent={{ md: 'flex-end' }}
-        order={{ base: 0, md: 1 }}
-      >
+      <HStack width="full" spacing="16px" justifyContent={{ md: 'flex-end' }}>
         {activeStep === 1 && (
           <Button
             type="button"

@@ -65,14 +65,17 @@ const GenericSuccessModal = (props: GenericSuccessModalProps) => {
         setShowRibbon(false);
       }}
       mainModalStyle={mainModalStyle}
-      contentStyle={{ width: { lg: '526px' }, ...customStyle }}
+      contentStyle={{
+        width: { base: 'full', sm: 'max-content', md: '526px' },
+        ...customStyle,
+      }}
     >
       <ModalBody p={0} m={0} width="full">
         <VStack
           spacing="48px"
           width="full"
-          pb={{ lg: '40px' }}
-          px="74px"
+          pb={{ base: '40px' }}
+          px={{ base: '24px', lg: '74px' }}
           {...contentStyle}
         >
           {showRibbon && (
@@ -83,7 +86,7 @@ const GenericSuccessModal = (props: GenericSuccessModalProps) => {
               position="absolute"
             />
           )}
-          <VStack width="full" spacing="24px" pt={{ lg: '48px' }}>
+          <VStack width="full" spacing="24px" pt={{ base: '24px', lg: '48px' }}>
             <VStack width="60px" align="center" position="relative">
               <video
                 ref={checkVideoRef}

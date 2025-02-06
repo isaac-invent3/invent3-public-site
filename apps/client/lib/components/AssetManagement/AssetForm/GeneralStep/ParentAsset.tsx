@@ -11,6 +11,7 @@ const ParentAsset = () => {
       description="Select the Parent Asset if there is any"
       title="Parent Asset"
       isRequired
+      direction={{ base: 'column', md: 'row' }}
     >
       <Grid
         templateColumns={{

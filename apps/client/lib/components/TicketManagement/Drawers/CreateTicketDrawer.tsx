@@ -135,8 +135,8 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
               pb="20px"
             >
               <Heading
-                fontSize="32px"
-                lineHeight="38.02px"
+                fontSize={{ base: '24px', lg: '32px' }}
+                lineHeight={{ base: '28.51px', lg: '38.02px' }}
                 color="black"
                 px="24px"
                 pb="20px"
@@ -146,7 +146,12 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
               </Heading>
 
               <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
-                <VStack width="full" spacing="24px" px="24px" mt="22px">
+                <VStack
+                  width="full"
+                  spacing={{ base: '38px', lg: '24px' }}
+                  px="24px"
+                  mt="22px"
+                >
                   <FormInputWrapper
                     sectionMaxWidth="141px"
                     spacing="24px"
@@ -288,7 +293,7 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                     spacing="24px"
                     description="Specify the date when this ticket was raised"
                     title="Request Date"
-                    alignItems="center"
+                    alignItems={{ lg: 'center' }}
                   >
                     <Text fontSize={'14px'} color="gray">
                       {dateFormatter(new Date(), `DD / MM / YYYY`)}
@@ -301,8 +306,9 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
 
           <DrawerFooter p={0} m={0}>
             <HStack
+              width="full"
               spacing="8px"
-              justifyContent="flex-end"
+              justifyContent={{ base: 'center', lg: 'flex-end' }}
               mt="8px"
               px="24px"
               pb="32px"
@@ -320,7 +326,10 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                 handleClick={() => {
                   formik.handleSubmit();
                 }}
-                customStyles={{ width: '237px', height: '50px' }}
+                customStyles={{
+                  width: { base: '161px', lg: '237px' },
+                  height: '50px',
+                }}
               >
                 Save Ticket
               </Button>

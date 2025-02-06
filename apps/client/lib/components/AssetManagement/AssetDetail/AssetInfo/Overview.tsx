@@ -1,4 +1,4 @@
-import { Flex, Heading, HStack, Text, VStack } from '@chakra-ui/react';
+import { Flex, Heading, HStack, Stack, Text, VStack } from '@chakra-ui/react';
 import { ReactBarcode, Renderer } from 'react-jsbarcode';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import { useAppSelector } from '~/lib/redux/hooks';
@@ -42,17 +42,18 @@ const Overview = () => {
   ];
 
   return (
-    <HStack
+    <Stack
       width="full"
-      py="24px"
-      px="32px"
+      py={{ base: '16px', md: '24px' }}
+      px={{ base: '16px', md: '32px' }}
       bgColor="#B4BFCA4D"
       spacing="24px"
       alignItems="flex-start"
+      direction={{ base: 'column', sm: 'row' }}
     >
       <Flex
-        height="175px"
-        width="216px"
+        height={{ base: '97px', md: '175px' }}
+        width={{ base: '120px', md: '216px' }}
         rounded="16px"
         bgColor="white"
         overflow="hidden"
@@ -72,17 +73,26 @@ const Overview = () => {
         <HStack spacing="16px">
           <Heading
             as="h3"
-            fontSize="32px"
-            lineHeight="38.02px"
-            fontWeight={800}
+            fontSize={{ base: '24px', md: '32px' }}
+            lineHeight={{ base: '28.51px', md: '38.02px' }}
+            fontWeight={{ base: 700, md: 800 }}
           >
             {assetName}
           </Heading>
         </HStack>
-        <HStack width="full" spacing="42px" alignItems="flex-start">
+        <Stack
+          width="full"
+          direction={{ base: 'column', md: 'row' }}
+          spacing={{ base: '8px', md: '42px' }}
+          alignItems="flex-start"
+        >
           <VStack alignItems="flex-start" spacing="8px">
             <HStack spacing="8px" alignItems="center">
-              <Text color="neutral.600" minW="65px" size="md">
+              <Text
+                color="neutral.600"
+                minW={{ base: '95px', md: '65px' }}
+                size="md"
+              >
                 Status:
               </Text>
               <GenericStatusBox
@@ -91,7 +101,11 @@ const Overview = () => {
               />
             </HStack>
             <HStack spacing="8px" alignItems="flex-start">
-              <Text size="md" color="neutral.600" minW="65px">
+              <Text
+                size="md"
+                color="neutral.600"
+                minW={{ base: '95px', md: '65px' }}
+              >
                 Asset ID:
               </Text>
               <Text size="md" color="black">
@@ -102,7 +116,7 @@ const Overview = () => {
               <Text
                 color="neutral.600"
                 size="md"
-                minW="65px"
+                minW={{ base: '95px', md: '65px' }}
                 whiteSpace="nowrap"
               >
                 Category:
@@ -113,7 +127,11 @@ const Overview = () => {
             </HStack>
             {assetInfo1.map((info, index) => (
               <HStack spacing="8px" alignItems="flex-start" key={index}>
-                <Text color="neutral.600" minW="65px" size="md">
+                <Text
+                  color="neutral.600"
+                  minW={{ base: '95px', md: '65px' }}
+                  size="md"
+                >
                   {info.label}
                 </Text>
                 <Text color="black" size="md">
@@ -137,7 +155,11 @@ const Overview = () => {
               <Text color="neutral.600" width="95px" size="md">
                 Barcode:
               </Text>
-              <Flex bgColor="white" height="71px" width="175px">
+              <Flex
+                bgColor="white"
+                height={{ base: '37px', md: '71px' }}
+                width={{ base: '92px', md: '175px' }}
+              >
                 <ReactBarcode
                   value={assetId ? assetId.toString() : ''}
                   renderer={Renderer.CANVAS}
@@ -150,9 +172,9 @@ const Overview = () => {
               </Flex>
             </HStack>
           </VStack>
-        </HStack>
+        </Stack>
       </VStack>
-    </HStack>
+    </Stack>
   );
 };
 

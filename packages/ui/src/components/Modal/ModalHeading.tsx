@@ -11,8 +11,8 @@ const ModalHeading = (props: ModalHeadingProps) => {
     <VStack width="full" alignItems="flex-start" spacing="8px">
       <Heading
         fontWeight={800}
-        fontSize="32px"
-        lineHeight="38.02px"
+        fontSize={{ base: '24px', lg: '32px' }}
+        lineHeight={{ base: '28.51px', lg: '38.02px' }}
         color="primary.500"
       >
         {heading}

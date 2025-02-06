@@ -1,4 +1,4 @@
-import { Flex, Text } from '@chakra-ui/react';
+import { Flex, Text, useMediaQuery } from '@chakra-ui/react';
 import { createColumnHelper } from '@tanstack/react-table';
 import React, { useMemo, useState } from 'react';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
@@ -39,6 +39,46 @@ const HistoryTab = () => {
     { skip: !assetId }
   );
   const columnHelper = createColumnHelper<MaintenanceSchedule>();
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
+
+  const mobileColumns = useMemo(
+    () => [
+      columnHelper.accessor('completionDate', {
+        cell: (info) => {
+          const value = info.getValue();
+          if (value && !isNaN(new Date(value).getTime())) {
+            return dateFormatter(value, 'YYYY-MM-DD');
+          } else {
+            return 'N/A';
+          }
+        },
+        header: 'Completion Date',
+        enableSorting: false,
+      }),
+      columnHelper.accessor('maintenanceType', {
+        cell: (info) => info.getValue() ?? 'N/A',
+        header: 'Maintenance Type',
+        enableSorting: false,
+      }),
+      columnHelper.accessor('contactPerson', {
+        cell: (info) =>
+          !info.row.original.contactPerson &&
+          !info.row.original.contactPersonEmail &&
+          !info.row.original.contactPersonPhoneNo
+            ? 'N/A'
+            : Technician(info.row.original),
+        header: 'Contact Person',
+        enableSorting: false,
+      }),
+      columnHelper.accessor('totalCost', {
+        cell: (info) => amountFormatter(info.getValue() ?? 0),
+        header: 'Cost',
+        enableSorting: false,
+      }),
+    ],
+    [data?.data?.items] //eslint-disable-line
+  );
+
   const columns = useMemo(
     () => [
       columnHelper.accessor('assetId', {
@@ -97,7 +137,7 @@ const HistoryTab = () => {
   return (
     <Flex width="full" my="23px">
       <DataTable
-        columns={columns}
+        columns={isMobile ? mobileColumns : columns}
         data={data?.data?.items ?? []}
         isLoading={isLoading}
         pageSize={pageSize}

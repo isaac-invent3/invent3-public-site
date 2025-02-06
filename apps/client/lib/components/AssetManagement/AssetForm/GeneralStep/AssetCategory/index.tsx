@@ -30,7 +30,11 @@ const AssetCategory = () => {
   return (
     <Grid templateColumns="repeat(4, 1fr)" gap="11px" width="full">
       <GridItem colSpan={4}>
-        <SimpleGrid columns={2} spacing="11px" alignItems="flex-start">
+        <SimpleGrid
+          columns={{ base: 1, md: 2 }}
+          spacing={{ base: '16px', md: '11px' }}
+          alignItems="flex-start"
+        >
           <VStack alignItems="flex-end" width="full">
             <CategorySelect
               handleSelect={(option) => {

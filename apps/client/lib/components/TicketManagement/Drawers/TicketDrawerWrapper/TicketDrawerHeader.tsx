@@ -1,4 +1,4 @@
-import { HStack } from '@chakra-ui/react';
+import { Flex, HStack } from '@chakra-ui/react';
 import { Button } from '@repo/ui/components';
 import usePermissionAccess from '~/lib/hooks/useRoleAccess';
 import {
@@ -11,6 +11,7 @@ import {
   addSelectedAction,
   setSelectedTicket,
 } from '~/lib/redux/slices/TicketSlice';
+import PopoverAction from '../../TicketTable/PopoverAction';
 
 interface TicketDrawerHeaderProps {
   data: Ticket;
@@ -48,9 +49,11 @@ const TicketDrawerHeader = (props: TicketDrawerHeaderProps) => {
     <>
       <HStack spacing="8px">
         {children}
-
+        <Flex display={{ base: 'flex', lg: 'none' }}>
+          <PopoverAction ticket={data} category={category} />
+        </Flex>
         {(action === 'view' || action === 'assign') && (
-          <>
+          <HStack spacing="8px" display={{ base: 'none', lg: 'flex' }}>
             {canScheduleTicket && (
               <Button
                 handleClick={() => openModal('schedule')}
@@ -79,7 +82,7 @@ const TicketDrawerHeader = (props: TicketDrawerHeaderProps) => {
                 Delete
               </Button>
             )}
-          </>
+          </HStack>
         )}
 
         {action === 'edit' && canMarkTicketAsCompleted && (

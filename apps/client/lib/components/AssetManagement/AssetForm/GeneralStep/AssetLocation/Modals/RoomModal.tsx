@@ -52,7 +52,11 @@ const RoomModal = (props: RoomModalProps) => {
       <ModalBody p={0} m={0} width="full">
         <FormikProvider value={formik}>
           <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
-            <VStack width="full" spacing="32px" p="40px">
+            <VStack
+              width="full"
+              spacing="32px"
+              p={{ base: '24px', md: '40px' }}
+            >
               <ModalHeading
                 heading="Add New Room"
                 subheading="Add a new room that is not on the system yet"

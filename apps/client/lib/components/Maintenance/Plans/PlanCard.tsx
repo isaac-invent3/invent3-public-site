@@ -1,4 +1,4 @@
-import { HStack, Text, useDisclosure, VStack } from '@chakra-ui/react';
+import { HStack, Stack, Text, useDisclosure, VStack } from '@chakra-ui/react';
 
 import useSlugAction from '~/lib/hooks/useSlugAction';
 import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
@@ -26,13 +26,15 @@ const PlanCard = (props: PlanCardProps) => {
 
   return (
     <>
-      <HStack
+      <Stack
         width="full"
         rounded="8px"
         border="1px solid #BBBBBB80"
+        direction={{ base: 'column', md: 'row' }}
         p="8px"
         alignItems="flex-start"
         justifyContent="space-between"
+        spacing="16px"
       >
         {/* First Section Starts */}
         <HStack alignItems="flex-start" spacing="16px">
@@ -61,7 +63,7 @@ const PlanCard = (props: PlanCardProps) => {
         {/* First Section Ends */}
 
         {/* Second Section Starts */}
-        <HStack alignItems="flex-start" spacing="24px">
+        <HStack alignItems="flex-start" spacing="24px" flexWrap="wrap">
           <VStack
             alignItems="flex-start"
             spacing="8px"
@@ -118,7 +120,7 @@ const PlanCard = (props: PlanCardProps) => {
           </VStack>
         </HStack>
         {/* Second Section Ends */}
-      </HStack>
+      </Stack>
       {isOpen && (
         <ScheduleDetailDrawer
           isOpen={isOpen}

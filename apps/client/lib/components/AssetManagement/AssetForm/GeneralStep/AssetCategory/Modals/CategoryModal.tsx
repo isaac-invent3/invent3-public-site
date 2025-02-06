@@ -49,7 +49,11 @@ const CategoryModal = (props: CategoryModalProps) => {
       <ModalBody p={0} m={0} width="full">
         <FormikProvider value={formik}>
           <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
-            <VStack width="full" spacing="32px" p="40px">
+            <VStack
+              width="full"
+              spacing="32px"
+              p={{ base: '24px', md: '40px' }}
+            >
               <ModalHeading
                 heading="Add New Category"
                 subheading="Add a new category that is not on the system yet"

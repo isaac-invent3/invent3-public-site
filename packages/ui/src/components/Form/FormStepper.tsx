@@ -61,6 +61,7 @@ const FormStepper = (props: FormStepperProps) => {
       px="16px"
       bgColor="#B4BFCA80"
       rounded="4px"
+      overflow="auto"
     >
       <Flex
         direction="row"
@@ -106,7 +107,7 @@ const FormStepper = (props: FormStepperProps) => {
                 borderWidth="2px"
                 borderColor="neutral.600"
                 w="full"
-                mr={{ md: '29px', base: '8px' }}
+                mr="29px"
                 rounded="full"
               />
             )}

@@ -20,7 +20,7 @@ const AssetSuccessModal = (props: AssetSuccessModalProps) => {
     >
       <Button
         href={`/${ROUTES.ASSETS}`}
-        customStyles={{ width: buttonWidth, mb: '54px' }}
+        customStyles={{ width: buttonWidth, mb: { lg: '54px' } }}
       >
         Continue
       </Button>

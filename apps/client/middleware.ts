@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { checkPermission } from './app/actions/permissionAction';
 
 const publicRoutes = ['/', '/forgot-password'];
-const protectedGlobalRoute = ['/', '/dashboard', '/profile'];
+const protectedGlobalRoute = ['/dashboard', '/profile'];
 
 export async function middleware(request: NextRequest) {
   const session = await auth();

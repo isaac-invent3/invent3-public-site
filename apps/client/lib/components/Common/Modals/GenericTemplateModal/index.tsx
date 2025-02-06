@@ -57,7 +57,7 @@ const GenericTemplateModal = (props: GenericTemplateModalProps) => {
     <GenericModal
       isOpen={isOpen}
       onClose={onClose}
-      contentStyle={{ maxW: '80vw', width: '1116px', height: '716px' }}
+      contentStyle={{ maxW: '90vw', width: '1116px', height: { lg: '716px' } }}
       mainModalStyle={{ blockScrollOnMount: false, preserveScrollBarGap: true }}
     >
       <Header

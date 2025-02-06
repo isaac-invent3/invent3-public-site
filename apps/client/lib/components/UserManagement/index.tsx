@@ -1,6 +1,6 @@
 'use client';
 
-import { Flex, HStack, useDisclosure, VStack } from '@chakra-ui/react';
+import { Flex, Stack, useDisclosure, VStack } from '@chakra-ui/react';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
   DEFAULT_PAGE_SIZE,
@@ -130,28 +130,37 @@ const UserManagement = () => {
       <Flex width="full" direction="column" pb="24px">
         <VStack width="full" spacing="40px">
           <Header />
-          <HStack
+          <Stack
+            spacing="16px"
             width="full"
+            direction={{ base: 'column', lg: 'row' }}
             justifyContent="space-between"
-            borderBottom="1px"
+            borderBottom={{ lg: '1px' }}
             borderColor="neutral.300"
             pb="8px"
+            px={{ base: '16px', md: 0 }}
           >
             <SearchInput
               setSearch={setSearch}
               placeholderText="Search by name..."
-              customStyle={{ minW: '363px' }}
+              containerStyle={{ minW: { base: 'full', lg: 'max-content' } }}
+              customStyle={{ minW: { base: 'full', lg: '363px' } }}
             />
             <ActionButton
               activeAction={activeAction}
               setActiveAction={setActiveAction}
             />
-          </HStack>
+          </Stack>
         </VStack>
         {isOpen && (
           <SlideTransition trigger={isOpen} direction="bottom">
             {isOpen && (
-              <Flex width="full" mt="8px">
+              <Flex
+                width="full"
+                mt="8px"
+                px={{ base: '16px', md: 0 }}
+                mb={{ base: '16px', lg: 0 }}
+              >
                 <UserActionDisplay
                   isOpen={isOpen}
                   activeAction={activeAction}

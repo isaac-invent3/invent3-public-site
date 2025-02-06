@@ -27,7 +27,12 @@ const Header = (props: HeaderProps) => {
     hideOtherInfoWhenDetailsIsShown,
   } = props;
   return (
-    <ModalHeader m={0} p={0} mt="32px" mx="24px">
+    <ModalHeader
+      m={0}
+      p={0}
+      mt={{ base: '24px', lg: '32px' }}
+      mx={{ base: '16px', lg: '24px' }}
+    >
       <VStack
         width="full"
         spacing={showDetails ? '31px' : '26px'}
@@ -36,8 +41,8 @@ const Header = (props: HeaderProps) => {
         <Heading
           color="primary.500"
           fontWeight={800}
-          fontSize="32px"
-          lineHeight="38.02px"
+          fontSize={{ base: '24px', lg: '32px' }}
+          lineHeight={{ base: '28.51px', lg: '38.02px' }}
         >
           {headerName}
         </Heading>

@@ -27,7 +27,7 @@ interface AssetFormProps {
 }
 const AssetForm = (props: AssetFormProps) => {
   const { type } = props;
-  const [activeStep, setActiveStep] = useState(2);
+  const [activeStep, setActiveStep] = useState(1);
 
   return (
     <Flex width="full" direction="column" pb={{ md: '24px' }}>
@@ -39,6 +39,7 @@ const AssetForm = (props: AssetFormProps) => {
           px={{ base: '16px', md: 0 }}
           bgColor={{ base: 'white', md: 'transparent' }}
           direction="column"
+          pb="24px"
         >
           <GeneralStep activeStep={activeStep} setActiveStep={setActiveStep} />
           <SlideTransition trigger={activeStep === 2}>

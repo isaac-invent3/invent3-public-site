@@ -57,6 +57,7 @@ const AssetImages = () => {
         description="Size max: 10MB each Format: JPG, PNG"
         title="Asset Images"
         isRequired
+        direction={{ base: 'column', md: 'row' }}
       >
         <HStack spacing="12px" alignItems="flex-start" width="full">
           {/* Display */}

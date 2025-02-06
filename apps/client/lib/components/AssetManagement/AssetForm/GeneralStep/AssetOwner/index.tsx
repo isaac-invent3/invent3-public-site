@@ -17,6 +17,7 @@ const AssetOwner = () => {
       description="Enter details of the person responsible for the asset."
       title="Owner's Info"
       isRequired
+      direction={{ base: 'column', md: 'row' }}
     >
       <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} gap="11px" width="full">
         <EmployeeSelect

@@ -1,4 +1,4 @@
-import { Flex, Stack, StackProps } from '@chakra-ui/react';
+import { Flex, FlexProps, Stack, StackProps } from '@chakra-ui/react';
 import { FormSectionInfo } from '..';
 
 type FormInputWrapperProps = {
@@ -8,6 +8,7 @@ type FormInputWrapperProps = {
   description: string;
   isRequired?: boolean;
   children: React.ReactNode;
+  formSectionCustomStyle?: FlexProps;
 } & StackProps;
 
 const FormInputWrapper = (props: FormInputWrapperProps) => {
@@ -17,6 +18,7 @@ const FormInputWrapper = (props: FormInputWrapperProps) => {
     title,
     description,
     children,
+    formSectionCustomStyle,
     isRequired = false,
     ...rest
   } = props;
@@ -29,7 +31,11 @@ const FormInputWrapper = (props: FormInputWrapperProps) => {
       direction={{ base: 'column', lg: 'row' }}
       {...rest}
     >
-      <Flex width="full" maxW={{ base: 'auto', lg: sectionMaxWidth }}>
+      <Flex
+        width="full"
+        maxW={{ base: 'auto', md: sectionMaxWidth }}
+        {...formSectionCustomStyle}
+      >
         <FormSectionInfo
           title={title}
           info={description}

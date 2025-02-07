@@ -1,4 +1,4 @@
-import { Flex, Heading, HStack, VStack } from '@chakra-ui/react';
+import { Flex, Heading, HStack, Stack, VStack } from '@chakra-ui/react';
 import Detail from '~/lib/components/UI/ContentDetails/Detail';
 import { useAppSelector } from '~/lib/redux/hooks';
 
@@ -46,14 +46,16 @@ const Overview = () => {
       width="full"
       pt="24px"
       pb="20px"
-      px="32px"
+      px={{ base: '12px', md: '32px' }}
       bgColor="#B4BFCA4D"
-      spacing="24px"
+      spacing={{ base: '12px', md: '24px' }}
       alignItems="flex-start"
+      overflow='scroll'
     >
       <Flex
-        height="175px"
-        width="216px"
+        h={{ base: '100px', md: '175px' }}
+        width="30%"
+        maxW="216px"
         rounded="16px"
         bgColor="white"
         overflow="hidden"
@@ -73,10 +75,19 @@ const Overview = () => {
         <Heading as="h3" fontSize="32px" lineHeight="38.02px" fontWeight={800}>
           {vendorName}
         </Heading>
-        <HStack width="full" spacing="18px" alignItems="flex-start">
+        <Stack
+          width="full"
+          spacing="18px"
+          alignItems="flex-start"
+          flexDir={{ base: 'column', md: 'row' }}
+        >
           <VStack alignItems="flex-start" spacing="8px">
             {vendorInfo1.map((info, index) => (
-              <Detail {...info} key={index} labelMinWidth="107px" />
+              <Detail
+                {...info}
+                key={index}
+                labelMinWidth={{ base: '100px', md: '107px' }}
+              />
             ))}
           </VStack>
           <VStack alignItems="flex-start" spacing="8px">
@@ -84,7 +95,7 @@ const Overview = () => {
               <Detail {...info} key={index} labelMinWidth="107px" />
             ))}
           </VStack>
-        </HStack>
+        </Stack>
       </VStack>
     </HStack>
   );

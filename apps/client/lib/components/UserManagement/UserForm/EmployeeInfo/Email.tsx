@@ -4,7 +4,7 @@ import { Field } from 'formik';
 
 const Email = () => {
   return (
-    <SimpleGrid columns={2} spacing="72px" width="full">
+    <SimpleGrid columns={{ base: 1, md: 2 }} spacing="72px" width="full">
       <FormInputWrapper
         sectionMaxWidth="157px"
         customSpacing="65px"

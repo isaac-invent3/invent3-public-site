@@ -1,11 +1,11 @@
 import { SimpleGrid } from '@chakra-ui/react';
 
-import QuickLinks from './QuickLinks';
 import AssetCountStats from './AssetCountStats';
+import QuickLinks from './QuickLinks';
 
 const SectionOne = () => {
   return (
-    <SimpleGrid width="full" columns={2} gap="16px">
+    <SimpleGrid width="full" columns={{ base: 1, md: 2 }} gap="16px">
       <QuickLinks />
       <AssetCountStats />
     </SimpleGrid>

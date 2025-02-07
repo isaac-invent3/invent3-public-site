@@ -11,12 +11,12 @@ import {
 import { Field, FormikProvider, useFormik } from 'formik';
 
 import { Button, FormInputWrapper, FormTextInput } from '@repo/ui/components';
-import { ROUTES } from '~/lib/utils/constants';
-import PageHeader from '~/lib/components/UI/PageHeader';
-import { userGroupSchema } from '~/lib/schemas/user.schema';
-import Permissions from '../../Permissions';
 import { useState } from 'react';
 import UserDisplayAndAddButton from '~/lib/components/Common/UserDisplayAndAddButton';
+import PageHeader from '~/lib/components/UI/PageHeader';
+import { userGroupSchema } from '~/lib/schemas/user.schema';
+import { ROUTES } from '~/lib/utils/constants';
+import Permissions from '../../Permissions';
 
 const UserGroupForm = () => {
   const [selectedUser, setSelectedUser] = useState<string[]>([]);
@@ -45,7 +45,12 @@ const UserGroupForm = () => {
               pb="33px"
               minH="60vh"
             >
-              <SimpleGrid columns={2} width="full" px="24px" gap="73px">
+              <SimpleGrid
+                columns={{ base: 1, md: 2 }}
+                width="full"
+                px="24px"
+                gap="73px"
+              >
                 <FormInputWrapper
                   sectionMaxWidth="141px"
                   customSpacing="40px"

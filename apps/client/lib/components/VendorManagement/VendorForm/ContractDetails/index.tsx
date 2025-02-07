@@ -52,12 +52,12 @@ const ContractDetails = (props: ContractDetailsProps) => {
             pt="26px"
             pl="16px"
             pb="33px"
-            pr="44px"
+            pr={{ base: '16px', md: '44px' }}
             rounded="6px"
             minH="60vh"
           >
             <ContractStartEndDate />
-            <SimpleGrid width="full" columns={2} gap="27px">
+            <SimpleGrid width="full" columns={{ base: 1, md: 2 }} gap="27px">
               <ContractValueAndVendorStatus />
               <SLADocuments />
             </SimpleGrid>

@@ -1,27 +1,27 @@
 'use client';
 
 import { Flex, HStack, useDisclosure, VStack } from '@chakra-ui/react';
-import React, { useCallback, useEffect, useState } from 'react';
-import {
-  DEFAULT_PAGE_SIZE,
-  SYSTEM_CONTEXT_DETAILS,
-} from '~/lib/utils/constants';
-import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { ListResponse } from '@repo/interfaces';
 import { OPERATORS } from '@repo/constants';
+import { ListResponse } from '@repo/interfaces';
 import { SearchInput, SlideTransition } from '@repo/ui/components';
 import _ from 'lodash';
-import Header from './Header';
-import ActionButton from './Actions';
-import UserActionDisplay from './Actions/Display';
 import { useSearchParams } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
+import { Vendor, VendorFilter } from '~/lib/interfaces/vendor.interfaces';
 import {
   useGetAllVendorsQuery,
   useSearchVendorsMutation,
 } from '~/lib/redux/services/vendor.services';
-import VendorTable from './VendorTable';
-import { Vendor, VendorFilter } from '~/lib/interfaces/vendor.interfaces';
+import {
+  DEFAULT_PAGE_SIZE,
+  SYSTEM_CONTEXT_DETAILS,
+} from '~/lib/utils/constants';
+import ActionButton from './Actions';
+import UserActionDisplay from './Actions/Display';
+import Header from './Header';
 import VendorDetail from './VendorDetail';
+import VendorTable from './VendorTable';
 
 export const initialFilterData = {
   startDate: undefined,
@@ -137,11 +137,18 @@ const VendorManagement = () => {
             borderBottom="1px"
             borderColor="neutral.300"
             pb="8px"
+            flexWrap="wrap"
+            px={{ base: '16px', md: 0 }}
+
+            // display={{ base: 'none', lg: 'flex' }}
           >
             <SearchInput
+              width={{base:'full', md:'100px'}}
               setSearch={setSearch}
               placeholderText="Search by name..."
-              customStyle={{ minW: '363px' }}
+              customStyle={{
+                minW: { md: '363px', base: undefined },
+              }}
             />
             <ActionButton
               activeAction={activeAction}
@@ -164,6 +171,33 @@ const VendorManagement = () => {
             )}
           </SlideTransition>
         )}
+        {/* <Flex
+            mt="16px"
+            px={{ base: '16px', md: 0 }}
+            display={{ base: 'flex', lg: 'none' }}
+          >
+
+        <HStack
+          width="full"
+          // justifyContent="space-between"
+          // borderBottom="1px"
+          // borderColor="neutral.300"
+          // pb="8px"
+          // display={{ base: 'flex', lg: 'none' }}
+          flexWrap="wrap"
+        >
+          <SearchInput
+            setSearch={setSearch}
+            placeholderText="Search by name..."
+            customStyle={{ minW: '363px' }}
+          />
+          <ActionButton
+            activeAction={activeAction}
+            setActiveAction={setActiveAction}
+          />
+        </HStack>
+          </Flex> */}
+
         <Flex width="full" mt="8px">
           <VendorTable
             data={

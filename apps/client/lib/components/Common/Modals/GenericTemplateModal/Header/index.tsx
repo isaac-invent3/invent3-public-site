@@ -41,8 +41,7 @@ const Header = (props: HeaderProps) => {
         <Heading
           color="primary.500"
           fontWeight={800}
-          fontSize={{ base: '24px', lg: '32px' }}
-          lineHeight={{ base: '28.51px', lg: '38.02px' }}
+          size={{ base: 'lg', md: 'xl' }}
         >
           {headerName}
         </Heading>

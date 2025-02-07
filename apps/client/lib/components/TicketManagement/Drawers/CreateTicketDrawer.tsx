@@ -135,8 +135,7 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
               pb="20px"
             >
               <Heading
-                fontSize={{ base: '24px', lg: '32px' }}
-                lineHeight={{ base: '28.51px', lg: '38.02px' }}
+                size={{ base: 'lg', lg: 'xl' }}
                 color="black"
                 px="24px"
                 pb="20px"

@@ -39,13 +39,7 @@ const User = (props: UserProps) => {
       />
       <VStack spacing="24px" alignItems="flex-start">
         <VStack alignItems="flex-start" spacing="8px">
-          <Heading
-            as="h5"
-            fontSize="16px"
-            lineHeight="19.01px"
-            fontWeight={700}
-            color="black"
-          >
+          <Heading as="h5" size="md" color="black">
             {name}
           </Heading>
           <Text color="neutral.600">{role}</Text>

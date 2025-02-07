@@ -94,8 +94,7 @@ const SignIn = () => {
           <Heading
             as="h2"
             fontWeight={800}
-            fontSize={{ base: '32px', lg: '40px' }}
-            lineHeight={{ base: '38.02px', lg: '47.52px' }}
+            size={{ base: 'lg', md: '2xl' }}
             color="neutral.100"
           >
             Sign in

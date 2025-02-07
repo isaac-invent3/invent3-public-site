@@ -73,8 +73,7 @@ const Overview = () => {
         <HStack spacing="16px">
           <Heading
             as="h3"
-            fontSize={{ base: '24px', md: '32px' }}
-            lineHeight={{ base: '28.51px', md: '38.02px' }}
+            size={{ base: 'lg', md: 'xl' }}
             fontWeight={{ base: 700, md: 800 }}
           >
             {assetName}

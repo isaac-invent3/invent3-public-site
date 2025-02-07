@@ -98,12 +98,7 @@ const AssetDetailWrapper = (props: AssetDetailWrapperProps) => {
           </Flex>
           <VStack spacing="16px" alignItems="flex-start" width="full">
             <HStack spacing="24px">
-              <Heading
-                as="h4"
-                fontSize="24px"
-                lineHeight="28.51px"
-                color="black"
-              >
+              <Heading as="h4" size="lg" color="black">
                 {assetName}
               </Heading>
               {showStatus && (

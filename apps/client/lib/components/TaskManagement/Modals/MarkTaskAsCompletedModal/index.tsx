@@ -103,8 +103,7 @@ const MarkTaskAsCompletedModal = (props: MarkTaskAsCompletedModalProps) => {
                 <VStack width="full" spacing="8px" alignItems="center">
                   <Heading
                     fontWeight={800}
-                    fontSize="32px"
-                    lineHeight="38.02px"
+                    size={{ base: 'lg', lg: 'xl' }}
                     color="primary.500"
                   >
                     Mark as completed?

@@ -32,8 +32,7 @@ const SectionOne = ({ data }: SectionOneProps) => {
     >
       <Heading
         color="black"
-        lineHeight={{ base: '28.51px', md: '38.02px' }}
-        fontSize={{ base: '24px', md: '32px' }}
+        size={{ base: 'lg', lg: 'xl' }}
         fontWeight={{ base: 700, md: 800 }}
       >
         #{data?.taskInstanceId} {data?.taskInstanceName}

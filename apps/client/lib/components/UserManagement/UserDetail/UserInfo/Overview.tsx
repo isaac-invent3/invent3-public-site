@@ -70,12 +70,7 @@ const Overview = () => {
       />
       <VStack alignItems="flex-start" width="full" spacing="16px">
         <HStack spacing="29px">
-          <Heading
-            as="h3"
-            fontSize={{ base: '24px', md: '32px' }}
-            lineHeight={{ base: '28.51px', md: '38.02px' }}
-            fontWeight={800}
-          >
+          <Heading as="h3" size={{ base: 'lg', md: 'xl' }} fontWeight={800}>
             {name}
           </Heading>
           <GenericStatusBox text="Active" colorCode="#07CC3B" />

@@ -98,7 +98,7 @@ const Maintenance = (props: MaintenanceProps) => {
             </HStack>
           </Flex>
 
-          <TabPanels>
+          <TabPanels px={{ base: '16px', md: 0 }}>
             <TabPanel>
               {tabIndex === 0 && <Plans search={search} openFilter={isOpen} />}
             </TabPanel>

@@ -1,27 +1,27 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import { Flex } from '@chakra-ui/react';
 import moment from 'moment';
+import { useEffect, useMemo, useState } from 'react';
 import {
   Calendar,
+  Event as EventType,
   View,
   Views,
   momentLocalizer,
-  Event as EventType,
 } from 'react-big-calendar';
-import { Flex } from '@chakra-ui/react';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import './style.css';
-import CustomToolbar from './CustomToolBar';
-import Event from './Events';
-import CustomDateHeader from './CustomDateHeader';
-('~/lib/redux/services/maintenance/schedule.services');
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { scheduleInstanceApi } from '~/lib/redux/services/maintenance/scheduleInstance.services';
+import { updateScheduleInfo } from '~/lib/redux/slices/MaintenanceSlice';
+import { AREA_ENUM } from '~/lib/utils/constants';
 import {
   getDisplayDate,
   transformToCalendarEvents,
 } from '~/lib/utils/helperFunctions';
-import { AREA_ENUM } from '~/lib/utils/constants';
-import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import { updateScheduleInfo } from '~/lib/redux/slices/MaintenanceSlice';
-import { scheduleInstanceApi } from '~/lib/redux/services/maintenance/scheduleInstance.services';
+import CustomDateHeader from './CustomDateHeader';
+import CustomToolbar from './CustomToolBar';
+import Event from './Events';
+import './style.css';
+('~/lib/redux/services/maintenance/schedule.services');
 
 const mLocalizer = momentLocalizer(moment);
 
@@ -158,7 +158,7 @@ const ScheduleTimeline = () => {
   }, [isProperState, startDate, endDate, selectedState, selectedCountry]);
 
   return (
-    <Flex width="full" height="full" direction="column">
+    <Flex width="full" height="full" direction="column" overflow="scroll">
       <Calendar
         date={date}
         events={events}

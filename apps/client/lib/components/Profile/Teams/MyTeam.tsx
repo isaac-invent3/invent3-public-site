@@ -1,7 +1,6 @@
 import React from 'react';
 import SectionWrapper from '../Common/SectionWrapper';
 import { HStack, Icon, Skeleton, Text, VStack } from '@chakra-ui/react';
-import { Button } from '@repo/ui/components';
 import { UserGroup } from '~/lib/interfaces/user.interfaces';
 import { TeamIconTwo } from '../../CustomIcons';
 
@@ -15,6 +14,9 @@ const MyTeam = ({ isLoading, data }: MyTeamProps) => {
       title="My Team"
       subtitle="View and manage your current team details"
       sectionInfoWidth="221px"
+      spacing={{ base: '16px' }}
+      direction={{ base: 'column', md: 'row' }}
+      sectionInfoStyle={{ maxW: { base: 'full', md: '221px' } }}
     >
       {isLoading && <Skeleton width="200px" height="50px" />}
       {!isLoading && data && (
@@ -34,10 +36,6 @@ const MyTeam = ({ isLoading, data }: MyTeamProps) => {
               </HStack>
             ))}
           </VStack>
-
-          <Button variant="secondary" customStyles={{ width: 'max-content' }}>
-            Change Team
-          </Button>
         </HStack>
       )}
     </SectionWrapper>

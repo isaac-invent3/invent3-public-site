@@ -32,7 +32,11 @@ const PersonalInformation = ({
   ];
   return (
     <VStack width="full" spacing="16px" alignItems="flex-start">
-      <Text size="xl" color="primary.500" fontWeight={700}>
+      <Text
+        size={{ base: 'lg', md: 'xl' }}
+        color="primary.500"
+        fontWeight={700}
+      >
         Personal Information
       </Text>
       <HStack
@@ -40,15 +44,27 @@ const PersonalInformation = ({
         alignItems="flex-start"
         justifyContent="space-between"
       >
-        <VStack spacing="22px" width="60%" alignItems="flex-start">
-          <Grid templateColumns="repeat(3, 1fr)" gap="66px" width="full">
+        <VStack
+          spacing="22px"
+          width={{ base: 'full', lg: '60%' }}
+          alignItems="flex-start"
+        >
+          <Grid
+            templateColumns={{ sm: 'repeat(3, 1fr)' }}
+            gap={{ base: '16px', md: '66px' }}
+            width="full"
+          >
             {infoOne.map((item, index) => (
               <GridItem colSpan={1} width="full" key={index}>
                 <Detail {...item} />
               </GridItem>
             ))}
           </Grid>
-          <Grid templateColumns="repeat(3, 1fr)" gap="66px" width="full">
+          <Grid
+            templateColumns={{ sm: 'repeat(3, 1fr)' }}
+            gap={{ base: '16px', md: '66px' }}
+            width="full"
+          >
             <GridItem colSpan={1} width="full">
               <Detail
                 label="Phone Number"

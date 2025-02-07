@@ -8,12 +8,14 @@ const DeleteAccount = () => {
       title="Delete Account"
       subtitle="Permanently remove your account and all data"
       sectionInfoWidth="212px"
+      sectionInfoStyle={{ width: { base: '60%', md: '212px' } }}
     >
       <Button
         variant="secondary"
         customStyles={{
           width: 'max-content',
-          px: '32px',
+          height: { base: '35px', md: '50px' },
+          px: { md: '32px' },
           bgColor: '#F500001A',
           color: '#F50000',
         }}

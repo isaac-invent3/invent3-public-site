@@ -18,7 +18,7 @@ interface TeamsAccordionProps {
 }
 const TeamsAccordion = ({ userGroups }: TeamsAccordionProps) => {
   return (
-    <Accordion width="full" allowMultiple>
+    <Accordion width="full" allowMultiple overflow="auto">
       {userGroups.map((group, index) => (
         <AccordionItem key={index} border="none">
           {({ isExpanded }) => (

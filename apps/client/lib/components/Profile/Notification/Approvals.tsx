@@ -29,7 +29,8 @@ const Approvals = () => {
       subtitle="These are notifications from approval workflow"
       sectionInfoWidth="280px"
       justifyContent="flex-start"
-      spacing="20%"
+      spacing={{ base: '16px', md: '20%' }}
+      direction={{ base: 'column', md: 'row' }}
     >
       <VStack alignItems="flex-start" spacing="16px" width="full">
         <NotificationRadioGroup

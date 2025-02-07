@@ -55,7 +55,7 @@ const TaskInstanceTable = (props: TaskInstanceTableProps) => {
   } = props;
 
   const columnHelper = createColumnHelper<TaskInstance>();
-  const [isMobile] = useMediaQuery('(max-width: 480px)');
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
 
   const columns = useMemo(
     () => {

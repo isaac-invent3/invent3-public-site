@@ -14,7 +14,9 @@ const TeamMembers = ({ isLoading, data }: TeamMembersProps) => {
       title="Team Members"
       subtitle="See the list of members in your team."
       sectionInfoWidth="221px"
-      spacing="177px"
+      spacing={{ base: '16px', lg: '177px' }}
+      direction={{ base: 'column', md: 'row' }}
+      sectionInfoStyle={{ maxW: { base: 'full', md: '221px' } }}
     >
       {isLoading && <Skeleton width="full" height="250px" />}
       {!isLoading && data && <TeamsAccordion userGroups={data} />}

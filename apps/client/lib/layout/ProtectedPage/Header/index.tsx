@@ -3,10 +3,10 @@ import { HStack, Image, Stack } from '@chakra-ui/react';
 import HeaderIcon from './HeaderIcon';
 import { SearchIcon, SettingsIcon } from '~/lib/components/CustomIcons/layout';
 import UserActionPopover from './UserActionPopover';
-import NotificationPopover from '~/lib/components/Notification';
 import { getBreadcrumb } from './BreadCrumb';
 import { usePathname } from 'next/navigation';
 import { GenericBreadCrumb } from '@repo/ui/components';
+import NotificationComponents from '~/lib/components/Notification';
 
 interface HeaderProps {
   setIsCollapse: React.Dispatch<React.SetStateAction<boolean>>;
@@ -55,7 +55,7 @@ const Header = (props: HeaderProps) => {
         <HStack spacing={{ base: '8px', md: '24px' }}>
           <HeaderIcon icon={SearchIcon} size="20px" />
           <HeaderIcon icon={SettingsIcon} size="24px" />
-          <NotificationPopover />
+          <NotificationComponents />
           <UserActionPopover />
         </HStack>
       </HStack>

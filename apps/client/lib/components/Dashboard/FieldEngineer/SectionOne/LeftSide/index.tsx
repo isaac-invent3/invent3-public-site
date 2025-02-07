@@ -1,13 +1,13 @@
 import { Flex, Grid, GridItem } from '@chakra-ui/react';
-import React, { useState } from 'react';
-import TicketSummary from './TicketSummary';
+import { useSession } from 'next-auth/react';
+import { useState } from 'react';
+import { Option } from '~/lib/interfaces/general.interfaces';
+import { useGetFrontdeskChartDataQuery } from '~/lib/redux/services/dashboard/frontdesk.services';
+import { generateLastFiveYears } from '~/lib/utils/helperFunctions';
 import MaintenanceSuccessChart from '../../../Common/Charts/MaintenanceSuccessChart';
 import TaskCompletionRateChart from '../../../Common/Charts/TaskCompletionRateChart';
 import AssetSummary from './AssetSummary';
-import { useSession } from 'next-auth/react';
-import { useGetFrontdeskChartDataQuery } from '~/lib/redux/services/dashboard/frontdesk.services';
-import { generateLastFiveYears } from '~/lib/utils/helperFunctions';
-import { Option } from '~/lib/interfaces/general.interfaces';
+import TicketSummary from './TicketSummary';
 
 const LeftSide = () => {
   const session = useSession();
@@ -21,21 +21,38 @@ const LeftSide = () => {
   });
   return (
     <Flex direction="column" gap="16px" width="full">
-      <Flex gap="16px" width="full" height="full">
-        <Flex width="max-content" minH="full">
-          <TicketSummary />
-        </Flex>
-        <Flex width="full">
-          <AssetSummary />
-        </Flex>
-      </Flex>
-      <Grid
-        templateColumns="repeat(3, 1fr)"
+      <Flex
         gap="16px"
         width="full"
         height="full"
+        flexDir={{ base: 'column', md: 'row' }}
       >
-        <GridItem colSpan={1} width="full">
+        <Flex
+          width={{ base: 'full', md: '50%' }}
+          minH="full"
+          overflow="scroll"
+          flexDir={{ base: 'column', md: 'row' }}
+        >
+          <TicketSummary />
+        </Flex>
+        <Flex
+          width={{ base: 'full', md: '50%' }}
+          overflow="scroll"
+          flexDir={{ base: 'column', md: 'row' }}
+        >
+          <AssetSummary />
+        </Flex>
+      </Flex>
+
+      <Grid
+        templateColumns={{ base: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }}
+        gap="16px"
+        display={{ base: 'flex', md: 'grid' }}
+        flexDir={{ base: 'column', md: 'row' }}
+        width="full"
+        height="full"
+      >
+        <GridItem colSpan={{ base: 2, lg: 1 }} width="full">
           <TaskCompletionRateChart
             notCompletedColorCode="#EABC30"
             completedColorCode="#033376"

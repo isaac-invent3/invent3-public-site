@@ -1,15 +1,21 @@
 import { Flex } from '@chakra-ui/react';
 
-import AssetsInRegion from './AssetsInRegion';
 import UpcomingMaintenance from '../../Common/UpcomingMaintenance';
+import AssetsInRegion from './AssetsInRegion';
 
 const SectionThree = () => {
   return (
-    <Flex width="full" gap="16px">
-      <Flex width="48%">
+    <Flex width="full" gap="16px" flexDir={{ base: 'column', md: 'row' }}>
+      <Flex
+        width={{ base: 'full', md: '48%' }}
+        flexDir={{ base: 'column', md: 'row' }}
+      >
         <AssetsInRegion />
       </Flex>
-      <Flex width="52%">
+      <Flex
+        width={{ base: 'full', md: '52%' }}
+        flexDir={{ base: 'column', md: 'row' }}
+      >
         <UpcomingMaintenance />
       </Flex>
     </Flex>

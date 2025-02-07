@@ -19,7 +19,15 @@ const SectionTwo = () => {
     year: +selectedYear?.value!,
   });
   return (
-    <Grid templateColumns="repeat(3, 1fr)" width="full" gap="16px">
+    <Grid
+      templateColumns={{
+        base: 'repeat(1, 1fr)',
+        md: 'repeat(2, 1fr)',
+        lg: 'repeat(3, 1fr)',
+      }}
+      width="full"
+      gap={{ md: '16px' }}
+    >
       <GridItem colSpan={2}>
         <SimpleGrid
           columns={{ base: 1, md: 2 }}
@@ -41,7 +49,10 @@ const SectionTwo = () => {
           />
         </SimpleGrid>
       </GridItem>
-      <GridItem colSpan={1}>
+      <GridItem
+        colSpan={{ base: 1, md: 2, lg: 1 }}
+        mt={{ base: '1em', md: undefined }}
+      >
         <MaintenanceSuccessChart
           missedColorCode="#00A129"
           completedColorCode="#033376"

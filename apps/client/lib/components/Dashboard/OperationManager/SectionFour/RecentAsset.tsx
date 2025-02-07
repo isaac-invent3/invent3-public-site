@@ -92,9 +92,9 @@ const RecentAsset = () => {
       rounded="8px"
       maxH="375px"
     >
-      <HStack width="full" justifyContent="space-between">
+      <HStack width="full" justifyContent="space-between" flexWrap="wrap">
         <CardHeader>Recent Assets</CardHeader>
-        <HStack spacing="8px">
+        <HStack spacing="8px" flexWrap="wrap">
           <SearchInput
             setSearch={setSearch}
             width="200px"

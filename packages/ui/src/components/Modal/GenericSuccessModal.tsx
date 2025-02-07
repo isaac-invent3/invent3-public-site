@@ -66,7 +66,7 @@ const GenericSuccessModal = (props: GenericSuccessModalProps) => {
       }}
       mainModalStyle={mainModalStyle}
       contentStyle={{
-        width: { base: 'full', sm: 'max-content', md: '526px' },
+        width: { base: 'full', sm: '400px', md: '526px' },
         ...customStyle,
       }}
     >

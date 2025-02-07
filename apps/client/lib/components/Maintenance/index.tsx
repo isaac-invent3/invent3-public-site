@@ -82,21 +82,26 @@ const Maintenance = (props: MaintenanceProps) => {
             )}
           </Flex>
 
-          <Flex
-            mt="16px"
-            px={{ base: '16px', md: 0 }}
-            display={{ base: 'flex', lg: 'none' }}
-          >
-            <HStack flexWrap="wrap" spacing="16px" width="full">
-              <SearchInput setSearch={setSearch} placeholderText="Search..." />
-              <FilterButton
-                icon={FilterIcon}
-                label="Filter"
-                handleClick={onToggle}
-                isActive={isOpen}
-              />
-            </HStack>
-          </Flex>
+          {tabIndex !== 1 && (
+            <Flex
+              mt="16px"
+              px={{ base: '16px', md: 0 }}
+              display={{ base: 'flex', lg: 'none' }}
+            >
+              <HStack flexWrap="wrap" spacing="16px" width="full">
+                <SearchInput
+                  setSearch={setSearch}
+                  placeholderText="Search..."
+                />
+                <FilterButton
+                  icon={FilterIcon}
+                  label="Filter"
+                  handleClick={onToggle}
+                  isActive={isOpen}
+                />
+              </HStack>
+            </Flex>
+          )}
 
           <TabPanels px={{ base: '16px', md: 0 }}>
             <TabPanel>

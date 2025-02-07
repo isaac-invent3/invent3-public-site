@@ -54,9 +54,10 @@ const Header = (props: HeaderProps) => {
             width="full"
             pb="8px"
             mb="8px"
-            justifyContent="flex-end"
+            justifyContent={{ base: 'flex-start', md: 'flex-end' }}
             borderBottomWidth="1px"
             borderColor="neutral.300"
+            flexWrap="wrap"
           >
             <SearchInput
               setSearch={setSearch}

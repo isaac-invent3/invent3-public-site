@@ -15,11 +15,15 @@ const Stats = (props: StatsProps) => {
   return (
     <HStack color={color} spacing="8px">
       <Skeleton isLoaded={!isLoading} minW={isLoading ? '40px' : 'min-content'}>
-        <Text fontWeight={800} fontSize="48px" lineHeight="57.02px">
+        <Text
+          fontWeight={800}
+          fontSize={{ base: '24px', md: '48px' }}
+          lineHeight={{ base: '28.51px', md: '57.02px' }}
+        >
           {value !== undefined ? value.toLocaleString() : '-'}
         </Text>
       </Skeleton>
-      <Text size="lg" fontWeight={700}>
+      <Text size={{ base: 'md', md: 'lg' }} fontWeight={700}>
         {text1}
         <br />
         {text2}
@@ -54,7 +58,7 @@ const AssetCountStats = () => {
     <HStack
       width="full"
       height="full"
-      px="16px"
+      px={{ base: '8px', md: '16px' }}
       py="27.5px"
       bgColor="white"
       rounded="8px"
@@ -63,8 +67,8 @@ const AssetCountStats = () => {
         divider={<StackDivider border="1px solid #BBBBBB" />}
         width="full"
         // maxW="620px"
-        justifyContent="flex-start"
-        spacing="45px"
+        justifyContent={{ base: 'space-between', lg: 'flex-start' }}
+        spacing={{ md: '32px', xl: '45px' }}
       >
         {data.map((item, index) => (
           <Stats {...item} key={index} />

@@ -5,7 +5,12 @@ import AssetCountStats from './AssetCountStats';
 
 const SectionOne = () => {
   return (
-    <SimpleGrid width="full" columns={2} gap="16px">
+    <SimpleGrid
+      width="full"
+      columns={{ base: 1, xl: 2 }}
+      gap="16px"
+      px={{ base: '16px', md: 0 }}
+    >
       <QuickLinks />
       <AssetCountStats />
     </SimpleGrid>

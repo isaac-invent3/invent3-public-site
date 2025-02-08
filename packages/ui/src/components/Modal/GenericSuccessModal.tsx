@@ -65,7 +65,10 @@ const GenericSuccessModal = (props: GenericSuccessModalProps) => {
         setShowRibbon(false);
       }}
       mainModalStyle={mainModalStyle}
-      contentStyle={{ width: { lg: '526px' }, ...customStyle }}
+      contentStyle={{
+        width: { base: 'full', sm: '400px', md: '526px' },
+        ...customStyle,
+      }}
     >
       <ModalBody p={0} m={0} width="full">
         <VStack
@@ -96,8 +99,7 @@ const GenericSuccessModal = (props: GenericSuccessModalProps) => {
             </VStack>
             <VStack spacing="8px" width="full">
               <Heading
-                fontSize="32px"
-                lineHeight="38.02px"
+                size={{ base: 'lg', md: 'xl' }}
                 fontWeight={800}
                 color="primary.500"
                 textAlign="center"
@@ -124,4 +126,3 @@ const GenericSuccessModal = (props: GenericSuccessModalProps) => {
 };
 
 export default GenericSuccessModal;
-

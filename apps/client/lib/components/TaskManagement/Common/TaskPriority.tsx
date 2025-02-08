@@ -1,10 +1,9 @@
-import { Flex, Stack, VStack } from '@chakra-ui/react';
+import { VStack } from '@chakra-ui/react';
 import { useField, useFormikContext } from 'formik';
 
 import {
   ErrorMessage,
   FormInputWrapper,
-  FormSectionInfo,
   SelectableButtonGroup,
 } from '@repo/ui/components';
 import { taskFormDetails } from '~/lib/interfaces/task.interfaces';

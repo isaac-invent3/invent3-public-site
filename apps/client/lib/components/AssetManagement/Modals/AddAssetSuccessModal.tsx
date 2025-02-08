@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 
 import { Button, GenericSuccessModal } from '@repo/ui/components';
-import { HStack, VStack } from '@chakra-ui/react';
+import { HStack, Stack, VStack } from '@chakra-ui/react';
 import { ROUTES } from '~/lib/utils/constants';
 
 interface AddAssetSuccessModalProps {
@@ -19,7 +19,12 @@ const AddAssetSuccessModal = (props: AddAssetSuccessModalProps) => {
       mainModalStyle={{ closeOnOverlayClick: false, closeOnEsc: false }}
     >
       <VStack spacing="24px" width="full">
-        <HStack spacing="16px" width="full">
+        <Stack
+          spacing="16px"
+          width="full"
+          direction={{ base: 'column', sm: 'row' }}
+          justifyContent="space-between"
+        >
           <Button
             customStyles={{ width: 'full' }}
             variant="outline"
@@ -33,7 +38,7 @@ const AddAssetSuccessModal = (props: AddAssetSuccessModalProps) => {
           >
             Add Another Asset
           </Button>
-        </HStack>
+        </Stack>
         <Button
           href={`/${ROUTES.ASSETS}`}
           variant="secondary"

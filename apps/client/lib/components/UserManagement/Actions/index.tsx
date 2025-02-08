@@ -17,7 +17,7 @@ const ActionButton = (props: ActionButtonProps) => {
   const { activeAction, setActiveAction } = props;
 
   return (
-    <HStack spacing="16px" flexWrap="wrap">
+    <HStack spacing={{ base: '8px', md: '16px' }} flexWrap="wrap">
       <FilterButton
         icon={BulkSearchIcon}
         label="Bulk Actions"
@@ -36,7 +36,7 @@ const ActionButton = (props: ActionButtonProps) => {
       />
       <Button
         customStyles={{
-          minH: '36px',
+          height: '36px',
           p: '0px',
           px: '8px',
           width: '100px',

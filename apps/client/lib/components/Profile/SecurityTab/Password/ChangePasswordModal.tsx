@@ -1,5 +1,4 @@
 import {
-  Flex,
   Heading,
   HStack,
   ModalBody,
@@ -10,7 +9,7 @@ import { Field, FormikProvider, useFormik } from 'formik';
 
 import {
   Button,
-  FormSectionInfo,
+  FormInputWrapper,
   FormTextInput,
   GenericModal,
   GenericSuccessModal,
@@ -73,17 +72,16 @@ const ChangePasswordModal = (props: ChangePasswordModalProps) => {
             <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
               <VStack
                 width="full"
-                px="32px"
-                pt="56px"
-                pb="34px"
-                spacing="56px"
+                px={{ base: '16px', md: '32px' }}
+                pt={{ base: '24px', md: '56px' }}
+                pb={{ base: '24px', md: '34px' }}
+                spacing={{ base: '32px', md: '56px' }}
                 alignItems="center"
               >
                 <VStack width="full" spacing="8px" alignItems="center">
                   <Heading
                     fontWeight={800}
-                    fontSize="32px"
-                    lineHeight="38.02px"
+                    size={{ base: 'lg', lg: 'xl' }}
                     color="primary.500"
                   >
                     Change Password
@@ -92,36 +90,37 @@ const ChangePasswordModal = (props: ChangePasswordModalProps) => {
 
                 {/* Main Form Starts Here */}
                 <VStack width="full" spacing="24px">
-                  <HStack width="full" alignItems="flex-start" spacing="31px">
-                    <Flex width="full" maxW="132px">
-                      <FormSectionInfo
-                        title="Current Password"
-                        info="Enter your current password"
-                        isRequired
-                      />
-                    </Flex>
+                  <FormInputWrapper
+                    sectionMaxWidth="132px"
+                    customSpacing="31px"
+                    description="Enter your current password"
+                    title="Current Password"
+                    isRequired
+                    formSectionCustomStyle={{
+                      maxW: { base: 'full', lg: '132px' },
+                    }}
+                  >
                     <Field
                       as={FormTextInput}
                       name="currentPassword"
                       type="password"
                       label="Current Password"
                     />
-                  </HStack>
-                  <HStack width="full" alignItems="flex-start" spacing="31px">
-                    <Flex width="full" maxW="132px">
-                      <FormSectionInfo
-                        title="New Password"
-                        info="Enter new password"
-                        isRequired
-                      />
-                    </Flex>
+                  </FormInputWrapper>
+                  <FormInputWrapper
+                    sectionMaxWidth="132px"
+                    customSpacing="31px"
+                    description="Enter new password"
+                    title="New Password"
+                    isRequired
+                  >
                     <Field
                       as={FormTextInput}
                       name="newPassword"
                       type="password"
                       label="New Password"
                     />
-                  </HStack>
+                  </FormInputWrapper>
                 </VStack>
                 {/* Main Form Ends Here */}
                 <HStack width="full" spacing="24px" justifyContent="center">

@@ -1,4 +1,4 @@
-import { HStack, Stack, useDisclosure } from '@chakra-ui/react';
+import { Stack, useDisclosure } from '@chakra-ui/react';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import PageHeader from '~/lib/components/UI/PageHeader';

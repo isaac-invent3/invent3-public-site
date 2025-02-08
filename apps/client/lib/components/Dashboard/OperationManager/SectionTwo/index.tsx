@@ -6,24 +6,27 @@ import MeanTime from './MeanTime';
 
 const SectionTwo = () => {
   return (
-    <Flex width="full" gap="16px" flexDir={{ base: 'column', md: 'row' }}>
-      <Flex
-        width={{ base: 'full', md: '24%' }}
-        flexDir={{ base: 'column', md: 'row' }}
-      >
+
+    <Flex
+      width="full"
+      gap="16px"
+      direction={{ base: 'column', lg: 'row' }}
+      px={{ base: '16px', md: 0 }}
+    >
+      <Flex width={{ base: '100%', lg: '24%' }}>
         <AssetSummary />
       </Flex>
       <Flex
-        width={{ base: 'full', md: '46%' }}
-        flexDir={{ base: 'column', md: 'row' }}
+        width={{ base: '100%', lg: '76%' }}
+        direction={{ base: 'column', md: 'row' }}
+        gap="16px"
       >
-        <MaintenanceCostGraph />
-      </Flex>
-      <Flex
-        width={{ base: 'full', md: '30%' }}
-        flexDir={{ base: 'column', md: 'row' }}
-      >
-        <MeanTime />
+        <Flex width={{ base: 'full', md: '50%', lg: '60.5%' }}>
+          <MaintenanceCostGraph />
+        </Flex>
+        <Flex width={{ base: 'full', md: '50%', lg: '39.5%' }}>
+          <MeanTime />
+        </Flex>
       </Flex>
     </Flex>
   );

@@ -13,10 +13,10 @@ const SecurityTab = () => {
       width="full"
       alignItems="flex-start"
       bgColor="white"
-      p="24px"
+      p={{ base: '16px', md: '24px' }}
       pt="32px"
-      rounded="6px"
-      minH="60vh"
+      rounded={{ md: '6px' }}
+      minH={{ base: '60vh' }}
     >
       <Email />
       <Password />

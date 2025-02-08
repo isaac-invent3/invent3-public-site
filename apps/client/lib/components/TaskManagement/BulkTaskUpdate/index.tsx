@@ -92,17 +92,19 @@ const BulkTaskUpdate = () => {
 
   return (
     <Flex width="full" direction="column" pb="24px">
-      <PageHeader>Bulk Task Update</PageHeader>
+      <Flex px={{ base: '16px', md: 0 }}>
+        <PageHeader>Bulk Task Update</PageHeader>
+      </Flex>
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
           <Flex width="full" direction="column" gap="24px" mt="32px">
             <Flex
               width="full"
               py="32px"
-              px="25px"
+              px={{ base: '16px', md: '25px' }}
               direction="column"
               gap="50px"
-              rounded="6px"
+              rounded={{ md: '6px' }}
               bgColor="white"
             >
               <FormInputWrapper
@@ -134,7 +136,7 @@ const BulkTaskUpdate = () => {
                   base: '1fr',
                   md: 'repeat(3, 1fr)',
                 }}
-                gap="32px"
+                gap={{ base: '24px', md: '32px' }}
                 width="full"
                 height="full"
               >
@@ -184,7 +186,12 @@ const BulkTaskUpdate = () => {
               </Grid>
             </Flex>
 
-            <HStack spacing="16px" justifyContent="flex-end" width="full">
+            <HStack
+              spacing="16px"
+              justifyContent={{ base: 'space-between', sm: 'flex-end' }}
+              width="full"
+              px={{ base: '16px', md: 0 }}
+            >
               <Button
                 type="button"
                 customStyles={{ width: '96px', bgColor: '#F6F6F6B2' }}

@@ -9,8 +9,7 @@ const CardHeader = ({ children, color, customStyle }: CardHeaderProps) => {
   return (
     <Heading
       color={color ?? 'neutral.800'}
-      fontSize="14px"
-      lineHeight="16.63px"
+      size="base"
       fontWeight={800}
       {...customStyle}
     >

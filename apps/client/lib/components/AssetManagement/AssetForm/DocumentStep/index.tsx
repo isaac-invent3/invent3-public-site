@@ -1,11 +1,11 @@
-import { Flex, HStack, VStack } from '@chakra-ui/react';
+import { Flex, useMediaQuery, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 
 import { documentSchema } from '~/lib/schemas/asset/main.schema';
 import AddDocument from './AddDocument';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
-import { FormActionButtons, FormSectionInfo } from '@repo/ui/components';
+import { FormActionButtons, FormInputWrapper } from '@repo/ui/components';
 import { ROUTES } from '~/lib/utils/constants';
 
 interface DocumentStepProps {
@@ -16,6 +16,7 @@ const DocumentStep = (props: DocumentStepProps) => {
   const { activeStep, setActiveStep } = props;
   const formDetails = useAppSelector((state) => state.asset.assetForm);
   const dispatch = useAppDispatch();
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
 
   const initialValues = {
     documents: formDetails.documents ?? [],
@@ -44,24 +45,24 @@ const DocumentStep = (props: DocumentStepProps) => {
             alignItems="flex-start"
             position="relative"
             bgColor="white"
-            pt="26px"
-            pl="16px"
-            pb="24px"
-            pr="41px"
+            pt={{ base: '16px', lg: '26px' }}
+            pl={{ md: '24px', lg: '16px' }}
+            pb={{ base: '16px', lg: '24px' }}
+            pr={{ md: '24px', lg: '41px' }}
             rounded="6px"
             spacing="51px"
             minH="60vh"
           >
-            <HStack width="full" alignItems="flex-start" spacing="81px">
-              <Flex width="full" maxW="141px">
-                <FormSectionInfo
-                  title="Upload Documents"
-                  info="Attach related files for this asset"
-                  isRequired={false}
-                />
-              </Flex>
+            <FormInputWrapper
+              sectionMaxWidth="125px"
+              customSpacing="64px"
+              description="Attach related files for this asset"
+              title="Upload Documents"
+              isRequired={false}
+              direction={{ base: 'column', md: 'row' }}
+            >
               <AddDocument
-                variant="primary"
+                variant={isMobile ? 'secondary' : 'primary'}
                 handleNewExistingDocumentsIds={(ids) =>
                   dispatch(
                     updateAssetForm({
@@ -73,7 +74,7 @@ const DocumentStep = (props: DocumentStepProps) => {
                   )
                 }
               />
-            </HStack>
+            </FormInputWrapper>
           </VStack>
           <Flex width="full" mt="16px">
             <FormActionButtons

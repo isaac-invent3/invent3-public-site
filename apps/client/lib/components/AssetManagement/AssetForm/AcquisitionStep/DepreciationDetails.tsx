@@ -1,6 +1,7 @@
-import { Flex, Grid, GridItem, HStack } from '@chakra-ui/react';
+import { Flex, Grid, GridItem, Stack } from '@chakra-ui/react';
 import {
   FormDatePicker,
+  FormInputWrapper,
   FormSectionInfo,
   FormTextInput,
 } from '@repo/ui/components';
@@ -9,20 +10,40 @@ import { Field } from 'formik';
 
 const DepreciationDetails = () => {
   return (
-    <HStack width="full" alignItems="flex-start" spacing="78px">
-      <Flex width="full" maxW="144px">
+    <Stack
+      width="full"
+      direction={{ base: 'column', lg: 'row' }}
+      alignItems="flex-start"
+      spacing={{ base: '16px', lg: '33px' }}
+    >
+      <Flex width="full" maxW="144px" display={{ base: 'none', lg: 'flex' }}>
         <FormSectionInfo
           title="Depreciation Details"
           info="Provide the asset's depreciation method"
           isRequired
         />
       </Flex>
-      <Grid templateColumns="repeat(3, 1fr)" gap="16px" width="full">
+      <Grid templateColumns={{ lg: 'repeat(3, 1fr)' }} gap="16px" width="full">
         <GridItem colSpan={1}>
-          <FormDatePicker name="depreciationStartDate" label="Select Date" />
+          <FormInputWrapper
+            sectionMaxWidth="130px"
+            customSpacing="0px"
+            description="Provide the asset's depreciation method"
+            title="Depreciation Details"
+            isRequired
+            direction={{ base: 'column', md: 'row' }}
+            formSectionCustomStyle={{ display: { lg: 'none' } }}
+          >
+            <FormDatePicker name="depreciationStartDate" label="Select Date" />
+          </FormInputWrapper>
         </GridItem>
         <GridItem colSpan={2} width="full">
-          <HStack width="full" alignItems="flex-start" spacing="16px">
+          <Stack
+            width="full"
+            direction={{ base: 'column', md: 'row' }}
+            alignItems="flex-start"
+            spacing="16px"
+          >
             <Field
               as={FormTextInput}
               name="depreciationMethod"
@@ -37,10 +58,10 @@ const DepreciationDetails = () => {
               label="Depreciation Rate"
               customStyles
             />
-          </HStack>
+          </Stack>
         </GridItem>
       </Grid>
-    </HStack>
+    </Stack>
   );
 };
 

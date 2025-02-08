@@ -1,10 +1,11 @@
-import { VStack } from '@chakra-ui/react';
+import { useMediaQuery, VStack } from '@chakra-ui/react';
 
 import DetailHeader from '~/lib/components/UI/DetailHeader';
 import User from '../../Common/User';
 import { useAppSelector } from '~/lib/redux/hooks';
 
 const CurrentOwner = () => {
+  const [isMobile] = useMediaQuery('(max-width: 992px)');
   const assetData = useAppSelector((state) => state.asset.asset);
   if (!assetData) {
     return null;
@@ -19,7 +20,7 @@ const CurrentOwner = () => {
         Current Owner
       </DetailHeader>
       <User
-        minWidth="120px"
+        minWidth={isMobile ? '100px' : '120px'}
         name={currentOwner}
         department={departmentName}
         location={[buildingName, floorName].filter(Boolean).join(', ')}

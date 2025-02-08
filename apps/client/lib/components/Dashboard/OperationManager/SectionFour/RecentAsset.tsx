@@ -82,6 +82,7 @@ const RecentAsset = () => {
     <VStack
       width="full"
       height="full"
+      minH="300px"
       pl="16px"
       pr="15px"
       pt="21px"
@@ -134,7 +135,7 @@ const RecentAsset = () => {
               ? searchData?.totalPages
               : data?.data?.totalPages
           }
-          showFooter={true}
+          showFooter={data?.data && data?.data?.totalPages > 1 ? true : false}
           emptyLines={10}
           isSelectable={false}
         />

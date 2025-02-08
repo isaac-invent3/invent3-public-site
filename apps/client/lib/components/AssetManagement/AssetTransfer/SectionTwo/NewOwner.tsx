@@ -42,7 +42,7 @@ const NewOwner = (props: NewOwnerProps) => {
     >
       <DetailHeader
         variant="secondary"
-        customStyles={{ size: 'lg', fontWeight: 700 }}
+        customStyles={{ size: { base: 'md', md: 'lg' }, fontWeight: 700 }}
       >
         New Owner
       </DetailHeader>

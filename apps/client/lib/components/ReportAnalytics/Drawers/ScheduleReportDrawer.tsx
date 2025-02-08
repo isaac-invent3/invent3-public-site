@@ -131,8 +131,7 @@ const ScheduleReportDrawer = (props: ScheduleReportDrawerProps) => {
             px="32px"
           >
             <Heading
-              fontSize="32px"
-              lineHeight="38.02px"
+              size={{ base: 'lg', lg: 'xl' }}
               color="black"
               pb="20px"
               fontWeight={800}

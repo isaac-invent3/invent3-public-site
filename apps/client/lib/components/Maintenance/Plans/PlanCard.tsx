@@ -34,21 +34,58 @@ const PlanCard = (props: PlanCardProps) => {
         p="8px"
         alignItems="flex-start"
         justifyContent="space-between"
-        spacing="16px"
+        spacing={{ base: '24px', lg: '16px' }}
       >
-        {/* First Section Starts */}
-        <HStack alignItems="flex-start" spacing="16px">
-          <VStack
-            spacing="2px"
+        <VStack
+          spacing="8px"
+          alignItems="flex-start"
+          width={{ base: 'full', md: 'max-content' }}
+        >
+          {/* First Section Starts */}
+          <HStack
             alignItems="flex-start"
-            minW="110px"
-            whiteSpace="nowrap"
+            spacing="16px"
+            width={{ base: 'full', md: 'max-content' }}
+            justifyContent="space-between"
           >
-            <Text color="neutral.700">Start Date: </Text>
-            <Text color="neutral.800" fontWeight={700}>
-              {dateFormatter(data?.endDate, 'Do MMMM, YYYY') ?? 'N/A'}
+            <VStack
+              spacing="2px"
+              alignItems="flex-start"
+              minW="110px"
+              whiteSpace="nowrap"
+            >
+              <Text color="neutral.700">Start Date: </Text>
+              <Text color="neutral.800" fontWeight={700}>
+                {dateFormatter(data?.endDate, 'Do MMMM, YYYY') ?? 'N/A'}
+              </Text>
+            </VStack>
+            {/* Shows on Mobile */}
+            <VStack
+              spacing="2px"
+              alignItems="flex-start"
+              width={{ md: '151px' }}
+              maxW={{ md: '115px' }}
+              display={{ base: 'flex', md: 'none' }}
+            >
+              <Text color="neutral.700">End Date: </Text>
+              <Text color="neutral.800" fontWeight={700}>
+                {dateFormatter(data?.endDate, 'Do MMMM, YYYY') ?? 'N/A'}
+              </Text>
+            </VStack>
+            {/* Shows on Mobile */}
+            <Text
+              color="neutral.800"
+              fontWeight={800}
+              width="181px"
+              maxW="1810px"
+              fontSize="14px"
+              lineHeight="21px"
+              display={{ base: 'none', md: 'flex' }}
+            >
+              {data?.planName}
             </Text>
-          </VStack>
+          </HStack>
+          {/* First Section Ends */}
           <Text
             color="neutral.800"
             fontWeight={800}
@@ -56,14 +93,20 @@ const PlanCard = (props: PlanCardProps) => {
             maxW="1810px"
             fontSize="14px"
             lineHeight="21px"
+            display={{ base: 'flex', md: 'none' }}
           >
             {data?.planName}
           </Text>
-        </HStack>
-        {/* First Section Ends */}
+        </VStack>
 
         {/* Second Section Starts */}
-        <HStack alignItems="flex-start" spacing="24px" flexWrap="wrap">
+        <HStack
+          alignItems={'flex-start'}
+          spacing="24px"
+          flexWrap="wrap"
+          justifyContent="space-between"
+          width={{ base: 'full', md: 'max-content' }}
+        >
           <VStack
             alignItems="flex-start"
             spacing="8px"
@@ -112,6 +155,7 @@ const PlanCard = (props: PlanCardProps) => {
             alignItems="flex-start"
             width="151px"
             maxW="115px"
+            display={{ base: 'none', md: 'flex' }}
           >
             <Text color="neutral.700">End Date: </Text>
             <Text color="neutral.800" fontWeight={700}>

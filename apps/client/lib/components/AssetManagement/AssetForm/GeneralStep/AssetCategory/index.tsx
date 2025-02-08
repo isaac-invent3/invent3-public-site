@@ -31,7 +31,7 @@ const AssetCategory = () => {
     <Grid templateColumns="repeat(4, 1fr)" gap="11px" width="full">
       <GridItem colSpan={4}>
         <SimpleGrid
-          columns={{ base: 1, md: 2 }}
+          columns={{ base: 1, lg: 2 }}
           spacing={{ base: '16px', md: '11px' }}
           alignItems="flex-start"
         >

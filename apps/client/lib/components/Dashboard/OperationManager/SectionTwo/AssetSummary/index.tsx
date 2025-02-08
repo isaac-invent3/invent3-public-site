@@ -1,4 +1,4 @@
-import { HStack, Skeleton, Text, VStack } from '@chakra-ui/react';
+import { HStack, Skeleton, Stack, Text } from '@chakra-ui/react';
 
 import AssetSummaryCard from './AssetSummaryCard';
 import { InUseIcon } from '~/lib/components/CustomIcons';
@@ -12,14 +12,18 @@ const AssetSummary = () => {
   const valueChange = stats?.totalAssetsPercentageChange ?? 0;
 
   return (
-    <VStack width="full" spacing="14px">
+    <Stack
+      width="full"
+      spacing="14px"
+      direction={{ base: 'row', lg: 'column' }}
+    >
       <AssetSummaryCard
         title="Total Assets"
         value={stats?.totalAssets}
         icon={AssetBoxIcon}
       >
         {valueChange !== 0 && (
-          <HStack spacing="4px">
+          <HStack spacing="4px" flexWrap="wrap">
             <ProgressIndicator valueChange={valueChange} />
             <Text color="neutral.600" fontWeight={700}>
               vs Last Year
@@ -32,7 +36,7 @@ const AssetSummary = () => {
         value={stats?.activeAssets}
         icon={InUseIcon}
       >
-        <HStack spacing="4px">
+        <HStack spacing="4px" flexWrap="wrap">
           <Skeleton isLoaded={!isLoading}>
             <Text
               color="#0366EF"
@@ -53,7 +57,7 @@ const AssetSummary = () => {
           </Text>
         </HStack>
       </AssetSummaryCard>
-    </VStack>
+    </Stack>
   );
 };
 

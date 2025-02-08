@@ -43,6 +43,11 @@ const HistoryTab = () => {
 
   const mobileColumns = useMemo(
     () => [
+      columnHelper.accessor('assetId', {
+        cell: (info) => info.getValue(),
+        header: '#',
+        enableSorting: false,
+      }),
       columnHelper.accessor('completionDate', {
         cell: (info) => {
           const value = info.getValue();
@@ -52,7 +57,7 @@ const HistoryTab = () => {
             return 'N/A';
           }
         },
-        header: 'Completion Date',
+        header: 'Date',
         enableSorting: false,
       }),
       columnHelper.accessor('maintenanceType', {
@@ -60,19 +65,15 @@ const HistoryTab = () => {
         header: 'Maintenance Type',
         enableSorting: false,
       }),
-      columnHelper.accessor('contactPerson', {
-        cell: (info) =>
-          !info.row.original.contactPerson &&
-          !info.row.original.contactPersonEmail &&
-          !info.row.original.contactPersonPhoneNo
-            ? 'N/A'
-            : Technician(info.row.original),
-        header: 'Contact Person',
-        enableSorting: false,
-      }),
       columnHelper.accessor('totalCost', {
         cell: (info) => amountFormatter(info.getValue() ?? 0),
         header: 'Cost',
+        enableSorting: false,
+      }),
+      columnHelper.accessor('currentStatus', {
+        cell: (info) =>
+          info.getValue() ? Status(info.getValue() as string) : 'N/A',
+        header: 'Status',
         enableSorting: false,
       }),
     ],

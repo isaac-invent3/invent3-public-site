@@ -4,10 +4,9 @@ const PageHeader = ({ children }: { children: string | React.ReactNode }) => {
   return (
     <Heading
       as="h3"
-      fontWeight={800}
-      fontSize={{ base: '24px', md: '32px' }}
-      lineHeight={{ base: '28.51px', md: '38.02px' }}
+      size={{ base: 'lg', lg: 'xl' }}
       color="primary.500"
+      fontWeight={800}
     >
       {children}
     </Heading>

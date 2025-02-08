@@ -34,7 +34,7 @@ interface MaintenancePlanProps {
   type?: PlanTableType;
 }
 const MaintenancePlanTable = (props: MaintenancePlanProps) => {
-    const [isMobile] = useMediaQuery('(max-width: 480px)');
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
   const columnHelper = createColumnHelper<MaintenancePlan>();
   const {
     data,
@@ -165,49 +165,47 @@ const MaintenancePlanTable = (props: MaintenancePlanProps) => {
     [data] //eslint-disable-line
   );
 
-   const mobileColumns = useMemo(
-     () => {
-       const baseColumns = [
-         columnHelper.accessor('maintenancePlanId', {
-           cell: (info) => info.getValue(),
-           header: '#',
-           enableSorting: false,
-         }),
-         columnHelper.accessor('planName', {
-           cell: (info) => info.getValue(),
-           header: 'Plan Name',
-           enableSorting: false,
-         }),
-        
-      
-       ];
-       const popOverColumn = columnHelper.accessor('rowId', {
-         cell: (info) => {
-           if (PopoverComponent) {
-             return PopoverComponent(info.row.original);
-           }
-         },
-         header: '',
-         enableSorting: false,
-       });
+  const mobileColumns = useMemo(
+    () => {
+      const baseColumns = [
+        columnHelper.accessor('maintenancePlanId', {
+          cell: (info) => info.getValue(),
+          header: '#',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('planName', {
+          cell: (info) => info.getValue(),
+          header: 'Plan Name',
+          enableSorting: false,
+        }),
+      ];
+      const popOverColumn = columnHelper.accessor('rowId', {
+        cell: (info) => {
+          if (PopoverComponent) {
+            return PopoverComponent(info.row.original);
+          }
+        },
+        header: '',
+        enableSorting: false,
+      });
 
-       const statusCOlumn = columnHelper.accessor('planStatusName', {
-         cell: (info) => info.getValue() ?? 'N/A',
-         header: 'Status',
-         enableSorting: false,
-       });
+      const statusCOlumn = columnHelper.accessor('planStatusName', {
+        cell: (info) => info.getValue() ?? 'N/A',
+        header: 'Status',
+        enableSorting: false,
+      });
 
-       if (type === 'current') {
-         baseColumns.splice(8, 0, statusCOlumn);
-       }
+      if (type === 'current') {
+        baseColumns.splice(8, 0, statusCOlumn);
+      }
 
-       if (showPopover) {
-         baseColumns.push(popOverColumn);
-       }
-       return baseColumns;
-     },
-     [data] //eslint-disable-line
-   );
+      if (showPopover) {
+        baseColumns.push(popOverColumn);
+      }
+      return baseColumns;
+    },
+    [data] //eslint-disable-line
+  );
   return (
     <DataTable
       columns={isMobile ? mobileColumns : columns}

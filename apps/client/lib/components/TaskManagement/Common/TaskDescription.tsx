@@ -10,7 +10,7 @@ const TaskDescription = (props: TaskDescriptionProps) => {
   return (
     <FormInputWrapper
       sectionMaxWidth={sectionMaxWidth}
-      spacing={spacing}
+      customSpacing={spacing}
       title="Description"
       description="Provide details about the task objective"
       isRequired

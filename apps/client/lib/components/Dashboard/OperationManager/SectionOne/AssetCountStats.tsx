@@ -18,7 +18,7 @@ const Stats = (props: StatsProps) => {
         <Text
           fontWeight={800}
           fontSize={{ base: '24px', md: '48px' }}
-          lineHeight="57.02px"
+          lineHeight={{ base: '28.51px', md: '57.02px' }}
         >
           {value !== undefined ? value.toLocaleString() : '-'}
         </Text>
@@ -59,7 +59,7 @@ const AssetCountStats = () => {
       width="full"
       height="full"
       px={{ base: '8px', md: '16px' }}
-      py={{ base: '16px', md: '27.5px' }}
+      py="27.5px"
       bgColor="white"
       rounded="8px"
     >
@@ -71,8 +71,8 @@ const AssetCountStats = () => {
         }
         width="full"
         // maxW="620px"
-        justifyContent={{ base: 'space-between', md: 'flex-start' }}
-        spacing={{ base: '4px', md: '45px' }}
+        justifyContent={{ base: 'space-between', lg: 'flex-start' }}
+        spacing={{ md: '32px', xl: '45px' }}
       >
         {data.map((item, index) => (
           <Stats {...item} key={index} />

@@ -35,9 +35,9 @@ const UserTable = (props: UserTableProps) => {
     setPageSize,
     setSelectedRows,
   } = props;
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
 
   const columnHelper = createColumnHelper<User>();
-  const [isMobile] = useMediaQuery('(max-width: 480px)');
 
   const columns = useMemo(
     () => {
@@ -61,7 +61,7 @@ const UserTable = (props: UserTableProps) => {
               role="Admin Officer"
             />
           ),
-          header: 'User',
+          header: 'Name',
           enableSorting: true,
         }),
 
@@ -87,7 +87,7 @@ const UserTable = (props: UserTableProps) => {
           enableSorting: true,
         }),
 
-        columnHelper.accessor('stateName', {
+        columnHelper.accessor('countryName', {
           cell: () => (
             <VStack spacing="4px" alignItems="flex-start">
               <Text color="black">Admiralty Way,</Text>
@@ -96,7 +96,7 @@ const UserTable = (props: UserTableProps) => {
               </Text>
             </VStack>
           ),
-          header: 'User',
+          header: 'Location',
           enableSorting: true,
         }),
 

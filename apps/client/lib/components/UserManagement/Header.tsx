@@ -1,5 +1,4 @@
-import { HStack, Icon, Stack } from '@chakra-ui/react';
-
+import { Icon, Stack } from '@chakra-ui/react';
 import { Button } from '@repo/ui/components';
 import PageHeader from '../UI/PageHeader';
 import { AddIcon } from '../CustomIcons';
@@ -12,18 +11,17 @@ const Header = () => {
     <Stack
       width="full"
       justifyContent="space-between"
-      spacing="10px"
+      direction={{ base: 'column', sm: 'row' }}
+      spacing="16px"
       px={{ base: '16px', md: 0 }}
-      direction={{ base: 'column', md: 'row' }}
     >
       <PageHeader>User Management</PageHeader>
       {canCreateUser && (
         <Button
           customStyles={{
-            width: 'max-content',
-            px: '16px',
-            height: { base: '36px', md: 'min-content' },
-            alignSelf: 'end',
+            width: '146px',
+            height: { base: '36px', md: '50px' },
+            alignSelf: { base: 'flex-end', md: 'initial' },
           }}
           href={`/${ROUTES.USERS}/add`}
         >

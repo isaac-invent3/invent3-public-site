@@ -100,8 +100,7 @@ const TicketDrawerWrapper = (props: TicketDrawerProps) => {
           >
             {action === 'edit' && ticketDetail && (
               <Heading
-                fontSize="32px"
-                lineHeight="38.02px"
+                size={{ base: 'lg', lg: 'xl' }}
                 color="#0E2642"
                 fontWeight={800}
                 px="24px"

@@ -35,7 +35,7 @@ const Address = () => {
             placeholder="Address 2"
           />
         </SimpleGrid>
-        <SimpleGrid width="full" gap="16px" columns={4}>
+        <SimpleGrid width="full" gap="16px" columns={{base:2, md:4}}>
           <CountrySelect
             handleSelect={(option) => {
               setFieldValue('countryId', option.value);

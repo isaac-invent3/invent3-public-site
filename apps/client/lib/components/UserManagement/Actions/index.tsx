@@ -17,7 +17,7 @@ const ActionButton = (props: ActionButtonProps) => {
   const { activeAction, setActiveAction } = props;
 
   return (
-    <HStack spacing="16px">
+    <HStack spacing="16px" flexWrap="wrap">
       <FilterButton
         icon={BulkSearchIcon}
         label="Bulk Actions"

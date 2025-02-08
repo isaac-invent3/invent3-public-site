@@ -136,11 +136,16 @@ const UserManagement = () => {
             borderBottom="1px"
             borderColor="neutral.300"
             pb="8px"
+            flexWrap="wrap"
+            px={{ base: '16px', md: 0 }}
           >
             <SearchInput
               setSearch={setSearch}
               placeholderText="Search by name..."
-              customStyle={{ minW: '363px' }}
+              customStyle={{
+                minW: { md: '363px', base: undefined },
+              }}
+              width={{ base: 'full', md: '100px' }}
             />
             <ActionButton
               activeAction={activeAction}

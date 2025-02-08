@@ -2,12 +2,12 @@ import { Flex, Text, useMediaQuery, VStack } from '@chakra-ui/react';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useMemo } from 'react';
-import { dateFormatter } from '~/lib/utils/Formatters';
-import PopoverAction from './PopoverAction';
 import { GenericTableProps } from '~/lib/interfaces/general.interfaces';
 import { Vendor } from '~/lib/interfaces/vendor.interfaces';
+import { dateFormatter } from '~/lib/utils/Formatters';
 import UserInfo from '../../Common/UserInfo';
 import GenericStatusBox from '../../UI/GenericStatusBox';
+import PopoverAction from './PopoverAction';
 
 const ContactPerson = (vendor: Vendor) => {
   const { emailAddress, phoneNumber } = vendor;
@@ -52,7 +52,7 @@ const VendorTable = (props: VendorTableProps) => {
   } = props;
 
   const columnHelper = createColumnHelper<Vendor>();
-    const [isMobile] = useMediaQuery('(max-width: 480px)');
+  const [isMobile] = useMediaQuery('(max-width: 480px)');
 
   const columns = useMemo(
     () => {
@@ -102,37 +102,37 @@ const VendorTable = (props: VendorTableProps) => {
     [[data]] //eslint-disable-line
   );
 
-    const mobileColumns = useMemo(
-      () => {
-        const baseColumns = [
-          columnHelper.accessor('vendorId', {
-            cell: (info) => info.getValue(),
-            header: '#',
-            enableSorting: false,
-          }),
+  const mobileColumns = useMemo(
+    () => {
+      const baseColumns = [
+        columnHelper.accessor('vendorId', {
+          cell: (info) => info.getValue(),
+          header: '#',
+          enableSorting: false,
+        }),
 
-          columnHelper.accessor('vendorName', {
-            cell: (info) => UserInfo({ name: info.getValue() }),
-            header: 'Vendor Name',
-            enableSorting: true,
-          }),
+        columnHelper.accessor('vendorName', {
+          cell: (info) => UserInfo({ name: info.getValue() }),
+          header: 'Vendor Name',
+          enableSorting: true,
+        }),
 
-          columnHelper.accessor('lastModifiedBy', {
-            cell: () => <GenericStatusBox text="Active" colorCode="#07CC3B" />,
-            header: 'Status',
-            enableSorting: false,
-          }),
-          columnHelper.accessor('guid', {
-            cell: (info) => <PopoverAction vendor={info.row.original} />,
-            header: '',
-            enableSorting: false,
-          }),
-        ];
+        columnHelper.accessor('lastModifiedBy', {
+          cell: () => <GenericStatusBox text="Active" colorCode="#07CC3B" />,
+          header: 'Status',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('guid', {
+          cell: (info) => <PopoverAction vendor={info.row.original} />,
+          header: '',
+          enableSorting: false,
+        }),
+      ];
 
-        return baseColumns;
-      },
-      [[data]] //eslint-disable-line
-    );
+      return baseColumns;
+    },
+    [[data]] //eslint-disable-line
+  );
 
   return (
     <Flex width="full">

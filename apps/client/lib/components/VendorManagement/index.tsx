@@ -171,32 +171,7 @@ const VendorManagement = () => {
             )}
           </SlideTransition>
         )}
-        {/* <Flex
-            mt="16px"
-            px={{ base: '16px', md: 0 }}
-            display={{ base: 'flex', lg: 'none' }}
-          >
-
-        <HStack
-          width="full"
-          // justifyContent="space-between"
-          // borderBottom="1px"
-          // borderColor="neutral.300"
-          // pb="8px"
-          // display={{ base: 'flex', lg: 'none' }}
-          flexWrap="wrap"
-        >
-          <SearchInput
-            setSearch={setSearch}
-            placeholderText="Search by name..."
-            customStyle={{ minW: '363px' }}
-          />
-          <ActionButton
-            activeAction={activeAction}
-            setActiveAction={setActiveAction}
-          />
-        </HStack>
-          </Flex> */}
+    
 
         <Flex width="full" mt="8px">
           <VendorTable

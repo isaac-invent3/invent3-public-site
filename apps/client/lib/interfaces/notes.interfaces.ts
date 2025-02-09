@@ -1,6 +1,7 @@
 import { QueryParams } from '@repo/interfaces';
 
 interface Note {
+  title: string;
   isNew: boolean;
   createdDate: string;
   createdBy: string;
@@ -27,14 +28,19 @@ interface GetAllNotesQueryParams extends QueryParams {
 }
 
 interface CreateNotePayload {
-  systemContextTypeId: number;
-  systemContextId?: number;
-  authorId: number;
-  content: string;
-  isPrivate: boolean;
-  parentId?: number;
-  notePriorityId: number;
-  createdBy: string;
+  createNoteDto: {
+    systemContextTypeId: number;
+    systemContextId?: number;
+    authorId: number;
+    content: string;
+    isPrivate: boolean;
+    parentId?: number;
+    notePriorityId: number;
+    createdBy: string;
+    title:string
+  };
+  tags: number[];
+  systemContextIds: number[];
 }
 
 interface GetAllPinnedNotesQueryParams extends QueryParams {

@@ -104,9 +104,9 @@ const NoteDetails = (props: NoteFormModalProps) => {
                 </HStack>
               </HStack>
 
-              <Card rounded="12px" p="20px" bgColor="white">
+              <Card rounded="12px" p="20px" bgColor="white" w='full'>
                 <Text fontWeight={800} fontSize="20px">
-                  Heading
+                  {note.title}
                 </Text>
                 <Text
                   size="md"

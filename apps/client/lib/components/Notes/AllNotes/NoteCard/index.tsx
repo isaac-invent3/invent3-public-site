@@ -16,17 +16,28 @@ import PopoverAction from './PopoverAction';
 interface NoteCardProps {
   data: Note;
   isPinned?: boolean;
+  isFetching?:boolean
 }
 
 const NoteCard = (props: NoteCardProps) => {
-  const { content, notePriorityId, lastModifiedDate } = props.data;
-  const { isPinned } = props;
-
   const {
     isOpen: isNoteDetailOpen,
     onOpen: onOpenNoteDetail,
     onClose: onCloseNoteDetail,
   } = useDisclosure();
+
+  if (!props.data) return;
+
+  const { isPinned, isFetching , data} = props;
+  const { content, notePriorityId, lastModifiedDate, title } = data;
+
+  const noteTitle = () => {
+    if (!title) return 'Text';
+
+    if (title.length > 10) return `${title?.slice(0, 10)}...`;
+
+    return title;
+  };
 
   return (
     <>
@@ -38,89 +49,101 @@ const NoteCard = (props: NoteCardProps) => {
         position="relative"
         h="180px"
         transition="all 300ms ease-in-out"
-        onClick={onOpenNoteDetail}
-        _hover={{
-          boxShadow:
-            '0 4px 10px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1)',
-          marginTop: '-0.2em',
-        }}
+        pointerEvents={isFetching ? 'none' : 'all'}
+        opacity={isFetching ? 0.5 : 1}
+        _hover={
+          !isFetching
+            ? {
+                boxShadow:
+                  '0 4px 10px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1)',
+                marginTop: '-0.2em',
+              }
+            : undefined
+        }
       >
-        <HStack w="full" justifyContent="space-between" gap="8px">
-          <Text fontWeight={800}>Test</Text>
+        <Box onClick={onOpenNoteDetail}>
+          <HStack w="full" justifyContent="space-between" gap="8px">
+            <Text fontWeight={800}>{noteTitle()}</Text>
 
-          {isPinned && (
-            <Box rounded="4px" bgColor="#42403D" w="16px" h="16px"></Box>
-          )}
-        </HStack>
+            {isPinned && (
+              <Box rounded="4px" bgColor="#42403D" w="16px" h="16px"></Box>
+            )}
+          </HStack>
 
-        {notePriorityId === 1 && !isPinned && (
-          <Box position="absolute" right="-8px">
-            <Box
-              display="flex"
-              alignItems="end"
-              justifyContent="end"
-              pos="relative"
-            >
-              <Icon
-                as={AiFillStar}
-                color="white"
-                boxSize="13px"
-                position="absolute"
-                zIndex={3}
-                left={-4}
-                top={1}
-              />
-
+          {notePriorityId === 1 && !isPinned && (
+            <Box position="absolute" right="-8px">
               <Box
-                w="32px"
-                h="24px"
-                rounded="4px"
-                bgColor="#222222"
-                borderBottomRightRadius="0px"
-                position="absolute"
-                top={0}
-                right={0}
-                zIndex={2}
-              ></Box>
+                display="flex"
+                alignItems="end"
+                justifyContent="end"
+                pos="relative"
+              >
+                <Icon
+                  as={AiFillStar}
+                  color="white"
+                  boxSize="13px"
+                  position="absolute"
+                  zIndex={3}
+                  left={-4}
+                  top={1}
+                />
 
-              <Box
-                w="8px"
-                h="29px"
-                bgColor="#000000"
-                top={0}
-                right={0}
-                roundedTopRight="4px"
-                roundedBottomRight="4px"
-                zIndex={1}
-              ></Box>
+                <Box
+                  w="32px"
+                  h="24px"
+                  rounded="4px"
+                  bgColor="#222222"
+                  borderBottomRightRadius="0px"
+                  position="absolute"
+                  top={0}
+                  right={0}
+                  zIndex={2}
+                ></Box>
+
+                <Box
+                  w="8px"
+                  h="29px"
+                  bgColor="#000000"
+                  top={0}
+                  right={0}
+                  roundedTopRight="4px"
+                  roundedBottomRight="4px"
+                  zIndex={1}
+                ></Box>
+              </Box>
             </Box>
-          </Box>
-        )}
-
-        <Box pos="relative" h="120px" rounded="8px" overflow="hidden" mt="8px">
-          <Text
-            color="#BBBBBB"
-            fontWeight={400}
-            size="xs"
-            noOfLines={8}
-            display="-webkit-box"
-            style={{
-              WebkitLineClamp: 8,
-              WebkitBoxOrient: 'vertical',
-            }}
-          >
-            {content}
-          </Text>
+          )}
 
           <Box
-            position="absolute"
-            top={0}
-            left={0}
-            right={0}
-            bottom={0}
-            pointerEvents="none"
-            sx={{
-              background: `
+            pos="relative"
+            h="120px"
+            rounded="8px"
+            overflow="hidden"
+            mt="8px"
+          >
+            <Text
+              color="#BBBBBB"
+              fontWeight={400}
+              size="xs"
+              noOfLines={8}
+              display="-webkit-box"
+              style={{
+                WebkitLineClamp: 8,
+                WebkitBoxOrient: 'vertical',
+              }}
+            >
+              {content}
+            </Text>
+
+            <Box
+              position="absolute"
+              top={0}
+              left={0}
+              right={0}
+              bottom={0}
+              pointerEvents="none"
+              sx={{
+                background: `
               linear-gradient(
                 180deg, 
                 rgba(247,250,252,0) 0%,
@@ -128,8 +151,9 @@ const NoteCard = (props: NoteCardProps) => {
                 rgba(247,250,252,0.8) 80%,
                 rgba(255,255,255,1) 95%
               )`,
-            }}
-          />
+              }}
+            />
+          </Box>
         </Box>
 
         <Box position="absolute" bottom={2} w="90%">
@@ -151,7 +175,7 @@ const NoteCard = (props: NoteCardProps) => {
               {dateFormatter(lastModifiedDate, 'DD/MM/YYYY')}
             </Text>
 
-            <PopoverAction />
+            <PopoverAction data={props.data} />
           </HStack>
         </Box>
       </Card>

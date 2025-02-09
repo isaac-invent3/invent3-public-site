@@ -252,13 +252,13 @@ const SYSTEM_CONTEXT_DETAILS: Record<ContextKey, SystemContextDetail> = {
     id: SYSTEM_CONTEXT_TYPE.USERS,
     route: ROUTES.USERS,
     slug: 'userId',
-    displayName:'Maintenance'
+    displayName:'User Management'
   },
   VENDOR: {
     id: SYSTEM_CONTEXT_TYPE.VENDOR,
     route: ROUTES.VENDOR,
     slug: 'vendorId',
-    displayName:'User Management'
+    displayName:'Vendor Management'
   },
   AUDIT: {
     id: SYSTEM_CONTEXT_TYPE.AUDIT,

@@ -1,6 +1,4 @@
-import { CloseIcon } from '@chakra-ui/icons';
 import {
-  Box,
   HStack,
   Icon,
   ModalBody,
@@ -16,37 +14,46 @@ import {
   CheckBox,
   FilterDropDown,
   FormInputWrapper,
-  FormTextAreaInput,
-  FormTextInput,
   GenericModal,
 } from '@repo/ui/components';
-import { Field, FieldArray, FormikProvider, useFormik } from 'formik';
+import { FormikProvider, useFormik } from 'formik';
 import { getSession } from 'next-auth/react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import useFormatUrl from '~/lib/hooks/useFormatUrl';
-import useParseUrlData, { findSystemContextDetailById } from '~/lib/hooks/useParseUrl';
-import { CreateNotePayload, Note } from '~/lib/interfaces/notes.interfaces';
-import { useCreateNoteMutation } from '~/lib/redux/services/notes.services';
-import UserSelectModal from '../../Common/Modals/UserSelectModal';
-import UserInfo from '../../Common/UserInfo';
-import { AddIcon, InfoIcon } from '../../CustomIcons';
+import useParseUrlData, {
+  findSystemContextDetailById,
+} from '~/lib/hooks/useParseUrl';
+import { Note } from '~/lib/interfaces/notes.interfaces';
+import {
+  useCreateNoteMutation,
+  useUpdateNoteMutation,
+} from '~/lib/redux/services/notes.services';
+import { InfoIcon } from '../../CustomIcons';
+import NoteContent from './NoteContent';
+import NoteTag from './NoteTag';
+import NoteTitle from './NoteTitle';
 interface NoteFormModalProps {
   isOpen: boolean;
   onClose: () => void;
-  note?:Note
+  note?: Note;
 }
 
-interface CreateNoteForm extends Partial<CreateNotePayload> {
-  taggedPeople: { name: string; id: number }[];
+interface CreateNoteForm {
+  content: string;
+  isPrivate: boolean;
+  notePriorityId: number;
+  title: string;
+  tags: { name: string; id: number }[];
+  systemContextIds: number[];
 }
 
 const NoteForm = (props: NoteFormModalProps) => {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, note } = props;
 
   const { handleSubmit } = useCustomMutation();
 
-  const [createNoteMutation, { isLoading: isCreatingNote }] =
-    useCreateNoteMutation();
+  const [createNote, { isLoading: createLoading }] = useCreateNoteMutation();
+  const [updateNote, { isLoading: updateLoading }] = useUpdateNoteMutation();
 
   const {
     isOpen: isOpenSelectUser,
@@ -58,10 +65,12 @@ const NoteForm = (props: NoteFormModalProps) => {
   const parsedUrl = useParseUrlData(formattedUrl);
 
   const initialValues: CreateNoteForm = {
-    content: '',
-    isPrivate: false,
-    notePriorityId: 0,
-    taggedPeople: [],
+    content: note?.content ?? '',
+    title: note?.content ?? '',
+    isPrivate: note?.isPrivate ?? false,
+    notePriorityId: note?.notePriorityId ?? 0,
+    tags: [],
+    systemContextIds: [],
   };
 
   const formik = useFormik<CreateNoteForm>({
@@ -72,20 +81,45 @@ const NoteForm = (props: NoteFormModalProps) => {
 
       if (!parsedUrl?.systemContextId || !session?.user.id) return;
 
-      const payload:any = {
-        createdBy: session?.user?.username,
+      const { tags, systemContextIds, ...rest } = data;
+
+      const createNoteDto = {
         systemContextTypeId: parsedUrl?.systemContextId,
         authorId: Number(session?.user.id),
-        ...data,
+        createdBy: session?.user?.username!,
+        ...rest,
       };
 
-      console.log({payload})
+      const payload = {
+        createNoteDto,
+        tags: tags.map((item) => item.id),
+        systemContextIds,
+      };
 
-      const response = await handleSubmit(createNoteMutation, payload, '');
+      if (!note) {
+        const response = await handleSubmit(
+          createNote,
+          payload,
+          'Note Created Successfully!'
+        );
 
-      if (response?.data) {
-        formik.resetForm();
-        console.log('hey');
+        if (response?.data) {
+          formik.resetForm();
+          onClose();
+        }
+      }
+
+      if (note) {
+        const response = await handleSubmit(
+          updateNote,
+          payload,
+          'Note Created Successfully!'
+        );
+
+        if (response?.data) {
+          formik.resetForm();
+          onClose();
+        }
       }
     },
   });
@@ -126,132 +160,10 @@ const NoteForm = (props: NoteFormModalProps) => {
                 px="24px"
                 mt="22px"
               >
-                <FormInputWrapper
-                  sectionMaxWidth="157px"
-                  spacing="24px"
-                  description="Provide essential information about the asset being added."
-                  title="Title"
-                  isRequired
-                >
-                  <Field
-                    as={FormTextInput}
-                    name="noteTitle"
-                    type="text"
-                    label="Title"
-                  />
-                </FormInputWrapper>
+                <NoteTitle />
 
-                <FormInputWrapper
-                  sectionMaxWidth="157px"
-                  spacing="24px"
-                  description="Provide essential information about the asset being added."
-                  title="Title"
-                  isRequired
-                >
-                  <Field
-                    as={FormTextAreaInput}
-                    name="content"
-                    type="text"
-                    label="Note"
-                    customStyle={{ height: '300px' }}
-                  />
-                </FormInputWrapper>
-
-                <FormInputWrapper
-                  sectionMaxWidth="157px"
-                  spacing="24px"
-                  description=""
-                  title=""
-                >
-                  <VStack
-                    bgColor="white"
-                    p="20px"
-                    spacing="16px"
-                    rounded="12px"
-                    alignItems="start"
-                    w="full"
-                  >
-                    <Text color="black" size="md" fontWeight={800}>
-                      Tag Someone
-                    </Text>
-
-                    <FieldArray name="taggedPeople">
-                      {({ push, remove }) => {
-                        return (
-                          <HStack
-                            transition="all 0.5s ease"
-                            w="full"
-                            flexWrap="wrap"
-                            spacing="16px"
-                          >
-                            {formik.values.taggedPeople.map((person, index) => (
-                              <HStack cursor="pointer" role="group">
-                                <UserInfo
-                                  name={person.name}
-                                  customAvatarStyle={{
-                                    width: '30px',
-                                    height: '30px',
-                                    fontWeight: 700,
-                                  }}
-                                />
-                                <Icon
-                                  as={CloseIcon}
-                                  boxSize="10px"
-                                  color="black"
-                                  opacity="0"
-                                  _groupHover={{ opacity: '1' }}
-                                  transition="all 0.3s ease-in-out"
-                                  cursor="pointer"
-                                  onClick={() => remove(index)}
-                                />
-                              </HStack>
-                            ))}
-
-                            <Box
-                              boxSize="28px"
-                              rounded="full"
-                              bgColor="#E4E4E4"
-                              display="flex"
-                              alignItems="center"
-                              justifyContent="center"
-                              cursor="pointer"
-                              role="group"
-                              onClick={onOpenSelectUser}
-                            >
-                              <Icon
-                                as={AddIcon}
-                                color="#374957"
-                                boxSize="18px"
-                                transition="all 300ms ease-in-out"
-                                _groupHover={{ transform: 'rotate(90deg)' }}
-                              />
-                            </Box>
-
-                            <UserSelectModal
-                              isOpen={isOpenSelectUser}
-                              onClose={onCloseSelectUser}
-                              handleSelectUser={(option) => {
-                                const existingUser =
-                                  formik.values.taggedPeople.find(
-                                    (item) => item.id === option?.value
-                                  );
-
-                                if (existingUser) return;
-
-                                push({
-                                  name: option.label,
-                                  id: option.value,
-                                });
-                              }}
-                              sectionInfoText="Tagged user"
-                              sectionInfoTitle="Select a user to tag into the note"
-                            />
-                          </HStack>
-                        );
-                      }}
-                    </FieldArray>
-                  </VStack>
-                </FormInputWrapper>
+                <NoteContent />
+                <NoteTag />
 
                 <FormInputWrapper
                   sectionMaxWidth="157px"
@@ -354,7 +266,7 @@ const NoteForm = (props: NoteFormModalProps) => {
               </Button>
 
               <Button
-                isLoading={isCreatingNote}
+                isLoading={createLoading || updateLoading}
                 handleClick={() => {
                   formik.handleSubmit();
                 }}

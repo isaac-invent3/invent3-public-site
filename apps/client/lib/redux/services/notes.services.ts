@@ -1,5 +1,10 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { BaseApiResponse, ListResponse, QueryParams, SearchQuery } from '@repo/interfaces';
+import {
+  BaseApiResponse,
+  ListResponse,
+  QueryParams,
+  SearchQuery,
+} from '@repo/interfaces';
 import {
   CreateNotePayload,
   GetAllNotesQueryParams,
@@ -23,7 +28,7 @@ export const notesApi = createApi({
       GetAllNotesQueryParams
     >({
       query: (data) => ({
-        url: generateQueryStr(`/Notes`, data),
+        url: generateQueryStr(`/Notes?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -62,18 +67,28 @@ export const notesApi = createApi({
       invalidatesTags: ['allNotes', 'pinnedNotes'],
     }),
 
-    deleteNote: builder.mutation<BaseApiResponse<void>, { id: number }>({
-      query: ({ id }) => ({
+    deleteNote: builder.mutation<
+      BaseApiResponse<void>,
+      {
+        id: number;
+        deletedBy: string
+      }
+    >({
+      query: ({ id, ...body }) => ({
         url: `/Notes/${id}`,
         method: 'DELETE',
         headers: getHeaders(),
+        body,
       }),
       invalidatesTags: ['allNotes', 'pinnedNotes'],
     }),
 
-    pinNote: builder.mutation<BaseApiResponse<Note>, string>({
-      query: (noteId) => ({
-        url: `/Notes/PinNote/${noteId}`,
+    pinNote: builder.mutation<
+      BaseApiResponse<Note>,
+      { id: number; authorId: number }
+    >({
+      query: ({ id, ...data }) => ({
+        url: generateQueryStr(`/Notes/PinNote/${id}?`, data),
         method: 'POST',
         headers: getHeaders(),
       }),
@@ -85,7 +100,7 @@ export const notesApi = createApi({
       GetAllPinnedNotesQueryParams
     >({
       query: ({ userId, ...data }) => ({
-        url: generateQueryStr(`/Notes/GetPinnedNotes/${userId}`, data),
+        url: generateQueryStr(`/Notes/GetPinnedNotes/${userId}?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -124,7 +139,8 @@ export const {
   useDeleteNoteMutation,
   useGetNoteByIdQuery,
   useGetPinnedNotesQuery,
+  useUpdateNoteMutation,
   usePinNoteMutation,
   useSearchNotesMutation,
-  useGetNoteCommentsQuery
+  useGetNoteCommentsQuery,
 } = notesApi;

@@ -91,7 +91,11 @@ type SubModuleKey =
   | 'approval:delete'
   | 'vendor:create'
   | 'vendor:edit'
-  | 'vendor:delete';
+  | 'vendor:delete'
+  | 'company:create'
+  | 'company:edit'
+  | 'company:delete';
+
 
 type PermissionKey = ModuleKey | SubModuleKey;
 
@@ -131,12 +135,12 @@ interface updateRoleModulePermissionPayload {
 }
 
 export type {
-  Role,
-  ModuleKey,
-  SubModuleKey,
-  PermissionKey,
-  RoleSystemModuleContextPermission,
-  RoleModulePermission,
   createRoleModulePermissionPayload,
+  ModuleKey,
+  PermissionKey,
+  Role,
+  RoleModulePermission,
+  RoleSystemModuleContextPermission,
+  SubModuleKey,
   updateRoleModulePermissionPayload,
 };

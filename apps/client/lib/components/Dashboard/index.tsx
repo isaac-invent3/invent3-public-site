@@ -7,7 +7,7 @@ import OperationManager from './OperationManager';
 // import FieldEngineer from './FieldEngineer';
 // import ClientAdmin from './ClientAdmin';
 // import Executive from './Executive';
-// import SuperAdmin from './SuperAdmin';
+import SuperAdmin from './SuperAdmin';
 
 const Dashboard = () => {
   return (
@@ -16,7 +16,7 @@ const Dashboard = () => {
       {/* <FrontDesk /> */}
       {/* <FieldEngineer /> */}
       {/* <ClientAdmin /> */}
-      {/* <SuperAdmin /> */}
+      <SuperAdmin />
       {/* <Executive /> */}
     </Flex>
   );

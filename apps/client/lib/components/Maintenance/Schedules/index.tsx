@@ -24,20 +24,21 @@ const Schedules = () => {
         mt={{ base: '24px', md: '35px' }}
         width="full"
         gap="16px"
-        flexDir={{ base: 'column', md: 'row' }}
+        flexDir={{ base: 'column', lg: 'row' }}
+        px={{ base: '16px', md: 0 }}
       >
         <Flex
-          width={{ base: 'full', md: '77%' }}
-          mt={{ base: '16px', md: undefined }}
-          order={{ base: 1, md: 0 }}
+          width={{ base: 'full', lg: '77%' }}
+          mt={{ base: '16px', lg: undefined }}
+          order={{ base: 1, lg: 0 }}
         >
           <ScheduleTimeline />
         </Flex>
 
         <Flex
-          width={{ base: 'full', md: '23%' }}
-          mt={{ base: undefined, md: '52px' }}
-          order={{ base: 0, md: 1 }}
+          width={{ base: 'full', lg: '23%' }}
+          mt={{ base: undefined, lg: '52px' }}
+          order={{ base: 0, lg: 1 }}
         >
           <ScheduleStats />
         </Flex>

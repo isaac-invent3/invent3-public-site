@@ -8,6 +8,7 @@ import {
   Tab,
   TabPanel,
   useDisclosure,
+  useMediaQuery,
 } from '@chakra-ui/react';
 import React, { useEffect, useMemo, useState } from 'react';
 import Header from './Header';
@@ -26,6 +27,7 @@ const AssetManagement = () => {
   const [activeFilter, setActiveFilter] = useState<'bulk' | 'general' | null>(
     null
   );
+  const [isDesktop] = useMediaQuery('(min-width: 768px)');
 
   // Handles Toggling the  Filter
   useEffect(() => {
@@ -67,7 +69,7 @@ const AssetManagement = () => {
           <Flex width="full" position="relative">
             <TabList mx={{ base: '16px', md: 0 }} width="full">
               <Tab>List View</Tab>
-              <Tab>Map View</Tab>
+              {isDesktop && <Tab>Map View</Tab>}
             </TabList>
             {tabIndex === 0 && (
               <Flex

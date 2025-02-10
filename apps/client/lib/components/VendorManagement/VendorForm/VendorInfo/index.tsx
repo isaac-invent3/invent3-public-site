@@ -45,7 +45,7 @@ const VendorInfo = (props: VendorInfoProps) => {
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
           <VStack
-            spacing="45px"
+            spacing={{ base: '24px', lg: '45px' }}
             width="full"
             alignItems="flex-start"
             bgColor="white"
@@ -60,9 +60,9 @@ const VendorInfo = (props: VendorInfoProps) => {
             <SimpleGrid
               width="full"
               columns={{ base: 1, md: 2 }}
-              spacing="70px"
+              spacing={{ base: '24px', lg: '70px' }}
             >
-              <VStack width="full" spacing="46px">
+              <VStack width="full" spacing={{ base: '24px', lg: '45px' }}>
                 <VendorName />
                 <VendorCategory />
               </VStack>

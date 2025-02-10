@@ -64,18 +64,13 @@ const InfoSection = (props: InfoSectionProps) => {
       spacing="18px"
       alignItems="flex-start"
     >
-      <Heading
-        color="black"
-        fontSize="30px"
-        fontWeight={800}
-        lineHeight="35.64px"
-      >
+      <Heading color="black" size={{ base: 'lg', md: 'xl' }} fontWeight={800}>
         #{data?.maintenancePlanId} {data?.planName}
       </Heading>
 
       <HStack
         width="full"
-        spacing={{ base: '16px', md: '75px' }}
+        spacing={{ base: '16px', sm: '32px', md: '75px' }}
         alignItems="flex-start"
         flexWrap="wrap"
       >

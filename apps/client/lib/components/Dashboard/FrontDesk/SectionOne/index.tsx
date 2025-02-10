@@ -16,7 +16,7 @@ const SectionOne = () => {
     { skip: !user?.userId }
   );
   return (
-    <SimpleGrid width="full" columns={{base:1, md:2, lg:4}} gap="16px">
+    <SimpleGrid width="full" columns={{ base: 1, sm: 2, lg: 4 }} gap="16px">
       {/* Open Ticket */}
       <OpenTicketSummary
         isLoading={isLoading}

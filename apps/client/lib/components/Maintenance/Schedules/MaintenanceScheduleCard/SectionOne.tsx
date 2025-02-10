@@ -54,10 +54,14 @@ const SectionOne = (props: SectionOneProps) => {
       pb="15px"
       justifyContent="space-between"
       alignItems="flex-start"
-      spacing="43px"
+      spacing={{ base: '16px', lg: '43px' }}
       bgColor="neutral.200"
     >
-      <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} gap="32px" width="100%">
+      <SimpleGrid
+        columns={{ base: 1, sm: 2, lg: 4 }}
+        gap={{ base: '16px', lg: '32px' }}
+        width="100%"
+      >
         {/* Date Starts Here */}
         <VStack spacing="8px" alignItems="flex-start" width="140px">
           <Text color="neutral.600" fontWeight={700}>

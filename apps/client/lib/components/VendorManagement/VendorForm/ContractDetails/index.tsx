@@ -45,7 +45,7 @@ const ContractDetails = (props: ContractDetailsProps) => {
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
           <VStack
-            spacing="45px"
+            spacing={{ base: '24px', lg: '45px' }}
             width="full"
             alignItems="flex-start"
             bgColor="white"
@@ -57,7 +57,11 @@ const ContractDetails = (props: ContractDetailsProps) => {
             minH="60vh"
           >
             <ContractStartEndDate />
-            <SimpleGrid width="full" columns={{ base: 1, md: 2 }} gap="27px">
+            <SimpleGrid
+              width="full"
+              columns={{ base: 1, md: 2 }}
+              gap={{ base: '24px', lg: '27px' }}
+            >
               <ContractValueAndVendorStatus />
               <SLADocuments />
             </SimpleGrid>

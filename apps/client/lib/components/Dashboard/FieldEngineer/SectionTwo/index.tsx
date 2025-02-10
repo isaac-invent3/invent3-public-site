@@ -8,19 +8,19 @@ const SectionTwo = () => {
       width="full"
       minH="354px"
       spacing="16px"
-      flexDir={{ base: 'column', md: 'row' }}
+      flexDir={{ base: 'column', lg: 'row' }}
     >
       <Flex
-        width={{ base: 'full', md: '42%' }}
+        width={{ base: 'full', lg: '42%' }}
         height="full"
-        flexDir={{ base: 'column', md: 'row' }}
+        flexDir={{ base: 'column', lg: 'row' }}
       >
         <AssignedTickets />
       </Flex>
       <Flex
-        width={{ base: 'full', md: '58%' }}
+        width={{ base: 'full', lg: '58%' }}
         height="full"
-        flexDir={{ base: 'column', md: 'row' }}
+        flexDir={{ base: 'column', lg: 'row' }}
       >
         <UpcomingMaintenance />
       </Flex>

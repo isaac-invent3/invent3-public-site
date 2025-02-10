@@ -38,12 +38,7 @@ const OperationManager = () => {
     }
   }, [statsData]);
   return (
-    <Flex
-      width="full"
-      direction="column"
-      pb="24px"
-      px={{ base: '16px', md: 0 }}
-    >
+    <Flex width="full" direction="column" pb="24px">
       <Header>
         <Filter />
       </Header>

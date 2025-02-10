@@ -17,8 +17,8 @@ const Stats = (props: StatsProps) => {
       <Skeleton isLoaded={!isLoading} minW={isLoading ? '40px' : 'min-content'}>
         <Text
           fontWeight={800}
-          fontSize={{ base: '24px', md: '48px' }}
-          lineHeight={{ base: '28.51px', md: '57.02px' }}
+          fontSize={{ base: '24px', xl: '48px' }}
+          lineHeight={{ base: '28.51px', xl: '57.02px' }}
         >
           {value !== undefined ? value.toLocaleString() : '-'}
         </Text>
@@ -64,11 +64,7 @@ const AssetCountStats = () => {
       rounded="8px"
     >
       <HStack
-        divider={
-          <StackDivider
-            border="1px solid #BBBBBB"
-          />
-        }
+        divider={<StackDivider border="1px solid #BBBBBB" />}
         width="full"
         // maxW="620px"
         justifyContent={{ base: 'space-between', lg: 'flex-start' }}

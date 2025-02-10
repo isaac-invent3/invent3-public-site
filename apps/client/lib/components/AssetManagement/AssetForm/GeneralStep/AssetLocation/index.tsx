@@ -48,6 +48,9 @@ const AssetLocation = (props: AssetLocationProps) => {
       title="Location"
       isRequired
       direction={{ base: 'column', md: 'row' }}
+      formSectionCustomStyle={{
+        maxW: { md: '118px' },
+      }}
     >
       <Grid templateColumns="repeat(4, 1fr)" gap="16px" width="full">
         <GridItem colSpan={4}>

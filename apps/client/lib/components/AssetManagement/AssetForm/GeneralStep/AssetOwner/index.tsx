@@ -18,6 +18,9 @@ const AssetOwner = () => {
       title="Owner's Info"
       isRequired
       direction={{ base: 'column', md: 'row' }}
+      formSectionCustomStyle={{
+        maxW: { md: '118px' },
+      }}
     >
       <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} gap="11px" width="full">
         <EmployeeSelect

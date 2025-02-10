@@ -58,6 +58,9 @@ const AssetImages = () => {
         title="Asset Images"
         isRequired
         direction={{ base: 'column', md: 'row' }}
+        formSectionCustomStyle={{
+          maxW: { md: '118px' },
+        }}
       >
         <HStack spacing="12px" alignItems="flex-start" width="full">
           {/* Display */}

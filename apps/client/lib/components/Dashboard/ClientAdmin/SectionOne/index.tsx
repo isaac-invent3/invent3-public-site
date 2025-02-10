@@ -16,7 +16,11 @@ const SectionOne = () => {
     regionId: (selectedState?.value as number) ?? undefined,
   });
   return (
-    <SimpleGrid width="full" spacing="16px" columns={{ base: 1, md: 3, lg: 5 }}>
+    <SimpleGrid
+      width="full"
+      spacing="16px"
+      columns={{ base: 1, sm: 2, md: 3, xl: 5 }}
+    >
       <TotalAssetSummary
         isLoading={isLoading}
         assetInUse={data?.data?.totalAssets}

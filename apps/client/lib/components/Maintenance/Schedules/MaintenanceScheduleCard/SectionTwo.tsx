@@ -53,7 +53,11 @@ const SectionTwo = (props: SectionTwoProps) => {
         pr="16px"
         bgColor="neutral.600"
       >
-        <SimpleGrid columns={{ base: 2, lg: 4 }} gap="32px" width="100%">
+        <SimpleGrid
+          columns={{ base: 2, lg: 4 }}
+          gap={{ base: '16px', lg: '32px' }}
+          width="100%"
+        >
           {dateInfo.map((item, index) => (
             <VStack
               width="full"

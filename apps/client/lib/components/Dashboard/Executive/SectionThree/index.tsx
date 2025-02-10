@@ -4,7 +4,7 @@ import ComplianceRiskAssessment from './ComplianceRiskAssessment';
 
 const SectionThree = () => {
   return (
-    <SimpleGrid width="full" gap="16px" columns={{ base: 1, md: 2 }}>
+    <SimpleGrid width="full" gap="16px" columns={{ base: 1, lg: 2 }}>
       <AssetPerformance />
       <ComplianceRiskAssessment />
     </SimpleGrid>

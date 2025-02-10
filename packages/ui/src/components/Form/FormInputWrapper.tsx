@@ -33,7 +33,7 @@ const FormInputWrapper = (props: FormInputWrapperProps) => {
     >
       <Flex
         width="full"
-        maxW={{ base: 'auto', md: sectionMaxWidth }}
+        maxW={{ base: 'auto', lg: sectionMaxWidth }}
         {...formSectionCustomStyle}
       >
         <FormSectionInfo

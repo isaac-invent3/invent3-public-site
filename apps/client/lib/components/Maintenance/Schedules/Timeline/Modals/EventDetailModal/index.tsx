@@ -45,9 +45,11 @@ const EventDetailModal = (props: EventDetailModalProps) => {
     <Modal isOpen={isOpen} onClose={handleClose} isCentered>
       <ModalOverlay />
       <ModalContent
-        minW={{ base: '90%', lg: '729px' }}
+        maxW={{ base: '90%', lg: '729px' }}
         maxHeight="90%"
+        width="full"
         rounded="4px"
+        overflow="auto"
       >
         <ModalBody p={0} m={0} position="relative">
           <Icon

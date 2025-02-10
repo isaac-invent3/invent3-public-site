@@ -9,7 +9,7 @@ const SectionTwo = () => {
   return (
     <SimpleGrid
       width="full"
-      columns={{ base: 1, md: 2, lg: 4 }}
+      columns={{ base: 1, md: 2, xl: 4 }}
       gap="16px"
       minH="343px"
     >

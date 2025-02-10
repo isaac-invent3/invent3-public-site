@@ -47,7 +47,10 @@ const AcquisitionDateConditon = () => {
             title="Acquisition Date"
             isRequired
             direction={{ base: 'column', md: 'row' }}
-            formSectionCustomStyle={{ display: { lg: 'none' } }}
+            formSectionCustomStyle={{
+              maxW: { md: '130px' },
+              display: { lg: 'none' },
+            }}
           >
             <FormDatePicker
               name="acquisitionDate"
@@ -65,6 +68,10 @@ const AcquisitionDateConditon = () => {
               title="Asset Condition"
               isRequired
               direction={{ base: 'column', md: 'row' }}
+              formSectionCustomStyle={{
+                maxW: { md: '130px' },
+                display: { lg: 'none' },
+              }}
             >
               <GenericAsyncSelect
                 selectName="conditionId"
@@ -89,6 +96,10 @@ const AcquisitionDateConditon = () => {
               title="Asset Status"
               isRequired
               direction={{ base: 'column', md: 'row' }}
+              formSectionCustomStyle={{
+                maxW: { md: '130px' },
+                display: { lg: 'none' },
+              }}
             >
               <AssetStatusSelect />
             </FormInputWrapper>

@@ -12,6 +12,9 @@ const ParentAsset = () => {
       title="Parent Asset"
       isRequired
       direction={{ base: 'column', md: 'row' }}
+      formSectionCustomStyle={{
+        maxW: { md: '118px' },
+      }}
     >
       <Grid
         templateColumns={{

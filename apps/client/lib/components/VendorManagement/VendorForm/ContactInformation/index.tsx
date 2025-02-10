@@ -53,7 +53,7 @@ const ContactInformation = (props: ContactInformationProps) => {
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
           <VStack
-            spacing="40px"
+            spacing={{ base: '24px', lg: '40px' }}
             width="full"
             alignItems="flex-start"
             bgColor="white"
@@ -68,7 +68,7 @@ const ContactInformation = (props: ContactInformationProps) => {
             <SimpleGrid
               width="full"
               columns={{ base: 1, md: 2 }}
-              spacing="50px"
+              spacing={{ base: '24px', lg: '50px' }}
             >
               <FormInputWrapper
                 sectionMaxWidth="157px"

@@ -52,7 +52,7 @@ const VendorTable = (props: VendorTableProps) => {
   } = props;
 
   const columnHelper = createColumnHelper<Vendor>();
-  const [isMobile] = useMediaQuery('(max-width: 480px)');
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
 
   const columns = useMemo(
     () => {

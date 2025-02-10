@@ -50,12 +50,12 @@ const Overview = () => {
       bgColor="#B4BFCA4D"
       spacing={{ base: '12px', md: '24px' }}
       alignItems="flex-start"
-      overflow='scroll'
+      overflow="scroll"
+      flexWrap="wrap"
     >
       <Flex
-        h={{ base: '100px', md: '175px' }}
-        width="30%"
-        maxW="216px"
+        h={{ base: '89px', sm: '175px' }}
+        width={{ base: '111px', sm: '216px' }}
         rounded="16px"
         bgColor="white"
         overflow="hidden"
@@ -71,7 +71,7 @@ const Overview = () => {
           bgColor="neutral.200"
         />
       </Flex>
-      <VStack alignItems="flex-start" width="full" spacing="16px">
+      <VStack alignItems="flex-start" spacing="16px">
         <Heading as="h3" fontSize="32px" lineHeight="38.02px" fontWeight={800}>
           {vendorName}
         </Heading>

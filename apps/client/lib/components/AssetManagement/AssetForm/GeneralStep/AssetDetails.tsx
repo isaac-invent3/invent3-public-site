@@ -12,6 +12,9 @@ const AssetDetail = () => {
       title="Details"
       isRequired
       direction={{ base: 'column', md: 'row' }}
+      formSectionCustomStyle={{
+        maxW: { md: '118px' },
+      }}
     >
       <SimpleGrid width="full" columns={{ base: 1, md: 3, lg: 4 }} gap="11px">
         <Field as={FormTextInput} name="brandName" type="text" label="Make" />

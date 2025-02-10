@@ -76,6 +76,7 @@ const CompanyManagement = () => {
     <VStack
       width="full"
       height="full"
+      minH="350px"
       pl="16px"
       pr="15px"
       pt="21px"

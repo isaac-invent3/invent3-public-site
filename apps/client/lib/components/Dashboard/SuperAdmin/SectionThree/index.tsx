@@ -8,7 +8,7 @@ const SectionThree = () => {
       spacing="16px"
       width="full"
       minH="409px"
-      columns={{ base: 1, md: 2 }}
+      columns={{ base: 1, lg: 2 }}
     >
       <CompanyManagement />
       <UserActivity />

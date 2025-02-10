@@ -7,7 +7,7 @@ const SectionOne = () => {
   return (
     <SimpleGrid
       width="full"
-      columns={{ base: 1, md: 2 }}
+      columns={{ base: 1, lg: 2 }}
       gap="16px"
       px={{ base: '16px', md: 0 }}
     >

@@ -103,7 +103,7 @@ const Maintenance = (props: MaintenanceProps) => {
             </Flex>
           )}
 
-          <TabPanels px={{ base: '16px', md: 0 }}>
+          <TabPanels>
             <TabPanel>
               {tabIndex === 0 && <Plans search={search} openFilter={isOpen} />}
             </TabPanel>

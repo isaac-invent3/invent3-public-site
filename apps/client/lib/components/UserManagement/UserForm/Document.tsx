@@ -1,13 +1,13 @@
-import { Flex, HStack, VStack } from '@chakra-ui/react';
+import { Flex, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 
-import { documentSchema } from '~/lib/schemas/asset/main.schema';
+import { FormActionButtons, FormInputWrapper } from '@repo/ui/components';
+import { Document } from '~/lib/interfaces/general.interfaces';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import { FormActionButtons, FormSectionInfo } from '@repo/ui/components';
+import { updateUserForm } from '~/lib/redux/slices/UserSlice';
+import { documentSchema } from '~/lib/schemas/asset/main.schema';
 import { ROUTES } from '~/lib/utils/constants';
 import DocumentUploadAndView from '../../Common/DocumentUploadAndView';
-import { Document } from '~/lib/interfaces/general.interfaces';
-import { updateUserForm } from '~/lib/redux/slices/UserSlice';
 
 interface DocumentStepProps {
   activeStep: number;
@@ -60,14 +60,13 @@ const DocumentStep = (props: DocumentStepProps) => {
             spacing="51px"
             minH="60vh"
           >
-            <HStack width="full" alignItems="flex-start" spacing="81px">
-              <Flex width="full" maxW="141px">
-                <FormSectionInfo
-                  title="Upload Documents"
-                  info="Attach related files for this user"
-                  isRequired={false}
-                />
-              </Flex>
+            <FormInputWrapper
+              title="Upload Documents"
+              description="Attach related files for this user"
+              isRequired={false}
+              customSpacing="81px"
+              sectionMaxWidth="141px"
+            >
               <DocumentUploadAndView
                 variant="primary"
                 handleRemoveDocuments={(document) =>
@@ -83,7 +82,7 @@ const DocumentStep = (props: DocumentStepProps) => {
                 setError={(error) => formik.setErrors({ documents: error })}
                 error={formik.errors.documents as string}
               />
-            </HStack>
+            </FormInputWrapper>
           </VStack>
           <Flex width="full" mt="16px">
             <FormActionButtons

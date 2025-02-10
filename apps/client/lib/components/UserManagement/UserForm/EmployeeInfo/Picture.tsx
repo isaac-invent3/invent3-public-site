@@ -10,22 +10,20 @@ import {
 import React, { useMemo } from 'react';
 import { useField } from 'formik';
 import { AddIcon, CircularCloseIcon } from '~/lib/components/CustomIcons';
-import { ErrorMessage, FormSectionInfo } from '@repo/ui/components';
+import { ErrorMessage, FormInputWrapper } from '@repo/ui/components';
 
 const Picture = () => {
   const [field, meta, helpers] = useField('picture'); //eslint-disable-line
 
   return useMemo(
     () => (
-      <HStack width="full" alignItems="flex-start" spacing="104px">
-        <Flex width="full" maxW="118px">
-          <FormSectionInfo
-            title="Picture"
-            info="Size max: 10MB each Format: JPG, PNG"
-            isRequired
-            maxWidth="118px"
-          />
-        </Flex>
+      <FormInputWrapper
+        title="Picture"
+        description="Size max: 10MB each Format: JPG, PNG"
+        isRequired
+        sectionMaxWidth="118px"
+        customSpacing="104px"
+      >
         <HStack spacing="12px" alignItems="flex-start" width="full">
           {/* Display */}
           {meta.value && (
@@ -156,7 +154,7 @@ const Picture = () => {
             </HStack>
           )}
         </HStack>
-      </HStack>
+      </FormInputWrapper>
     ),
     [meta.value, meta.error, meta.touched] //eslint-disable-line
   );

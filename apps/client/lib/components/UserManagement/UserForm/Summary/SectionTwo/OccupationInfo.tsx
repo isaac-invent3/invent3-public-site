@@ -1,5 +1,4 @@
 import { HStack, SimpleGrid, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
 import SummaryInfo from '~/lib/components/Common/SummaryInfo';
 import DetailHeader from '~/lib/components/UI/DetailHeader';
 import { useAppSelector } from '~/lib/redux/hooks';
@@ -36,12 +35,12 @@ const OccupationInfo = () => {
     <VStack width="full">
       <DetailHeader variant="primary">Occupation Info</DetailHeader>
       <VStack width="full" spacing="20px">
-        <SimpleGrid width="full" gap="20px" columns={2}>
+        <SimpleGrid width="full" gap="20px" columns={{ base: 1, md: 2 }}>
           {infoOne.map((item, index) => (
             <SummaryInfo {...item} key={index} />
           ))}
         </SimpleGrid>
-        <SimpleGrid width="full" gap="20px" columns={2}>
+        <SimpleGrid width="full" gap="20px" columns={{ base: 1, md: 2 }}>
           <SummaryInfo label="User Role" value={userRoleName} />
 
           <VStack width="full" spacing="4px" alignItems="flex-start">

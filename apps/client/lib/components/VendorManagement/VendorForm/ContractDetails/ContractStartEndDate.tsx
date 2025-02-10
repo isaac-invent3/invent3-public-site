@@ -1,10 +1,9 @@
 import { SimpleGrid } from '@chakra-ui/react';
 import { FormDatePicker, FormInputWrapper } from '@repo/ui/components';
-import React from 'react';
 
 const ContractStartEndDate = () => {
   return (
-    <SimpleGrid width="full" columns={2} spacing="27px">
+    <SimpleGrid width="full" columns={{ base: 1, md: 2 }} spacing="27px">
       <FormInputWrapper
         sectionMaxWidth="141px"
         customSpacing="24px"

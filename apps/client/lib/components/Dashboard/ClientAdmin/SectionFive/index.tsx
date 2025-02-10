@@ -1,15 +1,27 @@
 import { Flex, HStack } from '@chakra-ui/react';
-import React from 'react';
-import VendorManagement from './VendorManagement';
 import UserActivity from './UserActivity';
+import VendorManagement from './VendorManagement';
 
 const SectionFive = () => {
   return (
-    <HStack spacing="16px" width="full" minH="382px">
-      <Flex width="54%" height="full">
+    <HStack
+      spacing="16px"
+      width="full"
+      minH={{ md: '382px' }}
+      flexDir={{ base: 'column', md: 'row' }}
+    >
+      <Flex
+        width={{ base: 'full', md: '54%' }}
+        height="full"
+        flexDir={{ base: 'column', md: 'row' }}
+      >
         <VendorManagement />
       </Flex>
-      <Flex width="45%" height="full">
+      <Flex
+        width={{ base: 'full', md: '45%' }}
+        height="full"
+        flexDir={{ base: 'column', md: 'row' }}
+      >
         <UserActivity />
       </Flex>
     </HStack>

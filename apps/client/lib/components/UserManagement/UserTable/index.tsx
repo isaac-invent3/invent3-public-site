@@ -2,11 +2,11 @@ import { Flex, Text, useMediaQuery, VStack } from '@chakra-ui/react';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useMemo } from 'react';
-import PopoverAction from './PopoverAction';
 import { GenericTableProps } from '~/lib/interfaces/general.interfaces';
 import { User } from '~/lib/interfaces/user.interfaces';
-import GenericStatusBox from '../../UI/GenericStatusBox';
 import UserInfo from '../../Common/UserInfo';
+import GenericStatusBox from '../../UI/GenericStatusBox';
+import PopoverAction from './PopoverAction';
 
 interface UserTableProps extends GenericTableProps {
   data: User[];
@@ -38,45 +38,6 @@ const UserTable = (props: UserTableProps) => {
   const [isMobile] = useMediaQuery('(max-width: 768px)');
 
   const columnHelper = createColumnHelper<User>();
-
-  const mobileColumns = useMemo(
-    () => {
-      const baseColumns = [
-        columnHelper.accessor('userId', {
-          cell: (info) => info.getValue(),
-          header: 'User ID',
-          enableSorting: false,
-        }),
-
-        columnHelper.accessor('residentialAddress', {
-          cell: (info) => (
-            <UserInfo
-              name={`${info.row.original.firstName} ${info.row.original.lastName}`}
-              role="Admin Officer"
-            />
-          ),
-          header: 'Name',
-          enableSorting: true,
-        }),
-        columnHelper.accessor('stateName', {
-          cell: () => {
-            return <GenericStatusBox text="Active" colorCode="#07CC3B" />;
-          },
-          header: 'Status',
-          enableSorting: false,
-        }),
-
-        columnHelper.accessor('guid', {
-          cell: (info) => <PopoverAction user={info.row.original} />,
-          header: '',
-          enableSorting: false,
-        }),
-      ];
-
-      return baseColumns;
-    },
-    [[data]] //eslint-disable-line
-  );
 
   const columns = useMemo(
     () => {
@@ -144,6 +105,46 @@ const UserTable = (props: UserTableProps) => {
           header: 'Hired Date',
           enableSorting: false,
         }),
+        columnHelper.accessor('stateName', {
+          cell: () => {
+            return <GenericStatusBox text="Active" colorCode="#07CC3B" />;
+          },
+          header: 'Status',
+          enableSorting: false,
+        }),
+
+        columnHelper.accessor('guid', {
+          cell: (info) => <PopoverAction user={info.row.original} />,
+          header: '',
+          enableSorting: false,
+        }),
+      ];
+
+      return baseColumns;
+    },
+    [[data]] //eslint-disable-line
+  );
+
+  const mobileColumns = useMemo(
+    () => {
+      const baseColumns = [
+        columnHelper.accessor('userId', {
+          cell: (info) => info.getValue(),
+          header: 'User ID',
+          enableSorting: false,
+        }),
+
+        columnHelper.accessor('residentialAddress', {
+          cell: (info) => (
+            <UserInfo
+              name={`${info.row.original.firstName} ${info.row.original.lastName}`}
+              role="Admin Officer"
+            />
+          ),
+          header: 'User',
+          enableSorting: true,
+        }),
+
         columnHelper.accessor('stateName', {
           cell: () => {
             return <GenericStatusBox text="Active" colorCode="#07CC3B" />;

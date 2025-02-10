@@ -1,7 +1,7 @@
 import { Flex } from '@chakra-ui/react';
 
-import RecentAsset from './RecentAsset';
 import CTA from './CTA';
+import RecentAsset from './RecentAsset';
 
 const SectionFour = () => {
   return (

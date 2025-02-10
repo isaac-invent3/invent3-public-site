@@ -1,11 +1,17 @@
 import { Grid, GridItem } from '@chakra-ui/react';
-import React from 'react';
-import AssetDistribution from './AssetDistribution';
 import RecentAsset from '../../OperationManager/SectionFour/RecentAsset';
+import AssetDistribution from './AssetDistribution';
 
 const SectionThree = () => {
   return (
-    <Grid templateColumns="repeat(3, 1fr)" width="full" gap="16px" minH="345px">
+    <Grid
+      templateColumns="repeat(3, 1fr)"
+      width="full"
+      gap="16px"
+      minH={{ md: '345px' }}
+      display={{ base: 'flex', lg: 'grid' }}
+      flexDir={{ base: 'column', lg: 'row' }}
+    >
       <GridItem colSpan={2}>
         <RecentAsset />
       </GridItem>

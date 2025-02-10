@@ -44,6 +44,7 @@ const PendingTask = (props: PendingTaskProps) => {
         justifyContent="space-between"
         alignItems="flex-start"
         height="full"
+        width="full"
         spacing={0}
       >
         <HStack alignItems="flex-end" spacing="4px">
@@ -62,7 +63,7 @@ const PendingTask = (props: PendingTaskProps) => {
             Total Task
           </Text>
         </HStack>
-        <HStack spacing="4px" justifyContent="space-between" width="full">
+        <HStack spacing="4px" width="full" justifyContent="space-between">
           <ChartLegend
             chartLegendItems={chartLegendItems}
             containerStyle={{
@@ -74,7 +75,7 @@ const PendingTask = (props: PendingTaskProps) => {
               whiteSpace: 'nowrap',
             }}
           />
-          <Flex>
+          <Flex width="80px">
             <DoughtnutChart
               labels={chartLegendItems.map((item) => item.label)}
               datasets={[

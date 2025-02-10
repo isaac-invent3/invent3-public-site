@@ -13,7 +13,11 @@ import { formatNumberShort } from '~/lib/utils/helperFunctions';
 const SectionOne = () => {
   const { data, isLoading } = useGetSuperAdminDashboardStatQuery();
   return (
-    <SimpleGrid width="full" gap="16px" columns={5}>
+    <SimpleGrid
+      width="full"
+      gap="16px"
+      columns={{ base: 1, sm: 2, md: 3, xl: 5 }}
+    >
       <SummaryCard
         title="Total Asset Managed Under Management"
         icon={AssetManagementIcon}

@@ -23,7 +23,12 @@ const UserForm = (props: UserFormProps) => {
   const [activeStep, setActiveStep] = useState(1);
 
   return (
-    <Flex width="full" direction="column" pb="24px">
+    <Flex
+      width="full"
+      direction="column"
+      pb="24px"
+      px={{ base: '16px', md: 0 }}
+    >
       <PageHeader>
         {type === 'create' ? 'Add New User' : 'Edit User'}
       </PageHeader>

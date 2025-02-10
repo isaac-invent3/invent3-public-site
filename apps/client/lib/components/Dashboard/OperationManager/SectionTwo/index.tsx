@@ -1,11 +1,12 @@
 import { Flex } from '@chakra-ui/react';
 
-import MeanTime from './MeanTime';
-import MaintenanceCostGraph from './MaintenanceCostGraph';
 import AssetSummary from './AssetSummary';
+import MaintenanceCostGraph from './MaintenanceCostGraph';
+import MeanTime from './MeanTime';
 
 const SectionTwo = () => {
   return (
+
     <Flex
       width="full"
       gap="16px"

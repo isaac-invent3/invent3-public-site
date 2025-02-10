@@ -69,7 +69,10 @@ const VendorDetails = () => {
             title="Vendor Details"
             isRequired={false}
             direction={{ base: 'column', md: 'row' }}
-            formSectionCustomStyle={{ display: { lg: 'none' } }}
+            formSectionCustomStyle={{
+              maxW: { md: '130px' },
+              display: { lg: 'none' },
+            }}
           >
             <GenericAsyncSelect
               selectName="vendorId"
@@ -132,6 +135,9 @@ const VendorDetails = () => {
             title="Asset Type"
             isRequired
             direction={{ base: 'column', md: 'row' }}
+            formSectionCustomStyle={{
+              maxW: { md: '130px' },
+            }}
           >
             <AssetTypeSelect
               selectName="assetTypeId"

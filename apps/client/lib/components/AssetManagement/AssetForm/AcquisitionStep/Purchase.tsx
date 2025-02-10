@@ -31,7 +31,10 @@ const PurchasePrice = () => {
             title="Purchase Price"
             isRequired
             direction={{ base: 'column', md: 'row' }}
-            formSectionCustomStyle={{ display: { lg: 'none' } }}
+            formSectionCustomStyle={{
+              maxW: { md: '130px' },
+              display: { lg: 'none' },
+            }}
           >
             <Field
               as={FormTextInput}
@@ -49,6 +52,9 @@ const PurchasePrice = () => {
             title="Resale Value"
             isRequired={false}
             direction={{ base: 'column', md: 'row' }}
+            formSectionCustomStyle={{
+              maxW: { md: '130px' },
+            }}
           >
             <Field
               as={FormTextInput}
@@ -66,6 +72,9 @@ const PurchasePrice = () => {
             title="Scrap Value"
             isRequired={false}
             direction={{ base: 'column', md: 'row' }}
+            formSectionCustomStyle={{
+              maxW: { md: '130px' },
+            }}
           >
             <Field
               as={FormTextInput}

@@ -24,6 +24,9 @@ const AssetDimension = () => {
       title="Dimension"
       isRequired
       direction={{ base: 'column', md: 'row' }}
+      formSectionCustomStyle={{
+        maxW: { md: '118px' },
+      }}
     >
       <SimpleGrid
         width="full"

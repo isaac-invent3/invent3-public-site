@@ -62,7 +62,6 @@ const MaintenancePlanStep = (props: MaintenancePlanStepProps) => {
               description="Specify the Plan for asset upkeep"
               title="Maintenance Plan"
               isRequired={false}
-              direction={{ base: 'column', md: 'row' }}
             >
               <VStack width="full" spacing="27px" overflow="auto">
                 <VStack width="full" spacing="8px" overflow="auto">

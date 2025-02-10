@@ -76,13 +76,17 @@ const VendorInfo = () => {
         Vendor Info / Contact Information
       </DetailHeader>
       <VStack width="full" spacing="20px">
-        <SimpleGrid width="full" gap="20px" columns={3}>
+        <SimpleGrid
+          width="full"
+          gap="20px"
+          columns={{ base: 1, setMaxListeners: 2, lg: 3 }}
+        >
           {infoOne.map((item, index) => (
             <SummaryInfo {...item} key={index} />
           ))}
         </SimpleGrid>
         <SummaryInfo label="Description" value={description} />
-        <SimpleGrid width="full" gap="20px" columns={3}>
+        <SimpleGrid width="full" gap="20px" columns={{ base: 1, sm: 2, lg: 3 }}>
           {infoTwo.map((item, index) => (
             <SummaryInfo {...item} key={index} />
           ))}

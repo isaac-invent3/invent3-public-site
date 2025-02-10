@@ -9,14 +9,13 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { CheckBox } from '@repo/ui/components';
-import React from 'react';
 import { ChevronDownIcon } from '~/lib/components/CustomIcons';
-import { Permission } from './Permission';
 import { Module } from '~/lib/interfaces/module.interfaces';
-import { useGetAllSubModulesQuery } from '~/lib/redux/services/modules.services';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import { checkIfModuleIsSelected } from '../../utils';
+import { useGetAllSubModulesQuery } from '~/lib/redux/services/modules.services';
 import { updateFormRoleModules } from '~/lib/redux/slices/RoleSlice';
+import { checkIfModuleIsSelected } from '../../utils';
+import { Permission } from './Permission';
 
 const ModuleItem = ({ data }: { data: Module }) => {
   const { systemModuleContextTypeId, moduleContextTypeName, description } =
@@ -82,7 +81,7 @@ const ModuleItem = ({ data }: { data: Module }) => {
           rowGap="20px"
           py="24px"
           px="32px"
-          columns={2}
+          columns={{ base: 1, md: 2 }}
           maxW="80%"
         >
           {isLoading

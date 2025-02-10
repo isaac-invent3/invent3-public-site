@@ -5,7 +5,12 @@ import React from 'react';
 
 const ContactName = () => {
   return (
-    <SimpleGrid width="full" columns={2} spacing="50px">
+    <SimpleGrid
+      width="full"
+      columns={{ base: 1, md: 2 }}
+      spacing={{ base: '24px', lg: '50px' }}
+      alignItems={{ base: 'flex-end', lg: 'flex-start' }}
+    >
       <FormInputWrapper
         sectionMaxWidth="157px"
         customSpacing="65px"

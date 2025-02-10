@@ -11,7 +11,7 @@ const ContractValueAndVendorStatus = () => {
   const dispatch = useAppDispatch();
 
   return (
-    <VStack spacing="35px" alignItems="flex-start">
+    <VStack spacing={{ base: '24px', lg: '35px' }} alignItems="flex-start">
       <FormInputWrapper
         sectionMaxWidth="141px"
         customSpacing="24px"

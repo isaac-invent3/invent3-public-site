@@ -11,7 +11,7 @@ const FullName = () => {
       title="Full Name"
       isRequired
     >
-      <SimpleGrid columns={3} gap="11px" width="full">
+      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap="11px" width="full">
         <Field
           as={FormTextInput}
           name="firstName"

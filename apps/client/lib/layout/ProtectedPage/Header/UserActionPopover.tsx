@@ -40,7 +40,12 @@ const ActionButton = (props: ActionButtonProps) => {
       cursor="pointer"
       onClick={handleClick}
     >
-      <Icon as={icon} boxSize="26px" color="neutral.600" rounded="8px" />
+      <Icon
+        as={icon}
+        boxSize={{ base: '20px', md: '26px' }}
+        color="neutral.600"
+        rounded="8px"
+      />
 
       <Text size="md" color="primary.500">
         {name}
@@ -159,22 +164,27 @@ const UserActionPopover = () => {
           }}
         >
           <PopoverHeader
-            py="24px"
+            py={{ base: '12px', md: '24px' }}
             px="20px"
             bgImage="/header-popover-bg.png"
             bgSize="cover"
-            height="98px"
+            height={{ base: '55px', md: '98px' }}
           >
             <HStack spacing="10px">
               <Avatar
-                width="50px"
-                height="50px"
+                width={{ base: '30px', md: '50px' }}
+                height={{ base: '30px', md: '50px' }}
                 src=""
                 border="2.4px solid white"
                 name={data?.user.name ?? ''}
+                size={{ base: 'sm', md: 'md' }}
               />
               <VStack alignItems="flex-start" spacing={0}>
-                <Text color="white" size="lg" fontWeight={700}>
+                <Text
+                  color="white"
+                  size={{ base: 'md', md: 'lg' }}
+                  fontWeight={700}
+                >
                   {data?.user?.name}
                 </Text>
                 <Text
@@ -188,7 +198,7 @@ const UserActionPopover = () => {
               </VStack>
             </HStack>
           </PopoverHeader>
-          <PopoverBody pt="32px" pb="20px" px="20px">
+          <PopoverBody pt={{ base: '16px', md: '32px' }} pb="20px" px="20px">
             <VStack alignItems="flex-start" spacing="8px">
               <ActionButton
                 icon={UserProfileIcon}

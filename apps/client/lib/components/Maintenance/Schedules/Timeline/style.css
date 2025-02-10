@@ -36,6 +36,14 @@
     justify-content: center;
   }
 
+  .rbc-timeslot-group {
+    min-height: 60px !important;
+  }
+
+  .rbc-time-header-content{
+    min-width: 546px !important;
+  }
+
   .rbc-label {
     color: #838383;
     text-align: center;

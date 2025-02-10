@@ -1,7 +1,7 @@
 import { SimpleGrid, Skeleton } from '@chakra-ui/react';
 
-import PieChartWithInfo from './PieChartWIthInfo';
 import { AssetStatsCummalative } from '~/lib/interfaces/asset/stats.interfaces';
+import PieChartWithInfo from './PieChartWIthInfo';
 
 interface PieChartStatsProps {
   isLoading: boolean;
@@ -36,7 +36,7 @@ const PieChartStats = (props: PieChartStatsProps) => {
   ];
 
   return (
-    <SimpleGrid columns={2} width="full" gap="16px">
+    <SimpleGrid columns={{ base: 1, md: 2 }} width="full" gap="16px">
       {isLoading
         ? Array(4)
             .fill('')

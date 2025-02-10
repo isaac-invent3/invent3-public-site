@@ -1,7 +1,7 @@
 import { Flex } from '@chakra-ui/react';
 
-import AssetsInRegion from './AssetsInRegion';
 import UpcomingMaintenance from '../../Common/UpcomingMaintenance';
+import AssetsInRegion from './AssetsInRegion';
 
 const SectionThree = () => {
   return (

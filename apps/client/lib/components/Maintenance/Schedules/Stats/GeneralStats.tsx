@@ -61,7 +61,7 @@ const GeneralStats = (props: GeneralStatsProps) => {
   return (
     <SimpleGrid
       width="full"
-      columns={2}
+      columns={{ base: 1, md: 2 }}
       rounded="8px"
       bgColor="white"
       px="16px"

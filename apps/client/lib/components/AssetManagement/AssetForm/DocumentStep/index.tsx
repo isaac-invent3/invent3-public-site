@@ -59,7 +59,6 @@ const DocumentStep = (props: DocumentStepProps) => {
               description="Attach related files for this asset"
               title="Upload Documents"
               isRequired={false}
-              direction={{ base: 'column', md: 'row' }}
             >
               <AddDocument
                 variant={isMobile ? 'secondary' : 'primary'}

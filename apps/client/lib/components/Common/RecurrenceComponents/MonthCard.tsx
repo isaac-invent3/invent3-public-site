@@ -11,7 +11,7 @@ const MonthCard = (props: MonthCardProps) => {
   const { selectedDays, handleSelectDay } = props;
   return (
     <SimpleGrid
-      columns={7}
+      columns={{base:5, md:7}}
       rowGap="12px"
       columnGap="4px"
       width="full"

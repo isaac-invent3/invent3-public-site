@@ -55,23 +55,35 @@ const RoleManagement = () => {
           onChange={(index) => handleTabChange(index)}
           index={tabIndex}
         >
-          <Flex width="full" position="relative">
+          <Flex
+            width="full"
+            position="relative"
+            direction={{ base: 'column', lg: 'row' }}
+            gap="16px"
+            px={{ base: '16px', md: 0 }}
+          >
             <TabList>
               {ALlTabs.map((item, index) => (
                 <Tab key={index}>{item}</Tab>
               ))}
             </TabList>
-            <Flex position="absolute" right={0} bottom="8px">
+            <Flex
+              position={{ base: 'static', lg: 'absolute' }}
+              right={0}
+              bottom={{ lg: '8px' }}
+            >
               <HStack spacing="16px" width="full">
                 <SearchInput
                   setSearch={setSearch}
                   placeholderText="Search..."
+                  containerStyle={{ minW: { base: 'full', lg: 'max-content' } }}
+                  customStyle={{ minW: { base: 'full', lg: '363px' } }}
                 />
               </HStack>
             </Flex>
           </Flex>
 
-          <TabPanels>
+          <TabPanels mt={{ base: '16px', md: 0 }}>
             <TabPanel>
               {tabIndex === 0 && <UserRole search={search} />}
             </TabPanel>

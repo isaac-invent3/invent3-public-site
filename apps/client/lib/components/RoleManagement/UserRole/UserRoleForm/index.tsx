@@ -80,7 +80,12 @@ const UserRoleForm = () => {
 
   return (
     <>
-      <Flex width="full" direction="column" pb="24px">
+      <Flex
+        width="full"
+        direction="column"
+        pb="24px"
+        px={{ base: '16px', md: 0 }}
+      >
         <PageHeader>Add New Role</PageHeader>
         <Flex width="full" height="full" direction="column" mt="32px">
           <FormikProvider value={formik}>

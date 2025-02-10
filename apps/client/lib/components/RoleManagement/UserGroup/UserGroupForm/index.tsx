@@ -31,7 +31,12 @@ const UserGroupForm = () => {
   });
 
   return (
-    <Flex width="full" direction="column" pb="24px">
+    <Flex
+      width="full"
+      direction="column"
+      pb="24px"
+      px={{ base: '16px', md: 0 }}
+    >
       <PageHeader>Add New User Group</PageHeader>
       <Flex width="full" height="full" direction="column" mt="32px">
         <FormikProvider value={formik}>
@@ -49,7 +54,7 @@ const UserGroupForm = () => {
                 columns={{ base: 1, md: 2 }}
                 width="full"
                 px="24px"
-                gap="73px"
+                gap={{ base: '24px', lg: '73px' }}
               >
                 <FormInputWrapper
                   sectionMaxWidth="141px"
@@ -76,9 +81,19 @@ const UserGroupForm = () => {
                   isRequired
                 >
                   <HStack justifyContent="space-between" width="full">
-                    <AvatarGroup size="sm" max={3}>
+                    <AvatarGroup
+                      size="sm"
+                      max={3}
+                      display={selectedUser.length > 0 ? 'flex' : 'none'}
+                    >
                       {selectedUser.map((item, index) => (
-                        <Avatar name={item} src="" key={index} />
+                        <Avatar
+                          name={item}
+                          src=""
+                          key={index}
+                          width="44px"
+                          height="44px"
+                        />
                       ))}
                     </AvatarGroup>
                     <UserDisplayAndAddButton

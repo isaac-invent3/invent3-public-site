@@ -1,4 +1,4 @@
-import { Avatar, AvatarGroup, Flex } from '@chakra-ui/react';
+import { Avatar, AvatarGroup, Flex, useMediaQuery } from '@chakra-ui/react';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useMemo } from 'react';
@@ -27,6 +27,41 @@ const UserGroupTable = (props: UserGroupTableProps) => {
   } = props;
 
   const columnHelper = createColumnHelper<UserGroup>();
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
+
+  const mobileColumns = useMemo(
+    () => {
+      const baseColumns = [
+        columnHelper.accessor('groupName', {
+          cell: (info) => info.getValue(),
+          header: 'User Group',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('userGroupId', {
+          cell: () => 'John Doe',
+          header: 'Owner',
+          enableSorting: true,
+        }),
+        columnHelper.accessor('groupId', {
+          cell: () => {
+            return <GenericStatusBox text="Active" colorCode="#07CC3B" />;
+          },
+          header: 'Status',
+          enableSorting: false,
+        }),
+
+        columnHelper.accessor('userId', {
+          cell: (info) => <PopoverAction group={info.row.original} />,
+          header: '',
+          enableSorting: false,
+        }),
+      ];
+
+      return baseColumns;
+    },
+    [[data]] //eslint-disable-line
+  );
+
   const columns = useMemo(
     () => {
       const baseColumns = [
@@ -98,7 +133,7 @@ const UserGroupTable = (props: UserGroupTableProps) => {
   return (
     <Flex width="full">
       <DataTable
-        columns={columns}
+        columns={isMobile ? mobileColumns : columns}
         data={data ?? []}
         isLoading={isLoading}
         isFetching={isFetching}

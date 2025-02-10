@@ -1,4 +1,4 @@
-import { Flex, Text } from '@chakra-ui/react';
+import { Flex, Text, useMediaQuery } from '@chakra-ui/react';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useMemo } from 'react';
@@ -26,8 +26,42 @@ const RoleTable = (props: RoleTableProps) => {
     setPageNumber,
     setPageSize,
   } = props;
-
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
   const columnHelper = createColumnHelper<Role>();
+
+  const mobileColumns = useMemo(
+    () => {
+      const baseColumns = [
+        columnHelper.accessor('roleName', {
+          cell: (info) => info.getValue(),
+          header: 'Role',
+          enableSorting: false,
+        }),
+
+        columnHelper.accessor('lastModifiedDate', {
+          cell: () => <Text color="blue.500">10</Text>,
+          header: 'Accounts',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('roleId', {
+          cell: () => {
+            return <GenericStatusBox text="Active" colorCode="#07CC3B" />;
+          },
+          header: 'Status',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('guid', {
+          cell: (info) => <PopoverAction role={info.row.original} />,
+          header: '',
+          enableSorting: false,
+        }),
+      ];
+
+      return baseColumns;
+    },
+    [[data]] //eslint-disable-line
+  );
+
   const columns = useMemo(
     () => {
       const baseColumns = [
@@ -77,7 +111,7 @@ const RoleTable = (props: RoleTableProps) => {
   return (
     <Flex width="full">
       <DataTable
-        columns={columns}
+        columns={isMobile ? mobileColumns : columns}
         data={data ?? []}
         isLoading={isLoading}
         isFetching={isFetching}

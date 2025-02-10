@@ -38,8 +38,8 @@ const RoleTable = (props: RoleTableProps) => {
           enableSorting: false,
         }),
 
-        columnHelper.accessor('lastModifiedDate', {
-          cell: () => <Text color="blue.500">10</Text>,
+        columnHelper.accessor('noOfAssociatedUsers', {
+          cell: (info) => <Text color="blue.500">{info.getValue()}</Text>,
           header: 'Accounts',
           enableSorting: false,
         }),
@@ -50,7 +50,7 @@ const RoleTable = (props: RoleTableProps) => {
           header: 'Status',
           enableSorting: false,
         }),
-        columnHelper.accessor('guid', {
+        columnHelper.accessor('currentStatusId', {
           cell: (info) => <PopoverAction role={info.row.original} />,
           header: '',
           enableSorting: false,
@@ -70,33 +70,36 @@ const RoleTable = (props: RoleTableProps) => {
           header: 'Role',
           enableSorting: false,
         }),
-
-        columnHelper.accessor('lastModifiedDate', {
-          cell: () => <Text color="blue.500">10</Text>,
+        columnHelper.accessor('noOfAssociatedUsers', {
+          cell: (info) => <Text color="blue.500">{info.getValue()}</Text>,
           header: 'Accounts',
           enableSorting: false,
         }),
-
-        columnHelper.accessor('isNew', {
-          cell: () => '05',
+        columnHelper.accessor('noOfAssignedSystemModuleContextTypes', {
+          cell: (info) => info.getValue(),
           header: 'Modules',
           enableSorting: true,
         }),
-        columnHelper.accessor('createdDate', {
+        columnHelper.accessor('dateCreated', {
           cell: (info) =>
             dateFormatter(info.getValue(), 'DD / MM / YYYY') ?? 'N/A',
           header: 'Date Created',
           enableSorting: false,
         }),
-        columnHelper.accessor('roleId', {
-          cell: () => {
-            return <GenericStatusBox text="Active" colorCode="#07CC3B" />;
+        columnHelper.accessor('currentStatusId', {
+          cell: (info) => {
+            return (
+              <GenericStatusBox
+                text={info.row.original.currentStatusName}
+                colorCode={info.row.original.currentStatusDisplayColorCode}
+              />
+            );
           },
           header: 'Status',
           enableSorting: false,
         }),
 
-        columnHelper.accessor('guid', {
+        columnHelper.accessor('currentStatusDisplayColorCode', {
           cell: (info) => <PopoverAction role={info.row.original} />,
           header: '',
           enableSorting: false,

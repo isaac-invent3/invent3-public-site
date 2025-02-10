@@ -13,6 +13,7 @@ import {
   UserConfigurationPayload,
   UserDesignation,
   UserGroup,
+  UserGroupInfoHeader,
   UserGroupMember,
   UserPasswordChangeQuery,
 } from '~/lib/interfaces/user.interfaces';
@@ -28,6 +29,8 @@ export const userApi = createApi({
     'userProfile',
     'allUserConfigurationOptions',
     'userDetail',
+    'userGroups',
+    'allUserGroupInfoHeaders',
   ],
   endpoints: (builder) => ({
     getAllUsers: builder.query<
@@ -50,7 +53,18 @@ export const userApi = createApi({
         method: 'GET',
         headers: getHeaders(),
       }),
-      providesTags: ['allUsers'],
+      providesTags: ['userGroups'],
+    }),
+    getAllUserGroupsInfoHeader: builder.query<
+      BaseApiResponse<ListResponse<UserGroupInfoHeader>>,
+      QueryParams
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/UserGroups/GetUserGroupsInfoHeaders?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allUserGroupInfoHeaders'],
     }),
     getAllUserDesignations: builder.query<
       BaseApiResponse<ListResponse<UserDesignation>>,
@@ -176,4 +190,5 @@ export const {
   useGetAllUserDesignationsQuery,
   useSearchUserDesignationMutation,
   useGetAllUserGroupsQuery,
+  useGetAllUserGroupsInfoHeaderQuery,
 } = userApi;

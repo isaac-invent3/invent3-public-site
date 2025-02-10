@@ -3,10 +3,10 @@ import { Text, VStack } from '@chakra-ui/react';
 import { GenericPopover } from '@repo/ui/components';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { ROUTES } from '~/lib/utils/constants';
-import { UserGroup } from '~/lib/interfaces/user.interfaces';
+import { UserGroupInfoHeader } from '~/lib/interfaces/user.interfaces';
 
 interface PopoverActionProps {
-  group: UserGroup;
+  group: UserGroupInfoHeader;
 }
 
 const PopoverAction = ({ group }: PopoverActionProps) => {

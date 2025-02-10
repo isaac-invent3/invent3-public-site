@@ -57,6 +57,18 @@ interface UserGroup {
   isDeleted: boolean;
 }
 
+interface UserGroupInfoHeader {
+  groupId: number;
+  groupName: string;
+  noOfAssociatedUsers: number;
+  owner: string;
+  dateCreated: string;
+  currentStatusId: number;
+  currentStatusName: string;
+  currentStatusDisplayColorCode: string;
+  isDeleted: boolean;
+}
+
 interface UserGroupMember {
   rowId: number;
   userId: number;
@@ -214,4 +226,5 @@ export type {
   UserFilter,
   UserFormDetails,
   UserDesignation,
+  UserGroupInfoHeader,
 };

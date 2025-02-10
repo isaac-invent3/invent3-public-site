@@ -27,7 +27,18 @@ export const rolesApi = createApi({
       QueryParams
     >({
       query: (data) => ({
-        url: generateQueryStr(`/Roles?`, data),
+        url: generateQueryStr(`/UserRoles/GetUserRolesInfoHeaders?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allRoles'],
+    }),
+    getAllUserGroups: builder.query<
+      BaseApiResponse<ListResponse<Role>>,
+      QueryParams
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/UserRoles/GetUserRolesInfoHeaders?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),

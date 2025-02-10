@@ -1,11 +1,4 @@
-import {
-  Grid,
-  HStack,
-  Icon,
-  Text,
-  useMediaQuery,
-  VStack,
-} from '@chakra-ui/react';
+import { Grid, HStack, Icon, Text, VStack } from '@chakra-ui/react';
 import { AiOutlineFilePdf } from 'react-icons/ai';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
 import Detail from '../../UI/ContentDetails/Detail';
@@ -21,7 +14,6 @@ const ContractOverview = () => {
       value: dateFormatter(new Date(), 'Do MMM, YYYY'),
     },
   ];
-  const [isMobile] = useMediaQuery('(max-width: 480px)');
 
   return (
     <VStack width="full" spacing="16px">

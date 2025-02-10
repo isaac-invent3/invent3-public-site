@@ -1,4 +1,4 @@
-import { HStack, Icon, Stack } from '@chakra-ui/react';
+import { Icon, Stack } from '@chakra-ui/react';
 
 import { Button } from '@repo/ui/components';
 import PageHeader from '../UI/PageHeader';

@@ -1,4 +1,3 @@
-import { SimpleGrid } from '@chakra-ui/react';
 import { FormInputWrapper, FormTextInput } from '@repo/ui/components';
 import { Field } from 'formik';
 

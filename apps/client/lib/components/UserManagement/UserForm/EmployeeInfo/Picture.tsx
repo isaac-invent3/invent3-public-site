@@ -10,7 +10,7 @@ import {
 import React, { useMemo } from 'react';
 import { useField } from 'formik';
 import { AddIcon, CircularCloseIcon } from '~/lib/components/CustomIcons';
-import { ErrorMessage, FormInputWrapper, FormSectionInfo } from '@repo/ui/components';
+import { ErrorMessage, FormInputWrapper } from '@repo/ui/components';
 
 const Picture = () => {
   const [field, meta, helpers] = useField('picture'); //eslint-disable-line

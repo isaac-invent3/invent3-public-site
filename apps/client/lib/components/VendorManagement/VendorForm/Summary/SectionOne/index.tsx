@@ -1,4 +1,4 @@
-import { Flex, HStack, Stack, Text, VStack } from '@chakra-ui/react';
+import { Flex, Stack, Text, VStack } from '@chakra-ui/react';
 import Image from 'next/image';
 import DocumentSummaryView from '~/lib/components/Common/DocumentUploadAndView/DocumentSummaryView';
 import DetailHeader from '~/lib/components/UI/DetailHeader';

@@ -1,11 +1,7 @@
-import { Flex, HStack, VStack } from '@chakra-ui/react';
+import { Flex, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 
-import {
-  FormActionButtons,
-  FormInputWrapper,
-  FormSectionInfo,
-} from '@repo/ui/components';
+import { FormActionButtons, FormInputWrapper } from '@repo/ui/components';
 import { Document } from '~/lib/interfaces/general.interfaces';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateUserForm } from '~/lib/redux/slices/UserSlice';

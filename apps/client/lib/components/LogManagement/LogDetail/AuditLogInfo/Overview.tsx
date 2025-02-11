@@ -1,4 +1,4 @@
-import { Heading, HStack, Text, VStack } from '@chakra-ui/react';
+import { Heading, HStack, Stack, Text, VStack } from '@chakra-ui/react';
 import { isEmpty } from 'lodash';
 import { useAppSelector } from '~/lib/redux/hooks';
 
@@ -34,7 +34,7 @@ const Overview = () => {
       value: 'johndoe@invent3.com',
     },
     {
-      label: 'User Email',
+      label: 'User Role',
       value: 'Super Admin',
     },
   ];
@@ -43,17 +43,22 @@ const Overview = () => {
     <HStack
       width="full"
       pt="24px"
-      pb="59px"
-      px="32px"
+      pb={{ base: '24px', lg: '59px' }}
+      px={{ base: '16px', lg: '32px' }}
       bgColor="#B4BFCA4D"
       spacing="40px"
       alignItems="flex-start"
     >
       <VStack alignItems="flex-start" width="full" spacing="15px">
-        <Heading as="h3" fontSize="32px" lineHeight="38.02px" fontWeight={800}>
+        <Heading as="h3" size={{ base: 'lg', md: 'xl' }} fontWeight={800}>
           Action: Update Vendor Details
         </Heading>
-        <HStack width="full" spacing="59px" alignItems="flex-start">
+        <Stack
+          width="full"
+          spacing={{ base: '16px', md: '59px' }}
+          alignItems="flex-start"
+          direction={{ base: 'column', md: 'row' }}
+        >
           <VStack alignItems="flex-start" spacing="16px">
             {logInfo1.map((info, index) => (
               <HStack spacing="8px" alignItems="flex-start" key={index}>
@@ -78,7 +83,7 @@ const Overview = () => {
               </HStack>
             ))}
           </VStack>
-        </HStack>
+        </Stack>
       </VStack>
     </HStack>
   );

@@ -31,7 +31,7 @@ const SideBar = (props: SideBarProps) => {
       direction="column"
       width={{
         base: isCollapse ? '0px' : '249px',
-        md: isCollapse ? '65px' : '249px',
+        md: isCollapse ? '80px' : '249px',
       }}
       mt="8px"
       ml="8px"
@@ -55,7 +55,7 @@ const SideBar = (props: SideBarProps) => {
         <LogoSection isCollapse={isCollapse} />
         {/* Logo Section Ends */}
         {/* Navigation Menu */}
-        <VStack width="full" spacing="8px" px={isCollapse ? '0' : '24px'}>
+        <VStack width="full" spacing="8px" px={isCollapse ? '0' : '0px'}>
           {sideBarData.map((item) => (
             <NavItem {...item} key={item.name} isCollapse={isCollapse} />
           ))}

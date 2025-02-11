@@ -1,4 +1,4 @@
-import { SimpleGrid, Text } from '@chakra-ui/react';
+import { SimpleGrid, Skeleton, Text } from '@chakra-ui/react';
 import React from 'react';
 import SummaryCardWrapper from '../../Common/SummaryCardWrapper';
 import {
@@ -6,45 +6,55 @@ import {
   TaskIcon,
   TicketIcon,
 } from '../../CustomIcons/Dashboard';
+import { useGetAuditRecordSummaryQuery } from '~/lib/redux/services/log.services';
 
 const SummaryCards = () => {
+  const { data, isLoading } = useGetAuditRecordSummaryQuery();
   return (
-    <SimpleGrid width="full" gap="16px" columns={4}>
+    <SimpleGrid width="full" gap="16px" columns={{ base: 1, sm: 2, lg: 4 }}>
       <SummaryCardWrapper
-        title="Open Ticket"
+        title="Total Logs Recorded"
         icon={TicketIcon}
         containerStyle={{ minH: '164px' }}
       >
-        <Text size="xl" fontWeight={800} color="primary.500">
-          9000
-        </Text>
+        <Skeleton isLoaded={!isLoading} minW="30px" minH="30px">
+          <Text size="xl" fontWeight={800} color="primary.500">
+            {data?.data?.totalAuditsRecorded}
+          </Text>
+        </Skeleton>
       </SummaryCardWrapper>
       <SummaryCardWrapper
-        title="Open Ticket"
+        title="Critical Events"
         icon={TicketIcon}
         containerStyle={{ minH: '164px' }}
       >
-        <Text size="xl" fontWeight={800} color="red.500">
-          900
-        </Text>
+        <Skeleton isLoaded={!isLoading} minW="30px" minH="30px">
+          <Text size="xl" fontWeight={800} color="red.500">
+            {data?.data?.criticalEvents}
+          </Text>
+        </Skeleton>
       </SummaryCardWrapper>
       <SummaryCardWrapper
-        title="Open Ticket"
+        title="Most Active Users"
         icon={MaintenanceIcon}
         containerStyle={{ minH: '164px' }}
       >
-        <Text size="xl" fontWeight={800} color="primary.500">
-          20
-        </Text>
+        <Skeleton isLoaded={!isLoading} minW="30px" minH="30px">
+          <Text size="xl" fontWeight={800} color="primary.500">
+            {data?.data?.mostActiveUsers}
+          </Text>
+        </Skeleton>
       </SummaryCardWrapper>
       <SummaryCardWrapper
-        title="Open Ticket"
+        title="Recent Alerts"
         icon={TaskIcon}
         containerStyle={{ minH: '164px' }}
       >
-        <Text size="xl" fontWeight={800} color="primary.500">
-          460
-        </Text>
+        <Skeleton isLoaded={!isLoading} minW="30px" minH="30px">
+          <Text size="xl" fontWeight={800} color="primary.500">
+            {data?.data?.recentAlerts}
+          </Text>
+        </Skeleton>
       </SummaryCardWrapper>
     </SimpleGrid>
   );

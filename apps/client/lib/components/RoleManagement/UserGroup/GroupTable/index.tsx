@@ -83,11 +83,7 @@ const UserGroupTable = (props: UserGroupTableProps) => {
                 {Array(info.getValue())
                   .fill('')
                   .map((item, index) => (
-                    <Avatar
-                      name=""
-                      src="https://bit.ly/ryan-florence"
-                      key={index}
-                    />
+                    <Avatar name="" src="" key={index} />
                   ))}
               </AvatarGroup>
             );

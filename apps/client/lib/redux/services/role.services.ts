@@ -46,7 +46,7 @@ export const rolesApi = createApi({
     }),
     getRoleById: builder.query<BaseApiResponse<Role>, { id: number }>({
       query: ({ id }) => ({
-        url: `/Roles/${id}`,
+        url: `/UserRoles/GetUserRoleInfoHeaders/${id}`,
         method: 'GET',
         headers: getHeaders(),
       }),

@@ -5,7 +5,7 @@ import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
 import GenericErrorState from '../../UI/GenericErrorState';
-import { useGetLogByIdQuery } from '~/lib/redux/services/log.services';
+import { useGetAuditRecordByIdQuery } from '~/lib/redux/services/log.services';
 import { setAuditLog } from '~/lib/redux/slices/AuditLogSlice';
 import LogHeader from './Header';
 import AuditLogInfo from './AuditLogInfo';
@@ -26,7 +26,7 @@ const LogDetail = ({ isOpen, onClose }: LogDetailProps) => {
     ? Number(getSearchParam(logSlug))
     : null;
 
-  const { data: logData, isLoading } = useGetLogByIdQuery(
+  const { data: logData, isLoading } = useGetAuditRecordByIdQuery(
     { id: logId! },
     {
       skip: !logId || Boolean(selectedAuditLog),
@@ -75,11 +75,19 @@ const LogDetail = ({ isOpen, onClose }: LogDetailProps) => {
 
       {log && (
         <>
-          <DrawerHeader px="32px" pt="16px" pb="29px">
+          <DrawerHeader
+            px={{ base: '16px', lg: '32px' }}
+            pt="16px"
+            pb={{ base: '16px', lg: '29px' }}
+          >
             <LogHeader handleBack={closeDrawer} />
           </DrawerHeader>
           <DrawerBody p={0}>
-            <VStack width="full" alignItems="flex-start" spacing="59px">
+            <VStack
+              width="full"
+              alignItems="flex-start"
+              spacing={{ base: '24px', lg: '59px' }}
+            >
               <AuditLogInfo />
               <AuditLogTabs />
             </VStack>

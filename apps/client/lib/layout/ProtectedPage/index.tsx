@@ -51,8 +51,8 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
         )}
       </HStack>
       <Flex
-        width={{ base: 'full', md: 'calc(100vw - 73px)' }}
-        ml={{ md: '73px' }}
+        width={{ base: 'full', md: 'calc(100vw - 88px)' }}
+        ml={{ md: '88px' }}
         px={{ base: 0, md: '24px' }}
         pt="32px"
         direction="column"

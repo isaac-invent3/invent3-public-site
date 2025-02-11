@@ -20,6 +20,16 @@ const Dashboard: SideBarData = {
   route: ROUTES.DASHBOARD,
   icon: DashboardIcon,
   permissionKey: 'dashboard',
+  children: [
+    {
+      name: 'Executive',
+      route: 'dashboard?view=executive',
+    },
+    {
+      name: 'Manager',
+      route: 'dashboard?view=manager',
+    },
+  ],
 };
 
 const sideBarData: SideBarData[] = [

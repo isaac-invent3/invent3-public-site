@@ -5,21 +5,8 @@
 import 'next-auth';
 import 'next-auth/jwt';
 
-export interface UserPermission {
-  rowId: number;
-  routeName: string;
-  routePath: string;
-  roleRouteId: number;
-  roleRouteGuid: string;
-  createPermission: boolean;
-  readPermission: boolean;
-  updatePermission: boolean;
-  deletePermission: boolean;
-  isDeleted: boolean;
-  roleId: number;
-  roleName: string;
-  routeSetId: number;
-  routeSetName: string;
+interface AccessibleRoute {
+  [name: string]: string;
 }
 
 declare module 'next-auth' {
@@ -29,14 +16,14 @@ declare module 'next-auth' {
     lastName: string | null | undefined;
     username: string | undefined;
     email: string | null | undefined;
-    role: string;
+    role: string[];
     accessToken: string;
     refreshToken: string;
     tokenType: string;
     apiKey: string;
     expiresIn: number;
     sessionId: number;
-    roleRoutePermissions: UserPermission[];
+    roleSystemModuleContextPermissions: AccessibleRoute;
   }
   interface Session {
     user: User;
@@ -47,8 +34,8 @@ declare module 'next-auth' {
 declare module 'next-auth/jwt' {
   interface JWT {
     id: number;
-    role: string;
+    role: string[];
   }
 }
 
-export type { UserPermission };
+export type { AccessibleRoute };

@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Flex, HStack, ModalBody, VStack } from '@chakra-ui/react';
+import { Flex, HStack, ModalBody, SimpleGrid, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 import { useState } from 'react';
 import { locationSchema } from '~/lib/schemas/asset/location.schema';
@@ -17,9 +17,9 @@ import Shelf from './Shelf';
 import { resetDependentFields, resetFormikFields } from './utility';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
-import LGASelect from '../../LGASelect';
-import StateSelect from '../../StateSelect';
-import CountrySelect from '../../CountrySelect';
+import LGASelect from '../../../../../../Common/SelectComponents/Location/LGASelect';
+import StateSelect from '../../../../../../Common/SelectComponents/Location/StateSelect';
+import CountrySelect from '../../../../../../Common/SelectComponents/Location/CountrySelect';
 
 interface LocationModalProps {
   isOpen: boolean;
@@ -140,7 +140,11 @@ const LocationModal = (props: LocationModalProps) => {
       <ModalBody p={0} m={0} width="full">
         <FormikProvider value={formik}>
           <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
-            <VStack width="full" spacing="32px" p="40px">
+            <VStack
+              width="full"
+              spacing="32px"
+              p={{ base: '24px', md: '40px' }}
+            >
               <ModalHeading
                 heading="Add Location"
                 subheading=" You are required to add atleast 4 levels for the asset location"
@@ -148,7 +152,12 @@ const LocationModal = (props: LocationModalProps) => {
 
               {/* Main Form Starts Here */}
               <VStack width="full" spacing="16px">
-                <HStack width="full" alignItems="flex-start" spacing="8px">
+                <SimpleGrid
+                  width="full"
+                  alignItems="flex-start"
+                  spacing="8px"
+                  columns={{ base: 3 }}
+                >
                   <CountrySelect
                     handleSelect={(option) => {
                       handleReadableLocation(option, 'country');
@@ -167,7 +176,7 @@ const LocationModal = (props: LocationModalProps) => {
                     }
                     type="specificById"
                   />
-                </HStack>
+                </SimpleGrid>
                 <HStack width="full" spacing="16px">
                   <Facility
                     handleReadableLocation={handleReadableLocation}

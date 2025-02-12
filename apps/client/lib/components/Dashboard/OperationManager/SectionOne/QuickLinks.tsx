@@ -29,12 +29,12 @@ const QuickLinks = () => {
       height="full"
       p="16px"
       alignItems="flex-start"
-      spacing="24px"
+      spacing={{ base: '16px', lg: '24px' }}
       bgColor="white"
       rounded="8px"
     >
       <CardHeader>Quick Links:</CardHeader>
-      <HStack flexWrap="wrap">
+      <HStack flexWrap="wrap" spacing="16px">
         {LinkData.map((item, index) => (
           <Button
             key={index}

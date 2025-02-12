@@ -8,6 +8,7 @@ const AssetDistribution = () => {
     <VStack
       width="full"
       height="full"
+      minH="350px"
       p="20px"
       alignItems="flex-start"
       spacing="16px"

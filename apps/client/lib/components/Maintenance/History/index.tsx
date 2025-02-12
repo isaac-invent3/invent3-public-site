@@ -13,7 +13,7 @@ import {
   useSearchScheduleInstanceMutation,
 } from '~/lib/redux/services/maintenance/scheduleInstance.services';
 import PopoverAction from './PopoverAction';
-import { Flex, useDisclosure } from '@chakra-ui/react';
+import { Flex, useDisclosure, useMediaQuery } from '@chakra-ui/react';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import TaskInstanceListView from '../../TaskManagement/Drawers/TaskListDrawer/TaskInstanceListView';
 import { generateSearchCriterion } from '@repo/utils';
@@ -52,6 +52,7 @@ const MaintenanceHistory = (props: MaintenanceHistoryProp) => {
     pageNumber: currentPage,
     statusId: +appConfigValues?.DEFAULT_COMPLETED_TASK_STATUS_ID!,
   });
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
   const [filterData, setFilterData] =
     useState<ScheduleFilter>(initialFilterData);
   const { getSearchParam } = useCustomSearchParams();
@@ -165,6 +166,42 @@ const MaintenanceHistory = (props: MaintenanceHistoryProp) => {
     }
   }, [maintenanceScheduleInstanceId]);
 
+  const mobileColumns = useMemo(
+    () => {
+      const baseColumns = [
+        columnHelper.accessor('maintenancePlanId', {
+          cell: (info) => info.getValue() ?? 'N/A',
+          header: 'Plan ID',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('planName', {
+          cell: (info) => info.getValue() ?? 'N/A',
+          header: 'Plan Name',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('maintenanceType', {
+          cell: (info) => info.getValue() ?? 'N/A',
+          header: 'Maintenance Type',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('scheduleInstanceName', {
+          cell: (info) => info.getValue(),
+          header: 'Schedule Name',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('rowId', {
+          cell: (info) => PopoverAction(info.row.original),
+
+          header: '',
+          enableSorting: false,
+        }),
+      ];
+
+      return baseColumns;
+    },
+    [data?.data?.items] //eslint-disable-line
+  );
+
   const columns = useMemo(
     () => {
       const baseColumns = [
@@ -253,7 +290,7 @@ const MaintenanceHistory = (props: MaintenanceHistoryProp) => {
         </Flex>
       )}
       <DataTable
-        columns={columns}
+        columns={isMobile ? mobileColumns : columns}
         data={
           (search || !isFilterEmpty) && searchData
             ? searchData.items
@@ -285,7 +322,6 @@ const MaintenanceHistory = (props: MaintenanceHistoryProp) => {
           paddingBottom: '16px',
         }}
         customTBodyRowStyle={{ verticalAlign: 'top' }}
-        customTableContainerStyle={{ rounded: 'none' }}
       />
       {maintenanceScheduleInstanceId && (
         <TaskInstanceListView

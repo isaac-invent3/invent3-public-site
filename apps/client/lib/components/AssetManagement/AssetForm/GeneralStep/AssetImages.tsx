@@ -18,7 +18,7 @@ import {
   InfoIcon,
 } from '~/lib/components/CustomIcons';
 import { AssetFormImage } from '~/lib/interfaces/asset/general.interface';
-import { FormSectionInfo } from '@repo/ui/components';
+import { FormInputWrapper } from '@repo/ui/components';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 
@@ -51,15 +51,17 @@ const AssetImages = () => {
 
   return useMemo(
     () => (
-      <HStack width="full" alignItems="flex-start" spacing="104px">
-        <Flex width="full" maxW="118px">
-          <FormSectionInfo
-            title="Asset Images"
-            info="Size max: 10MB each Format: JPG, PNG"
-            isRequired
-            maxWidth="118px"
-          />
-        </Flex>
+      <FormInputWrapper
+        sectionMaxWidth="118px"
+        customSpacing="104px"
+        description="Size max: 10MB each Format: JPG, PNG"
+        title="Asset Images"
+        isRequired
+        direction={{ base: 'column', md: 'row' }}
+        formSectionCustomStyle={{
+          maxW: { md: '118px' },
+        }}
+      >
         <HStack spacing="12px" alignItems="flex-start" width="full">
           {/* Display */}
           {meta.value.length >= 1 && (
@@ -74,8 +76,8 @@ const AssetImages = () => {
                   }
                   bgSize="cover"
                   bgRepeat="no-repeat"
-                  width="100px"
-                  height="75px"
+                  width={{ base: '73px', md: '100px' }}
+                  height={{ base: '51px', md: '75px' }}
                   rounded="8px"
                   position="relative"
                   role="group"
@@ -211,13 +213,13 @@ const AssetImages = () => {
                       : '#F6F6F6'
                   }
                   color="primary.500"
-                  width="140px"
-                  height="75px"
+                  width={{ base: '90px', md: '140px' }}
+                  height={{ base: '51px', md: '75px' }}
                   rounded="8px"
                   cursor="pointer"
                 >
                   <Icon as={AddIcon} boxSize="18px" />
-                  <Text>Add Images</Text>
+                  <Text size={{ base: 'xs', md: 'base' }}>Add Images</Text>
                 </HStack>
               </label>
               <FormErrorMessage
@@ -235,7 +237,7 @@ const AssetImages = () => {
             </FormControl>
           </HStack>
         </HStack>
-      </HStack>
+      </FormInputWrapper>
     ),
     [meta.value, meta.error, meta.touched] //eslint-disable-line
   );

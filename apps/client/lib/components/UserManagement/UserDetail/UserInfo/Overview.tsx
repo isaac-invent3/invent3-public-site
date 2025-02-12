@@ -1,4 +1,4 @@
-import { Avatar, Heading, HStack, Text, VStack } from '@chakra-ui/react';
+import { Avatar, Heading, HStack, Stack, Text, VStack } from '@chakra-ui/react';
 import { isEmpty } from 'lodash';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import { useAppSelector } from '~/lib/redux/hooks';
@@ -52,38 +52,40 @@ const Overview = () => {
   const name = `${firstName} ${lastName}`;
 
   return (
-    <HStack
+    <Stack
       width="full"
-      pt="24px"
+      direction={{ base: 'column', sm: 'row' }}
+      pt={{ base: '18px', md: '24px' }}
       pb="19px"
-      px="32px"
+      px={{ base: '16px', md: '32px' }}
       bgColor="#B4BFCA4D"
-      spacing="40px"
+      spacing={{ base: '16px', md: '40px' }}
       alignItems="flex-start"
     >
-      <Avatar width="176px" height="176px" name={name} size="lg" />
+      <Avatar
+        width={{ base: '75px', lg: '176px' }}
+        height={{ base: '75px', lg: '176px' }}
+        name={name}
+        size="lg"
+      />
       <VStack alignItems="flex-start" width="full" spacing="16px">
         <HStack spacing="29px">
-          <Heading
-            as="h3"
-            fontSize="32px"
-            lineHeight="38.02px"
-            fontWeight={800}
-          >
+          <Heading as="h3" size={{ base: 'lg', md: 'xl' }} fontWeight={800}>
             {name}
           </Heading>
           <GenericStatusBox text="Active" colorCode="#07CC3B" />
         </HStack>
-        <HStack
+        <Stack
           width="full"
-          spacing="32px"
+          direction={{ base: 'column', md: 'row' }}
+          spacing={{ base: '8px', md: '32px' }}
           alignItems="flex-start"
           justifyContent="space-between"
         >
           <VStack alignItems="flex-start" spacing="8px">
             {userInfo1.map((info, index) => (
               <HStack spacing="16px" alignItems="flex-start" key={index}>
-                <Text color="neutral.600" minW="90px" size="md">
+                <Text color="neutral.600" minW="95px" size="md">
                   {info.label}:
                 </Text>
                 <Text color="black" size="md">
@@ -95,7 +97,11 @@ const Overview = () => {
           <VStack alignItems="flex-start" spacing="8px">
             {userInfo2.map((info, index) => (
               <HStack spacing="16px" alignItems="flex-start" key={index}>
-                <Text color="neutral.600" minW="64px" size="md">
+                <Text
+                  color="neutral.600"
+                  minW={{ base: '95px', md: '64px' }}
+                  size="md"
+                >
                   {info.label}:
                 </Text>
                 <Text color="black" size="md">
@@ -104,9 +110,9 @@ const Overview = () => {
               </HStack>
             ))}
           </VStack>
-        </HStack>
+        </Stack>
       </VStack>
-    </HStack>
+    </Stack>
   );
 };
 

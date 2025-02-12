@@ -4,11 +4,12 @@ import { ComponentWithAs, Flex, Icon, IconProps } from '@chakra-ui/react';
 interface HeaderIconProps {
   icon: ComponentWithAs<'svg', IconProps>;
   size: string;
+  handleClick?: () => void;
 }
 
 const HeaderIcon = React.forwardRef<HTMLDivElement, HeaderIconProps>(
   (props, ref) => {
-    const { icon, size, ...rest } = props;
+    const { icon, size, handleClick, ...rest } = props;
     return (
       <Flex
         ref={ref}
@@ -20,6 +21,7 @@ const HeaderIcon = React.forwardRef<HTMLDivElement, HeaderIconProps>(
         alignItems="center"
         flexShrink={0}
         cursor="pointer"
+        onClick={handleClick}
         {...rest}
       >
         <Icon as={icon} boxSize={size} color="neutral.600" />

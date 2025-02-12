@@ -6,14 +6,14 @@ import {
   Tooltip,
   VStack,
 } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
-import { dateFormatter } from '~/lib/utils/Formatters';
+import { useEffect, useState } from 'react';
 import {
   parseOccurrences,
   summaryText,
 } from '~/lib/components/Common/HelperFunctions/RecurrenceSummary';
-import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
 import { InfoIcon } from '~/lib/components/CustomIcons';
+import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
+import { dateFormatter } from '~/lib/utils/Formatters';
 
 function isTextOverflowing(elementId: string) {
   const element = document.getElementById(elementId);
@@ -54,10 +54,14 @@ const SectionOne = (props: SectionOneProps) => {
       pb="15px"
       justifyContent="space-between"
       alignItems="flex-start"
-      spacing="43px"
+      spacing={{ base: '16px', lg: '43px' }}
       bgColor="neutral.200"
     >
-      <SimpleGrid columns={3} gap="32px" width="80%">
+      <SimpleGrid
+        columns={{ base: 1, sm: 2, lg: 4 }}
+        gap={{ base: '16px', lg: '32px' }}
+        width="100%"
+      >
         {/* Date Starts Here */}
         <VStack spacing="8px" alignItems="flex-start" width="140px">
           <Text color="neutral.600" fontWeight={700}>
@@ -138,16 +142,21 @@ const SectionOne = (props: SectionOneProps) => {
         </VStack>
         {/* Contact Ends Here */}
         {/* SLA and Action Button */}
+        <VStack
+          spacing="8px"
+          alignItems="flex-start"
+          justifySelf={{ lg: 'end' }}
+        >
+          <Text color="neutral.600" fontWeight={700}>
+            SLA:
+          </Text>
+          <Text fontWeight={800}>
+            {data?.sla
+              ? `${data?.sla} Hour ${data?.sla > 1 ? 's' : ''}`
+              : 'N/A'}
+          </Text>
+        </VStack>
       </SimpleGrid>
-
-      <VStack spacing="8px" alignItems="flex-start" pr="20px">
-        <Text color="neutral.600" fontWeight={700}>
-          SLA:
-        </Text>
-        <Text fontWeight={800}>
-          {data?.sla ? `${data?.sla} Hour ${data?.sla > 1 ? 's' : ''}` : 'N/A'}
-        </Text>
-      </VStack>
     </HStack>
   );
 };

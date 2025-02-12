@@ -1,4 +1,4 @@
-import { HStack, Switch, Text, VStack } from '@chakra-ui/react';
+import { HStack, Switch, Text, useMediaQuery, VStack } from '@chakra-ui/react';
 import React from 'react';
 import SectionWrapper from '../Common/SectionWrapper';
 import { Select } from '@repo/ui/components';
@@ -40,6 +40,7 @@ const generalInfo = [
 const GeneralTab = () => {
   const { submitButton } = useUpdateConfigurationOptions();
   const dispatch = useAppDispatch();
+  const [isMobile] = useMediaQuery('(max-width: 480px)');
   const formConfigurationOptions = useAppSelector(
     (state) => state.user.formConfigurationOptions
   );
@@ -61,15 +62,16 @@ const GeneralTab = () => {
         width="full"
         alignItems="flex-start"
         bgColor="white"
-        p="24px"
+        p={{ base: '16px', md: '24px' }}
         pt="32px"
-        rounded="6px"
-        minH="60vh"
+        rounded={{ md: '6px' }}
+        minH={{ base: '60vh' }}
       >
         <SectionWrapper
           title="Automatic Time Zone"
           subtitle="Choose the category and the sub-category"
           sectionInfoWidth="212px"
+          sectionInfoStyle={{ maxW: { base: '60%', md: '212px' } }}
         >
           <HStack spacing="16px">
             <Switch
@@ -87,12 +89,12 @@ const GeneralTab = () => {
                 )
               }
             />
-            <Text color="black" size="md">
+            <Text color="black" size="md" whiteSpace="nowrap">
               GMT +01:00
             </Text>
           </HStack>
         </SectionWrapper>
-        <VStack width="full" spacing="24px">
+        <VStack width="full" spacing="32px">
           {generalInfo.map((item, index) => {
             const existingInfo = _.intersection(
               existingSystemConfigurationOptionIds,
@@ -106,12 +108,18 @@ const GeneralTab = () => {
                 subtitle={item.subtitle}
                 sectionInfoWidth="212px"
                 key={index}
+                spacing={{ base: '8px', sm: '24px' }}
+                direction={{ base: 'column', sm: 'row' }}
+                sectionInfoStyle={{ maxW: { base: '100%', sm: '212px' } }}
               >
                 <Select
                   title={item.title}
                   options={item.options}
                   selectedOption={selectedOption}
-                  containerStyles={{ width: '179px', height: '36px' }}
+                  containerStyles={{
+                    width: isMobile ? '100%' : '179px',
+                    height: '36px',
+                  }}
                   selectStyles={{ height: '46px', pt: '0px' }}
                   showTitleAfterSelect={false}
                   handleSelect={(option) =>

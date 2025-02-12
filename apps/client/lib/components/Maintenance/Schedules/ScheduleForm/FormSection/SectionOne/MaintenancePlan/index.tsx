@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import CustomizedPlanModal from '~/lib/components/Maintenance/Plans/Drawers/CustomizedplanDrawer';
 import PlanDetailsModal from '~/lib/components/Maintenance/Plans/Drawers/PlanDetailDrawer';
 import InfoCard from '~/lib/components/UI/InfoCard';
-import { ErrorMessage, FormSectionInfo } from '@repo/ui/components';
+import { ErrorMessage, FormInputWrapper, FormSectionInfo } from '@repo/ui/components';
 import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useGetAllMaintenancePlansByAssetIdQuery } from '~/lib/redux/services/maintenance/plan.services';
@@ -125,74 +125,76 @@ const Plan = () => {
     : []; // Filter out -1 values
 
   return (
-    <HStack width="full" alignItems="flex-start" spacing="81px">
-      <Flex width="full" maxW="130px">
-        <FormSectionInfo
-          title="Maintenance Plan"
-          info="Choose the plan for routine maintenance tasks."
-          isRequired
-        />
-      </Flex>
-      <VStack
-        width="full"
-        alignItems="flex-start"
-        spacing="27px"
-        overflowX="auto"
+    <>
+      <FormInputWrapper
+        title="Maintenance Plan"
+        description="Choose the plan for routine maintenance tasks."
+        isRequired
+        customSpacing="81px"
+        sectionMaxWidth="130px"
       >
-        <MaintenancePlanTable
-          data={data?.data?.items ?? []}
-          isLoading={isLoading || isFetching}
-          handleSelectRow={setSelectedPlan}
-          pageSize={pageSize}
-          setPageSize={setPageSize}
-          pageNumber={pageNumber}
-          setPageNumber={setPageNumber}
-          selectedRows={selectedRows}
-          setSelectedRows={setSelectedRows}
-          totalPages={data?.data.totalPages}
-          showFooter={data?.data?.hasPreviousPage || data?.data?.hasNextPage}
-          emptyLines={2}
-          isSelectable={true}
-          disabledRows={defaultPlanIndices}
-          PopoverComponent={(data) => View(data)}
-          showEmptyState={false}
-        />
-        {data?.data && !isLoading && !isFetching && showCustomizedButton && (
-          <Text
-            color="neutral.800"
-            fontWeight={700}
-            width="full"
-            textAlign="center"
-          >
-            This asset has no customized plan.{' '}
-            <Text
-              fontWeight={700}
-              as="span"
-              color="#0366EF"
-              textDecoration="underline"
-              cursor="pointer"
-              onClick={onOpen}
-            >
-              Create a customized plan
-            </Text>
-          </Text>
-        )}
-        {data?.data && !isLoading && !isFetching && (
-          <InfoCard
-            infoText="  Default Plan cannot be edited. A new schedule can only be added to
-              a customized plan"
+        <VStack
+          width="full"
+          alignItems="flex-start"
+          spacing="27px"
+          overflowX="auto"
+        >
+          <MaintenancePlanTable
+            data={data?.data?.items ?? []}
+            isLoading={isLoading || isFetching}
+            handleSelectRow={setSelectedPlan}
+            pageSize={pageSize}
+            setPageSize={setPageSize}
+            pageNumber={pageNumber}
+            setPageNumber={setPageNumber}
+            selectedRows={selectedRows}
+            setSelectedRows={setSelectedRows}
+            totalPages={data?.data.totalPages}
+            showFooter={data?.data?.hasPreviousPage || data?.data?.hasNextPage}
+            emptyLines={2}
+            isSelectable={true}
+            disabledRows={defaultPlanIndices}
+            PopoverComponent={(data) => View(data)}
+            showEmptyState={false}
           />
-        )}
-        {meta.touched && meta.error !== undefined && (
-          <ErrorMessage>{meta.error}</ErrorMessage>
-        )}
-      </VStack>
+          {data?.data && !isLoading && !isFetching && showCustomizedButton && (
+            <Text
+              color="neutral.800"
+              fontWeight={700}
+              width="full"
+              textAlign="center"
+            >
+              This asset has no customized plan.{' '}
+              <Text
+                fontWeight={700}
+                as="span"
+                color="#0366EF"
+                textDecoration="underline"
+                cursor="pointer"
+                onClick={onOpen}
+              >
+                Create a customized plan
+              </Text>
+            </Text>
+          )}
+          {data?.data && !isLoading && !isFetching && (
+            <InfoCard
+              infoText="  Default Plan cannot be edited. A new schedule can only be added to
+              a customized plan"
+            />
+          )}
+          {meta.touched && meta.error !== undefined && (
+            <ErrorMessage>{meta.error}</ErrorMessage>
+          )}
+        </VStack>
+      </FormInputWrapper>
+
       <CustomizedPlanModal
         isOpen={isOpen}
         onClose={onClose}
         assetId={assetId}
       />
-    </HStack>
+    </>
   );
 };
 

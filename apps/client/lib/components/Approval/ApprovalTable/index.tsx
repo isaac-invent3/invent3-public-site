@@ -145,18 +145,11 @@ const ApprovalTable = (props: ApprovalTableProps) => {
         disabledRows={disabledRows}
         showEmptyState={showEmptyState}
         maxTdWidth="200px"
-        customThStyle={{
-          paddingLeft: '16px',
-          paddingTop: '12px',
-          paddingBottom: '12px',
-          fontWeight: 700,
-        }}
         customTdStyle={{
           paddingLeft: '16px',
           paddingTop: '12px',
           paddingBottom: '12px',
         }}
-        customTableContainerStyle={{ rounded: 'none' }}
       />
     </Flex>
   );

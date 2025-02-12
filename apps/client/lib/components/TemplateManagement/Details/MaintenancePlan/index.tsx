@@ -1,6 +1,6 @@
 'use client';
 
-import { Flex, Skeleton, Text, VStack } from '@chakra-ui/react';
+import { Flex, Skeleton, Stack, Text, VStack } from '@chakra-ui/react';
 import DetailHeader from '../Common/Header';
 import TemplateInfo from '../Common/TemplateInfo';
 import { useAppSelector } from '~/lib/redux/hooks';
@@ -41,12 +41,18 @@ const MaintenancePlan = () => {
               <PlanInfo data={data?.data} type="secondary" />
             </VStack>
             <VStack alignItems="flex-start" width="full" spacing="8px">
-              <Text fontWeight={800} color="black" size="md">
-                Schedules under the Plan{'  '}
-                <Text as="span" fontWeight={500} color="neutral.700">
+              <Stack
+                direction={{ base: 'column', sm: 'row' }}
+                spacing={{ base: '8px', lg: 0 }}
+              >
+                <Text fontWeight={800} color="black" size="md">
+                  Schedules under the Plan
+                </Text>
+                <Text fontWeight={500} color="neutral.700">
                   (Select a Schedule to see the details)
                 </Text>
-              </Text>
+              </Stack>
+
               <Schedule plan={data?.data} />
             </VStack>
           </VStack>

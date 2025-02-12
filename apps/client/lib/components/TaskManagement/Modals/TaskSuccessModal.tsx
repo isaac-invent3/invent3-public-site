@@ -25,7 +25,7 @@ const TaskSuccessModal = (props: TaskSuccessModalProps) => {
       successText={text ?? successText}
       mainModalStyle={{ closeOnOverlayClick: false, closeOnEsc: false }}
     >
-      <HStack spacing="24px">
+      <HStack spacing={{ base: '16px', md: '24px' }}>
         {type === 'create' && (
           <Button
             variant="secondary"
@@ -39,7 +39,7 @@ const TaskSuccessModal = (props: TaskSuccessModalProps) => {
           </Button>
         )}
         <Button
-          customStyles={{ width: '193px' }}
+          customStyles={{ width: { base: '150px', md: '193px' }, }}
           handleClick={() => onClose(type === 'create')}
         >
           {type === 'edit' ? 'Continue' : 'Add Another Task'}

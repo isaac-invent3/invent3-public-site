@@ -35,7 +35,7 @@ function GenericModal({
       <ModalOverlay />
 
       <ModalContent
-        maxW={{ base: '90vw', sm: 'full' }}
+        maxW={{ base: '90vw' }}
         width="full"
         rounded="8px"
         bgColor="white"

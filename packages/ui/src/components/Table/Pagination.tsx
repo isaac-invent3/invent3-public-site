@@ -51,6 +51,8 @@ const Pagination = (props: PaginationProps) => {
       spacing="16px"
       rounded="6px"
       {...customStyles}
+      overflow="auto"
+      justifyContent={{ base: 'space-between', sm: 'flex-start' }}
     >
       <HStack spacing="16px">
         <ChakraText color="neutral.800" whiteSpace="nowrap">

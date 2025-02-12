@@ -36,7 +36,7 @@ const Schedules = (props: SchedulesProps) => {
       <VStack
         width="full"
         my="28px"
-        pl="32px"
+        pl={{ base: '16px', md: '32px' }}
         pr="19px"
         alignItems="flex-start"
         spacing="20px"

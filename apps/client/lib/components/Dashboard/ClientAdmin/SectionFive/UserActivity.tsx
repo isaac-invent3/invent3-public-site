@@ -4,52 +4,56 @@ import { Button, DataTable } from '@repo/ui/components';
 import { ROUTES } from '~/lib/utils/constants';
 import CardHeader from '../../Common/CardHeader';
 import { createColumnHelper } from '@tanstack/react-table';
-import { Employee } from '~/lib/interfaces/user.interfaces';
 import { dateFormatter } from '~/lib/utils/Formatters';
-import { useGetAllEmployeesQuery } from '~/lib/redux/services/employees.services';
+import { useGetUserActivityDataQuery } from '~/lib/redux/services/dashboard/clientadmin.services';
+import { useAppSelector } from '~/lib/redux/hooks';
+import { UserActivity } from '~/lib/interfaces/dashboard/clientadmin.interfaces';
 
-const UserActivity = () => {
-  const { data, isLoading, isFetching } = useGetAllEmployeesQuery({
-    pageNumber: 1,
-    pageSize: 5,
+const UserActivityTable = () => {
+  const { selectedCountry, selectedState } = useAppSelector(
+    (state) => state.dashboard.info
+  );
+  const { data, isLoading, isFetching } = useGetUserActivityDataQuery({
+    countryId: +selectedCountry?.value!,
+    regionId: (selectedState?.value as number) ?? undefined,
   });
 
-  const columnHelper = createColumnHelper<Employee>();
+  const columnHelper = createColumnHelper<UserActivity>();
   const columns = useMemo(
     () => {
       const baseColumns = [
-        columnHelper.accessor('createdDate', {
+        columnHelper.accessor('timeStamp', {
           cell: (info) =>
             dateFormatter(info.getValue(), 'YYYY-MM-DD hh:mma') ?? 'N/A',
           header: 'Timestamp',
           enableSorting: false,
         }),
 
-        columnHelper.accessor('employeeName', {
+        columnHelper.accessor('name', {
           cell: (info) => info.getValue(),
           header: 'Name',
           enableSorting: false,
         }),
 
-        columnHelper.accessor('roleId', {
+        columnHelper.accessor('designation', {
           cell: (info) => info.getValue() ?? 'N/A',
           header: 'Role',
           enableSorting: true,
         }),
 
-        columnHelper.accessor('phoneNumber', {
+        columnHelper.accessor('action', {
           cell: (info) => info.getValue() ?? 'N/A',
           header: 'Action',
           enableSorting: false,
         }),
-        columnHelper.accessor('employeeLocation', {
+        columnHelper.accessor('details', {
           cell: (info) => info.getValue() ?? 'N/A',
           header: 'Details',
           enableSorting: false,
         }),
 
-        columnHelper.accessor('createdDate', {
-          cell: () => 'N/A',
+        columnHelper.accessor('ipAddress', {
+          cell: (info) => info.getValue() ?? 'N/A',
           header: 'IP Address',
           enableSorting: false,
         }),
@@ -71,6 +75,7 @@ const UserActivity = () => {
       alignItems="flex-start"
       bgColor="white"
       rounded="8px"
+      spacing="16px"
     >
       <HStack width="full" justifyContent="space-between">
         <CardHeader>User Activity</CardHeader>
@@ -89,25 +94,19 @@ const UserActivity = () => {
       </HStack>
       <DataTable
         columns={columns}
-        data={data?.data?.items ?? []}
+        data={data?.data ?? []}
         isLoading={isLoading}
         isFetching={isFetching}
+        showFooter={false}
         maxTdWidth="200px"
-        customThStyle={{
-          paddingLeft: '16px',
-          paddingTop: '12px',
-          paddingBottom: '12px',
-          fontWeight: 700,
-        }}
         customTdStyle={{
           paddingLeft: '16px',
           paddingTop: '12px',
           paddingBottom: '12px',
         }}
-        customTableContainerStyle={{ rounded: 'none' }}
       />
     </VStack>
   );
 };
 
-export default UserActivity;
+export default UserActivityTable;

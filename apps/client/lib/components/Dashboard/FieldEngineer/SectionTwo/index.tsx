@@ -1,18 +1,30 @@
-import { Flex, HStack } from '@chakra-ui/react';
-import React from 'react';
+import { Flex, Stack } from '@chakra-ui/react';
 import UpcomingMaintenance from '../../Common/UpcomingMaintenance';
 import AssignedTickets from './AssignedTicket';
 
 const SectionTwo = () => {
   return (
-    <HStack width="full" minH="354px" spacing="16px">
-      <Flex width="42%" height="full">
+    <Stack
+      width="full"
+      minH="354px"
+      spacing="16px"
+      flexDir={{ base: 'column', lg: 'row' }}
+    >
+      <Flex
+        width={{ base: 'full', lg: '42%' }}
+        height="full"
+        flexDir={{ base: 'column', lg: 'row' }}
+      >
         <AssignedTickets />
       </Flex>
-      <Flex width="58%" height="full">
+      <Flex
+        width={{ base: 'full', lg: '58%' }}
+        height="full"
+        flexDir={{ base: 'column', lg: 'row' }}
+      >
         <UpcomingMaintenance />
       </Flex>
-    </HStack>
+    </Stack>
   );
 };
 

@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
-import { Option } from '~/lib/interfaces/general.interfaces';
-import { HStack } from '@chakra-ui/react';
-import { FormSectionInfo, SelectableButtonGroup } from '@repo/ui/components';
+import { FormInputWrapper, SelectableButtonGroup } from '@repo/ui/components';
 import moment from 'moment';
+import { useEffect } from 'react';
+import { Option } from '~/lib/interfaces/general.interfaces';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateRepeatInterval } from '~/lib/redux/slices/DateSlice';
 
@@ -23,14 +22,14 @@ const Weekly = () => {
   }, []);
 
   return (
-    <HStack width="full" spacing="29px" alignItems="flex-start" mb="32px">
-      <FormSectionInfo
-        title="On days"
-        info="Select specific days for the occurence schedule"
-        isRequired={false}
-        maxWidth="130px"
-      />
-
+    <FormInputWrapper
+      title="On days"
+      description="Select specific days for the occurence schedule"
+      isRequired={false}
+      sectionMaxWidth="130px"
+      customSpacing="29px"
+      mb="32px"
+    >
       <SelectableButtonGroup
         options={DAYS.map(
           (item, index) => ({ label: item, value: index }) as Option
@@ -51,7 +50,7 @@ const Weekly = () => {
         isMultiSelect
         hasAtLeastOneSelected
       />
-    </HStack>
+    </FormInputWrapper>
   );
 };
 

@@ -82,6 +82,7 @@ const RecentAsset = () => {
     <VStack
       width="full"
       height="full"
+      minH="300px"
       pl="16px"
       pr="15px"
       pt="21px"
@@ -92,9 +93,9 @@ const RecentAsset = () => {
       rounded="8px"
       maxH="375px"
     >
-      <HStack width="full" justifyContent="space-between">
+      <HStack width="full" justifyContent="space-between" flexWrap="wrap">
         <CardHeader>Recent Assets</CardHeader>
-        <HStack spacing="8px">
+        <HStack spacing="8px" flexWrap="wrap">
           <SearchInput
             setSearch={setSearch}
             width="200px"
@@ -134,7 +135,7 @@ const RecentAsset = () => {
               ? searchData?.totalPages
               : data?.data?.totalPages
           }
-          showFooter={true}
+          showFooter={data?.data && data?.data?.totalPages > 1 ? true : false}
           emptyLines={10}
           isSelectable={false}
         />

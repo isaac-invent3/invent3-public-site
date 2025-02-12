@@ -53,7 +53,11 @@ const SectionTwo = (props: SectionTwoProps) => {
         pr="16px"
         bgColor="neutral.600"
       >
-        <SimpleGrid columns={3} gap="32px" width="80%">
+        <SimpleGrid
+          columns={{ base: 2, lg: 4 }}
+          gap={{ base: '16px', lg: '32px' }}
+          width="100%"
+        >
           {dateInfo.map((item, index) => (
             <VStack
               width="full"
@@ -69,17 +73,18 @@ const SectionTwo = (props: SectionTwoProps) => {
               </Text>
             </VStack>
           ))}
+          <Text
+            fontWeight={700}
+            textDecoration="underline"
+            color="primary.500"
+            role="button"
+            onClick={openAction}
+            whiteSpace="nowrap"
+            justifySelf={{ lg: 'end' }}
+          >
+            View Tasks
+          </Text>
         </SimpleGrid>
-        <Text
-          fontWeight={700}
-          textDecoration="underline"
-          color="primary.500"
-          role="button"
-          onClick={openAction}
-          whiteSpace="nowrap"
-        >
-          View Tasks
-        </Text>
       </HStack>
       {isOpen && (
         <TaskListView

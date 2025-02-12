@@ -36,9 +36,13 @@ const InfoOne = (props: InfoOneProps) => {
     },
   ];
   return (
-    <Grid templateColumns="repeat(3, 1fr)" gap="66px" width="full">
-      <GridItem colSpan={1}>
-        <Flex width="max-content" whiteSpace="nowrap">
+    <Grid
+      templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(3, 1fr)' }}
+      gap={{ base: '24px', md: '66px' }}
+      width="full"
+    >
+      <GridItem colSpan={1} width="full">
+        <Flex width={{ base: 'full', md: 'max-content' }} whiteSpace="nowrap">
           <Skeleton isLoaded={!isLoading} width="full">
             <DetailSection labelMinWidth="105px" details={details} />
           </Skeleton>
@@ -50,6 +54,7 @@ const InfoOne = (props: InfoOneProps) => {
           width="full"
           rounded="8px"
           height="full"
+          display={{ base: 'none', md: 'flex' }}
         >
           <VendorDetails data={data} />
         </Skeleton>

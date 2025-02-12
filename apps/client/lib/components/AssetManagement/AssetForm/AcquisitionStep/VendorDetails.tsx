@@ -1,4 +1,4 @@
-import { Flex, Grid, GridItem, HStack, Text, VStack } from '@chakra-ui/react';
+import { Flex, Grid, GridItem, Stack, Text, VStack } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import {
@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import AssetTypeSelect from '~/lib/components/Common/SelectComponents/AssetTypeSelect';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
-import { FormSectionInfo } from '@repo/ui/components';
+import { FormInputWrapper, FormSectionInfo } from '@repo/ui/components';
 
 const VendorDetails = () => {
   const dispatch = useAppDispatch();
@@ -47,31 +47,49 @@ const VendorDetails = () => {
   }, [vendorData]);
 
   return (
-    <HStack width="full" alignItems="flex-start" spacing="78px">
-      <Flex width="full" maxW="144px">
+    <Stack
+      width="full"
+      direction={{ base: 'column', lg: 'row' }}
+      alignItems="flex-start"
+      spacing={{ base: '16px', lg: '33px' }}
+    >
+      <Flex width="full" maxW="144px" display={{ base: 'none', lg: 'flex' }}>
         <FormSectionInfo
           title="Vendor Details"
           info="Enter vendor name and contact information"
-          isRequired
+          isRequired={false}
         />
       </Flex>
-      <Grid templateColumns="repeat(3, 1fr)" gap="20px" width="full">
+      <Grid templateColumns={{ lg: 'repeat(3, 1fr)' }} gap="20px" width="full">
         <GridItem colSpan={1}>
-          <GenericAsyncSelect
-            selectName="vendorId"
-            selectTitle="Vendor"
-            data={data}
-            labelKey="vendorName"
-            valueKey="vendorId"
-            defaultInputValue={vendorDetails?.vendorName}
-            mutationFn={searchVendor}
-            isLoading={isLoading}
-            pageNumber={pageNumber}
-            setPageNumber={setPageNumber}
-            handleSelect={(option) =>
-              setSelectedVendor(Number(option.value) ?? undefined)
-            }
-          />
+          <FormInputWrapper
+            sectionMaxWidth="130px"
+            customSpacing="0px"
+            description="Enter vendor name and contact information"
+            title="Vendor Details"
+            isRequired={false}
+            direction={{ base: 'column', md: 'row' }}
+            formSectionCustomStyle={{
+              maxW: { md: '130px' },
+              display: { lg: 'none' },
+            }}
+          >
+            <GenericAsyncSelect
+              selectName="vendorId"
+              selectTitle="Vendor"
+              data={data}
+              labelKey="vendorName"
+              valueKey="vendorId"
+              defaultInputValue={vendorDetails?.vendorName}
+              mutationFn={searchVendor}
+              isLoading={isLoading}
+              pageNumber={pageNumber}
+              setPageNumber={setPageNumber}
+              handleSelect={(option) =>
+                setSelectedVendor(Number(option.value) ?? undefined)
+              }
+            />
+          </FormInputWrapper>
         </GridItem>
         <GridItem colSpan={1}>
           <VStack
@@ -110,14 +128,17 @@ const VendorDetails = () => {
           </VStack>
         </GridItem>
         <GridItem colSpan={1}>
-          <HStack width="full" alignItems="flex-start" spacing="0px">
-            <Flex width="full" maxW="130px">
-              <FormSectionInfo
-                title="Asset Type"
-                info="Select the category of this asset"
-                isRequired
-              />
-            </Flex>
+          <FormInputWrapper
+            sectionMaxWidth="130px"
+            customSpacing="0px"
+            description="Select the category of this asset"
+            title="Asset Type"
+            isRequired
+            direction={{ base: 'column', md: 'row' }}
+            formSectionCustomStyle={{
+              maxW: { md: '130px' },
+            }}
+          >
             <AssetTypeSelect
               selectName="assetTypeId"
               selectTitle="Asset Type"
@@ -125,10 +146,10 @@ const VendorDetails = () => {
                 dispatch(updateAssetForm({ assetTypeName: option.label }))
               }
             />
-          </HStack>
+          </FormInputWrapper>
         </GridItem>
       </Grid>
-    </HStack>
+    </Stack>
   );
 };
 

@@ -65,7 +65,7 @@ const useUpdateConfigurationOptions = () => {
       handleClick={handleUpdateOptions}
       isLoading={isLoading}
       loadingText="Saving..."
-      customStyles={{ width: 'max-content' }}
+      customStyles={{ width: 'max-content', mr: { base: '16px', md: 0 } }}
     >
       Save Changes
     </Button>

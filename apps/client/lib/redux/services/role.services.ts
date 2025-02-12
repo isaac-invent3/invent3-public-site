@@ -7,7 +7,12 @@ import {
   QueryParams,
   SearchQuery,
 } from '@repo/interfaces';
-import { Role } from '~/lib/interfaces/role.interfaces';
+import {
+  createRoleModulePermissionPayload,
+  Role,
+  RoleSystemModuleContextPermission,
+  updateRoleModulePermissionPayload,
+} from '~/lib/interfaces/role.interfaces';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -22,7 +27,18 @@ export const rolesApi = createApi({
       QueryParams
     >({
       query: (data) => ({
-        url: generateQueryStr(`/Roles?`, data),
+        url: generateQueryStr(`/UserRoles/GetUserRolesInfoHeaders?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allRoles'],
+    }),
+    getAllUserGroups: builder.query<
+      BaseApiResponse<ListResponse<Role>>,
+      QueryParams
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/UserRoles/GetUserRolesInfoHeaders?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -30,10 +46,43 @@ export const rolesApi = createApi({
     }),
     getRoleById: builder.query<BaseApiResponse<Role>, { id: number }>({
       query: ({ id }) => ({
-        url: `/Roles/${id}`,
+        url: `/UserRoles/GetUserRoleInfoHeaders/${id}`,
         method: 'GET',
         headers: getHeaders(),
       }),
+    }),
+    createRoleModulePermission: builder.mutation<
+      void,
+      createRoleModulePermissionPayload
+    >({
+      query: (body) => ({
+        url: `/Invent3Pro/CreateRoleModulePermissions`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
+    updateRoleModulePermission: builder.mutation<
+      void,
+      updateRoleModulePermissionPayload
+    >({
+      query: (body) => ({
+        url: `/Invent3Pro/UpdateRoleModulePermissions`,
+        method: 'PUT',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
+    getAllRoleSystemModuleContextPermissions: builder.query<
+      BaseApiResponse<ListResponse<RoleSystemModuleContextPermission>>,
+      QueryParams & { roleIds?: number[] }
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/RoleSystemModuleContextPermissions?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allRoles'],
     }),
     searchRoles: builder.mutation<
       BaseApiResponse<ListResponse<Role>>,
@@ -46,6 +95,15 @@ export const rolesApi = createApi({
         body,
       }),
     }),
+    deleteRole: builder.mutation<void, { id: number; deletedBy: string }>({
+      query: ({ id, ...body }) => ({
+        url: `/Roles/${id}`,
+        method: 'DELETE',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allRoles'],
+    }),
   }),
 });
 
@@ -53,4 +111,8 @@ export const {
   useGetAllRolesQuery,
   useGetRoleByIdQuery,
   useSearchRolesMutation,
+  useGetAllRoleSystemModuleContextPermissionsQuery,
+  useCreateRoleModulePermissionMutation,
+  useUpdateRoleModulePermissionMutation,
+  useDeleteRoleMutation,
 } = rolesApi;

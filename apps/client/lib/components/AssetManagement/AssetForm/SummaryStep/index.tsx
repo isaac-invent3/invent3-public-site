@@ -260,12 +260,12 @@ const SummaryStep = (props: SummaryStepProps) => {
         <VStack
           width="full"
           alignItems="flex-start"
-          spacing="40px"
+          spacing={{ base: '32px', lg: '40px' }}
           bgColor="white"
-          pt="16px"
-          pl="16px"
-          pr="44px"
-          pb="40px"
+          pt={{ base: '16px' }}
+          pl={{ md: '24px', lg: '16px' }}
+          pb={{ base: '16px', lg: '40px' }}
+          pr={{ md: '24px', lg: '44px' }}
           rounded="8px"
           minH="60vh"
         >

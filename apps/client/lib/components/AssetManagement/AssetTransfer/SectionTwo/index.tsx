@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react';
+import { SimpleGrid } from '@chakra-ui/react';
 
 import NewOwner from './NewOwner';
 import TransferDetails from './TransferDetails';
@@ -8,13 +8,17 @@ import { useState } from 'react';
 const SectionTwo = () => {
   const [newLocation, setNewLocation] = useState('');
   return (
-    <Flex gap="32px" width="full">
+    <SimpleGrid
+      gap={{ base: '20px', lg: '32px' }}
+      width="full"
+      columns={{ base: 1, lg: 3 }}
+    >
       <NewOwner setNewLocation={setNewLocation} />
 
       <NewLocation newLocation={newLocation} />
 
       <TransferDetails />
-    </Flex>
+    </SimpleGrid>
   );
 };
 

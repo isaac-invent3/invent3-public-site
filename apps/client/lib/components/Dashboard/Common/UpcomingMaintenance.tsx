@@ -111,8 +111,8 @@ const UpcomingMaintenance = () => {
       bgColor="white"
       rounded="8px"
     >
-      <HStack width="full" justifyContent="space-between">
-        <HStack width="full" alignItems="center">
+      <HStack width="full" justifyContent="space-between" flexWrap="wrap">
+        <HStack alignItems="center" flexWrap="wrap">
           <CardHeader>Upcoming Maintenance</CardHeader>
           <Text
             color="neutral.800"
@@ -159,7 +159,6 @@ const UpcomingMaintenance = () => {
             paddingBottom: '8px',
           }}
           customTBodyRowStyle={{ verticalAlign: 'top' }}
-          customTableContainerStyle={{ rounded: 'none' }}
         />
       </Flex>
     </VStack>

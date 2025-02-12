@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react';
 
 import { useAppSelector } from '~/lib/redux/hooks';
-import SummaryCardWrapper from '../../../Common/SummaryCardWrapper';
+import SummaryCardWrapper from '../../../../Common/SummaryCardWrapper';
 
 interface AssetSummaryCardProps {
   title: string;
@@ -21,7 +21,11 @@ const AssetSummaryCard = (props: AssetSummaryCardProps) => {
   const { title, icon, value, children } = props;
   const { isLoading } = useAppSelector((state) => state.dashboard.info);
   return (
-    <SummaryCardWrapper title={title} icon={icon}>
+    <SummaryCardWrapper
+      title={title}
+      icon={icon}
+      headerStyle={{ fontWeight: 500 }}
+    >
       <VStack
         justifyContent="space-between"
         alignItems="flex-start"
@@ -30,8 +34,8 @@ const AssetSummaryCard = (props: AssetSummaryCardProps) => {
         <Skeleton isLoaded={!isLoading} minW="50px">
           <Text
             mt="8px"
-            fontSize="24px"
-            lineHeight="28.51px"
+            fontSize={{ base: '20px', md: '24px' }}
+            lineHeight={{ base: '23.76px', md: '28.51px' }}
             fontWeight={800}
             color="primary.500"
           >

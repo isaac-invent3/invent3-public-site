@@ -7,6 +7,10 @@ import {
   AiOutlineFileWord,
   AiOutlineQuestion,
 } from 'react-icons/ai';
+import {
+  ContextKey,
+  SystemContextDetail,
+} from '../interfaces/general.interfaces';
 
 const OPERATORS = {
   Equals: 1,
@@ -178,6 +182,8 @@ const SYSTEM_CONTEXT_TYPE = {
   MAINTENANCE_SCHEDULE_INSTANCES: 40,
   TASKS_INSTANCES: 61,
   NOTES: 43,
+  VENDOR: 68,
+  AUDIT: 73,
 };
 
 const ROUTES = {
@@ -195,29 +201,35 @@ const ROUTES = {
   USERS: 'user-management',
   AUDIT_LOG: 'log-management',
   ROLES: 'role-management',
+  COMPANY: 'company-management',
+  VENDOR: 'vendor-management',
 };
 
-const SYSTEM_CONTEXT_DETAILS = {
+const SYSTEM_CONTEXT_DETAILS: Record<ContextKey, SystemContextDetail> = {
   ASSETS: {
     id: SYSTEM_CONTEXT_TYPE.ASSETS,
     route: ROUTES.ASSETS,
     slug: 'assetId',
+    relatedPermissionKeys: ['task'],
   },
 
   MAINTENANCE_PLANS: {
     id: SYSTEM_CONTEXT_TYPE.MAINTENANCE_PLANS,
     route: ROUTES.MAINTENANCE_PLANS,
     slug: 'maintenancePlanId',
+    relatedPermissionKeys: ['task'],
   },
   MAINTENANCE_SCHEDULES: {
     id: SYSTEM_CONTEXT_TYPE.MAINTENANCE_SCHEDULES,
     route: ROUTES.MAINTENANCE_SCHEDULES,
     slug: 'maintenanceScheduleId',
+    relatedPermissionKeys: ['task'],
   },
   MAINTENANCE_SCHEDULE_INSTANCE: {
     id: SYSTEM_CONTEXT_TYPE.MAINTENANCE_SCHEDULE_INSTANCES,
     route: ROUTES.MAINTENANCE_SCHEDULES,
     slug: 'maintenanceScheduleInstanceId',
+    relatedPermissionKeys: ['task'],
   },
   TASKS: {
     id: SYSTEM_CONTEXT_TYPE.TASKS,
@@ -228,11 +240,22 @@ const SYSTEM_CONTEXT_DETAILS = {
     id: SYSTEM_CONTEXT_TYPE.TICKETS,
     route: ROUTES.TICKETS,
     slug: 'ticketId',
+    relatedPermissionKeys: ['task'],
   },
   USER: {
     id: SYSTEM_CONTEXT_TYPE.USERS,
     route: ROUTES.USERS,
     slug: 'userId',
+  },
+  VENDOR: {
+    id: SYSTEM_CONTEXT_TYPE.VENDOR,
+    route: ROUTES.VENDOR,
+    slug: 'vendorId',
+  },
+  AUDIT: {
+    id: SYSTEM_CONTEXT_TYPE.AUDIT,
+    route: ROUTES.AUDIT_LOG,
+    slug: 'logId',
   },
 };
 

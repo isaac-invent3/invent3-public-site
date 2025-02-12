@@ -24,8 +24,14 @@ const Header = ({ children }: HeaderProps) => {
   const { data } = useSession();
   const now = new Date();
   return (
-    <HStack width="full" justifyContent="space-between">
-      <HStack width="full" spacing="8px" alignItems="flex-end">
+    <HStack
+      width="full"
+      justifyContent="space-between"
+      spacing="16px"
+      flexWrap="wrap"
+      px={{ base: '16px', md: 0 }}
+    >
+      <HStack spacing="8px" alignItems="flex-end" flexWrap="wrap">
         <PageHeader>
           {`${getGreeting()}, ${data?.user?.firstName ?? ''}!`}
         </PageHeader>

@@ -1,12 +1,12 @@
-import { Flex, Text, VStack } from '@chakra-ui/react';
+import { Flex, Text, useMediaQuery, VStack } from '@chakra-ui/react';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useMemo } from 'react';
-import PopoverAction from './PopoverAction';
 import { GenericTableProps } from '~/lib/interfaces/general.interfaces';
 import { User } from '~/lib/interfaces/user.interfaces';
-import GenericStatusBox from '../../UI/GenericStatusBox';
 import UserInfo from '../../Common/UserInfo';
+import GenericStatusBox from '../../UI/GenericStatusBox';
+import PopoverAction from './PopoverAction';
 
 interface UserTableProps extends GenericTableProps {
   data: User[];
@@ -35,8 +35,10 @@ const UserTable = (props: UserTableProps) => {
     setPageSize,
     setSelectedRows,
   } = props;
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
 
   const columnHelper = createColumnHelper<User>();
+
   const columns = useMemo(
     () => {
       const baseColumns = [
@@ -59,7 +61,7 @@ const UserTable = (props: UserTableProps) => {
               role="Admin Officer"
             />
           ),
-          header: 'User',
+          header: 'Name',
           enableSorting: true,
         }),
 
@@ -85,7 +87,7 @@ const UserTable = (props: UserTableProps) => {
           enableSorting: true,
         }),
 
-        columnHelper.accessor('stateName', {
+        columnHelper.accessor('countryName', {
           cell: () => (
             <VStack spacing="4px" alignItems="flex-start">
               <Text color="black">Admiralty Way,</Text>
@@ -94,7 +96,7 @@ const UserTable = (props: UserTableProps) => {
               </Text>
             </VStack>
           ),
-          header: 'User',
+          header: 'Location',
           enableSorting: true,
         }),
 
@@ -123,10 +125,50 @@ const UserTable = (props: UserTableProps) => {
     [[data]] //eslint-disable-line
   );
 
+  const mobileColumns = useMemo(
+    () => {
+      const baseColumns = [
+        columnHelper.accessor('userId', {
+          cell: (info) => info.getValue(),
+          header: 'User ID',
+          enableSorting: false,
+        }),
+
+        columnHelper.accessor('residentialAddress', {
+          cell: (info) => (
+            <UserInfo
+              name={`${info.row.original.firstName} ${info.row.original.lastName}`}
+              role="Admin Officer"
+            />
+          ),
+          header: 'User',
+          enableSorting: true,
+        }),
+
+        columnHelper.accessor('stateName', {
+          cell: () => {
+            return <GenericStatusBox text="Active" colorCode="#07CC3B" />;
+          },
+          header: 'Status',
+          enableSorting: false,
+        }),
+
+        columnHelper.accessor('guid', {
+          cell: (info) => <PopoverAction user={info.row.original} />,
+          header: '',
+          enableSorting: false,
+        }),
+      ];
+
+      return baseColumns;
+    },
+    [[data]] //eslint-disable-line
+  );
+
   return (
     <Flex width="full">
       <DataTable
-        columns={columns}
+        columns={isMobile ? mobileColumns : columns}
         data={data ?? []}
         isLoading={isLoading}
         isFetching={isFetching}
@@ -157,7 +199,6 @@ const UserTable = (props: UserTableProps) => {
           paddingTop: '12px',
           paddingBottom: '12px',
         }}
-        customTableContainerStyle={{ rounded: 'none' }}
       />
     </Flex>
   );

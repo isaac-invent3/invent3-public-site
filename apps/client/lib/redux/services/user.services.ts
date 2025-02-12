@@ -11,7 +11,9 @@ import {
   User,
   UserConfigurationOption,
   UserConfigurationPayload,
+  UserDesignation,
   UserGroup,
+  UserGroupInfoHeader,
   UserGroupMember,
   UserPasswordChangeQuery,
 } from '~/lib/interfaces/user.interfaces';
@@ -27,6 +29,8 @@ export const userApi = createApi({
     'userProfile',
     'allUserConfigurationOptions',
     'userDetail',
+    'userGroups',
+    'allUserGroupInfoHeaders',
   ],
   endpoints: (builder) => ({
     getAllUsers: builder.query<
@@ -35,6 +39,39 @@ export const userApi = createApi({
     >({
       query: (data) => ({
         url: generateQueryStr(`/Users?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allUsers'],
+    }),
+    getAllUserGroups: builder.query<
+      BaseApiResponse<ListResponse<UserGroup>>,
+      QueryParams
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/UserGroups?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['userGroups'],
+    }),
+    getAllUserGroupsInfoHeader: builder.query<
+      BaseApiResponse<ListResponse<UserGroupInfoHeader>>,
+      QueryParams
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/UserGroups/GetUserGroupsInfoHeaders?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allUserGroupInfoHeaders'],
+    }),
+    getAllUserDesignations: builder.query<
+      BaseApiResponse<ListResponse<UserDesignation>>,
+      QueryParams
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/UserDesignations?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -106,6 +143,17 @@ export const userApi = createApi({
         body,
       }),
     }),
+    searchUserDesignation: builder.mutation<
+      BaseApiResponse<ListResponse<UserDesignation>>,
+      SearchQuery
+    >({
+      query: (body) => ({
+        url: `/UserDesignations`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
     changeUserPassword: builder.mutation<void, UserPasswordChangeQuery>({
       query: (body) => ({
         url: `/Users/ChangePassword`,
@@ -139,4 +187,8 @@ export const {
   useChangeUserPasswordMutation,
   useGetUserConfigurationOptionsQuery,
   useUpdateUserConfigurationOptionsMutation,
+  useGetAllUserDesignationsQuery,
+  useSearchUserDesignationMutation,
+  useGetAllUserGroupsQuery,
+  useGetAllUserGroupsInfoHeaderQuery,
 } = userApi;

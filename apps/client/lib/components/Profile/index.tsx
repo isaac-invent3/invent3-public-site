@@ -62,7 +62,9 @@ const Profile = () => {
 
   return (
     <Flex width="full" direction="column" pb="40px">
-      <PageHeader>Settings</PageHeader>
+      <Flex px={{ base: '16px', md: 0 }}>
+        <PageHeader>Settings</PageHeader>
+      </Flex>
       <Tabs
         variant="custom"
         width={'full'}
@@ -72,13 +74,15 @@ const Profile = () => {
         opacity={isLoading ? 0.5 : 1}
         pointerEvents={isLoading ? 'none' : 'initial'}
       >
-        <TabList>
-          {ALlTabs.map((item, index) => (
-            <Tab key={index} width="93px">
-              {item}
-            </Tab>
-          ))}
-        </TabList>
+        <Flex width="full" px={{ base: '16px', md: 0 }}>
+          <TabList>
+            {ALlTabs.map((item, index) => (
+              <Tab key={index} width="93px">
+                {item}
+              </Tab>
+            ))}
+          </TabList>
+        </Flex>
         <TabPanels pt="16px">
           <TabPanel>{tabIndex === 0 && <ProfileTab />}</TabPanel>
           <TabPanel>{tabIndex === 1 && <SecurityTab />}</TabPanel>

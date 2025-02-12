@@ -111,6 +111,18 @@ const roleManagementBreadcrumb: BreadcrumbNode = {
   label: 'Role Management',
   children: {
     detail: { label: 'Role Details' },
+    group: { label: 'User Group' },
+    role: { label: 'User Role' },
+    add: { label: 'Add' },
+  },
+};
+
+const vendorManagementBreadCrumb: BreadcrumbNode = {
+  route: `/${ROUTES.VENDOR}`,
+  label: 'Vendor Management',
+  children: {
+    edit: { label: 'Edit Vendor' },
+    add: { label: 'Add New Vendor' },
   },
 };
 
@@ -126,6 +138,7 @@ const breadcrumbMap: Record<string, BreadcrumbNode> = {
   [ROUTES.USERS]: userManagementBreadcrumb,
   [ROUTES.ROLES]: roleManagementBreadcrumb,
   [ROUTES.AUDIT_LOG]: auditLogBreadcrumb,
+  [ROUTES.VENDOR]: vendorManagementBreadCrumb,
 };
 
 const getBreadcrumb = (pathSegments: string[]): breadCrumbRoute[] => {

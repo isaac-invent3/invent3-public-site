@@ -1,4 +1,5 @@
 import { SlideFade } from '@chakra-ui/react';
+import { MotionStyle } from 'framer-motion';
 
 interface ISlideTransition {
   trigger: boolean;
@@ -6,6 +7,7 @@ interface ISlideTransition {
   entryDelay?: number;
   exitDelay?: number;
   direction?: string;
+  style?: MotionStyle;
 }
 const SlideTransition = ({
   trigger,
@@ -13,6 +15,7 @@ const SlideTransition = ({
   entryDelay = 0.5,
   exitDelay = 0.5,
   direction,
+  style,
 }: ISlideTransition) => {
   return (
     <SlideFade
@@ -24,7 +27,7 @@ const SlideTransition = ({
         exit: { duration: exitDelay },
         enter: { duration: entryDelay },
       }}
-      style={{ minWidth: '100%' }}
+      style={{ minWidth: '100%', ...style }}
     >
       {children}
     </SlideFade>

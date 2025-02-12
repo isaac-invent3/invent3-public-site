@@ -3,7 +3,7 @@ import React, { useMemo, useState } from 'react';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import GenericStatusBox from '../../UI/GenericStatusBox';
 import UserInfo from '../../Common/UserInfo';
-import { Text } from '@chakra-ui/react';
+import { Text, useMediaQuery } from '@chakra-ui/react';
 import { UserGroupMember } from '~/lib/interfaces/user.interfaces';
 import { useGetUserGroupMembersQuery } from '~/lib/redux/services/user.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
@@ -21,7 +21,42 @@ const TeamTable = ({ groupId }: TeamTableProps) => {
     { groupId, userId: session?.data?.user?.userId! },
     { skip: !session?.data?.user?.userId }
   );
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
   const columnHelper = createColumnHelper<UserGroupMember>();
+
+  const mobileColumns = useMemo(
+    () => {
+      const baseColumns = [
+        columnHelper.accessor('firstName', {
+          cell: (info) => (
+            <UserInfo name={`${info.getValue()} ${info.row.original.lastName}`}>
+              <Text color="neutral.700" fontWeight={400}>
+                {info.row.original.email}
+              </Text>
+            </UserInfo>
+          ),
+          header: 'Name',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('employeeStatus', {
+          cell: () => {
+            return <GenericStatusBox text="Not Active" />;
+          },
+          header: 'Status',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('employeeStatusId', {
+          cell: () => {
+            return 'Frontend Developer';
+          },
+          header: 'Role',
+          enableSorting: false,
+        }),
+      ];
+      return baseColumns;
+    },
+    [[data?.data?.items]] //eslint-disable-line
+  );
 
   const columns = useMemo(
     () => {
@@ -48,7 +83,7 @@ const TeamTable = ({ groupId }: TeamTableProps) => {
           cell: () => {
             return 'Frontend Developer';
           },
-          header: 'Status',
+          header: 'Role',
           enableSorting: false,
         }),
         columnHelper.accessor('dateAdded', {
@@ -70,7 +105,7 @@ const TeamTable = ({ groupId }: TeamTableProps) => {
   );
   return (
     <DataTable
-      columns={columns}
+      columns={isMobile ? mobileColumns : columns}
       data={data?.data?.items ?? []}
       isLoading={isLoading}
       isFetching={isFetching}

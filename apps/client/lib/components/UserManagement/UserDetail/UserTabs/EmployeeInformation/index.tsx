@@ -1,8 +1,9 @@
-import { HStack } from '@chakra-ui/react';
+import { Stack, useMediaQuery } from '@chakra-ui/react';
 import React from 'react';
 import DetailSection from '~/lib/components/UI/ContentDetails/DetailsSection';
 
 const EmployeeInformation = () => {
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
   const data = [
     { label: 'First Name:', value: 'George' },
     { label: 'Last Name:', value: 'Clooney' },
@@ -20,10 +21,14 @@ const EmployeeInformation = () => {
   ];
 
   return (
-    <HStack alignItems="flex-start" spacing="48px">
+    <Stack
+      direction={{ base: 'column', md: 'row' }}
+      alignItems="flex-start"
+      spacing={{ base: '16px', md: '48px' }}
+    >
       <DetailSection
         details={data}
-        labelMinWidth="99px"
+        labelMinWidth={isMobile ? '108px' : '99px'}
         outerContainerStyle={{ spacing: '16px' }}
         wrapperStyle={{ width: 'max-content' }}
         itemContainerStyle={{ spacing: '8px' }}
@@ -35,7 +40,7 @@ const EmployeeInformation = () => {
         wrapperStyle={{ width: 'max-content' }}
         itemContainerStyle={{ spacing: '8px' }}
       />
-    </HStack>
+    </Stack>
   );
 };
 

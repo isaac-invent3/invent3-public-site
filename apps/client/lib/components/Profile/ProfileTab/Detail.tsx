@@ -9,7 +9,9 @@ interface DetailProps extends StackProps {
 const Detail = ({ label, value, isLoading, ...rest }: DetailProps) => {
   return (
     <VStack alignItems="flex-start" spacing="8px" {...rest}>
-      <Text color="neutral.600">{label}</Text>
+      <Text color="neutral.600" whiteSpace="nowrap">
+        {label}
+      </Text>
       {isLoading && <Skeleton width="50px" height="15px" />}
       {!isLoading && (
         <Text color="black" size="md">

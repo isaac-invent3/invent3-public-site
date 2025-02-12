@@ -10,6 +10,7 @@ const customVariant = definePartsStyle(() => {
       fontSize: '14px',
       fontWeight: 500,
       lineHeight: '16.63px',
+      whiteSpace: 'nowrap',
       _selected: {
         color: 'primary.500',
         fontWeight: 700,
@@ -25,14 +26,17 @@ const customVariant = definePartsStyle(() => {
     tablist: {
       textAlign: 'left',
       color: 'neutral.600',
+      borderBottom: '1px',
+      p: 0,
+      borderColor: 'neutral.300',
+      overflow: 'auto',
+      width: 'full',
     },
     indicator: {
       height: '50px',
     },
     tabpanels: {
-      borderTop: '1px',
-      p: 0,
-      borderColor: 'neutral.300',
+      border: '0px',
     },
     tabpanel: {
       p: 0,

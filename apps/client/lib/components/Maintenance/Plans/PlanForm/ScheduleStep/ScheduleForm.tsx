@@ -1,15 +1,15 @@
 import { HStack, useDisclosure, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 
-import { scheduleSchema } from '~/lib/schemas/maintenance.schema';
+import { Button, LeaveDialogModal } from '@repo/ui/components';
+import moment from 'moment';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import {
   clearScheduleForm,
   updatePlanForm,
 } from '~/lib/redux/slices/MaintenanceSlice';
+import { scheduleSchema } from '~/lib/schemas/maintenance.schema';
 import SectionTwo from '../../../Schedules/ScheduleForm/FormSection/SectionTwo';
-import { Button, LeaveDialogModal } from '@repo/ui/components';
-import moment from 'moment';
 
 interface ScheduleFormProps {
   setShowScheduleForm: React.Dispatch<React.SetStateAction<boolean>>;
@@ -162,16 +162,22 @@ const ScheduleForm = (props: ScheduleFormProps) => {
                   : undefined
               }
             />
-            <HStack spacing="24px">
+            <HStack w='full' spacing={{ base: '16px', md: '24px' }} justifyContent={{base:'space-between', md:undefined}}>
               <Button
                 variant="secondary"
-                customStyles={{ width: '96px' }}
+                customStyles={{
+                  width: { md: '96px', base: '40%' },
+                  p: { base: '12px', md: '16px' },
+                }}
                 handleClick={() => onOpenDialog()}
               >
                 Cancel
               </Button>
               <Button
-                customStyles={{ width: '161px' }}
+                customStyles={{
+                  width: { md: '161px', base: '50%' },
+                  p: { base: '12px', md: '16px' },
+                }}
                 handleClick={formik.handleSubmit}
               >
                 {formDetails?.localId ? 'Update' : 'Add'} Schedule

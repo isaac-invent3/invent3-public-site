@@ -27,9 +27,18 @@ interface LineChartProps {
   isLoading: boolean;
   datasets: ChartDataset<'line'>[];
   height?: string;
+  showXGrid?: boolean;
+  showYGrid?: boolean;
 }
 const LineChart = (props: LineChartProps) => {
-  const { labels, datasets, isLoading, height } = props;
+  const {
+    labels,
+    datasets,
+    isLoading,
+    height,
+    showXGrid = true,
+    showYGrid,
+  } = props;
 
   const data = {
     labels,
@@ -57,6 +66,7 @@ const LineChart = (props: LineChartProps) => {
         grid: {
           borderDash: [8, 4],
           color: '#BBBBBB',
+          display: showXGrid,
         },
         ticks: {
           color: '#838383',
@@ -64,7 +74,7 @@ const LineChart = (props: LineChartProps) => {
       },
       y: {
         grid: {
-          display: false,
+          display: showYGrid,
         },
         ticks: {
           color: '#838383',

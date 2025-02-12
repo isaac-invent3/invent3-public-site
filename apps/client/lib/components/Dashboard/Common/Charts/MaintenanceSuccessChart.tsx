@@ -86,7 +86,7 @@ const MaintenanceSuccessChart = ({
       bgColor="white"
       rounded="8px"
     >
-      <HStack width="full" justifyContent="space-between">
+      <HStack width="full" justifyContent="space-between" flexWrap="wrap">
         <CardHeader>Maintenance Success</CardHeader>
         <HStack>
           <Text
@@ -124,7 +124,7 @@ const MaintenanceSuccessChart = ({
           (chartData.filter(Boolean).length > 0 ? (
             <PieChart
               dataValues={chartData}
-              labels={['Missed', 'Completed']}
+              labels={chartLegendItems.map((item) => item.label)}
               pieLabel="Maintenance"
               backgroundColors={[missedColorCode, completedColorCode]}
             />

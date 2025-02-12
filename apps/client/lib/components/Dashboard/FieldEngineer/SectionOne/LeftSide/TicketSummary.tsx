@@ -1,6 +1,6 @@
 import { Box, Flex, HStack, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
-import SummaryCardWrapper from '../../../Common/SummaryCardWrapper';
+import SummaryCardWrapper from '../../../../Common/SummaryCardWrapper';
 import ProgressIndicator from '../../../Common/ProgressIndicator';
 import DoughtnutChart from '../../../Common/Charts/DoughtnutChart';
 
@@ -25,7 +25,7 @@ const TicketSummary = () => {
   return (
     <SummaryCardWrapper
       title="TIckets"
-      containerStyle={{ width: 'max-content', height: 'full' }}
+      containerStyle={{ width: 'full', height: 'full' }}
     >
       <HStack
         width="full"

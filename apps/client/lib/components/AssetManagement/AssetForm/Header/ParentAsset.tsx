@@ -58,13 +58,7 @@ const ParentAsset = () => {
           />
         </Flex>
         <VStack alignItems="flex-start" spacing="8px">
-          <Heading
-            as="h4"
-            fontSize="24px"
-            lineHeight="28.51px"
-            fontWeight={700}
-            color="black"
-          >
+          <Heading as="h4" size="lg" fontWeight={700} color="black">
             {assetName}
           </Heading>
           <VStack spacing="4px" alignItems="flex-start">

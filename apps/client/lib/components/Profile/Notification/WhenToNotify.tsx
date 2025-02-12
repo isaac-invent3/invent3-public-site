@@ -28,7 +28,7 @@ const WhenToNotify = () => {
 
   return (
     <VStack width="full" alignItems="flex-start" spacing="8px">
-      <Text size="md" color="black">
+      <Text size="md" color="black" mb="8px">
         Notify me when...
       </Text>
       {INFO.map((item, index) => (

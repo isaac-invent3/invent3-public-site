@@ -1,6 +1,6 @@
 import { HStack, SimpleGrid, Skeleton, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
-import SummaryCardWrapper from '../../Common/SummaryCardWrapper';
+import SummaryCardWrapper from '../../../Common/SummaryCardWrapper';
 import { MaintenanceIcon } from '~/lib/components/CustomIcons/Dashboard';
 import TaskOverview from './TaskOverview';
 import OpenTicketSummary from '../../Common/Summaries/OpenTicketSummary';
@@ -16,7 +16,7 @@ const SectionOne = () => {
     { skip: !user?.userId }
   );
   return (
-    <SimpleGrid width="full" columns={4} columnGap="16px">
+    <SimpleGrid width="full" columns={{ base: 1, sm: 2, lg: 4 }} gap="16px">
       {/* Open Ticket */}
       <OpenTicketSummary
         isLoading={isLoading}

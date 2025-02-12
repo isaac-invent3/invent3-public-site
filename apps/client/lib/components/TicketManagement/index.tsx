@@ -3,6 +3,7 @@
 import {
   Flex,
   HStack,
+  Stack,
   Tab,
   TabList,
   TabPanels,
@@ -206,44 +207,64 @@ const TicketManagement = () => {
           onChange={(index) => handleTabChange(index)}
           index={tabIndex}
         >
-          <Flex width="full" position="relative">
+          <Flex
+            width="full"
+            position="relative"
+            direction={{ base: 'column', lg: 'row' }}
+            px={{ base: '16px', md: 0 }}
+          >
             <TabList>
               {ALlTabs.map((item, index) => (
                 <Tab key={index}>{item}</Tab>
               ))}
             </TabList>
-            <Flex position="absolute" right={0} bottom="8px">
-              <HStack spacing="16px" width="full">
+            <Flex
+              position={{ base: 'static', lg: 'absolute' }}
+              right={0}
+              bottom="8px"
+              mt="21px"
+            >
+              <Stack
+                spacing="16px"
+                width="full"
+                direction={{ base: 'column', lg: 'row' }}
+                px={{ base: '16px', md: 0 }}
+              >
                 <SearchInput
                   setSearch={setSearch}
                   placeholderText="Search..."
+                  containerStyle={{ minW: { base: 'full', lg: 'max-content' } }}
+                  customStyle={{ minW: { base: 'full', lg: 'max-content' } }}
                 />
-
-                <FilterButton
-                  icon={BulkSearchIcon}
-                  label="Bulk Actions"
-                  handleClick={() =>
-                    setActiveFilter((prev) => (prev === 'bulk' ? null : 'bulk'))
-                  }
-                  isActive={activeFilter === 'bulk'}
-                />
-                <FilterButton
-                  icon={FilterIcon}
-                  label="Filters"
-                  handleClick={() =>
-                    setActiveFilter((prev) =>
-                      prev === 'general' ? null : 'general'
-                    )
-                  }
-                  isActive={activeFilter === 'general'}
-                />
-              </HStack>
+                <HStack spacing="16px" width="full" flexWrap="wrap">
+                  <FilterButton
+                    icon={BulkSearchIcon}
+                    label="Bulk Actions"
+                    handleClick={() =>
+                      setActiveFilter((prev) =>
+                        prev === 'bulk' ? null : 'bulk'
+                      )
+                    }
+                    isActive={activeFilter === 'bulk'}
+                  />
+                  <FilterButton
+                    icon={FilterIcon}
+                    label="Filters"
+                    handleClick={() =>
+                      setActiveFilter((prev) =>
+                        prev === 'general' ? null : 'general'
+                      )
+                    }
+                    isActive={activeFilter === 'general'}
+                  />
+                </HStack>
+              </Stack>
             </Flex>
           </Flex>
 
           <TabPanels>
             {isOpen && (
-              <Flex width="full" mt="16px">
+              <Flex width="full" mt="16px" px={{ base: '16px', md: 0 }}>
                 <TableActions
                   filterData={filterData}
                   setFilterData={setFilterData}

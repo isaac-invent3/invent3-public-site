@@ -1,4 +1,4 @@
-import { HStack, Text, VStack } from '@chakra-ui/react';
+import { SimpleGrid, Text, VStack } from '@chakra-ui/react';
 
 import { SingleMaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 import { MAINTENANCE_PLAN_ENUM } from '~/lib/utils/constants';
@@ -38,8 +38,9 @@ const PlanInfo = (props: PlanInfoProps) => {
   ];
 
   return (
-    <HStack
+    <SimpleGrid
       width="full"
+      columns={{ base: 2, sm: 3 }}
       spacing="47px"
       bgColor={isPrimary ? 'primary.500' : 'none'}
       p={isPrimary ? '16px' : '0px'}
@@ -61,7 +62,7 @@ const PlanInfo = (props: PlanInfoProps) => {
           </Text>
         </VStack>
       ))}
-    </HStack>
+    </SimpleGrid>
   );
 };
 

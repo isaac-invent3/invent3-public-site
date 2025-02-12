@@ -121,6 +121,8 @@ const RecurrenceModal = (props: RecurrenceModalProps) => {
           mb="19px"
           mt="10px"
           alignItems="flex-start"
+          gap='12px'
+          flexDir={{base:'column', md:'row'}}
         >
           <Summary />
           <HStack spacing="16px" width="full" justifyContent="flex-end">

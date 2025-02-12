@@ -1,6 +1,6 @@
-import { Text as ChakraText, VStack } from '@chakra-ui/react';
+import { Text as ChakraText, StackProps, VStack } from '@chakra-ui/react';
 
-interface SectionInfoProps {
+interface SectionInfoProps extends StackProps {
   title: string;
   info: string;
   isRequired: boolean;
@@ -8,7 +8,7 @@ interface SectionInfoProps {
 }
 
 const SectionInfo = (props: SectionInfoProps) => {
-  const { title, info, isRequired, maxWidth } = props;
+  const { title, info, isRequired, maxWidth, ...rest } = props;
   return (
     <VStack
       alignItems="flex-start"
@@ -16,6 +16,7 @@ const SectionInfo = (props: SectionInfoProps) => {
       width="full"
       maxWidth={maxWidth ?? 'full'}
       flexShrink={0}
+      {...rest}
     >
       <ChakraText size="md" fontWeight={700} color="primary">
         {title}
@@ -25,9 +26,7 @@ const SectionInfo = (props: SectionInfoProps) => {
           </ChakraText>
         )}
       </ChakraText>
-      <ChakraText color="neutral.600" >
-        {info}
-      </ChakraText>
+      <ChakraText color="neutral.600">{info}</ChakraText>
     </VStack>
   );
 };

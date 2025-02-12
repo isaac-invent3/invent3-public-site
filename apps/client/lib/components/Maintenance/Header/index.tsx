@@ -1,4 +1,4 @@
-import { HStack, useDisclosure } from '@chakra-ui/react';
+import { Stack, useDisclosure } from '@chakra-ui/react';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import PageHeader from '~/lib/components/UI/PageHeader';
@@ -6,6 +6,7 @@ import PlanTemplateModal from '../Plans/PlanTemplateModal';
 import ScheduleTemplateModal from '../Schedules/ScheduleTemplateModal';
 import ActionButtonPopover from '../../UI/ActionButtonsPopover';
 import { ROUTES } from '~/lib/utils/constants';
+import usePermissionAccess from '~/lib/hooks/useRoleAccess';
 
 const Header = () => {
   const pathname = usePathname();
@@ -20,6 +21,8 @@ const Header = () => {
     onClose: onCloseScheduleTemplate,
     onOpen: onOpenScheduleTemplate,
   } = useDisclosure();
+  const canCreatePlan = usePermissionAccess('maintenance:plan_create');
+  const canCreateSchedule = usePermissionAccess('maintenance:schedule_create');
 
   useEffect(() => {
     // Define a mapping for the paths to tab names
@@ -37,9 +40,15 @@ const Header = () => {
   }, [pathname]);
 
   return (
-    <HStack width="full" justifyContent="space-between">
+    <Stack
+      width="full"
+      justifyContent="space-between"
+      spacing="10px"
+      direction={{ base: 'column', md: 'row' }}
+      px={{ base: '16px', md: 0 }}
+    >
       <PageHeader>Maintenance</PageHeader>
-      {tabName?.toLowerCase() === 'plans' && (
+      {tabName?.toLowerCase() === 'plans' && canCreatePlan && (
         <ActionButtonPopover
           onOpenTemplateModal={onOpenPlanTemplate}
           newRoute={`/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_PLANS}/add`}
@@ -55,7 +64,7 @@ const Header = () => {
           )}
         </ActionButtonPopover>
       )}
-      {tabName?.toLowerCase() === 'schedules' && (
+      {tabName?.toLowerCase() === 'schedules' && canCreateSchedule && (
         <ActionButtonPopover
           onOpenTemplateModal={onOpenScheduleTemplate}
           newRoute={`/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_SCHEDULES}/add`}
@@ -71,7 +80,7 @@ const Header = () => {
           )}
         </ActionButtonPopover>
       )}
-    </HStack>
+    </Stack>
   );
 };
 

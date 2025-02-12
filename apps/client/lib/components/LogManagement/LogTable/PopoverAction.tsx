@@ -1,15 +1,35 @@
 /* eslint-disable no-unused-vars */
 import { Text, VStack } from '@chakra-ui/react';
 import { GenericPopover } from '@repo/ui/components';
+import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
+import { AuditRecord } from '~/lib/interfaces/log.interfaces';
+import { useAppDispatch } from '~/lib/redux/hooks';
+import { setAuditLog } from '~/lib/redux/slices/AuditLogSlice';
+import { SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
 
-interface PopoverActionProps {}
+interface PopoverActionProps {
+  log: AuditRecord;
+}
 
-const PopoverAction = (props: PopoverActionProps) => {
+const PopoverAction = ({ log }: PopoverActionProps) => {
+  const dispatch = useAppDispatch();
+  const { updateSearchParam } = useCustomSearchParams();
   return (
     <>
       <GenericPopover width="137px" placement="bottom-start">
         <VStack width="full" alignItems="flex-start" spacing="16px">
-          <Text cursor="pointer">View Details</Text>
+          <Text
+            cursor="pointer"
+            onClick={() => {
+              dispatch(setAuditLog(log));
+              updateSearchParam(
+                SYSTEM_CONTEXT_DETAILS.AUDIT.slug,
+                log.auditRecordId
+              );
+            }}
+          >
+            View Details
+          </Text>
         </VStack>
       </GenericPopover>
     </>

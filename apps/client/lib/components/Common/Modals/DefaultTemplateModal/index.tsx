@@ -138,7 +138,7 @@ const TemplateModal = (props: TemplateModalProps) => {
       setPageNumber={setPageNumber}
       setPageSize={setPageSize}
       filters={
-        <Flex width="full" mb="16px">
+        <Flex width="full" mb="16px" flexWrap='wrap'>
           <TemplateFilters handleApplyFilter={handleSearch} type="modal" />
         </Flex>
       }

@@ -1,48 +1,51 @@
-ARG NODE_VERSION="18.15.0"
-ARG ALPINE_VERSION="3.17"
-FROM --platform=linux/amd64 node:${NODE_VERSION}-alpine${ALPINE_VERSION} as base
-# for turbo - https://turbo.build/repo/docs/handbook/deploying-with-docker#example
-RUN apk add --no-cache libc6-compat
-RUN apk update
-WORKDIR /workspace
-# enable corepack for pnpm
-RUN corepack enable
+FROM node:18-alpine AS base
+    # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
+    RUN apk add --no-cache libc6-compat
 
-FROM base as fetcher
-# pnpm fetch only requires lockfile, but we'll need to build workspaces
-COPY pnpm*.yaml ./
-# COPY patches ./patches
-# mount pnpm store as cache & fetch dependencies
-RUN --mount=type=cache,id=pnpm-store,target=/root/.local/share/pnpm-store \
-  pnpm fetch --ignore-scripts
+FROM base AS builder
+    WORKDIR /app
 
-FROM fetcher as builder
-# specify the app in apps/ we want to build
-ARG APP_NAME="client"
-ENV APP_NAME=${APP_NAME}
-WORKDIR /workspace
-COPY . .
-# RUN --mount=type=secret,id=env,required=true,target=/workspace/.env.local \
-#   pnpm install --frozen-lockfile --offline --silent
-# # build app
-# RUN --mount=type=secret,id=env,required=true,target=/workspace/.env.local \
-#   --mount=type=cache,target=/workspace/node_modules/.cache \
-#   pnpm turbo run build --filter="${APP_NAME}"
+    RUN npm install -g turbo
 
-FROM builder as deployer
-WORKDIR /workspace
-# deploy app
-RUN pnpm --filter ${APP_NAME} deploy --prod --ignore-scripts ./out
+    COPY . .
 
-FROM base as runner
-WORKDIR /workspace
-# Don't run production as root
-RUN addgroup --system --gid 1001 mygroup
-RUN adduser --system --uid 1001 myuser
-USER myuser
-# copy files needed to run the app
-COPY --chown=myuser:mygroup --from=deployer /workspace/out/package.json .
-COPY --chown=myuser:mygroup --from=deployer /workspace/out/node_modules/ ./node_modules
-COPY --chown=myuser:mygroup --from=deployer /workspace/out/build/ ./build
-# start the app
-CMD pnpm run start
+    RUN turbo prune --scope=client --docker
+
+FROM base as installer
+    WORKDIR /app
+
+    RUN npm install -g pnpm
+    RUN npm install -g turbo
+
+    # First install dependencies (as they change less often)
+    COPY .gitignore .gitignore
+    COPY --from=builder /app/out/json/ .
+    COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
+    RUN pnpm install
+
+    # Build the project and its dependencies
+    COPY --from=builder /app/out/full/ .
+    COPY turbo.json turbo.json
+
+    # Uncomment and use build args to enable remote caching
+    # ARG TURBO_TEAM
+    # ENV TURBO_TEAM=$TURBO_TEAM
+
+    # ARG TURBO_TOKEN
+    # ENV TURBO_TOKEN=$TURBO_TOKEN
+
+    RUN turbo run build --filter=client...
+
+FROM base AS runner
+    WORKDIR /app
+
+    RUN npm install -g pnpm
+
+    # Don't run production as root
+    RUN addgroup --system --gid 1001 nodejs
+    RUN adduser --system --uid 1001 nextjs
+    USER nextjs
+
+    COPY --from=installer /app .
+
+    CMD pnpm --filter client run start

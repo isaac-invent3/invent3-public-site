@@ -1,0 +1,29 @@
+name: Deploy-to-AWS
+
+on:
+  workflow_run:
+    workflows: ["CI-build-and-push-image-to-dockerhub"]  
+    types:
+      - completed  # Runs after the previous workflow completes
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.AWS_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.AWS_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to AWS
+        run: |
+          ssh ubuntu@${{ secrets.AWS_HOST }} << 'EOF'
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/invent3pro:latest
+            docker stop invent3pro-container || true
+            docker rm invent3pro-container || true
+            docker run -d --name invent3pro-container -p 80:3000 \
+              ${{ secrets.DOCKERHUB_USERNAME }}/invent3pro:latest
+          EOF

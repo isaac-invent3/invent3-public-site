@@ -11,10 +11,11 @@ FROM base AS builder
 
     RUN turbo prune --scope=client --docker
 
-FROM base as installer
+FROM base AS installer
     WORKDIR /app
 
-    RUN npm install -g pnpm
+    RUN npm install -g pnpm@9.1.2
+
     RUN npm install -g turbo
 
     # First install dependencies (as they change less often)
@@ -39,7 +40,7 @@ FROM base as installer
 FROM base AS runner
     WORKDIR /app
 
-    RUN npm install -g pnpm
+    RUN npm install -g pnpm@9.1.2
 
     # Don't run production as root
     RUN addgroup --system --gid 1001 nodejs

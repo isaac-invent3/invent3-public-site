@@ -15,7 +15,7 @@ on:
       - README.md
       - .vscode/**
       - .gitignore
-    
+
 # Allows for this workflow to be executed manually from the Actions tab
   workflow_dispatch:
 
@@ -43,6 +43,6 @@ jobs:
         uses: docker/build-push-action@v6.6.0
         with:
           context: .
-          file: ./Invent3Pro/Dockerfile
+          file: ./apps/client/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/invent3pro:latest, ${{ secrets.DOCKERHUB_USERNAME }}/invent3pro:${{ github.run_number }}

@@ -1,6 +1,7 @@
 import { Heading, HStack, Stack, Text, VStack } from '@chakra-ui/react';
 import { isEmpty } from 'lodash';
 import { useAppSelector } from '~/lib/redux/hooks';
+import { dateFormatter } from '~/lib/utils/Formatters';
 
 const Overview = () => {
   const logData = useAppSelector((state) => state.auditLog.auditLog);
@@ -12,7 +13,8 @@ const Overview = () => {
   const logInfo1 = [
     {
       label: 'Time Stamp',
-      value: 'June 25, 2024, 14:37:22 UTC',
+      // value: 'June 25, 2024, 14:37:22 UTC',
+      value: dateFormatter(logData?.dateCreated, 'MMMM DD, YYYY, HH:mm:ss UTC'),
     },
     {
       label: 'IP Address',
@@ -27,15 +29,15 @@ const Overview = () => {
   const logInfo2 = [
     {
       label: 'Performed By',
-      value: 'John Doe (Admin)',
+      value: logData?.username,
     },
     {
       label: 'User Email',
-      value: 'johndoe@invent3.com',
+      value: logData?.username,
     },
     {
       label: 'User Role',
-      value: 'Super Admin',
+      value: logData?.username,
     },
   ];
 
@@ -51,7 +53,8 @@ const Overview = () => {
     >
       <VStack alignItems="flex-start" width="full" spacing="15px">
         <Heading as="h3" size={{ base: 'lg', md: 'xl' }} fontWeight={800}>
-          Action: Update Vendor Details
+          Action: {logData?.requestActionTypeName}{' '}
+          {logData?.systemContextTypeName}
         </Heading>
         <Stack
           width="full"

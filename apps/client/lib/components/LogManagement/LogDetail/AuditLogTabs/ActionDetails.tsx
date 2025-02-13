@@ -15,11 +15,11 @@ const ActionDetails = () => {
   const infoOne = [
     {
       label: 'Action Type:',
-      value: 'Updated Vendor Details',
+      value: `${logData.requestActionTypeName} ${logData.systemContextTypeName}`,
     },
     {
       label: 'Module Affected:',
-      value: 'Vendor Management',
+      value: `${logData.systemContextTypeName}`,
     },
   ];
 
@@ -42,7 +42,7 @@ const ActionDetails = () => {
       <VStack alignItems="flex-start" spacing="16px">
         <Detail
           label="Entity Affected:"
-          value="Tech Supplies Ltd"
+          value={logData?.systemContextTypeName}
           labelMinWidth={isMobile ? '108px' : '97px'}
         />
         <Detail
@@ -51,7 +51,7 @@ const ActionDetails = () => {
           labelMinWidth={isMobile ? '108px' : '97px'}
           itemContainerStyle={{ alignItems: 'center' }}
         >
-          <GenericStatusBox text="Success" colorCode="#018A1E" />
+          <GenericStatusBox text={logData?.statusName} />
         </Detail>
       </VStack>
     </Stack>

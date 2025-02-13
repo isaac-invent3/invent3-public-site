@@ -95,13 +95,13 @@ const LogTable = (props: LogTableProps) => {
           enableSorting: false,
         }),
         columnHelper.accessor('requestActionTypeName', {
-          cell: (info) => info.getValue(),
+          cell: (info) => info.getValue() ?? 'N/A',
           header: 'Action',
           enableSorting: true,
         }),
 
         columnHelper.accessor('systemContextTypeName', {
-          cell: (info) => info.getValue(),
+          cell: (info) => info.getValue() ?? 'N/A',
           header: 'Module Affected',
           enableSorting: true,
         }),
@@ -119,11 +119,11 @@ const LogTable = (props: LogTableProps) => {
         //   enableSorting: true,
         // }),
 
-        columnHelper.accessor('requestActionTypeName', {
-          cell: (info) => info.getValue(),
-          header: 'Change Type',
-          enableSorting: true,
-        }),
+        // columnHelper.accessor('requestActionTypeName', {
+        //   cell: (info) => info.getValue(),
+        //   header: 'Change Type',
+        //   enableSorting: true,
+        // }),
 
         // columnHelper.accessor('isDeleted', {
         //   cell: () => '198.62.10.0',
@@ -133,10 +133,7 @@ const LogTable = (props: LogTableProps) => {
 
         columnHelper.accessor('statusName', {
           cell: (info) => (
-            <GenericStatusBox
-              text={info.row.original.statusName}
-              colorCode={info.row.original.statusName}
-            />
+            <GenericStatusBox text={info.row.original.statusName} />
           ),
           header: 'Status',
           enableSorting: true,

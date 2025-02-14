@@ -83,16 +83,28 @@ const sideBarData: SideBarData[] = [
     permissionKey: 'role',
   },
   {
+    name: 'Vendor Management',
+    route: ROUTES.VENDOR,
+    icon: VendorManagementIcon,
+    permissionKey: 'vendor',
+  },
+  {
     name: 'Audit Logs',
     route: ROUTES.AUDIT_LOG,
     icon: AuditLogIcon,
     permissionKey: 'audit',
   },
   {
-    name: 'Vendor Management',
-    route: ROUTES.VENDOR,
-    icon: VendorManagementIcon,
-    permissionKey: 'vendor',
+    name: 'Compliance',
+    route: ROUTES.COMPLIANCE,
+    icon: TemplateIcon,
+    permissionKey: 'audit',
+  },
+  {
+    name: 'Settings',
+    route: ROUTES.SETTINGS,
+    icon: TemplateIcon,
+    permissionKey: 'audit',
   },
 ];
 

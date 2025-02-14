@@ -1,13 +1,11 @@
-import { Flex, useMediaQuery } from '@chakra-ui/react';
+import { Flex, Text, useMediaQuery } from '@chakra-ui/react';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useMemo } from 'react';
 import { dateFormatter } from '~/lib/utils/Formatters';
-import PopoverAction from './PopoverAction';
 import { GenericTableProps } from '~/lib/interfaces/general.interfaces';
 import { AuditRecord } from '~/lib/interfaces/log.interfaces';
-import UserInfo from '../../Common/UserInfo';
-import GenericStatusBox from '../../UI/GenericStatusBox';
+import PopoverAction from './PopoverAction';
 
 interface LogTableProps extends GenericTableProps {
   data: AuditRecord[];
@@ -15,7 +13,7 @@ interface LogTableProps extends GenericTableProps {
   handleSelectRow?: (row: AuditRecord) => void;
 }
 
-const LogTable = (props: LogTableProps) => {
+const ComplianceTable = (props: LogTableProps) => {
   const {
     data,
     isFetching,
@@ -49,7 +47,7 @@ const LogTable = (props: LogTableProps) => {
           enableSorting: false,
         }),
         columnHelper.accessor('dateCreated', {
-          cell: (info) => dateFormatter(info.getValue(), 'YYYY-MM-DD hh:mmA'),
+          cell: (info) => dateFormatter(info.getValue(), 'YYYY-DD-MM hh:mmA'),
           header: 'Timestamp',
           enableSorting: false,
         }),
@@ -64,7 +62,7 @@ const LogTable = (props: LogTableProps) => {
           enableSorting: true,
         }),
         columnHelper.accessor('contextIds', {
-          cell: (info) => <PopoverAction log={info.row.original} />,
+          cell: () => <PopoverAction />,
           header: '',
           enableSorting: false,
         }),
@@ -79,68 +77,43 @@ const LogTable = (props: LogTableProps) => {
     () => {
       const baseColumns = [
         columnHelper.accessor('auditRecordId', {
-          cell: (info) => info.getValue(),
-          header: '#',
+          cell: () => 'ISO 27001',
+          header: 'Compliance Standard',
           enableSorting: false,
         }),
         columnHelper.accessor('dateCreated', {
-          cell: (info) => dateFormatter(info.getValue(), 'YYYY-DD-MM hh:mmA'),
-          header: 'Timestamp',
+          cell: () => <Text color="#07CC3B">Completed</Text>,
+          header: 'Status',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('dateCreated', {
+          cell: (info) => dateFormatter(info.getValue(), 'YYYY-MM-DD'),
+          header: 'Last Review Date',
           enableSorting: false,
         }),
 
         columnHelper.accessor('username', {
-          cell: (info) => <UserInfo name={info.getValue()} />,
-          header: 'User',
+          cell: () => '6 Months',
+          header: 'Frequency',
           enableSorting: false,
         }),
         columnHelper.accessor('requestActionTypeName', {
-          cell: (info) => info.getValue() ?? 'N/A',
-          header: 'Action',
+          cell: () => 'CertAuthority Ltd',
+          header: 'Certificate Issued By',
           enableSorting: true,
         }),
-
-        columnHelper.accessor('systemContextTypeName', {
-          cell: (info) => info.getValue() ?? 'N/A',
-          header: 'Module Affected',
-          enableSorting: true,
+        columnHelper.accessor('dateCreated', {
+          cell: (info) => dateFormatter(info.getValue(), 'YYYY-MM-DD'),
+          header: 'Certificate Issued Date',
+          enableSorting: false,
         }),
-
-        // columnHelper.accessor('logMessageId', {
-        //   cell: () => (
-        //     <VStack spacing={0} alignItems="flex-start">
-        //       <Text color="black">Macbook 2015</Text>
-        //       <Text color="neutral.700" size="xs">
-        //         Google Chrome
-        //       </Text>
-        //     </VStack>
-        //   ),
-        //   header: 'Device/Browser',
-        //   enableSorting: true,
-        // }),
-
-        // columnHelper.accessor('requestActionTypeName', {
-        //   cell: (info) => info.getValue(),
-        //   header: 'Change Type',
-        //   enableSorting: true,
-        // }),
-
-        // columnHelper.accessor('isDeleted', {
-        //   cell: () => '198.62.10.0',
-        //   header: 'IP Address',
-        //   enableSorting: true,
-        // }),
-
-        columnHelper.accessor('statusName', {
-          cell: (info) => (
-            <GenericStatusBox text={info.row.original.statusName} />
-          ),
-          header: 'Status',
-          enableSorting: true,
+        columnHelper.accessor('dateCreated', {
+          cell: (info) => dateFormatter(info.getValue(), 'YYYY-MM-DD'),
+          header: 'Expiry Date',
+          enableSorting: false,
         }),
-
-        columnHelper.accessor('systemContextTypeId', {
-          cell: (info) => <PopoverAction log={info.row.original} />,
+        columnHelper.accessor('contextIds', {
+          cell: () => <PopoverAction />,
           header: '',
           enableSorting: false,
         }),
@@ -190,4 +163,4 @@ const LogTable = (props: LogTableProps) => {
   );
 };
 
-export default LogTable;
+export default ComplianceTable;

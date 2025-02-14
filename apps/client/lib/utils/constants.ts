@@ -203,6 +203,8 @@ const ROUTES = {
   ROLES: 'role-management',
   COMPANY: 'company-management',
   VENDOR: 'vendor-management',
+  SETTINGS: 'settings',
+  COMPLIANCE: 'compliance',
 };
 
 const SYSTEM_CONTEXT_DETAILS: Record<ContextKey, SystemContextDetail> = {

@@ -211,7 +211,7 @@ export const assetApi = createApi({
       }),
     }),
     exportAsset: builder.mutation<
-      string,
+      BaseApiResponse<string>,
       { exportType: number; assetIds: number[] }
     >({
       query: ({ exportType, assetIds }) => ({
@@ -219,6 +219,13 @@ export const assetApi = createApi({
         method: 'POST',
         headers: getHeaders(),
         body: assetIds,
+      }),
+    }),
+    downloadAsset: builder.query<any, { filePath: string }>({
+      query: ({ filePath }) => ({
+        url: `/Assets/Download?filePath=${filePath}`,
+        method: 'GET',
+        headers: getHeaders(),
       }),
     }),
   }),
@@ -241,4 +248,5 @@ export const {
   useTransferAssetMutation,
   useUpdateAssetStatusMutation,
   useExportAssetMutation,
+  useDownloadAssetQuery,
 } = assetApi;

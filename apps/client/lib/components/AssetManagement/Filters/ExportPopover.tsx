@@ -11,6 +11,7 @@ import {
   HStack,
   useToast,
 } from '@chakra-ui/react';
+import { useSession } from 'next-auth/react';
 import { DownloadIcon } from '~/lib/components/CustomIcons';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useAppSelector } from '~/lib/redux/hooks';
@@ -25,6 +26,7 @@ const ExportPopover = () => {
   const toast = useToast();
   const { handleSubmit } = useCustomMutation();
   const [exportAsset, { isLoading }] = useExportAssetMutation();
+  const session = useSession();
 
   const handlePopoverClick = () => {
     if (selectedAssetIds.length > 0) {
@@ -42,10 +44,43 @@ const ExportPopover = () => {
   };
 
   const handleExport = async (exportType: number) => {
-    await handleSubmit(exportAsset, {
+    const resp = await handleSubmit(exportAsset, {
       exportType: exportType,
       assetIds: selectedAssetIds,
     });
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/Assets/Download?filePath=${resp?.data?.data}`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${session?.data?.user.accessToken}`,
+            Apikey: `${session?.data?.user.apiKey}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Failed to download file: ${response.statusText}`);
+      }
+
+      const blob = await response.blob();
+
+      // Trigger download
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = resp?.data?.data ?? '';
+      document.body.appendChild(a);
+      a.click();
+
+      // Cleanup
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('Error downloading file:', error);
+    }
   };
 
   return (
@@ -106,7 +141,7 @@ const ExportPopover = () => {
             borderColor: 'transparent',
           }}
         >
-          <PopoverBody p="16px" onClick={onClose}>
+          <PopoverBody p="16px">
             <VStack spacing="12px">
               <Text
                 color="#0E2642"

@@ -210,6 +210,17 @@ export const assetApi = createApi({
         body,
       }),
     }),
+    exportAsset: builder.mutation<
+      string,
+      { exportType: number; assetIds: number[] }
+    >({
+      query: ({ exportType, assetIds }) => ({
+        url: `/Assets/Export?exportType=${exportType}`,
+        method: 'POST',
+        headers: getHeaders(),
+        body: assetIds,
+      }),
+    }),
   }),
 });
 
@@ -229,4 +240,5 @@ export const {
   useSearchAssetsMutation,
   useTransferAssetMutation,
   useUpdateAssetStatusMutation,
+  useExportAssetMutation,
 } = assetApi;

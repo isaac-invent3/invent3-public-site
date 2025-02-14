@@ -279,6 +279,11 @@ const SYSTEM_ROLES = {
   VISITORS: 7,
 };
 
+const EXPORT_TYPE_ENUM = {
+  CSV: 1,
+  PDF: 2,
+};
+
 export {
   AREA_ENUM,
   ASSET_GROUP_TYPE,
@@ -300,4 +305,5 @@ export {
   SYSTEM_ROLES,
   timeRangeOptions,
   yearOptions,
+  EXPORT_TYPE_ENUM,
 };

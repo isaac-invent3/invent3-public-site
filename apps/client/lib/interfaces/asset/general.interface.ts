@@ -429,6 +429,13 @@ interface UpdateAssetPayload {
   > | null;
 }
 
+interface MeanTimeComputation {
+  mtbf: number;
+  mttr: number;
+  unit: string;
+  month: number;
+}
+
 export type {
   AssetLocation,
   Asset,
@@ -447,4 +454,5 @@ export type {
   AssetDocumentsDto,
   CreateAssetPayload,
   UpdateAssetPayload,
+  MeanTimeComputation,
 };

@@ -45,8 +45,9 @@ const userRoleSchema = Yup.object().shape({
 });
 
 const userGroupSchema = Yup.object().shape({
-  groupName: Yup.string().required('Role name is required'),
-  users: Yup.array().of(Yup.number()).required('Users are required'),
+  groupName: Yup.string().required('Group name is required'),
+  userIds: Yup.array().of(Yup.number()).required('Users are required'),
+  roleIds: Yup.array().of(Yup.number()).required('Roles are required'),
 });
 
 export {

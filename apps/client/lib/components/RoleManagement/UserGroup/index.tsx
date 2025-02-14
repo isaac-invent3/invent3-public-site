@@ -1,3 +1,5 @@
+'use client';
+
 import { Flex } from '@chakra-ui/react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';

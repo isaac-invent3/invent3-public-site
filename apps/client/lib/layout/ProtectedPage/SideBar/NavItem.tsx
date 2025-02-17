@@ -9,7 +9,7 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { ChevronDownIcon } from '~/lib/components/CustomIcons';
 import { sidebarChildren } from '~/lib/interfaces/general.interfaces';
 
@@ -19,17 +19,28 @@ interface NavItemProps {
   icon: ComponentWithAs<'svg', IconProps>;
   isCollapse: boolean;
   children?: sidebarChildren[];
+  hasAnyChildren?: boolean;
 }
 
 const NavItem = (props: NavItemProps) => {
-  const { name, route, icon, isCollapse, children } = props;
-  const router = useRouter();
+  const { name, route, icon, isCollapse, children, hasAnyChildren } = props;
   const { isOpen, onToggle } = useDisclosure();
-
   const path = usePathname();
   const splittedPathname = path.split('/');
+
+  //For nav items with children
+  const fullPath = window.location.href.split(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/`
+  );
+  const relativePath = fullPath?.[1];
+
   return (
-    <VStack width="full" position="relative" px="12px">
+    <VStack
+      width="full"
+      position="relative"
+      px="12px"
+      alignItems={hasAnyChildren ? 'flex-start' : 'center'}
+    >
       <HStack
         rounded="8px"
         bgColor={
@@ -52,9 +63,9 @@ const NavItem = (props: NavItemProps) => {
           pr={!children ? '12px' : 0}
           width={isCollapse ? 'max-content' : 'full'}
           cursor="pointer"
-          onClick={() => {
-            children ? onToggle() : router.push(`/${route}`);
-          }}
+          {...(!children
+            ? { as: 'a', href: `/${route}` }
+            : { as: 'button', onClick: () => onToggle() })}
         >
           <Icon
             as={icon}
@@ -101,6 +112,7 @@ const NavItem = (props: NavItemProps) => {
               href={`/${item.route}`}
               minW="full"
               textDecoration="none !important"
+              key={index}
             >
               <Text
                 key={index}
@@ -111,9 +123,7 @@ const NavItem = (props: NavItemProps) => {
                 bgColor={
                   splittedPathname[1] === item.route ? '#6E7D8E80' : 'none'
                 }
-                color={
-                  splittedPathname[1] === item.route ? 'white' : 'neutral.600'
-                }
+                color={relativePath === item.route ? 'white' : 'neutral.600'}
               >
                 {item.name}
               </Text>

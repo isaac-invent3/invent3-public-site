@@ -212,6 +212,15 @@ interface UserDesignation {
   designationId: number;
 }
 
+interface UserGroupPayload {
+  createGroupDto: {
+    groupName: string;
+    createdBy: string;
+  };
+  userIds: number[];
+  roleIds: number[];
+}
+
 export type {
   Employee,
   User,
@@ -227,4 +236,5 @@ export type {
   UserFormDetails,
   UserDesignation,
   UserGroupInfoHeader,
+  UserGroupPayload,
 };

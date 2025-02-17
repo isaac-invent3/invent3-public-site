@@ -9,7 +9,7 @@ const FooterSection = (props: FooterSectionProps) => {
   const { data } = useSession();
 
   return (
-    <HStack spacing="19px" px="24px" position="relative" zIndex={999}>
+    <HStack spacing="19px" px="24px" position="relative" zIndex={999} mt="24px">
       <Flex width={isCollapse ? 'full' : 'max-content'} justifyContent="center">
         <Avatar width="40px" height="40px" name={data?.user.name ?? ''} />
       </Flex>

@@ -4,7 +4,7 @@ import { FormikProvider, useFormik } from 'formik';
 import { useState } from 'react';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { assigneeSchema } from '~/lib/schemas/general.schema';
-import EmployeeSelect from '../../SelectComponents/EmployeeSelect';
+import UserSelect from '../../SelectComponents/UserSelect';
 
 interface UserSelectModalProps {
   isOpen: boolean;
@@ -68,7 +68,7 @@ const UserSelectModal = (props: UserSelectModalProps) => {
                   'Select the person tasked with this responsibility'
                 }
               >
-                <EmployeeSelect
+                <UserSelect
                   selectName="assignee"
                   selectTitle="Enter User"
                   handleSelect={(option) => setSelectedUser(option)}

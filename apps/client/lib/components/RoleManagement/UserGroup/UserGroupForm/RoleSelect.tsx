@@ -9,10 +9,11 @@ import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 interface RoleSelectProps {
   // eslint-disable-next-line no-unused-vars
-  handleSelect?: (options: Option) => void;
+  handleSelect?: (options: Option | Option[]) => void;
   selectName: string;
   selectTitle: string;
   defaultInputValue?: string | null;
+  customProps?: { [name: string]: any };
 }
 
 const RoleSelect = (props: RoleSelectProps) => {

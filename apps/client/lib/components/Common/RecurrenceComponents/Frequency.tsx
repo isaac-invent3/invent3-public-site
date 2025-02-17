@@ -81,7 +81,9 @@ const Frequency = (props: FrequencyProps) => {
         showTitleAfterSelect={false}
         onSelect={(option) => {
           dispatch(clearRepeatInterval());
-          dispatch(updateRecurrence({ frequency: option, interval: 1 }));
+          dispatch(
+            updateRecurrence({ frequency: option as Option, interval: 1 })
+          );
         }}
       />
     </FormInputWrapper>

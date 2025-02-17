@@ -116,7 +116,10 @@ const DynamicConditionValue = (props: DynamicConditionValueProps) => {
         selectedOption={getSelectedOption(meta.value)}
         showTitleAfterSelect={true}
         handleSelect={(option) => {
-          setFieldValue(`criterion[${index}].columnValue`, option?.value);
+          setFieldValue(
+            `criterion[${index}].columnValue`,
+            (option as Option)?.value
+          );
         }}
         containerStyles={{
           flex: 1,

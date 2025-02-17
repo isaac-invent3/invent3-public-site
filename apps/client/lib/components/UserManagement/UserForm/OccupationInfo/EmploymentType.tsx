@@ -1,4 +1,5 @@
 import { VStack } from '@chakra-ui/react';
+import { Option } from '@repo/interfaces';
 import {
   ErrorMessage,
   FormInputWrapper,
@@ -35,8 +36,10 @@ const EmploymentType = () => {
           title="Employment Type"
           options={EmploymentTypeOptions}
           onSelect={(option) => {
-            helpers.setValue(option.value as number);
-            dispatch(updateUserForm({ employmentTypeName: option.label }));
+            helpers.setValue((option as Option).value as number);
+            dispatch(
+              updateUserForm({ employmentTypeName: (option as Option).label })
+            );
           }}
           isLoading={false}
           isSearchable

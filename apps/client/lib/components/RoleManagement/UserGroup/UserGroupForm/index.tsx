@@ -6,6 +6,8 @@ import {
   DrawerFooter,
   DrawerHeader,
   HStack,
+  Icon,
+  useDisclosure,
   VStack,
 } from '@chakra-ui/react';
 import { Field, FormikProvider, useFormik } from 'formik';
@@ -13,17 +15,23 @@ import { Field, FormikProvider, useFormik } from 'formik';
 import {
   BackButton,
   Button,
+  ErrorMessage,
   FormInputWrapper,
   FormTextInput,
   GenericDrawer,
+  GenericSuccessModal,
   ModalHeading,
 } from '@repo/ui/components';
-// import useCustomMutation from '~/lib/hooks/mutation.hook';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { UserGroupInfoHeader } from '~/lib/interfaces/user.interfaces';
 import { userGroupSchema } from '~/lib/schemas/user.schema';
 import { useState } from 'react';
 import UserDisplayAndAddButton from '~/lib/components/Common/UserDisplayAndAddButton';
 import RoleSelect from './RoleSelect';
+import { getSession } from 'next-auth/react';
+import { CloseIcon } from '~/lib/components/CustomIcons';
+import { Option } from '@repo/interfaces';
+import { useCreateUserGroupMutation } from '~/lib/redux/services/user.services';
 
 interface UserGroupFormDrawerProps {
   isOpen: boolean;
@@ -32,8 +40,14 @@ interface UserGroupFormDrawerProps {
 }
 const UserGroupDrawer = (props: UserGroupFormDrawerProps) => {
   const { isOpen, onClose, data } = props;
-  // const { handleSubmit } = useCustomMutation();
-  const [selectedUser, setSelectedUser] = useState<string[]>([]);
+  const { handleSubmit } = useCustomMutation();
+  const {
+    isOpen: isOpenSuccess,
+    onClose: onCloseSuccess,
+    onOpen: onOpenSuccess,
+  } = useDisclosure();
+  const [selectedUser, setSelectedUser] = useState<Option[]>([]);
+  const [createUserGroup, { isLoading }] = useCreateUserGroupMutation();
 
   const formik = useFormik({
     initialValues: {
@@ -43,7 +57,22 @@ const UserGroupDrawer = (props: UserGroupFormDrawerProps) => {
     },
     validationSchema: userGroupSchema,
     enableReinitialize: true,
-    onSubmit: async () => {},
+    onSubmit: async (values) => {
+      const session = await getSession();
+      const payload = {
+        createGroupDto: {
+          groupName: values.groupName,
+          createdBy: session?.user?.username!,
+        },
+        userIds: values.userIds,
+        roleIds: values.roleIds,
+      };
+      const response = await handleSubmit(createUserGroup, payload, '');
+
+      if (response?.data) {
+        onOpenSuccess();
+      }
+    },
   });
 
   return (
@@ -107,42 +136,86 @@ const UserGroupDrawer = (props: UserGroupFormDrawerProps) => {
                     title="Add Users"
                     isRequired
                   >
-                    <HStack justifyContent="space-between" width="full">
-                      <AvatarGroup
-                        size="sm"
-                        max={3}
-                        display={selectedUser.length > 0 ? 'flex' : 'none'}
-                      >
-                        {selectedUser.map((item, index) => (
-                          <Avatar
-                            name={item}
-                            src=""
-                            key={index}
-                            width="44px"
-                            height="44px"
-                          />
-                        ))}
-                      </AvatarGroup>
-                      <UserDisplayAndAddButton
-                        selectedUser={null}
-                        handleSelectUser={(option) => {
-                          if (
-                            !(formik.values.userIds as number[]).includes(
-                              option?.value as number
-                            )
-                          ) {
-                            formik.setFieldValue('users', [
-                              ...formik.values.userIds,
-                              option?.value as number,
-                            ]);
-                            setSelectedUser((prev) => [
-                              ...prev,
-                              option?.label as string,
-                            ]);
-                          }
-                        }}
-                      />
-                    </HStack>
+                    <VStack width="full" spacing="4px" alignItems="flex-start">
+                      <HStack justifyContent="space-between" width="full">
+                        <AvatarGroup
+                          size="sm"
+                          max={3}
+                          display={selectedUser.length > 0 ? 'flex' : 'none'}
+                        >
+                          {selectedUser.map((user, index) => (
+                            <HStack
+                              position="relative"
+                              justifyContent="center"
+                              alignItems="center"
+                              overflow="hidden"
+                              rounded="full"
+                              role="group"
+                              cursor="pointer"
+                            >
+                              <Icon
+                                as={CloseIcon}
+                                position="absolute"
+                                boxSize="24px"
+                                zIndex={999}
+                                color="red.500"
+                                display="none"
+                                _groupHover={{
+                                  display: 'flex',
+                                }}
+                                onClick={() => {
+                                  setSelectedUser(
+                                    selectedUser.filter(
+                                      (item) => item.value !== user.value
+                                    )
+                                  );
+                                  formik.setFieldValue(
+                                    'userIds',
+                                    formik.values.userIds.filter(
+                                      (id) => id !== user.value
+                                    )
+                                  );
+                                }}
+                              />
+                              <Avatar
+                                name={user.label}
+                                src=""
+                                key={index}
+                                width="44px"
+                                height="44px"
+                                opacity={1}
+                                _groupHover={{
+                                  opacity: 0.7,
+                                }}
+                              />
+                            </HStack>
+                          ))}
+                        </AvatarGroup>
+                        <UserDisplayAndAddButton
+                          selectedUser={null}
+                          handleSelectUser={(option) => {
+                            if (
+                              !(formik.values.userIds as number[]).includes(
+                                option?.value as number
+                              )
+                            ) {
+                              formik.setFieldValue('userIds', [
+                                ...formik.values.userIds,
+                                option?.value as number,
+                              ]);
+                              setSelectedUser((prev) => [
+                                ...prev,
+                                option as Option,
+                              ]);
+                            }
+                          }}
+                        />
+                      </HStack>
+                      {formik.touched &&
+                        formik.errors.userIds !== undefined && (
+                          <ErrorMessage>{formik.errors.userIds}</ErrorMessage>
+                        )}
+                    </VStack>
                   </FormInputWrapper>
                 </VStack>
                 {/* Main Form Ends Here */}
@@ -162,7 +235,7 @@ const UserGroupDrawer = (props: UserGroupFormDrawerProps) => {
             <Button
               type="submit"
               customStyles={{ width: '237px' }}
-              isLoading={false}
+              isLoading={isLoading}
               handleClick={formik.handleSubmit}
             >
               Save User Group
@@ -170,6 +243,16 @@ const UserGroupDrawer = (props: UserGroupFormDrawerProps) => {
           </HStack>
         </DrawerFooter>
       </GenericDrawer>
+      <GenericSuccessModal
+        isOpen={isOpenSuccess}
+        onClose={onCloseSuccess}
+        successText="User Group Created Successfully"
+        mainModalStyle={{ closeOnOverlayClick: false, closeOnEsc: false }}
+      >
+        <Button customStyles={{ width: '193px' }} handleClick={onCloseSuccess}>
+          Continue
+        </Button>
+      </GenericSuccessModal>
     </>
   );
 };

@@ -146,7 +146,7 @@ const DynamicConditions = () => {
                           handleSelect={(option) => {
                             setFieldValue(
                               `criterion[${index}].columnName`,
-                              option?.value
+                              (option as Option)?.value
                             );
                           }}
                           containerStyles={{
@@ -188,7 +188,7 @@ const DynamicConditions = () => {
                           handleSelect={(option) => {
                             setFieldValue(
                               `criterion[${index}].operation`,
-                              option?.value
+                              (option as Option)?.value
                             );
                           }}
                           containerStyles={{

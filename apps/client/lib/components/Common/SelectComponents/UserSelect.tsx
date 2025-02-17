@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import {
-  useGetAllEmployeesQuery,
-  useSearchEmployeesMutation,
-} from '~/lib/redux/services/employees.services';
+  useGetAllUsersQuery,
+  useSearchUsersMutation,
+} from '~/lib/redux/services/user.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
-interface EmployeeSelectProps {
+interface UserSelectProps {
   // eslint-disable-next-line no-unused-vars
   handleSelect?: (options: Option) => void;
   selectName: string;
@@ -16,7 +16,7 @@ interface EmployeeSelectProps {
   showTitleAfterSelect?: boolean;
 }
 
-const EmployeeSelect = (props: EmployeeSelectProps) => {
+const UserSelect = (props: UserSelectProps) => {
   const {
     handleSelect,
     selectName,
@@ -24,10 +24,10 @@ const EmployeeSelect = (props: EmployeeSelectProps) => {
     defaultName,
     showTitleAfterSelect = true,
   } = props;
-  const [searchEmployee] = useSearchEmployeesMutation({});
+  const [searchUsers] = useSearchUsersMutation({});
 
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllEmployeesQuery({
+  const { data, isLoading } = useGetAllUsersQuery({
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
@@ -36,10 +36,10 @@ const EmployeeSelect = (props: EmployeeSelectProps) => {
       selectName={selectName}
       selectTitle={selectTitle}
       data={data}
-      labelKey="employeeName"
-      valueKey="employeeId"
+      labelKey={['firstName', 'lastName']}
+      valueKey="userId"
       defaultInputValue={defaultName}
-      mutationFn={searchEmployee}
+      mutationFn={searchUsers}
       isLoading={isLoading}
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
@@ -49,4 +49,4 @@ const EmployeeSelect = (props: EmployeeSelectProps) => {
   );
 };
 
-export default EmployeeSelect;
+export default UserSelect;

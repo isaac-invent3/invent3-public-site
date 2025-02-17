@@ -1,4 +1,5 @@
 import { Flex, useOutsideClick, VStack } from '@chakra-ui/react';
+import { isEmpty, some } from 'lodash';
 import React, { useLayoutEffect, useRef, useState } from 'react';
 import { filterSidebarData } from './utils';
 import NavItem from './NavItem';
@@ -24,6 +25,11 @@ const SideBar = (props: SideBarProps) => {
   }, []);
 
   useOutsideClick({ ref: flexRef, handler: () => setIsCollapse(true) });
+
+  const hasAnyChildren = some(
+    sideBarData,
+    (item) => item.children && item.children.length > 0
+  );
 
   return (
     <Flex
@@ -57,7 +63,13 @@ const SideBar = (props: SideBarProps) => {
         {/* Navigation Menu */}
         <VStack width="full" spacing="8px" px={isCollapse ? '0' : '0px'}>
           {sideBarData.map((item) => (
-            <NavItem {...item} key={item.name} isCollapse={isCollapse} />
+            <NavItem
+              key={item.name}
+              {...item}
+              children={isEmpty(item.children) ? undefined : item.children}
+              isCollapse={isCollapse}
+              hasAnyChildren={hasAnyChildren}
+            />
           ))}
         </VStack>
         {/* Navigation Menu */}

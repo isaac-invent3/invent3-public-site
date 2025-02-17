@@ -286,6 +286,15 @@ const EXPORT_TYPE_ENUM = {
   PDF: 2,
 };
 
+const ROLE_IDS_ENUM = {
+  EXECUTIVE: 20,
+  OPERATION_MANAGER: 21,
+  CLIENT_ADMIN: 3,
+  FRONT_DESK: 25,
+  SUPER_ADMIN: 5,
+  FIELD_ENGINEER: 22,
+};
+
 export {
   AREA_ENUM,
   ASSET_GROUP_TYPE,
@@ -308,4 +317,5 @@ export {
   timeRangeOptions,
   yearOptions,
   EXPORT_TYPE_ENUM,
+  ROLE_IDS_ENUM,
 };

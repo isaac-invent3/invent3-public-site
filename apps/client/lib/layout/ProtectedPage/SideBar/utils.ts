@@ -149,11 +149,14 @@ async function filterSidebarData() {
 
     const Dashboard: SideBarData = {
       ...BaseDashboard,
-      name: `Dashboard${validDashboardViews.length > 0 ? 's' : ''}`,
-      children: validDashboardViews.map((view) => ({
-        name: view.name,
-        route: `${ROUTES.DASHBOARD}?view=${view.route}`,
-      })),
+      name: `Dashboard${validDashboardViews.length > 1 ? 's' : ''}`,
+      children:
+        validDashboardViews.length > 1
+          ? validDashboardViews.map((view) => ({
+              name: view.name,
+              route: `${ROUTES.DASHBOARD}?view=${view.route}`,
+            }))
+          : [],
     };
 
     const accessibleModules =

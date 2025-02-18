@@ -2,36 +2,27 @@ import { Flex, SimpleGrid, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 
 import { FormActionButtons } from '@repo/ui/components';
-import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { useAppDispatch } from '~/lib/redux/hooks';
 import { updateUserForm } from '~/lib/redux/slices/UserSlice';
-import { occupationInfoSchema } from '~/lib/schemas/user.schema';
+import { roleGroupInfoSchema } from '~/lib/schemas/user.schema';
 import { ROUTES } from '~/lib/utils/constants';
-import Branch from './Branch';
-import EmploymentType from './EmploymentType';
-import JobTitle from './JobTitle';
-import Team from './Team';
-import UserGroup from './UserGroup';
 import UserRole from './UserRole';
+import UserGroup from './UserGroup';
 
-interface OccupationInfoProps {
+interface RoleGroupInfoProps {
   activeStep: number;
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
 }
-const OccupationInfo = (props: OccupationInfoProps) => {
+const RoleGroupInfo = (props: RoleGroupInfoProps) => {
   const { activeStep, setActiveStep } = props;
-  const formDetails = useAppSelector((state) => state.user.userForm);
   const dispatch = useAppDispatch();
 
   const formik = useFormik({
     initialValues: {
-      employmentTypeId: formDetails?.employmentTypeId ?? null,
-      branchId: formDetails?.branchId ?? null,
-      jobTitleId: formDetails?.jobTitleId ?? null,
-      teamId: formDetails?.teamId ?? null,
-      userRoleId: formDetails?.userRoleIds ?? null,
-      userGroupsId: formDetails?.userGroupIds ?? null,
+      userRoleIds: [],
+      userGroupIds: [],
     },
-    validationSchema: occupationInfoSchema,
+    validationSchema: roleGroupInfoSchema,
     enableReinitialize: true,
     onSubmit: async (values) => {
       dispatch(updateUserForm(values));
@@ -53,21 +44,13 @@ const OccupationInfo = (props: OccupationInfoProps) => {
             width="full"
             alignItems="flex-start"
             bgColor="white"
-            pt="26px"
+            pt={{ base: '16px', lg: '26px' }}
             pl="16px"
-            pb="33px"
-            pr="44px"
+            pb={{ base: '16px', lg: '24px' }}
+            pr={{ base: '16px', lg: '41px' }}
             rounded="6px"
             minH="60vh"
           >
-            <SimpleGrid width="full" columns={{ base: 1, md: 2 }} gap="37px">
-              <EmploymentType />
-              <Branch />
-            </SimpleGrid>
-            <SimpleGrid width="full" columns={{ base: 1, md: 2 }} gap="37px">
-              <JobTitle />
-              <Team />
-            </SimpleGrid>
             <SimpleGrid width="full" columns={{ base: 1, md: 2 }} gap="37px">
               <UserRole />
               <UserGroup />
@@ -87,4 +70,4 @@ const OccupationInfo = (props: OccupationInfoProps) => {
   );
 };
 
-export default OccupationInfo;
+export default RoleGroupInfo;

@@ -1,4 +1,4 @@
-import { Flex, VStack } from '@chakra-ui/react';
+import { Flex, useMediaQuery, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 
 import { FormActionButtons, FormInputWrapper } from '@repo/ui/components';
@@ -17,6 +17,7 @@ const DocumentStep = (props: DocumentStepProps) => {
   const { activeStep, setActiveStep } = props;
   const formDetails = useAppSelector((state) => state.user.userForm);
   const dispatch = useAppDispatch();
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
 
   const initialValues = {
     documents: formDetails.documents ?? [],
@@ -52,10 +53,10 @@ const DocumentStep = (props: DocumentStepProps) => {
             alignItems="flex-start"
             position="relative"
             bgColor="white"
-            pt="26px"
+            pt={{ base: '16px', lg: '26px' }}
             pl="16px"
-            pb="24px"
-            pr="41px"
+            pb={{ base: '16px', lg: '24px' }}
+            pr={{ base: '16px', lg: '41px' }}
             rounded="6px"
             spacing="51px"
             minH="60vh"
@@ -68,7 +69,7 @@ const DocumentStep = (props: DocumentStepProps) => {
               sectionMaxWidth="141px"
             >
               <DocumentUploadAndView
-                variant="primary"
+                variant={isMobile ? 'secondary' : 'primary'}
                 handleRemoveDocuments={(document) =>
                   handleRemoveDocument(document)
                 }

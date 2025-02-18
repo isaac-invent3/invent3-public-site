@@ -1,9 +1,8 @@
-import { Icon, Stack } from '@chakra-ui/react';
-import { Button } from '@repo/ui/components';
+import { Stack } from '@chakra-ui/react';
 import PageHeader from '../UI/PageHeader';
-import { AddIcon } from '../CustomIcons';
 import { ROUTES } from '~/lib/utils/constants';
 import usePermissionAccess from '~/lib/hooks/useRoleAccess';
+import ActionButtonPopover from '../UI/ActionButtonsPopover';
 
 const Header = () => {
   const canCreateUser = usePermissionAccess('user:create');
@@ -17,17 +16,20 @@ const Header = () => {
     >
       <PageHeader>User Management</PageHeader>
       {canCreateUser && (
-        <Button
-          customStyles={{
-            width: '146px',
-            height: { base: '36px', md: '50px' },
-            alignSelf: { base: 'flex-end', md: 'initial' },
-          }}
-          href={`/${ROUTES.USERS}/add`}
-        >
-          <Icon as={AddIcon} boxSize="18px" color="#D2FEFD" mr="4px" />
-          Add New User
-        </Button>
+        <ActionButtonPopover
+          actions={[
+            {
+              label: 'Create a New User',
+              route: `/${ROUTES.USERS}/add`,
+            },
+            {
+              label: 'Create User from Active Directory',
+              route: `/${ROUTES.USERS}/add`,
+            },
+          ]}
+          buttonLabel="Add New User"
+          actionsContainerStyle={{ spacing: '24px', alignItems: 'flex-start' }}
+        />
       )}
     </Stack>
   );

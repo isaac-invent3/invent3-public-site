@@ -8,6 +8,7 @@ import {
   SearchQuery,
 } from '@repo/interfaces';
 import {
+  CreateUserPayload,
   User,
   UserConfigurationOption,
   UserConfigurationPayload,
@@ -155,6 +156,17 @@ export const userApi = createApi({
         body,
       }),
     }),
+    searchUserGroup: builder.mutation<
+      BaseApiResponse<ListResponse<UserGroup>>,
+      SearchQuery
+    >({
+      query: (body) => ({
+        url: `/Groups/Search`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
     changeUserPassword: builder.mutation<void, UserPasswordChangeQuery>({
       query: (body) => ({
         url: `/Users/ChangePassword`,
@@ -187,6 +199,24 @@ export const userApi = createApi({
       }),
       invalidatesTags: ['allUserGroupInfoHeaders'],
     }),
+    createUser: builder.mutation<BaseApiResponse<User>, CreateUserPayload>({
+      query: (body) => ({
+        url: `/Invent3Pro/Users/Create`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allUsers'],
+    }),
+    updateUser: builder.mutation<BaseApiResponse<User>, CreateUserPayload>({
+      query: (body) => ({
+        url: `/Invent3Pro/Users/Create`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allUsers'],
+    }),
   }),
 });
 
@@ -205,4 +235,7 @@ export const {
   useGetAllUserGroupsQuery,
   useGetAllUserGroupsInfoHeaderQuery,
   useCreateUserGroupMutation,
+  useCreateUserMutation,
+  useUpdateUserMutation,
+  useSearchUserGroupMutation,
 } = userApi;

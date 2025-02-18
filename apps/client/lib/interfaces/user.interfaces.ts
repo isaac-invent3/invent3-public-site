@@ -191,8 +191,8 @@ interface UserFormDetails {
   jobTitleName: string | null;
   teamId: number | null;
   teamName: string | null;
-  userRoleId: number | null;
-  userRoleName: string | null;
+  userRoleIds: number[];
+  userRoleNames: string[];
   userGroupIds: number[];
   userGroupNames: string[];
 }
@@ -221,6 +221,44 @@ interface UserGroupPayload {
   roleIds: number[];
 }
 
+interface UserDto {
+  username: string;
+  email: string;
+  phoneNumber: string;
+  firstName: string;
+  lastName: string;
+  companyId: number | null;
+  employeeId: number | null;
+  bio: string | null;
+  createdBy: string;
+  roles?: Record<number, keyof typeof FORM_ENUM>;
+  groups?: Record<number, keyof typeof FORM_ENUM>;
+  permissions?: Record<number, keyof typeof FORM_ENUM>;
+}
+
+interface UserImageDto {
+  imageName: string;
+  base64PhotoImage: string;
+  isPrimaryImage: boolean;
+  userId: number | null;
+  createdBy: string;
+}
+
+interface UserDocumentDto {
+  documentName: string;
+  base64Document: string;
+  createdBy: string;
+}
+
+interface CreateUserPayload {
+  createUserDto: UserDto;
+  createUserImageDto: UserImageDto[];
+  createUserDocumentDto: UserDocumentDto[] | null;
+  userDocumentIds: number[] | null;
+  userRoles: number[];
+  userGroups: number[];
+}
+
 export type {
   Employee,
   User,
@@ -237,4 +275,5 @@ export type {
   UserDesignation,
   UserGroupInfoHeader,
   UserGroupPayload,
+  CreateUserPayload,
 };

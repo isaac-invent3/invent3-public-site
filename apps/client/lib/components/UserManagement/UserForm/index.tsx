@@ -9,18 +9,19 @@ import {
 } from '@repo/ui/components';
 import PageHeader from '../../UI/PageHeader';
 import EmployeeInfo from './EmployeeInfo';
-import OccupationInfo from './OccupationInfo';
 import DocumentStep from './Document';
 import SummaryStep from './Summary';
+import RoleGroupInfo from './RoleGroupInfo';
+import OccupationInfo from './OccupationInfo';
 
-const STEPS = ['Employee Info', 'Occupation Info', 'Document', 'Summary'];
+const STEPS = ['Employee Info', 'User Role', 'Document', 'Summary'];
 
 interface UserFormProps {
   type: 'create' | 'edit';
 }
 const UserForm = (props: UserFormProps) => {
   const { type } = props;
-  const [activeStep, setActiveStep] = useState(1);
+  const [activeStep, setActiveStep] = useState(2);
 
   return (
     <Flex
@@ -37,6 +38,12 @@ const UserForm = (props: UserFormProps) => {
         <EmployeeInfo activeStep={activeStep} setActiveStep={setActiveStep} />
         <SlideTransition trigger={activeStep === 2}>
           <OccupationInfo
+            activeStep={activeStep}
+            setActiveStep={setActiveStep}
+          />
+        </SlideTransition>
+        <SlideTransition trigger={activeStep === 3}>
+          <RoleGroupInfo
             activeStep={activeStep}
             setActiveStep={setActiveStep}
           />

@@ -9,28 +9,32 @@ import {
   Text,
   Icon,
   HStack,
+  StackProps,
 } from '@chakra-ui/react';
 import { AddIcon, ChevronDownIcon } from '~/lib/components/CustomIcons';
 import Link from 'next/link';
 import TemplateButton from './TemplateButton';
 
 interface ActionButtonPopoverProps {
-  newRoute: string;
-  onOpenTemplateModal: () => void;
-  children: React.ReactNode;
+  onOpenTemplateModal?: () => void;
+  children?: React.ReactNode;
   buttonLabel: string;
-  linkLabel: string;
-  modalLabel: string;
+  modalLabel?: string;
+  actions: {
+    label: string;
+    route: string;
+  }[];
+  actionsContainerStyle?: StackProps;
 }
 
 const ActionButtonPopover = (props: ActionButtonPopoverProps) => {
   const {
-    newRoute,
     onOpenTemplateModal,
     children,
     buttonLabel,
-    linkLabel,
     modalLabel,
+    actions,
+    actionsContainerStyle,
   } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
@@ -65,7 +69,7 @@ const ActionButtonPopover = (props: ActionButtonPopoverProps) => {
             justifyContent="space-between"
             cursor="pointer"
             spacing={0}
-            alignSelf='end'
+            alignSelf="end"
           >
             <HStack alignItems="center" spacing="4px">
               <Icon
@@ -110,15 +114,17 @@ const ActionButtonPopover = (props: ActionButtonPopoverProps) => {
             pr="16px"
             onClick={onClose}
           >
-            <VStack spacing="12px">
-              <Link href={newRoute} style={{ width: '100%' }}>
-                <Text color="#0E2642" textAlign="center">
-                  {linkLabel}
-                </Text>
-              </Link>
-              <TemplateButton handleClick={() => onOpenTemplateModal()}>
-                {modalLabel}
-              </TemplateButton>
+            <VStack spacing="12px" {...actionsContainerStyle}>
+              {actions.map((item, index) => (
+                <Link href={item.route} key={index}>
+                  <Text color="#0E2642">{item.label}</Text>
+                </Link>
+              ))}
+              {modalLabel && onOpenTemplateModal && (
+                <TemplateButton handleClick={() => onOpenTemplateModal()}>
+                  {modalLabel}
+                </TemplateButton>
+              )}
             </VStack>
           </PopoverBody>
         </PopoverContent>

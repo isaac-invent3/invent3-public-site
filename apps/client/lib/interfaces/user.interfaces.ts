@@ -212,6 +212,38 @@ interface UserDesignation {
   designationId: number;
 }
 
+interface Group {
+  isNew: boolean;
+  createdDate: Date;
+  createdBy: string;
+  lastModifiedDate: Date;
+  lastModifiedBy: string;
+  isDeleted: boolean;
+  deletedDate: Date;
+  deletedBy: string;
+  guid: string;
+  groupId: number;
+  groupName: string;
+  groupDescription: string;
+  groupRoles: GroupRole[];
+  groupPermissions: GroupPermission[];
+  groupUsers: User[];
+}
+
+interface GroupPermission {
+  groupPermissionId: number;
+  groupId: number;
+  permissionId: number;
+  permissionName: string;
+}
+
+interface GroupRole {
+  groupRoleId: number;
+  groupId: number;
+  roleId: number;
+  roleName: string;
+}
+
 interface UserGroupPayload {
   createGroupDto: {
     groupName: string;
@@ -219,6 +251,14 @@ interface UserGroupPayload {
   };
   userIds: number[];
   roleIds: number[];
+}
+
+interface UpdateUserGroupPayload {
+  groupId: number;
+  groupName: string;
+  roles?: Record<number, typeof FORM_ENUM.add | typeof FORM_ENUM.delete>;
+  userIds?: Record<number, typeof FORM_ENUM.add | typeof FORM_ENUM.delete>;
+  lastModifiedBy: string;
 }
 
 interface UserDto {
@@ -276,4 +316,6 @@ export type {
   UserGroupInfoHeader,
   UserGroupPayload,
   CreateUserPayload,
+  Group,
+  UpdateUserGroupPayload,
 };

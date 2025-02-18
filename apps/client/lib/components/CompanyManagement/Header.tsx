@@ -3,6 +3,7 @@ import { Button } from '@repo/ui/components';
 import usePermissionAccess from '~/lib/hooks/useRoleAccess';
 import { AddIcon } from '../CustomIcons';
 import PageHeader from '../UI/PageHeader';
+import { ROUTES } from '~/lib/utils/constants';
 
 const Header = () => {
   const canCreateCompany = usePermissionAccess('company:create');
@@ -20,6 +21,7 @@ const Header = () => {
       {!canCreateCompany && (
         <Button
           handleClick={onOpen}
+          href={`/${ROUTES.ASSETS}/add`}
           customStyles={{
             width: '186px',
             height: { base: '36px', md: '50px' },

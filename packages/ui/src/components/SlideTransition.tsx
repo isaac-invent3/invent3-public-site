@@ -29,7 +29,7 @@ const SlideTransition = ({
       }}
       style={{ minWidth: '100%', ...style }}
     >
-      {children}
+      {trigger && children}
     </SlideFade>
   );
 };

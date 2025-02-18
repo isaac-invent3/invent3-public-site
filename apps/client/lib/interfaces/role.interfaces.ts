@@ -50,7 +50,7 @@ type ModuleKey =
   | 'vendor'
   | 'compliance'
   | 'approval'
-  | 'profile';
+  | 'profile'
 
 type SubModuleKey =
   | 'asset:create'

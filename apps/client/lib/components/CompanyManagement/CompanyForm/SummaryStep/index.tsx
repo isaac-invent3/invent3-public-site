@@ -39,7 +39,7 @@ const SummaryStep = (props: SummaryStepProps) => {
             sectionMaxWidth="141px"
             customSpacing="47px"
             title="Company Logo"
-            description="Size max: 10MB each Format: JPG, PNG"
+            description="Size max: 10MB each Format: JPG, PNG" 
           >
             <Flex
               position="relative"

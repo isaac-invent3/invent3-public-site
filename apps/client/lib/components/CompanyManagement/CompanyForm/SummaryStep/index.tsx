@@ -4,6 +4,9 @@ import Image from 'next/image';
 import React from 'react';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { ROUTES } from '~/lib/utils/constants';
+import CompanyInfo from './SectionOne/CompanyInfo';
+import ContactInformation from './SectionOne/ContactInformation';
+import Subscription from './SectionOne/Subscription';
 
 interface SummaryStepProps {
   activeStep: number;
@@ -39,7 +42,7 @@ const SummaryStep = (props: SummaryStepProps) => {
             sectionMaxWidth="141px"
             customSpacing="47px"
             title="Company Logo."
-            description="Size max: 10MB each Format: JPG, PNG" 
+            description="Size max: 10MB each Format: JPG, PNG"
           >
             <Flex
               position="relative"
@@ -60,6 +63,22 @@ const SummaryStep = (props: SummaryStepProps) => {
               />
             </Flex>
           </FormInputWrapper>
+
+          <Flex
+            width="full"
+            gap={{ base: '32px', lg: '24pxmmm' }}
+            direction={{ base: 'column', lg: 'row' }}
+          >
+            <Flex width={{ base: 'full', lg: '40%' }}>
+              <CompanyInfo />
+            </Flex>
+            <Flex width={{ base: 'full', lg: '40%' }}>
+              <ContactInformation />
+            </Flex>
+            <Flex width={{ base: 'full', lg: '20%' }}>
+              <Subscription />
+            </Flex>
+          </Flex>
         </VStack>
         <FormActionButtons
           cancelLink={`/${ROUTES.COMPANY}`}

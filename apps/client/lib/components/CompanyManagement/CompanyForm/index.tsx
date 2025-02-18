@@ -25,7 +25,7 @@ interface CompanyFormProps {
 }
 const CompanyForm = (props: CompanyFormProps) => {
   const { type } = props;
-  const [activeStep, setActiveStep] = useState(3);
+  const [activeStep, setActiveStep] = useState(1);
 
   return (
     <Flex width="full" direction="column" pb={{ md: '24px' }}>

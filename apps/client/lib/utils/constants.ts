@@ -204,6 +204,8 @@ const ROUTES = {
   ROLES: 'role-management',
   COMPANY: 'company-management',
   VENDOR: 'vendor-management',
+  SETTINGS: 'settings',
+  COMPLIANCE: 'compliance',
 };
 
 const SYSTEM_CONTEXT_DETAILS: Record<ContextKey, SystemContextDetail> = {
@@ -285,6 +287,20 @@ const SYSTEM_ROLES = {
   VISITORS: 7,
 };
 
+const EXPORT_TYPE_ENUM = {
+  CSV: 1,
+  PDF: 2,
+};
+
+const ROLE_IDS_ENUM = {
+  EXECUTIVE: 20,
+  OPERATION_MANAGER: 21,
+  CLIENT_ADMIN: 3,
+  FRONT_DESK: 25,
+  SUPER_ADMIN: 5,
+  FIELD_ENGINEER: 22,
+};
+
 export {
   AREA_ENUM,
   ASSET_GROUP_TYPE,
@@ -306,4 +322,6 @@ export {
   SYSTEM_ROLES,
   timeRangeOptions,
   yearOptions,
+  EXPORT_TYPE_ENUM,
+  ROLE_IDS_ENUM,
 };

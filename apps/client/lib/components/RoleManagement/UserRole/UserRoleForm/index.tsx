@@ -16,16 +16,16 @@ import {
   FormTextInput,
   GenericSuccessModal,
 } from '@repo/ui/components';
-import { FORM_ENUM, ROUTES } from '~/lib/utils/constants';
-import PageHeader from '~/lib/components/UI/PageHeader';
-import { userRoleSchema } from '~/lib/schemas/user.schema';
-import Permissions from '../../Permissions';
-import { useAppSelector } from '~/lib/redux/hooks';
-import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { useCreateRoleModulePermissionMutation } from '~/lib/redux/services/role.services';
 import { getSession } from 'next-auth/react';
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import PageHeader from '~/lib/components/UI/PageHeader';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
+import { useAppSelector } from '~/lib/redux/hooks';
+import { useCreateRoleModulePermissionMutation } from '~/lib/redux/services/role.services';
+import { userRoleSchema } from '~/lib/schemas/user.schema';
+import { FORM_ENUM, ROUTES } from '~/lib/utils/constants';
+import Permissions from '../../Permissions';
 
 const UserRoleForm = () => {
   const { formRoleModules } = useAppSelector((state) => state.role);
@@ -80,7 +80,12 @@ const UserRoleForm = () => {
 
   return (
     <>
-      <Flex width="full" direction="column" pb="24px">
+      <Flex
+        width="full"
+        direction="column"
+        pb="24px"
+        px={{ base: '16px', md: 0 }}
+      >
         <PageHeader>Add New Role</PageHeader>
         <Flex width="full" height="full" direction="column" mt="32px">
           <FormikProvider value={formik}>
@@ -94,7 +99,7 @@ const UserRoleForm = () => {
                 pb="33px"
                 minH="60vh"
               >
-                <SimpleGrid columns={2} width="full" px="24px">
+                <SimpleGrid columns={{ base: 1, md: 2 }} width="full" px="24px">
                   <FormInputWrapper
                     sectionMaxWidth="141px"
                     customSpacing="40px"

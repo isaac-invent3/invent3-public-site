@@ -82,12 +82,16 @@ const Summary = () => {
       direction={{ base: 'column', sm: 'row' }}
       spacing={{ base: '24px' }}
     >
-      <SimpleGrid columns={2} spacing="24px" alignItems="flex-start">
+      <SimpleGrid
+        columns={{ base: 1, md: 2 }}
+        spacing="24px"
+        alignItems="flex-start"
+      >
         {Summary1.map((item) => (
           <SummaryInfo {...item} key={item.label} />
         ))}
       </SimpleGrid>
-      <SimpleGrid columns={2} spacing="24px">
+      <SimpleGrid columns={{ base: 1, md: 2 }} spacing="24px">
         {Summary2.map((item) => (
           <SummaryInfo {...item} key={item.label} />
         ))}

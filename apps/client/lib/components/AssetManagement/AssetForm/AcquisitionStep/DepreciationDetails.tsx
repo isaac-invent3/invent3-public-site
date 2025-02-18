@@ -32,7 +32,10 @@ const DepreciationDetails = () => {
             title="Depreciation Details"
             isRequired
             direction={{ base: 'column', md: 'row' }}
-            formSectionCustomStyle={{ display: { lg: 'none' } }}
+            formSectionCustomStyle={{
+              maxW: { md: '130px' },
+              display: { lg: 'none' },
+            }}
           >
             <FormDatePicker name="depreciationStartDate" label="Select Date" />
           </FormInputWrapper>

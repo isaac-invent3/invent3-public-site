@@ -1,11 +1,10 @@
 import { SimpleGrid } from '@chakra-ui/react';
-import React from 'react';
-import AssetDepreciation from './AssetDepreciation';
 import ApprovalRequests from './Approval';
+import AssetDepreciation from './AssetDepreciation';
 
 const SectionFive = () => {
   return (
-    <SimpleGrid width="full" gap="16px" columns={2}>
+    <SimpleGrid width="full" gap="16px" columns={{ base: 1, lg: 2 }}>
       <AssetDepreciation />
       <ApprovalRequests />
     </SimpleGrid>

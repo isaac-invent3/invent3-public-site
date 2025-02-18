@@ -1,7 +1,6 @@
 import { SimpleGrid, VStack } from '@chakra-ui/react';
 import { FormInputWrapper, FormTextInput } from '@repo/ui/components';
 import { Field, useFormikContext } from 'formik';
-import React from 'react';
 import CountrySelect from '~/lib/components/Common/SelectComponents/Location/CountrySelect';
 import LGASelect from '~/lib/components/Common/SelectComponents/Location/LGASelect';
 import StateSelect from '~/lib/components/Common/SelectComponents/Location/StateSelect';
@@ -20,7 +19,7 @@ const Address = () => {
       title="Address"
     >
       <VStack width="full" spacing="8px">
-        <SimpleGrid width="full" gap="16px" columns={2}>
+        <SimpleGrid width="full" gap="16px" columns={{ base: 1, md: 2 }}>
           <Field
             as={FormTextInput}
             name="address1"
@@ -36,7 +35,7 @@ const Address = () => {
             placeholder="Address 2"
           />
         </SimpleGrid>
-        <SimpleGrid width="full" gap="16px" columns={4}>
+        <SimpleGrid width="full" gap="16px" columns={{base:2, md:4}}>
           <CountrySelect
             handleSelect={(option) => {
               setFieldValue('countryId', option.value);

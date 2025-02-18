@@ -4,9 +4,9 @@ import ChangedData from './ChangedData';
 
 const AuditLogInfo = () => {
   return (
-    <VStack width="full" spacing="32px">
+    <VStack width="full" spacing={{ base: '16px', lg: '32px' }}>
       <Overview />
-      <Flex width="full" px="32px">
+      <Flex width="full" px={{ base: '16px', lg: '32px' }}>
         <ChangedData />
       </Flex>
     </VStack>

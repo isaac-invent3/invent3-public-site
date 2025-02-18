@@ -97,11 +97,20 @@ interface Document {
 
 type ActionType = 'bulk' | 'filter' | null;
 
+interface sidebarChildren {
+  name: string;
+  route: string;
+}
+
 interface SideBarData {
   name: string;
   route: string;
   icon: ComponentWithAs<'svg', IconProps>;
   permissionKey: ModuleKey;
+  children?: {
+    name: string;
+    route: string;
+  }[];
 }
 
 type ContextKey =
@@ -145,4 +154,5 @@ export type {
   SystemContextDetail,
   ContextKey,
   ImageObject,
+  sidebarChildren,
 };

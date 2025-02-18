@@ -1,4 +1,4 @@
-import { Flex, HStack, Text, VStack } from '@chakra-ui/react';
+import { Flex, Stack, Text, VStack } from '@chakra-ui/react';
 import Image from 'next/image';
 import DocumentSummaryView from '~/lib/components/Common/DocumentUploadAndView/DocumentSummaryView';
 import DetailHeader from '~/lib/components/UI/DetailHeader';
@@ -8,8 +8,17 @@ const SectionOne = () => {
   const { picture, documents } = useAppSelector((state) => state.user.userForm);
 
   return (
-    <HStack width="full" spacing="64px" alignItems="flex-start">
-      <VStack spacing="8px" width="177px" alignItems="flex-start">
+    <Stack
+      width="full"
+      spacing="64px"
+      alignItems="flex-start"
+      flexDir={{ base: 'column', md: 'row' }}
+    >
+      <VStack
+        spacing="8px"
+        width={{ base: 'full', md: '177px' }}
+        alignItems="flex-start"
+      >
         <DetailHeader variant="primary">Picture</DetailHeader>
         {picture ? (
           <Flex position="relative" width="100px" height="75px" bgSize="cover">
@@ -35,10 +44,10 @@ const SectionOne = () => {
           </Text>
         )}
       </VStack>
-      <Flex width="230px">
+      <Flex width={{ base: 'full', md: '230px' }}>
         <DocumentSummaryView documents={documents} />
       </Flex>
-    </HStack>
+    </Stack>
   );
 };
 

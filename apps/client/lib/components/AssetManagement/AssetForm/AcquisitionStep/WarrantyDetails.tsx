@@ -35,7 +35,10 @@ const WarrantyDetails = () => {
             title="Warranty Details"
             isRequired={false}
             direction={{ base: 'column', md: 'row' }}
-            formSectionCustomStyle={{ display: { lg: 'none' } }}
+            formSectionCustomStyle={{
+              maxW: { md: '130px' },
+              display: { lg: 'none' },
+            }}
           >
             <DateTimeButtons
               buttonVariant="secondary"
@@ -78,6 +81,9 @@ const WarrantyDetails = () => {
             title="Warranty Terms"
             isRequired
             direction={{ base: 'column', md: 'row' }}
+            formSectionCustomStyle={{
+              maxW: { md: '130px' },
+            }}
           >
             <Field
               as={FormTextInput}
@@ -96,6 +102,9 @@ const WarrantyDetails = () => {
             title="Life Expectancy"
             isRequired={false}
             direction={{ base: 'column', md: 'row' }}
+            formSectionCustomStyle={{
+              maxW: { md: '130px' },
+            }}
           >
             <Field
               as={FormTextInput}

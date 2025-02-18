@@ -149,7 +149,7 @@ const Plans = (props: PlansProp) => {
   }, [maintenancePlanId]);
 
   return (
-    <Flex direction="column" pt="16px">
+    <Flex direction="column" pt="16px" width="full">
       {openFilter && (
         <Flex width="full" mb="16px">
           <FilterDisplay isOpen={openFilter}>

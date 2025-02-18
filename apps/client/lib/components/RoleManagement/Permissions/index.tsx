@@ -5,7 +5,7 @@ import ModuleItem from './Module';
 import { useGetAllModulesQuery } from '~/lib/redux/services/modules.services';
 
 const Permissions = () => {
-  const { data, isLoading } = useGetAllModulesQuery({});
+  const { data, isLoading } = useGetAllModulesQuery({ pageSize: 50 });
   return (
     <VStack width="full" spacing={0}>
       <Header />

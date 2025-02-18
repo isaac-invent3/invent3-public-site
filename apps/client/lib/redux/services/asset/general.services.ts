@@ -12,6 +12,7 @@ import {
   Asset,
   AssetStatus,
   CreateAssetPayload,
+  MeanTimeComputation,
   UpdateAssetPayload,
 } from '~/lib/interfaces/asset/general.interface';
 import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
@@ -210,6 +211,34 @@ export const assetApi = createApi({
         body,
       }),
     }),
+    exportAsset: builder.mutation<
+      BaseApiResponse<string>,
+      { exportType: number; assetIds: number[] }
+    >({
+      query: ({ exportType, assetIds }) => ({
+        url: `/Assets/Export?exportType=${exportType}`,
+        method: 'POST',
+        headers: getHeaders(),
+        body: assetIds,
+      }),
+    }),
+    downloadAsset: builder.query<string, { filePath: string }>({
+      query: (data) => ({
+        url: generateQueryStr(`/Assets/Download?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    assetMeanTimeComputation: builder.query<
+      BaseApiResponse<MeanTimeComputation>,
+      { monthId: number }
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/Assets/Assets/MeantimeComputations?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
   }),
 });
 
@@ -229,4 +258,7 @@ export const {
   useSearchAssetsMutation,
   useTransferAssetMutation,
   useUpdateAssetStatusMutation,
+  useExportAssetMutation,
+  useDownloadAssetQuery,
+  useAssetMeanTimeComputationQuery,
 } = assetApi;

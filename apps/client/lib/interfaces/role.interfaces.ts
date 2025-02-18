@@ -1,17 +1,15 @@
 import { FORM_ENUM } from '../utils/constants';
 
 interface Role {
-  isNew: boolean;
-  createdDate: string;
-  createdBy: string;
-  lastModifiedDate: string;
-  lastModifiedBy: string;
-  isDeleted: boolean;
-  deletedDate: string;
-  deletedBy: string;
-  guid: string;
   roleId: number;
   roleName: string;
+  noOfAssociatedUsers: number;
+  noOfAssignedSystemModuleContextTypes: number;
+  dateCreated: string;
+  currentStatusId: number;
+  currentStatusName: string;
+  currentStatusDisplayColorCode: string;
+  isDeleted: boolean;
 }
 
 interface RoleSystemModuleContextPermission {

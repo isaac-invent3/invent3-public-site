@@ -17,13 +17,13 @@ const Stats = (props: StatsProps) => {
       <Skeleton isLoaded={!isLoading} minW={isLoading ? '40px' : 'min-content'}>
         <Text
           fontWeight={800}
-          fontSize={{ base: '24px', md: '48px' }}
-          lineHeight={{ base: '28.51px', md: '57.02px' }}
+          fontSize={{ base: '24px', xl: '48px' }}
+          lineHeight={{ base: '28.51px', xl: '57.02px' }}
         >
           {value !== undefined ? value.toLocaleString() : '-'}
         </Text>
       </Skeleton>
-      <Text size={{ base: 'md', md: 'lg' }} fontWeight={700}>
+      <Text size={{ base: 'md', md: 'lg' }} fontWeight={{ base: 500, md: 700 }}>
         {text1}
         <br />
         {text2}

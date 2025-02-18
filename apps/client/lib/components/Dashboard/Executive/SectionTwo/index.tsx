@@ -7,7 +7,12 @@ import AssetTrends from '../../ClientAdmin/SectionTwo/AssetTrends';
 
 const SectionTwo = () => {
   return (
-    <SimpleGrid width="full" columns={4} gap="16px" minH="343px">
+    <SimpleGrid
+      width="full"
+      columns={{ base: 1, md: 2, xl: 4 }}
+      gap="16px"
+      minH="343px"
+    >
       <AssetTrends />
       <ScheduledUnplannedMaintenance />
       <TicketResolutionTrends />

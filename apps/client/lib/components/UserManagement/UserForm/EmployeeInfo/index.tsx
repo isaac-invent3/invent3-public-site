@@ -66,7 +66,7 @@ const EmployeeInfo = (props: EmployeeInfoProps) => {
             pt="26px"
             pl="16px"
             pb="33px"
-            pr="44px"
+            pr={{ base: '16px', md: '44px' }}
             rounded="6px"
             minH="60vh"
           >

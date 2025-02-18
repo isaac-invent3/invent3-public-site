@@ -1,6 +1,6 @@
 import { SimpleGrid } from '@chakra-ui/react';
 
-import EmployeeSelect from '../../../../Common/SelectComponents/EmployeeSelect';
+import UserSelect from '../../../../Common/SelectComponents/UserSelect';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import { FormInputWrapper } from '@repo/ui/components';
@@ -18,9 +18,12 @@ const AssetOwner = () => {
       title="Owner's Info"
       isRequired
       direction={{ base: 'column', md: 'row' }}
+      formSectionCustomStyle={{
+        maxW: { md: '118px' },
+      }}
     >
       <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} gap="11px" width="full">
-        <EmployeeSelect
+        <UserSelect
           selectName="currentOwner"
           selectTitle="Owner"
           defaultName={currentOwnerName}
@@ -28,7 +31,7 @@ const AssetOwner = () => {
             dispatch(updateAssetForm({ currentOwnerName: option.label }))
           }
         />
-        <EmployeeSelect
+        <UserSelect
           selectName="assignedTo"
           selectTitle="Assigned to"
           defaultName={assignedToName}
@@ -36,7 +39,7 @@ const AssetOwner = () => {
             dispatch(updateAssetForm({ assignedToName: option.label }))
           }
         />
-        <EmployeeSelect
+        <UserSelect
           selectName="responsibleFor"
           selectTitle="Responsible for"
           defaultName={responsibleForName}

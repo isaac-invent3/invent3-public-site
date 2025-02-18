@@ -1,4 +1,11 @@
-import { Heading, HStack, Text, useDisclosure, VStack } from '@chakra-ui/react';
+import {
+  Heading,
+  HStack,
+  Stack,
+  Text,
+  useDisclosure,
+  VStack,
+} from '@chakra-ui/react';
 import moment from 'moment';
 
 import TaskInstanceListView from '~/lib/components/TaskManagement/Drawers/TaskListDrawer/TaskInstanceListView';
@@ -19,13 +26,23 @@ const HeaderInfo = (props: HeaderInfoProps) => {
 
   return (
     <>
-      <VStack spacing="16px" width="full" alignItems="flex-start">
+      <Stack
+        spacing="16px"
+        width="full"
+        alignItems="flex-start"
+        direction={{ base: 'column' }}
+      >
         <Text color="neutral.600">
           {data.scheduledDate
             ? `${dateFormatter(data.scheduledDate, 'dddd, MMMM D, ')} ${dateFormatter(data?.scheduledDate, 'h:mmA')} - ${endTime ? endTime.format('h:mmA') : 'N/A'}`
             : 'N/A'}
         </Text>
-        <HStack minW="full" justifyContent="space-between" spacing="84px">
+        <Stack
+          minW="full"
+          justifyContent="space-between"
+          spacing={{ base: '16px', lg: '84px' }}
+          direction={{ base: 'column', md: 'row' }}
+        >
           <VStack alignItems="flex-start" spacing="2px">
             <Heading
               color="neutral.800"
@@ -65,8 +82,8 @@ const HeaderInfo = (props: HeaderInfoProps) => {
               </Text>
             </VStack>
           </HStack>
-        </HStack>
-      </VStack>
+        </Stack>
+      </Stack>
       <TaskInstanceListView
         isOpen={isOpen}
         onClose={onClose}

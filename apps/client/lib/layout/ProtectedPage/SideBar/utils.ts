@@ -12,14 +12,41 @@ import {
   UserManagementIcon,
   VendorManagementIcon,
 } from '~/lib/components/CustomIcons/layout';
+import { DashboardView } from '~/lib/interfaces/dashboard.interfaces';
 import { SideBarData } from '~/lib/interfaces/general.interfaces';
-import { ROUTES } from '~/lib/utils/constants';
+import { ROLE_IDS_ENUM, ROUTES } from '~/lib/utils/constants';
 
-const Dashboard: SideBarData = {
-  name: 'Dashboard',
-  route: ROUTES.DASHBOARD,
-  icon: DashboardIcon,
-  permissionKey: 'dashboard',
+const DashboardViewMaps: Record<
+  number,
+  {
+    name: string;
+    route: DashboardView;
+  }
+> = {
+  [ROLE_IDS_ENUM.SUPER_ADMIN]: {
+    name: 'Super Admin',
+    route: 'executive',
+  },
+  [ROLE_IDS_ENUM.CLIENT_ADMIN]: {
+    name: 'Client Admin',
+    route: 'client_admin',
+  },
+  [ROLE_IDS_ENUM.EXECUTIVE]: {
+    name: 'Executive',
+    route: 'executive',
+  },
+  [ROLE_IDS_ENUM.OPERATION_MANAGER]: {
+    name: 'Operation Manager',
+    route: 'operation_manager',
+  },
+  [ROLE_IDS_ENUM.FIELD_ENGINEER]: {
+    name: 'Field Engineer',
+    route: 'client_admin',
+  },
+  [ROLE_IDS_ENUM.FRONT_DESK]: {
+    name: 'Front Desk',
+    route: 'front_desk',
+  },
 };
 
 const sideBarData: SideBarData[] = [
@@ -73,26 +100,61 @@ const sideBarData: SideBarData[] = [
     permissionKey: 'role',
   },
   {
+    name: 'Vendor Management',
+    route: ROUTES.VENDOR,
+    icon: VendorManagementIcon,
+    permissionKey: 'vendor',
+  },
+  {
     name: 'Audit Logs',
     route: ROUTES.AUDIT_LOG,
     icon: AuditLogIcon,
     permissionKey: 'audit',
   },
   {
-    name: 'Vendor Management',
-    route: ROUTES.VENDOR,
-    icon: VendorManagementIcon,
-    permissionKey: 'vendor',
+    name: 'Compliance',
+    route: ROUTES.COMPLIANCE,
+    icon: TemplateIcon,
+    permissionKey: 'audit',
+  },
+  {
+    name: 'Settings',
+    route: ROUTES.SETTINGS,
+    icon: TemplateIcon,
+    permissionKey: 'audit',
   },
 ];
 
 async function filterSidebarData() {
+  const BaseDashboard: SideBarData = {
+    name: 'Dashboard',
+    route: ROUTES.DASHBOARD,
+    icon: DashboardIcon,
+    permissionKey: 'dashboard',
+    children: [],
+  };
   try {
     const session = await getSession();
 
     if (!session?.user) {
-      return [Dashboard]; // Return default dashboard if no session
+      return [BaseDashboard]; // Return default dashboard if no session
     }
+
+    const roleIds = session?.user?.roleIds;
+
+    // Filter valid Dashboard views based on roleIds
+    const validDashboardViews = roleIds
+      .map((roleId) => DashboardViewMaps[roleId])
+      .filter((view) => view !== undefined);
+
+    const Dashboard: SideBarData = {
+      ...BaseDashboard,
+      name: `Dashboard${validDashboardViews.length > 0 ? 's' : ''}`,
+      children: validDashboardViews.map((view) => ({
+        name: view.name,
+        route: `${ROUTES.DASHBOARD}?view=${view.route}`,
+      })),
+    };
 
     const accessibleModules =
       session.user.roleSystemModuleContextPermissions ?? {};
@@ -111,7 +173,7 @@ async function filterSidebarData() {
 
     return [Dashboard, ...filteredSidebarItems];
   } catch (error) {
-    return [Dashboard]; // Return default dashboard in case of an error
+    return [BaseDashboard]; // Return default dashboard in case of an error
   }
 }
 

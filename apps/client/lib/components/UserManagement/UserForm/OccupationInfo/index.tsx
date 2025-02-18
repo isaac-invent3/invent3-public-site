@@ -1,17 +1,17 @@
 import { Flex, SimpleGrid, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 
-import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { FormActionButtons } from '@repo/ui/components';
-import { ROUTES } from '~/lib/utils/constants';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateUserForm } from '~/lib/redux/slices/UserSlice';
 import { occupationInfoSchema } from '~/lib/schemas/user.schema';
-import EmploymentType from './EmploymentType';
+import { ROUTES } from '~/lib/utils/constants';
 import Branch from './Branch';
+import EmploymentType from './EmploymentType';
 import JobTitle from './JobTitle';
 import Team from './Team';
-import UserRole from './UserRole';
 import UserGroup from './UserGroup';
+import UserRole from './UserRole';
 
 interface OccupationInfoProps {
   activeStep: number;
@@ -60,15 +60,15 @@ const OccupationInfo = (props: OccupationInfoProps) => {
             rounded="6px"
             minH="60vh"
           >
-            <SimpleGrid width="full" columns={2} gap="37px">
+            <SimpleGrid width="full" columns={{ base: 1, md: 2 }} gap="37px">
               <EmploymentType />
               <Branch />
             </SimpleGrid>
-            <SimpleGrid width="full" columns={2} gap="37px">
+            <SimpleGrid width="full" columns={{ base: 1, md: 2 }} gap="37px">
               <JobTitle />
               <Team />
             </SimpleGrid>
-            <SimpleGrid width="full" columns={2} gap="37px">
+            <SimpleGrid width="full" columns={{ base: 1, md: 2 }} gap="37px">
               <UserRole />
               <UserGroup />
             </SimpleGrid>

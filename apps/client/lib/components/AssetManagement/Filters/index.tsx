@@ -1,7 +1,8 @@
-import { HStack, Icon, Stack } from '@chakra-ui/react';
+import { HStack, Stack } from '@chakra-ui/react';
 
-import { Button, SearchInput, FilterButton } from '@repo/ui/components';
-import { BulkSearchIcon, DownloadIcon, FilterIcon } from '../../CustomIcons';
+import { SearchInput, FilterButton } from '@repo/ui/components';
+import { BulkSearchIcon, FilterIcon } from '../../CustomIcons';
+import ExportPopover from './ExportPopover';
 
 interface FiltersProps {
   setSearch: React.Dispatch<React.SetStateAction<string>>;
@@ -43,18 +44,7 @@ const Filters = (props: FiltersProps) => {
           }
           isActive={activeFilter === 'general'}
         />
-        <Button
-          customStyles={{
-            height: '36px',
-            p: '0px',
-            px: '8px',
-            width: '100px',
-            justifyContent: 'flex-start',
-          }}
-        >
-          <Icon as={DownloadIcon} boxSize="24px" mr="8px" />
-          Export
-        </Button>
+        <ExportPopover />
       </HStack>
     </Stack>
   );

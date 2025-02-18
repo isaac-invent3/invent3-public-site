@@ -1,12 +1,12 @@
 import { SimpleGrid } from '@chakra-ui/react';
-import React, { useState } from 'react';
-import TaskCompletionRateChart from '../../Common/Charts/TaskCompletionRateChart';
-import MaintenanceAndDowntimeChart from './MaintenanceAndDowntime';
+import { Option } from '@repo/interfaces';
+import { useState } from 'react';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { useGetTaskCompletionRateDataQuery } from '~/lib/redux/services/dashboard/clientadmin.services';
-import AssetTrends from './AssetTrends';
-import { Option } from '@repo/interfaces';
 import { generateLastFiveYears } from '~/lib/utils/helperFunctions';
+import TaskCompletionRateChart from '../../Common/Charts/TaskCompletionRateChart';
+import AssetTrends from './AssetTrends';
+import MaintenanceAndDowntimeChart from './MaintenanceAndDowntime';
 
 const SectionTwo = () => {
   const { selectedCountry, selectedState } = useAppSelector(
@@ -21,7 +21,7 @@ const SectionTwo = () => {
   });
 
   return (
-    <SimpleGrid columns={3} width="full" gap="16px">
+    <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} width="full" gap="16px">
       <AssetTrends />
       <MaintenanceAndDowntimeChart />
       <TaskCompletionRateChart

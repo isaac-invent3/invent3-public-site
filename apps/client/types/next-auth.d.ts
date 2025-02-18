@@ -24,6 +24,7 @@ declare module 'next-auth' {
     expiresIn: number;
     sessionId: number;
     roleSystemModuleContextPermissions: AccessibleRoute;
+    roleIds: number[];
   }
   interface Session {
     user: User;

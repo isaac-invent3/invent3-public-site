@@ -25,7 +25,7 @@ const TicketSummary = () => {
   return (
     <SummaryCardWrapper
       title="TIckets"
-      containerStyle={{ width: 'max-content', height: 'full' }}
+      containerStyle={{ width: 'full', height: 'full' }}
     >
       <HStack
         width="full"

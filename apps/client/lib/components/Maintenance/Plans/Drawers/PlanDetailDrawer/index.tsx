@@ -53,7 +53,7 @@ const PlanDetailsModal = (props: PlanDetailsModalProps) => {
         <HStack
           pt="16px"
           pb="29px"
-          pl="32px"
+          pl={{ base: '16px', lg: '32px' }}
           pr="4"
           width="full"
           justifyContent="space-between"

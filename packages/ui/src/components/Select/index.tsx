@@ -6,6 +6,7 @@ import { Option } from '@repo/interfaces';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ChevronDownIcon } from '../CustomIcons';
 import ErrorMessage from '../ErrorMessage';
+import { isEmpty } from 'lodash';
 
 const DropdownIndicator = (props: any) => {
   const { pb, ...rest } = props;
@@ -25,7 +26,7 @@ const DropdownIndicator = (props: any) => {
 export interface SelectInputProps {
   title: string;
   options: Option[];
-  selectedOption?: Option | string | number;
+  selectedOption?: Option | Option[] | string | number;
   isSearchable?: boolean;
   isInvalid?: boolean;
   showTitleAfterSelect?: boolean;
@@ -35,7 +36,7 @@ export interface SelectInputProps {
   defaultInputValue?: string;
   errorMessage?: string;
   // eslint-disable-next-line no-unused-vars
-  handleSelect?: (options: Option) => void;
+  handleSelect?: (options: Option | Option[]) => void;
   handleOnMenuScrollToBottom?: () => void;
   // eslint-disable-next-line no-unused-vars
   callBackFunction?: (selectedOption: string) => Promise<Option[]>;
@@ -70,7 +71,7 @@ function SelectInput(props: SelectInputProps) {
   const [isFocused, setIsFocused] = useState(false);
   const handleFocus = () => setIsFocused(true);
   const handleBlur = () => {
-    setIsFocused(!!selectedOption);
+    setIsFocused(!isEmpty(selectedOption));
   };
 
   // Debounce ref
@@ -99,7 +100,7 @@ function SelectInput(props: SelectInputProps) {
   );
 
   useEffect(() => {
-    if (!selectedOption) {
+    if (!selectedOption || isEmpty(selectedOption)) {
       setIsFocused(false);
     }
   }, [selectedOption]);
@@ -115,17 +116,25 @@ function SelectInput(props: SelectInputProps) {
             alignItems="center"
             position="absolute"
             top={
-              isFocused || selectedOption ? '10px' : isInvalid ? '40%' : '50%'
+              isFocused || !isEmpty(selectedOption)
+                ? '10px'
+                : isInvalid
+                  ? '40%'
+                  : '50%'
             }
             transform={
-              isFocused || selectedOption
+              isFocused || !isEmpty(selectedOption)
                 ? 'translateY(-40%) scale(0.85)'
                 : 'translateY(-50%)'
             }
             transformOrigin="left top"
-            paddingLeft={isFocused || selectedOption ? '20px' : '16px'}
-            fontSize={isFocused || selectedOption ? '12px' : '14px'}
-            lineHeight={isFocused || selectedOption ? '14.26px' : '16.63px'}
+            paddingLeft={
+              isFocused || !isEmpty(selectedOption) ? '20px' : '16px'
+            }
+            fontSize={isFocused || !isEmpty(selectedOption) ? '12px' : '14px'}
+            lineHeight={
+              isFocused || !isEmpty(selectedOption) ? '14.26px' : '16.63px'
+            }
             color={
               isFocused
                 ? variant === 'primary'
@@ -227,15 +236,25 @@ function SelectInput(props: SelectInputProps) {
           defaultInputValue={defaultInputValue}
           value={
             selectedOption
-              ? typeof selectedOption === 'string' ||
-                typeof selectedOption === 'number'
-                ? options.find((option) => option.value === selectedOption)
-                : selectedOption
+              ? isMultiSelect
+                ? options.filter((item) =>
+                    (selectedOption as unknown as number[]).includes(
+                      item.value as number
+                    )
+                  )
+                : typeof selectedOption === 'string' ||
+                    typeof selectedOption === 'number'
+                  ? options.find((option) => option.value === selectedOption)
+                  : selectedOption
               : null
           }
           onChange={(selectedOptions) => {
-            if (selectedOptions) {
-              handleSelect && handleSelect(selectedOptions as Option);
+            if (selectedOptions && handleSelect) {
+              if (isMultiSelect) {
+                handleSelect(selectedOptions as Option[]);
+              } else {
+                handleSelect(selectedOptions as Option);
+              }
             }
           }}
           components={{

@@ -30,7 +30,7 @@ const SummaryStep = (props: SummaryStepProps) => {
           bgColor="white"
           pt="16px"
           pl="16px"
-          pr="44px"
+          pr={{ base: '16px', md: '44px' }}
           pb="40px"
           rounded="8px"
           minH="60vh"

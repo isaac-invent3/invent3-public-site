@@ -13,8 +13,8 @@ import { CheckIcon } from '../CustomIcons';
 const CompletedIcon = () => {
   return (
     <HStack
-      width={{ base: '16px', md: '24px' }}
-      height={{ base: '16px', md: '24px' }}
+      width="24px"
+      height="24px"
       bgColor="#34C759"
       rounded="4px"
       justifyContent="center"
@@ -32,14 +32,14 @@ const ActiveInactiveIcon = (props: ActiveInactiveIconProps) => {
   const { active, boxIndex } = props;
   return (
     <HStack
-      minW={{ base: '16px', md: '24px' }}
-      minH={{ base: '16px', md: '24px' }}
+      minW="24px"
+      minH="24px"
       bgColor="primary.500"
       rounded="4px"
       opacity={active ? 1 : 0.5}
       justifyContent="center"
     >
-      <ChakraText size={{base:'base', md: 'md' }} color="white" fontWeight={800}>
+      <ChakraText size="md" color="white" fontWeight={800}>
         {boxIndex + 1}
       </ChakraText>
     </HStack>
@@ -68,11 +68,12 @@ const FormStepper = (props: FormStepperProps) => {
         alignItems="center"
         justifyContent="space-between"
         w="100%"
-        maxW={{ md: '95%' ,base:'100%'}}
+        maxW={{ lg: '95%' }}
+        mr="16px"
       >
         {steps.map((step, index) => (
           <React.Fragment key={index}>
-            <HStack spacing="12px" mr={{ md: '32px', base: '8px' }}>
+            <HStack spacing="12px" mr="32px">
               {currentStep > index + 1 && <CompletedIcon />}
               {currentStep <= index + 1 && (
                 <ActiveInactiveIcon
@@ -83,7 +84,7 @@ const FormStepper = (props: FormStepperProps) => {
               <VStack spacing="4px" alignItems="flex-start">
                 <ChakraText
                   color="neutral.600"
-                  letterSpacing={{ base: '0.15em', md: '0.2em' }}
+                  letterSpacing="0.2em"
                   fontSize="10px"
                   fontWeight={700}
                   lineHeight="11.88px"
@@ -92,7 +93,7 @@ const FormStepper = (props: FormStepperProps) => {
                   STEP {index + 1}
                 </ChakraText>
                 <ChakraText
-                  size={{ base: 'base', md: 'md' }}
+                  fontSize="md"
                   color="black"
                   fontWeight={700}
                   whiteSpace="nowrap"
@@ -106,7 +107,8 @@ const FormStepper = (props: FormStepperProps) => {
                 orientation="horizontal"
                 borderWidth="2px"
                 borderColor="neutral.600"
-                w="full"
+                width="full"
+                minW={{ base: '49px', lg: 'initial' }}
                 mr="29px"
                 rounded="full"
               />

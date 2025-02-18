@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateFormConfigurationOptions } from '~/lib/redux/slices/UserSlice';
 import _ from 'lodash';
 import useUpdateConfigurationOptions from '../Common/useUpdateConfigurationOptions';
+import { Option } from '@repo/interfaces';
 
 const generalInfo = [
   {
@@ -125,9 +126,9 @@ const GeneralTab = () => {
                   handleSelect={(option) =>
                     dispatch(
                       updateFormConfigurationOptions({
-                        option: +option.value,
+                        option: +(option as Option).value,
                         optionsToRemove: filterOptionsById(
-                          +option.value,
+                          +(option as Option).value,
                           item.optionObject
                         ),
                       })

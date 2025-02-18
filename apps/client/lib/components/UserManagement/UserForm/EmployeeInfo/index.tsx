@@ -63,10 +63,10 @@ const EmployeeInfo = (props: EmployeeInfoProps) => {
             width="full"
             alignItems="flex-start"
             bgColor="white"
-            pt="26px"
+            pt={{ base: '16px', lg: '26px' }}
             pl="16px"
-            pb="33px"
-            pr={{ base: '16px', md: '44px' }}
+            pb={{ base: '16px', lg: '24px' }}
+            pr={{ base: '16px', lg: '41px' }}
             rounded="6px"
             minH="60vh"
           >

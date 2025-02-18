@@ -40,6 +40,11 @@ const occupationInfoSchema = Yup.object().shape({
   userGroupIds: Yup.array().of(Yup.string()).nullable(),
 });
 
+const roleGroupInfoSchema = Yup.object().shape({
+  userRoleIds: Yup.array().of(Yup.number()).min(1, 'Role is required'),
+  userGroupIds: Yup.array().of(Yup.number()).min(1, 'User Group is required'),
+});
+
 const userRoleSchema = Yup.object().shape({
   roleName: Yup.string().required('Role name is required'),
 });
@@ -62,4 +67,5 @@ export {
   occupationInfoSchema,
   userRoleSchema,
   userGroupSchema,
+  roleGroupInfoSchema,
 };

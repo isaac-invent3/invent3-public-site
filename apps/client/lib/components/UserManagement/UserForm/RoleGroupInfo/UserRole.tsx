@@ -1,5 +1,6 @@
 import { Option } from '@repo/interfaces';
 import { FormInputWrapper } from '@repo/ui/components';
+import { useField } from 'formik';
 import React, { useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
@@ -11,6 +12,7 @@ import { updateUserForm } from '~/lib/redux/slices/UserSlice';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 const UserRole = () => {
+  const [field, meta, helpers] = useField('userRoleId'); //eslint-disable-line
   const [searchRoles] = useSearchRolesMutation({});
   const dispatch = useAppDispatch();
   const { countryName } = useAppSelector((state) => state.asset.assetForm);

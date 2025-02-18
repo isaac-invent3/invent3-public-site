@@ -20,9 +20,13 @@ const Header = () => {
       {canCreateAsset && (
         <ActionButtonPopover
           onOpenTemplateModal={onOpen}
-          newRoute={`/${ROUTES.ASSETS}/add`}
+          actions={[
+            {
+              label: 'Create a New Asset',
+              route: `/${ROUTES.ASSETS}/add`,
+            },
+          ]}
           buttonLabel="Add New Asset"
-          linkLabel="Create a New Asset"
           modalLabel="Create From Existing"
         >
           <AssetTemplateModal isOpen={isOpen} onClose={onClose} />

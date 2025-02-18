@@ -51,9 +51,13 @@ const Header = () => {
       {tabName?.toLowerCase() === 'plans' && canCreatePlan && (
         <ActionButtonPopover
           onOpenTemplateModal={onOpenPlanTemplate}
-          newRoute={`/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_PLANS}/add`}
+          actions={[
+            {
+              label: 'Create a New Plan',
+              route: `/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_PLANS}/add`,
+            },
+          ]}
           buttonLabel="Add New Plan"
-          linkLabel="Create a New Plan"
           modalLabel="Create From Template"
         >
           {isOpenPlanTemplate && (
@@ -67,9 +71,13 @@ const Header = () => {
       {tabName?.toLowerCase() === 'schedules' && canCreateSchedule && (
         <ActionButtonPopover
           onOpenTemplateModal={onOpenScheduleTemplate}
-          newRoute={`/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_SCHEDULES}/add`}
+          actions={[
+            {
+              label: 'Create a New Schedule',
+              route: `/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_SCHEDULES}/add`,
+            },
+          ]}
           buttonLabel="Add New Schedule"
-          linkLabel="Create a New Schedule"
           modalLabel="Create From Template"
         >
           {isOpenScheduleTemplate && (

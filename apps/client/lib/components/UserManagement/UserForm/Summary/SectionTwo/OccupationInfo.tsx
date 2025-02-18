@@ -9,7 +9,7 @@ const OccupationInfo = () => {
     branchName,
     jobTitleName,
     teamName,
-    userRoleName,
+    userRoleNames,
     userGroupNames,
   } = useAppSelector((state) => state.user.userForm);
 
@@ -41,7 +41,7 @@ const OccupationInfo = () => {
           ))}
         </SimpleGrid>
         <SimpleGrid width="full" gap="20px" columns={{ base: 1, md: 2 }}>
-          <SummaryInfo label="User Role" value={userRoleName} />
+          <SummaryInfo label="User Role" value={userRoleNames} />
 
           <VStack width="full" spacing="4px" alignItems="flex-start">
             <Text color="neutral.600">User Group</Text>

@@ -99,6 +99,10 @@ const reportBreadcrumb: BreadcrumbNode = {
 const userManagementBreadcrumb: BreadcrumbNode = {
   route: `/${ROUTES.USERS}`,
   label: 'User Management',
+  children: {
+    add: { label: 'Add' },
+    edit: { label: 'Edit' },
+  },
 };
 
 const auditLogBreadcrumb: BreadcrumbNode = {

@@ -9,6 +9,8 @@ import {
 } from '@repo/interfaces';
 import {
   CreateUserPayload,
+  Group,
+  UpdateUserGroupPayload,
   User,
   UserConfigurationOption,
   UserConfigurationPayload,
@@ -120,6 +122,16 @@ export const userApi = createApi({
       }),
       providesTags: ['userDetail'],
     }),
+    getUserGroupById: builder.query<
+      BaseApiResponse<Group>,
+      { groupId: number }
+    >({
+      query: ({ groupId }) => ({
+        url: `/Groups/${groupId}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
     getUserConfigurationOptions: builder.query<
       BaseApiResponse<ListResponse<UserConfigurationOption>>,
       QueryParams & { userId: number }
@@ -199,6 +211,18 @@ export const userApi = createApi({
       }),
       invalidatesTags: ['allUserGroupInfoHeaders'],
     }),
+    updateUserGroup: builder.mutation<
+      BaseApiResponse<UserGroupInfoHeader>,
+      UpdateUserGroupPayload
+    >({
+      query: (body) => ({
+        url: `/Groups/${body.groupId}`,
+        method: 'PUT',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allUserGroupInfoHeaders'],
+    }),
     createUser: builder.mutation<BaseApiResponse<User>, CreateUserPayload>({
       query: (body) => ({
         url: `/Invent3Pro/Users/Create`,
@@ -216,6 +240,15 @@ export const userApi = createApi({
         body,
       }),
       invalidatesTags: ['allUsers'],
+    }),
+    deleteUserGroup: builder.mutation<void, { id: number; deletedBy: string }>({
+      query: ({ id, ...body }) => ({
+        url: `/Groups/${id}`,
+        method: 'DELETE',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allUserGroupInfoHeaders'],
     }),
   }),
 });
@@ -238,4 +271,7 @@ export const {
   useCreateUserMutation,
   useUpdateUserMutation,
   useSearchUserGroupMutation,
+  useGetUserGroupByIdQuery,
+  useUpdateUserGroupMutation,
+  useDeleteUserGroupMutation,
 } = userApi;

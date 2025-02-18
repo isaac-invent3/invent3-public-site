@@ -1,255 +1,303 @@
 'use client';
+
 import {
   Avatar,
   AvatarGroup,
-  DrawerBody,
-  DrawerFooter,
-  DrawerHeader,
+  Flex,
   HStack,
-  Icon,
+  IconButton,
+  SimpleGrid,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
 import { Field, FormikProvider, useFormik } from 'formik';
 
 import {
-  BackButton,
   Button,
   ErrorMessage,
   FormInputWrapper,
   FormTextInput,
-  GenericDrawer,
   GenericSuccessModal,
-  ModalHeading,
 } from '@repo/ui/components';
-import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { UserGroupInfoHeader } from '~/lib/interfaces/user.interfaces';
+import PageHeader from '~/lib/components/UI/PageHeader';
 import { userGroupSchema } from '~/lib/schemas/user.schema';
-import { useState } from 'react';
-import UserDisplayAndAddButton from '~/lib/components/Common/UserDisplayAndAddButton';
-import RoleSelect from './RoleSelect';
+import { ROUTES } from '~/lib/utils/constants';
+import { AddIcon, PenIcon } from '~/lib/components/CustomIcons';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import Roles from './Roles';
+import AddUserModal from './UserSelectModals/AddUserModal';
+import EditUserModal from './UserSelectModals/EditUserModal';
 import { getSession } from 'next-auth/react';
-import { CloseIcon } from '~/lib/components/CustomIcons';
-import { Option } from '@repo/interfaces';
-import { useCreateUserGroupMutation } from '~/lib/redux/services/user.services';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
+import {
+  useCreateUserGroupMutation,
+  useUpdateUserGroupMutation,
+} from '~/lib/redux/services/user.services';
+import mapIdsToObject from '~/lib/components/Common/HelperFunctions/mapIdsToObject';
+import _ from 'lodash';
+import { useEffect } from 'react';
+import { updateUserGroupFormDetails } from '~/lib/redux/slices/RoleSlice';
 
-interface UserGroupFormDrawerProps {
-  isOpen: boolean;
-  onClose: () => void;
-  data?: UserGroupInfoHeader;
+interface UserGroupFormProps {
+  type: 'create' | 'edit';
 }
-const UserGroupDrawer = (props: UserGroupFormDrawerProps) => {
-  const { isOpen, onClose, data } = props;
+const UserGroupForm = ({ type }: UserGroupFormProps) => {
+  const dispatch = useAppDispatch();
+  const {
+    isOpen: isOpenAddUser,
+    onClose: onCloseAddUser,
+    onOpen: onOpenAddUser,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenEditUser,
+    onClose: onCloseEditUser,
+    onOpen: onOpenEditUser,
+  } = useDisclosure();
+  const {
+    groupId,
+    groupName,
+    users,
+    formUserGroupRoleIds,
+    newlyAddedUsers,
+    initialUserGroupRoleIds,
+    removedUserIds,
+  } = useAppSelector((state) => state.role.userGroupFormDetails);
   const { handleSubmit } = useCustomMutation();
+  const [createUserGroup, { isLoading: isCreating }] =
+    useCreateUserGroupMutation();
+  const [updateUserGroup, { isLoading: isUpdating }] =
+    useUpdateUserGroupMutation();
   const {
     isOpen: isOpenSuccess,
     onClose: onCloseSuccess,
     onOpen: onOpenSuccess,
   } = useDisclosure();
-  const [selectedUser, setSelectedUser] = useState<Option[]>([]);
-  const [createUserGroup, { isLoading }] = useCreateUserGroupMutation();
 
   const formik = useFormik({
     initialValues: {
-      groupName: '',
-      userIds: [],
-      roleIds: [],
+      groupName: groupName,
+      userIds: newlyAddedUsers.map((item) => item.userId),
+      roleIds: formUserGroupRoleIds,
     },
     validationSchema: userGroupSchema,
     enableReinitialize: true,
     onSubmit: async (values) => {
       const session = await getSession();
-      const payload = {
+      let response;
+      const createUserGroupPayload = {
         createGroupDto: {
-          groupName: values.groupName,
+          groupName: values.groupName!,
           createdBy: session?.user?.username!,
         },
         userIds: values.userIds,
         roleIds: values.roleIds,
       };
-      const response = await handleSubmit(createUserGroup, payload, '');
+
+      // Get newly added role IDs (in formUserGroupRoleIds but not in initialUserGroupRoleIds)
+      const newlyAddedRoleIds = _.difference(
+        formUserGroupRoleIds,
+        initialUserGroupRoleIds
+      );
+
+      // Get deleted role IDs (in initialUserGroupRoleIds but not in formUserGroupRoleIds)
+      const deletedRoleIds = _.difference(
+        initialUserGroupRoleIds,
+        formUserGroupRoleIds
+      );
+
+      // New User Ids
+      const newUserIds = _.difference(
+        newlyAddedUsers.map((item) => item.userId),
+        users.map((item) => item.userId)
+      );
+      // Deleted User Ids
+      const deletedUserId = _.intersection(
+        users.map((item) => item.userId),
+        removedUserIds
+      );
+      const updateUserGroupPayload = {
+        groupId: groupId!,
+        groupName: values.groupName!,
+        roles: mapIdsToObject(newlyAddedRoleIds, deletedRoleIds)!,
+        userIds: mapIdsToObject(newUserIds, deletedUserId)!,
+        lastModifiedBy: session?.user?.username!,
+      };
+      if (type === 'create') {
+        response = await handleSubmit(
+          createUserGroup,
+          createUserGroupPayload,
+          ''
+        );
+      } else {
+        response = await handleSubmit(
+          updateUserGroup,
+          updateUserGroupPayload,
+          ''
+        );
+      }
 
       if (response?.data) {
         onOpenSuccess();
       }
     },
   });
+  useEffect(() => {
+    dispatch(
+      updateUserGroupFormDetails({ groupName: formik.values.groupName! })
+    );
+  }, [formik.values.groupName]);
 
   return (
     <>
-      <GenericDrawer isOpen={isOpen} onClose={onClose} maxWidth="681px">
-        <DrawerHeader
-          p={0}
-          m={0}
-          px={{ base: '24px', md: '32px' }}
-          mt="20px"
-          mb="10px"
-          width="max-content"
-        >
-          <BackButton handleClick={onClose} />
-        </DrawerHeader>
-        <DrawerBody p={0} m={0}>
+      <Flex
+        width="full"
+        direction="column"
+        pb="24px"
+        px={{ base: '16px', md: 0 }}
+      >
+        <PageHeader>{type === 'create' ? 'Add' : 'Edit'} User Group</PageHeader>
+        <Flex width="full" height="full" direction="column" mt="32px">
           <FormikProvider value={formik}>
             <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
               <VStack
+                spacing="40px"
                 width="full"
-                px={{ base: '24px', md: '32px' }}
-                pb="32px"
-                pt="50px"
-                spacing={0}
                 alignItems="flex-start"
+                bgColor="white"
+                pt="24px"
+                pb="33px"
+                minH="60vh"
               >
-                <ModalHeading
-                  heading={data ? 'Edit User Group' : 'Add New User Group'}
-                />
-
-                {/* Main Form Starts Here */}
-                <VStack width="full" spacing="27px" mt="60px">
+                <SimpleGrid
+                  columns={{ base: 1, md: 2 }}
+                  width="full"
+                  px="24px"
+                  gap={{ base: '24px', lg: '73px' }}
+                >
                   <FormInputWrapper
                     sectionMaxWidth="141px"
                     customSpacing="40px"
-                    description="Provide a name for this group"
+                    description="Provide a title for this name"
                     title="Group Name"
                     isRequired
                   >
-                    <Field
-                      as={FormTextInput}
-                      name="groupName"
-                      type="text"
-                      label="Group Name"
-                      placeholder="Group Name"
-                    />
+                    <VStack alignItems="flex-start" spacing="4px" width="full">
+                      <Field
+                        as={FormTextInput}
+                        name="groupName"
+                        type="text"
+                        label="User Group Name"
+                        placeholder="Group Name"
+                      />
+                    </VStack>
                   </FormInputWrapper>
                   <FormInputWrapper
                     sectionMaxWidth="141px"
                     customSpacing="40px"
-                    description="Provide a title for this role"
-                    title="Roles"
-                    isRequired
-                  >
-                    <RoleSelect selectName="roleIds" selectTitle="Role" />
-                  </FormInputWrapper>
-                  <FormInputWrapper
-                    sectionMaxWidth="141px"
-                    customSpacing="40px"
-                    description="Users to be assigned to the group."
+                    description="Assign responsible team member for the tasks."
                     title="Add Users"
                     isRequired
                   >
-                    <VStack width="full" spacing="4px" alignItems="flex-start">
+                    <VStack alignItems="flex-start" spacing="4px">
                       <HStack justifyContent="space-between" width="full">
                         <AvatarGroup
                           size="sm"
                           max={3}
-                          display={selectedUser.length > 0 ? 'flex' : 'none'}
+                          display={newlyAddedUsers.length > 0 ? 'flex' : 'none'}
                         >
-                          {selectedUser.map((user, index) => (
-                            <HStack
-                              position="relative"
-                              justifyContent="center"
-                              alignItems="center"
-                              overflow="hidden"
-                              rounded="full"
-                              role="group"
-                              cursor="pointer"
-                            >
-                              <Icon
-                                as={CloseIcon}
-                                position="absolute"
-                                boxSize="24px"
-                                zIndex={999}
-                                color="red.500"
-                                display="none"
-                                _groupHover={{
-                                  display: 'flex',
-                                }}
-                                onClick={() => {
-                                  setSelectedUser(
-                                    selectedUser.filter(
-                                      (item) => item.value !== user.value
-                                    )
-                                  );
-                                  formik.setFieldValue(
-                                    'userIds',
-                                    formik.values.userIds.filter(
-                                      (id) => id !== user.value
-                                    )
-                                  );
-                                }}
-                              />
-                              <Avatar
-                                name={user.label}
-                                src=""
-                                key={index}
-                                width="44px"
-                                height="44px"
-                                opacity={1}
-                                _groupHover={{
-                                  opacity: 0.7,
-                                }}
-                              />
-                            </HStack>
+                          {newlyAddedUsers.map((item, index) => (
+                            <Avatar
+                              name={`${item.firstName} ${item.lastName}`}
+                              src=""
+                              key={index}
+                              width="44px"
+                              height="44px"
+                            />
                           ))}
                         </AvatarGroup>
-                        <UserDisplayAndAddButton
-                          selectedUser={null}
-                          handleSelectUser={(option) => {
-                            if (
-                              !(formik.values.userIds as number[]).includes(
-                                option?.value as number
-                              )
-                            ) {
-                              formik.setFieldValue('userIds', [
-                                ...formik.values.userIds,
-                                option?.value as number,
-                              ]);
-                              setSelectedUser((prev) => [
-                                ...prev,
-                                option as Option,
-                              ]);
-                            }
-                          }}
-                        />
+                        <HStack spacing="8px">
+                          {newlyAddedUsers.length > 0 && (
+                            <IconButton
+                              variant="solid"
+                              bgColor="#F1F1F1"
+                              aria-label="Edit Users"
+                              icon={<PenIcon color="#374957" boxSize="20px" />}
+                              sx={{
+                                width: '50px',
+                                height: '50px',
+                                rounded: 'full',
+                              }}
+                              onClick={onOpenEditUser}
+                            />
+                          )}
+                          <IconButton
+                            variant="solid"
+                            bgColor="#F1F1F1"
+                            aria-label="Add User"
+                            icon={<AddIcon color="#374957" boxSize="24px" />}
+                            sx={{
+                              width: '50px',
+                              height: '50px',
+                              rounded: 'full',
+                            }}
+                            onClick={onOpenAddUser}
+                          />
+                        </HStack>
                       </HStack>
-                      {formik.touched &&
+                      {formik.submitCount > 0 &&
+                        formik.touched &&
                         formik.errors.userIds !== undefined && (
                           <ErrorMessage>{formik.errors.userIds}</ErrorMessage>
                         )}
                     </VStack>
                   </FormInputWrapper>
-                </VStack>
-                {/* Main Form Ends Here */}
+                </SimpleGrid>
+                <Roles />
               </VStack>
+              {formik.submitCount > 0 &&
+                formik.touched &&
+                formik.errors.roleIds !== undefined && (
+                  <Flex width="full" mt="4px">
+                    <ErrorMessage>{formik.errors.roleIds}</ErrorMessage>
+                  </Flex>
+                )}
+              <HStack width="full" justifyContent="space-between" mt="24px">
+                <Button
+                  variant="secondary"
+                  customStyles={{ width: 'max-content' }}
+                  href={`/${ROUTES.USERS}`}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  customStyles={{ width: 'max-content' }}
+                  isLoading={isCreating || isUpdating}
+                >
+                  {type === 'create' ? 'Create' : 'Update'} User Group
+                </Button>
+              </HStack>
             </form>
           </FormikProvider>
-        </DrawerBody>
-        <DrawerFooter pb="38px">
-          <HStack width="full" spacing="16px" justifyContent="flex-end">
-            <Button
-              variant="secondary"
-              customStyles={{ width: '138px' }}
-              handleClick={onClose}
-            >
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              customStyles={{ width: '237px' }}
-              isLoading={isLoading}
-              handleClick={formik.handleSubmit}
-            >
-              Save User Group
-            </Button>
-          </HStack>
-        </DrawerFooter>
-      </GenericDrawer>
+        </Flex>
+      </Flex>
+      {isOpenAddUser && (
+        <AddUserModal isOpen={isOpenAddUser} onClose={onCloseAddUser} />
+      )}
+      {isOpenEditUser && (
+        <EditUserModal isOpen={isOpenEditUser} onClose={onCloseEditUser} />
+      )}
       <GenericSuccessModal
         isOpen={isOpenSuccess}
-        onClose={onCloseSuccess}
-        successText="User Group Created Successfully"
+        onClose={() => {}}
+        successText={`User Group ${type === 'create' ? 'Created' : 'updated'} Successfully`}
         mainModalStyle={{ closeOnOverlayClick: false, closeOnEsc: false }}
       >
-        <Button customStyles={{ width: '193px' }} handleClick={onCloseSuccess}>
+        <Button
+          customStyles={{ width: '193px' }}
+          handleClick={onCloseSuccess}
+          href={`/${ROUTES.ROLES}`}
+        >
           Continue
         </Button>
       </GenericSuccessModal>
@@ -257,4 +305,4 @@ const UserGroupDrawer = (props: UserGroupFormDrawerProps) => {
   );
 };
 
-export default UserGroupDrawer;
+export default UserGroupForm;

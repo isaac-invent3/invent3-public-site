@@ -36,7 +36,7 @@ const PopoverAction = ({ role }: PopoverActionProps) => {
           <Text
             cursor="pointer"
             as="a"
-            href={`/${ROUTES.ROLES}/${role.roleId}/detail`}
+            href={`/${ROUTES.ROLES}/role/${role.roleId}/detail`}
           >
             View Details
           </Text>

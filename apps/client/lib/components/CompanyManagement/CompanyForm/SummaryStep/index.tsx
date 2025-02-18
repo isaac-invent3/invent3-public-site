@@ -38,7 +38,7 @@ const SummaryStep = (props: SummaryStepProps) => {
           <FormInputWrapper
             sectionMaxWidth="141px"
             customSpacing="47px"
-            title="Company Logo"
+            title="Company Logo."
             description="Size max: 10MB each Format: JPG, PNG" 
           >
             <Flex

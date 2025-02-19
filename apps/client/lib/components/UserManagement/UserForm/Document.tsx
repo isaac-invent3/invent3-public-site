@@ -12,12 +12,14 @@ import DocumentUploadAndView from '../../Common/DocumentUploadAndView';
 interface DocumentStepProps {
   activeStep: number;
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
+  isManual: boolean;
 }
 const DocumentStep = (props: DocumentStepProps) => {
-  const { activeStep, setActiveStep } = props;
+  const { activeStep, setActiveStep, isManual } = props;
   const formDetails = useAppSelector((state) => state.user.userForm);
   const dispatch = useAppDispatch();
   const [isMobile] = useMediaQuery('(max-width: 768px)');
+  const step = isManual ? 0 : 1;
 
   const initialValues = {
     documents: formDetails.documents ?? [],
@@ -29,7 +31,7 @@ const DocumentStep = (props: DocumentStepProps) => {
     enableReinitialize: true,
     onSubmit: async (values) => {
       dispatch(updateUserForm(values));
-      setActiveStep(4);
+      setActiveStep(isManual ? 5 : 4);
     },
   });
 
@@ -44,7 +46,7 @@ const DocumentStep = (props: DocumentStepProps) => {
     <Flex
       width="full"
       direction="column"
-      display={activeStep === 3 ? 'flex' : 'none'}
+      display={activeStep === 4 - step ? 'flex' : 'none'}
     >
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
@@ -88,8 +90,8 @@ const DocumentStep = (props: DocumentStepProps) => {
           <Flex width="full" mt="16px">
             <FormActionButtons
               cancelLink={`/${ROUTES.USERS}`}
-              totalStep={4}
-              activeStep={3}
+              totalStep={5}
+              activeStep={4 - step}
               setActiveStep={setActiveStep}
             />
           </Flex>

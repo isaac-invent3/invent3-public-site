@@ -1,5 +1,10 @@
 import { BaseEntity, Option } from '@repo/interfaces';
-import { Document, LocationFilter } from '../general.interfaces';
+import {
+  BaseDto,
+  Document,
+  LocationDto,
+  LocationFilter,
+} from '../general.interfaces';
 import { MaintenancePlan } from '../maintenance.interfaces';
 import { FORM_ENUM } from '~/lib/utils/constants';
 
@@ -323,12 +328,6 @@ interface AssetStatus {
 
 // Create and Update API Payload
 
-interface BaseDto {
-  createdBy?: string;
-  lastModifiedBy?: string;
-  actionType?: (typeof FORM_ENUM)[keyof typeof FORM_ENUM];
-}
-
 interface AssetDepreciationDto extends BaseDto {
   assetId?: number | null;
   depreciationDate: string;
@@ -387,18 +386,6 @@ interface AssetWarrantyDto extends BaseDto {
   expiryDate: string | null;
   assetId?: number | null;
   warrantyId?: number | null;
-}
-
-interface LocationDto extends BaseDto {
-  lgaId: number | null;
-  facilityId: number | null;
-  buildingId: number | null;
-  floorId: number | null;
-  departmentId: number | null;
-  roomId: number | null;
-  locationId?: number | null;
-  aisleId: number | null;
-  shelfId: number | null;
 }
 
 interface CreateAssetPayload {

@@ -63,7 +63,7 @@ const UserTabs = () => {
           ))}
         </TabList>
 
-        <TabPanels>
+        <TabPanels pb={{ base: '16px', lg: '24px' }}>
           {AllTabs.map((item, index) => (
             <TabPanel key={item.label} pt="33px">
               {index === tabIndex && item.component}

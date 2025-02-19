@@ -1,23 +1,40 @@
 import { Stack, useMediaQuery } from '@chakra-ui/react';
 import React from 'react';
 import DetailSection from '~/lib/components/UI/ContentDetails/DetailsSection';
+import { useAppSelector } from '~/lib/redux/hooks';
+import { dateFormatter } from '~/lib/utils/Formatters';
 
 const EmployeeInformation = () => {
   const [isMobile] = useMediaQuery('(max-width: 768px)');
+  const userDetail = useAppSelector((state) => state.user.user);
+  if (!userDetail) {
+    return;
+  }
+  const {
+    firstName,
+    lastName,
+    dateOfBirth,
+    personalEmail,
+    phoneNumber,
+    lganame,
+    stateName,
+    countryName,
+  } = userDetail;
+
   const data = [
-    { label: 'First Name:', value: 'George' },
-    { label: 'Last Name:', value: 'Clooney' },
-    { label: 'Date of Birth:', value: 'August 23, 1982' },
-    { label: 'Personal Phone:', value: '+234 234 567 8901' },
-    { label: 'Personal Email:', value: 'email@example.com' },
+    { label: 'First Name:', value: firstName },
+    { label: 'Last Name:', value: lastName },
+    {
+      label: 'Date of Birth:',
+      value: dateOfBirth ? dateFormatter(dateOfBirth, 'Do, MMMMM, YYYY') : null,
+    },
+    { label: 'Personal Phone:', value: phoneNumber },
+    { label: 'Personal Email:', value: personalEmail },
   ];
   const addressData = [
-    { label: 'Address 1:', value: '2972 Westheimer Rd.' },
-    { label: 'Address 2:', value: '--' },
-    { label: 'City:', value: 'Santa Ana' },
-    { label: 'State / Province:', value: 'Illinois' },
-    { label: 'Country:', value: 'United States' },
-    { label: 'Zip / Postal Code:', value: '85486' },
+    { label: 'City:', value: lganame },
+    { label: 'State / Province:', value: stateName },
+    { label: 'Country:', value: countryName },
   ];
 
   return (

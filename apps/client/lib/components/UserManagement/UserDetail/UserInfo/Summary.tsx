@@ -1,4 +1,5 @@
 import { Flex, SimpleGrid, Text } from '@chakra-ui/react';
+import _ from 'lodash';
 
 import { useAppSelector } from '~/lib/redux/hooks';
 
@@ -15,7 +16,7 @@ const SummaryInfo = (props: SummaryInfoProps) => {
         {label}
       </Text>
       <Text size={{ base: 'base', md: 'lg' }} color="black">
-        {value}
+        {_.isEmpty(value) ? 'N/A' : value}
       </Text>
       {children}
     </Flex>
@@ -40,7 +41,7 @@ const Summary = () => {
     },
     {
       label: 'Employee ID',
-      value: userData?.userId,
+      value: userData?.employeeId,
     },
     {
       label: 'NIN',

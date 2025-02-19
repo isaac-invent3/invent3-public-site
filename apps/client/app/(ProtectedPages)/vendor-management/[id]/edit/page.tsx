@@ -1,7 +1,7 @@
 'use client';
 
-import { Skeleton } from '@chakra-ui/react';
 import { notFound } from 'next/navigation';
+import PageLoadingSkeleton from '~/lib/components/UI/PageLoadingSkeleton';
 import VendorForm from '~/lib/components/VendorManagement/VendorForm';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { useGetVendorByIdQuery } from '~/lib/redux/services/vendor.services';
@@ -12,7 +12,7 @@ export default function Page({ params }: { params: { id: number } }) {
   const dispatch = useAppDispatch();
 
   if (isLoading) {
-    return <Skeleton width="full" rounded="8px" height="250px" />;
+    return <PageLoadingSkeleton />;
   }
   if (!data?.data) return notFound();
 

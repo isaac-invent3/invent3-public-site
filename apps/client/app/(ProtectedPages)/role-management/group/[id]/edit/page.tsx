@@ -1,8 +1,8 @@
 'use client';
 
-import { Skeleton } from '@chakra-ui/react';
 import { notFound } from 'next/navigation';
 import UserGroupForm from '~/lib/components/RoleManagement/UserGroup/UserGroupForm';
+import PageLoadingSkeleton from '~/lib/components/UI/PageLoadingSkeleton';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { useGetUserGroupByIdQuery } from '~/lib/redux/services/user.services';
 import { updateUserGroupFormDetails } from '~/lib/redux/slices/RoleSlice';
@@ -12,7 +12,7 @@ export default function Page({ params }: { params: { id: number } }) {
   const { data, isLoading } = useGetUserGroupByIdQuery({ groupId: params.id! });
 
   if (isLoading) {
-    return <Skeleton width="full" rounded="8px" height="250px" />;
+    return <PageLoadingSkeleton />;
   }
   if (data) {
     dispatch(

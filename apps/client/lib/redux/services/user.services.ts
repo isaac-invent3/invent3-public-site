@@ -11,10 +11,12 @@ import {
   CreateUserPayload,
   Group,
   UpdateUserGroupPayload,
+  UpdateUserPayload,
   User,
   UserConfigurationOption,
   UserConfigurationPayload,
   UserDesignation,
+  UserDocument,
   UserGroup,
   UserGroupInfoHeader,
   UserGroupMember,
@@ -91,6 +93,16 @@ export const userApi = createApi({
         headers: getHeaders(),
       }),
       providesTags: ['allUsers'],
+    }),
+    getUserDocuments: builder.query<
+      BaseApiResponse<ListResponse<UserDocument>>,
+      QueryParams & { userId: number }
+    >({
+      query: ({ userId, ...data }) => ({
+        url: generateQueryStr(`/UserDocuments/ByUserId/${userId}?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
     }),
     getUserGroupMembers: builder.query<
       BaseApiResponse<ListResponse<UserGroupMember>>,
@@ -232,10 +244,10 @@ export const userApi = createApi({
       }),
       invalidatesTags: ['allUsers'],
     }),
-    updateUser: builder.mutation<BaseApiResponse<User>, CreateUserPayload>({
+    updateUser: builder.mutation<BaseApiResponse<User>, UpdateUserPayload>({
       query: (body) => ({
-        url: `/Invent3Pro/Users/Create`,
-        method: 'POST',
+        url: `/Invent3Pro/Users/Update`,
+        method: 'PUT',
         headers: getHeaders(),
         body,
       }),
@@ -274,4 +286,5 @@ export const {
   useGetUserGroupByIdQuery,
   useUpdateUserGroupMutation,
   useDeleteUserGroupMutation,
+  useGetUserDocumentsQuery,
 } = userApi;

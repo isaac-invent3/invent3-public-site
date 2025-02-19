@@ -8,21 +8,28 @@ import {
   withFormLeaveDialog,
 } from '@repo/ui/components';
 import PageHeader from '../../UI/PageHeader';
-import EmployeeInfo from './EmployeeInfo';
 import DocumentStep from './Document';
 import SummaryStep from './Summary';
 import RoleGroupInfo from './RoleGroupInfo';
 import OccupationInfo from './OccupationInfo';
-
-const STEPS = ['Employee Info', 'User Role', 'Document', 'Summary'];
+import EmployeeInfo from './EmployeeInfo';
 
 interface UserFormProps {
   type: 'create' | 'edit';
+  formCreationType?: 'manual' | 'idp';
 }
 const UserForm = (props: UserFormProps) => {
-  const { type } = props;
-  const [activeStep, setActiveStep] = useState(2);
-
+  const { type, formCreationType = 'manual' } = props;
+  const [activeStep, setActiveStep] = useState(1);
+  const isManual = formCreationType === 'manual' && type === 'create';
+  const stepReduction = isManual ? 0 : 1;
+  const STEPS = [
+    isManual ? 'Employee Info' : 'Add Employee',
+    ...(isManual ? ['Occupation Info'] : []),
+    'User Role',
+    'Document',
+    'Summary',
+  ];
   return (
     <Flex
       width="full"
@@ -35,27 +42,39 @@ const UserForm = (props: UserFormProps) => {
       </PageHeader>
       <Flex width="full" gap="8px" mt="32px" direction="column">
         <FormStepper currentStep={activeStep} steps={STEPS} />
-        <EmployeeInfo activeStep={activeStep} setActiveStep={setActiveStep} />
-        <SlideTransition trigger={activeStep === 2}>
-          <OccupationInfo
-            activeStep={activeStep}
-            setActiveStep={setActiveStep}
-          />
-        </SlideTransition>
-        <SlideTransition trigger={activeStep === 3}>
+        <EmployeeInfo
+          activeStep={activeStep}
+          setActiveStep={setActiveStep}
+          isManual={isManual}
+        />
+        {formCreationType === 'manual' && (
+          <SlideTransition trigger={activeStep === 2}>
+            <OccupationInfo
+              activeStep={activeStep}
+              setActiveStep={setActiveStep}
+            />
+          </SlideTransition>
+        )}
+        <SlideTransition trigger={activeStep === 3 - stepReduction}>
           <RoleGroupInfo
             activeStep={activeStep}
             setActiveStep={setActiveStep}
+            isManual={isManual}
           />
         </SlideTransition>
-        <SlideTransition trigger={activeStep === 3}>
-          <DocumentStep activeStep={activeStep} setActiveStep={setActiveStep} />
+        <SlideTransition trigger={activeStep === 4 - stepReduction}>
+          <DocumentStep
+            activeStep={activeStep}
+            setActiveStep={setActiveStep}
+            isManual={isManual}
+          />
         </SlideTransition>
-        <SlideTransition trigger={activeStep === 4}>
+        <SlideTransition trigger={activeStep === 5 - stepReduction}>
           <SummaryStep
             activeStep={activeStep}
             setActiveStep={setActiveStep}
             type={type}
+            isManual={isManual}
           />
         </SlideTransition>
       </Flex>

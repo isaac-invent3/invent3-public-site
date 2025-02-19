@@ -1,13 +1,25 @@
 import { VStack } from '@chakra-ui/react';
 import React from 'react';
 import DetailSection from '~/lib/components/UI/ContentDetails/DetailsSection';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 const OccupationInformation = () => {
+  const userDetail = useAppSelector((state) => state.user.user);
+  if (!userDetail) {
+    return;
+  }
+  const { facilityName, userRoles, userGroups } = userDetail;
   const data = [
     { label: 'Employment Type:', value: 'Full time' },
-    { label: 'Team:', value: 'Administrators' },
-    { label: 'Branch Location:', value: 'Lekki, Lagos' },
-    { label: 'User Role:', value: 'Frontdesk/CSA' },
+    {
+      label: 'Team:',
+      value: userGroups?.map((item) => item.groupName).join(', '),
+    },
+    { label: 'Branch Location:', value: facilityName },
+    {
+      label: 'User Role:',
+      value: userRoles?.map((item) => item.roleName).join(', '),
+    },
     { label: 'Job Title:', value: 'Admin Officer' },
   ];
 

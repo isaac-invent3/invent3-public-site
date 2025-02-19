@@ -6,7 +6,7 @@ export const metadata: Metadata = {
 };
 
 const Page = () => {
-  return <UserForm type="create" formCreationType="manual" />;
+  return <UserForm type="create" formCreationType="idp" />;
 };
 
 export default Page;

@@ -2,7 +2,7 @@ import { Flex, SimpleGrid, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 
 import { FormActionButtons } from '@repo/ui/components';
-import { useAppDispatch } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateUserForm } from '~/lib/redux/slices/UserSlice';
 import { roleGroupInfoSchema } from '~/lib/schemas/user.schema';
 import { ROUTES } from '~/lib/utils/constants';
@@ -12,21 +12,24 @@ import UserGroup from './UserGroup';
 interface RoleGroupInfoProps {
   activeStep: number;
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
+  isManual: boolean;
 }
 const RoleGroupInfo = (props: RoleGroupInfoProps) => {
-  const { activeStep, setActiveStep } = props;
+  const { activeStep, setActiveStep, isManual } = props;
   const dispatch = useAppDispatch();
+  const formDetails = useAppSelector((state) => state.user.userForm);
+  const step = isManual ? 0 : 1;
 
   const formik = useFormik({
     initialValues: {
-      userRoleIds: [],
-      userGroupIds: [],
+      userRoleIds: formDetails?.userRoleIds ?? [],
+      userGroupIds: formDetails?.userGroupIds ?? [],
     },
     validationSchema: roleGroupInfoSchema,
     enableReinitialize: true,
     onSubmit: async (values) => {
       dispatch(updateUserForm(values));
-      setActiveStep(3);
+      setActiveStep(isManual ? 4 : 3);
     },
   });
 
@@ -35,7 +38,7 @@ const RoleGroupInfo = (props: RoleGroupInfoProps) => {
       width="full"
       height="full"
       direction="column"
-      display={activeStep === 2 ? 'flex' : 'none'}
+      display={activeStep === 3 - step ? 'flex' : 'none'}
     >
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
@@ -60,7 +63,7 @@ const RoleGroupInfo = (props: RoleGroupInfoProps) => {
             <FormActionButtons
               cancelLink={`/${ROUTES.USERS}`}
               totalStep={4}
-              activeStep={2}
+              activeStep={3 - step}
               setActiveStep={setActiveStep}
             />
           </Flex>

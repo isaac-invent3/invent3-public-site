@@ -1,8 +1,7 @@
 'use client';
-
-import { Skeleton } from '@chakra-ui/react';
 import { notFound } from 'next/navigation';
 import RoleDetails from '~/lib/components/RoleManagement/RoleDetails';
+import PageLoadingSkeleton from '~/lib/components/UI/PageLoadingSkeleton';
 import { RoleModulePermission } from '~/lib/interfaces/role.interfaces';
 import { useAppDispatch } from '~/lib/redux/hooks';
 
@@ -22,7 +21,7 @@ export default function Page({ params }: { params: { id: number } }) {
     );
 
   if (isLoading || isLoadingPermissions) {
-    return <Skeleton width="full" rounded="8px" height="250px" />;
+    return <PageLoadingSkeleton />;
   }
   if (rolePermissions) {
     const transformedPermissions: RoleModulePermission[] =

@@ -100,8 +100,8 @@ const userManagementBreadcrumb: BreadcrumbNode = {
   route: `/${ROUTES.USERS}`,
   label: 'User Management',
   children: {
-    add: { label: 'Add' },
-    edit: { label: 'Edit' },
+    add: { label: 'Add User' },
+    edit: { label: 'Edit User' },
   },
 };
 

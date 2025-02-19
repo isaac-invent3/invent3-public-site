@@ -24,7 +24,7 @@ const Header = () => {
             },
             {
               label: 'Create User from Active Directory',
-              route: `/${ROUTES.USERS}/add`,
+              route: `/${ROUTES.USERS}/add/directory`,
             },
           ]}
           buttonLabel="Add New User"

@@ -38,6 +38,7 @@ export default function Page({ params }: { params: { id: number } }) {
     }
     dispatch(
       setUserForm({
+        userId: user?.userId,
         picture: null,
         firstName: user?.firstName,
         middleName: null,

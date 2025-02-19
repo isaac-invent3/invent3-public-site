@@ -175,6 +175,7 @@ interface UserPicture {
 }
 
 interface UserFormDetails {
+  userId: number | null;
   picture: UserPicture | null;
   firstName: string | null;
   middleName: string | null;
@@ -279,6 +280,7 @@ interface UpdateUserGroupPayload {
 }
 
 interface UserDto extends BaseDto {
+  userId: number | null;
   username: string;
   email: string;
   phoneNumber: string;

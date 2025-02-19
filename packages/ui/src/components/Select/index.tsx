@@ -243,6 +243,21 @@ function SelectInput(props: SelectInputProps) {
               lineHeight: '16.63px',
               fontWeight: 500,
             }),
+            multiValue: (provided) => ({
+              ...provided,
+              display: 'flex',
+              flexDirection: 'row',
+              wrap: 'wrap',
+            }),
+            valueContainer: (provided) => ({
+              ...provided,
+              flexWrap: 'nowrap',
+              overflowX: 'auto',
+            }),
+            input: (provided) => ({
+              ...provided,
+              minWidth: 'auto',
+            }),
           }}
           defaultInputValue={defaultInputValue}
           value={

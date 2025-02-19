@@ -26,7 +26,7 @@ const RoleGroupInfo = (props: RoleGroupInfoProps) => {
       userGroupIds: formDetails?.userGroupIds ?? [],
     },
     validationSchema: roleGroupInfoSchema,
-    enableReinitialize: true,
+    enableReinitialize: false,
     onSubmit: async (values) => {
       dispatch(updateUserForm(values));
       setActiveStep(isManual ? 4 : 3);

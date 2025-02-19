@@ -1,9 +1,9 @@
 'use client';
 
-import { Skeleton } from '@chakra-ui/react';
 import { notFound } from 'next/navigation';
 
 import AssetForm from '~/lib/components/AssetManagement/AssetForm';
+import PageLoadingSkeleton from '~/lib/components/UI/PageLoadingSkeleton';
 import {
   AcquisitionInfo,
   Asset,
@@ -53,7 +53,7 @@ export default function Page({ params }: { params: { id: number } }) {
     documentsLoading ||
     planLoading
   ) {
-    return <Skeleton width="full" rounded="8px" height="250px" />;
+    return <PageLoadingSkeleton />;
   }
   if (!data?.data) return notFound();
   if (data?.data) {

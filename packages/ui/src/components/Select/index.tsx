@@ -70,8 +70,17 @@ function SelectInput(props: SelectInputProps) {
   const SelectComponent = isAsync ? AsyncSelect : Select;
   const [isFocused, setIsFocused] = useState(false);
   const handleFocus = () => setIsFocused(true);
+  const isValueEmpty = (
+    value: Option | Option[] | string | number | undefined
+  ) => {
+    return (
+      value === undefined ||
+      value === null ||
+      (typeof value !== 'number' && isEmpty(value))
+    );
+  };
   const handleBlur = () => {
-    setIsFocused(!isEmpty(selectedOption));
+    setIsFocused(!isValueEmpty(selectedOption));
   };
 
   // Debounce ref
@@ -100,7 +109,7 @@ function SelectInput(props: SelectInputProps) {
   );
 
   useEffect(() => {
-    if (!selectedOption || isEmpty(selectedOption)) {
+    if (!selectedOption || isValueEmpty(selectedOption)) {
       setIsFocused(false);
     }
   }, [selectedOption]);
@@ -116,24 +125,26 @@ function SelectInput(props: SelectInputProps) {
             alignItems="center"
             position="absolute"
             top={
-              isFocused || !isEmpty(selectedOption)
+              isFocused || !isValueEmpty(selectedOption)
                 ? '10px'
                 : isInvalid
                   ? '40%'
                   : '50%'
             }
             transform={
-              isFocused || !isEmpty(selectedOption)
+              isFocused || !isValueEmpty(selectedOption)
                 ? 'translateY(-40%) scale(0.85)'
                 : 'translateY(-50%)'
             }
             transformOrigin="left top"
             paddingLeft={
-              isFocused || !isEmpty(selectedOption) ? '20px' : '16px'
+              isFocused || !isValueEmpty(selectedOption) ? '20px' : '16px'
             }
-            fontSize={isFocused || !isEmpty(selectedOption) ? '12px' : '14px'}
+            fontSize={
+              isFocused || !isValueEmpty(selectedOption) ? '12px' : '14px'
+            }
             lineHeight={
-              isFocused || !isEmpty(selectedOption) ? '14.26px' : '16.63px'
+              isFocused || !isValueEmpty(selectedOption) ? '14.26px' : '16.63px'
             }
             color={
               isFocused

@@ -4,6 +4,7 @@ import { CloseIcon } from '../../CustomIcons';
 import DeactivateUserModal from '../Modals/DeactivateUserModal';
 import MobilePopover from './MobilePopover';
 import { useAppSelector } from '~/lib/redux/hooks';
+import { ROUTES } from '~/lib/utils/constants';
 
 interface UserHeaderProps {
   handleBack: () => void;
@@ -39,6 +40,7 @@ const UserHeader = (props: UserHeaderProps) => {
             <Button
               customStyles={{ height: '35px', width: '107px', px: '16px' }}
               variant="primary"
+              href={`/${ROUTES.USERS}/${user.userId}/edit`}
             >
               Modify
             </Button>

@@ -1,37 +1,46 @@
-import { Flex, SimpleGrid, VStack } from '@chakra-ui/react';
+import { Flex, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 
-import { FormActionButtons } from '@repo/ui/components';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import { updateUserForm } from '~/lib/redux/slices/UserSlice';
-import { occupationInfoSchema } from '~/lib/schemas/user.schema';
+import { FormActionButtons } from '@repo/ui/components';
 import { ROUTES } from '~/lib/utils/constants';
-import Branch from './Branch';
-import EmploymentType from './EmploymentType';
-import JobTitle from './JobTitle';
-import Team from './Team';
+import { updateUserForm } from '~/lib/redux/slices/UserSlice';
+import Picture from './Picture';
+import FullName from './FullName';
+import DateOfBirth from './DateOfBirth';
+import PhoneNumber from './PhoneNumber';
+import Email from './Email';
+import Gender from './Gender';
+import Location from './Location';
+import { employeeInfoSchema } from '~/lib/schemas/user.schema';
 
-interface OccupationInfoProps {
+interface ManualInsertionProps {
   activeStep: number;
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
 }
-const OccupationInfo = (props: OccupationInfoProps) => {
+const ManualInsertion = (props: ManualInsertionProps) => {
   const { activeStep, setActiveStep } = props;
   const formDetails = useAppSelector((state) => state.user.userForm);
   const dispatch = useAppDispatch();
 
   const formik = useFormik({
     initialValues: {
-      employmentTypeId: formDetails?.employmentTypeId ?? null,
-      branchId: formDetails?.branchId ?? null,
-      jobTitleId: formDetails?.jobTitleId ?? null,
-      teamId: formDetails?.teamId ?? null,
+      picture: formDetails?.picture ?? null,
+      firstName: formDetails?.firstName ?? null,
+      lastName: formDetails?.lastName ?? null,
+      dob: formDetails?.dob ?? null,
+      mobileNumber: formDetails?.mobileNumber ?? null,
+      workEmail: formDetails?.workEmail ?? null,
+      gender: formDetails?.gender ?? null,
+      countryId: formDetails?.countryId ?? null,
+      stateId: formDetails?.stateId ?? null,
+      cityId: formDetails?.cityId ?? null,
     },
-    validationSchema: occupationInfoSchema,
+    validationSchema: employeeInfoSchema,
     enableReinitialize: true,
     onSubmit: async (values) => {
       dispatch(updateUserForm(values));
-      setActiveStep(3);
+      setActiveStep(2);
     },
   });
 
@@ -40,7 +49,7 @@ const OccupationInfo = (props: OccupationInfoProps) => {
       width="full"
       height="full"
       direction="column"
-      display={activeStep === 2 ? 'flex' : 'none'}
+      display={activeStep === 1 ? 'flex' : 'none'}
     >
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
@@ -56,20 +65,19 @@ const OccupationInfo = (props: OccupationInfoProps) => {
             rounded="6px"
             minH="60vh"
           >
-            <SimpleGrid width="full" columns={{ base: 1, md: 2 }} gap="37px">
-              <EmploymentType />
-              <Branch />
-            </SimpleGrid>
-            <SimpleGrid width="full" columns={{ base: 1, md: 2 }} gap="37px">
-              <JobTitle />
-              <Team />
-            </SimpleGrid>
+            <Picture />
+            <FullName />
+            <DateOfBirth />
+            <PhoneNumber />
+            <Email />
+            <Gender />
+            <Location />
           </VStack>
           <Flex width="full" mt="16px">
             <FormActionButtons
               cancelLink={`/${ROUTES.USERS}`}
               totalStep={4}
-              activeStep={2}
+              activeStep={1}
               setActiveStep={setActiveStep}
             />
           </Flex>
@@ -79,4 +87,4 @@ const OccupationInfo = (props: OccupationInfoProps) => {
   );
 };
 
-export default OccupationInfo;
+export default ManualInsertion;

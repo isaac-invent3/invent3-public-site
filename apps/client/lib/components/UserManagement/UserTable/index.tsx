@@ -48,8 +48,8 @@ const UserTable = (props: UserTableProps) => {
           enableSorting: false,
         }),
 
-        columnHelper.accessor('lastName', {
-          cell: (info) => info.row.original.userId,
+        columnHelper.accessor('employeeId', {
+          cell: (info) => info.getValue() ?? 'N/A',
           header: 'Employee ID',
           enableSorting: false,
         }),

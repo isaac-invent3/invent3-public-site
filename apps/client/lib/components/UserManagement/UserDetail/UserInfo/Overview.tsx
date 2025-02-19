@@ -11,19 +11,20 @@ const Overview = () => {
   }
 
   const {
-    userId,
     email,
     phoneNumber,
     firstName,
     lastName,
     facilityName,
     lganame,
+    userRoles,
+    employeeId,
   } = userData;
 
   const userInfo1 = [
     {
       label: 'Employee ID',
-      value: userId.toString(),
+      value: employeeId ? employeeId.toString() : null,
     },
     {
       label: 'Email',
@@ -42,7 +43,7 @@ const Overview = () => {
   const userInfo2 = [
     {
       label: 'User Role',
-      value: 'Frontdesk/CSA',
+      value: userRoles?.map((item) => item.roleName).join(', '),
     },
     {
       label: 'Job Title',
@@ -66,7 +67,7 @@ const Overview = () => {
         width={{ base: '75px', lg: '176px' }}
         height={{ base: '75px', lg: '176px' }}
         name={name}
-        size="lg"
+        size="2xl"
       />
       <VStack alignItems="flex-start" width="full" spacing="16px">
         <HStack spacing="29px">

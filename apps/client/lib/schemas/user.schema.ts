@@ -20,24 +20,18 @@ const employeeInfoSchema = Yup.object().shape({
   lastName: Yup.string().required('Last name is Required'),
   dob: createDateSchema(false, false).nullable(),
   mobileNumber: Yup.string().nullable(),
-  personalEmail: Yup.string().nullable(),
   workEmail: Yup.string().nullable(),
   gender: Yup.string().nullable(),
-  address1: Yup.string().nullable(),
-  address2: Yup.string().nullable(),
   countryId: Yup.number().nullable(),
   stateId: Yup.number().nullable(),
   cityId: Yup.number().nullable(),
-  postalCode: Yup.string().nullable(),
 });
 
 const occupationInfoSchema = Yup.object().shape({
   employmentTypeId: Yup.string().nullable(),
   branchId: Yup.string().nullable(),
   jobTitleId: Yup.string().nullable(),
-  teamId: Yup.string().nullable(),
-  userRoleId: Yup.string().nullable(),
-  userGroupIds: Yup.array().of(Yup.string()).nullable(),
+  teamId: Yup.array().of(Yup.number()).nullable(),
 });
 
 const roleGroupInfoSchema = Yup.object().shape({
@@ -47,6 +41,10 @@ const roleGroupInfoSchema = Yup.object().shape({
 
 const userRoleSchema = Yup.object().shape({
   roleName: Yup.string().required('Role name is required'),
+});
+
+const userIDPSchema = Yup.object().shape({
+  employeeId: Yup.number().required('Employee is required'),
 });
 
 const userGroupSchema = Yup.object().shape({
@@ -68,4 +66,5 @@ export {
   userRoleSchema,
   userGroupSchema,
   roleGroupInfoSchema,
+  userIDPSchema,
 };

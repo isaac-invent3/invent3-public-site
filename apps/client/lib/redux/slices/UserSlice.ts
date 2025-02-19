@@ -40,6 +40,9 @@ const initialUserForm = {
   employmentTypeName: null,
   userGroupIds: [],
   userGroupNames: [],
+  initialRoleIds: [],
+  initialGroupIds: [],
+  initialDocumentIds: [],
 };
 
 interface SliceProps {

@@ -136,7 +136,7 @@ const UserManagement = () => {
             direction={{ base: 'column', lg: 'row' }}
             justifyContent="space-between"
             borderBottom={{ lg: '1px' }}
-            borderColor="neutral.300"
+            borderColor="#BBBBBBB2 !important"
             pb="8px"
             px={{ base: '16px', md: 0 }}
           >

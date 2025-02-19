@@ -23,7 +23,7 @@ const DueDate = (props: DueDateProps) => {
       title="Due Date"
       description="Select the date when the task would be due"
       isRequired
-    >
+  >
       <VStack width="full" spacing="4px" alignItems="flex-start">
         <DateTimeButtons
           buttonVariant="secondary"

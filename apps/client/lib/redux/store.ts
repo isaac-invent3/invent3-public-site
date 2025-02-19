@@ -73,6 +73,7 @@ import { rolesApi } from './services/role.services';
 import { moduleApi } from './services/modules.services';
 import { superAdminApi } from './services/dashboard/superadmin.services';
 import { clientAdminApi } from './services/dashboard/clientadmin.services';
+import { industryApi } from './services/industry.services';
 
 export const persistConfig = {
   key: 'root',
@@ -163,6 +164,9 @@ const rootReducer = combineReducers({
 
   // Module APIS
   [moduleApi.reducerPath]: moduleApi.reducer,
+
+  // Industry APIS
+  [industryApi.reducerPath]: industryApi.reducer,
 
   asset: assetSlice,
   auditLog: auditLogSlice,
@@ -274,6 +278,9 @@ export const makeStore = () => {
 
         // Module APIs
         moduleApi.middleware,
+
+        // Industry APIs
+        industryApi.middleware,
       ]),
   });
 };

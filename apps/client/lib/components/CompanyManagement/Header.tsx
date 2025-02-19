@@ -1,4 +1,4 @@
-import { Icon, Stack, useDisclosure } from '@chakra-ui/react';
+import { Icon, Stack } from '@chakra-ui/react';
 import { Button } from '@repo/ui/components';
 import usePermissionAccess from '~/lib/hooks/useRoleAccess';
 import { AddIcon } from '../CustomIcons';
@@ -7,7 +7,6 @@ import { ROUTES } from '~/lib/utils/constants';
 
 const Header = () => {
   const canCreateCompany = usePermissionAccess('company:create');
-  const { isOpen, onClose, onOpen } = useDisclosure();
   return (
     <Stack
       width="full"
@@ -20,8 +19,7 @@ const Header = () => {
 
       {!canCreateCompany && (
         <Button
-          handleClick={onOpen}
-          href={`/${ROUTES.ASSETS}/add`}
+          href={`/${ROUTES.COMPANY}/add`}
           customStyles={{
             width: '186px',
             height: { base: '36px', md: '50px' },

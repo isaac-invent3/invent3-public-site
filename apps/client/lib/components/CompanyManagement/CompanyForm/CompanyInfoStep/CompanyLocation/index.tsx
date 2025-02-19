@@ -7,9 +7,12 @@ import CountrySelect from '~/lib/components/Common/SelectComponents/Location/Cou
 import LGASelect from '~/lib/components/Common/SelectComponents/Location/LGASelect';
 import StateSelect from '~/lib/components/Common/SelectComponents/Location/StateSelect';
 import { CompanyFormDetails } from '~/lib/interfaces/company.interfaces';
+import { useAppDispatch } from '~/lib/redux/hooks';
+import { updateCompanyForm } from '~/lib/redux/slices/CompanySlice';
 
 const CompanyLocation = () => {
   const [field, meta, helpers] = useField('facilityId');
+  const dispatch = useAppDispatch();
   const { setFieldValue, values } = useFormikContext<CompanyFormDetails>();
 
   useEffect(() => {
@@ -23,7 +26,6 @@ const CompanyLocation = () => {
       customSpacing="47px"
       description="Enter details of the person responsible for the asset."
       title="Physical Address"
-      direction={{ base: 'column', md: 'row' }}
     >
       <Grid
         templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(4, 1fr)' }}
@@ -52,6 +54,7 @@ const CompanyLocation = () => {
           <CountrySelect
             handleSelect={(option) => {
               setFieldValue('countryId', option.value);
+              dispatch(updateCompanyForm({ countryName: option.label }));
             }}
           />
         </GridItem>
@@ -61,6 +64,7 @@ const CompanyLocation = () => {
             countryId={values?.countryId}
             handleSelect={(option) => {
               setFieldValue('stateId', option.value);
+              dispatch(updateCompanyForm({ stateName: option.label }));
             }}
           />
         </GridItem>
@@ -68,7 +72,10 @@ const CompanyLocation = () => {
         <GridItem colSpan={1}>
           <LGASelect
             stateId={values?.stateId}
-            handleSelect={(option) => setFieldValue('lgaId', option.value)}
+            handleSelect={(option) => {
+              setFieldValue('lgaId', option.value);
+              dispatch(updateCompanyForm({ lgaName: option.label }));
+            }}
             type="specificById"
           />
         </GridItem>

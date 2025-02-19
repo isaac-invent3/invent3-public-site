@@ -7,7 +7,7 @@ const CompanyInfo = () => {
   const {
     companyName,
     companyEmail,
-    industryType,
+    industryTypeName,
     companyWebsite,
     registrationNumber,
     address1,
@@ -23,7 +23,7 @@ const CompanyInfo = () => {
     },
     {
       label: 'Registration Number',
-      value: registrationNumber,
+      value: registrationNumber?.toString(),
     },
   ];
   const row2 = [
@@ -33,7 +33,7 @@ const CompanyInfo = () => {
     },
     {
       label: 'Industry Type',
-      value: industryType,
+      value: industryTypeName,
     },
     {
       label: 'Company Email',
@@ -44,7 +44,7 @@ const CompanyInfo = () => {
   const row3 = [
     {
       label: 'Physical Address',
-      value: [address1, countryName, stateName, lgaName]
+      value: [address1, lgaName, stateName, countryName]
         .filter(Boolean)
         .join(', '),
     },
@@ -55,22 +55,18 @@ const CompanyInfo = () => {
       <DetailHeader variant="primary">Company Info</DetailHeader>
       <VStack width="full" spacing="24px" alignItems="flex-start">
         {/* Row 1  */}
-        <SimpleGrid columns={4} width="full">
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} width="full" gap="16px">
           {row1.map((item) => (
             <Info {...item} key={item.label} />
           ))}
         </SimpleGrid>
 
         {/* Row 2  */}
-        <Grid templateColumns="repeat(4, 1fr)" width="full">
-          <GridItem colSpan={3} width="full">
-            <HStack width="full" spacing="16px" alignItems="flex-start">
-              {row2.map((item) => (
-                <Info {...item} key={item.label} />
-              ))}
-            </HStack>
-          </GridItem>
-        </Grid>
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} width="full" gap="16px">
+          {row2.map((item) => (
+            <Info {...item} key={item.label} />
+          ))}
+        </SimpleGrid>
         {/* Row 3  */}
         <Grid templateColumns="repeat(4, 1fr)" width="full">
           <GridItem colSpan={2} width="full">

@@ -23,9 +23,7 @@ const SubscriptionStep = (props: SubscriptionStepProps) => {
   const dispatch = useAppDispatch();
   const previousDay = moment().subtract(1, 'days').format('DD/MM/YYYY');
 
-  const [inputtedStartDate, setInputtedStartDate] = useState<Date | undefined>(
-    undefined
-  );
+  const [inputtedStartDate] = useState<Date | undefined>(undefined);
   const formik = useFormik({
     initialValues: {
       subscriptionPlan: formDetails.subscriptionPlan ?? null,

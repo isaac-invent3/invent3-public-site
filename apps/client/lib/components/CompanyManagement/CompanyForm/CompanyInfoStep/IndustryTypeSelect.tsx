@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import {
-  useGetAllAssetTypesQuery,
-  useSearchAssetTypesMutation,
-} from '~/lib/redux/services/asset/types.services';
+  useGetAllIndustriesQuery,
+  useSearchIndustriesMutation,
+} from '~/lib/redux/services/industry.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 interface IndustryTypeSelectProps {
@@ -17,9 +17,9 @@ interface IndustryTypeSelectProps {
 
 const IndustryTypeSelect = (props: IndustryTypeSelectProps) => {
   const { handleSelect, selectName, selectTitle, defaultInputValue } = props;
-  const [searchAssetType] = useSearchAssetTypesMutation({});
+  const [searchAssetType] = useSearchIndustriesMutation({});
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllAssetTypesQuery({
+  const { data, isLoading } = useGetAllIndustriesQuery({
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
@@ -28,8 +28,8 @@ const IndustryTypeSelect = (props: IndustryTypeSelectProps) => {
       selectName={selectName}
       selectTitle={selectTitle}
       data={data}
-      labelKey="typeName"
-      valueKey="assetTypeId"
+      labelKey="industryName"
+      valueKey="industryId"
       mutationFn={searchAssetType}
       isLoading={isLoading}
       pageNumber={pageNumber}

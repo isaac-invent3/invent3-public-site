@@ -1,4 +1,5 @@
 import { Text, VStack } from '@chakra-ui/react';
+import { isEmpty } from 'lodash';
 
 interface InfoProps {
   label: string;
@@ -17,7 +18,7 @@ const Info = (props: InfoProps) => {
         textOverflow="ellipsis"
         maxW="full"
       >
-        {value}
+        {isEmpty(value) ? 'N/A' : value}
       </Text>
     </VStack>
   );

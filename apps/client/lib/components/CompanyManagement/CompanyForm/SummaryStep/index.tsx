@@ -1,12 +1,12 @@
 import { Flex, VStack } from '@chakra-ui/react';
-import { FormActionButtons, FormInputWrapper } from '@repo/ui/components';
+import { FormActionButtons } from '@repo/ui/components';
 import Image from 'next/image';
 import React from 'react';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { ROUTES } from '~/lib/utils/constants';
 import CompanyInfo from './SectionOne/CompanyInfo';
 import ContactInformation from './SectionOne/ContactInformation';
-import Subscription from './SectionOne/Subscription';
+import DetailHeader from '~/lib/components/UI/DetailHeader';
 
 interface SummaryStepProps {
   activeStep: number;
@@ -15,6 +15,7 @@ interface SummaryStepProps {
 }
 
 const SummaryStep = (props: SummaryStepProps) => {
+  // eslint-disable-next-line no-unused-vars
   const { activeStep, setActiveStep, type } = props;
   const { companyForm } = useAppSelector((state) => state.company);
 
@@ -38,12 +39,13 @@ const SummaryStep = (props: SummaryStepProps) => {
           rounded="8px"
           minH="60vh"
         >
-          <FormInputWrapper
-            sectionMaxWidth="141px"
-            customSpacing="47px"
-            title="Company Logo."
-            description="Size max: 10MB each Format: JPG, PNG"
+          <VStack
+            spacing="8px"
+            width={{ base: 'full', md: '50%' }}
+            alignItems="flex-start"
           >
+            <DetailHeader variant="primary">Company Logo</DetailHeader>
+
             <Flex
               position="relative"
               width="100px"
@@ -55,29 +57,27 @@ const SummaryStep = (props: SummaryStepProps) => {
                 src={
                   companyForm.companyLogo?.base64Prefix
                     ? `${companyForm.companyLogo.base64Prefix}${companyForm.companyLogo.base64PhotoImage}`
-                    : (companyForm.companyLogo?.base64PhotoImage ??
-                      '/images/default-company-logo.png')
+                    : (companyForm.companyLogo?.base64PhotoImage ?? '')
                 }
                 alt="Company Logo"
                 fill
               />
             </Flex>
-          </FormInputWrapper>
-
+          </VStack>
           <Flex
             width="full"
-            gap={{ base: '32px', lg: '24pxmmm' }}
+            gap={{ base: '32px' }}
             direction={{ base: 'column', lg: 'row' }}
           >
-            <Flex width={{ base: 'full', lg: '40%' }}>
+            <Flex width={{ base: 'full', lg: '50%' }}>
               <CompanyInfo />
             </Flex>
-            <Flex width={{ base: 'full', lg: '40%' }}>
+            <Flex width={{ base: 'full', lg: '50%' }}>
               <ContactInformation />
             </Flex>
-            <Flex width={{ base: 'full', lg: '20%' }}>
+            {/* <Flex width={{ base: 'full', lg: '20%' }}>
               <Subscription />
-            </Flex>
+            </Flex> */}
           </Flex>
         </VStack>
         <FormActionButtons

@@ -11,11 +11,11 @@ const companyInfoSchema = Yup.object().shape({
     })
     .required('Company logo is required'),
   companyName: Yup.string().required('Company Name is required'),
+  industryTypeId: Yup.number().required('Industry is required'),
   registrationNumber: Yup.string().required(
     'Company Registration Number is Required'
   ),
 });
-
 
 const contactInfoSchema = Yup.object().shape({
   contactFirstName: Yup.string().required('First Name is required'),
@@ -24,40 +24,16 @@ const contactInfoSchema = Yup.object().shape({
     .email('Invalid email format')
     .required('Email is required'),
   contactPhoneNumber: Yup.string().required('Phone Number is required'),
-  contactJobTitle: Yup.string().required('Job Title is required'),
 });
 
-const companyContactInformationSchema = Yup.object().shape({
-  contactInformation: Yup.array()
-    .of(contactInfoSchema)
-    .test(
-      'at-least-one-completed',
-      'At least one contact record must be fully completed',
-      (contactList) => {
-        return contactList?.some(
-          (contact) =>
-            contact.contactFirstName &&
-            contact.contactLastName &&
-            contact.contactEmail &&
-            contact.contactPhoneNumber &&
-            contact.contactJobTitle
-        );
-      }
-    ),
-});
-
-const companySubscriptionSchema = (minStartDate?: string, minEndDate?: string) =>
+const companySubscriptionSchema = (
+  minStartDate?: string,
+  minEndDate?: string
+) =>
   Yup.object().shape({
-    subscriptionPlan: Yup.string().required('Subscription Plan is Required'),
-    startDate: createDateSchema(false, true, minStartDate).required(
-      'Start Date is Required'
-    ),
+    subscriptionPlan: Yup.string().nullable(),
+    startDate: createDateSchema(false, false, minStartDate).nullable(),
     endDate: createDateSchema(false, false, minEndDate).nullable(),
-
   });
 
-export {
-  companyInfoSchema,
-  companyContactInformationSchema,
-  companySubscriptionSchema,
-};
+export { companyInfoSchema, contactInfoSchema, companySubscriptionSchema };

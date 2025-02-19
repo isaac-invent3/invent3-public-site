@@ -1,78 +1,47 @@
 import {
-  Badge,
   Box,
   Flex,
   FormControl,
-  FormErrorMessage,
   HStack,
   Icon,
   Input,
   Text,
 } from '@chakra-ui/react';
-import { FormInputWrapper } from '@repo/ui/components';
+import React, { useMemo } from 'react';
 import { useField } from 'formik';
-import { useMemo } from 'react';
-import {
-  AddIcon,
-  AttachmentIcon,
-  CircularCloseIcon,
-  InfoIcon,
-} from '~/lib/components/CustomIcons';
-import { CompanyFormImage } from '~/lib/interfaces/company.interfaces';
+import { AddIcon, CircularCloseIcon } from '~/lib/components/CustomIcons';
+import { ErrorMessage, FormInputWrapper } from '@repo/ui/components';
 
 const CompanyLogo = () => {
   const [field, meta, helpers] = useField('companyLogo'); //eslint-disable-line
 
-  const handleRemoveImage = () => {
-    helpers.setValue(null);
-  };
-
-  const handleSetPrimaryImage = (image: CompanyFormImage) => {
-    helpers.setValue(image);
-  };
-
-  const image = meta.value;
-
   return useMemo(
     () => (
       <FormInputWrapper
+        title="Company Logo"
+        description="Size max: 10MB each Format: JPG, PNG"
+        isRequired
         sectionMaxWidth="141px"
         customSpacing="47px"
-        description="Size max: 10MB each Format: JPG, PNG"
-        title="Company Logo"
-        isRequired
-        direction={{ base: 'column', md: 'row' }}
       >
         <HStack spacing="12px" alignItems="flex-start" width="full">
           {/* Display */}
-          {image && (
+          {meta.value && (
             <Box
               bgImage={
-                image.base64Prefix
-                  ? `${image.base64Prefix}${image.base64PhotoImage}`
-                  : image.base64PhotoImage
+                meta.value.base64Prefix
+                  ? `${meta.value.base64Prefix}${meta.value.base64PhotoImage}`
+                  : meta.value.base64PhotoImage
               }
               bgSize="cover"
               bgRepeat="no-repeat"
-              width={{ base: '73px', md: '100px' }}
-              height={{ base: '51px', md: '75px' }}
+              width="100px"
+              height="75px"
               rounded="8px"
               position="relative"
               role="group"
               overflow="hidden"
             >
-              {image.isPrimaryImage && (
-                <Badge
-                  position="absolute"
-                  top="5px"
-                  left="5px"
-                  colorScheme="green"
-                  fontSize="10px"
-                  rounded="4px"
-                >
-                  Primary
-                </Badge>
-              )}
               <Flex
                 position="absolute"
                 bgColor="#333333E5"
@@ -96,7 +65,7 @@ const CompanyLogo = () => {
                 <HStack
                   spacing="8px"
                   cursor="pointer"
-                  onClick={handleRemoveImage}
+                  onClick={() => helpers.setValue(null)}
                 >
                   <Text
                     fontSize="10px"
@@ -108,62 +77,47 @@ const CompanyLogo = () => {
                   </Text>
                   <Icon as={CircularCloseIcon} boxSize="18px" color="#FF3B30" />
                 </HStack>
-                <HStack
-                  spacing="8px"
-                  cursor="pointer"
-                  onClick={() => handleSetPrimaryImage(image)}
-                >
-                  <Text
-                    fontSize="10px"
-                    lineHeight="11.88px"
-                    color="white"
-                    whiteSpace="nowrap"
-                    fontWeight={500}
-                  >
-                    {image.isPrimaryImage ? 'Primary' : 'Make Primary'}
-                  </Text>
-                  <Icon as={AttachmentIcon} boxSize="18px" color="white" />
-                </HStack>
               </Flex>
             </Box>
           )}
 
           {/* Display */}
-          {!image && (
+          {meta.value === null && (
             <HStack alignItems="flex-start" spacing="12px">
               <FormControl isInvalid={meta.touched && meta.error !== undefined}>
                 <Input
                   id="file"
                   display="none"
-                  onChange={(event: any) => {
-                    const files = Array.from(
-                      event.currentTarget.files
-                    ) as File[]; // Convert FileList to array
-                    if (files.length > 0) {
-                      files.forEach((file: File) => {
-                        const reader = new FileReader();
-                        reader.readAsDataURL(file);
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    const fileList = event.currentTarget.files;
 
-                        reader.onloadend = () => {
+                    if (fileList && fileList.length > 0) {
+                      const file = fileList[0];
+                      const reader = new FileReader();
+                      reader.readAsDataURL(file as Blob);
+
+                      reader.onloadend = () => {
+                        if (reader.result) {
                           const base64PhotoImage = reader.result as string;
 
-                          const newImage = {
+                          const image = {
                             imageId: null,
-                            imageName: file.name,
-                            base64PhotoImage: base64PhotoImage,
+                            imageName: file && file.name,
+                            base64PhotoImage,
                             base64Prefix: null,
                           };
 
-                          newImage && helpers.setValue(newImage);
-                        };
-                      });
-                    }
+                          // Update the Formik helpers with the processed image
+                          helpers.setValue(image);
+                        }
 
-                    event.target.value = ''; // Clear the input after selecting files
+                        // Clear the input after the file is processed
+                        event.target.value = '';
+                      };
+                    }
                   }}
                   type="file"
                   accept="image/*"
-                  multiple // Enable multiple image uploads
                 />
                 <label htmlFor="file">
                   <HStack
@@ -182,27 +136,20 @@ const CompanyLogo = () => {
                         : '#F6F6F6'
                     }
                     color="primary.500"
-                    width={{ base: '90px', md: '140px' }}
-                    height={{ base: '51px', md: '75px' }}
+                    width="140px"
+                    height="75px"
                     rounded="8px"
                     cursor="pointer"
                   >
                     <Icon as={AddIcon} boxSize="18px" />
-                    <Text size={{ base: 'xs', md: 'base' }}>Add Image</Text>
+                    <Text>Add Picture</Text>
                   </HStack>
                 </label>
-                <FormErrorMessage
-                  color="error.500"
-                  fontSize="12px"
-                  fontWeight={500}
-                  lineHeight="14.26px"
-                  mt="4px"
-                >
-                  <Flex width="full" gap="8px">
-                    <Icon as={InfoIcon} color="error.500" />
-                    {meta.error}
+                {meta.touched && meta.error !== undefined && (
+                  <Flex mt="4px">
+                    <ErrorMessage>{meta.error}</ErrorMessage>
                   </Flex>
-                </FormErrorMessage>
+                )}
               </FormControl>
             </HStack>
           )}

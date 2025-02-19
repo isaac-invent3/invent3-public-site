@@ -27,7 +27,7 @@ const CompanyInfoStep = (props: CompanyInfoStepProps) => {
       companyLogo: formDetails.companyLogo ?? null,
       companyName: formDetails.companyName ?? '',
       registrationNumber: formDetails.registrationNumber ?? '',
-      industryType: formDetails.industryType ?? '',
+      industryTypeId: formDetails.industryTypeId ?? null,
       companyEmail: formDetails.companyEmail ?? '',
       companyWebsite: formDetails.companyWebsite ?? '',
       address1: formDetails.address1 ?? '',
@@ -37,8 +37,8 @@ const CompanyInfoStep = (props: CompanyInfoStepProps) => {
       lgaId: formDetails.lgaId ?? null,
       postalCode: formDetails.postalCode ?? null,
     },
-    validationSchema:companyInfoSchema,
-    enableReinitialize: true,
+    validationSchema: companyInfoSchema,
+    enableReinitialize: false,
     onSubmit: async (values) => {
       dispatch(updateCompanyForm(values));
       setActiveStep(2);
@@ -107,10 +107,12 @@ const CompanyInfoStep = (props: CompanyInfoStepProps) => {
               w={{ base: 'full', md: '50%' }}
             >
               <IndustryTypeSelect
-                selectName="industryType"
+                selectName="industryTypeId"
                 selectTitle="Industry Type"
                 handleSelect={(option) =>
-                  dispatch(updateCompanyForm({ industryType: option.label }))
+                  dispatch(
+                    updateCompanyForm({ industryTypeName: option.label })
+                  )
                 }
               />
             </FormInputWrapper>

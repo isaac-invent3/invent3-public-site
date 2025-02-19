@@ -31,7 +31,8 @@ interface CompanyFormDetails {
   companyLogo: CompanyFormImage | null;
   companyName: string | null;
   registrationNumber: string | null;
-  industryType: string | null;
+  industryTypeId: number | null;
+  industryTypeName: string | null;
   companyEmail: string | null;
   companyWebsite: string | null;
   address1: string | null;
@@ -43,18 +44,13 @@ interface CompanyFormDetails {
   stateName: string | null;
   countryName: string | null;
   postalCode: string | null;
-  contactInformation: CompanyContactInformation[];
   subscriptionPlan: string | null;
   startDate: string | null;
   endDate: string | null;
-}
-
-interface CompanyContactInformation {
   contactFirstName: string | null;
   contactLastName: string | null;
   contactEmail: string | null;
   contactPhoneNumber: string | null;
-  contactJobTitle: string | null;
 }
 
 export type { Company, CompanyFormDetails, CompanyFormImage };

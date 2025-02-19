@@ -246,7 +246,7 @@ export const userApi = createApi({
     }),
     updateUser: builder.mutation<BaseApiResponse<User>, UpdateUserPayload>({
       query: (body) => ({
-        url: `/Invent3Pro/Users/Update`,
+        url: `/Invent3Pro/User/Update`,
         method: 'PUT',
         headers: getHeaders(),
         body,

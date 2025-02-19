@@ -67,7 +67,7 @@ const Overview = () => {
         width={{ base: '75px', lg: '176px' }}
         height={{ base: '75px', lg: '176px' }}
         name={name}
-        size="2xl"
+        size={{ base: 'lg', lg: '2xl' }}
       />
       <VStack alignItems="flex-start" width="full" spacing="16px">
         <HStack spacing="29px">

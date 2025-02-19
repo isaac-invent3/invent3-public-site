@@ -9,6 +9,7 @@ import {
 } from '~/lib/interfaces/user.interfaces';
 
 const initialUserForm = {
+  userId: null,
   picture: null,
   firstName: null,
   middleName: null,

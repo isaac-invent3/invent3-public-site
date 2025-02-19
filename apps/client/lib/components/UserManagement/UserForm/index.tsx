@@ -21,11 +21,11 @@ interface UserFormProps {
 const UserForm = (props: UserFormProps) => {
   const { type, formCreationType = 'manual' } = props;
   const [activeStep, setActiveStep] = useState(1);
-  const isManual = formCreationType === 'manual' && type === 'create';
+  const isManual = formCreationType === 'manual';
   const stepReduction = isManual ? 0 : 1;
   const STEPS = [
-    isManual ? 'Employee Info' : 'Add Employee',
-    ...(isManual ? ['Occupation Info'] : []),
+    isManual || type === 'edit' ? 'Employee Info' : 'Add Employee',
+    ...(isManual || type === 'edit' ? ['Occupation Info'] : []),
     'User Role',
     'Document',
     'Summary',

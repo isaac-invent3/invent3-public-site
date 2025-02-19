@@ -45,6 +45,7 @@ const SummaryStep = (props: SummaryStepProps) => {
   }, [data]);
 
   const USER = {
+    userId: userFormDetails.userId!,
     username: userFormDetails.firstName!,
     email: userFormDetails.workEmail!,
     phoneNumber: userFormDetails.mobileNumber!,
@@ -60,6 +61,7 @@ const SummaryStep = (props: SummaryStepProps) => {
   const LOCATION = {
     lgaId: userFormDetails.cityId,
     facilityId: userFormDetails.branchId,
+    locationId: null,
     buildingId: null,
     floorId: null,
     departmentId: null,

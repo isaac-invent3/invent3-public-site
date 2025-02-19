@@ -3,6 +3,7 @@ import {
   AnalyticsIcon,
   AssetManagementIcon,
   AuditLogIcon,
+  CompanyIcon,
   DashboardIcon,
   MaintenanceIcon,
   RoleManagementIcon,
@@ -121,6 +122,12 @@ const sideBarData: SideBarData[] = [
     name: 'Settings',
     route: ROUTES.SETTINGS,
     icon: TemplateIcon,
+    permissionKey: 'audit',
+  },
+  {
+    name: 'Company Management',
+    route: ROUTES.COMPANY,
+    icon: CompanyIcon,
     permissionKey: 'audit',
   },
 ];

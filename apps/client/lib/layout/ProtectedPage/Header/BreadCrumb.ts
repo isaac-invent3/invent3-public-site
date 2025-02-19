@@ -130,6 +130,15 @@ const vendorManagementBreadCrumb: BreadcrumbNode = {
   },
 };
 
+const companyManagementBreadCrumb: BreadcrumbNode = {
+  route: `/${ROUTES.COMPANY}`,
+  label: 'Company Management',
+  children: {
+    edit: { label: 'Edit Company' },
+    add: { label: 'Add New Company' },
+  },
+};
+
 const breadcrumbMap: Record<string, BreadcrumbNode> = {
   [ROUTES.DASHBOARD]: dashboardBreadcrumb,
   [ROUTES.ASSETS]: assetsBreadcrumb,
@@ -143,6 +152,7 @@ const breadcrumbMap: Record<string, BreadcrumbNode> = {
   [ROUTES.ROLES]: roleManagementBreadcrumb,
   [ROUTES.AUDIT_LOG]: auditLogBreadcrumb,
   [ROUTES.VENDOR]: vendorManagementBreadCrumb,
+  [ROUTES.COMPANY]: companyManagementBreadCrumb,
 };
 
 const getBreadcrumb = (pathSegments: string[]): breadCrumbRoute[] => {

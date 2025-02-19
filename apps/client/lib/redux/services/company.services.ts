@@ -7,7 +7,12 @@ import {
   QueryParams,
   SearchQuery,
 } from '@repo/interfaces';
-import { Company } from '~/lib/interfaces/company.interfaces';
+import {
+  Company,
+  CompanySummary,
+  createCompanyPayload,
+  updateCompanyPayload,
+} from '~/lib/interfaces/company.interfaces';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -22,18 +27,22 @@ export const companyApi = createApi({
       QueryParams
     >({
       query: (data) => ({
-        url: generateQueryStr(`/Companies?`, data),
+        url: generateQueryStr(`/Companies/GetInfoHeader?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
       providesTags: ['allCompanies'],
     }),
-    getCompanyById: builder.query<
-      BaseApiResponse<Company>,
-      { id: number | undefined }
-    >({
+    getCompanyById: builder.query<BaseApiResponse<Company>, { id: number }>({
       query: ({ id }) => ({
-        url: `/Companies/${id}`,
+        url: `/Companies/GetInfo/${id}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getCompaniesSummary: builder.query<BaseApiResponse<CompanySummary>, void>({
+      query: () => ({
+        url: `/Invent3Pro/GetCompaniesDashboardSummary`,
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -49,6 +58,28 @@ export const companyApi = createApi({
         body,
       }),
     }),
+    createCompany: builder.mutation<
+      BaseApiResponse<Company>,
+      createCompanyPayload
+    >({
+      query: (body) => ({
+        url: `/Invent3Pro/Companies/Create`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
+    updateCompany: builder.mutation<
+      BaseApiResponse<Company>,
+      updateCompanyPayload
+    >({
+      query: (body) => ({
+        url: `/Invent3Pro/Companies/Update`,
+        method: 'PUT',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
   }),
 });
 
@@ -56,4 +87,7 @@ export const {
   useGetAllCompaniesQuery,
   useGetCompanyByIdQuery,
   useSearchCompaniesMutation,
+  useGetCompaniesSummaryQuery,
+  useCreateCompanyMutation,
+  useUpdateCompanyMutation,
 } = companyApi;

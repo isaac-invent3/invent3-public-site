@@ -2,32 +2,18 @@ import { Flex, useMediaQuery } from '@chakra-ui/react';
 import { BaseApiResponse, ListResponse } from '@repo/interfaces';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
-import { Dispatch, SetStateAction, useMemo } from 'react';
+import { useMemo } from 'react';
 import UserInfo from '~/lib/components/Common/UserInfo';
-import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
-import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import { Company } from '~/lib/interfaces/company.interfaces';
-import {
-  COLOR_CODES_FALLBACK,
-  SYSTEM_CONTEXT_DETAILS,
-} from '~/lib/utils/constants';
+
 import { dateFormatter } from '~/lib/utils/Formatters';
 import PopoverAction from './PopoverAction';
+import { GenericTableProps } from '~/lib/interfaces/general.interfaces';
+import { useRouter } from 'next/navigation';
+import { ROUTES } from '~/lib/utils/constants';
 
-interface CompanyTableProps {
+interface CompanyTableProps extends GenericTableProps {
   data: BaseApiResponse<ListResponse<Company>> | undefined;
-  isLoading: boolean;
-  isFetching: boolean;
-  isSelectable?: boolean;
-  currentPage?: number;
-  setCurrentPage?: Dispatch<SetStateAction<number>>;
-  pageSize?: number;
-  setPageSize?: Dispatch<SetStateAction<number>>;
-  selectedRows?: number[];
-  setSelectedRows?: React.Dispatch<React.SetStateAction<number[]>>;
-  emptyLines?: number;
-  shouldHideFooter?: boolean;
-  showPopover?: boolean;
 }
 const CompanyTable = (props: CompanyTableProps) => {
   const {
@@ -35,18 +21,18 @@ const CompanyTable = (props: CompanyTableProps) => {
     isFetching,
     isLoading,
     isSelectable,
-    currentPage,
+    pageNumber,
     pageSize,
-    setCurrentPage,
+    setPageNumber,
     setPageSize,
     selectedRows,
     setSelectedRows,
     emptyLines,
-    shouldHideFooter,
+    showFooter,
     showPopover = true,
   } = props;
   const [isMobile] = useMediaQuery('(max-width: 768px)');
-  const { updateSearchParam } = useCustomSearchParams();
+  const router = useRouter();
   const columnHelper = createColumnHelper<Company>();
 
   const columns = useMemo(
@@ -59,59 +45,44 @@ const CompanyTable = (props: CompanyTableProps) => {
         }),
 
         columnHelper.accessor('companyName', {
-          cell: (info) => info.getValue(),
+          cell: (info) => info.getValue() ?? 'N/A',
           header: 'Company Name',
           enableSorting: false,
         }),
 
-        columnHelper.accessor('industry', {
-          cell: (info) => info.getValue(),
+        columnHelper.accessor('industryName', {
+          cell: (info) => info.getValue() ?? 'N/A',
           header: 'Industry',
           enableSorting: false,
         }),
-        columnHelper.accessor('totalAsset', {
-          cell: (info) => info.getValue(),
-          header: 'Total Asset',
-          enableSorting: false,
-        }),
-        columnHelper.accessor('primaryContacts', {
-          cell: (info) => <UserInfo name={info.getValue()} />,
+        columnHelper.accessor('contactPersonFirstName', {
+          cell: (info) => (
+            <UserInfo
+              name={`${info.row.original.contactPersonFirstName ?? ''} ${info.row.original.contactPersonLastName ?? ''}`}
+            />
+          ),
           header: 'Primary Contact Person',
           enableSorting: true,
         }),
-        columnHelper.accessor('email', {
-          cell: (info) => info.getValue(),
+        columnHelper.accessor('emailAddress', {
+          cell: (info) => info.getValue() ?? 'N/A',
           header: 'Email',
           enableSorting: false,
         }),
-        columnHelper.accessor('subscriptionType', {
-          cell: (info) => info.getValue(),
-          header: 'Subscription Type',
-          enableSorting: false,
-        }),
-        columnHelper.accessor('createdDate', {
-          cell: (info) => dateFormatter(info.getValue(), 'DD / MM / YYYY'),
+        // columnHelper.accessor('subscriptionPlanId', {
+        //   cell: (info) => info.getValue(),
+        //   header: 'Subscription Type',
+        //   enableSorting: false,
+        // }),
+        columnHelper.accessor('dateCreated', {
+          cell: (info) =>
+            dateFormatter(info.getValue(), 'DD / MM / YYYY') ?? 'N/A',
           header: 'Creation Date',
           enableSorting: false,
         }),
-
-        columnHelper.accessor('subscriptionStatus', {
-          cell: (info) => {
-            const ticket = info.row.original;
-
-            return (
-              <GenericStatusBox
-                colorCode={COLOR_CODES_FALLBACK.default}
-                width="80px"
-                text={ticket.subscriptionStatus}
-              />
-            );
-          },
-          header: 'Priority',
-        }),
       ];
 
-      const Popover = columnHelper.accessor('industry', {
+      const Popover = columnHelper.accessor('registrationNumber', {
         cell: (info) => <PopoverAction company={info.row.original} />,
         header: '',
         enableSorting: false,
@@ -140,20 +111,16 @@ const CompanyTable = (props: CompanyTableProps) => {
           header: 'Company Name',
           enableSorting: false,
         }),
-
-        columnHelper.accessor('subscriptionStatus', {
-          cell: (info) => {
-            const ticket = info.row.original;
-
-            return (
-              <GenericStatusBox
-                colorCode={COLOR_CODES_FALLBACK.default}
-                width="80px"
-                text={ticket.subscriptionStatus}
-              />
-            );
-          },
-          header: 'Priority',
+        columnHelper.accessor('industryName', {
+          cell: (info) => info.getValue() ?? 'N/A',
+          header: 'Industry',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('dateCreated', {
+          cell: (info) =>
+            dateFormatter(info.getValue(), 'DD / MM / YYYY') ?? 'N/A',
+          header: 'Creation Date',
+          enableSorting: false,
         }),
       ];
 
@@ -180,8 +147,8 @@ const CompanyTable = (props: CompanyTableProps) => {
         isLoading={isLoading}
         isFetching={isFetching}
         totalPages={data?.data?.totalPages}
-        setPageNumber={setCurrentPage}
-        pageNumber={currentPage}
+        setPageNumber={setPageNumber}
+        pageNumber={pageNumber}
         pageSize={pageSize}
         setPageSize={setPageSize}
         selectedRows={selectedRows}
@@ -189,11 +156,9 @@ const CompanyTable = (props: CompanyTableProps) => {
         emptyLines={emptyLines}
         isSelectable={isSelectable}
         handleSelectRow={(row) => {
-          updateSearchParam(SYSTEM_CONTEXT_DETAILS.COMPANY.slug, row.companyId);
+          router.push(`/${ROUTES.COMPANY}/${row.companyId}/edit`);
         }}
-        showFooter={
-          shouldHideFooter && data?.data?.totalPages === 1 ? true : false
-        }
+        showFooter={showFooter && data?.data?.totalPages === 1 ? true : false}
         maxTdWidth="200px"
         customThStyle={{
           paddingLeft: '16px',

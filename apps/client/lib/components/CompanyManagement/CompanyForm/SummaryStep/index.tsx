@@ -1,12 +1,19 @@
-import { Flex, VStack } from '@chakra-ui/react';
+import { Flex, useDisclosure, VStack } from '@chakra-ui/react';
 import { FormActionButtons } from '@repo/ui/components';
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { ROUTES } from '~/lib/utils/constants';
 import CompanyInfo from './SectionOne/CompanyInfo';
 import ContactInformation from './SectionOne/ContactInformation';
 import DetailHeader from '~/lib/components/UI/DetailHeader';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
+import { useSession } from 'next-auth/react';
+import {
+  useCreateCompanyMutation,
+  useUpdateCompanyMutation,
+} from '~/lib/redux/services/company.services';
+import CompanySuccessModal from './SuccessModal';
 
 interface SummaryStepProps {
   activeStep: number;
@@ -18,6 +25,66 @@ const SummaryStep = (props: SummaryStepProps) => {
   // eslint-disable-next-line no-unused-vars
   const { activeStep, setActiveStep, type } = props;
   const { companyForm } = useAppSelector((state) => state.company);
+  const { isOpen, onClose, onOpen } = useDisclosure();
+  const [username, setUsername] = useState<string | undefined>(undefined);
+  const { handleSubmit } = useCustomMutation();
+  const { data } = useSession();
+  const [createCompany, { isLoading: createLoading }] =
+    useCreateCompanyMutation({});
+  // eslint-disable-next-line no-unused-vars
+  const [updateCompany, { isLoading: updateLoading }] =
+    useUpdateCompanyMutation({});
+
+  //Store Username so that it is retained in the state.
+  useEffect(() => {
+    if (data) {
+      setUsername(data?.user?.username);
+    }
+  }, [data]);
+
+  const CompanyDto = {
+    companyName: companyForm?.companyName!,
+    address: companyForm?.address1!,
+    emailAddress: companyForm?.companyEmail!,
+    phoneNumber: null,
+    industryId: companyForm?.industryTypeId!,
+    webUrl: companyForm?.companyWebsite!,
+    [`${type === 'create' ? 'createdBy' : 'lastModifiedBy'}`]: username,
+  };
+
+  const CompanyUserDto = {
+    phoneNumber: companyForm?.contactPhoneNumber!,
+    firstName: companyForm?.contactFirstName!,
+    lastName: companyForm?.contactLastName!,
+    email: companyForm?.contactLastName!,
+    [`${type === 'create' ? 'createdBy' : 'lastModifiedBy'}`]: username,
+  };
+
+  const createCompanyPayload = {
+    createCompanyDto: CompanyDto,
+    createCompanyImageDtos: [
+      {
+        imageName: companyForm.companyLogo?.imageName!,
+        base64PhotoImage: companyForm.companyLogo?.base64PhotoImage!,
+        isPrimaryImage: true,
+        companyId: null,
+        createdBy: username!,
+      },
+    ],
+    createUserDto: CompanyUserDto,
+  };
+
+  const handleSumbitCompany = async () => {
+    let response;
+    if (type === 'create') {
+      response = await handleSubmit(createCompany, createCompanyPayload, '');
+    } else {
+      response = await handleSubmit(createCompany, createCompanyPayload, '');
+    }
+    if (response?.data) {
+      onOpen();
+    }
+  };
 
   return (
     <>
@@ -85,11 +152,20 @@ const SummaryStep = (props: SummaryStepProps) => {
           totalStep={5}
           activeStep={5}
           setActiveStep={setActiveStep}
-          // handleContinue={handleSumbitAsset}
-          // isLoading={createLoading || updateLoading}
-          // loadingText={createLoading ? 'Submitting...' : 'Updating...'}
+          handleContinue={handleSumbitCompany}
+          isLoading={createLoading || updateLoading}
+          loadingText={createLoading ? 'Submitting...' : 'Updating...'}
         />
       </Flex>
+      <CompanySuccessModal
+        isOpen={isOpen}
+        onClose={onClose}
+        successText={
+          type === 'create'
+            ? 'Company Created Successfully!'
+            : 'Company Updated Sucessfully!'
+        }
+      />
     </>
   );
 };

@@ -13,12 +13,7 @@ import Header from './Header';
 import SubscriptionStep from './SubscriptionStep';
 import SummaryStep from './SummaryStep';
 
-const STEPS = [
-  'Company Info',
-  'Contact Information',
-  'Subscription',
-  'Summary',
-];
+const STEPS = ['Company Info', 'Contact Admin', 'Subscription', 'Summary'];
 
 interface CompanyFormProps {
   type: 'create' | 'edit';

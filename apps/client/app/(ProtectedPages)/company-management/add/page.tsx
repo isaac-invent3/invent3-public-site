@@ -1,5 +1,3 @@
-'use client';
-
 import { Metadata } from 'next';
 import CompanyForm from '~/lib/components/CompanyManagement/CompanyForm';
 

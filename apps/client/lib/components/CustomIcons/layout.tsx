@@ -745,6 +745,64 @@ const InfoIcon = createIcon({
   ),
 });
 
+const CompanyIcon = createIcon({
+  displayName: 'CompanyIcon',
+  viewBox: '0 0 18 18',
+
+  path: (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 18 18"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M9.37406 16.5003H3.05906C2.18906 16.5003 1.47656 15.8028 1.47656 14.9478V3.81776C1.47656 1.85276 2.93906 0.960262 4.73156 1.83776L8.06156 3.47276C8.78156 3.82526 9.37406 4.76276 9.37406 5.55776V16.5003Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M16.4775 11.2945V14.1295C16.4775 15.7495 15.7275 16.4995 14.1075 16.4995H9.375V7.81445L9.7275 7.88945L13.1025 8.64695L14.625 8.98445C15.615 9.20195 16.425 9.71195 16.47 11.152C16.4775 11.197 16.4775 11.242 16.4775 11.2945Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M4.125 6.75H6.7275"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M4.125 9.75H6.7275"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M13.1016 8.64812V11.0631C13.1016 11.9931 12.3441 12.7506 11.4141 12.7506C10.4841 12.7506 9.72656 11.9931 9.72656 11.0631V7.89062L13.1016 8.64812Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M16.4691 11.1534C16.4241 12.0384 15.6891 12.7509 14.7891 12.7509C13.8591 12.7509 13.1016 11.9934 13.1016 11.0634V8.64844L14.6241 8.98594C15.6141 9.20344 16.4241 9.71344 16.4691 11.1534Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
+});
+
 export {
   DashboardIcon,
   AssetManagementIcon,
@@ -771,4 +829,5 @@ export {
   MinusIcon,
   PlusIcon,
   InfoIcon,
+  CompanyIcon,
 };

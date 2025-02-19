@@ -43,7 +43,7 @@ const CompanyManagement = () => {
           header: 'Company Name',
           enableSorting: false,
         }),
-        columnHelper.accessor('createdBy', {
+        columnHelper.accessor('dateCreated', {
           cell: (info) => dateFormatter(info.getValue(), 'DD-MM-YYYY') ?? 'N/A',
           header: 'Registration Date',
           enableSorting: false,

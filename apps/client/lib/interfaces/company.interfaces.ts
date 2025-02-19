@@ -1,23 +1,33 @@
+import { BaseDto } from './general.interfaces';
+
 interface Company {
-  isNew: boolean;
-  createdDate: Date;
-  createdBy: string;
-  lastModifiedDate: Date;
-  lastModifiedBy: string;
-  isDeleted: boolean;
-  deletedDate: Date;
-  deletedBy: string;
-  guid: string;
   companyId: number;
+  guid: string;
   companyName: string;
   address: string;
+  emailAddress: string;
+  phoneNumber: string;
+  dateCreated: string;
+  subscriptionPlanId: number;
+  subscriptionPlanTypeId: number;
+  subscriptionStatusId: number;
+  industryId: number;
+  locationId: number;
+  webUrl: string;
+  registrationNumber: string;
   apikey: string;
-  industry: string;
-  totalAsset: number;
-  primaryContacts: string;
-  email: string;
-  subscriptionType: 'Free Tier' | 'Pro';
-  subscriptionStatus: 'Active' | 'Inactive';
+  imageName: string;
+  photoImage: string;
+  isPrimaryImage: boolean;
+  base64Prefix: string;
+  industryName: string;
+  lgaid: number;
+  contactPersonFirstName: string;
+  contactPersonLastName: string;
+  contactPersonEmail: string;
+  contactPersonImagePrefix: string;
+  contactPersonPrimaryImage: string;
+  isDeleted: boolean;
 }
 
 interface CompanyFormImage {
@@ -25,6 +35,13 @@ interface CompanyFormImage {
   imageName: string | null;
   base64PhotoImage: string;
   base64Prefix: string | null;
+}
+
+interface CompanySummary {
+  totalRegisteredCompanies: number;
+  activeSubscriptions: number;
+  trialAccounts: number;
+  expiringSoon: number;
 }
 
 interface CompanyFormDetails {
@@ -53,4 +70,44 @@ interface CompanyFormDetails {
   contactPhoneNumber: string | null;
 }
 
-export type { Company, CompanyFormDetails, CompanyFormImage };
+interface CompanyImageDto extends BaseDto {
+  imageName: string;
+  base64PhotoImage: string;
+  isPrimaryImage: boolean;
+  companyId: number | null;
+}
+
+interface CompanyUserDto extends BaseDto {
+  phoneNumber: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+
+interface CompanyDto extends BaseDto {
+  companyName: string;
+  address: string;
+  emailAddress: string;
+  phoneNumber: string | null;
+  industryId: number;
+  webUrl: string;
+}
+interface createCompanyPayload {
+  createCompanyDto: CompanyDto;
+  createCompanyImageDtos: CompanyImageDto[];
+  createUserDto: CompanyUserDto;
+}
+interface updateCompanyPayload {
+  updateCompanyDto: CompanyDto;
+  updateCompanyImageDtos: CompanyImageDto[];
+  updateUserDto: CompanyUserDto;
+}
+
+export type {
+  Company,
+  CompanyFormDetails,
+  CompanyFormImage,
+  CompanySummary,
+  createCompanyPayload,
+  updateCompanyPayload,
+};

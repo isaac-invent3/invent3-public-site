@@ -2,11 +2,12 @@
 import { Text, useDisclosure, VStack } from '@chakra-ui/react';
 import { GenericPopover } from '@repo/ui/components';
 import { Company } from '~/lib/interfaces/company.interfaces';
+import { ROUTES } from '~/lib/utils/constants';
 
 interface PopoverActionProps {
   company: Company;
 }
-const PopoverAction = (props: PopoverActionProps) => {
+const PopoverAction = ({ company }: PopoverActionProps) => {
   const {
     isOpen: isOpenView,
     onOpen: onOpenView,
@@ -23,6 +24,13 @@ const PopoverAction = (props: PopoverActionProps) => {
         <VStack width="full" alignItems="flex-start" spacing="16px">
           <Text cursor="pointer" onClick={onOpenView}>
             View Details
+          </Text>
+          <Text
+            cursor="pointer"
+            as="a"
+            href={`/${ROUTES.COMPANY}/${company.companyId}/edit`}
+          >
+            Edit
           </Text>
           <Text cursor="pointer" onClick={onOpenDeactivate}>
             Deactivate

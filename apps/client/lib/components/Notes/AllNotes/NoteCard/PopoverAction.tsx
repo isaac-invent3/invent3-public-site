@@ -1,10 +1,12 @@
 import { Text, useDisclosure, VStack } from '@chakra-ui/react';
 import { GenericDeleteModal, GenericPopover } from '@repo/ui/components';
 import { useSession } from 'next-auth/react';
+import { Dispatch, SetStateAction, useEffect, useMemo } from 'react';
 import { AiOutlineEllipsis } from 'react-icons/ai';
 import { Note } from '~/lib/interfaces/notes.interfaces';
 import {
   useDeleteNoteMutation,
+  useDuplicateNoteMutation,
   usePinNoteMutation,
   useUpdateNoteMutation,
 } from '~/lib/redux/services/notes.services';
@@ -12,51 +14,67 @@ import NoteForm from '../../NoteForm';
 
 interface NotePopoverProps {
   data: Note;
+  setNoteLoading: Dispatch<SetStateAction<boolean>>;
 }
 
-const PopoverAction = (props: NotePopoverProps) => {
-  const { data } = props;
+const ActionItem = ({
+  label,
+  onClick,
+}: {
+  label: string;
+  onClick: () => void;
+}) => (
+  <Text
+    w="full"
+    cursor="pointer"
+    color="primary.500"
+    px="16px"
+    py="10px"
+    rounded="4px"
+    transition="all 200ms ease-in-out"
+    onClick={onClick}
+    _hover={{ bgColor: 'neutral.200' }}
+  >
+    {label}
+  </Text>
+);
 
-  const session = useSession();
-  const user = session?.data?.user;
+const PopoverAction = ({ data, setNoteLoading }: NotePopoverProps) => {
+  const { data: sessionData } = useSession();
+  const user = sessionData?.user;
 
-  const {
-    isOpen: isEditNoteOpen,
-    onOpen: onOpenEditNote,
-    onClose: onCloseEditNote,
-  } = useDisclosure();
+  const editNote = useDisclosure();
+  const deleteNoteModal = useDisclosure();
 
-  const {
-    isOpen: isOpenDelete,
-    onOpen: onOpenDelete,
-    onClose: onCloseDelete,
-  } = useDisclosure();
+  const [pinNote, { isLoading: isPinning }] = usePinNoteMutation();
+  const [updateNote, { isLoading: isUpdating }] = useUpdateNoteMutation();
+  const [deleteNote, { isLoading: isDeleting }] = useDeleteNoteMutation();
+  const [duplicateNote, { isLoading: isDuplicating }] =
+    useDuplicateNoteMutation();
 
-  const [pinNote] = usePinNoteMutation();
+  const isLoading = useMemo(
+    () => isPinning || isUpdating || isDeleting || isDuplicating,
+    [isPinning, isUpdating, isDeleting, isDuplicating]
+  );
 
-  const [updateNote] = useUpdateNoteMutation();
+  useEffect(() => {
+    setNoteLoading(isLoading);
+  }, [isLoading, setNoteLoading]);
 
-  const [deleteNote, { isLoading: isDeletingNote }] = useDeleteNoteMutation();
-
-  const handleDelete = () => {
+  const handleDelete = () =>
     deleteNote({ id: data.noteId, deletedBy: user?.username! });
-  };
-
-  const handlePinNote = () => {
-    pinNote({ id: data.noteId, authorId: user?.userId! });
-  };
-
-  const setNoteAsPriority = () => {
+  const handlePin = () => pinNote({ id: data.noteId, authorId: user?.userId! });
+  const handleDuplicate = () => duplicateNote({ id: data.noteId });
+  const togglePriority = () => {
     updateNote({
       id: data.noteId,
       data: {
         noteId: data.noteId,
-        notePriorityId: data.notePriorityId == 0 ? 1 : 0,
+        notePriorityId: data.notePriorityId ? 0 : 1,
         lastModifiedBy: user?.username!,
       },
     });
   };
-
   return (
     <>
       <GenericPopover
@@ -66,91 +84,32 @@ const PopoverAction = (props: NotePopoverProps) => {
         popoverBodyStyles={{ padding: '0px' }}
       >
         <VStack width="full" alignItems="flex-start" spacing="4px">
-          <Text
-            w="full"
-            cursor="pointer"
-            color="primary.500"
-            px="16px"
-            py="10px"
-            rounded="4px"
-            transition="all 200ms ease-in-out"
-            onClick={onOpenEditNote}
-            _hover={{
-              bgColor: 'neutral.200',
-            }}
-          >
-            Edit Note
-          </Text>
-          <Text
-            w="full"
-            cursor="pointer"
-            color="primary.500"
-            px="16px"
-            py="10px"
-            rounded="4px"
-            transition="all 200ms ease-in-out"
-            _hover={{
-              bgColor: 'neutral.200',
-            }}
-          >
-            Duplicate
-          </Text>
-          <Text
-            w="full"
-            cursor="pointer"
-            color="primary.500"
-            px="16px"
-            py="10px"
-            rounded="4px"
-            transition="all 200ms ease-in-out"
-            onClick={handlePinNote}
-            _hover={{
-              bgColor: 'neutral.200',
-            }}
-          >
-            Pin this Note
-          </Text>
-          <Text
-            w="full"
-            cursor="pointer"
-            color="primary.500"
-            px="16px"
-            py="10px"
-            rounded="4px"
-            transition="all 200ms ease-in-out"
-            onClick={setNoteAsPriority}
-            _hover={{
-              bgColor: 'neutral.200',
-            }}
-          >
-            {data.notePriorityId ? 'Remove Priority' : ' Set as Priority'}
-          </Text>
-          <Text
-            w="full"
-            cursor="pointer"
-            color="primary.500"
-            px="16px"
-            py="10px"
-            rounded="4px"
-            transition="all 200ms ease-in-out"
-            onClick={onOpenDelete}
-            _hover={{
-              bgColor: 'neutral.200',
-            }}
-          >
-            Delete Note
-          </Text>
+          <ActionItem label="Edit Note" onClick={editNote.onOpen} />
+          <ActionItem label="Duplicate" onClick={handleDuplicate} />
+          <ActionItem
+            label={data.isPinned ? 'Unpin this Note' : 'Pin this Note'}
+            onClick={handlePin}
+          />
+          <ActionItem
+            label={data.notePriorityId ? 'Remove Priority' : 'Set as Priority'}
+            onClick={togglePriority}
+          />
+          <ActionItem label="Delete Note" onClick={deleteNoteModal.onOpen} />
         </VStack>
       </GenericPopover>
 
       <GenericDeleteModal
-        isOpen={isOpenDelete}
-        onClose={onCloseDelete}
+        isOpen={deleteNoteModal.isOpen}
+        onClose={deleteNoteModal.onClose}
         handleDelete={handleDelete}
-        isLoading={isDeletingNote}
+        isLoading={isDeleting}
       />
 
-      <NoteForm note={data} onClose={onCloseEditNote} isOpen={isEditNoteOpen} />
+      <NoteForm
+        note={data}
+        onClose={editNote.onClose}
+        isOpen={editNote.isOpen}
+      />
     </>
   );
 };

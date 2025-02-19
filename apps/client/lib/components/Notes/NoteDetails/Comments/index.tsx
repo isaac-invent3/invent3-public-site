@@ -8,15 +8,24 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { TextInput } from '@repo/ui/components';
-import { useGetNoteCommentsQuery } from '~/lib/redux/services/notes.services';
+import { getSession } from 'next-auth/react';
+import { FormEventHandler, useState } from 'react';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
+import useFormatUrl from '~/lib/hooks/useFormatUrl';
+import useParseUrlData from '~/lib/hooks/useParseUrl';
+import {
+  useCreateNoteMutation,
+  useGetNoteCommentsQuery,
+} from '~/lib/redux/services/notes.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
-import { Comment, comments } from './dummyComments';
+import { Comment } from './dummyComments';
+import { Note } from '~/lib/interfaces/notes.interfaces';
 
-const renderComments = (comments: Comment[], depth = 0) => {
+const renderComments = (comments: Note[], depth = 0) => {
   return comments.map((comment) => (
     <VStack
       spacing="24px"
-      key={comment.id}
+      key={comment.noteId}
       align="start"
       pl={`${depth * 48}px`}
       w="full"
@@ -27,7 +36,7 @@ const renderComments = (comments: Comment[], depth = 0) => {
         <VStack align="start" spacing="11.5px" mt="11.5px">
           <HStack spacing={2}>
             <Text color="neutral.800" fontWeight={700}>
-              {comment.userName}
+              {comment.authorFirstName}
             </Text>
 
             <Text size="xs" color="neutral.600">
@@ -36,22 +45,59 @@ const renderComments = (comments: Comment[], depth = 0) => {
           </HStack>
 
           <Text size="xs" fontWeight={400} color="neutral.600">
-            {comment.text}
+            {comment.content}
           </Text>
         </VStack>
       </HStack>
 
-      {comment.replies && renderComments(comment.replies, depth + 1)}
+      {/* {comment.replies && renderComments(comment.replies, depth + 1)} */}
     </VStack>
   ));
 };
 
 const NoteComments = ({ noteId }: { noteId: number }) => {
-  const { data: notes, isLoading: isGettingNotes } = useGetNoteCommentsQuery({
-    noteId,
-    pageNumber: 1,
-    pageSize: DEFAULT_PAGE_SIZE,
-  });
+  const formattedUrl = useFormatUrl();
+  const parsedUrl = useParseUrlData(formattedUrl);
+  const { data: comments, isLoading: isGettingNotes } = useGetNoteCommentsQuery(
+    {
+      noteId,
+      pageNumber: 1,
+      pageSize: DEFAULT_PAGE_SIZE,
+    }
+  );
+
+  const [comment, setComment] = useState('');
+  const { handleSubmit } = useCustomMutation();
+  const [createComment, { isLoading: isCommenting }] = useCreateNoteMutation();
+
+  const handleAddComment: FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+    const session = await getSession();
+
+    const payload = {
+      createNoteDto: {
+        systemContextTypeId: parsedUrl?.systemContextId!,
+        authorId: Number(session?.user.id),
+        createdBy: session?.user?.username!,
+        title: '',
+        content: comment,
+        parentId: noteId,
+        notePriorityId: 0,
+      },
+      systemContextIds: [],
+      tags: [],
+    };
+
+    const response = await handleSubmit(
+      createComment,
+      payload,
+      'Comment Created Successfully!'
+    );
+
+    if (response?.data) {
+      setComment('');
+    }
+  };
 
   return (
     <VStack
@@ -70,18 +116,25 @@ const NoteComments = ({ noteId }: { noteId: number }) => {
         </StackDivider>
       }
     >
-      <HStack gap="8px" w="full">
-        <Avatar width="28px" height="28px" />
+      <form style={{ width: '100%' }} onSubmit={handleAddComment}>
+        <HStack gap="8px" w="full">
+          <Avatar width="28px" height="28px" />
 
-        <TextInput
-          label="Comment"
-          name="comment"
-          type="text"
-          placeholder="Start your comment"
-        />
-      </HStack>
+          <TextInput
+            label="Comment"
+            name="comment"
+            type="text"
+            placeholder="Start your comment"
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            isDisabled={isCommenting}
+          />
+        </HStack>
+      </form>
 
-      <Skeleton isLoaded={!isGettingNotes}>{renderComments(comments)}</Skeleton>
+      <Skeleton isLoaded={!isGettingNotes}>
+        {renderComments(comments?.data.items ?? [])}
+      </Skeleton>
     </VStack>
   );
 };

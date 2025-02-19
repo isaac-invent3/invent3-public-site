@@ -7,7 +7,9 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
+import { useState } from 'react';
 import { AiFillStar } from 'react-icons/ai';
+import { PinIcon } from '~/lib/components/CustomIcons';
 import { Note } from '~/lib/interfaces/notes.interfaces';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import NoteDetails from '../../NoteDetails';
@@ -15,8 +17,7 @@ import PopoverAction from './PopoverAction';
 
 interface NoteCardProps {
   data: Note;
-  isPinned?: boolean;
-  isFetching?:boolean
+  isFetching?: boolean;
 }
 
 const NoteCard = (props: NoteCardProps) => {
@@ -26,10 +27,19 @@ const NoteCard = (props: NoteCardProps) => {
     onClose: onCloseNoteDetail,
   } = useDisclosure();
 
+  const [noteLoading, setNoteLoading] = useState(props.isFetching ?? false);
+
   if (!props.data) return;
 
-  const { isPinned, isFetching , data} = props;
-  const { content, notePriorityId, lastModifiedDate, title } = data;
+  const { data } = props;
+  const {
+    content,
+    notePriorityId,
+    lastModifiedDate,
+    title,
+    authorFirstName,
+    authorLastName,
+  } = data;
 
   const noteTitle = () => {
     if (!title) return 'Text';
@@ -49,10 +59,10 @@ const NoteCard = (props: NoteCardProps) => {
         position="relative"
         h="180px"
         transition="all 300ms ease-in-out"
-        pointerEvents={isFetching ? 'none' : 'all'}
-        opacity={isFetching ? 0.5 : 1}
+        pointerEvents={noteLoading ? 'none' : 'all'}
+        opacity={noteLoading ? 0.5 : 1}
         _hover={
-          !isFetching
+          !noteLoading
             ? {
                 boxShadow:
                   '0 4px 10px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1)',
@@ -65,12 +75,22 @@ const NoteCard = (props: NoteCardProps) => {
           <HStack w="full" justifyContent="space-between" gap="8px">
             <Text fontWeight={800}>{noteTitle()}</Text>
 
-            {isPinned && (
-              <Box rounded="4px" bgColor="#42403D" w="16px" h="16px"></Box>
+            {data?.isPinned && (
+              <Box
+                rounded="4px"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                bgColor="#42403D"
+                w="16px"
+                h="16px"
+              >
+                <Icon as={PinIcon} boxSize="10px" />
+              </Box>
             )}
           </HStack>
 
-          {notePriorityId === 1 && !isPinned && (
+          {notePriorityId === 1 && !data?.isPinned && (
             <Box position="absolute" right="-8px">
               <Box
                 display="flex"
@@ -161,7 +181,7 @@ const NoteCard = (props: NoteCardProps) => {
             <Avatar w="12px" h="12px" />
 
             <Text fontSize="8px" fontWeight={500} color="black">
-              George Clooney
+              {` ${authorFirstName ?? 'George'} ${authorLastName ?? 'Clooney'}`}
             </Text>
           </HStack>
 
@@ -175,7 +195,7 @@ const NoteCard = (props: NoteCardProps) => {
               {dateFormatter(lastModifiedDate, 'DD/MM/YYYY')}
             </Text>
 
-            <PopoverAction data={props.data} />
+            <PopoverAction data={props.data} setNoteLoading={setNoteLoading} />
           </HStack>
         </Box>
       </Card>

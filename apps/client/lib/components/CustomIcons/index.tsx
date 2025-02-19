@@ -940,6 +940,26 @@ const ListIcon = createIcon({
     </svg>
   ),
 });
+
+const PinIcon = createIcon({
+  displayName: 'PinIcon',
+  viewBox: '0 0 10 10',
+
+  path: (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="10"
+      height="10"
+      fill="none"
+      viewBox="0 0 10 10"
+    >
+      <path
+        fill="#fff"
+        d="M6.722.41 9.17 2.857c.674.674.49 1.81-.363 2.236L6.336 6.33a.38.38 0 0 0-.19.216l-.73 2.115a.634.634 0 0 1-1.049.241L2.792 7.327.538 9.58H0v-.538l2.253-2.254L.678 5.213a.634.634 0 0 1 .241-1.049l2.115-.73a.38.38 0 0 0 .216-.19L4.486.772A1.396 1.396 0 0 1 6.722.409m1.91 2.987L6.184.947a.634.634 0 0 0-1.016.165L3.931 3.585a1.14 1.14 0 0 1-.649.568l-1.923.665L4.762 8.22l.665-1.923c.097-.283.301-.515.568-.649l2.473-1.236a.634.634 0 0 0 .165-1.016"
+      ></path>
+    </svg>
+  ),
+});
 export {
   AddIcon,
   AssetIcon,
@@ -976,4 +996,5 @@ export {
   TemplateIcon,
   ThreeVerticalDotsIcon,
   UptrendIcon,
+  PinIcon,
 };

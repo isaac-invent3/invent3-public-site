@@ -15,11 +15,14 @@ interface Note {
   systemContextTypeId: number;
   systemContextId: number;
   authorId: number;
+  authorFirstName: string;
+  authorLastName:string
   content: string;
   isPrivate: boolean;
   parentId: number;
   dateCreated: string;
   notePriorityId: number;
+  isPinned?: boolean;
 }
 
 interface GetAllNotesQueryParams extends QueryParams {
@@ -33,7 +36,7 @@ interface CreateNotePayload {
     systemContextId?: number;
     authorId: number;
     content: string;
-    isPrivate: boolean;
+    isPrivate?: boolean;
     parentId?: number;
     notePriorityId: number;
     createdBy: string;

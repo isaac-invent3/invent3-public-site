@@ -21,7 +21,7 @@ const getHeaders = () => ({
 export const notesApi = createApi({
   reducerPath: 'notesApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['allNotes', 'pinnedNotes', 'noteComments'],
+  tagTypes: ['allNotes', 'pinnedNotes', 'noteComments', 'unPinnedNotes'],
   endpoints: (builder) => ({
     getAllUserNotes: builder.query<
       BaseApiResponse<ListResponse<Note>>,
@@ -71,7 +71,7 @@ export const notesApi = createApi({
       BaseApiResponse<void>,
       {
         id: number;
-        deletedBy: string
+        deletedBy: string;
       }
     >({
       query: ({ id, ...body }) => ({
@@ -94,6 +94,14 @@ export const notesApi = createApi({
       }),
       invalidatesTags: ['allNotes', 'pinnedNotes'],
     }),
+    duplicateNote: builder.mutation<BaseApiResponse<Note>, { id: number }>({
+      query: ({ id }) => ({
+        url: `/Notes/DuplicateNote/${id}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      invalidatesTags: ['allNotes', 'pinnedNotes'],
+    }),
 
     getPinnedNotes: builder.query<
       BaseApiResponse<ListResponse<Note>>,
@@ -106,13 +114,24 @@ export const notesApi = createApi({
       }),
       providesTags: ['pinnedNotes'],
     }),
+    getUnPinnedNotes: builder.query<
+      BaseApiResponse<ListResponse<Note>>,
+      GetAllPinnedNotesQueryParams
+    >({
+      query: ({ userId, ...data }) => ({
+        url: generateQueryStr(`/Notes/GetUnpinnedNotes/${userId}?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['unPinnedNotes'],
+    }),
 
     getNoteComments: builder.query<
       BaseApiResponse<ListResponse<Note>>,
       { noteId: number } & QueryParams
     >({
       query: ({ noteId, ...data }) => ({
-        url: generateQueryStr(`/Notes/GetNoteComments/${noteId}`, data),
+        url: generateQueryStr(`/Notes/GetNoteComments/${noteId}?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -139,8 +158,10 @@ export const {
   useDeleteNoteMutation,
   useGetNoteByIdQuery,
   useGetPinnedNotesQuery,
+  useGetUnPinnedNotesQuery,
   useUpdateNoteMutation,
   usePinNoteMutation,
+  useDuplicateNoteMutation,
   useSearchNotesMutation,
   useGetNoteCommentsQuery,
 } = notesApi;

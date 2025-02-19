@@ -7,6 +7,8 @@ import {
   Text,
   Tooltip,
   VStack,
+  Avatar,
+  AvatarGroup,
 } from '@chakra-ui/react';
 import {
   BackButton,
@@ -14,19 +16,20 @@ import {
   CheckBox,
   GenericModal,
 } from '@repo/ui/components';
+import { Note } from '~/lib/interfaces/notes.interfaces';
+import { dateFormatter } from '~/lib/utils/Formatters';
 import UserInfo from '../../Common/UserInfo';
 import { AddIcon, InfoIcon } from '../../CustomIcons';
 import NoteComments from './Comments';
-import { Note } from '~/lib/interfaces/notes.interfaces';
-import { dateFormatter } from '~/lib/utils/Formatters';
 interface NoteFormModalProps {
   isOpen: boolean;
   onClose: () => void;
-  note:Note
+  note: Note;
 }
 
 const NoteDetails = (props: NoteFormModalProps) => {
-  const { isOpen, onClose , note} = props;
+  const { isOpen, onClose, note } = props;
+  console.log({note})
 
   return (
     <>
@@ -104,7 +107,7 @@ const NoteDetails = (props: NoteFormModalProps) => {
                 </HStack>
               </HStack>
 
-              <Card rounded="12px" p="20px" bgColor="white" w='full'>
+              <Card rounded="12px" p="20px" bgColor="white" w="full">
                 <Text fontWeight={800} fontSize="20px">
                   {note.title}
                 </Text>
@@ -135,7 +138,7 @@ const NoteDetails = (props: NoteFormModalProps) => {
                 </Text>
                 <HStack justifyContent="space-between" w="full">
                   <UserInfo
-                    name="George Clooney"
+                    name={`${note.authorFirstName ?? 'George'} ${note.authorLastName ?? 'Clooney'}`}
                     customAvatarStyle={{
                       width: '24px',
                       height: '24px',
@@ -161,24 +164,49 @@ const NoteDetails = (props: NoteFormModalProps) => {
                   Tag Someone
                 </Text>
                 <HStack justifyContent="space-between" w="full">
-                  <Box
-                    boxSize="28px"
-                    rounded="full"
-                    bgColor="#E4E4E4"
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                    cursor="pointer"
-                    role="group"
-                  >
-                    <Icon
-                      as={AddIcon}
-                      color="#374957"
-                      boxSize="18px"
-                      transition="all 300ms ease-in-out"
-                      _groupHover={{ transform: 'rotate(90deg)' }}
+                  {/* {note.} */}
+                  <AvatarGroup size="sm" max={4}>
+                    <Avatar
+                      size="sm"
+                      width="28px"
+                      height="28px"
+                      border="2px solid white"
+                      name="Ryan Florence"
+                      src="https://bit.ly/ryan-florence"
                     />
-                  </Box>
+                    <Avatar
+                      size="sm"
+                      width="28px"
+                      height="28px"
+                      border="2px solid white"
+                      name="Segun Adebayo"
+                      src="https://bit.ly/sage-adebayo"
+                    />
+                    <Avatar
+                      size="sm"
+                      width="28px"
+                      height="28px"
+                      border="2px solid white"
+                      name="Kent Dodds"
+                      src="https://bit.ly/kent-c-dodds"
+                    />
+                    <Avatar
+                      size="sm"
+                      width="28px"
+                      height="28px"
+                      border="2px solid white"
+                      name="Prosper Otemuyiwa"
+                      src="https://bit.ly/prosper-baba"
+                    />
+                    <Avatar
+                      size="sm"
+                      width="28px"
+                      height="28px"
+                      border="2px solid white"
+                      name="Christian Nwamba"
+                      src="https://bit.ly/code-beast"
+                    />
+                  </AvatarGroup>
                 </HStack>
               </VStack>
 

@@ -84,7 +84,7 @@ const NoteForm = (props: NoteFormModalProps) => {
       const { tags, systemContextIds, ...rest } = data;
 
       const createNoteDto = {
-        systemContextTypeId: parsedUrl?.systemContextId,
+        systemContextTypeId: parsedUrl?.systemContextId!,
         authorId: Number(session?.user.id),
         createdBy: session?.user?.username!,
         ...rest,

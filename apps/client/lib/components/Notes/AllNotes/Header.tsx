@@ -1,8 +1,12 @@
 import { HStack, Text, useDisclosure } from '@chakra-ui/react';
 import { Button } from '@repo/ui/components';
+import useFormatUrl from '~/lib/hooks/useFormatUrl';
+import useParseUrlData from '~/lib/hooks/useParseUrl';
 import NoteForm from '../NoteForm';
 
 const Header = () => {
+  const formattedUrl = useFormatUrl();
+  const data = useParseUrlData(formattedUrl);
   const {
     isOpen: isNoteFormOpened,
     onOpen: onNoteFormOpen,
@@ -15,11 +19,15 @@ const Header = () => {
         Notes
       </Text>
 
-      <Button handleClick={onNoteFormOpen} customStyles={{ w: '150px' }}>
-        Add New Note
-      </Button>
+      {data?.systemContextId && (
+        <>
+          <Button handleClick={onNoteFormOpen} customStyles={{ w: '150px' }}>
+            Add New Note
+          </Button>
 
-      <NoteForm onClose={onNoteFormClose} isOpen={isNoteFormOpened} />
+          <NoteForm onClose={onNoteFormClose} isOpen={isNoteFormOpened} />
+        </>
+      )}
     </HStack>
   );
 };

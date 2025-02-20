@@ -6,7 +6,7 @@ import AcquisitionDateConditon from './AcquisitionDateCondition';
 import Purchase from './Purchase';
 import WarrantyDetails from './WarrantyDetails';
 import DepreciationDetails from './DepreciationDetails';
-import VendorDetails from './VendorDetails';
+import VendorDetails from './Vendor/VendorDetails';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import { FormActionButtons } from '@repo/ui/components';

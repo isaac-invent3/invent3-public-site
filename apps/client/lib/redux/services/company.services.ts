@@ -10,8 +10,8 @@ import {
 import {
   Company,
   CompanySummary,
-  createCompanyPayload,
-  updateCompanyPayload,
+  CreateCompanyPayload,
+  UpdateCompanyPayload,
 } from '~/lib/interfaces/company.interfaces';
 
 const getHeaders = () => ({
@@ -60,7 +60,7 @@ export const companyApi = createApi({
     }),
     createCompany: builder.mutation<
       BaseApiResponse<Company>,
-      createCompanyPayload
+      CreateCompanyPayload
     >({
       query: (body) => ({
         url: `/Invent3Pro/Companies/Create`,
@@ -71,7 +71,7 @@ export const companyApi = createApi({
     }),
     updateCompany: builder.mutation<
       BaseApiResponse<Company>,
-      updateCompanyPayload
+      UpdateCompanyPayload
     >({
       query: (body) => ({
         url: `/Invent3Pro/Companies/Update`,

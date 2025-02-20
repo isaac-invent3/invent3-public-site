@@ -7,7 +7,10 @@ import {
   QueryParams,
   SearchQuery,
 } from '@repo/interfaces';
-import { Vendor } from '~/lib/interfaces/vendor.interfaces';
+import {
+  UpdateVendorPayload,
+  Vendor,
+} from '~/lib/interfaces/vendor.interfaces';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -58,6 +61,15 @@ export const vendorApi = createApi({
       }),
       invalidatesTags: ['allVendors'],
     }),
+    UpdateVendor: builder.mutation<BaseApiResponse<void>, UpdateVendorPayload>({
+      query: (body) => ({
+        url: `/Invent3Pro/Vendor/Update`,
+        method: 'PUT',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allVendors'],
+    }),
   }),
 });
 
@@ -66,4 +78,5 @@ export const {
   useSearchVendorsMutation,
   useDeleteVendorMutation,
   useGetVendorByIdQuery,
+  useUpdateVendorMutation,
 } = vendorApi;

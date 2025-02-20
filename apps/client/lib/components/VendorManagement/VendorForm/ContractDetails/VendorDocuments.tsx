@@ -3,13 +3,14 @@ import { useField } from 'formik';
 import DocumentUploadAndView from '~/lib/components/Common/DocumentUploadAndView';
 import { Document } from '~/lib/interfaces/general.interfaces';
 
-const SLADocuments = () => {
-  const [field, meta, helpers] = useField('slaDocuments'); //eslint-disable-line
+const VendorDocuments = () => {
+  const [field, meta, helpers] = useField('vendorDocuments'); //eslint-disable-line
 
   const handleRemoveDocument = (document: Document) => {
     const updatedDocuments: Document[] = meta.value.filter(
       (old: Document) => old !== document
     );
+    console.log({ remove: updatedDocuments });
     helpers.setValue(updatedDocuments);
   };
 
@@ -18,15 +19,15 @@ const SLADocuments = () => {
       sectionMaxWidth="141px"
       customSpacing="24px"
       description="Attach related files to this vendor"
-      title="Upload Service Agreement"
+      title="Vendor Documents"
       isRequired
     >
       <DocumentUploadAndView
         variant="secondary"
         handleRemoveDocuments={(document) => handleRemoveDocument(document)}
-        handleAddDocuments={(documents) =>
-          helpers.setValue([...meta.value, ...documents])
-        }
+        handleAddDocuments={(documents) => {
+          helpers.setValue([...meta.value, ...documents]);
+        }}
         documents={meta.value ?? []}
         setError={(error) => helpers.setError(error)}
         error={meta.error as string}
@@ -35,4 +36,4 @@ const SLADocuments = () => {
   );
 };
 
-export default SLADocuments;
+export default VendorDocuments;

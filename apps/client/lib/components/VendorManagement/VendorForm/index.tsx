@@ -39,17 +39,23 @@ const VendorForm = (props: VendorFormProps) => {
       </PageHeader>
       <Flex width="full" gap="8px" mt="32px" direction="column">
         <FormStepper currentStep={activeStep} steps={STEPS} />
-        <VendorInfo activeStep={activeStep} setActiveStep={setActiveStep} />
+        <VendorInfo
+          activeStep={activeStep}
+          setActiveStep={setActiveStep}
+          type={type}
+        />
         <SlideTransition trigger={activeStep === 2}>
           <ContactInformation
             activeStep={activeStep}
             setActiveStep={setActiveStep}
+            type={type}
           />
         </SlideTransition>
         <SlideTransition trigger={activeStep === 3}>
           <ContractDetails
             activeStep={activeStep}
             setActiveStep={setActiveStep}
+            type={type}
           />
         </SlideTransition>
         <SlideTransition trigger={activeStep === 4}>

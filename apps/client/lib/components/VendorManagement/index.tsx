@@ -18,10 +18,11 @@ import {
   SYSTEM_CONTEXT_DETAILS,
 } from '~/lib/utils/constants';
 import ActionButton from './Actions';
-import UserActionDisplay from './Actions/Display';
-import Header from './Header';
+import VendorActionDisplay from './Actions/Display';
 import VendorDetail from './VendorDetail';
 import VendorTable from './VendorTable';
+import { generateSearchCriterion } from '@repo/utils';
+import PageHeader from '../UI/PageHeader';
 
 export const initialFilterData = {
   startDate: undefined,
@@ -71,31 +72,36 @@ const VendorManagement = () => {
   const isFilterEmpty = _.every(filterData, (value) => _.isEmpty(value));
 
   const searchCriterion = {
-    ...((!isFilterEmpty || search) && {
-      orCriterion: [
-        ...(search
-          ? [
-              [
-                {
-                  columnName: 'firstName',
-                  columnValue: search,
-                  operation: OPERATORS.Contains,
-                },
-              ],
-            ]
-          : []),
-        ...(search
-          ? [
-              [
-                {
-                  columnName: 'lastName',
-                  columnValue: search,
-                  operation: OPERATORS.Contains,
-                },
-              ],
-            ]
-          : []),
+    ...(search && {
+      criterion: [
+        {
+          columnName: 'vendorName',
+          columnValue: search,
+          operation: OPERATORS.Contains,
+        },
       ],
+      ...(!isFilterEmpty && {
+        orCriterion: [
+          ...[filterData.startDate]
+            .filter(Boolean)
+            .map((item) => [
+              ...generateSearchCriterion(
+                'createdDate',
+                [item as string],
+                OPERATORS.Contains
+              ),
+            ]),
+          ...[filterData.endDate]
+            .filter(Boolean)
+            .map((item) => [
+              ...generateSearchCriterion(
+                'createdDate',
+                [item as string],
+                OPERATORS.Contains
+              ),
+            ]),
+        ],
+      }),
     }),
     pageNumber,
     pageSize,
@@ -130,7 +136,9 @@ const VendorManagement = () => {
     <>
       <Flex width="full" direction="column" pb="24px">
         <VStack width="full" spacing="40px">
-          <Header />
+          <Flex px={{ base: '16px', md: 0 }} width="full">
+            <PageHeader>Vendor Management</PageHeader>
+          </Flex>
           <HStack
             width="full"
             justifyContent="space-between"
@@ -143,7 +151,7 @@ const VendorManagement = () => {
             // display={{ base: 'none', lg: 'flex' }}
           >
             <SearchInput
-              width={{base:'full', md:'100px'}}
+              width={{ base: 'full', md: '100px' }}
               setSearch={setSearch}
               placeholderText="Search by name..."
               customStyle={{
@@ -160,7 +168,7 @@ const VendorManagement = () => {
           <SlideTransition trigger={isOpen} direction="bottom">
             {isOpen && (
               <Flex width="full" mt="8px">
-                <UserActionDisplay
+                <VendorActionDisplay
                   isOpen={isOpen}
                   activeAction={activeAction}
                   handleApplyFilter={handleSearch}
@@ -171,7 +179,6 @@ const VendorManagement = () => {
             )}
           </SlideTransition>
         )}
-    
 
         <Flex width="full" mt="8px">
           <VendorTable

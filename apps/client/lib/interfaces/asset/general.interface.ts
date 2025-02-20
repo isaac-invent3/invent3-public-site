@@ -7,6 +7,7 @@ import {
 } from '../general.interfaces';
 import { MaintenancePlan } from '../maintenance.interfaces';
 import { FORM_ENUM } from '~/lib/utils/constants';
+import { CreateVendorPayload } from '../vendor.interfaces';
 
 interface AssetLocation {
   locationId: number;
@@ -210,6 +211,7 @@ interface AssetFormDetails {
   deletedMaintenancePlanIds: number[];
   existingDocumentsIds: number[];
   deletedExistingDocumentIds: number[];
+  vendorFormDetails: CreateVendorPayload | null;
   vendorDetails: {
     vendorName: string | null;
     address: string | null;

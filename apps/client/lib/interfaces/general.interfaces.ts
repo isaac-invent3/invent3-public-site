@@ -163,6 +163,11 @@ interface LocationDto extends BaseDto {
   shelfId: number | null;
 }
 
+interface BaseUpdateDto {
+  changeInitiatedBy: string | null;
+  actionType: (typeof FORM_ENUM)[keyof typeof FORM_ENUM];
+}
+
 export type {
   GeoJSONFeature,
   Option,
@@ -181,4 +186,5 @@ export type {
   sidebarChildren,
   BaseDto,
   LocationDto,
+  BaseUpdateDto,
 };

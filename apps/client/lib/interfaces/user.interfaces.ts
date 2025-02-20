@@ -298,6 +298,7 @@ interface UserDto extends BaseDto {
 interface UserImageDto extends BaseDto {
   imageName: string;
   base64PhotoImage: string;
+  base64Prefix: string;
   isPrimaryImage: boolean;
   userId: number | null;
 }

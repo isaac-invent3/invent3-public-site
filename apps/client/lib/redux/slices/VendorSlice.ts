@@ -5,6 +5,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { Vendor, VendorFormDetails } from '~/lib/interfaces/vendor.interfaces';
 
 const initialVendorForm = {
+  vendorId: null,
   vendorName: null,
   logo: null,
   description: null,
@@ -28,7 +29,8 @@ const initialVendorForm = {
   contractValue: null,
   vendorStatusId: null,
   vendorStatusName: null,
-  slaDocuments: [],
+  vendorDocuments: [],
+  initialDocumentIds: [],
 };
 
 interface SliceProps {

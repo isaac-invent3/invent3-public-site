@@ -20,6 +20,7 @@ export default function Page({ params }: { params: { id: number } }) {
     const vendor = data?.data;
     dispatch(
       setVendorForm({
+        vendorId: vendor.vendorId,
         vendorName: vendor.vendorName,
         logo: null,
         description: null,
@@ -43,7 +44,8 @@ export default function Page({ params }: { params: { id: number } }) {
         contractValue: null,
         vendorStatusId: null,
         vendorStatusName: null,
-        slaDocuments: [],
+        vendorDocuments: [],
+        initialDocumentIds: [],
       })
     );
   }

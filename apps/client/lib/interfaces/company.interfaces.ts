@@ -74,6 +74,7 @@ interface CompanyFormDetails {
 interface CompanyImageDto extends BaseDto {
   imageName: string;
   base64PhotoImage: string;
+  base64Prefix: string;
   isPrimaryImage: boolean;
   companyId: number | null;
 }
@@ -94,12 +95,12 @@ interface CompanyDto extends BaseDto {
   subscriptionPlanId: number;
   webUrl: string;
 }
-interface createCompanyPayload {
+interface CreateCompanyPayload {
   createCompanyDto: CompanyDto;
   createCompanyImageDtos: CompanyImageDto[];
   createUserDto: CompanyUserDto;
 }
-interface updateCompanyPayload {
+interface UpdateCompanyPayload {
   updateCompanyDto: CompanyDto;
   multiPurposeCompanyImageDto: CompanyImageDto[];
   updateUserDto: CompanyUserDto;
@@ -110,6 +111,6 @@ export type {
   CompanyFormDetails,
   CompanyFormImage,
   CompanySummary,
-  createCompanyPayload,
-  updateCompanyPayload,
+  CreateCompanyPayload,
+  UpdateCompanyPayload,
 };

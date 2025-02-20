@@ -10,10 +10,13 @@ import GenericStatusBox from '../../UI/GenericStatusBox';
 import PopoverAction from './PopoverAction';
 
 const ContactPerson = (vendor: Vendor) => {
-  const { emailAddress, phoneNumber } = vendor;
+  const { emailAddress, phoneNumber, contactFirstName, contactLastName } =
+    vendor;
   return (
     <VStack alignItems="flex-start" spacing="2px">
-      <Text color="black">Contact Person</Text>
+      <Text color="black">
+        {contactFirstName ?? ''} {contactLastName ?? ''}
+      </Text>
       <Text size="sm" color="neutral.600">
         {emailAddress}
       </Text>

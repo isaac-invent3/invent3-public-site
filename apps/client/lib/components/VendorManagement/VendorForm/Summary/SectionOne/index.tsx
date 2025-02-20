@@ -5,7 +5,7 @@ import DetailHeader from '~/lib/components/UI/DetailHeader';
 import { useAppSelector } from '~/lib/redux/hooks';
 
 const SectionOne = () => {
-  const { logo, slaDocuments } = useAppSelector(
+  const { logo, vendorDocuments } = useAppSelector(
     (state) => state.vendor.vendorForm
   );
 
@@ -47,7 +47,7 @@ const SectionOne = () => {
         )}
       </VStack>
       <Flex width={{ base: 'full', md: '230px' }}>
-        <DocumentSummaryView documents={slaDocuments} />
+        <DocumentSummaryView documents={vendorDocuments} />
       </Flex>
     </Stack>
   );

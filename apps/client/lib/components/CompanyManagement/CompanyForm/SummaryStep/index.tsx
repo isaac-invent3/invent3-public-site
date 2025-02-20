@@ -46,6 +46,7 @@ const SummaryStep = (props: SummaryStepProps) => {
   }, [data]);
 
   const CompanyDto = {
+    companyId: companyForm?.companyId,
     companyName: companyForm?.companyName!,
     address: companyForm?.address1!,
     emailAddress: companyForm?.companyEmail!,
@@ -69,6 +70,7 @@ const SummaryStep = (props: SummaryStepProps) => {
     createCompanyImageDtos: [
       {
         imageName: companyForm.companyLogo?.imageName!,
+        base64Prefix: companyForm.companyLogo?.base64Prefix!,
         base64PhotoImage: companyForm.companyLogo?.base64PhotoImage!,
         isPrimaryImage: true,
         companyId: null,
@@ -84,6 +86,7 @@ const SummaryStep = (props: SummaryStepProps) => {
       {
         imageName: companyForm.companyLogo?.imageName!,
         base64PhotoImage: companyForm.companyLogo?.base64PhotoImage!,
+        base64Prefix: companyForm.companyLogo?.base64Prefix!,
         isPrimaryImage: true,
         companyId: companyForm.companyId!,
         actionType: FORM_ENUM.update,

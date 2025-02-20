@@ -78,6 +78,7 @@ const SummaryStep = (props: SummaryStepProps) => {
       {
         imageName: userFormDetails.picture?.imageName!,
         base64PhotoImage: userFormDetails.picture?.base64PhotoImage!,
+        base64Prefix: userFormDetails.picture?.base64Prefix!,
         isPrimaryImage: true,
         userId: null,
         createdBy: username!,
@@ -134,6 +135,7 @@ const SummaryStep = (props: SummaryStepProps) => {
       {
         imageName: userFormDetails.picture?.imageName!,
         base64PhotoImage: userFormDetails.picture?.base64PhotoImage!,
+        base64Prefix: userFormDetails.picture?.base64Prefix!,
         isPrimaryImage: true,
         userId: null,
         actionType: FORM_ENUM.add,

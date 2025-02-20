@@ -1,5 +1,10 @@
 import { HStack, Text, VStack } from '@chakra-ui/react';
-import { FormInputWrapper, FormTextInput, RadioBox } from '@repo/ui/components';
+import {
+  ErrorMessage,
+  FormInputWrapper,
+  FormTextInput,
+  RadioBox,
+} from '@repo/ui/components';
 import { Field, useField } from 'formik';
 import React from 'react';
 import { useAppDispatch } from '~/lib/redux/hooks';
@@ -34,22 +39,27 @@ const ContractValueAndVendorStatus = () => {
         title="Vendor Status"
         isRequired
       >
-        <HStack spacing="24px">
-          {RadioButtonData.map((item, index) => (
-            <HStack key={index} spacing="8px">
-              <RadioBox
-                isSelected={index === meta.value}
-                handleClick={() => {
-                  helpers.setValue(index);
-                  dispatch(updateVendorForm({ vendorStatusName: item }));
-                }}
-              />
-              <Text color="neutral.600" size="md">
-                {item}
-              </Text>
-            </HStack>
-          ))}
-        </HStack>
+        <VStack>
+          <HStack spacing="24px">
+            {RadioButtonData.map((item, index) => (
+              <HStack key={index} spacing="8px">
+                <RadioBox
+                  isSelected={index === meta.value}
+                  handleClick={() => {
+                    helpers.setValue(index);
+                    dispatch(updateVendorForm({ vendorStatusName: item }));
+                  }}
+                />
+                <Text color="neutral.600" size="md">
+                  {item}
+                </Text>
+              </HStack>
+            ))}
+          </HStack>
+          {meta.touched && meta.error !== undefined && (
+            <ErrorMessage>{meta.error}</ErrorMessage>
+          )}
+        </VStack>
       </FormInputWrapper>
     </VStack>
   );

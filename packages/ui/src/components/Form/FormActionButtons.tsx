@@ -10,7 +10,8 @@ interface FormActionButtonsProps {
   handleContinue?: () => void;
   isLoading?: boolean;
   loadingText?: string;
-  cancelLink: string;
+  cancelLink?: string;
+  cancelAction?: () => void;
   finalText?: string;
   disablePrimaryButton?: boolean;
   disableBackButton?: boolean;
@@ -27,6 +28,7 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
     loadingText,
     finalText,
     cancelLink,
+    cancelAction,
     disablePrimaryButton = false,
     disableBackButton = false,
     type,
@@ -86,6 +88,7 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
               color: 'primary.500',
             }}
             href={cancelLink}
+            handleClick={cancelAction}
           >
             Cancel
           </Button>

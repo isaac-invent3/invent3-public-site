@@ -74,6 +74,7 @@ import { moduleApi } from './services/modules.services';
 import { superAdminApi } from './services/dashboard/superadmin.services';
 import { clientAdminApi } from './services/dashboard/clientadmin.services';
 import { industryApi } from './services/industry.services';
+import { subscriptionApi } from './services/subscription.services';
 
 export const persistConfig = {
   key: 'root',
@@ -161,6 +162,7 @@ const rootReducer = combineReducers({
 
   // Company APIS
   [companyApi.reducerPath]: companyApi.reducer,
+  [subscriptionApi.reducerPath]: subscriptionApi.reducer,
 
   // Module APIS
   [moduleApi.reducerPath]: moduleApi.reducer,
@@ -275,6 +277,7 @@ export const makeStore = () => {
 
         // Company APIs
         companyApi.middleware,
+        subscriptionApi.middleware,
 
         // Module APIs
         moduleApi.middleware,

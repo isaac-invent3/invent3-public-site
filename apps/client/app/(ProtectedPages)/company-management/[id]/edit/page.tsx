@@ -20,6 +20,7 @@ export default function Page({ params }: { params: { id: number } }) {
     const company = data?.data;
     dispatch(
       setCompanyForm({
+        companyId: company.companyId,
         companyLogo: null,
         companyName: company.companyName,
         registrationNumber: company.registrationNumber,
@@ -40,7 +41,7 @@ export default function Page({ params }: { params: { id: number } }) {
         contactLastName: company.contactPersonLastName,
         contactEmail: company.contactPersonEmail,
         contactPhoneNumber: company.phoneNumber,
-        subscriptionPlan: null,
+        subscriptionPlanId: null,
         startDate: null,
         endDate: null,
       })

@@ -1,9 +1,8 @@
-import { Icon, Stack } from '@chakra-ui/react';
-import { Button } from '@repo/ui/components';
+import { Stack } from '@chakra-ui/react';
 import usePermissionAccess from '~/lib/hooks/useRoleAccess';
-import { AddIcon } from '../CustomIcons';
 import PageHeader from '../UI/PageHeader';
 import { ROUTES } from '~/lib/utils/constants';
+import ActionButtonPopover from '../UI/ActionButtonsPopover';
 
 const Header = () => {
   const canCreateCompany = usePermissionAccess('company:create');
@@ -18,17 +17,20 @@ const Header = () => {
       <PageHeader>Company Management</PageHeader>
 
       {!canCreateCompany && (
-        <Button
-          href={`/${ROUTES.COMPANY}/add`}
-          customStyles={{
-            width: '186px',
-            height: { base: '36px', md: '50px' },
-            alignSelf: { base: 'flex-end', md: 'initial' },
-          }}
-        >
-          <Icon as={AddIcon} boxSize="18px" color="#D2FEFD" mr="4px" />
-          Add New Company
-        </Button>
+        <ActionButtonPopover
+          actions={[
+            {
+              label: 'Manage Own Data',
+              route: `/${ROUTES.COMPANY}/add`,
+            },
+            {
+              label: 'Manage Data by other Companies',
+              route: `/${ROUTES.COMPANY}/add/manage-data`,
+            },
+          ]}
+          buttonLabel="Add New Company"
+          actionsContainerStyle={{ spacing: '24px', alignItems: 'flex-start' }}
+        />
       )}
     </Stack>
   );

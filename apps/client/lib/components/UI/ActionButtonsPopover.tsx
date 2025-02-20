@@ -61,14 +61,14 @@ const ActionButtonPopover = (props: ActionButtonPopoverProps) => {
       >
         <PopoverTrigger>
           <HStack
-            width="175px"
+            width="min-content"
             p="16px"
             height={{ base: '36px', md: 'min-content' }}
             bgColor="primary.500"
             rounded="8px"
             justifyContent="space-between"
             cursor="pointer"
-            spacing={0}
+            spacing="8px"
             alignSelf="end"
           >
             <HStack alignItems="center" spacing="4px">
@@ -78,7 +78,9 @@ const ActionButtonPopover = (props: ActionButtonPopoverProps) => {
                 color="secondary.pale.500"
                 mb="2px"
               />
-              <Text color="secondary.pale.500">{buttonLabel}</Text>
+              <Text color="secondary.pale.500" whiteSpace="nowrap">
+                {buttonLabel}
+              </Text>
             </HStack>
             <Icon
               as={ChevronDownIcon}

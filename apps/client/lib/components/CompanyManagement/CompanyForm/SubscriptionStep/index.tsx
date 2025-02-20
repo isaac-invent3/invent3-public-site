@@ -9,9 +9,11 @@ import { FormikProvider, useFormik } from 'formik';
 import moment from 'moment';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { useGetAllSubscriptionPlansQuery } from '~/lib/redux/services/subscription.services';
 import { updateCompanyForm } from '~/lib/redux/slices/CompanySlice';
 import { companySubscriptionSchema } from '~/lib/schemas/company/main.schema';
-import { ROUTES } from '~/lib/utils/constants';
+import { DEFAULT_PAGE_SIZE, ROUTES } from '~/lib/utils/constants';
+import { generateOptions } from '~/lib/utils/helperFunctions';
 
 interface SubscriptionStepProps {
   activeStep: number;
@@ -22,11 +24,14 @@ const SubscriptionStep = (props: SubscriptionStepProps) => {
   const { companyForm: formDetails } = useAppSelector((state) => state.company);
   const dispatch = useAppDispatch();
   const previousDay = moment().subtract(1, 'days').format('DD/MM/YYYY');
+  const { data } = useGetAllSubscriptionPlansQuery({
+    pageSize: DEFAULT_PAGE_SIZE,
+  });
 
   const [inputtedStartDate] = useState<Date | undefined>(undefined);
   const formik = useFormik({
     initialValues: {
-      subscriptionPlan: formDetails.subscriptionPlan ?? null,
+      subscriptionPlanId: formDetails.subscriptionPlanId ?? null,
       startDate: formDetails.startDate ?? null,
       endDate: formDetails.endDate ?? null,
     },
@@ -70,9 +75,13 @@ const SubscriptionStep = (props: SubscriptionStepProps) => {
               w={{ base: 'full', md: '50%' }}
             >
               <FormSelect
-                name="subscriptionPlan"
+                name="subscriptionPlanId"
                 title="Subscription Plan"
-                options={[{ label: 'Test', value: 'test' }]}
+                options={generateOptions(
+                  data?.data.items,
+                  'subscriptionPlanName',
+                  'subscriptionPlanId'
+                )}
                 isSearchable
               />
             </FormInputWrapper>

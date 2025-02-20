@@ -12,14 +12,16 @@ import ContactInformationStep from './ContactInformationStep';
 import Header from './Header';
 import SubscriptionStep from './SubscriptionStep';
 import SummaryStep from './SummaryStep';
+import { COMPANY_TYPE_ENUM } from '~/lib/utils/constants';
 
 const STEPS = ['Company Info', 'Contact Admin', 'Subscription', 'Summary'];
 
 interface CompanyFormProps {
   type: 'create' | 'edit';
+  companyType?: (typeof COMPANY_TYPE_ENUM)[keyof typeof COMPANY_TYPE_ENUM];
 }
 const CompanyForm = (props: CompanyFormProps) => {
-  const { type } = props;
+  const { type, companyType } = props;
   const [activeStep, setActiveStep] = useState(1);
 
   return (
@@ -55,6 +57,7 @@ const CompanyForm = (props: CompanyFormProps) => {
             <SummaryStep
               activeStep={activeStep}
               setActiveStep={setActiveStep}
+              companyType={companyType}
               type={type}
             />
           </SlideTransition>

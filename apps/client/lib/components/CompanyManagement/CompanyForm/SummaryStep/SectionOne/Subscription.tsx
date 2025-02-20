@@ -5,7 +5,7 @@ import { useAppSelector } from '~/lib/redux/hooks';
 import Info from './Info';
 
 const Subscription = () => {
-  const { startDate, subscriptionPlan, endDate } = useAppSelector(
+  const { startDate, subscriptionPlanId, endDate } = useAppSelector(
     (state) => state.company.companyForm
   );
 
@@ -13,7 +13,7 @@ const Subscription = () => {
     <VStack spacing="8px" width="full" alignItems="flex-start">
       <DetailHeader variant="primary">Subscription</DetailHeader>
       <VStack width="full" spacing="24px" alignItems="flex-start">
-        <Info label="Subscription" value={subscriptionPlan} />
+        <Info label="Subscription" value={subscriptionPlanId} />
 
         <VStack width="full" spacing="4px" alignItems="flex-start">
           <Text color="neutral.600">Start Date</Text>

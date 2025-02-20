@@ -45,6 +45,7 @@ interface CompanySummary {
 }
 
 interface CompanyFormDetails {
+  companyId: number | null;
   companyLogo: CompanyFormImage | null;
   companyName: string | null;
   registrationNumber: string | null;
@@ -61,7 +62,7 @@ interface CompanyFormDetails {
   stateName: string | null;
   countryName: string | null;
   postalCode: string | null;
-  subscriptionPlan: string | null;
+  subscriptionPlanId: number | null;
   startDate: string | null;
   endDate: string | null;
   contactFirstName: string | null;
@@ -90,6 +91,7 @@ interface CompanyDto extends BaseDto {
   emailAddress: string;
   phoneNumber: string | null;
   industryId: number;
+  subscriptionPlanId: number;
   webUrl: string;
 }
 interface createCompanyPayload {
@@ -99,7 +101,7 @@ interface createCompanyPayload {
 }
 interface updateCompanyPayload {
   updateCompanyDto: CompanyDto;
-  updateCompanyImageDtos: CompanyImageDto[];
+  multiPurposeCompanyImageDto: CompanyImageDto[];
   updateUserDto: CompanyUserDto;
 }
 

@@ -184,7 +184,7 @@ const SYSTEM_CONTEXT_TYPE = {
   NOTES: 43,
   VENDOR: 68,
   AUDIT: 73,
-  COMPANY:0,
+  COMPANY: 0,
 };
 
 const ROUTES = {
@@ -301,6 +301,11 @@ const ROLE_IDS_ENUM = {
   FIELD_ENGINEER: 22,
 };
 
+const COMPANY_TYPE_ENUM = {
+  MANAGE_OWN_DATA: 1,
+  MANAGE_DATA_FOR_COMPANIES: 2,
+};
+
 export {
   AREA_ENUM,
   ASSET_GROUP_TYPE,
@@ -324,4 +329,5 @@ export {
   yearOptions,
   EXPORT_TYPE_ENUM,
   ROLE_IDS_ENUM,
+  COMPANY_TYPE_ENUM,
 };

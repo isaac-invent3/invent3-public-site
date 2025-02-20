@@ -7,6 +7,7 @@ import {
 } from '~/lib/interfaces/company.interfaces';
 
 const initialCompanyForm = {
+  companyId: null,
   companyLogo: null,
   companyName: null,
   registrationNumber: null,
@@ -27,7 +28,7 @@ const initialCompanyForm = {
   contactLastName: null,
   contactEmail: null,
   contactPhoneNumber: null,
-  subscriptionPlan: null,
+  subscriptionPlanId: null,
   startDate: null,
   endDate: null,
 };

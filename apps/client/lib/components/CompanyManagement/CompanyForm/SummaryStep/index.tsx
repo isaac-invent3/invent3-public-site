@@ -3,7 +3,7 @@ import { FormActionButtons } from '@repo/ui/components';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { useAppSelector } from '~/lib/redux/hooks';
-import { ROUTES } from '~/lib/utils/constants';
+import { COMPANY_TYPE_ENUM, FORM_ENUM, ROUTES } from '~/lib/utils/constants';
 import CompanyInfo from './SectionOne/CompanyInfo';
 import ContactInformation from './SectionOne/ContactInformation';
 import DetailHeader from '~/lib/components/UI/DetailHeader';
@@ -19,11 +19,14 @@ interface SummaryStepProps {
   activeStep: number;
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
   type: 'create' | 'edit';
+  companyType:
+    | (typeof COMPANY_TYPE_ENUM)[keyof typeof COMPANY_TYPE_ENUM]
+    | undefined;
 }
 
 const SummaryStep = (props: SummaryStepProps) => {
   // eslint-disable-next-line no-unused-vars
-  const { activeStep, setActiveStep, type } = props;
+  const { activeStep, setActiveStep, type, companyType } = props;
   const { companyForm } = useAppSelector((state) => state.company);
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [username, setUsername] = useState<string | undefined>(undefined);
@@ -48,6 +51,7 @@ const SummaryStep = (props: SummaryStepProps) => {
     emailAddress: companyForm?.companyEmail!,
     phoneNumber: null,
     industryId: companyForm?.industryTypeId!,
+    subscriptionPlanId: companyForm?.subscriptionPlanId!,
     webUrl: companyForm?.companyWebsite!,
     [`${type === 'create' ? 'createdBy' : 'lastModifiedBy'}`]: username,
   };
@@ -74,12 +78,27 @@ const SummaryStep = (props: SummaryStepProps) => {
     createUserDto: CompanyUserDto,
   };
 
+  const updateCompanyPayload = {
+    updateCompanyDto: CompanyDto,
+    multiPurposeCompanyImageDto: [
+      {
+        imageName: companyForm.companyLogo?.imageName!,
+        base64PhotoImage: companyForm.companyLogo?.base64PhotoImage!,
+        isPrimaryImage: true,
+        companyId: companyForm.companyId!,
+        actionType: FORM_ENUM.update,
+        changeInitiatedBy: username!,
+      },
+    ],
+    updateUserDto: CompanyUserDto,
+  };
+
   const handleSumbitCompany = async () => {
     let response;
     if (type === 'create') {
       response = await handleSubmit(createCompany, createCompanyPayload, '');
     } else {
-      response = await handleSubmit(createCompany, createCompanyPayload, '');
+      response = await handleSubmit(updateCompany, updateCompanyPayload, '');
     }
     if (response?.data) {
       onOpen();
@@ -157,15 +176,7 @@ const SummaryStep = (props: SummaryStepProps) => {
           loadingText={createLoading ? 'Submitting...' : 'Updating...'}
         />
       </Flex>
-      <CompanySuccessModal
-        isOpen={isOpen}
-        onClose={onClose}
-        successText={
-          type === 'create'
-            ? 'Company Created Successfully!'
-            : 'Company Updated Sucessfully!'
-        }
-      />
+      <CompanySuccessModal isOpen={isOpen} onClose={onClose} type={type} />
     </>
   );
 };

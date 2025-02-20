@@ -31,7 +31,7 @@ const companySubscriptionSchema = (
   minEndDate?: string
 ) =>
   Yup.object().shape({
-    subscriptionPlan: Yup.string().nullable(),
+    subscriptionPlanId: Yup.string().required('Subscription plan is required'),
     startDate: createDateSchema(false, false, minStartDate).nullable(),
     endDate: createDateSchema(false, false, minEndDate).nullable(),
   });

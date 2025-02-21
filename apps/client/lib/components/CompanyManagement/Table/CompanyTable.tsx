@@ -14,6 +14,8 @@ import { ROUTES } from '~/lib/utils/constants';
 
 interface CompanyTableProps extends GenericTableProps {
   data: BaseApiResponse<ListResponse<Company>> | undefined;
+  // eslint-disable-next-line no-unused-vars
+  PopoverComponent?: (data: Company) => JSX.Element | undefined;
 }
 const CompanyTable = (props: CompanyTableProps) => {
   const {
@@ -30,6 +32,7 @@ const CompanyTable = (props: CompanyTableProps) => {
     emptyLines,
     showFooter,
     showPopover = true,
+    PopoverComponent,
   } = props;
   const [isMobile] = useMediaQuery('(max-width: 768px)');
   const router = useRouter();
@@ -62,7 +65,7 @@ const CompanyTable = (props: CompanyTableProps) => {
             />
           ),
           header: 'Primary Contact Person',
-          enableSorting: true,
+          enableSorting: false,
         }),
         columnHelper.accessor('emailAddress', {
           cell: (info) => info.getValue() ?? 'N/A',
@@ -83,7 +86,12 @@ const CompanyTable = (props: CompanyTableProps) => {
       ];
 
       const Popover = columnHelper.accessor('registrationNumber', {
-        cell: (info) => <PopoverAction company={info.row.original} />,
+        cell: (info) => {
+          if (PopoverComponent) {
+            return PopoverComponent(info.row.original);
+          }
+          return <PopoverAction company={info.row.original} />;
+        },
         header: '',
         enableSorting: false,
       });

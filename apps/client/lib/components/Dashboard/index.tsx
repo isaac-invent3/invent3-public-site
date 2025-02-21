@@ -13,9 +13,11 @@ import SuperAdmin from './SuperAdmin';
 import { useSession } from 'next-auth/react';
 import { ROLE_IDS_ENUM } from '~/lib/utils/constants';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
+import ThirdParty from './ThirdParty';
 
 const ROLE_PRIORITY = [
   ROLE_IDS_ENUM.SUPER_ADMIN,
+  ROLE_IDS_ENUM.THIRD_PARTY,
   ROLE_IDS_ENUM.CLIENT_ADMIN,
   ROLE_IDS_ENUM.EXECUTIVE,
   ROLE_IDS_ENUM.OPERATION_MANAGER,
@@ -34,6 +36,7 @@ const ROLE_VIEW_MAPPING: Record<number, DashboardView> = {
 
 const DASHBOARD_COMPONENTS: Record<DashboardView, React.FC> = {
   super_admin: SuperAdmin,
+  third_party: ThirdParty,
   client_admin: ClientAdmin,
   executive: Executive,
   operation_manager: OperationManager,
@@ -89,6 +92,7 @@ const isDashboardView = (value: string | null): value is DashboardView => {
     'executive',
     'operation_manager',
     'field_engineer',
+    'third_party',
     'front_desk',
   ]);
   return value !== null && DASHBOARD_VIEWS.has(value as DashboardView);

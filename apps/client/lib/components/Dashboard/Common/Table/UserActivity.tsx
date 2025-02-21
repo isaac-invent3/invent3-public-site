@@ -2,7 +2,7 @@ import { HStack, VStack } from '@chakra-ui/react';
 import React, { useMemo } from 'react';
 import { Button, DataTable } from '@repo/ui/components';
 import { ROUTES } from '~/lib/utils/constants';
-import CardHeader from '../../Common/CardHeader';
+import CardHeader from '../CardHeader';
 import { createColumnHelper } from '@tanstack/react-table';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import { useGetUserActivityDataQuery } from '~/lib/redux/services/dashboard/clientadmin.services';

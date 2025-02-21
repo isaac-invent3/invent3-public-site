@@ -1,5 +1,5 @@
 import { SimpleGrid } from '@chakra-ui/react';
-import UserActivity from '../../ClientAdmin/SectionFive/UserActivity';
+import UserActivity from '../../Common/Table/UserActivity';
 import CompanyManagement from './CompanyManagement';
 
 const SectionThree = () => {

@@ -151,6 +151,7 @@ type DashboardView =
   | 'executive'
   | 'front_desk'
   | 'field_engineer'
+  | 'third_party'
   | 'client_admin'
   | 'super_admin';
 

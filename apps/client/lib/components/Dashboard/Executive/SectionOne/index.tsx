@@ -6,7 +6,7 @@ import {
   TicketSlantedIcon,
 } from '~/lib/components/CustomIcons/Dashboard';
 import { useGetSuperAdminDashboardStatQuery } from '~/lib/redux/services/dashboard/superadmin.services';
-import SummaryCard from './SummaryCardWithPercentChange';
+import SummaryCard from '../../Common/Summaries/SummaryCardWithPercentChange';
 import { AssetManagementIcon } from '~/lib/components/CustomIcons/layout';
 import { formatNumberShort } from '~/lib/utils/helperFunctions';
 

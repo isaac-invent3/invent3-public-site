@@ -1,5 +1,6 @@
 export { default as Button } from './Button';
 export { default as BackButton } from './Button/BackButton';
+export { default as CustomBadge } from './Badge';
 export { default as CheckBox } from './CheckBox';
 export { default as AddTime } from './DateTimeComponents/AddTime';
 export { default as ConditionalDateSelector } from './DateTimeComponents/Common/ConditionalDateSelector';

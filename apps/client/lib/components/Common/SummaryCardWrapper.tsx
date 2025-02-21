@@ -43,7 +43,7 @@ const SummaryCardWrapper = (props: SummaryCardWrapperProps) => {
     >
       <HStack
         width="full"
-        alignItems="flex-start"
+        alignItems="center"
         justifyContent="space-between"
         position="relative"
       >

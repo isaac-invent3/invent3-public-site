@@ -1,6 +1,7 @@
 export { default as GenericBreadCrumb } from './BreadCrumb';
 export { default as Button } from './Button';
 export { default as BackButton } from './Button/BackButton';
+export { default as CustomBadge } from './Badge';
 export { default as SelectableButtonGroup } from './Button/SelectableButtonGroup';
 export { default as CheckBox } from './CheckBox';
 export { default as ConditionalOverFlow } from './ConditionalOverFlow';

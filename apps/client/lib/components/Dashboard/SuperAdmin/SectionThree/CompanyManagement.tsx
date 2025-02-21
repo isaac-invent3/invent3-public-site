@@ -100,7 +100,7 @@ const CompanyManagement = () => {
           </Text>
         </HStack>
         <Button
-          href={`/${ROUTES.TICKETS}`}
+          href={`/${ROUTES.COMPANY}`}
           customStyles={{
             py: 0,
             height: '28px',

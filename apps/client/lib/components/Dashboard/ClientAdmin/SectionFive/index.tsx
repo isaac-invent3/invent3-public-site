@@ -1,5 +1,5 @@
 import { Flex, HStack } from '@chakra-ui/react';
-import UserActivity from './UserActivity';
+import UserActivity from '../../Common/Table/UserActivity';
 import VendorManagement from './VendorManagement';
 
 const SectionFive = () => {

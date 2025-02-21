@@ -2,13 +2,14 @@ import {
   ComponentWithAs,
   HStack,
   IconProps,
+  ResponsiveValue,
   Skeleton,
   Text,
   VStack,
 } from '@chakra-ui/react';
 import React from 'react';
 import SummaryCardWrapper from '../../../Common/SummaryCardWrapper';
-import ProgressIndicator from '../../Common/ProgressIndicator';
+import ProgressIndicator from '../ProgressIndicator';
 
 interface SummaryCardProps {
   isLoading: boolean;
@@ -21,6 +22,9 @@ interface SummaryCardProps {
   rangeText?: string;
   progressText?: string;
   formatValue?: boolean;
+  showIconBgColor?: boolean;
+  textSize?: ResponsiveValue<string>;
+  iconStyle?: IconProps | undefined;
 }
 const SummaryCard = (props: SummaryCardProps) => {
   const {
@@ -34,24 +38,28 @@ const SummaryCard = (props: SummaryCardProps) => {
     rangeText,
     progressText,
     formatValue,
+    showIconBgColor,
+    textSize,
+    iconStyle,
   } = props;
   return (
     <SummaryCardWrapper
       title={title}
       icon={icon}
       containerStyle={{ minH: '180px' }}
-      headerStyle={{ maxW: '70%' }}
+      headerStyle={{ maxW: '70%', size: textSize }}
       iconStyle={{
         color: 'primary.500',
         boxSize: '16px',
         mr: '6px',
+        ...iconStyle,
       }}
       iconWrapperStyle={{
         width: '32px',
         height: '32px',
         flexShrink: 0,
         rounded: 'full',
-        bgColor: '#0F264233',
+        bgColor: showIconBgColor ? '#0F264233' : 'none',
       }}
     >
       <VStack
@@ -61,13 +69,7 @@ const SummaryCard = (props: SummaryCardProps) => {
       >
         <HStack alignItems="flex-end" spacing="4px">
           <Skeleton isLoaded={!isLoading}>
-            <Text
-              mt="8px"
-              fontSize="24px"
-              lineHeight="28.51px"
-              fontWeight={800}
-              color="primary.500"
-            >
+            <Text mt="8px" size="xl" fontWeight={800} color="primary.500">
               {(formatValue ? value?.toLocaleString() : value) ?? '-'}
             </Text>
           </Skeleton>

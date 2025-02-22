@@ -2,8 +2,8 @@
 import { Text, useDisclosure, VStack } from '@chakra-ui/react';
 import { GenericPopover } from '@repo/ui/components';
 import usePermissionAccess from '~/lib/hooks/useRoleAccess';
-import { ROUTES } from '~/lib/utils/constants';
-import DeactivateUserModal from '../Modals/DeactivateUserModal';
+import { ROUTES, USER_STATUS_ENUM } from '~/lib/utils/constants';
+import DeactivateUserModal from '../Modals/ToggleUserStatusModal';
 import { User } from '~/lib/interfaces/user.interfaces';
 
 interface MobilePopoverProps {
@@ -30,7 +30,9 @@ const MobilePopover = (props: MobilePopoverProps) => {
           )}
           {canDeactivateUser && (
             <Text cursor="pointer" onClick={onOpen}>
-              Deactivate User
+              {data?.statusId === USER_STATUS_ENUM.ACTIVE
+                ? 'Deactivate'
+                : 'Activate'}
             </Text>
           )}
         </VStack>

@@ -5,8 +5,12 @@ import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import { User } from '~/lib/interfaces/user.interfaces';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { setUser } from '~/lib/redux/slices/UserSlice';
-import { SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
-import DeactivateUserModal from '../Modals/DeactivateUserModal';
+import {
+  ROUTES,
+  SYSTEM_CONTEXT_DETAILS,
+  USER_STATUS_ENUM,
+} from '~/lib/utils/constants';
+import ToggleUserStatusModal from '../Modals/ToggleUserStatusModal';
 
 interface PopoverActionProps {
   user: User;
@@ -29,13 +33,21 @@ const PopoverAction = ({ user }: PopoverActionProps) => {
           >
             View Details
           </Text>
-          <Text cursor="pointer">Modify</Text>
+          <Text
+            cursor="pointer"
+            as="a"
+            href={`/${ROUTES.USERS}/${user.userId}/edit`}
+          >
+            Modify
+          </Text>
           <Text cursor="pointer" color="red.500" onClick={() => onOpen()}>
-            Deactivate
+            {user?.statusId === USER_STATUS_ENUM.ACTIVE
+              ? 'Deactivate'
+              : 'Activate'}
           </Text>
         </VStack>
       </GenericPopover>
-      <DeactivateUserModal isOpen={isOpen} onClose={onClose} />
+      <ToggleUserStatusModal isOpen={isOpen} onClose={onClose} />
     </>
   );
 };

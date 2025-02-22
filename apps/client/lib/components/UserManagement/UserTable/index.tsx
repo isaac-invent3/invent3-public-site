@@ -58,7 +58,7 @@ const UserTable = (props: UserTableProps) => {
           cell: (info) => (
             <UserInfo
               name={`${info.row.original.firstName} ${info.row.original.lastName}`}
-              role="Admin Officer"
+              role=""
             />
           ),
           header: 'Name',
@@ -71,8 +71,8 @@ const UserTable = (props: UserTableProps) => {
           enableSorting: true,
         }),
 
-        columnHelper.accessor('rowId', {
-          cell: () => (
+        columnHelper.accessor('userRoles', {
+          cell: (info) => (
             <Text
               color="black"
               py="8px"
@@ -80,19 +80,22 @@ const UserTable = (props: UserTableProps) => {
               bgColor="#EABC3040"
               rounded="16px"
             >
-              FrontDesk/CSA
+              {info
+                .getValue()
+                .map((item) => item.roleName)
+                .join(', ')}
             </Text>
           ),
           header: 'User Role',
           enableSorting: true,
         }),
 
-        columnHelper.accessor('countryName', {
-          cell: () => (
+        columnHelper.accessor('facilityName', {
+          cell: (info) => (
             <VStack spacing="4px" alignItems="flex-start">
-              <Text color="black">Admiralty Way,</Text>
+              <Text color="black">{info.getValue() ?? 'N/A'}</Text>
               <Text color="neutral.700" fontSize="10px" lineHeight="11.88px">
-                Lekki Epe
+                {info.row.original.lganame ?? ''}
               </Text>
             </VStack>
           ),
@@ -105,9 +108,14 @@ const UserTable = (props: UserTableProps) => {
           header: 'Hired Date',
           enableSorting: false,
         }),
-        columnHelper.accessor('stateName', {
-          cell: () => {
-            return <GenericStatusBox text="Active" colorCode="#07CC3B" />;
+        columnHelper.accessor('statusName', {
+          cell: (info) => {
+            return (
+              <GenericStatusBox
+                text={info.getValue()}
+                colorCode={info.row.original?.displayColorCode}
+              />
+            );
           },
           header: 'Status',
           enableSorting: false,

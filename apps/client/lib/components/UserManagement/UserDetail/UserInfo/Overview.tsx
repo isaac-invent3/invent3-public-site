@@ -19,6 +19,8 @@ const Overview = () => {
     lganame,
     userRoles,
     employeeId,
+    statusName,
+    displayColorCode,
   } = userData;
 
   const userInfo1 = [
@@ -74,7 +76,10 @@ const Overview = () => {
           <Heading as="h3" size={{ base: 'lg', md: 'xl' }} fontWeight={800}>
             {name}
           </Heading>
-          <GenericStatusBox text="Active" colorCode="#07CC3B" />
+          <GenericStatusBox
+            text={statusName ?? ''}
+            colorCode={displayColorCode ?? ''}
+          />
         </HStack>
         <Stack
           width="full"

@@ -20,7 +20,7 @@ const OccupationInformation = () => {
       label: 'User Role:',
       value: userRoles?.map((item) => item.roleName).join(', '),
     },
-    { label: 'Job Title:', value: 'Admin Officer' },
+    { label: 'Job Title:', value: userDetail?.designationName },
   ];
 
   return (

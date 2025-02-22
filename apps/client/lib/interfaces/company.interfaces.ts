@@ -96,7 +96,9 @@ interface CompanyDto extends BaseDto {
   webUrl: string;
 }
 interface CreateCompanyPayload {
-  createCompanyDto: CompanyDto;
+  createCompanyDto: {
+    companyType: number;
+  };
   createCompanyImageDtos: CompanyImageDto[];
   createUserDto: CompanyUserDto;
 }

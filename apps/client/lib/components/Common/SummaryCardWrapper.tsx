@@ -43,13 +43,13 @@ const SummaryCardWrapper = (props: SummaryCardWrapperProps) => {
     >
       <HStack
         width="full"
-        alignItems="center"
+        alignItems="flex-start"
         justifyContent="space-between"
         position="relative"
       >
         <CardHeader customStyle={headerStyle}>{title}</CardHeader>
         {icon && (
-          <HStack width="24px" height="24px" {...iconWrapperStyle}>
+          <HStack width="24px" height="24px" p={0} m={0} {...iconWrapperStyle}>
             <Icon
               as={icon}
               boxSize="24px"

@@ -45,7 +45,7 @@ const Summary = () => {
     },
     {
       label: 'NIN',
-      value: '2752348-09238645',
+      value: userData?.personalIdentificationNumber,
     },
   ];
 

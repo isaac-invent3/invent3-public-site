@@ -1,10 +1,10 @@
 import { HStack, Icon, useDisclosure, useMediaQuery } from '@chakra-ui/react';
 import { Button } from '@repo/ui/components';
 import { CloseIcon } from '../../CustomIcons';
-import DeactivateUserModal from '../Modals/DeactivateUserModal';
 import MobilePopover from './MobilePopover';
 import { useAppSelector } from '~/lib/redux/hooks';
-import { ROUTES } from '~/lib/utils/constants';
+import { ROUTES, USER_STATUS_ENUM } from '~/lib/utils/constants';
+import ToggleUserStatusModal from '../Modals/ToggleUserStatusModal';
 
 interface UserHeaderProps {
   handleBack: () => void;
@@ -55,12 +55,14 @@ const UserHeader = (props: UserHeaderProps) => {
               variant="secondary"
               handleClick={onOpen}
             >
-              Deactivate
+              {user?.statusId === USER_STATUS_ENUM.ACTIVE
+                ? 'Deactivate'
+                : 'Activate'}
             </Button>
           </HStack>
         )}
       </HStack>
-      <DeactivateUserModal isOpen={isOpen} onClose={onClose} />
+      <ToggleUserStatusModal isOpen={isOpen} onClose={onClose} />
     </>
   );
 };

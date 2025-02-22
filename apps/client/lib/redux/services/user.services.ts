@@ -253,6 +253,18 @@ export const userApi = createApi({
       }),
       invalidatesTags: ['allUsers'],
     }),
+    toggleUserStatus: builder.mutation<
+      BaseApiResponse<User>,
+      { userId: number; lastModifiedBy: string }
+    >({
+      query: ({ userId, ...body }) => ({
+        url: generateQueryStr(`/Users/ToggleUserStatus/${userId}?`, body),
+        method: 'PUT',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allUsers'],
+    }),
     deleteUserGroup: builder.mutation<void, { id: number; deletedBy: string }>({
       query: ({ id, ...body }) => ({
         url: `/Groups/${id}`,
@@ -287,4 +299,5 @@ export const {
   useUpdateUserGroupMutation,
   useDeleteUserGroupMutation,
   useGetUserDocumentsQuery,
+  useToggleUserStatusMutation,
 } = userApi;

@@ -31,6 +31,9 @@ interface User {
   lastName: string;
   username: string;
   email: string;
+  statusId: number;
+  statusName: string;
+  displayColorCode: string;
   isDeleted: boolean;
   phoneNumber: string;
   residentialAddress: string;
@@ -50,6 +53,7 @@ interface User {
   employeeId: number;
   companyId: number;
   designationId: number;
+  designationName: string;
   lastActive: string;
   personalIdentificationNumber: number;
   personalEmail: string;

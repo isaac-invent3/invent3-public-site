@@ -47,16 +47,19 @@ const SummaryCard = (props: SummaryCardProps) => {
       title={title}
       icon={icon}
       containerStyle={{ minH: '180px' }}
-      headerStyle={{ maxW: '70%', size: textSize }}
+      headerStyle={{
+        maxW: '70%',
+        size: textSize ?? { base: 'base', sm: 'base' },
+      }}
       iconStyle={{
         color: 'primary.500',
-        boxSize: '16px',
+        boxSize: '20px',
         mr: '6px',
         ...iconStyle,
       }}
       iconWrapperStyle={{
-        width: '32px',
-        height: '32px',
+        // width: '32px',
+        // height: '32px',
         flexShrink: 0,
         rounded: 'full',
         bgColor: showIconBgColor ? '#0F264233' : 'none',

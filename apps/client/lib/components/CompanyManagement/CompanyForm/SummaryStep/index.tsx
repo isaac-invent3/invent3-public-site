@@ -66,7 +66,7 @@ const SummaryStep = (props: SummaryStepProps) => {
   };
 
   const createCompanyPayload = {
-    createCompanyDto: CompanyDto,
+    createCompanyDto: { ...CompanyDto, companyType: companyType! },
     createCompanyImageDtos: [
       {
         imageName: companyForm.companyLogo?.imageName!,

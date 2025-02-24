@@ -372,6 +372,7 @@ interface AssetDto extends BaseDto {
   scrapvalue: number;
   parentId: number;
   subCategoryId: number;
+  vendorId?: number;
 }
 
 interface AssetImageDto extends BaseDto {

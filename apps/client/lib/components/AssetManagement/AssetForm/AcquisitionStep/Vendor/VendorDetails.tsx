@@ -110,9 +110,10 @@ const VendorDetails = () => {
                   isLoading={isLoading}
                   pageNumber={pageNumber}
                   setPageNumber={setPageNumber}
-                  handleSelect={(option) =>
-                    setSelectedVendor(Number(option.value) ?? undefined)
-                  }
+                  handleSelect={(option) => {
+                    setSelectedVendor(Number(option.value) ?? undefined);
+                    dispatch(updateAssetForm({ vendorFormDetails: null }));
+                  }}
                 />
                 {canCreateVendor && (
                   <FormAddButton handleClick={onOpen}>
@@ -137,13 +138,13 @@ const VendorDetails = () => {
               {vendorDetails.vendorName ? (
                 <VStack width="full" spacing="4px" alignItems="flex-start">
                   <Text size="lg" color="black" fontWeight={700}>
-                    {vendorDetails.vendorName}
+                    {vendorDetails?.vendorName}
                   </Text>
                   <Text size="md" color="neutral.600">
-                    {vendorDetails.address}
+                    {vendorDetails?.address}
                   </Text>
                   <Text size="md" color="neutral.600">
-                    {vendorDetails.emailAddress}
+                    {vendorDetails?.emailAddress}
                   </Text>
                 </VStack>
               ) : (

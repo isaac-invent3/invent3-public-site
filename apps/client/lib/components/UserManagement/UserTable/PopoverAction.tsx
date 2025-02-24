@@ -20,6 +20,7 @@ const PopoverAction = ({ user }: PopoverActionProps) => {
   const dispatch = useAppDispatch();
   const { updateSearchParam } = useCustomSearchParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const isActive = user?.statusId === USER_STATUS_ENUM.ACTIVE;
   return (
     <>
       <GenericPopover width="137px" placement="bottom-start">
@@ -40,14 +41,16 @@ const PopoverAction = ({ user }: PopoverActionProps) => {
           >
             Modify
           </Text>
-          <Text cursor="pointer" color="red.500" onClick={() => onOpen()}>
-            {user?.statusId === USER_STATUS_ENUM.ACTIVE
-              ? 'Deactivate'
-              : 'Activate'}
+          <Text
+            cursor="pointer"
+            color={isActive ? 'red.500' : 'black'}
+            onClick={() => onOpen()}
+          >
+            {isActive ? 'Deactivate' : 'Activate'}
           </Text>
         </VStack>
       </GenericPopover>
-      <ToggleUserStatusModal isOpen={isOpen} onClose={onClose} />
+      <ToggleUserStatusModal isOpen={isOpen} onClose={onClose} user={user} />
     </>
   );
 };

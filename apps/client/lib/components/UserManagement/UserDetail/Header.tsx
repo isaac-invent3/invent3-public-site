@@ -62,7 +62,7 @@ const UserHeader = (props: UserHeaderProps) => {
           </HStack>
         )}
       </HStack>
-      <ToggleUserStatusModal isOpen={isOpen} onClose={onClose} />
+      <ToggleUserStatusModal isOpen={isOpen} onClose={onClose} user={user} />
     </>
   );
 };

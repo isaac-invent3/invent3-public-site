@@ -82,7 +82,7 @@ const UserTable = (props: UserTableProps) => {
             >
               {info
                 .getValue()
-                .map((item) => item.roleName)
+                ?.map((item) => item.roleName)
                 .join(', ')}
             </Text>
           ),

@@ -8,19 +8,19 @@ import {
 import { Button, GenericModal } from '@repo/ui/components';
 import { getSession } from 'next-auth/react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { useAppSelector } from '~/lib/redux/hooks';
+import { User } from '~/lib/interfaces/user.interfaces';
 import { useToggleUserStatusMutation } from '~/lib/redux/services/user.services';
 import { USER_STATUS_ENUM } from '~/lib/utils/constants';
 
 interface ToggleUserStatusModalProps {
   isOpen: boolean;
   onClose: () => void;
+  user: User;
 }
 
 const ToggleUserStatusModal = (props: ToggleUserStatusModalProps) => {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, user: userDetails } = props;
   const [toggleStatus, { isLoading }] = useToggleUserStatusMutation({});
-  const userDetails = useAppSelector((state) => state.user.user);
   const { handleSubmit } = useCustomMutation();
   const isActive = userDetails?.statusId === USER_STATUS_ENUM.ACTIVE;
   const loadingText = isActive ? 'Deactivating...' : 'Activating...';

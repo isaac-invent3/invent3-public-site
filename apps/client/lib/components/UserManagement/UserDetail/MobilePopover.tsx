@@ -37,7 +37,7 @@ const MobilePopover = (props: MobilePopoverProps) => {
           )}
         </VStack>
       </GenericPopover>
-      <DeactivateUserModal isOpen={isOpen} onClose={onClose} />
+      <DeactivateUserModal isOpen={isOpen} onClose={onClose} user={data} />
     </>
   );
 };

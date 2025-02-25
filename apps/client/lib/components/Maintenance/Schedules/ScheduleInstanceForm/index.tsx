@@ -3,11 +3,7 @@ import { Flex, useDisclosure, VStack } from '@chakra-ui/react';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { FormikProvider, useFormik } from 'formik';
 import { scheduleSchema } from '~/lib/schemas/maintenance.schema';
-import {
-  Button,
-  FormActionButtons,
-  withFormLeaveDialog,
-} from '@repo/ui/components';
+import { Button, FormActionButtons } from '@repo/ui/components';
 import { useUpdateScheduleInstanceandTaskInstancesMutation } from '~/lib/redux/services/maintenance/scheduleInstance.services';
 import SectionTwo from '../ScheduleForm/FormSection/SectionTwo';
 import moment from 'moment';
@@ -20,6 +16,7 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import ScheduleInstanceSuccessModal from './SuccessModal';
 import { TaskInstancePayload } from '~/lib/interfaces/task.interfaces';
 import PageHeader from '~/lib/components/UI/PageHeader';
+import withFormLeaveDialog from '~/lib/components/UI/FormLeaveDialogProvider';
 
 const ScheduleInstanceForm = () => {
   const formDetails = useAppSelector((state) => state.maintenance.scheduleForm);

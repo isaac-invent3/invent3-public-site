@@ -308,7 +308,7 @@ importers:
         version: link:../typescript-config
       typescript:
         specifier: latest
-        version: 5.7.2
+        version: 5.7.3
 
   packages/eslint-config:
     devDependencies:
@@ -344,7 +344,7 @@ importers:
         version: link:../typescript-config
       typescript:
         specifier: latest
-        version: 5.7.2
+        version: 5.7.3
 
   packages/typescript-config: {}
 
@@ -456,7 +456,7 @@ importers:
         version: link:../typescript-config
       typescript:
         specifier: latest
-        version: 5.7.2
+        version: 5.7.3
 
 packages:
 
@@ -6747,6 +6747,7 @@ packages:
 
   lodash.get@4.4.2:
     resolution: {integrity: sha512-z+Uw/vLuy6gQe8cfaFWD7p0wVv8fJl3mbzXh33RS+0oW2wvUqiRXiQ69gLWSLpgB5/6sU+r6BlQR0MBILadqTQ==}
+    deprecated: This package is deprecated. Use the optional chaining (?.) operator instead.
 
   lodash.ismatch@4.4.0:
     resolution: {integrity: sha512-fPMfXjGQEV9Xsq/8MTSgUf255gawYRbjwMyDbcvDhXgV7enSZA0hynz6vMPnpAb5iONEzBHBPsT+0zes5Z301g==}
@@ -9759,6 +9760,11 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
+  typescript@5.7.3:
+    resolution: {integrity: sha512-84MVSjMEHP+FQRPy3pX9sTVV/INIex71s9TL2Gm5FG/WG1SqXeKyZ0k7/blY/4FdOzI12CBy1vGc4og/eus0fw==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
   typewise-core@1.2.0:
     resolution: {integrity: sha512-2SCC/WLzj2SbUwzFOzqMCkz5amXLlxtJqDKTICqg30x+2DZxcfZN2MvQZmGfXWKNWaKK9pBPsvkcwv8bF/gxKg==}
 
@@ -12447,9 +12453,7 @@ snapshots:
       source-map: 0.6.1
       string-length: 2.0.0
     transitivePeerDependencies:
-      - bufferutil
       - supports-color
-      - utf-8-validate
 
   '@jest/source-map@24.9.0':
     dependencies:
@@ -22168,6 +22172,8 @@ snapshots:
   typedarray@0.0.6: {}
 
   typescript@5.7.2: {}
+
+  typescript@5.7.3: {}
 
   typewise-core@1.2.0: {}
 

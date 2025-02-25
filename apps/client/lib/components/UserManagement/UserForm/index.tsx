@@ -2,17 +2,14 @@
 
 import { Flex } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import {
-  FormStepper,
-  SlideTransition,
-  withFormLeaveDialog,
-} from '@repo/ui/components';
+import { FormStepper, SlideTransition } from '@repo/ui/components';
 import PageHeader from '../../UI/PageHeader';
 import DocumentStep from './Document';
 import SummaryStep from './Summary';
 import RoleGroupInfo from './RoleGroupInfo';
 import OccupationInfo from './OccupationInfo';
 import EmployeeInfo from './EmployeeInfo';
+import withFormLeaveDialog from '../../UI/FormLeaveDialogProvider';
 
 interface UserFormProps {
   type: 'create' | 'edit';

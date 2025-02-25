@@ -15,7 +15,7 @@ const baseQuery = fetchBaseQuery({
     const session = await getSession();
 
     if (session?.error) {
-      return handleSignOut();
+      return handleSignOut(window.location.pathname);
     }
 
     if (session?.user) {
@@ -37,7 +37,7 @@ const baseQueryWithReauth: BaseQueryFn<
   // const path = typeof args === 'string' ? args : args.url;
   // If you get a 401 response, try refreshing the token
   if (result.error && result.error.status === 401) {
-    handleSignOut();
+    handleSignOut(window.location.pathname);
   }
 
   return result;

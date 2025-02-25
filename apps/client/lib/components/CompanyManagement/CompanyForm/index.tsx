@@ -1,11 +1,7 @@
 'use client';
 
 import { Flex } from '@chakra-ui/react';
-import {
-  FormStepper,
-  SlideTransition,
-  withFormLeaveDialog,
-} from '@repo/ui/components';
+import { FormStepper, SlideTransition } from '@repo/ui/components';
 import { useState } from 'react';
 import CompanyInfoStep from './CompanyInfoStep';
 import ContactInformationStep from './ContactInformationStep';
@@ -13,6 +9,7 @@ import Header from './Header';
 import SubscriptionStep from './SubscriptionStep';
 import SummaryStep from './SummaryStep';
 import { COMPANY_TYPE_ENUM } from '~/lib/utils/constants';
+import withFormLeaveDialog from '../../UI/FormLeaveDialogProvider';
 
 const STEPS = ['Company Info', 'Contact Admin', 'Subscription', 'Summary'];
 

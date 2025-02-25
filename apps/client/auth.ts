@@ -2,7 +2,9 @@ import NextAuth from 'next-auth';
 import type { NextAuthConfig } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { Mutex } from 'async-mutex';
-import { AccessibleRoute } from './types/next-auth';
+
+export const TOKEN_REFRESH_BUFFER_SECONDS = 300; // 5 minutes
+const getTimeInSeconds = () => Math.floor(Date.now() / 1000);
 
 // Create a shared mutex for controlling access to the refresh token process
 const refreshTokenMutex = new Mutex();
@@ -46,14 +48,13 @@ async function refreshAccessToken(token) {
 
     console.log('The token has been refreshed successfully.');
 
-    const currentTime = Date.now(); // Current time in milliseconds
-
+    const timeInSeconds = getTimeInSeconds();
     const refreshedToken = {
       ...token,
       accessToken: data.data.accessToken,
       refreshToken: data.data.refreshToken,
       sessionId: data.data.sessionId,
-      accessTokenExpires: currentTime + data.data.expiresIn * 1000,
+      accessTokenExpires: timeInSeconds + data.data.expiresIn,
       error: '',
     };
 
@@ -63,6 +64,12 @@ async function refreshAccessToken(token) {
     return refreshedToken;
   } catch (error) {
     console.log(error);
+    const failedRefresh = {
+      ...token,
+      error: 'RefreshAccessTokenError',
+    };
+    // Store the refreshed token in the map
+    refreshedTokens.set(token.accessToken, failedRefresh);
     return {
       ...token,
       error: 'RefreshAccessTokenError',
@@ -125,8 +132,7 @@ export const config = {
   },
   callbacks: {
     async jwt({ token, user, trigger, session }) {
-      const currentTime = Date.now(); // Current time in milliseconds
-      if (user) {
+      if (user && user.expiresIn) {
         token.id = user.userId;
         token.name = `${user.firstName} ${user.lastName}`;
         token.firstName = user.firstName;
@@ -138,6 +144,7 @@ export const config = {
         token.sessionId = user.sessionId;
         token.apiKey = user.apiKey;
         token.role = user.role;
+        token.companyId = user.companyId;
         token.roleIds = user.roleIds;
         token.roleSystemModuleContextPermissions =
           user.roleSystemModuleContextPermissions;
@@ -145,7 +152,7 @@ export const config = {
 
       // Set accessTokenExpires if not already set, to prevent resetting it on each callback
       if (!token.accessTokenExpires) {
-        token.accessTokenExpires = currentTime + user.expiresIn * 1000;
+        token.accessTokenExpires = getTimeInSeconds() + user.expiresIn;
       }
 
       // Update token if triggered by 'update'
@@ -156,8 +163,8 @@ export const config = {
       // If token is still valid, return it
       if (
         token.accessTokenExpires &&
-        Date.now() < Number(token.accessTokenExpires) &&
-        token.error !== 'RefreshAccessTokenError'
+        getTimeInSeconds() <
+          Number(token.accessTokenExpires) - TOKEN_REFRESH_BUFFER_SECONDS
       ) {
         return token;
       }
@@ -185,18 +192,19 @@ export const config = {
           ...session.user,
           id: token.id.toString(),
           userId: token.id,
-          firstName: token.firstName as string,
-          lastName: token.lastName as string,
-          email: token.email as string,
-          username: token.username as string,
-          sessionId: token.sessionId as number,
-          apiKey: token.apiKey as string,
-          accessToken: token.accessToken as string,
-          accessTokenExpires: token.accessTokenExpires as number,
-          role: token.role as string[],
-          roleIds: token.roleIds as number[],
+          companyId: token.companyId,
+          firstName: token.firstName,
+          lastName: token.lastName,
+          email: token.email,
+          username: token.username,
+          sessionId: token.sessionId,
+          apiKey: token.apiKey,
+          accessToken: token.accessToken,
+          accessTokenExpires: token.accessTokenExpires,
+          role: token.role,
+          roleIds: token.roleIds,
           roleSystemModuleContextPermissions:
-            token.roleSystemModuleContextPermissions as AccessibleRoute,
+            token.roleSystemModuleContextPermissions,
         },
         error: token.error,
       };

@@ -138,7 +138,6 @@ const SummaryStep = (props: SummaryStepProps) => {
     scrapvalue: assetFormDetails.scrapValue!,
     parentId: assetData?.assetId! ?? assetFormDetails.parentId!,
     subCategoryId: assetFormDetails.subCategoryId!,
-    vendorId: assetFormDetails?.vendorId!,
     [`${type === 'create' ? 'createdBy' : 'lastModifiedBy'}`]: username,
   };
 

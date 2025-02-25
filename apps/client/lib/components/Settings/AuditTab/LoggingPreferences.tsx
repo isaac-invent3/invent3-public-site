@@ -1,10 +1,13 @@
 import { Switch, Text, useMediaQuery, VStack } from '@chakra-ui/react';
 import React from 'react';
-import { CheckBox, Select } from '@repo/ui/components';
+import { CheckBox, FormSelect } from '@repo/ui/components';
 import SectionWrapper from '../../Profile/Common/SectionWrapper';
+import { useFormikContext } from 'formik';
+import { Settings } from '~/lib/interfaces/settings.interfaces';
 
 const LoggingPreference = () => {
   const [isMobile] = useMediaQuery('(max-width: 480px)');
+  const { setFieldValue, values } = useFormikContext<Settings>();
   return (
     <VStack spacing="24px" width="full" alignItems="flex-start">
       <Text fontWeight={700} size="lg">
@@ -17,7 +20,13 @@ const LoggingPreference = () => {
           sectionInfoWidth="212px"
           sectionInfoStyle={{ maxW: { base: '60%', md: '212px' } }}
         >
-          <Switch size="sm" isChecked={false} onChange={() => {}} />
+          <Switch
+            size="sm"
+            isChecked={values.enableAuditLogs}
+            onChange={() =>
+              setFieldValue('enableAuditLogs', !values.enableAuditLogs)
+            }
+          />
         </SectionWrapper>
         <SectionWrapper
           title="Retention Period"
@@ -27,16 +36,15 @@ const LoggingPreference = () => {
           direction={{ base: 'column', sm: 'row' }}
           sectionInfoStyle={{ maxW: { base: '100%', sm: '212px' } }}
         >
-          <Select
+          <FormSelect
+            name="retentionPeriodId"
             title="Period"
             options={[]}
-            selectedOption={undefined}
             containerStyles={{
               width: isMobile ? '100%' : '179px',
             }}
             selectStyles={{ height: '46px', pt: '0px' }}
             showTitleAfterSelect={false}
-            handleSelect={() => {}}
           />
         </SectionWrapper>
         <SectionWrapper
@@ -45,7 +53,15 @@ const LoggingPreference = () => {
           sectionInfoWidth="212px"
           sectionInfoStyle={{ maxW: { base: '60%', md: '212px' } }}
         >
-          <CheckBox isChecked={false} handleChange={() => {}} />
+          <CheckBox
+            isChecked={values.logsIncludeUserActivity}
+            handleChange={() =>
+              setFieldValue(
+                'logsIncludeUserActivity',
+                !values.logsIncludeUserActivity
+              )
+            }
+          />
         </SectionWrapper>
       </VStack>
     </VStack>

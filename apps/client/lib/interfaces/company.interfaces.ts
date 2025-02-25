@@ -1,3 +1,4 @@
+import { FORM_ENUM } from '../utils/constants';
 import { BaseDto } from './general.interfaces';
 
 interface Company {
@@ -107,6 +108,31 @@ interface UpdateCompanyPayload {
   multiPurposeCompanyImageDto: CompanyImageDto[];
   updateUserDto: CompanyUserDto;
 }
+interface CompanyConfigurationPayload {
+  companyId: number;
+  companyConfigurationOptionId: number | null;
+  systemConfigurationOptionId: number;
+  actionType: typeof FORM_ENUM.add | typeof FORM_ENUM.delete;
+  changeInitiatedBy: string;
+}
+interface CompanyConfigurationOption {
+  rowId: number;
+  companyId: number;
+  companyName: string;
+  companyConfigurationOptionId: number;
+  guid: string;
+  systemConfigurationOptionId: number;
+  systemConfigurationOptionName: string;
+  systemConfigurationOptionTypeId: number;
+  systemConfigurationOptionTypeName: string;
+  systemConfigurationContextTypeId: number;
+  systemConfigurationContextTypeName: string;
+}
+
+interface CompanyConfigurationObject {
+  companyConfigurationOptionId: number | null;
+  systemConfigurationOptionId: number;
+}
 
 export type {
   Company,
@@ -115,4 +141,7 @@ export type {
   CompanySummary,
   CreateCompanyPayload,
   UpdateCompanyPayload,
+  CompanyConfigurationPayload,
+  CompanyConfigurationOption,
+  CompanyConfigurationObject,
 };

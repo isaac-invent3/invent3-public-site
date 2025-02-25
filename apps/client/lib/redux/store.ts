@@ -52,6 +52,7 @@ import roleSlice from './slices/RoleSlice';
 import vendorSlice from './slices/VendorSlice';
 import auditLogSlice from './slices/AuditLogSlice';
 import companySlice from './slices/CompanySlice';
+import settingSlice from './slices/SettingsSlice';
 
 import { assetDocumentApi } from './services/asset/document.services';
 import { aisleApi } from './services/location/aisle.services';
@@ -184,6 +185,7 @@ const rootReducer = combineReducers({
   report: reportSlice,
   role: roleSlice,
   company: companySlice,
+  settings: settingSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

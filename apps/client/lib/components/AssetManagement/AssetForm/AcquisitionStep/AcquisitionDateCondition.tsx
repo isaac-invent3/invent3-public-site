@@ -70,7 +70,7 @@ const AcquisitionDateConditon = () => {
               direction={{ base: 'column', md: 'row' }}
               formSectionCustomStyle={{
                 maxW: { md: '130px' },
-                display: { lg: 'none' },
+                // display: { lg: 'none' },
               }}
             >
               <GenericAsyncSelect
@@ -98,7 +98,7 @@ const AcquisitionDateConditon = () => {
               direction={{ base: 'column', md: 'row' }}
               formSectionCustomStyle={{
                 maxW: { md: '130px' },
-                display: { lg: 'none' },
+                // display: { lg: 'none' },
               }}
             >
               <AssetStatusSelect />

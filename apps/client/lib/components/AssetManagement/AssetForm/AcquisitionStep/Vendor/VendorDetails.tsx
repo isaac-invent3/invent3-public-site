@@ -115,7 +115,7 @@ const VendorDetails = () => {
                     dispatch(updateAssetForm({ vendorFormDetails: null }));
                   }}
                 />
-                {canCreateVendor && (
+                {!canCreateVendor && (
                   <FormAddButton handleClick={onOpen}>
                     {vendorFormDetails ? 'Edit' : 'Add'} New Vendor
                   </FormAddButton>

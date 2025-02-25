@@ -1,27 +1,40 @@
 import { HStack, Switch, Text, useMediaQuery, VStack } from '@chakra-ui/react';
 import React from 'react';
 import SectionWrapper from '../../Profile/Common/SectionWrapper';
-import { CheckBox, Select } from '@repo/ui/components';
+import { CheckBox, FormSelect } from '@repo/ui/components';
+import { useFormikContext } from 'formik';
+import { Settings } from '~/lib/interfaces/settings.interfaces';
+import { exportFrequencyOptions } from '../utils';
 
 const SWTICH_DATA = [
   {
     title: 'Enable Automatic Compliance Checks',
     subtitle: 'Automate monitoring for policy violations',
+    name: 'complianceEnableAutoChecks',
   },
   {
     title: 'Require Documentation for Compliance Status Changes',
     subtitle: 'Mandate proof for status updates',
+    name: 'complianceRequireDocumentationOfStatusChange',
   },
   {
     title: 'Document Expiry Alerts',
     subtitle: 'Get notified of expiring documents',
+    name: 'complianceRequireDocumentExpiryAlerts',
   },
 ];
 
-const ComplianceFramework = ['ISO 27001', 'GDPR', 'SOC 2', 'HIPAA', 'PCI DSS'];
+const ComplianceFrameworkOptions = [
+  { label: 'ISO 27001', name: 'iso27001' },
+  { label: 'GDPR', name: 'gdpr' },
+  { label: 'SOC 2', name: 'soc2' },
+  { label: 'HIPAA', name: 'hippa' },
+  { label: 'PCI DSS', name: 'pciDss' },
+];
 
 const CompliancePolicies = () => {
   const [isMobile] = useMediaQuery('(max-width: 480px)');
+  const { setFieldValue, values } = useFormikContext<Settings>();
 
   return (
     <VStack spacing="24px" width="full" alignItems="flex-start">
@@ -42,12 +55,41 @@ const CompliancePolicies = () => {
           sectionInfoStyle={{ maxW: { base: '100%', sm: '212px' } }}
         >
           <VStack spacing="16px">
-            {ComplianceFramework.map((item, index) => (
+            {ComplianceFrameworkOptions.map((item, index) => (
               <HStack spacing="39px" key={index}>
                 <Text size="md" color="primary.500" minW="64px">
-                  {item}
+                  {item.label}
                 </Text>
-                <CheckBox isChecked handleChange={() => {}} />
+                <CheckBox
+                  isChecked={
+                    values[
+                      item.name as
+                        | 'gdpr'
+                        | 'iso27001'
+                        | 'soc2'
+                        | 'hippa'
+                        | 'pciDss'
+                    ]
+                  }
+                  handleChange={() =>
+                    setFieldValue(
+                      item.name as
+                        | 'gdpr'
+                        | 'iso27001'
+                        | 'soc2'
+                        | 'hippa'
+                        | 'pciDss',
+                      !values[
+                        item.name as
+                          | 'gdpr'
+                          | 'iso27001'
+                          | 'soc2'
+                          | 'hippa'
+                          | 'pciDss'
+                      ]
+                    )
+                  }
+                />
               </HStack>
             ))}
           </VStack>
@@ -59,16 +101,15 @@ const CompliancePolicies = () => {
           spacing={{ base: '8px', sm: '24px' }}
           direction={{ base: 'column', sm: 'row' }}
         >
-          <Select
+          <FormSelect
+            name="complianceReviewFrequencyId"
             title="Period"
-            options={[]}
-            selectedOption={undefined}
+            options={exportFrequencyOptions}
             containerStyles={{
               width: isMobile ? '100%' : '179px',
             }}
             selectStyles={{ height: '46px', pt: '0px' }}
             showTitleAfterSelect={false}
-            handleSelect={() => {}}
           />
         </SectionWrapper>
         {SWTICH_DATA.map((item, index) => {
@@ -78,7 +119,31 @@ const CompliancePolicies = () => {
               subtitle={item.subtitle}
               key={index}
             >
-              <Switch size="sm" isChecked={false} onChange={() => {}} />
+              <Switch
+                size="sm"
+                isChecked={
+                  values[
+                    item.name as
+                      | 'complianceEnableAutoChecks'
+                      | 'complianceRequireDocumentationOfStatusChange'
+                      | 'complianceRequireDocumentExpiryAlerts'
+                  ]
+                }
+                onChange={() =>
+                  setFieldValue(
+                    item.name as
+                      | 'complianceEnableAutoChecks'
+                      | 'complianceRequireDocumentationOfStatusChange'
+                      | 'complianceRequireDocumentExpiryAlerts',
+                    !values[
+                      item.name as
+                        | 'complianceEnableAutoChecks'
+                        | 'complianceRequireDocumentationOfStatusChange'
+                        | 'complianceRequireDocumentExpiryAlerts'
+                    ]
+                  )
+                }
+              />
             </SectionWrapper>
           );
         })}

@@ -6,13 +6,10 @@ import GeneralStep from './GeneralStep';
 import AcquisitionStep from './AcquisitionStep';
 import DocumentStep from './DocumentStep';
 import SummaryStep from './SummaryStep';
-import {
-  SlideTransition,
-  FormStepper,
-  withFormLeaveDialog,
-} from '@repo/ui/components';
+import { SlideTransition, FormStepper } from '@repo/ui/components';
 import Header from './Header';
 import MaintenancePlanStep from './MaintenancePlanStep';
+import withFormLeaveDialog from '../../UI/FormLeaveDialogProvider';
 
 const STEPS = [
   'General',

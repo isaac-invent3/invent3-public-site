@@ -2,17 +2,13 @@
 
 import { Flex } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import {
-  FormStepper,
-  SlideTransition,
-  //   SlideTransition,
-  withFormLeaveDialog,
-} from '@repo/ui/components';
+import { FormStepper, SlideTransition } from '@repo/ui/components';
 import PageHeader from '../../UI/PageHeader';
 import VendorInfo from './VendorInfo';
 import ContactInformation from './ContactInformation';
 import ContractDetails from './ContractDetails';
 import SummaryStep from './Summary';
+import withFormLeaveDialog from '../../UI/FormLeaveDialogProvider';
 const STEPS = [
   'Vendor Info',
   'Contact Information',

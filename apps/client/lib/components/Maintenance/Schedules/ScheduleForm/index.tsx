@@ -4,7 +4,8 @@ import { Flex } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import FormSection from './FormSection';
 import SummarySection from './SummarySection';
-import { SlideTransition, withFormLeaveDialog } from '@repo/ui/components';
+import { SlideTransition } from '@repo/ui/components';
+import withFormLeaveDialog from '~/lib/components/UI/FormLeaveDialogProvider';
 
 interface ScheduleFormProps {
   type: 'create' | 'edit';

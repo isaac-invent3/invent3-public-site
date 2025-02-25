@@ -25,7 +25,6 @@ export { default as FormActionButtons } from './Form/FormActionButtons';
 export { default as FormAddButton } from './Form/FormAddButton';
 export { default as FormDatePicker } from './Form/FormDatePicker';
 export { default as FormInputWrapper } from './Form/FormInputWrapper';
-export { default as withFormLeaveDialog } from './Form/FormLeaveDialogProvider';
 export { default as FormSectionInfo } from './Form/FormSectionInfo';
 export { default as FormSelect } from './Form/FormSelect';
 export { default as FormStepper } from './Form/FormStepper';

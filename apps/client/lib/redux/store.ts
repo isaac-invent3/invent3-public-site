@@ -76,6 +76,7 @@ import { superAdminApi } from './services/dashboard/superadmin.services';
 import { clientAdminApi } from './services/dashboard/clientadmin.services';
 import { industryApi } from './services/industry.services';
 import { subscriptionApi } from './services/subscription.services';
+import { thirdPartyApi } from './services/dashboard/thirdparty.services';
 
 export const persistConfig = {
   key: 'root',
@@ -113,6 +114,7 @@ const rootReducer = combineReducers({
   [frontdeskDashboardApi.reducerPath]: frontdeskDashboardApi.reducer,
   [superAdminApi.reducerPath]: superAdminApi.reducer,
   [clientAdminApi.reducerPath]: clientAdminApi.reducer,
+  [thirdPartyApi.reducerPath]: thirdPartyApi.reducer,
 
   // Category and condition APIs
   [categoryApi.reducerPath]: categoryApi.reducer,
@@ -235,6 +237,7 @@ export const makeStore = () => {
         frontdeskDashboardApi.middleware,
         superAdminApi.middleware,
         clientAdminApi.middleware,
+        thirdPartyApi.middleware,
 
         // Depreciation APIs
         depreciationApi.middleware,

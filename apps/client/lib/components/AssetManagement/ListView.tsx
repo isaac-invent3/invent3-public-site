@@ -64,7 +64,7 @@ const ListView = (props: ListViewProps) => {
   const { data, isLoading, isFetching } = useGetAllAssetQuery(
     {
       pageNumber: currentPage,
-      pageSize: 10,
+      pageSize: pageSize,
     },
     { skip: search !== '' || !isFilterEmpty }
   );

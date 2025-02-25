@@ -8,19 +8,21 @@ import {
 import SummaryCard from '../../Common/Summaries/SummaryCardWithPercentChange';
 import { CalendarIcon } from '~/lib/components/CustomIcons';
 import { CustomBadge } from '@repo/ui/components';
+import { useGetDashboardStatQuery } from '~/lib/redux/services/dashboard/thirdparty.services';
 
 const SectionOne = () => {
-  const isLoading = false;
+  const { data, isLoading } = useGetDashboardStatQuery();
   return (
     <SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} spacing="16px" width="full">
       <SummaryCard
         title="Total Managed Companies"
         icon={Company2Icon}
-        value={100}
+        value={data?.data?.totalManagedCompanies}
         isLoading={isLoading}
         showRange={false}
         showIconBgColor={false}
         textSize="base"
+        formatValue
         iconStyle={{ boxSize: '24px' }}
       >
         <HStack spacing="4px">
@@ -36,10 +38,11 @@ const SectionOne = () => {
       <SummaryCard
         title="Total Assets being Managed"
         icon={AssetBoxIcon}
-        value={100}
+        value={data?.data?.totalAssetsBeingManaged}
         isLoading={isLoading}
         showRange={false}
         showIconBgColor={false}
+        formatValue
         textSize="base"
         iconStyle={{ boxSize: '24px' }}
       >
@@ -57,9 +60,10 @@ const SectionOne = () => {
       <SummaryCard
         title="Upcoming Maintenance"
         icon={CalendarIcon}
-        value={100}
+        value={data?.data?.upcomingMaintenanceThisWekk}
         isLoading={isLoading}
         showRange={true}
+        formatValue
         rangeText="This Week"
         showIconBgColor={false}
         textSize="base"
@@ -80,7 +84,8 @@ const SectionOne = () => {
       <SummaryCard
         title="Task Overview"
         icon={TaskIcon}
-        value={100}
+        formatValue
+        value={data?.data?.taskOverviewThisMonth}
         isLoading={isLoading}
         showRange={true}
         showIconBgColor={false}
@@ -91,7 +96,7 @@ const SectionOne = () => {
           <HStack spacing="4px">
             <CustomBadge
               badgeColor="#07CC3B"
-              badgeContent={130}
+              badgeContent={data?.data?.tasksCompletedThisMonth}
               py="2px"
               px="5px"
             />
@@ -102,7 +107,7 @@ const SectionOne = () => {
           <HStack spacing="4px">
             <CustomBadge
               badgeColor="#F50000"
-              badgeContent={330}
+              badgeContent={data?.data?.tasksNotCompletedThisMonth}
               py="2px"
               px="5px"
             />

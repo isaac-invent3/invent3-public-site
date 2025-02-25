@@ -1,17 +1,18 @@
 import { Flex } from '@chakra-ui/react';
-// import { useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 
 const withFormLeaveDialog = <P extends object>(
   WrappedComponent: React.ComponentType<P>
 ) => {
   const HOC = (props: P) => {
-    // const { data } = useSession();
+    const session = useSession();
 
     useEffect(() => {
-      // if (data?.user) {
       const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-        event.preventDefault();
+        if (session?.data?.error || !session?.data) {
+          event.preventDefault();
+        }
       };
 
       window.addEventListener('beforeunload', handleBeforeUnload);
@@ -19,7 +20,6 @@ const withFormLeaveDialog = <P extends object>(
       return () => {
         window.removeEventListener('beforeunload', handleBeforeUnload);
       };
-      // }
     }, []);
 
     return (

@@ -14,9 +14,10 @@ import {
 import TaskSuccessModal from '../Modals/TaskSuccessModal';
 import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
-import { FormActionButtons, withFormLeaveDialog } from '@repo/ui/components';
+import { FormActionButtons } from '@repo/ui/components';
 import PageHeader from '../../UI/PageHeader';
 import { ROUTES } from '~/lib/utils/constants';
+import withFormLeaveDialog from '../../UI/FormLeaveDialogProvider';
 
 interface TaskFormProps {
   type: 'create' | 'edit';

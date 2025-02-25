@@ -1,25 +1,31 @@
 import { Switch, Text, useMediaQuery, VStack } from '@chakra-ui/react';
 import React from 'react';
 import SectionWrapper from '../../Profile/Common/SectionWrapper';
-import { Button, Select } from '@repo/ui/components';
+import { Button, FormSelect } from '@repo/ui/components';
+import { exportFrequencyOptions } from '../utils';
+import { useFormikContext } from 'formik';
+import { Settings } from '~/lib/interfaces/settings.interfaces';
 
 const selectInfo = [
   {
+    name: 'complianceAuditRetentionPeriodId',
     title: 'Set Audit Log Retention Period',
     subtitle: 'Define log storage duration',
     label: 'Duration',
-    options: [],
+    options: exportFrequencyOptions,
   },
   {
+    name: 'complianceAutoReportScheduleId',
     title: 'Automated Compliance Reports Schedule',
     subtitle: 'Generate reports at set intervals.',
     label: 'Times',
-    options: [],
+    options: exportFrequencyOptions,
   },
 ];
 
 const ComplianceReporting = () => {
   const [isMobile] = useMediaQuery('(max-width: 480px)');
+  const { setFieldValue, values } = useFormikContext<Settings>();
   return (
     <VStack spacing="24px" width="full" alignItems="flex-start">
       <Text fontWeight={700} size="lg">
@@ -31,7 +37,16 @@ const ComplianceReporting = () => {
           subtitle="Track all compliance-related activities"
           sectionInfoWidth="210px"
         >
-          <Switch size="sm" isChecked={false} onChange={() => {}} />
+          <Switch
+            size="sm"
+            isChecked={values.complianceEnableAudits}
+            onChange={() =>
+              setFieldValue(
+                'complianceEnableAudits',
+                !values.complianceEnableAudits
+              )
+            }
+          />
         </SectionWrapper>
         {selectInfo.map((item, index) => {
           return (
@@ -43,16 +58,15 @@ const ComplianceReporting = () => {
               direction={{ base: 'column', sm: 'row' }}
               sectionInfoStyle={{ maxW: { base: '100%' } }}
             >
-              <Select
+              <FormSelect
+                name={item.name}
                 title={item.label}
                 options={item.options}
-                selectedOption={undefined}
                 containerStyles={{
                   width: isMobile ? '100%' : '179px',
                 }}
                 selectStyles={{ height: '46px', pt: '0px' }}
                 showTitleAfterSelect={false}
-                handleSelect={() => {}}
               />
             </SectionWrapper>
           );

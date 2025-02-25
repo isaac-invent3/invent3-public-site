@@ -138,7 +138,6 @@ const SummaryStep = (props: SummaryStepProps) => {
     scrapvalue: assetFormDetails.scrapValue!,
     parentId: assetData?.assetId! ?? assetFormDetails.parentId!,
     subCategoryId: assetFormDetails.subCategoryId!,
-    vendorId: assetFormDetails?.vendorId!,
     [`${type === 'create' ? 'createdBy' : 'lastModifiedBy'}`]: username,
   };
 
@@ -181,6 +180,7 @@ const SummaryStep = (props: SummaryStepProps) => {
     createAssetDepreciationDto: DEPRECIATION,
     createAssetImageDto: IMAGES,
     createAssetDocumentsDto: DOCUMENTS.length > 0 ? DOCUMENTS : null,
+    masterVendorCreateDto: assetFormDetails.vendorFormDetails,
     maintenancePlanIds:
       assetFormDetails.newMaintenancePlanIds.length > 0
         ? assetFormDetails.newMaintenancePlanIds
@@ -189,6 +189,8 @@ const SummaryStep = (props: SummaryStepProps) => {
       assetFormDetails.existingDocumentsIds.length > 0
         ? assetFormDetails.existingDocumentsIds
         : null,
+
+    existingVendorId: assetFormDetails?.vendorId!,
   };
 
   const updateAssetPayload = {

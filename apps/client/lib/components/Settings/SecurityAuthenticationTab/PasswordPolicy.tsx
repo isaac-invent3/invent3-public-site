@@ -1,10 +1,14 @@
 import { Switch, Text, useMediaQuery, VStack } from '@chakra-ui/react';
 import React from 'react';
-import { Select } from '@repo/ui/components';
+import { FormSelect } from '@repo/ui/components';
 import SectionWrapper from '../../Profile/Common/SectionWrapper';
+import { passwordExpiryPeriodOptions, passwordLengthOptions } from '../utils';
+import { useFormikContext } from 'formik';
+import { Settings } from '~/lib/interfaces/settings.interfaces';
 
 const PasswordPolicy = () => {
   const [isMobile] = useMediaQuery('(max-width: 480px)');
+  const { setFieldValue, values } = useFormikContext<Settings>();
   return (
     <VStack spacing="24px" width="full" alignItems="flex-start">
       <Text fontWeight={700} size="lg">
@@ -19,16 +23,15 @@ const PasswordPolicy = () => {
           direction={{ base: 'column', sm: 'row' }}
           sectionInfoStyle={{ maxW: { base: '100%', sm: '212px' } }}
         >
-          <Select
+          <FormSelect
+            name="minPasswordLengthId"
             title="Length"
-            options={[]}
-            selectedOption={undefined}
+            options={passwordLengthOptions}
             containerStyles={{
               width: isMobile ? '100%' : '179px',
             }}
             selectStyles={{ height: '46px', pt: '0px' }}
             showTitleAfterSelect={false}
-            handleSelect={() => {}}
           />
         </SectionWrapper>
         <SectionWrapper
@@ -37,7 +40,16 @@ const PasswordPolicy = () => {
           sectionInfoWidth="212px"
           sectionInfoStyle={{ maxW: { base: '60%', md: '212px' } }}
         >
-          <Switch size="sm" isChecked={false} onChange={() => {}} />
+          <Switch
+            size="sm"
+            isChecked={values.specialCharactersRequired}
+            onChange={() =>
+              setFieldValue(
+                'specialCharactersRequired',
+                !values.specialCharactersRequired
+              )
+            }
+          />
         </SectionWrapper>
         <SectionWrapper
           title="Password Expiry Period"
@@ -47,16 +59,15 @@ const PasswordPolicy = () => {
           direction={{ base: 'column', sm: 'row' }}
           sectionInfoStyle={{ maxW: { base: '100%', sm: '212px' } }}
         >
-          <Select
+          <FormSelect
+            name="passwordExpiryPeriodId"
             title="Period"
-            options={[]}
-            selectedOption={undefined}
+            options={passwordExpiryPeriodOptions}
             containerStyles={{
               width: isMobile ? '100%' : '179px',
             }}
             selectStyles={{ height: '46px', pt: '0px' }}
             showTitleAfterSelect={false}
-            handleSelect={() => {}}
           />
         </SectionWrapper>
       </VStack>

@@ -372,7 +372,6 @@ interface AssetDto extends BaseDto {
   scrapvalue: number;
   parentId: number;
   subCategoryId: number;
-  vendorId?: number;
 }
 
 interface AssetImageDto extends BaseDto {
@@ -398,9 +397,10 @@ interface CreateAssetPayload {
   createAssetWarrantyDto: AssetWarrantyDto;
   createAssetDepreciationDto: AssetDepreciationDto;
   createAssetDocumentsDto: AssetDocumentsDto[] | null;
-  masterVendorCreateDto?: CreateVendorPayload;
+  masterVendorCreateDto?: CreateVendorPayload | null;
   maintenancePlanIds?: number[] | null;
   assetDocumentIds?: number[] | null;
+  existingVendorId: number | null;
 }
 
 interface UpdateAssetPayload {

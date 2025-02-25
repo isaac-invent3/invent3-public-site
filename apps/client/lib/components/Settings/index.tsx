@@ -18,6 +18,10 @@ import ComplianceTab from './ComplianceTab';
 import SystemMaintenanceBackupTab from './SystemMaintenanceBackupTab';
 import IntegrationTab from './IntegrationTab';
 import DataImportExportTab from './DataImportExportTab';
+import { useSession } from 'next-auth/react';
+import { useGetSettingsQuery } from '~/lib/redux/services/utility.services';
+import { setSettings } from '~/lib/redux/slices/SettingsSlice';
+import { useAppDispatch } from '~/lib/redux/hooks';
 
 const ALlTabs = [
   'General Settings',
@@ -34,7 +38,12 @@ const Profile = () => {
   const { getSearchParam, updateSearchParam } = useCustomSearchParams();
   const tab = getSearchParam('tab');
   const [tabIndex, setTabIndex] = useState<number | undefined>(undefined);
-
+  const session = useSession();
+  const dispatch = useAppDispatch();
+  const { data: settings, isLoading } = useGetSettingsQuery(
+    { companyId: session?.data?.user?.companyId! },
+    { skip: !session?.data?.user?.companyId }
+  );
   useEffect(() => {
     const tabIndex = tab ? ALlTabs.findIndex((value) => value === tab) : -1;
     setTabIndex(tabIndex !== -1 ? tabIndex : 0);
@@ -49,6 +58,12 @@ const Profile = () => {
     }
   };
 
+  useEffect(() => {
+    if (settings) {
+      dispatch(setSettings(settings.data));
+    }
+  }, [settings]);
+
   return (
     <Flex width="full" direction="column" pb="40px">
       <Flex px={{ base: '16px', md: 0 }}>
@@ -61,7 +76,11 @@ const Profile = () => {
         index={tabIndex}
         mt="51px"
       >
-        <Flex width="full" px={{ base: '16px', md: 0 }}>
+        <Flex
+          width="full"
+          px={{ base: '16px', md: 0 }}
+          opacity={isLoading ? 0.5 : 1}
+        >
           <TabList>
             {ALlTabs.map((item, index) => (
               <Tab key={index}>{item}</Tab>

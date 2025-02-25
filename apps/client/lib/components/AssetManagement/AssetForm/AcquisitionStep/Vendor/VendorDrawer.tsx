@@ -71,6 +71,7 @@ const VendorDrawer = (props: VendorDrawerProps) => {
                   dispatch(
                     updateAssetForm({
                       vendorFormDetails: vendor,
+                      vendorId: null,
                       vendorDetails: {
                         vendorName: vendor.createVendor.vendorName!,
                         emailAddress: vendor.createVendor.emailAddress!,

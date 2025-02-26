@@ -78,7 +78,6 @@ import { industryApi } from './services/industry.services';
 import { subscriptionApi } from './services/subscription.services';
 import { thirdPartyApi } from './services/dashboard/thirdparty.services';
 import { complianceApi } from './services/asset/compliance.services';
-
 export const persistConfig = {
   key: 'root',
   storage,

@@ -136,7 +136,14 @@ const companyManagementBreadCrumb: BreadcrumbNode = {
   children: {
     edit: { label: 'Edit Company' },
     add: { label: 'Add New Company' },
+    details: { label: 'Company Details' },
+    'data-upload': { label: 'Data Upload' },
   },
+};
+
+const complianceBreadCrumb: BreadcrumbNode = {
+  route: `/${ROUTES.COMPLIANCE}`,
+  label: 'Compliance',
 };
 
 const breadcrumbMap: Record<string, BreadcrumbNode> = {
@@ -153,6 +160,7 @@ const breadcrumbMap: Record<string, BreadcrumbNode> = {
   [ROUTES.AUDIT_LOG]: auditLogBreadcrumb,
   [ROUTES.VENDOR]: vendorManagementBreadCrumb,
   [ROUTES.COMPANY]: companyManagementBreadCrumb,
+  [ROUTES.COMPLIANCE]: complianceBreadCrumb,
 };
 
 const getBreadcrumb = (pathSegments: string[]): breadCrumbRoute[] => {

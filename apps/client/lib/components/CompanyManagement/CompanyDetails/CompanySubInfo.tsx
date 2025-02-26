@@ -1,23 +1,38 @@
-import { Grid, GridItem, HStack, Text, VStack } from '@chakra-ui/react';
+import { Grid, GridItem, Stack, Text, VStack } from '@chakra-ui/react';
 import UploadStatusTable from '../DataUpload/UploadStatusTable';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 const CompanySubInfo = () => {
   const complianceStatusData = [
     ['ISO 27001', '28 March 2025', 'Verified'],
     ['GDPR', '28 March 2025', 'Pending'],
   ];
+  const company = useAppSelector((state) => state.company.company);
   return (
-    <HStack
+    <Stack
+      direction={{ base: 'column', md: 'row' }}
+      w="full"
       flexWrap="wrap"
       justifyContent="space-between"
       spacing="32px"
       mb="3em"
     >
-      <UploadStatusTable
-        headers={['Name', 'Role', 'Email', 'Status']}
-        data={[['John Doe', 'Admin', 'JohnDoe@gmail.com', 'Active']]}
-        containerProps={{ flex: { base: 1, md: 2 } }}
-      />
+      <VStack flex={{ base: 1, md: 2 }} alignItems="start">
+        <Text size="md" fontWeight={700} color="primary.500">
+          Contact Person
+        </Text>
+        <UploadStatusTable
+          headers={['Name', 'Role', 'Email']}
+          data={[
+            [
+              `${company?.contactPersonFirstName ?? ''} ${company?.contactPersonLastName ?? ''}`,
+              'Admin',
+              `${company?.contactPersonEmail ?? ''}`,
+            ],
+          ]}
+          containerProps={{ flex: { base: 1, md: 2 } }}
+        />
+      </VStack>
       <VStack flex={{ base: 1, md: 2 }} alignItems="start">
         <Text size="md" fontWeight={700} color="primary.500">
           Compliance Status
@@ -82,7 +97,7 @@ const CompanySubInfo = () => {
           </VStack>
         </GridItem>
       </Grid>
-    </HStack>
+    </Stack>
   );
 };
 

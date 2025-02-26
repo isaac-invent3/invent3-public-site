@@ -18,14 +18,19 @@ const CompanyUpload = () => {
   const [tabIndex, setTabIndex] = useState<number | undefined>(undefined);
 
   return (
-    <Flex width="full" direction="column" pb={{ md: '24px' }}>
+    <Flex
+      width="full"
+      direction="column"
+      pb={{ md: '24px' }}
+      px={{ base: '16px', md: 0 }}
+    >
       <PageHeader>Data Upload</PageHeader>
       <Tabs
         variant="custom"
         width={'full'}
         onChange={(index) => setTabIndex(index)}
         index={tabIndex}
-        mt="51px"
+        mt="41px"
       >
         <TabList>
           <Tab>Data Upload</Tab>
@@ -36,7 +41,7 @@ const CompanyUpload = () => {
           width="full"
           bgColor="white"
           pt={{ base: '24px' }}
-          px={{ md: '24px', lg: '16px' }}
+          px="16px"
           pb={{ base: '16px', lg: '40px' }}
           rounded="6px"
           minH="60vh"

@@ -69,7 +69,7 @@ const Dashboard = () => {
 
   //Replace the view query to a valid view
   useEffect(() => {
-    if (viewParam && effectiveView) {
+    if (effectiveView) {
       updateSearchParam('view', effectiveView);
     }
   }, [effectiveView]);

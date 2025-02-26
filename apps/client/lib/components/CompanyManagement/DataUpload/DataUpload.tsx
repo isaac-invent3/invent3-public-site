@@ -1,5 +1,5 @@
 import { CheckIcon } from '@chakra-ui/icons';
-import { HStack, Icon, Progress, Text, VStack } from '@chakra-ui/react';
+import { HStack, Icon, Progress, Stack, Text, VStack } from '@chakra-ui/react';
 import { FileUpload, FormInputWrapper } from '@repo/ui/components';
 import { FILE_ICONS } from '~/lib/utils/constants';
 import DetailHeader from '../../UI/DetailHeader';
@@ -54,7 +54,12 @@ const DataUpload = () => {
       <DetailHeader variant="primary" customStyles={{ size: 'lg' }}>
         1. Download Template
       </DetailHeader>
-      <HStack justifyContent="space-between" w={{md:'70%'}}>
+      <Stack
+        direction={{ base: 'column', lg: 'row' }}
+        justifyContent="space-between"
+        w={{ md: '70%' }}
+        spacing="16px"
+      >
         <FormInputWrapper
           sectionMaxWidth="157px"
           customSpacing="64px"
@@ -74,7 +79,7 @@ const DataUpload = () => {
           customStyle={{ maxW: '370px' }}
           infoText="The template document has different tabs that caters to the different data to be uploaded"
         />
-      </HStack>
+      </Stack>
       <DetailHeader variant="primary" customStyles={{ size: 'lg' }}>
         2. Upload Data Document
       </DetailHeader>{' '}

@@ -153,6 +153,7 @@ export const config = {
       // Set accessTokenExpires if not already set, to prevent resetting it on each callback
       if (!token.accessTokenExpires) {
         token.accessTokenExpires = getTimeInSeconds() + user.expiresIn;
+        token.exp = getTimeInSeconds() + user.expiresIn;
       }
 
       // Update token if triggered by 'update'

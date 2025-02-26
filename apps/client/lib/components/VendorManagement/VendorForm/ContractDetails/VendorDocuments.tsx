@@ -26,7 +26,7 @@ const VendorDocuments = () => {
         variant="secondary"
         handleRemoveDocuments={(document) => handleRemoveDocument(document)}
         handleAddDocuments={(documents) => {
-          helpers.setValue([...meta.value, ...documents]);
+          helpers.setValue(documents);
         }}
         documents={meta.value ?? []}
         setError={(error) => helpers.setError(error)}

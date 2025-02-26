@@ -4,14 +4,14 @@ import { Flex, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import PageHeader from '../UI/PageHeader';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
-import { useGetAllAuditRecordsQuery } from '~/lib/redux/services/log.services';
 import SummaryCards from './SummaryCards';
 import ComplianceTable from './ComplianceTable';
+import { useGetAllAssetComplianceQuery } from '~/lib/redux/services/asset/compliance.services';
 
 const Compliance = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const { data, isLoading, isFetching } = useGetAllAuditRecordsQuery({
+  const { data, isLoading, isFetching } = useGetAllAssetComplianceQuery({
     pageNumber,
     pageSize,
   });

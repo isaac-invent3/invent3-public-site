@@ -9,11 +9,6 @@ interface PopoverActionProps {
 }
 const PopoverAction = ({ company }: PopoverActionProps) => {
   const {
-    isOpen: isOpenView,
-    onOpen: onOpenView,
-    onClose: onCloseView,
-  } = useDisclosure();
-  const {
     isOpen: isOpenDelete,
     onOpen: onOpenDeactivate,
     onClose: onCloseDelete,
@@ -22,7 +17,11 @@ const PopoverAction = ({ company }: PopoverActionProps) => {
     <>
       <GenericPopover width="137px" placement="bottom-start">
         <VStack width="full" alignItems="flex-start" spacing="16px">
-          <Text cursor="pointer" onClick={onOpenView}>
+          <Text
+            cursor="pointer"
+            as="a"
+            href={`/${ROUTES.COMPANY}/${company.companyId}/details`}
+          >
             View Details
           </Text>
           <Text

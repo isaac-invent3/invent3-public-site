@@ -77,7 +77,7 @@ import { clientAdminApi } from './services/dashboard/clientadmin.services';
 import { industryApi } from './services/industry.services';
 import { subscriptionApi } from './services/subscription.services';
 import { thirdPartyApi } from './services/dashboard/thirdparty.services';
-
+import { complianceApi } from './services/asset/compliance.services';
 export const persistConfig = {
   key: 'root',
   storage,
@@ -94,6 +94,7 @@ const rootReducer = combineReducers({
   [assetTypeApi.reducerPath]: assetTypeApi.reducer,
   [conditionApi.reducerPath]: conditionApi.reducer,
   [assetVendorsApi.reducerPath]: assetVendorsApi.reducer,
+  [complianceApi.reducerPath]: complianceApi.reducer,
 
   // Maintenance-related APIs
   [maintenanceFrequencyApi.reducerPath]: maintenanceFrequencyApi.reducer,
@@ -210,6 +211,7 @@ export const makeStore = () => {
         assetTypeApi.middleware,
         assetDisposalApi.middleware,
         assetVendorsApi.middleware,
+        complianceApi.middleware,
 
         // Maintenance-related APIs
         maintenanceFrequencyApi.middleware,

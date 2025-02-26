@@ -9,33 +9,20 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
+import { UploadedFile } from '@repo/interfaces';
 import React, { useState } from 'react';
-import { DocumentIcon, InfoIcon } from '~/lib/components/CustomIcons';
-import { Document } from '~/lib/interfaces/general.interfaces';
-import SingleDocument from './SingleDocument';
+import { DocumentIcon, InfoIcon } from './CustomIcons';
 
 interface DocumentUploadAndViewProps {
   variant?: 'primary' | 'secondary';
-  handleAddDocuments: (document: Document[]) => void;
-  handleRemoveDocuments: (document: Document) => void;
-  handleOpenExistingDocumentModal?: () => void;
-  documents: Document[];
+  handleAddFiles?: (files: UploadedFile[]) => void;
   setError?: (error: string) => void;
   error?: string | undefined;
-  showDocumentView?: boolean;
 }
 
-const DocumentUploadAndView = (props: DocumentUploadAndViewProps) => {
-  const {
-    variant,
-    handleAddDocuments,
-    handleRemoveDocuments,
-    handleOpenExistingDocumentModal,
-    documents,
-    setError,
-    error,
-    showDocumentView = true,
-  } = props;
+const FileUpload = (props: DocumentUploadAndViewProps) => {
+  const { variant, handleAddFiles, setError, error } = props;
+
   const [isDragging, setIsDragging] = useState(false);
 
   // Updated valid file types for txt, word, excel, powerpoint, pdf, and images (jpeg)
@@ -52,7 +39,7 @@ const DocumentUploadAndView = (props: DocumentUploadAndViewProps) => {
   ];
 
   const handleFileChange = (files: File[], validFiles: File[]) => {
-    const newDocuments: Document[] = [];
+    const uploadedFiles: UploadedFile[] = [];
 
     if (validFiles.length < files.length) {
       setError &&
@@ -67,16 +54,16 @@ const DocumentUploadAndView = (props: DocumentUploadAndViewProps) => {
         reader.onloadend = () => {
           const baseDocument = reader.result as string;
 
-          newDocuments.push({
-            documentId: null,
-            documentName: file.name,
-            base64Document: baseDocument,
+          uploadedFiles.push({
+            fileId: null,
+            fileName: file.name,
+            base64: baseDocument,
             base64Prefix: null,
           });
 
           // Update the state or Formik helpers only when all files are processed
-          if (newDocuments.length === files.length) {
-            handleAddDocuments([...documents, ...newDocuments]);
+          if (uploadedFiles.length === files.length && handleAddFiles) {
+            handleAddFiles(uploadedFiles);
           }
         };
       });
@@ -113,10 +100,9 @@ const DocumentUploadAndView = (props: DocumentUploadAndViewProps) => {
     <VStack width="full" spacing="51px">
       <FormControl isInvalid={error !== undefined}>
         <Input
-          id="documents"
+          id="document"
           display="none"
           onChange={(event: any) => {
-            console.log('it came here');
             const files = Array.from(event.currentTarget.files) as File[]; // Convert FileList to array
             const validFiles = files.filter(
               (file) =>
@@ -163,28 +149,11 @@ const DocumentUploadAndView = (props: DocumentUploadAndViewProps) => {
               justifyContent="center"
               alignItems="center"
             >
-              <label htmlFor="documents">
+              <label htmlFor="document">
                 <Text size="md" color="blue.500" fontWeight={800} role="button">
                   Click to browse (Up to 10MB)
                 </Text>
               </label>
-              {handleOpenExistingDocumentModal && (
-                <Text size="md" color="neutral.600">
-                  Or
-                </Text>
-              )}
-
-              {handleOpenExistingDocumentModal && (
-                <Text
-                  size="md"
-                  color="blue.500"
-                  fontWeight={800}
-                  role="button"
-                  onClick={handleOpenExistingDocumentModal}
-                >
-                  Link Existing Document(s)
-                </Text>
-              )}
             </Stack>
           </VStack>
           <Text
@@ -210,22 +179,8 @@ const DocumentUploadAndView = (props: DocumentUploadAndViewProps) => {
           </Flex>
         </FormErrorMessage>
       </FormControl>
-      {showDocumentView && (
-        <VStack width="full" spacing="4px">
-          {documents.map((item: Document, index: number) => (
-            <SingleDocument
-              document={item}
-              variant={variant}
-              key={index}
-              handleRemoveDocument={(document) =>
-                handleRemoveDocuments(document)
-              }
-            />
-          ))}
-        </VStack>
-      )}
     </VStack>
   );
 };
 
-export default DocumentUploadAndView;
+export default FileUpload;

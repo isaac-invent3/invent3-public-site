@@ -2,6 +2,7 @@ import {
   Avatar,
   Box,
   HStack,
+  Icon,
   Skeleton,
   StackDivider,
   Text,
@@ -10,16 +11,16 @@ import {
 import { TextInput } from '@repo/ui/components';
 import { getSession } from 'next-auth/react';
 import { FormEventHandler, useState } from 'react';
+import { EmptyNotesIcon } from '~/lib/components/CustomIcons';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import useFormatUrl from '~/lib/hooks/useFormatUrl';
 import useParseUrlData from '~/lib/hooks/useParseUrl';
+import { Note } from '~/lib/interfaces/notes.interfaces';
 import {
   useCreateNoteMutation,
   useGetNoteCommentsQuery,
 } from '~/lib/redux/services/notes.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
-import { Comment } from './dummyComments';
-import { Note } from '~/lib/interfaces/notes.interfaces';
 
 const renderComments = (comments: Note[], depth = 0) => {
   return comments.map((comment) => (
@@ -55,12 +56,12 @@ const renderComments = (comments: Note[], depth = 0) => {
   ));
 };
 
-const NoteComments = ({ noteId }: { noteId: number }) => {
+const NoteComments = ({ note }: { note: Note }) => {
   const formattedUrl = useFormatUrl();
   const parsedUrl = useParseUrlData(formattedUrl);
   const { data: comments, isLoading: isGettingNotes } = useGetNoteCommentsQuery(
     {
-      noteId,
+      noteId: note.noteId,
       pageNumber: 1,
       pageSize: DEFAULT_PAGE_SIZE,
     }
@@ -74,6 +75,8 @@ const NoteComments = ({ noteId }: { noteId: number }) => {
     e.preventDefault();
     const session = await getSession();
 
+    // Problem with the flow here
+
     const payload = {
       createNoteDto: {
         systemContextTypeId: parsedUrl?.systemContextId!,
@@ -81,7 +84,7 @@ const NoteComments = ({ noteId }: { noteId: number }) => {
         createdBy: session?.user?.username!,
         title: '',
         content: comment,
-        parentId: noteId,
+        parentId: note.noteId,
         notePriorityId: 0,
       },
       systemContextIds: [],
@@ -132,9 +135,20 @@ const NoteComments = ({ noteId }: { noteId: number }) => {
         </HStack>
       </form>
 
-      <Skeleton isLoaded={!isGettingNotes}>
-        {renderComments(comments?.data.items ?? [])}
-      </Skeleton>
+      {note.hasComment && (
+        <Skeleton isLoaded={!isGettingNotes}>
+          {renderComments(comments?.data.items ?? [])}
+        </Skeleton>
+      )}
+
+      {!note.hasComment && (
+        <VStack justifyContent="center" h="200px" w="full">
+          <Icon as={EmptyNotesIcon} w="130px" h="130px" mb="8px" />
+          <Text size="md" color="#2C2C2C" fontWeight={700}>
+            No comments
+          </Text>
+        </VStack>
+      )}
     </VStack>
   );
 };

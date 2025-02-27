@@ -8,6 +8,7 @@ import {
   useDeleteNoteMutation,
   useDuplicateNoteMutation,
   usePinNoteMutation,
+  useUnPinNoteMutation,
   useUpdateNoteMutation,
 } from '~/lib/redux/services/notes.services';
 import NoteForm from '../../NoteForm';
@@ -47,14 +48,15 @@ const PopoverAction = ({ data, setNoteLoading }: NotePopoverProps) => {
   const deleteNoteModal = useDisclosure();
 
   const [pinNote, { isLoading: isPinning }] = usePinNoteMutation();
+  const [unpinNote, { isLoading: isUnPinning }] = useUnPinNoteMutation();
   const [updateNote, { isLoading: isUpdating }] = useUpdateNoteMutation();
   const [deleteNote, { isLoading: isDeleting }] = useDeleteNoteMutation();
   const [duplicateNote, { isLoading: isDuplicating }] =
     useDuplicateNoteMutation();
 
   const isLoading = useMemo(
-    () => isPinning || isUpdating || isDeleting || isDuplicating,
-    [isPinning, isUpdating, isDeleting, isDuplicating]
+    () => isPinning || isUpdating || isDeleting || isDuplicating || isUnPinning,
+    [isPinning, isUpdating, isDeleting, isDuplicating, isUnPinning]
   );
 
   useEffect(() => {
@@ -63,8 +65,18 @@ const PopoverAction = ({ data, setNoteLoading }: NotePopoverProps) => {
 
   const handleDelete = () =>
     deleteNote({ id: data.noteId, deletedBy: user?.username! });
-  const handlePin = () => pinNote({ id: data.noteId, authorId: user?.userId! });
-  const handleDuplicate = () => duplicateNote({ id: data.noteId });
+  const handlePin = () => {
+    if (data.isPinned) {
+      return unpinNote({
+        id: data.noteId,
+        authorId: user?.userId!,
+        unpinnedBy: user?.userId!,
+      });
+    }
+    pinNote({ id: data.noteId, authorId: user?.userId! });
+  };
+  const handleDuplicate = () =>
+    duplicateNote({ id: data.noteId, DuplicatedBy: user?.id! });
   const togglePriority = () => {
     updateNote({
       id: data.noteId,

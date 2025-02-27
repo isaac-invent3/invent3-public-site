@@ -1,14 +1,14 @@
 import {
-  Box,
+  Avatar,
+  AvatarGroup,
   Card,
   HStack,
   Icon,
   ModalBody,
+  SkeletonCircle,
   Text,
   Tooltip,
   VStack,
-  Avatar,
-  AvatarGroup,
 } from '@chakra-ui/react';
 import {
   BackButton,
@@ -16,11 +16,18 @@ import {
   CheckBox,
   GenericModal,
 } from '@repo/ui/components';
+import useFormatUrl from '~/lib/hooks/useFormatUrl';
+import useParseUrlData, {
+  findSystemContextDetailById,
+} from '~/lib/hooks/useParseUrl';
 import { Note } from '~/lib/interfaces/notes.interfaces';
+import { useGetNoteTaggedUsersQuery } from '~/lib/redux/services/notes.services';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import UserInfo from '../../Common/UserInfo';
-import { AddIcon, InfoIcon } from '../../CustomIcons';
+import { InfoIcon } from '../../CustomIcons';
 import NoteComments from './Comments';
+
 interface NoteFormModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -29,7 +36,16 @@ interface NoteFormModalProps {
 
 const NoteDetails = (props: NoteFormModalProps) => {
   const { isOpen, onClose, note } = props;
-  console.log({note})
+  const formattedUrl = useFormatUrl();
+  const data = useParseUrlData(formattedUrl);
+  const { data: noteTaggedUsers, isLoading } = useGetNoteTaggedUsersQuery(
+    {
+      id: note.noteId,
+      pageNumber: 1,
+      pageSize: DEFAULT_PAGE_SIZE,
+    },
+    { skip: !note.noteId }
+  );
 
   return (
     <>
@@ -96,7 +112,8 @@ const NoteDetails = (props: NoteFormModalProps) => {
                     </HStack>
 
                     <Text color="neutral.700" size="lg" fontWeight={400}>
-                      Asset Management
+                      {findSystemContextDetailById(data?.systemContextId)
+                        ?.displayName ?? 'N/A'}
                     </Text>
                   </HStack>
 
@@ -161,51 +178,30 @@ const NoteDetails = (props: NoteFormModalProps) => {
                 w="full"
               >
                 <Text color="black" size="md" fontWeight={800}>
-                  Tag Someone
+                  Tagged Users
                 </Text>
                 <HStack justifyContent="space-between" w="full">
-                  {/* {note.} */}
                   <AvatarGroup size="sm" max={4}>
-                    <Avatar
-                      size="sm"
-                      width="28px"
-                      height="28px"
-                      border="2px solid white"
-                      name="Ryan Florence"
-                      src="https://bit.ly/ryan-florence"
-                    />
-                    <Avatar
-                      size="sm"
-                      width="28px"
-                      height="28px"
-                      border="2px solid white"
-                      name="Segun Adebayo"
-                      src="https://bit.ly/sage-adebayo"
-                    />
-                    <Avatar
-                      size="sm"
-                      width="28px"
-                      height="28px"
-                      border="2px solid white"
-                      name="Kent Dodds"
-                      src="https://bit.ly/kent-c-dodds"
-                    />
-                    <Avatar
-                      size="sm"
-                      width="28px"
-                      height="28px"
-                      border="2px solid white"
-                      name="Prosper Otemuyiwa"
-                      src="https://bit.ly/prosper-baba"
-                    />
-                    <Avatar
-                      size="sm"
-                      width="28px"
-                      height="28px"
-                      border="2px solid white"
-                      name="Christian Nwamba"
-                      src="https://bit.ly/code-beast"
-                    />
+                    {isLoading &&
+                      Array.from({ length: 4 }).map((_, index) => (
+                        <SkeletonCircle
+                          key={index}
+                          width="28px"
+                          height="28px"
+                          border="2px solid white"
+                        />
+                      ))}
+
+                    {!isLoading &&
+                      noteTaggedUsers?.data.items.map((item) => (
+                        <Avatar
+                          size="sm"
+                          width="28px"
+                          height="28px"
+                          border="2px solid white"
+                          name={item.createdBy}
+                        />
+                      ))}
                   </AvatarGroup>
                 </HStack>
               </VStack>
@@ -220,7 +216,7 @@ const NoteDetails = (props: NoteFormModalProps) => {
                 h="460px"
                 overflowY="scroll"
               >
-                <NoteComments noteId={note.noteId} />
+                <NoteComments note={note} />
               </VStack>
             </VStack>
           </HStack>

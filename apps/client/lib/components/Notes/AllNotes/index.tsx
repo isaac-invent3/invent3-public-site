@@ -2,6 +2,7 @@ import { Divider, ModalBody, ModalHeader, VStack } from '@chakra-ui/react';
 import { GenericModal } from '@repo/ui/components';
 import useFormatUrl from '~/lib/hooks/useFormatUrl';
 import useParseUrlData from '~/lib/hooks/useParseUrl';
+import EmptyNotes from './EmptyNotes';
 import Filters from './Filters';
 import Header from './Header';
 import NotesGrid from './NotesGrid';
@@ -27,6 +28,36 @@ const AllNotes = (props: AllNotesModalProps) => {
     unPinnedNotes,
   } = useNotes(data);
 
+  const renderContent = () => {
+    if (isFetchingNotes) return <SkeletonGrid count={15} />;
+
+    const hasNotes = notes.length || unPinnedNotes.length;
+    const hasPinnedNotes = pinnedNotes.length > 0;
+    const hasNoNotes = !hasNotes && !hasPinnedNotes;
+
+    if (hasNoNotes) return <EmptyNotes />;
+
+    return (
+      <VStack
+        width="full"
+        spacing="16px"
+        divider={<Divider borderColor="#BBBBBB" />}
+      >
+        {!isSearched && hasPinnedNotes && (
+          <PinnedNotesSection pinnedNotes={pinnedNotes} />
+        )}
+
+        {hasNotes && (
+          <NotesGrid
+            notes={notes}
+            unPinnedNotes={unPinnedNotes}
+            isSearched={isSearched}
+          />
+        )}
+      </VStack>
+    );
+  };
+
   return (
     <>
       <GenericModal
@@ -48,19 +79,12 @@ const AllNotes = (props: AllNotesModalProps) => {
             spacing="16px"
             divider={<Divider borderColor="#BBBBBB" />}
             maxH="550px"
+            minH='500px'
             overflowY="scroll"
           >
             <Filters setSearch={setSearch} />
 
-            {isFetchingNotes && <SkeletonGrid count={15} />}
-
-            {!isSearched && <PinnedNotesSection pinnedNotes={pinnedNotes} />}
-
-            <NotesGrid
-              notes={notes}
-              unPinnedNotes={unPinnedNotes}
-              isSearched={isSearched}
-            />
+            {renderContent()}
           </VStack>
         </ModalBody>
       </GenericModal>

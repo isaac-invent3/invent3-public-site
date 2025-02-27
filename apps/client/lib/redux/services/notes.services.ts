@@ -10,6 +10,8 @@ import {
   GetAllNotesQueryParams,
   GetAllPinnedNotesQueryParams,
   Note,
+  NoteTaggedUser,
+  UnPinNotePayload,
 } from '~/lib/interfaces/notes.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../baseQueryWithReauth';
@@ -43,9 +45,24 @@ export const notesApi = createApi({
         body,
       }),
 
-      invalidatesTags: ['allNotes'],
+      invalidatesTags: [
+        'allNotes',
+        'unPinnedNotes',
+        'pinnedNotes',
+        'noteComments',
+      ],
     }),
 
+    getNoteTaggedUsers: builder.query<
+      BaseApiResponse<ListResponse<NoteTaggedUser>>,
+      { id: number } & QueryParams
+    >({
+      query: ({ id }) => ({
+        url: `/Notes/TaggedUsers/${id}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
     getNoteById: builder.query<BaseApiResponse<Note>, { id: number }>({
       query: ({ id }) => ({
         url: `/Notes/${id}`,
@@ -64,7 +81,7 @@ export const notesApi = createApi({
         headers: getHeaders(),
         body: data,
       }),
-      invalidatesTags: ['allNotes', 'pinnedNotes'],
+      invalidatesTags: ['allNotes', 'pinnedNotes', 'unPinnedNotes'],
     }),
 
     deleteNote: builder.mutation<
@@ -80,7 +97,7 @@ export const notesApi = createApi({
         headers: getHeaders(),
         body,
       }),
-      invalidatesTags: ['allNotes', 'pinnedNotes'],
+      invalidatesTags: ['allNotes', 'pinnedNotes', 'unPinnedNotes'],
     }),
 
     pinNote: builder.mutation<
@@ -92,15 +109,26 @@ export const notesApi = createApi({
         method: 'POST',
         headers: getHeaders(),
       }),
-      invalidatesTags: ['allNotes', 'pinnedNotes'],
+      invalidatesTags: ['allNotes', 'pinnedNotes', 'unPinnedNotes'],
     }),
-    duplicateNote: builder.mutation<BaseApiResponse<Note>, { id: number }>({
-      query: ({ id }) => ({
-        url: `/Notes/DuplicateNote/${id}`,
+    unPinNote: builder.mutation<BaseApiResponse<Note>, UnPinNotePayload>({
+      query: (data) => ({
+        url: generateQueryStr(`/Notes/UnpinNote?`, data),
+        method: 'DELETE',
+        headers: getHeaders(),
+      }),
+      invalidatesTags: ['allNotes', 'pinnedNotes', 'unPinnedNotes'],
+    }),
+    duplicateNote: builder.mutation<
+      BaseApiResponse<Note>,
+      { id: number; DuplicatedBy: string }
+    >({
+      query: ({ id, ...data }) => ({
+        url: generateQueryStr(`/Notes/DuplicateNote/${id}?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
-      invalidatesTags: ['allNotes', 'pinnedNotes'],
+      invalidatesTags: ['allNotes', 'pinnedNotes', 'unPinnedNotes'],
     }),
 
     getPinnedNotes: builder.query<
@@ -153,6 +181,7 @@ export const notesApi = createApi({
 });
 
 export const {
+  useGetNoteTaggedUsersQuery,
   useGetAllUserNotesQuery,
   useCreateNoteMutation,
   useDeleteNoteMutation,
@@ -164,4 +193,5 @@ export const {
   useDuplicateNoteMutation,
   useSearchNotesMutation,
   useGetNoteCommentsQuery,
+  useUnPinNoteMutation
 } = notesApi;

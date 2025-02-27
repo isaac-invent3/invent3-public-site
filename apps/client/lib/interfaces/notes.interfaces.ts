@@ -1,28 +1,28 @@
-import { QueryParams } from '@repo/interfaces';
+import { BaseEntity, QueryParams } from '@repo/interfaces';
 
-interface Note {
+interface Note extends BaseEntity {
   title: string;
-  isNew: boolean;
-  createdDate: string;
-  createdBy: string;
-  lastModifiedDate: string;
-  lastModifiedBy: string;
-  isDeleted: boolean;
-  deletedDate: string;
-  deletedBy: string;
-  guid: string;
   noteId: number;
-  systemContextTypeId: number;
   systemContextId: number;
+  systemContextTypeId: number;
+  systemContextTypeName: string;
   authorId: number;
   authorFirstName: string;
-  authorLastName:string
+  authorLastName: string;
+  hasComment: boolean;
   content: string;
   isPrivate: boolean;
   parentId: number;
   dateCreated: string;
   notePriorityId: number;
+  notePriorityName: string;
   isPinned?: boolean;
+}
+
+interface NoteTaggedUser extends BaseEntity {
+  noteId: number;
+  notesTagId: number;
+  userId: number;
 }
 
 interface GetAllNotesQueryParams extends QueryParams {
@@ -40,7 +40,7 @@ interface CreateNotePayload {
     parentId?: number;
     notePriorityId: number;
     createdBy: string;
-    title:string
+    title: string;
   };
   tags: number[];
   systemContextIds: number[];
@@ -50,9 +50,17 @@ interface GetAllPinnedNotesQueryParams extends QueryParams {
   userId: number;
 }
 
+interface UnPinNotePayload {
+  id: number;
+  authorId: number;
+  unpinnedBy: number;
+}
+
 export type {
   CreateNotePayload,
   GetAllNotesQueryParams,
   GetAllPinnedNotesQueryParams,
   Note,
+  NoteTaggedUser,
+  UnPinNotePayload,
 };

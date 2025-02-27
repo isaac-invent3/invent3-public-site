@@ -960,6 +960,139 @@ const PinIcon = createIcon({
     </svg>
   ),
 });
+
+const EmptyNotesIcon = createIcon({
+  displayName: 'EmptyNotesIcon',
+  viewBox: '0 0 92 110',
+
+  path: (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="92"
+      height="110"
+      fill="none"
+      viewBox="0 0 92 110"
+    >
+      <path
+        fill="url(#paint0_linear_6566_52351)"
+        d="M46.124 102.641c25.335 0 45.873-20.539 45.873-45.874S71.459 10.894 46.124 10.894C20.788 10.894.25 31.432.25 56.767s20.538 45.874 45.874 45.874"
+      ></path>
+      <g filter="url(#filter0_d_6566_52351)">
+        <path
+          fill="#fff"
+          d="M72.426 37.195H19.824a3.06 3.06 0 0 0-3.058 3.059v64.222a3.06 3.06 0 0 0 3.058 3.059h52.602a3.06 3.06 0 0 0 3.058-3.059V40.254a3.06 3.06 0 0 0-3.058-3.059"
+        ></path>
+      </g>
+      <path
+        fill="#98FEFE"
+        d="M40.003 46.37H24.101a1.835 1.835 0 0 0 0 3.669h15.902a1.835 1.835 0 1 0 0-3.67"
+      ></path>
+      <path
+        fill="#F2F1F1"
+        d="M51.013 54.32H24.101a1.835 1.835 0 1 0 0 3.67h26.912a1.835 1.835 0 1 0 0-3.67"
+      ></path>
+      <path
+        fill="#98FEFE"
+        d="M40.003 62.884H24.101a1.835 1.835 0 1 0 0 3.67h15.902a1.835 1.835 0 0 0 0-3.67"
+      ></path>
+      <path
+        fill="#F2F1F1"
+        d="M51.013 70.835H24.101a1.835 1.835 0 1 0 0 3.67h26.912a1.835 1.835 0 1 0 0-3.67"
+      ></path>
+      <path
+        fill="#98FEFE"
+        d="M40.003 79.398H24.101a1.835 1.835 0 0 0 0 3.67h15.902a1.835 1.835 0 1 0 0-3.67"
+      ></path>
+      <path
+        fill="#F2F1F1"
+        d="M51.013 87.35H24.101a1.835 1.835 0 1 0 0 3.67h26.912a1.835 1.835 0 1 0 0-3.67"
+      ></path>
+      <g filter="url(#filter1_d_6566_52351)">
+        <path
+          fill="#0E2642"
+          d="M72.418 6H19.816a3.06 3.06 0 0 0-3.058 3.058v18.35a3.06 3.06 0 0 0 3.058 3.058h52.602a3.06 3.06 0 0 0 3.058-3.058V9.058A3.06 3.06 0 0 0 72.418 6"
+        ></path>
+      </g>
+      <path
+        fill="#98FEFE"
+        d="M40.003 12.728H24.101a1.835 1.835 0 0 0 0 3.67h15.902a1.835 1.835 0 1 0 0-3.67"
+      ></path>
+      <path
+        fill="#fff"
+        d="M51.013 20.679H24.101a1.835 1.835 0 1 0 0 3.67h26.912a1.835 1.835 0 1 0 0-3.67"
+      ></path>
+      <defs>
+        <filter
+          id="filter0_d_6566_52351"
+          width="66.682"
+          height="78.303"
+          x="12.784"
+          y="31.223"
+          colorInterpolationFilters="sRGB"
+          filterUnits="userSpaceOnUse"
+        >
+          <feFlood floodOpacity="0" result="BackgroundImageFix"></feFlood>
+          <feColorMatrix
+            in="SourceAlpha"
+            result="hardAlpha"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+          ></feColorMatrix>
+          <feOffset dy="-1.991"></feOffset>
+          <feGaussianBlur stdDeviation="1.991"></feGaussianBlur>
+          <feColorMatrix values="0 0 0 0 0.788235 0 0 0 0 0.803922 0 0 0 0 0.85098 0 0 0 0.349 0"></feColorMatrix>
+          <feBlend
+            in2="BackgroundImageFix"
+            result="effect1_dropShadow_6566_52351"
+          ></feBlend>
+          <feBlend
+            in="SourceGraphic"
+            in2="effect1_dropShadow_6566_52351"
+            result="shape"
+          ></feBlend>
+        </filter>
+        <filter
+          id="filter1_d_6566_52351"
+          width="66.682"
+          height="32.429"
+          x="12.776"
+          y="0.027"
+          colorInterpolationFilters="sRGB"
+          filterUnits="userSpaceOnUse"
+        >
+          <feFlood floodOpacity="0" result="BackgroundImageFix"></feFlood>
+          <feColorMatrix
+            in="SourceAlpha"
+            result="hardAlpha"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+          ></feColorMatrix>
+          <feOffset dy="-1.991"></feOffset>
+          <feGaussianBlur stdDeviation="1.991"></feGaussianBlur>
+          <feColorMatrix values="0 0 0 0 0.788235 0 0 0 0 0.803922 0 0 0 0 0.85098 0 0 0 0.349 0"></feColorMatrix>
+          <feBlend
+            in2="BackgroundImageFix"
+            result="effect1_dropShadow_6566_52351"
+          ></feBlend>
+          <feBlend
+            in="SourceGraphic"
+            in2="effect1_dropShadow_6566_52351"
+            result="shape"
+          ></feBlend>
+        </filter>
+        <linearGradient
+          id="paint0_linear_6566_52351"
+          x1="46.123"
+          x2="46.123"
+          y1="10.894"
+          y2="102.641"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor="#E4FEFE" stopOpacity="0.8"></stop>
+          <stop offset="1" stopColor="#D2FEFD" stopOpacity="0.3"></stop>
+        </linearGradient>
+      </defs>
+    </svg>
+  ),
+});
 export {
   AddIcon,
   AssetIcon,
@@ -997,4 +1130,5 @@ export {
   ThreeVerticalDotsIcon,
   UptrendIcon,
   PinIcon,
+  EmptyNotesIcon,
 };

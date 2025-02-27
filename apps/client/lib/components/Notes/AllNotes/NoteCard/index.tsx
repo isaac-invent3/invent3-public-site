@@ -200,11 +200,13 @@ const NoteCard = (props: NoteCardProps) => {
         </Box>
       </Card>
 
-      <NoteDetails
-        note={props.data}
-        isOpen={isNoteDetailOpen}
-        onClose={onCloseNoteDetail}
-      />
+      {isNoteDetailOpen && (
+        <NoteDetails
+          note={props.data}
+          isOpen={isNoteDetailOpen}
+          onClose={onCloseNoteDetail}
+        />
+      )}
     </>
   );
 };

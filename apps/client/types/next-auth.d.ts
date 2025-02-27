@@ -26,6 +26,8 @@ declare module 'next-auth' {
     sessionId: number;
     roleSystemModuleContextPermissions: AccessibleRoute;
     roleIds: number[];
+    companySlug: string;
+    managedCompanySlug: string | null;
   }
   interface Session {
     user: User;
@@ -52,6 +54,8 @@ declare module 'next-auth/jwt' {
     sessionId: number;
     roleSystemModuleContextPermissions: AccessibleRoute;
     roleIds: number[];
+    companySlug: string;
+    managedCompanySlug: string | null;
   }
 }
 

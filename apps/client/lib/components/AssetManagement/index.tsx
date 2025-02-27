@@ -14,7 +14,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import Header from './Header';
 import ListView from './ListView';
 import Filters from './Filters';
-import MapView from './MapView';
+// import MapView from './MapView';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ROUTES } from '~/lib/utils/constants';
 
@@ -102,7 +102,7 @@ const AssetManagement = () => {
                 search={search}
               />
             </TabPanel>
-            <TabPanel>{tabIndex === 1 && <MapView />}</TabPanel>
+            {/* <TabPanel>{tabIndex === 1 && <MapView />}</TabPanel> */}
           </TabPanels>
         </Tabs>
       </Flex>

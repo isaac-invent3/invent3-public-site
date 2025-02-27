@@ -3,7 +3,7 @@ import type { NextAuthConfig } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { Mutex } from 'async-mutex';
 
-export const TOKEN_REFRESH_BUFFER_SECONDS = 300; // 5 minutes
+export const TOKEN_REFRESH_BUFFER_SECONDS = 60; // 5 minutes
 const getTimeInSeconds = () => Math.floor(Date.now() / 1000);
 
 // Create a shared mutex for controlling access to the refresh token process
@@ -144,7 +144,9 @@ export const config = {
         token.sessionId = user.sessionId;
         token.apiKey = user.apiKey;
         token.role = user.role;
-        token.companyId = user.companyId;
+        token.companyId = user?.companyId;
+        token.companySlug = 'test';
+        token.managedCompanySlug = null;
         token.roleIds = user.roleIds;
         token.roleSystemModuleContextPermissions =
           user.roleSystemModuleContextPermissions;
@@ -158,7 +160,7 @@ export const config = {
 
       // Update token if triggered by 'update'
       if (trigger === 'update' && session?.user?.email) {
-        token.email = session.user.email;
+        return { ...token, ...session?.user };
       }
 
       // If token is still valid, return it
@@ -203,6 +205,8 @@ export const config = {
           accessToken: token.accessToken,
           accessTokenExpires: token.accessTokenExpires,
           role: token.role,
+          companySlug: token?.companySlug,
+          managedCompanySlug: token?.managedCompanySlug,
           roleIds: token.roleIds,
           roleSystemModuleContextPermissions:
             token.roleSystemModuleContextPermissions,

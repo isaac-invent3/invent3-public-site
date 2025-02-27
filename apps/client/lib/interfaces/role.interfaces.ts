@@ -49,6 +49,8 @@ type ModuleKey =
   | 'compliance'
   | 'approval'
   | 'profile'
+  | 'company'
+  | 'settings';
 
 type SubModuleKey =
   | 'asset:create'
@@ -93,7 +95,6 @@ type SubModuleKey =
   | 'company:create'
   | 'company:edit'
   | 'company:delete';
-
 
 type PermissionKey = ModuleKey | SubModuleKey;
 

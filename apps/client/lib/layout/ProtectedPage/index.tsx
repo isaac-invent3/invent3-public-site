@@ -11,7 +11,7 @@ import {
   CaretLeftIcon,
   CaretRightIcon,
 } from '~/lib/components/CustomIcons/layout';
-// import CompanyPageHeader from '~/lib/components/CompanyManagement/CompanyPageHeader';
+import CompanyPageHeader from '~/lib/components/CompanyManagement/CompanyPageHeader';
 
 interface ProtectedLayoutProps {
   children: React.ReactNode;
@@ -60,7 +60,7 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
         height="full"
       >
         <Header setIsCollapse={setIsCollapse} />
-        {/* <CompanyPageHeader /> */}
+        <CompanyPageHeader />
         {children}
       </Flex>
       {/* <CountDownTimer /> */}

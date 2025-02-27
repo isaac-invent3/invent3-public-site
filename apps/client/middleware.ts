@@ -1,16 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import {
-  ResponseCookies,
-  RequestCookies,
-} from 'next/dist/server/web/spec-extension/cookies';
 import { checkPermission } from './app/actions/permissionAction';
-import { signOut } from '~/auth';
 import { encode, getToken, JWT } from 'next-auth/jwt';
 
 const publicRoutes = ['/', '/forgot-password'];
-const protectedGlobalRoute = ['/dashboard', '/profile', '/api/auth/session'];
+const protectedGlobalRoute = ['/dashboard', '/profile'];
 const SECRET = process.env.NEXTAUTH_SECRET;
-export const TOKEN_REFRESH_BUFFER_SECONDS = 300; // 5 minutes
+export const TOKEN_REFRESH_BUFFER_SECONDS = 60; // 5 minutes
 export const SESSION_SECURE =
   process.env.NEXT_PUBLIC_BASE_URL?.startsWith('https://');
 export const SESSION_COOKIE = SESSION_SECURE
@@ -20,12 +15,6 @@ export const SESSION_TIMEOUT = 1800; // 30 Mins
 
 export function shouldUpdateToken(token: JWT): boolean {
   const timeInSeconds = Math.floor(Date.now() / 1000);
-  console.log({
-    timeInSeconds,
-    buffer: token.accessTokenExpires - TOKEN_REFRESH_BUFFER_SECONDS,
-    shouldUpdate:
-      timeInSeconds >= token.accessTokenExpires - TOKEN_REFRESH_BUFFER_SECONDS,
-  });
   return (
     timeInSeconds >= token.accessTokenExpires - TOKEN_REFRESH_BUFFER_SECONDS
   );
@@ -76,11 +65,14 @@ export async function refreshAccessToken(token: JWT): Promise<JWT> {
   return token;
 }
 
-async function handleSignOut(request: NextRequest, response: NextResponse) {
-  await signOut({ redirect: false });
-  response = NextResponse.redirect(
-    new URL(`/?ref=${request.nextUrl.pathname}`, request.url)
+function signOut(request: NextRequest) {
+  console.log('signing out');
+  request.cookies.delete(SESSION_COOKIE);
+  request.cookies.delete('permissionData');
+  const response = NextResponse.redirect(
+    new URL(`/?ref=${request.nextUrl.pathname}`, request?.url)
   );
+  response.cookies.delete(SESSION_COOKIE);
   response.cookies.delete('permissionData');
   return response;
 }
@@ -114,48 +106,17 @@ export function updateCookie(
     });
     console.log('cookies updated');
   } else {
-    console.log('signout called');
-    handleSignOut(request, response);
+    signOut(request);
   }
 
   return response;
 }
-/**
- * Copy cookies from the Set-Cookie header of the response to the Cookie header of the request,
- * so that it will appear to SSR/RSC as if the user already has the new cookies.
- */
-function applySetCookie(req: NextRequest, res: NextResponse) {
-  console.log('applying set cookie');
-  // 1. Parse Set-Cookie header from the response
-  const setCookies = new ResponseCookies(res.headers);
-
-  // 2. Construct updated Cookie header for the request
-  const newReqHeaders = new Headers(req.headers);
-  const newReqCookies = new RequestCookies(newReqHeaders);
-  setCookies.getAll().forEach((cookie) => newReqCookies.set(cookie));
-
-  // 3. Set up the “request header overrides” (see https://github.com/vercel/next.js/pull/41380)
-  //    on a dummy response
-  // NextResponse.next will set x-middleware-override-headers / x-middleware-request-* headers
-  const dummyRes = NextResponse.next({ request: { headers: newReqHeaders } });
-
-  // 4. Copy the “request header overrides” headers from our dummy response to the real response
-  dummyRes.headers.forEach((value, key) => {
-    if (
-      key === 'x-middleware-override-headers' ||
-      key.startsWith('x-middleware-request-')
-    ) {
-      res.headers.set(key, value);
-    }
-  });
-}
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  // const session = await auth();
   let response = NextResponse.next();
 
-  if (!SECRET) return await handleSignOut(request, response);
+  if (!SECRET) return signOut(request);
 
   const token = await getToken({
     req: request,
@@ -188,7 +149,7 @@ export async function middleware(request: NextRequest) {
       }
     }
 
-    applySetCookie(request, response);
+    // applySetCookie(request, response);
 
     // Don't check permission for protected global route
     if (protectedGlobalRoute.includes(pathname)) {

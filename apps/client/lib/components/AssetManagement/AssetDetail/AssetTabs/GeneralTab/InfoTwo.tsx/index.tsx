@@ -1,6 +1,8 @@
 import { Flex, SimpleGrid } from '@chakra-ui/react';
-import MapView from './MapView';
 import OwnersInfo from './OwnersInfo';
+import dynamic from 'next/dynamic';
+
+const MapViewDynamic = dynamic(() => import('./MapView'), { ssr: false });
 
 const InfoTwo = () => {
   return (
@@ -14,7 +16,7 @@ const InfoTwo = () => {
       <Flex display={{ base: 'none', sm: 'flex' }}>
         <OwnersInfo />
       </Flex>
-      <MapView />
+      <MapViewDynamic />
     </SimpleGrid>
   );
 };

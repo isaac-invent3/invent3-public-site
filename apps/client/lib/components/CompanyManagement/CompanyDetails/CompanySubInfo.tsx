@@ -15,7 +15,6 @@ const CompanySubInfo = () => {
       flexWrap="wrap"
       justifyContent="space-between"
       spacing="32px"
-      mb="3em"
     >
       <VStack flex={{ base: 1, md: 2 }} alignItems="start">
         <Text size="md" fontWeight={700} color="primary.500">

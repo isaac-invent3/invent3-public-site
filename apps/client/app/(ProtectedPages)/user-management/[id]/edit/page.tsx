@@ -29,7 +29,7 @@ export default function Page({ params }: { params: { id: number } }) {
     const user = data?.data;
     let formDocuments;
     if (userDocuments?.data) {
-      formDocuments = userDocuments.data.items.map((document) => ({
+      formDocuments = userDocuments.data.items?.map((document) => ({
         documentId: document.documentId || null,
         documentName: document.documentName || null,
         base64Document: document.document,
@@ -63,15 +63,15 @@ export default function Page({ params }: { params: { id: number } }) {
         jobTitleName: null,
         teamId: null,
         teamName: null,
-        userRoleIds: data?.data.userRoles.map((item) => item.roleId),
-        userRoleNames: data?.data.userRoles.map((item) => item.roleName),
+        userRoleIds: data?.data?.userRoles?.map((item) => item.roleId),
+        userRoleNames: data?.data?.userRoles?.map((item) => item.roleName),
         employmentTypeName: null,
-        userGroupIds: data?.data.userGroups.map((item) => item.groupId),
-        userGroupNames: data?.data.userGroups.map((item) => item.groupName),
-        initialRoleIds: data?.data.userRoles.map((item) => item.roleId),
-        initialGroupIds: data?.data.userGroups.map((item) => item.groupId),
+        userGroupIds: data?.data?.userGroups?.map((item) => item.groupId),
+        userGroupNames: data?.data?.userGroups?.map((item) => item.groupName),
+        initialRoleIds: data?.data?.userRoles?.map((item) => item.roleId),
+        initialGroupIds: data?.data?.userGroups?.map((item) => item.groupId),
         initialDocumentIds: userDocuments?.data
-          ? userDocuments?.data?.items.map((item) => item.documentId)
+          ? userDocuments?.data?.items?.map((item) => item.documentId)
           : [],
       })
     );

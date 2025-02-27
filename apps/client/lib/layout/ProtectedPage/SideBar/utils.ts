@@ -50,48 +50,60 @@ const DashboardViewMaps: Record<
   },
 };
 
-const sideBarData: SideBarData[] = [
+const clientSideBarData: SideBarData[] = [
   {
     name: 'Asset Management',
     route: ROUTES.ASSETS,
     icon: AssetManagementIcon,
     permissionKey: 'asset',
+    description:
+      'Organize, track, and optimize asset lifecycles for efficiency and cost savings.',
   },
   {
     name: 'Task Management',
     route: ROUTES.TASKS,
     icon: TaskIcon,
     permissionKey: 'task',
+    description:
+      'Assign, prioritize, and monitor tasks to streamline workflow and productivity.',
   },
   {
     name: 'Maintenance',
     route: ROUTES.MAINTENANCE,
     icon: MaintenanceIcon,
     permissionKey: 'maintenance',
+    description:
+      'Structured strategy for preventive and corrective maintenance',
   },
   {
     name: 'Tickets',
     route: ROUTES.TICKETS,
     icon: TicketIcon,
     permissionKey: 'ticket',
+    description: 'Track, manage, and resolve customer issues and requests.',
   },
   {
     name: 'Report & Analytics',
     route: ROUTES.REPORT,
     icon: AnalyticsIcon,
     permissionKey: 'report',
+    description: `Analyze and visualize data to make informed decisions and drive business growth.`,
   },
   {
     name: 'Template Management',
     route: ROUTES.TEMPLATES,
     icon: TemplateIcon,
     permissionKey: 'template',
+    description:
+      'Create, store, and modify standardized templates for consistency.',
   },
   {
     name: 'User Management',
     route: ROUTES.USERS,
     icon: UserManagementIcon,
     permissionKey: 'user',
+    description:
+      'Control access, roles, and permissions for secure user administration.',
   },
 
   {
@@ -99,36 +111,51 @@ const sideBarData: SideBarData[] = [
     route: ROUTES.ROLES,
     icon: RoleManagementIcon,
     permissionKey: 'role',
+    description:
+      'Define and manage user roles to enforce security and responsibilities.',
   },
   {
     name: 'Vendor Management',
     route: ROUTES.VENDOR,
     icon: VendorManagementIcon,
     permissionKey: 'vendor',
+    description:
+      'Manage vendor relationships and contracts for efficient procurement.',
   },
   {
     name: 'Audit Logs',
     route: ROUTES.AUDIT_LOG,
     icon: AuditLogIcon,
     permissionKey: 'audit',
+    description:
+      'Track and monitor system activities for security and compliance.',
   },
   {
     name: 'Compliance',
     route: ROUTES.COMPLIANCE,
     icon: TemplateIcon,
     permissionKey: 'audit',
+    description:
+      'Manage compliance requirements and certifications for regulatory adherence.',
   },
   {
     name: 'Settings',
     route: ROUTES.SETTINGS,
     icon: TemplateIcon,
     permissionKey: 'audit',
+    description:
+      'Customize and configure system settings for optimal performance.',
   },
+];
+const sideBarData: SideBarData[] = [
+  ...clientSideBarData,
   {
     name: 'Company Management',
     route: ROUTES.COMPANY,
     icon: CompanyIcon,
     permissionKey: 'audit',
+    description:
+      'Manage company details and settings for organizational control.',
   },
 ];
 
@@ -187,4 +214,4 @@ async function filterSidebarData() {
   }
 }
 
-export { sideBarData, filterSidebarData };
+export { clientSideBarData, sideBarData, filterSidebarData };

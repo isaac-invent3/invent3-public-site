@@ -10,7 +10,11 @@ const FooterSection = (props: FooterSectionProps) => {
 
   return (
     <HStack spacing="19px" px="24px" position="relative" zIndex={999} mt="24px">
-      <Flex width={isCollapse ? 'full' : 'max-content'} justifyContent="center">
+      <Flex
+        width={isCollapse ? 'full' : 'max-content'}
+        justifyContent="center"
+        display={{ base: isCollapse ? 'none' : 'flex', md: 'flex' }}
+      >
         <Avatar width="40px" height="40px" name={data?.user.name ?? ''} />
       </Flex>
       <Collapse in={!isCollapse}>

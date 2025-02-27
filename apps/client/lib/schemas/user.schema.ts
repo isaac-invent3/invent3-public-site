@@ -36,7 +36,7 @@ const occupationInfoSchema = Yup.object().shape({
 
 const roleGroupInfoSchema = Yup.object().shape({
   userRoleIds: Yup.array().of(Yup.number()).min(1, 'Role is required'),
-  userGroupIds: Yup.array().of(Yup.number()).min(1, 'User Group is required'),
+  userGroupIds: Yup.array().of(Yup.number()).nullable(),
 });
 
 const userRoleSchema = Yup.object().shape({

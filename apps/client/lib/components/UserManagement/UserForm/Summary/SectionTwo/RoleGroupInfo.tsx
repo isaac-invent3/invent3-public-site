@@ -14,8 +14,8 @@ const RoleGroupInfo = () => {
         <VStack width="full" spacing="4px" alignItems="flex-start">
           <Text color="neutral.600">User Role</Text>
           <HStack wrap="wrap" spacing="8px">
-            {userRoleNames.length > 0 ? (
-              userRoleNames.map((item, index) => (
+            {userRoleNames?.length > 0 ? (
+              userRoleNames?.map((item, index) => (
                 <Text
                   key={index}
                   size="md"
@@ -37,8 +37,8 @@ const RoleGroupInfo = () => {
         <VStack width="full" spacing="4px" alignItems="flex-start">
           <Text color="neutral.600">User Group</Text>
           <HStack wrap="wrap" spacing="8px">
-            {userGroupNames.length > 0 ? (
-              userGroupNames.map((item, index) => (
+            {userGroupNames?.length > 0 ? (
+              userGroupNames?.map((item, index) => (
                 <Text
                   key={index}
                   size="md"

@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import Settings from '~/lib/components/Settings';
+import AdminSettings from '~/lib/components/AdminSettings';
 
 export const metadata: Metadata = {
-  title: 'Settings',
+  title: 'Admin Settings',
 };
 
-export default Settings;
+export default AdminSettings;

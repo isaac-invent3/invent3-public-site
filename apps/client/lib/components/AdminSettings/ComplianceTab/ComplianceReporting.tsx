@@ -1,64 +1,62 @@
 import { Switch, Text, useMediaQuery, VStack } from '@chakra-ui/react';
 import React from 'react';
-import { FormSelect } from '@repo/ui/components';
-import SectionWrapper from '../../Profile/Common/SectionWrapper';
-import { exportFormatOptions, exportFrequencyOptions } from '../utils';
+import SectionWrapper from '../../UserSettings/Common/SectionWrapper';
+import { Button, FormSelect } from '@repo/ui/components';
+import { exportFrequencyOptions } from '../utils';
 import { useFormikContext } from 'formik';
 import { Settings } from '~/lib/interfaces/settings.interfaces';
 
-const generalInfo = [
+const selectInfo = [
   {
-    name: 'exportFrequencyId',
-    title: 'Export Frequency',
-    subtitle: 'Choose daily, weekly, or monthly',
-    label: 'Frequency',
+    name: 'complianceAuditRetentionPeriodId',
+    title: 'Set Audit Log Retention Period',
+    subtitle: 'Define log storage duration',
+    label: 'Duration',
     options: exportFrequencyOptions,
   },
   {
-    name: 'exportFormatId',
-    title: 'Export Formats',
-    subtitle: 'Download logs in multiple formats',
-    label: 'Format',
-    options: exportFormatOptions,
+    name: 'complianceAutoReportScheduleId',
+    title: 'Automated Compliance Reports Schedule',
+    subtitle: 'Generate reports at set intervals.',
+    label: 'Times',
+    options: exportFrequencyOptions,
   },
 ];
 
-const ExportSettings = () => {
+const ComplianceReporting = () => {
   const [isMobile] = useMediaQuery('(max-width: 480px)');
   const { setFieldValue, values } = useFormikContext<Settings>();
   return (
     <VStack spacing="24px" width="full" alignItems="flex-start">
       <Text fontWeight={700} size="lg">
-        Export Settings
+        Compliance Reporting & Audit Logs
       </Text>
-      <VStack width="full" spacing={{ base: '16px', lg: '24px' }}>
+      <VStack width="full" alignItems="flex-start" spacing="16px">
         <SectionWrapper
-          title="Enable Auto-Export of Logs"
-          subtitle="Automate log backups for security"
-          sectionInfoWidth="212px"
-          sectionInfoStyle={{ maxW: { base: '60%', md: '212px' } }}
+          title="Enable Compliance Audit Logging"
+          subtitle="Track all compliance-related activities"
+          sectionInfoWidth="210px"
         >
           <Switch
             size="sm"
-            isChecked={values.exportLogsAutoEnabled}
+            isChecked={values.complianceEnableAudits}
             onChange={() =>
               setFieldValue(
-                'exportLogsAutoEnabled',
-                !values.exportLogsAutoEnabled
+                'complianceEnableAudits',
+                !values.complianceEnableAudits
               )
             }
           />
         </SectionWrapper>
-        {generalInfo.map((item, index) => {
+        {selectInfo.map((item, index) => {
           return (
             <SectionWrapper
               title={item.title}
               subtitle={item.subtitle}
-              sectionInfoWidth="212px"
               key={index}
               spacing={{ base: '8px', sm: '24px' }}
               direction={{ base: 'column', sm: 'row' }}
-              sectionInfoStyle={{ maxW: { base: '100%', sm: '212px' } }}
+              sectionInfoStyle={{ maxW: { base: '100%' } }}
             >
               <FormSelect
                 name={item.name}
@@ -73,9 +71,16 @@ const ExportSettings = () => {
             </SectionWrapper>
           );
         })}
+        <SectionWrapper
+          title="Export Compliance Reports"
+          subtitle="Download compliance insights easily."
+          sectionInfoWidth="193px"
+        >
+          <Button customStyles={{ width: '161px' }}>Export</Button>
+        </SectionWrapper>
       </VStack>
     </VStack>
   );
 };
 
-export default ExportSettings;
+export default ComplianceReporting;

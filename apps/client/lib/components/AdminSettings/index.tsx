@@ -34,7 +34,7 @@ const ALlTabs = [
   'Compliance',
 ];
 
-const Profile = () => {
+const AdminSettings = () => {
   const { getSearchParam, updateSearchParam } = useCustomSearchParams();
   const tab = getSearchParam('tab');
   const [tabIndex, setTabIndex] = useState<number | undefined>(undefined);
@@ -104,4 +104,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default AdminSettings;

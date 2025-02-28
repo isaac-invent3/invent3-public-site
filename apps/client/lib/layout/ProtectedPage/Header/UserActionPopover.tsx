@@ -24,6 +24,7 @@ import {
 import { handleSignOut } from '~/app/actions/authActions';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { ROLE_IDS_ENUM } from '~/lib/utils/constants';
 
 interface ActionButtonProps {
   icon: ComponentWithAs<'svg', IconProps>;
@@ -210,12 +211,22 @@ const UserActionPopover = () => {
               />
               <ActionButton
                 icon={Setting2Icon}
-                name="Settings"
+                name="General Settings"
                 handleClick={() => {
-                  router.push('/profile');
+                  router.push('/user-settings');
                   onClose();
                 }}
               />
+              {data?.user.roleIds.includes(ROLE_IDS_ENUM.CLIENT_ADMIN) && (
+                <ActionButton
+                  icon={Setting2Icon}
+                  name="Admin Settings"
+                  handleClick={() => {
+                    router.push('/settings');
+                    onClose();
+                  }}
+                />
+              )}
               <ActionButton
                 icon={ExitIcon}
                 name="Logout"

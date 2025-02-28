@@ -94,11 +94,16 @@ export const config = {
           type: 'password',
         },
       },
-      async authorize(credentials) {
+      async authorize(credentials, request) {
         const payload = {
           username: credentials.username,
           password: credentials.password,
         };
+        const baseUrl = new URL(request.headers.get('origin') ?? '');
+        const envUrl = new URL(process.env.NEXT_PUBLIC_BASE_URL ?? '');
+        const subdomain = baseUrl.hostname.split('.')[0];
+        const hasSubdomain =
+          baseUrl.hostname !== envUrl.hostname ? subdomain : null;
 
         // external api for users to log in
         const res = await fetch(`${process.env.API_BASE_URL}/login`, {
@@ -106,6 +111,7 @@ export const config = {
           headers: {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*',
+            ...(hasSubdomain ? { 'X-Tenant-ID': subdomain } : {}),
           },
           body: JSON.stringify(payload),
         });
@@ -117,7 +123,11 @@ export const config = {
         }
 
         if (res.ok && user) {
-          return { ...user.data, username: credentials.username };
+          return {
+            ...user.data,
+            username: credentials.username,
+            companySlug: hasSubdomain ? subdomain : null,
+          };
         }
 
         return null;
@@ -145,7 +155,7 @@ export const config = {
         token.apiKey = user.apiKey;
         token.role = user.role;
         token.companyId = user?.companyId;
-        token.companySlug = 'test';
+        token.companySlug = user?.companySlug;
         token.managedCompanySlug = null;
         token.roleIds = user.roleIds;
         token.roleSystemModuleContextPermissions =

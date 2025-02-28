@@ -205,6 +205,7 @@ const ROUTES = {
   COMPANY: 'company-management',
   VENDOR: 'vendor-management',
   SETTINGS: 'settings',
+  USER_SETTINGS: 'user-settings',
   COMPLIANCE: 'compliance',
 };
 

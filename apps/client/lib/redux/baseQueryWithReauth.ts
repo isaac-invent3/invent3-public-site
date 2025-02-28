@@ -22,6 +22,11 @@ const baseQuery = fetchBaseQuery({
       // Attach the access token to the Authorization header
       headers.set('Authorization', `Bearer ${session.user.accessToken}`);
       headers.set('ApiKey', `${session.user.apiKey}`);
+      if (session?.user?.companySlug || session?.user?.managedCompanySlug)
+        headers.set(
+          'X-Tenant-ID',
+          `${session.user.managedCompanySlug ?? session.user.companySlug}`
+        );
     }
     return headers;
   },

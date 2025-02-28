@@ -1,62 +1,67 @@
 import { Switch, Text, useMediaQuery, VStack } from '@chakra-ui/react';
 import React from 'react';
-import SectionWrapper from '../../Profile/Common/SectionWrapper';
-import { Button, FormSelect } from '@repo/ui/components';
-import { exportFrequencyOptions } from '../utils';
+import { FormSelect } from '@repo/ui/components';
+import SectionWrapper from '../../UserSettings/Common/SectionWrapper';
+import {
+  maxFailedLoginAttemptsOptions,
+  sessionTimeoutDurationOptions,
+} from '../utils';
 import { useFormikContext } from 'formik';
 import { Settings } from '~/lib/interfaces/settings.interfaces';
 
-const selectInfo = [
+const generalInfo = [
   {
-    name: 'complianceAuditRetentionPeriodId',
-    title: 'Set Audit Log Retention Period',
-    subtitle: 'Define log storage duration',
+    name: 'sessionDurationTimeoutId',
+    title: 'Session Timeout Duration',
+    subtitle: 'Auto-logout after inactivity for safety.',
     label: 'Duration',
-    options: exportFrequencyOptions,
+    options: sessionTimeoutDurationOptions,
   },
   {
-    name: 'complianceAutoReportScheduleId',
-    title: 'Automated Compliance Reports Schedule',
-    subtitle: 'Generate reports at set intervals.',
+    name: 'maxFailedAttempts',
+    title: 'Max Failed Login Attempts Before Lockout',
+    subtitle: 'Prevent unauthorized access with account lock.',
     label: 'Times',
-    options: exportFrequencyOptions,
+    options: maxFailedLoginAttemptsOptions,
   },
 ];
 
-const ComplianceReporting = () => {
+const LoginSecurity = () => {
   const [isMobile] = useMediaQuery('(max-width: 480px)');
   const { setFieldValue, values } = useFormikContext<Settings>();
   return (
     <VStack spacing="24px" width="full" alignItems="flex-start">
       <Text fontWeight={700} size="lg">
-        Compliance Reporting & Audit Logs
+        Login Security
       </Text>
-      <VStack width="full" alignItems="flex-start" spacing="16px">
+      <VStack width="full" spacing="16px">
         <SectionWrapper
-          title="Enable Compliance Audit Logging"
-          subtitle="Track all compliance-related activities"
-          sectionInfoWidth="210px"
+          title="Require Two-Factor Authentication (2FA)"
+          subtitle="Enhance security with extra verification step."
+          sectionInfoWidth="270px"
+          sectionInfoStyle={{ maxW: { base: '60%', md: '270px' } }}
         >
           <Switch
             size="sm"
-            isChecked={values.complianceEnableAudits}
+            isChecked={values.twoFactorAuthentication}
             onChange={() =>
               setFieldValue(
-                'complianceEnableAudits',
-                !values.complianceEnableAudits
+                'twoFactorAuthentication',
+                !values.twoFactorAuthentication
               )
             }
           />
         </SectionWrapper>
-        {selectInfo.map((item, index) => {
+        {generalInfo.map((item, index) => {
           return (
             <SectionWrapper
               title={item.title}
               subtitle={item.subtitle}
+              sectionInfoWidth="212px"
               key={index}
               spacing={{ base: '8px', sm: '24px' }}
               direction={{ base: 'column', sm: 'row' }}
-              sectionInfoStyle={{ maxW: { base: '100%' } }}
+              sectionInfoStyle={{ maxW: { base: '100%', sm: '212px' } }}
             >
               <FormSelect
                 name={item.name}
@@ -71,16 +76,9 @@ const ComplianceReporting = () => {
             </SectionWrapper>
           );
         })}
-        <SectionWrapper
-          title="Export Compliance Reports"
-          subtitle="Download compliance insights easily."
-          sectionInfoWidth="193px"
-        >
-          <Button customStyles={{ width: '161px' }}>Export</Button>
-        </SectionWrapper>
       </VStack>
     </VStack>
   );
 };
 
-export default ComplianceReporting;
+export default LoginSecurity;

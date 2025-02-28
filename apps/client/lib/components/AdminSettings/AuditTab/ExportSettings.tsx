@@ -1,53 +1,50 @@
 import { Switch, Text, useMediaQuery, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { FormSelect } from '@repo/ui/components';
-import SectionWrapper from '../../Profile/Common/SectionWrapper';
-import {
-  maxFailedLoginAttemptsOptions,
-  sessionTimeoutDurationOptions,
-} from '../utils';
+import SectionWrapper from '../../UserSettings/Common/SectionWrapper';
+import { exportFormatOptions, exportFrequencyOptions } from '../utils';
 import { useFormikContext } from 'formik';
 import { Settings } from '~/lib/interfaces/settings.interfaces';
 
 const generalInfo = [
   {
-    name: 'sessionDurationTimeoutId',
-    title: 'Session Timeout Duration',
-    subtitle: 'Auto-logout after inactivity for safety.',
-    label: 'Duration',
-    options: sessionTimeoutDurationOptions,
+    name: 'exportFrequencyId',
+    title: 'Export Frequency',
+    subtitle: 'Choose daily, weekly, or monthly',
+    label: 'Frequency',
+    options: exportFrequencyOptions,
   },
   {
-    name: 'maxFailedAttempts',
-    title: 'Max Failed Login Attempts Before Lockout',
-    subtitle: 'Prevent unauthorized access with account lock.',
-    label: 'Times',
-    options: maxFailedLoginAttemptsOptions,
+    name: 'exportFormatId',
+    title: 'Export Formats',
+    subtitle: 'Download logs in multiple formats',
+    label: 'Format',
+    options: exportFormatOptions,
   },
 ];
 
-const LoginSecurity = () => {
+const ExportSettings = () => {
   const [isMobile] = useMediaQuery('(max-width: 480px)');
   const { setFieldValue, values } = useFormikContext<Settings>();
   return (
     <VStack spacing="24px" width="full" alignItems="flex-start">
       <Text fontWeight={700} size="lg">
-        Login Security
+        Export Settings
       </Text>
-      <VStack width="full" spacing="16px">
+      <VStack width="full" spacing={{ base: '16px', lg: '24px' }}>
         <SectionWrapper
-          title="Require Two-Factor Authentication (2FA)"
-          subtitle="Enhance security with extra verification step."
-          sectionInfoWidth="270px"
-          sectionInfoStyle={{ maxW: { base: '60%', md: '270px' } }}
+          title="Enable Auto-Export of Logs"
+          subtitle="Automate log backups for security"
+          sectionInfoWidth="212px"
+          sectionInfoStyle={{ maxW: { base: '60%', md: '212px' } }}
         >
           <Switch
             size="sm"
-            isChecked={values.twoFactorAuthentication}
+            isChecked={values.exportLogsAutoEnabled}
             onChange={() =>
               setFieldValue(
-                'twoFactorAuthentication',
-                !values.twoFactorAuthentication
+                'exportLogsAutoEnabled',
+                !values.exportLogsAutoEnabled
               )
             }
           />
@@ -81,4 +78,4 @@ const LoginSecurity = () => {
   );
 };
 
-export default LoginSecurity;
+export default ExportSettings;

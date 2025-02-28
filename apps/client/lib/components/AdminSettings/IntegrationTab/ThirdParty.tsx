@@ -1,7 +1,7 @@
 import { HStack, Switch, Text, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { FilterButton, SearchInput } from '@repo/ui/components';
-import SectionWrapper from '~/lib/components/Profile/Common/SectionWrapper';
+import SectionWrapper from '~/lib/components/UserSettings/Common/SectionWrapper';
 import { FilterIcon } from '../../CustomIcons';
 
 const ThirdParty = () => {

@@ -1,6 +1,6 @@
 import { Switch, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
-import SectionWrapper from '../../Profile/Common/SectionWrapper';
+import SectionWrapper from '../../UserSettings/Common/SectionWrapper';
 import { useFormikContext } from 'formik';
 import { Settings } from '~/lib/interfaces/settings.interfaces';
 

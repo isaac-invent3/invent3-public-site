@@ -20,7 +20,7 @@ export interface TextInputProps {
   value?: string | number;
   placeholder?: string;
   customStyle?: InputProps;
-  formControlWrapperStyles?: FormControlProps
+  formControlWrapperStyles?: FormControlProps;
   customLeftElement?: React.ReactNode;
   customRightElement?: React.ReactNode;
   leftElementWidth?: string;

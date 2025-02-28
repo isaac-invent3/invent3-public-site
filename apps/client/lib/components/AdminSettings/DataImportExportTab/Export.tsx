@@ -1,6 +1,6 @@
 import { Stack, Text, useMediaQuery, VStack } from '@chakra-ui/react';
 import React from 'react';
-import SectionWrapper from '../../Profile/Common/SectionWrapper';
+import SectionWrapper from '../../UserSettings/Common/SectionWrapper';
 import { Button, Select } from '@repo/ui/components';
 
 const selectInfo = [

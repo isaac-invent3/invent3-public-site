@@ -1,7 +1,7 @@
 import { Switch, Text, useMediaQuery, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { FormSelect } from '@repo/ui/components';
-import SectionWrapper from '../../Profile/Common/SectionWrapper';
+import SectionWrapper from '../../UserSettings/Common/SectionWrapper';
 import { passwordExpiryPeriodOptions, passwordLengthOptions } from '../utils';
 import { useFormikContext } from 'formik';
 import { Settings } from '~/lib/interfaces/settings.interfaces';

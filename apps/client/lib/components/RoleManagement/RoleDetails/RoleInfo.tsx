@@ -51,6 +51,7 @@ const RoleInfo = ({ role }: RoleInfoProps) => {
           spacing={{ base: '16px', lg: '32px' }}
           width={{ base: 'full', lg: 'max-content' }}
           justifyContent="space-between"
+          alignItems="flex-start"
         >
           <InfoWrapper label="Modules" minW="126px">
             <Text color="white" fontWeight={700} size="lg">

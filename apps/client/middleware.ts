@@ -3,7 +3,7 @@ import { checkPermission } from './app/actions/permissionAction';
 import { encode, getToken, JWT } from 'next-auth/jwt';
 
 const publicRoutes = ['/', '/forgot-password'];
-const protectedGlobalRoute = ['/dashboard', '/profile'];
+const protectedGlobalRoute = ['/dashboard', '/profile', '/user-settings'];
 const SECRET = process.env.NEXTAUTH_SECRET;
 export const TOKEN_REFRESH_BUFFER_SECONDS = 60; // 5 minutes
 export const SESSION_SECURE =
@@ -181,5 +181,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api/|_next/|_static/|_vercel|[\\w-]+\\.\\w+).*)'],
+  matcher: ['/((?!api/|_next/|_static/|_vercel|fonts/|[\\w-]+\\.\\w+).*)'],
 };

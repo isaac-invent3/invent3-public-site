@@ -2,7 +2,7 @@ import { Text, useMediaQuery, VStack } from '@chakra-ui/react';
 import { Select } from '@repo/ui/components';
 import React from 'react';
 import DocumentUploadAndView from '~/lib/components/Common/DocumentUploadAndView';
-import SectionWrapper from '~/lib/components/Profile/Common/SectionWrapper';
+import SectionWrapper from '~/lib/components/UserSettings/Common/SectionWrapper';
 
 const Import = () => {
   const [isMobile] = useMediaQuery('(max-width: 480px)');

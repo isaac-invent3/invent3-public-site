@@ -138,14 +138,6 @@ const clientSideBarData: SideBarData[] = [
     description:
       'Manage compliance requirements and certifications for regulatory adherence.',
   },
-  {
-    name: 'Settings',
-    route: ROUTES.SETTINGS,
-    icon: TemplateIcon,
-    permissionKey: 'audit',
-    description:
-      'Customize and configure system settings for optimal performance.',
-  },
 ];
 const sideBarData: SideBarData[] = [
   ...clientSideBarData,

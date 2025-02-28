@@ -88,6 +88,11 @@ const ticketsBreadcrumb: BreadcrumbNode = {
 
 const profileBreadcrumb: BreadcrumbNode = {
   route: `/${ROUTES.PROFILE}`,
+  label: 'Profile',
+};
+
+const userSettingsBreadcrumb: BreadcrumbNode = {
+  route: `/${ROUTES.USER_SETTINGS}`,
   label: 'Settings',
 };
 
@@ -145,6 +150,10 @@ const complianceBreadCrumb: BreadcrumbNode = {
   route: `/${ROUTES.COMPLIANCE}`,
   label: 'Compliance',
 };
+const adminSettingsBreadcrumb: BreadcrumbNode = {
+  route: `/${ROUTES.USER_SETTINGS}`,
+  label: 'Admin Settings',
+};
 
 const breadcrumbMap: Record<string, BreadcrumbNode> = {
   [ROUTES.DASHBOARD]: dashboardBreadcrumb,
@@ -161,6 +170,8 @@ const breadcrumbMap: Record<string, BreadcrumbNode> = {
   [ROUTES.VENDOR]: vendorManagementBreadCrumb,
   [ROUTES.COMPANY]: companyManagementBreadCrumb,
   [ROUTES.COMPLIANCE]: complianceBreadCrumb,
+  [ROUTES.USER_SETTINGS]: userSettingsBreadcrumb,
+  [ROUTES.SETTINGS]: adminSettingsBreadcrumb,
 };
 
 const getBreadcrumb = (pathSegments: string[]): breadCrumbRoute[] => {

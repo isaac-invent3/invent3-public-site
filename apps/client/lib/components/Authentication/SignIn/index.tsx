@@ -39,6 +39,7 @@ const SignIn = () => {
         redirect: false,
         username: values.username,
         password: values.password,
+        url: window.location.href,
       });
 
       if (result?.error) {

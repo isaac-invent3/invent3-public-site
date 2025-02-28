@@ -2,7 +2,7 @@ import { HStack, Switch, Text, useMediaQuery, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { Button, FormSelect } from '@repo/ui/components';
 
-import SectionWrapper from '../../Profile/Common/SectionWrapper';
+import SectionWrapper from '../../UserSettings/Common/SectionWrapper';
 import { FormikProvider, useFormik } from 'formik';
 import { getSession } from 'next-auth/react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';

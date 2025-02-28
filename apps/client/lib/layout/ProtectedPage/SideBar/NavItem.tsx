@@ -9,6 +9,7 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
+import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 import { ChevronDownIcon } from '~/lib/components/CustomIcons';
 import { sidebarChildren } from '~/lib/interfaces/general.interfaces';
@@ -27,6 +28,7 @@ const NavItem = (props: NavItemProps) => {
   const { isOpen, onToggle } = useDisclosure();
   const path = usePathname();
   const splittedPathname = path.split('/');
+  const { data, update } = useSession();
 
   //For nav items with children
   const fullPath = window.location.href.split(
@@ -63,9 +65,28 @@ const NavItem = (props: NavItemProps) => {
           pr={!children ? '12px' : 0}
           width={isCollapse ? 'max-content' : 'full'}
           cursor="pointer"
+          onClick={() =>
+            update({
+              user: {
+                ...data?.user,
+                managedCompanySlug: null,
+              },
+            })
+          }
           {...(!children
             ? { as: 'a', href: `/${route}` }
-            : { as: 'button', onClick: () => onToggle() })}
+            : {
+                as: 'button',
+                onClick: () => {
+                  onToggle();
+                  update({
+                    user: {
+                      ...data?.user,
+                      managedCompanySlug: null,
+                    },
+                  });
+                },
+              })}
         >
           <Icon
             as={icon}
@@ -113,6 +134,14 @@ const NavItem = (props: NavItemProps) => {
               minW="full"
               textDecoration="none !important"
               key={index}
+              onClick={() =>
+                update({
+                  user: {
+                    ...data?.user,
+                    managedCompanySlug: null,
+                  },
+                })
+              }
             >
               <Text
                 key={index}

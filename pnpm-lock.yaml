@@ -74,7 +74,7 @@ importers:
         version: 2.1.1(@chakra-ui/system@2.6.2(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0-rc.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0-rc.1))(@types/react@18.3.18)(react@19.0.0-rc.1))(react@19.0.0-rc.1))(react@19.0.0-rc.1)
       '@chakra-ui/next-js':
         specifier: ^2.2.0
-        version: 2.4.2(@chakra-ui/react@2.10.4(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0-rc.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0-rc.1))(@types/react@18.3.18)(react@19.0.0-rc.1))(@types/react@18.3.18)(framer-motion@11.15.0(@emotion/is-prop-valid@1.3.1)(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1))(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1))(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0-rc.1))(next@14.3.0-canary.87(@babel/core@7.9.0)(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1))(react@19.0.0-rc.1)
+        version: 2.4.2(@chakra-ui/react@2.10.4(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0-rc.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0-rc.1))(@types/react@18.3.18)(react@19.0.0-rc.1))(@types/react@18.3.18)(framer-motion@11.15.0(@emotion/is-prop-valid@1.3.1)(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1))(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1))(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0-rc.1))(next@14.3.0-canary.87(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1))(react@19.0.0-rc.1)
       '@chakra-ui/react':
         specifier: ^2.8.2
         version: 2.10.4(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0-rc.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0-rc.1))(@types/react@18.3.18)(react@19.0.0-rc.1))(@types/react@18.3.18)(framer-motion@11.15.0(@emotion/is-prop-valid@1.3.1)(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1))(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1)
@@ -270,6 +270,9 @@ importers:
       react-select:
         specifier: ^5.8.0
         version: 5.9.0(@types/react@18.3.18)(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1)
+      react-server-dom-webpack:
+        specifier: ^19.0.0
+        version: 19.0.0(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1)(webpack@4.42.0)
       react-simple-maps:
         specifier: ^3.0.0
         version: 3.0.0(prop-types@15.8.1)(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1)
@@ -371,7 +374,7 @@ importers:
         version: 2.1.1(@chakra-ui/system@2.6.2(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0-rc.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0-rc.1))(@types/react@18.3.18)(react@19.0.0-rc.1))(react@19.0.0-rc.1))(react@19.0.0-rc.1)
       '@chakra-ui/next-js':
         specifier: ^2.2.0
-        version: 2.4.2(@chakra-ui/react@2.10.4(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0-rc.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0-rc.1))(@types/react@18.3.18)(react@19.0.0-rc.1))(@types/react@18.3.18)(framer-motion@11.15.0(@emotion/is-prop-valid@1.3.1)(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1))(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1))(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0-rc.1))(next@14.3.0-canary.87(@babel/core@7.9.0)(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1))(react@19.0.0-rc.1)
+        version: 2.4.2(@chakra-ui/react@2.10.4(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0-rc.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0-rc.1))(@types/react@18.3.18)(react@19.0.0-rc.1))(@types/react@18.3.18)(framer-motion@11.15.0(@emotion/is-prop-valid@1.3.1)(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1))(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1))(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0-rc.1))(next@14.3.0-canary.87(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1))(react@19.0.0-rc.1)
       '@chakra-ui/react':
         specifier: ^2.8.2
         version: 2.10.4(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0-rc.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0-rc.1))(@types/react@18.3.18)(react@19.0.0-rc.1))(@types/react@18.3.18)(framer-motion@11.15.0(@emotion/is-prop-valid@1.3.1)(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1))(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1)
@@ -3000,6 +3003,10 @@ packages:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
     peerDependencies:
       acorn: ^6.0.0 || ^7.0.0 || ^8.0.0
+
+  acorn-loose@8.4.0:
+    resolution: {integrity: sha512-M0EUka6rb+QC4l9Z3T0nJEzNOO7JcoJlYMrBlyBCiFSXRyxjLKayd4TbQs2FDRWQU1h9FR7QVNHt+PEaoNL5rQ==}
+    engines: {node: '>=0.4.0'}
 
   acorn-walk@6.2.0:
     resolution: {integrity: sha512-7evsyfH1cLOCdAzZAd43Cic04yKydNx0cF+7tiA19p1XnLLPU4dpCQOqpjqwokFe//vS0QqfqqjCS2JkiIs0cA==}
@@ -8651,6 +8658,14 @@ packages:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
+  react-server-dom-webpack@19.0.0:
+    resolution: {integrity: sha512-hLug9KEXLc8vnU9lDNe2b2rKKDaqrp5gNiES4uyu2Up3FZfZJZmdwLFXlWzdA9gTB/6/cWduSB2K1Lfag2pSvw==}
+    engines: {node: '>=0.10.0'}
+    peerDependencies:
+      react: ^19.0.0
+      react-dom: ^19.0.0
+      webpack: ^5.59.0
+
   react-simple-maps@3.0.0:
     resolution: {integrity: sha512-vKNFrvpPG8Vyfdjnz5Ne1N56rZlDfHXv5THNXOVZMqbX1rWZA48zQuYT03mx6PAKanqarJu/PDLgshIZAfHHqw==}
     peerDependencies:
@@ -10185,6 +10200,10 @@ packages:
 
   webpack-sources@1.4.3:
     resolution: {integrity: sha512-lgTS3Xhv1lCOKo7SA5TjKXMjpSM4sBjNV5+q2bqesbSPs5FjGmU6jjtBSkX9b4qW87vDIsCIlUPOEhbZrMdjeQ==}
+
+  webpack-sources@3.2.3:
+    resolution: {integrity: sha512-/DyMEOrDgLKKIG0fmvtz+4dUX/3Ghozwgm6iPp8KRhvn+eQf9+Q7GWxVNMk3+uCPWfdXYC4ExGBckIXdFEfH1w==}
+    engines: {node: '>=10.13.0'}
 
   webpack@4.42.0:
     resolution: {integrity: sha512-EzJRHvwQyBiYrYqhyjW9AqM90dE4+s1/XtCfn7uWg6cS72zH+2VPFAlsnW0+W0cDi0XRjNKUMoJtpSi50+Ph6w==}
@@ -11796,7 +11815,7 @@ snapshots:
       '@chakra-ui/system': 2.6.2(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0-rc.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0-rc.1))(@types/react@18.3.18)(react@19.0.0-rc.1))(react@19.0.0-rc.1)
       react: 19.0.0-rc.1
 
-  '@chakra-ui/next-js@2.4.2(@chakra-ui/react@2.10.4(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0-rc.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0-rc.1))(@types/react@18.3.18)(react@19.0.0-rc.1))(@types/react@18.3.18)(framer-motion@11.15.0(@emotion/is-prop-valid@1.3.1)(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1))(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1))(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0-rc.1))(next@14.3.0-canary.87(@babel/core@7.9.0)(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1))(react@19.0.0-rc.1)':
+  '@chakra-ui/next-js@2.4.2(@chakra-ui/react@2.10.4(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0-rc.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0-rc.1))(@types/react@18.3.18)(react@19.0.0-rc.1))(@types/react@18.3.18)(framer-motion@11.15.0(@emotion/is-prop-valid@1.3.1)(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1))(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1))(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0-rc.1))(next@14.3.0-canary.87(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1))(react@19.0.0-rc.1)':
     dependencies:
       '@chakra-ui/react': 2.10.4(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0-rc.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0-rc.1))(@types/react@18.3.18)(react@19.0.0-rc.1))(@types/react@18.3.18)(framer-motion@11.15.0(@emotion/is-prop-valid@1.3.1)(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1))(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1)
       '@emotion/cache': 11.14.0
@@ -12679,7 +12698,9 @@ snapshots:
       source-map: 0.6.1
       string-length: 2.0.0
     transitivePeerDependencies:
+      - bufferutil
       - supports-color
+      - utf-8-validate
 
   '@jest/source-map@24.9.0':
     dependencies:
@@ -13912,6 +13933,10 @@ snapshots:
       acorn-walk: 6.2.0
 
   acorn-jsx@5.3.2(acorn@8.14.0):
+    dependencies:
+      acorn: 8.14.0
+
+  acorn-loose@8.4.0:
     dependencies:
       acorn: 8.14.0
 
@@ -21001,6 +21026,15 @@ snapshots:
       - '@types/react'
       - supports-color
 
+  react-server-dom-webpack@19.0.0(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1)(webpack@4.42.0):
+    dependencies:
+      acorn-loose: 8.4.0
+      neo-async: 2.6.2
+      react: 19.0.0-rc.1
+      react-dom: 19.0.0-rc.1(react@19.0.0-rc.1)
+      webpack: 4.42.0
+      webpack-sources: 3.2.3
+
   react-simple-maps@3.0.0(prop-types@15.8.1)(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1):
     dependencies:
       d3-geo: 2.0.2
@@ -22758,6 +22792,8 @@ snapshots:
     dependencies:
       source-list-map: 2.0.1
       source-map: 0.6.1
+
+  webpack-sources@3.2.3: {}
 
   webpack@4.42.0:
     dependencies:

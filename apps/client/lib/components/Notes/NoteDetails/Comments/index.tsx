@@ -4,6 +4,7 @@ import {
   HStack,
   Icon,
   Skeleton,
+  Spinner,
   StackDivider,
   Text,
   VStack,
@@ -17,6 +18,7 @@ import useFormatUrl from '~/lib/hooks/useFormatUrl';
 import useParseUrlData from '~/lib/hooks/useParseUrl';
 import { Note } from '~/lib/interfaces/notes.interfaces';
 import {
+  useCreateCommentMutation,
   useCreateNoteMutation,
   useGetNoteCommentsQuery,
 } from '~/lib/redux/services/notes.services';
@@ -69,7 +71,7 @@ const NoteComments = ({ note }: { note: Note }) => {
 
   const [comment, setComment] = useState('');
   const { handleSubmit } = useCustomMutation();
-  const [createComment, { isLoading: isCommenting }] = useCreateNoteMutation();
+  const [createComment, { isLoading: isCommenting }] = useCreateCommentMutation();
 
   const handleAddComment: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
@@ -131,6 +133,9 @@ const NoteComments = ({ note }: { note: Note }) => {
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             isDisabled={isCommenting}
+            customRightElement={
+              isCommenting && <Spinner color="primary.500" size="sm" />
+            }
           />
         </HStack>
       </form>

@@ -53,6 +53,17 @@ export const notesApi = createApi({
       ],
     }),
 
+    createComment: builder.mutation<BaseApiResponse<Note>, CreateNotePayload>({
+      query: (body) => ({
+        url: '/Notes',
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+
+      invalidatesTags: ['noteComments'],
+    }),
+
     getNoteTaggedUsers: builder.query<
       BaseApiResponse<ListResponse<NoteTaggedUser>>,
       { id: number } & QueryParams
@@ -193,5 +204,6 @@ export const {
   useDuplicateNoteMutation,
   useSearchNotesMutation,
   useGetNoteCommentsQuery,
-  useUnPinNoteMutation
+  useUnPinNoteMutation,
+  useCreateCommentMutation
 } = notesApi;

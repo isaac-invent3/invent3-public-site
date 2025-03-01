@@ -21,7 +21,7 @@ const AllNotes = (props: AllNotesModalProps) => {
   const { isOpen, onClose } = props;
   const {
     isFetchingNotes,
-    notes,
+    searchedNotes,
     isSearched,
     pinnedNotes,
     setSearch,
@@ -31,7 +31,7 @@ const AllNotes = (props: AllNotesModalProps) => {
   const renderContent = () => {
     if (isFetchingNotes) return <SkeletonGrid count={15} />;
 
-    const hasNotes = notes.length || unPinnedNotes.length;
+    const hasNotes = searchedNotes.length || unPinnedNotes.length;
     const hasPinnedNotes = pinnedNotes.length > 0;
     const hasNoNotes = !hasNotes && !hasPinnedNotes;
 
@@ -49,7 +49,7 @@ const AllNotes = (props: AllNotesModalProps) => {
 
         {hasNotes && (
           <NotesGrid
-            notes={notes}
+            notes={searchedNotes}
             unPinnedNotes={unPinnedNotes}
             isSearched={isSearched}
           />
@@ -67,6 +67,7 @@ const AllNotes = (props: AllNotesModalProps) => {
           width: { lg: '1150px' },
           padding: '48px',
           bgColor: '#E7E7E7',
+          maxW:'80vw'
         }}
       >
         <ModalHeader m={0} p={0}>

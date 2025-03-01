@@ -133,6 +133,7 @@ const NoteForm = (props: NoteFormModalProps) => {
           width: { lg: '1150px' },
           padding: '48px',
           bgColor: '#E7E7E7',
+          maxW: '80vw',
         }}
       >
         <ModalHeader m={0} p={0}>

@@ -48,6 +48,8 @@ interface CreateNotePayload {
 
 interface GetAllPinnedNotesQueryParams extends QueryParams {
   userId: number;
+  systemContextTypeId: number;
+  systemContextIds: number[];
 }
 
 interface UnPinNotePayload {

@@ -56,6 +56,7 @@ const NoteDetails = (props: NoteFormModalProps) => {
           width: { lg: '1150px' },
           padding: '48px',
           bgColor: '#E7E7E7',
+          maxW: '80vw',
         }}
       >
         <ModalBody p={0} m={0} width="full">

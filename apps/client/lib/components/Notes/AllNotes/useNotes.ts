@@ -5,7 +5,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { Note } from '~/lib/interfaces/notes.interfaces';
 import {
-  useGetAllUserNotesQuery,
   useGetPinnedNotesQuery,
   useGetUnPinnedNotesQuery,
   useSearchNotesMutation,
@@ -21,27 +20,25 @@ const useNotes = (data: any) => {
 
   const { data: pinnedNotes, isLoading: isGettingPinnedNotes } =
     useGetPinnedNotesQuery(
-      { userId: user?.userId!, pageSize: 5 },
+      {
+        userId: user?.userId!,
+        pageSize: 15,
+        systemContextTypeId: data?.systemContextId!,
+        systemContextIds: [],
+      },
       { skip: !user?.userId || !data?.systemContextId }
     );
 
   const { data: unPinnedNotes, isLoading: isGettingUnPinnedNotes } =
     useGetUnPinnedNotesQuery(
-      { userId: user?.userId!, pageSize: 5 },
+      {
+        userId: user?.userId!,
+        pageSize: 15,
+        systemContextTypeId: data?.systemContextId!,
+        systemContextIds: [],
+      },
       { skip: !user?.userId || !data?.systemContextId }
     );
-
-  const {
-    data: allNotes,
-    isLoading: isGettingAllNotes,
-    isFetching: isFetchingAllNotes,
-  } = useGetAllUserNotesQuery(
-    {
-      systemContextTypeId: data?.systemContextId!,
-      systemContextIds: [],
-    },
-    { skip: !user?.userId || !data?.systemContextId || search !== '' }
-  );
 
   //   Search Notes
   const [searchNotes, { isLoading: isSearchingNotes }] = useSearchNotesMutation(
@@ -77,29 +74,18 @@ const useNotes = (data: any) => {
   }, [search]);
 
   const isFetchingNotes = useMemo(
-    () =>
-      isGettingAllNotes ||
-      isFetchingAllNotes ||
-      isSearchingNotes ||
-      isGettingUnPinnedNotes ||
-      isGettingPinnedNotes,
-    [
-      isGettingAllNotes,
-      isFetchingAllNotes,
-      isSearchingNotes,
-      isGettingPinnedNotes,
-      isGettingUnPinnedNotes,
-    ]
+    () => isSearchingNotes || isGettingUnPinnedNotes || isGettingPinnedNotes,
+    [isSearchingNotes, isGettingPinnedNotes, isGettingUnPinnedNotes]
   );
 
-  const notes = () => {
+  const searchedNotes = () => {
     if (search && searchData) return searchData.items;
 
-    return allNotes?.data?.items ?? [];
+    return [];
   };
 
   return {
-    notes: notes(),
+    searchedNotes: searchedNotes(),
     isFetchingNotes,
     unPinnedNotes: unPinnedNotes?.data?.items ?? [],
     pinnedNotes: pinnedNotes?.data?.items ?? [],

@@ -25,7 +25,7 @@ const CombinedLocationFilter = (props: CombinedLocationFilterProps) => {
     ...rest
   } = props;
   return (
-    <HStack spacing="7px" {...rest}>
+    <HStack spacing="7px" flexWrap="wrap" {...rest}>
       <RegionFilter
         selectedOptions={selectedRegion}
         handleSelectedOption={(option) =>

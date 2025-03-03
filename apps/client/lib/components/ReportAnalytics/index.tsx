@@ -1,6 +1,6 @@
 'use client';
 
-import { Flex, Grid, HStack, Link, Text, VStack } from '@chakra-ui/react';
+import { Flex, Grid, HStack, Link, Stack, Text, VStack } from '@chakra-ui/react';
 import moment from 'moment';
 import { useAppSelector } from '~/lib/redux/hooks';
 import {
@@ -75,23 +75,29 @@ const ReportAnalytics = () => {
   ];
 
   return (
-    <Flex width="full" direction="column" pb="24px">
+    <Flex
+      width="full"
+      direction="column"
+      pb="24px"
+      px={{ base: '16px', md: 0 }}
+    >
       <Header />
 
       <GeneralFilter />
 
-      <HStack
+      <Stack
         alignItems="center"
         width="full"
         mt={10}
+        spacing="16px"
         paddingBlock="2rem"
         borderBlock="1px solid #BBBBBB"
         justifyContent="space-between"
+        direction={{ base: 'column', md: 'row' }}
       >
         <Grid
           templateColumns={{
-            base: '1fr',
-            md: 'repeat(2, 1fr)',
+            base: 'repeat(2, 1fr)',
             xl: 'repeat(3, 1fr)',
           }}
           width={{ base: '100%', xl: '50%' }}
@@ -112,7 +118,7 @@ const ReportAnalytics = () => {
             reportDashboardValues?.data.topFiveFacilitiesWithAssets ?? []
           }
         />
-      </HStack>
+      </Stack>
 
       <VStack>
         <HStack
@@ -131,7 +137,13 @@ const ReportAnalytics = () => {
         </HStack>
 
         <Grid
-          templateColumns="repeat(7, 1fr)"
+          templateColumns={{
+            base: 'repeat(2, 1fr)',
+            sm: 'repeat(3, 1fr)',
+            md: 'repeat(4, 1fr)',
+            lg: 'repeat(5, 1fr)',
+            xl: 'repeat(7, 1fr)',
+          }}
           width="100%"
           gap="16px"
           mt="10px"
@@ -167,7 +179,13 @@ const ReportAnalytics = () => {
         </HStack>
 
         <Grid
-          templateColumns="repeat(7, 1fr)"
+          templateColumns={{
+            base: 'repeat(2, 1fr)',
+            sm: 'repeat(3, 1fr)',
+            md: 'repeat(4, 1fr)',
+            lg: 'repeat(5, 1fr)',
+            xl: 'repeat(7, 1fr)',
+          }}
           width="100%"
           gap="16px"
           mt="10px"

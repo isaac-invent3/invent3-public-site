@@ -470,16 +470,24 @@
   display: flex;
   gap: 54px;
   margin-top: 1em;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .rdrMonths {
+    flex-direction: row;
+  }
 }
 
 .rdrMonth {
-  max-width: 220px;
+  max-width: 280px;
+  width: 100%;
 }
 .rdrDays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 8px;
-  max-width: 220px;
+  max-width: 280px;
 }
 
 .rdrDay {

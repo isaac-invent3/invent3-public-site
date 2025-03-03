@@ -68,7 +68,13 @@ const GenerateReport = () => {
 
   return (
     <div>
-      <Flex width="full" direction="column" pb="24px" pt="12px">
+      <Flex
+        width="full"
+        direction="column"
+        pb="24px"
+        pt="12px"
+        px={{ base: '16px', md: 0 }}
+      >
         <Header showGenerate={false} header="Generate Report" />
 
         <FormikProvider value={formik}>

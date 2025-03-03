@@ -163,9 +163,9 @@ const CompanyTable = (props: CompanyTableProps) => {
         setSelectedRows={setSelectedRows}
         emptyLines={emptyLines}
         isSelectable={isSelectable}
-        handleSelectRow={(row) => {
-          router.push(`/${ROUTES.COMPANY}/${row.companyId}/edit`);
-        }}
+        // handleSelectRow={(row) => {
+        //   router.push(`/${ROUTES.COMPANY}/${row.companyId}/edit`);
+        // }}
         showFooter={showFooter && data?.data?.totalPages === 1 ? true : false}
         maxTdWidth="200px"
         customThStyle={{

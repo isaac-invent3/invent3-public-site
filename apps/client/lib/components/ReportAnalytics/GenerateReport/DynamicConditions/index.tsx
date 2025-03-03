@@ -1,4 +1,4 @@
-import { Box, HStack, Link, VStack } from '@chakra-ui/react';
+import { Box, HStack, Link, Stack, VStack } from '@chakra-ui/react';
 import { ErrorMessage, Select } from '@repo/ui/components';
 import { FieldArray, Form, getIn, useFormikContext } from 'formik';
 import { useState } from 'react';
@@ -93,7 +93,7 @@ const DynamicConditions = () => {
                         <OperatorDropdown
                           position="absolute"
                           top="90%"
-                          left="-9%"
+                          left={{ base: '-15%' , md:'-9%'}}
                           zIndex={3}
                           bg="#F7F7F7"
                           selectedValue={values.criterion[index]?.join}
@@ -113,18 +113,20 @@ const DynamicConditions = () => {
                           borderRight="none"
                           borderTopLeftRadius="8px"
                           borderBottomLeftRadius="8px"
-                          height="80px"
+                          height={{ base: '280px', md: '80px' }}
                           width="40px"
                         />
                       </>
                     )}
 
-                    <HStack
+                    <Stack
                       alignItems="center"
                       spacing={4}
                       justifyContent="space-between"
-                      height="66px"
+                      direction={{ base: 'column', md: 'row' }}
+                      height={{ md: '66px' }}
                       bg="#F7F7F7"
+                      width={{ base: 'calc(100% - 9%)', md: 'full' }}
                       p="8px"
                       borderRadius="8px"
                     >
@@ -132,6 +134,7 @@ const DynamicConditions = () => {
                         spacing="4px"
                         alignItems="flex-start"
                         flex={1}
+                        w="full"
                         position="relative"
                       >
                         <Select
@@ -171,7 +174,7 @@ const DynamicConditions = () => {
                       <VStack
                         spacing="4px"
                         alignItems="flex-start"
-                        width="155px"
+                        width={{ base: 'full', md: '155px' }}
                         position="relative"
                       >
                         <Select
@@ -214,7 +217,7 @@ const DynamicConditions = () => {
                         index={index}
                       />
 
-                      <VStack flex={0.5} alignItems="flex-start">
+                      <VStack flex={0.5} w="full" alignItems="flex-start">
                         <Link
                           color="#0366EF"
                           onClick={() => insert(index + 1, newCriterion)}
@@ -242,7 +245,7 @@ const DynamicConditions = () => {
                           </Link>
                         )}
                       </VStack>
-                    </HStack>
+                    </Stack>
                   </Box>
                 ))}
               </VStack>

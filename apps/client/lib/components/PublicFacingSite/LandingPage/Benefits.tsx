@@ -1,7 +1,7 @@
 import { Flex, Heading, HStack, Icon, Text, VStack } from '@chakra-ui/react';
 import Image from 'next/image';
 import React from 'react';
-import { CheckIcon } from '../../CustomIcons/layout';
+import { CheckIcon } from '../../CustomIcons/PublicFacingSite';
 
 const benefitItems = [
   {

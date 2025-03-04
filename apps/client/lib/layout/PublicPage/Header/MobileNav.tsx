@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { usePathname, useRouter } from 'next/navigation';
 
-import { HamburgerIcon } from '~/lib/components/CustomIcons/layout';
+import { HamburgerIcon } from '~/lib/components/CustomIcons/PublicFacingSite';
 
 import Links from './data';
 import Image from 'next/image';

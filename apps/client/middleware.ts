@@ -2,7 +2,15 @@ import { NextRequest, NextResponse } from 'next/server';
 import { checkPermission } from './app/actions/permissionAction';
 import { encode, getToken, JWT } from 'next-auth/jwt';
 
-const publicRoutes = ['/', '/signin', '/forgot-password'];
+const publicRoutes = [
+  '/',
+  '/signin',
+  '/forgot-password',
+  '/about-us',
+  '/contact-us',
+  '/faq',
+  '/features',
+];
 const protectedGlobalRoute = ['/dashboard', '/profile', '/user-settings'];
 const SECRET = process.env.NEXTAUTH_SECRET;
 export const TOKEN_REFRESH_BUFFER_SECONDS = 60; // 5 minutes

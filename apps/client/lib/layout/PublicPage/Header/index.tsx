@@ -4,7 +4,7 @@ import Link from 'next/link';
 // import { usePathname } from 'next/navigation';
 
 import Links from './data';
-import { GlobeIcon } from '~/lib/components/CustomIcons/layout';
+import { GlobeIcon } from '~/lib/components/CustomIcons/PublicFacingSite';
 import MobileNav from './MobileNav';
 
 const Header = () => {

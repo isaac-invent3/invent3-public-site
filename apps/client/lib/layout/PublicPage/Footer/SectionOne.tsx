@@ -1,4 +1,4 @@
-import { Flex, HStack, Stack, Text, VStack } from '@chakra-ui/react';
+import { Flex, Stack, Text, VStack } from '@chakra-ui/react';
 import Image from 'next/image';
 import React from 'react';
 import { COMPANY_LINK, LEARN_LINK } from './data';
@@ -34,7 +34,11 @@ const SectionOne = () => {
           real-time insights for smarter decision-making.
         </Text>
       </VStack>
-      <HStack spacing={{ base: '24px', md: '80px' }} alignItems="flex-start">
+      <Stack
+        direction={{ base: 'column', md: 'row' }}
+        spacing={{ base: '24px', md: '80px' }}
+        alignItems="flex-start"
+      >
         <VStack alignItems="flex-start" spacing="16px">
           <Text
             color="black"
@@ -69,7 +73,7 @@ const SectionOne = () => {
             </Link>
           ))}
         </VStack>
-      </HStack>
+      </Stack>
     </Stack>
   );
 };

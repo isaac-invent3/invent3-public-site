@@ -1,3 +1,10 @@
+import {
+  FacebookIcon,
+  InstagramIcon,
+  LinkedInIcon,
+  TwitterIcon,
+} from '~/lib/components/CustomIcons/PublicFacingSite';
+
 const COMPANY_LINK = [
   {
     label: 'About Us',
@@ -40,4 +47,23 @@ const LEARN_LINK = [
   },
 ];
 
-export { LEARN_LINK, COMPANY_LINK };
+const SOCIAL_LINKS = [
+  {
+    icon: FacebookIcon,
+    link: '',
+  },
+  {
+    icon: TwitterIcon,
+    link: '',
+  },
+  {
+    icon: InstagramIcon,
+    link: '',
+  },
+  {
+    icon: LinkedInIcon,
+    link: '',
+  },
+];
+
+export { LEARN_LINK, COMPANY_LINK, SOCIAL_LINKS };

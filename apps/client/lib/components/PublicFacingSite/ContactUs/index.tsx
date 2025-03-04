@@ -3,17 +3,17 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 import Hero from './Hero';
-import CTA from '../Common/CallToAction';
-import FaqAccordion from './FaqAccordion';
+import Actions from './Actions';
+import GetInTouch from './GetInTouch';
 
-const FAQ = () => {
+const ContactUs = () => {
   return (
     <Flex direction="column">
       <Hero />
-      <FaqAccordion />
-      <CTA />
+      <Actions />
+      <GetInTouch />
     </Flex>
   );
 };
 
-export default FAQ;
+export default ContactUs;

@@ -1,36 +1,14 @@
 import { Flex, HStack, Icon, Text, VStack } from '@chakra-ui/react';
 import Link from 'next/link';
 import React from 'react';
-import {
-  FacebookIcon,
-  InstagramIcon,
-  LinkedInIcon,
-  TwitterIcon,
-} from '~/lib/components/CustomIcons/layout';
+import { SOCIAL_LINKS } from './data';
 
 const contactInfo = [
   'Info@Invent3.ai',
   '+447-65887-83792',
   '364 , downton Forth Delaware,',
 ];
-const socialLinks = [
-  {
-    icon: FacebookIcon,
-    link: '',
-  },
-  {
-    icon: TwitterIcon,
-    link: '',
-  },
-  {
-    icon: InstagramIcon,
-    link: '',
-  },
-  {
-    icon: LinkedInIcon,
-    link: '',
-  },
-];
+
 const SectionTwo = () => {
   return (
     <VStack spacing="16px" alignItems="flex-start">
@@ -39,7 +17,7 @@ const SectionTwo = () => {
           Follow us on
         </Text>
         <HStack spacing="16px">
-          {socialLinks.map((item, index) => (
+          {SOCIAL_LINKS.map((item, index) => (
             <Link href={item.link} key={index}>
               <Flex
                 width="32px"
@@ -49,7 +27,7 @@ const SectionTwo = () => {
                 justifyContent="center"
                 alignItems="center"
               >
-                <Icon as={item.icon} boxSize="20px" />
+                <Icon as={item.icon} boxSize="20px" color="primary.500" />
               </Flex>
             </Link>
           ))}

@@ -6,8 +6,8 @@ import Hero from './Hero';
 import Explore from './Explore';
 import Features from './Features';
 import Benefits from './Benefits';
-import CTA from './CallToAction';
-import FAQ from './FAQ';
+import CTA from '../Common/CallToAction';
+import FaqAccordion from '../FAQ/FaqAccordion';
 
 const LandingPage = () => {
   return (
@@ -16,7 +16,7 @@ const LandingPage = () => {
       <Explore />
       <Features />
       <Benefits />
-      <FAQ />
+      <FaqAccordion />
       <CTA />
     </Flex>
   );

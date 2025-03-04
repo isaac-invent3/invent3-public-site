@@ -8,12 +8,19 @@ const CTA = () => {
       justifyContent="center"
       width="full"
       height="full"
-      mt={{ base: '40px', lg: '120px' }}
-      // bgImage="/cta-bg.png"
-      // bgRepeat="no-repeat"
-      // bgPosition="bottom right"
-      // backdropBlur="2xl"
+      position="relative"
     >
+      <Flex
+        top={0}
+        bottom={0}
+        right={0}
+        left={0}
+        position="absolute"
+        bgImage="/cta-bg.png"
+        bgRepeat="no-repeat"
+        bgPosition="bottom right"
+        opacity={0.1}
+      />
       <Flex
         width="full"
         justifyContent="space-between"

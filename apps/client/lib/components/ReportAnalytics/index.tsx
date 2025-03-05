@@ -136,6 +136,24 @@ const ReportAnalytics = () => {
           </Link>
         </HStack>
 
+        <VStack
+          justifyContent="center"
+          my={{ base: '32px', md: '64px' }}
+          w="full"
+        >
+          <Text fontWeight={700} size="md" color="#0E2642">
+            No Default Reports Yet
+          </Text>
+          <Text
+            color="#838383"
+            width="200px"
+            margin="0 auto"
+            textAlign="center"
+          >
+            It looks like there aren’t any default reports set up yet.
+          </Text>
+        </VStack>
+
         <Grid
           templateColumns={{
             base: 'repeat(2, 1fr)',
@@ -177,6 +195,23 @@ const ReportAnalytics = () => {
             See all Saved Templates
           </Link>
         </HStack>
+        <VStack
+          justifyContent="center"
+          my={{ base: '32px', md: '64px' }}
+          w="full"
+        >
+          <Text fontWeight={700} size="md" color="#0E2642">
+            No Saved Reports Yet
+          </Text>
+          <Text
+            color="#838383"
+            width="200px"
+            margin="0 auto"
+            textAlign="center"
+          >
+            It looks like there aren’t any saved reports set up yet
+          </Text>
+        </VStack>
 
         <Grid
           templateColumns={{

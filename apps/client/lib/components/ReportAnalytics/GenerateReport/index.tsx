@@ -139,9 +139,9 @@ const GenerateReport = () => {
                   </VStack>
                 </FormInputWrapper>
 
-                <VStack gridColumn="span 3">
+                <VStack gridColumn={{base:'span 3',md:"span 4", xl:"span 3"}}>
                   <FormInputWrapper
-                    sectionMaxWidth="118px"
+                    sectionMaxWidth="141px"
                     customSpacing="24px"
                     description="Specify the condition for this report"
                     title="Condition"

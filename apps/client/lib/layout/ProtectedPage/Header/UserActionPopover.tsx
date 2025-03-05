@@ -217,7 +217,7 @@ const UserActionPopover = () => {
                   onClose();
                 }}
               />
-              {data?.user.roleIds.includes(ROLE_IDS_ENUM.CLIENT_ADMIN) && (
+              {data?.user.roleIds?.includes(ROLE_IDS_ENUM.CLIENT_ADMIN) && (
                 <ActionButton
                   icon={Setting2Icon}
                   name="Admin Settings"

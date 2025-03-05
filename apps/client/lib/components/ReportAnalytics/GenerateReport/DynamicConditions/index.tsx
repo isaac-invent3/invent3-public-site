@@ -93,7 +93,7 @@ const DynamicConditions = () => {
                         <OperatorDropdown
                           position="absolute"
                           top="90%"
-                          left={{ base: '-15%' , md:'-9%'}}
+                          left={{ base: '-15%' , md:'-8%', }}
                           zIndex={3}
                           bg="#F7F7F7"
                           selectedValue={values.criterion[index]?.join}
@@ -113,7 +113,7 @@ const DynamicConditions = () => {
                           borderRight="none"
                           borderTopLeftRadius="8px"
                           borderBottomLeftRadius="8px"
-                          height={{ base: '280px', md: '80px' }}
+                          height={{ base: '280px', xl: '80px' }}
                           width="40px"
                         />
                       </>
@@ -123,10 +123,10 @@ const DynamicConditions = () => {
                       alignItems="center"
                       spacing={4}
                       justifyContent="space-between"
-                      direction={{ base: 'column', md: 'row' }}
-                      height={{ md: '66px' }}
+                      direction={{ base: 'column', xl: 'row' }}
+                      height={{ xl: '66px' }}
                       bg="#F7F7F7"
-                      width={{ base: 'calc(100% - 9%)', md: 'full' }}
+                      width={{ base: 'calc(100% - 9%)', xl: 'full' }}
                       p="8px"
                       borderRadius="8px"
                     >
@@ -174,7 +174,7 @@ const DynamicConditions = () => {
                       <VStack
                         spacing="4px"
                         alignItems="flex-start"
-                        width={{ base: 'full', md: '155px' }}
+                        width={{ base: 'full', xl: '155px' }}
                         position="relative"
                       >
                         <Select

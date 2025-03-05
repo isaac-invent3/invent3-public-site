@@ -5,12 +5,16 @@ import { ROUTES } from '~/lib/utils/constants';
 import CardHeader from '../../Common/CardHeader';
 import { useGetTicketsByTabScopeQuery } from '~/lib/redux/services/ticket.services';
 import TicketTable from '~/lib/components/TicketManagement/TicketTable';
+import { useSession } from 'next-auth/react';
 
 const AssignedTickets = () => {
+  const session = useSession();
+  const user = session?.data?.user;
   const { data, isLoading, isFetching } = useGetTicketsByTabScopeQuery({
     pageNumber: 1,
     pageSize: 5,
     tabScopeName: 'assigned',
+    userId: user?.userId!,
   });
 
   return (

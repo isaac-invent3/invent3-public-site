@@ -15,6 +15,9 @@ import { WeekType } from '~/lib/interfaces/dashboard.interfaces';
 import { useGetAllTaskInstancesQuery } from '~/lib/redux/services/task/instance.services';
 import LoadingSkeleton from './LoadingSkeleton';
 import SingleSchedule from './SingleSchedule';
+import { generateWeekDays } from './utils';
+import { useSession } from 'next-auth/react';
+// import moment from 'moment';
 
 const weekOptions = [
   {
@@ -27,13 +30,26 @@ const weekOptions = [
   },
 ];
 const UsersSchedule = () => {
+  const session = useSession();
+  const user = session?.data?.user;
   const [selectedWeekType, setSelectedWeekType] = useState<Option | null>(
     weekOptions[0] ?? null
+  );
+  const dateArray = generateWeekDays('this');
+  // eslint-disable-next-line no-unused-vars
+  const [dateSelected, setDateSelected] = useState<string | undefined>(
+    dateArray?.[0]?.fullDay
   );
   const { data, isLoading } = useGetAllTaskInstancesQuery({
     pageSize: 5,
     pageNumber: 1,
+    assignedTo: user?.userId!,
+    // startDate: dateSelected,
+    // endDate: dateSelected
+    //   ? moment(dateSelected).add(1, 'days').toISOString()
+    //   : undefined,
   });
+
   return (
     <VStack width="full" rounded="8px" bgColor="white" height="full" p="16px">
       <HStack width="full" justifyContent="space-between">
@@ -53,7 +69,10 @@ const UsersSchedule = () => {
         />
       </HStack>
       <Flex width="full" mt="32px" mb="24px">
-        <Tab weekType={selectedWeekType?.value as WeekType} />
+        <Tab
+          weekType={selectedWeekType?.value as WeekType}
+          setDateSelected={setDateSelected}
+        />
       </Flex>
 
       <SimpleGrid columns={3} width="full" mb="8px" ml="16px">

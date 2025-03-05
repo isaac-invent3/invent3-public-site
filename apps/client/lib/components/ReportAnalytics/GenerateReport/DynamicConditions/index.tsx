@@ -1,4 +1,4 @@
-import { Box, HStack, Link, Stack, VStack } from '@chakra-ui/react';
+import { Box, Link, Stack, VStack } from '@chakra-ui/react';
 import { ErrorMessage, Select } from '@repo/ui/components';
 import { FieldArray, Form, getIn, useFormikContext } from 'formik';
 import { useState } from 'react';
@@ -93,7 +93,7 @@ const DynamicConditions = () => {
                         <OperatorDropdown
                           position="absolute"
                           top="90%"
-                          left={{ base: '-15%' , md:'-8%', }}
+                          left={{ base: '-15%', md: '-8%' }}
                           zIndex={3}
                           bg="#F7F7F7"
                           selectedValue={values.criterion[index]?.join}

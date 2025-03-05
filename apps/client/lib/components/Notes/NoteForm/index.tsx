@@ -6,7 +6,6 @@ import {
   ModalHeader,
   Text,
   Tooltip,
-  useDisclosure,
   VStack,
 } from '@chakra-ui/react';
 import {
@@ -54,12 +53,6 @@ const NoteForm = (props: NoteFormModalProps) => {
 
   const [createNote, { isLoading: createLoading }] = useCreateNoteMutation();
   const [updateNote, { isLoading: updateLoading }] = useUpdateNoteMutation();
-
-  const {
-    isOpen: isOpenSelectUser,
-    onOpen: onOpenSelectUser,
-    onClose: onCloseSelectUser,
-  } = useDisclosure();
 
   const formattedUrl = useFormatUrl();
   const parsedUrl = useParseUrlData(formattedUrl);
@@ -110,10 +103,18 @@ const NoteForm = (props: NoteFormModalProps) => {
       }
 
       if (note) {
+        const updatedPayload = {
+          noteId: note.noteId,
+          ...payload.createNoteDto,
+          systemContextIds: payload.systemContextIds,
+          tags: payload.tags,
+          lastModifiedBy: session?.user?.username!,
+        };
+
         const response = await handleSubmit(
           updateNote,
-          payload,
-          'Note Created Successfully!'
+          { id: note.noteId, data: updatedPayload },
+          'Note Updated Successfully!'
         );
 
         if (response?.data) {

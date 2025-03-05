@@ -49,7 +49,6 @@ export const notesApi = createApi({
         'allNotes',
         'unPinnedNotes',
         'pinnedNotes',
-        'noteComments',
       ],
     }),
 

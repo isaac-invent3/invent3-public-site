@@ -58,6 +58,7 @@ const NoteCard = (props: NoteCardProps) => {
         bgColor="white"
         position="relative"
         h="180px"
+        w='150px'
         transition="all 300ms ease-in-out"
         pointerEvents={noteLoading ? 'none' : 'all'}
         opacity={noteLoading ? 0.5 : 1}

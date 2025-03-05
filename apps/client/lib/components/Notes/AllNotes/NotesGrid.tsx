@@ -1,4 +1,4 @@
-import { Grid } from '@chakra-ui/react';
+import { Grid, HStack } from '@chakra-ui/react';
 import NoteCard from './NoteCard';
 import { Note } from '~/lib/interfaces/notes.interfaces';
 
@@ -14,11 +14,11 @@ const NotesGrid = ({ notes, unPinnedNotes, isSearched }: NotesGridProps) => {
   if (!items.length) return null;
 
   return (
-    <Grid templateColumns="repeat(6, 1fr)" gap="16px" w="full">
+    <HStack flexWrap="wrap" gap="16px" w="full">
       {items.map((item) => (
         <NoteCard key={item.noteId} data={item} />
       ))}
-    </Grid>
+    </HStack>
   );
 };
 

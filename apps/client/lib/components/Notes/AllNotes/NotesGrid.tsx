@@ -14,7 +14,12 @@ const NotesGrid = ({ notes, unPinnedNotes, isSearched }: NotesGridProps) => {
   if (!items.length) return null;
 
   return (
-    <HStack flexWrap="wrap" gap="16px" w="full">
+    <HStack
+      flexWrap="wrap"
+      gap="16px"
+      w="full"
+      justifyContent={{ base: 'space-evenly', md: 'unset' }}
+    >
       {items.map((item) => (
         <NoteCard key={item.noteId} data={item} />
       ))}

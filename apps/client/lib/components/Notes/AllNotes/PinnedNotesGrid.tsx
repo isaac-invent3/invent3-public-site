@@ -1,4 +1,4 @@
-import { Box, Grid, Text } from '@chakra-ui/react';
+import { Box, HStack, Text } from '@chakra-ui/react';
 import { Note } from '~/lib/interfaces/notes.interfaces';
 import NoteCard from './NoteCard';
 
@@ -14,11 +14,17 @@ const PinnedNotesSection = ({ pinnedNotes }: PinnedNotesSectionProps) => {
       <Text size="md" color="black" fontWeight={800} mb="1em">
         Pinned Notes
       </Text>
-      <Grid templateColumns="repeat(6, 1fr)" gap="16px" w="full">
+
+      <HStack
+        flexWrap="wrap"
+        gap="16px"
+        w="full"
+        justifyContent={{ base: 'space-evenly', md: 'unset' }}
+      >
         {pinnedNotes.map((item) => (
           <NoteCard key={item.noteId} data={{ ...item, isPinned: true }} />
         ))}
-      </Grid>
+      </HStack>
     </Box>
   );
 };

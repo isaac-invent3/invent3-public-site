@@ -65,9 +65,10 @@ const AllNotes = (props: AllNotesModalProps) => {
         onClose={onClose}
         contentStyle={{
           width: { lg: '1150px' },
-          padding: '48px',
+          px: { base: '16px', md: '48px' },
+          py: { base: '32px', md: '48px' },
           bgColor: '#E7E7E7',
-          maxW:'80vw'
+          maxW: '80vw',
         }}
       >
         <ModalHeader m={0} p={0}>
@@ -80,7 +81,7 @@ const AllNotes = (props: AllNotesModalProps) => {
             spacing="16px"
             divider={<Divider borderColor="#BBBBBB" />}
             maxH="550px"
-            minH='500px'
+            minH="500px"
             overflowY="scroll"
           >
             <Filters setSearch={setSearch} />

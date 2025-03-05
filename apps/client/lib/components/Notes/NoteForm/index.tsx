@@ -4,6 +4,7 @@ import {
   ModalBody,
   ModalFooter,
   ModalHeader,
+  Stack,
   Text,
   Tooltip,
   VStack,
@@ -28,6 +29,7 @@ import {
   useUpdateNoteMutation,
 } from '~/lib/redux/services/notes.services';
 import { InfoIcon } from '../../CustomIcons';
+import PageHeader from '../../UI/PageHeader';
 import NoteContent from './NoteContent';
 import NoteTag from './NoteTag';
 import NoteTitle from './NoteTitle';
@@ -138,18 +140,18 @@ const NoteForm = (props: NoteFormModalProps) => {
         }}
       >
         <ModalHeader m={0} p={0}>
-          <Text lineHeight="38px" fontSize="32px" fontWeight={800}>
-            Add New Note
-          </Text>
+          <PageHeader>Add New Note</PageHeader>
         </ModalHeader>
 
         <FormikProvider value={formik}>
           <ModalBody p={0} m={0} width="full">
-            <HStack
+            <Stack
               alignItems="start"
               justifyContent="space-between"
               w="full"
               mt="1em"
+              spacing='1em'
+              direction={{ base: 'column', lg: 'row' }}
             >
               <VStack
                 p={0}
@@ -158,6 +160,7 @@ const NoteForm = (props: NoteFormModalProps) => {
                 padding="0px"
                 paddingInline="0px !important"
                 width={{ md: '80%', base: '100%' }}
+                order={{ base: 1, md: 0 }}
                 spacing="24px"
                 px="24px"
                 mt="22px"
@@ -188,7 +191,11 @@ const NoteForm = (props: NoteFormModalProps) => {
                 </FormInputWrapper>
               </VStack>
 
-              <VStack alignItems="start" spacing="40px">
+              <VStack
+                order={{ base: 0, md: 1 }}
+                alignItems="start"
+                spacing="40px"
+              >
                 <VStack alignItems="start">
                   <HStack>
                     <Text size="md" fontWeight={800}>
@@ -254,7 +261,7 @@ const NoteForm = (props: NoteFormModalProps) => {
                   />
                 </VStack>
               </VStack>
-            </HStack>
+            </Stack>
           </ModalBody>
 
           <ModalFooter p={0} m={0}>

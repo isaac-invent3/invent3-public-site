@@ -6,6 +6,7 @@ import {
   Icon,
   ModalBody,
   SkeletonCircle,
+  Stack,
   Text,
   Tooltip,
   VStack,
@@ -26,6 +27,7 @@ import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import UserInfo from '../../Common/UserInfo';
 import { InfoIcon } from '../../CustomIcons';
+import PageHeader from '../../UI/PageHeader';
 import NoteComments from './Comments';
 
 interface NoteFormModalProps {
@@ -54,18 +56,20 @@ const NoteDetails = (props: NoteFormModalProps) => {
         onClose={onClose}
         contentStyle={{
           width: { lg: '1150px' },
-          padding: '48px',
+          px: { base: '16px', md: '48px' },
+          py: { base: '32px', md: '48px' },
           bgColor: '#E7E7E7',
           maxW: '80vw',
         }}
       >
         <ModalBody p={0} m={0} width="full">
-          <HStack
+          <Stack
             alignItems="start"
             justifyContent="space-between"
             w="full"
             mt="1em"
             spacing="2em"
+            direction={{ base: 'column', lg: 'row' }}
           >
             <VStack
               p={0}
@@ -73,23 +77,43 @@ const NoteDetails = (props: NoteFormModalProps) => {
               margin="0px"
               padding="0px"
               paddingInline="0px !important"
-              width={{ md: '70%', base: '100%' }}
+              width={{ lg: '70%', base: '100%' }}
               spacing="24px"
               px="24px"
               mt="22px"
             >
-              <HStack justifyContent="space-between" w="full">
-                <Text lineHeight="38px" fontSize="32px" fontWeight={800}>
-                  Notes
-                </Text>
+              <Stack
+                direction={{ base: 'column', sm: 'row' }}
+                justifyContent="space-between"
+                spacing="16px"
+                w="full"
+              >
+                <PageHeader>Notes</PageHeader>
 
-                <Button customStyles={{ w: '150px' }}>Edit Note</Button>
-              </HStack>
+                {data?.systemContextId && (
+                  <>
+                    <Button
+                      customStyles={{
+                        w: '150px',
+                        alignSelf: 'end',
+                        height: { base: '36px', md: 'min-content' },
+                      }}
+                    >
+                      Edit Note
+                    </Button>
+                  </>
+                )}
+              </Stack>
 
-              <HStack justifyContent="space-between" w="full">
+              <HStack
+                justifyContent="space-between"
+                w="full"
+                flexWrap="wrap"
+                spacing="16px"
+              >
                 <BackButton handleClick={onClose} />
-                <HStack spacing="12px">
-                  <HStack alignItems="start">
+                <HStack spacing="12px" flexWrap="wrap">
+                  <HStack alignItems="start" flexWrap="wrap">
                     <HStack>
                       <Text size="md" fontWeight={800}>
                         System Context
@@ -142,7 +166,11 @@ const NoteDetails = (props: NoteFormModalProps) => {
               </Card>
             </VStack>
 
-            <VStack w="30%" alignItems="start" spacing="20px">
+            <VStack
+              width={{ lg: '30%', base: '100%' }}
+              alignItems="start"
+              spacing="20px"
+            >
               <VStack
                 bgColor="white"
                 p="20px"
@@ -220,7 +248,7 @@ const NoteDetails = (props: NoteFormModalProps) => {
                 <NoteComments note={note} />
               </VStack>
             </VStack>
-          </HStack>
+          </Stack>
         </ModalBody>
       </GenericModal>
     </>

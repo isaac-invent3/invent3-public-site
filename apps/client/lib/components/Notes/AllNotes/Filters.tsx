@@ -16,8 +16,18 @@ const Filters = (props: FilterProps) => {
   const data = useParseUrlData(formattedUrl);
 
   return (
-    <HStack gap="1em" w="full" justifyContent="space-between" mt="1em">
-      <HStack alignItems="start" spacing="40px">
+    <HStack
+      flexWrap="wrap"
+      gap="1em"
+      w="full"
+      justifyContent="space-between"
+      mt="1em"
+    >
+      <HStack
+        alignItems="start"
+        spacing={{ base: '16px', md: '40px' }}
+        flexWrap="wrap"
+      >
         <VStack alignItems="start">
           <HStack>
             <Text size="md" fontWeight={800}>
@@ -85,7 +95,7 @@ const Filters = (props: FilterProps) => {
         </VStack>
       </HStack>
 
-      <HStack spacing="16px">
+      <HStack spacing="16px" flexWrap="wrap">
         <SearchInput setSearch={setSearch} placeholderText="Search" />
 
         <FilterButton

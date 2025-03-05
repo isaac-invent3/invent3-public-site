@@ -1,8 +1,9 @@
-import { HStack, Text, useDisclosure } from '@chakra-ui/react';
+import { HStack, Stack, Text, useDisclosure } from '@chakra-ui/react';
 import { Button } from '@repo/ui/components';
 import useFormatUrl from '~/lib/hooks/useFormatUrl';
 import useParseUrlData from '~/lib/hooks/useParseUrl';
 import NoteForm from '../NoteForm';
+import PageHeader from '../../UI/PageHeader';
 
 const Header = () => {
   const formattedUrl = useFormatUrl();
@@ -14,21 +15,31 @@ const Header = () => {
   } = useDisclosure();
 
   return (
-    <HStack justifyContent="space-between" w="full">
-      <Text lineHeight="38px" fontSize="32px" fontWeight={800}>
-        Notes
-      </Text>
+    <Stack
+      direction={{ base: 'column', sm: 'row' }}
+      justifyContent="space-between"
+      spacing="16px"
+      w="full"
+    >
+      <PageHeader>Notes</PageHeader>
 
       {data?.systemContextId && (
         <>
-          <Button handleClick={onNoteFormOpen} customStyles={{ w: '150px' }}>
+          <Button
+            handleClick={onNoteFormOpen}
+            customStyles={{
+              w: '150px',
+              alignSelf: 'end',
+              height: { base: '36px', md: 'min-content' },
+            }}
+          >
             Add New Note
           </Button>
 
           <NoteForm onClose={onNoteFormClose} isOpen={isNoteFormOpened} />
         </>
       )}
-    </HStack>
+    </Stack>
   );
 };
 

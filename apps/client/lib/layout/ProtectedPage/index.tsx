@@ -12,6 +12,7 @@ import {
   CaretRightIcon,
 } from '~/lib/components/CustomIcons/layout';
 import CompanyPageHeader from '~/lib/components/CompanyManagement/CompanyPageHeader';
+import Notes from './Notes';
 
 interface ProtectedLayoutProps {
   children: React.ReactNode;
@@ -26,6 +27,8 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
       overflowY="scroll"
       position="relative"
     >
+      <Notes />
+
       <HStack position="relative">
         <SideBar isCollapse={isCollapse} setIsCollapse={setIsCollapse} />
 

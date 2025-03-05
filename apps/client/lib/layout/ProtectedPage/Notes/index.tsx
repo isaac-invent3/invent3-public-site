@@ -11,7 +11,7 @@ const Notes = () => {
       pos="absolute"
       w="100px"
       h="40px"
-      right={20}
+      right={{ base: 10, md: 20 }}
       bottom={50}
       display="flex"
       alignItems="center"
@@ -21,6 +21,7 @@ const Notes = () => {
       transition="all 300ms ease-in-out"
       background="white"
       role="group"
+      zIndex={999}
       sx={{
         boxShadow: `
       0px 3px 6px rgba(0, 0, 0, 0.1),

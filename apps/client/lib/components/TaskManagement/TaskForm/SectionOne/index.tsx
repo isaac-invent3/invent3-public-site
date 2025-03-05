@@ -8,10 +8,10 @@ const SectionOne = () => {
   return (
     <VStack spacing="24px" width="full" alignItems="flex-start">
       <SimpleGrid
-        columns={2}
+        columns={{ base: 1, md: 2 }}
         alignItems="flex-start"
         width="full"
-        spacing="78px"
+        spacing={{ base: '30px', md: '78px' }}
       >
         <TaskTitle sectionMaxWidth="141px" spacing="47px" />
         <AssetField />

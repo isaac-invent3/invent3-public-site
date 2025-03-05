@@ -1,9 +1,9 @@
 'use client';
 
-import { Skeleton } from '@chakra-ui/react';
 import { notFound } from 'next/navigation';
 import MaintenancePlan from '~/lib/components/TemplateManagement/Details/MaintenancePlan';
 import MaintenanceSchedule from '~/lib/components/TemplateManagement/Details/MaintenanceSchedule';
+import PageLoadingSkeleton from '~/lib/components/UI/PageLoadingSkeleton';
 
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { useGetTemplateByIdQuery } from '~/lib/redux/services/template.services';
@@ -21,7 +21,7 @@ export default function Page({ params }: { params: { id: number } }) {
 
   // Handle loading state
   if (isLoading) {
-    return <Skeleton width="full" rounded="8px" height="250px" />;
+    return <PageLoadingSkeleton />;
   }
 
   // Handle not found state

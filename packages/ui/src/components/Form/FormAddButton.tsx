@@ -18,7 +18,7 @@ const AddButton = (props: AddButtonProps) => {
   const {
     children,
     handleClick,
-    color = 'primary.500',
+    color = 'blue.500',
     customStyle,
     customTextStyle,
   } = props;

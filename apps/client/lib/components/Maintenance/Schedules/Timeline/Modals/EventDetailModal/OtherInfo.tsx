@@ -9,8 +9,17 @@ interface OtherInfoProps {
 const OtherInfo = (props: OtherInfoProps) => {
   const { data } = props;
   return (
-    <Flex gap="40px" width="full" alignItems="flex-start">
-      <VStack width="43%" alignItems="flex-start" spacing="4px">
+    <Flex
+      gap="40px"
+      width="full"
+      alignItems="flex-start"
+      direction={{ base: 'column', md: 'row' }}
+    >
+      <VStack
+        width={{ base: 'full', md: '43%' }}
+        alignItems="flex-start"
+        spacing="4px"
+      >
         <DetailHeader
           variant="secondary"
           customStyles={{ color: 'black', size: 'base', fontWeight: 500 }}
@@ -21,7 +30,11 @@ const OtherInfo = (props: OtherInfoProps) => {
           {data?.comments ? data?.comments : 'N/A'}
         </Text>
       </VStack>
-      <VStack width="30%" alignItems="flex-start" spacing="4px">
+      <VStack
+        width={{ base: 'full', md: '30%' }}
+        alignItems="flex-start"
+        spacing="4px"
+      >
         <DetailHeader
           variant="secondary"
           customStyles={{ color: 'black', size: 'base', fontWeight: 500 }}
@@ -30,7 +43,11 @@ const OtherInfo = (props: OtherInfoProps) => {
         </DetailHeader>
         <Text color="neutral.600">{data?.assetLocation ?? 'N/A'}</Text>
       </VStack>
-      <VStack width="27%" alignItems="flex-start" spacing="4px">
+      <VStack
+        width={{ base: 'full', md: '27%' }}
+        alignItems="flex-start"
+        spacing="4px"
+      >
         <DetailHeader
           variant="secondary"
           customStyles={{ color: 'black', size: 'base', fontWeight: 500 }}

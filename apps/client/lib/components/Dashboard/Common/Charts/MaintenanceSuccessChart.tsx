@@ -86,7 +86,7 @@ const MaintenanceSuccessChart = ({
       bgColor="white"
       rounded="8px"
     >
-      <HStack width="full" justifyContent="space-between">
+      <HStack width="full" justifyContent="space-between" flexWrap="wrap">
         <CardHeader>Maintenance Success</CardHeader>
         <HStack>
           <Text

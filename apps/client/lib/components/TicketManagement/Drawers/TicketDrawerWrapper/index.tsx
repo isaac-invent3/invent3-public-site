@@ -4,7 +4,7 @@ import {
   DrawerHeader,
   Flex,
   Heading,
-  HStack,
+  Stack,
   VStack,
 } from '@chakra-ui/react';
 import { FormikContextType, FormikProvider } from 'formik';
@@ -100,8 +100,7 @@ const TicketDrawerWrapper = (props: TicketDrawerProps) => {
           >
             {action === 'edit' && ticketDetail && (
               <Heading
-                fontSize="32px"
-                lineHeight="38.02px"
+                size={{ base: 'lg', lg: 'xl' }}
                 color="#0E2642"
                 fontWeight={800}
                 px="24px"
@@ -147,12 +146,13 @@ const TicketDrawerWrapper = (props: TicketDrawerProps) => {
     <>
       <GenericDrawer isOpen={isOpen} onClose={handleClose} maxWidth="507px">
         <DrawerHeader p={0} m={0}>
-          <HStack
+          <Stack
             pt="16px"
             pb="32px"
-            px="24px"
+            px={{ base: '16px', lg: '24px' }}
             width="full"
             justifyContent="space-between"
+            direction={{ base: 'row' }}
           >
             <BackButton handleClick={handleClose} />
 
@@ -173,7 +173,7 @@ const TicketDrawerWrapper = (props: TicketDrawerProps) => {
                 )}
               </TicketDrawerHeader>
             )}
-          </HStack>
+          </Stack>
         </DrawerHeader>
         {isLoading && (
           <DrawerBody width="full" height="full">

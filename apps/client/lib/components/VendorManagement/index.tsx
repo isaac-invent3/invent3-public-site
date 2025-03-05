@@ -1,27 +1,28 @@
 'use client';
 
 import { Flex, HStack, useDisclosure, VStack } from '@chakra-ui/react';
-import React, { useCallback, useEffect, useState } from 'react';
-import {
-  DEFAULT_PAGE_SIZE,
-  SYSTEM_CONTEXT_DETAILS,
-} from '~/lib/utils/constants';
-import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { ListResponse } from '@repo/interfaces';
 import { OPERATORS } from '@repo/constants';
+import { ListResponse } from '@repo/interfaces';
 import { SearchInput, SlideTransition } from '@repo/ui/components';
 import _ from 'lodash';
-import Header from './Header';
-import ActionButton from './Actions';
-import UserActionDisplay from './Actions/Display';
 import { useSearchParams } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
+import { Vendor, VendorFilter } from '~/lib/interfaces/vendor.interfaces';
 import {
   useGetAllVendorsQuery,
   useSearchVendorsMutation,
 } from '~/lib/redux/services/vendor.services';
-import VendorTable from './VendorTable';
-import { Vendor, VendorFilter } from '~/lib/interfaces/vendor.interfaces';
+import {
+  DEFAULT_PAGE_SIZE,
+  SYSTEM_CONTEXT_DETAILS,
+} from '~/lib/utils/constants';
+import ActionButton from './Actions';
+import VendorActionDisplay from './Actions/Display';
 import VendorDetail from './VendorDetail';
+import VendorTable from './VendorTable';
+import { generateSearchCriterion } from '@repo/utils';
+import PageHeader from '../UI/PageHeader';
 
 export const initialFilterData = {
   startDate: undefined,
@@ -71,31 +72,36 @@ const VendorManagement = () => {
   const isFilterEmpty = _.every(filterData, (value) => _.isEmpty(value));
 
   const searchCriterion = {
-    ...((!isFilterEmpty || search) && {
-      orCriterion: [
-        ...(search
-          ? [
-              [
-                {
-                  columnName: 'firstName',
-                  columnValue: search,
-                  operation: OPERATORS.Contains,
-                },
-              ],
-            ]
-          : []),
-        ...(search
-          ? [
-              [
-                {
-                  columnName: 'lastName',
-                  columnValue: search,
-                  operation: OPERATORS.Contains,
-                },
-              ],
-            ]
-          : []),
+    ...(search && {
+      criterion: [
+        {
+          columnName: 'vendorName',
+          columnValue: search,
+          operation: OPERATORS.Contains,
+        },
       ],
+      ...(!isFilterEmpty && {
+        orCriterion: [
+          ...[filterData.startDate]
+            .filter(Boolean)
+            .map((item) => [
+              ...generateSearchCriterion(
+                'createdDate',
+                [item as string],
+                OPERATORS.Contains
+              ),
+            ]),
+          ...[filterData.endDate]
+            .filter(Boolean)
+            .map((item) => [
+              ...generateSearchCriterion(
+                'createdDate',
+                [item as string],
+                OPERATORS.Contains
+              ),
+            ]),
+        ],
+      }),
     }),
     pageNumber,
     pageSize,
@@ -130,18 +136,27 @@ const VendorManagement = () => {
     <>
       <Flex width="full" direction="column" pb="24px">
         <VStack width="full" spacing="40px">
-          <Header />
+          <Flex px={{ base: '16px', md: 0 }} width="full">
+            <PageHeader>Vendor Management</PageHeader>
+          </Flex>
           <HStack
             width="full"
             justifyContent="space-between"
             borderBottom="1px"
             borderColor="neutral.300"
             pb="8px"
+            flexWrap="wrap"
+            px={{ base: '16px', md: 0 }}
+
+            // display={{ base: 'none', lg: 'flex' }}
           >
             <SearchInput
+              width={{ base: 'full', md: '100px' }}
               setSearch={setSearch}
               placeholderText="Search by name..."
-              customStyle={{ minW: '363px' }}
+              customStyle={{
+                minW: { md: '363px', base: undefined },
+              }}
             />
             <ActionButton
               activeAction={activeAction}
@@ -153,7 +168,7 @@ const VendorManagement = () => {
           <SlideTransition trigger={isOpen} direction="bottom">
             {isOpen && (
               <Flex width="full" mt="8px">
-                <UserActionDisplay
+                <VendorActionDisplay
                   isOpen={isOpen}
                   activeAction={activeAction}
                   handleApplyFilter={handleSearch}
@@ -164,6 +179,7 @@ const VendorManagement = () => {
             )}
           </SlideTransition>
         )}
+
         <Flex width="full" mt="8px">
           <VendorTable
             data={

@@ -1,11 +1,11 @@
-import { Flex, HStack, VStack } from '@chakra-ui/react';
+import { VStack } from '@chakra-ui/react';
 import { useField } from 'formik';
 import moment from 'moment';
 
 import {
   ConditionalDateSelector,
   ErrorMessage,
-  FormSectionInfo,
+  FormInputWrapper,
 } from '@repo/ui/components';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
@@ -19,15 +19,13 @@ const EndDate = (props: EndDateProps) => {
   // eslint-disable-next-line no-unused-vars
   const [field, meta, helpers] = useField('endDate');
   return (
-    <HStack width="full" alignItems="flex-start" spacing={spacing}>
-      <Flex width="full" maxW={sectionMaxWidth}>
-        <FormSectionInfo
-          title="End Date"
-          info="Specify when the maintenance plan will end"
-          isRequired
-        />
-      </Flex>
-
+    <FormInputWrapper
+      sectionMaxWidth={sectionMaxWidth}
+      customSpacing={spacing}
+      title="End Date"
+      description="Specify when the maintenance plan will end"
+      isRequired
+    >
       <VStack width="full" spacing="4px" alignItems="flex-start">
         <ConditionalDateSelector
           selectedDate={
@@ -43,7 +41,7 @@ const EndDate = (props: EndDateProps) => {
           <ErrorMessage>{meta.error}</ErrorMessage>
         )}
       </VStack>
-    </HStack>
+    </FormInputWrapper>
   );
 };
 

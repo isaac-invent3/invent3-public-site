@@ -184,6 +184,7 @@ const SYSTEM_CONTEXT_TYPE = {
   NOTES: 43,
   VENDOR: 68,
   AUDIT: 73,
+  COMPANY: 0,
 };
 
 const ROUTES = {
@@ -203,6 +204,9 @@ const ROUTES = {
   ROLES: 'role-management',
   COMPANY: 'company-management',
   VENDOR: 'vendor-management',
+  SETTINGS: 'settings',
+  USER_SETTINGS: 'user-settings',
+  COMPLIANCE: 'compliance',
 };
 
 const SYSTEM_CONTEXT_DETAILS: Record<ContextKey, SystemContextDetail> = {
@@ -260,6 +264,11 @@ const SYSTEM_CONTEXT_DETAILS: Record<ContextKey, SystemContextDetail> = {
     slug: 'vendorId',
     displayName:'Vendor Management'
   },
+  COMPANY: {
+    id: SYSTEM_CONTEXT_TYPE.COMPANY,
+    route: ROUTES.COMPANY,
+    slug: 'companyId',
+  },
   AUDIT: {
     id: SYSTEM_CONTEXT_TYPE.AUDIT,
     route: ROUTES.AUDIT_LOG,
@@ -288,6 +297,31 @@ const SYSTEM_ROLES = {
   VISITORS: 7,
 };
 
+const EXPORT_TYPE_ENUM = {
+  CSV: 1,
+  PDF: 2,
+};
+
+const ROLE_IDS_ENUM = {
+  EXECUTIVE: 20,
+  OPERATION_MANAGER: 21,
+  CLIENT_ADMIN: 26,
+  FRONT_DESK: 25,
+  SUPER_ADMIN: 6,
+  THIRD_PARTY: 27,
+  FIELD_ENGINEER: 22,
+};
+
+const COMPANY_TYPE_ENUM = {
+  MANAGE_OWN_DATA: 1,
+  MANAGE_DATA_FOR_COMPANIES: 2,
+};
+
+const USER_STATUS_ENUM = {
+  ACTIVE: 1,
+  NON_ACTIVE: 2,
+};
+
 export {
   AREA_ENUM,
   ASSET_GROUP_TYPE,
@@ -309,4 +343,8 @@ export {
   SYSTEM_ROLES,
   timeRangeOptions,
   yearOptions,
+  EXPORT_TYPE_ENUM,
+  ROLE_IDS_ENUM,
+  COMPANY_TYPE_ENUM,
+  USER_STATUS_ENUM,
 };

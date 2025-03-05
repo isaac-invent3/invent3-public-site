@@ -6,7 +6,7 @@ const Logo = () => {
   return (
     <FormInputWrapper
       sectionMaxWidth="133px"
-      spacing="17px"
+      customSpacing="17px"
       description="Size max: 10MB each Format: JPG, PNG"
       title="Logo"
       isRequired

@@ -58,12 +58,12 @@ const BranchesWithTopAssetsChart = (props: BranchesWithTopAssetsProps) => {
 
   return (
     <Box
-      ml="16px"
       bg="white"
       p="16px"
       borderRadius="md"
       border="1px solid #F2F1F1"
       height="100%"
+      w={{ base: 'full' , md:'50%'}}
     >
       <HStack alignItems="start" height="100%">
         <VStack justifyContent="space-between" alignItems="start" height="30%">

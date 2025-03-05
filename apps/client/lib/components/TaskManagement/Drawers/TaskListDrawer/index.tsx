@@ -60,11 +60,10 @@ const TaskListDrawer = (props: TaskListDrawerProps) => {
           )}
         </HStack>
       </DrawerHeader>
-      <DrawerBody p={0} m={0}>
+      <DrawerBody p={{base:'16px', md:0}} m={0}>
         <VStack width="full" alignItems="flex-start" spacing="32px">
           <Heading
-            fontSize="32px"
-            lineHeight="38.02px"
+            size={{ base: 'lg', lg: 'xl' }}
             fontWeight={800}
             color="primary.500"
             pl="32px"

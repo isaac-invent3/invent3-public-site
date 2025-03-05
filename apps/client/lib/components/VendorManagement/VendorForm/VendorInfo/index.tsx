@@ -1,22 +1,24 @@
 import { Flex, SimpleGrid, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 
-import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { FormActionButtons } from '@repo/ui/components';
-import { ROUTES } from '~/lib/utils/constants';
-import { vendorInfoSchema } from '~/lib/schemas/vendor.schema';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateVendorForm } from '~/lib/redux/slices/VendorSlice';
+import { vendorInfoSchema } from '~/lib/schemas/vendor.schema';
+import { ROUTES } from '~/lib/utils/constants';
 import Logo from './Logo';
-import VendorName from './VendorName';
 import VendorCategory from './VendorCategory';
 import VendorDescription from './VendorDescription';
+import VendorName from './VendorName';
 
 interface VendorInfoProps {
   activeStep: number;
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
+  type: 'create' | 'edit';
+  cancelAction?: () => void;
 }
 const VendorInfo = (props: VendorInfoProps) => {
-  const { activeStep, setActiveStep } = props;
+  const { activeStep, setActiveStep, type, cancelAction } = props;
   const formDetails = useAppSelector((state) => state.vendor.vendorForm);
   const dispatch = useAppDispatch();
 
@@ -45,20 +47,24 @@ const VendorInfo = (props: VendorInfoProps) => {
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
           <VStack
-            spacing="45px"
+            spacing={{ base: '24px', lg: '45px' }}
             width="full"
             alignItems="flex-start"
             bgColor="white"
             pt="26px"
             pl="16px"
             pb="33px"
-            pr="44px"
+            pr={{ base: '16px', md: '44px' }}
             rounded="6px"
             minH="60vh"
           >
             <Logo />
-            <SimpleGrid width="full" columns={2} spacing="70px">
-              <VStack width="full" spacing="46px">
+            <SimpleGrid
+              width="full"
+              columns={{ base: 1, md: 2 }}
+              spacing={{ base: '24px', lg: '70px' }}
+            >
+              <VStack width="full" spacing={{ base: '24px', lg: '45px' }}>
                 <VendorName />
                 <VendorCategory />
               </VStack>
@@ -67,7 +73,10 @@ const VendorInfo = (props: VendorInfoProps) => {
           </VStack>
           <Flex width="full" mt="16px">
             <FormActionButtons
-              cancelLink={`/${ROUTES.VENDOR}`}
+              cancelLink={type === 'edit' ? `/${ROUTES.VENDOR}` : undefined}
+              cancelAction={
+                type === 'create' && cancelAction ? cancelAction : undefined
+              }
               totalStep={4}
               activeStep={1}
               setActiveStep={setActiveStep}

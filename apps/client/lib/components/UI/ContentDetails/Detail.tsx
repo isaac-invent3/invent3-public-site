@@ -6,7 +6,7 @@ interface DetailProps {
   labelStyle?: TextProps;
   valueStyle?: TextProps;
   itemContainerStyle?: StackProps;
-  labelMinWidth: string;
+  labelMinWidth: string | object
   label: string;
   value?: string | number | React.ReactNode;
   children?: React.ReactNode;
@@ -28,13 +28,18 @@ const Detail = (props: DetailProps) => {
       direction="row"
       {...itemContainerStyle}
     >
-      <Text size="md" minW={labelMinWidth} color="neutral.600" {...labelStyle}>
+      <Text
+        size={{ base: 'base', md: 'md' }}
+        minW={labelMinWidth}
+        color="neutral.600"
+        {...labelStyle}
+      >
         {label}
       </Text>
       {children ? (
         children
       ) : (
-        <Text size="md" {...valueStyle}>
+        <Text size={{ base: 'base', md: 'md' }} {...valueStyle}>
           {isEmpty(value) ? 'N/A' : value}
         </Text>
       )}

@@ -19,7 +19,7 @@ const AppProviders = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <SessionProvider>
+    <SessionProvider refetchOnWindowFocus={false}>
       <ReduxProvider>
         <CacheProvider>
           <ChakraProvider>{children}</ChakraProvider>

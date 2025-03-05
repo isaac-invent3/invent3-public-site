@@ -1,6 +1,6 @@
 'use client';
 
-import { Flex, HStack, useDisclosure } from '@chakra-ui/react';
+import { Flex, HStack, Stack, useDisclosure } from '@chakra-ui/react';
 import React, { useCallback, useEffect, useState } from 'react';
 import PageHeader from '../UI/PageHeader';
 import {
@@ -106,10 +106,21 @@ const TemplateManagement = () => {
   }, [search]);
 
   return (
-    <Flex width="full" direction="column" pb="24px" gap="32px">
-      <HStack width="full" justifyContent="space-between">
+    <Flex
+      width="full"
+      direction="column"
+      pb="24px"
+      gap={{ base: '24px', lg: '32px' }}
+    >
+      <Stack
+        width="full"
+        justifyContent="space-between"
+        direction={{ base: 'column', lg: 'row' }}
+        spacing="16px"
+        px={{ base: '16px', md: 0 }}
+      >
         <PageHeader>Template Management</PageHeader>
-        <HStack spacing="16px">
+        <HStack spacing="16px" flexWrap="wrap">
           <SearchInput setSearch={setSearch} placeholderText="Search..." />
           <FilterButton
             icon={FilterIcon}
@@ -118,11 +129,13 @@ const TemplateManagement = () => {
             isActive={isOpen}
           />
         </HStack>
-      </HStack>
+      </Stack>
       {isOpen && (
         <SlideTransition trigger={isOpen} direction="bottom">
           {isOpen && (
-            <TemplateFilters handleApplyFilter={handleSearch} type="page" />
+            <Flex width="full" px={{ base: '16px', lg: 0 }}>
+              <TemplateFilters handleApplyFilter={handleSearch} type="page" />
+            </Flex>
           )}
         </SlideTransition>
       )}

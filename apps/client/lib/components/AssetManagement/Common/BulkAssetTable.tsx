@@ -1,5 +1,4 @@
-import { HStack } from '@chakra-ui/react';
-import { DataTable, FormSectionInfo } from '@repo/ui/components';
+import { DataTable, FormInputWrapper } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useMemo, useState } from 'react';
 import { Asset } from '~/lib/interfaces/asset/general.interface';
@@ -8,6 +7,7 @@ import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
 import GenericStatusBox from '../../UI/GenericStatusBox';
 import { getSelectedAssetIds } from './utils';
+import { useMediaQuery } from '@chakra-ui/react';
 
 interface BulkAssetTableProps {
   type: 'transfer' | 'dispose';
@@ -25,6 +25,45 @@ const BulkAssetTable = (props: BulkAssetTableProps) => {
 
   const suffix = type === 'transfer' ? 'transferred' : 'disposed';
   const columnHelper = createColumnHelper<Asset>();
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
+
+  const mobileColumns = useMemo(
+    () => {
+      const baseColumns = [
+        columnHelper.accessor('currentOwner', {
+          cell: (info) => info.getValue() ?? 'N/A',
+          header: 'Current Owner',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('assetId', {
+          cell: (info) => info.getValue(),
+          header: 'Asset ID',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('assetName', {
+          cell: (info) => info.getValue() ?? 'N/A',
+          header: 'Asset Name',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('currentStatus', {
+          cell: (info) => {
+            return (
+              <GenericStatusBox
+                text={info.getValue()}
+                colorCode={info.row.original.displayColorCode}
+              />
+            );
+          },
+          header: 'Status',
+          enableSorting: false,
+        }),
+      ];
+
+      return baseColumns;
+    },
+    [[data]] //eslint-disable-line
+  );
+
   const columns = useMemo(
     () => {
       const baseColumns = [
@@ -95,7 +134,7 @@ const BulkAssetTable = (props: BulkAssetTableProps) => {
           header: 'Purchase Value',
           enableSorting: false,
         }),
-        columnHelper.accessor('scrapvalue', {
+        columnHelper.accessor('maintenanceCost', {
           cell: (info) =>
             info.getValue()
               ? amountFormatter(info.getValue() as number)
@@ -120,15 +159,16 @@ const BulkAssetTable = (props: BulkAssetTableProps) => {
   );
 
   return (
-    <HStack width="full" alignItems="flex-start" spacing="16px">
-      <FormSectionInfo
-        title="Bulk Assets"
-        info={`List of assets to be ${suffix}`}
-        isRequired={false}
-        maxWidth="118px"
-      />
+    <FormInputWrapper
+      sectionMaxWidth="118px"
+      customSpacing="16px"
+      description={`List of assets to be ${suffix}`}
+      title="Bulk Assets"
+      isRequired={false}
+      formSectionCustomStyle={{ maxW: { base: 'full', lg: '118px' } }}
+    >
       <DataTable
-        columns={columns}
+        columns={isMobile ? mobileColumns : columns}
         data={data?.data?.items ?? []}
         emptyLines={3}
         isLoading={isLoading}
@@ -154,7 +194,7 @@ const BulkAssetTable = (props: BulkAssetTableProps) => {
         }}
         customTBodyRowStyle={{ verticalAlign: 'top' }}
       />
-    </HStack>
+    </FormInputWrapper>
   );
 };
 

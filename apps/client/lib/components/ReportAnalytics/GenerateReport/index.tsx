@@ -68,7 +68,13 @@ const GenerateReport = () => {
 
   return (
     <div>
-      <Flex width="full" direction="column" pb="24px" pt="12px">
+      <Flex
+        width="full"
+        direction="column"
+        pb="24px"
+        pt="12px"
+        px={{ base: '16px', md: 0 }}
+      >
         <Header showGenerate={false} header="Generate Report" />
 
         <FormikProvider value={formik}>
@@ -88,7 +94,7 @@ const GenerateReport = () => {
               >
                 <FormInputWrapper
                   sectionMaxWidth="141px"
-                  spacing="24px"
+                  customSpacing="24px"
                   description="Choose the context for this report"
                   title="Select from Context"
                   isRequired
@@ -119,7 +125,7 @@ const GenerateReport = () => {
 
                 <FormInputWrapper
                   sectionMaxWidth="141px"
-                  spacing="8px"
+                  customSpacing="8px"
                   description="Pick the relevant column for data selection."
                   title="Column"
                   isRequired
@@ -133,10 +139,10 @@ const GenerateReport = () => {
                   </VStack>
                 </FormInputWrapper>
 
-                <VStack gridColumn="span 3">
+                <VStack gridColumn={{base:'span 3',md:"span 4", xl:"span 3"}}>
                   <FormInputWrapper
-                    sectionMaxWidth="118px"
-                    spacing="24px"
+                    sectionMaxWidth="141px"
+                    customSpacing="24px"
                     description="Specify the condition for this report"
                     title="Condition"
                     isRequired

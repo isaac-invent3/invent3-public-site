@@ -1,5 +1,10 @@
 import { GeoJsonTypes } from 'geojson';
-import { OPERATORS, ROUTES, SYSTEM_CONTEXT_TYPE } from '../utils/constants';
+import {
+  FORM_ENUM,
+  OPERATORS,
+  ROUTES,
+  SYSTEM_CONTEXT_TYPE,
+} from '../utils/constants';
 import { ComponentWithAs, IconProps } from '@chakra-ui/react';
 import { ModuleKey } from './role.interfaces';
 
@@ -97,11 +102,21 @@ interface Document {
 
 type ActionType = 'bulk' | 'filter' | null;
 
+interface sidebarChildren {
+  name: string;
+  route: string;
+}
+
 interface SideBarData {
   name: string;
   route: string;
   icon: ComponentWithAs<'svg', IconProps>;
   permissionKey: ModuleKey;
+  description?: string;
+  children?: {
+    name: string;
+    route: string;
+  }[];
 }
 
 type ContextKey =
@@ -113,7 +128,8 @@ type ContextKey =
   | 'TICKETS'
   | 'USER'
   | 'VENDOR'
-  | 'AUDIT';
+  | 'AUDIT'
+  | 'COMPANY';
 
 interface SystemContextDetail {
   id: (typeof SYSTEM_CONTEXT_TYPE)[keyof typeof SYSTEM_CONTEXT_TYPE];
@@ -128,6 +144,30 @@ interface ImageObject {
   imageName: string | null;
   base64PhotoImage: string;
   base64Prefix: string | null;
+}
+
+interface BaseDto {
+  createdBy?: string;
+  lastModifiedBy?: string;
+  changeInitiatedBy?: string | null;
+  actionType?: (typeof FORM_ENUM)[keyof typeof FORM_ENUM];
+}
+
+interface LocationDto extends BaseDto {
+  lgaId: number | null;
+  facilityId: number | null;
+  buildingId: number | null;
+  floorId: number | null;
+  departmentId: number | null;
+  roomId: number | null;
+  locationId?: number | null;
+  aisleId: number | null;
+  shelfId: number | null;
+}
+
+interface BaseUpdateDto {
+  changeInitiatedBy: string | null;
+  actionType: (typeof FORM_ENUM)[keyof typeof FORM_ENUM];
 }
 
 export type {
@@ -145,4 +185,8 @@ export type {
   SystemContextDetail,
   ContextKey,
   ImageObject,
+  sidebarChildren,
+  BaseDto,
+  LocationDto,
+  BaseUpdateDto,
 };

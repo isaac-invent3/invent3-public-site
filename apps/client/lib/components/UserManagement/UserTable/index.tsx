@@ -1,12 +1,12 @@
-import { Flex, Text, VStack } from '@chakra-ui/react';
+import { Flex, Text, useMediaQuery, VStack } from '@chakra-ui/react';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useMemo } from 'react';
-import PopoverAction from './PopoverAction';
 import { GenericTableProps } from '~/lib/interfaces/general.interfaces';
 import { User } from '~/lib/interfaces/user.interfaces';
-import GenericStatusBox from '../../UI/GenericStatusBox';
 import UserInfo from '../../Common/UserInfo';
+import GenericStatusBox from '../../UI/GenericStatusBox';
+import PopoverAction from './PopoverAction';
 
 interface UserTableProps extends GenericTableProps {
   data: User[];
@@ -35,8 +35,10 @@ const UserTable = (props: UserTableProps) => {
     setPageSize,
     setSelectedRows,
   } = props;
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
 
   const columnHelper = createColumnHelper<User>();
+
   const columns = useMemo(
     () => {
       const baseColumns = [
@@ -46,9 +48,97 @@ const UserTable = (props: UserTableProps) => {
           enableSorting: false,
         }),
 
-        columnHelper.accessor('lastName', {
-          cell: (info) => info.row.original.userId,
+        columnHelper.accessor('employeeId', {
+          cell: (info) => info.getValue() ?? 'N/A',
           header: 'Employee ID',
+          enableSorting: false,
+        }),
+
+        columnHelper.accessor('residentialAddress', {
+          cell: (info) => (
+            <UserInfo
+              name={`${info.row.original.firstName} ${info.row.original.lastName}`}
+              role=""
+            />
+          ),
+          header: 'Name',
+          enableSorting: true,
+        }),
+
+        columnHelper.accessor('email', {
+          cell: (info) => info.getValue(),
+          header: 'Email',
+          enableSorting: true,
+        }),
+
+        columnHelper.accessor('userRoles', {
+          cell: (info) => (
+            <Text
+              color="black"
+              py="8px"
+              px="16px"
+              bgColor="#EABC3040"
+              rounded="16px"
+            >
+              {info
+                .getValue()
+                ?.map((item) => item.roleName)
+                .join(', ')}
+            </Text>
+          ),
+          header: 'User Role',
+          enableSorting: true,
+        }),
+
+        columnHelper.accessor('facilityName', {
+          cell: (info) => (
+            <VStack spacing="4px" alignItems="flex-start">
+              <Text color="black">{info.getValue() ?? 'N/A'}</Text>
+              <Text color="neutral.700" fontSize="10px" lineHeight="11.88px">
+                {info.row.original.lganame ?? ''}
+              </Text>
+            </VStack>
+          ),
+          header: 'Location',
+          enableSorting: true,
+        }),
+
+        columnHelper.accessor('firstName', {
+          cell: () => '23 / 10 / 2024',
+          header: 'Hired Date',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('statusName', {
+          cell: (info) => {
+            return (
+              <GenericStatusBox
+                text={info.getValue()}
+                colorCode={info.row.original?.displayColorCode}
+              />
+            );
+          },
+          header: 'Status',
+          enableSorting: false,
+        }),
+
+        columnHelper.accessor('guid', {
+          cell: (info) => <PopoverAction user={info.row.original} />,
+          header: '',
+          enableSorting: false,
+        }),
+      ];
+
+      return baseColumns;
+    },
+    [[data]] //eslint-disable-line
+  );
+
+  const mobileColumns = useMemo(
+    () => {
+      const baseColumns = [
+        columnHelper.accessor('userId', {
+          cell: (info) => info.getValue(),
+          header: 'User ID',
           enableSorting: false,
         }),
 
@@ -63,46 +153,6 @@ const UserTable = (props: UserTableProps) => {
           enableSorting: true,
         }),
 
-        columnHelper.accessor('email', {
-          cell: (info) => info.getValue(),
-          header: 'Email',
-          enableSorting: true,
-        }),
-
-        columnHelper.accessor('rowId', {
-          cell: () => (
-            <Text
-              color="black"
-              py="8px"
-              px="16px"
-              bgColor="#EABC3040"
-              rounded="16px"
-            >
-              FrontDesk/CSA
-            </Text>
-          ),
-          header: 'User Role',
-          enableSorting: true,
-        }),
-
-        columnHelper.accessor('stateName', {
-          cell: () => (
-            <VStack spacing="4px" alignItems="flex-start">
-              <Text color="black">Admiralty Way,</Text>
-              <Text color="neutral.700" fontSize="10px" lineHeight="11.88px">
-                Lekki Epe
-              </Text>
-            </VStack>
-          ),
-          header: 'User',
-          enableSorting: true,
-        }),
-
-        columnHelper.accessor('firstName', {
-          cell: () => '23 / 10 / 2024',
-          header: 'Hired Date',
-          enableSorting: false,
-        }),
         columnHelper.accessor('stateName', {
           cell: () => {
             return <GenericStatusBox text="Active" colorCode="#07CC3B" />;
@@ -126,7 +176,7 @@ const UserTable = (props: UserTableProps) => {
   return (
     <Flex width="full">
       <DataTable
-        columns={columns}
+        columns={isMobile ? mobileColumns : columns}
         data={data ?? []}
         isLoading={isLoading}
         isFetching={isFetching}

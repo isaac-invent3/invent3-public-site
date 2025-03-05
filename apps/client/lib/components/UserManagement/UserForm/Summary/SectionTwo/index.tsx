@@ -1,14 +1,22 @@
-import { SimpleGrid } from '@chakra-ui/react';
-import React from 'react';
+import { Flex } from '@chakra-ui/react';
 import EmployeeInfo from './EmployeeInfo';
-import OccupationInfo from './OccupationInfo';
+import RoleGroupInfo from './RoleGroupInfo';
 
 const SectionTwo = () => {
   return (
-    <SimpleGrid width="full" columns={2} gap="57px">
-      <EmployeeInfo />
-      <OccupationInfo />
-    </SimpleGrid>
+    <Flex
+      width="full"
+      gap={{ base: '40px', lg: '57px' }}
+      direction={{ base: 'column', lg: 'row' }}
+      justifyContent="space-between"
+    >
+      <Flex width={{ base: 'full', lg: '563px' }}>
+        <EmployeeInfo />
+      </Flex>
+      <Flex width={{ base: 'full', lg: '440px' }}>
+        <RoleGroupInfo />
+      </Flex>
+    </Flex>
   );
 };
 

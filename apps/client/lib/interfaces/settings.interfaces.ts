@@ -1,0 +1,88 @@
+import { BaseEntity } from '@repo/interfaces';
+
+interface Settings extends BaseEntity {
+  settingId: number;
+  companyId: number;
+  languageId: number;
+  automaticTimeZoneId: boolean;
+  dateFormatId: number;
+  twoFactorAuthentication: boolean;
+  sessionDurationTimeoutId: number;
+  maxFailedAttempts: number;
+  minPasswordLengthId: number;
+  specialCharactersRequired: boolean;
+  passwordExpiryPeriodId: number;
+  emailNotifications: boolean;
+  pushNotifications: boolean;
+  smsnotifications: boolean;
+  alertAssetMaintenanceDue: boolean;
+  alertComplianceViolation: boolean;
+  alertNewUserAdded: boolean;
+  alertSubscriptionExpiresSoon: boolean;
+  enableAuditLogs: boolean;
+  retentionPeriodId: number;
+  logsIncludeUserActivity: boolean;
+  exportLogsAutoEnabled: boolean;
+  exportFrequencyId: number;
+  exportFormatId: number;
+  iso27001: boolean;
+  gdpr: boolean;
+  soc2: boolean;
+  hippa: boolean;
+  pciDss: boolean;
+  complianceReviewFrequencyId: number;
+  complianceEnableAutoChecks: boolean;
+  complianceRequireDocumentationOfStatusChange: boolean;
+  complianceRequireDocumentExpiryAlerts: boolean;
+  complianceViolationAlerts: boolean;
+  complianceEscalationRulesId: number;
+  complianceAutoSuspendViolatingPartner: boolean;
+  complianceEnableAudits: boolean;
+  complianceAuditRetentionPeriodId: number;
+  complianceAutoReportScheduleId: number;
+  dateCreated: string;
+}
+
+interface UpdateSettingsPayload {
+  companyId?: number;
+  languageId?: number;
+  automaticTimeZoneId?: boolean;
+  dateFormatId?: number;
+  twoFactorAuthentication?: boolean;
+  sessionDurationTimeoutId?: number;
+  maxFailedAttempts?: number;
+  minPasswordLengthId?: number;
+  specialCharactersRequired?: boolean;
+  passwordExpiryPeriodId?: number;
+  emailNotifications?: boolean;
+  pushNotifications?: boolean;
+  smsnotifications?: boolean;
+  alertAssetMaintenanceDue?: boolean;
+  alertComplianceViolation?: boolean;
+  alertNewUserAdded?: boolean;
+  alertSubscriptionExpiresSoon?: boolean;
+  enableAuditLogs?: boolean;
+  retentionPeriodId?: number;
+  logsIncludeUserActivity?: boolean;
+  exportLogsAutoEnabled?: boolean;
+  exportFrequencyId?: number;
+  exportFormatId?: number;
+  iso27001?: boolean;
+  gdpr?: boolean;
+  soc2?: boolean;
+  hippa?: boolean;
+  pciDss?: boolean;
+  complianceReviewFrequencyId?: number;
+  complianceEnableAutoChecks?: boolean;
+  complianceRequireDocumentationOfStatusChange?: boolean;
+  complianceRequireDocumentExpiryAlerts?: boolean;
+  complianceViolationAlerts?: boolean;
+  complianceEscalationRulesId?: number;
+  complianceAutoSuspendViolatingPartner?: boolean;
+  complianceEnableAudits?: boolean;
+  complianceAuditRetentionPeriodId?: number;
+  complianceAutoReportScheduleId?: number;
+  lastModifiedBy: string;
+}
+
+export type { Settings, UpdateSettingsPayload };

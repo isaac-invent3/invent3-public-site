@@ -12,9 +12,9 @@ interface DashboardStats {
   openTickets: number;
   openTicketsPercentageChange: number;
   pendingTasks: number;
-  highPriorityPendingTasksPercentage: number;
-  mediumPriorityPendingTasksPercentage: number;
-  lowPriorityPendingTasksPercentage: number;
+  highPriorityPendingTasks: number;
+  mediumPriorityPendingTasks: number;
+  lowPriorityPendingTasks: number;
   totalNoOfVendors: number;
   totalNoOfVendorsPercentageChange: number;
   noOfOpenApprovals: number;

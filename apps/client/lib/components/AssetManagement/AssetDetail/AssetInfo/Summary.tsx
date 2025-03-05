@@ -1,4 +1,4 @@
-import { Flex, HStack, Text } from '@chakra-ui/react';
+import { Flex, SimpleGrid, Stack, Text } from '@chakra-ui/react';
 
 import { useAppSelector } from '~/lib/redux/hooks';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
@@ -71,7 +71,7 @@ const Summary = () => {
     },
   ];
   return (
-    <HStack
+    <Stack
       width="full"
       p="16px"
       borderWidth="0.7px"
@@ -79,18 +79,24 @@ const Summary = () => {
       rounded="8px"
       justifyContent="space-between"
       alignItems="flex-start"
+      direction={{ base: 'column', sm: 'row' }}
+      spacing={{ base: '24px' }}
     >
-      <HStack spacing="24px" alignItems="flex-start">
+      <SimpleGrid
+        columns={{ base: 1, md: 2 }}
+        spacing="24px"
+        alignItems="flex-start"
+      >
         {Summary1.map((item) => (
           <SummaryInfo {...item} key={item.label} />
         ))}
-      </HStack>
-      <HStack spacing="24px">
+      </SimpleGrid>
+      <SimpleGrid columns={{ base: 1, md: 2 }} spacing="24px">
         {Summary2.map((item) => (
           <SummaryInfo {...item} key={item.label} />
         ))}
-      </HStack>
-    </HStack>
+      </SimpleGrid>
+    </Stack>
   );
 };
 

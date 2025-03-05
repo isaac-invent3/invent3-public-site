@@ -13,6 +13,38 @@ interface AuditLog {
   systemContextTypeId: number;
 }
 
+interface AuditRecord {
+  statusName: string;
+  auditRecordId: number;
+  userId: string;
+  systemModuleContextTypeId: string;
+  requestActionTypeId: string;
+  requestStatusId: string;
+  isFlaggedForReview: string;
+  contextIds: string;
+  dateCreated: string;
+  actionPerformedViaId: string;
+  createdBy: string;
+  requestActionTypeName: string;
+  username: string;
+  systemContextTypeName: string;
+  systemContextTypeId: string;
+  isDeleted: string;
+}
+
+interface AuditChanges {
+  fieldName: string;
+  beforeChanges: string;
+  afterChanges: string;
+}
+
+interface AuditSummary {
+  totalAuditsRecorded: number;
+  criticalEvents: number;
+  mostActiveUsers: number;
+  recentAlerts: number;
+}
+
 interface LogFilter {
   userIds: number[];
   systemContextTypeIds: number[];
@@ -20,4 +52,4 @@ interface LogFilter {
   endDate: string | undefined;
 }
 
-export type { AuditLog, LogFilter };
+export type { AuditLog, LogFilter, AuditRecord, AuditChanges, AuditSummary };

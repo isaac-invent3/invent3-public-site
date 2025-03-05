@@ -85,7 +85,7 @@ const FormImageUpload = (props: FormImageUploadProps) => {
           <HStack alignItems="flex-start" spacing="12px">
             <FormControl isInvalid={meta.touched && meta.error !== undefined}>
               <Input
-                id="file"
+                id={`${name}Upload`}
                 display="none"
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                   const fileList = event.currentTarget.files;
@@ -106,6 +106,7 @@ const FormImageUpload = (props: FormImageUploadProps) => {
                           base64Prefix: null,
                         };
 
+                        console.log({ image });
                         // Update the Formik helpers with the processed image
                         helpers.setValue(image);
                       }
@@ -118,7 +119,7 @@ const FormImageUpload = (props: FormImageUploadProps) => {
                 type="file"
                 accept="image/*"
               />
-              <label htmlFor="file">
+              <label htmlFor={`${name}Upload`}>
                 <HStack
                   justifyContent="center"
                   spacing="4px"

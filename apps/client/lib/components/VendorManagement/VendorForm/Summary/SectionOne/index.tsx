@@ -1,17 +1,26 @@
-import { Flex, HStack, Text, VStack } from '@chakra-ui/react';
+import { Flex, Stack, Text, VStack } from '@chakra-ui/react';
 import Image from 'next/image';
 import DocumentSummaryView from '~/lib/components/Common/DocumentUploadAndView/DocumentSummaryView';
 import DetailHeader from '~/lib/components/UI/DetailHeader';
 import { useAppSelector } from '~/lib/redux/hooks';
 
 const SectionOne = () => {
-  const { logo, slaDocuments } = useAppSelector(
+  const { logo, vendorDocuments } = useAppSelector(
     (state) => state.vendor.vendorForm
   );
 
   return (
-    <HStack width="full" spacing="64px" alignItems="flex-start">
-      <VStack spacing="8px" width="177px" alignItems="flex-start">
+    <Stack
+      flexDir={{ base: 'column', md: 'row' }}
+      width="full"
+      spacing="64px"
+      alignItems="flex-start"
+    >
+      <VStack
+        spacing="8px"
+        width={{ base: 'full', md: '177px' }}
+        alignItems="flex-start"
+      >
         <DetailHeader variant="primary">Logo</DetailHeader>
         {logo ? (
           <Flex position="relative" width="100px" height="75px" bgSize="cover">
@@ -37,10 +46,10 @@ const SectionOne = () => {
           </Text>
         )}
       </VStack>
-      <Flex width="230px">
-        <DocumentSummaryView documents={slaDocuments} />
+      <Flex width={{ base: 'full', md: '230px' }}>
+        <DocumentSummaryView documents={vendorDocuments} />
       </Flex>
-    </HStack>
+    </Stack>
   );
 };
 

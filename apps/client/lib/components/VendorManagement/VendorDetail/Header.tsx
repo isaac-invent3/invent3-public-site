@@ -1,4 +1,4 @@
-import { HStack, Icon } from '@chakra-ui/react';
+import { Grid, HStack, Icon, Stack } from '@chakra-ui/react';
 import { Button } from '@repo/ui/components';
 import { CloseIcon } from '../../CustomIcons';
 
@@ -9,10 +9,14 @@ const VendorHeader = (props: VendorHeaderProps) => {
   const { handleBack } = props;
 
   return (
-    <HStack width="full" justifyContent="space-between">
+    <Stack
+      flexDir={{ base: 'column', md: 'row' }}
+      width="full"
+      justifyContent="space-between"
+    >
       <HStack spacing="16px">
         <Button
-          customStyles={{ height: '32px', px: '12px' }}
+          customStyles={{ height: '32px', px: '12px', width: '85px' }}
           variant="secondary"
           handleClick={handleBack}
         >
@@ -20,7 +24,10 @@ const VendorHeader = (props: VendorHeaderProps) => {
           Back
         </Button>
       </HStack>
-      <HStack spacing="8px">
+      <Grid
+        gap="8px"
+        templateColumns={{ base: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}
+      >
         <Button
           customStyles={{ height: '35px', px: '12px' }}
           handleClick={handleBack}
@@ -35,14 +42,18 @@ const VendorHeader = (props: VendorHeaderProps) => {
           Send Reminder Email
         </Button>
         <Button
-          customStyles={{ height: '35px', px: '12px' }}
+          customStyles={{
+            height: '35px',
+            px: '12px',
+            display: { base: 'none', md: 'flex' },
+          }}
           handleClick={handleBack}
           variant="secondary"
         >
           Terminate Contract
         </Button>
-      </HStack>
-    </HStack>
+      </Grid>
+    </Stack>
   );
 };
 

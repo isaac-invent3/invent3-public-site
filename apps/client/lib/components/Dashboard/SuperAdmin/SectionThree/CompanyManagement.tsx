@@ -43,7 +43,7 @@ const CompanyManagement = () => {
           header: 'Company Name',
           enableSorting: false,
         }),
-        columnHelper.accessor('createdBy', {
+        columnHelper.accessor('dateCreated', {
           cell: (info) => dateFormatter(info.getValue(), 'DD-MM-YYYY') ?? 'N/A',
           header: 'Registration Date',
           enableSorting: false,
@@ -76,6 +76,7 @@ const CompanyManagement = () => {
     <VStack
       width="full"
       height="full"
+      minH="350px"
       pl="16px"
       pr="15px"
       pt="21px"
@@ -99,7 +100,7 @@ const CompanyManagement = () => {
           </Text>
         </HStack>
         <Button
-          href={`/${ROUTES.TICKETS}`}
+          href={`/${ROUTES.COMPANY}`}
           customStyles={{
             py: 0,
             height: '28px',

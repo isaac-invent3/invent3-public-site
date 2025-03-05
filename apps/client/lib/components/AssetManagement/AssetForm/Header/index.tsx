@@ -12,7 +12,12 @@ const Header = (props: HeaderProps) => {
   const assetData = useAppSelector((state) => state.asset.asset);
 
   return (
-    <HStack width="full" justifyContent="space-between" alignItems="flex-start">
+    <HStack
+      width="full"
+      justifyContent="space-between"
+      alignItems="flex-start"
+      px={{ base: '16px', md: 0 }}
+    >
       <PageHeader>
         {type === 'create' ? 'Add New Asset' : 'Edit Asset'}
       </PageHeader>

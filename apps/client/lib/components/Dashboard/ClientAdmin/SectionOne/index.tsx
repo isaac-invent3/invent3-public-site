@@ -1,12 +1,11 @@
 import { HStack, SimpleGrid, Skeleton, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
-import TotalAssetSummary from '../../Common/Summaries/TotalAssetSummary';
-import OpenTicketSummary from '../../Common/Summaries/OpenTicketSummary';
+import { useAppSelector } from '~/lib/redux/hooks';
+import { useGetDashboardStatQuery } from '~/lib/redux/services/dashboard/clientadmin.services';
 import SummaryCardWrapper from '../../../Common/SummaryCardWrapper';
 import ProgressIndicator from '../../Common/ProgressIndicator';
+import OpenTicketSummary from '../../Common/Summaries/OpenTicketSummary';
+import TotalAssetSummary from '../../Common/Summaries/TotalAssetSummary';
 import PendingTask from './PendingTask';
-import { useGetDashboardStatQuery } from '~/lib/redux/services/dashboard/clientadmin.services';
-import { useAppSelector } from '~/lib/redux/hooks';
 
 const SectionOne = () => {
   const { selectedCountry, selectedState } = useAppSelector(
@@ -17,7 +16,11 @@ const SectionOne = () => {
     regionId: (selectedState?.value as number) ?? undefined,
   });
   return (
-    <SimpleGrid width="full" spacing="16px" columns={5}>
+    <SimpleGrid
+      width="full"
+      spacing="16px"
+      columns={{ base: 1, sm: 2, md: 3, xl: 5 }}
+    >
       <TotalAssetSummary
         isLoading={isLoading}
         assetInUse={data?.data?.totalAssets}
@@ -32,9 +35,9 @@ const SectionOne = () => {
       <PendingTask
         isLoading={false}
         totalTask={data?.data?.pendingTasks}
-        highPriority={data?.data?.highPriorityPendingTasksPercentage}
-        mediumPriority={data?.data?.mediumPriorityPendingTasksPercentage}
-        lowPriority={data?.data?.lowPriorityPendingTasksPercentage}
+        highPriority={data?.data?.highPriorityPendingTasks}
+        mediumPriority={data?.data?.mediumPriorityPendingTasks}
+        lowPriority={data?.data?.lowPriorityPendingTasks}
       />
       <SummaryCardWrapper
         title="Total Number of Vendors"

@@ -1,10 +1,11 @@
-import { HStack, Icon, useDisclosure } from '@chakra-ui/react';
+import { Flex, HStack, Icon, useDisclosure } from '@chakra-ui/react';
 import { Button } from '@repo/ui/components';
 import { CloseIcon } from '../../CustomIcons';
 import { useAppSelector } from '~/lib/redux/hooks';
 import CreateTicketDrawer from '../../TicketManagement/Drawers/CreateTicketDrawer';
 import { ROUTES } from '~/lib/utils/constants';
 import usePermissionAccess from '~/lib/hooks/useRoleAccess';
+import MobilePopover from './MobilePopover';
 
 interface AssetHeaderProps {
   handleBack: () => void;
@@ -32,56 +33,67 @@ const AssetHeader = (props: AssetHeaderProps) => {
         </Button>
       </HStack>
       {type === 'main' ? (
-        <HStack width="min-content" spacing="8px">
-          {canEditAsset && (
-            <Button
-              customStyles={{ height: '35px', width: '106px', px: '16px' }}
-              variant="primary"
-              href={`/${ROUTES.ASSETS}/${assetData?.assetId}/edit`}
-            >
-              Edit Asset
-            </Button>
+        <>
+          {assetData && (
+            <Flex display={{ lg: 'none' }}>
+              <MobilePopover data={assetData} />
+            </Flex>
           )}
-          {canRaiseTicket && (
-            <Button
-              handleClick={onOpen}
-              customStyles={{ height: '35px', px: '12px', width: '106px' }}
-              variant="outline"
-            >
-              Raise Ticket
-            </Button>
-          )}
-          {canTransferAsset && (
-            <Button
-              customStyles={{
-                height: '35px',
-                width: '106px',
-                px: '8px',
-                fontSize: '14px',
-                lineHeight: '16.63px',
-              }}
-              variant="secondary"
-              href={`/${ROUTES.ASSETS}/${assetData?.assetId}/transfer`}
-            >
-              Transfer
-            </Button>
-          )}
-          {canDisposeAsset && (
-            <Button
-              customStyles={{
-                height: '35px',
-                width: '106px',
-                px: '8px',
-                fontSize: '14px',
-                lineHeight: '16.63px',
-              }}
-              variant="secondary"
-              href={`/${ROUTES.ASSETS}/${assetData?.assetId}/dispose`}
-            >
-              Dispose
-            </Button>
-          )}
-        </HStack>
+          <HStack
+            width="min-content"
+            spacing="8px"
+            display={{ base: 'none', lg: 'flex' }}
+          >
+            {canEditAsset && (
+              <Button
+                customStyles={{ height: '35px', width: '106px', px: '16px' }}
+                variant="primary"
+                href={`/${ROUTES.ASSETS}/${assetData?.assetId}/edit`}
+              >
+                Edit Asset
+              </Button>
+            )}
+            {canRaiseTicket && (
+              <Button
+                handleClick={onOpen}
+                customStyles={{ height: '35px', px: '12px', width: '106px' }}
+                variant="outline"
+              >
+                Raise Ticket
+              </Button>
+            )}
+            {canTransferAsset && (
+              <Button
+                customStyles={{
+                  height: '35px',
+                  width: '106px',
+                  px: '8px',
+                  fontSize: '14px',
+                  lineHeight: '16.63px',
+                }}
+                variant="secondary"
+                href={`/${ROUTES.ASSETS}/${assetData?.assetId}/transfer`}
+              >
+                Transfer
+              </Button>
+            )}
+            {canDisposeAsset && (
+              <Button
+                customStyles={{
+                  height: '35px',
+                  width: '106px',
+                  px: '8px',
+                  fontSize: '14px',
+                  lineHeight: '16.63px',
+                }}
+                variant="secondary"
+                href={`/${ROUTES.ASSETS}/${assetData?.assetId}/dispose`}
+              >
+                Dispose
+              </Button>
+            )}
+          </HStack>
+        </>
       ) : (
         <Button
           customStyles={{ height: '35px', width: 'min-content', px: '16px' }}

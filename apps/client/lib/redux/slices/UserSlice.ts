@@ -9,6 +9,7 @@ import {
 } from '~/lib/interfaces/user.interfaces';
 
 const initialUserForm = {
+  userId: null,
   picture: null,
   firstName: null,
   middleName: null,
@@ -35,11 +36,14 @@ const initialUserForm = {
   jobTitleName: null,
   teamId: null,
   teamName: null,
-  userRoleId: null,
-  userRoleName: null,
+  userRoleIds: [],
+  userRoleNames: [],
   employmentTypeName: null,
   userGroupIds: [],
   userGroupNames: [],
+  initialRoleIds: [],
+  initialGroupIds: [],
+  initialDocumentIds: [],
 };
 
 interface SliceProps {

@@ -6,11 +6,15 @@ import Info from './Info';
 import RadarChart from './RadarChart';
 import CardHeader from '../../../Common/CardHeader';
 import DropDown from '../../../Common/DropDown';
+import { useAssetMeanTimeComputationQuery } from '~/lib/redux/services/asset/general.services';
 
 const MeanTime = () => {
   const [selectedTimeRange, setSelectedTimeRange] = useState<Option | null>(
     timeRangeOptions[0] as Option
   );
+  const { data, isLoading, isFetching } = useAssetMeanTimeComputationQuery({
+    monthId: +selectedTimeRange?.value!,
+  });
   return (
     <VStack
       width="full"
@@ -43,10 +47,16 @@ const MeanTime = () => {
         >
           <Info
             title="Mean TIme Between Failures (MTBF)"
-            days={35}
+            days={data?.data.mtbf ?? 0}
             valueChange={20}
+            isLoading={isLoading || isFetching}
           />
-          <Info title="Mean Time To Repair (MTTR)" days={3} valueChange={20} />
+          <Info
+            title="Mean Time To Repair (MTTR)"
+            days={data?.data.mttr ?? 0}
+            valueChange={20}
+            isLoading={isLoading || isFetching}
+          />
         </Flex>
       </HStack>
     </VStack>

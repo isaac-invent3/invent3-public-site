@@ -52,6 +52,8 @@ import roleSlice from './slices/RoleSlice';
 import vendorSlice from './slices/VendorSlice';
 import notesSlice from './slices/NoteSlice';
 import auditLogSlice from './slices/AuditLogSlice';
+import companySlice from './slices/CompanySlice';
+import settingSlice from './slices/SettingsSlice';
 
 import { assetDocumentApi } from './services/asset/document.services';
 import { aisleApi } from './services/location/aisle.services';
@@ -73,6 +75,10 @@ import { rolesApi } from './services/role.services';
 import { moduleApi } from './services/modules.services';
 import { superAdminApi } from './services/dashboard/superadmin.services';
 import { clientAdminApi } from './services/dashboard/clientadmin.services';
+import { industryApi } from './services/industry.services';
+import { subscriptionApi } from './services/subscription.services';
+import { thirdPartyApi } from './services/dashboard/thirdparty.services';
+import { complianceApi } from './services/asset/compliance.services';
 import { notesApi } from './services/notes.services';
 
 export const persistConfig = {
@@ -91,6 +97,7 @@ const rootReducer = combineReducers({
   [assetTypeApi.reducerPath]: assetTypeApi.reducer,
   [conditionApi.reducerPath]: conditionApi.reducer,
   [assetVendorsApi.reducerPath]: assetVendorsApi.reducer,
+  [complianceApi.reducerPath]: complianceApi.reducer,
 
   // Maintenance-related APIs
   [maintenanceFrequencyApi.reducerPath]: maintenanceFrequencyApi.reducer,
@@ -111,6 +118,7 @@ const rootReducer = combineReducers({
   [frontdeskDashboardApi.reducerPath]: frontdeskDashboardApi.reducer,
   [superAdminApi.reducerPath]: superAdminApi.reducer,
   [clientAdminApi.reducerPath]: clientAdminApi.reducer,
+  [thirdPartyApi.reducerPath]: thirdPartyApi.reducer,
 
   // Category and condition APIs
   [categoryApi.reducerPath]: categoryApi.reducer,
@@ -161,9 +169,13 @@ const rootReducer = combineReducers({
 
   // Company APIS
   [companyApi.reducerPath]: companyApi.reducer,
+  [subscriptionApi.reducerPath]: subscriptionApi.reducer,
 
   // Module APIS
   [moduleApi.reducerPath]: moduleApi.reducer,
+
+  // Industry APIS
+  [industryApi.reducerPath]: industryApi.reducer,
 
   // Notes APIS
   [notesApi.reducerPath]: notesApi.reducer,
@@ -181,6 +193,8 @@ const rootReducer = combineReducers({
   ticket: ticketSlice,
   report: reportSlice,
   role: roleSlice,
+  company: companySlice,
+  settings: settingSlice,
   notes: notesSlice,
 });
 
@@ -204,6 +218,7 @@ export const makeStore = () => {
         assetTypeApi.middleware,
         assetDisposalApi.middleware,
         assetVendorsApi.middleware,
+        complianceApi.middleware,
 
         // Maintenance-related APIs
         maintenanceFrequencyApi.middleware,
@@ -231,6 +246,7 @@ export const makeStore = () => {
         frontdeskDashboardApi.middleware,
         superAdminApi.middleware,
         clientAdminApi.middleware,
+        thirdPartyApi.middleware,
 
         // Depreciation APIs
         depreciationApi.middleware,
@@ -275,9 +291,13 @@ export const makeStore = () => {
 
         // Company APIs
         companyApi.middleware,
+        subscriptionApi.middleware,
 
         // Module APIs
         moduleApi.middleware,
+
+        // Industry APIs
+        industryApi.middleware,
 
         // Notes Apis
         notesApi.middleware,

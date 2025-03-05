@@ -88,6 +88,11 @@ const ticketsBreadcrumb: BreadcrumbNode = {
 
 const profileBreadcrumb: BreadcrumbNode = {
   route: `/${ROUTES.PROFILE}`,
+  label: 'Profile',
+};
+
+const userSettingsBreadcrumb: BreadcrumbNode = {
+  route: `/${ROUTES.USER_SETTINGS}`,
   label: 'Settings',
 };
 
@@ -99,6 +104,10 @@ const reportBreadcrumb: BreadcrumbNode = {
 const userManagementBreadcrumb: BreadcrumbNode = {
   route: `/${ROUTES.USERS}`,
   label: 'User Management',
+  children: {
+    add: { label: 'Add User' },
+    edit: { label: 'Edit User' },
+  },
 };
 
 const auditLogBreadcrumb: BreadcrumbNode = {
@@ -126,6 +135,26 @@ const vendorManagementBreadCrumb: BreadcrumbNode = {
   },
 };
 
+const companyManagementBreadCrumb: BreadcrumbNode = {
+  route: `/${ROUTES.COMPANY}`,
+  label: 'Company Management',
+  children: {
+    edit: { label: 'Edit Company' },
+    add: { label: 'Add New Company' },
+    details: { label: 'Company Details' },
+    'data-upload': { label: 'Data Upload' },
+  },
+};
+
+const complianceBreadCrumb: BreadcrumbNode = {
+  route: `/${ROUTES.COMPLIANCE}`,
+  label: 'Compliance',
+};
+const adminSettingsBreadcrumb: BreadcrumbNode = {
+  route: `/${ROUTES.USER_SETTINGS}`,
+  label: 'Admin Settings',
+};
+
 const breadcrumbMap: Record<string, BreadcrumbNode> = {
   [ROUTES.DASHBOARD]: dashboardBreadcrumb,
   [ROUTES.ASSETS]: assetsBreadcrumb,
@@ -139,6 +168,10 @@ const breadcrumbMap: Record<string, BreadcrumbNode> = {
   [ROUTES.ROLES]: roleManagementBreadcrumb,
   [ROUTES.AUDIT_LOG]: auditLogBreadcrumb,
   [ROUTES.VENDOR]: vendorManagementBreadCrumb,
+  [ROUTES.COMPANY]: companyManagementBreadCrumb,
+  [ROUTES.COMPLIANCE]: complianceBreadCrumb,
+  [ROUTES.USER_SETTINGS]: userSettingsBreadcrumb,
+  [ROUTES.SETTINGS]: adminSettingsBreadcrumb,
 };
 
 const getBreadcrumb = (pathSegments: string[]): breadCrumbRoute[] => {

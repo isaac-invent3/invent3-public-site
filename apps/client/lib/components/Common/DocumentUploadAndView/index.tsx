@@ -22,6 +22,7 @@ interface DocumentUploadAndViewProps {
   documents: Document[];
   setError?: (error: string) => void;
   error?: string | undefined;
+  showDocumentView?: boolean;
 }
 
 const DocumentUploadAndView = (props: DocumentUploadAndViewProps) => {
@@ -33,6 +34,7 @@ const DocumentUploadAndView = (props: DocumentUploadAndViewProps) => {
     documents,
     setError,
     error,
+    showDocumentView = true,
   } = props;
   const [isDragging, setIsDragging] = useState(false);
 
@@ -111,9 +113,10 @@ const DocumentUploadAndView = (props: DocumentUploadAndViewProps) => {
     <VStack width="full" spacing="51px">
       <FormControl isInvalid={error !== undefined}>
         <Input
-          id="document"
+          id="documents"
           display="none"
           onChange={(event: any) => {
+            console.log('it came here');
             const files = Array.from(event.currentTarget.files) as File[]; // Convert FileList to array
             const validFiles = files.filter(
               (file) =>
@@ -160,7 +163,7 @@ const DocumentUploadAndView = (props: DocumentUploadAndViewProps) => {
               justifyContent="center"
               alignItems="center"
             >
-              <label htmlFor="document">
+              <label htmlFor="documents">
                 <Text size="md" color="blue.500" fontWeight={800} role="button">
                   Click to browse (Up to 10MB)
                 </Text>
@@ -207,16 +210,20 @@ const DocumentUploadAndView = (props: DocumentUploadAndViewProps) => {
           </Flex>
         </FormErrorMessage>
       </FormControl>
-      <VStack width="full" spacing="4px">
-        {documents.map((item: Document, index: number) => (
-          <SingleDocument
-            document={item}
-            variant={variant}
-            key={index}
-            handleRemoveDocument={(document) => handleRemoveDocuments(document)}
-          />
-        ))}
-      </VStack>
+      {showDocumentView && (
+        <VStack width="full" spacing="4px">
+          {documents.map((item: Document, index: number) => (
+            <SingleDocument
+              document={item}
+              variant={variant}
+              key={index}
+              handleRemoveDocument={(document) =>
+                handleRemoveDocuments(document)
+              }
+            />
+          ))}
+        </VStack>
+      )}
     </VStack>
   );
 };

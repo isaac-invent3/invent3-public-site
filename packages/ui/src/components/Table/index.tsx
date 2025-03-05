@@ -373,7 +373,12 @@ function DataTable<Data extends object>({
 
       {/* Footer */}
       {showFooter && data && data.length >= 1 && (
-        <Flex width="full" mt="8px" justifyContent="flex-end">
+        <Flex
+          width="full"
+          mt="8px"
+          px={{ base: '16px', md: 0 }}
+          justifyContent={{ base: 'center', md: 'flex-end' }}
+        >
           <Pagination
             totalPage={totalPages}
             pageNumber={pageNumber}

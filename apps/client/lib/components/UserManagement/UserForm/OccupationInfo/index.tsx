@@ -1,17 +1,15 @@
 import { Flex, SimpleGrid, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 
-import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { FormActionButtons } from '@repo/ui/components';
-import { ROUTES } from '~/lib/utils/constants';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateUserForm } from '~/lib/redux/slices/UserSlice';
 import { occupationInfoSchema } from '~/lib/schemas/user.schema';
-import EmploymentType from './EmploymentType';
+import { ROUTES } from '~/lib/utils/constants';
 import Branch from './Branch';
+import EmploymentType from './EmploymentType';
 import JobTitle from './JobTitle';
 import Team from './Team';
-import UserRole from './UserRole';
-import UserGroup from './UserGroup';
 
 interface OccupationInfoProps {
   activeStep: number;
@@ -28,8 +26,6 @@ const OccupationInfo = (props: OccupationInfoProps) => {
       branchId: formDetails?.branchId ?? null,
       jobTitleId: formDetails?.jobTitleId ?? null,
       teamId: formDetails?.teamId ?? null,
-      userRoleId: formDetails?.userRoleId ?? null,
-      userGroupsId: formDetails?.userGroupIds ?? null,
     },
     validationSchema: occupationInfoSchema,
     enableReinitialize: true,
@@ -53,24 +49,20 @@ const OccupationInfo = (props: OccupationInfoProps) => {
             width="full"
             alignItems="flex-start"
             bgColor="white"
-            pt="26px"
+            pt={{ base: '16px', lg: '26px' }}
             pl="16px"
-            pb="33px"
-            pr="44px"
+            pb={{ base: '16px', lg: '24px' }}
+            pr={{ base: '16px', lg: '41px' }}
             rounded="6px"
             minH="60vh"
           >
-            <SimpleGrid width="full" columns={2} gap="37px">
+            <SimpleGrid width="full" columns={{ base: 1, md: 2 }} gap="37px">
               <EmploymentType />
               <Branch />
             </SimpleGrid>
-            <SimpleGrid width="full" columns={2} gap="37px">
+            <SimpleGrid width="full" columns={{ base: 1, md: 2 }} gap="37px">
               <JobTitle />
               <Team />
-            </SimpleGrid>
-            <SimpleGrid width="full" columns={2} gap="37px">
-              <UserRole />
-              <UserGroup />
             </SimpleGrid>
           </VStack>
           <Flex width="full" mt="16px">

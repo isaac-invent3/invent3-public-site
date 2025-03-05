@@ -1,11 +1,11 @@
-import { Flex, HStack, VStack } from '@chakra-ui/react';
+import { VStack } from '@chakra-ui/react';
 import { useField } from 'formik';
 import moment from 'moment';
 
 import {
   DateTimeButtons,
   ErrorMessage,
-  FormSectionInfo,
+  FormInputWrapper,
 } from '@repo/ui/components';
 
 interface StartDateProps {
@@ -19,15 +19,13 @@ const StartDate = (props: StartDateProps) => {
   // eslint-disable-next-line no-unused-vars
   const [field, meta, helpers] = useField('startDate');
   return (
-    <HStack width="full" alignItems="flex-start" spacing={spacing}>
-      <Flex width="full" maxW={sectionMaxWidth}>
-        <FormSectionInfo
-          title="Start Date"
-          info="Set the starting date for the maintenance"
-          isRequired
-        />
-      </Flex>
-
+    <FormInputWrapper
+      sectionMaxWidth={sectionMaxWidth}
+      customSpacing={spacing}
+      title="Start Date"
+      description="Set the starting date for the maintenance"
+      isRequired
+    >
       <VStack width="full" spacing="4px" alignItems="flex-start">
         <DateTimeButtons
           buttonVariant="secondary"
@@ -45,7 +43,7 @@ const StartDate = (props: StartDateProps) => {
           <ErrorMessage>{meta.error}</ErrorMessage>
         )}
       </VStack>
-    </HStack>
+    </FormInputWrapper>
   );
 };
 

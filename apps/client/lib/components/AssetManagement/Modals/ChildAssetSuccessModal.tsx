@@ -17,7 +17,13 @@ const ChildAssetSuccessModal = (props: ChildAssetSuccessModalProps) => {
       successText="Asset Child details added successfully"
       mainModalStyle={{ closeOnOverlayClick: false, closeOnEsc: false }}
     >
-      <HStack spacing="16px" width="full" pb="54">
+      <HStack
+        spacing="16px"
+        width="full"
+        pb={{ lg: '54' }}
+        flexWrap="wrap"
+        justifyContent="center"
+      >
         <Button
           href={`/${ROUTES.ASSETS}`}
           variant="secondary"
@@ -26,7 +32,7 @@ const ChildAssetSuccessModal = (props: ChildAssetSuccessModalProps) => {
           Back to Grid
         </Button>
         <Button
-          customStyles={{ width: 'full' }}
+          customStyles={{ width: 'max-content' }}
           handleClick={() => handleAction('childAsset')}
         >
           Add Another Child Asset

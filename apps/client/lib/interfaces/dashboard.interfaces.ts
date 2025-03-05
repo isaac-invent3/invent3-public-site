@@ -146,6 +146,15 @@ interface GenericTaskCompleteData {
   year: number;
 }
 
+type DashboardView =
+  | 'operation_manager'
+  | 'executive'
+  | 'front_desk'
+  | 'field_engineer'
+  | 'third_party'
+  | 'client_admin'
+  | 'super_admin';
+
 export type {
   AssetStatistics,
   ActualProjectedData,
@@ -163,4 +172,5 @@ export type {
   TrafficCount,
   CompanyDistritution,
   GenericTaskCompleteData,
+  DashboardView,
 };

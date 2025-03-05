@@ -1,5 +1,7 @@
+import { BaseEntity } from '@repo/interfaces';
 import { FORM_ENUM } from '../utils/constants';
-import { Document } from './general.interfaces';
+import { BaseDto, Document, LocationDto } from './general.interfaces';
+import { Role } from './role.interfaces';
 
 interface Employee {
   employeeId: number;
@@ -29,6 +31,9 @@ interface User {
   lastName: string;
   username: string;
   email: string;
+  statusId: number;
+  statusName: string;
+  displayColorCode: string;
   isDeleted: boolean;
   phoneNumber: string;
   residentialAddress: string;
@@ -45,6 +50,16 @@ interface User {
   lganame: string;
   stateName: string;
   countryName: string;
+  employeeId: number;
+  companyId: number;
+  designationId: number;
+  designationName: string;
+  lastActive: string;
+  personalIdentificationNumber: number;
+  personalEmail: string;
+  dateOfBirth: string;
+  userGroups: UserGroup[];
+  userRoles: Role[];
 }
 
 interface UserGroup {
@@ -54,6 +69,18 @@ interface UserGroup {
   groupName: string;
   groupDescription: string;
   dateCreated: string;
+  isDeleted: boolean;
+}
+
+interface UserGroupInfoHeader {
+  groupId: number;
+  groupName: string;
+  noOfAssociatedUsers: number;
+  owner: string;
+  dateCreated: string;
+  currentStatusId: number;
+  currentStatusName: string;
+  currentStatusDisplayColorCode: string;
   isDeleted: boolean;
 }
 
@@ -152,24 +179,21 @@ interface UserPicture {
 }
 
 interface UserFormDetails {
+  userId: number | null;
   picture: UserPicture | null;
   firstName: string | null;
   middleName: string | null;
   lastName: string | null;
   dob: string | null;
   mobileNumber: string | null;
-  personalEmail: string | null;
   workEmail: string | null;
   gender: string | null;
-  address1: string | null;
-  address2: string | null;
   countryId: number | null;
   stateId: number | null;
   cityId: number | null;
   cityName: string | null;
   countryName: string | null;
   stateName: string | null;
-  postalCode: string | null;
   documents: Document[];
   employmentTypeId: number | null;
   employmentTypeName: string | null;
@@ -179,10 +203,13 @@ interface UserFormDetails {
   jobTitleName: string | null;
   teamId: number | null;
   teamName: string | null;
-  userRoleId: number | null;
-  userRoleName: string | null;
+  userRoleIds: number[];
+  userRoleNames: string[];
   userGroupIds: number[];
   userGroupNames: string[];
+  initialRoleIds: number[];
+  initialGroupIds: number[];
+  initialDocumentIds: number[];
 }
 
 interface UserDesignation {
@@ -200,6 +227,120 @@ interface UserDesignation {
   designationId: number;
 }
 
+interface Group {
+  isNew: boolean;
+  createdDate: Date;
+  createdBy: string;
+  lastModifiedDate: Date;
+  lastModifiedBy: string;
+  isDeleted: boolean;
+  deletedDate: Date;
+  deletedBy: string;
+  guid: string;
+  groupId: number;
+  groupName: string;
+  groupDescription: string;
+  groupRoles: GroupRole[];
+  groupPermissions: GroupPermission[];
+  groupUsers: User[];
+}
+
+interface GroupPermission {
+  groupPermissionId: number;
+  groupId: number;
+  permissionId: number;
+  permissionName: string;
+}
+
+interface GroupRole {
+  groupRoleId: number;
+  groupId: number;
+  roleId: number;
+  roleName: string;
+}
+
+interface UserGroupPayload {
+  createGroupDto: {
+    groupName: string;
+    createdBy: string;
+  };
+  userIds: number[];
+  roleIds: number[];
+}
+
+interface UserDocument extends BaseEntity {
+  documentId: number;
+  documentName: string;
+  document: string;
+  base64Prefix: string;
+}
+
+interface UpdateUserGroupPayload {
+  groupId: number;
+  groupName: string;
+  roles?: Record<number, typeof FORM_ENUM.add | typeof FORM_ENUM.delete>;
+  userIds?: Record<number, typeof FORM_ENUM.add | typeof FORM_ENUM.delete>;
+  lastModifiedBy: string;
+}
+
+interface UserDto extends BaseDto {
+  userId: number | null;
+  username: string;
+  email: string;
+  phoneNumber: string;
+  firstName: string;
+  lastName: string;
+  companyId: number | null;
+  employeeId: number | null;
+  designationId: number | null;
+  bio: string | null;
+  roles?: Record<number, typeof FORM_ENUM.add | typeof FORM_ENUM.delete>;
+  groups?: Record<number, typeof FORM_ENUM.add | typeof FORM_ENUM.delete>;
+  permissions?: Record<number, typeof FORM_ENUM.add | typeof FORM_ENUM.delete>;
+}
+
+interface UserImageDto extends BaseDto {
+  imageName: string;
+  base64PhotoImage: string;
+  base64Prefix: string;
+  isPrimaryImage: boolean;
+  userId: number | null;
+}
+
+interface UserDocumentDto extends BaseDto {
+  documentName: string;
+  base64Document: string;
+}
+
+interface CreateUserPayload {
+  createUserDto: UserDto;
+  createUserImageDto: UserImageDto[];
+  createUserDocumentDto: UserDocumentDto[] | null;
+  createLocationDto: LocationDto;
+  userDocumentIds: number[] | null;
+  userRoles: number[];
+  userGroups: number[];
+}
+
+interface UpdateUserPayload {
+  updateUserDto: UserDto;
+  updateLocationDto: LocationDto;
+  multiPurposeUserImageDto: UserImageDto[];
+  multiPurposeUserDocumentDto: UserDocumentDto[] | null;
+  userDocuments?: Record<
+    number,
+    typeof FORM_ENUM.add | typeof FORM_ENUM.delete
+  > | null;
+  userRoles?: Record<
+    number,
+    typeof FORM_ENUM.add | typeof FORM_ENUM.delete
+  > | null;
+  userGroups?: Record<
+    number,
+    typeof FORM_ENUM.add | typeof FORM_ENUM.delete
+  > | null;
+}
+
 export type {
   Employee,
   User,
@@ -214,4 +355,11 @@ export type {
   UserFilter,
   UserFormDetails,
   UserDesignation,
+  UserGroupInfoHeader,
+  UserGroupPayload,
+  CreateUserPayload,
+  Group,
+  UpdateUserGroupPayload,
+  UpdateUserPayload,
+  UserDocument,
 };

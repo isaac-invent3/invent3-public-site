@@ -1,23 +1,21 @@
-import { Document, ImageObject } from './general.interfaces';
+import { BaseEntity } from '@repo/interfaces';
+import { BaseUpdateDto, Document, ImageObject } from './general.interfaces';
 
-interface Vendor {
-  isNew: boolean;
-  createdDate: string;
-  createdBy: string;
-  lastModifiedDate: string;
-  lastModifiedBy: string;
-  isDeleted: boolean;
-  deletedDate: string;
-  deletedBy: string;
-  guid: string;
+interface Vendor extends BaseEntity {
   vendorId: number;
+  vendorCategoryId: null;
   vendorName: string;
+  contactFirstName: null;
+  contactLastName: null;
   address: string;
   phoneNumber: string;
   emailAddress: string;
+  statusId: null;
+  description: null;
 }
 
 interface VendorFormDetails {
+  vendorId: number | null;
   vendorName: string | null;
   logo: ImageObject | null;
   description: string | null;
@@ -41,7 +39,8 @@ interface VendorFormDetails {
   contractValue: number | null;
   vendorStatusId: number | null;
   vendorStatusName: string | null;
-  slaDocuments: Document[];
+  vendorDocuments: Document[];
+  initialDocumentIds: number[];
 }
 
 interface VendorFilter {
@@ -49,4 +48,62 @@ interface VendorFilter {
   endDate: string | undefined;
 }
 
-export type { Vendor, VendorFormDetails, VendorFilter };
+interface VendorDto {
+  vendorName: string;
+  contactFirstName: string;
+  contactLastName: string;
+  description: string;
+  address: string;
+  phoneNumber: string;
+  emailAddress: string;
+  statusId: number;
+  vendorCategoryId: number;
+}
+
+interface VendorImageDto {
+  vendorImageName: string;
+  base64PhotoImage: string;
+  isPrimaryImage: boolean;
+  base64Prefix: string;
+  vendorId: number | null;
+}
+
+interface CreateVendorImageDto extends VendorImageDto {
+  createdBy: string;
+}
+interface UpdateVendorImageDto extends VendorImageDto, BaseUpdateDto {}
+
+interface VendorContractDocumentDto {
+  contractId: number | null;
+  base64ContractDocument: string;
+  documentName: string;
+  documentType: string;
+}
+
+interface CreateVendorContractDocumentDto extends VendorContractDocumentDto {
+  createdBy: string;
+}
+interface UpdateVendorContractDocumentDto
+  extends VendorContractDocumentDto,
+    BaseUpdateDto {}
+
+interface CreateVendorPayload {
+  createVendor: VendorDto & { createdBy: string };
+  createVendorImageDto: CreateVendorImageDto[];
+  createVendorContractDocumentDto: CreateVendorContractDocumentDto[] | null;
+}
+
+interface UpdateVendorPayload {
+  updateVendorDto: VendorDto & { vendorId: number; lastModifiedBy: string };
+  multiPurposeVendorImageDto: UpdateVendorImageDto[];
+  multiPurposeVendorContractDocumentDto:
+    | UpdateVendorContractDocumentDto[]
+    | null;
+}
+export type {
+  Vendor,
+  VendorFormDetails,
+  VendorFilter,
+  CreateVendorPayload,
+  UpdateVendorPayload,
+};

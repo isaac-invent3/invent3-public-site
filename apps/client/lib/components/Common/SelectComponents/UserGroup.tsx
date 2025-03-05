@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { Option } from '~/lib/interfaces/general.interfaces';
-import { useSearchRolesMutation } from '~/lib/redux/services/role.services';
-import { useGetAllUserGroupsQuery } from '~/lib/redux/services/user.services';
-import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import {
+  useGetAllUserGroupsInfoHeaderQuery,
+  useSearchUserGroupMutation,
+} from '~/lib/redux/services/user.services';
 
 interface UserGroupSelectProps {
   // eslint-disable-next-line no-unused-vars
@@ -15,10 +16,10 @@ interface UserGroupSelectProps {
 
 const UserGroupSelect = (props: UserGroupSelectProps) => {
   const { handleSelect, selectName, selectTitle, defaultInputValue } = props;
-  const [searchRoles] = useSearchRolesMutation({});
+  const [searchRoles] = useSearchUserGroupMutation({});
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllUserGroupsQuery({
-    pageSize: DEFAULT_PAGE_SIZE,
+  const { data, isLoading } = useGetAllUserGroupsInfoHeaderQuery({
+    pageSize: 50,
     pageNumber,
   });
 
@@ -27,7 +28,7 @@ const UserGroupSelect = (props: UserGroupSelectProps) => {
       selectName={selectName}
       selectTitle={selectTitle}
       data={data}
-      labelKey="userId"
+      labelKey="groupName"
       valueKey="groupId"
       mutationFn={searchRoles}
       isLoading={isLoading}

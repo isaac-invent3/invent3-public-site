@@ -9,24 +9,31 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import ProgressIndicator from '../../../Common/ProgressIndicator';
+import { useGetFieldEngineerAssetStatusDataQuery } from '~/lib/redux/services/dashboard/fieldengineer.services';
+import { useSession } from 'next-auth/react';
 
 const AssetSummary = () => {
-  const totalAsset = 900;
+  const session = useSession();
+  const user = session?.data?.user;
+  const { data, isLoading } = useGetFieldEngineerAssetStatusDataQuery({
+    userId: user?.userId!,
+  });
+  const totalAsset = data?.data?.totalAssets;
 
   const details = [
     {
       header: 'Asset Transfered',
-      value: 300,
+      value: data?.data?.transferredAssets,
       valueChange: -10,
     },
     {
       header: 'Asset Disposed',
-      value: 290,
+      value: data?.data?.disposedAssets,
       valueChange: -10,
     },
     {
       header: 'Asset Deleted',
-      value: 200,
+      value: data?.data?.decommissionedAssets,
       valueChange: -10,
     },
   ];
@@ -37,7 +44,7 @@ const AssetSummary = () => {
     >
       <VStack width="full" alignItems="flex-start" spacing="24px">
         <HStack alignItems="flex-end" spacing="4px">
-          <Skeleton isLoaded={true}>
+          <Skeleton isLoaded={!isLoading}>
             <Text
               mt="8px"
               fontSize="24px"

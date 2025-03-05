@@ -1,49 +1,45 @@
 import { HStack, SkeletonCircle, Text, VStack } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React from 'react';
 import CardHeader from '../CardHeader';
 import DropDown from '../DropDown';
 import ChartLegend from './ChartLegend';
 import PieChart from './PieChart';
-import { useGetFrontdeskMaintenanceSuccessChartDataQuery } from '~/lib/redux/services/dashboard/frontdesk.services';
 import { Option } from '@repo/interfaces';
-import { useSession } from 'next-auth/react';
 import { monthOptions } from '~/lib/utils/constants';
 
 interface MaintenanceSuccessChartProps {
   missedColorCode: string;
   completedColorCode: string;
+  isLoading: boolean;
+  selectedMonth: Option | null;
+  setSelectedMonth: React.Dispatch<React.SetStateAction<Option | null>>;
+  data?: {
+    missed: number;
+    completed: number;
+    percentageMissed?: number;
+    percentageCompleted?: number;
+    monthId: number;
+  };
 }
 
 const MaintenanceSuccessChart = ({
   missedColorCode,
   completedColorCode,
+  data,
+  isLoading,
+  selectedMonth,
+  setSelectedMonth,
 }: MaintenanceSuccessChartProps) => {
   const currentYear = new Date().getFullYear();
-  const currentMonth = new Date().getMonth();
-  const actualMonthOptions = monthOptions.slice(1, monthOptions.length);
-  const currentMonthOption = actualMonthOptions.find(
-    (item) => item.value === currentMonth + 1
-  );
 
-  const [selectedMonth, setSelectedMonth] = useState<Option | null>(
-    currentMonthOption ?? null
-  );
-  const session = useSession();
-  const user = session?.data?.user;
-  const { data, isLoading } = useGetFrontdeskMaintenanceSuccessChartDataQuery({
-    year: currentYear,
-    monthNo: +selectedMonth?.value!,
-    userId: user?.userId!,
-  });
-
-  const chartData = [data?.data?.missed ?? 0, data?.data?.completed ?? 0];
+  const chartData = [data?.missed ?? 0, data?.completed ?? 0];
   const chartLegendItems = [
     {
       label: 'Missed',
       color: '#00A129',
       children: (
         <Text fontSize="10px" lineHeight="11.88px">
-          {data?.data?.missed ?? '-'}
+          {data?.missed ?? '-'}
           <Text
             as="span"
             color="neutral.600"
@@ -51,7 +47,7 @@ const MaintenanceSuccessChart = ({
             lineHeight="11.88px"
           >
             {' '}
-            . {data?.data?.percentageMissed ?? '-'}
+            . {data?.percentageMissed ?? '-'}
           </Text>
         </Text>
       ),
@@ -61,7 +57,7 @@ const MaintenanceSuccessChart = ({
       color: '#033376',
       children: (
         <Text fontSize="10px" lineHeight="11.88px">
-          {data?.data?.completed ?? '-'}
+          {data?.completed ?? '-'}
           <Text
             as="span"
             color="neutral.600"
@@ -69,7 +65,7 @@ const MaintenanceSuccessChart = ({
             lineHeight="11.88px"
           >
             {' '}
-            . {data?.data?.percentageCompleted ?? '-'}
+            . {data?.percentageCompleted ?? '-'}
           </Text>
         </Text>
       ),

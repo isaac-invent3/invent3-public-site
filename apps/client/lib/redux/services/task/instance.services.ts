@@ -88,6 +88,7 @@ export const taskInstanceApi = createApi({
       {
         taskStatusId?: number;
         statusCategoryId?: number;
+        assignedTo?: number;
       } & QueryParams
     >({
       query: (data) => ({

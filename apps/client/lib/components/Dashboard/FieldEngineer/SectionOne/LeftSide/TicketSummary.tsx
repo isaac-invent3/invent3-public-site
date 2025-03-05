@@ -3,21 +3,28 @@ import React from 'react';
 import SummaryCardWrapper from '../../../../Common/SummaryCardWrapper';
 import ProgressIndicator from '../../../Common/ProgressIndicator';
 import DoughtnutChart from '../../../Common/Charts/DoughtnutChart';
+import { useSession } from 'next-auth/react';
+import { useGetFieldEngineerTicketOverviewQuery } from '~/lib/redux/services/dashboard/fieldengineer.services';
 
 const TicketSummary = () => {
+  const session = useSession();
+  const user = session?.data?.user;
+  const { data } = useGetFieldEngineerTicketOverviewQuery({
+    userId: user?.userId!,
+  });
   const cardKeys = [
     {
-      value: 100,
+      value: data?.data?.assignedTickets ?? 0,
       label: 'Assigned',
       color: '#EABC30',
     },
     {
-      value: 150,
+      value: data?.data?.inProgress ?? 0,
       label: 'In Progress',
       color: '#0E2642',
     },
     {
-      value: 50,
+      value: data?.data?.completed ?? 0,
       label: 'Completed',
       color: '#0366EF',
     },
@@ -40,8 +47,8 @@ const TicketSummary = () => {
                 labels={['Assigned', 'In Progress', 'Completed']}
                 datasets={[
                   {
-                    data: [70, 30, 40],
-                    backgroundColor: ['#0E2642', '#EABC30', '#0366EF'],
+                    data: cardKeys.map((item) => item.value),
+                    backgroundColor: cardKeys.map((item) => item.color),
                     borderWidth: 4,
                     borderRadius: 4,
                   },
@@ -53,7 +60,10 @@ const TicketSummary = () => {
             </Flex>
             <VStack spacing="4px" position="absolute" top="50px">
               <Text fontWeight={800} size="md" color="primary.500">
-                300 Tickets
+                {(data?.data?.assignedTickets ?? 0) +
+                  (data?.data?.assignedTickets ?? 0) +
+                  (data?.data?.assignedTickets ?? 0)}{' '}
+                Tickets
               </Text>
               <Text color="neutral.600" fontWeight={700}>
                 This month

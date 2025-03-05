@@ -78,7 +78,7 @@ function signOut(request: NextRequest) {
   request.cookies.delete(SESSION_COOKIE);
   request.cookies.delete('permissionData');
   const response = NextResponse.redirect(
-    new URL(`/?ref=${request.nextUrl.pathname}`, request?.url)
+    new URL(`/signin?ref=${request.nextUrl.pathname}`, request?.url)
   );
   response.cookies.delete(SESSION_COOKIE);
   response.cookies.delete('permissionData');

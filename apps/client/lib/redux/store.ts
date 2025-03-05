@@ -78,6 +78,7 @@ import { industryApi } from './services/industry.services';
 import { subscriptionApi } from './services/subscription.services';
 import { thirdPartyApi } from './services/dashboard/thirdparty.services';
 import { complianceApi } from './services/asset/compliance.services';
+import { fieldEngineerDashboardApi } from './services/dashboard/fieldengineer.services';
 export const persistConfig = {
   key: 'root',
   storage,
@@ -116,6 +117,7 @@ const rootReducer = combineReducers({
   [superAdminApi.reducerPath]: superAdminApi.reducer,
   [clientAdminApi.reducerPath]: clientAdminApi.reducer,
   [thirdPartyApi.reducerPath]: thirdPartyApi.reducer,
+  [fieldEngineerDashboardApi.reducerPath]: fieldEngineerDashboardApi.reducer,
 
   // Category and condition APIs
   [categoryApi.reducerPath]: categoryApi.reducer,
@@ -240,6 +242,7 @@ export const makeStore = () => {
         superAdminApi.middleware,
         clientAdminApi.middleware,
         thirdPartyApi.middleware,
+        fieldEngineerDashboardApi.middleware,
 
         // Depreciation APIs
         depreciationApi.middleware,

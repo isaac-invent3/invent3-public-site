@@ -9,8 +9,6 @@ import { Company } from '~/lib/interfaces/company.interfaces';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import PopoverAction from './PopoverAction';
 import { GenericTableProps } from '~/lib/interfaces/general.interfaces';
-import { useRouter } from 'next/navigation';
-import { ROUTES } from '~/lib/utils/constants';
 
 interface CompanyTableProps extends GenericTableProps {
   data: BaseApiResponse<ListResponse<Company>> | undefined;
@@ -35,7 +33,6 @@ const CompanyTable = (props: CompanyTableProps) => {
     PopoverComponent,
   } = props;
   const [isMobile] = useMediaQuery('(max-width: 768px)');
-  const router = useRouter();
   const columnHelper = createColumnHelper<Company>();
 
   const columns = useMemo(

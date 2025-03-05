@@ -20,9 +20,20 @@ interface DoughtnutChartProps {
 }
 const DoughtnutChart = (props: DoughtnutChartProps) => {
   const { labels, datasets, type, height, cutout } = props;
+  const isEmpty =
+    datasets.length === 0 ||
+    datasets.every((d) => d.data.every((val) => val === 0));
   const data = {
     labels: labels,
-    datasets,
+    datasets: isEmpty
+      ? [
+          {
+            data: [1],
+            backgroundColor: '#B4BFCA80',
+            borderWidth: 0,
+          },
+        ]
+      : datasets,
   };
 
   const options = {

@@ -3,7 +3,13 @@ import { generateWeekDays } from './utils';
 import { HStack, Text, VStack } from '@chakra-ui/react';
 import { WeekType } from '~/lib/interfaces/dashboard.interfaces';
 
-const Tab = ({ weekType }: { weekType: WeekType }) => {
+const Tab = ({
+  weekType,
+  setDateSelected,
+}: {
+  weekType: WeekType;
+  setDateSelected: React.Dispatch<React.SetStateAction<string | undefined>>;
+}) => {
   const [selected, setSelected] = useState(0);
   const data = generateWeekDays(weekType);
   return (
@@ -22,6 +28,7 @@ const Tab = ({ weekType }: { weekType: WeekType }) => {
           key={index}
           onClick={() => {
             setSelected(index);
+            setDateSelected(item.fullDay);
           }}
           as="button"
         >

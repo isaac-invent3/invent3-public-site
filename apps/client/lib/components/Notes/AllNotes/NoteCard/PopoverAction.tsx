@@ -68,9 +68,9 @@ const PopoverAction = ({ data, setNoteLoading }: NotePopoverProps) => {
   const handlePin = () => {
     if (data.isPinned) {
       return unpinNote({
-        id: data.noteId,
+        noteId: data.noteId,
         authorId: user?.userId!,
-        unpinnedBy: user?.userId!,
+        unpinnedBy: user?.username!,
       });
     }
     pinNote({ id: data.noteId, authorId: user?.userId! });

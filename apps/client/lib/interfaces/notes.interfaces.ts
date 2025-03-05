@@ -53,9 +53,9 @@ interface GetAllPinnedNotesQueryParams extends QueryParams {
 }
 
 interface UnPinNotePayload {
-  id: number;
+  noteId: number;
   authorId: number;
-  unpinnedBy: number;
+  unpinnedBy: string;
 }
 
 export type {

@@ -1,3 +1,4 @@
+import { ComponentWithAs, IconProps } from '@chakra-ui/react';
 import { GeoJsonTypes } from 'geojson';
 import {
   FORM_ENUM,
@@ -5,7 +6,6 @@ import {
   ROUTES,
   SYSTEM_CONTEXT_TYPE,
 } from '../utils/constants';
-import { ComponentWithAs, IconProps } from '@chakra-ui/react';
 import { ModuleKey } from './role.interfaces';
 
 interface Option {
@@ -113,11 +113,14 @@ interface SideBarData {
   icon: ComponentWithAs<'svg', IconProps>;
   permissionKey: ModuleKey;
   description?: string;
-  children?: {
-    name: string;
-    route: string;
-  }[];
+  children?: SidebarChildren[];
 }
+
+interface SidebarChildren {
+  name: string;
+  route: string;
+}
+
 
 type ContextKey =
   | 'ASSETS'
@@ -170,22 +173,22 @@ interface BaseUpdateDto {
 }
 
 export type {
+  ActionType,
+  AppConfig,
+  BaseDto,
+  BaseUpdateDto,
+  ContextKey,
+  Document,
+  GenericTableProps,
   GeoJSONFeature,
+  ImageObject,
+  LocationDto,
+  LocationFilter,
   Option,
   RecurrenceInfo,
   RepeatInterval,
   SearchCriterion,
-  LocationFilter,
-  AppConfig,
-  GenericTableProps,
-  ActionType,
-  Document,
+  sidebarChildren,
   SideBarData,
   SystemContextDetail,
-  ContextKey,
-  ImageObject,
-  sidebarChildren,
-  BaseDto,
-  LocationDto,
-  BaseUpdateDto,
 };

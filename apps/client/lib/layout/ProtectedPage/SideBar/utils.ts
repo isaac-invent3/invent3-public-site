@@ -115,12 +115,23 @@ const clientSideBarData: SideBarData[] = [
       'Define and manage user roles to enforce security and responsibilities.',
   },
   {
-    name: 'Vendor Management',
+    name: 'Partner Management',
     route: ROUTES.VENDOR,
     icon: VendorManagementIcon,
     permissionKey: 'vendor',
     description:
       'Manage vendor relationships and contracts for efficient procurement.',
+    //  Question: Could these two have different permission keys
+    children: [
+      {
+        name: 'Vendor',
+        route: ROUTES.VENDOR,
+      },
+      {
+        name: 'Service Provider',
+        route: '#',
+      },
+    ],
   },
   {
     name: 'Audit Logs',
@@ -157,7 +168,6 @@ async function filterSidebarData() {
     route: ROUTES.DASHBOARD,
     icon: DashboardIcon,
     permissionKey: 'dashboard',
-    children: [],
   };
   try {
     const session = await getSession();
@@ -206,4 +216,4 @@ async function filterSidebarData() {
   }
 }
 
-export { clientSideBarData, sideBarData, filterSidebarData };
+export { clientSideBarData, filterSidebarData, sideBarData };

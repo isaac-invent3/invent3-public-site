@@ -80,6 +80,21 @@ export const companyApi = createApi({
         body,
       }),
     }),
+    toggleCompanyStatus: builder.mutation<
+      BaseApiResponse<Company>,
+      { companyId: number; lastModifiedBy: string }
+    >({
+      query: ({ companyId, ...body }) => ({
+        url: generateQueryStr(
+          `/Companies/ToggleCompanyStatus/${companyId}?`,
+          body
+        ),
+        method: 'PUT',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allCompanies'],
+    }),
   }),
 });
 
@@ -90,4 +105,5 @@ export const {
   useGetCompaniesSummaryQuery,
   useCreateCompanyMutation,
   useUpdateCompanyMutation,
+  useToggleCompanyStatusMutation,
 } = companyApi;

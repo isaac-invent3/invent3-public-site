@@ -27,6 +27,7 @@ const ROLE_PRIORITY = [
 
 const ROLE_VIEW_MAPPING: Record<number, DashboardView> = {
   [ROLE_IDS_ENUM.SUPER_ADMIN]: 'super_admin',
+  [ROLE_IDS_ENUM.THIRD_PARTY]: 'third_party',
   [ROLE_IDS_ENUM.CLIENT_ADMIN]: 'client_admin',
   [ROLE_IDS_ENUM.EXECUTIVE]: 'executive',
   [ROLE_IDS_ENUM.OPERATION_MANAGER]: 'operation_manager',

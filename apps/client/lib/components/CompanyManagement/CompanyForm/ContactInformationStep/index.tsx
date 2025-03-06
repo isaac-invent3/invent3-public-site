@@ -65,7 +65,7 @@ const ContactInformationStep = (props: ContactInformationStepProps) => {
                 <FormInputWrapper
                   sectionMaxWidth="141px"
                   customSpacing="47px"
-                  title="Company Admin"
+                  title="Name"
                   description="Provide the contact person full name."
                   isRequired
                 >
@@ -95,7 +95,7 @@ const ContactInformationStep = (props: ContactInformationStepProps) => {
               <FormInputWrapper
                 sectionMaxWidth="141px"
                 customSpacing="47px"
-                title="Admin Email"
+                title="Email"
                 description="Provide the person’s email"
               >
                 <Field
@@ -109,7 +109,7 @@ const ContactInformationStep = (props: ContactInformationStepProps) => {
               <FormInputWrapper
                 sectionMaxWidth="141px"
                 customSpacing="47px"
-                title="Admin Phone Number"
+                title="Phone Number"
                 description="Provide the person’s email"
               >
                 <Field

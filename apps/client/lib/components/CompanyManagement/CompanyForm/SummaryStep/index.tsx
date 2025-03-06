@@ -3,7 +3,12 @@ import { FormActionButtons } from '@repo/ui/components';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { useAppSelector } from '~/lib/redux/hooks';
-import { COMPANY_TYPE_ENUM, FORM_ENUM, ROUTES } from '~/lib/utils/constants';
+import {
+  COMPANY_TYPE_ENUM,
+  FORM_ENUM,
+  ROLE_IDS_ENUM,
+  ROUTES,
+} from '~/lib/utils/constants';
 import CompanyInfo from './SectionOne/CompanyInfo';
 import ContactInformation from './SectionOne/ContactInformation';
 import DetailHeader from '~/lib/components/UI/DetailHeader';
@@ -32,6 +37,9 @@ const SummaryStep = (props: SummaryStepProps) => {
   const [username, setUsername] = useState<string | undefined>(undefined);
   const { handleSubmit } = useCustomMutation();
   const { data } = useSession();
+  const user = data?.user;
+  const isThirdParty =
+    user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY) ?? false;
   const [createCompany, { isLoading: createLoading }] =
     useCreateCompanyMutation({});
   // eslint-disable-next-line no-unused-vars
@@ -61,7 +69,7 @@ const SummaryStep = (props: SummaryStepProps) => {
     phoneNumber: companyForm?.contactPhoneNumber!,
     firstName: companyForm?.contactFirstName!,
     lastName: companyForm?.contactLastName!,
-    email: companyForm?.contactLastName!,
+    email: companyForm?.contactEmail!,
     [`${type === 'create' ? 'createdBy' : 'lastModifiedBy'}`]: username,
   };
 
@@ -114,7 +122,7 @@ const SummaryStep = (props: SummaryStepProps) => {
         width="full"
         gap="16px"
         direction="column"
-        display={activeStep === 4 ? 'flex' : 'none'}
+        display={activeStep === (isThirdParty ? 3 : 4) ? 'flex' : 'none'}
       >
         <VStack
           width="full"

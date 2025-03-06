@@ -4,20 +4,24 @@ import { useAppSelector } from '~/lib/redux/hooks';
 import Info from './Info';
 
 const ContactInformation = () => {
-  const { contactFirstName, contactLastName, contactPhoneNumber } =
-    useAppSelector((state) => state.company.companyForm);
+  const {
+    contactFirstName,
+    contactLastName,
+    contactPhoneNumber,
+    contactEmail,
+  } = useAppSelector((state) => state.company.companyForm);
 
   const info = [
     {
-      label: 'Company Name',
+      label: 'Contact Name',
       value: `${contactFirstName} ${contactLastName}`,
     },
     {
-      label: 'Company Email',
-      value: contactFirstName,
+      label: 'Contact Email',
+      value: contactEmail,
     },
     {
-      label: 'Company Number',
+      label: 'Contact Number',
       value: contactPhoneNumber,
     },
   ];

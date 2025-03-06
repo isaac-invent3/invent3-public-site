@@ -31,6 +31,7 @@ const initialCompanyForm = {
   subscriptionPlanId: null,
   startDate: null,
   endDate: null,
+  clientAdminId: null,
 };
 
 const initialCompanyFilter = {

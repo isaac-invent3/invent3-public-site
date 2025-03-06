@@ -1,5 +1,6 @@
 import { Stack } from '@chakra-ui/react';
 import { Button, GenericSuccessModal } from '@repo/ui/components';
+import { useAppSelector } from '~/lib/redux/hooks';
 import { ROUTES } from '~/lib/utils/constants';
 
 interface CompanySuccessModalProps {
@@ -9,6 +10,7 @@ interface CompanySuccessModalProps {
 }
 const CompanySuccessModal = (props: CompanySuccessModalProps) => {
   const { isOpen, onClose, type } = props;
+  const company = useAppSelector((state) => state.company.company);
   const successText =
     type === 'create'
       ? 'Company Created Successfully!'
@@ -40,7 +42,7 @@ const CompanySuccessModal = (props: CompanySuccessModalProps) => {
             Don’t Upload Data yet
           </Button>
           <Button
-            href={`/${ROUTES.COMPANY}`}
+            href={`/${ROUTES.COMPANY}/${company?.companyId}/data-upload`}
             customStyles={{ width: { base: 'full', sm: '193px' } }}
           >
             Continue to Data Upload

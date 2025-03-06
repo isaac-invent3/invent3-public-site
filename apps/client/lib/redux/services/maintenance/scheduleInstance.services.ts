@@ -45,7 +45,12 @@ export const scheduleInstanceApi = createApi({
     }),
     getAllScheduleInstance: builder.query<
       BaseApiResponse<ListResponse<MaintenanceScheduleInstance>>,
-      QueryParams & { statusId?: number; assignedTo?: number }
+      QueryParams & {
+        statusId?: number;
+        assignedTo?: number;
+        startDateRange?: string;
+        endDateRange?: string;
+      }
     >({
       query: (data) => ({
         url: generateQueryStr('/MaintenanceScheduleInstances?', data),

@@ -1,10 +1,10 @@
 import { HStack, Icon, SimpleGrid, Text } from '@chakra-ui/react';
 import React from 'react';
 import { ClockIcon } from '~/lib/components/CustomIcons/Dashboard';
-import { TaskInstance } from '~/lib/interfaces/task.interfaces';
+import { MaintenanceScheduleInstance } from '~/lib/interfaces/maintenance.interfaces';
 
 interface SingleScheduleProps {
-  data: TaskInstance;
+  data: MaintenanceScheduleInstance;
 }
 const SingleSchedule = (props: SingleScheduleProps) => {
   const { data } = props;
@@ -17,10 +17,10 @@ const SingleSchedule = (props: SingleScheduleProps) => {
     >
       <HStack spacing="8px" alignItems="flex-start">
         <Icon as={ClockIcon} boxSize="12px" color="black" />
-        <Text color="black">{data?.estimatedDurationInHours}hrs</Text>
+        <Text color="black">{data?.estimatedDurationInHours ?? 0}hrs</Text>
       </HStack>
       <Text color="neutral.800" noOfLines={1} textOverflow="ellipsis">
-        {data?.taskInstanceName}
+        {data?.scheduleInstanceName}
       </Text>
       <Text color="neutral.800" noOfLines={1} textOverflow="ellipsis">
         {data?.assetLocation}

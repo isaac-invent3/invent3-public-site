@@ -8,11 +8,18 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { Button } from '@repo/ui/components';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useAppSelector } from '~/lib/redux/hooks';
+import { ROLE_IDS_ENUM } from '~/lib/utils/constants';
 
 const CompanyInfo = () => {
   const company = useAppSelector((state) => state.company.company);
+  const session = useSession();
+  const user = session?.data?.user;
+  const isThirdParty =
+    user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY) ?? false;
+
   return (
     <Stack
       direction={{ base: 'column', md: 'row' }}
@@ -36,11 +43,14 @@ const CompanyInfo = () => {
             width={{ base: '83px', lg: '129px' }}
             height={{ base: '83px', lg: '129px' }}
             rounded="8px"
-            bgColor="#BBBBBB"
             position="relative"
             shrink={0}
           >
-            <Image src="" fill alt="company-logo" />
+            <Image
+              src={`${company?.base64Prefix}${company?.photoImage}`}
+              fill
+              alt="company-logo"
+            />
           </Flex>
           <VStack
             alignItems="flex-start"
@@ -125,14 +135,21 @@ const CompanyInfo = () => {
           mt={{ base: '16px', md: '24px' }}
           mb={{ base: '16px', md: '24px' }}
         >
-          <HStack>
-            <Text color="black" size="xl" fontWeight={700}>
-              Invent3 Pro
+          {!isThirdParty && (
+            <HStack>
+              <Text color="black" size="xl" fontWeight={700}>
+                Invent3 Pro
+              </Text>
+              <Text as="span" color="neutral.600" size="md" fontWeight={500}>
+                (Yearly)
+              </Text>
+            </HStack>
+          )}
+          {!isThirdParty && (
+            <Text color="neutral.600" size="md" fontWeight={500}>
+              Start Date: 28 March 2025
             </Text>
-            <Text as="span" color="neutral.600" size="md" fontWeight={500}>
-              (Yearly)
-            </Text>
-          </HStack>
+          )}
           <Text color="neutral.600" size="md" fontWeight={500}>
             Renew Date: 28 March 2025
           </Text>

@@ -21,6 +21,7 @@ export default function Page({ params }: { params: { id: number } }) {
     dispatch(
       setCompanyForm({
         companyId: company.companyId,
+        clientAdminId: null,
         companyLogo: null,
         companyName: company.companyName,
         registrationNumber: company.registrationNumber,

@@ -3,8 +3,10 @@ import { BaseDto } from './general.interfaces';
 
 interface Company {
   companyId: number;
+  companyType: number;
   guid: string;
   companyName: string;
+  tenantName: string;
   address: string;
   emailAddress: string;
   phoneNumber: string;
@@ -70,6 +72,7 @@ interface CompanyFormDetails {
   contactLastName: string | null;
   contactEmail: string | null;
   contactPhoneNumber: string | null;
+  clientAdminId: number | null;
 }
 
 interface CompanyImageDto extends BaseDto {
@@ -102,6 +105,7 @@ interface CreateCompanyPayload {
   };
   createCompanyImageDtos: CompanyImageDto[];
   createUserDto: CompanyUserDto;
+  clientAdminId?: number;
 }
 interface UpdateCompanyPayload {
   updateCompanyDto: CompanyDto;

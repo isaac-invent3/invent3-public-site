@@ -9,12 +9,15 @@ import { Company } from '~/lib/interfaces/company.interfaces';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import PopoverAction from './PopoverAction';
 import { GenericTableProps } from '~/lib/interfaces/general.interfaces';
+import { COMPANY_TYPE_ENUM, ROLE_IDS_ENUM } from '~/lib/utils/constants';
+import { useSession } from 'next-auth/react';
 
 interface CompanyTableProps extends GenericTableProps {
   data: BaseApiResponse<ListResponse<Company>> | undefined;
   // eslint-disable-next-line no-unused-vars
   PopoverComponent?: (data: Company) => JSX.Element | undefined;
 }
+
 const CompanyTable = (props: CompanyTableProps) => {
   const {
     data,
@@ -34,6 +37,10 @@ const CompanyTable = (props: CompanyTableProps) => {
   } = props;
   const [isMobile] = useMediaQuery('(max-width: 768px)');
   const columnHelper = createColumnHelper<Company>();
+  const session = useSession();
+  const user = session?.data?.user;
+  const isSuperAdmin =
+    user?.roleIds.includes(ROLE_IDS_ENUM.SUPER_ADMIN) ?? false;
 
   const columns = useMemo(
     () => {
@@ -56,11 +63,17 @@ const CompanyTable = (props: CompanyTableProps) => {
           enableSorting: false,
         }),
         columnHelper.accessor('contactPersonFirstName', {
-          cell: (info) => (
-            <UserInfo
-              name={`${info.row.original.contactPersonFirstName ?? ''} ${info.row.original.contactPersonLastName ?? ''}`}
-            />
-          ),
+          cell: (info) =>
+            [
+              info.row.original.contactPersonFirstName,
+              info.row.original.contactPersonLastName,
+            ].filter(Boolean).length >= 1 ? (
+              <UserInfo
+                name={`${info.row.original.contactPersonFirstName ?? ''} ${info.row.original.contactPersonLastName ?? ''}`}
+              />
+            ) : (
+              'N/A'
+            ),
           header: 'Primary Contact Person',
           enableSorting: false,
         }),
@@ -93,8 +106,20 @@ const CompanyTable = (props: CompanyTableProps) => {
         enableSorting: false,
       });
 
+      const clientType = columnHelper.accessor('companyType', {
+        cell: (info) =>
+          info.getValue() === COMPANY_TYPE_ENUM.MANAGE_OWN_DATA
+            ? 'Direct'
+            : 'CMF',
+        header: 'Client Type',
+        enableSorting: false,
+      });
+
       if (showPopover) {
         baseColumns.push(Popover);
+      }
+      if (isSuperAdmin) {
+        baseColumns.splice(3, 0, clientType);
       }
 
       return baseColumns;

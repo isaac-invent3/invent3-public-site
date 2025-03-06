@@ -2,7 +2,7 @@ import { Flex, useDisclosure, VStack } from '@chakra-ui/react';
 import { FormActionButtons } from '@repo/ui/components';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import { useAppSelector } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import {
   COMPANY_TYPE_ENUM,
   FORM_ENUM,
@@ -19,6 +19,7 @@ import {
   useUpdateCompanyMutation,
 } from '~/lib/redux/services/company.services';
 import CompanySuccessModal from './SuccessModal';
+import { setCompany } from '~/lib/redux/slices/CompanySlice';
 
 interface SummaryStepProps {
   activeStep: number;
@@ -36,6 +37,7 @@ const SummaryStep = (props: SummaryStepProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [username, setUsername] = useState<string | undefined>(undefined);
   const { handleSubmit } = useCustomMutation();
+  const dispatch = useAppDispatch();
   const { data } = useSession();
   const user = data?.user;
   const isThirdParty =
@@ -86,6 +88,7 @@ const SummaryStep = (props: SummaryStepProps) => {
       },
     ],
     createUserDto: CompanyUserDto,
+    ...(isThirdParty ? { clientAdminId: companyForm?.clientAdminId! } : {}),
   };
 
   const updateCompanyPayload = {
@@ -112,6 +115,7 @@ const SummaryStep = (props: SummaryStepProps) => {
       response = await handleSubmit(updateCompany, updateCompanyPayload, '');
     }
     if (response?.data) {
+      dispatch(setCompany(response?.data?.data));
       onOpen();
     }
   };

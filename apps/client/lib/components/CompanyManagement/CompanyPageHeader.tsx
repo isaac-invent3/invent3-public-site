@@ -40,8 +40,17 @@ const CompanyPageHeader = () => {
           rounded="8px"
           position="relative"
           shrink={0}
+          bgColor={!selectedCompanyInfo?.base64Prefix ? 'neutral.100' : 'none'}
         >
-          <Image src={selectedCompanyInfo?.logo ?? ''} fill alt="logo" />
+          <Image
+            src={
+              selectedCompanyInfo?.base64Prefix
+                ? `${selectedCompanyInfo?.base64Prefix}${selectedCompanyInfo?.photoImage}`
+                : ''
+            }
+            fill
+            alt="logo"
+          />
         </Flex>
         <Heading color="black" fontWeight={700} size="lg">
           {selectedCompanyInfo?.name ?? ''}

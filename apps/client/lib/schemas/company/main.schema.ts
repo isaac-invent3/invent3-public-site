@@ -17,8 +17,8 @@ const companyInfoSchema = (validateUser: boolean) =>
       'Company Registration Number is Required'
     ),
     ...(validateUser
-      ? { userId: Yup.number().required('User is Required') }
-      : { userId: Yup.number().nullable() }),
+      ? { clientAdminId: Yup.number().required('User is Required') }
+      : { clientAdminId: Yup.number().nullable() }),
   });
 
 const contactInfoSchema = Yup.object().shape({

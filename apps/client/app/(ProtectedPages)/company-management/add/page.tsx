@@ -10,7 +10,7 @@ export default function Page() {
   return (
     <CompanyForm
       type="create"
-      companyType={COMPANY_TYPE_ENUM.MANAGE_DATA_FOR_COMPANIES}
+      companyType={COMPANY_TYPE_ENUM.MANAGE_OWN_DATA}
     />
   );
 }

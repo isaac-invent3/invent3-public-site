@@ -31,8 +31,9 @@ const Module = (props: ModuleProps) => {
         setSelectedCompanyInfo({
           name: company.companyName,
           companyId: company.companyId,
-          slug: 'test',
-          logo: `${company?.base64Prefix}${company?.photoImage}`,
+          slug: company.tenantName,
+          base64Prefix: company?.base64Prefix,
+          photoImage: company?.photoImage,
           industryType: company?.industryName,
         })
       );

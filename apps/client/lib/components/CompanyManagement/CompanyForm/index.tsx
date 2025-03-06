@@ -27,7 +27,7 @@ const CompanyForm = (props: CompanyFormProps) => {
   const THIRD_PARTY_STEPS = ['Company Info', 'Company Contact', 'Summary'];
   const SUPER_ADMIN_STEPS = [
     'Company Info',
-    'Contact Admin',
+    'Company Admin',
     'Subscription',
     'Summary',
   ];

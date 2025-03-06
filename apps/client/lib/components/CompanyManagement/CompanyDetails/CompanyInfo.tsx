@@ -45,9 +45,14 @@ const CompanyInfo = () => {
             rounded="8px"
             position="relative"
             shrink={0}
+            bgColor={!company?.base64Prefix ? 'neutral.100' : 'none'}
           >
             <Image
-              src={`${company?.base64Prefix}${company?.photoImage}`}
+              src={
+                company?.base64Prefix
+                  ? `${company?.base64Prefix}${company?.photoImage}`
+                  : ''
+              }
               fill
               alt="company-logo"
             />

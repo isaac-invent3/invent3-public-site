@@ -42,7 +42,7 @@ const CompanyInfoStep = (props: CompanyInfoStepProps) => {
       stateId: formDetails.stateId ?? null,
       lgaId: formDetails.lgaId ?? null,
       postalCode: formDetails.postalCode ?? null,
-      userId: null,
+      clientAdminId: formDetails.clientAdminId ?? null,
     },
     validationSchema: companyInfoSchema(false),
     enableReinitialize: false,
@@ -173,7 +173,10 @@ const CompanyInfoStep = (props: CompanyInfoStepProps) => {
                 description="Select and assign a user to manage this company"
                 w={{ base: 'full', lg: '50%' }}
               >
-                <EmployeeSelect selectName="userId" selectTitle="Select User" />
+                <EmployeeSelect
+                  selectName="clientAdminId"
+                  selectTitle="Select User"
+                />
               </FormInputWrapper>
             )}
           </VStack>

@@ -9,7 +9,8 @@ interface SelectedCompany {
   industryType: string;
   companyId: number;
   slug: string;
-  logo?: string;
+  photoImage?: string;
+  base64Prefix?: string;
 }
 interface SliceProps {
   appConfigValues: AppConfig;

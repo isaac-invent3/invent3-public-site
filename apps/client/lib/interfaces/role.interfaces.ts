@@ -45,6 +45,7 @@ type ModuleKey =
   | 'audit'
   | 'user'
   | 'template'
+  | 'partner'
   | 'vendor'
   | 'compliance'
   | 'approval'

@@ -16,7 +16,7 @@ import { sidebarChildren } from '~/lib/interfaces/general.interfaces';
 
 interface NavItemProps {
   name: string;
-  route: string;
+  route?: string;
   icon: ComponentWithAs<'svg', IconProps>;
   isCollapse: boolean;
   children?: sidebarChildren[];

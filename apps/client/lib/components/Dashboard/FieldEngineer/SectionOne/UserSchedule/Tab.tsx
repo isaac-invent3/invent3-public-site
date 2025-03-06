@@ -1,17 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { generateWeekDays } from './utils';
 import { HStack, Text, VStack } from '@chakra-ui/react';
 import { WeekType } from '~/lib/interfaces/dashboard.interfaces';
+import moment from 'moment';
 
 const Tab = ({
   weekType,
+  dateSelected,
   setDateSelected,
 }: {
   weekType: WeekType;
+  dateSelected: string | undefined;
   setDateSelected: React.Dispatch<React.SetStateAction<string | undefined>>;
 }) => {
-  const [selected, setSelected] = useState(0);
   const data = generateWeekDays(weekType);
+
+  useEffect(() => {
+    if (weekType === 'this') {
+      setDateSelected(moment().utcOffset(0).startOf('day').toISOString());
+    } else {
+      setDateSelected(data?.[0]?.fullDay);
+    }
+  }, [weekType]);
+
   return (
     <HStack
       width="full"
@@ -24,10 +35,9 @@ const Tab = ({
           pb="4px"
           spacing="4px"
           borderColor="#0366EF"
-          borderBottomWidth={selected === index ? '2px' : 0}
+          borderBottomWidth={dateSelected === item.fullDay ? '2px' : 0}
           key={index}
           onClick={() => {
-            setSelected(index);
             setDateSelected(item.fullDay);
           }}
           as="button"
@@ -35,7 +45,7 @@ const Tab = ({
           <Text
             fontWeight={400}
             color="neutral.600"
-            visibility={selected === index ? 'visible' : 'hidden'}
+            visibility={dateSelected === item.fullDay ? 'visible' : 'hidden'}
           >
             {item.date}
           </Text>

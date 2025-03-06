@@ -38,11 +38,10 @@ const CompanyPageHeader = () => {
           width="57px"
           height="57px"
           rounded="8px"
-          bgColor="#BBBBBB"
           position="relative"
           shrink={0}
         >
-          <Image src="" fill alt="logo" />
+          <Image src={selectedCompanyInfo?.logo ?? ''} fill alt="logo" />
         </Flex>
         <Heading color="black" fontWeight={700} size="lg">
           {selectedCompanyInfo?.name ?? ''}

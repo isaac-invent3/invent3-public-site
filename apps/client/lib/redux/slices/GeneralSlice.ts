@@ -10,7 +10,6 @@ interface SelectedCompany {
   companyId: number;
   slug: string;
   logo?: string;
-  logoPrefix?: string;
 }
 interface SliceProps {
   appConfigValues: AppConfig;

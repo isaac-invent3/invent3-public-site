@@ -1,4 +1,4 @@
-import { Flex, VStack } from '@chakra-ui/react';
+import { Flex, Stack, VStack } from '@chakra-ui/react';
 import {
   FormActionButtons,
   FormInputWrapper,
@@ -7,11 +7,13 @@ import {
 import { Field, FormikProvider, useFormik } from 'formik';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateCompanyForm } from '~/lib/redux/slices/CompanySlice';
-import { ROUTES } from '~/lib/utils/constants';
+import { ROLE_IDS_ENUM, ROUTES } from '~/lib/utils/constants';
 import CompanyLocation from './CompanyLocation';
 import CompanyLogo from './CompanyLogo';
 import IndustryTypeSelect from './IndustryTypeSelect';
 import { companyInfoSchema } from '~/lib/schemas/company/main.schema';
+import EmployeeSelect from '~/lib/components/UserManagement/UserForm/EmployeeInfo/IDP/EmployeeSelect';
+import { useSession } from 'next-auth/react';
 
 interface CompanyInfoStepProps {
   activeStep: number;
@@ -21,6 +23,10 @@ const CompanyInfoStep = (props: CompanyInfoStepProps) => {
   const { activeStep, setActiveStep } = props;
   const { companyForm: formDetails } = useAppSelector((state) => state.company);
   const dispatch = useAppDispatch();
+  const session = useSession();
+  const user = session?.data?.user;
+  const isThirdParty =
+    user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY) ?? false;
 
   const formik = useFormik({
     initialValues: {
@@ -36,8 +42,9 @@ const CompanyInfoStep = (props: CompanyInfoStepProps) => {
       stateId: formDetails.stateId ?? null,
       lgaId: formDetails.lgaId ?? null,
       postalCode: formDetails.postalCode ?? null,
+      userId: null,
     },
-    validationSchema: companyInfoSchema,
+    validationSchema: companyInfoSchema(false),
     enableReinitialize: false,
     onSubmit: async (values) => {
       dispatch(updateCompanyForm(values));
@@ -82,72 +89,93 @@ const CompanyInfoStep = (props: CompanyInfoStepProps) => {
                 label="Company Name"
               />
             </FormInputWrapper>
-
-            <FormInputWrapper
-              sectionMaxWidth="141px"
-              customSpacing="47px"
-              title="Registration Number"
-              description="Provide the company’s registration number"
-              isRequired
-              w={{ base: 'full', md: '50%' }}
+            <Stack
+              width="full"
+              direction={{ base: 'column', lg: 'row' }}
+              spacing={{ base: '24px', lg: '32px' }}
             >
-              <Field
-                as={FormTextInput}
-                name="registrationNumber"
-                type="number"
-                label="Registration Number"
-              />
-            </FormInputWrapper>
+              <FormInputWrapper
+                sectionMaxWidth="141px"
+                customSpacing="47px"
+                title="Registration Number"
+                description="Provide the company’s registration number"
+                isRequired
+                w={{ base: 'full', lg: '50%' }}
+              >
+                <Field
+                  as={FormTextInput}
+                  name="registrationNumber"
+                  type="number"
+                  label="Registration Number"
+                />
+              </FormInputWrapper>
 
-            <FormInputWrapper
-              sectionMaxWidth="141px"
-              customSpacing="47px"
-              title="Industry Type"
-              description="Select the Industry type"
-              w={{ base: 'full', md: '50%' }}
+              <FormInputWrapper
+                sectionMaxWidth="141px"
+                customSpacing="47px"
+                title="Industry Type"
+                description="Select the Industry type"
+                w={{ base: 'full', lg: '50%' }}
+              >
+                <IndustryTypeSelect
+                  selectName="industryTypeId"
+                  selectTitle="Industry Type"
+                  handleSelect={(option) =>
+                    dispatch(
+                      updateCompanyForm({ industryTypeName: option.label })
+                    )
+                  }
+                />
+              </FormInputWrapper>
+            </Stack>
+            <Stack
+              width="full"
+              direction={{ base: 'column', lg: 'row' }}
+              spacing={{ base: '24px', lg: '32px' }}
             >
-              <IndustryTypeSelect
-                selectName="industryTypeId"
-                selectTitle="Industry Type"
-                handleSelect={(option) =>
-                  dispatch(
-                    updateCompanyForm({ industryTypeName: option.label })
-                  )
-                }
-              />
-            </FormInputWrapper>
+              <FormInputWrapper
+                sectionMaxWidth="141px"
+                customSpacing="47px"
+                title="Company Email"
+                description="Provide the company’s email"
+                w={{ base: 'full', lg: '50%' }}
+              >
+                <Field
+                  as={FormTextInput}
+                  name="companyEmail"
+                  type="email"
+                  label="Company Email"
+                />
+              </FormInputWrapper>
 
-            <FormInputWrapper
-              sectionMaxWidth="141px"
-              customSpacing="47px"
-              title="Company Email"
-              description="Provide the company’s email"
-              w={{ base: 'full', md: '50%' }}
-            >
-              <Field
-                as={FormTextInput}
-                name="companyEmail"
-                type="email"
-                label="Company Email"
-              />
-            </FormInputWrapper>
-
-            <FormInputWrapper
-              sectionMaxWidth="141px"
-              customSpacing="47px"
-              title="Company Website"
-              description="Provide the company’s Website"
-              w={{ base: 'full', md: '50%' }}
-            >
-              <Field
-                as={FormTextInput}
-                name="companyWebsite"
-                type="url"
-                label="Company Website"
-              />
-            </FormInputWrapper>
+              <FormInputWrapper
+                sectionMaxWidth="141px"
+                customSpacing="47px"
+                title="Company Website"
+                description="Provide the company’s Website"
+                w={{ base: 'full', lg: '50%' }}
+              >
+                <Field
+                  as={FormTextInput}
+                  name="companyWebsite"
+                  type="url"
+                  label="Company Website"
+                />
+              </FormInputWrapper>
+            </Stack>
 
             <CompanyLocation />
+            {isThirdParty && (
+              <FormInputWrapper
+                sectionMaxWidth="142px"
+                customSpacing="47px"
+                title="Assign CMF Manager"
+                description="Select and assign a user to manage this company"
+                w={{ base: 'full', lg: '50%' }}
+              >
+                <EmployeeSelect selectName="userId" selectTitle="Select User" />
+              </FormInputWrapper>
+            )}
           </VStack>
           <Flex width="full" mt="16px">
             <FormActionButtons

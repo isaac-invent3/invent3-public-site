@@ -27,7 +27,7 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
       overflowY="scroll"
       position="relative"
     >
-      <Notes />
+      <Notes isCollapse={isCollapse} />
 
       <HStack position="relative">
         <SideBar isCollapse={isCollapse} setIsCollapse={setIsCollapse} />

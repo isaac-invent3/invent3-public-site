@@ -7,7 +7,10 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { TextInput } from '@repo/ui/components';
-import { Comment, comments } from './dummyComments';
+import {
+  Comment,
+  comments,
+} from '~/lib/components/Notes/NoteDetails/Comments/dummyComments';
 
 const renderComments = (comments: Comment[], depth = 0) => {
   return comments.map((comment) => (
@@ -18,10 +21,10 @@ const renderComments = (comments: Comment[], depth = 0) => {
       pl={`${depth * 48}px`}
       w="full"
     >
-      <HStack align="start" spacing='8px'>
+      <HStack align="start" spacing="8px">
         <Avatar width="40px" height="40px" />
 
-        <VStack align="start" spacing='11.5px' mt="11.5px" >
+        <VStack align="start" spacing="11.5px" mt="11.5px">
           <HStack spacing={2}>
             <Text color="neutral.800" size="md" fontWeight={700}>
               {comment.userName}

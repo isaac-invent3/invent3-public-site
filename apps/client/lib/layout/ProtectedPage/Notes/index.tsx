@@ -16,8 +16,8 @@ const Notes = (props: NotesProps) => {
   const componentWidth = 100;
   const componentHeight = 40;
 
-  const initialX = window.innerWidth - componentWidth - 20;
-  const initialY = window.innerHeight / 2;
+  const initialX = window.innerWidth - componentWidth - 40;
+  const initialY = window.innerHeight *0.9;
 
   const OPEN_SIDEBAR_POSITION = 260;
 
@@ -33,7 +33,7 @@ const Notes = (props: NotesProps) => {
 
     let newX;
     if (x + componentWidth / 2 > windowWidth / 2) {
-      newX = windowWidth - componentWidth - 20;
+      newX = windowWidth - componentWidth - 40;
     } else {
       newX = isCollapse ? 100 : OPEN_SIDEBAR_POSITION;
     }

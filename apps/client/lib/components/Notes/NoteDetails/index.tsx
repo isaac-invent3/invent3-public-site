@@ -9,6 +9,7 @@ import {
   Stack,
   Text,
   Tooltip,
+  useDisclosure,
   VStack,
 } from '@chakra-ui/react';
 import {
@@ -28,6 +29,7 @@ import { dateFormatter } from '~/lib/utils/Formatters';
 import UserInfo from '../../Common/UserInfo';
 import { InfoIcon } from '../../CustomIcons';
 import PageHeader from '../../UI/PageHeader';
+import NoteForm from '../NoteForm';
 import NoteComments from './Comments';
 
 interface NoteFormModalProps {
@@ -38,6 +40,11 @@ interface NoteFormModalProps {
 
 const NoteDetails = (props: NoteFormModalProps) => {
   const { isOpen, onClose, note } = props;
+  const {
+    isOpen: isNoteFormOpened,
+    onOpen: onNoteFormOpen,
+    onClose: onNoteFormClose,
+  } = useDisclosure();
   const formattedUrl = useFormatUrl();
   const data = useParseUrlData(formattedUrl);
   const { data: noteTaggedUsers, isLoading } = useGetNoteTaggedUsersQuery(
@@ -93,6 +100,7 @@ const NoteDetails = (props: NoteFormModalProps) => {
                 {data?.systemContextId && (
                   <>
                     <Button
+                      handleClick={onNoteFormOpen}
                       customStyles={{
                         w: '150px',
                         alignSelf: 'end',
@@ -251,6 +259,12 @@ const NoteDetails = (props: NoteFormModalProps) => {
           </Stack>
         </ModalBody>
       </GenericModal>
+
+      <NoteForm
+        note={note}
+        onClose={onNoteFormClose}
+        isOpen={isNoteFormOpened}
+      />
     </>
   );
 };

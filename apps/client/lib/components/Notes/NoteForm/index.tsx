@@ -61,7 +61,7 @@ const NoteForm = (props: NoteFormModalProps) => {
 
   const initialValues: CreateNoteForm = {
     content: note?.content ?? '',
-    title: note?.content ?? '',
+    title: note?.title ?? '',
     isPrivate: note?.isPrivate ?? false,
     notePriorityId: note?.notePriorityId ?? 0,
     tags: [],
@@ -133,10 +133,11 @@ const NoteForm = (props: NoteFormModalProps) => {
         isOpen={isOpen}
         onClose={onClose}
         contentStyle={{
-          width: { lg: '1150px' },
-          padding: '48px',
+          width: { base: '100%', lg: '1150px' },
+          px: { base: '16px', lg: '48px' },
+          py: { base: '32px', lg: '48px' },
           bgColor: '#E7E7E7',
-          maxW: '80vw',
+          // maxW: '80vw',
         }}
       >
         <ModalHeader m={0} p={0}>
@@ -150,7 +151,7 @@ const NoteForm = (props: NoteFormModalProps) => {
               justifyContent="space-between"
               w="full"
               mt="1em"
-              spacing='1em'
+              spacing="1em"
               direction={{ base: 'column', lg: 'row' }}
             >
               <VStack
@@ -159,7 +160,7 @@ const NoteForm = (props: NoteFormModalProps) => {
                 margin="0px"
                 padding="0px"
                 paddingInline="0px !important"
-                width={{ md: '80%', base: '100%' }}
+                width={{ lg: '80%', base: '100%' }}
                 order={{ base: 1, md: 0 }}
                 spacing="24px"
                 px="24px"
@@ -265,9 +266,18 @@ const NoteForm = (props: NoteFormModalProps) => {
           </ModalBody>
 
           <ModalFooter p={0} m={0}>
-            <HStack spacing="8px" justifyContent="flex-end" mt="8px" pt="32px">
+            <HStack
+              spacing="8px"
+              w="full"
+              justifyContent={{ base: 'space-between', md: 'flex-end' }}
+              mt="8px"
+              pt="32px"
+            >
               <Button
-                customStyles={{ width: '138px', height: '50px' }}
+                customStyles={{
+                  width: { base: 'full', md: '138px' },
+                  height: { base: '36px', md: '50px' },
+                }}
                 variant="secondary"
                 handleClick={onClose}
               >
@@ -279,7 +289,10 @@ const NoteForm = (props: NoteFormModalProps) => {
                 handleClick={() => {
                   formik.handleSubmit();
                 }}
-                customStyles={{ width: '150px', height: '50px' }}
+                customStyles={{
+                  width: { base: 'full', md: '150px' },
+                  height: { base: '36px', md: '50px' },
+                }}
               >
                 Save Note
               </Button>

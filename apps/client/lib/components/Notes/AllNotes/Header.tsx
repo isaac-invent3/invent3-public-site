@@ -1,9 +1,9 @@
-import { HStack, Stack, Text, useDisclosure } from '@chakra-ui/react';
+import { Stack, useDisclosure } from '@chakra-ui/react';
 import { Button } from '@repo/ui/components';
 import useFormatUrl from '~/lib/hooks/useFormatUrl';
 import useParseUrlData from '~/lib/hooks/useParseUrl';
-import NoteForm from '../NoteForm';
 import PageHeader from '../../UI/PageHeader';
+import NoteForm from '../NoteForm';
 
 const Header = () => {
   const formattedUrl = useFormatUrl();

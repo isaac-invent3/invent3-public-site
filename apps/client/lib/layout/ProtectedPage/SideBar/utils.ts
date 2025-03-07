@@ -121,7 +121,6 @@ const clientSideBarData: SideBarData[] = [
     permissionKey: 'vendor',
     description:
       'Manage vendor relationships and contracts for efficient procurement.',
-    //  Question: Could these two have different permission keys
     children: [
       {
         name: 'Vendor',

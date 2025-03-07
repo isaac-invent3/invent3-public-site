@@ -1,4 +1,4 @@
-import { Grid, Skeleton } from "@chakra-ui/react";
+import { Grid, HStack, Skeleton } from "@chakra-ui/react";
 
 interface SkeletonGridProps {
   count: number;
@@ -6,11 +6,23 @@ interface SkeletonGridProps {
 }
 
 const SkeletonGrid = ({ count, columns = 6 }: SkeletonGridProps) => (
-  <Grid templateColumns={`repeat(${columns}, 1fr)`} gap="16px" w="full">
+  <HStack
+    flexWrap="wrap"
+    gap="16px"
+    w="full"
+    justifyContent={{ base: 'space-evenly', md: 'unset' }}
+  >
     {Array.from({ length: count }).map((_, index) => (
-      <Skeleton key={index} isLoaded={false} rounded="8px" p="8px" h="180px" />
+      <Skeleton
+        key={index}
+        isLoaded={false}
+        rounded="8px"
+        p="8px"
+        h={{ base: '150px', md: '180px' }}
+        w={{ base: '120px', md: '150px' }}
+      />
     ))}
-  </Grid>
+  </HStack>
 );
 
 

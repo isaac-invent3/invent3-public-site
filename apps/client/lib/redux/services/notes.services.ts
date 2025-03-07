@@ -45,11 +45,7 @@ export const notesApi = createApi({
         body,
       }),
 
-      invalidatesTags: [
-        'allNotes',
-        'unPinnedNotes',
-        'pinnedNotes',
-      ],
+      invalidatesTags: ['allNotes', 'unPinnedNotes', 'pinnedNotes'],
     }),
 
     createComment: builder.mutation<BaseApiResponse<Note>, CreateNotePayload>({

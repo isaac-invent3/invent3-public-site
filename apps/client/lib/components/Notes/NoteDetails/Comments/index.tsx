@@ -3,13 +3,14 @@ import {
   Box,
   HStack,
   Icon,
-  Skeleton,
   Spinner,
   StackDivider,
   Text,
   VStack,
 } from '@chakra-ui/react';
+import { keyframes } from '@emotion/react';
 import { TextInput } from '@repo/ui/components';
+import moment from 'moment';
 import { getSession } from 'next-auth/react';
 import { FormEventHandler, useState } from 'react';
 import { EmptyNotesIcon } from '~/lib/components/CustomIcons';
@@ -19,12 +20,18 @@ import useParseUrlData from '~/lib/hooks/useParseUrl';
 import { Note } from '~/lib/interfaces/notes.interfaces';
 import {
   useCreateCommentMutation,
-  useCreateNoteMutation,
   useGetNoteCommentsQuery,
 } from '~/lib/redux/services/notes.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import SkeletonComment from './SkeletonComment';
 
-const renderComments = (comments: Note[], depth = 0) => {
+const pulse = keyframes`
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% {  opacity: 1; }
+`;
+
+const renderComments = (comments: Note[], isLoading: boolean, depth = 0) => {
   return comments.map((comment) => (
     <VStack
       spacing="24px"
@@ -32,18 +39,19 @@ const renderComments = (comments: Note[], depth = 0) => {
       align="start"
       pl={`${depth * 48}px`}
       w="full"
+      animation={isLoading ? `${pulse} 1.5s infinite ease-in-out` : ''}
     >
       <HStack align="start" spacing="8px">
         <Avatar width="28px" height="28px" />
 
-        <VStack align="start" spacing="11.5px" mt="11.5px">
+        <VStack align="start" spacing="11.5px" mt="5px">
           <HStack spacing={2}>
             <Text color="neutral.800" fontWeight={700}>
               {comment.authorFirstName}
             </Text>
 
             <Text size="xs" color="neutral.600">
-              3h ago
+              {moment(comment.dateCreated).fromNow()}
             </Text>
           </HStack>
 
@@ -61,20 +69,25 @@ const renderComments = (comments: Note[], depth = 0) => {
 const NoteComments = ({ note }: { note: Note }) => {
   const formattedUrl = useFormatUrl();
   const parsedUrl = useParseUrlData(formattedUrl);
-  const { data: comments, isLoading: isGettingNotes } = useGetNoteCommentsQuery(
-    {
-      noteId: note.noteId,
-      pageNumber: 1,
-      pageSize: DEFAULT_PAGE_SIZE,
-    }
-  );
+  const {
+    data: comments,
+    isLoading: isGettingComments,
+    isFetching: isFetchingComments,
+  } = useGetNoteCommentsQuery({
+    noteId: note.noteId,
+    pageNumber: 1,
+    pageSize: DEFAULT_PAGE_SIZE,
+  });
 
   const [comment, setComment] = useState('');
   const { handleSubmit } = useCustomMutation();
-  const [createComment, { isLoading: isCommenting }] = useCreateCommentMutation();
+  const [createComment, { isLoading: isCommenting }] =
+    useCreateCommentMutation();
 
   const handleAddComment: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
+    if (isCommenting) return;
+
     const session = await getSession();
 
     // Problem with the flow here
@@ -140,11 +153,10 @@ const NoteComments = ({ note }: { note: Note }) => {
         </HStack>
       </form>
 
-      {note.hasComment && (
-        <Skeleton isLoaded={!isGettingNotes}>
-          {renderComments(comments?.data.items ?? [])}
-        </Skeleton>
-      )}
+      {note.hasComment &&
+        renderComments(comments?.data.items ?? [], isFetchingComments)}
+
+      {isGettingComments && <SkeletonComment count={5} />}
 
       {!note.hasComment && (
         <VStack justifyContent="center" h="200px" w="full">

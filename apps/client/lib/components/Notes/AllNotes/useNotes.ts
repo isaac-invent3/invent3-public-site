@@ -18,7 +18,7 @@ const useNotes = (data: any) => {
   const { handleSubmit } = useCustomMutation();
   const [searchData, setSearchData] = useState<ListResponse<Note> | null>(null);
 
-  const { data: pinnedNotes, isLoading: isGettingPinnedNotes } =
+  const { data: pinnedNotes, isLoading: isGettingPinnedNotes, isFetching:isFetchingPinnedNotes } =
     useGetPinnedNotesQuery(
       {
         userId: user?.userId!,
@@ -29,7 +29,7 @@ const useNotes = (data: any) => {
       { skip: !user?.userId || !data?.systemContextId }
     );
 
-  const { data: unPinnedNotes, isLoading: isGettingUnPinnedNotes } =
+  const { data: unPinnedNotes, isLoading: isGettingUnPinnedNotes, isFetching:isFetchingUnpinnedNotes } =
     useGetUnPinnedNotesQuery(
       {
         userId: user?.userId!,
@@ -41,7 +41,7 @@ const useNotes = (data: any) => {
     );
 
   //   Search Notes
-  const [searchNotes, { isLoading: isSearchingNotes }] = useSearchNotesMutation(
+  const [searchNotes, { isLoading: isSearchingNotes,  }] = useSearchNotesMutation(
     {}
   );
 
@@ -74,8 +74,19 @@ const useNotes = (data: any) => {
   }, [search]);
 
   const isFetchingNotes = useMemo(
-    () => isSearchingNotes || isGettingUnPinnedNotes || isGettingPinnedNotes,
-    [isSearchingNotes, isGettingPinnedNotes, isGettingUnPinnedNotes]
+    () =>
+      isSearchingNotes ||
+      isGettingUnPinnedNotes ||
+      isGettingPinnedNotes ||
+      isFetchingPinnedNotes ||
+      isFetchingUnpinnedNotes,
+    [
+      isSearchingNotes,
+      isGettingPinnedNotes,
+      isGettingUnPinnedNotes,
+      isFetchingUnpinnedNotes,
+      isFetchingPinnedNotes,
+    ]
   );
 
   const searchedNotes = () => {

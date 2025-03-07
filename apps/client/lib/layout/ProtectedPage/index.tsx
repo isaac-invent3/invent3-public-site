@@ -2,8 +2,8 @@
 
 import { Flex, HStack, Icon } from '@chakra-ui/react';
 
-import SideBar from './SideBar';
 import Header from './Header';
+import SideBar from './SideBar';
 import { useState } from 'react';
 // import CountDownTimer from './CountDownTimer';
 
@@ -12,6 +12,7 @@ import {
   CaretRightIcon,
 } from '~/lib/components/CustomIcons/layout';
 import CompanyPageHeader from '~/lib/components/CompanyManagement/CompanyPageHeader';
+import Notes from './Notes';
 
 interface ProtectedLayoutProps {
   children: React.ReactNode;
@@ -26,6 +27,8 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
       overflowY="scroll"
       position="relative"
     >
+      <Notes isCollapse={isCollapse} />
+
       <HStack position="relative">
         <SideBar isCollapse={isCollapse} setIsCollapse={setIsCollapse} />
 
@@ -63,7 +66,6 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
         <CompanyPageHeader />
         {children}
       </Flex>
-      {/* <CountDownTimer /> */}
     </Flex>
   );
 };

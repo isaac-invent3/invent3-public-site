@@ -139,6 +139,7 @@ interface SystemContextDetail {
   route: (typeof ROUTES)[keyof typeof ROUTES];
   slug: string;
   relatedPermissionKeys?: ModuleKey[];
+  displayName:string
 }
 
 interface ImageObject {

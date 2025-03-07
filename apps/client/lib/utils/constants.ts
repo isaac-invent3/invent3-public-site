@@ -214,6 +214,7 @@ const SYSTEM_CONTEXT_DETAILS: Record<ContextKey, SystemContextDetail> = {
     id: SYSTEM_CONTEXT_TYPE.ASSETS,
     route: ROUTES.ASSETS,
     slug: 'assetId',
+    displayName: 'Asset Management',
     relatedPermissionKeys: ['task'],
   },
 
@@ -222,49 +223,58 @@ const SYSTEM_CONTEXT_DETAILS: Record<ContextKey, SystemContextDetail> = {
     route: ROUTES.MAINTENANCE_PLANS,
     slug: 'maintenancePlanId',
     relatedPermissionKeys: ['task'],
+    displayName: 'Maintenance Plans',
   },
   MAINTENANCE_SCHEDULES: {
     id: SYSTEM_CONTEXT_TYPE.MAINTENANCE_SCHEDULES,
     route: ROUTES.MAINTENANCE_SCHEDULES,
     slug: 'maintenanceScheduleId',
     relatedPermissionKeys: ['task'],
+    displayName: 'Maintenance Schedules',
   },
   MAINTENANCE_SCHEDULE_INSTANCE: {
     id: SYSTEM_CONTEXT_TYPE.MAINTENANCE_SCHEDULE_INSTANCES,
     route: ROUTES.MAINTENANCE_SCHEDULES,
     slug: 'maintenanceScheduleInstanceId',
     relatedPermissionKeys: ['task'],
+    displayName: 'Maintenance Schedule Instance',
   },
   TASKS: {
     id: SYSTEM_CONTEXT_TYPE.TASKS,
     route: ROUTES.TASKS,
     slug: 'taskId',
+    displayName: 'Task Management',
   },
   TICKETS: {
     id: SYSTEM_CONTEXT_TYPE.TICKETS,
     route: ROUTES.TICKETS,
     slug: 'ticketId',
     relatedPermissionKeys: ['task'],
+    displayName: 'Ticket Management',
   },
   USER: {
     id: SYSTEM_CONTEXT_TYPE.USERS,
     route: ROUTES.USERS,
     slug: 'userId',
+    displayName: 'User Management',
   },
   VENDOR: {
     id: SYSTEM_CONTEXT_TYPE.VENDOR,
     route: ROUTES.VENDOR,
     slug: 'vendorId',
+    displayName: 'Vendor Management',
   },
   COMPANY: {
     id: SYSTEM_CONTEXT_TYPE.COMPANY,
     route: ROUTES.COMPANY,
     slug: 'companyId',
+    displayName: 'Company Management',
   },
   AUDIT: {
     id: SYSTEM_CONTEXT_TYPE.AUDIT,
     route: ROUTES.AUDIT_LOG,
     slug: 'logId',
+    displayName: 'Audits',
   },
 };
 

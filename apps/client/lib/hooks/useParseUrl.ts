@@ -13,6 +13,19 @@ interface ParseUrlDataResponse {
 type SystemContextDetail =
   (typeof SYSTEM_CONTEXT_DETAILS)[keyof typeof SYSTEM_CONTEXT_DETAILS];
 
+export const findSystemContextDetailById = (
+  id: number | undefined
+): SystemContextDetail | null => {
+  for (const key of Object.keys(SYSTEM_CONTEXT_DETAILS) as Array<
+    keyof typeof SYSTEM_CONTEXT_DETAILS
+  >) {
+    if (SYSTEM_CONTEXT_DETAILS[key].id === id) {
+      return SYSTEM_CONTEXT_DETAILS[key];
+    }
+  }
+
+  return null;
+};
 /**
  * Custom hook to parse URL data and extract relevant context information.
  *

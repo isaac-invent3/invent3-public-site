@@ -60,6 +60,7 @@ const ProtectedLayout = ({ children }: RootLayoutProps) => {
   };
 
   useEffect(() => {
+    console.log({ data });
     fetchRelatedPermissionKeyForASystemContext(data?.permissionKeys);
   }, [data]);
 

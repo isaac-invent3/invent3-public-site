@@ -50,6 +50,7 @@ import ticketSlice from './slices/TicketSlice';
 import userSlice from './slices/UserSlice';
 import roleSlice from './slices/RoleSlice';
 import vendorSlice from './slices/VendorSlice';
+import notesSlice from './slices/NoteSlice';
 import auditLogSlice from './slices/AuditLogSlice';
 import companySlice from './slices/CompanySlice';
 import settingSlice from './slices/SettingsSlice';
@@ -78,6 +79,7 @@ import { industryApi } from './services/industry.services';
 import { subscriptionApi } from './services/subscription.services';
 import { thirdPartyApi } from './services/dashboard/thirdparty.services';
 import { complianceApi } from './services/asset/compliance.services';
+import { notesApi } from './services/notes.services';
 import { fieldEngineerDashboardApi } from './services/dashboard/fieldengineer.services';
 export const persistConfig = {
   key: 'root',
@@ -176,6 +178,9 @@ const rootReducer = combineReducers({
   // Industry APIS
   [industryApi.reducerPath]: industryApi.reducer,
 
+  // Notes APIS
+  [notesApi.reducerPath]: notesApi.reducer,
+
   asset: assetSlice,
   auditLog: auditLogSlice,
   general: generalSlice,
@@ -191,6 +196,7 @@ const rootReducer = combineReducers({
   role: roleSlice,
   company: companySlice,
   settings: settingSlice,
+  notes: notesSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -294,6 +300,9 @@ export const makeStore = () => {
 
         // Industry APIs
         industryApi.middleware,
+
+        // Notes Apis
+        notesApi.middleware,
       ]),
   });
 };

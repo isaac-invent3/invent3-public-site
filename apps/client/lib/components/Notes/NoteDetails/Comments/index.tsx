@@ -24,47 +24,8 @@ import {
 } from '~/lib/redux/services/notes.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import SkeletonComment from './SkeletonComment';
+import CommentItem from './CommentItem';
 
-const pulse = keyframes`
-  0% { opacity: 1; }
-  50% { opacity: 0.5; }
-  100% {  opacity: 1; }
-`;
-
-const renderComments = (comments: Note[], isLoading: boolean, depth = 0) => {
-  return comments.map((comment) => (
-    <VStack
-      spacing="24px"
-      key={comment.noteId}
-      align="start"
-      pl={`${depth * 48}px`}
-      w="full"
-      animation={isLoading ? `${pulse} 1.5s infinite ease-in-out` : ''}
-    >
-      <HStack align="start" spacing="8px">
-        <Avatar width="28px" height="28px" />
-
-        <VStack align="start" spacing="11.5px" mt="5px">
-          <HStack spacing={2}>
-            <Text color="neutral.800" fontWeight={700}>
-              {comment.authorFirstName}
-            </Text>
-
-            <Text size="xs" color="neutral.600">
-              {moment(comment.dateCreated).fromNow()}
-            </Text>
-          </HStack>
-
-          <Text size="xs" fontWeight={400} color="neutral.600">
-            {comment.content}
-          </Text>
-        </VStack>
-      </HStack>
-
-      {/* {comment.replies && renderComments(comment.replies, depth + 1)} */}
-    </VStack>
-  ));
-};
 
 const NoteComments = ({ note }: { note: Note }) => {
   const formattedUrl = useFormatUrl();
@@ -154,8 +115,13 @@ const NoteComments = ({ note }: { note: Note }) => {
       </form>
 
       {note.hasComment &&
-        renderComments(comments?.data.items ?? [], isFetchingComments)}
-
+        comments?.data.items.map((comment) => (
+          <CommentItem
+            key={comment.noteId}
+            comment={comment}
+            isFetchingComments={isFetchingComments}
+          />
+        ))}
       {isGettingComments && <SkeletonComment count={5} />}
 
       {!note.hasComment && (

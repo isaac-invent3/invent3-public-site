@@ -2,7 +2,6 @@ import { Box } from '@chakra-ui/react';
 import {
   addEdge,
   Connection,
-  Controls,
   ReactFlow,
   ReactFlowProvider,
   useEdgesState,
@@ -15,7 +14,6 @@ import { useGetAllApprovalWorkflowPartyInstancesQuery } from '~/lib/redux/servic
 import { ROUTES } from '~/lib/utils/constants';
 import ApprovalDetailsPanel from '../RightPanel';
 import { useApprovalFlowContext } from './Context';
-import { dummyApprovalPartyInstances } from './Dummydata';
 import { CustomEdge, CustomNode } from './Interfaces';
 import { createNodeAndEdgesFromBaseElements } from './Logic/formatApprovalPartyToNode';
 import { layoutApprovalFlowElements } from './Logic/layoutApprovalFlowElements';
@@ -48,24 +46,16 @@ const FlowChart = () => {
     nodes: CustomNode[];
     edges: CustomEdge[];
   }>({ nodes: [], edges: [] });
+  const [nodes, setNodes, onNodesChange] = useNodesState(layoutElements.nodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(layoutElements.edges);
+  const [draggingNodeId, setDraggingNodeId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!data?.data.items) return;
 
-    // const { edges, nodes } = createNodeAndEdgesFromBaseElements(
-    //   data.data.items
-    // );
-
     const { edges, nodes } = createNodeAndEdgesFromBaseElements(
-      dummyApprovalPartyInstances
+      data?.data.items
     );
-
-    const node: CustomNode = {
-      data: {},
-      id: '234',
-      position: { x: 400, y: 0 },
-      type: 'stackJoiner',
-    };
 
     setElements([...nodes, ...edges]);
   }, [data]);
@@ -86,31 +76,13 @@ const FlowChart = () => {
     });
   }, [elements]);
 
-  const [nodes, setNodes, onNodesChange] = useNodesState(layoutElements.nodes);
-
-  const [edges, setEdges, onEdgesChange] = useEdgesState(layoutElements.edges);
-  const [draggingNodeId, setDraggingNodeId] = useState<string | null>(null);
-
-  // type StackJoinerHelpers = {
-  //   createStackJoiner: (
-  //     node: Node,
-  //     nodes: Node[],
-  //     edges: Edge[],
-  //     createNewNode: (type: string) => Node
-  //   ) => { newNodes: Node[]; newEdges: Edge[] };
-  //   checkAndRemoveStackJoiners: (
-  //     nodes: Node[],
-  //     edges: Edge[]
-  //   ) => { nodes: Node[]; edges: Edge[] };
-  //   replaceStackJoinerWithNode: (
-  //     newNode: Node,
-  //     nodes: Node[],
-  //     edges: Edge[]
-  //   ) => { nodes: Node[]; edges: Edge[] };
-  // };
-
   const stackJoinerHelpers = {
-    createStackJoiner: (node, nodes, edges, createNewNode) => {
+    createStackJoiner: (
+      node: CustomNode,
+      nodes: CustomNode[],
+      edges: CustomEdge[],
+      createNewNode: (type?: string) => CustomNode
+    ) => {
       const incomingEdges = edges.filter((e) => e.target === node.id);
       const outgoingEdges = edges.filter((e) => e.source === node.id);
 
@@ -132,7 +104,7 @@ const FlowChart = () => {
       return { newNodes, newEdges: updatedEdges };
     },
 
-    checkAndRemoveStackJoiners: (nodes, edges) => {
+    checkAndRemoveStackJoiners: (nodes: CustomNode[], edges: CustomEdge[]) => {
       const stackJoiners = nodes.filter((n) => n.type === 'stackJoiner');
       let newEdges = [...edges];
       let newNodes = [...nodes];
@@ -183,7 +155,11 @@ const FlowChart = () => {
       return { nodes: newNodes, edges: newEdges };
     },
 
-    replaceStackJoinerWithNode: (newNode, nodes, edges) => {
+    replaceStackJoinerWithNode: (
+      newNode: CustomNode,
+      nodes: CustomNode[],
+      edges: CustomEdge[]
+    ) => {
       const stackJoiners = nodes.filter((n) => n.type === 'stackJoiner');
       let newEdges = [...edges];
       let newNodes = [...nodes];
@@ -259,48 +235,10 @@ const FlowChart = () => {
       groupedByX[n.position.x].push(n);
     });
 
+    
+
     const stackedNodes = groupedByX[posX] || [];
     const isPartOfStack = stackedNodes.length > 1;
-
-    // if (incomingEdges.length > 1 && outgoingEdges.length > 1) {
-    //   const newNode = createNewNode('stackJoiner');
-
-    //   setNodes((nds) => [...nds, newNode]);
-
-    //   setEdges((eds) => {
-    //     let updatedEdges = [...eds];
-
-    //     incomingEdges.forEach((edge) => {
-    //       updatedEdges = addEdge(
-    //         {
-    //           ...edge,
-    //           target: newNode.id!,
-    //         },
-    //         updatedEdges
-    //       );
-    //     });
-
-    //     outgoingEdges.forEach((edge) => {
-    //       updatedEdges = addEdge(
-    //         {
-    //           ...edge,
-    //           source: newNode.id!,
-    //         },
-    //         updatedEdges
-    //       );
-    //     });
-
-    //     updatedEdges = updatedEdges.filter(
-    //       (edge) => edge.source !== node.id && edge.target !== node.id
-    //     );
-
-    //     console.log({ updatedEdges });
-
-    //     return updatedEdges;
-    //   });
-
-    //   return;
-    // }
 
     if (incomingEdges.length > 1 && outgoingEdges.length > 1) {
       const { newNodes, newEdges } = stackJoinerHelpers.createStackJoiner(
@@ -317,7 +255,13 @@ const FlowChart = () => {
 
     // If node is in a stack with others, just remove its edges and return
     if (isPartOfStack) {
-      console.log('isPart',nodes, connectedEdges,edges,edges.filter((edge) => !connectedEdges.includes(edge)))
+      console.log(
+        'isPart',
+        nodes,
+        connectedEdges,
+        edges,
+        edges.filter((edge) => !connectedEdges.includes(edge))
+      );
       return setEdges((eds) =>
         eds.filter((edge) => !connectedEdges.includes(edge))
       );
@@ -452,7 +396,7 @@ const FlowChart = () => {
       );
 
       if (overlappingNode.type === 'stackJoiner') {
-        console.log(overlappingNode.id)
+        console.log(overlappingNode.id);
         setEdges((eds) => {
           let updatedEdges = [...eds];
 
@@ -476,17 +420,14 @@ const FlowChart = () => {
             );
           });
 
-              updatedEdges = updatedEdges.filter(
-                (edge) =>
-                  edge.source !== overlappingNode.id &&
-                  edge.target !== overlappingNode.id
-              );
-
+          updatedEdges = updatedEdges.filter(
+            (edge) =>
+              edge.source !== overlappingNode.id &&
+              edge.target !== overlappingNode.id
+          );
 
           return updatedEdges;
         });
-
-
 
         return setNodes((nds) =>
           nds.filter((n) => n.id !== overlappingNode.id)
@@ -494,7 +435,7 @@ const FlowChart = () => {
       }
 
       if (incomingEdges.length > 1 || outgoingEdges.length > 1) {
-        console.log("sd", )
+        console.log('sd');
         if (incomingEdges.length > 1) {
           const newNodeLeft = createNewNode('stackJoiner');
 
@@ -728,8 +669,7 @@ const FlowChart = () => {
             style={{
               ...(isLoading || isFetching ? { opacity: 0.3 } : { opacity: 1 }),
             }}
-          >
-          </ReactFlow>
+          ></ReactFlow>
         </ReactFlowProvider>
       </Box>
 

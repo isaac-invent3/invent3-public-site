@@ -83,13 +83,18 @@ const ApprovalTable = (props: ApprovalTableProps) => {
           enableSorting: false,
         }),
 
-        columnHelper.accessor('reportedBy', {
+        columnHelper.accessor('currentStatusName', {
           cell: (info) => {
+            const request = info.row.original;
             return (
               <>
                 <HStack>
-                  <Text> Level 1</Text> <Text>/</Text>
-                  <UserInfo name={info.getValue()} />
+                  <Text>
+                    {' '}
+                    Level {request.currentLevel ? request.currentLevel : 1}
+                  </Text>{' '}
+                  <Text>/</Text>
+                  <UserInfo name={request.requestedByUserFirstName} />
                 </HStack>
               </>
             );

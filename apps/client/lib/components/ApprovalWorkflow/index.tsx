@@ -10,10 +10,6 @@ const ApprovalWorkFlow = () => {
   const [selectedApprovalType, setSelectedApprovalType] =
     useState<ApprovalWorkflowType | null>(null);
 
-  const [activeFilter, setActiveFilter] = useState<'bulk' | 'general' | null>(
-    null
-  );
-
   return (
     <Flex width="full" direction="column" pb="24px">
       <Header setSelectedApprovalType={setSelectedApprovalType} />

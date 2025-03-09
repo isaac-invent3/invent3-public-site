@@ -110,6 +110,8 @@ interface ApprovalWorkflowRequest {
   rowId: number;
   systemContextTypeId: number;
   systemContextTypeName: string;
+  currentLevel: number | null;
+ 
 }
 interface CreateApprovalWorkflowRequestPayload {}
 
@@ -146,7 +148,6 @@ export type {
   ApprovalWorkflowRequest,
   ApprovalWorkflowRequestDocument,
   ApprovalWorkflowRequirementType,
-  GetApprovalWorkflowPartyInstances,
   ApprovalWorkflowStatus,
   ApprovalWorkflowType,
   CreateApprovalPartyInstancePayload,
@@ -154,4 +155,5 @@ export type {
   CreateApprovalWorkflowRequestPayload,
   CreateApprovalWorkflowStatusPayload,
   CreateApprovalWorkflowTypePayload,
+  GetApprovalWorkflowPartyInstances,
 };

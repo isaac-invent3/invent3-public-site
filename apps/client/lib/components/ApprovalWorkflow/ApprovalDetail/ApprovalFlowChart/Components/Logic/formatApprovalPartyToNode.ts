@@ -5,12 +5,10 @@ import { CustomEdge, CustomNode } from '../Interfaces';
 const createBaseNodesFromApprovalPartyInstance = (
   items: ApprovalWorkflowPartyInstance[]
 ): CustomNode[] => {
-  const instances = items.filter((el) => el.levelNumber);
-
-  const newNodes = instances.map((item) => {
+  const newNodes = items.map((item) => {
     return {
       id: item.approvalWorkFlowPartyInstanceId.toString(),
-      data: item,
+      data: { ...item, levelNumber: item.levelNumber ? item.levelNumber : 1 },
       position: { x: 0, y: 0 },
     };
   });

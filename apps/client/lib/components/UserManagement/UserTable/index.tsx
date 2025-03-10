@@ -79,6 +79,7 @@ const UserTable = (props: UserTableProps) => {
               px="16px"
               bgColor="#EABC3040"
               rounded="16px"
+              width="min-content"
             >
               {info
                 .getValue()
@@ -195,7 +196,6 @@ const UserTable = (props: UserTableProps) => {
         selectMultipleRows={selectMultipleRows}
         disabledRows={disabledRows}
         showEmptyState={showEmptyState}
-        maxTdWidth="200px"
         customThStyle={{
           paddingLeft: '16px',
           paddingTop: '12px',

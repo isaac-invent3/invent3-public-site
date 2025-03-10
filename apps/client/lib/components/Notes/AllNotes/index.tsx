@@ -26,7 +26,7 @@ const AllNotes = (props: AllNotesModalProps) => {
     pinnedNotes,
     setSearch,
     unPinnedNotes,
-  } = useNotes(data);
+  } = useNotes({ data: data, isOpen: isOpen });
 
   const renderContent = () => {
     if (isFetchingNotes) return <SkeletonGrid count={15} />;

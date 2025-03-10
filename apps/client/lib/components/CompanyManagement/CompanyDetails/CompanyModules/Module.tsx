@@ -40,7 +40,8 @@ const Module = (props: ModuleProps) => {
       await update({
         user: {
           ...data?.user,
-          managedCompanySlug: company.companyName,
+          managedCompanySlug: company.tenantName,
+          managedCompanyId: company.companyId,
         },
       });
       router.push(`/${route}`);

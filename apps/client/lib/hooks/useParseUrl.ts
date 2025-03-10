@@ -4,7 +4,7 @@ import { PermissionKey } from '../interfaces/role.interfaces';
 import { SYSTEM_CONTEXT_DETAILS } from '../utils/constants';
 import { FormattedUrl } from './useFormatUrl';
 
-interface ParseUrlDataResponse {
+export interface ParseUrlDataResponse {
   systemContextId: number;
   contextId: number | string | null;
   permissionKeys?: PermissionKey[];

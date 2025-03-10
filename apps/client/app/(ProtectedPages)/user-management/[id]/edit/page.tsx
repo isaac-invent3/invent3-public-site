@@ -7,12 +7,19 @@ import { useAppDispatch } from '~/lib/redux/hooks';
 import {
   useGetUserByIdQuery,
   useGetUserDocumentsQuery,
+  useGetUserProfileByGuidQuery,
 } from '~/lib/redux/services/user.services';
 import { setUserForm } from '~/lib/redux/slices/UserSlice';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
 export default function Page({ params }: { params: { id: number } }) {
-  const { data, isLoading } = useGetUserByIdQuery({ userId: params.id! });
+  const { data: user, isLoading: loadingUser } = useGetUserByIdQuery({
+    userId: params.id!,
+  });
+  const { data, isLoading } = useGetUserProfileByGuidQuery(
+    { guid: user?.data?.guid! },
+    { skip: !user?.data?.userId }
+  );
   const { data: userDocuments, isLoading: loadingDocuments } =
     useGetUserDocumentsQuery(
       { userId: params.id!, pageSize: 25 },
@@ -20,7 +27,7 @@ export default function Page({ params }: { params: { id: number } }) {
     );
   const dispatch = useAppDispatch();
 
-  if (isLoading || loadingDocuments) {
+  if (isLoading || loadingDocuments || loadingUser) {
     return <PageLoadingSkeleton />;
   }
   if (!data?.data) return notFound();
@@ -47,7 +54,7 @@ export default function Page({ params }: { params: { id: number } }) {
           ? dateFormatter(user?.dateOfBirth, 'DD/MM/YYYY')
           : null,
         mobileNumber: user?.phoneNumber,
-        workEmail: user?.personalEmail,
+        workEmail: user?.email,
         gender: null,
         countryId: null,
         stateId: null,

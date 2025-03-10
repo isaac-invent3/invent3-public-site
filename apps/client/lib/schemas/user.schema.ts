@@ -20,7 +20,7 @@ const employeeInfoSchema = Yup.object().shape({
   lastName: Yup.string().required('Last name is Required'),
   dob: createDateSchema(false, false).nullable(),
   mobileNumber: Yup.string().nullable(),
-  workEmail: Yup.string().nullable(),
+  workEmail: Yup.string().email().nullable(),
   gender: Yup.string().nullable(),
   countryId: Yup.number().nullable(),
   stateId: Yup.number().nullable(),
@@ -29,7 +29,7 @@ const employeeInfoSchema = Yup.object().shape({
 
 const occupationInfoSchema = Yup.object().shape({
   employmentTypeId: Yup.string().nullable(),
-  branchId: Yup.string().nullable(),
+  branchId: Yup.string().required('Branch is required'),
   jobTitleId: Yup.string().nullable(),
   teamId: Yup.array().of(Yup.number()).nullable(),
 });

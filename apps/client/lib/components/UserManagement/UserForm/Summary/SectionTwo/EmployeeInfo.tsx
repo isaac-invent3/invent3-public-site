@@ -13,6 +13,7 @@ const EmployeeInfo = () => {
     countryName,
     stateName,
     cityName,
+    branchName,
   } = useAppSelector((state) => state.user.userForm);
 
   const infoOne = [
@@ -50,6 +51,10 @@ const EmployeeInfo = () => {
     {
       label: 'City',
       value: cityName,
+    },
+    {
+      label: 'Facility',
+      value: branchName,
     },
   ];
   return (

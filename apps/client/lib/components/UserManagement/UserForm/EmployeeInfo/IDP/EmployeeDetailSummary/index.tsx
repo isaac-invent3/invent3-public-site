@@ -2,15 +2,22 @@ import { Flex, Text, VStack } from '@chakra-ui/react';
 import { useField } from 'formik';
 import React from 'react';
 import PageLoadingSkeleton from '~/lib/components/UI/PageLoadingSkeleton';
-import { useGetUserProfileByUserIdQuery } from '~/lib/redux/services/user.services';
+import {
+  useGetUserByIdQuery,
+  useGetUserProfileByGuidQuery,
+} from '~/lib/redux/services/user.services';
 import EmployeeDetail from './EmployeeDetail';
 
 const EmployeeDetailSummary = () => {
   // eslint-disable-next-line no-unused-vars
   const [field, meta, helpers] = useField('employeeId');
-  const { data, isLoading } = useGetUserProfileByUserIdQuery(
+  const { data: user, isLoading: loadingUser } = useGetUserByIdQuery(
     { userId: meta.value! },
     { skip: !meta.value }
+  );
+  const { data, isLoading } = useGetUserProfileByGuidQuery(
+    { guid: user?.data?.guid! },
+    { skip: !user }
   );
   return (
     <VStack width="full" spacing="25px" alignItems="flex-start" mt="15px">
@@ -18,8 +25,8 @@ const EmployeeDetailSummary = () => {
         Employee Info
       </Text>
 
-      {isLoading && <PageLoadingSkeleton />}
-      {!isLoading && !data?.data && (
+      {(isLoading || loadingUser) && <PageLoadingSkeleton />}
+      {!isLoading && !loadingUser && !data?.data && (
         <Flex
           width="full"
           justifyContent="center"
@@ -35,7 +42,9 @@ const EmployeeDetailSummary = () => {
           </Text>
         </Flex>
       )}
-      {!isLoading && data?.data && <EmployeeDetail data={data?.data} />}
+      {!isLoading && !loadingUser && data?.data && (
+        <EmployeeDetail data={data?.data} />
+      )}
     </VStack>
   );
 };

@@ -115,12 +115,12 @@ export const userApi = createApi({
       }),
       providesTags: ['allUsers'],
     }),
-    getUserProfileByUserId: builder.query<
+    getUserProfileByGuid: builder.query<
       BaseApiResponse<User>,
-      { userId: number }
+      { guid: string }
     >({
-      query: ({ userId }) => ({
-        url: `/Users/GetUserProfileDetails/${userId}`,
+      query: ({ guid }) => ({
+        url: `/Users/GetUserProfileDetails/${guid}`,
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -282,7 +282,7 @@ export const {
   useGetUserGroupsQuery,
   useGetUserGroupMembersQuery,
   useSearchUsersMutation,
-  useGetUserProfileByUserIdQuery,
+  useGetUserProfileByGuidQuery,
   useGetUserByIdQuery,
   useChangeUserPasswordMutation,
   useGetUserConfigurationOptionsQuery,

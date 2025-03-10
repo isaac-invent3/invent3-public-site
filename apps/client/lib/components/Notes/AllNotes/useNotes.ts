@@ -3,6 +3,7 @@ import { ListResponse } from '@repo/interfaces';
 import { useSession } from 'next-auth/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
+import { ParseUrlDataResponse } from '~/lib/hooks/useParseUrl';
 import { Note } from '~/lib/interfaces/notes.interfaces';
 import {
   useGetPinnedNotesQuery,
@@ -11,37 +12,49 @@ import {
 } from '~/lib/redux/services/notes.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
-const useNotes = (data: any) => {
+const useNotes = ({
+  data,
+  isOpen,
+}: {
+  data: ParseUrlDataResponse | null;
+  isOpen: boolean;
+}) => {
   const session = useSession();
   const user = session?.data?.user;
   const [search, setSearch] = useState('');
   const { handleSubmit } = useCustomMutation();
   const [searchData, setSearchData] = useState<ListResponse<Note> | null>(null);
 
-  const { data: pinnedNotes, isLoading: isGettingPinnedNotes, isFetching:isFetchingPinnedNotes } =
-    useGetPinnedNotesQuery(
-      {
-        userId: user?.userId!,
-        pageSize: 15,
-        systemContextTypeId: data?.systemContextId!,
-        systemContextIds: [],
-      },
-      { skip: !user?.userId || !data?.systemContextId }
-    );
+  const {
+    data: pinnedNotes,
+    isLoading: isGettingPinnedNotes,
+    isFetching: isFetchingPinnedNotes,
+  } = useGetPinnedNotesQuery(
+    {
+      userId: user?.userId!,
+      pageSize: 15,
+      systemContextTypeId: data?.systemContextId!,
+      systemContextIds: [],
+    },
+    { skip: !user?.userId || !data?.systemContextId || !isOpen }
+  );
 
-  const { data: unPinnedNotes, isLoading: isGettingUnPinnedNotes, isFetching:isFetchingUnpinnedNotes } =
-    useGetUnPinnedNotesQuery(
-      {
-        userId: user?.userId!,
-        pageSize: 15,
-        systemContextTypeId: data?.systemContextId!,
-        systemContextIds: [],
-      },
-      { skip: !user?.userId || !data?.systemContextId }
-    );
+  const {
+    data: unPinnedNotes,
+    isLoading: isGettingUnPinnedNotes,
+    isFetching: isFetchingUnpinnedNotes,
+  } = useGetUnPinnedNotesQuery(
+    {
+      userId: user?.userId!,
+      pageSize: 15,
+      systemContextTypeId: data?.systemContextId!,
+      systemContextIds: [],
+    },
+    { skip: !user?.userId || !data?.systemContextId || !isOpen }
+  );
 
   //   Search Notes
-  const [searchNotes, { isLoading: isSearchingNotes,  }] = useSearchNotesMutation(
+  const [searchNotes, { isLoading: isSearchingNotes }] = useSearchNotesMutation(
     {}
   );
 

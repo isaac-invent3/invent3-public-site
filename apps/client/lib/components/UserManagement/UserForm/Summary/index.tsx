@@ -44,6 +44,38 @@ const SummaryStep = (props: SummaryStepProps) => {
     }
   }, [data]);
 
+  //Roles
+  const newlyAddedRoles = _.difference(
+    userFormDetails.userRoleIds,
+    userFormDetails.initialRoleIds
+  );
+  const deletedRoles = _.difference(
+    userFormDetails.initialRoleIds,
+    userFormDetails.userRoleIds
+  );
+  // Groups
+  const newlyAddedGroups = _.difference(
+    userFormDetails.userGroupIds,
+    userFormDetails.initialGroupIds
+  );
+  const deletedGroups = _.difference(
+    userFormDetails.initialGroupIds,
+    userFormDetails.userGroupIds
+  );
+
+  const formDocumentIds = userFormDetails.documents.map(
+    (item) => item.documentId as number
+  );
+  // Documents
+  const newlyAddedDocuments = _.difference(
+    formDocumentIds,
+    userFormDetails.initialDocumentIds
+  );
+  const deletedDocuments = _.difference(
+    userFormDetails.initialDocumentIds,
+    formDocumentIds
+  );
+
   const USER = {
     userId: userFormDetails.userId!,
     username: userFormDetails.firstName!,
@@ -52,9 +84,11 @@ const SummaryStep = (props: SummaryStepProps) => {
     firstName: userFormDetails.firstName!,
     lastName: userFormDetails.lastName!,
     designationId: userFormDetails.jobTitleId,
-    companyId: 1,
+    companyId: data?.user?.managedCompanyId! ?? data?.user?.companyId!,
     employeeId: null,
     bio: null,
+    roles: mapIdsToObject(newlyAddedRoles, deletedRoles),
+    groups: mapIdsToObject(newlyAddedGroups, deletedGroups),
     [`${type === 'create' ? 'createdBy' : 'lastModifiedBy'}`]: username,
   };
 
@@ -93,41 +127,8 @@ const SummaryStep = (props: SummaryStepProps) => {
           }))
         : null,
     userDocumentIds: null,
-    userRoles: userFormDetails?.userRoleIds,
-    userGroups: userFormDetails?.userGroupIds,
   };
 
-  //Roles
-  const newlyAddedRoles = _.difference(
-    userFormDetails.userRoleIds,
-    userFormDetails.initialRoleIds
-  );
-  const deletedRoles = _.difference(
-    userFormDetails.initialRoleIds,
-    userFormDetails.userRoleIds
-  );
-  // Groups
-  const newlyAddedGroups = _.difference(
-    userFormDetails.userGroupIds,
-    userFormDetails.initialGroupIds
-  );
-  const deletedGroups = _.difference(
-    userFormDetails.initialGroupIds,
-    userFormDetails.userGroupIds
-  );
-
-  const formDocumentIds = userFormDetails.documents.map(
-    (item) => item.documentId as number
-  );
-  // Documents
-  const newlyAddedDocuments = _.difference(
-    formDocumentIds,
-    userFormDetails.initialDocumentIds
-  );
-  const deletedDocuments = _.difference(
-    userFormDetails.initialDocumentIds,
-    formDocumentIds
-  );
   const updateUserPayload: UpdateUserPayload = {
     updateUserDto: USER,
     updateLocationDto: LOCATION,

@@ -156,7 +156,6 @@ export const config = {
         token.role = user.role;
         token.companyId = user?.companyId;
         token.companySlug = user?.companySlug;
-        token.managedCompanySlug = null;
         token.roleIds = user.roleIds;
         token.roleSystemModuleContextPermissions =
           user.roleSystemModuleContextPermissions;
@@ -217,6 +216,7 @@ export const config = {
           role: token.role,
           companySlug: token?.companySlug,
           managedCompanySlug: token?.managedCompanySlug,
+          managedCompanyiD: token?.managedCompanyId,
           roleIds: token.roleIds,
           roleSystemModuleContextPermissions:
             token.roleSystemModuleContextPermissions,

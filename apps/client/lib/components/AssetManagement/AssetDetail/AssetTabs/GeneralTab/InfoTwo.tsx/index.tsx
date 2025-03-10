@@ -16,7 +16,7 @@ const InfoTwo = () => {
       <Flex display={{ base: 'none', sm: 'flex' }}>
         <OwnersInfo />
       </Flex>
-      <MapViewDynamic />
+      {/* <MapViewDynamic /> */}
     </SimpleGrid>
   );
 };

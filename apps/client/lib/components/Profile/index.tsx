@@ -4,7 +4,10 @@ import { Divider, Flex, VStack } from '@chakra-ui/react';
 import React from 'react';
 import Photo from './Photo';
 import Location from './Location';
-import { useGetUserProfileByUserIdQuery } from '~/lib/redux/services/user.services';
+import {
+  useGetUserByIdQuery,
+  useGetUserProfileByGuidQuery,
+} from '~/lib/redux/services/user.services';
 import { useSession } from 'next-auth/react';
 import PageHeader from '../UI/PageHeader';
 import PersonalInformation from './PersonalInformation';
@@ -12,8 +15,12 @@ import PersonalInformation from './PersonalInformation';
 const Profile = () => {
   const data = useSession();
   const authenticatedUser = data?.data?.user;
-  const { data: user, isLoading } = useGetUserProfileByUserIdQuery(
+  const { data: info, isLoading: loadingUser } = useGetUserByIdQuery(
     { userId: authenticatedUser?.userId! },
+    { skip: !authenticatedUser?.userId }
+  );
+  const { data: user, isLoading } = useGetUserProfileByGuidQuery(
+    { guid: info?.data.guid! },
     { skip: !authenticatedUser?.userId }
   );
   return (
@@ -33,8 +40,11 @@ const Profile = () => {
         divider={<Divider borderColor="neutral.700" />}
       >
         <Photo />
-        <PersonalInformation user={user?.data} isLoading={isLoading} />
-        <Location user={user?.data} isLoading={isLoading} />
+        <PersonalInformation
+          user={user?.data}
+          isLoading={isLoading || loadingUser}
+        />
+        <Location user={user?.data} isLoading={isLoading || loadingUser} />
       </VStack>
     </Flex>
   );

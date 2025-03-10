@@ -17,8 +17,8 @@ const Gender = () => {
     >
       <SelectableButtonGroup
         options={[
-          { label: 'Male', value: 'm' },
-          { label: 'Female', value: 'f' },
+          { label: 'Male', value: 'Male' },
+          { label: 'Female', value: 'Female' },
         ]}
         selectedOptions={[{ value: meta.value, label: meta.value }]}
         handleSelect={(options) => {

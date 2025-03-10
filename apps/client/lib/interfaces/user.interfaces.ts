@@ -294,8 +294,8 @@ interface UserDto extends BaseDto {
   employeeId: number | null;
   designationId: number | null;
   bio: string | null;
-  roles?: Record<number, typeof FORM_ENUM.add | typeof FORM_ENUM.delete>;
-  groups?: Record<number, typeof FORM_ENUM.add | typeof FORM_ENUM.delete>;
+  roles: Record<number, typeof FORM_ENUM.add | typeof FORM_ENUM.delete> | null;
+  groups: Record<number, typeof FORM_ENUM.add | typeof FORM_ENUM.delete> | null;
   permissions?: Record<number, typeof FORM_ENUM.add | typeof FORM_ENUM.delete>;
 }
 
@@ -318,8 +318,6 @@ interface CreateUserPayload {
   createUserDocumentDto: UserDocumentDto[] | null;
   createLocationDto: LocationDto;
   userDocumentIds: number[] | null;
-  userRoles: number[];
-  userGroups: number[];
 }
 
 interface UpdateUserPayload {

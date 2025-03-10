@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateUserForm } from '~/lib/redux/slices/UserSlice';
 
 const Branch = () => {
-  const [field, meta, helpers] = useField('branch'); //eslint-disable-line
+  const [field, meta, helpers] = useField('branchId'); //eslint-disable-line
   const { cityId } = useAppSelector((state) => state.user.userForm);
   const dispatch = useAppDispatch();
   return (

@@ -40,6 +40,7 @@ type ContextTypeColumn = {
 };
 
 interface GenerateReportDetails {
+  selectedCompany?:string
   criterion: GenerateReportCriterion[];
   systemContextTypeId: number | undefined;
   contextTypeColumns: Option[];
@@ -68,6 +69,12 @@ type FacilityWithTopAssets = {
   facilityId: number;
   facilityName: string;
   totalAssets: number;
+};
+
+type TicketStatistics = {
+  openTickets: number;
+  escalatedTickets: number;
+  resolvedTickets: number;
 };
 
 interface ReportDashboardValuesResponse {
@@ -133,4 +140,5 @@ export type {
   ScheduleReportPayload,
   ViewReportTableData,
   ViewReportTableDataPayload,
+  TicketStatistics,
 };

@@ -1,14 +1,23 @@
 'use client';
 
-import { Flex, Grid, HStack, Link, Stack, Text, VStack } from '@chakra-ui/react';
+import {
+  Flex,
+  Grid,
+  HStack,
+  Link,
+  Stack,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 import moment from 'moment';
+import { useSession } from 'next-auth/react';
 import { useAppSelector } from '~/lib/redux/hooks';
 import {
   useGetAllDefaultReportsQuery,
   useGetAllSavedReportsQuery,
   useGetReportDasboardValuesQuery,
 } from '~/lib/redux/services/reports.services';
-import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import { DEFAULT_PAGE_SIZE, ROLE_IDS_ENUM } from '~/lib/utils/constants';
 import GeneralFilter from './Filters/GeneralFilter';
 import Header from './Header';
 import BranchesWithTopAssetsChart from './ReportDashboard/BranchesWithTopAssetsChart';
@@ -16,6 +25,7 @@ import DefaultReport from './ReportDashboard/DefaultReport';
 import { dummyReport } from './ReportDashboard/dummyData';
 import ReportCard from './ReportDashboard/ReportCard';
 import SavedTemplate from './ReportDashboard/SavedTemplate';
+import TicketStatusPieChart from './ReportDashboard/TicketStatusPieChart';
 
 const ReportAnalytics = () => {
   const { data: defaultReports, isLoading: defaultReportsLoading } =
@@ -24,6 +34,8 @@ const ReportAnalytics = () => {
     });
 
   const { filters } = useAppSelector((state) => state.report);
+  const session = useSession();
+  const user = session?.data?.user;
 
   const { data: savedReports, isLoading: savedReportsLoading } =
     useGetAllSavedReportsQuery({
@@ -111,13 +123,22 @@ const ReportAnalytics = () => {
             />
           ))}
         </Grid>
-
-        <BranchesWithTopAssetsChart
-          totalAssets={reportDashboardValues?.data.totalAssets?.statValue}
-          topFiveBranchesWithAssets={
-            reportDashboardValues?.data.topFiveFacilitiesWithAssets ?? []
-          }
-        />
+        {user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY) ? (
+          <TicketStatusPieChart
+            ticketsStatistics={{
+              escalatedTickets: 20,
+              openTickets: 125,
+              resolvedTickets: 140,
+            }}
+          />
+        ) : (
+          <BranchesWithTopAssetsChart
+            totalAssets={reportDashboardValues?.data.totalAssets?.statValue}
+            topFiveBranchesWithAssets={
+              reportDashboardValues?.data.topFiveFacilitiesWithAssets ?? []
+            }
+          />
+        )}
       </Stack>
 
       <VStack>

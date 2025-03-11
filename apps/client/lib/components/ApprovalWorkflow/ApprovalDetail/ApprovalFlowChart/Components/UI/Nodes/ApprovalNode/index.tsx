@@ -449,25 +449,13 @@ const ApprovalNode = ({
                 }}
                 onClick={() => onNodeDragStop('top')}
               >
-                <Icon as={ArrowUpIcon} boxSize="12px" />
-                <Text>Add Node Above </Text>
+                <VStack>
+                  <Icon as={ArrowUpIcon} boxSize="12px" />
+                  <Icon as={ArrowDownIcon} boxSize="12px" />
+                </VStack>
+                <Text>Add Node Same Level </Text>
               </HStack>
-              <HStack
-                w="full"
-                cursor="pointer"
-                color="primary.500"
-                px="8px"
-                py="8px"
-                rounded="8px"
-                transition="all 200ms ease-in-out"
-                _hover={{
-                  bgColor: 'neutral.200',
-                }}
-                onClick={() => onNodeDragStop('bottom')}
-              >
-                <Icon as={ArrowDownIcon} boxSize="12px" />
-                <Text>Add Node Below </Text>
-              </HStack>
+              
               <HStack
                 w="full"
                 cursor="pointer"

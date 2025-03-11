@@ -41,12 +41,12 @@ export const createNewEdge = (
   sourceHandle: 'output',
   style: {
     stroke: '#656565',
-    strokeWidth: 1,
+    strokeWidth: 2,
   },
   markerEnd: {
     type: MarkerType.Arrow,
-    width: 30,
-    height: 30,
+    width: 20,
+    height: 20,
     color: '#656565',
   },
 });

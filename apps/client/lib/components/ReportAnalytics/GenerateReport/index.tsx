@@ -21,6 +21,7 @@ import { useGenerateReportMutation } from '~/lib/redux/services/reports.services
 import { generateReportSchema } from '~/lib/schemas/report.schema';
 import { DEFAULT_PAGE_SIZE, ROLE_IDS_ENUM } from '~/lib/utils/constants';
 import GeneratedReport from './GeneratedReport';
+import CompanySelect from './CompanySelect';
 
 const GenerateReport = () => {
   const initialValues: GenerateReportDetails = {
@@ -88,13 +89,13 @@ const GenerateReport = () => {
                 <FormInputWrapper
                   sectionMaxWidth="141px"
                   customSpacing="24px"
-                  description="Choose the comapny for this report"
+                  description="Choose the company for this report"
                   title="Select Company"
                   isRequired
                   maxW={{ base: 'full', md: '49%' }}
                 >
                   <VStack width="full" spacing="4px" alignItems="flex-start">
-                    <SystemContextSelect
+                    <CompanySelect
                       selectName="selectedCompany"
                       selectTitle="Select from Company"
                       isInvalid={

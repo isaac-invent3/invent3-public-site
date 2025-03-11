@@ -1,21 +1,31 @@
 'use client';
 
-import { Flex, Grid, HStack, Link, Stack, Text, VStack } from '@chakra-ui/react';
+import {
+  Flex,
+  Grid,
+  HStack,
+  Link,
+  Skeleton,
+  Stack,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 import moment from 'moment';
+import { useSession } from 'next-auth/react';
 import { useAppSelector } from '~/lib/redux/hooks';
 import {
   useGetAllDefaultReportsQuery,
   useGetAllSavedReportsQuery,
   useGetReportDasboardValuesQuery,
 } from '~/lib/redux/services/reports.services';
-import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import { DEFAULT_PAGE_SIZE, ROLE_IDS_ENUM } from '~/lib/utils/constants';
 import GeneralFilter from './Filters/GeneralFilter';
 import Header from './Header';
 import BranchesWithTopAssetsChart from './ReportDashboard/BranchesWithTopAssetsChart';
 import DefaultReport from './ReportDashboard/DefaultReport';
-import { dummyReport } from './ReportDashboard/dummyData';
 import ReportCard from './ReportDashboard/ReportCard';
 import SavedTemplate from './ReportDashboard/SavedTemplate';
+import TicketStatusPieChart from './ReportDashboard/TicketStatusPieChart';
 
 const ReportAnalytics = () => {
   const { data: defaultReports, isLoading: defaultReportsLoading } =
@@ -24,6 +34,8 @@ const ReportAnalytics = () => {
     });
 
   const { filters } = useAppSelector((state) => state.report);
+  const session = useSession();
+  const user = session?.data?.user;
 
   const { data: savedReports, isLoading: savedReportsLoading } =
     useGetAllSavedReportsQuery({
@@ -111,13 +123,22 @@ const ReportAnalytics = () => {
             />
           ))}
         </Grid>
-
-        <BranchesWithTopAssetsChart
-          totalAssets={reportDashboardValues?.data.totalAssets?.statValue}
-          topFiveBranchesWithAssets={
-            reportDashboardValues?.data.topFiveFacilitiesWithAssets ?? []
-          }
-        />
+        {user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY) ? (
+          <TicketStatusPieChart
+            ticketsStatistics={{
+              escalatedTickets: 20,
+              openTickets: 125,
+              resolvedTickets: 140,
+            }}
+          />
+        ) : (
+          <BranchesWithTopAssetsChart
+            totalAssets={reportDashboardValues?.data.totalAssets?.statValue}
+            topFiveBranchesWithAssets={
+              reportDashboardValues?.data.topFiveFacilitiesWithAssets ?? []
+            }
+          />
+        )}
       </Stack>
 
       <VStack>
@@ -136,23 +157,25 @@ const ReportAnalytics = () => {
           </Link>
         </HStack>
 
-        <VStack
-          justifyContent="center"
-          my={{ base: '32px', md: '64px' }}
-          w="full"
-        >
-          <Text fontWeight={700} size="md" color="#0E2642">
-            No Default Reports Yet
-          </Text>
-          <Text
-            color="#838383"
-            width="200px"
-            margin="0 auto"
-            textAlign="center"
+        {!defaultReportsLoading && defaultReports?.data.items.length === 0 && (
+          <VStack
+            justifyContent="center"
+            my={{ base: '32px', md: '64px' }}
+            w="full"
           >
-            It looks like there aren’t any default reports set up yet.
-          </Text>
-        </VStack>
+            <Text fontWeight={700} size="md" color="#0E2642">
+              No Default Reports Yet
+            </Text>
+            <Text
+              color="#838383"
+              width="200px"
+              margin="0 auto"
+              textAlign="center"
+            >
+              It looks like there aren’t any default reports set up yet.
+            </Text>
+          </VStack>
+        )}
 
         <Grid
           templateColumns={{
@@ -166,17 +189,20 @@ const ReportAnalytics = () => {
           gap="16px"
           mt="10px"
         >
-          {defaultReportsLoading && (
-            <DefaultReport report={dummyReport} isLoading={true} />
-          )}
-
-          {defaultReports?.data.items.map((report, index) => (
-            <DefaultReport
-              key={index}
-              report={report}
-              isLoading={defaultReportsLoading}
-            />
-          ))}
+          {defaultReportsLoading &&
+            Array(7)
+              .fill('')
+              .map((item, index) => (
+                <Skeleton minWidth="full" height="194px" />
+              ))}
+          {!defaultReportsLoading &&
+            defaultReports?.data.items.map((report, index) => (
+              <DefaultReport
+                key={index}
+                report={report}
+                isLoading={defaultReportsLoading}
+              />
+            ))}
         </Grid>
       </VStack>
 
@@ -195,23 +221,25 @@ const ReportAnalytics = () => {
             See all Saved Templates
           </Link>
         </HStack>
-        <VStack
-          justifyContent="center"
-          my={{ base: '32px', md: '64px' }}
-          w="full"
-        >
-          <Text fontWeight={700} size="md" color="#0E2642">
-            No Saved Reports Yet
-          </Text>
-          <Text
-            color="#838383"
-            width="200px"
-            margin="0 auto"
-            textAlign="center"
+        {!savedReportsLoading && savedReports?.data.items.length === 0 && (
+          <VStack
+            justifyContent="center"
+            my={{ base: '32px', md: '64px' }}
+            w="full"
           >
-            It looks like there aren’t any saved reports set up yet
-          </Text>
-        </VStack>
+            <Text fontWeight={700} size="md" color="#0E2642">
+              No Saved Reports Yet
+            </Text>
+            <Text
+              color="#838383"
+              width="200px"
+              margin="0 auto"
+              textAlign="center"
+            >
+              It looks like there aren’t any saved reports set up yet
+            </Text>
+          </VStack>
+        )}
 
         <Grid
           templateColumns={{
@@ -225,13 +253,17 @@ const ReportAnalytics = () => {
           gap="16px"
           mt="10px"
         >
-          {savedReportsLoading && (
-            <SavedTemplate report={dummyReport} isLoading={true} />
-          )}
+          {savedReportsLoading &&
+            Array(7)
+              .fill('')
+              .map((item, index) => (
+                <Skeleton minWidth="full" height="194px" />
+              ))}
 
-          {savedReports?.data.items.map((report, index) => (
-            <SavedTemplate key={index} report={report} />
-          ))}
+          {!savedReportsLoading &&
+            savedReports?.data.items.map((report, index) => (
+              <SavedTemplate key={index} report={report} />
+            ))}
         </Grid>
       </VStack>
     </Flex>

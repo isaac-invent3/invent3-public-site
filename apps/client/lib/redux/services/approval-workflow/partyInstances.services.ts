@@ -7,8 +7,9 @@ import {
 } from '@repo/interfaces';
 import {
   ApprovalWorkflowPartyInstance,
-  CreateApprovalPartyInstancePayload,
+  CreateApprovalWorkflowPartyInstancePayload,
   GetApprovalWorkflowPartyInstances,
+  UpdateSubsequentPartyInstancesLevelNumbersPayload,
 } from '~/lib/interfaces/approvalWorkflow.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
@@ -23,7 +24,7 @@ export const approvalWorkflowPartyInstanceApi = createApi({
   endpoints: (builder) => ({
     createApprovalWorkflowPartyInstances: builder.mutation<
       BaseApiResponse<ApprovalWorkflowPartyInstance>,
-      CreateApprovalPartyInstancePayload
+      CreateApprovalWorkflowPartyInstancePayload
     >({
       query: (body) => ({
         url: '/ApprovalWorkFlowPartiesInstances',
@@ -70,7 +71,22 @@ export const approvalWorkflowPartyInstanceApi = createApi({
       invalidatesTags: ['allApprovalWorkflowPartyInstances'],
     }),
 
-    deleteApprovalWorkflowPartyInstances: builder.mutation<
+    updateSubsequentPartyInstancesLevelNumbers: builder.mutation<
+      BaseApiResponse<ApprovalWorkflowPartyInstance>,
+      UpdateSubsequentPartyInstancesLevelNumbersPayload
+    >({
+      query: ({ approvalWorkFlowInstanceId, ...data }) => ({
+        url: generateQueryStr(
+          `/ApprovalWorkFlowPartiesInstances/UpdateSubsequentPartyInstancesLevelNumbers/${approvalWorkFlowInstanceId}?`,
+          data
+        ),
+        method: 'POST',
+        headers: getHeaders(),
+      }),
+      invalidatesTags: ['allApprovalWorkflowPartyInstances'],
+    }),
+
+    deleteApprovalWorkflowPartyInstance: builder.mutation<
       BaseApiResponse<void>,
       DeleteRecordQuery
     >({
@@ -100,9 +116,10 @@ export const approvalWorkflowPartyInstanceApi = createApi({
 
 export const {
   useCreateApprovalWorkflowPartyInstancesMutation,
-  useDeleteApprovalWorkflowPartyInstancesMutation,
+  useDeleteApprovalWorkflowPartyInstanceMutation,
   useGetAllApprovalWorkflowPartyInstancesQuery,
   useGetApprovalWorkflowPartyInstancesByIdQuery,
   useUpdateApprovalWorkflowPartyInstancesMutation,
   useSearchApprovalWorkflowPartyInstancesQuery,
+  useUpdateSubsequentPartyInstancesLevelNumbersMutation
 } = approvalWorkflowPartyInstanceApi;

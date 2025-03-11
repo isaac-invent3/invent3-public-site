@@ -1,29 +1,27 @@
 /* eslint-disable no-unused-vars */
 import {
   HStack,
-  Icon,
   ModalBody,
   ModalFooter,
   ModalHeader,
-  Text,
   VStack,
 } from '@chakra-ui/react';
 
 import { Button, GenericModal } from '@repo/ui/components';
 import { FormikProvider, useFormik } from 'formik';
-import { getSession, useSession } from 'next-auth/react';
-import { CloseIcon } from '~/lib/components/CustomIcons';
+import { getSession } from 'next-auth/react';
 import {
   ApprovalWorkflowPartyInstance,
-  CreateApprovalWorkflowInstancePayload,
+  CreateApprovalWorkflowPartyInstancePayload,
 } from '~/lib/interfaces/approvalWorkflow.interfaces';
-import { useUpdateSubsequentPartyInstancesLevelNumbersQuery } from '~/lib/redux/services/approval-workflow/partyInstances.services';
-import { useCreateApprovalWorkflowInstanceMutation } from '~/lib/redux/services/approval-workflow/workflowInstances.services';
-import useNodeActions from '../../Logic/useNodeActions';
-import ApprovalAction from '../Nodes/NodeForm/ApprovalAction';
-import ApprovalAssignee from '../Nodes/NodeForm/ApprovalAssignee';
-import ApprovalRequirementType from '../Nodes/NodeForm/ApprovalRequirementType';
-import { useEffect } from 'react';
+import {
+  useCreateApprovalWorkflowPartyInstancesMutation,
+  useUpdateSubsequentPartyInstancesLevelNumbersMutation,
+} from '~/lib/redux/services/approval-workflow/partyInstances.services';
+import ApprovalAction from './ApprovalAction';
+import ApprovalAssignee from './ApprovalAssignee';
+import ApprovalRequirementType from './ApprovalRequirementType';
+import Header from './Header';
 
 interface SubCategoryModalProps {
   isOpen: boolean;
@@ -34,27 +32,19 @@ interface SubCategoryModalProps {
   type: 'add' | 'edit';
   position: 'right' | 'left' | 'same_level';
 }
+
 const NodeFormModal = (props: SubCategoryModalProps) => {
   const { isOpen, onClose, selectedInstance, position, type } = props;
 
-  const { onUpdateNode } = useNodeActions();
-  const data = useSession();
-  const authenticatedUser = data?.data?.user;
+  const [
+    createApprovalWorkflowPartyInstanceMutation,
+    { isLoading: isCreatingApprovalWorkflowPartyInstance },
+  ] = useCreateApprovalWorkflowPartyInstancesMutation();
 
   const [
-    createApprovalWorkflowInstance,
-    { isLoading: isCreatingApprovalWorkflowInstance },
-  ] = useCreateApprovalWorkflowInstanceMutation();
-
-  // const {data:updated } = useUpdateSubsequentPartyInstancesLevelNumbersQuery(
-  //   {
-  //     alteredLevelNumber: 4,
-  //     approvalWorkFlowInstanceId: 1,
-  //     isLevelDeleted: false,
-  //     lastModifiedBy: authenticatedUser?.username!,
-  //   },
-  // );
-
+    updateSubsequentPartyInstancesLevelNumbersMutation,
+    { isLoading: isUpdatingSubsequentPartyInstancesLevelNumbersMutation },
+  ] = useUpdateSubsequentPartyInstancesLevelNumbersMutation();
 
   const formik = useFormik({
     initialValues: {
@@ -63,10 +53,10 @@ const NodeFormModal = (props: SubCategoryModalProps) => {
       approvalActionId: null,
     },
     enableReinitialize: false,
-    onSubmit: async (data) => {
+    onSubmit: async (data, { resetForm }) => {
       const session = await getSession();
 
-      const payload: CreateApprovalWorkflowInstancePayload = {
+      const payload: CreateApprovalWorkflowPartyInstancePayload = {
         ...data,
         parentId: selectedInstance.approvalWorkFlowPartyInstanceId,
         approvalWorkFlowInstanceId: selectedInstance.approvalWorkFlowInstanceId,
@@ -74,10 +64,30 @@ const NodeFormModal = (props: SubCategoryModalProps) => {
         levelNumber: selectedInstance.levelNumber,
         createdBy: session?.user?.username!,
       };
+
+      if (position !== 'same_level') {
+        const updateOtherLevelsPayload = {
+          alteredLevelNumber: selectedInstance.levelNumber,
+          approvalWorkFlowInstanceId:
+            selectedInstance.approvalWorkFlowInstanceId,
+          isLevelDeleted: false,
+          lastModifiedBy: session?.user?.username!,
+        };
+
+        await updateSubsequentPartyInstancesLevelNumbersMutation(
+          updateOtherLevelsPayload
+        );
+      }
+
+      const response =
+        await createApprovalWorkflowPartyInstanceMutation(payload);
+
+      if (!response.data) return;
+
+      resetForm();
+      onClose();
     },
   });
-
-  const handleCreateWorkflowInstance = async () => {};
 
   return (
     <GenericModal
@@ -86,21 +96,7 @@ const NodeFormModal = (props: SubCategoryModalProps) => {
       contentStyle={{ width: { md: '605px' } }}
     >
       <ModalHeader m={0} p={0} my="24px" px="24px">
-        <HStack w="full" justifyContent="space-between">
-          <Text
-            fontSize="24px"
-            lineHeight="28.51px"
-            color="primary.500"
-            fontWeight={700}
-          >
-            {type === 'add' ? 'Create' : 'Edit'} Approval Workflow Node
-          </Text>
-
-          <HStack color="#F50000" onClick={onClose}>
-            <Text>Close</Text>
-            <Icon as={CloseIcon} />
-          </HStack>
-        </HStack>
+        <Header onClose={onClose} type={type} />
       </ModalHeader>
 
       <FormikProvider value={formik}>
@@ -131,7 +127,10 @@ const NodeFormModal = (props: SubCategoryModalProps) => {
 
               <Button
                 type="submit"
-                isLoading={isCreatingApprovalWorkflowInstance}
+                isLoading={
+                  isCreatingApprovalWorkflowPartyInstance ||
+                  isUpdatingSubsequentPartyInstancesLevelNumbersMutation
+                }
                 customStyles={{ width: '138px', height: '50px' }}
               >
                 Create Node

@@ -1,4 +1,4 @@
-import { QueryParams } from '@repo/interfaces';
+import { BaseEntity, QueryParams } from '@repo/interfaces';
 
 interface ApprovalWorkflowActionOption {
   isNew: boolean;
@@ -71,7 +71,16 @@ interface GetApprovalWorkflowPartyInstances extends QueryParams {
   approvalRequestId?: number;
   levelNumber?: number;
 }
-interface CreateApprovalPartyInstancePayload {}
+interface CreateApprovalWorkflowPartyInstancePayload {
+  userId: number | null;
+  approvalRequirementTypeId: number | null;
+  approvalActionId: number | null;
+  parentId: number;
+  approvalWorkFlowInstanceId: number;
+  approvalRequestId: number;
+  levelNumber: number;
+  createdBy: string;
+}
 
 interface ApprovalWorkflowRequestDocument {
   isNew: boolean;
@@ -87,6 +96,13 @@ interface ApprovalWorkflowRequestDocument {
   systemContextTypeId: number;
   contextId: number;
   approvalRequestId: number;
+}
+
+interface UpdateSubsequentPartyInstancesLevelNumbersPayload {
+  approvalWorkFlowInstanceId: number;
+  alteredLevelNumber: number;
+  isLevelDeleted: boolean;
+  lastModifiedBy: string;
 }
 
 interface ApprovalWorkflowRequest {
@@ -111,11 +127,14 @@ interface ApprovalWorkflowRequest {
   systemContextTypeId: number;
   systemContextTypeName: string;
   currentLevel: number | null;
- 
 }
 interface CreateApprovalWorkflowRequestPayload {}
 
-interface ApprovalWorkflowRequirementType {}
+interface ApprovalWorkflowRequirementType extends BaseEntity {
+  approvalRequirementTypeId: number;
+  approvalRequirementTypeName: string;
+  description: string | null;
+}
 
 interface ApprovalWorkflowStatus {}
 interface CreateApprovalWorkflowStatusPayload {}
@@ -137,7 +156,9 @@ interface ApprovalWorkflowType {
 interface CreateApprovalWorkflowTypePayload {}
 
 interface ApprovalWorkflowInstance {}
-interface CreateApprovalWorkflowInstancePayload {}
+interface CreateApprovalWorkflowInstancePayload {
+
+}
 
 export type {
   ApprovalWorkflowAction,
@@ -150,10 +171,11 @@ export type {
   ApprovalWorkflowRequirementType,
   ApprovalWorkflowStatus,
   ApprovalWorkflowType,
-  CreateApprovalPartyInstancePayload,
+  CreateApprovalWorkflowPartyInstancePayload,
   CreateApprovalWorkflowInstancePayload,
   CreateApprovalWorkflowRequestPayload,
   CreateApprovalWorkflowStatusPayload,
   CreateApprovalWorkflowTypePayload,
   GetApprovalWorkflowPartyInstances,
+  UpdateSubsequentPartyInstancesLevelNumbersPayload,
 };

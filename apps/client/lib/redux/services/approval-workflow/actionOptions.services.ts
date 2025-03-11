@@ -1,7 +1,13 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
-import { BaseApiResponse, ListResponse, SearchQuery } from '@repo/interfaces';
+import {
+  BaseApiResponse,
+  ListResponse,
+  QueryParams,
+  SearchQuery,
+} from '@repo/interfaces';
 import { ApprovalWorkflowActionOption } from '~/lib/interfaces/approvalWorkflow.interfaces';
+import { generateQueryStr } from '~/lib/utils/queryGenerator';
+import baseQueryWithReauth from '../../baseQueryWithReauth';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -20,7 +26,7 @@ export const approvalWorkflowActionOptionApi = createApi({
       Partial<ApprovalWorkflowActionOption>
     >({
       query: (data) => ({
-        url: '/api/ApprovalActionOptions',
+        url: '/ApprovalActionOptions',
         method: 'POST',
         headers: getHeaders(),
         body: data,
@@ -30,10 +36,11 @@ export const approvalWorkflowActionOptionApi = createApi({
 
     getAllApprovalActionOptions: builder.query<
       BaseApiResponse<ListResponse<ApprovalWorkflowActionOption>>,
-      void
+      QueryParams
     >({
-      query: () => ({
-        url: '/api/ApprovalActionOptions',
+      query: (data) => ({
+        url: generateQueryStr(`/ApprovalActionOptions?`, data),
+
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -45,7 +52,7 @@ export const approvalWorkflowActionOptionApi = createApi({
       string
     >({
       query: (id) => ({
-        url: `/api/ApprovalActionOptions/${id}`,
+        url: `/ApprovalActionOptions/${id}`,
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -56,7 +63,7 @@ export const approvalWorkflowActionOptionApi = createApi({
       { id: string; data: Partial<ApprovalWorkflowActionOption> }
     >({
       query: ({ id, data }) => ({
-        url: `/api/ApprovalActionOptions/${id}`,
+        url: `/ApprovalActionOptions/${id}`,
         method: 'PUT',
         headers: getHeaders(),
         body: data,
@@ -67,7 +74,7 @@ export const approvalWorkflowActionOptionApi = createApi({
     deleteApprovalActionOption: builder.mutation<BaseApiResponse<void>, string>(
       {
         query: (id) => ({
-          url: `/api/ApprovalActionOptions/${id}`,
+          url: `/ApprovalActionOptions/${id}`,
           method: 'DELETE',
           headers: getHeaders(),
         }),
@@ -80,7 +87,7 @@ export const approvalWorkflowActionOptionApi = createApi({
       SearchQuery
     >({
       query: (params) => ({
-        url: '/api/ApprovalActionOptions/Search',
+        url: '/ApprovalActionOptions/Search',
         method: 'POST',
         headers: getHeaders(),
         body: params,

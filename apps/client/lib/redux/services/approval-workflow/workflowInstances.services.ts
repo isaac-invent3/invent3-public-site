@@ -21,12 +21,12 @@ export const approvalWorkflowInstanceApi = createApi({
   baseQuery: baseQueryWithReauth,
   tagTypes: ['allApprovalWorkflowInstances'],
   endpoints: (builder) => ({
-    createApprovalWorkflowInstances: builder.mutation<
+    createApprovalWorkflowInstance: builder.mutation<
       BaseApiResponse<ApprovalWorkflowInstance>,
       CreateApprovalWorkflowInstancePayload
     >({
       query: (body) => ({
-        url: 'ApprovalWorkFlowInstances',
+        url: '/ApprovalWorkFlowInstances',
         method: 'POST',
         headers: getHeaders(),
         body,
@@ -39,7 +39,7 @@ export const approvalWorkflowInstanceApi = createApi({
       QueryParams
     >({
       query: (data) => ({
-        url: generateQueryStr(`ApprovalWorkFlowInstances?`, data),
+        url: generateQueryStr(`/ApprovalWorkFlowInstances?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -70,7 +70,7 @@ export const approvalWorkflowInstanceApi = createApi({
       invalidatesTags: ['allApprovalWorkflowInstances'],
     }),
 
-    deleteApprovalWorkflowInstances: builder.mutation<
+    deleteApprovalWorkflowInstance: builder.mutation<
       BaseApiResponse<void>,
       DeleteRecordQuery
     >({
@@ -99,8 +99,8 @@ export const approvalWorkflowInstanceApi = createApi({
 });
 
 export const {
-  useCreateApprovalWorkflowInstancesMutation,
-  useDeleteApprovalWorkflowInstancesMutation,
+  useCreateApprovalWorkflowInstanceMutation,
+  useDeleteApprovalWorkflowInstanceMutation,
   useGetAllApprovalWorkflowInstancesQuery,
   useGetApprovalWorkflowInstanceByIdQuery,
   useUpdateApprovalWorkflowInstancesMutation,

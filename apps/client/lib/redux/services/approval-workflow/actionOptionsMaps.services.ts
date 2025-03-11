@@ -1,7 +1,13 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { BaseApiResponse, ListResponse, SearchQuery } from '@repo/interfaces';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+import {
+  BaseApiResponse,
+  ListResponse,
+  QueryParams,
+  SearchQuery,
+} from '@repo/interfaces';
 import { ApprovalWorkflowActionOptionMap } from '~/lib/interfaces/approvalWorkflow.interfaces';
+import { generateQueryStr } from '~/lib/utils/queryGenerator';
+import baseQueryWithReauth from '../../baseQueryWithReauth';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -17,7 +23,7 @@ export const approvalWorkflowActionOptionsMapApi = createApi({
       Partial<ApprovalWorkflowActionOptionMap>
     >({
       query: (data) => ({
-        url: '/api/ApprovalActionOptionMaps',
+        url: '/ApprovalActionOptionMaps',
         method: 'POST',
         headers: getHeaders(),
         body: data,
@@ -27,10 +33,10 @@ export const approvalWorkflowActionOptionsMapApi = createApi({
 
     getAllApprovalActionOptionMaps: builder.query<
       BaseApiResponse<ListResponse<ApprovalWorkflowActionOptionMap>>,
-      void
+      {approvalActionId: number } & QueryParams 
     >({
-      query: () => ({
-        url: '/api/ApprovalActionOptionMaps',
+      query: (data) => ({
+        url: generateQueryStr(`/ApprovalActionOptionMaps?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -42,7 +48,7 @@ export const approvalWorkflowActionOptionsMapApi = createApi({
       string
     >({
       query: (id) => ({
-        url: `/api/ApprovalActionOptionMaps/${id}`,
+        url: `/ApprovalActionOptionMaps/${id}`,
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -53,7 +59,7 @@ export const approvalWorkflowActionOptionsMapApi = createApi({
       { id: string; data: Partial<ApprovalWorkflowActionOptionMap> }
     >({
       query: ({ id, data }) => ({
-        url: `/api/ApprovalActionOptionMaps/${id}`,
+        url: `/ApprovalActionOptionMaps/${id}`,
         method: 'PUT',
         headers: getHeaders(),
         body: data,
@@ -66,7 +72,7 @@ export const approvalWorkflowActionOptionsMapApi = createApi({
       string
     >({
       query: (id) => ({
-        url: `/api/ApprovalActionOptionMaps/${id}`,
+        url: `/ApprovalActionOptionMaps/${id}`,
         method: 'DELETE',
         headers: getHeaders(),
       }),

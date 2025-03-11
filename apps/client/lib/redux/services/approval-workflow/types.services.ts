@@ -1,10 +1,10 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import {
   BaseApiResponse,
-  ListResponse,
-  SearchQuery,
   DeleteRecordQuery,
+  ListResponse,
   QueryParams,
+  SearchQuery,
 } from '@repo/interfaces';
 import {
   ApprovalWorkflowType,
@@ -36,7 +36,7 @@ export const approvalWorkflowTypeApi = createApi({
 
     getAllApprovalWorkflowTypes: builder.query<
       BaseApiResponse<ListResponse<ApprovalWorkflowType>>,
-      QueryParams
+      { systemContextTypeId: number } & QueryParams
     >({
       query: (data) => ({
         url: generateQueryStr(`/ApprovalTypes?`, data),

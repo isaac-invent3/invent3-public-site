@@ -16,7 +16,7 @@ export const approvalWorkflowActionApi = createApi({
       Partial<ApprovalWorkflowAction>
     >({
       query: (data) => ({
-        url: '/api/ApprovalActions',
+        url: '/ApprovalActions',
         method: 'POST',
         headers: getHeaders(),
         body: data,
@@ -29,7 +29,7 @@ export const approvalWorkflowActionApi = createApi({
       void
     >({
       query: () => ({
-        url: '/api/ApprovalActions',
+        url: '/ApprovalActions',
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -41,7 +41,7 @@ export const approvalWorkflowActionApi = createApi({
       string
     >({
       query: (id) => ({
-        url: `/api/ApprovalActions/${id}`,
+        url: `/ApprovalActions/${id}`,
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -52,7 +52,7 @@ export const approvalWorkflowActionApi = createApi({
       { id: string; data: Partial<ApprovalWorkflowAction> }
     >({
       query: ({ id, data }) => ({
-        url: `/api/ApprovalActions/${id}`,
+        url: `/ApprovalActions/${id}`,
         method: 'PUT',
         headers: getHeaders(),
         body: data,
@@ -62,7 +62,7 @@ export const approvalWorkflowActionApi = createApi({
 
     deleteApprovalAction: builder.mutation<BaseApiResponse<void>, string>({
       query: (id) => ({
-        url: `/api/ApprovalActions/${id}`,
+        url: `/ApprovalActions/${id}`,
         method: 'DELETE',
         headers: getHeaders(),
       }),
@@ -74,7 +74,7 @@ export const approvalWorkflowActionApi = createApi({
       SearchQuery
     >({
       query: (params) => ({
-        url: '/api/ApprovalActions/Search',
+        url: '/ApprovalActions/Search',
         method: 'POST',
         headers: getHeaders(),
         body: params,

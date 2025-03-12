@@ -941,6 +941,33 @@ const ListIcon = createIcon({
   ),
 });
 
+const MessagingIcon = createIcon({
+  displayName: 'MessagingIcon',
+  viewBox: '0 0 21 20',
+
+  path: (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="21"
+      height="20"
+      fill="none"
+      viewBox="0 0 21 20"
+    >
+      <g clipPath="url(#clip0_7025_28456)">
+        <path
+          fill="#838383"
+          d="M19.922 5.417a4.583 4.583 0 1 1-9.167 0 4.583 4.583 0 0 1 9.167 0m-4.584-2.916a.417.417 0 0 0-.416.416v3.334a.417.417 0 0 0 .833 0V2.917a.417.417 0 0 0-.417-.416m0 5.937a.52.52 0 1 0 0-1.042.52.52 0 0 0 0 1.042m2.5 3.854v-2.068c.46-.24.88-.543 1.25-.898v2.966a2.71 2.71 0 0 1-2.708 2.709H11.6l-4.178 3.125a1.042 1.042 0 0 1-1.666-.834v-2.291H5.13a2.71 2.71 0 0 1-2.708-2.709V5.21A2.71 2.71 0 0 1 5.13 2.501h5.643a5.4 5.4 0 0 0-.59 1.25H5.13c-.805 0-1.458.653-1.458 1.458v7.083c0 .806.653 1.459 1.458 1.459h1.874l.001 3.125 4.178-3.125h5.197c.806 0 1.459-.653 1.459-1.459"
+        ></path>
+      </g>
+      <defs>
+        <clipPath id="clip0_7025_28456">
+          <path fill="#fff" d="M.758.001h20v20h-20z"></path>
+        </clipPath>
+      </defs>
+    </svg>
+  ),
+});
+
 const PinIcon = createIcon({
   displayName: 'PinIcon',
   viewBox: '0 0 10 10',
@@ -1131,4 +1158,5 @@ export {
   UptrendIcon,
   PinIcon,
   EmptyNotesIcon,
+  MessagingIcon,
 };

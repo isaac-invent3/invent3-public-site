@@ -185,7 +185,7 @@ export async function middleware(request: NextRequest) {
     return response;
   }
   return NextResponse.redirect(
-    new URL(`/?ref=${request.nextUrl.pathname}`, request.url)
+    new URL(`/signin?ref=${request.nextUrl.pathname}`, request.url)
   );
 }
 

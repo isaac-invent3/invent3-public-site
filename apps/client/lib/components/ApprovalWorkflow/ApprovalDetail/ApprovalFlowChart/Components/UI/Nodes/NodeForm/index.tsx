@@ -61,13 +61,19 @@ const NodeFormModal = (props: SubCategoryModalProps) => {
         parentId: selectedInstance.approvalWorkFlowPartyInstanceId,
         approvalWorkFlowInstanceId: selectedInstance.approvalWorkFlowInstanceId,
         approvalRequestId: selectedInstance.approvalRequestId,
-        levelNumber: selectedInstance.levelNumber,
+        levelNumber:
+          position === 'right'
+            ? selectedInstance.levelNumber + 1
+            : selectedInstance.levelNumber,
         createdBy: session?.user?.username!,
       };
 
       if (position !== 'same_level') {
         const updateOtherLevelsPayload = {
-          alteredLevelNumber: selectedInstance.levelNumber,
+          alteredLevelNumber:
+            position === 'right'
+              ? selectedInstance.levelNumber + 1
+              : selectedInstance.levelNumber,
           approvalWorkFlowInstanceId:
             selectedInstance.approvalWorkFlowInstanceId,
           isLevelDeleted: false,

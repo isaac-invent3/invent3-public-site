@@ -8,9 +8,14 @@ import {
   useNodesState,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
+import { getSession } from 'next-auth/react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
-import { useGetAllApprovalWorkflowPartyInstancesQuery } from '~/lib/redux/services/approval-workflow/partyInstances.services';
+import {
+  useGetAllApprovalWorkflowPartyInstancesQuery,
+  useUpdateApprovalWorkflowPartyInstancesMutation,
+  useUpdateSubsequentPartyInstancesLevelNumbersMutation,
+} from '~/lib/redux/services/approval-workflow/partyInstances.services';
 import { ROUTES } from '~/lib/utils/constants';
 import ApprovalDetailsPanel from '../RightPanel';
 import { useApprovalFlowContext } from './Context';
@@ -42,13 +47,30 @@ const FlowChart = () => {
       { skip: !approvalRequestId }
     );
 
+  const [
+    updateSubsequentPartyInstancesLevelNumbersMutation,
+    { isLoading: isUpdatingSubsequentPartyInstancesLevelNumbersMutation },
+  ] = useUpdateSubsequentPartyInstancesLevelNumbersMutation();
+
+  const [
+    updateApprovalWorkflowPartyInstanceMutation,
+    { isLoading: isUpdatingApprovalWorkflowPartyInstance },
+  ] = useUpdateApprovalWorkflowPartyInstancesMutation();
+
   const [layoutElements, setLayoutElements] = useState<{
     nodes: CustomNode[];
     edges: CustomEdge[];
   }>({ nodes: [], edges: [] });
+
   const [nodes, setNodes, onNodesChange] = useNodesState(layoutElements.nodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(layoutElements.edges);
   const [draggingNodeId, setDraggingNodeId] = useState<string | null>(null);
+
+  const onConnect = useCallback(
+    (params: CustomEdge | Connection) =>
+      setEdges((els) => addEdge(params, els)),
+    [setEdges]
+  );
 
   useEffect(() => {
     if (!data?.data.items) return;
@@ -75,6 +97,26 @@ const FlowChart = () => {
       edges,
     });
   }, [elements]);
+
+  useEffect(() => {
+    if (layoutElements.edges) {
+      setEdges(layoutElements.edges);
+    }
+
+    if (layoutElements.nodes) {
+      setNodes(layoutElements.nodes);
+    }
+  }, [layoutElements]);
+
+  useEffect(() => {
+    const layedOutElements = layoutApprovalFlowElements([...nodes, ...edges]);
+
+    const nodesss = layedOutElements.filter(
+      (el): el is CustomNode => 'position' in el
+    );
+
+    setNodes(nodesss);
+  }, [edges]);
 
   const stackJoinerHelpers = {
     createStackJoiner: (
@@ -235,8 +277,6 @@ const FlowChart = () => {
       groupedByX[n.position.x].push(n);
     });
 
-    
-
     const stackedNodes = groupedByX[posX] || [];
     const isPartOfStack = stackedNodes.length > 1;
 
@@ -382,7 +422,7 @@ const FlowChart = () => {
    * @param {any} _ - The event data (unused in this implementation).
    * @param {CustomNode} node - The node that was dragged and released.
    */
-  const onNodeDragStop = (_: any, node: CustomNode) => {
+  const onNodeDragStop = async (_: any, node: CustomNode) => {
     if (!draggingNodeId) return;
 
     const { leftNodes, rightNodes, overlappingNode } = findClosestNodes(node);
@@ -617,35 +657,37 @@ const FlowChart = () => {
       return cleanedEdges;
     });
 
+    // if (leftNodes[0]?.data?.levelNumber)
+
+    const session = await getSession();
+
+    const leftInstance = leftNodes[0]?.data;
+    const newLevel = leftInstance?.levelNumber ?? 0 + 1;
+
+    const updateOtherLevelsPayload = {
+      alteredLevelNumber: newLevel + 1,
+      approvalWorkFlowInstanceId: leftInstance?.approvalWorkFlowInstanceId!,
+      isLevelDeleted: newLevel > node.data?.levelNumber! ? true : false,
+      lastModifiedBy: session?.user?.username!,
+    };
+
+    await updateSubsequentPartyInstancesLevelNumbersMutation(
+      updateOtherLevelsPayload
+    );
+
+    await updateApprovalWorkflowPartyInstanceMutation({
+      id: node.data?.approvalWorkFlowPartyInstanceId!,
+      data: {
+        levelNumber: newLevel,
+        lastModifiedBy: session?.user?.username!,
+        approvalWorkFlowPartyInstanceId:
+          node.data?.approvalWorkFlowPartyInstanceId!,
+      },
+    });
+
     // Reset dragging state
     setDraggingNodeId(null);
   };
-
-  const onConnect = useCallback(
-    (params: CustomEdge | Connection) =>
-      setEdges((els) => addEdge(params, els)),
-    [setEdges]
-  );
-
-  useEffect(() => {
-    if (layoutElements.edges) {
-      setEdges(layoutElements.edges);
-    }
-
-    if (layoutElements.nodes) {
-      setNodes(layoutElements.nodes);
-    }
-  }, [layoutElements]);
-
-  useEffect(() => {
-    const layedOutElements = layoutApprovalFlowElements([...nodes, ...edges]);
-
-    const nodesss = layedOutElements.filter(
-      (el): el is CustomNode => 'position' in el
-    );
-
-    setNodes(nodesss);
-  }, [edges]);
 
   if (!approvalRequestId) return router.push(ROUTES.APPROVAL);
 

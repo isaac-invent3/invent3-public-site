@@ -1,14 +1,10 @@
-import { Box, Icon } from '@chakra-ui/react';
 import {
   BaseEdge,
   Edge,
-  EdgeLabelRenderer,
   getSmoothStepPath,
   useReactFlow,
   type EdgeProps,
 } from '@xyflow/react';
-import { AddIcon } from '~/lib/components/CustomIcons';
-import useNodeActions from '../../Logic/useNodeActions';
 
 const ConditionEdge = ({
   id,
@@ -107,37 +103,9 @@ const ConditionEdge = ({
     return true;
   };
 
-  const { onAddNode } = useNodeActions();
-
   return (
     <>
       <BaseEdge path={edgePath} markerEnd={markerEnd} style={style} />
-
-      {/* <EdgeLabelRenderer>
-        <Box
-          position="absolute"
-          w="18px"
-          h="18px"
-          cursor="pointer"
-          borderWidth="2px"
-          borderColor="#374957"
-          rounded="full"
-          display={shouldDisplayIcon() ? 'flex' : 'none'}
-          alignItems="center"
-          justifyContent="center"
-          pointerEvents="all"
-          background="white"
-          onClick={() =>
-            onAddNode(
-              id,
-              countOutgoingEdges(source) > 1 ? 'vertical' : 'horizontal'
-            )
-          }
-          transform={`translate(-50%, -50%) translate(${calculateIconPositionX()}px, ${calculateIconPositionY()}px)`}
-        >
-          <Icon as={AddIcon} boxSize="14px" color="#374957" />
-        </Box>
-      </EdgeLabelRenderer> */}
     </>
   );
 };

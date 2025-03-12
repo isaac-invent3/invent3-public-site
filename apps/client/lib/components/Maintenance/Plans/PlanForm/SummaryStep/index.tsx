@@ -243,7 +243,11 @@ const SummarySection = (props: SummarySectionProps) => {
           >
             {!isLoading ? (
               !isSuccess && (
-                <Button variant="outline" handleClick={onOpenSaveAsTemplate}>
+                <Button
+                  variant="outline"
+                  customStyles={{ width: 'max-content' }}
+                  handleClick={onOpenSaveAsTemplate}
+                >
                   Save and Create Template
                 </Button>
               )

@@ -2,6 +2,7 @@ import { auth } from 'auth';
 import { NextRequest, NextResponse } from 'next/server';
 import { checkPermission } from './app/actions/permissionAction';
 import { encode, getToken, JWT } from 'next-auth/jwt';
+// import { validateTenant } from './app/actions/validateTenantAction';
 
 const publicRoutes = [
   '/',
@@ -29,7 +30,10 @@ export function shouldUpdateToken(token: JWT): boolean {
   );
 }
 
-export async function refreshAccessToken(token: JWT): Promise<JWT> {
+export async function refreshAccessToken(
+  token: JWT,
+  subdomain: string | null | undefined
+): Promise<JWT> {
   const timeInSeconds = Math.floor(Date.now() / 1000);
 
   const payload = {
@@ -47,6 +51,7 @@ export async function refreshAccessToken(token: JWT): Promise<JWT> {
           'Access-Control-Allow-Origin': '*',
           Authorization: `Bearer ${token.accessToken}`,
           ApiKey: `${token.apiKey}`,
+          ...(subdomain ? { 'X-Tenant-ID': subdomain } : {}),
         },
         body: JSON.stringify(payload),
         method: 'POST',
@@ -124,6 +129,19 @@ export function updateCookie(
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   let response = NextResponse.next();
+  const mainHost = request.nextUrl.host,
+    currentHost = request.headers.get('host');
+  const subdomain = currentHost?.split('.')[0];
+  const hasSubdomain = mainHost !== currentHost ? subdomain : null;
+
+  // Checks if tenant name is valid
+  // if (hasSubdomain && subdomain) {
+  //   const tenantData = await validateTenant({ tenantName: subdomain });
+
+  //   if (!tenantData) {
+  //     return NextResponse.rewrite(new URL('/404', request.url));
+  //   }
+  // }
 
   if (!SECRET) return signOut(request);
 
@@ -137,7 +155,10 @@ export async function middleware(request: NextRequest) {
   if (token) {
     if (shouldUpdateToken(token)) {
       try {
-        const refreshedToken = await refreshAccessToken(token);
+        const refreshedToken = await refreshAccessToken(
+          token,
+          hasSubdomain ? subdomain : null
+        );
         if (token === refreshedToken) {
           console.error('Error refreshing token');
           return updateCookie(null, request, response);
@@ -157,8 +178,6 @@ export async function middleware(request: NextRequest) {
         return updateCookie(null, request, response);
       }
     }
-
-    // applySetCookie(request, response);
 
     // Don't check permission for protected global route
     if (protectedGlobalRoute.includes(pathname)) {

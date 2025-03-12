@@ -20,6 +20,7 @@ export async function checkPermission({
       roleSystemModuleContextPermissions: accessibleRoutes,
       accessToken,
       apiKey,
+      companySlug,
     } = session.user;
 
     if (!accessibleRoutes) {
@@ -64,6 +65,7 @@ export async function checkPermission({
           'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`,
           ApiKey: apiKey,
+          ...(companySlug ? { 'X-Tenant-ID': companySlug } : {}),
         },
       }
     );

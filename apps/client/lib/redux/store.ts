@@ -20,7 +20,7 @@ import { assetGroupTypeApi } from './services/asset/groupType.services';
 import { assetStatsApi } from './services/asset/stats.services';
 import { assetTypeApi } from './services/asset/types.services';
 import { assetVendorsApi } from './services/asset/vendors.services';
-import { dashboardApi } from './services/dashboard.services';
+import { operationManagerDashboardApis } from './services/dashboard/operationmanager.services';
 import { employeesApi } from './services/employees.services';
 import { frontdeskDashboardApi } from './services/dashboard/frontdesk.services';
 import { maintenanceFrequencyApi } from './services/maintenance/frequency.services';
@@ -81,6 +81,7 @@ import { thirdPartyApi } from './services/dashboard/thirdparty.services';
 import { complianceApi } from './services/asset/compliance.services';
 import { notesApi } from './services/notes.services';
 import { fieldEngineerDashboardApi } from './services/dashboard/fieldengineer.services';
+import { executiveDashboardApis } from './services/dashboard/executive.services';
 export const persistConfig = {
   key: 'root',
   storage,
@@ -114,12 +115,14 @@ const rootReducer = combineReducers({
   [taskTypeApi.reducerPath]: taskTypeApi.reducer,
 
   // Dashboard-related APIs
-  [dashboardApi.reducerPath]: dashboardApi.reducer,
+  [operationManagerDashboardApis.reducerPath]:
+    operationManagerDashboardApis.reducer,
   [frontdeskDashboardApi.reducerPath]: frontdeskDashboardApi.reducer,
   [superAdminApi.reducerPath]: superAdminApi.reducer,
   [clientAdminApi.reducerPath]: clientAdminApi.reducer,
   [thirdPartyApi.reducerPath]: thirdPartyApi.reducer,
   [fieldEngineerDashboardApi.reducerPath]: fieldEngineerDashboardApi.reducer,
+  [executiveDashboardApis.reducerPath]: executiveDashboardApis.reducer,
 
   // Category and condition APIs
   [categoryApi.reducerPath]: categoryApi.reducer,
@@ -243,12 +246,13 @@ export const makeStore = () => {
         conditionApi.middleware,
 
         // Dashboard APIs
-        dashboardApi.middleware,
+        operationManagerDashboardApis.middleware,
         frontdeskDashboardApi.middleware,
         superAdminApi.middleware,
         clientAdminApi.middleware,
         thirdPartyApi.middleware,
         fieldEngineerDashboardApi.middleware,
+        executiveDashboardApis.middleware,
 
         // Depreciation APIs
         depreciationApi.middleware,

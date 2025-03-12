@@ -5,13 +5,13 @@ import {
   MaintenanceIcon,
   TicketSlantedIcon,
 } from '~/lib/components/CustomIcons/Dashboard';
-import { useGetSuperAdminDashboardStatQuery } from '~/lib/redux/services/dashboard/superadmin.services';
 import SummaryCard from '../../Common/Summaries/SummaryCardWithPercentChange';
 import { AssetManagementIcon } from '~/lib/components/CustomIcons/layout';
 import { formatNumberShort } from '~/lib/utils/helperFunctions';
+import { useGetDashboardStatQuery } from '~/lib/redux/services/dashboard/executive.services';
 
 const SectionOne = () => {
-  const { data, isLoading } = useGetSuperAdminDashboardStatQuery();
+  const { data, isLoading } = useGetDashboardStatQuery();
   return (
     <SimpleGrid
       width="full"
@@ -21,44 +21,44 @@ const SectionOne = () => {
       <SummaryCard
         title="Total Asset Managed Under Management"
         icon={AssetManagementIcon}
-        value={data?.data?.totalCompaniesUnderMgt}
+        value={data?.data?.totalAssetsManaged}
         isLoading={isLoading}
         showRange={false}
-        percentChange={data?.data?.newOnboardedCompaniesPercentageChange}
+        percentChange={data?.data?.totalAssetsManagedPercentageChange}
         progressText="Growth Year on Year"
       />
       <SummaryCard
         title="Total Asset Value"
         icon={AssetManagementIcon}
-        value={`$${formatNumberShort(10004000)}`}
+        value={`$${formatNumberShort(data?.data?.totalAssetValue ?? 0)}`}
         isLoading={isLoading}
         showRange={false}
-        percentChange={data?.data?.newOnboardedCompaniesPercentageChange}
+        percentChange={data?.data?.totalAssetValuePercentageChange}
       />
       <SummaryCard
         title="Active Maintenance plan"
         icon={MaintenanceIcon}
-        value={data?.data?.activeSubscriptionsByMonth}
+        value={data?.data?.activeMaintenancePlans}
         isLoading={isLoading}
-        percentChange={data?.data?.activeSubscriptionsPercentageChange}
+        percentChange={data?.data?.activeMaintenancePlansPercentageChange}
         rangeText="Ongoing"
       />
       <SummaryCard
         title="Pending Approval"
         icon={ApprovalIcon}
-        value={data?.data?.pendingFeedbacks}
+        value={data?.data?.pendingApproval}
         isLoading={isLoading}
         showRange={false}
-        percentChange={data?.data?.pendingFeedbacksPercentageChange}
+        percentChange={data?.data?.pendingApprovalPercentageChange}
       />
       <SummaryCard
         title="Ticket Resolution Rate"
         icon={TicketSlantedIcon}
-        value="92%"
+        value={`${data?.data?.ticketResolutionRate ?? 0}%`}
         isLoading={isLoading}
         showRange={false}
         formatValue={false}
-        percentChange={data?.data?.pendingFeedbacksPercentageChange}
+        percentChange={data?.data?.ticketResolutionRatePercentageChange}
       />
     </SimpleGrid>
   );

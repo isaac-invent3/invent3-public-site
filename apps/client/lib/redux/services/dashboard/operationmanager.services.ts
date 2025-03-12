@@ -7,7 +7,7 @@ import {
   ProjectedAndActualCostsByArea,
 } from '~/lib/interfaces/dashboard.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../baseQueryWithReauth';
+import baseQueryWithReauth from '../../baseQueryWithReauth';
 import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
 
 const getHeaders = () => ({
@@ -15,8 +15,8 @@ const getHeaders = () => ({
 });
 
 type ID = string | number | undefined;
-export const dashboardApi = createApi({
-  reducerPath: 'dashboardApi',
+export const operationManagerDashboardApis = createApi({
+  reducerPath: 'operationManagerDashboardApis',
   baseQuery: baseQueryWithReauth,
   tagTypes: [],
   endpoints: (builder) => ({
@@ -102,4 +102,4 @@ export const {
   useGetUpcomingMaintenanceQuery,
   useGetDashboardStatsQuery,
   useGetMaintenanceCostStatsQuery,
-} = dashboardApi;
+} = operationManagerDashboardApis;

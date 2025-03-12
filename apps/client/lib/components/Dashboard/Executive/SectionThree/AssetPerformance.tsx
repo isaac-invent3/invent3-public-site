@@ -1,17 +1,19 @@
 import { Flex, HStack, Text, VStack } from '@chakra-ui/react';
 import React, { useMemo } from 'react';
 import { Button, DataTable } from '@repo/ui/components';
-import { ROUTES } from '~/lib/utils/constants';
+import { DATE_PERIOD, ROUTES } from '~/lib/utils/constants';
 import CardHeader from '../../Common/CardHeader';
 import { createColumnHelper } from '@tanstack/react-table';
 import { amountFormatter } from '~/lib/utils/Formatters';
-import { useGetAllAssetQuery } from '~/lib/redux/services/asset/general.services';
-import { Asset } from '~/lib/interfaces/asset/general.interface';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
+import { useGetAssetPerformanceQuery } from '~/lib/redux/services/dashboard/executive.services';
+import { AssetPerformance } from '~/lib/interfaces/dashboard/executive.interfaces';
 
-const AssetPerformance = () => {
-  const { data, isLoading } = useGetAllAssetQuery({ pageSize: 5 });
-  const columnHelper = createColumnHelper<Asset>();
+const AssetPerformanceTable = () => {
+  const { data, isLoading } = useGetAssetPerformanceQuery({
+    datePeriod: DATE_PERIOD.YEAR,
+  });
+  const columnHelper = createColumnHelper<AssetPerformance>();
   const columns = useMemo(
     () => {
       const baseColumns = [
@@ -20,33 +22,28 @@ const AssetPerformance = () => {
           header: 'Asset Name',
           enableSorting: false,
         }),
-        columnHelper.accessor('assetCategory', {
+        columnHelper.accessor('category', {
           cell: (info) => info.getValue(),
           header: 'Category',
           enableSorting: false,
         }),
-        columnHelper.accessor('resalevalue', {
-          cell: () => '85%',
+        columnHelper.accessor('usageRate', {
+          cell: (info) => `${info.getValue()}%`,
           header: 'Usage Rate',
           enableSorting: false,
         }),
-        columnHelper.accessor('currentCost', {
+        columnHelper.accessor('currentValue', {
           cell: (info) => amountFormatter(info.getValue() ?? 0),
           header: 'Current Value',
           enableSorting: false,
         }),
-        columnHelper.accessor('initialValue', {
-          cell: () => '10%',
+        columnHelper.accessor('depreciationRate', {
+          cell: (info) => `${info.getValue()}%`,
           header: 'Depreciation Rate(%)',
           enableSorting: false,
         }),
-        columnHelper.accessor('currentStatus', {
-          cell: (info) => (
-            <GenericStatusBox
-              text={info.getValue()}
-              color={info.row.original.displayColorCode}
-            />
-          ),
+        columnHelper.accessor('status', {
+          cell: (info) => <GenericStatusBox text={info.getValue()} />,
           header: 'Status',
           enableSorting: false,
         }),
@@ -99,7 +96,7 @@ const AssetPerformance = () => {
       <Flex width="full">
         <DataTable
           columns={columns}
-          data={data?.data?.items ?? []}
+          data={data?.data ?? []}
           isLoading={isLoading}
           showFooter={false}
           customThStyle={{
@@ -121,4 +118,4 @@ const AssetPerformance = () => {
   );
 };
 
-export default AssetPerformance;
+export default AssetPerformanceTable;

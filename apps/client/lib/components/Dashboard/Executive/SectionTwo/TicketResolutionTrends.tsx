@@ -1,25 +1,20 @@
 import { HStack, SkeletonCircle, Text, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { generateLastFiveYears } from '~/lib/utils/helperFunctions';
-import { useGetMaintenanceDownTimeDataQuery } from '~/lib/redux/services/dashboard/clientadmin.services';
-import { useAppSelector } from '~/lib/redux/hooks';
 import { Option } from '@repo/interfaces';
 import CardHeader from '../../Common/CardHeader';
 import DropDown from '../../Common/DropDown';
 import ChartLegend from '../../Common/Charts/ChartLegend';
 import PieChart from '../../Common/Charts/PieChart';
+import { useGetTicketResolutionTrendsQuery } from '~/lib/redux/services/dashboard/executive.services';
+import { DATE_PERIOD } from '~/lib/utils/constants';
 
 const TicketResolutionTrends = () => {
-  const { selectedCountry, selectedState } = useAppSelector(
-    (state) => state.dashboard.info
-  );
   const [selectedYear, setSelectedYear] = useState<Option | null>(
     generateLastFiveYears()[0] as Option
   );
-  const { data, isLoading, isFetching } = useGetMaintenanceDownTimeDataQuery({
-    countryId: +selectedCountry?.value!,
-    regionId: (selectedState?.value as number) ?? undefined,
-    year: (selectedYear?.value as number) ?? undefined,
+  const { data, isLoading, isFetching } = useGetTicketResolutionTrendsQuery({
+    datePeriod: +DATE_PERIOD.YEAR,
   });
 
   const chartLegendItems = [
@@ -37,11 +32,7 @@ const TicketResolutionTrends = () => {
     },
   ];
 
-  const chartData = [
-    data?.data?.maintenancePercentage ?? 0,
-    data?.data?.downTimePercentage ?? 0,
-    data?.data?.downTimePercentage ?? 0,
-  ];
+  const chartData = data?.data?.map((item) => item.percentage);
 
   return (
     <VStack
@@ -77,7 +68,7 @@ const TicketResolutionTrends = () => {
         )}
         {!isLoading &&
           !isFetching &&
-          (chartData.filter(Boolean).length > 0 ? (
+          (chartData && chartData.filter(Boolean).length > 0 ? (
             <PieChart
               dataValues={chartData}
               labels={chartLegendItems.map((item) => item.label)}

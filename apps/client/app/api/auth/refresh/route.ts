@@ -13,6 +13,7 @@ export async function POST(request: Request) {
       'Access-Control-Allow-Origin': '*',
       Authorization: `Bearer ${body.accessToken}`,
       ApiKey: `${body.apiKey}`,
+      ...(body.companySlug ? { 'X-Tenant-ID': body.companySlug } : {}),
     },
     body: JSON.stringify(payload),
   });

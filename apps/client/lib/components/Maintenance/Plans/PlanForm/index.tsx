@@ -16,7 +16,7 @@ interface PlanFormProps {
 }
 const PlanForm = (props: PlanFormProps) => {
   const { type } = props;
-  const [activeStep, setActiveStep] = useState(2);
+  const [activeStep, setActiveStep] = useState(1);
 
   return (
     <Flex

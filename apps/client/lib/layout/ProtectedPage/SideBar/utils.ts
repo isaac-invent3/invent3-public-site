@@ -149,13 +149,14 @@ const clientSideBarData: SideBarData[] = [
       'Manage compliance requirements and certifications for regulatory adherence.',
   },
 ];
+
 const sideBarData: SideBarData[] = [
   ...clientSideBarData,
   {
     name: 'Company Management',
     route: ROUTES.COMPANY,
     icon: CompanyIcon,
-    permissionKey: 'audit',
+    permissionKey: 'company',
     description:
       'Manage company details and settings for organizational control.',
   },

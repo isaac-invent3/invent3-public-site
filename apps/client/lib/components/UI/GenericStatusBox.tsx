@@ -1,11 +1,12 @@
-import { Box, HStack, StackProps, Text } from '@chakra-ui/react';
+import { Box, HStack, StackProps, Text, TextProps } from '@chakra-ui/react';
 
 interface GenericStatusBoxProps extends StackProps {
   colorCode?: string | null;
   text: string;
+  textStyles?: TextProps;
 }
 const GenericStatusBox = (props: GenericStatusBoxProps) => {
-  const { colorCode = '#8595A5', text, ...rest } = props;
+  const { colorCode = '#8595A5', text, textStyles, ...rest } = props;
   return (
     <HStack
       padding="6px"
@@ -31,6 +32,7 @@ const GenericStatusBox = (props: GenericStatusBoxProps) => {
         textTransform="capitalize"
         overflow="hidden"
         flex="1"
+        {...textStyles}
       >
         {text}
       </Text>

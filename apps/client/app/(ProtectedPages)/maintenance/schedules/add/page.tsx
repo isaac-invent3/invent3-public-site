@@ -1,9 +1,9 @@
 'use client';
 
-import { Skeleton } from '@chakra-ui/react';
 import { useSearchParams } from 'next/navigation';
 
 import ScheduleForm from '~/lib/components/Maintenance/Schedules/ScheduleForm';
+import PageLoadingSkeleton from '~/lib/components/UI/PageLoadingSkeleton';
 import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { useGetMaintenanceScheduleByGuidQuery } from '~/lib/redux/services/maintenance/schedule.services';
@@ -19,7 +19,7 @@ export default function Page() {
 
   if (template) {
     if (isLoading) {
-      return <Skeleton width="full" rounded="8px" height="250px" mt="80px" />;
+      return <PageLoadingSkeleton />;
     }
 
     if (data?.data) {

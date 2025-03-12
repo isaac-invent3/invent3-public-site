@@ -13,12 +13,12 @@ import {
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Schedules from './Schedules';
-import History from './History';
 import Plans from './Plans';
 import Header from './Header';
 import { FilterButton, SearchInput } from '@repo/ui/components';
 import { FilterIcon } from '../CustomIcons';
 import { ROUTES } from '~/lib/utils/constants';
+import MaintenanceHistory from './History';
 
 const AllTabs = ['plans', 'schedules', 'history'];
 
@@ -53,14 +53,42 @@ const Maintenance = (props: MaintenanceProps) => {
           onChange={(index) => handleTabChange(index)}
           index={tabIndex}
         >
-          <Flex width="full" position="relative">
+          <Flex width="full" position="relative" px={{ base: '16px', md: 0 }}>
             <TabList>
               <Tab>Plans</Tab>
               <Tab>Schedules</Tab>
               <Tab>History</Tab>
             </TabList>
-            <Flex position="absolute" right={0} bottom="8px">
-              <HStack spacing="16px" width="full">
+            {tabIndex !== 1 && (
+              <Flex
+                position="absolute"
+                right={0}
+                bottom="8px"
+                display={{ base: 'none', lg: 'flex' }}
+              >
+                <HStack spacing="16px" width="full">
+                  <SearchInput
+                    setSearch={setSearch}
+                    placeholderText="Search..."
+                  />
+                  <FilterButton
+                    icon={FilterIcon}
+                    label="Filter"
+                    handleClick={onToggle}
+                    isActive={isOpen}
+                  />
+                </HStack>
+              </Flex>
+            )}
+          </Flex>
+
+          {tabIndex !== 1 && (
+            <Flex
+              mt="16px"
+              px={{ base: '16px', md: 0 }}
+              display={{ base: 'flex', lg: 'none' }}
+            >
+              <HStack flexWrap="wrap" spacing="16px" width="full">
                 <SearchInput
                   setSearch={setSearch}
                   placeholderText="Search..."
@@ -73,7 +101,7 @@ const Maintenance = (props: MaintenanceProps) => {
                 />
               </HStack>
             </Flex>
-          </Flex>
+          )}
 
           <TabPanels>
             <TabPanel>
@@ -81,7 +109,9 @@ const Maintenance = (props: MaintenanceProps) => {
             </TabPanel>
             <TabPanel>{tabIndex === 1 && <Schedules />}</TabPanel>
             <TabPanel>
-              <History />
+              {tabIndex === 2 && (
+                <MaintenanceHistory search={search} openFilter={isOpen} />
+              )}
             </TabPanel>
           </TabPanels>
         </Tabs>

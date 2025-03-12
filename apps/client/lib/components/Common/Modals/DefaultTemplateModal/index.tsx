@@ -1,14 +1,17 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { SlideTransition } from '@repo/ui/components';
 import { Flex } from '@chakra-ui/react';
-import TemplateTable from './TemplateTable';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import TemplateFilters from './Filters';
+import TemplateFilters from '../../../TemplateManagement/Filters';
 import { useSearchTemplatesMutation } from '~/lib/redux/services/template.services';
 import { Template } from '~/lib/interfaces/template.interfaces';
 import GenericTemplateModal from '../GenericTemplateModal';
 import { ListResponse } from '@repo/interfaces';
+import TemplateTable from '~/lib/components/TemplateManagement/TemplateTable';
+import { generateSearchCriterion } from '@repo/utils';
+import { useAppSelector } from '~/lib/redux/hooks';
+import _ from 'lodash';
 
 interface TemplateModalProps {
   isOpen: boolean;
@@ -47,11 +50,14 @@ const TemplateModal = (props: TemplateModalProps) => {
   } = props;
   const [searchTemplate, { isLoading: searchLoading }] =
     useSearchTemplatesMutation({});
-  const [searchData, setSearchData] = useState<ListResponse<Template> | null>(
-    null
-  );
+  const [searchData, setSearchData] = useState<
+    ListResponse<Template> | undefined
+  >(undefined);
   const { handleSubmit } = useCustomMutation();
   const [showDetails, setShowDetails] = useState(false);
+  const filterData = useAppSelector((state) => state.template.templateFilters);
+  // Checks if all filterdata is empty
+  const isFilterEmpty = _.every(filterData, (value) => _.isEmpty(value));
 
   const searchCriterion = {
     criterion: [
@@ -61,6 +67,22 @@ const TemplateModal = (props: TemplateModalProps) => {
         operation: OPERATORS.Contains,
       },
     ],
+    ...(!isFilterEmpty && {
+      orCriterion: [
+        ...filterData.owner.map((item) => [
+          ...generateSearchCriterion('createdBy', [item], OPERATORS.Equals),
+        ]),
+        ...[filterData.createdDate]
+          .filter(Boolean)
+          .map((item) => [
+            ...generateSearchCriterion(
+              'dateCreated',
+              [item as string],
+              OPERATORS.Contains
+            ),
+          ]),
+      ],
+    }),
     pageNumber,
     pageSize,
   };
@@ -115,15 +137,21 @@ const TemplateModal = (props: TemplateModalProps) => {
       setSearch={setSearch}
       setPageNumber={setPageNumber}
       setPageSize={setPageSize}
-      filters={<TemplateFilters />}
+      filters={
+        <Flex width="full" mb="16px" flexWrap='wrap'>
+          <TemplateFilters handleApplyFilter={handleSearch} type="modal" />
+        </Flex>
+      }
     >
-      <Flex width="full" direction="column">
+      <Flex width="full" direction="column" id="date-picker-portal">
         {!showDetails && (
           <TemplateTable
+            data={search && searchData ? searchData.items : (data?.items ?? [])}
             isLoading={isLoading || searchLoading}
             isFetching={isFetching}
             setSelectedTemplate={setSelectedTemplate}
-            data={search && searchData ? searchData.items : (data?.items ?? [])}
+            type="modal"
+            showFooter={false}
           />
         )}
         <SlideTransition trigger={showDetails}>

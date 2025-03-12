@@ -1,13 +1,13 @@
 import { Flex, HStack, SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import {
   FormActionButtons,
-  FormSectionInfo,
+  FormInputWrapper,
   RadioBox,
 } from '@repo/ui/components';
 import { FormikProvider, useFormik } from 'formik';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import AssetSelect from '~/lib/components/Common/AssetSelect';
+import AssetSelect from '~/lib/components/Common/SelectComponents/AssetSelect';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useGetAssetTypeByIdQuery } from '~/lib/redux/services/asset/types.services';
 import { updatePlanForm } from '~/lib/redux/slices/MaintenanceSlice';
@@ -146,46 +146,47 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
             minH="60vh"
           >
             <VStack width="full" spacing="36px">
-              <SimpleGrid columns={2} gap="40px" width="full">
-                <HStack width="full" spacing="40px">
-                  <Flex width="full" maxW="141px">
-                    <FormSectionInfo
-                      title="Plan Scope"
-                      info="Define the coverage and objectives of the plan."
-                      isRequired
-                    />
-                  </Flex>
-                  <HStack spacing="73px">
-                    {planScopeOptions.map((item, index) => (
-                      <HStack key={index} spacing="16px">
-                        <RadioBox
-                          handleClick={() =>
-                            formik.setFieldValue('planScope', item.value)
-                          }
-                          isSelected={formik.values.planScope === item.value}
-                        />
-                        <Text color="black" size="md">
-                          {item.label}
-                        </Text>
-                      </HStack>
-                    ))}
-                  </HStack>
-                </HStack>
-              </SimpleGrid>
-              {formik.values.planScope && (
-                <SimpleGrid columns={2} gap="40px" width="full">
-                  <HStack width="full" alignItems="flex-start" spacing="40px">
-                    <Flex width="full" maxW="141px">
-                      <FormSectionInfo
-                        title={
-                          formik.values.planScope === 'asset'
-                            ? 'Asset'
-                            : 'Group Type'
+              <FormInputWrapper
+                sectionMaxWidth="141px"
+                customSpacing="40px"
+                title="Plan Scope"
+                description="Define the coverage and objectives of the plan."
+                isRequired
+              >
+                <HStack spacing={{ base: '40px', md: '73px' }}>
+                  {planScopeOptions.map((item, index) => (
+                    <HStack key={index} spacing="16px">
+                      <RadioBox
+                        handleClick={() =>
+                          formik.setFieldValue('planScope', item.value)
                         }
-                        info={`${formik.values.planScope === 'asset' ? 'Choose the type of asset for maintenance.' : 'Select the relevant group for the plan'}`}
-                        isRequired
+                        isSelected={formik.values.planScope === item.value}
                       />
-                    </Flex>
+                      <Text color="black" size="md">
+                        {item.label}
+                      </Text>
+                    </HStack>
+                  ))}
+                </HStack>
+              </FormInputWrapper>
+
+              {formik.values.planScope && (
+                <SimpleGrid
+                  columns={{ base: 1, md: 2 }}
+                  gap="40px"
+                  width="full"
+                >
+                  <FormInputWrapper
+                    sectionMaxWidth="141px"
+                    customSpacing="40px"
+                    title={
+                      formik.values.planScope === 'asset'
+                        ? 'Asset'
+                        : 'Group Type'
+                    }
+                    description={`${formik.values.planScope === 'asset' ? 'Choose the type of asset for maintenance.' : 'Select the relevant group for the plan'}`}
+                    isRequired
+                  >
                     {formik.values.planScope === 'asset' ? (
                       <AssetSelect
                         selectName="assetId"
@@ -198,16 +199,18 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
                     ) : (
                       <AssetGroupType />
                     )}
-                  </HStack>
+                  </FormInputWrapper>
+
                   {formik.values.planScope === 'asset_group' &&
                     formik.values.assetGroupTypeID && <AssetGroupContext />}
                 </SimpleGrid>
               )}
-              <SimpleGrid columns={2} gap="40px" width="full">
+
+              <SimpleGrid columns={{ base: 1, md: 2 }} gap="40px" width="full">
                 <PlanTitle sectionMaxWidth="141px" spacing="40px" />
               </SimpleGrid>
 
-              <SimpleGrid columns={2} gap="40px" width="full">
+              <SimpleGrid columns={{ base: 1, md: 2 }} gap="40px" width="full">
                 <StartDate
                   sectionMaxWidth="141px"
                   spacing="40px"
@@ -219,7 +222,7 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
                   minDate={inputtedStartDate ?? new Date()}
                 />
               </SimpleGrid>
-              <SimpleGrid columns={2} gap="40px" width="full">
+              <SimpleGrid columns={{ base: 1, md: 2 }} gap="40px" width="full">
                 <Owner
                   sectionMaxWidth="141px"
                   spacing="40px"

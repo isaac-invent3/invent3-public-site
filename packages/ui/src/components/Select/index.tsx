@@ -6,6 +6,7 @@ import { Option } from '@repo/interfaces';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ChevronDownIcon } from '../CustomIcons';
 import ErrorMessage from '../ErrorMessage';
+import { isEmpty } from 'lodash';
 
 const DropdownIndicator = (props: any) => {
   const { pb, ...rest } = props;
@@ -25,7 +26,7 @@ const DropdownIndicator = (props: any) => {
 export interface SelectInputProps {
   title: string;
   options: Option[];
-  selectedOption?: Option | string | number;
+  selectedOption?: Option | Option[] | string | number;
   isSearchable?: boolean;
   isInvalid?: boolean;
   showTitleAfterSelect?: boolean;
@@ -35,7 +36,7 @@ export interface SelectInputProps {
   defaultInputValue?: string;
   errorMessage?: string;
   // eslint-disable-next-line no-unused-vars
-  handleSelect?: (options: Option) => void;
+  handleSelect?: (options: Option | Option[]) => void;
   handleOnMenuScrollToBottom?: () => void;
   // eslint-disable-next-line no-unused-vars
   callBackFunction?: (selectedOption: string) => Promise<Option[]>;
@@ -43,6 +44,7 @@ export interface SelectInputProps {
   isAsync?: boolean;
   containerStyles?: BoxProps;
   selectStyles?: CSSObjectWithLabel;
+  isMultiSelect?: boolean;
 }
 function SelectInput(props: SelectInputProps) {
   const {
@@ -63,12 +65,22 @@ function SelectInput(props: SelectInputProps) {
     errorMessage,
     containerStyles,
     selectStyles,
+    isMultiSelect,
   } = props;
   const SelectComponent = isAsync ? AsyncSelect : Select;
   const [isFocused, setIsFocused] = useState(false);
   const handleFocus = () => setIsFocused(true);
+  const isValueEmpty = (
+    value: Option | Option[] | string | number | undefined
+  ) => {
+    return (
+      value === undefined ||
+      value === null ||
+      (typeof value !== 'number' && isEmpty(value))
+    );
+  };
   const handleBlur = () => {
-    setIsFocused(!!selectedOption);
+    setIsFocused(!isValueEmpty(selectedOption));
   };
 
   // Debounce ref
@@ -97,7 +109,7 @@ function SelectInput(props: SelectInputProps) {
   );
 
   useEffect(() => {
-    if (!selectedOption) {
+    if (!selectedOption || isValueEmpty(selectedOption)) {
       setIsFocused(false);
     }
   }, [selectedOption]);
@@ -113,17 +125,27 @@ function SelectInput(props: SelectInputProps) {
             alignItems="center"
             position="absolute"
             top={
-              isFocused || selectedOption ? '10px' : isInvalid ? '40%' : '50%'
+              isFocused || !isValueEmpty(selectedOption)
+                ? '10px'
+                : isInvalid
+                  ? '40%'
+                  : '50%'
             }
             transform={
-              isFocused || selectedOption
+              isFocused || !isValueEmpty(selectedOption)
                 ? 'translateY(-40%) scale(0.85)'
                 : 'translateY(-50%)'
             }
             transformOrigin="left top"
-            paddingLeft={isFocused || selectedOption ? '20px' : '16px'}
-            fontSize={isFocused || selectedOption ? '12px' : '14px'}
-            lineHeight={isFocused || selectedOption ? '14.26px' : '16.63px'}
+            paddingLeft={
+              isFocused || !isValueEmpty(selectedOption) ? '20px' : '16px'
+            }
+            fontSize={
+              isFocused || !isValueEmpty(selectedOption) ? '12px' : '14px'
+            }
+            lineHeight={
+              isFocused || !isValueEmpty(selectedOption) ? '14.26px' : '16.63px'
+            }
             color={
               isFocused
                 ? variant === 'primary'
@@ -150,6 +172,7 @@ function SelectInput(props: SelectInputProps) {
           onFocus={handleFocus}
           onBlur={handleBlur}
           placeholder={title}
+          isMulti={isMultiSelect}
           styles={{
             container: (provided) => ({
               ...provided,
@@ -220,19 +243,44 @@ function SelectInput(props: SelectInputProps) {
               lineHeight: '16.63px',
               fontWeight: 500,
             }),
+            multiValue: (provided) => ({
+              ...provided,
+              display: 'flex',
+              flexDirection: 'row',
+              wrap: 'wrap',
+            }),
+            valueContainer: (provided) => ({
+              ...provided,
+              flexWrap: 'nowrap',
+              overflowX: 'auto',
+            }),
+            input: (provided) => ({
+              ...provided,
+              minWidth: 'auto',
+            }),
           }}
           defaultInputValue={defaultInputValue}
           value={
             selectedOption
-              ? typeof selectedOption === 'string' ||
-                typeof selectedOption === 'number'
-                ? options.find((option) => option.value === selectedOption)
-                : selectedOption
+              ? isMultiSelect
+                ? options.filter((item) =>
+                    (selectedOption as unknown as number[]).includes(
+                      item.value as number
+                    )
+                  )
+                : typeof selectedOption === 'string' ||
+                    typeof selectedOption === 'number'
+                  ? options.find((option) => option.value === selectedOption)
+                  : selectedOption
               : null
           }
           onChange={(selectedOptions) => {
-            if (selectedOptions) {
-              handleSelect && handleSelect(selectedOptions as Option);
+            if (selectedOptions && handleSelect) {
+              if (isMultiSelect) {
+                handleSelect(selectedOptions as Option[]);
+              } else {
+                handleSelect(selectedOptions as Option);
+              }
             }
           }}
           components={{

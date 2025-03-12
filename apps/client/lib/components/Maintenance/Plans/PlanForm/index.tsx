@@ -5,12 +5,9 @@ import React, { useState } from 'react';
 import PlanInfoStep from './PlanInfoStep';
 import ScheduleStep from './ScheduleStep';
 import SummarySection from './SummaryStep';
-import {
-  FormStepper,
-  withFormLeaveDialog,
-  SlideTransition,
-} from '@repo/ui/components';
+import { FormStepper, SlideTransition } from '@repo/ui/components';
 import PageHeader from '~/lib/components/UI/PageHeader';
+import withFormLeaveDialog from '~/lib/components/UI/FormLeaveDialogProvider';
 
 const STEPS = ['Plan Info', 'Schedules', 'Summary'];
 
@@ -19,10 +16,15 @@ interface PlanFormProps {
 }
 const PlanForm = (props: PlanFormProps) => {
   const { type } = props;
-  const [activeStep, setActiveStep] = useState(1);
+  const [activeStep, setActiveStep] = useState(2);
 
   return (
-    <Flex width="full" direction="column" pb="24px">
+    <Flex
+      width="full"
+      direction="column"
+      pb="24px"
+      px={{ base: '16px', md: 0 }}
+    >
       <PageHeader>
         {type === 'create'
           ? 'Add New Maintenance Plan'

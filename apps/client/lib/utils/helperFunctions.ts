@@ -1,10 +1,10 @@
 import { Option } from '@repo/interfaces';
 import moment from 'moment';
 import { Event as EventType, View } from 'react-big-calendar';
-import { AssetFormDocument } from '~/lib/interfaces/asset/general.interface';
 import { ActualProjectedData } from '../interfaces/dashboard.interfaces';
 import { FILE_ICONS } from './constants';
 import nigeriaStatesByLandSize from './NigeriaCordinates/landSize';
+import { Document } from '../interfaces/general.interfaces';
 
 interface IOption {
   [key: string]: any;
@@ -44,7 +44,7 @@ function getSelectedOption(options: Option[], value: number | string) {
   return { value: '', label: '' };
 }
 
-function getDocumentInfo(document: AssetFormDocument) {
+function getDocumentInfo(document: Document) {
   let mimeType: string | null = null;
   let base64Data: string | null = null;
   let extensionName: keyof typeof FILE_ICONS;
@@ -241,6 +241,7 @@ const formattedDateTime = (date: Date | null, time: string | null) => {
 
   return formatted;
 };
+
 
 export {
   formatNumberShort,

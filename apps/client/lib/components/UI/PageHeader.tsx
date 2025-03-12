@@ -7,10 +7,9 @@ const PageHeader = ({
   return (
     <Heading
       as="h3"
-      fontWeight={800}
-      fontSize="32px"
-      lineHeight="38.02px"
+      size={{ base: 'lg', lg: 'xl' }}
       color="primary.500"
+      fontWeight={800}
       {...rest}
     >
       {children}

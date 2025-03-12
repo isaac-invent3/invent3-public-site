@@ -69,8 +69,8 @@ const Event = ({ event }: { event: EventType }) => {
           alignItems="center"
           justifyContent="center"
           bgColor="primary.500"
-          right="-8px"
-          top="-8px"
+          right="0px"
+          // top="-8px"
           zIndex={99}
         >
           <Text color="neutral.250">

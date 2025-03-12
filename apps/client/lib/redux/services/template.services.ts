@@ -1,7 +1,12 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../baseQueryWithReauth';
-import { BaseApiResponse, ListResponse, QueryParams } from '@repo/interfaces';
+import {
+  BaseApiResponse,
+  ListResponse,
+  QueryParams,
+  SearchQuery,
+} from '@repo/interfaces';
 import { Template } from '~/lib/interfaces/template.interfaces';
 
 const getHeaders = () => ({
@@ -10,8 +15,26 @@ const getHeaders = () => ({
 export const templateApi = createApi({
   reducerPath: 'templateApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['allMaintenancePlanTemplates'],
+  tagTypes: ['allMaintenancePlanTemplates', 'allTemplates'],
   endpoints: (builder) => ({
+    getAllTemplates: builder.query<
+      BaseApiResponse<ListResponse<Template>>,
+      QueryParams
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/Templates?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allTemplates'],
+    }),
+    getTemplateById: builder.query<BaseApiResponse<Template>, { id: number }>({
+      query: ({ id }) => ({
+        url: `/Templates/GetTemplateInfoHeader/${id}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
     getMaintenancePlanTemplate: builder.query<
       BaseApiResponse<ListResponse<Template>>,
       QueryParams
@@ -35,7 +58,10 @@ export const templateApi = createApi({
         headers: getHeaders(),
       }),
     }),
-    searchTemplates: builder.mutation({
+    searchTemplates: builder.mutation<
+      BaseApiResponse<ListResponse<Template>>,
+      SearchQuery
+    >({
       query: (body) => ({
         url: `/Templates/Search`,
         method: 'POST',
@@ -53,12 +79,42 @@ export const templateApi = createApi({
         headers: getHeaders(),
       }),
     }),
+    updateTemplate: builder.mutation<
+      void,
+      {
+        templateId: number;
+        templateName: string;
+        description: string;
+        lastModifiedBy: string;
+      }
+    >({
+      query: (body) => ({
+        url: `/Templates/${body.templateId}`,
+        method: 'PUT',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allTemplates'],
+    }),
+    deleteTemplate: builder.mutation<void, { id: number; deletedBy: string }>({
+      query: ({ id, ...body }) => ({
+        url: `/Templates/${id}`,
+        method: 'DELETE',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allTemplates'],
+    }),
   }),
 });
 
 export const {
+  useGetAllTemplatesQuery,
+  useGetTemplateByIdQuery,
   useGetMaintenancePlanTemplateQuery,
   useGetMaintenanceScheduleTemplateQuery,
   useSearchTemplatesMutation,
   useGetTemplateInfoBySystemContextTypeAndContextIdQuery,
+  useUpdateTemplateMutation,
+  useDeleteTemplateMutation,
 } = templateApi;

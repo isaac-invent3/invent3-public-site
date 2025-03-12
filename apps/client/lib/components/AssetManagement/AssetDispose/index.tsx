@@ -1,9 +1,6 @@
-import { Flex, HStack, Text, useDisclosure } from '@chakra-ui/react';
+import { Flex, HStack, useDisclosure } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
-import {
-  Asset,
-  AssetFormDocument,
-} from '~/lib/interfaces/asset/general.interface';
+import { Asset } from '~/lib/interfaces/asset/general.interface';
 import { FormikProvider, useFormik } from 'formik';
 import { assetDisposeSchema } from '~/lib/schemas/asset/main.schema';
 import { useAppDispatch } from '~/lib/redux/hooks';
@@ -16,8 +13,9 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useRequestAssetDisposalMutation } from '~/lib/redux/services/asset/disposal.services';
 import { getSession } from 'next-auth/react';
 import moment from 'moment';
-import { getSelectedAssetIds } from '../Common/utils';
 import PageHeader from '../../UI/PageHeader';
+import { ROUTES } from '~/lib/utils/constants';
+import { Document } from '~/lib/interfaces/general.interfaces';
 
 interface AssetDisposeProps {
   data: Asset;
@@ -51,12 +49,12 @@ const AssetDispose = (props: AssetDisposeProps) => {
         disposalRequestedBy: data?.currentOwnerId!,
         createdBy: session?.user?.username!,
       };
-      const uploadedDocuments: AssetFormDocument[] = values.documents.filter(
-        (item: AssetFormDocument) => item.documentId === null
+      const uploadedDocuments: Document[] = values.documents.filter(
+        (item: Document) => item.documentId === null
       );
 
-      const existingDocuments: AssetFormDocument[] = values.documents.filter(
-        (item: AssetFormDocument) => item.documentId !== null
+      const existingDocuments: Document[] = values.documents.filter(
+        (item: Document) => item.documentId !== null
       );
       const createAssetDocumentsDto =
         uploadedDocuments.length > 0
@@ -96,43 +94,43 @@ const AssetDispose = (props: AssetDisposeProps) => {
 
   return (
     <Flex width="full" direction="column" pb="24px">
-      <PageHeader>Asset Dispose Request</PageHeader>
+      <Flex px={{ base: '16px', md: 0 }}>
+        <PageHeader>Asset Dispose Request</PageHeader>
+      </Flex>
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
           <Flex width="full" direction="column" gap="24px" mt="32px">
             <Flex
               width="full"
               py="32px"
-              px="25px"
+              px={{ base: '16px', md: '25px' }}
               direction="column"
-              gap="40px"
-              rounded="6px"
+              gap={{ base: '28px', md: '40px' }}
+              rounded={{ md: '6px' }}
               bgColor="white"
               minH="70vh"
             >
               <SectionOne />
               <SectionTwo />
             </Flex>
-            <HStack spacing="16px" justifyContent="flex-end" width="full">
-              <HStack
-                as="button"
-                px="16px"
-                rounded="8px"
-                bgColor="#F6F6F6B2"
-                minH="50px"
-                minW="96px"
-                justifyContent="center"
+            <HStack
+              spacing="16px"
+              justifyContent={{ base: 'space-between', md: 'flex-end' }}
+              width="full"
+              px={{ base: '16px', md: 0 }}
+            >
+              <Button
+                type="button"
+                customStyles={{ width: '96px', bgColor: '#F6F6F6B2' }}
+                variant="secondary"
+                href={`/${ROUTES.ASSETS}`}
               >
-                <Text size="md" color="primary.500">
-                  Cancel
-                </Text>
-              </HStack>
-
+                Cancel
+              </Button>
               <Button
                 type="submit"
                 customStyles={{ width: '161px' }}
                 isLoading={formik.isSubmitting || isLoading}
-                isDisabled={getSelectedAssetIds().length < 1}
               >
                 Dispose
               </Button>

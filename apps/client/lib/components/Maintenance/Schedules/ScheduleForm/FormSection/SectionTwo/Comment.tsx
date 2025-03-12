@@ -1,13 +1,15 @@
-import { Flex, HStack } from '@chakra-ui/react';
-import { FormSectionInfo, FormTextAreaInput } from '@repo/ui/components';
+import { FormInputWrapper, FormTextAreaInput } from '@repo/ui/components';
 import { Field } from 'formik';
 
 const Comment = () => {
   return (
-    <HStack width="full" alignItems="flex-start" spacing="56px">
-      <Flex width="full" maxW="130px">
-        <FormSectionInfo title="Comment" info="Add a comment" isRequired />
-      </Flex>
+    <FormInputWrapper
+      sectionMaxWidth="130px"
+      customSpacing="56px"
+      title="Comment"
+      description="Add a comment"
+      isRequired
+    >
       <Field
         as={FormTextAreaInput}
         name="comment"
@@ -15,7 +17,7 @@ const Comment = () => {
         placeholder="Comment"
         customStyle={{ height: '133px' }}
       />
-    </HStack>
+    </FormInputWrapper>
   );
 };
 

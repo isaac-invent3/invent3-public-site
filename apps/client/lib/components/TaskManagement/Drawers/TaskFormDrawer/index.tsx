@@ -89,10 +89,10 @@ const TaskFormDrawer = (props: TaskFormDrawerProps) => {
       assignedToEmployeeName: data?.assignedToEmployeeName ?? null,
       estimatedDurationInHours:
         data?.estimatedDurationInHours ??
-        (typeof appConfigValues.DEFAULT_ESTIMATED_TASK_DURATION_IN_HOURS ===
+        (typeof appConfigValues?.DEFAULT_ESTIMATED_TASK_DURATION_IN_HOURS ===
         'string'
           ? parseInt(
-              appConfigValues.DEFAULT_ESTIMATED_TASK_DURATION_IN_HOURS,
+              appConfigValues?.DEFAULT_ESTIMATED_TASK_DURATION_IN_HOURS,
               10
             )
           : null),
@@ -211,7 +211,7 @@ const TaskFormDrawer = (props: TaskFormDrawerProps) => {
         <DrawerHeader
           p={0}
           m={0}
-          px="32px"
+          px={{ base: '24px', md: '32px' }}
           mt="20px"
           mb="10px"
           width="max-content"
@@ -223,7 +223,7 @@ const TaskFormDrawer = (props: TaskFormDrawerProps) => {
             <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
               <VStack
                 width="full"
-                px="32px"
+                px={{ base: '24px', md: '32px' }}
                 pb="32px"
                 pt="50px"
                 spacing={0}

@@ -1,8 +1,9 @@
-import { HStack, Icon, VStack } from '@chakra-ui/react';
-import { AddIcon } from '../CustomIcons';
+import { Icon, Stack } from '@chakra-ui/react';
 import { Button } from '@repo/ui/components';
-import PageHeader from '../UI/PageHeader';
+import usePermissionAccess from '~/lib/hooks/useRoleAccess';
 import { ROUTES } from '~/lib/utils/constants';
+import { AddIcon } from '../CustomIcons';
+import PageHeader from '../UI/PageHeader';
 
 const Header = ({
   showGenerate = true,
@@ -11,22 +12,30 @@ const Header = ({
   showGenerate?: boolean;
   header?: string;
 }) => {
+  const canGenerateReport = usePermissionAccess('report:generate');
   return (
-    <VStack spacing="58px" alignItems="flex-start" width="full" pt="12px">
-      <HStack width="full" justifyContent="space-between">
-        <PageHeader>{header ?? 'Reports & Analytics'}</PageHeader>
-
-        {showGenerate && (
-          <Button
-            customStyles={{ width: '227px' }}
-            href={`/${ROUTES.REPORT}/generate`}
-          >
-            <Icon as={AddIcon} boxSize="18px" color="#D2FEFD" mr="4px" />
-            Generate a Report
-          </Button>
-        )}
-      </HStack>
-    </VStack>
+    <Stack
+      spacing="10px"
+      justifyContent="space-between"
+      direction={{ base: 'column', md: 'row' }}
+      width="full"
+      pt="12px"
+    >
+      <PageHeader>{header ?? 'Reports & Analytics'}</PageHeader>
+      {showGenerate && canGenerateReport && (
+        <Button
+          customStyles={{
+            width: '227px',
+            height: { base: '36px', md: 'min-content' },
+            alignSelf: 'end',
+          }}
+          href={`/${ROUTES.REPORT}/generate`}
+        >
+          <Icon as={AddIcon} boxSize="18px" color="#D2FEFD" mr="4px" />
+          Generate a Report
+        </Button>
+      )}
+    </Stack>
   );
 };
 

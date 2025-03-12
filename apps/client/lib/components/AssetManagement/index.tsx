@@ -8,12 +8,13 @@ import {
   Tab,
   TabPanel,
   useDisclosure,
+  useMediaQuery,
 } from '@chakra-ui/react';
 import React, { useEffect, useMemo, useState } from 'react';
 import Header from './Header';
 import ListView from './ListView';
 import Filters from './Filters';
-import MapView from './MapView';
+// import MapView from './MapView';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ROUTES } from '~/lib/utils/constants';
 
@@ -26,6 +27,7 @@ const AssetManagement = () => {
   const [activeFilter, setActiveFilter] = useState<'bulk' | 'general' | null>(
     null
   );
+  const [isDesktop] = useMediaQuery('(min-width: 768px)');
 
   // Handles Toggling the  Filter
   useEffect(() => {
@@ -65,12 +67,17 @@ const AssetManagement = () => {
           index={tabIndex}
         >
           <Flex width="full" position="relative">
-            <TabList>
+            <TabList mx={{ base: '16px', md: 0 }} width="full">
               <Tab>List View</Tab>
-              <Tab>Map View</Tab>
+              {isDesktop && <Tab>Map View</Tab>}
             </TabList>
             {tabIndex === 0 && (
-              <Flex position="absolute" right={0} bottom="8px">
+              <Flex
+                position="absolute"
+                right={0}
+                bottom="8px"
+                display={{ base: 'none', lg: 'flex' }}
+              >
                 <Filters
                   setSearch={setSearch}
                   activeFilter={activeFilter}
@@ -82,13 +89,20 @@ const AssetManagement = () => {
 
           <TabPanels>
             <TabPanel>
+              <Flex display={{ base: 'flex', lg: 'none' }} mt="16px">
+                <Filters
+                  setSearch={setSearch}
+                  activeFilter={activeFilter}
+                  setActiveFilter={setActiveFilter}
+                />
+              </Flex>
               <ListView
                 openFilter={isOpen}
                 activeFilter={activeFilter}
                 search={search}
               />
             </TabPanel>
-            <TabPanel>{tabIndex === 1 && <MapView />}</TabPanel>
+            {/* <TabPanel>{tabIndex === 1 && <MapView />}</TabPanel> */}
           </TabPanels>
         </Tabs>
       </Flex>

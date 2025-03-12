@@ -147,4 +147,37 @@ const templateSchema = Yup.object().shape({
   templateDescription: Yup.string().required('Description is Required'),
 });
 
-export { createDateSchema, assigneeSchema, recurrenceSchema, templateSchema };
+const singleDocumentSchema = Yup.object().shape({
+  documentId: Yup.number().nullable(),
+  documentName: Yup.string().required(),
+  base64Document: Yup.string().required(),
+  base64Prefix: Yup.string().nullable(),
+});
+
+const documentSchema = Yup.object().shape({
+  documents: Yup.array().of(
+    Yup.object().shape({
+      documentId: Yup.number().nullable(),
+      documentName: Yup.string().required(),
+      base64Document: Yup.string().required(),
+      base64Prefix: Yup.string().nullable(),
+    })
+  ),
+});
+
+const contactSchema = Yup.object().shape({
+  email: Yup.string().email('Invalid Email Adress').required('Email Required'),
+  name: Yup.string().required('Name is Required'),
+  subject: Yup.string().required('Subject is Required'),
+  content: Yup.string().required('Message is Required'),
+});
+
+export {
+  createDateSchema,
+  assigneeSchema,
+  recurrenceSchema,
+  templateSchema,
+  documentSchema,
+  singleDocumentSchema,
+  contactSchema,
+};

@@ -6,7 +6,7 @@ import AcquisitionDateConditon from './AcquisitionDateCondition';
 import Purchase from './Purchase';
 import WarrantyDetails from './WarrantyDetails';
 import DepreciationDetails from './DepreciationDetails';
-import VendorDetails from './VendorDetails';
+import VendorDetails from './Vendor/VendorDetails';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import { FormActionButtons } from '@repo/ui/components';
@@ -66,14 +66,14 @@ const AcquisitionStep = (props: AcquisitionStepProps) => {
             alignItems="flex-start"
             position="relative"
             bgColor="white"
-            pt="26px"
-            pl="16px"
-            pb="24px"
-            pr="29px"
+            pt={{ base: '16px', lg: '26px' }}
+            pl={{ md: '24px', lg: '16px' }}
+            pb={{ base: '16px', lg: '24px' }}
+            pr={{ md: '24px', lg: '29px' }}
             rounded="6px"
-            minH="60vh"
+            minH={{ lg: '60vh' }}
           >
-            <VStack width="full" alignItems="flex-start" spacing="36px">
+            <VStack width="full" alignItems="flex-start" spacing="40px">
               <AcquisitionDateConditon />
               <Purchase />
               <WarrantyDetails />

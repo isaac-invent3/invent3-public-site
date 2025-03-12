@@ -24,6 +24,8 @@ const assetsBreadcrumb: BreadcrumbNode = {
     add: { label: 'Add New Asset' },
     transfer: { label: 'Asset Transfer Request' },
     dispose: { label: 'Dispose Asset Request' },
+    'bulk-dispose': { label: 'Bulk Dispose' },
+    'bulk-transfer': { label: 'Bulk Transfer' },
   },
 };
 
@@ -64,22 +66,93 @@ const tasksBreadcrumb: BreadcrumbNode = {
   label: 'Task Management',
   children: {
     add: { label: 'Add New Task' },
+    'bulk-update': { label: 'Bulk Update' },
+  },
+};
+
+const templateBreadcrumb: BreadcrumbNode = {
+  route: `/${ROUTES.TEMPLATES}`,
+  label: 'Template Management',
+  children: {
+    detail: { label: 'Template Detail' },
   },
 };
 
 const ticketsBreadcrumb: BreadcrumbNode = {
   route: `/${ROUTES.TICKETS}`,
   label: 'Ticket Management',
+  children: {
+    'bulk-update': { label: 'Bulk Update' },
+  },
 };
 
 const profileBreadcrumb: BreadcrumbNode = {
   route: `/${ROUTES.PROFILE}`,
+  label: 'Profile',
+};
+
+const userSettingsBreadcrumb: BreadcrumbNode = {
+  route: `/${ROUTES.USER_SETTINGS}`,
   label: 'Settings',
 };
 
 const reportBreadcrumb: BreadcrumbNode = {
   route: `/${ROUTES.REPORT}`,
   label: 'Reports & Analytics',
+};
+
+const userManagementBreadcrumb: BreadcrumbNode = {
+  route: `/${ROUTES.USERS}`,
+  label: 'User Management',
+  children: {
+    add: { label: 'Add User' },
+    edit: { label: 'Edit User' },
+  },
+};
+
+const auditLogBreadcrumb: BreadcrumbNode = {
+  route: `/${ROUTES.AUDIT_LOG}`,
+  label: 'Audit Log',
+};
+
+const roleManagementBreadcrumb: BreadcrumbNode = {
+  route: `/${ROUTES.ROLES}`,
+  label: 'Role Management',
+  children: {
+    detail: { label: 'Role Details' },
+    group: { label: 'User Group' },
+    role: { label: 'User Role' },
+    add: { label: 'Add' },
+  },
+};
+
+const vendorManagementBreadCrumb: BreadcrumbNode = {
+  route: `/${ROUTES.VENDOR}`,
+  label: 'Vendor Management',
+  children: {
+    edit: { label: 'Edit Vendor' },
+    add: { label: 'Add New Vendor' },
+  },
+};
+
+const companyManagementBreadCrumb: BreadcrumbNode = {
+  route: `/${ROUTES.COMPANY}`,
+  label: 'Company Management',
+  children: {
+    edit: { label: 'Edit Company' },
+    add: { label: 'Add New Company' },
+    details: { label: 'Company Details' },
+    'data-upload': { label: 'Data Upload' },
+  },
+};
+
+const complianceBreadCrumb: BreadcrumbNode = {
+  route: `/${ROUTES.COMPLIANCE}`,
+  label: 'Compliance',
+};
+const adminSettingsBreadcrumb: BreadcrumbNode = {
+  route: `/${ROUTES.USER_SETTINGS}`,
+  label: 'Admin Settings',
 };
 
 const approvalBreadcrumb: BreadcrumbNode = {
@@ -95,7 +168,6 @@ const breadcrumbMap: Record<string, BreadcrumbNode> = {
   [ROUTES.TICKETS]: ticketsBreadcrumb,
   [ROUTES.PROFILE]: profileBreadcrumb,
   [ROUTES.REPORT]: reportBreadcrumb,
-  [ROUTES.APPROVAL]: approvalBreadcrumb,
 };
 
 const getBreadcrumb = (pathSegments: string[]): breadCrumbRoute[] => {

@@ -21,6 +21,31 @@ const taskBaseSchema = () =>
     comments: Yup.string().nullable(),
   });
 
+const updateTaskInstanceMetadataSchema = Yup.object().shape({
+  taskStatusId: Yup.string(),
+  taskPriorityId: Yup.string(),
+  assignedToId: Yup.string(),
+
+  // Custom test to validate at least one of the fields is present
+  atLeastOne: Yup.object().test(
+    'at-least-one',
+    'At least one of taskStatusId, taskPriorityId, or assignedToId is required',
+    function (value: {
+      taskStatusId?: string;
+      taskPriorityId?: string;
+      assignedToId?: string;
+    }) {
+      const { taskStatusId, taskPriorityId, assignedToId } = value || {};
+      return (!taskStatusId || !taskPriorityId || !assignedToId);
+    }
+  ),
+
+  taskInstanceIds: Yup.array()
+    .of(Yup.number())
+    .required('Task Instances are required')
+    .min(1, 'There must be atleast one task selected'),
+});
+
 const taskSchema = () =>
   taskBaseSchema().shape({
     scheduleId: Yup.number().required('Schedule is Required'),
@@ -30,4 +55,9 @@ const markTaskAsCompletedSchema = Yup.object().shape({
   actualCost: Yup.number().required('Actual cost is Required'),
 });
 
-export { taskBaseSchema, taskSchema, markTaskAsCompletedSchema };
+export {
+  markTaskAsCompletedSchema,
+  taskBaseSchema,
+  taskSchema,
+  updateTaskInstanceMetadataSchema,
+};

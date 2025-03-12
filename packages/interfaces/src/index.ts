@@ -3,6 +3,7 @@ export type {
   Option,
   FilterInput,
   SearchQuery,
+  UploadedFile,
 } from './common';
 export type {
   QueryParams,

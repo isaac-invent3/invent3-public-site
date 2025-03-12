@@ -16,6 +16,11 @@ const GenericBreadCrumb = ({ routes }: GenericBreadCrumbProps) => {
     <Breadcrumb
       spacing="4px"
       separator={<ChakraText color="neutral.600">/</ChakraText>}
+      sx={{
+        '& .chakra-breadcrumb__list': {
+          flexWrap: 'wrap',
+        },
+      }}
     >
       {routes.map((item, index) => (
         <BreadcrumbItem

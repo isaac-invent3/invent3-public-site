@@ -1,8 +1,8 @@
-import { Flex, HStack, SimpleGrid } from '@chakra-ui/react';
+import { HStack, SimpleGrid } from '@chakra-ui/react';
 import { Field } from 'formik';
 import { useState } from 'react';
 import DimensionDropDown from './DimensionDropDown';
-import { FormSectionInfo, FormTextInput } from '@repo/ui/components';
+import { FormInputWrapper, FormTextInput } from '@repo/ui/components';
 
 const sampleDimensions = [
   { value: 'kg', label: 'Kg' },
@@ -17,22 +17,20 @@ const AssetDimension = () => {
     length: 'Cm',
   });
   return (
-    <HStack
-      width="full"
-      alignItems="flex-start"
-      spacing="104px"
-      position="relative"
+    <FormInputWrapper
+      sectionMaxWidth="118px"
+      customSpacing="104px"
+      description="Enter the size or measurements of the asset."
+      title="Dimension"
+      isRequired
+      direction={{ base: 'column', md: 'row' }}
+      formSectionCustomStyle={{
+        maxW: { md: '118px' },
+      }}
     >
-      <Flex width="full" maxW="118px">
-        <FormSectionInfo
-          title="Dimension"
-          info="Enter the size or measurements of the asset."
-          isRequired
-        />
-      </Flex>
       <SimpleGrid
         width="full"
-        columns={4}
+        columns={{ base: 1, md: 2, lg: 4 }}
         gap="11px"
         position="relative"
         alignItems="flex-start"
@@ -103,7 +101,7 @@ const AssetDimension = () => {
           />
         </HStack>
       </SimpleGrid>
-    </HStack>
+    </FormInputWrapper>
   );
 };
 

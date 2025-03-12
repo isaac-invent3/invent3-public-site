@@ -1,28 +1,65 @@
-import { HStack } from '@chakra-ui/react';
+import { HStack, Image, Stack } from '@chakra-ui/react';
 
 import HeaderIcon from './HeaderIcon';
 import { SearchIcon, SettingsIcon } from '~/lib/components/CustomIcons/layout';
 import UserActionPopover from './UserActionPopover';
-import NotificationPopover from '~/lib/components/Notification';
 import { getBreadcrumb } from './BreadCrumb';
 import { usePathname } from 'next/navigation';
 import { GenericBreadCrumb } from '@repo/ui/components';
+import NotificationComponents from '~/lib/components/Notification';
 
-const Header = () => {
+interface HeaderProps {
+  setIsCollapse: React.Dispatch<React.SetStateAction<boolean>>;
+}
+const Header = (props: HeaderProps) => {
+  const { setIsCollapse } = props;
   const pathname = usePathname();
   const pathSegments = pathname.split('/').filter(Boolean);
   const breadCrumbData = getBreadcrumb(pathSegments);
 
   return (
-    <HStack width="full" justifyContent="space-between" mb="40px">
+    <Stack
+      width="full"
+      justifyContent="space-between"
+      mb={{ base: '32px', lg: '40px' }}
+      spacing="16px"
+      direction={{ base: 'column', md: 'row' }}
+      alignItems={{ base: 'flex-start', md: 'center' }}
+      px={{ base: '16px', md: 0 }}
+    >
       <GenericBreadCrumb routes={breadCrumbData} />
-      <HStack spacing="24px" pr="24px">
-        <HeaderIcon icon={SearchIcon} size="20px" />
-        <HeaderIcon icon={SettingsIcon} size="24px" />
-        <NotificationPopover />
-        <UserActionPopover />
+      <HStack
+        width={{ base: 'full', md: 'max-content' }}
+        justifyContent="space-between"
+      >
+        <HStack
+          width="40px"
+          height="40px"
+          rounded="8px"
+          bgColor="primary.500"
+          justifySelf="center"
+          alignSelf="center"
+          cursor="pointer"
+          onClick={() => setIsCollapse(false)}
+          display={{ md: 'none' }}
+          pl="16px" //Temporary fix of alignment
+          pt="8px" //Temporary fix of alignment
+        >
+          <Image
+            src="/logo-small-initials-white.svg"
+            alt="Invent3 logo"
+            height="24px"
+            width="8px"
+          />
+        </HStack>
+        <HStack spacing={{ base: '8px', md: '24px' }}>
+          <HeaderIcon icon={SearchIcon} size="20px" />
+          <HeaderIcon icon={SettingsIcon} size="24px" />
+          <NotificationComponents />
+          <UserActionPopover />
+        </HStack>
       </HStack>
-    </HStack>
+    </Stack>
   );
 };
 

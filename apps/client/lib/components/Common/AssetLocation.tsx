@@ -1,5 +1,5 @@
-import { Flex, HStack, Text } from '@chakra-ui/react';
-import { FormSectionInfo } from '@repo/ui/components';
+import { Text } from '@chakra-ui/react';
+import { FormInputWrapper } from '@repo/ui/components';
 
 interface AssetLocationProps {
   value: string | null;
@@ -8,14 +8,13 @@ const AssetLocation = (props: AssetLocationProps) => {
   const { value } = props;
 
   return (
-    <HStack width="full" alignItems="flex-start" spacing="56px">
-      <Flex width="full" maxW="130px">
-        <FormSectionInfo
-          title="Asset Location"
-          info="Specify where the asset is located"
-          isRequired
-        />
-      </Flex>
+    <FormInputWrapper
+      title="Asset Location"
+      description="Specify where the asset is located"
+      isRequired
+      sectionMaxWidth="130px"
+      customSpacing="56px"
+    >
       <Text
         color="black"
         bgColor="neutral.100"
@@ -27,7 +26,7 @@ const AssetLocation = (props: AssetLocationProps) => {
       >
         {value}
       </Text>
-    </HStack>
+    </FormInputWrapper>
   );
 };
 

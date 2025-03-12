@@ -1,6 +1,6 @@
 'use client';
 
-import { Flex, HStack, Text, useDisclosure } from '@chakra-ui/react';
+import { Flex, HStack, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 import { FormikProvider, useFormik } from 'formik';
 import { assetTransferSchema } from '~/lib/schemas/asset/main.schema';
@@ -17,11 +17,14 @@ import {
   removeSelectedAssetIds,
 } from '../../Common/utils';
 import PageHeader from '~/lib/components/UI/PageHeader';
+import { ROUTES } from '~/lib/utils/constants';
+import { useRouter } from 'next/navigation';
 
 const BulkTransfer = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [transferAsset, { isLoading }] = useTransferAssetMutation({});
   const { handleSubmit } = useCustomMutation();
+  const router = useRouter();
   const formik = useFormik({
     initialValues: {
       newOwnerId: undefined,
@@ -51,39 +54,47 @@ const BulkTransfer = () => {
     },
   });
 
+  const handleClose = () => {
+    removeSelectedAssetIds();
+    onClose();
+    router.push(`/${ROUTES.ASSETS}`);
+  };
+
   return (
     <Flex width="full" direction="column" pb="24px">
-      <PageHeader>Bulk Asset Transfer Request</PageHeader>
+      <Flex px={{ base: '16px', md: 0 }}>
+        <PageHeader>Bulk Asset Transfer Request</PageHeader>
+      </Flex>
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
           <Flex width="full" direction="column" gap="24px" mt="32px">
             <Flex
               width="full"
               py="32px"
-              px="25px"
+              px={{ base: '16px', md: '25px' }}
               direction="column"
-              gap="31px"
-              rounded="6px"
+              gap={{ base: '28px', md: '31px' }}
+              rounded={{ md: '6px' }}
               bgColor="white"
               minH="70vh"
             >
               <BulkAssetTable type="transfer" />
               <SectionTwo />
             </Flex>
-            <HStack spacing="16px" justifyContent="flex-end" width="full">
-              <HStack
-                as="button"
-                px="16px"
-                rounded="8px"
-                bgColor="#F6F6F6B2"
-                minH="50px"
-                minW="96px"
-                justifyContent="center"
+            <HStack
+              spacing="16px"
+              justifyContent={{ base: 'space-between', md: 'flex-end' }}
+              width="full"
+              px={{ base: '16px', md: 0 }}
+            >
+              <Button
+                type="button"
+                customStyles={{ width: '96px', bgColor: '#F6F6F6B2' }}
+                variant="secondary"
+                handleClick={handleClose}
               >
-                <Text size="md" color="primary.500">
-                  Cancel
-                </Text>
-              </HStack>
+                Cancel
+              </Button>
 
               <Button
                 type="submit"

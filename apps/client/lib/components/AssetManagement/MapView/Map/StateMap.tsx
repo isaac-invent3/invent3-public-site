@@ -4,6 +4,7 @@ import NIGERIA_CORDINATES from '~/lib/utils/NigeriaCordinates';
 import CustomMarker from './CustomMarker';
 import { SingleMapAssetData } from '~/lib/interfaces/asset/general.interface';
 import { LoadingSpinner } from '@repo/ui/components';
+import { VStack } from '@chakra-ui/react';
 
 interface GeoJSONData {
   type: string;
@@ -51,7 +52,11 @@ const StateMap = (props: StateMapProps) => {
   }, []);
 
   if (isLoading) {
-    return <LoadingSpinner />;
+    return (
+      <VStack justifyContent="center" minHeight="50vh" width="full">
+        <LoadingSpinner />
+      </VStack>
+    );
   }
 
   // Create a sorted list of markers, with the hovered marker placed last

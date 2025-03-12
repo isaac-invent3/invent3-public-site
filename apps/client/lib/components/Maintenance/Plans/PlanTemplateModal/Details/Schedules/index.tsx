@@ -1,4 +1,4 @@
-import { Heading, VStack } from '@chakra-ui/react';
+import { Heading, useMediaQuery, VStack } from '@chakra-ui/react';
 import { createColumnHelper } from '@tanstack/react-table';
 import React, { useEffect, useMemo, useState } from 'react';
 import { DataTable } from '@repo/ui/components';
@@ -32,6 +32,37 @@ const Schedule = (props: MaintenanceSchedulesProps) => {
       { skip: !plan?.maintenancePlanId }
     );
   const columnHelper = createColumnHelper<MaintenanceSchedule>();
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
+
+  const mobileColumns = useMemo(
+    () => {
+      const baseColumns = [
+        columnHelper.accessor('scheduleId', {
+          cell: (info) => info.getValue(),
+          header: '#',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('scheduleName', {
+          cell: (info) => info.getValue() ?? 'N/A',
+          header: 'Schedule Title',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('scheduledDate', {
+          cell: (info) => {
+            return (
+              dateFormatter(info.getValue(), 'DD / MM / YYYY hh:mmA') ?? 'N/A'
+            );
+          },
+          header: 'Start Date and Time',
+          enableSorting: false,
+        }),
+      ];
+
+      return baseColumns;
+    },
+    [[data]] //eslint-disable-line
+  );
+
   const columns = useMemo(
     () => {
       const baseColumns = [
@@ -66,7 +97,7 @@ const Schedule = (props: MaintenanceSchedulesProps) => {
         }),
 
         columnHelper.accessor('activeTasksCount', {
-          cell: (info) => info.getValue(),
+          cell: (info) => info.getValue() ?? 'N/A',
           header: 'No. Of Tasks',
           enableSorting: false,
         }),
@@ -85,7 +116,7 @@ const Schedule = (props: MaintenanceSchedulesProps) => {
   return (
     <VStack width="full" alignItems="flex-start" spacing="24px">
       <DataTable
-        columns={columns}
+        columns={isMobile ? mobileColumns : columns}
         data={data?.data?.items ?? []}
         showFooter={
           data?.data ? (data?.data?.totalPages > 1 ? true : false) : false

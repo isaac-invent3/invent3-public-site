@@ -16,7 +16,10 @@ const NewLocation = (props: NewLocationProps) => {
   return (
     <VStack spacing="32px" alignItems="flex-start" width="full">
       <VStack spacing="16px" alignItems="flex-start" width="full">
-        <DetailHeader variant="secondary" customStyles={{ fontWeight: 700 }}>
+        <DetailHeader
+          variant="secondary"
+          customStyles={{ size: { base: 'md', md: 'lg' }, fontWeight: 700 }}
+        >
           New Location
         </DetailHeader>
         {newLocation && (

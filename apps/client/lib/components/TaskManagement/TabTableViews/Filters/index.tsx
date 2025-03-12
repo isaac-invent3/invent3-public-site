@@ -1,55 +1,39 @@
-import CombinedLocationFilter from '~/lib/components/Common/FilterComponents/CombinedLocationFilter';
-import FilterWrapper from '~/lib/components/Common/FilterComponents/FilterWrapper';
-import { LocationFilter, Option } from '~/lib/interfaces/general.interfaces';
-import { initialFilterData } from '..';
+import { FilterDisplay } from '@repo/ui/components';
+import { LocationFilter } from '~/lib/interfaces/general.interfaces';
+import BulkActions from './BulkFilters';
+import GeneralFilter from './GeneralFilter';
 
 interface FiltersProps {
   filterData: LocationFilter;
   setFilterData: React.Dispatch<React.SetStateAction<LocationFilter>>;
   handleApplyFilter: () => Promise<void>;
+  isOpen: boolean;
+  activeFilter: 'bulk' | 'general' | null;
+  selectedTaskIds:number[]
 }
 const Filters = (props: FiltersProps) => {
-  const { filterData, setFilterData, handleApplyFilter } = props;
+  const {
+    filterData,
+    setFilterData,
+    handleApplyFilter,
+    activeFilter,
+    isOpen,
+    selectedTaskIds,
+  } = props;
 
-  type FilterLabel = keyof LocationFilter;
-
-  const handleFilterData = (option: Option, filterLabel: FilterLabel) => {
-    setFilterData((prev) => {
-      const selectedFilterData = [...prev[filterLabel]];
-
-      const optionIndex = selectedFilterData.find(
-        (item) => item.value === option.value
-      );
-
-      if (optionIndex) {
-        // Remove the value if it already exists
-        return {
-          ...prev,
-          [filterLabel]: selectedFilterData.filter(
-            (item) => item.value !== option.value
-          ),
-        };
-      } else {
-        // Add the value if it does not exist
-        return {
-          ...prev,
-          [filterLabel]: [...selectedFilterData, option],
-        };
-      }
-    });
-  };
   return (
-    <FilterWrapper
-      handleApplyFilter={handleApplyFilter}
-      handleClearFilter={() => setFilterData(initialFilterData)}
-    >
-      <CombinedLocationFilter
-        selectedRegion={filterData.region}
-        selectedArea={filterData.area}
-        selectedBranch={filterData.branch}
-        handleSelectedOption={handleFilterData}
-      />
-    </FilterWrapper>
+    <FilterDisplay isOpen={isOpen}>
+      {activeFilter === 'bulk' && (
+        <BulkActions selectedTaskIds={selectedTaskIds} />
+      )}
+      {activeFilter === 'general' && (
+        <GeneralFilter
+          filterData={filterData}
+          setFilterData={setFilterData}
+          handleApplyFilter={handleApplyFilter}
+        />
+      )}
+    </FilterDisplay>
   );
 };
 

@@ -1,7 +1,7 @@
-import { Divider, Flex, HStack, Text } from '@chakra-ui/react';
+import { Divider, HStack, Text } from '@chakra-ui/react';
 
+import { FormInputWrapper, FormTextInput } from '@repo/ui/components';
 import { Field } from 'formik';
-import { FormSectionInfo, FormTextInput } from '@repo/ui/components';
 
 interface EstimatedDurationProps {
   sectionMaxWidth: string;
@@ -10,14 +10,13 @@ interface EstimatedDurationProps {
 const EstimatedDuration = (props: EstimatedDurationProps) => {
   const { sectionMaxWidth, spacing } = props;
   return (
-    <HStack width="full" alignItems="flex-start" spacing={spacing}>
-      <Flex width="full" maxW={sectionMaxWidth}>
-        <FormSectionInfo
-          title="Estimated Duration"
-          info="Enter the approximate hours to complete the task"
-          isRequired
-        />
-      </Flex>
+    <FormInputWrapper
+      sectionMaxWidth={sectionMaxWidth}
+      customSpacing={spacing}
+      title="Estimated Duration"
+      description="Enter the approximate hours to complete the task"
+      isRequired
+    >
       <Field
         as={FormTextInput}
         name="estimatedDurationInHours"
@@ -37,7 +36,7 @@ const EstimatedDuration = (props: EstimatedDurationProps) => {
           </HStack>
         }
       />
-    </HStack>
+    </FormInputWrapper>
   );
 };
 

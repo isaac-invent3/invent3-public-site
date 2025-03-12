@@ -1,11 +1,29 @@
-import { BaseEntity } from '@repo/interfaces';
-
-interface Template extends BaseEntity {
+interface Template {
+  rowId: number;
   templateId: number;
+  guid: string;
   contextId: number;
-  contextTypeId: number;
   templateName: string;
+  isDeleted: boolean;
   description: string;
+  systemContextTypeId: number;
+  systemContextTypeDisplayName: string;
+  createdBy: string;
+  dateCreated: string;
 }
 
-export type { Template };
+interface TemplateFilter {
+  contextTypeId: number[];
+  owner: number[];
+  createdDate: string | null;
+}
+
+interface UpdateTicketMetadataPayload {
+  ticketIds: number[];
+  ticketStatusId?: number;
+  ticketPriorityId?: number;
+  assignedTo?: number;
+  lastModifiedBy: string;
+}
+
+export type { Template, TemplateFilter, UpdateTicketMetadataPayload };

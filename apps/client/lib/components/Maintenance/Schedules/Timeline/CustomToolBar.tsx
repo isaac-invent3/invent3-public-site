@@ -24,7 +24,7 @@ const CustomToolbar = (props: CustomToolbarProps) => {
   const todayButtonStyle = { bgColor: '#B4BFCA4D', color: 'primary.500' };
 
   return (
-    <HStack justify="space-between" width="full" mb="14px">
+    <HStack justify="space-between" width="full" mb="14px" flexWrap='wrap'>
       <HStack spacing="16px">
         <Text
           color="black"
@@ -49,7 +49,7 @@ const CustomToolbar = (props: CustomToolbarProps) => {
           Today
         </Button>
       </HStack>
-      <HStack spacing="12px">
+      <HStack spacing="12px" flexWrap='wrap'>
         <HStack bgColor="white" rounded="8px" padding="4px" height="38px">
           {['day', 'week', 'month'].map((item, index) => (
             <Button

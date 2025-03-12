@@ -8,18 +8,21 @@ import {
   REHYDRATE,
   persistReducer,
 } from 'redux-persist';
+import { createWrapper } from 'next-redux-wrapper';
 
 import storage from './customStorage';
 import { categoryApi } from './services/asset/category.services';
+import { companyApi } from './services/company.services';
 import { conditionApi } from './services/asset/condition.services';
 import { depreciationApi } from './services/asset/depreciation.services';
 import { assetApi } from './services/asset/general.services';
 import { assetGroupTypeApi } from './services/asset/groupType.services';
 import { assetStatsApi } from './services/asset/stats.services';
 import { assetTypeApi } from './services/asset/types.services';
-import { vendorsApi } from './services/asset/vendor.services';
+import { assetVendorsApi } from './services/asset/vendors.services';
 import { dashboardApi } from './services/dashboard.services';
 import { employeesApi } from './services/employees.services';
+import { frontdeskDashboardApi } from './services/dashboard/frontdesk.services';
 import { maintenanceFrequencyApi } from './services/maintenance/frequency.services';
 import { maintenancePlanApi } from './services/maintenance/plan.services';
 import { maintenanceScheduleApi } from './services/maintenance/schedule.services';
@@ -42,7 +45,15 @@ import generalSlice from './slices/GeneralSlice';
 import maintenanceSlice from './slices/MaintenanceSlice';
 import reportSlice from './slices/ReportSlice';
 import taskSlice from './slices/TaskSlice';
+import templateSlice from './slices/TemplateSlice';
 import ticketSlice from './slices/TicketSlice';
+import userSlice from './slices/UserSlice';
+import roleSlice from './slices/RoleSlice';
+import vendorSlice from './slices/VendorSlice';
+import notesSlice from './slices/NoteSlice';
+import auditLogSlice from './slices/AuditLogSlice';
+import companySlice from './slices/CompanySlice';
+import settingSlice from './slices/SettingsSlice';
 
 import { approvalWorkflowRequestApi } from './services/approval-workflow/requests.services';
 import { assetDisposalApi } from './services/asset/disposal.services';
@@ -68,7 +79,18 @@ import { approvalWorkflowPartyInstanceApi } from './services/approval-workflow/p
 import { approvalWorkflowRequirementTypeApi } from './services/approval-workflow/requirementTypes.services';
 import { approvalWorkflowStatusApi } from './services/approval-workflow/statuses.services';
 import { approvalWorkflowTypeApi } from './services/approval-workflow/types.services';
-
+import { vendorApi } from './services/vendor.services';
+import { logApi } from './services/log.services';
+import { rolesApi } from './services/role.services';
+import { moduleApi } from './services/modules.services';
+import { superAdminApi } from './services/dashboard/superadmin.services';
+import { clientAdminApi } from './services/dashboard/clientadmin.services';
+import { industryApi } from './services/industry.services';
+import { subscriptionApi } from './services/subscription.services';
+import { thirdPartyApi } from './services/dashboard/thirdparty.services';
+import { complianceApi } from './services/asset/compliance.services';
+import { notesApi } from './services/notes.services';
+import { fieldEngineerDashboardApi } from './services/dashboard/fieldengineer.services';
 export const persistConfig = {
   key: 'root',
   storage,
@@ -84,6 +106,8 @@ const rootReducer = combineReducers({
   [assetStatsApi.reducerPath]: assetStatsApi.reducer,
   [assetTypeApi.reducerPath]: assetTypeApi.reducer,
   [conditionApi.reducerPath]: conditionApi.reducer,
+  [assetVendorsApi.reducerPath]: assetVendorsApi.reducer,
+  [complianceApi.reducerPath]: complianceApi.reducer,
 
   // Maintenance-related APIs
   [maintenanceFrequencyApi.reducerPath]: maintenanceFrequencyApi.reducer,
@@ -101,6 +125,11 @@ const rootReducer = combineReducers({
 
   // Dashboard-related APIs
   [dashboardApi.reducerPath]: dashboardApi.reducer,
+  [frontdeskDashboardApi.reducerPath]: frontdeskDashboardApi.reducer,
+  [superAdminApi.reducerPath]: superAdminApi.reducer,
+  [clientAdminApi.reducerPath]: clientAdminApi.reducer,
+  [thirdPartyApi.reducerPath]: thirdPartyApi.reducer,
+  [fieldEngineerDashboardApi.reducerPath]: fieldEngineerDashboardApi.reducer,
 
   // Category and condition APIs
   [categoryApi.reducerPath]: categoryApi.reducer,
@@ -135,7 +164,7 @@ const rootReducer = combineReducers({
   [reportApi.reducerPath]: reportApi.reducer,
 
   // Vendor-related APIs
-  [vendorsApi.reducerPath]: vendorsApi.reducer,
+  [vendorApi.reducerPath]: vendorApi.reducer,
 
   // Notification APIs
   [notificationApi.reducerPath]: notificationApi.reducer,
@@ -155,14 +184,41 @@ const rootReducer = combineReducers({
   [approvalWorkflowStatusApi.reducerPath]: approvalWorkflowStatusApi.reducer,
   [approvalWorkflowTypeApi.reducerPath]: approvalWorkflowTypeApi.reducer,
 
+  // Log APIS
+  [logApi.reducerPath]: logApi.reducer,
+
+  // Roles APIS
+  [rolesApi.reducerPath]: rolesApi.reducer,
+
+  // Company APIS
+  [companyApi.reducerPath]: companyApi.reducer,
+  [subscriptionApi.reducerPath]: subscriptionApi.reducer,
+
+  // Module APIS
+  [moduleApi.reducerPath]: moduleApi.reducer,
+
+  // Industry APIS
+  [industryApi.reducerPath]: industryApi.reducer,
+
+  // Notes APIS
+  [notesApi.reducerPath]: notesApi.reducer,
+
   asset: assetSlice,
+  auditLog: auditLogSlice,
   general: generalSlice,
   dashboard: dashboardSlice,
   maintenance: maintenanceSlice,
   task: taskSlice,
   date: dateSlice,
+  template: templateSlice,
+  vendor: vendorSlice,
+  user: userSlice,
   ticket: ticketSlice,
   report: reportSlice,
+  role: roleSlice,
+  company: companySlice,
+  settings: settingSlice,
+  notes: notesSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -184,6 +240,8 @@ export const makeStore = () => {
         assetStatsApi.middleware,
         assetTypeApi.middleware,
         assetDisposalApi.middleware,
+        assetVendorsApi.middleware,
+        complianceApi.middleware,
 
         // Maintenance-related APIs
         maintenanceFrequencyApi.middleware,
@@ -208,6 +266,11 @@ export const makeStore = () => {
 
         // Dashboard APIs
         dashboardApi.middleware,
+        frontdeskDashboardApi.middleware,
+        superAdminApi.middleware,
+        clientAdminApi.middleware,
+        thirdPartyApi.middleware,
+        fieldEngineerDashboardApi.middleware,
 
         // Depreciation APIs
         depreciationApi.middleware,
@@ -238,7 +301,7 @@ export const makeStore = () => {
         userApi.middleware,
 
         // Vendor-related APIs
-        vendorsApi.middleware,
+        vendorApi.middleware,
         systemContextTypesApi.middleware,
 
         // Report Apis
@@ -255,6 +318,25 @@ export const makeStore = () => {
         approvalWorkflowRequirementTypeApi.middleware,
         approvalWorkflowStatusApi.middleware,
         approvalWorkflowTypeApi.middleware,
+
+        // Log Apis
+        logApi.middleware,
+
+        // Roles Apis
+        rolesApi.middleware,
+
+        // Company APIs
+        companyApi.middleware,
+        subscriptionApi.middleware,
+
+        // Module APIs
+        moduleApi.middleware,
+
+        // Industry APIs
+        industryApi.middleware,
+
+        // Notes Apis
+        notesApi.middleware,
       ]),
   });
 };
@@ -262,3 +344,5 @@ export const makeStore = () => {
 export type AppStore = ReturnType<typeof makeStore>;
 export type RootState = ReturnType<AppStore['getState']>;
 export type AppDispatch = AppStore['dispatch'];
+
+export const wrapper = createWrapper<AppStore>(makeStore, { debug: true });

@@ -1,7 +1,7 @@
-import { Flex, HStack, VStack } from '@chakra-ui/react';
+import { VStack } from '@chakra-ui/react';
+import { ErrorMessage, FormInputWrapper } from '@repo/ui/components';
 import { useField, useFormikContext } from 'formik';
 import UserDisplayAndAddButton from '../../Common/UserDisplayAndAddButton';
-import { ErrorMessage, FormSectionInfo } from '@repo/ui/components';
 
 interface TaskAssignedToProps {
   sectionMaxWidth: string;
@@ -14,14 +14,13 @@ const TaskAssignedTo = (props: TaskAssignedToProps) => {
   const [field, meta, helpers] = useField('assignedTo');
 
   return (
-    <HStack width="full" alignItems="flex-start" spacing={spacing}>
-      <Flex width="full" maxW={sectionMaxWidth}>
-        <FormSectionInfo
-          title="Assigned to"
-          info="Select the person responsible for this task"
-          isRequired
-        />
-      </Flex>
+    <FormInputWrapper
+      sectionMaxWidth={sectionMaxWidth}
+      customSpacing={spacing}
+      title="Assigned to"
+      description="Select the person responsible for this task"
+      isRequired
+    >
       <VStack width="full" spacing="4px" alignItems="flex-start">
         <UserDisplayAndAddButton
           selectedUser={values?.assignedToEmployeeName}
@@ -34,7 +33,7 @@ const TaskAssignedTo = (props: TaskAssignedToProps) => {
           <ErrorMessage>{meta.error}</ErrorMessage>
         )}
       </VStack>
-    </HStack>
+    </FormInputWrapper>
   );
 };
 

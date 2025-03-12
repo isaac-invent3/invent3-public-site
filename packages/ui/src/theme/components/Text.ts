@@ -5,6 +5,10 @@ const CustomText: ComponentStyleConfig = {
     fontWeight: 500,
   },
   sizes: {
+    xs: {
+      fontSize: '10px',
+      lineHeight: '11.88px',
+    },
     base: {
       fontSize: '12px',
       lineHeight: '14.26px',
@@ -16,6 +20,14 @@ const CustomText: ComponentStyleConfig = {
     lg: {
       fontSize: '16px',
       lineHeight: '19.01px',
+    },
+    xl: {
+      fontSize: '24px',
+      lineHeight: '28.51px',
+    },
+    '2xl': {
+      fontSize: '32px',
+      lineHeight: '38.02px',
     },
   },
   defaultProps: {

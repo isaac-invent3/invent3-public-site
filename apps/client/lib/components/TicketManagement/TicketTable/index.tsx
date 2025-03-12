@@ -1,32 +1,61 @@
-import { Flex } from '@chakra-ui/react';
+import { Flex, useMediaQuery } from '@chakra-ui/react';
+import { BaseApiResponse, ListResponse } from '@repo/interfaces';
+import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
-import { useMemo, useState } from 'react';
+import { Dispatch, SetStateAction, useMemo } from 'react';
 import UserInfo from '~/lib/components/Common/UserInfo';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
-import { DataTable } from '@repo/ui/components';
 import { Ticket, TicketCategory } from '~/lib/interfaces/ticket.interfaces';
-import { useGetTicketsByTabScopeQuery } from '~/lib/redux/services/ticket.services';
-import { COLOR_CODES_FALLBACK, DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import {
+  COLOR_CODES_FALLBACK,
+  SYSTEM_CONTEXT_DETAILS,
+} from '~/lib/utils/constants';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import TicketOverlays from '../Overlays';
 import PopoverAction from './PopoverAction';
+import { useAppDispatch } from '~/lib/redux/hooks';
+import { setSelectedTicket } from '~/lib/redux/slices/TicketSlice';
+import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 
 interface TicketTableProps {
-  category: TicketCategory;
+  category?: TicketCategory;
+  data: BaseApiResponse<ListResponse<Ticket>> | undefined;
+  isLoading: boolean;
+  isFetching: boolean;
+  isSelectable?: boolean;
+  currentPage?: number;
+  setCurrentPage?: Dispatch<SetStateAction<number>>;
+  pageSize?: number;
+  setPageSize?: Dispatch<SetStateAction<number>>;
+  selectedRows?: number[];
+  setSelectedRows?: React.Dispatch<React.SetStateAction<number[]>>;
+  emptyLines?: number;
+  shouldHideFooter?: boolean;
+  showPopover?: boolean;
 }
 const TicketTable = (props: TicketTableProps) => {
-  const { category } = props;
-  const [selectedRows, setSelectedRows] = useState<number[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const { data, isLoading, isFetching } = useGetTicketsByTabScopeQuery({
-    pageNumber: currentPage,
-    pageSize: pageSize,
-    tabScopeName: category,
-  });
-
+  const {
+    category,
+    data,
+    isFetching,
+    isLoading,
+    isSelectable,
+    currentPage,
+    pageSize,
+    setCurrentPage,
+    setPageSize,
+    selectedRows,
+    setSelectedRows,
+    emptyLines,
+    shouldHideFooter,
+    showPopover = true,
+  } = props;
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
+  const { updateSearchParam } = useCustomSearchParams();
+  const dispatch = useAppDispatch();
   const columnHelper = createColumnHelper<Ticket>();
-  const columns = useMemo(
+
+  const mobileColumns = useMemo(
     () => {
       const baseColumns = [
         columnHelper.accessor('ticketId', {
@@ -43,13 +72,67 @@ const TicketTable = (props: TicketTableProps) => {
 
         ...(category === 'new'
           ? [
-              columnHelper.accessor('issueDescription', {
-                cell: (info) => info.getValue(),
-                header: 'Description',
+              columnHelper.accessor('reportedBy', {
+                cell: (info) => <UserInfo name={info.getValue()} />,
+                header: 'Requested By',
+                enableSorting: true,
+              }),
+            ]
+          : []),
+
+        ...(category !== 'new' && category !== 'completed'
+          ? [
+              columnHelper.accessor('assignedTo', {
+                cell: (info) => <UserInfo name={info.getValue()} />,
+                header: 'Assigned To',
                 enableSorting: false,
               }),
             ]
           : []),
+
+        ...(category === 'completed'
+          ? [
+              columnHelper.accessor('resolutionDate', {
+                cell: (info) =>
+                  dateFormatter(info.getValue(), 'DD / MM / YYYY hh:mma'),
+                header: 'Resolution Date',
+                enableSorting: false,
+              }),
+            ]
+          : []),
+      ];
+
+      const Popover = columnHelper.accessor('facilityRef', {
+        cell: (info) => (
+          <PopoverAction ticket={info.row.original} category={category} />
+        ),
+        header: '',
+        enableSorting: false,
+      });
+
+      if (showPopover) {
+        baseColumns.push(Popover);
+      }
+
+      return baseColumns;
+    },
+    [[data?.data?.items]] //eslint-disable-line
+  );
+
+  const columns = useMemo(
+    () => {
+      const baseColumns = [
+        columnHelper.accessor('ticketId', {
+          cell: (info) => info.getValue(),
+          header: '#',
+          enableSorting: false,
+        }),
+
+        columnHelper.accessor('ticketTitle', {
+          cell: (info) => info.getValue(),
+          header: 'Title',
+          enableSorting: false,
+        }),
 
         columnHelper.accessor('ticketTypeName', {
           cell: (info) => info.getValue(),
@@ -127,15 +210,19 @@ const TicketTable = (props: TicketTableProps) => {
               }),
             ]
           : []),
-
-        columnHelper.accessor('facilityRef', {
-          cell: (info) => (
-            <PopoverAction ticket={info.row.original} category={category} />
-          ),
-          header: '',
-          enableSorting: false,
-        }),
       ];
+
+      const Popover = columnHelper.accessor('facilityRef', {
+        cell: (info) => (
+          <PopoverAction ticket={info.row.original} category={category} />
+        ),
+        header: '',
+        enableSorting: false,
+      });
+
+      if (showPopover) {
+        baseColumns.push(Popover);
+      }
 
       return baseColumns;
     },
@@ -143,11 +230,10 @@ const TicketTable = (props: TicketTableProps) => {
   );
 
   return (
-    <Flex width="full" mt="24px">
+    <Flex width="full">
       <TicketOverlays />
-
       <DataTable
-        columns={columns}
+        columns={isMobile ? mobileColumns : columns}
         data={data?.data?.items ?? []}
         isLoading={isLoading}
         isFetching={isFetching}
@@ -158,8 +244,21 @@ const TicketTable = (props: TicketTableProps) => {
         setPageSize={setPageSize}
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
-        emptyLines={15}
-        isSelectable
+        emptyLines={emptyLines}
+        isSelectable={isSelectable}
+        handleSelectRow={(row) => {
+          dispatch(
+            setSelectedTicket({
+              action: ['view'],
+              category: category ?? 'new',
+              data: row,
+            })
+          );
+          updateSearchParam(SYSTEM_CONTEXT_DETAILS.TICKETS.slug, row.ticketId);
+        }}
+        showFooter={
+          shouldHideFooter && data?.data?.totalPages === 1 ? true : false
+        }
         maxTdWidth="200px"
         customThStyle={{
           paddingLeft: '16px',
@@ -173,7 +272,6 @@ const TicketTable = (props: TicketTableProps) => {
           paddingBottom: '12px',
         }}
         rowColorKey="priorityColorCode"
-        customTableContainerStyle={{ rounded: 'none' }}
       />
     </Flex>
   );

@@ -20,12 +20,13 @@ export interface TextInputProps {
   value?: string | number;
   placeholder?: string;
   customStyle?: InputProps;
-  formControlWrapperStyles?: FormControlProps
+  formControlWrapperStyles?: FormControlProps;
   customLeftElement?: React.ReactNode;
   customRightElement?: React.ReactNode;
   leftElementWidth?: string;
   isDisabled?: boolean;
   variant?: 'primary' | 'secondary';
+  showTitleAfterContent?: boolean;
   errorMessage?: string;
   isInvalid?: boolean;
   // eslint-disable-next-line no-unused-vars
@@ -54,6 +55,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>((props, ref) => {
     onBlur,
     onFocus,
     formControlWrapperStyles,
+    showTitleAfterContent = true,
   } = props;
 
   const [show, setShow] = useState(false);
@@ -80,33 +82,37 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>((props, ref) => {
           </InputLeftElement>
         )}
 
-        <FormLabel
-          position="absolute"
-          top={isFocused || value || value === 0 ? '10px' : '50%'}
-          left={customLeftElement ? (leftElementWidth ?? '16px') : '16px'}
-          transform={
-            isFocused || value || value === 0
-              ? 'translateY(-40%) scale(0.85)'
-              : 'translateY(-50%)'
-          }
-          transformOrigin="left top"
-          fontSize={isFocused || value || value === 0 ? '12px' : '14px'}
-          lineHeight={isFocused || value || value === 0 ? '14.26px' : '16.63px'}
-          color={
-            isFocused || value
-              ? variant === 'primary'
-                ? 'neutral.600'
-                : 'neutral.800'
-              : variant === 'primary'
-                ? 'neutral.300'
-                : 'neutral.700'
-          }
-          pointerEvents="none"
-          transition="all 0.2s ease-in-out"
-          zIndex={1}
-        >
-          {placeholder ? (isFocused || value ? label : placeholder) : label}
-        </FormLabel>
+        {showTitleAfterContent && (
+          <FormLabel
+            position="absolute"
+            top={isFocused || value || value === 0 ? '10px' : '50%'}
+            left={customLeftElement ? (leftElementWidth ?? '16px') : '16px'}
+            transform={
+              isFocused || value || value === 0
+                ? 'translateY(-40%) scale(0.85)'
+                : 'translateY(-50%)'
+            }
+            transformOrigin="left top"
+            fontSize={isFocused || value || value === 0 ? '12px' : '14px'}
+            lineHeight={
+              isFocused || value || value === 0 ? '14.26px' : '16.63px'
+            }
+            color={
+              isFocused || value
+                ? variant === 'primary'
+                  ? 'neutral.600'
+                  : 'neutral.800'
+                : variant === 'primary'
+                  ? 'neutral.300'
+                  : 'neutral.700'
+            }
+            pointerEvents="none"
+            transition="all 0.2s ease-in-out"
+            zIndex={1}
+          >
+            {placeholder ? (isFocused || value ? label : placeholder) : label}
+          </FormLabel>
+        )}
 
         <Input
           ref={ref}
@@ -121,7 +127,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>((props, ref) => {
           position="relative"
           rounded="8px"
           height="50px"
-          pt={isFocused || value ? '10px' : '6px'}
+          pt={(isFocused || value) && showTitleAfterContent ? '10px' : '6px'}
           pl={customLeftElement ? (leftElementWidth ?? '16px') : '16px'}
           pr={customRightElement || type === 'password' ? '36px' : '16px'}
           bgColor={variant === 'primary' ? 'neutral.100' : '#F7F7F799'}
@@ -152,6 +158,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>((props, ref) => {
           _placeholder={{
             color: 'netural.700',
           }}
+          placeholder={!showTitleAfterContent ? placeholder : undefined}
           {...customStyle}
         />
 

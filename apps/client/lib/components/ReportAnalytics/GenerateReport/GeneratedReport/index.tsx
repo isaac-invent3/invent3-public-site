@@ -108,7 +108,7 @@ const GeneratedReport = (props: GeneratedReportProps) => {
 
   return (
     <VStack mt={6}>
-      <HStack spacing="16px" alignSelf="flex-end">
+      <HStack spacing="16px" alignSelf="flex-end" flexWrap='wrap'>
         <FilterButton
           chevron={false}
           icon={CalendarIcon}
@@ -153,7 +153,6 @@ const GeneratedReport = (props: GeneratedReportProps) => {
           paddingTop: '12px',
           paddingBottom: '12px',
         }}
-        customTableContainerStyle={{ rounded: 'none' }}
       />
 
       <ScheduleReportDrawer

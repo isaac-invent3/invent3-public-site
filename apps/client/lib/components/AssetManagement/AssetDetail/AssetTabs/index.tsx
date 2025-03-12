@@ -14,6 +14,7 @@ import GeneralTab from './GeneralTab';
 import HistoryTab from './HistoryTab';
 import MaintenanceTab from './MaintenanceTab';
 import RelationshipTab from './RelationshipTab';
+import AssetTickets from './AssetTickets';
 
 const AssetTabs = () => {
   const [tabIndex, setTabIndex] = useState(0);
@@ -48,6 +49,11 @@ const AssetTabs = () => {
       slug: 'assetComponents',
       component: <RelationshipTab />,
     },
+    {
+      label: 'Open Tickets',
+      slug: 'openTickets',
+      component: <AssetTickets />,
+    },
   ];
 
   const { updateSearchParam, getSearchParam } = useCustomSearchParams();
@@ -62,7 +68,7 @@ const AssetTabs = () => {
     }
   }, []);
   return (
-    <Flex width="full" px="32px">
+    <Flex width="full" px={{ base: '16px', md: '32px' }}>
       <Tabs
         variant="custom"
         onChange={(index) => setTabIndex(index)}

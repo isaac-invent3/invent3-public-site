@@ -7,6 +7,7 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { Task, taskFormDetails } from '~/lib/interfaces/task.interfaces';
 import { useDeleteTaskMutation } from '~/lib/redux/services/task/general.services';
 import { ROUTES } from '~/lib/utils/constants';
+import usePermissionAccess from '~/lib/hooks/useRoleAccess';
 
 const PopoverAction = (task: Task, type: 'drawer' | 'page') => {
   const {
@@ -19,6 +20,8 @@ const PopoverAction = (task: Task, type: 'drawer' | 'page') => {
     onOpen: onOpenDelete,
     onClose: onCloseDelete,
   } = useDisclosure();
+  const canEditTask = usePermissionAccess('task:edit');
+  const canDeleteTask = usePermissionAccess('task:delete');
 
   const { handleSubmit } = useCustomMutation();
   const [deleteTask, { isLoading }] = useDeleteTaskMutation({});
@@ -39,19 +42,23 @@ const PopoverAction = (task: Task, type: 'drawer' | 'page') => {
     <>
       <GenericPopover width="129px" placement="bottom-start">
         <VStack width="full" alignItems="flex-start" spacing="16px">
-          <Text
-            cursor="pointer"
-            {...(type === 'drawer' ? { onClick: () => onOpenEdit() } : {})}
-            as={type === 'page' ? 'a' : 'button'}
-            {...(type === 'page'
-              ? { href: `/${ROUTES.TASKS}/${task.taskId}/edit` }
-              : {})}
-          >
-            Edit
-          </Text>
-          <Text cursor="pointer" onClick={onOpenDelete}>
-            Delete
-          </Text>
+          {canEditTask && (
+            <Text
+              cursor="pointer"
+              {...(type === 'drawer' ? { onClick: () => onOpenEdit() } : {})}
+              as={type === 'page' ? 'a' : 'button'}
+              {...(type === 'page'
+                ? { href: `/${ROUTES.TASKS}/${task.taskId}/edit` }
+                : {})}
+            >
+              Edit
+            </Text>
+          )}
+          {canDeleteTask && (
+            <Text cursor="pointer" onClick={onOpenDelete}>
+              Delete
+            </Text>
+          )}
         </VStack>
       </GenericPopover>
       <TaskFormDrawer

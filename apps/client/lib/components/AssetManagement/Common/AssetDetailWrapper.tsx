@@ -2,6 +2,7 @@ import {
   Flex,
   Heading,
   HStack,
+  Stack,
   StackProps,
   useDisclosure,
   VStack,
@@ -40,19 +41,28 @@ const AssetDetailWrapper = (props: AssetDetailWrapperProps) => {
         width="full"
         {...customStyle}
       >
-        <HStack
+        <Stack
           width="full"
+          direction={{ base: 'column', md: 'row' }}
           justifyContent="space-between"
           borderBottom="1px solid #BBBBBB80"
           pb="4px"
         >
           <DetailHeader
             variant="secondary"
-            customStyles={{ fontWeight: 700, borderBottom: 'none' }}
+            customStyles={{
+              size: { base: 'md', lg: 'lg' },
+              fontWeight: 700,
+              borderBottom: 'none',
+            }}
           >
             Asset Details
           </DetailHeader>
-          <HStack spacing="16px">
+          <HStack
+            spacing={{ base: '8px', sm: '16px' }}
+            flexWrap={{ base: 'wrap', sm: 'nowrap' }}
+            width="full"
+          >
             {showMaintenanceHistoryButton && (
               <Button
                 variant="outline"
@@ -78,13 +88,13 @@ const AssetDetailWrapper = (props: AssetDetailWrapperProps) => {
               View Full Asset Details
             </Button>
           </HStack>
-        </HStack>
+        </Stack>
 
         <HStack spacing="16px" alignItems="flex-start" width="full">
           <Flex
             position="relative"
-            width="123px"
-            height="100px"
+            width={{ base: '95.44px', md: '123px' }}
+            height={{ base: '95.44px', md: '100px' }}
             overflow="hidden"
             rounded="12px"
             bgColor="neutral.100"
@@ -96,14 +106,14 @@ const AssetDetailWrapper = (props: AssetDetailWrapperProps) => {
               alt="Asset image"
             />
           </Flex>
-          <VStack spacing="16px" alignItems="flex-start" width="full">
-            <HStack spacing="24px">
-              <Heading
-                as="h4"
-                fontSize="24px"
-                lineHeight="28.51px"
-                color="black"
-              >
+          <VStack
+            spacing="16px"
+            alignItems="flex-start"
+            width="full"
+            flexWrap="wrap"
+          >
+            <HStack spacing={{ base: '16px', lg: '24px' }} flexWrap="wrap">
+              <Heading as="h4" size="lg" color="black">
                 {assetName}
               </Heading>
               {showStatus && (
@@ -117,7 +127,7 @@ const AssetDetailWrapper = (props: AssetDetailWrapperProps) => {
           </VStack>
         </HStack>
       </VStack>
-      <AssetDetail data={assetData} onClose={onClose} isOpen={isOpen} />
+      <AssetDetail onClose={onClose} isOpen={isOpen} />
     </>
   );
 };

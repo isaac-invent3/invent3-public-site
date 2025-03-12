@@ -1,8 +1,8 @@
 'use client';
 
-import { Skeleton } from '@chakra-ui/react';
 import { useSearchParams } from 'next/navigation';
 import PlanForm from '~/lib/components/Maintenance/Plans/PlanForm';
+import PageLoadingSkeleton from '~/lib/components/UI/PageLoadingSkeleton';
 import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { useGetMaintenancePlanByIdQuery } from '~/lib/redux/services/maintenance/plan.services';
@@ -22,7 +22,7 @@ export default function Page() {
 
   if (templateId) {
     if (isLoading) {
-      return <Skeleton width="full" rounded="8px" height="250px" mt="80px" />;
+      return <PageLoadingSkeleton />;
     }
 
     if (data?.data) {

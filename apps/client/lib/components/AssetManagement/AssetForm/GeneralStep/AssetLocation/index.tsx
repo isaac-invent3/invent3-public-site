@@ -1,19 +1,11 @@
 /* eslint-disable no-unused-vars */
-import {
-  Flex,
-  Grid,
-  GridItem,
-  HStack,
-  Text,
-  useDisclosure,
-  VStack,
-} from '@chakra-ui/react';
+import { Grid, GridItem, Text, useDisclosure, VStack } from '@chakra-ui/react';
 import LocationModal from './Modals/LocationModal';
 import { AssetFormDetails } from '~/lib/interfaces/asset/general.interface';
 import {
   ErrorMessage,
   FormAddButton,
-  FormSectionInfo,
+  FormInputWrapper,
 } from '@repo/ui/components';
 import { useField } from 'formik';
 import { useAppSelector } from '~/lib/redux/hooks';
@@ -49,24 +41,22 @@ const AssetLocation = (props: AssetLocationProps) => {
     }
   }, [meta.value, meta.error]);
   return (
-    <HStack
-      width="full"
-      alignItems="flex-start"
-      spacing="104px"
-      position="relative"
+    <FormInputWrapper
+      sectionMaxWidth="118px"
+      customSpacing="104px"
+      description="Specify where the asset is located"
+      title="Location"
+      isRequired
+      direction={{ base: 'column', md: 'row' }}
+      formSectionCustomStyle={{
+        maxW: { md: '118px' },
+      }}
     >
-      <Flex width="full" maxW="118px">
-        <FormSectionInfo
-          title="Location"
-          info="Specify where the asset is located"
-          isRequired
-        />
-      </Flex>
       <Grid templateColumns="repeat(4, 1fr)" gap="16px" width="full">
         <GridItem colSpan={4}>
           <Grid templateColumns="repeat(4, 1fr)" width="full" gap="16px">
             {facilityName && (
-              <GridItem colSpan={2}>
+              <GridItem colSpan={{ base: 4, md: 2 }}>
                 <Text
                   py="14px"
                   px="16px"
@@ -93,9 +83,12 @@ const AssetLocation = (props: AssetLocationProps) => {
               </GridItem>
             )}
 
-            <GridItem colSpan={1}>
+            <GridItem
+              colSpan={{ base: 4, md: 1 }}
+              py={{ base: facilityName ? 0 : '50px', md: 0 }}
+            >
               <VStack
-                alignItems="flex-start"
+                alignItems={{ base: 'center', lg: 'flex-start' }}
                 justifyContent="center"
                 height="full"
               >
@@ -115,7 +108,7 @@ const AssetLocation = (props: AssetLocationProps) => {
         onClose={onClose}
         setFieldValue={setFieldValue}
       />
-    </HStack>
+    </FormInputWrapper>
   );
 };
 

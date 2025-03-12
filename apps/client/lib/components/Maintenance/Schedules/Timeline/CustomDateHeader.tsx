@@ -4,7 +4,7 @@ const CustomDateHeader = ({ label }: { label: string }) => {
   const [day, date] = label.split(' ');
 
   return (
-    <HStack spacing="8px">
+    <HStack spacing={{ base: '2px', md: '8px' }}>
       <Text color="neutral.600" textTransform="uppercase">
         {day}
       </Text>

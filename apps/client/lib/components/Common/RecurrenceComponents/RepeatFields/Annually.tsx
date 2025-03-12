@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { HStack, Icon, Text, VStack } from '@chakra-ui/react';
 
+import { FormInputWrapper } from '@repo/ui/components';
 import moment from 'moment';
-import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import { updateRepeatInterval } from '~/lib/redux/slices/DateSlice';
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from '~/lib/components/CustomIcons';
-import { FormSectionInfo } from '@repo/ui/components';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { updateRepeatInterval } from '~/lib/redux/slices/DateSlice';
 import MonthCard from '../MonthCard';
 
 const months = Array.from({ length: 12 }, (_, i) => ({
@@ -55,13 +55,14 @@ const Monthly = () => {
   }, []);
 
   return (
-    <HStack width="full" spacing="29px" alignItems="flex-start" mb="32px">
-      <FormSectionInfo
-        title="Days"
-        info="Add name that users can likely search with"
-        isRequired={false}
-        maxWidth="130px"
-      />
+    <FormInputWrapper
+      title="Days"
+      description="Select specific days for the event"
+      isRequired={false}
+      sectionMaxWidth="130px"
+      customSpacing="29px"
+      mb="32px"
+    >
       {months.map(
         (item, index) =>
           selectedMonth === item.value && (
@@ -94,7 +95,7 @@ const Monthly = () => {
             </VStack>
           )
       )}
-    </HStack>
+    </FormInputWrapper>
   );
 };
 

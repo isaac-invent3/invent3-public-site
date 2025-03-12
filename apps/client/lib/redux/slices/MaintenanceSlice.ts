@@ -3,7 +3,6 @@ import type { Option } from '~/lib/interfaces/general.interfaces';
 import {
   PlanFormDetails,
   ScheduleFormDetails,
-  TemplateFilter,
 } from '~/lib/interfaces/maintenance.interfaces';
 
 interface ScheduleInfo {
@@ -17,7 +16,6 @@ export interface SliceProps {
   scheduleInfo: ScheduleInfo;
   scheduleForm: ScheduleFormDetails;
   planForm: PlanFormDetails;
-  templateFilters: TemplateFilter;
 }
 
 const initialScheduleForm = {
@@ -93,17 +91,10 @@ const initialPlanForm = {
   schedules: [],
 };
 
-const initialTemplateFilter = {
-  createdDate: null,
-  owner: [],
-  apply: false,
-};
-
 const initialState: SliceProps = {
   scheduleInfo: InitialScheduleInfo,
   scheduleForm: initialScheduleForm,
   planForm: initialPlanForm,
-  templateFilters: initialTemplateFilter,
 };
 
 export const Maintenance = createSlice({
@@ -147,15 +138,6 @@ export const Maintenance = createSlice({
     clearPlanForm: (state) => {
       state.planForm = initialPlanForm;
     },
-    updateTemplateFilter: (
-      state,
-      { payload }: PayloadAction<Partial<TemplateFilter>>
-    ) => {
-      state.templateFilters = { ...state.templateFilters, ...payload };
-    },
-    clearTemplateFilter: (state) => {
-      state.templateFilters = initialTemplateFilter;
-    },
   },
 });
 
@@ -168,8 +150,6 @@ export const {
   setPlanForm,
   updatePlanForm,
   clearPlanForm,
-  updateTemplateFilter,
-  clearTemplateFilter,
 } = Maintenance.actions;
 
 export default Maintenance.reducer;

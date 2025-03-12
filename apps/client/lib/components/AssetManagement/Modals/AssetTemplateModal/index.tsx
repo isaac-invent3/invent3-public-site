@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import GenericTemplateModal from '~/lib/components/Common/Modals/GenericTemplateModal';
 import { Asset } from '~/lib/interfaces/asset/general.interface';
-import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { useAppDispatch } from '~/lib/redux/hooks';
 import { setAsset } from '~/lib/redux/slices/AssetSlice';
 import AssetDetail from '../../AssetDetail';
 
@@ -58,7 +58,6 @@ const AssetTemplateModal = (props: AssetTemplateModalProps) => {
     dispatch(setAsset(data));
     onOpenDetail();
   };
-  const { asset } = useAppSelector((state) => state.asset);
 
   const [search, setSearch] = useState('');
   const {
@@ -94,7 +93,6 @@ const AssetTemplateModal = (props: AssetTemplateModalProps) => {
         {AssetTemplateTable}
       </GenericTemplateModal>
       <AssetDetail
-        data={asset}
         onClose={onCloseDetail}
         isOpen={isOpenDetail}
         type="template"

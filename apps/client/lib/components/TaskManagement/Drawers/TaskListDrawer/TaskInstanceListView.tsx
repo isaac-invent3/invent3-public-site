@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import TaskListDrawer from '~/lib/components/TaskManagement/Drawers/TaskListDrawer';
-import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import {
+  DEFAULT_PAGE_SIZE,
+  SYSTEM_CONTEXT_DETAILS,
+} from '~/lib/utils/constants';
 import { useGetAllTaskInstancesByScheduleInstanceIdQuery } from '~/lib/redux/services/task/instance.services';
 import TaskInstanceTable from '../../Tables/TaskInstanceTable';
+import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 
 interface TaskInstanceListViewProps {
   isOpen: boolean;
@@ -21,10 +25,19 @@ const TaskInstanceListView = (props: TaskInstanceListViewProps) => {
       pageNumber: currentPage,
     });
 
+  const { removeSearchParam } = useCustomSearchParams();
+
+  const handleClose = () => {
+    removeSearchParam(
+      SYSTEM_CONTEXT_DETAILS.MAINTENANCE_SCHEDULE_INSTANCE.slug
+    );
+    onClose();
+  };
+
   return (
     <TaskListDrawer
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleClose}
       showAddTaskButton={showPopover}
       scheduleId={scheduleId}
       taskType="instance"

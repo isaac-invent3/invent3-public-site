@@ -102,9 +102,9 @@ const AssignTicketDrawer = (props: AssignTicketDrawerProps) => {
     >
       <FormInputWrapper
         sectionMaxWidth="141px"
-        spacing="24px"
+        customSpacing="24px"
         pb="16px"
-        description="Add name that users can likely search with"
+        description="Select the person responsible for this ticket"
         title="Assigned To"
         isRequired
       >

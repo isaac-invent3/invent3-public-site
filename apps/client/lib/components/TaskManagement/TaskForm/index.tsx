@@ -14,9 +14,10 @@ import {
 import TaskSuccessModal from '../Modals/TaskSuccessModal';
 import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
-import { FormActionButtons, withFormLeaveDialog } from '@repo/ui/components';
+import { FormActionButtons } from '@repo/ui/components';
 import PageHeader from '../../UI/PageHeader';
 import { ROUTES } from '~/lib/utils/constants';
+import withFormLeaveDialog from '../../UI/FormLeaveDialogProvider';
 
 interface TaskFormProps {
   type: 'create' | 'edit';
@@ -108,7 +109,12 @@ const TaskForm = (props: TaskFormProps) => {
   });
 
   return (
-    <Flex width="full" direction="column" pb="24px">
+    <Flex
+      width="full"
+      direction="column"
+      pb="24px"
+      px={{ base: '16px', md: 0 }}
+    >
       <PageHeader>{defaultHeader}</PageHeader>
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
@@ -120,7 +126,7 @@ const TaskForm = (props: TaskFormProps) => {
             pt="37px"
             pl="16px"
             pb="33px"
-            pr="30px"
+            pr={{ base: '16px', md: '30px' }}
             mt="40px"
             rounded="6px"
             minH="60vh"

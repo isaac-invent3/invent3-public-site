@@ -54,7 +54,7 @@ const CustomSelectDateButton = (props: CustomSelectDateButtonProps) => {
 
   return (
     <>
-      <HStack spacing="24px" opacity={isDisabled ? 0.3 : 1}>
+      <HStack spacing="24px" flexWrap='wrap' opacity={isDisabled ? 0.3 : 1}>
         <HStack
           width="full"
           py="10px"

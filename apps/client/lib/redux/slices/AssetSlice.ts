@@ -87,6 +87,7 @@ const initialAssetForm = {
     phoneNumber: null,
     emailAddress: null,
   },
+  vendorFormDetails: null,
 };
 
 const initialAssetFilter = {

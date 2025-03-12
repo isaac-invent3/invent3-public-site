@@ -7,6 +7,10 @@ import {
   AiOutlineFileWord,
   AiOutlineQuestion,
 } from 'react-icons/ai';
+import {
+  ContextKey,
+  SystemContextDetail,
+} from '../interfaces/general.interfaces';
 
 const OPERATORS = {
   Equals: 1,
@@ -178,6 +182,9 @@ const SYSTEM_CONTEXT_TYPE = {
   MAINTENANCE_SCHEDULE_INSTANCES: 40,
   TASKS_INSTANCES: 61,
   NOTES: 43,
+  VENDOR: 68,
+  AUDIT: 73,
+  COMPANY: 0,
 };
 
 const ROUTES = {
@@ -190,41 +197,85 @@ const ROUTES = {
   PROFILE: 'profile',
   REPORT: 'report-analytics',
   TASKS: 'task-management',
+  TEMPLATES: 'template-management',
   TICKETS: 'ticket-management',
+  USERS: 'user-management',
+  AUDIT_LOG: 'log-management',
+  ROLES: 'role-management',
+  COMPANY: 'company-management',
+  VENDOR: 'vendor-management',
+  SETTINGS: 'settings',
+  USER_SETTINGS: 'user-settings',
+  COMPLIANCE: 'compliance',
   APPROVAL:'approval-flow'
 };
 
-const SYSTEM_CONTEXT_DETAILS = {
+const SYSTEM_CONTEXT_DETAILS: Record<ContextKey, SystemContextDetail> = {
   ASSETS: {
     id: SYSTEM_CONTEXT_TYPE.ASSETS,
     route: ROUTES.ASSETS,
     slug: 'assetId',
+    displayName: 'Asset Management',
+    relatedPermissionKeys: ['task'],
   },
 
   MAINTENANCE_PLANS: {
     id: SYSTEM_CONTEXT_TYPE.MAINTENANCE_PLANS,
     route: ROUTES.MAINTENANCE_PLANS,
     slug: 'maintenancePlanId',
+    relatedPermissionKeys: ['task'],
+    displayName: 'Maintenance Plans',
   },
   MAINTENANCE_SCHEDULES: {
     id: SYSTEM_CONTEXT_TYPE.MAINTENANCE_SCHEDULES,
     route: ROUTES.MAINTENANCE_SCHEDULES,
     slug: 'maintenanceScheduleId',
+    relatedPermissionKeys: ['task'],
+    displayName: 'Maintenance Schedules',
   },
   MAINTENANCE_SCHEDULE_INSTANCE: {
     id: SYSTEM_CONTEXT_TYPE.MAINTENANCE_SCHEDULE_INSTANCES,
     route: ROUTES.MAINTENANCE_SCHEDULES,
     slug: 'maintenanceScheduleInstanceId',
+    relatedPermissionKeys: ['task'],
+    displayName: 'Maintenance Schedule Instance',
   },
   TASKS: {
     id: SYSTEM_CONTEXT_TYPE.TASKS,
     route: ROUTES.TASKS,
     slug: 'taskId',
+    displayName: 'Task Management',
   },
   TICKETS: {
     id: SYSTEM_CONTEXT_TYPE.TICKETS,
     route: ROUTES.TICKETS,
     slug: 'ticketId',
+    relatedPermissionKeys: ['task'],
+    displayName: 'Ticket Management',
+  },
+  USER: {
+    id: SYSTEM_CONTEXT_TYPE.USERS,
+    route: ROUTES.USERS,
+    slug: 'userId',
+    displayName: 'User Management',
+  },
+  VENDOR: {
+    id: SYSTEM_CONTEXT_TYPE.VENDOR,
+    route: ROUTES.VENDOR,
+    slug: 'vendorId',
+    displayName: 'Vendor Management',
+  },
+  COMPANY: {
+    id: SYSTEM_CONTEXT_TYPE.COMPANY,
+    route: ROUTES.COMPANY,
+    slug: 'companyId',
+    displayName: 'Company Management',
+  },
+  AUDIT: {
+    id: SYSTEM_CONTEXT_TYPE.AUDIT,
+    route: ROUTES.AUDIT_LOG,
+    slug: 'logId',
+    displayName: 'Audits',
   },
 };
 
@@ -237,6 +288,41 @@ const ASSET_GROUP_TYPE = {
 };
 
 const DEFAULT_PAGE_SIZE = 25;
+
+const SYSTEM_ROLES = {
+  LOGIN: 1,
+  ADMIN: 2,
+  FRONT_DESK: 3,
+  EXECUTIVE: 4,
+  MANAGER: 5,
+  TEAM_MEMBERS: 6,
+  VISITORS: 7,
+};
+
+const EXPORT_TYPE_ENUM = {
+  CSV: 1,
+  PDF: 2,
+};
+
+const ROLE_IDS_ENUM = {
+  EXECUTIVE: 20,
+  OPERATION_MANAGER: 21,
+  CLIENT_ADMIN: 26,
+  FRONT_DESK: 25,
+  SUPER_ADMIN: 6,
+  THIRD_PARTY: 27,
+  FIELD_ENGINEER: 22,
+};
+
+const COMPANY_TYPE_ENUM = {
+  MANAGE_OWN_DATA: 1,
+  MANAGE_DATA_FOR_COMPANIES: 2,
+};
+
+const USER_STATUS_ENUM = {
+  ACTIVE: 1,
+  NON_ACTIVE: 2,
+};
 
 export {
   AREA_ENUM,
@@ -256,6 +342,11 @@ export {
   STATUS_CATEGORY_ENUM,
   SYSTEM_CONTEXT_TYPE,
   SYSTEM_CONTEXT_DETAILS,
+  SYSTEM_ROLES,
   timeRangeOptions,
   yearOptions,
+  EXPORT_TYPE_ENUM,
+  ROLE_IDS_ENUM,
+  COMPANY_TYPE_ENUM,
+  USER_STATUS_ENUM,
 };

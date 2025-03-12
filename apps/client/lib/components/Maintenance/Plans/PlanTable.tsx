@@ -2,7 +2,11 @@ import React, { useMemo } from 'react';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import { dateFormatter } from '~/lib/utils/Formatters';
-import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
+import {
+  MaintenancePlan,
+  PlanTableType,
+} from '~/lib/interfaces/maintenance.interfaces';
+import { useMediaQuery } from '@chakra-ui/react';
 
 interface MaintenancePlanProps {
   data: MaintenancePlan[];
@@ -27,8 +31,10 @@ interface MaintenancePlanProps {
   showEmptyState?: boolean;
   // eslint-disable-next-line no-unused-vars
   PopoverComponent?: (data: MaintenancePlan) => JSX.Element;
+  type?: PlanTableType;
 }
 const MaintenancePlanTable = (props: MaintenancePlanProps) => {
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
   const columnHelper = createColumnHelper<MaintenancePlan>();
   const {
     data,
@@ -51,6 +57,7 @@ const MaintenancePlanTable = (props: MaintenancePlanProps) => {
     setPageSize,
     setSelectedRows,
     PopoverComponent,
+    type = 'current',
   } = props;
 
   const columns = useMemo(
@@ -117,11 +124,6 @@ const MaintenancePlanTable = (props: MaintenancePlanProps) => {
           header: 'End Date',
           enableSorting: false,
         }),
-        columnHelper.accessor('planStatusName', {
-          cell: (info) => info.getValue() ?? 'N/A',
-          header: 'Status',
-          enableSorting: false,
-        }),
         columnHelper.accessor('dateCreated', {
           cell: (info) => {
             const value = info.getValue();
@@ -145,6 +147,58 @@ const MaintenancePlanTable = (props: MaintenancePlanProps) => {
         enableSorting: false,
       });
 
+      const statusCOlumn = columnHelper.accessor('planStatusName', {
+        cell: (info) => info.getValue() ?? 'N/A',
+        header: 'Status',
+        enableSorting: false,
+      });
+
+      if (type === 'current') {
+        baseColumns.splice(8, 0, statusCOlumn);
+      }
+
+      if (showPopover) {
+        baseColumns.push(popOverColumn);
+      }
+      return baseColumns;
+    },
+    [data] //eslint-disable-line
+  );
+
+  const mobileColumns = useMemo(
+    () => {
+      const baseColumns = [
+        columnHelper.accessor('maintenancePlanId', {
+          cell: (info) => info.getValue(),
+          header: '#',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('planName', {
+          cell: (info) => info.getValue(),
+          header: 'Plan Name',
+          enableSorting: false,
+        }),
+      ];
+      const popOverColumn = columnHelper.accessor('rowId', {
+        cell: (info) => {
+          if (PopoverComponent) {
+            return PopoverComponent(info.row.original);
+          }
+        },
+        header: '',
+        enableSorting: false,
+      });
+
+      const statusCOlumn = columnHelper.accessor('planStatusName', {
+        cell: (info) => info.getValue() ?? 'N/A',
+        header: 'Status',
+        enableSorting: false,
+      });
+
+      if (type === 'current') {
+        baseColumns.splice(8, 0, statusCOlumn);
+      }
+
       if (showPopover) {
         baseColumns.push(popOverColumn);
       }
@@ -154,7 +208,7 @@ const MaintenancePlanTable = (props: MaintenancePlanProps) => {
   );
   return (
     <DataTable
-      columns={columns}
+      columns={isMobile ? mobileColumns : columns}
       data={data ?? []}
       isLoading={isLoading}
       isFetching={isFetching}
@@ -186,7 +240,6 @@ const MaintenancePlanTable = (props: MaintenancePlanProps) => {
         paddingBottom: '16px',
       }}
       customTBodyRowStyle={{ verticalAlign: 'top' }}
-      customTableContainerStyle={{ rounded: 'none' }}
     />
   );
 };

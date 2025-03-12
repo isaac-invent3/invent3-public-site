@@ -1,10 +1,10 @@
-import { Flex, HStack, useDisclosure, VStack } from '@chakra-ui/react';
+import { Flex, useDisclosure, VStack } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 import { useAppSelector } from '~/lib/redux/hooks';
 import {
   FormActionButtons,
   FormAddButton,
-  FormSectionInfo,
+  FormInputWrapper,
 } from '@repo/ui/components';
 import { assetMaintenancePlanSchema } from '~/lib/schemas/asset/main.schema';
 import ExistingMaintenancePlanModal from './ExistingMaintenancePlanModal';
@@ -48,22 +48,21 @@ const MaintenancePlanStep = (props: MaintenancePlanStepProps) => {
             alignItems="flex-start"
             position="relative"
             bgColor="white"
-            pt="26px"
-            pl="16px"
-            pb="24px"
-            pr="41px"
+            pt={{ base: '16px', lg: '26px' }}
+            pl={{ md: '24px', lg: '16px' }}
+            pb={{ base: '16px', lg: '24px' }}
+            pr={{ md: '24px', lg: '41px' }}
             rounded="6px"
             spacing="51px"
             minH="60vh"
           >
-            <HStack width="full" alignItems="flex-start" spacing="64px">
-              <Flex width="full" maxW="118px">
-                <FormSectionInfo
-                  title="Maintenance Plan"
-                  info="Specify the Plan for asset upkeep"
-                  isRequired={false}
-                />
-              </Flex>
+            <FormInputWrapper
+              sectionMaxWidth="120px"
+              customSpacing="64px"
+              description="Specify the Plan for asset upkeep"
+              title="Maintenance Plan"
+              isRequired={false}
+            >
               <VStack width="full" spacing="27px" overflow="auto">
                 <VStack width="full" spacing="8px" overflow="auto">
                   <PlanList />
@@ -76,7 +75,7 @@ const MaintenancePlanStep = (props: MaintenancePlanStepProps) => {
                   Add a New Maintenance Plan
                 </FormAddButton>
               </VStack>
-            </HStack>
+            </FormInputWrapper>
           </VStack>
           <Flex width="full" mt="16px">
             <FormActionButtons

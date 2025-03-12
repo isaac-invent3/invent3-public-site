@@ -1,3 +1,5 @@
+import { QueryParams } from '@repo/interfaces';
+
 type NotificationType = 1 | 2 | 3 | 4;
 
 interface INotification {
@@ -9,6 +11,17 @@ interface INotification {
   title: string;
   user: string | null;
   userProfilePicture: string | null;
+}
+
+interface GetUserNotificationQueryParams extends QueryParams {
+  userId: number;
+  isRead?: boolean;
+  isArchived?: boolean;
+}
+
+interface MarkAllNotificationsAsReadParams {
+  userId: number;
+  lastModifiedBy: number;
 }
 
 interface Notification {
@@ -39,4 +52,9 @@ interface Notification {
   lastName: string;
 }
 
-export type { INotification, Notification };
+export type {
+  GetUserNotificationQueryParams,
+  INotification,
+  MarkAllNotificationsAsReadParams,
+  Notification,
+};

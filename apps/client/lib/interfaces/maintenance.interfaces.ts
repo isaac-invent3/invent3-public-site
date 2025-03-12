@@ -212,18 +212,17 @@ interface MaintenanceType extends BaseEntity {
   typeName: string;
 }
 
-interface TemplateFilter {
-  createdDate: string | null;
-  owner: number[];
-  apply: boolean;
-}
-
 interface PlanFilter extends LocationFilter {
   planType: Option[];
+  startDate: string | undefined;
+  endDate: string | undefined;
 }
 
 interface ScheduleFilter extends LocationFilter {
+  planType: Option[];
   maintenanceType: Option[];
+  scheduleDate: string | undefined;
+  completionDate: string | undefined;
 }
 
 interface PlanPayload {
@@ -309,6 +308,8 @@ interface UpdateMaintenancePlanWithSchedulesPayload {
   masterUpdateMaintenanceScheduleDto: UpdateScheduleAndTasksPayload[] | null;
 }
 
+type PlanTableType = 'history' | 'current';
+
 export type {
   MaintenancePlan,
   MaintenanceScheduleStat,
@@ -318,7 +319,6 @@ export type {
   MaintenanceScheduleInstance,
   MaintenanceFrequency,
   PlanFormDetails,
-  TemplateFilter,
   PlanFilter,
   ScheduleFilter,
   MaintenanceType,
@@ -328,4 +328,5 @@ export type {
   CreateScheduleAndTasksPayload,
   CreateMaintenancePlanWithSchedulesPayload,
   UpdateMaintenancePlanWithSchedulesPayload,
+  PlanTableType,
 };

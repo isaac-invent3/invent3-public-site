@@ -14,12 +14,7 @@ const AssetCountList = (props: AssetCountListProps) => {
   const { type, isLoading, data, currentAssetStatus, currentStatType } = props;
   return (
     <VStack width="full" spacing="8px" alignItems="flex-start">
-      <Heading
-        color="primary.500"
-        fontWeight={700}
-        fontSize="16px"
-        lineHeight="19.01px"
-      >
+      <Heading color="primary.500" size="md">
         Assets by {type === 'state' ? 'State' : 'LGA'}
       </Heading>
       <VStack width="full" spacing="8px" maxH="50vh" overflow="auto">

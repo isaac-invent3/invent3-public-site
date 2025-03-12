@@ -1,65 +1,51 @@
 'use client';
-import {
-  Flex,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-} from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
-import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
-import ProfileTab from './ProfileTab';
-import SecurityTab from './SecurityTab';
-import GeneralTab from './GeneralTab';
-import Notification from './Notification';
-import Teams from './Teams';
-import PageHeader from '../UI/PageHeader';
 
-const ALlTabs = ['Profile', 'Security', 'Notification', 'Teams', 'General'];
+import { Divider, Flex, VStack } from '@chakra-ui/react';
+import React from 'react';
+import Photo from './Photo';
+import Location from './Location';
+import {
+  useGetUserByIdQuery,
+  useGetUserProfileByGuidQuery,
+} from '~/lib/redux/services/user.services';
+import { useSession } from 'next-auth/react';
+import PageHeader from '../UI/PageHeader';
+import PersonalInformation from './PersonalInformation';
 
 const Profile = () => {
-  const { getSearchParam, updateSearchParam } = useCustomSearchParams();
-  const tab = getSearchParam('tab');
-  const [tabIndex, setTabIndex] = useState<number | undefined>(undefined);
-  useEffect(() => {
-    const tabIndex = tab ? ALlTabs.findIndex((value) => value === tab) : -1;
-    setTabIndex(tabIndex !== -1 ? tabIndex : 0);
-  }, [tab]);
-  // Update the URL whenever the tab is changed
-  const handleTabChange = (index: number) => {
-    setTabIndex(index);
-    const tabName = ALlTabs[index];
-    if (tabName) {
-      updateSearchParam('tab', tabName);
-    }
-  };
-
+  const data = useSession();
+  const authenticatedUser = data?.data?.user;
+  const { data: info, isLoading: loadingUser } = useGetUserByIdQuery(
+    { userId: authenticatedUser?.userId! },
+    { skip: !authenticatedUser?.userId }
+  );
+  const { data: user, isLoading } = useGetUserProfileByGuidQuery(
+    { guid: info?.data.guid! },
+    { skip: !authenticatedUser?.userId }
+  );
   return (
-    <Flex width="full" direction="column" pb="40px">
-      <PageHeader>Settings</PageHeader>
-      <Tabs
-        variant="custom"
-        width={'full'}
-        onChange={(index) => handleTabChange(index)}
-        index={tabIndex}
-        mt="51px"
+    <Flex width="full" direction="column" pb="40px" gap="40px">
+      <Flex px={{ base: '16px', md: 0 }}>
+        <PageHeader>User Profile</PageHeader>
+      </Flex>
+      <VStack
+        spacing="24px"
+        width="full"
+        alignItems="flex-start"
+        bgColor="white"
+        p={{ base: '16px', md: '24px' }}
+        pt="32px"
+        rounded={{ md: '6px' }}
+        minH={{ base: '60vh' }}
+        divider={<Divider borderColor="neutral.700" />}
       >
-        <TabList>
-          {ALlTabs.map((item, index) => (
-            <Tab key={index} width="93px">
-              {item}
-            </Tab>
-          ))}
-        </TabList>
-        <TabPanels pt="16px">
-          <TabPanel>{tabIndex === 0 && <ProfileTab />}</TabPanel>
-          <TabPanel>{tabIndex === 1 && <SecurityTab />}</TabPanel>
-          <TabPanel>{tabIndex === 2 && <Notification />}</TabPanel>
-          <TabPanel>{tabIndex === 3 && <Teams />}</TabPanel>
-          <TabPanel>{tabIndex === 4 && <GeneralTab />}</TabPanel>
-        </TabPanels>
-      </Tabs>
+        <Photo />
+        <PersonalInformation
+          user={user?.data}
+          isLoading={isLoading || loadingUser}
+        />
+        <Location user={user?.data} isLoading={isLoading || loadingUser} />
+      </VStack>
     </Flex>
   );
 };

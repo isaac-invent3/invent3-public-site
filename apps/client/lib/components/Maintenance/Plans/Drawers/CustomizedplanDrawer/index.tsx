@@ -3,7 +3,6 @@ import {
   DrawerBody,
   DrawerFooter,
   DrawerHeader,
-  Flex,
   HStack,
   VStack,
 } from '@chakra-ui/react';
@@ -12,22 +11,22 @@ import { FormikProvider, useFormik } from 'formik';
 import {
   BackButton,
   Button,
+  FormInputWrapper,
+  GenericDrawer,
   ModalHeading,
-  FormSectionInfo,
 } from '@repo/ui/components';
-import useCustomMutation from '~/lib/hooks/mutation.hook';
+import moment from 'moment';
 import { getSession } from 'next-auth/react';
+import AssetSelect from '~/lib/components/Common/SelectComponents/AssetSelect';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useCreateMaintenancePlanMutation } from '~/lib/redux/services/maintenance/plan.services';
-import Plan from './PlanType';
-import AssetSelect from '~/lib/components/Common/AssetSelect';
 import { planSchema } from '~/lib/schemas/maintenance.schema';
 import { MAINTENANCE_PLAN_ENUM } from '~/lib/utils/constants';
-import moment from 'moment';
+import EndDate from '../../Common/EndDate';
 import Owner from '../../Common/Owner';
 import PlanTitle from '../../Common/PlanTitle';
 import StartDate from '../../Common/StartDate';
-import EndDate from '../../Common/EndDate';
-import { GenericDrawer } from '@repo/ui/components';
+import Plan from './PlanType';
 
 interface CustomizedPlanModalProps {
   isOpen: boolean;
@@ -93,17 +92,16 @@ const CustomizedPlanModal = (props: CustomizedPlanModalProps) => {
                 {!assetId && (
                   <>
                     <Plan />
-                    <HStack width="full" alignItems="flex-start" spacing="73px">
-                      <Flex width="full" maxW="118px">
-                        <FormSectionInfo
-                          title="Asset"
-                          info="Choose the type of asset"
-                          isRequired
-                        />
-                      </Flex>
 
+                    <FormInputWrapper
+                      title="Asset"
+                      description="Choose the type of asset"
+                      isRequired
+                      customSpacing="73px"
+                      sectionMaxWidth="118px"
+                    >
                       <AssetSelect selectName="assetId" selectTitle="Asset" />
-                    </HStack>
+                    </FormInputWrapper>
                   </>
                 )}
 

@@ -1,9 +1,9 @@
-import { Flex, HStack, SimpleGrid } from '@chakra-ui/react';
+import { SimpleGrid } from '@chakra-ui/react';
 
-import EmployeeSelect from '../../../../Common/EmployeeSelect';
+import UserSelect from '../../../../Common/SelectComponents/UserSelect';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
-import { FormSectionInfo } from '@repo/ui/components';
+import { FormInputWrapper } from '@repo/ui/components';
 
 const AssetOwner = () => {
   const dispatch = useAppDispatch();
@@ -11,16 +11,19 @@ const AssetOwner = () => {
     useAppSelector((state) => state.asset.assetForm);
 
   return (
-    <HStack width="full" alignItems="flex-start" spacing="104px">
-      <Flex width="full" maxW="118px">
-        <FormSectionInfo
-          title="Owner's Info"
-          info="Enter details of the person responsible for the asset."
-          isRequired
-        />
-      </Flex>
-      <SimpleGrid columns={4} gap="11px" width="full">
-        <EmployeeSelect
+    <FormInputWrapper
+      sectionMaxWidth="118px"
+      customSpacing="104px"
+      description="Enter details of the person responsible for the asset."
+      title="Owner's Info"
+      isRequired
+      direction={{ base: 'column', md: 'row' }}
+      formSectionCustomStyle={{
+        maxW: { md: '118px' },
+      }}
+    >
+      <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} gap="11px" width="full">
+        <UserSelect
           selectName="currentOwner"
           selectTitle="Owner"
           defaultName={currentOwnerName}
@@ -28,7 +31,7 @@ const AssetOwner = () => {
             dispatch(updateAssetForm({ currentOwnerName: option.label }))
           }
         />
-        <EmployeeSelect
+        <UserSelect
           selectName="assignedTo"
           selectTitle="Assigned to"
           defaultName={assignedToName}
@@ -36,7 +39,7 @@ const AssetOwner = () => {
             dispatch(updateAssetForm({ assignedToName: option.label }))
           }
         />
-        <EmployeeSelect
+        <UserSelect
           selectName="responsibleFor"
           selectTitle="Responsible for"
           defaultName={responsibleForName}
@@ -45,7 +48,7 @@ const AssetOwner = () => {
           }
         />
       </SimpleGrid>
-    </HStack>
+    </FormInputWrapper>
   );
 };
 

@@ -25,7 +25,7 @@ const LGAFilter = (props: LGAFilterProps) => {
   const [loadingStates, setLoadingStates] = useState(true);
   const dispatch = useAppDispatch();
 
-  // Checks if all filterdata is empty
+  // Checks if there are LGAs
   const noLGAs = _.every(
     stateOptions,
     (value) => _.isArray(value.lgaOptions) && _.isEmpty(value.lgaOptions)

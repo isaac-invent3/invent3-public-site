@@ -64,6 +64,7 @@ interface ApprovalWorkflowPartyInstance {
   approvalRequirementTypeId: number;
   approvalRequirementTypeName: string;
   employeeDesignation: string;
+  lastModifiedBy?: string;
 }
 
 interface GetApprovalWorkflowPartyInstances extends QueryParams {
@@ -156,9 +157,7 @@ interface ApprovalWorkflowType {
 interface CreateApprovalWorkflowTypePayload {}
 
 interface ApprovalWorkflowInstance {}
-interface CreateApprovalWorkflowInstancePayload {
-
-}
+interface CreateApprovalWorkflowInstancePayload {}
 
 export type {
   ApprovalWorkflowAction,
@@ -171,8 +170,8 @@ export type {
   ApprovalWorkflowRequirementType,
   ApprovalWorkflowStatus,
   ApprovalWorkflowType,
-  CreateApprovalWorkflowPartyInstancePayload,
   CreateApprovalWorkflowInstancePayload,
+  CreateApprovalWorkflowPartyInstancePayload,
   CreateApprovalWorkflowRequestPayload,
   CreateApprovalWorkflowStatusPayload,
   CreateApprovalWorkflowTypePayload,

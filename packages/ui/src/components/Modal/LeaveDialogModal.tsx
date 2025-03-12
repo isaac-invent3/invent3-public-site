@@ -36,8 +36,7 @@ const LeaveDialogModal = (props: GenericDeleteModalProps) => {
         >
           <VStack spacing="8px" width="full">
             <Heading
-              fontSize="32px"
-              lineHeight="38.02px"
+              size={{ base: 'lg', md: 'xl' }}
               fontWeight={800}
               color="primary.500"
             >

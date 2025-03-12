@@ -48,7 +48,7 @@ const Button = (props: ButtonProps) => {
       fontWeight={500}
       p="16px"
       height="full"
-      maxH="50px"
+      maxH={{ base: '50px' }}
       width="full"
       isLoading={isLoading}
       as={href ? 'a' : 'button'}

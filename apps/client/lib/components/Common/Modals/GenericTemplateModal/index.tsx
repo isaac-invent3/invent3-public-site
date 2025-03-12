@@ -1,7 +1,6 @@
 import { GenericModal, TablePagination } from '@repo/ui/components';
 import {
   Collapse,
-  Flex,
   ModalBody,
   ModalFooter,
   useDisclosure,
@@ -58,7 +57,7 @@ const GenericTemplateModal = (props: GenericTemplateModalProps) => {
     <GenericModal
       isOpen={isOpen}
       onClose={onClose}
-      contentStyle={{ maxW: '80vw', width: '1116px', height: '716px' }}
+      contentStyle={{ maxW: '90vw', width: '1116px', height: { lg: '716px' } }}
       mainModalStyle={{ blockScrollOnMount: false, preserveScrollBarGap: true }}
     >
       <Header
@@ -73,7 +72,6 @@ const GenericTemplateModal = (props: GenericTemplateModalProps) => {
         hideOtherInfoWhenDetailsIsShown={hideOtherInfoWhenDetailsIsShown}
       />
       <ModalBody m={0} p={0} px="24px" ref={modalBodyRef}>
-        <Flex />
         <Collapse in={openFilter} animateOpacity>
           {openFilter && filters}
         </Collapse>

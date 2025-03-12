@@ -20,6 +20,7 @@ interface GeneralStepProps {
 }
 const GeneralStep = (props: GeneralStepProps) => {
   const { activeStep, setActiveStep } = props;
+  const asset = useAppSelector((state) => state.asset.asset);
   const formDetails = useAppSelector((state) => state.asset.assetForm);
   const dispatch = useAppDispatch();
 
@@ -69,21 +70,21 @@ const GeneralStep = (props: GeneralStepProps) => {
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
           <VStack
-            spacing="43px"
+            spacing={{ base: '24px', lg: '43px' }}
             width="full"
             alignItems="flex-start"
             bgColor="white"
-            pt="26px"
-            pl="16px"
-            pb="33px"
-            pr="44px"
+            pt={{ base: '16px', lg: '26px' }}
+            pl={{ md: '24px', lg: '16px' }}
+            pb={{ base: '16px', lg: '33px' }}
+            pr={{ md: '24px', lg: '44px' }}
             rounded="6px"
-            minH="60vh"
+            minH={{ lg: '60vh' }}
           >
             <AssetImages />
             <AssetNameCodeDescription />
             <AssetDetail />
-            <ParentAsset />
+            {asset === null && <ParentAsset />}
             <AssetDimension />
             <AssetLocation setFieldValue={formik.setFieldValue} />
             <AssetOwner />

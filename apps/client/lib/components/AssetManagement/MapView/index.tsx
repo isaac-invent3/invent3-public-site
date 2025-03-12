@@ -103,7 +103,7 @@ const MapView = () => {
             justifyContent="center"
             position="relative"
           >
-            <Flex
+            {/* <Flex
               width="full"
               height="full"
               position="absolute"
@@ -128,7 +128,7 @@ const MapView = () => {
               >
                 {selectedState?.name}
               </Text>
-            </Flex>
+            </Flex> */}
             <Flex width={{ base: '100%', '2xl': '67%' }}>
               <MapViewComponent
                 selectedState={selectedState}

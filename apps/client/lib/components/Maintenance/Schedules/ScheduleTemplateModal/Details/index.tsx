@@ -25,7 +25,7 @@ const Details = (props: DetailsProps) => {
       alignItems="flex-start"
       pt="14px"
       pb="19px"
-      px="16px"
+      px={{ base: '8px', md: '16px' }}
       spacing="16px"
       mt="8px"
       rounded="6px"
@@ -39,7 +39,7 @@ const Details = (props: DetailsProps) => {
       ) : (
         data?.data && (
           <VStack width="full" alignItems="flex-start" spacing={0}>
-            <HeaderInfo data={data?.data} />
+            <HeaderInfo data={data?.data} type="secondary" />
             <VStack
               width="full"
               alignItems="flex-start"
@@ -51,6 +51,7 @@ const Details = (props: DetailsProps) => {
               borderWidth="1px"
               borderColor="neutral.300"
               borderBottomRadius="8px"
+              mt="0.5em"
             >
               <VStack alignItems="flex-start" width="full" spacing="8px">
                 <ScheduleInfo schedule={data?.data} />

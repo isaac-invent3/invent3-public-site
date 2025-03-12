@@ -27,7 +27,12 @@ const Header = (props: HeaderProps) => {
     hideOtherInfoWhenDetailsIsShown,
   } = props;
   return (
-    <ModalHeader m={0} p={0} mt="32px" mx="24px">
+    <ModalHeader
+      m={0}
+      p={0}
+      mt={{ base: '24px', lg: '32px' }}
+      mx={{ base: '16px', lg: '24px' }}
+    >
       <VStack
         width="full"
         spacing={showDetails ? '31px' : '26px'}
@@ -36,8 +41,7 @@ const Header = (props: HeaderProps) => {
         <Heading
           color="primary.500"
           fontWeight={800}
-          fontSize="32px"
-          lineHeight="38.02px"
+          size={{ base: 'lg', md: 'xl' }}
         >
           {headerName}
         </Heading>
@@ -54,9 +58,10 @@ const Header = (props: HeaderProps) => {
             width="full"
             pb="8px"
             mb="8px"
-            justifyContent="flex-end"
+            justifyContent={{ base: 'flex-start', md: 'flex-end' }}
             borderBottomWidth="1px"
             borderColor="neutral.300"
+            flexWrap="wrap"
           >
             <SearchInput
               setSearch={setSearch}

@@ -19,9 +19,7 @@ const GenericErrorState = (props: GenericErrorStateProps) => {
     >
       <Icon as={InfoIcon} color="error.500" boxSize="40px" />
       <VStack width="full" spacing="8px">
-        <Heading fontSize="32px" lineHeight="38.02px">
-          {title ?? 'Error'}
-        </Heading>
+        <Heading size={{ base: 'lg', md: 'xl' }}>{title ?? 'Error'}</Heading>
         <Text color="neutral.700">{subtitle ?? 'Not Found'}</Text>
       </VStack>
     </VStack>

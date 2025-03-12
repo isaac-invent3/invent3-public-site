@@ -8,18 +8,14 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import DatePicker, { registerLocale } from 'react-datepicker';
+
 import AddTime from '../AddTime';
-import enGB from 'date-fns/locale/en-GB';
-import './style.css';
-import moment from 'moment';
-import 'react-datepicker/dist/react-datepicker.css';
+
 import { ClockIcon, RemoveIcon } from '../../CustomIcons';
 import dateFormatter from '../../../utils/HelperFunctions/dateFormatter';
 import Button from '../../../components/Button';
 import GenericModal from '../../../components/Modal';
-
-registerLocale('en-GB', enGB);
+import CommonDatePicker from '../Common/CommonDatePicker';
 
 interface CustomDateProps {
   isOpen: boolean;
@@ -77,34 +73,11 @@ const CustomDate = (props: CustomDateProps) => {
               justifyContent="space-between"
               alignItems="flex-start"
             >
-              <DatePicker
-                onChange={(date) => {
-                  if (date) {
-                    setSelectedDate(date);
-                  }
-                }}
-                dateFormat="mm/dd/yyyy"
-                // showMonthDropdown
-                // showYearDropdown
+              <CommonDatePicker
                 minDate={minDate}
                 maxDate={maxDate}
-                selected={selectedDate}
-                inline
-                selectsEnd
-                startDate={selectedDate}
-                endDate={maxDate}
-                locale="en-GB"
-                weekDayClassName={(date) =>
-                  moment(date).format('dd') == 'Sa' ||
-                  moment(date).format('dd') == 'Su'
-                    ? 'custom-weekend'
-                    : ''
-                }
-                dayClassName={(date) =>
-                  date.getDay() === 0 || date.getDay() === 6
-                    ? 'custom-weekend'
-                    : ''
-                }
+                selectedDate={selectedDate}
+                setSelectedDate={(date) => setSelectedDate(date)}
               />
               {shouldIncludeTime && (
                 <VStack alignItems="flex-end" width="max-content" spacing="8px">

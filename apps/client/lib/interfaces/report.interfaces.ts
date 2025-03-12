@@ -1,4 +1,4 @@
-import { Option, SearchQuery } from '@repo/interfaces';
+import { Option, QueryParams, SearchQuery } from '@repo/interfaces';
 
 interface CreateReportPayload {
   reportName: string;
@@ -40,6 +40,7 @@ type ContextTypeColumn = {
 };
 
 interface GenerateReportDetails {
+  selectedCompany?:string
   criterion: GenerateReportCriterion[];
   systemContextTypeId: number | undefined;
   contextTypeColumns: Option[];
@@ -48,7 +49,7 @@ interface GenerateReportDetails {
   endDate: string;
 }
 
-interface GenerateReportPayload {
+interface GenerateReportPayload extends QueryParams {
   criterion: GenerateReportCriterion[];
   systemContextTypeId: number | undefined;
   contextTypeColumns: Option[];
@@ -66,13 +67,19 @@ type DashboardValuesObj = {
 };
 type FacilityWithTopAssets = {
   facilityId: number;
-  facilityName: string
+  facilityName: string;
   totalAssets: number;
+};
+
+type TicketStatistics = {
+  openTickets: number;
+  escalatedTickets: number;
+  resolvedTickets: number;
 };
 
 interface ReportDashboardValuesResponse {
   newAssets: DashboardValuesObj;
-  topFiveFacilitiesWithAssets: FacilityWithTopAssets[]
+  topFiveFacilitiesWithAssets: FacilityWithTopAssets[];
   totalAssets: DashboardValuesObj;
   totalMaintenanceCost: DashboardValuesObj;
   totalAssetsDisposed: DashboardValuesObj;
@@ -121,6 +128,7 @@ interface SaveReportPayload {
 export type {
   ContextTypeColumn,
   CreateReportPayload,
+  FacilityWithTopAssets,
   GenerateReportCriterion,
   GenerateReportDetails,
   GenerateReportPayload,
@@ -132,5 +140,5 @@ export type {
   ScheduleReportPayload,
   ViewReportTableData,
   ViewReportTableDataPayload,
-  FacilityWithTopAssets,
+  TicketStatistics,
 };

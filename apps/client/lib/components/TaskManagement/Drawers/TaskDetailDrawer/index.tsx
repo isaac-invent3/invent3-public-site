@@ -18,6 +18,7 @@ import MarkTaskAsCompletedModal from '../../Modals/MarkTaskAsCompletedModal';
 import OtherRelatedTasks from './OtherRelatedTasks';
 import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
+import usePermissionAccess from '~/lib/hooks/useRoleAccess';
 
 interface TaskDetailDrawerProps {
   isOpen: boolean;
@@ -34,6 +35,7 @@ const TaskDetailDrawer = (props: TaskDetailDrawerProps) => {
   } = useDisclosure();
   const taskSlug = SYSTEM_CONTEXT_DETAILS.TASKS.slug;
   const { getSearchParam, clearSearchParamsAfter } = useCustomSearchParams();
+  const canMarkTaskAsCompleted = usePermissionAccess('task:mark_completed');
 
   const taskId = getSearchParam(taskSlug) ?? null;
 
@@ -95,12 +97,14 @@ const TaskDetailDrawer = (props: TaskDetailDrawerProps) => {
             >
               <BackButton handleClick={closeDrawer} />
 
-              <Button
-                handleClick={onOpenMarkAsCompleted}
-                customStyles={{ width: '138px', height: '35px' }}
-              >
-                Mark as completed
-              </Button>
+              {canMarkTaskAsCompleted && (
+                <Button
+                  handleClick={onOpenMarkAsCompleted}
+                  customStyles={{ width: '138px', height: '35px' }}
+                >
+                  Mark as completed
+                </Button>
+              )}
             </HStack>
           </DrawerHeader>
           <DrawerBody p={0}>

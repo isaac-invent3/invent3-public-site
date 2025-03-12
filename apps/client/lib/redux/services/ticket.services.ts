@@ -15,6 +15,7 @@ import {
 } from '~/lib/interfaces/ticket.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../baseQueryWithReauth';
+import { UpdateTicketMetadataPayload } from '~/lib/interfaces/template.interfaces';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -59,10 +60,22 @@ export const ticketApi = createApi({
     }),
     getTicketsByTabScope: builder.query<
       BaseApiResponse<ListResponse<Ticket>>,
-      { tabScopeName: TicketCategory } & QueryParams
+      { userId?: number; tabScopeName?: TicketCategory } & QueryParams
     >({
       query: (data) => ({
         url: generateQueryStr(`/Tickets/GetTicketsByTabScope?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allTickets'],
+    }),
+
+    getAssetOpenTickets: builder.query<
+      BaseApiResponse<ListResponse<Ticket>>,
+      { assetId: number } & QueryParams
+    >({
+      query: ({ assetId, ...data }) => ({
+        url: generateQueryStr(`/Tickets/GetAssetOpenTickets/${assetId}?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -95,6 +108,18 @@ export const ticketApi = createApi({
       }),
       invalidatesTags: ['allTickets'],
     }),
+    getTicketsByListOfIds: builder.query<
+      BaseApiResponse<ListResponse<Ticket>>,
+      {
+        ticketIds: number[];
+      } & QueryParams
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/Tickets/GetTicketsByListOfIds?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
     getAllTicketTypes: builder.query<
       BaseApiResponse<ListResponse<TicketTypeDetails>>,
       QueryParams
@@ -118,6 +143,18 @@ export const ticketApi = createApi({
         body,
       }),
     }),
+
+    UpdateTicketMetadataPayload: builder.mutation<
+      void,
+      UpdateTicketMetadataPayload
+    >({
+      query: (body) => ({
+        url: `/Tickets/UpdateTicketMetadataIds`,
+        method: 'PUT',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
   }),
 });
 
@@ -131,4 +168,7 @@ export const {
   useSearchTicketsMutation,
   useScheduleTicketsMutation,
   useSearchTicketTypesMutation,
+  useGetAssetOpenTicketsQuery,
+  useUpdateTicketMetadataPayloadMutation,
+  useGetTicketsByListOfIdsQuery,
 } = ticketApi;

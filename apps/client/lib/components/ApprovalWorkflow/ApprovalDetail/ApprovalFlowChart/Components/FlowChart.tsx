@@ -163,7 +163,8 @@ const FlowChart = () => {
             if (
               !newEdges.some(
                 (ne) => ne.source === sourceId && ne.target === e.target
-              )
+              ) &&
+              sourceId
             ) {
               newEdges.push({ ...e, source: sourceId });
             }
@@ -182,7 +183,8 @@ const FlowChart = () => {
             if (
               !newEdges.some(
                 (ne) => ne.source === e.source && ne.target === targetId
-              )
+              ) &&
+              targetId
             ) {
               newEdges.push({ ...e, target: targetId });
             }
@@ -373,7 +375,7 @@ const FlowChart = () => {
 
     let leftNodes: CustomNode[] = [];
     let rightNodes: CustomNode[] = [];
-    let overlappingNode: CustomNode | null = null;
+    let overlappingNode: CustomNode | undefined = undefined;
     let minLeftDistance = Infinity;
     let minRightDistance = Infinity;
 
@@ -410,8 +412,9 @@ const FlowChart = () => {
         rightNodes = stackedNodes;
       }
     });
+    let overlap: CustomNode = overlappingNode as unknown as CustomNode;
 
-    return { leftNodes, rightNodes, overlappingNode };
+    return { leftNodes, rightNodes, overlappingNode: overlap };
   };
 
   /**
@@ -427,7 +430,7 @@ const FlowChart = () => {
 
     const { leftNodes, rightNodes, overlappingNode } = findClosestNodes(node);
 
-    if (overlappingNode) {
+    if (overlappingNode as unknown as CustomNode) {
       const incomingEdges = edges.filter(
         (edge) => edge.target === overlappingNode.id
       );

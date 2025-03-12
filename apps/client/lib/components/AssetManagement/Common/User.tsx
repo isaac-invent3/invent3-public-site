@@ -31,21 +31,25 @@ const User = (props: UserProps) => {
   ];
 
   return (
-    <HStack width="full" spacing="24px" alignItems="flex-start">
+    <HStack
+      width="full"
+      spacing={{ base: '16px', md: '24px' }}
+      alignItems="flex-start"
+    >
       <Avatar
-        width={variant === 'fullDetails' ? '99px' : '40px'}
-        height={variant === 'fullDetails' ? '99px' : '40px'}
+        width={{
+          base: '70px',
+          md: variant === 'fullDetails' ? '99px' : '40px',
+        }}
+        height={{
+          base: '70px',
+          md: variant === 'fullDetails' ? '99px' : '40px',
+        }}
         src=""
       />
-      <VStack spacing="24px" alignItems="flex-start">
+      <VStack spacing={{ base: '16px', md: '24px' }} alignItems="flex-start">
         <VStack alignItems="flex-start" spacing="8px">
-          <Heading
-            as="h5"
-            fontSize="16px"
-            lineHeight="19.01px"
-            fontWeight={700}
-            color="black"
-          >
+          <Heading as="h5" size="md" color="black">
             {name}
           </Heading>
           <Text color="neutral.600">{role}</Text>

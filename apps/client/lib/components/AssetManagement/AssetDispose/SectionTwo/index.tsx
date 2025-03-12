@@ -6,14 +6,18 @@ import SupportingDocuments from './SupportingDocuments';
 
 const SectionTwo = () => {
   return (
-    <Flex gap="40px" width="full">
-      <Flex width="32.5%">
+    <Flex
+      gap={{ base: '16px', md: '40px' }}
+      width="full"
+      direction={{ base: 'column', lg: 'row' }}
+    >
+      <Flex width={{ base: 'full', lg: '32.5%' }}>
         <CurrentOwner />
       </Flex>
-      <Flex width="35%">
+      <Flex width={{ base: 'full', lg: '35%' }}>
         <DisposalDetails />
       </Flex>
-      <Flex width="32.5%">
+      <Flex width={{ base: 'full', lg: '32.5%' }}>
         <SupportingDocuments />
       </Flex>
     </Flex>

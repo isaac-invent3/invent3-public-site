@@ -35,12 +35,142 @@ interface ActualProjectedData {
 interface ProjectedAndActualCostsByArea {
   percentageChange: number;
   projectedAndActualCosts: ActualProjectedData[];
-  totalMaintenanceCost:number
+  totalMaintenanceCost: number;
 }
+
+type WeekType = 'this' | 'last' | 'next';
+export interface FrontdeskDashboardStat {
+  data: { [key: string]: number };
+  message: string;
+  responseId: string;
+}
+
+interface FrontendDashboardStats {
+  openTickets: number;
+  assetsInUseCount: number;
+  assetsNotInUseCount: number;
+  upcomingMaintenanceByWeek: number;
+  upcomingMaintenanceByDay: number;
+  totalTasksCount: number;
+  completedTask: number;
+  incompleteTask: number;
+  completeTaskPercentageChange: number;
+  assetsInUsePercentageChange: number;
+  openTicketsPercentageChange: number;
+}
+
+interface FrontendDashboardChartData {
+  openedAndResolvedTickets: OpenedAndResolvedTicket[];
+  completeAndIncompleteTasks: CompleteAndIncompleteTask[];
+}
+
+interface CompleteAndIncompleteTask {
+  complete: number;
+  inComplete: number;
+  variance: number;
+  monthId: number;
+  weekId: number;
+  year: number;
+}
+
+interface OpenedAndResolvedTicket {
+  open: number;
+  resolved: number;
+  variance: number;
+  monthId: number;
+  weekId: number;
+  year: number;
+}
+
+interface MaintenanceSuccessChartData {
+  missed: number;
+  completed: number;
+  percentageMissed: number;
+  percentageCompleted: number;
+  variance: null;
+  monthId: number;
+  weekId: number;
+  year: number;
+}
+
+interface SuperAdminDashboardStats {
+  totalCompaniesUnderMgt: number;
+  newOnboardedCompaniesByMonth: number;
+  activeSubscriptionsByMonth: number;
+  totalUsers: number;
+  totalInactiveUsersByMonth: number;
+  pendingFeedbacks: number;
+  newOnboardedCompaniesPercentageChange: number;
+  activeSubscriptionsPercentageChange: number;
+  pendingFeedbacksPercentageChange: number;
+}
+
+interface SubscriptionTrend {
+  free: number;
+  paid: number;
+  variance: number;
+  monthId: number;
+  weekId: number;
+  year: number;
+}
+
+interface UserDemographics {
+  usersCount: number;
+  lgaId: number;
+  countryId: number;
+  stateId: number;
+  lgaName: string;
+  stateName: string;
+}
+
+interface TrafficCount {
+  trafficCount: number;
+  monthId: number;
+  weekId: number;
+  year: number;
+}
+
+interface CompanyDistritution {
+  companyCount: number;
+  lgaId: number;
+  countryId: number;
+  stateId: number;
+  lgaName: string;
+  stateName: string;
+}
+
+interface GenericTaskCompleteData {
+  inComplete: number;
+  complete: number;
+  monthId: number;
+  year: number;
+}
+
+type DashboardView =
+  | 'operation_manager'
+  | 'executive'
+  | 'front_desk'
+  | 'field_engineer'
+  | 'third_party'
+  | 'client_admin'
+  | 'super_admin';
 
 export type {
   AssetStatistics,
   ActualProjectedData,
   AssetInRegion,
   ProjectedAndActualCostsByArea,
+  WeekType,
+  FrontendDashboardStats,
+  FrontendDashboardChartData,
+  MaintenanceSuccessChartData,
+  OpenedAndResolvedTicket,
+  CompleteAndIncompleteTask,
+  SuperAdminDashboardStats,
+  SubscriptionTrend,
+  UserDemographics,
+  TrafficCount,
+  CompanyDistritution,
+  GenericTaskCompleteData,
+  DashboardView,
 };

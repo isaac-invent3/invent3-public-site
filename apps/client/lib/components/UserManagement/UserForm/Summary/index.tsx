@@ -158,8 +158,6 @@ const SummaryStep = (props: SummaryStepProps) => {
             }))
         : null,
     userDocuments: mapIdsToObject([], deletedDocuments),
-    userRoles: mapIdsToObject(newlyAddedRoles, deletedRoles),
-    userGroups: mapIdsToObject(newlyAddedGroups, deletedGroups),
   };
 
   const handleSumbitUser = async () => {

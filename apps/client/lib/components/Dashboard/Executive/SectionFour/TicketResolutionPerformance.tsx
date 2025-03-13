@@ -1,15 +1,17 @@
 import { Flex, HStack, Text, VStack } from '@chakra-ui/react';
 import React, { useMemo } from 'react';
 import { Button, DataTable } from '@repo/ui/components';
-import { ROUTES } from '~/lib/utils/constants';
+import { DATE_PERIOD, ROUTES } from '~/lib/utils/constants';
 import CardHeader from '../../Common/CardHeader';
 import { createColumnHelper } from '@tanstack/react-table';
-import { useGetTicketsByTabScopeQuery } from '~/lib/redux/services/ticket.services';
-import { Ticket } from '~/lib/interfaces/ticket.interfaces';
+import { useGetTicketResolutionPerformanceQuery } from '~/lib/redux/services/dashboard/executive.services';
+import { TicketResolution } from '~/lib/interfaces/dashboard/executive.interfaces';
 
 const TicketResolutionPerformance = () => {
-  const { data, isLoading } = useGetTicketsByTabScopeQuery({ pageSize: 5 });
-  const columnHelper = createColumnHelper<Ticket>();
+  const { data, isLoading } = useGetTicketResolutionPerformanceQuery({
+    datePeriod: DATE_PERIOD.YEAR,
+  });
+  const columnHelper = createColumnHelper<TicketResolution>();
   const columns = useMemo(
     () => {
       const baseColumns = [
@@ -18,12 +20,12 @@ const TicketResolutionPerformance = () => {
           header: '#',
           enableSorting: false,
         }),
-        columnHelper.accessor('ticketPriorityName', {
+        columnHelper.accessor('category', {
           cell: (info) => info.getValue(),
           header: 'Category',
           enableSorting: false,
         }),
-        columnHelper.accessor('ticketPriorityName', {
+        columnHelper.accessor('priority', {
           cell: (info) => info.getValue(),
           header: 'Priority',
           enableSorting: false,
@@ -33,7 +35,7 @@ const TicketResolutionPerformance = () => {
           header: 'Assigned To',
           enableSorting: false,
         }),
-        columnHelper.accessor('statusName', {
+        columnHelper.accessor('status', {
           cell: (info) => info.getValue(),
           header: 'Status',
           enableSorting: false,
@@ -72,7 +74,7 @@ const TicketResolutionPerformance = () => {
           </Text>
         </HStack>
         <Button
-          href={`/${ROUTES.ASSETS}`}
+          href={`/${ROUTES.TICKETS}`}
           customStyles={{
             py: 0,
             height: '28px',
@@ -87,7 +89,7 @@ const TicketResolutionPerformance = () => {
       <Flex width="full">
         <DataTable
           columns={columns}
-          data={data?.data?.items ?? []}
+          data={data?.data ?? []}
           isLoading={isLoading}
           showFooter={false}
           customThStyle={{

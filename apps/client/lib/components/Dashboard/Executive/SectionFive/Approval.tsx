@@ -1,40 +1,42 @@
 import { Flex, HStack, Text, VStack } from '@chakra-ui/react';
 import React, { useMemo } from 'react';
 import { Button, DataTable } from '@repo/ui/components';
-import { ROUTES } from '~/lib/utils/constants';
+import { DATE_PERIOD, ROUTES } from '~/lib/utils/constants';
 import CardHeader from '../../Common/CardHeader';
 import { createColumnHelper } from '@tanstack/react-table';
-import { useGetTicketsByTabScopeQuery } from '~/lib/redux/services/ticket.services';
-import { Ticket } from '~/lib/interfaces/ticket.interfaces';
 import { amountFormatter } from '~/lib/utils/Formatters';
+import { useGetPendingApprovalRequestQuery } from '~/lib/redux/services/dashboard/executive.services';
+import { PendingApproval } from '~/lib/interfaces/dashboard/executive.interfaces';
 
 const ApprovalRequests = () => {
-  const { data, isLoading } = useGetTicketsByTabScopeQuery({ pageSize: 5 });
-  const columnHelper = createColumnHelper<Ticket>();
+  const { data, isLoading } = useGetPendingApprovalRequestQuery({
+    datePeriod: DATE_PERIOD.YEAR,
+  });
+  const columnHelper = createColumnHelper<PendingApproval>();
   const columns = useMemo(
     () => {
       const baseColumns = [
-        columnHelper.accessor('ticketId', {
+        columnHelper.accessor('requestId', {
           cell: (info) => info.getValue(),
           header: '#',
           enableSorting: false,
         }),
-        columnHelper.accessor('ticketPriorityName', {
+        columnHelper.accessor('requestType', {
           cell: (info) => info.getValue(),
           header: 'Request Type',
           enableSorting: false,
         }),
-        columnHelper.accessor('assignedTo', {
+        columnHelper.accessor('submittedBy', {
           cell: (info) => info.getValue(),
           header: 'Submitted By',
           enableSorting: false,
         }),
-        columnHelper.accessor('statusName', {
+        columnHelper.accessor('department', {
           cell: (info) => info.getValue(),
           header: 'Department',
           enableSorting: false,
         }),
-        columnHelper.accessor('totalTasksCount', {
+        columnHelper.accessor('operations', {
           cell: (info) => amountFormatter(info.getValue() ?? 0),
           header: 'Amount($)',
           enableSorting: false,
@@ -88,7 +90,7 @@ const ApprovalRequests = () => {
       <Flex width="full">
         <DataTable
           columns={columns}
-          data={data?.data?.items ?? []}
+          data={data?.data ?? []}
           isLoading={isLoading}
           showFooter={false}
           customThStyle={{

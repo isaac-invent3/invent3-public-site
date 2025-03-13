@@ -4,7 +4,7 @@ import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
 import SectionThree from './SectionThree';
 import SectionFour from './SectionFour';
-import { useGetDashboardStatsQuery } from '~/lib/redux/services/dashboard.services';
+import { useGetDashboardStatsQuery } from '~/lib/redux/services/dashboard/operationmanager.services';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateInfo } from '~/lib/redux/slices/DashboardSlice';
 import Header from '../Header';

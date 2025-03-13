@@ -1,16 +1,18 @@
 import { Flex, HStack, Text, VStack } from '@chakra-ui/react';
 import React, { useMemo } from 'react';
 import { Button, DataTable } from '@repo/ui/components';
-import { ROUTES } from '~/lib/utils/constants';
+import { DATE_PERIOD, ROUTES } from '~/lib/utils/constants';
 import CardHeader from '../../Common/CardHeader';
 import { createColumnHelper } from '@tanstack/react-table';
 import { amountFormatter } from '~/lib/utils/Formatters';
-import { useGetAllAssetQuery } from '~/lib/redux/services/asset/general.services';
-import { Asset } from '~/lib/interfaces/asset/general.interface';
+import { useGetAssetDepreciationFinancialImpactQuery } from '~/lib/redux/services/dashboard/executive.services';
+import { FinancialImpact } from '~/lib/interfaces/dashboard/executive.interfaces';
 
 const AssetDepreciation = () => {
-  const { data, isLoading } = useGetAllAssetQuery({ pageSize: 5 });
-  const columnHelper = createColumnHelper<Asset>();
+  const { data, isLoading } = useGetAssetDepreciationFinancialImpactQuery({
+    datePeriod: DATE_PERIOD.YEAR,
+  });
+  const columnHelper = createColumnHelper<FinancialImpact>();
   const columns = useMemo(
     () => {
       const baseColumns = [
@@ -19,23 +21,23 @@ const AssetDepreciation = () => {
           header: 'Asset Name',
           enableSorting: false,
         }),
-        columnHelper.accessor('assetCategory', {
+        columnHelper.accessor('category', {
           cell: (info) => info.getValue(),
           header: 'Category',
           enableSorting: false,
         }),
-        columnHelper.accessor('currentCost', {
+        columnHelper.accessor('initialCost', {
           cell: (info) => amountFormatter(info.getValue() ?? 0),
           header: 'Initial Cost($)',
           enableSorting: false,
         }),
-        columnHelper.accessor('currentCost', {
+        columnHelper.accessor('currentValue', {
           cell: (info) => amountFormatter(info.getValue() ?? 0),
           header: 'Current Value($)',
           enableSorting: false,
         }),
-        columnHelper.accessor('initialValue', {
-          cell: () => '10%',
+        columnHelper.accessor('depreciationRate', {
+          cell: (info) => `${info.getValue()}%`,
           header: 'Depreciation Rate(%)',
           enableSorting: false,
         }),
@@ -88,7 +90,7 @@ const AssetDepreciation = () => {
       <Flex width="full">
         <DataTable
           columns={columns}
-          data={data?.data?.items ?? []}
+          data={data?.data ?? []}
           isLoading={isLoading}
           showFooter={false}
           customThStyle={{

@@ -7,7 +7,7 @@ import {
   transformCostsData,
 } from '~/lib/utils/helperFunctions';
 import { useAppSelector } from '~/lib/redux/hooks';
-import { useGetMaintenanceCostStatsQuery } from '~/lib/redux/services/dashboard.services';
+import { useGetMaintenanceCostStatsQuery } from '~/lib/redux/services/dashboard/operationmanager.services';
 import { AREA_ENUM } from '~/lib/utils/constants';
 import DropDown from '../../../Common/DropDown';
 import LineChart from '../../../Common/Charts/LineChart';

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Subscription Confirmation Email</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+             margin: 0 0 8px 0;
+            padding: 0;
+        }
+        table {
+            max-width: 600px;
+            margin: 20px auto 0;
+            background-color: #F2F2F2;
+            border-spacing: 0;
+            border-collapse: collapse;
+            font-size: 16px;
+        }
+        td {
+            padding: 0px 20px;
+            font-weight: 400;
+        }
+        .header {
+            background-color: #0A1D37;
+            text-align: left;
+            padding: 20px;
+        }
+        .header img {
+            max-width: 150px;
+        }
+        h1, h2 {
+            color: black;
+             margin: 0 0 8px 0;
+        }
+        p {
+            font-size: 14px;
+            line-height: 1.5;
+            color: black;
+            font-weight: 400;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #0E2642;
+            color: #D2FEFD;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+        .footer {
+            font-size: 14px;
+            text-align: center;
+            padding: 20px;
+            color: #888;
+        }
+        .checklist img {
+            width: 16px;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+        @media screen and (max-width: 480px) {
+            table {
+                width: 100% !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <table align="center" width="600" cellpadding="0" cellspacing="0">
+        <!-- Header -->
+        <tr>
+            <td style="background-color: #061A31; padding: 30px 20px;">
+                <img src="https://yourlogo.com/logo.png" alt="Invent3 Logo" style="display: block; color: white;">
+            </td>
+        </tr>
+        <!-- Content -->
+        <tr>
+            <td style="padding-top: 40px; padding-bottom: 40px;">
+                <h1 style="font-size: 16px; font-weight: 500;">Hi {{name}},</h1>
+                <p style="margin-bottom: 40px;">Thank you for subscribing to Invent3.ai! Here are the details of your subscription:   
+                </p>
+
+              <p><span>Plan: </span><strong>{{planName}}</strong></p>
+              <p><span>Billing Cycle: </span><strong>{{billingCycle}}</strong></p>
+              <p><span>Next Payment Date: </span><strong>{{nextPaymentDate}}</strong></p>
+              <p><span>Amount: </span><strong>{{amount}}</strong></p>
+             <br>
+                <p>If you have any questions, feel free to reach out to us at
+                    <strong>support@invent3.ai</strong></p>
+                <p style="margin-top: 40px;">Thank you for choosing Invent3.ai!  <br><br><strong> The Invent3.ai Team</strong></p>
+            </td>
+        </tr>
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse; background: #0A1D37; color: white; text-align: center; padding: 20px; margin-top: 0;">
+            <tr>
+                <td style="font-size: 12px; line-height: 1.5; padding: 10px 20px;">
+                    If you have any questions or issues, feel free to reach out to <strong>support@invent3.ai</strong>.
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 10px;">
+                    <a href="{unsubscribe_link}" style="color: #ffffff; font-size: 12px; text-decoration: underline;">Unsubscribe</a>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 10px;">
+                    <!-- Social Media Links -->
+                    <a href="https://facebook.com" style="margin: 0 10px;">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" width="24" height="24" alt="Facebook">
+                    </a>
+                    <a href="https://twitter.com" style="margin: 0 10px;">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/33/X_logo-white.png" width="24" height="24" alt="Twitter">
+                    </a>
+                    <a href="https://linkedin.com" style="margin: 0 10px;">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/8/81/LinkedIn_icon.svg" width="24" height="24" alt="LinkedIn">
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td style="font-size: 12px; line-height: 1.5; padding-bottom: 10px; opacity: 0.8;">
+                    &copy; 2025 Invent3.ai. All rights reserved.
+                </td>
+            </tr>
+        </table>        
+    </table>
+</body>
+</html>

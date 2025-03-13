@@ -1,7 +1,7 @@
 import { Text, useDisclosure } from '@chakra-ui/react';
 import { MessagingIcon } from '~/lib/components/CustomIcons';
+import FeedbackFormModal from '~/lib/components/Feedback/Modals/FeedbackFormModal';
 import HeaderIcon from '../Header/HeaderIcon';
-import FeedbackForm from './FeedbackForm';
 
 const Feedback = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -20,7 +20,7 @@ const Feedback = () => {
         </Text>
       </HeaderIcon>
 
-      {isOpen && <FeedbackForm isOpen={isOpen} onClose={onClose} />}
+      {isOpen && <FeedbackFormModal isOpen={isOpen} onClose={onClose} />}
     </>
   );
 };

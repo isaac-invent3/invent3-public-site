@@ -4,7 +4,7 @@ import { GenericBreadCrumb } from '@repo/ui/components';
 import { usePathname } from 'next/navigation';
 import { SearchIcon, SettingsIcon } from '~/lib/components/CustomIcons/layout';
 import NotificationComponents from '~/lib/components/Notification';
-import Feedback from '../Feedback';
+import Feedback from './Feedback';
 import { getBreadcrumb } from './BreadCrumb';
 import HeaderIcon from './HeaderIcon';
 import UserActionPopover from './UserActionPopover';

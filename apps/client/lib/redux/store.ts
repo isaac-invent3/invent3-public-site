@@ -81,6 +81,7 @@ import { thirdPartyApi } from './services/dashboard/thirdparty.services';
 import { complianceApi } from './services/asset/compliance.services';
 import { notesApi } from './services/notes.services';
 import { fieldEngineerDashboardApi } from './services/dashboard/fieldengineer.services';
+import { feedbackApi } from './services/feedback.services';
 export const persistConfig = {
   key: 'root',
   storage,
@@ -180,6 +181,9 @@ const rootReducer = combineReducers({
 
   // Notes APIS
   [notesApi.reducerPath]: notesApi.reducer,
+
+  // Feedback APIS
+  [feedbackApi.reducerPath]: feedbackApi.reducer,
 
   asset: assetSlice,
   auditLog: auditLogSlice,
@@ -303,6 +307,9 @@ export const makeStore = () => {
 
         // Notes Apis
         notesApi.middleware,
+
+        // Feedback Apis
+        feedbackApi.middleware
       ]),
   });
 };

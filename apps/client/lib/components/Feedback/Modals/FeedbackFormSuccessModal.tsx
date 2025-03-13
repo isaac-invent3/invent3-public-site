@@ -5,7 +5,7 @@ interface FeedbackFormSuccessModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
-const FeedbackFormSuccess = (props: FeedbackFormSuccessModalProps) => {
+const FeedbackFormSuccessModal = (props: FeedbackFormSuccessModalProps) => {
   const { isOpen, onClose } = props;
 
   return (
@@ -36,4 +36,4 @@ const FeedbackFormSuccess = (props: FeedbackFormSuccessModalProps) => {
   );
 };
 
-export default FeedbackFormSuccess;
+export default FeedbackFormSuccessModal;

@@ -17,14 +17,14 @@ import {
   GenericModal,
 } from '@repo/ui/components';
 import { Field, FormikProvider, useFormik } from 'formik';
-import FeedbackFormSuccess from './FeedbackFormSuccess';
+import FeedbackFormSuccessModal from './FeedbackFormSuccessModal';
 
 interface FeedbackFormModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const FeedbackForm = (props: FeedbackFormModalProps) => {
+const FeedbackFormModal = (props: FeedbackFormModalProps) => {
   const { isOpen, onClose } = props;
 
   const {
@@ -155,7 +155,7 @@ const FeedbackForm = (props: FeedbackFormModalProps) => {
         </ModalFooter>
       </FormikProvider>
 
-      <FeedbackFormSuccess
+      <FeedbackFormSuccessModal
         isOpen={isOpenFeedbackSuccess}
         onClose={onOpenFeedbackSuccess}
       />
@@ -163,4 +163,4 @@ const FeedbackForm = (props: FeedbackFormModalProps) => {
   );
 };
 
-export default FeedbackForm;
+export default FeedbackFormModal;

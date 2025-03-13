@@ -68,23 +68,6 @@ const NodeFormModal = (props: SubCategoryModalProps) => {
         createdBy: session?.user?.username!,
       };
 
-      if (position !== 'same_level') {
-        const updateOtherLevelsPayload = {
-          alteredLevelNumber:
-            position === 'right'
-              ? selectedInstance.levelNumber + 1
-              : selectedInstance.levelNumber,
-          approvalWorkFlowInstanceId:
-            selectedInstance.approvalWorkFlowInstanceId,
-          isLevelDeleted: false,
-          lastModifiedBy: session?.user?.username!,
-        };
-
-        await updateSubsequentPartyInstancesLevelNumbersMutation(
-          updateOtherLevelsPayload
-        );
-      }
-
       const response =
         await createApprovalWorkflowPartyInstanceMutation(payload);
 

@@ -668,10 +668,10 @@ const ApprovalFlowChart = (props: ApprovalChartProps) => {
 
     const leftInstance = leftNodes[0]?.data;
     const newLevel = leftInstance?.levelNumber ?? 0 + 1;
-  
+
     await updateApprovalWorkflowPartyInstanceMutation({
       id: node.data?.approvalWorkFlowPartyInstanceId!,
-      overlap:false,
+      overlap: false,
       data: {
         levelNumber: newLevel + 1,
         lastModifiedBy: session?.user?.username!,
@@ -706,10 +706,20 @@ const ApprovalFlowChart = (props: ApprovalChartProps) => {
             edgeTypes={edgeTypes}
             onNodeDragStart={onNodeDragStart}
             onNodeDragStop={onNodeDragStop}
-            
             fitView
+            nodesDraggable={
+              !(
+                isLoading ||
+                isFetching ||
+                isUpdatingApprovalWorkflowPartyInstance
+              )
+            }
             style={{
-              ...(isLoading || isFetching ? { opacity: 0.3 } : { opacity: 1 }),
+              ...(isLoading ||
+              isFetching ||
+              isUpdatingApprovalWorkflowPartyInstance
+                ? { opacity: 0.3 }
+                : { opacity: 1 }),
             }}
           ></ReactFlow>
         </ReactFlowProvider>

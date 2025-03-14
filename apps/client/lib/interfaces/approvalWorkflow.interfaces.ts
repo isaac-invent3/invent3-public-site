@@ -80,6 +80,7 @@ interface CreateApprovalWorkflowPartyInstancePayload {
   approvalWorkFlowInstanceId: number;
   approvalRequestId: number;
   levelNumber: number;
+  overlap?: boolean;
   createdBy: string;
 }
 

@@ -1,16 +1,19 @@
 'use client';
 
+import { CheckIcon } from '@chakra-ui/icons';
 import { Flex, HStack, Spinner, Text } from '@chakra-ui/react';
+import React, { useState } from 'react';
 import { ApprovalWorkflowRequest } from '~/lib/interfaces/approvalWorkflow.interfaces';
 import PageHeader from '../../UI/PageHeader';
-import ApprovalFlowChart from './ApprovalFlowChart';
-import { CheckIcon } from '@chakra-ui/icons';
+import { ApprovalFlowProvider } from './ApprovalFlowChart/Components/Context';
+import ApprovalFlowChart from './ApprovalFlowChart/Components/FlowChart';
 
 interface ApprovalDetailProps {
   data: ApprovalWorkflowRequest;
 }
 
 const ApprovalDetail = (props: ApprovalDetailProps) => {
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <Flex width="full" direction="column" pb="24px">
       <PageHeader>Approval Requests</PageHeader>
@@ -23,12 +26,15 @@ const ApprovalDetail = (props: ApprovalDetailProps) => {
         >
           #{props.data.approvalRequestId} - {props.data.approvalTypeName}
         </Text>
-        <Spinner color="primary.500" size="sm" />
-        <CheckIcon />
+        {isLoading && <Spinner color="primary.500" size="sm" />}
+
+        {!isLoading && <CheckIcon />}
       </HStack>
-      <ApprovalFlowChart />
+      <ApprovalFlowProvider>
+        <ApprovalFlowChart setIsLoading={setIsLoading} />
+      </ApprovalFlowProvider>
     </Flex>
   );
 };
 
-export default ApprovalDetail;
+export default React.memo(ApprovalDetail);

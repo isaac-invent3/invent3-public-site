@@ -23,7 +23,7 @@ import ApprovalAssignee from './ApprovalAssignee';
 import ApprovalRequirementType from './ApprovalRequirementType';
 import Header from './Header';
 
-interface SubCategoryModalProps {
+interface NodeFormModalProps {
   isOpen: boolean;
   onClose: () => void;
 
@@ -33,7 +33,7 @@ interface SubCategoryModalProps {
   position: 'right' | 'left' | 'same_level';
 }
 
-const NodeFormModal = (props: SubCategoryModalProps) => {
+const NodeFormModal = (props: NodeFormModalProps) => {
   const { isOpen, onClose, selectedInstance, position, type } = props;
 
   const [
@@ -66,6 +66,7 @@ const NodeFormModal = (props: SubCategoryModalProps) => {
             ? selectedInstance.levelNumber + 1
             : selectedInstance.levelNumber,
         createdBy: session?.user?.username!,
+        overlap: position === 'same_level' ? true : false,
       };
 
       const response =

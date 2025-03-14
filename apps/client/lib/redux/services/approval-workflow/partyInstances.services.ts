@@ -26,8 +26,10 @@ export const approvalWorkflowPartyInstanceApi = createApi({
       BaseApiResponse<ApprovalWorkflowPartyInstance>,
       CreateApprovalWorkflowPartyInstancePayload
     >({
-      query: (body) => ({
-        url: '/ApprovalWorkFlowPartiesInstances',
+      query: ({ overlap, ...body }) => ({
+        url: generateQueryStr(`/ApprovalWorkFlowPartiesInstances?`, {
+          overlap,
+        }),
         method: 'POST',
         headers: getHeaders(),
         body,
@@ -60,10 +62,16 @@ export const approvalWorkflowPartyInstanceApi = createApi({
 
     updateApprovalWorkflowPartyInstances: builder.mutation<
       BaseApiResponse<ApprovalWorkflowPartyInstance>,
-      { id: number; data: Partial<ApprovalWorkflowPartyInstance> }
+      {
+        id: number;
+        overlap: boolean;
+        data: Partial<ApprovalWorkflowPartyInstance>;
+      }
     >({
-      query: ({ id, data }) => ({
-        url: `/ApprovalWorkFlowPartiesInstances/${id}`,
+      query: ({ id, overlap, data }) => ({
+        url: generateQueryStr(`/ApprovalWorkFlowPartiesInstances/${id}?`, {
+          overlap,
+        }),
         method: 'PUT',
         headers: getHeaders(),
         body: data,
@@ -91,7 +99,10 @@ export const approvalWorkflowPartyInstanceApi = createApi({
       DeleteRecordQuery
     >({
       query: ({ id, ...body }) => ({
-        url: `/ApprovalWorkFlowPartiesInstances/${id}`,
+        url: generateQueryStr(`/ApprovalWorkFlowPartiesInstances/${id}?`, {
+          overlap: false,
+        }),
+
         method: 'DELETE',
         headers: getHeaders(),
         body,
@@ -121,5 +132,5 @@ export const {
   useGetApprovalWorkflowPartyInstancesByIdQuery,
   useUpdateApprovalWorkflowPartyInstancesMutation,
   useSearchApprovalWorkflowPartyInstancesQuery,
-  useUpdateSubsequentPartyInstancesLevelNumbersMutation
+  useUpdateSubsequentPartyInstancesLevelNumbersMutation,
 } = approvalWorkflowPartyInstanceApi;

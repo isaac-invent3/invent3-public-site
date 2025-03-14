@@ -14,7 +14,6 @@ import { useCallback, useEffect, useState } from 'react';
 import {
   useGetAllApprovalWorkflowPartyInstancesQuery,
   useUpdateApprovalWorkflowPartyInstancesMutation,
-  useUpdateSubsequentPartyInstancesLevelNumbersMutation,
 } from '~/lib/redux/services/approval-workflow/partyInstances.services';
 import { ROUTES } from '~/lib/utils/constants';
 import ApprovalDetailsPanel from '../RightPanel';
@@ -29,7 +28,11 @@ import {
 import edgeTypes from './UI/Edges';
 import nodeTypes from './UI/Nodes';
 
-const FlowChart = () => {
+interface ApprovalChartProps {
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const ApprovalFlowChart = (props: ApprovalChartProps) => {
   const { setElements, elements } = useApprovalFlowContext();
 
   const pathname = usePathname();
@@ -48,14 +51,13 @@ const FlowChart = () => {
     );
 
   const [
-    updateSubsequentPartyInstancesLevelNumbersMutation,
-    { isLoading: isUpdatingSubsequentPartyInstancesLevelNumbersMutation },
-  ] = useUpdateSubsequentPartyInstancesLevelNumbersMutation();
-
-  const [
     updateApprovalWorkflowPartyInstanceMutation,
     { isLoading: isUpdatingApprovalWorkflowPartyInstance },
   ] = useUpdateApprovalWorkflowPartyInstancesMutation();
+
+  useEffect(() => {
+    props.setIsLoading(isUpdatingApprovalWorkflowPartyInstance);
+  }, [isUpdatingApprovalWorkflowPartyInstance]);
 
   const [layoutElements, setLayoutElements] = useState<{
     nodes: CustomNode[];
@@ -666,22 +668,12 @@ const FlowChart = () => {
 
     const leftInstance = leftNodes[0]?.data;
     const newLevel = leftInstance?.levelNumber ?? 0 + 1;
-
-    const updateOtherLevelsPayload = {
-      alteredLevelNumber: newLevel + 1,
-      approvalWorkFlowInstanceId: leftInstance?.approvalWorkFlowInstanceId!,
-      isLevelDeleted: newLevel > node.data?.levelNumber! ? true : false,
-      lastModifiedBy: session?.user?.username!,
-    };
-
-    await updateSubsequentPartyInstancesLevelNumbersMutation(
-      updateOtherLevelsPayload
-    );
-
+  
     await updateApprovalWorkflowPartyInstanceMutation({
       id: node.data?.approvalWorkFlowPartyInstanceId!,
+      overlap:false,
       data: {
-        levelNumber: newLevel,
+        levelNumber: newLevel + 1,
         lastModifiedBy: session?.user?.username!,
         approvalWorkFlowPartyInstanceId:
           node.data?.approvalWorkFlowPartyInstanceId!,
@@ -692,7 +684,11 @@ const FlowChart = () => {
     setDraggingNodeId(null);
   };
 
-  if (!approvalRequestId) return router.push(ROUTES.APPROVAL);
+  if (!approvalRequestId) {
+    router.push(ROUTES.APPROVAL);
+
+    return null;
+  }
 
   return (
     <Box position="relative" width="100%">
@@ -710,6 +706,7 @@ const FlowChart = () => {
             edgeTypes={edgeTypes}
             onNodeDragStart={onNodeDragStart}
             onNodeDragStop={onNodeDragStop}
+            
             fitView
             style={{
               ...(isLoading || isFetching ? { opacity: 0.3 } : { opacity: 1 }),
@@ -725,4 +722,4 @@ const FlowChart = () => {
   );
 };
 
-export default FlowChart;
+export default ApprovalFlowChart;

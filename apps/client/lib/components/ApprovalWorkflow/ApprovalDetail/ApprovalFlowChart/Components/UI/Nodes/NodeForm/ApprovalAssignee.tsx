@@ -5,11 +5,12 @@ import { FormInputWrapper } from '@repo/ui/components';
 import { useField } from 'formik';
 import { useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
+import { useSearchEmployeesMutation } from '~/lib/redux/services/employees.services';
 import {
-  useGetAllEmployeesQuery,
-  useSearchEmployeesMutation,
-} from '~/lib/redux/services/employees.services';
-import { useGetAllUsersQuery } from '~/lib/redux/services/user.services';
+  useGetAllUserGroupsInfoHeaderQuery,
+  useGetAllUsersQuery,
+  useSearchUserGroupMutation,
+} from '~/lib/redux/services/user.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 const ApprovalAssignee = () => {
@@ -21,6 +22,14 @@ const ApprovalAssignee = () => {
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber: userListPageNumber,
   });
+
+  const { data: userGroups, isLoading: isLoadingUserGroups } =
+    useGetAllUserGroupsInfoHeaderQuery({
+      pageSize: DEFAULT_PAGE_SIZE,
+      pageNumber: userListPageNumber,
+    });
+
+  const [searchUserGroups] = useSearchUserGroupMutation({});
 
   const [field, meta, helpers] = useField('userId');
 
@@ -62,12 +71,12 @@ const ApprovalAssignee = () => {
             <GenericAsyncSelect
               selectName="groupList"
               selectTitle="Select a Group"
-              data={data}
-              labelKey="employeeName"
-              valueKey="employeeId"
+              data={userGroups}
+              labelKey="groupName"
+              valueKey="groupId"
               defaultInputValue={undefined}
-              mutationFn={searchEmployee}
-              isLoading={isLoading}
+              mutationFn={searchUserGroups}
+              isLoading={isLoadingUserGroups}
               pageNumber={userListPageNumber}
               setPageNumber={setUserListPageNumber}
               handleSelect={(option) => {

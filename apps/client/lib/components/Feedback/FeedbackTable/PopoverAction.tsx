@@ -2,6 +2,7 @@
 import { Text, VStack, useDisclosure } from '@chakra-ui/react';
 import { GenericPopover } from '@repo/ui/components';
 import { Feedback } from '~/lib/interfaces/feedback.interfaces';
+import ViewFeedbackDrawer from '../Drawers/ViewFeedbackDrawer';
 
 interface PopoverActionProps {
   feedback: Feedback;
@@ -23,6 +24,12 @@ const PopoverAction = (props: PopoverActionProps) => {
           </Text>
         </VStack>
       </GenericPopover>
+
+      <ViewFeedbackDrawer
+        data={feedback}
+        isOpen={isOpenView}
+        onClose={onCloseView}
+      />
     </>
   );
 };

@@ -17,6 +17,7 @@ import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { BulkSearchIcon, FilterIcon } from '../CustomIcons';
 import PageHeader from '../UI/PageHeader';
 import FeedbackTable from './FeedbackTable';
+import ExportButtonPopover from './Common/ExportButtonPopover';
 
 const ALlTabs = ['New', 'Assigned', 'Scheduled', 'In Progress', 'Completed'];
 
@@ -130,14 +131,7 @@ const FeedbackOverview = () => {
           />
 
           <HStack spacing="16px" flexWrap="wrap">
-            <FilterButton
-              icon={BulkSearchIcon}
-              label="Bulk Actions"
-              handleClick={() =>
-                setActiveFilter((prev) => (prev === 'bulk' ? null : 'bulk'))
-              }
-              isActive={activeFilter === 'bulk'}
-            />
+           
             <FilterButton
               icon={FilterIcon}
               label="Filters"
@@ -148,6 +142,7 @@ const FeedbackOverview = () => {
               }
               isActive={activeFilter === 'general'}
             />
+            <ExportButtonPopover />
           </HStack>
         </Stack>
 

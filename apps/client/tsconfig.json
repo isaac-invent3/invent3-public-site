@@ -21,6 +21,6 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-  ],
+, "lib/components/Feedback/Common/FeedbackDrawerHeader.tsx"  ],
   "exclude": ["node_modules"]
 }

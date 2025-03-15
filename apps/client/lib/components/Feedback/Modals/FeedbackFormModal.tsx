@@ -8,6 +8,7 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
+import { UploadedFile } from '@repo/interfaces';
 import {
   Button,
   FileUpload,
@@ -20,15 +21,19 @@ import {
 import { Field, FormikProvider, useFormik } from 'formik';
 import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
 import useFormatUrl from '~/lib/hooks/useFormatUrl';
-import useParseUrlData from '~/lib/hooks/useParseUrl';
 import {
   CreateFeedbackAttachmentPayload,
   CreateFeedbackPayload,
 } from '~/lib/interfaces/feedback.interfaces';
 import { SideBarData } from '~/lib/interfaces/general.interfaces';
 import { filterSidebarData } from '~/lib/layout/ProtectedPage/SideBar/utils';
-import { useCreateFeedbackMutation } from '~/lib/redux/services/feedback.services';
+import {
+  useCreateFeedbackAttachmentMutation,
+  useCreateFeedbackMutation,
+} from '~/lib/redux/services/feedback.services';
+import { createFeedbackSchema } from '~/lib/schemas/feedback.schema';
 import { generateOptions } from '~/lib/utils/helperFunctions';
 import FeedbackFormSuccessModal from './FeedbackFormSuccessModal';
 
@@ -44,11 +49,13 @@ interface FeedbackFormPayload {
     feedbackTypeId: number | null;
   };
 
-  createFeedbackAttachmentDto: CreateFeedbackAttachmentPayload | null;
+  createFeedbackAttachmentDto: UploadedFile | null;
 }
 
 const FeedbackFormModal = (props: FeedbackFormModalProps) => {
   const { isOpen, onClose } = props;
+
+  const { handleSubmit } = useCustomMutation();
 
   const {
     isOpen: isOpenFeedbackSuccess,
@@ -57,8 +64,8 @@ const FeedbackFormModal = (props: FeedbackFormModalProps) => {
   } = useDisclosure();
 
   const formattedUrl = useFormatUrl();
-  const urlData = useParseUrlData(formattedUrl);
   const [createFeedback] = useCreateFeedbackMutation();
+  const [createFeedbackAttachment] = useCreateFeedbackAttachmentMutation();
 
   const formik = useFormik<FeedbackFormPayload>({
     initialValues: {
@@ -70,26 +77,42 @@ const FeedbackFormModal = (props: FeedbackFormModalProps) => {
       },
     },
     enableReinitialize: false,
-    onSubmit: async (data) => {
+    validationSchema: createFeedbackSchema,
+    onSubmit: async (data, { resetForm }) => {
       const session = await getSession();
 
       if (!session) return;
 
       const payload: CreateFeedbackPayload = {
-        createFeedbackDto: {
-          ...data.createFeedbackDto,
-          submittedDate: new Date().toISOString(),
-          createdBy: session?.user.username!,
-        },
-        createFeedbackAttachmentDto: {
-          ...data.createFeedbackAttachmentDto,
-          createdBy: session?.user.username!,
-        },
+        ...data.createFeedbackDto,
+        feedbackTypeId: data.createFeedbackDto.feedbackTypeId!,
+        submittedDate: new Date().toISOString(),
+        createdBy: session?.user.username!,
       };
 
-      await createFeedback(payload)
+      const feedback = await handleSubmit(createFeedback, payload);
 
-      console.log({ payload });
+      if (!feedback) return;
+
+      const { createFeedbackAttachmentDto } = data;
+
+      const feedbackAttachmentPayload: CreateFeedbackAttachmentPayload = {
+        attachmentName: createFeedbackAttachmentDto?.fileName!,
+        base64Attachment: createFeedbackAttachmentDto?.base64!,
+        base64Prefix: createFeedbackAttachmentDto?.base64Prefix!,
+        createdBy: session?.user.username!,
+        feedbackId: feedback.data?.feedbackID!,
+      };
+
+      const feedbackAttachment = await handleSubmit(
+        createFeedbackAttachment,
+        feedbackAttachmentPayload
+      );
+
+      if (!feedbackAttachment) return;
+
+      resetForm();
+      onOpenFeedbackSuccess();
     },
   });
 
@@ -154,7 +177,7 @@ const FeedbackFormModal = (props: FeedbackFormModalProps) => {
                 isRequired
               >
                 <FormSelect
-                  name="feedbackTypeId"
+                  name="createFeedbackDto.feedbackTypeId"
                   title="Feedback Type"
                   isLoading={isFetchingFeedbackTypes}
                   options={generateOptions(feedbackTypes, 'name', 'contextId')}
@@ -200,7 +223,9 @@ const FeedbackFormModal = (props: FeedbackFormModalProps) => {
                 isRequired
               >
                 <FileUpload
+                  files={formik.values.createFeedbackAttachmentDto}
                   error={formik.errors.createFeedbackAttachmentDto}
+                  isMulti={false}
                   handleAddFiles={(files) => {
                     formik.setFieldValue(
                       'createFeedbackAttachmentDto',
@@ -247,7 +272,10 @@ const FeedbackFormModal = (props: FeedbackFormModalProps) => {
 
       <FeedbackFormSuccessModal
         isOpen={isOpenFeedbackSuccess}
-        onClose={onOpenFeedbackSuccess}
+        onClose={() => {
+          onCloseFeedbackSuccess();
+          onClose();
+        }}
       />
     </GenericModal>
   );

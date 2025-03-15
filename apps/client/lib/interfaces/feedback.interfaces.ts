@@ -14,28 +14,32 @@ interface Feedback extends BaseEntity {
   statusName: string;
 }
 
+type FeedbackAttachment = BaseEntity & CreateFeedbackAttachmentPayload;
+
 interface CreateFeedbackAttachmentPayload {
   attachmentName: string;
   base64Attachment: string;
   base64Prefix: string;
-  feedbackId: 0;
+  feedbackId: number;
   createdBy: string;
 }
 
 interface CreateFeedbackPayload {
-  createFeedbackDto: {
-    feedbackTypeId: number;
-    resolved?: boolean;
-    authorFirstName?: string;
-    authorLastName?: string;
-    assignedTo?: number;
-    subject: string;
-    description: string;
-    companyId?: number;
-    submittedDate: string;
-    statusId?: number;
-    createdBy: string;
-  };
+  feedbackTypeId: number;
+  resolved?: boolean;
+  authorFirstName?: string;
+  authorLastName?: string;
+  assignedTo?: number;
+  subject: string;
+  description: string;
+  companyId?: number;
+  submittedDate: string;
+  statusId?: number;
+  createdBy: string;
+}
+
+interface CreateFeedbackWithAttachmentPayload {
+  createFeedbackDto: CreateFeedbackPayload;
 
   createFeedbackAttachmentDto: CreateFeedbackAttachmentPayload | null;
 }
@@ -47,8 +51,10 @@ interface FeedbackTypes extends BaseEntity {
 }
 
 export type {
+  CreateFeedbackAttachmentPayload,
   CreateFeedbackPayload,
+  CreateFeedbackWithAttachmentPayload,
   Feedback,
   FeedbackTypes,
-  CreateFeedbackAttachmentPayload,
+  FeedbackAttachment,
 };

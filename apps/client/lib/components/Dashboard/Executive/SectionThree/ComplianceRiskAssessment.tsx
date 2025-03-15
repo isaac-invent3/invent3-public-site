@@ -1,40 +1,42 @@
 import { Flex, HStack, Text, VStack } from '@chakra-ui/react';
 import React, { useMemo } from 'react';
 import { Button, DataTable } from '@repo/ui/components';
-import { ROUTES } from '~/lib/utils/constants';
+import { DATE_PERIOD, ROUTES } from '~/lib/utils/constants';
 import CardHeader from '../../Common/CardHeader';
 import { createColumnHelper } from '@tanstack/react-table';
 import { dateFormatter } from '~/lib/utils/Formatters';
-import { useGetAllAssetQuery } from '~/lib/redux/services/asset/general.services';
-import { Asset } from '~/lib/interfaces/asset/general.interface';
+import { useGetComplianceAssessmentQuery } from '~/lib/redux/services/dashboard/executive.services';
+import { Compliance } from '~/lib/interfaces/dashboard/executive.interfaces';
 
 const ComplianceRiskAssessment = () => {
-  const { data, isLoading } = useGetAllAssetQuery({ pageSize: 5 });
-  const columnHelper = createColumnHelper<Asset>();
+  const { data, isLoading } = useGetComplianceAssessmentQuery({
+    datePeriod: DATE_PERIOD.YEAR,
+  });
+  const columnHelper = createColumnHelper<Compliance>();
   const columns = useMemo(
     () => {
       const baseColumns = [
-        columnHelper.accessor('assetName', {
+        columnHelper.accessor('complianceStandard', {
           cell: (info) => info.getValue(),
           header: 'Compliance Standard',
           enableSorting: false,
         }),
-        columnHelper.accessor('assetCategory', {
-          cell: () => 'Compliant',
+        columnHelper.accessor('status', {
+          cell: (info) => info.getValue(),
           header: 'Status',
           enableSorting: false,
         }),
-        columnHelper.accessor('dateCreated', {
+        columnHelper.accessor('lastAuditDate', {
           cell: (info) => dateFormatter(info.getValue(), 'DD-MM-YYYY') ?? 'N/A',
           header: 'Last Audit Date',
           enableSorting: false,
         }),
-        columnHelper.accessor('lastMaintenanceDate', {
+        columnHelper.accessor('expiryDate', {
           cell: (info) => dateFormatter(info.getValue(), 'DD-MM-YYYY') ?? 'N/A',
           header: 'Expiry Date',
           enableSorting: false,
         }),
-        columnHelper.accessor('initialValue', {
+        columnHelper.accessor('status', {
           cell: () => 'Low',
           header: 'Risk Level',
           enableSorting: false,
@@ -73,7 +75,7 @@ const ComplianceRiskAssessment = () => {
           </Text>
         </HStack>
         <Button
-          href={`/${ROUTES.TICKETS}`}
+          href={`/${ROUTES.COMPLIANCE}`}
           customStyles={{
             py: 0,
             height: '28px',
@@ -88,7 +90,7 @@ const ComplianceRiskAssessment = () => {
       <Flex width="full">
         <DataTable
           columns={columns}
-          data={data?.data?.items ?? []}
+          data={data?.data ?? []}
           isLoading={isLoading}
           showFooter={false}
           customThStyle={{

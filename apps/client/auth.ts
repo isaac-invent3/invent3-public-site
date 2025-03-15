@@ -2,6 +2,7 @@ import NextAuth from 'next-auth';
 import type { NextAuthConfig } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { Mutex } from 'async-mutex';
+import { JWT } from 'next-auth/jwt';
 
 export const TOKEN_REFRESH_BUFFER_SECONDS = 60; // 5 minutes
 const getTimeInSeconds = () => Math.floor(Date.now() / 1000);
@@ -13,7 +14,7 @@ const refreshTokenMutex = new Mutex();
 const refreshedTokens = new Map();
 
 // @ts-ignore
-async function refreshAccessToken(token) {
+async function refreshAccessToken(token: JWT) {
   const release = await refreshTokenMutex.acquire();
 
   try {
@@ -35,6 +36,7 @@ async function refreshAccessToken(token) {
           accessToken: token.accessToken,
           refreshToken: token.refreshToken,
           apiKey: token.apiKey,
+          companySlug: token.companySlug,
         }),
       }
     );

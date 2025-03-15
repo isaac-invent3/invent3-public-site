@@ -2,7 +2,7 @@ import { HStack, VStack } from '@chakra-ui/react';
 import { useState } from 'react';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { useAppSelector } from '~/lib/redux/hooks';
-import { useGetMaintenanceCostStatsQuery } from '~/lib/redux/services/dashboard.services';
+import { useGetMaintenanceCostStatsQuery } from '~/lib/redux/services/dashboard/operationmanager.services';
 import { AREA_ENUM, monthOptions } from '~/lib/utils/constants';
 import {
   generateLastFiveYears,

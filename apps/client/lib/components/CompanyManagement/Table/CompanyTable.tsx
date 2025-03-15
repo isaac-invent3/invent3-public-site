@@ -108,9 +108,11 @@ const CompanyTable = (props: CompanyTableProps) => {
 
       const clientType = columnHelper.accessor('companyType', {
         cell: (info) =>
-          info.getValue() === COMPANY_TYPE_ENUM.MANAGE_OWN_DATA
-            ? 'Direct'
-            : 'CMF',
+          info.getValue()
+            ? info.getValue() === COMPANY_TYPE_ENUM.MANAGE_OWN_DATA
+              ? 'Direct'
+              : 'CMF'
+            : 'N/A',
         header: 'Client Type',
         enableSorting: false,
       });

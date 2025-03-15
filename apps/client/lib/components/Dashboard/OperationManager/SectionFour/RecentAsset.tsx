@@ -7,7 +7,7 @@ import { Asset } from '~/lib/interfaces/asset/general.interface';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { useSearchAssetsMutation } from '~/lib/redux/services/asset/general.services';
-import { useGetRecentAssetsQuery } from '~/lib/redux/services/dashboard.services';
+import { useGetRecentAssetsQuery } from '~/lib/redux/services/dashboard/operationmanager.services';
 import {
   DEFAULT_PAGE_SIZE,
   OPERATORS,

@@ -30,7 +30,7 @@ const DashboardViewMaps: Record<
 > = {
   [ROLE_IDS_ENUM.SUPER_ADMIN]: {
     name: 'Super Admin',
-    route: 'executive',
+    route: 'super_admin',
   },
   [ROLE_IDS_ENUM.CLIENT_ADMIN]: {
     name: 'Client Admin',
@@ -46,7 +46,7 @@ const DashboardViewMaps: Record<
   },
   [ROLE_IDS_ENUM.FIELD_ENGINEER]: {
     name: 'Field Engineer',
-    route: 'client_admin',
+    route: 'field_engineer',
   },
   [ROLE_IDS_ENUM.FRONT_DESK]: {
     name: 'Front Desk',
@@ -166,13 +166,14 @@ const clientSideBarData: SideBarData[] = [
       'Manage compliance requirements and certifications for regulatory adherence.',
   },
 ];
+
 const sideBarData: SideBarData[] = [
   ...clientSideBarData,
   {
     name: 'Company Management',
     route: ROUTES.COMPANY,
     icon: CompanyIcon,
-    permissionKey: 'audit',
+    permissionKey: 'company',
     contextId: SYSTEM_CONTEXT_TYPE.COMPANY,
     description:
       'Manage company details and settings for organizational control.',

@@ -15,6 +15,7 @@ import { DocumentIcon, InfoIcon } from './CustomIcons';
 
 interface DocumentUploadAndViewProps {
   variant?: 'primary' | 'secondary';
+  files?: UploadedFile[]
   handleAddFiles?: (files: UploadedFile[]) => void;
   setError?: (error: string) => void;
   error?: string | undefined;

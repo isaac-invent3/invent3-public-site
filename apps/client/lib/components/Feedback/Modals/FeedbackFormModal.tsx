@@ -12,16 +12,39 @@ import {
   Button,
   FileUpload,
   FormInputWrapper,
+  FormSelect,
   FormTextAreaInput,
   FormTextInput,
   GenericModal,
 } from '@repo/ui/components';
 import { Field, FormikProvider, useFormik } from 'formik';
+import { getSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
+import useFormatUrl from '~/lib/hooks/useFormatUrl';
+import useParseUrlData from '~/lib/hooks/useParseUrl';
+import {
+  CreateFeedbackAttachmentPayload,
+  CreateFeedbackPayload,
+} from '~/lib/interfaces/feedback.interfaces';
+import { SideBarData } from '~/lib/interfaces/general.interfaces';
+import { filterSidebarData } from '~/lib/layout/ProtectedPage/SideBar/utils';
+import { useCreateFeedbackMutation } from '~/lib/redux/services/feedback.services';
+import { generateOptions } from '~/lib/utils/helperFunctions';
 import FeedbackFormSuccessModal from './FeedbackFormSuccessModal';
 
 interface FeedbackFormModalProps {
   isOpen: boolean;
   onClose: () => void;
+}
+
+interface FeedbackFormPayload {
+  createFeedbackDto: {
+    subject: string;
+    description: string;
+    feedbackTypeId: number | null;
+  };
+
+  createFeedbackAttachmentDto: CreateFeedbackAttachmentPayload | null;
 }
 
 const FeedbackFormModal = (props: FeedbackFormModalProps) => {
@@ -33,11 +56,66 @@ const FeedbackFormModal = (props: FeedbackFormModalProps) => {
     onClose: onCloseFeedbackSuccess,
   } = useDisclosure();
 
-  const formik = useFormik({
-    initialValues: {},
+  const formattedUrl = useFormatUrl();
+  const urlData = useParseUrlData(formattedUrl);
+  const [createFeedback] = useCreateFeedbackMutation();
+
+  const formik = useFormik<FeedbackFormPayload>({
+    initialValues: {
+      createFeedbackAttachmentDto: null,
+      createFeedbackDto: {
+        description: '',
+        subject: '',
+        feedbackTypeId: null,
+      },
+    },
     enableReinitialize: false,
-    onSubmit: async (data) => {},
+    onSubmit: async (data) => {
+      const session = await getSession();
+
+      if (!session) return;
+
+      const payload: CreateFeedbackPayload = {
+        createFeedbackDto: {
+          ...data.createFeedbackDto,
+          submittedDate: new Date().toISOString(),
+          createdBy: session?.user.username!,
+        },
+        createFeedbackAttachmentDto: {
+          ...data.createFeedbackAttachmentDto,
+          createdBy: session?.user.username!,
+        },
+      };
+
+      await createFeedback(payload)
+
+      console.log({ payload });
+    },
   });
+
+  const [isFetchingFeedbackTypes, setIsFetchingFeedbackTypes] = useState(false);
+
+  const [feedbackTypes, setFeedbackTypes] = useState<SideBarData[]>([]);
+
+  const fetchFeedbackTypes = async () => {
+    setIsFetchingFeedbackTypes(true);
+
+    try {
+      const response = await filterSidebarData();
+      const filteredData = response.filter((item) => Boolean(item.contextId));
+      setFeedbackTypes(filteredData);
+
+      setIsFetchingFeedbackTypes(false);
+    } catch (error) {
+      console.log(`error: ${error}`);
+
+      setIsFetchingFeedbackTypes(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchFeedbackTypes();
+  }, []);
 
   return (
     <GenericModal
@@ -64,96 +142,108 @@ const FeedbackFormModal = (props: FeedbackFormModalProps) => {
           Report an Issue or Suggest an Improvement
         </Text>
       </ModalHeader>
-      <FormikProvider value={formik}>
-        <ModalBody p={0} m={0} width="full">
-          <VStack width="full" spacing="27px" mt="60px">
-            <FormInputWrapper
-              sectionMaxWidth="170px"
-              customSpacing="50px"
-              title="Feedback Type"
-              description="Enter the approximate time to complete the task"
-              isRequired
-            >
-              <Field
-                as={FormTextInput}
-                name="taskName"
-                type="text"
-                label="Task Title"
-              />
-            </FormInputWrapper>
+      <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
+        <FormikProvider value={formik}>
+          <ModalBody p={0} m={0} width="full">
+            <VStack width="full" spacing="27px" mt="60px">
+              <FormInputWrapper
+                sectionMaxWidth="170px"
+                customSpacing="50px"
+                title="Feedback Type"
+                description="Enter the approximate time to complete the task"
+                isRequired
+              >
+                <FormSelect
+                  name="feedbackTypeId"
+                  title="Feedback Type"
+                  isLoading={isFetchingFeedbackTypes}
+                  options={generateOptions(feedbackTypes, 'name', 'contextId')}
+                  isSearchable
+                />
+              </FormInputWrapper>
 
-            <FormInputWrapper
-              sectionMaxWidth="170px"
-              customSpacing="50px"
-              title="Subject"
-              description="Provide essential information about the asset being added."
-              isRequired
-            >
-              <Field
-                as={FormTextInput}
-                name="subject"
-                type="text"
-                label="Subject"
-              />
-            </FormInputWrapper>
+              <FormInputWrapper
+                sectionMaxWidth="170px"
+                customSpacing="50px"
+                title="Subject"
+                description="Provide essential information about the asset being added."
+                isRequired
+              >
+                <Field
+                  as={FormTextInput}
+                  name="createFeedbackDto.subject"
+                  type="text"
+                  label="Subject"
+                />
+              </FormInputWrapper>
 
-            <FormInputWrapper
-              sectionMaxWidth="170px"
-              customSpacing="50px"
-              title="Description"
-              description="Provide essential information about the asset being added."
-              isRequired
-            >
-              <Field
-                as={FormTextAreaInput}
-                name="description"
-                type="text"
-                label="Description"
-              />
-            </FormInputWrapper>
+              <FormInputWrapper
+                sectionMaxWidth="170px"
+                customSpacing="50px"
+                title="Description"
+                description="Provide essential information about the asset being added."
+                isRequired
+              >
+                <Field
+                  as={FormTextAreaInput}
+                  name="createFeedbackDto.description"
+                  type="text"
+                  label="Description"
+                />
+              </FormInputWrapper>
 
-            <FormInputWrapper
-              sectionMaxWidth="170px"
-              customSpacing="50px"
-              title="Attach Screenshot or File"
-              description="Attach related files for this asset"
-              isRequired
-            >
-              <FileUpload />
-            </FormInputWrapper>
-          </VStack>
-        </ModalBody>
+              <FormInputWrapper
+                sectionMaxWidth="170px"
+                customSpacing="50px"
+                title="Attach Screenshot or File"
+                description="Attach related files for this asset"
+                isRequired
+              >
+                <FileUpload
+                  error={formik.errors.createFeedbackAttachmentDto}
+                  handleAddFiles={(files) => {
+                    formik.setFieldValue(
+                      'createFeedbackAttachmentDto',
+                      files[0]
+                    );
+                  }}
+                />
+              </FormInputWrapper>
+            </VStack>
+          </ModalBody>
 
-        <ModalFooter p={0} m={0}>
-          <HStack
-            spacing="8px"
-            w="full"
-            justifyContent={{ base: 'space-between', md: 'flex-end' }}
-            mt="8px"
-            pt="32px"
-          >
-            <Button
-              customStyles={{
-                width: { base: 'full', md: '138px' },
-                height: { base: '36px', md: '50px' },
-              }}
-              variant="secondary"
-              handleClick={onClose}
+          <ModalFooter p={0} m={0}>
+            <HStack
+              spacing="8px"
+              w="full"
+              justifyContent={{ base: 'space-between', md: 'flex-end' }}
+              mt="8px"
+              pt="32px"
             >
-              Cancel
-            </Button>
+              <Button
+                customStyles={{
+                  width: { base: 'full', md: '138px' },
+                  height: { base: '36px', md: '50px' },
+                }}
+                variant="secondary"
+                handleClick={onClose}
+              >
+                Cancel
+              </Button>
 
-            <Button
-              customStyles={{
-                width: { base: 'full', md: '150px' },
-                height: { base: '36px', md: '50px' },
-              }}
-            >
-              Submit Feedback
-            </Button>
-          </HStack>
-        </ModalFooter>
-      </FormikProvider>
+              <Button
+                type="submit"
+                customStyles={{
+                  width: { base: 'full', md: '150px' },
+                  height: { base: '36px', md: '50px' },
+                }}
+              >
+                Submit Feedback
+              </Button>
+            </HStack>
+          </ModalFooter>
+        </FormikProvider>
+      </form>
 
       <FeedbackFormSuccessModal
         isOpen={isOpenFeedbackSuccess}

@@ -184,7 +184,7 @@ const FeedbackTable = (props: FeedbackTableProps) => {
     <Flex width="full">
       <DataTable
         columns={isMobile ? mobileColumns : columns}
-        data={data?.data ?? []}
+        data={data?.data?.items ?? []}
         isLoading={isLoading}
         isFetching={isFetching}
         totalPages={data?.data?.totalPages}

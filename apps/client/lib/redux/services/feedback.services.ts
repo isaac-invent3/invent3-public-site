@@ -1,5 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { BaseApiResponse, ListResponse, QueryParams } from '@repo/interfaces';
+import { BaseApiResponse, ListResponse, QueryParams, SearchQuery } from '@repo/interfaces';
 import {
   CreateFeedbackAttachmentPayload,
   CreateFeedbackPayload,
@@ -23,7 +23,7 @@ export const feedbackApi = createApi({
       QueryParams
     >({
       query: (data) => ({
-        url: generateQueryStr(`/Invent3Pro/Feedbacks?`, data),
+        url: generateQueryStr(`/Feedbacks?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -38,6 +38,18 @@ export const feedbackApi = createApi({
         body,
       }),
       invalidatesTags: ['allFeedbacks'],
+    }),
+
+    searchFeedbacks: builder.mutation<
+      BaseApiResponse<ListResponse<Feedback>>,
+      SearchQuery
+    >({
+      query: (body) => ({
+        url: `/Feedbacks/Search`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
     }),
 
     // Feedback Types
@@ -74,4 +86,5 @@ export const {
   useCreateFeedbackMutation,
   useGetAllFeedbackTypesQuery,
   useCreateFeedbackAttachmentMutation,
+  useSearchFeedbacksMutation
 } = feedbackApi;

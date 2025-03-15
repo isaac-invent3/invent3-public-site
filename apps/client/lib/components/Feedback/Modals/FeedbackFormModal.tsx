@@ -1,6 +1,7 @@
 import {
   Heading,
   HStack,
+  Icon,
   ModalBody,
   ModalFooter,
   ModalHeader,
@@ -36,6 +37,7 @@ import {
 import { createFeedbackSchema } from '~/lib/schemas/feedback.schema';
 import { generateOptions } from '~/lib/utils/helperFunctions';
 import FeedbackFormSuccessModal from './FeedbackFormSuccessModal';
+import { CloseIcon } from '../../CustomIcons';
 
 interface FeedbackFormModalProps {
   isOpen: boolean;
@@ -153,6 +155,10 @@ const FeedbackFormModal = (props: FeedbackFormModalProps) => {
       }}
     >
       <ModalHeader m={0} p={0}>
+        <HStack spacing="8px" as="button"  mb='8px' justifySelf='end' onClick={onClose}>
+          <Text color="#F50000">Close</Text>
+          <Icon as={CloseIcon} color="#F50000" boxSize="12px" />
+        </HStack>
         <Heading
           as="h2"
           size={{ base: 'lg', lg: 'xl' }}

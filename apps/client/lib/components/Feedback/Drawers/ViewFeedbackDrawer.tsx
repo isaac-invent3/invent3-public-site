@@ -17,11 +17,14 @@ import {
   GenericDrawer,
 } from '@repo/ui/components';
 import { Field, FormikProvider, useFormik } from 'formik';
+import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { Feedback } from '~/lib/interfaces/feedback.interfaces';
+import { ROLE_IDS_ENUM } from '~/lib/utils/constants';
 import UserDisplayAndAddButton from '../../Common/UserDisplayAndAddButton';
 import UserInfo from '../../Common/UserInfo';
 import Description from '../../TicketManagement/Drawers/Common/Description';
+import CMFPopoverAction from '../Common/CMFPopoverActions';
 import FeedbackDrawerHeader from '../Common/FeedbackDrawerHeader';
 
 interface FeedbackDrawerProps {
@@ -32,6 +35,8 @@ interface FeedbackDrawerProps {
 
 const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
   const { isOpen, onClose, data } = props;
+  const session = useSession();
+  const user = session?.data?.user;
 
   const handleClose = () => {
     onClose();
@@ -58,18 +63,22 @@ const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
           >
             <BackButton handleClick={handleClose} />
 
-            <HStack spacing="8px">
-              <Button customStyles={{ width: '107px', height: '35px' }}>
-                Save Changes
-              </Button>
+            {user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY) ? (
+              <CMFPopoverAction />
+            ) : (
+              <HStack spacing="8px">
+                <Button customStyles={{ width: '107px', height: '35px' }}>
+                  Save Changes
+                </Button>
 
-              <Button
-                customStyles={{ width: '139px', height: '35px' }}
-                variant="secondary"
-              >
-                Mark as Completed
-              </Button>
-            </HStack>
+                <Button
+                  customStyles={{ width: '139px', height: '35px' }}
+                  variant="secondary"
+                >
+                  Mark as Resolved
+                </Button>
+              </HStack>
+            )}
           </Stack>
         </DrawerHeader>
 

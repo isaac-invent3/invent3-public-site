@@ -17,6 +17,7 @@ import {
   GenericDrawer,
 } from '@repo/ui/components';
 import { Field, FormikProvider, useFormik } from 'formik';
+import { useState } from 'react';
 import { Feedback } from '~/lib/interfaces/feedback.interfaces';
 import UserDisplayAndAddButton from '../../Common/UserDisplayAndAddButton';
 import UserInfo from '../../Common/UserInfo';
@@ -36,10 +37,10 @@ const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
     onClose();
   };
 
+  const [viewMore, setViewMore] = useState(false);
+
   const formik = useFormik<Partial<Feedback>>({
-    initialValues: {
-      assignedTo: data.assignedTo,
-    },
+    initialValues: data,
     onSubmit(values, formikHelpers) {},
   });
 
@@ -129,12 +130,21 @@ const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
                         <Text>{data.companyName ?? 'N/A'}</Text>
                       </VStack>
 
-                      <Text fontWeight={500} color="#0366EF" cursor="pointer">
-                        Click to View More
+                      <Text
+                        fontWeight={500}
+                        color="#0366EF"
+                        cursor="pointer"
+                        onClick={() => setViewMore(!viewMore)}
+                      >
+                        {viewMore ? 'Minimize View More' : 'Click to View More'}
                       </Text>
                     </HStack>
 
-                    <Description info={data?.description} />
+                    {viewMore && (
+                      <>
+                        <Description info={data?.description} />
+                      </>
+                    )}
                   </VStack>
                 </VStack>
 

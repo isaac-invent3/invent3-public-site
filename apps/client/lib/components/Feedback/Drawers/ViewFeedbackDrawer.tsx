@@ -152,6 +152,15 @@ const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
                     {viewMore && (
                       <>
                         <Description info={data?.description} />
+                        <VStack spacing="8px" alignItems="center">
+                          <Text fontWeight={700} color="neutral.600">
+                            Attachment
+                          </Text>
+
+                          <Text>N/A</Text>
+                        </VStack>
+
+                       
                       </>
                     )}
                   </VStack>

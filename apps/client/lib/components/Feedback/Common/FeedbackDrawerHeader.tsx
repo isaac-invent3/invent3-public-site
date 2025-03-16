@@ -66,7 +66,7 @@ const FeedbackDrawerHeader = (props: FeedbackDrawerHeaderProps) => {
         color="black"
         fontWeight={{ base: 700, lg: 700 }}
       >
-        #{data?.feedbackID} {data?.subject}
+        #{data?.feedbackId} {data?.subject}
       </Heading>
 
       <HStack
@@ -101,7 +101,7 @@ const FeedbackDrawerHeader = (props: FeedbackDrawerHeaderProps) => {
           <VStack alignItems="flex-start" spacing="15px">
             <Text color="neutral.600">Feedback Type</Text>
 
-            <Text color="black">{data.feedbackType}</Text>
+            <Text color="black">{data.feedbackTypeName}</Text>
           </VStack>
 
           <VStack alignItems="flex-start" spacing="15px">

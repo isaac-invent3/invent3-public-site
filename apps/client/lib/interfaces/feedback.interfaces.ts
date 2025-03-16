@@ -1,17 +1,29 @@
 import { BaseEntity } from '@repo/interfaces';
 
 interface Feedback extends BaseEntity {
-  feedbackID: number;
-  user: string;
-  userRoleName: string;
+  alias: string | null;
+  assignedTo: string | null;
+  attachment: string | null;
+  attachmentName: string | null;
+  authorFirstName: string | null;
+  authorLastName: string | null;
+  base64Prefix: string | null;
+  companyId: string | null;
+  companyName: string | null;
+  companyType: string | null;
+  description: string;
+  designationName: string | null;
+  displayColorCode: string | null;
+  feedbackId: number;
+  feedbackTypeId: string | null;
+  feedbackTypeName: string | null;
+  firstName: string | null;
+  lastName: string | null;
+  resolved: boolean;
+  statusId: string | null;
+  statusName: string | null;
   subject: string;
-  companyName: string;
-  email: string;
-  feedbackTypeId: string;
-  feedbackType: string;
   submittedDate: string;
-  statusID: string;
-  statusName: string;
 }
 
 type FeedbackAttachment = BaseEntity & CreateFeedbackAttachmentPayload;
@@ -55,6 +67,6 @@ export type {
   CreateFeedbackPayload,
   CreateFeedbackWithAttachmentPayload,
   Feedback,
-  FeedbackTypes,
   FeedbackAttachment,
+  FeedbackTypes,
 };

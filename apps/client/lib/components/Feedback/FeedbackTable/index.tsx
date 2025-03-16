@@ -46,22 +46,22 @@ const FeedbackTable = (props: FeedbackTableProps) => {
   const mobileColumns = useMemo(
     () => {
       const baseColumns = [
-        columnHelper.accessor('feedbackID', {
+        columnHelper.accessor('feedbackId', {
           cell: (info) => info.getValue(),
           header: '#',
           enableSorting: false,
         }),
 
-        columnHelper.accessor('user', {
+        columnHelper.accessor('authorFirstName', {
           cell: (info) => {
             const feedback = info.row.original;
             return (
               <Text>
-                {feedback.user}
+                {feedback.authorFirstName}
                 <br />
 
                 <Text as="span" size="xs" color="neutral.600" fontWeight={500}>
-                  {feedback.userRoleName}
+                  {feedback.designationName}
                 </Text>
               </Text>
             );
@@ -70,14 +70,14 @@ const FeedbackTable = (props: FeedbackTableProps) => {
           enableSorting: false,
         }),
 
-        columnHelper.accessor('feedbackType', {
+        columnHelper.accessor('feedbackTypeName', {
           cell: (info) => info.getValue(),
           header: 'Feedback Type',
           enableSorting: false,
         }),
       ];
 
-      const Popover = columnHelper.accessor('statusID', {
+      const Popover = columnHelper.accessor('statusId', {
         cell: (info) => <PopoverAction feedback={info.row.original} />,
         header: '',
         enableSorting: false,
@@ -95,22 +95,22 @@ const FeedbackTable = (props: FeedbackTableProps) => {
   const columns = useMemo(
     () => {
       const baseColumns = [
-        columnHelper.accessor('feedbackID', {
+        columnHelper.accessor('feedbackId', {
           cell: (info) => info.getValue(),
           header: '#',
           enableSorting: false,
         }),
 
-        columnHelper.accessor('user', {
+        columnHelper.accessor('authorFirstName', {
           cell: (info) => {
             const feedback = info.row.original;
             return (
               <Text>
-                {feedback.user}
+                {feedback.authorFirstName}
                 <br />
 
                 <Text as="span" size="xs" color="neutral.600" fontWeight={500}>
-                  {feedback.userRoleName}
+                  {feedback.designationName}
                 </Text>
               </Text>
             );
@@ -131,13 +131,7 @@ const FeedbackTable = (props: FeedbackTableProps) => {
           enableSorting: false,
         }),
 
-        columnHelper.accessor('email', {
-          cell: (info) => info.getValue(),
-          header: 'Email',
-          enableSorting: false,
-        }),
-
-        columnHelper.accessor('feedbackType', {
+        columnHelper.accessor('feedbackTypeName', {
           cell: (info) => info.getValue(),
           header: 'Feedback Type',
           enableSorting: false,
@@ -155,9 +149,11 @@ const FeedbackTable = (props: FeedbackTableProps) => {
 
             return (
               <GenericStatusBox
-                colorCode={COLOR_CODES_FALLBACK.default}
+                colorCode={
+                  feedback.displayColorCode ?? COLOR_CODES_FALLBACK.default
+                }
                 width="80px"
-                text={feedback.statusName}
+                text={feedback.statusName ?? 'Status'}
               />
             );
           },
@@ -165,7 +161,7 @@ const FeedbackTable = (props: FeedbackTableProps) => {
         }),
       ];
 
-      const Popover = columnHelper.accessor('statusID', {
+      const Popover = columnHelper.accessor('statusId', {
         cell: (info) => <PopoverAction feedback={info.row.original} />,
         header: '',
         enableSorting: false,

@@ -289,16 +289,6 @@ const ASSET_GROUP_TYPE = {
 
 const DEFAULT_PAGE_SIZE = 25;
 
-const SYSTEM_ROLES = {
-  LOGIN: 1,
-  ADMIN: 2,
-  FRONT_DESK: 3,
-  EXECUTIVE: 4,
-  MANAGER: 5,
-  TEAM_MEMBERS: 6,
-  VISITORS: 7,
-};
-
 const EXPORT_TYPE_ENUM = {
   CSV: 1,
   PDF: 2,
@@ -342,7 +332,6 @@ export {
   STATUS_CATEGORY_ENUM,
   SYSTEM_CONTEXT_TYPE,
   SYSTEM_CONTEXT_DETAILS,
-  SYSTEM_ROLES,
   timeRangeOptions,
   yearOptions,
   EXPORT_TYPE_ENUM,

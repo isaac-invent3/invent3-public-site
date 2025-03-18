@@ -171,9 +171,9 @@ const FeedbackFormModal = (props: FeedbackFormModalProps) => {
           Report an Issue or Suggest an Improvement
         </Text>
       </ModalHeader>
-      <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
-        <FormikProvider value={formik}>
-          <ModalBody p={0} m={0} width="full">
+      <ModalBody p={0} m={0} width="full">
+        <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
+          <FormikProvider value={formik}>
             <VStack width="full" spacing="27px" mt="60px">
               <FormInputWrapper
                 sectionMaxWidth="170px"
@@ -240,41 +240,41 @@ const FeedbackFormModal = (props: FeedbackFormModalProps) => {
                 />
               </FormInputWrapper>
             </VStack>
-          </ModalBody>
+          </FormikProvider>
+        </form>
+      </ModalBody>
 
-          <ModalFooter p={0} m={0}>
-            <HStack
-              spacing="8px"
-              w="full"
-              justifyContent={{ base: 'space-between', md: 'flex-end' }}
-              mt="8px"
-              pt="32px"
-            >
-              <Button
-                customStyles={{
-                  width: { base: 'full', md: '138px' },
-                  height: { base: '36px', md: '50px' },
-                }}
-                variant="secondary"
-                handleClick={onClose}
-              >
-                Cancel
-              </Button>
+      <ModalFooter p={0} m={0}>
+        <HStack
+          spacing="8px"
+          w="full"
+          justifyContent={{ base: 'space-between', md: 'flex-end' }}
+          mt="8px"
+          pt="32px"
+        >
+          <Button
+            customStyles={{
+              width: { base: 'full', md: '138px' },
+              height: { base: '36px', md: '50px' },
+            }}
+            variant="secondary"
+            handleClick={onClose}
+          >
+            Cancel
+          </Button>
 
-              <Button
-                type="submit"
-                isLoading={isLoading}
-                customStyles={{
-                  width: { base: 'full', md: '150px' },
-                  height: { base: '36px', md: '50px' },
-                }}
-              >
-                Submit Feedback
-              </Button>
-            </HStack>
-          </ModalFooter>
-        </FormikProvider>
-      </form>
+          <Button
+            handleClick={formik.handleSubmit}
+            isLoading={isLoading}
+            customStyles={{
+              width: { base: 'full', md: '150px' },
+              height: { base: '36px', md: '50px' },
+            }}
+          >
+            Submit Feedback
+          </Button>
+        </HStack>
+      </ModalFooter>
 
       <FeedbackFormSuccessModal
         isOpen={isOpenFeedbackSuccess}

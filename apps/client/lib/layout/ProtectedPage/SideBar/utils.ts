@@ -5,6 +5,7 @@ import {
   AuditLogIcon,
   CompanyIcon,
   DashboardIcon,
+  FeedbackIcon,
   MaintenanceIcon,
   RoleManagementIcon,
   TaskIcon,
@@ -164,6 +165,15 @@ const clientSideBarData: SideBarData[] = [
     permissionKey: 'audit',
     description:
       'Manage compliance requirements and certifications for regulatory adherence.',
+  },
+
+  {
+    name: 'Feedback',
+    route: ROUTES.FEEDBACK,
+    icon: FeedbackIcon,
+    permissionKey: 'feedback',
+    description:
+      'Manage Feedback of the system.',
   },
 ];
 

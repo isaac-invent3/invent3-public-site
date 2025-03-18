@@ -271,6 +271,7 @@ const ROUTES = {
   SETTINGS: 'settings',
   USER_SETTINGS: 'user-settings',
   COMPLIANCE: 'compliance',
+  FEEDBACK:'feedback'
 };
 
 const SYSTEM_CONTEXT_DETAILS: Record<ContextKey, SystemContextDetail> = {

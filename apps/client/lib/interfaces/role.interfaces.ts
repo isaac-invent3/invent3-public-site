@@ -51,7 +51,8 @@ type ModuleKey =
   | 'approval'
   | 'profile'
   | 'company'
-  | 'settings';
+  | 'settings'
+  | 'feedback';
 
 type SubModuleKey =
   | 'asset:create'

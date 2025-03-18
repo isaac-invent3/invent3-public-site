@@ -1,26 +1,59 @@
 'use client';
 
-import { Flex, Grid, Stack, Text, useMediaQuery } from '@chakra-ui/react';
+import {
+  Flex,
+  Grid,
+  Skeleton,
+  Stack,
+  Text,
+  useMediaQuery,
+} from '@chakra-ui/react';
 import { Select } from '@repo/ui/components';
-import { DesktopIcon } from '../../CustomIcons';
+import { useEffect, useState } from 'react';
+import { ValidColumnNames } from '~/lib/interfaces/asset/general.interface';
+import { useGetAssetCountByColumnNameQuery } from '~/lib/redux/services/asset/general.services';
 import PageHeader from '../../UI/PageHeader';
 import AssetCountCard from './AssetCountCard';
 
+interface DropdownData {
+  label: string;
+  value: ValidColumnNames;
+}
+
+const dropdownData: DropdownData[] = [
+  {
+    label: 'Asset Type',
+    value: 'AssetType',
+  },
+  {
+    label: 'Category',
+    value: 'Category',
+  },
+  {
+    label: 'Condition',
+    value: 'Condition',
+  },
+  {
+    label: 'Status',
+    value: 'Status',
+  },
+];
+0;
 const AssetCount = () => {
   const [isMobile] = useMediaQuery('(max-width: 480px)');
 
-  const data = [
-    { title: 'IT Equipment', value: '750,000', icon: DesktopIcon },
-    { title: 'Office Equipment', value: '550,000', icon: DesktopIcon },
-    { title: 'Vehicles', value: '50,000', icon: DesktopIcon },
-    { title: 'Heavy Machinery', value: '20,000', icon: DesktopIcon },
-    { title: 'Facilities', value: '750,000', icon: DesktopIcon },
-    { title: 'Infrastructures', value: '750,000', icon: DesktopIcon },
-    { title: 'HVAC Systems', value: '750,000', icon: DesktopIcon },
-    { title: 'IT Equipment', value: '750,000', icon: DesktopIcon },
-    { title: 'IT Equipment', value: '750,000', icon: DesktopIcon },
-    { title: 'IT Equipment', value: '750,000', icon: DesktopIcon },
-  ];
+  const [selectedClass, setSelectedClass] = useState<DropdownData | undefined>(
+    dropdownData[0]
+  );
+
+  const { refetch, isLoading, isFetching, data } =
+    useGetAssetCountByColumnNameQuery(selectedClass?.value ?? 'AssetType', {
+      skip: !selectedClass,
+    });
+
+  useEffect(() => {
+    selectedClass?.value && refetch();
+  }, [selectedClass]);
 
   return (
     <Flex
@@ -42,14 +75,16 @@ const AssetCount = () => {
 
         <Select
           title="Type"
-          options={[]}
-          selectedOption={undefined}
+          options={dropdownData}
+          selectedOption={selectedClass}
           containerStyles={{
             width: isMobile ? '100%' : '261px',
           }}
           selectStyles={{ height: '46px', pt: '0px' }}
           showTitleAfterSelect={false}
-          handleSelect={() => {}}
+          handleSelect={(option) => {
+            setSelectedClass(option as DropdownData);
+          }}
         />
       </Stack>
 
@@ -58,9 +93,23 @@ const AssetCount = () => {
         gap="24px"
         my="2em"
       >
-        {data.map((item, index) => (
-          <AssetCountCard data={item} key={index} />
-        ))}
+        {(isLoading || isFetching) &&
+          Array.from({ length: 15 }).map((_, index) => (
+            <Skeleton
+              bg="gray.100"
+              borderRadius="16px"
+              height="224px"
+              boxShadow="md"
+              textAlign="center"
+              bgColor="#EBEBEB"
+              overflow="hidden"
+            />
+          ))}
+
+        {!(isLoading || isFetching) &&
+          data?.data.map((item, index) => (
+            <AssetCountCard data={item} key={index} />
+          ))}
       </Grid>
     </Flex>
   );

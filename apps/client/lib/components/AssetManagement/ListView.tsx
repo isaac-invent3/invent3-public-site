@@ -1,30 +1,30 @@
 import { Flex, useDisclosure } from '@chakra-ui/react';
-import { useCallback, useEffect, useState } from 'react';
 import _ from 'lodash';
+import { useCallback, useEffect, useState } from 'react';
 
+import { ListResponse } from '@repo/interfaces';
+import { generateSearchCriterion } from '@repo/utils';
 import { useSearchParams } from 'next/navigation';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
+import { Asset } from '~/lib/interfaces/asset/general.interface';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import {
   useGetAllAssetQuery,
   useSearchAssetsMutation,
 } from '~/lib/redux/services/asset/general.services';
-import useCustomMutation from '~/lib/hooks/mutation.hook';
+import {
+  setAsset,
+  updateSelectedAssetIds,
+} from '~/lib/redux/slices/AssetSlice';
 import {
   DEFAULT_PAGE_SIZE,
   OPERATORS,
   SYSTEM_CONTEXT_DETAILS,
 } from '~/lib/utils/constants';
+import AssetDetail from './AssetDetail';
 import AssetTable from './Common/AssetTable';
 import AssetFilterDisplay from './Filters/AssetFilterDisplay';
-import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import {
-  setAsset,
-  updateSelectedAssetIds,
-} from '~/lib/redux/slices/AssetSlice';
-import AssetDetail from './AssetDetail';
-import { Asset } from '~/lib/interfaces/asset/general.interface';
-import { ListResponse } from '@repo/interfaces';
-import { generateSearchCriterion } from '@repo/utils';
 
 interface ListViewProps {
   search: string;
@@ -40,7 +40,8 @@ const ListView = (props: ListViewProps) => {
   const searchParams = useSearchParams();
   const assetIdString = searchParams.get(SYSTEM_CONTEXT_DETAILS.ASSETS.slug);
   const { handleSubmit } = useCustomMutation();
-  const { updateSearchParam } = useCustomSearchParams();
+  const { updateSearchParam, getSearchParam } = useCustomSearchParams();
+  const assetClassName = getSearchParam('assetClass');
 
   const { assetFilter: filterData, selectedAssetIds } = useAppSelector(
     (state) => state.asset

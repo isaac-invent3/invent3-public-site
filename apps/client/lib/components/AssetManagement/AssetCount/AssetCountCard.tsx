@@ -3,6 +3,8 @@
 import { Box, Flex, Text, VStack } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import { AssetCountByColumnName } from '~/lib/interfaces/asset/general.interface';
+import { useAppDispatch } from '~/lib/redux/hooks';
+import { updateAssetFilter } from '~/lib/redux/slices/AssetSlice';
 
 interface AssetCountCardProps {
   data: AssetCountByColumnName;
@@ -10,6 +12,9 @@ interface AssetCountCardProps {
 const AssetCountCard = (props: AssetCountCardProps) => {
   const { data } = props;
   const router = useRouter();
+  const dispatch = useAppDispatch();
+
+  updateAssetFilter;
 
   const goToAssetPage = () => {
     const params = new URLSearchParams({

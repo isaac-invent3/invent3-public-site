@@ -3,7 +3,10 @@ import { BaseEntity } from '@repo/interfaces';
 interface Feedback extends BaseEntity {
   alias: string | null;
   assignedTo: string | null;
+  assignedToFirstName: string | null;
+  assignedToLastName: string | null;
   authorId: number;
+  companyId: number | null;
   companyName: string | null;
   companyType: string | null;
   description: string;
@@ -13,8 +16,8 @@ interface Feedback extends BaseEntity {
   feedbackTypeId: string | null;
   feedbackTypeName: string | null;
   resolutionNote: string | null;
-  firstName: string | null;
-  lastName: string | null;
+  authorFirstName: string | null;
+  authorLastName: string | null;
   resolved: boolean;
   statusId: string | null;
   statusName: string | null;
@@ -58,11 +61,17 @@ interface UpdateFeedbackPayload {
   data: Partial<Feedback>;
 }
 
+interface ResolveFeedbackPayload {
+  id: number;
+  lastModifiedBy: string;
+}
+
 export type {
   CreateFeedbackAttachmentPayload,
   CreateFeedbackPayload,
   CreateFeedbackWithAttachmentPayload,
   Feedback,
   FeedbackAttachment,
+  ResolveFeedbackPayload,
   UpdateFeedbackPayload,
 };

@@ -57,7 +57,7 @@ const FeedbackTable = (props: FeedbackTableProps) => {
             const feedback = info.row.original;
             return (
               <Text>
-                {feedback.firstName}
+                {feedback.authorFirstName}
                 <br />
 
                 <Text as="span" size="xs" color="neutral.600" fontWeight={500}>
@@ -106,7 +106,7 @@ const FeedbackTable = (props: FeedbackTableProps) => {
             const feedback = info.row.original;
             return (
               <Text>
-                {feedback.firstName}
+                {feedback.authorFirstName}
                 <br />
 
                 <Text as="span" size="xs" color="neutral.600" fontWeight={500}>

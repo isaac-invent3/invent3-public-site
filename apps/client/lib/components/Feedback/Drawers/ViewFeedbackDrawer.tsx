@@ -16,28 +16,28 @@ import {
   FormInputWrapper,
   FormTextAreaInput,
   GenericDrawer,
+  GenericPopover,
 } from '@repo/ui/components';
 import { Field, FormikProvider, useFormik } from 'formik';
 import { getSession, useSession } from 'next-auth/react';
 import { useState } from 'react';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { Feedback } from '~/lib/interfaces/feedback.interfaces';
-import { useUpdateFeedbackMutation } from '~/lib/redux/services/feedback.services';
+import {
+  useResolveFeedbackMutation,
+  useUpdateFeedbackMutation,
+} from '~/lib/redux/services/feedback.services';
 import { updateFeedbackSchema } from '~/lib/schemas/feedback.schema';
 import { ROLE_IDS_ENUM } from '~/lib/utils/constants';
 import UserDisplayAndAddButton from '../../Common/UserDisplayAndAddButton';
 import UserInfo from '../../Common/UserInfo';
 import Description from '../../TicketManagement/Drawers/Common/Description';
-import CMFPopoverAction from '../Common/CMFPopoverActions';
 import FeedbackDrawerHeader from '../Common/FeedbackDrawerHeader';
 
 interface FeedbackDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   data: Feedback;
-}
-
-interface UpdateFeedbackForm extends Partial<Feedback> {
-  assignedToEmployeeName: string | null;
 }
 
 const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
@@ -52,15 +52,16 @@ const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
   const [viewMore, setViewMore] = useState(false);
 
   const toast = useToast();
+  const { handleSubmit } = useCustomMutation();
 
   const [updateFeedback, { isLoading: isUpdating }] =
     useUpdateFeedbackMutation();
 
-  const formik = useFormik<UpdateFeedbackForm>({
-    initialValues: {
-      ...data,
-      assignedToEmployeeName: '',
-    },
+  const [resolveFeedback, { isLoading: isResolving }] =
+    useResolveFeedbackMutation();
+
+  const formik = useFormik<Partial<Feedback>>({
+    initialValues: data,
     validationSchema: updateFeedbackSchema,
     onSubmit: async (values, { resetForm }) => {
       const session = await getSession();
@@ -89,6 +90,21 @@ const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
     },
   });
 
+  const handleResolveFeedback = async () => {
+    const session = await getSession();
+
+    if (!session) return;
+
+    await handleSubmit(
+      resolveFeedback,
+      {
+        id: data.feedbackId,
+        lastModifiedBy: session?.user.username!,
+      },
+      'Feedback Resolved Successfully!'
+    );
+  };
+
   return (
     <>
       <GenericDrawer isOpen={isOpen} onClose={handleClose} maxWidth="507px">
@@ -106,7 +122,25 @@ const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
                 <BackButton handleClick={handleClose} />
 
                 {user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY) ? (
-                  <CMFPopoverAction />
+                  // <CMFPopoverAction />
+                  <GenericPopover width="189px" placement="bottom-start">
+                    <VStack width="full" alignItems="flex-start" spacing="16px">
+                      <Text as="button" type="submit" cursor="pointer">
+                        Save Changes
+                      </Text>
+                      {!data.resolved && (
+                        <Text
+                          as="button"
+                          onClick={handleResolveFeedback}
+                          cursor="pointer"
+                        >
+                          Mark as Resolved
+                        </Text>
+                      )}
+
+                      <Text cursor="pointer">Escalate to Super Admin</Text>
+                    </VStack>
+                  </GenericPopover>
                 ) : (
                   <HStack spacing="8px">
                     <Button
@@ -117,12 +151,16 @@ const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
                       Save Changes
                     </Button>
 
-                    <Button
-                      customStyles={{ width: '139px', height: '35px' }}
-                      variant="secondary"
-                    >
-                      Mark as Resolved
-                    </Button>
+                    {!data.resolved && (
+                      <Button
+                        handleClick={handleResolveFeedback}
+                        isLoading={isResolving}
+                        customStyles={{ width: '139px', height: '35px' }}
+                        variant="secondary"
+                      >
+                        Mark as Resolved
+                      </Button>
+                    )}
                   </HStack>
                 )}
               </Stack>
@@ -168,7 +206,7 @@ const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
                           </Text>
 
                           <UserInfo
-                            name={`${data?.firstName} ${data.lastName}`}
+                            name={`${data?.authorFirstName} ${data.authorLastName}`}
                             role={data.designationName ?? 'N/A'}
                             customAvatarStyle={{
                               width: '24px',
@@ -231,7 +269,7 @@ const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
                         alignItems="flex-start"
                       >
                         <UserDisplayAndAddButton
-                          selectedUser={formik.values?.assignedToEmployeeName}
+                          selectedUser={formik.values?.assignedToFirstName}
                           handleSelectUser={(user) => {
                             formik.setFieldValue(
                               'assignedTo',
@@ -239,7 +277,7 @@ const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
                             );
 
                             formik.setFieldValue(
-                              'assignedToEmployeeName',
+                              'assignedToFirstName',
                               user?.label ?? null
                             );
                           }}

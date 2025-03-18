@@ -9,6 +9,7 @@ import {
   CreateFeedbackPayload,
   CreateFeedbackWithAttachmentPayload,
   Feedback,
+  ResolveFeedbackPayload,
   UpdateFeedbackPayload,
 } from '~/lib/interfaces/feedback.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
@@ -57,6 +58,21 @@ export const feedbackApi = createApi({
       invalidatesTags: ['allFeedbacks'],
     }),
 
+    resolveFeedback: builder.mutation<
+      BaseApiResponse<Feedback>,
+      ResolveFeedbackPayload
+    >({
+      query: ({ id, ...data }) => ({
+        url: generateQueryStr(
+          `/Feedbacks/ChangeFeedbackResolution/${id}?`,
+          data
+        ),
+        method: 'PUT',
+        headers: getHeaders(),
+      }),
+      invalidatesTags: ['allFeedbacks'],
+    }),
+
     updateFeedback: builder.mutation<
       BaseApiResponse<Feedback>,
       UpdateFeedbackPayload
@@ -90,4 +106,5 @@ export const {
   useSearchFeedbacksMutation,
   useCreateFeedbackWithAttachmentMutation,
   useUpdateFeedbackMutation,
+  useResolveFeedbackMutation
 } = feedbackApi;

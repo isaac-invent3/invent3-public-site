@@ -31,10 +31,10 @@ import {
 import { SideBarData } from '~/lib/interfaces/general.interfaces';
 import { filterSidebarData } from '~/lib/layout/ProtectedPage/SideBar/utils';
 import { useCreateFeedbackWithAttachmentMutation } from '~/lib/redux/services/feedback.services';
+import { createFeedbackSchema } from '~/lib/schemas/feedback.schema';
 import { generateOptions } from '~/lib/utils/helperFunctions';
 import { CloseIcon } from '../../CustomIcons';
 import FeedbackFormSuccessModal from './FeedbackFormSuccessModal';
-import { createFeedbackSchema } from '~/lib/schemas/feedback.schema';
 
 interface FeedbackFormModalProps {
   isOpen: boolean;
@@ -62,7 +62,8 @@ const FeedbackFormModal = (props: FeedbackFormModalProps) => {
     onClose: onCloseFeedbackSuccess,
   } = useDisclosure();
 
-  const [createFeedback] = useCreateFeedbackWithAttachmentMutation();
+  const [createFeedback, { isLoading }] =
+    useCreateFeedbackWithAttachmentMutation();
 
   const formik = useFormik<FeedbackFormPayload>({
     initialValues: {
@@ -262,6 +263,7 @@ const FeedbackFormModal = (props: FeedbackFormModalProps) => {
 
               <Button
                 type="submit"
+                isLoading={isLoading}
                 customStyles={{
                   width: { base: 'full', md: '150px' },
                   height: { base: '36px', md: '50px' },

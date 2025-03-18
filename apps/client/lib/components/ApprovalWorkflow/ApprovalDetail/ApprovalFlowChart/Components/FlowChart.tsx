@@ -430,6 +430,8 @@ const ApprovalFlowChart = (props: ApprovalChartProps) => {
   const onNodeDragStop = async (_: any, node: CustomNode) => {
     if (!draggingNodeId) return;
 
+    const session = await getSession();
+
     const { leftNodes, rightNodes, overlappingNode } = findClosestNodes(node);
 
     if (overlappingNode as unknown as CustomNode) {
@@ -441,7 +443,6 @@ const ApprovalFlowChart = (props: ApprovalChartProps) => {
       );
 
       if (overlappingNode.type === 'stackJoiner') {
-        console.log(overlappingNode.id);
         setEdges((eds) => {
           let updatedEdges = [...eds];
 
@@ -474,137 +475,34 @@ const ApprovalFlowChart = (props: ApprovalChartProps) => {
           return updatedEdges;
         });
 
+        const leftInstance = leftNodes[0]?.data;
+        const newLevel = leftInstance?.levelNumber ?? 0 + 1;
+
+        await updateApprovalWorkflowPartyInstanceMutation({
+          id: node.data?.approvalWorkFlowPartyInstanceId!,
+          overlap: false,
+          data: {
+            levelNumber: newLevel + 1,
+            lastModifiedBy: session?.user?.username!,
+            approvalWorkFlowPartyInstanceId:
+              node.data?.approvalWorkFlowPartyInstanceId!,
+          },
+        });
+
         return setNodes((nds) =>
           nds.filter((n) => n.id !== overlappingNode.id)
         );
       }
 
-      if (incomingEdges.length > 1 || outgoingEdges.length > 1) {
-        console.log('sd');
-        if (incomingEdges.length > 1) {
-          const newNodeLeft = createNewNode('stackJoiner');
-
-          setNodes((nds) => [...nds, newNodeLeft]);
-
-          setEdges((eds) => {
-            let updatedEdges = [...eds];
-
-            updatedEdges = updatedEdges.filter(
-              (edge) => edge.target !== overlappingNode.id
-            );
-
-            incomingEdges.forEach((edge) => {
-              updatedEdges = addEdge(
-                {
-                  ...edge,
-                  target: newNodeLeft.id!,
-                },
-                updatedEdges
-              );
-            });
-
-            // outgoingEdges.forEach((edge) => {
-            //   updatedEdges = addEdge(
-            //     {
-            //       ...createNewEdge(node.id, edge.source),
-            //     },
-            //     updatedEdges
-            //   );
-            // });
-
-            updatedEdges = addEdge(
-              {
-                ...createNewEdge(newNodeLeft.id, overlappingNode.id),
-              },
-              updatedEdges
-            );
-            updatedEdges = addEdge(
-              {
-                ...createNewEdge(newNodeLeft.id, node.id),
-              },
-              updatedEdges
-            );
-
-            return updatedEdges;
-          });
-        }
-
-        if (outgoingEdges.length > 1) {
-          const newNodeRight = createNewNode('stackJoiner');
-
-          setNodes((nds) => [...nds, newNodeRight]);
-
-          setEdges((eds) => {
-            let updatedEdges = [...eds];
-
-            updatedEdges = updatedEdges.filter(
-              (edge) => edge.source !== overlappingNode.id
-            );
-
-            outgoingEdges.forEach((edge) => {
-              updatedEdges = addEdge(
-                {
-                  ...edge,
-                  source: newNodeRight.id!,
-                },
-                updatedEdges
-              );
-            });
-
-            updatedEdges = addEdge(
-              {
-                ...createNewEdge(overlappingNode.id, newNodeRight.id),
-              },
-              updatedEdges
-            );
-
-            if (incomingEdges.length == 1) {
-              incomingEdges.forEach((edge) => {
-                updatedEdges = addEdge(
-                  {
-                    ...createNewEdge(edge.source, node.id),
-                  },
-                  updatedEdges
-                );
-              });
-            }
-
-            updatedEdges = addEdge(
-              {
-                ...createNewEdge(node.id, newNodeRight.id),
-              },
-              updatedEdges
-            );
-
-            return updatedEdges;
-          });
-        }
-
-        return;
-      }
-
-      return setEdges((eds) => {
-        let updatedEdges = [...eds];
-
-        incomingEdges.forEach((edge) => {
-          updatedEdges = addEdge(
-            {
-              ...createNewEdge(edge.source, node.id),
-            },
-            updatedEdges
-          );
-        });
-
-        outgoingEdges.forEach((edge) => {
-          updatedEdges = addEdge(
-            {
-              ...createNewEdge(node.id, edge.target),
-            },
-            updatedEdges
-          );
-        });
-
-        return updatedEdges;
+      await updateApprovalWorkflowPartyInstanceMutation({
+        id: node.data?.approvalWorkFlowPartyInstanceId!,
+        overlap: true,
+        data: {
+          levelNumber: node.data.levelNumber,
+          lastModifiedBy: session?.user?.username!,
+          approvalWorkFlowPartyInstanceId:
+            node.data?.approvalWorkFlowPartyInstanceId!,
+        },
       });
     }
 
@@ -663,8 +561,6 @@ const ApprovalFlowChart = (props: ApprovalChartProps) => {
     });
 
     // if (leftNodes[0]?.data?.levelNumber)
-
-    const session = await getSession();
 
     const leftInstance = leftNodes[0]?.data;
     const newLevel = leftInstance?.levelNumber ?? 0 + 1;

@@ -5,7 +5,7 @@ import { Handle, Position } from '@xyflow/react';
 const StackJoinerNode = ({ isConnectable }: NodeProps<Node>) => {
   return (
     <Flex width="30px" h="200px" alignItems="center" justifyContent="center">
-      <Box borderColor="#656565" w="full" borderWidth={0.5}>
+      <Box borderColor="#656565" w="full" borderWidth={1}>
         <Handle
           type="source"
           position={Position.Right}

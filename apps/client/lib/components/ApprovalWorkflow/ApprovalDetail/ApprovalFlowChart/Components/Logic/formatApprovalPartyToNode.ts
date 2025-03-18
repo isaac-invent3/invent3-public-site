@@ -1,6 +1,7 @@
 import { MarkerType } from '@xyflow/react';
 import { ApprovalWorkflowPartyInstance } from '~/lib/interfaces/approvalWorkflow.interfaces';
 import { CustomEdge, CustomNode } from '../Interfaces';
+import { createNewNode } from './updateApprovalFlowElements';
 
 const createBaseNodesFromApprovalPartyInstance = (
   items: ApprovalWorkflowPartyInstance[]
@@ -38,6 +39,7 @@ const createBaseEdgesFromApprovalPartyInstance = (
     .sort((a, b) => a - b);
 
   const edges: CustomEdge[] = [];
+  let joinerNodes: CustomNode[] = [];
 
   for (let i = 0; i < sortedLevels.length - 1; i++) {
     const currentLevel = sortedLevels[i];
@@ -50,30 +52,56 @@ const createBaseEdgesFromApprovalPartyInstance = (
 
     if (!currentInstances || !nextInstances) continue;
 
-    for (const currentInstance of currentInstances) {
+    // If both levels have more than one node, insert a joiner node
+    if (currentInstances.length > 1 && nextInstances.length > 1) {
+      const stackJoinerNode = createNewNode('stackJoiner');
+
+      joinerNodes.push(stackJoinerNode);
+
+      for (const currentInstance of currentInstances) {
+        edges.push({
+          id: `e${currentInstance.approvalWorkFlowPartyInstanceId}-${stackJoinerNode.id}`,
+          source: currentInstance.approvalWorkFlowPartyInstanceId.toString(),
+          target: stackJoinerNode.id,
+        });
+      }
+
       for (const nextInstance of nextInstances) {
         edges.push({
-          id: `e${currentInstance.approvalWorkFlowPartyInstanceId}-${nextInstance.approvalWorkFlowPartyInstanceId}`,
-          source: currentInstance.approvalWorkFlowPartyInstanceId.toString(),
+          id: `e${stackJoinerNode.id}-${nextInstance.approvalWorkFlowPartyInstanceId}`,
+          source: stackJoinerNode.id,
           target: nextInstance.approvalWorkFlowPartyInstanceId.toString(),
         });
+      }
+    } else {
+      for (const currentInstance of currentInstances) {
+        for (const nextInstance of nextInstances) {
+          edges.push({
+            id: `e${currentInstance.approvalWorkFlowPartyInstanceId}-${nextInstance.approvalWorkFlowPartyInstanceId}`,
+            source: currentInstance.approvalWorkFlowPartyInstanceId.toString(),
+            target: nextInstance.approvalWorkFlowPartyInstanceId.toString(),
+          });
+        }
       }
     }
   }
 
-  return edges;
+  return { edges, joinerNodes };
 };
 
 const createNodeAndEdgesFromBaseElements = (
   instances: ApprovalWorkflowPartyInstance[]
 ) => {
-  const baseEdges = createBaseEdgesFromApprovalPartyInstance(instances);
+  const { edges: baseEdges, joinerNodes } =
+    createBaseEdgesFromApprovalPartyInstance(instances);
   const baseNodes = createBaseNodesFromApprovalPartyInstance(instances);
 
-  const nodes = baseNodes.map((x) => ({
+  const formattedNodes = baseNodes.map((x) => ({
     ...x,
     type: 'approvalNode',
   }));
+
+  const nodes = [...joinerNodes, ...formattedNodes];
 
   const edges = baseEdges.map((x) => ({
     ...x,

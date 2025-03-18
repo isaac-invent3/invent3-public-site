@@ -2,6 +2,7 @@ import { auth } from 'auth';
 import { NextRequest, NextResponse } from 'next/server';
 import { checkPermission } from './app/actions/permissionAction';
 import { encode, getToken, JWT } from 'next-auth/jwt';
+import { ROLE_IDS_ENUM } from './lib/utils/constants';
 // import { validateTenant } from './app/actions/validateTenantAction';
 
 const publicRoutes = [
@@ -187,9 +188,15 @@ export async function middleware(request: NextRequest) {
 
     const permissionData = await checkPermission({ path: pathname });
 
-    // if (!permissionData) {
-    //   return NextResponse.rewrite(new URL('/404', request.url));
-    // }
+    if (
+      !permissionData &&
+      !(
+        token.roleIds.includes(ROLE_IDS_ENUM.SUPER_ADMIN) ||
+        token.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY)
+      )
+    ) {
+      return NextResponse.rewrite(new URL('/404', request.url));
+    }
     response.cookies.set(
       'permissionData',
       JSON.stringify(permissionData?.permissionKeys)

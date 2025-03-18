@@ -160,6 +160,17 @@ export const assetApi = createApi({
       }),
     }),
 
+    getAssetsByColumnId: builder.query<
+      BaseApiResponse<ListResponse<Asset>>,
+      { columnId: number } & QueryParams
+    >({
+      query: ({ columnId, ...data }) => ({
+        url: generateQueryStr(`/Assets/GetAssetsByColumnId/${columnId}?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+
     createAsset: builder.mutation<BaseApiResponse<Asset>, CreateAssetPayload>({
       query: (body) => ({
         url: `/Invent3Pro/Assets/Create`,
@@ -277,5 +288,6 @@ export const {
   useExportAssetMutation,
   useDownloadAssetQuery,
   useAssetMeanTimeComputationQuery,
-  useGetAssetCountByColumnNameQuery
+  useGetAssetCountByColumnNameQuery,
+  useGetAssetsByColumnIdQuery
 } = assetApi;

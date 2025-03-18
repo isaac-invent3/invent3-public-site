@@ -108,7 +108,10 @@ const AssetCount = () => {
 
         {!(isLoading || isFetching) &&
           data?.data.map((item, index) => (
-            <AssetCountCard data={item} key={index} />
+            <AssetCountCard
+              data={item}
+              key={index}
+            />
           ))}
       </Grid>
     </Flex>

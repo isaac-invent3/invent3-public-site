@@ -3,12 +3,7 @@ import { BaseEntity } from '@repo/interfaces';
 interface Feedback extends BaseEntity {
   alias: string | null;
   assignedTo: string | null;
-  attachment: string | null;
-  attachmentName: string | null;
-  authorFirstName: string | null;
-  authorLastName: string | null;
-  base64Prefix: string | null;
-  companyId: string | null;
+  authorId: number;
   companyName: string | null;
   companyType: string | null;
   description: string;
@@ -17,6 +12,7 @@ interface Feedback extends BaseEntity {
   feedbackId: number;
   feedbackTypeId: string | null;
   feedbackTypeName: string | null;
+  resolutionNote: string | null;
   firstName: string | null;
   lastName: string | null;
   resolved: boolean;
@@ -32,7 +28,7 @@ interface CreateFeedbackAttachmentPayload {
   attachmentName: string;
   base64Attachment: string;
   base64Prefix: string;
-  feedbackId: number;
+  feedbackId?: number;
   createdBy: string;
 }
 
@@ -42,6 +38,7 @@ interface CreateFeedbackPayload {
   authorFirstName?: string;
   authorLastName?: string;
   assignedTo?: number;
+  authorId: number;
   subject: string;
   description: string;
   companyId?: number;
@@ -53,13 +50,12 @@ interface CreateFeedbackPayload {
 interface CreateFeedbackWithAttachmentPayload {
   createFeedbackDto: CreateFeedbackPayload;
 
-  createFeedbackAttachmentDto: CreateFeedbackAttachmentPayload | null;
+  createFeedbackAttachmentDto: CreateFeedbackAttachmentPayload[];
 }
 
-// Feedback Types
-interface FeedbackTypes extends BaseEntity {
-  feedbackTypeId: number;
-  feedbackTypeName: string;
+interface UpdateFeedbackPayload {
+  feedbackId: number;
+  data: Partial<Feedback>;
 }
 
 export type {
@@ -68,5 +64,5 @@ export type {
   CreateFeedbackWithAttachmentPayload,
   Feedback,
   FeedbackAttachment,
-  FeedbackTypes,
+  UpdateFeedbackPayload,
 };

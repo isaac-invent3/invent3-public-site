@@ -1,11 +1,15 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { BaseApiResponse, ListResponse, QueryParams, SearchQuery } from '@repo/interfaces';
 import {
-  CreateFeedbackAttachmentPayload,
+  BaseApiResponse,
+  ListResponse,
+  QueryParams,
+  SearchQuery,
+} from '@repo/interfaces';
+import {
   CreateFeedbackPayload,
+  CreateFeedbackWithAttachmentPayload,
   Feedback,
-  FeedbackAttachment,
-  FeedbackTypes,
+  UpdateFeedbackPayload,
 } from '~/lib/interfaces/feedback.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../baseQueryWithReauth';
@@ -40,6 +44,32 @@ export const feedbackApi = createApi({
       invalidatesTags: ['allFeedbacks'],
     }),
 
+    createFeedbackWithAttachment: builder.mutation<
+      Feedback,
+      CreateFeedbackWithAttachmentPayload
+    >({
+      query: (body) => ({
+        url: `/Feedbacks/CreateFeedback`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allFeedbacks'],
+    }),
+
+    updateFeedback: builder.mutation<
+      BaseApiResponse<Feedback>,
+      UpdateFeedbackPayload
+    >({
+      query: ({ feedbackId, data }) => ({
+        url: `/Feedbacks/${feedbackId}`,
+        method: 'PUT',
+        headers: getHeaders(),
+        body: data,
+      }),
+      invalidatesTags: ['allFeedbacks'],
+    }),
+
     searchFeedbacks: builder.mutation<
       BaseApiResponse<ListResponse<Feedback>>,
       SearchQuery
@@ -51,40 +81,13 @@ export const feedbackApi = createApi({
         body,
       }),
     }),
-
-    // Feedback Types
-    getAllFeedbackTypes: builder.query<
-      BaseApiResponse<ListResponse<FeedbackTypes>>,
-      QueryParams
-    >({
-      query: (data) => ({
-        url: generateQueryStr(`/FeedbackTypes?`, data),
-        method: 'GET',
-        headers: getHeaders(),
-      }),
-      providesTags: ['feedbackTypes'],
-    }),
-
-    // Feedback Attachments
-    createFeedbackAttachment: builder.mutation<
-      FeedbackAttachment,
-      CreateFeedbackAttachmentPayload
-    >({
-      query: (body) => ({
-        url: `/FeedbackAttachments`,
-        method: 'POST',
-        headers: getHeaders(),
-        body,
-      }),
-      invalidatesTags: ['feedbackAttachments'],
-    }),
   }),
 });
 
 export const {
   useGetAllFeedbacksQuery,
   useCreateFeedbackMutation,
-  useGetAllFeedbackTypesQuery,
-  useCreateFeedbackAttachmentMutation,
-  useSearchFeedbacksMutation
+  useSearchFeedbacksMutation,
+  useCreateFeedbackWithAttachmentMutation,
+  useUpdateFeedbackMutation,
 } = feedbackApi;

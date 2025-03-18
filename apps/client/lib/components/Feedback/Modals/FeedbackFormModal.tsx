@@ -23,21 +23,18 @@ import { Field, FormikProvider, useFormik } from 'formik';
 import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import useFormatUrl from '~/lib/hooks/useFormatUrl';
 import {
   CreateFeedbackAttachmentPayload,
   CreateFeedbackPayload,
+  CreateFeedbackWithAttachmentPayload,
 } from '~/lib/interfaces/feedback.interfaces';
 import { SideBarData } from '~/lib/interfaces/general.interfaces';
 import { filterSidebarData } from '~/lib/layout/ProtectedPage/SideBar/utils';
-import {
-  useCreateFeedbackAttachmentMutation,
-  useCreateFeedbackMutation,
-} from '~/lib/redux/services/feedback.services';
-import { createFeedbackSchema } from '~/lib/schemas/feedback.schema';
+import { useCreateFeedbackWithAttachmentMutation } from '~/lib/redux/services/feedback.services';
 import { generateOptions } from '~/lib/utils/helperFunctions';
-import FeedbackFormSuccessModal from './FeedbackFormSuccessModal';
 import { CloseIcon } from '../../CustomIcons';
+import FeedbackFormSuccessModal from './FeedbackFormSuccessModal';
+import { createFeedbackSchema } from '~/lib/schemas/feedback.schema';
 
 interface FeedbackFormModalProps {
   isOpen: boolean;
@@ -51,7 +48,7 @@ interface FeedbackFormPayload {
     feedbackTypeId: number | null;
   };
 
-  createFeedbackAttachmentDto: UploadedFile | null;
+  createFeedbackAttachmentDto: UploadedFile[];
 }
 
 const FeedbackFormModal = (props: FeedbackFormModalProps) => {
@@ -65,13 +62,11 @@ const FeedbackFormModal = (props: FeedbackFormModalProps) => {
     onClose: onCloseFeedbackSuccess,
   } = useDisclosure();
 
-  const formattedUrl = useFormatUrl();
-  const [createFeedback] = useCreateFeedbackMutation();
-  const [createFeedbackAttachment] = useCreateFeedbackAttachmentMutation();
+  const [createFeedback] = useCreateFeedbackWithAttachmentMutation();
 
   const formik = useFormik<FeedbackFormPayload>({
     initialValues: {
-      createFeedbackAttachmentDto: null,
+      createFeedbackAttachmentDto: [],
       createFeedbackDto: {
         description: '',
         subject: '',
@@ -85,33 +80,32 @@ const FeedbackFormModal = (props: FeedbackFormModalProps) => {
 
       if (!session) return;
 
-      const payload: CreateFeedbackPayload = {
+      const feedbackPayload: CreateFeedbackPayload = {
         ...data.createFeedbackDto,
         feedbackTypeId: data.createFeedbackDto.feedbackTypeId!,
         submittedDate: new Date().toISOString(),
         createdBy: session?.user.username!,
+        authorId: session?.user.userId!,
       };
 
-      const feedback = await handleSubmit(createFeedback, payload);
+      const attachmentPayload: CreateFeedbackAttachmentPayload[] =
+        data.createFeedbackAttachmentDto.map((item) => {
+          return {
+            attachmentName: item?.fileName!,
+            base64Attachment: item?.base64!,
+            base64Prefix: item?.base64Prefix!,
+            createdBy: session?.user.username!,
+          };
+        });
 
-      if (!feedback) return;
-
-      const { createFeedbackAttachmentDto } = data;
-
-      const feedbackAttachmentPayload: CreateFeedbackAttachmentPayload = {
-        attachmentName: createFeedbackAttachmentDto?.fileName!,
-        base64Attachment: createFeedbackAttachmentDto?.base64!,
-        base64Prefix: createFeedbackAttachmentDto?.base64Prefix!,
-        createdBy: session?.user.username!,
-        feedbackId: feedback.data?.feedbackID!,
+      const fullPayload: CreateFeedbackWithAttachmentPayload = {
+        createFeedbackAttachmentDto: attachmentPayload,
+        createFeedbackDto: feedbackPayload,
       };
 
-      const feedbackAttachment = await handleSubmit(
-        createFeedbackAttachment,
-        feedbackAttachmentPayload
-      );
+      const response = await handleSubmit(createFeedback, fullPayload);
 
-      if (!feedbackAttachment) return;
+      if (!response) return;
 
       resetForm();
       onOpenFeedbackSuccess();
@@ -129,7 +123,6 @@ const FeedbackFormModal = (props: FeedbackFormModalProps) => {
       const response = await filterSidebarData();
       const filteredData = response.filter((item) => Boolean(item.contextId));
       setFeedbackTypes(filteredData);
-
       setIsFetchingFeedbackTypes(false);
     } catch (error) {
       console.log(`error: ${error}`);
@@ -155,7 +148,13 @@ const FeedbackFormModal = (props: FeedbackFormModalProps) => {
       }}
     >
       <ModalHeader m={0} p={0}>
-        <HStack spacing="8px" as="button"  mb='8px' justifySelf='end' onClick={onClose}>
+        <HStack
+          spacing="8px"
+          as="button"
+          mb="8px"
+          justifySelf="end"
+          onClick={onClose}
+        >
           <Text color="#F50000">Close</Text>
           <Icon as={CloseIcon} color="#F50000" boxSize="12px" />
         </HStack>
@@ -230,13 +229,12 @@ const FeedbackFormModal = (props: FeedbackFormModalProps) => {
               >
                 <FileUpload
                   files={formik.values.createFeedbackAttachmentDto}
-                  error={formik.errors.createFeedbackAttachmentDto}
-                  isMulti={false}
+                  error={formik.errors.createFeedbackAttachmentDto?.toString()}
                   handleAddFiles={(files) => {
-                    formik.setFieldValue(
-                      'createFeedbackAttachmentDto',
-                      files[0]
-                    );
+                    formik.setFieldValue('createFeedbackAttachmentDto', [
+                      ...formik.values.createFeedbackAttachmentDto,
+                      ...files,
+                    ]);
                   }}
                 />
               </FormInputWrapper>

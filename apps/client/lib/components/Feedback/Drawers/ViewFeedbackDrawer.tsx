@@ -6,6 +6,7 @@ import {
   HStack,
   Stack,
   Text,
+  useToast,
   VStack,
 } from '@chakra-ui/react';
 import {
@@ -17,9 +18,11 @@ import {
   GenericDrawer,
 } from '@repo/ui/components';
 import { Field, FormikProvider, useFormik } from 'formik';
-import { useSession } from 'next-auth/react';
+import { getSession, useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { Feedback } from '~/lib/interfaces/feedback.interfaces';
+import { useUpdateFeedbackMutation } from '~/lib/redux/services/feedback.services';
+import { updateFeedbackSchema } from '~/lib/schemas/feedback.schema';
 import { ROLE_IDS_ENUM } from '~/lib/utils/constants';
 import UserDisplayAndAddButton from '../../Common/UserDisplayAndAddButton';
 import UserInfo from '../../Common/UserInfo';
@@ -33,6 +36,10 @@ interface FeedbackDrawerProps {
   data: Feedback;
 }
 
+interface UpdateFeedbackForm extends Partial<Feedback> {
+  assignedToEmployeeName: string | null;
+}
+
 const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
   const { isOpen, onClose, data } = props;
   const session = useSession();
@@ -44,184 +51,233 @@ const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
 
   const [viewMore, setViewMore] = useState(false);
 
-  const formik = useFormik<Partial<Feedback>>({
-    initialValues: data,
-    onSubmit(values, formikHelpers) {},
+  const toast = useToast();
+
+  const [updateFeedback, { isLoading: isUpdating }] =
+    useUpdateFeedbackMutation();
+
+  const formik = useFormik<UpdateFeedbackForm>({
+    initialValues: {
+      ...data,
+      assignedToEmployeeName: '',
+    },
+    validationSchema: updateFeedbackSchema,
+    onSubmit: async (values, { resetForm }) => {
+      const session = await getSession();
+
+      if (!session) return;
+
+      const payload = {
+        ...values,
+        lastModifiedBy: session?.user.username!,
+      };
+
+      const response = await updateFeedback({
+        feedbackId: data.feedbackId,
+        data: payload,
+      });
+
+      if (!response) return;
+
+      toast({
+        title: 'Feedback Updated Successfully!',
+        status: 'success',
+        position: 'top-right',
+      });
+
+      resetForm();
+    },
   });
 
   return (
     <>
       <GenericDrawer isOpen={isOpen} onClose={handleClose} maxWidth="507px">
-        <DrawerHeader p={0} m={0}>
-          <Stack
-            pt="16px"
-            pb="32px"
-            px={{ base: '16px', lg: '24px' }}
-            width="full"
-            justifyContent="space-between"
-            direction={{ base: 'row' }}
-          >
-            <BackButton handleClick={handleClose} />
-
-            {user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY) ? (
-              <CMFPopoverAction />
-            ) : (
-              <HStack spacing="8px">
-                <Button customStyles={{ width: '107px', height: '35px' }}>
-                  Save Changes
-                </Button>
-
-                <Button
-                  customStyles={{ width: '139px', height: '35px' }}
-                  variant="secondary"
-                >
-                  Mark as Resolved
-                </Button>
-              </HStack>
-            )}
-          </Stack>
-        </DrawerHeader>
-
-        <Flex direction="column" width="full">
+        <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
           <FormikProvider value={formik}>
-            <DrawerBody p={0} m={0}>
-              <Flex
-                direction="column"
+            <DrawerHeader p={0} m={0}>
+              <Stack
+                pt="16px"
+                pb="32px"
+                px={{ base: '16px', lg: '24px' }}
                 width="full"
-                alignItems="flex-start"
-                pb="20px"
+                justifyContent="space-between"
+                direction={{ base: 'row' }}
               >
-                <Heading
-                  size={{ base: 'lg', lg: 'xl' }}
-                  color="#0E2642"
-                  fontWeight={800}
-                  px="24px"
-                  pb="16px"
-                >
-                  Feedback Detail
-                </Heading>
+                <BackButton handleClick={handleClose} />
 
-                <FeedbackDrawerHeader data={data} />
-
-                <VStack width="full" px="24px" mb="24px">
-                  <VStack
-                    width="full"
-                    alignItems="flex-start"
-                    spacing="32px"
-                    borderBottom="0.5px solid #838383"
-                    py="24px"
-                  >
-                    <HStack
-                      width="full"
-                      alignItems="center"
-                      justifyContent="space-between"
-                      spacing="40px"
+                {user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY) ? (
+                  <CMFPopoverAction />
+                ) : (
+                  <HStack spacing="8px">
+                    <Button
+                      type="submit"
+                      isLoading={isUpdating}
+                      customStyles={{ width: '107px', height: '35px' }}
                     >
-                      <VStack spacing="8px" alignItems="flex-start">
-                        <Text fontWeight={700} color="neutral.600">
-                          Submitted by
-                        </Text>
+                      Save Changes
+                    </Button>
 
-                        <UserInfo
-                          name={data?.createdBy}
-                          customAvatarStyle={{
-                            width: '24px',
-                            height: '24px',
-                          }}
-                        />
-                      </VStack>
+                    <Button
+                      customStyles={{ width: '139px', height: '35px' }}
+                      variant="secondary"
+                    >
+                      Mark as Resolved
+                    </Button>
+                  </HStack>
+                )}
+              </Stack>
+            </DrawerHeader>
 
-                      <VStack spacing="8px" alignItems="center">
-                        <Text fontWeight={700} color="neutral.600">
-                          Company
-                        </Text>
+            <Flex direction="column" width="full">
+              <DrawerBody p={0} m={0}>
+                <Flex
+                  direction="column"
+                  width="full"
+                  alignItems="flex-start"
+                  pb="20px"
+                >
+                  <Heading
+                    size={{ base: 'lg', lg: 'xl' }}
+                    color="#0E2642"
+                    fontWeight={800}
+                    px="24px"
+                    pb="16px"
+                  >
+                    Feedback Detail
+                  </Heading>
 
-                        <Text>{data.companyName ?? 'N/A'}</Text>
-                      </VStack>
+                  <FeedbackDrawerHeader data={data} />
 
-                      <Text
-                        fontWeight={500}
-                        color="#0366EF"
-                        cursor="pointer"
-                        onClick={() => setViewMore(!viewMore)}
+                  <VStack width="full" px="24px" mb="24px">
+                    <VStack
+                      width="full"
+                      alignItems="flex-start"
+                      spacing="32px"
+                      borderBottom="0.5px solid #838383"
+                      py="24px"
+                    >
+                      <HStack
+                        width="full"
+                        alignItems="center"
+                        justifyContent="space-between"
+                        spacing="40px"
                       >
-                        {viewMore ? 'Minimize View More' : 'Click to View More'}
-                      </Text>
-                    </HStack>
-
-                    {viewMore && (
-                      <>
-                        <Description info={data?.description} />
-                        <VStack spacing="8px" alignItems="center">
+                        <VStack spacing="8px" alignItems="flex-start">
                           <Text fontWeight={700} color="neutral.600">
-                            Attachment
+                            Submitted by
                           </Text>
 
-                          <Text>N/A</Text>
+                          <UserInfo
+                            name={`${data?.firstName} ${data.lastName}`}
+                            role={data.designationName ?? 'N/A'}
+                            customAvatarStyle={{
+                              width: '24px',
+                              height: '24px',
+                            }}
+                          />
                         </VStack>
 
-                       
-                      </>
-                    )}
-                  </VStack>
-                </VStack>
+                        <VStack spacing="8px" alignItems="center">
+                          <Text fontWeight={700} color="neutral.600">
+                            Company
+                          </Text>
 
-                <VStack px="24px" width="full" alignItems="start">
-                  <Text size="lg" color="black" fontWeight={700} mb="1em">
-                    Resolution
-                  </Text>
+                          <Text>{data.companyName ?? 'N/A'}</Text>
+                        </VStack>
 
-                  <FormInputWrapper
-                    sectionMaxWidth="141px"
-                    customSpacing="24px"
-                    pb="16px"
-                    description="Select the person responsible for this ticket"
-                    title="Assign To"
-                    isRequired
-                  >
-                    <VStack width="full" spacing="12px" alignItems="flex-start">
-                      <UserDisplayAndAddButton
-                        selectedUser={null}
-                        handleSelectUser={(user) => {
-                          formik.setFieldValue(
-                            'assignedTo',
-                            user?.value ?? null
-                          );
-                        }}
-                        sectionInfoTitle="Assign To"
-                      />
+                        <Text
+                          fontWeight={500}
+                          color="#0366EF"
+                          cursor="pointer"
+                          onClick={() => setViewMore(!viewMore)}
+                        >
+                          {viewMore
+                            ? 'Minimize View More'
+                            : 'Click to View More'}
+                        </Text>
+                      </HStack>
 
-                      {formik.submitCount > 0 &&
-                        formik.touched &&
-                        formik.errors.assignedTo !== undefined && (
-                          <ErrorMessage>
-                            {formik.errors.assignedTo}
-                          </ErrorMessage>
-                        )}
+                      {viewMore && (
+                        <>
+                          <Description info={data?.description} />
+                          <VStack spacing="8px" alignItems="center">
+                            <Text fontWeight={700} color="neutral.600">
+                              Attachment
+                            </Text>
+
+                            <Text>N/A</Text>
+                          </VStack>
+                        </>
+                      )}
                     </VStack>
-                  </FormInputWrapper>
+                  </VStack>
 
-                  <FormInputWrapper
-                    sectionMaxWidth="141px"
-                    customSpacing="24px"
-                    description="Provide details about the resolution objective"
-                    title="Resolution Note"
-                    isRequired
-                  >
-                    <Field
-                      as={FormTextAreaInput}
-                      name="issueDescription"
-                      type="text"
-                      label="Resolution"
-                      placeholder="Resolution"
-                      customStyle={{ height: '133px' }}
-                    />
-                  </FormInputWrapper>
-                </VStack>
-              </Flex>
-            </DrawerBody>
+                  <VStack px="24px" width="full" alignItems="start">
+                    <Text size="lg" color="black" fontWeight={700} mb="1em">
+                      Resolution
+                    </Text>
+
+                    <FormInputWrapper
+                      sectionMaxWidth="141px"
+                      customSpacing="24px"
+                      pb="16px"
+                      description="Select the person responsible for this ticket"
+                      title="Assign To"
+                      isRequired
+                    >
+                      <VStack
+                        width="full"
+                        spacing="12px"
+                        alignItems="flex-start"
+                      >
+                        <UserDisplayAndAddButton
+                          selectedUser={formik.values?.assignedToEmployeeName}
+                          handleSelectUser={(user) => {
+                            formik.setFieldValue(
+                              'assignedTo',
+                              user?.value ?? null
+                            );
+
+                            formik.setFieldValue(
+                              'assignedToEmployeeName',
+                              user?.label ?? null
+                            );
+                          }}
+                          sectionInfoTitle="Assign To"
+                        />
+
+                        {formik.submitCount > 0 &&
+                          formik.touched &&
+                          formik.errors.assignedTo !== undefined && (
+                            <ErrorMessage>
+                              {formik.errors.assignedTo}
+                            </ErrorMessage>
+                          )}
+                      </VStack>
+                    </FormInputWrapper>
+
+                    <FormInputWrapper
+                      sectionMaxWidth="141px"
+                      customSpacing="24px"
+                      description="Provide details about the resolution objective"
+                      title="Resolution Note"
+                      isRequired
+                    >
+                      <Field
+                        as={FormTextAreaInput}
+                        name="resolutionNote"
+                        type="text"
+                        label="Resolution"
+                        placeholder="Resolution"
+                        customStyle={{ height: '133px' }}
+                      />
+                    </FormInputWrapper>
+                  </VStack>
+                </Flex>
+              </DrawerBody>
+            </Flex>
           </FormikProvider>
-        </Flex>
+        </form>
       </GenericDrawer>
     </>
   );

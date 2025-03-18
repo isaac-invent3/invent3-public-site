@@ -52,12 +52,12 @@ const FeedbackTable = (props: FeedbackTableProps) => {
           enableSorting: false,
         }),
 
-        columnHelper.accessor('authorFirstName', {
+        columnHelper.accessor('authorId', {
           cell: (info) => {
             const feedback = info.row.original;
             return (
               <Text>
-                {feedback.authorFirstName}
+                {feedback.firstName}
                 <br />
 
                 <Text as="span" size="xs" color="neutral.600" fontWeight={500}>
@@ -101,12 +101,12 @@ const FeedbackTable = (props: FeedbackTableProps) => {
           enableSorting: false,
         }),
 
-        columnHelper.accessor('authorFirstName', {
+        columnHelper.accessor('authorId', {
           cell: (info) => {
             const feedback = info.row.original;
             return (
               <Text>
-                {feedback.authorFirstName}
+                {feedback.firstName}
                 <br />
 
                 <Text as="span" size="xs" color="neutral.600" fontWeight={500}>

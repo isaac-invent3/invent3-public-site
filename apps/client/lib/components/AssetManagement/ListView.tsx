@@ -1,30 +1,34 @@
 import { Flex, useDisclosure } from '@chakra-ui/react';
-import { useCallback, useEffect, useState } from 'react';
 import _ from 'lodash';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { ListResponse } from '@repo/interfaces';
+import { generateSearchCriterion } from '@repo/utils';
 import { useSearchParams } from 'next/navigation';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import {
+  Asset,
+  ValidColumnNames,
+} from '~/lib/interfaces/asset/general.interface';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import {
   useGetAllAssetQuery,
+  useGetAssetsByColumnIdQuery,
   useSearchAssetsMutation,
 } from '~/lib/redux/services/asset/general.services';
-import useCustomMutation from '~/lib/hooks/mutation.hook';
+import {
+  setAsset,
+  updateSelectedAssetIds,
+} from '~/lib/redux/slices/AssetSlice';
 import {
   DEFAULT_PAGE_SIZE,
   OPERATORS,
   SYSTEM_CONTEXT_DETAILS,
 } from '~/lib/utils/constants';
+import AssetDetail from './AssetDetail';
 import AssetTable from './Common/AssetTable';
 import AssetFilterDisplay from './Filters/AssetFilterDisplay';
-import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import {
-  setAsset,
-  updateSelectedAssetIds,
-} from '~/lib/redux/slices/AssetSlice';
-import AssetDetail from './AssetDetail';
-import { Asset } from '~/lib/interfaces/asset/general.interface';
-import { ListResponse } from '@repo/interfaces';
-import { generateSearchCriterion } from '@repo/utils';
 
 interface ListViewProps {
   search: string;
@@ -40,7 +44,9 @@ const ListView = (props: ListViewProps) => {
   const searchParams = useSearchParams();
   const assetIdString = searchParams.get(SYSTEM_CONTEXT_DETAILS.ASSETS.slug);
   const { handleSubmit } = useCustomMutation();
-  const { updateSearchParam } = useCustomSearchParams();
+  const { updateSearchParam, getSearchParam } = useCustomSearchParams();
+  const assetClassId = getSearchParam('assetClassId');
+  const assetClass = getSearchParam('assetClassType');
 
   const { assetFilter: filterData, selectedAssetIds } = useAppSelector(
     (state) => state.asset
@@ -66,8 +72,37 @@ const ListView = (props: ListViewProps) => {
       pageNumber: currentPage,
       pageSize: pageSize,
     },
-    { skip: search !== '' || !isFilterEmpty }
+    {
+      skip: search !== '' || !isFilterEmpty || Boolean(assetClassId),
+    }
   );
+
+  const {
+    data: assetsByColumnId,
+    isLoading: isLoadingAssetsByColumnId,
+    isFetching: isFetchingAssetsByColumnId,
+  } = useGetAssetsByColumnIdQuery(
+    {
+      columnId: Number(assetClassId),
+      columnName: assetClass as ValidColumnNames,
+      pageNumber: currentPage,
+      pageSize: pageSize,
+    },
+    {
+      skip:
+        search !== '' ||
+        !isFilterEmpty ||
+        !Boolean(assetClassId) ||
+        !assetClass,
+    }
+  );
+
+  const assetData = useMemo(() => {
+    console.log({ assetClassId, data: assetsByColumnId });
+    if (assetClassId) return assetsByColumnId?.data;
+
+    return data?.data;
+  }, [assetsByColumnId, data]);
 
   // Search Criterion
   const searchCriterion = {
@@ -153,7 +188,7 @@ const ListView = (props: ListViewProps) => {
   // Update SelectedAssetIds array when selected row is greater than 1
   useEffect(() => {
     if (selectedRows.length > 0) {
-      const sourceItems = searchData?.items || data?.data?.items || [];
+      const sourceItems = searchData?.items || assetData?.items || [];
       const assetIds = selectedRows
         .map((rowId) => sourceItems[rowId]?.assetId) // Access by index and get assetId
         .filter((id): id is number => id !== undefined); // Filter out undefined values
@@ -175,10 +210,10 @@ const ListView = (props: ListViewProps) => {
           data={
             (search || !isFilterEmpty) && searchData
               ? searchData.items
-              : (data?.data?.items ?? [])
+              : (assetData?.items ?? [])
           }
-          isLoading={isLoading}
-          isFetching={isFetching || searchLoading}
+          isLoading={isLoading || isLoadingAssetsByColumnId}
+          isFetching={isFetching || searchLoading || isFetchingAssetsByColumnId}
           pageNumber={currentPage}
           setPageNumber={setCurrentPage}
           pageSize={pageSize}
@@ -186,7 +221,7 @@ const ListView = (props: ListViewProps) => {
           totalPages={
             (search || !isFilterEmpty) && searchData
               ? searchData?.totalPages
-              : data?.data?.totalPages
+              : assetData?.totalPages
           }
           handleSelectRow={(row) => {
             onOpen();

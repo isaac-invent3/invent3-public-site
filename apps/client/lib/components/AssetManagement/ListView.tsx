@@ -7,7 +7,10 @@ import { generateSearchCriterion } from '@repo/utils';
 import { useSearchParams } from 'next/navigation';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
-import { Asset } from '~/lib/interfaces/asset/general.interface';
+import {
+  Asset,
+  ValidColumnNames,
+} from '~/lib/interfaces/asset/general.interface';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import {
   useGetAllAssetQuery,
@@ -42,8 +45,8 @@ const ListView = (props: ListViewProps) => {
   const assetIdString = searchParams.get(SYSTEM_CONTEXT_DETAILS.ASSETS.slug);
   const { handleSubmit } = useCustomMutation();
   const { updateSearchParam, getSearchParam } = useCustomSearchParams();
-  const assetClassName = getSearchParam('assetClass');
   const assetClassId = getSearchParam('assetClassId');
+  const assetClass = getSearchParam('assetClassType');
 
   const { assetFilter: filterData, selectedAssetIds } = useAppSelector(
     (state) => state.asset
@@ -69,7 +72,9 @@ const ListView = (props: ListViewProps) => {
       pageNumber: currentPage,
       pageSize: pageSize,
     },
-    { skip: search !== '' || !isFilterEmpty || Boolean(assetClassId) }
+    {
+      skip: search !== '' || !isFilterEmpty || Boolean(assetClassId),
+    }
   );
 
   const {
@@ -79,10 +84,17 @@ const ListView = (props: ListViewProps) => {
   } = useGetAssetsByColumnIdQuery(
     {
       columnId: Number(assetClassId),
+      columnName: assetClass as ValidColumnNames,
       pageNumber: currentPage,
       pageSize: pageSize,
     },
-    { skip: search !== '' || !isFilterEmpty || Boolean(assetClassId) }
+    {
+      skip:
+        search !== '' ||
+        !isFilterEmpty ||
+        !Boolean(assetClassId) ||
+        !assetClass,
+    }
   );
 
   const assetData = useMemo(() => {

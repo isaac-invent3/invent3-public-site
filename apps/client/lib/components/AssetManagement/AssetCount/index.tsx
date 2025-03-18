@@ -110,6 +110,7 @@ const AssetCount = () => {
           data?.data.map((item, index) => (
             <AssetCountCard
               data={item}
+              type={selectedClass?.value!}
               key={index}
             />
           ))}

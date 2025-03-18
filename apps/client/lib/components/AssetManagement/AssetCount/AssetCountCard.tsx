@@ -2,24 +2,27 @@
 
 import { Box, Flex, Text, VStack } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { AssetCountByColumnName } from '~/lib/interfaces/asset/general.interface';
-import { useAppDispatch } from '~/lib/redux/hooks';
-import { updateAssetFilter } from '~/lib/redux/slices/AssetSlice';
+import { AssetCountByColumnName, ValidColumnNames } from '~/lib/interfaces/asset/general.interface';
 
 interface AssetCountCardProps {
   data: AssetCountByColumnName;
+  type:ValidColumnNames
 }
 const AssetCountCard = (props: AssetCountCardProps) => {
-  const { data } = props;
+  const { data ,type} = props;
   const router = useRouter();
-  const dispatch = useAppDispatch();
-
-  updateAssetFilter;
 
   const goToAssetPage = () => {
+    console.log({
+      assetClass: data.name,
+      assetClassId: data.id.toString(),
+      assetClassType: type,
+      data
+    });
     const params = new URLSearchParams({
       assetClass: data.name,
       assetClassId: data.id.toString(),
+      assetClassType: type,
     });
 
     router.push(`/asset-management?${params.toString()}`);

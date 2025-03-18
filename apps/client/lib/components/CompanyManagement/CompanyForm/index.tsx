@@ -11,6 +11,7 @@ import SummaryStep from './SummaryStep';
 import { COMPANY_TYPE_ENUM, ROLE_IDS_ENUM } from '~/lib/utils/constants';
 import withFormLeaveDialog from '../../UI/FormLeaveDialogProvider';
 import { useSession } from 'next-auth/react';
+import AuthenticationProtocol from './AuthenticationProtocol';
 
 interface CompanyFormProps {
   type: 'create' | 'edit';
@@ -24,10 +25,16 @@ const CompanyForm = (props: CompanyFormProps) => {
   const isThirdParty =
     user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY) ?? false;
 
-  const THIRD_PARTY_STEPS = ['Company Info', 'Company Contact', 'Summary'];
+  const THIRD_PARTY_STEPS = [
+    'Company Info',
+    'Company Contact',
+    'Authentication Protocol',
+    'Summary',
+  ];
   const SUPER_ADMIN_STEPS = [
     'Company Info',
     'Company Admin',
+    'Authentication Protocol',
     'Subscription',
     'Summary',
   ];
@@ -56,8 +63,14 @@ const CompanyForm = (props: CompanyFormProps) => {
               setActiveStep={setActiveStep}
             />
           </SlideTransition>
+          <SlideTransition trigger={activeStep === 3}>
+            <AuthenticationProtocol
+              activeStep={activeStep}
+              setActiveStep={setActiveStep}
+            />
+          </SlideTransition>
           {!isThirdParty && (
-            <SlideTransition trigger={activeStep === 3}>
+            <SlideTransition trigger={activeStep === 4}>
               <SubscriptionStep
                 activeStep={activeStep}
                 setActiveStep={setActiveStep}
@@ -65,7 +78,7 @@ const CompanyForm = (props: CompanyFormProps) => {
             </SlideTransition>
           )}
 
-          <SlideTransition trigger={activeStep === (isThirdParty ? 3 : 4)}>
+          <SlideTransition trigger={activeStep === (isThirdParty ? 4 : 5)}>
             <SummaryStep
               activeStep={activeStep}
               setActiveStep={setActiveStep}

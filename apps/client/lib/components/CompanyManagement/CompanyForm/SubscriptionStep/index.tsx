@@ -42,7 +42,7 @@ const SubscriptionStep = (props: SubscriptionStepProps) => {
     enableReinitialize: true,
     onSubmit: async (values) => {
       dispatch(updateCompanyForm(values));
-      setActiveStep(4);
+      setActiveStep(5);
     },
   });
 
@@ -51,7 +51,7 @@ const SubscriptionStep = (props: SubscriptionStepProps) => {
       width="full"
       height="full"
       direction="column"
-      display={activeStep === 3 ? 'flex' : 'none'}
+      display={activeStep === 4 ? 'flex' : 'none'}
     >
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
@@ -132,8 +132,8 @@ const SubscriptionStep = (props: SubscriptionStepProps) => {
           <Flex width="full" mt="16px">
             <FormActionButtons
               cancelLink={`/${ROUTES.COMPANY}`}
-              totalStep={4}
-              activeStep={3}
+              totalStep={5}
+              activeStep={4}
               setActiveStep={setActiveStep}
             />
           </Flex>

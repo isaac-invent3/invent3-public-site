@@ -35,6 +35,7 @@ const ROUTES_PERMISSION_KEY: { [name: string]: PermissionKey } = {
   [`/${ROUTES.PROFILE}`]: 'profile',
   [`/${ROUTES.USERS}`]: 'user',
   [`/${ROUTES.USERS}/add`]: 'user:create',
+  [`/${ROUTES.USERS}/directory`]: 'user:create',
   [`/${ROUTES.USERS}/[id]/edit`]: 'user:edit',
   [`/${ROUTES.AUDIT_LOG}`]: 'audit',
   [`/${ROUTES.ROLES}`]: 'role',

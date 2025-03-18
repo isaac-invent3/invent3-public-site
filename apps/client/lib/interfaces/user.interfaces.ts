@@ -62,6 +62,20 @@ interface User {
   userRoles: Role[];
 }
 
+interface ActiveDirectoryUser {
+  employeeImage: string;
+  firstName: string;
+  lastName: string;
+  status: string;
+  employeeId: string;
+  email: string;
+  phone: string;
+  facility: string;
+  employmentType: string;
+  designation: string;
+  team: string;
+}
+
 interface UserGroup {
   userGroupId: number;
   userId: number;
@@ -360,4 +374,5 @@ export type {
   UpdateUserGroupPayload,
   UpdateUserPayload,
   UserDocument,
+  ActiveDirectoryUser,
 };

@@ -1,24 +1,24 @@
 'use client';
 
-import { IconProps } from '@chakra-ui/icons';
-import {
-  Box,
-  ComponentWithAs,
-  Flex,
-  Icon,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, Flex, Text, VStack } from '@chakra-ui/react';
+import { useRouter } from 'next/navigation';
+import { AssetCountByColumnName } from '~/lib/interfaces/asset/general.interface';
 
 interface AssetCountCardProps {
-  data: {
-    title: string;
-    value: string;
-    icon: ComponentWithAs<'svg', IconProps>;
-  };
+  data: AssetCountByColumnName;
 }
 const AssetCountCard = (props: AssetCountCardProps) => {
   const { data } = props;
+  const router = useRouter();
+
+  const goToAssetPage = () => {
+    const params = new URLSearchParams({
+      assetClass: data.name,
+      assetClassId: data.id.toString(),
+    });
+
+    router.push(`/asset-management?${params.toString()}`);
+  };
 
   return (
     <Box
@@ -31,6 +31,7 @@ const AssetCountCard = (props: AssetCountCardProps) => {
       overflow="hidden"
       cursor="pointer"
       transition="all 300ms ease-in-out"
+      onClick={goToAssetPage}
       _hover={{
         transform: 'translateY(-10px)',
         boxShadow: 'lg',
@@ -44,11 +45,11 @@ const AssetCountCard = (props: AssetCountCardProps) => {
         gap="1em"
       >
         <Flex w="64px" h="64px" alignItems="center" justifyContent="center">
-          <Icon as={data.icon} boxSize="64px" />
+          {/* <Icon as={data.icon} boxSize="64px" /> */}
         </Flex>
 
         <Text fontSize="lg" fontWeight={800} color="neutral.800">
-          {data.title}
+          {data.name}
         </Text>
       </VStack>
 
@@ -60,7 +61,7 @@ const AssetCountCard = (props: AssetCountCardProps) => {
         justifyContent="center"
       >
         <Text fontSize="xl" fontWeight={800} color="primary.500">
-          {data.value}
+          {data.assetCount}
         </Text>
       </VStack>
     </Box>

@@ -1,4 +1,5 @@
 import { BaseEntity, Option } from '@repo/interfaces';
+import { FORM_ENUM } from '~/lib/utils/constants';
 import {
   BaseDto,
   Document,
@@ -6,7 +7,6 @@ import {
   LocationFilter,
 } from '../general.interfaces';
 import { MaintenancePlan } from '../maintenance.interfaces';
-import { FORM_ENUM } from '~/lib/utils/constants';
 import { CreateVendorPayload } from '../vendor.interfaces';
 
 interface AssetLocation {
@@ -427,23 +427,37 @@ interface MeanTimeComputation {
   month: number;
 }
 
+interface AssetCountByColumnName {
+  assetCount: number;
+  name: string;
+  id: number;
+}
+type ValidColumnNames =
+  | 'Condition'
+  | 'Status'
+  | 'Condition'
+  | 'Category'
+  | 'AssetType';
+
 export type {
-  AssetLocation,
-  Asset,
-  AssetFormDetails,
-  FilterInput,
   AcquisitionInfo,
-  ContractDocument,
+  Asset,
+  AssetCountByColumnName,
   AssetDocument,
-  AssetFormImage,
-  StateAssetCount,
-  LGAAssetCount,
-  InfoProps,
-  SingleMapAssetData,
-  AssetStatus,
-  AssetImageDto,
   AssetDocumentsDto,
+  AssetFormDetails,
+  AssetFormImage,
+  AssetImageDto,
+  AssetLocation,
+  AssetStatus,
+  ContractDocument,
   CreateAssetPayload,
-  UpdateAssetPayload,
+  FilterInput,
+  InfoProps,
+  LGAAssetCount,
   MeanTimeComputation,
+  SingleMapAssetData,
+  StateAssetCount,
+  UpdateAssetPayload,
+  ValidColumnNames,
 };

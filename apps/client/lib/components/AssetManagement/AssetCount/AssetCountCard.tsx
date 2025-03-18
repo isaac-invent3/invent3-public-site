@@ -2,14 +2,17 @@
 
 import { Box, Flex, Text, VStack } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { AssetCountByColumnName, ValidColumnNames } from '~/lib/interfaces/asset/general.interface';
+import {
+  AssetCountByColumnName,
+  ValidColumnNames,
+} from '~/lib/interfaces/asset/general.interface';
 
 interface AssetCountCardProps {
   data: AssetCountByColumnName;
-  type:ValidColumnNames
+  type: ValidColumnNames;
 }
 const AssetCountCard = (props: AssetCountCardProps) => {
-  const { data ,type} = props;
+  const { data, type } = props;
   const router = useRouter();
 
   const goToAssetPage = () => {
@@ -17,12 +20,12 @@ const AssetCountCard = (props: AssetCountCardProps) => {
       assetClass: data.name,
       assetClassId: data.id.toString(),
       assetClassType: type,
-      data
+      data,
     });
     const params = new URLSearchParams({
       assetClass: data.name,
       assetClassId: data.id.toString(),
-      assetClassType: type,
+      assetClassType: `${type}ID`,
     });
 
     router.push(`/asset-management?${params.toString()}`);
@@ -53,7 +56,10 @@ const AssetCountCard = (props: AssetCountCardProps) => {
         gap="1em"
       >
         <Flex w="64px" h="64px" alignItems="center" justifyContent="center">
-          {/* <Icon as={data.icon} boxSize="64px" /> */}
+          <Box
+            boxSize="64px"
+            dangerouslySetInnerHTML={{ __html: data.icon! }}
+          />
         </Flex>
 
         <Text fontSize="lg" fontWeight={800} color="neutral.800">

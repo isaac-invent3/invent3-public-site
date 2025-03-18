@@ -8,6 +8,7 @@ import {
   SearchQuery,
 } from '@repo/interfaces';
 import {
+  ActiveDirectoryUser,
   CreateUserPayload,
   Group,
   UpdateUserGroupPayload,
@@ -274,6 +275,17 @@ export const userApi = createApi({
       }),
       invalidatesTags: ['allUserGroupInfoHeaders'],
     }),
+    getActiveDirectoryUsers: builder.query<
+      BaseApiResponse<ActiveDirectoryUser>,
+      void
+    >({
+      query: () => ({
+        url: `/Invent3Pro/GetUsersFromAD?`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allUsers'],
+    }),
   }),
 });
 
@@ -300,4 +312,5 @@ export const {
   useDeleteUserGroupMutation,
   useGetUserDocumentsQuery,
   useToggleUserStatusMutation,
+  useGetActiveDirectoryUsersQuery,
 } = userApi;

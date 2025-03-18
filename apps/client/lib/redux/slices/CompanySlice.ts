@@ -32,6 +32,9 @@ const initialCompanyForm = {
   startDate: null,
   endDate: null,
   clientAdminId: null,
+  companyAuthProtocolId: null,
+  activeDirectoryUrl: null,
+  companyAuthProtocolName: 'Basic Authentication',
 };
 
 const initialCompanyFilter = {

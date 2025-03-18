@@ -20,6 +20,7 @@ import {
 } from '~/lib/redux/services/company.services';
 import CompanySuccessModal from './SuccessModal';
 import { setCompany } from '~/lib/redux/slices/CompanySlice';
+import AuthenticationProtocol from './SectionOne/AuthenticationProtocol';
 
 interface SummaryStepProps {
   activeStep: number;
@@ -57,6 +58,8 @@ const SummaryStep = (props: SummaryStepProps) => {
 
   const CompanyDto = {
     companyId: companyForm?.companyId,
+    companyAuthProtocolId: companyForm?.companyAuthProtocolId!,
+    activeDirectoryUrl: companyForm?.activeDirectoryUrl!,
     companyName: companyForm?.companyName!,
     address: companyForm?.address1!,
     emailAddress: companyForm?.companyEmail!,
@@ -126,7 +129,7 @@ const SummaryStep = (props: SummaryStepProps) => {
         width="full"
         gap="16px"
         direction="column"
-        display={activeStep === (isThirdParty ? 3 : 4) ? 'flex' : 'none'}
+        display={activeStep === (isThirdParty ? 4 : 5) ? 'flex' : 'none'}
       >
         <VStack
           width="full"
@@ -175,6 +178,9 @@ const SummaryStep = (props: SummaryStepProps) => {
             </Flex>
             <Flex width={{ base: 'full', lg: '50%' }}>
               <ContactInformation />
+            </Flex>
+            <Flex width={{ base: 'full', lg: '50%' }}>
+              <AuthenticationProtocol />
             </Flex>
             {/* <Flex width={{ base: 'full', lg: '20%' }}>
               <Subscription />

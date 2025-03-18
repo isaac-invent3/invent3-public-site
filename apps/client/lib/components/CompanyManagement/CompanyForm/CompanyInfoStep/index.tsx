@@ -105,7 +105,7 @@ const CompanyInfoStep = (props: CompanyInfoStepProps) => {
                 <Field
                   as={FormTextInput}
                   name="registrationNumber"
-                  type="number"
+                  type="text"
                   label="Registration Number"
                 />
               </FormInputWrapper>

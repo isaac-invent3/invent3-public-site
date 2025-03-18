@@ -45,6 +45,9 @@ export default function Page({ params }: { params: { id: number } }) {
         subscriptionPlanId: null,
         startDate: null,
         endDate: null,
+        companyAuthProtocolId: null,
+        companyAuthProtocolName: null,
+        activeDirectoryUrl: null,
       })
     );
   }

@@ -378,6 +378,11 @@ const USER_STATUS_ENUM = {
   NON_ACTIVE: 2,
 };
 
+const AUTHENTICATION_PROTOCOL_ENUM = {
+  BASIC: 1,
+  ACTIVE_DIRECTORY: 2,
+};
+
 export {
   AREA_ENUM,
   ASSET_GROUP_TYPE,
@@ -403,4 +408,5 @@ export {
   timeRangeOptions,
   USER_STATUS_ENUM,
   yearOptions,
+  AUTHENTICATION_PROTOCOL_ENUM,
 };

@@ -162,7 +162,7 @@ export const assetApi = createApi({
 
     getAssetsByColumnId: builder.query<
       BaseApiResponse<ListResponse<Asset>>,
-      { columnId: number } & QueryParams
+      { columnId: number; columnName: ValidColumnNames } & QueryParams
     >({
       query: ({ columnId, ...data }) => ({
         url: generateQueryStr(`/Assets/GetAssetsByColumnId/${columnId}?`, data),
@@ -289,5 +289,5 @@ export const {
   useDownloadAssetQuery,
   useAssetMeanTimeComputationQuery,
   useGetAssetCountByColumnNameQuery,
-  useGetAssetsByColumnIdQuery
+  useGetAssetsByColumnIdQuery,
 } = assetApi;

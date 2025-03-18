@@ -431,6 +431,7 @@ interface AssetCountByColumnName {
   assetCount: number;
   name: string;
   id: number;
+  icon: string | null;
 }
 type ValidColumnNames =
   | 'Condition'

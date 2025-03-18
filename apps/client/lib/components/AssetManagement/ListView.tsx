@@ -98,6 +98,7 @@ const ListView = (props: ListViewProps) => {
   );
 
   const assetData = useMemo(() => {
+    console.log({ assetClassId, data: assetsByColumnId });
     if (assetClassId) return assetsByColumnId?.data;
 
     return data?.data;
@@ -187,7 +188,7 @@ const ListView = (props: ListViewProps) => {
   // Update SelectedAssetIds array when selected row is greater than 1
   useEffect(() => {
     if (selectedRows.length > 0) {
-      const sourceItems = searchData?.items || data?.data?.items || [];
+      const sourceItems = searchData?.items || assetData?.items || [];
       const assetIds = selectedRows
         .map((rowId) => sourceItems[rowId]?.assetId) // Access by index and get assetId
         .filter((id): id is number => id !== undefined); // Filter out undefined values

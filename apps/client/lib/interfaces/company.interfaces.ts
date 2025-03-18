@@ -73,6 +73,9 @@ interface CompanyFormDetails {
   contactEmail: string | null;
   contactPhoneNumber: string | null;
   clientAdminId: number | null;
+  activeDirectoryUrl: string | null;
+  companyAuthProtocolId: number | null;
+  companyAuthProtocolName: string | null;
 }
 
 interface CompanyImageDto extends BaseDto {
@@ -91,6 +94,8 @@ interface CompanyUserDto extends BaseDto {
 }
 
 interface CompanyDto extends BaseDto {
+  companyAuthProtocolId: number;
+  activeDirectoryUrl: string | null;
   companyName: string;
   address: string;
   emailAddress: string;

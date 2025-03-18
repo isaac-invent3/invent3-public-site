@@ -12,6 +12,10 @@ const companyInfoSchema = (validateUser: boolean) =>
       })
       .required('Company logo is required'),
     companyName: Yup.string().required('Company Name is required'),
+    companyEmail: Yup.string()
+      .email('Invalid email format')
+      .required('Email is required'),
+    companyWebsite: Yup.string().url().nullable(),
     industryTypeId: Yup.number().required('Industry is required'),
     registrationNumber: Yup.string().required(
       'Company Registration Number is Required'
@@ -40,4 +44,23 @@ const companySubscriptionSchema = (
     endDate: createDateSchema(false, false, minEndDate).nullable(),
   });
 
-export { companyInfoSchema, contactInfoSchema, companySubscriptionSchema };
+const authenticationMethodSchema = (validateUrl: boolean) =>
+  Yup.object().shape({
+    companyAuthProtocolId: Yup.number().required('Method is required'),
+    ...(validateUrl
+      ? {
+          activeDirectoryUrl: Yup.string()
+            .url()
+            .required('Active Directory URL is required'),
+        }
+      : {
+          activeDirectoryUrl: Yup.string().nullable(),
+        }),
+  });
+
+export {
+  companyInfoSchema,
+  contactInfoSchema,
+  companySubscriptionSchema,
+  authenticationMethodSchema,
+};

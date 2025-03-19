@@ -108,15 +108,18 @@ export const config = {
           baseUrl.hostname !== envUrl.hostname ? subdomain : null;
 
         // external api for users to log in
-        const res = await fetch(`${process.env.API_BASE_URL}/login`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            ...(hasSubdomain ? { 'X-Tenant-ID': subdomain } : {}),
-          },
-          body: JSON.stringify(payload),
-        });
+        const res = await fetch(
+          `${process.env.API_BASE_URL}/Invent3Pro/login`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*',
+              ...(hasSubdomain ? { 'X-Tenant-ID': subdomain } : {}),
+            },
+            body: JSON.stringify(payload),
+          }
+        );
 
         const user = await res.json();
 

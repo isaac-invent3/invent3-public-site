@@ -6,17 +6,20 @@ export async function POST(request: Request) {
     refreshToken: body.refreshToken,
     apiKey: body.apiKey,
   };
-  const res = await fetch(`${process.env.API_BASE_URL}/refresh-tokens`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      Authorization: `Bearer ${body.accessToken}`,
-      ApiKey: `${body.apiKey}`,
-      ...(body.companySlug ? { 'X-Tenant-ID': body.companySlug } : {}),
-    },
-    body: JSON.stringify(payload),
-  });
+  const res = await fetch(
+    `${process.env.API_BASE_URL}/Invent3Pro/refresh-tokens`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        Authorization: `Bearer ${body.accessToken}`,
+        ApiKey: `${body.apiKey}`,
+        ...(body.companySlug ? { 'X-Tenant-ID': body.companySlug } : {}),
+      },
+      body: JSON.stringify(payload),
+    }
+  );
 
   const data = await res.json();
 

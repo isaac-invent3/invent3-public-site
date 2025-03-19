@@ -36,7 +36,7 @@ export const approvalWorkflowTypeApi = createApi({
 
     getAllApprovalWorkflowTypes: builder.query<
       BaseApiResponse<ListResponse<ApprovalWorkflowType>>,
-      { systemContextTypeId: number } & QueryParams
+      { systemContextTypeId?: number } & QueryParams
     >({
       query: (data) => ({
         url: generateQueryStr(`/ApprovalTypes?`, data),

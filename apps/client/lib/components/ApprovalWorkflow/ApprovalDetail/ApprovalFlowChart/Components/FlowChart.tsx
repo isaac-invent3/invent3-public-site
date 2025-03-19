@@ -278,7 +278,7 @@ const ApprovalFlowChart = (props: ApprovalChartProps) => {
 
     nodes.forEach((n) => {
       if (!groupedByX[n.position.x]) groupedByX[n.position.x] = [];
-      groupedByX[n.position.x].push(n);
+      (groupedByX[n.position.x] as CustomNode[]).push(n);
     });
 
     const stackedNodes = groupedByX[posX] || [];
@@ -396,7 +396,7 @@ const ApprovalFlowChart = (props: ApprovalChartProps) => {
       if (!groupedByX[node.position.x]) {
         groupedByX[node.position.x] = [];
       }
-      groupedByX[node.position.x].push(node);
+      (groupedByX[node.position.x] as CustomNode[]).push(node);
     });
 
     // Find the closest left and right nodes based on X position

@@ -20,7 +20,7 @@ const INFO = [
     subtitle: 'Notify me to for all approvals',
     key: APPROVAL_NOTIFICATION.APPROVAL_ALL,
   },
-];ap
+];
 
 const Approvals = () => {
   return (

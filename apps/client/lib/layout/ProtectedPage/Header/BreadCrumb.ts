@@ -155,6 +155,11 @@ const adminSettingsBreadcrumb: BreadcrumbNode = {
   label: 'Admin Settings',
 };
 
+const approvalBreadcrumb: BreadcrumbNode = {
+  route: `/${ROUTES.APPROVAL}`,
+  label: 'Approval Workflow',
+};
+
 const breadcrumbMap: Record<string, BreadcrumbNode> = {
   [ROUTES.DASHBOARD]: dashboardBreadcrumb,
   [ROUTES.ASSETS]: assetsBreadcrumb,
@@ -163,15 +168,6 @@ const breadcrumbMap: Record<string, BreadcrumbNode> = {
   [ROUTES.TICKETS]: ticketsBreadcrumb,
   [ROUTES.PROFILE]: profileBreadcrumb,
   [ROUTES.REPORT]: reportBreadcrumb,
-  [ROUTES.TEMPLATES]: templateBreadcrumb,
-  [ROUTES.USERS]: userManagementBreadcrumb,
-  [ROUTES.ROLES]: roleManagementBreadcrumb,
-  [ROUTES.AUDIT_LOG]: auditLogBreadcrumb,
-  [ROUTES.VENDOR]: vendorManagementBreadCrumb,
-  [ROUTES.COMPANY]: companyManagementBreadCrumb,
-  [ROUTES.COMPLIANCE]: complianceBreadCrumb,
-  [ROUTES.USER_SETTINGS]: userSettingsBreadcrumb,
-  [ROUTES.SETTINGS]: adminSettingsBreadcrumb,
 };
 
 const getBreadcrumb = (pathSegments: string[]): breadCrumbRoute[] => {

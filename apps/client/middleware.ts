@@ -1,3 +1,4 @@
+import { auth } from 'auth';
 import { NextRequest, NextResponse } from 'next/server';
 import { checkPermission } from './app/actions/permissionAction';
 import { encode, getToken, JWT } from 'next-auth/jwt';

@@ -5,6 +5,7 @@ import {
   HStack,
   StackProps,
   Text,
+  TextProps,
 } from '@chakra-ui/react';
 
 interface UserInfoProps {
@@ -14,9 +15,11 @@ interface UserInfoProps {
   customAvatarStyle?: AvatarProps;
   customBoxStyle?: StackProps;
   children?: React.ReactNode;
+  textStyle?: TextProps;
 }
 const UserInfo = (props: UserInfoProps) => {
-  const { name, role, customBoxStyle, customAvatarStyle, children } = props;
+  const { name, role, customBoxStyle, customAvatarStyle, children, textStyle } =
+    props;
 
   return (
     <HStack spacing="8px" {...customBoxStyle}>
@@ -28,7 +31,9 @@ const UserInfo = (props: UserInfoProps) => {
         {...customAvatarStyle}
       />
       <Flex direction="column">
-        <Text color="black">{name ?? 'N/A'}</Text>
+        <Text color="black" {...textStyle}>
+          {name ?? 'N/A'}
+        </Text>
         {role && (
           <Text color="neutral.600" fontSize="10px" lineHeight="11.88px">
             {role}

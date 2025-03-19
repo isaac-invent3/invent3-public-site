@@ -55,6 +55,8 @@ import auditLogSlice from './slices/AuditLogSlice';
 import companySlice from './slices/CompanySlice';
 import settingSlice from './slices/SettingsSlice';
 
+import { approvalWorkflowRequestApi } from './services/approval-workflow/requests.services';
+import { assetDisposalApi } from './services/asset/disposal.services';
 import { assetDocumentApi } from './services/asset/document.services';
 import { aisleApi } from './services/location/aisle.services';
 import { buildingApi } from './services/location/building.services';
@@ -66,9 +68,17 @@ import { lgaApi } from './services/location/lga.services';
 import { roomApi } from './services/location/room.services';
 import { shelfApi } from './services/location/shelf.services';
 import { stateApi } from './services/location/state.services';
-import { assetDisposalApi } from './services/asset/disposal.services';
 import { scheduleInstanceApi } from './services/maintenance/scheduleInstance.services';
 import { systemContextTypesApi } from './services/systemcontexttypes.services';
+import { approvalWorkflowRequestDocumentApi } from './services/approval-workflow/requestDocuments.services';
+import { approvalWorkflowActionApi } from './services/approval-workflow/actions.services';
+import { approvalWorkflowActionOptionApi } from './services/approval-workflow/actionOptions.services';
+import { approvalWorkflowActionOptionsMapApi } from './services/approval-workflow/actionOptionsMaps.services';
+import { approvalWorkflowInstanceApi } from './services/approval-workflow/workflowInstances.services';
+import { approvalWorkflowPartyInstanceApi } from './services/approval-workflow/partyInstances.services';
+import { approvalWorkflowRequirementTypeApi } from './services/approval-workflow/requirementTypes.services';
+import { approvalWorkflowStatusApi } from './services/approval-workflow/statuses.services';
+import { approvalWorkflowTypeApi } from './services/approval-workflow/types.services';
 import { vendorApi } from './services/vendor.services';
 import { logApi } from './services/log.services';
 import { rolesApi } from './services/role.services';
@@ -164,6 +174,18 @@ const rootReducer = combineReducers({
 
   // Utlis APIS
   [systemContextTypesApi.reducerPath]: systemContextTypesApi.reducer,
+
+  // Approval Workflow Related APIs
+  [approvalWorkflowRequestApi.reducerPath]: approvalWorkflowRequestApi.reducer,
+  [approvalWorkflowRequestDocumentApi.reducerPath]: approvalWorkflowRequestDocumentApi.reducer,
+  [approvalWorkflowActionApi.reducerPath]: approvalWorkflowActionApi.reducer,
+  [approvalWorkflowActionOptionApi.reducerPath]: approvalWorkflowActionOptionApi.reducer,
+  [approvalWorkflowActionOptionsMapApi.reducerPath]: approvalWorkflowActionOptionsMapApi.reducer,
+  [approvalWorkflowInstanceApi.reducerPath]: approvalWorkflowInstanceApi.reducer,
+  [approvalWorkflowPartyInstanceApi.reducerPath]: approvalWorkflowPartyInstanceApi.reducer,
+  [approvalWorkflowRequirementTypeApi.reducerPath]: approvalWorkflowRequirementTypeApi.reducer,
+  [approvalWorkflowStatusApi.reducerPath]: approvalWorkflowStatusApi.reducer,
+  [approvalWorkflowTypeApi.reducerPath]: approvalWorkflowTypeApi.reducer,
 
   // Log APIS
   [logApi.reducerPath]: logApi.reducer,
@@ -288,6 +310,18 @@ export const makeStore = () => {
 
         // Report Apis
         reportApi.middleware,
+
+        // Approval-Workflow Related APIs
+        approvalWorkflowRequestApi.middleware,
+        approvalWorkflowRequestDocumentApi.middleware,
+        approvalWorkflowActionApi.middleware,
+        approvalWorkflowActionOptionApi.middleware,
+        approvalWorkflowActionOptionsMapApi.middleware,
+        approvalWorkflowInstanceApi.middleware,
+        approvalWorkflowPartyInstanceApi.middleware,
+        approvalWorkflowRequirementTypeApi.middleware,
+        approvalWorkflowStatusApi.middleware,
+        approvalWorkflowTypeApi.middleware,
 
         // Log Apis
         logApi.middleware,

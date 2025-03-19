@@ -41,4 +41,8 @@ interface SearchQuery {
   isLogicalOperatorSpecified?: boolean;
 }
 
+
+
+
+
 export type { FilterInput, Option, SearchCriterion, SearchQuery, UploadedFile };

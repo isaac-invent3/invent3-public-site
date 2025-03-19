@@ -1305,5 +1305,5 @@ export {
   TemplateIcon,
   ThreeVerticalDotsIcon,
   UptrendIcon,
-  DesktopIcon,
+  DesktopIcon
 };

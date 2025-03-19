@@ -1,5 +1,5 @@
 'use client';
-import Chat from '~/lib/components/Notification/Tabs/test';
+import Cookies from 'js-cookie';
 import { getSession } from 'next-auth/react';
 import { useEffect } from 'react';
 import useFormatUrl from '~/lib/hooks/useFormatUrl';

@@ -512,6 +512,45 @@ const TemplateIcon = createIcon({
   ),
 });
 
+const FeedbackIcon = createIcon({
+  displayName: 'FeedbackIcon',
+  viewBox: '0 0 18 18',
+
+  path: (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="18"
+      height="18"
+      fill="none"
+      viewBox="0 0 18 18"
+    >
+      <path
+        stroke="#838383"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+        d="M8.25 1.5h-1.5C3 1.5 1.5 3 1.5 6.75v4.5C1.5 15 3 16.5 6.75 16.5h4.5c3.75 0 5.25-1.5 5.25-5.25v-1.5"
+      ></path>
+      <path
+        stroke="#838383"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeMiterlimit="10"
+        strokeWidth="1.5"
+        d="m12.032 2.266-5.91 5.91c-.225.225-.45.667-.495.99l-.322 2.257c-.12.818.457 1.388 1.275 1.275l2.257-.322c.315-.045.758-.27.99-.495l5.91-5.91c1.02-1.02 1.5-2.205 0-3.705s-2.685-1.02-3.705 0"
+      ></path>
+      <path
+        stroke="#838383"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeMiterlimit="10"
+        strokeWidth="1.5"
+        d="M11.18 3.113a5.36 5.36 0 0 0 3.705 3.705"
+      ></path>
+    </svg>
+  ),
+});
+
 const AuditLogIcon = createIcon({
   displayName: 'AuditLogIcon',
   viewBox: '0 0 18 18',
@@ -835,31 +874,32 @@ const CompanyIcon = createIcon({
 });
 
 export {
-  DashboardIcon,
-  AssetManagementIcon,
-  TaskIcon,
-  MaintenanceIcon,
-  TicketIcon,
   AnalyticsIcon,
-  ComplianceIcon,
+  AssetManagementIcon,
+  AuditLogIcon,
   CaretLeftIcon,
   CaretRightIcon,
-  SearchIcon,
   ChevronDownIcon,
-  SettingsIcon,
-  NotificationIcon,
-  Setting2Icon,
-  UserProfileIcon,
-  PreferenceIcon,
-  ExitIcon,
-  TemplateIcon,
-  AuditLogIcon,
-  UserManagementIcon,
-  RoleManagementIcon,
-  VendorManagementIcon,
-  MinusIcon,
-  PlusIcon,
-  InfoIcon,
   CompanyIcon,
+  ComplianceIcon,
+  DashboardIcon,
+  ExitIcon,
+  InfoIcon,
+  MaintenanceIcon,
+  MinusIcon,
+  NotificationIcon,
+  PlusIcon,
+  PreferenceIcon,
+  RoleManagementIcon,
+  SearchIcon,
+  Setting2Icon,
+  SettingsIcon,
+  TaskIcon,
+  TemplateIcon,
+  TicketIcon,
+  UserManagementIcon,
+  UserProfileIcon,
+  VendorManagementIcon,
+  FeedbackIcon,
   ShuffleIcon,
 };

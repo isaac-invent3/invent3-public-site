@@ -184,7 +184,9 @@ const SYSTEM_CONTEXT_TYPE = {
   NOTES: 43,
   VENDOR: 68,
   AUDIT: 73,
-  COMPANY: 0,
+  COMPANY: 17,
+  TEMPLATES: 65,
+  ROLES: 56,
 };
 
 const ROUTES = {
@@ -207,7 +209,8 @@ const ROUTES = {
   SETTINGS: 'settings',
   USER_SETTINGS: 'user-settings',
   COMPLIANCE: 'compliance',
-  APPROVAL:'approval-flow'
+  FEEDBACK: 'feedback',
+  APPROVAL: 'approval-flow',
 };
 
 const SYSTEM_CONTEXT_DETAILS: Record<ContextKey, SystemContextDetail> = {
@@ -323,8 +326,10 @@ export {
   AREA_ENUM,
   ASSET_GROUP_TYPE,
   COLOR_CODES_FALLBACK,
+  COMPANY_TYPE_ENUM,
   DATE_PERIOD,
   DEFAULT_PAGE_SIZE,
+  EXPORT_TYPE_ENUM,
   FILE_ICONS,
   FORM_ENUM,
   INSTANCE_UPDATE_ENUM,
@@ -333,15 +338,13 @@ export {
   NOTIFICATION_EVENT_TYPE_ENUM,
   OPERATORS,
   planScopeOptions,
+  ROLE_IDS_ENUM,
   ROUTES,
   STATUS_CATEGORY_ENUM,
-  SYSTEM_CONTEXT_TYPE,
   SYSTEM_CONTEXT_DETAILS,
+  SYSTEM_CONTEXT_TYPE,
   timeRangeOptions,
-  yearOptions,
-  EXPORT_TYPE_ENUM,
-  ROLE_IDS_ENUM,
-  COMPANY_TYPE_ENUM,
   USER_STATUS_ENUM,
+  yearOptions,
   AUTHENTICATION_PROTOCOL_ENUM,
 };

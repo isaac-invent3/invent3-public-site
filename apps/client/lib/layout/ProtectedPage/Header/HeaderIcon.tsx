@@ -1,15 +1,16 @@
+import { ComponentWithAs, Flex, FlexProps, Icon, IconProps } from '@chakra-ui/react';
 import React from 'react';
-import { ComponentWithAs, Flex, Icon, IconProps } from '@chakra-ui/react';
 
-interface HeaderIconProps {
+interface HeaderIconProps extends FlexProps {
   icon: ComponentWithAs<'svg', IconProps>;
   size: string;
   handleClick?: () => void;
+  children?: React.ReactNode;
 }
 
 const HeaderIcon = React.forwardRef<HTMLDivElement, HeaderIconProps>(
   (props, ref) => {
-    const { icon, size, handleClick, ...rest } = props;
+    const { icon, size, handleClick, children, ...rest } = props;
     return (
       <Flex
         ref={ref}
@@ -25,6 +26,7 @@ const HeaderIcon = React.forwardRef<HTMLDivElement, HeaderIconProps>(
         {...rest}
       >
         <Icon as={icon} boxSize={size} color="neutral.600" />
+        {children}
       </Flex>
     );
   }

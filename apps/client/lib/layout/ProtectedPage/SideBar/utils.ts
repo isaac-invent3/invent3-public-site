@@ -5,6 +5,7 @@ import {
   AuditLogIcon,
   CompanyIcon,
   DashboardIcon,
+  FeedbackIcon,
   MaintenanceIcon,
   RoleManagementIcon,
   TaskIcon,
@@ -15,7 +16,11 @@ import {
 } from '~/lib/components/CustomIcons/layout';
 import { DashboardView } from '~/lib/interfaces/dashboard.interfaces';
 import { SideBarData } from '~/lib/interfaces/general.interfaces';
-import { ROLE_IDS_ENUM, ROUTES } from '~/lib/utils/constants';
+import {
+  ROLE_IDS_ENUM,
+  ROUTES,
+  SYSTEM_CONTEXT_TYPE,
+} from '~/lib/utils/constants';
 
 const DashboardViewMaps: Record<
   number,
@@ -56,6 +61,7 @@ const clientSideBarData: SideBarData[] = [
     route: ROUTES.ASSETS,
     icon: AssetManagementIcon,
     permissionKey: 'asset',
+    contextId: SYSTEM_CONTEXT_TYPE.ASSETS,
     description:
       'Organize, track, and optimize asset lifecycles for efficiency and cost savings.',
   },
@@ -64,6 +70,7 @@ const clientSideBarData: SideBarData[] = [
     route: ROUTES.TASKS,
     icon: TaskIcon,
     permissionKey: 'task',
+    contextId: SYSTEM_CONTEXT_TYPE.TASKS,
     description:
       'Assign, prioritize, and monitor tasks to streamline workflow and productivity.',
   },
@@ -80,6 +87,8 @@ const clientSideBarData: SideBarData[] = [
     route: ROUTES.TICKETS,
     icon: TicketIcon,
     permissionKey: 'ticket',
+    contextId: SYSTEM_CONTEXT_TYPE.TICKETS,
+
     description: 'Track, manage, and resolve customer issues and requests.',
   },
   {
@@ -94,6 +103,8 @@ const clientSideBarData: SideBarData[] = [
     route: ROUTES.TEMPLATES,
     icon: TemplateIcon,
     permissionKey: 'template',
+    contextId: SYSTEM_CONTEXT_TYPE.TEMPLATES,
+
     description:
       'Create, store, and modify standardized templates for consistency.',
   },
@@ -102,6 +113,8 @@ const clientSideBarData: SideBarData[] = [
     route: ROUTES.USERS,
     icon: UserManagementIcon,
     permissionKey: 'user',
+    contextId: SYSTEM_CONTEXT_TYPE.USERS,
+
     description:
       'Control access, roles, and permissions for secure user administration.',
   },
@@ -111,6 +124,8 @@ const clientSideBarData: SideBarData[] = [
     route: ROUTES.ROLES,
     icon: RoleManagementIcon,
     permissionKey: 'role',
+    contextId: SYSTEM_CONTEXT_TYPE.ROLES,
+
     description:
       'Define and manage user roles to enforce security and responsibilities.',
   },
@@ -119,6 +134,8 @@ const clientSideBarData: SideBarData[] = [
     route: ROUTES.VENDOR,
     icon: VendorManagementIcon,
     permissionKey: 'vendor',
+    contextId: SYSTEM_CONTEXT_TYPE.VENDOR,
+
     description:
       'Manage vendor relationships and contracts for efficient procurement.',
     children: [
@@ -137,6 +154,7 @@ const clientSideBarData: SideBarData[] = [
     route: ROUTES.AUDIT_LOG,
     icon: AuditLogIcon,
     permissionKey: 'audit',
+    contextId: SYSTEM_CONTEXT_TYPE.AUDIT,
     description:
       'Track and monitor system activities for security and compliance.',
   },
@@ -148,6 +166,15 @@ const clientSideBarData: SideBarData[] = [
     description:
       'Manage compliance requirements and certifications for regulatory adherence.',
   },
+
+  {
+    name: 'Feedback',
+    route: ROUTES.FEEDBACK,
+    icon: FeedbackIcon,
+    permissionKey: 'feedback',
+    description:
+      'Manage Feedback of the system.',
+  },
 ];
 
 const sideBarData: SideBarData[] = [
@@ -157,6 +184,7 @@ const sideBarData: SideBarData[] = [
     route: ROUTES.COMPANY,
     icon: CompanyIcon,
     permissionKey: 'company',
+    contextId: SYSTEM_CONTEXT_TYPE.COMPANY,
     description:
       'Manage company details and settings for organizational control.',
   },

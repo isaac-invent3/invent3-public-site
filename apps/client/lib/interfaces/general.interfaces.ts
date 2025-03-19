@@ -112,6 +112,7 @@ interface SideBarData {
   route: string;
   icon: ComponentWithAs<'svg', IconProps>;
   permissionKey: ModuleKey;
+  contextId?: (typeof SYSTEM_CONTEXT_TYPE)[keyof typeof SYSTEM_CONTEXT_TYPE]
   description?: string;
   children?: SidebarChildren[];
 }

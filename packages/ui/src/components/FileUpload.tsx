@@ -15,13 +15,22 @@ import { DocumentIcon, InfoIcon } from './CustomIcons';
 
 interface DocumentUploadAndViewProps {
   variant?: 'primary' | 'secondary';
+  files?: UploadedFile[] | UploadedFile | null;
   handleAddFiles?: (files: UploadedFile[]) => void;
   setError?: (error: string) => void;
   error?: string | undefined;
+  isMulti?: boolean;
 }
 
 const FileUpload = (props: DocumentUploadAndViewProps) => {
-  const { variant, handleAddFiles, setError, error } = props;
+  const {
+    variant,
+    files,
+    handleAddFiles,
+    setError,
+    error,
+    isMulti = true,
+  } = props;
 
   const [isDragging, setIsDragging] = useState(false);
 
@@ -38,36 +47,41 @@ const FileUpload = (props: DocumentUploadAndViewProps) => {
     'image/jpeg', // JPEG
   ];
 
-  const handleFileChange = (files: File[], validFiles: File[]) => {
+  const handleFileChange = (droppedFiles: File[], validFiles: File[]) => {
+    if (validFiles.length < droppedFiles.length && setError) {
+      return setError(
+        'Some files could not be uploaded because they are larger than 10MB, have names longer than 100 characters, or are in an unsupported format. Supported formats include: TXT, PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, and JPEG.'
+      );
+    }
+
     const uploadedFiles: UploadedFile[] = [];
 
-    if (validFiles.length < files.length) {
-      setError &&
-        setError(
-          'Some files could not be uploaded because they are larger than 10MB, have names longer than 100 characters, or are in an unsupported format. Supported formats include: TXT, PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, and JPEG.'
-        );
-    } else {
-      files.forEach((file: File) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
+    droppedFiles.forEach((file: File) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
 
-        reader.onloadend = () => {
-          const baseDocument = reader.result as string;
+      reader.onloadend = () => {
+        const baseDocument = reader.result as string;
 
-          uploadedFiles.push({
-            fileId: null,
-            fileName: file.name,
-            base64: baseDocument,
-            base64Prefix: null,
-          });
+        uploadedFiles.push({
+          fileId: null,
+          fileName: file.name,
+          base64: baseDocument,
+          base64Prefix: null,
+        });
 
-          // Update the state or Formik helpers only when all files are processed
-          if (uploadedFiles.length === files.length && handleAddFiles) {
+        // Update the state or Formik helpers only when all files are processed
+        if (uploadedFiles.length === droppedFiles.length && handleAddFiles) {
+          handleAddFiles(uploadedFiles);
+
+          if (isMulti && files && Array.isArray(files)) {
+            handleAddFiles([...uploadedFiles, ...files]);
+          } else {
             handleAddFiles(uploadedFiles);
           }
-        };
-      });
-    }
+        }
+      };
+    });
   };
 
   const handleDragOver = (event: React.DragEvent) => {
@@ -114,7 +128,7 @@ const FileUpload = (props: DocumentUploadAndViewProps) => {
           }}
           type="file"
           accept=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .jpeg, .jpg"
-          multiple
+          multiple={isMulti}
         />
 
         <VStack
@@ -139,9 +153,13 @@ const FileUpload = (props: DocumentUploadAndViewProps) => {
         >
           <VStack spacing="4px">
             <Icon as={DocumentIcon} boxSize="24px" color="neutral.600" />
+
             <Text size="md" color="neutral.600">
-              Drop file in here or
+              {!isMulti && files && !Array.isArray(files)
+                ? files.fileName
+                : 'Drop file in here or'}
             </Text>
+
             <Stack
               direction={variant === 'primary' ? 'row' : 'column'}
               spacing="8px"

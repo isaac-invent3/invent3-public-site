@@ -1,15 +1,18 @@
 import { Flex, HStack, Text, VStack } from '@chakra-ui/react';
 import React, { useMemo, useState } from 'react';
-import { DATE_PERIOD, DEFAULT_PAGE_SIZE, ROUTES } from '~/lib/utils/constants';
+import { DEFAULT_PAGE_SIZE, ROUTES } from '~/lib/utils/constants';
 import { createColumnHelper } from '@tanstack/react-table';
-import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
+import {
+  MaintenanceSchedule,
+  MaintenanceScheduleInstance,
+} from '~/lib/interfaces/maintenance.interfaces';
 import { dateFormatter } from '~/lib/utils/Formatters';
-import { useGetUpcomingMaintenanceQuery } from '~/lib/redux/services/dashboard.services';
-import { useAppSelector } from '~/lib/redux/hooks';
 import { Button, DataTable } from '@repo/ui/components';
 import Technician from '~/lib/components/AssetManagement/Common/Technician';
 import Status from '~/lib/components/AssetManagement/Common/MaintenanceStatus';
 import CardHeader from './CardHeader';
+import { useGetAllScheduleInstanceQuery } from '~/lib/redux/services/maintenance/scheduleInstance.services';
+import { useSession } from 'next-auth/react';
 
 const ContentDisplay = (
   content: string | React.ReactNode,
@@ -31,20 +34,20 @@ const ContentDisplay = (
   );
 };
 
-const UpcomingMaintenance = () => {
-  const { selectedCountry, selectedState } = useAppSelector(
-    (state) => state.dashboard.info
-  );
+interface UpcomingMaintenanceProps {
+  perUser?: boolean;
+}
+const UpcomingMaintenance = ({ perUser }: UpcomingMaintenanceProps) => {
+  const session = useSession();
+  const user = session?.data?.user;
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const { data, isLoading } = useGetUpcomingMaintenanceQuery({
-    id: selectedCountry?.value,
-    ...(selectedState?.value ? { regionId: selectedState?.value } : {}),
-    pageSize,
+  const { data, isLoading } = useGetAllScheduleInstanceQuery({
+    pageSize: 10,
     pageNumber: currentPage,
-    datePeriod: DATE_PERIOD.WEEK,
+    ...(perUser ? { assignedTo: user?.userId! } : {}),
   });
-  const columnHelper = createColumnHelper<MaintenanceSchedule>();
+  const columnHelper = createColumnHelper<MaintenanceScheduleInstance>();
   const columns = useMemo(
     () => [
       columnHelper.accessor('scheduledDate', {
@@ -63,14 +66,14 @@ const UpcomingMaintenance = () => {
         header: 'Date',
         enableSorting: false,
       }),
-      columnHelper.accessor('assetId', {
-        cell: () => ContentDisplay('Brand New Bike', 'black', '100px'),
+      columnHelper.accessor('assetName', {
+        cell: (info) => ContentDisplay(info.getValue(), 'black', '100px'),
         header: 'Asset',
         enableSorting: false,
       }),
-      columnHelper.accessor('planName', {
+      columnHelper.accessor('scheduleInstanceName', {
         cell: (info) => ContentDisplay(info.getValue(), 'black', '128px'),
-        header: 'Task',
+        header: 'Name',
         enableSorting: false,
       }),
       columnHelper.accessor('contactPerson', {
@@ -79,7 +82,7 @@ const UpcomingMaintenance = () => {
           !info.row.original.contactPersonEmail &&
           !info.row.original.contactPersonPhoneNo
             ? 'N/A'
-            : Technician(info.row.original),
+            : Technician(info.row.original as unknown as MaintenanceSchedule),
         header: 'Contact Person',
         enableSorting: false,
       }),
@@ -111,8 +114,8 @@ const UpcomingMaintenance = () => {
       bgColor="white"
       rounded="8px"
     >
-      <HStack width="full" justifyContent="space-between">
-        <HStack width="full" alignItems="center">
+      <HStack width="full" justifyContent="space-between" flexWrap="wrap">
+        <HStack alignItems="center" flexWrap="wrap">
           <CardHeader>Upcoming Maintenance</CardHeader>
           <Text
             color="neutral.800"

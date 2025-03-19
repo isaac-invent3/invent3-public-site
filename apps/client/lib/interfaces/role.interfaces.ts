@@ -1,17 +1,15 @@
 import { FORM_ENUM } from '../utils/constants';
 
 interface Role {
-  isNew: boolean;
-  createdDate: string;
-  createdBy: string;
-  lastModifiedDate: string;
-  lastModifiedBy: string;
-  isDeleted: boolean;
-  deletedDate: string;
-  deletedBy: string;
-  guid: string;
   roleId: number;
   roleName: string;
+  noOfAssociatedUsers: number;
+  noOfAssignedSystemModuleContextTypes: number;
+  dateCreated: string;
+  currentStatusId: number;
+  currentStatusName: string;
+  currentStatusDisplayColorCode: string;
+  isDeleted: boolean;
 }
 
 interface RoleSystemModuleContextPermission {
@@ -47,10 +45,14 @@ type ModuleKey =
   | 'audit'
   | 'user'
   | 'template'
+  | 'partner'
   | 'vendor'
   | 'compliance'
   | 'approval'
-  | 'profile';
+  | 'profile'
+  | 'company'
+  | 'settings'
+  | 'feedback';
 
 type SubModuleKey =
   | 'asset:create'
@@ -91,7 +93,10 @@ type SubModuleKey =
   | 'approval:delete'
   | 'vendor:create'
   | 'vendor:edit'
-  | 'vendor:delete';
+  | 'vendor:delete'
+  | 'company:create'
+  | 'company:edit'
+  | 'company:delete';
 
 type PermissionKey = ModuleKey | SubModuleKey;
 
@@ -131,12 +136,12 @@ interface updateRoleModulePermissionPayload {
 }
 
 export type {
-  Role,
-  ModuleKey,
-  SubModuleKey,
-  PermissionKey,
-  RoleSystemModuleContextPermission,
-  RoleModulePermission,
   createRoleModulePermissionPayload,
+  ModuleKey,
+  PermissionKey,
+  Role,
+  RoleModulePermission,
+  RoleSystemModuleContextPermission,
+  SubModuleKey,
   updateRoleModulePermissionPayload,
 };

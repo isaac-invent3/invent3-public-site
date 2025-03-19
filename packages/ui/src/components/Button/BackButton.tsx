@@ -15,7 +15,7 @@ const BackButton = (props: BackButtonProps) => {
       rounded="8px"
       spacing="8px"
       bgColor="#F6F6F6"
-      minW="85px"
+      width="85px"
       minH="32px"
       onClick={() => handleClick()}
       {...customStyles}

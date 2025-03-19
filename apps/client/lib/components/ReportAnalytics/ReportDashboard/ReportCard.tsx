@@ -26,7 +26,7 @@ const ReportCard = (props: ReportCardProps) => {
   return (
     <GridItem
       bg="white"
-      p="16px"
+      p={{ base: '12px', md: '16px' }}
       borderRadius="md"
       border="1px solid #F2F1F1"
       height="144px"
@@ -38,7 +38,7 @@ const ReportCard = (props: ReportCardProps) => {
               {card.title}
             </Text>
             <Heading
-              fontSize="36px"
+              fontSize={{ base: '20px', md: '36px' }}
               lineHeight="38.02px"
               fontWeight={800}
               color={card.color ?? '#0E2642'}

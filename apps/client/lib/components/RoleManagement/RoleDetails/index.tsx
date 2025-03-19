@@ -97,7 +97,12 @@ const RoleDetails = ({ role }: RoleDetailsProps) => {
 
   return (
     <>
-      <Flex width="full" direction="column" pb="24px">
+      <Flex
+        width="full"
+        direction="column"
+        pb="24px"
+        px={{ base: '16px', md: 0 }}
+      >
         <VStack width="full" spacing="32px" alignItems="flex-start">
           <PageHeader>Role Permissions</PageHeader>
           <VStack spacing="24px" width="full">

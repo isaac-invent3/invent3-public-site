@@ -6,7 +6,7 @@ const UserInfo = () => {
   return (
     <VStack width="full" spacing="24px">
       <Overview />
-      <Flex width="full" px="32px">
+      <Flex width="full" px={{ base: '16px', md: '32px' }}>
         <Summary />
       </Flex>
     </VStack>

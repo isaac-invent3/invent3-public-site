@@ -59,31 +59,39 @@ const InfoSection = (props: InfoSectionProps) => {
       bgColor="#B4BFCA4D"
       pt="24px"
       pb="16px"
-      pl="42px"
-      pr="24px"
+      pl={{ base: '16px', md: '42px' }}
+      pr={{ base: '16px', md: '24px' }}
       spacing="18px"
       alignItems="flex-start"
     >
-      <Heading
-        color="black"
-        fontSize="30px"
-        fontWeight={800}
-        lineHeight="35.64px"
-      >
+      <Heading color="black" size={{ base: 'lg', md: 'xl' }} fontWeight={800}>
         #{data?.maintenancePlanId} {data?.planName}
       </Heading>
 
-      <HStack width="full" spacing="75px" alignItems="flex-start">
+      <HStack
+        width="full"
+        spacing={{ base: '16px', sm: '32px', md: '75px' }}
+        alignItems="flex-start"
+        flexWrap="wrap"
+      >
         <VStack spacing="8px" alignItems="flex-start">
           <HStack spacing="8px">
-            <Text size="md" color="neutral.600" minW="81px">
+            <Text
+              size="md"
+              color="neutral.600"
+              minW={{ base: '102px', md: '81px' }}
+            >
               Status:
             </Text>
             <GenericStatusBox text="Active" />
           </HStack>
           {CONTENT1.map((item, index) => (
             <HStack spacing="8px" key={index}>
-              <Text size="md" color="neutral.600" minW="81px">
+              <Text
+                size="md"
+                color="neutral.600"
+                minW={{ base: '102px', md: '81px' }}
+              >
                 {item.label}
               </Text>
               <Text color="black">{item.value}</Text>

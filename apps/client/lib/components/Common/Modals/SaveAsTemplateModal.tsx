@@ -58,8 +58,7 @@ const SaveAsTemplateModal = (props: SaveReportAsTemplateModalProps) => {
               <VStack width="full" spacing="8px" alignItems="center">
                 <Heading
                   fontWeight={800}
-                  fontSize="32px"
-                  lineHeight="38.02px"
+                  size={{ base: 'lg', md: 'xl' }}
                   color="primary.500"
                 >
                   Save as Template?

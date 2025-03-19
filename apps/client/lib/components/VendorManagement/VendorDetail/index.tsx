@@ -77,13 +77,18 @@ const VendorDetail = ({ isOpen, onClose }: VendorDetailProps) => {
 
       {vendor && (
         <>
-          <DrawerHeader px="32px" pt="16px" pb="29px">
+          <DrawerHeader px={{ base: '12px', md: '32px' }} pt="16px" pb="29px">
             <VendorHeader handleBack={closeDrawer} />
           </DrawerHeader>
           <DrawerBody p={0}>
             <VStack width="full" spacing="24px">
               <Overview />
-              <VStack width="full" px="32px" spacing="24px" pb="24px">
+              <VStack
+                width="full"
+                px={{ base: '12px', md: '32px' }}
+                spacing="24px"
+                pb="24px"
+              >
                 <ContractOverview />
                 <PerformanceMetrics />
                 <RecentActivities />

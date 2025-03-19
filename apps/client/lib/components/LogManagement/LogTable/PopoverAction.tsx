@@ -2,13 +2,13 @@
 import { Text, VStack } from '@chakra-ui/react';
 import { GenericPopover } from '@repo/ui/components';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
-import { AuditLog } from '~/lib/interfaces/log.interfaces';
+import { AuditRecord } from '~/lib/interfaces/log.interfaces';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { setAuditLog } from '~/lib/redux/slices/AuditLogSlice';
 import { SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
 
 interface PopoverActionProps {
-  log: AuditLog;
+  log: AuditRecord;
 }
 
 const PopoverAction = ({ log }: PopoverActionProps) => {
@@ -24,7 +24,7 @@ const PopoverAction = ({ log }: PopoverActionProps) => {
               dispatch(setAuditLog(log));
               updateSearchParam(
                 SYSTEM_CONTEXT_DETAILS.AUDIT.slug,
-                log.logMessageId
+                log.auditRecordId
               );
             }}
           >

@@ -53,14 +53,19 @@ const Maintenance = (props: MaintenanceProps) => {
           onChange={(index) => handleTabChange(index)}
           index={tabIndex}
         >
-          <Flex width="full" position="relative">
+          <Flex width="full" position="relative" px={{ base: '16px', md: 0 }}>
             <TabList>
               <Tab>Plans</Tab>
               <Tab>Schedules</Tab>
               <Tab>History</Tab>
             </TabList>
             {tabIndex !== 1 && (
-              <Flex position="absolute" right={0} bottom="8px">
+              <Flex
+                position="absolute"
+                right={0}
+                bottom="8px"
+                display={{ base: 'none', lg: 'flex' }}
+              >
                 <HStack spacing="16px" width="full">
                   <SearchInput
                     setSearch={setSearch}
@@ -76,6 +81,27 @@ const Maintenance = (props: MaintenanceProps) => {
               </Flex>
             )}
           </Flex>
+
+          {tabIndex !== 1 && (
+            <Flex
+              mt="16px"
+              px={{ base: '16px', md: 0 }}
+              display={{ base: 'flex', lg: 'none' }}
+            >
+              <HStack flexWrap="wrap" spacing="16px" width="full">
+                <SearchInput
+                  setSearch={setSearch}
+                  placeholderText="Search..."
+                />
+                <FilterButton
+                  icon={FilterIcon}
+                  label="Filter"
+                  handleClick={onToggle}
+                  isActive={isOpen}
+                />
+              </HStack>
+            </Flex>
+          )}
 
           <TabPanels>
             <TabPanel>

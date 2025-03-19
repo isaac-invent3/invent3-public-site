@@ -7,7 +7,12 @@ import SectionThree from './SectionThree';
 
 const SuperAdmin = () => {
   return (
-    <Flex width="full" direction="column" pb="24px">
+    <Flex
+      width="full"
+      direction="column"
+      pb="24px"
+      px={{ base: '16px', md: 0 }}
+    >
       <Header />
       <VStack width="full" mt="44px" spacing="16px">
         <SectionOne />

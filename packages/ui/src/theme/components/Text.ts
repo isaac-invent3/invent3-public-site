@@ -25,6 +25,10 @@ const CustomText: ComponentStyleConfig = {
       fontSize: '24px',
       lineHeight: '28.51px',
     },
+    '2xl': {
+      fontSize: '32px',
+      lineHeight: '38.02px',
+    },
   },
   defaultProps: {
     size: 'base',

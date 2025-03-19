@@ -165,6 +165,13 @@ const documentSchema = Yup.object().shape({
   ),
 });
 
+const contactSchema = Yup.object().shape({
+  email: Yup.string().email('Invalid Email Adress').required('Email Required'),
+  name: Yup.string().required('Name is Required'),
+  subject: Yup.string().required('Subject is Required'),
+  content: Yup.string().required('Message is Required'),
+});
+
 export {
   createDateSchema,
   assigneeSchema,
@@ -172,4 +179,5 @@ export {
   templateSchema,
   documentSchema,
   singleDocumentSchema,
+  contactSchema,
 };

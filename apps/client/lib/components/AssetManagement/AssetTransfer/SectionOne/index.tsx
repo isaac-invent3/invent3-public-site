@@ -1,32 +1,17 @@
-import { Flex, HStack, Stack, Text, VStack } from '@chakra-ui/react';
+import { Flex, HStack, Stack } from '@chakra-ui/react';
 
 import CurrentOwner from './CurrentOwner';
 import AssetDetailWrapper from '../../Common/AssetDetailWrapper';
 import { useAppSelector } from '~/lib/redux/hooks';
 import DetailSection from '../../AssetDetail/DetailSection';
+import LocationConditionInfo from './LocationConditionInfo';
 
 const SectionOne = () => {
   const assetData = useAppSelector((state) => state.asset.asset);
   if (!assetData) {
     return null;
   }
-  const {
-    assetId,
-    countryName,
-    stateName,
-    lganame,
-    facilityName,
-    buildingName,
-    floorName,
-    departmentName,
-    roomName,
-    aisleName,
-    shelfName,
-    currentCondition,
-    assetCategory,
-    brandName,
-    modelRef,
-  } = assetData;
+  const { assetId, assetCategory, brandName, modelRef } = assetData;
 
   const info1 = [
     {
@@ -50,11 +35,19 @@ const SectionOne = () => {
     },
   ];
   return (
-    <Flex gap="44px" width="full">
-      <Flex width="40%" pt="14px">
+    <Flex
+      gap={{ base: '32px', lg: '44px' }}
+      width="full"
+      direction={{ base: 'column', lg: 'row' }}
+    >
+      <Flex width={{ base: 'full', lg: '40%' }} pt="14px">
         <CurrentOwner />
       </Flex>
-      <Flex width="60%">
+      <Flex
+        width={{ base: 'full', lg: '60%' }}
+        direction={{ base: 'column', lg: 'row' }}
+        gap="16px"
+      >
         <AssetDetailWrapper showStatus={false}>
           <HStack
             width="full"
@@ -72,39 +65,14 @@ const SectionOne = () => {
               />
               <DetailSection details={info2} labelMinWidth="65px" />
             </Stack>
-            <HStack alignItems="flex-start" spacing="56px">
-              <HStack alignItems="flex-start" spacing="16px">
-                <Text color="neutral.600" size="md">
-                  Location:
-                </Text>
-                <Text color="black" size="md" lineHeight="22px" maxW="157px">
-                  {[
-                    countryName,
-                    stateName,
-                    lganame,
-                    facilityName,
-                    buildingName,
-                    floorName,
-                    departmentName,
-                    roomName,
-                    aisleName,
-                    shelfName,
-                  ]
-                    .filter(Boolean)
-                    .join(', ') ?? 'N/A'}
-                </Text>
-              </HStack>
-              <VStack spacing="8px" alignItems="flex-start">
-                <Text color="neutral.600" size="md">
-                  Condition:
-                </Text>
-                <Text color="black" size="md" lineHeight="22px">
-                  {currentCondition ?? 'N/A'}
-                </Text>
-              </VStack>
-            </HStack>
+            <Flex width="full" display={{ base: 'none', lg: 'flex' }}>
+              <LocationConditionInfo />
+            </Flex>
           </HStack>
         </AssetDetailWrapper>
+        <Flex width="full" display={{ base: 'flex', lg: 'none' }}>
+          <LocationConditionInfo />
+        </Flex>
       </Flex>
     </Flex>
   );

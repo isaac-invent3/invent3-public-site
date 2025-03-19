@@ -98,12 +98,7 @@ const ChangeAssetStatusModal = (props: ChangeAssetStatusModalProps) => {
                 alignItems="center"
               >
                 <VStack spacing="8px">
-                  <Heading
-                    fontWeight={800}
-                    fontSize="32px"
-                    lineHeight="38.02px"
-                    color="primary.500"
-                  >
+                  <Heading fontWeight={800} size="xl" color="primary.500">
                     Change Status
                   </Heading>
                   <Text color="neutral.700" size="md">

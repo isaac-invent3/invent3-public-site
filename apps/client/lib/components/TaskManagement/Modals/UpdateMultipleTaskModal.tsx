@@ -1,5 +1,4 @@
 import {
-  Flex,
   Grid,
   HStack,
   ModalBody,
@@ -9,7 +8,7 @@ import {
 } from '@chakra-ui/react';
 import {
   Button,
-  FormSectionInfo,
+  FormInputWrapper,
   GenericModal,
   ModalHeading,
 } from '@repo/ui/components';
@@ -125,15 +124,13 @@ const UpdateMultipleTaskModal = (props: UpdateMultipleTaskModalProps) => {
               >
                 <ModalHeading heading="Bulk Task Update" />
 
-                <HStack width="full" alignItems="flex-start" spacing="64px">
-                  <Flex width="full" maxW="118px">
-                    <FormSectionInfo
-                      title="Bulk Tasks"
-                      info="List of tasks to be updated."
-                      isRequired={false}
-                    />
-                  </Flex>
-
+                <FormInputWrapper
+                  title="Bulk Tasks"
+                  description="List of tasks to be updated."
+                  isRequired={false}
+                  customSpacing="64px"
+                  sectionMaxWidth="118px"
+                >
                   <VStack width="full" spacing="27px" overflow="auto">
                     <VStack width="full" spacing="8px" overflow="auto">
                       <TaskInstanceTable
@@ -152,7 +149,7 @@ const UpdateMultipleTaskModal = (props: UpdateMultipleTaskModalProps) => {
                       />
                     </VStack>
                   </VStack>
-                </HStack>
+                </FormInputWrapper>
 
                 <Grid
                   templateColumns={{

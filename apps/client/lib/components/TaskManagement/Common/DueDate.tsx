@@ -1,11 +1,11 @@
-import { Flex, HStack, VStack } from '@chakra-ui/react';
+import { VStack } from '@chakra-ui/react';
 
-import { useField } from 'formik';
 import {
   DateTimeButtons,
   ErrorMessage,
-  FormSectionInfo,
+  FormInputWrapper,
 } from '@repo/ui/components';
+import { useField } from 'formik';
 
 interface DueDateProps {
   sectionMaxWidth: string;
@@ -17,15 +17,13 @@ const DueDate = (props: DueDateProps) => {
   const [field, meta, helpers] = useField('dueDate');
 
   return (
-    <HStack width="full" alignItems="flex-start" spacing={spacing}>
-      <Flex width="full" maxW={sectionMaxWidth}>
-        <FormSectionInfo
-          title="Due Date"
-          info="Select the date when the task would be due"
-          isRequired
-        />
-      </Flex>
-
+    <FormInputWrapper
+      sectionMaxWidth={sectionMaxWidth}
+      customSpacing={spacing}
+      title="Due Date"
+      description="Select the date when the task would be due"
+      isRequired
+  >
       <VStack width="full" spacing="4px" alignItems="flex-start">
         <DateTimeButtons
           buttonVariant="secondary"
@@ -40,7 +38,7 @@ const DueDate = (props: DueDateProps) => {
           <ErrorMessage>{meta.error}</ErrorMessage>
         )}
       </VStack>
-    </HStack>
+    </FormInputWrapper>
   );
 };
 

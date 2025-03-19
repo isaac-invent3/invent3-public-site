@@ -106,7 +106,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
         </Flex>
         {/* Footer Starts Here */}
         <VStack width="full" spacing="65px">
-          <Flex width="full" display={{ md: 'none' }}>
+          <Flex width="full" display={{ lg: 'none' }}>
             <InfoLearnMore />
           </Flex>
           <Flex
@@ -119,7 +119,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
               <Flex
                 width="344px"
                 maxW="344px"
-                display={{ base: 'none', md: 'flex' }}
+                display={{ base: 'none', lg: 'flex' }}
                 position="absolute"
                 bottom="115px"
               >

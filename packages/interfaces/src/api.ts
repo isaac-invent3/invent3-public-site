@@ -3,6 +3,11 @@ interface QueryParams {
   pageNumber?: number;
 }
 
+interface DeleteRecordQuery {
+  id: number;
+  deletedBy?: string;
+}
+
 interface ListResponse<T> {
   items: T[];
   pageNumber: number;
@@ -30,4 +35,10 @@ interface BaseEntity {
   guid: string;
 }
 
-export type { QueryParams, ListResponse, BaseApiResponse, BaseEntity };
+export type {
+  QueryParams,
+  ListResponse,
+  BaseApiResponse,
+  BaseEntity,
+  DeleteRecordQuery,
+};

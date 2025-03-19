@@ -71,13 +71,18 @@ const TaskManagement = () => {
           onChange={(index) => handleTabChange(index)}
           index={tabIndex}
         >
-          <Flex width="full" position="relative">
+          <Flex width="full" position="relative" px={{ base: '16px', md: 0 }}>
             <TabList>
               {ALlTabs.map((item, index) => (
                 <Tab key={index}>{item}</Tab>
               ))}
             </TabList>
-            <Flex position="absolute" right={0} bottom="8px">
+            <Flex
+              position="absolute"
+              right={0}
+              bottom="8px"
+              display={{ base: 'none', lg: 'flex' }}
+            >
               <HStack spacing="16px" width="full">
                 <SearchInput
                   setSearch={setSearch}
@@ -104,6 +109,37 @@ const TaskManagement = () => {
                 />
               </HStack>
             </Flex>
+          </Flex>
+          <Flex
+            mt="16px"
+            px={{ base: '16px', md: 0 }}
+            display={{ base: 'flex', lg: 'none' }}
+          >
+            <HStack width="full" flexWrap="wrap" spacing="16px">
+              <SearchInput
+                width="100%"
+                setSearch={setSearch}
+                placeholderText="Search..."
+              />
+              <FilterButton
+                icon={BulkSearchIcon}
+                label="Bulk Actions"
+                handleClick={() =>
+                  setActiveFilter((prev) => (prev === 'bulk' ? null : 'bulk'))
+                }
+                isActive={activeFilter === 'bulk'}
+              />
+              <FilterButton
+                icon={FilterIcon}
+                label="Filters"
+                handleClick={() =>
+                  setActiveFilter((prev) =>
+                    prev === 'general' ? null : 'general'
+                  )
+                }
+                isActive={activeFilter === 'general'}
+              />
+            </HStack>
           </Flex>
 
           <TabPanels>

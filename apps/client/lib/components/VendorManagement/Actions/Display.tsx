@@ -1,14 +1,14 @@
 import { FilterDisplay } from '@repo/ui/components';
 import Filters from './Filters';
 import { ActionType } from '~/lib/interfaces/general.interfaces';
-import { UserFilter } from '~/lib/interfaces/user.interfaces';
 import React from 'react';
+import { VendorFilter } from '~/lib/interfaces/vendor.interfaces';
 
 interface VendorActionProps {
   isOpen: boolean;
   activeAction: ActionType;
-  filterData: UserFilter;
-  setFilterData: React.Dispatch<React.SetStateAction<UserFilter>>;
+  filterData: VendorFilter;
+  setFilterData: React.Dispatch<React.SetStateAction<VendorFilter>>;
   handleApplyFilter: () => Promise<void>;
 }
 const VendorAction = (props: VendorActionProps) => {

@@ -49,7 +49,7 @@ const SectionOne = () => {
     },
   ];
   return (
-    <Flex width="full" gap="16px">
+    <Flex width="full" gap="16px" direction={{ base: 'column', md: 'row' }}>
       <VStack alignItems="flex-start" spacing="8px" width="393px">
         <Text fontWeight={700} color="neutral.600">
           Plan Title
@@ -58,7 +58,12 @@ const SectionOne = () => {
           {planName}
         </Text>
       </VStack>
-      <Flex width="full" gap="16px" justifyContent="space-between">
+      <Flex
+        width="full"
+        gap="16px"
+        justifyContent="space-between"
+        direction={{ base: 'column', md: 'row' }}
+      >
         {details.map((detail, index) => (
           <VStack alignItems="flex-start" spacing="8px" key={index}>
             <Text fontWeight={700} color="neutral.600">

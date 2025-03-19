@@ -1,7 +1,7 @@
 'use client';
 
 import { Flex, Grid, HStack, useDisclosure, VStack } from '@chakra-ui/react';
-import { Button, FormSectionInfo } from '@repo/ui/components';
+import { Button, FormInputWrapper } from '@repo/ui/components';
 import { FormikProvider, useFormik } from 'formik';
 import { getSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -14,13 +14,13 @@ import {
 } from '~/lib/redux/services/task/instance.services';
 import { updateTaskInstanceMetadataSchema } from '~/lib/schemas/task.schema';
 import { ROUTES } from '~/lib/utils/constants';
+import TaskPrioritySelect from '../../Common/SelectComponents/TaskPrioritySelect';
+import TaskStatusSelect from '../../Common/SelectComponents/TaskStatusSelect';
 import UserDisplayAndAddButton from '../../Common/UserDisplayAndAddButton';
+import DetailHeader from '../../UI/DetailHeader';
 import { getSelectedTaskIds, removeSelectedTaskIds } from '../Common/utils';
 import TaskSuccessModal from '../Modals/TaskSuccessModal';
 import TaskInstanceTable from '../Tables/TaskInstanceTable';
-import DetailHeader from '../../UI/DetailHeader';
-import TaskPrioritySelect from '../../Common/SelectComponents/TaskPrioritySelect';
-import TaskStatusSelect from '../../Common/SelectComponents/TaskStatusSelect';
 
 const BulkTaskUpdate = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -92,27 +92,28 @@ const BulkTaskUpdate = () => {
 
   return (
     <Flex width="full" direction="column" pb="24px">
-      <PageHeader>Bulk Task Update</PageHeader>
+      <Flex px={{ base: '16px', md: 0 }}>
+        <PageHeader>Bulk Task Update</PageHeader>
+      </Flex>
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
           <Flex width="full" direction="column" gap="24px" mt="32px">
             <Flex
               width="full"
               py="32px"
-              px="25px"
+              px={{ base: '16px', md: '25px' }}
               direction="column"
               gap="50px"
-              rounded="6px"
+              rounded={{ md: '6px' }}
               bgColor="white"
             >
-              <HStack width="full" alignItems="flex-start" spacing="16px">
-                <Flex width="full" maxW="118px">
-                  <FormSectionInfo
-                    title="Bulk Tasks"
-                    info="List of tasks to be updated."
-                    isRequired={false}
-                  />
-                </Flex>
+              <FormInputWrapper
+                title="Bulk Tasks"
+                description="List of tasks to be updated."
+                isRequired={false}
+                sectionMaxWidth="118px"
+                customSpacing="16px"
+              >
                 <TaskInstanceTable
                   data={data?.data?.items ?? []}
                   totalPages={data?.data?.totalPages}
@@ -128,14 +129,14 @@ const BulkTaskUpdate = () => {
                   showFooter={data?.data?.totalPages === 1 ? false : true}
                   type="page"
                 />
-              </HStack>
+              </FormInputWrapper>
 
               <Grid
                 templateColumns={{
                   base: '1fr',
                   md: 'repeat(3, 1fr)',
                 }}
-                gap="32px"
+                gap={{ base: '24px', md: '32px' }}
                 width="full"
                 height="full"
               >
@@ -185,7 +186,12 @@ const BulkTaskUpdate = () => {
               </Grid>
             </Flex>
 
-            <HStack spacing="16px" justifyContent="flex-end" width="full">
+            <HStack
+              spacing="16px"
+              justifyContent={{ base: 'space-between', sm: 'flex-end' }}
+              width="full"
+              px={{ base: '16px', md: 0 }}
+            >
               <Button
                 type="button"
                 customStyles={{ width: '96px', bgColor: '#F6F6F6B2' }}

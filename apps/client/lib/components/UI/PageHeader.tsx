@@ -1,13 +1,16 @@
-import { Heading } from '@chakra-ui/react';
+import { Heading, HeadingProps } from '@chakra-ui/react';
 
-const PageHeader = ({ children }: { children: string | React.ReactNode }) => {
+const PageHeader = ({
+  children,
+  ...rest
+}: { children: string | React.ReactNode } & HeadingProps) => {
   return (
     <Heading
       as="h3"
-      fontWeight={800}
-      fontSize="32px"
-      lineHeight="38.02px"
+      size={{ base: 'lg', lg: 'xl' }}
       color="primary.500"
+      fontWeight={800}
+      {...rest}
     >
       {children}
     </Heading>

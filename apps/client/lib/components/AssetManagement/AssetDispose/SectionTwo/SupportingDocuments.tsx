@@ -8,7 +8,7 @@ const SupportingDocuments = () => {
     <VStack spacing="16px" alignItems="flex-start" width="full">
       <DetailHeader
         variant="secondary"
-        customStyles={{ size: 'lg', fontWeight: 700 }}
+        customStyles={{ size: { base: 'md', md: 'lg' }, fontWeight: 700 }}
       >
         Supporting Documents
       </DetailHeader>

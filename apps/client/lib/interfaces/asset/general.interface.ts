@@ -1,7 +1,13 @@
 import { BaseEntity, Option } from '@repo/interfaces';
-import { Document, LocationFilter } from '../general.interfaces';
-import { MaintenancePlan } from '../maintenance.interfaces';
 import { FORM_ENUM } from '~/lib/utils/constants';
+import {
+  BaseDto,
+  Document,
+  LocationDto,
+  LocationFilter,
+} from '../general.interfaces';
+import { MaintenancePlan } from '../maintenance.interfaces';
+import { CreateVendorPayload } from '../vendor.interfaces';
 
 interface AssetLocation {
   locationId: number;
@@ -205,6 +211,7 @@ interface AssetFormDetails {
   deletedMaintenancePlanIds: number[];
   existingDocumentsIds: number[];
   deletedExistingDocumentIds: number[];
+  vendorFormDetails: CreateVendorPayload | null;
   vendorDetails: {
     vendorName: string | null;
     address: string | null;
@@ -323,12 +330,6 @@ interface AssetStatus {
 
 // Create and Update API Payload
 
-interface BaseDto {
-  createdBy?: string;
-  lastModifiedBy?: string;
-  actionType?: (typeof FORM_ENUM)[keyof typeof FORM_ENUM];
-}
-
 interface AssetDepreciationDto extends BaseDto {
   assetId?: number | null;
   depreciationDate: string;
@@ -389,18 +390,6 @@ interface AssetWarrantyDto extends BaseDto {
   warrantyId?: number | null;
 }
 
-interface LocationDto extends BaseDto {
-  lgaId: number | null;
-  facilityId: number | null;
-  buildingId: number | null;
-  floorId: number | null;
-  departmentId: number | null;
-  roomId: number | null;
-  locationId?: number | null;
-  aisleId: number | null;
-  shelfId: number | null;
-}
-
 interface CreateAssetPayload {
   createLocationDto: LocationDto;
   createAssetDto: AssetDto;
@@ -408,8 +397,10 @@ interface CreateAssetPayload {
   createAssetWarrantyDto: AssetWarrantyDto;
   createAssetDepreciationDto: AssetDepreciationDto;
   createAssetDocumentsDto: AssetDocumentsDto[] | null;
+  masterVendorCreateDto?: CreateVendorPayload | null;
   maintenancePlanIds?: number[] | null;
   assetDocumentIds?: number[] | null;
+  existingVendorId: number | null;
 }
 
 interface UpdateAssetPayload {
@@ -429,22 +420,45 @@ interface UpdateAssetPayload {
   > | null;
 }
 
+interface MeanTimeComputation {
+  mtbf: number;
+  mttr: number;
+  unit: string;
+  month: number;
+}
+
+interface AssetCountByColumnName {
+  assetCount: number;
+  name: string;
+  id: number;
+  icon: string | null;
+}
+type ValidColumnNames =
+  | 'Condition'
+  | 'Status'
+  | 'Condition'
+  | 'Category'
+  | 'AssetType';
+
 export type {
-  AssetLocation,
-  Asset,
-  AssetFormDetails,
-  FilterInput,
   AcquisitionInfo,
-  ContractDocument,
+  Asset,
+  AssetCountByColumnName,
   AssetDocument,
-  AssetFormImage,
-  StateAssetCount,
-  LGAAssetCount,
-  InfoProps,
-  SingleMapAssetData,
-  AssetStatus,
-  AssetImageDto,
   AssetDocumentsDto,
+  AssetFormDetails,
+  AssetFormImage,
+  AssetImageDto,
+  AssetLocation,
+  AssetStatus,
+  ContractDocument,
   CreateAssetPayload,
+  FilterInput,
+  InfoProps,
+  LGAAssetCount,
+  MeanTimeComputation,
+  SingleMapAssetData,
+  StateAssetCount,
   UpdateAssetPayload,
+  ValidColumnNames,
 };

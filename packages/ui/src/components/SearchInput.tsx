@@ -14,7 +14,7 @@ import { SearchIcon } from './CustomIcons';
 interface ISearchInput {
   setSearch: React.Dispatch<React.SetStateAction<string>>;
   placeholderText?: string;
-  width?: string;
+  width?: string | object;
   customStyle?: InputProps;
   containerStyle?: InputGroupProps;
   leftElementStyle?: InputLeftElementProps;

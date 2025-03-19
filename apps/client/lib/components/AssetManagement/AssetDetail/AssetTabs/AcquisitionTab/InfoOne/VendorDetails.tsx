@@ -33,13 +33,7 @@ const VendorTexts = (props: VendorTextsProps) => {
           }
         >
           <VStack spacing="4px" alignItems="flex-start">
-            <Heading
-              as="h5"
-              fontSize="16px"
-              lineHeight="19.01px"
-              color="black"
-              fontWeight={700}
-            >
+            <Heading as="h5" size="md" color="black" fontWeight={700}>
               {data?.vendorName}
             </Heading>
             <Text size="md" color="neutral.600">

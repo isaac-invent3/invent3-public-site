@@ -9,14 +9,13 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { CheckBox } from '@repo/ui/components';
-import React from 'react';
 import { ChevronDownIcon } from '~/lib/components/CustomIcons';
-import { Permission } from './Permission';
 import { Module } from '~/lib/interfaces/module.interfaces';
-import { useGetAllSubModulesQuery } from '~/lib/redux/services/modules.services';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import { checkIfModuleIsSelected } from '../../utils';
+import { useGetAllSubModulesQuery } from '~/lib/redux/services/modules.services';
 import { updateFormRoleModules } from '~/lib/redux/slices/RoleSlice';
+import { checkIfModuleIsSelected } from '../../utils';
+import { Permission } from './Permission';
 
 const ModuleItem = ({ data }: { data: Module }) => {
   const { systemModuleContextTypeId, moduleContextTypeName, description } =
@@ -38,9 +37,13 @@ const ModuleItem = ({ data }: { data: Module }) => {
         onClick={onToggle}
         bgColor={isOpen ? 'neutral.200' : 'white'}
         py="20px"
-        px="32px"
+        px={{ base: '16px', lg: '32px' }}
       >
-        <HStack spacing="16px" width="60%">
+        <HStack
+          spacing="16px"
+          width={{ base: '90%', md: '60%' }}
+          alignItems="flex-start"
+        >
           <CheckBox
             isChecked={checkIfModuleIsSelected(formRoleModules, {
               systemModuleContextTypeId,
@@ -56,12 +59,33 @@ const ModuleItem = ({ data }: { data: Module }) => {
               )
             }
           />
-          <Text color="black" fontWeight={700}>
-            {moduleContextTypeName}
-          </Text>
+          <VStack
+            spacing="8px"
+            alignItems="flex-start"
+            width={{ base: 'full', md: 'max-content' }}
+          >
+            <Text color="black" fontWeight={700}>
+              {moduleContextTypeName}
+            </Text>
+            <Text
+              textAlign="left"
+              display={{ base: 'flex', md: 'none' }}
+              width="full"
+            >
+              {description}
+            </Text>
+          </VStack>
         </HStack>
-        <HStack width="40%" position="relative" justifyContent="flex-start">
-          <Text maxW="90%" textAlign="left">
+        <HStack
+          width={{ base: '10%', md: '40%' }}
+          position="relative"
+          justifyContent="flex-start"
+        >
+          <Text
+            maxW="90%"
+            textAlign="left"
+            display={{ base: 'none', md: 'flex' }}
+          >
             {description}
           </Text>
           <Icon
@@ -81,15 +105,19 @@ const ModuleItem = ({ data }: { data: Module }) => {
           spacing="74px"
           rowGap="20px"
           py="24px"
-          px="32px"
-          columns={2}
-          maxW="80%"
+          px={{ base: '16px', lg: '32px' }}
+          columns={{ base: 1, md: 2 }}
+          maxW={{ lg: '80%' }}
         >
           {isLoading
             ? Array(4)
                 .fill('')
                 .map((_, index) => (
-                  <Skeleton width="250px" height="120px" key={index} />
+                  <Skeleton
+                    width={{ base: 'full', md: '250px' }}
+                    height="120px"
+                    key={index}
+                  />
                 ))
             : submodules?.data?.items.map((data, index) => (
                 <Permission

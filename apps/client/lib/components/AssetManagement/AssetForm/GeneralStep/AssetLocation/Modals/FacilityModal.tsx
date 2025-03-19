@@ -55,7 +55,11 @@ const FacilityModal = (props: FacilityModalProps) => {
       <ModalBody p={0} m={0} width="full">
         <FormikProvider value={formik}>
           <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
-            <VStack width="full" spacing="32px" p="40px">
+            <VStack
+              width="full"
+              spacing="32px"
+              p={{ base: '24px', md: '40px' }}
+            >
               <ModalHeading
                 heading="Add New Facility"
                 subheading="Add a new facility that is not on the system yet"

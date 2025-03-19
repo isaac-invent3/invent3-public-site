@@ -1,5 +1,6 @@
 import { HStack, StackProps, Text, TextProps, VStack } from '@chakra-ui/react';
 import DetailHeader from '../DetailHeader';
+import _ from 'lodash';
 
 interface DetailSectionProps {
   details: {
@@ -57,7 +58,7 @@ const DetailSection = (props: DetailSectionProps) => {
               {item.label}
             </Text>
             <Text size="md" {...valueStyle}>
-              {item.value}
+              {_.isEmpty(item.value) ? 'N/A' : item.value}
             </Text>
           </HStack>
         ))}

@@ -38,9 +38,8 @@ const GenericDeleteModal = (props: GenericDeleteModalProps) => {
         >
           <VStack spacing="8px" width="full">
             <Heading
-              fontSize="32px"
-              lineHeight="38.02px"
-              fontWeight={800}
+              size={{ base: 'lg', md: 'xl' }}
+              fontWeight={{ base: 700, lg: 800 }}
               color="primary.500"
             >
               Delete?

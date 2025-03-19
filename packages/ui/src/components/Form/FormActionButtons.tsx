@@ -1,7 +1,7 @@
-import { HStack, Icon, Text as ChakraText, Link } from '@chakra-ui/react';
+import { HStack, Icon, Text as ChakraText, Stack } from '@chakra-ui/react';
 
-import { ChevronLeftIcon } from '../CustomIcons';
 import Button from '../Button';
+import { ChevronLeftIcon } from '../CustomIcons';
 
 interface FormActionButtonsProps {
   activeStep: number;
@@ -10,7 +10,8 @@ interface FormActionButtonsProps {
   handleContinue?: () => void;
   isLoading?: boolean;
   loadingText?: string;
-  cancelLink: string;
+  cancelLink?: string;
+  cancelAction?: () => void;
   finalText?: string;
   disablePrimaryButton?: boolean;
   disableBackButton?: boolean;
@@ -27,6 +28,7 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
     loadingText,
     finalText,
     cancelLink,
+    cancelAction,
     disablePrimaryButton = false,
     disableBackButton = false,
     type,
@@ -34,13 +36,18 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
   } = props;
 
   return (
-    <HStack width="full" justifyContent="space-between" maxH="50px">
+    <Stack
+      width="full"
+      direction={{ base: 'row' }}
+      justifyContent={{ base: 'space-between' }}
+      alignItems={{ base: 'center', md: 'space-between' }}
+    >
       <Button
         customStyles={{
           px: '16px',
           bgColor: '#F6F6F666',
-          visibility: activeStep === 1 ? 'hidden' : 'visible',
-          width: '96px',
+          display: activeStep === 1 ? 'none' : 'flex',
+          width: { base: 'full', md: '96px' },
           minH: '50px',
           _disabled: {
             bgColor: '#F6F6F666',
@@ -71,23 +78,20 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
         <ChakraText color="primary.500">Back</ChakraText>
       </Button>
 
-      <HStack spacing="16px" justifySelf="flex-end">
+      <HStack width="full" spacing="16px" justifyContent={{ md: 'flex-end' }}>
         {activeStep === 1 && (
-          <Link href={cancelLink} textDecoration="none">
-            <HStack
-              cursor="pointer"
-              px="16px"
-              rounded="8px"
-              bgColor="#F6F6F6B2"
-              minH="50px"
-              minW="96px"
-              justifyContent="center"
-            >
-              <ChakraText size="md" color="primary.500">
-                Cancel
-              </ChakraText>
-            </HStack>
-          </Link>
+          <Button
+            type="button"
+            customStyles={{
+              width: { base: 'full', md: '96px' },
+              bgColor: '#F6F6F6B2',
+              color: 'primary.500',
+            }}
+            href={cancelLink}
+            handleClick={cancelAction}
+          >
+            Cancel
+          </Button>
         )}
         {children}
         <Button
@@ -95,7 +99,7 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
           handleClick={() => {
             handleContinue && handleContinue();
           }}
-          customStyles={{ minW: '167px' }}
+          customStyles={{ width: { base: 'full', md: '167px' } }}
           isLoading={isLoading}
           loadingText={loadingText}
           isDisabled={disablePrimaryButton}
@@ -103,7 +107,7 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
           {activeStep < totalStep ? 'Continue' : (finalText ?? 'Save')}
         </Button>
       </HStack>
-    </HStack>
+    </Stack>
   );
 };
 

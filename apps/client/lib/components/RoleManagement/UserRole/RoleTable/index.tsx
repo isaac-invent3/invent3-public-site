@@ -1,4 +1,4 @@
-import { Flex, Text } from '@chakra-ui/react';
+import { Flex, Text, useMediaQuery } from '@chakra-ui/react';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useMemo } from 'react';
@@ -26,9 +26,10 @@ const RoleTable = (props: RoleTableProps) => {
     setPageNumber,
     setPageSize,
   } = props;
-
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
   const columnHelper = createColumnHelper<Role>();
-  const columns = useMemo(
+
+  const mobileColumns = useMemo(
     () => {
       const baseColumns = [
         columnHelper.accessor('roleName', {
@@ -37,21 +38,9 @@ const RoleTable = (props: RoleTableProps) => {
           enableSorting: false,
         }),
 
-        columnHelper.accessor('lastModifiedDate', {
-          cell: () => <Text color="blue.500">10</Text>,
+        columnHelper.accessor('noOfAssociatedUsers', {
+          cell: (info) => <Text color="blue.500">{info.getValue()}</Text>,
           header: 'Accounts',
-          enableSorting: false,
-        }),
-
-        columnHelper.accessor('isNew', {
-          cell: () => '05',
-          header: 'Modules',
-          enableSorting: true,
-        }),
-        columnHelper.accessor('createdDate', {
-          cell: (info) =>
-            dateFormatter(info.getValue(), 'DD / MM / YYYY') ?? 'N/A',
-          header: 'Date Created',
           enableSorting: false,
         }),
         columnHelper.accessor('roleId', {
@@ -61,8 +50,56 @@ const RoleTable = (props: RoleTableProps) => {
           header: 'Status',
           enableSorting: false,
         }),
+        columnHelper.accessor('currentStatusId', {
+          cell: (info) => <PopoverAction role={info.row.original} />,
+          header: '',
+          enableSorting: false,
+        }),
+      ];
 
-        columnHelper.accessor('guid', {
+      return baseColumns;
+    },
+    [[data]] //eslint-disable-line
+  );
+
+  const columns = useMemo(
+    () => {
+      const baseColumns = [
+        columnHelper.accessor('roleName', {
+          cell: (info) => info.getValue(),
+          header: 'Role',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('noOfAssociatedUsers', {
+          cell: (info) => <Text color="blue.500">{info.getValue()}</Text>,
+          header: 'Accounts',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('noOfAssignedSystemModuleContextTypes', {
+          cell: (info) => info.getValue(),
+          header: 'Modules',
+          enableSorting: true,
+        }),
+        columnHelper.accessor('dateCreated', {
+          cell: (info) =>
+            dateFormatter(info.getValue(), 'DD / MM / YYYY') ?? 'N/A',
+          header: 'Date Created',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('currentStatusId', {
+          cell: (info) => {
+            return (
+              <GenericStatusBox
+                text={info.row.original.currentStatusName}
+                colorCode={info.row.original.currentStatusDisplayColorCode}
+              />
+            );
+          },
+          header: 'Status',
+          enableSorting: false,
+        }),
+
+        columnHelper.accessor('currentStatusDisplayColorCode', {
           cell: (info) => <PopoverAction role={info.row.original} />,
           header: '',
           enableSorting: false,
@@ -77,7 +114,7 @@ const RoleTable = (props: RoleTableProps) => {
   return (
     <Flex width="full">
       <DataTable
-        columns={columns}
+        columns={isMobile ? mobileColumns : columns}
         data={data ?? []}
         isLoading={isLoading}
         isFetching={isFetching}

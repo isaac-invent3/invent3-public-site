@@ -20,7 +20,7 @@ const MaintenanceSchedule = () => {
   return (
     <Flex width="full" direction="column" pb="24px">
       <DetailHeader />
-      <Flex width="full" mt="16px">
+      <Flex width="full" mt={{ lg: '16px' }}>
         <TemplateInfo />
       </Flex>
       <VStack
@@ -34,7 +34,11 @@ const MaintenanceSchedule = () => {
       >
         {isLoading && <Skeleton width="full" height="400px" rounded="8px" />}
         {!isLoading && data?.data && (
-          <VStack width="full" spacing="40px" alignItems="flex-start">
+          <VStack
+            width="full"
+            spacing={{ base: '24px', md: '40px' }}
+            alignItems="flex-start"
+          >
             <VStack alignItems="flex-start" spacing="22px" width="full">
               <Text fontWeight={800} size="md">
                 Asset associated to the Shcedule

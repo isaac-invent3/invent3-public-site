@@ -20,10 +20,13 @@ const TicketInfoHeader = (props: TicketInfoHeaderProps) => {
       direction="column"
     >
       <Heading
-        fontSize={isUpdateTicket ? '24px' : '32px'}
-        lineHeight={isUpdateTicket ? '28.51px' : '38.02px'}
+        fontSize={{ base: '24px', lg: isUpdateTicket ? '24px' : '32px' }}
+        lineHeight={{
+          base: '28.51px',
+          lg: isUpdateTicket ? '28.51px' : '38.02px',
+        }}
         color="black"
-        fontWeight={isUpdateTicket ? 700 : 800}
+        fontWeight={{ base: 700, lg: isUpdateTicket ? 700 : 800 }}
       >
         #{data?.ticketId} {data?.ticketTitle}
       </Heading>

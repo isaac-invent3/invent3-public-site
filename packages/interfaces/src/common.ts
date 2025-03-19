@@ -15,6 +15,13 @@ interface FilterInput {
   [name: string]: Option[];
 }
 
+interface UploadedFile {
+  fileId: number | null;
+  fileName: string;
+  base64: string;
+  base64Prefix: string | null;
+}
+
 interface SearchQuery {
   criterion?: SearchCriterion[];
   orCriterion?: SearchCriterion[][];
@@ -34,4 +41,8 @@ interface SearchQuery {
   isLogicalOperatorSpecified?: boolean;
 }
 
-export type { SearchCriterion, Option, FilterInput, SearchQuery };
+
+
+
+
+export type { FilterInput, Option, SearchCriterion, SearchQuery, UploadedFile };

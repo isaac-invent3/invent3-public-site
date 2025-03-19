@@ -74,11 +74,19 @@ const UserDetail = ({ isOpen, onClose }: UserDetailProps) => {
 
       {user && (
         <>
-          <DrawerHeader px="32px" pt="16px" pb="29px">
+          <DrawerHeader
+            px={{ base: '16px', md: '32px' }}
+            pt="16px"
+            pb={{ base: '24px', md: '29px' }}
+          >
             <UserHeader handleBack={closeDrawer} />
           </DrawerHeader>
           <DrawerBody p={0}>
-            <VStack width="full" alignItems="flex-start" spacing="33px">
+            <VStack
+              width="full"
+              alignItems="flex-start"
+              spacing={{ base: '24px', md: '33px' }}
+            >
               <UserInfo />
               <UserTabs />
             </VStack>

@@ -31,8 +31,14 @@ const HeaderInfo = (props: HeaderInfoProps) => {
       roundedTop="8px"
       alignItems="flex-start"
       justifyContent="space-between"
+      flexWrap="wrap"
+      spacing={{ base: '24px', md: '40px' }}
     >
-      <HStack spacing="40px" alignItems="flex-start">
+      <HStack
+        spacing={{ base: '24px', md: '40px' }}
+        alignItems="flex-start"
+        flexWrap="wrap"
+      >
         {firstInfo.map((item, index) => (
           <VStack alignItems="flex-start" spacing="8px" key={index}>
             <Text color="neutral.300">{item.label}</Text>

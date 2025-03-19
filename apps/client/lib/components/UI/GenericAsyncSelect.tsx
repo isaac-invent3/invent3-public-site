@@ -24,6 +24,7 @@ interface GenericAsyncSelectProps {
   showTitleAfterSelect?: boolean;
   isInvalid?: boolean;
   isMultiSelect?: boolean;
+  customProps?: { [name: string]: any };
 }
 
 const GenericAsyncSelect = (props: GenericAsyncSelectProps) => {
@@ -119,7 +120,7 @@ const GenericAsyncSelect = (props: GenericAsyncSelectProps) => {
       name={selectName}
       title={selectTitle}
       options={options}
-      onSelect={(option) => handleSelect && handleSelect(option)}
+      onSelect={(option) => handleSelect && handleSelect(option as Option)}
       isLoading={isLoading}
       defaultInputValue={defaultInputValue ?? undefined}
       callBackFunction={(inputValue: string) => handleSearch(inputValue)}

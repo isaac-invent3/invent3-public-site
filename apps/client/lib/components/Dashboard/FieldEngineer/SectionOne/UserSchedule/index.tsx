@@ -6,15 +6,17 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
+import moment from 'moment';
 import React, { useState } from 'react';
 import DropDown from '../../../Common/DropDown';
 import CardHeader from '../../../Common/CardHeader';
 import Tab from './Tab';
 import { Option } from '@repo/interfaces';
 import { WeekType } from '~/lib/interfaces/dashboard.interfaces';
-import { useGetAllTaskInstancesQuery } from '~/lib/redux/services/task/instance.services';
 import LoadingSkeleton from './LoadingSkeleton';
 import SingleSchedule from './SingleSchedule';
+import { useSession } from 'next-auth/react';
+import { useGetAllScheduleInstanceQuery } from '~/lib/redux/services/maintenance/scheduleInstance.services';
 
 const weekOptions = [
   {
@@ -27,18 +29,30 @@ const weekOptions = [
   },
 ];
 const UsersSchedule = () => {
+  const session = useSession();
+  const user = session?.data?.user;
   const [selectedWeekType, setSelectedWeekType] = useState<Option | null>(
     weekOptions[0] ?? null
   );
-  const { data, isLoading } = useGetAllTaskInstancesQuery({
-    pageSize: 5,
+
+  const [dateSelected, setDateSelected] = useState<string | undefined>(
+    moment().utcOffset(0).startOf('day').toISOString()
+  );
+  const { data, isLoading } = useGetAllScheduleInstanceQuery({
+    pageSize: 10,
     pageNumber: 1,
+    assignedTo: user?.userId!,
+    startDateRange: dateSelected,
+    endDateRange: dateSelected
+      ? moment(dateSelected).add(1, 'days').toISOString()
+      : undefined,
   });
+
   return (
     <VStack width="full" rounded="8px" bgColor="white" height="full" p="16px">
       <HStack width="full" justifyContent="space-between">
         <VStack alignItems="8px" spacing="8px">
-          <CardHeader>Schedule</CardHeader>
+          <CardHeader>Schedules</CardHeader>
           <Text fontWeight={800} color="neutral.600">
             Here is your activity for this week
           </Text>
@@ -53,11 +67,15 @@ const UsersSchedule = () => {
         />
       </HStack>
       <Flex width="full" mt="32px" mb="24px">
-        <Tab weekType={selectedWeekType?.value as WeekType} />
+        <Tab
+          weekType={selectedWeekType?.value as WeekType}
+          dateSelected={dateSelected}
+          setDateSelected={setDateSelected}
+        />
       </Flex>
 
-      <SimpleGrid columns={3} width="full" mb="8px" ml="16px">
-        {['Time', 'Task', 'Location'].map((item, index) => (
+      <SimpleGrid columns={3} width="full" mb="8px">
+        {['Estimated Hours', 'Schedule', 'Location'].map((item, index) => (
           <Text
             key={index}
             fontWeight={800}
@@ -84,7 +102,7 @@ const UsersSchedule = () => {
       )}
       {!isLoading && data?.data && data?.data?.items.length === 0 && (
         <Text color="neutral.800" my="20%" width="full" textAlign="center">
-          No Task at the moment
+          No Schedule at the moment
         </Text>
       )}
     </VStack>

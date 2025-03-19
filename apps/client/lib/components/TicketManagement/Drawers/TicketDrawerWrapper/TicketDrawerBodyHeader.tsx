@@ -37,8 +37,10 @@ const TicketDrawerBodyHeader = (props: TicketDrawerBodyHeaderProps) => {
           mt="24px"
           alignItems="flex-start"
           justifyContent="space-between"
+          flexWrap="wrap"
+          spacing="20px"
         >
-          <HStack spacing="20px" alignItems="flex-start">
+          <HStack spacing="20px" alignItems="flex-start" flexWrap="wrap">
             <VStack alignItems="flex-start" spacing="8px">
               <Text color="neutral.600">Status:</Text>
 
@@ -140,7 +142,7 @@ const TicketDrawerBodyHeader = (props: TicketDrawerBodyHeaderProps) => {
           flexWrap="wrap"
           width="full"
         >
-          <HStack spacing="16px">
+          <HStack spacing="16px" flexWrap="wrap">
             <VStack alignItems="flex-start" spacing="8px">
               <Text color="neutral.600">Status:</Text>
               <TicketInfoDropDown

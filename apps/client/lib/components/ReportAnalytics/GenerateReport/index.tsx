@@ -10,6 +10,7 @@ import SystemContextSelect from './SystemContextSelect';
 
 import { ListResponse } from '@repo/interfaces';
 import { FormInputWrapper } from '@repo/ui/components';
+import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import {
@@ -18,8 +19,9 @@ import {
 } from '~/lib/interfaces/report.interfaces';
 import { useGenerateReportMutation } from '~/lib/redux/services/reports.services';
 import { generateReportSchema } from '~/lib/schemas/report.schema';
-import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import { DEFAULT_PAGE_SIZE, ROLE_IDS_ENUM } from '~/lib/utils/constants';
 import GeneratedReport from './GeneratedReport';
+import CompanySelect from './CompanySelect';
 
 const GenerateReport = () => {
   const initialValues: GenerateReportDetails = {
@@ -34,6 +36,7 @@ const GenerateReport = () => {
     systemContextTypeId: undefined,
     contextTypeColumns: [],
     contextTypeName: undefined,
+    selectedCompany: undefined,
     startDate: '',
     endDate: '',
   };
@@ -45,6 +48,8 @@ const GenerateReport = () => {
 
   const [generatedReport, setGeneratedReport] =
     useState<ListResponse<GenerateReportResponse> | null>(null);
+  const session = useSession();
+  const user = session?.data?.user;
 
   const formik = useFormik({
     initialValues,
@@ -68,12 +73,50 @@ const GenerateReport = () => {
 
   return (
     <div>
-      <Flex width="full" direction="column" pb="24px" pt="12px">
+      <Flex
+        width="full"
+        direction="column"
+        pb="24px"
+        pt="12px"
+        px={{ base: '16px', md: 0 }}
+      >
         <Header showGenerate={false} header="Generate Report" />
 
         <FormikProvider value={formik}>
           <Box p="16px" bg="white" borderRadius="6px" mt="20px" height="100%">
             <form onSubmit={formik.handleSubmit}>
+              {user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY) && (
+                <FormInputWrapper
+                  sectionMaxWidth="141px"
+                  customSpacing="24px"
+                  description="Choose the company for this report"
+                  title="Select Company"
+                  isRequired
+                  maxW={{ base: 'full', md: '49%' }}
+                >
+                  <VStack width="full" spacing="4px" alignItems="flex-start">
+                    <CompanySelect
+                      selectName="selectedCompany"
+                      selectTitle="Select from Company"
+                      isInvalid={
+                        formik.submitCount > 0 && formik.errors.selectedCompany
+                          ? true
+                          : false
+                      }
+                      handleSelect={(option) => {
+                        setFieldValue('selectedCompany', option.value);
+                      }}
+                    />
+                    {formik.submitCount > 0 &&
+                      formik.errors.selectedCompany && (
+                        <ErrorMessage>
+                          {formik.errors.selectedCompany}
+                        </ErrorMessage>
+                      )}
+                  </VStack>
+                </FormInputWrapper>
+              )}
+
               <Grid
                 templateColumns={{
                   base: '1fr',
@@ -88,7 +131,7 @@ const GenerateReport = () => {
               >
                 <FormInputWrapper
                   sectionMaxWidth="141px"
-                  spacing="24px"
+                  customSpacing="24px"
                   description="Choose the context for this report"
                   title="Select from Context"
                   isRequired
@@ -119,7 +162,7 @@ const GenerateReport = () => {
 
                 <FormInputWrapper
                   sectionMaxWidth="141px"
-                  spacing="8px"
+                  customSpacing="8px"
                   description="Pick the relevant column for data selection."
                   title="Column"
                   isRequired
@@ -133,10 +176,12 @@ const GenerateReport = () => {
                   </VStack>
                 </FormInputWrapper>
 
-                <VStack gridColumn="span 3">
+                <VStack
+                  gridColumn={{ base: 'span 3', md: 'span 4', xl: 'span 3' }}
+                >
                   <FormInputWrapper
-                    sectionMaxWidth="118px"
-                    spacing="24px"
+                    sectionMaxWidth="141px"
+                    customSpacing="24px"
                     description="Specify the condition for this report"
                     title="Condition"
                     isRequired

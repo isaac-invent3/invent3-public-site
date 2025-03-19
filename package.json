@@ -34,5 +34,10 @@
   "browser": {
     "crypto": false,
     "stream": false
+  },
+  "dependencies": {
+    "next": "14.3.0-canary.87",
+    "react": "19.0.0-rc.1",
+    "react-dom": "19.0.0-rc.1"
   }
 }

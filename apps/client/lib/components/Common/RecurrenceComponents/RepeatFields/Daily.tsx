@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
 import { HStack, useDisclosure } from '@chakra-ui/react';
-import { Option } from '~/lib/interfaces/general.interfaces';
 import {
   AddTime,
   Button,
   CustomDateButton,
   DimissibleContainer,
-  FormSectionInfo,
+  FormInputWrapper,
   SelectableButtonGroup,
 } from '@repo/ui/components';
-import { dateFormatter } from '~/lib/utils/Formatters';
+import { useEffect, useState } from 'react';
+import { Option } from '~/lib/interfaces/general.interfaces';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateRepeatInterval } from '~/lib/redux/slices/DateSlice';
+import { dateFormatter } from '~/lib/utils/Formatters';
 import { generateTimeIntervalsForDay } from '../helperFunction';
 
 const StaticIntervals: Option[] = [
@@ -104,13 +104,14 @@ const Daily = (props: DailyProps) => {
 
   return (
     <>
-      <HStack width="full" spacing="29px" alignItems="flex-start" mb="32px">
-        <FormSectionInfo
-          title="Every"
-          info="Select specific intervals for the occurence schedule"
-          isRequired={false}
-          maxWidth="130px"
-        />
+      <FormInputWrapper
+        title="Every"
+        description="Select specific intervals for the occurrence schedule"
+        isRequired={false}
+        sectionMaxWidth="130px"
+        customSpacing="29px"
+        mb="32px"
+      >
         {type === 'custom' ? (
           <HStack width="full" spacing="8px" flexWrap="wrap">
             {dailyInterval.map((time, index) => (
@@ -152,7 +153,8 @@ const Daily = (props: DailyProps) => {
             />
           </HStack>
         )}
-      </HStack>
+      </FormInputWrapper>
+
       <AddTime
         isOpen={isOpenTime}
         onClose={onCloseTime}

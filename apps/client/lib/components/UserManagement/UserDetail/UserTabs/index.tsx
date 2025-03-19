@@ -44,7 +44,7 @@ const UserTabs = () => {
     }
   }, []);
   return (
-    <Flex width="full" px="32px">
+    <Flex width="full" px={{ base: '16px', md: '32px' }}>
       <Tabs
         variant="custom"
         onChange={(index) => setTabIndex(index)}
@@ -63,7 +63,7 @@ const UserTabs = () => {
           ))}
         </TabList>
 
-        <TabPanels>
+        <TabPanels pb={{ base: '16px', lg: '24px' }}>
           {AllTabs.map((item, index) => (
             <TabPanel key={item.label} pt="33px">
               {index === tabIndex && item.component}

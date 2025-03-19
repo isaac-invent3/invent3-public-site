@@ -18,7 +18,7 @@ const AcquisitionTab = () => {
   );
 
   return (
-    <VStack width="full" spacing="40px" my="24px">
+    <VStack width="full" spacing={{ base: '0px', md: '40px' }} my="24px">
       <InfoOne isLoading={isLoading} data={data?.data} />
       <InfoTwo isLoading={isLoading} data={data?.data} />
     </VStack>

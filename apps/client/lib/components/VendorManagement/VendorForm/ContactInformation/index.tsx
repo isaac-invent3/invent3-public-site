@@ -16,9 +16,11 @@ import Address from './Address';
 interface ContactInformationProps {
   activeStep: number;
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
+  type: 'create' | 'edit';
+  cancelAction?: () => void;
 }
 const ContactInformation = (props: ContactInformationProps) => {
-  const { activeStep, setActiveStep } = props;
+  const { activeStep, setActiveStep, type, cancelAction } = props;
   const formDetails = useAppSelector((state) => state.vendor.vendorForm);
   const dispatch = useAppDispatch();
 
@@ -53,22 +55,26 @@ const ContactInformation = (props: ContactInformationProps) => {
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
           <VStack
-            spacing="40px"
+            spacing={{ base: '24px', lg: '40px' }}
             width="full"
             alignItems="flex-start"
             bgColor="white"
             pt="26px"
             pl="16px"
             pb="33px"
-            pr="44px"
+            pr={{ base: '16px', md: '44px' }}
             rounded="6px"
             minH="60vh"
           >
             <ContactName />
-            <SimpleGrid width="full" columns={2} spacing="50px">
+            <SimpleGrid
+              width="full"
+              columns={{ base: 1, md: 2 }}
+              spacing={{ base: '24px', lg: '50px' }}
+            >
               <FormInputWrapper
                 sectionMaxWidth="157px"
-                spacing="65px"
+                customSpacing="65px"
                 description="Provide the person’s email"
                 title="Primary Contact Email"
                 isRequired
@@ -83,7 +89,7 @@ const ContactInformation = (props: ContactInformationProps) => {
               </FormInputWrapper>
               <FormInputWrapper
                 sectionMaxWidth="141px"
-                spacing="24px"
+                customSpacing="24px"
                 description="Provide the person’s Phone Number"
                 title="Primary Phone Number"
                 isRequired
@@ -101,7 +107,10 @@ const ContactInformation = (props: ContactInformationProps) => {
           </VStack>
           <Flex width="full" mt="16px">
             <FormActionButtons
-              cancelLink={`/${ROUTES.VENDOR}`}
+              cancelLink={type === 'edit' ? `/${ROUTES.VENDOR}` : undefined}
+              cancelAction={
+                type === 'create' && cancelAction ? cancelAction : undefined
+              }
               totalStep={4}
               activeStep={2}
               setActiveStep={setActiveStep}

@@ -1,8 +1,9 @@
-import { SimpleGrid, Text, VStack } from '@chakra-ui/react';
+import { Flex, SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import DetailHeader from '../../../../UI/DetailHeader';
 import DetailSection from '../../DetailSection';
 import { useAppSelector } from '~/lib/redux/hooks';
 import PhotoViewer from './InfoTwo.tsx/Photos';
+import OwnersInfo from './InfoTwo.tsx/OwnersInfo';
 
 const InfoOne = () => {
   const assetData = useAppSelector((state) => state.asset.asset);
@@ -72,16 +73,19 @@ const InfoOne = () => {
 
   return (
     <SimpleGrid
-      columns={2}
+      columns={{ base: 1, sm: 2 }}
       width="full"
-      gap="74px"
+      gap={{ base: '24px', md: '74px' }}
       alignItems="flex-start"
       justifyContent="space-between"
     >
       <VStack alignItems="flex-start" spacing="8px">
         <DetailSection details={details} labelMinWidth="77px" />
       </VStack>
-      <VStack alignItems="flex-start" spacing="20px">
+      <Flex display={{ base: 'flex', sm: 'none' }} width="full">
+        <OwnersInfo />
+      </Flex>
+      <VStack alignItems="flex-start" spacing="24px">
         <VStack width="full" spacing="8px" alignItems="flex-start">
           <DetailHeader variant="secondary">Description:</DetailHeader>
           <Text size="md" color="neutral.800" fontWeight={400}>

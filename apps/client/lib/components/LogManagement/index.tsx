@@ -21,10 +21,10 @@ import _ from 'lodash';
 import { generateSearchCriterion } from '@repo/utils';
 import LogTable from './LogTable';
 import {
-  useGetAllLogsQuery,
-  useSearchLogMutation,
+  useGetAllAuditRecordsQuery,
+  useSearchAuditRecordsMutation,
 } from '~/lib/redux/services/log.services';
-import { AuditLog, LogFilter } from '~/lib/interfaces/log.interfaces';
+import { AuditRecord, LogFilter } from '~/lib/interfaces/log.interfaces';
 import Filters from './LogTable/Filters';
 import SummaryCards from './SummaryCards';
 import { useSearchParams } from 'next/navigation';
@@ -40,7 +40,7 @@ export const initialFilterData = {
 const LogManagement = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const { data, isLoading, isFetching } = useGetAllLogsQuery({
+  const { data, isLoading, isFetching } = useGetAllAuditRecordsQuery({
     pageNumber,
     pageSize,
   });
@@ -55,10 +55,11 @@ const LogManagement = () => {
   const logId = searchParams.get(SYSTEM_CONTEXT_DETAILS.AUDIT.slug);
 
   const [searchData, setSearchData] = useState<
-    ListResponse<AuditLog> | undefined
+    ListResponse<AuditRecord> | undefined
   >(undefined);
   const { handleSubmit } = useCustomMutation();
-  const [searchLog, { isLoading: searchLoading }] = useSearchLogMutation({});
+  const [searchLog, { isLoading: searchLoading }] =
+    useSearchAuditRecordsMutation({});
   const [filterData, setFilterData] = useState<LogFilter>(initialFilterData);
 
   // Checks if all filterdata is empty
@@ -140,6 +141,7 @@ const LogManagement = () => {
           justifyContent="space-between"
           alignItems="flex-start"
           spacing="24px"
+          px={{ base: '16px', md: 0 }}
         >
           <PageHeader>Audit Log Management</PageHeader>
           <SummaryCards />
@@ -151,11 +153,11 @@ const LogManagement = () => {
             pb="8px"
             borderBottom="1px solid #BBBBBB"
           >
-            <HStack width="full" justifyContent="space-between">
+            <HStack width="full" justifyContent="space-between" flexWrap="wrap">
               <SearchInput
                 setSearch={setSearch}
                 placeholderText="Search..."
-                width="363px"
+                width={{ base: 'full', md: '363px' }}
               />
               <HStack spacing="16px">
                 <FilterButton

@@ -1,26 +1,38 @@
+import { IconProps } from '@chakra-ui/icons';
 import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverBody,
-  type PlacementWithLogical,
-  useOutsideClick,
   Box,
-  useDisclosure,
+  ComponentWithAs,
   Flex,
   Icon,
+  Popover,
+  PopoverBody,
+  PopoverBodyProps,
+  PopoverContent,
+  PopoverTrigger,
+  useDisclosure,
+  useOutsideClick,
+  type PlacementWithLogical,
 } from '@chakra-ui/react';
 import { useRef } from 'react';
 import { ThreeVerticalDotsIcon } from './CustomIcons';
+import { IconType } from 'react-icons';
 
 interface GenericPopoverProps {
   children: React.ReactNode;
   width?: string;
   placement?: PlacementWithLogical;
+  icon?: ComponentWithAs<'svg', IconProps> | IconType;
+  popoverBodyStyles?: PopoverBodyProps
 }
 
 const GenericPopover = (props: GenericPopoverProps) => {
-  const { children, width = '240px', placement = 'auto' } = props;
+  const {
+    children,
+    width = '240px',
+    placement = 'auto',
+    icon,
+    popoverBodyStyles,
+  } = props;
   const popoverRef = useRef(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   useOutsideClick({
@@ -39,7 +51,7 @@ const GenericPopover = (props: GenericPopoverProps) => {
         <PopoverTrigger>
           <Flex onClick={() => onOpen()}>
             <Icon
-              as={ThreeVerticalDotsIcon}
+              as={icon ?? ThreeVerticalDotsIcon}
               boxSize="16px"
               color="neutral.700"
             />
@@ -51,7 +63,7 @@ const GenericPopover = (props: GenericPopoverProps) => {
           boxShadow="0px 4px 32px 0px #00000026"
           rounded="8px"
         >
-          <PopoverBody m={0} p="16px" onClick={onClose}>
+          <PopoverBody m={0} p="16px" onClick={onClose} {...popoverBodyStyles}>
             {children}
           </PopoverBody>
         </PopoverContent>

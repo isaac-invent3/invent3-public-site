@@ -20,7 +20,7 @@ import { assetGroupTypeApi } from './services/asset/groupType.services';
 import { assetStatsApi } from './services/asset/stats.services';
 import { assetTypeApi } from './services/asset/types.services';
 import { assetVendorsApi } from './services/asset/vendors.services';
-import { dashboardApi } from './services/dashboard.services';
+import { operationManagerDashboardApis } from './services/dashboard/operationmanager.services';
 import { employeesApi } from './services/employees.services';
 import { frontdeskDashboardApi } from './services/dashboard/frontdesk.services';
 import { maintenanceFrequencyApi } from './services/maintenance/frequency.services';
@@ -50,8 +50,13 @@ import ticketSlice from './slices/TicketSlice';
 import userSlice from './slices/UserSlice';
 import roleSlice from './slices/RoleSlice';
 import vendorSlice from './slices/VendorSlice';
+import notesSlice from './slices/NoteSlice';
 import auditLogSlice from './slices/AuditLogSlice';
+import companySlice from './slices/CompanySlice';
+import settingSlice from './slices/SettingsSlice';
 
+import { approvalWorkflowRequestApi } from './services/approval-workflow/requests.services';
+import { assetDisposalApi } from './services/asset/disposal.services';
 import { assetDocumentApi } from './services/asset/document.services';
 import { aisleApi } from './services/location/aisle.services';
 import { buildingApi } from './services/location/building.services';
@@ -63,16 +68,31 @@ import { lgaApi } from './services/location/lga.services';
 import { roomApi } from './services/location/room.services';
 import { shelfApi } from './services/location/shelf.services';
 import { stateApi } from './services/location/state.services';
-import { assetDisposalApi } from './services/asset/disposal.services';
 import { scheduleInstanceApi } from './services/maintenance/scheduleInstance.services';
 import { systemContextTypesApi } from './services/systemcontexttypes.services';
+import { approvalWorkflowRequestDocumentApi } from './services/approval-workflow/requestDocuments.services';
+import { approvalWorkflowActionApi } from './services/approval-workflow/actions.services';
+import { approvalWorkflowActionOptionApi } from './services/approval-workflow/actionOptions.services';
+import { approvalWorkflowActionOptionsMapApi } from './services/approval-workflow/actionOptionsMaps.services';
+import { approvalWorkflowInstanceApi } from './services/approval-workflow/workflowInstances.services';
+import { approvalWorkflowPartyInstanceApi } from './services/approval-workflow/partyInstances.services';
+import { approvalWorkflowRequirementTypeApi } from './services/approval-workflow/requirementTypes.services';
+import { approvalWorkflowStatusApi } from './services/approval-workflow/statuses.services';
+import { approvalWorkflowTypeApi } from './services/approval-workflow/types.services';
 import { vendorApi } from './services/vendor.services';
 import { logApi } from './services/log.services';
 import { rolesApi } from './services/role.services';
 import { moduleApi } from './services/modules.services';
 import { superAdminApi } from './services/dashboard/superadmin.services';
 import { clientAdminApi } from './services/dashboard/clientadmin.services';
-
+import { industryApi } from './services/industry.services';
+import { subscriptionApi } from './services/subscription.services';
+import { thirdPartyApi } from './services/dashboard/thirdparty.services';
+import { complianceApi } from './services/asset/compliance.services';
+import { notesApi } from './services/notes.services';
+import { fieldEngineerDashboardApi } from './services/dashboard/fieldengineer.services';
+import { feedbackApi } from './services/feedback.services';
+import { executiveDashboardApis } from './services/dashboard/executive.services';
 export const persistConfig = {
   key: 'root',
   storage,
@@ -89,6 +109,7 @@ const rootReducer = combineReducers({
   [assetTypeApi.reducerPath]: assetTypeApi.reducer,
   [conditionApi.reducerPath]: conditionApi.reducer,
   [assetVendorsApi.reducerPath]: assetVendorsApi.reducer,
+  [complianceApi.reducerPath]: complianceApi.reducer,
 
   // Maintenance-related APIs
   [maintenanceFrequencyApi.reducerPath]: maintenanceFrequencyApi.reducer,
@@ -105,10 +126,14 @@ const rootReducer = combineReducers({
   [taskTypeApi.reducerPath]: taskTypeApi.reducer,
 
   // Dashboard-related APIs
-  [dashboardApi.reducerPath]: dashboardApi.reducer,
+  [operationManagerDashboardApis.reducerPath]:
+    operationManagerDashboardApis.reducer,
   [frontdeskDashboardApi.reducerPath]: frontdeskDashboardApi.reducer,
   [superAdminApi.reducerPath]: superAdminApi.reducer,
   [clientAdminApi.reducerPath]: clientAdminApi.reducer,
+  [thirdPartyApi.reducerPath]: thirdPartyApi.reducer,
+  [fieldEngineerDashboardApi.reducerPath]: fieldEngineerDashboardApi.reducer,
+  [executiveDashboardApis.reducerPath]: executiveDashboardApis.reducer,
 
   // Category and condition APIs
   [categoryApi.reducerPath]: categoryApi.reducer,
@@ -151,6 +176,18 @@ const rootReducer = combineReducers({
   // Utlis APIS
   [systemContextTypesApi.reducerPath]: systemContextTypesApi.reducer,
 
+  // Approval Workflow Related APIs
+  [approvalWorkflowRequestApi.reducerPath]: approvalWorkflowRequestApi.reducer,
+  [approvalWorkflowRequestDocumentApi.reducerPath]: approvalWorkflowRequestDocumentApi.reducer,
+  [approvalWorkflowActionApi.reducerPath]: approvalWorkflowActionApi.reducer,
+  [approvalWorkflowActionOptionApi.reducerPath]: approvalWorkflowActionOptionApi.reducer,
+  [approvalWorkflowActionOptionsMapApi.reducerPath]: approvalWorkflowActionOptionsMapApi.reducer,
+  [approvalWorkflowInstanceApi.reducerPath]: approvalWorkflowInstanceApi.reducer,
+  [approvalWorkflowPartyInstanceApi.reducerPath]: approvalWorkflowPartyInstanceApi.reducer,
+  [approvalWorkflowRequirementTypeApi.reducerPath]: approvalWorkflowRequirementTypeApi.reducer,
+  [approvalWorkflowStatusApi.reducerPath]: approvalWorkflowStatusApi.reducer,
+  [approvalWorkflowTypeApi.reducerPath]: approvalWorkflowTypeApi.reducer,
+
   // Log APIS
   [logApi.reducerPath]: logApi.reducer,
 
@@ -159,9 +196,19 @@ const rootReducer = combineReducers({
 
   // Company APIS
   [companyApi.reducerPath]: companyApi.reducer,
+  [subscriptionApi.reducerPath]: subscriptionApi.reducer,
 
   // Module APIS
   [moduleApi.reducerPath]: moduleApi.reducer,
+
+  // Industry APIS
+  [industryApi.reducerPath]: industryApi.reducer,
+
+  // Notes APIS
+  [notesApi.reducerPath]: notesApi.reducer,
+
+  // Feedback APIS
+  [feedbackApi.reducerPath]: feedbackApi.reducer,
 
   asset: assetSlice,
   auditLog: auditLogSlice,
@@ -176,6 +223,9 @@ const rootReducer = combineReducers({
   ticket: ticketSlice,
   report: reportSlice,
   role: roleSlice,
+  company: companySlice,
+  settings: settingSlice,
+  notes: notesSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -198,6 +248,7 @@ export const makeStore = () => {
         assetTypeApi.middleware,
         assetDisposalApi.middleware,
         assetVendorsApi.middleware,
+        complianceApi.middleware,
 
         // Maintenance-related APIs
         maintenanceFrequencyApi.middleware,
@@ -221,10 +272,13 @@ export const makeStore = () => {
         conditionApi.middleware,
 
         // Dashboard APIs
-        dashboardApi.middleware,
+        operationManagerDashboardApis.middleware,
         frontdeskDashboardApi.middleware,
         superAdminApi.middleware,
         clientAdminApi.middleware,
+        thirdPartyApi.middleware,
+        fieldEngineerDashboardApi.middleware,
+        executiveDashboardApis.middleware,
 
         // Depreciation APIs
         depreciationApi.middleware,
@@ -261,6 +315,18 @@ export const makeStore = () => {
         // Report Apis
         reportApi.middleware,
 
+        // Approval-Workflow Related APIs
+        approvalWorkflowRequestApi.middleware,
+        approvalWorkflowRequestDocumentApi.middleware,
+        approvalWorkflowActionApi.middleware,
+        approvalWorkflowActionOptionApi.middleware,
+        approvalWorkflowActionOptionsMapApi.middleware,
+        approvalWorkflowInstanceApi.middleware,
+        approvalWorkflowPartyInstanceApi.middleware,
+        approvalWorkflowRequirementTypeApi.middleware,
+        approvalWorkflowStatusApi.middleware,
+        approvalWorkflowTypeApi.middleware,
+
         // Log Apis
         logApi.middleware,
 
@@ -269,9 +335,19 @@ export const makeStore = () => {
 
         // Company APIs
         companyApi.middleware,
+        subscriptionApi.middleware,
 
         // Module APIs
         moduleApi.middleware,
+
+        // Industry APIs
+        industryApi.middleware,
+
+        // Notes Apis
+        notesApi.middleware,
+
+        // Feedback Apis
+        feedbackApi.middleware
       ]),
   });
 };

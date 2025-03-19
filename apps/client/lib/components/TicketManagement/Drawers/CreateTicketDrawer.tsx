@@ -135,8 +135,7 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
               pb="20px"
             >
               <Heading
-                fontSize="32px"
-                lineHeight="38.02px"
+                size={{ base: 'lg', lg: 'xl' }}
                 color="black"
                 px="24px"
                 pb="20px"
@@ -146,10 +145,15 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
               </Heading>
 
               <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
-                <VStack width="full" spacing="24px" px="24px" mt="22px">
+                <VStack
+                  width="full"
+                  spacing={{ base: '38px', lg: '24px' }}
+                  px="24px"
+                  mt="22px"
+                >
                   <FormInputWrapper
                     sectionMaxWidth="141px"
-                    spacing="24px"
+                    customSpacing="24px"
                     description="Enter a clear title for this ticket"
                     title="Ticket Title"
                     isRequired
@@ -164,7 +168,7 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
 
                   <FormInputWrapper
                     sectionMaxWidth="141px"
-                    spacing="24px"
+                    customSpacing="24px"
                     description="Provide details about the Ticket objective"
                     title="Ticket Description"
                     isRequired
@@ -182,7 +186,7 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                   {!asset && (
                     <FormInputWrapper
                       sectionMaxWidth="141px"
-                      spacing="24px"
+                      customSpacing="24px"
                       description="Select the Asset to which this ticket relates to"
                       title="Asset"
                       isRequired
@@ -193,7 +197,7 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
 
                   <FormInputWrapper
                     sectionMaxWidth="141px"
-                    spacing="24px"
+                    customSpacing="24px"
                     description="Choose the category this ticket belongs to"
                     title="Type"
                     isRequired
@@ -206,7 +210,7 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
 
                   <FormInputWrapper
                     sectionMaxWidth="141px"
-                    spacing="24px"
+                    customSpacing="24px"
                     description="Set the urgency level for this ticket"
                     title="Priority"
                     isRequired
@@ -242,7 +246,7 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
 
                   <FormInputWrapper
                     sectionMaxWidth="141px"
-                    spacing="24px"
+                    customSpacing="24px"
                     description="Name of user that initiated the ticket"
                     title="Ticket Raised By"
                   >
@@ -265,7 +269,7 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
 
                   <FormInputWrapper
                     sectionMaxWidth="141px"
-                    spacing="24px"
+                    customSpacing="24px"
                     description="Name of user that the ticket is assigned to"
                     title="Ticket Assigned To"
                   >
@@ -285,10 +289,10 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
 
                   <FormInputWrapper
                     sectionMaxWidth="141px"
-                    spacing="24px"
+                    customSpacing="24px"
                     description="Specify the date when this ticket was raised"
                     title="Request Date"
-                    alignItems="center"
+                    alignItems={{ lg: 'center' }}
                   >
                     <Text fontSize={'14px'} color="gray">
                       {dateFormatter(new Date(), `DD / MM / YYYY`)}
@@ -301,8 +305,9 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
 
           <DrawerFooter p={0} m={0}>
             <HStack
+              width="full"
               spacing="8px"
-              justifyContent="flex-end"
+              justifyContent={{ base: 'center', lg: 'flex-end' }}
               mt="8px"
               px="24px"
               pb="32px"
@@ -320,7 +325,10 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                 handleClick={() => {
                   formik.handleSubmit();
                 }}
-                customStyles={{ width: '237px', height: '50px' }}
+                customStyles={{
+                  width: { base: '161px', lg: '237px' },
+                  height: '50px',
+                }}
               >
                 Save Ticket
               </Button>

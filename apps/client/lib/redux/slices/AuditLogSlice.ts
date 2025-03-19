@@ -2,10 +2,10 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { AuditLog } from '~/lib/interfaces/log.interfaces';
+import { AuditRecord } from '~/lib/interfaces/log.interfaces';
 
 interface SliceProps {
-  auditLog: AuditLog | null;
+  auditLog: AuditRecord | null;
 }
 
 const initialState: SliceProps = {
@@ -16,7 +16,7 @@ export const AuditLogSlice = createSlice({
   name: 'auditLogReducer',
   initialState,
   reducers: {
-    setAuditLog: (state, { payload }: PayloadAction<AuditLog>) => {
+    setAuditLog: (state, { payload }: PayloadAction<AuditRecord>) => {
       state.auditLog = payload;
     },
     clearAuditLog: (state) => {

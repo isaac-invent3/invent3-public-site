@@ -1,27 +1,27 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import { Flex } from '@chakra-ui/react';
 import moment from 'moment';
+import { useEffect, useMemo, useState } from 'react';
 import {
   Calendar,
+  Event as EventType,
   View,
   Views,
   momentLocalizer,
-  Event as EventType,
 } from 'react-big-calendar';
-import { Flex } from '@chakra-ui/react';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import './style.css';
-import CustomToolbar from './CustomToolBar';
-import Event from './Events';
-import CustomDateHeader from './CustomDateHeader';
-('~/lib/redux/services/maintenance/schedule.services');
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { scheduleInstanceApi } from '~/lib/redux/services/maintenance/scheduleInstance.services';
+import { updateScheduleInfo } from '~/lib/redux/slices/MaintenanceSlice';
+import { AREA_ENUM } from '~/lib/utils/constants';
 import {
   getDisplayDate,
   transformToCalendarEvents,
 } from '~/lib/utils/helperFunctions';
-import { AREA_ENUM } from '~/lib/utils/constants';
-import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import { updateScheduleInfo } from '~/lib/redux/slices/MaintenanceSlice';
-import { scheduleInstanceApi } from '~/lib/redux/services/maintenance/scheduleInstance.services';
+import CustomDateHeader from './CustomDateHeader';
+import CustomToolbar from './CustomToolBar';
+import Event from './Events';
+import './style.css';
+('~/lib/redux/services/maintenance/schedule.services');
 
 const mLocalizer = momentLocalizer(moment);
 
@@ -76,72 +76,89 @@ const ScheduleTimeline = () => {
     setView(newView);
   };
 
-  //Fetches Single Instances with aggregate count of one
-  useEffect(() => {
-    const fetchInstancesWithSingleAggregateCount = async () => {
-      let hasNextPage = true;
-      while (hasNextPage && selectedCountry) {
-        const result = await dispatch(
-          scheduleInstanceApi.endpoints.getMaintenanceScheduleInstancesWithSingleAggregateCountsByArea.initiate(
-            {
-              areaId: isProperState
-                ? (selectedState.value as number)
-                : (selectedCountry.value as number),
-              areaType: isProperState ? AREA_ENUM.state : AREA_ENUM.country,
-              startDate,
-              endDate,
-              pageNumber: 1,
-              pageSize: 50,
-            }
-          )
-        );
+  const fetchInstanceAggregate = async (): Promise<EventType[]> => {
+    let hasNextPage = true;
+    let allEvents: EventType[] = [];
 
-        if (result.data?.data?.items) {
-          setEventData((prev) => [
-            ...prev,
-            ...transformToCalendarEvents(result.data?.data.items as any[]),
-          ]);
-        }
-        hasNextPage = result.data?.data.hasNextPage ?? false;
+    while (hasNextPage && selectedCountry) {
+      const result = await dispatch(
+        scheduleInstanceApi.endpoints.getMaintenanceScheduleInstanceAggregate.initiate(
+          {
+            areaId: isProperState
+              ? (selectedState.value as number)
+              : (selectedCountry.value as number),
+            areaType: isProperState ? AREA_ENUM.state : AREA_ENUM.country,
+            startDate,
+            endDate,
+            pageNumber: 1,
+            pageSize: 50,
+          }
+        )
+      );
+
+      if (result.data?.data?.items) {
+        allEvents = [
+          ...allEvents,
+          ...transformToCalendarEvents(result.data?.data.items as any[]),
+        ];
       }
-    };
-    fetchInstancesWithSingleAggregateCount();
-  }, [isProperState, startDate, endDate, selectedState, selectedCountry]);
+      hasNextPage = result.data?.data.hasNextPage ?? false;
+    }
 
-  //Fetches Instances Aggregate Info with count of more than 1
-  useEffect(() => {
-    const fetchInstanceAggregate = async () => {
-      let hasNextPage = true;
-      while (hasNextPage && selectedCountry) {
-        const result = await dispatch(
-          scheduleInstanceApi.endpoints.getMaintenanceScheduleInstanceAggregate.initiate(
-            {
-              areaId: isProperState
-                ? (selectedState.value as number)
-                : (selectedCountry.value as number),
-              areaType: isProperState ? AREA_ENUM.state : AREA_ENUM.country,
-              startDate,
-              endDate,
-              pageNumber: 1,
-              pageSize: 50,
-            }
-          )
-        );
+    return allEvents;
+  };
 
-        if (result.data?.data?.items) {
-          setEventData((prev) => [
-            ...prev,
-            ...transformToCalendarEvents(result.data?.data.items as any[]),
-          ]);
-        }
-        hasNextPage = result.data?.data.hasNextPage ?? false;
+  const fetchInstancesWithSingleAggregateCount = async (): Promise<
+    EventType[]
+  > => {
+    let hasNextPage = true;
+    let allEvents: EventType[] = [];
+
+    while (hasNextPage && selectedCountry) {
+      const result = await dispatch(
+        scheduleInstanceApi.endpoints.getMaintenanceScheduleInstancesWithSingleAggregateCountsByArea.initiate(
+          {
+            areaId: isProperState
+              ? (selectedState.value as number)
+              : (selectedCountry.value as number),
+            areaType: isProperState ? AREA_ENUM.state : AREA_ENUM.country,
+            startDate,
+            endDate,
+            pageNumber: 1,
+            pageSize: 50,
+          }
+        )
+      );
+
+      if (result.data?.data?.items) {
+        allEvents = [
+          ...allEvents,
+          ...transformToCalendarEvents(result.data?.data.items as any[]),
+        ];
       }
+      hasNextPage = result.data?.data.hasNextPage ?? false;
+    }
+
+    return allEvents;
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setEventData([]); // Clear existing data before fetching new
+
+      const [singleAggregateEvents, aggregateEvents] = await Promise.all([
+        fetchInstancesWithSingleAggregateCount(),
+        fetchInstanceAggregate(),
+      ]);
+
+      setEventData([...singleAggregateEvents, ...aggregateEvents]);
     };
-    fetchInstanceAggregate();
+
+    fetchData();
   }, [isProperState, startDate, endDate, selectedState, selectedCountry]);
 
   return (
-    <Flex width="full" height="full" direction="column">
+    <Flex width="full" height="full" direction="column" overflow="scroll">
       <Calendar
         date={date}
         events={events}

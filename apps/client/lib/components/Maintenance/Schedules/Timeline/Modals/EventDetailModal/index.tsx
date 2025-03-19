@@ -25,12 +25,13 @@ interface EventDetailModalProps {
 }
 const EventDetailModal = (props: EventDetailModalProps) => {
   const { isOpen, onClose, scheduleInstanceId } = props;
-  const { data, isLoading, isError } = useGetScheduleInstanceByIdQuery(
-    {
-      instanceId: scheduleInstanceId!,
-    },
-    { skip: !scheduleInstanceId }
-  );
+  const { data, isLoading, isError, isFetching } =
+    useGetScheduleInstanceByIdQuery(
+      {
+        instanceId: scheduleInstanceId!,
+      },
+      { skip: !scheduleInstanceId }
+    );
   const { removeSearchParam } = useCustomSearchParams();
 
   const handleClose = () => {
@@ -44,9 +45,11 @@ const EventDetailModal = (props: EventDetailModalProps) => {
     <Modal isOpen={isOpen} onClose={handleClose} isCentered>
       <ModalOverlay />
       <ModalContent
-        minW={{ base: '90%', lg: '729px' }}
+        maxW={{ base: '90%', lg: '729px' }}
         maxHeight="90%"
+        width="full"
         rounded="4px"
+        overflow="auto"
       >
         <ModalBody p={0} m={0} position="relative">
           <Icon
@@ -60,7 +63,7 @@ const EventDetailModal = (props: EventDetailModalProps) => {
             cursor="pointer"
             onClick={() => handleClose()}
           />
-          {isLoading ? (
+          {isLoading || isFetching ? (
             <VStack my="220px" width="full" alignItems="center">
               <LoadingSpinner />
             </VStack>

@@ -7,7 +7,7 @@ interface FormSelectProps
   extends Omit<SelectInputProps, 'selectedOptions' | 'handleSelect'> {
   name: string;
   // eslint-disable-next-line no-unused-vars
-  onSelect?: (option: Option) => void;
+  onSelect?: (option: Option | Option[]) => void;
 }
 
 const FormSelect = (props: FormSelectProps) => {
@@ -24,7 +24,11 @@ const FormSelect = (props: FormSelectProps) => {
       selectedOption={meta.value}
       handleSelect={(option) => {
         props.onSelect && props.onSelect(option);
-        helpers.setValue(option?.value);
+        if (props.isMultiSelect) {
+          helpers.setValue((option as Option[]).map((item) => item.value));
+        } else {
+          helpers.setValue((option as Option)?.value);
+        }
       }}
     />
   );

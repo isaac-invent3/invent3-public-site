@@ -35,11 +35,21 @@ const ROUTES_PERMISSION_KEY: { [name: string]: PermissionKey } = {
   [`/${ROUTES.PROFILE}`]: 'profile',
   [`/${ROUTES.USERS}`]: 'user',
   [`/${ROUTES.USERS}/add`]: 'user:create',
+  [`/${ROUTES.USERS}/directory`]: 'user:create',
+  [`/${ROUTES.USERS}/[id]/edit`]: 'user:edit',
   [`/${ROUTES.AUDIT_LOG}`]: 'audit',
   [`/${ROUTES.ROLES}`]: 'role',
+  [`/${ROUTES.ROLES}/[id]/details`]: 'role',
   [`/${ROUTES.VENDOR}`]: 'vendor',
   [`/${ROUTES.VENDOR}/add`]: 'vendor:create',
   [`/${ROUTES.VENDOR}/[id]/edit`]: 'vendor:edit',
+  [`/${ROUTES.VENDOR}/[id]/edit`]: 'vendor:edit',
+  [`/${ROUTES.COMPANY}`]: 'company',
+  [`/${ROUTES.COMPANY}/[id]/details`]: 'company',
+  [`/${ROUTES.COMPANY}/add`]: 'company:create',
+  [`/${ROUTES.COMPANY}/[id]/edit`]: 'company:edit',
+  [`/${ROUTES.SETTINGS}`]: 'settings',
+  [`/${ROUTES.COMPLIANCE}`]: 'compliance',
 };
 
 function getPathPermissionKey(pathname: string): PermissionKey | undefined {

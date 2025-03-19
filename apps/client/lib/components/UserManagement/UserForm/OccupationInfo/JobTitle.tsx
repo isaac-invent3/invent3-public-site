@@ -24,7 +24,7 @@ const JobTitle = () => {
   return (
     <FormInputWrapper
       sectionMaxWidth="141px"
-      spacing="81px"
+      customSpacing="81px"
       description="Select Job Title"
       title="Job Title"
     >

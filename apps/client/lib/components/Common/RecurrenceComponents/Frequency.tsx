@@ -1,15 +1,14 @@
-import { HStack } from '@chakra-ui/react';
+import { FormInputWrapper, FormSelect } from '@repo/ui/components';
 import React, { useEffect } from 'react';
-import { generateOptions } from '~/lib/utils/helperFunctions';
+import { Option } from '~/lib/interfaces/general.interfaces';
+import { MaintenanceFrequency } from '~/lib/interfaces/maintenance.interfaces';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useGetAllMaintenanceFrequenciesQuery } from '~/lib/redux/services/maintenance/frequency.services';
-import { MaintenanceFrequency } from '~/lib/interfaces/maintenance.interfaces';
 import {
   clearRepeatInterval,
   updateRecurrence,
 } from '~/lib/redux/slices/DateSlice';
-import { Option } from '~/lib/interfaces/general.interfaces';
-import { FormSectionInfo, FormSelect } from '@repo/ui/components';
+import { generateOptions } from '~/lib/utils/helperFunctions';
 
 interface FrequencyProps {
   setMaxInterval: React.Dispatch<React.SetStateAction<number>>;
@@ -60,13 +59,14 @@ const Frequency = (props: FrequencyProps) => {
   }, [dateInfo.recurrence.frequency, data?.data?.items]);
 
   return (
-    <HStack width="full" spacing="29px" mb="32px">
-      <FormSectionInfo
-        title="Repeats"
-        info="Choose how often the occurence will repeat"
-        isRequired={false}
-        maxWidth="130px"
-      />
+    <FormInputWrapper
+      title="Repeats"
+      description="Choose how often the occurence will repeat"
+      isRequired={false}
+      sectionMaxWidth="130px"
+      customSpacing="29px"
+      mb="32px"
+    >
       <FormSelect
         name="repeat"
         title="Repeat"
@@ -81,10 +81,12 @@ const Frequency = (props: FrequencyProps) => {
         showTitleAfterSelect={false}
         onSelect={(option) => {
           dispatch(clearRepeatInterval());
-          dispatch(updateRecurrence({ frequency: option, interval: 1 }));
+          dispatch(
+            updateRecurrence({ frequency: option as Option, interval: 1 })
+          );
         }}
       />
-    </HStack>
+    </FormInputWrapper>
   );
 };
 

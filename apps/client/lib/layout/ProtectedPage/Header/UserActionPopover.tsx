@@ -24,6 +24,7 @@ import {
 import { handleSignOut } from '~/app/actions/authActions';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { ROLE_IDS_ENUM } from '~/lib/utils/constants';
 
 interface ActionButtonProps {
   icon: ComponentWithAs<'svg', IconProps>;
@@ -40,7 +41,12 @@ const ActionButton = (props: ActionButtonProps) => {
       cursor="pointer"
       onClick={handleClick}
     >
-      <Icon as={icon} boxSize="26px" color="neutral.600" rounded="8px" />
+      <Icon
+        as={icon}
+        boxSize={{ base: '20px', md: '26px' }}
+        color="neutral.600"
+        rounded="8px"
+      />
 
       <Text size="md" color="primary.500">
         {name}
@@ -78,30 +84,39 @@ const UserActionPopover = () => {
       >
         <PopoverTrigger>
           <HStack
-            p="7px"
-            pl={0}
+            p={{ md: '7px' }}
+            pl={{ base: 0, md: 0 }}
             height="40px"
+            justifyContent={{ base: 'center', md: 'space-between' }}
+            width={{ base: '40px', md: 'min-content' }}
             rounded="full"
             bgColor="white"
             spacing="20px"
             cursor="pointer"
             textTransform="capitalize"
+            flexShrink={0}
           >
             <HStack spacing="10px">
               <Avatar
+                size={{ base: 'sm', md: 'md' }}
                 width="38px"
                 height="38px"
                 src=""
                 border="2.4px solid white"
                 name={data?.user.name ?? ''}
               />
-              <VStack alignItems="flex-start" spacing="1px">
+              <VStack
+                alignItems="flex-start"
+                spacing="1px"
+                display={{ base: 'none', md: 'flex' }}
+              >
                 <Text
                   color="neutral.800"
                   fontSize="11.18px"
                   lineHeight="13.28px"
                   letterSpacing="0.05em"
                   fontWeight={700}
+                  whiteSpace="nowrap"
                 >
                   {data?.user?.name}
                 </Text>
@@ -123,6 +138,7 @@ const UserActionPopover = () => {
               rounded="full"
               justifyContent="center"
               alignItems="center"
+              display={{ base: 'none', md: 'flex' }}
             >
               <Icon as={ChevronDownIcon} boxSize="7px" />
             </Flex>
@@ -149,22 +165,27 @@ const UserActionPopover = () => {
           }}
         >
           <PopoverHeader
-            py="24px"
+            py={{ base: '12px', md: '24px' }}
             px="20px"
             bgImage="/header-popover-bg.png"
             bgSize="cover"
-            height="98px"
+            height={{ base: '55px', md: '98px' }}
           >
             <HStack spacing="10px">
               <Avatar
-                width="50px"
-                height="50px"
+                width={{ base: '30px', md: '50px' }}
+                height={{ base: '30px', md: '50px' }}
                 src=""
                 border="2.4px solid white"
                 name={data?.user.name ?? ''}
+                size={{ base: 'sm', md: 'md' }}
               />
               <VStack alignItems="flex-start" spacing={0}>
-                <Text color="white" size="lg" fontWeight={700}>
+                <Text
+                  color="white"
+                  size={{ base: 'md', md: 'lg' }}
+                  fontWeight={700}
+                >
                   {data?.user?.name}
                 </Text>
                 <Text
@@ -178,7 +199,7 @@ const UserActionPopover = () => {
               </VStack>
             </HStack>
           </PopoverHeader>
-          <PopoverBody pt="32px" pb="20px" px="20px">
+          <PopoverBody pt={{ base: '16px', md: '32px' }} pb="20px" px="20px">
             <VStack alignItems="flex-start" spacing="8px">
               <ActionButton
                 icon={UserProfileIcon}
@@ -190,12 +211,22 @@ const UserActionPopover = () => {
               />
               <ActionButton
                 icon={Setting2Icon}
-                name="Settings"
+                name="General Settings"
                 handleClick={() => {
-                  router.push('/profile');
+                  router.push('/user-settings');
                   onClose();
                 }}
               />
+              {data?.user.roleIds?.includes(ROLE_IDS_ENUM.CLIENT_ADMIN) && (
+                <ActionButton
+                  icon={Setting2Icon}
+                  name="Admin Settings"
+                  handleClick={() => {
+                    router.push('/settings');
+                    onClose();
+                  }}
+                />
+              )}
               <ActionButton
                 icon={ExitIcon}
                 name="Logout"

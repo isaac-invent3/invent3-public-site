@@ -2,6 +2,7 @@ import {
   Avatar,
   AvatarGroup,
   HStack,
+  Stack,
   StackProps,
   Text,
   VStack,
@@ -30,7 +31,8 @@ interface RoleInfoProps {
 
 const RoleInfo = ({ role }: RoleInfoProps) => {
   return (
-    <HStack
+    <Stack
+      direction={{ base: 'column', md: 'row' }}
       width="full"
       p="16px"
       justifyContent="space-between"
@@ -41,33 +43,40 @@ const RoleInfo = ({ role }: RoleInfoProps) => {
           {role.roleName}
         </Text>
       </InfoWrapper>
-      <HStack spacing="32px">
-        <InfoWrapper label="Modules" minW="126px">
-          <Text color="white" fontWeight={700} size="lg">
-            05
-          </Text>
-        </InfoWrapper>
-        <InfoWrapper label="Accounts" minW="126px">
-          <AvatarGroup size="sm" max={4}>
-            <Avatar name="Ryan Florence" src="https://bit.ly/ryan-florence" />
-            <Avatar name="Segun Adebayo" src="https://bit.ly/sage-adebayo" />
-            <Avatar name="Kent Dodds" src="https://bit.ly/kent-c-dodds" />
-            <Avatar
-              name="Prosper Otemuyiwa"
-              src="https://bit.ly/prosper-baba"
-            />
-            <Avatar name="Christian Nwamba" src="https://bit.ly/code-beast" />
-          </AvatarGroup>
-        </InfoWrapper>
+      <Stack
+        direction={{ base: 'column', md: 'row' }}
+        spacing={{ base: '16px', lg: '32px' }}
+      >
+        <HStack
+          spacing={{ base: '16px', lg: '32px' }}
+          width={{ base: 'full', lg: 'max-content' }}
+          justifyContent="space-between"
+          alignItems="flex-start"
+        >
+          <InfoWrapper label="Modules" minW="126px">
+            <Text color="white" fontWeight={700} size="lg">
+              {role.noOfAssignedSystemModuleContextTypes}
+            </Text>
+          </InfoWrapper>
+          <InfoWrapper label="Accounts" minW="126px">
+            <AvatarGroup size="sm" max={4}>
+              {Array(role.noOfAssociatedUsers)
+                .fill('')
+                .map((_, index) => (
+                  <Avatar name="" src="" key={index} />
+                ))}
+            </AvatarGroup>
+          </InfoWrapper>
+        </HStack>
         <InfoWrapper label="Status" minW="126px">
           <GenericStatusBox
-            text="Active"
-            color="#07CC3B"
+            text={role.currentStatusName}
+            color={role.currentStatusDisplayColorCode}
             textStyles={{ color: 'white' }}
           />
         </InfoWrapper>
-      </HStack>
-    </HStack>
+      </Stack>
+    </Stack>
   );
 };
 

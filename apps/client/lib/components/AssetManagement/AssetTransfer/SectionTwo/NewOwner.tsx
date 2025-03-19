@@ -1,7 +1,7 @@
 import { VStack } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import DetailHeader from '~/lib/components/UI/DetailHeader';
-import EmployeeSelect from '../../../Common/SelectComponents/EmployeeSelect';
+import UserSelect from '../../../Common/SelectComponents/UserSelect';
 import { Employee } from '~/lib/interfaces/user.interfaces';
 import { useGetEmployeeByIdQuery } from '~/lib/redux/services/employees.services';
 import User from '../../Common/User';
@@ -42,11 +42,11 @@ const NewOwner = (props: NewOwnerProps) => {
     >
       <DetailHeader
         variant="secondary"
-        customStyles={{ size: 'lg', fontWeight: 700 }}
+        customStyles={{ size: { base: 'md', md: 'lg' }, fontWeight: 700 }}
       >
         New Owner
       </DetailHeader>
-      <EmployeeSelect
+      <UserSelect
         selectName="newOwnerId"
         selectTitle="User"
         handleSelect={(option) => setSelectedUserId(option.value as number)}

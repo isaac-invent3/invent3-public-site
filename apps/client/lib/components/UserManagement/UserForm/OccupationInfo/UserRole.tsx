@@ -1,6 +1,5 @@
-import { VStack } from '@chakra-ui/react';
-import { ErrorMessage, FormInputWrapper } from '@repo/ui/components';
-import { useField } from 'formik';
+import { Option } from '@repo/interfaces';
+import { FormInputWrapper } from '@repo/ui/components';
 import React, { useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
@@ -12,7 +11,6 @@ import { updateUserForm } from '~/lib/redux/slices/UserSlice';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 const UserRole = () => {
-  const [field, meta, helpers] = useField('userRoleId'); //eslint-disable-line
   const [searchRoles] = useSearchRolesMutation({});
   const dispatch = useAppDispatch();
   const { countryName } = useAppSelector((state) => state.asset.assetForm);
@@ -24,32 +22,32 @@ const UserRole = () => {
   return (
     <FormInputWrapper
       sectionMaxWidth="141px"
-      spacing="81px"
+      customSpacing="81px"
       description="Select User Role"
       title="User Role"
     >
-      <VStack width="full" spacing="4px">
-        <GenericAsyncSelect
-          selectName="roleId"
-          selectTitle="User Role"
-          data={data}
-          labelKey="roleName"
-          valueKey="roleId"
-          defaultInputValue={countryName}
-          mutationFn={searchRoles}
-          isLoading={isLoading}
-          pageNumber={pageNumber}
-          setPageNumber={setPageNumber}
-          handleSelect={(option) => {
-            helpers.setValue(option.value);
-            dispatch(updateUserForm({ userRoleName: option.label }));
-          }}
-        />
-
-        {meta.touched && meta.error !== undefined && (
-          <ErrorMessage>{meta.error}</ErrorMessage>
-        )}
-      </VStack>
+      <GenericAsyncSelect
+        selectName="userRoleIds"
+        selectTitle="User Role"
+        data={data}
+        labelKey="roleName"
+        valueKey="roleId"
+        defaultInputValue={countryName}
+        mutationFn={searchRoles}
+        isLoading={isLoading}
+        pageNumber={pageNumber}
+        setPageNumber={setPageNumber}
+        handleSelect={(option) => {
+          dispatch(
+            updateUserForm({
+              userRoleNames: (option as unknown as Option[]).map(
+                (item) => item.label
+              ),
+            })
+          );
+        }}
+        isMultiSelect
+      />
     </FormInputWrapper>
   );
 };

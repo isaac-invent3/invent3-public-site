@@ -61,22 +61,24 @@ const FormStepper = (props: FormStepperProps) => {
       px="16px"
       bgColor="#B4BFCA80"
       rounded="4px"
+      overflow="auto"
     >
       <Flex
         direction="row"
         alignItems="center"
         justifyContent="space-between"
         w="100%"
-        maxW="95%"
+        maxW={{ lg: '95%' }}
+        mr="16px"
       >
         {steps.map((step, index) => (
           <React.Fragment key={index}>
             <HStack spacing="12px" mr="32px">
-              {currentStep > index && <CompletedIcon />}
-              {currentStep <= index && (
+              {currentStep > index + 1 && <CompletedIcon />}
+              {currentStep <= index + 1 && (
                 <ActiveInactiveIcon
                   boxIndex={index}
-                  active={index === currentStep}
+                  active={index + 1 === currentStep}
                 />
               )}
               <VStack spacing="4px" alignItems="flex-start">
@@ -105,7 +107,8 @@ const FormStepper = (props: FormStepperProps) => {
                 orientation="horizontal"
                 borderWidth="2px"
                 borderColor="neutral.600"
-                w="full"
+                width="full"
+                minW={{ base: '49px', lg: 'initial' }}
                 mr="29px"
                 rounded="full"
               />

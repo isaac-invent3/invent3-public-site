@@ -5,11 +5,19 @@ import Tasks from './Tasks';
 
 const SectionFour = () => {
   return (
-    <HStack width="full" minH="354px">
-      <Flex width="58%" height="full">
+    <HStack width="full" minH="354px" flexDir={{ base: 'column', md: 'row' }}>
+      <Flex
+        width={{ base: 'full', md: '58%' }}
+        height="full"
+        flexDir={{ base: 'column', md: 'row' }}
+      >
         <UpcomingMaintenance />
       </Flex>
-      <Flex width="42%" height="full">
+      <Flex
+        width={{ base: 'full', md: '42%' }}
+        height="full"
+        flexDir={{ base: 'column', md: 'row' }}
+      >
         <Tasks />
       </Flex>
     </HStack>

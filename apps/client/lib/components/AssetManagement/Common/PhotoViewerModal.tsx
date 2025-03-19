@@ -37,7 +37,7 @@ const PhotoViewerModal = (props: PhotoViewerModalProps) => {
       isOpen={isOpen}
       onClose={onClose}
       mainModalStyle={{ size: 'xl', isCentered: true }}
-      contentStyle={{ height: '500px', width: '600px' }}
+      contentStyle={{ height: { base: '400px', md: '500px' }, width: '600px' }}
     >
       <ModalCloseButton p={4} />
       <ModalBody px={8} pt={16}>

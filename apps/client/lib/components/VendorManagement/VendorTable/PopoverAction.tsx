@@ -8,7 +8,6 @@ import usePermissionAccess from '~/lib/hooks/useRoleAccess';
 import { Vendor } from '~/lib/interfaces/vendor.interfaces';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { useDeleteVendorMutation } from '~/lib/redux/services/vendor.services';
-import { setUser } from '~/lib/redux/slices/UserSlice';
 import { setVendor } from '~/lib/redux/slices/VendorSlice';
 import { ROUTES, SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
 
@@ -52,6 +51,7 @@ const PopoverAction = ({ vendor }: PopoverActionProps) => {
           >
             View Details
           </Text>
+          <Text cursor="pointer">Rate a Partner</Text>
           {canEditVendor && (
             <Text
               cursor="pointer"

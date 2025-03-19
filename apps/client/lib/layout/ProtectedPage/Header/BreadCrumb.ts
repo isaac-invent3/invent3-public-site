@@ -88,6 +88,11 @@ const ticketsBreadcrumb: BreadcrumbNode = {
 
 const profileBreadcrumb: BreadcrumbNode = {
   route: `/${ROUTES.PROFILE}`,
+  label: 'Profile',
+};
+
+const userSettingsBreadcrumb: BreadcrumbNode = {
+  route: `/${ROUTES.USER_SETTINGS}`,
   label: 'Settings',
 };
 
@@ -99,6 +104,10 @@ const reportBreadcrumb: BreadcrumbNode = {
 const userManagementBreadcrumb: BreadcrumbNode = {
   route: `/${ROUTES.USERS}`,
   label: 'User Management',
+  children: {
+    add: { label: 'Add User' },
+    edit: { label: 'Edit User' },
+  },
 };
 
 const auditLogBreadcrumb: BreadcrumbNode = {
@@ -126,6 +135,31 @@ const vendorManagementBreadCrumb: BreadcrumbNode = {
   },
 };
 
+const companyManagementBreadCrumb: BreadcrumbNode = {
+  route: `/${ROUTES.COMPANY}`,
+  label: 'Company Management',
+  children: {
+    edit: { label: 'Edit Company' },
+    add: { label: 'Add New Company' },
+    details: { label: 'Company Details' },
+    'data-upload': { label: 'Data Upload' },
+  },
+};
+
+const complianceBreadCrumb: BreadcrumbNode = {
+  route: `/${ROUTES.COMPLIANCE}`,
+  label: 'Compliance',
+};
+const adminSettingsBreadcrumb: BreadcrumbNode = {
+  route: `/${ROUTES.USER_SETTINGS}`,
+  label: 'Admin Settings',
+};
+
+const approvalBreadcrumb: BreadcrumbNode = {
+  route: `/${ROUTES.APPROVAL}`,
+  label: 'Approval Workflow',
+};
+
 const breadcrumbMap: Record<string, BreadcrumbNode> = {
   [ROUTES.DASHBOARD]: dashboardBreadcrumb,
   [ROUTES.ASSETS]: assetsBreadcrumb,
@@ -134,11 +168,6 @@ const breadcrumbMap: Record<string, BreadcrumbNode> = {
   [ROUTES.TICKETS]: ticketsBreadcrumb,
   [ROUTES.PROFILE]: profileBreadcrumb,
   [ROUTES.REPORT]: reportBreadcrumb,
-  [ROUTES.TEMPLATES]: templateBreadcrumb,
-  [ROUTES.USERS]: userManagementBreadcrumb,
-  [ROUTES.ROLES]: roleManagementBreadcrumb,
-  [ROUTES.AUDIT_LOG]: auditLogBreadcrumb,
-  [ROUTES.VENDOR]: vendorManagementBreadCrumb,
 };
 
 const getBreadcrumb = (pathSegments: string[]): breadCrumbRoute[] => {

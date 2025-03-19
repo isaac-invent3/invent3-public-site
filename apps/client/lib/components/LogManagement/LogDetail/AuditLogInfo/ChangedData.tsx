@@ -1,7 +1,11 @@
 import { Text, VStack } from '@chakra-ui/react';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
+import { AuditChanges } from '~/lib/interfaces/log.interfaces';
+import { useAppSelector } from '~/lib/redux/hooks';
+import { useGetAllAuditRecordChangesQuery } from '~/lib/redux/services/log.services';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 interface ChangeLog {
   field: string;
@@ -38,23 +42,34 @@ const changeLog: ChangeLog[] = [
 ];
 
 const ChangedData = () => {
-  const columnHelper = createColumnHelper<ChangeLog>();
+  const auditRecord = useAppSelector((state) => state.auditLog.auditLog);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+  const { data, isLoading, isFetching } = useGetAllAuditRecordChangesQuery(
+    {
+      pageNumber,
+      pageSize,
+      auditRecordId: auditRecord?.auditRecordId!,
+    },
+    { skip: !auditRecord?.auditRecordId }
+  );
+  const columnHelper = createColumnHelper<AuditChanges>();
   const columns = useMemo(
     () => {
       const baseColumns = [
-        columnHelper.accessor('field', {
+        columnHelper.accessor('fieldName', {
           cell: (info) => info.getValue(),
           header: 'Field',
           enableSorting: false,
         }),
 
-        columnHelper.accessor('beforeChange', {
+        columnHelper.accessor('beforeChanges', {
           cell: (info) => info.getValue(),
           header: 'Before Change',
           enableSorting: true,
         }),
 
-        columnHelper.accessor('afterChange', {
+        columnHelper.accessor('afterChanges', {
           cell: (info) => info.getValue(),
           header: 'After Change',
           enableSorting: false,
@@ -73,10 +88,14 @@ const ChangedData = () => {
       </Text>
       <DataTable
         columns={columns}
-        data={changeLog}
-        isLoading={false}
-        isFetching={false}
-        showFooter={false}
+        data={data?.data?.items ?? []}
+        isLoading={isLoading}
+        isFetching={isFetching}
+        showFooter={data?.data && data?.data?.totalPages > 1 ? true : false}
+        pageSize={pageSize}
+        setPageSize={setPageSize}
+        pageNumber={pageNumber}
+        setPageNumber={setPageNumber}
         maxTdWidth="200px"
         customTdStyle={{
           paddingLeft: '16px',

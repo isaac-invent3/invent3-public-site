@@ -3,7 +3,7 @@ import { Map, Marker, Point } from 'pigeon-maps';
 import { useEffect, useState } from 'react';
 import { AssetInRegion } from '~/lib/interfaces/dashboard.interfaces';
 import { useAppSelector } from '~/lib/redux/hooks';
-import { useGetAssetsInRegionQuery } from '~/lib/redux/services/dashboard.services';
+import { useGetAssetsInRegionQuery } from '~/lib/redux/services/dashboard/operationmanager.services';
 import NIGERIA_CORDINATES from '~/lib/utils/NigeriaCordinates';
 import CountMarker from './CountMarker';
 import CardHeader from '../../../Common/CardHeader';

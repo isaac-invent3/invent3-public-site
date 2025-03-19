@@ -1,10 +1,10 @@
-import { Flex, HStack, VStack } from '@chakra-ui/react';
+import { VStack } from '@chakra-ui/react';
 import { useField } from 'formik';
 
 import {
-  SelectableButtonGroup,
   ErrorMessage,
-  FormSectionInfo,
+  FormInputWrapper,
+  SelectableButtonGroup,
 } from '@repo/ui/components';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { useGetAllMaintenanceTypeQuery } from '~/lib/redux/services/maintenance/type.services';
@@ -27,14 +27,13 @@ const Type = (props: TypeProps) => {
   // eslint-disable-next-line no-unused-vars
   const [field, meta, helpers] = useField('typeId');
   return (
-    <HStack width="full" alignItems="flex-start" spacing={spacing}>
-      <Flex width="full" maxW={sectionMaxWidth}>
-        <FormSectionInfo
-          title="Type"
-          info="Select the maintenance type from the options."
-          isRequired
-        />
-      </Flex>
+    <FormInputWrapper
+      sectionMaxWidth={sectionMaxWidth}
+      customSpacing={spacing}
+      title="Type"
+      description="Select the maintenance type from the options."
+      isRequired
+    >
       <VStack width="full" alignItems="flex-start">
         <SelectableButtonGroup
           options={generateOptions(
@@ -56,7 +55,7 @@ const Type = (props: TypeProps) => {
           <ErrorMessage>{meta.error}</ErrorMessage>
         )}
       </VStack>
-    </HStack>
+    </FormInputWrapper>
   );
 };
 

@@ -6,7 +6,7 @@ import {
   PreferenceIcon,
 } from '~/lib/components/CustomIcons/layout';
 import useSignalR from '~/lib/hooks/useSignalR';
-import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
+// import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
 import HeaderIcon from '~/lib/layout/ProtectedPage/Header/HeaderIcon';
 import { useMarkAllNotificationsAsReadMutation } from '~/lib/redux/services/notification.services';
 import NotificationPopover from './Display/NotificationPopover';
@@ -27,11 +27,11 @@ const NotificationComponents = () => {
   const [isMobile] = useMediaQuery('(max-width: 480px)');
   const connectionState = useSignalR('asset-hub');
 
-  useSignalREventHandler({
-    callback: (message) => console.log(message),
-    eventName: 'ReceiveAsset',
-    connectionState,
-  });
+  // useSignalREventHandler({
+  //   callback: (message) => console.log(message),
+  //   eventName: 'ReceiveAsset',
+  //   connectionState,
+  // });
   const [markAllAsReadMutation, { isLoading }] =
     useMarkAllNotificationsAsReadMutation();
 

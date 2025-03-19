@@ -6,8 +6,9 @@ import type {
 import { fetchBaseQuery } from '@reduxjs/toolkit/query';
 import { getSession } from 'next-auth/react';
 import { handleSignOut } from '~/app/actions/authActions';
+import { NEXT_PUBLIC_BASE_URL } from '~/app/actions/publicVars';
 
-const baseURL = process.env.NEXT_PUBLIC_API_URL;
+const baseURL = NEXT_PUBLIC_BASE_URL;
 
 const baseQuery = fetchBaseQuery({
   baseUrl: `${baseURL}`,

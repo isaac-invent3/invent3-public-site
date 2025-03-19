@@ -7,7 +7,7 @@ import { fetchBaseQuery } from '@reduxjs/toolkit/query';
 import { getSession } from 'next-auth/react';
 import { handleSignOut } from '~/app/actions/authActions';
 
-const baseURL = 'https://aggressive-bells.pipeops.app/api';
+const baseURL = process.env.NEXTAUTH_SECRET;
 
 const baseQuery = fetchBaseQuery({
   baseUrl: `${baseURL}`,

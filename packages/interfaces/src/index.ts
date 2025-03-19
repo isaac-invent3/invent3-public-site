@@ -10,4 +10,5 @@ export type {
   ListResponse,
   BaseApiResponse,
   BaseEntity,
+  DeleteRecordQuery,
 } from './api';

@@ -2,32 +2,36 @@
 
 import {
   Flex,
-  Tabs,
-  TabList,
-  TabPanels,
   Tab,
+  TabList,
   TabPanel,
+  TabPanels,
+  Tabs,
   useDisclosure,
   useMediaQuery,
 } from '@chakra-ui/react';
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import Filters from './Filters';
 import Header from './Header';
 import ListView from './ListView';
-import Filters from './Filters';
 // import MapView from './MapView';
 import { useRouter, useSearchParams } from 'next/navigation';
+import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import { ROUTES } from '~/lib/utils/constants';
 
 const AssetManagement = () => {
   const [search, setSearch] = useState('');
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
+    const { getSearchParam } = useCustomSearchParams();
   const searchParams = useSearchParams();
   const [tabIndex, setTabIndex] = useState(0);
   const [activeFilter, setActiveFilter] = useState<'bulk' | 'general' | null>(
     null
   );
   const [isDesktop] = useMediaQuery('(min-width: 768px)');
+    const assetClassId = getSearchParam('assetClassId');
+
 
   // Handles Toggling the  Filter
   useEffect(() => {
@@ -69,7 +73,7 @@ const AssetManagement = () => {
           <Flex width="full" position="relative">
             <TabList mx={{ base: '16px', md: 0 }} width="full">
               <Tab>List View</Tab>
-              {isDesktop && <Tab>Map View</Tab>}
+              {isDesktop && !assetClassId && <Tab>Map View</Tab>}
             </TabList>
             {tabIndex === 0 && (
               <Flex

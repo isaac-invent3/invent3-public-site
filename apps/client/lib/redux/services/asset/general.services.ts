@@ -1,6 +1,4 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
 import {
   BaseApiResponse,
   ListResponse,
@@ -10,20 +8,24 @@ import {
 import {
   AcquisitionInfo,
   Asset,
+  AssetCountByColumnName,
   AssetStatus,
   CreateAssetPayload,
   MeanTimeComputation,
   UpdateAssetPayload,
+  ValidColumnNames,
 } from '~/lib/interfaces/asset/general.interface';
-import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
-import {
-  AssetTransfer,
-  AssetTransferQuery,
-} from '~/lib/interfaces/asset/transfer.interfaces';
 import {
   AssetImage,
   AssetImageQuery,
 } from '~/lib/interfaces/asset/image.interfaces';
+import {
+  AssetTransfer,
+  AssetTransferQuery,
+} from '~/lib/interfaces/asset/transfer.interfaces';
+import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
+import { generateQueryStr } from '~/lib/utils/queryGenerator';
+import baseQueryWithReauth from '../../baseQueryWithReauth';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -144,6 +146,31 @@ export const assetApi = createApi({
         headers: getHeaders(),
       }),
     }),
+
+    getAssetCountByColumnName: builder.query<
+      BaseApiResponse<AssetCountByColumnName[]>,
+      ValidColumnNames
+    >({
+      query: (columnName) => ({
+        url: generateQueryStr(`/Assets/GetAssetCountByColumnName?`, {
+          columnName,
+        }),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+
+    getAssetsByColumnId: builder.query<
+      BaseApiResponse<ListResponse<Asset>>,
+      { columnId: number; columnName: ValidColumnNames } & QueryParams
+    >({
+      query: ({ columnId, ...data }) => ({
+        url: generateQueryStr(`/Assets/GetAssetsByColumnId/${columnId}?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+
     createAsset: builder.mutation<BaseApiResponse<Asset>, CreateAssetPayload>({
       query: (body) => ({
         url: `/Invent3Pro/Assets/Create`,
@@ -261,4 +288,6 @@ export const {
   useExportAssetMutation,
   useDownloadAssetQuery,
   useAssetMeanTimeComputationQuery,
+  useGetAssetCountByColumnNameQuery,
+  useGetAssetsByColumnIdQuery,
 } = assetApi;

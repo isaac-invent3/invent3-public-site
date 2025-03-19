@@ -1,5 +1,6 @@
 import {
   Collapse,
+  Box,
   ComponentWithAs,
   HStack,
   Icon,
@@ -21,10 +22,11 @@ interface NavItemProps {
   isCollapse: boolean;
   children?: sidebarChildren[];
   hasAnyChildren?: boolean;
+  count?: number;
 }
 
 const NavItem = (props: NavItemProps) => {
-  const { name, route, icon, isCollapse, children, hasAnyChildren } = props;
+  const { name, route, icon, isCollapse, children, hasAnyChildren, count } = props;
   const { isOpen, onToggle } = useDisclosure();
   const path = usePathname();
   const splittedPathname = path.split('/');
@@ -43,6 +45,32 @@ const NavItem = (props: NavItemProps) => {
       px="12px"
       alignItems={hasAnyChildren ? 'flex-start' : 'center'}
     >
+      {count && (
+        <Box
+          bgColor="#17A1FA"
+          border="1px solid #0E2642"
+          borderRadius="100%"
+          width="18px"
+          height="18px"
+          position="absolute"
+          right={isCollapse ? 0.5 : 1}
+          top={isCollapse ? 0.5 : 1}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Text
+            as="span"
+            color="#42403D"
+            fontWeight={700}
+            fontSize="10px"
+            lineHeight="11.88px"
+          >
+            {count}
+          </Text>
+        </Box>
+      )}
+
       <HStack
         rounded="8px"
         bgColor={

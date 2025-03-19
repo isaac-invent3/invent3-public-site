@@ -272,6 +272,7 @@ const ROUTES = {
   USER_SETTINGS: 'user-settings',
   COMPLIANCE: 'compliance',
   FEEDBACK:'feedback'
+  APPROVAL:'approval-flow'
 };
 
 const SYSTEM_CONTEXT_DETAILS: Record<ContextKey, SystemContextDetail> = {

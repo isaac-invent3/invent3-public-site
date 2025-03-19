@@ -901,9 +901,5 @@ export {
   UserProfileIcon,
   VendorManagementIcon,
   FeedbackIcon,
-  MinusIcon,
-  PlusIcon,
-  InfoIcon,
-  CompanyIcon,
-  ShuffleIcon
+  ShuffleIcon,
 };

@@ -185,6 +185,8 @@ const SYSTEM_CONTEXT_TYPE = {
   VENDOR: 68,
   AUDIT: 73,
   COMPANY: 17,
+  TEMPLATES: 65,
+  ROLES: 56,
 };
 
 const ROUTES = {

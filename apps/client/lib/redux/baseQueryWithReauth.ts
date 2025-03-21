@@ -6,6 +6,7 @@ import type {
 import { fetchBaseQuery } from '@reduxjs/toolkit/query';
 import { getSession } from 'next-auth/react';
 import { handleSignOut } from '~/app/actions/authActions';
+export const dynamic = 'force-dynamic';
 
 const baseURL = process.env.NEXT_PUBLIC_API_URL;
 

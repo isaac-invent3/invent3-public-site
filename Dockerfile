@@ -33,6 +33,12 @@ COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
 COPY entrypoint.sh .
 COPY .env .
+
+# Execute script
+RUN apk add --no-cache --upgrade bash
+RUN ["chmod", "+x", "./entrypoint.sh"]
+ENTRYPOINT ["./entrypoint.sh"]
+
 # Uncomment and use build args to enable remote caching
 # ARG TURBO_TEAM
 # ENV TURBO_TEAM=$TURBO_TEAM

@@ -14,7 +14,7 @@ COPY . .
 RUN turbo prune --scope=client --docker
 
 FROM base AS installer
-RUN apk update
+RUN apk update --no-cache
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
@@ -38,8 +38,9 @@ COPY turbo.json turbo.json
 
 # ARG TURBO_TOKEN
 # ENV TURBO_TOKEN=$TURBO_TOKEN
+ENV TURBO_NO_CACHE=1
 
-RUN turbo run build --filter=client...
+RUN turbo run build --filter=client... --force
 
 FROM base AS runner
 WORKDIR /app

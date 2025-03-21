@@ -4,6 +4,7 @@ import { ROUTES } from './constants';
 const ROUTES_PERMISSION_KEY: { [name: string]: PermissionKey } = {
   [`/${ROUTES.DASHBOARD}`]: 'dashboard',
   [`/${ROUTES.ASSETS}`]: 'asset',
+  [`/${ROUTES.ASSETS}/asset-count`]: 'asset',
   [`/${ROUTES.ASSETS}/add`]: 'asset:create',
   [`/${ROUTES.ASSETS}/[id]/edit`]: 'asset:edit',
   [`/${ROUTES.ASSETS}/[id]/dispose`]: 'asset:dispose',
@@ -50,6 +51,8 @@ const ROUTES_PERMISSION_KEY: { [name: string]: PermissionKey } = {
   [`/${ROUTES.COMPANY}/[id]/edit`]: 'company:edit',
   [`/${ROUTES.SETTINGS}`]: 'settings',
   [`/${ROUTES.COMPLIANCE}`]: 'compliance',
+  [`/${ROUTES.APPROVAL}`]: 'approval',
+  [`/${ROUTES.APPROVAL}/[id]`]: 'approval',
 };
 
 function getPathPermissionKey(pathname: string): PermissionKey | undefined {

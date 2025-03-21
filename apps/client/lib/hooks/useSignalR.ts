@@ -6,6 +6,10 @@ import {
 } from '@microsoft/signalr';
 import { useSession } from 'next-auth/react';
 import { useEffect, useRef, useState } from 'react';
+import { env } from 'next-runtime-env';
+
+const NEXT_PUBLIC_API_URL = env('NEXT_PUBLIC_API_URL');
+const baseURL = NEXT_PUBLIC_API_URL;
 
 export interface SignalRConnectionState {
   connection: HubConnection | null;
@@ -24,7 +28,7 @@ const useSignalR = (path: string = 'notification-hub') => {
   const { data: session } = useSession();
 
   const hubConnection = new HubConnectionBuilder()
-    .withUrl(`https://localhost:54728/Invent3Pro/${path}`, {
+    .withUrl(`https://${baseURL}/Invent3Pro/${path}`, {
       withCredentials: false,
       headers: {
         Authorization: `Bearer ${session?.user.accessToken}`,

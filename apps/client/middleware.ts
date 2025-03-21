@@ -5,6 +5,12 @@ import { encode, getToken, JWT } from 'next-auth/jwt';
 import { ROLE_IDS_ENUM } from './lib/utils/constants';
 // import { validateTenant } from './app/actions/validateTenantAction';
 
+// import { env } from 'next-runtime-env';
+
+// const NEXT_PUBLIC_API_URL = env('NEXT_PUBLIC_API_URL');
+// const NEXT_PUBLIC_BASE_URL = env('NEXT_PUBLIC_BASE_URL');
+// const NEXTAUTH_SECRET = env('NEXTAUTH_SECRET');
+
 const publicRoutes = [
   '/',
   '/signin',

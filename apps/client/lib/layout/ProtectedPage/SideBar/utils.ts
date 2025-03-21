@@ -8,6 +8,7 @@ import {
   FeedbackIcon,
   MaintenanceIcon,
   RoleManagementIcon,
+  ShuffleIcon,
   TaskIcon,
   TemplateIcon,
   TicketIcon,
@@ -62,6 +63,16 @@ const clientSideBarData: SideBarData[] = [
     icon: AssetManagementIcon,
     permissionKey: 'asset',
     contextId: SYSTEM_CONTEXT_TYPE.ASSETS,
+    children: [
+      {
+        name: 'Asset Management',
+        route: ROUTES.ASSETS,
+      },
+      {
+        name: 'Asset Count',
+        route: `${ROUTES.ASSETS}/asset-count`,
+      },
+    ],
     description:
       'Organize, track, and optimize asset lifecycles for efficiency and cost savings.',
   },
@@ -97,6 +108,13 @@ const clientSideBarData: SideBarData[] = [
     icon: AnalyticsIcon,
     permissionKey: 'report',
     description: `Analyze and visualize data to make informed decisions and drive business growth.`,
+  },
+  {
+    name: 'Approval Flow',
+    route: ROUTES.APPROVAL,
+    icon: ShuffleIcon,
+    permissionKey: 'approval',
+    description: 'Approval Workflow of the system.',
   },
   {
     name: 'Template Management',
@@ -172,8 +190,7 @@ const clientSideBarData: SideBarData[] = [
     route: ROUTES.FEEDBACK,
     icon: FeedbackIcon,
     permissionKey: 'feedback',
-    description:
-      'Manage Feedback of the system.',
+    description: 'Manage Feedback of the system.',
   },
 ];
 

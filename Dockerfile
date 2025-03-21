@@ -14,7 +14,7 @@ COPY . .
 RUN turbo prune --scope=client --docker
 
 FROM base AS installer
-RUN apk update --no-cache
+RUN apk update
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
@@ -31,16 +31,17 @@ RUN pnpm install
 # Build the project and its dependencies
 COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
-
+COPY entrypoint.sh .
+COPY .env.production .
+COPY .env .
 # Uncomment and use build args to enable remote caching
 # ARG TURBO_TEAM
 # ENV TURBO_TEAM=$TURBO_TEAM
 
 # ARG TURBO_TOKEN
 # ENV TURBO_TOKEN=$TURBO_TOKEN
-ENV TURBO_NO_CACHE=1
 
-RUN turbo run build --filter=client... --force
+RUN turbo run build --filter=client...
 
 FROM base AS runner
 WORKDIR /app

@@ -2,6 +2,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata } from 'next';
 import AppProviders from '~/lib/layout/Provider';
 import './globals.css';
+import { PublicEnvScript } from 'next-runtime-env';
 
 const APP_NAME = 'Invent3';
 const DESCRIPTION = 'Assest Management Software';
@@ -23,6 +24,9 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <PublicEnvScript />
+      </head>
       <body>
         <AppProviders>{children}</AppProviders>
         <SpeedInsights />

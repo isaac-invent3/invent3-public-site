@@ -225,6 +225,9 @@ importers:
       next-redux-wrapper:
         specifier: ^8.1.0
         version: 8.1.0(next@14.3.0-canary.87(@babel/core@7.9.0)(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1))(react-redux@9.2.0(@types/react@18.3.18)(react@19.0.0-rc.1)(redux@5.0.1))(react@19.0.0-rc.1)
+      next-runtime-env:
+        specifier: ^3.2.2
+        version: 3.2.2(next@14.3.0-canary.87(@babel/core@7.9.0)(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1))(react@19.0.0-rc.1)
       nextjs:
         specifier: ^0.0.3
         version: 0.0.3
@@ -7510,6 +7513,12 @@ packages:
       next: '>=9'
       react: '*'
       react-redux: '*'
+
+  next-runtime-env@3.2.2:
+    resolution: {integrity: sha512-S5S6NxIf3XeaVc9fLBN2L5Jzu+6dLYCXeOaPQa1RzKRYlG2BBayxXOj6A4VsciocyNkJMazW1VAibtbb1/ZjAw==}
+    peerDependencies:
+      next: ^14
+      react: ^18
 
   next-tick@1.1.0:
     resolution: {integrity: sha512-CXdUiJembsNjuToQvxayPZF9Vqht7hewsvy2sOWafLvi2awflj9mOC6bHIg50orX8IJvWKY9wYQ/zB2kogPslQ==}
@@ -19888,6 +19897,11 @@ snapshots:
       next: 14.3.0-canary.87(@babel/core@7.9.0)(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1)
       react: 19.0.0-rc.1
       react-redux: 9.2.0(@types/react@18.3.18)(react@19.0.0-rc.1)(redux@5.0.1)
+
+  next-runtime-env@3.2.2(next@14.3.0-canary.87(@babel/core@7.9.0)(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1))(react@19.0.0-rc.1):
+    dependencies:
+      next: 14.3.0-canary.87(@babel/core@7.9.0)(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1)
+      react: 19.0.0-rc.1
 
   next-tick@1.1.0: {}
 

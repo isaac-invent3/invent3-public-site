@@ -7,8 +7,10 @@ import { fetchBaseQuery } from '@reduxjs/toolkit/query';
 import { getSession } from 'next-auth/react';
 import { handleSignOut } from '~/app/actions/authActions';
 export const dynamic = 'force-dynamic';
+import { env } from 'next-runtime-env';
 
-const baseURL = process.env.NEXT_PUBLIC_API_URL;
+const NEXT_PUBLIC_API_URL = env('NEXT_PUBLIC_API_URL');
+const baseURL = NEXT_PUBLIC_API_URL;
 
 const baseQuery = fetchBaseQuery({
   baseUrl: `${baseURL}`,

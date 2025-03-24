@@ -3,12 +3,16 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { signIn } from 'next-auth/react';
 
+import { env } from 'next-runtime-env';
+
+const NEXT_PUBLIC_API_URL = env('NEXT_PUBLIC_API_URL');
+
 const SSOLogin = () => {
   const [googleLoading, setGoogleLoading] = useState(false);
   const handleGoogleSignin = async () => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/Invent3Pro/login/google-login-url`
+        `${NEXT_PUBLIC_API_URL}/Invent3Pro/login/google-login-url`
       );
       const { data } = await response.json();
       window.location.href = data?.url;
@@ -27,7 +31,7 @@ const SSOLogin = () => {
       setGoogleLoading(true);
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/Invent3Pro/login/redirect`,
+          `${NEXT_PUBLIC_API_URL}/Invent3Pro/login/redirect`,
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

@@ -35,9 +35,21 @@ const SSOLogin = () => {
         );
 
         const { data } = await res.json();
-        await signIn('google', { ...data, callbackUrl: '/dashboard' });
+        // Manually set the session using the NextAuth session update method
+        const response = await fetch('/api/auth/session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+
+        if (response.ok) {
+          window.location.href = '/dashboard'; // Redirect manually
+        } else {
+          throw new Error('Failed to update session');
+        }
       } catch (error) {
         console.error('Error handling Google callback:', error);
+      } finally {
         setGoogleLoading(false);
       }
     }

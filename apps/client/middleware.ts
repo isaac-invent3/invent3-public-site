@@ -192,6 +192,11 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next();
     }
 
+    // Redirect to Dashboard for public routes
+    if (publicRoutes.includes(pathname)) {
+      return NextResponse.redirect(new URL(`/dashboard`, request.url));
+    }
+
     const permissionData = await checkPermission({ path: pathname });
 
     if (
@@ -208,15 +213,9 @@ export async function middleware(request: NextRequest) {
       JSON.stringify(permissionData?.permissionKeys)
     );
 
-    if (publicRoutes.includes(pathname)) {
-      return NextResponse.redirect(new URL(`/dashboard`, request.url));
-    }
     return response;
   }
 
-  if (publicRoutes.includes(pathname)) {
-    return response;
-  }
   return NextResponse.redirect(
     new URL(`/signin?ref=${request.nextUrl.pathname}`, request.url)
   );

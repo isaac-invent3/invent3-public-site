@@ -106,6 +106,7 @@ export const config = {
         if (credentials.accessToken) {
           return {
             ...credentials,
+            expiresIn: +credentials?.expiresIn,
             sessionId: +credentials?.sessionId,
             userId: +credentials?.userId,
             companyId: +credentials?.companyId,

@@ -96,16 +96,24 @@ export const config = {
           type: 'password',
         },
       },
-      async authorize(credentials, request) {
-        const payload = {
-          username: credentials.username,
-          password: credentials.password,
-        };
+      async authorize(credentials: Record<string, any>, request) {
         const baseUrl = new URL(request.headers.get('origin') ?? '');
         const envUrl = new URL(process.env.NEXT_PUBLIC_BASE_URL ?? '');
         const subdomain = baseUrl.hostname.split('.')[0];
         const hasSubdomain =
           baseUrl.hostname !== envUrl.hostname ? subdomain : null;
+
+        if (credentials.accessToken) {
+          return {
+            ...credentials,
+            username: credentials.username,
+            companySlug: hasSubdomain ? subdomain : null,
+          };
+        }
+        const payload = {
+          username: credentials.username,
+          password: credentials.password,
+        };
 
         // external api for users to log in
         const res = await fetch(

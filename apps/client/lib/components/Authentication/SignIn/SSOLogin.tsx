@@ -1,14 +1,21 @@
-import { Box, Button, HStack } from '@chakra-ui/react';
+import { Box, Button, HStack, useToast } from '@chakra-ui/react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { signIn } from 'next-auth/react';
 
 import { env } from 'next-runtime-env';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { ROUTES } from '~/lib/utils/constants';
 
 const NEXT_PUBLIC_API_URL = env('NEXT_PUBLIC_API_URL');
 
 const SSOLogin = () => {
   const [googleLoading, setGoogleLoading] = useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const ref = searchParams.get('ref');
+  const toast = useToast();
+
   const handleGoogleSignin = async () => {
     try {
       const response = await fetch(
@@ -35,18 +42,22 @@ const SSOLogin = () => {
         );
 
         const { data } = await res.json();
-        // Manually set the session using the NextAuth session update method
-        const response = await fetch('/api/auth/session', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
-        });
+        if (!data.accessToken) throw new Error('No access token received');
 
-        if (response.ok) {
-          window.location.href = '/dashboard'; // Redirect manually
-        } else {
-          throw new Error('Failed to update session');
-        }
+        // Store user data in NextAuth session
+        const result = await signIn('credentials', {
+          ...data,
+          redirect: false,
+        });
+        if (result?.error) throw new Error(result.error);
+        toast({
+          title: 'Success',
+          description: 'Login Successful',
+          status: 'success',
+          position: 'top-right',
+          duration: 2000,
+        });
+        router.push(ref ?? `/${ROUTES.DASHBOARD}`);
       } catch (error) {
         console.error('Error handling Google callback:', error);
       } finally {

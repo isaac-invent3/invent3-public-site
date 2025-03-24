@@ -33,7 +33,7 @@ RUN pnpm install
 COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
 COPY entrypoint.sh .
-COPY .env .
+# COPY .env .
 
 # Execute script
 RUN apk add --no-cache --upgrade bash

@@ -35,7 +35,7 @@ const SSOLogin = () => {
         );
 
         const { data } = await res.json();
-        await signIn('google', data);
+        await signIn('google', { ...data, callbackUrl: '/dashboard' });
       } catch (error) {
         console.error('Error handling Google callback:', error);
         setGoogleLoading(false);

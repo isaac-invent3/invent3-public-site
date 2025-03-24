@@ -31,15 +31,10 @@ const SSOLogin = () => {
       setGoogleLoading(true);
       try {
         const res = await fetch(
-          `${NEXT_PUBLIC_API_URL}/Invent3Pro/login/redirect`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ code, state }),
-          }
+          `${NEXT_PUBLIC_API_URL}/Invent3Pro/login/redirect?code=${code}&state=${state}`
         );
 
-        const data = await res.json();
+        const { data } = await res.json();
         await signIn('google', data);
       } catch (error) {
         console.error('Error handling Google callback:', error);

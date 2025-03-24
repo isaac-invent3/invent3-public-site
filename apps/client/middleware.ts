@@ -216,6 +216,9 @@ export async function middleware(request: NextRequest) {
     return response;
   }
 
+  if (publicRoutes.includes(pathname)) {
+    return response;
+  }
   return NextResponse.redirect(
     new URL(`/signin?ref=${request.nextUrl.pathname}`, request.url)
   );

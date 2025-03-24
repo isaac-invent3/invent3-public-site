@@ -1,17 +1,65 @@
 import { Box, Button, HStack } from '@chakra-ui/react';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { signIn } from 'next-auth/react';
 
 const SSOLogin = () => {
+  const [googleLoading, setGoogleLoading] = useState(false);
+  const handleGoogleSignin = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/Invent3Pro/login/google-login-url`
+      );
+      const { data } = await response.json();
+      window.location.href = data?.url;
+    } catch (error) {
+      console.error('An error occurred during logout:', error);
+    } finally {
+    }
+  };
+
+  const handleGoogleCallback = async () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    const state = urlParams.get('state');
+
+    if (code) {
+      setGoogleLoading(true);
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/Invent3Pro/login/redirect`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ code, state }),
+          }
+        );
+
+        const data = await res.json();
+        await signIn('google', data);
+      } catch (error) {
+        console.error('Error handling Google callback:', error);
+        setGoogleLoading(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    handleGoogleCallback();
+  }, []);
+
   const providers = [
     {
       image: '/office-365.png',
       label: 'Login 365',
       action: () => {},
+      isLoading: false,
     },
     {
       image: '/google.png',
       label: 'Google',
-      action: () => {},
+      action: () => handleGoogleSignin(),
+      isLoading: googleLoading,
     },
   ];
 
@@ -30,6 +78,8 @@ const SSOLogin = () => {
           fontSize="14px"
           lineHeight="16.63px"
           gap="8px"
+          onClick={() => provider.action()}
+          isLoading={provider.isLoading}
         >
           <Box position="relative" width="20px" height="20px">
             <Image src={provider.image} alt={`${provider.label}-image`} fill />

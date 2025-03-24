@@ -106,6 +106,13 @@ export const config = {
         if (credentials.accessToken) {
           return {
             ...credentials,
+            sessionId: +credentials?.sessionId,
+            userId: +credentials?.userId,
+            companyId: +credentials?.companyId,
+            roleIds: JSON.parse(credentials?.roleIds),
+            roleSystemModuleContextPermissions: JSON.parse(
+              credentials?.roleSystemModuleContextPermissions
+            ),
             username: credentials.username,
             companySlug: hasSubdomain ? subdomain : null,
           };

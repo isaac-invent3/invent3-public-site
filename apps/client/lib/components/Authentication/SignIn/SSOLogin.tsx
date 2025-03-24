@@ -47,6 +47,10 @@ const SSOLogin = () => {
         // Store user data in NextAuth session
         const result = await signIn('credentials', {
           ...data,
+          roleIds: JSON.stringify(data?.roleIds),
+          roleSystemModuleContextPermissions: JSON.stringify(
+            data?.roleSystemModuleContextPermissions
+          ),
           redirect: false,
         });
         if (result?.error) throw new Error(result.error);

@@ -5,7 +5,7 @@ services:
     container_name: client
     build:
       context: .
-      dockerfile: ./apps/client/Dockerfile
+      dockerfile: ./Dockerfile
     restart: always
     ports:
       - 3000:3000

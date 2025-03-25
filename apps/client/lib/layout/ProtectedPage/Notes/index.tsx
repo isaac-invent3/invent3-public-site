@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from 'react';
 import Draggable, { DraggableEventHandler } from 'react-draggable';
 import { FolderIcon } from '~/lib/components/CustomIcons';
 import AllNotes from '~/lib/components/Notes/AllNotes';
+import useFormatUrl from '~/lib/hooks/useFormatUrl';
+import useParseUrlData from '~/lib/hooks/useParseUrl';
 
 interface NotesProps {
   isCollapse: boolean;
@@ -12,12 +14,14 @@ interface NotesProps {
 const Notes = (props: NotesProps) => {
   const { isCollapse } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const formattedUrl = useFormatUrl();
+  const data = useParseUrlData(formattedUrl);
 
   const componentWidth = 100;
   const componentHeight = 40;
 
   const initialX = window.innerWidth - componentWidth - 40;
-  const initialY = window.innerHeight *0.9;
+  const initialY = window.innerHeight * 0.9;
 
   const OPEN_SIDEBAR_POSITION = 260;
 
@@ -76,7 +80,7 @@ const Notes = (props: NotesProps) => {
           pos="fixed"
           w="100px"
           h="40px"
-          display="flex"
+          display={data?.systemContextId ? 'flex' : 'none'}
           alignItems="center"
           rounded="30px"
           gap="8px"

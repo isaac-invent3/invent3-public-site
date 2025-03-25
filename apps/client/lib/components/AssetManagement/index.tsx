@@ -14,7 +14,7 @@ import { useEffect, useMemo, useState } from 'react';
 import Filters from './Filters';
 import Header from './Header';
 import ListView from './ListView';
-// import MapView from './MapView';
+import MapView from './MapView';
 import { useRouter, useSearchParams } from 'next/navigation';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import { ROUTES } from '~/lib/utils/constants';
@@ -23,15 +23,14 @@ const AssetManagement = () => {
   const [search, setSearch] = useState('');
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
-    const { getSearchParam } = useCustomSearchParams();
+  const { getSearchParam } = useCustomSearchParams();
   const searchParams = useSearchParams();
   const [tabIndex, setTabIndex] = useState(0);
   const [activeFilter, setActiveFilter] = useState<'bulk' | 'general' | null>(
     null
   );
   const [isDesktop] = useMediaQuery('(min-width: 768px)');
-    const assetClassId = getSearchParam('assetClassId');
-
+  const assetClassId = getSearchParam('assetClassId');
 
   // Handles Toggling the  Filter
   useEffect(() => {
@@ -106,7 +105,7 @@ const AssetManagement = () => {
                 search={search}
               />
             </TabPanel>
-            {/* <TabPanel>{tabIndex === 1 && <MapView />}</TabPanel> */}
+            <TabPanel>{tabIndex === 1 && <MapView />}</TabPanel>
           </TabPanels>
         </Tabs>
       </Flex>

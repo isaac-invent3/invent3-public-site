@@ -13,7 +13,6 @@ import {
 } from '~/lib/components/CustomIcons/layout';
 import CompanyPageHeader from '~/lib/components/CompanyManagement/CompanyPageHeader';
 import Notes from './Notes';
-import { HamburgerIcon } from '~/lib/components/CustomIcons';
 
 interface ProtectedLayoutProps {
   children: React.ReactNode;

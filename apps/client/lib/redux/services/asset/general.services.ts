@@ -261,7 +261,7 @@ export const assetApi = createApi({
       { monthId: number }
     >({
       query: (data) => ({
-        url: generateQueryStr(`/Assets/Assets/MeantimeComputations?`, data),
+        url: generateQueryStr(`/Assets/MeantimeComputations?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),

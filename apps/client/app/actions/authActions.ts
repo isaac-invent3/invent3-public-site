@@ -37,7 +37,7 @@ export async function handleCredentialsSignin({
 }
 
 export async function handleSignOut(ref?: string) {
-  const redirectUrl = ref ? `/signin?ref=${ref}` : '/';
+  const redirectUrl = ref ? `/signin?ref=${ref}` : '/signin';
   try {
     const session = await auth();
     if (!session) {

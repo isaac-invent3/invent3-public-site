@@ -226,5 +226,25 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api/|_next/|_static/|_vercel|fonts/|[\\w-]+\\.\\w+).*)'],
+  matcher: [
+    '/',
+    '/signin',
+    '/forgot-password',
+    '/dashboard',
+    '/approval-flow/:path*',
+    '/asset-management/:path*',
+    '/maintenance/:path*',
+    '/task-management/:path*',
+    '/ticket-management/:path*',
+    '/template-management/:path*',
+    '/report-analytics/:path*',
+    '/role-management/:path*',
+    '/user-management/:path*',
+    '/vendor-management/:path*',
+    '/log-management/:path*',
+    '/company-management/:path*',
+    '/compliance/:path*',
+    '/feedback/:path*',
+    '/report-analytics/:path*',
+  ],
 };

@@ -63,7 +63,7 @@ type SubModuleKey =
   | 'asset:raise_ticket'
   | 'maintenance:plan_create'
   | 'maintenance:plan_edit'
-  | 'maintenance_plan:delete'
+  | 'maintenance:plan_delete'
   | 'maintenance:schedule_create'
   | 'maintenance:schedule_edit'
   | 'maintenance:schedule_delete'

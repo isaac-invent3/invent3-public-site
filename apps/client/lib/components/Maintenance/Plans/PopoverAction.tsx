@@ -9,6 +9,7 @@ import { useDeleteMaintenancePlanMutation } from '~/lib/redux/services/maintenan
 import { getSession } from 'next-auth/react';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import { ROUTES, SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
+import usePermissionAccess from '~/lib/hooks/useRoleAccess';
 
 const PopoverAction = (
   plan: MaintenancePlan,
@@ -23,6 +24,8 @@ const PopoverAction = (
   const { handleSubmit } = useCustomMutation();
   const { updateSearchParam } = useCustomSearchParams();
   const [deletePlan, { isLoading }] = useDeleteMaintenancePlanMutation({});
+  const canEditPlan = usePermissionAccess('maintenance:plan_edit');
+  const canDeletePlan = usePermissionAccess('maintenance:plan_delete');
 
   const handleDeletePlan = async () => {
     const session = await getSession();
@@ -40,7 +43,7 @@ const PopoverAction = (
     <>
       <GenericPopover width="129px" placement="bottom-start">
         <VStack width="full" alignItems="flex-start" spacing="16px">
-          {type === 'current' && (
+          {type === 'current' && canEditPlan && (
             <Text
               cursor="pointer"
               as="a"
@@ -60,7 +63,7 @@ const PopoverAction = (
           >
             View
           </Text>
-          {type === 'current' && (
+          {type === 'current' && canDeletePlan && (
             <Text cursor="pointer" onClick={onOpenDelete} color="#F50000">
               Delete
             </Text>

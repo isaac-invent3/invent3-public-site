@@ -14,6 +14,7 @@ import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 import { ChevronDownIcon } from '~/lib/components/CustomIcons';
 import { sidebarChildren } from '~/lib/interfaces/general.interfaces';
+import { env } from 'next-runtime-env';
 
 interface NavItemProps {
   name: string;
@@ -26,16 +27,16 @@ interface NavItemProps {
 }
 
 const NavItem = (props: NavItemProps) => {
-  const { name, route, icon, isCollapse, children, hasAnyChildren, count } = props;
+  const { name, route, icon, isCollapse, children, hasAnyChildren, count } =
+    props;
   const { isOpen, onToggle } = useDisclosure();
   const path = usePathname();
   const splittedPathname = path.split('/');
   const { data, update } = useSession();
+  const NEXT_PUBLIC_BASE_URL = env(`NEXT_PUBLIC_BASE_URL`);
 
   //For nav items with children
-  const fullPath = window.location.href.split(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/`
-  );
+  const fullPath = window.location.href.split(`${NEXT_PUBLIC_BASE_URL}/`);
   const relativePath = fullPath?.[1];
 
   return (
@@ -144,6 +145,8 @@ const NavItem = (props: NavItemProps) => {
           mx="8px"
           transition="transform 0.3s ease-out"
           transform={isOpen ? 'rotate(-180deg)' : 'rotate(0deg)'}
+          cursor="pointer"
+          onClick={() => onToggle()}
         />
       </HStack>
       <Collapse
@@ -177,9 +180,9 @@ const NavItem = (props: NavItemProps) => {
                 py="12px"
                 rounded="8px"
                 width="full"
-                bgColor={
-                  splittedPathname[1] === item.route ? '#6E7D8E80' : 'none'
-                }
+                // bgColor={
+                //   splittedPathname[1] === item.route ? '#6E7D8E80' : 'none'
+                // }
                 color={relativePath === item.route ? 'white' : 'neutral.600'}
               >
                 {item.name}

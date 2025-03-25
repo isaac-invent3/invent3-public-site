@@ -105,7 +105,9 @@ const Maintenance = (props: MaintenanceProps) => {
 
           <TabPanels>
             <TabPanel>
-              {tabIndex === 0 && <Plans search={search} openFilter={isOpen} />}
+              {tabIndex === 0 && (
+                <Plans search={search} openFilter={isOpen} type="current" />
+              )}
             </TabPanel>
             <TabPanel>{tabIndex === 1 && <Schedules />}</TabPanel>
             <TabPanel>

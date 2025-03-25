@@ -10,7 +10,11 @@ import {
   useGetAllMaintenancePlanQuery,
   useSearchMaintenancePlanMutation,
 } from '~/lib/redux/services/maintenance/plan.services';
-import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
+import {
+  DEFAULT_PAGE_SIZE,
+  OPERATORS,
+  SYSTEM_CONTEXT_DETAILS,
+} from '~/lib/utils/constants';
 import Filters from './Filters';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { FilterDisplay } from '@repo/ui/components';
@@ -18,7 +22,7 @@ import MaintenancePlanTable from './PlanTable';
 import { ListResponse } from '@repo/interfaces';
 import { generateSearchCriterion } from '@repo/utils';
 import PopoverAction from './PopoverAction';
-import PlanDetailsModal from './Drawers/PlanDetailDrawer';
+import PlanDetailsDrawer from './Drawers/PlanDetailDrawer';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 
 export const initialFilterData = {
@@ -49,6 +53,7 @@ const Plans = (props: PlansProp) => {
   const { getSearchParam } = useCustomSearchParams();
   const maintenancePlanId = getSearchParam('maintenancePlanId');
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { updateSearchParam } = useCustomSearchParams();
 
   // Checks if all filterdata is empty
   const isFilterEmpty = _.every(
@@ -181,11 +186,17 @@ const Plans = (props: PlansProp) => {
         setPageNumber={setCurrentPage}
         pageSize={pageSize}
         setPageSize={setPageSize}
-        PopoverComponent={(plan) => PopoverAction(plan, 'history')}
+        PopoverComponent={(plan) => PopoverAction(plan, 'current')}
         type={type}
+        handleSelectRow={(row) =>
+          updateSearchParam(
+            SYSTEM_CONTEXT_DETAILS.MAINTENANCE_PLANS.slug,
+            row?.maintenancePlanId
+          )
+        }
       />
       {maintenancePlanId && (
-        <PlanDetailsModal
+        <PlanDetailsDrawer
           isOpen={isOpen}
           onClose={onClose}
           data={null}

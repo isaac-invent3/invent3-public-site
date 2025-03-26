@@ -4,6 +4,25 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { Mutex } from 'async-mutex';
 import { JWT } from 'next-auth/jwt';
 
+const extractTenantFromReferer = (
+  referer: string | null
+): string | null | undefined => {
+  if (!referer) return null;
+
+  try {
+    const url = new URL(referer);
+    const segments = url.pathname.split('/').filter(Boolean); // Remove empty parts
+
+    if (segments.length >= 2 && segments[1] === 'signin') {
+      return segments[0]; // First segment is the tenant name
+    }
+
+    return null; // No tenant present
+  } catch (error) {
+    return null;
+  }
+};
+
 export const TOKEN_REFRESH_BUFFER_SECONDS = 60; // 5 minutes
 const getTimeInSeconds = () => Math.floor(Date.now() / 1000);
 
@@ -102,6 +121,9 @@ export const config = {
         const subdomain = baseUrl.hostname.split('.')[0];
         const hasSubdomain =
           baseUrl.hostname !== envUrl.hostname ? subdomain : null;
+        const tenantName = extractTenantFromReferer(
+          request.headers.get('referer')
+        );
 
         if (credentials.accessToken) {
           return {
@@ -115,7 +137,8 @@ export const config = {
               credentials?.roleSystemModuleContextPermissions
             ),
             username: credentials.username,
-            companySlug: hasSubdomain ? subdomain : null,
+            // companySlug: hasSubdomain ? subdomain : null,
+            companySlug: tenantName,
           };
         }
         const payload = {
@@ -131,7 +154,8 @@ export const config = {
             headers: {
               'Content-Type': 'application/json',
               'Access-Control-Allow-Origin': '*',
-              ...(hasSubdomain ? { 'X-Tenant-ID': subdomain } : {}),
+              // ...(hasSubdomain ? { 'X-Tenant-ID': subdomain } : {}),
+              ...(tenantName ? { 'X-Tenant-ID': tenantName } : {}),
             },
             body: JSON.stringify(payload),
           }
@@ -147,7 +171,8 @@ export const config = {
           return {
             ...user.data,
             username: credentials.username,
-            companySlug: hasSubdomain ? subdomain : null,
+            // companySlug: hasSubdomain ? subdomain : null,
+            companySlug: tenantName,
           };
         }
 

@@ -142,7 +142,13 @@ export async function middleware(request: NextRequest) {
   const subdomain = currentHost?.split('.')[0];
   const hasSubdomain = mainHost !== currentHost ? subdomain : null;
 
-  // Checks if tenant name is valid
+  // Extract tenant from the first segment of the path
+  const segments = pathname.split('/').filter(Boolean); // Remove empty parts
+  if (segments.length < 2) return NextResponse.next(); // No tenant in URL
+
+  const tenant = segments[0]; // First segment is the tenant name
+
+  // Checks if tenant name is valid (Subdomain Approach)
   // if (hasSubdomain && subdomain) {
   //   const tenantData = await validateTenant({ tenantName: subdomain });
 
@@ -150,6 +156,10 @@ export async function middleware(request: NextRequest) {
   //     return NextResponse.rewrite(new URL('/404', request.url));
   //   }
   // }
+
+  // Checks if tenant name is valid (relative path approach)
+  const tenantData = { name: tenant };
+  const remainingPath = segments.slice(1).join('/');
 
   if (!SECRET) return signOut(request);
 
@@ -165,7 +175,8 @@ export async function middleware(request: NextRequest) {
       try {
         const refreshedToken = await refreshAccessToken(
           token,
-          hasSubdomain ? subdomain : null
+          // hasSubdomain ? subdomain : null
+          tenantData ? tenant : null
         );
         if (token === refreshedToken) {
           console.error('Error refreshing token');
@@ -186,19 +197,35 @@ export async function middleware(request: NextRequest) {
         return updateCookie(null, request, response);
       }
     }
+    console.log({ token: token.companySlug });
+    // Redirect to tenant if token has a different tenant. Note: This is for only the relative path approach
+    if (token.companySlug && token.companySlug !== tenant) {
+      console.log('it came here');
+      return NextResponse.redirect(
+        new URL(`/${token.companySlug}/${pathname}`, request.url)
+      );
+    }
 
+    const checkPath = tenantData ? `/${remainingPath}` : pathname;
     // Don't check permission for protected global route
-    if (protectedGlobalRoute.includes(pathname)) {
+    if (protectedGlobalRoute.includes(checkPath)) {
+      if (tenantData) {
+        return NextResponse.rewrite(new URL(`${checkPath}`, request.url));
+      }
       return NextResponse.next();
     }
 
     // Redirect to Dashboard for public routes
-    if (publicRoutes.includes(pathname)) {
+    if (publicRoutes.includes(checkPath)) {
+      if (tenantData) {
+        return NextResponse.redirect(
+          new URL(`/${tenant}/dashboard`, request.url)
+        );
+      }
       return NextResponse.redirect(new URL(`/dashboard`, request.url));
     }
 
-    const permissionData = await checkPermission({ path: pathname });
-
+    const permissionData = await checkPermission({ path: checkPath });
     if (
       !permissionData &&
       !(
@@ -213,13 +240,25 @@ export async function middleware(request: NextRequest) {
       JSON.stringify(permissionData?.permissionKeys)
     );
 
+    if (tenantData) {
+      return NextResponse.rewrite(new URL(`${checkPath}`, request.url));
+    }
     return response;
   }
   if (!token) {
     if (publicRoutes.includes(pathname)) {
       return response;
     }
+    if (tenantData) {
+      if (remainingPath === 'signin') {
+        return NextResponse.rewrite(new URL(`/signin`, request.url));
+      }
+      return NextResponse.redirect(
+        new URL(`/${tenant}/signin?ref=${remainingPath}`, request.url)
+      );
+    }
   }
+
   return NextResponse.redirect(
     new URL(`/signin?ref=${request.nextUrl.pathname}`, request.url)
   );
@@ -227,6 +266,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
+    '/((?!api/|_next/|_static/|_vercel|fonts/|[\\w-]+\\.\\w+).*)',
     '/',
     '/signin',
     '/forgot-password',

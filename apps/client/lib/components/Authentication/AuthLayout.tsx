@@ -43,7 +43,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
       position="relative"
       width="full"
       height="100vh"
-      bgImage={{ base: './auth-bg-mobile.png', md: './auth-bg.png' }}
+      bgImage={{ base: '/auth-bg-mobile.png', md: '/auth-bg.png' }}
       bgSize="cover"
       justifyContent="center"
       overflow="hidden"

@@ -144,7 +144,6 @@ export async function middleware(request: NextRequest) {
 
   // Extract tenant from the first segment of the path
   const segments = pathname.split('/').filter(Boolean); // Remove empty parts
-  if (segments.length < 2) return NextResponse.next(); // No tenant in URL
 
   const tenant = segments[0]; // First segment is the tenant name
 
@@ -197,10 +196,8 @@ export async function middleware(request: NextRequest) {
         return updateCookie(null, request, response);
       }
     }
-    console.log({ token: token.companySlug });
     // Redirect to tenant if token has a different tenant. Note: This is for only the relative path approach
     if (token.companySlug && token.companySlug !== tenant) {
-      console.log('it came here');
       return NextResponse.redirect(
         new URL(`/${token.companySlug}/${pathname}`, request.url)
       );

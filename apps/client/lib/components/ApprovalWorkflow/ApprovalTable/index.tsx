@@ -46,16 +46,6 @@ const ApprovalTable = (props: ApprovalTableProps) => {
           enableSorting: false,
         }),
 
-        columnHelper.accessor('approvalTypeName', {
-          cell: (info) => (
-            <Text fontWeight={800} color="black">
-              {info.getValue()}
-            </Text>
-          ),
-          header: 'Approval Type',
-          enableSorting: false,
-        }),
-
         columnHelper.accessor('requestedByUserFirstName', {
           cell: (info) => {
             const approvalRequest = info.row.original;
@@ -68,6 +58,15 @@ const ApprovalTable = (props: ApprovalTableProps) => {
           },
           header: 'Requestor',
           enableSorting: true,
+        }),
+        columnHelper.accessor('approvalTypeName', {
+          cell: (info) => (
+            <Text fontWeight={800} color="black">
+              {info.getValue()}
+            </Text>
+          ),
+          header: 'Approval Type',
+          enableSorting: false,
         }),
 
         columnHelper.accessor('numberOfApprovalLevels', {

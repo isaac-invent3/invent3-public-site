@@ -35,7 +35,7 @@ const StateMap = (props: StateMapProps) => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch('/nigeria-geojson/state.geojson');
+        const response = await fetch('/api/nigeria-geojson'); // Use Next.js API route
         if (!response.ok) {
           throw new Error('Failed to fetch GeoJSON data');
         }

@@ -136,13 +136,16 @@ const PlanCard = (props: PlanCardProps) => {
               </Text>
               <Text
                 fontWeight={700}
-                textDecoration="underline"
+                textDecoration={
+                  data?.activeSchedules > 0 ? 'underline' : 'none'
+                }
                 role="button"
-                color="#0366EF"
+                color={data?.activeSchedules > 0 ? '#0366EF' : 'neutral.800'}
                 onClick={openAction}
               >
-                {data?.activeSchedules < 10 ? 0 : ''}
-                {data?.activeSchedules}
+                {data?.activeSchedules > 0
+                  ? `${data?.activeSchedules < 10 ? 0 : ''}${data?.activeSchedules}`
+                  : '--'}
               </Text>
             </HStack>
           </VStack>

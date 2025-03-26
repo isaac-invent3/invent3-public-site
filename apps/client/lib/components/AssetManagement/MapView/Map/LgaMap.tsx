@@ -45,7 +45,7 @@ const LgaMap = (props: LgaMapProps) => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(`/nigeria-geojson/state.geojson`);
+        const response = await fetch('/api/nigeria-geojson');
         if (!response.ok) {
           throw new Error('Failed to fetch GeoJSON data');
         }

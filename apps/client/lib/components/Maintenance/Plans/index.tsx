@@ -53,7 +53,7 @@ const Plans = (props: PlansProp) => {
   const { getSearchParam } = useCustomSearchParams();
   const maintenancePlanId = getSearchParam('maintenancePlanId');
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { updateSearchParam } = useCustomSearchParams();
+  const { updateSearchParam, clearSearchParamsAfter } = useCustomSearchParams();
 
   // Checks if all filterdata is empty
   const isFilterEmpty = _.every(
@@ -198,7 +198,13 @@ const Plans = (props: PlansProp) => {
       {maintenancePlanId && (
         <PlanDetailsDrawer
           isOpen={isOpen}
-          onClose={onClose}
+          onClose={() => {
+            onClose;
+            clearSearchParamsAfter(
+              SYSTEM_CONTEXT_DETAILS.MAINTENANCE_PLANS.slug,
+              { removeSelf: true }
+            );
+          }}
           data={null}
           planId={+maintenancePlanId}
         />

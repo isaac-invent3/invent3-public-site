@@ -60,8 +60,7 @@ const PopoverAction = (task: TaskInstance, type: 'drawer' | 'page') => {
     }
   };
 
-  const { updateSearchParam, getSearchParam, clearSearchParamsAfter } =
-    useCustomSearchParams();
+  const { updateSearchParam, getSearchParam } = useCustomSearchParams();
 
   const taskSlugName = SYSTEM_CONTEXT_DETAILS.TASKS.slug;
   const slugValue = getSearchParam(taskSlugName);
@@ -71,12 +70,6 @@ const PopoverAction = (task: TaskInstance, type: 'drawer' | 'page') => {
       onOpenViewDetails();
     }
   }, []);
-
-  const closeAction = () => {
-    onCloseViewDetails();
-
-    clearSearchParamsAfter(taskSlugName, { removeSelf: true });
-  };
 
   const openAction = () => {
     updateSearchParam(taskSlugName, task?.taskInstanceGuid);
@@ -133,13 +126,6 @@ const PopoverAction = (task: TaskInstance, type: 'drawer' | 'page') => {
           isOpen={isOpenDelete}
           onClose={onCloseDelete}
           handleDelete={handleDeleteTaskInstance}
-        />
-      )}
-      {isOpenViewDetails && (
-        <TaskDetailDrawer
-          isOpen={isOpenViewDetails}
-          onClose={closeAction}
-          data={task}
         />
       )}
       {isOpenMarkCompleted && (

@@ -31,7 +31,7 @@ const NavItem = (props: NavItemProps) => {
     props;
   const { isOpen, onToggle } = useDisclosure();
   const path = usePathname();
-  const splittedPathname = path.split('/');
+  const splittedPathname = path?.split('/') as string[];
   const { data, update } = useSession();
   const NEXT_PUBLIC_BASE_URL = env(`NEXT_PUBLIC_BASE_URL`);
 

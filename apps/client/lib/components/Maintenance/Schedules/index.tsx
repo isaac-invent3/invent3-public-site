@@ -3,12 +3,13 @@ import { useEffect } from 'react';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import ScheduleStats from './Stats';
 import ScheduleTimeline from './Timeline';
-import EventDetailModal from './Timeline/Modals/EventDetailModal';
+import EventDetailDrawer from './Timeline/EventDetailDrawer';
+import { SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
 
 const Schedules = () => {
-  const { getSearchParam } = useCustomSearchParams();
+  const { getSearchParam, clearSearchParamsAfter } = useCustomSearchParams();
   const maintenanceScheduleInstanceId = getSearchParam(
-    'maintenanceScheduleInstanceId'
+    SYSTEM_CONTEXT_DETAILS.MAINTENANCE_SCHEDULE_INSTANCE.slug
   );
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -44,9 +45,15 @@ const Schedules = () => {
         </Flex>
       </Flex>
 
-      <EventDetailModal
+      <EventDetailDrawer
         isOpen={isOpen}
-        onClose={onClose}
+        onClose={() => {
+          clearSearchParamsAfter(
+            SYSTEM_CONTEXT_DETAILS.MAINTENANCE_SCHEDULE_INSTANCE.slug,
+            { removeSelf: true }
+          );
+          onClose();
+        }}
         scheduleInstanceId={
           maintenanceScheduleInstanceId ? +maintenanceScheduleInstanceId : null
         }

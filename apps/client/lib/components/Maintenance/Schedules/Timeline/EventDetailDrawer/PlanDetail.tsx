@@ -26,7 +26,7 @@ const PlanDetail = (props: PlanDetailProps) => {
         enableSorting: false,
       }),
       columnHelper.accessor('contactPerson', {
-        cell: (info) => info.getValue(),
+        cell: (info) => info.getValue() ?? 'N/A',
         header: 'Owner',
         enableSorting: false,
       }),

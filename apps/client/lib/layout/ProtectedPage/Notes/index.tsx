@@ -80,7 +80,7 @@ const Notes = (props: NotesProps) => {
           pos="fixed"
           w="100px"
           h="40px"
-          display={data?.systemContextId ? 'flex' : 'none'}
+          display={data?.systemContextId && data?.contextId ? 'flex' : 'none'}
           alignItems="center"
           rounded="30px"
           gap="8px"
@@ -88,6 +88,7 @@ const Notes = (props: NotesProps) => {
           transition="all 300ms ease-in-out"
           background="white"
           role="group"
+          zIndex={99999}
           sx={{
             boxShadow: `
       0px 3px 6px rgba(0, 0, 0, 0.1),

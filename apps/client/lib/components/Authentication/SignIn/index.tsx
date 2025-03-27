@@ -24,7 +24,7 @@ import { ROUTES } from '~/lib/utils/constants';
 const SignIn = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const ref = searchParams.get('ref');
+  const ref = searchParams?.get('ref');
   const toast = useToast();
   const dispatch = useAppDispatch();
   const formik = useFormik({

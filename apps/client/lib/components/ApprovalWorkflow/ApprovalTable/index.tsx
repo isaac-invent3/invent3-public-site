@@ -69,11 +69,11 @@ const ApprovalTable = (props: ApprovalTableProps) => {
           enableSorting: false,
         }),
 
-        columnHelper.accessor('numberOfApprovalLevels', {
-          cell: (info) => info.getValue(),
-          header: 'No of Approval Level',
-          enableSorting: false,
-        }),
+        // columnHelper.accessor('numberOfApprovalLevels', {
+        //   cell: (info) => info.getValue(),
+        //   header: 'No of Approval Level',
+        //   enableSorting: false,
+        // }),
 
         columnHelper.accessor('dateRequested', {
           cell: (info) =>

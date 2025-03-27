@@ -65,6 +65,7 @@ const HeaderInfo = (props: HeaderInfoProps) => {
                   size="md"
                   textDecoration="underline"
                   cursor="pointer"
+                  whiteSpace="nowrap"
                 >
                   {data?.activeTasksCount ?? 0}{' '}
                   {`Task${data?.activeTasksCount > 1 ? 's' : ''}`}
@@ -77,6 +78,7 @@ const HeaderInfo = (props: HeaderInfoProps) => {
               <Text
                 fontWeight={800}
                 color={MaintenanceColorCode[data?.currentStatus as 'Completed']}
+                whiteSpace="nowrap"
               >
                 {data?.currentStatus ?? 'N/A'}
               </Text>

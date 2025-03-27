@@ -37,12 +37,18 @@ export async function handleCredentialsSignin({
 }
 
 export async function handleSignOut(ref?: string) {
-  const redirectUrl = ref ? `/signin?ref=${ref}` : '/signin';
+  const session = await auth();
+  if (!session) {
+    return;
+  }
+  const tenantName = session?.user?.companySlug
+    ? `/${session?.user?.companySlug}`
+    : '';
+  const redirectUrl = ref
+    ? `${tenantName}/signin?ref=${ref}`
+    : `${tenantName}/signin`;
+
   try {
-    const session = await auth();
-    if (!session) {
-      return;
-    }
     if (session.error) {
       await signOut({ redirectTo: redirectUrl });
     }

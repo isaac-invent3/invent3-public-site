@@ -88,8 +88,8 @@ const NotificationHeader = (props: NotificationHeaderProps) => {
           {isLoading && <Spinner color="#0366EF" size="sm" />}
 
           <Button
-            fontSize="9.33px"
-            lineHeight="11.09px"
+            fontSize="12px"
+            lineHeight="14.26px"
             fontWeight={800}
             color="#0366EF"
             onClick={handleMarkNotificationsAsRead}

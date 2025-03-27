@@ -56,7 +56,7 @@ const VendorManagement = () => {
   );
   const [filterData, setFilterData] = useState<VendorFilter>(initialFilterData);
   const searchParams = useSearchParams();
-  const VendorId = searchParams.get(SYSTEM_CONTEXT_DETAILS.VENDOR.slug);
+  const VendorId = searchParams?.get(SYSTEM_CONTEXT_DETAILS.VENDOR.slug);
 
   // Handles Toggling the  Filter
   useEffect(() => {

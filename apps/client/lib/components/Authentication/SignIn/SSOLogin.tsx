@@ -13,7 +13,7 @@ const SSOLogin = () => {
   const [googleLoading, setGoogleLoading] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const ref = searchParams.get('ref');
+  const ref = searchParams?.get('ref');
   const toast = useToast();
 
   const handleGoogleSignin = async () => {

@@ -14,8 +14,7 @@ const TabButton = (props: TabButtonProps) => {
       pb="9px"
       borderBottom={tab.label === activeTab ? '2px solid #0E2642' : 'none'}
       onClick={() => setActiveTab(tab.label)}
-      fontSize="9.33px"
-      lineHeight="11.09px"
+      size="base"
     >
       {tab.label}
       {tab.count > 0 ? `(${tab.count})` : ''}

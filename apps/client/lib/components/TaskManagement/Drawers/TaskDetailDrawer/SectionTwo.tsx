@@ -70,7 +70,7 @@ const SectionTwo = ({ data }: SectionTwoProps) => {
               </Text>
             )}
             <Text color="black" size="md">
-              MacBook M1 2024
+              N/A
             </Text>
           </VStack>
         </VStack>

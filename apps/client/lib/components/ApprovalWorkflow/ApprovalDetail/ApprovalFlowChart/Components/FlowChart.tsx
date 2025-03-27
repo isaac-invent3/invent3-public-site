@@ -38,7 +38,7 @@ const ApprovalFlowChart = (props: ApprovalChartProps) => {
   const pathname = usePathname();
   const router = useRouter();
 
-  const approvalRequestId = Number(pathname.split('/')[2]);
+  const approvalRequestId = Number(pathname?.split('/')[2]);
 
   const { data, isLoading, isFetching } =
     useGetAllApprovalWorkflowPartyInstancesQuery(

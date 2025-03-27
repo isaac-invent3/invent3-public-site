@@ -15,8 +15,8 @@ interface HeaderProps {
 const Header = (props: HeaderProps) => {
   const { setIsCollapse } = props;
   const pathname = usePathname();
-  const pathSegments = pathname.split('/').filter(Boolean);
-  const breadCrumbData = getBreadcrumb(pathSegments);
+  const pathSegments = pathname?.split('/').filter(Boolean);
+  const breadCrumbData = getBreadcrumb(pathSegments as string[]);
 
   return (
     <Stack

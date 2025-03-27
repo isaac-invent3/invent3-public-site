@@ -23,7 +23,7 @@ const useFormatUrl = (): FormattedUrl | null => {
   const parsedUrl = useMemo(() => {
     if (!pathname) return null;
 
-    const pathnames = pathname.split('/').filter((segment) => segment);
+    const pathnames = pathname?.split('/').filter((segment) => segment);
 
     const searchParamsObject: Record<string, string> = {};
 

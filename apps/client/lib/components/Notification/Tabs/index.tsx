@@ -32,7 +32,13 @@ export const NotifcationTabs = ({ activeTab }: { activeTab: string }) => {
         </Text> */}
         <VStack width="full" alignItems="flex-start">
           {data?.data && data?.data?.items.length < 1 ? (
-            <Text width="full" textAlign="center" color="neutral.600" my="20px">
+            <Text
+              width="full"
+              textAlign="center"
+              color="neutral.600"
+              my="10vh"
+              size="md"
+            >
               No Notifications at the moment
             </Text>
           ) : (

@@ -1,22 +1,23 @@
 'use server';
 
-export async function validateTenant({ tenantName }: { tenantName: string }) {
+export async function validateTenant({
+  tenantName,
+}: {
+  tenantName: string | undefined;
+}) {
+  if (!tenantName) {
+    return null;
+  }
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/Companies/GetTenantInfo/${tenantName}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
+      `${process.env.NEXT_PUBLIC_API_URL}/Invent3Pro/Companies/ValidateTenant/${tenantName}`
     );
 
     if (!response.ok) {
       console.error(
         `Failed to validate tenant: ${response.status} ${response.statusText}`
       );
-      return;
+      return null;
     }
     const tenantData = await response.json();
 

@@ -3,11 +3,11 @@ import { HStack } from '@chakra-ui/react';
 import { Button } from '@repo/ui/components';
 import { ROUTES } from '~/lib/utils/constants';
 
-interface ModalButtonsProps {
+interface DrawerButtonsProps {
   planId: number | null;
   scheduleInstanceId: number;
 }
-const ModalButtons = (props: ModalButtonsProps) => {
+const DrawerButtons = (props: DrawerButtonsProps) => {
   const { scheduleInstanceId, planId } = props;
   return (
     <HStack
@@ -45,4 +45,4 @@ const ModalButtons = (props: ModalButtonsProps) => {
   );
 };
 
-export default ModalButtons;
+export default DrawerButtons;

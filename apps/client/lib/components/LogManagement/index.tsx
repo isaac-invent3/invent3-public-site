@@ -52,7 +52,7 @@ const LogManagement = () => {
     onOpen: onOpenDetails,
   } = useDisclosure();
   const searchParams = useSearchParams();
-  const logId = searchParams.get(SYSTEM_CONTEXT_DETAILS.AUDIT.slug);
+  const logId = searchParams?.get(SYSTEM_CONTEXT_DETAILS.AUDIT.slug);
 
   const [searchData, setSearchData] = useState<
     ListResponse<AuditRecord> | undefined

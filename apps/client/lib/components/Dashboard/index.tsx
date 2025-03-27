@@ -47,7 +47,7 @@ const DASHBOARD_COMPONENTS: Record<DashboardView, React.FC> = {
 
 const Dashboard = () => {
   const searchParams = useSearchParams();
-  const viewParam = searchParams.get('view');
+  const viewParam = searchParams?.get('view');
   const session = useSession();
   const roleIds = session?.data?.user?.roleIds ?? [];
   const { updateSearchParam } = useCustomSearchParams();

@@ -25,7 +25,7 @@ const RoleManagement = () => {
   const [tabIndex, setTabIndex] = useState<number | undefined>(undefined);
 
   useEffect(() => {
-    const tab = searchParams.get('tab');
+    const tab = searchParams?.get('tab');
     if (tab) {
       const tabIndex = ALlTabs.findIndex((value) => value === tab);
       if (tabIndex !== -1) {

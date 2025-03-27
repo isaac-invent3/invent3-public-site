@@ -1,4 +1,4 @@
-import { CalendarIcon, CheckIcon } from '@chakra-ui/icons';
+import { CheckIcon } from '@chakra-ui/icons';
 import {
   Box,
   Card,
@@ -19,7 +19,7 @@ import type { NodeProps } from '@xyflow/react';
 import { Handle, Position } from '@xyflow/react';
 import { useEffect, useRef } from 'react';
 import UserInfo from '~/lib/components/Common/UserInfo';
-import { CursorIcon } from '~/lib/components/CustomIcons';
+import { CursorIcon, CalendarIcon } from '~/lib/components/CustomIcons';
 import { CustomNode } from '../../../Interfaces';
 import PopoverAction from './PopoverAction';
 
@@ -103,33 +103,27 @@ const ApprovalNode = ({ data, isConnectable, id }: NodeProps<CustomNode>) => {
             background={approvalActionId ? 'white' : '#e7f6fe'}
             overflowY="scroll"
             w="185px"
-            h="210px"
+            h="183px"
             transition="all 300ms ease-in-out"
             onContextMenu={handleContextMenu}
             zIndex={1}
+            sx={{
+              scrollbarWidth: '0px',
+              scrollbarColor: 'transparent transparent',
+              '&::-webkit-scrollbar': {
+                width: '0px',
+                height: '0px',
+              },
+              '&::-webkit-scrollbar-thumb': {
+                background: 'transparent',
+              },
+            }}
           >
             <VStack
               alignItems="start"
               gap={!approvalActionId || !userId ? '16px' : '0px'}
-              divider={
-                approvalActionId && userId ? (
-                  <StackDivider
-                    height="20px"
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                    border="none"
-                  >
-                    <Box
-                      borderColor="#838383"
-                      width="full"
-                      borderWidth={0.5}
-                    ></Box>
-                  </StackDivider>
-                ) : undefined
-              }
             >
-              <VStack alignItems="flex-start" gap="12px" w="full">
+              <VStack alignItems="flex-start" gap="8px" w="full">
                 {data?.currentStatusId === 3 && (
                   <Flex
                     alignItems="center"
@@ -159,24 +153,33 @@ const ApprovalNode = ({ data, isConnectable, id }: NodeProps<CustomNode>) => {
                   </Box>
                 )}
 
-                <Text size="md" color="primary.500">
+                <Text size="md" color="primary.500" fontWeight={700}>
                   {data?.requiredAction}
                 </Text>
 
-                <HStack alignItems="center" gap="16px">
-                  <Icon as={CursorIcon} />
+                <HStack alignItems="center" gap="8px">
+                  <Icon as={CursorIcon} boxSize="14px" color="neutral.600" />
 
                   <Text color="neutral.600">{data?.employeeDesignation}</Text>
                 </HStack>
               </VStack>
 
-              <VStack alignItems="flex-start" gap="12px" w="full">
+              <VStack
+                alignItems="flex-start"
+                gap="8px"
+                w="full"
+                mt="16px"
+                borderTop="1px solid rgba(131, 131, 131, 0.5)"
+                pt="16px"
+              >
                 <UserInfo
                   name={`${data?.firstName} ${data?.lastName}`}
                   textStyle={{
+                    size: 'base',
                     color: '#0366EF',
                     cursor: 'pointer',
                     transition: 'all 200ms ease-in-out',
+                    textDecoration: 'underline',
                     _hover: {
                       textDecoration: 'underline',
                       textUnderlineOffset: 2,
@@ -185,17 +188,18 @@ const ApprovalNode = ({ data, isConnectable, id }: NodeProps<CustomNode>) => {
                   customAvatarStyle={{
                     width: '24px',
                     height: '24px',
+                    size: 'xs',
                   }}
                   customBoxStyle={{
-                    spacing: '16px',
+                    spacing: '8px',
                   }}
                 />
 
                 <HStack alignItems="center" gap="16px">
-                  <Icon as={CalendarIcon} />
+                  <Icon as={CalendarIcon} boxSize="14px" color="neutral.600" />
 
-                  <Text color="neutral.600" isTruncated>
-                    {/* {data.date ?? '- -'} */}
+                  <Text color="neutral.600" isTruncated pl="4px">
+                    {'- -'}
                   </Text>
                 </HStack>
               </VStack>

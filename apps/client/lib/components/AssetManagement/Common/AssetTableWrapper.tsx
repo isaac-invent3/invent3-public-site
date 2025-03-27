@@ -22,7 +22,7 @@ const GeneralAssetTableWrapper = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const searchParams = useSearchParams();
-  const assetIdString = searchParams.get(SYSTEM_CONTEXT_DETAILS.ASSETS.slug);
+  const assetIdString = searchParams?.get(SYSTEM_CONTEXT_DETAILS.ASSETS.slug);
   const { updateSearchParam } = useCustomSearchParams();
 
   const { assetFilter: filterData, selectedAssetIds } = useAppSelector(

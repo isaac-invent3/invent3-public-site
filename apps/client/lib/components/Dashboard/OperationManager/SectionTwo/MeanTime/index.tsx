@@ -35,18 +35,19 @@ const MeanTime = () => {
           width="110px"
         />
       </HStack>
-      <HStack width="full" height="full" spacing="24px" alignItems="center">
-        <Flex width="51%" flexGrow={1} alignItems="flex-start">
+      <HStack
+        width="full"
+        height="full"
+        spacing="24px"
+        alignItems="center"
+        justifyContent="space-between"
+      >
+        <Flex width="51%" height="full" alignItems="flex-start">
           <RadarChart />
         </Flex>
-        <Flex
-          direction="column"
-          justifyContent="space-between"
-          width="49%"
-          gap="32px"
-        >
+        <Flex direction="column" justifyContent="space-between" gap="32px">
           <Info
-            title="Mean TIme Between Failures (MTBF)"
+            title="Mean Time Between Failures (MTBF)"
             days={data?.data.mtbf ?? 0}
             valueChange={20}
             isLoading={isLoading || isFetching}

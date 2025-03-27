@@ -7,6 +7,7 @@ import {
   TabList,
   Tabs,
   Text,
+  VStack,
 } from '@chakra-ui/react';
 import { FilterButton } from '@repo/ui/components';
 import { useState } from 'react';
@@ -33,11 +34,30 @@ const Header = (props: ApprovalHeaderProps) => {
   });
 
   return (
-    <HStack width="full" justifyContent="space-between" pt="40px">
+    <VStack
+      width="full"
+      justifyContent="space-between"
+      pt="40px"
+      flexWrap="wrap"
+      spacing="24px"
+      alignItems="flex-start"
+      px={{ base: '20px', md: 0 }}
+    >
       <PageHeader>Approval Requests</PageHeader>
 
-      <Flex alignItems="center" justifyContent="space-between">
-        <HStack spacing="16px" alignItems="flex-start">
+      <Flex
+        alignItems="center"
+        justifyContent="space-between"
+        gap={{ base: '20px', md: '40px' }}
+        width="full"
+        flexWrap="wrap"
+      >
+        <HStack
+          spacing="16px"
+          alignItems="flex-start"
+          maxW="full"
+          overflow="hidden"
+        >
           <Text color="neutral.800" fontWeight="700" size="lg">
             Type:
           </Text>
@@ -47,6 +67,7 @@ const Header = (props: ApprovalHeaderProps) => {
             width={'full'}
             onChange={(index) => setTabIndex(index)}
             index={tabIndex}
+            overflow="auto"
           >
             <TabList>
               <HStack
@@ -110,7 +131,7 @@ const Header = (props: ApprovalHeaderProps) => {
           isActive={false}
         />
       </Flex>
-    </HStack>
+    </VStack>
   );
 };
 

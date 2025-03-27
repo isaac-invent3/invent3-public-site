@@ -42,7 +42,7 @@ const ListView = (props: ListViewProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const searchParams = useSearchParams();
-  const assetIdString = searchParams.get(SYSTEM_CONTEXT_DETAILS.ASSETS.slug);
+  const assetIdString = searchParams?.get(SYSTEM_CONTEXT_DETAILS.ASSETS.slug);
   const { handleSubmit } = useCustomMutation();
   const { updateSearchParam, getSearchParam } = useCustomSearchParams();
   const assetClassId = getSearchParam('assetClassId');

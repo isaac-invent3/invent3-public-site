@@ -10,7 +10,7 @@ import { setPlanForm } from '~/lib/redux/slices/MaintenanceSlice';
 
 export default function Page() {
   const searchParams = useSearchParams();
-  const templateString = searchParams.get('template');
+  const templateString = searchParams?.get('template');
   const templateId = templateString ? Number(templateString) : undefined;
   const { data, isLoading } = useGetMaintenancePlanByIdQuery(
     { id: templateId! },

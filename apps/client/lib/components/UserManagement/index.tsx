@@ -54,7 +54,7 @@ const UserManagement = () => {
   const [searchUser, { isLoading: searchLoading }] = useSearchUsersMutation({});
   const [filterData, setFilterData] = useState<UserFilter>(initialFilterData);
   const searchParams = useSearchParams();
-  const userId = searchParams.get(SYSTEM_CONTEXT_DETAILS.USER.slug);
+  const userId = searchParams?.get(SYSTEM_CONTEXT_DETAILS.USER.slug);
 
   // Handles Toggling the  Filter
   useEffect(() => {

@@ -33,7 +33,7 @@ const Header = () => {
     };
 
     // Get the last segment of the pathname
-    const lastPath = pathname.split('/').pop() || ''; // Add fallback to an empty string in case `pop()` is undefined
+    const lastPath = pathname?.split('/').pop() || ''; // Add fallback to an empty string in case `pop()` is undefined
 
     // Set the tab name based on the mapping or default to null
     setTabName(tabMapping[lastPath] ?? null);

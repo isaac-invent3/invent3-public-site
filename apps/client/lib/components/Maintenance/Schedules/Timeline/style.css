@@ -1,4 +1,10 @@
 /* Header styling */
+
+.rbc-time-header {
+  max-width: 100%;
+  overflow: auto;
+}
+
 .rbc-header, .rbc-time-header-gutter {
     background-color: #F7F7F7;
     text-align: center;
@@ -8,6 +14,7 @@
     align-items: center;
     
   }
+  
   
   .rbc-header span {
     text-transform: uppercase;

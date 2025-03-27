@@ -22,7 +22,7 @@ import { dateFormatter } from '~/lib/utils/Formatters';
 
 export default function Page() {
   const searchParams = useSearchParams();
-  const assetIdString = searchParams.get('assetId');
+  const assetIdString = searchParams?.get('assetId');
   const assetId = assetIdString ? Number(assetIdString) : undefined;
   const { data, isLoading } = useGetAssetInfoHeaderByIdQuery(
     { id: assetId! },

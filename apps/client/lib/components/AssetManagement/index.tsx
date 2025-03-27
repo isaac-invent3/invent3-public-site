@@ -44,7 +44,7 @@ const AssetManagement = () => {
 
   // Retrieve the `tab` parameter from URL on mount
   useMemo(() => {
-    const tab = searchParams.get('tab');
+    const tab = searchParams?.get('tab');
     if (tab === 'map') {
       setTabIndex(1); // Set to the map tab if "map" is in the URL
     } else {

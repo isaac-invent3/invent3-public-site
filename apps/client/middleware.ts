@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { checkPermission } from './app/actions/permissionAction';
 import { encode, getToken, JWT } from 'next-auth/jwt';
 import { ROLE_IDS_ENUM } from './lib/utils/constants';
-// import { validateTenant } from './app/actions/validateTenantAction';
+import { validateTenant } from './app/actions/validateTenantAction';
 
 // import { env } from 'next-runtime-env';
 
@@ -157,7 +157,8 @@ export async function middleware(request: NextRequest) {
   // }
 
   // Checks if tenant name is valid (relative path approach)
-  const tenantData = { name: tenant };
+  const tenantData = await validateTenant({ tenantName: tenant });
+
   const remainingPath = segments.slice(1).join('/');
 
   if (!SECRET) return signOut(request);
@@ -254,6 +255,7 @@ export async function middleware(request: NextRequest) {
         new URL(`/${tenant}/signin?ref=${remainingPath}`, request.url)
       );
     }
+    return NextResponse.rewrite(new URL('/404', request.url));
   }
 
   return NextResponse.redirect(

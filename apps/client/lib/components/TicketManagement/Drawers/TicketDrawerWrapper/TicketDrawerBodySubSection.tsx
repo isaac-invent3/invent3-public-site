@@ -1,4 +1,10 @@
-import { HStack, Text, VStack, useDisclosure } from '@chakra-ui/react';
+import {
+  HStack,
+  SimpleGrid,
+  Text,
+  VStack,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { useFormikContext } from 'formik';
 import UserSelectModal from '~/lib/components/Common/Modals/UserSelectModal';
 import UserInfo from '~/lib/components/Common/UserInfo';
@@ -20,7 +26,6 @@ export interface AssignedToFormDetails {
   assignedToEmployeeName: string | null;
   assignedTo: number | null;
 }
-
 
 const TicketDrawerBodySubSection = (props: TicketDrawerBodySubSectionProps) => {
   const { data, category, action } = props;
@@ -90,6 +95,37 @@ const TicketDrawerBodySubSection = (props: TicketDrawerBodySubSectionProps) => {
           </Text>
         </VStack>
       </HStack>
+
+      <SimpleGrid
+        width="full"
+        spacing={{ base: '24px', md: '40px' }}
+        columns={{ base: 1 }}
+      >
+        <VStack width="full" spacing="8px" alignItems="flex-start">
+          <Text color="neutral.600" fontWeight={700}>
+            Asset Name
+          </Text>
+          <VStack alignItems="flex-start">
+            {data?.assetCode && (
+              <Text color="neutral.600" size="md">
+                ({data?.assetCode})
+              </Text>
+            )}
+            <Text color="black" size="md">
+              N/A
+            </Text>
+          </VStack>
+        </VStack>
+
+        <VStack width="full" spacing="8px" alignItems="flex-start">
+          <Text color="neutral.600" fontWeight={700}>
+            Asset Location
+          </Text>
+          <Text color="black" size="md">
+            {data?.assetLocation ?? 'N/A'}
+          </Text>
+        </VStack>
+      </SimpleGrid>
 
       <Description info={data?.issueDescription} />
 

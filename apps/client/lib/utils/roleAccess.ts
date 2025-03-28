@@ -18,9 +18,11 @@ const ROUTES_PERMISSION_KEY: { [name: string]: PermissionKey } = {
   [`/${ROUTES.MAINTENANCE_PLANS}/${ROUTES.MAINTENANCE_PLANS}/[id]/edit`]:
     'maintenance:plan_edit',
   [`/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_SCHEDULES}`]: 'maintenance',
-  [`/${ROUTES.MAINTENANCE_SCHEDULES}/[id]/edit`]: 'maintenance:schedule_edit',
-  [`/${ROUTES.MAINTENANCE_SCHEDULES}/add`]: 'maintenance:schedule_create',
-  [`/${ROUTES.MAINTENANCE_SCHEDULES}/instances/[id]/edit`]:
+  [`/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_SCHEDULES}/[id]/edit`]:
+    'maintenance:schedule_edit',
+  [`/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_SCHEDULES}/add`]:
+    'maintenance:schedule_create',
+  [`/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_SCHEDULES}/instances/[id]/edit`]:
     'maintenance:schedule_edit',
   [`/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_HISTORY}`]: 'maintenance',
   [`/${ROUTES.TASKS}`]: 'task',

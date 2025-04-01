@@ -20,7 +20,7 @@ const publicRoutes = [
   '/faq',
   '/features',
 ];
-const protectedGlobalRoute = ['/dashboard', '/profile', '/user-settings'];
+const protectedGlobalRoute = ['/dashboard'];
 const SECRET = process.env.NEXTAUTH_SECRET;
 export const TOKEN_REFRESH_BUFFER_SECONDS = 60; // 5 minutes
 export const SESSION_SECURE =
@@ -52,7 +52,7 @@ export async function refreshAccessToken(
   console.log('updating');
   try {
     const response = await fetch(
-      process.env.NEXT_PUBLIC_API_URL + '/Invent3Pro/refresh-tokens',
+      process.env.NEXT_PUBLIC_API_URL + '/api/Invent3Pro/refresh-tokens',
       {
         headers: {
           'Content-Type': 'application/json',
@@ -255,7 +255,7 @@ export async function middleware(request: NextRequest) {
         new URL(`/${tenant}/signin?ref=${remainingPath}`, request.url)
       );
     }
-    return NextResponse.rewrite(new URL('/404', request.url));
+    // return NextResponse.rewrite(new URL('/404', request.url));
   }
 
   return NextResponse.redirect(
@@ -265,7 +265,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!api/|_next/|_static/|_vercel|fonts/|[\\w-]+\\.\\w+).*)',
+    '/((?!api/|_next/|__next|_static/|_vercel|fonts/|[\\w-]+\\.\\w+).*)',
     '/',
     '/signin',
     '/forgot-password',

@@ -25,6 +25,8 @@ import { handleSignOut } from '~/app/actions/authActions';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { ROLE_IDS_ENUM } from '~/lib/utils/constants';
+import Profile from '~/lib/components/Profile';
+import UserSettings from '~/lib/components/UserSettings';
 
 interface ActionButtonProps {
   icon: ComponentWithAs<'svg', IconProps>;
@@ -59,6 +61,16 @@ const UserActionPopover = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { data } = useSession();
   const router = useRouter();
+  const {
+    isOpen: isOpenProfile,
+    onOpen: onOpenProfile,
+    onClose: onCloseProfile,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenSettings,
+    onOpen: onOpenSettings,
+    onClose: onCloseSettings,
+  } = useDisclosure();
 
   return (
     <>
@@ -169,7 +181,7 @@ const UserActionPopover = () => {
             px="20px"
             bgImage="/header-popover-bg.png"
             bgSize="cover"
-            height={{ base: '55px', md: '98px' }}
+            height={{ md: '98px' }}
           >
             <HStack spacing="10px">
               <Avatar
@@ -205,7 +217,7 @@ const UserActionPopover = () => {
                 icon={UserProfileIcon}
                 name="User Profile"
                 handleClick={() => {
-                  router.push('/profile');
+                  onOpenProfile();
                   onClose();
                 }}
               />
@@ -213,7 +225,7 @@ const UserActionPopover = () => {
                 icon={Setting2Icon}
                 name="General Settings"
                 handleClick={() => {
-                  router.push('/user-settings');
+                  onOpenSettings();
                   onClose();
                 }}
               />
@@ -236,6 +248,8 @@ const UserActionPopover = () => {
           </PopoverBody>
         </PopoverContent>
       </Popover>
+      <Profile isOpen={isOpenProfile} onClose={onCloseProfile} />
+      <UserSettings isOpen={isOpenSettings} onClose={onCloseSettings} />
     </>
   );
 };

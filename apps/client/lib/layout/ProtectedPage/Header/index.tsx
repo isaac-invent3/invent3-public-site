@@ -2,11 +2,11 @@ import { HStack, Image, Stack } from '@chakra-ui/react';
 
 import { GenericBreadCrumb } from '@repo/ui/components';
 import { usePathname } from 'next/navigation';
-import { SearchIcon, SettingsIcon } from '~/lib/components/CustomIcons/layout';
+// import { SearchIcon, SettingsIcon } from '~/lib/components/CustomIcons/layout';
 import NotificationComponents from '~/lib/components/Notification';
 import Feedback from './Feedback';
 import { getBreadcrumb } from './BreadCrumb';
-import HeaderIcon from './HeaderIcon';
+// import HeaderIcon from './HeaderIcon';
 import UserActionPopover from './UserActionPopover';
 
 interface HeaderProps {
@@ -55,8 +55,8 @@ const Header = (props: HeaderProps) => {
         </HStack>
         <HStack spacing={{ base: '8px', md: '24px' }}>
           <Feedback />
-          <HeaderIcon icon={SearchIcon} size="20px" />
-          <HeaderIcon icon={SettingsIcon} size="24px" />
+          {/* <HeaderIcon icon={SearchIcon} size="20px" />
+          <HeaderIcon icon={SettingsIcon} size="24px" /> */}
           <NotificationComponents />
           <UserActionPopover />
         </HStack>

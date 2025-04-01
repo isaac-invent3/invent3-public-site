@@ -1,20 +1,16 @@
 import { Flex, useDisclosure } from '@chakra-ui/react';
 import _ from 'lodash';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { ListResponse } from '@repo/interfaces';
 import { generateSearchCriterion } from '@repo/utils';
 import { useSearchParams } from 'next/navigation';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
-import {
-  Asset,
-  ValidColumnNames,
-} from '~/lib/interfaces/asset/general.interface';
+import { Asset } from '~/lib/interfaces/asset/general.interface';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import {
   useGetAllAssetQuery,
-  useGetAssetsByColumnIdQuery,
   useSearchAssetsMutation,
 } from '~/lib/redux/services/asset/general.services';
 import {
@@ -44,9 +40,7 @@ const ListView = (props: ListViewProps) => {
   const searchParams = useSearchParams();
   const assetIdString = searchParams?.get(SYSTEM_CONTEXT_DETAILS.ASSETS.slug);
   const { handleSubmit } = useCustomMutation();
-  const { updateSearchParam, getSearchParam } = useCustomSearchParams();
-  const assetClassId = getSearchParam('assetClassId');
-  const assetClass = getSearchParam('assetClassType');
+  const { updateSearchParam } = useCustomSearchParams();
 
   const { assetFilter: filterData, selectedAssetIds } = useAppSelector(
     (state) => state.asset
@@ -73,36 +67,9 @@ const ListView = (props: ListViewProps) => {
       pageSize: pageSize,
     },
     {
-      skip: search !== '' || !isFilterEmpty || Boolean(assetClassId),
+      skip: search !== '' || !isFilterEmpty,
     }
   );
-
-  const {
-    data: assetsByColumnId,
-    isLoading: isLoadingAssetsByColumnId,
-    isFetching: isFetchingAssetsByColumnId,
-  } = useGetAssetsByColumnIdQuery(
-    {
-      columnId: Number(assetClassId),
-      columnName: assetClass as ValidColumnNames,
-      pageNumber: currentPage,
-      pageSize: pageSize,
-    },
-    {
-      skip:
-        search !== '' ||
-        !isFilterEmpty ||
-        !Boolean(assetClassId) ||
-        !assetClass,
-    }
-  );
-
-  const assetData = useMemo(() => {
-    console.log({ assetClassId, data: assetsByColumnId });
-    if (assetClassId) return assetsByColumnId?.data;
-
-    return data?.data;
-  }, [assetsByColumnId, data]);
 
   // Search Criterion
   const searchCriterion = {
@@ -188,7 +155,7 @@ const ListView = (props: ListViewProps) => {
   // Update SelectedAssetIds array when selected row is greater than 1
   useEffect(() => {
     if (selectedRows.length > 0) {
-      const sourceItems = searchData?.items || assetData?.items || [];
+      const sourceItems = searchData?.items || data?.data?.items || [];
       const assetIds = selectedRows
         .map((rowId) => sourceItems[rowId]?.assetId) // Access by index and get assetId
         .filter((id): id is number => id !== undefined); // Filter out undefined values
@@ -210,10 +177,10 @@ const ListView = (props: ListViewProps) => {
           data={
             (search || !isFilterEmpty) && searchData
               ? searchData.items
-              : (assetData?.items ?? [])
+              : (data?.data?.items ?? [])
           }
-          isLoading={isLoading || isLoadingAssetsByColumnId}
-          isFetching={isFetching || searchLoading || isFetchingAssetsByColumnId}
+          isLoading={isLoading}
+          isFetching={isFetching || searchLoading}
           pageNumber={currentPage}
           setPageNumber={setCurrentPage}
           pageSize={pageSize}
@@ -221,7 +188,7 @@ const ListView = (props: ListViewProps) => {
           totalPages={
             (search || !isFilterEmpty) && searchData
               ? searchData?.totalPages
-              : assetData?.totalPages
+              : data?.data?.totalPages
           }
           handleSelectRow={(row) => {
             onOpen();

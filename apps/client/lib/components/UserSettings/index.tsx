@@ -1,5 +1,7 @@
 'use client';
 import {
+  DrawerBody,
+  DrawerHeader,
   Flex,
   Tab,
   TabList,
@@ -18,10 +20,16 @@ import { useGetUserConfigurationOptionsQuery } from '~/lib/redux/services/user.s
 import { useSession } from 'next-auth/react';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { setInitialOptions } from '~/lib/redux/slices/UserSlice';
+import { BackButton, GenericDrawer } from '@repo/ui/components';
 
 const ALlTabs = ['Security', 'Notification', 'Teams', 'General'];
 
-const UserSettings = () => {
+interface UserSettingsProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+const UserSettings = (props: UserSettingsProps) => {
+  const { isOpen, onClose } = props;
   const { getSearchParam, updateSearchParam } = useCustomSearchParams();
   const tab = getSearchParam('tab');
   const [tabIndex, setTabIndex] = useState<number | undefined>(undefined);
@@ -60,36 +68,58 @@ const UserSettings = () => {
   };
 
   return (
-    <Flex width="full" direction="column" pb="40px">
-      <Flex px={{ base: '16px', md: 0 }}>
-        <PageHeader>Settings</PageHeader>
-      </Flex>
-      <Tabs
-        variant="custom"
-        width={'full'}
-        onChange={(index) => handleTabChange(index)}
-        index={tabIndex}
-        mt="51px"
-        opacity={isLoading ? 0.5 : 1}
-        pointerEvents={isLoading ? 'none' : 'initial'}
+    <GenericDrawer isOpen={isOpen} onClose={onClose} maxWidth="690px">
+      <DrawerHeader
+        p={0}
+        m={0}
+        px={{ base: '16px', md: '18px' }}
+        pb="16px"
+        bgColor="#EAEAEA"
       >
-        <Flex width="full" px={{ base: '16px', md: 0 }}>
-          <TabList>
-            {ALlTabs.map((item, index) => (
-              <Tab key={index} width="93px">
-                {item}
-              </Tab>
-            ))}
-          </TabList>
+        <BackButton
+          handleClick={onClose}
+          customStyles={{ mt: '21px', mb: '8px' }}
+        />
+      </DrawerHeader>
+
+      <DrawerBody
+        p={0}
+        m={0}
+        position="relative"
+        bgColor="#EAEAEA"
+        px={{ base: '16px', md: '18px' }}
+      >
+        <Flex mt={{ base: '24px', md: '52px' }}>
+          <PageHeader>Settings</PageHeader>
         </Flex>
-        <TabPanels pt="16px">
-          <TabPanel>{tabIndex === 0 && <SecurityTab />}</TabPanel>
-          <TabPanel>{tabIndex === 1 && <Notification />}</TabPanel>
-          <TabPanel>{tabIndex === 2 && <Teams />}</TabPanel>
-          <TabPanel>{tabIndex === 3 && <GeneralTab />}</TabPanel>
-        </TabPanels>
-      </Tabs>
-    </Flex>
+        <Tabs
+          variant="custom"
+          width={'full'}
+          onChange={(index) => handleTabChange(index)}
+          index={tabIndex}
+          mt="51px"
+          opacity={isLoading ? 0.5 : 1}
+          pointerEvents={isLoading ? 'none' : 'initial'}
+          pb="24px"
+        >
+          <Flex width="full" px={{ base: '16px', md: 0 }}>
+            <TabList>
+              {ALlTabs.map((item, index) => (
+                <Tab key={index} width="93px">
+                  {item}
+                </Tab>
+              ))}
+            </TabList>
+          </Flex>
+          <TabPanels pt="16px">
+            <TabPanel>{tabIndex === 0 && <SecurityTab />}</TabPanel>
+            <TabPanel>{tabIndex === 1 && <Notification />}</TabPanel>
+            <TabPanel>{tabIndex === 2 && <Teams />}</TabPanel>
+            <TabPanel>{tabIndex === 3 && <GeneralTab />}</TabPanel>
+          </TabPanels>
+        </Tabs>
+      </DrawerBody>
+    </GenericDrawer>
   );
 };
 

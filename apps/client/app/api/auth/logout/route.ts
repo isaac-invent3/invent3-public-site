@@ -4,7 +4,7 @@ export async function POST(request: any) {
   const body = await request.json();
   console.log('Logout endpoint was called');
   const res = await fetch(
-    `${process.env.API_BASE_URL}/Invent3Pro/LogOut/${body.sessionId}`,
+    `${process.env.API_BASE_URL}/api/Invent3Pro/LogOut/${body.sessionId}`,
     {
       method: 'DELETE',
       headers: {

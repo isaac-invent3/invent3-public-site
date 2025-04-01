@@ -51,7 +51,7 @@ const ExportPopover = () => {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/Assets/Download?filePath=${resp?.data?.data}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/Assets/Download?filePath=${resp?.data?.data}`,
         {
           method: 'GET',
           headers: {

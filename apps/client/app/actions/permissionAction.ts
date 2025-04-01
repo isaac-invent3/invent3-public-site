@@ -58,7 +58,7 @@ export async function checkPermission({
     const [key] = routeInfo;
 
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/SystemSubModuleContextTypes/GetSystemSubModuleKeyValuesByParentModuleId/${key}?pageSize=50`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/SystemSubModuleContextTypes/GetSystemSubModuleKeyValuesByParentModuleId/${key}?pageSize=50`,
       {
         method: 'GET',
         headers: {

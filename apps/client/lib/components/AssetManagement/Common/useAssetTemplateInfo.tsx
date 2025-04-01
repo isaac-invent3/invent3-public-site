@@ -7,7 +7,10 @@ import {
   useSearchAssetsMutation,
 } from '~/lib/redux/services/asset/general.services';
 import { ListResponse } from '@repo/interfaces';
-import { Asset } from '~/lib/interfaces/asset/general.interface';
+import {
+  Asset,
+  ValidColumnNames,
+} from '~/lib/interfaces/asset/general.interface';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
@@ -21,10 +24,13 @@ interface UseAssetTemplateInfo {
   // eslint-disable-next-line no-unused-vars
   handleSelectRow: (data: Asset) => void;
   search: string;
+  columnId?: number;
+  columnType?: ValidColumnNames;
 }
 
 const useAssetTemplateInfo = (props: UseAssetTemplateInfo) => {
-  const { PopoverComponent, handleSelectRow, search } = props;
+  const { PopoverComponent, handleSelectRow, search, columnId, columnType } =
+    props;
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const { data, isLoading, isFetching } = useGetAllAssetQuery(
@@ -44,10 +50,9 @@ const useAssetTemplateInfo = (props: UseAssetTemplateInfo) => {
   const { assetFilter: filterData } = useAppSelector((state) => state.asset);
 
   // Checks if all filterdata is empty
-  const isFilterEmpty = _.every(
-    filterData,
-    (value) => _.isArray(value) && _.isEmpty(value)
-  );
+  const isFilterEmpty =
+    _.every(filterData, (value) => _.isArray(value) && _.isEmpty(value)) &&
+    columnId === undefined;
 
   // Search Criterion
   const searchCriterion = {
@@ -89,6 +94,17 @@ const useAssetTemplateInfo = (props: UseAssetTemplateInfo) => {
             OPERATORS.Equals
           ),
         ]),
+        ...(columnType && columnId
+          ? [
+              [
+                ...generateSearchCriterion(
+                  `${columnType}ID`,
+                  [columnId],
+                  OPERATORS.Equals
+                ),
+              ],
+            ]
+          : []),
       ].filter((criterion) => criterion.length > 0),
     }),
     pageNumber: pageNumber,
@@ -102,10 +118,10 @@ const useAssetTemplateInfo = (props: UseAssetTemplateInfo) => {
 
   // Trigger search when search input changes or pagination updates
   useEffect(() => {
-    if (search) {
+    if (search || !isFilterEmpty) {
       handleSearch();
     }
-  }, [search, pageNumber, pageSize]);
+  }, [search, pageNumber, pageSize, isFilterEmpty]);
 
   // Reset pagination when clearing the search
   useEffect(() => {
@@ -130,7 +146,9 @@ const useAssetTemplateInfo = (props: UseAssetTemplateInfo) => {
         pageSize={pageSize}
         setPageSize={setPageSize}
         totalPages={
-          search && searchData ? searchData?.totalPages : data?.data?.totalPages
+          (search || !isFilterEmpty) && searchData
+            ? searchData?.totalPages
+            : data?.data?.totalPages
         }
         handleSelectRow={(row) => {
           handleSelectRow(row);
@@ -146,7 +164,7 @@ const useAssetTemplateInfo = (props: UseAssetTemplateInfo) => {
   );
   const Filter = (
     <Flex width="full" pb="16px">
-      <GeneralFilter handleApplyFilter={handleSearch} />
+      <GeneralFilter handleApplyFilter={handleSearch} columnType={columnType} />
     </Flex>
   );
   return {

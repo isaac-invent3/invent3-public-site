@@ -12,7 +12,7 @@ const NEXT_PUBLIC_API_URL = env('NEXT_PUBLIC_API_URL');
 const baseURL = NEXT_PUBLIC_API_URL;
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: `${baseURL}`,
+  baseUrl: `${baseURL}/api`,
   prepareHeaders: async (headers) => {
     const session = await getSession();
 

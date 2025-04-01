@@ -103,6 +103,7 @@ const AssetCount = () => {
               textAlign="center"
               bgColor="#EBEBEB"
               overflow="hidden"
+              key={index}
             />
           ))}
 

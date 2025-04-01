@@ -32,11 +32,7 @@ const PersonalInformation = ({
   ];
   return (
     <VStack width="full" spacing="16px" alignItems="flex-start">
-      <Text
-        size={{ base: 'lg', md: 'xl' }}
-        color="primary.500"
-        fontWeight={700}
-      >
+      <Text size="lg" color="primary.500" fontWeight={700}>
         Personal Information
       </Text>
       <HStack

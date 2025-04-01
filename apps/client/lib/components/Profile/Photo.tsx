@@ -8,11 +8,7 @@ const Photo = () => {
   const user = data?.data?.user;
   return (
     <VStack width="full" spacing="16px" alignItems="flex-start">
-      <Text
-        size={{ base: 'lg', md: 'xl' }}
-        color="primary.500"
-        fontWeight={700}
-      >
+      <Text size="lg" color="primary.500" fontWeight={700}>
         Photo
       </Text>
       <HStack width="full" justifyContent="space-between">

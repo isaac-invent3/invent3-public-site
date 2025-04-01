@@ -1,4 +1,7 @@
-import { FilterInput } from '~/lib/interfaces/asset/general.interface';
+import {
+  FilterInput,
+  ValidColumnNames,
+} from '~/lib/interfaces/asset/general.interface';
 import CategoryFilter from './FilterComponents/CategoryFilter';
 import StatusFilter from './FilterComponents/StatusFilter';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
@@ -12,12 +15,13 @@ import FilterWrapper from '../../Common/FilterComponents/FilterWrapper';
 
 interface GeneralFilterProps {
   handleApplyFilter: () => Promise<void>;
+  columnType?: ValidColumnNames;
 }
 
 type FilterLabel = keyof FilterInput;
 
 const GeneralFilter = (props: GeneralFilterProps) => {
-  const { handleApplyFilter } = props;
+  const { handleApplyFilter, columnType } = props;
   const filterData = useAppSelector((state) => state.asset.assetFilter);
   const dispatch = useAppDispatch();
 
@@ -36,20 +40,24 @@ const GeneralFilter = (props: GeneralFilterProps) => {
       handleApplyFilter={handleApplyFilter}
       handleClearFilter={() => dispatch(clearAssetFilter())}
     >
-      <CategoryFilter
-        selectedOptions={filterData.category}
-        handleSelectedOption={(value) => handleFilterData(value, 'category')}
-      />
+      {columnType !== 'Category' && (
+        <CategoryFilter
+          selectedOptions={filterData.category}
+          handleSelectedOption={(value) => handleFilterData(value, 'category')}
+        />
+      )}
       <CombinedLocationFilter
         selectedRegion={filterData.region}
         selectedArea={filterData.area}
         selectedBranch={filterData.branch}
         handleSelectedOption={handleFilterData}
       />
-      <StatusFilter
-        selectedOptions={filterData.status}
-        handleSelectedOption={(value) => handleFilterData(value, 'status')}
-      />
+      {columnType !== 'Status' && (
+        <StatusFilter
+          selectedOptions={filterData.status}
+          handleSelectedOption={(value) => handleFilterData(value, 'status')}
+        />
+      )}
     </FilterWrapper>
   );
 };

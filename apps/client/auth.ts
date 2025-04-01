@@ -148,7 +148,7 @@ export const config = {
 
         // external api for users to log in
         const res = await fetch(
-          `${process.env.API_BASE_URL}/Invent3Pro/login`,
+          `${process.env.API_BASE_URL}/api/Invent3Pro/login`,
           {
             method: 'POST',
             headers: {
@@ -184,7 +184,7 @@ export const config = {
   secret: process.env.NEXTAUTH_SECRET,
 
   pages: {
-    signIn: '/',
+    signIn: '/signin',
   },
   callbacks: {
     async jwt({ token, user, trigger, session }) {
@@ -270,6 +270,13 @@ export const config = {
         error: token.error,
       };
     },
+  },
+  session: {
+    strategy: 'jwt',
+    maxAge: 1800,
+  },
+  jwt: {
+    maxAge: 1800,
   },
   debug: process.env.NODE_ENV === 'development',
 } satisfies NextAuthConfig;

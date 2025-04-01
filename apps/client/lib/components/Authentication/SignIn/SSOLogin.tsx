@@ -19,7 +19,7 @@ const SSOLogin = () => {
   const handleGoogleSignin = async () => {
     try {
       const response = await fetch(
-        `${NEXT_PUBLIC_API_URL}/Invent3Pro/login/google-login-url`
+        `${NEXT_PUBLIC_API_URL}/api/Invent3Pro/login/google-login-url`
       );
       const { data } = await response.json();
       window.location.href = data?.url;
@@ -38,7 +38,7 @@ const SSOLogin = () => {
       setGoogleLoading(true);
       try {
         const res = await fetch(
-          `${NEXT_PUBLIC_API_URL}/Invent3Pro/login/redirect?code=${code}&state=${state}`
+          `${NEXT_PUBLIC_API_URL}/api/Invent3Pro/login/redirect?code=${code}&state=${state}`
         );
 
         const { data } = await res.json();

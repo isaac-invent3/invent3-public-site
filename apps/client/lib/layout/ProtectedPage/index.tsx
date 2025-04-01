@@ -4,7 +4,7 @@ import { Flex, HStack, Icon } from '@chakra-ui/react';
 
 import Header from './Header';
 import SideBar from './SideBar';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // import CountDownTimer from './CountDownTimer';
 
 import {
@@ -13,12 +13,27 @@ import {
 } from '~/lib/components/CustomIcons/layout';
 import CompanyPageHeader from '~/lib/components/CompanyManagement/CompanyPageHeader';
 import Notes from './Notes';
+import { getSession, signOut } from 'next-auth/react';
 
 interface ProtectedLayoutProps {
   children: React.ReactNode;
 }
 const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
   const [isCollapse, setIsCollapse] = useState(true);
+
+  //Session timeout check
+  // This effect checks the session every minute and signs out the user if the session is invalid
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const session = await getSession();
+      if (!session) {
+        signOut(); // Logs out the user
+      }
+    }, 1800 * 1000); // Check every 60 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <Flex
       width="full"

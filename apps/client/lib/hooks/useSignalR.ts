@@ -25,59 +25,68 @@ const useSignalR = (path: string = 'notification-hub') => {
       state: HubConnectionState.Disconnected,
     });
 
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
-  const hubConnection = new HubConnectionBuilder()
-    .withUrl(`https://${baseURL}/Invent3Pro/${path}`, {
-      withCredentials: false,
-      headers: {
-        Authorization: `Bearer ${session?.user.accessToken}`,
-        ApiKey: `${session?.user.apiKey}`,
-      },
-    })
-    .configureLogging(LogLevel.Information)
-    .withAutomaticReconnect()
-    .withKeepAliveInterval(15000)
-    .withServerTimeout(30000)
-    .build();
-
-  const startSignalRConnection = async (): Promise<void> => {
-    if (hubConnection.state !== HubConnectionState.Disconnected) {
-      console.log(
-        'Connection is not in the Disconnected state. Current state:',
-        hubConnection.state
-      );
+  useEffect(() => {
+    if (
+      status !== 'authenticated' ||
+      !session?.user.accessToken ||
+      !session?.user.apiKey
+    ) {
+      console.log('Session is not ready or missing required fields.');
       return;
     }
 
-    try {
-      await hubConnection.start();
-      setConnectionState({
-        connection: hubConnection,
-        state: hubConnection.state,
-      });
-      console.log('Connected to SignalR');
-    } catch (error) {
-      console.error('Error connecting to SignalR:', error);
+    const hubConnection = new HubConnectionBuilder()
+      .withUrl(`${baseURL}/Invent3Pro/${path}`, {
+        withCredentials: false,
+        headers: {
+          Authorization: `Bearer ${session.user.accessToken}`,
+          ApiKey: `${session.user.apiKey}`,
+        },
+      })
+      .configureLogging(LogLevel.Information)
+      .withAutomaticReconnect()
+      .withKeepAliveInterval(15000)
+      .withServerTimeout(3000)
+      .build();
 
-      reconnectTimeoutRef.current = setTimeout(
-        () => startSignalRConnection(),
-        5000
-      );
-    }
-  };
+    const startSignalRConnection = async (): Promise<void> => {
+      if (hubConnection.state !== HubConnectionState.Disconnected) {
+        console.log(
+          'Connection is not in the Disconnected state. Current state:',
+          hubConnection.state
+        );
+        return;
+      }
 
-  const stopSignalRConnection = async (): Promise<void> => {
-    if (
-      hubConnection.state === HubConnectionState.Connected ||
-      hubConnection.state === HubConnectionState.Connecting
-    ) {
-      console.log('Stopping SignalR connection');
-      await hubConnection.stop();
-    }
-  };
+      try {
+        await hubConnection.start();
+        setConnectionState({
+          connection: hubConnection,
+          state: hubConnection.state,
+        });
+        console.log('Connected to SignalR');
+      } catch (error) {
+        console.error('Error connecting to SignalR:', error);
 
-  useEffect(() => {
+        reconnectTimeoutRef.current = setTimeout(
+          () => startSignalRConnection(),
+          5000
+        );
+      }
+    };
+
+    const stopSignalRConnection = async (): Promise<void> => {
+      if (
+        hubConnection.state === HubConnectionState.Connected ||
+        hubConnection.state === HubConnectionState.Connecting
+      ) {
+        console.log('Stopping SignalR connection');
+        await hubConnection.stop();
+      }
+    };
+
     startSignalRConnection();
 
     hubConnection.onclose(async () => {
@@ -90,7 +99,7 @@ const useSignalR = (path: string = 'notification-hub') => {
         clearTimeout(reconnectTimeoutRef.current);
       }
     };
-  }, []);
+  }, [session, status, path]);
 
   return connectionState;
 };

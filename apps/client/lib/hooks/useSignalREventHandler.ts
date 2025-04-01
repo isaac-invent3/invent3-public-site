@@ -20,7 +20,6 @@ const useSignalREventHandler = ({
     if (!connection || state !== HubConnectionState.Connected) return;
 
     const handleEvent = (message: any): void => {
-      console.log('Data Received from SignalR:', message);
       callback(message);
     };
 

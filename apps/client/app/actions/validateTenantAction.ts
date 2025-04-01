@@ -10,7 +10,7 @@ export async function validateTenant({
   }
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/Invent3Pro/Companies/ValidateTenant/${tenantName}`
+      `${process.env.NEXT_PUBLIC_API_URL}/api/Invent3Pro/Companies/ValidateTenant/${tenantName}`
     );
 
     if (!response.ok) {

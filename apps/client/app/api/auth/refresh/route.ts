@@ -7,7 +7,7 @@ export async function POST(request: Request) {
     apiKey: body.apiKey,
   };
   const res = await fetch(
-    `${process.env.API_BASE_URL}/Invent3Pro/refresh-tokens`,
+    `${process.env.API_BASE_URL}/api/Invent3Pro/refresh-tokens`,
     {
       method: 'POST',
       headers: {

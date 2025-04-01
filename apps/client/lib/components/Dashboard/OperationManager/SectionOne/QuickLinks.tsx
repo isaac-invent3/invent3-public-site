@@ -40,8 +40,7 @@ const QuickLinks = () => {
             key={index}
             href={item.href}
             customStyles={{
-              color: 'primary.500',
-              bgColor: 'neutral.300',
+              color: 'white',
               height: '37px',
               minW: '75px',
               py: '10px',

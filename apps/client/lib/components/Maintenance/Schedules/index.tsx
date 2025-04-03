@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import ScheduleStats from './Stats';
 import ScheduleTimeline from './Timeline';
-import EventDetailDrawer from './Timeline/EventDetailDrawer';
+import MaintenanceScheduleDrawer from './Timeline/MaintenanceScheduleDrawer';
 import { SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
 
 const Schedules = () => {
@@ -45,7 +45,7 @@ const Schedules = () => {
         </Flex>
       </Flex>
 
-      <EventDetailDrawer
+      <MaintenanceScheduleDrawer
         isOpen={isOpen}
         onClose={() => {
           clearSearchParamsAfter(

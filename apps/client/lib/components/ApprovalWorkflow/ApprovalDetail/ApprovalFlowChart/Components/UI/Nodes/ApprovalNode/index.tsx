@@ -9,7 +9,6 @@ import {
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
-  StackDivider,
   Text,
   useDisclosure,
   useOutsideClick,

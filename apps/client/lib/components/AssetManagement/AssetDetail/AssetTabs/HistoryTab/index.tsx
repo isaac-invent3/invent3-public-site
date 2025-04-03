@@ -1,6 +1,6 @@
-import { Flex, Text, useMediaQuery } from '@chakra-ui/react';
+import { Flex, Text, useDisclosure, useMediaQuery } from '@chakra-ui/react';
 import { createColumnHelper } from '@tanstack/react-table';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
 import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
 import { useGetMaintenanceHistoryByAssetIdQuery } from '~/lib/redux/services/asset/general.services';
@@ -8,7 +8,12 @@ import { useAppSelector } from '~/lib/redux/hooks';
 import { DataTable } from '@repo/ui/components';
 import Technician from '../../../Common/Technician';
 import Status from '../../../Common/MaintenanceStatus';
-import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import {
+  DEFAULT_PAGE_SIZE,
+  SYSTEM_CONTEXT_DETAILS,
+} from '~/lib/utils/constants';
+import MaintenanceScheduleDrawer from '~/lib/components/Maintenance/Schedules/Timeline/MaintenanceScheduleDrawer';
+import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 
 const Description = (description: string | null) => {
   return (
@@ -40,6 +45,18 @@ const HistoryTab = () => {
   );
   const columnHelper = createColumnHelper<MaintenanceSchedule>();
   const [isMobile] = useMediaQuery('(max-width: 768px)');
+  const { clearSearchParamsAfter, getSearchParam, updateSearchParam } =
+    useCustomSearchParams();
+  const maintenanceScheduleInstanceId = getSearchParam(
+    SYSTEM_CONTEXT_DETAILS.MAINTENANCE_SCHEDULE_INSTANCE.slug
+  );
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  useEffect(() => {
+    if (maintenanceScheduleInstanceId) {
+      onOpen();
+    }
+  }, [maintenanceScheduleInstanceId]);
 
   const mobileColumns = useMemo(
     () => [
@@ -145,6 +162,14 @@ const HistoryTab = () => {
         pageNumber={currentPage}
         setPageNumber={setCurrentPage}
         setPageSize={setPageSize}
+        // handleSelectRow={(row) => {
+        //           if (row) {
+        //             updateSearchParam(
+        //               SYSTEM_CONTEXT_DETAILS.MAINTENANCE_SCHEDULE_INSTANCE.slug,
+        //               row.scheduleInstanceId
+        //             );
+        //           }
+        //         }}
         customThStyle={{
           paddingLeft: '16px',
           paddingTop: '8px',
@@ -157,6 +182,19 @@ const HistoryTab = () => {
           paddingBottom: '8px',
         }}
         customTBodyRowStyle={{ verticalAlign: 'top' }}
+      />
+      <MaintenanceScheduleDrawer
+        isOpen={isOpen}
+        onClose={() => {
+          clearSearchParamsAfter(
+            SYSTEM_CONTEXT_DETAILS.MAINTENANCE_SCHEDULE_INSTANCE.slug,
+            { removeSelf: true }
+          );
+          onClose();
+        }}
+        scheduleInstanceId={
+          maintenanceScheduleInstanceId ? +maintenanceScheduleInstanceId : null
+        }
       />
     </Flex>
   );

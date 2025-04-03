@@ -58,6 +58,17 @@ export const ticketApi = createApi({
       }),
       invalidatesTags: [],
     }),
+    getAllTickets: builder.query<
+      BaseApiResponse<ListResponse<Ticket>>,
+      QueryParams
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/Tickets?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+
     getTicketsByTabScope: builder.query<
       BaseApiResponse<ListResponse<Ticket>>,
       { userId?: number; tabScopeName?: TicketCategory } & QueryParams
@@ -171,4 +182,5 @@ export const {
   useGetAssetOpenTicketsQuery,
   useUpdateTicketMetadataPayloadMutation,
   useGetTicketsByListOfIdsQuery,
+  useGetAllTicketsQuery,
 } = ticketApi;

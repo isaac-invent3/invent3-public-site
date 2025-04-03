@@ -13,12 +13,12 @@ import { useGetScheduleInstanceByIdQuery } from '~/lib/redux/services/maintenanc
 import { BackButton, GenericDrawer, LoadingSpinner } from '@repo/ui/components';
 import GenericErrorState from '~/lib/components/UI/GenericErrorState';
 
-interface EventDetailDrawerProps {
+interface MaintenanceScheduleDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   scheduleInstanceId: number | null;
 }
-const EventDetailModal = (props: EventDetailDrawerProps) => {
+const MaintenanceScheduleDrawer = (props: MaintenanceScheduleDrawerProps) => {
   const { isOpen, onClose, scheduleInstanceId } = props;
   const { data, isLoading, isError, isFetching } =
     useGetScheduleInstanceByIdQuery(
@@ -78,4 +78,4 @@ const EventDetailModal = (props: EventDetailDrawerProps) => {
   );
 };
 
-export default EventDetailModal;
+export default MaintenanceScheduleDrawer;

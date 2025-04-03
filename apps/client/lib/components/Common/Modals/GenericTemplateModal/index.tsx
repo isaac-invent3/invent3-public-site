@@ -11,15 +11,15 @@ interface GenericTemplateModalProps {
   isOpen: boolean;
   onClose: () => void;
   headerName: string;
-  pageSize: number;
-  pageNumber: number;
-  totalPages: number;
+  pageSize?: number;
+  pageNumber?: number;
+  totalPages?: number;
   showDetails?: boolean;
   hideOtherInfoWhenDetailsIsShown?: boolean;
   setShowDetails?: React.Dispatch<React.SetStateAction<boolean>>;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
-  setPageNumber: React.Dispatch<React.SetStateAction<number>>;
-  setPageSize: React.Dispatch<React.SetStateAction<number>>;
+  setPageNumber?: React.Dispatch<React.SetStateAction<number>>;
+  setPageSize?: React.Dispatch<React.SetStateAction<number>>;
   children: React.ReactNode;
   filters?: React.ReactNode;
   footer?: React.ReactNode;
@@ -92,7 +92,7 @@ const GenericTemplateModal = (props: GenericTemplateModalProps) => {
               setPageNumber={setPageNumber}
               pageSize={pageSize}
               setPageSize={setPageSize}
-              totalPage={totalPages}
+              totalPage={totalPages ?? 0}
             />
           )}
         </ModalFooter>

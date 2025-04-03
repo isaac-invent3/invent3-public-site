@@ -1,79 +1,26 @@
 'use client';
 
 import { Flex, SimpleGrid } from '@chakra-ui/react';
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { CompanyIcon, UserManagementIcon } from '../CustomIcons/layout';
 import Filters from './Filters';
 import Header from './Header';
 import SummaryCard from './SummaryCard';
-import CompanyTable from './Table/CompanyTable';
-import {
-  useGetAllCompaniesQuery,
-  useGetCompaniesSummaryQuery,
-  useSearchCompaniesMutation,
-} from '~/lib/redux/services/company.services';
-import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
-import { OPERATORS } from '@repo/constants';
-import { BaseApiResponse, ListResponse } from '@repo/interfaces';
-import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { Company } from '~/lib/interfaces/company.interfaces';
+import { useGetCompaniesSummaryQuery } from '~/lib/redux/services/company.services';
 import { CardIcon, EditIcon } from '../CustomIcons/Dashboard';
+import useCompanyTable from './Table/useCompanyTable';
 
 const CompanyManagement = () => {
   const [search, setSearch] = useState('');
-  const [pageNumber, setPageNumber] = useState(1);
-  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const { data, isLoading, isFetching } = useGetAllCompaniesQuery({
-    pageNumber: pageNumber,
-    pageSize: pageSize,
-  });
+
   const { data: companiesSummary, isLoading: loadingSummary } =
     useGetCompaniesSummaryQuery();
   const [activeFilter, setActiveFilter] = useState<'bulk' | 'general' | null>(
     null
   );
-
-  const [searchData, setSearchData] = useState<
-    BaseApiResponse<ListResponse<Company>> | undefined
-  >(undefined);
-  const { handleSubmit } = useCustomMutation();
-  const [searchLog, { isLoading: searchLoading }] = useSearchCompaniesMutation(
-    {}
-  );
-
-  const searchCriterion = {
-    ...(search && {
-      criterion: [
-        {
-          columnName: 'companyName',
-          columnValue: search,
-          operation: OPERATORS.Contains,
-        },
-      ],
-    }),
-    pageNumber,
-    pageSize,
-  };
-
-  const handleSearch = useCallback(async () => {
-    const response = await handleSubmit(searchLog, searchCriterion, '');
-    setSearchData(response?.data);
-  }, [searchLog, searchCriterion]);
-
-  // Trigger search when search input changes or pagination updates
-  useEffect(() => {
-    if (search) {
-      handleSearch();
-    }
-  }, [search, pageNumber, pageSize]);
-
-  // Reset pagination when clearing the search
-  useEffect(() => {
-    if (!search) {
-      setPageSize(DEFAULT_PAGE_SIZE);
-      setPageNumber(1);
-    }
-  }, [search]);
+  const { CompanyInfoTable } = useCompanyTable({
+    search,
+  });
 
   return (
     <Flex width="full" direction="column" pb="24px">
@@ -118,15 +65,7 @@ const CompanyManagement = () => {
         setActiveFilter={setActiveFilter}
       />
 
-      <CompanyTable
-        data={search ? searchData : data}
-        isFetching={isFetching || searchLoading}
-        isLoading={isLoading}
-        pageSize={pageSize}
-        setPageSize={setPageSize}
-        pageNumber={pageNumber}
-        setPageNumber={setPageNumber}
-      />
+      {CompanyInfoTable}
     </Flex>
   );
 };

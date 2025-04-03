@@ -9,8 +9,13 @@ import { Company } from '~/lib/interfaces/company.interfaces';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import PopoverAction from './PopoverAction';
 import { GenericTableProps } from '~/lib/interfaces/general.interfaces';
-import { COMPANY_TYPE_ENUM, ROLE_IDS_ENUM } from '~/lib/utils/constants';
+import {
+  COMPANY_TYPE_ENUM,
+  ROLE_IDS_ENUM,
+  ROUTES,
+} from '~/lib/utils/constants';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 interface CompanyTableProps extends GenericTableProps {
   data: BaseApiResponse<ListResponse<Company>> | undefined;
@@ -39,6 +44,7 @@ const CompanyTable = (props: CompanyTableProps) => {
   const columnHelper = createColumnHelper<Company>();
   const session = useSession();
   const user = session?.data?.user;
+  const router = useRouter();
   const isSuperAdmin =
     user?.roleIds.includes(ROLE_IDS_ENUM.SUPER_ADMIN) ?? false;
 
@@ -187,9 +193,9 @@ const CompanyTable = (props: CompanyTableProps) => {
         setSelectedRows={setSelectedRows}
         emptyLines={emptyLines}
         isSelectable={isSelectable}
-        // handleSelectRow={(row) => {
-        //   router.push(`/${ROUTES.COMPANY}/${row.companyId}/edit`);
-        // }}
+        handleSelectRow={(row) => {
+          router.push(`/${ROUTES.COMPANY}/${row.companyId}/details`);
+        }}
         showFooter={showFooter && data?.data?.totalPages === 1 ? true : false}
         maxTdWidth="200px"
         customThStyle={{

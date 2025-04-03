@@ -1,5 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { BaseApiResponse } from '@repo/interfaces';
+import { BaseApiResponse, ListResponse, QueryParams } from '@repo/interfaces';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
 import {
   AssetTrendData,
@@ -72,12 +72,12 @@ export const clientAdminApi = createApi({
       }),
     }),
     getUserActivityData: builder.query<
-      BaseApiResponse<UserActivity[]>,
-      { countryId: number; regionId?: number; year?: number; monthNo?: number }
+      BaseApiResponse<ListResponse<UserActivity>>,
+      QueryParams
     >({
-      query: ({ countryId, ...data }) => ({
+      query: (data) => ({
         url: generateQueryStr(
-          `/Invent3Pro/GetUserActivityClientAdminDashboardComponent/${countryId}?`,
+          `/Invent3Pro/GetUserActivityClientAdminDashboardComponent?`,
           data
         ),
         method: 'GET',

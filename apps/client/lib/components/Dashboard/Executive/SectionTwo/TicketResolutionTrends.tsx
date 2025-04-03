@@ -37,7 +37,7 @@ const TicketResolutionTrends = () => {
   return (
     <VStack
       width="full"
-      minH="full"
+      minH="353px"
       p="20px"
       alignItems="flex-start"
       bgColor="white"

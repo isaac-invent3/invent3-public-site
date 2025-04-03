@@ -4,7 +4,12 @@ import AssetDepreciation from './AssetDepreciation';
 
 const SectionFive = () => {
   return (
-    <SimpleGrid width="full" gap="16px" columns={{ base: 1, lg: 2 }}>
+    <SimpleGrid
+      width="full"
+      gap="16px"
+      columns={{ base: 1, lg: 2 }}
+      minH="353px"
+    >
       <AssetDepreciation />
       <ApprovalRequests />
     </SimpleGrid>

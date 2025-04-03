@@ -1,20 +1,20 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { BaseApiResponse } from '@repo/interfaces';
+import { BaseApiResponse, ListResponse } from '@repo/interfaces';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import {
   AssetDistribution,
   AssetPerformance,
   AssetTrendsData,
-  Compliance,
   DashboardStats,
   FinancialImpact,
   MaintenanceBudget,
   MaintenanceTrendData,
-  PendingApproval,
   TicketResolution,
   TicketTrends,
 } from '~/lib/interfaces/dashboard/executive.interfaces';
+import { ApprovalWorkflowRequest } from '~/lib/interfaces/approvalWorkflow.interfaces';
+import { AssetComplaince } from '~/lib/interfaces/asset/compliance.interfaces';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -56,12 +56,12 @@ export const executiveDashboardApis = createApi({
       }),
     }),
     getMaintenanceTrend: builder.query<
-      BaseApiResponse<MaintenanceTrendData>,
-      { countryId: number; regionId?: number; year?: number; monthNo?: number }
+      BaseApiResponse<MaintenanceTrendData[]>,
+      { year?: number }
     >({
-      query: ({ countryId, ...data }) => ({
+      query: ({ ...data }) => ({
         url: generateQueryStr(
-          `/Invent3Pro/GetMaintenanceCLevelDashboardComponent/${countryId}?`,
+          `/Invent3Pro/GetMaintenanceCLevelDashboardComponent?`,
           data
         ),
         method: 'GET',
@@ -82,7 +82,7 @@ export const executiveDashboardApis = createApi({
       }),
     }),
     getComplianceAssessment: builder.query<
-      BaseApiResponse<Compliance[]>,
+      BaseApiResponse<ListResponse<AssetComplaince>>,
       { datePeriod: number }
     >({
       query: (data) => ({
@@ -108,7 +108,7 @@ export const executiveDashboardApis = createApi({
       }),
     }),
     getTicketResolutionPerformance: builder.query<
-      BaseApiResponse<TicketResolution[]>,
+      BaseApiResponse<ListResponse<TicketResolution>>,
       { datePeriod: number }
     >({
       query: (data) => ({
@@ -121,7 +121,7 @@ export const executiveDashboardApis = createApi({
       }),
     }),
     getAssetDepreciationFinancialImpact: builder.query<
-      BaseApiResponse<FinancialImpact[]>,
+      BaseApiResponse<ListResponse<FinancialImpact>>,
       { datePeriod: number }
     >({
       query: (data) => ({
@@ -134,7 +134,7 @@ export const executiveDashboardApis = createApi({
       }),
     }),
     getPendingApprovalRequest: builder.query<
-      BaseApiResponse<PendingApproval[]>,
+      BaseApiResponse<ListResponse<ApprovalWorkflowRequest>>,
       { datePeriod: number }
     >({
       query: (data) => ({
@@ -147,7 +147,7 @@ export const executiveDashboardApis = createApi({
       }),
     }),
     getAssetPerformance: builder.query<
-      BaseApiResponse<AssetPerformance[]>,
+      BaseApiResponse<ListResponse<AssetPerformance>>,
       { datePeriod: number }
     >({
       query: (data) => ({

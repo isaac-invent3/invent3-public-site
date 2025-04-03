@@ -91,7 +91,10 @@ interface AssetTrendsData {
   percentageChange: -12;
 }
 interface MaintenanceTrendData {
-  taskCompletionRates: MaintenanceTrend[];
+  monthId: number;
+  monthName: string;
+  totalPlannedMaintenanceCount: number;
+  totalUnplannedMaintenanceCount: number;
 }
 
 export type {

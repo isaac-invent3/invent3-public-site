@@ -18,8 +18,6 @@ const ScheduledUnplannedMaintenance = () => {
     generateLastFiveYears()[0] as Option
   );
   const { data, isLoading } = useGetMaintenanceTrendQuery({
-    countryId: +selectedCountry?.value!,
-    regionId: (selectedState?.value as number) ?? undefined,
     year: (selectedYear?.value as number) ?? undefined,
   });
 
@@ -67,21 +65,21 @@ const ScheduledUnplannedMaintenance = () => {
           labels={
             data?.data
               ? transformMonthIdsToShortNames(
-                  data?.data?.taskCompletionRates.map((item) => item.monthId)
+                  data?.data?.map((item) => item.monthId)
                 )
               : []
           }
           firstStack={{
             label: 'Unplanned Maintenance',
             values:
-              data?.data?.taskCompletionRates.map((item) => item.unplanned) ??
+              data?.data?.map((item) => item.totalUnplannedMaintenanceCount) ??
               [],
             color: '#0E2642',
           }}
           secondStack={{
             label: 'Scheduled',
             values:
-              data?.data?.taskCompletionRates.map((item) => item.scheduled) ??
+              data?.data?.map((item) => item.totalPlannedMaintenanceCount) ??
               [],
             color: '#98FEFE',
           }}

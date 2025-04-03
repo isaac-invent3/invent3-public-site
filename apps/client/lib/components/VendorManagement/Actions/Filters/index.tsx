@@ -4,17 +4,17 @@ import DateRangeFilter from '~/lib/components/Common/DateRangeFilter';
 // import { isArray } from 'lodash';
 import moment from 'moment';
 import { initialFilterData } from '../..';
-import { UserFilter } from '~/lib/interfaces/user.interfaces';
+import { VendorFilter } from '~/lib/interfaces/vendor.interfaces';
 
-interface FiltersProps {
-  filterData: UserFilter;
-  setFilterData: React.Dispatch<React.SetStateAction<UserFilter>>;
+interface VendorFiltersProps {
+  filterData: VendorFilter;
+  setFilterData: React.Dispatch<React.SetStateAction<VendorFilter>>;
   handleApplyFilter: () => Promise<void>;
 }
-const Filters = (props: FiltersProps) => {
+const VendorFilters = (props: VendorFiltersProps) => {
   const { filterData, setFilterData, handleApplyFilter } = props;
 
-  // type FilterLabel = keyof UserFilter;
+  // type FilterLabel = keyof VendorFilter;
 
   // const handleFilterData = (option: Option, filterLabel: FilterLabel) => {
   //   setFilterData((prev) => {
@@ -78,4 +78,4 @@ const Filters = (props: FiltersProps) => {
   );
 };
 
-export default Filters;
+export default VendorFilters;

@@ -1,114 +1,63 @@
-import { Flex, HStack, Text, VStack } from '@chakra-ui/react';
-import React, { useMemo } from 'react';
-import { Button, DataTable } from '@repo/ui/components';
-import { DATE_PERIOD, ROUTES } from '~/lib/utils/constants';
+import { Flex, HStack, Text, useDisclosure, VStack } from '@chakra-ui/react';
+import React from 'react';
+import { Button } from '@repo/ui/components';
 import CardHeader from '../../Common/CardHeader';
-import { createColumnHelper } from '@tanstack/react-table';
-import { dateFormatter } from '~/lib/utils/Formatters';
-import { useGetComplianceAssessmentQuery } from '~/lib/redux/services/dashboard/executive.services';
-import { Compliance } from '~/lib/interfaces/dashboard/executive.interfaces';
+import useComplianceRiskAssessmentTable from '../../hooks/useComplianceRiskAssessmentTable';
+import ComplianceRiskAssessmentModal from '../../Modals/ComplianceRiskAssessmentModal';
 
 const ComplianceRiskAssessment = () => {
-  const { data, isLoading } = useGetComplianceAssessmentQuery({
-    datePeriod: DATE_PERIOD.YEAR,
-  });
-  const columnHelper = createColumnHelper<Compliance>();
-  const columns = useMemo(
-    () => {
-      const baseColumns = [
-        columnHelper.accessor('complianceStandard', {
-          cell: (info) => info.getValue(),
-          header: 'Compliance Standard',
-          enableSorting: false,
-        }),
-        columnHelper.accessor('status', {
-          cell: (info) => info.getValue(),
-          header: 'Status',
-          enableSorting: false,
-        }),
-        columnHelper.accessor('lastAuditDate', {
-          cell: (info) => dateFormatter(info.getValue(), 'DD-MM-YYYY') ?? 'N/A',
-          header: 'Last Audit Date',
-          enableSorting: false,
-        }),
-        columnHelper.accessor('expiryDate', {
-          cell: (info) => dateFormatter(info.getValue(), 'DD-MM-YYYY') ?? 'N/A',
-          header: 'Expiry Date',
-          enableSorting: false,
-        }),
-        columnHelper.accessor('status', {
-          cell: () => 'Low',
-          header: 'Risk Level',
-          enableSorting: false,
-        }),
-      ];
-
-      return baseColumns;
-    },
-    [[data]] //eslint-disable-line
+  const { ComplianceRiskAssessmentTable } = useComplianceRiskAssessmentTable(
+    {}
   );
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <VStack
-      width="full"
-      height="full"
-      pl="16px"
-      pr="15px"
-      pt="21px"
-      pb="12px"
-      alignItems="flex-start"
-      spacing="16px"
-      bgColor="white"
-      rounded="8px"
-    >
-      <HStack width="full" justifyContent="space-between">
-        <HStack>
-          <CardHeader>Compliance & Risk Assessment</CardHeader>
-          <Text
-            color="neutral.800"
-            py="6px"
-            px="8px"
-            rounded="4px"
-            bgColor="neutral.200"
+    <>
+      <VStack
+        width="full"
+        height="full"
+        pl="16px"
+        pr="15px"
+        pt="21px"
+        pb="12px"
+        alignItems="flex-start"
+        spacing="16px"
+        bgColor="white"
+        rounded="8px"
+        minH="353px"
+      >
+        <HStack width="full" justifyContent="space-between">
+          <HStack>
+            <CardHeader>Compliance & Risk Assessment</CardHeader>
+            <Text
+              color="neutral.800"
+              py="6px"
+              px="8px"
+              rounded="4px"
+              bgColor="neutral.200"
+            >
+              This Month
+            </Text>
+          </HStack>
+          <Button
+            handleClick={onOpen}
+            customStyles={{
+              py: 0,
+              height: '28px',
+              width: '68px',
+              fontSize: '12px',
+              lineHeight: '14.26px',
+            }}
           >
-            This Month
-          </Text>
+            View All
+          </Button>
         </HStack>
-        <Button
-          href={`/${ROUTES.COMPLIANCE}`}
-          customStyles={{
-            py: 0,
-            height: '28px',
-            width: '68px',
-            fontSize: '12px',
-            lineHeight: '14.26px',
-          }}
-        >
-          View All
-        </Button>
-      </HStack>
-      <Flex width="full">
-        <DataTable
-          columns={columns}
-          data={data?.data ?? []}
-          isLoading={isLoading}
-          showFooter={false}
-          customThStyle={{
-            paddingLeft: '16px',
-            paddingTop: '17px',
-            paddingBottom: '17px',
-            fontWeight: 700,
-          }}
-          customTdStyle={{
-            paddingLeft: '16px',
-            paddingTop: '16px',
-            paddingBottom: '16px',
-          }}
-          customTBodyRowStyle={{ verticalAlign: 'top' }}
-          maxTdWidth="250px"
-        />
-      </Flex>
-    </VStack>
+        <Flex width="full">{ComplianceRiskAssessmentTable}</Flex>
+      </VStack>
+      {isOpen && (
+        <ComplianceRiskAssessmentModal isOpen={isOpen} onClose={onClose} />
+      )}
+    </>
   );
 };
 

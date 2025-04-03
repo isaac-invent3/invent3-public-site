@@ -14,8 +14,9 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import { Ticket, TicketCategory } from '~/lib/interfaces/ticket.interfaces';
-import { useAppSelector } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import {
+  ticketApi,
   useGetTicketsByTabScopeQuery,
   useSearchTicketsMutation,
 } from '~/lib/redux/services/ticket.services';
@@ -37,6 +38,8 @@ import { generateSearchCriterion } from '@repo/utils';
 import { OPERATORS } from '@repo/constants';
 import { BaseApiResponse, ListResponse } from '@repo/interfaces';
 import _ from 'lodash';
+import useSignalR from '~/lib/hooks/useSignalR';
+import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
 
 const ALlTabs = ['New', 'Assigned', 'Scheduled', 'In Progress', 'Completed'];
 
@@ -68,6 +71,9 @@ const TicketManagement = () => {
   const selectedTicket = useAppSelector((state) => state.ticket.selectedTicket);
   const { handleSubmit } = useCustomMutation();
   const [selectedTicketIds, setSelectedTicketIds] = useState<number[]>([]);
+  const appConfigValue = useAppSelector(
+    (state) => state.general.appConfigValues
+  );
 
   // Open ticket detail if ticket id params exists
   useEffect(() => {
@@ -107,6 +113,7 @@ const TicketManagement = () => {
     pageSize: pageSize,
     tabScopeName: getTicketCategory,
   });
+  const dispatch = useAppDispatch();
 
   // Checks if all filterdata is empty
   const isFilterEmpty = _.every(
@@ -196,6 +203,110 @@ const TicketManagement = () => {
       onClose();
     }
   }, [activeFilter]);
+
+  const connectionState = useSignalR('tickets-hub');
+
+  useSignalREventHandler({
+    eventName: 'CreateTicket',
+    connectionState,
+    callback: (newTicket) => {
+      const parsedTicket = JSON.parse(newTicket);
+      // Update the query cache when a new ticket is received
+
+      if (
+        (getTicketCategory === 'new' &&
+          parsedTicket.assignedToEmployeeId === null) ||
+        (getTicketCategory === 'assigned' &&
+          parsedTicket.assignedToEmployeeId !== null)
+      ) {
+        dispatch(
+          ticketApi.util.updateQueryData(
+            'getTicketsByTabScope',
+            {
+              pageNumber: currentPage,
+              pageSize,
+              tabScopeName: getTicketCategory,
+            },
+            (draft) => {
+              if (draft?.data?.items) {
+                draft?.data?.items.unshift(parsedTicket); // Add new ticket to the beginning
+              }
+            }
+          )
+        );
+      }
+    },
+  });
+
+  useSignalREventHandler({
+    eventName: 'UpdateTicket',
+    connectionState,
+    callback: (updatedTicket) => {
+      const parsedTicket = JSON.parse(updatedTicket);
+      // Update the query cache when a ticket is updated
+
+      dispatch(
+        ticketApi.util.updateQueryData(
+          'getTicketsByTabScope',
+          {
+            pageNumber: currentPage,
+            pageSize,
+            tabScopeName: getTicketCategory,
+          },
+          (draft) => {
+            if (draft?.data?.items) {
+              if (
+                (getTicketCategory === 'new' &&
+                  parsedTicket.assignedToEmployeeId) ||
+                (getTicketCategory === 'assigned' &&
+                  parsedTicket.isScheduled) ||
+                (getTicketCategory === 'scheduled' &&
+                  parsedTicket.ticketStatusId ===
+                    +(appConfigValue?.DEFAULT_COMPLETED_TASK_STATUS_ID ?? '0'))
+              ) {
+                draft.data.items = draft.data.items.filter(
+                  (ticket) => ticket.ticketId !== parsedTicket.ticketId
+                ); // Remove the ticket
+              } else {
+                const index = draft.data.items.findIndex(
+                  (ticket) => ticket.ticketId === parsedTicket.ticketId
+                );
+                if (index !== -1) {
+                  draft.data.items[index] = parsedTicket; // Update the ticket in place
+                }
+              }
+            }
+          }
+        )
+      );
+    },
+  });
+
+  useSignalREventHandler({
+    eventName: 'DeleteTicket',
+    connectionState,
+    callback: (deletedTicket) => {
+      const parsedTicket = JSON.parse(deletedTicket);
+      // Update the query cache when a ticket is deleted
+      dispatch(
+        ticketApi.util.updateQueryData(
+          'getTicketsByTabScope',
+          {
+            pageNumber: currentPage,
+            pageSize,
+            tabScopeName: getTicketCategory,
+          },
+          (draft) => {
+            if (draft?.data?.items) {
+              draft.data.items = draft.data.items.filter(
+                (ticket) => ticket.ticketId !== parsedTicket.ticketId
+              ); // Remove the deleted ticket
+            }
+          }
+        )
+      );
+    },
+  });
 
   return (
     <Flex width="full" direction="column" pb="24px">

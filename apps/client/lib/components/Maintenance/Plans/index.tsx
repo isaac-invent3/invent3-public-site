@@ -7,6 +7,7 @@ import {
   PlanTableType,
 } from '~/lib/interfaces/maintenance.interfaces';
 import {
+  maintenancePlanApi,
   useGetAllMaintenancePlanQuery,
   useSearchMaintenancePlanMutation,
 } from '~/lib/redux/services/maintenance/plan.services';
@@ -24,6 +25,9 @@ import { generateSearchCriterion } from '@repo/utils';
 import PopoverAction from './PopoverAction';
 import PlanDetailsDrawer from './Drawers/PlanDetailDrawer';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
+import useSignalR from '~/lib/hooks/useSignalR';
+import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
+import { useAppDispatch } from '~/lib/redux/hooks';
 
 export const initialFilterData = {
   planType: [],
@@ -54,6 +58,7 @@ const Plans = (props: PlansProp) => {
   const maintenancePlanId = getSearchParam('maintenancePlanId');
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { updateSearchParam, clearSearchParamsAfter } = useCustomSearchParams();
+  const dispatch = useAppDispatch();
 
   // Checks if all filterdata is empty
   const isFilterEmpty = _.every(
@@ -152,6 +157,87 @@ const Plans = (props: PlansProp) => {
       onOpen();
     }
   }, [maintenancePlanId]);
+
+  // SignalR Connection
+  const connectionState = useSignalR('maintenanceplan-hub');
+
+  useSignalREventHandler({
+    eventName: 'CreateMaintenancePlan',
+    connectionState,
+    callback: (newPlan) => {
+      // Update the query cache when a new plan is received
+      const parsedPlan = JSON.parse(newPlan);
+      dispatch(
+        maintenancePlanApi.util.updateQueryData(
+          'getAllMaintenancePlan',
+          {
+            pageNumber: currentPage,
+            pageSize,
+          },
+          (draft) => {
+            if (draft?.data?.items) {
+              draft?.data?.items.unshift(parsedPlan); // Add new plan to the beginning
+            }
+          }
+        )
+      );
+    },
+  });
+
+  useSignalREventHandler({
+    eventName: 'UpdateMaintenancePlan',
+    connectionState,
+    callback: (updatedPlan) => {
+      // Update the query cache when a plan is updated
+      const parsedPlan = JSON.parse(updatedPlan);
+      dispatch(
+        maintenancePlanApi.util.updateQueryData(
+          'getAllMaintenancePlan',
+          {
+            pageNumber: currentPage,
+            pageSize,
+          },
+          (draft) => {
+            if (draft?.data?.items) {
+              const index = draft.data.items.findIndex(
+                (item) =>
+                  item.maintenancePlanId === parsedPlan.maintenancePlanId
+              );
+              if (index !== -1) {
+                draft.data.items[index] = parsedPlan; // Update the existing plan
+              }
+            }
+          }
+        )
+      );
+    },
+  });
+
+  useSignalREventHandler({
+    eventName: 'DeleteMaintenancePlan',
+    connectionState,
+    callback: (deletedPlan) => {
+      // Update the query cache when a plan is deleted
+      const parsedPlan = JSON.parse(deletedPlan);
+      dispatch(
+        maintenancePlanApi.util.updateQueryData(
+          'getAllMaintenancePlan',
+          {
+            pageNumber: currentPage,
+            pageSize,
+          },
+          (draft) => {
+            if (draft?.data?.items) {
+              draft.data.items = draft.data.items.filter(
+                (item) =>
+                  item.maintenancePlanId !== parsedPlan.maintenancePlanId
+              ); // Remove the deleted plan
+            }
+          }
+        )
+      );
+    },
+  });
 
   return (
     <Flex direction="column" pt="16px" width="full">

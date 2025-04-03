@@ -51,9 +51,7 @@ const AddDocument = (props: AddDocumentProps) => {
       <DocumentUploadAndView
         variant={variant}
         handleRemoveDocuments={(document) => handleRemoveDocument(document)}
-        handleAddDocuments={(documents) =>
-          helpers.setValue([...meta.value, ...documents])
-        }
+        handleAddDocuments={(documents) => helpers.setValue(documents)}
         documents={meta.value}
         setError={(error) => helpers.setError(error)}
         error={meta.error}

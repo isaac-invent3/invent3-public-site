@@ -76,8 +76,8 @@ export default function Page({ params }: { params: { id: number } }) {
         (document: AssetDocument) => ({
           documentId: document.documentId || null,
           documentName: document.documentName || null,
-          base64Document: document.document,
-          base64Prefix: document.base64Prefix,
+          base64Document: document.document || null,
+          base64Prefix: document.base64Prefix || null,
         })
       );
     }

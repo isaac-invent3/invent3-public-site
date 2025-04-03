@@ -31,7 +31,11 @@ const SingleDocument = (props: SingleDocumentProps) => {
       <HStack spacing={variant === 'primary' ? '64px' : '0px'} flexWrap="wrap">
         <HStack spacing="16px">
           <Icon
-            as={FILE_ICONS[(extensionName.toLowerCase() as 'pdf') ?? 'invalid']}
+            as={
+              FILE_ICONS[
+                extensionName?.toLowerCase() as keyof typeof FILE_ICONS
+              ] || FILE_ICONS['invalid']
+            }
             boxSize="34px"
           />
           <Text

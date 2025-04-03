@@ -9,10 +9,11 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DocumentIcon, InfoIcon } from '~/lib/components/CustomIcons';
 import { Document } from '~/lib/interfaces/general.interfaces';
 import SingleDocument from './SingleDocument';
+import _ from 'lodash';
 
 interface DocumentUploadAndViewProps {
   variant?: 'primary' | 'secondary';
@@ -73,7 +74,6 @@ const DocumentUploadAndView = (props: DocumentUploadAndViewProps) => {
             base64Document: baseDocument,
             base64Prefix: null,
           });
-
           // Update the state or Formik helpers only when all files are processed
           if (newDocuments.length === files.length) {
             handleAddDocuments([...documents, ...newDocuments]);
@@ -116,7 +116,6 @@ const DocumentUploadAndView = (props: DocumentUploadAndViewProps) => {
           id="documents"
           display="none"
           onChange={(event: any) => {
-            console.log('it came here');
             const files = Array.from(event.currentTarget.files) as File[]; // Convert FileList to array
             const validFiles = files.filter(
               (file) =>
@@ -212,16 +211,17 @@ const DocumentUploadAndView = (props: DocumentUploadAndViewProps) => {
       </FormControl>
       {showDocumentView && (
         <VStack width="full" spacing="4px">
-          {documents.map((item: Document, index: number) => (
-            <SingleDocument
-              document={item}
-              variant={variant}
-              key={index}
-              handleRemoveDocument={(document) =>
-                handleRemoveDocuments(document)
-              }
-            />
-          ))}
+          {_.isArray(documents) &&
+            documents?.map((item: Document, index: number) => (
+              <SingleDocument
+                document={item}
+                variant={variant}
+                key={index}
+                handleRemoveDocument={(document) =>
+                  handleRemoveDocuments(document)
+                }
+              />
+            ))}
         </VStack>
       )}
     </VStack>

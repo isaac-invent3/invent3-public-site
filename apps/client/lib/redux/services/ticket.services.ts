@@ -35,7 +35,7 @@ export const ticketApi = createApi({
         headers: getHeaders(),
         body,
       }),
-      invalidatesTags: ['allTickets'],
+      invalidatesTags: [],
     }),
     updateTicket: builder.mutation<
       BaseApiResponse<Ticket>,
@@ -47,7 +47,7 @@ export const ticketApi = createApi({
         headers: getHeaders(),
         body,
       }),
-      invalidatesTags: ['allTickets'],
+      invalidatesTags: [],
     }),
     deleteTicket: builder.mutation<BaseApiResponse<null>, DeleteTicketPayload>({
       query: ({ id, ...body }) => ({
@@ -56,7 +56,7 @@ export const ticketApi = createApi({
         headers: getHeaders(),
         body,
       }),
-      invalidatesTags: ['allTickets'],
+      invalidatesTags: [],
     }),
     getTicketsByTabScope: builder.query<
       BaseApiResponse<ListResponse<Ticket>>,
@@ -106,7 +106,7 @@ export const ticketApi = createApi({
         headers: getHeaders(),
         body,
       }),
-      invalidatesTags: ['allTickets'],
+      invalidatesTags: [],
     }),
     getTicketsByListOfIds: builder.query<
       BaseApiResponse<ListResponse<Ticket>>,

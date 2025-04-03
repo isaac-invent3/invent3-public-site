@@ -1,5 +1,8 @@
 import { useState } from 'react';
-import { useGetAllCompletedTaskInstancesQuery } from '~/lib/redux/services/task/instance.services';
+import {
+  taskInstanceApi,
+  useGetAllCompletedTaskInstancesQuery,
+} from '~/lib/redux/services/task/instance.services';
 import {
   DEFAULT_PAGE_SIZE,
   OPERATORS,
@@ -7,6 +10,9 @@ import {
 } from '~/lib/utils/constants';
 import TabTableView from '.';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
+import useSignalR from '~/lib/hooks/useSignalR';
+import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 
 interface CompletedTabProps {
   search: string;
@@ -23,12 +29,47 @@ const CompletedTab = (props: CompletedTabProps) => {
     pageSize,
     pageNumber: currentPage,
   });
+  const dispatch = useAppDispatch();
+  const appConfigValue = useAppSelector(
+    (state) => state.general.appConfigValues
+  );
 
   const searchCriterion = {
     columnName: 'statusCategoryId',
     columnValue: search,
     operation: OPERATORS.Equals,
   };
+
+  // SignalR Connection
+  const connectionState = useSignalR('tasks-hub');
+
+  useSignalREventHandler({
+    eventName: 'ReceiveTask',
+    connectionState,
+    callback: (newTask) => {
+      // Update the query cache when a new task is received
+      const parsedTask = JSON.parse(newTask);
+      if (
+        +(appConfigValue?.DEFAULT_COMPLETED_TASK_STATUS_ID ?? '0') ===
+        parsedTask.statusCategoryId
+      ) {
+        dispatch(
+          taskInstanceApi.util.updateQueryData(
+            'getAllTaskInstances',
+            {
+              pageNumber: currentPage,
+              pageSize,
+            },
+            (draft) => {
+              if (draft?.data?.items) {
+                draft?.data?.items.unshift(parsedTask); // Add new task to the beginning
+              }
+            }
+          )
+        );
+      }
+    },
+  });
 
   return (
     <TabTableView

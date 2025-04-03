@@ -10,6 +10,7 @@ import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import { Asset } from '~/lib/interfaces/asset/general.interface';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import {
+  assetApi,
   useGetAllAssetQuery,
   useSearchAssetsMutation,
 } from '~/lib/redux/services/asset/general.services';
@@ -25,6 +26,8 @@ import {
 import AssetDetail from './AssetDetail';
 import AssetTable from './Common/AssetTable';
 import AssetFilterDisplay from './Filters/AssetFilterDisplay';
+import useSignalR from '~/lib/hooks/useSignalR';
+import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
 
 interface ListViewProps {
   search: string;
@@ -162,6 +165,60 @@ const ListView = (props: ListViewProps) => {
       dispatch(updateSelectedAssetIds(assetIds));
     }
   }, [selectedRows]);
+
+  // SignalR Connection
+  const connectionState = useSignalR('asset-hub');
+
+  useSignalREventHandler({
+    eventName: 'CreateAsset',
+    connectionState,
+    callback: (newAsset) => {
+      // Update the query cache when a new asset is received
+      const parsedAsset = JSON.parse(newAsset);
+      dispatch(
+        assetApi.util.updateQueryData(
+          'getAllAsset',
+          {
+            pageNumber: currentPage,
+            pageSize,
+          },
+          (draft) => {
+            if (draft?.data?.items) {
+              draft?.data?.items.unshift(parsedAsset); // Add new asset to the beginning
+            }
+          }
+        )
+      );
+    },
+  });
+
+  useSignalREventHandler({
+    eventName: 'UpdateAsset',
+    connectionState,
+    callback: (updatedAsset) => {
+      // Update the query cache when an asset is updated
+      const parsedAsset = JSON.parse(updatedAsset);
+      dispatch(
+        assetApi.util.updateQueryData(
+          'getAllAsset',
+          {
+            pageNumber: currentPage,
+            pageSize,
+          },
+          (draft) => {
+            if (draft?.data?.items) {
+              const index = draft.data.items.findIndex(
+                (item) => item.assetId === parsedAsset.assetId
+              );
+              if (index !== -1) {
+                draft.data.items[index] = parsedAsset; // Update the existing asset
+              }
+            }
+          }
+        )
+      );
+    },
+  });
 
   return (
     <>

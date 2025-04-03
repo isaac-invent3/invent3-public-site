@@ -248,8 +248,12 @@ const UserActionPopover = () => {
           </PopoverBody>
         </PopoverContent>
       </Popover>
-      <Profile isOpen={isOpenProfile} onClose={onCloseProfile} />
-      <UserSettings isOpen={isOpenSettings} onClose={onCloseSettings} />
+      {isOpenProfile && (
+        <Profile isOpen={isOpenProfile} onClose={onCloseProfile} />
+      )}
+      {isOpenSettings && (
+        <UserSettings isOpen={isOpenSettings} onClose={onCloseSettings} />
+      )}
     </>
   );
 };

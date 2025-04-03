@@ -9,7 +9,10 @@ import {
   ApprovalWorkflowRequest,
   ApprovalWorkflowType,
 } from '~/lib/interfaces/approvalWorkflow.interfaces';
-import { useGetAllApprovalWorkflowRequestsQuery } from '~/lib/redux/services/approval-workflow/requests.services';
+import {
+  approvalWorkflowRequestApi,
+  useGetAllApprovalWorkflowRequestsQuery,
+} from '~/lib/redux/services/approval-workflow/requests.services';
 import {
   COLOR_CODES_FALLBACK,
   DEFAULT_PAGE_SIZE,
@@ -17,6 +20,9 @@ import {
 } from '~/lib/utils/constants';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import PopoverAction from './PopoverAction';
+import useSignalR from '~/lib/hooks/useSignalR';
+import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
+import { useAppDispatch } from '~/lib/redux/hooks';
 
 interface ApprovalTableProps {
   selectedApprovalType: ApprovalWorkflowType | null;
@@ -28,6 +34,7 @@ const ApprovalTable = (props: ApprovalTableProps) => {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+  const dispatch = useAppDispatch();
 
   const { data, isLoading, isFetching } =
     useGetAllApprovalWorkflowRequestsQuery({
@@ -35,6 +42,63 @@ const ApprovalTable = (props: ApprovalTableProps) => {
       pageSize: pageSize,
       approvalTypeId: selectedApprovalType?.approvalTypeId ?? undefined,
     });
+
+  // SignalR Connection
+  const connectionState = useSignalR('approvalworkflow-hub');
+
+  useSignalREventHandler({
+    eventName: 'UpdateApprovalWorkflow',
+    connectionState,
+    callback: (updatedApproval) => {
+      // Update the query cache when an approval is updated
+      const parsedApproval = JSON.parse(updatedApproval);
+      dispatch(
+        approvalWorkflowRequestApi.util.updateQueryData(
+          'getAllApprovalWorkflowRequests',
+          {
+            pageNumber: currentPage,
+            pageSize,
+            approvalTypeId: selectedApprovalType?.approvalTypeId ?? undefined,
+          },
+          (draft) => {
+            if (draft?.data?.items) {
+              const index = draft.data.items.findIndex(
+                (item) =>
+                  item.approvalRequestId === parsedApproval.approvalRequestId
+              );
+              if (index !== -1) {
+                draft.data.items[index] = parsedApproval; // Update the existing approval
+              }
+            }
+          }
+        )
+      );
+    },
+  });
+
+  useSignalREventHandler({
+    eventName: 'CreateApprovalWorkflow',
+    connectionState,
+    callback: (newApproval) => {
+      // Update the query cache when a new approval is created
+      const parsedApproval = JSON.parse(newApproval);
+      dispatch(
+        approvalWorkflowRequestApi.util.updateQueryData(
+          'getAllApprovalWorkflowRequests',
+          {
+            pageNumber: currentPage,
+            pageSize,
+            approvalTypeId: selectedApprovalType?.approvalTypeId ?? undefined,
+          },
+          (draft) => {
+            if (draft?.data?.items) {
+              draft.data.items.unshift(parsedApproval); // Add the new approval to the beginning
+            }
+          }
+        )
+      );
+    },
+  });
 
   const columnHelper = createColumnHelper<ApprovalWorkflowRequest>();
   const columns = useMemo(

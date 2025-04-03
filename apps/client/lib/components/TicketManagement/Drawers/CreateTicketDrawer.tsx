@@ -94,7 +94,7 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
         createTicketMutation,
         {
           ...payload,
-          createdBy: session?.user.id,
+          createdBy: session?.user.username,
         },
         ''
       );

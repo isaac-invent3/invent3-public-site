@@ -13,9 +13,9 @@ const ROUTES_PERMISSION_KEY: { [name: string]: PermissionKey } = {
   [`/${ROUTES.ASSETS}/bulk-transfer`]: 'asset:transfer',
   [`/${ROUTES.MAINTENANCE}`]: 'maintenance',
   [`/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_PLANS}`]: 'maintenance',
-  [`/${ROUTES.MAINTENANCE_PLANS}/${ROUTES.MAINTENANCE_PLANS}/add`]:
+  [`/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_PLANS}/add`]:
     'maintenance:plan_create',
-  [`/${ROUTES.MAINTENANCE_PLANS}/${ROUTES.MAINTENANCE_PLANS}/[id]/edit`]:
+  [`/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_PLANS}/[id]/edit`]:
     'maintenance:plan_edit',
   [`/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_SCHEDULES}`]: 'maintenance',
   [`/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_SCHEDULES}/[id]/edit`]:

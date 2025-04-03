@@ -22,7 +22,7 @@ interface GenericPopoverProps {
   width?: string;
   placement?: PlacementWithLogical;
   icon?: ComponentWithAs<'svg', IconProps> | IconType;
-  popoverBodyStyles?: PopoverBodyProps
+  popoverBodyStyles?: PopoverBodyProps;
 }
 
 const GenericPopover = (props: GenericPopoverProps) => {
@@ -49,7 +49,12 @@ const GenericPopover = (props: GenericPopoverProps) => {
         isOpen={isOpen}
       >
         <PopoverTrigger>
-          <Flex onClick={() => onOpen()}>
+          <Flex
+            onClick={(e) => {
+              e.stopPropagation();
+              onOpen();
+            }}
+          >
             <Icon
               as={icon ?? ThreeVerticalDotsIcon}
               boxSize="16px"
@@ -63,7 +68,15 @@ const GenericPopover = (props: GenericPopoverProps) => {
           boxShadow="0px 4px 32px 0px #00000026"
           rounded="8px"
         >
-          <PopoverBody m={0} p="16px" onClick={onClose} {...popoverBodyStyles}>
+          <PopoverBody
+            m={0}
+            p="16px"
+            onClick={(e) => {
+              e.stopPropagation();
+              onClose();
+            }}
+            {...popoverBodyStyles}
+          >
             {children}
           </PopoverBody>
         </PopoverContent>

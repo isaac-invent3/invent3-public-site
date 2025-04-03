@@ -52,8 +52,8 @@ function getDocumentInfo(document: Document) {
   // Check if the base64 string has a prefix like 'data:application/pdf;base64,'
   const base64WithPrefixPattern = /^data:(.+);base64,(.+)$/;
   let matches;
-  if (document?.base64Document) {
-    matches = document?.base64Document.match(base64WithPrefixPattern);
+  if (document?.base64Document && typeof document.base64Document === 'string') {
+    matches = document.base64Document.match(base64WithPrefixPattern);
   }
 
   extensionName =
@@ -241,7 +241,6 @@ const formattedDateTime = (date: Date | null, time: string | null) => {
 
   return formatted;
 };
-
 
 export {
   formatNumberShort,

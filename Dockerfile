@@ -32,13 +32,24 @@ RUN pnpm install
 # Build the project and its dependencies
 COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
-COPY entrypoint.sh .
+# COPY entrypoint.sh .
 # COPY .env .
 
 # Execute script
-RUN apk add --no-cache --upgrade bash
-RUN ["chmod", "+x", "./entrypoint.sh"]
-ENTRYPOINT ["./entrypoint.sh"]
+# RUN apk add --no-cache --upgrade bash
+# RUN ["chmod", "+x", "./entrypoint.sh"]
+# ENTRYPOINT ["./entrypoint.sh"]
+
+# ARG and ENV for environment variables
+ARG NEXTAUTH_SECRET
+ARG NEXT_PUBLIC_BASE_URL
+ARG NEXT_PUBLIC_API_URL
+ARG API_BASE_URL
+
+ENV NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+ENV NEXT_PUBLIC_BASE_URL=${NEXT_PUBLIC_BASE_URL}
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+ENV API_BASE_URL=${API_BASE_URL}
 
 # Uncomment and use build args to enable remote caching
 # ARG TURBO_TEAM

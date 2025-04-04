@@ -70,7 +70,7 @@ const Notes = (props: NotesProps) => {
         ref={nodeRef}
         style={{
           position: 'fixed',
-          zIndex: 999,
+          zIndex: 99999,
           transition: 'all 200ms ease-in-out',
         }}
       >

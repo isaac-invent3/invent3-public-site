@@ -38,6 +38,7 @@ export { default as GenericDeleteModal } from './Modal/GenericDeleteModal';
 export { default as GenericSuccessModal } from './Modal/GenericSuccessModal';
 export { default as LeaveDialogModal } from './Modal/LeaveDialogModal';
 export { default as ModalHeading } from './Modal/ModalHeading';
+export { default as ModalCloseButtonText } from './Modal/ModalCloseButtonText';
 export { default as NumberBox } from './NumberBox';
 export { default as ButtonPagination } from './Pagination/ButtonPagination';
 export { default as NumberPagination } from './Pagination/NumberPagination';

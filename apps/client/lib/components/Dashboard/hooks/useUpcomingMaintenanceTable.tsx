@@ -157,7 +157,7 @@ const useUpcomingMaintenanceTable = (props: useUpcomingMaintenanceTable) => {
           !info.row.original.contactPersonEmail &&
           !info.row.original.contactPersonPhoneNo
             ? 'N/A'
-            : Technician(info.row.original as unknown as MaintenanceSchedule),
+            : Technician(info.row.original),
         header: 'Contact Person',
         enableSorting: false,
       }),

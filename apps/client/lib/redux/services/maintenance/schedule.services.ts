@@ -68,20 +68,6 @@ export const maintenanceScheduleApi = createApi({
       }),
       providesTags: ['allMaintenanceSchedule'],
     }),
-    getAllMaintenanceScheduleByAssetId: builder.query<
-      BaseApiResponse<ListResponse<MaintenanceSchedule>>,
-      { id: number; pageSize?: number; pageNumber?: number }
-    >({
-      query: ({ id, ...data }) => ({
-        url: generateQueryStr(
-          `/MaintenanceSchedules/GetMaintenanceSchedulesByAssetId/${id}?`,
-          data
-        ),
-        method: 'GET',
-        headers: getHeaders(),
-      }),
-      providesTags: ['allMaintenanceSchedule'],
-    }),
     getMaintenanceScheduleByGuid: builder.query<
       BaseApiResponse<MaintenanceSchedule>,
       string
@@ -201,7 +187,6 @@ export const maintenanceScheduleApi = createApi({
 });
 
 export const {
-  useGetAllMaintenanceScheduleByAssetIdQuery,
   useDeleteMaintenanceScheduleMutation,
   useCreateMaintenanceScheduleAndTasksMutation,
   useGetAllMaintenanceScheduleQuery,

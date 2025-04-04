@@ -1,9 +1,14 @@
-import { Flex, Text, useDisclosure, useMediaQuery } from '@chakra-ui/react';
+import {
+  Flex,
+  Text,
+  useDisclosure,
+  useMediaQuery,
+  VStack,
+} from '@chakra-ui/react';
 import { createColumnHelper } from '@tanstack/react-table';
 import React, { useEffect, useMemo, useState } from 'react';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
-import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
-import { useGetMaintenanceHistoryByAssetIdQuery } from '~/lib/redux/services/asset/general.services';
+import { MaintenanceScheduleInstance } from '~/lib/interfaces/maintenance.interfaces';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { DataTable } from '@repo/ui/components';
 import Technician from '../../../Common/Technician';
@@ -14,6 +19,7 @@ import {
 } from '~/lib/utils/constants';
 import MaintenanceScheduleDrawer from '~/lib/components/Maintenance/Schedules/Timeline/MaintenanceScheduleDrawer';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
+import { useGetAllMaintenanceScheduleInstanceByAssetIdQuery } from '~/lib/redux/services/maintenance/scheduleInstance.services';
 
 const Description = (description: string | null) => {
   return (
@@ -30,6 +36,15 @@ const Description = (description: string | null) => {
   );
 };
 
+const MaintenanceType = (type: string | null) => {
+  return (
+    <VStack spacing="16px" alignItems="flex-start">
+      <Text>{type ?? 'N/A'}</Text>
+      <Text color="blue.500">View Schedule</Text>
+    </VStack>
+  );
+};
+
 const HistoryTab = () => {
   const assetData = useAppSelector((state) => state.asset.asset);
 
@@ -39,11 +54,12 @@ const HistoryTab = () => {
   const { assetId } = assetData;
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const { data, isLoading } = useGetMaintenanceHistoryByAssetIdQuery(
-    { id: assetId, pageSize, pageNumber: currentPage },
-    { skip: !assetId }
-  );
-  const columnHelper = createColumnHelper<MaintenanceSchedule>();
+  const { data, isLoading } =
+    useGetAllMaintenanceScheduleInstanceByAssetIdQuery(
+      { id: assetId, pageSize, pageNumber: currentPage },
+      { skip: !assetId }
+    );
+  const columnHelper = createColumnHelper<MaintenanceScheduleInstance>();
   const [isMobile] = useMediaQuery('(max-width: 768px)');
   const { clearSearchParamsAfter, getSearchParam, updateSearchParam } =
     useCustomSearchParams();
@@ -78,7 +94,7 @@ const HistoryTab = () => {
         enableSorting: false,
       }),
       columnHelper.accessor('maintenanceType', {
-        cell: (info) => info.getValue() ?? 'N/A',
+        cell: (info) => MaintenanceType(info.getValue()),
         header: 'Maintenance Type',
         enableSorting: false,
       }),
@@ -117,7 +133,7 @@ const HistoryTab = () => {
         enableSorting: false,
       }),
       columnHelper.accessor('maintenanceType', {
-        cell: (info) => info.getValue() ?? 'N/A',
+        cell: (info) => MaintenanceType(info.getValue()),
         header: 'Maintenance Type',
         enableSorting: false,
       }),
@@ -162,14 +178,14 @@ const HistoryTab = () => {
         pageNumber={currentPage}
         setPageNumber={setCurrentPage}
         setPageSize={setPageSize}
-        // handleSelectRow={(row) => {
-        //           if (row) {
-        //             updateSearchParam(
-        //               SYSTEM_CONTEXT_DETAILS.MAINTENANCE_SCHEDULE_INSTANCE.slug,
-        //               row.scheduleInstanceId
-        //             );
-        //           }
-        //         }}
+        handleSelectRow={(row) => {
+          if (row) {
+            updateSearchParam(
+              SYSTEM_CONTEXT_DETAILS.MAINTENANCE_SCHEDULE_INSTANCE.slug,
+              row.scheduleInstanceId
+            );
+          }
+        }}
         customThStyle={{
           paddingLeft: '16px',
           paddingTop: '8px',

@@ -121,10 +121,24 @@ export const scheduleInstanceApi = createApi({
         body,
       }),
     }),
+    getAllMaintenanceScheduleInstanceByAssetId: builder.query<
+      BaseApiResponse<ListResponse<MaintenanceScheduleInstance>>,
+      { id: number; pageSize?: number; pageNumber?: number }
+    >({
+      query: ({ id, ...data }) => ({
+        url: generateQueryStr(
+          `/MaintenanceScheduleInstances/GetAssetMaintenanceHistory/${id}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
   }),
 });
 
 export const {
+  useGetAllMaintenanceScheduleInstanceByAssetIdQuery,
   useDeleteMaintenanceScheduleMutation,
   useGetAllScheduleInstanceQuery,
   useGetScheduleInstanceByIdQuery,

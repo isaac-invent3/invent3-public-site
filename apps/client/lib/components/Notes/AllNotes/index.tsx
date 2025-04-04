@@ -1,5 +1,12 @@
-import { Divider, ModalBody, ModalHeader, VStack } from '@chakra-ui/react';
-import { GenericModal } from '@repo/ui/components';
+import {
+  Divider,
+  Flex,
+  HStack,
+  ModalBody,
+  ModalHeader,
+  VStack,
+} from '@chakra-ui/react';
+import { GenericModal, ModalCloseButtonText } from '@repo/ui/components';
 import useFormatUrl from '~/lib/hooks/useFormatUrl';
 import useParseUrlData from '~/lib/hooks/useParseUrl';
 import EmptyNotes from './EmptyNotes';
@@ -66,16 +73,27 @@ const AllNotes = (props: AllNotesModalProps) => {
         contentStyle={{
           width: { lg: '1150px' },
           px: { base: '16px', md: '48px' },
-          py: { base: '32px', md: '48px' },
+          pb: { base: '32px', md: '48px' },
+          pt: { base: '32px', md: 0 },
           bgColor: '#E7E7E7',
           maxW: '80vw',
         }}
       >
-        <ModalHeader m={0} p={0}>
+        <ModalHeader
+          m={0}
+          p={0}
+          position="relative"
+          pt={{ base: '32px', md: '48px' }}
+        >
+          <Flex position="absolute" top="0" right="0">
+            <Flex mt="17px">
+              <ModalCloseButtonText onClose={onClose} />
+            </Flex>
+          </Flex>
           <Header />
         </ModalHeader>
 
-        <ModalBody p={0} m={0} width="full">
+        <ModalBody p={0} m={0} width="full" mt={{ base: '16px', md: '32px' }}>
           <VStack
             width="full"
             spacing="16px"

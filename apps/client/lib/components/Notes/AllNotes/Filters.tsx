@@ -16,13 +16,7 @@ const Filters = (props: FilterProps) => {
   const data = useParseUrlData(formattedUrl);
 
   return (
-    <HStack
-      flexWrap="wrap"
-      gap="1em"
-      w="full"
-      justifyContent="space-between"
-      mt="1em"
-    >
+    <HStack flexWrap="wrap" gap="1em" w="full" justifyContent="space-between">
       <HStack
         alignItems="start"
         spacing={{ base: '16px', md: '40px' }}
@@ -35,7 +29,7 @@ const Filters = (props: FilterProps) => {
             </Text>
 
             <Tooltip
-              label="Default Plans are automatically added to an asset based on the selected asset type"
+              label="Current System Context"
               placement="top"
               bgColor="#CADBF2"
               color="blue.500"
@@ -95,17 +89,23 @@ const Filters = (props: FilterProps) => {
         </VStack>
       </HStack>
 
-      <HStack spacing="16px" flexWrap="wrap">
-        <SearchInput setSearch={setSearch} placeholderText="Search" />
+      <HStack spacing={{ base: '16px', lg: '46px' }} flexWrap="wrap">
+        <HStack spacing="16px">
+          <SearchInput
+            setSearch={setSearch}
+            placeholderText="Search"
+            width="187px"
+          />
 
-        <FilterButton
-          icon={FilterIcon}
-          label="Filters"
-          handleClick={() => console.log('')}
-          isActive={false}
-        />
+          <FilterButton
+            icon={FilterIcon}
+            label="Filters"
+            handleClick={() => console.log('')}
+            isActive={false}
+          />
+        </HStack>
 
-        <HStack>
+        <HStack spacing="12px">
           <Box
             rounded="4px"
             display="flex"

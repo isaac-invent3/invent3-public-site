@@ -67,7 +67,7 @@ const MaintenanceScheduleDrawer = (props: MaintenanceScheduleDrawerProps) => {
         )}
       </DrawerBody>
       <DrawerFooter>
-        {data?.data && (
+        {data?.data && !data?.data?.completionDate && (
           <DrawerButtons
             planId={data?.data?.maintenancePlanId}
             scheduleInstanceId={data?.data?.scheduleInstanceId}

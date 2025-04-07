@@ -183,6 +183,19 @@ export const maintenanceScheduleApi = createApi({
         body,
       }),
     }),
+    getAllMaintenanceScheduleByAssetId: builder.query<
+      BaseApiResponse<ListResponse<MaintenanceSchedule>>,
+      { id: number; pageSize?: number; pageNumber?: number }
+    >({
+      query: ({ id, ...data }) => ({
+        url: generateQueryStr(
+          `/MaintenanceSchedules/GetMaintenanceSchedulesByAssetId/${id}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
   }),
 });
 
@@ -198,4 +211,5 @@ export const {
   useGetMaintenenanceScheduleInfoHeaderByScheduleIDQuery,
   useValidateFirstInstanceScheduledDateMutation,
   useGetMaintenanceSchedulesByTicketIdQuery,
+  useGetAllMaintenanceScheduleByAssetIdQuery,
 } = maintenanceScheduleApi;

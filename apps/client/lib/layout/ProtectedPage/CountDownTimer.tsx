@@ -57,7 +57,7 @@ const CountDownTimer = () => {
       <HStack
         width="full"
         height="47px"
-        bgColor="#0366EF1A"
+        bgColor="#B4BFCA"
         justifyContent="space-between"
         px="16px"
       >
@@ -111,7 +111,7 @@ const CountDownTimer = () => {
                 You need to logout and log back in to continue using the app.
               </Text>
               <Text fontWeight={800} color="neutral.700">
-                Time to restart:
+                Time to logout:
                 <Text as="span" ml="8px" fontWeight={800} color="neutral.700">
                   {time < 10 ? `0${time}` : time}s
                 </Text>

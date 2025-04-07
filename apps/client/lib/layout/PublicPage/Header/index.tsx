@@ -10,13 +10,7 @@ import MobileNav from './MobileNav';
 const Header = () => {
   //   const pathname = usePathname();
   return (
-    <Flex
-      bgColor="primary.500"
-      justifyContent="center"
-      width="full"
-      m={0}
-      p={0}
-    >
+    <Flex bgColor="#000000" justifyContent="center" width="full" m={0} p={0}>
       <Flex
         width="full"
         justifyContent="space-between"

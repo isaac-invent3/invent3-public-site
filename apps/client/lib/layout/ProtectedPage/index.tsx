@@ -47,7 +47,8 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
   useSignalREventHandler({
     eventName: 'UserTriggerLogout',
     connectionState,
-    callback: () => {
+    callback: (event) => {
+      console.log('UserTriggerLogout event received:', event);
       // Handle the logout event
       setShowCountdown(true);
     },

@@ -28,12 +28,7 @@ const summaryInfo = [
 
 const Hero = () => {
   return (
-    <Flex
-      bgColor="primary.500"
-      justifyContent="center"
-      width="full"
-      height="full"
-    >
+    <Flex bgColor="#000000" justifyContent="center" width="full" height="full">
       <Flex
         width="full"
         justifyContent="space-between"
@@ -46,9 +41,9 @@ const Hero = () => {
         direction={{ base: 'column', md: 'row' }}
       >
         <VStack
-          width={{ base: 'full', md: '50%' }}
+          width={{ base: 'full', md: '53%' }}
           alignItems={{ base: 'center', md: 'flex-start' }}
-          spacing={{ base: '40px', md: '80px' }}
+          spacing={{ base: '40px', md: '80px', xl: '147px' }}
         >
           <VStack
             width="full"
@@ -67,20 +62,19 @@ const Hero = () => {
                 lineHeight={{ base: '32px', lg: '62.4px' }}
                 textAlign={{ base: 'center', md: 'left' }}
               >
-                Revolutionize and Transform Your Asset Management with
-                Cutting-Edge AI Tech
+                AI & IoT-Powered Physical Asset & Facility Management for
+                Smarter Operations
               </Heading>
               <Text
                 fontSize={{ base: '12px', lg: '16px' }}
                 fontWeight={400}
                 lineHeight={{ base: '16px', lg: '22.4px' }}
                 textAlign={{ base: 'center', md: 'left' }}
-                color="white"
-                maxW="552px"
+                color="neutral.300"
               >
-                Discover the ultimate solution for efficient and effective asset
-                management by Leverage the Power of Artificial Intelligence for
-                Unparalleled Efficiency.
+                Optimize asset performance, reduce downtime, and stay
+                compliant—effortlessly. Invent3.ai transforms how businesses
+                manage their physical assets with automation and intelligence.
               </Text>
             </VStack>
             <Stack
@@ -97,7 +91,7 @@ const Hero = () => {
                 _hover={{ opacity: 0.8 }}
                 _active={{ opacity: 0.8 }}
               >
-                Get Started
+                Get a free Demo
               </Button>
               <Button
                 variant="outline"
@@ -109,33 +103,45 @@ const Hero = () => {
                 _hover={{ bgColor: 'white', color: 'primary.500' }}
                 _active={{ bgColor: 'white', color: 'primary.500' }}
               >
-                Request a Demo
+                See how it works
               </Button>
             </Stack>
           </VStack>
-          <HStack
-            spacing="8px"
-            divider={<StackDivider borderColor="white" />}
+          <VStack
+            spacing={{ base: '24px', md: '31px' }}
+            width="full"
             alignItems="flex-start"
           >
-            {summaryInfo.map((item, index) => (
-              <VStack
-                spacing={{ base: '8px', lg: '19px' }}
-                key={index}
-                color="secondary.pale.500"
-              >
-                <Text size={{ base: 'md', lg: '2xl' }}>{item.title}</Text>
-                <Text
-                  width={{ base: 'full', md: '141px' }}
-                  textAlign="center"
-                  size={{ base: 'base', md: 'md' }}
-                  fontWeight={700}
+            <Text color="neutral.600" ml="32px">
+              Target for 2025:
+            </Text>
+            <HStack
+              spacing="8px"
+              divider={<StackDivider borderColor="white" />}
+              alignItems="flex-start"
+            >
+              {summaryInfo.map((item, index) => (
+                <VStack
+                  spacing={{ base: '8px', lg: '19px' }}
+                  key={index}
+                  color="white"
                 >
-                  {item.subtitle}
-                </Text>
-              </VStack>
-            ))}
-          </HStack>
+                  <Text size={{ base: 'md', lg: '2xl' }} color="white">
+                    {item.title}
+                  </Text>
+                  <Text
+                    width={{ base: 'full', md: '141px' }}
+                    textAlign="center"
+                    size={{ base: 'base', md: 'md' }}
+                    fontWeight={700}
+                    color="neutral.600"
+                  >
+                    {item.subtitle}
+                  </Text>
+                </VStack>
+              ))}
+            </HStack>
+          </VStack>
         </VStack>
 
         <Flex

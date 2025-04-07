@@ -15,6 +15,7 @@ import { DataTable } from '@repo/ui/components';
 import Technician from '../../AssetManagement/Common/Technician';
 import { useSession } from 'next-auth/react';
 import {
+  scheduleInstanceApi,
   useGetAllScheduleInstanceQuery,
   useSearchScheduleInstanceMutation,
 } from '~/lib/redux/services/maintenance/scheduleInstance.services';
@@ -25,6 +26,10 @@ import {
 import Status from '~/lib/components/AssetManagement/Common/MaintenanceStatus';
 import MaintenanceScheduleDrawer from '../../Maintenance/Schedules/Timeline/MaintenanceScheduleDrawer';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
+import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
+import useSignalR from '~/lib/hooks/useSignalR';
+import { useAppDispatch } from '~/lib/redux/hooks';
+import { maintenanceScheduleApi } from '~/lib/redux/services/maintenance/schedule.services';
 
 const ContentDisplay = (
   content: string | React.ReactNode,
@@ -62,6 +67,7 @@ const useUpcomingMaintenanceTable = (props: useUpcomingMaintenanceTable) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { clearSearchParamsAfter, getSearchParam, updateSearchParam } =
     useCustomSearchParams();
+  const dispatch = useAppDispatch();
   const { data, isLoading, isFetching } = useGetAllScheduleInstanceQuery({
     pageSize: customPageSize ?? pageSize,
     pageNumber,
@@ -175,6 +181,98 @@ const useUpcomingMaintenanceTable = (props: useUpcomingMaintenanceTable) => {
     ],
     [data?.data?.items] //eslint-disable-line
   );
+
+  // SignalR Connection
+  const connectionState = useSignalR('maintenanceschedule-hub');
+
+  useSignalREventHandler({
+    eventName: 'CreateMaintenanceSchedule',
+    connectionState,
+    callback: (newScheduleInstance) => {
+      // Update the query cache when a new schedule instance is received
+      const parsedScheduleInstance = JSON.parse(newScheduleInstance);
+      dispatch(
+        scheduleInstanceApi.util.updateQueryData(
+          'getAllScheduleInstance',
+          {
+            pageSize: customPageSize ?? pageSize,
+            pageNumber,
+            ...(perUser ? { assignedTo: user?.userId! } : {}),
+          },
+          (draft) => {
+            if (
+              (draft?.data?.items && !perUser) ||
+              (perUser && parsedScheduleInstance.assignedTo === user?.userId)
+            ) {
+              draft?.data?.items.unshift(parsedScheduleInstance); // Add new schedule instance to the beginning
+            }
+          }
+        )
+      );
+    },
+  });
+
+  useSignalREventHandler({
+    eventName: 'UpdateMaintenanceSchedule',
+    connectionState,
+    callback: (updatedPlan) => {
+      // Update the query cache when a schedule instance is updated
+      const parsedScheduleInstance = JSON.parse(updatedPlan);
+      dispatch(
+        scheduleInstanceApi.util.updateQueryData(
+          'getAllScheduleInstance',
+          {
+            pageSize: customPageSize ?? pageSize,
+            pageNumber,
+            ...(perUser ? { assignedTo: user?.userId! } : {}),
+          },
+          (draft) => {
+            if (
+              (draft?.data?.items && !perUser) ||
+              (perUser && parsedScheduleInstance.assignedTo === user?.userId)
+            ) {
+              const index = draft.data.items.findIndex(
+                (item) =>
+                  item.scheduleInstanceId ===
+                  parsedScheduleInstance.scheduleInstanceId
+              );
+              if (index !== -1) {
+                draft.data.items[index] = parsedScheduleInstance; // Update the existing schedule instance
+              }
+            }
+          }
+        )
+      );
+    },
+  });
+
+  useSignalREventHandler({
+    eventName: 'DeleteMaintenanceSchedule',
+    connectionState,
+    callback: (deletedScheduleInstance) => {
+      // Update the query cache when a  schedule instance is deleted
+      const parsedScheduleInstance = JSON.parse(deletedScheduleInstance);
+      dispatch(
+        scheduleInstanceApi.util.updateQueryData(
+          'getAllScheduleInstance',
+          {
+            pageSize: customPageSize ?? pageSize,
+            pageNumber,
+            ...(perUser ? { assignedTo: user?.userId! } : {}),
+          },
+          (draft) => {
+            if (draft?.data?.items) {
+              draft.data.items = draft.data.items.filter(
+                (item) =>
+                  item.scheduleInstanceId !==
+                  parsedScheduleInstance.scheduleInstanceId
+              ); // Remove the deleted schedule instance
+            }
+          }
+        )
+      );
+    },
+  });
 
   const UpcomingMaintenanceTable = (
     <>

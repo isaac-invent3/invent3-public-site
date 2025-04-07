@@ -114,7 +114,6 @@ export const userApi = createApi({
         method: 'GET',
         headers: getHeaders(),
       }),
-      providesTags: ['allUsers'],
     }),
     getUserProfileByGuid: builder.query<
       BaseApiResponse<User>,

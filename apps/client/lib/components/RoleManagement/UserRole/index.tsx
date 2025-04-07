@@ -5,11 +5,15 @@ import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { OPERATORS } from '@repo/constants';
 import {
+  rolesApi,
   useGetAllRolesQuery,
   useSearchRolesMutation,
 } from '~/lib/redux/services/role.services';
 import { ListResponse } from '@repo/interfaces';
 import { Role } from '~/lib/interfaces/role.interfaces';
+import useSignalR from '~/lib/hooks/useSignalR';
+import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
+import { useAppDispatch } from '~/lib/redux/hooks';
 
 interface UserRoleProps {
   search: string;
@@ -21,6 +25,7 @@ const UserRole = ({ search }: UserRoleProps) => {
     pageNumber,
     pageSize,
   });
+  const dispatch = useAppDispatch();
 
   const [searchData, setSearchData] = useState<ListResponse<Role> | undefined>(
     undefined
@@ -61,6 +66,85 @@ const UserRole = ({ search }: UserRoleProps) => {
       setPageNumber(1);
     }
   }, [search]);
+
+  // SignalR Connection
+  const connectionState = useSignalR('userRole-hub');
+
+  useSignalREventHandler({
+    eventName: 'CreateUserRole',
+    connectionState,
+    callback: (newRole) => {
+      // Update the query cache when a new user is received
+      const parsedRole = JSON.parse(newRole);
+      dispatch(
+        rolesApi.util.updateQueryData(
+          'getAllRoles',
+          {
+            pageNumber,
+            pageSize,
+          },
+          (draft) => {
+            if (draft?.data?.items) {
+              draft?.data?.items.unshift(parsedRole); // Add new user to the beginning
+            }
+          }
+        )
+      );
+    },
+  });
+
+  useSignalREventHandler({
+    eventName: 'UpdateUserRole',
+    connectionState,
+    callback: (updatedRole) => {
+      // Update the query cache when a user is updated
+      const parsedRole = JSON.parse(updatedRole);
+      dispatch(
+        rolesApi.util.updateQueryData(
+          'getAllRoles',
+          {
+            pageNumber,
+            pageSize,
+          },
+          (draft) => {
+            if (draft?.data?.items) {
+              const index = draft.data.items.findIndex(
+                (item) => item.roleId === parsedRole.roleId
+              );
+              if (index !== -1) {
+                draft.data.items[index] = parsedRole;
+              }
+            }
+          }
+        )
+      );
+    },
+  });
+
+  useSignalREventHandler({
+    eventName: 'DeleteUserRole',
+    connectionState,
+    callback: (deleteUser) => {
+      // Update the query cache when a role is deleted
+      const parsedRole = JSON.parse(deleteUser);
+      dispatch(
+        rolesApi.util.updateQueryData(
+          'getAllRoles',
+          {
+            pageNumber,
+            pageSize,
+          },
+          (draft) => {
+            if (draft?.data?.items) {
+              draft.data.items = draft.data.items.filter(
+                (item) => item.roleId !== parsedRole.roleId
+              ); // Remove the deleted role
+            }
+          }
+        )
+      );
+    },
+  });
 
   return (
     <Flex width="full" mt="8px">

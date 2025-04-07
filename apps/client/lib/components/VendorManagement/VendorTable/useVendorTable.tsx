@@ -9,9 +9,13 @@ import VendorTable from '.';
 import {
   useGetAllVendorsQuery,
   useSearchVendorsMutation,
+  vendorApi,
 } from '~/lib/redux/services/vendor.services';
 import { Vendor, VendorFilter } from '~/lib/interfaces/vendor.interfaces';
 import { generateSearchCriterion } from '@repo/utils';
+import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
+import useSignalR from '~/lib/hooks/useSignalR';
+import { useAppDispatch } from '~/lib/redux/hooks';
 
 interface useVendorTable {
   search?: string;
@@ -32,6 +36,7 @@ const useVendorTable = (props: useVendorTable) => {
     BaseApiResponse<ListResponse<Vendor>> | undefined
   >(undefined);
   const { handleSubmit } = useCustomMutation();
+  const dispatch = useAppDispatch();
   const [searchVendor, { isLoading: searchLoading }] = useSearchVendorsMutation(
     {}
   );
@@ -109,6 +114,85 @@ const useVendorTable = (props: useVendorTable) => {
       setPageNumber(1);
     }
   }, [search]);
+
+  // SignalR Connection
+  const connectionState = useSignalR('vendors-hub');
+
+  useSignalREventHandler({
+    eventName: 'CreateVendor',
+    connectionState,
+    callback: (newVendor) => {
+      // Update the query cache when a new vendor is received
+      const parsedVendor = JSON.parse(newVendor);
+      dispatch(
+        vendorApi.util.updateQueryData(
+          'getAllVendors',
+          {
+            pageNumber,
+            pageSize,
+          },
+          (draft) => {
+            if (draft?.data?.items) {
+              draft?.data?.items.unshift(parsedVendor); // Add new vendor to the beginning
+            }
+          }
+        )
+      );
+    },
+  });
+
+  useSignalREventHandler({
+    eventName: 'UpdateVendor',
+    connectionState,
+    callback: (updatedVendor) => {
+      // Update the query cache when a vendor is updated
+      const parsedVendor = JSON.parse(updatedVendor);
+      dispatch(
+        vendorApi.util.updateQueryData(
+          'getAllVendors',
+          {
+            pageNumber,
+            pageSize,
+          },
+          (draft) => {
+            if (draft?.data?.items) {
+              const index = draft.data.items.findIndex(
+                (item) => item.vendorId === parsedVendor.vendorId
+              );
+              if (index !== -1) {
+                draft.data.items[index] = parsedVendor;
+              }
+            }
+          }
+        )
+      );
+    },
+  });
+
+  useSignalREventHandler({
+    eventName: 'DeleteVendor',
+    connectionState,
+    callback: (deletedVendor) => {
+      // Update the query cache when a vendor is deleted
+      const parsedVendor = JSON.parse(deletedVendor);
+      dispatch(
+        vendorApi.util.updateQueryData(
+          'getAllVendors',
+          {
+            pageNumber,
+            pageSize,
+          },
+          (draft) => {
+            if (draft?.data?.items) {
+              draft.data.items = draft.data.items.filter(
+                (item) => item.vendorId !== parsedVendor.vendorId
+              ); // Remove the deleted vendor
+            }
+          }
+        )
+      );
+    },
+  });
 
   const VendorInfoTable = (
     <Flex width="full" direction="column">

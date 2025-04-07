@@ -5,7 +5,7 @@ import { Flex, HStack, Icon } from '@chakra-ui/react';
 import Header from './Header';
 import SideBar from './SideBar';
 import { useEffect, useState } from 'react';
-// import CountDownTimer from './CountDownTimer';
+import CountDownTimer from './CountDownTimer';
 
 import {
   CaretLeftIcon,
@@ -13,26 +13,45 @@ import {
 } from '~/lib/components/CustomIcons/layout';
 import CompanyPageHeader from '~/lib/components/CompanyManagement/CompanyPageHeader';
 import Notes from './Notes';
-import { getSession, signOut } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
+import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
+import useSignalR from '~/lib/hooks/useSignalR';
+import { handleSignOut } from '~/app/actions/authActions';
 
 interface ProtectedLayoutProps {
   children: React.ReactNode;
 }
 const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
   const [isCollapse, setIsCollapse] = useState(true);
+  const [showCountdown, setShowCountdown] = useState(false);
 
   //Session timeout check
   // This effect checks the session every minute and signs out the user if the session is invalid
   useEffect(() => {
-    const interval = setInterval(async () => {
-      const session = await getSession();
-      if (!session) {
-        signOut(); // Logs out the user
-      }
-    }, 1800 * 1000); // Check every 60 seconds
+    const interval = setInterval(
+      async () => {
+        const session = await getSession();
+        if (!session) {
+          handleSignOut(); // Logs out the user
+        }
+      },
+      31 * 60 * 1000
+    ); // Check every 31 minutes
 
     return () => clearInterval(interval);
   }, []);
+
+  // SignalR Connection
+  const connectionState = useSignalR('userRole-hub');
+
+  useSignalREventHandler({
+    eventName: 'UserTriggerLogout',
+    connectionState,
+    callback: () => {
+      // Handle the logout event
+      setShowCountdown(true);
+    },
+  });
 
   return (
     <Flex
@@ -43,6 +62,7 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
       position="relative"
     >
       <Notes isCollapse={isCollapse} />
+      {showCountdown && <CountDownTimer />}
 
       <HStack position="relative">
         <SideBar isCollapse={isCollapse} setIsCollapse={setIsCollapse} />

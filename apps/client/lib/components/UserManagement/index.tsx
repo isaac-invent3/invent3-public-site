@@ -15,6 +15,7 @@ import _ from 'lodash';
 import UserTable from './UserTable';
 import {
   useGetAllUsersQuery,
+  userApi,
   useSearchUsersMutation,
 } from '~/lib/redux/services/user.services';
 import { User, UserFilter } from '~/lib/interfaces/user.interfaces';
@@ -23,6 +24,9 @@ import ActionButton from './Actions';
 import UserActionDisplay from './Actions/Display';
 import { useSearchParams } from 'next/navigation';
 import UserDetail from './UserDetail';
+import { useAppDispatch } from '~/lib/redux/hooks';
+import useSignalR from '~/lib/hooks/useSignalR';
+import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
 
 export const initialFilterData = {
   startDate: undefined,
@@ -46,6 +50,7 @@ const UserManagement = () => {
     onClose: onCloseDetails,
     onOpen: onOpenDetails,
   } = useDisclosure();
+  const dispatch = useAppDispatch();
 
   const [searchData, setSearchData] = useState<ListResponse<User> | undefined>(
     undefined
@@ -124,6 +129,85 @@ const UserManagement = () => {
   useEffect(() => {
     if (userId) onOpenDetails();
   }, [userId]);
+
+  // SignalR Connection
+  const connectionState = useSignalR('users-hub');
+
+  useSignalREventHandler({
+    eventName: 'CreateUser',
+    connectionState,
+    callback: (newUser) => {
+      // Update the query cache when a new user is received
+      const parsedUser = JSON.parse(newUser);
+      dispatch(
+        userApi.util.updateQueryData(
+          'getAllUsers',
+          {
+            pageNumber,
+            pageSize,
+          },
+          (draft) => {
+            if (draft?.data?.items) {
+              draft?.data?.items.unshift(parsedUser); // Add new user to the beginning
+            }
+          }
+        )
+      );
+    },
+  });
+
+  useSignalREventHandler({
+    eventName: 'UpdateUser',
+    connectionState,
+    callback: (updatedUser) => {
+      // Update the query cache when a user is updated
+      const parsedUser = JSON.parse(updatedUser);
+      dispatch(
+        userApi.util.updateQueryData(
+          'getAllUsers',
+          {
+            pageNumber,
+            pageSize,
+          },
+          (draft) => {
+            if (draft?.data?.items) {
+              const index = draft.data.items.findIndex(
+                (item) => item.userId === parsedUser.userId
+              );
+              if (index !== -1) {
+                draft.data.items[index] = parsedUser;
+              }
+            }
+          }
+        )
+      );
+    },
+  });
+
+  useSignalREventHandler({
+    eventName: 'DeleteUser',
+    connectionState,
+    callback: (deleteUser) => {
+      // Update the query cache when a user is deleted
+      const parsedUser = JSON.parse(deleteUser);
+      dispatch(
+        userApi.util.updateQueryData(
+          'getAllUsers',
+          {
+            pageNumber,
+            pageSize,
+          },
+          (draft) => {
+            if (draft?.data?.items) {
+              draft.data.items = draft.data.items.filter(
+                (item) => item.userId !== parsedUser.userId
+              ); // Remove the deleted user
+            }
+          }
+        )
+      );
+    },
+  });
 
   return (
     <>

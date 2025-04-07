@@ -11,11 +11,15 @@ import { useDisclosure } from '@chakra-ui/react';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
 import {
+  ticketApi,
   useGetAllTicketsQuery,
   useSearchTicketsMutation,
 } from '~/lib/redux/services/ticket.services';
 import TicketDrawerWrapper from '../../TicketManagement/Drawers/TicketDrawerWrapper';
 import TicketTable from '../../TicketManagement/TicketTable';
+import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
+import useSignalR from '~/lib/hooks/useSignalR';
+import { useAppDispatch } from '~/lib/redux/hooks';
 
 interface TicketModalProps {
   isOpen: boolean;
@@ -45,6 +49,7 @@ const TicketModal = (props: TicketModalProps) => {
     onClose: onCloseTicket,
     onOpen: onOpenTicket,
   } = useDisclosure();
+  const dispatch = useAppDispatch();
 
   const searchCriterion = {
     ...(search && {
@@ -89,6 +94,85 @@ const TicketModal = (props: TicketModalProps) => {
       onOpenTicket();
     }
   }, [ticketId]);
+
+  // SignalR Connection
+  const connectionState = useSignalR('tickets-hub');
+
+  useSignalREventHandler({
+    eventName: 'CreateTicket',
+    connectionState,
+    callback: (newTicket) => {
+      // Update the query cache when a new ticket is received
+      const parsedTicket = JSON.parse(newTicket);
+      dispatch(
+        ticketApi.util.updateQueryData(
+          'getAllTickets',
+          {
+            pageNumber,
+            pageSize,
+          },
+          (draft) => {
+            if (draft?.data?.items) {
+              draft?.data?.items.unshift(parsedTicket); // Add new ticket to the beginning
+            }
+          }
+        )
+      );
+    },
+  });
+
+  useSignalREventHandler({
+    eventName: 'UpdateTicket',
+    connectionState,
+    callback: (updatedTicket) => {
+      // Update the query cache when a ticket is updated
+      const parsedTicket = JSON.parse(updatedTicket);
+      dispatch(
+        ticketApi.util.updateQueryData(
+          'getAllTickets',
+          {
+            pageNumber,
+            pageSize,
+          },
+          (draft) => {
+            if (draft?.data?.items) {
+              const index = draft.data.items.findIndex(
+                (item) => item.ticketId === parsedTicket.ticketId
+              );
+              if (index !== -1) {
+                draft.data.items[index] = parsedTicket;
+              }
+            }
+          }
+        )
+      );
+    },
+  });
+
+  useSignalREventHandler({
+    eventName: 'DeleteTicket',
+    connectionState,
+    callback: (deletedTicket) => {
+      // Update the query cache when a ticket is deleted
+      const parsedTicket = JSON.parse(deletedTicket);
+      dispatch(
+        ticketApi.util.updateQueryData(
+          'getAllTickets',
+          {
+            pageNumber,
+            pageSize,
+          },
+          (draft) => {
+            if (draft?.data?.items) {
+              draft.data.items = draft.data.items.filter(
+                (item) => item.ticketId !== parsedTicket.ticketId
+              ); // Remove the deleted ticket
+            }
+          }
+        )
+      );
+    },
+  });
 
   return (
     <>

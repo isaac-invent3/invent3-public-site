@@ -82,7 +82,7 @@ const Dashboard = () => {
 
   // Render the appropriate dashboard component based on the resolved view
   const DashboardComponent = DASHBOARD_COMPONENTS[effectiveView];
-  return <ThirdParty />;
+  return <DashboardComponent />;
 };
 
 // Helper function to validate if the given value is a valid DashboardView

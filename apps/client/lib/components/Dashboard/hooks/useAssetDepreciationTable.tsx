@@ -10,8 +10,14 @@ import { useSearchCompaniesMutation } from '~/lib/redux/services/company.service
 import { createColumnHelper } from '@tanstack/react-table';
 import { amountFormatter } from '~/lib/utils/Formatters';
 import { DataTable } from '@repo/ui/components';
-import { useGetAssetDepreciationFinancialImpactQuery } from '~/lib/redux/services/dashboard/executive.services';
+import {
+  executiveDashboardApis,
+  useGetAssetDepreciationFinancialImpactQuery,
+} from '~/lib/redux/services/dashboard/executive.services';
 import { FinancialImpact } from '~/lib/interfaces/dashboard/executive.interfaces';
+import useSignalR from '~/lib/hooks/useSignalR';
+import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
+import { useAppDispatch } from '~/lib/redux/hooks';
 
 interface useAssetDepreciationTable {
   search?: string;
@@ -30,6 +36,7 @@ const useAssetDepreciationTable = (props: useAssetDepreciationTable) => {
     BaseApiResponse<ListResponse<Company>> | undefined
   >(undefined);
   const { handleSubmit } = useCustomMutation();
+  const dispatch = useAppDispatch();
   const [searchLog, { isLoading: searchLoading }] = useSearchCompaniesMutation(
     {}
   );
@@ -68,21 +75,103 @@ const useAssetDepreciationTable = (props: useAssetDepreciationTable) => {
     }
   }, [search]);
 
+  // SignalR Connection
+  const connectionState = useSignalR('assetDepreciation-hub');
+
+  useSignalREventHandler({
+    eventName: 'CreateAssetDepreciation',
+    connectionState,
+    callback: (newAssetDepreciation) => {
+      // Update the query cache when a new asset depreciation is received
+      const parsedAssetDepreciation = JSON.parse(newAssetDepreciation);
+      dispatch(
+        executiveDashboardApis.util.updateQueryData(
+          'getAssetDepreciationFinancialImpact',
+          {
+            // pageNumber,
+            // pageSize,
+            datePeriod: DATE_PERIOD.YEAR,
+          },
+          (draft) => {
+            if (draft?.data?.items) {
+              draft?.data?.items.unshift(parsedAssetDepreciation); // Add new vendor to the beginning
+            }
+          }
+        )
+      );
+    },
+  });
+
+  useSignalREventHandler({
+    eventName: 'UpdateAssetDepreciation',
+    connectionState,
+    callback: (updatedAssetDepreciation) => {
+      // Update the query cache when a vendor is updated
+      const parsedAssetDepreciation = JSON.parse(updatedAssetDepreciation);
+      dispatch(
+        executiveDashboardApis.util.updateQueryData(
+          'getAssetDepreciationFinancialImpact',
+          {
+            // pageNumber,
+            // pageSize,
+            datePeriod: DATE_PERIOD.YEAR,
+          },
+          (draft) => {
+            if (draft?.data?.items) {
+              const index = draft.data.items.findIndex(
+                (item) => item.guid === parsedAssetDepreciation.guid
+              );
+              if (index !== -1) {
+                draft.data.items[index] = parsedAssetDepreciation;
+              }
+            }
+          }
+        )
+      );
+    },
+  });
+
+  useSignalREventHandler({
+    eventName: 'DeleteAssetDepreciation',
+    connectionState,
+    callback: (deleteAssetDepreciation) => {
+      // Update the query cache when an asset depreciation is deleted
+      const parsedAssetDepreciation = JSON.parse(deleteAssetDepreciation);
+      dispatch(
+        executiveDashboardApis.util.updateQueryData(
+          'getAssetDepreciationFinancialImpact',
+          {
+            // pageNumber,
+            // pageSize,
+            datePeriod: DATE_PERIOD.YEAR,
+          },
+          (draft) => {
+            if (draft?.data?.items) {
+              draft.data.items = draft.data.items.filter(
+                (item) => item.guid !== parsedAssetDepreciation.guid
+              ); // Remove the deleted asset depreciation
+            }
+          }
+        )
+      );
+    },
+  });
+
   const columnHelper = createColumnHelper<FinancialImpact>();
   const columns = useMemo(
     () => {
       const baseColumns = [
-        columnHelper.accessor('assetName', {
+        columnHelper.accessor('assetId', {
           cell: (info) => info.getValue(),
           header: 'Asset Name',
           enableSorting: false,
         }),
-        columnHelper.accessor('category', {
+        columnHelper.accessor('depreciationMethod', {
           cell: (info) => info.getValue(),
           header: 'Category',
           enableSorting: false,
         }),
-        columnHelper.accessor('initialCost', {
+        columnHelper.accessor('initialValue', {
           cell: (info) => amountFormatter(info.getValue() ?? 0),
           header: 'Initial Cost($)',
           enableSorting: false,

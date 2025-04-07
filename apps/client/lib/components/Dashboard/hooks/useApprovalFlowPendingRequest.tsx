@@ -10,8 +10,14 @@ import { useSearchCompaniesMutation } from '~/lib/redux/services/company.service
 import { createColumnHelper } from '@tanstack/react-table';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import { DataTable } from '@repo/ui/components';
-import { useGetPendingApprovalRequestQuery } from '~/lib/redux/services/dashboard/executive.services';
+import {
+  executiveDashboardApis,
+  useGetPendingApprovalRequestQuery,
+} from '~/lib/redux/services/dashboard/executive.services';
 import { ApprovalWorkflowRequest } from '~/lib/interfaces/approvalWorkflow.interfaces';
+import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
+import useSignalR from '~/lib/hooks/useSignalR';
+import { useAppDispatch } from '~/lib/redux/hooks';
 
 interface useApprovalFlowPendingRequestTable {
   search?: string;
@@ -34,6 +40,7 @@ const useApprovalFlowPendingRequestTable = (
   const [searchLog, { isLoading: searchLoading }] = useSearchCompaniesMutation(
     {}
   );
+  const dispatch = useAppDispatch();
 
   const searchCriterion = {
     ...(search && {
@@ -105,6 +112,63 @@ const useApprovalFlowPendingRequestTable = (
     },
     [[data]] //eslint-disable-line
   );
+
+  // SignalR Connection
+  const connectionState = useSignalR('approvalworkflow-hub');
+
+  // useSignalREventHandler({
+  //   eventName: 'UpdateApprovalWorkflow',
+  //   connectionState,
+  //   callback: (updatedApproval) => {
+  //     // Update the query cache when an approval is updated
+  //     const parsedApproval = JSON.parse(updatedApproval);
+  //     dispatch(
+  //       approvalWorkflowRequestApi.util.updateQueryData(
+  //         'getAllApprovalWorkflowRequests',
+  //         {
+  //           pageNumber: currentPage,
+  //           pageSize,
+  //           approvalTypeId: selectedApprovalType?.approvalTypeId ?? undefined,
+  //         },
+  //         (draft) => {
+  //           if (draft?.data?.items) {
+  //             const index = draft.data.items.findIndex(
+  //               (item) =>
+  //                 item.approvalRequestId === parsedApproval.approvalRequestId
+  //             );
+  //             if (index !== -1) {
+  //               draft.data.items[index] = parsedApproval; // Update the existing approval
+  //             }
+  //           }
+  //         }
+  //       )
+  //     );
+  //   },
+  // });
+
+  useSignalREventHandler({
+    eventName: 'CreateApprovalWorkflow',
+    connectionState,
+    callback: (newApproval) => {
+      // Update the query cache when a new approval is created
+      const parsedApproval = JSON.parse(newApproval);
+      dispatch(
+        executiveDashboardApis.util.updateQueryData(
+          'getPendingApprovalRequest',
+          {
+            // pageNumber,
+            // pageSize,
+            datePeriod: DATE_PERIOD.YEAR,
+          },
+          (draft) => {
+            if (draft?.data?.items) {
+              draft.data.items.unshift(parsedApproval); // Add the new approval to the beginning
+            }
+          }
+        )
+      );
+    },
+  });
 
   const ApprovalFlowPendingRequestTable = (
     <Flex width="full" direction="column">

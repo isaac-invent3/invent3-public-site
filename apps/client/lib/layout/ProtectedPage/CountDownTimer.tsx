@@ -9,6 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { Button, SlideTransition } from '@repo/ui/components';
 import React, { useEffect, useRef, useState } from 'react';
+import { handleSignOut } from '~/app/actions/authActions';
 import {
   InfoIcon,
   MinusIcon,
@@ -26,7 +27,10 @@ const CountDownTimer = () => {
   });
 
   useEffect(() => {
-    if (time === 0) return; // Stop re-running when time is 0
+    if (time === 0) {
+      handleSignOut();
+      return;
+    } // Stop re-running when time is 0
 
     const timerId = setInterval(() => {
       setTime((prev) => prev - 1);
@@ -41,6 +45,7 @@ const CountDownTimer = () => {
       rounded="10.67px"
       overflow="hidden"
       position="fixed"
+      zIndex={9999}
       top={0}
       right={0}
       spacing={0}
@@ -100,12 +105,10 @@ const CountDownTimer = () => {
           <VStack width="full" alignItems="flex-end" spacing="35px">
             <VStack width="full" alignItems="flex-start" spacing="8px">
               <Text color="black" size="md" fontWeight={800}>
-                Countdown to restart
+                Countdown to logout
               </Text>
               <Text color="neutral.700" fontWeight={400}>
-                Your system needs to shutdown and restart due to the changes to
-                either of your user setup or system configuration. Save any
-                current work to avoid lost
+                You need to logout and log back in to continue using the app.
               </Text>
               <Text fontWeight={800} color="neutral.700">
                 Time to restart:
@@ -120,8 +123,9 @@ const CountDownTimer = () => {
                 px: '16px',
                 width: 'max-content',
               }}
+              handleClick={handleSignOut}
             >
-              Restart Now
+              Logout Now
             </Button>
           </VStack>
         </HStack>

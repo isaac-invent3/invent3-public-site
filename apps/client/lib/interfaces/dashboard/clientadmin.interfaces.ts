@@ -45,12 +45,31 @@ interface AssetTrend {
 }
 
 interface UserActivity {
-  timeStamp: string;
-  name: string;
-  designation: string;
-  action: string;
-  details: string;
-  ipAddress: string;
+  statusName: string;
+  auditRecordId: number;
+  userId: number;
+  systemModuleContextTypeId: number;
+  requestActionTypeId: number;
+  requestStatusId: number;
+  isFlaggedForReview: boolean;
+  contextIds: string;
+  dateCreated: Date;
+  actionPerformedViaId: number;
+  createdBy: string;
+  requestActionTypeName: string;
+  username: string;
+  email: string;
+  systemContextTypeName: string;
+  systemContextTypeId: number;
+  isDeleted: boolean;
+  firstName: string;
+  lastName: string;
+  entityAffected: string;
+  message: string;
+  companyId: number;
+  displayColorCode: string;
+  companyName: string;
+  userRoles: string;
 }
 
 export type {

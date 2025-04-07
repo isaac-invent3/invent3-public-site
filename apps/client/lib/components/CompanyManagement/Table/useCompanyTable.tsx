@@ -8,9 +8,13 @@ import { OPERATORS } from '@repo/constants';
 import CompanyTable from './CompanyTable';
 import { Company } from '~/lib/interfaces/company.interfaces';
 import {
+  companyApi,
   useGetAllCompaniesQuery,
   useSearchCompaniesMutation,
 } from '~/lib/redux/services/company.services';
+import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
+import useSignalR from '~/lib/hooks/useSignalR';
+import { useAppDispatch } from '~/lib/redux/hooks';
 
 interface useCompanyTable {
   search?: string;
@@ -27,6 +31,7 @@ const useCompanyTable = (props: useCompanyTable) => {
     pageNumber: pageNumber,
     pageSize: customPageSize ?? pageSize,
   });
+  const dispatch = useAppDispatch();
   const [searchData, setSearchData] = useState<
     BaseApiResponse<ListResponse<Company>> | undefined
   >(undefined);
@@ -68,6 +73,85 @@ const useCompanyTable = (props: useCompanyTable) => {
       setPageNumber(1);
     }
   }, [search]);
+
+  // SignalR Connection
+  const connectionState = useSignalR('companies-hub');
+
+  useSignalREventHandler({
+    eventName: 'CreateCompany',
+    connectionState,
+    callback: (newCompany) => {
+      // Update the query cache when a new company is received
+      const parsedCompany = JSON.parse(newCompany);
+      dispatch(
+        companyApi.util.updateQueryData(
+          'getAllCompanies',
+          {
+            pageNumber,
+            pageSize,
+          },
+          (draft) => {
+            if (draft?.data?.items) {
+              draft?.data?.items.unshift(parsedCompany); // Add new company to the beginning
+            }
+          }
+        )
+      );
+    },
+  });
+
+  useSignalREventHandler({
+    eventName: 'UpdateCompany',
+    connectionState,
+    callback: (updatedCompany) => {
+      // Update the query cache when a company is updated
+      const parsedCompany = JSON.parse(updatedCompany);
+      dispatch(
+        companyApi.util.updateQueryData(
+          'getAllCompanies',
+          {
+            pageNumber,
+            pageSize,
+          },
+          (draft) => {
+            if (draft?.data?.items) {
+              const index = draft.data.items.findIndex(
+                (item) => item.companyId === parsedCompany.companyId
+              );
+              if (index !== -1) {
+                draft.data.items[index] = parsedCompany;
+              }
+            }
+          }
+        )
+      );
+    },
+  });
+
+  useSignalREventHandler({
+    eventName: 'DeleteCompany',
+    connectionState,
+    callback: (deletedPlan) => {
+      // Update the query cache when a company is deleted
+      const parsedCompany = JSON.parse(deletedPlan);
+      dispatch(
+        companyApi.util.updateQueryData(
+          'getAllCompanies',
+          {
+            pageNumber,
+            pageSize,
+          },
+          (draft) => {
+            if (draft?.data?.items) {
+              draft.data.items = draft.data.items.filter(
+                (item) => item.companyId !== parsedCompany.companyId
+              ); // Remove the deleted company
+            }
+          }
+        )
+      );
+    },
+  });
 
   const CompanyInfoTable = (
     <Flex width="full" direction="column">

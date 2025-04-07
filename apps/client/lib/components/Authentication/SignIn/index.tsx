@@ -29,7 +29,7 @@ const SignIn = () => {
   const dispatch = useAppDispatch();
   const formik = useFormik({
     initialValues: {
-      username: '',
+      email: '',
       password: '',
     },
     validationSchema: loginSchema,
@@ -37,7 +37,7 @@ const SignIn = () => {
       setSubmitting(true);
       const result = await signIn('credentials', {
         redirect: false,
-        username: values.username,
+        username: values.email,
         password: values.password,
         url: window.location.href,
       });
@@ -124,10 +124,10 @@ const SignIn = () => {
             >
               <Field
                 as={FormTextInput}
-                name="username"
-                type="text"
-                label="Username"
-                placeholder="Username"
+                name="email"
+                type="email"
+                label="Email"
+                placeholder="Email Address"
                 variant="secondary"
               />
 

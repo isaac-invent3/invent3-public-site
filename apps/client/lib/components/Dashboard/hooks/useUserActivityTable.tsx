@@ -72,41 +72,41 @@ const useUserActivityTable = (props: useUserActivityTable) => {
   const columns = useMemo(
     () => {
       const baseColumns = [
-        columnHelper.accessor('timeStamp', {
+        columnHelper.accessor('dateCreated', {
           cell: (info) =>
             dateFormatter(info.getValue(), 'YYYY-MM-DD hh:mma') ?? 'N/A',
           header: 'Timestamp',
           enableSorting: false,
         }),
 
-        columnHelper.accessor('name', {
-          cell: (info) => info.getValue(),
+        columnHelper.accessor('firstName', {
+          cell: (info) => `${info.getValue()} ${info.row.original.lastName}`,
           header: 'Name',
           enableSorting: false,
         }),
 
-        columnHelper.accessor('designation', {
+        columnHelper.accessor('userRoles', {
           cell: (info) => info.getValue() ?? 'N/A',
           header: 'Role',
           enableSorting: true,
         }),
 
-        columnHelper.accessor('action', {
+        columnHelper.accessor('requestActionTypeName', {
           cell: (info) => info.getValue() ?? 'N/A',
           header: 'Action',
           enableSorting: false,
         }),
-        columnHelper.accessor('details', {
+        columnHelper.accessor('message', {
           cell: (info) => info.getValue() ?? 'N/A',
           header: 'Details',
           enableSorting: false,
         }),
 
-        columnHelper.accessor('ipAddress', {
-          cell: (info) => info.getValue() ?? 'N/A',
-          header: 'IP Address',
-          enableSorting: false,
-        }),
+        // columnHelper.accessor('ipAddress', {
+        //   cell: (info) => info.getValue() ?? 'N/A',
+        //   header: 'IP Address',
+        //   enableSorting: false,
+        // }),
       ];
 
       return baseColumns;

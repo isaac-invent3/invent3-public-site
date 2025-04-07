@@ -54,11 +54,23 @@ interface TicketResolution {
 }
 
 interface FinancialImpact {
-  assetName: string;
-  category: string;
-  initialCost: number;
-  currentValue: number;
+  isNew: boolean;
+  createdDate: Date;
+  createdBy: string;
+  lastModifiedDate: Date;
+  lastModifiedBy: string;
+  isDeleted: boolean;
+  deletedDate: Date;
+  deletedBy: string;
+  guid: string;
+  depreciationId: number;
+  assetId: number;
+  depreciationDate: Date;
+  depreciationMethod: string;
   depreciationRate: number;
+  initialValue: number;
+  accumulatedDepreciation: number;
+  currentValue: number;
 }
 
 interface PendingApproval {

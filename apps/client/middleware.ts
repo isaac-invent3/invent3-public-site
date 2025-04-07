@@ -254,8 +254,9 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(
         new URL(`/${tenant}/signin?ref=${remainingPath}`, request.url)
       );
+    } else {
+      return NextResponse.rewrite(new URL('/404', request.url));
     }
-    // return NextResponse.rewrite(new URL('/404', request.url));
   }
 
   return NextResponse.redirect(

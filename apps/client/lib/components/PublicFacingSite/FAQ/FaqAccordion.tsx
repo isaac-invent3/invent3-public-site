@@ -25,27 +25,45 @@ const FaqAccordion = () => {
         maxW="1440px"
         position="relative"
         direction={{ base: 'column', lg: 'row' }}
-        gap="24px"
+        gap={{ base: '48px', lg: '65px' }}
       >
         <VStack
           alignItems="flex-start"
-          maxW="516px"
-          width={{ base: 'full', lg: '43%' }}
+          width={{ base: 'full', lg: '50%' }}
           spacing="16px"
         >
+          <Text
+            py="12px"
+            px="16px"
+            color="primary.500"
+            bgColor="neutral.250"
+            rounded="full"
+          >
+            FAQ
+          </Text>
           <Heading
             fontWeight={800}
             fontSize={{ base: '24px', md: '40px' }}
             lineHeight={{ base: '28.51px', md: '47.52px' }}
-            color="primary.500"
+            color="black"
           >
-            Frequently Asked Questions
+            Frequently Asked{' '}
+            <Heading
+              as="span"
+              color="#B279A2"
+              fontWeight={800}
+              fontSize={{ base: '24px', md: '40px' }}
+              lineHeight={{ base: '28.51px', md: '47.52px' }}
+            >
+              Questions
+            </Heading>
           </Heading>
           <Text
             fontSize={{ base: '14px', md: '16px' }}
             lineHeight={{ base: '20px', md: '24px' }}
-            color="neutral.600"
+            color="primary.accent"
             fontWeight={400}
+            maxW="578px"
           >
             Find answers to common questions about Invent3, including asset
             management, maintenance scheduling, cost optimization, compliance
@@ -53,11 +71,7 @@ const FaqAccordion = () => {
           </Text>
         </VStack>
 
-        <Accordion
-          defaultIndex={[0]}
-          allowMultiple
-          width={{ base: 'full', lg: '57%' }}
-        >
+        <Accordion allowMultiple width={{ base: 'full', lg: '50%' }}>
           {Faqdata.map((item, index) => (
             <AccordionItem key={index} border="none" mb="24px">
               {({ isExpanded }) => (

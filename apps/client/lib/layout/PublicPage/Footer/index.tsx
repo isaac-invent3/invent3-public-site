@@ -23,7 +23,7 @@ const Footer = () => {
         justifyContent="space-between"
         alignItems="center"
         px={{ base: '16px', md: '40px', '2xl': '80px' }}
-        pt={{ base: '32px', lg: '174px' }}
+        pt={{ base: '43px', lg: '73px' }}
         pb={{ base: '23px', lg: '25px' }}
         maxW="1440px"
         direction="column"

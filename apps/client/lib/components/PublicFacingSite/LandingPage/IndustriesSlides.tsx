@@ -40,24 +40,26 @@ const IndustriesSlides = () => {
         </Text>
         <Flex
           width={{ base: 'full', lg: 'calc(100vw - 194px)' }}
-          position="relative"
+          // position="relative"
           overflowX="scroll"
           alignItems="flex-start"
-        />
-        {industries.map((industry, index) => (
-          <Text
-            fontWeight={800}
-            fontSize={{ base: '12px', lg: '20px' }}
-            lineHeight="100%"
-            color="neutral.600"
-            key={index}
-            minW="208px"
-          >
-            {industry}
-          </Text>
-        ))}
+          gap="16px"
+        >
+          {industries.map((industry, index) => (
+            <Text
+              fontWeight={800}
+              fontSize={{ base: '12px', lg: '20px' }}
+              lineHeight="100%"
+              color="neutral.600"
+              key={index}
+              minW={{ base: '120px', lg: '208px' }}
+              alignSelf="flex-start"
+            >
+              {industry}
+            </Text>
+          ))}
 
-        {/* <Flex
+          {/* <Flex
           width={{ base: 'full', lg: 'calc(100vw - 194px)' }}
           bgColor="red"
           position="relative"
@@ -96,6 +98,7 @@ const IndustriesSlides = () => {
             ))}
           </MotionFlex>
         </Flex> */}
+        </Flex>
       </Flex>
     </Flex>
   );

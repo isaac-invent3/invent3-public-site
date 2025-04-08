@@ -3,14 +3,19 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 import Hero from './Hero';
-import Explore from './Explore';
 import Features from './Features';
-import Benefits from './Benefits';
 import CTA from '../Common/CallToAction';
 import FaqAccordion from '../FAQ/FaqAccordion';
 import IndustriesSlides from './IndustriesSlides';
 import AboutUs from './About';
 import Solutions from './Solutions';
+import Spreadsheet from './Spreadsheet';
+import WhyUs from './WhyUs';
+import Statistics from './Statistics';
+import RoleSolution from './RoleSolution';
+import OurIntegrations from './OurIntegrations';
+import ThreeSteps from './ThreeSteps';
+import DataSecurity from './DataSecurity';
 
 const LandingPage = () => {
   return (
@@ -20,7 +25,13 @@ const LandingPage = () => {
       <AboutUs />
       <Features />
       <Solutions />
-      <Benefits />
+      <Spreadsheet />
+      <WhyUs />
+      <Statistics />
+      <RoleSolution />
+      <OurIntegrations />
+      <ThreeSteps />
+      <DataSecurity />
       <FaqAccordion />
       <CTA />
     </Flex>

@@ -44,6 +44,7 @@ const Hero = () => {
           width={{ base: 'full', md: '53%' }}
           alignItems={{ base: 'center', md: 'flex-start' }}
           spacing={{ base: '40px', md: '80px', xl: '147px' }}
+          order={{ base: 1, lg: 0 }}
         >
           <VStack
             width="full"
@@ -150,6 +151,7 @@ const Hero = () => {
           minH={{ base: '350px', lg: '565px' }}
           width={{ base: 'full', lg: '50%' }}
           flex={1}
+          order={{ base: 0, lg: 1 }}
         >
           <Image src="/hero-img.svg" alt="logo" fill />
         </Flex>

@@ -247,16 +247,16 @@ export async function middleware(request: NextRequest) {
     if (publicRoutes.includes(pathname)) {
       return response;
     }
-    // if (tenantData) {
-    //   if (remainingPath === 'signin') {
-    //     return NextResponse.rewrite(new URL(`/signin`, request.url));
-    //   }
-    //   return NextResponse.redirect(
-    //     new URL(`/${tenant}/signin?ref=${remainingPath}`, request.url)
-    //   );
-    // } else {
-    //   return NextResponse.rewrite(new URL('/404', request.url));
-    // }
+    if (tenantData) {
+      if (remainingPath === 'signin') {
+        return NextResponse.rewrite(new URL(`/signin`, request.url));
+      }
+      return NextResponse.redirect(
+        new URL(`/${tenant}/signin?ref=${remainingPath}`, request.url)
+      );
+    } else {
+      return NextResponse.rewrite(new URL('/404', request.url));
+    }
   }
 
   return NextResponse.redirect(

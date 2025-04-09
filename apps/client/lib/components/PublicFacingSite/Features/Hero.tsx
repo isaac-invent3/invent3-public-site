@@ -35,6 +35,7 @@ const Hero = () => {
         <HeroHeader
           title="Revolutionizing Asset Management for Smarter Business Operations"
           subtitle="From acquisition to retirement, Invent3 simplifies asset tracking, maintenance scheduling, cost optimization, and compliance—giving you total control over your business assets."
+          bgDesktop=""
         />
         <Button
           bgColor="white"

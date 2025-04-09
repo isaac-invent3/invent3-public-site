@@ -1,10 +1,44 @@
 import { Flex, Heading, Text, VStack } from '@chakra-ui/react';
-import { Button } from '@repo/ui/components';
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import KeyPoints from './KeyPoints';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const About = () => {
+  const sectionRef = useRef<HTMLDivElement | null>(null);
+  const sectionHeadingRef = useRef<HTMLDivElement | null>(null);
+  const keyPointRef = useRef<HTMLDivElement | null>(null);
+  const imageRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const sectionElement = sectionRef.current;
+    const sectionHeadingElement = sectionHeadingRef.current;
+    const keyPointElement = keyPointRef.current;
+    const imageElement = imageRef.current;
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionElement,
+        toggleActions: 'restart none none none',
+        start: 'top 70%',
+        end: 'bottom 80%',
+        scrub: 1,
+      },
+    });
+
+    tl.from(sectionHeadingElement, { opacity: 0, x: -100, duration: 0.5 });
+    tl.to(sectionHeadingElement, { opacity: 1, x: 0, duration: 0.5 });
+
+    tl.from(keyPointElement, { opacity: 0, y: 100, duration: 0.5 });
+    tl.to(keyPointElement, { opacity: 1, y: 0, duration: 0.5 });
+
+    tl.from(imageElement, { opacity: 0, x: 100, duration: 0.5 });
+    tl.to(imageElement, { opacity: 1, x: 0, duration: 0.5 });
+  }, []);
+
   return (
     <Flex justifyContent="center" width="full">
       <Flex
@@ -18,6 +52,7 @@ const About = () => {
         position="relative"
         direction={{ base: 'column', lg: 'row' }}
         gap={{ base: '32px', lg: '87px' }}
+        ref={sectionRef}
       >
         <VStack
           width={{ base: 'full', lg: '45%' }}
@@ -28,6 +63,7 @@ const About = () => {
             width="full"
             spacing={{ base: '16px', lg: '32px' }}
             alignItems="flex-start"
+            ref={sectionHeadingRef}
           >
             <Text
               py="12px"
@@ -86,7 +122,9 @@ const About = () => {
               />
             </Flex>
           </Flex>
-          <KeyPoints />
+          <Flex width="full" ref={keyPointRef}>
+            <KeyPoints />
+          </Flex>
         </VStack>
         <Flex
           position="relative"
@@ -96,6 +134,7 @@ const About = () => {
           height={{ base: '382px', md: '500px', lg: '490px' }}
           width={{ base: 'full', lg: '55%' }}
           maxW={{ base: 'full', lg: '565px' }}
+          ref={imageRef}
         >
           <Image src="/about-illustration.svg" alt="about-illustration" fill />
         </Flex>

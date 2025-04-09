@@ -1,48 +1,29 @@
 'use client';
 
-import { Flex, Icon } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
-import Hero from './Hero';
-import CTA from '../Common/CallToAction';
 import CEOMessage from './CEOMessage';
-import AboutInfo from './AboutInfo';
-import Team from './Team';
-import { VideoPlayIcon } from '../../CustomIcons/PublicFacingSite';
+import MissionVision from './MissionVision';
+import OurStrategy from './Strategy';
+import WhyUs from './WhyUs';
+import HeroHeader from '../Common/HeroHeader';
 
 const AboutUs = () => {
   return (
-    <Flex direction="column" gap={{ base: '40px', lg: '120px' }}>
-      <Hero />
-      <Flex
-        justifyContent="center"
-        width="full"
-        height="full"
-        position="relative"
-      >
-        <Flex
-          width="full"
-          px={{ base: '16px', md: '40px', '2xl': '80px' }}
-          maxW="1440px"
-          position="relative"
-          direction="column"
-          gap={{ base: '40px', lg: '120px' }}
-        >
-          <Flex
-            width="full"
-            height={{ base: '382px', lg: '649px' }}
-            rounded={{ base: '8px', lg: '20px' }}
-            bgColor="black"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Icon as={VideoPlayIcon} boxSize="80px" />
-          </Flex>
-          <CEOMessage />
-          <AboutInfo />
-          <Team />
-        </Flex>
-      </Flex>
-      <CTA />
+    <Flex direction="column">
+      <HeroHeader
+        title="Empowering Businesses with Smarter Asset Management"
+        subtitle="At Invent3.ai, we believe in revolutionizing asset and facility management through AI-driven automation. Our mission is to help businesses streamline operations, reduce downtime, and maximize asset value with cutting-edge technology."
+        customHeading={{ maxW: '617px' }}
+        containerStyle={{ spacing: { base: '16px', lg: '24px' } }}
+        subTitleStyle={{ maxW: { lg: '617px' } }}
+        bgDesktop="/about-hero-desktop.png"
+        bgMobile="/about-hero-mobile.png"
+      />
+      <CEOMessage />
+      <MissionVision />
+      <OurStrategy />
+      <WhyUs />
     </Flex>
   );
 };

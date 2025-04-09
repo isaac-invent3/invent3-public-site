@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import JobTitle from '../components/UserManagement/UserForm/OccupationInfo/JobTitle';
 
 //Accepted date format is DD/MM/YYYY
 // If time is included, it is DD/MM/YYYY HH:mm
@@ -166,9 +167,12 @@ const documentSchema = Yup.object().shape({
 });
 
 const contactSchema = Yup.object().shape({
+  firstName: Yup.string().required('First Name is Required'),
+  lastName: Yup.string().required('Last Name is Required'),
+  company: Yup.string().required('Company is Required'),
+  JobTitle: Yup.string().nullable(),
   email: Yup.string().email('Invalid Email Adress').required('Email Required'),
-  name: Yup.string().required('Name is Required'),
-  subject: Yup.string().required('Subject is Required'),
+  phoneNumber: Yup.string().required('Phone number is Required'),
   content: Yup.string().required('Message is Required'),
 });
 

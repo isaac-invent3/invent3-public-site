@@ -1,6 +1,10 @@
-import { Box, Flex, Heading, Stack, Text, VStack } from '@chakra-ui/react';
-import React, { useState } from 'react';
-import SingleFeature from './SingleFeature';
+import { Flex, Heading, Stack, Text, VStack } from '@chakra-ui/react';
+import React, { useEffect, useRef, useState } from 'react';
+import GenericFeatures from '../../Common/GenericFeatures';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const featureItems = [
   {
@@ -53,7 +57,32 @@ const featureItems = [
   },
 ];
 const Features = () => {
-  const [activeTab, setActiveTab] = useState(0);
+  const sectionRef = useRef<HTMLDivElement | null>(null);
+  const contentOneRef = useRef<HTMLDivElement | null>(null);
+  const contentTwoRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const sectionElement = sectionRef.current;
+    const contentOneElement = contentOneRef.current;
+    const contentTwoElement = contentTwoRef.current;
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionElement,
+        toggleActions: 'restart none none none',
+        start: 'top 50%',
+        end: 'bottom 100%',
+        scrub: 1,
+      },
+    });
+
+    tl.from(contentOneElement, { opacity: 0, x: -100, duration: 0.5 });
+    tl.to(contentOneElement, { opacity: 1, x: 0, duration: 0.5 });
+
+    tl.from(contentTwoElement, { opacity: 0, x: 100, duration: 0.5 });
+    tl.to(contentTwoElement, { opacity: 1, x: 0, duration: 0.5 });
+  }, []);
+
   return (
     <Flex justifyContent="center" width="full" bgColor="primary.500">
       <Flex
@@ -67,6 +96,7 @@ const Features = () => {
         position="relative"
         direction="column"
         gap={{ base: '64px', lg: '80px' }}
+        ref={sectionRef}
       >
         <VStack
           width="full"
@@ -95,6 +125,7 @@ const Features = () => {
               color="white"
               maxW="862px"
               textAlign="left"
+              ref={contentOneRef}
             >
               Powerful Features to Simplify your{' '}
               <Heading
@@ -114,6 +145,7 @@ const Features = () => {
               fontWeight={400}
               maxW="538px"
               textAlign="left"
+              ref={contentTwoRef}
             >
               Designed for efficiency, built for reliability. InventPro offers
               AI-driven automation, real-time tracking, and seamless
@@ -122,70 +154,11 @@ const Features = () => {
             </Text>
           </Stack>
         </VStack>
-        <Stack
-          width="full"
-          bgColor="white"
-          rounded="16px"
-          pt={{ base: '32px', lg: '82px' }}
-          px={{ base: '16px', lg: '48px' }}
-          pb={{ lg: '36px' }}
-          direction={{ base: 'column', lg: 'row' }}
-          spacing={{ base: '32px', lg: '68px' }}
-          alignItems="flex-start"
-          justifyContent="flex-start"
-          overflow="hidden"
-        >
-          <Stack
-            direction={{ base: 'row', lg: 'column' }}
-            spacing={{ base: '24px', lg: '54px' }}
-            minW={{ base: 'full', lg: 'min-content' }}
-            width={{ base: 'full', lg: 'min-content' }}
-            overflow={{ base: 'scroll', lg: 'none' }}
-          >
-            {featureItems.map((item) => (
-              <VStack
-                alignItems="flex-start"
-                spacing={0}
-                cursor="pointer"
-                onClick={() => setActiveTab(item.tabIndex)}
-              >
-                <Heading
-                  key={item.tabIndex}
-                  color={
-                    activeTab === item.tabIndex ? 'primary.500' : 'neutral.300'
-                  }
-                  fontSize={{ base: '14px', lg: '20px' }}
-                  lineHeight={{ base: '16px', lg: '24px' }}
-                  fontWeight={800}
-                  width="full"
-                  minW="126px"
-                  whiteSpace={{ lg: 'nowrap' }}
-                  maxW={{ base: '126px', lg: 'full' }}
-                >
-                  {item.tabName}
-                </Heading>
-                {activeTab === item.tabIndex && (
-                  <Box
-                    bgColor="secondary.purple.500"
-                    height="4px"
-                    width={{ base: 'full', lg: '60%' }}
-                  />
-                )}
-              </VStack>
-            ))}
-          </Stack>
-          {featureItems.map(
-            (item) =>
-              item.tabIndex === activeTab && (
-                <SingleFeature
-                  key={item.tabIndex}
-                  title={item.title}
-                  description={item.description}
-                  image={item.image}
-                />
-              )
-          )}
-        </Stack>
+        <GenericFeatures
+          featureItems={featureItems}
+          buttonLink=""
+          buttonText="Get a Free Demo"
+        />
       </Flex>
     </Flex>
   );

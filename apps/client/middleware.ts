@@ -19,6 +19,7 @@ const publicRoutes = [
   '/contact-us',
   '/faq',
   '/features',
+  '/leadership-team',
 ];
 const protectedGlobalRoute = ['/dashboard'];
 const SECRET = process.env.NEXTAUTH_SECRET;

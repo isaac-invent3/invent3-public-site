@@ -7,9 +7,19 @@ interface SingleFeatureProps {
   title: string;
   description: string;
   image: string;
+  buttonText: string;
+  buttonLink: string;
+  featureDescriptionColor?: string;
 }
 const SingleFeature = (props: SingleFeatureProps) => {
-  const { title, description, image } = props;
+  const {
+    title,
+    description,
+    image,
+    buttonText,
+    buttonLink,
+    featureDescriptionColor,
+  } = props;
   return (
     <Stack
       width="full"
@@ -27,11 +37,12 @@ const SingleFeature = (props: SingleFeatureProps) => {
           <Heading
             fontWeight={{ base: 700, lg: 800 }}
             fontSize={{ base: '24px', lg: '28px' }}
+            color="primary.500"
           >
             {title}
           </Heading>
           <Text
-            color="primary.accent"
+            color={featureDescriptionColor ?? 'primary.accent'}
             fontWeight={400}
             size={{ base: '14px', md: 'lg' }}
           >
@@ -50,8 +61,8 @@ const SingleFeature = (props: SingleFeatureProps) => {
           </Flex>
         </Flex>
 
-        <Button customStyles={{ width: { base: 'full', lg: '175px' } }}>
-          Get a Free Demo
+        <Button customStyles={{ width: { base: 'full', lg: 'min-content' } }}>
+          {buttonText}
         </Button>
       </VStack>
 

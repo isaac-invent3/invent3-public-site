@@ -40,6 +40,7 @@ const Hero = () => {
         <HeroHeader
           title="Ask us anything"
           subtitle="Need something cleared up? Here are our most frequently asked questions."
+          bgDesktop=""
         />
         <SearchComponent setSearch={setSearch} />
       </Flex>

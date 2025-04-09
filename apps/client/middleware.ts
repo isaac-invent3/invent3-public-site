@@ -25,10 +25,10 @@ const SECRET = process.env.NEXTAUTH_SECRET;
 export const TOKEN_REFRESH_BUFFER_SECONDS = 60; // 5 minutes
 export const SESSION_SECURE =
   process.env.NEXT_PUBLIC_BASE_URL?.startsWith('https://');
-// export const SESSION_COOKIE = SESSION_SECURE
-//   ? '__Secure-authjs.session-token'
-//   : 'authjs.session-token';
-export const SESSION_COOKIE = 'authjs.session-token';
+export const SESSION_COOKIE = SESSION_SECURE
+  ? '__Secure-authjs.session-token'
+  : 'authjs.session-token';
+// export const SESSION_COOKIE = 'authjs.session-token';
 export const SESSION_TIMEOUT = 1800; // 30 Mins
 
 export function shouldUpdateToken(token: JWT): boolean {

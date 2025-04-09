@@ -1,12 +1,14 @@
 'use client'; // Error boundaries must be Client Components
 import { Flex, Heading, Text, VStack } from '@chakra-ui/react';
 import { Button } from '@repo/ui/components';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
 export default function NotFound() {
   const router = useRouter();
+  const session = useSession();
   return (
     <Flex
       width="full"
@@ -51,9 +53,9 @@ export default function NotFound() {
           </Text>
           <Button
             customStyles={{ width: 'max-content' }}
-            handleClick={() => router.back()}
+            handleClick={() => router.push(session?.data ? '/dashboard' : '/')}
           >
-            Go Back
+            Go to Homepage
           </Button>
         </VStack>
       </VStack>

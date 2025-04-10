@@ -9,24 +9,61 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const summaryInfo = [
   {
-    title: '300+',
+    value: 300,
+    suffix: '+',
     subtitle: 'Companies across Nigeria',
+    className: 'companies',
   },
   {
-    title: '900,000',
+    value: 900000,
+    suffix: '',
     subtitle: 'Assets Being Managed',
+    className: 'asset',
   },
   {
-    title: '92%',
+    value: 92,
+    suffix: '%',
     subtitle: 'Improving client’s operations',
+    className: 'client',
   },
 ];
 
 const Hero = () => {
+  useEffect(() => {
+    const tl = gsap.timeline();
+
+    summaryInfo.forEach((item) => {
+      const elements = document.getElementsByClassName(item.className);
+      if (elements.length >= 1 && elements[0]) {
+        const element = elements[0];
+
+        // Create a dummy object to animate the number
+        const obj = { val: 0 };
+
+        tl.to(
+          obj,
+          {
+            duration: 3,
+            val: item.value,
+            roundProps: 'val',
+            ease: 'power1.inOut',
+            onUpdate: () => {
+              element.textContent = `${Math.floor(obj.val).toLocaleString()}${item.suffix}`;
+            },
+          },
+          0
+        );
+      }
+    });
+  }, []);
   return (
     <Flex bgColor="#000000" justifyContent="center" width="full" height="full">
       <Flex
@@ -127,8 +164,13 @@ const Hero = () => {
                   key={index}
                   color="white"
                 >
-                  <Text size={{ base: 'md', lg: '2xl' }} color="white">
-                    {item.title}
+                  <Text
+                    size={{ base: 'md', lg: '2xl' }}
+                    color="white"
+                    className={item.className}
+                  >
+                    {item.value}
+                    {item.suffix}
                   </Text>
                   <Text
                     width={{ base: 'full', md: '141px' }}

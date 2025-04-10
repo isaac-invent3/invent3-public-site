@@ -1,6 +1,10 @@
 import { Flex, Heading, SimpleGrid, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import SolutionCard from './SolutionCard';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const allSolutions = [
   {
@@ -54,8 +58,38 @@ const allSolutions = [
 ];
 
 const Solutions = () => {
+  const solutionsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const sectionRef = useRef<HTMLDivElement | null>(null);
+  const headerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const solutionsElement = solutionsRef.current;
+    const sectionElement = sectionRef.current;
+    const headerElement = headerRef.current;
+
+    // const mm = gsap.matchMedia();
+
+    // mm.add('(min-width: 1024px)', () => {
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionElement,
+        toggleActions: 'restart none none none',
+        start: 'top 60%',
+        end: 'bottom 80%',
+        scrub: 1,
+      },
+    });
+    tl.from(headerElement, { opacity: 0, x: -100, duration: 0.5 });
+    tl.to(headerElement, { opacity: 1, x: 0, duration: 0.5 });
+    solutionsElement.forEach((feature, index) => {
+      tl.from(feature, { opacity: 0, y: 100, duration: 0.5 }, index * 0.3);
+      tl.to(feature, { opacity: 1, y: 0, duration: 0.5 });
+    });
+    // });
+  }, []);
+
   return (
-    <Flex justifyContent="center" width="full">
+    <Flex justifyContent="center" width="full" ref={sectionRef}>
       <Flex
         width="full"
         justifyContent="space-between"
@@ -68,7 +102,7 @@ const Solutions = () => {
         direction="column"
         gap={{ base: '112px', lg: '60px' }}
       >
-        <VStack width="full" spacing="24px">
+        <VStack width="full" spacing="24px" ref={headerRef}>
           <Text
             py="12px"
             px="16px"
@@ -114,7 +148,12 @@ const Solutions = () => {
 
         <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} gap="24px">
           {allSolutions.map((solution, index) => (
-            <SolutionCard key={index} {...solution} />
+            <SolutionCard
+              key={index}
+              {...solution}
+              index={index}
+              solutionRef={solutionsRef}
+            />
           ))}
         </SimpleGrid>
       </Flex>

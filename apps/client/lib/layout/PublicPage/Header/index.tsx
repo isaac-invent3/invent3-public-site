@@ -1,11 +1,8 @@
-import { Button, Flex, HStack, Icon, Text } from '@chakra-ui/react';
+import { Button, Flex, HStack } from '@chakra-ui/react';
 import Image from 'next/image';
 import Link from 'next/link';
-// import { usePathname } from 'next/navigation';
-
-import Links from './data';
-import { GlobeIcon } from '~/lib/components/CustomIcons/PublicFacingSite';
 import MobileNav from './MobileNav';
+import DesktopNav from './DesktopNav';
 
 const Header = () => {
   //   const pathname = usePathname();
@@ -24,25 +21,13 @@ const Header = () => {
           height={{ base: '35px', lg: '54px' }}
           width={{ base: '71px', lg: '108px' }}
           flexShrink={0}
+          as="a"
+          href="/"
         >
           <Image src="/logo-white.svg" alt="logo" fill />
         </Flex>
         <HStack spacing="40px">
-          <HStack spacing="32px" display={{ base: 'none', lg: 'flex' }}>
-            {Links.map((item) => (
-              <Link href={item.href} passHref key={item.label}>
-                <Text color="white" size="md" whiteSpace="nowrap">
-                  {item.label}
-                </Text>
-              </Link>
-            ))}
-            <HStack spacing="8px">
-              <Icon as={GlobeIcon} boxSize="24px" color="white" />
-              <Text size="lg" color="white">
-                EN
-              </Text>
-            </HStack>
-          </HStack>
+          <DesktopNav />
           <HStack spacing="16px">
             <Link href="/signin" passHref>
               <Button

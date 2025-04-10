@@ -60,6 +60,7 @@ const Features = () => {
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const contentOneRef = useRef<HTMLDivElement | null>(null);
   const contentTwoRef = useRef<HTMLDivElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const sectionElement = sectionRef.current;
@@ -84,7 +85,12 @@ const Features = () => {
   }, []);
 
   return (
-    <Flex justifyContent="center" width="full" bgColor="primary.500">
+    <Flex
+      justifyContent="center"
+      width="full"
+      bgColor="primary.500"
+      ref={containerRef}
+    >
       <Flex
         width="full"
         justifyContent="space-between"
@@ -158,6 +164,7 @@ const Features = () => {
           featureItems={featureItems}
           buttonLink=""
           buttonText="Get a Free Demo"
+          containerRef={containerRef}
         />
       </Flex>
     </Flex>

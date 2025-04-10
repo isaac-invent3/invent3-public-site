@@ -37,7 +37,7 @@ const MobileNav = () => {
         as={HamburgerIcon}
         boxSize="24px"
         onClick={() => onOpen()}
-        display={{ base: 'flex', lg: 'none' }}
+        display={{ base: 'flex', xl: 'none' }}
         cursor="pointer"
         color="white"
       />

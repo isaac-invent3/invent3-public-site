@@ -1,15 +1,8 @@
-import { auth } from 'auth';
 import { NextRequest, NextResponse } from 'next/server';
 import { checkPermission } from './app/actions/permissionAction';
 import { encode, getToken, JWT } from 'next-auth/jwt';
 import { ROLE_IDS_ENUM } from './lib/utils/constants';
 import { validateTenant } from './app/actions/validateTenantAction';
-
-// import { env } from 'next-runtime-env';
-
-// const NEXT_PUBLIC_API_URL = env('NEXT_PUBLIC_API_URL');
-// const NEXT_PUBLIC_BASE_URL = env('NEXT_PUBLIC_BASE_URL');
-// const NEXTAUTH_SECRET = env('NEXTAUTH_SECRET');
 
 const publicRoutes = [
   '/',
@@ -20,6 +13,14 @@ const publicRoutes = [
   '/faq',
   '/features',
   '/leadership-team',
+  '/sectors/banking-finance',
+  '/sectors/transportation-public-infastructure',
+  '/sectors/healthcare-medical',
+  '/sectors/industrial-manufacturing',
+  '/sectors/retail-warehousing',
+  '/sectors/real-estate-management',
+  '/sectors/logistics-fleet-management',
+  '/sectors/corporate-office-spaces',
 ];
 const protectedGlobalRoute = ['/dashboard'];
 const SECRET = process.env.NEXTAUTH_SECRET;
@@ -29,7 +30,6 @@ export const SESSION_SECURE =
 export const SESSION_COOKIE = SESSION_SECURE
   ? '__Secure-authjs.session-token'
   : 'authjs.session-token';
-// export const SESSION_COOKIE = 'authjs.session-token';
 export const SESSION_TIMEOUT = 1800; // 30 Mins
 
 export function shouldUpdateToken(token: JWT): boolean {

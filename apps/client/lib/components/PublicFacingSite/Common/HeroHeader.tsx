@@ -63,7 +63,11 @@ const HeroHeader = (props: HeroHeaderProps) => {
         alignItems="center"
         zIndex={999}
       >
-        <VStack spacing="8px" width="full" {...containerStyle}>
+        <VStack
+          spacing={{ base: '16px', lg: '24px' }}
+          width="full"
+          {...containerStyle}
+        >
           <Heading
             fontWeight={800}
             fontSize={{ base: '24px', lg: '40px' }}

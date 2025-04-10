@@ -1,6 +1,10 @@
 import { Box, Heading, Stack, StackProps, VStack } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import SingleFeature from './SingleFeature';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface GenericFeaturesProps {
   featureItems: {
@@ -15,6 +19,7 @@ interface GenericFeaturesProps {
   containerStyles?: StackProps;
   tabColor?: string;
   featureDescriptionColor?: string;
+  containerRef?: React.MutableRefObject<HTMLDivElement | null>;
 }
 const GenericFeatures = (props: GenericFeaturesProps) => {
   const {
@@ -24,8 +29,38 @@ const GenericFeatures = (props: GenericFeaturesProps) => {
     containerStyles,
     tabColor,
     featureDescriptionColor,
+    containerRef,
   } = props;
   const [activeTab, setActiveTab] = useState(0);
+  const featureRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    if (!containerRef?.current) return;
+
+    const ctx = gsap.context(() => {
+      const totalTabs = featureItems.length;
+
+      const timeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef?.current,
+          start: 'top top',
+          end: `+=${totalTabs * window.innerHeight}`,
+          scrub: true,
+          pin: featureRef.current,
+          anticipatePin: 1,
+          onUpdate: (self) => {
+            const newTab = Math.floor(self.progress * totalTabs);
+            if (newTab !== activeTab && newTab < totalTabs) {
+              setActiveTab(newTab);
+            }
+          },
+        },
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, [featureItems.length]);
+
   return (
     <Stack
       width="full"
@@ -40,6 +75,7 @@ const GenericFeatures = (props: GenericFeaturesProps) => {
       justifyContent="flex-start"
       overflow="hidden"
       {...containerStyles}
+      ref={containerRef}
     >
       <Stack
         direction={{ base: 'row', lg: 'column' }}

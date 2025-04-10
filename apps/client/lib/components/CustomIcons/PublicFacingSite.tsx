@@ -204,6 +204,63 @@ const VideoPlayIcon = createIcon({
   ),
 });
 
+const ChevronDownIcon = createIcon({
+  displayName: 'ChevronDownIcon',
+  viewBox: '0 0 20 21',
+
+  path: (
+    <svg
+      width="20"
+      height="21"
+      viewBox="0 0 20 21"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M6 8L10.1667 12.1667L14.3333 8H6Z" fill="white" />
+    </svg>
+  ),
+});
+
+const TripleCircleIcon = createIcon({
+  displayName: 'TripleCircleIcon',
+  viewBox: '0 0 24 24',
+
+  path: (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <circle
+        cx="12"
+        cy="12"
+        r="11.7"
+        stroke="#455A64"
+        stroke-width="0.6"
+        stroke-dasharray="0.2 0.2"
+      />
+      <circle
+        cx="12"
+        cy="11.9998"
+        r="9.7"
+        stroke="#455A64"
+        stroke-width="0.6"
+        stroke-dasharray="0.2 0.2"
+      />
+      <circle
+        cx="12"
+        cy="12.0002"
+        r="7.7"
+        stroke="#455A64"
+        stroke-width="0.6"
+        stroke-dasharray="0.2 0.2"
+      />
+    </svg>
+  ),
+});
+
 export {
   HamburgerIcon,
   GlobeIcon,
@@ -214,4 +271,6 @@ export {
   CheckIcon,
   SlantedForwardIcon,
   VideoPlayIcon,
+  ChevronDownIcon,
+  TripleCircleIcon,
 };

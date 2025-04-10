@@ -6,9 +6,11 @@ interface SolutionCardProps {
   icon: string;
   title: string;
   description: string;
+  index: number;
+  solutionRef: React.MutableRefObject<(HTMLDivElement | null)[]>;
 }
 const SolutionCard = (props: SolutionCardProps) => {
-  const { icon, title, description } = props;
+  const { icon, title, description, index, solutionRef } = props;
   return (
     <VStack
       width="full"
@@ -18,6 +20,14 @@ const SolutionCard = (props: SolutionCardProps) => {
       bgColor="#F3F3F3"
       p="16px"
       pb={{ base: '16px', lg: '24px' }}
+      ref={(el) => {
+        solutionRef.current[index] = el;
+      }}
+      _hover={{
+        bgColor: '#B279A214',
+        border: '2px solid #B279A2',
+      }}
+      transition="all 100ms ease-in-out"
     >
       <VStack width="full" spacing="16px" alignItems="flex-start">
         <Flex position="relative" width="40px" height="40px">

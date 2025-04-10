@@ -7,7 +7,11 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { Button } from '@repo/ui/components';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const reasons = [
   {
@@ -42,12 +46,43 @@ const reasons = [
   },
 ];
 const WhyUs = () => {
+  const reasonsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const sectionRef = useRef<HTMLDivElement | null>(null);
+  const headerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const reasonsElement = reasonsRef.current;
+    const sectionElement = sectionRef.current;
+    const headerElement = headerRef.current;
+
+    // const mm = gsap.matchMedia();
+
+    // mm.add('(min-width: 1024px)', () => {
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionElement,
+        toggleActions: 'restart none none none',
+        start: 'top 60%',
+        end: 'bottom 80%',
+        scrub: 1,
+      },
+    });
+    tl.from(headerElement, { opacity: 0, x: -100, duration: 0.5 });
+    tl.to(headerElement, { opacity: 1, x: 0, duration: 0.5 });
+    reasonsElement.forEach((feature, index) => {
+      tl.from(feature, { opacity: 0, y: 100, duration: 0.5 }, index * 0.3);
+      tl.to(feature, { opacity: 1, y: 0, duration: 0.5 });
+    });
+    // });
+  }, []);
+
   return (
     <Flex
       justifyContent="center"
       width="full"
       background="linear-gradient(180deg, rgba(255, 211, 97, 0.2) -31.16%, rgba(255, 211, 97, 0) 79.48%)"
       position="relative"
+      ref={sectionRef}
     >
       <Image
         src="/why-us-1.svg"
@@ -86,7 +121,12 @@ const WhyUs = () => {
         gap={{ base: '78px', lg: '88px' }}
         zIndex={9999}
       >
-        <VStack width="full" spacing="32px" alignItems="flex-start">
+        <VStack
+          width="full"
+          spacing="32px"
+          alignItems="flex-start"
+          ref={headerRef}
+        >
           <Text
             py="12px"
             px="16px"
@@ -142,6 +182,9 @@ const WhyUs = () => {
                 key={index}
                 spacing={{ base: '16px', lg: '24px' }}
                 alignItems="flex-start"
+                ref={(el) => {
+                  reasonsRef.current[index] = el;
+                }}
               >
                 <Heading
                   fontWeight={800}

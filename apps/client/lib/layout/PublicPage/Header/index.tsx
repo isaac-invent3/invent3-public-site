@@ -7,7 +7,15 @@ import DesktopNav from './DesktopNav';
 const Header = () => {
   //   const pathname = usePathname();
   return (
-    <Flex bgColor="#000000" justifyContent="center" width="full" m={0} p={0}>
+    <Flex
+      bgColor="#000000"
+      justifyContent="center"
+      width="full"
+      m={0}
+      p={0}
+      position="relative"
+      zIndex={9999}
+    >
       <Flex
         width="full"
         justifyContent="space-between"

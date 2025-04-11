@@ -7,8 +7,9 @@ import {
   StackDivider,
   Text,
   VStack,
+  Image,
 } from '@chakra-ui/react';
-import Image from 'next/image';
+// import Image from 'next/image';
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
@@ -82,6 +83,8 @@ const Hero = () => {
           alignItems={{ base: 'center', md: 'flex-start' }}
           spacing={{ base: '40px', md: '80px', xl: '147px' }}
           order={{ base: 1, lg: 0 }}
+          position="relative"
+          zIndex={9999}
         >
           <VStack
             width="full"
@@ -188,14 +191,24 @@ const Hero = () => {
         </VStack>
 
         <Flex
-          position="relative"
+          position={{ base: 'relative', md: 'absolute' }}
           height="auto"
           minH={{ base: '350px', lg: '565px' }}
-          width={{ base: 'full', lg: '50%' }}
+          width="full"
           flex={1}
           order={{ base: 0, lg: 1 }}
+          bgColor="red"
+          right={{ base: 0, md: -220, xl: -400 }}
+          top={{ md: -50 }}
         >
-          <Image src="/hero-img.svg" alt="logo" fill />
+          {/* <Image src="/hero-img.svg" alt="logo" fill /> */}
+          <Image
+            src="/hero-globe.gif"
+            width="full"
+            // minW="600px"
+            minH="full"
+            position="absolute"
+          />
         </Flex>
       </Flex>
     </Flex>

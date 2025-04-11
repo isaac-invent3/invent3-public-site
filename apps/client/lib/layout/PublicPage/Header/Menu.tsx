@@ -53,6 +53,7 @@ const Menu = (props: IMenu) => {
         bgColor="transparent"
         border="none"
         width="full"
+        onClick={() => onClose()}
       >
         <PopoverBody p={0} bgColor="transparent">
           {children}

@@ -11,6 +11,10 @@ import {
   Flex,
   HStack,
   Button,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 
@@ -21,6 +25,7 @@ import {
 
 import Links from './data';
 import Image from 'next/image';
+import { ChevronRightIcon } from '~/lib/components/CustomIcons';
 
 const MobileNav = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -63,23 +68,83 @@ const MobileNav = () => {
             <DrawerCloseButton p={0} m={0} />
           </Flex>
           <DrawerBody padding="32px">
-            <VStack width="full" spacing="32px" mt="40px">
-              {Links.map((item) => (
+            <VStack
+              width="full"
+              spacing="32px"
+              mt="40px"
+              alignItems="flex-start"
+            >
+              <Accordion allowToggle width="full">
+                {Links.map((item, index) => (
+                  <AccordionItem
+                    key={index}
+                    p={0}
+                    m={0}
+                    mb={index + 1 !== Links.length ? '32px' : 0}
+                    border="none"
+                  >
+                    <AccordionButton
+                      m={0}
+                      p={0}
+                      borderColor="none"
+                      bgColor="none"
+                      _hover={{ bgColor: 'none' }}
+                    >
+                      <Text
+                        color="primary.500"
+                        size="md"
+                        lineHeight="20px"
+                        letterSpacing="0.04em"
+                        whiteSpace="nowrap"
+                        cursor="pointer"
+                        mr="8px"
+                        onClick={() => {
+                          !item.children && handleNavigation(item.href);
+                        }}
+                      >
+                        {item.label}
+                      </Text>
+                      {item.children && (
+                        <Icon
+                          boxSize="16px"
+                          color="primary.500"
+                          as={ChevronRightIcon}
+                        />
+                      )}
+                    </AccordionButton>
+                    {item.children && (
+                      <AccordionPanel p={0} m={0} mt="24px">
+                        <VStack spacing="24px" alignItems="flex-start">
+                          {item.children.submenu.map((item, index) => (
+                            <Text
+                              color="primary.500"
+                              size="md"
+                              lineHeight="20px"
+                              letterSpacing="0.04em"
+                              whiteSpace="nowrap"
+                              cursor="pointer"
+                              mr="8px"
+                              onClick={() => {
+                                handleNavigation(item.link);
+                              }}
+                            >
+                              {item.title}
+                            </Text>
+                          ))}
+                        </VStack>
+                      </AccordionPanel>
+                    )}
+                  </AccordionItem>
+                ))}
+              </Accordion>
+              <HStack spacing="8px">
+                <Icon as={GlobeIcon} boxSize="24px" color="primary.500" />
                 <Text
                   color="primary.500"
                   size="md"
                   lineHeight="20px"
                   letterSpacing="0.04em"
-                  whiteSpace="nowrap"
-                  cursor="pointer"
-                  onClick={() => handleNavigation(item.href)}
                 >
-                  {item.label}
-                </Text>
-              ))}
-              <HStack spacing="8px">
-                <Icon as={GlobeIcon} boxSize="24px" color="primary.500" />
-                <Text size="lg" color="primary.500">
                   EN
                 </Text>
               </HStack>

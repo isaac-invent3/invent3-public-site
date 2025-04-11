@@ -8,17 +8,17 @@ const rolesSolutionItems = [
   {
     title: 'For Managers',
     content:
-      'Use predictive analytics, cost-saving insights, and compliance tracking to drive long-term business growth and make strategic, data-driven decisions with confidence.',
+      'Gain complete visibility and control over asset performance. Monitor real-time asset data, streamline maintenance workflows, and optimize team productivity—all in one place.',
   },
   {
     title: 'For Field Teams',
     content:
-      'Use predictive analytics, cost-saving insights, and compliance tracking to drive long-term business growth and make strategic, data-driven decisions with confidence.',
+      'Stay connected and efficient, no matter where you are. Access asset details, update maintenance logs, and receive AI-driven alerts on the go with our mobile-friendly platform.',
   },
   {
     title: 'For C-level Executives',
     content:
-      'Use predictive analytics, cost-saving insights, and compliance tracking to drive long-term business growth and make strategic, data-driven decisions with confidence.',
+      'Make strategic, data-driven decisions with confidence. Use predictive analytics, cost-saving insights, and compliance tracking to drive long-term business growth.',
   },
 ];
 const RoleSolution = () => {

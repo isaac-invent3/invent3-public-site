@@ -1,4 +1,4 @@
-import { Flex, SimpleGrid } from '@chakra-ui/react';
+import { Flex, SimpleGrid, Stack } from '@chakra-ui/react';
 import React from 'react';
 import SectionInfo from '../../../Common/SectionInfo';
 import AdvantageCard from './AdvantageCard';
@@ -45,11 +45,23 @@ const TheAdvantage = (props: TheAdvantageProps) => {
           alignItems="center"
           minH="600px"
         >
-          <SimpleGrid
-            columns={{ base: 1, sm: 2, lg: 4 }}
+          <Stack
+            direction={{ base: 'column', lg: 'row' }}
             gap="24px"
             justifyContent="center"
             alignItems="center"
+            display={{ base: 'none', lg: 'flex' }}
+            transition="all 200ms ease-in-out"
+          >
+            {items.map((item, index) => (
+              <AdvantageCard {...item} key={index} />
+            ))}
+          </Stack>
+          <SimpleGrid
+            columns={{ base: 1, md: 2 }}
+            gap="24px"
+            width="full"
+            display={{ base: 'grid', lg: 'none' }}
           >
             {items.map((item, index) => (
               <AdvantageCard {...item} key={index} />

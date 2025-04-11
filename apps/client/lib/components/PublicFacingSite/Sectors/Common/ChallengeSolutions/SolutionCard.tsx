@@ -1,4 +1,4 @@
-import { Heading, Text, VStack } from '@chakra-ui/react';
+import { Box, Heading, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 const colorScheme = {
@@ -25,26 +25,32 @@ const SolutionCard = (props: SolutionCardProps) => {
       onMouseLeave={() => setActiveSolution(0)}
       cursor="pointer"
       role="group"
-      minH={{ md: '350px', lg: '450px' }}
+      minH={{ md: '350px', lg: '400px' }}
       justifyContent="flex-end"
     >
-      <Heading
-        fontSize={{ base: '100px', md: '130px', xl: '200px' }}
-        fontWeight={{ base: 700, lg: 800 }}
-        lineHeight={{
-          base: '104px',
-          //   md: activeSolution === index ? '80px' : '40px',
-          lg: activeSolution === index ? '100px' : '40px',
-          xl: activeSolution === index ? '150px' : '40px',
-        }}
-        transition="line-height 300ms ease-in-out"
-        color={colorScheme[index as keyof typeof colorScheme]}
+      <Box
+        // width="full"
+        height="full"
+        background="background: radial-gradient(50.64% 50.64% at 54.25% 113.14%, rgba(121, 199, 186, 0.1) 0%, #FFFFFF 100%)"
       >
-        0{index + 1}
-      </Heading>
+        <Heading
+          fontSize={{ base: '100px', md: '130px', xl: '200px' }}
+          fontWeight={{ base: 700, lg: 800 }}
+          lineHeight={{
+            base: '104px',
+            //   md: activeSolution === index ? '80px' : '40px',
+            lg: activeSolution === index ? '100px' : '40px',
+            xl: activeSolution === index ? '150px' : '40px',
+          }}
+          transition="line-height 300ms ease-in-out"
+          color={colorScheme[index as keyof typeof colorScheme]}
+        >
+          0{index + 1}
+        </Heading>
+      </Box>
       <VStack
         spacing="32px"
-        minH={{ base: '200px', lg: '297px' }}
+        // minH={{ base: '200px', lg: '100px' }}
         bgColor="white"
         padding="16px"
       >
@@ -63,9 +69,15 @@ const SolutionCard = (props: SolutionCardProps) => {
           fontWeight={{ base: 500, lg: 400 }}
           textAlign="center"
           lineHeight="100%"
-          display={{ lg: activeSolution === index ? 'flex' : 'none' }}
+          display="flex"
           opacity={{ lg: activeSolution === index ? 1 : 0 }}
-          mt={{ lg: activeSolution === index ? 0 : '20px' }}
+          transform={{
+            lg: activeSolution === index ? 'none' : 'translateY(50px)',
+          }}
+          _groupHover={{
+            opacity: 1,
+            transform: 'translateY(0)',
+          }}
           transition="all 300ms ease-in-out"
         >
           {subtitle}

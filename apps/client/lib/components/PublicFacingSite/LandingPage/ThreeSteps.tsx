@@ -77,7 +77,12 @@ const ThreeSteps = () => {
                 <Heading fontWeight={800} fontSize="20px" color="black">
                   {item.title}
                 </Heading>
-                <Text color="neutral.600" fontSize="16px" lineHeight="100%">
+                <Text
+                  color="neutral.600"
+                  fontSize="16px"
+                  fontWeight={400}
+                  lineHeight="100%"
+                >
                   {item.subtitle}
                 </Text>
               </VStack>

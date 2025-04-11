@@ -20,21 +20,33 @@ const AdvantageCard = (props: AdvantageCardProps) => {
       rounded="8px"
       justifyContent="flex-end"
       role="group"
+      position="relative"
       p="24px"
       _hover={{
-        maxW: { lg: 'full' },
+        maxW: { lg: '302px' },
         height: { lg: 'full' },
         px: { lg: '40px' },
         py: { lg: '73px' },
       }}
-      transition="all 300ms ease-in-out"
     >
       <VStack
         spacing="24px"
         alignItems="flex-start"
         display={{ base: 'none', lg: 'flex' }}
-        _groupHover={{ display: 'none' }}
-        transition="all 300ms ease-in-out"
+        position={{ lg: 'absolute' }}
+        bottom={0}
+        left={0}
+        width="full"
+        maxW={{ base: '583px', lg: '216px' }}
+        pl={{ lg: '24px' }}
+        pb={{ lg: '24px' }}
+        opacity={1}
+        transform="translateY(0)"
+        transition="all 400ms ease-in-out"
+        _groupHover={{
+          opacity: 0,
+          transform: 'translateY(-20px)',
+        }}
       >
         <Icon as={TripleCircleIcon} boxSize="24px" />
         <Text
@@ -49,14 +61,45 @@ const AdvantageCard = (props: AdvantageCardProps) => {
 
       <VStack
         width="full"
-        display={{ base: 'flex', lg: 'none' }}
-        _groupHover={{ display: 'flex' }}
+        display={{ base: 'flex' }}
+        opacity={{ base: 1, lg: 0 }}
+        transform={{ lg: 'translateY(100px)' }}
+        _groupHover={{
+          opacity: 1,
+          transform: 'translateY(0)',
+        }}
         transition="all 300ms ease-in-out"
       >
-        <Flex position="relative" width="240px" height="240px">
+        {/* Image animation */}
+        <Flex
+          position="relative"
+          width="240px"
+          height="240px"
+          transform={{ lg: 'translateY(100px)' }} // 45deg-ish angle
+          opacity={{ lg: 0 }}
+          transition="all 400ms ease-in-out"
+          transitionDelay="300ms"
+          _groupHover={{
+            transform: 'translateY(0)',
+            opacity: 1,
+          }}
+        >
           <Image src={image} alt="advantage-image" fill />
         </Flex>
-        <VStack alignItems="flex-start" spacing="16px">
+
+        {/* Text animation */}
+        <VStack
+          alignItems="flex-start"
+          spacing="16px"
+          opacity={{ lg: 0 }}
+          transform={{ lg: 'translateY(20px)' }}
+          transition="all 300ms ease-in-out"
+          transitionDelay="0ms"
+          _groupHover={{
+            opacity: 1,
+            transform: 'translateY(0)',
+          }}
+        >
           <VStack
             alignItems="flex-start"
             spacing={{ base: '16px', lg: '12px' }}

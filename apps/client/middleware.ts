@@ -21,6 +21,7 @@ const publicRoutes = [
   '/sectors/real-estate-management',
   '/sectors/logistics-fleet-management',
   '/sectors/corporate-office-spaces',
+  '/the-invent3-advantage',
 ];
 const protectedGlobalRoute = ['/dashboard'];
 const SECRET = process.env.NEXTAUTH_SECRET;

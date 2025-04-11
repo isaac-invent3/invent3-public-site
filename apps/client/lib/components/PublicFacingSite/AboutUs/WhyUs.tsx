@@ -8,7 +8,7 @@ const featureItems = [
     tabName: 'To Be Strategic',
     title: 'To Be Strategic',
     description:
-      ' Make informed decisions with AI-driven insights. Forecast trends, optimize asset performance, and prevent disruptions before they happen.',
+      'Make informed decisions with AI-driven insights. Forecast trends, optimize asset performance, and prevent disruptions before they happen.',
     image: '/strategy-1.png',
   },
   {
@@ -16,7 +16,7 @@ const featureItems = [
     tabName: 'To Increase Profitability',
     title: 'To Increase Profitability',
     description:
-      ' Make informed decisions with AI-driven insights. Forecast trends, optimize asset performance, and prevent disruptions before they happen.',
+      'Maximize asset value and cut unnecessary costs. Reduce downtime, eliminate inefficiencies, and extend asset lifespan for long-term savings.',
     image: '/strategy-1.png',
   },
   {
@@ -24,7 +24,7 @@ const featureItems = [
     tabName: 'To Maximize Productivity',
     title: 'To Maximize Productivity',
     description:
-      ' Make informed decisions with AI-driven insights. Forecast trends, optimize asset performance, and prevent disruptions before they happen.',
+      'Automate workflows and keep your teams focused on what matters. Streamline operations with intelligent task management and predictive maintenance scheduling.',
     image: '/strategy-1.png',
   },
   {
@@ -32,7 +32,7 @@ const featureItems = [
     tabName: 'To Get Better Insights',
     title: 'To Get Better Insights',
     description:
-      ' Make informed decisions with AI-driven insights. Forecast trends, optimize asset performance, and prevent disruptions before they happen.',
+      'Turn complex asset data into actionable intelligence. Leverage real-time analytics to identify risks, improve efficiency, and drive growth.',
     image: '/strategy-1.png',
   },
   {
@@ -40,7 +40,7 @@ const featureItems = [
     tabName: 'To Improve Efficiency',
     title: 'To Improve Efficiency',
     description:
-      ' Make informed decisions with AI-driven insights. Forecast trends, optimize asset performance, and prevent disruptions before they happen.',
+      'Reduce bottlenecks and increase operational agility. Automate compliance tracking, maintenance planning, and asset workflows.',
     image: '/strategy-1.png',
   },
   {
@@ -48,7 +48,7 @@ const featureItems = [
     tabName: 'To Keep Connected',
     title: 'To Keep Connected',
     description:
-      ' Make informed decisions with AI-driven insights. Forecast trends, optimize asset performance, and prevent disruptions before they happen.',
+      'Seamlessly integrate with your existing business ecosystem. Connect effortlessly with ERP, CRM, and financial tools for a unified workflow.',
     image: '/strategy-1.png',
   },
 ];

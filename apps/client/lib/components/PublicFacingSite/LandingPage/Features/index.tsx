@@ -10,7 +10,7 @@ const featureItems = [
   {
     tabIndex: 0,
     tabName: 'AI-Powered Asset Tracking',
-    title: 'Automated tracking of your Physical Assets',
+    title: 'AI-Powered Asset Tracking',
     description:
       'Know where your assets are and how they’re performing at all times. Gain real-time visibility into asset locations, usage, and status across multiple sites.',
     image: '/asset-tracking-illustration.png',
@@ -18,41 +18,41 @@ const featureItems = [
   {
     tabIndex: 1,
     tabName: 'Compliance & Audit Readiness',
-    title: 'Automated tracking of your Physical Assets',
+    title: 'Compliance & Audit Readiness',
     description:
-      'Know where your assets are and how they’re performing at all times. Gain real-time visibility into asset locations, usage, and status across multiple sites.',
+      'Stay ahead of regulatory requirements with real-time monitoring. Ensure seamless audits with automated compliance tracking, document storage, and violation alerts.',
     image: '/feature-1.png',
   },
   {
     tabIndex: 2,
     tabName: 'Predictive Maintenance',
-    title: 'Automated tracking of your Physical Assets',
+    title: 'Predictive Maintenance',
     description:
-      'Know where your assets are and how they’re performing at all times. Gain real-time visibility into asset locations, usage, and status across multiple sites.',
+      'Prevent costly breakdowns with automated servicing alerts. Reduce unexpected failures with data-driven maintenance scheduling that keeps assets running longer.',
     image: '/feature-1.png',
   },
   {
     tabIndex: 3,
     tabName: 'Smart Workflow Automation',
-    title: 'Automated tracking of your Physical Assets',
+    title: 'Smart Workflow Automation',
     description:
-      'Know where your assets are and how they’re performing at all times. Gain real-time visibility into asset locations, usage, and status across multiple sites.',
+      'Eliminate manual work and speed up asset approvals and maintenance requests. Streamline task assignments, approval flows, and vendor coordination to enhance operational efficiency.',
     image: '/feature-1.png',
   },
   {
     tabIndex: 4,
     tabName: 'Seamless Third-Party Integrations',
-    title: 'Automated tracking of your Physical Assets',
+    title: 'Seamless Third-Party Integrations',
     description:
-      'Know where your assets are and how they’re performing at all times. Gain real-time visibility into asset locations, usage, and status across multiple sites.',
+      'Connect effortlessly with ERP, CRM, and financial tools. Sync data across your existing enterprise systems, reducing redundancy and improving accuracy.',
     image: '/feature-1.png',
   },
   {
     tabIndex: 5,
     tabName: 'Data-Driven Insights',
-    title: 'Automated tracking of your Physical Assets',
+    title: 'Data-Driven Insights',
     description:
-      'Know where your assets are and how they’re performing at all times. Gain real-time visibility into asset locations, usage, and status across multiple sites.',
+      'Make smarter decisions with detailed reports and analytics. Track asset utilization, maintenance costs, and performance trends to drive better business strategies.',
     image: '/feature-1.png',
   },
 ];

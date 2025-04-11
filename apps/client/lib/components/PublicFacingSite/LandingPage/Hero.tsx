@@ -84,7 +84,7 @@ const Hero = () => {
           spacing={{ base: '40px', md: '80px', xl: '147px' }}
           order={{ base: 1, lg: 0 }}
           position="relative"
-          zIndex={9999}
+          zIndex={99}
         >
           <VStack
             width="full"

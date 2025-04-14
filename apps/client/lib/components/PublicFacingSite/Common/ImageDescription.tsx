@@ -8,9 +8,10 @@ interface ImageDescriptionProps {
   description: string;
   image: string;
   imageFirst: boolean;
+  children?: React.ReactNode;
 }
 const ImageDescription = (props: ImageDescriptionProps) => {
-  const { title, description, image, imageFirst } = props;
+  const { title, description, image, imageFirst, children } = props;
   return (
     <Stack
       width="full"
@@ -18,18 +19,22 @@ const ImageDescription = (props: ImageDescriptionProps) => {
       spacing={{ base: '54px', md: '24px' }}
       alignItems="flex-start"
     >
-      <SectionInfo
-        heading={title}
-        headingStyles={{
-          width: 'full',
-          // maxW: { lg: '527px' },
-        }}
-        description={description}
-        containerStyles={{
-          order: { lg: imageFirst ? 1 : 0 },
-          width: { base: 'full', lg: '50%' },
-        }}
-      />
+      <VStack
+        width={{ base: 'full', lg: '50%' }}
+        order={{ lg: imageFirst ? 1 : 0 }}
+        alignItems="flex-start"
+        spacing={{ base: '56px', lg: '40px' }}
+      >
+        <SectionInfo
+          heading={title}
+          headingStyles={{
+            width: 'full',
+            // maxW: { lg: '527px' },
+          }}
+          description={description}
+        />
+        {children}
+      </VStack>
 
       <Flex
         height={{ base: '530px', md: '502px' }}

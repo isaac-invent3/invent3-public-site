@@ -7,13 +7,19 @@ interface TitleSubtitleCardProps {
   subtitleStyles?: TextProps;
   title: string;
   subtitle: string;
+  ref?: (el: HTMLDivElement | null) => void;
 }
 
 const TitleSubtitleCard = (props: TitleSubtitleCardProps) => {
-  const { containerStyles, titleStyles, subtitleStyles, title, subtitle } =
+  const { containerStyles, titleStyles, subtitleStyles, title, subtitle, ref } =
     props;
   return (
-    <VStack alignItems="flex-start" spacing="12px" {...containerStyles}>
+    <VStack
+      alignItems="flex-start"
+      spacing="12px"
+      {...containerStyles}
+      ref={(el) => ref && ref(el)}
+    >
       <Text
         color="primary.500"
         fontSize={{ base: '16px' }}

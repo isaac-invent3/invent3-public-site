@@ -57,7 +57,7 @@ const allSolutions = [
   },
 ];
 
-const Solutions = () => {
+const Solutions = ({ animate }: { animate?: boolean }) => {
   const solutionsRef = useRef<(HTMLDivElement | null)[]>([]);
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const headerRef = useRef<HTMLDivElement | null>(null);
@@ -67,24 +67,26 @@ const Solutions = () => {
     const sectionElement = sectionRef.current;
     const headerElement = headerRef.current;
 
-    // const mm = gsap.matchMedia();
+    if (animate) {
+      // const mm = gsap.matchMedia();
 
-    // mm.add('(min-width: 1024px)', () => {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionElement,
-        toggleActions: 'restart none none none',
-        start: 'top 60%',
-        end: 'bottom 80%',
-        scrub: 1,
-      },
-    });
-    tl.from(headerElement, { opacity: 0, x: -100, duration: 0.5 });
-    tl.to(headerElement, { opacity: 1, x: 0, duration: 0.5 });
-    solutionsElement.forEach((feature, index) => {
-      tl.from(feature, { opacity: 0, y: 100, duration: 0.5 }, index * 0.3);
-      tl.to(feature, { opacity: 1, y: 0, duration: 0.5 });
-    });
+      // mm.add('(min-width: 1024px)', () => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionElement,
+          toggleActions: 'restart none none none',
+          start: 'top 60%',
+          end: 'bottom 80%',
+          scrub: 1,
+        },
+      });
+      tl.from(headerElement, { opacity: 0, x: -100, duration: 0.5 });
+      tl.to(headerElement, { opacity: 1, x: 0, duration: 0.5 });
+      solutionsElement.forEach((feature, index) => {
+        tl.from(feature, { opacity: 0, y: 100, duration: 0.5 }, index * 0.3);
+        tl.to(feature, { opacity: 1, y: 0, duration: 0.5 });
+      });
+    }
     // });
   }, []);
 

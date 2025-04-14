@@ -7,7 +7,13 @@ import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const About = () => {
+const About = ({
+  image,
+  animate = true,
+}: {
+  image?: string;
+  animate?: boolean;
+}) => {
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const sectionHeadingRef = useRef<HTMLDivElement | null>(null);
   const keyPointRef = useRef<HTMLDivElement | null>(null);
@@ -18,25 +24,26 @@ const About = () => {
     const sectionHeadingElement = sectionHeadingRef.current;
     const keyPointElement = keyPointRef.current;
     const imageElement = imageRef.current;
+    if (animate) {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionElement,
+          toggleActions: 'restart none none none',
+          start: 'top 70%',
+          end: 'bottom 80%',
+          scrub: 1,
+        },
+      });
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionElement,
-        toggleActions: 'restart none none none',
-        start: 'top 70%',
-        end: 'bottom 80%',
-        scrub: 1,
-      },
-    });
+      tl.from(sectionHeadingElement, { opacity: 0, x: -100, duration: 0.5 });
+      tl.to(sectionHeadingElement, { opacity: 1, x: 0, duration: 0.5 });
 
-    tl.from(sectionHeadingElement, { opacity: 0, x: -100, duration: 0.5 });
-    tl.to(sectionHeadingElement, { opacity: 1, x: 0, duration: 0.5 });
+      tl.from(keyPointElement, { opacity: 0, y: 100, duration: 0.5 });
+      tl.to(keyPointElement, { opacity: 1, y: 0, duration: 0.5 });
 
-    tl.from(keyPointElement, { opacity: 0, y: 100, duration: 0.5 });
-    tl.to(keyPointElement, { opacity: 1, y: 0, duration: 0.5 });
-
-    tl.from(imageElement, { opacity: 0, x: 100, duration: 0.5 });
-    tl.to(imageElement, { opacity: 1, x: 0, duration: 0.5 });
+      tl.from(imageElement, { opacity: 0, x: 100, duration: 0.5 });
+      tl.to(imageElement, { opacity: 1, x: 0, duration: 0.5 });
+    }
   }, []);
 
   return (
@@ -116,7 +123,7 @@ const About = () => {
               display={{ base: 'flex', lg: 'none' }}
             >
               <Image
-                src="/about-illustration.svg"
+                src={image ?? '/about-illustration.svg'}
                 alt="about-illustration"
                 fill
               />
@@ -136,7 +143,11 @@ const About = () => {
           maxW={{ base: 'full', lg: '565px' }}
           ref={imageRef}
         >
-          <Image src="/about-illustration.svg" alt="about-illustration" fill />
+          <Image
+            src={image ?? '/about-illustration.svg'}
+            alt="about-illustration"
+            fill
+          />
         </Flex>
       </Flex>
     </Flex>

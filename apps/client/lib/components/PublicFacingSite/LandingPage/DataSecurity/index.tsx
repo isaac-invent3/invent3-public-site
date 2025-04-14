@@ -1,4 +1,11 @@
-import { Flex, Heading, SimpleGrid, Text, VStack } from '@chakra-ui/react';
+import {
+  Flex,
+  FlexProps,
+  Heading,
+  SimpleGrid,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 import { Button } from '@repo/ui/components';
 import Image from 'next/image';
 import React from 'react';
@@ -26,7 +33,7 @@ const info = [
   },
 ];
 
-const DataSecurity = () => {
+const DataSecurity = ({ customStyles }: { customStyles?: FlexProps }) => {
   return (
     <Flex
       justifyContent="center"
@@ -44,6 +51,7 @@ const DataSecurity = () => {
         position="relative"
         direction="column"
         gap={{ base: '56px', lg: '170px' }}
+        {...customStyles}
       >
         <Flex
           direction={{ base: 'column', lg: 'row' }}

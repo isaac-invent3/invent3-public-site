@@ -10,38 +10,40 @@ import { Button } from '@repo/ui/components';
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
+import SectionInfo from '../../Common/SectionInfo';
+import TitleSubtitleCard from '../../Common/TitleSubtitleCard';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const reasons = [
   {
     title: 'To Be Strategic',
-    description:
+    subtitle:
       'Gain a competitive edge by leveraging AI to forecast trends, prevent disruptions, and optimize asset performance.',
   },
   {
     title: 'To Increase Profitability',
-    description:
+    subtitle:
       'Extend asset lifespan, cut operational expenses, and eliminate unnecessary downtime for better financial outcomes.',
   },
   {
     title: 'To Maximize Productivity',
-    description:
+    subtitle:
       'Gain a competitive edge by leveraging AI to forecast trends, prevent disruptions, and optimize asset performance.',
   },
   {
     title: 'To Get Better Insights',
-    description:
+    subtitle:
       'Gain a competitive edge by leveraging AI to forecast trends, prevent disruptions, and optimize asset performance.',
   },
   {
     title: 'To Improve Efficiency',
-    description:
+    subtitle:
       'Gain a competitive edge by leveraging AI to forecast trends, prevent disruptions, and optimize asset performance.',
   },
   {
     title: 'To Keep Connected',
-    description:
+    subtitle:
       'Gain a competitive edge by leveraging AI to forecast trends, prevent disruptions, and optimize asset performance.',
   },
 ];
@@ -121,52 +123,19 @@ const WhyUs = () => {
         gap={{ base: '78px', lg: '88px' }}
         zIndex={9999}
       >
-        <VStack
-          width="full"
-          spacing="32px"
-          alignItems="flex-start"
-          ref={headerRef}
-        >
-          <Text
-            py="12px"
-            px="16px"
-            color="primary.500"
-            bgColor="neutral.250"
-            rounded="full"
-          >
-            Why Invent3.ai
-          </Text>
-          <Heading
-            fontWeight={800}
-            fontSize={{ base: '24px', md: '40px' }}
-            lineHeight={{ base: '28.51px', md: '47.52px' }}
-            color="black"
-            maxW="537px"
-          >
-            Be excellent with the right{' '}
-            <Heading
-              as="span"
-              color="#B279A2"
-              fontWeight={800}
-              fontSize={{ base: '24px', md: '40px' }}
-              lineHeight={{ base: '28.51px', md: '47.52px' }}
-            >
-              CAFM Solutions
-            </Heading>
-          </Heading>
-          <Text
-            fontSize={{ base: '14px', md: '16px' }}
-            lineHeight={{ base: '20px', md: '24px' }}
-            color="primary.accent"
-            fontWeight={400}
-            maxW="578px"
-          >
-            Invent3.ai is more than a technology provider—we are a trusted
+        <SectionInfo
+          badgeText="Why Invent3.ai"
+          heading={['Be excellent with the right', ['CAFM Solutions']]}
+          description="     Invent3.ai is more than a technology provider—we are a trusted
             partner in CAFM Industry with excellence. Our AI-driven solutions
             help businesses optimize asset management, enhance efficiency, and
-            ensure long-term sustainability.
-          </Text>
-        </VStack>
+            ensure long-term sustainability."
+          containerStyles={{ spacing: '32px' }}
+          headingStyles={{ maxW: '537px' }}
+          descriptionStyles={{ maxW: '537px' }}
+          ref={headerRef}
+        />
+
         <VStack
           width="full"
           alignItems="flex-start"
@@ -178,31 +147,24 @@ const WhyUs = () => {
             columnGap={{ base: '32px', lg: '42px' }}
           >
             {reasons.map((item, index) => (
-              <VStack
+              <TitleSubtitleCard
+                {...item}
                 key={index}
-                spacing={{ base: '16px', lg: '24px' }}
-                alignItems="flex-start"
+                titleStyles={{
+                  color: 'black',
+                  fontSize: { base: '16px', lg: '20px' },
+                  lineHeight: '100%',
+                }}
+                subtitleStyles={{
+                  color: '#515151',
+                  fontSize: { base: '14px', lg: '16px' },
+                  lineHeight: { base: '100%' },
+                }}
+                containerStyles={{ spacing: { base: '16px', lg: '24px' } }}
                 ref={(el) => {
                   reasonsRef.current[index] = el;
                 }}
-              >
-                <Heading
-                  fontWeight={800}
-                  fontSize={{ base: '16px', md: '20px' }}
-                  lineHeight="100%"
-                  color="black"
-                >
-                  {item.title}
-                </Heading>
-                <Text
-                  fontSize={{ base: '14px', md: '16px' }}
-                  lineHeight={{ base: '20px', md: '24px' }}
-                  color="#515151"
-                  fontWeight={400}
-                >
-                  {item.description}
-                </Text>
-              </VStack>
+              />
             ))}
           </SimpleGrid>
           <Button

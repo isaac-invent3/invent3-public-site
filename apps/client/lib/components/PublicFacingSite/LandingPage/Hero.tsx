@@ -197,7 +197,6 @@ const Hero = () => {
           width="full"
           flex={1}
           order={{ base: 0, lg: 1 }}
-          bgColor="red"
           right={{ base: 0, md: -220, xl: -400 }}
           top={{ md: -50 }}
         >

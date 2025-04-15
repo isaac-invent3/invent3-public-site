@@ -13,6 +13,15 @@ const nextConfig = {
       externals: [...config.externals, 'pino-pretty', 'encoding'],
     };
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.prismic.io',
+        port: '',
+      },
+    ],
+  },
 };
 
 export default nextConfig;

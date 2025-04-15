@@ -17,6 +17,7 @@ interface HeroHeaderProps {
   subTitleStyle?: TextProps;
   bgMobile?: string;
   bgDesktop: string;
+  children?: React.ReactNode;
 }
 const HeroHeader = (props: HeroHeaderProps) => {
   const {
@@ -27,6 +28,7 @@ const HeroHeader = (props: HeroHeaderProps) => {
     subTitleStyle,
     bgMobile,
     bgDesktop,
+    children
   } = props;
 
   return (
@@ -92,6 +94,7 @@ const HeroHeader = (props: HeroHeaderProps) => {
             {subtitle}
           </Text>
         </VStack>
+        {children}
       </Flex>
     </Flex>
   );

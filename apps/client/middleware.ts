@@ -25,6 +25,7 @@ const publicRoutes = [
   '/how-we-work',
   '/solutions',
   '/built-for-all-industries',
+  '/blog',
 ];
 const protectedGlobalRoute = ['/dashboard'];
 const SECRET = process.env.NEXTAUTH_SECRET;
@@ -210,8 +211,11 @@ export async function middleware(request: NextRequest) {
     }
 
     const checkPath = tenantData ? `/${remainingPath}` : pathname;
+
     // Don't check permission for protected global route
-    if (protectedGlobalRoute.includes(checkPath)) {
+    if (
+      protectedGlobalRoute.includes(`/${checkPath.split('/')?.[1] as string}`)
+    ) {
       if (tenantData) {
         return NextResponse.rewrite(new URL(`${checkPath}`, request.url));
       }
@@ -249,7 +253,7 @@ export async function middleware(request: NextRequest) {
     return response;
   }
   if (!token) {
-    if (publicRoutes.includes(pathname)) {
+    if (publicRoutes.includes(`/${pathname.split('/')?.[1] as string}`)) {
       return response;
     }
     if (tenantData) {

@@ -102,8 +102,8 @@ const LINKS = [
           link: '/developer-portal',
         },
         {
-          title: 'Blogs',
-          link: '/blogs',
+          title: 'Blog',
+          link: '/blog',
         },
       ],
       columns: 1,

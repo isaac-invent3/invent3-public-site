@@ -20,6 +20,9 @@ const SearchComponent = (props: SearchComponentProps) => {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchText(value);
+    if (value === '') {
+      setSearch('');
+    }
   };
   return (
     <InputGroup

@@ -14,6 +14,7 @@ import { useSession } from 'next-auth/react';
 import { ROLE_IDS_ENUM } from '~/lib/utils/constants';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import ThirdParty from './ThirdParty';
+import BMSDashboard from './BMS';
 
 const ROLE_PRIORITY = [
   ROLE_IDS_ENUM.SUPER_ADMIN,
@@ -82,7 +83,8 @@ const Dashboard = () => {
 
   // Render the appropriate dashboard component based on the resolved view
   const DashboardComponent = DASHBOARD_COMPONENTS[effectiveView];
-  return <DashboardComponent />;
+  // return <DashboardComponent />;
+  return <BMSDashboard />;
 };
 
 // Helper function to validate if the given value is a valid DashboardView

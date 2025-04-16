@@ -23,6 +23,7 @@ interface DatePopoverProps {
   label?: string;
   variant?: 'primary' | 'secondary';
   customStyle?: StackProps;
+  customButton?: React.ReactNode;
 }
 const DatePopover = (props: DatePopoverProps) => {
   const {
@@ -32,6 +33,7 @@ const DatePopover = (props: DatePopoverProps) => {
     selectedDate,
     label,
     customStyle,
+    customButton,
   } = props;
 
   const { isOpen, onClose, onOpen, onToggle } = useDisclosure();
@@ -43,31 +45,33 @@ const DatePopover = (props: DatePopoverProps) => {
       placement="bottom-start"
     >
       <PopoverTrigger>
-        <HStack
-          onClick={onToggle}
-          cursor="pointer"
-          bgColor="white"
-          width="max-content"
-          height="36px"
-          py="10px"
-          px="12px"
-          rounded="6px"
-          border="none"
-          {...customStyle}
-        >
-          <HStack spacing="8px">
-            <ChakraText width="full" whiteSpace="nowrap" color="neutral.600">
-              {label ?? 'Date:'}
-            </ChakraText>
+        {customButton ?? (
+          <HStack
+            onClick={onToggle}
+            cursor="pointer"
+            bgColor="white"
+            width="max-content"
+            height="36px"
+            py="10px"
+            px="12px"
+            rounded="6px"
+            border="none"
+            {...customStyle}
+          >
+            <HStack spacing="8px">
+              <ChakraText width="full" whiteSpace="nowrap" color="neutral.600">
+                {label ?? 'Date:'}
+              </ChakraText>
 
-            <ChakraText whiteSpace="nowrap">
-              {selectedDate
-                ? moment(selectedDate).format('DD-MM-YYYY')
-                : '-----'}
-            </ChakraText>
+              <ChakraText whiteSpace="nowrap">
+                {selectedDate
+                  ? moment(selectedDate).format('DD-MM-YYYY')
+                  : '-----'}
+              </ChakraText>
+            </HStack>
+            <Icon as={ChevronDownIcon} boxSize="12px" color="neutral.600" />
           </HStack>
-          <Icon as={ChevronDownIcon} boxSize="12px" color="neutral.600" />
-        </HStack>
+        )}
       </PopoverTrigger>
       <PopoverContent
         p={0}

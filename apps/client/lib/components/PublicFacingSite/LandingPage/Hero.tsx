@@ -219,7 +219,7 @@ const Hero = () => {
             width={{ base: '120px', lg: '186px' }}
             height={{ base: '60px', lg: '87px' }}
             position="absolute"
-            zIndex={9999}
+            zIndex={99}
             top={{ base: 50, md: 120, lg: 120, xl: 150 }}
             left={{ base: 170, sm: 120, md: 230, lg: 250, xl: 450 }}
             bottom={0}
@@ -230,7 +230,7 @@ const Hero = () => {
             width={{ base: '150px', md: '120px', xl: '226.05px' }}
             height={{ base: '70px', xl: '114.75px' }}
             position="absolute"
-            zIndex={9999}
+            zIndex={99}
             top={{ base: 50, md: 120, lg: 120, xl: 150 }}
             right={{ base: 150, sm: 150, md: 250, lg: 350, xl: 400 }}
             // display={{ base: 'none', lg: 'flex' }}
@@ -241,7 +241,7 @@ const Hero = () => {
             width={{ base: '150px', md: '180px', lg: '248.94px' }}
             height={{ base: '80px', md: '120px', lg: '199.55px' }}
             position="absolute"
-            zIndex={9999}
+            zIndex={99}
             left={{ base: 170, sm: 150, md: 300, xl: 400 }}
             bottom={{ base: 30, sm: 0, md: -140, lg: -50, xl: -200 }}
             ref={image3Ref}

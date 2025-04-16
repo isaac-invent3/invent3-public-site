@@ -38,8 +38,13 @@ const summaryInfo = [
 ];
 
 const Hero = () => {
+  const image1Ref = useRef(null);
+  const image2Ref = useRef(null);
+  const image3Ref = useRef(null);
+
   useEffect(() => {
     const tl = gsap.timeline();
+    const imagetl = gsap.timeline({ repeat: -1, repeatDelay: 1 });
 
     summaryInfo.forEach((item) => {
       const elements = document.getElementsByClassName(item.className);
@@ -64,6 +69,14 @@ const Hero = () => {
         );
       }
     });
+
+    imagetl
+      .set([image1Ref.current, image2Ref.current, image3Ref.current], {
+        opacity: 0,
+      })
+      .to(image1Ref.current, { opacity: 1, duration: 2 })
+      .to(image2Ref.current, { opacity: 1, duration: 2 })
+      .to(image3Ref.current, { opacity: 1, duration: 2 });
   }, []);
   return (
     <Flex bgColor="#000000" justifyContent="center" width="full" height="full">
@@ -85,6 +98,7 @@ const Hero = () => {
           order={{ base: 1, lg: 0 }}
           position="relative"
           zIndex={99}
+          mt={{ sm: '20px', md: 0 }}
         >
           <VStack
             width="full"
@@ -189,26 +203,85 @@ const Hero = () => {
             </HStack>
           </VStack>
         </VStack>
-
         <Flex
           position={{ base: 'relative', md: 'absolute' }}
           height="auto"
           minH={{ base: '350px', lg: '565px' }}
           width="full"
-          flex={1}
+          minW="600px"
           order={{ base: 0, lg: 1 }}
-          right={{ base: 0, md: -220, xl: -400 }}
+          right={{ base: 0, md: -220, lg: -300, xl: -350 }}
           top={{ md: -50 }}
+          flexShrink={0}
         >
-          {/* <Image src="/hero-img.svg" alt="logo" fill /> */}
+          <Image
+            src="/hero-globe-image-1.png"
+            width={{ base: '120px', lg: '186px' }}
+            height={{ base: '60px', lg: '87px' }}
+            position="absolute"
+            zIndex={9999}
+            top={{ base: 50, md: 120, lg: 120, xl: 150 }}
+            left={{ base: 170, sm: 120, md: 230, lg: 250, xl: 450 }}
+            bottom={0}
+            ref={image1Ref}
+          />
+          <Image
+            src="/hero-globe-image-2.png"
+            width={{ base: '150px', md: '120px', xl: '226.05px' }}
+            height={{ base: '70px', xl: '114.75px' }}
+            position="absolute"
+            zIndex={9999}
+            top={{ base: 50, md: 120, lg: 120, xl: 150 }}
+            right={{ base: 150, sm: 150, md: 250, lg: 350, xl: 400 }}
+            // display={{ base: 'none', lg: 'flex' }}
+            ref={image2Ref}
+          />
+          <Image
+            src="/hero-globe-image-3.png"
+            width={{ base: '150px', md: '180px', lg: '248.94px' }}
+            height={{ base: '80px', md: '120px', lg: '199.55px' }}
+            position="absolute"
+            zIndex={9999}
+            left={{ base: 170, sm: 150, md: 300, xl: 400 }}
+            bottom={{ base: 30, sm: 0, md: -140, lg: -50, xl: -200 }}
+            ref={image3Ref}
+          />
           <Image
             src="/hero-globe.gif"
             width="full"
-            // minW="600px"
             minH="full"
             position="absolute"
           />
         </Flex>
+
+        {/* <Flex
+          position={{ base: 'relative', md: 'absolute' }}
+          height="auto"
+          minH={{ base: '350px', lg: '565px' }}
+          width="full"
+          maxW="100%"
+          order={{ base: 0, lg: 1 }}
+          right={{ base: 0, md: -220, xl: -400 }}
+          top={{ md: -50 }}
+          bgColor="red"
+          flexShrink={0}
+          justify="center"
+          align="center"
+        >
+          {/* Wrapper for aspect ratio */}
+        {/* <Box
+            position="relative"
+            width={{ base: '90%', md: '600px' }}
+            aspectRatio={1}
+            maxW="full"
+          >
+            <Image
+              src="/hero-globe.gif"
+              alt="rotating globe"
+              objectFit="contain"
+            />
+          </Box> */}
+        {/* </Flex> */}
       </Flex>
     </Flex>
   );

@@ -264,7 +264,10 @@ export async function middleware(request: NextRequest) {
         new URL(`/${tenant}/signin?ref=${remainingPath}`, request.url)
       );
     } else {
-      return NextResponse.rewrite(new URL('/404', request.url));
+      // return NextResponse.rewrite(new URL('/404', request.url));
+      return NextResponse.redirect(
+        new URL(`/signin?ref=${request.nextUrl.pathname}`, request.url)
+      );
     }
   }
 
@@ -279,7 +282,7 @@ export const config = {
     '/',
     '/signin',
     '/forgot-password',
-    '/dashboard',
+    '/dashboard/:path*',
     '/approval-flow/:path*',
     '/asset-management/:path*',
     '/maintenance/:path*',

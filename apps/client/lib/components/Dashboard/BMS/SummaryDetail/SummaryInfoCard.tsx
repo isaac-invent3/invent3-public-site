@@ -23,7 +23,7 @@ const SummaryInfoCard = (props: SummaryInfoCardProps) => {
       width="full"
     >
       <HStack justifyContent="space-between" width="full">
-        <Text color="neutral.800" fontWeight={800}>
+        <Text color="neutral.800" fontWeight={800} maxW="99px">
           {title}
         </Text>
         <Flex position="relative" width="44px" height="44px">
@@ -31,9 +31,14 @@ const SummaryInfoCard = (props: SummaryInfoCardProps) => {
         </Flex>
       </HStack>
       <VStack width="full" alignItems="flex-end">
-        <HStack width="full" justifyContent="space-between" spacing="17.5px">
-          {children}
-          <VStack alignItems="flex-start" spacing="4px">
+        <HStack
+          width="full"
+          justifyContent="space-between"
+          spacing="17.5px"
+          alignItems="flex-start"
+        >
+          <Flex width="50%">{children}</Flex>
+          <VStack alignItems="flex-start" spacing="4px" width="50%">
             <Text size="lg" fontWeight={800} color="black">
               {facilityName}
             </Text>

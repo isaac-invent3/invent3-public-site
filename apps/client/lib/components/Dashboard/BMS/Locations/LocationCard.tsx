@@ -1,4 +1,4 @@
-import { Flex, Icon, Text, VStack } from '@chakra-ui/react';
+import { Flex, Icon, StackProps, Text, VStack } from '@chakra-ui/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -9,11 +9,12 @@ interface LocationCardProps {
   facilityName: string;
   lgaName: string;
   stateName: string;
+  customStyle?: StackProps;
 }
 const LocationCard = (props: LocationCardProps) => {
-  const { id, facilityName, lgaName, stateName } = props;
+  const { id, facilityName, lgaName, stateName, customStyle } = props;
   return (
-    <Link href={`/dashboard/bms/${id}`}>
+    <Link href={`/dashboard/bms/${id}/detail`}>
       <VStack
         spacing="0px"
         minW="206px"
@@ -21,6 +22,7 @@ const LocationCard = (props: LocationCardProps) => {
         rounded="8px"
         bgColor="#F2F1F1"
         overflow="hidden"
+        {...customStyle}
       >
         <Flex
           width="full"

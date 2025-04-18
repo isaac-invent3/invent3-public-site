@@ -11,6 +11,7 @@ import {
   StackProps,
   FlexProps,
   IconProps,
+  TextProps,
 } from '@chakra-ui/react';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { useRef } from 'react';
@@ -26,6 +27,7 @@ interface DropDownProps {
   labelStyles?: StackProps;
   containerStyles?: FlexProps;
   chevronStyles?: IconProps;
+  selectedOptionStyles?: TextProps;
 }
 
 const DropDown = (props: DropDownProps) => {
@@ -39,6 +41,7 @@ const DropDown = (props: DropDownProps) => {
     labelStyles,
     containerStyles,
     chevronStyles,
+    selectedOptionStyles,
   } = props;
   const { onToggle, isOpen, onClose } = useDisclosure();
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -68,7 +71,10 @@ const DropDown = (props: DropDownProps) => {
         justifyContent="space-between"
         {...labelStyles}
       >
-        <Text color={selectedOptions ? 'neutral.800' : 'neutral.300'}>
+        <Text
+          color={selectedOptions ? 'neutral.800' : 'neutral.300'}
+          {...selectedOptionStyles}
+        >
           {selectedOptions ? selectedOptions.label : label}
         </Text>
         <Icon

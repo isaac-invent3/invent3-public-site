@@ -14,7 +14,7 @@ const Header = () => {
       m={0}
       p={0}
       position="relative"
-      zIndex={9999}
+      zIndex={99}
     >
       <Flex
         width="full"

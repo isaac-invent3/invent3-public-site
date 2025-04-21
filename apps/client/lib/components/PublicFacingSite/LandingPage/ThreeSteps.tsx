@@ -74,7 +74,13 @@ const ThreeSteps = () => {
                 key={index}
                 spacing="24px"
               >
-                <Heading fontWeight={800} fontSize="20px" color="black">
+                <Heading
+                  fontWeight={800}
+                  fontSize="20px"
+                  lineHeight="100%"
+                  color="black"
+                  textAlign={{ base: 'center', md: 'left' }}
+                >
                   {item.title}
                 </Heading>
                 <Text
@@ -82,6 +88,7 @@ const ThreeSteps = () => {
                   fontSize="16px"
                   fontWeight={400}
                   lineHeight="100%"
+                  textAlign={{ base: 'center', md: 'left' }}
                 >
                   {item.subtitle}
                 </Text>

@@ -28,7 +28,7 @@ const HeroHeader = (props: HeroHeaderProps) => {
     subTitleStyle,
     bgMobile,
     bgDesktop,
-    children
+    children,
   } = props;
 
   return (
@@ -63,7 +63,7 @@ const HeroHeader = (props: HeroHeaderProps) => {
         direction="column"
         gap="16px"
         alignItems="center"
-        zIndex={999}
+        zIndex={9}
       >
         <VStack
           spacing={{ base: '16px', lg: '24px' }}

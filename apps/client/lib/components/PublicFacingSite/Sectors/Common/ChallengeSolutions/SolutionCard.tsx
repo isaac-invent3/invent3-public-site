@@ -50,7 +50,7 @@ const SolutionCard = (props: SolutionCardProps) => {
       </Box>
       <VStack
         spacing="32px"
-        // minH={{ base: '200px', lg: '100px' }}
+        minH={{ lg: '200px' }}
         bgColor="white"
         padding="16px"
       >

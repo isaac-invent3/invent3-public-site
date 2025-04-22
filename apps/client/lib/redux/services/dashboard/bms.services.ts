@@ -109,8 +109,7 @@ export const BMSApi = createApi({
     }),
     getBMSOccupanyRate: builder.query<
       BaseApiResponse<{
-        totalEnergyConsumption: number;
-        targetEnergyConsumption: number;
+        occupancyRatePercentage: number;
       }>,
       { facilityId: number; buildingId?: number; floorId?: number }
     >({

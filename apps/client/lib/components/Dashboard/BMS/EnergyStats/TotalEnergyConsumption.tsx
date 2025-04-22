@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import InfoCard from '../InfoCard';
-import { HStack, Stack, Text, VStack } from '@chakra-ui/react';
+import { HStack, Skeleton, Stack, Text, VStack } from '@chakra-ui/react';
 import { Option } from '@repo/interfaces';
 import { timeRangeOptions } from '~/lib/utils/constants';
+import { useGetBMSTotalEnergyConsumptionForAllFacilitiesQuery } from '~/lib/redux/services/dashboard/bms.services';
 
 const TotalEnergyConsumption = () => {
   const [selectedTimeRange, setSelectedTimeRange] = useState<Option | null>(
     timeRangeOptions[1] as Option
   );
+  const { data, isLoading } =
+    useGetBMSTotalEnergyConsumptionForAllFacilitiesQuery({});
 
   return (
     <InfoCard
@@ -36,29 +39,33 @@ const TotalEnergyConsumption = () => {
           alignItems="flex-start"
         >
           <HStack spacing="8px">
-            <Text
-              fontWeight={800}
-              fontSize="40px"
-              lineHeight="16px"
-              color="#F50000"
-            >
-              120,500
-            </Text>
+            <Skeleton isLoaded={!isLoading} as="span">
+              <Text
+                fontWeight={800}
+                fontSize="40px"
+                lineHeight="16px"
+                color="#F50000"
+              >
+                {data?.data?.totalEnergyConsumption?.toLocaleString() ?? '-'}
+              </Text>
+            </Skeleton>
             <Text fontWeight={800} lineHeight="16px" pt="16px">
               kWh
             </Text>
           </HStack>
           <Text fontWeight={800} size="lg">
             Target:
-            <Text
-              fontWeight={800}
-              size="lg"
-              as="span"
-              ml="8px"
-              color="neutral.700"
-            >
-              110,500
-            </Text>
+            <Skeleton isLoaded={!isLoading} as="span">
+              <Text
+                fontWeight={800}
+                size="lg"
+                as="span"
+                ml="8px"
+                color="neutral.700"
+              >
+                {data?.data?.targetEnergyConsumption?.toLocaleString() ?? '-'}
+              </Text>
+            </Skeleton>
             <Text
               fontWeight={800}
               size="lg"

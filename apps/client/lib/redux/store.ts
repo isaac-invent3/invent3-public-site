@@ -93,6 +93,7 @@ import { notesApi } from './services/notes.services';
 import { fieldEngineerDashboardApi } from './services/dashboard/fieldengineer.services';
 import { feedbackApi } from './services/feedback.services';
 import { executiveDashboardApis } from './services/dashboard/executive.services';
+import { BMSApi } from './services/dashboard/bms.services';
 export const persistConfig = {
   key: 'root',
   storage,
@@ -134,6 +135,7 @@ const rootReducer = combineReducers({
   [thirdPartyApi.reducerPath]: thirdPartyApi.reducer,
   [fieldEngineerDashboardApi.reducerPath]: fieldEngineerDashboardApi.reducer,
   [executiveDashboardApis.reducerPath]: executiveDashboardApis.reducer,
+  [BMSApi.reducerPath]: BMSApi.reducer,
 
   // Category and condition APIs
   [categoryApi.reducerPath]: categoryApi.reducer,
@@ -178,13 +180,19 @@ const rootReducer = combineReducers({
 
   // Approval Workflow Related APIs
   [approvalWorkflowRequestApi.reducerPath]: approvalWorkflowRequestApi.reducer,
-  [approvalWorkflowRequestDocumentApi.reducerPath]: approvalWorkflowRequestDocumentApi.reducer,
+  [approvalWorkflowRequestDocumentApi.reducerPath]:
+    approvalWorkflowRequestDocumentApi.reducer,
   [approvalWorkflowActionApi.reducerPath]: approvalWorkflowActionApi.reducer,
-  [approvalWorkflowActionOptionApi.reducerPath]: approvalWorkflowActionOptionApi.reducer,
-  [approvalWorkflowActionOptionsMapApi.reducerPath]: approvalWorkflowActionOptionsMapApi.reducer,
-  [approvalWorkflowInstanceApi.reducerPath]: approvalWorkflowInstanceApi.reducer,
-  [approvalWorkflowPartyInstanceApi.reducerPath]: approvalWorkflowPartyInstanceApi.reducer,
-  [approvalWorkflowRequirementTypeApi.reducerPath]: approvalWorkflowRequirementTypeApi.reducer,
+  [approvalWorkflowActionOptionApi.reducerPath]:
+    approvalWorkflowActionOptionApi.reducer,
+  [approvalWorkflowActionOptionsMapApi.reducerPath]:
+    approvalWorkflowActionOptionsMapApi.reducer,
+  [approvalWorkflowInstanceApi.reducerPath]:
+    approvalWorkflowInstanceApi.reducer,
+  [approvalWorkflowPartyInstanceApi.reducerPath]:
+    approvalWorkflowPartyInstanceApi.reducer,
+  [approvalWorkflowRequirementTypeApi.reducerPath]:
+    approvalWorkflowRequirementTypeApi.reducer,
   [approvalWorkflowStatusApi.reducerPath]: approvalWorkflowStatusApi.reducer,
   [approvalWorkflowTypeApi.reducerPath]: approvalWorkflowTypeApi.reducer,
 
@@ -279,6 +287,7 @@ export const makeStore = () => {
         thirdPartyApi.middleware,
         fieldEngineerDashboardApi.middleware,
         executiveDashboardApis.middleware,
+        BMSApi.middleware,
 
         // Depreciation APIs
         depreciationApi.middleware,
@@ -347,7 +356,7 @@ export const makeStore = () => {
         notesApi.middleware,
 
         // Feedback Apis
-        feedbackApi.middleware
+        feedbackApi.middleware,
       ]),
   });
 };

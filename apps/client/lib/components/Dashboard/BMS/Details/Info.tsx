@@ -1,9 +1,24 @@
-import { Flex, HStack, Stack, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
+import { Flex, HStack, Skeleton, Stack, Text, VStack } from '@chakra-ui/react';
+import React, { useEffect } from 'react';
 import WeatherReading from '../WeatherReading';
 import Image from 'next/image';
+import { useGetBMSFacilityDashboardSummaryQuery } from '~/lib/redux/services/dashboard/bms.services';
+import { useParams } from 'next/navigation';
 
-const Info = () => {
+const Info = ({
+  facilityName,
+  address,
+}: {
+  facilityName: string;
+  address: string;
+}) => {
+  const params = useParams();
+  const id = params?.id as unknown as number;
+  const { data, isLoading } = useGetBMSFacilityDashboardSummaryQuery(
+    { facilityId: id },
+    { skip: !id }
+  );
+
   return (
     <Stack
       width="full"
@@ -37,7 +52,7 @@ const Info = () => {
           pb={{ base: '32px', lg: '23px' }}
           pr={{ base: '9px', lg: '13px' }}
           pl={{ base: '11px', lg: '22px' }}
-          direction={{ base: 'column', lg: 'row' }}
+          direction={{ base: 'column', xl: 'row' }}
         >
           <VStack
             alignItems="flex-start"
@@ -45,34 +60,38 @@ const Info = () => {
             width={{ base: 'full', lg: '40%' }}
           >
             <Text size="xl" fontWeight={800} color="white">
-              Awolowo Road Branch
+              {facilityName ?? '-'}
             </Text>
             <Text size="md" color="neutral.200">
-              123 Marina Rd, Lagos, NG
+              {address ?? '-'}
             </Text>
           </VStack>
           <VStack spacing="40px" width={{ base: 'full', lg: '60%' }}>
             <HStack width="full" justifyContent="space-between" spacing="24px">
               <VStack alignItems="flex-start">
-                <Text
-                  fontWeight={800}
-                  fontSize="20px"
-                  lineHeight="100%"
-                  color="white"
-                >
-                  35,000 kWh
-                </Text>
+                <Skeleton isLoaded={!isLoading}>
+                  <Text
+                    fontWeight={800}
+                    fontSize="20px"
+                    lineHeight="100%"
+                    color="white"
+                  >
+                    {data?.data?.energyConsumption ?? '-'} kWh
+                  </Text>
+                </Skeleton>
                 <Text color="neutral.250">Energy Consumption</Text>
               </VStack>
               <VStack alignItems="flex-start">
-                <Text
-                  fontWeight={800}
-                  fontSize="20px"
-                  lineHeight="100%"
-                  color="white"
-                >
-                  90%
-                </Text>
+                <Skeleton isLoaded={!isLoading}>
+                  <Text
+                    fontWeight={800}
+                    fontSize="20px"
+                    lineHeight="100%"
+                    color="white"
+                  >
+                    {data?.data?.occupancyRatePercentage ?? '-'} %
+                  </Text>
+                </Skeleton>
                 <Text color="neutral.250">Occupancy Rate:</Text>
               </VStack>
             </HStack>
@@ -95,14 +114,16 @@ const Info = () => {
                 <Text color="neutral.250">System Health</Text>
               </VStack>
               <VStack alignItems="flex-start">
-                <Text
-                  fontWeight={800}
-                  fontSize="20px"
-                  lineHeight="100%"
-                  color="white"
-                >
-                  2 Open issues
-                </Text>
+                <Skeleton isLoaded={!isLoading}>
+                  <Text
+                    fontWeight={800}
+                    fontSize="20px"
+                    lineHeight="100%"
+                    color="white"
+                  >
+                    {data?.data?.openIssues ?? '-'} Open issues
+                  </Text>
+                </Skeleton>
                 <Text color="neutral.250">Maintenance Alerts</Text>
               </VStack>
             </Stack>

@@ -7,13 +7,12 @@ interface SummaryInfoCardProps {
   title: string;
   icon: string;
   children: React.ReactNode;
-  facilityName: string;
-  lgaName: string;
-  stateName: string;
+  facilityName?: string;
+  address?: string;
 }
 
 const SummaryInfoCard = (props: SummaryInfoCardProps) => {
-  const { title, icon, children, facilityName, lgaName, stateName } = props;
+  const { title, icon, children, facilityName, address } = props;
   return (
     <VStack
       bgColor="#F2F1F1"
@@ -43,7 +42,7 @@ const SummaryInfoCard = (props: SummaryInfoCardProps) => {
               {facilityName}
             </Text>
             <Text color="neutral.600" fontWeight={700}>
-              {lgaName}, {stateName}
+              {address}
             </Text>
           </VStack>
         </HStack>

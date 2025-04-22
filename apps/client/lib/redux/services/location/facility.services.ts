@@ -42,6 +42,13 @@ export const facilityApi = createApi({
       }),
       providesTags: ['facilitiesByLGAId'],
     }),
+    getFacilityById: builder.query<BaseApiResponse<Facility>, { id: string }>({
+      query: ({ id }) => ({
+        url: `/Facilities/${id}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
     createFacility: builder.mutation<
       BaseApiResponse<Facility>,
       {
@@ -81,4 +88,5 @@ export const {
   useGetAllFacilitiesQuery,
   useGetFacilitiesByLGAIdQuery,
   useSearchFacilitiesMutation,
+  useGetFacilityByIdQuery,
 } = facilityApi;

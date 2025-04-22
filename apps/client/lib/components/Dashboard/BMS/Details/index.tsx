@@ -6,7 +6,13 @@ import Header from './Header';
 import Info from './Info';
 import DetailTabs from './DetailTabs';
 
-const BMSDetails = () => {
+const BMSDetails = ({
+  facilityName,
+  address,
+}: {
+  facilityName: string;
+  address: string;
+}) => {
   return (
     <VStack
       width="full"
@@ -15,7 +21,7 @@ const BMSDetails = () => {
       pb="26px"
     >
       <Header />
-      <Info />
+      <Info facilityName={facilityName} address={address} />
       <DetailTabs />
     </VStack>
   );

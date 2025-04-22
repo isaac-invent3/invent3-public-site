@@ -2,6 +2,8 @@ import React from 'react';
 import { Flex, HStack, Stack, Text, VStack } from '@chakra-ui/react';
 import InfoCard from '../../../InfoCard';
 import Image from 'next/image';
+import { useGetBMSHvacOperationalEfficiencyQuery } from '~/lib/redux/services/dashboard/bms.services';
+import { useParams } from 'next/navigation';
 
 interface ItemDetailProps {
   icon: string;
@@ -24,20 +26,27 @@ const ItemDetail = (props: ItemDetailProps) => {
 };
 
 const HVAC = () => {
+  const params = useParams();
+  const id = params?.id as unknown as number;
+  const { data, isLoading } = useGetBMSHvacOperationalEfficiencyQuery(
+    { facilityId: id },
+    { skip: !id }
+  );
+
   const content = [
     {
       title: 'Average Temperature',
-      value: '22oC',
+      value: `${data?.data?.averageTemperature ?? '-'}oC`,
       icon: '/thermometer.png',
     },
     {
       title: 'Humidity Levels',
-      value: '45%',
+      value: `${data?.data?.humidityLevels ?? '-'}%`,
       icon: '/humidity.png',
     },
     {
       title: 'kWh / month',
-      value: '30,000',
+      value: `${data?.data?.energyConsumptionForMonth?.toLocaleString() ?? '-'}`,
       icon: '/air-conditioner.png',
     },
   ];
@@ -64,7 +73,7 @@ const HVAC = () => {
             fontWeight={800}
             color="#00A129"
           >
-            92%
+            {data?.data?.operationalEfficiency ?? '-'}%
           </Text>
           <Text color="neutral.800" fontWeight={800} size="md">
             Operational Efficiency

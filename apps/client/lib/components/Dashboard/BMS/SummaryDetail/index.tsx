@@ -1,8 +1,27 @@
 import { SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import SummaryInfoCard from './SummaryInfoCard';
+import {
+  useGetBMSFacilityWithHighestSystemFailuresQuery,
+  useGetBMSHighestCostFacilityQuery,
+  useGetBMSHighestNonCompliantFacilityQuery,
+  useGetBMSHighestOccupancyRateQuery,
+} from '~/lib/redux/services/dashboard/bms.services';
 
 const SummaryDetail = () => {
+  const { data: highestCostData, isLoading: isLoadingHighestCost } =
+    useGetBMSHighestCostFacilityQuery();
+  const { data: highestOccupancyData, isLoading: isLoadingHighestOccupancy } =
+    useGetBMSHighestOccupancyRateQuery();
+  const {
+    data: highestNonCompliantData,
+    isLoading: isLoadingHighestNonCompliant,
+  } = useGetBMSHighestNonCompliantFacilityQuery();
+  const {
+    data: highestSystemFailure,
+    isLoading: isLoadingHighestSystemFailure,
+  } = useGetBMSFacilityWithHighestSystemFailuresQuery();
+
   const content = [
     {
       title: 'Highest Occupancy Rate',
@@ -15,27 +34,26 @@ const SummaryDetail = () => {
             fontSize="24px"
             lineHeight="16px"
           >
-            90%
+            {highestOccupancyData?.data?.occupancyRate}
           </Text>
           <VStack spacing="2px" alignItems="flex-start">
             <Text color="neutral.600" fontWeight={700}>
               Current Occupancy:{' '}
               <Text as="span" color="black" fontWeight={700}>
-                450
+                {highestOccupancyData?.data?.occupancyRate}
               </Text>
             </Text>
             <Text color="neutral.600" fontWeight={700}>
               Max Occupancy:{' '}
               <Text as="span" color="black" fontWeight={700}>
-                500
+                {highestOccupancyData?.data?.occupancyRate}
               </Text>
             </Text>
           </VStack>
         </VStack>
       ),
-      facilityName: 'Adeola Odeku Branch',
-      lgaName: 'Victoria Island',
-      stateName: 'Lagos',
+      facilityName: highestOccupancyData?.data?.facilityName,
+      address: highestOccupancyData?.data?.address,
     },
     {
       title: 'Most System Failures',
@@ -43,37 +61,35 @@ const SummaryDetail = () => {
       children: (
         <VStack alignItems="flex-start" spacing="2px">
           <Text color="#F50000" fontWeight={800} size="lg">
-            05
+            {highestSystemFailure?.data?.CriticalFailureCount ?? '-'}
             <Text as="span" color="#EE5959" fontWeight={700} ml="10px">
               Critical Failures
             </Text>
           </Text>
           <Text color="#F78C1A" fontWeight={800} size="lg">
-            12
+            {highestSystemFailure?.data?.WarningAlerts ?? '-'}
             <Text as="span" color="#F09A3F" fontWeight={700} ml="10px">
               Warning Alerts
             </Text>
           </Text>
         </VStack>
       ),
-      facilityName: 'Adeola Odeku Branch',
-      lgaName: 'Victoria Island',
-      stateName: 'Lagos',
+      facilityName: highestSystemFailure?.data?.facilityName,
+      address: highestSystemFailure?.data?.address,
     },
     {
       title: 'Highest Non-Compliant',
       icon: '/will.gif',
       children: (
         <Text color="#F78C1A" fontWeight={800} size="lg">
-          30
+          {highestNonCompliantData?.data?.nonCompliances}
           <Text as="span" color="#F09A3F" fontWeight={700} ml="8px">
             Non Compliance
           </Text>
         </Text>
       ),
-      facilityName: 'Adeola Odeku Branch',
-      lgaName: 'Victoria Island',
-      stateName: 'Lagos',
+      facilityName: highestNonCompliantData?.data?.facility,
+      address: highestNonCompliantData?.data?.address,
     },
     {
       title: 'Highest Cost Location',
@@ -81,22 +97,21 @@ const SummaryDetail = () => {
       children: (
         <VStack spacing="4px" alignItems="flex-start">
           <Text color="black" fontWeight={800} size="lg">
-            $5,500
+            ${highestCostData?.data?.energyCost}
             <Text as="span" color="neutral.600" fontWeight={700} ml="8px">
               Energy Cost
             </Text>
           </Text>
           <Text color="black" fontWeight={800} size="lg">
-            $1,200
+            ${highestCostData?.data?.waterCost}
             <Text as="span" color="neutral.600" fontWeight={700} ml="8px">
               Water Cost
             </Text>
           </Text>
         </VStack>
       ),
-      facilityName: 'Adeola Odeku Branch',
-      lgaName: 'Victoria Island',
-      stateName: 'Lagos',
+      facilityName: highestCostData?.data?.facility,
+      address: highestCostData?.data?.address,
     },
   ];
   return (

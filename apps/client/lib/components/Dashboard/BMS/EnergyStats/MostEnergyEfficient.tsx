@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import InfoCard from '../InfoCard';
-import { HStack, Stack, Text, VStack } from '@chakra-ui/react';
+import { HStack, Skeleton, Stack, Text, VStack } from '@chakra-ui/react';
 import { timeRangeOptions } from '~/lib/utils/constants';
 import { Option } from '@repo/interfaces';
+import { useGetBMSMostEnergyEfficientFacilityQuery } from '~/lib/redux/services/dashboard/bms.services';
 
 const MostEnergyEfficient = () => {
   const [selectedTimeRange, setSelectedTimeRange] = useState<Option | null>(
     timeRangeOptions[1] as Option
   );
+  const { data, isLoading } = useGetBMSMostEnergyEfficientFacilityQuery({});
   return (
     <InfoCard
       title="Most Energy Efficient"
@@ -24,18 +26,22 @@ const MostEnergyEfficient = () => {
         spacing="28px"
       >
         <VStack spacing="4px" alignItems="flex-start">
-          <Text
-            maxW="168px"
-            color="black"
-            fontWeight={800}
-            fontSize="24px"
-            lineHeight="100%"
-          >
-            Adeola Odeku Branch
-          </Text>
-          <Text fontWeight={700} color="neutral.600">
-            Victoria Island, Lagos
-          </Text>
+          <Skeleton isLoaded={!isLoading}>
+            <Text
+              maxW="168px"
+              color="black"
+              fontWeight={800}
+              fontSize="24px"
+              lineHeight="100%"
+            >
+              {data?.data?.facilityName ?? '-'}
+            </Text>
+          </Skeleton>
+          <Skeleton isLoaded={!isLoading}>
+            <Text fontWeight={700} color="neutral.600">
+              {data?.data?.address ?? '-'}
+            </Text>
+          </Skeleton>
         </VStack>
         <VStack alignItems="flex-start" spacing="6px">
           <HStack alignItems="flex-end">
@@ -45,10 +51,10 @@ const MostEnergyEfficient = () => {
               lineHeight="100%"
               fontWeight={800}
             >
-              A
-              <Text as="sup" fontWeight={800} fontSize="32px">
+              {data?.data?.rating ?? '-'}
+              {/* <Text as="sup" fontWeight={800} fontSize="32px">
                 +
-              </Text>
+              </Text> */}
             </Text>
             <Text color="neutral.700" size="lg" mb="4px">
               Rating

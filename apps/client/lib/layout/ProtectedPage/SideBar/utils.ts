@@ -27,33 +27,37 @@ const DashboardViewMaps: Record<
   number,
   {
     name: string;
-    route: DashboardView;
+    route: string;
   }
 > = {
   [ROLE_IDS_ENUM.SUPER_ADMIN]: {
     name: 'Super Admin',
-    route: 'super_admin',
+    route: '?view=super_admin',
   },
   [ROLE_IDS_ENUM.CLIENT_ADMIN]: {
     name: 'Client Admin',
-    route: 'client_admin',
+    route: '?view=client_admin',
   },
   [ROLE_IDS_ENUM.EXECUTIVE]: {
     name: 'Executive',
-    route: 'executive',
+    route: '?view=executive',
   },
   [ROLE_IDS_ENUM.OPERATION_MANAGER]: {
     name: 'Operation Manager',
-    route: 'operation_manager',
+    route: '?view=operation_manager',
   },
   [ROLE_IDS_ENUM.FIELD_ENGINEER]: {
     name: 'Field Engineer',
-    route: 'field_engineer',
+    route: '?view=field_engineer',
   },
   [ROLE_IDS_ENUM.FRONT_DESK]: {
     name: 'Front Desk',
-    route: 'front_desk',
+    route: '?view=front_desk',
   },
+  // [ROLE_IDS_ENUM.SUPER_ADMIN]: {
+  //   name: 'BMS',
+  //   route: '/bms',
+  // },
 };
 
 const clientSideBarData: SideBarData[] = [
@@ -235,7 +239,7 @@ async function filterSidebarData() {
         validDashboardViews.length > 1
           ? validDashboardViews.map((view) => ({
               name: view.name,
-              route: `${ROUTES.DASHBOARD}?view=${view.route}`,
+              route: `${ROUTES.DASHBOARD}${view.route}`,
             }))
           : [],
     };

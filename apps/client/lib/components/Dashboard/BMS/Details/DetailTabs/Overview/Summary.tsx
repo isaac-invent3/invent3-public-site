@@ -1,15 +1,30 @@
-import { Flex, HStack, SimpleGrid, Text, VStack } from '@chakra-ui/react';
+import {
+  Flex,
+  HStack,
+  SimpleGrid,
+  Skeleton,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 import Image from 'next/image';
+import { useParams } from 'next/navigation';
 import React from 'react';
+import {
+  useGetBMSAverageMaintenanceTimeQuery,
+  useGetBMSOccupanyRateQuery,
+  useGetBMSScheduledMaintenanceQuery,
+  useGetBMSTotalFaultsDetectedQuery,
+} from '~/lib/redux/services/dashboard/bms.services';
 
 interface SummaryCardProps {
   title: string;
   subtitle: string;
-  value: string;
+  value: string | number;
   icon: string;
+  isLoading: boolean;
 }
 const SummaryCard = (props: SummaryCardProps) => {
-  const { title, subtitle, value, icon } = props;
+  const { title, subtitle, value, icon, isLoading } = props;
   return (
     <VStack
       width="full"
@@ -28,9 +43,11 @@ const SummaryCard = (props: SummaryCardProps) => {
         </Flex>
       </HStack>
       <VStack alignItems="flex-start" spacing="8px">
-        <Text fontWeight={800} size="xl">
-          {value}
-        </Text>
+        <Skeleton isLoaded={!isLoading}>
+          <Text fontWeight={800} size="xl">
+            {value}
+          </Text>
+        </Skeleton>
         <Text color="neutral.600">{subtitle}</Text>
       </VStack>
     </VStack>
@@ -38,36 +55,58 @@ const SummaryCard = (props: SummaryCardProps) => {
 };
 
 const Summary = () => {
+  const params = useParams();
+  const id = params?.id as unknown as number;
+  const { data: occupancyRateData, isLoading: isLoadingOccupancyRate } =
+    useGetBMSOccupanyRateQuery({ facilityId: id }, { skip: !id });
+  const {
+    data: averageMaintenanceData,
+    isLoading: isLoadingAverageMaintenance,
+  } = useGetBMSAverageMaintenanceTimeQuery({ facilityId: id }, { skip: !id });
+  const {
+    data: scheduleMaintenanceData,
+    isLoading: isLoadingScheduleMaintenanceData,
+  } = useGetBMSScheduledMaintenanceQuery({ facilityId: id }, { skip: !id });
+  const { data: totalFaultData, isLoading: isLoadingTotalFaultData } =
+    useGetBMSTotalFaultsDetectedQuery({ facilityId: id }, { skip: !id });
+
   const content = [
     {
       title: 'Occupancy Rate',
       subtitle: 'All zones',
       value: '90%',
       icon: '/adjust.png',
+      isLoading: isLoadingOccupancyRate,
     },
     {
       title: 'Total Zones',
       subtitle: 'No of Zones',
-      value: '4',
+      value: averageMaintenanceData?.data?.totalZones ?? '-',
       icon: '/location.png',
+      isLoading: isLoadingAverageMaintenance,
     },
     {
       title: 'Avg Maintenance Time',
       subtitle: 'All zones',
-      value: '2 hours',
+      value: averageMaintenanceData?.data?.averageMaintenanceTime
+        ? `${averageMaintenanceData?.data?.averageMaintenanceTime} ${averageMaintenanceData?.data?.unit}`
+        : '-',
       icon: '/clock.png',
+      isLoading: isLoadingAverageMaintenance,
     },
     {
       title: 'Total  Faults Detetcted',
       subtitle: 'No of Faults',
       value: '3 Faults',
       icon: '/fault.png',
+      isLoading: isLoadingTotalFaultData,
     },
     {
       title: 'Scheduled Maintenance',
       subtitle: 'This Week',
-      value: '5',
+      value: scheduleMaintenanceData?.data?.scheduledMaintenance ?? '-',
       icon: '/bms-calendar.png',
+      isLoading: isLoadingScheduleMaintenanceData,
     },
   ];
   return (

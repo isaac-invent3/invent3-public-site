@@ -97,7 +97,7 @@ const Hero = () => {
           spacing={{ base: '40px', md: '80px', xl: '147px' }}
           order={{ base: 1, lg: 0 }}
           position="relative"
-          zIndex={99}
+          zIndex={9}
           mt={{ sm: '20px', md: 0 }}
         >
           <VStack
@@ -219,9 +219,9 @@ const Hero = () => {
             width={{ base: '120px', lg: '186px' }}
             height={{ base: '60px', lg: '87px' }}
             position="absolute"
-            zIndex={99}
+            zIndex={9}
             top={{ base: 50, md: 120, lg: 120, xl: 150 }}
-            left={{ base: 170, sm: 120, md: 230, lg: 250, xl: 450 }}
+            left={{ base: 170, sm: 170, md: 250, lg: 300, xl: 450 }}
             bottom={0}
             ref={image1Ref}
           />
@@ -230,7 +230,7 @@ const Hero = () => {
             width={{ base: '150px', md: '120px', xl: '226.05px' }}
             height={{ base: '70px', xl: '114.75px' }}
             position="absolute"
-            zIndex={99}
+            zIndex={9}
             top={{ base: 50, md: 120, lg: 120, xl: 150 }}
             right={{ base: 150, sm: 150, md: 250, lg: 350, xl: 400 }}
             // display={{ base: 'none', lg: 'flex' }}
@@ -241,7 +241,7 @@ const Hero = () => {
             width={{ base: '150px', md: '180px', lg: '248.94px' }}
             height={{ base: '80px', md: '120px', lg: '199.55px' }}
             position="absolute"
-            zIndex={99}
+            zIndex={9}
             left={{ base: 170, sm: 150, md: 300, xl: 400 }}
             bottom={{ base: 30, sm: 0, md: -140, lg: -50, xl: -200 }}
             ref={image3Ref}
@@ -253,35 +253,6 @@ const Hero = () => {
             position="absolute"
           />
         </Flex>
-
-        {/* <Flex
-          position={{ base: 'relative', md: 'absolute' }}
-          height="auto"
-          minH={{ base: '350px', lg: '565px' }}
-          width="full"
-          maxW="100%"
-          order={{ base: 0, lg: 1 }}
-          right={{ base: 0, md: -220, xl: -400 }}
-          top={{ md: -50 }}
-          bgColor="red"
-          flexShrink={0}
-          justify="center"
-          align="center"
-        >
-          {/* Wrapper for aspect ratio */}
-        {/* <Box
-            position="relative"
-            width={{ base: '90%', md: '600px' }}
-            aspectRatio={1}
-            maxW="full"
-          >
-            <Image
-              src="/hero-globe.gif"
-              alt="rotating globe"
-              objectFit="contain"
-            />
-          </Box> */}
-        {/* </Flex> */}
       </Flex>
     </Flex>
   );

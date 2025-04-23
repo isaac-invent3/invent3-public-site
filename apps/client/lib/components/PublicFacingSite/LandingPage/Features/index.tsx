@@ -21,7 +21,7 @@ const featureItems = [
     title: 'Compliance & Audit Readiness',
     description:
       'Stay ahead of regulatory requirements with real-time monitoring. Ensure seamless audits with automated compliance tracking, document storage, and violation alerts.',
-    image: '/feature-1.png',
+    image: '/complaince-readiness.jpg',
   },
   {
     tabIndex: 2,
@@ -29,7 +29,7 @@ const featureItems = [
     title: 'Predictive Maintenance',
     description:
       'Prevent costly breakdowns with automated servicing alerts. Reduce unexpected failures with data-driven maintenance scheduling that keeps assets running longer.',
-    image: '/feature-1.png',
+    image: '/predictive-maintenance.jpg',
   },
   {
     tabIndex: 3,

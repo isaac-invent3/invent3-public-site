@@ -83,6 +83,17 @@ const GenericFeatures = (props: GenericFeaturesProps) => {
         minW={{ base: 'full', lg: 'min-content' }}
         width={{ base: 'full', lg: 'min-content' }}
         overflow={{ base: 'scroll', lg: 'none' }}
+        sx={{
+          scrollbarWidth: '0px',
+          scrollbarColor: 'transparent transparent',
+          '&::-webkit-scrollbar': {
+            width: '0px',
+            height: '0px',
+          },
+          '&::-webkit-scrollbar-thumb': {
+            background: 'transparent',
+          },
+        }}
       >
         {featureItems.map((item) => (
           <VStack

@@ -73,64 +73,26 @@ const IndustriesSlides = () => {
         >
           <Flex
             ref={scrollRef}
-            gap="16px"
-            sx={{
-              whiteSpace: 'nowrap',
-            }}
+            gap={{ base: '16px', lg: '56px' }}
+            flexWrap="nowrap"
           >
             {[...industries, ...industries].map((industry, index) => (
-              <Text
-                fontWeight={800}
-                fontSize={{ base: '12px', lg: '20px' }}
-                lineHeight="100%"
-                color="neutral.600"
+              <Box
                 key={index}
-                minW={{ base: '120px', lg: '208px' }}
-                alignSelf="flex-start"
+                maxW={{ base: '120px', lg: '208px' }}
+                flexShrink={0}
               >
-                {industry}
-              </Text>
+                <Text
+                  fontWeight={800}
+                  fontSize={{ base: '12px', lg: '20px' }}
+                  lineHeight="120%"
+                  color="neutral.600"
+                  whiteSpace="normal"
+                >
+                  {industry}
+                </Text>
+              </Box>
             ))}
-
-            {/* <Flex
-          width={{ base: 'full', lg: 'calc(100vw - 194px)' }}
-          bgColor="red"
-          position="relative"
-        >
-          <MotionFlex
-            overflow="hidden"
-            whiteSpace="nowrap"
-            animate={{ x: ['0%', '-100%'] }}
-            transition={{
-              repeat: Infinity,
-              duration: 20,
-              ease: 'linear',
-            }}
-            position={{ base: 'absolute', md: 'static' }}
-            bottom={{ base: '0', md: 'auto' }}
-            justifyContent="center"
-            bgColor="primary.500"
-          >
-            {industries.concat(industries).map((industry, index) => (
-              // <Box
-              //   key={index}
-              //   flexShrink={0}
-              //   maxW="208px"
-              //   mx="10px"
-              //   textAlign="center"
-              // >
-              <Text
-                fontWeight={800}
-                fontSize={{ base: '12px', lg: '20px' }}
-                lineHeight="20px"
-                color="white"
-              >
-                {industry}
-              </Text>
-              // </Box>
-            ))}
-          </MotionFlex>
-        </Flex> */}
           </Flex>
         </Flex>
       </Flex>

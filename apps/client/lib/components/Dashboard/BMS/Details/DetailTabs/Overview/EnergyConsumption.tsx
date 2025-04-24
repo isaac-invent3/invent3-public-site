@@ -17,7 +17,10 @@ import InfoCard from '../../../InfoCard';
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
-const HighestEnergyConsumption = () => {
+interface HighestEnergyConsumptionProps {
+  title?: string;
+}
+const HighestEnergyConsumption = ({ title }: HighestEnergyConsumptionProps) => {
   const [selectedTimeRange, setSelectedTimeRange] = useState<Option | null>(
     timeRangeOptions[1] as Option
   );
@@ -84,7 +87,7 @@ const HighestEnergyConsumption = () => {
 
   return (
     <InfoCard
-      title="Highest Energy Consumption"
+      title={title ?? 'Highest Energy Consumption'}
       headerContainerStyle={{ maxW: '112px' }}
       selectedTimeRange={selectedTimeRange}
       setSelectedTimeRange={setSelectedTimeRange}

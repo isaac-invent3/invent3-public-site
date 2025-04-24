@@ -1,12 +1,4 @@
-import {
-  Flex,
-  HStack,
-  SimpleGrid,
-  Skeleton,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
-import Image from 'next/image';
+import { SimpleGrid } from '@chakra-ui/react';
 import { useParams } from 'next/navigation';
 import React from 'react';
 import {
@@ -15,44 +7,7 @@ import {
   useGetBMSScheduledMaintenanceQuery,
   useGetBMSTotalFaultsDetectedQuery,
 } from '~/lib/redux/services/dashboard/bms.services';
-
-interface SummaryCardProps {
-  title: string;
-  subtitle: string;
-  value: string | number;
-  icon: string;
-  isLoading: boolean;
-}
-const SummaryCard = (props: SummaryCardProps) => {
-  const { title, subtitle, value, icon, isLoading } = props;
-  return (
-    <VStack
-      width="full"
-      spacing="16px"
-      alignItems="flex-start"
-      rounded="8px"
-      bgColor="neutral.200"
-      p="16px"
-    >
-      <HStack width="full" justifyContent="space-between" spacing="24px">
-        <Text color="neutral.800" fontWeight={800} size="md">
-          {title}
-        </Text>
-        <Flex position="relative" width="24px" height="24px">
-          <Image src={icon} alt="icon" fill />
-        </Flex>
-      </HStack>
-      <VStack alignItems="flex-start" spacing="8px">
-        <Skeleton isLoaded={!isLoading}>
-          <Text fontWeight={800} size="xl">
-            {value}
-          </Text>
-        </Skeleton>
-        <Text color="neutral.600">{subtitle}</Text>
-      </VStack>
-    </VStack>
-  );
-};
+import SummaryCard from '../../../Common/SummaryCard';
 
 const Summary = () => {
   const params = useParams();

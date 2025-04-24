@@ -1,5 +1,6 @@
 import {
   Box,
+  FlexProps,
   HStack,
   Skeleton,
   Stack,
@@ -19,11 +20,13 @@ interface ChartLegendProps {
   }[];
   containerStyle?: StackProps;
   textStyle?: TextProps;
+  boxStyle?: FlexProps;
 }
 
 const ChartLegend = ({
   chartLegendItems,
   containerStyle,
+  boxStyle,
   textStyle,
   isLoading,
 }: ChartLegendProps) => {
@@ -38,6 +41,7 @@ const ChartLegend = ({
             rounded="full"
             bgColor={item.color}
             mt="1px"
+            {...boxStyle}
           />
           <VStack alignItems="flex-start" spacing="4px" m={0} p={0}>
             <Text color="neutral.600" fontWeight={700} {...textStyle}>

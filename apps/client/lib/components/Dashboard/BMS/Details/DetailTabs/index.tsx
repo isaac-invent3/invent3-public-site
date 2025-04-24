@@ -10,6 +10,8 @@ import {
 import { useEffect, useState } from 'react';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import Overview from './Overview';
+import EnergyManagement from './EnergyManagement';
+import EnvironmentalControl from './EnvironmentalControl';
 
 const DetailTabs = () => {
   const [tabIndex, setTabIndex] = useState(0);
@@ -22,12 +24,12 @@ const DetailTabs = () => {
     {
       label: 'Energy Management',
       slug: 'energyManagement',
-      component: <></>,
+      component: <EnergyManagement />,
     },
     {
       label: 'Environmental Control',
       slug: 'environmentalControl',
-      component: <></>,
+      component: <EnvironmentalControl />,
     },
     {
       label: 'Occupancy Management',

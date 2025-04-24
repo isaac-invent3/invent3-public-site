@@ -15,7 +15,10 @@ import { useGetBMSEnergyConsumedByBMSCategoryQuery } from '~/lib/redux/services/
 import { useParams } from 'next/navigation';
 import _ from 'lodash';
 
-const ActivePower = () => {
+interface ActivePowerProps {
+  title?: string;
+}
+const ActivePower = ({ title }: ActivePowerProps) => {
   const params = useParams();
   const id = params?.id as unknown as number;
   const [total, setTotal] = useState(0);
@@ -44,7 +47,7 @@ const ActivePower = () => {
 
   return (
     <InfoCard
-      title="Active Power"
+      title={title ?? 'Active Power'}
       containerStyle={{
         minH: { base: '342px', lg: 'full' },
         justifyContent: 'space-between',
@@ -125,9 +128,14 @@ const ActivePower = () => {
             const width =
               (item.energyConsumed * 74) / (sortedData[0]?.energyConsumed ?? 1);
             return (
-              <SimpleGrid columns={3} spacing="11px" key={index}>
+              <SimpleGrid
+                columns={3}
+                spacing="11px"
+                key={index}
+                alignItems="center"
+              >
                 {/* <HStack width="100px" bgColor="red"> */}
-                <Text color="neutral.600" textAlign="right">
+                <Text color="neutral.600" textAlign="right" whiteSpace="nowrap">
                   {item.category}
                 </Text>
                 {/* </HStack> */}

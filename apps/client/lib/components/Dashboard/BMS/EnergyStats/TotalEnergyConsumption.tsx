@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import InfoCard from '../InfoCard';
-import { HStack, Skeleton, Stack, Text, VStack } from '@chakra-ui/react';
+import { Flex, HStack, Skeleton, Stack, Text, VStack } from '@chakra-ui/react';
 import { Option } from '@repo/interfaces';
 import { timeRangeOptions } from '~/lib/utils/constants';
 import { useGetBMSTotalEnergyConsumptionForAllFacilitiesQuery } from '~/lib/redux/services/dashboard/bms.services';
+import dynamic from 'next/dynamic';
+const GaugeComponent = dynamic(() => import('react-gauge-component'), {
+  ssr: false,
+});
 
 const TotalEnergyConsumption = () => {
   const [selectedTimeRange, setSelectedTimeRange] = useState<Option | null>(
@@ -32,6 +36,7 @@ const TotalEnergyConsumption = () => {
         width="full"
         direction={{ base: 'column', lg: 'row' }}
         mt={{ base: '16px', lg: '62px' }}
+        alignItems="flex-end"
       >
         <VStack
           width={{ base: 'full', lg: '50%' }}
@@ -77,6 +82,18 @@ const TotalEnergyConsumption = () => {
             </Text>
           </Text>
         </VStack>
+        <Flex>
+          <GaugeComponent
+            arc={{
+              gradient: true,
+              colorArray: ['#F500000D', '#F50000'],
+              subArcs: [],
+            }}
+            value={0}
+            maxValue={0}
+            pointer={{ type: 'arrow', elastic: true }}
+          />
+        </Flex>
       </Stack>
     </InfoCard>
   );

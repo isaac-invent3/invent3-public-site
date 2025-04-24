@@ -29,7 +29,7 @@ const SummaryInfoCard = (props: SummaryInfoCardProps) => {
           <Image src={icon} fill alt="icon" />
         </Flex>
       </HStack>
-      <VStack width="full" alignItems="flex-end">
+      <VStack width="full" height="full" justifyContent="space-between">
         <HStack
           width="full"
           justifyContent="space-between"

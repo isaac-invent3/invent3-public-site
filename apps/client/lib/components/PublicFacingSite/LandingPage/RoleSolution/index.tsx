@@ -22,7 +22,7 @@ const rolesSolutionItems = [
   },
 ];
 const RoleSolution = () => {
-  const [activeIndex, setActiveIndex] = useState<null | number>(null);
+  const [activeIndex, setActiveIndex] = useState<null | number>(0);
   return (
     <Flex justifyContent="center" width="full">
       <Flex
@@ -54,10 +54,22 @@ const RoleSolution = () => {
               activeIndex={activeIndex}
               setActiveIndex={setActiveIndex}
               showButton
+              defaultIndex={0}
+              allowToggle={false}
             />
           </VStack>
-          <Flex width="full" height="full" position="relative">
-            <Image src="/role-1.png" alt="title" fill />
+          <Flex
+            width="full"
+            position="relative"
+            sx={{ aspectRatio: '4 / 3' }}
+            alignSelf="stretch"
+          >
+            <Image
+              src="/role-1.png"
+              alt="title"
+              fill
+              style={{ objectFit: 'contain' }} // or 'cover' if you want it to crop
+            />
           </Flex>
         </SimpleGrid>
       </Flex>

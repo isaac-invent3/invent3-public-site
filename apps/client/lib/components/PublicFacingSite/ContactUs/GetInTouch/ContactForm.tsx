@@ -64,7 +64,7 @@ const CustomTextInputForm = ({
 const ContactForm = () => {
   const [createCategory, { isLoading }] = useCreateCategoryMutation({});
   const { handleSubmit } = useCustomMutation();
-  const [selectedType, setSelectedType] = useState(0);
+  const [selectedType, setSelectedType] = useState(1);
 
   const formik = useFormik({
     initialValues: {

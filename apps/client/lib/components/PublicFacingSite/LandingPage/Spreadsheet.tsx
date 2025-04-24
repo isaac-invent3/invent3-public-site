@@ -75,6 +75,7 @@ const Spreadsheet = () => {
                 color: 'primary.500',
               },
             }}
+            href="/contact-us"
           >
             Get a Free Demo
           </Button>

@@ -52,6 +52,7 @@ const KeyPoints = () => {
             display: { base: 'none', md: 'flex' },
             width: { base: 'full', md: '203px' },
           }}
+          href="/contact-us"
         >
           Request a Demo
         </Button>
@@ -61,6 +62,7 @@ const KeyPoints = () => {
           display: { base: 'flex', md: 'none' },
           width: 'full',
         }}
+        href="/contact-us"
       >
         Request a Demo
       </Button>

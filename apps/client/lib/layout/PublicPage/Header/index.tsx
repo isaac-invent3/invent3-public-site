@@ -68,6 +68,8 @@ const Header = () => {
               color="primary.500"
               display={{ base: 'none', lg: 'flex' }}
               width="177px"
+              as="a"
+              href="/contact-us"
             >
               Request a Demo
             </Button>

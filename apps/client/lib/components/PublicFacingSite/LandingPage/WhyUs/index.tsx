@@ -29,17 +29,17 @@ const reasons = [
   {
     title: 'To Maximize Productivity',
     subtitle:
-      'Gain a competitive edge by leveraging AI to forecast trends, prevent disruptions, and optimize asset performance.',
+      'Automate workflows, approvals, and maintenance schedules, ensuring your team focuses on high-impact tasks.',
   },
   {
     title: 'To Get Better Insights',
     subtitle:
-      'Gain a competitive edge by leveraging AI to forecast trends, prevent disruptions, and optimize asset performance.',
+      'Turn raw data into actionable intelligence. Unlock real-time analytics and reports that reveal inefficiencies, predict risks, and highlight opportunities.',
   },
   {
     title: 'To Improve Efficiency',
     subtitle:
-      'Gain a competitive edge by leveraging AI to forecast trends, prevent disruptions, and optimize asset performance.',
+      'Eliminate bottlenecks and streamline operations. Optimize asset utilization, maintenance scheduling, and compliance tracking in one centralized platform.',
   },
   {
     title: 'To Keep Connected',

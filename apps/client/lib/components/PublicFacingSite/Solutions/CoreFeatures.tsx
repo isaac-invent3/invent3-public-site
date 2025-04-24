@@ -123,6 +123,7 @@ const CoreFeatures = () => {
                 color: 'primary',
               },
             }}
+            href="/contact-us"
           >
             Get a Free Demo
           </Button>

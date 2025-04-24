@@ -145,6 +145,8 @@ const Hero = () => {
                 width={{ base: 'full', md: '175px' }}
                 _hover={{ opacity: 0.8 }}
                 _active={{ opacity: 0.8 }}
+                as="a"
+                href="/contact-us"
               >
                 Get a free Demo
               </Button>

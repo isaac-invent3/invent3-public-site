@@ -194,7 +194,7 @@ const Statistics = () => {
                     40%
                   </Heading>
                   <Text color="white" fontWeight={800}>
-                    System uptime
+                    Reduction in Downtime
                   </Text>
                 </VStack>
                 <Text
@@ -244,7 +244,7 @@ const Statistics = () => {
                     60%
                   </Heading>
                   <Text color="white" fontWeight={800}>
-                    System uptime
+                    Faster Issue Resolution
                   </Text>
                 </VStack>
                 <Text

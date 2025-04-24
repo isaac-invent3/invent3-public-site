@@ -2,6 +2,7 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import { BaseApiResponse } from '@repo/interfaces';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
+import { string } from 'yup';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -16,6 +17,8 @@ export const BMSApi = createApi({
       BaseApiResponse<{
         facilityId: number;
         occupancyRate: number;
+        currentOccupancy: number;
+        maxOccupancy: number;
         facilityName: string;
         address: string;
       }>,
@@ -110,6 +113,9 @@ export const BMSApi = createApi({
     getBMSOccupanyRate: builder.query<
       BaseApiResponse<{
         occupancyRatePercentage: number;
+        totalZones: number;
+        facilityName: string;
+        address: string;
       }>,
       { facilityId: number; buildingId?: number; floorId?: number }
     >({

@@ -15,11 +15,24 @@ interface AccordionFeatureProps {
   activeIndex: number | null;
   setActiveIndex: React.Dispatch<React.SetStateAction<number | null>>;
   showButton: boolean;
+  defaultIndex?: number;
+  allowToggle?: boolean;
 }
 const AccordionFeature = (props: AccordionFeatureProps) => {
-  const { items, activeIndex, setActiveIndex, showButton } = props;
+  const {
+    items,
+    activeIndex,
+    setActiveIndex,
+    showButton,
+    defaultIndex,
+    allowToggle,
+  } = props;
   return (
-    <Accordion allowToggle width="full">
+    <Accordion
+      allowToggle={allowToggle}
+      defaultIndex={defaultIndex}
+      width="full"
+    >
       {items.map((item, index) => (
         <AccordionItem
           key={index}
@@ -73,6 +86,7 @@ const AccordionFeature = (props: AccordionFeatureProps) => {
                       mt: { base: '44px', lg: '55px' },
                       width: { base: 'full', lg: '203px' },
                     }}
+                    href="/contact-us"
                   >
                     Request a Free Demo
                   </Button>

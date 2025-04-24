@@ -37,7 +37,7 @@ const featureItems = [
     title: 'Smart Workflow Automation',
     description:
       'Eliminate manual work and speed up asset approvals and maintenance requests. Streamline task assignments, approval flows, and vendor coordination to enhance operational efficiency.',
-    image: '/feature-1.png',
+    image: '/smart-workflow-automation.svg',
   },
   {
     tabIndex: 4,
@@ -45,7 +45,7 @@ const featureItems = [
     title: 'Seamless Third-Party Integrations',
     description:
       'Connect effortlessly with ERP, CRM, and financial tools. Sync data across your existing enterprise systems, reducing redundancy and improving accuracy.',
-    image: '/feature-1.png',
+    image: '/seamless-third-party-integrations.jpg',
   },
   {
     tabIndex: 5,
@@ -53,7 +53,7 @@ const featureItems = [
     title: 'Data-Driven Insights',
     description:
       'Make smarter decisions with detailed reports and analytics. Track asset utilization, maintenance costs, and performance trends to drive better business strategies.',
-    image: '/feature-1.png',
+    image: '/data-driven-insights.svg',
   },
 ];
 const Features = () => {

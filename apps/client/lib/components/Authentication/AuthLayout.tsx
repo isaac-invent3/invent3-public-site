@@ -79,9 +79,11 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
           zIndex={99}
           display={{ base: 'none', md: 'flex' }}
         >
-          <Flex width="225px" height="100vh" position="fixed" top="-30%">
-            <Image src="/logo-initials.svg" fill alt="logo-initial" />
-          </Flex>
+          <Link href="/">
+            <Flex width="225px" height="100vh" position="fixed" top="-30%">
+              <Image src="/logo-initials.svg" fill alt="logo-initial" />
+            </Flex>
+          </Link>
         </Flex>
         <Flex
           width="full"
@@ -93,15 +95,17 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
           direction={{ base: 'column', lg: 'row' }}
           gap={{ base: '27px', lg: 'none' }}
         >
-          <Flex
-            top={0}
-            position={{ base: 'absolute', lg: 'relative' }}
-            width={{ base: '86.27px', md: '122px' }}
-            height={{ base: '24px', md: '34px' }}
-            alignSelf="flex-start"
-          >
-            <Image src="/logo-white.svg" fill alt="Invent3 white logo" />
-          </Flex>
+          <Link href="/">
+            <Flex
+              top={0}
+              position={{ base: 'absolute', lg: 'relative' }}
+              width={{ base: '86.27px', md: '122px' }}
+              height={{ base: '24px', md: '34px' }}
+              alignSelf="flex-start"
+            >
+              <Image src="/logo-white.svg" fill alt="Invent3 white logo" />
+            </Flex>
+          </Link>
           {children}
         </Flex>
         {/* Footer Starts Here */}

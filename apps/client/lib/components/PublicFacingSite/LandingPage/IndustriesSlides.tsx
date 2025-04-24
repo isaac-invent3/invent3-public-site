@@ -1,15 +1,15 @@
-import { Flex, Text, Box } from '@chakra-ui/react';
+import { Flex, Text, Box, VStack } from '@chakra-ui/react';
 import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import gsap from 'gsap';
 
 const industries = [
-  'Transportation & Public Infrastructure',
-  'Corporate & Office Spaces',
-  'Retail & Warehousing',
-  'Industrial and Manufacturing',
-  'Banking and Finance',
-  'Healthcare & Medical Facilities',
+  ['Transportation', 'Public Infrastructure'],
+  ['Corporate', 'Office Spaces'],
+  ['Retail', 'Warehousing'],
+  ['Industrial', 'Manufacturing'],
+  ['Banking', 'Finance'],
+  ['Healthcare', 'Medical Facilities'],
 ];
 
 const MotionFlex = motion(Flex);
@@ -80,17 +80,24 @@ const IndustriesSlides = () => {
               <Box
                 key={index}
                 maxW={{ base: '120px', lg: '208px' }}
+                width="max-content"
                 flexShrink={0}
               >
-                <Text
-                  fontWeight={800}
-                  fontSize={{ base: '12px', lg: '20px' }}
-                  lineHeight="120%"
-                  color="neutral.600"
-                  whiteSpace="normal"
-                >
-                  {industry}
-                </Text>
+                <VStack spacing={0} alignItems="flex-start">
+                  {industry.map((item, index) => (
+                    <Text
+                      fontWeight={800}
+                      fontSize={{ base: '12px', lg: '20px' }}
+                      lineHeight="120%"
+                      color="neutral.600"
+                      whiteSpace="normal"
+                      key={index}
+                    >
+                      {item}
+                      {index == 0 && ' &'}
+                    </Text>
+                  ))}
+                </VStack>
               </Box>
             ))}
           </Flex>

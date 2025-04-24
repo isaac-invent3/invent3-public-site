@@ -40,13 +40,13 @@ const SummaryDetail = () => {
             <Text color="neutral.600" fontWeight={700}>
               Current Occupancy:{' '}
               <Text as="span" color="black" fontWeight={700}>
-                {highestOccupancyData?.data?.occupancyRate}
+                {highestOccupancyData?.data?.currentOccupancy ?? '-'}
               </Text>
             </Text>
             <Text color="neutral.600" fontWeight={700}>
               Max Occupancy:{' '}
               <Text as="span" color="black" fontWeight={700}>
-                {highestOccupancyData?.data?.occupancyRate}
+                {highestOccupancyData?.data?.maxOccupancy ?? '-'}
               </Text>
             </Text>
           </VStack>

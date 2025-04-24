@@ -79,6 +79,7 @@ const CTA = (props: CTAProps) => {
                   color: 'primary.500',
                   _hover: { bgColor: 'white', color: 'primary.500' },
                 }}
+                href="/contact-us"
               >
                 Request a free Demo
               </Button>

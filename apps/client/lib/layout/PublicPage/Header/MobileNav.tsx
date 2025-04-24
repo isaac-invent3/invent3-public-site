@@ -177,6 +177,8 @@ const MobileNav = () => {
                   lineHeight="16.63px"
                   color="white"
                   width="177px"
+                  as="a"
+                  href="/contact-us"
                 >
                   Request a Demo
                 </Button>

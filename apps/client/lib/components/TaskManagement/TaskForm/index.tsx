@@ -131,6 +131,7 @@ const TaskForm = (props: TaskFormProps) => {
             rounded="6px"
             minH="60vh"
             divider={<Divider borderColor="#BBBBBB" />}
+            overflow="hidden"
           >
             <SectionOne />
             <SectionTwo />

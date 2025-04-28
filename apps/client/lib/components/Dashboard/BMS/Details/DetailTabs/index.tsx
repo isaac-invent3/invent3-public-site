@@ -12,6 +12,9 @@ import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import Overview from './Overview';
 import EnergyManagement from './EnergyManagement';
 import EnvironmentalControl from './EnvironmentalControl';
+import OccupancyManagement from './OccupancyManagement';
+import PredictiveMaintenance from './PredictiveMaintenance';
+import FinancialInsight from './FinancialInsight';
 
 const DetailTabs = () => {
   const [tabIndex, setTabIndex] = useState(0);
@@ -34,17 +37,17 @@ const DetailTabs = () => {
     {
       label: 'Occupancy Management',
       slug: 'occupancyManagement',
-      component: <></>,
+      component: <OccupancyManagement />,
     },
     {
       label: 'Predictive Maintenance',
       slug: 'predictiveMaintenance',
-      component: <></>,
+      component: <PredictiveMaintenance />,
     },
     {
       label: 'Financial Insights',
       slug: 'financialInsights',
-      component: <></>,
+      component: <FinancialInsight />,
     },
     {
       label: 'Floor Plan',
@@ -90,7 +93,7 @@ const DetailTabs = () => {
               <VStack
                 rounded="6px"
                 bgColor="white"
-                minH="60vh"
+                minH="30vh"
                 mt="16px"
                 width="full"
               >

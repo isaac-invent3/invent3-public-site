@@ -58,11 +58,11 @@ const AssetSchedules = () => {
         header: 'Start Date and Time',
         enableSorting: false,
       }),
-      columnHelper.accessor('occurrences', {
-        cell: (info) => info.getValue() ?? 'N/A',
-        header: 'No of Occurence',
-        enableSorting: false,
-      }),
+      // columnHelper.accessor('occurrences', {
+      //   cell: (info) => info.getValue() ?? 'N/A',
+      //   header: 'No of Occurence',
+      //   enableSorting: false,
+      // }),
 
       columnHelper.accessor('activeTasksCount', {
         cell: (info) => info.getValue() ?? 'N/A',

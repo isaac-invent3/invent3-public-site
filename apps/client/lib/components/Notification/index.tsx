@@ -5,8 +5,8 @@ import {
   NotificationIcon,
   PreferenceIcon,
 } from '~/lib/components/CustomIcons/layout';
-// import useSignalR from '~/lib/hooks/useSignalR';
-// import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
+import useSignalR from '~/lib/hooks/useSignalR';
+import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
 import HeaderIcon from '~/lib/layout/ProtectedPage/Header/HeaderIcon';
 import { useMarkAllNotificationsAsReadMutation } from '~/lib/redux/services/notification.services';
 import NotificationPopover from './Display/NotificationPopover';
@@ -38,6 +38,17 @@ const NotificationComponents = () => {
       lastModifiedBy: session?.user.userId,
     });
   };
+
+  // SignalR Connection
+  const connectionState = useSignalR('notification-hub');
+
+  useSignalREventHandler({
+    eventName: 'ReceiveNotification',
+    connectionState,
+    callback: (notification) => {
+      console.log('Notification received:', notification);
+    },
+  });
 
   return (
     <>

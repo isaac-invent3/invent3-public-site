@@ -13,7 +13,7 @@ interface SummaryCardProps {
   subtitle: string;
   value: string | number;
   icon: string;
-  isLoading: boolean;
+  isLoading?: boolean;
   containerStyle?: StackProps;
 }
 const SummaryCard = (props: SummaryCardProps) => {

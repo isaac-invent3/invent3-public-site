@@ -12,6 +12,7 @@ interface InfoCardProps {
   children: React.ReactNode;
   headerContainerStyle?: StackProps;
   containerStyle?: StackProps;
+  options?: Option[];
 }
 
 const InfoCard = (props: InfoCardProps) => {
@@ -23,6 +24,7 @@ const InfoCard = (props: InfoCardProps) => {
     children,
     headerContainerStyle,
     containerStyle,
+    options,
   } = props;
   return (
     <VStack
@@ -47,7 +49,7 @@ const InfoCard = (props: InfoCardProps) => {
         </VStack>
         {setSelectedTimeRange && selectedTimeRange && (
           <DropDown
-            options={timeRangeOptions}
+            options={options ?? timeRangeOptions}
             label="Timeline"
             handleClick={(option) => setSelectedTimeRange(option)}
             selectedOptions={selectedTimeRange}

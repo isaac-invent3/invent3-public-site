@@ -1,15 +1,12 @@
-import { Flex, Heading, HStack, Image, Text, VStack } from '@chakra-ui/react';
+import { Flex, HStack, Image, Text } from '@chakra-ui/react';
 import React from 'react';
 import SectionInfo from '../Common/SectionInfo';
 
 const integrations = [
-  'CRM & Service Management',
-  'Financial & Accounting Software',
-  'IoT',
-  'Fleet & Logistics Management',
-  'ERP Systems',
-  'BMS',
-  'Cloud Storage & Security',
+  'ERP & Finance Systems',
+  'HR & Workforce Management',
+  'IoT & Smart Sensors',
+  'Communication & Collaboration',
 ];
 const OurIntegrations = () => {
   return (
@@ -18,10 +15,10 @@ const OurIntegrations = () => {
       width="full"
       bgColor="primary.500"
       position="relative"
-      mt={{ base: '107px', lg: '137px' }}
+      mt={{ base: '130px', lg: '120px' }}
     >
       <Image
-        src="/integration-bg.png"
+        src="/solution-integration.png"
         position="absolute"
         height={{ lg: 'full' }}
         right={0}
@@ -39,10 +36,8 @@ const OurIntegrations = () => {
       >
         <SectionInfo
           badgeText="Our Integrations"
-          heading={[['Seamlessly Connect'], 'with the Tools You Already Use']}
-          description=" Invent3Pro integrates effortlessly with your existing business
-            systems—ensuring a unified, data-driven workflow. No disruptions,
-            just seamless connectivity."
+          heading={['Works with the', ['tools'], 'You Already Use']}
+          description="When it comes to asset and facility management, Invent3Pro is ahead of the curve. Here’s why businesses trust us over traditional solutions:"
           containerStyles={{
             spacing: '24px',
           }}

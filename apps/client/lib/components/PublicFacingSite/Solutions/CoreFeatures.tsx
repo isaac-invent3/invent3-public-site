@@ -48,7 +48,7 @@ const CoreFeatures = () => {
         src="/solution-bg-desktop-1.svg"
         alt="solution-bg-desktop-1"
         position="absolute"
-        top={{ base: 10, lg: 20 }}
+        top={{ base: 10, lg: 40 }}
         right={{ base: -30, lg: 0 }}
         display={{ base: 'none', lg: 'flex' }}
       />
@@ -56,21 +56,12 @@ const CoreFeatures = () => {
         position="absolute"
         left={0}
         bottom={0}
-        top={0}
+        top={{ lg: 150 }}
         right={0}
         alignItems="center"
         display={{ base: 'none', lg: 'flex' }}
       >
         <Image src="/solution-bg-desktop-2.svg" alt="solution-bg-desktop-2" />
-      </Flex>
-      <Flex
-        position="absolute"
-        bottom={0}
-        justifyContent="center"
-        width="full"
-        display={{ base: 'none', lg: 'flex' }}
-      >
-        <Image src="/solution-bg-desktop-3.svg" alt="solution-bg-desktop-3" />
       </Flex>
       <Flex
         position="absolute"
@@ -130,7 +121,7 @@ const CoreFeatures = () => {
         </VStack>
 
         <SimpleGrid
-          columns={{ base: 1, lg: 2 }}
+          columns={{ base: 1, md: 2 }}
           rowGap={{ base: '56px', lg: '70px' }}
           columnGap={{ base: '32px', lg: '37px' }}
           width={{ base: '100%', lg: '58%' }}

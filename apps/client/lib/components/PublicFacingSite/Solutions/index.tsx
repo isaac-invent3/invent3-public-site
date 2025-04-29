@@ -3,12 +3,13 @@ import React from 'react';
 import { Flex } from '@chakra-ui/react';
 import HeroHeader from '../Common/HeroHeader';
 import CoreFeatures from './CoreFeatures';
-import DataSecurity from '../LandingPage/DataSecurity';
-import LandingPageSolutions from '../LandingPage/Solutions';
-import CTA from '../Common/CallToAction';
-import OurIntegrations from '../LandingPage/OurIntegrations';
-import About from '../LandingPage/About';
 import HowItWorks from './HowItWorks';
+import AIAutomation from './AIAutomation';
+import TheInvent3Advantage from './TheInvent3Advantage';
+import OurIntegrations from './OurIntegrations';
+import Industries from './Industries';
+import DataSecurity from './DataSecurity';
+import CTA from './CTA';
 
 const Solutions = () => {
   return (
@@ -24,10 +25,11 @@ const Solutions = () => {
       />
       <CoreFeatures />
       <HowItWorks />
-      <About image="/solution-about-image.png" animate={false} />
+      <AIAutomation />
+      <TheInvent3Advantage />
       <OurIntegrations />
-      <LandingPageSolutions animate={false} />
-      <DataSecurity customStyles={{ pt: { base: '107px', lg: '0px' } }} />
+      <Industries />
+      <DataSecurity />
       <CTA />
     </Flex>
   );

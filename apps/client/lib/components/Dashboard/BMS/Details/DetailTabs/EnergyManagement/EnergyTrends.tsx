@@ -3,8 +3,16 @@ import InfoCard from '../../../InfoCard';
 import { VStack } from '@chakra-ui/react';
 import LineChart from '~/lib/components/Dashboard/Common/Charts/LineChart';
 import ChartLegend from '~/lib/components/Dashboard/Common/Charts/ChartLegend';
+import { useParams } from 'next/navigation';
+import { useGetBMSEnergyTrendsQuery } from '~/lib/redux/services/dashboard/bms.services';
 
 const EnergyTrends = () => {
+  const params = useParams();
+  const id = params?.id as unknown as number;
+  const { data, isLoading } = useGetBMSEnergyTrendsQuery(
+    { facilityId: id },
+    { skip: !id }
+  );
   return (
     <InfoCard
       title="Energy Trends"
@@ -29,11 +37,12 @@ const EnergyTrends = () => {
           }}
         />
         <LineChart
-          labels={['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July']}
+          labels={data?.data?.map((item) => item.month) ?? []}
           datasets={[
             {
               label: 'Total Energy Consumption',
-              data: [10, 30, 40, 50, 10, 20, 50],
+              data:
+                data?.data?.map((item) => item.totalEnergyConsumption) ?? [],
               borderColor: '#17A1FA',
               pointRadius: 0,
               borderWidth: 2,
@@ -42,7 +51,7 @@ const EnergyTrends = () => {
             },
             {
               label: 'Peak Demand',
-              data: [15, 40, 20, 30, 20, 40, 10],
+              data: data?.data?.map((item) => item.peakDemand) ?? [],
               borderColor: '#EABC30',
               borderDash: [8, 4],
               pointRadius: 0,
@@ -51,7 +60,7 @@ const EnergyTrends = () => {
               borderWidth: 2,
             },
           ]}
-          isLoading={false}
+          isLoading={isLoading}
           showXGrid={false}
           showYGrid={false}
         />

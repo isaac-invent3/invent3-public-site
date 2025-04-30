@@ -58,6 +58,7 @@ const KeyFeatures = () => {
               activeIndex={activeIndex}
               setActiveIndex={setActiveIndex}
               showButton
+              allowToggle
             />
           </VStack>
           <Flex width="full" justifyContent="center">

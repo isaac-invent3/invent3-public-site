@@ -11,7 +11,7 @@ import Image from 'next/image';
 interface SummaryCardProps {
   title: string;
   subtitle: string;
-  value: string | number;
+  value: string | number | undefined;
   icon: string;
   isLoading?: boolean;
   containerStyle?: StackProps;
@@ -39,7 +39,7 @@ const SummaryCard = (props: SummaryCardProps) => {
       <VStack alignItems="flex-start" spacing="8px">
         <Skeleton isLoaded={!isLoading}>
           <Text fontWeight={800} size="xl">
-            {value}
+            {value ?? '-'}
           </Text>
         </Skeleton>
         <Text color="neutral.600">{subtitle}</Text>

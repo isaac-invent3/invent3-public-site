@@ -4,8 +4,16 @@ import { VStack } from '@chakra-ui/react';
 import LineChart from '~/lib/components/Dashboard/Common/Charts/LineChart';
 import ChartLegend from '~/lib/components/Dashboard/Common/Charts/ChartLegend';
 import { Option } from '@repo/interfaces';
+import { useParams } from 'next/navigation';
+import { useGetBMSConditionReadingsQuery } from '~/lib/redux/services/dashboard/bms.services';
 
 const ConditionMonitoringReadings = () => {
+  const params = useParams();
+  const id = params?.id as unknown as number;
+  const { data, isLoading } = useGetBMSConditionReadingsQuery(
+    { facilityId: id },
+    { skip: !id }
+  );
   const zones = [
     { label: 'Zone 1', value: 'zone1' },
     { label: 'Zone 2', value: 'zone2' },
@@ -42,11 +50,11 @@ const ConditionMonitoringReadings = () => {
           }}
         />
         <LineChart
-          labels={['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July']}
+          labels={data?.data?.map((item) => item.month) ?? []}
           datasets={[
             {
               label: 'Total Energy Consumption',
-              data: [10, 30, 40, 50, 10, 20, 50],
+              data: data?.data?.map((item) => item.good) ?? [],
               borderColor: '#07CC3B',
               pointRadius: 0,
               borderWidth: 2,
@@ -55,7 +63,7 @@ const ConditionMonitoringReadings = () => {
             },
             {
               label: 'Peak Demand',
-              data: [15, 40, 20, 30, 20, 40, 10],
+              data: data?.data?.map((item) => item.bad) ?? [],
               borderColor: '#EABC30',
               pointRadius: 0,
               fill: false,
@@ -64,7 +72,7 @@ const ConditionMonitoringReadings = () => {
             },
             {
               label: 'Max Demand',
-              data: [15, 30, 10, 24, 28, 50, 10],
+              data: data?.data?.map((item) => item.warning) ?? [],
               borderColor: '#F50000',
               pointRadius: 0,
               fill: false,
@@ -72,7 +80,7 @@ const ConditionMonitoringReadings = () => {
               borderWidth: 2,
             },
           ]}
-          isLoading={false}
+          isLoading={isLoading}
           showXGrid={false}
           showYGrid={true}
         />

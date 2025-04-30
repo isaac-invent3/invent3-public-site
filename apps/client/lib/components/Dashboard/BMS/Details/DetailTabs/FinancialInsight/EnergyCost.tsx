@@ -3,6 +3,8 @@ import InfoCard from '../../../InfoCard';
 import { VStack } from '@chakra-ui/react';
 import LineChart from '~/lib/components/Dashboard/Common/Charts/LineChart';
 import { Option } from '@repo/interfaces';
+import { useParams } from 'next/navigation';
+import { useGetBMSEnergyCostTrendQuery } from '~/lib/redux/services/dashboard/bms.services';
 
 const EnergyCost = () => {
   const zones = [
@@ -11,6 +13,12 @@ const EnergyCost = () => {
   ];
   const [selectedZone, setSelectedZone] = useState<Option | null>(
     zones[0] as Option
+  );
+  const params = useParams();
+  const id = params?.id as unknown as number;
+  const { data, isLoading } = useGetBMSEnergyCostTrendQuery(
+    { facilityId: id },
+    { skip: !id }
   );
 
   return (
@@ -26,11 +34,11 @@ const EnergyCost = () => {
     >
       <VStack alignItems="flex-start" spacing="16px" width="full">
         <LineChart
-          labels={['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July']}
+          labels={data?.data?.map((item) => item.month) ?? []}
           datasets={[
             {
               label: 'Energy Cost',
-              data: [10000, 30000, 40000, 5000, 10000, 20000, 50000],
+              data: data?.data?.map((item) => item.totalEnergyCost) ?? [],
               borderColor: '#0366EF',
               pointRadius: 2,
               borderWidth: 2,
@@ -40,7 +48,7 @@ const EnergyCost = () => {
               pointBorderColor: '#EABC30',
             },
           ]}
-          isLoading={false}
+          isLoading={isLoading}
           showXGrid={false}
           showYGrid={true}
         />

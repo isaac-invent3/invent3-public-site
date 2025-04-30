@@ -1,33 +1,42 @@
 import React from 'react';
 import InfoCard from '../../../InfoCard';
-import { Box, Flex, HStack, Text, VStack } from '@chakra-ui/react';
+import { Box, HStack, Text, VStack } from '@chakra-ui/react';
+import { useParams } from 'next/navigation';
+import { useGetBMSZoneControlQuery } from '~/lib/redux/services/dashboard/bms.services';
 
 const ZoneControl = () => {
+  const params = useParams();
+  const id = params?.id as unknown as number;
+  const { data, isLoading } = useGetBMSZoneControlQuery(
+    { facilityId: id },
+    { skip: !id }
+  );
+
   const content = [
     {
       title: 'Temperature Set Point',
       color: '#07CC3B',
-      value: '22oC',
+      value: `${data?.data?.temperatureSetPoint?.value ?? '-'}oC`,
     },
     {
       title: 'Humidity Set Point',
       color: '#F50000',
-      value: '45%RH',
+      value: `${data?.data?.humiditySetPoint?.value ?? '-'}${data?.data?.humiditySetPoint?.key ?? '-'}`,
     },
     {
       title: 'Lighting Level',
       color: '#BBBBBB',
-      value: '70%',
+      value: `${data?.data?.lightningLevel ?? '-'}%`,
     },
     {
       title: 'Energy Consumption',
       color: '#EABC30',
-      value: '1.2KWh',
+      value: `${data?.data?.energyConsumption?.value ?? '-'}${data?.data?.energyConsumption?.key ?? '-'}`,
     },
     {
       title: 'CO Levels',
       color: '#FF7A37',
-      value: '9PPM',
+      value: `${data?.data?.coLevels?.value ?? '-'}${data?.data?.coLevels?.key ?? '-'}`,
     },
   ];
 

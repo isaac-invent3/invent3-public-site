@@ -2,8 +2,17 @@ import React from 'react';
 import InfoCard from '../../../InfoCard';
 import { VStack } from '@chakra-ui/react';
 import LineChart from '~/lib/components/Dashboard/Common/Charts/LineChart';
+import { useParams } from 'next/navigation';
+import { useGetBMSOccupancyTrendQuery } from '~/lib/redux/services/dashboard/bms.services';
 
 const OccupancyTrend = () => {
+  const params = useParams();
+  const id = params?.id as unknown as number;
+  const { data, isLoading } = useGetBMSOccupancyTrendQuery(
+    { facilityId: id },
+    { skip: !id }
+  );
+
   return (
     <InfoCard
       title="Occupancy Trend"
@@ -15,11 +24,11 @@ const OccupancyTrend = () => {
     >
       <VStack alignItems="flex-start" spacing="16px" width="full">
         <LineChart
-          labels={['Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']}
+          labels={data?.data?.map((item) => item.month) ?? []}
           datasets={[
             {
               label: 'Occupancy Trend',
-              data: [10, 30, 40, 50, 10, 20, 50, 80],
+              data: data?.data?.map((item) => item.occupancy) ?? [],
               borderColor: '#0366EF',
               pointRadius: 0,
               borderWidth: 1,
@@ -27,7 +36,7 @@ const OccupancyTrend = () => {
               fill: false,
             },
           ]}
-          isLoading={false}
+          isLoading={isLoading}
           showXGrid={false}
           showYGrid={true}
         />

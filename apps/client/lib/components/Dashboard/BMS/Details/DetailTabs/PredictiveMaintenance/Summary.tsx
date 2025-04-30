@@ -1,31 +1,39 @@
 import { SimpleGrid } from '@chakra-ui/react';
-import { icon } from 'leaflet';
 import React from 'react';
 import SummaryCard from '../../../Common/SummaryCard';
+import { useParams } from 'next/navigation';
+import { useGetBMSPredictiveMaintenanceOverviewQuery } from '~/lib/redux/services/dashboard/bms.services';
 
 const Summary = () => {
+  const params = useParams();
+  const id = params?.id as unknown as number;
+  const { data, isLoading } = useGetBMSPredictiveMaintenanceOverviewQuery(
+    { facilityId: id },
+    { skip: !id }
+  );
+
   const summaryData = [
     {
       title: 'Total Maintenance',
-      value: '300',
+      value: data?.data?.totalMaintenance?.toLocaleString() ?? '-',
       subtitle: 'All zones',
       icon: '/adjust.png',
     },
     {
       title: 'Scheduled Maintenance',
-      value: '5',
+      value: data?.data?.scheduledMaintenance?.toLocaleString() ?? '-',
       subtitle: 'This week',
       icon: '/adjust.png',
     },
     {
       title: 'Peak Demand',
-      value: '100MW',
+      value: `${data?.data?.peakDemand?.toLocaleString() ?? '-'}MW`,
       subtitle: 'All zones',
       icon: '/adjust.png',
     },
     {
       title: 'Real Time Power Usage',
-      value: '80kW',
+      value: `${data?.data?.realTimePowerUsage?.toLocaleString() ?? '-'}kW`,
       subtitle: 'All zones',
       icon: '/adjust.png',
     },
@@ -45,6 +53,7 @@ const Summary = () => {
           {...item}
           key={index}
           containerStyle={{ bgColor: 'white' }}
+          isLoading={isLoading}
         />
       ))}
     </SimpleGrid>

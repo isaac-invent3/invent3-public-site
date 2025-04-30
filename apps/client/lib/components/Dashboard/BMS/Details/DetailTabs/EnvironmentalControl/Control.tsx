@@ -1,8 +1,16 @@
 import React from 'react';
 import InfoCard from '../../../InfoCard';
-import { Flex, HStack, Text, VStack } from '@chakra-ui/react';
+import { HStack, Text, VStack } from '@chakra-ui/react';
+import { useParams } from 'next/navigation';
+import { useGetBMSHvacSystemStatusQuery } from '~/lib/redux/services/dashboard/bms.services';
 
 const Control = () => {
+  const params = useParams();
+  const id = params?.id as unknown as number;
+  const { data, isLoading } = useGetBMSHvacSystemStatusQuery(
+    { facilityId: id },
+    { skip: !id }
+  );
   return (
     <InfoCard
       title="Envrionmental Control"
@@ -19,7 +27,7 @@ const Control = () => {
             lineHeight="100%"
             fontWeight={800}
           >
-            50%
+            {data?.data?.operationalEfficency ?? '-'}%
           </Text>
           <Text fontWeight={800} fontSize="16px" lineHeight="100%">
             CO₂ Levels
@@ -31,11 +39,13 @@ const Control = () => {
               Humidity
             </Text>
             <Text fontWeight={800} fontSize="24px" lineHeight="100%">
-              45%
+              {data?.data?.humiditySetPoint?.value ?? '-'}
+              {data?.data?.humiditySetPoint?.key ?? '-'}
             </Text>
           </VStack>
           <Text fontWeight={800} fontSize="16px" lineHeight="100%">
-            426ppm
+            {data?.data?.energyConsumption?.value ?? '-'}
+            {data?.data?.energyConsumption?.key ?? '-'}
           </Text>
         </VStack>
       </HStack>

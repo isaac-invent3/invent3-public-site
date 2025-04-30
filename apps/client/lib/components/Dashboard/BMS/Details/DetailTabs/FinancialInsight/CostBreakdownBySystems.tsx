@@ -5,6 +5,8 @@ import LineChart from '~/lib/components/Dashboard/Common/Charts/LineChart';
 import { Option } from '@repo/interfaces';
 import DoughtnutChart from '~/lib/components/Dashboard/Common/Charts/DoughtnutChart';
 import ChartLegend from '~/lib/components/Dashboard/Common/Charts/ChartLegend';
+import { useParams } from 'next/navigation';
+import { useGetBMSCostBreakdownBySystemsQuery } from '~/lib/redux/services/dashboard/bms.services';
 
 const CostBreakdownBySystems = () => {
   const zones = [
@@ -14,42 +16,48 @@ const CostBreakdownBySystems = () => {
   const [selectedZone, setSelectedZone] = useState<Option | null>(
     zones[0] as Option
   );
+  const params = useParams();
+  const id = params?.id as unknown as number;
+  const { data, isLoading } = useGetBMSCostBreakdownBySystemsQuery(
+    { facilityId: id },
+    { skip: !id }
+  );
 
   const chartLegendItems = [
     {
       label: 'HVAC',
       color: '#4FBAFF',
-      value: 20,
+      value: data?.data?.hvac,
     },
     {
       label: 'Lighting',
       color: '#0366EF',
-      value: 12,
+      value: data?.data?.lighting,
     },
     {
       label: 'Printer',
       color: '#FF7A37',
-      value: 8,
+      value: data?.data?.printers,
     },
     {
       label: 'Pumps',
       color: '#EABC30',
-      value: 10,
+      value: data?.data?.pumps,
     },
     {
       label: 'Office Equipment',
       color: '#07CC3B',
-      value: 13,
+      value: data?.data?.officeEquipments,
     },
     {
       label: 'Elevators',
       color: '#392DCA',
-      value: 9,
+      value: data?.data?.elevators,
     },
     {
       label: 'Doors',
       color: '#4D55BB',
-      value: 30,
+      value: data?.data?.doors,
     },
   ];
 

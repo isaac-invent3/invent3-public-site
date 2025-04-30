@@ -1,30 +1,38 @@
 import React from 'react';
-import InfoCard from '../../../InfoCard';
 import { SimpleGrid } from '@chakra-ui/react';
 import SummaryCard from '../../../Common/SummaryCard';
+import { useParams } from 'next/navigation';
+import { useGetBMSEnvironmentalControlOverviewQuery } from '~/lib/redux/services/dashboard/bms.services';
 
 const Summary = () => {
+  const params = useParams();
+  const id = params?.id as unknown as number;
+  const { data, isLoading } = useGetBMSEnvironmentalControlOverviewQuery(
+    { facilityId: id },
+    { skip: !id }
+  );
+
   const content = [
     {
       title: 'Current Temperature',
       subtitle: 'All zones',
-      value: '98oC',
+      value: data?.data?.currentTemperature ?? '-',
       icon: '/adjust.png',
-      isLoading: false,
+      isLoading: isLoading,
     },
     {
       title: 'Humidity',
       subtitle: 'All zones',
-      value: '80%RH',
+      value: `${data?.data?.airQuality.value ?? '-'}${data?.data?.airQuality.key ?? '-'}`,
       icon: '/adjust.png',
-      isLoading: false,
+      isLoading: isLoading,
     },
     {
       title: 'COs Level',
       subtitle: 'All zones',
-      value: '35PPM',
+      value: `${data?.data?.coLevel.value ?? '-'}${data?.data?.coLevel.key ?? '-'}`,
       icon: '/adjust.png',
-      isLoading: false,
+      isLoading: isLoading,
     },
   ];
   return (

@@ -2,7 +2,37 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import { BaseApiResponse } from '@repo/interfaces';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import { string } from 'yup';
+import {
+  AllowedCapacity,
+  AssetHealthStatus,
+  AverageMaintenanceTime,
+  ConditionReadings,
+  CostBreakdownBySystems,
+  DensityMetrics,
+  EnergyConsumption,
+  EnergyCostTrend,
+  EnergyTrend,
+  EnvironmentalControlOverview,
+  EnvironmentControlSummary,
+  FacilityDashboardSummary,
+  FinancialInsightsOverview,
+  HighestCostFacility,
+  HighestEnergyConsumptionByFacility,
+  HighestNonCompliantFacility,
+  HighestOccupancyRate,
+  HighestSystemFailures,
+  HvacOperationalEfficiency,
+  HvacSystemStatus,
+  MaintenancePriorityList,
+  MostEnergyEfficientFacility,
+  OccupancyManagement,
+  OccupancyTrend,
+  OccupanyRate,
+  PredictiveMaintenanceOverview,
+  SystemStatus,
+  TotalEnergyConsumptionForAllFacilities,
+  ZoneControl,
+} from '~/lib/interfaces/dashboard/bms.interfaces';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -14,14 +44,7 @@ export const BMSApi = createApi({
   tagTypes: [],
   endpoints: (builder) => ({
     getBMSHighestOccupancyRate: builder.query<
-      BaseApiResponse<{
-        facilityId: number;
-        occupancyRate: number;
-        currentOccupancy: number;
-        maxOccupancy: number;
-        facilityName: string;
-        address: string;
-      }>,
+      BaseApiResponse<HighestOccupancyRate>,
       void
     >({
       query: () => ({
@@ -31,13 +54,7 @@ export const BMSApi = createApi({
       }),
     }),
     getBMSFacilityWithHighestSystemFailures: builder.query<
-      BaseApiResponse<{
-        facilityId: number;
-        facilityName: string;
-        address: string;
-        CriticalFailureCount: number;
-        WarningAlerts: number;
-      }>,
+      BaseApiResponse<HighestSystemFailures>,
       void
     >({
       query: () => ({
@@ -47,11 +64,7 @@ export const BMSApi = createApi({
       }),
     }),
     getBMSHighestNonCompliantFacility: builder.query<
-      BaseApiResponse<{
-        nonCompliances: number;
-        facility: string;
-        address: string;
-      }>,
+      BaseApiResponse<HighestNonCompliantFacility>,
       void
     >({
       query: () => ({
@@ -61,12 +74,7 @@ export const BMSApi = createApi({
       }),
     }),
     getBMSHighestCostFacility: builder.query<
-      BaseApiResponse<{
-        energyCost: number;
-        waterCost: number;
-        facility: string;
-        address: string;
-      }>,
+      BaseApiResponse<HighestCostFacility>,
       void
     >({
       query: () => ({
@@ -76,10 +84,7 @@ export const BMSApi = createApi({
       }),
     }),
     getBMSTotalEnergyConsumptionForAllFacilities: builder.query<
-      BaseApiResponse<{
-        totalEnergyConsumption: number;
-        targetEnergyConsumption: number;
-      }>,
+      BaseApiResponse<TotalEnergyConsumptionForAllFacilities>,
       { monthId?: number }
     >({
       query: (data) => ({
@@ -92,13 +97,7 @@ export const BMSApi = createApi({
       }),
     }),
     getBMSHighestEnergyConsumptionByFacility: builder.query<
-      BaseApiResponse<
-        {
-          totalEnergyConsumption: number;
-          facility: string;
-          address: string;
-        }[]
-      >,
+      BaseApiResponse<HighestEnergyConsumptionByFacility[]>,
       { monthId?: number }
     >({
       query: (data) => ({
@@ -111,12 +110,7 @@ export const BMSApi = createApi({
       }),
     }),
     getBMSOccupanyRate: builder.query<
-      BaseApiResponse<{
-        occupancyRatePercentage: number;
-        totalZones: number;
-        facilityName: string;
-        address: string;
-      }>,
+      BaseApiResponse<OccupanyRate>,
       { facilityId: number; buildingId?: number; floorId?: number }
     >({
       query: ({ facilityId, ...data }) => ({
@@ -129,11 +123,7 @@ export const BMSApi = createApi({
       }),
     }),
     getBMSAverageMaintenanceTime: builder.query<
-      BaseApiResponse<{
-        averageMaintenanceTime: number;
-        unit: string;
-        totalZones: number;
-      }>,
+      BaseApiResponse<AverageMaintenanceTime>,
       { facilityId: number; buildingId?: number; floorId?: number }
     >({
       query: ({ facilityId, ...data }) => ({
@@ -212,12 +202,7 @@ export const BMSApi = createApi({
       }),
     }),
     getBMSFacilityDashboardSummary: builder.query<
-      BaseApiResponse<{
-        energyConsumption: number;
-        occupancyRatePercentage: number;
-        openIssues: number;
-        upcomingMaintenance: number;
-      }>,
+      BaseApiResponse<FacilityDashboardSummary>,
       { facilityId: number }
     >({
       query: ({ facilityId }) => ({
@@ -227,13 +212,7 @@ export const BMSApi = createApi({
       }),
     }),
     getBMSHvacOperationalEfficiency: builder.query<
-      BaseApiResponse<{
-        operationalEfficiency: number;
-        averageTemperature: number;
-        temperatureUnit: string;
-        humidityLevels: number;
-        energyConsumptionForMonth: number;
-      }>,
+      BaseApiResponse<HvacOperationalEfficiency>,
       { facilityId: number }
     >({
       query: ({ facilityId }) => ({
@@ -243,16 +222,216 @@ export const BMSApi = createApi({
       }),
     }),
     GetBMSMostEnergyEfficientFacility: builder.query<
-      BaseApiResponse<{
-        facilityName: string;
-        address: string;
-        rating: string;
-      }>,
+      BaseApiResponse<MostEnergyEfficientFacility>,
       { datePeriod?: number }
     >({
       query: (data) => ({
         url: generateQueryStr(
           `/Invent3Pro/GetBMSMostEnergyEfficientFacility?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getBMSEnergyConsumption: builder.query<
+      BaseApiResponse<EnergyConsumption>,
+      { facilityId: number }
+    >({
+      query: ({ facilityId }) => ({
+        url: `/Invent3Pro/GetBMSEnergyConsumption/${facilityId}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getBMSEnergyTrends: builder.query<
+      BaseApiResponse<EnergyTrend[]>,
+      { facilityId: number; room?: number }
+    >({
+      query: ({ facilityId, ...data }) => ({
+        url: generateQueryStr(
+          `/Invent3Pro/GetBMSEnergyTrends/${facilityId}`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getBMSEnvironmentalControlOverview: builder.query<
+      BaseApiResponse<EnvironmentalControlOverview>,
+      { facilityId: number }
+    >({
+      query: ({ facilityId }) => ({
+        url: `/Invent3Pro/GetBMSEnvironmentalControlOverview/${facilityId}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getBMSSystemStatus: builder.query<
+      BaseApiResponse<SystemStatus>,
+      { facilityId: number }
+    >({
+      query: ({ facilityId }) => ({
+        url: `/Invent3Pro/GetBMSSystemStatus/${facilityId}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getBMSZoneControl: builder.query<
+      BaseApiResponse<ZoneControl>,
+      { facilityId: number; RoomId?: number }
+    >({
+      query: ({ facilityId, ...data }) => ({
+        url: generateQueryStr(
+          `/Invent3Pro/GetBMSZoneControl/${facilityId}`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getBMSHvacSystemStatus: builder.query<
+      BaseApiResponse<HvacSystemStatus>,
+      { facilityId: number }
+    >({
+      query: ({ facilityId }) => ({
+        url: `/Invent3Pro/GetBMSHvacSystemStatus/${facilityId}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getBMSEnvironmentControlSummary: builder.query<
+      BaseApiResponse<EnvironmentControlSummary>,
+      { facilityId: number; RoomId?: number }
+    >({
+      query: ({ facilityId, ...data }) => ({
+        url: generateQueryStr(
+          `/Invent3Pro/GetBMSEnvironmentControlSummary/${facilityId}`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getBMSOccupancyManagement: builder.query<
+      BaseApiResponse<OccupancyManagement>,
+      { facilityId: number }
+    >({
+      query: ({ facilityId }) => ({
+        url: `/Invent3Pro/GetBMSOccupancyMgt/${facilityId}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getBMSOccupancyTrend: builder.query<
+      BaseApiResponse<OccupancyTrend[]>,
+      { facilityId: number }
+    >({
+      query: ({ facilityId }) => ({
+        url: `/Invent3Pro/GetBMSOccupancyTrend/${facilityId}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getBMSAllowedCapacity: builder.query<
+      BaseApiResponse<AllowedCapacity>,
+      { facilityId: number }
+    >({
+      query: ({ facilityId }) => ({
+        url: `/Invent3Pro/GetBMSAllowedCapacity/${facilityId}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getBMSDensityMetrics: builder.query<
+      BaseApiResponse<DensityMetrics>,
+      { facilityId: number }
+    >({
+      query: ({ facilityId }) => ({
+        url: `/Invent3Pro/GetBMSDensityMetrics/${facilityId}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getBMSPredictiveMaintenanceOverview: builder.query<
+      BaseApiResponse<PredictiveMaintenanceOverview>,
+      { facilityId: number }
+    >({
+      query: ({ facilityId }) => ({
+        url: `/Invent3Pro/GetBMSPredictiveMaintenanceOverview/${facilityId}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getBMSAssetHealthStatus: builder.query<
+      BaseApiResponse<AssetHealthStatus>,
+      { facilityId: number; RoomId?: number }
+    >({
+      query: ({ facilityId, ...data }) => ({
+        url: generateQueryStr(
+          `/Invent3Pro/GetBMSAssetHealthStatus/${facilityId}`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getBMSConditionReadings: builder.query<
+      BaseApiResponse<ConditionReadings[]>,
+      { facilityId: number; Room?: number }
+    >({
+      query: ({ facilityId, ...data }) => ({
+        url: generateQueryStr(
+          `/Invent3Pro/GetBMSConditionReadings/${facilityId}`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getBMSFinancialInsightsOverview: builder.query<
+      BaseApiResponse<FinancialInsightsOverview>,
+      { facilityId: number }
+    >({
+      query: ({ facilityId }) => ({
+        url: `/Invent3Pro/GetBMSFinancialInsightsOverview/${facilityId}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getBMSCostBreakdownBySystems: builder.query<
+      BaseApiResponse<CostBreakdownBySystems>,
+      { facilityId: number; RoomId?: number }
+    >({
+      query: ({ facilityId, ...data }) => ({
+        url: generateQueryStr(
+          `/Invent3Pro/GetBMSCostBreakdownBySystems/${facilityId}`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getBMSMaintenancePriorityList: builder.query<
+      BaseApiResponse<MaintenancePriorityList[]>,
+      { facilityId: number; datePeriod?: number }
+    >({
+      query: ({ facilityId, ...data }) => ({
+        url: generateQueryStr(
+          `/Invent3Pro/GetBMSMaintenancePriorityList${facilityId}`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getBMSEnergyCostTrend: builder.query<
+      BaseApiResponse<EnergyCostTrend[]>,
+      { facilityId: number; RoomId?: number }
+    >({
+      query: ({ facilityId, ...data }) => ({
+        url: generateQueryStr(
+          `/Invent3Pro/GetBMSEnergyCostTrend/${facilityId}`,
           data
         ),
         method: 'GET',
@@ -278,4 +457,22 @@ export const {
   useGetBMSFacilityDashboardSummaryQuery,
   useGetBMSHvacOperationalEfficiencyQuery,
   useGetBMSMostEnergyEfficientFacilityQuery,
+  useGetBMSEnergyConsumptionQuery,
+  useGetBMSEnergyTrendsQuery,
+  useGetBMSEnvironmentalControlOverviewQuery,
+  useGetBMSHvacSystemStatusQuery,
+  useGetBMSSystemStatusQuery,
+  useGetBMSZoneControlQuery,
+  useGetBMSEnvironmentControlSummaryQuery,
+  useGetBMSOccupancyManagementQuery,
+  useGetBMSOccupancyTrendQuery,
+  useGetBMSAllowedCapacityQuery,
+  useGetBMSDensityMetricsQuery,
+  useGetBMSPredictiveMaintenanceOverviewQuery,
+  useGetBMSAssetHealthStatusQuery,
+  useGetBMSConditionReadingsQuery,
+  useGetBMSCostBreakdownBySystemsQuery,
+  useGetBMSFinancialInsightsOverviewQuery,
+  useGetBMSMaintenancePriorityListQuery,
+  useGetBMSEnergyCostTrendQuery,
 } = BMSApi;

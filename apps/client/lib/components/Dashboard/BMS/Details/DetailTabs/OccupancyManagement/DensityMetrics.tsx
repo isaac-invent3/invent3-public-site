@@ -1,9 +1,16 @@
 import React from 'react';
 import InfoCard from '../../../InfoCard';
 import { Box, Flex, Text, VStack } from '@chakra-ui/react';
+import { useParams } from 'next/navigation';
+import { useGetBMSDensityMetricsQuery } from '~/lib/redux/services/dashboard/bms.services';
 
 const DensityMetrics = () => {
-  const progress = 75; // Example progress value
+  const params = useParams();
+  const id = params?.id as unknown as number;
+  const { data, isLoading } = useGetBMSDensityMetricsQuery(
+    { facilityId: id },
+    { skip: !id }
+  );
   return (
     <InfoCard
       title="Density Metrics"
@@ -37,8 +44,8 @@ const DensityMetrics = () => {
           position="absolute"
           // bg={`conic-gradient(rgba(23, 161, 250, 0.5) ${progress}%, #E0E0E0 ${progress}%)`}
           bg={`conic-gradient(
-              #033376 ${progress}%,
-              #E0E0E0 ${progress}%
+              #033376 ${data?.data?.metric?.value ?? 0}%,
+              #E0E0E0 ${data?.data?.metric?.value ?? 0}%
             )`}
         />
 
@@ -54,7 +61,7 @@ const DensityMetrics = () => {
         >
           <VStack spacing="2px">
             <Text fontWeight={600} fontSize="24px" lineHeight="100%">
-              22.5
+              {data?.data?.metric?.value ?? '-'}
             </Text>
             <Text color="neutral.600">g/cm</Text>
           </VStack>

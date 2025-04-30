@@ -1,13 +1,20 @@
 import React, { useMemo } from 'react';
 import InfoCard from '../../../InfoCard';
-import { Flex } from '@chakra-ui/react';
 import { createColumnHelper } from '@tanstack/react-table';
-import { Asset } from '~/lib/interfaces/asset/general.interface';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import { DataTable } from '@repo/ui/components';
+import { MaintenancePriorityList } from '~/lib/interfaces/dashboard/bms.interfaces';
+import { useGetBMSMaintenancePriorityListQuery } from '~/lib/redux/services/dashboard/bms.services';
+import { useParams } from 'next/navigation';
 
-const MaintenancePriorityList = () => {
-  const columnHelper = createColumnHelper<Asset>();
+const MaintenancePriority = () => {
+  const params = useParams();
+  const id = params?.id as unknown as number;
+  const { data, isLoading } = useGetBMSMaintenancePriorityListQuery(
+    { facilityId: id },
+    { skip: !id }
+  );
+  const columnHelper = createColumnHelper<MaintenancePriorityList>();
   const columns = useMemo(() => {
     const baseColumns = [
       columnHelper.accessor('assetId', {
@@ -15,18 +22,18 @@ const MaintenancePriorityList = () => {
         header: 'Asset ID',
         enableSorting: false,
       }),
-      columnHelper.accessor('assetName', {
+      columnHelper.accessor('asset', {
         cell: (info) => info.getValue() ?? 'N/A',
         header: 'Asset',
         enableSorting: false,
       }),
-      columnHelper.accessor('assetCategory', {
+      columnHelper.accessor('zone', {
         cell: (info) => info.getValue() ?? 'N/A',
         header: 'Zone',
         enableSorting: false,
       }),
 
-      columnHelper.accessor('currentStatus', {
+      columnHelper.accessor('status', {
         cell: (info) => {
           return (
             <GenericStatusBox
@@ -40,7 +47,7 @@ const MaintenancePriorityList = () => {
       }),
     ];
     return baseColumns;
-  }, []);
+  }, [data]);
   return (
     <InfoCard
       title="Maintenance Priority List"
@@ -51,9 +58,9 @@ const MaintenancePriorityList = () => {
     >
       <DataTable
         columns={columns}
-        data={[]}
+        data={data?.data ?? []}
         emptyLines={3}
-        isLoading={false}
+        isLoading={isLoading}
         totalPages={10}
         showFooter={false}
         maxTdWidth="250px"
@@ -74,4 +81,4 @@ const MaintenancePriorityList = () => {
   );
 };
 
-export default MaintenancePriorityList;
+export default MaintenancePriority;

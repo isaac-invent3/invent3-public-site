@@ -1,27 +1,34 @@
 import React, { useState } from 'react';
 import InfoCard from '../../../InfoCard';
 import { Stack, Text, VStack } from '@chakra-ui/react';
-import LineChart from '~/lib/components/Dashboard/Common/Charts/LineChart';
 import { Option } from '@repo/interfaces';
 import CircularProgress from '../../../Common/CircularProgress';
+import { useParams } from 'next/navigation';
+import { useGetBMSAssetHealthStatusQuery } from '~/lib/redux/services/dashboard/bms.services';
 
 const AssetHealthStatus = () => {
+  const params = useParams();
+  const id = params?.id as unknown as number;
+  const { data, isLoading } = useGetBMSAssetHealthStatusQuery(
+    { facilityId: id },
+    { skip: !id }
+  );
   const [selectedZone, setSelectedZone] = useState<Option | null>(null);
   const content = [
     {
       title: 'Healthy',
       color: '#0A9086',
-      percentage: 60,
+      percentage: data?.data?.healthy ?? 0,
     },
     {
       title: 'Warning',
       color: '#FD941C',
-      percentage: 20,
+      percentage: data?.data?.warning ?? 0,
     },
     {
       title: 'Critical',
       color: '#D12E23',
-      percentage: 10,
+      percentage: data?.data?.critical ?? 0,
     },
   ];
   return (

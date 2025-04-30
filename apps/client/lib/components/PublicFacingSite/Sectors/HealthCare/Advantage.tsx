@@ -3,24 +3,24 @@ import TheAdvantage from '../Common/TheAdvantage';
 
 const advantageInfo = [
   {
-    title: 'Compliance Confidence',
-    description:
-      'Optimize asset and facility management with data-driven insights.',
+    title: 'Uninterrupted Patient Care',
+    description: 'Proactive maintenance prevents critical equipment failures.',
     image: '/banking-advantage-1.png',
   },
   {
-    title: 'Uninterrupted Patient Care',
-    description: 'Reduce operational costs and extend asset lifespan.',
+    title: 'Compliance Confidence',
+    description: 'Automated documentation for audits and inspections.',
     image: '/banking-advantage-2.png',
   },
   {
     title: 'Operational Cost Reduction',
-    description: 'Eliminate downtime and enhance banking efficiency.',
+    description: 'Smarter resource allocation reduces financial strain.',
     image: '/banking-advantage-3.png',
   },
   {
     title: 'Seamless System Integration',
-    description: 'Automated documentation for audits and inspections.',
+    description:
+      'Works with existing hospital management and procurement systems.',
     image: '/banking-advantage-4.png',
   },
 ];

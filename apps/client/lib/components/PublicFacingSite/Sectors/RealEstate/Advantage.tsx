@@ -4,8 +4,7 @@ import TheAdvantage from '../Common/TheAdvantage';
 const advantageInfo = [
   {
     title: 'Reduced Downtime',
-    description:
-      'Optimize asset and facility management with data-driven insights.',
+    description: 'Predict and prevent maintenance issues before they arise.',
     image: '/banking-advantage-1.png',
   },
   {
@@ -15,13 +14,12 @@ const advantageInfo = [
   },
   {
     title: 'Lower Operational Costs',
-    description: 'Eliminate downtime and enhance banking efficiency.',
+    description: 'Improve energy efficiency and reduce wastage.',
     image: '/banking-advantage-3.png',
   },
   {
     title: 'Enhanced Tenant Satisfaction',
-    description:
-      'Gain real-time analytics to drive smarter financial operations.',
+    description: 'Streamlined issue resolution and improved service delivery.',
     image: '/banking-advantage-4.png',
   },
 ];

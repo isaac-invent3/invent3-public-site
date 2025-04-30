@@ -4,24 +4,23 @@ import TheAdvantage from '../Common/TheAdvantage';
 const advantageInfo = [
   {
     title: 'Improved Public Service Delivery',
-    description:
-      'Optimize asset and facility management with data-driven insights.',
+    description: 'Reduce downtime and ensure seamless transportation services.',
     image: '/banking-advantage-1.png',
   },
   {
     title: 'Proactive Maintenance',
-    description: 'Reduce operational costs and extend asset lifespan.',
+    description: 'AI-driven predictions prevent failures before they happen.',
     image: '/banking-advantage-2.png',
   },
   {
     title: 'Cost-Effective Operations',
-    description: 'Eliminate downtime and enhance banking efficiency.',
+    description: 'Maximize budget efficiency with data-driven decision-making.',
     image: '/banking-advantage-3.png',
   },
   {
     title: 'Seamless Integrations',
     description:
-      'Gain real-time analytics to drive smarter financial operations.',
+      'Connects with existing transport and infrastructure management systems.',
     image: '/banking-advantage-4.png',
   },
 ];

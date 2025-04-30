@@ -4,8 +4,7 @@ import TheAdvantage from '../Common/TheAdvantage';
 const advantageInfo = [
   {
     title: 'Reduced Inventory Errors',
-    description:
-      'Optimize asset and facility management with data-driven insights.',
+    description: 'AI-driven analytics ensure accurate stock levels.',
     image: '/banking-advantage-1.png',
   },
   {
@@ -15,13 +14,12 @@ const advantageInfo = [
   },
   {
     title: 'Loss Prevention Measures',
-    description: 'Eliminate downtime and enhance banking efficiency.',
+    description: 'Track asset movement and prevent unauthorized access.',
     image: '/banking-advantage-3.png',
   },
   {
     title: 'Optimized Storage & Logistics',
-    description:
-      'Gain real-time analytics to drive smarter financial operations.',
+    description: 'Efficiently manage space, shipments, and stock rotation.',
     image: '/banking-advantage-4.png',
   },
 ];

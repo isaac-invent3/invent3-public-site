@@ -38,11 +38,11 @@ const Footer = () => {
           alignItems="flex-start"
           gap="24px"
         >
-          <Flex width={{ base: 'full', lg: '75%' }}>
+          <Flex width={{ base: 'full', lg: '55%' }}>
             <SectionOne />
           </Flex>
           <Flex
-            width={{ base: 'full', lg: '25%' }}
+            width={{ base: 'full', lg: '45%' }}
             justifyContent={{ lg: 'flex-end' }}
           >
             <SectionTwo />

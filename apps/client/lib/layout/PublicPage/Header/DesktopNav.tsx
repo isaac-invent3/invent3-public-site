@@ -53,7 +53,7 @@ const Submenu = (props: SubmenuProps) => {
                 )}
                 <Text
                   fontSize="14px"
-                  lineHeight="24px"
+                  lineHeight="16px"
                   fontWeight={700}
                   letterSpacing="0.04em"
                   //   whiteSpace="nowrap"
@@ -68,7 +68,7 @@ const Submenu = (props: SubmenuProps) => {
                   fontSize="10px"
                   fontWeight={400}
                   lineHeight="140%"
-                  maxW="60%"
+                  maxW="90%"
                 >
                   {item.description}
                 </Text>

@@ -5,45 +5,45 @@ import {
   TwitterIcon,
 } from '~/lib/components/CustomIcons/PublicFacingSite';
 
-const COMPANY_LINK = [
+const QUICK_LINKS = [
+  {
+    label: 'Home',
+    href: '/',
+  },
   {
     label: 'About Us',
     href: '/about-us',
   },
   {
-    label: 'Product',
-    href: '/product',
+    label: 'Solutions',
+    href: '/solutions',
   },
   {
-    label: 'Resources',
-    href: '/resources',
+    label: 'Features',
+    href: '/features',
   },
   {
-    label: 'FAQ',
-    href: '/faq',
-  },
-  {
-    label: 'Contact Us',
-    href: '/contact-us',
+    label: 'Integrations',
+    href: '/integrations',
   },
 ];
 
-const LEARN_LINK = [
+const SUPPORT_LINKS = [
   {
-    label: 'E-Books',
-    href: '/e-books',
+    label: 'Help Center',
+    href: '/faq',
   },
   {
-    label: 'Blog',
-    href: '/blog',
+    label: 'Knowledge Base',
+    href: '/knowledge-base',
   },
   {
-    label: 'Guide',
-    href: '/guide',
+    label: 'Security',
+    href: '/security',
   },
   {
-    label: 'Templates',
-    href: '/templates',
+    label: 'Career',
+    href: '/career',
   },
 ];
 
@@ -66,4 +66,4 @@ const SOCIAL_LINKS = [
   },
 ];
 
-export { LEARN_LINK, COMPANY_LINK, SOCIAL_LINKS };
+export { SUPPORT_LINKS, QUICK_LINKS, SOCIAL_LINKS };

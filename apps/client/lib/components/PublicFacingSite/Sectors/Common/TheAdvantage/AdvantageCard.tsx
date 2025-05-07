@@ -1,33 +1,48 @@
-import { Flex, Heading, Icon, Text, VStack } from '@chakra-ui/react';
+import { Flex, Heading, Text, VStack } from '@chakra-ui/react';
 import Image from 'next/image';
 import React from 'react';
-import { TripleCircleIcon } from '~/lib/components/CustomIcons/PublicFacingSite';
 
 interface AdvantageCardProps {
+  index: number;
   title: string;
   description: string;
   image: string;
+  activeAdvantage: number;
+  setActiveAdvantage: React.Dispatch<React.SetStateAction<number>>;
 }
 const AdvantageCard = (props: AdvantageCardProps) => {
-  const { title, description, image } = props;
+  const {
+    index,
+    title,
+    description,
+    image,
+    activeAdvantage,
+    setActiveAdvantage,
+  } = props;
   return (
     <VStack
       spacing="32px"
       width="full"
-      maxW={{ base: '583px', lg: '216px' }}
-      height={{ lg: '419px' }}
+      onMouseEnter={() => setActiveAdvantage(index)}
+      onMouseLeave={() => setActiveAdvantage(0)}
+      // maxW={{ base: '583px', lg: '216px' }}
+      height={{
+        base: 'full',
+        lg: activeAdvantage === index ? 'full' : '419px',
+      }}
       bgColor="#F2F1F14D"
       rounded="8px"
       justifyContent="flex-end"
       role="group"
       position="relative"
-      p="24px"
-      _hover={{
-        maxW: { lg: '302px' },
-        height: { lg: 'full' },
-        px: { lg: '40px' },
-        py: { lg: '73px' },
-      }}
+      px={{ base: '24px', lg: activeAdvantage === index ? '40px' : '24px' }}
+      py={{ base: '24px', lg: activeAdvantage === index ? '73px' : '24px' }}
+      // _hover={{
+      //   // maxW: { lg: '302px' },
+      //   height: { lg: 'full' },
+      //   px: { lg: '40px' },
+      //   py: { lg: '73px' },
+      // }}
     >
       <VStack
         spacing="24px"
@@ -37,18 +52,18 @@ const AdvantageCard = (props: AdvantageCardProps) => {
         bottom={0}
         left={0}
         width="full"
-        maxW={{ base: '583px', lg: '216px' }}
+        // maxW={{ base: '583px', lg: '216px' }}
         pl={{ lg: '24px' }}
         pb={{ lg: '24px' }}
-        opacity={1}
-        transform="translateY(0)"
-        transition="all 400ms ease-in-out"
-        _groupHover={{
-          opacity: 0,
-          transform: 'translateY(-20px)',
+        opacity={{ lg: activeAdvantage === index ? 0 : 1 }}
+        transform={{
+          lg: activeAdvantage === index ? 'translateY(-20px)' : 'translateY(0)',
         }}
+        transition="all 400ms ease-in-out"
       >
-        <Icon as={TripleCircleIcon} boxSize="24px" />
+        <Flex position="relative" width="24px" height="24px">
+          <Image src={image} fill alt="advantage-image" />
+        </Flex>
         <Text
           color="primary.accent"
           fontWeight={700}
@@ -62,11 +77,9 @@ const AdvantageCard = (props: AdvantageCardProps) => {
       <VStack
         width="full"
         display={{ base: 'flex' }}
-        opacity={{ base: 1, lg: 0 }}
-        transform={{ lg: 'translateY(100px)' }}
-        _groupHover={{
-          opacity: 1,
-          transform: 'translateY(0)',
+        opacity={{ base: 1, lg: activeAdvantage === index ? 1 : 0 }}
+        transform={{
+          lg: activeAdvantage === index ? 'translateY(0)' : 'translateY(100px)',
         }}
         transition="all 300ms ease-in-out"
       >
@@ -75,14 +88,13 @@ const AdvantageCard = (props: AdvantageCardProps) => {
           position="relative"
           width="240px"
           height="240px"
-          transform={{ lg: 'translateY(100px)' }} // 45deg-ish angle
-          opacity={{ lg: 0 }}
+          transform={{
+            lg:
+              activeAdvantage === index ? 'translateY(0)' : 'translateY(100px)',
+          }} // 45deg-ish angle
+          opacity={{ lg: activeAdvantage === index ? 1 : 0 }}
           transition="all 400ms ease-in-out"
           transitionDelay="300ms"
-          _groupHover={{
-            transform: 'translateY(0)',
-            opacity: 1,
-          }}
         >
           <Image src={image} alt="advantage-image" fill />
         </Flex>
@@ -91,18 +103,18 @@ const AdvantageCard = (props: AdvantageCardProps) => {
         <VStack
           alignItems="flex-start"
           spacing="16px"
-          opacity={{ lg: 0 }}
-          transform={{ lg: 'translateY(20px)' }}
+          opacity={{ lg: activeAdvantage === index ? 1 : 0 }}
+          transform={{
+            lg:
+              activeAdvantage === index ? 'translateY(0)' : 'translateY(20px)',
+          }}
           transition="all 300ms ease-in-out"
           transitionDelay="0ms"
-          _groupHover={{
-            opacity: 1,
-            transform: 'translateY(0)',
-          }}
         >
           <VStack
             alignItems="flex-start"
             spacing={{ base: '16px', lg: '12px' }}
+            width="full"
           >
             <Heading
               fontWeight={{ base: 800, lg: 700 }}

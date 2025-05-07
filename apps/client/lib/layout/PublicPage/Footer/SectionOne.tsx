@@ -1,7 +1,7 @@
 import { Flex, Stack, Text, VStack } from '@chakra-ui/react';
 import Image from 'next/image';
 import React from 'react';
-import { COMPANY_LINK, LEARN_LINK } from './data';
+import { QUICK_LINKS, SUPPORT_LINKS } from './data';
 import Link from 'next/link';
 
 const SectionOne = () => {
@@ -29,9 +29,8 @@ const SectionOne = () => {
           width={{ base: 'full', lg: '349px' }}
           maxW="349px"
         >
-          Invent3 is an AI-powered asset management platform that optimizes
-          efficiency, automates workflows, ensures compliance, and provides
-          real-time insights for smarter decision-making.
+          Invent3 is an AI-powered physical asset and facility management
+          platform that optimizes efficiency.
         </Text>
       </VStack>
       <Stack
@@ -46,9 +45,9 @@ const SectionOne = () => {
             fontSize="18px"
             lineHeight="24px"
           >
-            Company
+            Quick Links
           </Text>
-          {COMPANY_LINK.map((item) => (
+          {QUICK_LINKS.map((item) => (
             <Link href={item.href} passHref key={item.label}>
               <Text color="black" size="md">
                 {item.label}
@@ -63,9 +62,9 @@ const SectionOne = () => {
             fontSize="18px"
             lineHeight="24px"
           >
-            Learn
+            Support
           </Text>
-          {LEARN_LINK.map((item) => (
+          {SUPPORT_LINKS.map((item) => (
             <Link href={item.href} passHref key={item.label}>
               <Text color="black" size="md">
                 {item.label}

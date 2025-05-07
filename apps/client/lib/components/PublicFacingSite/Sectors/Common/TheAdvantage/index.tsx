@@ -1,5 +1,5 @@
 import { Flex, SimpleGrid, Stack } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
 import SectionInfo from '../../../Common/SectionInfo';
 import AdvantageCard from './AdvantageCard';
 
@@ -9,6 +9,7 @@ interface TheAdvantageProps {
 }
 const TheAdvantage = (props: TheAdvantageProps) => {
   const { items, sectionDescription } = props;
+  const [activeAdvantage, setActiveAdvantage] = useState(0);
   return (
     <Flex
       justifyContent="center"
@@ -45,7 +46,7 @@ const TheAdvantage = (props: TheAdvantageProps) => {
           alignItems="center"
           minH="600px"
         >
-          <Stack
+          {/* <Stack
             direction={{ base: 'column', lg: 'row' }}
             gap="24px"
             justifyContent="center"
@@ -54,17 +55,30 @@ const TheAdvantage = (props: TheAdvantageProps) => {
             transition="all 200ms ease-in-out"
           >
             {items.map((item, index) => (
-              <AdvantageCard {...item} key={index} />
+              <AdvantageCard
+                {...item}
+                key={index}
+                index={index}
+                activeAdvantage={activeAdvantage}
+                setActiveAdvantage={setActiveAdvantage}
+              />
             ))}
-          </Stack>
+          </Stack> */}
           <SimpleGrid
-            columns={{ base: 1, md: 2 }}
+            columns={{ base: 1, md: 2, xl: 4 }}
             gap="24px"
             width="full"
-            display={{ base: 'grid', lg: 'none' }}
+            display={{ base: 'grid' }}
+            alignItems="center"
           >
             {items.map((item, index) => (
-              <AdvantageCard {...item} key={index} />
+              <AdvantageCard
+                {...item}
+                key={index}
+                index={index}
+                activeAdvantage={activeAdvantage}
+                setActiveAdvantage={setActiveAdvantage}
+              />
             ))}
           </SimpleGrid>
         </Flex>

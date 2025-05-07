@@ -1,4 +1,4 @@
-import { Flex, HStack, Icon, Text, VStack } from '@chakra-ui/react';
+import { Flex, HStack, Icon, Stack, Text, VStack } from '@chakra-ui/react';
 import Link from 'next/link';
 import React from 'react';
 import { SOCIAL_LINKS } from './data';
@@ -11,10 +11,25 @@ const contactInfo = [
 
 const SectionTwo = () => {
   return (
-    <VStack spacing="16px" alignItems="flex-start">
+    <Stack
+      direction={{ base: 'column', xl: 'row' }}
+      spacing={{ base: '24px', lg: '32px' }}
+      alignItems="flex-start"
+    >
       <VStack width="full" spacing="8px" alignItems="flex-start">
-        <Text size="lg" color="black">
-          Follow us on
+        <Text color="black" fontWeight={700} fontSize="18px" lineHeight="24px">
+          Contact Information
+        </Text>
+        {contactInfo.map((item, index) => (
+          <Text key={index} size="md">
+            {item}
+          </Text>
+        ))}
+      </VStack>
+
+      <VStack width="full" spacing="8px" alignItems="flex-start">
+        <Text color="black" fontWeight={700} fontSize="18px" lineHeight="24px">
+          Follow Us On
         </Text>
         <HStack spacing="16px">
           {SOCIAL_LINKS.map((item, index) => (
@@ -33,12 +48,7 @@ const SectionTwo = () => {
           ))}
         </HStack>
       </VStack>
-      {contactInfo.map((item, index) => (
-        <Text key={index} color="primary.500" size="lg">
-          {item}
-        </Text>
-      ))}
-    </VStack>
+    </Stack>
   );
 };
 

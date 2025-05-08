@@ -1,4 +1,4 @@
-import { SimpleGrid } from '@chakra-ui/react';
+import { HStack, SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import SummaryCard from '../../../Common/SummaryCard';
 import { useParams } from 'next/navigation';
@@ -16,32 +16,103 @@ const Summary = () => {
     {
       title: 'Total Zones',
       value: data?.data?.totalZones ?? '-',
-      subtitle: 'No of Zones',
       icon: '/location.png',
     },
     {
-      title: 'Current Occupancy',
+      title: 'Current vs. Maximum Occupancy',
       value: data?.data?.currentOccupancy ?? '-',
-      subtitle: 'People in All zones',
-      icon: '/clock.png',
+      icon: '/location.png',
+      children: (
+        <HStack width="full" justifyContent="space-between">
+          <VStack alignItems="flex-start" spacing={0}>
+            <Text>
+              <Text
+                as="span"
+                fontWeight={800}
+                fontSize="16px"
+                lineHeight="150%"
+              >
+                75
+              </Text>{' '}
+              out of{' '}
+              <Text
+                as="span"
+                fontWeight={800}
+                fontSize="16px"
+                lineHeight="150%"
+              >
+                100
+              </Text>
+            </Text>
+            <Text color="neutral.600">in Open Office</Text>
+          </VStack>
+          <VStack alignItems="flex-start" spacing={0}>
+            <Text>
+              <Text
+                as="span"
+                fontWeight={800}
+                fontSize="16px"
+                lineHeight="150%"
+              >
+                8
+              </Text>{' '}
+              out of{' '}
+              <Text
+                as="span"
+                fontWeight={800}
+                fontSize="16px"
+                lineHeight="150%"
+              >
+                12
+              </Text>
+            </Text>
+            <Text color="neutral.600">in Meeting Room</Text>
+          </VStack>
+        </HStack>
+      ),
     },
     {
-      title: 'Occupancy Rate',
+      title: 'Space Utilization by Department',
       value: data?.data?.occupancyRate ?? '-',
       subtitle: 'All zones',
-      icon: '/adjust.png',
+      icon: '/location.png',
+      children: (
+        <HStack width="full" justifyContent="space-between">
+          <VStack alignItems="flex-start" spacing={0}>
+            <Text fontWeight={800} fontSize="24px" lineHeight="100%">
+              85%
+            </Text>
+            <Text color="neutral.600">Human Resources</Text>
+          </VStack>
+          <VStack alignItems="flex-start" spacing={0}>
+            <Text fontWeight={800} fontSize="24px" lineHeight="100%">
+              70%
+            </Text>
+            <Text color="neutral.600">Information Technology</Text>
+          </VStack>
+        </HStack>
+      ),
     },
     {
-      title: 'Occupancy Sensor Health',
+      title: 'Meeting Room Availability',
       value: data?.data?.occupancySensorHealth ?? '-',
       subtitle: 'All zones',
-      icon: '/adjust.png',
-    },
-    {
-      title: 'Occupancy vs Capacity',
-      value: data?.data?.occupancyVsCapacity ?? '-',
-      subtitle: 'This Week',
-      icon: '/bms-calendar.png',
+      icon: '/location.png',
+
+      children: (
+        <VStack alignItems="flex-start" spacing={0}>
+          <Text>
+            <Text as="span" fontWeight={800} fontSize="16px" lineHeight="150%">
+              3
+            </Text>{' '}
+            out of{' '}
+            <Text as="span" fontWeight={800} fontSize="16px" lineHeight="150%">
+              5
+            </Text>
+          </Text>
+          <Text color="neutral.600">rooms available</Text>
+        </VStack>
+      ),
     },
   ];
 
@@ -49,10 +120,15 @@ const Summary = () => {
     <SimpleGrid
       width="full"
       gap="16px"
-      columns={{ base: 1, sm: 2, md: 3, lg: 5 }}
+      columns={{ base: 1, sm: 2, md: 3, lg: 4 }}
     >
       {summaryData.map((item, index) => (
-        <SummaryCard {...item} key={index} isLoading={isLoading} />
+        <SummaryCard
+          {...item}
+          key={index}
+          isLoading={isLoading}
+          containerStyle={{ justifyContent: 'space-between' }}
+        />
       ))}
     </SimpleGrid>
   );

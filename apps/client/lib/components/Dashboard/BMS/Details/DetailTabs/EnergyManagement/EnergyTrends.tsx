@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import InfoCard from '../../../InfoCard';
 import { VStack } from '@chakra-ui/react';
 import LineChart from '~/lib/components/Dashboard/Common/Charts/LineChart';
 import ChartLegend from '~/lib/components/Dashboard/Common/Charts/ChartLegend';
 import { useParams } from 'next/navigation';
 import { useGetBMSEnergyTrendsQuery } from '~/lib/redux/services/dashboard/bms.services';
+import { Option } from '@repo/interfaces';
+import { timeRangeOptions } from '~/lib/utils/constants';
 
 const EnergyTrends = () => {
   const params = useParams();
@@ -13,19 +15,24 @@ const EnergyTrends = () => {
     { facilityId: id },
     { skip: !id }
   );
+  const [selectedTimeRange, setSelectedTimeRange] = useState<Option | null>(
+    timeRangeOptions[1] as Option
+  );
   return (
     <InfoCard
-      title="Energy Trends"
+      title="Peak vs. Off-Peak Usage"
       containerStyle={{
         height: 'full',
         spacing: '22px',
       }}
+      selectedTimeRange={selectedTimeRange}
+      setSelectedTimeRange={setSelectedTimeRange}
     >
       <VStack alignItems="flex-start" spacing="16px" width="full">
         <ChartLegend
           chartLegendItems={[
-            { label: 'Total Energy Consumption', color: '#17A1FA' },
-            { label: 'Peak Demand', color: '#EABC30' },
+            { label: 'Peak Demand', color: '#17A1FA' },
+            { label: 'Off Peak Demand', color: '#EABC30' },
           ]}
           containerStyle={{
             spacing: '16px',

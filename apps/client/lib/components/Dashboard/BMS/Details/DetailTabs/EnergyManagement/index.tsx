@@ -1,33 +1,35 @@
-import { Flex, SimpleGrid, VStack } from '@chakra-ui/react';
+import { Grid, GridItem, SimpleGrid, VStack } from '@chakra-ui/react';
 import React from 'react';
-import EnergyOverview from './EnergyOverview';
 import EnergyTrends from './EnergyTrends';
-import SystemPerformanceMetrics from './SystemPerformanceMetrics';
 import HighestEnergyConsumption from '../Overview/EnergyConsumption';
-import ActivePower from '../Overview/ActivePower';
+import EnergyConsumptionByZone from './EnergyConsumptionByZone';
+import CostMonthlySpend from './CostMonthlySpend';
+import OptimisationRecommendation from './OptimisationRecommendation';
 
 const EnergyManagement = () => {
   return (
     <VStack width="full" spacing="16px" p="16px">
-      <SimpleGrid
-        columns={{ base: 1, lg: 2 }}
+      <SimpleGrid columns={{ base: 1, xl: 3 }} gap="16px" width="full">
+        <EnergyConsumptionByZone />
+        <CostMonthlySpend />
+        <OptimisationRecommendation />
+      </SimpleGrid>
+      <Grid
+        templateColumns={{ base: 'repeat(1, 1fr)', lg: 'repeat(3, 1fr)' }}
         gap="16px"
-        minH="342px"
         width="full"
       >
-        <EnergyOverview />
-        <EnergyTrends />
-      </SimpleGrid>
-      <SimpleGrid
-        columns={{ base: 1, lg: 3 }}
-        gap="16px"
-        minH="342px"
-        width="full"
-      >
-        <HighestEnergyConsumption title="Energy Consumption" />
-        <SystemPerformanceMetrics />
-        <ActivePower title="Facility Comparison" />
-      </SimpleGrid>
+        <GridItem colSpan={{ base: 1, lg: 2 }}>
+          {/* <SimpleGrid> */}
+          <EnergyTrends />
+          {/* </SimpleGrid> */}
+        </GridItem>
+        <GridItem colSpan={1}>
+          {/* <SimpleGrid height="full"> */}
+          <HighestEnergyConsumption title="Energy Consumption" />
+          {/* </SimpleGrid> */}
+        </GridItem>
+      </Grid>
     </VStack>
   );
 };

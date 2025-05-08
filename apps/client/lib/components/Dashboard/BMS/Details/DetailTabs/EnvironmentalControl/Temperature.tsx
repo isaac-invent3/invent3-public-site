@@ -5,7 +5,13 @@ import LineChart from '~/lib/components/Dashboard/Common/Charts/LineChart';
 import { Option } from '@repo/interfaces';
 
 const TemperatureTrends = () => {
-  const [selectedZone, setSelectedZone] = useState<Option | null>(null);
+  const zoneOptions = [
+    { label: 'Zone 1', value: 'zone1' },
+    { label: 'Zone 2', value: 'zone2' },
+  ];
+  const [selectedZone, setSelectedZone] = useState<Option | null>(
+    zoneOptions[0] as Option
+  );
   return (
     <InfoCard
       title="Temperature Trends"
@@ -18,10 +24,7 @@ const TemperatureTrends = () => {
           Over the Last 24H
         </Text>
       }
-      options={[
-        { label: 'Zone 1', value: 'zone1' },
-        { label: 'Zone 2', value: 'zone2' },
-      ]}
+      options={zoneOptions}
       selectedTimeRange={selectedZone}
       setSelectedTimeRange={setSelectedZone}
     >

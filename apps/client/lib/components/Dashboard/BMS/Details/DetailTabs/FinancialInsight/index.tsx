@@ -1,8 +1,8 @@
 import { SimpleGrid, VStack } from '@chakra-ui/react';
 import React from 'react';
 import Summary from './Summary';
-import CostBreakdownBySystems from './CostBreakdownBySystems';
-import EnergyCost from './EnergyCost';
+import BudgetActualExpenditureAnalysis from './BudgetActualExpenditureAnalysis';
+import FinancialTrend from './FinancialTrend';
 
 const FinancialInsight = () => {
   return (
@@ -14,8 +14,8 @@ const FinancialInsight = () => {
         gap="16px"
         minH="368px"
       >
-        <CostBreakdownBySystems />
-        <EnergyCost />
+        <BudgetActualExpenditureAnalysis />
+        <FinancialTrend />
       </SimpleGrid>
     </VStack>
   );

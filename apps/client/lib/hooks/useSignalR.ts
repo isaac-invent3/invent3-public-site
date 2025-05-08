@@ -48,7 +48,7 @@ const useSignalR = (path: string = 'notification-hub') => {
       .configureLogging(LogLevel.Information)
       .withAutomaticReconnect()
       .withKeepAliveInterval(15000)
-      .withServerTimeout(3000)
+      .withServerTimeout(30000)
       .build();
 
     const startSignalRConnection = async (): Promise<void> => {

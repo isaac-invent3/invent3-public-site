@@ -20,7 +20,6 @@ const Summary = () => {
     },
     {
       title: 'Current vs. Maximum Occupancy',
-      value: data?.data?.currentOccupancy ?? '-',
       icon: '/location.png',
       children: (
         <HStack width="full" justifyContent="space-between">
@@ -32,7 +31,7 @@ const Summary = () => {
                 fontSize="16px"
                 lineHeight="150%"
               >
-                75
+                {data?.data?.currentOccupancy1 ?? '-'}
               </Text>{' '}
               out of{' '}
               <Text
@@ -41,7 +40,7 @@ const Summary = () => {
                 fontSize="16px"
                 lineHeight="150%"
               >
-                100
+                {data?.data?.maxOccupancy1 ?? '-'}
               </Text>
             </Text>
             <Text color="neutral.600">in Open Office</Text>
@@ -54,7 +53,7 @@ const Summary = () => {
                 fontSize="16px"
                 lineHeight="150%"
               >
-                8
+                {data?.data?.currentOccupancy2 ?? '-'}
               </Text>{' '}
               out of{' '}
               <Text
@@ -63,7 +62,7 @@ const Summary = () => {
                 fontSize="16px"
                 lineHeight="150%"
               >
-                12
+                {data?.data?.maxOccupancy2 ?? '-'}
               </Text>
             </Text>
             <Text color="neutral.600">in Meeting Room</Text>
@@ -73,29 +72,27 @@ const Summary = () => {
     },
     {
       title: 'Space Utilization by Department',
-      value: data?.data?.occupancyRate ?? '-',
       subtitle: 'All zones',
       icon: '/location.png',
       children: (
         <HStack width="full" justifyContent="space-between">
           <VStack alignItems="flex-start" spacing={0}>
             <Text fontWeight={800} fontSize="24px" lineHeight="100%">
-              85%
+              {data?.data?.firstDept ?? '-'}%
             </Text>
-            <Text color="neutral.600">Human Resources</Text>
+            <Text color="neutral.600"> {data?.data?.room1Name ?? '-'}</Text>
           </VStack>
           <VStack alignItems="flex-start" spacing={0}>
             <Text fontWeight={800} fontSize="24px" lineHeight="100%">
-              70%
+              {data?.data?.firstDept ?? '-'}%
             </Text>
-            <Text color="neutral.600">Information Technology</Text>
+            <Text color="neutral.600"> {data?.data?.room2Name ?? '-'}</Text>
           </VStack>
         </HStack>
       ),
     },
     {
       title: 'Meeting Room Availability',
-      value: data?.data?.occupancySensorHealth ?? '-',
       subtitle: 'All zones',
       icon: '/location.png',
 
@@ -103,11 +100,11 @@ const Summary = () => {
         <VStack alignItems="flex-start" spacing={0}>
           <Text>
             <Text as="span" fontWeight={800} fontSize="16px" lineHeight="150%">
-              3
+              {data?.data?.floorRoomAvailaible ?? '-'}
             </Text>{' '}
             out of{' '}
             <Text as="span" fontWeight={800} fontSize="16px" lineHeight="150%">
-              5
+              {data?.data?.totalFloorRooms ?? '-'}
             </Text>
           </Text>
           <Text color="neutral.600">rooms available</Text>

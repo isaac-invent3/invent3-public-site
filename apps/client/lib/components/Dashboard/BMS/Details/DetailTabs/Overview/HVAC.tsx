@@ -21,7 +21,7 @@ const HVAC = () => {
     },
     {
       title: 'Humidity Levels',
-      value: `${data?.data?.humidityLevels ?? '-'}%`,
+      value: `${data?.data?.humidityLevels?.value ?? '-'}${data?.data?.humidityLevels?.key}`,
       icon: '/humidity.png',
     },
     {

@@ -43,9 +43,7 @@ const Summary = () => {
     {
       title: 'Avg Maintenance Time',
       subtitle: 'All zones',
-      value: averageMaintenanceData?.data?.averageMaintenanceTime
-        ? `${averageMaintenanceData?.data?.averageMaintenanceTime} ${averageMaintenanceData?.data?.unit}`
-        : '-',
+      value: `${averageMaintenanceData?.data?.averageMaintenanceTime} ${averageMaintenanceData?.data?.unit}`,
       icon: '/clock.png',
       isLoading: isLoadingAverageMaintenance,
     },

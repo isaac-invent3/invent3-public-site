@@ -27,6 +27,7 @@ const OccupancyManagement = () => {
       value: 5,
     },
   ];
+
   return (
     <VStack width="full" p="16px" spacing="16px">
       <Summary />

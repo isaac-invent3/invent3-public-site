@@ -76,7 +76,8 @@ const Info = ({
                     lineHeight="100%"
                     color="white"
                   >
-                    {data?.data?.energyConsumption ?? '-'} kWh
+                    {data?.data?.energyConsumption?.value ?? '-'}{' '}
+                    {data?.data?.energyConsumption?.key}
                   </Text>
                 </Skeleton>
                 <Text color="neutral.250">Energy Consumption</Text>

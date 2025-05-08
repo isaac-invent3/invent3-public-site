@@ -6,6 +6,7 @@ import {
   AllowedCapacity,
   AssetHealthStatus,
   AverageMaintenanceTime,
+  BudgetActualExpenditure,
   ConditionReadings,
   CostBreakdownBySystems,
   DensityMetrics,
@@ -16,6 +17,7 @@ import {
   EnvironmentControlSummary,
   FacilityDashboardSummary,
   FinancialInsightsOverview,
+  FinancialTrend,
   HighestCostFacility,
   HighestEnergyConsumptionByFacility,
   HighestNonCompliantFacility,
@@ -24,11 +26,15 @@ import {
   HvacOperationalEfficiency,
   HvacSystemStatus,
   MaintenancePriorityList,
+  MonthlyCostSpend,
   MostEnergyEfficientFacility,
+  OccupancyDistribution,
   OccupancyManagement,
   OccupancyTrend,
   OccupanyRate,
   PredictiveMaintenanceOverview,
+  PredictiveRecommendation,
+  SustainabilityMetrics,
   SystemStatus,
   TotalEnergyConsumptionForAllFacilities,
   ZoneControl,
@@ -250,7 +256,7 @@ export const BMSApi = createApi({
     >({
       query: ({ facilityId, ...data }) => ({
         url: generateQueryStr(
-          `/Invent3Pro/GetBMSEnergyTrends/${facilityId}`,
+          `/Invent3Pro/GetBMSEnergyTrends/${facilityId}?`,
           data
         ),
         method: 'GET',
@@ -283,7 +289,7 @@ export const BMSApi = createApi({
     >({
       query: ({ facilityId, ...data }) => ({
         url: generateQueryStr(
-          `/Invent3Pro/GetBMSZoneControl/${facilityId}`,
+          `/Invent3Pro/GetBMSZoneControl/${facilityId}?`,
           data
         ),
         method: 'GET',
@@ -306,7 +312,7 @@ export const BMSApi = createApi({
     >({
       query: ({ facilityId, ...data }) => ({
         url: generateQueryStr(
-          `/Invent3Pro/GetBMSEnvironmentControlSummary/${facilityId}`,
+          `/Invent3Pro/GetBMSEnvironmentControlSummary/${facilityId}?`,
           data
         ),
         method: 'GET',
@@ -369,7 +375,7 @@ export const BMSApi = createApi({
     >({
       query: ({ facilityId, ...data }) => ({
         url: generateQueryStr(
-          `/Invent3Pro/GetBMSAssetHealthStatus/${facilityId}`,
+          `/Invent3Pro/GetBMSAssetHealthStatus/${facilityId}?`,
           data
         ),
         method: 'GET',
@@ -382,7 +388,7 @@ export const BMSApi = createApi({
     >({
       query: ({ facilityId, ...data }) => ({
         url: generateQueryStr(
-          `/Invent3Pro/GetBMSConditionReadings/${facilityId}`,
+          `/Invent3Pro/GetBMSConditionReadings/${facilityId}?`,
           data
         ),
         method: 'GET',
@@ -405,7 +411,7 @@ export const BMSApi = createApi({
     >({
       query: ({ facilityId, ...data }) => ({
         url: generateQueryStr(
-          `/Invent3Pro/GetBMSCostBreakdownBySystems/${facilityId}`,
+          `/Invent3Pro/GetBMSCostBreakdownBySystems/${facilityId}?`,
           data
         ),
         method: 'GET',
@@ -418,7 +424,7 @@ export const BMSApi = createApi({
     >({
       query: ({ facilityId, ...data }) => ({
         url: generateQueryStr(
-          `/Invent3Pro/GetBMSMaintenancePriorityList${facilityId}`,
+          `/Invent3Pro/GetBMSMaintenancePriorityList${facilityId}?`,
           data
         ),
         method: 'GET',
@@ -431,7 +437,138 @@ export const BMSApi = createApi({
     >({
       query: ({ facilityId, ...data }) => ({
         url: generateQueryStr(
-          `/Invent3Pro/GetBMSEnergyCostTrend/${facilityId}`,
+          `/Invent3Pro/GetBMSEnergyCostTrend/${facilityId}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getBMSSustainabilityMetrics: builder.query<
+      BaseApiResponse<SustainabilityMetrics>,
+      {
+        facilityId: number;
+        buildingId?: number;
+        floorId?: number;
+        roomId?: number;
+      }
+    >({
+      query: ({ facilityId, ...data }) => ({
+        url: generateQueryStr(
+          `/Invent3Pro/GetBMSSustainabilityMetrics/${facilityId}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getBMSAssetCategoryHealthStatus: builder.query<
+      BaseApiResponse<{ key: string; value: number }[]>,
+      {
+        facilityId: number;
+        roomId?: number;
+      }
+    >({
+      query: ({ facilityId, ...data }) => ({
+        url: generateQueryStr(
+          `/Invent3Pro/GetBMSAssetCategoryHealthStatus/${facilityId}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getBMSPredictiveJarvisRecommendation: builder.query<
+      BaseApiResponse<PredictiveRecommendation[]>,
+      {
+        facilityId: number;
+        roomId?: number;
+      }
+    >({
+      query: ({ facilityId, ...data }) => ({
+        url: generateQueryStr(
+          `/Invent3Pro/GetBMSPredictiveJarvisRecommendation/${facilityId}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getBMSBudgetVActualExpenditure: builder.query<
+      BaseApiResponse<BudgetActualExpenditure[]>,
+      {
+        facilityId: number;
+        buildingId?: number;
+        floorId?: number;
+        year?: number;
+      }
+    >({
+      query: ({ facilityId, ...data }) => ({
+        url: generateQueryStr(
+          `/Invent3Pro/GetBMSBudgetVActualExpenditure/${facilityId}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getBMSFinancialTrend: builder.query<
+      BaseApiResponse<FinancialTrend[]>,
+      {
+        facilityId?: number;
+        buildingId?: number;
+        floorId?: number;
+        year?: number;
+      }
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/Invent3Pro/GetBMSFinancialTrend?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getBMSMonthlyCostSpend: builder.query<
+      BaseApiResponse<MonthlyCostSpend>,
+      {
+        facilityId: number;
+        buildingId?: number;
+        floorId?: number;
+        monthId?: number;
+      }
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/Invent3Pro/GetBMSMonthlyCostSpend?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getBMSEngeryMgtJarvisRecommendation: builder.query<
+      BaseApiResponse<PredictiveRecommendation>,
+      {
+        facilityId: number;
+        roomId?: number;
+      }
+    >({
+      query: ({ facilityId, ...data }) => ({
+        url: generateQueryStr(
+          `/Invent3Pro/GetBMSEngeryMgtJarvisRecommendation/${facilityId}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getBMSOccupancyDistribution: builder.query<
+      BaseApiResponse<OccupancyDistribution[]>,
+      {
+        facilityId: number;
+        buildingId?: number;
+        floorId?: number;
+      }
+    >({
+      query: ({ facilityId, ...data }) => ({
+        url: generateQueryStr(
+          `/Invent3Pro/GetBMSOccupancyDistribution/${facilityId}?`,
           data
         ),
         method: 'GET',
@@ -475,4 +612,12 @@ export const {
   useGetBMSFinancialInsightsOverviewQuery,
   useGetBMSMaintenancePriorityListQuery,
   useGetBMSEnergyCostTrendQuery,
+  useGetBMSSustainabilityMetricsQuery,
+  useGetBMSAssetCategoryHealthStatusQuery,
+  useGetBMSPredictiveJarvisRecommendationQuery,
+  useGetBMSBudgetVActualExpenditureQuery,
+  useGetBMSFinancialTrendQuery,
+  useGetBMSMonthlyCostSpendQuery,
+  useGetBMSEngeryMgtJarvisRecommendationQuery,
+  useGetBMSOccupancyDistributionQuery,
 } = BMSApi;

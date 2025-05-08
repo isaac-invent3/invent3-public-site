@@ -15,6 +15,7 @@ import EnvironmentalControl from './EnvironmentalControl';
 import OccupancyManagement from './OccupancyManagement';
 import PredictiveMaintenance from './PredictiveMaintenance';
 import FinancialInsight from './FinancialInsight';
+import SustainabilityMetrics from './SustainabilityMetrics';
 
 const DetailTabs = () => {
   const [tabIndex, setTabIndex] = useState(0);
@@ -43,6 +44,11 @@ const DetailTabs = () => {
       label: 'Predictive Maintenance',
       slug: 'predictiveMaintenance',
       component: <PredictiveMaintenance />,
+    },
+    {
+      label: 'Sustainability Metrics',
+      slug: 'sustainabilityMetrics',
+      component: <SustainabilityMetrics />,
     },
     {
       label: 'Financial Insights',

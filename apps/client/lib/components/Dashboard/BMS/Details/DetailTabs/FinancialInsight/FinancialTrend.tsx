@@ -4,40 +4,37 @@ import { VStack } from '@chakra-ui/react';
 import LineChart from '~/lib/components/Dashboard/Common/Charts/LineChart';
 import { Option } from '@repo/interfaces';
 import { useParams } from 'next/navigation';
-import { useGetBMSEnergyCostTrendQuery } from '~/lib/redux/services/dashboard/bms.services';
+import { useGetBMSFinancialTrendQuery } from '~/lib/redux/services/dashboard/bms.services';
+import { timeRangeOptions } from '~/lib/utils/constants';
+import { generateLastFiveYears } from '~/lib/utils/helperFunctions';
 
-const EnergyCost = () => {
-  const zones = [
-    { label: 'Zone 1', value: 'zone1' },
-    { label: 'Zone 2', value: 'zone2' },
-  ];
-  const [selectedZone, setSelectedZone] = useState<Option | null>(
-    zones[0] as Option
+const FinancialTrend = () => {
+  const [selectedYear, setSelectedYear] = useState<Option | null>(
+    generateLastFiveYears()[0] as Option
   );
   const params = useParams();
   const id = params?.id as unknown as number;
-  const { data, isLoading } = useGetBMSEnergyCostTrendQuery(
-    { facilityId: id },
+  const { data, isLoading } = useGetBMSFinancialTrendQuery(
+    { facilityId: id, year: +selectedYear?.value! },
     { skip: !id }
   );
-
   return (
     <InfoCard
-      title="Energy Cost"
+      title="Financial Trend"
       containerStyle={{
         height: 'full',
         spacing: '22px',
       }}
-      options={zones}
-      selectedTimeRange={selectedZone}
-      setSelectedTimeRange={setSelectedZone}
+      options={timeRangeOptions}
+      selectedTimeRange={selectedYear}
+      setSelectedTimeRange={setSelectedYear}
     >
       <VStack alignItems="flex-start" spacing="16px" width="full">
         <LineChart
-          labels={data?.data?.map((item) => item.month) ?? []}
+          labels={data?.data?.map((item) => item.monthName) ?? []}
           datasets={[
             {
-              label: 'Energy Cost',
+              label: 'Financial Trend',
               data: data?.data?.map((item) => item.totalEnergyCost) ?? [],
               borderColor: '#0366EF',
               pointRadius: 2,
@@ -57,4 +54,4 @@ const EnergyCost = () => {
   );
 };
 
-export default EnergyCost;
+export default FinancialTrend;

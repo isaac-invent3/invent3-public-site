@@ -53,7 +53,7 @@ interface AverageMaintenanceTime {
 }
 
 interface FacilityDashboardSummary {
-  energyConsumption: number;
+  energyConsumption: { key: string; value: number };
   occupancyRatePercentage: number;
   openIssues: number;
   upcomingMaintenance: number;
@@ -63,7 +63,10 @@ interface HvacOperationalEfficiency {
   operationalEfficiency: number;
   averageTemperature: number;
   temperatureUnit: string;
-  humidityLevels: number;
+  humidityLevels: {
+    key: string;
+    value: number;
+  };
   energyConsumptionForMonth: number;
 }
 
@@ -144,10 +147,16 @@ interface EnvironmentControlSummary {
 
 interface OccupancyManagement {
   totalZones: number;
-  currentOccupancy: number;
-  occupancyRate: number;
-  occupancySensorHealth: string;
-  occupancyVsCapacity: number;
+  currentOccupancy1: number;
+  currentOccupancy2: number;
+  maxOccupancy1: number;
+  maxOccupancy2: number;
+  firstDept: number;
+  SecondDept: number;
+  floorRoomAvailaible: number;
+  totalFloorRooms: number;
+  room1Name: string;
+  room2Name: string;
 }
 
 interface OccupancyTrend {
@@ -198,10 +207,10 @@ interface ConditionReadings {
 }
 
 interface FinancialInsightsOverview {
-  totalEnergyCost: number;
-  forcastEnergyCost: number;
+  energyCostSavingsByQuarter: number;
+  operationalConst: number;
   maintenanceCost: number;
-  energySavingsVBaseline: number;
+  projectedAnnualSavings: number;
 }
 
 interface CostBreakdownBySystems {
@@ -228,6 +237,57 @@ interface EnergyCostTrend {
   totalEnergyCost: number;
 }
 
+interface SustainabilityMetrics {
+  energyConsumption: EnergyConsumptionType;
+  carbonFootprint: CarbonFootprint;
+  waterUsage: CarbonFootprint;
+  wasteGenerated: CarbonFootprint;
+  recycledWastePercentage: number;
+  energyEfficiencyRating: string;
+}
+
+interface CarbonFootprint {
+  key: string;
+  value: number;
+}
+
+interface EnergyConsumptionType {
+  key: string;
+  value: string;
+}
+
+interface PredictiveRecommendation {
+  recommendation: string;
+  systemContextType: string;
+  contextId: string;
+  contextName: string;
+}
+
+interface BudgetActualExpenditure {
+  year: number;
+  monthId: number;
+  month: number;
+  budget: number;
+  actualConsumption: number;
+}
+
+interface FinancialTrend {
+  month: number;
+  monthName: string;
+  totalEnergyCost: number;
+}
+
+interface MonthlyCostSpend {
+  totalMonthlyEnergySpend: number;
+  percentageChange: number;
+  costPerKWh: number;
+}
+
+interface OccupancyDistribution {
+  zone: string;
+  currentOccupancy: number;
+  maxCapacity: number;
+}
 export type {
   HighestOccupancyRate,
   HighestSystemFailures,
@@ -258,4 +318,10 @@ export type {
   CostBreakdownBySystems,
   MaintenancePriorityList,
   EnergyCostTrend,
+  SustainabilityMetrics,
+  PredictiveRecommendation,
+  BudgetActualExpenditure,
+  FinancialTrend,
+  MonthlyCostSpend,
+  OccupancyDistribution,
 };

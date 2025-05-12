@@ -10,10 +10,11 @@ import {
 import React from 'react';
 
 interface HeroHeaderProps {
-  title: string;
+  title?: string;
   subtitle: string;
   customHeading?: HeadingProps;
   containerStyle?: StackProps;
+  contentContainerStyle?: StackProps;
   subTitleStyle?: TextProps;
   bgMobile?: string;
   bgDesktop: string;
@@ -25,6 +26,7 @@ const HeroHeader = (props: HeroHeaderProps) => {
     subtitle,
     customHeading,
     containerStyle,
+    contentContainerStyle,
     subTitleStyle,
     bgMobile,
     bgDesktop,
@@ -64,6 +66,7 @@ const HeroHeader = (props: HeroHeaderProps) => {
         gap="16px"
         alignItems="center"
         zIndex={9}
+        {...contentContainerStyle}
       >
         <VStack
           spacing={{ base: '16px', lg: '24px' }}

@@ -39,11 +39,12 @@ const useSignalR = (path: string = 'notification-hub') => {
 
     const hubConnection = new HubConnectionBuilder()
       .withUrl(`${baseURL}/Invent3Pro/${path}`, {
-        withCredentials: false,
-        headers: {
-          Authorization: `Bearer ${session.user.accessToken}`,
-          ApiKey: `${session.user.apiKey}`,
-        },
+        accessTokenFactory: () => session.user.accessToken,
+        // withCredentials: true,
+        // headers: {
+        //   Authorization: `Bearer ${session.user.accessToken}`,
+        //   ApiKey: `${session.user.apiKey}`,
+        // },
       })
       .configureLogging(LogLevel.Information)
       .withAutomaticReconnect()
@@ -66,7 +67,7 @@ const useSignalR = (path: string = 'notification-hub') => {
           connection: hubConnection,
           state: hubConnection.state,
         });
-        console.log('Connected to SignalR');
+        console.log(`Connected to SignalR - ${path}`);
       } catch (error) {
         console.error('Error connecting to SignalR:', error);
 

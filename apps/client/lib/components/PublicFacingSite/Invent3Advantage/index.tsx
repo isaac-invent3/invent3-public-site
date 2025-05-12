@@ -2,7 +2,8 @@
 import React from 'react';
 import { Flex } from '@chakra-ui/react';
 import HeroHeader from '../Common/HeroHeader';
-import ImageDescription from '../Common/ImageDescription';
+import { FirstSection } from './FirstSection';
+import Innovation from './Innovation';
 
 const content = [
   {
@@ -58,11 +59,10 @@ const Invent3Advantage = () => {
           direction="column"
           gap={{ base: '80px', lg: '80px' }}
         >
-          {content.map((item, index) => (
-            <ImageDescription {...item} key={index} />
-          ))}
+          <FirstSection />
         </Flex>
       </Flex>
+      <Innovation />
     </Flex>
   );
 };

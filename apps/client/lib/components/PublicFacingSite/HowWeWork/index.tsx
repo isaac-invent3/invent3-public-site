@@ -1,48 +1,11 @@
 'use client';
 import React from 'react';
-import { Flex } from '@chakra-ui/react';
+import { Flex, Heading, SimpleGrid, VStack } from '@chakra-ui/react';
 import HeroHeader from '../Common/HeroHeader';
-import ImageDescription from '../Common/ImageDescription';
-import OurProcess from './OurProcess';
-
-const content = [
-  {
-    title: ['Our Process - A Proven', ['Framework'], 'for Success'],
-    description:
-      'We follow a structured yet flexible process that ensures measurable impact',
-    image: '/how-we-work-1.png',
-    imageFirst: false,
-    children: <OurProcess />,
-  },
-  {
-    title: [
-      ['AI-Driven'],
-      '& Data-Powered – Smarter Decisions, Better Outcomes',
-    ],
-    description:
-      "Our platform doesn't just digitize your operations—it enhances them. By leveraging AI and machine learning, we transform raw data into predictive insights, allowing you to stay ahead of risks, reduce downtime, and drive smarter investments.",
-    image: '/how-we-work-2.png',
-    imageFirst: true,
-  },
-  {
-    title: [
-      'Designed for Seamless Adoption - Easy',
-      ['Integration'],
-      ', Fast ROI',
-    ],
-    description:
-      "Invent3Pro is built for rapid implementation. With minimal disruption and easy integrations, your teams can start seeing value immediately—whether it's reducing operational costs, streamlining asset tracking, or improving service delivery.",
-    image: '/how-we-work-3.png',
-    imageFirst: false,
-  },
-  {
-    title: [['Continuous'], 'Improvement - Evolving with Your Needs'],
-    description:
-      "Your business is dynamic, and so is Invent3Pro. With ongoing updates, new AI models, and data-driven refinements, we ensure that our platform evolves alongside your organization's changing demands.",
-    image: '/how-we-work-4.png',
-    imageFirst: true,
-  },
-];
+import Features from './Features';
+import SectionInfo from '../Common/SectionInfo';
+import Image from 'next/image';
+import ContinuousImprovement from './ContinuousImprovement';
 
 const HowWeWork = () => {
   return (
@@ -65,13 +28,39 @@ const HowWeWork = () => {
           py={{ base: '80px', lg: '120px' }}
           maxW="1440px"
           direction="column"
-          gap={{ base: '80px', lg: '80px' }}
+          gap={{ base: '80px', lg: '120px' }}
         >
-          {content.map((item, index) => (
-            <ImageDescription {...item} key={index} />
-          ))}
+          <SimpleGrid columns={{ base: 1, lg: 2 }} width="full" spacing="40px">
+            <VStack alignItems="flex-start" spacing={0}>
+              <Heading
+                fontWeight={800}
+                fontSize={{ base: '24px', md: '40px' }}
+                lineHeight={{ base: '28.51px', md: '47.52px' }}
+              >
+                Our Process -
+              </Heading>
+              <SectionInfo
+                heading={['A Proven', ['Framework'], 'for Success']}
+                description="We follow a structured yet flexible process that ensures measurable impact"
+                containerStyles={{
+                  spacing: '24px',
+                  maxW: '477px',
+                }}
+              />
+            </VStack>
+            <Flex
+              position="relative"
+              width="full"
+              height="full"
+              minH={{ base: '400px', lg: '536px' }}
+            >
+              <Image src="/how-we-work-step.svg" alt="how-we-work-step" fill />
+            </Flex>
+          </SimpleGrid>
+          <Features />
         </Flex>
       </Flex>
+      <ContinuousImprovement />
     </Flex>
   );
 };

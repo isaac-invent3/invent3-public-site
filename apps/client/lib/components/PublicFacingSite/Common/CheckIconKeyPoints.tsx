@@ -1,20 +1,23 @@
-import { HStack, Icon, Text, VStack } from '@chakra-ui/react';
+import { HStack, Icon, StackProps, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { CheckIcon } from '../../CustomIcons/PublicFacingSite';
 
 interface CheckIconKeyPointsProps {
   items: { title: string; subtitle?: string }[];
+  containerStyle?: StackProps;
+  itemStyle?: StackProps;
 }
 
 const CheckIconKeyPoints = (props: CheckIconKeyPointsProps) => {
-  const { items } = props;
+  const { items, containerStyle, itemStyle } = props;
   return (
-    <VStack spacing="32px" alignItems="flex-start">
+    <VStack spacing="32px" alignItems="flex-start" {...containerStyle}>
       {items.map((item, index) => (
         <HStack
           spacing={{ base: '8px', md: '10.89px' }}
           alignItems="flex-start"
           key={index}
+          {...itemStyle}
         >
           <Icon as={CheckIcon} boxSize="24px" />
           <VStack spacing="8px" alignItems="flex-start">

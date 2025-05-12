@@ -22,6 +22,7 @@ import { useSession } from 'next-auth/react';
 import { useGetSettingsQuery } from '~/lib/redux/services/utility.services';
 import { setSettings } from '~/lib/redux/slices/SettingsSlice';
 import { useAppDispatch } from '~/lib/redux/hooks';
+import BMSData from './BMSData';
 
 const ALlTabs = [
   'General Settings',
@@ -32,6 +33,7 @@ const ALlTabs = [
   'Data Import & Export',
   'System Maintenance & Backup',
   'Compliance',
+  'BMS Data',
 ];
 
 const AdminSettings = () => {
@@ -98,6 +100,7 @@ const AdminSettings = () => {
             {tabIndex === 6 && <SystemMaintenanceBackupTab />}
           </TabPanel>
           <TabPanel>{tabIndex === 7 && <ComplianceTab />}</TabPanel>
+          <TabPanel>{tabIndex === 8 && <BMSData />}</TabPanel>
         </TabPanels>
       </Tabs>
     </Flex>

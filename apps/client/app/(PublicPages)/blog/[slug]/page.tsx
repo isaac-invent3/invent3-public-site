@@ -47,17 +47,17 @@ export default async function PostPage({ params }: PageProps) {
 
   const { title, content, author, author_image, preview_image } = page.data;
 
-  // const relatedPosts = await client.getAllByType('blog_post', {
-  //   limit: 2,
-  //   orderings: [
-  //     { field: 'my.blog_post.publication_date', direction: 'desc' },
-  //     { field: 'document.first_publication_date', direction: 'desc' },
-  //   ],
-  //   predicates: [
-  //     prismic.filter.not('my.blog_post.uid', slug),
-  //     prismic.filter.any('document.tags', page.tags),
-  //   ],
-  // });
+  const relatedPosts = await client.getAllByType('blog_post', {
+    limit: 2,
+    orderings: [
+      { field: 'my.blog_post.publication_date', direction: 'desc' },
+      { field: 'document.first_publication_date', direction: 'desc' },
+    ],
+    predicates: [
+      prismic.filter.not('my.blog_post.uid', slug),
+      prismic.filter.any('document.tags', page.tags),
+    ],
+  });
 
   return (
     <BlogPost
@@ -66,6 +66,7 @@ export default async function PostPage({ params }: PageProps) {
       author={author}
       authorImage={author_image.url}
       previewImage={preview_image.url}
+      relatedPosts={relatedPosts}
     />
   );
 }

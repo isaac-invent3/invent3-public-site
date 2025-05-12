@@ -1,10 +1,10 @@
 import {
   Heading,
   HeadingProps,
+  Stack,
   StackProps,
   Text,
   TextProps,
-  VStack,
 } from '@chakra-ui/react';
 import { isArray } from 'lodash';
 import React from 'react';
@@ -34,10 +34,11 @@ const SectionInfo = (props: SectionInfoProps) => {
     headingPrimaryColor = 'black',
   } = props;
   return (
-    <VStack
+    <Stack
       width="full"
       spacing="24px"
       alignItems="flex-start"
+      direction="column"
       ref={ref}
       {...containerStyles}
     >
@@ -102,7 +103,7 @@ const SectionInfo = (props: SectionInfoProps) => {
           {description}
         </Text>
       )}
-    </VStack>
+    </Stack>
   );
 };
 

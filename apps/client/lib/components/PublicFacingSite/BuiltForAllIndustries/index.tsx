@@ -4,6 +4,9 @@ import { Flex } from '@chakra-ui/react';
 import HeroHeader from '../Common/HeroHeader';
 import ImageDescription from '../Common/ImageDescription';
 import UseCases from './UseCases';
+import CustomTailored from './CustomTailored';
+import Scalable from './Scalable';
+import CTA from './CTA';
 
 const content = [
   {
@@ -52,22 +55,10 @@ const BuiltForAllIndustries = () => {
         bgDesktop="/built-for-all-industries-hero-desktop.png"
         bgMobile="/built-for-all-industries-hero-mobile.png"
       />
-      <Flex justifyContent="center" width="full">
-        <Flex
-          width="full"
-          justifyContent="space-between"
-          alignItems="flex-start"
-          px={{ base: '16px', md: '40px', '2xl': '80px' }}
-          py={{ base: '80px', lg: '120px' }}
-          maxW="1440px"
-          direction="column"
-          gap={{ base: '80px', lg: '80px' }}
-        >
-          {content.map((item, index) => (
-            <ImageDescription {...item} key={index} />
-          ))}
-        </Flex>
-      </Flex>
+      <CustomTailored />
+      <Scalable />
+      <UseCases />
+      <CTA />
     </Flex>
   );
 };

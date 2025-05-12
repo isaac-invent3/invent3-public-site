@@ -1,4 +1,12 @@
-import { Avatar, Flex, Heading, HStack, Text, VStack } from '@chakra-ui/react';
+import {
+  Avatar,
+  Flex,
+  Heading,
+  HStack,
+  StackProps,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 import { KeyTextField } from '@prismicio/client';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -13,6 +21,7 @@ interface BlogCardProps {
   dateCreated: string;
   previewImage: string | null | undefined;
   tags?: KeyTextField[];
+  containerStyle?: StackProps;
 }
 const BlogCard = (props: BlogCardProps) => {
   const {
@@ -23,9 +32,10 @@ const BlogCard = (props: BlogCardProps) => {
     dateCreated,
     previewImage,
     tags,
+    containerStyle,
   } = props;
   return (
-    <Link href={`/blog/${id}`}>
+    <Link href={`/blog/${id}`} style={{ minWidth: '100%' }}>
       <VStack
         width="full"
         spacing="24px"
@@ -34,6 +44,7 @@ const BlogCard = (props: BlogCardProps) => {
         rounded="8px"
         height="full"
         justifyContent="space-between"
+        {...containerStyle}
       >
         <VStack width="full" alignItems="flex-start" spacing="16px">
           <Flex position="relative" height="275px" width="full">
@@ -62,6 +73,7 @@ const BlogCard = (props: BlogCardProps) => {
             fontSize="16px"
             lineHeight="24px"
             color="black"
+            textAlign="left"
           >
             {title}
           </Heading>

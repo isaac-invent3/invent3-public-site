@@ -210,7 +210,6 @@ const TicketManagement = () => {
     eventName: 'CreateTicket',
     connectionState,
     callback: (newTicket) => {
-      console.log({ newTicket });
       const parsedTicket = JSON.parse(newTicket);
       // Update the query cache when a new ticket is received
 

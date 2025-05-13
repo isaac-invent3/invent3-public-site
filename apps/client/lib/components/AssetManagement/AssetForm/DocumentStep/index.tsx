@@ -19,7 +19,7 @@ const DocumentStep = (props: DocumentStepProps) => {
   const [isMobile] = useMediaQuery('(max-width: 768px)');
 
   const initialValues = {
-    documents: formDetails.documents ?? [],
+    documents: formDetails?.documents ?? [],
   };
 
   const formik = useFormik({

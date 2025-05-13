@@ -95,7 +95,7 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
         )}
         {children}
         <Button
-          type={(type ?? activeStep < totalStep) ? 'submit' : 'button'}
+          type={type ?? (activeStep < totalStep ? 'submit' : 'button')}
           handleClick={() => {
             handleContinue && handleContinue();
           }}

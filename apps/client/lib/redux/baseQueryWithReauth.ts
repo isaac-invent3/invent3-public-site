@@ -6,10 +6,10 @@ import type {
 import { fetchBaseQuery } from '@reduxjs/toolkit/query';
 import { getSession } from 'next-auth/react';
 import { handleSignOut } from '~/app/actions/authActions';
-// import { env } from 'next-runtime-env';
+import { env } from 'next-runtime-env';
 
-const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
-const baseURL = NEXT_PUBLIC_API_URL;
+// const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
+const baseURL = env('NEXT_PUBLIC_API_URL');
 
 const baseQuery = fetchBaseQuery({
   baseUrl: `${baseURL}/api`,

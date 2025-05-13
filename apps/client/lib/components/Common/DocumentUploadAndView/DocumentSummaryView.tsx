@@ -27,7 +27,7 @@ const DocumentSummaryView = ({ documents }: DocumentSummaryViewProps) => {
                   overflow="hidden"
                   textOverflow="ellipsis"
                 >
-                  {document.documentName}
+                  {document?.documentName}
                 </Text>
               </HStack>
             );

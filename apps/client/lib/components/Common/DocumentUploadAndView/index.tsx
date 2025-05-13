@@ -9,7 +9,7 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { DocumentIcon, InfoIcon } from '~/lib/components/CustomIcons';
 import { Document } from '~/lib/interfaces/general.interfaces';
 import SingleDocument from './SingleDocument';

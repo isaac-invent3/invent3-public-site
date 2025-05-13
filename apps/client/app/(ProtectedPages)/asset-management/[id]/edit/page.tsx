@@ -72,14 +72,14 @@ export default function Page({ params }: { params: { id: number } }) {
     }
     //Populating Asset Documents
     if (assetDocumentData?.data) {
-      formDocuments = assetDocumentData.data.items.map(
-        (document: AssetDocument) => ({
+      formDocuments = assetDocumentData.data.items
+        .filter((item) => item.document !== null)
+        .map((document: AssetDocument) => ({
           documentId: document.documentId || null,
           documentName: document.documentName || null,
           base64Document: document.document || null,
           base64Prefix: document.base64Prefix || null,
-        })
-      );
+        }));
     }
     let acquisitionInfo;
     //Populating Asset Acquisition Info

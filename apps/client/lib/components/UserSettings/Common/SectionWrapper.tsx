@@ -1,12 +1,13 @@
-import { Stack, StackProps, Text, VStack } from '@chakra-ui/react';
+import { Stack, StackProps, Text, TextProps, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 interface SectionWrapperProps extends StackProps {
   title: string;
   subtitle: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   sectionInfoWidth?: string;
   sectionInfoStyle?: StackProps;
+  subtitleStyle?: TextProps;
 }
 const SectionWrapper = (props: SectionWrapperProps) => {
   const {
@@ -15,6 +16,7 @@ const SectionWrapper = (props: SectionWrapperProps) => {
     sectionInfoWidth = 'full',
     children,
     sectionInfoStyle,
+    subtitleStyle,
     ...rest
   } = props;
   return (
@@ -36,7 +38,7 @@ const SectionWrapper = (props: SectionWrapperProps) => {
         <Text color="black" size="md">
           {title}
         </Text>
-        <Text color="neutral.600" fontWeight={400}>
+        <Text color="neutral.600" fontWeight={400} {...subtitleStyle}>
           {subtitle}
         </Text>
       </VStack>

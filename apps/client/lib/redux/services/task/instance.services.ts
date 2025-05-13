@@ -24,6 +24,7 @@ export const taskInstanceApi = createApi({
     'allTaskInstances',
     'allTaskInstancesByScheduleInstanceId',
     'allCompletedTaskInstances',
+    'singleTaskInstance',
   ],
   endpoints: (builder) => ({
     createTaskInstance: builder.mutation<
@@ -51,6 +52,7 @@ export const taskInstanceApi = createApi({
       invalidatesTags: [
         'allTaskInstancesByScheduleInstanceId',
         'allTaskInstances',
+        'singleTaskInstance',
       ],
     }),
     updateTaskInstanceMetadataIds: builder.mutation<
@@ -66,6 +68,7 @@ export const taskInstanceApi = createApi({
       invalidatesTags: [
         'allTaskInstancesByScheduleInstanceId',
         'allTaskInstances',
+        'singleTaskInstance',
       ],
     }),
     deleteTaskInstance: builder.mutation<
@@ -130,6 +133,7 @@ export const taskInstanceApi = createApi({
         method: 'GET',
         headers: getHeaders(),
       }),
+      providesTags: ['singleTaskInstance'],
     }),
     getAllTaskInstancesByScheduleInstanceId: builder.query<
       BaseApiResponse<ListResponse<TaskInstance>>,

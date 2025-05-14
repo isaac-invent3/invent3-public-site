@@ -29,6 +29,7 @@ declare module 'next-auth' {
     companySlug: string;
     managedCompanySlug: string | null;
     managedCompanyId: number | null;
+    hasShownGuide: boolean;
   }
   interface Session {
     user: User;
@@ -58,6 +59,7 @@ declare module 'next-auth/jwt' {
     companySlug: string;
     managedCompanySlug: string | null;
     managedCompanyId: number | null;
+    hasShownGuide: boolean;
   }
 }
 

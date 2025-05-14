@@ -6,6 +6,7 @@ import { ROLE_IDS_ENUM, ROUTES } from '~/lib/utils/constants';
 import { useAppSelector } from '~/lib/redux/hooks';
 import ToggleCompanyStatusModal from '../Modals/ToggleCompanyStatusModal';
 import { useSession } from 'next-auth/react';
+import AssistantGuideBox from '../JourneyGuide/AssistantGuideBox';
 
 const Header = () => {
   const company = useAppSelector((state) => state.company.company);
@@ -28,6 +29,9 @@ const Header = () => {
       >
         <PageHeader>Company Detail</PageHeader>
         <HStack spacing="8px" wrap="wrap">
+          <AssistantGuideBox
+            containerStyle={{ height: '60px', rounded: 'full' }}
+          />
           <Button
             customStyles={{
               width: 'max-content',
@@ -42,7 +46,7 @@ const Header = () => {
               variant="outline"
               customStyles={{
                 width: 'max-content',
-                height: { base: '36px', md: 'min-content' },
+                height: { base: '36px', md: '50px' },
               }}
             >
               Manage Subscription

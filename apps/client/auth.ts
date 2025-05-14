@@ -205,6 +205,7 @@ export const config = {
         token.roleIds = user.roleIds;
         token.roleSystemModuleContextPermissions =
           user.roleSystemModuleContextPermissions;
+        token.hasShownGuide = false;
       }
 
       // Set accessTokenExpires if not already set, to prevent resetting it on each callback
@@ -266,6 +267,7 @@ export const config = {
           roleIds: token.roleIds,
           roleSystemModuleContextPermissions:
             token.roleSystemModuleContextPermissions,
+          hasShownGuide: token.hasShownGuide,
         },
         error: token.error,
       };

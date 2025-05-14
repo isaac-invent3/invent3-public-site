@@ -8,6 +8,9 @@ import Feedback from './Feedback';
 import { getBreadcrumb } from './BreadCrumb';
 // import HeaderIcon from './HeaderIcon';
 import UserActionPopover from './UserActionPopover';
+import AssistantGuideBox from '~/lib/components/CompanyManagement/JourneyGuide/AssistantGuideBox';
+import { useSession } from 'next-auth/react';
+import { ROLE_IDS_ENUM } from '~/lib/utils/constants';
 
 interface HeaderProps {
   setIsCollapse: React.Dispatch<React.SetStateAction<boolean>>;
@@ -17,6 +20,7 @@ const Header = (props: HeaderProps) => {
   const pathname = usePathname();
   const pathSegments = pathname?.split('/').filter(Boolean);
   const breadCrumbData = getBreadcrumb(pathSegments as string[]);
+  const { data } = useSession();
 
   return (
     <Stack
@@ -54,6 +58,9 @@ const Header = (props: HeaderProps) => {
           />
         </HStack>
         <HStack spacing={{ base: '8px', md: '24px' }}>
+          {data?.user?.roleIds.includes(ROLE_IDS_ENUM.CLIENT_ADMIN) && (
+            <AssistantGuideBox />
+          )}
           <Feedback />
           {/* <HeaderIcon icon={SearchIcon} size="20px" />
           <HeaderIcon icon={SettingsIcon} size="24px" /> */}

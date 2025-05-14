@@ -13,10 +13,11 @@ import {
 } from '~/lib/components/CustomIcons/layout';
 import CompanyPageHeader from '~/lib/components/CompanyManagement/CompanyPageHeader';
 import Notes from './Notes';
-import { getSession } from 'next-auth/react';
+import { getSession, useSession } from 'next-auth/react';
 import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
 import useSignalR from '~/lib/hooks/useSignalR';
 import { handleSignOut } from '~/app/actions/authActions';
+import AssistanceGuide from '~/lib/components/CompanyManagement/JourneyGuide/AssistanceGuide';
 
 interface ProtectedLayoutProps {
   children: React.ReactNode;
@@ -24,6 +25,8 @@ interface ProtectedLayoutProps {
 const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
   const [isCollapse, setIsCollapse] = useState(true);
   const [showCountdown, setShowCountdown] = useState(false);
+  const [showAssistantGuide, setShowAssistantGuide] = useState(false);
+  const { data, update } = useSession();
 
   //Session timeout check
   // This effect checks the session every minute and signs out the user if the session is invalid
@@ -37,6 +40,24 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
       },
       31 * 60 * 1000
     ); // Check every 31 minutes
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Hide Assistant Guide after 1 minutes
+  useEffect(() => {
+    if (data?.user && !data?.user?.hasShownGuide) {
+      setShowAssistantGuide(true);
+    }
+    const interval = setInterval(async () => {
+      setShowAssistantGuide(false);
+      await update({
+        user: {
+          ...data?.user,
+          hasShownGuide: true,
+        },
+      });
+    }, 10 * 1000); // Check every 31 minutes
 
     return () => clearInterval(interval);
   }, []);
@@ -99,6 +120,10 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
         height="full"
       >
         <Header setIsCollapse={setIsCollapse} />
+        <AssistanceGuide
+          isOpen={showAssistantGuide}
+          onClose={() => setShowAssistantGuide(false)}
+        />
         <CompanyPageHeader />
         {children}
       </Flex>

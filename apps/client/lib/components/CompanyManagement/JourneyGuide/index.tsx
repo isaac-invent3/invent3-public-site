@@ -12,42 +12,43 @@ import {
   GenericModal,
   ModalCloseButtonText,
 } from '@repo/ui/components';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CheckIcon, JourneyIcon } from '../../CustomIcons';
-import { ROUTES } from '~/lib/utils/constants';
+import { ROLE_IDS_ENUM, ROUTES } from '~/lib/utils/constants';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useSession } from 'next-auth/react';
+import { useGetCompanyJourneyGuideQuery } from '~/lib/redux/services/company.services';
+import { CompanyJourneyGuide } from '~/lib/interfaces/company.interfaces';
 
-const steps = [
-  {
-    title: 'Create Company',
-    subtitle: '',
-    buttonSuffix: 'Create Company',
-    link: `/${ROUTES.COMPANY}/add`,
-  },
+export const journeyGuideSteps = [
   {
     title: 'Add Users',
     subtitle: '',
     buttonSuffix: 'Create User',
     link: `/${ROUTES.USERS}/add`,
+    key: 'AddUsers',
   },
   {
     title: 'Add Asset(s)',
     subtitle: 'Upload assets Images or later',
     buttonSuffix: 'Create Asset',
     link: `/${ROUTES.ASSETS}/add`,
+    key: 'AddAssets',
   },
   {
     title: 'Add Maintenance Plan',
     subtitle: 'Add schedules or later',
     buttonSuffix: 'Create Maintenance Plan',
     link: `/${ROUTES.MAINTENANCE_PLANS}/add`,
+    key: 'AddMaintenancePlan',
   },
   {
     title: 'Configure Admin Settings',
     subtitle: '',
     buttonSuffix: 'Configure Settings',
     link: `/${ROUTES.SETTINGS}`,
+    key: 'AddAdminSettings',
   },
 ];
 
@@ -59,6 +60,42 @@ interface JourneyGuideProps {
 const JourneyGuide = (props: JourneyGuideProps) => {
   const { isOpen, onClose, closeWithNavigating } = props;
   const [activeStep, setActiveStep] = useState(0);
+  const { data } = useSession();
+  const { data: journeyGuideData } = useGetCompanyJourneyGuideQuery(
+    { companyId: data?.user?.companyId! },
+    { skip: !data?.user }
+  );
+
+  const steps = [
+    ...(!data?.user?.roleIds.includes(ROLE_IDS_ENUM.CLIENT_ADMIN)
+      ? [
+          {
+            title: 'Create Company',
+            subtitle: '',
+            buttonSuffix: 'Create Company',
+            link: `/${ROUTES.COMPANY}/add`,
+            key: 'CreateCompanyProfile',
+          },
+        ]
+      : []),
+    ...journeyGuideSteps,
+  ];
+
+  useEffect(() => {
+    if (journeyGuideData?.data) {
+      const nextStepIndex = steps.findIndex(
+        (step) => !journeyGuideData?.data[step.key as keyof CompanyJourneyGuide]
+      );
+
+      if (nextStepIndex === -1) {
+        // All steps completed
+        setActiveStep(steps.length);
+      } else {
+        setActiveStep(nextStepIndex);
+      }
+    }
+  }, [journeyGuideData, steps]);
+
   return (
     <GenericModal
       isOpen={isOpen}
@@ -75,12 +112,17 @@ const JourneyGuide = (props: JourneyGuideProps) => {
         position: 'relative',
       }}
     >
-      <Flex width="full" position="relative">
+      <Flex
+        width="full"
+        height="full"
+        minH={{ lg: '686px' }}
+        position="relative"
+      >
         {/* Left Side Starts Here */}
         <VStack
           width={{ base: 'full', lg: '50%' }}
           alignItems="flex-start"
-          spacing={{ base: '24px', lg: '88px' }}
+          spacing={{ base: '24px', lg: '60px' }}
           bgColor="#DBDAD680"
           backdropFilter="blur(40px)"
           px={{ base: '24px', md: '32px' }}
@@ -233,7 +275,7 @@ const JourneyGuide = (props: JourneyGuideProps) => {
           </HStack>
           <Flex
             position="relative"
-            height="250px"
+            height="300px"
             width="379px"
             left={'-120px'}
           >

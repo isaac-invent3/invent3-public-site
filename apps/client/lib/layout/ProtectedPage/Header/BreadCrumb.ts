@@ -91,10 +91,10 @@ const profileBreadcrumb: BreadcrumbNode = {
   label: 'Profile',
 };
 
-const userSettingsBreadcrumb: BreadcrumbNode = {
-  route: `/${ROUTES.USER_SETTINGS}`,
-  label: 'Settings',
-};
+// const userSettingsBreadcrumb: BreadcrumbNode = {
+//   route: `/${ROUTES.USER_SETTINGS}`,
+//   label: 'Settings',
+// };
 
 const reportBreadcrumb: BreadcrumbNode = {
   route: `/${ROUTES.REPORT}`,
@@ -168,6 +168,15 @@ const breadcrumbMap: Record<string, BreadcrumbNode> = {
   [ROUTES.TICKETS]: ticketsBreadcrumb,
   [ROUTES.PROFILE]: profileBreadcrumb,
   [ROUTES.REPORT]: reportBreadcrumb,
+  [ROUTES.COMPANY]: companyManagementBreadCrumb,
+  [ROUTES.APPROVAL]: approvalBreadcrumb,
+  [ROUTES.COMPLIANCE]: complianceBreadCrumb,
+  [ROUTES.SETTINGS]: adminSettingsBreadcrumb,
+  [ROUTES.ROLES]: roleManagementBreadcrumb,
+  [ROUTES.VENDOR]: vendorManagementBreadCrumb,
+  [ROUTES.USERS]: userManagementBreadcrumb,
+  [ROUTES.AUDIT_LOG]: auditLogBreadcrumb,
+  [ROUTES.TEMPLATES]: templateBreadcrumb,
 };
 
 const getBreadcrumb = (pathSegments: string[]): breadCrumbRoute[] => {

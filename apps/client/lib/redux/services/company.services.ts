@@ -9,6 +9,7 @@ import {
 } from '@repo/interfaces';
 import {
   Company,
+  CompanyJourneyGuide,
   CompanySummary,
   CreateCompanyPayload,
   UpdateCompanyPayload,
@@ -95,6 +96,16 @@ export const companyApi = createApi({
       }),
       invalidatesTags: ['allCompanies'],
     }),
+    getCompanyJourneyGuide: builder.query<
+      BaseApiResponse<CompanyJourneyGuide>,
+      { companyId: number }
+    >({
+      query: ({ companyId }) => ({
+        url: `/Invent3Pro/GetComapnyJourneyGuide/${companyId}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
   }),
 });
 
@@ -106,4 +117,5 @@ export const {
   useCreateCompanyMutation,
   useUpdateCompanyMutation,
   useToggleCompanyStatusMutation,
+  useGetCompanyJourneyGuideQuery,
 } = companyApi;

@@ -1,17 +1,48 @@
 import { Flex, Heading, HStack, Icon, Text, VStack } from '@chakra-ui/react';
 import { Button, GenericModal } from '@repo/ui/components';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { CloseIcon, JourneyIcon } from '../../CustomIcons';
+import { useGetCompanyJourneyGuideQuery } from '~/lib/redux/services/company.services';
+import { useSession } from 'next-auth/react';
+import { journeyGuideSteps } from '.';
+import { CompanyJourneyGuide } from '~/lib/interfaces/company.interfaces';
 
 interface AssistanceGuideProps {
   isOpen: boolean;
   onClose: () => void;
+  companyId?: number;
 }
 const AssistanceGuide = (props: AssistanceGuideProps) => {
   const { isOpen, onClose } = props;
+  const { data } = useSession();
+  const { data: journeyGuideData } = useGetCompanyJourneyGuideQuery(
+    { companyId: data?.user?.companyId! },
+    { skip: !data?.user }
+  );
+  const [activeStep, setActiveStep] = useState(0);
+
+  useEffect(() => {
+    if (journeyGuideData?.data) {
+      const nextStepIndex = journeyGuideSteps.findIndex(
+        (step) => !journeyGuideData?.data[step.key as keyof CompanyJourneyGuide]
+      );
+
+      if (nextStepIndex === -1) {
+        // All steps completed
+        setActiveStep(journeyGuideSteps.length);
+      } else {
+        setActiveStep(nextStepIndex);
+      }
+    }
+  }, [journeyGuideData]);
+
   return (
     <GenericModal
-      isOpen={isOpen}
+      isOpen={
+        journeyGuideData && activeStep === journeyGuideSteps.length
+          ? false
+          : isOpen
+      }
       onClose={onClose}
       mainModalStyle={{ isCentered: false }}
       contentStyle={{
@@ -49,7 +80,7 @@ const AssistanceGuide = (props: AssistanceGuideProps) => {
             <HStack spacing="16px">
               <Icon as={JourneyIcon} boxSize="24px" />
               <Heading fontWeight={800} fontSize={{ base: '24px' }}>
-                Assistant Guide
+                Journey Guide
               </Heading>
             </HStack>
             <Text
@@ -80,19 +111,28 @@ const AssistanceGuide = (props: AssistanceGuideProps) => {
             cursor="pointer"
             onClick={() => onClose()}
           />
-          <Text
-            width="full"
-            fontWeight={800}
-            fontSize="20px"
-            lineHeight="100%"
-            textAlign="center"
-          >
-            3
-            <Text as="span" fontWeight={800} fontSize="14px" lineHeight="100%">
-              /5
-            </Text>{' '}
-            steps pending
-          </Text>
+          <VStack alignItems="flex-start" spacing="4px" width="full">
+            <Text
+              width="full"
+              fontWeight={800}
+              fontSize="20px"
+              lineHeight="100%"
+            >
+              {activeStep}
+              <Text
+                as="span"
+                fontWeight={800}
+                fontSize="14px"
+                lineHeight="100%"
+              >
+                /4
+              </Text>{' '}
+              steps pending
+            </Text>
+            <Text color="neutral.700">
+              Next Step: {journeyGuideSteps?.[activeStep]?.title}
+            </Text>
+          </VStack>
           <Button customStyles={{ height: '33px' }}>Continue</Button>
         </VStack>
       </Flex>

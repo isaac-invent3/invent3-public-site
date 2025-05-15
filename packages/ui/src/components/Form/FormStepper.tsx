@@ -89,6 +89,7 @@ const FormStepper = (props: FormStepperProps) => {
                   fontWeight={700}
                   lineHeight="11.88px"
                   whiteSpace="nowrap"
+                  opacity={currentStep >= index + 1 ? 1 : 0.5}
                 >
                   STEP {index + 1}
                 </ChakraText>
@@ -97,6 +98,7 @@ const FormStepper = (props: FormStepperProps) => {
                   color="black"
                   fontWeight={700}
                   whiteSpace="nowrap"
+                  opacity={currentStep >= index + 1 ? 1 : 0.5}
                 >
                   {step}
                 </ChakraText>

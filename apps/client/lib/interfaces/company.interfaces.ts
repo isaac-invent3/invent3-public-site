@@ -143,6 +143,14 @@ interface CompanyConfigurationObject {
   systemConfigurationOptionId: number;
 }
 
+interface CompanyJourneyGuide {
+  CreateCompanyProfile: boolean;
+  AddUsers: boolean;
+  AddAssets: boolean;
+  AddMaintenancePlan: boolean;
+  AddAdminSettings: boolean;
+}
+
 export type {
   Company,
   CompanyFormDetails,
@@ -153,4 +161,5 @@ export type {
   CompanyConfigurationPayload,
   CompanyConfigurationOption,
   CompanyConfigurationObject,
+  CompanyJourneyGuide,
 };

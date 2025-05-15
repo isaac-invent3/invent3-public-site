@@ -18,6 +18,7 @@ import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
 import useSignalR from '~/lib/hooks/useSignalR';
 import { handleSignOut } from '~/app/actions/authActions';
 import AssistanceGuide from '~/lib/components/CompanyManagement/JourneyGuide/AssistanceGuide';
+import { ROLE_IDS_ENUM } from '~/lib/utils/constants';
 
 interface ProtectedLayoutProps {
   children: React.ReactNode;
@@ -25,7 +26,7 @@ interface ProtectedLayoutProps {
 const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
   const [isCollapse, setIsCollapse] = useState(true);
   const [showCountdown, setShowCountdown] = useState(false);
-  const [showAssistantGuide, setShowAssistantGuide] = useState(false);
+  const [showAssistantGuide, setShowAssistantGuide] = useState(true);
   const { data, update } = useSession();
 
   //Session timeout check
@@ -49,17 +50,6 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
     if (data?.user && !data?.user?.hasShownGuide) {
       setShowAssistantGuide(true);
     }
-    const interval = setInterval(async () => {
-      setShowAssistantGuide(false);
-      await update({
-        user: {
-          ...data?.user,
-          hasShownGuide: true,
-        },
-      });
-    }, 10 * 1000); // Check every 31 minutes
-
-    return () => clearInterval(interval);
   }, []);
 
   // SignalR Connection
@@ -120,10 +110,13 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
         height="full"
       >
         <Header setIsCollapse={setIsCollapse} />
-        <AssistanceGuide
-          isOpen={showAssistantGuide}
-          onClose={() => setShowAssistantGuide(false)}
-        />
+        {data?.user?.roleIds.includes(ROLE_IDS_ENUM.CLIENT_ADMIN) ||
+          (data?.user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY) && (
+            <AssistanceGuide
+              isOpen={showAssistantGuide}
+              onClose={() => setShowAssistantGuide(false)}
+            />
+          ))}
         <CompanyPageHeader />
         {children}
       </Flex>

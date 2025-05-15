@@ -26,7 +26,7 @@ interface ProtectedLayoutProps {
 const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
   const [isCollapse, setIsCollapse] = useState(true);
   const [showCountdown, setShowCountdown] = useState(false);
-  const [showAssistantGuide, setShowAssistantGuide] = useState(true);
+  const [showAssistantGuide, setShowAssistantGuide] = useState(false);
   const { data, update } = useSession();
 
   //Session timeout check

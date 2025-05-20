@@ -43,6 +43,7 @@ const CustomizedPlanModal = (props: CustomizedPlanModalProps) => {
       planName: null,
       startDate: null,
       endDate: null,
+      ownerId: null,
     },
     validationSchema: planSchema(false, false),
     enableReinitialize: true,
@@ -51,6 +52,7 @@ const CustomizedPlanModal = (props: CustomizedPlanModalProps) => {
       const finalValue = {
         planName: values.planName!,
         assetId: assetId!,
+        ownerId: values.ownerId!,
         startDate: moment(values.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
         endDate: values.endDate
           ? moment(values.endDate, 'DD/MM/YYYY').format('YYYY-MM-DD')

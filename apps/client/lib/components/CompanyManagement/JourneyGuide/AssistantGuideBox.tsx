@@ -78,7 +78,11 @@ const AssistantGuideBox = (props: AssistantGuideBoxProps) => {
         >
           <HStack spacing="16px">
             <Icon as={JourneyIcon} boxSize="24px" />
-            <Heading fontWeight={800} fontSize={{ base: '16px' }}>
+            <Heading
+              fontWeight={800}
+              fontSize={{ base: '16px' }}
+              lineHeight="100%"
+            >
               Journey Guide
             </Heading>
           </HStack>

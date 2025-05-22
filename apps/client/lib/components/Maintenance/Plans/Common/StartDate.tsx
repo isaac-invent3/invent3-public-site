@@ -1,4 +1,4 @@
-import { VStack } from '@chakra-ui/react';
+import { StackProps, VStack } from '@chakra-ui/react';
 import { useField } from 'formik';
 import moment from 'moment';
 
@@ -13,9 +13,10 @@ interface StartDateProps {
   spacing: string;
   // eslint-disable-next-line no-unused-vars
   handleSelectedDate?: (date: Date | undefined) => void;
+  buttonStyle?: StackProps;
 }
 const StartDate = (props: StartDateProps) => {
-  const { sectionMaxWidth, spacing, handleSelectedDate } = props;
+  const { sectionMaxWidth, spacing, handleSelectedDate, buttonStyle } = props;
   // eslint-disable-next-line no-unused-vars
   const [field, meta, helpers] = useField('startDate');
   return (
@@ -26,7 +27,12 @@ const StartDate = (props: StartDateProps) => {
       description="Set the starting date for the maintenance"
       isRequired
     >
-      <VStack width="full" spacing="4px" alignItems="flex-start">
+      <VStack
+        width="full"
+        spacing="4px"
+        alignItems="flex-start"
+        {...buttonStyle}
+      >
         <DateTimeButtons
           buttonVariant="secondary"
           includeTime={false}

@@ -49,6 +49,7 @@ const Header = (props: HeaderProps) => {
           display={{ md: 'none' }}
           pl="16px" //Temporary fix of alignment
           pt="8px" //Temporary fix of alignment
+          flexShrink={0}
         >
           <Image
             src="/logo-small-initials-white.svg"
@@ -58,15 +59,22 @@ const Header = (props: HeaderProps) => {
           />
         </HStack>
         <HStack spacing={{ base: '8px', md: '24px' }}>
-          {data?.user?.roleIds.includes(ROLE_IDS_ENUM.CLIENT_ADMIN) && (
-            <AssistantGuideBox />
-          )}
+          <HStack display={{ base: 'none', lg: 'flex' }}>
+            {data?.user?.roleIds.includes(ROLE_IDS_ENUM.CLIENT_ADMIN) && (
+              <AssistantGuideBox />
+            )}
+          </HStack>
           <Feedback />
           {/* <HeaderIcon icon={SearchIcon} size="20px" />
           <HeaderIcon icon={SettingsIcon} size="24px" /> */}
           <NotificationComponents />
           <UserActionPopover />
         </HStack>
+      </HStack>
+      <HStack display={{ base: 'flex', lg: 'none' }}>
+        {data?.user?.roleIds.includes(ROLE_IDS_ENUM.CLIENT_ADMIN) && (
+          <AssistantGuideBox containerStyle={{ width: '100%' }} />
+        )}
       </HStack>
     </Stack>
   );

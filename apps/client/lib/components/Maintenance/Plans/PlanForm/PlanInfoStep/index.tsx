@@ -30,7 +30,7 @@ interface PlanInfoStepProps {
   type: 'create' | 'edit';
 }
 const PlanInfoStep = (props: PlanInfoStepProps) => {
-  const { activeStep, setActiveStep } = props;
+  const { activeStep, setActiveStep, type } = props;
   const maintenanceSlice = useAppSelector((state) => state.maintenance);
   const plan = maintenanceSlice.planForm;
   const dispatch = useAppDispatch();
@@ -57,14 +57,17 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
       : 'asset_group',
   };
   const previousDay = moment().subtract(1, 'days').format('DD/MM/YYYY');
+  const todayDate = moment().format('DD/MM/YYYY');
 
   const formik = useFormik({
     initialValues,
     validationSchema: planSchema(
       isDefaultPlan,
       true,
-      previousDay,
-      moment(inputtedStartDate).format('DD/MM/YYYY') ?? undefined
+      type === 'create' ? previousDay : undefined,
+      type === 'create'
+        ? (moment(inputtedStartDate).format('DD/MM/YYYY') ?? undefined)
+        : todayDate
     ),
     enableReinitialize: true,
     onSubmit: async (values) => {
@@ -215,6 +218,10 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
                   sectionMaxWidth="141px"
                   spacing="40px"
                   handleSelectedDate={(date) => setInputtedStartDate(date)}
+                  buttonStyle={{
+                    opacity: type === 'edit' ? 0.5 : 1,
+                    pointerEvents: type == 'edit' ? 'none' : 'initial',
+                  }}
                 />
                 <EndDate
                   sectionMaxWidth="141px"

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { CSSObjectWithLabel } from 'react-select';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { Option, SearchCriterion } from '~/lib/interfaces/general.interfaces';
 import { useAppSelector } from '~/lib/redux/hooks';
@@ -14,10 +15,11 @@ interface BuildingSelectProps {
   handleSelect?: (options: Option) => void;
   type: 'general' | 'specificById';
   facilityId?: number | null;
+  selectStyles?: CSSObjectWithLabel;
 }
 
 const BuildingSelect = (props: BuildingSelectProps) => {
-  const { handleSelect, type, facilityId } = props;
+  const { handleSelect, type, facilityId, selectStyles } = props;
   const { buildingName } = useAppSelector((state) => state.asset.assetForm);
   const [searchBuilding] = useSearchBuildingMutation({});
 
@@ -78,6 +80,7 @@ const BuildingSelect = (props: BuildingSelectProps) => {
       specialSearch={
         type === 'specificById' ? buildingByFacilityIdCriterion : undefined
       }
+      selectStyles={selectStyles}
     />
   );
 };

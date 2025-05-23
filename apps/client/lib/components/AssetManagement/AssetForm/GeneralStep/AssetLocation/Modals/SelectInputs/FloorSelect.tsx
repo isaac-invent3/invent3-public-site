@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { CSSObjectWithLabel } from 'react-select';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { Option, SearchCriterion } from '~/lib/interfaces/general.interfaces';
 import { useAppSelector } from '~/lib/redux/hooks';
@@ -14,10 +15,11 @@ interface FloorSelectProps {
   handleSelect?: (options: Option) => void;
   type: 'general' | 'specificById';
   buildingId?: number | null;
+  selectStyles?: CSSObjectWithLabel;
 }
 
 const FloorSelect = (props: FloorSelectProps) => {
-  const { handleSelect, type, buildingId } = props;
+  const { handleSelect, type, buildingId, selectStyles } = props;
   const { floorName } = useAppSelector((state) => state.asset.assetForm);
   const [searchFloors] = useSearchFloorsMutation({});
 

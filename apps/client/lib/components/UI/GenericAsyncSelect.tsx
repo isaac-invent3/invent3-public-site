@@ -1,5 +1,6 @@
 import { FormSelect } from '@repo/ui/components';
 import React, { useEffect, useState } from 'react';
+import { CSSObjectWithLabel } from 'react-select';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { Option, SearchCriterion } from '~/lib/interfaces/general.interfaces';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
@@ -25,6 +26,7 @@ interface GenericAsyncSelectProps {
   isInvalid?: boolean;
   isMultiSelect?: boolean;
   customProps?: { [name: string]: any };
+  selectStyles?: CSSObjectWithLabel;
 }
 
 const GenericAsyncSelect = (props: GenericAsyncSelectProps) => {
@@ -45,6 +47,7 @@ const GenericAsyncSelect = (props: GenericAsyncSelectProps) => {
     showTitleAfterSelect = true,
     isInvalid,
     isMultiSelect,
+    selectStyles,
   } = props;
   const { handleSubmit } = useCustomMutation();
   const [options, setOptions] = useState<Option[]>([]);
@@ -130,6 +133,7 @@ const GenericAsyncSelect = (props: GenericAsyncSelectProps) => {
       isSearchable
       isInvalid={isInvalid}
       isMultiSelect={isMultiSelect}
+      selectStyles={selectStyles}
     />
   );
 };

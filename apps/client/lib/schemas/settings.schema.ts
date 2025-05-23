@@ -52,10 +52,76 @@ const complianceSchema = Yup.object().shape({
   complianceAutoReportScheduleId: Yup.number().nullable(),
 });
 
+const bmsSettingsSchema = () =>
+  Yup.object().shape({
+    bmsBuildingSettingsModel: Yup.array()
+      .of(
+        Yup.object().shape({
+          buildingId: Yup.number().required('Building is Required'),
+          costOfEnergyPerKWh: Yup.number().required('Cost of Energy Per KWh'),
+          budgetExpenditureModels: Yup.array().of(
+            Yup.object().shape({
+              key: Yup.number().required('Key is Required'),
+              value: Yup.object().shape({
+                systemContextTypeId: Yup.number().required(
+                  'System Context Type is Required'
+                ),
+                contextId: Yup.number().required('Context ID is Required'),
+                kWhTarget: Yup.number().required('Target kWh is Required'),
+              }),
+            })
+          ),
+          bmsFloorSettingsModels: Yup.array().of(
+            Yup.object().shape({
+              floorId: Yup.number().required('Floor ID is Required'),
+              floorMap: Yup.string().required('Floor Map is Required'),
+              bmsRoomSettingsModel: Yup.array().of(
+                Yup.object().shape({
+                  roomId: Yup.number().required('Room is Required'),
+                  temperatureSetPoint: Yup.object().shape({
+                    key: Yup.number().required('Key is Required'),
+                    value: Yup.object().shape({
+                      key: Yup.number().required('Key is Required'),
+                      value: Yup.number().required('Value is Required'),
+                    }),
+                  }),
+                  humiditySetPoint: Yup.object().shape({
+                    key: Yup.number().required('Key is Required'),
+                    value: Yup.object().shape({
+                      key: Yup.number().required('Key is Required'),
+                      value: Yup.number().required('Value is Required'),
+                    }),
+                  }),
+                  co2SetPoint: Yup.object().shape({
+                    key: Yup.number().required('Key is Required'),
+                    value: Yup.object().shape({
+                      key: Yup.number().required('Key is Required'),
+                      value: Yup.number().required('Value is Required'),
+                    }),
+                  }),
+                  energyConsumptionTarget: Yup.object().shape({
+                    key: Yup.number().required('Key is Required'),
+                    value: Yup.object().shape({
+                      key: Yup.number().required('Key is Required'),
+                      value: Yup.number().required('Value is Required'),
+                    }),
+                  }),
+                })
+              ),
+            })
+          ),
+        })
+      )
+      .required('Building Settings is Required')
+      .min(1),
+    facilityId: Yup.number().required('Facility is Required'),
+  });
+
 export {
   generalSchema,
   notificationSchema,
   securityAuthenticationSchema,
   auditLogSchema,
   complianceSchema,
+  bmsSettingsSchema,
 };

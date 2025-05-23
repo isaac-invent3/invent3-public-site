@@ -2,12 +2,14 @@ import { useField } from 'formik';
 import SelectInput, { SelectInputProps } from '../Select';
 // eslint-disable-next-line no-redeclare
 import { Option } from '@repo/interfaces';
+import { CSSObjectWithLabel } from 'react-select';
 
 interface FormSelectProps
   extends Omit<SelectInputProps, 'selectedOptions' | 'handleSelect'> {
   name: string;
   // eslint-disable-next-line no-unused-vars
   onSelect?: (option: Option | Option[]) => void;
+  selectStyles?: CSSObjectWithLabel;
 }
 
 const FormSelect = (props: FormSelectProps) => {

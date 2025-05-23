@@ -27,6 +27,7 @@ import UserDetail from './UserDetail';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import useSignalR from '~/lib/hooks/useSignalR';
 import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
+import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 
 export const initialFilterData = {
   startDate: undefined,
@@ -60,6 +61,7 @@ const UserManagement = () => {
   const [filterData, setFilterData] = useState<UserFilter>(initialFilterData);
   const searchParams = useSearchParams();
   const userId = searchParams?.get(SYSTEM_CONTEXT_DETAILS.USER.slug);
+  const { updateSearchParam } = useCustomSearchParams();
 
   // Handles Toggling the  Filter
   useEffect(() => {
@@ -278,6 +280,9 @@ const UserManagement = () => {
             pageSize={pageSize}
             setPageSize={setPageSize}
             showPopover
+            handleSelectRow={(row) => {
+              updateSearchParam(SYSTEM_CONTEXT_DETAILS.USER.slug, row.userId);
+            }}
           />
         </Flex>
       </Flex>

@@ -3,6 +3,7 @@ import baseQueryWithReauth from '../baseQueryWithReauth';
 import { AppConfig } from '~/lib/interfaces/general.interfaces';
 import { BaseApiResponse } from '@repo/interfaces';
 import {
+  BMSData,
   Settings,
   UpdateSettingsPayload,
 } from '~/lib/interfaces/settings.interfaces';
@@ -40,6 +41,14 @@ export const utilityApi = createApi({
         body,
       }),
     }),
+    bmsSettings: builder.mutation<void, BMSData & { createdBy: string }>({
+      query: (body) => ({
+        url: `/Invent3Pro/BMSAdminSettings`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
   }),
 });
 
@@ -47,4 +56,5 @@ export const {
   useGetAppConfigValuesQuery,
   useUpdateSettingsMutation,
   useGetSettingsQuery,
+  useBmsSettingsMutation,
 } = utilityApi;

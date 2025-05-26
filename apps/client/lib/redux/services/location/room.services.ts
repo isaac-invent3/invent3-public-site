@@ -31,6 +31,20 @@ export const roomApi = createApi({
       }),
       providesTags: ['allRooms'],
     }),
+    getAllRoomsInAFloor: builder.query<
+      BaseApiResponse<Room[]>,
+      { floorId: number }
+    >({
+      query: ({ floorId, ...data }) => ({
+        url: generateQueryStr(
+          `/Invent3Pro/GetAllRoomsInFloor/${floorId}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allRooms'],
+    }),
     getRoomsByDepartmentId: builder.query<
       BaseApiResponse<ListResponse<Room>>,
       LocationQueryParams
@@ -78,4 +92,5 @@ export const {
   useGetAllRoomsQuery,
   useGetRoomsByDepartmentIdQuery,
   useSearchRoomsMutation,
+  useGetAllRoomsInAFloorQuery,
 } = roomApi;

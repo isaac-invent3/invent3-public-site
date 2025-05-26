@@ -174,6 +174,7 @@ export interface BmsRoomSettingsModel {
   roomId: number | null;
   temperatureSetPoint: Co2SetPoint;
   humiditySetPoint: Co2SetPoint;
+  lightningLevelSetPoint: Co2SetPoint;
   co2SetPoint: Co2SetPoint;
   energyConsumptionTarget: Co2SetPoint;
 }

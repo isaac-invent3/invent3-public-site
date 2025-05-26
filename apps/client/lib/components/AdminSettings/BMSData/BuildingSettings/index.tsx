@@ -5,24 +5,28 @@ import {
   GridItem,
   HStack,
   Icon,
+  Stack,
   Text,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
 import { FormTextInput } from '@repo/ui/components';
-import { useFormikContext } from 'formik';
+import { FieldArray, useFormikContext } from 'formik';
 import React from 'react';
 import BuildingSelect from '~/lib/components/AssetManagement/AssetForm/GeneralStep/AssetLocation/Modals/SelectInputs/BuildingSelect';
-import { ChevronDownIcon } from '~/lib/components/CustomIcons';
+import { ChevronDownIcon, DeleteIcon } from '~/lib/components/CustomIcons';
 import SectionWrapper from '~/lib/components/UserSettings/Common/SectionWrapper';
 import { BMSData } from '~/lib/interfaces/settings.interfaces';
 import BudgetExpenditure from './BudgetExpenditure';
+import { newFloor } from '../helpers';
+import FloorSettings from '../FloorSettings';
+import { set } from 'lodash';
 
 interface BuildingSettingsProps {
-  index: number;
+  buildingIndex: number;
 }
 const BuildingSettings = (props: BuildingSettingsProps) => {
-  const { index } = props;
+  const { buildingIndex } = props;
   const { onToggle, isOpen } = useDisclosure();
   const { values, setFieldValue } = useFormikContext<BMSData>();
   return (
@@ -39,7 +43,11 @@ const BuildingSettings = (props: BuildingSettingsProps) => {
       borderColor={isOpen ? 'transparent' : 'netural.300'}
     >
       <HStack width="full" justifyContent="space-between">
-        <HStack spacing="96px">
+        <Stack
+          spacing={{ base: '24px', lg: '96px' }}
+          direction={{ base: 'column', lg: 'row' }}
+          alignItems="flex-start"
+        >
           <Text
             width="246px"
             fontSize="20px"
@@ -49,15 +57,24 @@ const BuildingSettings = (props: BuildingSettingsProps) => {
           >
             Building Settings
           </Text>
-          <Flex width="391px" onClick={(e) => e.stopPropagation()}>
+          <Flex
+            width={{ base: 'full', lg: '391px' }}
+            onClick={(e) => e.stopPropagation()}
+          >
             <BuildingSelect
               type="specificById"
               facilityId={values?.facilityId}
-              handleSelect={() => {}}
+              handleSelect={(option) => {
+                setFieldValue(
+                  `bmsBuildingSettingsModel.${buildingIndex}.buildingId`,
+                  option?.value
+                );
+              }}
+              selectName={`bmsBuildingSettingsModel.${buildingIndex}.buildingId`}
               selectStyles={{ backgroundColor: '#E6E6E6' }}
             />
           </Flex>
-        </HStack>
+        </Stack>
         <Icon
           as={ChevronDownIcon}
           boxSize="24px"
@@ -74,18 +91,22 @@ const BuildingSettings = (props: BuildingSettingsProps) => {
         style={{ width: '100%' }}
       >
         <VStack width="full" spacing="24px">
-          <VStack width="full" spacing="16px" alignItems="flex-start">
+          <VStack
+            width="full"
+            spacing={{ base: '24px', lg: '16px' }}
+            alignItems="flex-start"
+          >
             <VStack
               width="full"
-              spacing="16px"
+              spacing={{ base: '24px', lg: '16px' }}
               alignItems="flex-start"
-              maxW="80%"
+              maxW={{ lg: '80%' }}
             >
               <SectionWrapper
                 title="Cost of Energy per kWh"
                 subtitle="The unit cost of electricity per kWh depending on the distributing company."
-                spacing={{ base: '8px', sm: '24px', lg: '96px' }}
-                direction={{ base: 'column', sm: 'row' }}
+                spacing={{ base: '8px', sm: '16px', lg: '96px' }}
+                direction={{ base: 'column', lg: 'row' }}
                 sectionInfoStyle={{
                   width: { lg: '246px' },
                 }}
@@ -99,7 +120,7 @@ const BuildingSettings = (props: BuildingSettingsProps) => {
                 >
                   <GridItem colSpan={2}>
                     <FormTextInput
-                      name="cost"
+                      name={`bmsBuildingSettingsModel.${buildingIndex}.costOfEnergyPerKWh`}
                       type="number"
                       label="Cost per KWh"
                       customStyle={{ bgColor: '#E6E6E6' }}
@@ -107,9 +128,60 @@ const BuildingSettings = (props: BuildingSettingsProps) => {
                   </GridItem>
                 </Grid>
               </SectionWrapper>
-              <BudgetExpenditure buildingSettingsIndex={index} />
+              <BudgetExpenditure buildingSettingsIndex={buildingIndex} />
             </VStack>
           </VStack>
+          <FieldArray
+            name={`bmsBuildingSettingsModel.${buildingIndex}.bmsFloorSettingsModels`}
+          >
+            {({ insert, remove, form, push }) => {
+              return (
+                <VStack
+                  width="full"
+                  spacing="16px"
+                  alignItems={
+                    values.bmsBuildingSettingsModel.length > 0
+                      ? 'flex-end'
+                      : 'center'
+                  }
+                >
+                  {values.bmsBuildingSettingsModel?.[
+                    buildingIndex
+                  ]?.bmsFloorSettingsModels.map((_, index) => (
+                    <HStack
+                      width="full"
+                      alignItems="flex-end"
+                      transition="all 0.5s ease"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <FloorSettings buildingIndex={index} floorIndex={index} />
+                      {index !== 0 && (
+                        <Icon
+                          as={DeleteIcon}
+                          boxSize="16px"
+                          cursor="pointer"
+                          onClick={() => remove(index)}
+                          mb="8px"
+                        />
+                      )}
+                    </HStack>
+                  ))}
+                  <Text
+                    size="md"
+                    color="blue.500"
+                    fontWeight={700}
+                    cursor="pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      push(newFloor);
+                    }}
+                  >
+                    Configure A Floor
+                  </Text>
+                </VStack>
+              );
+            }}
+          </FieldArray>
         </VStack>
       </Collapse>
     </VStack>

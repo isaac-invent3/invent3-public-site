@@ -29,8 +29,8 @@ const BudgetExpenditure = (props: BudgetExpenditureProps) => {
     <SectionWrapper
       title="Budget Expenditure on Energy"
       subtitle="Set the budget amount for mainatenance for each asset category"
-      spacing={{ base: '8px', sm: '24px', lg: '96px' }}
-      direction={{ base: 'column', sm: 'row' }}
+      spacing={{ base: '8px', sm: '16px', lg: '96px' }}
+      direction={{ base: 'column', lg: 'row' }}
       sectionInfoStyle={{
         width: { lg: '246px' },
       }}
@@ -54,20 +54,25 @@ const BudgetExpenditure = (props: BudgetExpenditureProps) => {
                   onClick={(e) => e.stopPropagation()}
                 >
                   <GenericAsyncSelect
-                    selectName={`bmsBuildingSettingsModel.${buildingSettingsIndex}.budgetExpenditureModels.contextId`}
+                    selectName={`bmsBuildingSettingsModel.${buildingSettingsIndex}.budgetExpenditureModels.${index}.value.contextId`}
                     selectTitle="Asset Category"
                     data={data}
-                    labelKey="displayName"
-                    valueKey="assetId"
+                    labelKey="categoryName"
+                    valueKey="categoryId"
                     mutationFn={searchAsset}
                     isLoading={isLoading}
                     pageNumber={pageNumber}
                     setPageNumber={setPageNumber}
-                    handleSelect={() => {}}
+                    handleSelect={(option) => {
+                      setFieldValue(
+                        `bmsBuildingSettingsModel.${buildingSettingsIndex}.budgetExpenditureModels.${index}.value.contextId`,
+                        option?.value
+                      );
+                    }}
                     selectStyles={{ backgroundColor: '#E6E6E6' }}
                   />
                   <FormTextInput
-                    name={`bmsBuildingSettingsModel.${buildingSettingsIndex}.budgetExpenditureModels.kWhTarget`}
+                    name={`bmsBuildingSettingsModel.${buildingSettingsIndex}.budgetExpenditureModels.${index}.value.kWhTarget`}
                     type="number"
                     label="KWh Target"
                     placeholder="kWh target eg. 3500kWh"

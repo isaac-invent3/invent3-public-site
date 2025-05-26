@@ -74,7 +74,7 @@ const bmsSettingsSchema = () =>
           bmsFloorSettingsModels: Yup.array().of(
             Yup.object().shape({
               floorId: Yup.number().required('Floor ID is Required'),
-              floorMap: Yup.string().required('Floor Map is Required'),
+              floorMap: Yup.string().nullable(),
               bmsRoomSettingsModel: Yup.array().of(
                 Yup.object().shape({
                   roomId: Yup.number().required('Room is Required'),
@@ -85,13 +85,24 @@ const bmsSettingsSchema = () =>
                       value: Yup.number().required('Value is Required'),
                     }),
                   }),
-                  humiditySetPoint: Yup.object().shape({
-                    key: Yup.number().required('Key is Required'),
-                    value: Yup.object().shape({
+                  humiditySetPoint: Yup.object()
+                    .shape({
                       key: Yup.number().required('Key is Required'),
-                      value: Yup.number().required('Value is Required'),
-                    }),
-                  }),
+                      value: Yup.object().shape({
+                        key: Yup.number().required('Key is Required'),
+                        value: Yup.number().required('Value is Required'),
+                      }),
+                    })
+                    .required('Humidity SetPoint is Required'),
+                  lightningLevelSetPoint: Yup.object()
+                    .shape({
+                      key: Yup.number().required('Key is Required'),
+                      value: Yup.object().shape({
+                        key: Yup.number().required('Key is Required'),
+                        value: Yup.number().required('Value is Required'),
+                      }),
+                    })
+                    .required('Lightning Level SetPoint is Required'),
                   co2SetPoint: Yup.object().shape({
                     key: Yup.number().required('Key is Required'),
                     value: Yup.object().shape({
@@ -113,7 +124,7 @@ const bmsSettingsSchema = () =>
         })
       )
       .required('Building Settings is Required')
-      .min(1),
+      .min(1, 'At least one building setting is required'),
     facilityId: Yup.number().required('Facility is Required'),
   });
 

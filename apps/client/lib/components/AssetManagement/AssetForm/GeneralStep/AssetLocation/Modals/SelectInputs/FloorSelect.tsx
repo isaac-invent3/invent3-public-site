@@ -16,10 +16,11 @@ interface FloorSelectProps {
   type: 'general' | 'specificById';
   buildingId?: number | null;
   selectStyles?: CSSObjectWithLabel;
+  selectName?: string;
 }
 
 const FloorSelect = (props: FloorSelectProps) => {
-  const { handleSelect, type, buildingId, selectStyles } = props;
+  const { handleSelect, type, buildingId, selectStyles, selectName } = props;
   const { floorName } = useAppSelector((state) => state.asset.assetForm);
   const [searchFloors] = useSearchFloorsMutation({});
 
@@ -63,7 +64,7 @@ const FloorSelect = (props: FloorSelectProps) => {
 
   return (
     <GenericAsyncSelect
-      selectName="floorId"
+      selectName={selectName ?? 'floorId'}
       selectTitle="Floor"
       data={
         type === 'general' ? data : buildingId ? floorsByBuildingIdData : []
@@ -80,6 +81,7 @@ const FloorSelect = (props: FloorSelectProps) => {
       specialSearch={
         type === 'specificById' ? floorsByBuildingIdCriterion : undefined
       }
+      selectStyles={selectStyles}
     />
   );
 };

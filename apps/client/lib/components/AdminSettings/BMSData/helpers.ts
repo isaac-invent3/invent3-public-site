@@ -4,12 +4,12 @@ import {
   BmsRoomSettingsModel,
   BudgetExpenditureModel,
 } from '~/lib/interfaces/settings.interfaces';
-import { FORM_ENUM } from '~/lib/utils/constants';
+import { FORM_ENUM, SYSTEM_CONTEXT_TYPE, UNIT_ID } from '~/lib/utils/constants';
 
 const newBudgetExpenditure: BudgetExpenditureModel = {
   key: FORM_ENUM.add,
   value: {
-    systemContextTypeId: null,
+    systemContextTypeId: SYSTEM_CONTEXT_TYPE.ASSET_CATEGORY,
     contextId: null,
     kWhTarget: null,
   },
@@ -18,30 +18,37 @@ const newBudgetExpenditure: BudgetExpenditureModel = {
 const newRoom: BmsRoomSettingsModel = {
   roomId: null,
   temperatureSetPoint: {
-    key: null,
+    key: FORM_ENUM.add,
     value: {
-      key: null,
+      key: UNIT_ID.DEGREE_CELSIUS,
       value: null,
     },
   },
   humiditySetPoint: {
-    key: null,
+    key: FORM_ENUM.add,
     value: {
-      key: null,
+      key: UNIT_ID.RELATIVE_HUMIDITY,
       value: null,
     },
   },
   co2SetPoint: {
-    key: null,
+    key: FORM_ENUM.add,
     value: {
-      key: null,
+      key: UNIT_ID.PARTS_PER_MILLION,
+      value: null,
+    },
+  },
+  lightningLevelSetPoint: {
+    key: FORM_ENUM.add,
+    value: {
+      key: UNIT_ID.LUX,
       value: null,
     },
   },
   energyConsumptionTarget: {
-    key: null,
+    key: FORM_ENUM.add,
     value: {
-      key: null,
+      key: UNIT_ID.KILOWATT_HOUR,
       value: null,
     },
   },
@@ -57,7 +64,7 @@ const newBuildingSettings: BmsBuildingSettingsModel = {
   buildingId: null,
   costOfEnergyPerKWh: null,
   budgetExpenditureModels: [newBudgetExpenditure],
-  bmsFloorSettingsModels: [],
+  bmsFloorSettingsModels: [newFloor],
 };
 
 export { newBuildingSettings, newBudgetExpenditure, newFloor, newRoom };

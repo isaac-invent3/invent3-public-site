@@ -4,44 +4,40 @@ import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { Option, SearchCriterion } from '~/lib/interfaces/general.interfaces';
 import { useAppSelector } from '~/lib/redux/hooks';
 import {
-  useGetAllRoomsQuery,
-  useGetRoomsByDepartmentIdQuery,
+  useGetAllRoomsInAFloorQuery,
   useSearchRoomsMutation,
 } from '~/lib/redux/services/location/room.services';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 
-interface RoomSelectProps {
+interface RoomByFloorSelectProps {
   // eslint-disable-next-line no-unused-vars
   handleSelect?: (options: Option) => void;
   type: 'general' | 'specificById';
-  departmentId?: number | null;
+  floorId?: number | null;
   selectStyles?: CSSObjectWithLabel;
   selectName?: string;
 }
 
-const RoomSelect = (props: RoomSelectProps) => {
-  const { handleSelect, type, departmentId, selectStyles, selectName } = props;
+const RoomByFloorSelect = (props: RoomByFloorSelectProps) => {
+  const { handleSelect, type, floorId, selectStyles, selectName } = props;
   const { roomName } = useAppSelector((state) => state.asset.assetForm);
   const [searchRooms] = useSearchRoomsMutation({});
 
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllRoomsQuery(
+  const { data, isLoading } = useGetAllRoomsInAFloorQuery(
     {
-      pageSize: DEFAULT_PAGE_SIZE,
-      pageNumber,
+      floorId: floorId!,
     },
     { skip: type === 'specificById' }
   );
   const {
     data: roomsByDepartmentIdData,
     isLoading: isLoadingRoomsByDepartmentIdData,
-  } = useGetRoomsByDepartmentIdQuery(
+  } = useGetAllRoomsInAFloorQuery(
     {
-      id: departmentId ?? undefined,
-      pageSize: DEFAULT_PAGE_SIZE,
-      pageNumber,
+      floorId: floorId!,
     },
-    { skip: !departmentId }
+    { skip: !floorId }
   );
 
   const roomsByDepartmentIdCriterion = (
@@ -49,8 +45,8 @@ const RoomSelect = (props: RoomSelectProps) => {
   ): SearchCriterion[] => {
     const criterion = [
       {
-        columnName: 'departmentId',
-        columnValue: departmentId?.toString() as string,
+        columnName: 'floorId',
+        columnValue: floorId?.toString() as string,
         operation: OPERATORS.Equals,
       },
       {
@@ -66,9 +62,7 @@ const RoomSelect = (props: RoomSelectProps) => {
     <GenericAsyncSelect
       selectName={selectName ?? 'roomId'}
       selectTitle="Room"
-      data={
-        type === 'general' ? data : departmentId ? roomsByDepartmentIdData : []
-      }
+      data={type === 'general' ? data : floorId ? roomsByDepartmentIdData : []}
       labelKey="roomName"
       valueKey="roomId"
       defaultInputValue={roomName}
@@ -77,7 +71,7 @@ const RoomSelect = (props: RoomSelectProps) => {
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
       handleSelect={handleSelect}
-      fetchKey={departmentId}
+      fetchKey={floorId}
       specialSearch={
         type === 'specificById' ? roomsByDepartmentIdCriterion : undefined
       }
@@ -86,4 +80,4 @@ const RoomSelect = (props: RoomSelectProps) => {
   );
 };
 
-export default RoomSelect;
+export default RoomByFloorSelect;

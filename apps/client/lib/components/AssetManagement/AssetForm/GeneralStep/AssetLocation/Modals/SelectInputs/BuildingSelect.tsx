@@ -16,10 +16,11 @@ interface BuildingSelectProps {
   type: 'general' | 'specificById';
   facilityId?: number | null;
   selectStyles?: CSSObjectWithLabel;
+  selectName?: string;
 }
 
 const BuildingSelect = (props: BuildingSelectProps) => {
-  const { handleSelect, type, facilityId, selectStyles } = props;
+  const { handleSelect, type, facilityId, selectStyles, selectName } = props;
   const { buildingName } = useAppSelector((state) => state.asset.assetForm);
   const [searchBuilding] = useSearchBuildingMutation({});
 
@@ -63,7 +64,7 @@ const BuildingSelect = (props: BuildingSelectProps) => {
 
   return (
     <GenericAsyncSelect
-      selectName="buildingId"
+      selectName={selectName ?? 'buildingId'}
       selectTitle="Building"
       data={
         type === 'general' ? data : facilityId ? buildingByFacilityIdData : []

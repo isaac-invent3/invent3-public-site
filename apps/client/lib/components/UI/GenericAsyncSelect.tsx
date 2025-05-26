@@ -79,7 +79,7 @@ const GenericAsyncSelect = (props: GenericAsyncSelectProps) => {
     };
     const response: any = await handleSubmit(mutationFn, searchCriterion, '');
     const formattedOptions = generateOptions(
-      response?.data?.data?.items,
+      response?.data?.data?.items ?? response?.data?.data,
       labelKey,
       valueKey
     );
@@ -98,7 +98,7 @@ const GenericAsyncSelect = (props: GenericAsyncSelectProps) => {
   useEffect(() => {
     if (data?.data) {
       const formattedOptions = generateOptions(
-        data?.data?.items,
+        data?.data?.items ?? data?.data,
         labelKey,
         valueKey
       );

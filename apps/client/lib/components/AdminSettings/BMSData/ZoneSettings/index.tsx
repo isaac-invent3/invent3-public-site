@@ -3,6 +3,7 @@ import {
   Flex,
   HStack,
   Icon,
+  Spinner,
   Stack,
   Text,
   useDisclosure,
@@ -10,12 +11,12 @@ import {
 } from '@chakra-ui/react';
 import { FormTextInput } from '@repo/ui/components';
 import { useFormikContext } from 'formik';
-import React from 'react';
+import React, { useEffect } from 'react';
 import RoomByFloorSelect from '~/lib/components/AssetManagement/AssetForm/GeneralStep/AssetLocation/Modals/SelectInputs/RoomsByFloorSelect';
-import RoomSelect from '~/lib/components/AssetManagement/AssetForm/GeneralStep/AssetLocation/Modals/SelectInputs/RoomSelect';
 import { ChevronDownIcon } from '~/lib/components/CustomIcons';
 import SectionWrapper from '~/lib/components/UserSettings/Common/SectionWrapper';
 import { BMSData } from '~/lib/interfaces/settings.interfaces';
+import { useGetRoomSettingsByRoomIdQuery } from '~/lib/redux/services/settings.services';
 
 interface ZoneSettingsProps {
   buildingIndex: number;
@@ -26,6 +27,58 @@ const ZoneSettings = (props: ZoneSettingsProps) => {
   const { buildingIndex, floorIndex, zoneIndex } = props;
   const { onToggle, isOpen } = useDisclosure();
   const { values, setFieldValue } = useFormikContext<BMSData>();
+  const { data, isLoading } = useGetRoomSettingsByRoomIdQuery(
+    {
+      roomId:
+        values?.bmsBuildingSettingsModel?.[buildingIndex]
+          ?.bmsFloorSettingsModels?.[floorIndex]?.bmsRoomSettingsModel?.[
+          zoneIndex
+        ]?.roomId!,
+    },
+    {
+      skip:
+        !isOpen ||
+        !values?.bmsBuildingSettingsModel?.[buildingIndex]
+          ?.bmsFloorSettingsModels?.[floorIndex]?.bmsRoomSettingsModel?.[
+          zoneIndex
+        ]?.roomId,
+      refetchOnMountOrArgChange: true,
+    }
+  );
+
+  useEffect(() => {
+    if (data) {
+      setFieldValue(
+        `bmsBuildingSettingsModel.${buildingIndex}.bmsFloorSettingsModels.${floorIndex}.bmsRoomSettingsModel.${zoneIndex}.temperatureSetPoint.value.value`,
+        typeof data.data?.temperature === 'string'
+          ? +data.data?.temperature
+          : data.data?.temperature
+      );
+      setFieldValue(
+        `bmsBuildingSettingsModel.${buildingIndex}.bmsFloorSettingsModels.${floorIndex}.bmsRoomSettingsModel.${zoneIndex}.humiditySetPoint.value.value`,
+        typeof data.data?.humidity === 'string'
+          ? +data.data?.humidity
+          : data.data?.humidity
+      );
+      setFieldValue(
+        `bmsBuildingSettingsModel.${buildingIndex}.bmsFloorSettingsModels.${floorIndex}.bmsRoomSettingsModel.${zoneIndex}.co2SetPoint.value.value`,
+        typeof data.data?.co2 === 'string' ? +data.data?.co2 : data.data?.co2
+      );
+      setFieldValue(
+        `bmsBuildingSettingsModel.${buildingIndex}.bmsFloorSettingsModels.${floorIndex}.bmsRoomSettingsModel.${zoneIndex}.energyConsumptionTarget.value.value`,
+        typeof data.data?.energyConsumption === 'string'
+          ? +data.data?.energyConsumption
+          : data.data?.energyConsumption
+      );
+      setFieldValue(
+        `bmsBuildingSettingsModel.${buildingIndex}.bmsFloorSettingsModels.${floorIndex}.bmsRoomSettingsModel.${zoneIndex}.lightningLevelSetPoint.value.value`,
+        typeof data.data?.lightningLevel === 'string'
+          ? +data.data?.lightningLevel
+          : data.data?.lightningLevel
+      );
+    }
+  }, [data]);
+
   return (
     <VStack
       width="full"
@@ -35,12 +88,13 @@ const ZoneSettings = (props: ZoneSettingsProps) => {
       transition="all 0.5s ease"
       cursor="pointer"
       spacing="16px"
+      rounded="16px"
     >
       <HStack width="full" justifyContent="space-between">
         <Stack
           spacing={{ base: '24px', lg: '96px' }}
           direction={{ base: 'column', lg: 'row' }}
-          alignItems="flex-start"
+          alignItems="center"
         >
           <Text
             width="246px"
@@ -87,7 +141,25 @@ const ZoneSettings = (props: ZoneSettingsProps) => {
         transition={{ enter: { duration: 0 } }}
         style={{ width: '100%' }}
       >
-        <VStack width="full" spacing="16px" alignItems="flex-start">
+        <VStack
+          width="full"
+          spacing="16px"
+          alignItems="flex-start"
+          opacity={isLoading ? 0.5 : 1}
+          position="relative"
+          pointerEvents={isLoading ? 'none' : 'initial'}
+        >
+          {isLoading && (
+            <Flex
+              position="absolute"
+              width="full"
+              height="full"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Spinner size="md" />
+            </Flex>
+          )}
           <SectionWrapper
             title="Temperature SetPoint"
             subtitle="Target temperature set for automated climate control adjustments."
@@ -152,7 +224,7 @@ const ZoneSettings = (props: ZoneSettingsProps) => {
             <FormTextInput
               name={`bmsBuildingSettingsModel.${buildingIndex}.bmsFloorSettingsModels.${floorIndex}.bmsRoomSettingsModel.${zoneIndex}.lightningLevelSetPoint.value.value`}
               type="number"
-              label="Degree"
+              label="Level"
               customStyle={{
                 bgColor: '#E9E9E9',
                 width: '306px',

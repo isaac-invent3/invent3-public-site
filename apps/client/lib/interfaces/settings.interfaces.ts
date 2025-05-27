@@ -200,4 +200,59 @@ export interface BudgetExpenditureModelValue {
   kWhTarget: number | null;
 }
 
-export type { Settings, UpdateSettingsPayload, BMSData };
+interface BuildingSetting {
+  buildingId: number;
+  costOfEnergyPerKWh: number;
+  budgetExpenditureModels: BudgetExpenditure[];
+  floorSettingsIds: number[];
+}
+
+export interface BudgetExpenditure {
+  systemContextTypeId: number;
+  contextId: number;
+  kWhTarget: number;
+  baselineSource: number;
+  durationId: number;
+  baselineEnergySource: number;
+  startDate: Date;
+}
+
+interface FloorSetting {
+  floor: Floor;
+  roomIds: number[];
+}
+
+export interface Floor {
+  floorId: number;
+  buildingId: number;
+  floorName: string;
+  floorRef: string;
+  imageBasePrefix: string;
+  floorPlanImage: string;
+  isNew: boolean;
+  createdDate: Date;
+  createdBy: null;
+  lastModifiedDate: Date;
+  lastModifiedBy: string;
+  isDeleted: boolean;
+  deletedDate: null;
+  deletedBy: null;
+  guid: string;
+}
+
+interface RoomSetting {
+  temperature: number;
+  humidity: number;
+  co2: number;
+  energyConsumption: number;
+  lightningLevel: number;
+}
+
+export type {
+  Settings,
+  UpdateSettingsPayload,
+  BMSData,
+  BuildingSetting,
+  FloorSetting,
+  RoomSetting,
+};

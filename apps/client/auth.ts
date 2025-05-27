@@ -114,6 +114,10 @@ export const config = {
           label: 'password',
           type: 'password',
         },
+        code: {
+          label: 'code',
+          type: 'text',
+        },
       },
       async authorize(credentials: Record<string, any>, request) {
         const baseUrl = new URL(request.headers.get('origin') ?? '');
@@ -144,6 +148,7 @@ export const config = {
         const payload = {
           username: credentials.username,
           password: credentials.password,
+          otpCode: credentials.code,
         };
 
         // external api for users to log in

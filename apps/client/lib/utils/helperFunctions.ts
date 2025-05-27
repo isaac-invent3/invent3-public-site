@@ -242,6 +242,21 @@ const formattedDateTime = (date: Date | null, time: string | null) => {
   return formatted;
 };
 
+const extractTenantFromUrl = (): string | null | undefined => {
+  try {
+    const { pathname } = window.location;
+    const segments = pathname.split('/').filter(Boolean); // Remove empty parts
+
+    if (segments.length >= 2 && segments[1] === 'signin') {
+      return segments[0];
+    }
+
+    return null;
+  } catch (error) {
+    return null;
+  }
+};
+
 export {
   formatNumberShort,
   formattedDateTime,
@@ -253,4 +268,5 @@ export {
   getSelectedOption,
   transformCostsData,
   transformToCalendarEvents,
+  extractTenantFromUrl,
 };

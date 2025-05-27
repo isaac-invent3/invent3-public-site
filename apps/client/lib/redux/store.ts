@@ -94,6 +94,8 @@ import { fieldEngineerDashboardApi } from './services/dashboard/fieldengineer.se
 import { feedbackApi } from './services/feedback.services';
 import { executiveDashboardApis } from './services/dashboard/executive.services';
 import { BMSApi } from './services/dashboard/bms.services';
+import { settingsApi } from './services/settings.services';
+import { authApi } from './services/auth.services';
 export const persistConfig = {
   key: 'root',
   storage,
@@ -217,6 +219,12 @@ const rootReducer = combineReducers({
 
   // Feedback APIS
   [feedbackApi.reducerPath]: feedbackApi.reducer,
+
+  // Settings APIS
+  [settingsApi.reducerPath]: settingsApi.reducer,
+
+  // Auth APIS
+  [authApi.reducerPath]: authApi.reducer,
 
   asset: assetSlice,
   auditLog: auditLogSlice,
@@ -357,6 +365,12 @@ export const makeStore = () => {
 
         // Feedback Apis
         feedbackApi.middleware,
+
+        // Settings Apis
+        settingsApi.middleware,
+
+        // Auth Apis
+        authApi.middleware,
       ]),
   });
 };

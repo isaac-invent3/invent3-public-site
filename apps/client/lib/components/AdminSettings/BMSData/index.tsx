@@ -1,5 +1,5 @@
-import { Flex, HStack, Icon, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
+import { Flex, HStack, Icon, Skeleton, Text, VStack } from '@chakra-ui/react';
+import React, { useEffect } from 'react';
 import { FieldArray, FormikProvider, useFormik } from 'formik';
 import FacilitySelect from '../../AssetManagement/AssetForm/GeneralStep/AssetLocation/Modals/SelectInputs/FacilitySelect';
 import { bmsSettingsSchema } from '~/lib/schemas/settings.schema';
@@ -9,7 +9,10 @@ import { DeleteIcon } from '../../CustomIcons';
 import { Button } from '@repo/ui/components';
 import { getSession } from 'next-auth/react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { useBmsSettingsMutation } from '~/lib/redux/services/utility.services';
+import {
+  useBmsSettingsMutation,
+  useGetBuildingSettingsByFacilityIdQuery,
+} from '~/lib/redux/services/settings.services';
 
 const BMSData = () => {
   const { handleSubmit } = useCustomMutation();
@@ -35,6 +38,30 @@ const BMSData = () => {
       setSubmitting(false);
     },
   });
+  const { data: buildingSettingsData, isLoading: isLoadingBuildingSettings } =
+    useGetBuildingSettingsByFacilityIdQuery(
+      { facilityId: formik.values.facilityId },
+      {
+        skip: !formik.values.facilityId,
+        refetchOnMountOrArgChange: true,
+      }
+    );
+
+  useEffect(() => {
+    if (buildingSettingsData) {
+      buildingSettingsData.data.forEach((building) => {
+        formik.setFieldValue('bmsBuildingSettingsModel', [
+          ...formik.values.bmsBuildingSettingsModel,
+          {
+            buildingId: building,
+            costOfEnergyPerKWh: null,
+            budgetExpenditureModels: [],
+            bmsFloorSettingsModels: [],
+          },
+        ]);
+      });
+    }
+  }, [buildingSettingsData]);
 
   return (
     <FormikProvider value={formik}>
@@ -73,10 +100,34 @@ const BMSData = () => {
                         : 'center'
                     }
                   >
+                    {isLoadingBuildingSettings ? (
+                      <VStack width="full" spacing="16px">
+                        {Array(3)
+                          .fill(0)
+                          .map((_, index) => (
+                            <Skeleton
+                              width="full"
+                              rounded="8px"
+                              key={index}
+                              height="150px"
+                            />
+                          ))}
+                      </VStack>
+                    ) : (
+                      <Text
+                        size="md"
+                        color="blue.500"
+                        fontWeight={700}
+                        cursor="pointer"
+                        onClick={() => push(newBuildingSettings)}
+                      >
+                        Configure A Building
+                      </Text>
+                    )}
                     {formik.values.bmsBuildingSettingsModel.map((_, index) => (
                       <HStack
                         width="full"
-                        alignItems="flex-end"
+                        alignItems="center"
                         transition="all 0.5s ease"
                       >
                         <BuildingSettings buildingIndex={index} />
@@ -89,15 +140,6 @@ const BMSData = () => {
                         />
                       </HStack>
                     ))}
-                    <Text
-                      size="md"
-                      color="blue.500"
-                      fontWeight={700}
-                      cursor="pointer"
-                      onClick={() => push(newBuildingSettings)}
-                    >
-                      Configure A Building
-                    </Text>
                     {/* {formik.errors.bmsBuildingSettingsModel && (
                       <Text color="red.500" fontSize="sm">
                         {formik.errors.bmsBuildingSettingsModel}

@@ -5,6 +5,7 @@ import {
   GridItem,
   HStack,
   Icon,
+  Spinner,
   Stack,
   Text,
   useDisclosure,
@@ -12,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { FormTextInput } from '@repo/ui/components';
 import { FieldArray, useFormikContext } from 'formik';
-import React from 'react';
+import React, { useEffect } from 'react';
 import BuildingSelect from '~/lib/components/AssetManagement/AssetForm/GeneralStep/AssetLocation/Modals/SelectInputs/BuildingSelect';
 import { ChevronDownIcon, DeleteIcon } from '~/lib/components/CustomIcons';
 import SectionWrapper from '~/lib/components/UserSettings/Common/SectionWrapper';
@@ -20,7 +21,8 @@ import { BMSData } from '~/lib/interfaces/settings.interfaces';
 import BudgetExpenditure from './BudgetExpenditure';
 import { newFloor } from '../helpers';
 import FloorSettings from '../FloorSettings';
-import { set } from 'lodash';
+import { useGetBuildingSettingsByBuilidingIdQuery } from '~/lib/redux/services/settings.services';
+import { FORM_ENUM, SYSTEM_CONTEXT_TYPE } from '~/lib/utils/constants';
 
 interface BuildingSettingsProps {
   buildingIndex: number;
@@ -29,6 +31,59 @@ const BuildingSettings = (props: BuildingSettingsProps) => {
   const { buildingIndex } = props;
   const { onToggle, isOpen } = useDisclosure();
   const { values, setFieldValue } = useFormikContext<BMSData>();
+  const { data, isLoading } = useGetBuildingSettingsByBuilidingIdQuery(
+    {
+      buildingId:
+        values?.bmsBuildingSettingsModel?.[buildingIndex]?.buildingId!,
+    },
+    {
+      skip:
+        !isOpen ||
+        !values?.bmsBuildingSettingsModel?.[buildingIndex]?.buildingId,
+    }
+  );
+
+  useEffect(() => {
+    if (data) {
+      setFieldValue(
+        `bmsBuildingSettingsModel.${buildingIndex}.costOfEnergyPerKWh`,
+        data.data?.costOfEnergyPerKWh
+      );
+      data?.data?.budgetExpenditureModels?.forEach((model) => {
+        setFieldValue(
+          `bmsBuildingSettingsModel.${buildingIndex}.budgetExpenditureModels`,
+          [
+            ...(values.bmsBuildingSettingsModel?.[buildingIndex]
+              ?.budgetExpenditureModels ?? []),
+            {
+              key: FORM_ENUM.update,
+              value: {
+                systemContextTypeId: SYSTEM_CONTEXT_TYPE.ASSET_CATEGORY,
+                contextId: model.contextId,
+                kWhTarget: model.kWhTarget,
+              },
+            },
+          ]
+        );
+      });
+
+      data?.data?.floorSettingsIds.forEach((floorId) => {
+        setFieldValue(
+          `bmsBuildingSettingsModel.${buildingIndex}.bmsFloorSettingsModels`,
+          [
+            ...(values.bmsBuildingSettingsModel?.[buildingIndex]
+              ?.bmsFloorSettingsModels ?? []),
+            {
+              floorMap: null,
+              floorId: floorId,
+              bmsRoomSettingsModel: [],
+            },
+          ]
+        );
+      });
+    }
+  }, [data]);
+
   return (
     <VStack
       width="full"
@@ -46,7 +101,7 @@ const BuildingSettings = (props: BuildingSettingsProps) => {
         <Stack
           spacing={{ base: '24px', lg: '96px' }}
           direction={{ base: 'column', lg: 'row' }}
-          alignItems="flex-start"
+          alignItems="center"
         >
           <Text
             width="246px"
@@ -90,7 +145,25 @@ const BuildingSettings = (props: BuildingSettingsProps) => {
         transition={{ enter: { duration: 0 } }}
         style={{ width: '100%' }}
       >
-        <VStack width="full" spacing="24px">
+        <VStack
+          width="full"
+          spacing="24px"
+          opacity={isLoading ? 0.5 : 1}
+          position="relative"
+          pointerEvents={isLoading ? 'none' : 'initial'}
+        >
+          {isLoading && (
+            <Flex
+              position="absolute"
+              width="full"
+              height="full"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Spinner size="md" />
+            </Flex>
+          )}
+
           <VStack
             width="full"
             spacing={{ base: '24px', lg: '16px' }}
@@ -145,12 +218,23 @@ const BuildingSettings = (props: BuildingSettingsProps) => {
                       : 'center'
                   }
                 >
+                  <Text
+                    size="md"
+                    color="blue.500"
+                    fontWeight={700}
+                    cursor="pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      push(newFloor);
+                    }}
+                  >
+                    Configure A Floor
+                  </Text>
                   {values.bmsBuildingSettingsModel?.[
                     buildingIndex
                   ]?.bmsFloorSettingsModels.map((_, index) => (
                     <HStack
                       width="full"
-                      alignItems="flex-end"
                       transition="all 0.5s ease"
                       onClick={(e) => e.stopPropagation()}
                     >
@@ -166,18 +250,6 @@ const BuildingSettings = (props: BuildingSettingsProps) => {
                       )}
                     </HStack>
                   ))}
-                  <Text
-                    size="md"
-                    color="blue.500"
-                    fontWeight={700}
-                    cursor="pointer"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      push(newFloor);
-                    }}
-                  >
-                    Configure A Floor
-                  </Text>
                 </VStack>
               );
             }}

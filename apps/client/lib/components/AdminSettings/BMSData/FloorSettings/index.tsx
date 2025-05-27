@@ -4,13 +4,14 @@ import {
   HStack,
   Icon,
   Input,
+  Spinner,
   Stack,
   Text,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
 import { FieldArray, useFormikContext } from 'formik';
-import React from 'react';
+import React, { useEffect } from 'react';
 import FloorSelect from '~/lib/components/AssetManagement/AssetForm/GeneralStep/AssetLocation/Modals/SelectInputs/FloorSelect';
 import {
   ChevronDownIcon,
@@ -22,6 +23,8 @@ import SectionWrapper from '~/lib/components/UserSettings/Common/SectionWrapper'
 import { BMSData } from '~/lib/interfaces/settings.interfaces';
 import ZoneSettings from '../ZoneSettings';
 import { newRoom } from '../helpers';
+import { useGetFloorSettingsByFloorIdQuery } from '~/lib/redux/services/settings.services';
+import { FORM_ENUM, UNIT_ID } from '~/lib/utils/constants';
 
 interface FloorSettingsProps {
   buildingIndex: number;
@@ -34,6 +37,78 @@ const FloorSettings = (props: FloorSettingsProps) => {
   const [imageName, setImageName] = React.useState<string | undefined>(
     undefined
   );
+  const { data, isLoading } = useGetFloorSettingsByFloorIdQuery(
+    {
+      floorId:
+        values?.bmsBuildingSettingsModel?.[buildingIndex]
+          ?.bmsFloorSettingsModels?.[floorIndex]?.floorId!,
+    },
+    {
+      skip:
+        !isOpen ||
+        !values?.bmsBuildingSettingsModel?.[buildingIndex]
+          ?.bmsFloorSettingsModels?.[floorIndex]?.floorId,
+      refetchOnMountOrArgChange: true,
+    }
+  );
+
+  useEffect(() => {
+    if (data) {
+      setFieldValue(
+        `bmsBuildingSettingsModel.${buildingIndex}.bmsFloorSettingsModels.${floorIndex}.floorMap`,
+        `${data.data?.floor?.imageBasePrefix}${data.data?.floor?.floorPlanImage}`
+      );
+      data?.data?.roomIds.forEach((roomId) => {
+        setFieldValue(
+          `bmsBuildingSettingsModel.${buildingIndex}.bmsFloorSettingsModels.${floorIndex}.bmsRoomSettingsModel`,
+          [
+            ...(values.bmsBuildingSettingsModel?.[buildingIndex]
+              ?.bmsFloorSettingsModels?.[floorIndex]?.bmsRoomSettingsModel ??
+              []),
+            {
+              roomId: roomId,
+              temperatureSetPoint: {
+                key: FORM_ENUM.update,
+                value: {
+                  key: UNIT_ID.DEGREE_CELSIUS,
+                  value: null,
+                },
+              },
+              humiditySetPoint: {
+                key: FORM_ENUM.update,
+                value: {
+                  key: UNIT_ID.RELATIVE_HUMIDITY,
+                  value: null,
+                },
+              },
+              co2SetPoint: {
+                key: FORM_ENUM.update,
+                value: {
+                  key: UNIT_ID.PARTS_PER_MILLION,
+                  value: null,
+                },
+              },
+              lightningLevelSetPoint: {
+                key: FORM_ENUM.update,
+                value: {
+                  key: UNIT_ID.LUX,
+                  value: null,
+                },
+              },
+              energyConsumptionTarget: {
+                key: FORM_ENUM.update,
+                value: {
+                  key: UNIT_ID.KILOWATT_HOUR,
+                  value: null,
+                },
+              },
+            },
+          ]
+        );
+      });
+    }
+  }, [data]);
+
   return (
     <VStack
       width="full"
@@ -43,12 +118,13 @@ const FloorSettings = (props: FloorSettingsProps) => {
       transition="all 0.5s ease"
       cursor="pointer"
       spacing="32px"
+      rounded="16px"
     >
       <HStack width="full" justifyContent="space-between">
         <Stack
           spacing={{ base: '24px', lg: '56px' }}
           direction={{ base: 'column', lg: 'row' }}
-          alignItems="flex-start"
+          alignItems="center"
         >
           <Text
             width="103px"
@@ -94,7 +170,24 @@ const FloorSettings = (props: FloorSettingsProps) => {
         transition={{ enter: { duration: 0 } }}
         style={{ width: '100%' }}
       >
-        <VStack width="full" spacing="32px">
+        <VStack
+          width="full"
+          spacing="32px"
+          opacity={isLoading ? 0.5 : 1}
+          position="relative"
+          pointerEvents={isLoading ? 'none' : 'initial'}
+        >
+          {isLoading && (
+            <Flex
+              position="absolute"
+              width="full"
+              height="full"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Spinner size="md" />
+            </Flex>
+          )}
           <SectionWrapper
             title="Upload Floor Map (JPG, PNG)"
             subtitle="Easily upload your data files"
@@ -191,6 +284,18 @@ const FloorSettings = (props: FloorSettingsProps) => {
                       : 'center'
                   }
                 >
+                  <Text
+                    size="md"
+                    color="blue.500"
+                    fontWeight={700}
+                    cursor="pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      push(newRoom);
+                    }}
+                  >
+                    Configure A Zone
+                  </Text>
                   {values.bmsBuildingSettingsModel?.[
                     buildingIndex
                   ]?.bmsFloorSettingsModels?.[
@@ -198,7 +303,7 @@ const FloorSettings = (props: FloorSettingsProps) => {
                   ]?.bmsRoomSettingsModel.map((_, index) => (
                     <HStack
                       width="full"
-                      alignItems="flex-end"
+                      alignItems="center"
                       transition="all 0.5s ease"
                       onClick={(e) => e.stopPropagation()}
                     >
@@ -218,18 +323,6 @@ const FloorSettings = (props: FloorSettingsProps) => {
                       )}
                     </HStack>
                   ))}
-                  <Text
-                    size="md"
-                    color="blue.500"
-                    fontWeight={700}
-                    cursor="pointer"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      push(newRoom);
-                    }}
-                  >
-                    Configure A Zone
-                  </Text>
                 </VStack>
               );
             }}

@@ -34,18 +34,18 @@ const useExport = (props: UseExportProps) => {
   const [exportType, setExportType] = useState<number | null>(null);
 
   const handlePopoverClick = () => {
-    if (ids.length > 0) {
-      onOpen();
-    } else {
-      toast({
-        title: `No ${_.startCase(tableDisplayName)} Selected`,
-        description: `Please select atleast one ${_.lowerCase(tableDisplayName)}`,
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-        position: 'top-right',
-      });
-    }
+    // if (ids.length > 0) {
+    onOpen();
+    // } else {
+    //   toast({
+    //     title: `No ${_.startCase(tableDisplayName)} Selected`,
+    //     description: `Please select atleast one ${_.lowerCase(tableDisplayName)}`,
+    //     status: 'error',
+    //     duration: 5000,
+    //     isClosable: true,
+    //     position: 'top-right',
+    //   });
+    // }
   };
 
   const submitExport = async (exportType: number) => {

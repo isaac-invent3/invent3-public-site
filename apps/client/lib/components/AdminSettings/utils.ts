@@ -1,11 +1,6 @@
 const exportFormatOptions = [
   { label: 'CSV', value: 1 },
   { label: 'PDF', value: 2 },
-  { label: 'DOCX', value: 3 },
-  { label: 'TXT', value: 4 },
-  { label: 'JSON', value: 5 },
-  { label: 'XML', value: 6 },
-  { label: 'HTML', value: 7 },
 ];
 
 const sessionTimeoutDurationOptions = [

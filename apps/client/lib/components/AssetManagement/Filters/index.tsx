@@ -2,7 +2,8 @@ import { HStack, Stack } from '@chakra-ui/react';
 
 import { SearchInput, FilterButton } from '@repo/ui/components';
 import { BulkSearchIcon, FilterIcon } from '../../CustomIcons';
-import ExportPopover from './ExportPopover';
+import { useAppSelector } from '~/lib/redux/hooks';
+import useExport from '~/lib/hooks/useExport';
 
 interface FiltersProps {
   setSearch: React.Dispatch<React.SetStateAction<string>>;
@@ -13,6 +14,14 @@ interface FiltersProps {
 }
 const Filters = (props: FiltersProps) => {
   const { setSearch, activeFilter, setActiveFilter } = props;
+  const selectedAssetIds = useAppSelector(
+    (state) => state.asset.selectedAssetIds
+  );
+  const { ExportPopover } = useExport({
+    ids: selectedAssetIds,
+    exportTableName: 'Assets',
+    tableDisplayName: 'asset',
+  });
 
   return (
     <Stack
@@ -44,7 +53,7 @@ const Filters = (props: FiltersProps) => {
           }
           isActive={activeFilter === 'general'}
         />
-        <ExportPopover />
+        {ExportPopover}
       </HStack>
     </Stack>
   );

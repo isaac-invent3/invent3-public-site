@@ -227,24 +227,6 @@ export const assetApi = createApi({
         body,
       }),
     }),
-    exportAsset: builder.mutation<
-      BaseApiResponse<string>,
-      { exportType: number; assetIds: number[] }
-    >({
-      query: ({ exportType, assetIds }) => ({
-        url: `/Assets/Export?exportType=${exportType}`,
-        method: 'POST',
-        headers: getHeaders(),
-        body: assetIds,
-      }),
-    }),
-    downloadAsset: builder.query<string, { filePath: string }>({
-      query: (data) => ({
-        url: generateQueryStr(`/Assets/Download?`, data),
-        method: 'GET',
-        headers: getHeaders(),
-      }),
-    }),
     assetMeanTimeComputation: builder.query<
       BaseApiResponse<MeanTimeComputation>,
       { monthId: number }
@@ -274,8 +256,6 @@ export const {
   useSearchAssetsMutation,
   useTransferAssetMutation,
   useUpdateAssetStatusMutation,
-  useExportAssetMutation,
-  useDownloadAssetQuery,
   useAssetMeanTimeComputationQuery,
   useGetAssetCountByColumnNameQuery,
 } = assetApi;

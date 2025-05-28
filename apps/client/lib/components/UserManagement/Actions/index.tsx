@@ -1,11 +1,9 @@
-import { HStack, Icon } from '@chakra-ui/react';
+import { HStack } from '@chakra-ui/react';
 
-import { Button, FilterButton } from '@repo/ui/components';
-import {
-  BulkSearchIcon,
-  DownloadIcon,
-  FilterIcon,
-} from '~/lib/components/CustomIcons';
+import { FilterButton } from '@repo/ui/components';
+import { BulkSearchIcon, FilterIcon } from '~/lib/components/CustomIcons';
+import { useAppSelector } from '~/lib/redux/hooks';
+import useExport from '~/lib/hooks/useExport';
 
 interface ActionButtonProps {
   activeAction: 'bulk' | 'filter' | null;
@@ -15,6 +13,12 @@ interface ActionButtonProps {
 }
 const ActionButton = (props: ActionButtonProps) => {
   const { activeAction, setActiveAction } = props;
+  const selectedIds = useAppSelector((state) => state.common.selectedTableIds);
+  const { ExportPopover } = useExport({
+    ids: selectedIds,
+    exportTableName: 'Users',
+    tableDisplayName: 'user',
+  });
 
   return (
     <HStack spacing={{ base: '8px', md: '16px' }} flexWrap="wrap">
@@ -34,18 +38,7 @@ const ActionButton = (props: ActionButtonProps) => {
         }
         isActive={activeAction === 'filter'}
       />
-      <Button
-        customStyles={{
-          height: '36px',
-          p: '0px',
-          px: '8px',
-          width: '100px',
-          justifyContent: 'flex-start',
-        }}
-      >
-        <Icon as={DownloadIcon} boxSize="24px" mr="8px" />
-        Export
-      </Button>
+      {ExportPopover}
     </HStack>
   );
 };

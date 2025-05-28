@@ -39,7 +39,7 @@ const ReportViewFilters = (props: ReportViewFiltersProps) => {
         isActive={activeFilter === 'general'}
       />
 
-      <ShareReportPopover report={[]} />
+      <ShareReportPopover reportId={report.reportId} />
 
       <ScheduleReportDrawer
         isOpen={isOpenSchedule}

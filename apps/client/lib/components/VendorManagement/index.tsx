@@ -12,6 +12,7 @@ import VendorActionDisplay from './Actions/Display';
 import VendorDetail from './VendorDetail';
 import PageHeader from '../UI/PageHeader';
 import useVendorTable from './VendorTable/useVendorTable';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 export const initialFilterData = {
   startDate: undefined,
@@ -32,9 +33,11 @@ const VendorManagement = () => {
   const [filterData, setFilterData] = useState<VendorFilter>(initialFilterData);
   const searchParams = useSearchParams();
   const VendorId = searchParams?.get(SYSTEM_CONTEXT_DETAILS.VENDOR.slug);
+
   const { handleSearch, VendorInfoTable } = useVendorTable({
     search,
     filterData,
+    isSelectable: true,
   });
 
   // Handles Toggling the  Filter

@@ -6,6 +6,8 @@ import {
   DownloadIcon,
   FilterIcon,
 } from '~/lib/components/CustomIcons';
+import useExport from '~/lib/hooks/useExport';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 interface ActionButtonProps {
   activeAction: 'bulk' | 'filter' | null;
@@ -15,9 +17,15 @@ interface ActionButtonProps {
 }
 const ActionButton = (props: ActionButtonProps) => {
   const { activeAction, setActiveAction } = props;
+  const selectedIds = useAppSelector((state) => state.common.selectedTableIds);
+  const { ExportPopover } = useExport({
+    ids: selectedIds,
+    exportTableName: 'Vendors',
+    tableDisplayName: 'vendor',
+  });
 
   return (
-    <HStack spacing="16px" flexWrap='wrap'>
+    <HStack spacing="16px" flexWrap="wrap">
       <FilterButton
         icon={BulkSearchIcon}
         label="Bulk Actions"
@@ -34,18 +42,7 @@ const ActionButton = (props: ActionButtonProps) => {
         }
         isActive={activeAction === 'filter'}
       />
-      <Button
-        customStyles={{
-          minH: '36px',
-          p: '0px',
-          px: '8px',
-          width: '100px',
-          justifyContent: 'flex-start',
-        }}
-      >
-        <Icon as={DownloadIcon} boxSize="24px" mr="8px" />
-        Export
-      </Button>
+      {ExportPopover}
     </HStack>
   );
 };

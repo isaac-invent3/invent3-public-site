@@ -24,10 +24,11 @@ import ActionButton from './Actions';
 import UserActionDisplay from './Actions/Display';
 import { useSearchParams } from 'next/navigation';
 import UserDetail from './UserDetail';
-import { useAppDispatch } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import useSignalR from '~/lib/hooks/useSignalR';
 import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
+import { updateSelectedTableIds } from '~/lib/redux/slices/CommonSlice';
 
 export const initialFilterData = {
   startDate: undefined,
@@ -52,6 +53,8 @@ const UserManagement = () => {
     onOpen: onOpenDetails,
   } = useDisclosure();
   const dispatch = useAppDispatch();
+  const [selectedRows, setSelectedRows] = useState<number[]>([]);
+  const { selectedTableIds } = useAppSelector((state) => state.common);
 
   const [searchData, setSearchData] = useState<ListResponse<User> | undefined>(
     undefined
@@ -131,6 +134,28 @@ const UserManagement = () => {
   useEffect(() => {
     if (userId) onOpenDetails();
   }, [userId]);
+
+  // Reset Selected Row when SelectedIds array is emptied
+  useEffect(() => {
+    if (selectedTableIds.length === 0 && selectedRows.length > 0) {
+      setSelectedRows([]);
+    }
+  }, [selectedTableIds]);
+
+  // Update selectedTableIds array when selected row is greater than 1
+  useEffect(() => {
+    if (selectedRows.length > 0) {
+      const sourceItems = searchData?.items || data?.data?.items || [];
+      const userIds = selectedRows
+        .map((rowId) => sourceItems[rowId]?.userId) // Access by index and get id
+        .filter((id): id is number => id !== undefined); // Filter out undefined values
+      dispatch(updateSelectedTableIds(userIds));
+    }
+    if (selectedRows.length === 0) {
+      // Reset selectedTableIds when no rows are selected
+      dispatch(updateSelectedTableIds([]));
+    }
+  }, [selectedRows]);
 
   // SignalR Connection
   const connectionState = useSignalR('users-hub');
@@ -279,6 +304,8 @@ const UserManagement = () => {
             setPageNumber={setPageNumber}
             pageSize={pageSize}
             setPageSize={setPageSize}
+            selectedRows={selectedRows}
+            setSelectedRows={setSelectedRows}
             showPopover
             handleSelectRow={(row) => {
               updateSearchParam(SYSTEM_CONTEXT_DETAILS.USER.slug, row.userId);

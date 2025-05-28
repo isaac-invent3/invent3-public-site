@@ -29,6 +29,9 @@ import Filters from './LogTable/Filters';
 import SummaryCards from './SummaryCards';
 import { useSearchParams } from 'next/navigation';
 import LogDetail from './LogDetail';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { updateSelectedTableIds } from '~/lib/redux/slices/CommonSlice';
+import useExport from '~/lib/hooks/useExport';
 
 export const initialFilterData = {
   userIds: [],
@@ -53,6 +56,14 @@ const LogManagement = () => {
   } = useDisclosure();
   const searchParams = useSearchParams();
   const logId = searchParams?.get(SYSTEM_CONTEXT_DETAILS.AUDIT.slug);
+  const [selectedRows, setSelectedRows] = useState<number[]>([]);
+  const { selectedTableIds } = useAppSelector((state) => state.common);
+  const dispatch = useAppDispatch();
+  const { ExportPopover } = useExport({
+    ids: selectedTableIds,
+    exportTableName: 'AuditRecords',
+    tableDisplayName: 'record',
+  });
 
   const [searchData, setSearchData] = useState<
     ListResponse<AuditRecord> | undefined
@@ -133,6 +144,28 @@ const LogManagement = () => {
     if (logId) onOpenDetails();
   }, [logId]);
 
+  // Reset Selected Row when SelectedIds array is emptied
+  useEffect(() => {
+    if (selectedTableIds.length === 0 && selectedRows.length > 0) {
+      setSelectedRows([]);
+    }
+  }, [selectedTableIds]);
+
+  // Update selectedTableIds array when selected row is greater than 1
+  useEffect(() => {
+    if (selectedRows.length > 0) {
+      const sourceItems = searchData?.items || data?.data?.items || [];
+      const auditRecordIds = selectedRows
+        .map((rowId) => sourceItems[rowId]?.auditRecordId) // Access by index and get id
+        .filter((id): id is number => id !== undefined); // Filter out undefined values
+      dispatch(updateSelectedTableIds(auditRecordIds));
+    }
+    if (selectedRows.length === 0) {
+      // Reset selectedTableIds when no rows are selected
+      dispatch(updateSelectedTableIds([]));
+    }
+  }, [selectedRows]);
+
   return (
     <>
       <Flex width="full" direction="column" pb="24px">
@@ -166,18 +199,7 @@ const LogManagement = () => {
                   handleClick={onToggle}
                   isActive={isOpen}
                 />
-                <Button
-                  customStyles={{
-                    minH: '36px',
-                    p: '0px',
-                    px: '8px',
-                    minW: '100px',
-                    justifyContent: 'flex-start',
-                  }}
-                >
-                  <Icon as={DownloadIcon} boxSize="24px" mr="8px" />
-                  Export
-                </Button>
+                {ExportPopover}
               </HStack>
             </HStack>
             {isOpen && (
@@ -214,6 +236,8 @@ const LogManagement = () => {
           setPageNumber={setPageNumber}
           pageSize={pageSize}
           setPageSize={setPageSize}
+          selectedRows={selectedRows}
+          setSelectedRows={setSelectedRows}
           showPopover
         />
       </Flex>

@@ -54,6 +54,7 @@ import notesSlice from './slices/NoteSlice';
 import auditLogSlice from './slices/AuditLogSlice';
 import companySlice from './slices/CompanySlice';
 import settingSlice from './slices/SettingsSlice';
+import commonSlice from './slices/CommonSlice';
 
 import { approvalWorkflowRequestApi } from './services/approval-workflow/requests.services';
 import { assetDisposalApi } from './services/asset/disposal.services';
@@ -242,6 +243,7 @@ const rootReducer = combineReducers({
   company: companySlice,
   settings: settingSlice,
   notes: notesSlice,
+  common: commonSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

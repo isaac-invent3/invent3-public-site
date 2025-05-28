@@ -11,30 +11,35 @@ import {
   HStack,
   useToast,
 } from '@chakra-ui/react';
-import { useSession } from 'next-auth/react';
+import _ from 'lodash';
 import { DownloadIcon } from '~/lib/components/CustomIcons';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { useAppSelector } from '~/lib/redux/hooks';
-import { useExportAssetMutation } from '~/lib/redux/services/asset/general.services';
+import { useExportTableMutation } from '~/lib/redux/services/utility.services';
 import { EXPORT_TYPE_ENUM } from '~/lib/utils/constants';
+import { handleExport } from '~/lib/utils/helperFunctions';
+import { ExportTableName } from '../interfaces/general.interfaces';
+import { useState } from 'react';
 
-const ExportPopover = () => {
+interface UseExportProps {
+  ids: number[];
+  exportTableName: ExportTableName;
+  tableDisplayName: string;
+}
+const useExport = (props: UseExportProps) => {
+  const { ids, exportTableName, tableDisplayName } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const selectedAssetIds = useAppSelector(
-    (state) => state.asset.selectedAssetIds
-  );
   const toast = useToast();
   const { handleSubmit } = useCustomMutation();
-  const [exportAsset, { isLoading }] = useExportAssetMutation();
-  const session = useSession();
+  const [exportTable, { isLoading }] = useExportTableMutation();
+  const [exportType, setExportType] = useState<number | null>(null);
 
   const handlePopoverClick = () => {
-    if (selectedAssetIds.length > 0) {
+    if (ids.length > 0) {
       onOpen();
     } else {
       toast({
-        title: 'No Asset Selected',
-        description: 'Please select atleast one asset',
+        title: `No ${_.startCase(tableDisplayName)} Selected`,
+        description: `Please select atleast one ${_.lowerCase(tableDisplayName)}`,
         status: 'error',
         duration: 5000,
         isClosable: true,
@@ -43,47 +48,18 @@ const ExportPopover = () => {
     }
   };
 
-  const handleExport = async (exportType: number) => {
-    const resp = await handleSubmit(exportAsset, {
-      exportType: exportType,
-      assetIds: selectedAssetIds,
+  const submitExport = async (exportType: number) => {
+    const resp = await handleSubmit(exportTable, {
+      tableName: exportTableName,
+      exportType,
+      ids,
     });
-
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/Assets/Download?filePath=${resp?.data?.data}`,
-        {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${session?.data?.user.accessToken}`,
-            Apikey: `${session?.data?.user.apiKey}`,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`Failed to download file: ${response.statusText}`);
-      }
-
-      const blob = await response.blob();
-
-      // Trigger download
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = resp?.data?.data ?? '';
-      document.body.appendChild(a);
-      a.click();
-
-      // Cleanup
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-    } catch (error) {
-      console.error('Error downloading file:', error);
+    if (resp?.data?.data) {
+      await handleExport(resp?.data?.data);
     }
   };
 
-  return (
+  const ExportPopover = (
     <>
       {/* Overlay */}
       {isOpen && (
@@ -147,17 +123,29 @@ const ExportPopover = () => {
                 color="#0E2642"
                 textAlign="center"
                 cursor="pointer"
-                onClick={() => handleExport(EXPORT_TYPE_ENUM.CSV)}
+                pointerEvents={isLoading ? 'none' : 'auto'}
+                onClick={() => {
+                  setExportType(EXPORT_TYPE_ENUM.CSV);
+                  submitExport(EXPORT_TYPE_ENUM.CSV);
+                }}
               >
-                {isLoading ? 'Exporting...' : 'Export as CSV'}
+                {isLoading && exportType === EXPORT_TYPE_ENUM.CSV
+                  ? 'Exporting...'
+                  : 'Export as CSV'}
               </Text>
               <Text
                 color="#0E2642"
                 textAlign="center"
                 cursor="pointer"
-                onClick={() => handleExport(EXPORT_TYPE_ENUM.PDF)}
+                pointerEvents={isLoading ? 'none' : 'auto'}
+                onClick={() => {
+                  setExportType(EXPORT_TYPE_ENUM.PDF);
+                  submitExport(EXPORT_TYPE_ENUM.PDF);
+                }}
               >
-                {isLoading ? 'Exporting...' : 'Export as PDF'}
+                {isLoading && exportType === EXPORT_TYPE_ENUM.PDF
+                  ? 'Exporting...'
+                  : 'Export as PDF'}
               </Text>
             </VStack>
           </PopoverBody>
@@ -165,6 +153,10 @@ const ExportPopover = () => {
       </Popover>
     </>
   );
+
+  return {
+    ExportPopover,
+  };
 };
 
-export default ExportPopover;
+export default useExport;

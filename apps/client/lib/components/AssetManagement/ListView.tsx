@@ -150,7 +150,7 @@ const ListView = (props: ListViewProps) => {
 
   // Reset Selected Row when SelectedAssetIds array is emptied
   useEffect(() => {
-    if (selectedAssetIds.length == 0) {
+    if (selectedAssetIds.length == 0 && selectedRows.length > 0) {
       setSelectedRows([]);
     }
   }, [selectedAssetIds]);
@@ -163,6 +163,10 @@ const ListView = (props: ListViewProps) => {
         .map((rowId) => sourceItems[rowId]?.assetId) // Access by index and get assetId
         .filter((id): id is number => id !== undefined); // Filter out undefined values
       dispatch(updateSelectedAssetIds(assetIds));
+    }
+    if (selectedRows.length === 0) {
+      // Reset when no rows are selected
+      dispatch(updateSelectedAssetIds([]));
     }
   }, [selectedRows]);
 

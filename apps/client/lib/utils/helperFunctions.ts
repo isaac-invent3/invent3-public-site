@@ -5,6 +5,7 @@ import { ActualProjectedData } from '../interfaces/dashboard.interfaces';
 import { FILE_ICONS } from './constants';
 import nigeriaStatesByLandSize from './NigeriaCordinates/landSize';
 import { Document } from '../interfaces/general.interfaces';
+import { getSession } from 'next-auth/react';
 
 interface IOption {
   [key: string]: any;
@@ -257,6 +258,43 @@ const extractTenantFromUrl = (): string | null | undefined => {
   }
 };
 
+const handleExport = async (filePath: string) => {
+  const session = await getSession();
+
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/Assets/Download?filePath=${filePath}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${session?.user.accessToken}`,
+          Apikey: `${session?.user.apiKey}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to download file: ${response.statusText}`);
+    }
+
+    const blob = await response.blob();
+
+    // Trigger download
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filePath ?? '';
+    document.body.appendChild(a);
+    a.click();
+
+    // Cleanup
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+  } catch (error) {
+    console.error('Error downloading file:', error);
+  }
+};
+
 export {
   formatNumberShort,
   formattedDateTime,
@@ -269,4 +307,5 @@ export {
   transformCostsData,
   transformToCalendarEvents,
   extractTenantFromUrl,
+  handleExport,
 };

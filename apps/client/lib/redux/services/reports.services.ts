@@ -99,7 +99,6 @@ export const reportApi = createApi({
         body,
       }),
     }),
-
     saveReportAsTemplate: builder.mutation<
       BaseApiResponse<Report>,
       SaveReportPayload
@@ -111,10 +110,27 @@ export const reportApi = createApi({
         body,
       }),
     }),
+    exportReport: builder.mutation<
+      BaseApiResponse<string>,
+      {
+        reportId: number;
+        exportType: number;
+        startDate?: string;
+        endDate?: string;
+        regionIds?: number[];
+        lgaIds?: number[];
+        facilityIds?: number[];
+      } & QueryParams
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/Reports/Export?`, data),
+        method: 'POST',
+        headers: getHeaders(),
+      }),
+    }),
   }),
 });
 
-;
 export const {
   useGetAllSavedReportsQuery,
   useGetAllDefaultReportsQuery,
@@ -123,5 +139,6 @@ export const {
   useViewReportByIdQuery,
   useScheduleReportMutation,
   useGenerateReportMutation,
-  useSaveReportAsTemplateMutation
+  useSaveReportAsTemplateMutation,
+  useExportReportMutation,
 } = reportApi;

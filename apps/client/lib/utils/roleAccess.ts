@@ -54,7 +54,7 @@ const ROUTES_PERMISSION_KEY: { [name: string]: PermissionKey } = {
   [`/${ROUTES.COMPANY}/add`]: 'company:create',
   [`/${ROUTES.COMPANY}/[id]/edit`]: 'company:edit',
   [`/${ROUTES.SETTINGS}`]: 'settings',
-  [`/${ROUTES.COMPLIANCE}`]: 'compliance',
+  [`/${ROUTES.COMPLIANCE}`]: 'settings',
   [`/${ROUTES.APPROVAL}`]: 'approval',
   [`/${ROUTES.APPROVAL}/[id]`]: 'approval',
 };

@@ -112,7 +112,7 @@ interface SideBarData {
   route: string;
   icon: ComponentWithAs<'svg', IconProps>;
   permissionKey: ModuleKey;
-  contextId?: (typeof SYSTEM_CONTEXT_TYPE)[keyof typeof SYSTEM_CONTEXT_TYPE]
+  contextId?: (typeof SYSTEM_CONTEXT_TYPE)[keyof typeof SYSTEM_CONTEXT_TYPE];
   description?: string;
   children?: SidebarChildren[];
 }
@@ -121,7 +121,6 @@ interface SidebarChildren {
   name: string;
   route: string;
 }
-
 
 type ContextKey =
   | 'ASSETS'
@@ -140,7 +139,7 @@ interface SystemContextDetail {
   route: (typeof ROUTES)[keyof typeof ROUTES];
   slug: string;
   relatedPermissionKeys?: ModuleKey[];
-  displayName:string
+  displayName: string;
 }
 
 interface ImageObject {
@@ -174,6 +173,13 @@ interface BaseUpdateDto {
   actionType: (typeof FORM_ENUM)[keyof typeof FORM_ENUM];
 }
 
+type ExportTableName =
+  | 'Assets'
+  | 'AssetCompliances'
+  | 'AuditRecords'
+  | 'Users'
+  | 'Vendors';
+
 export type {
   ActionType,
   AppConfig,
@@ -193,4 +199,5 @@ export type {
   sidebarChildren,
   SideBarData,
   SystemContextDetail,
+  ExportTableName,
 };

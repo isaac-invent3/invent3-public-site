@@ -15,17 +15,25 @@ import { Vendor, VendorFilter } from '~/lib/interfaces/vendor.interfaces';
 import { generateSearchCriterion } from '@repo/utils';
 import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
 import useSignalR from '~/lib/hooks/useSignalR';
-import { useAppDispatch } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { updateSelectedTableIds } from '~/lib/redux/slices/CommonSlice';
 
 interface useVendorTable {
   search?: string;
   showFooter?: boolean;
   filterData?: VendorFilter;
   customPageSize?: number;
+  isSelectable?: boolean;
 }
 
 const useVendorTable = (props: useVendorTable) => {
-  const { search, showFooter = true, filterData, customPageSize } = props;
+  const {
+    search,
+    showFooter = true,
+    filterData,
+    customPageSize,
+    isSelectable,
+  } = props;
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const { data, isLoading, isFetching } = useGetAllVendorsQuery({
@@ -40,6 +48,8 @@ const useVendorTable = (props: useVendorTable) => {
   const [searchVendor, { isLoading: searchLoading }] = useSearchVendorsMutation(
     {}
   );
+  const [selectedRows, setSelectedRows] = useState<number[]>([]);
+  const { selectedTableIds } = useAppSelector((state) => state.common);
 
   // Checks if all filterdata is empty
   const isFilterEmpty = _.every(filterData, (value) => _.isEmpty(value));
@@ -194,6 +204,28 @@ const useVendorTable = (props: useVendorTable) => {
     },
   });
 
+  // Reset Selected Row when SelectedIds array is emptied
+  useEffect(() => {
+    if (selectedTableIds.length === 0 && selectedRows.length > 0) {
+      setSelectedRows([]);
+    }
+  }, [selectedTableIds]);
+
+  // Update selectedTableIds array when selected row is greater than 1
+  useEffect(() => {
+    if (selectedRows.length > 0) {
+      const sourceItems = searchData?.data?.items || data?.data?.items || [];
+      const vendorIds = selectedRows
+        .map((rowId) => sourceItems[rowId]?.vendorId) // Access by index and get id
+        .filter((id): id is number => id !== undefined); // Filter out undefined values
+      dispatch(updateSelectedTableIds(vendorIds));
+    }
+    if (selectedRows.length === 0) {
+      // Reset selectedTableIds when no rows are selected
+      dispatch(updateSelectedTableIds([]));
+    }
+  }, [selectedRows]);
+
   const VendorInfoTable = (
     <Flex width="full" direction="column">
       <VendorTable
@@ -205,7 +237,10 @@ const useVendorTable = (props: useVendorTable) => {
         isFetching={isFetching || searchLoading}
         isLoading={isLoading}
         pageSize={pageSize}
+        isSelectable={isSelectable}
         setPageSize={setPageSize}
+        selectedRows={selectedRows}
+        setSelectedRows={setSelectedRows}
         pageNumber={pageNumber}
         setPageNumber={setPageNumber}
         showFooter={showFooter}

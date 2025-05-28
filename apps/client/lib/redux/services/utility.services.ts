@@ -1,11 +1,15 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import baseQueryWithReauth from '../baseQueryWithReauth';
-import { AppConfig } from '~/lib/interfaces/general.interfaces';
+import {
+  AppConfig,
+  ExportTableName,
+} from '~/lib/interfaces/general.interfaces';
 import { BaseApiResponse } from '@repo/interfaces';
 import {
   Settings,
   UpdateSettingsPayload,
 } from '~/lib/interfaces/settings.interfaces';
+import { generateQueryStr } from '~/lib/utils/queryGenerator';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -40,6 +44,28 @@ export const utilityApi = createApi({
         body,
       }),
     }),
+    exportTable: builder.mutation<
+      BaseApiResponse<string>,
+      {
+        tableName: ExportTableName;
+        exportType: number;
+        ids?: number[];
+      }
+    >({
+      query: ({ tableName, exportType, ids }) => ({
+        url: `/${tableName}/Export?exportType=${exportType}`,
+        method: 'POST',
+        headers: getHeaders(),
+        body: ids,
+      }),
+    }),
+    downloadFile: builder.query<string, { filePath: string }>({
+      query: (data) => ({
+        url: generateQueryStr(`/Invent3Pro/Download?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
   }),
 });
 
@@ -47,4 +73,6 @@ export const {
   useGetAppConfigValuesQuery,
   useUpdateSettingsMutation,
   useGetSettingsQuery,
+  useExportTableMutation,
+  useDownloadFileQuery,
 } = utilityApi;

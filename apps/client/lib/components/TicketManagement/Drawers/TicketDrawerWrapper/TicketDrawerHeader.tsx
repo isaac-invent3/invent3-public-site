@@ -52,38 +52,39 @@ const TicketDrawerHeader = (props: TicketDrawerHeaderProps) => {
         <Flex display={{ base: 'flex', lg: 'none' }}>
           <PopoverAction ticket={data} category={category} />
         </Flex>
-        {(action === 'view' || action === 'assign') && (
-          <HStack spacing="8px" display={{ base: 'none', lg: 'flex' }}>
-            {canScheduleTicket && (
-              <Button
-                handleClick={() => openModal('schedule')}
-                customStyles={{ width: '126px', height: '35px' }}
-              >
-                Schedule Ticket
-              </Button>
-            )}
+        {(action === 'view' || action === 'assign') &&
+          !category.includes('completed') && (
+            <HStack spacing="8px" display={{ base: 'none', lg: 'flex' }}>
+              {canScheduleTicket && (
+                <Button
+                  handleClick={() => openModal('schedule')}
+                  customStyles={{ width: '126px', height: '35px' }}
+                >
+                  Schedule Ticket
+                </Button>
+              )}
 
-            {category === 'new' && action === 'view' && canAssignTicket && (
-              <Button
-                handleClick={() => openModal('assign')}
-                variant="outline"
-                customStyles={{ width: '126px', height: '35px' }}
-              >
-                Assign Ticket
-              </Button>
-            )}
+              {category === 'new' && action === 'view' && canAssignTicket && (
+                <Button
+                  handleClick={() => openModal('assign')}
+                  variant="outline"
+                  customStyles={{ width: '126px', height: '35px' }}
+                >
+                  Assign Ticket
+                </Button>
+              )}
 
-            {canDeleteTicket && (
-              <Button
-                customStyles={{ width: '84px', height: '35px' }}
-                variant="secondary"
-                handleClick={() => openModal('delete')}
-              >
-                Delete
-              </Button>
-            )}
-          </HStack>
-        )}
+              {canDeleteTicket && (
+                <Button
+                  customStyles={{ width: '84px', height: '35px' }}
+                  variant="secondary"
+                  handleClick={() => openModal('delete')}
+                >
+                  Delete
+                </Button>
+              )}
+            </HStack>
+          )}
 
         {action === 'edit' && canMarkTicketAsCompleted && (
           <Button

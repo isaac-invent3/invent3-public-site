@@ -47,7 +47,7 @@ export const ticketApi = createApi({
         headers: getHeaders(),
         body,
       }),
-      invalidatesTags: [],
+      invalidatesTags: ['allTickets'],
     }),
     deleteTicket: builder.mutation<BaseApiResponse<null>, DeleteTicketPayload>({
       query: ({ id, ...body }) => ({
@@ -56,7 +56,7 @@ export const ticketApi = createApi({
         headers: getHeaders(),
         body,
       }),
-      invalidatesTags: [],
+      invalidatesTags: ['allTickets'],
     }),
     getAllTickets: builder.query<
       BaseApiResponse<ListResponse<Ticket>>,

@@ -10,4 +10,5 @@ const getSelectedTicketIds = (): number[] => {
 const removeSelectedTicketIds = () => {
   localStorage.removeItem('ticketIds');
 };
+
 export { saveSelectedTicketIds, getSelectedTicketIds, removeSelectedTicketIds };

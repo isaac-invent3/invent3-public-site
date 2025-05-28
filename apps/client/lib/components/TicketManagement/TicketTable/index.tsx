@@ -2,7 +2,7 @@ import { Flex, useMediaQuery } from '@chakra-ui/react';
 import { BaseApiResponse, ListResponse } from '@repo/interfaces';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
-import { Dispatch, SetStateAction, useMemo } from 'react';
+import { Dispatch, SetStateAction, useEffect, useMemo } from 'react';
 import UserInfo from '~/lib/components/Common/UserInfo';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import { Ticket, TicketCategory } from '~/lib/interfaces/ticket.interfaces';
@@ -13,7 +13,7 @@ import {
 import { dateFormatter } from '~/lib/utils/Formatters';
 import TicketOverlays from '../Overlays';
 import PopoverAction from './PopoverAction';
-import { useAppDispatch } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { setSelectedTicket } from '~/lib/redux/slices/TicketSlice';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 
@@ -54,6 +54,25 @@ const TicketTable = (props: TicketTableProps) => {
   const { updateSearchParam } = useCustomSearchParams();
   const dispatch = useAppDispatch();
   const columnHelper = createColumnHelper<Ticket>();
+  const appConfig = useAppSelector((state) => state.general.appConfigValues);
+
+  const getAction = (data: Ticket) => {
+    if (
+      data.ticketStatusId ===
+      (typeof appConfig?.DEFAULT_COMPLETED_TASK_STATUS_ID === 'string'
+        ? +appConfig?.DEFAULT_COMPLETED_TASK_STATUS_ID
+        : appConfig?.DEFAULT_COMPLETED_TASK_STATUS_ID)
+    ) {
+      return 'view';
+    }
+    if (data.isScheduled) {
+      return 'edit';
+    }
+    if (data.assignedTo) {
+      return 'schedule';
+    }
+    return 'assign';
+  };
 
   const mobileColumns = useMemo(
     () => {
@@ -249,7 +268,7 @@ const TicketTable = (props: TicketTableProps) => {
         handleSelectRow={(row) => {
           dispatch(
             setSelectedTicket({
-              action: ['view'],
+              action: [getAction(row)],
               category: category ?? 'new',
               data: row,
             })
@@ -257,7 +276,11 @@ const TicketTable = (props: TicketTableProps) => {
           updateSearchParam(SYSTEM_CONTEXT_DETAILS.TICKETS.slug, row.ticketId);
         }}
         showFooter={
-          shouldHideFooter && data?.data?.totalPages === 1 ? true : false
+          shouldHideFooter
+            ? data?.data?.totalPages === 1
+              ? false
+              : true
+            : true
         }
         maxTdWidth="200px"
         customThStyle={{

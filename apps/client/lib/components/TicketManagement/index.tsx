@@ -17,6 +17,7 @@ import { Ticket, TicketCategory } from '~/lib/interfaces/ticket.interfaces';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import {
   ticketApi,
+  useGetTicketByIdQuery,
   useGetTicketsByTabScopeQuery,
   useSearchTicketsMutation,
 } from '~/lib/redux/services/ticket.services';
@@ -25,7 +26,6 @@ import {
   ROUTES,
   SYSTEM_CONTEXT_DETAILS,
 } from '~/lib/utils/constants';
-import TicketDrawerWrapper from './Drawers/TicketDrawerWrapper';
 import Header from './Header';
 import TicketOverlays from './Overlays';
 import TicketTable from './TicketTable';
@@ -40,6 +40,8 @@ import { BaseApiResponse, ListResponse } from '@repo/interfaces';
 import _ from 'lodash';
 import useSignalR from '~/lib/hooks/useSignalR';
 import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
+import LoadingDrawer from './Drawers/LoadingDrawer';
+import { setSelectedTicket } from '~/lib/redux/slices/TicketSlice';
 
 const ALlTabs = ['New', 'Assigned', 'Scheduled', 'In Progress', 'Completed'];
 
@@ -47,6 +49,16 @@ export const initialFilterData = {
   region: [],
   area: [],
   branch: [],
+};
+
+const getTicketCategoryKey = (data: Ticket) => {
+  if (data.isScheduled) {
+    return 'scheduled';
+  }
+  if (data.assignedTo) {
+    return 'assigned';
+  }
+  return 'new';
 };
 
 const TicketManagement = () => {
@@ -70,9 +82,39 @@ const TicketManagement = () => {
   const tab = getSearchParam('tab');
   const selectedTicket = useAppSelector((state) => state.ticket.selectedTicket);
   const { handleSubmit } = useCustomMutation();
+  const [selectedRows, setSelectedRows] = useState<number[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [selectedTicketIds, setSelectedTicketIds] = useState<number[]>([]);
   const appConfigValue = useAppSelector(
     (state) => state.general.appConfigValues
+  );
+
+  const getAction = (data: Ticket) => {
+    if (
+      data.ticketStatusId ===
+      (typeof appConfigValue?.DEFAULT_COMPLETED_TASK_STATUS_ID === 'string'
+        ? +appConfigValue?.DEFAULT_COMPLETED_TASK_STATUS_ID
+        : appConfigValue?.DEFAULT_COMPLETED_TASK_STATUS_ID)
+    ) {
+      return 'view';
+    }
+    if (data.isScheduled) {
+      return 'edit';
+    }
+    if (data.assignedTo) {
+      return 'schedule';
+    }
+    return 'assign';
+  };
+
+  const {
+    data: ticket,
+    isLoading: isLoadingTicket,
+    isError,
+  } = useGetTicketByIdQuery(
+    { id: (typeof ticketId === 'string' ? +ticketId : ticketId)! },
+    { skip: !ticketId || selectedTicket !== null }
   );
 
   // Open ticket detail if ticket id params exists
@@ -86,6 +128,19 @@ const TicketManagement = () => {
     const tabIndex = tab ? ALlTabs.findIndex((value) => value === tab) : -1;
     setTabIndex(tabIndex !== -1 ? tabIndex : 0);
   }, [tab]);
+
+  useEffect(() => {
+    if (ticket?.data) {
+      dispatch(
+        setSelectedTicket({
+          action: [getAction(ticket.data)],
+          category: getTicketCategoryKey(ticket.data),
+          data: ticket.data,
+        })
+      );
+      onCloseView();
+    }
+  }, [ticket]);
 
   // Update the URL whenever the tab is changed
   const handleTabChange = (index: number) => {
@@ -105,9 +160,6 @@ const TicketManagement = () => {
 
     return 'new';
   }, [tabIndex]);
-  const [selectedRows, setSelectedRows] = useState<number[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const { data, isLoading, isFetching } = useGetTicketsByTabScopeQuery({
     pageNumber: currentPage,
     pageSize: pageSize,
@@ -402,19 +454,20 @@ const TicketManagement = () => {
                 selectedRows={selectedRows}
                 setSelectedRows={setSelectedRows}
                 emptyLines={25}
-                shouldHideFooter={true}
+                shouldHideFooter={false}
               />
             </Flex>
           </TabPanels>
         </Tabs>
       </Flex>
       <TicketOverlays />
-      <TicketDrawerWrapper
+      <LoadingDrawer
         isOpen={isOpenView}
-        onClose={onCloseView}
-        data={null}
-        category="new"
-        action="view"
+        onClose={() => {
+          onCloseView();
+        }}
+        isError={isError}
+        isLoading={isLoadingTicket}
       />
     </Flex>
   );

@@ -26,7 +26,7 @@ import moment from 'moment';
 type SelectedReportActions = 'download-pdf' | 'download-csv' | 'share-email';
 
 interface PopoverActionProps {
-  reportId: number;
+  reportId: number | null;
 }
 const ShareReportPopover = (props: PopoverActionProps) => {
   const { reportId } = props;
@@ -47,7 +47,7 @@ const ShareReportPopover = (props: PopoverActionProps) => {
 
   const submitExport = async (exportType: number) => {
     const resp = await handleSubmit(exportReport, {
-      reportId,
+      reportId: reportId!,
       exportType,
       startDate: moment(filters.fromDate, 'DD-MM-YYYY')
         .utcOffset(0, true)

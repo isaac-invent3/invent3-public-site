@@ -5,16 +5,16 @@ import { FormInputWrapper } from '@repo/ui/components';
 import { useField } from 'formik';
 import { useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
-import { useSearchEmployeesMutation } from '~/lib/redux/services/employees.services';
 import {
   useGetAllUserGroupsInfoHeaderQuery,
   useGetAllUsersQuery,
   useSearchUserGroupMutation,
+  useSearchUsersMutation,
 } from '~/lib/redux/services/user.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 const ApprovalAssignee = () => {
-  const [searchEmployee] = useSearchEmployeesMutation({});
+  const [searchUser] = useSearchUsersMutation({});
 
   const [userListPageNumber, setUserListPageNumber] = useState(1);
 
@@ -56,7 +56,7 @@ const ApprovalAssignee = () => {
               labelKey="username"
               valueKey="userId"
               defaultInputValue={undefined}
-              mutationFn={searchEmployee}
+              mutationFn={searchUser}
               isLoading={isLoading}
               pageNumber={userListPageNumber}
               setPageNumber={setUserListPageNumber}

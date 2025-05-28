@@ -36,7 +36,7 @@ const NewLocation = (props: NewLocationProps) => {
           </Text>
         )}
       </VStack>
-      <HStack spacing="4px">
+      {/* <HStack spacing="4px">
         <Icon
           as={newLocation ? PenIcon : AddIcon}
           boxSize={!newLocation ? '18px' : '16px'}
@@ -45,7 +45,7 @@ const NewLocation = (props: NewLocationProps) => {
         <Text color="blue.500" mt="3px">
           {newLocation ? 'Edit' : 'Add'} Location
         </Text>
-      </HStack>
+      </HStack> */}
       {meta.touched && meta.error !== undefined && (
         <ErrorMessage>{meta.error}</ErrorMessage>
       )}

@@ -45,7 +45,7 @@ const BulkDispose = () => {
         disposalDate: moment(values.disposalDate, 'DD/MM/YYYY')
           .utcOffset(0, true)
           .toISOString()!,
-        disposalRequestedBy: 1,
+        disposalRequestedBy: session?.user?.userId!,
         createdBy: session?.user?.username!,
       };
       const uploadedDocuments: Document[] = values.documents.filter(

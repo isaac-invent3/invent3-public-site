@@ -2,10 +2,10 @@ import { VStack } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import DetailHeader from '~/lib/components/UI/DetailHeader';
 import UserSelect from '../../../Common/SelectComponents/UserSelect';
-import { Employee } from '~/lib/interfaces/user.interfaces';
-import { useGetEmployeeByIdQuery } from '~/lib/redux/services/employees.services';
-import User from '../../Common/User';
+import UserDisplay from '../../Common/User';
 import { useField } from 'formik';
+import { useGetUserByIdQuery } from '~/lib/redux/services/user.services';
+import { User } from '~/lib/interfaces/user.interfaces';
 
 interface NewOwnerProps {
   setNewLocation: React.Dispatch<React.SetStateAction<string>>;
@@ -13,9 +13,9 @@ interface NewOwnerProps {
 const NewOwner = (props: NewOwnerProps) => {
   const { setNewLocation } = props;
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
-  const [user, setUser] = useState<Employee | null>(null);
-  const { data } = useGetEmployeeByIdQuery(
-    { id: selectedUserId ?? undefined },
+  const [user, setUser] = useState<User | null>(null);
+  const { data } = useGetUserByIdQuery(
+    { userId: selectedUserId! },
     {
       skip: !selectedUserId,
     }
@@ -28,7 +28,7 @@ const NewOwner = (props: NewOwnerProps) => {
       setUser(data?.data);
       helpers.setValue(data?.data?.locationId);
       if (data?.data?.locationId) {
-        setNewLocation(data?.data?.employeeLocation);
+        setNewLocation(data?.data?.locationId.toString());
       }
     }
   }, [data]);
@@ -52,8 +52,8 @@ const NewOwner = (props: NewOwnerProps) => {
         handleSelect={(option) => setSelectedUserId(option.value as number)}
       />
       {user && (
-        <User
-          name={user.employeeName}
+        <UserDisplay
+          name={user.firstName + ' ' + user.lastName}
           role="Operation Manager"
           location={null}
           department={null}

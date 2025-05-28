@@ -6,6 +6,8 @@ import { FILE_ICONS } from './constants';
 import nigeriaStatesByLandSize from './NigeriaCordinates/landSize';
 import { Document } from '../interfaces/general.interfaces';
 import { getSession } from 'next-auth/react';
+import { env } from 'next-runtime-env';
+const baseURL = env('NEXT_PUBLIC_API_URL');
 
 interface IOption {
   [key: string]: any;
@@ -263,7 +265,7 @@ const handleExport = async (filePath: string) => {
 
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/Assets/Download?filePath=${filePath}`,
+      `${baseURL}/api/Assets/Download?filePath=${filePath}`,
       {
         method: 'GET',
         headers: {

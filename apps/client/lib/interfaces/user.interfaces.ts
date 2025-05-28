@@ -36,6 +36,7 @@ interface User {
   displayColorCode: string;
   isDeleted: boolean;
   phoneNumber: string;
+  locationId: number;
   residentialAddress: string;
   facilityName: string;
   facilityRef: string;

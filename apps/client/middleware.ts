@@ -196,6 +196,7 @@ export async function middleware(request: NextRequest) {
         return updateCookie(null, request, response);
       }
     }
+
     // Redirect to tenant if token has a different tenant. Note: This is for only the relative path approach
     if (token.companySlug && token.companySlug !== tenant) {
       return NextResponse.redirect(
@@ -235,15 +236,19 @@ export async function middleware(request: NextRequest) {
     ) {
       return NextResponse.rewrite(new URL('/404', request.url));
     }
-    response.cookies.set(
+
+    // Decide which response to return
+    const responseToReturn = tenantData
+      ? NextResponse.rewrite(new URL(`${checkPath}`, request.url))
+      : NextResponse.next();
+
+    // Set cookies on the correct response
+    responseToReturn.cookies.set(
       'permissionData',
       JSON.stringify(permissionData?.permissionKeys)
     );
 
-    if (tenantData) {
-      return NextResponse.rewrite(new URL(`${checkPath}`, request.url));
-    }
-    return response;
+    return responseToReturn;
   }
   if (!token) {
     if (publicRoutes.includes(`/${pathname.split('/')?.[1] as string}`)) {

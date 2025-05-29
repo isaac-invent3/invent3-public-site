@@ -28,6 +28,7 @@ const UserInfo = (props: UserInfoProps) => {
         width="30px"
         height="30px"
         name={name ?? ''}
+        // {...(name ? { name } : {})}
         {...customAvatarStyle}
       />
       <Flex direction="column">

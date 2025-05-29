@@ -151,8 +151,8 @@ const JourneyGuide = (props: JourneyGuideProps) => {
           </VStack>
           <VStack alignItems="flex-start" spacing="5px">
             {steps.map((item, index) => (
-              <VStack alignItems="flex-start" spacing="5px">
-                <HStack key={index} spacing="24px">
+              <VStack alignItems="flex-start" spacing="5px" key={index}>
+                <HStack spacing="24px">
                   <Flex
                     width="48px"
                     height="48px"

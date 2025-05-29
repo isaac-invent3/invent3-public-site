@@ -4,13 +4,14 @@ interface Ticket {
   ticketTitle: string;
   issueDescription: string;
   issueReportDate: string;
-  resolutionDate: string | null;
+  resolutionDate: string;
   dateCreated: string;
   isScheduled: boolean;
   isDeleted: boolean;
   assetId: number;
+  assetName: string;
   assetCode: string;
-  serialNo: string | null;
+  serialNo: string;
   assetDescription: string;
   reportedBy: string | null;
   reportedByEmployeeId: number | null;
@@ -18,8 +19,8 @@ interface Ticket {
   resolvedByEmployeeId: number | null;
   assignedTo: string | null;
   assignedToEmployeeId: number | null;
-  activeSchedules: number;
-  openTasks: number;
+  activeSchedules: number | null;
+  openTasks: number | null;
   facilityName: string;
   facilityRef: string;
   facilityAddress: string;
@@ -48,10 +49,10 @@ interface Ticket {
   statusColorCode: string;
   ticketTypeId: number;
   ticketTypeName: string;
-  totalTasksCount: number | null;
-  activeTasksCount: number | null;
-  completedTasksCount: number | null;
-  assetLocation: string | null;
+  totalTasksCount: number;
+  activeTasksCount: number;
+  completedTasksCount: number;
+  assetLocation: string;
 }
 
 interface CreateTicketPayload {

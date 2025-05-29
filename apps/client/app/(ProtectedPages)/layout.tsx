@@ -20,6 +20,7 @@ const ProtectedLayout = ({ children }: RootLayoutProps) => {
   const fetchRelatedPermissionKeyForASystemContext = async (
     relatedKeys: string[] | undefined
   ) => {
+    console.log({ relatedKeys });
     const session = await getSession();
     const accessibleRoutes = session?.user?.roleSystemModuleContextPermissions;
     const permissionData = Cookies.get('permissionData');
@@ -30,6 +31,7 @@ const ProtectedLayout = ({ children }: RootLayoutProps) => {
 
     if (!relatedKeys || !accessibleRoutes) return;
 
+    // Checks if user have access to the route
     for (const relatedKey of relatedKeys) {
       const routeInfo = Object.entries(accessibleRoutes).find(
         ([, value]) => value === relatedKey
@@ -49,7 +51,8 @@ const ProtectedLayout = ({ children }: RootLayoutProps) => {
 
         if (result.data?.data?.items?.length) {
           const newKeys = result.data.data.items.map((item) => item.keyName);
-          permissionKeys.push(...newKeys);
+          // Add only unique keys
+          permissionKeys = Array.from(new Set([...permissionKeys, ...newKeys]));
         }
       } catch (error) {
         console.error('Error fetching submodules:', error);

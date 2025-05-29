@@ -13,7 +13,11 @@ import {
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
-import { Ticket, TicketCategory } from '~/lib/interfaces/ticket.interfaces';
+import {
+  SelectedTicketAction,
+  Ticket,
+  TicketCategory,
+} from '~/lib/interfaces/ticket.interfaces';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import {
   ticketApi,
@@ -51,16 +55,6 @@ export const initialFilterData = {
   branch: [],
 };
 
-const getTicketCategoryKey = (data: Ticket) => {
-  if (data.isScheduled) {
-    return 'scheduled';
-  }
-  if (data.assignedTo) {
-    return 'assigned';
-  }
-  return 'new';
-};
-
 const TicketManagement = () => {
   const router = useRouter();
   const { getSearchParam } = useCustomSearchParams();
@@ -90,22 +84,24 @@ const TicketManagement = () => {
     (state) => state.general.appConfigValues
   );
 
-  const getAction = (data: Ticket) => {
+  const getActionAndTicketCategoryKey = (
+    data: Ticket
+  ): { action: SelectedTicketAction; category: TicketCategory } => {
     if (
       data.ticketStatusId ===
       (typeof appConfigValue?.DEFAULT_COMPLETED_TASK_STATUS_ID === 'string'
         ? +appConfigValue?.DEFAULT_COMPLETED_TASK_STATUS_ID
         : appConfigValue?.DEFAULT_COMPLETED_TASK_STATUS_ID)
     ) {
-      return 'view';
+      return { action: 'view', category: 'completed' };
     }
     if (data.isScheduled) {
-      return 'edit';
+      return { action: 'edit', category: 'scheduled' };
     }
     if (data.assignedTo) {
-      return 'schedule';
+      return { action: 'schedule', category: 'assigned' };
     }
-    return 'assign';
+    return { action: 'assign', category: 'new' };
   };
 
   const {
@@ -133,8 +129,8 @@ const TicketManagement = () => {
     if (ticket?.data) {
       dispatch(
         setSelectedTicket({
-          action: [getAction(ticket.data)],
-          category: getTicketCategoryKey(ticket.data),
+          action: [getActionAndTicketCategoryKey(ticket.data).action],
+          category: getActionAndTicketCategoryKey(ticket.data).category,
           data: ticket.data,
         })
       );

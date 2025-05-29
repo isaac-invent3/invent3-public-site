@@ -16,6 +16,7 @@ import OccupancyManagement from './OccupancyManagement';
 import PredictiveMaintenance from './PredictiveMaintenance';
 import FinancialInsight from './FinancialInsight';
 import SustainabilityMetrics from './SustainabilityMetrics';
+import FloorPlan from './FloorPlan';
 
 const DetailTabs = () => {
   const [tabIndex, setTabIndex] = useState(0);
@@ -58,7 +59,7 @@ const DetailTabs = () => {
     {
       label: 'Floor Plan',
       slug: 'floorPlan',
-      component: <></>,
+      component: <FloorPlan />,
     },
   ];
 
@@ -102,6 +103,8 @@ const DetailTabs = () => {
                 minH="30vh"
                 mt="16px"
                 width="full"
+                p={0}
+                overflow="hidden"
               >
                 {index === tabIndex && item.component}
               </VStack>

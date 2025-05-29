@@ -19,14 +19,15 @@ const Overview = () => {
     lganame,
     userRoles,
     employeeId,
+    userId,
     statusName,
     displayColorCode,
   } = userData;
 
   const userInfo1 = [
     {
-      label: 'Employee ID',
-      value: employeeId ? employeeId.toString() : null,
+      label: 'User ID',
+      value: userId?.toString() ?? null,
     },
     {
       label: 'Email',

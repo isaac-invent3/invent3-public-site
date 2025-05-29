@@ -9,6 +9,7 @@ import StackedBarChart from '~/lib/components/Dashboard/Common/Charts/StackedBar
 import { timeRangeOptions } from '~/lib/utils/constants';
 import { transformMonthIdsToShortNames } from '~/lib/components/Dashboard/Common/utils';
 import { generateLastFiveYears } from '~/lib/utils/helperFunctions';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 const BudgetActualExpenditureAnalysis = () => {
   const [selectedYear, setSelectedYear] = useState<Option | null>(
@@ -16,8 +17,16 @@ const BudgetActualExpenditureAnalysis = () => {
   );
   const params = useParams();
   const id = params?.id as unknown as number;
+  const { selectedBuilding, selectedFloor } = useAppSelector(
+    (state) => state.dashboard.info
+  );
   const { data, isLoading } = useGetBMSBudgetVActualExpenditureQuery(
-    { facilityId: id, year: +selectedYear?.value! },
+    {
+      facilityId: id,
+      buildingId: selectedBuilding?.value as number,
+      floorId: selectedFloor?.value as number,
+      year: +selectedYear?.value!,
+    },
     { skip: !id }
   );
 

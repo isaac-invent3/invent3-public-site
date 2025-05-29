@@ -5,10 +5,15 @@ import PageHeader from '../UI/PageHeader';
 import { AddIcon } from '../CustomIcons';
 import { ROUTES } from '~/lib/utils/constants';
 import usePermissionAccess from '~/lib/hooks/useRoleAccess';
+import { useEffect } from 'react';
 
 const Header = ({ type }: { type: 'role' | 'group' }) => {
   const isRole = type === 'role';
   const canAddRole = usePermissionAccess('role:create');
+
+  useEffect(() => {
+    console.log({ canAddRole });
+  }, [canAddRole]);
   return (
     <Stack
       width="full"

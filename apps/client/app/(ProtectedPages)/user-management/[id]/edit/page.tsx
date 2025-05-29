@@ -50,9 +50,7 @@ export default function Page({ params }: { params: { id: number } }) {
         firstName: user?.firstName,
         middleName: null,
         lastName: user?.lastName,
-        dob: user?.dateOfBirth
-          ? dateFormatter(user?.dateOfBirth, 'DD/MM/YYYY')
-          : null,
+        dob: null,
         mobileNumber: user?.phoneNumber,
         workEmail: user?.email,
         gender: null,

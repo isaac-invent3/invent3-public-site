@@ -41,11 +41,11 @@ const Summary = () => {
     },
     {
       label: 'Employee ID',
-      value: userData?.employeeId,
+      value: userData?.userId,
     },
     {
       label: 'NIN',
-      value: userData?.personalIdentificationNumber,
+      value: 'N/A',
     },
   ];
 

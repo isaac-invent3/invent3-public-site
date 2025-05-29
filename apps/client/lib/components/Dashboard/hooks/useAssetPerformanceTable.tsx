@@ -11,7 +11,10 @@ import { createColumnHelper } from '@tanstack/react-table';
 import { amountFormatter } from '~/lib/utils/Formatters';
 import { DataTable } from '@repo/ui/components';
 import { useGetAssetPerformanceQuery } from '~/lib/redux/services/dashboard/executive.services';
-import { AssetPerformance } from '~/lib/interfaces/dashboard/executive.interfaces';
+import {
+  AssetPerformance,
+  FinancialImpact,
+} from '~/lib/interfaces/dashboard/executive.interfaces';
 import GenericStatusBox from '../../UI/GenericStatusBox';
 
 interface useAssetPerformanceTable {
@@ -68,7 +71,7 @@ const useAssetPerformanceTable = (props: useAssetPerformanceTable) => {
     }
   }, [search]);
 
-  const columnHelper = createColumnHelper<AssetPerformance>();
+  const columnHelper = createColumnHelper<FinancialImpact>();
   const columns = useMemo(
     () => {
       const baseColumns = [
@@ -77,16 +80,16 @@ const useAssetPerformanceTable = (props: useAssetPerformanceTable) => {
           header: 'Asset Name',
           enableSorting: false,
         }),
-        columnHelper.accessor('category', {
+        columnHelper.accessor('assetCategory', {
           cell: (info) => info.getValue(),
           header: 'Category',
           enableSorting: false,
         }),
-        columnHelper.accessor('usageRate', {
-          cell: (info) => `${info.getValue()}%`,
-          header: 'Usage Rate',
-          enableSorting: false,
-        }),
+        // columnHelper.accessor('depreciationRate', {
+        //   cell: (info) => `${info.getValue()}%`,
+        //   header: 'Usage Rate',
+        //   enableSorting: false,
+        // }),
         columnHelper.accessor('currentValue', {
           cell: (info) => amountFormatter(info.getValue() ?? 0),
           header: 'Current Value',
@@ -97,11 +100,11 @@ const useAssetPerformanceTable = (props: useAssetPerformanceTable) => {
           header: 'Depreciation Rate(%)',
           enableSorting: false,
         }),
-        columnHelper.accessor('status', {
-          cell: (info) => <GenericStatusBox text={info.getValue()} />,
-          header: 'Status',
-          enableSorting: false,
-        }),
+        // columnHelper.accessor('status', {
+        //   cell: (info) => <GenericStatusBox text={info.getValue()} />,
+        //   header: 'Status',
+        //   enableSorting: false,
+        // }),
       ];
 
       return baseColumns;

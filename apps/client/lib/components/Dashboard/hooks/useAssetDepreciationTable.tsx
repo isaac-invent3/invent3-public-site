@@ -119,7 +119,8 @@ const useAssetDepreciationTable = (props: useAssetDepreciationTable) => {
           (draft) => {
             if (draft?.data?.items) {
               const index = draft.data.items.findIndex(
-                (item) => item.guid === parsedAssetDepreciation.guid
+                (item) =>
+                  item.depreciationId === parsedAssetDepreciation.depreciationId
               );
               if (index !== -1) {
                 draft.data.items[index] = parsedAssetDepreciation;
@@ -148,7 +149,8 @@ const useAssetDepreciationTable = (props: useAssetDepreciationTable) => {
           (draft) => {
             if (draft?.data?.items) {
               draft.data.items = draft.data.items.filter(
-                (item) => item.guid !== parsedAssetDepreciation.guid
+                (item) =>
+                  item.depreciationId !== parsedAssetDepreciation.depreciationId
               ); // Remove the deleted asset depreciation
             }
           }
@@ -161,12 +163,12 @@ const useAssetDepreciationTable = (props: useAssetDepreciationTable) => {
   const columns = useMemo(
     () => {
       const baseColumns = [
-        columnHelper.accessor('assetId', {
+        columnHelper.accessor('assetName', {
           cell: (info) => info.getValue(),
           header: 'Asset Name',
           enableSorting: false,
         }),
-        columnHelper.accessor('depreciationMethod', {
+        columnHelper.accessor('assetCategory', {
           cell: (info) => info.getValue(),
           header: 'Category',
           enableSorting: false,

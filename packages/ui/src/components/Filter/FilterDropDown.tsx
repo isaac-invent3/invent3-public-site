@@ -20,10 +20,10 @@ import { ChevronDownIcon } from '../CustomIcons';
 
 interface FilterDropDownProps {
   label?: string;
-  options: Option[];
-  selectedOptions: Option[];
+  options?: Option[];
+  selectedOptions?: Option[];
   // eslint-disable-next-line no-unused-vars
-  handleClick: (option: Option) => void;
+  handleClick?: (option: Option) => void;
   loadMoreOptions?: () => void;
   hasMoreOptions?: boolean;
   isLoading?: boolean;
@@ -32,6 +32,7 @@ interface FilterDropDownProps {
   labelStyles?: StackProps;
   containerStyles?: FlexProps;
   chevronStyles?: IconProps;
+  customLabel?: React.ReactNode;
 }
 
 const FilterDropDown = ({
@@ -47,6 +48,7 @@ const FilterDropDown = ({
   labelStyles,
   containerStyles,
   chevronStyles,
+  customLabel,
 }: FilterDropDownProps) => {
   const { onToggle, isOpen, onClose } = useDisclosure();
   const buttonRef = useRef<HTMLDivElement | null>(null);
@@ -106,27 +108,39 @@ const FilterDropDown = ({
         border={showBorder ? '1px solid #DADFE5' : 'none'}
         {...labelStyles}
       >
-        <HStack spacing="8px">
-          {label && (
-            <Text width="full" whiteSpace="nowrap" color="neutral.600">
-              {label}
-            </Text>
-          )}
-          <HStack spacing="4px" fontWeight={700}>
-            <Text py="1px" px="4px" rounded="3px" border="1px solid #BBBBBB">
-              {options.length >= 1 && options.length === selectedOptions.length
-                ? 'All'
-                : selectedOptions.length}
-            </Text>
-            <Text>Selected</Text>
+        {customLabel ?? (
+          <HStack spacing="8px">
+            <HStack spacing="8px">
+              {label && (
+                <Text width="full" whiteSpace="nowrap" color="neutral.600">
+                  {label}
+                </Text>
+              )}
+              {options && selectedOptions && (
+                <HStack spacing="4px" fontWeight={700}>
+                  <Text
+                    py="1px"
+                    px="4px"
+                    rounded="3px"
+                    border="1px solid #BBBBBB"
+                  >
+                    {options.length >= 1 &&
+                    options.length === selectedOptions.length
+                      ? 'All'
+                      : selectedOptions.length}
+                  </Text>
+                  <Text>Selected</Text>
+                </HStack>
+              )}
+            </HStack>
+            <Icon
+              as={ChevronDownIcon}
+              boxSize="12px"
+              color="neutral.600"
+              {...chevronStyles}
+            />
           </HStack>
-        </HStack>
-        <Icon
-          as={ChevronDownIcon}
-          boxSize="12px"
-          color="neutral.600"
-          {...chevronStyles}
-        />
+        )}
       </HStack>
 
       <Collapse in={isOpen}>
@@ -151,7 +165,7 @@ const FilterDropDown = ({
         >
           {children && !isLoading && children}
 
-          {!isLoading && !children && options.length <= 0 && (
+          {!isLoading && !children && options && options.length <= 0 && (
             <Text color="neutral.800" width="full" textAlign="center" py="20px">
               No Options
             </Text>
@@ -159,6 +173,8 @@ const FilterDropDown = ({
 
           {!isLoading &&
             !children &&
+            options &&
+            selectedOptions &&
             options.length > 0 &&
             options.map((option) => (
               <HStack key={option.value} spacing="8px">
@@ -168,7 +184,7 @@ const FilterDropDown = ({
                       (item) => item.value === option.value
                     ) !== undefined
                   }
-                  handleChange={() => handleClick(option)}
+                  handleChange={() => handleClick && handleClick(option)}
                 />
                 {<Text color="neutral.800">{option.label}</Text>}
               </HStack>

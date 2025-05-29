@@ -6,6 +6,8 @@ interface Info {
   stats: AssetStatistics | null;
   selectedState: Option | null;
   selectedCountry: Option | null;
+  selectedBuilding: Option | null;
+  selectedFloor: Option | null;
   isLoading: boolean;
 }
 export interface SliceProps {
@@ -15,6 +17,8 @@ export interface SliceProps {
 const InitialInfo = {
   stats: null,
   selectedState: null,
+  selectedBuilding: null,
+  selectedFloor: null,
   selectedCountry: {
     label: 'Nigeria',
     value: 1,

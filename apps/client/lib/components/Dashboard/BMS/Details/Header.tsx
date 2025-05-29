@@ -1,6 +1,7 @@
 import { Stack } from '@chakra-ui/react';
 import React from 'react';
 import PageHeader from '~/lib/components/UI/PageHeader';
+import LocationDropdown from './LocationDropdown';
 
 const Header = () => {
   return (
@@ -12,6 +13,7 @@ const Header = () => {
       alignItems="flex-start"
     >
       <PageHeader>BMS Dashboard</PageHeader>
+      <LocationDropdown />
     </Stack>
   );
 };

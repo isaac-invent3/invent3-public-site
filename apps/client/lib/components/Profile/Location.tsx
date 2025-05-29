@@ -12,12 +12,12 @@ interface LocationProps {
 const Location = ({ user, isLoading }: LocationProps) => {
   const infoOne = [
     {
-      label: 'Country',
-      value: user?.countryName,
-    },
-    {
       label: 'City/State',
       value: user?.stateName,
+    },
+    {
+      label: 'LGA',
+      value: user?.lganame,
     },
     {
       label: 'Postal/Zip Code',
@@ -36,7 +36,7 @@ const Location = ({ user, isLoading }: LocationProps) => {
     },
     {
       label: 'Location',
-      value: user?.residentialAddress,
+      value: user?.address,
     },
   ];
   return (

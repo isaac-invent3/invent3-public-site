@@ -38,14 +38,21 @@ const BMSData = () => {
       setSubmitting(false);
     },
   });
-  const { data: buildingSettingsData, isLoading: isLoadingBuildingSettings } =
-    useGetBuildingSettingsByFacilityIdQuery(
-      { facilityId: formik.values.facilityId },
-      {
-        skip: !formik.values.facilityId,
-        refetchOnMountOrArgChange: true,
-      }
-    );
+  const {
+    data: buildingSettingsData,
+    isLoading: isLoadingBuildingSettings,
+    isFetching: isFetchingBuildingSettings,
+  } = useGetBuildingSettingsByFacilityIdQuery(
+    { facilityId: formik.values.facilityId },
+    {
+      skip: !formik.values.facilityId,
+      refetchOnMountOrArgChange: true,
+    }
+  );
+
+  useEffect(() => {
+    formik.setFieldValue('bmsBuildingSettingsModel', []);
+  }, [formik.values.facilityId]);
 
   useEffect(() => {
     if (buildingSettingsData) {
@@ -100,7 +107,7 @@ const BMSData = () => {
                         : 'center'
                     }
                   >
-                    {isLoadingBuildingSettings ? (
+                    {isLoadingBuildingSettings || isFetchingBuildingSettings ? (
                       <VStack width="full" spacing="16px">
                         {Array(3)
                           .fill(0)

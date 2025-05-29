@@ -8,22 +8,55 @@ import {
   useGetBMSTotalFaultsDetectedQuery,
 } from '~/lib/redux/services/dashboard/bms.services';
 import SummaryCard from '../../../Common/SummaryCard';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 const Summary = () => {
   const params = useParams();
   const id = params?.id as unknown as number;
+  const { selectedBuilding, selectedFloor } = useAppSelector(
+    (state) => state.dashboard.info
+  );
+
   const { data: occupancyRateData, isLoading: isLoadingOccupancyRate } =
-    useGetBMSOccupanyRateQuery({ facilityId: id }, { skip: !id });
+    useGetBMSOccupanyRateQuery(
+      {
+        facilityId: id,
+        buildingId: selectedBuilding?.value as number,
+        floorId: selectedFloor?.value as number,
+      },
+      { skip: !id }
+    );
   const {
     data: averageMaintenanceData,
     isLoading: isLoadingAverageMaintenance,
-  } = useGetBMSAverageMaintenanceTimeQuery({ facilityId: id }, { skip: !id });
+  } = useGetBMSAverageMaintenanceTimeQuery(
+    {
+      facilityId: id,
+      buildingId: selectedBuilding?.value as number,
+      floorId: selectedFloor?.value as number,
+    },
+    { skip: !id }
+  );
   const {
     data: scheduleMaintenanceData,
     isLoading: isLoadingScheduleMaintenanceData,
-  } = useGetBMSScheduledMaintenanceQuery({ facilityId: id }, { skip: !id });
+  } = useGetBMSScheduledMaintenanceQuery(
+    {
+      facilityId: id,
+      buildingId: selectedBuilding?.value as number,
+      floorId: selectedFloor?.value as number,
+    },
+    { skip: !id }
+  );
   const { data: totalFaultData, isLoading: isLoadingTotalFaultData } =
-    useGetBMSTotalFaultsDetectedQuery({ facilityId: id }, { skip: !id });
+    useGetBMSTotalFaultsDetectedQuery(
+      {
+        facilityId: id,
+        buildingId: selectedBuilding?.value as number,
+        floorId: selectedFloor?.value as number,
+      },
+      { skip: !id }
+    );
 
   const content = [
     {

@@ -56,7 +56,9 @@ const FloorSettings = (props: FloorSettingsProps) => {
     if (data) {
       setFieldValue(
         `bmsBuildingSettingsModel.${buildingIndex}.bmsFloorSettingsModels.${floorIndex}.floorMap`,
-        `${data.data?.floor?.imageBasePrefix}${data.data?.floor?.floorPlanImage}`
+        data.data?.floor?.imageBasePrefix && data.data?.floor?.floorPlanImage
+          ? `${data.data?.floor?.imageBasePrefix}${data.data?.floor?.floorPlanImage}`
+          : null
       );
       data?.data?.roomIds.forEach((roomId) => {
         setFieldValue(

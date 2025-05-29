@@ -7,6 +7,7 @@ import { useParams } from 'next/navigation';
 import { useGetBMSFinancialTrendQuery } from '~/lib/redux/services/dashboard/bms.services';
 import { timeRangeOptions } from '~/lib/utils/constants';
 import { generateLastFiveYears } from '~/lib/utils/helperFunctions';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 const FinancialTrend = () => {
   const [selectedYear, setSelectedYear] = useState<Option | null>(
@@ -14,8 +15,16 @@ const FinancialTrend = () => {
   );
   const params = useParams();
   const id = params?.id as unknown as number;
+  const { selectedBuilding, selectedFloor } = useAppSelector(
+    (state) => state.dashboard.info
+  );
   const { data, isLoading } = useGetBMSFinancialTrendQuery(
-    { facilityId: id, year: +selectedYear?.value! },
+    {
+      facilityId: id,
+      buildingId: selectedBuilding?.value as number,
+      floorId: selectedFloor?.value as number,
+      year: +selectedYear?.value!,
+    },
     { skip: !id }
   );
   return (

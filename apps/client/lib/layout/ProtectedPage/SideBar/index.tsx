@@ -95,7 +95,7 @@ const SideBar = (props: SideBarProps) => {
           width="full"
           spacing="8px"
           pb="8px"
-          maxH="60vh"
+          maxH="65vh"
           overflowY="auto"
           sx={{
             scrollbarWidth: '0px',

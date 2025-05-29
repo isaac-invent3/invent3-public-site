@@ -24,43 +24,43 @@ interface Employee {
 }
 
 interface User {
-  rowId: number;
   userId: number;
   guid: string;
-  firstName: string;
-  lastName: string;
   username: string;
   email: string;
+  companyId: number;
+  companyName: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: null;
   statusId: number;
   statusName: string;
   displayColorCode: string;
-  isDeleted: boolean;
-  phoneNumber: string;
+  designationId: null;
+  designationName: null;
+  designationTypeName: null;
+  primaryImagePrefix: null;
+  primaryImage: null;
+  employeeId: null;
   locationId: number;
-  residentialAddress: string;
   facilityName: string;
   facilityRef: string;
-  buildingName: string;
-  buildingRef: string;
-  floorName: string;
-  floorRef: string;
-  departmentName: string;
-  departmentRef: string;
-  roomName: string;
-  roomRef: string;
-  lganame: string;
-  stateName: string;
-  countryName: string;
-  employeeId: number;
-  companyId: number;
-  designationId: number;
-  designationName: string;
-  lastActive: string;
-  personalIdentificationNumber: number;
-  personalEmail: string;
-  dateOfBirth: string;
+  address: string;
+  lganame: null;
+  stateName: null;
+  isDeleted: boolean;
+  userLocation: string;
+  userRoles: UserRole[];
   userGroups: UserGroup[];
-  userRoles: Role[];
+  userPermissions: null;
+  userDesignationInfos: null;
+}
+
+export interface UserRole {
+  userRoleId: number;
+  userId: number;
+  roleId: number;
+  roleName: string;
 }
 
 interface ActiveDirectoryUser {
@@ -83,20 +83,23 @@ interface UserGroup {
   groupId: number;
   groupName: string;
   groupDescription: string;
-  dateCreated: string;
+  dateCreated: Date;
   isDeleted: boolean;
 }
 
 interface UserGroupInfoHeader {
-  groupId: number;
-  groupName: string;
   noOfAssociatedUsers: number;
-  owner: string;
-  dateCreated: string;
-  currentStatusId: number;
-  currentStatusName: string;
-  currentStatusDisplayColorCode: string;
+  groupId: number;
+  guid: string;
+  groupName: string;
+  groupDescription: string;
+  owner: null;
+  dateCreated: Date;
   isDeleted: boolean;
+  fullName: string;
+  statusId: number;
+  statusName: string;
+  displayColorCode: string;
 }
 
 interface UserGroupMember {

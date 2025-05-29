@@ -27,8 +27,8 @@ const NewOwner = (props: NewOwnerProps) => {
     if (data?.data) {
       setUser(data?.data);
       helpers.setValue(data?.data?.locationId);
-      if (data?.data?.locationId) {
-        setNewLocation(data?.data?.locationId.toString());
+      if (data?.data?.userLocation) {
+        setNewLocation(data?.data?.userLocation);
       }
     }
   }, [data]);
@@ -54,8 +54,8 @@ const NewOwner = (props: NewOwnerProps) => {
       {user && (
         <UserDisplay
           name={user.firstName + ' ' + user.lastName}
-          role="Operation Manager"
-          location={null}
+          role={user.userRoles.map((item) => item.roleName).join(', ')}
+          location={user?.userLocation}
           department={null}
           minWidth="100px"
         />

@@ -7,6 +7,7 @@ import { DowntrendIcon, UptrendIcon } from '~/lib/components/CustomIcons';
 import { useParams } from 'next/navigation';
 import { useGetBMSMonthlyCostSpendQuery } from '~/lib/redux/services/dashboard/bms.services';
 import { amountFormatter } from '~/lib/utils/Formatters';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 const CostMonthlySpend = () => {
   const [selectedTimeRange, setSelectedTimeRange] = useState<Option | null>(
@@ -14,8 +15,15 @@ const CostMonthlySpend = () => {
   );
   const params = useParams();
   const id = params?.id as unknown as number;
+  const { selectedBuilding, selectedFloor } = useAppSelector(
+    (state) => state.dashboard.info
+  );
   const { data, isLoading } = useGetBMSMonthlyCostSpendQuery(
-    { facilityId: id },
+    {
+      facilityId: id,
+      buildingId: selectedBuilding?.value as number,
+      floorId: selectedFloor?.value as number,
+    },
     { skip: !id }
   );
   return (

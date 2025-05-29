@@ -10,31 +10,17 @@ const EmployeeInformation = () => {
   if (!userDetail) {
     return;
   }
-  const {
-    firstName,
-    lastName,
-    dateOfBirth,
-    personalEmail,
-    phoneNumber,
-    lganame,
-    stateName,
-    countryName,
-  } = userDetail;
+  const { firstName, lastName, phoneNumber, lganame, stateName } = userDetail;
 
   const data = [
     { label: 'First Name:', value: firstName },
     { label: 'Last Name:', value: lastName },
-    {
-      label: 'Date of Birth:',
-      value: dateOfBirth ? dateFormatter(dateOfBirth, 'Do, MMMMM, YYYY') : null,
-    },
     { label: 'Personal Phone:', value: phoneNumber },
-    { label: 'Personal Email:', value: personalEmail },
   ];
   const addressData = [
     { label: 'City:', value: lganame },
     { label: 'State / Province:', value: stateName },
-    { label: 'Country:', value: countryName },
+    { label: 'Country:', value: lganame },
   ];
 
   return (

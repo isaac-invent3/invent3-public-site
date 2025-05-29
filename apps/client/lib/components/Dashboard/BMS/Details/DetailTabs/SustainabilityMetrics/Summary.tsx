@@ -2,20 +2,24 @@ import { HStack, SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import SummaryCard from '../../../Common/SummaryCard';
 import { useParams } from 'next/navigation';
-import {
-  useGetBMSFinancialInsightsOverviewQuery,
-  useGetBMSSustainabilityMetricsQuery,
-} from '~/lib/redux/services/dashboard/bms.services';
-import { amountFormatter } from '~/lib/utils/Formatters';
+import { useGetBMSSustainabilityMetricsQuery } from '~/lib/redux/services/dashboard/bms.services';
 import { Option } from '@repo/interfaces';
 import DropDown from '~/lib/components/Dashboard/Common/DropDown';
 import ProgressIndicator from '~/lib/components/Dashboard/Common/ProgressIndicator';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 const Summary = () => {
   const params = useParams();
   const id = params?.id as unknown as number;
+  const { selectedBuilding, selectedFloor } = useAppSelector(
+    (state) => state.dashboard.info
+  );
   const { data, isLoading } = useGetBMSSustainabilityMetricsQuery(
-    { facilityId: id },
+    {
+      facilityId: id,
+      buildingId: selectedBuilding?.value as number,
+      floorId: selectedFloor?.value as number,
+    },
     { skip: !id }
   );
   const zoneOptions = [{ label: 'Zone A', value: 'Zone B' }];

@@ -54,7 +54,7 @@ const UserTable = (props: UserTableProps) => {
           enableSorting: false,
         }),
 
-        columnHelper.accessor('residentialAddress', {
+        columnHelper.accessor('firstName', {
           cell: (info) => (
             <UserInfo
               name={`${info.row.original.firstName} ${info.row.original.lastName}`}
@@ -143,7 +143,7 @@ const UserTable = (props: UserTableProps) => {
           enableSorting: false,
         }),
 
-        columnHelper.accessor('residentialAddress', {
+        columnHelper.accessor('firstName', {
           cell: (info) => (
             <UserInfo
               name={`${info.row.original.firstName} ${info.row.original.lastName}`}

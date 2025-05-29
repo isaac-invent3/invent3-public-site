@@ -28,36 +28,48 @@ const DashboardViewMaps: Record<
   {
     name: string;
     route: string;
-  }
+  }[]
 > = {
-  [ROLE_IDS_ENUM.SUPER_ADMIN]: {
-    name: 'Super Admin',
-    route: '?view=super_admin',
-  },
-  [ROLE_IDS_ENUM.CLIENT_ADMIN]: {
-    name: 'Client Admin',
-    route: '?view=client_admin',
-  },
-  [ROLE_IDS_ENUM.EXECUTIVE]: {
-    name: 'Executive',
-    route: '?view=executive',
-  },
-  [ROLE_IDS_ENUM.OPERATION_MANAGER]: {
-    name: 'Operation Manager',
-    route: '?view=operation_manager',
-  },
-  [ROLE_IDS_ENUM.FIELD_ENGINEER]: {
-    name: 'Field Engineer',
-    route: '?view=field_engineer',
-  },
-  [ROLE_IDS_ENUM.FRONT_DESK]: {
-    name: 'Front Desk',
-    route: '?view=front_desk',
-  },
-  // [ROLE_IDS_ENUM.SUPER_ADMIN]: {
-  //   name: 'BMS',
-  //   route: '/bms',
-  // },
+  [ROLE_IDS_ENUM.SUPER_ADMIN]: [
+    {
+      name: 'Super Admin',
+      route: '?view=super_admin',
+    },
+  ],
+  [ROLE_IDS_ENUM.CLIENT_ADMIN]: [
+    {
+      name: 'Client Admin',
+      route: '?view=client_admin',
+    },
+    {
+      name: 'BMS',
+      route: '/bms',
+    },
+  ],
+  [ROLE_IDS_ENUM.EXECUTIVE]: [
+    {
+      name: 'Executive',
+      route: '?view=executive',
+    },
+  ],
+  [ROLE_IDS_ENUM.OPERATION_MANAGER]: [
+    {
+      name: 'Operation Manager',
+      route: '?view=operation_manager',
+    },
+  ],
+  [ROLE_IDS_ENUM.FIELD_ENGINEER]: [
+    {
+      name: 'Field Engineer',
+      route: '?view=field_engineer',
+    },
+  ],
+  [ROLE_IDS_ENUM.FRONT_DESK]: [
+    {
+      name: 'Front Desk',
+      route: '?view=front_desk',
+    },
+  ],
 };
 
 const clientSideBarData: SideBarData[] = [
@@ -228,9 +240,9 @@ async function filterSidebarData() {
     const roleIds = session?.user?.roleIds;
 
     // Filter valid Dashboard views based on roleIds
-    const validDashboardViews = roleIds
-      .map((roleId) => DashboardViewMaps[roleId])
-      .filter((view) => view !== undefined);
+    const validDashboardViews = roleIds.flatMap(
+      (roleId) => DashboardViewMaps[roleId] || []
+    );
 
     const Dashboard: SideBarData = {
       ...BaseDashboard,

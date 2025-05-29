@@ -67,7 +67,7 @@ export const userApi = createApi({
       QueryParams
     >({
       query: (data) => ({
-        url: generateQueryStr(`/UserGroups/GetUserGroupsInfoHeaders?`, data),
+        url: generateQueryStr(`/Groups/GroupInfoHeaders?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -89,7 +89,10 @@ export const userApi = createApi({
       QueryParams & { userId: number }
     >({
       query: ({ userId, ...data }) => ({
-        url: generateQueryStr(`/Users/GetUserGroupsInfo/${userId}?`, data),
+        url: generateQueryStr(
+          `/UserGroups/GetUserGroupsInfoHeaderByUserId/${userId}?`,
+          data
+        ),
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -128,7 +131,7 @@ export const userApi = createApi({
     }),
     getUserById: builder.query<BaseApiResponse<User>, { userId: number }>({
       query: ({ userId }) => ({
-        url: `/Users/${userId}`,
+        url: `/Users/GetUserInfo/${userId}`,
         method: 'GET',
         headers: getHeaders(),
       }),

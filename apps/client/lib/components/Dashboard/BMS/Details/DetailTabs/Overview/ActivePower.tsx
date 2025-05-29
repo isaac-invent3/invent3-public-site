@@ -14,6 +14,7 @@ import InfoCard from '../../../InfoCard';
 import { useGetBMSEnergyConsumedByBMSCategoryQuery } from '~/lib/redux/services/dashboard/bms.services';
 import { useParams } from 'next/navigation';
 import _ from 'lodash';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 interface ActivePowerProps {
   title?: string;
@@ -22,8 +23,15 @@ const ActivePower = ({ title }: ActivePowerProps) => {
   const params = useParams();
   const id = params?.id as unknown as number;
   const [total, setTotal] = useState(0);
+  const { selectedBuilding, selectedFloor } = useAppSelector(
+    (state) => state.dashboard.info
+  );
   const { data, isLoading } = useGetBMSEnergyConsumedByBMSCategoryQuery(
-    { facilityId: id },
+    {
+      facilityId: id,
+      buildingId: selectedBuilding?.value as number,
+      floorId: selectedFloor?.value as number,
+    },
     { skip: !id }
   );
   const progress = (total / 100) * 100;

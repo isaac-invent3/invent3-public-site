@@ -199,9 +199,9 @@ export async function middleware(request: NextRequest) {
 
     // Redirect to tenant if token has a different tenant. Note: This is for only the relative path approach
     if (token.companySlug && token.companySlug !== tenant) {
-      return NextResponse.redirect(
-        new URL(`/${token.companySlug}/${pathname}`, request.url)
-      );
+      const url = new URL(`/${token.companySlug}/${pathname}`, request.url);
+      url.search = request.nextUrl.search; // Preserve query string
+      return NextResponse.redirect(url);
     }
 
     const checkPath = tenantData ? `/${remainingPath}` : pathname;
@@ -256,22 +256,39 @@ export async function middleware(request: NextRequest) {
     }
     if (tenantData) {
       if (remainingPath === 'signin') {
-        return NextResponse.rewrite(new URL(`/signin`, request.url));
+        const url = new URL(`/signin`, request.url);
+        // Preserve original query parameters
+        request.nextUrl.searchParams.forEach((value, key) => {
+          url.searchParams.set(key, value);
+        });
+        return NextResponse.rewrite(url);
       }
-      return NextResponse.redirect(
-        new URL(`/${tenant}/signin?ref=${remainingPath}`, request.url)
-      );
+      const url = new URL(`/${tenant}/signin`, request.url);
+      url.searchParams.set('ref', remainingPath);
+      // Preserve original query parameters
+      request.nextUrl.searchParams.forEach((value, key) => {
+        url.searchParams.set(key, value);
+      });
+      return NextResponse.redirect(url);
     } else {
       // return NextResponse.rewrite(new URL('/404', request.url));
-      return NextResponse.redirect(
-        new URL(`/signin?ref=${request.nextUrl.pathname}`, request.url)
-      );
+      const url = new URL(`/signin`, request.url);
+      url.searchParams.set('ref', request.nextUrl.pathname);
+      // Preserve original query parameters
+      request.nextUrl.searchParams.forEach((value, key) => {
+        url.searchParams.set(key, value);
+      });
+      return NextResponse.redirect(url);
     }
   }
 
-  return NextResponse.redirect(
-    new URL(`/signin?ref=${request.nextUrl.pathname}`, request.url)
-  );
+  const url = new URL(`/signin`, request.url);
+  url.searchParams.set('ref', request.nextUrl.pathname);
+  // Append all original query parameters
+  request.nextUrl.searchParams.forEach((value, key) => {
+    url.searchParams.set(key, value);
+  });
+  return NextResponse.redirect(url);
 }
 
 export const config = {

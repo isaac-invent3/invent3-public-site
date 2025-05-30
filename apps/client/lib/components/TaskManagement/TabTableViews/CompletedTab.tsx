@@ -33,10 +33,14 @@ const CompletedTab = (props: CompletedTabProps) => {
   const appConfigValue = useAppSelector(
     (state) => state.general.appConfigValues
   );
+  const appConfig = useAppSelector((state) => state.general.appConfigValues);
 
   const searchCriterion = {
     columnName: 'statusCategoryId',
-    columnValue: search,
+    columnValue:
+      typeof appConfig.DEFAULT_COMPLETED_TASK_STATUS_ID === 'string'
+        ? +appConfig.DEFAULT_COMPLETED_TASK_STATUS_ID
+        : (appConfig.DEFAULT_COMPLETED_TASK_STATUS_ID as unknown as number),
     operation: OPERATORS.Equals,
   };
 

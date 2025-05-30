@@ -41,7 +41,7 @@ const PendingAndInProgressTab = (props: PendingAndInProgressTabProps) => {
 
   const searchCriterion = {
     columnName: 'statusCategoryId',
-    columnValue: search,
+    columnValue: statusCategoryId,
     operation: OPERATORS.Equals,
   };
 

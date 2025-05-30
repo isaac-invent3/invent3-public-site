@@ -46,7 +46,14 @@ export default function Page({ params }: { params: { id: number } }) {
     dispatch(
       setUserForm({
         userId: user?.userId,
-        picture: null,
+        picture: user?.primaryImage
+          ? {
+              imageId: null,
+              imageName: null,
+              base64PhotoImage: user?.primaryImage,
+              base64Prefix: user?.primaryImagePrefix,
+            }
+          : null,
         firstName: user?.firstName,
         middleName: null,
         lastName: user?.lastName,
@@ -59,11 +66,11 @@ export default function Page({ params }: { params: { id: number } }) {
         cityId: null,
         cityName: null,
         countryName: null,
-        stateName: null,
+        stateName: user?.stateName,
         documents: formDocuments ?? [],
         employmentTypeId: null,
         branchId: null,
-        branchName: null,
+        branchName: user?.lganame,
         jobTitleId: null,
         jobTitleName: null,
         teamId: null,

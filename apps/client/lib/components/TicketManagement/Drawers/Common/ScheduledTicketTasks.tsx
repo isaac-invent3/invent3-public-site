@@ -20,6 +20,8 @@ import { useGetAllTasksByScheduleIdQuery } from '~/lib/redux/services/task/gener
 
 interface ScheduledTicketTasksProps {
   data: Ticket;
+  scheduleId?: number;
+  isFetchingSchedule: boolean;
 }
 
 const ScheduledTicketTasks = (props: ScheduledTicketTasksProps) => {
@@ -31,15 +33,13 @@ const ScheduledTicketTasks = (props: ScheduledTicketTasksProps) => {
   // TODO: Change implementation for this when api is ready
   const [checkedTasks, setCheckedTasks] = useState<number[]>([]);
 
-  const { data: maintenanceSchedule, isLoading: isFetchingSchedule } =
-    useGetMaintenanceSchedulesByTicketIdQuery({
-      ticketId: props.data.ticketId!,
-    });
-
   const { data: tasks, isLoading: isFetchingTasks } =
-    useGetAllTasksByScheduleIdQuery({
-      id: maintenanceSchedule?.data.scheduleId!,
-    });
+    useGetAllTasksByScheduleIdQuery(
+      {
+        id: props.scheduleId!,
+      },
+      { skip: !props.scheduleId }
+    );
 
   const handleAddTask = (task: taskFormDetails) => {
     setFieldValue('tasks', [
@@ -48,7 +48,7 @@ const ScheduledTicketTasks = (props: ScheduledTicketTasksProps) => {
         ...task,
         taskId: null,
         localId: values.tasks.length + 1,
-        scheduleId: maintenanceSchedule?.data.scheduleId,
+        scheduleId: props.scheduleId,
       },
     ]);
     // Increase taskCount by 1
@@ -72,7 +72,7 @@ const ScheduledTicketTasks = (props: ScheduledTicketTasksProps) => {
     return 'N/A';
   };
 
-  const isLoading = isFetchingTasks || isFetchingSchedule;
+  const isLoading = isFetchingTasks || props.isFetchingSchedule;
 
   return (
     <VStack width="full" alignItems="flex-start" pt="24px">

@@ -11,11 +11,14 @@ const ScheduleTasks = (props: ScheduleTasksProps) => {
   const { scheduleId } = props;
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const { data, isLoading, isFetching } = useGetAllTasksByScheduleIdQuery({
-    id: scheduleId,
-    pageSize,
-    pageNumber,
-  });
+  const { data, isLoading, isFetching } = useGetAllTasksByScheduleIdQuery(
+    {
+      id: scheduleId,
+      pageSize,
+      pageNumber,
+    },
+    { skip: !scheduleId }
+  );
 
   return (
     <VStack width="full" spacing="24px" alignItems="flex-start">

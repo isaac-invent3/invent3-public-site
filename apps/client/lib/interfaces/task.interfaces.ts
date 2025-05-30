@@ -182,7 +182,7 @@ interface TaskMetadata {
 }
 
 interface TaskPayload extends TaskMetadata {
-  taskId?: number;
+  taskId?: number | null;
   taskName: string;
   taskDescription: string;
   scheduleId: number;
@@ -203,7 +203,7 @@ interface UpdateTaskInstanceMetadataPayload {
   taskStatusId?: number;
   taskPriorityId?: number;
   assignedTo?: number;
-  lastModifiedBy:string
+  lastModifiedBy: string;
 }
 
 export type {

@@ -9,6 +9,12 @@ import { useUpdateTicketMutation } from '~/lib/redux/services/ticket.services';
 import ScheduledTicketTasks from './Common/ScheduledTicketTasks';
 import TicketActivity from './Common/TicketActivity';
 import TicketDrawerWrapper from './TicketDrawerWrapper';
+import {
+  useGetMaintenanceSchedulesByTicketIdQuery,
+  useUpdateMaintenanceScheduleAndTasksMutation,
+} from '~/lib/redux/services/maintenance/schedule.services';
+import { FORM_ENUM } from '~/lib/utils/constants';
+import { useState } from 'react';
 
 interface EditTicketDrawerProps {
   isOpen: boolean;
@@ -32,12 +38,17 @@ const EditTicketDrawer = (props: EditTicketDrawerProps) => {
   const [updateTicketMutation, { isLoading: isUpdatingTicket }] =
     useUpdateTicketMutation();
 
-  const [createTask, { isLoading: isCreatingTask }] = useCreateTaskMutation();
+  const { data: maintenanceSchedule, isLoading: isFetchingSchedule } =
+    useGetMaintenanceSchedulesByTicketIdQuery({
+      ticketId: props.data.ticketId!,
+    });
+
+  const [updateScheduleAndTask, { isLoading: isUpdating }] =
+    useUpdateMaintenanceScheduleAndTasksMutation();
 
   const toast = useToast();
   const { data: session } = useSession();
   const { handleSubmit } = useCustomMutation();
-
   const username = session?.user?.username;
 
   const formik = useFormik<EditTicketForm>({
@@ -63,12 +74,18 @@ const EditTicketDrawer = (props: EditTicketDrawerProps) => {
         assignedTo: payload.assignedTo,
       };
 
-      await Promise.all(
-        payload.tasks.map(async (task) => {
-          await handleSubmit(
-            createTask,
-            {
-              taskInstanceId: task.taskId!,
+      await handleSubmit(
+        updateScheduleAndTask,
+        {
+          updateMaintenanceScheduleDto: {
+            scheduleId: maintenanceSchedule?.data?.scheduleId,
+            actionType: FORM_ENUM.update,
+            changeInitiatedBy: username!,
+          },
+          updateTaskDtos: payload.tasks
+            .filter((item) => item.taskId === null)
+            .map((task) => ({
+              taskId: null,
               taskDescription: task.taskDescription!,
               taskName: task.taskName!,
               scheduleId: task.scheduleId!,
@@ -78,11 +95,11 @@ const EditTicketDrawer = (props: EditTicketDrawerProps) => {
               estimatedDurationInHours: task.estimatedDurationInHours!,
               costEstimate: task.costEstimate!,
               comments: task.comments!,
-              createdBy: username!,
-            },
-            ''
-          );
-        })
+              actionType: FORM_ENUM.add,
+              changeInitiatedBy: username!,
+            })),
+        },
+        ''
       );
 
       const response = await updateTicketMutation({
@@ -111,11 +128,15 @@ const EditTicketDrawer = (props: EditTicketDrawerProps) => {
         isOpen={isOpen}
         formik={formik}
         onClose={onClose}
-        isEditing={isUpdatingTicket || isCreatingTask}
+        isEditing={isUpdatingTicket || isUpdating}
         handleEdit={() => formik.handleSubmit()}
       >
         {/* <TicketActivity /> */}
-        <ScheduledTicketTasks data={data} />
+        <ScheduledTicketTasks
+          data={data}
+          scheduleId={maintenanceSchedule?.data?.scheduleId}
+          isFetchingSchedule={isFetchingSchedule}
+        />
       </TicketDrawerWrapper>
     </>
   );

@@ -57,7 +57,7 @@ const acquisitionInfoSchema = Yup.object().shape({
     .min(1, 'Price must be greater than 1'),
   warrantyStartDate: createDateSchema(false, false).nullable(),
   warrantyEndDate: createDateSchema(false, false).nullable(),
-  warrantyDetails: Yup.string().required('Warranty Terms is required'),
+  warrantyDetails: Yup.string().nullable(),
   resaleValue: Yup.number().nullable(),
   scrapValue: Yup.number().nullable(),
   currentValue: Yup.number().nullable(),
@@ -66,7 +66,7 @@ const acquisitionInfoSchema = Yup.object().shape({
   depreciationStartDate: createDateSchema(false, false).required(
     'Depreciation Start Date is required'
   ),
-  depreciationMethod: Yup.string().required('Depreciation Method is required'),
+  depreciationMethod: Yup.string().nullable(),
   depreciationRate: Yup.number()
     .required('Depreciation Rate is required')
     .min(0, 'Rate must be greater than 0'),

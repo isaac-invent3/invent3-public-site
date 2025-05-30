@@ -23,11 +23,14 @@ const TaskListView = (props: TaskListViewProps) => {
   const { getSearchParam, removeSearchParam } = useCustomSearchParams();
   const maintenanceScheduleId = getSearchParam('maintenanceScheduleId');
   const { data, isLoading, isFetching, isError } =
-    useGetAllTasksByScheduleIdQuery({
-      id: scheduleId ?? maintenanceScheduleId,
-      pageSize,
-      pageNumber: currentPage,
-    });
+    useGetAllTasksByScheduleIdQuery(
+      {
+        id: scheduleId ?? maintenanceScheduleId,
+        pageSize,
+        pageNumber: currentPage,
+      },
+      { skip: !(scheduleId ?? maintenanceScheduleId) }
+    );
 
   const handleClose = () => {
     removeSearchParam(SYSTEM_CONTEXT_DETAILS.MAINTENANCE_SCHEDULES.slug);

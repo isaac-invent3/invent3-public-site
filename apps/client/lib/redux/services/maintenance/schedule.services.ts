@@ -9,6 +9,7 @@ import {
   CreateScheduleAndTasksPayload,
   MaintenanceSchedule,
   MaintenanceScheduleStat,
+  UpdateScheduleAndTasksPayload,
 } from '~/lib/interfaces/maintenance.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
@@ -32,6 +33,21 @@ export const maintenanceScheduleApi = createApi({
     >({
       query: (body) => ({
         url: `/Invent3Pro/CreateScheduleAndTasks`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: [
+        'allMaintenanceSchedule',
+        'allMaintenanceScheduleByPlanId',
+      ],
+    }),
+    updateMaintenanceScheduleAndTasks: builder.mutation<
+      BaseApiResponse<MaintenanceSchedule>,
+      UpdateScheduleAndTasksPayload
+    >({
+      query: (body) => ({
+        url: `/Invent3Pro/UpdateScheduleAndTasks`,
         method: 'POST',
         headers: getHeaders(),
         body,
@@ -212,4 +228,5 @@ export const {
   useValidateFirstInstanceScheduledDateMutation,
   useGetMaintenanceSchedulesByTicketIdQuery,
   useGetAllMaintenanceScheduleByAssetIdQuery,
+  useUpdateMaintenanceScheduleAndTasksMutation,
 } = maintenanceScheduleApi;

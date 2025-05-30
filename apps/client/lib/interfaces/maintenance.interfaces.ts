@@ -329,4 +329,5 @@ export type {
   CreateMaintenancePlanWithSchedulesPayload,
   UpdateMaintenancePlanWithSchedulesPayload,
   PlanTableType,
+  UpdateScheduleAndTasksPayload,
 };

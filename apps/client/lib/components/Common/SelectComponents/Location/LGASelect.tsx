@@ -14,10 +14,11 @@ interface LGASelectProps {
   handleSelect?: (options: Option) => void;
   type: 'general' | 'specificById';
   stateId?: number | null;
+  name?: string;
 }
 
 const LGASelect = (props: LGASelectProps) => {
-  const { stateId, handleSelect, type } = props;
+  const { stateId, handleSelect, type, name } = props;
   const { lgaName } = useAppSelector((state) => state.asset.assetForm);
   const [searchLga] = useSearchLGAMutation({});
   const [pageNumber, setPageNumber] = useState(1);
@@ -55,7 +56,7 @@ const LGASelect = (props: LGASelectProps) => {
 
   return (
     <GenericAsyncSelect
-      selectName="lgaId"
+      selectName={name ?? 'lgaId'}
       selectTitle="LGA"
       data={type === 'general' ? allLgasData : stateId ? data : []}
       labelKey="lgaName"

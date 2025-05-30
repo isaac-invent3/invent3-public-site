@@ -44,7 +44,7 @@ const ContextTypeFilter = () => {
         dispatch(
           updateTemplateFilter({
             contextTypeId: contextTypeId.includes(+option.value)
-              ? contextTypeId
+              ? contextTypeId.filter((value) => value !== option.value)
               : [...contextTypeId, +option.value],
           })
         )

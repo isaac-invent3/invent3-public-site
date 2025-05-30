@@ -65,7 +65,11 @@ const TemplateManagement = () => {
     ...(!isFilterEmpty && {
       orCriterion: [
         ...filterData.contextTypeId.map((item) => [
-          ...generateSearchCriterion('contextTypeId', [item], OPERATORS.Equals),
+          ...generateSearchCriterion(
+            'systemContextTypeId',
+            [item],
+            OPERATORS.Equals
+          ),
         ]),
         ...filterData.owner.map((item) => [
           ...generateSearchCriterion('createdBy', [item], OPERATORS.Equals),
@@ -74,7 +78,7 @@ const TemplateManagement = () => {
           .filter(Boolean)
           .map((item) => [
             ...generateSearchCriterion(
-              'createdDate',
+              'dateCreated',
               [item as string],
               OPERATORS.Contains
             ),

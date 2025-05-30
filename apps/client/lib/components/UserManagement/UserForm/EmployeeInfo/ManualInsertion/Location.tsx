@@ -35,6 +35,7 @@ const Location = () => {
           />
           <LGASelect
             stateId={values.stateId}
+            name="cityId"
             handleSelect={(option) => {
               setFieldValue('cityId', option.value);
               dispatch(updateUserForm({ cityName: option.label }));

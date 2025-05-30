@@ -96,7 +96,7 @@ const ListView = (props: ListViewProps) => {
         ]),
         ...filterData.status.map((item) => [
           ...generateSearchCriterion(
-            'statusId',
+            'AssetStatusId',
             [item.value],
             OPERATORS.Equals
           ),

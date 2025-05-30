@@ -16,7 +16,7 @@ import {
   User,
   UserConfigurationOption,
   UserConfigurationPayload,
-  UserDesignation,
+  Designation,
   UserDocument,
   UserGroup,
   UserGroupInfoHeader,
@@ -73,8 +73,8 @@ export const userApi = createApi({
       }),
       providesTags: ['allUserGroupInfoHeaders'],
     }),
-    getAllUserDesignations: builder.query<
-      BaseApiResponse<ListResponse<UserDesignation>>,
+    getAllDesignations: builder.query<
+      BaseApiResponse<ListResponse<Designation>>,
       QueryParams
     >({
       query: (data) => ({
@@ -172,8 +172,8 @@ export const userApi = createApi({
         body,
       }),
     }),
-    searchUserDesignation: builder.mutation<
-      BaseApiResponse<ListResponse<UserDesignation>>,
+    searchDesignation: builder.mutation<
+      BaseApiResponse<ListResponse<Designation>>,
       SearchQuery
     >({
       query: (body) => ({
@@ -301,8 +301,8 @@ export const {
   useChangeUserPasswordMutation,
   useGetUserConfigurationOptionsQuery,
   useUpdateUserConfigurationOptionsMutation,
-  useGetAllUserDesignationsQuery,
-  useSearchUserDesignationMutation,
+  useGetAllDesignationsQuery,
+  useSearchDesignationMutation,
   useGetAllUserGroupsQuery,
   useGetAllUserGroupsInfoHeaderQuery,
   useCreateUserGroupMutation,

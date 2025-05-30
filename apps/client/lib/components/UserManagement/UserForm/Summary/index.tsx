@@ -108,16 +108,18 @@ const SummaryStep = (props: SummaryStepProps) => {
   const createUserPayload: CreateUserPayload = {
     createUserDto: USER,
     createLocationDto: LOCATION,
-    createUserImageDto: [
-      {
-        imageName: userFormDetails.picture?.imageName!,
-        base64PhotoImage: userFormDetails.picture?.base64PhotoImage!,
-        base64Prefix: userFormDetails.picture?.base64Prefix!,
-        isPrimaryImage: true,
-        userId: null,
-        createdBy: username!,
-      },
-    ],
+    createUserImageDto: userFormDetails.picture?.base64PhotoImage
+      ? [
+          {
+            imageName: userFormDetails.picture?.imageName!,
+            base64PhotoImage: userFormDetails.picture?.base64PhotoImage!,
+            base64Prefix: userFormDetails.picture?.base64Prefix!,
+            isPrimaryImage: true,
+            userId: null,
+            createdBy: username!,
+          },
+        ]
+      : null,
     createUserDocumentDto:
       userFormDetails.documents.length >= 1
         ? userFormDetails.documents.map((document) => ({
@@ -132,17 +134,19 @@ const SummaryStep = (props: SummaryStepProps) => {
   const updateUserPayload: UpdateUserPayload = {
     updateUserDto: USER,
     updateLocationDto: LOCATION,
-    multiPurposeUserImageDto: [
-      {
-        imageName: userFormDetails.picture?.imageName!,
-        base64PhotoImage: userFormDetails.picture?.base64PhotoImage!,
-        base64Prefix: userFormDetails.picture?.base64Prefix!,
-        isPrimaryImage: true,
-        userId: null,
-        actionType: FORM_ENUM.add,
-        changeInitiatedBy: username!,
-      },
-    ],
+    multiPurposeUserImageDto: userFormDetails.picture?.base64PhotoImage
+      ? [
+          {
+            imageName: userFormDetails.picture?.imageName!,
+            base64PhotoImage: userFormDetails.picture?.base64PhotoImage!,
+            base64Prefix: userFormDetails.picture?.base64Prefix!,
+            isPrimaryImage: true,
+            userId: null,
+            actionType: FORM_ENUM.add,
+            changeInitiatedBy: username!,
+          },
+        ]
+      : null,
     multiPurposeUserDocumentDto:
       userFormDetails.documents.length >= 1
         ? userFormDetails.documents

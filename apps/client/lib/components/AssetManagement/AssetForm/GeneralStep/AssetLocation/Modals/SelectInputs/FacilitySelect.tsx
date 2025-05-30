@@ -14,10 +14,11 @@ interface FacilitySelectProps {
   handleSelect?: (options: Option) => void;
   type: 'general' | 'specificById';
   lgaId?: number | null;
+  name?: string;
 }
 
 const FacilitySelect = (props: FacilitySelectProps) => {
-  const { handleSelect, type, lgaId } = props;
+  const { handleSelect, type, lgaId, name } = props;
   const { facilityName } = useAppSelector((state) => state.asset.assetForm);
   const [searchFacility] = useSearchFacilitiesMutation({});
 
@@ -59,7 +60,7 @@ const FacilitySelect = (props: FacilitySelectProps) => {
 
   return (
     <GenericAsyncSelect
-      selectName="facilityId"
+      selectName={name ?? 'facilityId'}
       selectTitle="Facility"
       data={type === 'general' ? data : lgaId ? facilitiesByLGAIDData : []}
       labelKey="facilityName"

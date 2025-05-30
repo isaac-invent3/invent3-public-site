@@ -14,7 +14,7 @@ const employeeInfoSchema = Yup.object().shape({
       base64PhotoImage: Yup.string().required(),
       base64Prefix: Yup.string().nullable(),
     })
-    .required('Picture is required'),
+    .nullable(),
   firstName: Yup.string().required('First name is Required'),
   middleName: Yup.string().nullable(),
   lastName: Yup.string().required('Last name is Required'),

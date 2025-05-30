@@ -94,7 +94,7 @@ export const ticketApi = createApi({
     }),
     getTicketById: builder.query<BaseApiResponse<Ticket>, { id: number }>({
       query: ({ id }) => ({
-        url: `/Tickets/${id}`,
+        url: `/Tickets/GetTicketInfoHeader/${id}`,
         method: 'GET',
         headers: getHeaders(),
       }),

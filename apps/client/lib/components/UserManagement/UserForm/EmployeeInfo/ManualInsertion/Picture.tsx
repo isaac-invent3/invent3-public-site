@@ -20,7 +20,6 @@ const Picture = () => {
       <FormInputWrapper
         title="Picture"
         description="Size max: 10MB each Format: JPG, PNG"
-        isRequired
         sectionMaxWidth="118px"
         customSpacing="104px"
       >

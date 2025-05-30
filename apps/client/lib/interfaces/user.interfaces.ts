@@ -230,19 +230,19 @@ interface UserFormDetails {
   initialDocumentIds: number[];
 }
 
-interface UserDesignation {
-  isNew: boolean;
-  createdDate: string;
-  createdBy: string;
-  lastModifiedDate: string;
-  lastModifiedBy: string;
-  isDeleted: boolean;
-  deletedDate: string;
-  deletedBy: string;
-  guid: string;
-  userDesignationId: number;
-  employeeId: number;
+interface Designation {
   designationId: number;
+  designationTypeId: number;
+  designationName: string;
+  isNew: boolean;
+  createdDate: Date;
+  createdBy: null;
+  lastModifiedDate: null;
+  lastModifiedBy: null;
+  isDeleted: boolean;
+  deletedDate: null;
+  deletedBy: null;
+  guid: string;
 }
 
 interface Group {
@@ -332,7 +332,7 @@ interface UserDocumentDto extends BaseDto {
 
 interface CreateUserPayload {
   createUserDto: UserDto;
-  createUserImageDto: UserImageDto[];
+  createUserImageDto: UserImageDto[] | null;
   createUserDocumentDto: UserDocumentDto[] | null;
   createLocationDto: LocationDto;
   userDocumentIds: number[] | null;
@@ -341,7 +341,7 @@ interface CreateUserPayload {
 interface UpdateUserPayload {
   updateUserDto: UserDto;
   updateLocationDto: LocationDto;
-  multiPurposeUserImageDto: UserImageDto[];
+  multiPurposeUserImageDto: UserImageDto[] | null;
   multiPurposeUserDocumentDto: UserDocumentDto[] | null;
   userDocuments?: Record<
     number,
@@ -370,7 +370,7 @@ export type {
   UserPermission,
   UserFilter,
   UserFormDetails,
-  UserDesignation,
+  Designation,
   UserGroupInfoHeader,
   UserGroupPayload,
   CreateUserPayload,

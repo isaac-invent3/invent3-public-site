@@ -5,8 +5,8 @@ import React, { useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import {
-  useGetAllUserDesignationsQuery,
-  useSearchUserDesignationMutation,
+  useGetAllDesignationsQuery,
+  useSearchDesignationMutation,
 } from '~/lib/redux/services/user.services';
 import { updateUserForm } from '~/lib/redux/slices/UserSlice';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
@@ -16,11 +16,12 @@ const JobTitle = () => {
   const dispatch = useAppDispatch();
   const { countryName } = useAppSelector((state) => state.asset.assetForm);
   const [pageNumber, setPageNumber] = useState(1);
-  const [searchDesignation] = useSearchUserDesignationMutation({});
-  const { data, isLoading } = useGetAllUserDesignationsQuery({
+  const [searchDesignation] = useSearchDesignationMutation({});
+  const { data, isLoading } = useGetAllDesignationsQuery({
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
+
   return (
     <FormInputWrapper
       sectionMaxWidth="141px"
@@ -33,8 +34,8 @@ const JobTitle = () => {
           selectName="jobTitleId"
           selectTitle="Job Title"
           data={data}
-          labelKey="designationId"
-          valueKey="userDesignationId"
+          labelKey="designationName"
+          valueKey="designationId"
           defaultInputValue={countryName}
           mutationFn={searchDesignation}
           isLoading={isLoading}

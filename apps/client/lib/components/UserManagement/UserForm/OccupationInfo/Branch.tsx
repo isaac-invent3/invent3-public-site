@@ -21,6 +21,7 @@ const Branch = () => {
         <FacilitySelect
           type="specificById"
           lgaId={cityId}
+          name="branchId"
           handleSelect={(option) => {
             helpers.setValue(option.value);
             dispatch(updateUserForm({ branchName: option.label }));

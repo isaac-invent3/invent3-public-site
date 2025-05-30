@@ -7,7 +7,6 @@ import { ROUTES } from '~/lib/utils/constants';
 import { updateUserForm } from '~/lib/redux/slices/UserSlice';
 import Picture from './Picture';
 import FullName from './FullName';
-import DateOfBirth from './DateOfBirth';
 import PhoneNumber from './PhoneNumber';
 import Email from './Email';
 import Gender from './Gender';
@@ -28,7 +27,6 @@ const ManualInsertion = (props: ManualInsertionProps) => {
       picture: formDetails?.picture ?? null,
       firstName: formDetails?.firstName ?? null,
       lastName: formDetails?.lastName ?? null,
-      dob: formDetails?.dob ?? null,
       mobileNumber: formDetails?.mobileNumber ?? null,
       workEmail: formDetails?.workEmail ?? null,
       gender: formDetails?.gender ?? null,
@@ -67,10 +65,9 @@ const ManualInsertion = (props: ManualInsertionProps) => {
           >
             <Picture />
             <FullName />
-            <DateOfBirth />
             <PhoneNumber />
             <Email />
-            <Gender />
+            {/* <Gender /> */}
             <Location />
           </VStack>
           <Flex width="full" mt="16px">

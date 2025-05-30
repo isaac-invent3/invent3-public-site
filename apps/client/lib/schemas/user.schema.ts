@@ -10,8 +10,8 @@ const employeeInfoSchema = Yup.object().shape({
   picture: Yup.object()
     .shape({
       imageId: Yup.number().nullable(),
-      imageName: Yup.string().required(),
-      base64PhotoImage: Yup.string().required(),
+      imageName: Yup.string().nullable(),
+      base64PhotoImage: Yup.string().nullable(),
       base64Prefix: Yup.string().nullable(),
     })
     .nullable(),
@@ -22,9 +22,9 @@ const employeeInfoSchema = Yup.object().shape({
   mobileNumber: Yup.string().nullable(),
   workEmail: Yup.string().email().nullable(),
   gender: Yup.string().nullable(),
-  countryId: Yup.number().nullable(),
-  stateId: Yup.number().nullable(),
-  cityId: Yup.number().nullable(),
+  countryId: Yup.number().required('Country is Required'),
+  stateId: Yup.number().required('State is Required'),
+  cityId: Yup.number().required('City is Required'),
 });
 
 const occupationInfoSchema = Yup.object().shape({

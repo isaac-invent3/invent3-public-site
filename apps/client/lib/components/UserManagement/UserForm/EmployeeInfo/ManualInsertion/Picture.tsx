@@ -25,7 +25,7 @@ const Picture = () => {
       >
         <HStack spacing="12px" alignItems="flex-start" width="full">
           {/* Display */}
-          {meta.value && (
+          {meta.value?.base64PhotoImage && (
             <Box
               bgImage={
                 meta.value.base64Prefix

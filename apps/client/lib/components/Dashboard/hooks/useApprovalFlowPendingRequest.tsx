@@ -103,7 +103,7 @@ const useApprovalFlowPendingRequestTable = (
         }),
         columnHelper.accessor('dateRequested', {
           cell: (info) => dateFormatter(info.getValue(), 'MMMM DD, YYYY'),
-          header: 'Amount($)',
+          header: 'Date Requested',
           enableSorting: false,
         }),
       ];

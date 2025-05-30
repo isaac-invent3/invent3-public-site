@@ -45,7 +45,7 @@ const AssetSummary = () => {
               rounded="full"
               bgColor="#0366EF1A"
             >
-              {stats?.assetsNotInUse.toLocaleString()}
+              {stats?.assetsNotInUse?.toLocaleString()}
             </Text>
           </Skeleton>
           <Text color="neutral.600" fontWeight={700}>

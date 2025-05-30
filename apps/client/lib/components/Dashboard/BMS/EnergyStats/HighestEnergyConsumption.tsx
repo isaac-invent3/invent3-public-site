@@ -61,7 +61,7 @@ const HighestEnergyConsumption = () => {
         enabled: true,
         callbacks: {
           label: function (tooltipItem: any) {
-            return `${tooltipItem.raw.toLocaleString()}`;
+            return `${tooltipItem.raw?.toLocaleString()}`;
           },
         },
       },

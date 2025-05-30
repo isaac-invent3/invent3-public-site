@@ -62,7 +62,7 @@ const Hero = () => {
             roundProps: 'val',
             ease: 'power1.inOut',
             onUpdate: () => {
-              element.textContent = `${Math.floor(obj.val).toLocaleString()}${item.suffix}`;
+              element.textContent = `${Math.floor(obj.val)?.toLocaleString()}${item.suffix}`;
             },
           },
           0

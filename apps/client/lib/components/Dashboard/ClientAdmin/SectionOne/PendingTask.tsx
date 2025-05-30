@@ -56,7 +56,7 @@ const PendingTask = (props: PendingTaskProps) => {
               fontWeight={800}
               color="primary.500"
             >
-              {totalTask !== undefined ? totalTask.toLocaleString() : '-'}
+              {totalTask !== undefined ? totalTask?.toLocaleString() : '-'}
             </Text>
           </Skeleton>
           <Text color="neutral.600" fontWeight={700} mb="4px">

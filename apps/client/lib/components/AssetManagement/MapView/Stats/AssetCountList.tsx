@@ -32,13 +32,13 @@ const AssetCountList = (props: AssetCountListProps) => {
               if (currentStatType === 'count') {
                 displayData =
                   currentAssetStatus === 'In Use'
-                    ? option.assetInUseCount.toLocaleString()
-                    : option.assetNoInUseCount.toLocaleString();
+                    ? option.assetInUseCount?.toLocaleString()
+                    : option.assetNoInUseCount?.toLocaleString();
               } else {
                 displayData =
                   currentAssetStatus === 'In Use'
-                    ? option.activeAssetsTotalValue.toLocaleString()
-                    : option.assetsNotInUseTotalValue.toLocaleString();
+                    ? option.activeAssetsTotalValue?.toLocaleString()
+                    : option.assetsNotInUseTotalValue?.toLocaleString();
               }
 
               return (

@@ -92,7 +92,7 @@ const SectionOne = () => {
                 fontWeight={800}
                 color="primary.500"
               >
-                {data?.data?.noOfOpenApprovals.toLocaleString() ?? '-'}
+                {data?.data?.noOfOpenApprovals?.toLocaleString() ?? '-'}
               </Text>
             </Skeleton>
             <Text color="neutral.600" fontWeight={700} mb="4px">

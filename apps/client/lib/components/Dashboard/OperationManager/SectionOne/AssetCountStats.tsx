@@ -20,7 +20,7 @@ const Stats = (props: StatsProps) => {
           fontSize={{ base: '24px', xl: '48px' }}
           lineHeight={{ base: '28.51px', xl: '57.02px' }}
         >
-          {value !== undefined ? value.toLocaleString() : '-'}
+          {value !== undefined ? value?.toLocaleString() : '-'}
         </Text>
       </Skeleton>
       <Text size={{ base: 'md', md: 'lg' }} fontWeight={{ base: 500, md: 700 }}>

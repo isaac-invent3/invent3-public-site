@@ -39,7 +39,7 @@ const AssetSummaryCard = (props: AssetSummaryCardProps) => {
             fontWeight={800}
             color="primary.500"
           >
-            {value !== undefined ? value.toLocaleString() : '-'}
+            {value !== undefined ? value?.toLocaleString() : '-'}
           </Text>
         </Skeleton>
         <Flex mt="16px">{children}</Flex>

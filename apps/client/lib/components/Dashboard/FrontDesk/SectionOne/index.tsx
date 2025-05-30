@@ -50,7 +50,7 @@ const SectionOne = () => {
                 fontWeight={800}
                 color="primary.500"
               >
-                {data?.data?.upcomingMaintenanceByWeek.toLocaleString() ?? '-'}
+                {data?.data?.upcomingMaintenanceByWeek?.toLocaleString() ?? '-'}
               </Text>
             </Skeleton>
             <Text color="neutral.600" fontWeight={700} mb="4px">

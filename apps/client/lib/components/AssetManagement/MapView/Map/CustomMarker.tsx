@@ -131,7 +131,7 @@ const CustomMarker = (props: CustomMarkerProps) => {
                   {name}
                 </Text>
                 <Text color="primary.500" fontWeight={800}>
-                  {displayValue.toLocaleString()}
+                  {displayValue?.toLocaleString()}
                 </Text>
               </VStack>
             </HStack>

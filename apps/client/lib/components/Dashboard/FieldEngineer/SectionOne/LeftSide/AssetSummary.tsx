@@ -52,7 +52,7 @@ const AssetSummary = () => {
               fontWeight={800}
               color="primary.500"
             >
-              {totalAsset !== undefined ? totalAsset.toLocaleString() : '-'}
+              {totalAsset !== undefined ? totalAsset?.toLocaleString() : '-'}
             </Text>
           </Skeleton>
           <Text color="neutral.600" fontWeight={700} mb="4px">

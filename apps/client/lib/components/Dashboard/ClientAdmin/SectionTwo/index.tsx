@@ -31,12 +31,14 @@ const SectionTwo = () => {
         selectedYear={selectedYear}
         setSelectedYear={setSelectedYear}
         data={
-          data?.data?.taskCompletionRates.map((item) => ({
-            complete: item.completed,
-            inComplete: item.overdue,
-            monthId: item.monthId,
-            year: item.year,
-          })) ?? []
+          data?.data?.taskCompletionRates
+            ? data?.data?.taskCompletionRates.map((item) => ({
+                complete: item.completed,
+                inComplete: item.overdue,
+                monthId: item.monthId,
+                year: item.year,
+              }))
+            : []
         }
       />
     </SimpleGrid>

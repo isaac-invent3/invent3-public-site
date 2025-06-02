@@ -2,19 +2,18 @@ import { Flex, useMediaQuery } from '@chakra-ui/react';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useMemo } from 'react';
-import { dateFormatter } from '~/lib/utils/Formatters';
 import { GenericTableProps } from '~/lib/interfaces/general.interfaces';
+import { AssetComplianceCategory } from '~/lib/interfaces/asset/compliance.interfaces';
 import PopoverAction from './PopoverAction';
-import { FacilityAssetCompliance } from '~/lib/interfaces/asset/compliance.interfaces';
-import GenericStatusBox from '../../UI/GenericStatusBox';
+import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 
-interface LogTableProps extends GenericTableProps {
-  data: FacilityAssetCompliance[];
+interface FacilityComplianceTableProps extends GenericTableProps {
+  data: AssetComplianceCategory[];
   // eslint-disable-next-line no-unused-vars
-  handleSelectRow?: (row: FacilityAssetCompliance) => void;
+  handleSelectRow?: (row: AssetComplianceCategory) => void;
 }
 
-const ComplianceTable = (props: LogTableProps) => {
+const FacilityComplianceTable = (props: FacilityComplianceTableProps) => {
   const {
     data,
     isFetching,
@@ -36,29 +35,34 @@ const ComplianceTable = (props: LogTableProps) => {
     setSelectedRows,
   } = props;
 
-  const columnHelper = createColumnHelper<FacilityAssetCompliance>();
+  const columnHelper = createColumnHelper<AssetComplianceCategory>();
   const [isMobile] = useMediaQuery('(max-width: 768px)');
 
   const mobileColumns = useMemo(
     () => {
       const baseColumns = [
-        columnHelper.accessor('facilityName', {
+        columnHelper.accessor('categoryName', {
           cell: (info) => info.getValue(),
-          header: 'Facility/Location',
+          header: 'Asset Category',
           enableSorting: false,
         }),
-        columnHelper.accessor('address', {
+        columnHelper.accessor('totalAssets', {
           cell: (info) => info.getValue(),
-          header: 'Address',
+          header: 'Total Assets',
           enableSorting: false,
         }),
-        columnHelper.accessor('totalAssetCategory', {
+        columnHelper.accessor('compliant', {
           cell: (info) => info.getValue(),
-          header: 'Total Asset Category',
+          header: 'Complaint',
           enableSorting: false,
         }),
-        columnHelper.accessor('facilityId', {
-          cell: (info) => <PopoverAction facilityId={info.getValue()} />,
+        columnHelper.accessor('nonCompliant', {
+          cell: (info) => info.getValue(),
+          header: 'Non compliant',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('categoryId', {
+          cell: (info) => <PopoverAction assetCategoryId={info.getValue()} />,
           header: '',
           enableSorting: false,
         }),
@@ -72,41 +76,35 @@ const ComplianceTable = (props: LogTableProps) => {
   const columns = useMemo(
     () => {
       const baseColumns = [
-        columnHelper.accessor('facilityName', {
+        columnHelper.accessor('categoryName', {
           cell: (info) => info.getValue(),
-          header: 'Facility/Location',
+          header: 'Asset Category',
           enableSorting: false,
         }),
-        columnHelper.accessor('address', {
+        columnHelper.accessor('totalAssets', {
           cell: (info) => info.getValue(),
-          header: 'Address',
+          header: 'Total Assets',
           enableSorting: false,
         }),
-        columnHelper.accessor('totalAssetCategory', {
-          cell: (info) => info.getValue(),
-          header: 'Total Asset Category',
-          enableSorting: false,
-        }),
-
         columnHelper.accessor('compliant', {
           cell: (info) => info.getValue(),
-          header: 'Compliant',
+          header: 'Complaint',
           enableSorting: false,
         }),
         columnHelper.accessor('nonCompliant', {
           cell: (info) => info.getValue(),
-          header: 'Non Compliant',
+          header: 'Non compliant',
           enableSorting: false,
         }),
         columnHelper.accessor('complianceStatus', {
           cell: (info) => {
             return <GenericStatusBox text={info.getValue()} />;
           },
-          header: 'Non Compliant',
+          header: 'Status',
           enableSorting: false,
         }),
-        columnHelper.accessor('facilityId', {
-          cell: (info) => <PopoverAction facilityId={info.getValue()} />,
+        columnHelper.accessor('categoryId', {
+          cell: (info) => <PopoverAction assetCategoryId={info.getValue()} />,
           header: '',
           enableSorting: false,
         }),
@@ -156,4 +154,4 @@ const ComplianceTable = (props: LogTableProps) => {
   );
 };
 
-export default ComplianceTable;
+export default FacilityComplianceTable;

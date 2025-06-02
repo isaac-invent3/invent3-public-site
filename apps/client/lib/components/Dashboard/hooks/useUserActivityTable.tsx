@@ -80,7 +80,10 @@ const useUserActivityTable = (props: useUserActivityTable) => {
         }),
 
         columnHelper.accessor('firstName', {
-          cell: (info) => `${info.getValue()} ${info.row.original.lastName}`,
+          cell: (info) =>
+            info.getValue() || info.row.original.lastName
+              ? `${info.getValue()} ${info.row.original.lastName}`
+              : 'N/A',
           header: 'Name',
           enableSorting: false,
         }),

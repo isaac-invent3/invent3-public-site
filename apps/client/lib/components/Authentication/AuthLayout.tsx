@@ -95,7 +95,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
           direction={{ base: 'column', lg: 'row' }}
           gap={{ base: '27px', lg: 'none' }}
         >
-          <Link href="/">
+          <Link href="/" style={{ width: '100%' }}>
             <Flex
               top={0}
               position={{ base: 'absolute', lg: 'relative' }}

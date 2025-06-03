@@ -132,7 +132,8 @@ type ContextKey =
   | 'USER'
   | 'VENDOR'
   | 'AUDIT'
-  | 'COMPANY';
+  | 'COMPANY'
+  | 'COMPLIANCE';
 
 interface SystemContextDetail {
   id: (typeof SYSTEM_CONTEXT_TYPE)[keyof typeof SYSTEM_CONTEXT_TYPE];

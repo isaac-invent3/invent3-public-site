@@ -5,6 +5,8 @@ import { useMemo } from 'react';
 import { GenericTableProps } from '~/lib/interfaces/general.interfaces';
 import { AssetBasedCompliance } from '~/lib/interfaces/asset/compliance.interfaces';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
+import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
+import { SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
 
 interface CategoryComplianceTableProps extends GenericTableProps {
   data: AssetBasedCompliance[];
@@ -36,6 +38,7 @@ const CategoryComplianceTable = (props: CategoryComplianceTableProps) => {
 
   const columnHelper = createColumnHelper<AssetBasedCompliance>();
   const [isMobile] = useMediaQuery('(max-width: 768px)');
+  const { updateSearchParam } = useCustomSearchParams();
 
   const mobileColumns = useMemo(
     () => {
@@ -62,8 +65,19 @@ const CategoryComplianceTable = (props: CategoryComplianceTableProps) => {
           enableSorting: false,
         }),
         columnHelper.accessor('facilityName', {
-          cell: () => (
-            <Text fontWeight={700} color="#1270B0">
+          cell: (info) => (
+            <Text
+              fontWeight={700}
+              color="#1270B0"
+              cursor="pointer"
+              onClick={(e) => {
+                e.stopPropagation();
+                updateSearchParam(
+                  SYSTEM_CONTEXT_DETAILS.COMPLIANCE.slug,
+                  info.row.original.assetId
+                );
+              }}
+            >
               View Compliance
             </Text>
           ),
@@ -86,7 +100,18 @@ const CategoryComplianceTable = (props: CategoryComplianceTableProps) => {
           enableSorting: false,
         }),
         columnHelper.accessor('assetName', {
-          cell: (info) => info.getValue(),
+          cell: (info) => (
+            <Text
+              size="md"
+              lineHeight="100%"
+              fontWeight={700}
+              color="blue.500"
+              cursor="pointer"
+              textDecoration="underline"
+            >
+              {info.getValue()}
+            </Text>
+          ),
           header: 'Asset Name',
           enableSorting: false,
         }),
@@ -108,8 +133,19 @@ const CategoryComplianceTable = (props: CategoryComplianceTableProps) => {
           enableSorting: false,
         }),
         columnHelper.accessor('facilityName', {
-          cell: () => (
-            <Text fontWeight={700} color="#1270B0">
+          cell: (info) => (
+            <Text
+              fontWeight={700}
+              color="#1270B0"
+              cursor="pointer"
+              onClick={(e) => {
+                e.stopPropagation();
+                updateSearchParam(
+                  SYSTEM_CONTEXT_DETAILS.COMPLIANCE.slug,
+                  info.row.original.assetId
+                );
+              }}
+            >
               View Compliance
             </Text>
           ),
@@ -156,6 +192,7 @@ const CategoryComplianceTable = (props: CategoryComplianceTableProps) => {
           paddingLeft: '16px',
           paddingTop: '12px',
           paddingBottom: '12px',
+          bgColor: 'white',
         }}
       />
     </Flex>

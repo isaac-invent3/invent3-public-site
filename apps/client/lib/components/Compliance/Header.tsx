@@ -1,24 +1,32 @@
-import { HStack, Icon, Stack } from '@chakra-ui/react';
+import { HStack, Icon, Stack, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 import PageHeader from '../UI/PageHeader';
 import { Button } from '@repo/ui/components';
 import { AddIcon } from '../CustomIcons';
+import CreateAssetComplianceDrawer from './Drawers/CreateComplianceDrawer';
+import ComplianceTypeDrawer from './Drawers/ComplianceTypeDrawer';
 
 const Header = ({
   showComplianceType = false,
 }: {
   showComplianceType?: boolean;
 }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenComplianceType,
+    onOpen: onOpenComplianceType,
+    onClose: onCloseComplianceType,
+  } = useDisclosure();
   return (
-    <Stack
-      width="full"
-      justifyContent="space-between"
-      direction={{ base: 'column', md: 'row' }}
-      spacing="10px"
-    >
-      <PageHeader>Compliance Management</PageHeader>
-      <HStack spacing="24px">
-        {showComplianceType && (
+    <>
+      <Stack
+        width="full"
+        justifyContent="space-between"
+        direction={{ base: 'column', md: 'row' }}
+        spacing="10px"
+      >
+        <PageHeader>Compliance Management</PageHeader>
+        <HStack spacing="24px">
           <Button
             customStyles={{
               width: '184px',
@@ -26,22 +34,33 @@ const Header = ({
               alignSelf: 'end',
             }}
             variant="outline"
+            handleClick={onOpenComplianceType}
           >
             Compliance Type
           </Button>
-        )}
-        <Button
-          customStyles={{
-            width: '184px',
-            height: { base: '36px', md: 'min-content' },
-            alignSelf: 'end',
-          }}
-        >
-          <Icon as={AddIcon} boxSize="18px" color="#D2FEFD" mr="4px" />
-          Assign Compliance
-        </Button>
-      </HStack>
-    </Stack>
+          <Button
+            handleClick={onOpen}
+            customStyles={{
+              width: '184px',
+              height: { base: '36px', md: 'min-content' },
+              alignSelf: 'end',
+            }}
+          >
+            <Icon as={AddIcon} boxSize="18px" color="#D2FEFD" mr="4px" />
+            Assign Compliance
+          </Button>
+        </HStack>
+      </Stack>
+      {isOpen && (
+        <CreateAssetComplianceDrawer isOpen={isOpen} onClose={onClose} />
+      )}
+      {isOpenComplianceType && (
+        <ComplianceTypeDrawer
+          isOpen={isOpenComplianceType}
+          onClose={onCloseComplianceType}
+        />
+      )}
+    </>
   );
 };
 

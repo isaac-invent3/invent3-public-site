@@ -80,10 +80,10 @@ const Compliance = () => {
         </VStack>
 
         <ComplianceTable
-          data={data?.data ?? []}
+          data={data?.data?.items ?? []}
           isLoading={isLoading}
           isFetching={isFetching}
-          totalPages={1}
+          totalPages={data?.data?.totalPages}
           showFooter={true}
           emptyLines={25}
           isSelectable={false}

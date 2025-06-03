@@ -1,8 +1,22 @@
+import { BaseEntity } from '@repo/interfaces';
+
 interface ComplianceSummary {
   totalComplianceCertificate: number;
   nonCompliantItems: number;
   upcomingAudit: string;
   flaggedRisk: number;
+}
+
+export interface Compliance extends BaseEntity {
+  complianceId: number;
+  assetId: number;
+  assetCategoryId: number;
+  regulationId: number;
+  complianceRegulationId: number;
+  lastInspectionDate: Date;
+  nextInspectionDate: Date;
+  complianceStatusId: number;
+  dateCreated: Date;
 }
 
 interface AssetComplaince {
@@ -118,12 +132,89 @@ interface AssetComplianceDetail {
   totalPolicies: number;
 }
 
+interface AssetComplianceCategoryDetail {
+  categoryId: number;
+  categoryName: string;
+  facilityName: null;
+  totalAssets: null;
+  compliant: null;
+  nonCompliant: null;
+  complianceStatus: null;
+  displayColorCode: null;
+  policies: Policy[];
+}
+
+interface CategoryPolicy {
+  standard: string;
+  typeName: null;
+  frequency: null;
+  nextInspectionDate: Date;
+}
+
 interface Policy {
   standard: string;
   typeName: null;
   frequency: null;
   complianceStatusName: string;
   complianceStatusId: number;
+}
+
+interface AssetCompliancePayload {
+  createAssetComplianceDto: CreateAssetComplianceDto;
+  createComplianceDocumentDtos: CreateComplianceDocumentDto[] | null;
+}
+
+interface CreateAssetComplianceDto {
+  assetCategoryId: number;
+  assetId?: number;
+  regulationId: number;
+  complianceRegulationId?: number;
+  lastInspectionDate?: string;
+  nextInspectionDate?: string;
+  complianceStatusId?: number;
+  dateCreated?: string;
+  createdBy: string;
+}
+
+export interface CreateComplianceDocumentDto {
+  documentName: string;
+  document: string;
+  base64Prefix: string;
+  createdBy: string;
+}
+
+interface ComplianceType {
+  complianceTypeId: number;
+  typeName: string;
+  typeIcon: string;
+  isNew: boolean;
+  createdDate: string;
+  createdBy: string;
+  lastModifiedDate: null;
+  lastModifiedBy: null;
+  isDeleted: boolean;
+  deletedDate: null;
+  deletedBy: null;
+  guid: string;
+}
+
+interface ComplianceRegulation extends BaseEntity {
+  regulationId: number;
+  standard: string;
+  description: string;
+  frequency: number;
+  lastUpdatedDate: Date;
+  dateCreated: Date;
+}
+
+interface CreateCompliancePayload {
+  regulationTypeId: number;
+  standard: string;
+  description: string;
+  frequency?: number;
+  lastUpdatedDate?: Date;
+  dateCreated?: Date;
+  createdBy: string;
 }
 
 export type {
@@ -137,4 +228,9 @@ export type {
   AssetBasedCompliance,
   Policy,
   AssetComplianceDetail,
+  AssetCompliancePayload,
+  ComplianceType,
+  ComplianceRegulation,
+  CreateCompliancePayload,
+  AssetComplianceCategoryDetail,
 };

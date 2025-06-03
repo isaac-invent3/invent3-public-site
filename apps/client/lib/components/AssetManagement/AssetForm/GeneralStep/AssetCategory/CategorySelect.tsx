@@ -11,10 +11,11 @@ import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 interface CategorySelectProps {
   // eslint-disable-next-line no-unused-vars
   handleSelect?: (options: Option) => void;
+  name?: string;
 }
 
 const CategorySelect = (props: CategorySelectProps) => {
-  const { handleSelect } = props;
+  const { handleSelect, name } = props;
   const { categoryName } = useAppSelector((state) => state.asset.assetForm);
   const [searchCategory] = useSearchCategoriesMutation({});
 
@@ -25,7 +26,7 @@ const CategorySelect = (props: CategorySelectProps) => {
   });
   return (
     <GenericAsyncSelect
-      selectName="categoryId"
+      selectName={name ?? 'categoryId'}
       selectTitle="Category"
       data={data}
       labelKey="categoryName"

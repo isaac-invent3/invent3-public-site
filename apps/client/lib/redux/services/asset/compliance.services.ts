@@ -13,8 +13,14 @@ import {
   AssetComplaince,
   AssetComplianceByFacility,
   AssetComplianceCategory,
+  AssetComplianceCategoryDetail,
   AssetComplianceDetail,
+  AssetCompliancePayload,
+  Compliance,
+  ComplianceRegulation,
   ComplianceSummary,
+  ComplianceType,
+  CreateCompliancePayload,
   FacilityAssetCompliance,
   FacilityAssetComplianceSummary,
 } from '~/lib/interfaces/asset/compliance.interfaces';
@@ -29,6 +35,7 @@ export const complianceApi = createApi({
     'allComplianceByFacility',
     'allFacilityCompliance',
     'allCategoryCompliance',
+    'allComplianceRegulations',
   ],
   endpoints: (builder) => ({
     getAllAssetCompliance: builder.query<
@@ -54,7 +61,7 @@ export const complianceApi = createApi({
       providesTags: ['allComplianceByFacility'],
     }),
     getAllFacilityCompliance: builder.query<
-      BaseApiResponse<FacilityAssetCompliance[]>,
+      BaseApiResponse<ListResponse<FacilityAssetCompliance>>,
       QueryParams
     >({
       query: (data) => ({
@@ -65,7 +72,7 @@ export const complianceApi = createApi({
       providesTags: ['allFacilityCompliance'],
     }),
     getAllCategoryComplianceByFacility: builder.query<
-      BaseApiResponse<AssetComplianceCategory[]>,
+      BaseApiResponse<ListResponse<AssetComplianceCategory>>,
       QueryParams & { facilityId: number }
     >({
       query: ({ facilityId, ...data }) => ({
@@ -78,8 +85,33 @@ export const complianceApi = createApi({
       }),
       providesTags: ['allCategoryCompliance'],
     }),
+    getAllComplianceTypes: builder.query<
+      BaseApiResponse<ListResponse<ComplianceType>>,
+      QueryParams
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/ComplianceTypes?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allCategoryCompliance'],
+    }),
+    getAllComplianceByType: builder.query<
+      BaseApiResponse<ListResponse<ComplianceRegulation>>,
+      QueryParams & { complianceTypeId: number }
+    >({
+      query: ({ complianceTypeId, ...data }) => ({
+        url: generateQueryStr(
+          `/ComplianceRegulations/GetByComplianceType/${complianceTypeId}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allComplianceRegulations'],
+    }),
     getAllAssetBasedCompliances: builder.query<
-      BaseApiResponse<AssetBasedCompliance[]>,
+      BaseApiResponse<ListResponse<AssetBasedCompliance>>,
       QueryParams & { facilityId: number; categoryId: number }
     >({
       query: ({ facilityId, categoryId, ...data }) => ({
@@ -123,12 +155,23 @@ export const complianceApi = createApi({
         headers: getHeaders(),
       }),
     }),
+
+    getComplianceAssetCategoryDetails: builder.query<
+      BaseApiResponse<AssetComplianceCategoryDetail>,
+      { facilityId: number; assetCategoryId: number }
+    >({
+      query: ({ facilityId, assetCategoryId }) => ({
+        url: `/AssetCompliances/AssetCompliancesByCategoryDetails/${facilityId}/${assetCategoryId}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
     getAssetComplianceDetails: builder.query<
       BaseApiResponse<AssetComplianceDetail>,
       { facilityId: number; assetId: number }
     >({
       query: ({ facilityId, assetId }) => ({
-        url: `/AssetCompliances/AssetComplianceDetails/${facilityId}/${assetId}`,
+        url: `/AssetCompliances/AssetCompliancesByCategoryDetails/${facilityId}/${assetId}`,
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -144,6 +187,42 @@ export const complianceApi = createApi({
         body,
       }),
     }),
+    createAssetCompliance: builder.mutation<
+      BaseApiResponse<Compliance>,
+      AssetCompliancePayload
+    >({
+      query: (body) => ({
+        url: `/Invent3Pro/AssetCompliance/Create`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allFacilityCompliance'],
+    }),
+    createComplianceRegulation: builder.mutation<
+      BaseApiResponse<ComplianceRegulation>,
+      CreateCompliancePayload
+    >({
+      query: (body) => ({
+        url: `/ComplianceRegulations`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allComplianceRegulations'],
+    }),
+    deleteComplianceRegulation: builder.mutation<
+      void,
+      { id: number; deletedBy: string }
+    >({
+      query: ({ id, ...body }) => ({
+        url: `/ComplianceRegulations/${id}`,
+        method: 'DELETE',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allComplianceRegulations'],
+    }),
   }),
 });
 
@@ -158,4 +237,10 @@ export const {
   useGetAllCategoryComplianceByFacilityQuery,
   useGetAllAssetBasedCompliancesQuery,
   useGetAssetComplianceDetailsQuery,
+  useCreateAssetComplianceMutation,
+  useGetAllComplianceTypesQuery,
+  useGetAllComplianceByTypeQuery,
+  useCreateComplianceRegulationMutation,
+  useDeleteComplianceRegulationMutation,
+  useGetComplianceAssetCategoryDetailsQuery,
 } = complianceApi;

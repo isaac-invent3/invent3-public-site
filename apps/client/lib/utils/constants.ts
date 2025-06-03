@@ -175,6 +175,7 @@ const SYSTEM_CONTEXT_TYPE = {
   ASSETS: 1,
   ASSET_TYPE: 30,
   ASSET_CATEGORY: 18,
+  ASSET_COMPLIANCE: 146,
   TASKS: 2,
   TICKETS: 3,
   MAINTENANCE_PLANS: 4,
@@ -275,6 +276,12 @@ const SYSTEM_CONTEXT_DETAILS: Record<ContextKey, SystemContextDetail> = {
     slug: 'companyId',
     displayName: 'Company Management',
   },
+  COMPLIANCE: {
+    id: SYSTEM_CONTEXT_TYPE.ASSET_COMPLIANCE,
+    route: ROUTES.COMPLIANCE,
+    slug: 'complianceId',
+    displayName: 'Compliance',
+  },
   AUDIT: {
     id: SYSTEM_CONTEXT_TYPE.AUDIT,
     route: ROUTES.AUDIT_LOG,
@@ -334,6 +341,11 @@ const UNIT_ID = {
   KILOWATT_HOUR: 16,
 };
 
+const COMPLIANT_STATUS = {
+  COMPLIANT: 1,
+  NONCOMPLIANT: 2,
+};
+
 export {
   AREA_ENUM,
   ASSET_GROUP_TYPE,
@@ -360,4 +372,5 @@ export {
   yearOptions,
   AUTHENTICATION_PROTOCOL_ENUM,
   UNIT_ID,
+  COMPLIANT_STATUS,
 };

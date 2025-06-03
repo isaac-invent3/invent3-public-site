@@ -66,10 +66,10 @@ const FacilityCompliance = ({ data }: FacilityComplianceProps) => {
             </HStack>
           </HStack>
           <FacilityComplianceTable
-            data={complianceCategory?.data ?? []}
+            data={complianceCategory?.data?.items ?? []}
             isLoading={isLoading}
             isFetching={isFetching}
-            totalPages={1}
+            totalPages={complianceCategory?.data?.totalPages}
             showFooter={true}
             emptyLines={25}
             isSelectable={false}

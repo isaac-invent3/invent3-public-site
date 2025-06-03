@@ -1,15 +1,21 @@
 import { Flex, HStack, useDisclosure, VStack } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../../Header';
 import { AssetCategoryComplianceSummary } from '~/lib/interfaces/asset/compliance.interfaces';
 import { FilterButton, SearchInput } from '@repo/ui/components';
 import useExport from '~/lib/hooks/useExport';
 import { FilterIcon } from '~/lib/components/CustomIcons';
-import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import {
+  DEFAULT_PAGE_SIZE,
+  SYSTEM_CONTEXT_DETAILS,
+} from '~/lib/utils/constants';
 import { useGetAllAssetBasedCompliancesQuery } from '~/lib/redux/services/asset/compliance.services';
 import { useParams } from 'next/navigation';
 import CategoryComplianceTable from './CategoryComplianceTable';
 import SummaryInfo from './SummaryInfo';
+import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
+import AssetComplianceDetailDrawer from '../../Drawers/AssetComplianceDetailDrawer';
+import AssetDetail from '~/lib/components/AssetManagement/AssetDetail';
 
 interface CategoryComplianceProps {
   data: AssetCategoryComplianceSummary;
@@ -19,6 +25,28 @@ const CategoryCompliance = ({ data }: CategoryComplianceProps) => {
   const [search, setSearch] = useState('');
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+  const {
+    isOpen: isOpenAssetCompliance,
+    onOpen: onOpenAssetCompliance,
+    onClose: onCloseAssetCompliance,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenAsset,
+    onOpen: onOpenAsset,
+    onClose: onCloseAsset,
+  } = useDisclosure();
+  const assetComplianceSlug = SYSTEM_CONTEXT_DETAILS.COMPLIANCE.slug;
+  const assetSlug = SYSTEM_CONTEXT_DETAILS.ASSETS.slug;
+  const { getSearchParam, updateSearchParam } = useCustomSearchParams();
+
+  const complianceAssetId = getSearchParam(
+    SYSTEM_CONTEXT_DETAILS.COMPLIANCE.slug
+  )
+    ? Number(getSearchParam(assetComplianceSlug))
+    : null;
+  const assetId = getSearchParam(SYSTEM_CONTEXT_DETAILS.ASSETS.slug)
+    ? Number(getSearchParam(assetSlug))
+    : null;
   const params = useParams();
   const facilityId = params?.facilityId as unknown as number;
   const id = params?.id as unknown as number;
@@ -39,6 +67,16 @@ const CategoryCompliance = ({ data }: CategoryComplianceProps) => {
     tableDisplayName: 'compliance',
   });
 
+  useEffect(() => {
+    if (complianceAssetId) {
+      onOpenAssetCompliance();
+    }
+  }, [complianceAssetId]);
+  useEffect(() => {
+    if (assetId) {
+      onOpenAsset();
+    }
+  }, [assetId]);
   return (
     <>
       <Flex
@@ -68,10 +106,10 @@ const CategoryCompliance = ({ data }: CategoryComplianceProps) => {
             </HStack>
           </HStack>
           <CategoryComplianceTable
-            data={complianceCategory?.data ?? []}
+            data={complianceCategory?.data?.items ?? []}
             isLoading={isLoading}
             isFetching={isFetching}
-            totalPages={1}
+            totalPages={complianceCategory?.data?.totalPages}
             showFooter={true}
             emptyLines={25}
             isSelectable={false}
@@ -80,9 +118,20 @@ const CategoryCompliance = ({ data }: CategoryComplianceProps) => {
             pageSize={pageSize}
             setPageSize={setPageSize}
             showPopover
+            handleSelectRow={(row) => {
+              updateSearchParam(
+                SYSTEM_CONTEXT_DETAILS.ASSETS.slug,
+                row.assetId
+              );
+            }}
           />
         </VStack>
       </Flex>
+      <AssetComplianceDetailDrawer
+        isOpen={isOpenAssetCompliance}
+        onClose={onCloseAssetCompliance}
+      />
+      <AssetDetail isOpen={isOpenAsset} onClose={onCloseAsset} />
     </>
   );
 };

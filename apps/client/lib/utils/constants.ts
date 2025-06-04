@@ -213,6 +213,7 @@ const ROUTES = {
   COMPLIANCE: 'compliance',
   FEEDBACK: 'feedback',
   APPROVAL: 'approval-flow',
+  LOCATION: 'facility-management',
 };
 
 const SYSTEM_CONTEXT_DETAILS: Record<ContextKey, SystemContextDetail> = {

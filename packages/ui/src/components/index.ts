@@ -17,6 +17,7 @@ export { default as DateRangePopover } from './DateTimeComponents/DateRange/Date
 export { default as DateTimeButtons } from './DateTimeComponents/DateTimeButtons';
 export { default as DimissibleContainer } from './DimissibleContainer';
 export { default as ErrorMessage } from './ErrorMessage';
+export { default as EmptyState } from './EmptyState';
 export { default as FileUpload } from './FileUpload';
 export { default as FilterButton } from './Filter/FilterButton';
 export { default as FilterDisplay } from './Filter/FilterDisplay';

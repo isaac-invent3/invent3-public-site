@@ -10,10 +10,11 @@ import {
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { JourneyIcon } from '../../CustomIcons';
-import JourneyGuide, { journeyGuideSteps } from '.';
+import JourneyGuide, { CMFJourneyGuideSteps, journeyGuideSteps } from '.';
 import { useGetCompanyJourneyGuideQuery } from '~/lib/redux/services/company.services';
 import { useSession } from 'next-auth/react';
 import { CompanyJourneyGuide } from '~/lib/interfaces/company.interfaces';
+import { ROLE_IDS_ENUM } from '~/lib/utils/constants';
 
 interface AssistantGuideBoxProps {
   containerStyle?: FlexProps;
@@ -29,15 +30,19 @@ const AssistantGuideBox = (props: AssistantGuideBoxProps) => {
   );
   const [activeStep, setActiveStep] = useState(0);
 
+  const guideSteps = data?.user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY)
+    ? CMFJourneyGuideSteps
+    : journeyGuideSteps;
+
   useEffect(() => {
     if (journeyGuideData?.data) {
-      const nextStepIndex = journeyGuideSteps.findIndex(
+      const nextStepIndex = guideSteps.findIndex(
         (step) => !journeyGuideData?.data[step.key as keyof CompanyJourneyGuide]
       );
 
       if (nextStepIndex === -1) {
         // All steps completed
-        setActiveStep(journeyGuideSteps.length);
+        setActiveStep(guideSteps.length);
       } else {
         setActiveStep(nextStepIndex);
       }
@@ -49,19 +54,17 @@ const AssistantGuideBox = (props: AssistantGuideBoxProps) => {
       <Flex
         bgColor="white"
         width="440px"
-        bgImage="/assitant-ellipse.png"
-        backgroundPosition="55% top"
+        // bgImage="/assistant-guide-left-bg"
+        // backgroundPosition="47% top"
         bgRepeat="no-repeat"
         rounded="24px"
         overflow="hidden"
         cursor="pointer"
         onClick={onOpen}
-        height="50px"
+        minH="40px"
         {...containerStyle}
         display={
-          journeyGuideData && activeStep === journeyGuideSteps.length
-            ? 'none'
-            : 'flex'
+          journeyGuideData && activeStep === guideSteps.length ? 'none' : 'flex'
         }
       >
         {/* Left Side Starts Here */}
@@ -70,6 +73,8 @@ const AssistantGuideBox = (props: AssistantGuideBoxProps) => {
           alignItems="flex-start"
           spacing={{ base: '24px', lg: '88px' }}
           bgColor="#DBDAD680"
+          bgImage="/assistant-guide-left-bg.png"
+          bgSize="cover"
           backdropFilter="blur(40px)"
           pl="16px"
           pr={0}
@@ -82,8 +87,9 @@ const AssistantGuideBox = (props: AssistantGuideBoxProps) => {
               fontWeight={800}
               fontSize={{ base: '16px' }}
               lineHeight="100%"
+              color="black"
             >
-              Journey Guide
+              New Company Setup Guide
             </Heading>
           </HStack>
         </VStack>
@@ -104,7 +110,7 @@ const AssistantGuideBox = (props: AssistantGuideBoxProps) => {
             letterSpacing={0}
             // whiteSpace="nowrap"
           >
-            Next Step: {journeyGuideSteps?.[activeStep]?.title}
+            Next Step: {guideSteps?.[activeStep]?.title}
           </Text>
         </VStack>
       </Flex>

@@ -4,7 +4,7 @@ import { Heading, SimpleGrid, Skeleton, Text, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useGetAllFacilitiesQuery } from '~/lib/redux/services/location/facility.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
-import LocationCard from './LocationCard';
+import LocationCard from '../../../FacilityManagement/LocationCard';
 import Header from '../Header';
 
 const Locations = () => {
@@ -67,10 +67,9 @@ const Locations = () => {
           >
             {data?.data?.items.map((item, index) => (
               <LocationCard
-                id={item.facilityId}
-                facilityName={item.facilityName}
-                lgaName={item.facilityName}
-                stateName={item.facilityName}
+                href={`/dashboard/bms/${item.facilityId}/detail`}
+                title={item.facilityName}
+                subtitle={`${item.facilityName} ${item.facilityName}`}
                 key={index}
                 customStyle={{ width: 'full' }}
               />

@@ -6,7 +6,6 @@ import PageLoadingSkeleton from '~/lib/components/UI/PageLoadingSkeleton';
 import { useGetComplianceFacilitySummaryQuery } from '~/lib/redux/services/asset/compliance.services';
 
 export default function Page({ params }: { params: { facilityId: number } }) {
-  console.log({ test: params.facilityId });
   const { data, isLoading } = useGetComplianceFacilitySummaryQuery({
     facilityId: params.facilityId!,
   });

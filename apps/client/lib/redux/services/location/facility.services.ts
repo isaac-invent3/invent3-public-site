@@ -9,6 +9,7 @@ import {
 } from '@repo/interfaces';
 import {
   Facility,
+  GroupByState,
   LocationQueryParams,
 } from '~/lib/interfaces/location.interfaces';
 
@@ -42,9 +43,33 @@ export const facilityApi = createApi({
       }),
       providesTags: ['facilitiesByLGAId'],
     }),
+    getFacilitiesByStateId: builder.query<
+      BaseApiResponse<ListResponse<Facility>>,
+      LocationQueryParams
+    >({
+      query: ({ id, ...data }) => ({
+        url: generateQueryStr(
+          `/Facilities/GetFacilitiesByStateId/${id}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['facilitiesByLGAId'],
+    }),
     getFacilityById: builder.query<BaseApiResponse<Facility>, { id: string }>({
       query: ({ id }) => ({
         url: `/Facilities/${id}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getAggregateFacilityByState: builder.query<
+      BaseApiResponse<GroupByState[]>,
+      void
+    >({
+      query: () => ({
+        url: `/Facilities/GroupByState`,
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -89,4 +114,6 @@ export const {
   useGetFacilitiesByLGAIdQuery,
   useSearchFacilitiesMutation,
   useGetFacilityByIdQuery,
+  useGetFacilitiesByStateIdQuery,
+  useGetAggregateFacilityByStateQuery,
 } = facilityApi;

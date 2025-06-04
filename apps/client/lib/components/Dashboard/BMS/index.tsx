@@ -7,7 +7,7 @@ import SummaryDetail from './SummaryDetail';
 import EnergyStats from './EnergyStats';
 import Link from 'next/link';
 import LocationSkeleton from './Locations/LocationSkeleton';
-import LocationCard from './Locations/LocationCard';
+import LocationCard from '../../FacilityManagement/LocationCard';
 import { useGetAllFacilitiesQuery } from '~/lib/redux/services/location/facility.services';
 
 const BMSDashboard = () => {
@@ -59,10 +59,9 @@ const BMSDashboard = () => {
             <HStack overflowX="scroll" width="full">
               {data?.data?.items.map((item, index) => (
                 <LocationCard
-                  id={item.facilityId}
-                  facilityName={item.facilityName}
-                  lgaName={item.facilityName}
-                  stateName={item.facilityName}
+                  href={`/dashboard/bms/${item.facilityId}/detail`}
+                  title={item.facilityName}
+                  subtitle={`${item.facilityName} ${item.facilityName}`}
                   key={index}
                 />
               ))}

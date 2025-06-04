@@ -52,6 +52,23 @@ export const journeyGuideSteps = [
   },
 ];
 
+export const CMFJourneyGuideSteps = [
+  {
+    title: 'Add Users',
+    subtitle: '',
+    buttonSuffix: 'Create User',
+    link: `/${ROUTES.USERS}/add`,
+    key: 'AddUsers',
+  },
+  {
+    title: 'Create Managed Company',
+    subtitle: '',
+    buttonSuffix: 'Create Company',
+    link: `/${ROUTES.COMPANY}/add`,
+    key: 'CreateCompanyProfile',
+  },
+];
+
 interface JourneyGuideProps {
   isOpen: boolean;
   onClose: () => void;
@@ -78,7 +95,9 @@ const JourneyGuide = (props: JourneyGuideProps) => {
           },
         ]
       : []),
-    ...journeyGuideSteps,
+    ...(!data?.user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY)
+      ? CMFJourneyGuideSteps
+      : journeyGuideSteps),
   ];
 
   useEffect(() => {

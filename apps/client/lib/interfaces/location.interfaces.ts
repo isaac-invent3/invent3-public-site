@@ -115,6 +115,12 @@ interface BaseLocationQuery {
   createdBy: string | undefined;
 }
 
+interface GroupByState {
+  stateId: number;
+  stateName: string;
+  totalBranchCount: number;
+}
+
 export type {
   State,
   FormLocation,
@@ -130,4 +136,5 @@ export type {
   Shelf,
   LocationQueryParams,
   BaseLocationQuery,
+  GroupByState,
 };

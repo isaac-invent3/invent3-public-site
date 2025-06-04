@@ -64,6 +64,7 @@ const CreateAssetComplianceDrawer = (
     enableReinitialize: false,
     validationSchema: createComplianceSchema,
     onSubmit: async (data, { setSubmitting }) => {
+      console.log({ data });
       setSubmitting(true);
       const session = await getSession();
       const response = await handleSubmit(
@@ -143,6 +144,7 @@ const CreateAssetComplianceDrawer = (
                   spacing={{ base: '38px', lg: '40px' }}
                   px="24px"
                   mt="43px"
+                  mb="24px"
                 >
                   <FormInputWrapper
                     sectionMaxWidth="141px"
@@ -220,9 +222,11 @@ const CreateAssetComplianceDrawer = (
                       handleAddDocuments={(documents) => {
                         formik.setFieldValue('documents', documents);
                       }}
-                      documents={[]}
-                      //   setError={(error) => formik.setErrors({})}
-                      //   error={formik.errors.documents as string}
+                      documents={formik.values.documents}
+                      setError={(error) =>
+                        formik.setErrors({ documents: error.toString() })
+                      }
+                      error={formik.errors.documents as string}
                     />
                   </FormInputWrapper>
                 </VStack>

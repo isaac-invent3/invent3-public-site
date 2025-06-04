@@ -61,6 +61,8 @@ const ROUTES_PERMISSION_KEY: { [name: string]: PermissionKey } = {
     'settings',
   [`/${ROUTES.APPROVAL}`]: 'approval',
   [`/${ROUTES.APPROVAL}/[id]`]: 'approval',
+  [`/${ROUTES.LOCATION}`]: 'settings',
+  [`/${ROUTES.LOCATION}/[stateId]`]: 'settings',
 };
 
 function getPathPermissionKey(pathname: string): PermissionKey | undefined {

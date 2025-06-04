@@ -5,16 +5,15 @@ import React from 'react';
 import { ForwardIcon } from '~/lib/components/CustomIcons/Dashboard';
 
 interface LocationCardProps {
-  id: number;
-  facilityName: string;
-  lgaName: string;
-  stateName: string;
+  href: string;
+  title: string;
+  subtitle?: string;
   customStyle?: StackProps;
 }
 const LocationCard = (props: LocationCardProps) => {
-  const { id, facilityName, lgaName, stateName, customStyle } = props;
+  const { href, title, subtitle, customStyle } = props;
   return (
-    <Link href={`/dashboard/bms/${id}/detail`}>
+    <Link href={href}>
       <VStack
         spacing="0px"
         minW="206px"
@@ -45,10 +44,10 @@ const LocationCard = (props: LocationCardProps) => {
             noOfLines={1}
             textOverflow="ellipsis"
           >
-            {facilityName}
+            {title}
           </Text>
           <Text color="neutral.600" noOfLines={1} textOverflow="ellipsis">
-            {lgaName}, {stateName}
+            {subtitle}
           </Text>
           <Flex
             width="16px"

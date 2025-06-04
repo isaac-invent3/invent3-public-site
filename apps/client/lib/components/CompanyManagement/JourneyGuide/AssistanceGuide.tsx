@@ -4,8 +4,9 @@ import React, { useEffect, useState } from 'react';
 import { CloseIcon, JourneyIcon } from '../../CustomIcons';
 import { useGetCompanyJourneyGuideQuery } from '~/lib/redux/services/company.services';
 import { useSession } from 'next-auth/react';
-import { journeyGuideSteps } from '.';
+import { CMFJourneyGuideSteps, journeyGuideSteps } from '.';
 import { CompanyJourneyGuide } from '~/lib/interfaces/company.interfaces';
+import { ROLE_IDS_ENUM } from '~/lib/utils/constants';
 
 interface AssistanceGuideProps {
   isOpen: boolean;
@@ -21,15 +22,19 @@ const AssistanceGuide = (props: AssistanceGuideProps) => {
   );
   const [activeStep, setActiveStep] = useState(0);
 
+  const guideSteps = data?.user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY)
+    ? CMFJourneyGuideSteps
+    : journeyGuideSteps;
+
   useEffect(() => {
     if (journeyGuideData?.data) {
-      const nextStepIndex = journeyGuideSteps.findIndex(
+      const nextStepIndex = guideSteps.findIndex(
         (step) => !journeyGuideData?.data[step.key as keyof CompanyJourneyGuide]
       );
 
       if (nextStepIndex === -1) {
         // All steps completed
-        setActiveStep(journeyGuideSteps.length);
+        setActiveStep(guideSteps.length);
       } else {
         setActiveStep(nextStepIndex);
       }
@@ -39,9 +44,7 @@ const AssistanceGuide = (props: AssistanceGuideProps) => {
   return (
     <GenericModal
       isOpen={
-        journeyGuideData && activeStep === journeyGuideSteps.length
-          ? false
-          : isOpen
+        journeyGuideData && activeStep === guideSteps.length ? false : isOpen
       }
       onClose={onClose}
       mainModalStyle={{ isCentered: false }}
@@ -130,10 +133,15 @@ const AssistanceGuide = (props: AssistanceGuideProps) => {
               steps pending
             </Text>
             <Text color="neutral.700">
-              Next Step: {journeyGuideSteps?.[activeStep]?.title}
+              Next Step: {guideSteps?.[activeStep]?.title}
             </Text>
           </VStack>
-          <Button customStyles={{ height: '33px' }}>Continue</Button>
+          <Button
+            customStyles={{ height: '33px' }}
+            href={guideSteps?.[activeStep]?.link}
+          >
+            Continue
+          </Button>
         </VStack>
       </Flex>
     </GenericModal>

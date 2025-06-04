@@ -6,6 +6,7 @@ import {
   CompanyIcon,
   DashboardIcon,
   FeedbackIcon,
+  LocationIcon,
   MaintenanceIcon,
   RoleManagementIcon,
   ShuffleIcon,
@@ -15,7 +16,6 @@ import {
   UserManagementIcon,
   VendorManagementIcon,
 } from '~/lib/components/CustomIcons/layout';
-import { DashboardView } from '~/lib/interfaces/dashboard.interfaces';
 import { SideBarData } from '~/lib/interfaces/general.interfaces';
 import {
   ROLE_IDS_ENUM,
@@ -141,6 +141,15 @@ const clientSideBarData: SideBarData[] = [
 
     description:
       'Create, store, and modify standardized templates for consistency.',
+  },
+  {
+    name: 'Facility Management',
+    route: ROUTES.LOCATION,
+    icon: LocationIcon,
+    permissionKey: 'settings',
+    contextId: SYSTEM_CONTEXT_TYPE.TEMPLATES,
+
+    description: "Manage company's location.",
   },
   {
     name: 'User Management',

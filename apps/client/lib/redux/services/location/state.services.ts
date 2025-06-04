@@ -25,6 +25,13 @@ export const stateApi = createApi({
         headers: getHeaders(),
       }),
     }),
+    getStateById: builder.query<BaseApiResponse<State>, { id: number }>({
+      query: ({ id }) => ({
+        url: `/States/${id}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
     searchStates: builder.mutation<
       BaseApiResponse<ListResponse<State>>,
       SearchQuery
@@ -39,5 +46,8 @@ export const stateApi = createApi({
   }),
 });
 
-export const { useGetStatesByCountryIdQuery, useSearchStatesMutation } =
-  stateApi;
+export const {
+  useGetStatesByCountryIdQuery,
+  useSearchStatesMutation,
+  useGetStateByIdQuery,
+} = stateApi;

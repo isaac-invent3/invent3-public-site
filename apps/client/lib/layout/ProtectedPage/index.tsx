@@ -71,6 +71,7 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
       height="100vh"
       bgColor="#D9D9D9"
       overflowY="scroll"
+      overflowX="hidden"
       position="relative"
     >
       <Notes isCollapse={isCollapse} />

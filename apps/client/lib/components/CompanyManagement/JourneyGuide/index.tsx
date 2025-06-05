@@ -95,7 +95,7 @@ const JourneyGuide = (props: JourneyGuideProps) => {
           },
         ]
       : []),
-    ...(!data?.user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY)
+    ...(data?.user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY)
       ? CMFJourneyGuideSteps
       : journeyGuideSteps),
   ];

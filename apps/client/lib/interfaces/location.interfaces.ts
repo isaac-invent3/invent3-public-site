@@ -18,19 +18,6 @@ interface FormLocation {
   shelf: LocationOption;
 }
 
-interface LocationIds {
-  countryId: number | null;
-  stateId: number | null;
-  lgaId: number | null;
-  facilityId: number | null;
-  buildingId: number | null;
-  floorId: number | null;
-  departmentId: number | null;
-  roomId: number | null;
-  aisleId: number | null;
-  shelfId: number | null;
-}
-
 interface State extends BaseEntity {
   stateId: number;
   stateName: string;
@@ -121,10 +108,52 @@ interface GroupByState {
   totalBranchCount: number;
 }
 
+interface ShelfModel {
+  shelfName: string;
+  shelfRef: string | null;
+}
+
+interface AisleModel {
+  aisleName: string;
+  aisleRef: string | null;
+  shelfModel: ShelfModel[];
+}
+
+interface RoomModel {
+  roomName: string;
+  roomRef: string | null;
+  aisleModel: AisleModel[];
+}
+
+interface DepartmentModel {
+  departmentName: string;
+  departmentRef: string | null;
+  roomModel: RoomModel[];
+}
+
+interface FloorModel {
+  floorName: string;
+  floorRef: string | null;
+  departmentModel: DepartmentModel[];
+}
+
+interface BuildingModel {
+  buildingName: string;
+  buildingRef: string | null;
+  floorModel: FloorModel[];
+}
+
+interface LocationMasterFormInterface {
+  countryId: number | null;
+  stateId: number | null;
+  lgaId: number | null;
+  facilityId: number | null;
+  buildingModel: BuildingModel[];
+}
+
 export type {
   State,
   FormLocation,
-  LocationIds,
   Aisle,
   Country,
   LGA,
@@ -137,4 +166,11 @@ export type {
   LocationQueryParams,
   BaseLocationQuery,
   GroupByState,
+  LocationMasterFormInterface,
+  BuildingModel,
+  FloorModel,
+  DepartmentModel,
+  RoomModel,
+  AisleModel,
+  ShelfModel,
 };

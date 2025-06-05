@@ -61,6 +61,67 @@ const shelfSchema = Yup.object().shape({
   shelfRef: Yup.string().nullable(),
 });
 
+const locationMasterSchema = () =>
+  Yup.object().shape({
+    buildingModel: Yup.array()
+      .of(
+        Yup.object().shape({
+          buildingName: Yup.string().required('Building Name is Required'),
+          buildingRef: Yup.string().nullable(),
+          floorModel: Yup.array().of(
+            Yup.object().shape({
+              floorName: Yup.string().required('Floor Name is Required'),
+              floorRef: Yup.string().nullable(),
+              departmentModel: Yup.array().of(
+                Yup.object().shape({
+                  departmentName: Yup.string().required(
+                    'Department Name is Required'
+                  ),
+                  departmentRef: Yup.string().nullable(),
+                  roomModel: Yup.array().of(
+                    Yup.object().shape({
+                      roomName: Yup.string().required('Room Name is Required'),
+                      roomRef: Yup.string().nullable(),
+                      roomModel: Yup.array().of(
+                        Yup.object().shape({
+                          aisleName: Yup.string().required(
+                            'Aisle Name is Required'
+                          ),
+                          aisleRef: Yup.string().nullable(),
+                          shelfModel: Yup.array().of(
+                            Yup.object().shape({
+                              shelfName: Yup.string().required(
+                                'Shelf Name is Required'
+                              ),
+                              shelfRef: Yup.string().nullable(),
+                            })
+                          ),
+                        })
+                      ),
+                    })
+                  ),
+                })
+              ),
+            })
+          ),
+        })
+      )
+      .nullable(),
+    countryId: Yup.number().required('Country is Required'),
+    stateId: Yup.number().required('State is Required'),
+    lgaId: Yup.number().required('LGA is Required'),
+    facilityName: Yup.string().required('Facility Name is Required'),
+    address: Yup.string().nullable(),
+    picture: Yup.object()
+      .shape({
+        imageId: Yup.number().nullable(),
+        imageName: Yup.string().nullable(),
+        base64PhotoImage: Yup.string().nullable(),
+        base64Prefix: Yup.string().nullable(),
+      })
+      .nullable(),
+  });
+
 export {
   locationSchema,
   facilitySchema,
@@ -70,4 +131,5 @@ export {
   roomSchema,
   aisleSchema,
   shelfSchema,
+  locationMasterSchema,
 };

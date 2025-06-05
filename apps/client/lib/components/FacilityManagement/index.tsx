@@ -29,6 +29,7 @@ const FacilityManagement = () => {
             height: { base: '36px', md: 'min-content' },
             alignSelf: 'end',
           }}
+          href={`${ROUTES.LOCATION}/add`}
         >
           <Icon as={AddIcon} boxSize="18px" color="#D2FEFD" mr="4px" />
           Add New Facility

@@ -14,7 +14,6 @@ import { useSession } from 'next-auth/react';
 import { ROLE_IDS_ENUM } from '~/lib/utils/constants';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import ThirdParty from './ThirdParty';
-import BMSDashboard from './BMS';
 
 const ROLE_PRIORITY = [
   ROLE_IDS_ENUM.SUPER_ADMIN,

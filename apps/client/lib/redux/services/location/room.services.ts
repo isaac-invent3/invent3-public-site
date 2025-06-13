@@ -84,6 +84,15 @@ export const roomApi = createApi({
         body,
       }),
     }),
+    deleteRoom: builder.mutation<void, { id: number; deletedBy: string }>({
+      query: ({ id, ...body }) => ({
+        url: `/Rooms/${id}`,
+        method: 'DELETE',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['roomsByDepartmentId'],
+    }),
   }),
 });
 
@@ -93,4 +102,5 @@ export const {
   useGetRoomsByDepartmentIdQuery,
   useSearchRoomsMutation,
   useGetAllRoomsInAFloorQuery,
+  useDeleteRoomMutation,
 } = roomApi;

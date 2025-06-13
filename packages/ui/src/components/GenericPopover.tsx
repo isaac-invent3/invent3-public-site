@@ -22,6 +22,7 @@ interface GenericPopoverProps {
   width?: string;
   placement?: PlacementWithLogical;
   icon?: ComponentWithAs<'svg', IconProps> | IconType;
+  popoverTriggerElement?: React.ReactNode;
   popoverBodyStyles?: PopoverBodyProps;
 }
 
@@ -32,6 +33,7 @@ const GenericPopover = (props: GenericPopoverProps) => {
     placement = 'auto',
     icon,
     popoverBodyStyles,
+    popoverTriggerElement,
   } = props;
   const popoverRef = useRef(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -55,11 +57,13 @@ const GenericPopover = (props: GenericPopoverProps) => {
               onOpen();
             }}
           >
-            <Icon
-              as={icon ?? ThreeVerticalDotsIcon}
-              boxSize="16px"
-              color="neutral.700"
-            />
+            {popoverTriggerElement ?? (
+              <Icon
+                as={icon ?? ThreeVerticalDotsIcon}
+                boxSize="16px"
+                color="neutral.700"
+              />
+            )}
           </Flex>
         </PopoverTrigger>
         <PopoverContent

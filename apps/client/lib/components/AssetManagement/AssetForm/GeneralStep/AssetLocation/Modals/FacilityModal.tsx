@@ -4,6 +4,7 @@ import { Field, FormikProvider, useFormik } from 'formik';
 
 import {
   Button,
+  FormInputWrapper,
   FormTextInput,
   GenericModal,
   ModalHeading,
@@ -58,7 +59,8 @@ const FacilityModal = (props: FacilityModalProps) => {
             <VStack
               width="full"
               spacing="32px"
-              p={{ base: '24px', md: '40px' }}
+              py={{ base: '24px', md: '40px' }}
+              px="20px"
             >
               <ModalHeading
                 heading="Add New Facility"
@@ -67,37 +69,81 @@ const FacilityModal = (props: FacilityModalProps) => {
 
               {/* Main Form Starts Here */}
               <VStack width="full" spacing="16px">
-                <LGASelect type="general" />
-                <Field
-                  as={FormTextInput}
-                  name="facilityName"
-                  type="text"
-                  label="Facility Name"
-                />
-                <Field
-                  as={FormTextInput}
-                  name="facilityRef"
-                  type="text"
-                  label="Facility Reference"
-                />
-                <Field
-                  as={FormTextInput}
-                  name="address"
-                  type="text"
-                  label="Address"
-                />
-                <Field
-                  as={FormTextInput}
-                  name="longitude"
-                  type="number"
-                  label="Longitude"
-                />
-                <Field
-                  as={FormTextInput}
-                  name="latitude"
-                  type="number"
-                  label="Latitude"
-                />
+                <FormInputWrapper
+                  sectionMaxWidth="141px"
+                  customSpacing="16px"
+                  title="LGA"
+                  description="Select LGA"
+                  isRequired
+                >
+                  <LGASelect type="general" />
+                </FormInputWrapper>
+                <FormInputWrapper
+                  sectionMaxWidth="141px"
+                  customSpacing="16px"
+                  title="Facility Name"
+                  description="Input Facility Name"
+                  isRequired
+                >
+                  <Field
+                    as={FormTextInput}
+                    name="facilityName"
+                    type="text"
+                    label="Facility Name"
+                  />
+                </FormInputWrapper>
+                <FormInputWrapper
+                  sectionMaxWidth="141px"
+                  customSpacing="16px"
+                  title="Facility Reference"
+                  description="Input Facility Reference"
+                >
+                  <Field
+                    as={FormTextInput}
+                    name="facilityRef"
+                    type="text"
+                    label="Facility Reference"
+                  />
+                </FormInputWrapper>
+                <FormInputWrapper
+                  sectionMaxWidth="141px"
+                  customSpacing="16px"
+                  title="Facility Address"
+                  description="Input Facility Address"
+                >
+                  <Field
+                    as={FormTextInput}
+                    name="address"
+                    type="text"
+                    label="Address"
+                  />
+                </FormInputWrapper>
+                <FormInputWrapper
+                  sectionMaxWidth="141px"
+                  customSpacing="16px"
+                  title="Facility Longitude"
+                  description="Input Facility Longitude"
+                >
+                  <Field
+                    as={FormTextInput}
+                    name="longitude"
+                    type="number"
+                    label="Longitude"
+                  />
+                </FormInputWrapper>
+                <FormInputWrapper
+                  sectionMaxWidth="141px"
+                  customSpacing="16px"
+                  title="Facility Latitude"
+                  description="Input Facility Latitude"
+                >
+                  <Field
+                    as={FormTextInput}
+                    name="latitude"
+                    type="number"
+                    label="Latitude"
+                  />
+                </FormInputWrapper>
               </VStack>
               {/* Main Form Ends Here */}
               <HStack width="full" spacing="24px">

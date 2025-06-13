@@ -4,6 +4,7 @@ import { Field, FormikProvider, useFormik } from 'formik';
 
 import {
   Button,
+  FormInputWrapper,
   FormTextInput,
   GenericModal,
   ModalHeading,
@@ -13,20 +14,24 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';
 import { buildingSchema } from '~/lib/schemas/asset/location.schema';
 import FacilitySelect from './SelectInputs/FacilitySelect';
+import React from 'react';
+import { BuildingFormData } from '~/lib/interfaces/location.interfaces';
 
 interface BuildingModalProps {
   isOpen: boolean;
   onClose: () => void;
   defaultFacilityId: number | null;
+  children?: React.ReactNode;
+  handleSave?: (data: BuildingFormData) => void;
 }
 const BuildingModal = (props: BuildingModalProps) => {
-  const { isOpen, onClose, defaultFacilityId } = props;
+  const { isOpen, onClose, defaultFacilityId, children, handleSave } = props;
   const [createBuilding, { isLoading }] = useCreateBuildingMutation({});
   const { handleSubmit } = useCustomMutation();
 
   const formik = useFormik({
     initialValues: {
-      facilityId: defaultFacilityId ?? undefined,
+      facilityId: (defaultFacilityId ?? undefined)!,
       buildingName: '',
       buildingRef: '',
       address: '',
@@ -41,10 +46,15 @@ const BuildingModal = (props: BuildingModalProps) => {
         ...values,
         createdBy: session?.user?.username ?? '',
       };
-      const response = await handleSubmit(createBuilding, finalValue, '');
-      if (response?.data) {
-        onClose();
+      if (handleSave) {
+        handleSave(finalValue);
         resetForm();
+      } else {
+        const response = await handleSubmit(createBuilding, finalValue, '');
+        if (response?.data) {
+          onClose();
+          resetForm();
+        }
       }
     },
   });
@@ -61,7 +71,8 @@ const BuildingModal = (props: BuildingModalProps) => {
             <VStack
               width="full"
               spacing="32px"
-              p={{ base: '24px', md: '40px' }}
+              py={{ base: '24px', md: '40px' }}
+              px="20px"
             >
               <ModalHeading
                 heading="Add New Building"
@@ -70,37 +81,44 @@ const BuildingModal = (props: BuildingModalProps) => {
 
               {/* Main Form Starts Here */}
               <VStack width="full" spacing="16px">
-                <FacilitySelect type="general" />
-                <Field
-                  as={FormTextInput}
-                  name="buildingName"
-                  type="text"
-                  label="Building Name"
-                />
-                <Field
-                  as={FormTextInput}
-                  name="buildingRef"
-                  type="text"
-                  label="Building Reference"
-                />
-                <Field
-                  as={FormTextInput}
-                  name="address"
-                  type="text"
-                  label="Address"
-                />
-                <Field
-                  as={FormTextInput}
-                  name="longitude"
-                  type="number"
-                  label="Longitude"
-                />
-                <Field
-                  as={FormTextInput}
-                  name="latitude"
-                  type="number"
-                  label="Latitude"
-                />
+                {children ?? (
+                  <FormInputWrapper
+                    sectionMaxWidth="141px"
+                    customSpacing="16px"
+                    title="Facility"
+                    isRequired
+                    description="Select Facility"
+                  >
+                    <FacilitySelect type="general" />
+                  </FormInputWrapper>
+                )}
+                <FormInputWrapper
+                  sectionMaxWidth="141px"
+                  customSpacing="16px"
+                  title="Building Name"
+                  description="Input Building name"
+                  isRequired
+                >
+                  <Field
+                    as={FormTextInput}
+                    name="buildingName"
+                    type="text"
+                    label="Building Name"
+                  />
+                </FormInputWrapper>
+                <FormInputWrapper
+                  sectionMaxWidth="141px"
+                  customSpacing="16px"
+                  title="Building Ref"
+                  description="Input Building ref."
+                >
+                  <Field
+                    as={FormTextInput}
+                    name="buildingRef"
+                    type="text"
+                    label="Building Reference"
+                  />
+                </FormInputWrapper>
               </VStack>
               {/* Main Form Ends Here */}
               <HStack width="full" spacing="24px">

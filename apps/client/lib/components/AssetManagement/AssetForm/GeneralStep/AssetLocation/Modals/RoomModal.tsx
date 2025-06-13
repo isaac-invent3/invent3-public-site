@@ -4,6 +4,7 @@ import { Field, FormikProvider, useFormik } from 'formik';
 
 import {
   Button,
+  FormInputWrapper,
   FormTextInput,
   GenericModal,
   ModalHeading,
@@ -55,7 +56,8 @@ const RoomModal = (props: RoomModalProps) => {
             <VStack
               width="full"
               spacing="32px"
-              p={{ base: '24px', md: '40px' }}
+              py={{ base: '24px', md: '40px' }}
+              px="20px"
             >
               <ModalHeading
                 heading="Add New Room"
@@ -64,19 +66,42 @@ const RoomModal = (props: RoomModalProps) => {
 
               {/* Main Form Starts Here */}
               <VStack width="full" spacing="16px">
-                <DepartmentSelect type="general" />
-                <Field
-                  as={FormTextInput}
-                  name="roomName"
-                  type="text"
-                  label="Room Name"
-                />
-                <Field
-                  as={FormTextInput}
-                  name="roomRef"
-                  type="text"
-                  label="Room Reference"
-                />
+                <FormInputWrapper
+                  sectionMaxWidth="141px"
+                  customSpacing="16px"
+                  title="Department"
+                  description="Select Department"
+                  isRequired
+                >
+                  <DepartmentSelect type="general" />
+                </FormInputWrapper>
+                <FormInputWrapper
+                  sectionMaxWidth="141px"
+                  customSpacing="16px"
+                  title="Room Name"
+                  description="Input Room name"
+                  isRequired
+                >
+                  <Field
+                    as={FormTextInput}
+                    name="roomName"
+                    type="text"
+                    label="Room Name"
+                  />
+                </FormInputWrapper>
+                <FormInputWrapper
+                  sectionMaxWidth="141px"
+                  customSpacing="16px"
+                  title="Room Reference"
+                  description="Input Room Reference"
+                >
+                  <Field
+                    as={FormTextInput}
+                    name="roomRef"
+                    type="text"
+                    label="Room Reference"
+                  />
+                </FormInputWrapper>
               </VStack>
               {/* Main Form Ends Here */}
               <HStack width="full" spacing="24px">

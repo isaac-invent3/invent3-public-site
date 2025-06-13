@@ -70,6 +70,15 @@ export const aisleApi = createApi({
         body,
       }),
     }),
+    deleteAisle: builder.mutation<void, { id: number; deletedBy: string }>({
+      query: ({ id, ...body }) => ({
+        url: `/Aisles/${id}`,
+        method: 'DELETE',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['aislesByRoomId'],
+    }),
   }),
 });
 
@@ -78,4 +87,5 @@ export const {
   useGetAislesByRoomIdQuery,
   useGetAllAislesQuery,
   useSearchAisleMutation,
+  useDeleteAisleMutation,
 } = aisleApi;

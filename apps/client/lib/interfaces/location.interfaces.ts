@@ -108,48 +108,115 @@ interface GroupByState {
   totalBranchCount: number;
 }
 
-interface ShelfModel {
-  shelfName: string;
-  shelfRef: string | null;
+interface CreateShelfDto {
+  createShelfDto: {
+    shelfName: string;
+    shelfRef: string | null;
+    createdBy: string;
+  };
 }
 
-interface AisleModel {
-  aisleName: string;
-  aisleRef: string | null;
-  shelfModel: ShelfModel[];
+interface CreateAisleDto {
+  createAisleDto: {
+    aisleName: string;
+    aisleRef: string | null;
+    createdBy: string;
+  };
+  createShelveDtos: CreateShelfDto[];
 }
 
-interface RoomModel {
-  roomName: string;
-  roomRef: string | null;
-  aisleModel: AisleModel[];
+interface CreateRoomDto {
+  createRoomDto: {
+    roomName: string;
+    roomRef: string | null;
+    createdBy: string;
+  };
+  createAisleDtos: CreateAisleDto[];
 }
 
-interface DepartmentModel {
-  departmentName: string;
-  departmentRef: string | null;
-  roomModel: RoomModel[];
+interface CreateDepartmentDto {
+  createDepartmentDto: {
+    departmentName: string;
+    departmentRef: string | null;
+    createdBy: string;
+  };
+  createRoomDtos: CreateRoomDto[];
 }
 
-interface FloorModel {
-  floorName: string;
-  floorRef: string | null;
-  departmentModel: DepartmentModel[];
+interface CreateFloorDto {
+  createFloorDto: {
+    floorName: string;
+    floorRef: string | null;
+    createdBy: string;
+  };
+  createDepartmentDtos: CreateDepartmentDto[];
 }
 
-interface BuildingModel {
-  buildingName: string;
-  buildingRef: string | null;
-  floorModel: FloorModel[];
+interface CreateBuildingDto {
+  createBuildingDto: {
+    buildingName: string;
+    buildingRef: string | null;
+    createdBy: string;
+  };
+  createFloorDtos: CreateFloorDto[];
+}
+
+interface createFacilityDtos {
+  lgaId: number;
+  facilityName: string;
+  facilityRef?: string;
+  address?: string;
+  longitude?: number;
+  latitude?: number;
+  energyCostPerKwh?: number;
+  createdBy: string;
+}
+interface FacilityFormData {
+  facilityId: number;
+  countryId: number;
+  stateId: number;
+  lgaId: number;
 }
 
 interface LocationMasterFormInterface {
-  countryId: number | null;
-  stateId: number | null;
-  lgaId: number | null;
-  facilityId: number | null;
-  buildingModel: BuildingModel[];
+  facilityId: number;
+  countryId: number;
+  stateId: number;
+  lgaId: number;
+  address: string;
+  facilityName: string;
+  createBuildingDtos: CreateBuildingDto[];
 }
+
+interface LocationMasterFormDto {
+  createFacilityDto: createFacilityDtos;
+  createBuildingDtos: CreateBuildingDto[];
+}
+
+interface BuildingFormData {
+  createdBy: string;
+  facilityId: number;
+  buildingName: string;
+  buildingRef: string;
+  address: string;
+  longitude: number;
+  latitude: number;
+}
+
+interface FloorFormData {
+  buildingId: number;
+  floorName: string;
+  floorRef: string;
+  createdBy: string;
+}
+
+type LocationBase =
+  | 'Buildings'
+  | 'Floors'
+  | 'Departments'
+  | 'Rooms'
+  | 'Aisles'
+  | 'Shelves';
 
 export type {
   State,
@@ -167,10 +234,13 @@ export type {
   BaseLocationQuery,
   GroupByState,
   LocationMasterFormInterface,
-  BuildingModel,
-  FloorModel,
-  DepartmentModel,
-  RoomModel,
-  AisleModel,
-  ShelfModel,
+  CreateAisleDto,
+  CreateBuildingDto,
+  CreateDepartmentDto,
+  CreateFloorDto,
+  CreateRoomDto,
+  BuildingFormData,
+  FloorFormData,
+  LocationMasterFormDto,
+  LocationBase,
 };

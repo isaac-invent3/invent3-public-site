@@ -58,7 +58,7 @@ const FormStepper = (props: FormStepperProps) => {
       width="full"
       pt="19px"
       pb="18px"
-      px="16px"
+      px="16px !important"
       bgColor="#B4BFCA80"
       rounded="4px"
       overflow="auto"
@@ -69,7 +69,7 @@ const FormStepper = (props: FormStepperProps) => {
         justifyContent="space-between"
         w="100%"
         maxW={{ lg: '95%' }}
-        mr="16px"
+        pr="16px"
       >
         {steps.map((step, index) => (
           <React.Fragment key={index}>
@@ -110,7 +110,7 @@ const FormStepper = (props: FormStepperProps) => {
                 borderWidth="2px"
                 borderColor="neutral.600"
                 width="full"
-                minW={{ base: '49px', lg: 'initial' }}
+                minW={{ base: '49px' }}
                 mr="29px"
                 rounded="full"
               />

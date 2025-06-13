@@ -76,6 +76,15 @@ export const buildingApi = createApi({
         body,
       }),
     }),
+    deleteBuilding: builder.mutation<void, { id: number; deletedBy: string }>({
+      query: ({ id, ...body }) => ({
+        url: `/Buildings/${id}`,
+        method: 'DELETE',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['buildingsByFacilityId'],
+    }),
   }),
 });
 
@@ -84,4 +93,5 @@ export const {
   useGetAllBuildingsQuery,
   useGetBuildingsByFacilityIdQuery,
   useSearchBuildingMutation,
+  useDeleteBuildingMutation,
 } = buildingApi;

@@ -3,6 +3,7 @@ import { HStack, ModalBody, VStack } from '@chakra-ui/react';
 import { Field, FormikProvider, useFormik } from 'formik';
 import {
   Button,
+  FormInputWrapper,
   FormTextInput,
   GenericModal,
   ModalHeading,
@@ -54,7 +55,8 @@ const ShelfModal = (props: ShelfModalProps) => {
             <VStack
               width="full"
               spacing="32px"
-              p={{ base: '24px', md: '40px' }}
+              py={{ base: '24px', md: '40px' }}
+              px="20px"
             >
               <ModalHeading
                 heading="Add New Shelf"
@@ -63,19 +65,42 @@ const ShelfModal = (props: ShelfModalProps) => {
 
               {/* Main Form Starts Here */}
               <VStack width="full" spacing="16px">
-                <AisleSelect type="general" />
-                <Field
-                  as={FormTextInput}
-                  name="shelfName"
-                  type="text"
-                  label="Shelf Name"
-                />
-                <Field
-                  as={FormTextInput}
-                  name="shelfRef"
-                  type="text"
-                  label="Shelf Reference"
-                />
+                <FormInputWrapper
+                  sectionMaxWidth="141px"
+                  customSpacing="16px"
+                  title="Aisle"
+                  description="Select Aisle"
+                  isRequired
+                >
+                  <AisleSelect type="general" />
+                </FormInputWrapper>
+                <FormInputWrapper
+                  sectionMaxWidth="141px"
+                  customSpacing="16px"
+                  title="Shelf Name"
+                  description="Input Shelf Name"
+                  isRequired
+                >
+                  <Field
+                    as={FormTextInput}
+                    name="shelfName"
+                    type="text"
+                    label="Shelf Name"
+                  />
+                </FormInputWrapper>
+                <FormInputWrapper
+                  sectionMaxWidth="141px"
+                  customSpacing="16px"
+                  title="Shelf Reference"
+                  description="Input Shelf Reference"
+                >
+                  <Field
+                    as={FormTextInput}
+                    name="shelfRef"
+                    type="text"
+                    label="Shelf Reference"
+                  />
+                </FormInputWrapper>
               </VStack>
               {/* Main Form Ends Here */}
               <HStack width="full" spacing="24px">

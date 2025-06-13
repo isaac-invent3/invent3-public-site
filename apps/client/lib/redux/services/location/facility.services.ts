@@ -10,6 +10,8 @@ import {
 import {
   Facility,
   GroupByState,
+  LocationBase,
+  LocationMasterFormDto,
   LocationQueryParams,
 } from '~/lib/interfaces/location.interfaces';
 
@@ -105,6 +107,36 @@ export const facilityApi = createApi({
         body,
       }),
     }),
+    createMasterFacility: builder.mutation<
+      void,
+      {
+        createFacilityDtos: [LocationMasterFormDto];
+      }
+    >({
+      query: (body) => ({
+        url: `/Invent3Pro/Facilities/with-structure`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
+    deleteLocation: builder.mutation<
+      void,
+      {
+        id: number;
+        location: LocationBase;
+        deletedBy: string;
+      }
+    >({
+      query: ({ id, location, deletedBy }) => ({
+        url: `/${location}/${id}`,
+        method: 'DELETE',
+        headers: getHeaders(),
+        body: {
+          deletedBy,
+        },
+      }),
+    }),
   }),
 });
 
@@ -116,4 +148,6 @@ export const {
   useGetFacilityByIdQuery,
   useGetFacilitiesByStateIdQuery,
   useGetAggregateFacilityByStateQuery,
+  useCreateMasterFacilityMutation,
+  useDeleteLocationMutation,
 } = facilityApi;

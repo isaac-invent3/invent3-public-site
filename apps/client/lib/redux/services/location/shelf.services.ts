@@ -70,6 +70,15 @@ export const shelfApi = createApi({
         body,
       }),
     }),
+    deleteShelf: builder.mutation<void, { id: number; deletedBy: string }>({
+      query: ({ id, ...body }) => ({
+        url: `/Shelves/${id}`,
+        method: 'DELETE',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['shelvesByAisleId'],
+    }),
   }),
 });
 
@@ -78,4 +87,5 @@ export const {
   useGetAllShelvesQuery,
   useGetShelvesByAisleIdQuery,
   useSearchShelfMutation,
+  useDeleteShelfMutation,
 } = shelfApi;

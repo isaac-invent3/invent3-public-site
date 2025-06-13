@@ -4,6 +4,7 @@ import { Field, FormikProvider, useFormik } from 'formik';
 
 import {
   Button,
+  FormInputWrapper,
   FormTextInput,
   GenericModal,
   ModalHeading,
@@ -18,15 +19,22 @@ interface FloorModalProps {
   isOpen: boolean;
   onClose: () => void;
   defaultBuildingId: number | null;
+  children?: React.ReactNode;
+  handleSave?: (data: {
+    createdBy: string;
+    buildingId: number;
+    floorName: string;
+    floorRef: string;
+  }) => void;
 }
 const FloorModal = (props: FloorModalProps) => {
-  const { isOpen, onClose, defaultBuildingId } = props;
+  const { isOpen, onClose, defaultBuildingId, children, handleSave } = props;
   const [createFloor, { isLoading }] = useCreateFloorMutation({});
   const { handleSubmit } = useCustomMutation();
 
   const formik = useFormik({
     initialValues: {
-      buildingId: defaultBuildingId ?? undefined,
+      buildingId: (defaultBuildingId ?? undefined)!,
       floorName: '',
       floorRef: '',
     },
@@ -34,11 +42,16 @@ const FloorModal = (props: FloorModalProps) => {
     enableReinitialize: true,
     onSubmit: async (values, { resetForm }) => {
       const session = await getSession();
-      const finalValue = { ...values, createdBy: session?.user?.username };
-      const response = await handleSubmit(createFloor, finalValue, '');
-      if (response?.data) {
-        onClose();
+      const finalValue = { ...values, createdBy: session?.user?.username! };
+      if (handleSave) {
+        handleSave(finalValue);
         resetForm();
+      } else {
+        const response = await handleSubmit(createFloor, finalValue, '');
+        if (response?.data) {
+          onClose();
+          resetForm();
+        }
       }
     },
   });
@@ -55,7 +68,8 @@ const FloorModal = (props: FloorModalProps) => {
             <VStack
               width="full"
               spacing="32px"
-              p={{ base: '24px', md: '40px' }}
+              py={{ base: '24px', md: '40px' }}
+              px="20px"
             >
               <ModalHeading
                 heading="Add New Floor"
@@ -64,19 +78,45 @@ const FloorModal = (props: FloorModalProps) => {
 
               {/* Main Form Starts Here */}
               <VStack width="full" spacing="16px">
-                <BuildingSelect type="general" />
-                <Field
-                  as={FormTextInput}
-                  name="floorName"
-                  type="text"
-                  label="Floor Name"
-                />
-                <Field
-                  as={FormTextInput}
-                  name="floorRef"
-                  type="text"
-                  label="Floor Reference"
-                />
+                {children ?? (
+                  <FormInputWrapper
+                    sectionMaxWidth="141px"
+                    customSpacing="16px"
+                    title="Building"
+                    description="Select Building"
+                    isRequired
+                  >
+                    <BuildingSelect type="general" />
+                  </FormInputWrapper>
+                )}
+
+                <FormInputWrapper
+                  sectionMaxWidth="141px"
+                  customSpacing="16px"
+                  title="Floor Name"
+                  description="Input Floor name"
+                  isRequired
+                >
+                  <Field
+                    as={FormTextInput}
+                    name="floorName"
+                    type="text"
+                    label="Floor Name"
+                  />
+                </FormInputWrapper>
+                <FormInputWrapper
+                  sectionMaxWidth="141px"
+                  customSpacing="16px"
+                  title="Floor Reference"
+                  description="Input Floor Reference"
+                >
+                  <Field
+                    as={FormTextInput}
+                    name="floorRef"
+                    type="text"
+                    label="Floor Reference"
+                  />
+                </FormInputWrapper>
               </VStack>
               {/* Main Form Ends Here */}
               <HStack width="full" spacing="24px">

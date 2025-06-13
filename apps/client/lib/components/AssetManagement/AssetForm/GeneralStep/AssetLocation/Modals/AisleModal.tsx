@@ -4,6 +4,7 @@ import { Field, FormikProvider, useFormik } from 'formik';
 
 import {
   Button,
+  FormInputWrapper,
   FormTextInput,
   GenericModal,
   ModalHeading,
@@ -58,7 +59,8 @@ const AisleModal = (props: AisleModalProps) => {
             <VStack
               width="full"
               spacing="32px"
-              p={{ base: '24px', md: '40px' }}
+              py={{ base: '24px', md: '40px' }}
+              px="20px"
             >
               <ModalHeading
                 heading="Add New Aisle"
@@ -67,19 +69,43 @@ const AisleModal = (props: AisleModalProps) => {
 
               {/* Main Form Starts Here */}
               <VStack width="full" spacing="16px">
-                <RoomSelect type="general" />
-                <Field
-                  as={FormTextInput}
-                  name="aisleName"
-                  type="text"
-                  label="Aisle Name"
-                />
-                <Field
-                  as={FormTextInput}
-                  name="aisleRef"
-                  type="text"
-                  label="Aisle Reference"
-                />
+                <FormInputWrapper
+                  sectionMaxWidth="141px"
+                  customSpacing="16px"
+                  title="Room"
+                  description="Select Room"
+                  isRequired
+                >
+                  <RoomSelect type="general" />
+                </FormInputWrapper>
+                <FormInputWrapper
+                  sectionMaxWidth="141px"
+                  customSpacing="16px"
+                  title="Aisle Name"
+                  description="Input Aisle Name"
+                  isRequired
+                >
+                  <Field
+                    as={FormTextInput}
+                    name="aisleName"
+                    type="text"
+                    label="Aisle Name"
+                  />
+                </FormInputWrapper>
+                <FormInputWrapper
+                  sectionMaxWidth="141px"
+                  customSpacing="16px"
+                  title="Aisle Reference"
+                  description="Input Aisle Reference"
+                  isRequired
+                >
+                  <Field
+                    as={FormTextInput}
+                    name="aisleRef"
+                    type="text"
+                    label="Aisle Reference"
+                  />
+                </FormInputWrapper>
               </VStack>
               {/* Main Form Ends Here */}
               <HStack width="full" spacing="24px">

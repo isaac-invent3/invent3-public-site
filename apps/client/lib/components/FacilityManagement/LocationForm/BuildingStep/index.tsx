@@ -1,39 +1,42 @@
-import { VStack } from '@chakra-ui/react';
+import { useDisclosure, VStack } from '@chakra-ui/react';
 import { DataTable, FormAddButton } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useFormikContext } from 'formik';
 import React, { useMemo } from 'react';
 import {
-  BuildingModel,
+  CreateBuildingDto,
   LocationMasterFormInterface,
 } from '~/lib/interfaces/location.interfaces';
 import PopoverAction from '../PopoverAction';
+import Building from '../../LocationModals/BuildingModal';
 
 interface BuildingStepProps {
   activeStep: number;
 }
 const BuildingStep = (props: BuildingStepProps) => {
   const { activeStep } = props;
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const { values, setFieldValue } =
     useFormikContext<LocationMasterFormInterface>();
 
-  const columnHelper = createColumnHelper<BuildingModel>();
+  const columnHelper = createColumnHelper<CreateBuildingDto>();
 
   const columns = useMemo(
     () => {
       const baseColumns = [
-        columnHelper.accessor('buildingRef', {
+        columnHelper.accessor('createBuildingDto.buildingRef', {
           cell: (info) => info.getValue(),
           header: 'Building Ref',
           enableSorting: false,
         }),
-        columnHelper.accessor('buildingName', {
+        columnHelper.accessor('createBuildingDto.buildingName', {
           cell: (info) => info.getValue(),
           header: 'Building Name',
           enableSorting: false,
         }),
-        columnHelper.accessor('buildingRef', {
-          cell: (info) => <PopoverAction />,
+        columnHelper.display({
+          id: 'action',
+          cell: () => <PopoverAction />,
           header: 'Action',
           enableSorting: false,
         }),
@@ -41,32 +44,39 @@ const BuildingStep = (props: BuildingStepProps) => {
 
       return baseColumns;
     },
-    [[values.buildingModel]] //eslint-disable-line
+    [[values.createBuildingDtos]] //eslint-disable-line
   );
 
   return (
-    <VStack
-      spacing={{ base: '24px', lg: '43px' }}
-      width="full"
-      alignItems="center"
-      bgColor="white"
-      pt={{ base: '16px', lg: '19px' }}
-      pl={{ md: '24px', lg: '28px' }}
-      pb={{ base: '16px', lg: '33px' }}
-      pr={{ md: '24px', lg: '38px' }}
-      rounded="6px"
-      minH={{ lg: '60vh' }}
-      display={activeStep === 2 ? 'flex' : 'none'}
-    >
-      <DataTable
-        columns={columns}
-        data={values?.buildingModel ?? []}
-        showEmptyState={false}
-      />
-      <FormAddButton handleClick={() => {}} customStyle={{ my: '40px' }}>
-        Add New Building
-      </FormAddButton>
-    </VStack>
+    <>
+      <VStack
+        spacing={{ base: '24px', lg: '43px' }}
+        width="full"
+        alignItems="center"
+        bgColor="white"
+        p="8px"
+        rounded="6px"
+        minH={{ lg: '60vh' }}
+        display={activeStep === 2 ? 'flex' : 'none'}
+      >
+        <DataTable
+          columns={columns}
+          data={values?.createBuildingDtos ?? []}
+          showEmptyState={false}
+          showFooter={false}
+          customTdStyle={{
+            paddingLeft: '16px',
+            paddingTop: '12px',
+            paddingBottom: '12px',
+            bgColor: '#f2f1f1',
+          }}
+        />
+        <FormAddButton handleClick={onOpen} customStyle={{ my: '40px' }}>
+          Add New Building
+        </FormAddButton>
+      </VStack>
+      <Building isOpen={isOpen} onClose={onClose} />
+    </>
   );
 };
 

@@ -37,73 +37,137 @@ const floorSchema = Yup.object().shape({
   floorRef: Yup.string().nullable(),
 });
 
-const departmentSchema = Yup.object().shape({
-  floorId: Yup.number().required('Floor is Required'),
-  departmentName: Yup.string().required('Name is Required'),
-  departmentRef: Yup.string().nullable(),
-});
+const departmentSchema = (isMainForm?: boolean) =>
+  Yup.object().shape({
+    floorId: Yup.number().required('Floor is Required'),
+    departmentName: Yup.string().required('Name is Required'),
+    departmentRef: Yup.string().nullable(),
+    ...(isMainForm
+      ? { buildingId: Yup.string().required('Building is Required') }
+      : {}),
+  });
 
-const roomSchema = Yup.object().shape({
-  departmentId: Yup.number().required('Department is Required'),
-  roomName: Yup.string().required('Name is Required'),
-  roomRef: Yup.string().nullable(),
-});
+const roomSchema = (isMainForm?: boolean) =>
+  Yup.object().shape({
+    departmentId: Yup.number().required('Department is Required'),
+    roomName: Yup.string().required('Name is Required'),
+    roomRef: Yup.string().nullable(),
+    ...(isMainForm
+      ? {
+          buildingId: Yup.string().required('Building is Required'),
+          floorId: Yup.number().required('Floor is Required'),
+        }
+      : {}),
+  });
 
-const aisleSchema = Yup.object().shape({
-  roomId: Yup.number().required('Room is Required'),
-  aisleName: Yup.string().required('Name is Required'),
-  aisleRef: Yup.string().nullable(),
-});
+const aisleSchema = (isMainForm?: boolean) =>
+  Yup.object().shape({
+    roomId: Yup.number().required('Room is Required'),
+    aisleName: Yup.string().required('Name is Required'),
+    aisleRef: Yup.string().nullable(),
+    ...(isMainForm
+      ? {
+          buildingId: Yup.string().required('Building is Required'),
+          floorId: Yup.number().required('Floor is Required'),
+          departmentId: Yup.number().required('Department is Required'),
+        }
+      : {}),
+  });
 
-const shelfSchema = Yup.object().shape({
-  aisleId: Yup.number().required('Aisle is Required'),
-  shelfName: Yup.string().required('Name is Required'),
-  shelfRef: Yup.string().nullable(),
-});
+const shelfSchema = (isMainForm?: boolean) =>
+  Yup.object().shape({
+    aisleId: Yup.number().required('Aisle is Required'),
+    shelfName: Yup.string().required('Name is Required'),
+    shelfRef: Yup.string().nullable(),
+    ...(isMainForm
+      ? {
+          buildingId: Yup.string().required('Building is Required'),
+          floorId: Yup.number().required('Floor is Required'),
+          departmentId: Yup.number().required('Department is Required'),
+          roomId: Yup.number().required('Room is Required'),
+        }
+      : {}),
+  });
 
 const locationMasterSchema = () =>
   Yup.object().shape({
-    buildingModel: Yup.array()
+    createBuildingDtos: Yup.array()
       .of(
         Yup.object().shape({
-          buildingName: Yup.string().required('Building Name is Required'),
-          buildingRef: Yup.string().nullable(),
-          floorModel: Yup.array().of(
-            Yup.object().shape({
-              floorName: Yup.string().required('Floor Name is Required'),
-              floorRef: Yup.string().nullable(),
-              departmentModel: Yup.array().of(
-                Yup.object().shape({
-                  departmentName: Yup.string().required(
-                    'Department Name is Required'
-                  ),
-                  departmentRef: Yup.string().nullable(),
-                  roomModel: Yup.array().of(
+          createBuildingDto: Yup.object().shape({
+            buildingName: Yup.string().required('Building Name is Required'),
+            buildingRef: Yup.string().nullable(),
+            createdBy: Yup.string().required('Created by is Required'),
+          }),
+          createFloorDtos: Yup.array()
+            .of(
+              Yup.object().shape({
+                createFloorDto: Yup.object().shape({
+                  floorName: Yup.string().required('Floor Name is Required'),
+                  floorRef: Yup.string().nullable(),
+                  createdBy: Yup.string().required('Created by is Required'),
+                }),
+                createDepartmentDtos: Yup.array()
+                  .of(
                     Yup.object().shape({
-                      roomName: Yup.string().required('Room Name is Required'),
-                      roomRef: Yup.string().nullable(),
-                      roomModel: Yup.array().of(
-                        Yup.object().shape({
-                          aisleName: Yup.string().required(
-                            'Aisle Name is Required'
-                          ),
-                          aisleRef: Yup.string().nullable(),
-                          shelfModel: Yup.array().of(
-                            Yup.object().shape({
-                              shelfName: Yup.string().required(
-                                'Shelf Name is Required'
+                      createDepartmentDto: Yup.object().shape({
+                        departmentName: Yup.string().required(
+                          'Department Name is Required'
+                        ),
+                        departmentRef: Yup.string().nullable(),
+                        createdBy: Yup.string().required(
+                          'Created by is Required'
+                        ),
+                      }),
+                      createRoomDtos: Yup.array()
+                        .of(
+                          Yup.object().shape({
+                            createRoomDto: Yup.object().shape({
+                              roomName: Yup.string().required(
+                                'Room Name is Required'
                               ),
-                              shelfRef: Yup.string().nullable(),
-                            })
-                          ),
-                        })
-                      ),
+                              roomRef: Yup.string().nullable(),
+                              createdBy: Yup.string().required(
+                                'Created by is Required'
+                              ),
+                            }),
+                            createAisleDtos: Yup.array()
+                              .of(
+                                Yup.object().shape({
+                                  createAisleDto: Yup.object().shape({
+                                    aisleName: Yup.string().required(
+                                      'Aisle Name is Required'
+                                    ),
+                                    aisleRef: Yup.string().nullable(),
+                                    createdBy: Yup.string().required(
+                                      'Created by is Required'
+                                    ),
+                                  }),
+                                  createShelveDtos: Yup.array().of(
+                                    Yup.object().shape({
+                                      createShelfDto: Yup.object().shape({
+                                        shelfName: Yup.string().required(
+                                          'Shelf Name is Required'
+                                        ),
+                                        shelfRef: Yup.string().nullable(),
+                                        createdBy: Yup.string().required(
+                                          'Created by is Required'
+                                        ),
+                                      }),
+                                    })
+                                  ),
+                                })
+                              )
+                              .nullable(),
+                          })
+                        )
+                        .nullable(),
                     })
-                  ),
-                })
-              ),
-            })
-          ),
+                  )
+                  .nullable(),
+              })
+            )
+            .nullable(),
         })
       )
       .nullable(),

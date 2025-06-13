@@ -44,7 +44,7 @@ const FacilityInfoStep = (props: FacilityInfoStepProps) => {
         isRequired
         sectionMaxWidth="141px"
         customSpacing="36px"
-        width="50%"
+        width={{ base: 'full', lg: '50%' }}
       >
         <CountrySelect />
       </FormInputWrapper>
@@ -54,11 +54,16 @@ const FacilityInfoStep = (props: FacilityInfoStepProps) => {
         isRequired
         sectionMaxWidth="141px"
         customSpacing="36px"
-        width="50%"
+        width={{ base: 'full', lg: '50%' }}
       >
         <StateSelect countryId={values.countryId} />
       </FormInputWrapper>
-      <SimpleGrid columns={{ base: 1, lg: 2 }} spacing="0px" width="full">
+      <SimpleGrid
+        columns={{ base: 1, lg: 2 }}
+        spacing="0px"
+        rowGap="24px"
+        width="full"
+      >
         <FormInputWrapper
           title="LGA"
           description="Select the local government area"
@@ -74,7 +79,7 @@ const FacilityInfoStep = (props: FacilityInfoStepProps) => {
           isRequired
           sectionMaxWidth="141px"
           customSpacing="36px"
-          pl="24px"
+          pl={{ lg: '24px' }}
         >
           <Field
             as={FormTextInput}
@@ -91,7 +96,7 @@ const FacilityInfoStep = (props: FacilityInfoStepProps) => {
         isRequired
         sectionMaxWidth="141px"
         customSpacing="36px"
-        width="50%"
+        width={{ base: 'full', lg: '50%' }}
       >
         <Field
           as={FormTextInput}

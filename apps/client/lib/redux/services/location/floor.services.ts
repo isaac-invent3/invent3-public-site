@@ -70,6 +70,15 @@ export const floorApi = createApi({
         body,
       }),
     }),
+    deleteFloor: builder.mutation<void, { id: number; deletedBy: string }>({
+      query: ({ id, ...body }) => ({
+        url: `/Floors/${id}`,
+        method: 'DELETE',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['floorsByBuildingId'],
+    }),
   }),
 });
 
@@ -78,4 +87,5 @@ export const {
   useGetAllFloorsQuery,
   useGetFloorsByBuildingIdQuery,
   useSearchFloorsMutation,
+  useDeleteFloorMutation,
 } = floorApi;

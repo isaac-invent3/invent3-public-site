@@ -73,6 +73,17 @@ export const departmentApi = createApi({
         body,
       }),
     }),
+    deleteDepartment: builder.mutation<void, { id: number; deletedBy: string }>(
+      {
+        query: ({ id, ...body }) => ({
+          url: `/Departments/${id}`,
+          method: 'DELETE',
+          headers: getHeaders(),
+          body,
+        }),
+        invalidatesTags: ['departmentsByFloorId'],
+      }
+    ),
   }),
 });
 
@@ -81,4 +92,5 @@ export const {
   useGetAllDepartmentsQuery,
   useGetDepartmentsByFloorIdQuery,
   useSearchDepartmentsMutation,
+  useDeleteDepartmentMutation,
 } = departmentApi;

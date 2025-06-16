@@ -66,7 +66,6 @@ const LocationForm = (props: LocationFormProps) => {
     onSubmit: async (values, { setSubmitting }) => {
       setSubmitting(true);
       const session = await getSession();
-      console.log(values);
       const response = await handleSubmit(
         createMasterFacility,
         {
@@ -94,8 +93,16 @@ const LocationForm = (props: LocationFormProps) => {
   return (
     <>
       <Flex width="full" direction="column" pb={{ md: '24px' }}>
-        <PageHeader>Add New Facility</PageHeader>
-        <Flex width="full" gap={{ md: '8px' }} mt="32px" direction="column">
+        <Flex px={{ base: '16px', lg: '0px' }}>
+          <PageHeader>Add New Facility</PageHeader>
+        </Flex>
+        <Flex
+          width="full"
+          gap={{ md: '8px' }}
+          my="32px"
+          direction="column"
+          px={{ base: '16px', lg: '0px' }}
+        >
           <FormStepper currentStep={activeStep} steps={STEPS} />
 
           <FormikProvider value={formik}>
@@ -125,7 +132,7 @@ const LocationForm = (props: LocationFormProps) => {
                   totalStep={STEPS.length}
                   activeStep={activeStep}
                   setActiveStep={setActiveStep}
-                  type={activeStep < STEPS.length ? 'button' : 'submit'}
+                  type="button"
                   isLoading={isLoading || formik.isSubmitting}
                   handleContinue={async () => {
                     if (activeStep < STEPS.length) {
@@ -141,12 +148,14 @@ const LocationForm = (props: LocationFormProps) => {
                           )
                         );
                       }
+                    } else {
+                      formik.handleSubmit();
                     }
                   }}
                 >
                   {activeStep < STEPS.length && (
                     <Button
-                      customStyles={{ width: '161px' }}
+                      customStyles={{ width: '161px', flexShrink: 0 }}
                       variant="outline"
                       type="submit"
                       isLoading={isLoading || formik.isSubmitting}

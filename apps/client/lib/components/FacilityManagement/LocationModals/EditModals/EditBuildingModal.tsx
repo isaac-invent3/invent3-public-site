@@ -9,46 +9,42 @@ import {
   GenericModal,
   ModalHeading,
 } from '@repo/ui/components';
-import { useCreateRoomMutation } from '~/lib/redux/services/location/room.services';
+import { useUpdateBuildingMutation } from '~/lib/redux/services/location/building.services';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { roomSchema } from '~/lib/schemas/asset/location.schema';
-import DepartmentSelect from './SelectInputs/DepartmentSelect';
 import { getSession } from 'next-auth/react';
+import { buildingSchema } from '~/lib/schemas/asset/location.schema';
+import React from 'react';
+import { Building } from '~/lib/interfaces/location.interfaces';
 
-interface RoomModalProps {
+interface EditBuildingModalProps {
   isOpen: boolean;
   onClose: () => void;
-  defaultDepartmentId: number | null;
-  showDropdown?: boolean;
-  showToast?: boolean;
+  data: Building;
 }
-const RoomModal = (props: RoomModalProps) => {
-  const {
-    isOpen,
-    onClose,
-    defaultDepartmentId,
-    showDropdown = true,
-    showToast,
-  } = props;
-  const [createRoom, { isLoading }] = useCreateRoomMutation({});
+const EditBuildingModal = (props: EditBuildingModalProps) => {
+  const { isOpen, onClose, data } = props;
+  const [updateBuilding, { isLoading }] = useUpdateBuildingMutation({});
   const { handleSubmit } = useCustomMutation();
 
   const formik = useFormik({
     initialValues: {
-      departmentId: defaultDepartmentId ?? undefined,
-      roomName: '',
-      roomRef: '',
+      facilityId: data?.facilityId,
+      buildingName: data?.buildingName!,
+      buildingRef: data?.buildingRef!,
+      address: data?.address,
+      longitude: data?.longitude,
+      latitude: data?.latitude,
     },
-    validationSchema: roomSchema,
+    validationSchema: buildingSchema,
     enableReinitialize: true,
     onSubmit: async (values, { resetForm }) => {
       const session = await getSession();
-      const finalValue = { ...values, createdBy: session?.user?.username };
-      const response = await handleSubmit(
-        createRoom,
-        finalValue,
-        showToast ? 'Room Created Successfully' : ''
-      );
+      const finalValue = {
+        ...values,
+        buildingId: data.buildingId,
+        lastModifiedBy: session?.user?.username ?? '',
+      };
+      const response = await handleSubmit(updateBuilding, finalValue, '');
       if (response?.data) {
         onClose();
         resetForm();
@@ -72,48 +68,37 @@ const RoomModal = (props: RoomModalProps) => {
               px="20px"
             >
               <ModalHeading
-                heading="Add New Room"
-                subheading="Add a new room that is not on the system yet"
+                heading="Edit Building"
+                subheading="Edit building Information"
               />
 
               {/* Main Form Starts Here */}
               <VStack width="full" spacing="16px">
-                {showDropdown && (
-                  <FormInputWrapper
-                    sectionMaxWidth="141px"
-                    customSpacing="16px"
-                    title="Department"
-                    description="Select Department"
-                    isRequired
-                  >
-                    <DepartmentSelect type="general" />
-                  </FormInputWrapper>
-                )}
                 <FormInputWrapper
                   sectionMaxWidth="141px"
                   customSpacing="16px"
-                  title="Room Name"
-                  description="Input Room name"
+                  title="Building Name"
+                  description="Input Building name"
                   isRequired
                 >
                   <Field
                     as={FormTextInput}
-                    name="roomName"
+                    name="buildingName"
                     type="text"
-                    label="Room Name"
+                    label="Building Name"
                   />
                 </FormInputWrapper>
                 <FormInputWrapper
                   sectionMaxWidth="141px"
                   customSpacing="16px"
-                  title="Room Reference"
-                  description="Input Room Reference"
+                  title="Building Ref"
+                  description="Input Building ref."
                 >
                   <Field
                     as={FormTextInput}
-                    name="roomRef"
+                    name="buildingRef"
                     type="text"
-                    label="Room Reference"
+                    label="Building Reference"
                   />
                 </FormInputWrapper>
               </VStack>
@@ -130,7 +115,7 @@ const RoomModal = (props: RoomModalProps) => {
                   type="submit"
                   isLoading={isLoading || formik.isSubmitting}
                 >
-                  Add Room
+                  Save
                 </Button>
               </HStack>
             </VStack>
@@ -141,4 +126,4 @@ const RoomModal = (props: RoomModalProps) => {
   );
 };
 
-export default RoomModal;
+export default EditBuildingModal;

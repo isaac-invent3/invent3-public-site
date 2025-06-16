@@ -37,7 +37,7 @@ const StateView = ({ data: stateData }: { data: State }) => {
         direction="column"
         pb="24px"
         gap="32px"
-        px={{ base: '16px', lg: 'none' }}
+        px={{ base: '16px', lg: '0px' }}
       >
         <HStack width="full" justifyContent="space-between">
           <PageHeader>Facility Management</PageHeader>
@@ -47,7 +47,7 @@ const StateView = ({ data: stateData }: { data: State }) => {
               height: { base: '36px', md: 'min-content' },
               alignSelf: 'end',
             }}
-            href={`${ROUTES.LOCATION}/add`}
+            href={`/${ROUTES.LOCATION}/add`}
           >
             <Icon as={AddIcon} boxSize="18px" color="#D2FEFD" mr="4px" />
             Add New Facility

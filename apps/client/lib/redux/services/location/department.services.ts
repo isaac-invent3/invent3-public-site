@@ -84,6 +84,25 @@ export const departmentApi = createApi({
         invalidatesTags: ['departmentsByFloorId'],
       }
     ),
+    updateDepartment: builder.mutation<
+      BaseApiResponse<Department>,
+      {
+        departmentId: number;
+        departmentName: string;
+        departmentRef?: string;
+        currentCapacity?: number;
+        maxCapacity?: number;
+        lastModifiedBy: string;
+      }
+    >({
+      query: (body) => ({
+        url: `/Departments/${body.departmentId}`,
+        method: 'PUT',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['departmentsByFloorId'],
+    }),
   }),
 });
 
@@ -93,4 +112,5 @@ export const {
   useGetDepartmentsByFloorIdQuery,
   useSearchDepartmentsMutation,
   useDeleteDepartmentMutation,
+  useUpdateDepartmentMutation,
 } = departmentApi;

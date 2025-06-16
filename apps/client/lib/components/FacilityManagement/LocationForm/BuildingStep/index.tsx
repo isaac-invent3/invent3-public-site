@@ -21,11 +21,17 @@ const BuildingStep = (props: BuildingStepProps) => {
 
   const columnHelper = createColumnHelper<CreateBuildingDto>();
 
+  const handleDelete = (index: number) => {
+    const updatedBuildings = [...(values.createBuildingDtos ?? [])];
+    updatedBuildings.splice(index, 1);
+    setFieldValue('createBuildingDtos', updatedBuildings);
+  };
+
   const columns = useMemo(
     () => {
       const baseColumns = [
         columnHelper.accessor('createBuildingDto.buildingRef', {
-          cell: (info) => info.getValue(),
+          cell: (info) => info.getValue() ?? 'N/A',
           header: 'Building Ref',
           enableSorting: false,
         }),
@@ -36,7 +42,9 @@ const BuildingStep = (props: BuildingStepProps) => {
         }),
         columnHelper.display({
           id: 'action',
-          cell: () => <PopoverAction />,
+          cell: (info) => (
+            <PopoverAction handleDelete={() => handleDelete(info.row.index)} />
+          ),
           header: 'Action',
           enableSorting: false,
         }),

@@ -23,9 +23,19 @@ interface BuildingModalProps {
   defaultFacilityId: number | null;
   children?: React.ReactNode;
   handleSave?: (data: BuildingFormData) => void;
+  showDropdown?: boolean;
+  showToast?: boolean;
 }
 const BuildingModal = (props: BuildingModalProps) => {
-  const { isOpen, onClose, defaultFacilityId, children, handleSave } = props;
+  const {
+    isOpen,
+    onClose,
+    defaultFacilityId,
+    children,
+    handleSave,
+    showDropdown = true,
+    showToast,
+  } = props;
   const [createBuilding, { isLoading }] = useCreateBuildingMutation({});
   const { handleSubmit } = useCustomMutation();
 
@@ -50,7 +60,11 @@ const BuildingModal = (props: BuildingModalProps) => {
         handleSave(finalValue);
         resetForm();
       } else {
-        const response = await handleSubmit(createBuilding, finalValue, '');
+        const response = await handleSubmit(
+          createBuilding,
+          finalValue,
+          showToast ? 'Building Created Successfully' : ''
+        );
         if (response?.data) {
           onClose();
           resetForm();
@@ -81,17 +95,18 @@ const BuildingModal = (props: BuildingModalProps) => {
 
               {/* Main Form Starts Here */}
               <VStack width="full" spacing="16px">
-                {children ?? (
-                  <FormInputWrapper
-                    sectionMaxWidth="141px"
-                    customSpacing="16px"
-                    title="Facility"
-                    isRequired
-                    description="Select Facility"
-                  >
-                    <FacilitySelect type="general" />
-                  </FormInputWrapper>
-                )}
+                {children ??
+                  (showDropdown && (
+                    <FormInputWrapper
+                      sectionMaxWidth="141px"
+                      customSpacing="16px"
+                      title="Facility"
+                      isRequired
+                      description="Select Facility"
+                    >
+                      <FacilitySelect type="general" />
+                    </FormInputWrapper>
+                  ))}
                 <FormInputWrapper
                   sectionMaxWidth="141px"
                   customSpacing="16px"

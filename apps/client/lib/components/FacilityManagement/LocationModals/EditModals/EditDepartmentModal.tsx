@@ -9,46 +9,39 @@ import {
   GenericModal,
   ModalHeading,
 } from '@repo/ui/components';
-import { useCreateRoomMutation } from '~/lib/redux/services/location/room.services';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { roomSchema } from '~/lib/schemas/asset/location.schema';
-import DepartmentSelect from './SelectInputs/DepartmentSelect';
 import { getSession } from 'next-auth/react';
+import { departmentSchema } from '~/lib/schemas/asset/location.schema';
+import React from 'react';
+import { Department } from '~/lib/interfaces/location.interfaces';
+import { useUpdateDepartmentMutation } from '~/lib/redux/services/location/department.services';
 
-interface RoomModalProps {
+interface EditDepartmentModalProps {
   isOpen: boolean;
   onClose: () => void;
-  defaultDepartmentId: number | null;
-  showDropdown?: boolean;
-  showToast?: boolean;
+  data: Department;
 }
-const RoomModal = (props: RoomModalProps) => {
-  const {
-    isOpen,
-    onClose,
-    defaultDepartmentId,
-    showDropdown = true,
-    showToast,
-  } = props;
-  const [createRoom, { isLoading }] = useCreateRoomMutation({});
+const EditDepartmentModal = (props: EditDepartmentModalProps) => {
+  const { isOpen, onClose, data } = props;
+  const [updateDepartment, { isLoading }] = useUpdateDepartmentMutation({});
   const { handleSubmit } = useCustomMutation();
 
   const formik = useFormik({
     initialValues: {
-      departmentId: defaultDepartmentId ?? undefined,
-      roomName: '',
-      roomRef: '',
+      floorId: data?.floorId,
+      departmentName: data?.departmentName!,
+      departmentRef: data?.departmentRef!,
     },
-    validationSchema: roomSchema,
+    validationSchema: departmentSchema,
     enableReinitialize: true,
     onSubmit: async (values, { resetForm }) => {
       const session = await getSession();
-      const finalValue = { ...values, createdBy: session?.user?.username };
-      const response = await handleSubmit(
-        createRoom,
-        finalValue,
-        showToast ? 'Room Created Successfully' : ''
-      );
+      const finalValue = {
+        ...values,
+        departmentId: data.departmentId,
+        lastModifiedBy: session?.user?.username ?? '',
+      };
+      const response = await handleSubmit(updateDepartment, finalValue, '');
       if (response?.data) {
         onClose();
         resetForm();
@@ -72,48 +65,37 @@ const RoomModal = (props: RoomModalProps) => {
               px="20px"
             >
               <ModalHeading
-                heading="Add New Room"
-                subheading="Add a new room that is not on the system yet"
+                heading="Edit Department"
+                subheading="Edit Department Information"
               />
 
               {/* Main Form Starts Here */}
               <VStack width="full" spacing="16px">
-                {showDropdown && (
-                  <FormInputWrapper
-                    sectionMaxWidth="141px"
-                    customSpacing="16px"
-                    title="Department"
-                    description="Select Department"
-                    isRequired
-                  >
-                    <DepartmentSelect type="general" />
-                  </FormInputWrapper>
-                )}
                 <FormInputWrapper
                   sectionMaxWidth="141px"
                   customSpacing="16px"
-                  title="Room Name"
-                  description="Input Room name"
+                  title="Department Name"
+                  description="Input Department name"
                   isRequired
                 >
                   <Field
                     as={FormTextInput}
-                    name="roomName"
+                    name="departmentName"
                     type="text"
-                    label="Room Name"
+                    label="Department Name"
                   />
                 </FormInputWrapper>
                 <FormInputWrapper
                   sectionMaxWidth="141px"
                   customSpacing="16px"
-                  title="Room Reference"
-                  description="Input Room Reference"
+                  title="Department Ref"
+                  description="Input Department ref."
                 >
                   <Field
                     as={FormTextInput}
-                    name="roomRef"
+                    name="departmentRef"
                     type="text"
-                    label="Room Reference"
+                    label="Department Reference"
                   />
                 </FormInputWrapper>
               </VStack>
@@ -130,7 +112,7 @@ const RoomModal = (props: RoomModalProps) => {
                   type="submit"
                   isLoading={isLoading || formik.isSubmitting}
                 >
-                  Add Room
+                  Save
                 </Button>
               </HStack>
             </VStack>
@@ -141,4 +123,4 @@ const RoomModal = (props: RoomModalProps) => {
   );
 };
 
-export default RoomModal;
+export default EditDepartmentModal;

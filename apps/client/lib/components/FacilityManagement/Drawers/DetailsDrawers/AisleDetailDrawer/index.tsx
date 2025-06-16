@@ -5,14 +5,16 @@ import {
   VStack,
 } from '@chakra-ui/react';
 
-import { DataTable, GenericDrawer, GenericPopover } from '@repo/ui/components';
-import HeaderActionButtons from './HeaderActionButtons';
+import { DataTable, GenericDrawer } from '@repo/ui/components';
+import HeaderActionButtons from '../HeaderActionButtons';
 import { Aisle, Room } from '~/lib/interfaces/location.interfaces';
-import InfoCard from './InfoCard';
+import InfoCard from '../InfoCard';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useMemo, useState } from 'react';
 import { useGetAislesByRoomIdQuery } from '~/lib/redux/services/location/aisle.services';
-import ShelfDetailDrawer from './ShelfDetailDrawer';
+import ShelfDetailDrawer from '../ShelfDetailDrawer';
+import PopoverAction from './PopoverAction';
+import AisleModal from '~/lib/components/AssetManagement/AssetForm/GeneralStep/AssetLocation/Modals/AisleModal';
 
 interface AisleDetailDrawerProps {
   isOpen: boolean;
@@ -33,6 +35,11 @@ const AisleDetailDrawer = (props: AisleDetailDrawerProps) => {
     isOpen: isOpenShelfDetail,
     onClose: onCloseShelfDetail,
     onOpen: onOpenShelfDetail,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenCreateModal,
+    onClose: onCloseCreateModal,
+    onOpen: onOpenCreateModal,
   } = useDisclosure();
 
   const columnHelper = createColumnHelper<Aisle>();
@@ -57,11 +64,7 @@ const AisleDetailDrawer = (props: AisleDetailDrawerProps) => {
         }),
         columnHelper.display({
           id: 'action',
-          cell: () => (
-            <GenericPopover>
-              <></>
-            </GenericPopover>
-          ),
+          cell: (info) => <PopoverAction data={info.row.original} />,
           header: 'Action',
           enableSorting: false,
         }),
@@ -76,13 +79,17 @@ const AisleDetailDrawer = (props: AisleDetailDrawerProps) => {
     <>
       <GenericDrawer isOpen={isOpen} onClose={onClose} maxWidth="597px">
         <DrawerHeader p={0} m={0}>
-          <HeaderActionButtons closeDrawer={onClose} />
+          <HeaderActionButtons
+            closeDrawer={onClose}
+            suffix="Aisle"
+            handleButtonClick={onOpenCreateModal}
+          />
         </DrawerHeader>
         <DrawerBody p={0}>
           <VStack spacing="24px">
             <InfoCard
               title={`${roomData?.roomName} (Room)`}
-              count={5}
+              count={roomData?.totalAislesInRoom}
               locationTitle="Aisles"
             />
             <DataTable
@@ -111,6 +118,13 @@ const AisleDetailDrawer = (props: AisleDetailDrawerProps) => {
           aisleData={selectedAisle}
         />
       )}
+      <AisleModal
+        isOpen={isOpenCreateModal}
+        onClose={onCloseCreateModal}
+        defaultRoomId={roomData.roomId}
+        showDropdown={false}
+        showToast
+      />
     </>
   );
 };

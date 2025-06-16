@@ -85,6 +85,27 @@ export const buildingApi = createApi({
       }),
       invalidatesTags: ['buildingsByFacilityId'],
     }),
+    updateBuilding: builder.mutation<
+      BaseApiResponse<Building>,
+      {
+        buildingId: number;
+        buildingName: string;
+        buildingRef?: string;
+        address?: string;
+        longitude?: number;
+        latitude?: number;
+        energyCostPerKwh?: number;
+        lastModifiedBy: string;
+      }
+    >({
+      query: (body) => ({
+        url: `/Buildings/${body.buildingId}`,
+        method: 'PUT',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allBuildings', 'buildingsByFacilityId'],
+    }),
   }),
 });
 
@@ -94,4 +115,5 @@ export const {
   useGetBuildingsByFacilityIdQuery,
   useSearchBuildingMutation,
   useDeleteBuildingMutation,
+  useUpdateBuildingMutation,
 } = buildingApi;

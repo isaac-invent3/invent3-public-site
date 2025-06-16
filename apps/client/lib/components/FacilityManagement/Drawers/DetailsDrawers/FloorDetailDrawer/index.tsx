@@ -5,14 +5,16 @@ import {
   VStack,
 } from '@chakra-ui/react';
 
-import { DataTable, GenericDrawer, GenericPopover } from '@repo/ui/components';
-import HeaderActionButtons from './HeaderActionButtons';
+import { DataTable, GenericDrawer } from '@repo/ui/components';
 import { Building, Floor } from '~/lib/interfaces/location.interfaces';
-import InfoCard from './InfoCard';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useMemo, useState } from 'react';
 import { useGetFloorsByBuildingIdQuery } from '~/lib/redux/services/location/floor.services';
-import DepartmentDetailDrawer from './DepartmentDetailDrawer';
+import HeaderActionButtons from '../HeaderActionButtons';
+import InfoCard from '../InfoCard';
+import DepartmentDetailDrawer from '../DepartmentDetailDrawer';
+import PopoverAction from './PopoverAction';
+import FloorModal from '~/lib/components/AssetManagement/AssetForm/GeneralStep/AssetLocation/Modals/FloorModal';
 
 interface FloorDetailDrawerProps {
   isOpen: boolean;
@@ -33,6 +35,11 @@ const FloorDetailDrawer = (props: FloorDetailDrawerProps) => {
     isOpen: isOpenDepartmentDetail,
     onClose: onCloseDepartmentDetail,
     onOpen: onOpenDepartmentDetail,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenCreateModal,
+    onClose: onCloseCreateModal,
+    onOpen: onOpenCreateModal,
   } = useDisclosure();
 
   const columnHelper = createColumnHelper<Floor>();
@@ -57,11 +64,7 @@ const FloorDetailDrawer = (props: FloorDetailDrawerProps) => {
         }),
         columnHelper.display({
           id: 'action',
-          cell: () => (
-            <GenericPopover>
-              <></>
-            </GenericPopover>
-          ),
+          cell: (info) => <PopoverAction data={info.row.original} />,
           header: 'Action',
           enableSorting: false,
         }),
@@ -76,14 +79,18 @@ const FloorDetailDrawer = (props: FloorDetailDrawerProps) => {
     <>
       <GenericDrawer isOpen={isOpen} onClose={onClose} maxWidth="597px">
         <DrawerHeader p={0} m={0}>
-          <HeaderActionButtons closeDrawer={onClose} />
+          <HeaderActionButtons
+            closeDrawer={onClose}
+            suffix="Floor"
+            handleButtonClick={onOpenCreateModal}
+          />
         </DrawerHeader>
         <DrawerBody p={0}>
           <VStack spacing="24px">
             <InfoCard
               title={`${buildingData?.buildingName} (Building)`}
               subtitle={buildingData?.address}
-              count={5}
+              count={buildingData?.totalFloorsInBuilding}
               locationTitle="Floors"
             />
             <DataTable
@@ -112,6 +119,13 @@ const FloorDetailDrawer = (props: FloorDetailDrawerProps) => {
           floorData={selectedFloor}
         />
       )}
+      <FloorModal
+        isOpen={isOpenCreateModal}
+        onClose={onCloseCreateModal}
+        defaultBuildingId={buildingData.buildingId}
+        showDropdown={false}
+        showToast
+      />
     </>
   );
 };

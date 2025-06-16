@@ -13,7 +13,8 @@ interface RoomStepProps {
 const RoomStep = (props: RoomStepProps) => {
   const { activeStep } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { values } = useFormikContext<LocationMasterFormInterface>();
+  const { values, setFieldValue } =
+    useFormikContext<LocationMasterFormInterface>();
 
   const flattenedRoom = useMemo(() => {
     return (
@@ -23,16 +24,17 @@ const RoomStep = (props: RoomStepProps) => {
           const departments = floor?.createDepartmentDtos ?? [];
           return departments.flatMap((department, departmentIdx) => {
             const rooms = department?.createRoomDtos ?? [];
-            return rooms.map((room) => ({
+            return rooms.map((room, roomIdx) => ({
               buildingName: building.createBuildingDto.buildingName,
               floorName: floor.createFloorDto.floorName,
               departmentName: department.createDepartmentDto.departmentName,
               departmentRef: department.createDepartmentDto.departmentRef,
               roomName: room.createRoomDto.roomName,
               roomRef: room.createRoomDto.roomRef,
-              buildingId: buildingIdx,
-              floorId: floorIdx,
-              departmentId: departmentIdx,
+              buildingIndex: buildingIdx,
+              floorIndex: floorIdx,
+              departmentIndex: departmentIdx,
+              roomIndex: roomIdx,
             }));
           });
         });
@@ -41,9 +43,10 @@ const RoomStep = (props: RoomStepProps) => {
   }, [values?.createBuildingDtos]);
 
   const columnHelper = createColumnHelper<{
-    buildingId: number;
-    floorId: number;
-    departmentId: number;
+    buildingIndex: number;
+    floorIndex: number;
+    departmentIndex: number;
+    roomIndex: number;
     buildingName: string;
     floorName: string;
     departmentName: string;
@@ -51,10 +54,57 @@ const RoomStep = (props: RoomStepProps) => {
     roomName: string;
   }>();
 
+  const handleDelete = (
+    buildingIndex: number,
+    floorIndex: number,
+    departmentIndex: number,
+    roomIndex: number
+  ) => {
+    const updatedBuildings = [...(values.createBuildingDtos ?? [])];
+    if (
+      updatedBuildings[buildingIndex] &&
+      Array.isArray(updatedBuildings[buildingIndex].createFloorDtos)
+    ) {
+      const updatedFloors = [
+        ...updatedBuildings[buildingIndex].createFloorDtos,
+      ];
+      if (
+        updatedFloors[floorIndex] &&
+        Array.isArray(updatedFloors[floorIndex].createDepartmentDtos)
+      ) {
+        const updatedDepartments = [
+          ...updatedFloors[floorIndex].createDepartmentDtos,
+        ];
+        if (
+          updatedDepartments[departmentIndex] &&
+          Array.isArray(updatedDepartments[departmentIndex].createRoomDtos)
+        ) {
+          const updatedRooms = [
+            ...updatedDepartments[departmentIndex].createRoomDtos,
+          ];
+          updatedRooms.splice(roomIndex, 1);
+          updatedDepartments[departmentIndex] = {
+            ...updatedDepartments[departmentIndex],
+            createRoomDtos: updatedRooms,
+          };
+          updatedFloors[floorIndex] = {
+            ...updatedFloors[floorIndex],
+            createDepartmentDtos: updatedDepartments,
+          };
+          updatedBuildings[buildingIndex] = {
+            ...updatedBuildings[buildingIndex],
+            createFloorDtos: updatedFloors,
+          };
+          setFieldValue('createBuildingDtos', updatedBuildings);
+        }
+      }
+    }
+  };
+
   const columns = useMemo(
     () => [
       columnHelper.accessor('roomRef', {
-        cell: (info) => info.getValue(),
+        cell: (info) => info.getValue() ?? 'N/A',
         header: 'Room Ref',
         enableSorting: false,
       }),
@@ -80,12 +130,23 @@ const RoomStep = (props: RoomStepProps) => {
       }),
       columnHelper.display({
         id: 'action',
-        cell: () => <PopoverAction />,
+        cell: (info) => (
+          <PopoverAction
+            handleDelete={() =>
+              handleDelete(
+                info.row.original.buildingIndex,
+                info.row.original.floorIndex,
+                info.row.original.departmentIndex,
+                info.row.original.roomIndex
+              )
+            }
+          />
+        ),
         header: 'Action',
         enableSorting: false,
       }),
     ],
-    []
+    [flattenedRoom]
   );
 
   return (
@@ -95,10 +156,7 @@ const RoomStep = (props: RoomStepProps) => {
         width="full"
         alignItems="center"
         bgColor="white"
-        pt={{ base: '16px', lg: '19px' }}
-        pl={{ md: '24px', lg: '28px' }}
-        pb={{ base: '16px', lg: '33px' }}
-        pr={{ md: '24px', lg: '38px' }}
+        p="8px"
         rounded="6px"
         minH={{ lg: '60vh' }}
         display={activeStep === 5 ? 'flex' : 'none'}

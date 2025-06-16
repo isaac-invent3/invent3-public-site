@@ -93,6 +93,24 @@ export const roomApi = createApi({
       }),
       invalidatesTags: ['roomsByDepartmentId'],
     }),
+    updateRoom: builder.mutation<
+      BaseApiResponse<Room>,
+      {
+        roomId: number;
+        roomName: string;
+        roomRef: string;
+        currentCapacity?: number;
+        maxCapacity?: number;
+      }
+    >({
+      query: (body) => ({
+        url: `/Rooms/${body.roomId}`,
+        method: 'PUT',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['roomsByDepartmentId'],
+    }),
   }),
 });
 
@@ -103,4 +121,5 @@ export const {
   useSearchRoomsMutation,
   useGetAllRoomsInAFloorQuery,
   useDeleteRoomMutation,
+  useUpdateRoomMutation,
 } = roomApi;

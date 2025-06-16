@@ -9,46 +9,39 @@ import {
   GenericModal,
   ModalHeading,
 } from '@repo/ui/components';
-import { useCreateRoomMutation } from '~/lib/redux/services/location/room.services';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { roomSchema } from '~/lib/schemas/asset/location.schema';
-import DepartmentSelect from './SelectInputs/DepartmentSelect';
 import { getSession } from 'next-auth/react';
+import { roomSchema } from '~/lib/schemas/asset/location.schema';
+import React from 'react';
+import { Room } from '~/lib/interfaces/location.interfaces';
+import { useUpdateRoomMutation } from '~/lib/redux/services/location/room.services';
 
-interface RoomModalProps {
+interface EditRoomModalProps {
   isOpen: boolean;
   onClose: () => void;
-  defaultDepartmentId: number | null;
-  showDropdown?: boolean;
-  showToast?: boolean;
+  data: Room;
 }
-const RoomModal = (props: RoomModalProps) => {
-  const {
-    isOpen,
-    onClose,
-    defaultDepartmentId,
-    showDropdown = true,
-    showToast,
-  } = props;
-  const [createRoom, { isLoading }] = useCreateRoomMutation({});
+const EditRoomModal = (props: EditRoomModalProps) => {
+  const { isOpen, onClose, data } = props;
+  const [updateRoom, { isLoading }] = useUpdateRoomMutation({});
   const { handleSubmit } = useCustomMutation();
 
   const formik = useFormik({
     initialValues: {
-      departmentId: defaultDepartmentId ?? undefined,
-      roomName: '',
-      roomRef: '',
+      departmentId: data?.departmentId,
+      roomName: data?.roomName!,
+      roomRef: data?.roomRef!,
     },
     validationSchema: roomSchema,
     enableReinitialize: true,
     onSubmit: async (values, { resetForm }) => {
       const session = await getSession();
-      const finalValue = { ...values, createdBy: session?.user?.username };
-      const response = await handleSubmit(
-        createRoom,
-        finalValue,
-        showToast ? 'Room Created Successfully' : ''
-      );
+      const finalValue = {
+        ...values,
+        roomId: data.roomId,
+        lastModifiedBy: session?.user?.username ?? '',
+      };
+      const response = await handleSubmit(updateRoom, finalValue, '');
       if (response?.data) {
         onClose();
         resetForm();
@@ -72,23 +65,12 @@ const RoomModal = (props: RoomModalProps) => {
               px="20px"
             >
               <ModalHeading
-                heading="Add New Room"
-                subheading="Add a new room that is not on the system yet"
+                heading="Edit Room"
+                subheading="Edit Room Information"
               />
 
               {/* Main Form Starts Here */}
               <VStack width="full" spacing="16px">
-                {showDropdown && (
-                  <FormInputWrapper
-                    sectionMaxWidth="141px"
-                    customSpacing="16px"
-                    title="Department"
-                    description="Select Department"
-                    isRequired
-                  >
-                    <DepartmentSelect type="general" />
-                  </FormInputWrapper>
-                )}
                 <FormInputWrapper
                   sectionMaxWidth="141px"
                   customSpacing="16px"
@@ -106,8 +88,8 @@ const RoomModal = (props: RoomModalProps) => {
                 <FormInputWrapper
                   sectionMaxWidth="141px"
                   customSpacing="16px"
-                  title="Room Reference"
-                  description="Input Room Reference"
+                  title="Room Ref"
+                  description="Input Room ref."
                 >
                   <Field
                     as={FormTextInput}
@@ -130,7 +112,7 @@ const RoomModal = (props: RoomModalProps) => {
                   type="submit"
                   isLoading={isLoading || formik.isSubmitting}
                 >
-                  Add Room
+                  Save
                 </Button>
               </HStack>
             </VStack>
@@ -141,4 +123,4 @@ const RoomModal = (props: RoomModalProps) => {
   );
 };
 
-export default RoomModal;
+export default EditRoomModal;

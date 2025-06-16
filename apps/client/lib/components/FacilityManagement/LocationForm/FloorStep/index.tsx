@@ -3,10 +3,7 @@ import { DataTable, FormAddButton } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useFormikContext } from 'formik';
 import React, { useMemo } from 'react';
-import {
-  CreateBuildingDto,
-  LocationMasterFormInterface,
-} from '~/lib/interfaces/location.interfaces';
+import { LocationMasterFormInterface } from '~/lib/interfaces/location.interfaces';
 import PopoverAction from '../PopoverAction';
 import Floor from '../../LocationModals/FloorModal';
 
@@ -21,27 +18,49 @@ const FloorStep = (props: FloorStepProps) => {
 
   const flattenedFloors = useMemo(() => {
     return (
-      values?.createBuildingDtos?.flatMap((building) => {
+      values?.createBuildingDtos?.flatMap((building, bIndex) => {
         const floors = building?.createFloorDtos ?? [];
-        return floors.map((floor) => ({
+        return floors.map((floor, fIndex) => ({
           buildingName: building.createBuildingDto.buildingName,
           floorName: floor.createFloorDto.floorName,
           floorRef: floor.createFloorDto.floorRef,
+          buildingIndex: bIndex,
+          floorIndex: fIndex,
         }));
       }) ?? []
     );
   }, [values?.createBuildingDtos]);
 
+  const handleDelete = (buildingIndex: number, floorIndex: number) => {
+    const updatedBuildings = [...(values.createBuildingDtos ?? [])];
+    if (
+      updatedBuildings[buildingIndex] &&
+      Array.isArray(updatedBuildings[buildingIndex].createFloorDtos)
+    ) {
+      const updatedFloors = [
+        ...updatedBuildings[buildingIndex].createFloorDtos,
+      ];
+      updatedFloors.splice(floorIndex, 1);
+      updatedBuildings[buildingIndex] = {
+        ...updatedBuildings[buildingIndex],
+        createFloorDtos: updatedFloors,
+      };
+      setFieldValue('createBuildingDtos', updatedBuildings);
+    }
+  };
+
   const columnHelper = createColumnHelper<{
     buildingName: string;
     floorName: string;
     floorRef: string | null;
+    buildingIndex: number;
+    floorIndex: number;
   }>();
 
   const columns = useMemo(
     () => [
       columnHelper.accessor('floorRef', {
-        cell: (info) => info.getValue(),
+        cell: (info) => info.getValue() ?? 'N/A',
         header: 'Floor Ref',
         enableSorting: false,
       }),
@@ -57,12 +76,21 @@ const FloorStep = (props: FloorStepProps) => {
       }),
       columnHelper.display({
         id: 'action',
-        cell: () => <PopoverAction />,
+        cell: (info) => (
+          <PopoverAction
+            handleDelete={() =>
+              handleDelete(
+                info.row.original.buildingIndex,
+                info.row.original.floorIndex
+              )
+            }
+          />
+        ),
         header: 'Action',
         enableSorting: false,
       }),
     ],
-    []
+    [flattenedFloors]
   );
 
   return (
@@ -72,10 +100,7 @@ const FloorStep = (props: FloorStepProps) => {
         width="full"
         alignItems="center"
         bgColor="white"
-        pt={{ base: '16px', lg: '19px' }}
-        pl={{ md: '24px', lg: '28px' }}
-        pb={{ base: '16px', lg: '33px' }}
-        pr={{ md: '24px', lg: '38px' }}
+        p="8px"
         rounded="6px"
         minH={{ lg: '60vh' }}
         display={activeStep === 3 ? 'flex' : 'none'}

@@ -50,7 +50,7 @@ const InfoCard = (props: InfoCardProps) => {
             fontSize={{ base: '24px', lg: '40px' }}
             lineHeight="100%"
           >
-            {count}
+            {count ?? '-'}
           </Heading>
           <Text size="md" color="primary.500" fontWeight={800}>
             {locationTitle}

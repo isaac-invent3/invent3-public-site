@@ -29,6 +29,7 @@ import DocumentUploadAndView from '~/lib/components/Common/DocumentUploadAndView
 import { Document } from '~/lib/interfaces/general.interfaces';
 import ComplianceType from './ComplianceType';
 import Compliance from './Compliances';
+import moment from 'moment';
 
 interface CreateAssetComplianceDrawerProps {
   isOpen: boolean;
@@ -74,7 +75,11 @@ const CreateAssetComplianceDrawer = (
             assetCategoryId: data?.assetCategoryId!,
             regulationId: data?.regulationId!,
             complianceRegulationId: data?.complianceRegulationId!,
-            nextInspectionDate: data.nextInspectionDate!,
+            nextInspectionDate: data.nextInspectionDate
+              ? moment(data.nextInspectionDate, 'DD/MM/YYYY')
+                  .utcOffset(0, true)
+                  .toISOString()
+              : null,
             createdBy: session?.user?.email!,
           },
           createComplianceDocumentDtos:

@@ -19,9 +19,17 @@ interface AisleModalProps {
   isOpen: boolean;
   onClose: () => void;
   defaultRoomId: number | null;
+  showDropdown?: boolean;
+  showToast?: boolean;
 }
 const AisleModal = (props: AisleModalProps) => {
-  const { isOpen, onClose, defaultRoomId } = props;
+  const {
+    isOpen,
+    onClose,
+    defaultRoomId,
+    showDropdown = true,
+    showToast,
+  } = props;
   const [createAisle, { isLoading }] = useCreateAisleMutation({});
   const { handleSubmit } = useCustomMutation();
 
@@ -39,7 +47,11 @@ const AisleModal = (props: AisleModalProps) => {
         ...values,
         createdBy: session?.user?.username,
       };
-      const response = await handleSubmit(createAisle, finalValue, '');
+      const response = await handleSubmit(
+        createAisle,
+        finalValue,
+        showToast ? 'Aisle Created Successfully' : ''
+      );
       if (response?.data) {
         onClose();
         resetForm();
@@ -69,15 +81,17 @@ const AisleModal = (props: AisleModalProps) => {
 
               {/* Main Form Starts Here */}
               <VStack width="full" spacing="16px">
-                <FormInputWrapper
-                  sectionMaxWidth="141px"
-                  customSpacing="16px"
-                  title="Room"
-                  description="Select Room"
-                  isRequired
-                >
-                  <RoomSelect type="general" />
-                </FormInputWrapper>
+                {showDropdown && (
+                  <FormInputWrapper
+                    sectionMaxWidth="141px"
+                    customSpacing="16px"
+                    title="Room"
+                    description="Select Room"
+                    isRequired
+                  >
+                    <RoomSelect type="general" />
+                  </FormInputWrapper>
+                )}
                 <FormInputWrapper
                   sectionMaxWidth="141px"
                   customSpacing="16px"

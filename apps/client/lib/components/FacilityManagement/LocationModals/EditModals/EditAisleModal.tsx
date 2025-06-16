@@ -9,46 +9,39 @@ import {
   GenericModal,
   ModalHeading,
 } from '@repo/ui/components';
-import { useCreateRoomMutation } from '~/lib/redux/services/location/room.services';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { roomSchema } from '~/lib/schemas/asset/location.schema';
-import DepartmentSelect from './SelectInputs/DepartmentSelect';
 import { getSession } from 'next-auth/react';
+import { aisleSchema } from '~/lib/schemas/asset/location.schema';
+import React from 'react';
+import { Aisle } from '~/lib/interfaces/location.interfaces';
+import { useUpdateAisleMutation } from '~/lib/redux/services/location/aisle.services';
 
-interface RoomModalProps {
+interface EditAisleModalProps {
   isOpen: boolean;
   onClose: () => void;
-  defaultDepartmentId: number | null;
-  showDropdown?: boolean;
-  showToast?: boolean;
+  data: Aisle;
 }
-const RoomModal = (props: RoomModalProps) => {
-  const {
-    isOpen,
-    onClose,
-    defaultDepartmentId,
-    showDropdown = true,
-    showToast,
-  } = props;
-  const [createRoom, { isLoading }] = useCreateRoomMutation({});
+const EditAisleModal = (props: EditAisleModalProps) => {
+  const { isOpen, onClose, data } = props;
+  const [updateAisle, { isLoading }] = useUpdateAisleMutation({});
   const { handleSubmit } = useCustomMutation();
 
   const formik = useFormik({
     initialValues: {
-      departmentId: defaultDepartmentId ?? undefined,
-      roomName: '',
-      roomRef: '',
+      roomId: data?.roomId,
+      aisleName: data?.aisleName!,
+      aisleRef: data?.aisleRef!,
     },
-    validationSchema: roomSchema,
+    validationSchema: aisleSchema,
     enableReinitialize: true,
     onSubmit: async (values, { resetForm }) => {
       const session = await getSession();
-      const finalValue = { ...values, createdBy: session?.user?.username };
-      const response = await handleSubmit(
-        createRoom,
-        finalValue,
-        showToast ? 'Room Created Successfully' : ''
-      );
+      const finalValue = {
+        ...values,
+        aisleId: data.aisleId,
+        lastModifiedBy: session?.user?.username ?? '',
+      };
+      const response = await handleSubmit(updateAisle, finalValue, '');
       if (response?.data) {
         onClose();
         resetForm();
@@ -72,48 +65,37 @@ const RoomModal = (props: RoomModalProps) => {
               px="20px"
             >
               <ModalHeading
-                heading="Add New Room"
-                subheading="Add a new room that is not on the system yet"
+                heading="Edit Aisle"
+                subheading="Edit Aisle Information"
               />
 
               {/* Main Form Starts Here */}
               <VStack width="full" spacing="16px">
-                {showDropdown && (
-                  <FormInputWrapper
-                    sectionMaxWidth="141px"
-                    customSpacing="16px"
-                    title="Department"
-                    description="Select Department"
-                    isRequired
-                  >
-                    <DepartmentSelect type="general" />
-                  </FormInputWrapper>
-                )}
                 <FormInputWrapper
                   sectionMaxWidth="141px"
                   customSpacing="16px"
-                  title="Room Name"
-                  description="Input Room name"
+                  title="Aisle Name"
+                  description="Input Aisle name"
                   isRequired
                 >
                   <Field
                     as={FormTextInput}
-                    name="roomName"
+                    name="aisleName"
                     type="text"
-                    label="Room Name"
+                    label="Aisle Name"
                   />
                 </FormInputWrapper>
                 <FormInputWrapper
                   sectionMaxWidth="141px"
                   customSpacing="16px"
-                  title="Room Reference"
-                  description="Input Room Reference"
+                  title="Aisle Ref"
+                  description="Input Aisle ref."
                 >
                   <Field
                     as={FormTextInput}
-                    name="roomRef"
+                    name="aisleRef"
                     type="text"
-                    label="Room Reference"
+                    label="Aisle Reference"
                   />
                 </FormInputWrapper>
               </VStack>
@@ -130,7 +112,7 @@ const RoomModal = (props: RoomModalProps) => {
                   type="submit"
                   isLoading={isLoading || formik.isSubmitting}
                 >
-                  Add Room
+                  Save
                 </Button>
               </HStack>
             </VStack>
@@ -141,4 +123,4 @@ const RoomModal = (props: RoomModalProps) => {
   );
 };
 
-export default RoomModal;
+export default EditAisleModal;

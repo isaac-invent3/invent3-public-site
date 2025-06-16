@@ -19,9 +19,17 @@ interface DepartmentModalProps {
   isOpen: boolean;
   onClose: () => void;
   defaultFloorId: number | null;
+  showDropdown?: boolean;
+  showToast?: boolean;
 }
 const DepartmentModal = (props: DepartmentModalProps) => {
-  const { isOpen, onClose, defaultFloorId } = props;
+  const {
+    isOpen,
+    onClose,
+    defaultFloorId,
+    showDropdown = true,
+    showToast,
+  } = props;
   const [createDepartment, { isLoading }] = useCreateDepartmentMutation({});
   const { handleSubmit } = useCustomMutation();
 
@@ -38,7 +46,11 @@ const DepartmentModal = (props: DepartmentModalProps) => {
 
       const finalValue = { ...values, createdBy: session?.user?.username! };
 
-      const response = await handleSubmit(createDepartment, finalValue, '');
+      const response = await handleSubmit(
+        createDepartment,
+        finalValue,
+        showToast ? 'Department Created Successfully' : ''
+      );
       if (response?.data) {
         onClose();
         resetForm();
@@ -68,7 +80,17 @@ const DepartmentModal = (props: DepartmentModalProps) => {
 
               {/* Main Form Starts Here */}
               <VStack width="full" spacing="16px">
-                <FloorSelect type="general" />
+                {showDropdown && (
+                  <FormInputWrapper
+                    sectionMaxWidth="141px"
+                    customSpacing="16px"
+                    title="Floor"
+                    description="Select Floor"
+                    isRequired
+                  >
+                    <FloorSelect type="general" />
+                  </FormInputWrapper>
+                )}
                 <FormInputWrapper
                   sectionMaxWidth="141px"
                   customSpacing="16px"

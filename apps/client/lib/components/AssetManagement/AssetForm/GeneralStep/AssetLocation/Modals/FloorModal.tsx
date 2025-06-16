@@ -26,9 +26,19 @@ interface FloorModalProps {
     floorName: string;
     floorRef: string;
   }) => void;
+  showDropdown?: boolean;
+  showToast?: boolean;
 }
 const FloorModal = (props: FloorModalProps) => {
-  const { isOpen, onClose, defaultBuildingId, children, handleSave } = props;
+  const {
+    isOpen,
+    onClose,
+    defaultBuildingId,
+    children,
+    handleSave,
+    showDropdown = true,
+    showToast,
+  } = props;
   const [createFloor, { isLoading }] = useCreateFloorMutation({});
   const { handleSubmit } = useCustomMutation();
 
@@ -47,7 +57,11 @@ const FloorModal = (props: FloorModalProps) => {
         handleSave(finalValue);
         resetForm();
       } else {
-        const response = await handleSubmit(createFloor, finalValue, '');
+        const response = await handleSubmit(
+          createFloor,
+          finalValue,
+          showToast ? 'Floor Created Successfully' : ''
+        );
         if (response?.data) {
           onClose();
           resetForm();
@@ -78,17 +92,18 @@ const FloorModal = (props: FloorModalProps) => {
 
               {/* Main Form Starts Here */}
               <VStack width="full" spacing="16px">
-                {children ?? (
-                  <FormInputWrapper
-                    sectionMaxWidth="141px"
-                    customSpacing="16px"
-                    title="Building"
-                    description="Select Building"
-                    isRequired
-                  >
-                    <BuildingSelect type="general" />
-                  </FormInputWrapper>
-                )}
+                {children ??
+                  (showDropdown && (
+                    <FormInputWrapper
+                      sectionMaxWidth="141px"
+                      customSpacing="16px"
+                      title="Building"
+                      description="Select Building"
+                      isRequired
+                    >
+                      <BuildingSelect type="general" />
+                    </FormInputWrapper>
+                  ))}
 
                 <FormInputWrapper
                   sectionMaxWidth="141px"

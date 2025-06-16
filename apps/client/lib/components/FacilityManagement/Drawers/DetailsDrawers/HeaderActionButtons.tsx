@@ -1,12 +1,17 @@
-import { HStack, Icon, Text, VStack } from '@chakra-ui/react';
-import { BackButton, Button, GenericPopover } from '@repo/ui/components';
+import { HStack } from '@chakra-ui/react';
+import { BackButton, Button } from '@repo/ui/components';
 import React from 'react';
-import { ChevronDownIcon } from '~/lib/components/CustomIcons';
 
 interface HeaderActionButtonsProps {
   closeDrawer: () => void;
+  suffix: string;
+  handleButtonClick: () => void;
 }
-const HeaderActionButtons = ({ closeDrawer }: HeaderActionButtonsProps) => {
+const HeaderActionButtons = ({
+  closeDrawer,
+  suffix,
+  handleButtonClick,
+}: HeaderActionButtonsProps) => {
   return (
     <HStack
       pt="16px"
@@ -17,33 +22,12 @@ const HeaderActionButtons = ({ closeDrawer }: HeaderActionButtonsProps) => {
       justifyContent="space-between"
     >
       <BackButton handleClick={closeDrawer} />
-      <GenericPopover
-        width="180px"
-        placement="auto"
-        popoverTriggerElement={
-          <Button
-            variant="secondary"
-            customStyles={{ width: '102px', height: '35px' }}
-          >
-            Edit
-            <Icon
-              as={ChevronDownIcon}
-              color="neutral.800"
-              boxSize="16px"
-              ml="8px"
-            />
-          </Button>
-        }
+      <Button
+        customStyles={{ height: '32px', width: 'max-content' }}
+        handleClick={handleButtonClick}
       >
-        <VStack width="full" alignItems="flex-start" spacing="16px">
-          <Text cursor="pointer">Edit Building</Text>
-          <Text cursor="pointer">Edit Floor</Text>
-          <Text cursor="pointer">Edit Department</Text>
-          <Text cursor="pointer">Edit Room</Text>
-          <Text cursor="pointer">Edit Aisle</Text>
-          <Text cursor="pointer">Edit Shelf</Text>
-        </VStack>
-      </GenericPopover>
+        Create {suffix}
+      </Button>
     </HStack>
   );
 };

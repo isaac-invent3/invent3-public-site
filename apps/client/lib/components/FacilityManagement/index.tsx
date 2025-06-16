@@ -20,7 +20,13 @@ import { useGetAggregateFacilityByStateQuery } from '~/lib/redux/services/locati
 const FacilityManagement = () => {
   const { data, isLoading } = useGetAggregateFacilityByStateQuery();
   return (
-    <Flex width="full" direction="column" pb="24px" gap="32px">
+    <Flex
+      width="full"
+      direction="column"
+      pb="24px"
+      gap="32px"
+      px={{ base: '16px', lg: '0px' }}
+    >
       <HStack width="full" justifyContent="space-between">
         <PageHeader>Facility Management</PageHeader>
         <Button
@@ -29,7 +35,7 @@ const FacilityManagement = () => {
             height: { base: '36px', md: 'min-content' },
             alignSelf: 'end',
           }}
-          href={`${ROUTES.LOCATION}/add`}
+          href={`/${ROUTES.LOCATION}/add`}
         >
           <Icon as={AddIcon} boxSize="18px" color="#D2FEFD" mr="4px" />
           Add New Facility

@@ -27,7 +27,7 @@ const ShelfStep = (props: ShelfStepProps) => {
               const aisles = room?.createAisleDtos ?? [];
               return aisles.flatMap((aisle, aisleIdx) => {
                 const shelves = aisle?.createShelveDtos ?? [];
-                return shelves.map((shelf) => ({
+                return shelves.map((shelf, shelfIdx) => ({
                   buildingName: building.createBuildingDto.buildingName,
                   floorName: floor.createFloorDto.floorName,
                   departmentName: department.createDepartmentDto.departmentName,
@@ -40,6 +40,7 @@ const ShelfStep = (props: ShelfStepProps) => {
                   departmentId: departmentIdx,
                   roomId: roomIdx,
                   aisleId: aisleIdx,
+                  shelfId: shelfIdx,
                 }));
               });
             });
@@ -55,6 +56,7 @@ const ShelfStep = (props: ShelfStepProps) => {
     departmentId: number;
     roomId: number;
     aisleId: number;
+    shelfId: number;
     buildingName: string;
     floorName: string;
     departmentName: string;
@@ -87,7 +89,7 @@ const ShelfStep = (props: ShelfStepProps) => {
   const columns = useMemo(
     () => [
       columnHelper.accessor('shelfRef', {
-        cell: (info) => info.getValue(),
+        cell: (info) => info.getValue() ?? 'N/A',
         header: 'Shelf Ref',
         enableSorting: false,
       }),
@@ -125,7 +127,6 @@ const ShelfStep = (props: ShelfStepProps) => {
         id: 'action',
         cell: (info) => {
           const row = info.row.original;
-          const shelfId = info.row.index;
           return (
             <Text
               color="red.500"
@@ -137,7 +138,7 @@ const ShelfStep = (props: ShelfStepProps) => {
                   row.departmentId,
                   row.roomId,
                   row.aisleId,
-                  shelfId
+                  row.shelfId
                 )
               }
             >
@@ -159,10 +160,7 @@ const ShelfStep = (props: ShelfStepProps) => {
         width="full"
         alignItems="center"
         bgColor="white"
-        pt={{ base: '16px', lg: '19px' }}
-        pl={{ md: '24px', lg: '28px' }}
-        pb={{ base: '16px', lg: '33px' }}
-        pr={{ md: '24px', lg: '38px' }}
+        p="8px"
         rounded="6px"
         minH={{ lg: '60vh' }}
         display={activeStep === 7 ? 'flex' : 'none'}

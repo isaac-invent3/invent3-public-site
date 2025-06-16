@@ -79,6 +79,23 @@ export const aisleApi = createApi({
       }),
       invalidatesTags: ['aislesByRoomId'],
     }),
+    updateAisle: builder.mutation<
+      BaseApiResponse<Aisle>,
+      {
+        aisleName: string;
+        aisleRef?: string;
+        aisleId: number;
+        lastModifiedBy: string;
+      }
+    >({
+      query: (body) => ({
+        url: `/Aisles/${body.aisleId}`,
+        method: 'PUT',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['aislesByRoomId'],
+    }),
   }),
 });
 
@@ -88,4 +105,5 @@ export const {
   useGetAllAislesQuery,
   useSearchAisleMutation,
   useDeleteAisleMutation,
+  useUpdateAisleMutation,
 } = aisleApi;

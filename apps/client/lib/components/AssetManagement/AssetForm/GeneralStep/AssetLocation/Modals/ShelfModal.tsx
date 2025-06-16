@@ -18,9 +18,17 @@ interface ShelfModalProps {
   isOpen: boolean;
   onClose: () => void;
   defaultAisleId: number | null;
+  showDropdown?: boolean;
+  showToast?: boolean;
 }
 const ShelfModal = (props: ShelfModalProps) => {
-  const { isOpen, onClose, defaultAisleId } = props;
+  const {
+    isOpen,
+    onClose,
+    defaultAisleId,
+    showDropdown = true,
+    showToast,
+  } = props;
   const [createShelf, { isLoading }] = useCreateShelfMutation({});
   const { handleSubmit } = useCustomMutation();
 
@@ -35,7 +43,11 @@ const ShelfModal = (props: ShelfModalProps) => {
     onSubmit: async (values, { resetForm }) => {
       const session = await getSession();
       const finalValue = { ...values, createdBy: session?.user?.username };
-      const response = await handleSubmit(createShelf, finalValue, '');
+      const response = await handleSubmit(
+        createShelf,
+        finalValue,
+        showToast ? 'Shelf Created Successfully' : ''
+      );
       if (response?.data) {
         onClose();
         resetForm();
@@ -65,15 +77,17 @@ const ShelfModal = (props: ShelfModalProps) => {
 
               {/* Main Form Starts Here */}
               <VStack width="full" spacing="16px">
-                <FormInputWrapper
-                  sectionMaxWidth="141px"
-                  customSpacing="16px"
-                  title="Aisle"
-                  description="Select Aisle"
-                  isRequired
-                >
-                  <AisleSelect type="general" />
-                </FormInputWrapper>
+                {showDropdown && (
+                  <FormInputWrapper
+                    sectionMaxWidth="141px"
+                    customSpacing="16px"
+                    title="Aisle"
+                    description="Select Aisle"
+                    isRequired
+                  >
+                    <AisleSelect type="general" />
+                  </FormInputWrapper>
+                )}
                 <FormInputWrapper
                   sectionMaxWidth="141px"
                   customSpacing="16px"

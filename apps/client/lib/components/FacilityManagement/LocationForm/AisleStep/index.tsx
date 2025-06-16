@@ -14,7 +14,8 @@ interface AisleStepProps {
 const AisleStep = (props: AisleStepProps) => {
   const { activeStep } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { values } = useFormikContext<LocationMasterFormInterface>();
+  const { values, setFieldValue } =
+    useFormikContext<LocationMasterFormInterface>();
 
   const flattenedAisles = useMemo(() => {
     return (
@@ -26,17 +27,18 @@ const AisleStep = (props: AisleStepProps) => {
             const rooms = department?.createRoomDtos ?? [];
             return rooms.flatMap((room, roomIdx) => {
               const aisles = room?.createAisleDtos ?? [];
-              return aisles.map((aisle) => ({
+              return aisles.map((aisle, aisleIdx) => ({
                 buildingName: building.createBuildingDto.buildingName,
                 floorName: floor.createFloorDto.floorName,
                 departmentName: department.createDepartmentDto.departmentName,
                 roomName: room.createRoomDto.roomName,
                 aisleName: aisle.createAisleDto.aisleName,
                 aisleRef: aisle.createAisleDto.aisleRef,
-                buildingId: buildingIdx,
-                floorId: floorIdx,
-                departmentId: departmentIdx,
-                roomId: roomIdx,
+                buildingIndex: buildingIdx,
+                floorIndex: floorIdx,
+                departmentIndex: departmentIdx,
+                roomIndex: roomIdx,
+                aisleIndex: aisleIdx,
               }));
             });
           });
@@ -45,11 +47,70 @@ const AisleStep = (props: AisleStepProps) => {
     );
   }, [values?.createBuildingDtos]);
 
+  const handleDelete = (
+    buildingIndex: number,
+    floorIndex: number,
+    departmentIndex: number,
+    roomIndex: number,
+    aisleIndex: number
+  ) => {
+    const updatedBuildings = [...(values.createBuildingDtos ?? [])];
+    if (
+      updatedBuildings[buildingIndex] &&
+      Array.isArray(updatedBuildings[buildingIndex].createFloorDtos)
+    ) {
+      const updatedFloors = [
+        ...updatedBuildings[buildingIndex].createFloorDtos,
+      ];
+      if (
+        updatedFloors[floorIndex] &&
+        Array.isArray(updatedFloors[floorIndex].createDepartmentDtos)
+      ) {
+        const updatedDepartments = [
+          ...updatedFloors[floorIndex].createDepartmentDtos,
+        ];
+        if (
+          updatedDepartments[departmentIndex] &&
+          Array.isArray(updatedDepartments[departmentIndex].createRoomDtos)
+        ) {
+          const updatedRooms = [
+            ...updatedDepartments[departmentIndex].createRoomDtos,
+          ];
+          if (
+            updatedRooms[roomIndex] &&
+            Array.isArray(updatedRooms[roomIndex].createAisleDtos)
+          ) {
+            const updatedAisles = [...updatedRooms[roomIndex].createAisleDtos];
+            updatedAisles.splice(aisleIndex, 1);
+            updatedRooms[roomIndex] = {
+              ...updatedRooms[roomIndex],
+              createAisleDtos: updatedAisles,
+            };
+            updatedDepartments[departmentIndex] = {
+              ...updatedDepartments[departmentIndex],
+              createRoomDtos: updatedRooms,
+            };
+            updatedFloors[floorIndex] = {
+              ...updatedFloors[floorIndex],
+              createDepartmentDtos: updatedDepartments,
+            };
+            updatedBuildings[buildingIndex] = {
+              ...updatedBuildings[buildingIndex],
+              createFloorDtos: updatedFloors,
+            };
+            setFieldValue('createBuildingDtos', updatedBuildings);
+          }
+        }
+      }
+    }
+  };
+
   const columnHelper = createColumnHelper<{
-    buildingId: number;
-    floorId: number;
-    departmentId: number;
-    roomId: number;
+    buildingIndex: number;
+    floorIndex: number;
+    departmentIndex: number;
+    roomIndex: number;
+    aisleIndex: number;
     buildingName: string;
     floorName: string;
     departmentName: string;
@@ -61,11 +122,11 @@ const AisleStep = (props: AisleStepProps) => {
   const columns = useMemo(
     () => [
       columnHelper.accessor('aisleRef', {
-        cell: (info) => info.getValue(),
+        cell: (info) => info.getValue() ?? 'N/A',
         header: 'Aisle Ref',
         enableSorting: false,
       }),
-      columnHelper.accessor('roomName', {
+      columnHelper.accessor('aisleName', {
         cell: (info) => info.getValue(),
         header: 'Aisle Name',
         enableSorting: false,
@@ -92,12 +153,24 @@ const AisleStep = (props: AisleStepProps) => {
       }),
       columnHelper.display({
         id: 'action',
-        cell: () => <PopoverAction />,
+        cell: (info) => (
+          <PopoverAction
+            handleDelete={() =>
+              handleDelete(
+                info.row.original.buildingIndex,
+                info.row.original.floorIndex,
+                info.row.original.departmentIndex,
+                info.row.original.roomIndex,
+                info.row.original.aisleIndex
+              )
+            }
+          />
+        ),
         header: 'Action',
         enableSorting: false,
       }),
     ],
-    []
+    [flattenedAisles]
   );
 
   return (
@@ -107,10 +180,7 @@ const AisleStep = (props: AisleStepProps) => {
         width="full"
         alignItems="center"
         bgColor="white"
-        pt={{ base: '16px', lg: '19px' }}
-        pl={{ md: '24px', lg: '28px' }}
-        pb={{ base: '16px', lg: '33px' }}
-        pr={{ md: '24px', lg: '38px' }}
+        p="8px"
         rounded="6px"
         minH={{ lg: '60vh' }}
         display={activeStep === 6 ? 'flex' : 'none'}

@@ -29,6 +29,7 @@ interface Aisle extends BaseEntity {
   aisleName: string;
   aisleRef: string;
   roomId: number;
+  totalShelvesInAisle: number;
 }
 
 interface Country extends BaseEntity {
@@ -50,6 +51,7 @@ interface Facility extends BaseEntity {
   address: string;
   longitude: number;
   latitude: number;
+  totalBuildingsInFacility: number;
 }
 
 interface Floor extends BaseEntity {
@@ -57,6 +59,7 @@ interface Floor extends BaseEntity {
   buildingId: number;
   floorName: string;
   floorRef: string;
+  departmentsInFloor: number;
 }
 
 interface Building extends BaseEntity {
@@ -67,6 +70,7 @@ interface Building extends BaseEntity {
   address: string;
   longitude: number;
   latitude: number;
+  totalFloorsInBuilding: number;
 }
 
 interface Department extends BaseEntity {
@@ -74,6 +78,7 @@ interface Department extends BaseEntity {
   departmentName: string;
   departmentRef: string;
   floorId: number;
+  totalRoomsInDepartmentFloor: number;
 }
 
 interface Room extends BaseEntity {
@@ -81,6 +86,7 @@ interface Room extends BaseEntity {
   roomName: string;
   roomRef: string;
   departmentId: number;
+  totalAislesInRoom: number;
 }
 
 interface Shelf extends BaseEntity {

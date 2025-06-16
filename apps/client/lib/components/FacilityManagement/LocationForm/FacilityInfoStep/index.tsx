@@ -22,9 +22,8 @@ const FacilityInfoStep = (props: FacilityInfoStepProps) => {
       alignItems="flex-start"
       bgColor="white"
       pt={{ base: '16px', lg: '19px' }}
-      pl={{ md: '24px', lg: '28px' }}
+      px="16px"
       pb={{ base: '16px', lg: '33px' }}
-      pr={{ md: '24px', lg: '38px' }}
       rounded="6px"
       minH={{ lg: '60vh' }}
       display={activeStep === 1 ? 'flex' : 'none'}

@@ -5,19 +5,16 @@ import {
   VStack,
 } from '@chakra-ui/react';
 
-import { DataTable, GenericDrawer, GenericPopover } from '@repo/ui/components';
-import HeaderActionButtons from './HeaderActionButtons';
-import {
-  useDeleteBuildingMutation,
-  useGetBuildingsByFacilityIdQuery,
-} from '~/lib/redux/services/location/building.services';
-import { useParams } from 'next/navigation';
+import { DataTable, GenericDrawer } from '@repo/ui/components';
+import { useGetBuildingsByFacilityIdQuery } from '~/lib/redux/services/location/building.services';
 import { Building, Facility } from '~/lib/interfaces/location.interfaces';
-import InfoCard from './InfoCard';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useMemo, useState } from 'react';
-import FloorDetailDrawer from './FloorDetailDrawer';
-import DeletePopover from './DeletePopover';
+import PopoverAction from './PopoverAction';
+import HeaderActionButtons from '../HeaderActionButtons';
+import InfoCard from '../InfoCard';
+import FloorDetailDrawer from '../FloorDetailDrawer';
+import BuildingModal from '~/lib/components/AssetManagement/AssetForm/GeneralStep/AssetLocation/Modals/BuildingModal';
 
 interface BuildingDetailDrawerProps {
   isOpen: boolean;
@@ -41,9 +38,11 @@ const BuildingDetailDrawer = (props: BuildingDetailDrawerProps) => {
     onClose: onCloseFloorDetail,
     onOpen: onOpenFloorDetail,
   } = useDisclosure();
-  const [deleteBuilding, { isLoading: isDeleting }] =
-    useDeleteBuildingMutation();
-
+  const {
+    isOpen: isOpenCreateModal,
+    onClose: onCloseCreateModal,
+    onOpen: onOpenCreateModal,
+  } = useDisclosure();
   const columnHelper = createColumnHelper<Building>();
 
   const columns = useMemo(
@@ -66,13 +65,7 @@ const BuildingDetailDrawer = (props: BuildingDetailDrawerProps) => {
         }),
         columnHelper.display({
           id: 'action',
-          cell: (info) => (
-            <DeletePopover
-              id={info.row.original.buildingId}
-              mutationFn={deleteBuilding}
-              isLoading={isDeleting}
-            />
-          ),
+          cell: (info) => <PopoverAction data={info.row.original} />,
           header: 'Action',
           enableSorting: false,
         }),
@@ -87,14 +80,18 @@ const BuildingDetailDrawer = (props: BuildingDetailDrawerProps) => {
     <>
       <GenericDrawer isOpen={isOpen} onClose={onClose} maxWidth="597px">
         <DrawerHeader p={0} m={0}>
-          <HeaderActionButtons closeDrawer={onClose} />
+          <HeaderActionButtons
+            closeDrawer={onClose}
+            suffix="Building"
+            handleButtonClick={onOpenCreateModal}
+          />
         </DrawerHeader>
         <DrawerBody p={0}>
           <VStack spacing="24px">
             <InfoCard
               title={`${facilityData?.facilityName} (Facility)`}
               subtitle={facilityData?.address}
-              count={5}
+              count={facilityData?.totalBuildingsInFacility}
               locationTitle="Buildings"
             />
             <DataTable
@@ -125,6 +122,13 @@ const BuildingDetailDrawer = (props: BuildingDetailDrawerProps) => {
           buildingData={selectedBuilding}
         />
       )}
+      <BuildingModal
+        isOpen={isOpenCreateModal}
+        onClose={onCloseCreateModal}
+        defaultFacilityId={facilityData.facilityId}
+        showDropdown={false}
+        showToast
+      />
     </>
   );
 };

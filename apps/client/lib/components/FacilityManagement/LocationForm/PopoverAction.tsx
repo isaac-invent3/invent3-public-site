@@ -1,25 +1,24 @@
 /* eslint-disable no-unused-vars */
-import { Text, VStack } from '@chakra-ui/react';
-import { GenericPopover } from '@repo/ui/components';
+import { Text, useDisclosure, VStack } from '@chakra-ui/react';
+import { GenericDeleteModal, GenericPopover } from '@repo/ui/components';
 
 interface PopoverActionProps {
   handleEdit?: () => void;
-  handleDelete?: () => void;
+  handleDelete: () => void;
 }
 
 const PopoverAction = ({ handleEdit, handleDelete }: PopoverActionProps) => {
+  const { isOpen, onClose, onOpen } = useDisclosure();
   return (
     <>
-      <GenericPopover width="137px" placement="bottom-start">
-        <VStack width="full" alignItems="flex-start" spacing="16px">
-          <Text cursor="pointer" onClick={handleEdit}>
-            Edit
-          </Text>
-          <Text cursor="pointer" color="#F5000080" onClick={handleDelete}>
-            Delete
-          </Text>
-        </VStack>
-      </GenericPopover>
+      <Text cursor="pointer" color="#F50000" onClick={onOpen}>
+        Delete
+      </Text>
+      <GenericDeleteModal
+        isOpen={isOpen}
+        onClose={onClose}
+        handleDelete={handleDelete}
+      />
     </>
   );
 };

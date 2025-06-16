@@ -79,6 +79,23 @@ export const shelfApi = createApi({
       }),
       invalidatesTags: ['shelvesByAisleId'],
     }),
+    updateShelf: builder.mutation<
+      BaseApiResponse<Shelf>,
+      {
+        shelfId: number;
+        shelfName: string;
+        shelfRef: string;
+        lastModifiedBy: string;
+      }
+    >({
+      query: (body) => ({
+        url: `/Shelves/${body.shelfId}`,
+        method: 'PUT',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['shelvesByAisleId'],
+    }),
   }),
 });
 
@@ -88,4 +105,5 @@ export const {
   useGetShelvesByAisleIdQuery,
   useSearchShelfMutation,
   useDeleteShelfMutation,
+  useUpdateShelfMutation,
 } = shelfApi;

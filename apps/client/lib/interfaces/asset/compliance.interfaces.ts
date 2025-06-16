@@ -169,8 +169,8 @@ interface CreateAssetComplianceDto {
   assetId?: number;
   regulationId: number;
   complianceRegulationId?: number;
-  lastInspectionDate?: string;
-  nextInspectionDate?: string;
+  lastInspectionDate?: string | null;
+  nextInspectionDate: string | null;
   complianceStatusId?: number;
   dateCreated?: string;
   createdBy: string;

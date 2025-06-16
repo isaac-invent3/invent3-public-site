@@ -79,6 +79,25 @@ export const floorApi = createApi({
       }),
       invalidatesTags: ['floorsByBuildingId'],
     }),
+    updateFloor: builder.mutation<
+      BaseApiResponse<Floor>,
+      {
+        floorId: number;
+        floorName: string;
+        floorRef?: string;
+        imageBasePrefix?: string;
+        floorPlanImage?: string;
+        lastModifiedBy: string;
+      }
+    >({
+      query: (body) => ({
+        url: `/Floors/${body.floorId}`,
+        method: 'PUT',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['floorsByBuildingId'],
+    }),
   }),
 });
 
@@ -88,4 +107,5 @@ export const {
   useGetFloorsByBuildingIdQuery,
   useSearchFloorsMutation,
   useDeleteFloorMutation,
+  useUpdateFloorMutation,
 } = floorApi;

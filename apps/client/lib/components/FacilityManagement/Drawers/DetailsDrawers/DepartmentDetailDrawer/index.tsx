@@ -1,6 +1,7 @@
 import {
   DrawerBody,
   DrawerHeader,
+  Heading,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
@@ -15,17 +16,21 @@ import InfoCard from '../InfoCard';
 import RoomDetailDrawer from '../RoomDetailDrawer';
 import PopoverAction from './PopoverAction';
 import DepartmentModal from '~/lib/components/AssetManagement/AssetForm/GeneralStep/AssetLocation/Modals/DepartmentModal';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 interface DepartmentDetailDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   floorData: Floor;
+  buildingName: string;
 }
 
 const DepartmentDetailDrawer = (props: DepartmentDetailDrawerProps) => {
-  const { floorData, isOpen, onClose } = props;
+  const { floorData, isOpen, onClose, buildingName } = props;
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const { data, isLoading, isFetching } = useGetDepartmentsByFloorIdQuery(
-    { id: floorData.floorId },
+    { id: floorData.floorId, pageNumber, pageSize },
     {
       skip: !floorData.floorId,
     }
@@ -88,9 +93,20 @@ const DepartmentDetailDrawer = (props: DepartmentDetailDrawerProps) => {
           />
         </DrawerHeader>
         <DrawerBody p={0}>
-          <VStack spacing="24px">
+          <VStack spacing="24px" alignItems="flex-start">
+            <Heading
+              fontSize={{ base: '16px', lg: '24px' }}
+              px={{ base: '16px', lg: '32px' }}
+              lineHeight="100%"
+              fontWeight={800}
+              color="neutral.800"
+            >
+              Floor Details
+            </Heading>
             <InfoCard
-              title={`${floorData?.floorName} (Floor)`}
+              title={`${floorData?.floorName}`}
+              dividerText="In"
+              subtitle={buildingName}
               count={floorData?.departmentsInFloor}
               locationTitle="Departments"
             />
@@ -98,9 +114,16 @@ const DepartmentDetailDrawer = (props: DepartmentDetailDrawerProps) => {
               columns={columns}
               isLoading={isLoading || isFetching}
               data={data?.data?.items ?? []}
-              showFooter={false}
+              showFooter={
+                data?.data?.hasNextPage || data?.data?.hasPreviousPage
+              }
+              pageNumber={pageNumber}
+              setPageNumber={setPageNumber}
+              pageSize={pageSize}
+              setPageSize={setPageSize}
+              customThStyle={{ paddingLeft: { base: '16px', lg: '32px' } }}
               customTdStyle={{
-                paddingLeft: '16px',
+                paddingLeft: { base: '16px', lg: '32px' },
                 paddingTop: '12px',
                 paddingBottom: '12px',
                 bgColor: '#f2f1f1',
@@ -118,6 +141,7 @@ const DepartmentDetailDrawer = (props: DepartmentDetailDrawerProps) => {
           onClose={onCloseRoomDetail}
           isOpen={isOpenDepartmentDetail}
           departmentData={selectedDepartment}
+          floorName={floorData?.floorName}
         />
       )}
       <DepartmentModal

@@ -265,7 +265,7 @@ const handleExport = async (filePath: string) => {
 
   try {
     const response = await fetch(
-      `${baseURL}/api/Assets/Download?filePath=${filePath}`,
+      `${baseURL}/api/Invent3Pro/Download?filePath=${filePath}`,
       {
         method: 'GET',
         headers: {

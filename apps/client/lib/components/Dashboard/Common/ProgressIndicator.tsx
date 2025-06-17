@@ -19,7 +19,10 @@ const ProgressIndicator = ({ valueChange }: { valueChange: number }) => {
       <Text color={valueChange < 0 ? '#BA0000' : '#00A129'}>
         {valueChange < 0 && '-'}
         {valueChange > 0 && '+'}
-        {valueChange < 0 ? valueChange * -1 : valueChange}%
+        {valueChange < 0
+          ? (valueChange * -1).toFixed(2)
+          : valueChange.toFixed(2)}
+        %
       </Text>
     </HStack>
   );

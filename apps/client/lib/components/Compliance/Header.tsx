@@ -7,9 +7,11 @@ import CreateAssetComplianceDrawer from './Drawers/CreateComplianceDrawer';
 import ComplianceTypeDrawer from './Drawers/ComplianceTypeDrawer';
 
 const Header = ({
-  showComplianceType = false,
+  showComplianceType = true,
+  children,
 }: {
   showComplianceType?: boolean;
+  children?: React.ReactNode;
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -27,17 +29,20 @@ const Header = ({
       >
         <PageHeader>Compliance Management</PageHeader>
         <HStack spacing="24px">
-          <Button
-            customStyles={{
-              width: '184px',
-              height: { base: '36px', md: 'min-content' },
-              alignSelf: 'end',
-            }}
-            variant="outline"
-            handleClick={onOpenComplianceType}
-          >
-            Compliance Type
-          </Button>
+          {showComplianceType && (
+            <Button
+              customStyles={{
+                width: '184px',
+                height: { base: '36px', md: 'min-content' },
+                alignSelf: 'end',
+              }}
+              variant="outline"
+              handleClick={onOpenComplianceType}
+            >
+              Compliance Type
+            </Button>
+          )}
+          {children}
           <Button
             handleClick={onOpen}
             customStyles={{

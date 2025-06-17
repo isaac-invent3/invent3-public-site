@@ -27,6 +27,7 @@ import { useCreateMasterFacilityMutation } from '~/lib/redux/services/location/f
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { ImageObject } from '~/lib/interfaces/general.interfaces';
 
 const STEPS = [
   'Facility Info',
@@ -75,6 +76,10 @@ const LocationForm = (props: LocationFormProps) => {
                 lgaId: values.lgaId!,
                 facilityName: values.facilityName!,
                 address: values.address,
+                imageName: (values?.picture as unknown as ImageObject)
+                  ?.imageName!,
+                base64PhotoImage: (values?.picture as unknown as ImageObject)
+                  ?.base64PhotoImage!,
                 createdBy: session?.user?.username!,
               },
               createBuildingDtos: values.createBuildingDtos,
@@ -133,7 +138,10 @@ const LocationForm = (props: LocationFormProps) => {
                   activeStep={activeStep}
                   setActiveStep={setActiveStep}
                   type="button"
-                  isLoading={isLoading || formik.isSubmitting}
+                  isLoading={
+                    (isLoading || formik.isSubmitting) &&
+                    activeStep === STEPS.length
+                  }
                   handleContinue={async () => {
                     if (activeStep < STEPS.length) {
                       const valid = await formik.validateForm();

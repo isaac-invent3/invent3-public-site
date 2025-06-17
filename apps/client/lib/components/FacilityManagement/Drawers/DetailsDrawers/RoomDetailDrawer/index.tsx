@@ -1,6 +1,7 @@
 import {
   DrawerBody,
   DrawerHeader,
+  Heading,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
@@ -15,17 +16,21 @@ import HeaderActionButtons from '../HeaderActionButtons';
 import InfoCard from '../InfoCard';
 import AisleDetailDrawer from '../AisleDetailDrawer';
 import RoomModal from '~/lib/components/AssetManagement/AssetForm/GeneralStep/AssetLocation/Modals/RoomModal';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 interface RoomDetailDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   departmentData: Department;
+  floorName: string;
 }
 
 const RoomDetailDrawer = (props: RoomDetailDrawerProps) => {
-  const { departmentData, isOpen, onClose } = props;
+  const { departmentData, isOpen, onClose, floorName } = props;
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const { data, isLoading, isFetching } = useGetRoomsByDepartmentIdQuery(
-    { id: departmentData.departmentId },
+    { id: departmentData.departmentId, pageSize, pageNumber },
     {
       skip: !departmentData.departmentId,
     }
@@ -86,9 +91,20 @@ const RoomDetailDrawer = (props: RoomDetailDrawerProps) => {
           />
         </DrawerHeader>
         <DrawerBody p={0}>
-          <VStack spacing="24px">
+          <VStack spacing="24px" alignItems="flex-start">
+            <Heading
+              fontSize={{ base: '16px', lg: '24px' }}
+              px={{ base: '16px', lg: '32px' }}
+              lineHeight="100%"
+              fontWeight={800}
+              color="neutral.800"
+            >
+              Department Details
+            </Heading>
             <InfoCard
-              title={`${departmentData?.departmentName} (Department)`}
+              title={`${departmentData?.departmentName}`}
+              dividerText="On"
+              subtitle={floorName}
               count={departmentData?.totalRoomsInDepartmentFloor}
               locationTitle="Rooms"
             />
@@ -96,9 +112,16 @@ const RoomDetailDrawer = (props: RoomDetailDrawerProps) => {
               columns={columns}
               isLoading={isLoading || isFetching}
               data={data?.data?.items ?? []}
-              showFooter={false}
+              showFooter={
+                data?.data?.hasNextPage || data?.data?.hasPreviousPage
+              }
+              pageNumber={pageNumber}
+              setPageNumber={setPageNumber}
+              pageSize={pageSize}
+              setPageSize={setPageSize}
+              customThStyle={{ paddingLeft: { base: '16px', lg: '32px' } }}
               customTdStyle={{
-                paddingLeft: '16px',
+                paddingLeft: { base: '16px', lg: '32px' },
                 paddingTop: '12px',
                 paddingBottom: '12px',
                 bgColor: '#f2f1f1',
@@ -116,6 +139,7 @@ const RoomDetailDrawer = (props: RoomDetailDrawerProps) => {
           onClose={onCloseAisleDetail}
           isOpen={isOpenAisleDetail}
           roomData={selectedRoom}
+          departmentName={departmentData?.departmentName}
         />
       )}
       <RoomModal

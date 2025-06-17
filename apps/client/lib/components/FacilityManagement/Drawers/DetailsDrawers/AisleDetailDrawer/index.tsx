@@ -1,6 +1,7 @@
 import {
   DrawerBody,
   DrawerHeader,
+  Heading,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
@@ -15,17 +16,21 @@ import { useGetAislesByRoomIdQuery } from '~/lib/redux/services/location/aisle.s
 import ShelfDetailDrawer from '../ShelfDetailDrawer';
 import PopoverAction from './PopoverAction';
 import AisleModal from '~/lib/components/AssetManagement/AssetForm/GeneralStep/AssetLocation/Modals/AisleModal';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 interface AisleDetailDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   roomData: Room;
+  departmentName: string;
 }
 
 const AisleDetailDrawer = (props: AisleDetailDrawerProps) => {
-  const { roomData, isOpen, onClose } = props;
+  const { roomData, isOpen, onClose, departmentName } = props;
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const { data, isLoading, isFetching } = useGetAislesByRoomIdQuery(
-    { id: roomData.roomId },
+    { id: roomData.roomId, pageNumber, pageSize },
     {
       skip: !roomData.roomId,
     }
@@ -86,9 +91,20 @@ const AisleDetailDrawer = (props: AisleDetailDrawerProps) => {
           />
         </DrawerHeader>
         <DrawerBody p={0}>
-          <VStack spacing="24px">
+          <VStack spacing="24px" alignItems="flex-start">
+            <Heading
+              fontSize={{ base: '16px', lg: '24px' }}
+              px={{ base: '16px', lg: '32px' }}
+              lineHeight="100%"
+              fontWeight={800}
+              color="neutral.800"
+            >
+              Room Details
+            </Heading>
             <InfoCard
-              title={`${roomData?.roomName} (Room)`}
+              title={`${roomData?.roomName}`}
+              dividerText="In"
+              subtitle={departmentName}
               count={roomData?.totalAislesInRoom}
               locationTitle="Aisles"
             />
@@ -96,9 +112,16 @@ const AisleDetailDrawer = (props: AisleDetailDrawerProps) => {
               columns={columns}
               isLoading={isLoading || isFetching}
               data={data?.data?.items ?? []}
-              showFooter={false}
+              showFooter={
+                data?.data?.hasNextPage || data?.data?.hasPreviousPage
+              }
+              pageNumber={pageNumber}
+              setPageNumber={setPageNumber}
+              pageSize={pageSize}
+              setPageSize={setPageSize}
+              customThStyle={{ paddingLeft: { base: '16px', lg: '32px' } }}
               customTdStyle={{
-                paddingLeft: '16px',
+                paddingLeft: { base: '16px', lg: '32px' },
                 paddingTop: '12px',
                 paddingBottom: '12px',
                 bgColor: '#f2f1f1',
@@ -116,6 +139,7 @@ const AisleDetailDrawer = (props: AisleDetailDrawerProps) => {
           onClose={onCloseShelfDetail}
           isOpen={isOpenShelfDetail}
           aisleData={selectedAisle}
+          roomName={roomData?.roomName}
         />
       )}
       <AisleModal

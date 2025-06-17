@@ -12,11 +12,11 @@ import {
 import {
   BackButton,
   Button,
-  DateTimeButtons,
   FormInputWrapper,
   FormTextAreaInput,
   GenericDrawer,
   GenericSuccessModal,
+  TextInput,
 } from '@repo/ui/components';
 import { Field, FormikProvider, useFormik } from 'formik';
 import { getSession } from 'next-auth/react';
@@ -24,21 +24,17 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useCreateAssetComplianceMutation } from '~/lib/redux/services/asset/compliance.services';
 import { createComplianceSchema } from '~/lib/schemas/asset/compliance.schema';
 import CategorySelect from '~/lib/components/AssetManagement/AssetForm/GeneralStep/AssetCategory/CategorySelect';
-import FrequencySelect from '~/lib/components/Common/Frequency';
-import DocumentUploadAndView from '~/lib/components/Common/DocumentUploadAndView';
 import { Document } from '~/lib/interfaces/general.interfaces';
-import ComplianceType from './ComplianceType';
-import Compliance from './Compliances';
 import moment from 'moment';
+import ComplianceType from './CreateComplianceDrawer/ComplianceType';
+import Compliance from '..';
 
-interface CreateAssetComplianceDrawerProps {
+interface MarkComplianceStatusDrawerProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const CreateAssetComplianceDrawer = (
-  props: CreateAssetComplianceDrawerProps
-) => {
+const MarkComplianceStatusDrawer = (props: MarkComplianceStatusDrawerProps) => {
   const { isOpen, onClose } = props;
   const {
     isOpen: isOpenSuccess,
@@ -135,11 +131,11 @@ const CreateAssetComplianceDrawer = (
                   color="primary.500"
                   fontWeight={800}
                 >
-                  Assign Compliance
+                  Mark Compliance Status
                 </Heading>
                 <Text color="neutral.700" fontWeight={400} size="md">
-                  Assign relevant compliance standards to this asset category
-                  for proper governance.
+                  Track and document all compliance-related activities to ensure
+                  accountability, transparency, and regulatory readiness.
                 </Text>
               </VStack>
 
@@ -161,13 +157,13 @@ const CreateAssetComplianceDrawer = (
                     <CategorySelect name="assetCategoryId" />
                   </FormInputWrapper>
                   <ComplianceType />
-                  <Compliance />
+                  {/* <Compliance /> */}
                   <FormInputWrapper
                     sectionMaxWidth="141px"
                     customSpacing="24px"
-                    description="Provide details about the task objective"
-                    title="Policy Description"
-                    isRequired
+                    description="Provide Comments about the Action Taken"
+                    title="Comments"
+                    isRequired={false}
                   >
                     <Field
                       as={FormTextAreaInput}
@@ -179,59 +175,18 @@ const CreateAssetComplianceDrawer = (
                     />
                   </FormInputWrapper>
                   <FormInputWrapper
-                    title="Frequency"
-                    description="Choose how often the occurence will repeat"
+                    sectionMaxWidth="141px"
+                    customSpacing="24px"
+                    description="Provide details about who perfomed this Action"
+                    title="Performed By"
                     isRequired
-                    sectionMaxWidth="141px"
-                    customSpacing="24px"
                   >
-                    <FrequencySelect
-                      selectName="frequencyId"
-                      selectTitle="Frequency"
-                    />
-                  </FormInputWrapper>
-
-                  <FormInputWrapper
-                    sectionMaxWidth="141px"
-                    customSpacing="24px"
-                    description="Specify the Effective Date for Starting Compliance"
-                    title="Start Date"
-                  >
-                    <DateTimeButtons
-                      buttonVariant="secondary"
-                      includeTime={false}
-                      showPredefinedDates
-                      selectedDate={
-                        formik.values.nextInspectionDate ?? undefined
-                      }
-                      handleDateTimeSelect={(dateTime) => {
-                        formik.setFieldValue(
-                          'nextInspectionDate',
-                          dateTime?.trim() ?? null
-                        );
-                      }}
-                    />
-                  </FormInputWrapper>
-
-                  <FormInputWrapper
-                    sectionMaxWidth="141px"
-                    customSpacing="24px"
-                    description="Upload compliance documentation"
-                    title="Upload File (PDF, docx)"
-                  >
-                    <DocumentUploadAndView
-                      variant="secondary"
-                      handleRemoveDocuments={(document) =>
-                        handleRemoveDocument(document)
-                      }
-                      handleAddDocuments={(documents) => {
-                        formik.setFieldValue('documents', documents);
-                      }}
-                      documents={formik.values.documents}
-                      setError={(error) =>
-                        formik.setErrors({ documents: error.toString() })
-                      }
-                      error={formik.errors.documents as string}
+                    <Field
+                      as={TextInput}
+                      name="issueDescription"
+                      type="text"
+                      label="Description"
+                      placeholder="Performed By"
                     />
                   </FormInputWrapper>
                 </VStack>
@@ -266,7 +221,7 @@ const CreateAssetComplianceDrawer = (
                   height: '50px',
                 }}
               >
-                Assign
+                Save
               </Button>
             </HStack>
           </DrawerFooter>
@@ -296,4 +251,4 @@ const CreateAssetComplianceDrawer = (
   );
 };
 
-export default CreateAssetComplianceDrawer;
+export default MarkComplianceStatusDrawer;

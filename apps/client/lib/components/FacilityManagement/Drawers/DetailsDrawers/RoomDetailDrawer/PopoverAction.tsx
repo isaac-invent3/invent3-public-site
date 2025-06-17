@@ -36,8 +36,10 @@ const PopoverAction = ({ data }: { data: Room }) => {
     <>
       <GenericPopover placement="bottom-start" width="120px">
         <VStack alignItems="flex-start">
-          <Text onClick={onOpenEdit}>Edit</Text>
-          <Text color="#F50000" onClick={onOpenDelete}>
+          <Text onClick={onOpenEdit} cursor="pointer">
+            Edit
+          </Text>
+          <Text color="#F50000" onClick={onOpenDelete} cursor="pointer">
             Delete
           </Text>
         </VStack>

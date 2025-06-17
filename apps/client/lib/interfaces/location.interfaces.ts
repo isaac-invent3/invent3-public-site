@@ -45,12 +45,22 @@ interface LGA extends BaseEntity {
 
 interface Facility extends BaseEntity {
   facilityId: number;
-  lgaId: number;
+  lgaid: number;
+  lganame: string;
+  stateId: number;
+  stateName: string;
+  countryId: number;
+  countryName: string;
   facilityName: string;
   facilityRef: string;
   address: string;
   longitude: number;
   latitude: number;
+  currentCapacity: number;
+  maxCapacity: number;
+  image: string;
+  imageBasePrefix: string;
+  energyCostPerKwh: number;
   totalBuildingsInFacility: number;
 }
 
@@ -175,13 +185,9 @@ interface createFacilityDtos {
   longitude?: number;
   latitude?: number;
   energyCostPerKwh?: number;
+  imageName?: string | null;
+  base64PhotoImage?: string | null;
   createdBy: string;
-}
-interface FacilityFormData {
-  facilityId: number;
-  countryId: number;
-  stateId: number;
-  lgaId: number;
 }
 
 interface LocationMasterFormInterface {

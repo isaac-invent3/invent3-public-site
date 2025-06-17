@@ -1,6 +1,7 @@
 import {
   DrawerBody,
   DrawerHeader,
+  Heading,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
@@ -8,23 +9,27 @@ import {
 import { DataTable, GenericDrawer, GenericPopover } from '@repo/ui/components';
 import { Aisle, Shelf } from '~/lib/interfaces/location.interfaces';
 import { createColumnHelper } from '@tanstack/react-table';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useGetShelvesByAisleIdQuery } from '~/lib/redux/services/location/shelf.services';
 import HeaderActionButtons from '../HeaderActionButtons';
 import InfoCard from '../InfoCard';
 import PopoverAction from './PopoverAction';
 import ShelfModal from '~/lib/components/AssetManagement/AssetForm/GeneralStep/AssetLocation/Modals/ShelfModal';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 interface ShelfDetailDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   aisleData: Aisle;
+  roomName: string;
 }
 
 const ShelfDetailDrawer = (props: ShelfDetailDrawerProps) => {
-  const { aisleData, isOpen, onClose } = props;
+  const { aisleData, isOpen, onClose, roomName } = props;
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const { data, isLoading, isFetching } = useGetShelvesByAisleIdQuery(
-    { id: aisleData.aisleId },
+    { id: aisleData.aisleId, pageNumber, pageSize },
     {
       skip: !aisleData.aisleId,
     }
@@ -74,9 +79,20 @@ const ShelfDetailDrawer = (props: ShelfDetailDrawerProps) => {
           />
         </DrawerHeader>
         <DrawerBody p={0}>
-          <VStack spacing="24px">
+          <VStack spacing="24px" alignItems="flex-start">
+            <Heading
+              fontSize={{ base: '16px', lg: '24px' }}
+              px={{ base: '16px', lg: '32px' }}
+              lineHeight="100%"
+              fontWeight={800}
+              color="neutral.800"
+            >
+              Aisle Details
+            </Heading>
             <InfoCard
-              title={`${aisleData?.aisleName} (Aisle)`}
+              title={`${aisleData?.aisleName}`}
+              dividerText="In"
+              subtitle={roomName}
               count={aisleData?.totalShelvesInAisle}
               locationTitle="Shelves"
             />
@@ -84,9 +100,16 @@ const ShelfDetailDrawer = (props: ShelfDetailDrawerProps) => {
               columns={columns}
               isLoading={isLoading || isFetching}
               data={data?.data?.items ?? []}
-              showFooter={false}
+              showFooter={
+                data?.data?.hasNextPage || data?.data?.hasPreviousPage
+              }
+              pageNumber={pageNumber}
+              setPageNumber={setPageNumber}
+              pageSize={pageSize}
+              setPageSize={setPageSize}
+              customThStyle={{ paddingLeft: { base: '16px', lg: '32px' } }}
               customTdStyle={{
-                paddingLeft: '16px',
+                paddingLeft: { base: '16px', lg: '32px' },
                 paddingTop: '12px',
                 paddingBottom: '12px',
                 bgColor: '#f2f1f1',

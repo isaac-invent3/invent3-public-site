@@ -14,7 +14,7 @@ const ComplianceType = () => {
     <FormInputWrapper
       sectionMaxWidth="141px"
       customSpacing="24px"
-      description="Specify the expected lifespan of the asset"
+      description="Select Compliance Type"
       title="Compliance Type"
       isRequired
     >

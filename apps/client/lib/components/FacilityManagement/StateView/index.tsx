@@ -11,8 +11,8 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import { Button, EmptyState } from '@repo/ui/components';
-import { ROUTES } from '~/lib/utils/constants';
+import { Button, ButtonPagination, EmptyState } from '@repo/ui/components';
+import { DEFAULT_PAGE_SIZE, ROUTES } from '~/lib/utils/constants';
 import { useGetFacilitiesByStateIdQuery } from '~/lib/redux/services/location/facility.services';
 import { useParams } from 'next/navigation';
 import PageHeader from '../../UI/PageHeader';
@@ -25,10 +25,16 @@ const StateView = ({ data: stateData }: { data: State }) => {
   const params = useParams();
   const stateId = params?.stateId as unknown as number;
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [selectedFacility, setSelectedFacility] = useState<Facility | null>(
     null
   );
-  const { data, isLoading } = useGetFacilitiesByStateIdQuery({ id: stateId });
+  const { data, isLoading, isFetching } = useGetFacilitiesByStateIdQuery({
+    id: stateId,
+    pageSize,
+    pageNumber,
+  });
 
   return (
     <>
@@ -61,48 +67,64 @@ const StateView = ({ data: stateData }: { data: State }) => {
           p="16px"
           alignItems="flex-start"
           bgColor="white"
+          justifyContent="space-between"
         >
-          <Heading size="lg">{`${stateData?.stateName} State`}</Heading>
-          {isLoading && (
-            <SimpleGrid
-              width="full"
-              columns={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
-              gap={{ base: '16px', lg: '8px' }}
-            >
-              {Array(10)
-                .fill('')
-                .map((_, index) => (
-                  <Skeleton
-                    width="full"
-                    height="175px"
-                    rounded="8px"
+          <VStack spacing="19px" alignItems="flex-start" width="full">
+            <Heading size="lg">{`${stateData?.stateName} State`}</Heading>
+            {isLoading && (
+              <SimpleGrid
+                width="full"
+                columns={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
+                gap={{ base: '16px', lg: '8px' }}
+              >
+                {Array(10)
+                  .fill('')
+                  .map((_, index) => (
+                    <Skeleton
+                      width="full"
+                      height="175px"
+                      rounded="8px"
+                      key={index}
+                    />
+                  ))}
+              </SimpleGrid>
+            )}
+            {!isLoading && data?.data && data?.data?.items.length > 0 && (
+              <SimpleGrid
+                width="full"
+                columns={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
+                gap={{ base: '16px', lg: '8px' }}
+                opacity={isFetching ? 0.5 : 1}
+              >
+                {data?.data?.items.map((item, index) => (
+                  <LocationCard
+                    handleClick={() => {
+                      setSelectedFacility(item);
+                      onOpen();
+                    }}
+                    title={`${item.facilityName}`}
+                    subtitle={`${item.address}`}
                     key={index}
+                    imageUrl={
+                      item?.image && item?.imageBasePrefix
+                        ? `${item?.imageBasePrefix}${item?.image}`
+                        : undefined
+                    }
+                    customStyle={{ width: 'full' }}
                   />
                 ))}
-            </SimpleGrid>
-          )}
-          {!isLoading && data?.data && data?.data?.items.length > 0 && (
-            <SimpleGrid
-              width="full"
-              columns={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
-              gap={{ base: '16px', lg: '8px' }}
-            >
-              {data?.data?.items.map((item, index) => (
-                <LocationCard
-                  handleClick={() => {
-                    setSelectedFacility(item);
-                    onOpen();
-                  }}
-                  title={`${item.facilityName}`}
-                  subtitle={`${item.address}`}
-                  key={index}
-                  customStyle={{ width: 'full' }}
-                />
-              ))}
-            </SimpleGrid>
-          )}
-          {!isLoading && data && data?.data?.items.length === 0 && (
-            <EmptyState />
+              </SimpleGrid>
+            )}
+            {!isLoading && data && data?.data?.items.length === 0 && (
+              <EmptyState />
+            )}
+          </VStack>
+          {(data?.data?.hasPreviousPage || data?.data?.hasNextPage) && (
+            <ButtonPagination
+              currentPage={pageNumber}
+              setCurrentPage={setPageNumber}
+              totalPages={data?.data?.totalPages}
+            />
           )}
         </VStack>
       </Flex>

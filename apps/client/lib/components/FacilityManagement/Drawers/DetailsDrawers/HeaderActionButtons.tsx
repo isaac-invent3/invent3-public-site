@@ -1,16 +1,23 @@
-import { HStack } from '@chakra-ui/react';
+import { HStack, Icon } from '@chakra-ui/react';
 import { BackButton, Button } from '@repo/ui/components';
 import React from 'react';
+import { DoubleRightChevronIcon } from '~/lib/components/CustomIcons';
 
 interface HeaderActionButtonsProps {
   closeDrawer: () => void;
   suffix: string;
   handleButtonClick: () => void;
+  children?: React.ReactNode;
+  showCloseAll?: boolean;
+  closeAllDrawers?: () => void;
 }
 const HeaderActionButtons = ({
   closeDrawer,
   suffix,
   handleButtonClick,
+  children,
+  showCloseAll = true,
+  closeAllDrawers,
 }: HeaderActionButtonsProps) => {
   return (
     <HStack
@@ -21,13 +28,27 @@ const HeaderActionButtons = ({
       width="full"
       justifyContent="space-between"
     >
-      <BackButton handleClick={closeDrawer} />
-      <Button
-        customStyles={{ height: '32px', width: 'max-content' }}
-        handleClick={handleButtonClick}
-      >
-        Create {suffix}
-      </Button>
+      <HStack spacing="16px">
+        {/* {showCloseAll && (
+          <Button
+            customStyles={{ height: '32px', width: '44px' }}
+            handleClick={closeAllDrawers}
+            variant="secondary"
+          >
+            <Icon as={DoubleRightChevronIcon} boxSize="20px" />
+          </Button>
+        )} */}
+        <BackButton handleClick={closeDrawer} />
+      </HStack>
+      <HStack spacing="16px">
+        <Button
+          customStyles={{ height: '32px', width: 'max-content' }}
+          handleClick={handleButtonClick}
+        >
+          Create {suffix}
+        </Button>
+        {children}
+      </HStack>
     </HStack>
   );
 };

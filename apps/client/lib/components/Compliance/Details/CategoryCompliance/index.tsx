@@ -2,7 +2,7 @@ import { Flex, HStack, useDisclosure, VStack } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import Header from '../../Header';
 import { AssetCategoryComplianceSummary } from '~/lib/interfaces/asset/compliance.interfaces';
-import { FilterButton, SearchInput } from '@repo/ui/components';
+import { Button, FilterButton, SearchInput } from '@repo/ui/components';
 import useExport from '~/lib/hooks/useExport';
 import { FilterIcon } from '~/lib/components/CustomIcons';
 import {
@@ -16,6 +16,7 @@ import SummaryInfo from './SummaryInfo';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import AssetComplianceDetailDrawer from '../../Drawers/AssetComplianceDetailDrawer';
 import AssetDetail from '~/lib/components/AssetManagement/AssetDetail';
+import MarkComplianceStatusDrawer from '../../Drawers/MarkComplianceStatusDrawer';
 
 interface CategoryComplianceProps {
   data: AssetCategoryComplianceSummary;
@@ -29,6 +30,11 @@ const CategoryCompliance = ({ data }: CategoryComplianceProps) => {
     isOpen: isOpenAssetCompliance,
     onOpen: onOpenAssetCompliance,
     onClose: onCloseAssetCompliance,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenMarkComplianceStatus,
+    onOpen: onOpenMarkComplianceStatus,
+    onClose: onCloseMarkComplianceStatus,
   } = useDisclosure();
   const {
     isOpen: isOpenAsset,
@@ -86,7 +92,19 @@ const CategoryCompliance = ({ data }: CategoryComplianceProps) => {
         gap="32px"
         px={{ base: '16px', md: 0 }}
       >
-        <Header />
+        <Header showComplianceType={false}>
+          <Button
+            customStyles={{
+              width: '184px',
+              height: { base: '36px', md: 'min-content' },
+              alignSelf: 'end',
+            }}
+            variant="outline"
+            handleClick={onOpenMarkComplianceStatus}
+          >
+            Mark Compliance Status
+          </Button>
+        </Header>
         <SummaryInfo data={data} />
         <VStack width="full" alignItems="flex-start" spacing="8px">
           <HStack width="full" justifyContent="space-between" flexWrap="wrap">
@@ -127,6 +145,10 @@ const CategoryCompliance = ({ data }: CategoryComplianceProps) => {
           />
         </VStack>
       </Flex>
+      <MarkComplianceStatusDrawer
+        isOpen={isOpenMarkComplianceStatus}
+        onClose={onCloseMarkComplianceStatus}
+      />
       <AssetComplianceDetailDrawer
         isOpen={isOpenAssetCompliance}
         onClose={onCloseAssetCompliance}

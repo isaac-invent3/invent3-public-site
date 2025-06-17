@@ -1,6 +1,7 @@
 import {
   DrawerBody,
   DrawerHeader,
+  Heading,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
@@ -15,6 +16,8 @@ import HeaderActionButtons from '../HeaderActionButtons';
 import InfoCard from '../InfoCard';
 import FloorDetailDrawer from '../FloorDetailDrawer';
 import BuildingModal from '~/lib/components/AssetManagement/AssetForm/GeneralStep/AssetLocation/Modals/BuildingModal';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import FacilityPopoverAction from './FacilityPopoverAction';
 
 interface BuildingDetailDrawerProps {
   isOpen: boolean;
@@ -24,8 +27,10 @@ interface BuildingDetailDrawerProps {
 
 const BuildingDetailDrawer = (props: BuildingDetailDrawerProps) => {
   const { facilityData, isOpen, onClose } = props;
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const { data, isLoading, isFetching } = useGetBuildingsByFacilityIdQuery(
-    { id: facilityData.facilityId },
+    { id: facilityData.facilityId, pageNumber, pageSize },
     {
       skip: !facilityData.facilityId,
     }
@@ -84,12 +89,30 @@ const BuildingDetailDrawer = (props: BuildingDetailDrawerProps) => {
             closeDrawer={onClose}
             suffix="Building"
             handleButtonClick={onOpenCreateModal}
-          />
+            showCloseAll={false}
+          >
+            <FacilityPopoverAction data={facilityData} />
+          </HeaderActionButtons>
         </DrawerHeader>
         <DrawerBody p={0}>
-          <VStack spacing="24px">
+          <VStack spacing="24px" alignItems="flex-start">
+            <Heading
+              fontSize={{ base: '16px', lg: '24px' }}
+              px={{ base: '16px', lg: '32px' }}
+              lineHeight="100%"
+              fontWeight={800}
+              color="neutral.800"
+            >
+              Facility Details
+            </Heading>
             <InfoCard
-              title={`${facilityData?.facilityName} (Facility)`}
+              imageUrl={
+                facilityData?.image && facilityData?.imageBasePrefix
+                  ? `${facilityData?.imageBasePrefix}${facilityData?.image}`
+                  : undefined
+              }
+              title={`${facilityData?.facilityName}`}
+              dividerText="Branch Address:"
               subtitle={facilityData?.address}
               count={facilityData?.totalBuildingsInFacility}
               locationTitle="Buildings"
@@ -98,9 +121,16 @@ const BuildingDetailDrawer = (props: BuildingDetailDrawerProps) => {
               columns={columns}
               isLoading={isLoading || isFetching}
               data={data?.data?.items ?? []}
-              showFooter={false}
+              showFooter={
+                data?.data?.hasNextPage || data?.data?.hasPreviousPage
+              }
+              pageNumber={pageNumber}
+              setPageNumber={setPageNumber}
+              pageSize={pageSize}
+              setPageSize={setPageSize}
+              customThStyle={{ paddingLeft: { base: '16px', lg: '32px' } }}
               customTdStyle={{
-                paddingLeft: '16px',
+                paddingLeft: { base: '16px', lg: '32px' },
                 paddingTop: '12px',
                 paddingBottom: '12px',
                 bgColor: '#f2f1f1',
@@ -120,6 +150,7 @@ const BuildingDetailDrawer = (props: BuildingDetailDrawerProps) => {
           }}
           isOpen={isOpenFloorDetail}
           buildingData={selectedBuilding}
+          facilityAddress={facilityData?.address}
         />
       )}
       <BuildingModal

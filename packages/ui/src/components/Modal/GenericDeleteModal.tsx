@@ -14,10 +14,12 @@ interface GenericDeleteModalProps {
   handleDelete: () => void;
   isLoading?: boolean;
   children?: React.ReactNode;
+  modalHeader?: string;
 }
 
 const GenericDeleteModal = (props: GenericDeleteModalProps) => {
-  const { isOpen, onClose, handleDelete, isLoading, children } = props;
+  const { isOpen, onClose, handleDelete, isLoading, children, modalHeader } =
+    props;
 
   return (
     <GenericModal
@@ -42,7 +44,7 @@ const GenericDeleteModal = (props: GenericDeleteModalProps) => {
               fontWeight={{ base: 700, lg: 800 }}
               color="primary.500"
             >
-              Delete?
+              {modalHeader ?? 'Delete?'}
             </Heading>
             <ChakraText
               size="md"

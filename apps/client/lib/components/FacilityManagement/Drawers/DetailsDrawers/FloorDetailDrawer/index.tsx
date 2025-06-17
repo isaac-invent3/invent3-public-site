@@ -1,6 +1,7 @@
 import {
   DrawerBody,
   DrawerHeader,
+  Heading,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
@@ -15,17 +16,21 @@ import InfoCard from '../InfoCard';
 import DepartmentDetailDrawer from '../DepartmentDetailDrawer';
 import PopoverAction from './PopoverAction';
 import FloorModal from '~/lib/components/AssetManagement/AssetForm/GeneralStep/AssetLocation/Modals/FloorModal';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 interface FloorDetailDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   buildingData: Building;
+  facilityAddress: string;
 }
 
 const FloorDetailDrawer = (props: FloorDetailDrawerProps) => {
-  const { buildingData, isOpen, onClose } = props;
+  const { buildingData, isOpen, onClose, facilityAddress } = props;
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const { data, isLoading, isFetching } = useGetFloorsByBuildingIdQuery(
-    { id: buildingData.buildingId },
+    { id: buildingData.buildingId, pageNumber, pageSize },
     {
       skip: !buildingData.buildingId,
     }
@@ -86,10 +91,20 @@ const FloorDetailDrawer = (props: FloorDetailDrawerProps) => {
           />
         </DrawerHeader>
         <DrawerBody p={0}>
-          <VStack spacing="24px">
+          <VStack spacing="24px" alignItems="flex-start">
+            <Heading
+              fontSize={{ base: '16px', lg: '24px' }}
+              px={{ base: '16px', lg: '32px' }}
+              lineHeight="100%"
+              fontWeight={800}
+              color="neutral.800"
+            >
+              Building Details
+            </Heading>
             <InfoCard
-              title={`${buildingData?.buildingName} (Building)`}
-              subtitle={buildingData?.address}
+              title={`${buildingData?.buildingName}`}
+              dividerText="At"
+              subtitle={facilityAddress}
               count={buildingData?.totalFloorsInBuilding}
               locationTitle="Floors"
             />
@@ -97,9 +112,16 @@ const FloorDetailDrawer = (props: FloorDetailDrawerProps) => {
               columns={columns}
               isLoading={isLoading || isFetching}
               data={data?.data?.items ?? []}
-              showFooter={false}
+              showFooter={
+                data?.data?.hasNextPage || data?.data?.hasPreviousPage
+              }
+              pageNumber={pageNumber}
+              setPageNumber={setPageNumber}
+              pageSize={pageSize}
+              setPageSize={setPageSize}
+              customThStyle={{ paddingLeft: { base: '16px', lg: '32px' } }}
               customTdStyle={{
-                paddingLeft: '16px',
+                paddingLeft: { base: '16px', lg: '32px' },
                 paddingTop: '12px',
                 paddingBottom: '12px',
                 bgColor: '#f2f1f1',
@@ -117,6 +139,7 @@ const FloorDetailDrawer = (props: FloorDetailDrawerProps) => {
           onClose={onCloseDepartmentDetail}
           isOpen={isOpenDepartmentDetail}
           floorData={selectedFloor}
+          buildingName={buildingData?.buildingName}
         />
       )}
       <FloorModal

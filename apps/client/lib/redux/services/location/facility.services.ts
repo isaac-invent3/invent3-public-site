@@ -21,7 +21,7 @@ const getHeaders = () => ({
 export const facilityApi = createApi({
   reducerPath: 'facilityApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['allFacilities', 'facilitiesByLGAId'],
+  tagTypes: ['allFacilities', 'facilitiesByLGAId', 'facilitiesByStateId'],
   endpoints: (builder) => ({
     getAllFacilities: builder.query<
       BaseApiResponse<ListResponse<Facility>>,
@@ -57,7 +57,7 @@ export const facilityApi = createApi({
         method: 'GET',
         headers: getHeaders(),
       }),
-      providesTags: ['facilitiesByLGAId'],
+      providesTags: ['facilitiesByStateId'],
     }),
     getFacilityById: builder.query<BaseApiResponse<Facility>, { id: string }>({
       query: ({ id }) => ({
@@ -120,22 +120,34 @@ export const facilityApi = createApi({
         body,
       }),
     }),
-    deleteLocation: builder.mutation<
-      void,
-      {
-        id: number;
-        location: LocationBase;
-        deletedBy: string;
-      }
-    >({
-      query: ({ id, location, deletedBy }) => ({
-        url: `/${location}/${id}`,
+    deleteFacility: builder.mutation<void, { id: number; deletedBy: string }>({
+      query: ({ id, ...body }) => ({
+        url: `/Facilities/${id}`,
         method: 'DELETE',
         headers: getHeaders(),
-        body: {
-          deletedBy,
-        },
+        body,
       }),
+      invalidatesTags: ['facilitiesByStateId', 'facilitiesByLGAId'],
+    }),
+    updateFacility: builder.mutation<
+      BaseApiResponse<Facility>,
+      {
+        facilityId: number;
+        facilityName: string;
+        facilityRef: string;
+        address: string;
+        longitude: number;
+        latitude: number;
+        lastModifiedBy: string;
+      }
+    >({
+      query: (body) => ({
+        url: `/Facilities/${body.facilityId}`,
+        method: 'PUT',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['facilitiesByLGAId', 'facilitiesByLGAId'],
     }),
   }),
 });
@@ -149,5 +161,6 @@ export const {
   useGetFacilitiesByStateIdQuery,
   useGetAggregateFacilityByStateQuery,
   useCreateMasterFacilityMutation,
-  useDeleteLocationMutation,
+  useDeleteFacilityMutation,
+  useUpdateFacilityMutation,
 } = facilityApi;

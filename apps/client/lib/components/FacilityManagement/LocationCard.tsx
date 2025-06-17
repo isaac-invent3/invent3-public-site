@@ -8,11 +8,12 @@ interface LocationCardProps {
   href?: string;
   title: string;
   subtitle?: string;
+  imageUrl?: string;
   customStyle?: StackProps;
   handleClick?: () => void;
 }
 const LocationCard = (props: LocationCardProps) => {
-  const { href, title, subtitle, customStyle, handleClick } = props;
+  const { href, title, subtitle, customStyle, handleClick, imageUrl } = props;
   return (
     <VStack
       spacing="0px"
@@ -32,7 +33,11 @@ const LocationCard = (props: LocationCardProps) => {
         height="112px"
         bgColor="neutral.100"
       >
-        <Image fill src="/bms-location-1.png" alt="location image" />
+        <Image
+          fill
+          src={imageUrl ?? '/bms-location-1.png'}
+          alt="location image"
+        />
       </Flex>
       <VStack width="full" padding="8px" spacing="2px" alignItems="flex-start">
         <Text

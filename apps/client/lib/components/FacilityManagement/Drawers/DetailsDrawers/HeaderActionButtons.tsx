@@ -2,6 +2,7 @@ import { HStack, Icon } from '@chakra-ui/react';
 import { BackButton, Button } from '@repo/ui/components';
 import React from 'react';
 import { DoubleRightChevronIcon } from '~/lib/components/CustomIcons';
+import { closeAllDrawers } from './utils';
 
 interface HeaderActionButtonsProps {
   closeDrawer: () => void;
@@ -9,7 +10,6 @@ interface HeaderActionButtonsProps {
   handleButtonClick: () => void;
   children?: React.ReactNode;
   showCloseAll?: boolean;
-  closeAllDrawers?: () => void;
 }
 const HeaderActionButtons = ({
   closeDrawer,
@@ -17,7 +17,6 @@ const HeaderActionButtons = ({
   handleButtonClick,
   children,
   showCloseAll = true,
-  closeAllDrawers,
 }: HeaderActionButtonsProps) => {
   return (
     <HStack
@@ -29,7 +28,7 @@ const HeaderActionButtons = ({
       justifyContent="space-between"
     >
       <HStack spacing="16px">
-        {/* {showCloseAll && (
+        {showCloseAll && (
           <Button
             customStyles={{ height: '32px', width: '44px' }}
             handleClick={closeAllDrawers}
@@ -37,7 +36,7 @@ const HeaderActionButtons = ({
           >
             <Icon as={DoubleRightChevronIcon} boxSize="20px" />
           </Button>
-        )} */}
+        )}
         <BackButton handleClick={closeDrawer} />
       </HStack>
       <HStack spacing="16px">

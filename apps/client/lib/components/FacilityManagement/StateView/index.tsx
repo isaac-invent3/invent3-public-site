@@ -20,6 +20,7 @@ import { AddIcon } from '../../CustomIcons';
 import LocationCard from '../LocationCard';
 import { Facility, State } from '~/lib/interfaces/location.interfaces';
 import BuildingDetailDrawer from '../Drawers/DetailsDrawers/BuildingDetailDrawer';
+import { registerCloseFn } from '../Drawers/DetailsDrawers/utils';
 
 const StateView = ({ data: stateData }: { data: State }) => {
   const params = useParams();
@@ -100,6 +101,7 @@ const StateView = ({ data: stateData }: { data: State }) => {
                   <LocationCard
                     handleClick={() => {
                       setSelectedFacility(item);
+                      registerCloseFn(onClose);
                       onOpen();
                     }}
                     title={`${item.facilityName}`}

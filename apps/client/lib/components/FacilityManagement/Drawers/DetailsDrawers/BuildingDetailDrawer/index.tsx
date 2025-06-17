@@ -18,6 +18,7 @@ import FloorDetailDrawer from '../FloorDetailDrawer';
 import BuildingModal from '~/lib/components/AssetManagement/AssetForm/GeneralStep/AssetLocation/Modals/BuildingModal';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import FacilityPopoverAction from './FacilityPopoverAction';
+import { registerCloseFn } from '../utils';
 
 interface BuildingDetailDrawerProps {
   isOpen: boolean;
@@ -63,7 +64,7 @@ const BuildingDetailDrawer = (props: BuildingDetailDrawerProps) => {
           header: 'Building Name',
           enableSorting: false,
         }),
-        columnHelper.accessor('buildingId', {
+        columnHelper.accessor('totalFloorsInBuilding', {
           cell: (info) => info.getValue(),
           header: 'Number of Floors',
           enableSorting: false,
@@ -137,6 +138,8 @@ const BuildingDetailDrawer = (props: BuildingDetailDrawerProps) => {
               }}
               handleSelectRow={(row) => {
                 setSelectedBuilding(row);
+                registerCloseFn(onClose);
+                registerCloseFn(onCloseFloorDetail);
                 onOpenFloorDetail();
               }}
             />

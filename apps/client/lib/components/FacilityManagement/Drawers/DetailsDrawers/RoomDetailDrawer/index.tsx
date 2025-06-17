@@ -17,6 +17,7 @@ import InfoCard from '../InfoCard';
 import AisleDetailDrawer from '../AisleDetailDrawer';
 import RoomModal from '~/lib/components/AssetManagement/AssetForm/GeneralStep/AssetLocation/Modals/RoomModal';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import { registerCloseFn } from '../utils';
 
 interface RoomDetailDrawerProps {
   isOpen: boolean;
@@ -62,7 +63,7 @@ const RoomDetailDrawer = (props: RoomDetailDrawerProps) => {
           header: 'Room Name',
           enableSorting: false,
         }),
-        columnHelper.accessor('roomId', {
+        columnHelper.accessor('totalAislesInRoom', {
           cell: (info) => info.getValue(),
           header: 'Number of Aisles',
           enableSorting: false,
@@ -128,6 +129,8 @@ const RoomDetailDrawer = (props: RoomDetailDrawerProps) => {
               }}
               handleSelectRow={(row) => {
                 setSelectedRoom(row);
+                registerCloseFn(onClose);
+                registerCloseFn(onCloseAisleDetail);
                 onOpenAisleDetail();
               }}
             />

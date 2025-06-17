@@ -17,6 +17,7 @@ import DepartmentDetailDrawer from '../DepartmentDetailDrawer';
 import PopoverAction from './PopoverAction';
 import FloorModal from '~/lib/components/AssetManagement/AssetForm/GeneralStep/AssetLocation/Modals/FloorModal';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import { registerCloseFn } from '../utils';
 
 interface FloorDetailDrawerProps {
   isOpen: boolean;
@@ -62,7 +63,7 @@ const FloorDetailDrawer = (props: FloorDetailDrawerProps) => {
           header: 'Floor Name',
           enableSorting: false,
         }),
-        columnHelper.accessor('floorId', {
+        columnHelper.accessor('departmentsInFloor', {
           cell: (info) => info.getValue(),
           header: 'Number of Departments',
           enableSorting: false,
@@ -128,6 +129,8 @@ const FloorDetailDrawer = (props: FloorDetailDrawerProps) => {
               }}
               handleSelectRow={(row) => {
                 setselectedFloor(row);
+                registerCloseFn(onClose);
+                registerCloseFn(onCloseDepartmentDetail);
                 onOpenDepartmentDetail();
               }}
             />

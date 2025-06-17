@@ -17,6 +17,7 @@ import ShelfDetailDrawer from '../ShelfDetailDrawer';
 import PopoverAction from './PopoverAction';
 import AisleModal from '~/lib/components/AssetManagement/AssetForm/GeneralStep/AssetLocation/Modals/AisleModal';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import { registerCloseFn } from '../utils';
 
 interface AisleDetailDrawerProps {
   isOpen: boolean;
@@ -62,7 +63,7 @@ const AisleDetailDrawer = (props: AisleDetailDrawerProps) => {
           header: 'Aisle Name',
           enableSorting: false,
         }),
-        columnHelper.accessor('roomId', {
+        columnHelper.accessor('totalShelvesInAisle', {
           cell: (info) => info.getValue(),
           header: 'Number of Shelf',
           enableSorting: false,
@@ -128,6 +129,8 @@ const AisleDetailDrawer = (props: AisleDetailDrawerProps) => {
               }}
               handleSelectRow={(row) => {
                 setSelectedAisle(row);
+                registerCloseFn(onClose);
+                registerCloseFn(onCloseShelfDetail);
                 onOpenShelfDetail();
               }}
             />

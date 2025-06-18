@@ -31,8 +31,8 @@ const SectionTwo = () => {
         selectedYear={selectedYear}
         setSelectedYear={setSelectedYear}
         data={
-          data?.data?.taskCompletionRates
-            ? data?.data?.taskCompletionRates.map((item) => ({
+          data?.data
+            ? data?.data?.map((item) => ({
                 complete: item.completed,
                 inComplete: item.overdue,
                 monthId: item.monthId,

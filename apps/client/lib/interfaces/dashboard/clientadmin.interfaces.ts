@@ -78,4 +78,6 @@ export type {
   TaskCompletedData,
   AssetTrendData,
   UserActivity,
+  AssetTrend,
+  TaskCompletionRate,
 };

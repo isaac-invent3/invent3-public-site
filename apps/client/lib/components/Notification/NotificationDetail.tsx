@@ -6,7 +6,7 @@ import moment from 'moment';
 import Link from 'next/link';
 import { NOTIFICATION_EVENT_TYPE_ENUM, ROUTES } from '~/lib/utils/constants';
 
-const textStyle = { fontSize: '9.33px', lineHeight: '11.09px' };
+const textStyle = { fontSize: '12px', lineHeight: '100%' };
 
 function formatDate(date: string) {
   const now = moment();
@@ -132,7 +132,7 @@ const NotificationDetail = (props: NotificationDetailProps) => {
       pb="10.67px"
       borderColor="#BBBBBB"
       borderBottomWidth="0.67px"
-      alignItems="flex-start"
+      alignItems="center"
     >
       <HStack spacing="10.67px" maxW="70%">
         <Flex

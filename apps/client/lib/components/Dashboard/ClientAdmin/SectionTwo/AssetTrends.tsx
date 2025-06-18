@@ -50,7 +50,7 @@ const AssetTrends = () => {
         spacing="34px"
         justifyContent="space-between"
       >
-        <HStack spacing="4px">
+        {/* <HStack spacing="4px">
           <Text color="neutral.600" fontWeight={700} mb="4px">
             This month
           </Text>
@@ -59,17 +59,15 @@ const AssetTrends = () => {
               valueChange={data?.data?.percentageChange ?? 0}
             />
           </Skeleton>
-        </HStack>
+        </HStack> */}
         <LineChart
           labels={transformMonthIdsToShortNames(
-            data?.data?.assetTrends?.map((item) => item.monthId) ?? []
+            data?.data?.map((item) => item.monthId) ?? []
           )}
           datasets={[
             {
               label: 'Asset Added',
-              data:
-                data?.data?.assetTrends?.map((item) => item.noOfAddedAssets) ??
-                [],
+              data: data?.data?.map((item) => item.noOfAddedAssets) ?? [],
               borderColor: '#07CC3B',
               pointRadius: 0,
               borderWidth: 2,
@@ -78,10 +76,7 @@ const AssetTrends = () => {
             },
             {
               label: 'Asset Dispose',
-              data:
-                data?.data?.assetTrends?.map(
-                  (item) => item.noOfDisposedAssets
-                ) ?? [],
+              data: data?.data?.map((item) => item.noOfDisposedAssets) ?? [],
               borderColor: '#0366EF',
               borderDash: [8, 4],
               pointRadius: 0,

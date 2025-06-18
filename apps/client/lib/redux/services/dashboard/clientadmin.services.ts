@@ -2,10 +2,10 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import { BaseApiResponse, ListResponse, QueryParams } from '@repo/interfaces';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
 import {
-  AssetTrendData,
+  AssetTrend,
   DashboardStats,
   MaintenanceDowntime,
-  TaskCompletedData,
+  TaskCompletionRate,
   UserActivity,
 } from '~/lib/interfaces/dashboard/clientadmin.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
@@ -33,7 +33,7 @@ export const clientAdminApi = createApi({
       }),
     }),
     getAssetTrends: builder.query<
-      BaseApiResponse<AssetTrendData>,
+      BaseApiResponse<AssetTrend[]>,
       { countryId: number; regionId?: number; year?: number; monthNo?: number }
     >({
       query: ({ countryId, ...data }) => ({
@@ -46,7 +46,7 @@ export const clientAdminApi = createApi({
       }),
     }),
     getTaskCompletionRateData: builder.query<
-      BaseApiResponse<TaskCompletedData>,
+      BaseApiResponse<TaskCompletionRate[]>,
       { countryId: number; regionId?: number; year?: number; monthNo?: number }
     >({
       query: ({ countryId, ...data }) => ({

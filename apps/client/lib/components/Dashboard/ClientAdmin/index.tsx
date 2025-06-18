@@ -15,7 +15,6 @@ const ClientAdmin = () => {
       direction="column"
       pb="24px"
       px={{ base: '16px', md: 0 }}
-      overflowX="hidden"
     >
       <Header>{/* <Filter /> */}</Header>
       <VStack width="full" mt="32px" spacing="16px">

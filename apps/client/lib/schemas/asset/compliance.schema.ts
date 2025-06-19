@@ -26,4 +26,21 @@ const createComplianceRegulationSchema = () =>
     description: Yup.string().nullable(),
   });
 
-export { createComplianceSchema, createComplianceRegulationSchema };
+const markComplianceSchema = () =>
+  Yup.object().shape({
+    policyId: Yup.number().required('Policy is Required'),
+    performedBy: Yup.string().required('Performed By is Required'),
+    assetComplianceStatusId: Yup.number().required(
+      'Compliant Status is Required'
+    ),
+    comments: Yup.string().nullable(),
+    date: createDateSchema(false, false).required(
+      'Inspection Date is required'
+    ),
+  });
+
+export {
+  createComplianceSchema,
+  createComplianceRegulationSchema,
+  markComplianceSchema,
+};

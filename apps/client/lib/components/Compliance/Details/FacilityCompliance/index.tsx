@@ -5,11 +5,11 @@ import { FacilityAssetComplianceSummary } from '~/lib/interfaces/asset/complianc
 import SummaryInfo from './SummaryInfo';
 import { FilterButton, SearchInput } from '@repo/ui/components';
 import useExport from '~/lib/hooks/useExport';
-import { FilterIcon } from '~/lib/components/CustomIcons';
+import { BulkSearchIcon, FilterIcon } from '~/lib/components/CustomIcons';
 import FacilityComplianceTable from './FacilityComplianceTable';
-import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import { DEFAULT_PAGE_SIZE, ROUTES } from '~/lib/utils/constants';
 import { useGetAllCategoryComplianceByFacilityQuery } from '~/lib/redux/services/asset/compliance.services';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 interface FacilityComplianceProps {
   data: FacilityAssetComplianceSummary;
@@ -17,8 +17,12 @@ interface FacilityComplianceProps {
 
 const FacilityCompliance = ({ data }: FacilityComplianceProps) => {
   const [search, setSearch] = useState('');
+  const [activeFilter, setActiveFilter] = useState<'bulk' | 'general' | null>(
+    null
+  );
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+  const router = useRouter();
   const params = useParams();
   const id = params?.facilityId as unknown as number;
   const {
@@ -30,7 +34,6 @@ const FacilityCompliance = ({ data }: FacilityComplianceProps) => {
     pageNumber,
     pageSize,
   });
-  const { isOpen, onToggle } = useDisclosure();
   const { ExportPopover } = useExport({
     ids: [],
     exportTableName: 'AssetCompliances',
@@ -57,10 +60,22 @@ const FacilityCompliance = ({ data }: FacilityComplianceProps) => {
             />
             <HStack spacing="16px">
               <FilterButton
+                icon={BulkSearchIcon}
+                label="Bulk Actions"
+                handleClick={() =>
+                  setActiveFilter((prev) => (prev === 'bulk' ? null : 'bulk'))
+                }
+                isActive={activeFilter === 'bulk'}
+              />
+              <FilterButton
                 icon={FilterIcon}
                 label="Filter"
-                handleClick={onToggle}
-                isActive={isOpen}
+                handleClick={() =>
+                  setActiveFilter((prev) =>
+                    prev === 'general' ? null : 'general'
+                  )
+                }
+                isActive={activeFilter === 'general'}
               />
               {ExportPopover}
             </HStack>
@@ -78,6 +93,11 @@ const FacilityCompliance = ({ data }: FacilityComplianceProps) => {
             pageSize={pageSize}
             setPageSize={setPageSize}
             showPopover
+            handleSelectRow={(row) =>
+              router.push(
+                `/${ROUTES.COMPLIANCE}/facility/${id}/asset-category/${row.categoryId}`
+              )
+            }
           />
         </VStack>
       </Flex>

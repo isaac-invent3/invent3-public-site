@@ -46,10 +46,24 @@ export const notificationApi = createApi({
       }),
       invalidatesTags: ['allNotifications'],
     }),
+    markANotificationAsRead: builder.mutation<
+      BaseApiResponse<string>,
+      { notificationId: number; lastModifiedBy: string }
+    >({
+      query: ({ notificationId, ...data }) => ({
+        url: generateQueryStr(
+          `/Notifications/MarkNotificationAsRead/${notificationId}?`,
+          data
+        ),
+        method: 'PUT',
+        headers: getHeaders(),
+      }),
+    }),
   }),
 });
 
 export const {
   useGetUserNotificationQuery,
   useMarkAllNotificationsAsReadMutation,
+  useMarkANotificationAsReadMutation,
 } = notificationApi;

@@ -6,28 +6,28 @@ import {
   Heading,
   HStack,
   Text,
-  useDisclosure,
   VStack,
 } from '@chakra-ui/react';
 import {
   BackButton,
   Button,
+  DateTimeButtons,
+  ErrorMessage,
   FormInputWrapper,
   FormTextAreaInput,
+  FormTextInput,
   GenericDrawer,
-  GenericSuccessModal,
-  TextInput,
 } from '@repo/ui/components';
 import { Field, FormikProvider, useFormik } from 'formik';
 import { getSession } from 'next-auth/react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { useCreateAssetComplianceMutation } from '~/lib/redux/services/asset/compliance.services';
-import { createComplianceSchema } from '~/lib/schemas/asset/compliance.schema';
-import CategorySelect from '~/lib/components/AssetManagement/AssetForm/GeneralStep/AssetCategory/CategorySelect';
-import { Document } from '~/lib/interfaces/general.interfaces';
+import { useMarkComplianceStatusMutation } from '~/lib/redux/services/asset/compliance.services';
+import { markComplianceSchema } from '~/lib/schemas/asset/compliance.schema';
 import moment from 'moment';
-import ComplianceType from './CreateComplianceDrawer/ComplianceType';
-import Compliance from '..';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import ComplianceStatusType from './ComplianceStatusTypes';
+import PolicyByCategorySelect from './PolicyByCategorySelect';
+import { clearSelectedTableIds } from '~/lib/redux/slices/CommonSlice';
 
 interface MarkComplianceStatusDrawerProps {
   isOpen: boolean;
@@ -36,77 +36,55 @@ interface MarkComplianceStatusDrawerProps {
 
 const MarkComplianceStatusDrawer = (props: MarkComplianceStatusDrawerProps) => {
   const { isOpen, onClose } = props;
-  const {
-    isOpen: isOpenSuccess,
-    onOpen: onOpenSuccess,
-    onClose: onCloseSuccess,
-  } = useDisclosure();
-
   const { handleSubmit } = useCustomMutation();
 
-  const [createAssetCompliance, { isLoading: isCreatingCompliance }] =
-    useCreateAssetComplianceMutation();
+  const [markComplianceStatus, { isLoading }] =
+    useMarkComplianceStatusMutation();
+  const selectedAssets = useAppSelector(
+    (state) => state.common.selectedTableIds
+  );
+  const dispatch = useAppDispatch();
 
   const initialValues = {
-    assetCategoryId: null,
-    regulationId: null,
-    complianceRegulationId: null,
-    nextInspectionDate: null,
-    frequencyId: null,
-    documents: [],
+    policyId: null,
+    performedBy: '',
+    assetComplianceStatusId: null,
+    comments: null,
+    date: null,
   };
 
   const formik = useFormik({
     initialValues,
     enableReinitialize: false,
-    validationSchema: createComplianceSchema,
+    validationSchema: markComplianceSchema,
     onSubmit: async (data, { setSubmitting }) => {
       console.log({ data });
       setSubmitting(true);
       const session = await getSession();
       const response = await handleSubmit(
-        createAssetCompliance,
+        markComplianceStatus,
         {
-          createAssetComplianceDto: {
-            assetCategoryId: data?.assetCategoryId!,
-            regulationId: data?.regulationId!,
-            complianceRegulationId: data?.complianceRegulationId!,
-            nextInspectionDate: data.nextInspectionDate
-              ? moment(data.nextInspectionDate, 'DD/MM/YYYY')
-                  .utcOffset(0, true)
-                  .toISOString()
-              : null,
-            createdBy: session?.user?.email!,
-          },
-          createComplianceDocumentDtos:
-            data?.documents.length > 0
-              ? data?.documents.map((item: Document) => ({
-                  documentName: item.documentName!,
-                  document: item.base64Document!,
-                  base64Prefix: item.base64Prefix!,
-                  createdBy: session?.user?.email!,
-                }))
-              : null,
+          assetComplianceStatusId: data?.assetComplianceStatusId!,
+          policyId: data?.policyId!,
+          comments: data?.comments!,
+          performedBy: data?.performedBy!,
+          dateCreated: moment(data.date, 'DD/MM/YYYY')
+            .utcOffset(0, true)
+            .toISOString(),
+          assetId: selectedAssets,
+          createdBy: session?.user?.email!,
         },
-        ''
+        'Compliance Status Marked Successfully'
       );
 
       if (response?.data) {
         formik.resetForm();
-        onOpenSuccess();
+        dispatch(clearSelectedTableIds());
+        onClose();
       }
       setSubmitting(false);
     },
   });
-
-  const handleRemoveDocument = (document: Document) => {
-    if (formik.values.documents) {
-      const updatedDocuments: Document[] = formik.values?.documents.filter(
-        (old: Document) => old !== document
-      );
-      formik.setFieldValue('documents', updatedDocuments);
-    }
-  };
 
   return (
     <>
@@ -147,32 +125,33 @@ const MarkComplianceStatusDrawer = (props: MarkComplianceStatusDrawerProps) => {
                   mt="43px"
                   mb="24px"
                 >
+                  <PolicyByCategorySelect />
+                  <ComplianceStatusType />
                   <FormInputWrapper
                     sectionMaxWidth="141px"
                     customSpacing="24px"
-                    description="Select Asset Category"
-                    title="Asset Category"
+                    description="Specify the Date the inspection was carried out"
+                    title="Date Created Out"
                     isRequired
                   >
-                    <CategorySelect name="assetCategoryId" />
-                  </FormInputWrapper>
-                  <ComplianceType />
-                  {/* <Compliance /> */}
-                  <FormInputWrapper
-                    sectionMaxWidth="141px"
-                    customSpacing="24px"
-                    description="Provide Comments about the Action Taken"
-                    title="Comments"
-                    isRequired={false}
-                  >
-                    <Field
-                      as={FormTextAreaInput}
-                      name="issueDescription"
-                      type="text"
-                      label="Description"
-                      placeholder="Description"
-                      customStyle={{ height: '133px' }}
-                    />
+                    <VStack alignItems="flex-start">
+                      <DateTimeButtons
+                        buttonVariant="secondary"
+                        includeTime={false}
+                        showPredefinedDates={false}
+                        selectedDate={formik.values.date ?? undefined}
+                        handleDateTimeSelect={(dateTime) => {
+                          formik.setFieldValue(
+                            'date',
+                            dateTime?.trim() ?? null
+                          );
+                        }}
+                        customButtonLabel="Date"
+                      />
+                      {formik.submitCount > 0 && formik.errors.date && (
+                        <ErrorMessage>{formik.errors.date}</ErrorMessage>
+                      )}
+                    </VStack>
                   </FormInputWrapper>
                   <FormInputWrapper
                     sectionMaxWidth="141px"
@@ -182,11 +161,27 @@ const MarkComplianceStatusDrawer = (props: MarkComplianceStatusDrawerProps) => {
                     isRequired
                   >
                     <Field
-                      as={TextInput}
-                      name="issueDescription"
+                      as={FormTextInput}
+                      name="performedBy"
+                      type="text"
+                      label="Performed By"
+                      placeholder="Performed By"
+                    />
+                  </FormInputWrapper>
+                  <FormInputWrapper
+                    sectionMaxWidth="141px"
+                    customSpacing="24px"
+                    description="Provide Comments about the Action Taken"
+                    title="Comments"
+                    isRequired={false}
+                  >
+                    <Field
+                      as={FormTextAreaInput}
+                      name="comments"
                       type="text"
                       label="Description"
-                      placeholder="Performed By"
+                      placeholder="Description"
+                      customStyle={{ height: '133px' }}
                     />
                   </FormInputWrapper>
                 </VStack>
@@ -197,7 +192,7 @@ const MarkComplianceStatusDrawer = (props: MarkComplianceStatusDrawerProps) => {
           <DrawerFooter p={0} m={0}>
             <HStack
               width="full"
-              spacing="8px"
+              spacing="16px"
               justifyContent={{ base: 'center', lg: 'flex-end' }}
               mt="8px"
               px="24px"
@@ -212,7 +207,7 @@ const MarkComplianceStatusDrawer = (props: MarkComplianceStatusDrawerProps) => {
               </Button>
 
               <Button
-                isLoading={isCreatingCompliance || formik.isSubmitting}
+                isLoading={isLoading || formik.isSubmitting}
                 handleClick={() => {
                   formik.handleSubmit();
                 }}
@@ -227,26 +222,6 @@ const MarkComplianceStatusDrawer = (props: MarkComplianceStatusDrawerProps) => {
           </DrawerFooter>
         </FormikProvider>
       </GenericDrawer>
-
-      <GenericSuccessModal
-        isOpen={isOpenSuccess}
-        onClose={() => {
-          onCloseSuccess();
-          onClose();
-        }}
-        successText="Compliance Added Successfully"
-        mainModalStyle={{ closeOnOverlayClick: false, closeOnEsc: false }}
-      >
-        <Button
-          customStyles={{ width: '193px' }}
-          handleClick={() => {
-            onCloseSuccess();
-            onClose();
-          }}
-        >
-          Continue
-        </Button>
-      </GenericSuccessModal>
     </>
   );
 };

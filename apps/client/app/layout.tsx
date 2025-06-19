@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import AppProviders from '~/lib/layout/Provider';
 import './globals.css';
 import { PublicEnvScript } from 'next-runtime-env';
+import 'react-push-notification/dist/notifications/Notification.css';
 
 const APP_NAME = 'Invent3';
 const DESCRIPTION = 'Assest Management Software';

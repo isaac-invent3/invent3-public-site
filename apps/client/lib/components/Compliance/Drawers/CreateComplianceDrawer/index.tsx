@@ -74,6 +74,7 @@ const CreateAssetComplianceDrawer = (
           createAssetComplianceDto: {
             assetCategoryId: data?.assetCategoryId!,
             regulationId: data?.regulationId!,
+            frequencyId: data?.frequencyId!,
             complianceRegulationId: data?.complianceRegulationId!,
             nextInspectionDate: data.nextInspectionDate
               ? moment(data.nextInspectionDate, 'DD/MM/YYYY')
@@ -242,7 +243,7 @@ const CreateAssetComplianceDrawer = (
           <DrawerFooter p={0} m={0}>
             <HStack
               width="full"
-              spacing="8px"
+              spacing="16px"
               justifyContent={{ base: 'center', lg: 'flex-end' }}
               mt="8px"
               px="24px"

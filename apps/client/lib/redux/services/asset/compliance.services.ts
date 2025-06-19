@@ -18,11 +18,13 @@ import {
   AssetCompliancePayload,
   Compliance,
   ComplianceRegulation,
+  ComplianceStatusType,
   ComplianceSummary,
   ComplianceType,
   CreateCompliancePayload,
   FacilityAssetCompliance,
   FacilityAssetComplianceSummary,
+  MarkCompliancePayload,
 } from '~/lib/interfaces/asset/compliance.interfaces';
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -96,6 +98,16 @@ export const complianceApi = createApi({
       }),
       providesTags: ['allCategoryCompliance'],
     }),
+    getComplianceStatusType: builder.query<
+      BaseApiResponse<ListResponse<ComplianceStatusType>>,
+      QueryParams
+    >({
+      query: (data) => ({
+        url: '/ComplianceStatusTypes',
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
     getAllComplianceByType: builder.query<
       BaseApiResponse<ListResponse<ComplianceRegulation>>,
       QueryParams & { complianceTypeId: number }
@@ -155,7 +167,6 @@ export const complianceApi = createApi({
         headers: getHeaders(),
       }),
     }),
-
     getComplianceAssetCategoryDetails: builder.query<
       BaseApiResponse<AssetComplianceCategoryDetail>,
       { facilityId: number; assetCategoryId: number }
@@ -223,6 +234,18 @@ export const complianceApi = createApi({
       }),
       invalidatesTags: ['allComplianceRegulations'],
     }),
+    markComplianceStatus: builder.mutation<
+      BaseApiResponse<void>,
+      MarkCompliancePayload
+    >({
+      query: (body) => ({
+        url: `/ComplianceAuditLogs`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allCategoryCompliance'],
+    }),
   }),
 });
 
@@ -243,4 +266,6 @@ export const {
   useCreateComplianceRegulationMutation,
   useDeleteComplianceRegulationMutation,
   useGetComplianceAssetCategoryDetailsQuery,
+  useGetComplianceStatusTypeQuery,
+  useMarkComplianceStatusMutation,
 } = complianceApi;

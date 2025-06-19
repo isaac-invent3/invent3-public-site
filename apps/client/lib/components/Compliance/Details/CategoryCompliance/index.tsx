@@ -1,10 +1,10 @@
-import { Flex, HStack, useDisclosure, VStack } from '@chakra-ui/react';
+import { Flex, HStack, Text, useDisclosure, VStack } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import Header from '../../Header';
 import { AssetCategoryComplianceSummary } from '~/lib/interfaces/asset/compliance.interfaces';
 import { Button, FilterButton, SearchInput } from '@repo/ui/components';
 import useExport from '~/lib/hooks/useExport';
-import { FilterIcon } from '~/lib/components/CustomIcons';
+import { BulkSearchIcon, FilterIcon } from '~/lib/components/CustomIcons';
 import {
   DEFAULT_PAGE_SIZE,
   SYSTEM_CONTEXT_DETAILS,
@@ -16,7 +16,9 @@ import SummaryInfo from './SummaryInfo';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import AssetComplianceDetailDrawer from '../../Drawers/AssetComplianceDetailDrawer';
 import AssetDetail from '~/lib/components/AssetManagement/AssetDetail';
-import MarkComplianceStatusDrawer from '../../Drawers/MarkComplianceStatusDrawer';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { updateSelectedTableIds } from '~/lib/redux/slices/CommonSlice';
+import TableActions from './TableActions';
 
 interface CategoryComplianceProps {
   data: AssetCategoryComplianceSummary;
@@ -24,8 +26,15 @@ interface CategoryComplianceProps {
 
 const CategoryCompliance = ({ data }: CategoryComplianceProps) => {
   const [search, setSearch] = useState('');
+  const [activeFilter, setActiveFilter] = useState<'bulk' | 'general' | null>(
+    null
+  );
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+  const [selectedRows, setSelectedRows] = useState<number[]>([]);
+  const { selectedTableIds } = useAppSelector((state) => state.common);
+  const dispatch = useAppDispatch();
   const {
     isOpen: isOpenAssetCompliance,
     onOpen: onOpenAssetCompliance,
@@ -66,12 +75,21 @@ const CategoryCompliance = ({ data }: CategoryComplianceProps) => {
     pageNumber,
     pageSize,
   });
-  const { isOpen, onToggle } = useDisclosure();
   const { ExportPopover } = useExport({
     ids: [],
     exportTableName: 'AssetCompliances',
     tableDisplayName: 'compliance',
   });
+
+  //Filter control
+  useEffect(() => {
+    if (activeFilter && !isOpen) {
+      onOpen();
+    }
+    if (!activeFilter) {
+      onClose();
+    }
+  }, [activeFilter]);
 
   useEffect(() => {
     if (complianceAssetId) {
@@ -83,6 +101,29 @@ const CategoryCompliance = ({ data }: CategoryComplianceProps) => {
       onOpenAsset();
     }
   }, [assetId]);
+
+  // Reset Selected Row when SelectedIds array is emptied
+  useEffect(() => {
+    if (selectedTableIds.length === 0 && selectedRows.length > 0) {
+      setSelectedRows([]);
+    }
+  }, [selectedTableIds]);
+
+  // Update selectedTableIds array when selected row is greater than 1
+  useEffect(() => {
+    if (selectedRows.length > 0) {
+      const sourceItems = complianceCategory?.data?.items || [];
+      const auditRecordIds = selectedRows
+        .map((rowId) => sourceItems[rowId]?.assetId) // Access by index and get id
+        .filter((id): id is number => id !== undefined); // Filter out undefined values
+      dispatch(updateSelectedTableIds(auditRecordIds));
+    }
+    if (selectedRows.length === 0) {
+      // Reset selectedTableIds when no rows are selected
+      dispatch(updateSelectedTableIds([]));
+    }
+  }, [selectedRows]);
+
   return (
     <>
       <Flex
@@ -92,37 +133,50 @@ const CategoryCompliance = ({ data }: CategoryComplianceProps) => {
         gap="32px"
         px={{ base: '16px', md: 0 }}
       >
-        <Header showComplianceType={false}>
-          <Button
-            customStyles={{
-              width: '184px',
-              height: { base: '36px', md: 'min-content' },
-              alignSelf: 'end',
-            }}
-            variant="outline"
-            handleClick={onOpenMarkComplianceStatus}
-          >
-            Mark Compliance Status
-          </Button>
-        </Header>
+        <Header showComplianceType={false} />
         <SummaryInfo data={data} />
         <VStack width="full" alignItems="flex-start" spacing="8px">
           <HStack width="full" justifyContent="space-between" flexWrap="wrap">
-            <SearchInput
-              setSearch={setSearch}
-              placeholderText="Search..."
-              width={{ base: 'full', md: '363px' }}
-            />
             <HStack spacing="16px">
+              <SearchInput
+                setSearch={setSearch}
+                placeholderText="Search..."
+                width={{ base: 'full', md: '363px' }}
+              />
+              {selectedRows.length >= 1 && (
+                <Text whiteSpace="nowrap">
+                  <Text as="span" fontWeight={800}>
+                    {selectedRows.length}
+                  </Text>{' '}
+                  rows selected
+                </Text>
+              )}
+            </HStack>
+            <HStack spacing="16px">
+              <FilterButton
+                icon={BulkSearchIcon}
+                label="Bulk Actions"
+                handleClick={() =>
+                  setActiveFilter((prev) => (prev === 'bulk' ? null : 'bulk'))
+                }
+                isActive={activeFilter === 'bulk'}
+              />
               <FilterButton
                 icon={FilterIcon}
                 label="Filter"
-                handleClick={onToggle}
-                isActive={isOpen}
+                handleClick={() =>
+                  setActiveFilter((prev) =>
+                    prev === 'general' ? null : 'general'
+                  )
+                }
+                isActive={activeFilter === 'general'}
               />
               {ExportPopover}
             </HStack>
           </HStack>
+          <Flex width="full" mb="8px">
+            <TableActions activeFilter={activeFilter} isOpen={isOpen} />
+          </Flex>
           <CategoryComplianceTable
             data={complianceCategory?.data?.items ?? []}
             isLoading={isLoading}
@@ -130,11 +184,14 @@ const CategoryCompliance = ({ data }: CategoryComplianceProps) => {
             totalPages={complianceCategory?.data?.totalPages}
             showFooter={true}
             emptyLines={25}
-            isSelectable={false}
+            isSelectable={true}
             pageNumber={pageNumber}
             setPageNumber={setPageNumber}
             pageSize={pageSize}
             setPageSize={setPageSize}
+            selectedRows={selectedRows}
+            setSelectedRows={setSelectedRows}
+            selectMultipleRows
             showPopover
             handleSelectRow={(row) => {
               updateSearchParam(
@@ -145,10 +202,6 @@ const CategoryCompliance = ({ data }: CategoryComplianceProps) => {
           />
         </VStack>
       </Flex>
-      <MarkComplianceStatusDrawer
-        isOpen={isOpenMarkComplianceStatus}
-        onClose={onCloseMarkComplianceStatus}
-      />
       <AssetComplianceDetailDrawer
         isOpen={isOpenAssetCompliance}
         onClose={onCloseAssetCompliance}

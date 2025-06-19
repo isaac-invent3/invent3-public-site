@@ -164,10 +164,21 @@ interface AssetCompliancePayload {
   createComplianceDocumentDtos: CreateComplianceDocumentDto[] | null;
 }
 
+interface MarkCompliancePayload {
+  assetComplianceStatusId: number;
+  policyId: number;
+  assetId: number[];
+  comments?: string;
+  performedBy: string;
+  dateCreated: string;
+  createdBy: string;
+}
+
 interface CreateAssetComplianceDto {
   assetCategoryId: number;
   assetId?: number;
   regulationId: number;
+  frequencyId: number;
   complianceRegulationId?: number;
   lastInspectionDate?: string | null;
   nextInspectionDate: string | null;
@@ -217,6 +228,13 @@ interface CreateCompliancePayload {
   createdBy: string;
 }
 
+interface ComplianceStatusType extends BaseEntity {
+  statusTypeId: number;
+  statusName: string;
+  alias: string;
+  displayColorCode: string;
+}
+
 export type {
   ComplianceSummary,
   AssetComplaince,
@@ -233,4 +251,6 @@ export type {
   ComplianceRegulation,
   CreateCompliancePayload,
   AssetComplianceCategoryDetail,
+  ComplianceStatusType,
+  MarkCompliancePayload,
 };

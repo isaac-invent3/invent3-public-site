@@ -8,13 +8,13 @@ import PopoverAction from './PopoverAction';
 import { FacilityAssetCompliance } from '~/lib/interfaces/asset/compliance.interfaces';
 import GenericStatusBox from '../../UI/GenericStatusBox';
 
-interface LogTableProps extends GenericTableProps {
+interface ComplianceTableProps extends GenericTableProps {
   data: FacilityAssetCompliance[];
   // eslint-disable-next-line no-unused-vars
   handleSelectRow?: (row: FacilityAssetCompliance) => void;
 }
 
-const ComplianceTable = (props: LogTableProps) => {
+const ComplianceTable = (props: ComplianceTableProps) => {
   const {
     data,
     isFetching,

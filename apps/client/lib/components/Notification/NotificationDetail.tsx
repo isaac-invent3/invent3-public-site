@@ -4,9 +4,17 @@ import { Notification } from '~/lib/interfaces/notification.interfaces';
 import { NotificationInfoIcon } from '../CustomIcons';
 import moment from 'moment';
 import Link from 'next/link';
-import { NOTIFICATION_EVENT_TYPE_ENUM, ROUTES } from '~/lib/utils/constants';
+import {
+  NOTIFICATION_EVENT_TYPE_ENUM,
+  ROUTES,
+  SYSTEM_CONTEXT_DETAILS,
+} from '~/lib/utils/constants';
+import { useState } from 'react';
+import { useMarkANotificationAsReadMutation } from '~/lib/redux/services/notification.services';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
+import { getSession } from 'next-auth/react';
 
-const textStyle = { fontSize: '12px', lineHeight: '100%' };
+const textStyle = { fontSize: '11px', lineHeight: '100%' };
 
 function formatDate(date: string) {
   const now = moment();
@@ -29,7 +37,9 @@ const NotificationText = ({ notification }: { notification: Notification }) => {
   switch (notification.notificationTriggerEventTypeId) {
     case NOTIFICATION_EVENT_TYPE_ENUM.TICKET_CREATED:
       return (
-        <Link href={`/${ROUTES.TICKETS}?ticketId=${contextId}`}>
+        <Link
+          href={`/${ROUTES.TICKETS}?${SYSTEM_CONTEXT_DETAILS.TICKETS.slug}=${contextId}`}
+        >
           <Text color="neutral.600" {...textStyle}>
             <Text
               color={keyTextColor}
@@ -54,7 +64,9 @@ const NotificationText = ({ notification }: { notification: Notification }) => {
 
     case 2:
       return (
-        <Link href={`/ticket?id=${contextId}`}>
+        <Link
+          href={`/${ROUTES.TICKETS}?${SYSTEM_CONTEXT_DETAILS.TICKETS.slug}=${contextId}`}
+        >
           <Text color="neutral.600" {...textStyle}>
             A new ticket{' '}
             <Text color={keyTextColor} as="span" {...textStyle}>
@@ -67,7 +79,9 @@ const NotificationText = ({ notification }: { notification: Notification }) => {
 
     case 3:
       return (
-        <Link href={`/ticket?id=${contextId}`}>
+        <Link
+          href={`/${ROUTES.TICKETS}?${SYSTEM_CONTEXT_DETAILS.TICKETS.slug}=${contextId}`}
+        >
           <Text color="neutral.600" {...textStyle}>
             <Text
               color={keyTextColor}
@@ -92,7 +106,9 @@ const NotificationText = ({ notification }: { notification: Notification }) => {
 
     case 4:
       return (
-        <Link href={`/ticket?id=${contextId}`}>
+        <Link
+          href={`/${ROUTES.TICKETS}?${SYSTEM_CONTEXT_DETAILS.TICKETS.slug}=${contextId}`}
+        >
           <Text color="neutral.600" {...textStyle}>
             A new ticket{' '}
             <Text
@@ -122,8 +138,27 @@ interface NotificationDetailProps {
 }
 const NotificationDetail = (props: NotificationDetailProps) => {
   const { notification } = props;
-  const { isRead, firstName, lastName, dateCreated } = notification;
+  const [isRead, setIsRead] = useState(notification.isRead);
+  const { firstName, lastName, dateCreated } = notification;
   const name = `${firstName} ${lastName}`;
+  const [markNotificationAsRead, { isLoading }] =
+    useMarkANotificationAsReadMutation();
+  const { handleSubmit } = useCustomMutation();
+
+  const handleMarkNotificationAsRead = async () => {
+    const data = await getSession();
+    const response = await handleSubmit(
+      markNotificationAsRead,
+      {
+        notificationId: notification.notificationId,
+        lastModifiedBy: data?.user?.username!,
+      },
+      ''
+    );
+    if (response?.data) {
+      setIsRead(true);
+    }
+  };
 
   return (
     <HStack
@@ -132,9 +167,16 @@ const NotificationDetail = (props: NotificationDetailProps) => {
       pb="10.67px"
       borderColor="#BBBBBB"
       borderBottomWidth="0.67px"
-      alignItems="center"
+      alignItems="flex-start"
+      cursor="pointer"
+      opacity={isLoading ? 0.6 : 1}
+      onClick={() => {
+        if (!isRead) {
+          handleMarkNotificationAsRead();
+        }
+      }}
     >
-      <HStack spacing="10.67px" maxW="70%">
+      <HStack spacing="10.67px" maxW="70%" alignItems="flex-start">
         <Flex
           width="6px"
           height="6px"
@@ -142,8 +184,9 @@ const NotificationDetail = (props: NotificationDetailProps) => {
           bgColor="#17A1FA"
           flexShrink={0}
           visibility={isRead ? 'hidden' : 'visible'}
+          mt="8px"
         />
-        <HStack spacing="10.67px">
+        <HStack spacing="10.67px" alignItems="flex-start">
           {name ? (
             <Avatar width="26.67px" height="26.67px" />
           ) : (

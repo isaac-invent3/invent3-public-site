@@ -2,7 +2,7 @@
 
 import { Flex, HStack, useDisclosure, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import { DEFAULT_PAGE_SIZE, ROUTES } from '~/lib/utils/constants';
 import ComplianceTable from './ComplianceTable';
 import { useGetAllFacilityComplianceQuery } from '~/lib/redux/services/asset/compliance.services';
 import { FilterButton, SearchInput } from '@repo/ui/components';
@@ -10,6 +10,7 @@ import { FilterIcon } from '../CustomIcons';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import useExport from '~/lib/hooks/useExport';
 import Header from './Header';
+import { useRouter } from 'next/navigation';
 
 const Compliance = () => {
   const [pageNumber, setPageNumber] = useState(1);
@@ -28,6 +29,7 @@ const Compliance = () => {
     exportTableName: 'AssetCompliances',
     tableDisplayName: 'compliance',
   });
+  const router = useRouter();
 
   return (
     <>
@@ -91,6 +93,9 @@ const Compliance = () => {
           setPageNumber={setPageNumber}
           pageSize={pageSize}
           setPageSize={setPageSize}
+          handleSelectRow={(row) =>
+            router.push(`/${ROUTES.COMPLIANCE}/facility/${row.facilityId}`)
+          }
           showPopover
         />
       </Flex>

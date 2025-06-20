@@ -1,6 +1,10 @@
 import { Box, HStack, Text, VStack } from '@chakra-ui/react';
+import { useAppSelector } from '~/lib/redux/hooks';
 
-const SectionOne = () => {
+const ApprovalHeader = () => {
+  const approvalRequest = useAppSelector(
+    (state) => state.approval.approvalRequest
+  );
   return (
     <VStack alignItems="flex-start">
       <Box
@@ -13,20 +17,21 @@ const SectionOne = () => {
         rounded="6px"
         minWidth="90px"
       >
-        <Text color="#A07905">In Progress</Text>
+        <Text color="#A07905">{approvalRequest?.currentStatusName}</Text>
       </Box>
 
-      <HStack gap="2.5em" mt="1.5em">
-        <Text color="neutral.600" size="md" width='90px'>
+      <HStack gap="24px" mt="16px">
+        <Text color="neutral.600" size="md" width="90px">
           Workflow
         </Text>
 
         <Text color="primary.500" fontWeight={700} fontSize="18px">
-          #WRK00098 - Bulk Asset Transfer
+          #{approvalRequest?.approvalRequestId} -{' '}
+          {approvalRequest?.approvalTypeName}
         </Text>
       </HStack>
     </VStack>
   );
 };
 
-export default SectionOne;
+export default ApprovalHeader;

@@ -1,8 +1,7 @@
 import { Box, StackDivider, VStack } from '@chakra-ui/react';
 import SectionFour from './SectionFour';
-import SectionOne from './SectionOne';
-import SectionThree from './SectionThree';
 import SectionTwo from './SectionTwo';
+import ApprovalHeader from '../Header';
 
 const ApprovalDetails = () => {
   return (
@@ -20,12 +19,8 @@ const ApprovalDetails = () => {
         </StackDivider>
       }
     >
-      <SectionOne />
-
+      <ApprovalHeader />
       <SectionTwo />
-
-      <SectionThree />
-
       <SectionFour />
     </VStack>
   );

@@ -8,7 +8,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { CloseIcon, PDFIcon } from '~/lib/components/CustomIcons';
-import SectionOne from '../ApprovalDetails/SectionOne';
+import ApprovalHeader from '../Header';
 
 const ApprovalDocuments = () => {
   return (
@@ -27,7 +27,7 @@ const ApprovalDocuments = () => {
         </StackDivider>
       }
     >
-      <SectionOne />
+      <ApprovalHeader />
 
       <VStack
         w="full"

@@ -3,9 +3,12 @@
 import { Skeleton } from '@chakra-ui/react';
 import { notFound } from 'next/navigation';
 import ApprovalDetail from '~/lib/components/ApprovalWorkflow/ApprovalDetail';
+import { useAppDispatch } from '~/lib/redux/hooks';
 import { useGetApprovalWorkflowRequestByIdQuery } from '~/lib/redux/services/approval-workflow/requests.services';
+import { setApprovalRequest } from '~/lib/redux/slices/ApprovalSlice';
 
 export default function Page({ params }: { params: { id: number } }) {
+  const dispatch = useAppDispatch();
   const { data, isLoading } = useGetApprovalWorkflowRequestByIdQuery(
     { id: params.id },
     { skip: params.id === undefined }
@@ -17,5 +20,7 @@ export default function Page({ params }: { params: { id: number } }) {
 
   if (!data?.data) return notFound();
 
-  return <ApprovalDetail data={data?.data} />;
+  dispatch(setApprovalRequest(data?.data));
+
+  return <ApprovalDetail />;
 }

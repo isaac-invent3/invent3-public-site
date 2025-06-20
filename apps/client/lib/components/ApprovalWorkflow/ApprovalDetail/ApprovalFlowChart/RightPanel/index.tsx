@@ -17,10 +17,16 @@ import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import ApprovalComments from './ApprovalDetailsTabs/ApprovalComments';
 import ApprovalDetails from './ApprovalDetailsTabs/ApprovalDetails';
 import ApprovalDocuments from './ApprovalDetailsTabs/ApprovalDocuments';
+import Approvers from './ApprovalDetailsTabs/Approvers';
 
 const ApprovalDetailsPanel = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const AllTabs = [
+    {
+      label: 'Approvers',
+      slug: 'approvers',
+      component: <Approvers />,
+    },
     {
       label: 'Details',
       slug: 'details',

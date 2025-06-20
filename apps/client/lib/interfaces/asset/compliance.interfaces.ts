@@ -165,13 +165,15 @@ interface AssetCompliancePayload {
 }
 
 interface MarkCompliancePayload {
+  createComplianceAuditLogDto: {
+    comments?: string;
+    performedBy: string;
+    dateCreated: string;
+    compliancePolicyId: number;
+    createdBy: string;
+  };
   assetComplianceStatusId: number;
-  policyId: number;
-  assetId: number[];
-  comments?: string;
-  performedBy: string;
-  dateCreated: string;
-  createdBy: string;
+  assetIds: number[];
 }
 
 interface CreateAssetComplianceDto {

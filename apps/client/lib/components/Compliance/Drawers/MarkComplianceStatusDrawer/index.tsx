@@ -32,10 +32,11 @@ import { clearSelectedTableIds } from '~/lib/redux/slices/CommonSlice';
 interface MarkComplianceStatusDrawerProps {
   isOpen: boolean;
   onClose: () => void;
+  assetIds?: number[];
 }
 
 const MarkComplianceStatusDrawer = (props: MarkComplianceStatusDrawerProps) => {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, assetIds } = props;
   const { handleSubmit } = useCustomMutation();
 
   const [markComplianceStatus, { isLoading }] =
@@ -46,7 +47,7 @@ const MarkComplianceStatusDrawer = (props: MarkComplianceStatusDrawerProps) => {
   const dispatch = useAppDispatch();
 
   const initialValues = {
-    policyId: null,
+    compliancePolicyId: null,
     performedBy: '',
     assetComplianceStatusId: null,
     comments: null,
@@ -64,15 +65,17 @@ const MarkComplianceStatusDrawer = (props: MarkComplianceStatusDrawerProps) => {
       const response = await handleSubmit(
         markComplianceStatus,
         {
+          createComplianceAuditLogDto: {
+            compliancePolicyId: data?.compliancePolicyId!,
+            comments: data?.comments!,
+            performedBy: data?.performedBy!,
+            dateCreated: moment(data.date, 'DD/MM/YYYY')
+              .utcOffset(0, true)
+              .toISOString(),
+            createdBy: session?.user?.email!,
+          },
+          assetIds: assetIds ?? selectedAssets,
           assetComplianceStatusId: data?.assetComplianceStatusId!,
-          policyId: data?.policyId!,
-          comments: data?.comments!,
-          performedBy: data?.performedBy!,
-          dateCreated: moment(data.date, 'DD/MM/YYYY')
-            .utcOffset(0, true)
-            .toISOString(),
-          assetId: selectedAssets,
-          createdBy: session?.user?.email!,
         },
         'Compliance Status Marked Successfully'
       );
@@ -131,7 +134,7 @@ const MarkComplianceStatusDrawer = (props: MarkComplianceStatusDrawerProps) => {
                     sectionMaxWidth="141px"
                     customSpacing="24px"
                     description="Specify the Date the inspection was carried out"
-                    title="Date Created Out"
+                    title="Date Carried Out"
                     isRequired
                   >
                     <VStack alignItems="flex-start">

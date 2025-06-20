@@ -1,14 +1,15 @@
 import { FormInputWrapper } from '@repo/ui/components';
+import { useParams } from 'next/navigation';
 import React, { useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
-import { useGetComplianceStatusTypeQuery } from '~/lib/redux/services/asset/compliance.services';
-import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import { useGetAssetCategoryPoliciesQuery } from '~/lib/redux/services/asset/compliance.services';
 
 const PolicyByCategorySelect = () => {
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetComplianceStatusTypeQuery({
-    pageSize: DEFAULT_PAGE_SIZE,
-    pageNumber,
+  const params = useParams();
+  const id = params?.id as unknown as number;
+  const { data, isLoading } = useGetAssetCategoryPoliciesQuery({
+    assetCategoryId: id,
   });
   return (
     <FormInputWrapper
@@ -19,11 +20,11 @@ const PolicyByCategorySelect = () => {
       isRequired
     >
       <GenericAsyncSelect
-        selectName="policyId"
+        selectName="compliancePolicyId"
         selectTitle="Compliance Policy"
         data={data}
-        labelKey="standard"
-        valueKey="regulationId"
+        labelKey="policyName"
+        valueKey="policyId"
         isLoading={isLoading}
         pageNumber={pageNumber}
         setPageNumber={setPageNumber}

@@ -7,6 +7,7 @@ import { AssetBasedCompliance } from '~/lib/interfaces/asset/compliance.interfac
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import { SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
+import PopoverAction from './PopoverAction';
 
 interface CategoryComplianceTableProps extends GenericTableProps {
   data: AssetBasedCompliance[];
@@ -132,23 +133,9 @@ const CategoryComplianceTable = (props: CategoryComplianceTableProps) => {
           header: 'Status',
           enableSorting: false,
         }),
-        columnHelper.accessor('facilityName', {
-          cell: (info) => (
-            <Text
-              fontWeight={700}
-              color="#1270B0"
-              cursor="pointer"
-              onClick={(e) => {
-                e.stopPropagation();
-                updateSearchParam(
-                  SYSTEM_CONTEXT_DETAILS.COMPLIANCE.slug,
-                  info.row.original.assetId
-                );
-              }}
-            >
-              View Compliance
-            </Text>
-          ),
+        columnHelper.display({
+          id: 'action',
+          cell: (info) => <PopoverAction data={info.row.original} />,
           header: 'Action',
           enableSorting: false,
         }),

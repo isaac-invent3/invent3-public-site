@@ -79,7 +79,7 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
       <HStack position="relative">
         <SideBar isCollapse={isCollapse} setIsCollapse={setIsCollapse} />
 
-        {!isCollapse && (
+        {/* {!isCollapse && (
           <Flex
             position="absolute"
             right="-270px"
@@ -99,7 +99,7 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
               onClick={() => setIsCollapse((prev) => !prev)}
             />
           </Flex>
-        )}
+        )} */}
       </HStack>
       <Flex
         width={{ base: 'full', md: 'calc(100vw - 88px)' }}

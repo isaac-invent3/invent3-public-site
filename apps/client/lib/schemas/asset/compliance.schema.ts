@@ -28,7 +28,7 @@ const createComplianceRegulationSchema = () =>
 
 const markComplianceSchema = () =>
   Yup.object().shape({
-    policyId: Yup.number().required('Policy is Required'),
+    compliancePolicyId: Yup.number().required('Policy is Required'),
     performedBy: Yup.string().required('Performed By is Required'),
     assetComplianceStatusId: Yup.number().required(
       'Compliant Status is Required'

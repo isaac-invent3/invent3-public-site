@@ -38,6 +38,7 @@ export const complianceApi = createApi({
     'allFacilityCompliance',
     'allCategoryCompliance',
     'allComplianceRegulations',
+    'assetBasedCompliance',
   ],
   endpoints: (builder) => ({
     getAllAssetCompliance: builder.query<
@@ -134,7 +135,7 @@ export const complianceApi = createApi({
         method: 'GET',
         headers: getHeaders(),
       }),
-      providesTags: [],
+      providesTags: ['assetBasedCompliance'],
     }),
 
     getComplianceSummary: builder.query<
@@ -177,12 +178,22 @@ export const complianceApi = createApi({
         headers: getHeaders(),
       }),
     }),
+    getAssetCategoryPolicies: builder.query<
+      BaseApiResponse<{ policyId: number; policyName: string }>,
+      { assetCategoryId: number }
+    >({
+      query: ({ assetCategoryId }) => ({
+        url: `/AssetCompliances/GetAssetCategoryPolicies/${assetCategoryId}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
     getAssetComplianceDetails: builder.query<
       BaseApiResponse<AssetComplianceDetail>,
       { facilityId: number; assetId: number }
     >({
       query: ({ facilityId, assetId }) => ({
-        url: `/AssetCompliances/AssetCompliancesByCategoryDetails/${facilityId}/${assetId}`,
+        url: `/AssetCompliances/AssetComplianceDetails/${facilityId}/${assetId}`,
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -244,7 +255,7 @@ export const complianceApi = createApi({
         headers: getHeaders(),
         body,
       }),
-      invalidatesTags: ['allCategoryCompliance'],
+      invalidatesTags: ['assetBasedCompliance'],
     }),
   }),
 });
@@ -268,4 +279,5 @@ export const {
   useGetComplianceAssetCategoryDetailsQuery,
   useGetComplianceStatusTypeQuery,
   useMarkComplianceStatusMutation,
+  useGetAssetCategoryPoliciesQuery,
 } = complianceApi;

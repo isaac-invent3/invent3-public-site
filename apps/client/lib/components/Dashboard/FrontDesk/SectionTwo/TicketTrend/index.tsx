@@ -51,7 +51,7 @@ const TicketTrend = (props: TicketTrendProps) => {
           datasets={[
             {
               label: 'Opened',
-              data: data?.map((item) => item.open),
+              data: data?.map((item) => item.openTickets),
               borderColor: '#0366EF',
               pointBorderColor: '#fff',
               pointBackgroundColor: '#0366EF',
@@ -62,7 +62,7 @@ const TicketTrend = (props: TicketTrendProps) => {
             },
             {
               label: 'Resolved',
-              data: data?.map((item) => item.resolved),
+              data: data?.map((item) => item.resolvedTickets),
               borderColor: '#00A129',
               borderDash: [8, 4],
               pointRadius: 0,

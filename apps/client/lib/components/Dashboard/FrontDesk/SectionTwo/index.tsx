@@ -71,10 +71,7 @@ const SectionTwo = () => {
           />
         </SimpleGrid>
       </GridItem>
-      <GridItem
-        colSpan={{ base: 1, md: 2, lg: 1 }}
-        mt={{ base: '1em', md: undefined }}
-      >
+      <GridItem colSpan={{ base: 1, md: 2, lg: 1 }} mt={{ base: '1em', md: 0 }}>
         <MaintenanceSuccessChart
           missedColorCode="#00A129"
           completedColorCode="#033376"

@@ -46,7 +46,7 @@ export const logApi = createApi({
       providesTags: ['allAuditRecords'],
     }),
     getAllAuditRecordChanges: builder.query<
-      BaseApiResponse<ListResponse<AuditChanges>>,
+      BaseApiResponse<AuditChanges[]>,
       QueryParams & { auditRecordId: number }
     >({
       query: ({ auditRecordId, ...data }) => ({
@@ -71,7 +71,7 @@ export const logApi = createApi({
       { id: number }
     >({
       query: ({ id }) => ({
-        url: `/AuditRecords/${id}`,
+        url: `/AuditRecords/GetAuditRecordsInfoHeader/${id}`,
         method: 'GET',
         headers: getHeaders(),
       }),

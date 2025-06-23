@@ -15,6 +15,7 @@ const AssetDistribution = () => {
       rounded="8px"
       minH="343px"
       overflow="hidden"
+      position="relative"
     >
       <Flex width="full" position="absolute" zIndex={99} py="15px" px="10px">
         <CardHeader>Asset Distribution</CardHeader>

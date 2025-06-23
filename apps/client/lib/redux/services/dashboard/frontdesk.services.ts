@@ -38,10 +38,10 @@ export const frontdeskDashboardApi = createApi({
     }),
     getFrontdeskMaintenanceSuccessChartData: builder.query<
       BaseApiResponse<MaintenanceSuccessChartData>,
-      { userId: number; facilityId?: number; year: number; monthNo?: number }
+      { userId: number; year: number; monthNo?: number }
     >({
       query: ({ userId }) => ({
-        url: `/Invent3Pro/GetCSRGraphComponents/${userId}?`,
+        url: `/Invent3Pro/GetCSRMaintenanceSuccessGraph/${userId}?`,
         method: 'GET',
         headers: getHeaders(),
       }),

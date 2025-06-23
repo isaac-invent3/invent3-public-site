@@ -61,8 +61,8 @@ const TicketSummary = () => {
             <VStack spacing="4px" position="absolute" top="50px">
               <Text fontWeight={800} size="md" color="primary.500">
                 {(data?.data?.assignedTickets ?? 0) +
-                  (data?.data?.assignedTickets ?? 0) +
-                  (data?.data?.assignedTickets ?? 0)}{' '}
+                  (data?.data?.completed ?? 0) +
+                  (data?.data?.inProgress ?? 0)}{' '}
                 Tickets
               </Text>
               <Text color="neutral.600" fontWeight={700}>
@@ -71,7 +71,7 @@ const TicketSummary = () => {
             </VStack>
           </VStack>
           <HStack spacing="4px">
-            <ProgressIndicator valueChange={-10} />
+            <ProgressIndicator valueChange={0} />
             <Text color="neutral.600" fontWeight={700} whiteSpace="nowrap">
               Compared to last month
             </Text>

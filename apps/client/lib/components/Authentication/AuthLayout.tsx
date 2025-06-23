@@ -79,11 +79,9 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
           zIndex={99}
           display={{ base: 'none', md: 'flex' }}
         >
-          <Link href="/">
-            <Flex width="225px" height="100vh" position="fixed" top="-30%">
-              <Image src="/logo-initials.svg" fill alt="logo-initial" />
-            </Flex>
-          </Link>
+          <Flex width="225px" height="100vh" position="fixed" top="-30%">
+            <Image src="/logo-initials.svg" fill alt="logo-initial" />
+          </Flex>
         </Flex>
         <Flex
           width="full"

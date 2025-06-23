@@ -24,17 +24,17 @@ const AssetSummary = () => {
     {
       header: 'Asset Transfered',
       value: data?.data?.transferredAssets,
-      valueChange: -10,
+      valueChange: data?.data.assetTransferedPercentageRange ?? 0,
     },
     {
       header: 'Asset Disposed',
       value: data?.data?.disposedAssets,
-      valueChange: -10,
+      valueChange: data?.data.assetDisposed ?? 0,
     },
     {
       header: 'Asset Deleted',
       value: data?.data?.decommissionedAssets,
-      valueChange: -10,
+      valueChange: data?.data.assetDeleted ?? 0,
     },
   ];
   return (

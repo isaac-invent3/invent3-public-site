@@ -17,22 +17,26 @@ const TicketResolutionTrends = () => {
     datePeriod: +DATE_PERIOD.YEAR,
   });
 
-  const chartLegendItems = [
-    {
-      label: 'IT Issues',
-      color: '#98FEFE',
-    },
-    {
-      label: 'Facility Repairs',
-      color: '#4183DD',
-    },
-    {
-      label: 'Equipment Failures',
-      color: '#0E2642',
-    },
-  ];
+  const trendColors = ['#98FEFE', '#4183DD', '#0E2642'];
 
-  const chartData = data?.data?.map((item) => item.percentage);
+  const chartDataRaw = data?.data?.map((item) => item.percentage) || [];
+  const sum = chartDataRaw.reduce((acc, val) => acc + (val || 0), 0);
+  const others = Math.max(0, 100 - sum);
+  const chartData = chartDataRaw.length > 0 ? [...chartDataRaw, others] : [];
+
+  const chartLegendItems =
+    data?.data?.map((item, idx) => ({
+      label: item.categoryName,
+      color: trendColors[idx] || '#B0B0B0', // fallback color if more than 3 categories
+    })) || [];
+
+  // Append 'Others' with default color if needed
+  if (chartLegendItems.length > 0) {
+    chartLegendItems.push({
+      label: 'Others',
+      color: '#B0B0B0',
+    });
+  }
 
   return (
     <VStack

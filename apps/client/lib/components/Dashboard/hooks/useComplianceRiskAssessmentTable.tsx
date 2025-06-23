@@ -73,13 +73,13 @@ const useComplianceRiskAssessmentTable = (
   const columns = useMemo(
     () => {
       const baseColumns = [
-        columnHelper.accessor('standard', {
-          cell: (info) => info.getValue(),
+        columnHelper.accessor('policyName', {
+          cell: (info) => info.getValue() ?? 'N/A',
           header: 'Compliance Standard',
           enableSorting: false,
         }),
         columnHelper.accessor('statusName', {
-          cell: (info) => info.getValue(),
+          cell: (info) => info.getValue() ?? 'N/A',
           header: 'Status',
           enableSorting: false,
         }),

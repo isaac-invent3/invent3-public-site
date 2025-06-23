@@ -75,7 +75,8 @@ const MaintenanceSuccessChart = ({
   return (
     <VStack
       width="full"
-      minH="full"
+      height="full"
+      minH="300px"
       p="20px"
       alignItems="flex-start"
       spacing="16px"

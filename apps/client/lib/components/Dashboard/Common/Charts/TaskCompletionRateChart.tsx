@@ -47,9 +47,9 @@ const TaskCompletionRateChart = (props: TaskCompletionRateChartProps) => {
       spacing="16px"
       bgColor="white"
       rounded="8px"
-      w='full'
+      w="full"
     >
-      <HStack width="full" flexWrap='wrap' justifyContent="space-between">
+      <HStack width="full" flexWrap="wrap" justifyContent="space-between">
         <CardHeader>Task Completion Rate</CardHeader>
         <DropDown
           options={generateLastFiveYears()}

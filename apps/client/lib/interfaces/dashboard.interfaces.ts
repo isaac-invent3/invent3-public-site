@@ -74,8 +74,8 @@ interface CompleteAndIncompleteTask {
 }
 
 interface OpenedAndResolvedTicket {
-  open: number;
-  resolved: number;
+  openTickets: number;
+  resolvedTickets: number;
   variance: number;
   monthId: number;
   weekId: number;

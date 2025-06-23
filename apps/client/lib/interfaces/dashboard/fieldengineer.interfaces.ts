@@ -19,6 +19,9 @@ interface AssetOverview {
   decommissionedAssets: number;
   disposedAssets: number;
   transferredAssets: number;
+  assetTransferedPercentageRange: number;
+  assetDisposed: number;
+  assetDeleted: number;
 }
 
 interface MaintenanceSuccessChartData {

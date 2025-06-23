@@ -22,23 +22,26 @@ export interface Compliance extends BaseEntity {
 interface AssetComplaince {
   assetComplianceId: number;
   guid: string;
-  assetId: number;
+  assetId: null;
+  assetCategoryId: number;
   frequencyId: number;
   regulationId: number;
-  issuerId: number;
-  expiryDate: string;
-  lastInspectionDate: string;
-  nextInspectionDate: string;
-  statusName: string;
-  standard: string;
-  description: string;
-  alias: string;
-  displayColorCode: string;
-  complianceStatusId: number;
-  facilityId: number;
-  facilityName: string;
-  assetFacilityAddress: string;
-  dateCreated: string;
+  complianceTypeName: string;
+  complianceTypeId: number;
+  expiryDate: null;
+  lastInspectionDate: null;
+  nextInspectionDate: Date;
+  statusName: null;
+  alias: null;
+  displayColorCode: null;
+  complianceStatusId: null;
+  dateCreated: Date;
+  policyId: number;
+  policyName: string;
+  policyDescription: string;
+  facilityId: null;
+  facilityName: null;
+  assetFacilityAddress: null;
   isDeleted: boolean;
 }
 

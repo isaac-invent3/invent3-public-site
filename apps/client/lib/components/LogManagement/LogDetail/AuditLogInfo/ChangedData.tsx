@@ -88,10 +88,10 @@ const ChangedData = () => {
       </Text>
       <DataTable
         columns={columns}
-        data={data?.data?.items ?? []}
+        data={data?.data ?? []}
         isLoading={isLoading}
         isFetching={isFetching}
-        showFooter={data?.data && data?.data?.totalPages > 1 ? true : false}
+        showFooter={false}
         pageSize={pageSize}
         setPageSize={setPageSize}
         pageNumber={pageNumber}

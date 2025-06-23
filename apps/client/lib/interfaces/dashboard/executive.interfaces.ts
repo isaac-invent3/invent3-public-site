@@ -33,9 +33,9 @@ interface MaintenanceTrend {
 }
 
 interface TicketTrends {
-  ticketName: string;
+  categoryName: string;
   percentage: number;
-  datePeriod: number;
+  assetCount: number;
 }
 
 interface Compliance {
@@ -43,14 +43,6 @@ interface Compliance {
   status: string;
   lastAuditDate: Date;
   expiryDate: Date;
-}
-
-interface TicketResolution {
-  ticketId: number;
-  category: string;
-  priority: string;
-  assignedTo: string;
-  status: string;
 }
 
 interface FinancialImpact {
@@ -111,7 +103,6 @@ export type {
   MaintenanceTrend,
   TicketTrends,
   Compliance,
-  TicketResolution,
   FinancialImpact,
   PendingApproval,
   AssetPerformance,

@@ -10,11 +10,11 @@ import {
   FinancialImpact,
   MaintenanceBudget,
   MaintenanceTrendData,
-  TicketResolution,
   TicketTrends,
 } from '~/lib/interfaces/dashboard/executive.interfaces';
 import { ApprovalWorkflowRequest } from '~/lib/interfaces/approvalWorkflow.interfaces';
 import { AssetComplaince } from '~/lib/interfaces/asset/compliance.interfaces';
+import { Ticket } from '~/lib/interfaces/ticket.interfaces';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ export const executiveDashboardApis = createApi({
       }),
     }),
     getTicketResolutionPerformance: builder.query<
-      BaseApiResponse<ListResponse<TicketResolution>>,
+      BaseApiResponse<Ticket[]>,
       { datePeriod: number }
     >({
       query: (data) => ({

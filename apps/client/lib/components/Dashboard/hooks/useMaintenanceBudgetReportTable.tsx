@@ -103,7 +103,7 @@ const useMaintenanceBudgetReportTable = (
 
       return baseColumns;
     },
-    [[data]] //eslint-disable-line
+    [[data?.data]] //eslint-disable-line
   );
 
   const MaintenanceBudgetReportTable = (

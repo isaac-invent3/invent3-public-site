@@ -55,7 +55,7 @@ const UpcomingMaintenance = ({ perUser }: UpcomingMaintenanceProps) => {
             View All
           </Button>
         </HStack>
-        <Flex width="full" height="full" overflow="auto" maxH="280px">
+        <Flex width="full" height="full" overflow="auto">
           {UpcomingMaintenanceTable}
         </Flex>
       </VStack>

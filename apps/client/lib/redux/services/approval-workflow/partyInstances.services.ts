@@ -20,7 +20,10 @@ const getHeaders = () => ({
 export const approvalWorkflowPartyInstanceApi = createApi({
   reducerPath: 'approvalWorkflowPartyInstanceApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['allApprovalWorkflowPartyInstances'],
+  tagTypes: [
+    'allApprovalWorkflowPartyInstances',
+    'singleApprovalWorkflowPartyInstance',
+  ],
   endpoints: (builder) => ({
     createApprovalWorkflowPartyInstances: builder.mutation<
       BaseApiResponse<ApprovalWorkflowPartyInstance>,
@@ -58,6 +61,7 @@ export const approvalWorkflowPartyInstanceApi = createApi({
         method: 'GET',
         headers: getHeaders(),
       }),
+      providesTags: ['singleApprovalWorkflowPartyInstance'],
     }),
 
     updateApprovalWorkflowPartyInstances: builder.mutation<
@@ -122,6 +126,29 @@ export const approvalWorkflowPartyInstanceApi = createApi({
       }),
       providesTags: ['allApprovalWorkflowPartyInstances'],
     }),
+
+    updateApprovalRequestPartyInstanceStatus: builder.mutation<
+      BaseApiResponse<void>,
+      {
+        partyInstanceId: number;
+        approvalRequestId: number;
+        newStatus: boolean;
+        lastModifiedBy: string;
+      }
+    >({
+      query: ({ partyInstanceId, ...body }) => ({
+        url: generateQueryStr(
+          `/ApprovalRequests/UpdateApprovalRequestPartyInstanceStatus/${partyInstanceId}?`,
+          body
+        ),
+        method: 'PUT',
+        headers: getHeaders(),
+      }),
+      invalidatesTags: [
+        'singleApprovalWorkflowPartyInstance',
+        'allApprovalWorkflowPartyInstances',
+      ],
+    }),
   }),
 });
 
@@ -133,4 +160,5 @@ export const {
   useUpdateApprovalWorkflowPartyInstancesMutation,
   useSearchApprovalWorkflowPartyInstancesQuery,
   useUpdateSubsequentPartyInstancesLevelNumbersMutation,
+  useUpdateApprovalRequestPartyInstanceStatusMutation,
 } = approvalWorkflowPartyInstanceApi;

@@ -57,7 +57,7 @@ const User = (props: UserProps) => {
         {variant === 'fullDetails' && (
           <VStack alignItems="flex-start" spacing="8px">
             {info.map((item) => (
-              <HStack width="full">
+              <HStack width="full" alignItems="flex-start">
                 <Text size="md" color="neutral.600" minW={minWidth ?? '78px'}>
                   {item.label}
                 </Text>

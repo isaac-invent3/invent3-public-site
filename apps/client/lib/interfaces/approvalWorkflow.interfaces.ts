@@ -84,22 +84,6 @@ interface CreateApprovalWorkflowPartyInstancePayload {
   createdBy: string;
 }
 
-interface ApprovalWorkflowRequestDocument {
-  isNew: boolean;
-  createdDate: string;
-  createdBy: string;
-  lastModifiedDate: string;
-  lastModifiedBy: string;
-  isDeleted: boolean;
-  deletedDate: string | null;
-  deletedBy: string;
-  guid: string;
-  approvalRequestDocumentId: number;
-  systemContextTypeId: number;
-  contextId: number;
-  approvalRequestId: number;
-}
-
 interface UpdateSubsequentPartyInstancesLevelNumbersPayload {
   approvalWorkFlowInstanceId: number;
   alteredLevelNumber: number;
@@ -155,8 +139,32 @@ interface ApprovalWorkflowType {
   deletedBy: string | null;
   guid: string;
 }
-interface CreateApprovalWorkflowTypePayload {}
 
+interface ApprovalWorkflowComment extends BaseEntity {
+  isNew: boolean;
+  commentId: number;
+  authorId: number;
+  comment: string;
+  parentCommentId: number;
+  approvalRequestId: number;
+}
+
+interface ApprovalWorkflowRequestDocument {
+  approvalRequestDocumentId: number;
+  guid: string;
+  systemContextTypeId: number;
+  contextId: number;
+  approvalRequestId: number;
+  approvalTypeId: number;
+  approvalStatusId: number;
+  approvalRequestContextId: number;
+  documentId: number | null;
+  documentName: string | null;
+  document: string | null;
+  base64Prefix: string | null;
+}
+
+interface CreateApprovalWorkflowTypePayload {}
 interface ApprovalWorkflowInstance {}
 interface CreateApprovalWorkflowInstancePayload {}
 
@@ -178,4 +186,5 @@ export type {
   CreateApprovalWorkflowTypePayload,
   GetApprovalWorkflowPartyInstances,
   UpdateSubsequentPartyInstancesLevelNumbersPayload,
+  ApprovalWorkflowComment,
 };

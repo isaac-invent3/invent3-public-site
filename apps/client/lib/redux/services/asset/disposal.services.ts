@@ -8,6 +8,7 @@ import {
   SearchQuery,
 } from '@repo/interfaces';
 import {
+  AssetDisposal,
   AssetDisposalQuery,
   AssetDisposalReason,
 } from '~/lib/interfaces/asset/disposal.interfaces';
@@ -53,6 +54,16 @@ export const assetDisposalApi = createApi({
         body,
       }),
     }),
+    getAssetDisposal: builder.query<
+      BaseApiResponse<AssetDisposal>,
+      { id: number }
+    >({
+      query: ({ id }) => ({
+        url: `/AssetDisposalRequests/${id}?`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
   }),
 });
 
@@ -60,4 +71,5 @@ export const {
   useGetAllAssetDisposalReasonsQuery,
   useSearchAssetDisposalMutation,
   useRequestAssetDisposalMutation,
+  useGetAssetDisposalQuery,
 } = assetDisposalApi;

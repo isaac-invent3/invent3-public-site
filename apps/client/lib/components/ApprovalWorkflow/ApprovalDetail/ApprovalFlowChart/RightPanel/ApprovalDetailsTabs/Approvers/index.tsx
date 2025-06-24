@@ -6,13 +6,60 @@ import {
   Flex,
   HStack,
   Icon,
+  Skeleton,
+  SkeletonCircle,
   StackDivider,
   Text,
   VStack,
 } from '@chakra-ui/react';
 import ApprovalHeader from '../Header';
+import { useParams } from 'next/navigation';
+import {
+  useGetAllApprovalWorkflowPartyInstancesQuery,
+  useUpdateApprovalRequestPartyInstanceStatusMutation,
+} from '~/lib/redux/services/approval-workflow/partyInstances.services';
+import { APPROVAL_WORKFLOW_STATUSES } from '~/lib/utils/constants';
+import { getSession, useSession } from 'next-auth/react';
+import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
+import { useState } from 'react';
 
 const Approvers = () => {
+  const params = useParams();
+  const session = useSession();
+  const approvalRequestId = Number(params?.id);
+  const [shouldApprove, setShouldApprove] = useState(false);
+  const { data, isLoading, isFetching } =
+    useGetAllApprovalWorkflowPartyInstancesQuery(
+      {
+        pageNumber: 1,
+        pageSize: 100,
+        approvalRequestId,
+      },
+      { skip: !approvalRequestId }
+    );
+  const [updateInstance, { isLoading: isUpdatingInstance }] =
+    useUpdateApprovalRequestPartyInstanceStatusMutation();
+
+  const { handleSubmit } = useCustomMutation();
+
+  const takeAction = async (
+    shouldApprove: boolean,
+    approvalWorkFlowPartyInstanceId: number
+  ) => {
+    const session = await getSession();
+    await handleSubmit(
+      updateInstance,
+      {
+        partyInstanceId: approvalWorkFlowPartyInstanceId,
+        approvalRequestId,
+        newStatus: shouldApprove,
+        lastModifiedBy: session?.user?.username!,
+      },
+      ''
+    );
+  };
+
   return (
     <VStack
       alignItems="flex-start"
@@ -21,102 +68,107 @@ const Approvers = () => {
     >
       <ApprovalHeader />
       <VStack alignItems="flex-start" gap="1.2em" w="full">
-        <HStack alignItems="center" justifyContent="space-between" w="full">
-          <HStack spacing="8px">
-            <Avatar width="24px" height="24px" />
-
-            <Box>
-              <Text as="span" color="neutral.600" size="md">
-                Jerome Bell
-              </Text>
-
-              <Text as="span" color="neutral.800" size="md">
-                {' '}
-                requested
-              </Text>
-            </Box>
-          </HStack>
-
-          <Flex
-            alignItems="center"
-            justifyContent="center"
-            w="24px"
-            h="24px"
-            rounded="full"
-            background="#07CC3B26"
-          >
-            <Icon as={CheckIcon} color="#018A1E" boxSize="14px" />
-          </Flex>
-        </HStack>
-
-        <HStack alignItems="center" justifyContent="space-between" w="full">
-          <HStack spacing="8px">
-            <Avatar width="24px" height="24px" />
-
-            <Box>
-              <Text as="span" color="neutral.600" size="md">
-                George Washington
-              </Text>
-
-              <Text as="span" color="neutral.800" size="md">
-                {' '}
-                has to approve
-              </Text>
-            </Box>
-          </HStack>
-
-          <Flex alignItems="center" gap="8px">
-            <Button
-              background="transparent"
-              border="1px solid #D30000"
-              height="35px"
+        {isLoading &&
+          Array(5)
+            .fill('')
+            .map((item, index) => (
+              <HStack
+                alignItems="center"
+                justifyContent="space-between"
+                w="full"
+                key={index}
+                spacing="8px"
+              >
+                <SkeletonCircle size="30px" flexShrink={0} />
+                <Skeleton width="full" height="20px" />
+              </HStack>
+            ))}
+        {!isLoading &&
+          data?.data?.items.map((item, index) => (
+            <HStack
+              alignItems="center"
+              justifyContent="space-between"
+              w="full"
+              key={index}
             >
-              <Text color="#D30000">Reject</Text>
-            </Button>
+              <HStack spacing="8px">
+                <Avatar width="24px" height="24px" />
 
-            <Button
-              background="#008321"
-              height="35px"
-              _hover={{ background: '#008321F0' }}
-            >
-              <Text color="#D2FEFD">Approve</Text>
-            </Button>
-          </Flex>
-        </HStack>
+                <Box>
+                  <Text as="span" color="neutral.600" size="md">
+                    {item.firstName} {item.lastName}
+                  </Text>
 
-        <HStack alignItems="center" justifyContent="space-between" w="full">
-          <HStack spacing="8px">
-            <Avatar width="24px" height="24px" />
+                  <Text
+                    as="span"
+                    color="neutral.800"
+                    size="md"
+                    textTransform="lowercase"
+                  >
+                    {' '}
+                    {item.requiredAction}
+                  </Text>
+                </Box>
+              </HStack>
 
-            <Box>
-              <Text as="span" color="neutral.600" size="md">
-                Jerome Bell
-              </Text>
+              {item.currentStatusId === APPROVAL_WORKFLOW_STATUSES.APPROVED && (
+                <Flex
+                  alignItems="center"
+                  justifyContent="center"
+                  w="24px"
+                  h="24px"
+                  rounded="full"
+                  background="#07CC3B26"
+                >
+                  <Icon as={CheckIcon} color="#018A1E" boxSize="14px" />
+                </Flex>
+              )}
+              {item.currentStatusId ===
+                APPROVAL_WORKFLOW_STATUSES.IN_PROGRESS &&
+                session?.data?.user?.userId !== item.userId && (
+                  <GenericStatusBox text={item.currentStatusName} />
+                )}
+              {item.currentStatusId ===
+                APPROVAL_WORKFLOW_STATUSES.IN_PROGRESS &&
+                session?.data?.user?.userId === item.userId && (
+                  <Flex alignItems="center" gap="8px">
+                    <Button
+                      background="transparent"
+                      border="1px solid #D30000"
+                      height="35px"
+                      cursor="pointer"
+                      loadingText="..."
+                      isLoading={isUpdatingInstance && !shouldApprove}
+                      onClick={() => {
+                        setShouldApprove(false);
+                        takeAction(true, item.approvalWorkFlowPartyInstanceId);
+                      }}
+                      color="#D30000"
+                      fontSize="12px"
+                    >
+                      Reject
+                    </Button>
 
-              <Text as="span" color="neutral.800" size="md">
-                {' '}
-                has to be informed
-              </Text>
-            </Box>
-          </HStack>
-        </HStack>
-
-        <HStack alignItems="center" justifyContent="space-between" w="full">
-          <HStack spacing="8px">
-            <Avatar width="24px" height="24px" />
-
-            <Box>
-              <Text as="span" color="neutral.600" size="md">
-                Tasha Bell
-              </Text>
-
-              <Text as="span" color="neutral.800" size="md">
-                {' '}
-                has to approve
-              </Text>
-            </Box>
-          </HStack>
-        </HStack>
+                    <Button
+                      background="#008321"
+                      height="35px"
+                      _hover={{ background: '#008321F0' }}
+                      cursor="pointer"
+                      isLoading={isUpdatingInstance && shouldApprove}
+                      loadingText="..."
+                      onClick={() => {
+                        setShouldApprove(true);
+                        takeAction(true, item.approvalWorkFlowPartyInstanceId);
+                      }}
+                      color="#D2FEFD"
+                      fontSize="12px"
+                    >
+                      Approve
+                    </Button>
+                  </Flex>
+                )}
+            </HStack>
+          ))}
       </VStack>
     </VStack>
   );

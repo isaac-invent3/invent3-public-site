@@ -12,9 +12,9 @@ import AssetSuccessModal from '../Modals/AssetSuccessModal';
 import moment from 'moment';
 import { getSession } from 'next-auth/react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { useTransferAssetMutation } from '~/lib/redux/services/asset/general.services';
 import PageHeader from '../../UI/PageHeader';
 import { ROUTES } from '~/lib/utils/constants';
+import { useTransferAssetMutation } from '~/lib/redux/services/asset/transfer.services';
 
 interface AssetTransferProps {
   data: Asset;

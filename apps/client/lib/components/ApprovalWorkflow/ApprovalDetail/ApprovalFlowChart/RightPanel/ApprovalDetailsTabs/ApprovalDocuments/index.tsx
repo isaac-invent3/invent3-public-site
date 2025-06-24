@@ -1,95 +1,137 @@
 import {
-  Box,
   Flex,
   HStack,
   Icon,
+  Skeleton,
   StackDivider,
   Text,
   VStack,
 } from '@chakra-ui/react';
-import { CloseIcon, PDFIcon } from '~/lib/components/CustomIcons';
+import { ButtonPagination } from '@repo/ui/components';
+import { getDocumentInfo } from '~/lib/utils/helperFunctions';
+import { FILE_ICONS } from '~/lib/utils/constants';
+import { useState } from 'react';
+import { useAppSelector } from '~/lib/redux/hooks';
+import { useGetAllDocumentsByApprovalRequestIdQuery } from '~/lib/redux/services/approval-workflow/requestDocuments.services';
+import { ApprovalWorkflowRequestDocument } from '~/lib/interfaces/approvalWorkflow.interfaces';
 import ApprovalHeader from '../Header';
 
 const ApprovalDocuments = () => {
+  const approvalRequest = useAppSelector(
+    (state) => state.approval.approvalRequest
+  );
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize] = useState(5);
+  const { data, isLoading } = useGetAllDocumentsByApprovalRequestIdQuery(
+    {
+      id: approvalRequest?.approvalRequestId!,
+      pageSize,
+      pageNumber: currentPage,
+    },
+    { skip: !approvalRequest?.approvalRequestId }
+  );
+
+  const downloadDocument = (item: ApprovalWorkflowRequestDocument) => {
+    if (item.document) {
+      const link = document.createElement('a');
+      link.href = `${item.base64Prefix}${item.document}`;
+      link.download = item.documentName ?? '';
+      link.click();
+    }
+  };
+
   return (
     <VStack
+      width="full"
       alignItems="flex-start"
-      pb="1.5em"
-      divider={
-        <StackDivider
-          height="20px"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          border="none"
-        >
-          <Box borderColor="#838383" width="full" borderWidth={0.5}></Box>
-        </StackDivider>
-      }
+      divider={<StackDivider borderColor="neutral.600" />}
+      spacing="16px"
     >
       <ApprovalHeader />
-
-      <VStack
-        w="full"
-        mt="1rem"
-        divider={
-          <StackDivider
-            height="10px"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            border="none"
-          >
-            <Box borderColor="#BBBBBB" width="full" borderWidth={0.5}></Box>
-          </StackDivider>
-        }
+      {isLoading && (
+        <VStack
+          width="full"
+          wrap="wrap"
+          divider={<StackDivider borderColor="neutral.600" />}
+          spacing="16px"
+        >
+          {Array(3)
+            .fill('')
+            .map((_, index) => (
+              <Skeleton width="full" height="50px" key={index} />
+            ))}
+        </VStack>
+      )}
+      <Flex
+        width="full"
+        alignItems="flex-end"
+        gap="16px"
+        direction="column"
+        my="16px"
       >
-        <HStack justifyContent="space-between" w="full">
-          <HStack gap="12px">
-            <Icon as={PDFIcon} boxSize="28px" />
-
-            <Text color="neutral.800" size="md">
-              Purchase Receipt
+        <VStack
+          width="full"
+          alignItems="flex-start"
+          divider={<StackDivider borderColor="neutral.600" />}
+          spacing="16px"
+        >
+          {data?.data && data?.data?.items.length >= 1 ? (
+            data?.data?.items.map((item, index: number) => {
+              const { extensionName } = getDocumentInfo({
+                base64Document: item.document,
+                documentName: item.documentName,
+                base64Prefix: item.base64Prefix,
+                documentId: item.documentId!,
+              });
+              return (
+                <HStack
+                  spacing="16px"
+                  key={index}
+                  width="full"
+                  cursor="pointer"
+                  onClick={() => downloadDocument(item)}
+                >
+                  <Icon
+                    as={FILE_ICONS[extensionName ?? 'invalid']}
+                    boxSize="24px"
+                  />
+                  <Text size="md" color="neutral.800" textAlign="center">
+                    {item.documentName ?? '--'}
+                  </Text>
+                  <Text
+                    bgColor="#F6F6F6"
+                    color="neutral.800"
+                    px="12px"
+                    py="7px"
+                    rounded="8px"
+                  >
+                    {extensionName}
+                  </Text>
+                </HStack>
+              );
+            })
+          ) : (
+            <Text
+              width="full"
+              size="md"
+              fontWeight={400}
+              fontStyle="italic"
+              my="41px"
+              color="neutral.600"
+              textAlign="center"
+            >
+              No Document at the moment.
             </Text>
-
-            <Box background="#F6F6F6" padding="7px 12px" rounded="8px">
-              <Text color="neutral.800">PDF</Text>
-            </Box>
-          </HStack>
-
-          <Flex
-            justifyContent="center"
-            padding="1px"
-            rounded="full"
-            border="2px solid #FF3B30"
-          >
-            <Icon as={CloseIcon} boxSize="14px" color="#FF3B30" />
-          </Flex>
-        </HStack>
-
-        <HStack justifyContent="space-between" w="full">
-          <HStack gap="12px">
-            <Icon as={PDFIcon} boxSize="28px" />
-
-            <Text color="neutral.800" size="md">
-              Purchase Receipt
-            </Text>
-
-            <Box background="#F6F6F6" padding="7px 12px" rounded="8px">
-              <Text color="neutral.800">PDF</Text>
-            </Box>
-          </HStack>
-
-          <Flex
-            justifyContent="center"
-            padding="1px"
-            rounded="full"
-            border="2px solid #FF3B30"
-          >
-            <Icon as={CloseIcon} boxSize="14px" color="#FF3B30" />
-          </Flex>
-        </HStack>
-      </VStack>
+          )}
+        </VStack>
+        {(data?.data?.hasPreviousPage || data?.data?.hasNextPage) && (
+          <ButtonPagination
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            totalPages={data?.data?.totalPages}
+          />
+        )}
+      </Flex>
     </VStack>
   );
 };

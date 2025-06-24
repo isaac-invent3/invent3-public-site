@@ -99,6 +99,8 @@ import { executiveDashboardApis } from './services/dashboard/executive.services'
 import { BMSApi } from './services/dashboard/bms.services';
 import { settingsApi } from './services/settings.services';
 import { authApi } from './services/auth.services';
+import { assetTransferApi } from './services/asset/transfer.services';
+import { approvalWorkflowRequestCommentApi } from './services/approval-workflow/requestComments.services';
 export const persistConfig = {
   key: 'root',
   storage,
@@ -110,6 +112,7 @@ const rootReducer = combineReducers({
   [assetApi.reducerPath]: assetApi.reducer,
   [assetDocumentApi.reducerPath]: assetDocumentApi.reducer,
   [assetDisposalApi.reducerPath]: assetDisposalApi.reducer,
+  [assetTransferApi.reducerPath]: assetTransferApi.reducer,
   [assetGroupTypeApi.reducerPath]: assetGroupTypeApi.reducer,
   [assetStatsApi.reducerPath]: assetStatsApi.reducer,
   [assetTypeApi.reducerPath]: assetTypeApi.reducer,
@@ -200,6 +203,8 @@ const rootReducer = combineReducers({
     approvalWorkflowRequirementTypeApi.reducer,
   [approvalWorkflowStatusApi.reducerPath]: approvalWorkflowStatusApi.reducer,
   [approvalWorkflowTypeApi.reducerPath]: approvalWorkflowTypeApi.reducer,
+  [approvalWorkflowRequestCommentApi.reducerPath]:
+    approvalWorkflowRequestCommentApi.reducer,
 
   // Log APIS
   [logApi.reducerPath]: logApi.reducer,
@@ -269,6 +274,7 @@ export const makeStore = () => {
         assetStatsApi.middleware,
         assetTypeApi.middleware,
         assetDisposalApi.middleware,
+        assetTransferApi.middleware,
         assetVendorsApi.middleware,
         complianceApi.middleware,
 
@@ -349,6 +355,7 @@ export const makeStore = () => {
         approvalWorkflowRequirementTypeApi.middleware,
         approvalWorkflowStatusApi.middleware,
         approvalWorkflowTypeApi.middleware,
+        approvalWorkflowRequestCommentApi.middleware,
 
         // Log Apis
         logApi.middleware,

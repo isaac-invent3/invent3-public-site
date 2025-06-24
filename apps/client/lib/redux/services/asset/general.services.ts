@@ -19,10 +19,6 @@ import {
   AssetImage,
   AssetImageQuery,
 } from '~/lib/interfaces/asset/image.interfaces';
-import {
-  AssetTransfer,
-  AssetTransferQuery,
-} from '~/lib/interfaces/asset/transfer.interfaces';
 import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
@@ -216,17 +212,6 @@ export const assetApi = createApi({
       }),
       invalidatesTags: ['allAsset'],
     }),
-    transferAsset: builder.mutation<
-      BaseApiResponse<AssetTransfer>,
-      AssetTransferQuery
-    >({
-      query: (body) => ({
-        url: `/AssetTransfers`,
-        method: 'POST',
-        headers: getHeaders(),
-        body,
-      }),
-    }),
     assetMeanTimeComputation: builder.query<
       BaseApiResponse<MeanTimeComputation>,
       { monthId: number }
@@ -254,7 +239,6 @@ export const {
   useGetAllAssetStatusQuery,
   useSearchStatusMutation,
   useSearchAssetsMutation,
-  useTransferAssetMutation,
   useUpdateAssetStatusMutation,
   useAssetMeanTimeComputationQuery,
   useGetAssetCountByColumnNameQuery,

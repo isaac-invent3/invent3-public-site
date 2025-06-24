@@ -6,7 +6,6 @@ import { FormikProvider, useFormik } from 'formik';
 import { assetTransferSchema } from '~/lib/schemas/asset/main.schema';
 import { getSession } from 'next-auth/react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { useTransferAssetMutation } from '~/lib/redux/services/asset/general.services';
 import moment from 'moment';
 import AssetSuccessModal from '../../Modals/AssetSuccessModal';
 import SectionTwo from '../SectionTwo';
@@ -19,6 +18,7 @@ import {
 import PageHeader from '~/lib/components/UI/PageHeader';
 import { ROUTES } from '~/lib/utils/constants';
 import { useRouter } from 'next/navigation';
+import { useTransferAssetMutation } from '~/lib/redux/services/asset/transfer.services';
 
 const BulkTransfer = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();

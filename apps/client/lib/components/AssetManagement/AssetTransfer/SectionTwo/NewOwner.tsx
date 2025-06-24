@@ -54,7 +54,11 @@ const NewOwner = (props: NewOwnerProps) => {
       {user && (
         <UserDisplay
           name={user.firstName + ' ' + user.lastName}
-          role={user.userRoles.map((item) => item.roleName).join(', ')}
+          role={
+            user?.userRoles
+              ? user?.userRoles?.map((item) => item.roleName).join(', ')
+              : ''
+          }
           location={user?.userLocation}
           department={null}
           minWidth="100px"

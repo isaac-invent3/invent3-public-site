@@ -226,6 +226,7 @@ const SYSTEM_CONTEXT_DETAILS: Record<ContextKey, SystemContextDetail> = {
     slug: 'assetId',
     displayName: 'Asset Management',
     relatedPermissionKeys: ['task'],
+    label: 'asset',
   },
 
   MAINTENANCE_PLANS: {
@@ -234,6 +235,7 @@ const SYSTEM_CONTEXT_DETAILS: Record<ContextKey, SystemContextDetail> = {
     slug: 'maintenancePlanId',
     relatedPermissionKeys: ['task'],
     displayName: 'Maintenance Plans',
+    label: 'maintenance plan',
   },
   MAINTENANCE_SCHEDULES: {
     id: SYSTEM_CONTEXT_TYPE.MAINTENANCE_SCHEDULES,
@@ -241,6 +243,7 @@ const SYSTEM_CONTEXT_DETAILS: Record<ContextKey, SystemContextDetail> = {
     slug: 'maintenanceScheduleId',
     relatedPermissionKeys: ['task'],
     displayName: 'Maintenance Schedules',
+    label: 'maintenance schedule',
   },
   MAINTENANCE_SCHEDULE_INSTANCE: {
     id: SYSTEM_CONTEXT_TYPE.MAINTENANCE_SCHEDULE_INSTANCES,
@@ -248,12 +251,14 @@ const SYSTEM_CONTEXT_DETAILS: Record<ContextKey, SystemContextDetail> = {
     slug: 'maintenanceScheduleInstanceId',
     relatedPermissionKeys: ['task'],
     displayName: 'Maintenance Schedule Instance',
+    label: 'maintenance schedule',
   },
   TASKS: {
     id: SYSTEM_CONTEXT_TYPE.TASKS,
     route: ROUTES.TASKS,
     slug: 'taskId',
     displayName: 'Task Management',
+    label: 'task',
   },
   TICKETS: {
     id: SYSTEM_CONTEXT_TYPE.TICKETS,
@@ -261,41 +266,57 @@ const SYSTEM_CONTEXT_DETAILS: Record<ContextKey, SystemContextDetail> = {
     slug: 'ticketId',
     relatedPermissionKeys: ['task'],
     displayName: 'Ticket Management',
+    label: 'ticket',
   },
   USER: {
     id: SYSTEM_CONTEXT_TYPE.USERS,
     route: ROUTES.USERS,
     slug: 'userId',
     displayName: 'User Management',
+    label: 'user',
   },
   VENDOR: {
     id: SYSTEM_CONTEXT_TYPE.VENDOR,
     route: ROUTES.VENDOR,
     slug: 'vendorId',
     displayName: 'Vendor Management',
+    label: 'vendor',
   },
   COMPANY: {
     id: SYSTEM_CONTEXT_TYPE.COMPANY,
     route: ROUTES.COMPANY,
     slug: 'companyId',
     displayName: 'Company Management',
+    label: 'company',
   },
   COMPLIANCE: {
     id: SYSTEM_CONTEXT_TYPE.ASSET_COMPLIANCE,
     route: ROUTES.COMPLIANCE,
     slug: 'complianceId',
     displayName: 'Compliance',
+    label: 'compliance',
   },
   AUDIT: {
     id: SYSTEM_CONTEXT_TYPE.AUDIT,
     route: ROUTES.AUDIT_LOG,
     slug: 'logId',
     displayName: 'Audits',
+    label: 'audit',
   },
 };
 
 const NOTIFICATION_EVENT_TYPE_ENUM = {
-  TICKET_CREATED: 3,
+  CREATE: 1,
+  UPDATE: 2,
+  DELETE: 3,
+  SCHEDULE: 4,
+  ASSIGNED: 5,
+  APPROVED: 6,
+  REJECTED: 7,
+  REQUESTED: 8,
+  COMPLETED: 9,
+  CANCELLED: 10,
+  TAG: 11,
 };
 
 const ASSET_GROUP_TYPE = {

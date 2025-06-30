@@ -166,9 +166,105 @@ interface ApprovalWorkflowRequestDocument {
   base64Prefix: string | null;
 }
 
+interface ApprovalWorkflow {
+  rowId: number;
+  approvalWorkFlowId: number;
+  approvalWorkFlowName: string;
+  guid: string;
+  description: string;
+  numberOfApprovalLevels: number;
+  isDefaultApprovalWorkFlow: boolean;
+  isDeleted: boolean;
+  approvalTypeId: number;
+  approvalTypeName: string;
+  systemContextTypeId: number;
+  totalNoOfParties: number;
+}
+
+interface ApprovalWorkflowParty {
+  rowId: number;
+  approvalWorkFlowPartyId: number;
+  guid: string;
+  levelNumber: number;
+  isDeleted: boolean;
+  approvalWorkFlowId: number;
+  approvalWorkFlowName: string;
+  approvalActionId: number;
+  actionName: string;
+  userId: number;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  email: string;
+  approvalRequirementTypeId: number;
+  approvalRequirementTypeName: string;
+  employeeDesignation: string;
+}
+
+interface CreateApprovalWorkflowPayload {
+  createApprovalWorkFlowDto: {
+    approvalWorkFlowName: string;
+    description: string;
+    approvalTypeId: number;
+    isDefaultApprovalWorkFlow: boolean;
+    createdBy: string;
+  };
+  createApprovalWorkFlowPartyDtos: {
+    approvalWorkFlowPartyId: number | null;
+    approvalWorkFlowId: number;
+    userId: number;
+    approvalActionId: number;
+    levelNumber: number;
+    approvalRequirementTypeId: number;
+    actionType: number;
+    changeInitiatedBy: string;
+  }[];
+}
+
+interface UpdateApprovalWorkflowPayload {
+  updateApprovalWorkFlowDto: {
+    approvalWorkFlowId: number;
+    approvalWorkFlowName: string;
+    description: string;
+    approvalTypeId: number;
+    isDefaultApprovalWorkFlow: boolean;
+    lastModifiedBy: string;
+  };
+  updateApprovalWorkFlowPartyDtos: {
+    approvalWorkFlowPartyId: number | null;
+    approvalWorkFlowId: number;
+    userId: number;
+    approvalActionId: number;
+    levelNumber: number;
+    approvalRequirementTypeId: number;
+    actionType: number;
+    changeInitiatedBy: string;
+  }[];
+}
+
+interface ApprovalLevel {
+  levelNumber: number;
+  approvers: {
+    userId: number;
+    partyId: number | null;
+    userFullName: string | null;
+    approvalActionId: number;
+    approvalActionName: string;
+  }[];
+}
+
 interface CreateApprovalWorkflowTypePayload {}
 interface ApprovalWorkflowInstance {}
 interface CreateApprovalWorkflowInstancePayload {}
+
+interface CreateApprovalWorkflowFormikValues {
+  approvalTypeId: number | null;
+  approvalWorkFlowName: string;
+  description: string;
+  isDefaultApprovalWorkFlow: boolean;
+  levels: ApprovalLevel[];
+  deletedPartyIds: number[];
+}
 
 export type {
   ApprovalWorkflowAction,
@@ -189,4 +285,10 @@ export type {
   GetApprovalWorkflowPartyInstances,
   UpdateSubsequentPartyInstancesLevelNumbersPayload,
   ApprovalWorkflowComment,
+  ApprovalWorkflow,
+  CreateApprovalWorkflowPayload,
+  ApprovalLevel,
+  CreateApprovalWorkflowFormikValues,
+  UpdateApprovalWorkflowPayload,
+  ApprovalWorkflowParty,
 };

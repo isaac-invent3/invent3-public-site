@@ -83,7 +83,7 @@ export const approvalWorkflowTypeApi = createApi({
       invalidatesTags: ['allApprovalWorkflowTypes'],
     }),
 
-    searchApprovalWorkflowTypes: builder.query<
+    searchApprovalWorkflowTypes: builder.mutation<
       BaseApiResponse<ListResponse<ApprovalWorkflowType>>,
       SearchQuery
     >({
@@ -93,7 +93,6 @@ export const approvalWorkflowTypeApi = createApi({
         headers: getHeaders(),
         body,
       }),
-      providesTags: ['allApprovalWorkflowTypes'],
     }),
   }),
 });
@@ -103,6 +102,6 @@ export const {
   useDeleteApprovalWorkflowTypesMutation,
   useGetAllApprovalWorkflowTypesQuery,
   useGetApprovalWorkflowTypeByIdQuery,
-  useSearchApprovalWorkflowTypesQuery,
+  useSearchApprovalWorkflowTypesMutation,
   useUpdateApprovalWorkflowTypesMutation,
 } = approvalWorkflowTypeApi;

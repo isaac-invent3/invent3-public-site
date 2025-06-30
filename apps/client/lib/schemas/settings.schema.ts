@@ -52,81 +52,109 @@ const complianceSchema = Yup.object().shape({
   complianceAutoReportScheduleId: Yup.number().nullable(),
 });
 
-const bmsSettingsSchema = () =>
-  Yup.object().shape({
-    bmsBuildingSettingsModel: Yup.array()
-      .of(
-        Yup.object().shape({
-          buildingId: Yup.number().required('Building is Required'),
-          costOfEnergyPerKWh: Yup.number().required('Cost of Energy Per KWh'),
-          budgetExpenditureModels: Yup.array().of(
-            Yup.object().shape({
-              key: Yup.number().required('Key is Required'),
-              value: Yup.object().shape({
-                systemContextTypeId: Yup.number().required(
-                  'System Context Type is Required'
-                ),
-                contextId: Yup.number().required('Context ID is Required'),
-                kWhTarget: Yup.number().required('Target kWh is Required'),
-              }),
-            })
-          ),
-          bmsFloorSettingsModels: Yup.array().of(
-            Yup.object().shape({
-              floorId: Yup.number().required('Floor ID is Required'),
-              floorMap: Yup.string().nullable(),
-              bmsRoomSettingsModel: Yup.array().of(
-                Yup.object().shape({
-                  roomId: Yup.number().required('Room is Required'),
-                  temperatureSetPoint: Yup.object().shape({
-                    key: Yup.number().required('Key is Required'),
-                    value: Yup.object().shape({
-                      key: Yup.number().required('Key is Required'),
-                      value: Yup.number().required('Value is Required'),
-                    }),
-                  }),
-                  humiditySetPoint: Yup.object()
-                    .shape({
-                      key: Yup.number().required('Key is Required'),
-                      value: Yup.object().shape({
-                        key: Yup.number().required('Key is Required'),
-                        value: Yup.number().required('Value is Required'),
-                      }),
-                    })
-                    .required('Humidity SetPoint is Required'),
-                  lightningLevelSetPoint: Yup.object()
-                    .shape({
-                      key: Yup.number().required('Key is Required'),
-                      value: Yup.object().shape({
-                        key: Yup.number().required('Key is Required'),
-                        value: Yup.number().required('Value is Required'),
-                      }),
-                    })
-                    .required('Lightning Level SetPoint is Required'),
-                  co2SetPoint: Yup.object().shape({
-                    key: Yup.number().required('Key is Required'),
-                    value: Yup.object().shape({
-                      key: Yup.number().required('Key is Required'),
-                      value: Yup.number().required('Value is Required'),
-                    }),
-                  }),
-                  energyConsumptionTarget: Yup.object().shape({
-                    key: Yup.number().required('Key is Required'),
-                    value: Yup.object().shape({
-                      key: Yup.number().required('Key is Required'),
-                      value: Yup.number().required('Value is Required'),
-                    }),
-                  }),
-                })
+const bmsSettingsSchema = Yup.object().shape({
+  bmsBuildingSettingsModel: Yup.array()
+    .of(
+      Yup.object().shape({
+        buildingId: Yup.number().required('Building is Required'),
+        costOfEnergyPerKWh: Yup.number().required('Cost of Energy Per KWh'),
+        budgetExpenditureModels: Yup.array().of(
+          Yup.object().shape({
+            key: Yup.number().required('Key is Required'),
+            value: Yup.object().shape({
+              systemContextTypeId: Yup.number().required(
+                'System Context Type is Required'
               ),
+              contextId: Yup.number().required('Context ID is Required'),
+              kWhTarget: Yup.number().required('Target kWh is Required'),
+            }),
+          })
+        ),
+        bmsFloorSettingsModels: Yup.array().of(
+          Yup.object().shape({
+            floorId: Yup.number().required('Floor ID is Required'),
+            floorMap: Yup.string().nullable(),
+            bmsRoomSettingsModel: Yup.array().of(
+              Yup.object().shape({
+                roomId: Yup.number().required('Room is Required'),
+                temperatureSetPoint: Yup.object().shape({
+                  key: Yup.number().required('Key is Required'),
+                  value: Yup.object().shape({
+                    key: Yup.number().required('Key is Required'),
+                    value: Yup.number().required('Value is Required'),
+                  }),
+                }),
+                humiditySetPoint: Yup.object()
+                  .shape({
+                    key: Yup.number().required('Key is Required'),
+                    value: Yup.object().shape({
+                      key: Yup.number().required('Key is Required'),
+                      value: Yup.number().required('Value is Required'),
+                    }),
+                  })
+                  .required('Humidity SetPoint is Required'),
+                lightningLevelSetPoint: Yup.object()
+                  .shape({
+                    key: Yup.number().required('Key is Required'),
+                    value: Yup.object().shape({
+                      key: Yup.number().required('Key is Required'),
+                      value: Yup.number().required('Value is Required'),
+                    }),
+                  })
+                  .required('Lightning Level SetPoint is Required'),
+                co2SetPoint: Yup.object().shape({
+                  key: Yup.number().required('Key is Required'),
+                  value: Yup.object().shape({
+                    key: Yup.number().required('Key is Required'),
+                    value: Yup.number().required('Value is Required'),
+                  }),
+                }),
+                energyConsumptionTarget: Yup.object().shape({
+                  key: Yup.number().required('Key is Required'),
+                  value: Yup.object().shape({
+                    key: Yup.number().required('Key is Required'),
+                    value: Yup.number().required('Value is Required'),
+                  }),
+                }),
+              })
+            ),
+          })
+        ),
+      })
+    )
+    .required('Building Settings is Required')
+    .min(1, 'At least one building setting is required'),
+  facilityId: Yup.number().required('Facility is Required'),
+});
+
+const createApprovalWorkflowSchema = Yup.object().shape({
+  levels: Yup.array()
+    .of(
+      Yup.object().shape({
+        levelNumber: Yup.number().required('Building is Required'),
+        approvers: Yup.array()
+          .of(
+            Yup.object().shape({
+              userId: Yup.number().required('User is Required'),
+              userFullName: Yup.string().nullable(),
+              approvalActionId: Yup.number().required(
+                'Approval Action is Required'
+              ),
+              approvalActionName: Yup.string().required(
+                'Approval Name is Required'
+              ),
+              partyId: Yup.number().nullable(),
             })
-          ),
-        })
-      )
-      .required('Building Settings is Required')
-      .min(1, 'At least one building setting is required'),
-    facilityId: Yup.number().required('Facility is Required'),
-  });
+          )
+          .min(1, 'At least one approver is required'),
+      })
+    )
+    .required('Level is Required')
+    .min(1, 'At least one level is required'),
+  approvalTypeId: Yup.number().required('Approval Type is Required'),
+  approvalLevel: Yup.number().required('Approval Level is Required'),
+  deletedPartyIds: Yup.array().of(Yup.number()),
+});
 
 export {
   generalSchema,
@@ -135,4 +163,5 @@ export {
   auditLogSchema,
   complianceSchema,
   bmsSettingsSchema,
+  createApprovalWorkflowSchema,
 };

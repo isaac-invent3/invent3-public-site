@@ -141,6 +141,7 @@ interface SystemContextDetail {
   slug: string;
   relatedPermissionKeys?: ModuleKey[];
   displayName: string;
+  label: string;
 }
 
 interface ImageObject {

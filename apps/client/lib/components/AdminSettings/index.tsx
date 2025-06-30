@@ -23,6 +23,7 @@ import { useGetSettingsQuery } from '~/lib/redux/services/utility.services';
 import { setSettings } from '~/lib/redux/slices/SettingsSlice';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import BMSData from './BMSData';
+import ApprovalWorkflow from './ApprovalWorkflow';
 
 const ALlTabs = [
   'General Settings',
@@ -34,6 +35,7 @@ const ALlTabs = [
   'System Maintenance & Backup',
   'Compliance',
   'BMS Data',
+  'Approval Workflow',
 ];
 
 const AdminSettings = () => {
@@ -101,6 +103,7 @@ const AdminSettings = () => {
           </TabPanel>
           <TabPanel>{tabIndex === 7 && <ComplianceTab />}</TabPanel>
           <TabPanel>{tabIndex === 8 && <BMSData />}</TabPanel>
+          <TabPanel>{tabIndex === 9 && <ApprovalWorkflow />}</TabPanel>
         </TabPanels>
       </Tabs>
     </Flex>

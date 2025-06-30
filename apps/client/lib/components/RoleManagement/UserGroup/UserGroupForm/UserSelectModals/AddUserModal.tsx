@@ -1,4 +1,5 @@
 import { OPERATORS } from '@repo/constants';
+import { Option } from '@repo/interfaces';
 import React, { useCallback, useEffect, useState } from 'react';
 import UserSelectSecondaryModal from '~/lib/components/Common/Modals/UserSelectModal/UserSelectSecondaryModal';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
@@ -14,9 +15,10 @@ import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 interface AddUserModalProps {
   isOpen: boolean;
   onClose: () => void;
+  handleCustomAddUser?: (user: User) => void;
 }
 const AddUserModal = (props: AddUserModalProps) => {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, handleCustomAddUser } = props;
   const [users, setUsers] = useState<User[]>([]);
   const [search, setSearch] = useState('');
   const dispatch = useAppDispatch();
@@ -100,7 +102,11 @@ const AddUserModal = (props: AddUserModalProps) => {
       externalLoading={isLoading}
       externalSearchLoading={searchLoading}
       handleSelectUser={(user) => {
-        dispatch(addNewUserGroupUser(user));
+        if (handleCustomAddUser) {
+          handleCustomAddUser(user);
+        } else {
+          dispatch(addNewUserGroupUser(user));
+        }
       }}
     />
   );

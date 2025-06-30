@@ -82,6 +82,7 @@ import { approvalWorkflowPartyInstanceApi } from './services/approval-workflow/p
 import { approvalWorkflowRequirementTypeApi } from './services/approval-workflow/requirementTypes.services';
 import { approvalWorkflowStatusApi } from './services/approval-workflow/statuses.services';
 import { approvalWorkflowTypeApi } from './services/approval-workflow/types.services';
+import { approvalWorkflowSettingsApi } from './services/approval-workflow/settings.services';
 import { vendorApi } from './services/vendor.services';
 import { logApi } from './services/log.services';
 import { rolesApi } from './services/role.services';
@@ -207,6 +208,8 @@ const rootReducer = combineReducers({
   [approvalWorkflowTypeApi.reducerPath]: approvalWorkflowTypeApi.reducer,
   [approvalWorkflowRequestCommentApi.reducerPath]:
     approvalWorkflowRequestCommentApi.reducer,
+  [approvalWorkflowSettingsApi.reducerPath]:
+    approvalWorkflowSettingsApi.reducer,
 
   // Log APIS
   [logApi.reducerPath]: logApi.reducer,
@@ -359,6 +362,7 @@ export const makeStore = () => {
         approvalWorkflowStatusApi.middleware,
         approvalWorkflowTypeApi.middleware,
         approvalWorkflowRequestCommentApi.middleware,
+        approvalWorkflowSettingsApi.middleware,
 
         // Log Apis
         logApi.middleware,

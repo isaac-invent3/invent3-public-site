@@ -159,7 +159,6 @@ const BMSData = () => {
           </VStack>
           <Button
             handleClick={() => {
-              console.log({ test: formik.errors });
               formik.handleSubmit();
             }}
             customStyles={{ width: '220px' }}

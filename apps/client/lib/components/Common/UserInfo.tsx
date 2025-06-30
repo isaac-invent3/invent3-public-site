@@ -16,10 +16,18 @@ interface UserInfoProps {
   customBoxStyle?: StackProps;
   children?: React.ReactNode;
   textStyle?: TextProps;
+  roleStyle?: TextProps;
 }
 const UserInfo = (props: UserInfoProps) => {
-  const { name, role, customBoxStyle, customAvatarStyle, children, textStyle } =
-    props;
+  const {
+    name,
+    role,
+    customBoxStyle,
+    customAvatarStyle,
+    children,
+    textStyle,
+    roleStyle,
+  } = props;
 
   return (
     <HStack spacing="8px" {...customBoxStyle}>
@@ -36,7 +44,12 @@ const UserInfo = (props: UserInfoProps) => {
           {name ?? 'N/A'}
         </Text>
         {role && (
-          <Text color="neutral.600" fontSize="10px" lineHeight="11.88px">
+          <Text
+            color="neutral.600"
+            fontSize="10px"
+            lineHeight="11.88px"
+            {...roleStyle}
+          >
             {role}
           </Text>
         )}

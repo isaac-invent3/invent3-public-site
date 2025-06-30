@@ -43,7 +43,7 @@ const NotificationComponents = () => {
   useSignalREventHandler({
     eventName: 'ReceiveNotification',
     connectionState,
-    callback: (notification) => {
+    callback: (notification: Notification) => {
       console.log('Notification received:', notification);
     },
   });

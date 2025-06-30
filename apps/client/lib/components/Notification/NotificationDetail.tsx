@@ -4,15 +4,12 @@ import { Notification } from '~/lib/interfaces/notification.interfaces';
 import { NotificationInfoIcon } from '../CustomIcons';
 import moment from 'moment';
 import Link from 'next/link';
-import {
-  NOTIFICATION_EVENT_TYPE_ENUM,
-  ROUTES,
-  SYSTEM_CONTEXT_DETAILS,
-} from '~/lib/utils/constants';
+import { NOTIFICATION_EVENT_TYPE_ENUM } from '~/lib/utils/constants';
 import { useState } from 'react';
 import { useMarkANotificationAsReadMutation } from '~/lib/redux/services/notification.services';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';
+import { findSystemContextDetailById } from '~/lib/hooks/useParseUrl';
 
 const textStyle = { fontSize: '11px', lineHeight: '100%' };
 
@@ -33,12 +30,15 @@ const NotificationText = ({ notification }: { notification: Notification }) => {
   const { isRead, firstName, lastName, message, contextId } = notification;
   const keyTextColor = !isRead ? 'black' : 'neutral.600';
   const name = `${firstName} ${lastName}`;
+  const systemContextDetails = findSystemContextDetailById(
+    notification.systemContextTypeId
+  );
 
   switch (notification.notificationTriggerEventTypeId) {
-    case NOTIFICATION_EVENT_TYPE_ENUM.TICKET_CREATED:
+    case NOTIFICATION_EVENT_TYPE_ENUM.CREATE:
       return (
         <Link
-          href={`/${ROUTES.TICKETS}?${SYSTEM_CONTEXT_DETAILS.TICKETS.slug}=${contextId}`}
+          href={`/${systemContextDetails?.route}?${systemContextDetails?.slug}=${contextId}`}
         >
           <Text color="neutral.600" {...textStyle}>
             <Text
@@ -49,7 +49,7 @@ const NotificationText = ({ notification }: { notification: Notification }) => {
             >
               {name}
             </Text>{' '}
-            created a new ticket{' '}
+            created a new {systemContextDetails?.label}{' '}
             <Text
               color={keyTextColor}
               fontWeight={600}
@@ -62,25 +62,50 @@ const NotificationText = ({ notification }: { notification: Notification }) => {
         </Link>
       );
 
-    case 2:
+    case NOTIFICATION_EVENT_TYPE_ENUM.UPDATE:
       return (
         <Link
-          href={`/${ROUTES.TICKETS}?${SYSTEM_CONTEXT_DETAILS.TICKETS.slug}=${contextId}`}
+          href={`/${systemContextDetails?.route}?${systemContextDetails?.slug}=${contextId}`}
         >
           <Text color="neutral.600" {...textStyle}>
-            A new ticket{' '}
-            <Text color={keyTextColor} as="span" {...textStyle}>
-              {message}
+            <Text
+              color={keyTextColor}
+              as="span"
+              fontWeight={800}
+              {...textStyle}
+            >
+              {name}
             </Text>{' '}
-            has been assigned to you
+            updated {systemContextDetails?.label}{' '}
+            <Text
+              color={keyTextColor}
+              fontWeight={600}
+              as="span"
+              {...textStyle}
+            >
+              {message}
+            </Text>
           </Text>
         </Link>
       );
 
-    case 3:
+    case NOTIFICATION_EVENT_TYPE_ENUM.DELETE:
+      return (
+        <Text color="neutral.600" {...textStyle}>
+          <Text color={keyTextColor} as="span" fontWeight={800} {...textStyle}>
+            {name}
+          </Text>{' '}
+          deleted {systemContextDetails?.label}{' '}
+          <Text color={keyTextColor} fontWeight={600} as="span" {...textStyle}>
+            {message}
+          </Text>
+        </Text>
+      );
+
+    case NOTIFICATION_EVENT_TYPE_ENUM.SCHEDULE:
       return (
         <Link
-          href={`/${ROUTES.TICKETS}?${SYSTEM_CONTEXT_DETAILS.TICKETS.slug}=${contextId}`}
+          href={`/${systemContextDetails?.route}?${systemContextDetails?.slug}=${contextId}`}
         >
           <Text color="neutral.600" {...textStyle}>
             <Text
@@ -104,10 +129,10 @@ const NotificationText = ({ notification }: { notification: Notification }) => {
         </Link>
       );
 
-    case 4:
+    case NOTIFICATION_EVENT_TYPE_ENUM.ASSIGNED:
       return (
         <Link
-          href={`/${ROUTES.TICKETS}?${SYSTEM_CONTEXT_DETAILS.TICKETS.slug}=${contextId}`}
+          href={`/${systemContextDetails?.route}?${systemContextDetails?.slug}=${contextId}`}
         >
           <Text color="neutral.600" {...textStyle}>
             A new ticket{' '}

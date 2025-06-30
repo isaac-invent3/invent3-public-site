@@ -1,6 +1,6 @@
 import { BaseEntity } from '@repo/interfaces';
 
-export interface AssetTransfer extends BaseEntity {
+interface AssetTransfer extends BaseEntity {
   transferId: number;
   transferredTo: number;
   transferredFrom: number;
@@ -13,7 +13,28 @@ export interface AssetTransfer extends BaseEntity {
   comments: string;
 }
 
-export interface AssetTransferQuery {
+interface AssetTransferInfoHeader {
+  transferId: number;
+  guid: string;
+  transferredTo: number;
+  transsferedToLocation: string;
+  transferredFrom: number;
+  transsferedFromLocation: string;
+  newOwnerId: number;
+  previousOwnerId: number;
+  initiatedById: number;
+  authorizedById: number;
+  transferDate: Date;
+  assetId: number;
+  comments: string;
+  newOwner: string;
+  previousOwner: string;
+  initiatedBy: string;
+  authorizedBy: string;
+  assetName: string;
+}
+
+interface AssetTransferQuery {
   transferredTo: number;
   newOwnerId: number;
   initiatedBy: number;
@@ -22,3 +43,5 @@ export interface AssetTransferQuery {
   comments: string | null;
   createdBy: string;
 }
+
+export type { AssetTransfer, AssetTransferInfoHeader, AssetTransferQuery };

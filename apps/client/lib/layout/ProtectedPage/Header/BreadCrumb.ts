@@ -158,6 +158,9 @@ const adminSettingsBreadcrumb: BreadcrumbNode = {
 const approvalBreadcrumb: BreadcrumbNode = {
   route: `/${ROUTES.APPROVAL}`,
   label: 'Approval Workflow',
+  children: {
+    detail: { label: 'Approval Detail' },
+  },
 };
 
 const breadcrumbMap: Record<string, BreadcrumbNode> = {

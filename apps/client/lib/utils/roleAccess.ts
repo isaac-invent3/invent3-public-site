@@ -60,7 +60,7 @@ const ROUTES_PERMISSION_KEY: { [name: string]: PermissionKey } = {
   [`/${ROUTES.COMPLIANCE}/facility/[facilityId]/asset-category/[id]`]:
     'settings',
   [`/${ROUTES.APPROVAL}`]: 'approval',
-  [`/${ROUTES.APPROVAL}/[id]`]: 'approval',
+  [`/${ROUTES.APPROVAL}/[id]/detail`]: 'approval',
   [`/${ROUTES.LOCATION}`]: 'settings',
   [`/${ROUTES.LOCATION}/[stateId]`]: 'settings',
   [`/${ROUTES.LOCATION}/add`]: 'settings',

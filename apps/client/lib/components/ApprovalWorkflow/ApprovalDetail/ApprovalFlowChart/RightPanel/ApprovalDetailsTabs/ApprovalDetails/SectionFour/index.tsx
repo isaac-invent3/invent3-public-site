@@ -44,10 +44,6 @@ const SectionFour = () => {
               cursor: 'pointer',
               onClick: () => {
                 if (approvalRequest?.requestedByUserId) {
-                  updateSearchParam(
-                    SYSTEM_CONTEXT_DETAILS.USER.slug,
-                    approvalRequest?.requestedByUserId
-                  );
                   onOpenUser();
                 }
               },
@@ -81,9 +77,10 @@ const SectionFour = () => {
       <UserDetail
         isOpen={isOpenUser}
         onClose={() => {
-          removeSearchParam(SYSTEM_CONTEXT_DETAILS.USER.slug);
           onCloseUser();
         }}
+        defaultUserId={approvalRequest?.requestedByUserId}
+        showHeader={false}
       />
     </>
   );

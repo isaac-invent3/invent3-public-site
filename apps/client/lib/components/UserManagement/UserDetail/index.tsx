@@ -14,17 +14,24 @@ import { useGetUserByIdQuery } from '~/lib/redux/services/user.services';
 interface UserDetailProps {
   isOpen: boolean;
   onClose: () => void;
+  defaultUserId?: number;
+  showHeader?: boolean;
 }
 
-const UserDetail = ({ isOpen, onClose }: UserDetailProps) => {
+const UserDetail = ({
+  isOpen,
+  onClose,
+  defaultUserId,
+  showHeader = true,
+}: UserDetailProps) => {
   const dispatch = useAppDispatch();
   const userSlug = SYSTEM_CONTEXT_DETAILS.USER.slug;
   const selectedUser = useAppSelector((state) => state.user.user);
   const { getSearchParam, clearSearchParamsAfter } = useCustomSearchParams();
 
-  const userId = getSearchParam(userSlug)
-    ? Number(getSearchParam(userSlug))
-    : null;
+  const userId =
+    defaultUserId ??
+    (getSearchParam(userSlug) ? Number(getSearchParam(userSlug)) : null);
 
   const { data: userData, isLoading } = useGetUserByIdQuery(
     { userId: userId! },
@@ -79,7 +86,7 @@ const UserDetail = ({ isOpen, onClose }: UserDetailProps) => {
             pt="16px"
             pb={{ base: '24px', md: '29px' }}
           >
-            <UserHeader handleBack={closeDrawer} />
+            <UserHeader handleBack={closeDrawer} showHeader={showHeader} />
           </DrawerHeader>
           <DrawerBody p={0}>
             <VStack

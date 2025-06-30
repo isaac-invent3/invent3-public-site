@@ -3,6 +3,7 @@ import baseQueryWithReauth from '../../baseQueryWithReauth';
 import { BaseApiResponse } from '@repo/interfaces';
 import {
   AssetTransfer,
+  AssetTransferInfoHeader,
   AssetTransferQuery,
 } from '~/lib/interfaces/asset/transfer.interfaces';
 
@@ -26,11 +27,11 @@ export const assetTransferApi = createApi({
       }),
     }),
     getAssetTransfer: builder.query<
-      BaseApiResponse<AssetTransfer>,
+      BaseApiResponse<AssetTransferInfoHeader>,
       { id: number }
     >({
       query: ({ id }) => ({
-        url: `/AssetTransfers/${id}?`,
+        url: `/AssetTransfers/GetAssetTransferInfoHeader/${id}?`,
         method: 'GET',
         headers: getHeaders(),
       }),

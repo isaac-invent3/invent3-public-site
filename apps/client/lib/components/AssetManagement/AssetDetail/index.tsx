@@ -15,17 +15,27 @@ interface AssetDetailProps {
   isOpen: boolean;
   onClose: () => void;
   type?: 'template' | 'main';
+  defaultAssetId?: number;
+  showHeaderButtons?: boolean;
 }
 
-const AssetDetail = ({ isOpen, onClose, type = 'main' }: AssetDetailProps) => {
+const AssetDetail = ({
+  isOpen,
+  onClose,
+  type = 'main',
+  defaultAssetId,
+  showHeaderButtons = true,
+}: AssetDetailProps) => {
   const dispatch = useAppDispatch();
   const assetSlug = SYSTEM_CONTEXT_DETAILS.ASSETS.slug;
   const selectedAsset = useAppSelector((state) => state.asset.asset);
   const { getSearchParam, clearSearchParamsAfter } = useCustomSearchParams();
 
-  const assetId = getSearchParam(assetSlug)
-    ? Number(getSearchParam(assetSlug))
-    : null;
+  const assetId = defaultAssetId
+    ? defaultAssetId
+    : getSearchParam(assetSlug)
+      ? Number(getSearchParam(assetSlug))
+      : null;
 
   const { data: assetData, isLoading } = useGetAssetInfoHeaderByIdQuery(
     { id: assetId! },
@@ -76,7 +86,11 @@ const AssetDetail = ({ isOpen, onClose, type = 'main' }: AssetDetailProps) => {
       {asset && (
         <>
           <DrawerHeader px="32px" pt="16px" pb="29px">
-            <AssetHeader handleBack={closeDrawer} type={type} />
+            <AssetHeader
+              handleBack={closeDrawer}
+              type={type}
+              showHeaderButtons={showHeaderButtons}
+            />
           </DrawerHeader>
           <DrawerBody p={0}>
             <VStack width="full" alignItems="flex-start" spacing="24px">

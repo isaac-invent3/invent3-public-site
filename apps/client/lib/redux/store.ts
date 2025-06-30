@@ -101,6 +101,7 @@ import { settingsApi } from './services/settings.services';
 import { authApi } from './services/auth.services';
 import { assetTransferApi } from './services/asset/transfer.services';
 import { approvalWorkflowRequestCommentApi } from './services/approval-workflow/requestComments.services';
+import { assetBulkActionApi } from './services/asset/bulkAction.services';
 export const persistConfig = {
   key: 'root',
   storage,
@@ -113,6 +114,7 @@ const rootReducer = combineReducers({
   [assetDocumentApi.reducerPath]: assetDocumentApi.reducer,
   [assetDisposalApi.reducerPath]: assetDisposalApi.reducer,
   [assetTransferApi.reducerPath]: assetTransferApi.reducer,
+  [assetBulkActionApi.reducerPath]: assetBulkActionApi.reducer,
   [assetGroupTypeApi.reducerPath]: assetGroupTypeApi.reducer,
   [assetStatsApi.reducerPath]: assetStatsApi.reducer,
   [assetTypeApi.reducerPath]: assetTypeApi.reducer,
@@ -275,6 +277,7 @@ export const makeStore = () => {
         assetTypeApi.middleware,
         assetDisposalApi.middleware,
         assetTransferApi.middleware,
+        assetBulkActionApi.middleware,
         assetVendorsApi.middleware,
         complianceApi.middleware,
 

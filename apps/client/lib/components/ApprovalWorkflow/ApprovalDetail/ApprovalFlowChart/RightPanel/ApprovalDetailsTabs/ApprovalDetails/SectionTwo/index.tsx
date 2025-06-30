@@ -5,17 +5,21 @@ import UserInfo from '~/lib/components/Common/UserInfo';
 import UserDetail from '~/lib/components/UserManagement/UserDetail';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import { useAppSelector } from '~/lib/redux/hooks';
+import { useGetABulkAssetActionQuery } from '~/lib/redux/services/asset/bulkAction.services';
 import { useGetAssetDisposalQuery } from '~/lib/redux/services/asset/disposal.services';
 import { useGetAssetTransferQuery } from '~/lib/redux/services/asset/transfer.services';
 import {
+  ASSET_BULK_ACTION_TYPE,
   SYSTEM_CONTEXT_DETAILS,
   SYSTEM_CONTEXT_TYPE,
 } from '~/lib/utils/constants';
 import { dateFormatter } from '~/lib/utils/Formatters';
+import BulkAssetModal from '../BulkAssetModal';
 
 interface DetailInterface {
   totalAsset: number;
   assetId: number | null;
+  assetBulkActionId: number | null;
   assetDisplayName: string | null;
   newOwner: null | string;
   newOwnerId: number | null;
@@ -38,7 +42,11 @@ const SectionTwo = () => {
     onClose: onCloseUser,
     onOpen: onOpenUser,
   } = useDisclosure();
-  const { updateSearchParam, removeSearchParam } = useCustomSearchParams();
+  const {
+    isOpen: isOpenBulkAsset,
+    onClose: onCloseBulkAsset,
+    onOpen: onOpenBulkAsset,
+  } = useDisclosure();
   const { data: assetTransfer, isLoading: assetTransferLoading } =
     useGetAssetTransferQuery(
       { id: approvalRequest?.contextId! },
@@ -57,17 +65,28 @@ const SectionTwo = () => {
           SYSTEM_CONTEXT_TYPE.ASSET_DISPOSAL,
       }
     );
-  const isLoading = assetDisposalLoading || assetTransferLoading;
+  const { data: assetBulkAction, isLoading: assetBulkActionLoading } =
+    useGetABulkAssetActionQuery(
+      { id: approvalRequest?.contextId! },
+      {
+        skip:
+          approvalRequest?.systemContextTypeId !==
+          SYSTEM_CONTEXT_TYPE.ASSET_BULK_ACTION,
+      }
+    );
+  const isLoading =
+    assetDisposalLoading || assetTransferLoading || assetBulkActionLoading;
 
   const [details, setDetails] = useState<DetailInterface>({
     totalAsset: 0,
+    assetBulkActionId: null,
     assetId: null,
     newOwnerId: null,
-    assetDisplayName: null,
+    assetDisplayName: '--',
     newOwner: null,
     newLocation: '--',
     date: '--',
-    reason: null,
+    reason: '--',
   });
 
   useEffect(() => {
@@ -88,16 +107,33 @@ const SectionTwo = () => {
     if (assetTransfer?.data) {
       setDetails((prev) => ({
         ...prev,
-        assetDisplayName: 'Test',
+        assetDisplayName: assetTransfer?.data?.assetName,
         assetId: assetTransfer?.data?.assetId,
-        newOwner: assetTransfer?.data?.newOwnerId.toString(),
-        newLocation: assetTransfer?.data?.transferredTo,
+        newOwner: assetTransfer?.data?.newOwner,
+        newLocation: assetTransfer?.data?.transsferedToLocation,
+        reason: assetTransfer?.data?.comments,
         date: assetTransfer?.data?.transferDate
           ? dateFormatter(assetTransfer?.data?.transferDate, 'MMMM DD, YYYY')
           : null,
       }));
     }
   }, [assetTransfer]);
+
+  useEffect(() => {
+    if (assetBulkAction?.data) {
+      setDetails((prev) => ({
+        ...prev,
+        totalAsset: assetBulkAction?.data?.totalAssets || 0,
+        assetBulkActionId: assetBulkAction?.data?.bulkActionId,
+        newOwner: assetBulkAction?.data?.newOwner,
+        newLocation: assetBulkAction?.data?.transsferedToLocation,
+        date: assetBulkAction?.data?.actionDate
+          ? dateFormatter(assetBulkAction?.data?.actionDate, 'MMMM DD, YYYY')
+          : null,
+        reason: assetBulkAction?.data?.comments,
+      }));
+    }
+  }, [assetBulkAction]);
 
   return (
     <>
@@ -115,30 +151,43 @@ const SectionTwo = () => {
               : 'Asset'}
           </Text>
           <Skeleton isLoaded={!isLoading} minWidth="100px">
-            <Text
-              color="blue.500"
-              size="md"
-              cursor="pointer"
-              onClick={() => {
-                if (details?.assetId) {
-                  updateSearchParam(
-                    SYSTEM_CONTEXT_DETAILS.ASSETS.slug,
-                    details?.assetId
-                  );
-                  onOpenAsset();
-                }
-              }}
-            >
-              {SYSTEM_CONTEXT_TYPE.ASSET_BULK_ACTION ===
-              approvalRequest?.systemContextTypeId
-                ? details?.totalAsset
-                : details?.assetDisplayName}
-            </Text>
+            {SYSTEM_CONTEXT_TYPE.ASSET_BULK_ACTION ===
+              approvalRequest?.systemContextTypeId && (
+              <Text
+                color="blue.500"
+                size="md"
+                cursor="pointer"
+                onClick={() => {
+                  if (details?.assetBulkActionId) {
+                    onOpenBulkAsset();
+                  }
+                }}
+              >
+                {details?.totalAsset}
+              </Text>
+            )}
+            {SYSTEM_CONTEXT_TYPE.ASSET_BULK_ACTION !==
+              approvalRequest?.systemContextTypeId && (
+              <Text
+                color="blue.500"
+                size="md"
+                cursor="pointer"
+                onClick={() => {
+                  if (details?.assetId) {
+                    onOpenAsset();
+                  }
+                }}
+              >
+                {details?.assetDisplayName}
+              </Text>
+            )}
           </Skeleton>
         </Box>
 
-        {SYSTEM_CONTEXT_TYPE.ASSET_DISPOSAL !==
-          approvalRequest?.systemContextTypeId && (
+        {(SYSTEM_CONTEXT_TYPE.ASSET_TRANSFER ===
+          approvalRequest?.systemContextTypeId ||
+          assetBulkAction?.data?.bulkActionTypeId ===
+            ASSET_BULK_ACTION_TYPE.ASSET_TRANSFER) && (
           <Box
             display="grid"
             gridTemplateColumns="90px 1fr"
@@ -158,10 +207,6 @@ const SectionTwo = () => {
                     cursor: 'pointer',
                     onClick: () => {
                       if (details?.newOwnerId) {
-                        updateSearchParam(
-                          SYSTEM_CONTEXT_DETAILS.USER.slug,
-                          details?.newOwnerId
-                        );
                         onOpenUser();
                       }
                     },
@@ -178,8 +223,10 @@ const SectionTwo = () => {
           </Box>
         )}
 
-        {SYSTEM_CONTEXT_TYPE.ASSET_DISPOSAL !==
-          approvalRequest?.systemContextTypeId && (
+        {(SYSTEM_CONTEXT_TYPE.ASSET_TRANSFER ===
+          approvalRequest?.systemContextTypeId ||
+          assetBulkAction?.data?.bulkActionTypeId ===
+            ASSET_BULK_ACTION_TYPE.ASSET_TRANSFER) && (
           <Box
             display="grid"
             gridTemplateColumns="90px 1fr"
@@ -205,7 +252,9 @@ const SectionTwo = () => {
         >
           <Text color="neutral.600" size="md">
             {SYSTEM_CONTEXT_TYPE.ASSET_TRANSFER ===
-            approvalRequest?.systemContextTypeId
+              approvalRequest?.systemContextTypeId ||
+            assetBulkAction?.data?.bulkActionTypeId ===
+              ASSET_BULK_ACTION_TYPE.ASSET_TRANSFER
               ? 'Transfer'
               : 'Disposal'}{' '}
             Date
@@ -216,21 +265,45 @@ const SectionTwo = () => {
             </Text>
           </Skeleton>
         </Box>
+        <Box
+          display="grid"
+          gridTemplateColumns="90px 1fr"
+          columnGap="2.5em"
+          width="100%"
+        >
+          <Text color="neutral.600" size="md">
+            Reason
+          </Text>
+          <Skeleton isLoaded={!isLoading} width="100%">
+            <Text color="neutral.800" size="md" isTruncated>
+              {details?.reason}
+            </Text>
+          </Skeleton>
+        </Box>
       </VStack>
       <AssetDetail
         isOpen={isOpenAsset}
         onClose={() => {
-          removeSearchParam(SYSTEM_CONTEXT_DETAILS.ASSETS.slug);
           onCloseAsset();
         }}
+        defaultAssetId={details?.assetId || undefined}
       />
       <UserDetail
         isOpen={isOpenUser}
         onClose={() => {
-          removeSearchParam(SYSTEM_CONTEXT_DETAILS.USER.slug);
           onCloseUser();
         }}
+        defaultUserId={details?.newOwnerId || undefined}
       />
+      {details?.assetBulkActionId && (
+        <BulkAssetModal
+          isOpen={isOpenBulkAsset}
+          onClose={() => {
+            onCloseBulkAsset();
+          }}
+          bulkActionId={details?.assetBulkActionId}
+        />
+      )}
     </>
   );
 };

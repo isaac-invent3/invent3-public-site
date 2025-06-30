@@ -126,7 +126,10 @@ const Approvers = () => {
               {item.currentStatusId ===
                 APPROVAL_WORKFLOW_STATUSES.IN_PROGRESS &&
                 session?.data?.user?.userId !== item.userId && (
-                  <GenericStatusBox text={item.currentStatusName} />
+                  <GenericStatusBox
+                    text={item.currentStatusName}
+                    colorCode={item.displayColorCode}
+                  />
                 )}
               {item.currentStatusId ===
                 APPROVAL_WORKFLOW_STATUSES.IN_PROGRESS &&

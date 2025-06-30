@@ -206,7 +206,7 @@ const ApprovalTable = (props: ApprovalTableProps) => {
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
         handleSelectRow={(row) => {
-          router.push(`/${ROUTES.APPROVAL}/${row.approvalRequestId}`);
+          router.push(`/${ROUTES.APPROVAL}/${row.approvalRequestId}/detail`);
         }}
         emptyLines={15}
         isSelectable

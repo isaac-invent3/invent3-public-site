@@ -10,9 +10,10 @@ import MobilePopover from './MobilePopover';
 interface AssetHeaderProps {
   handleBack: () => void;
   type: 'template' | 'main';
+  showHeaderButtons: boolean;
 }
 const AssetHeader = (props: AssetHeaderProps) => {
-  const { handleBack, type } = props;
+  const { handleBack, type, showHeaderButtons } = props;
   const assetData = useAppSelector((state) => state.asset.asset);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const canTransferAsset = usePermissionAccess('asset:transfer');
@@ -32,77 +33,78 @@ const AssetHeader = (props: AssetHeaderProps) => {
           Back
         </Button>
       </HStack>
-      {type === 'main' ? (
-        <>
-          {assetData && (
-            <Flex display={{ lg: 'none' }}>
-              <MobilePopover data={assetData} />
-            </Flex>
-          )}
-          <HStack
-            width="min-content"
-            spacing="8px"
-            display={{ base: 'none', lg: 'flex' }}
+      {showHeaderButtons &&
+        (type === 'main' ? (
+          <>
+            {assetData && (
+              <Flex display={{ lg: 'none' }}>
+                <MobilePopover data={assetData} />
+              </Flex>
+            )}
+            <HStack
+              width="min-content"
+              spacing="8px"
+              display={{ base: 'none', lg: 'flex' }}
+            >
+              {canEditAsset && (
+                <Button
+                  customStyles={{ height: '35px', width: '106px', px: '16px' }}
+                  variant="primary"
+                  href={`/${ROUTES.ASSETS}/${assetData?.assetId}/edit`}
+                >
+                  Edit Asset
+                </Button>
+              )}
+              {canRaiseTicket && (
+                <Button
+                  handleClick={onOpen}
+                  customStyles={{ height: '35px', px: '12px', width: '106px' }}
+                  variant="outline"
+                >
+                  Raise Ticket
+                </Button>
+              )}
+              {canTransferAsset && (
+                <Button
+                  customStyles={{
+                    height: '35px',
+                    width: '106px',
+                    px: '8px',
+                    fontSize: '14px',
+                    lineHeight: '16.63px',
+                  }}
+                  variant="secondary"
+                  href={`/${ROUTES.ASSETS}/${assetData?.assetId}/transfer`}
+                >
+                  Transfer
+                </Button>
+              )}
+              {canDisposeAsset && (
+                <Button
+                  customStyles={{
+                    height: '35px',
+                    width: '106px',
+                    px: '8px',
+                    fontSize: '14px',
+                    lineHeight: '16.63px',
+                  }}
+                  variant="secondary"
+                  href={`/${ROUTES.ASSETS}/${assetData?.assetId}/dispose`}
+                >
+                  Dispose
+                </Button>
+              )}
+            </HStack>
+          </>
+        ) : (
+          <Button
+            customStyles={{ height: '35px', width: 'min-content', px: '16px' }}
+            variant="primary"
+            href={`/${ROUTES.ASSETS}/add?assetId=${assetData?.assetId}`}
           >
-            {canEditAsset && (
-              <Button
-                customStyles={{ height: '35px', width: '106px', px: '16px' }}
-                variant="primary"
-                href={`/${ROUTES.ASSETS}/${assetData?.assetId}/edit`}
-              >
-                Edit Asset
-              </Button>
-            )}
-            {canRaiseTicket && (
-              <Button
-                handleClick={onOpen}
-                customStyles={{ height: '35px', px: '12px', width: '106px' }}
-                variant="outline"
-              >
-                Raise Ticket
-              </Button>
-            )}
-            {canTransferAsset && (
-              <Button
-                customStyles={{
-                  height: '35px',
-                  width: '106px',
-                  px: '8px',
-                  fontSize: '14px',
-                  lineHeight: '16.63px',
-                }}
-                variant="secondary"
-                href={`/${ROUTES.ASSETS}/${assetData?.assetId}/transfer`}
-              >
-                Transfer
-              </Button>
-            )}
-            {canDisposeAsset && (
-              <Button
-                customStyles={{
-                  height: '35px',
-                  width: '106px',
-                  px: '8px',
-                  fontSize: '14px',
-                  lineHeight: '16.63px',
-                }}
-                variant="secondary"
-                href={`/${ROUTES.ASSETS}/${assetData?.assetId}/dispose`}
-              >
-                Dispose
-              </Button>
-            )}
-          </HStack>
-        </>
-      ) : (
-        <Button
-          customStyles={{ height: '35px', width: 'min-content', px: '16px' }}
-          variant="primary"
-          href={`/${ROUTES.ASSETS}/add?assetId=${assetData?.assetId}`}
-        >
-          Use As Template
-        </Button>
-      )}
+            Use As Template
+          </Button>
+        ))}
 
       {isOpen && (
         <CreateTicketDrawer

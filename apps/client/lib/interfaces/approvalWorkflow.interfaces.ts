@@ -60,6 +60,7 @@ interface ApprovalWorkflowPartyInstance {
   selectedApprovalOptionName?: string | null;
   currentStatusId: number;
   currentStatusName: string;
+  displayColorCode: string;
   approvalRequestId: number;
   approvalRequirementTypeId: number;
   approvalRequirementTypeName: string;
@@ -98,6 +99,7 @@ interface ApprovalWorkflowRequest {
   contextId: number;
   currentStatusId: number;
   currentStatusName: string;
+  displayColorCode: string;
   dateRequested: string;
   guid: string;
   isDeleted: boolean;

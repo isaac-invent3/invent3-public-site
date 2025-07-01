@@ -71,7 +71,7 @@ export const logApi = createApi({
       { id: number }
     >({
       query: ({ id }) => ({
-        url: `/AuditRecords/GetAuditRecordsInfoHeader/${id}`,
+        url: `/AuditRecords/GetAuditRecordInfoHeader/${id}`,
         method: 'GET',
         headers: getHeaders(),
       }),

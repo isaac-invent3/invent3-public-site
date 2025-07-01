@@ -9,6 +9,7 @@ import {
   ApprovalWorkflowPartyInstance,
   CreateApprovalWorkflowPartyInstancePayload,
   GetApprovalWorkflowPartyInstances,
+  UpdateApprovalWorkflowPartyInstancePayload,
   UpdateSubsequentPartyInstancesLevelNumbersPayload,
 } from '~/lib/interfaces/approvalWorkflow.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
@@ -69,7 +70,7 @@ export const approvalWorkflowPartyInstanceApi = createApi({
       {
         id: number;
         overlap: boolean;
-        data: Partial<ApprovalWorkflowPartyInstance>;
+        data: UpdateApprovalWorkflowPartyInstancePayload;
       }
     >({
       query: ({ id, overlap, data }) => ({

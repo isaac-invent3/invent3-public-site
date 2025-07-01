@@ -83,6 +83,7 @@ const AddApproverModal = (props: AddApproverModalProps) => {
               ]);
             }
             onCloseApprovalAction();
+            onClose();
           }}
           user={selectedUser!}
           handleBack={handleBack}

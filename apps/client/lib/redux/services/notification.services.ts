@@ -58,6 +58,7 @@ export const notificationApi = createApi({
         method: 'PUT',
         headers: getHeaders(),
       }),
+      invalidatesTags: ['allNotifications'],
     }),
   }),
 });

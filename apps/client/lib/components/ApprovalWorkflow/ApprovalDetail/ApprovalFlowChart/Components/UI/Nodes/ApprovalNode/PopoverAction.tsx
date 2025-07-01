@@ -1,11 +1,4 @@
-import {
-  ArrowDownIcon,
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  ArrowUpIcon,
-  EditIcon,
-} from '@chakra-ui/icons';
-import { HStack, Icon, Text, useDisclosure, VStack } from '@chakra-ui/react';
+import { HStack, Text, useDisclosure, VStack } from '@chakra-ui/react';
 import { addEdge, useReactFlow } from '@xyflow/react';
 import {
   createNewEdge,
@@ -242,24 +235,27 @@ const PopoverAction = (props: PopoverActionProps) => {
 
   return (
     <>
-      <VStack width="full" alignItems="flex-start" spacing="4px" zIndex={100}>
+      <VStack
+        width="full"
+        alignItems="flex-start"
+        spacing="4px"
+        zIndex={100}
+        boxShadow="lg"
+        overflow="hidden"
+        p="8px"
+      >
         <HStack
           w="full"
           cursor="pointer"
           color="primary.500"
-          px="8px"
-          py="8px"
-          rounded="8px"
+          p="8px"
+          rounded="4px"
           transition="all 200ms ease-in-out"
           _hover={{
             bgColor: 'neutral.200',
           }}
           onClick={() => handleAddNode('same_level')}
         >
-          <VStack>
-            <Icon as={ArrowUpIcon} boxSize="12px" />
-            <Icon as={ArrowDownIcon} boxSize="12px" />
-          </VStack>
           <Text>Add Node Same Level </Text>
         </HStack>
 
@@ -267,16 +263,14 @@ const PopoverAction = (props: PopoverActionProps) => {
           w="full"
           cursor="pointer"
           color="primary.500"
-          px="8px"
-          py="8px"
-          rounded="8px"
+          p="8px"
+          rounded="4px"
           transition="all 200ms ease-in-out"
           _hover={{
             bgColor: 'neutral.200',
           }}
           onClick={() => handleAddNode('left')}
         >
-          <Icon as={ArrowLeftIcon} boxSize="10px" />
           <Text>Add Node Before </Text>
         </HStack>
 
@@ -284,32 +278,28 @@ const PopoverAction = (props: PopoverActionProps) => {
           w="full"
           cursor="pointer"
           color="primary.500"
-          px="8px"
-          py="8px"
-          rounded="8px"
+          p="8px"
+          rounded="4px"
           transition="all 200ms ease-in-out"
           _hover={{
             bgColor: 'neutral.200',
           }}
           onClick={() => handleAddNode('right')}
         >
-          <Icon as={ArrowRightIcon} boxSize="10px" />
           <Text>Add Node After </Text>
         </HStack>
         <HStack
           w="full"
           cursor="pointer"
           color="primary.500"
-          px="8px"
-          py="8px"
-          rounded="8px"
+          p="8px"
+          rounded="4px"
           transition="all 200ms ease-in-out"
           onClick={handleEditNode}
           _hover={{
             bgColor: 'neutral.200',
           }}
         >
-          <Icon as={EditIcon} boxSize="10px" />
           <Text>Edit Node</Text>
         </HStack>
 

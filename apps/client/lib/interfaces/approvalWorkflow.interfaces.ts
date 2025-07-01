@@ -85,6 +85,17 @@ interface CreateApprovalWorkflowPartyInstancePayload {
   createdBy: string;
 }
 
+interface UpdateApprovalWorkflowPartyInstancePayload {
+  approvalWorkFlowInstanceId: number;
+  approvalWorkFlowPartyInstanceId: number;
+  approvalActionId: number | null;
+  approvalRequestId: number;
+  approvalRequirementTypeId: number | null;
+  userId: number | null;
+  levelNumber: number;
+  lastModifiedBy: string;
+}
+
 interface UpdateSubsequentPartyInstancesLevelNumbersPayload {
   approvalWorkFlowInstanceId: number;
   alteredLevelNumber: number;
@@ -291,4 +302,5 @@ export type {
   CreateApprovalWorkflowFormikValues,
   UpdateApprovalWorkflowPayload,
   ApprovalWorkflowParty,
+  UpdateApprovalWorkflowPartyInstancePayload,
 };

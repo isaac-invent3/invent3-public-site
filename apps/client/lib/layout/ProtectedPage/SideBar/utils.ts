@@ -209,14 +209,6 @@ const clientSideBarData: SideBarData[] = [
     description:
       'Manage compliance requirements and certifications for regulatory adherence.',
   },
-
-  {
-    name: 'Feedback',
-    route: ROUTES.FEEDBACK,
-    icon: FeedbackIcon,
-    permissionKey: 'feedback',
-    description: 'Manage Feedback of the system.',
-  },
 ];
 
 const sideBarData: SideBarData[] = [
@@ -229,6 +221,16 @@ const sideBarData: SideBarData[] = [
     contextId: SYSTEM_CONTEXT_TYPE.COMPANY,
     description:
       'Manage company details and settings for organizational control.',
+  },
+];
+
+const superAdminData: SideBarData[] = [
+  {
+    name: 'Feedback',
+    route: ROUTES.FEEDBACK,
+    icon: FeedbackIcon,
+    permissionKey: 'settings',
+    description: 'Manage Feedback of the system.',
   },
 ];
 
@@ -280,7 +282,13 @@ async function filterSidebarData() {
       accessiblePermissionKeys.has(item.permissionKey)
     );
 
-    return [Dashboard, ...filteredSidebarItems];
+    return [
+      Dashboard,
+      ...filteredSidebarItems,
+      ...(session?.user?.roleIds.includes(ROLE_IDS_ENUM.SUPER_ADMIN)
+        ? superAdminData
+        : []),
+    ];
   } catch (error) {
     return [BaseDashboard]; // Return default dashboard in case of an error
   }

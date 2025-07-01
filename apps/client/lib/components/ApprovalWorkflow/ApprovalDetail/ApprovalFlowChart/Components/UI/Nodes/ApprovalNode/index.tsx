@@ -5,10 +5,6 @@ import {
   Flex,
   HStack,
   Icon,
-  Popover,
-  PopoverBody,
-  PopoverContent,
-  PopoverTrigger,
   Text,
   useDisclosure,
   useOutsideClick,
@@ -16,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import type { NodeProps } from '@xyflow/react';
 import { Handle, Position } from '@xyflow/react';
-import { useEffect, useRef } from 'react';
+import { useRef, useState } from 'react';
 import UserInfo from '~/lib/components/Common/UserInfo';
 import {
   CursorIcon,
@@ -25,12 +21,19 @@ import {
 } from '~/lib/components/CustomIcons';
 import { CustomNode } from '../../../Interfaces';
 import PopoverAction from './PopoverAction';
+import UserDetail from '~/lib/components/UserManagement/UserDetail';
 
 const ApprovalNode = ({ data, isConnectable, id }: NodeProps<CustomNode>) => {
   const { approvalActionId, userId } = data;
 
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const {
+    isOpen: isOpenUser,
+    onClose: onCloseUser,
+    onOpen: onOpenUser,
+  } = useDisclosure();
   const popoverRef = useRef<HTMLDivElement>(null);
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
 
   useOutsideClick({
     ref: popoverRef,
@@ -57,167 +60,184 @@ const ApprovalNode = ({ data, isConnectable, id }: NodeProps<CustomNode>) => {
   // }, [onClose]);
 
   return (
-    <Box position="relative" zIndex={1}>
-      <Card
-        rounded="8px"
-        p="16px"
-        background={approvalActionId ? 'white' : '#e7f6fe'}
-        overflowY="scroll"
-        w="185px"
-        minH="183px"
-        transition="all 300ms ease-in-out"
-        zIndex={1}
-        sx={{
-          scrollbarWidth: '0px',
-          scrollbarColor: 'transparent transparent',
-          '&::-webkit-scrollbar': {
-            width: '0px',
-            height: '0px',
-          },
-          '&::-webkit-scrollbar-thumb': {
-            background: 'transparent',
-          },
-        }}
-      >
-        <VStack
-          alignItems="start"
-          gap={!approvalActionId || !userId ? '16px' : '0px'}
+    <>
+      <Box position="relative" zIndex={1}>
+        <Card
+          rounded="8px"
+          p="16px"
+          background={approvalActionId ? 'white' : '#e7f6fe'}
+          overflowY="scroll"
+          w="185px"
+          minH="183px"
+          transition="all 300ms ease-in-out"
+          zIndex={1}
+          sx={{
+            scrollbarWidth: '0px',
+            scrollbarColor: 'transparent transparent',
+            '&::-webkit-scrollbar': {
+              width: '0px',
+              height: '0px',
+            },
+            '&::-webkit-scrollbar-thumb': {
+              background: 'transparent',
+            },
+          }}
         >
           <VStack
-            alignItems="flex-start"
-            gap="8px"
-            w="full"
-            position="relative"
+            alignItems="start"
+            gap={!approvalActionId || !userId ? '16px' : '0px'}
           >
-            <Flex
+            <VStack
+              alignItems="flex-start"
+              gap="8px"
               w="full"
-              justifyContent="flex-end"
-              position="absolute"
-              onClick={onOpen}
+              position="relative"
             >
-              <Icon
-                as={ThreeVerticalDotsIcon}
-                boxSize="16px"
-                cursor="pointer"
-                color="neutral.700"
-                onClick={onOpen}
-              />
-            </Flex>
-            {data?.currentStatusId === 3 && (
               <Flex
-                alignItems="center"
-                justifyContent="center"
-                w="24px"
-                h="24px"
-                rounded="full"
-                background="#07CC3B26"
+                w="full"
+                justifyContent="flex-end"
+                position="absolute"
+                onClick={onOpen}
               >
-                <Icon as={CheckIcon} color="#018A1E" boxSize="14px" />
+                <Icon
+                  as={ThreeVerticalDotsIcon}
+                  boxSize="16px"
+                  cursor="pointer"
+                  color="neutral.700"
+                  onClick={onOpen}
+                />
               </Flex>
-            )}
+              {data?.currentStatusId === 3 && (
+                <Flex
+                  alignItems="center"
+                  justifyContent="center"
+                  w="24px"
+                  h="24px"
+                  rounded="full"
+                  background="#07CC3B26"
+                >
+                  <Icon as={CheckIcon} color="#018A1E" boxSize="14px" />
+                </Flex>
+              )}
 
-            {data?.currentStatusId !== 3 && (
-              <Box
-                padding="6px"
-                borderWidth="1px"
-                borderColor={`${data?.displayColorCode}80`}
-                bgColor={`${data?.displayColorCode}0D`}
-                width="max-content"
-                rounded="6px"
-                minWidth="90px"
-              >
-                <Text color={data?.displayColorCode}>
-                  {data?.currentStatusName}
-                </Text>
-              </Box>
-            )}
+              {data?.currentStatusId !== 3 && (
+                <Box
+                  padding="6px"
+                  borderWidth="1px"
+                  borderColor={`${data?.displayColorCode}80`}
+                  bgColor={`${data?.displayColorCode}0D`}
+                  width="max-content"
+                  rounded="6px"
+                  minWidth="90px"
+                >
+                  <Text color={data?.displayColorCode}>
+                    {data?.currentStatusName}
+                  </Text>
+                </Box>
+              )}
 
-            <Text size="md" color="primary.500" fontWeight={700}>
-              {data?.requiredAction}
-            </Text>
-
-            <HStack alignItems="center" gap="8px">
-              <Icon as={CursorIcon} boxSize="14px" color="neutral.600" />
-
-              <Text color="neutral.600">{data?.employeeDesignation}</Text>
-            </HStack>
-          </VStack>
-
-          <VStack
-            alignItems="flex-start"
-            gap="8px"
-            w="full"
-            mt="16px"
-            borderTop="1px solid rgba(131, 131, 131, 0.5)"
-            pt="16px"
-          >
-            <UserInfo
-              name={`${data?.firstName} ${data?.lastName}`}
-              textStyle={{
-                size: 'base',
-                color: '#0366EF',
-                cursor: 'pointer',
-                transition: 'all 200ms ease-in-out',
-                textDecoration: 'underline',
-                _hover: {
-                  textDecoration: 'underline',
-                  textUnderlineOffset: 2,
-                },
-              }}
-              customAvatarStyle={{
-                width: '24px',
-                height: '24px',
-                size: 'xs',
-              }}
-              customBoxStyle={{
-                spacing: '8px',
-              }}
-            />
-
-            <HStack alignItems="center" gap="16px">
-              <Icon as={CalendarIcon} boxSize="14px" color="neutral.600" />
-
-              <Text color="neutral.600" isTruncated pl="4px">
-                {'- -'}
+              <Text size="md" color="primary.500" fontWeight={700}>
+                {data?.requiredAction}
               </Text>
-            </HStack>
+
+              <HStack alignItems="center" gap="8px">
+                <Icon as={CursorIcon} boxSize="14px" color="neutral.600" />
+
+                <Text color="neutral.600">{data?.employeeDesignation}</Text>
+              </HStack>
+            </VStack>
+
+            <VStack
+              alignItems="flex-start"
+              gap="8px"
+              w="full"
+              mt="16px"
+              borderTop="1px solid rgba(131, 131, 131, 0.5)"
+              pt="16px"
+            >
+              <UserInfo
+                name={`${data?.firstName} ${data?.lastName}`}
+                textStyle={{
+                  size: 'base',
+                  color: '#0366EF',
+                  cursor: 'pointer',
+                  transition: 'all 200ms ease-in-out',
+                  textDecoration: 'underline',
+                  _hover: {
+                    textDecoration: 'underline',
+                    textUnderlineOffset: 2,
+                  },
+                  onClick: () => {
+                    if (data?.userId) {
+                      setSelectedUserId(data.userId);
+                      onOpenUser();
+                    }
+                  },
+                }}
+                customAvatarStyle={{
+                  width: '24px',
+                  height: '24px',
+                  size: 'xs',
+                }}
+                customBoxStyle={{
+                  spacing: '8px',
+                }}
+              />
+
+              <HStack alignItems="center" gap="16px">
+                <Icon as={CalendarIcon} boxSize="14px" color="neutral.600" />
+
+                <Text color="neutral.600" isTruncated pl="4px">
+                  {'- -'}
+                </Text>
+              </HStack>
+            </VStack>
           </VStack>
-        </VStack>
 
-        <Handle
-          type="source"
-          position={Position.Right}
-          id="output"
-          style={{ background: 'transparent' }}
-          isConnectable={isConnectable}
-        />
+          <Handle
+            type="source"
+            position={Position.Right}
+            id="output"
+            style={{ background: 'transparent' }}
+            isConnectable={isConnectable}
+          />
 
-        <Handle
-          type="target"
-          position={Position.Left}
-          id="input"
-          style={{ background: 'transparent' }}
-          isConnectable={isConnectable}
-        />
-      </Card>
-      <Box
-        ref={popoverRef}
-        position="absolute"
-        maxW="180px"
-        width="180px"
-        bgColor="white"
-        height="full"
-        top={0}
-        right={-110}
-        zIndex={999}
-        rounded="8px"
-        display={isOpen ? 'flex' : 'none'}
-      >
-        <Flex width="100%" height="100%">
-          <PopoverAction nodeId={id} data={data} />
-        </Flex>
+          <Handle
+            type="target"
+            position={Position.Left}
+            id="input"
+            style={{ background: 'transparent' }}
+            isConnectable={isConnectable}
+          />
+        </Card>
+        <Box
+          ref={popoverRef}
+          position="absolute"
+          maxW="180px"
+          width="180px"
+          bgColor="white"
+          height="full"
+          top={10}
+          right={-170}
+          zIndex={999}
+          rounded="8px"
+          display={isOpen ? 'flex' : 'none'}
+        >
+          <Flex width="100%" height="100%">
+            <PopoverAction nodeId={id} data={data} />
+          </Flex>
+        </Box>
       </Box>
-    </Box>
+      {selectedUserId && (
+        <UserDetail
+          isOpen={isOpenUser}
+          onClose={() => {
+            onCloseUser();
+          }}
+          defaultUserId={selectedUserId || undefined}
+        />
+      )}
+    </>
   );
 };
 

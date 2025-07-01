@@ -1,7 +1,5 @@
-import { DeleteIcon } from '@chakra-ui/icons';
 import {
   HStack,
-  Icon,
   Popover,
   PopoverBody,
   PopoverContent,
@@ -51,29 +49,27 @@ const DeleteNodePopover = (props: DeleteNodePopoverProps) => {
           w="full"
           cursor="pointer"
           color="primary.500"
-          px="8px"
-          py="8px"
-          rounded="8px"
+          p="8px"
+          rounded="4px"
           transition="all 200ms ease-in-out"
           onClick={onOpenDelete}
           _hover={{
             bgColor: 'neutral.200',
           }}
         >
-          <Icon as={DeleteIcon} boxSize="10px" />
           <Text>Delete Node</Text>
         </HStack>
       </PopoverTrigger>
 
       <PopoverContent
         bgColor="white"
-        width="150px"
+        width="200px"
         boxShadow="0px 4px 32px 0px #00000026"
         rounded="8px"
         zIndex={9999}
         position="relative"
       >
-        <PopoverBody m={0} px="8px">
+        <PopoverBody m={0} p="8px">
           <Text fontSize="12px" mb={5} color="primary.500">
             Are you sure you want to delete this Node?
           </Text>
@@ -95,6 +91,10 @@ const DeleteNodePopover = (props: DeleteNodePopoverProps) => {
               customStyles={{
                 height: '30px',
                 fontSize: '12px',
+                bgColor: 'red.500',
+                _hover: {
+                  bgColor: 'initial',
+                },
               }}
             >
               {isDeleting ? <Spinner size="sm" color="primary.500" /> : 'Yes'}

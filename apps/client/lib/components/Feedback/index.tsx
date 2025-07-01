@@ -75,11 +75,7 @@ const FeedbackOverview = () => {
   // Function that handles search/filters
   const handleSearch = useCallback(async () => {
     if (search || !isFilterEmpty) {
-      const response = await handleSubmit(
-        searchFeedbacks,
-        searchCriterion,
-        ''
-      );
+      const response = await handleSubmit(searchFeedbacks, searchCriterion, '');
       response?.data && setSearchData(response?.data);
     }
   }, [searchFeedbacks, searchCriterion]);
@@ -131,7 +127,6 @@ const FeedbackOverview = () => {
           />
 
           <HStack spacing="16px" flexWrap="wrap">
-           
             <FilterButton
               icon={FilterIcon}
               label="Filters"

@@ -163,6 +163,11 @@ const approvalBreadcrumb: BreadcrumbNode = {
   },
 };
 
+const feedbackBreadcrumb: BreadcrumbNode = {
+  route: `/${ROUTES.FEEDBACK}`,
+  label: 'Feedback',
+};
+
 const breadcrumbMap: Record<string, BreadcrumbNode> = {
   [ROUTES.DASHBOARD]: dashboardBreadcrumb,
   [ROUTES.ASSETS]: assetsBreadcrumb,
@@ -180,6 +185,7 @@ const breadcrumbMap: Record<string, BreadcrumbNode> = {
   [ROUTES.USERS]: userManagementBreadcrumb,
   [ROUTES.AUDIT_LOG]: auditLogBreadcrumb,
   [ROUTES.TEMPLATES]: templateBreadcrumb,
+  [ROUTES.FEEDBACK]: feedbackBreadcrumb,
 };
 
 const getBreadcrumb = (pathSegments: string[]): breadCrumbRoute[] => {

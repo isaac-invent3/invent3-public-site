@@ -1,14 +1,5 @@
 /* eslint-disable no-unused-vars */
-import {
-  HStack,
-  ModalBody,
-  ModalFooter,
-  ModalHeader,
-  VStack,
-} from '@chakra-ui/react';
-
-import { Button, GenericModal } from '@repo/ui/components';
-import { FormikProvider, useFormik } from 'formik';
+import { useDisclosure } from '@chakra-ui/react';
 import { getSession } from 'next-auth/react';
 import {
   ApprovalWorkflowPartyInstance,
@@ -16,12 +7,13 @@ import {
 } from '~/lib/interfaces/approvalWorkflow.interfaces';
 import {
   useCreateApprovalWorkflowPartyInstancesMutation,
+  useUpdateApprovalWorkflowPartyInstancesMutation,
   useUpdateSubsequentPartyInstancesLevelNumbersMutation,
 } from '~/lib/redux/services/approval-workflow/partyInstances.services';
-import ApprovalAction from './ApprovalAction';
-import ApprovalAssignee from './ApprovalAssignee';
-import ApprovalRequirementType from './ApprovalRequirementType';
-import Header from './Header';
+import { useEffect, useState } from 'react';
+import { User } from '~/lib/interfaces/user.interfaces';
+import AddUserModal from '~/lib/components/RoleManagement/UserGroup/UserGroupForm/UserSelectModals/AddUserModal';
+import ApprovalActionModal from '~/lib/components/AdminSettings/ApprovalWorkflow/Common/AddApproverModal/ApprovalActionModal';
 
 interface NodeFormModalProps {
   isOpen: boolean;
@@ -35,101 +27,118 @@ interface NodeFormModalProps {
 
 const NodeFormModal = (props: NodeFormModalProps) => {
   const { isOpen, onClose, selectedInstance, position, type } = props;
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const {
+    isOpen: isOpenAddUser,
+    onClose: onCloseAddUser,
+    onOpen: onOpenAddUser,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenApprovalAction,
+    onClose: onCloseApprovalAction,
+    onOpen: onOpenApprovalAction,
+  } = useDisclosure();
+
+  useEffect(() => {
+    if (isOpen) {
+      onOpenAddUser();
+    } else {
+      onCloseAddUser();
+    }
+  }, [isOpen]);
+
+  const handleBack = () => {
+    onCloseApprovalAction();
+    onOpenAddUser();
+  };
 
   const [
     createApprovalWorkflowPartyInstanceMutation,
     { isLoading: isCreatingApprovalWorkflowPartyInstance },
   ] = useCreateApprovalWorkflowPartyInstancesMutation();
 
-  const [
-    updateSubsequentPartyInstancesLevelNumbersMutation,
-    { isLoading: isUpdatingSubsequentPartyInstancesLevelNumbersMutation },
-  ] = useUpdateSubsequentPartyInstancesLevelNumbersMutation();
+  const [updateApprovalWorkflowPartyInstance, { isLoading: isUpdating }] =
+    useUpdateApprovalWorkflowPartyInstancesMutation();
 
-  const formik = useFormik({
-    initialValues: {
-      userId: null,
+  const handleSubmit = async (actionId: number) => {
+    const session = await getSession();
+
+    const createPayload = {
+      userId: selectedUser?.userId!,
       approvalRequirementTypeId: null,
-      approvalActionId: null,
-    },
-    enableReinitialize: false,
-    onSubmit: async (data, { resetForm }) => {
-      const session = await getSession();
+      approvalActionId: actionId,
+      parentId: selectedInstance.approvalWorkFlowPartyInstanceId,
+      approvalWorkFlowInstanceId: selectedInstance.approvalWorkFlowInstanceId,
+      approvalRequestId: selectedInstance.approvalRequestId,
+      levelNumber:
+        position === 'right'
+          ? selectedInstance.levelNumber + 1
+          : selectedInstance.levelNumber,
+      createdBy: session?.user?.username!,
+      overlap: position === 'same_level' ? true : false,
+    };
 
-      const payload: CreateApprovalWorkflowPartyInstancePayload = {
-        ...data,
-        parentId: selectedInstance.approvalWorkFlowPartyInstanceId,
-        approvalWorkFlowInstanceId: selectedInstance.approvalWorkFlowInstanceId,
-        approvalRequestId: selectedInstance.approvalRequestId,
-        levelNumber:
-          position === 'right'
-            ? selectedInstance.levelNumber + 1
-            : selectedInstance.levelNumber,
-        createdBy: session?.user?.username!,
-        overlap: position === 'same_level' ? true : false,
-      };
+    const updatePayload = {
+      userId: selectedUser?.userId!,
+      approvalRequirementTypeId: null!,
+      approvalActionId: actionId,
+      approvalWorkFlowPartyInstanceId:
+        selectedInstance.approvalWorkFlowPartyInstanceId,
+      approvalWorkFlowInstanceId: selectedInstance.approvalWorkFlowInstanceId,
+      approvalRequestId: selectedInstance.approvalRequestId,
+      levelNumber: selectedInstance.levelNumber,
+      lastModifiedBy: session?.user?.username!,
+    };
 
-      const response =
-        await createApprovalWorkflowPartyInstanceMutation(payload);
+    let response;
+    if (type === 'add') {
+      response =
+        await createApprovalWorkflowPartyInstanceMutation(createPayload);
+    } else {
+      response = await updateApprovalWorkflowPartyInstance({
+        id: selectedInstance.approvalWorkFlowPartyInstanceId,
+        overlap: false,
+        data: updatePayload,
+      });
+    }
 
-      if (!response.data) return;
-
-      resetForm();
+    if (response?.data) {
+      onCloseApprovalAction();
       onClose();
-    },
-  });
+    }
+  };
 
   return (
-    <GenericModal
-      isOpen={isOpen}
-      onClose={onClose}
-      contentStyle={{ width: { md: '605px' } }}
-    >
-      <ModalHeader m={0} p={0} my="24px" px="24px">
-        <Header onClose={onClose} type={type} />
-      </ModalHeader>
-
-      <FormikProvider value={formik}>
-        <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
-          <ModalBody p="24px" m={0} width="full" h="full">
-            <VStack w="full" gap="32px">
-              <ApprovalRequirementType />
-              <ApprovalAction />
-              <ApprovalAssignee />
-            </VStack>
-          </ModalBody>
-
-          <ModalFooter p={0} m={0}>
-            <HStack
-              spacing="8px"
-              justifyContent="flex-end"
-              mt="8px"
-              px="24px"
-              pb="32px"
-            >
-              <Button
-                customStyles={{ width: '138px', height: '50px' }}
-                variant="secondary"
-                handleClick={onClose}
-              >
-                Cancel
-              </Button>
-
-              <Button
-                type="submit"
-                isLoading={
-                  isCreatingApprovalWorkflowPartyInstance ||
-                  isUpdatingSubsequentPartyInstancesLevelNumbersMutation
-                }
-                customStyles={{ width: '138px', height: '50px' }}
-              >
-                Create Node
-              </Button>
-            </HStack>
-          </ModalFooter>
-        </form>
-      </FormikProvider>
-    </GenericModal>
+    <>
+      {isOpenAddUser && (
+        <AddUserModal
+          isOpen={isOpenAddUser}
+          onClose={() => {
+            onCloseAddUser();
+            onClose();
+          }}
+          handleCustomAddUser={(user) => {
+            setSelectedUser(user);
+            onOpenApprovalAction();
+          }}
+        />
+      )}
+      {isOpenApprovalAction && (
+        <ApprovalActionModal
+          isOpen={isOpenApprovalAction}
+          onClose={() => {
+            onCloseApprovalAction();
+            onClose();
+          }}
+          handleAddAction={(action) => {
+            handleSubmit(action.actionId);
+          }}
+          user={selectedUser!}
+          handleBack={handleBack}
+          isSubmitting={isCreatingApprovalWorkflowPartyInstance || isUpdating}
+        />
+      )}
+    </>
   );
 };
 

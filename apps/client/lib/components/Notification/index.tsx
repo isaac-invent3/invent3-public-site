@@ -1,14 +1,18 @@
 import { useDisclosure, useMediaQuery } from '@chakra-ui/react';
-import { getSession } from 'next-auth/react';
+import { getSession, useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { NotificationIcon } from '~/lib/components/CustomIcons/layout';
 import useSignalR from '~/lib/hooks/useSignalR';
 import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
 import HeaderIcon from '~/lib/layout/ProtectedPage/Header/HeaderIcon';
-import { useMarkAllNotificationsAsReadMutation } from '~/lib/redux/services/notification.services';
+import {
+  notificationApi,
+  useMarkAllNotificationsAsReadMutation,
+} from '~/lib/redux/services/notification.services';
 import NotificationPopover from './Display/NotificationPopover';
 import NotificationDrawer from './Display/NotificationDrawer';
-// import addNotification from 'react-push-notification';
+import { useAppDispatch } from '~/lib/redux/hooks';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 const NotificationComponents = () => {
   const {
@@ -25,6 +29,8 @@ const NotificationComponents = () => {
   const [isMobile] = useMediaQuery('(max-width: 480px)');
   const [markAllAsReadMutation, { isLoading }] =
     useMarkAllNotificationsAsReadMutation();
+  const dispatch = useAppDispatch();
+  const session = useSession();
 
   const handleMarkNotificationsAsRead = async () => {
     const session = await getSession();
@@ -43,20 +49,28 @@ const NotificationComponents = () => {
   useSignalREventHandler({
     eventName: 'ReceiveNotification',
     connectionState,
-    callback: (notification: Notification) => {
-      console.log('Notification received:', notification);
+    callback: (newAsset) => {
+      // Update the query cache when a new notification is received
+      const parsedNotification = JSON.parse(newAsset);
+      dispatch(
+        notificationApi.util.updateQueryData(
+          'getUserNotification',
+          {
+            pageNumber: 1,
+            pageSize: DEFAULT_PAGE_SIZE,
+            userId: session?.data?.user.userId!,
+            isRead: activeTab === 'Unread' ? false : undefined,
+            isArchived: activeTab === 'Archived' ? true : undefined,
+          },
+          (draft) => {
+            if (draft?.data?.items) {
+              draft?.data?.items.unshift(parsedNotification); // Add new notification to the beginning
+            }
+          }
+        )
+      );
     },
   });
-
-  // const buttonClick = () => {
-  //   addNotification({
-  //     title: 'Warning',
-  //     subtitle: 'This is a subtitle',
-  //     message: 'This is a very long message',
-  //     theme: 'darkblue',
-  //     native: true, // when using native, your OS will handle theming.
-  //   });
-  // };
 
   return (
     <>

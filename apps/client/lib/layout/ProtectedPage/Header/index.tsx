@@ -64,7 +64,9 @@ const Header = (props: HeaderProps) => {
               <AssistantGuideBox />
             )}
           </HStack>
-          <Feedback />
+          {!data?.user?.roleIds.includes(ROLE_IDS_ENUM.SUPER_ADMIN) && (
+            <Feedback />
+          )}
           {/* <HeaderIcon icon={SearchIcon} size="20px" />
           <HeaderIcon icon={SettingsIcon} size="24px" /> */}
           <NotificationComponents />

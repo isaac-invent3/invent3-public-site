@@ -21,6 +21,8 @@ const publicRoutes = [
   '/blog',
 ];
 const protectedGlobalRoute = ['/dashboard'];
+const protectedSuperAdminRoute = ['/feedback'];
+
 const SECRET = process.env.NEXTAUTH_SECRET;
 export const TOKEN_REFRESH_BUFFER_SECONDS = 60; // 5 minutes
 export const SESSION_SECURE =
@@ -206,9 +208,15 @@ export async function middleware(request: NextRequest) {
 
     const checkPath = tenantData ? `/${remainingPath}` : pathname;
 
-    // Don't check permission for protected global route
+    // Don't check permission for protected global route or super admin route if the user is a super admin
     if (
-      protectedGlobalRoute.includes(`/${checkPath.split('/')?.[1] as string}`)
+      protectedGlobalRoute.includes(
+        `/${checkPath.split('/')?.[1] as string}`
+      ) ||
+      (protectedSuperAdminRoute.includes(
+        `/${checkPath.split('/')?.[1] as string}`
+      ) &&
+        token.roleIds.includes(ROLE_IDS_ENUM.SUPER_ADMIN))
     ) {
       if (tenantData) {
         return NextResponse.rewrite(new URL(`${checkPath}`, request.url));

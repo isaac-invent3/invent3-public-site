@@ -19,9 +19,11 @@ interface ApprovalActionModalProps {
   handleAddAction?: (action: { actionId: number; actionName: string }) => void;
   user: User;
   handleBack?: () => void;
+  isSubmitting?: boolean;
 }
 const ApprovalActionModal = (props: ApprovalActionModalProps) => {
-  const { isOpen, onClose, handleAddAction, user, handleBack } = props;
+  const { isOpen, onClose, handleAddAction, user, handleBack, isSubmitting } =
+    props;
   const { data, isLoading } = useGetAllApprovalActionsQuery();
   const [selectedAction, setSelectedAction] = React.useState<{
     actionId: number;
@@ -115,9 +117,9 @@ const ApprovalActionModal = (props: ApprovalActionModalProps) => {
               handleAddAction &&
                 selectedAction &&
                 handleAddAction(selectedAction);
-              onClose();
             }}
             isDisabled={!selectedAction}
+            isLoading={isSubmitting}
           >
             Continue
           </Button>

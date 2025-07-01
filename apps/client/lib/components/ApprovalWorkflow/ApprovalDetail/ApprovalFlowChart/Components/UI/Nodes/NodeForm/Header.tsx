@@ -20,7 +20,7 @@ const Header = (props: HeaderProps) => {
         {type === 'add' ? 'Create' : 'Edit'} Approval Workflow Node
       </Text>
 
-      <HStack color="#F50000" onClick={onClose}>
+      <HStack color="#F50000" onClick={onClose} cursor="pointer">
         <Text>Close</Text>
         <Icon as={CloseIcon} />
       </HStack>

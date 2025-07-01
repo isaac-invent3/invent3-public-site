@@ -70,7 +70,7 @@ export const approvalWorkflowPartyInstanceApi = createApi({
       {
         id: number;
         overlap: boolean;
-        data: UpdateApprovalWorkflowPartyInstancePayload;
+        data: Partial<UpdateApprovalWorkflowPartyInstancePayload>;
       }
     >({
       query: ({ id, overlap, data }) => ({

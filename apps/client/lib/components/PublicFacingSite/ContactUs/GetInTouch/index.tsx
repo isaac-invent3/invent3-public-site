@@ -1,6 +1,5 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
-import Detail from './Detail';
 import ContactForm from './ContactForm';
 import Image from 'next/image';
 

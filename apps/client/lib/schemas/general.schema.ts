@@ -170,10 +170,10 @@ const contactSchema = Yup.object().shape({
   firstName: Yup.string().required('First Name is Required'),
   lastName: Yup.string().required('Last Name is Required'),
   company: Yup.string().required('Company is Required'),
-  JobTitle: Yup.string().nullable(),
+  designation: Yup.string().nullable(),
   email: Yup.string().email('Invalid Email Adress').required('Email Required'),
   phoneNumber: Yup.string().required('Phone number is Required'),
-  content: Yup.string().required('Message is Required'),
+  message: Yup.string().required('Message is Required'),
 });
 
 export {

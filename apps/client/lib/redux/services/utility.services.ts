@@ -6,6 +6,7 @@ import {
 } from '~/lib/interfaces/general.interfaces';
 import { BaseApiResponse } from '@repo/interfaces';
 import {
+  ContactPayload,
   Settings,
   UpdateSettingsPayload,
 } from '~/lib/interfaces/settings.interfaces';
@@ -66,6 +67,14 @@ export const utilityApi = createApi({
         headers: getHeaders(),
       }),
     }),
+    submitContactRequest: builder.mutation<void, ContactPayload>({
+      query: (body) => ({
+        url: `/Invent3Pro/SubmitContactUsRequest`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
   }),
 });
 
@@ -75,4 +84,5 @@ export const {
   useGetSettingsQuery,
   useExportTableMutation,
   useDownloadFileQuery,
+  useSubmitContactRequestMutation,
 } = utilityApi;

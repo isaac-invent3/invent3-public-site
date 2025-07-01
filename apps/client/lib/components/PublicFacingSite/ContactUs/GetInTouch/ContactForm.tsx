@@ -12,15 +12,16 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useCreateCategoryMutation } from '~/lib/redux/services/asset/category.services';
 import { contactSchema } from '~/lib/schemas/general.schema';
 import { useState } from 'react';
+import { useSubmitContactRequestMutation } from '~/lib/redux/services/utility.services';
 
 const contactType = [
   {
     label: 'Request Information',
-    value: 0,
+    value: 1,
   },
   {
     label: 'Book Demo',
-    value: 1,
+    value: 2,
   },
 ];
 
@@ -62,26 +63,36 @@ const CustomTextInputForm = ({
 };
 
 const ContactForm = () => {
-  const [createCategory, { isLoading }] = useCreateCategoryMutation({});
+  const [submitRequest, { isLoading }] = useSubmitContactRequestMutation({});
   const { handleSubmit } = useCustomMutation();
-  const [selectedType, setSelectedType] = useState(1);
+  const [selectedType, setSelectedType] = useState(2);
 
   const formik = useFormik({
     initialValues: {
       firstName: '',
       lastName: '',
       company: '',
-      JobTitle: '',
+      designation: '',
       email: '',
       phoneNumber: '',
-      content: '',
+      message: '',
     },
     validationSchema: contactSchema,
     onSubmit: async (values, { resetForm }) => {
-      //   const response = await handleSubmit(createCategory, values, 'Message Submitted Successfully');
-      //   if (response?.data) {
-      //   resetForm()
-      //   }
+      const response = await handleSubmit(
+        submitRequest,
+        {
+          ...values,
+          contactRequestType: selectedType,
+          subject:
+            contactType?.find((item) => item.value === selectedType)?.label ||
+            '',
+        },
+        'Message Submitted Successfully'
+      );
+      if (response?.data) {
+        resetForm();
+      }
     },
   });
 
@@ -133,7 +144,7 @@ const ContactForm = () => {
               placeholder="Enter Company"
             />
             <CustomTextInputForm
-              name="jobTitle"
+              name="designation"
               title="Job Title"
               placeholder="Enter Job Title"
             />
@@ -164,10 +175,10 @@ const ContactForm = () => {
             </Text>
             <Field
               as={FormTextAreaInput}
-              name="content"
+              name="message"
               placeholder="Write a Message"
               customStyle={{
-                ...(formik.errors.content ? {} : { bgColor: 'white' }),
+                ...(formik.errors.message ? {} : { bgColor: 'white' }),
                 height: '204px',
                 border: '1px solid #656565',
                 rounded: '5px',

@@ -248,6 +248,18 @@ interface RoomSetting {
   lightningLevel: number;
 }
 
+interface ContactPayload {
+  firstName: string;
+  lastName: string;
+  company: string;
+  designation: string;
+  email: string;
+  phoneNumber: string;
+  subject: string;
+  message: string;
+  contactRequestType: number;
+}
+
 export type {
   Settings,
   UpdateSettingsPayload,
@@ -255,4 +267,5 @@ export type {
   BuildingSetting,
   FloorSetting,
   RoomSetting,
+  ContactPayload,
 };

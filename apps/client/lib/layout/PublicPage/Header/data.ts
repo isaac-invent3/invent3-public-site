@@ -78,18 +78,31 @@ const LINKS = [
         {
           title: 'How we Work',
           link: '/how-we-work',
+          description:
+            'Streamlined tools and support to manage assets with ease',
+          icon: '/sector-banking.png',
         },
         {
           title: 'The Invent3.ai Advantage',
           link: '/the-invent3-advantage',
+          description:
+            'AI-driven insights, seamless control, and unmatched operational visibility',
+          icon: '/sector-conveyor.png',
         },
         {
           title: 'Built for All Industries',
           link: '/built-for-all-industries',
+          description:
+            'Flexible platform designed to serve diverse industries with precision.',
+          icon: '/sector-conveyor.png',
         },
       ],
       columns: 1,
+      image: '/difference-bg.png',
       rowGap: '24px',
+      sectionStyle: {
+        width: '219px',
+      },
     },
   },
   {
@@ -100,14 +113,24 @@ const LINKS = [
         {
           title: 'Developer Portal',
           link: '/developer-portal',
+          description:
+            'Explore tools, APIs, and docs to build with Invent3 easily.',
+          icon: '/sector-banking.png',
         },
         {
           title: 'Blog',
           link: '/blog',
+          description:
+            'Insights, updates, and stories powering smarter asset management decisions',
+          icon: '/sector-conveyor.png',
         },
       ],
       columns: 1,
+      image: '/resources-bg.png',
       rowGap: '24px',
+      sectionStyle: {
+        width: '219px',
+      },
     },
   },
   {

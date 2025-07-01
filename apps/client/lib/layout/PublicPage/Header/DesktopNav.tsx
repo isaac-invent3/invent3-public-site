@@ -1,4 +1,13 @@
-import { Flex, HStack, Icon, SimpleGrid, Text, VStack } from '@chakra-ui/react';
+import {
+  Flex,
+  HStack,
+  Icon,
+  SimpleGrid,
+  StackProps,
+  Text,
+  TextProps,
+  VStack,
+} from '@chakra-ui/react';
 import React from 'react';
 import LINKS from './data';
 import {
@@ -15,20 +24,21 @@ interface SubmenuProps {
   menuImage?: string;
   rowGap?: string;
   columns?: number;
+  sectionStyle?: TextProps;
 }
 const Submenu = (props: SubmenuProps) => {
-  const { items, menuImage, rowGap, columns } = props;
+  const { items, menuImage, rowGap, columns, sectionStyle } = props;
   return (
     <HStack
       alignItems="flex-start"
       spacing="52px"
       p="24px"
       justifyContent="flex-start"
-      width={columns && columns > 1 ? '90vw' : 'full'}
+      width={columns && columns > 1 ? '90vw' : 'max-content'}
       maxW={columns && columns > 1 ? '1138px' : 'max-content'}
       bgColor="white"
       rounded="10px"
-      mt={columns && columns > 1 ? '24px' : 'full'}
+      mt={columns && columns > 1 ? '24px' : 'initial'}
       mx="24px"
     >
       <SimpleGrid
@@ -47,7 +57,12 @@ const Submenu = (props: SubmenuProps) => {
             >
               <HStack spacing="8px">
                 {item.icon && (
-                  <Flex position="relative" width="20px" height="20px">
+                  <Flex
+                    position="relative"
+                    width="20px"
+                    height="20px"
+                    shrink={0}
+                  >
                     <Image src={item.icon} alt="menu-image" fill />
                   </Flex>
                 )}
@@ -56,6 +71,7 @@ const Submenu = (props: SubmenuProps) => {
                   lineHeight="16px"
                   fontWeight={700}
                   letterSpacing="0.04em"
+
                   //   whiteSpace="nowrap"
                 >
                   {item.title}
@@ -69,6 +85,7 @@ const Submenu = (props: SubmenuProps) => {
                   fontWeight={400}
                   lineHeight="140%"
                   maxW="90%"
+                  {...sectionStyle}
                 >
                   {item.description}
                 </Text>
@@ -78,7 +95,7 @@ const Submenu = (props: SubmenuProps) => {
         ))}
       </SimpleGrid>
       {menuImage && (
-        <Flex position="relative" width="311px" height="311px">
+        <Flex position="relative" width="227px" minH="278px" flexShrink={0}>
           <Image src={menuImage} alt="menu-image" fill />
         </Flex>
       )}
@@ -115,6 +132,7 @@ const DesktopNav = () => {
               menuImage={item.children.image}
               rowGap={item.children.rowGap}
               columns={item.children.columns}
+              sectionStyle={item.children?.sectionStyle}
             />
           </Menu>
         )

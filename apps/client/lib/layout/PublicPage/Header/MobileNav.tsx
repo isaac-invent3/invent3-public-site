@@ -67,7 +67,13 @@ const MobileNav = () => {
             </Flex>
             <DrawerCloseButton p={0} m={0} />
           </Flex>
-          <DrawerBody padding="32px">
+          <DrawerBody
+            padding="32px"
+            position="relative"
+            zIndex={9999}
+            bgColor="white"
+            height="full"
+          >
             <VStack
               width="full"
               spacing="32px"

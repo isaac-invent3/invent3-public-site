@@ -138,6 +138,30 @@ const ExistingApprovalWorkflow = ({ data }: ExistingApprovalWorkflowProps) => {
     }
   }, [approvalWorkflowParty]);
 
+  useEffect(() => {
+    if (formik.values.approvalLevel) {
+      const currentLevels = formik.values.levels || [];
+      const desiredLength = formik.values.approvalLevel;
+      if (currentLevels.length < desiredLength) {
+        // Append new levels
+        const newLevels = [
+          ...currentLevels,
+          ...Array.from(
+            { length: desiredLength - currentLevels.length },
+            (_, idx) => ({
+              levelNumber: currentLevels.length + idx + 1,
+              approvers: [],
+            })
+          ),
+        ];
+        formik.setFieldValue('levels', newLevels);
+      } else if (currentLevels.length > desiredLength) {
+        // Remove extra levels
+        formik.setFieldValue('levels', currentLevels.slice(0, desiredLength));
+      }
+    }
+  }, [formik.values.approvalLevel]);
+
   const handleDelete = async () => {
     const session = await getSession();
     await handleSubmit(

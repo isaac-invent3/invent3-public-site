@@ -1,6 +1,7 @@
 import { Button, Flex } from '@chakra-ui/react';
 import React from 'react';
 import HeroHeader from '../Common/HeroHeader';
+import Link from 'next/link';
 
 const Hero = () => {
   return (
@@ -37,17 +38,19 @@ const Hero = () => {
           subtitle="From acquisition to retirement, Invent3 simplifies asset tracking, maintenance scheduling, cost optimization, and compliance—giving you total control over your business assets."
           bgDesktop=""
         />
-        <Button
-          bgColor="white"
-          height="50px"
-          color="primary.500"
-          rounded="8px"
-          width="151px"
-          _hover={{ opacity: 0.8 }}
-          _active={{ opacity: 0.8 }}
-        >
-          Talk to Sales
-        </Button>
+        <Link href="/contact-us">
+          <Button
+            bgColor="white"
+            height="50px"
+            color="primary.500"
+            rounded="8px"
+            width="151px"
+            _hover={{ opacity: 0.8 }}
+            _active={{ opacity: 0.8 }}
+          >
+            Talk to Sales
+          </Button>
+        </Link>
       </Flex>
     </Flex>
   );

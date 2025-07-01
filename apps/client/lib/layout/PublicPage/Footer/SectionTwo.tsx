@@ -17,7 +17,13 @@ const SectionTwo = () => {
       alignItems="flex-start"
     >
       <VStack width="full" spacing="8px" alignItems="flex-start">
-        <Text color="black" fontWeight={700} fontSize="18px" lineHeight="24px">
+        <Text
+          color="black"
+          fontWeight={700}
+          fontSize="18px"
+          lineHeight="24px"
+          whiteSpace="nowrap"
+        >
           Contact Information
         </Text>
         {contactInfo.map((item, index) => (
@@ -28,7 +34,13 @@ const SectionTwo = () => {
       </VStack>
 
       <VStack width="full" spacing="8px" alignItems="flex-start">
-        <Text color="black" fontWeight={700} fontSize="18px" lineHeight="24px">
+        <Text
+          color="black"
+          fontWeight={700}
+          fontSize="18px"
+          lineHeight="24px"
+          whiteSpace="nowrap"
+        >
           Follow Us On
         </Text>
         <HStack spacing="16px">

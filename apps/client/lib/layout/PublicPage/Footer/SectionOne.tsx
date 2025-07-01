@@ -44,6 +44,7 @@ const SectionOne = () => {
             fontWeight={700}
             fontSize="18px"
             lineHeight="24px"
+            whiteSpace="nowrap"
           >
             Quick Links
           </Text>
@@ -61,6 +62,7 @@ const SectionOne = () => {
             fontWeight={700}
             fontSize="18px"
             lineHeight="24px"
+            whiteSpace="nowrap"
           >
             Support
           </Text>

@@ -85,7 +85,7 @@ const CoreFeatures = () => {
         position="relative"
         direction={{ base: 'column', lg: 'row' }}
         gap={{ base: '40px', lg: '56px' }}
-        zIndex={9999}
+        zIndex={999}
       >
         <VStack
           width={{ base: '100%', lg: '42%' }}

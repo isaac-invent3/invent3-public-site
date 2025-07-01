@@ -3,6 +3,7 @@ import React from 'react';
 import SectionInfo from '../../Common/SectionInfo';
 import { Button } from '@repo/ui/components';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface CTAProps {
   heading: (string | string[])[];
@@ -83,17 +84,19 @@ const CTA = (props: CTAProps) => {
               >
                 Request a free Demo
               </Button>
-              <Button
-                customStyles={{
-                  width: { base: 'full', lg: '220px' },
-                  borderColor: 'white',
-                  color: 'white',
-                  _hover: { bgColor: 'white', color: 'primary.500' },
-                }}
-                variant="outline"
-              >
-                Talk to Sales
-              </Button>
+              <Link href="/contact-us">
+                <Button
+                  customStyles={{
+                    width: { base: 'full', lg: '220px' },
+                    borderColor: 'white',
+                    color: 'white',
+                    _hover: { bgColor: 'white', color: 'primary.500' },
+                  }}
+                  variant="outline"
+                >
+                  Talk to Sales
+                </Button>
+              </Link>
             </Stack>
           </Flex>
         </Flex>

@@ -73,7 +73,7 @@ const Actions = () => {
             title="Live Chat"
             subtitle="Get instant support through our live chat. Our experts are available to provide real-time solutions and answer your questions efficiently."
           >
-            <ActionButton label="Email Us" link="mailto:support@invent3.ai" />
+            <ActionButton label="Live Chat" link="mailto:support@invent3.ai" />
           </ActionCard>
         </SimpleGrid>
       </Flex>

@@ -271,14 +271,14 @@ export async function middleware(request: NextRequest) {
       });
       return NextResponse.redirect(url);
     } else {
-      // return NextResponse.rewrite(new URL('/404', request.url));
-      const url = new URL(`/signin`, request.url);
-      url.searchParams.set('ref', request.nextUrl.pathname);
-      // Preserve original query parameters
-      request.nextUrl.searchParams.forEach((value, key) => {
-        url.searchParams.set(key, value);
-      });
-      return NextResponse.redirect(url);
+      return NextResponse.rewrite(new URL('/404', request.url));
+      // const url = new URL(`/signin`, request.url);
+      // url.searchParams.set('ref', request.nextUrl.pathname);
+      // // Preserve original query parameters
+      // request.nextUrl.searchParams.forEach((value, key) => {
+      //   url.searchParams.set(key, value);
+      // });
+      // return NextResponse.redirect(url);
     }
   }
 

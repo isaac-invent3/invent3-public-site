@@ -1,4 +1,5 @@
 import { Button, Flex, Heading, Stack, Text, VStack } from '@chakra-ui/react';
+import Link from 'next/link';
 import React from 'react';
 
 const CTA = () => {
@@ -94,18 +95,20 @@ const CTA = () => {
               >
                 Get Started
               </Button>
-              <Button
-                variant="outline"
-                borderColor="white"
-                height="50px"
-                color="white"
-                rounded="8px"
-                width={{ base: 'full', md: '160px' }}
-                _hover={{ bgColor: 'white', color: 'primary.500' }}
-                _active={{ bgColor: 'white', color: 'primary.500' }}
-              >
-                Talk to Sales
-              </Button>
+              <Link href="/contact-us">
+                <Button
+                  variant="outline"
+                  borderColor="white"
+                  height="50px"
+                  color="white"
+                  rounded="8px"
+                  width={{ base: 'full', md: '160px' }}
+                  _hover={{ bgColor: 'white', color: 'primary.500' }}
+                  _active={{ bgColor: 'white', color: 'primary.500' }}
+                >
+                  Talk to Sales
+                </Button>
+              </Link>
             </Stack>
           </VStack>
         </VStack>

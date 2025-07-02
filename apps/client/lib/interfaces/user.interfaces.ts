@@ -230,21 +230,6 @@ interface UserFormDetails {
   initialDocumentIds: number[];
 }
 
-interface Designation {
-  designationId: number;
-  designationTypeId: number;
-  designationName: string;
-  isNew: boolean;
-  createdDate: Date;
-  createdBy: null;
-  lastModifiedDate: null;
-  lastModifiedBy: null;
-  isDeleted: boolean;
-  deletedDate: null;
-  deletedBy: null;
-  guid: string;
-}
-
 interface Group {
   isNew: boolean;
   createdDate: Date;
@@ -370,7 +355,6 @@ export type {
   UserPermission,
   UserFilter,
   UserFormDetails,
-  Designation,
   UserGroupInfoHeader,
   UserGroupPayload,
   CreateUserPayload,

@@ -17,13 +17,14 @@ import {
   removeSelectedAssetIds,
 } from '../../Common/utils';
 import PageHeader from '~/lib/components/UI/PageHeader';
-import { ROUTES } from '~/lib/utils/constants';
+import { ASSET_BULK_ACTION_TYPE, ROUTES } from '~/lib/utils/constants';
 import { useRouter } from 'next/navigation';
 import { Document } from '~/lib/interfaces/general.interfaces';
+import { useCreateBulkAssetActionMutation } from '~/lib/redux/services/asset/bulkAction.services';
 
 const BulkDispose = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [requestAssetDisposal, { isLoading }] = useRequestAssetDisposalMutation(
+  const [createBulkAction, { isLoading }] = useCreateBulkAssetActionMutation(
     {}
   );
   const router = useRouter();
@@ -38,14 +39,16 @@ const BulkDispose = () => {
     validationSchema: assetDisposeSchema,
     onSubmit: async (values) => {
       const session = await getSession();
-      const createBulkAssetDisposalRequestDto = {
+      const createAssetBulkActionDto = {
+        bulkActionTypeId: ASSET_BULK_ACTION_TYPE.ASSET_DISPOSAL,
         disposalReasonId: values.disposalReasonId!,
         comments: values.comments!,
         assetIds: getSelectedAssetIds(),
-        disposalDate: moment(values.disposalDate, 'DD/MM/YYYY')
+        actionDate: moment(values.disposalDate, 'DD/MM/YYYY')
           .utcOffset(0, true)
           .toISOString()!,
         disposalRequestedBy: session?.user?.userId!,
+        requestedBy: session?.user.userId!,
         createdBy: session?.user?.username!,
       };
       const uploadedDocuments: Document[] = values.documents.filter(
@@ -71,12 +74,12 @@ const BulkDispose = () => {
               .map((item) => item.documentId as number)
           : null;
 
-      const finalQuery = {
-        createBulkAssetDisposalRequestDto,
+      const finalPayload = {
+        createAssetBulkActionDto,
         createAssetDocumentsDto,
         assetDocumentIds,
       };
-      const resp = await handleSubmit(requestAssetDisposal, finalQuery, '');
+      const resp = await handleSubmit(createBulkAction, finalPayload, '');
       if (resp?.data) {
         removeSelectedAssetIds();
         onOpen();

@@ -16,13 +16,15 @@ import {
   removeSelectedAssetIds,
 } from '../../Common/utils';
 import PageHeader from '~/lib/components/UI/PageHeader';
-import { ROUTES } from '~/lib/utils/constants';
+import { ASSET_BULK_ACTION_TYPE, ROUTES } from '~/lib/utils/constants';
 import { useRouter } from 'next/navigation';
-import { useTransferAssetMutation } from '~/lib/redux/services/asset/transfer.services';
+import { useCreateBulkAssetActionMutation } from '~/lib/redux/services/asset/bulkAction.services';
 
 const BulkTransfer = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [transferAsset, { isLoading }] = useTransferAssetMutation({});
+  const [createBulkAction, { isLoading }] = useCreateBulkAssetActionMutation(
+    {}
+  );
   const { handleSubmit } = useCustomMutation();
   const router = useRouter();
   const formik = useFormik({
@@ -35,18 +37,48 @@ const BulkTransfer = () => {
     validationSchema: assetTransferSchema,
     onSubmit: async (values) => {
       const session = await getSession();
-      const formValues = {
+      const createAssetBulkActionDto = {
+        bulkActionTypeId: ASSET_BULK_ACTION_TYPE.ASSET_TRANSFER,
         newOwnerId: values?.newOwnerId!,
         transferredTo: values?.transferredTo!,
         comments: values?.comments!,
         assetIds: getSelectedAssetIds(),
-        transferDate: moment(values.transferDate, 'DD/MM/YYYY')
+        actionDate: moment(values.transferDate, 'DD/MM/YYYY')
           .utcOffset(0, true)
           .toISOString(),
         initiatedBy: values.newOwnerId!,
+        requestedBy: session?.user.userId!,
         createdBy: session?.user.username!,
       };
-      const resp = await handleSubmit(transferAsset, formValues, '');
+      // const uploadedDocuments: Document[] = values.documents.filter(
+      //   (item: Document) => item.documentId === null
+      // );
+
+      // const existingDocuments: Document[] = values.documents.filter(
+      //   (item: Document) => item.documentId !== null
+      // );
+      // const createAssetDocumentsDto =
+      //   uploadedDocuments.length > 0
+      //     ? uploadedDocuments.map((item) => ({
+      //         documentName: item.documentName ?? undefined,
+      //         base64Document: item.base64Document ?? undefined,
+      //         createdBy: session?.user?.username,
+      //       }))
+      //     : null;
+
+      // const assetDocumentIds =
+      //   existingDocuments.length > 0
+      //     ? existingDocuments
+      //         .filter((item) => item.documentId !== null)
+      //         .map((item) => item.documentId as number)
+      //     : null;
+
+      const finalPayload = {
+        createAssetBulkActionDto,
+        createAssetDocumentsDto: null,
+        assetDocumentIds: null,
+      };
+      const resp = await handleSubmit(createBulkAction, finalPayload, '');
       if (resp?.data) {
         removeSelectedAssetIds();
         onOpen();

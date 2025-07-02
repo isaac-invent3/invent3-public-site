@@ -153,7 +153,12 @@ const createApprovalWorkflowSchema = Yup.object().shape({
     .min(1, 'At least one level is required'),
   approvalTypeId: Yup.number().required('Approval Type is Required'),
   approvalLevel: Yup.number().required('Approval Level is Required'),
-  deletedPartyIds: Yup.array().of(Yup.number()),
+  deletedParties: Yup.array().of(
+    Yup.object().shape({
+      partyId: Yup.number().required('Party is Required'),
+      levelNumber: Yup.number().required('Level number is Required'),
+    })
+  ),
 });
 
 export {

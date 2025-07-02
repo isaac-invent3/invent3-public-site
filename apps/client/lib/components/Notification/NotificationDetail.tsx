@@ -14,8 +14,8 @@ import { findSystemContextDetailById } from '~/lib/hooks/useParseUrl';
 const textStyle = { fontSize: '11px', lineHeight: '100%' };
 
 function formatDate(date: string) {
-  const now = moment();
-  const inputDate = moment(date);
+  const now = moment().utcOffset(0, true);
+  const inputDate = moment(date).utcOffset(0, true);
 
   if (inputDate.isSame(now, 'day')) {
     return `Today at ${inputDate.format('h:mma')}`;

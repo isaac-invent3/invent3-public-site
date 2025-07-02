@@ -274,7 +274,7 @@ interface CreateApprovalWorkflowFormikValues {
   description: string;
   isDefaultApprovalWorkFlow: boolean;
   levels: ApprovalLevel[];
-  deletedPartyIds: number[];
+  deletedParties: { partyId: number; levelNumber: number }[];
 }
 
 export type {

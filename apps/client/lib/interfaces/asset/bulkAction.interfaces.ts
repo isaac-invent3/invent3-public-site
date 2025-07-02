@@ -1,3 +1,5 @@
+import { AssetDocumentsDto } from './general.interface';
+
 interface AssetBulkAction {
   bulkActionId: number;
   bulkActionTypeId: number;
@@ -39,4 +41,30 @@ interface AssetBulkActionMap {
   isDeleted: boolean;
 }
 
-export type { AssetBulkAction, AssetBulkActionMap };
+interface CreateAssetBulkActionPayload {
+  createAssetBulkActionDto: CreateAssetBulkActionDto;
+  createAssetDocumentsDto?: AssetDocumentsDto[] | null;
+  assetDocumentIds?: number[] | null;
+}
+
+interface CreateAssetBulkActionDto {
+  bulkActionTypeId: number;
+  approvalRequestId?: number;
+  currentOwner?: number;
+  totalAssets?: number;
+  disposalReasonId?: number;
+  transferredFrom?: number;
+  transferredTo?: number;
+  newOwnerId?: number;
+  authorizedBy?: number;
+  actionDate: string;
+  comments: string | null;
+  requestedBy: number | null;
+  createdBy: string;
+}
+
+export type {
+  AssetBulkAction,
+  AssetBulkActionMap,
+  CreateAssetBulkActionPayload,
+};

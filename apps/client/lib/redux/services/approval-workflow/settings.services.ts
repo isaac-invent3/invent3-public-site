@@ -57,7 +57,7 @@ export const approvalWorkflowSettingsApi = createApi({
     }),
     updateApprovalWorkflow: builder.mutation<
       BaseApiResponse<ApprovalWorkflow>,
-      UpdateApprovalWorkflowPayload
+      Partial<UpdateApprovalWorkflowPayload>
     >({
       query: (data) => ({
         url: '/Invent3Pro/UpdateApprovalWorkFlowAndParties',

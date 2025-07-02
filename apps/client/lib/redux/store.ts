@@ -103,6 +103,7 @@ import { authApi } from './services/auth.services';
 import { assetTransferApi } from './services/asset/transfer.services';
 import { approvalWorkflowRequestCommentApi } from './services/approval-workflow/requestComments.services';
 import { assetBulkActionApi } from './services/asset/bulkAction.services';
+import { designationApi } from './services/designation.services';
 export const persistConfig = {
   key: 'root',
   storage,
@@ -163,7 +164,10 @@ const rootReducer = combineReducers({
   // Ticket APIs
   [ticketApi.reducerPath]: ticketApi.reducer,
   [utilityApi.reducerPath]: utilityApi.reducer,
+
+  // User-related APIs
   [userApi.reducerPath]: userApi.reducer,
+  [designationApi.reducerPath]: designationApi.reducer,
 
   // Location-related APIs
   [aisleApi.reducerPath]: aisleApi.reducer,
@@ -339,9 +343,12 @@ export const makeStore = () => {
         shelfApi.middleware,
         stateApi.middleware,
 
-        // Utility and user APIs
+        // Utility APIs
         utilityApi.middleware,
+
+        // User-related APIs
         userApi.middleware,
+        designationApi.middleware,
 
         // Vendor-related APIs
         vendorApi.middleware,

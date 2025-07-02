@@ -24,7 +24,7 @@ const employeeInfoSchema = Yup.object().shape({
   gender: Yup.string().nullable(),
   countryId: Yup.number().required('Country is Required'),
   stateId: Yup.number().required('State is Required'),
-  cityId: Yup.number().required('City is Required'),
+  cityId: Yup.number().required('LGA is Required'),
 });
 
 const occupationInfoSchema = Yup.object().shape({
@@ -59,6 +59,11 @@ const userGroupSchema = Yup.object().shape({
     .min(1, 'Roles is required'),
 });
 
+const designationSchema = Yup.object().shape({
+  designationTypeId: Yup.number().required('Designation Type is required'),
+  designationName: Yup.string().required('Designation Name is required'),
+});
+
 export {
   changePasswordSchema,
   employeeInfoSchema,
@@ -67,4 +72,5 @@ export {
   userGroupSchema,
   roleGroupInfoSchema,
   userIDPSchema,
+  designationSchema,
 };

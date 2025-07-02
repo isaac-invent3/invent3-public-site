@@ -103,9 +103,12 @@ const Approvers = ({ data, shouldEdit = true }: ApproversProps) => {
                             cursor="pointer"
                             onClick={() => {
                               if (approver?.partyId) {
-                                setFieldValue('deletedPartyIds', [
-                                  ...values.deletedPartyIds,
-                                  approver?.partyId,
+                                setFieldValue('deletedParties', [
+                                  ...values.deletedParties,
+                                  {
+                                    partyId: approver?.partyId,
+                                    levelNumber: data.levelNumber,
+                                  },
                                 ]);
                               }
                               remove(index);

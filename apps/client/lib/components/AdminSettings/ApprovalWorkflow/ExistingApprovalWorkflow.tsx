@@ -58,7 +58,7 @@ const ExistingApprovalWorkflow = ({ data }: ExistingApprovalWorkflowProps) => {
       approvalTypeId: data?.approvalTypeId ?? null,
       approvalLevel: 1,
       levels: [],
-      deletedPartyIds: [] as number[],
+      deletedParties: [] as { levelNumber: number; partyId: number }[],
     },
     validationSchema: createApprovalWorkflowSchema,
     enableReinitialize: true,
@@ -76,23 +76,34 @@ const ExistingApprovalWorkflow = ({ data }: ExistingApprovalWorkflowProps) => {
             isDefaultApprovalWorkFlow: true,
             lastModifiedBy: session?.user?.username!,
           },
-          updateApprovalWorkFlowPartyDtos: values.levels.flatMap(
-            (level: ApprovalLevel) =>
-              (level.approvers || []).map((approver: any) => ({
+          updateApprovalWorkFlowPartyDtos: [
+            ...values.levels.flatMap((level: ApprovalLevel) =>
+              (level.approvers || []).map((approver) => ({
                 approvalWorkFlowPartyId: approver?.partyId,
                 approvalWorkFlowId: data?.approvalWorkFlowId,
                 userId: approver.userId,
                 approvalActionId: approver.approvalActionId,
                 levelNumber: level.levelNumber,
-                approvalRequirementTypeId: approver.approvalRequirementTypeId,
+                approvalRequirementTypeId: null!,
                 actionType: approver?.partyId
-                  ? values.deletedPartyIds.includes(approver?.partyId)
-                    ? FORM_ENUM.delete
-                    : FORM_ENUM.update
+                  ? FORM_ENUM.update
                   : FORM_ENUM.add,
                 changeInitiatedBy: session?.user?.username!,
               }))
-          ),
+            ),
+            ...(values.deletedParties
+              ? values.deletedParties.map((party, index) => ({
+                  approvalWorkFlowPartyId: party.partyId,
+                  approvalWorkFlowId: data?.approvalWorkFlowId,
+                  userId: null!,
+                  approvalActionId: null!,
+                  levelNumber: party.levelNumber,
+                  approvalRequirementTypeId: null!,
+                  actionType: FORM_ENUM.delete,
+                  changeInitiatedBy: session?.user?.username!,
+                }))
+              : []),
+          ],
         },
         'Approval Workflow Updated Successfully'
       );

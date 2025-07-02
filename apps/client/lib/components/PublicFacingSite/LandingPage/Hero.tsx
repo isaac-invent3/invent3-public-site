@@ -116,6 +116,7 @@ const Hero = () => {
                 fontSize={{ base: '24px', lg: '48px' }}
                 lineHeight={{ base: '32px', lg: '62.4px' }}
                 textAlign={{ base: 'center', md: 'left' }}
+                maxW={{ md: '90%', lg: 'full' }}
               >
                 AI & IoT-Powered Physical Asset & Facility Management for
                 Smarter Operations
@@ -126,6 +127,7 @@ const Hero = () => {
                 lineHeight={{ base: '16px', lg: '22.4px' }}
                 textAlign={{ base: 'center', md: 'left' }}
                 color="neutral.300"
+                maxW={{ md: '85%', lg: 'full' }}
               >
                 Optimize asset performance, reduce downtime, and stay
                 compliant—effortlessly. Invent3.ai transforms how businesses

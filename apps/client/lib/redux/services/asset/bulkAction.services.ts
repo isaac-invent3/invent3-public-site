@@ -4,6 +4,7 @@ import { BaseApiResponse, ListResponse, QueryParams } from '@repo/interfaces';
 import {
   AssetBulkAction,
   AssetBulkActionMap,
+  CreateAssetBulkActionPayload,
 } from '~/lib/interfaces/asset/bulkAction.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 
@@ -35,8 +36,21 @@ export const assetBulkActionApi = createApi({
         headers: getHeaders(),
       }),
     }),
+    createBulkAssetAction: builder.mutation<void, CreateAssetBulkActionPayload>(
+      {
+        query: (body) => ({
+          url: `/Invent3Pro/CreateBulkAssetAction`,
+          method: 'POST',
+          headers: getHeaders(),
+          body,
+        }),
+      }
+    ),
   }),
 });
 
-export const { useGetABulkAssetActionQuery, useGetAssetBulkActionMapsQuery } =
-  assetBulkActionApi;
+export const {
+  useGetABulkAssetActionQuery,
+  useGetAssetBulkActionMapsQuery,
+  useCreateBulkAssetActionMutation,
+} = assetBulkActionApi;

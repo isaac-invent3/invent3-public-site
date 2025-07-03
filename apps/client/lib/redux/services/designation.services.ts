@@ -42,6 +42,7 @@ export const designationApi = createApi({
         headers: getHeaders(),
         body,
       }),
+      invalidatesTags: ['allDesignations'],
     }),
     searchDesignation: builder.mutation<
       BaseApiResponse<ListResponse<Designation>>,

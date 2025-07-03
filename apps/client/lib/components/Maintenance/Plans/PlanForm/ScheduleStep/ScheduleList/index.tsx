@@ -96,7 +96,7 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
           enableSorting: false,
         }),
         columnHelper.accessor('taskCount', {
-          cell: (info) => info.getValue(),
+          cell: (info) => info.getValue() ?? 'N/A',
           header: 'No. Of Tasks',
           enableSorting: false,
         }),
@@ -147,67 +147,69 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
     }
   }, [showScheduleInfo]);
 
+  const formattedSchedules = useMemo(() => {
+    if (data?.data && data?.data?.items?.length >= 1) {
+      const schedules: MaintenanceSchedule[] = data.data.items;
+      return schedules.map((item) => ({
+        name: item.scheduleName,
+        localId: item.scheduleId,
+        scheduleId: item.scheduleId,
+        planId: item.maintenancePlanId,
+        typeId: item.maintenanceTypeId,
+        typeName: item.maintenanceType,
+        assetId: item.assetId,
+        assetTypeId: item.assetTypeId,
+        assetName: item.assetName,
+        sla: item.sla,
+        frequencyId: item.frequencyId,
+        frequencyName: item.frequencyName,
+        assetLocation: item.assetLocation,
+        description: item.description,
+        comment: item.comments,
+        scheduledDate: dateFormatter(item.scheduledDate, 'DD/MM/YYYY HH:mm'),
+        endDate: item.endDate ?? null,
+        intervalValue: 1,
+        dayOccurrences: [],
+        weekOccurrences: [],
+        monthOccurrences: [],
+        yearOccurrences: {},
+        deletedTaskIDs: [],
+        updatedTaskIDs: [],
+        completionDate: dateFormatter(item.completionDate, 'DD/MM/YYYY HH:mm'),
+        ticketId: item.ticketId,
+        maintenancePlanInfo: {
+          planName: item.planName,
+          planType: item.maintenanceType,
+          assetName: null,
+          assetTypeName: null,
+          planStatus: null,
+          startDate: null,
+          endDate: null,
+        },
+        taskCount: item.activeTasksCount,
+        tasks: [],
+        firstInstanceDate: null,
+      }));
+    }
+    return [];
+  }, [data?.data?.items]);
+
   useEffect(() => {
-    if (data?.data) {
-      if (data?.data?.items?.length >= 1) {
-        const schedules: MaintenanceSchedule[] = data?.data?.items;
-        const formattedSchedules: ScheduleFormDetails[] = [];
-        schedules.forEach((item) => {
-          formattedSchedules.push({
-            name: item.scheduleName,
-            localId: item.scheduleId,
-            scheduleId: item.scheduleId,
-            planId: item.maintenancePlanId,
-            typeId: item.maintenanceTypeId,
-            typeName: item.maintenanceType,
-            assetId: item.assetId,
-            assetTypeId: item.assetTypeId,
-            assetName: item.assetName,
-            sla: item.sla,
-            frequencyId: item.frequencyId,
-            frequencyName: item.frequencyName,
-            assetLocation: item.assetLocation,
-            description: item.description,
-            comment: item.comments,
-            scheduledDate: dateFormatter(
-              item.scheduledDate,
-              'DD/MM/YYYY HH:mm'
-            ),
-            endDate: item.endDate ?? null,
-            intervalValue: 1,
-            dayOccurrences: [],
-            weekOccurrences: [],
-            monthOccurrences: [],
-            yearOccurrences: {},
-            deletedTaskIDs: [],
-            updatedTaskIDs: [],
-            completionDate: dateFormatter(
-              item.completionDate,
-              'DD/MM/YYYY HH:mm'
-            ),
-            ticketId: item.ticketId,
-            maintenancePlanInfo: {
-              planName: item.planName,
-              planType: item.maintenanceType,
-              assetName: null,
-              assetTypeName: null,
-              planStatus: null,
-              startDate: null,
-              endDate: null,
-            },
-            taskCount: item.activeTasksCount,
-            tasks: [],
-            firstInstanceDate: null,
-          });
-        });
+    if (formattedSchedules.length > 0) {
+      // Only add schedules from formattedSchedules that don't already exist in allPlanSchedules based on localId
+      const existingLocalIds = new Set(allPlanSchedules.map((s) => s.localId));
+      const newSchedules = formattedSchedules.filter(
+        (s) => !existingLocalIds.has(s.localId)
+      );
+      if (newSchedules.length > 0) {
         dispatch(
           updatePlanForm({
-            schedules: [...allPlanSchedules, ...formattedSchedules],
+            schedules: [...allPlanSchedules, ...newSchedules],
           })
         );
       }
     }
-  }, [data]);
+  }, [formattedSchedules]);
 
   const handleAddSchedule = () => {
     if (selectedRows.length > 0) {

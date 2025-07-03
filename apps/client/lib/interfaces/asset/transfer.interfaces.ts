@@ -39,7 +39,7 @@ interface AssetTransferQuery {
   newOwnerId: number;
   initiatedBy: number;
   transferDate: string;
-  assetIds: number[];
+  assetId: number;
   comments: string | null;
   createdBy: string;
 }

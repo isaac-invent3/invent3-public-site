@@ -58,7 +58,7 @@ export const assetStatsApi = createApi({
       BaseApiResponse<AssetStatsCummalative>,
       { id: number | undefined }
     >({
-      query: (id) => ({
+      query: ({ id }) => ({
         url: `/Locations/GetCumulativeAssetStatusCountsByStateId/${id}`,
         method: 'GET',
         headers: getHeaders(),

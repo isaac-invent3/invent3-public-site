@@ -76,7 +76,7 @@ const TabTableView = (props: TabTableViewProps) => {
     ...(search && {
       criterion: [
         {
-          columnName: 'taskName',
+          columnName: 'taskInstanceName',
           columnValue: search,
           operation: OPERATORS.Contains,
         },

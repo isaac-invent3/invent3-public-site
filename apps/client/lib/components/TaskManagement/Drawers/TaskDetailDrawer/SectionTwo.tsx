@@ -70,7 +70,7 @@ const SectionTwo = ({ data }: SectionTwoProps) => {
               </Text>
             )}
             <Text color="black" size="md">
-              N/A
+              {data?.assetName}
             </Text>
           </VStack>
         </VStack>

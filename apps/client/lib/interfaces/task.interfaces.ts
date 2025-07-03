@@ -108,6 +108,7 @@ interface TaskInstance extends BaseTask {
   assignedToEmployeeId: number;
   statusAlias: string;
   categoryName: string;
+  assetName: string;
 }
 
 interface SingleTask extends BaseMainTask {

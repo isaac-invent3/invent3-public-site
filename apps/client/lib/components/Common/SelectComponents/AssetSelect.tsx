@@ -1,3 +1,4 @@
+import { OPERATORS } from '@repo/constants';
 import React, { useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { Option } from '~/lib/interfaces/general.interfaces';
@@ -36,6 +37,23 @@ const AssetSelect = (props: AssetSelectProps) => {
       setPageNumber={setPageNumber}
       handleSelect={handleSelect}
       defaultInputValue={defaultInputValue}
+      searchAndCriterion={false}
+      specialOrCriterion={(inputValue) => [
+        [
+          {
+            columnName: 'assetName',
+            columnValue: inputValue,
+            operation: OPERATORS.Contains,
+          },
+        ],
+        [
+          {
+            columnName: 'assetCode',
+            columnValue: inputValue,
+            operation: OPERATORS.Contains,
+          },
+        ],
+      ]}
     />
   );
 };

@@ -63,7 +63,7 @@ const Plans = (props: PlansProp) => {
   // Checks if all filterdata is empty
   const isFilterEmpty = _.every(
     filterData,
-    (value) => _.isArray(value) && _.isEmpty(value)
+    (value) => (_.isArray(value) && _.isEmpty(value)) || value === undefined
   );
 
   const [searchPlan, { isLoading: searchLoading }] =
@@ -82,48 +82,53 @@ const Plans = (props: PlansProp) => {
         },
       ],
     }),
-    ...(!isFilterEmpty && {
-      orCriterion: [
-        ...filterData.planType.map((item) => [
-          ...generateSearchCriterion(
-            'planTypeId',
-            [item.value],
-            OPERATORS.Equals
-          ),
-        ]),
-        ...filterData.region.map((item) => [
-          ...generateSearchCriterion('stateId', [item.value], OPERATORS.Equals),
-        ]),
-        ...filterData.area.map((item) => [
-          ...generateSearchCriterion('lgaId', [item.value], OPERATORS.Equals),
-        ]),
-        ...filterData.branch.map((item) => [
-          ...generateSearchCriterion(
-            'facilityId',
-            [item.value],
-            OPERATORS.Equals
-          ),
-        ]),
-        ...[filterData.startDate]
-          .filter(Boolean)
-          .map((item) => [
+
+    orCriterion: isFilterEmpty
+      ? undefined
+      : [
+          ...filterData.planType.map((item) => [
             ...generateSearchCriterion(
-              'startDate',
-              [item as string],
-              OPERATORS.Contains
+              'planTypeId',
+              [item.value],
+              OPERATORS.Equals
             ),
           ]),
-        ...[filterData.endDate]
-          .filter(Boolean)
-          .map((item) => [
+          ...filterData.region.map((item) => [
             ...generateSearchCriterion(
-              'endDate',
-              [item as string],
-              OPERATORS.Contains
+              'stateId',
+              [item.value],
+              OPERATORS.Equals
             ),
           ]),
-      ],
-    }),
+          ...filterData.area.map((item) => [
+            ...generateSearchCriterion('lgaId', [item.value], OPERATORS.Equals),
+          ]),
+          ...filterData.branch.map((item) => [
+            ...generateSearchCriterion(
+              'facilityId',
+              [item.value],
+              OPERATORS.Equals
+            ),
+          ]),
+          ...[filterData.startDate]
+            .filter(Boolean)
+            .map((item) => [
+              ...generateSearchCriterion(
+                'startDate',
+                [item as string],
+                OPERATORS.Contains
+              ),
+            ]),
+          ...[filterData.endDate]
+            .filter(Boolean)
+            .map((item) => [
+              ...generateSearchCriterion(
+                'endDate',
+                [item as string],
+                OPERATORS.Contains
+              ),
+            ]),
+        ],
     pageNumber: currentPage,
     pageSize: pageSize,
   };

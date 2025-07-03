@@ -63,9 +63,7 @@ const Tasks = (props: TasksProps) => {
                   size="md"
                   textDecoration={showTaskCount ? 'underline' : 'none'}
                   cursor={showTaskCount ? 'pointer' : 'initial'}
-                  onClick={() => {
-                    onOpenFormTaskList;
-                  }}
+                  onClick={() => onOpenFormTaskList()}
                 >
                   {values?.taskCount}{' '}
                   {`Task${values?.taskCount > 1 ? 's' : ''}`}

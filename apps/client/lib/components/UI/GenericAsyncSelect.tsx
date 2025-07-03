@@ -21,6 +21,8 @@ interface GenericAsyncSelectProps {
   setPageNumber: React.Dispatch<React.SetStateAction<number>>;
   // eslint-disable-next-line no-unused-vars
   specialSearch?: (searchValue: string) => SearchCriterion[];
+  searchAndCriterion?: boolean;
+  specialOrCriterion?: (searchValue: string) => SearchCriterion[][];
   fetchKey?: string | number | null | undefined;
   showTitleAfterSelect?: boolean;
   isInvalid?: boolean;
@@ -43,6 +45,8 @@ const GenericAsyncSelect = (props: GenericAsyncSelectProps) => {
     pageNumber,
     setPageNumber,
     specialSearch,
+    searchAndCriterion = true,
+    specialOrCriterion,
     fetchKey,
     showTitleAfterSelect = true,
     isInvalid,
@@ -65,15 +69,21 @@ const GenericAsyncSelect = (props: GenericAsyncSelectProps) => {
 
   const handleSearch = async (inputValue: string): Promise<Option[]> => {
     const searchCriterion = {
-      criterion: specialSearch
-        ? specialSearch(inputValue)
-        : [
-            {
-              columnName: typeof labelKey === 'string' ? labelKey : labelKey[0],
-              columnValue: inputValue,
-              operation: OPERATORS.Contains,
-            },
-          ],
+      criterion: !searchAndCriterion
+        ? undefined
+        : specialSearch
+          ? specialSearch(inputValue)
+          : [
+              {
+                columnName:
+                  typeof labelKey === 'string' ? labelKey : labelKey[0],
+                columnValue: inputValue,
+                operation: OPERATORS.Contains,
+              },
+            ],
+      orCriterion: specialOrCriterion
+        ? specialOrCriterion(inputValue)
+        : undefined,
       pageNumber: 1,
       pageSize: DEFAULT_PAGE_SIZE,
     };

@@ -40,11 +40,11 @@ const AssetTransfer = (props: AssetTransferProps) => {
         newOwnerId: values?.newOwnerId!,
         transferredTo: values?.transferredTo!,
         comments: values?.comments!,
-        assetIds: [data?.assetId],
+        assetId: data?.assetId,
         transferDate: moment(values.transferDate, 'DD/MM/YYYY')
           .utcOffset(0, true)
           .toISOString(),
-        initiatedBy: values.newOwnerId!,
+        initiatedBy: Number(session?.user?.userId)!,
         createdBy: session?.user.username!,
       };
       const resp = await handleSubmit(transferAsset, formValues, '');

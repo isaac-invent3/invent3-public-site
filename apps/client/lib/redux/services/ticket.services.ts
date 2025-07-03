@@ -23,7 +23,7 @@ const getHeaders = () => ({
 export const ticketApi = createApi({
   reducerPath: 'ticketApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['allTickets', 'allTicketTypes'],
+  tagTypes: ['allTickets', 'allTicketTypes', 'allAssetOpenTickets'],
   endpoints: (builder) => ({
     createTicket: builder.mutation<
       BaseApiResponse<Ticket>,
@@ -35,7 +35,7 @@ export const ticketApi = createApi({
         headers: getHeaders(),
         body,
       }),
-      invalidatesTags: [],
+      invalidatesTags: ['allTickets', 'allAssetOpenTickets'],
     }),
     updateTicket: builder.mutation<
       BaseApiResponse<Ticket>,
@@ -90,7 +90,7 @@ export const ticketApi = createApi({
         method: 'GET',
         headers: getHeaders(),
       }),
-      providesTags: ['allTickets'],
+      providesTags: ['allAssetOpenTickets'],
     }),
     getTicketById: builder.query<BaseApiResponse<Ticket>, { id: number }>({
       query: ({ id }) => ({

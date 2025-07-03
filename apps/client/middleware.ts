@@ -259,9 +259,30 @@ export async function middleware(request: NextRequest) {
     return responseToReturn;
   }
   if (!token) {
-    if (publicRoutes.includes(`/${pathname.split('/')?.[1] as string}`)) {
-      return response;
-    }
+    const checkPath = tenantData ? `/${remainingPath}` : pathname;
+    const requestedPath = `/${checkPath.split('/')?.[1] as string}`;
+
+    const allRoutes = [
+      ...publicRoutes,
+      ...protectedGlobalRoute,
+      ...protectedSuperAdminRoute,
+      '/dashboard',
+      '/approval-flow',
+      '/asset-management',
+      '/maintenance',
+      '/task-management',
+      '/ticket-management',
+      '/template-management',
+      '/report-analytics',
+      '/role-management',
+      '/user-management',
+      '/vendor-management',
+      '/log-management',
+      '/company-management',
+      '/compliance',
+      '/feedback',
+    ];
+
     if (tenantData) {
       if (remainingPath === 'signin') {
         const url = new URL(`/signin`, request.url);
@@ -271,32 +292,29 @@ export async function middleware(request: NextRequest) {
         });
         return NextResponse.rewrite(url);
       }
-      const url = new URL(`/${tenant}/signin`, request.url);
-      url.searchParams.set('ref', remainingPath);
-      // Preserve original query parameters
-      request.nextUrl.searchParams.forEach((value, key) => {
-        url.searchParams.set(key, value);
-      });
-      return NextResponse.redirect(url);
-    } else {
-      return NextResponse.rewrite(new URL('/404', request.url));
-      // const url = new URL(`/signin`, request.url);
-      // url.searchParams.set('ref', request.nextUrl.pathname);
-      // // Preserve original query parameters
-      // request.nextUrl.searchParams.forEach((value, key) => {
-      //   url.searchParams.set(key, value);
-      // });
-      // return NextResponse.redirect(url);
     }
-  }
 
-  const url = new URL(`/signin`, request.url);
-  url.searchParams.set('ref', request.nextUrl.pathname);
-  // Append all original query parameters
-  request.nextUrl.searchParams.forEach((value, key) => {
-    url.searchParams.set(key, value);
-  });
-  return NextResponse.redirect(url);
+    // If public route, allow access
+    if (publicRoutes.includes(requestedPath)) {
+      return response;
+    }
+
+    // If route does not exist, return 404
+    if (!allRoutes.includes(requestedPath)) {
+      return NextResponse.rewrite(new URL('/404', request.url));
+    }
+
+    // If protected page, redirect to signin with ref (respect tenant)
+    const redirectPath = tenantData ? `/${tenant}/signin` : `/signin`;
+    const url = new URL(redirectPath, request.url);
+    const actualPath = tenantData ? remainingPath : pathname;
+    url.searchParams.set('ref', actualPath);
+    // Preserve original query parameters
+    request.nextUrl.searchParams.forEach((value, key) => {
+      url.searchParams.set(key, value);
+    });
+    return NextResponse.redirect(url);
+  }
 }
 
 export const config = {

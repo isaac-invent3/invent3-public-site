@@ -38,7 +38,7 @@ const useAssetTemplateInfo = (props: UseAssetTemplateInfo) => {
       pageNumber,
       pageSize,
     },
-    { skip: search !== '' }
+    { skip: search !== '' || columnId !== undefined }
   );
   const [searchAsset, { isLoading: searchLoading }] = useSearchAssetsMutation(
     {}
@@ -139,7 +139,7 @@ const useAssetTemplateInfo = (props: UseAssetTemplateInfo) => {
             ? searchData.items
             : (data?.data?.items ?? [])
         }
-        isLoading={isLoading}
+        isLoading={isLoading || (columnId !== undefined && searchLoading)}
         isFetching={isFetching || searchLoading}
         pageNumber={pageNumber}
         setPageNumber={setPageNumber}
@@ -171,7 +171,7 @@ const useAssetTemplateInfo = (props: UseAssetTemplateInfo) => {
     handleSearch,
     AssetTemplateTable,
     totalPages:
-      search && searchData
+      (search || !isFilterEmpty) && searchData
         ? searchData.totalPages
         : (data?.data?.totalPages ?? 0),
     pageSize,

@@ -10,7 +10,7 @@ const ParentAsset = () => {
       customSpacing="104px"
       description="Select the Parent Asset if there is any"
       title="Parent Asset"
-      isRequired
+      isRequired={false}
       direction={{ base: 'column', md: 'row' }}
       formSectionCustomStyle={{
         maxW: { md: '118px' },

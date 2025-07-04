@@ -1,11 +1,18 @@
-import { Flex, HStack, Icon, useDisclosure } from '@chakra-ui/react';
+import {
+  Flex,
+  HStack,
+  Icon,
+  Text,
+  useDisclosure,
+  VStack,
+} from '@chakra-ui/react';
 import { Button } from '@repo/ui/components';
 import { CloseIcon } from '../../CustomIcons';
 import { useAppSelector } from '~/lib/redux/hooks';
 import CreateTicketDrawer from '../../TicketManagement/Drawers/CreateTicketDrawer';
 import { ROUTES } from '~/lib/utils/constants';
 import usePermissionAccess from '~/lib/hooks/useRoleAccess';
-import MobilePopover from './MobilePopover';
+import { DrawerAction } from '../../UI/DrawerAction';
 
 interface AssetHeaderProps {
   handleBack: () => void;
@@ -33,78 +40,56 @@ const AssetHeader = (props: AssetHeaderProps) => {
           Back
         </Button>
       </HStack>
-      {showHeaderButtons &&
-        (type === 'main' ? (
-          <>
-            {assetData && (
-              <Flex display={{ lg: 'none' }}>
-                <MobilePopover data={assetData} />
-              </Flex>
+      {showHeaderButtons && (
+        <DrawerAction>
+          <VStack width="full" alignItems="flex-start" spacing="16px">
+            {type === 'main' ? (
+              <VStack width="full" alignItems="flex-start" spacing="16px">
+                {canEditAsset && (
+                  <Text
+                    cursor="pointer"
+                    as="a"
+                    href={`/${ROUTES.ASSETS}/${assetData?.assetId}/dispose`}
+                  >
+                    Edit Asset
+                  </Text>
+                )}
+                {canRaiseTicket && (
+                  <Text cursor="pointer" onClick={onOpen}>
+                    Raise Ticket
+                  </Text>
+                )}
+                {canTransferAsset && (
+                  <Text
+                    cursor="pointer"
+                    as="a"
+                    href={`/${ROUTES.ASSETS}/${assetData?.assetId}/dispose`}
+                  >
+                    Transfer
+                  </Text>
+                )}
+                {canDisposeAsset && (
+                  <Text
+                    cursor="pointer"
+                    as="a"
+                    href={`/${ROUTES.ASSETS}/${assetData?.assetId}/dispose`}
+                  >
+                    Dispose
+                  </Text>
+                )}
+              </VStack>
+            ) : (
+              <Text
+                cursor="pointer"
+                as="a"
+                href={`/${ROUTES.ASSETS}/add?assetId=${assetData?.assetId}`}
+              >
+                Use As Template
+              </Text>
             )}
-            <HStack
-              width="min-content"
-              spacing="8px"
-              display={{ base: 'none', lg: 'flex' }}
-            >
-              {canEditAsset && (
-                <Button
-                  customStyles={{ height: '35px', width: '106px', px: '16px' }}
-                  variant="primary"
-                  href={`/${ROUTES.ASSETS}/${assetData?.assetId}/edit`}
-                >
-                  Edit Asset
-                </Button>
-              )}
-              {canRaiseTicket && (
-                <Button
-                  handleClick={onOpen}
-                  customStyles={{ height: '35px', px: '12px', width: '106px' }}
-                  variant="outline"
-                >
-                  Raise Ticket
-                </Button>
-              )}
-              {canTransferAsset && (
-                <Button
-                  customStyles={{
-                    height: '35px',
-                    width: '106px',
-                    px: '8px',
-                    fontSize: '14px',
-                    lineHeight: '16.63px',
-                  }}
-                  variant="secondary"
-                  href={`/${ROUTES.ASSETS}/${assetData?.assetId}/transfer`}
-                >
-                  Transfer
-                </Button>
-              )}
-              {canDisposeAsset && (
-                <Button
-                  customStyles={{
-                    height: '35px',
-                    width: '106px',
-                    px: '8px',
-                    fontSize: '14px',
-                    lineHeight: '16.63px',
-                  }}
-                  variant="secondary"
-                  href={`/${ROUTES.ASSETS}/${assetData?.assetId}/dispose`}
-                >
-                  Dispose
-                </Button>
-              )}
-            </HStack>
-          </>
-        ) : (
-          <Button
-            customStyles={{ height: '35px', width: 'min-content', px: '16px' }}
-            variant="primary"
-            href={`/${ROUTES.ASSETS}/add?assetId=${assetData?.assetId}`}
-          >
-            Use As Template
-          </Button>
-        ))}
+          </VStack>
+        </DrawerAction>
+      )}
 
       {isOpen && (
         <CreateTicketDrawer

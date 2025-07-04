@@ -78,6 +78,7 @@ const useParseUrlData = (
       return {
         systemContextId: systemContextDetail.id,
         contextId: searchParams[key],
+        permissionKeys: systemContextDetail.relatedPermissionKeys,
       };
     }
   }

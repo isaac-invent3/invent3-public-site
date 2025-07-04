@@ -5,6 +5,7 @@ import usePermissionAccess from '~/lib/hooks/useRoleAccess';
 import { Asset } from '~/lib/interfaces/asset/general.interface';
 import { ROUTES } from '~/lib/utils/constants';
 import CreateTicketDrawer from '../../TicketManagement/Drawers/CreateTicketDrawer';
+import { DrawerAction } from '../../UI/DrawerAction';
 
 interface MobilePopoverProps {
   data: Asset;
@@ -19,42 +20,44 @@ const MobilePopover = (props: MobilePopoverProps) => {
 
   return (
     <>
-      <GenericPopover width="137px" placement="bottom-start">
+      <DrawerAction>
         <VStack width="full" alignItems="flex-start" spacing="16px">
-          {canEditAsset && (
-            <Text
-              cursor="pointer"
-              as="a"
-              href={`/${ROUTES.ASSETS}/${data?.assetId}/dispose`}
-            >
-              Edit Asset
-            </Text>
-          )}
-          {canRaiseTicket && (
-            <Text cursor="pointer" onClick={onOpen}>
-              Raise Ticket
-            </Text>
-          )}
-          {canTransferAsset && (
-            <Text
-              cursor="pointer"
-              as="a"
-              href={`/${ROUTES.ASSETS}/${data?.assetId}/dispose`}
-            >
-              Transfer
-            </Text>
-          )}
-          {canDisposeAsset && (
-            <Text
-              cursor="pointer"
-              as="a"
-              href={`/${ROUTES.ASSETS}/${data?.assetId}/dispose`}
-            >
-              Dispose
-            </Text>
-          )}
+          <VStack width="full" alignItems="flex-start" spacing="16px">
+            {canEditAsset && (
+              <Text
+                cursor="pointer"
+                as="a"
+                href={`/${ROUTES.ASSETS}/${data?.assetId}/dispose`}
+              >
+                Edit Asset
+              </Text>
+            )}
+            {canRaiseTicket && (
+              <Text cursor="pointer" onClick={onOpen}>
+                Raise Ticket
+              </Text>
+            )}
+            {canTransferAsset && (
+              <Text
+                cursor="pointer"
+                as="a"
+                href={`/${ROUTES.ASSETS}/${data?.assetId}/dispose`}
+              >
+                Transfer
+              </Text>
+            )}
+            {canDisposeAsset && (
+              <Text
+                cursor="pointer"
+                as="a"
+                href={`/${ROUTES.ASSETS}/${data?.assetId}/dispose`}
+              >
+                Dispose
+              </Text>
+            )}
+          </VStack>
         </VStack>
-      </GenericPopover>
+      </DrawerAction>
       {isOpen && (
         <CreateTicketDrawer
           asset={data ?? undefined}

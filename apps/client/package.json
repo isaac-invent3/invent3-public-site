@@ -50,6 +50,7 @@
     "dagre": "^0.8.5",
     "date-arithmetic": "^4.1.0",
     "date-fns": "^4.1.0",
+    "firebase": "^11.10.0",
     "focus-visible": "^5.2.1",
     "formik": "^2.4.6",
     "framer-motion": "^11.4.0",

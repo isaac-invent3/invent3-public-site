@@ -77,10 +77,10 @@ const LogManagement = () => {
   const isFilterEmpty = _.every(filterData, (value) => _.isEmpty(value));
 
   const searchCriterion = {
-    ...((search || filterData.startDate || filterData.endDate) && {
+    ...(search && {
       criterion: [
         {
-          columnName: 'logMessage',
+          columnName: 'message',
           columnValue: search,
           operation: OPERATORS.Contains,
         },
@@ -90,7 +90,7 @@ const LogManagement = () => {
       orCriterion: [
         ...filterData.systemContextTypeIds.map((item) => [
           ...generateSearchCriterion(
-            'systemContextTypeId',
+            'systemModuleContextTypeId',
             [item],
             OPERATORS.Equals
           ),
@@ -99,7 +99,7 @@ const LogManagement = () => {
           .filter(Boolean)
           .map((item) => [
             ...generateSearchCriterion(
-              'createdDate',
+              'dateCreated',
               [item as string],
               OPERATORS.GreaterThan
             ),
@@ -108,7 +108,7 @@ const LogManagement = () => {
           .filter(Boolean)
           .map((item) => [
             ...generateSearchCriterion(
-              'createdDate',
+              'dateCreated',
               [item as string],
               OPERATORS.LessThanOrEquals
             ),

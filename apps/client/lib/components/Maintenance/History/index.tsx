@@ -7,7 +7,10 @@ import {
   MaintenanceScheduleInstance,
   ScheduleFilter,
 } from '~/lib/interfaces/maintenance.interfaces';
-import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import {
+  DEFAULT_PAGE_SIZE,
+  SYSTEM_CONTEXT_DETAILS,
+} from '~/lib/utils/constants';
 import {
   useGetAllScheduleInstanceQuery,
   useSearchScheduleInstanceMutation,
@@ -55,7 +58,7 @@ const MaintenanceHistory = (props: MaintenanceHistoryProp) => {
   const [isMobile] = useMediaQuery('(max-width: 768px)');
   const [filterData, setFilterData] =
     useState<ScheduleFilter>(initialFilterData);
-  const { getSearchParam } = useCustomSearchParams();
+  const { getSearchParam, updateSearchParam } = useCustomSearchParams();
   const maintenanceScheduleInstanceId = getSearchParam(
     'maintenanceScheduleInstanceId'
   );
@@ -309,6 +312,12 @@ const MaintenanceHistory = (props: MaintenanceHistoryProp) => {
         setPageSize={setPageSize}
         emptyLines={25}
         isSelectable={false}
+        handleSelectRow={(row) =>
+          updateSearchParam(
+            SYSTEM_CONTEXT_DETAILS.MAINTENANCE_SCHEDULE_INSTANCE.slug,
+            row?.scheduleInstanceId
+          )
+        }
         maxTdWidth="200px"
         customThStyle={{
           paddingLeft: '16px',

@@ -17,7 +17,7 @@ import {
   useGetImagesByAssetIdQuery,
 } from '~/lib/redux/services/asset/general.services';
 import { useGetAssetCustomMaintenancePlanByAssetGuidQuery } from '~/lib/redux/services/maintenance/plan.services';
-import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
+import { clearAsset, updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
 export default function Page() {
@@ -181,6 +181,7 @@ export default function Page() {
         ...acquisitionInfo,
       })
     );
+    dispatch(clearAsset());
   }
   return <AssetForm type="create" />;
 }

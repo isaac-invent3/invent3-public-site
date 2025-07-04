@@ -181,6 +181,7 @@ const LocationModal = (props: LocationModalProps) => {
                   <Facility
                     handleReadableLocation={handleReadableLocation}
                     lgaId={localLocation.lga.value}
+                    stateId={localLocation.state.value}
                   />
                   <Building
                     handleReadableLocation={handleReadableLocation}

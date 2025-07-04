@@ -143,15 +143,6 @@ const clientSideBarData: SideBarData[] = [
       'Create, store, and modify standardized templates for consistency.',
   },
   {
-    name: 'Facility Management',
-    route: ROUTES.LOCATION,
-    icon: LocationIcon,
-    permissionKey: 'settings',
-    contextId: SYSTEM_CONTEXT_TYPE.TEMPLATES,
-
-    description: "Manage company's location.",
-  },
-  {
     name: 'User Management',
     route: ROUTES.USERS,
     icon: UserManagementIcon,
@@ -234,6 +225,18 @@ const superAdminData: SideBarData[] = [
   },
 ];
 
+const clientAdminCMFData: SideBarData[] = [
+  {
+    name: 'Facility Management',
+    route: ROUTES.LOCATION,
+    icon: LocationIcon,
+    permissionKey: 'user',
+    contextId: SYSTEM_CONTEXT_TYPE.TEMPLATES,
+
+    description: "Manage company's location.",
+  },
+];
+
 async function filterSidebarData() {
   const BaseDashboard: SideBarData = {
     name: 'Dashboard',
@@ -287,6 +290,10 @@ async function filterSidebarData() {
       ...filteredSidebarItems,
       ...(session?.user?.roleIds.includes(ROLE_IDS_ENUM.SUPER_ADMIN)
         ? superAdminData
+        : []),
+      ...(session?.user?.roleIds.includes(ROLE_IDS_ENUM.CLIENT_ADMIN) ||
+      session?.user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY)
+        ? clientAdminCMFData
         : []),
     ];
   } catch (error) {

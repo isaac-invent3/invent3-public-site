@@ -22,6 +22,7 @@ const publicRoutes = [
 ];
 const protectedGlobalRoute = ['/dashboard'];
 const protectedSuperAdminRoute = ['/feedback'];
+const protectedCMFAndClientAdminRoute = ['/facility-management'];
 
 const SECRET = process.env.NEXTAUTH_SECRET;
 export const TOKEN_REFRESH_BUFFER_SECONDS = 60; // 5 minutes
@@ -209,14 +210,14 @@ export async function middleware(request: NextRequest) {
     const checkPath = tenantData ? `/${remainingPath}` : pathname;
 
     // Don't check permission for protected global route or super admin route if the user is a super admin
+    const formattedPath = `/${checkPath.split('/')?.[1] as string}`;
     if (
-      protectedGlobalRoute.includes(
-        `/${checkPath.split('/')?.[1] as string}`
-      ) ||
-      (protectedSuperAdminRoute.includes(
-        `/${checkPath.split('/')?.[1] as string}`
-      ) &&
-        token.roleIds.includes(ROLE_IDS_ENUM.SUPER_ADMIN))
+      protectedGlobalRoute.includes(formattedPath) ||
+      (protectedSuperAdminRoute.includes(formattedPath) &&
+        token.roleIds.includes(ROLE_IDS_ENUM.SUPER_ADMIN) &&
+        ((protectedCMFAndClientAdminRoute.includes(formattedPath) &&
+          token.roleIds.includes(ROLE_IDS_ENUM.CLIENT_ADMIN)) ||
+          token.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY)))
     ) {
       if (tenantData) {
         return NextResponse.rewrite(new URL(`${checkPath}`, request.url));
@@ -281,6 +282,7 @@ export async function middleware(request: NextRequest) {
       '/company-management',
       '/compliance',
       '/feedback',
+      '/facility-management',
     ];
 
     if (tenantData) {
@@ -339,5 +341,6 @@ export const config = {
     '/compliance/:path*',
     '/feedback/:path*',
     '/report-analytics/:path*',
+    '/facility-management/:path*',
   ],
 };

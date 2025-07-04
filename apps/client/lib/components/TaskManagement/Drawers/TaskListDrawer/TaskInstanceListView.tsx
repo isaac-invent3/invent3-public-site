@@ -53,6 +53,7 @@ const TaskInstanceListView = (props: TaskInstanceListViewProps) => {
         setPageSize={setPageSize}
         isSortable={false}
         type="drawer"
+        showPopover={showPopover}
       />
     </TaskListDrawer>
   );

@@ -23,22 +23,21 @@ const Filters = (props: FiltersProps) => {
         const selectedFilterData = [...prev[filterLabel]];
 
         const optionIndex = selectedFilterData.find(
-          (item) => item.value === option.value
+          (item) => item === option.value
         );
-
         if (optionIndex) {
           // Remove the value if it already exists
           return {
             ...prev,
             [filterLabel]: selectedFilterData.filter(
-              (item) => item.value !== option.value
+              (item) => item !== option.value
             ),
           };
         } else {
           // Add the value if it does not exist
           return {
             ...prev,
-            [filterLabel]: [...selectedFilterData, option],
+            [filterLabel]: [...selectedFilterData, option?.value],
           };
         }
       } else {

@@ -10,9 +10,10 @@ import { FormAddButton } from '@repo/ui/components';
 interface FacilityProps {
   handleReadableLocation: (option: Option, key: keyof FormLocation) => void;
   lgaId: number | null;
+  stateId: number | null;
 }
 const Facility = (props: FacilityProps) => {
-  const { handleReadableLocation, lgaId } = props;
+  const { handleReadableLocation, lgaId, stateId } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
@@ -24,7 +25,12 @@ const Facility = (props: FacilityProps) => {
         />
         <FormAddButton handleClick={onOpen}>Add New Facility</FormAddButton>
       </VStack>
-      <FacilityModal isOpen={isOpen} onClose={onClose} defaultLGAId={lgaId} />
+      <FacilityModal
+        isOpen={isOpen}
+        onClose={onClose}
+        defaultLGAId={lgaId}
+        stateId={stateId}
+      />
     </>
   );
 };

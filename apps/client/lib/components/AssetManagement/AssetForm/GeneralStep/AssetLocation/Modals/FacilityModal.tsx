@@ -19,9 +19,10 @@ interface FacilityModalProps {
   isOpen: boolean;
   onClose: () => void;
   defaultLGAId: number | null;
+  stateId: number | null;
 }
 const FacilityModal = (props: FacilityModalProps) => {
-  const { isOpen, onClose, defaultLGAId } = props;
+  const { isOpen, onClose, defaultLGAId, stateId } = props;
   const [createFacility, { isLoading }] = useCreateFacilityMutation({});
   const { handleSubmit } = useCustomMutation();
 
@@ -76,7 +77,7 @@ const FacilityModal = (props: FacilityModalProps) => {
                   description="Select LGA"
                   isRequired
                 >
-                  <LGASelect type="general" />
+                  <LGASelect type="specificById" stateId={stateId} />
                 </FormInputWrapper>
                 <FormInputWrapper
                   sectionMaxWidth="141px"

@@ -1,10 +1,12 @@
 /* eslint-disable no-unused-vars */
-import { Text, useDisclosure, VStack } from '@chakra-ui/react';
-import { GenericPopover } from '@repo/ui/components';
+import { Icon, Text, useDisclosure, VStack } from '@chakra-ui/react';
+import { Button, GenericPopover } from '@repo/ui/components';
 import usePermissionAccess from '~/lib/hooks/useRoleAccess';
 import { ROUTES, USER_STATUS_ENUM } from '~/lib/utils/constants';
 import DeactivateUserModal from '../Modals/ToggleUserStatusModal';
 import { User } from '~/lib/interfaces/user.interfaces';
+import { ChevronDownIcon } from '@chakra-ui/icons';
+import { DrawerAction } from '../../UI/DrawerAction';
 
 interface MobilePopoverProps {
   data: User;
@@ -17,7 +19,7 @@ const MobilePopover = (props: MobilePopoverProps) => {
 
   return (
     <>
-      <GenericPopover width="137px" placement="bottom-start">
+      <DrawerAction>
         <VStack width="full" alignItems="flex-start" spacing="16px">
           {canEditUser && (
             <Text
@@ -36,7 +38,7 @@ const MobilePopover = (props: MobilePopoverProps) => {
             </Text>
           )}
         </VStack>
-      </GenericPopover>
+      </DrawerAction>
       <DeactivateUserModal isOpen={isOpen} onClose={onClose} user={data} />
     </>
   );

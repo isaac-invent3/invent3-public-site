@@ -162,7 +162,7 @@ const Features = () => {
         </VStack>
         <GenericFeatures
           featureItems={featureItems}
-          buttonLink=""
+          buttonLink="/contact-us"
           buttonText="Get a Free Demo"
           containerRef={containerRef}
         />

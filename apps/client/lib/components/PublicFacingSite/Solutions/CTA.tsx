@@ -1,6 +1,7 @@
 import { Button, Flex } from '@chakra-ui/react';
 import React from 'react';
 import SectionInfo from '../Common/SectionInfo';
+import Link from 'next/link';
 
 const CTA = () => {
   return (
@@ -39,17 +40,19 @@ const CTA = () => {
             headingStyles={{ maxW: '546px' }}
             descriptionStyles={{ color: 'white', maxW: '572px' }}
           />
-          <Button
-            bgColor="white"
-            height="50px"
-            rounded="8px"
-            width={{ base: 'full', lg: '263px' }}
-            color="primary.500"
-            fontSize="14px"
-            fontWeight={500}
-          >
-            Get Started Today
-          </Button>
+          <Link href="/contact-us">
+            <Button
+              bgColor="white"
+              height="50px"
+              rounded="8px"
+              width={{ base: 'full', lg: '263px' }}
+              color="primary.500"
+              fontSize="14px"
+              fontWeight={500}
+            >
+              Get Started Today
+            </Button>
+          </Link>
         </Flex>
       </Flex>
     </Flex>

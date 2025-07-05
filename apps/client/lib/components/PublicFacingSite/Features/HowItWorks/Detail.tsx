@@ -1,5 +1,6 @@
 import { Heading, Text, VStack } from '@chakra-ui/react';
 import { Button } from '@repo/ui/components';
+import Link from 'next/link';
 import React from 'react';
 
 const Detail = () => {
@@ -28,11 +29,13 @@ const Detail = () => {
           </Text>
         </VStack>
       </VStack>
+
       <Button
         customStyles={{
           width: { base: 'full', lg: '174px' },
           display: { base: 'none', lg: 'flex' },
         }}
+        href="/contact-us"
       >
         Get Started
       </Button>

@@ -84,17 +84,19 @@ const CTA = () => {
               spacing={{ base: '16px', md: '32px' }}
               width={{ base: 'full', md: 'max-content' }}
             >
-              <Button
-                bgColor="white"
-                height="50px"
-                color="primary.500"
-                rounded="8px"
-                width={{ base: 'full', md: '175px' }}
-                _hover={{ opacity: 0.8 }}
-                _active={{ opacity: 0.8 }}
-              >
-                Get Started
-              </Button>
+              <Link href="/contact-us">
+                <Button
+                  bgColor="white"
+                  height="50px"
+                  color="primary.500"
+                  rounded="8px"
+                  width={{ base: 'full', md: '175px' }}
+                  _hover={{ opacity: 0.8 }}
+                  _active={{ opacity: 0.8 }}
+                >
+                  Get Started
+                </Button>
+              </Link>
               <Link href="/contact-us">
                 <Button
                   variant="outline"

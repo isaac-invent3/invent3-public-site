@@ -161,6 +161,8 @@ const Hero = () => {
                 width={{ base: 'full', md: '170px' }}
                 _hover={{ bgColor: 'white', color: 'primary.500' }}
                 _active={{ bgColor: 'white', color: 'primary.500' }}
+                as="a"
+                href="/how-we-work"
               >
                 See how it works
               </Button>

@@ -49,7 +49,7 @@ const AssetHeader = (props: AssetHeaderProps) => {
                   <Text
                     cursor="pointer"
                     as="a"
-                    href={`/${ROUTES.ASSETS}/${assetData?.assetId}/dispose`}
+                    href={`/${ROUTES.ASSETS}/${assetData?.assetId}/edit`}
                   >
                     Edit Asset
                   </Text>
@@ -63,7 +63,7 @@ const AssetHeader = (props: AssetHeaderProps) => {
                   <Text
                     cursor="pointer"
                     as="a"
-                    href={`/${ROUTES.ASSETS}/${assetData?.assetId}/dispose`}
+                    href={`/${ROUTES.ASSETS}/${assetData?.assetId}/transfer`}
                   >
                     Transfer
                   </Text>

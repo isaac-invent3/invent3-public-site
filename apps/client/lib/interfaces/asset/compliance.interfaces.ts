@@ -223,6 +223,26 @@ interface ComplianceRegulation extends BaseEntity {
   dateCreated: Date;
 }
 
+interface ComplianceAuditLogsByAsset {
+  isNew: boolean;
+  createdDate: Date;
+  createdBy: string;
+  lastModifiedDate: Date;
+  lastModifiedBy: string;
+  isDeleted: boolean;
+  deletedDate: Date;
+  deletedBy: string;
+  guid: string;
+  complianceAuditLogId: number;
+  assetCategoryId: number;
+  assetId: number;
+  compliancePolicyId: number;
+  actionTaken: string;
+  comments: string;
+  performedBy: string;
+  dateCreated: Date;
+}
+
 interface CreateCompliancePayload {
   regulationTypeId: number;
   standard: string;
@@ -258,4 +278,5 @@ export type {
   AssetComplianceCategoryDetail,
   ComplianceStatusType,
   MarkCompliancePayload,
+  ComplianceAuditLogsByAsset,
 };

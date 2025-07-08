@@ -126,8 +126,8 @@ const CreateApprovalWorkflow = ({
             rounded={{ md: '6px' }}
           >
             <SectionWrapper
-              title="Number of Approval Levels"
-              subtitle="Select the number of approval levels required for this workflow."
+              title="Approval Type"
+              subtitle="Select the approval type."
               spacing={{ base: '8px', sm: '16px', lg: '128px' }}
               direction={{ base: 'column', lg: 'row' }}
               sectionInfoStyle={{

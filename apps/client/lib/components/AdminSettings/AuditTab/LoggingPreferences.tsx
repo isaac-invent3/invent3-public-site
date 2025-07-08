@@ -4,6 +4,7 @@ import { CheckBox, FormSelect } from '@repo/ui/components';
 import SectionWrapper from '../../UserSettings/Common/SectionWrapper';
 import { useFormikContext } from 'formik';
 import { Settings } from '~/lib/interfaces/settings.interfaces';
+import { exportFrequencyOptions } from '../utils';
 
 const LoggingPreference = () => {
   const [isMobile] = useMediaQuery('(max-width: 480px)');
@@ -39,7 +40,7 @@ const LoggingPreference = () => {
           <FormSelect
             name="retentionPeriodId"
             title="Period"
-            options={[]}
+            options={exportFrequencyOptions}
             containerStyles={{
               width: isMobile ? '100%' : '179px',
             }}

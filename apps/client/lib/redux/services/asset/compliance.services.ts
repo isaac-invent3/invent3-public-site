@@ -17,6 +17,7 @@ import {
   AssetComplianceDetail,
   AssetCompliancePayload,
   Compliance,
+  ComplianceAuditLogsByAsset,
   ComplianceRegulation,
   ComplianceStatusType,
   ComplianceSummary,
@@ -136,6 +137,20 @@ export const complianceApi = createApi({
         headers: getHeaders(),
       }),
       providesTags: ['assetBasedCompliance'],
+    }),
+    getAssetComplianceAuditLog: builder.query<
+      BaseApiResponse<ListResponse<ComplianceAuditLogsByAsset>>,
+      QueryParams & { assetId: number }
+    >({
+      query: ({ assetId, ...data }) => ({
+        url: generateQueryStr(
+          `/ComplianceAuditLogs/GetComplianceAuditLogsByAssetId/${assetId}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: [],
     }),
 
     getComplianceSummary: builder.query<
@@ -280,4 +295,5 @@ export const {
   useGetComplianceStatusTypeQuery,
   useMarkComplianceStatusMutation,
   useGetAssetCategoryPoliciesQuery,
+  useGetAssetComplianceAuditLogQuery,
 } = complianceApi;

@@ -77,16 +77,7 @@ const LogManagement = () => {
   const isFilterEmpty = _.every(filterData, (value) => _.isEmpty(value));
 
   const searchCriterion = {
-    ...(search && {
-      criterion: [
-        {
-          columnName: 'message',
-          columnValue: search,
-          operation: OPERATORS.Contains,
-        },
-      ],
-    }),
-    ...(!isFilterEmpty && {
+    ...((!isFilterEmpty || search) && {
       orCriterion: [
         ...filterData.systemContextTypeIds.map((item) => [
           ...generateSearchCriterion(
@@ -113,6 +104,24 @@ const LogManagement = () => {
               OPERATORS.LessThanOrEquals
             ),
           ]),
+        ...(search
+          ? [
+              [
+                {
+                  columnName: 'message',
+                  columnValue: search,
+                  operation: OPERATORS.Contains,
+                },
+              ],
+              [
+                {
+                  columnName: 'username',
+                  columnValue: search,
+                  operation: OPERATORS.Contains,
+                },
+              ],
+            ]
+          : []),
       ],
     }),
     pageNumber,

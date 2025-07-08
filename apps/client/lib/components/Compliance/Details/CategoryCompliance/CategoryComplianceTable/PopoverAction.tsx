@@ -6,11 +6,16 @@ import { AssetBasedCompliance } from '~/lib/interfaces/asset/compliance.interfac
 import { SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
 import MarkComplianceStatusDrawer from '../../../Drawers/MarkComplianceStatusDrawer';
 import { useAppDispatch } from '~/lib/redux/hooks';
-import { updateSelectedTableIds } from '~/lib/redux/slices/CommonSlice';
+import AssetComplianceHistoryDrawer from '../../../Drawers/AssetComplianceHistoryDrawer';
 
 const PopoverAction = ({ data }: { data: AssetBasedCompliance }) => {
   const { updateSearchParam } = useCustomSearchParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenComplianceHistory,
+    onOpen: onOpenComplianceHistory,
+    onClose: onCloseComplianceHistory,
+  } = useDisclosure();
   const dispatch = useAppDispatch();
   return (
     <>
@@ -27,6 +32,9 @@ const PopoverAction = ({ data }: { data: AssetBasedCompliance }) => {
           >
             View Compliance
           </Text>
+          <Text cursor="pointer" onClick={onOpenComplianceHistory}>
+            View Compliance History
+          </Text>
           <Text
             cursor="pointer"
             onClick={() => {
@@ -42,6 +50,13 @@ const PopoverAction = ({ data }: { data: AssetBasedCompliance }) => {
         onClose={onClose}
         assetIds={[data.assetId]}
       />
+      {isOpenComplianceHistory && (
+        <AssetComplianceHistoryDrawer
+          isOpen={isOpenComplianceHistory}
+          onClose={onCloseComplianceHistory}
+          data={{ assetId: data.assetId, assetName: data.assetName }}
+        />
+      )}
     </>
   );
 };

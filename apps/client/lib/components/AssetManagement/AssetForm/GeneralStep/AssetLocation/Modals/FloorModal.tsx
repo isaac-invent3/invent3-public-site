@@ -14,6 +14,7 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';
 import { floorSchema } from '~/lib/schemas/asset/location.schema';
 import BuildingSelect from './SelectInputs/BuildingSelect';
+import DocumentUploadAndView from '~/lib/components/Common/DocumentUploadAndView';
 
 interface FloorModalProps {
   isOpen: boolean;
@@ -47,12 +48,16 @@ const FloorModal = (props: FloorModalProps) => {
       buildingId: (defaultBuildingId ?? undefined)!,
       floorName: '',
       floorRef: '',
+      imageBasePrefix: null,
+      floorPlanImage: null,
+      planName: null,
     },
     validationSchema: floorSchema,
     enableReinitialize: true,
     onSubmit: async (values, { resetForm }) => {
       const session = await getSession();
-      const finalValue = { ...values, createdBy: session?.user?.username! };
+      const { planName, ...finalData } = values;
+      const finalValue = { ...finalData, createdBy: session?.user?.username! };
       if (handleSave) {
         handleSave(finalValue);
         resetForm();
@@ -131,6 +136,58 @@ const FloorModal = (props: FloorModalProps) => {
                     type="text"
                     label="Floor Reference"
                   />
+                </FormInputWrapper>
+                <FormInputWrapper
+                  sectionMaxWidth="141px"
+                  customSpacing="16px"
+                  title="Floor Plan"
+                  description="Upload Floor Plan"
+                  isRequired={false}
+                  flexShrink={0}
+                >
+                  <HStack width="max-content">
+                    <DocumentUploadAndView
+                      variant="secondary"
+                      handleRemoveDocuments={(documents) => {
+                        {
+                          formik.setFieldValue('floorPlanImage', null);
+                          formik.setFieldValue('imageBasePrefix', null);
+                          formik.setFieldValue('planName', null);
+                        }
+                      }}
+                      handleAddDocuments={(documents) => {
+                        if (documents?.[0]) {
+                          formik.setFieldValue(
+                            'floorPlanImage',
+                            documents[0].base64Document
+                          );
+                          formik.setFieldValue(
+                            'imageBasePrefix',
+                            documents[0].base64Prefix
+                          );
+                          formik.setFieldValue(
+                            'planName',
+                            documents[0].documentName
+                          );
+                        }
+                      }}
+                      documents={
+                        formik.values.floorPlanImage
+                          ? [
+                              {
+                                base64Document: formik.values.floorPlanImage,
+                                base64Prefix: formik.values.imageBasePrefix,
+                                documentId: null,
+                                documentName: formik.values.planName,
+                              },
+                            ]
+                          : []
+                      }
+                      // setError={(error) => helpers.setError(error)}
+                      // error={meta.error}
+                      // handleOpenExistingDocumentModal={onOpen}
+                    />
+                  </HStack>
                 </FormInputWrapper>
               </VStack>
               {/* Main Form Ends Here */}

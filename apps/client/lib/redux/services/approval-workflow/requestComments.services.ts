@@ -16,8 +16,11 @@ export const approvalWorkflowRequestCommentApi = createApi({
       BaseApiResponse<ListResponse<ApprovalWorkflowComment>>,
       QueryParams & { approvalRequestId: number }
     >({
-      query: (data) => ({
-        url: generateQueryStr(`/ApprovalRequestComments?`, data),
+      query: ({ approvalRequestId, ...data }) => ({
+        url: generateQueryStr(
+          `/ApprovalRequestComments/GetApprovalRequestTopComments/${approvalRequestId}?`,
+          data
+        ),
 
         method: 'GET',
         headers: getHeaders(),

@@ -75,6 +75,16 @@ export const utilityApi = createApi({
         body,
       }),
     }),
+    uploadData: builder.mutation<void, any>({
+      query: (body) => ({
+        url: `/Invent3Pro/Bulk-upload`,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        body,
+      }),
+    }),
   }),
 });
 
@@ -85,4 +95,5 @@ export const {
   useExportTableMutation,
   useDownloadFileQuery,
   useSubmitContactRequestMutation,
+  useUploadDataMutation,
 } = utilityApi;

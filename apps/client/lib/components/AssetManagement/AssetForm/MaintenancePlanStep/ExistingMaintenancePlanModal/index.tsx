@@ -73,26 +73,34 @@ const ExistingMaintenancePlanModal = (
     }),
     ...(!isFilterEmpty && {
       orCriterion: [
-        ...filterData.planType.map((item) => [
+        [
           ...generateSearchCriterion(
             'planTypeId',
-            [item.value],
+            filterData.planType.map((item) => item.value),
             OPERATORS.Equals
           ),
-        ]),
-        ...filterData.region.map((item) => [
-          ...generateSearchCriterion('stateId', [item.value], OPERATORS.Equals),
-        ]),
-        ...filterData.area.map((item) => [
-          ...generateSearchCriterion('lgaId', [item.value], OPERATORS.Equals),
-        ]),
-        ...filterData.branch.map((item) => [
+        ],
+        [
+          ...generateSearchCriterion(
+            'stateId',
+            filterData.region.map((item) => item.value),
+            OPERATORS.Equals
+          ),
+        ],
+        [
+          ...generateSearchCriterion(
+            'lgaId',
+            filterData.area.map((item) => item.value),
+            OPERATORS.Equals
+          ),
+        ],
+        [
           ...generateSearchCriterion(
             'facilityId',
-            [item.value],
+            filterData.branch.map((item) => item.value),
             OPERATORS.Equals
           ),
-        ]),
+        ],
       ],
     }),
     pageNumber: pageNumber,

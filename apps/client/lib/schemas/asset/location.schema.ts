@@ -35,6 +35,9 @@ const floorSchema = Yup.object().shape({
   buildingId: Yup.number().required('Building is Required'),
   floorName: Yup.string().required('Name is Required'),
   floorRef: Yup.string().nullable(),
+  imageBasePrefix: Yup.string().nullable(),
+  floorPlanImage: Yup.string().nullable(),
+  planName: Yup.string().nullable(),
 });
 
 const departmentSchema = (isMainForm?: boolean) =>

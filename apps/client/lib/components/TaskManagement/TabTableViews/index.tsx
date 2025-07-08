@@ -85,19 +85,27 @@ const TabTableView = (props: TabTableViewProps) => {
     }),
     ...(!isFilterEmpty && {
       orCriterion: [
-        ...filterData.region.map((item) => [
-          ...generateSearchCriterion('stateId', [item.value], OPERATORS.Equals),
-        ]),
-        ...filterData.area.map((item) => [
-          ...generateSearchCriterion('lgaId', [item.value], OPERATORS.Equals),
-        ]),
-        ...filterData.branch.map((item) => [
+        [
           ...generateSearchCriterion(
-            'facilityId',
-            [item.value],
+            'stateId',
+            filterData.region.map((item) => item.value),
             OPERATORS.Equals
           ),
-        ]),
+        ],
+        [
+          ...generateSearchCriterion(
+            'lgaId',
+            filterData.area.map((item) => item.value),
+            OPERATORS.Equals
+          ),
+        ],
+        [
+          ...generateSearchCriterion(
+            'facilityId',
+            filterData.branch.map((item) => item.value),
+            OPERATORS.Equals
+          ),
+        ],
       ],
     }),
     pageNumber: currentPage,

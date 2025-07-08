@@ -79,13 +79,13 @@ const LogManagement = () => {
   const searchCriterion = {
     ...((!isFilterEmpty || search) && {
       orCriterion: [
-        ...filterData.systemContextTypeIds.map((item) => [
+        [
           ...generateSearchCriterion(
             'systemModuleContextTypeId',
-            [item],
+            filterData.systemContextTypeIds.map((item) => item),
             OPERATORS.Equals
           ),
-        ]),
+        ],
         ...[filterData.startDate]
           .filter(Boolean)
           .map((item) => [
@@ -229,7 +229,9 @@ const LogManagement = () => {
 
         <LogTable
           data={
-            search && searchData ? searchData.items : (data?.data?.items ?? [])
+            (search || !isFilterEmpty) && searchData
+              ? searchData.items
+              : (data?.data?.items ?? [])
           }
           isLoading={isLoading}
           isFetching={isFetching || searchLoading}

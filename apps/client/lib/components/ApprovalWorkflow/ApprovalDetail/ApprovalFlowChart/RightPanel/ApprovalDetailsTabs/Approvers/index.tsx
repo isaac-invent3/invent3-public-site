@@ -125,7 +125,7 @@ const Approvers = () => {
               )}
               {item.currentStatusId ===
                 APPROVAL_WORKFLOW_STATUSES.IN_PROGRESS &&
-                session?.data?.user?.userId !== item.userId && (
+                Number(session?.data?.user?.userId) !== item.userId && (
                   <GenericStatusBox
                     text={item.currentStatusName}
                     colorCode={item.displayColorCode}
@@ -133,7 +133,7 @@ const Approvers = () => {
                 )}
               {item.currentStatusId ===
                 APPROVAL_WORKFLOW_STATUSES.IN_PROGRESS &&
-                session?.data?.user?.userId === item.userId && (
+                Number(session?.data?.user?.userId) === item.userId && (
                   <Flex alignItems="center" gap="8px">
                     <Button
                       background="transparent"

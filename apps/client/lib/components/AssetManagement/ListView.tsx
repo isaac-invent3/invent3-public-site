@@ -87,33 +87,41 @@ const ListView = (props: ListViewProps) => {
     }),
     ...(!isFilterEmpty && {
       orCriterion: [
-        ...filterData.category.map((item) => [
+        [
           ...generateSearchCriterion(
             'categoryId',
-            [item.value],
+            filterData.category.map((item) => item.value),
             OPERATORS.Equals
           ),
-        ]),
-        ...filterData.status.map((item) => [
+        ],
+        [
           ...generateSearchCriterion(
             'AssetStatusId',
-            [item.value],
+            filterData.status.map((item) => item.value),
             OPERATORS.Equals
           ),
-        ]),
-        ...filterData.region.map((item) => [
-          ...generateSearchCriterion('stateId', [item.value], OPERATORS.Equals),
-        ]),
-        ...filterData.area.map((item) => [
-          ...generateSearchCriterion('lgaId', [item.value], OPERATORS.Equals),
-        ]),
-        ...filterData.branch.map((item) => [
+        ],
+        [
+          ...generateSearchCriterion(
+            'stateId',
+            filterData.region.map((item) => item.value),
+            OPERATORS.Equals
+          ),
+        ],
+        [
+          ...generateSearchCriterion(
+            'lgaId',
+            filterData.area.map((item) => item.value),
+            OPERATORS.Equals
+          ),
+        ],
+        [
           ...generateSearchCriterion(
             'facilityId',
-            [item.value],
+            filterData.branch.map((item) => item.value),
             OPERATORS.Equals
           ),
-        ]),
+        ],
       ].filter((criterion) => criterion.length > 0),
     }),
     pageNumber: currentPage,

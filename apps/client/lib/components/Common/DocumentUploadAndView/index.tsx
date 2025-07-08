@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { DocumentIcon, InfoIcon } from '~/lib/components/CustomIcons';
-import { Document } from '~/lib/interfaces/general.interfaces';
+import { Document, ValidFileType } from '~/lib/interfaces/general.interfaces';
 import SingleDocument from './SingleDocument';
 import _ from 'lodash';
 
@@ -24,6 +24,9 @@ interface DocumentUploadAndViewProps {
   setError?: (error: string) => void;
   error?: string | undefined;
   showDocumentView?: boolean;
+  validTypes?: ValidFileType[];
+  acceptableText?: string;
+  acceptableFormat?: string;
 }
 
 const DocumentUploadAndView = (props: DocumentUploadAndViewProps) => {
@@ -36,20 +39,24 @@ const DocumentUploadAndView = (props: DocumentUploadAndViewProps) => {
     setError,
     error,
     showDocumentView = true,
+    acceptableText,
+    acceptableFormat,
+    validTypes,
   } = props;
   const [isDragging, setIsDragging] = useState(false);
 
   // Updated valid file types for txt, word, excel, powerpoint, pdf, and images (jpeg)
-  const validFileTypes = [
+
+  const validFileTypes: ValidFileType[] = validTypes ?? [
     'application/pdf',
     'application/msword',
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // DOCX
-    'application/vnd.ms-excel', // XLS
-    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // XLSX
-    'application/vnd.ms-powerpoint', // PPT
-    'application/vnd.openxmlformats-officedocument.presentationml.presentation', // PPTX
-    'text/plain', // TXT
-    'image/jpeg', // JPEG
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/vnd.ms-excel',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'application/vnd.ms-powerpoint',
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    'text/plain',
+    'image/jpeg',
   ];
 
   const handleFileChange = (files: File[], validFiles: File[]) => {
@@ -64,15 +71,23 @@ const DocumentUploadAndView = (props: DocumentUploadAndViewProps) => {
       files.forEach((file: File) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
+        let base64Prefix: string = '';
+        let base64Document;
 
         reader.onloadend = () => {
-          const baseDocument = reader.result as string;
+          const result = reader.result as string;
+
+          const match = result.split(',');
+          if (match) {
+            base64Prefix = match[0] ?? '';
+            base64Document = match[1];
+          }
 
           newDocuments.push({
             documentId: null,
             documentName: file.name,
-            base64Document: baseDocument,
-            base64Prefix: null,
+            base64Document: result,
+            base64Prefix: base64Prefix,
           });
           // Update the state or Formik helpers only when all files are processed
           if (newDocuments.length === files.length) {
@@ -101,7 +116,7 @@ const DocumentUploadAndView = (props: DocumentUploadAndViewProps) => {
       const validFiles = droppedFiles.filter(
         (file) =>
           file.size <= 10 * 1024 * 1024 &&
-          validFileTypes.includes(file.type) &&
+          validFileTypes.includes(file.type as ValidFileType) &&
           file.name.length <= 100
       );
 
@@ -115,18 +130,23 @@ const DocumentUploadAndView = (props: DocumentUploadAndViewProps) => {
         <Input
           id="documents"
           display="none"
-          onChange={(event: any) => {
-            const files = Array.from(event.currentTarget.files) as File[]; // Convert FileList to array
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            const files = Array.from(event.currentTarget.files ?? []) as File[]; // Convert FileList to array
             const validFiles = files.filter(
               (file) =>
                 file.size <= 10 * 1024 * 1024 &&
-                validFileTypes.includes(file.type) &&
+                validFileTypes.includes(file.type as ValidFileType) &&
                 file.name.length <= 100
             );
             handleFileChange(files, validFiles);
+            // Reset input value so the same file can be selected again
+            event.target.value = '';
           }}
           type="file"
-          accept=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .jpeg, .jpg"
+          accept={
+            acceptableFormat ??
+            '.pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .jpeg, .jpg'
+          }
           multiple
         />
 
@@ -193,7 +213,8 @@ const DocumentUploadAndView = (props: DocumentUploadAndViewProps) => {
             textAlign="center"
             px="10px"
           >
-            TXT, PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, JPEG are supported
+            {acceptableText ||
+              'TXT, PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, JPEG are supported'}
           </Text>
         </VStack>
         <FormErrorMessage

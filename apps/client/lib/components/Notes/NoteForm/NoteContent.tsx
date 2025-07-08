@@ -16,6 +16,7 @@ const NoteContent = () => {
         type="text"
         label="Note"
         customStyle={{ height: '300px' }}
+        maxLength={1000}
       />
     </FormInputWrapper>
   );

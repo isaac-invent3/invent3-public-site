@@ -64,16 +64,20 @@ const TemplateManagement = () => {
     }),
     ...(!isFilterEmpty && {
       orCriterion: [
-        ...filterData.contextTypeId.map((item) => [
+        [
           ...generateSearchCriterion(
             'systemContextTypeId',
-            [item],
+            filterData.contextTypeId.map((item) => item),
             OPERATORS.Equals
           ),
-        ]),
-        ...filterData.owner.map((item) => [
-          ...generateSearchCriterion('createdBy', [item], OPERATORS.Equals),
-        ]),
+        ],
+        [
+          ...generateSearchCriterion(
+            'createdBy',
+            filterData.owner.map((item) => item),
+            OPERATORS.Equals
+          ),
+        ],
         ...[filterData.createdDate]
           .filter(Boolean)
           .map((item) => [

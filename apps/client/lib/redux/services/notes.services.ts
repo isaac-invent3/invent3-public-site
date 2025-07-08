@@ -12,6 +12,7 @@ import {
   Note,
   NoteTaggedUser,
   UnPinNotePayload,
+  UpdateNotePayload,
 } from '~/lib/interfaces/notes.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../baseQueryWithReauth';
@@ -79,7 +80,7 @@ export const notesApi = createApi({
 
     updateNote: builder.mutation<
       BaseApiResponse<Note>,
-      { id: number; data: Partial<Note> }
+      { id: number; data: UpdateNotePayload }
     >({
       query: ({ id, data }) => ({
         url: `/Notes/${id}`,
@@ -200,5 +201,5 @@ export const {
   useSearchNotesMutation,
   useGetNoteCommentsQuery,
   useUnPinNoteMutation,
-  useCreateCommentMutation
+  useCreateCommentMutation,
 } = notesApi;

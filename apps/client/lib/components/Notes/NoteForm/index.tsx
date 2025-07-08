@@ -115,7 +115,7 @@ const NoteForm = (props: NoteFormModalProps) => {
 
         const response = await handleSubmit(
           updateNote,
-          { id: note.noteId, data: updatedPayload },
+          { id: note.noteId, data: { updateNoteDto: updatedPayload } },
           'Note Updated Successfully!'
         );
 

@@ -37,6 +37,7 @@ export const userApi = createApi({
     'userDetail',
     'userGroups',
     'allUserGroupInfoHeaders',
+    'allActiveUsers',
   ],
   endpoints: (builder) => ({
     getAllUsers: builder.query<
@@ -49,6 +50,17 @@ export const userApi = createApi({
         headers: getHeaders(),
       }),
       providesTags: ['allUsers'],
+    }),
+    getAllActiveUsers: builder.query<
+      BaseApiResponse<ListResponse<User>>,
+      QueryParams
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/Users/GetActiveUsers?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allActiveUsers'],
     }),
     getAllUserGroups: builder.query<
       BaseApiResponse<ListResponse<UserGroup>>,
@@ -290,4 +302,5 @@ export const {
   useGetUserDocumentsQuery,
   useToggleUserStatusMutation,
   useGetActiveDirectoryUsersQuery,
+  useGetAllActiveUsersQuery,
 } = userApi;

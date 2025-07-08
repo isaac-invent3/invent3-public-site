@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import {
-  useGetAllUsersQuery,
+  useGetAllActiveUsersQuery,
   useSearchUsersMutation,
 } from '~/lib/redux/services/user.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
@@ -27,7 +27,7 @@ const UserSelect = (props: UserSelectProps) => {
   const [searchUsers] = useSearchUsersMutation({});
 
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllUsersQuery({
+  const { data, isLoading } = useGetAllActiveUsersQuery({
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });

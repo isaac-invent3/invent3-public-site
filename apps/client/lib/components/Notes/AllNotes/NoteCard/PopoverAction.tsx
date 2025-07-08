@@ -81,9 +81,11 @@ const PopoverAction = ({ data, setNoteLoading }: NotePopoverProps) => {
     updateNote({
       id: data.noteId,
       data: {
-        noteId: data.noteId,
-        notePriorityId: data.notePriorityId ? 0 : 1,
-        lastModifiedBy: user?.username!,
+        updateNoteDto: {
+          noteId: data.noteId,
+          notePriorityId: data.notePriorityId ? 0 : 1,
+          lastModifiedBy: user?.username!,
+        },
       },
     });
   };

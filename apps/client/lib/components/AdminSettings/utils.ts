@@ -21,9 +21,9 @@ const passwordExpiryPeriodOptions = [
 ];
 
 const passwordLengthOptions = [
-  { label: '0', value: 0 },
-  { label: '1', value: 1 },
-  { label: '2', value: 2 },
+  { label: '8', value: 8 },
+  { label: '12', value: 12 },
+  { label: '16', value: 16 },
 ];
 const exportFrequencyOptions = [
   { label: '7 Days', value: 0 },

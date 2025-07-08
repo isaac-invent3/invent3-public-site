@@ -16,7 +16,7 @@ import { CloseIcon } from '~/lib/components/CustomIcons';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { User } from '~/lib/interfaces/user.interfaces';
 import {
-  useGetAllUsersQuery,
+  useGetAllActiveUsersQuery,
   useSearchUsersMutation,
 } from '~/lib/redux/services/user.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
@@ -53,7 +53,7 @@ const UserSelectSecondaryModal = (props: UserSelectSecondaryModalProps) => {
   );
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllUsersQuery({
+  const { data, isLoading } = useGetAllActiveUsersQuery({
     pageSize: pageSize,
     pageNumber,
   });

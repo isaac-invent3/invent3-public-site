@@ -32,28 +32,35 @@ interface User {
   companyName: string;
   firstName: string;
   lastName: string;
-  phoneNumber: null;
+  phoneNumber: string;
   statusId: number;
   statusName: string;
   displayColorCode: string;
-  designationId: null;
-  designationName: null;
-  designationTypeName: null;
-  primaryImagePrefix: null;
-  primaryImage: null;
-  employeeId: null;
+  designationId: number;
+  designationName: string;
+  designationTypeName: string;
+  primaryImagePrefix: string;
+  primaryImage: string;
+  employeeId: number;
   locationId: number;
+  lgaId: number;
+  stateId: number;
   facilityName: string;
   facilityRef: string;
   address: string;
-  lganame: null;
-  stateName: null;
+  lganame: string;
+  stateName: string;
   isDeleted: boolean;
   userLocation: string;
   userRoles: UserRole[];
   userGroups: UserGroup[];
-  userPermissions: null;
-  userDesignationInfos: null;
+  userPermissions: UserPermission[];
+  userDesignationInfos: UserDesignationInfo[];
+}
+
+export interface UserDesignationInfo {
+  designationName: string;
+  designationTypeName: string;
 }
 
 export interface UserRole {

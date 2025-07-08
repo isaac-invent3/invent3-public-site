@@ -1,4 +1,5 @@
 import { BaseEntity, QueryParams } from '@repo/interfaces';
+import { FORM_ENUM } from '../utils/constants';
 
 interface Note extends BaseEntity {
   title: string;
@@ -58,6 +59,28 @@ interface UnPinNotePayload {
   unpinnedBy: string;
 }
 
+interface UpdateNotePayload {
+  updateNoteDto: {
+    noteId: number;
+    systemContextTypeId?: number;
+    systemContextId?: number;
+    authorId?: number;
+    content?: string;
+    isPrivate?: boolean;
+    parentId?: number;
+    notePriorityId?: number;
+    title?: string;
+    lastModifiedBy: string;
+  };
+  tags?: {
+    key:
+      | typeof FORM_ENUM.add
+      | typeof FORM_ENUM.update
+      | typeof FORM_ENUM.delete;
+    value: number;
+  }[];
+}
+
 export type {
   CreateNotePayload,
   GetAllNotesQueryParams,
@@ -65,4 +88,5 @@ export type {
   Note,
   NoteTaggedUser,
   UnPinNotePayload,
+  UpdateNotePayload,
 };

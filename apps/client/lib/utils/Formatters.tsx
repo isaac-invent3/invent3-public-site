@@ -25,12 +25,14 @@ const dateFormatter = (
 ) => {
   if (date) {
     if (stringFormat) {
-      return moment(date, stringFormat)
-        .utcOffset(0, true)
+      return moment
+        .utc(date, stringFormat)
+        .local()
         .format(format ?? 'DD-MM-YYYY');
     }
-    return moment(date)
-      .utcOffset(0, true)
+    return moment
+      .utc(date)
+      .local()
       .format(format ?? 'DD-MM-YYYY');
   }
   return null;

@@ -5,9 +5,13 @@ import { FILE_ICONS } from '~/lib/utils/constants';
 import DetailHeader from '../../UI/DetailHeader';
 import InfoCard from '../../UI/InfoCard';
 import UploadStatusTable from './UploadStatusTable';
+import DocumentUploadAndView from '../../Common/DocumentUploadAndView';
+import { useState } from 'react';
+import { Document } from '~/lib/interfaces/general.interfaces';
 
 const DataUpload = () => {
   const headers = ['Stage', 'Status', 'Download'];
+  const [document, setDocumet] = useState<Document | null>(null);
   const data = [
     [
       'Uploading template',
@@ -69,7 +73,14 @@ const DataUpload = () => {
         >
           <HStack spacing="11px">
             <Icon as={FILE_ICONS['pdf']} boxSize="34px" />
-            <Text size="md" fontWeight={700} color="#0366EF" cursor="pointer">
+            <Text
+              size="md"
+              fontWeight={700}
+              color="#0366EF"
+              cursor="pointer"
+              as="a"
+              href="https://docs.google.com/spreadsheets/d/1jhVhtzHymsgJ5vktYpzWvMLVdcSgQJI5NzmD3b6oX4c/export?format=xlsx"
+            >
               Click to Download Template{' '}
             </Text>
           </HStack>
@@ -91,7 +102,15 @@ const DataUpload = () => {
         isRequired={false}
       >
         <VStack w="full" maxW="700px">
-          <FileUpload />
+          <DocumentUploadAndView
+            handleAddDocuments={(document) => {
+              if (document?.[0]) {
+                setDocumet(document?.[0]);
+              }
+            }}
+            documents={document ? [document] : []}
+            handleRemoveDocuments={(document) => setDocumet(null)}
+          />
 
           <UploadStatusTable
             headers={headers}

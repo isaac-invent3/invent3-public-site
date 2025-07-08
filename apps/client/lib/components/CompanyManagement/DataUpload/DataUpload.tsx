@@ -100,7 +100,7 @@ const DataUpload = () => {
 
   return (
     <VStack width="full" alignItems="flex-end">
-      <VStack width="full">
+      <VStack width="full" alignItems="flex-start">
         <DetailHeader variant="primary" customStyles={{ size: 'lg' }}>
           1. Download Template
         </DetailHeader>

@@ -36,7 +36,7 @@ const Header = () => {
           buttonLabel="Add New Asset"
           modalLabel="Create From Existing"
         >
-          <AssetTemplateModal isOpen={isOpen} onClose={onClose} />
+          {isOpen && <AssetTemplateModal isOpen={isOpen} onClose={onClose} />}
         </ActionButtonPopover>
       )}
     </Stack>

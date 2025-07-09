@@ -5,7 +5,7 @@ import GeneralFilter from './GeneralFilter';
 interface AssetFilterDisplayProps {
   isOpen: boolean;
   activeFilter: 'bulk' | 'general' | null;
-  handleApplyFilter: () => Promise<void>;
+  handleApplyFilter: () => void;
 }
 const AssetFilterDisplay = (props: AssetFilterDisplayProps) => {
   const { isOpen, activeFilter, handleApplyFilter } = props;

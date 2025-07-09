@@ -76,7 +76,7 @@ const useAssetTemplateInfo = (props: UseAssetTemplateInfo) => {
         ],
         [
           ...generateSearchCriterion(
-            'statusId',
+            'AssetStatusId',
             filterData.status.map((item) => item.value),
             OPERATORS.Equals
           ),

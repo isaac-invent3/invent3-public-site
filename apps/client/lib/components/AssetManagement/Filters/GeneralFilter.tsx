@@ -14,7 +14,7 @@ import CombinedLocationFilter from '../../Common/FilterComponents/CombinedLocati
 import FilterWrapper from '../../Common/FilterComponents/FilterWrapper';
 
 interface GeneralFilterProps {
-  handleApplyFilter: () => Promise<void>;
+  handleApplyFilter: () => void;
   columnType?: ValidColumnNames;
 }
 

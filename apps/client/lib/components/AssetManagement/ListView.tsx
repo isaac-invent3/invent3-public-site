@@ -138,17 +138,15 @@ const ListView = (props: ListViewProps) => {
 
   // Trigger search when search input changes or pagination updates
   useEffect(() => {
-    if (search) {
+    if (search || !isFilterEmpty) {
       handleSearch();
     }
   }, [search, currentPage, pageSize]);
 
-  // Reset pagination when the search input is cleared or apply filter flag is false
+  // Reset pagination when the search input or filter changes
   useEffect(() => {
-    if (!search && isFilterEmpty) {
-      setPageSize(DEFAULT_PAGE_SIZE);
-      setCurrentPage(1);
-    }
+    setPageSize(DEFAULT_PAGE_SIZE);
+    setCurrentPage(1);
   }, [search, isFilterEmpty]);
 
   // Open Detail Modal if assetId exists
@@ -177,6 +175,12 @@ const ListView = (props: ListViewProps) => {
       dispatch(updateSelectedAssetIds([]));
     }
   }, [selectedRows]);
+
+  //Handle applying Filter
+  const handleApplyFilter = () => {
+    setCurrentPage(1);
+    handleSearch();
+  };
 
   // SignalR Connection
   const connectionState = useSignalR('asset-hub');
@@ -239,7 +243,7 @@ const ListView = (props: ListViewProps) => {
           <AssetFilterDisplay
             activeFilter={activeFilter}
             isOpen={openFilter}
-            handleApplyFilter={handleSearch}
+            handleApplyFilter={handleApplyFilter}
           />
         </Flex>
         <AssetTable

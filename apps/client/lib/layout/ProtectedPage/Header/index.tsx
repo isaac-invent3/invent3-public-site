@@ -23,7 +23,7 @@ const Header = (props: HeaderProps) => {
   const { data } = useSession();
 
   return (
-    <VStack width="full" alignItems="flex-start" spacing="8px">
+    <VStack width="full" alignItems="flex-start" spacing="0px">
       <Stack
         width="full"
         justifyContent="space-between"

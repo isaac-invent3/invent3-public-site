@@ -277,6 +277,17 @@ export const userApi = createApi({
       }),
       providesTags: ['allUsers'],
     }),
+    initiateResetPassword: builder.mutation<
+      void,
+      { userId: number; firstName: string; requestedBy: string }
+    >({
+      query: ({ userId, ...body }) => ({
+        url: generateQueryStr(`/Users/ResetPassword/${userId}?`, body),
+        method: 'PUT',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
   }),
 });
 
@@ -303,4 +314,5 @@ export const {
   useToggleUserStatusMutation,
   useGetActiveDirectoryUsersQuery,
   useGetAllActiveUsersQuery,
+  useInitiateResetPasswordMutation,
 } = userApi;

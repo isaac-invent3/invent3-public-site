@@ -11,6 +11,7 @@ import {
   USER_STATUS_ENUM,
 } from '~/lib/utils/constants';
 import ToggleUserStatusModal from '../Modals/ToggleUserStatusModal';
+import ResetUserPassword from '../Modals/ResetUserPasswordModal';
 
 interface PopoverActionProps {
   user: User;
@@ -18,6 +19,11 @@ interface PopoverActionProps {
 
 const PopoverAction = ({ user }: PopoverActionProps) => {
   const dispatch = useAppDispatch();
+  const {
+    isOpen: isOpenResetPassword,
+    onOpen: onOpenResetPassword,
+    onClose: onCloseResetPassword,
+  } = useDisclosure();
   const { updateSearchParam } = useCustomSearchParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isActive = user?.statusId === USER_STATUS_ENUM.ACTIVE;
@@ -48,9 +54,21 @@ const PopoverAction = ({ user }: PopoverActionProps) => {
           >
             {isActive ? 'Deactivate' : 'Activate'}
           </Text>
+          <Text
+            cursor="pointer"
+            color="red.500"
+            onClick={() => onOpenResetPassword()}
+          >
+            Reset Password
+          </Text>
         </VStack>
       </GenericPopover>
       <ToggleUserStatusModal isOpen={isOpen} onClose={onClose} user={user} />
+      <ResetUserPassword
+        isOpen={isOpenResetPassword}
+        onClose={onCloseResetPassword}
+        user={user}
+      />
     </>
   );
 };

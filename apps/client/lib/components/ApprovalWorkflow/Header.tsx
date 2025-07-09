@@ -124,12 +124,12 @@ const Header = (props: ApprovalHeaderProps) => {
             </TabList>
           </Tabs>
         </HStack>
-        <FilterButton
+        {/* <FilterButton
           icon={FilterIcon}
           label="Filters"
           handleClick={() => console.log('hey')}
           isActive={false}
-        />
+        /> */}
       </Flex>
     </VStack>
   );

@@ -1,12 +1,11 @@
 /* eslint-disable no-unused-vars */
-import { Icon, Text, useDisclosure, VStack } from '@chakra-ui/react';
-import { Button, GenericPopover } from '@repo/ui/components';
+import { Text, useDisclosure, VStack } from '@chakra-ui/react';
 import usePermissionAccess from '~/lib/hooks/useRoleAccess';
 import { ROUTES, USER_STATUS_ENUM } from '~/lib/utils/constants';
 import DeactivateUserModal from '../Modals/ToggleUserStatusModal';
 import { User } from '~/lib/interfaces/user.interfaces';
-import { ChevronDownIcon } from '@chakra-ui/icons';
 import { DrawerAction } from '../../UI/DrawerAction';
+import ResetUserPassword from '../Modals/ResetUserPasswordModal';
 
 interface MobilePopoverProps {
   data: User;
@@ -14,6 +13,11 @@ interface MobilePopoverProps {
 const MobilePopover = (props: MobilePopoverProps) => {
   const { data } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenResetPassword,
+    onOpen: onOpenResetPassword,
+    onClose: onCloseResetPassword,
+  } = useDisclosure();
   const canEditUser = usePermissionAccess('user:edit');
   const canDeactivateUser = usePermissionAccess('user:deactivate');
 
@@ -21,15 +25,14 @@ const MobilePopover = (props: MobilePopoverProps) => {
     <>
       <DrawerAction>
         <VStack width="full" alignItems="flex-start" spacing="16px">
-          {canEditUser && (
-            <Text
-              cursor="pointer"
-              as="a"
-              href={`/${ROUTES.USERS}/${data?.userId}/edit`}
-            >
-              Modify
-            </Text>
-          )}
+          <Text
+            cursor="pointer"
+            as="a"
+            href={`/${ROUTES.USERS}/${data?.userId}/edit`}
+          >
+            Modify
+          </Text>
+
           {canDeactivateUser && (
             <Text cursor="pointer" onClick={onOpen}>
               {data?.statusId === USER_STATUS_ENUM.ACTIVE
@@ -37,9 +40,18 @@ const MobilePopover = (props: MobilePopoverProps) => {
                 : 'Activate'}
             </Text>
           )}
+
+          <Text cursor="pointer" onClick={onOpenResetPassword}>
+            Reset Password
+          </Text>
         </VStack>
       </DrawerAction>
       <DeactivateUserModal isOpen={isOpen} onClose={onClose} user={data} />
+      <ResetUserPassword
+        isOpen={isOpenResetPassword}
+        onClose={onCloseResetPassword}
+        user={data}
+      />
     </>
   );
 };

@@ -48,8 +48,8 @@ export const floorApi = createApi({
         buildingId: number | undefined;
         floorName: string;
         floorRef: string;
-        imageBasePrefix: string | null;
-        floorPlanImage: string | null;
+        // imageBasePrefix: string | null;
+        // floorPlanImage: string | null;
         createdBy: string | undefined;
       }
     >({

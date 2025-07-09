@@ -188,19 +188,27 @@ const TicketManagement = () => {
     }),
     ...(!isFilterEmpty && {
       orCriterion: [
-        ...filterData.region.map((item) => [
-          ...generateSearchCriterion('stateId', [item.value], OPERATORS.Equals),
-        ]),
-        ...filterData.area.map((item) => [
-          ...generateSearchCriterion('lgaId', [item.value], OPERATORS.Equals),
-        ]),
-        ...filterData.branch.map((item) => [
+        [
           ...generateSearchCriterion(
-            'facilityId',
-            [item.value],
+            'stateId',
+            filterData.region.map((item) => item.value),
             OPERATORS.Equals
           ),
-        ]),
+        ],
+        [
+          ...generateSearchCriterion(
+            'lgaId',
+            filterData.area.map((item) => item.value),
+            OPERATORS.Equals
+          ),
+        ],
+        [
+          ...generateSearchCriterion(
+            'facilityId',
+            filterData.branch.map((item) => item.value),
+            OPERATORS.Equals
+          ),
+        ],
       ],
     }),
     pageNumber: currentPage,
@@ -224,10 +232,8 @@ const TicketManagement = () => {
 
   // Reset pagination when the search input is cleared or apply filter flag is false
   useEffect(() => {
-    if (!search && isFilterEmpty) {
-      setPageSize(DEFAULT_PAGE_SIZE);
-      setCurrentPage(1);
-    }
+    setPageSize(DEFAULT_PAGE_SIZE);
+    setCurrentPage(1);
   }, [search, isFilterEmpty]);
 
   //Set Selected Ticket
@@ -251,6 +257,13 @@ const TicketManagement = () => {
       onClose();
     }
   }, [activeFilter]);
+
+  //Handle apply Filter
+  const handleApplyFilter = () => {
+    setPageSize(1);
+    setPageSize(DEFAULT_PAGE_SIZE);
+    handleSearch();
+  };
 
   const connectionState = useSignalR('tickets-hub');
 
@@ -427,7 +440,7 @@ const TicketManagement = () => {
                 <TableActions
                   filterData={filterData}
                   setFilterData={setFilterData}
-                  handleApplyFilter={handleSearch}
+                  handleApplyFilter={handleApplyFilter}
                   activeFilter={activeFilter}
                   isOpen={isOpen}
                   selectedTicketIds={selectedTicketIds ?? []}

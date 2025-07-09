@@ -9,7 +9,7 @@ interface UserActionDisplayProps {
   activeAction: ActionType;
   filterData: UserFilter;
   setFilterData: React.Dispatch<React.SetStateAction<UserFilter>>;
-  handleApplyFilter: () => Promise<void>;
+  handleApplyFilter: () => void;
 }
 const UserActionDisplay = (props: UserActionDisplayProps) => {
   const { isOpen, activeAction, handleApplyFilter, filterData, setFilterData } =

@@ -6,7 +6,7 @@ import { initialFilterData } from '..';
 interface FiltersProps {
   filterData: LocationFilter;
   setFilterData: React.Dispatch<React.SetStateAction<LocationFilter>>;
-  handleApplyFilter: () => Promise<void>;
+  handleApplyFilter: () => void;
 }
 const Filters = (props: FiltersProps) => {
   const { filterData, setFilterData, handleApplyFilter } = props;

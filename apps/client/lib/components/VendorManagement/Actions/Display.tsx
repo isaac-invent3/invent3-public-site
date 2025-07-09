@@ -9,7 +9,7 @@ interface VendorActionProps {
   activeAction: ActionType;
   filterData: VendorFilter;
   setFilterData: React.Dispatch<React.SetStateAction<VendorFilter>>;
-  handleApplyFilter: () => Promise<void>;
+  handleApplyFilter: () => void;
 }
 const VendorAction = (props: VendorActionProps) => {
   const { isOpen, activeAction, handleApplyFilter, filterData, setFilterData } =

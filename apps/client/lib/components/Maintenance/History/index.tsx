@@ -165,10 +165,8 @@ const MaintenanceHistory = (props: MaintenanceHistoryProp) => {
 
   // Reset pagination when the search input is cleared or apply filter flag is false
   useEffect(() => {
-    if (!search && isFilterEmpty) {
-      setPageSize(DEFAULT_PAGE_SIZE);
-      setCurrentPage(1);
-    }
+    setPageSize(DEFAULT_PAGE_SIZE);
+    setCurrentPage(1);
   }, [search, isFilterEmpty]);
 
   useEffect(() => {
@@ -176,6 +174,13 @@ const MaintenanceHistory = (props: MaintenanceHistoryProp) => {
       onOpen();
     }
   }, [maintenanceScheduleInstanceId]);
+
+  //Handle apply Filter
+  const handleApplyFilter = () => {
+    setCurrentPage(1);
+    setPageSize(DEFAULT_PAGE_SIZE);
+    handleSearch();
+  };
 
   const mobileColumns = useMemo(
     () => {
@@ -295,7 +300,7 @@ const MaintenanceHistory = (props: MaintenanceHistoryProp) => {
             <Filters
               filterData={filterData}
               setFilterData={setFilterData}
-              handleApplyFilter={handleSearch}
+              handleApplyFilter={handleApplyFilter}
             />
           </FilterDisplay>
         </Flex>

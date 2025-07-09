@@ -12,7 +12,7 @@ import MaintenanceTypeFilter from './MaintenanceTypeFilter';
 interface FiltersProps {
   filterData: ScheduleFilter;
   setFilterData: React.Dispatch<React.SetStateAction<ScheduleFilter>>;
-  handleApplyFilter: () => Promise<void>;
+  handleApplyFilter: () => void;
 }
 const Filters = (props: FiltersProps) => {
   const { filterData, setFilterData, handleApplyFilter } = props;

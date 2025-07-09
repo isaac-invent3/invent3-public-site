@@ -124,10 +124,8 @@ const UserManagement = () => {
 
   // Reset pagination when clearing the search
   useEffect(() => {
-    if (!search) {
-      setPageSize(DEFAULT_PAGE_SIZE);
-      setPageNumber(1);
-    }
+    setPageSize(DEFAULT_PAGE_SIZE);
+    setPageNumber(1);
   }, [search]);
 
   // Open Detail Modal if assetId exists
@@ -156,6 +154,13 @@ const UserManagement = () => {
       dispatch(updateSelectedTableIds([]));
     }
   }, [selectedRows]);
+
+  //Handle apply Filter
+  const handleApplyFilter = () => {
+    setPageSize(1);
+    setPageSize(DEFAULT_PAGE_SIZE);
+    handleSearch();
+  };
 
   // SignalR Connection
   const connectionState = useSignalR('users-hub');
@@ -275,7 +280,7 @@ const UserManagement = () => {
                 <UserActionDisplay
                   isOpen={isOpen}
                   activeAction={activeAction}
-                  handleApplyFilter={handleSearch}
+                  handleApplyFilter={handleApplyFilter}
                   setFilterData={setFilterData}
                   filterData={filterData}
                 />

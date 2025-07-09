@@ -6,7 +6,7 @@ import Filters from './Filters';
 interface TableActionsProps {
   filterData: LocationFilter;
   setFilterData: React.Dispatch<React.SetStateAction<LocationFilter>>;
-  handleApplyFilter: () => Promise<void>;
+  handleApplyFilter: () => void;
   isOpen: boolean;
   activeFilter: 'bulk' | 'general' | null;
   selectedTicketIds: number[];

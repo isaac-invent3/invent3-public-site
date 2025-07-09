@@ -11,7 +11,7 @@ import moment from 'moment';
 interface FiltersProps {
   filterData: PlanFilter;
   setFilterData: React.Dispatch<React.SetStateAction<PlanFilter>>;
-  handleApplyFilter: () => Promise<void>;
+  handleApplyFilter: () => void;
 }
 const Filters = (props: FiltersProps) => {
   const { filterData, setFilterData, handleApplyFilter } = props;

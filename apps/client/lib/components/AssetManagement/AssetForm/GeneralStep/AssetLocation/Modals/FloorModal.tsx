@@ -14,7 +14,7 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';
 import { floorSchema } from '~/lib/schemas/asset/location.schema';
 import BuildingSelect from './SelectInputs/BuildingSelect';
-import DocumentUploadAndView from '~/lib/components/Common/DocumentUploadAndView';
+// import DocumentUploadAndView from '~/lib/components/Common/DocumentUploadAndView';
 
 interface FloorModalProps {
   isOpen: boolean;
@@ -48,16 +48,16 @@ const FloorModal = (props: FloorModalProps) => {
       buildingId: (defaultBuildingId ?? undefined)!,
       floorName: '',
       floorRef: '',
-      imageBasePrefix: null,
-      floorPlanImage: null,
-      planName: null,
+      // imageBasePrefix: null,
+      // floorPlanImage: null,
+      // planName: null,
     },
     validationSchema: floorSchema,
     enableReinitialize: true,
     onSubmit: async (values, { resetForm }) => {
       const session = await getSession();
-      const { planName, ...finalData } = values;
-      const finalValue = { ...finalData, createdBy: session?.user?.username! };
+      // const { planName, ...finalData } = values;
+      const finalValue = { ...values, createdBy: session?.user?.username! };
       if (handleSave) {
         handleSave(finalValue);
         resetForm();
@@ -137,7 +137,7 @@ const FloorModal = (props: FloorModalProps) => {
                     label="Floor Reference"
                   />
                 </FormInputWrapper>
-                <FormInputWrapper
+                {/* <FormInputWrapper
                   sectionMaxWidth="141px"
                   customSpacing="16px"
                   title="Floor Plan"
@@ -188,7 +188,7 @@ const FloorModal = (props: FloorModalProps) => {
                       // handleOpenExistingDocumentModal={onOpen}
                     />
                   </HStack>
-                </FormInputWrapper>
+                </FormInputWrapper> */}
               </VStack>
               {/* Main Form Ends Here */}
               <HStack width="full" spacing="24px">

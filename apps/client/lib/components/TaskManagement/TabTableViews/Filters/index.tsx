@@ -6,10 +6,10 @@ import GeneralFilter from './GeneralFilter';
 interface FiltersProps {
   filterData: LocationFilter;
   setFilterData: React.Dispatch<React.SetStateAction<LocationFilter>>;
-  handleApplyFilter: () => Promise<void>;
+  handleApplyFilter: () => void;
   isOpen: boolean;
   activeFilter: 'bulk' | 'general' | null;
-  selectedTaskIds:number[]
+  selectedTaskIds: number[];
 }
 const Filters = (props: FiltersProps) => {
   const {

@@ -9,7 +9,7 @@ import { UserFilter } from '~/lib/interfaces/user.interfaces';
 interface FiltersProps {
   filterData: UserFilter;
   setFilterData: React.Dispatch<React.SetStateAction<UserFilter>>;
-  handleApplyFilter: () => Promise<void>;
+  handleApplyFilter: () => void;
 }
 const Filters = (props: FiltersProps) => {
   const { filterData, setFilterData, handleApplyFilter } = props;

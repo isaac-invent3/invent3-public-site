@@ -154,10 +154,8 @@ const Plans = (props: PlansProp) => {
 
   // Reset pagination when the search input is cleared or apply filter flag is false
   useEffect(() => {
-    if (!search && isFilterEmpty) {
-      setPageSize(DEFAULT_PAGE_SIZE);
-      setCurrentPage(1);
-    }
+    setPageSize(DEFAULT_PAGE_SIZE);
+    setCurrentPage(1);
   }, [search, isFilterEmpty]);
 
   //Open Plan detail drawer if plan id exists
@@ -166,6 +164,13 @@ const Plans = (props: PlansProp) => {
       onOpen();
     }
   }, [maintenancePlanId]);
+
+  //Handle apply Filter
+  const handleApplyFilter = () => {
+    setCurrentPage(1);
+    setPageSize(DEFAULT_PAGE_SIZE);
+    handleSearch();
+  };
 
   // SignalR Connection
   const connectionState = useSignalR('maintenanceplan-hub');
@@ -256,7 +261,7 @@ const Plans = (props: PlansProp) => {
             <Filters
               filterData={filterData}
               setFilterData={setFilterData}
-              handleApplyFilter={handleSearch}
+              handleApplyFilter={handleApplyFilter}
             />
           </FilterDisplay>
         </Flex>

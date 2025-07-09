@@ -176,7 +176,7 @@ const ListView = (props: ListViewProps) => {
     }
   }, [selectedRows]);
 
-  //Handle applying Filter
+  //Handle apply Filter
   const handleApplyFilter = () => {
     setCurrentPage(1);
     setPageSize(DEFAULT_PAGE_SIZE);

@@ -89,10 +89,8 @@ const FeedbackOverview = () => {
 
   // Reset pagination when the search input is cleared or apply filter flag is false
   useEffect(() => {
-    if (!search && isFilterEmpty) {
-      setPageSize(DEFAULT_PAGE_SIZE);
-      setCurrentPage(1);
-    }
+    setPageSize(DEFAULT_PAGE_SIZE);
+    setCurrentPage(1);
   }, [search, isFilterEmpty]);
 
   useEffect(() => {

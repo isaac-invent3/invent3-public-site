@@ -9,7 +9,7 @@ import { VendorFilter } from '~/lib/interfaces/vendor.interfaces';
 interface VendorFiltersProps {
   filterData: VendorFilter;
   setFilterData: React.Dispatch<React.SetStateAction<VendorFilter>>;
-  handleApplyFilter: () => Promise<void>;
+  handleApplyFilter: () => void;
 }
 const VendorFilters = (props: VendorFiltersProps) => {
   const { filterData, setFilterData, handleApplyFilter } = props;

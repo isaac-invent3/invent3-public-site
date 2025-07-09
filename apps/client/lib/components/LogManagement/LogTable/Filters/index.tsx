@@ -10,7 +10,7 @@ import ContextTypeFilter from '~/lib/components/Common/FilterComponents/ContextT
 interface FiltersProps {
   filterData: LogFilter;
   setFilterData: React.Dispatch<React.SetStateAction<LogFilter>>;
-  handleApplyFilter: () => Promise<void>;
+  handleApplyFilter: () => void;
 }
 const Filters = (props: FiltersProps) => {
   const { filterData, setFilterData, handleApplyFilter } = props;

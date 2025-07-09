@@ -10,7 +10,7 @@ import { DatePopover } from '@repo/ui/components';
 import moment from 'moment';
 
 interface TemplateFiltersProps {
-  handleApplyFilter: () => Promise<void>;
+  handleApplyFilter: () => void;
   type: 'page' | 'modal';
 }
 const TemplateFilters = (props: TemplateFiltersProps) => {

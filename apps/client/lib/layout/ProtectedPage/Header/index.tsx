@@ -1,4 +1,4 @@
-import { HStack, Image, Stack } from '@chakra-ui/react';
+import { HStack, Image, Stack, VStack } from '@chakra-ui/react';
 
 import { GenericBreadCrumb } from '@repo/ui/components';
 import { usePathname } from 'next/navigation';
@@ -23,62 +23,64 @@ const Header = (props: HeaderProps) => {
   const { data } = useSession();
 
   return (
-    <Stack
-      width="full"
-      justifyContent="space-between"
-      mb={{ base: '32px', lg: '40px' }}
-      spacing="16px"
-      direction={{ base: 'column', md: 'row' }}
-      alignItems={{ base: 'flex-start', md: 'center' }}
-      px={{ base: '16px', md: 0 }}
-    >
-      <GenericBreadCrumb routes={breadCrumbData} />
-      <HStack
-        width={{ base: 'full', md: 'max-content' }}
+    <VStack width="full" alignItems="flex-start" spacing="8px">
+      <Stack
+        width="full"
         justifyContent="space-between"
+        mb={{ base: '32px', lg: '40px' }}
+        spacing="16px"
+        direction={{ base: 'column', md: 'row' }}
+        alignItems={{ base: 'flex-start', md: 'center' }}
+        px={{ base: '16px', md: 0 }}
       >
+        <GenericBreadCrumb routes={breadCrumbData} />
         <HStack
-          width="40px"
-          height="40px"
-          rounded="8px"
-          bgColor="primary.500"
-          justifySelf="center"
-          alignSelf="center"
-          cursor="pointer"
-          onClick={() => setIsCollapse(false)}
-          display={{ md: 'none' }}
-          pl="16px" //Temporary fix of alignment
-          pt="8px" //Temporary fix of alignment
-          flexShrink={0}
+          width={{ base: 'full', md: 'max-content' }}
+          justifyContent="space-between"
         >
-          <Image
-            src="/logo-small-initials-white.svg"
-            alt="Invent3 logo"
-            height="24px"
-            width="8px"
-          />
-        </HStack>
-        <HStack spacing={{ base: '8px', md: '24px' }}>
-          <HStack display={{ base: 'none', lg: 'flex' }}>
-            {data?.user?.roleIds.includes(ROLE_IDS_ENUM.CLIENT_ADMIN) && (
-              <AssistantGuideBox />
-            )}
+          <HStack
+            width="40px"
+            height="40px"
+            rounded="8px"
+            bgColor="primary.500"
+            justifySelf="center"
+            alignSelf="center"
+            cursor="pointer"
+            onClick={() => setIsCollapse(false)}
+            display={{ md: 'none' }}
+            pl="16px" //Temporary fix of alignment
+            pt="8px" //Temporary fix of alignment
+            flexShrink={0}
+          >
+            <Image
+              src="/logo-small-initials-white.svg"
+              alt="Invent3 logo"
+              height="24px"
+              width="8px"
+            />
           </HStack>
-          {!data?.user?.roleIds.includes(ROLE_IDS_ENUM.SUPER_ADMIN) && (
-            <Feedback />
-          )}
-          {/* <HeaderIcon icon={SearchIcon} size="20px" />
+          <HStack spacing={{ base: '8px', md: '24px' }}>
+            <HStack display={{ base: 'none', lg: 'flex' }}>
+              {data?.user?.roleIds.includes(ROLE_IDS_ENUM.CLIENT_ADMIN) && (
+                <AssistantGuideBox />
+              )}
+            </HStack>
+            {!data?.user?.roleIds.includes(ROLE_IDS_ENUM.SUPER_ADMIN) && (
+              <Feedback />
+            )}
+            {/* <HeaderIcon icon={SearchIcon} size="20px" />
           <HeaderIcon icon={SettingsIcon} size="24px" /> */}
-          <NotificationComponents />
-          <UserActionPopover />
+            <NotificationComponents />
+            <UserActionPopover />
+          </HStack>
         </HStack>
-      </HStack>
+      </Stack>
       {data?.user?.roleIds.includes(ROLE_IDS_ENUM.CLIENT_ADMIN) && (
         <HStack display={{ base: 'flex', lg: 'none' }}>
           <AssistantGuideBox containerStyle={{ width: '100%' }} />
         </HStack>
       )}
-    </Stack>
+    </VStack>
   );
 };
 

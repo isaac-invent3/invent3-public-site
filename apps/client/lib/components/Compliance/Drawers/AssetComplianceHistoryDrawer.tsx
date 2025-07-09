@@ -24,10 +24,10 @@ const RegulatoryPolicy = (data: ComplianceAuditLogsByAsset) => {
   return (
     <VStack spacing="4px" alignItems="flex-start" maxW="252px">
       <Text color="primary.500" lineHeight="100%" fontWeight={700} size="md">
-        {data?.compliancePolicyId}
+        {data?.standard}
       </Text>
       <Text color="neutral.600" fontWeight={400}>
-        {data?.compliancePolicyId ?? ''}
+        {data?.typeName ?? ''}
       </Text>
     </VStack>
   );
@@ -64,7 +64,7 @@ const AssetComplianceHistoryDrawer = ({
   const columns = useMemo(
     () => {
       const baseColumns = [
-        columnHelper.accessor('compliancePolicyId', {
+        columnHelper.accessor('standard', {
           cell: (info) => RegulatoryPolicy(info.row.original),
           header: 'Regulatory/Policy',
           enableSorting: false,

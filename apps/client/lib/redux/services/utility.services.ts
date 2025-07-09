@@ -79,9 +79,6 @@ export const utilityApi = createApi({
       query: (body) => ({
         url: `/Invent3Pro/Bulk-upload`,
         method: 'POST',
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
         body,
       }),
     }),

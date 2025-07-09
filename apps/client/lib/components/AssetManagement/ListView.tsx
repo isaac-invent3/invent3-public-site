@@ -179,6 +179,7 @@ const ListView = (props: ListViewProps) => {
   //Handle applying Filter
   const handleApplyFilter = () => {
     setCurrentPage(1);
+    setPageSize(DEFAULT_PAGE_SIZE);
     handleSearch();
   };
 

@@ -79,6 +79,7 @@ const ScheduleTimeline = () => {
   const fetchInstanceAggregate = async (): Promise<EventType[]> => {
     let hasNextPage = true;
     let allEvents: EventType[] = [];
+    let pageNumber = 1;
 
     while (hasNextPage && selectedCountry) {
       const result = await dispatch(
@@ -90,7 +91,7 @@ const ScheduleTimeline = () => {
             areaType: isProperState ? AREA_ENUM.state : AREA_ENUM.country,
             startDate,
             endDate,
-            pageNumber: 1,
+            pageNumber,
             pageSize: 50,
           }
         )
@@ -103,6 +104,7 @@ const ScheduleTimeline = () => {
         ];
       }
       hasNextPage = result.data?.data.hasNextPage ?? false;
+      pageNumber += 1;
     }
 
     return allEvents;
@@ -113,6 +115,7 @@ const ScheduleTimeline = () => {
   > => {
     let hasNextPage = true;
     let allEvents: EventType[] = [];
+    let pageNumber = 1;
 
     while (hasNextPage && selectedCountry) {
       const result = await dispatch(
@@ -124,7 +127,7 @@ const ScheduleTimeline = () => {
             areaType: isProperState ? AREA_ENUM.state : AREA_ENUM.country,
             startDate,
             endDate,
-            pageNumber: 1,
+            pageNumber,
             pageSize: 50,
           }
         )
@@ -137,12 +140,14 @@ const ScheduleTimeline = () => {
         ];
       }
       hasNextPage = result.data?.data.hasNextPage ?? false;
+      pageNumber += 1;
     }
 
     return allEvents;
   };
 
   useEffect(() => {
+    let isMounted = true;
     const fetchData = async () => {
       setEventData([]); // Clear existing data before fetching new
 
@@ -151,10 +156,16 @@ const ScheduleTimeline = () => {
         fetchInstanceAggregate(),
       ]);
 
-      setEventData([...singleAggregateEvents, ...aggregateEvents]);
+      if (isMounted) {
+        setEventData([...singleAggregateEvents, ...aggregateEvents]);
+      }
     };
 
     fetchData();
+
+    return () => {
+      isMounted = false;
+    };
   }, [isProperState, startDate, endDate, selectedState, selectedCountry]);
 
   return (

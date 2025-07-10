@@ -13,13 +13,17 @@ import {
   useGetAllFeedbacksQuery,
   useSearchFeedbacksMutation,
 } from '~/lib/redux/services/feedback.services';
-import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
-import { BulkSearchIcon, FilterIcon } from '../CustomIcons';
+import {
+  DEFAULT_PAGE_SIZE,
+  SYSTEM_CONTEXT_DETAILS,
+} from '~/lib/utils/constants';
+import { FilterIcon } from '../CustomIcons';
 import PageHeader from '../UI/PageHeader';
 import FeedbackTable from './FeedbackTable';
 import ExportButtonPopover from './Common/ExportButtonPopover';
-
-const ALlTabs = ['New', 'Assigned', 'Scheduled', 'In Progress', 'Completed'];
+import { useSearchParams } from 'next/navigation';
+import ViewFeedbackDrawer from './Drawers/ViewFeedbackDrawer';
+import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 
 export const initialFilterData = {
   region: [],
@@ -37,6 +41,11 @@ const FeedbackOverview = () => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+  const {
+    isOpen: isOpenDetails,
+    onClose: onCloseDetails,
+    onOpen: onOpenDetails,
+  } = useDisclosure();
   const { data, isLoading, isFetching } = useGetAllFeedbacksQuery({
     pageNumber: currentPage,
     pageSize: pageSize,
@@ -44,6 +53,8 @@ const FeedbackOverview = () => {
   const [activeFilter, setActiveFilter] = useState<'bulk' | 'general' | null>(
     null
   );
+  const { getSearchParam, updateSearchParam } = useCustomSearchParams();
+  const feedbackId = getSearchParam(SYSTEM_CONTEXT_DETAILS.FEEDBACK.slug);
 
   // Checks if all filterdata is empty
   const isFilterEmpty = _.every(
@@ -101,62 +112,81 @@ const FeedbackOverview = () => {
       onClose();
     }
   }, [activeFilter]);
+
+  // Open Detail Modal if feedbackId exists
+  useEffect(() => {
+    if (feedbackId) onOpenDetails();
+  }, [feedbackId]);
+
   return (
-    <Flex width="full" direction="column" pb="24px">
-      <Box px={{ base: '16px', md: 0 }}>
-        <PageHeader>Feedback Overview</PageHeader>
-      </Box>
+    <>
+      <Flex width="full" direction="column" pb="24px">
+        <Box px={{ base: '16px', md: 0 }}>
+          <PageHeader>Feedback Overview</PageHeader>
+        </Box>
 
-      <Flex direction="column" mt="42px" position="relative">
-        <Stack
-          spacing="16px"
-          width="full"
-          direction={{ base: 'column', lg: 'row' }}
-          px={{ base: '16px', md: 0 }}
-          justifyContent="space-between"
-        >
-          <SearchInput
-            setSearch={setSearch}
-            placeholderText="Search..."
-            containerStyle={{
-              minW: { base: 'full', lg: '400px' },
-            }}
-            customStyle={{ minW: { base: 'full', lg: '400px' } }}
-          />
-
-          <HStack spacing="16px" flexWrap="wrap">
-            <FilterButton
-              icon={FilterIcon}
-              label="Filters"
-              handleClick={() =>
-                setActiveFilter((prev) =>
-                  prev === 'general' ? null : 'general'
-                )
-              }
-              isActive={activeFilter === 'general'}
+        <Flex direction="column" mt="42px" position="relative">
+          <Stack
+            spacing="16px"
+            width="full"
+            direction={{ base: 'column', lg: 'row' }}
+            px={{ base: '16px', md: 0 }}
+            justifyContent="space-between"
+          >
+            <SearchInput
+              setSearch={setSearch}
+              placeholderText="Search..."
+              containerStyle={{
+                minW: { base: 'full', lg: '400px' },
+              }}
+              customStyle={{ minW: { base: 'full', lg: '400px' } }}
             />
-            <ExportButtonPopover />
-          </HStack>
-        </Stack>
 
-        <Flex width="full" mt="24px">
-          <FeedbackTable
-            data={(search || !isFilterEmpty) && searchData ? searchData : data}
-            isLoading={isLoading}
-            isFetching={isFetching || searchLoading}
-            isSelectable
-            currentPage={currentPage}
-            pageSize={pageSize}
-            setCurrentPage={setCurrentPage}
-            setPageSize={setPageSize}
-            selectedRows={selectedRows}
-            setSelectedRows={setSelectedRows}
-            emptyLines={25}
-            shouldHideFooter={true}
-          />
+            <HStack spacing="16px" flexWrap="wrap">
+              <FilterButton
+                icon={FilterIcon}
+                label="Filters"
+                handleClick={() =>
+                  setActiveFilter((prev) =>
+                    prev === 'general' ? null : 'general'
+                  )
+                }
+                isActive={activeFilter === 'general'}
+              />
+              <ExportButtonPopover />
+            </HStack>
+          </Stack>
+
+          <Flex width="full" mt="24px">
+            <FeedbackTable
+              data={
+                (search || !isFilterEmpty) && searchData ? searchData : data
+              }
+              isLoading={isLoading}
+              isFetching={isFetching || searchLoading}
+              isSelectable
+              currentPage={currentPage}
+              pageSize={pageSize}
+              setCurrentPage={setCurrentPage}
+              setPageSize={setPageSize}
+              selectedRows={selectedRows}
+              setSelectedRows={setSelectedRows}
+              emptyLines={25}
+              shouldHideFooter={true}
+              handleSelectRow={(row) => {
+                if (row) {
+                  updateSearchParam(
+                    SYSTEM_CONTEXT_DETAILS.FEEDBACK.slug,
+                    row.feedbackId
+                  );
+                }
+              }}
+            />
+          </Flex>
         </Flex>
       </Flex>
-    </Flex>
+      <ViewFeedbackDrawer isOpen={isOpenDetails} onClose={onCloseDetails} />
+    </>
   );
 };
 

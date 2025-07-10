@@ -30,8 +30,6 @@ interface UserSettingsProps {
 }
 const UserSettings = (props: UserSettingsProps) => {
   const { isOpen, onClose } = props;
-  const { getSearchParam, updateSearchParam } = useCustomSearchParams();
-  const tab = getSearchParam('tab');
   const [tabIndex, setTabIndex] = useState<number | undefined>(undefined);
   const session = useSession();
   const dispatch = useAppDispatch();
@@ -52,20 +50,6 @@ const UserSettings = (props: UserSettingsProps) => {
       );
     }
   }, [data]);
-
-  useEffect(() => {
-    const tabIndex = tab ? ALlTabs.findIndex((value) => value === tab) : -1;
-    setTabIndex(tabIndex !== -1 ? tabIndex : 0);
-  }, [tab]);
-
-  // Update the URL whenever the tab is changed
-  const handleTabChange = (index: number) => {
-    setTabIndex(index);
-    const tabName = ALlTabs[index];
-    if (tabName) {
-      updateSearchParam('tab', tabName);
-    }
-  };
 
   return (
     <GenericDrawer isOpen={isOpen} onClose={onClose} maxWidth="690px">
@@ -95,7 +79,7 @@ const UserSettings = (props: UserSettingsProps) => {
         <Tabs
           variant="custom"
           width={'full'}
-          onChange={(index) => handleTabChange(index)}
+          onChange={(index) => setTabIndex(index)}
           index={tabIndex}
           mt="51px"
           opacity={isLoading ? 0.5 : 1}

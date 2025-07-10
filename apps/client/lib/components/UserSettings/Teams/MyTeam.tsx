@@ -16,11 +16,13 @@ const MyTeam = ({ isLoading, data }: MyTeamProps) => {
       sectionInfoWidth="221px"
       spacing={{ base: '16px' }}
       direction={{ base: 'column', md: 'row' }}
-      sectionInfoStyle={{ maxW: { base: 'full', md: '221px' } }}
+      sectionInfoStyle={{
+        maxW: { base: 'full', md: '221px' },
+      }}
     >
       {isLoading && <Skeleton width="200px" height="50px" />}
       {!isLoading && data && (
-        <HStack spacing="59px" alignItems="flex-start">
+        <HStack spacing="59px" alignItems="flex-start" width="full">
           <VStack alignItems="flex-start" spacing="8px">
             {data?.map((item, index) => (
               <HStack spacing="8px">

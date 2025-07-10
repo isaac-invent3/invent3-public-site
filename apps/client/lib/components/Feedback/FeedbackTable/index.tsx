@@ -23,6 +23,7 @@ interface FeedbackTableProps {
   emptyLines?: number;
   shouldHideFooter?: boolean;
   showPopover?: boolean;
+  handleSelectRow?: (row: Feedback) => void;
 }
 const FeedbackTable = (props: FeedbackTableProps) => {
   const {
@@ -39,6 +40,7 @@ const FeedbackTable = (props: FeedbackTableProps) => {
     emptyLines,
     shouldHideFooter,
     showPopover = true,
+    handleSelectRow,
   } = props;
   const [isMobile] = useMediaQuery('(max-width: 768px)');
   const columnHelper = createColumnHelper<Feedback>();
@@ -192,6 +194,7 @@ const FeedbackTable = (props: FeedbackTableProps) => {
         setSelectedRows={setSelectedRows}
         emptyLines={emptyLines}
         isSelectable={isSelectable}
+        handleSelectRow={handleSelectRow}
         showFooter={
           shouldHideFooter && data?.data?.totalPages === 1 ? true : false
         }

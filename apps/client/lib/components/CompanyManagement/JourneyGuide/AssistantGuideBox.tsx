@@ -64,7 +64,11 @@ const AssistantGuideBox = (props: AssistantGuideBoxProps) => {
         minH="40px"
         {...containerStyle}
         display={
-          journeyGuideData && activeStep === guideSteps.length ? 'none' : 'flex'
+          journeyGuideData
+            ? 'none'
+            : journeyGuideData && activeStep === guideSteps.length
+              ? 'none'
+              : 'flex'
         }
       >
         {/* Left Side Starts Here */}

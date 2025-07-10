@@ -1,63 +1,49 @@
 import { Flex, HStack, Icon, Skeleton, Text, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import { useAppSelector } from '~/lib/redux/hooks';
 import { ButtonPagination } from '@repo/ui/components';
-import { AssetDocument } from '~/lib/interfaces/asset/general.interface';
 import { FILE_ICONS } from '~/lib/utils/constants';
 import { getDocumentInfo } from '~/lib/utils/helperFunctions';
-import { useGetAssetDocumentsByAssetIdQuery } from '~/lib/redux/services/asset/document.services';
+import { useGetAttachmentsByFeedBackIdQuery } from '~/lib/redux/services/feedback.services';
+import { FeedbackAttachment } from '~/lib/interfaces/feedback.interfaces';
 
-const DocumentsTab = () => {
-  const assetData = useAppSelector((state) => state.asset.asset);
-
-  if (!assetData) {
-    return null;
-  }
-
-  const { assetId } = assetData;
+const FeedbackAttachments = ({ id }: { id: number }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(5);
-  const { data, isLoading } = useGetAssetDocumentsByAssetIdQuery(
-    { id: assetId, pageSize, pageNumber: currentPage },
-    { skip: !assetId }
+  const { data, isLoading } = useGetAttachmentsByFeedBackIdQuery(
+    { id, pageSize, pageNumber: currentPage },
+    { skip: !id }
   );
 
-  const downloadDocument = (item: AssetDocument) => {
-    if (item.document) {
+  const downloadDocument = (item: FeedbackAttachment) => {
+    if (item.attachment) {
       const link = document.createElement('a');
-      link.href = `${item.base64Prefix}${item.document}`;
-      link.download = item.documentName;
+      link.href = `${item.base64Prefix}${item.attachment}`;
+      link.download = item.attachmentName;
       link.click();
     }
   };
 
   if (isLoading) {
     return (
-      <HStack width="full" spacing="24px" wrap="wrap" my="16px">
+      <HStack width="full" spacing="16px" wrap="wrap" my="16px">
         {Array(3)
           .fill('')
           .map((_, index) => (
-            <Skeleton width="58px" height="58px" rounded="8px" key={index} />
+            <Skeleton width="40px" height="40px" rounded="8px" key={index} />
           ))}
       </HStack>
     );
   }
   return (
-    <Flex
-      width="full"
-      alignItems="flex-end"
-      gap="16px"
-      direction="column"
-      my="16px"
-    >
+    <Flex width="full" alignItems="flex-end" gap="16px" direction="column">
       <HStack width="full" spacing="24px" wrap="wrap" alignItems="flex-start">
         {data?.data && data?.data?.items.length >= 1 ? (
-          data?.data?.items.map((item: AssetDocument, index: number) => {
+          data?.data?.items.map((item: FeedbackAttachment, index: number) => {
             const { extensionName } = getDocumentInfo({
-              base64Document: item.document,
-              documentName: item.documentName,
+              base64Document: item.attachment,
+              documentName: item.attachmentName,
               base64Prefix: item.base64Prefix,
-              documentId: item.documentId,
+              documentId: item.attachmentId,
             });
             return (
               <VStack
@@ -70,10 +56,10 @@ const DocumentsTab = () => {
               >
                 <Icon
                   as={FILE_ICONS[extensionName ?? 'invalid']}
-                  boxSize="58px"
+                  boxSize="34px"
                 />
-                <Text size="md" color="neutral.600" textAlign="center">
-                  {item.documentName}
+                <Text size="md" color="blue.500" textAlign="center">
+                  {item.attachmentName}
                 </Text>
               </VStack>
             );
@@ -81,14 +67,13 @@ const DocumentsTab = () => {
         ) : (
           <Text
             width="full"
-            size="md"
             fontWeight={400}
             fontStyle="italic"
-            my="41px"
+            my="0px"
             color="neutral.600"
             textAlign="center"
           >
-            No Document at the moment.
+            No Attachment
           </Text>
         )}
       </HStack>
@@ -103,4 +88,4 @@ const DocumentsTab = () => {
   );
 };
 
-export default DocumentsTab;
+export default FeedbackAttachments;

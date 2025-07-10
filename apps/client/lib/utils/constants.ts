@@ -192,6 +192,7 @@ const SYSTEM_CONTEXT_TYPE = {
   COMPANY: 17,
   TEMPLATES: 65,
   ROLES: 56,
+  FEEDBACK: 151,
 };
 
 const ROUTES = {
@@ -302,6 +303,13 @@ const SYSTEM_CONTEXT_DETAILS: Record<ContextKey, SystemContextDetail> = {
     slug: 'logId',
     displayName: 'Audits',
     label: 'audit',
+  },
+  FEEDBACK: {
+    id: SYSTEM_CONTEXT_TYPE.FEEDBACK,
+    route: ROUTES.FEEDBACK,
+    slug: 'feedbackId',
+    displayName: 'Feedbacks',
+    label: 'feedback',
   },
 };
 

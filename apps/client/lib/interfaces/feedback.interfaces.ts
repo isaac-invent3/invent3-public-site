@@ -1,4 +1,4 @@
-import { BaseEntity } from '@repo/interfaces';
+import { BaseEntity, ListResponse } from '@repo/interfaces';
 
 interface Feedback extends BaseEntity {
   alias: string | null;
@@ -25,7 +25,20 @@ interface Feedback extends BaseEntity {
   submittedDate: string;
 }
 
-type FeedbackAttachment = BaseEntity & CreateFeedbackAttachmentPayload;
+interface FeedbackAttachment extends BaseEntity {
+  attachmentId: number;
+  feedbackId: number;
+  attachmentName: string;
+  attachment: string;
+  base64Prefix: string;
+}
+
+interface SingleFeedback {
+  data: {
+    feedback: Feedback;
+    feedbackAttachments: ListResponse<FeedbackAttachment>;
+  };
+}
 
 interface CreateFeedbackAttachmentPayload {
   attachmentName: string;
@@ -74,4 +87,5 @@ export type {
   FeedbackAttachment,
   ResolveFeedbackPayload,
   UpdateFeedbackPayload,
+  SingleFeedback,
 };

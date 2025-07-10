@@ -9,7 +9,9 @@ import {
   CreateFeedbackPayload,
   CreateFeedbackWithAttachmentPayload,
   Feedback,
+  FeedbackAttachment,
   ResolveFeedbackPayload,
+  SingleFeedback,
   UpdateFeedbackPayload,
 } from '~/lib/interfaces/feedback.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
@@ -33,6 +35,28 @@ export const feedbackApi = createApi({
         headers: getHeaders(),
       }),
       providesTags: ['allFeedbacks'],
+    }),
+    getAFeedback: builder.query<
+      BaseApiResponse<SingleFeedback>,
+      { id: number }
+    >({
+      query: ({ id }) => ({
+        url: `/Feedbacks/GetFeedbackInfo/${id}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+
+    getAttachmentsByFeedBackId: builder.query<
+      BaseApiResponse<ListResponse<FeedbackAttachment>>,
+      QueryParams & { id: number }
+    >({
+      query: ({ id, ...data }) => ({
+        url: generateQueryStr(`/Feedbacks/AllFeedbackAttachments/${id}?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['feedbackAttachments'],
     }),
 
     createFeedback: builder.mutation<Feedback, CreateFeedbackPayload>({
@@ -106,5 +130,7 @@ export const {
   useSearchFeedbacksMutation,
   useCreateFeedbackWithAttachmentMutation,
   useUpdateFeedbackMutation,
-  useResolveFeedbackMutation
+  useResolveFeedbackMutation,
+  useGetAttachmentsByFeedBackIdQuery,
+  useGetAFeedbackQuery,
 } = feedbackApi;

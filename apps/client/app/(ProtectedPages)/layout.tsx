@@ -8,6 +8,7 @@ import useParseUrlData from '~/lib/hooks/useParseUrl';
 import Layout from '~/lib/layout/ProtectedPage';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { moduleApi } from '~/lib/redux/services/modules.services';
+import OneSignalInit from '../OneSignalInit';
 // import { onMessage } from 'firebase/messaging';
 // import { messaging } from '../../firebase-config';
 
@@ -83,7 +84,12 @@ const ProtectedLayout = ({ children }: RootLayoutProps) => {
     fetchRelatedPermissionKeyForASystemContext(data?.permissionKeys);
   }, [data]);
 
-  return <Layout>{children}</Layout>;
+  return (
+    <Layout>
+      <OneSignalInit />
+      {children}
+    </Layout>
+  );
 };
 
 export default ProtectedLayout;

@@ -69,8 +69,8 @@ const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
   };
 
   const feedback = useMemo(() => {
-    return feedbackData?.data?.data?.feedback;
-  }, [feedbackData, data]);
+    return feedbackData?.data?.feedback;
+  }, [feedbackData]);
 
   const feedbackNotFound = useMemo(() => {
     const notFound = !feedback && !isLoading;
@@ -138,7 +138,7 @@ const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
   return (
     <>
       <GenericDrawer isOpen={isOpen} onClose={closeDrawer} maxWidth="507px">
-        {!isLoading && !feedback && (
+        {feedbackNotFound && (
           <GenericErrorState
             title="Error: Feedback Not Found!"
             subtitle="The Selected Feedback Could not be found"
@@ -175,7 +175,7 @@ const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
                         <Text as="button" type="submit" cursor="pointer">
                           Save Changes
                         </Text>
-                        {!feedback.resolved && (
+                        {!feedback?.resolved && (
                           <Text
                             as="button"
                             onClick={handleResolveFeedback}

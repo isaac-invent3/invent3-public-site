@@ -29,12 +29,13 @@ export default function OneSignalInit() {
             enable: true,
           },
         });
+        await OneSignal.setExternalUserId(session?.data?.user?.userId);
 
-        // Listen to subscription change and set external user ID
-        OneSignal.Notifications.addEventListener('subscribe', async () => {
-          // Example: set dynamic external user ID (replace with real logic)
-          await OneSignal.setExternalUserId(session?.data?.user?.userId);
-        });
+        // // Listen to subscription change and set external user ID
+        // OneSignal.Notifications.addEventListener('subscribe', async () => {
+        //   console.log({});
+        //   // Example: set dynamic external user ID (replace with real logic)
+        // });
       });
     }
   }, []);

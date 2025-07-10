@@ -34,10 +34,8 @@ interface FeedbackAttachment extends BaseEntity {
 }
 
 interface SingleFeedback {
-  data: {
-    feedback: Feedback;
-    feedbackAttachments: ListResponse<FeedbackAttachment>;
-  };
+  feedback: Feedback;
+  feedbackAttachments: ListResponse<FeedbackAttachment>;
 }
 
 interface CreateFeedbackAttachmentPayload {

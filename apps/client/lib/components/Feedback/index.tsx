@@ -174,12 +174,10 @@ const FeedbackOverview = () => {
               emptyLines={25}
               shouldHideFooter={true}
               handleSelectRow={(row) => {
-                if (row) {
-                  updateSearchParam(
-                    SYSTEM_CONTEXT_DETAILS.FEEDBACK.slug,
-                    row.feedbackId
-                  );
-                }
+                updateSearchParam(
+                  SYSTEM_CONTEXT_DETAILS.FEEDBACK.slug,
+                  row.feedbackId
+                );
               }}
             />
           </Flex>

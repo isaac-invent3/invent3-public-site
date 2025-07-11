@@ -1,81 +1,53 @@
-import { Box, BoxProps, Flex, FlexProps, Stack } from '@chakra-ui/react';
+import { DataTable } from '@repo/ui/components';
+import { createColumnHelper } from '@tanstack/react-table';
 import React from 'react';
 
 interface CustomTableProps {
-  headers: React.ReactNode[];
+  headers: string[];
   data: React.ReactNode[][];
-  containerProps?: BoxProps;
-  headerProps?: FlexProps;
-  rowProps?: FlexProps;
-  cellProps?: BoxProps;
 }
 
-const UploadStatusTable: React.FC<CustomTableProps> = ({
-  headers,
-  data,
-  containerProps,
-  headerProps,
-  rowProps,
-  cellProps,
-}) => {
-  return (
-    <Box
-      borderWidth="1px"
-      borderRadius="md"
-      overflow="hidden"
-      w="full"
-      {...containerProps}
-    >
-      {/* Header Row */}
-      <Flex
-        bg="#B4BFCAE5"
-        borderBottomWidth="1px"
-        borderColor="#BBBBBB"
-        p="16px"
-        {...headerProps}
-      >
-        {headers.map((header, index) => (
-          <Box
-            color="black"
-            fontSize="12px"
-            fontWeight={500}
-            textTransform="uppercase"
-            key={index}
-            flex="1"
-            {...cellProps}
-          >
-            {header}
-          </Box>
-        ))}
-      </Flex>
+const UploadStatusTable: React.FC<CustomTableProps> = ({ headers, data }) => {
+  const convertedRows = data.map((row) => {
+    const obj: { [key: string]: React.ReactNode } = {};
+    headers.forEach((header, i) => {
+      obj[`col-${i}`] = row[i];
+    });
+    return obj;
+  });
 
-      {/* Data Rows */}
-      <Stack spacing={0}>
-        {data.map((row, index) => (
-          <Flex
-            key={index}
-            borderBottomWidth="1px"
-            borderColor="#BBBBBB"
-            px="16px"
-            py="10px"
-            {...rowProps}
-          >
-            {row.map((cell, cellIndex) => (
-              <Box
-                flex="1"
-                color="black"
-                fontSize="12px"
-                fontWeight={500}
-                key={`cell-${index}-${cellIndex}`}
-                {...cellProps}
-              >
-                {cell}
-              </Box>
-            ))}
-          </Flex>
-        ))}
-      </Stack>
-    </Box>
+  const columnHelper = createColumnHelper<{ [key: string]: React.ReactNode }>();
+
+  const columns = headers.map((header, i) =>
+    columnHelper.accessor(`col-${i}`, {
+      header,
+      cell: (info) => info.getValue(),
+      enableSorting: false,
+    })
+  );
+
+  return (
+    <DataTable
+      columns={columns}
+      data={convertedRows ?? []}
+      showFooter={false}
+      emptyLines={3}
+      maxTdWidth="250px"
+      customThStyle={{
+        paddingLeft: '16px',
+        paddingTop: '17px',
+        paddingBottom: '17px',
+        fontWeight: 700,
+        bgColor: '#B4BFCA',
+      }}
+      customTdStyle={{
+        paddingLeft: '16px',
+        paddingTop: '16px',
+        paddingBottom: '16px',
+      }}
+      customTBodyRowStyle={{ verticalAlign: 'top' }}
+      customTableContainerStyle={{ rounded: '4px' }}
+    />
   );
 };
 

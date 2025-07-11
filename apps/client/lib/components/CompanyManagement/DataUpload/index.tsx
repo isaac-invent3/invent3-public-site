@@ -37,16 +37,7 @@ const CompanyUpload = () => {
           <Tab>Document Upload</Tab>
         </TabList>
 
-        <Box
-          width="full"
-          bgColor="white"
-          pt={{ base: '24px' }}
-          px="16px"
-          pb={{ base: '16px', lg: '40px' }}
-          rounded="6px"
-          minH="60vh"
-          mt="16px"
-        >
+        <Box>
           <TabPanels>
             <TabPanel>
               <VStack

@@ -4,13 +4,7 @@ import DataUpload from '../../CompanyManagement/DataUpload/DataUpload';
 
 const DataImportExportTab = () => {
   return (
-    <VStack
-      spacing="24px"
-      width="full"
-      alignItems="flex-start"
-      bgColor="white"
-      p="24px"
-    >
+    <VStack spacing="24px" width="full" alignItems="flex-start">
       <DataUpload />
     </VStack>
   );

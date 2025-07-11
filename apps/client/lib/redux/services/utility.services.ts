@@ -75,7 +75,7 @@ export const utilityApi = createApi({
         body,
       }),
     }),
-    uploadData: builder.mutation<void, any>({
+    uploadData: builder.mutation<any, any>({
       query: (body) => ({
         url: `/Invent3Pro/Bulk-upload`,
         method: 'POST',

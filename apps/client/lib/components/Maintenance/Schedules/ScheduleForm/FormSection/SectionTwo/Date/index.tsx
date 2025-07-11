@@ -1,9 +1,4 @@
-import {
-  Icon,
-  useDisclosure,
-  // useToast,
-  VStack,
-} from '@chakra-ui/react';
+import { Icon, useDisclosure, useToast, VStack } from '@chakra-ui/react';
 import { useFormikContext } from 'formik';
 import moment from 'moment';
 
@@ -50,7 +45,7 @@ const Date = (props: DateProps) => {
     onOpen: onOpenRecurrence,
     onClose: onCloseRecurrence,
   } = useDisclosure();
-  // const toast = useToast();
+  const toast = useToast();
   const { handleSubmit } = useCustomMutation();
   const [validateScheduleFirstInstanceSchedule, { isLoading }] =
     useValidateFirstInstanceScheduledDateMutation({});
@@ -97,32 +92,32 @@ const Date = (props: DateProps) => {
       false
     );
 
-    // if (!response?.data) {
-    setValues({
-      ...values,
-      ...formattedInfo,
-      frequencyId: info.frequency?.value as number,
-      scheduledDate: startDateTime,
-      endDate: endDateTime,
-    });
-    dispatch(
-      updateScheduleForm({
-        frequencyName: info.frequency?.label,
-        firstInstanceDate: response?.data?.data,
+    if (!response?.data) {
+      setValues({
+        ...values,
         ...formattedInfo,
-      })
-    );
-    onCloseRecurrence();
-    // } else {
-    //   toast({
-    //     title: 'Error',
-    //     description: 'Selected Recurrence does not have an instance',
-    //     status: 'error',
-    //     duration: 5000,
-    //     isClosable: true,
-    //     position: 'top-right',
-    //   });
-    // }
+        frequencyId: info.frequency?.value as number,
+        scheduledDate: startDateTime,
+        endDate: endDateTime,
+      });
+      dispatch(
+        updateScheduleForm({
+          frequencyName: info.frequency?.label,
+          firstInstanceDate: response?.data?.data,
+          ...formattedInfo,
+        })
+      );
+      onCloseRecurrence();
+    } else {
+      toast({
+        title: 'Error',
+        description: 'Selected Recurrence does not have an instance',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'top-right',
+      });
+    }
   };
 
   return (

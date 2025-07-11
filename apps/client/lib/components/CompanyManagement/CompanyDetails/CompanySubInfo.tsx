@@ -29,7 +29,6 @@ const CompanySubInfo = () => {
               `${company?.contactPersonEmail ?? ''}`,
             ],
           ]}
-          containerProps={{ flex: { base: 1, md: 2 } }}
         />
       </VStack>
       <VStack flex={{ base: 1, md: 2 }} alignItems="start">

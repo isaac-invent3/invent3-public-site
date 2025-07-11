@@ -7,6 +7,7 @@ import {
   SYSTEM_CONTEXT_TYPE,
 } from '../utils/constants';
 import { ModuleKey } from './role.interfaces';
+import { BaseEntity } from '@repo/interfaces';
 
 interface Option {
   label: string;
@@ -194,6 +195,34 @@ type ValidFileType =
   | 'text/plain'
   | 'image/jpeg';
 
+interface DataUpload {
+  isNew: boolean;
+  createdDate: Date;
+  createdBy: string;
+  lastModifiedDate: Date;
+  lastModifiedBy: string;
+  isDeleted: boolean;
+  deletedDate: Date;
+  deletedBy: string;
+  guid: string;
+  dataUploadHistoryId: number;
+  dataUploadId: number;
+  stageName: string;
+  stageId: number;
+  stageStatusId: number;
+  stageStatusName: string;
+  dateCreated: Date;
+}
+
+interface FailedUploadItems extends BaseEntity {
+  dataUploadFailedItemId: number;
+  dataUploadId: number;
+  tabName: string;
+  cell: string;
+  reason: string;
+  dateCreated: Date;
+}
+
 export type {
   ActionType,
   AppConfig,
@@ -215,4 +244,6 @@ export type {
   SystemContextDetail,
   ExportTableName,
   ValidFileType,
+  DataUpload,
+  FailedUploadItems,
 };

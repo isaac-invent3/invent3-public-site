@@ -28,13 +28,14 @@ import {
   CreateFeedbackPayload,
   CreateFeedbackWithAttachmentPayload,
 } from '~/lib/interfaces/feedback.interfaces';
-import { SideBarData } from '~/lib/interfaces/general.interfaces';
+import { Document, SideBarData } from '~/lib/interfaces/general.interfaces';
 import { filterSidebarData } from '~/lib/layout/ProtectedPage/SideBar/utils';
 import { useCreateFeedbackWithAttachmentMutation } from '~/lib/redux/services/feedback.services';
 import { createFeedbackSchema } from '~/lib/schemas/feedback.schema';
 import { generateOptions } from '~/lib/utils/helperFunctions';
 import { CloseIcon } from '../../CustomIcons';
 import FeedbackFormSuccessModal from './FeedbackFormSuccessModal';
+import DocumentUploadAndView from '../../Common/DocumentUploadAndView';
 
 interface FeedbackFormModalProps {
   isOpen: boolean;
@@ -48,7 +49,7 @@ interface FeedbackFormPayload {
     feedbackTypeId: number | null;
   };
 
-  createFeedbackAttachmentDto: UploadedFile[];
+  createFeedbackAttachmentDto: Document[];
 }
 
 const FeedbackFormModal = (props: FeedbackFormModalProps) => {
@@ -92,8 +93,8 @@ const FeedbackFormModal = (props: FeedbackFormModalProps) => {
       const attachmentPayload: CreateFeedbackAttachmentPayload[] =
         data.createFeedbackAttachmentDto.map((item) => {
           return {
-            attachmentName: item?.fileName!,
-            base64Attachment: item?.base64!,
+            attachmentName: item?.documentName!,
+            base64Attachment: item?.base64Document!,
             base64Prefix: item?.base64Prefix!,
             createdBy: session?.user.username!,
           };
@@ -135,6 +136,16 @@ const FeedbackFormModal = (props: FeedbackFormModalProps) => {
   useEffect(() => {
     fetchFeedbackTypes();
   }, []);
+
+  const handleRemoveDocument = (document: Document) => {
+    if (formik.values.createFeedbackAttachmentDto) {
+      const updatedDocuments: Document[] =
+        formik.values?.createFeedbackAttachmentDto.filter(
+          (old: Document) => old !== document
+        );
+      formik.setFieldValue('createFeedbackAttachmentDto', updatedDocuments);
+    }
+  };
 
   return (
     <GenericModal
@@ -228,15 +239,22 @@ const FeedbackFormModal = (props: FeedbackFormModalProps) => {
                 description="Attach related files for this asset"
                 isRequired
               >
-                <FileUpload
-                  files={formik.values.createFeedbackAttachmentDto}
-                  error={formik.errors.createFeedbackAttachmentDto?.toString()}
-                  handleAddFiles={(files) => {
-                    formik.setFieldValue('createFeedbackAttachmentDto', [
-                      ...formik.values.createFeedbackAttachmentDto,
-                      ...files,
-                    ]);
+                <DocumentUploadAndView
+                  variant="secondary"
+                  handleRemoveDocuments={(documents) => {
+                    handleRemoveDocument(documents);
                   }}
+                  handleAddDocuments={(documents) => {
+                    formik.setFieldValue(
+                      'createFeedbackAttachmentDto',
+                      documents
+                    );
+                  }}
+                  documents={formik.values.createFeedbackAttachmentDto ?? []}
+                  setError={(error) =>
+                    formik.setErrors({ createFeedbackAttachmentDto: error })
+                  }
+                  error={formik.errors.createFeedbackAttachmentDto?.toString()}
                 />
               </FormInputWrapper>
             </VStack>

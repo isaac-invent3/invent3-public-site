@@ -10,9 +10,9 @@ const createFeedbackSchema = Yup.object({
   createFeedbackAttachmentDto: Yup.array()
     .of(
       Yup.object().shape({
-        fileId: Yup.number().nullable(),
-        fileName: Yup.string().required(),
-        base64: Yup.string().required(),
+        documentId: Yup.number().nullable(),
+        documentName: Yup.string().required(),
+        base64Document: Yup.string().required(),
         base64Prefix: Yup.string().nullable(),
       })
     )
@@ -25,6 +25,7 @@ const updateFeedbackSchema = Yup.object({
   resolutionNote: Yup.string().required(
     'A Resolution Note for the feedback must be created!'
   ),
+  statusId: Yup.number(),
 });
 
 export { createFeedbackSchema, updateFeedbackSchema };

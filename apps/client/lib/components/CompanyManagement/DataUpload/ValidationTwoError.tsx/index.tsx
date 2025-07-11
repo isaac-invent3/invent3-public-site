@@ -1,14 +1,28 @@
 import { Text, VStack } from '@chakra-ui/react';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
+import { FailedUploadItems } from '~/lib/interfaces/general.interfaces';
+import { useGetDataUploadFailedItemByUploadIdQuery } from '~/lib/redux/services/utility.services';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
-const ValidationTwoError = () => {
-  const columnHelper = createColumnHelper<{ [key: string]: React.ReactNode }>();
+const ValidationTwoError = ({
+  dataUploadId,
+}: {
+  dataUploadId: number | undefined;
+}) => {
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+  const [pageNumber, setPageNumber] = useState(1);
+  const { data, isLoading, isFetching } =
+    useGetDataUploadFailedItemByUploadIdQuery(
+      { id: dataUploadId!, pageSize, pageNumber },
+      { skip: !dataUploadId }
+    );
+  const columnHelper = createColumnHelper<FailedUploadItems>();
 
   const columns = useMemo(
     () => [
-      columnHelper.accessor('tab', {
+      columnHelper.accessor('tabName', {
         cell: (info) => info.getValue(),
         header: 'Tab',
         enableSorting: false,
@@ -18,33 +32,39 @@ const ValidationTwoError = () => {
         header: 'Cell',
         enableSorting: false,
       }),
-      columnHelper.accessor('code', {
+      columnHelper.accessor('reason', {
         cell: (info) => info.getValue(),
         header: 'Error Code',
         enableSorting: false,
       }),
-      columnHelper.accessor('action', {
+      columnHelper.accessor('dataUploadFailedItemId', {
         cell: (info) => info.getValue(),
         header: 'Action',
         enableSorting: false,
       }),
     ],
-    [] //eslint-disable-line
+    [data?.data?.items] //eslint-disable-line
   );
 
   return (
     <VStack width="full" alignItems="flex-start" spacing="8px">
       <Text size="md" fontWeight={700}>
         <Text as="span" color="error.500" size="md" fontWeight={700}>
-          10 {''}
+          {data?.data?.totalItems ?? 0} {''}
         </Text>
         items failed - Validating Template Phase 2
       </Text>
       <DataTable
         columns={columns}
-        data={[]}
-        showFooter={false}
+        data={data?.data?.items ?? []}
+        showFooter={data?.data ? data?.data?.totalPages > 1 : false}
         emptyLines={3}
+        isLoading={isLoading}
+        isFetching={isFetching}
+        setPageNumber={setPageNumber}
+        setPageSize={setPageSize}
+        pageNumber={pageNumber}
+        pageSize={pageSize}
         maxTdWidth="250px"
         customThStyle={{
           paddingLeft: '16px',

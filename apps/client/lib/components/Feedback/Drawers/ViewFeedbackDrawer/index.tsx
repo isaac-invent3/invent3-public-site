@@ -50,8 +50,7 @@ const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
   const session = useSession();
   const user = session?.data?.user;
   const feedbackSlug = SYSTEM_CONTEXT_DETAILS.FEEDBACK.slug;
-  const { getSearchParam, clearSearchParamsAfter, removeSearchParam } =
-    useCustomSearchParams();
+  const { getSearchParam, clearSearchParamsAfter } = useCustomSearchParams();
 
   const feedbackId = getSearchParam(feedbackSlug)
     ? Number(getSearchParam(feedbackSlug))
@@ -99,6 +98,7 @@ const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
     initialValues: {
       assignedTo: feedback?.assignedTo ?? null,
       resolutionNote: feedback?.resolutionNote ?? '',
+      statusId: feedback?.statusId ?? null,
     },
     enableReinitialize: true,
     validationSchema: updateFeedbackSchema,
@@ -109,6 +109,7 @@ const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
 
       const payload = {
         ...values,
+        feedbackId: feedback?.feedbackId!,
         lastModifiedBy: session?.user.username!,
       };
 
@@ -117,16 +118,15 @@ const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
         data: payload,
       });
 
-      if (!response) return;
-
-      toast({
-        title: 'Feedback Updated Successfully!',
-        status: 'success',
-        position: 'top-right',
-      });
-
-      resetForm();
-      closeDrawer();
+      if (response?.data) {
+        toast({
+          title: 'Feedback Updated Successfully!',
+          status: 'success',
+          position: 'top-right',
+        });
+        resetForm();
+        closeDrawer();
+      }
     },
   });
 
@@ -141,7 +141,10 @@ const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
         id: feedback?.feedbackId!,
         lastModifiedBy: session?.user.username!,
       },
-      'Feedback Resolved Successfully!'
+      'Feedback Resolved Successfully!',
+      () => {
+        closeDrawer();
+      }
     );
   };
 
@@ -155,12 +158,11 @@ const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
           />
         )}
 
-        {isLoading ||
-          (isFetching && (
-            <VStack width="full" minH="100vh" justifyContent="center">
-              <LoadingSpinner />
-            </VStack>
-          ))}
+        {(isLoading || isFetching) && (
+          <VStack width="full" minH="100vh" justifyContent="center">
+            <LoadingSpinner />
+          </VStack>
+        )}
         {feedback && !isLoading && !isFetching && (
           <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
             <FormikProvider value={formik}>

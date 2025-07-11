@@ -393,6 +393,13 @@ const ASSET_BULK_ACTION_TYPE = {
   ASSET_DISPOSAL: 4,
 };
 
+const DATA_UPLOAD_STATUS = {
+  InProgress: 1,
+  Completed: 2,
+  Failed: 3,
+  Done: 4,
+};
+
 export {
   AREA_ENUM,
   ASSET_GROUP_TYPE,
@@ -422,4 +429,5 @@ export {
   COMPLIANT_STATUS,
   APPROVAL_WORKFLOW_STATUSES,
   ASSET_BULK_ACTION_TYPE,
+  DATA_UPLOAD_STATUS,
 };

@@ -15,7 +15,7 @@ import {
   FormInputWrapper,
   SlideTransition,
 } from '@repo/ui/components';
-import { FILE_ICONS } from '~/lib/utils/constants';
+import { DATA_UPLOAD_STATUS, FILE_ICONS } from '~/lib/utils/constants';
 import DetailHeader from '../../UI/DetailHeader';
 import InfoCard from '../../UI/InfoCard';
 import UploadStatusTable from './UploadStatusTable';
@@ -23,7 +23,10 @@ import DocumentUploadAndView from '../../Common/DocumentUploadAndView';
 import { useState } from 'react';
 import { Document } from '~/lib/interfaces/general.interfaces';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { useUploadDataMutation } from '~/lib/redux/services/utility.services';
+import {
+  useGetMostRecentUploadQuery,
+  useUploadDataMutation,
+} from '~/lib/redux/services/utility.services';
 import { getSession } from 'next-auth/react';
 import { CloseIcon } from '../../CustomIcons';
 import ValidationOneErrorModal from './ValidationOneErrorModal';
@@ -43,12 +46,25 @@ const DataUpload = () => {
   const { handleSubmit } = useCustomMutation();
   const [uploadData, { isLoading, isSuccess, isError }] =
     useUploadDataMutation();
+  const { data: recentUpload } = useGetMostRecentUploadQuery({});
+
+  const uploadStatus = recentUpload?.data?.stageStatusId ?? null;
+  // const completedStatus = [DATA_UPLOAD_STATUS.InProgress, DATA_UPLOAD_STATUS.Completed]
+
   const data = [
     [
       'Uploading Template',
       // For instance, you could even pass in a custom component:
       <Box>
-        <HStack display={isSuccess || isError ? 'flex' : 'none'}>
+        <HStack
+          display={
+            uploadStatus === DATA_UPLOAD_STATUS.InProgress ||
+            isSuccess ||
+            isError
+              ? 'flex'
+              : 'none'
+          }
+        >
           <CheckIcon color="#00A129" />
           <Text as="span" color="neutral.700">
             Completed
@@ -70,7 +86,7 @@ const DataUpload = () => {
     [
       'Validating Template Phase 1',
       <Box>
-        {isSuccess && (
+        {(isSuccess || uploadStatus === DATA_UPLOAD_STATUS.InProgress) && (
           <HStack>
             <CheckIcon color="#00A129" />
             <Text as="span" color="neutral.700">
@@ -104,9 +120,11 @@ const DataUpload = () => {
     ],
     [
       'Validating Template Phase 2',
-      <Text color="neutral.700">
-        {isSuccess ? 'Validating...' : 'Pending...'}
-      </Text>,
+      <Box>
+        <Text color="neutral.700">
+          {isSuccess ? 'Validating...' : 'Pending...'}
+        </Text>
+      </Box>,
       hasPhase2Error ? (
         <Text
           as="span"
@@ -256,7 +274,9 @@ const DataUpload = () => {
                   trigger={showPhase2Error}
                   style={{ marginTop: '30px' }}
                 >
-                  <ValidationTwoError />
+                  <ValidationTwoError
+                    dataUploadId={recentUpload?.data?.dataUploadId}
+                  />
                 </SlideTransition>
               </VStack>
             </FormInputWrapper>

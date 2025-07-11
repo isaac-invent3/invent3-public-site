@@ -87,7 +87,7 @@ const FeedbackDrawerHeader = (props: FeedbackDrawerHeaderProps) => {
             <TicketInfoDropDown
               width="120px"
               label="Status"
-              name="statusID"
+              name="statusId"
               isLoading={isFetchingTaskStatuses}
               colorCode={getItemColorCode(values.ticketStatusId, 'status')}
               options={generateOptions(

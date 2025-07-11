@@ -29,8 +29,7 @@ export default function OneSignalInit() {
             enable: true,
           },
         });
-        await OneSignal.setExternalUserId(session?.data?.user?.userId);
-
+        await OneSignal.login(session?.data?.user?.username);
         // // Listen to subscription change and set external user ID
         // OneSignal.Notifications.addEventListener('subscribe', async () => {
         //   console.log({});

@@ -50,7 +50,8 @@ const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
   const session = useSession();
   const user = session?.data?.user;
   const feedbackSlug = SYSTEM_CONTEXT_DETAILS.FEEDBACK.slug;
-  const { getSearchParam, clearSearchParamsAfter } = useCustomSearchParams();
+  const { getSearchParam, clearSearchParamsAfter, removeSearchParam } =
+    useCustomSearchParams();
 
   const feedbackId = getSearchParam(feedbackSlug)
     ? Number(getSearchParam(feedbackSlug))
@@ -64,7 +65,7 @@ const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
   );
 
   const closeDrawer = () => {
-    clearSearchParamsAfter(feedbackSlug, { removeSelf: true });
+    removeSearchParam(feedbackSlug);
     onClose();
   };
 
@@ -138,19 +139,19 @@ const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
   return (
     <>
       <GenericDrawer isOpen={isOpen} onClose={closeDrawer} maxWidth="507px">
-        {feedbackNotFound && (
+        {feedbackId && feedbackNotFound && (
           <GenericErrorState
             title="Error: Feedback Not Found!"
             subtitle="The Selected Feedback Could not be found"
           />
         )}
 
-        {isLoading && !feedback && (
+        {feedbackId && isLoading && !feedback && (
           <VStack width="full" minH="100vh" justifyContent="center">
             <LoadingSpinner />
           </VStack>
         )}
-        {feedback && !isLoading && (
+        {feedbackId && feedback && !isLoading && (
           <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
             <FormikProvider value={formik}>
               <DrawerHeader p={0} m={0}>

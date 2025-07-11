@@ -21,7 +21,6 @@ import { FilterIcon } from '../CustomIcons';
 import PageHeader from '../UI/PageHeader';
 import FeedbackTable from './FeedbackTable';
 import ExportButtonPopover from './Common/ExportButtonPopover';
-import { useSearchParams } from 'next/navigation';
 import ViewFeedbackDrawer from './Drawers/ViewFeedbackDrawer';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 
@@ -178,6 +177,7 @@ const FeedbackOverview = () => {
                   SYSTEM_CONTEXT_DETAILS.FEEDBACK.slug,
                   row.feedbackId
                 );
+                onOpenDetails();
               }}
             />
           </Flex>

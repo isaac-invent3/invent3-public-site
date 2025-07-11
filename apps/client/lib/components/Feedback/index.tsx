@@ -177,7 +177,7 @@ const FeedbackOverview = () => {
                   SYSTEM_CONTEXT_DETAILS.FEEDBACK.slug,
                   row.feedbackId
                 );
-                onOpenDetails();
+                // onOpenDetails();
               }}
             />
           </Flex>

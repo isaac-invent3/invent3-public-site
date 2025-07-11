@@ -57,7 +57,11 @@ const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
     ? Number(getSearchParam(feedbackSlug))
     : null;
 
-  const { data: feedbackData, isLoading } = useGetAFeedbackQuery(
+  const {
+    data: feedbackData,
+    isLoading,
+    isFetching,
+  } = useGetAFeedbackQuery(
     { id: feedbackId! },
     {
       skip: !feedbackId || Boolean(data),
@@ -65,7 +69,7 @@ const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
   );
 
   const closeDrawer = () => {
-    removeSearchParam(feedbackSlug);
+    clearSearchParamsAfter(feedbackSlug, { removeSelf: true });
     onClose();
   };
 
@@ -74,7 +78,7 @@ const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
   }, [feedbackData]);
 
   const feedbackNotFound = useMemo(() => {
-    const notFound = !feedback && !isLoading;
+    const notFound = !feedback && !isLoading && !isFetching;
     if (notFound) clearSearchParamsAfter(feedbackSlug);
 
     return notFound;
@@ -92,7 +96,11 @@ const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
     useResolveFeedbackMutation();
 
   const formik = useFormik<Partial<Feedback>>({
-    initialValues: feedback || {},
+    initialValues: {
+      assignedTo: feedback?.assignedTo ?? null,
+      resolutionNote: feedback?.resolutionNote ?? '',
+    },
+    enableReinitialize: true,
     validationSchema: updateFeedbackSchema,
     onSubmit: async (values, { resetForm }) => {
       const session = await getSession();
@@ -118,6 +126,7 @@ const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
       });
 
       resetForm();
+      closeDrawer();
     },
   });
 
@@ -139,19 +148,20 @@ const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
   return (
     <>
       <GenericDrawer isOpen={isOpen} onClose={closeDrawer} maxWidth="507px">
-        {feedbackId && feedbackNotFound && (
+        {feedbackNotFound && (
           <GenericErrorState
             title="Error: Feedback Not Found!"
             subtitle="The Selected Feedback Could not be found"
           />
         )}
 
-        {feedbackId && isLoading && !feedback && (
-          <VStack width="full" minH="100vh" justifyContent="center">
-            <LoadingSpinner />
-          </VStack>
-        )}
-        {feedbackId && feedback && !isLoading && (
+        {isLoading ||
+          (isFetching && (
+            <VStack width="full" minH="100vh" justifyContent="center">
+              <LoadingSpinner />
+            </VStack>
+          ))}
+        {feedback && !isLoading && !isFetching && (
           <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
             <FormikProvider value={formik}>
               <DrawerHeader p={0} m={0}>
@@ -173,7 +183,12 @@ const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
                         alignItems="flex-start"
                         spacing="16px"
                       >
-                        <Text as="button" type="submit" cursor="pointer">
+                        <Text
+                          as="button"
+                          type="submit"
+                          cursor="pointer"
+                          onClick={() => console.log({ error: formik.errors })}
+                        >
                           Save Changes
                         </Text>
                         {!feedback?.resolved && (

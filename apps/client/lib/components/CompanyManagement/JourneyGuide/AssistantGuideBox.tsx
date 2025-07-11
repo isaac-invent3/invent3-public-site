@@ -64,9 +64,9 @@ const AssistantGuideBox = (props: AssistantGuideBoxProps) => {
         minH="40px"
         {...containerStyle}
         display={
-          journeyGuideData
+          journeyGuideData?.data
             ? 'none'
-            : journeyGuideData && activeStep === guideSteps.length
+            : journeyGuideData?.data && activeStep === guideSteps.length
               ? 'none'
               : 'flex'
         }

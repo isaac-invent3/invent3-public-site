@@ -163,15 +163,15 @@ const FeedbackTable = (props: FeedbackTableProps) => {
         }),
       ];
 
-      const Popover = columnHelper.accessor('statusId', {
-        cell: (info) => <PopoverAction feedback={info.row.original} />,
-        header: '',
-        enableSorting: false,
-      });
+      // const Popover = columnHelper.accessor('statusId', {
+      //   cell: (info) => <PopoverAction feedback={info.row.original} />,
+      //   header: '',
+      //   enableSorting: false,
+      // });
 
-      if (showPopover) {
-        baseColumns.push(Popover);
-      }
+      // if (showPopover) {
+      //   baseColumns.push(Popover);
+      // }
 
       return baseColumns;
     },

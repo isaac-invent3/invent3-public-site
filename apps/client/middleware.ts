@@ -21,7 +21,7 @@ const publicRoutes = [
   '/blog',
 ];
 const protectedGlobalRoute = ['/dashboard'];
-const protectedSuperAdminRoute = ['/feedback'];
+const protectedSuperAdminRoute = [''];
 const protectedCMFAndClientAdminRoute = ['/facility-management'];
 
 const SECRET = process.env.NEXTAUTH_SECRET;

@@ -1,14 +1,28 @@
-import { Flex, Heading, HStack, Stack, Text, VStack } from '@chakra-ui/react';
+import {
+  Flex,
+  Heading,
+  HStack,
+  Skeleton,
+  Stack,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 import { ReactBarcode, Renderer } from 'react-jsbarcode';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import { useAppSelector } from '~/lib/redux/hooks';
 
 const Overview = () => {
-  const assetData = useAppSelector((state) => state.asset.asset);
+  const {
+    asset: assetData,
+    assetImages,
+    generalInfo,
+  } = useAppSelector((state) => state.asset);
 
   if (!assetData) {
     return null;
   }
+
+  const primaryImage = assetImages?.find((item) => item.isPrimaryImage);
 
   const {
     serialNo,
@@ -18,8 +32,6 @@ const Overview = () => {
     assetCategory,
     brandName,
     modelRef,
-    primaryImage,
-    primaryImagePrefix,
     displayColorCode,
   } = assetData;
 
@@ -51,24 +63,36 @@ const Overview = () => {
       alignItems="flex-start"
       direction={{ base: 'column', sm: 'row' }}
     >
-      <Flex
-        height={{ base: '97px', md: '175px' }}
-        width={{ base: '120px', md: '216px' }}
-        rounded="16px"
-        bgColor="white"
-        overflow="hidden"
-        flexShrink={0}
-      >
-        <Flex
-          width="full"
-          height="full"
-          bgSize="contain"
-          bgRepeat="no-repeat"
-          bgPosition="center"
-          mx="8px"
-          bgImage={`${primaryImagePrefix}${primaryImage}`}
+      {generalInfo.loadingImage ? (
+        <Skeleton
+          height={{ base: '97px', md: '175px' }}
+          width={{ base: '120px', md: '216px' }}
+          rounded="16px"
+          bgColor="white"
+          overflow="hidden"
+          flexShrink={0}
         />
-      </Flex>
+      ) : (
+        <Flex
+          height={{ base: '97px', md: '175px' }}
+          width={{ base: '120px', md: '216px' }}
+          rounded="16px"
+          bgColor="white"
+          overflow="hidden"
+          flexShrink={0}
+          objectFit="cover"
+        >
+          <Flex
+            width="full"
+            height="full"
+            bgSize="contain"
+            bgRepeat="no-repeat"
+            bgPosition="center"
+            mx="8px"
+            bgImage={`${primaryImage?.base64Prefix}${primaryImage?.photoImage}`}
+          />
+        </Flex>
+      )}
       <VStack alignItems="flex-start" width="full" spacing="16px">
         <HStack spacing="16px">
           <Heading

@@ -1,16 +1,11 @@
 'use client';
 
-import { Flex, HStack, Icon } from '@chakra-ui/react';
+import { Flex, HStack } from '@chakra-ui/react';
 
 import Header from './Header';
 import SideBar from './SideBar';
 import { useEffect, useState } from 'react';
 import CountDownTimer from './CountDownTimer';
-
-import {
-  CaretLeftIcon,
-  CaretRightIcon,
-} from '~/lib/components/CustomIcons/layout';
 import CompanyPageHeader from '~/lib/components/CompanyManagement/CompanyPageHeader';
 import Notes from './Notes';
 import { getSession, useSession } from 'next-auth/react';
@@ -72,6 +67,7 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
       bgColor="#D9D9D9"
       overflowY="scroll"
       position="relative"
+      overflowX="hidden"
     >
       <Notes isCollapse={isCollapse} />
       {showCountdown && <CountDownTimer />}

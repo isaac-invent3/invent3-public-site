@@ -5,6 +5,7 @@ import {
   Flex,
   Heading,
   Text,
+  useDisclosure,
   useToast,
   VStack,
 } from '@chakra-ui/react';
@@ -24,6 +25,7 @@ import { authApi } from '~/lib/redux/services/auth.services';
 import { useState } from 'react';
 import TwoFactorValidation from './2FAValidation';
 import { extractTenantFromUrl } from '~/lib/utils/helperFunctions';
+import ForgotPasswordModal from './ForgotPasswordModal';
 
 const SignIn = () => {
   const router = useRouter();
@@ -33,6 +35,7 @@ const SignIn = () => {
   const dispatch = useAppDispatch();
   const [has2fa, setHas2FA] = useState(false);
   const [email, setEmail] = useState('');
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleLogin = async (values: {
     email: string;
@@ -102,124 +105,135 @@ const SignIn = () => {
   });
 
   return (
-    <AuthLayout>
-      {!has2fa && (
-        <Flex
-          mt={{ base: '51px', lg: '0px' }}
-          width="full"
-          maxW="404px"
-          direction="column"
-          pt={{ base: '32px', lg: '71px' }}
-          px={{ base: '16px', lg: '40px' }}
-          pb={{ base: '32px', lg: '43px' }}
-          bgColor="#0000004D"
-          rounded={{ base: '8.49px', lg: '10px' }}
-        >
-          <VStack
-            alignItems="flex-start"
-            spacing={{ base: '13px', lg: '16px' }}
-            mb={{ base: '64px', lg: '77px' }}
+    <>
+      <AuthLayout>
+        {!has2fa && (
+          <Flex
+            mt={{ base: '51px', lg: '0px' }}
+            width="full"
+            maxW="404px"
+            direction="column"
+            pt={{ base: '32px', lg: '71px' }}
+            px={{ base: '16px', lg: '40px' }}
+            pb={{ base: '32px', lg: '43px' }}
+            bgColor="#0000004D"
+            rounded={{ base: '8.49px', lg: '10px' }}
           >
-            <Heading
-              as="h2"
-              fontWeight={800}
-              size={{ base: 'lg', md: '2xl' }}
-              color="neutral.100"
+            <VStack
+              alignItems="flex-start"
+              spacing={{ base: '13px', lg: '16px' }}
+              mb={{ base: '64px', lg: '77px' }}
             >
-              Sign in
-            </Heading>
-            <Text
-              color="neutral.300"
-              fontSize={{ base: '14px', lg: '15px' }}
-              lineHeight={{ base: '16.63px', lg: '17.82px' }}
-              fontWeight={500}
-            >
-              Don't have an account?
-              <Link href="#">
-                <Text fontWeight={700} as="span" color="brand.500">
-                  {' '}
-                  Contact admin
-                </Text>
-              </Link>
-            </Text>
-          </VStack>
-          <FormikProvider value={formik}>
-            <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
-              <VStack
-                spacing="16px"
-                width="full"
-                mb={{ base: '34px', lg: '40px' }}
+              <Heading
+                as="h2"
+                fontWeight={800}
+                size={{ base: 'lg', md: '2xl' }}
+                color="neutral.100"
               >
-                <Field
-                  as={FormTextInput}
-                  name="email"
-                  type="email"
-                  label="Email"
-                  placeholder="Email Address"
-                  variant="secondary"
-                />
-
-                <Flex direction="column" w="full" gap="16px">
+                Sign in
+              </Heading>
+              <Text
+                color="neutral.300"
+                fontSize={{ base: '14px', lg: '15px' }}
+                lineHeight={{ base: '16.63px', lg: '17.82px' }}
+                fontWeight={500}
+              >
+                Don't have an account?
+                <Link href="#">
+                  <Text fontWeight={700} as="span" color="brand.500">
+                    {' '}
+                    Contact admin
+                  </Text>
+                </Link>
+              </Text>
+            </VStack>
+            <FormikProvider value={formik}>
+              <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
+                <VStack
+                  spacing="16px"
+                  width="full"
+                  mb={{ base: '34px', lg: '40px' }}
+                >
                   <Field
                     as={FormTextInput}
-                    name="password"
-                    type="password"
-                    label="Password"
-                    placeholder="Password"
+                    name="email"
+                    type="email"
+                    label="Email"
+                    placeholder="Email Address"
                     variant="secondary"
                   />
 
-                  <Flex
-                    width="full"
-                    justifyContent="flex-end"
-                    color="brand.500"
-                  >
-                    <Link href="/forgot-password">
-                      <Text size="md" fontWeight={700}>
+                  <Flex direction="column" w="full" gap="16px">
+                    <Field
+                      as={FormTextInput}
+                      name="password"
+                      type="password"
+                      label="Password"
+                      placeholder="Password"
+                      variant="secondary"
+                    />
+
+                    <Flex
+                      width="full"
+                      justifyContent="flex-end"
+                      color="brand.500"
+                    >
+                      <Text
+                        size="md"
+                        fontWeight={700}
+                        cursor="pointer"
+                        onClick={onOpen}
+                      >
                         Forgot Password?
                       </Text>
-                    </Link>
+                    </Flex>
                   </Flex>
-                </Flex>
-              </VStack>
+                </VStack>
 
-              <Button
-                isLoading={formik.isSubmitting}
-                loadingText="Logging In..."
-                type="submit"
+                <Button
+                  isLoading={formik.isSubmitting}
+                  loadingText="Logging In..."
+                  type="submit"
+                >
+                  Sign in
+                </Button>
+              </form>
+            </FormikProvider>
+            <Flex
+              alignItems="center"
+              mt={{ base: '54px', lg: '64px' }}
+              mb={{ base: '27px', lg: '32px' }}
+              gap="4px"
+            >
+              <Divider borderColor="white" borderWidth="1px" flexGrow={1} />
+              <Text
+                size="md"
+                fontWeight={400}
+                color="white"
+                whiteSpace="nowrap"
               >
-                Sign in
-              </Button>
-            </form>
-          </FormikProvider>
-          <Flex
-            alignItems="center"
-            mt={{ base: '54px', lg: '64px' }}
-            mb={{ base: '27px', lg: '32px' }}
-            gap="4px"
-          >
-            <Divider borderColor="white" borderWidth="1px" flexGrow={1} />
-            <Text size="md" fontWeight={400} color="white" whiteSpace="nowrap">
-              Or
-            </Text>
-            <Divider borderColor="white" borderWidth="1px" flexGrow={1} />
+                Or
+              </Text>
+              <Divider borderColor="white" borderWidth="1px" flexGrow={1} />
+            </Flex>
+            <SSOLogin />
           </Flex>
-          <SSOLogin />
-        </Flex>
-      )}
-      {has2fa && (
-        <TwoFactorValidation
-          handleSubmit={(code) =>
-            handleLogin({
-              email: formik.values.email,
-              password: formik.values.password,
-              otpCode: code,
-            })
-          }
-          email={email}
-        />
-      )}
-    </AuthLayout>
+        )}
+        {has2fa && (
+          <TwoFactorValidation
+            handleSubmit={(code) =>
+              handleLogin({
+                email: formik.values.email,
+                password: formik.values.password,
+                otpCode: code,
+              })
+            }
+            email={email}
+          />
+        )}
+      </AuthLayout>
+      <ForgotPasswordModal isOpen={isOpen} onClose={onClose} />
+    </>
   );
 };
 

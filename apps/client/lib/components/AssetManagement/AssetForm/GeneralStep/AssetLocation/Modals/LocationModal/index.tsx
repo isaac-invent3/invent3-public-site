@@ -1,5 +1,12 @@
 /* eslint-disable no-unused-vars */
-import { Flex, HStack, ModalBody, SimpleGrid, VStack } from '@chakra-ui/react';
+import {
+  Flex,
+  HStack,
+  ModalBody,
+  SimpleGrid,
+  Stack,
+  VStack,
+} from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 import { useState } from 'react';
 import { locationSchema } from '~/lib/schemas/asset/location.schema';
@@ -156,7 +163,7 @@ const LocationModal = (props: LocationModalProps) => {
                   width="full"
                   alignItems="flex-start"
                   spacing="8px"
-                  columns={{ base: 3 }}
+                  columns={{ base: 1, md: 3 }}
                 >
                   <CountrySelect
                     handleSelect={(option) => {
@@ -177,7 +184,11 @@ const LocationModal = (props: LocationModalProps) => {
                     type="specificById"
                   />
                 </SimpleGrid>
-                <HStack width="full" spacing="16px">
+                <Stack
+                  direction={{ base: 'column', md: 'row' }}
+                  width="full"
+                  spacing="16px"
+                >
                   <Facility
                     handleReadableLocation={handleReadableLocation}
                     lgaId={localLocation.lga.value}
@@ -187,8 +198,12 @@ const LocationModal = (props: LocationModalProps) => {
                     handleReadableLocation={handleReadableLocation}
                     facilityId={localLocation.facility.value}
                   />
-                </HStack>
-                <HStack width="full" spacing="16px">
+                </Stack>
+                <Stack
+                  direction={{ base: 'column', md: 'row' }}
+                  width="full"
+                  spacing="16px"
+                >
                   <Floor
                     handleReadableLocation={handleReadableLocation}
                     buildingId={localLocation.building.value}
@@ -197,8 +212,12 @@ const LocationModal = (props: LocationModalProps) => {
                     handleReadableLocation={handleReadableLocation}
                     floorId={localLocation.floor.value}
                   />
-                </HStack>
-                <HStack width="full" spacing="16px">
+                </Stack>
+                <Stack
+                  direction={{ base: 'column', md: 'row' }}
+                  width="full"
+                  spacing="16px"
+                >
                   <Room
                     handleReadableLocation={handleReadableLocation}
                     departmentId={localLocation.department.value}
@@ -207,15 +226,19 @@ const LocationModal = (props: LocationModalProps) => {
                     handleReadableLocation={handleReadableLocation}
                     roomId={localLocation.room.value}
                   />
-                </HStack>
-                <HStack width="full" spacing="16px">
+                </Stack>
+                <Stack
+                  direction={{ base: 'column', md: 'row' }}
+                  width="full"
+                  spacing="16px"
+                >
                   <Flex width="50%">
                     <Shelf
                       handleReadableLocation={handleReadableLocation}
                       aisleId={localLocation.aisle.value}
                     />
                   </Flex>
-                </HStack>
+                </Stack>
               </VStack>
               {/* Main Form Ends Here */}
               <Flex width="full" justifyContent="flex-end">

@@ -3,25 +3,22 @@ import {
   Box,
   HStack,
   Icon,
-  Progress,
   Stack,
   Text,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import {
-  Button,
-  FileUpload,
-  FormInputWrapper,
-  SlideTransition,
-} from '@repo/ui/components';
+import { Button, FormInputWrapper, SlideTransition } from '@repo/ui/components';
 import { DATA_UPLOAD_STATUS, FILE_ICONS } from '~/lib/utils/constants';
 import DetailHeader from '../../UI/DetailHeader';
 import InfoCard from '../../UI/InfoCard';
 import UploadStatusTable from './UploadStatusTable';
 import DocumentUploadAndView from '../../Common/DocumentUploadAndView';
-import { useState } from 'react';
-import { Document } from '~/lib/interfaces/general.interfaces';
+import { useEffect, useState } from 'react';
+import {
+  DataUploadStageHistory,
+  Document,
+} from '~/lib/interfaces/general.interfaces';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import {
   useGetMostRecentUploadQuery,
@@ -31,6 +28,9 @@ import { getSession } from 'next-auth/react';
 import { CloseIcon } from '../../CustomIcons';
 import ValidationOneErrorModal from './ValidationOneErrorModal';
 import ValidationTwoError from './ValidationTwoError.tsx';
+import useSignalR from '~/lib/hooks/useSignalR';
+import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
+import { dateFormatter } from '~/lib/utils/Formatters';
 
 const DataUpload = () => {
   const headers = ['Stage', 'Status', 'Actions'];
@@ -41,29 +41,25 @@ const DataUpload = () => {
     onClose: onCloseError,
   } = useDisclosure();
   const [showPhase2Error, setShowPhase2Error] = useState(false);
-  const [hasPhase2Error, setHasPhase2Error] = useState(false);
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const { handleSubmit } = useCustomMutation();
   const [uploadData, { isLoading, isSuccess, isError }] =
     useUploadDataMutation();
   const { data: recentUpload } = useGetMostRecentUploadQuery({});
+  const [uploadStatus, setUploadStatus] = useState<number | null>(null);
 
-  const uploadStatus = recentUpload?.data?.stageStatusId ?? null;
-  // const completedStatus = [DATA_UPLOAD_STATUS.InProgress, DATA_UPLOAD_STATUS.Completed]
+  useEffect(() => {
+    if (recentUpload?.data) {
+      setUploadStatus(recentUpload?.data?.stageStatusId);
+    }
+  }, [recentUpload?.data]);
 
   const data = [
     [
       'Uploading Template',
-      // For instance, you could even pass in a custom component:
       <Box>
         <HStack
-          display={
-            uploadStatus === DATA_UPLOAD_STATUS.InProgress ||
-            isSuccess ||
-            isError
-              ? 'flex'
-              : 'none'
-          }
+          display={uploadStatus || isSuccess || isError ? 'flex' : 'none'}
         >
           <CheckIcon color="#00A129" />
           <Text as="span" color="neutral.700">
@@ -75,7 +71,11 @@ const DataUpload = () => {
           Uploading...
         </Text>
         <Text
-          display={!isLoading && !isError && !isSuccess ? 'flex' : 'none'}
+          display={
+            !isLoading && !isError && !isSuccess && !uploadStatus
+              ? 'flex'
+              : 'none'
+          }
           color="neutral.700"
         >
           Pending...
@@ -86,7 +86,7 @@ const DataUpload = () => {
     [
       'Validating Template Phase 1',
       <Box>
-        {(isSuccess || uploadStatus === DATA_UPLOAD_STATUS.InProgress) && (
+        {(isSuccess || uploadStatus) && (
           <HStack>
             <CheckIcon color="#00A129" />
             <Text as="span" color="neutral.700">
@@ -94,7 +94,9 @@ const DataUpload = () => {
             </Text>
           </HStack>
         )}
-        {!isError && !isSuccess && <Text color="neutral.700">Pending...</Text>}
+        {!isError && !isSuccess && !uploadStatus && (
+          <Text color="neutral.700">Pending...</Text>
+        )}
 
         <HStack display={isError ? 'flex' : 'none'}>
           <CloseIcon boxSize="16px" color="error.500" />
@@ -121,11 +123,35 @@ const DataUpload = () => {
     [
       'Validating Template Phase 2',
       <Box>
+        {uploadStatus === DATA_UPLOAD_STATUS.Completed && (
+          <HStack>
+            <CheckIcon color="#00A129" />
+            <Text as="span" color="neutral.700">
+              Completed
+            </Text>
+          </HStack>
+        )}
         <Text color="neutral.700">
-          {isSuccess ? 'Validating...' : 'Pending...'}
+          {(isSuccess || uploadStatus === DATA_UPLOAD_STATUS.InProgress) &&
+            'Validating...'}
+          {uploadStatus == null && 'Pending...'}
         </Text>
+        {uploadStatus &&
+          [DATA_UPLOAD_STATUS.Done, DATA_UPLOAD_STATUS.Failed].includes(
+            uploadStatus
+          ) && (
+            <HStack display="flex">
+              <CloseIcon boxSize="16px" color="error.500" />
+              <Text as="span" color="neutral.700">
+                Failed
+              </Text>
+            </HStack>
+          )}
       </Box>,
-      hasPhase2Error ? (
+      uploadStatus &&
+      [DATA_UPLOAD_STATUS.Done, DATA_UPLOAD_STATUS.Failed].includes(
+        uploadStatus
+      ) ? (
         <Text
           as="span"
           color="#0366EF"
@@ -139,10 +165,42 @@ const DataUpload = () => {
         <>N/A</>
       ),
     ],
-    ['Loading Data', <Text color="neutral.700">Pending...</Text>, 'N/A'],
+    [
+      'Loading Data',
+      uploadStatus ? (
+        <Box>
+          {uploadStatus === DATA_UPLOAD_STATUS.Completed && (
+            <HStack>
+              <CheckIcon color="#00A129" />
+              <Text as="span" color="neutral.700">
+                Completed
+              </Text>
+            </HStack>
+          )}
+          {uploadStatus &&
+            [DATA_UPLOAD_STATUS.Done, DATA_UPLOAD_STATUS.Failed].includes(
+              uploadStatus
+            ) && (
+              <HStack display="flex">
+                <CloseIcon boxSize="16px" color="error.500" />
+                <Text as="span" color="neutral.700">
+                  Failed
+                </Text>
+              </HStack>
+            )}
+          {uploadStatus === DATA_UPLOAD_STATUS.InProgress && (
+            <Text color="neutral.700">Uploading...</Text>
+          )}
+        </Box>
+      ) : (
+        <Text color="neutral.700">Pending...</Text>
+      ),
+      'N/A',
+    ],
   ];
 
   const handleSubmitDocument = async () => {
+    setUploadStatus(null);
     const session = await getSession();
     if (!document) return;
 
@@ -173,7 +231,7 @@ const DataUpload = () => {
     const response = await handleSubmit(
       uploadData,
       formData,
-      'Upload Set Successfully!. You will be notified as soon as the data is successfully added to the sytem',
+      'Upload Set Successfully!. You will be notified as soon as the data is successfully added to the system',
       () => {},
       false
     );
@@ -182,10 +240,23 @@ const DataUpload = () => {
       'data' in response.error &&
       (response.error as any)?.data?.data?.Assets
     ) {
-      console.log(response);
       setValidationErrors((response.error as any)?.data?.data?.Assets);
     }
   };
+
+  // SignalR Connection
+  const connectionState = useSignalR('dataUploadHistory-hub');
+
+  useSignalREventHandler({
+    eventName: 'UpdateDataUploadHistory',
+    connectionState,
+    callback: (uploadUpdate) => {
+      const parsedUploadData: DataUploadStageHistory = JSON.parse(uploadUpdate);
+      if (parsedUploadData?.stageStatusId) {
+        setUploadStatus(parsedUploadData?.stageStatusId);
+      }
+    },
+  });
 
   return (
     <>
@@ -269,7 +340,20 @@ const DataUpload = () => {
                   ]}
                 />
 
-                <UploadStatusTable headers={headers} data={data} />
+                <VStack width="full" alignItems="flex-start">
+                  {recentUpload && uploadStatus && (
+                    <Text size="md">
+                      <Text fontWeight={700} size="md" as="span">
+                        Most Recent Upload Status:{' '}
+                      </Text>
+                      {dateFormatter(
+                        recentUpload?.data?.dateCreated,
+                        'DD MMMM, YYYY'
+                      )}
+                    </Text>
+                  )}
+                  <UploadStatusTable headers={headers} data={data} />
+                </VStack>
                 <SlideTransition
                   trigger={showPhase2Error}
                   style={{ marginTop: '30px' }}

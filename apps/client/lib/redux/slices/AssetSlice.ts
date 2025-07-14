@@ -5,6 +5,7 @@ import {
   AssetFormDetails,
   FilterInput,
 } from '~/lib/interfaces/asset/general.interface';
+import { AssetImage } from '~/lib/interfaces/asset/image.interfaces';
 
 const initialAssetForm = {
   images: [],
@@ -90,6 +91,10 @@ const initialAssetForm = {
   vendorFormDetails: null,
 };
 
+interface GeneralInfo {
+  loadingImage: boolean;
+}
+
 const initialAssetFilter = {
   category: [],
   status: [],
@@ -100,16 +105,22 @@ const initialAssetFilter = {
 
 export interface SliceProps {
   asset: Asset | null;
+  assetImages: AssetImage[];
   assetForm: AssetFormDetails;
   assetFilter: FilterInput;
   selectedAssetIds: number[];
+  generalInfo: GeneralInfo;
 }
 
 const initialState: SliceProps = {
   asset: null,
+  assetImages: [],
   assetForm: initialAssetForm,
   assetFilter: initialAssetFilter,
   selectedAssetIds: [],
+  generalInfo: {
+    loadingImage: false,
+  },
 };
 
 export const AssetSlice = createSlice({
@@ -118,6 +129,9 @@ export const AssetSlice = createSlice({
   reducers: {
     setAsset: (state, { payload }: PayloadAction<Asset>) => {
       state.asset = payload;
+    },
+    setAssetImage: (state, { payload }: PayloadAction<AssetImage[]>) => {
+      state.assetImages = payload;
     },
     clearAsset: (state) => {
       state.asset = null;
@@ -149,6 +163,12 @@ export const AssetSlice = createSlice({
     clearSelectedAssetIds: (state) => {
       state.selectedAssetIds = [];
     },
+    updateGeneralInfo: (
+      state,
+      { payload }: PayloadAction<Partial<GeneralInfo>>
+    ) => {
+      state.generalInfo = { ...state.generalInfo, ...payload };
+    },
   },
 });
 
@@ -156,12 +176,14 @@ export const {
   setAsset,
   clearAsset,
   setAssetForm,
+  setAssetImage,
   clearAssetForm,
   updateAssetForm,
   updateAssetFilter,
   clearAssetFilter,
   updateSelectedAssetIds,
   clearSelectedAssetIds,
+  updateGeneralInfo,
 } = AssetSlice.actions;
 
 export default AssetSlice.reducer;

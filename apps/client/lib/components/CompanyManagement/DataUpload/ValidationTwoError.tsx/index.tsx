@@ -50,7 +50,7 @@ const ValidationTwoError = ({
     <VStack width="full" alignItems="flex-start" spacing="8px">
       <Text size="md" fontWeight={700}>
         <Text as="span" color="error.500" size="md" fontWeight={700}>
-          {data?.data?.totalItems ?? 0} {''}
+          {isLoading ? '-' : (data?.data?.totalItems ?? 0)} {''}
         </Text>
         items failed - Validating Template Phase 2
       </Text>

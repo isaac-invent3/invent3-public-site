@@ -1,15 +1,20 @@
 import { useEffect, useState } from 'react';
 import { VStack, Flex, useDisclosure, Skeleton, Text } from '@chakra-ui/react';
 import { useGetImagesByAssetIdQuery } from '~/lib/redux/services/asset/general.services';
-import { useAppSelector } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import DetailHeader from '~/lib/components/UI/DetailHeader';
 import { AssetImage } from '~/lib/interfaces/asset/image.interfaces';
 import PhotoViewerModal from '~/lib/components/AssetManagement/Common/PhotoViewerModal';
+import {
+  setAssetImage,
+  updateGeneralInfo,
+} from '~/lib/redux/slices/AssetSlice';
 
 const PhotoViewer = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [currentIndex, setCurrentIndex] = useState<number | null>(null);
   const assetData = useAppSelector((state) => state.asset.asset);
+  const dispatch = useAppDispatch();
 
   if (!assetData) {
     return null;
@@ -35,8 +40,13 @@ const PhotoViewer = () => {
   useEffect(() => {
     if (data?.data?.items) {
       setPhotos(data?.data?.items);
+      dispatch(setAssetImage(data?.data?.items));
     }
   }, [data]);
+
+  useEffect(() => {
+    dispatch(updateGeneralInfo({ loadingImage: isLoading }));
+  }, [isLoading]);
 
   return (
     <VStack alignItems="flex-start" spacing="16px" width="full">

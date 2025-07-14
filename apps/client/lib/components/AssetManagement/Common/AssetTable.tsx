@@ -124,7 +124,7 @@ const AssetTable = (props: AssetTableProps) => {
           enableSorting: false,
         }),
         columnHelper.accessor('assetName', {
-          cell: (info) => AssetName(info.getValue()),
+          cell: (info) => AssetName(info.getValue()) ?? 'N/A',
           header: 'Asset Name',
           enableSorting: false,
         }),

@@ -223,6 +223,16 @@ interface FailedUploadItems extends BaseEntity {
   dateCreated: Date;
 }
 
+interface DataUploadStageHistory {
+  dataUploadHistoryId: number;
+  dataUploadId: number;
+  stageName: string | null;
+  stageId: number | null;
+  stageStatusId: number | null;
+  stageStatusName: string | null;
+  dateCreated: string;
+}
+
 export type {
   ActionType,
   AppConfig,
@@ -246,4 +256,5 @@ export type {
   ValidFileType,
   DataUpload,
   FailedUploadItems,
+  DataUploadStageHistory,
 };

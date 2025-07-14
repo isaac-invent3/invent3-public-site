@@ -32,11 +32,13 @@ const Header = (props: HeaderProps) => {
         direction={{ base: 'column', md: 'row' }}
         alignItems={{ base: 'flex-start', md: 'center' }}
         px={{ base: '16px', md: 0 }}
+        flexWrap="wrap"
       >
         <GenericBreadCrumb routes={breadCrumbData} />
         <HStack
           width={{ base: 'full', md: 'max-content' }}
           justifyContent="space-between"
+          flexWrap="wrap"
         >
           <HStack
             width="40px"

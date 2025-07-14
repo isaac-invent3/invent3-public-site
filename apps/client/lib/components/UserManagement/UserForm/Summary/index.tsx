@@ -78,7 +78,7 @@ const SummaryStep = (props: SummaryStepProps) => {
 
   const USER = {
     userId: userFormDetails.userId!,
-    username: userFormDetails.firstName!,
+    username: null!,
     email: userFormDetails.workEmail!,
     phoneNumber: userFormDetails.mobileNumber!,
     firstName: userFormDetails.firstName!,

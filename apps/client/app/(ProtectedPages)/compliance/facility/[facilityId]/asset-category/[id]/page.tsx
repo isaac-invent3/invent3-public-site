@@ -2,7 +2,6 @@
 
 import { notFound } from 'next/navigation';
 import CategoryCompliance from '~/lib/components/Compliance/Details/CategoryCompliance';
-import FacilityCompliance from '~/lib/components/Compliance/Details/FacilityCompliance';
 import PageLoadingSkeleton from '~/lib/components/UI/PageLoadingSkeleton';
 import { useGetComplianceAssetCategorySummaryQuery } from '~/lib/redux/services/asset/compliance.services';
 

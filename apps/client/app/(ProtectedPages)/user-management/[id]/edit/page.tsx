@@ -10,7 +10,6 @@ import {
   useGetUserProfileByGuidQuery,
 } from '~/lib/redux/services/user.services';
 import { setUserForm } from '~/lib/redux/slices/UserSlice';
-import { dateFormatter } from '~/lib/utils/Formatters';
 
 export default function Page({ params }: { params: { id: number } }) {
   const { data: user, isLoading: loadingUser } = useGetUserByIdQuery({

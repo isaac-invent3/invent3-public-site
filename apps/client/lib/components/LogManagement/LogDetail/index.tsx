@@ -19,7 +19,7 @@ interface LogDetailProps {
 const LogDetail = ({ isOpen, onClose }: LogDetailProps) => {
   const dispatch = useAppDispatch();
   const logSlug = SYSTEM_CONTEXT_DETAILS.AUDIT.slug;
-  const selectedAuditLog = useAppSelector((state = state.auditLog));
+  const selectedAuditLog = useAppSelector((state) => state.auditLog.auditLog);
   const { getSearchParam, clearSearchParamsAfter } = useCustomSearchParams();
 
   const logId = getSearchParam(logSlug)
@@ -71,13 +71,13 @@ const LogDetail = ({ isOpen, onClose }: LogDetailProps) => {
         />
       )}
 
-      {isLoading && !log && (
+      {(isLoading || isFetching) && (
         <VStack width="full" minH="100vh" justifyContent="center">
           <LoadingSpinner />
         </VStack>
       )}
 
-      {log && (
+      {log && !isLoading && !isFetching && (
         <>
           <DrawerHeader
             px={{ base: '16px', lg: '32px' }}

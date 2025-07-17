@@ -78,7 +78,11 @@ const Header = (props: HeaderProps) => {
         </HStack>
       </Stack>
       {data?.user?.roleIds.includes(ROLE_IDS_ENUM.CLIENT_ADMIN) && (
-        <HStack display={{ base: 'flex', lg: 'none' }}>
+        <HStack
+          display={{ base: 'flex', lg: 'none' }}
+          mb="16px"
+          px={{ base: '16px', md: 0 }}
+        >
           <AssistantGuideBox containerStyle={{ width: '100%' }} />
         </HStack>
       )}

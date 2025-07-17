@@ -23,6 +23,13 @@ import { CompanyJourneyGuide } from '~/lib/interfaces/company.interfaces';
 
 export const journeyGuideSteps = [
   {
+    title: 'Add Facility/Branch',
+    subtitle: '',
+    buttonSuffix: 'Create Facility',
+    link: `/${ROUTES.LOCATION}/add`,
+    key: 'AddFacility',
+  },
+  {
     title: 'Add Users',
     subtitle: '',
     buttonSuffix: 'Create User',
@@ -129,6 +136,7 @@ const JourneyGuide = (props: JourneyGuideProps) => {
         bgSize: 'cover',
         overflow: 'hidden',
         position: 'relative',
+        minH: 'max-content',
       }}
     >
       <Flex
@@ -239,12 +247,12 @@ const JourneyGuide = (props: JourneyGuideProps) => {
           </VStack>
           <Flex
             width="full"
-            justifyContent="flex-end"
+            justifyContent="flex-start"
             display={{ base: 'flex', lg: 'none' }}
             mt="24px"
           >
             <Button
-              customStyles={{ width: '195px' }}
+              customStyles={{ width: 'full' }}
               {...(closeWithNavigating
                 ? { handleClick: onClose }
                 : { href: steps[activeStep]?.link ?? '#' })}
@@ -260,7 +268,7 @@ const JourneyGuide = (props: JourneyGuideProps) => {
           justifyContent="space-between"
           px={{ base: '24px', md: '32px' }}
           py={{ base: '24px', md: '24px' }}
-          alignItems="flex-end"
+          alignItems={{ lg: 'flex-end' }}
           position="relative"
           display={{ base: 'none', lg: 'flex' }}
         >

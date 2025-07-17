@@ -57,6 +57,7 @@ const AssistanceGuide = (props: AssistanceGuideProps) => {
         flexDirection: 'row',
         pt: '100px',
         justifyContent: 'flex-end',
+        maxW: '550px',
       }}
     >
       <Flex
@@ -66,6 +67,7 @@ const AssistanceGuide = (props: AssistanceGuideProps) => {
         bgSize="cover"
         rounded="24px"
         overflow="hidden"
+        maxW="550px"
       >
         {/* Left Side Starts Here */}
         <VStack
@@ -104,7 +106,7 @@ const AssistanceGuide = (props: AssistanceGuideProps) => {
           py={{ base: '20px' }}
           alignItems="flex-end"
           position="relative"
-          display={{ base: 'none', lg: 'flex' }}
+          display={{ base: 'flex' }}
           spacing="14px"
         >
           <Icon
@@ -128,7 +130,7 @@ const AssistanceGuide = (props: AssistanceGuideProps) => {
                 fontSize="14px"
                 lineHeight="100%"
               >
-                /4
+                /5
               </Text>{' '}
               steps pending
             </Text>

@@ -29,6 +29,7 @@ import useSignalR from '~/lib/hooks/useSignalR';
 import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import { updateSelectedTableIds } from '~/lib/redux/slices/CommonSlice';
+import { setUser } from '~/lib/redux/slices/UserSlice';
 
 export const initialFilterData = {
   startDate: undefined,
@@ -313,6 +314,7 @@ const UserManagement = () => {
             setSelectedRows={setSelectedRows}
             showPopover
             handleSelectRow={(row) => {
+              dispatch(setUser(row));
               updateSearchParam(SYSTEM_CONTEXT_DETAILS.USER.slug, row.userId);
             }}
           />

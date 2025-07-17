@@ -61,7 +61,7 @@ const UserDetail = ({
     if (notFound) clearSearchParamsAfter(userSlug);
 
     return notFound;
-  }, [user, isLoading]);
+  }, [user, isLoading, isFetching]);
 
   return (
     <GenericDrawer

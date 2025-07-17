@@ -28,7 +28,7 @@ const AssistantGuideBox = (props: AssistantGuideBoxProps) => {
     { companyId: data?.user?.companyId! },
     { skip: !data?.user }
   );
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState<number | null>(null);
 
   const guideSteps = data?.user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY)
     ? CMFJourneyGuideSteps
@@ -39,6 +39,7 @@ const AssistantGuideBox = (props: AssistantGuideBoxProps) => {
       const nextStepIndex = guideSteps.findIndex(
         (step) => !journeyGuideData?.data[step.key as keyof CompanyJourneyGuide]
       );
+      console.log({ nextStepIndex });
 
       if (nextStepIndex === -1) {
         // All steps completed
@@ -51,73 +52,70 @@ const AssistantGuideBox = (props: AssistantGuideBoxProps) => {
 
   return (
     <>
-      <Flex
-        bgColor="white"
-        width="440px"
-        // bgImage="/assistant-guide-left-bg"
-        // backgroundPosition="47% top"
-        bgRepeat="no-repeat"
-        rounded="24px"
-        overflow="hidden"
-        cursor="pointer"
-        onClick={onOpen}
-        minH="40px"
-        {...containerStyle}
-        display={
-          !journeyGuideData?.data
-            ? 'none'
-            : journeyGuideData?.data && activeStep === guideSteps.length
-              ? 'none'
-              : 'flex'
-        }
-      >
-        {/* Left Side Starts Here */}
-        <VStack
-          width="58%"
-          alignItems="flex-start"
-          spacing={{ base: '24px', lg: '88px' }}
-          bgColor="#DBDAD680"
-          bgImage="/assistant-guide-left-bg.png"
-          bgSize="cover"
-          backdropFilter="blur(40px)"
-          pl="16px"
-          pr={0}
-          justifyContent="center"
-          border="1px solid white"
-        >
-          <HStack spacing="16px">
-            <Icon as={JourneyIcon} boxSize="24px" />
-            <Heading
-              fontWeight={800}
-              fontSize={{ base: '16px' }}
-              lineHeight="100%"
-              color="black"
-            >
-              New Company Setup Guide
-            </Heading>
-          </HStack>
-        </VStack>
-        <VStack
-          width="45%"
-          justifyContent="center"
-          spacing="0px"
-          alignItems="flex-start"
-          pl="16px"
-        >
-          <Text fontWeight={700} size="md" color="blue.500">
-            Task Pending
-          </Text>
-          <Text
-            color="neutral.700"
-            fontSize="10px"
-            lineHeight="100%"
-            letterSpacing={0}
-            // whiteSpace="nowrap"
+      {activeStep !== null &&
+        journeyGuideData?.data &&
+        activeStep !== guideSteps.length && (
+          <Flex
+            bgColor="white"
+            width="440px"
+            // bgImage="/assistant-guide-left-bg"
+            // backgroundPosition="47% top"
+            bgRepeat="no-repeat"
+            rounded="24px"
+            overflow="hidden"
+            cursor="pointer"
+            onClick={onOpen}
+            minH="40px"
+            {...containerStyle}
           >
-            Next Step: {guideSteps?.[activeStep]?.title}
-          </Text>
-        </VStack>
-      </Flex>
+            {/* Left Side Starts Here */}
+            <VStack
+              width="58%"
+              alignItems="flex-start"
+              spacing={{ base: '24px', lg: '88px' }}
+              bgColor="#DBDAD680"
+              bgImage="/assistant-guide-left-bg.png"
+              bgSize="cover"
+              backdropFilter="blur(40px)"
+              pl="16px"
+              pr={0}
+              justifyContent="center"
+              border="1px solid white"
+            >
+              <HStack spacing="16px">
+                <Icon as={JourneyIcon} boxSize="24px" />
+                <Heading
+                  fontWeight={800}
+                  fontSize={{ base: '16px' }}
+                  lineHeight="100%"
+                  color="black"
+                >
+                  New Company Setup Guide
+                </Heading>
+              </HStack>
+            </VStack>
+            <VStack
+              width="45%"
+              justifyContent="center"
+              spacing="0px"
+              alignItems="flex-start"
+              pl="16px"
+            >
+              <Text fontWeight={700} size="md" color="blue.500">
+                Task Pending
+              </Text>
+              <Text
+                color="neutral.700"
+                fontSize="10px"
+                lineHeight="100%"
+                letterSpacing={0}
+                // whiteSpace="nowrap"
+              >
+                Next Step: {guideSteps?.[activeStep]?.title}
+              </Text>
+            </VStack>
+          </Flex>
+        )}
       <JourneyGuide isOpen={isOpen} onClose={onClose} />
     </>
   );

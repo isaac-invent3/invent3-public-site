@@ -106,13 +106,13 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
         height="full"
       >
         <Header setIsCollapse={setIsCollapse} />
-        {data?.user?.roleIds.includes(ROLE_IDS_ENUM.CLIENT_ADMIN) ||
-          (data?.user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY) && (
-            <AssistanceGuide
-              isOpen={showAssistantGuide}
-              onClose={() => setShowAssistantGuide(false)}
-            />
-          ))}
+        {(data?.user?.roleIds.includes(ROLE_IDS_ENUM.CLIENT_ADMIN) ||
+          data?.user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY)) && (
+          <AssistanceGuide
+            isOpen={showAssistantGuide}
+            onClose={() => setShowAssistantGuide(false)}
+          />
+        )}
         <CompanyPageHeader />
         {children}
       </Flex>

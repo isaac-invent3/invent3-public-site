@@ -25,7 +25,7 @@ const InfoLearnMore = () => {
         A new way to experience managing your physical assets and facilities
         using AI
       </Text>
-      <Link href="#">
+      <Link href="/solutions">
         <Text
           fontWeight={700}
           size={{ base: 'base', md: 'md' }}

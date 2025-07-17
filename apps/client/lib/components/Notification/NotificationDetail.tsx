@@ -5,7 +5,7 @@ import { NotificationInfoIcon } from '../CustomIcons';
 import moment from 'moment';
 import Link from 'next/link';
 import { NOTIFICATION_EVENT_TYPE_ENUM } from '~/lib/utils/constants';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMarkANotificationAsReadMutation } from '~/lib/redux/services/notification.services';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';
@@ -29,12 +29,15 @@ function formatDate(date: string) {
 const NotificationText = ({ notification }: { notification: Notification }) => {
   const { isRead, firstName, lastName, message, contextId } = notification;
   const keyTextColor = !isRead ? 'black' : 'neutral.600';
-  const name = `${firstName} ${lastName}`;
+  const name =
+    firstName || lastName
+      ? `${firstName ?? ''} ${lastName ?? ''}`.trim()
+      : 'System';
   const systemContextDetails = findSystemContextDetailById(
     notification.systemContextTypeId
   );
 
-  switch (notification.notificationTriggerEventTypeId) {
+  switch (notification.notificationEventTypeId) {
     case NOTIFICATION_EVENT_TYPE_ENUM.CREATE:
       return (
         <Link
@@ -184,6 +187,12 @@ const NotificationDetail = (props: NotificationDetailProps) => {
       setIsRead(true);
     }
   };
+
+  useEffect(() => {
+    if (notification) {
+      setIsRead(notification.isRead);
+    }
+  }, [notification]);
 
   return (
     <HStack

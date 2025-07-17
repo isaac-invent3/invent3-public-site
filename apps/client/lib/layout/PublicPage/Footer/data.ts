@@ -24,26 +24,26 @@ const QUICK_LINKS = [
   },
   {
     label: 'Integrations',
-    href: '/integrations',
+    href: '#',
   },
 ];
 
 const SUPPORT_LINKS = [
   {
     label: 'Help Center',
-    href: '/faq',
+    href: '#',
   },
   {
     label: 'Knowledge Base',
-    href: '/knowledge-base',
+    href: '#',
   },
   {
     label: 'Security',
-    href: '/security',
+    href: '#',
   },
   {
     label: 'Career',
-    href: '/career',
+    href: '#',
   },
 ];
 

@@ -11,12 +11,11 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { ListResponse } from '@repo/interfaces';
 import { OPERATORS } from '@repo/constants';
 import {
-  Button,
   FilterButton,
   SearchInput,
   SlideTransition,
 } from '@repo/ui/components';
-import { DownloadIcon, FilterIcon } from '../CustomIcons';
+import { FilterIcon } from '../CustomIcons';
 import _ from 'lodash';
 import { generateSearchCriterion } from '@repo/utils';
 import LogTable from './LogTable';
@@ -27,11 +26,12 @@ import {
 import { AuditRecord, LogFilter } from '~/lib/interfaces/log.interfaces';
 import Filters from './LogTable/Filters';
 import SummaryCards from './SummaryCards';
-import { useSearchParams } from 'next/navigation';
 import LogDetail from './LogDetail';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateSelectedTableIds } from '~/lib/redux/slices/CommonSlice';
 import useExport from '~/lib/hooks/useExport';
+import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
+import { setAuditLog } from '~/lib/redux/slices/AuditLogSlice';
 
 export const initialFilterData = {
   userIds: [],
@@ -54,8 +54,8 @@ const LogManagement = () => {
     onClose: onCloseDetails,
     onOpen: onOpenDetails,
   } = useDisclosure();
-  const searchParams = useSearchParams();
-  const logId = searchParams?.get(SYSTEM_CONTEXT_DETAILS.AUDIT.slug);
+  const { updateSearchParam, getSearchParam } = useCustomSearchParams();
+  const logId = getSearchParam(SYSTEM_CONTEXT_DETAILS.AUDIT.slug);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const { selectedTableIds } = useAppSelector((state) => state.common);
   const dispatch = useAppDispatch();
@@ -250,6 +250,13 @@ const LogManagement = () => {
           selectedRows={selectedRows}
           setSelectedRows={setSelectedRows}
           showPopover
+          handleSelectRow={(row) => {
+            dispatch(setAuditLog(row));
+            updateSearchParam(
+              SYSTEM_CONTEXT_DETAILS.AUDIT.slug,
+              row.auditRecordId
+            );
+          }}
         />
       </Flex>
       <LogDetail onClose={onCloseDetails} isOpen={isOpenDetails} />

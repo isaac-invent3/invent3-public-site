@@ -30,10 +30,13 @@ interface Notification {
   guid: string;
   systemContextTypeId: number;
   contextId: number;
+  priorityId: number;
   isRead: boolean;
   readAt: string;
   message: string;
+  notificationEventTypeId: number;
   isDeleted: boolean;
+  isArchived: boolean;
   dateCreated: string;
   notificationTypeId: number;
   notificationTypeName: string;
@@ -41,15 +44,16 @@ interface Notification {
   notificationPriorityName: string;
   deliveryMethodId: number;
   deliveryMethod: string;
-  notificationTriggerId: number;
-  notificationTriggerEventTypeId: number;
   notificationTriggerEventTypeName: string;
-  notificationTriggerTypeId: number;
-  notificationTriggerTypeName: string;
-  userId: number;
+  recipientUserId: number;
   username: string;
   firstName: string;
   lastName: string;
+  email: string;
+  recipientGroupId: string;
+  groupName: string;
+  recipientRoleId: number;
+  roleName: string;
 }
 
 export type {

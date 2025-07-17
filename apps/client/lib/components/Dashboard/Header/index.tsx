@@ -45,7 +45,6 @@ const Header = ({ children }: HeaderProps) => {
         justifyContent="space-between"
         spacing="16px"
         flexWrap="wrap"
-        px={{ base: '16px', md: 0 }}
       >
         <HStack spacing="8px" alignItems="flex-end" flexWrap="wrap">
           <PageHeader>

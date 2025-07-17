@@ -50,7 +50,7 @@ const SectionOne = () => {
           </Text>
           {QUICK_LINKS.map((item) => (
             <Link href={item.href} passHref key={item.label}>
-              <Text color="black" size="md">
+              <Text color="black" size="md" whiteSpace="nowrap">
                 {item.label}
               </Text>
             </Link>
@@ -68,7 +68,7 @@ const SectionOne = () => {
           </Text>
           {SUPPORT_LINKS.map((item) => (
             <Link href={item.href} passHref key={item.label}>
-              <Text color="black" size="md">
+              <Text color="black" size="md" whiteSpace="nowrap">
                 {item.label}
               </Text>
             </Link>

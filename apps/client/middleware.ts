@@ -321,7 +321,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!api/|_next/|__next|_static/|_vercel|fonts/|[\\w-]+\\.\\w+).*)',
+    // '/((?!api/|_next/|__next|_static/|_vercel|fonts/|[\\w-]+\\.\\w+).*)',
     '/',
     '/signin',
     '/forgot-password',

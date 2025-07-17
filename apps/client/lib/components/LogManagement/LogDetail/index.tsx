@@ -19,14 +19,18 @@ interface LogDetailProps {
 const LogDetail = ({ isOpen, onClose }: LogDetailProps) => {
   const dispatch = useAppDispatch();
   const logSlug = SYSTEM_CONTEXT_DETAILS.AUDIT.slug;
-  const selectedAuditLog = useAppSelector((state) => state.user.user);
+  const selectedAuditLog = useAppSelector((state = state.auditLog));
   const { getSearchParam, clearSearchParamsAfter } = useCustomSearchParams();
 
   const logId = getSearchParam(logSlug)
     ? Number(getSearchParam(logSlug))
     : null;
 
-  const { data: logData, isLoading } = useGetAuditRecordByIdQuery(
+  const {
+    data: logData,
+    isLoading,
+    isFetching,
+  } = useGetAuditRecordByIdQuery(
     { id: logId! },
     {
       skip: !logId || Boolean(selectedAuditLog),
@@ -46,7 +50,7 @@ const LogDetail = ({ isOpen, onClose }: LogDetailProps) => {
   }, [logData, selectedAuditLog]);
 
   const logNotFound = useMemo(() => {
-    const notFound = !log && !isLoading;
+    const notFound = !log && !isLoading && !isFetching;
 
     if (notFound) clearSearchParamsAfter(logSlug);
 

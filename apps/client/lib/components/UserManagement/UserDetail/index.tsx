@@ -33,7 +33,11 @@ const UserDetail = ({
     defaultUserId ??
     (getSearchParam(userSlug) ? Number(getSearchParam(userSlug)) : null);
 
-  const { data: userData, isLoading } = useGetUserByIdQuery(
+  const {
+    data: userData,
+    isLoading,
+    isFetching,
+  } = useGetUserByIdQuery(
     { userId: userId! },
     {
       skip: !userId || Boolean(selectedUser),
@@ -52,7 +56,7 @@ const UserDetail = ({
   }, [userData, selectedUser]);
 
   const userNotFound = useMemo(() => {
-    const notFound = !user && !isLoading;
+    const notFound = !user && !isLoading && !isFetching;
 
     if (notFound) clearSearchParamsAfter(userSlug);
 
@@ -73,13 +77,13 @@ const UserDetail = ({
         />
       )}
 
-      {isLoading && !user && (
+      {(isLoading || isFetching) && (
         <VStack width="full" minH="100vh" justifyContent="center">
           <LoadingSpinner />
         </VStack>
       )}
 
-      {user && (
+      {user && !isLoading && !isFetching && (
         <>
           <DrawerHeader
             px={{ base: '16px', md: '32px' }}

@@ -110,6 +110,7 @@
     "eslint": "^8",
     "eslint-config-next": "14.2.6",
     "slice-machine-ui": "^2.15.1",
+    "ts-prune": "^0.10.3",
     "typescript": "^5"
   }
 }

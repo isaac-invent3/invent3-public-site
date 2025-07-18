@@ -10,14 +10,15 @@ import { NotifcationTabs } from '../Tabs';
 import NotificationHeader from '../NotificationHeader';
 import HeaderIcon from '~/lib/layout/ProtectedPage/Header/HeaderIcon';
 import { NotificationIcon } from '../../CustomIcons/layout';
+import { NotificationTabType } from '~/lib/interfaces/notification.interfaces';
 
 interface NotificationPopoverProps {
   isOpen: boolean;
   onClose: () => void;
   onOpen: () => void;
   isLoading: boolean;
-  activeTab: string;
-  setActiveTab: React.Dispatch<React.SetStateAction<string>>;
+  activeTab: NotificationTabType;
+  setActiveTab: React.Dispatch<React.SetStateAction<NotificationTabType>>;
   handleMarkNotificationsAsRead: () => void;
 }
 const NotificationPopover = (props: NotificationPopoverProps) => {

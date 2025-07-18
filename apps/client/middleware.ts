@@ -89,15 +89,24 @@ export async function refreshAccessToken(
   return token;
 }
 
-function signOut(request: NextRequest) {
+function signOut(request: NextRequest): NextResponse {
   console.log('signing out');
-  request.cookies.delete(SESSION_COOKIE);
-  request.cookies.delete('permissionData');
-  const response = NextResponse.redirect(
-    new URL(`/signin?ref=${request.nextUrl.pathname}`, request?.url)
-  );
-  response.cookies.delete(SESSION_COOKIE);
-  response.cookies.delete('permissionData');
+
+  const url = new URL('/signin', request.url);
+  url.searchParams.set('ref', request.nextUrl.pathname);
+
+  const response = NextResponse.redirect(url);
+
+  // Clear auth/session cookies
+  response.cookies.set(SESSION_COOKIE, '', {
+    maxAge: 0,
+    path: '/',
+  });
+  response.cookies.set('permissionData', '', {
+    maxAge: 0,
+    path: '/',
+  });
+
   return response;
 }
 
@@ -129,11 +138,10 @@ export function updateCookie(
       sameSite: 'lax',
     });
     console.log('cookies updated');
-  } else {
-    signOut(request);
+    return response;
   }
 
-  return response;
+  return signOut(request);
 }
 
 export async function middleware(request: NextRequest) {
@@ -180,8 +188,8 @@ export async function middleware(request: NextRequest) {
           // hasSubdomain ? subdomain : null
           tenantData ? tenant : null
         );
-        if (token === refreshedToken) {
-          console.error('Error refreshing token');
+        if (refreshedToken.accessToken === token.accessToken) {
+          console.error('Error refreshing token – tokens unchanged');
           return updateCookie(null, request, response);
         }
 
@@ -192,10 +200,9 @@ export async function middleware(request: NextRequest) {
           salt: SESSION_COOKIE,
         });
 
-        response = updateCookie(newSessionToken, request, response);
+        return updateCookie(newSessionToken, request, response);
       } catch (error) {
         console.error('Error refreshing token: ', error);
-
         return updateCookie(null, request, response);
       }
     }
@@ -321,7 +328,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // '/((?!api/|_next/|__next|_static/|_vercel|fonts/|[\\w-]+\\.\\w+).*)',
+    '/((?!api/|_next/|__next|_static/|_vercel|fonts/|[\\w-]+\\.\\w+).*)',
     '/',
     '/signin',
     '/forgot-password',

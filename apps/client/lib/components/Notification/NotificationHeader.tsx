@@ -11,8 +11,9 @@ import {
 import React from 'react';
 import { PreferenceIcon } from '../CustomIcons/layout';
 import TabButton from './Tabs/TabButton';
+import { NotificationTabType } from '~/lib/interfaces/notification.interfaces';
 
-const Tabs = [
+const Tabs: { label: NotificationTabType; count: number }[] = [
   {
     label: 'All',
     count: 0,
@@ -29,8 +30,8 @@ const Tabs = [
 
 interface NotificationHeaderProps {
   isLoading: boolean;
-  activeTab: string;
-  setActiveTab: React.Dispatch<React.SetStateAction<string>>;
+  activeTab: NotificationTabType;
+  setActiveTab: React.Dispatch<React.SetStateAction<NotificationTabType>>;
   handleMarkNotificationsAsRead: () => void;
 }
 const NotificationHeader = (props: NotificationHeaderProps) => {

@@ -17,6 +17,7 @@ interface GetUserNotificationQueryParams extends QueryParams {
   userId: number;
   isRead?: boolean;
   isArchived?: boolean;
+  isAlert?: boolean;
 }
 
 interface MarkAllNotificationsAsReadParams {
@@ -56,9 +57,12 @@ interface Notification {
   roleName: string;
 }
 
+type NotificationTabType = 'All' | 'Unread' | 'Alerts' | 'Archived';
+
 export type {
   GetUserNotificationQueryParams,
   INotification,
   MarkAllNotificationsAsReadParams,
   Notification,
+  NotificationTabType,
 };

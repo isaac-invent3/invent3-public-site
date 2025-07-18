@@ -1,9 +1,10 @@
 import { Text } from '@chakra-ui/react';
+import { NotificationTabType } from '~/lib/interfaces/notification.interfaces';
 
 interface TabButtonProps {
-  tab: { label: string; count: number };
-  activeTab: string;
-  setActiveTab: React.Dispatch<React.SetStateAction<string>>;
+  tab: { label: NotificationTabType; count: number };
+  activeTab: NotificationTabType;
+  setActiveTab: React.Dispatch<React.SetStateAction<NotificationTabType>>;
 }
 const TabButton = (props: TabButtonProps) => {
   const { tab, activeTab, setActiveTab } = props;

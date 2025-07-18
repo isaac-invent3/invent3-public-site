@@ -44,7 +44,11 @@ const AssistanceGuide = (props: AssistanceGuideProps) => {
   return (
     <GenericModal
       isOpen={
-        journeyGuideData && activeStep === guideSteps.length ? false : isOpen
+        journeyGuideData?.data
+          ? activeStep === guideSteps.length
+            ? false
+            : isOpen
+          : false
       }
       onClose={onClose}
       mainModalStyle={{ isCentered: false }}
@@ -130,7 +134,7 @@ const AssistanceGuide = (props: AssistanceGuideProps) => {
                 fontSize="14px"
                 lineHeight="100%"
               >
-                /5
+                /{guideSteps?.length}
               </Text>{' '}
               steps pending
             </Text>

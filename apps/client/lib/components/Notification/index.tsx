@@ -13,6 +13,7 @@ import NotificationPopover from './Display/NotificationPopover';
 import NotificationDrawer from './Display/NotificationDrawer';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import { NotificationTabType } from '~/lib/interfaces/notification.interfaces';
 
 const NotificationComponents = () => {
   const {
@@ -25,7 +26,7 @@ const NotificationComponents = () => {
     onOpen: onOpenDrawer,
     onClose: onCloseDrawer,
   } = useDisclosure();
-  const [activeTab, setActiveTab] = useState('All');
+  const [activeTab, setActiveTab] = useState<NotificationTabType>('All');
   const [isMobile] = useMediaQuery('(max-width: 480px)');
   const [markAllAsReadMutation, { isLoading }] =
     useMarkAllNotificationsAsReadMutation();
@@ -49,9 +50,9 @@ const NotificationComponents = () => {
   useSignalREventHandler({
     eventName: 'ReceiveNotification',
     connectionState,
-    callback: (newAsset) => {
+    callback: (newNotification) => {
       // Update the query cache when a new notification is received
-      const parsedNotification = JSON.parse(newAsset);
+      const parsedNotification = JSON.parse(newNotification);
       dispatch(
         notificationApi.util.updateQueryData(
           'getUserNotification',
@@ -61,6 +62,7 @@ const NotificationComponents = () => {
             userId: session?.data?.user.userId!,
             isRead: activeTab === 'Unread' ? false : undefined,
             isArchived: activeTab === 'Archived' ? true : undefined,
+            isAlert: activeTab === 'Alerts' ? true : undefined,
           },
           (draft) => {
             if (draft?.data?.items) {

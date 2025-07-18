@@ -9,18 +9,19 @@ import NotificationDetail from '../NotificationDetail';
 export const NotifcationTabs = ({ activeTab }: { activeTab: string }) => {
   const session = useSession();
 
-  const { data, isLoading } = useGetUserNotificationQuery(
+  const { data, isLoading, isFetching } = useGetUserNotificationQuery(
     {
       pageSize: DEFAULT_PAGE_SIZE,
       pageNumber: 1,
       userId: session?.data?.user?.userId!,
       isRead: activeTab === 'Unread' ? false : undefined,
       isArchived: activeTab === 'Archived' ? true : undefined,
+      isAlert: activeTab === 'Alerts' ? true : undefined,
     },
     { skip: !session?.data?.user?.userId }
   );
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return <NotifcationSkeletion noOfskeleton={7} />;
   }
 

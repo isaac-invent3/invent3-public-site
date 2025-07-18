@@ -3,13 +3,14 @@ import { GenericDrawer } from '@repo/ui/components';
 import React from 'react';
 import NotificationHeader from '../NotificationHeader';
 import { NotifcationTabs } from '../Tabs';
+import { NotificationTabType } from '~/lib/interfaces/notification.interfaces';
 
 interface NotificationDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   isLoading: boolean;
-  activeTab: string;
-  setActiveTab: React.Dispatch<React.SetStateAction<string>>;
+  activeTab: NotificationTabType;
+  setActiveTab: React.Dispatch<React.SetStateAction<NotificationTabType>>;
   handleMarkNotificationsAsRead: () => void;
 }
 const NotificationDrawer = (props: NotificationDrawerProps) => {

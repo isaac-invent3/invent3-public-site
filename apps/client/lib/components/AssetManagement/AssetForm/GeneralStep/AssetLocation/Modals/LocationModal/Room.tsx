@@ -28,6 +28,7 @@ const Room = (props: RoomProps) => {
         isOpen={isOpen}
         onClose={onClose}
         defaultDepartmentId={departmentId}
+        handleReadableLocation={handleReadableLocation}
       />
     </>
   );

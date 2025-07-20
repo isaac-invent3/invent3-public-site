@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
-import { Field, FormikProvider, useFormik } from 'formik';
+import { Field, FormikProvider, useField, useFormik } from 'formik';
 import {
   Button,
   FormInputWrapper,
@@ -13,6 +13,8 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';
 import { shelfSchema } from '~/lib/schemas/asset/location.schema';
 import AisleSelect from './SelectInputs/AisleSelect';
+import { Option } from '@repo/interfaces';
+import { FormLocation } from '~/lib/interfaces/location.interfaces';
 
 interface ShelfModalProps {
   isOpen: boolean;
@@ -20,6 +22,7 @@ interface ShelfModalProps {
   defaultAisleId: number | null;
   showDropdown?: boolean;
   showToast?: boolean;
+  handleReadableLocation?: (option: Option, key: keyof FormLocation) => void;
 }
 const ShelfModal = (props: ShelfModalProps) => {
   const {
@@ -28,6 +31,7 @@ const ShelfModal = (props: ShelfModalProps) => {
     defaultAisleId,
     showDropdown = true,
     showToast,
+    handleReadableLocation,
   } = props;
   const [createShelf, { isLoading }] = useCreateShelfMutation({});
   const { handleSubmit } = useCustomMutation();
@@ -49,6 +53,15 @@ const ShelfModal = (props: ShelfModalProps) => {
         showToast ? 'Shelf Created Successfully' : ''
       );
       if (response?.data) {
+        if (handleReadableLocation) {
+          handleReadableLocation(
+            {
+              label: response?.data?.data?.shelfName,
+              value: response?.data?.data?.shelfId,
+            },
+            'shelf'
+          );
+        }
         onClose();
         resetForm();
       }

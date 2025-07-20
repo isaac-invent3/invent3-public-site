@@ -30,6 +30,7 @@ const Department = (props: DepartmentProps) => {
         isOpen={isOpen}
         onClose={onClose}
         defaultFloorId={floorId}
+        handleReadableLocation={handleReadableLocation}
       />
     </>
   );

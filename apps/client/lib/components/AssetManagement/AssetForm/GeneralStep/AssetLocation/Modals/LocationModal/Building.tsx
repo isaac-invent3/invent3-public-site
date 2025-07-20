@@ -29,6 +29,7 @@ const Building = (props: BuildingProps) => {
         isOpen={isOpen}
         onClose={onClose}
         defaultFacilityId={facilityId}
+        handleReadableLocation={handleReadableLocation}
       />
     </>
   );

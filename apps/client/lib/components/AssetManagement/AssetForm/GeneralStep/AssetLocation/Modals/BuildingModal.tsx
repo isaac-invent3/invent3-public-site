@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
-import { Field, FormikProvider, useFormik } from 'formik';
+import { Field, FormikProvider, useField, useFormik } from 'formik';
 
 import {
   Button,
@@ -15,7 +15,12 @@ import { getSession } from 'next-auth/react';
 import { buildingSchema } from '~/lib/schemas/asset/location.schema';
 import FacilitySelect from './SelectInputs/FacilitySelect';
 import React from 'react';
-import { BuildingFormData } from '~/lib/interfaces/location.interfaces';
+import {
+  BuildingFormData,
+  FormLocation,
+} from '~/lib/interfaces/location.interfaces';
+import { useAppDispatch } from '~/lib/redux/hooks';
+import { Option } from '@repo/interfaces';
 
 interface BuildingModalProps {
   isOpen: boolean;
@@ -25,6 +30,7 @@ interface BuildingModalProps {
   handleSave?: (data: BuildingFormData) => void;
   showDropdown?: boolean;
   showToast?: boolean;
+  handleReadableLocation?: (option: Option, key: keyof FormLocation) => void;
 }
 const BuildingModal = (props: BuildingModalProps) => {
   const {
@@ -35,6 +41,7 @@ const BuildingModal = (props: BuildingModalProps) => {
     handleSave,
     showDropdown = true,
     showToast,
+    handleReadableLocation,
   } = props;
   const [createBuilding, { isLoading }] = useCreateBuildingMutation({});
   const { handleSubmit } = useCustomMutation();
@@ -66,6 +73,15 @@ const BuildingModal = (props: BuildingModalProps) => {
           showToast ? 'Building Created Successfully' : ''
         );
         if (response?.data) {
+          if (handleReadableLocation) {
+            handleReadableLocation(
+              {
+                label: response?.data?.data?.buildingName,
+                value: response?.data?.data?.buildingId,
+              },
+              'building'
+            );
+          }
           onClose();
           resetForm();
         }

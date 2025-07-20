@@ -28,6 +28,7 @@ const Floor = (props: FloorProps) => {
         isOpen={isOpen}
         onClose={onClose}
         defaultBuildingId={buildingId}
+        handleReadableLocation={handleReadableLocation}
       />
     </>
   );

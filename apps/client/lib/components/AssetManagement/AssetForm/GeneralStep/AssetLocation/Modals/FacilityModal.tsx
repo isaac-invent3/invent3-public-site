@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
-import { Field, FormikProvider, useFormik } from 'formik';
+import { Field, FormikProvider, useField, useFormik } from 'formik';
 
 import {
   Button,
@@ -14,17 +14,22 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { facilitySchema } from '~/lib/schemas/asset/location.schema';
 import LGASelect from '../../../../../Common/SelectComponents/Location/LGASelect';
 import { getSession } from 'next-auth/react';
+import { Option } from '@repo/interfaces';
+import { FormLocation } from '~/lib/interfaces/location.interfaces';
 
 interface FacilityModalProps {
   isOpen: boolean;
   onClose: () => void;
   defaultLGAId: number | null;
   stateId: number | null;
+  handleReadableLocation?: (option: Option, key: keyof FormLocation) => void;
 }
 const FacilityModal = (props: FacilityModalProps) => {
-  const { isOpen, onClose, defaultLGAId, stateId } = props;
+  const { isOpen, onClose, defaultLGAId, stateId, handleReadableLocation } =
+    props;
   const [createFacility, { isLoading }] = useCreateFacilityMutation({});
   const { handleSubmit } = useCustomMutation();
+  const [field, meta, helpers] = useField('facilityId');
 
   const formik = useFormik({
     initialValues: {
@@ -42,6 +47,16 @@ const FacilityModal = (props: FacilityModalProps) => {
       const finalValue = { ...values, createdBy: session?.user?.username };
       const response = await handleSubmit(createFacility, finalValue, '');
       if (response?.data) {
+        helpers.setValue(response?.data?.data?.facilityId);
+        if (handleReadableLocation) {
+          handleReadableLocation(
+            {
+              label: response?.data?.data?.facilityName,
+              value: response?.data?.data?.facilityId,
+            },
+            'facility'
+          );
+        }
         onClose();
         resetForm();
       }

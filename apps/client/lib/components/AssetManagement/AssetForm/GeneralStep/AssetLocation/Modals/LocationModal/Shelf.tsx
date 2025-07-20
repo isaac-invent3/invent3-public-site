@@ -24,7 +24,12 @@ const Shelf = (props: ShelfProps) => {
         />
         <FormAddButton handleClick={onOpen}>Add New Shelf</FormAddButton>
       </VStack>
-      <ShelfModal isOpen={isOpen} onClose={onClose} defaultAisleId={aisleId} />
+      <ShelfModal
+        isOpen={isOpen}
+        onClose={onClose}
+        defaultAisleId={aisleId}
+        handleReadableLocation={handleReadableLocation}
+      />
     </>
   );
 };

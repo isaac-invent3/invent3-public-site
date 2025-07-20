@@ -1,12 +1,13 @@
 interface DashboardSummary {
-  totalManagedCompanies: number;
-  totalAssetsBeingManaged: number;
-  upcomingMaintenanceThisWekk: number;
-  taskOverviewThisMonth: number;
-  tasksCompletedThisMonth: number;
-  tasksNotCompletedThisMonth: number;
-  assetsNotInUse: number;
-  totalInactiveCompanies: number;
+  totalCompanies: number;
+  activeCompanies: number;
+  inactiveCompanies: number;
+  totalManagedAssets: number;
+  totalManagedAssetsNotInUse: number;
+  totalUpcomingMaintenanceByWeek: number;
+  totalUpcomingMaintenanceByDay: number;
+  totalTasksByMonth: number;
+  totalCompleteTasksByMonth: number;
 }
 
 export type { DashboardSummary };

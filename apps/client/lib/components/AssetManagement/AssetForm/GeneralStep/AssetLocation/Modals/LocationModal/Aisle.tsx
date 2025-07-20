@@ -25,7 +25,12 @@ const Aisle = (props: AisleProps) => {
         />
         <FormAddButton handleClick={onOpen}>Add New Aisle</FormAddButton>
       </VStack>
-      <AisleModal isOpen={isOpen} onClose={onClose} defaultRoomId={roomId} />
+      <AisleModal
+        isOpen={isOpen}
+        onClose={onClose}
+        defaultRoomId={roomId}
+        handleReadableLocation={handleReadableLocation}
+      />
     </>
   );
 };

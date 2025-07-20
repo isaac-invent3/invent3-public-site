@@ -5,6 +5,7 @@ import { dateFormatter } from '~/lib/utils/Formatters';
 import PageHeader from '../../UI/PageHeader';
 import { useSearchParams } from 'next/navigation';
 import { DashboardView } from '~/lib/interfaces/dashboard.interfaces';
+import moment from 'moment';
 
 function getGreeting() {
   const now = new Date();
@@ -25,6 +26,9 @@ interface HeaderProps {
 const Header = ({ children }: HeaderProps) => {
   const { data } = useSession();
   const now = new Date();
+  const test = moment(1753026706 * 1000).toISOString();
+  const timeInSeconds = Math.floor(Date.now() / 1000);
+  const currentTime = moment(timeInSeconds * 1000).toISOString();
   const searchParams = useSearchParams();
   const view = searchParams?.get('view');
 
@@ -53,7 +57,15 @@ const Header = ({ children }: HeaderProps) => {
           <Text
             color="neutral.600"
             fontWeight={700}
-          >{`It's ${dateFormatter(now, 'dddd D, MMMM YYYY')}`}</Text>
+          >{`It's ${dateFormatter(test, 'dddd D, MMMM YYYY HH:mm:ss')}`}</Text>
+          <Text
+            color="neutral.600"
+            fontWeight={700}
+          >{`Expiry Time ${test} (1753026706)`}</Text>
+          <Text
+            color="neutral.600"
+            fontWeight={700}
+          >{`Current Time: ${currentTime} (${timeInSeconds})`}</Text>
         </HStack>
 
         {data?.user &&

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
-import { Field, FormikProvider, useFormik } from 'formik';
+import { Field, FormikProvider, useField, useFormik } from 'formik';
 
 import {
   Button,
@@ -20,6 +20,8 @@ import {
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { useState } from 'react';
 import { designationSchema } from '~/lib/schemas/user.schema';
+import { useAppDispatch } from '~/lib/redux/hooks';
+import { updateUserForm } from '~/lib/redux/slices/UserSlice';
 
 interface JobDesignationModalProps {
   isOpen: boolean;
@@ -36,6 +38,8 @@ const JobDesignationModal = (props: JobDesignationModalProps) => {
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
+  const [field, meta, helpers] = useField('jobTitleId');
+  const dispatch = useAppDispatch();
 
   const formik = useFormik({
     initialValues: {
@@ -52,6 +56,12 @@ const JobDesignationModal = (props: JobDesignationModalProps) => {
       };
       const response = await handleSubmit(createDesignation, finalValue, '');
       if (response?.data) {
+        helpers.setValue(response?.data?.data?.designationId);
+        dispatch(
+          updateUserForm({
+            jobTitleName: response?.data?.data?.designationName!,
+          })
+        );
         onClose();
       }
     },

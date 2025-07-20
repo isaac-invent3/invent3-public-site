@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
-import { Field, FormikProvider, useFormik } from 'formik';
+import { Field, FormikProvider, useField, useFormik } from 'formik';
 
 import {
   Button,
@@ -14,6 +14,9 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';
 import { floorSchema } from '~/lib/schemas/asset/location.schema';
 import BuildingSelect from './SelectInputs/BuildingSelect';
+import { useAppDispatch } from '~/lib/redux/hooks';
+import { Option } from '@repo/interfaces';
+import { FormLocation } from '~/lib/interfaces/location.interfaces';
 // import DocumentUploadAndView from '~/lib/components/Common/DocumentUploadAndView';
 
 interface FloorModalProps {
@@ -29,6 +32,7 @@ interface FloorModalProps {
   }) => void;
   showDropdown?: boolean;
   showToast?: boolean;
+  handleReadableLocation?: (option: Option, key: keyof FormLocation) => void;
 }
 const FloorModal = (props: FloorModalProps) => {
   const {
@@ -39,9 +43,12 @@ const FloorModal = (props: FloorModalProps) => {
     handleSave,
     showDropdown = true,
     showToast,
+    handleReadableLocation,
   } = props;
   const [createFloor, { isLoading }] = useCreateFloorMutation({});
   const { handleSubmit } = useCustomMutation();
+  const [field, meta, helpers] = useField('floorId');
+  const dispatch = useAppDispatch();
 
   const formik = useFormik({
     initialValues: {
@@ -68,6 +75,15 @@ const FloorModal = (props: FloorModalProps) => {
           showToast ? 'Floor Created Successfully' : ''
         );
         if (response?.data) {
+          if (handleReadableLocation) {
+            handleReadableLocation(
+              {
+                label: response?.data?.data?.floorName,
+                value: response?.data?.data?.floorId,
+              },
+              'floor'
+            );
+          }
           onClose();
           resetForm();
         }

@@ -61,6 +61,13 @@ export const journeyGuideSteps = [
 
 export const CMFJourneyGuideSteps = [
   {
+    title: 'Add Facility/Branch',
+    subtitle: '',
+    buttonSuffix: 'Create Facility',
+    link: `/${ROUTES.LOCATION}/add`,
+    key: 'AddFacility',
+  },
+  {
     title: 'Add Users',
     subtitle: '',
     buttonSuffix: 'Create User',
@@ -91,17 +98,6 @@ const JourneyGuide = (props: JourneyGuideProps) => {
   );
 
   const steps = [
-    ...(!data?.user?.roleIds.includes(ROLE_IDS_ENUM.CLIENT_ADMIN)
-      ? [
-          {
-            title: 'Create Company',
-            subtitle: '',
-            buttonSuffix: 'Create Company',
-            link: `/${ROUTES.COMPANY}/add`,
-            key: 'CreateCompanyProfile',
-          },
-        ]
-      : []),
     ...(data?.user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY)
       ? CMFJourneyGuideSteps
       : journeyGuideSteps),

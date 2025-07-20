@@ -14,6 +14,8 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { roomSchema } from '~/lib/schemas/asset/location.schema';
 import DepartmentSelect from './SelectInputs/DepartmentSelect';
 import { getSession } from 'next-auth/react';
+import { Option } from '@repo/interfaces';
+import { FormLocation } from '~/lib/interfaces/location.interfaces';
 
 interface RoomModalProps {
   isOpen: boolean;
@@ -21,6 +23,7 @@ interface RoomModalProps {
   defaultDepartmentId: number | null;
   showDropdown?: boolean;
   showToast?: boolean;
+  handleReadableLocation?: (option: Option, key: keyof FormLocation) => void;
 }
 const RoomModal = (props: RoomModalProps) => {
   const {
@@ -29,6 +32,7 @@ const RoomModal = (props: RoomModalProps) => {
     defaultDepartmentId,
     showDropdown = true,
     showToast,
+    handleReadableLocation,
   } = props;
   const [createRoom, { isLoading }] = useCreateRoomMutation({});
   const { handleSubmit } = useCustomMutation();
@@ -50,6 +54,15 @@ const RoomModal = (props: RoomModalProps) => {
         showToast ? 'Room Created Successfully' : ''
       );
       if (response?.data) {
+        if (handleReadableLocation) {
+          handleReadableLocation(
+            {
+              label: response?.data?.data?.roomName,
+              value: response?.data?.data?.roomId,
+            },
+            'room'
+          );
+        }
         onClose();
         resetForm();
       }

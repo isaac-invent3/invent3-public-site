@@ -14,6 +14,8 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';
 import { aisleSchema } from '~/lib/schemas/asset/location.schema';
 import RoomSelect from './SelectInputs/RoomSelect';
+import { FormLocation } from '~/lib/interfaces/location.interfaces';
+import { Option } from '@repo/interfaces';
 
 interface AisleModalProps {
   isOpen: boolean;
@@ -21,6 +23,7 @@ interface AisleModalProps {
   defaultRoomId: number | null;
   showDropdown?: boolean;
   showToast?: boolean;
+  handleReadableLocation?: (option: Option, key: keyof FormLocation) => void;
 }
 const AisleModal = (props: AisleModalProps) => {
   const {
@@ -29,6 +32,7 @@ const AisleModal = (props: AisleModalProps) => {
     defaultRoomId,
     showDropdown = true,
     showToast,
+    handleReadableLocation,
   } = props;
   const [createAisle, { isLoading }] = useCreateAisleMutation({});
   const { handleSubmit } = useCustomMutation();
@@ -53,6 +57,15 @@ const AisleModal = (props: AisleModalProps) => {
         showToast ? 'Aisle Created Successfully' : ''
       );
       if (response?.data) {
+        if (handleReadableLocation) {
+          handleReadableLocation(
+            {
+              label: response?.data?.data?.aisleName,
+              value: response?.data?.data?.aisleId,
+            },
+            'aisle'
+          );
+        }
         onClose();
         resetForm();
       }

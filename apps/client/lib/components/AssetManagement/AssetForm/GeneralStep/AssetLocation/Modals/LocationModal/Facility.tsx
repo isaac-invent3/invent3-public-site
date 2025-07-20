@@ -30,6 +30,7 @@ const Facility = (props: FacilityProps) => {
         onClose={onClose}
         defaultLGAId={lgaId}
         stateId={stateId}
+        handleReadableLocation={handleReadableLocation}
       />
     </>
   );

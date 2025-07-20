@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
-import { Field, FormikProvider, useFormik } from 'formik';
+import { Field, FormikProvider, useField, useFormik } from 'formik';
 
 import {
   Button,
@@ -13,6 +13,8 @@ import { subCategorySchema } from '~/lib/schemas/asset/category.schema';
 import { useCreateSubCategoryMutation } from '~/lib/redux/services/asset/category.services';
 import CategorySelect from '../CategorySelect';
 import { getSession } from 'next-auth/react';
+import { useAppDispatch } from '~/lib/redux/hooks';
+import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 
 interface SubCategoryModalProps {
   isOpen: boolean;
@@ -23,6 +25,8 @@ const SubCategoryModal = (props: SubCategoryModalProps) => {
   const { isOpen, onClose, defaultCategory } = props;
   const [createSubCategory, { isLoading }] = useCreateSubCategoryMutation({});
   const { handleSubmit } = useCustomMutation();
+  const [field, meta, helpers] = useField('subCategoryId');
+  const dispatch = useAppDispatch();
 
   const formik = useFormik({
     initialValues: {
@@ -40,6 +44,12 @@ const SubCategoryModal = (props: SubCategoryModalProps) => {
       };
       const response = await handleSubmit(createSubCategory, finalValue, '');
       if (response?.data) {
+        helpers.setValue(response?.data?.data?.subCategoryId);
+        dispatch(
+          updateAssetForm({
+            subCategoryName: response?.data?.data?.subCategoryName!,
+          })
+        );
         onClose();
       }
     },

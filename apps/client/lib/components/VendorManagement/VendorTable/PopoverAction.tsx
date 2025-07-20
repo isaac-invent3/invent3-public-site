@@ -29,7 +29,7 @@ const PopoverAction = ({ vendor }: PopoverActionProps) => {
     const response = await handleSubmit(
       deleteTemplate,
       { id: vendor?.vendorId, deletedBy: session?.user.username! },
-      'Template Deleted Successfully'
+      'Vendor Deleted Successfully'
     );
     if (response?.data) {
       onClose();

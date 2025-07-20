@@ -12,12 +12,14 @@ import { useGetDashboardStatQuery } from '~/lib/redux/services/dashboard/thirdpa
 
 const SectionOne = () => {
   const { data, isLoading } = useGetDashboardStatQuery();
+
+  console.log({ data });
   return (
     <SimpleGrid columns={{ base: 1, sm: 2, lg: 4 }} spacing="16px" width="full">
       <SummaryCard
         title="Total Managed Companies"
         icon={Company2Icon}
-        value={data?.data?.totalManagedCompanies}
+        value={data?.data?.totalCompanies}
         isLoading={isLoading}
         showRange={false}
         showIconBgColor={false}
@@ -26,7 +28,10 @@ const SectionOne = () => {
         iconStyle={{ boxSize: '24px' }}
       >
         <HStack spacing="4px">
-          <CustomBadge badgeColor="#F50000" badgeContent={20} />
+          <CustomBadge
+            badgeColor="#F50000"
+            badgeContent={data?.data?.inactiveCompanies}
+          />
           <Text color="neutral.600" fontWeight={700}>
             <Text as="span" color="black" fontWeight={800}>
               NOT
@@ -38,7 +43,7 @@ const SectionOne = () => {
       <SummaryCard
         title="Total Assets being Managed"
         icon={AssetBoxIcon}
-        value={data?.data?.totalAssetsBeingManaged}
+        value={data?.data?.totalManagedAssets}
         isLoading={isLoading}
         showRange={false}
         showIconBgColor={false}
@@ -47,7 +52,10 @@ const SectionOne = () => {
         iconStyle={{ boxSize: '24px' }}
       >
         <HStack spacing="4px">
-          <CustomBadge badgeColor="#0366EF" badgeContent={12000} />
+          <CustomBadge
+            badgeColor="#0366EF"
+            badgeContent={data?.data?.totalManagedAssetsNotInUse}
+          />
           <Text color="neutral.600" fontWeight={700}>
             Asset{' '}
             <Text as="span" color="black" fontWeight={800}>
@@ -60,7 +68,7 @@ const SectionOne = () => {
       <SummaryCard
         title="Upcoming Maintenance"
         icon={CalendarIcon}
-        value={data?.data?.upcomingMaintenanceThisWekk}
+        value={data?.data?.totalUpcomingMaintenanceByWeek}
         isLoading={isLoading}
         showRange={true}
         formatValue
@@ -72,7 +80,7 @@ const SectionOne = () => {
         <HStack spacing="4px">
           <CustomBadge
             badgeColor="#D54801"
-            badgeContent={'05'}
+            badgeContent={data?.data?.totalUpcomingMaintenanceByDay}
             py="2px"
             px="5px"
           />
@@ -85,7 +93,7 @@ const SectionOne = () => {
         title="Task Overview"
         icon={TaskIcon}
         formatValue
-        value={data?.data?.taskOverviewThisMonth}
+        value={data?.data?.totalTasksByMonth}
         isLoading={isLoading}
         showRange={true}
         showIconBgColor={false}
@@ -96,7 +104,7 @@ const SectionOne = () => {
           <HStack spacing="4px">
             <CustomBadge
               badgeColor="#07CC3B"
-              badgeContent={data?.data?.tasksCompletedThisMonth}
+              badgeContent={data?.data?.totalCompleteTasksByMonth}
               py="2px"
               px="5px"
             />
@@ -107,7 +115,10 @@ const SectionOne = () => {
           <HStack spacing="4px">
             <CustomBadge
               badgeColor="#F50000"
-              badgeContent={data?.data?.tasksNotCompletedThisMonth}
+              badgeContent={
+                (data?.data?.totalTasksByMonth ?? 0) -
+                (data?.data?.totalCompleteTasksByMonth ?? 0)
+              }
               py="2px"
               px="5px"
             />

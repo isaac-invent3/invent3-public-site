@@ -63,7 +63,8 @@ const Header = (props: HeaderProps) => {
           </HStack>
           <HStack spacing={{ base: '8px', md: '24px' }}>
             <HStack display={{ base: 'none', lg: 'flex' }}>
-              {data?.user?.roleIds.includes(ROLE_IDS_ENUM.CLIENT_ADMIN) && (
+              {(data?.user?.roleIds.includes(ROLE_IDS_ENUM.CLIENT_ADMIN) ||
+                data?.user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY)) && (
                 <AssistantGuideBox />
               )}
             </HStack>
@@ -77,7 +78,8 @@ const Header = (props: HeaderProps) => {
           </HStack>
         </HStack>
       </Stack>
-      {data?.user?.roleIds.includes(ROLE_IDS_ENUM.CLIENT_ADMIN) && (
+      {(data?.user?.roleIds.includes(ROLE_IDS_ENUM.CLIENT_ADMIN) ||
+        data?.user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY)) && (
         <HStack
           display={{ base: 'flex', lg: 'none' }}
           mb="16px"

@@ -61,7 +61,11 @@ const AssetCategory = () => {
           </VStack>
         </SimpleGrid>
       </GridItem>
-      <CategoryModal isOpen={isOpen} onClose={onClose} />
+      <CategoryModal
+        isOpen={isOpen}
+        onClose={onClose}
+        setSelectedCategory={setSelectedCategory}
+      />
       <SubCategoryModal
         isOpen={isOpenSubCategory}
         onClose={onCloseSubCategory}

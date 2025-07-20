@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
-import { Field, FormikProvider, useFormik } from 'formik';
+import { Field, FormikProvider, useField, useFormik } from 'formik';
 
 import {
   Button,
@@ -14,6 +14,10 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';
 import { departmentSchema } from '~/lib/schemas/asset/location.schema';
 import FloorSelect from './SelectInputs/FloorSelect';
+import { useAppDispatch } from '~/lib/redux/hooks';
+import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
+import { Option } from '@repo/interfaces';
+import { FormLocation } from '~/lib/interfaces/location.interfaces';
 
 interface DepartmentModalProps {
   isOpen: boolean;
@@ -21,6 +25,7 @@ interface DepartmentModalProps {
   defaultFloorId: number | null;
   showDropdown?: boolean;
   showToast?: boolean;
+  handleReadableLocation?: (option: Option, key: keyof FormLocation) => void;
 }
 const DepartmentModal = (props: DepartmentModalProps) => {
   const {
@@ -29,6 +34,7 @@ const DepartmentModal = (props: DepartmentModalProps) => {
     defaultFloorId,
     showDropdown = true,
     showToast,
+    handleReadableLocation,
   } = props;
   const [createDepartment, { isLoading }] = useCreateDepartmentMutation({});
   const { handleSubmit } = useCustomMutation();
@@ -52,6 +58,15 @@ const DepartmentModal = (props: DepartmentModalProps) => {
         showToast ? 'Department Created Successfully' : ''
       );
       if (response?.data) {
+        if (handleReadableLocation) {
+          handleReadableLocation(
+            {
+              label: response?.data?.data?.departmentName,
+              value: response?.data?.data?.departmentId,
+            },
+            'department'
+          );
+        }
         onClose();
         resetForm();
       }

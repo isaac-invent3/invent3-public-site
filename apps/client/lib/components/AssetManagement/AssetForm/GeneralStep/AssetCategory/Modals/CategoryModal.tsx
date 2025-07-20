@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
-import { Field, FormikProvider, useFormik } from 'formik';
+import { Field, FormikProvider, useField, useFormik } from 'formik';
 
 import {
   Button,
@@ -12,15 +12,20 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';
 import { categorySchema } from '~/lib/schemas/asset/category.schema';
 import { useCreateCategoryMutation } from '~/lib/redux/services/asset/category.services';
+import { useAppDispatch } from '~/lib/redux/hooks';
+import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 
 interface CategoryModalProps {
   isOpen: boolean;
   onClose: () => void;
+  setSelectedCategory: React.Dispatch<React.SetStateAction<number | null>>;
 }
 const CategoryModal = (props: CategoryModalProps) => {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, setSelectedCategory } = props;
   const [createCategory, { isLoading }] = useCreateCategoryMutation({});
   const { handleSubmit } = useCustomMutation();
+  const [field, meta, helpers] = useField('categoryId');
+  const dispatch = useAppDispatch();
 
   const formik = useFormik({
     initialValues: {
@@ -35,6 +40,13 @@ const CategoryModal = (props: CategoryModalProps) => {
       };
       const response = await handleSubmit(createCategory, finalValue, '');
       if (response?.data) {
+        helpers.setValue(response?.data?.data?.categoryId);
+        setSelectedCategory(response?.data?.data?.categoryId);
+        dispatch(
+          updateAssetForm({
+            categoryName: response?.data?.data?.categoryName!,
+          })
+        );
         onClose();
       }
     },

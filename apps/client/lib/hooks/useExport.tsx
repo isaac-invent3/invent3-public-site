@@ -19,14 +19,23 @@ import { EXPORT_TYPE_ENUM } from '~/lib/utils/constants';
 import { handleExport } from '~/lib/utils/helperFunctions';
 import { ExportTableName } from '../interfaces/general.interfaces';
 import { useState } from 'react';
+import { getSession } from 'next-auth/react';
 
 interface UseExportProps {
   ids: number[];
   exportTableName: ExportTableName;
   tableDisplayName: string;
+  hasRequestedBy?: boolean;
+  isQueued?: boolean;
 }
 const useExport = (props: UseExportProps) => {
-  const { ids, exportTableName, tableDisplayName } = props;
+  const {
+    ids,
+    exportTableName,
+    tableDisplayName,
+    hasRequestedBy = false,
+    isQueued,
+  } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const { handleSubmit } = useCustomMutation();
@@ -49,12 +58,20 @@ const useExport = (props: UseExportProps) => {
   };
 
   const submitExport = async (exportType: number) => {
-    const resp = await handleSubmit(exportTable, {
-      tableName: exportTableName,
-      exportType,
-      ids,
-    });
-    if (resp?.data?.data) {
+    const session = await getSession();
+    const resp = await handleSubmit(
+      exportTable,
+      {
+        tableName: exportTableName,
+        exportType,
+        ids,
+        requestedBy: hasRequestedBy ? session?.user.username : undefined,
+      },
+      isQueued
+        ? 'Export job has been queued. You will be notified when the export is complete.'
+        : undefined
+    );
+    if (resp?.data?.data && !isQueued) {
       await handleExport(resp?.data?.data);
     }
   };

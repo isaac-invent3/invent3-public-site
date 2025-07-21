@@ -4,6 +4,7 @@ import {
   GetUserNotificationQueryParams,
   MarkAllNotificationsAsReadParams,
   Notification,
+  NotificationCount,
 } from '~/lib/interfaces/notification.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../baseQueryWithReauth';
@@ -15,7 +16,7 @@ const getHeaders = () => ({
 export const notificationApi = createApi({
   reducerPath: 'notificationApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['allNotifications'],
+  tagTypes: ['allNotifications', 'notificationCount'],
   endpoints: (builder) => ({
     getUserNotification: builder.query<
       BaseApiResponse<ListResponse<Notification>>,
@@ -44,7 +45,7 @@ export const notificationApi = createApi({
         method: 'PUT',
         headers: getHeaders(),
       }),
-      invalidatesTags: ['allNotifications'],
+      invalidatesTags: ['allNotifications', 'notificationCount'],
     }),
     markANotificationAsRead: builder.mutation<
       BaseApiResponse<string>,
@@ -58,7 +59,18 @@ export const notificationApi = createApi({
         method: 'PUT',
         headers: getHeaders(),
       }),
-      invalidatesTags: ['allNotifications'],
+      invalidatesTags: ['allNotifications', 'notificationCount'],
+    }),
+    getNotificationCount: builder.query<
+      BaseApiResponse<NotificationCount>,
+      { userId: number }
+    >({
+      query: ({ userId }) => ({
+        url: `/Notifications/GetNotificationCounts/${userId}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['notificationCount'],
     }),
   }),
 });
@@ -67,4 +79,5 @@ export const {
   useGetUserNotificationQuery,
   useMarkAllNotificationsAsReadMutation,
   useMarkANotificationAsReadMutation,
+  useGetNotificationCountQuery,
 } = notificationApi;

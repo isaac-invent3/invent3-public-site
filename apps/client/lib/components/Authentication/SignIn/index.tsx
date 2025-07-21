@@ -22,7 +22,7 @@ import { setCredentials } from '~/lib/redux/slices/GeneralSlice';
 import { Button, FormTextInput } from '@repo/ui/components';
 import { ROUTES } from '~/lib/utils/constants';
 import { authApi } from '~/lib/redux/services/auth.services';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TwoFactorValidation from './2FAValidation';
 import { extractTenantFromUrl } from '~/lib/utils/helperFunctions';
 import ForgotPasswordModal from './ForgotPasswordModal';
@@ -30,7 +30,8 @@ import ForgotPasswordModal from './ForgotPasswordModal';
 const SignIn = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const ref = searchParams?.get('ref');
+  const encodedRef = searchParams?.get('ref');
+  const ref = encodedRef ? decodeURIComponent(encodedRef) : null;
   const toast = useToast();
   const dispatch = useAppDispatch();
   const [has2fa, setHas2FA] = useState(false);

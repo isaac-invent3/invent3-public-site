@@ -53,10 +53,14 @@ export const utilityApi = createApi({
         tableName: ExportTableName;
         exportType: number;
         ids?: number[];
+        requestedBy?: string;
       }
     >({
-      query: ({ tableName, exportType, ids }) => ({
-        url: `/${tableName}/Export?exportType=${exportType}`,
+      query: ({ tableName, exportType, ids, requestedBy }) => ({
+        url: generateQueryStr(`/${tableName}/Export?`, {
+          exportType,
+          requestedBy: requestedBy!,
+        }),
         method: 'POST',
         headers: getHeaders(),
         body: ids,

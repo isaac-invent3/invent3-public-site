@@ -9,7 +9,10 @@ import { Button, GenericModal } from '@repo/ui/components';
 import { getSession } from 'next-auth/react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useAppSelector } from '~/lib/redux/hooks';
-import { useUpdateAuditRecordMutation } from '~/lib/redux/services/log.services';
+import {
+  useFlagAuditRecordForReviewMutation,
+  useUpdateAuditRecordMutation,
+} from '~/lib/redux/services/log.services';
 
 interface FlagForReviewModalProps {
   isOpen: boolean;
@@ -20,7 +23,7 @@ const FlagForReviewModal = (props: FlagForReviewModalProps) => {
   const { isOpen, onClose } = props;
   const auditRecord = useAppSelector((state) => state.auditLog.auditLog);
   const { handleSubmit } = useCustomMutation();
-  const [updateRecord, { isLoading }] = useUpdateAuditRecordMutation({});
+  const [updateRecord, { isLoading }] = useFlagAuditRecordForReviewMutation({});
 
   const handleUpdate = async () => {
     const session = await getSession();
@@ -28,7 +31,6 @@ const FlagForReviewModal = (props: FlagForReviewModalProps) => {
       updateRecord,
       {
         auditRecordId: auditRecord?.auditRecordId!,
-        isFlaggedForReview: true,
         lastModifiedBy: session?.user.username!,
       },
       'Record Flagged Successfully'

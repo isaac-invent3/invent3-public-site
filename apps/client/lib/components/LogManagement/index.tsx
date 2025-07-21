@@ -63,6 +63,8 @@ const LogManagement = () => {
     ids: selectedTableIds,
     exportTableName: 'AuditRecords',
     tableDisplayName: 'record',
+    hasRequestedBy: true,
+    isQueued: true,
   });
 
   const [searchData, setSearchData] = useState<

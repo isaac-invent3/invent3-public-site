@@ -3,6 +3,7 @@ import { Button } from '@repo/ui/components';
 import { CloseIcon } from '../../CustomIcons';
 import FlagForReviewModal from './Modals/FlagForReviewModal';
 import { useAppSelector } from '~/lib/redux/hooks';
+import useExport from '~/lib/hooks/useExport';
 
 interface LogHeaderProps {
   handleBack: () => void;
@@ -11,6 +12,13 @@ const LogHeader = (props: LogHeaderProps) => {
   const { handleBack } = props;
   const auditLog = useAppSelector((state) => state.auditLog.auditLog);
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const { ExportPopover } = useExport({
+    ids: [auditLog?.auditRecordId!],
+    exportTableName: 'AuditRecords',
+    tableDisplayName: 'record',
+    hasRequestedBy: true,
+    isQueued: true,
+  });
 
   return (
     <>
@@ -36,12 +44,7 @@ const LogHeader = (props: LogHeaderProps) => {
           spacing="8px"
           justifyContent="center"
         >
-          <Button
-            customStyles={{ height: '35px', width: '131px', px: '44px' }}
-            variant="primary"
-          >
-            Export
-          </Button>
+          {ExportPopover}
           {!auditLog?.isFlaggedForReview ? (
             <Button
               customStyles={{ height: '35px', width: '131px', px: '44px' }}

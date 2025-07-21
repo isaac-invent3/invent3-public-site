@@ -4,9 +4,9 @@ const exportFormatOptions = [
 ];
 
 const sessionTimeoutDurationOptions = [
-  { label: '0', value: 0 },
-  { label: '1', value: 1 },
-  { label: '2', value: 2 },
+  { label: '15 Minutes', value: 0 },
+  { label: '30 Minutes', value: 1 },
+  { label: '60 Minutes', value: 2 },
 ];
 
 const maxFailedLoginAttemptsOptions = [

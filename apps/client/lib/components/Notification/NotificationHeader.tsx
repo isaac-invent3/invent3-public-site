@@ -12,21 +12,8 @@ import React from 'react';
 import { PreferenceIcon } from '../CustomIcons/layout';
 import TabButton from './Tabs/TabButton';
 import { NotificationTabType } from '~/lib/interfaces/notification.interfaces';
-
-const Tabs: { label: NotificationTabType; count: number }[] = [
-  {
-    label: 'All',
-    count: 0,
-  },
-  {
-    label: 'Unread',
-    count: 2,
-  },
-  {
-    label: 'Alerts',
-    count: 0,
-  },
-];
+import { useGetNotificationCountQuery } from '~/lib/redux/services/notification.services';
+import { useSession } from 'next-auth/react';
 
 interface NotificationHeaderProps {
   isLoading: boolean;
@@ -37,6 +24,30 @@ interface NotificationHeaderProps {
 const NotificationHeader = (props: NotificationHeaderProps) => {
   const { isLoading, activeTab, setActiveTab, handleMarkNotificationsAsRead } =
     props;
+  const session = useSession();
+
+  const { data } = useGetNotificationCountQuery(
+    {
+      userId: session?.data?.user?.userId!,
+    },
+    { skip: !session?.data?.user?.userId }
+  );
+
+  const Tabs: { label: NotificationTabType; count: number }[] = [
+    {
+      label: 'All',
+      count: data?.data?.totalNotifications ?? 0,
+    },
+    {
+      label: 'Unread',
+      count: data?.data?.unreadNotifications ?? 0,
+    },
+    {
+      label: 'Alerts',
+      count: data?.data?.alerts ?? 0,
+    },
+  ];
+
   return (
     <VStack width="full" spacing="31px">
       <HStack width="full" justifyContent="space-between">
@@ -63,6 +74,7 @@ const NotificationHeader = (props: NotificationHeaderProps) => {
         justifyContent="space-between"
         borderBottom="1px solid #BBBBBB"
         alignItems="flex-start"
+        overflow="auto"
       >
         <HStack spacing="10.67px" height="full" alignItems="stretch">
           {Tabs.map((item, index) => (
@@ -87,7 +99,6 @@ const NotificationHeader = (props: NotificationHeaderProps) => {
         </HStack>
         <HStack gap="8px">
           {isLoading && <Spinner color="#0366EF" size="sm" />}
-
           <Button
             fontSize="12px"
             lineHeight="14.26px"

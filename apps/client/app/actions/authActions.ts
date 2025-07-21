@@ -45,7 +45,7 @@ export async function handleSignOut(ref?: string) {
     ? `/${session?.user?.companySlug}`
     : '';
   const redirectUrl = ref
-    ? `${tenantName}/signin?ref=${ref}`
+    ? `${tenantName}/signin?ref=${encodeURIComponent(ref)}`
     : `${tenantName}/signin`;
 
   try {

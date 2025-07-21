@@ -109,6 +109,22 @@ export const logApi = createApi({
         body,
       }),
     }),
+    flagAuditRecordForReview: builder.mutation<
+      void,
+      {
+        auditRecordId: number;
+        lastModifiedBy: string;
+      }
+    >({
+      query: ({ auditRecordId, ...body }) => ({
+        url: generateQueryStr(
+          `/AuditRecords/FlagAuditRecordForReview/${auditRecordId}?`,
+          body
+        ),
+        method: 'PUT',
+        headers: getHeaders(),
+      }),
+    }),
     searchAuditRecords: builder.mutation<
       BaseApiResponse<ListResponse<AuditRecord>>,
       SearchQuery
@@ -133,4 +149,5 @@ export const {
   useGetAuditRecordByIdQuery,
   useUpdateAuditRecordMutation,
   useGetAuditRecordSummaryQuery,
+  useFlagAuditRecordForReviewMutation,
 } = logApi;

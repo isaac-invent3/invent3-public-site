@@ -48,6 +48,16 @@ export const companyApi = createApi({
         headers: getHeaders(),
       }),
     }),
+    getCompanyApiKey: builder.query<
+      BaseApiResponse<{ apiKey: string }>,
+      { companyId: number; requestedBy: string }
+    >({
+      query: ({ companyId, ...data }) => ({
+        url: generateQueryStr(`/Companies/GetApiKey/${companyId}?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
     searchCompanies: builder.mutation<
       BaseApiResponse<ListResponse<Company>>,
       SearchQuery
@@ -118,4 +128,5 @@ export const {
   useUpdateCompanyMutation,
   useToggleCompanyStatusMutation,
   useGetCompanyJourneyGuideQuery,
+  useGetCompanyApiKeyQuery,
 } = companyApi;

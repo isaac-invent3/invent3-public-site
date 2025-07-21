@@ -57,6 +57,13 @@ interface Notification {
   roleName: string;
 }
 
+interface NotificationCount {
+  totalNotifications: number;
+  unreadNotifications: number;
+  archivedNotifications: number;
+  alerts: number;
+}
+
 type NotificationTabType = 'All' | 'Unread' | 'Alerts' | 'Archived';
 
 export type {
@@ -65,4 +72,5 @@ export type {
   MarkAllNotificationsAsReadParams,
   Notification,
   NotificationTabType,
+  NotificationCount,
 };

@@ -317,11 +317,22 @@ export async function middleware(request: NextRequest) {
     const redirectPath = tenantData ? `/${tenant}/signin` : `/signin`;
     const url = new URL(redirectPath, request.url);
     const actualPath = tenantData ? remainingPath : pathname;
-    url.searchParams.set('ref', actualPath);
-    // Preserve original query parameters
+
+    // Build the ref value: actualPath + search params
+    let refValue = actualPath;
+    const searchParams = new URLSearchParams(request.nextUrl.searchParams);
+    if ([...searchParams].length > 0) {
+      refValue += `?${searchParams.toString()}`;
+    }
+
+    // Encode the ref value
+    url.searchParams.set('ref', encodeURIComponent(refValue));
+
+    // Preserve original query parameters (except ref)
     request.nextUrl.searchParams.forEach((value, key) => {
-      url.searchParams.set(key, value);
+      if (key !== 'ref') url.searchParams.set(key, value);
     });
+
     return NextResponse.redirect(url);
   }
 }

@@ -4,6 +4,9 @@ import { CloseIcon } from '../../CustomIcons';
 import FlagForReviewModal from './Modals/FlagForReviewModal';
 import { useAppSelector } from '~/lib/redux/hooks';
 import useExport from '~/lib/hooks/useExport';
+import { useExportFieldChangesMutation } from '~/lib/redux/services/log.services';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
+import { handleExport } from '~/lib/utils/helperFunctions';
 
 interface LogHeaderProps {
   handleBack: () => void;
@@ -12,13 +15,17 @@ const LogHeader = (props: LogHeaderProps) => {
   const { handleBack } = props;
   const auditLog = useAppSelector((state) => state.auditLog.auditLog);
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const { ExportPopover } = useExport({
-    ids: [auditLog?.auditRecordId!],
-    exportTableName: 'AuditRecords',
-    tableDisplayName: 'record',
-    hasRequestedBy: true,
-    isQueued: true,
-  });
+  const { handleSubmit } = useCustomMutation();
+  const [exportFieldChanges, { isLoading }] = useExportFieldChangesMutation();
+
+  const exportData = async () => {
+    const resp = await handleSubmit(exportFieldChanges, {
+      auditRecordId: auditLog?.auditRecordId!,
+    });
+    if (resp?.data?.data) {
+      await handleExport(resp?.data?.data);
+    }
+  };
 
   return (
     <>
@@ -44,7 +51,14 @@ const LogHeader = (props: LogHeaderProps) => {
           spacing="8px"
           justifyContent="center"
         >
-          {ExportPopover}
+          <Button
+            customStyles={{ height: '35px', width: '131px' }}
+            handleClick={exportData}
+            isLoading={isLoading}
+            loadingText="Exporting..."
+          >
+            Export
+          </Button>
           {!auditLog?.isFlaggedForReview ? (
             <Button
               customStyles={{ height: '35px', width: '131px', px: '44px' }}

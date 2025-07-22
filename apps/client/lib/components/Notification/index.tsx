@@ -1,6 +1,6 @@
 import { useDisclosure, useMediaQuery } from '@chakra-ui/react';
 import { getSession, useSession } from 'next-auth/react';
-import { useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { NotificationIcon } from '~/lib/components/CustomIcons/layout';
 import useSignalR from '~/lib/hooks/useSignalR';
 import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
@@ -73,6 +73,10 @@ const NotificationComponents = () => {
       );
     },
   });
+
+  useLayoutEffect(() => {
+    onClosePopover();
+  }, []);
 
   return (
     <>

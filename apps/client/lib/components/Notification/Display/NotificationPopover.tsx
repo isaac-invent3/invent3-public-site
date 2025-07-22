@@ -11,6 +11,7 @@ import NotificationHeader from '../NotificationHeader';
 import HeaderIcon from '~/lib/layout/ProtectedPage/Header/HeaderIcon';
 import { NotificationIcon } from '../../CustomIcons/layout';
 import { NotificationTabType } from '~/lib/interfaces/notification.interfaces';
+import { useEffect } from 'react';
 
 interface NotificationPopoverProps {
   isOpen: boolean;
@@ -31,6 +32,10 @@ const NotificationPopover = (props: NotificationPopoverProps) => {
     setActiveTab,
     handleMarkNotificationsAsRead,
   } = props;
+
+  useEffect(() => {
+    onClose();
+  }, []);
 
   return (
     <>
@@ -65,7 +70,7 @@ const NotificationPopover = (props: NotificationPopoverProps) => {
           p={0}
           m={0}
           position="relative"
-          zIndex="999"
+          zIndex="9"
           width="347.33px"
           height="604px"
           maxH="80vh"

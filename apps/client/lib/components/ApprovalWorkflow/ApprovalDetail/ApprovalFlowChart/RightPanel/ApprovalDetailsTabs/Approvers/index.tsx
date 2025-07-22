@@ -144,7 +144,7 @@ const Approvers = () => {
                       isLoading={isUpdatingInstance && !shouldApprove}
                       onClick={() => {
                         setShouldApprove(false);
-                        takeAction(true, item.approvalWorkFlowPartyInstanceId);
+                        takeAction(false, item.approvalWorkFlowPartyInstanceId);
                       }}
                       color="#D30000"
                       fontSize="12px"

@@ -27,6 +27,7 @@ interface UseExportProps {
   tableDisplayName: string;
   hasRequestedBy?: boolean;
   isQueued?: boolean;
+  showInvent3?: boolean;
 }
 const useExport = (props: UseExportProps) => {
   const {
@@ -35,6 +36,7 @@ const useExport = (props: UseExportProps) => {
     tableDisplayName,
     hasRequestedBy = false,
     isQueued,
+    showInvent3 = false,
   } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
@@ -66,6 +68,7 @@ const useExport = (props: UseExportProps) => {
         exportType,
         ids,
         requestedBy: hasRequestedBy ? session?.user.username : undefined,
+        showInvent3: showInvent3,
       },
       isQueued
         ? 'Export job has been queued. You will be notified when the export is complete.'

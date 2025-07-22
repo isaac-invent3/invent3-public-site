@@ -136,6 +136,20 @@ export const logApi = createApi({
         body,
       }),
     }),
+    exportFieldChanges: builder.mutation<
+      BaseApiResponse<string>,
+      {
+        auditRecordId: number;
+      }
+    >({
+      query: ({ auditRecordId }) => ({
+        url: generateQueryStr(`/AuditRecords/ExportFieldChanges?`, {
+          auditRecordId,
+        }),
+        method: 'POST',
+        headers: getHeaders(),
+      }),
+    }),
   }),
 });
 
@@ -150,4 +164,5 @@ export const {
   useUpdateAuditRecordMutation,
   useGetAuditRecordSummaryQuery,
   useFlagAuditRecordForReviewMutation,
+  useExportFieldChangesMutation,
 } = logApi;

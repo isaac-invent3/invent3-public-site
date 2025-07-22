@@ -26,7 +26,7 @@ export const designationApi = createApi({
       QueryParams
     >({
       query: (data) => ({
-        url: generateQueryStr(`/UserDesignations?`, data),
+        url: generateQueryStr(`/Designations?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),

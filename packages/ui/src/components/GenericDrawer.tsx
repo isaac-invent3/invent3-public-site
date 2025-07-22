@@ -54,6 +54,8 @@ const GenericDrawer = (props: IGenericDrawer) => {
         height={`${innerHeight}px !important`}
         sx={{ maxWidth: maxWidth ?? 'full', width: '100%' }}
         overflow="auto"
+        position="relative"
+        zIndex={999}
       >
         {children}
       </DrawerContent>

@@ -89,21 +89,31 @@ export async function refreshAccessToken(
   return token;
 }
 
-function signOut(request: NextRequest): NextResponse {
-  console.log('signing out');
+export function signOut(request: NextRequest): NextResponse {
+  console.log('Signing out');
 
+  // Get full path + query string
+  const fullPathWithQuery = request.nextUrl.pathname + request.nextUrl.search;
+
+  // Encode it safely
+  const encodedRef = encodeURIComponent(fullPathWithQuery);
+
+  // Build redirect URL
   const url = new URL('/signin', request.url);
-  url.searchParams.set('ref', request.nextUrl.pathname);
+  url.searchParams.set('ref', encodedRef);
 
+  // Create redirect response
   const response = NextResponse.redirect(url);
 
-  // Clear auth/session cookies
+  // Expire cookies
   response.cookies.set(SESSION_COOKIE, '', {
-    maxAge: 0,
+    value: '',
+    maxAge: -1,
     path: '/',
   });
   response.cookies.set('permissionData', '', {
-    maxAge: 0,
+    value: '',
+    maxAge: -1,
     path: '/',
   });
 
@@ -233,7 +243,8 @@ export async function middleware(request: NextRequest) {
     }
 
     // Redirect to Dashboard for public routes
-    if (publicRoutes.includes(checkPath)) {
+    // Avoid redirecting from /signin if that's the current page
+    if (publicRoutes.includes(checkPath) && checkPath !== '/signin') {
       if (tenantData) {
         return NextResponse.redirect(
           new URL(`/${tenant}/dashboard`, request.url)
@@ -329,9 +340,9 @@ export async function middleware(request: NextRequest) {
     url.searchParams.set('ref', encodeURIComponent(refValue));
 
     // Preserve original query parameters (except ref)
-    request.nextUrl.searchParams.forEach((value, key) => {
-      if (key !== 'ref') url.searchParams.set(key, value);
-    });
+    // request.nextUrl.searchParams.forEach((value, key) => {
+    //   if (key !== 'ref') url.searchParams.set(key, value);
+    // });
 
     return NextResponse.redirect(url);
   }

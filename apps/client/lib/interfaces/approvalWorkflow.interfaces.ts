@@ -153,13 +153,17 @@ interface ApprovalWorkflowType {
   guid: string;
 }
 
-interface ApprovalWorkflowComment extends BaseEntity {
-  isNew: boolean;
+interface ApprovalWorkflowComment {
   commentId: number;
+  guid: string;
   authorId: number;
   comment: string;
   parentCommentId: number;
   approvalRequestId: number;
+  dateCreated: string;
+  author: string;
+  username: string;
+  authorStatusId: number;
 }
 
 interface ApprovalWorkflowRequestDocument {

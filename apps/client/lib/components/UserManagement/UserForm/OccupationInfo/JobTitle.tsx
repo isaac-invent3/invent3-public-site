@@ -52,6 +52,7 @@ const JobTitle = () => {
               helpers.setValue(option.value);
               dispatch(updateUserForm({ jobTitleName: option.label }));
             }}
+            fetchKey={1}
           />
           <FormAddButton handleClick={onOpen}>
             Add New Designation

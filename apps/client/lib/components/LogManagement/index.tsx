@@ -65,6 +65,7 @@ const LogManagement = () => {
     tableDisplayName: 'record',
     hasRequestedBy: true,
     isQueued: true,
+    showInvent3: true,
   });
 
   const [searchData, setSearchData] = useState<
@@ -81,13 +82,16 @@ const LogManagement = () => {
   const searchCriterion = {
     ...((!isFilterEmpty || search) && {
       orCriterion: [
-        [
-          ...generateSearchCriterion(
-            'systemModuleContextTypeId',
-            filterData.systemContextTypeIds.map((item) => item),
-            OPERATORS.Equals
-          ),
-        ],
+        ...(filterData.systemContextTypeIds &&
+        filterData.systemContextTypeIds.length > 0
+          ? [
+              generateSearchCriterion(
+                'systemModuleContextTypeId',
+                filterData.systemContextTypeIds.map((item) => item),
+                OPERATORS.Equals
+              ),
+            ]
+          : []),
         ...[filterData.startDate]
           .filter(Boolean)
           .map((item) => [
@@ -108,20 +112,26 @@ const LogManagement = () => {
           ]),
         ...(search
           ? [
-              [
-                {
-                  columnName: 'message',
-                  columnValue: search,
-                  operation: OPERATORS.Contains,
-                },
-              ],
-              [
-                {
-                  columnName: 'username',
-                  columnValue: search,
-                  operation: OPERATORS.Contains,
-                },
-              ],
+              ...['message', 'username', 'firstName', 'lastName', 'email'].map(
+                (item) => [
+                  {
+                    columnName: item,
+                    columnValue: search,
+                    operation: OPERATORS.Contains,
+                  },
+                ]
+              ),
+              ...(!isNaN(Number(search))
+                ? [
+                    [
+                      {
+                        columnName: 'auditRecordId',
+                        columnValue: search,
+                        operation: OPERATORS.Equals,
+                      },
+                    ],
+                  ]
+                : []),
             ]
           : []),
       ],

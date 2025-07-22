@@ -64,30 +64,34 @@ const TemplateManagement = () => {
     }),
     ...(!isFilterEmpty && {
       orCriterion: [
-        [
-          ...generateSearchCriterion(
-            'systemContextTypeId',
-            filterData.contextTypeId.map((item) => item),
-            OPERATORS.Equals
-          ),
-        ],
-        [
-          ...generateSearchCriterion(
-            'createdBy',
-            filterData.owner.map((item) => item),
-            OPERATORS.Equals
-          ),
-        ],
-        ...[filterData.createdDate]
-          .filter(Boolean)
-          .map((item) => [
-            ...generateSearchCriterion(
-              'dateCreated',
-              [item as string],
-              OPERATORS.Contains
-            ),
-          ]),
-      ],
+        ...(filterData.contextTypeId && filterData.contextTypeId.length > 0
+          ? [
+              generateSearchCriterion(
+                'systemContextTypeId',
+                filterData.contextTypeId,
+                OPERATORS.Equals
+              ),
+            ]
+          : []),
+        ...(filterData.owner && filterData.owner.length > 0
+          ? [
+              generateSearchCriterion(
+                'createdBy',
+                filterData.owner,
+                OPERATORS.Equals
+              ),
+            ]
+          : []),
+        ...(filterData.createdDate
+          ? [
+              generateSearchCriterion(
+                'dateCreated',
+                [filterData.createdDate as string],
+                OPERATORS.Contains
+              ),
+            ]
+          : []),
+      ].filter((arr) => arr && arr.length > 0),
     }),
     pageNumber,
     pageSize,
@@ -150,7 +154,9 @@ const TemplateManagement = () => {
 
       <TemplateTable
         data={
-          search && searchData ? searchData.items : (data?.data?.items ?? [])
+          (search || !isFilterEmpty) && searchData
+            ? searchData.items
+            : (data?.data?.items ?? [])
         }
         isLoading={isLoading}
         isFetching={isFetching || searchLoading}

@@ -35,11 +35,11 @@ const renderComments = (comments: ApprovalWorkflowComment[], depth = 0) => {
         <VStack align="start" spacing="11.5px" mt="11.5px">
           <HStack spacing={2}>
             <Text color="neutral.800" size="md" fontWeight={700}>
-              {comment.authorId}
+              {comment.author}
             </Text>
 
             <Text color="neutral.600">
-              {comment.createdDate ? moment(comment.createdDate).fromNow() : ''}
+              {comment.dateCreated ? moment(comment.dateCreated).fromNow() : ''}
             </Text>
           </HStack>
 
@@ -137,6 +137,7 @@ const ApprovalComments = () => {
                 w="full"
                 key={index}
                 spacing="8px"
+                mb="16px"
               >
                 <SkeletonCircle size="30px" flexShrink={0} />
                 <SkeletonText noOfLines={3} width="full" height="10px" />

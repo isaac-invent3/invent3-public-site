@@ -14,8 +14,8 @@ import { findSystemContextDetailById } from '~/lib/hooks/useParseUrl';
 const textStyle = { fontSize: '11px', lineHeight: '100%' };
 
 function formatDate(date: string) {
-  const now = moment().utcOffset(0, true);
-  const inputDate = moment(date).utcOffset(0, true);
+  const now = moment().utcOffset(0, true).local();
+  const inputDate = moment(date).utcOffset(0, true).local();
 
   if (inputDate.isSame(now, 'day')) {
     return `Today at ${inputDate.format('h:mma')}`;
@@ -41,7 +41,11 @@ const NotificationText = ({ notification }: { notification: Notification }) => {
     case NOTIFICATION_EVENT_TYPE_ENUM.CREATE:
       return (
         <Link
-          href={`/${systemContextDetails?.route}?${systemContextDetails?.slug}=${contextId}`}
+          href={
+            systemContextDetails?.route && contextId
+              ? `/${systemContextDetails?.route}?${systemContextDetails?.slug}=${contextId}`
+              : '#'
+          }
         >
           <Text color="neutral.600" {...textStyle}>
             <Text
@@ -68,7 +72,11 @@ const NotificationText = ({ notification }: { notification: Notification }) => {
     case NOTIFICATION_EVENT_TYPE_ENUM.UPDATE:
       return (
         <Link
-          href={`/${systemContextDetails?.route}?${systemContextDetails?.slug}=${contextId}`}
+          href={
+            systemContextDetails?.route && contextId
+              ? `/${systemContextDetails?.route}?${systemContextDetails?.slug}=${contextId}`
+              : '#'
+          }
         >
           <Text color="neutral.600" {...textStyle}>
             <Text
@@ -108,7 +116,11 @@ const NotificationText = ({ notification }: { notification: Notification }) => {
     case NOTIFICATION_EVENT_TYPE_ENUM.SCHEDULE:
       return (
         <Link
-          href={`/${systemContextDetails?.route}?${systemContextDetails?.slug}=${contextId}`}
+          href={
+            systemContextDetails?.route && contextId
+              ? `/${systemContextDetails?.route}?${systemContextDetails?.slug}=${contextId}`
+              : '#'
+          }
         >
           <Text color="neutral.600" {...textStyle}>
             <Text
@@ -135,7 +147,11 @@ const NotificationText = ({ notification }: { notification: Notification }) => {
     case NOTIFICATION_EVENT_TYPE_ENUM.ASSIGNED:
       return (
         <Link
-          href={`/${systemContextDetails?.route}?${systemContextDetails?.slug}=${contextId}`}
+          href={
+            systemContextDetails?.route && contextId
+              ? `/${systemContextDetails?.route}?${systemContextDetails?.slug}=${contextId}`
+              : '#'
+          }
         >
           <Text color="neutral.600" {...textStyle}>
             A new ticket{' '}

@@ -54,13 +54,17 @@ export const utilityApi = createApi({
         exportType: number;
         ids?: number[];
         requestedBy?: string;
+        showInvent3?: boolean;
       }
     >({
-      query: ({ tableName, exportType, ids, requestedBy }) => ({
-        url: generateQueryStr(`/${tableName}/Export?`, {
-          exportType,
-          requestedBy: requestedBy!,
-        }),
+      query: ({ tableName, exportType, ids, requestedBy, showInvent3 }) => ({
+        url: generateQueryStr(
+          `/${showInvent3 ? 'Invent3Pro/' : ''}${tableName}/Export?`,
+          {
+            exportType,
+            requestedBy: requestedBy!,
+          }
+        ),
         method: 'POST',
         headers: getHeaders(),
         body: ids,

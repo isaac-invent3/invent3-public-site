@@ -1,5 +1,5 @@
 import { Switch, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import SectionWrapper from '../../UserSettings/Common/SectionWrapper';
 import { useFormikContext } from 'formik';
 import { Settings } from '~/lib/interfaces/settings.interfaces';
@@ -18,11 +18,12 @@ const NOTICATION_TYPE = [
   {
     title: 'SMS Notifications',
     subtitle: 'Quick reminders straight to phone',
-    name: 'smsNotifications',
+    name: 'smsnotifications',
   },
 ];
 const Preferences = () => {
   const { setFieldValue, values } = useFormikContext<Settings>();
+
   return (
     <VStack spacing="24px" width="full" alignItems="flex-start">
       <Text fontWeight={700} size="lg">

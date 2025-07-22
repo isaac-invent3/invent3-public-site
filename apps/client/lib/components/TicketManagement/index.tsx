@@ -188,27 +188,33 @@ const TicketManagement = () => {
     }),
     ...(!isFilterEmpty && {
       orCriterion: [
-        [
-          ...generateSearchCriterion(
-            'stateId',
-            filterData.region.map((item) => item.value),
-            OPERATORS.Equals
-          ),
-        ],
-        [
-          ...generateSearchCriterion(
-            'lgaId',
-            filterData.area.map((item) => item.value),
-            OPERATORS.Equals
-          ),
-        ],
-        [
-          ...generateSearchCriterion(
-            'facilityId',
-            filterData.branch.map((item) => item.value),
-            OPERATORS.Equals
-          ),
-        ],
+        ...(filterData.region && filterData.region.length >= 1
+          ? [
+              generateSearchCriterion(
+                'stateId',
+                filterData.region.map((item) => item.value),
+                OPERATORS.Equals
+              ),
+            ]
+          : []),
+        ...(filterData.area && filterData.area.length >= 1
+          ? [
+              generateSearchCriterion(
+                'lgaId',
+                filterData.area.map((item) => item.value),
+                OPERATORS.Equals
+              ),
+            ]
+          : []),
+        ...(filterData.branch && filterData.branch.length >= 1
+          ? [
+              generateSearchCriterion(
+                'facilityId',
+                filterData.branch.map((item) => item.value),
+                OPERATORS.Equals
+              ),
+            ]
+          : []),
       ],
     }),
     pageNumber: currentPage,

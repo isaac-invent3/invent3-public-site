@@ -67,41 +67,51 @@ const useAssetTemplateInfo = (props: UseAssetTemplateInfo) => {
     }),
     ...(!isFilterEmpty && {
       orCriterion: [
-        [
-          ...generateSearchCriterion(
-            'categoryId',
-            filterData.category.map((item) => item.value),
-            OPERATORS.Equals
-          ),
-        ],
-        [
-          ...generateSearchCriterion(
-            'AssetStatusId',
-            filterData.status.map((item) => item.value),
-            OPERATORS.Equals
-          ),
-        ],
-        [
-          ...generateSearchCriterion(
-            'stateId',
-            filterData.region.map((item) => item.value),
-            OPERATORS.Equals
-          ),
-        ],
-        [
-          ...generateSearchCriterion(
-            'lgaId',
-            filterData.area.map((item) => item.value),
-            OPERATORS.Equals
-          ),
-        ],
-        [
-          ...generateSearchCriterion(
-            'facilityId',
-            filterData.branch.map((item) => item.value),
-            OPERATORS.Equals
-          ),
-        ],
+        ...(filterData.category && filterData.category.length >= 1
+          ? [
+              generateSearchCriterion(
+                'categoryId',
+                filterData.category.map((item) => item.value),
+                OPERATORS.Equals
+              ),
+            ]
+          : []),
+        ...(filterData.status && filterData.status.length >= 1
+          ? [
+              generateSearchCriterion(
+                'AssetStatusId',
+                filterData.status.map((item) => item.value),
+                OPERATORS.Equals
+              ),
+            ]
+          : []),
+        ...(filterData.region && filterData.region.length >= 1
+          ? [
+              generateSearchCriterion(
+                'stateId',
+                filterData.region.map((item) => item.value),
+                OPERATORS.Equals
+              ),
+            ]
+          : []),
+        ...(filterData.area && filterData.area.length >= 1
+          ? [
+              generateSearchCriterion(
+                'lgaId',
+                filterData.area.map((item) => item.value),
+                OPERATORS.Equals
+              ),
+            ]
+          : []),
+        ...(filterData.branch && filterData.branch.length >= 1
+          ? [
+              generateSearchCriterion(
+                'facilityId',
+                filterData.branch.map((item) => item.value),
+                OPERATORS.Equals
+              ),
+            ]
+          : []),
         ...(columnType && columnId
           ? [
               [

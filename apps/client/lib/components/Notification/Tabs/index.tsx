@@ -6,7 +6,13 @@ import NotifcationSkeletion from '../NotifcationSkeletion';
 import NotificationDetail from '../NotificationDetail';
 // const textStyle = { fontSize: '9.33px', lineHeight: '11.09px' };
 
-export const NotifcationTabs = ({ activeTab }: { activeTab: string }) => {
+export const NotifcationTabs = ({
+  activeTab,
+  handleClose,
+}: {
+  activeTab: string;
+  handleClose?: () => void;
+}) => {
   const session = useSession();
 
   const { data, isLoading, isFetching } = useGetUserNotificationQuery(
@@ -44,7 +50,11 @@ export const NotifcationTabs = ({ activeTab }: { activeTab: string }) => {
             </Text>
           ) : (
             data?.data?.items.map((notification, index) => (
-              <NotificationDetail notification={notification} key={index} />
+              <NotificationDetail
+                notification={notification}
+                key={index}
+                handleClose={handleClose}
+              />
             ))
           )}
         </VStack>

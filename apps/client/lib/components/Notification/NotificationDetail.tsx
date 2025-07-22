@@ -10,6 +10,7 @@ import { useMarkANotificationAsReadMutation } from '~/lib/redux/services/notific
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';
 import { findSystemContextDetailById } from '~/lib/hooks/useParseUrl';
+import { useRouter } from 'next/navigation';
 
 const textStyle = { fontSize: '11px', lineHeight: '100%' };
 
@@ -26,7 +27,13 @@ function formatDate(date: string) {
   }
 }
 
-const NotificationText = ({ notification }: { notification: Notification }) => {
+const NotificationText = ({
+  notification,
+  handleClose,
+}: {
+  notification: Notification;
+  handleClose?: () => void;
+}) => {
   const { isRead, firstName, lastName, message, contextId } = notification;
   const keyTextColor = !isRead ? 'black' : 'neutral.600';
   const name =
@@ -36,68 +43,52 @@ const NotificationText = ({ notification }: { notification: Notification }) => {
   const systemContextDetails = findSystemContextDetailById(
     notification.systemContextTypeId
   );
+  const router = useRouter();
+
+  const handleNavigate = () => {
+    if (systemContextDetails?.route && contextId) {
+      router.push(
+        `/${systemContextDetails?.route}?${systemContextDetails?.slug}=${contextId}`
+      );
+      if (handleClose) handleClose();
+    }
+  };
 
   switch (notification.notificationEventTypeId) {
     case NOTIFICATION_EVENT_TYPE_ENUM.CREATE:
       return (
-        <Link
-          href={
-            systemContextDetails?.route && contextId
-              ? `/${systemContextDetails?.route}?${systemContextDetails?.slug}=${contextId}`
-              : '#'
-          }
+        <Text
+          color="neutral.600"
+          {...textStyle}
+          cursor="pointer"
+          onClick={handleNavigate}
         >
-          <Text color="neutral.600" {...textStyle}>
-            <Text
-              color={keyTextColor}
-              as="span"
-              fontWeight={800}
-              {...textStyle}
-            >
-              {name}
-            </Text>{' '}
-            created a new {systemContextDetails?.label}{' '}
-            <Text
-              color={keyTextColor}
-              fontWeight={600}
-              as="span"
-              {...textStyle}
-            >
-              {message}
-            </Text>
+          <Text color={keyTextColor} as="span" fontWeight={800} {...textStyle}>
+            {name}
+          </Text>{' '}
+          created a new {systemContextDetails?.label}{' '}
+          <Text color={keyTextColor} fontWeight={600} as="span" {...textStyle}>
+            {message}
           </Text>
-        </Link>
+        </Text>
       );
 
     case NOTIFICATION_EVENT_TYPE_ENUM.UPDATE:
       return (
-        <Link
-          href={
-            systemContextDetails?.route && contextId
-              ? `/${systemContextDetails?.route}?${systemContextDetails?.slug}=${contextId}`
-              : '#'
-          }
+        <Text
+          color="neutral.600"
+          {...textStyle}
+          cursor="pointer"
+          onClick={handleNavigate}
         >
-          <Text color="neutral.600" {...textStyle}>
-            <Text
-              color={keyTextColor}
-              as="span"
-              fontWeight={800}
-              {...textStyle}
-            >
-              {name}
-            </Text>{' '}
-            updated {systemContextDetails?.label}{' '}
-            <Text
-              color={keyTextColor}
-              fontWeight={600}
-              as="span"
-              {...textStyle}
-            >
-              {message}
-            </Text>
+          <Text color={keyTextColor} as="span" fontWeight={800} {...textStyle}>
+            {name}
+          </Text>{' '}
+          updated {systemContextDetails?.label}{' '}
+          <Text color={keyTextColor} fontWeight={600} as="span" {...textStyle}>
+            {message}
           </Text>
-        </Link>
+        </Text>
       );
 
     case NOTIFICATION_EVENT_TYPE_ENUM.DELETE:
@@ -115,57 +106,36 @@ const NotificationText = ({ notification }: { notification: Notification }) => {
 
     case NOTIFICATION_EVENT_TYPE_ENUM.SCHEDULE:
       return (
-        <Link
-          href={
-            systemContextDetails?.route && contextId
-              ? `/${systemContextDetails?.route}?${systemContextDetails?.slug}=${contextId}`
-              : '#'
-          }
+        <Text
+          color="neutral.600"
+          {...textStyle}
+          cursor="pointer"
+          onClick={handleNavigate}
         >
-          <Text color="neutral.600" {...textStyle}>
-            <Text
-              color={keyTextColor}
-              as="span"
-              fontWeight={800}
-              {...textStyle}
-            >
-              {name}
-            </Text>{' '}
-            scheduled the ticket{' '}
-            <Text
-              color={keyTextColor}
-              as="span"
-              {...textStyle}
-              fontWeight={600}
-            >
-              {message}
-            </Text>
+          <Text color={keyTextColor} as="span" fontWeight={800} {...textStyle}>
+            {name}
+          </Text>{' '}
+          scheduled the ticket{' '}
+          <Text color={keyTextColor} as="span" {...textStyle} fontWeight={600}>
+            {message}
           </Text>
-        </Link>
+        </Text>
       );
 
     case NOTIFICATION_EVENT_TYPE_ENUM.ASSIGNED:
       return (
-        <Link
-          href={
-            systemContextDetails?.route && contextId
-              ? `/${systemContextDetails?.route}?${systemContextDetails?.slug}=${contextId}`
-              : '#'
-          }
+        <Text
+          color="neutral.600"
+          {...textStyle}
+          cursor="pointer"
+          onClick={handleNavigate}
         >
-          <Text color="neutral.600" {...textStyle}>
-            A new ticket{' '}
-            <Text
-              color={keyTextColor}
-              as="span"
-              fontWeight={800}
-              {...textStyle}
-            >
-              {message}
-            </Text>{' '}
-            has been assigned to you.
-          </Text>
-        </Link>
+          A new ticket{' '}
+          <Text color={keyTextColor} as="span" fontWeight={800} {...textStyle}>
+            {message}
+          </Text>{' '}
+          has been assigned to you.
+        </Text>
       );
 
     default:
@@ -179,9 +149,10 @@ const NotificationText = ({ notification }: { notification: Notification }) => {
 
 interface NotificationDetailProps {
   notification: Notification;
+  handleClose?: () => void;
 }
 const NotificationDetail = (props: NotificationDetailProps) => {
-  const { notification } = props;
+  const { notification, handleClose } = props;
   const [isRead, setIsRead] = useState(notification.isRead);
   const { firstName, lastName, dateCreated } = notification;
   const name = `${firstName} ${lastName}`;
@@ -252,7 +223,10 @@ const NotificationDetail = (props: NotificationDetailProps) => {
               <Icon as={NotificationInfoIcon} boxSize="16px" />
             </Flex>
           )}
-          <NotificationText notification={notification} />
+          <NotificationText
+            notification={notification}
+            handleClose={handleClose}
+          />
         </HStack>
       </HStack>
       <Text color="neutral.600" {...textStyle} whiteSpace="nowrap">

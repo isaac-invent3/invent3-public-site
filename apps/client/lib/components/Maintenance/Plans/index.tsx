@@ -86,34 +86,42 @@ const Plans = (props: PlansProp) => {
     orCriterion: isFilterEmpty
       ? undefined
       : [
-          [
-            ...generateSearchCriterion(
-              'planTypeId',
-              filterData.planType.map((item) => item.value),
-              OPERATORS.Equals
-            ),
-          ],
-          [
-            ...generateSearchCriterion(
-              'stateId',
-              filterData.region.map((item) => item.value),
-              OPERATORS.Equals
-            ),
-          ],
-          [
-            ...generateSearchCriterion(
-              'lgaId',
-              filterData.area.map((item) => item.value),
-              OPERATORS.Equals
-            ),
-          ],
-          [
-            ...generateSearchCriterion(
-              'facilityId',
-              filterData.branch.map((item) => item.value),
-              OPERATORS.Equals
-            ),
-          ],
+          ...(filterData.planType && filterData.planType.length >= 1
+            ? [
+                generateSearchCriterion(
+                  'planTypeId',
+                  filterData.planType.map((item) => item.value),
+                  OPERATORS.Equals
+                ),
+              ]
+            : []),
+          ...(filterData.region && filterData.region.length >= 1
+            ? [
+                generateSearchCriterion(
+                  'stateId',
+                  filterData.region.map((item) => item.value),
+                  OPERATORS.Equals
+                ),
+              ]
+            : []),
+          ...(filterData.area && filterData.area.length >= 1
+            ? [
+                generateSearchCriterion(
+                  'lgaId',
+                  filterData.area.map((item) => item.value),
+                  OPERATORS.Equals
+                ),
+              ]
+            : []),
+          ...(filterData.branch && filterData.branch.length >= 1
+            ? [
+                generateSearchCriterion(
+                  'facilityId',
+                  filterData.branch.map((item) => item.value),
+                  OPERATORS.Equals
+                ),
+              ]
+            : []),
           ...[filterData.startDate]
             .filter(Boolean)
             .map((item) => [

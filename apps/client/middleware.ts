@@ -362,7 +362,7 @@ export const config = {
   matcher: [
     '/((?!api/|_next/|__next|_static/|_vercel|fonts/|[\\w-]+\\.\\w+).*)',
     '/',
-    '/signin',
+    // '/signin',
     '/forgot-password',
     '/dashboard/:path*',
     '/approval-flow/:path*',

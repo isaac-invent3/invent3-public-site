@@ -18,11 +18,11 @@ const Overview = () => {
     },
     {
       label: 'IP Address',
-      value: '192.168.1.24',
+      value: 'N/A',
     },
     {
       label: 'Device/Browser Info',
-      value: 'Chrome 120.1, Windows 10',
+      value: 'N/A',
     },
   ];
 
@@ -33,11 +33,11 @@ const Overview = () => {
     },
     {
       label: 'User Email',
-      value: logData?.username,
+      value: logData?.email,
     },
     {
       label: 'User Role',
-      value: logData?.username,
+      value: logData?.userRoles,
     },
   ];
 

@@ -58,19 +58,19 @@ const ChangedData = () => {
     () => {
       const baseColumns = [
         columnHelper.accessor('fieldName', {
-          cell: (info) => info.getValue(),
+          cell: (info) => info.getValue() ?? 'N/A',
           header: 'Field',
           enableSorting: false,
         }),
 
         columnHelper.accessor('beforeChanges', {
-          cell: (info) => info.getValue(),
+          cell: (info) => info.getValue() ?? 'N/A',
           header: 'Before Change',
           enableSorting: true,
         }),
 
         columnHelper.accessor('afterChanges', {
-          cell: (info) => info.getValue(),
+          cell: (info) => info.getValue() ?? 'N/A',
           header: 'After Change',
           enableSorting: false,
         }),

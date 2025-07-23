@@ -7,16 +7,16 @@ import { Settings } from '~/lib/interfaces/settings.interfaces';
 import { exportFrequencyOptions } from '../utils';
 
 const SWTICH_DATA = [
-  {
-    title: 'Enable Automatic Compliance Checks',
-    subtitle: 'Automate monitoring for policy violations',
-    name: 'complianceEnableAutoChecks',
-  },
-  {
-    title: 'Require Documentation for Compliance Status Changes',
-    subtitle: 'Mandate proof for status updates',
-    name: 'complianceRequireDocumentationOfStatusChange',
-  },
+  // {
+  //   title: 'Enable Automatic Compliance Checks',
+  //   subtitle: 'Automate monitoring for policy violations',
+  //   name: 'complianceEnableAutoChecks',
+  // },
+  // {
+  //   title: 'Require Documentation for Compliance Status Changes',
+  //   subtitle: 'Mandate proof for status updates',
+  //   name: 'complianceRequireDocumentationOfStatusChange',
+  // },
   {
     title: 'Document Expiry Alerts',
     subtitle: 'Get notified of expiring documents',
@@ -46,7 +46,7 @@ const CompliancePolicies = () => {
         alignItems="flex-start"
         spacing={{ base: '16px', lg: '24px' }}
       >
-        <SectionWrapper
+        {/* <SectionWrapper
           title="Define Compliance Frameworks"
           subtitle="Establish rules for regulatory adherence"
           sectionInfoWidth="212px"
@@ -93,9 +93,9 @@ const CompliancePolicies = () => {
               </HStack>
             ))}
           </VStack>
-        </SectionWrapper>
+        </SectionWrapper> */}
 
-        <SectionWrapper
+        {/* <SectionWrapper
           title="Set Compliance Review Frequency"
           subtitle="Schedule periodic compliance evaluations"
           spacing={{ base: '8px', sm: '24px' }}
@@ -111,7 +111,7 @@ const CompliancePolicies = () => {
             selectStyles={{ height: '46px', pt: '0px' }}
             showTitleAfterSelect={false}
           />
-        </SectionWrapper>
+        </SectionWrapper> */}
         {SWTICH_DATA.map((item, index) => {
           return (
             <SectionWrapper

@@ -4,20 +4,20 @@ const exportFormatOptions = [
 ];
 
 const sessionTimeoutDurationOptions = [
-  { label: '15 Minutes', value: 0 },
-  { label: '30 Minutes', value: 1 },
-  { label: '60 Minutes', value: 2 },
+  { label: '15 Minutes', value: 1 },
+  { label: '30 Minutes', value: 2 },
+  { label: '60 Minutes', value: 3 },
 ];
 
 const maxFailedLoginAttemptsOptions = [
-  { label: '0', value: 0 },
-  { label: '1', value: 1 },
-  { label: '2', value: 2 },
+  { label: '3', value: 3 },
+  { label: '4', value: 4 },
+  { label: '5', value: 5 },
 ];
 
 const passwordExpiryPeriodOptions = [
-  { label: '7 Days', value: 0 },
-  { label: '30 Days', value: 1 },
+  { label: '7 Days', value: 1 },
+  { label: '30 Days', value: 2 },
 ];
 
 const passwordLengthOptions = [
@@ -26,8 +26,8 @@ const passwordLengthOptions = [
   { label: '16', value: 16 },
 ];
 const exportFrequencyOptions = [
-  { label: '7 Days', value: 0 },
-  { label: '30 Days', value: 1 },
+  { label: '7 Days', value: 1 },
+  { label: '30 Days', value: 2 },
 ];
 
 const languageOptions = [{ label: 'English', value: 1 }];

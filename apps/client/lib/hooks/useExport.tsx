@@ -20,6 +20,7 @@ import { handleExport } from '~/lib/utils/helperFunctions';
 import { ExportTableName } from '../interfaces/general.interfaces';
 import { useState } from 'react';
 import { getSession } from 'next-auth/react';
+import { Button, GenericSuccessModal } from '@repo/ui/components';
 
 interface UseExportProps {
   ids: number[];
@@ -39,6 +40,11 @@ const useExport = (props: UseExportProps) => {
     showInvent3 = false,
   } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenSuccess,
+    onOpen: onOpenSuccess,
+    onClose: onCloseSuccess,
+  } = useDisclosure();
   const toast = useToast();
   const { handleSubmit } = useCustomMutation();
   const [exportTable, { isLoading }] = useExportTableMutation();
@@ -70,9 +76,12 @@ const useExport = (props: UseExportProps) => {
         requestedBy: hasRequestedBy ? session?.user.username : undefined,
         showInvent3: showInvent3,
       },
-      isQueued
-        ? 'Export job has been queued. You will be notified when the export is complete.'
-        : undefined
+      undefined,
+      () => {
+        if (isQueued) {
+          onOpenSuccess();
+        }
+      }
     );
     if (resp?.data?.data && !isQueued) {
       await handleExport(resp?.data?.data);
@@ -171,6 +180,25 @@ const useExport = (props: UseExportProps) => {
           </PopoverBody>
         </PopoverContent>
       </Popover>
+      <GenericSuccessModal
+        isOpen={isOpenSuccess}
+        onClose={onCloseSuccess}
+        headingText="Your export request is being processed."
+        contentStyle={{ spacing: '8px' }}
+      >
+        <VStack spacing="40px" width="full" mb="48px">
+          <Text color="neutral.700" size="md" textAlign="center">
+            The file will be sent to your email address once it's ready. You can
+            continue using the platform in the meantime.
+          </Text>
+          <Button
+            customStyles={{ width: '193px' }}
+            handleClick={onCloseSuccess}
+          >
+            Continue
+          </Button>
+        </VStack>
+      </GenericSuccessModal>
     </>
   );
 

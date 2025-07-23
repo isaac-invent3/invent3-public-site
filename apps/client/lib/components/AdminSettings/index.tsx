@@ -32,7 +32,7 @@ const ALlTabs = [
   'Audit & Logging',
   'Integration',
   'Data Import & Export',
-  'System Maintenance & Backup',
+  // 'System Maintenance & Backup',
   'Compliance',
   'BMS Data',
   'Approval Workflow',
@@ -98,12 +98,12 @@ const AdminSettings = () => {
           <TabPanel>{tabIndex === 3 && <AuditTab />}</TabPanel>
           <TabPanel>{tabIndex === 4 && <IntegrationTab />}</TabPanel>
           <TabPanel>{tabIndex === 5 && <DataImportExportTab />}</TabPanel>
-          <TabPanel>
-            {tabIndex === 6 && <SystemMaintenanceBackupTab />}
-          </TabPanel>
-          <TabPanel>{tabIndex === 7 && <ComplianceTab />}</TabPanel>
-          <TabPanel>{tabIndex === 8 && <BMSData />}</TabPanel>
-          <TabPanel>{tabIndex === 9 && <ApprovalWorkflow />}</TabPanel>
+          {/* <TabPanel>
+           {tabIndex === 6 && <SystemMaintenanceBackupTab />} 
+          </TabPanel> */}
+          <TabPanel>{tabIndex === 6 && <ComplianceTab />}</TabPanel>
+          <TabPanel>{tabIndex === 7 && <BMSData />}</TabPanel>
+          <TabPanel>{tabIndex === 8 && <ApprovalWorkflow />}</TabPanel>
         </TabPanels>
       </Tabs>
     </Flex>

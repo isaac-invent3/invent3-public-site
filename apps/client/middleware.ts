@@ -24,6 +24,28 @@ const protectedGlobalRoute = ['/dashboard'];
 const protectedSuperAdminRoute = [''];
 const protectedCMFAndClientAdminRoute = ['/facility-management'];
 
+const allRoutes = [
+  ...publicRoutes,
+  ...protectedGlobalRoute,
+  ...protectedSuperAdminRoute,
+  '/dashboard',
+  '/approval-flow',
+  '/asset-management',
+  '/maintenance',
+  '/task-management',
+  '/ticket-management',
+  '/template-management',
+  '/report-analytics',
+  '/role-management',
+  '/user-management',
+  '/vendor-management',
+  '/log-management',
+  '/company-management',
+  '/compliance',
+  '/feedback',
+  '/facility-management',
+];
+
 const SECRET = process.env.NEXTAUTH_SECRET;
 export const TOKEN_REFRESH_BUFFER_SECONDS = 60; // 5 minutes
 export const SESSION_SECURE =
@@ -165,8 +187,6 @@ export async function middleware(request: NextRequest) {
   // Extract tenant from the first segment of the path
   const segments = pathname.split('/').filter(Boolean); // Remove empty parts
 
-  const tenant = segments[0]; // First segment is the tenant name
-
   // Checks if tenant name is valid (Subdomain Approach)
   // if (hasSubdomain && subdomain) {
   //   const tenantData = await validateTenant({ tenantName: subdomain });
@@ -176,8 +196,20 @@ export async function middleware(request: NextRequest) {
   //   }
   // }
 
-  // Checks if tenant name is valid (relative path approach)
-  const tenantData = await validateTenant({ tenantName: tenant });
+  // Normalize all route paths by removing leading/trailing slashes for comparison
+  const normalizedAllRoutes = allRoutes.map((route) =>
+    route.replace(/^\/|\/$/g, '')
+  );
+
+  // Get first segment from URL (e.g., /demo/dashboard → "demo")
+  const tenant = segments[0];
+
+  let tenantData;
+
+  // Only validate if tenant is NOT part of the routes
+  if (tenant && !normalizedAllRoutes.includes(tenant)) {
+    tenantData = await validateTenant({ tenantName: tenant });
+  }
 
   const remainingPath = segments.slice(1).join('/');
 
@@ -280,28 +312,6 @@ export async function middleware(request: NextRequest) {
   if (!token) {
     const checkPath = tenantData ? `/${remainingPath}` : pathname;
     const requestedPath = `/${checkPath.split('/')?.[1] as string}`;
-
-    const allRoutes = [
-      ...publicRoutes,
-      ...protectedGlobalRoute,
-      ...protectedSuperAdminRoute,
-      '/dashboard',
-      '/approval-flow',
-      '/asset-management',
-      '/maintenance',
-      '/task-management',
-      '/ticket-management',
-      '/template-management',
-      '/report-analytics',
-      '/role-management',
-      '/user-management',
-      '/vendor-management',
-      '/log-management',
-      '/company-management',
-      '/compliance',
-      '/feedback',
-      '/facility-management',
-    ];
 
     if (tenantData) {
       if (remainingPath === 'signin') {

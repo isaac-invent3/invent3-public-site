@@ -14,21 +14,21 @@ const AdditionalMetaData = () => {
   const infoOne = [
     {
       label: 'Performed Via:',
-      value: 'Web Application',
+      value: 'N/A',
     },
     {
       label: 'Vendor Contracts:',
-      value: 'Contract ID: C-20240120. 01/02/2026',
+      value: 'N/A',
     },
   ];
   const infoTwo = [
     {
       label: 'Associated Request ID:',
-      value: 'REQ-20240625-XYZ78',
+      value: 'N/A',
     },
     {
       label: 'User Assignments:',
-      value: 'Vendor Contact Changed from Alice Brown to Michael Johnson',
+      value: 'N/A',
     },
   ];
 

@@ -16,20 +16,29 @@ interface AuditLog {
 interface AuditRecord {
   statusName: string;
   auditRecordId: number;
-  userId: string;
-  systemModuleContextTypeId: string;
-  requestActionTypeId: string;
-  requestStatusId: string;
-  isFlaggedForReview: string;
+  userId: null;
+  systemModuleContextTypeId: number;
+  requestActionTypeId: number;
+  requestStatusId: number;
+  isFlaggedForReview: boolean;
   contextIds: string;
   dateCreated: string;
-  actionPerformedViaId: string;
+  actionPerformedViaId: number;
   createdBy: string;
   requestActionTypeName: string;
   username: string;
+  email: string;
   systemContextTypeName: string;
-  systemContextTypeId: string;
-  isDeleted: string;
+  systemContextTypeId: number;
+  isDeleted: boolean;
+  firstName: string;
+  lastName: string;
+  entityAffected: string;
+  message: string;
+  companyId: number;
+  displayColorCode: string;
+  companyName: string;
+  userRoles: string;
 }
 
 interface AuditChanges {

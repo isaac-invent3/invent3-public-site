@@ -19,7 +19,7 @@ const CustomBadge = (props: BadgeProps) => {
       >
         {badgeContent !== undefined && badgeContent !== null
           ? typeof badgeContent === 'number'
-            ? badgeContent.toLocaleString()
+            ? badgeContent?.toLocaleString()
             : badgeContent
           : '-'}
       </ChakraText>

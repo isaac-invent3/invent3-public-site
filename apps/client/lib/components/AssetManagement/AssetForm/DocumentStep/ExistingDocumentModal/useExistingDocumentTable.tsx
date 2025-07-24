@@ -114,7 +114,7 @@ const useExistingDocumentTable = (props: UseExistingDocumentTableProps) => {
               base64Prefix,
               base64Document: info.row.original.document,
             });
-            return sizeInMB ? `${sizeInMB.toFixed(2)}MB` : 'N/A';
+            return sizeInMB ? `${sizeInMB?.toFixed(2)}MB` : 'N/A';
           },
           header: 'File Size',
           enableSorting: false,

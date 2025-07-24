@@ -20,8 +20,8 @@ const ProgressIndicator = ({ valueChange }: { valueChange: number }) => {
         {valueChange < 0 && '-'}
         {valueChange > 0 && '+'}
         {valueChange < 0
-          ? (valueChange * -1).toFixed(2)
-          : valueChange.toFixed(2)}
+          ? (valueChange * -1)?.toFixed(2)
+          : valueChange?.toFixed(2)}
         %
       </Text>
     </HStack>

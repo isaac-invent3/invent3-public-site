@@ -40,7 +40,11 @@ const MaintenanceAndDowntimeChart = () => {
           lineHeight="11.88px"
           fontWeight={700}
         >
-          {data?.data?.maintenancePercentage?.toFixed(2) ?? '0'}%
+          {data?.data?.maintenancePercentage &&
+          !isNaN(data?.data?.maintenancePercentage)
+            ? data?.data?.maintenancePercentage?.toFixed(2)
+            : '0'}
+          %
         </Text>
       ),
     },
@@ -54,7 +58,11 @@ const MaintenanceAndDowntimeChart = () => {
           lineHeight="11.88px"
           fontWeight={700}
         >
-          {data?.data?.downTimePercentage?.toFixed(2) ?? '0'}%
+          {data?.data?.downTimePercentage &&
+          !isNaN(data?.data?.downTimePercentage)
+            ? data?.data?.downTimePercentage?.toFixed(2)
+            : '0'}
+          %
         </Text>
       ),
     },

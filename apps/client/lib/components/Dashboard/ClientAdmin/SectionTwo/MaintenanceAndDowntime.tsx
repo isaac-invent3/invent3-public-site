@@ -40,7 +40,7 @@ const MaintenanceAndDowntimeChart = () => {
           lineHeight="11.88px"
           fontWeight={700}
         >
-          {data?.data?.maintenancePercentage.toFixed(2) ?? '0'}%
+          {data?.data?.maintenancePercentage?.toFixed(2) ?? '0'}%
         </Text>
       ),
     },

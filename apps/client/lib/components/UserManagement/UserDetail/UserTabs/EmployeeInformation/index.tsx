@@ -10,7 +10,8 @@ const EmployeeInformation = () => {
   if (!userDetail) {
     return;
   }
-  const { firstName, lastName, phoneNumber, lganame, stateName } = userDetail;
+  const { firstName, lastName, phoneNumber, lganame, stateName, countryName } =
+    userDetail;
 
   const data = [
     { label: 'First Name:', value: firstName },
@@ -20,7 +21,7 @@ const EmployeeInformation = () => {
   const addressData = [
     { label: 'City:', value: lganame },
     { label: 'State / Province:', value: stateName },
-    { label: 'Country:', value: lganame },
+    { label: 'Country:', value: countryName },
   ];
 
   return (

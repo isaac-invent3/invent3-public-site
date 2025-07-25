@@ -47,7 +47,6 @@ const FloorModal = (props: FloorModalProps) => {
   } = props;
   const [createFloor, { isLoading }] = useCreateFloorMutation({});
   const { handleSubmit } = useCustomMutation();
-  const [field, meta, helpers] = useField('floorId');
   const dispatch = useAppDispatch();
 
   const formik = useFormik({

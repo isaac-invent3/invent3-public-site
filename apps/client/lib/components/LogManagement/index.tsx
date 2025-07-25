@@ -43,10 +43,6 @@ export const initialFilterData = {
 const LogManagement = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const { data, isLoading, isFetching } = useGetAllAuditRecordsQuery({
-    pageNumber,
-    pageSize,
-  });
   const [search, setSearch] = useState('');
   const { isOpen, onToggle } = useDisclosure();
   const {
@@ -78,6 +74,14 @@ const LogManagement = () => {
 
   // Checks if all filterdata is empty
   const isFilterEmpty = _.every(filterData, (value) => _.isEmpty(value));
+
+  const { data, isLoading, isFetching } = useGetAllAuditRecordsQuery(
+    {
+      pageNumber,
+      pageSize,
+    },
+    { skip: !isFilterEmpty || search !== '' }
+  );
 
   const searchCriterion = {
     ...((!isFilterEmpty || search) && {
@@ -112,26 +116,28 @@ const LogManagement = () => {
           ]),
         ...(search
           ? [
-              ...['message', 'username', 'firstName', 'lastName', 'email'].map(
-                (item) => [
-                  {
-                    columnName: item,
-                    columnValue: search,
-                    operation: OPERATORS.Contains,
-                  },
-                ]
-              ),
-              ...(!isNaN(Number(search))
-                ? [
-                    [
+              [
+                ...[
+                  'message',
+                  'username',
+                  'firstName',
+                  'lastName',
+                  'email',
+                ].map((item) => ({
+                  columnName: item,
+                  columnValue: search,
+                  operation: OPERATORS.Contains,
+                })),
+                ...(!isNaN(Number(search))
+                  ? [
                       {
                         columnName: 'auditRecordId',
                         columnValue: search,
                         operation: OPERATORS.Equals,
                       },
-                    ],
-                  ]
-                : []),
+                    ]
+                  : []),
+              ],
             ]
           : []),
       ],
@@ -141,8 +147,10 @@ const LogManagement = () => {
   };
 
   const handleSearch = useCallback(async () => {
-    const response = await handleSubmit(searchLog, searchCriterion, '');
-    setSearchData(response?.data?.data);
+    if (search !== '' || !isFilterEmpty) {
+      const response = await handleSubmit(searchLog, searchCriterion, '');
+      setSearchData(response?.data?.data);
+    }
   }, [searchLog, searchCriterion]);
 
   // Trigger search when search input changes or pagination updates
@@ -154,11 +162,11 @@ const LogManagement = () => {
 
   // Reset pagination when clearing the search
   useEffect(() => {
-    if (!search) {
+    if (!search || isFilterEmpty) {
       setPageSize(DEFAULT_PAGE_SIZE);
       setPageNumber(1);
     }
-  }, [search]);
+  }, [search, isFilterEmpty]);
 
   // Open Detail Modal if assetId exists
   useEffect(() => {

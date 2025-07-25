@@ -68,7 +68,9 @@ const LGASelect = (props: LGASelectProps) => {
       setPageNumber={setPageNumber}
       handleSelect={handleSelect}
       fetchKey={stateId}
-      specialSearch={type === 'specificById' ? lgaSearchCriterion : undefined}
+      specialSearch={
+        type === 'specificById' && stateId ? lgaSearchCriterion : undefined
+      }
     />
   );
 };

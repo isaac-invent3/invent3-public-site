@@ -27,12 +27,8 @@ const Profile = (props: ProfileProps) => {
   const { isOpen, onClose } = props;
   const data = useSession();
   const authenticatedUser = data?.data?.user;
-  const { data: info, isLoading: loadingUser } = useGetUserByIdQuery(
+  const { data: user, isLoading } = useGetUserByIdQuery(
     { userId: authenticatedUser?.userId! },
-    { skip: !authenticatedUser?.userId }
-  );
-  const { data: user, isLoading } = useGetUserProfileByGuidQuery(
-    { guid: info?.data.guid! },
     { skip: !authenticatedUser?.userId }
   );
   return (
@@ -74,11 +70,8 @@ const Profile = (props: ProfileProps) => {
           divider={<Divider borderColor="neutral.700" />}
         >
           <Photo />
-          <PersonalInformation
-            user={user?.data}
-            isLoading={isLoading || loadingUser}
-          />
-          <Location user={user?.data} isLoading={isLoading || loadingUser} />
+          <PersonalInformation user={user?.data} isLoading={isLoading} />
+          <Location user={user?.data} isLoading={isLoading} />
         </VStack>
       </DrawerBody>
     </GenericDrawer>

@@ -1,58 +1,19 @@
 import { Text, VStack } from '@chakra-ui/react';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
-import { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { AuditChanges } from '~/lib/interfaces/log.interfaces';
-import { useAppSelector } from '~/lib/redux/hooks';
-import { useGetAllAuditRecordChangesQuery } from '~/lib/redux/services/log.services';
-import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
-interface ChangeLog {
-  field: string;
-  beforeChange: string;
-  afterChange: string;
+interface ChangedDataProps {
+  pageNumber: number;
+  setPageNumber: React.Dispatch<React.SetStateAction<number>>;
+  pageSize: number;
+  setPageSize: React.Dispatch<React.SetStateAction<number>>;
+  data?: AuditChanges[];
 }
+const ChangedData = (props: ChangedDataProps) => {
+  const { pageNumber, setPageNumber, pageSize, setPageSize, data } = props;
 
-const changeLog: ChangeLog[] = [
-  {
-    field: 'Vendor Name',
-    beforeChange: 'Tech Solutions Ltd',
-    afterChange: 'Tech Supplies',
-  },
-  {
-    field: 'Contact Person',
-    beforeChange: 'John Doe',
-    afterChange: 'Jane Smith',
-  },
-  {
-    field: 'Email',
-    beforeChange: 'support@techsolutions.com',
-    afterChange: 'contact@techsupplies.com',
-  },
-  {
-    field: 'Phone Number',
-    beforeChange: '+1 123-456-7890',
-    afterChange: '+1 987-654-3210',
-  },
-  {
-    field: 'Address',
-    beforeChange: '123 Tech Street, NY',
-    afterChange: '456 Supply Road, CA',
-  },
-];
-
-const ChangedData = () => {
-  const auditRecord = useAppSelector((state) => state.auditLog.auditLog);
-  const [pageNumber, setPageNumber] = useState(1);
-  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const { data, isLoading, isFetching } = useGetAllAuditRecordChangesQuery(
-    {
-      pageNumber,
-      pageSize,
-      auditRecordId: auditRecord?.auditRecordId!,
-    },
-    { skip: !auditRecord?.auditRecordId }
-  );
   const columnHelper = createColumnHelper<AuditChanges>();
   const columns = useMemo(
     () => {
@@ -78,19 +39,25 @@ const ChangedData = () => {
 
       return baseColumns;
     },
-    [[changeLog]] //eslint-disable-line
+    [[data]] //eslint-disable-line
   );
 
   return (
-    <VStack width="full" alignItems="flex-start" spacing="8px">
+    <VStack
+      width="full"
+      alignItems="flex-start"
+      spacing="8px"
+      px={{ base: '16px', lg: '32px' }}
+      display={data && data?.length > 0 ? 'flex' : 'none'}
+    >
       <Text size="md" fontWeight={700} color="primary.500">
         Data Changed
       </Text>
       <DataTable
         columns={columns}
-        data={data?.data ?? []}
-        isLoading={isLoading}
-        isFetching={isFetching}
+        data={data ?? []}
+        isLoading={false}
+        isFetching={false}
         showFooter={false}
         pageSize={pageSize}
         setPageSize={setPageSize}

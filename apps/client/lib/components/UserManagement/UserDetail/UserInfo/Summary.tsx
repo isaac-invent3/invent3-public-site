@@ -32,7 +32,7 @@ const Summary = () => {
 
   const SummaryData = [
     {
-      label: 'Hired Date',
+      label: 'Last Active Date',
       value: 'August 22, 2024',
     },
     {

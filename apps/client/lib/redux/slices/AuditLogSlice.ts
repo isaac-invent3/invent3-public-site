@@ -6,10 +6,12 @@ import { AuditRecord } from '~/lib/interfaces/log.interfaces';
 
 interface SliceProps {
   auditLog: AuditRecord | null;
+  isLoadingDataChanged: boolean;
 }
 
 const initialState: SliceProps = {
   auditLog: null,
+  isLoadingDataChanged: false,
 };
 
 export const AuditLogSlice = createSlice({
@@ -22,9 +24,13 @@ export const AuditLogSlice = createSlice({
     clearAuditLog: (state) => {
       state.auditLog = null;
     },
+    setIsLoadingDataChanged: (state, { payload }: PayloadAction<boolean>) => {
+      state.isLoadingDataChanged = payload;
+    },
   },
 });
 
-export const { setAuditLog, clearAuditLog } = AuditLogSlice.actions;
+export const { setAuditLog, clearAuditLog, setIsLoadingDataChanged } =
+  AuditLogSlice.actions;
 
 export default AuditLogSlice.reducer;

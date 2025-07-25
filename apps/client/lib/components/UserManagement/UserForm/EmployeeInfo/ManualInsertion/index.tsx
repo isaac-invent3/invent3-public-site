@@ -9,7 +9,6 @@ import Picture from './Picture';
 import FullName from './FullName';
 import PhoneNumber from './PhoneNumber';
 import Email from './Email';
-import Gender from './Gender';
 import Location from './Location';
 import { employeeInfoSchema } from '~/lib/schemas/user.schema';
 
@@ -67,7 +66,6 @@ const ManualInsertion = (props: ManualInsertionProps) => {
             <FullName />
             <PhoneNumber />
             <Email />
-            {/* <Gender /> */}
             <Location />
           </VStack>
           <Flex width="full" mt="16px">

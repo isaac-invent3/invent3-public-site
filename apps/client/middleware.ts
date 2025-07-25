@@ -314,6 +314,9 @@ export async function middleware(request: NextRequest) {
     const requestedPath = `/${checkPath.split('/')?.[1] as string}`;
 
     if (tenantData) {
+      if (remainingPath === '' || remainingPath === '/') {
+        return NextResponse.redirect(new URL(`/${tenant}/signin`, request.url));
+      }
       if (remainingPath === 'signin') {
         const url = new URL(`/signin`, request.url);
         // Preserve original query parameters

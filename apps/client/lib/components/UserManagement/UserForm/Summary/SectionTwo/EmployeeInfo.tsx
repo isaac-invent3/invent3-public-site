@@ -25,10 +25,6 @@ const EmployeeInfo = () => {
       label: 'Surname',
       value: lastName,
     },
-    {
-      label: 'Gender',
-      value: gender,
-    },
   ];
 
   const infoTwo = [

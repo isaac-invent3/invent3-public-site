@@ -38,7 +38,7 @@ const NotificationDrawer = (props: NotificationDrawerProps) => {
           />
         </VStack>
       </DrawerHeader>
-      <DrawerBody m={0} p={'16px'}>
+      <DrawerBody m={0} p={'16px'} id="notificationsDiv">
         {isOpen && (
           <NotifcationTabs activeTab={activeTab} handleClose={onClose} />
         )}

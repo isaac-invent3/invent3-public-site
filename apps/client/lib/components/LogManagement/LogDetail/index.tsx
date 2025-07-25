@@ -1,11 +1,17 @@
 import { DrawerBody, DrawerHeader, VStack } from '@chakra-ui/react';
 import { GenericDrawer, LoadingSpinner } from '@repo/ui/components';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import { SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
+import {
+  DEFAULT_PAGE_SIZE,
+  SYSTEM_CONTEXT_DETAILS,
+} from '~/lib/utils/constants';
 import GenericErrorState from '../../UI/GenericErrorState';
-import { useGetAuditRecordByIdQuery } from '~/lib/redux/services/log.services';
+import {
+  useGetAllAuditRecordChangesQuery,
+  useGetAuditRecordByIdQuery,
+} from '~/lib/redux/services/log.services';
 import { setAuditLog } from '~/lib/redux/slices/AuditLogSlice';
 import LogHeader from './Header';
 import AuditLogInfo from './AuditLogInfo';
@@ -19,7 +25,9 @@ interface LogDetailProps {
 const LogDetail = ({ isOpen, onClose }: LogDetailProps) => {
   const dispatch = useAppDispatch();
   const logSlug = SYSTEM_CONTEXT_DETAILS.AUDIT.slug;
-  const selectedAuditLog = useAppSelector((state) => state.auditLog.auditLog);
+  const { auditLog: selectedAuditLog } = useAppSelector(
+    (state) => state.auditLog
+  );
   const { getSearchParam, clearSearchParamsAfter } = useCustomSearchParams();
 
   const logId = getSearchParam(logSlug)
@@ -36,6 +44,20 @@ const LogDetail = ({ isOpen, onClose }: LogDetailProps) => {
       skip: !logId || Boolean(selectedAuditLog),
     }
   );
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+  const {
+    data: logChanges,
+    isLoading: isLoadingChanges,
+    isFetching: isFetchingChanges,
+  } = useGetAllAuditRecordChangesQuery(
+    {
+      pageNumber,
+      pageSize,
+      auditRecordId: selectedAuditLog?.auditRecordId!,
+    },
+    { skip: !selectedAuditLog?.auditRecordId }
+  );
 
   const closeDrawer = () => {
     clearSearchParamsAfter(logSlug, { removeSelf: true });
@@ -50,7 +72,12 @@ const LogDetail = ({ isOpen, onClose }: LogDetailProps) => {
   }, [logData, selectedAuditLog]);
 
   const logNotFound = useMemo(() => {
-    const notFound = !log && !isLoading && !isFetching;
+    const notFound =
+      !log &&
+      !isLoading &&
+      !isFetching &&
+      !isLoadingChanges &&
+      !isFetchingChanges;
 
     if (notFound) clearSearchParamsAfter(logSlug);
 
@@ -71,33 +98,43 @@ const LogDetail = ({ isOpen, onClose }: LogDetailProps) => {
         />
       )}
 
-      {(isLoading || isFetching) && (
+      {(isLoading || isFetching || isLoadingChanges || isFetchingChanges) && (
         <VStack width="full" minH="100vh" justifyContent="center">
           <LoadingSpinner />
         </VStack>
       )}
 
-      {log && !isLoading && !isFetching && (
-        <>
-          <DrawerHeader
-            px={{ base: '16px', lg: '32px' }}
-            pt="16px"
-            pb={{ base: '16px', lg: '29px' }}
-          >
-            <LogHeader handleBack={closeDrawer} />
-          </DrawerHeader>
-          <DrawerBody p={0}>
-            <VStack
-              width="full"
-              alignItems="flex-start"
-              spacing={{ base: '24px', lg: '59px' }}
+      {log &&
+        !isLoading &&
+        !isFetching &&
+        !isLoadingChanges &&
+        !isFetchingChanges && (
+          <>
+            <DrawerHeader
+              px={{ base: '16px', lg: '32px' }}
+              pt="16px"
+              pb={{ base: '16px', lg: '29px' }}
             >
-              <AuditLogInfo />
-              <AuditLogTabs />
-            </VStack>
-          </DrawerBody>
-        </>
-      )}
+              <LogHeader handleBack={closeDrawer} />
+            </DrawerHeader>
+            <DrawerBody p={0}>
+              <VStack
+                width="full"
+                alignItems="flex-start"
+                spacing={{ base: '24px', lg: '59px' }}
+              >
+                <AuditLogInfo
+                  setPageNumber={setPageNumber}
+                  pageNumber={pageNumber}
+                  pageSize={pageSize}
+                  setPageSize={setPageSize}
+                  data={logChanges?.data}
+                />
+                <AuditLogTabs />
+              </VStack>
+            </DrawerBody>
+          </>
+        )}
     </GenericDrawer>
   );
 };

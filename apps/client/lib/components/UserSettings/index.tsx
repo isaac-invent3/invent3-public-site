@@ -30,7 +30,7 @@ interface UserSettingsProps {
 }
 const UserSettings = (props: UserSettingsProps) => {
   const { isOpen, onClose } = props;
-  const [tabIndex, setTabIndex] = useState<number | undefined>(undefined);
+  const [tabIndex, setTabIndex] = useState<number | undefined>(0);
   const session = useSession();
   const dispatch = useAppDispatch();
   const { data, isLoading } = useGetUserConfigurationOptionsQuery(

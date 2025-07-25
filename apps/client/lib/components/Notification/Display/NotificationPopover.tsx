@@ -5,6 +5,7 @@ import {
   PopoverContent,
   PopoverHeader,
   PopoverTrigger,
+  VStack,
 } from '@chakra-ui/react';
 import { NotifcationTabs } from '../Tabs';
 import NotificationHeader from '../NotificationHeader';
@@ -91,7 +92,12 @@ const NotificationPopover = (props: NotificationPopoverProps) => {
               handleMarkNotificationsAsRead={handleMarkNotificationsAsRead}
             />
           </PopoverHeader>
-          <PopoverBody pt="20px" px="20px" overflowY="auto">
+          <PopoverBody
+            pt="20px"
+            px="20px"
+            id="notificationsDiv"
+            overflowY="auto"
+          >
             {isOpen && (
               <NotifcationTabs activeTab={activeTab} handleClose={onClose} />
             )}

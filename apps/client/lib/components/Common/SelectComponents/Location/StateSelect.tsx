@@ -56,7 +56,7 @@ const StateSelect = (props: StateSelectProps) => {
       isLoading={isLoading}
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
-      specialSearch={stateSearchCriterion}
+      specialSearch={countryId ? stateSearchCriterion : undefined}
       fetchKey={countryId}
       handleSelect={handleSelect}
     />

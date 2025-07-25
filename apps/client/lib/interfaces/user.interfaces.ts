@@ -41,7 +41,6 @@ interface User {
   designationTypeName: string;
   primaryImagePrefix: string;
   primaryImage: string;
-  employeeId: number;
   locationId: number;
   lgaId: number;
   stateId: number;
@@ -52,10 +51,13 @@ interface User {
   stateName: string;
   isDeleted: boolean;
   userLocation: string;
+  countryId: number;
+  countryName: string;
+  facilityId: number;
+  lastActive: string;
   userRoles: UserRole[];
   userGroups: UserGroup[];
   userPermissions: UserPermission[];
-  userDesignationInfos: UserDesignationInfo[];
 }
 
 export interface UserDesignationInfo {

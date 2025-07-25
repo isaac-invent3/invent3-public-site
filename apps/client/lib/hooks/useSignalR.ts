@@ -16,7 +16,7 @@ export interface SignalRConnectionState {
   state: HubConnectionState;
 }
 
-const useSignalR = (path: string = 'notification-hub') => {
+const useSignalR = (path: string) => {
   const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const [connectionState, setConnectionState] =

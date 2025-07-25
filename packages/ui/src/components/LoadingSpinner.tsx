@@ -1,14 +1,29 @@
-import { Spinner, VStack } from '@chakra-ui/react';
+import { ResponsiveValue, Spinner, StackProps, VStack } from '@chakra-ui/react';
 
-const LoadingSpinner = () => {
+interface LoadingSpinnerProps {
+  size?:
+    | ResponsiveValue<(string & {}) | 'sm' | 'md' | 'lg' | 'xl' | 'xs'>
+    | undefined;
+  customStyle?: StackProps;
+}
+const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
+  size,
+  customStyle,
+}) => {
   return (
-    <VStack width="full" height="full" minH="inherit" justifyContent="center">
+    <VStack
+      width="full"
+      height="full"
+      minH="inherit"
+      justifyContent="center"
+      {...customStyle}
+    >
       <Spinner
         thickness="4px"
         speed="0.65s"
         emptyColor="gray.200"
         color="primary.500"
-        size="xl"
+        size={size ?? 'xl'}
       />
     </VStack>
   );

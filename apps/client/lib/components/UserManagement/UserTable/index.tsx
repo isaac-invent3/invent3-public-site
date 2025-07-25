@@ -7,6 +7,7 @@ import { User } from '~/lib/interfaces/user.interfaces';
 import UserInfo from '../../Common/UserInfo';
 import GenericStatusBox from '../../UI/GenericStatusBox';
 import PopoverAction from './PopoverAction';
+import { dateFormatter } from '~/lib/utils/Formatters';
 
 interface UserTableProps extends GenericTableProps {
   data: User[];
@@ -47,13 +48,6 @@ const UserTable = (props: UserTableProps) => {
           header: 'User ID',
           enableSorting: false,
         }),
-
-        columnHelper.accessor('employeeId', {
-          cell: (info) => info.getValue() ?? 'N/A',
-          header: 'Employee ID',
-          enableSorting: false,
-        }),
-
         columnHelper.accessor('firstName', {
           cell: (info) => (
             <UserInfo
@@ -64,7 +58,6 @@ const UserTable = (props: UserTableProps) => {
           header: 'Name',
           enableSorting: true,
         }),
-
         columnHelper.accessor('email', {
           cell: (info) => info.getValue(),
           header: 'Email',
@@ -104,9 +97,10 @@ const UserTable = (props: UserTableProps) => {
           enableSorting: true,
         }),
 
-        columnHelper.accessor('firstName', {
-          cell: () => '23 / 10 / 2024',
-          header: 'Hired Date',
+        columnHelper.accessor('lastActive', {
+          cell: (info) =>
+            dateFormatter(info.getValue(), 'DD / MM / YYYY') ?? 'N/A',
+          header: 'Last Active Date',
           enableSorting: false,
         }),
         columnHelper.accessor('statusName', {

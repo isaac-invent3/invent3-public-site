@@ -18,7 +18,6 @@ const Overview = () => {
     facilityName,
     lganame,
     userRoles,
-    employeeId,
     userId,
     statusName,
     displayColorCode,

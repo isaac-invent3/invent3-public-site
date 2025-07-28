@@ -29,14 +29,21 @@ interface NavItemProps {
 const NavItem = (props: NavItemProps) => {
   const { name, route, icon, isCollapse, children, hasAnyChildren, count } =
     props;
+  const session = useSession();
   const { isOpen, onToggle } = useDisclosure();
   const path = usePathname();
-  const splittedPathname = path?.split('/') as string[];
+  // Split the path based on companySlug if it exists, otherwise split normally
+  const companySlug = session?.data?.user?.companySlug;
+  const splittedPathname = companySlug
+    ? (path?.replace(`/${companySlug}`, '')?.split('/') as string[])
+    : (path?.split('/') as string[]);
   const { data, update } = useSession();
   const NEXT_PUBLIC_BASE_URL = env(`NEXT_PUBLIC_BASE_URL`);
 
   //For nav items with children
-  const fullPath = window.location.href.split(`${NEXT_PUBLIC_BASE_URL}/`);
+  const fullPath = window.location.href.split(
+    `${NEXT_PUBLIC_BASE_URL}/${session?.data?.user?.companySlug ? session?.data?.user?.companySlug + '/' : ''}`
+  ) as string[];
   const relativePath = fullPath?.[1];
 
   return (

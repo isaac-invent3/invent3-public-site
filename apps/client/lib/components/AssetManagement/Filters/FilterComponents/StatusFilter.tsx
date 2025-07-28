@@ -21,7 +21,7 @@ const StatusFilter = (props: StatusFilterProps) => {
   const { selectedOptions, handleSelectedOption } = props;
   const [pageNumber, setPageNumber] = useState(1);
   const [options, setOptions] = useState<StatusOption[]>([]);
-  const { data, isLoading } = useGetAllAssetStatusQuery({
+  const { data, isLoading, isFetching } = useGetAllAssetStatusQuery({
     pageNumber: pageNumber,
     pageSize: DEFAULT_PAGE_SIZE,
   });
@@ -48,7 +48,7 @@ const StatusFilter = (props: StatusFilterProps) => {
       handleClick={(value) => handleSelectedOption(value)}
       hasMoreOptions={data?.data?.hasNextPage}
       loadMoreOptions={() => setPageNumber((prev) => prev + 1)}
-      isLoading={isLoading}
+      isLoading={isLoading || isFetching}
     >
       {options.map((item, index) => (
         <HStack spacing="8px" key={index}>

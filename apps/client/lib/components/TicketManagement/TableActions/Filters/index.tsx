@@ -1,17 +1,25 @@
 import CombinedLocationFilter from '~/lib/components/Common/FilterComponents/CombinedLocationFilter';
 import FilterWrapper from '~/lib/components/Common/FilterComponents/FilterWrapper';
-import { LocationFilter, Option } from '~/lib/interfaces/general.interfaces';
-import { initialFilterData } from '..';
+import { initialFilterData } from '../..';
+import TicketTypeFilter from './TicketTypeFilter';
+import {
+  TicketCategory,
+  TicketFilter,
+} from '~/lib/interfaces/ticket.interfaces';
+import { Option } from '~/lib/interfaces/general.interfaces';
+import UsersFilter from '~/lib/components/Common/FilterComponents/UsersFilter';
 
 interface FiltersProps {
-  filterData: LocationFilter;
-  setFilterData: React.Dispatch<React.SetStateAction<LocationFilter>>;
+  filterData: TicketFilter;
+  setFilterData: React.Dispatch<React.SetStateAction<TicketFilter>>;
   handleApplyFilter: () => void;
+  ticketCategory: TicketCategory;
 }
 const Filters = (props: FiltersProps) => {
-  const { filterData, setFilterData, handleApplyFilter } = props;
+  const { filterData, setFilterData, handleApplyFilter, ticketCategory } =
+    props;
 
-  type FilterLabel = keyof LocationFilter;
+  type FilterLabel = keyof TicketFilter;
 
   const handleFilterData = (option: Option, filterLabel: FilterLabel) => {
     setFilterData((prev) => {
@@ -43,6 +51,22 @@ const Filters = (props: FiltersProps) => {
       handleApplyFilter={handleApplyFilter}
       handleClearFilter={() => setFilterData(initialFilterData)}
     >
+      <TicketTypeFilter
+        selectedOptions={filterData.ticketTypes.map((item) => ({
+          value: item.value,
+          label: item.label,
+        }))}
+        handleSelectedOption={(value) => handleFilterData(value, 'ticketTypes')}
+      />
+      {ticketCategory !== 'new' && (
+        <UsersFilter
+          selectedOptions={filterData.users.map((item) => ({
+            value: item.value,
+            label: item.label,
+          }))}
+          handleSelectedOption={(value) => handleFilterData(value, 'users')}
+        />
+      )}
       <CombinedLocationFilter
         selectedRegion={filterData.region}
         selectedArea={filterData.area}

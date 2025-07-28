@@ -1,17 +1,19 @@
 import CombinedLocationFilter from '~/lib/components/Common/FilterComponents/CombinedLocationFilter';
 import FilterWrapper from '~/lib/components/Common/FilterComponents/FilterWrapper';
-import { LocationFilter, Option } from '~/lib/interfaces/general.interfaces';
 import { initialFilterData } from '..';
+import { TaskFilter } from '~/lib/interfaces/task.interfaces';
+import { Option } from '~/lib/interfaces/general.interfaces';
+import UsersFilter from '~/lib/components/Common/FilterComponents/UsersFilter';
 
 interface FiltersProps {
-  filterData: LocationFilter;
-  setFilterData: React.Dispatch<React.SetStateAction<LocationFilter>>;
+  filterData: TaskFilter;
+  setFilterData: React.Dispatch<React.SetStateAction<TaskFilter>>;
   handleApplyFilter: () => void;
 }
 const GeneralFilter = (props: FiltersProps) => {
   const { filterData, setFilterData, handleApplyFilter } = props;
 
-  type FilterLabel = keyof LocationFilter;
+  type FilterLabel = keyof TaskFilter;
 
   const handleFilterData = (option: Option, filterLabel: FilterLabel) => {
     setFilterData((prev) => {
@@ -43,6 +45,13 @@ const GeneralFilter = (props: FiltersProps) => {
       handleApplyFilter={handleApplyFilter}
       handleClearFilter={() => setFilterData(initialFilterData)}
     >
+      <UsersFilter
+        selectedOptions={filterData.users.map((item) => ({
+          value: item.value,
+          label: item.label,
+        }))}
+        handleSelectedOption={(value) => handleFilterData(value, 'users')}
+      />
       <CombinedLocationFilter
         selectedRegion={filterData.region}
         selectedArea={filterData.area}

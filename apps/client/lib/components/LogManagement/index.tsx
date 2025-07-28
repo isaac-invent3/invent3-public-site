@@ -155,10 +155,10 @@ const LogManagement = () => {
 
   // Trigger search when search input changes or pagination updates
   useEffect(() => {
-    if (search) {
+    if (search || !isFilterEmpty) {
       handleSearch();
     }
-  }, [search, pageNumber, pageSize]);
+  }, [search, isFilterEmpty, pageNumber, pageSize]);
 
   // Reset pagination when clearing the search
   useEffect(() => {

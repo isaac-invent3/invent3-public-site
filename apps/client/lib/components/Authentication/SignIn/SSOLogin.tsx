@@ -6,6 +6,7 @@ import { signIn } from 'next-auth/react';
 import { env } from 'next-runtime-env';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ROUTES } from '~/lib/utils/constants';
+import { extractTenantFromUrl } from '~/lib/utils/helperFunctions';
 
 const NEXT_PUBLIC_API_URL = env('NEXT_PUBLIC_API_URL');
 
@@ -20,7 +21,7 @@ const SSOLogin = () => {
   const handleGoogleSignin = async () => {
     try {
       const response = await fetch(
-        `${NEXT_PUBLIC_API_URL}/api/Invent3Pro/login/google-login-url`
+        `${NEXT_PUBLIC_API_URL}/api/Invent3Pro/login/google-login-url${extractTenantFromUrl() ? `?tenantName=${extractTenantFromUrl()}` : ''}`
       );
       const { data } = await response.json();
       window.location.href = data?.url;

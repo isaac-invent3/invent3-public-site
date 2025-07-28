@@ -1,6 +1,6 @@
 import { useDisclosure, useMediaQuery } from '@chakra-ui/react';
 import { getSession, useSession } from 'next-auth/react';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { NotificationIcon } from '~/lib/components/CustomIcons/layout';
 import useSignalR from '~/lib/hooks/useSignalR';
 import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
@@ -14,6 +14,7 @@ import NotificationDrawer from './Display/NotificationDrawer';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { NotificationTabType } from '~/lib/interfaces/notification.interfaces';
+import NotificationIconWithBadge from './Display/NotificationIconWithBadge';
 
 const NotificationComponents = () => {
   const {
@@ -80,13 +81,7 @@ const NotificationComponents = () => {
 
   return (
     <>
-      {isMobile && (
-        <HeaderIcon
-          icon={NotificationIcon}
-          size="24px"
-          handleClick={onOpenDrawer}
-        />
-      )}
+      {isMobile && <NotificationIconWithBadge handleClick={onOpenDrawer} />}
       {!isMobile && (
         <NotificationPopover
           isOpen={isOpenPopover}

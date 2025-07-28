@@ -1,11 +1,11 @@
 import { FilterDisplay } from '@repo/ui/components';
-import { LocationFilter } from '~/lib/interfaces/general.interfaces';
 import BulkActions from './BulkFilters';
 import GeneralFilter from './GeneralFilter';
+import { TaskFilter } from '~/lib/interfaces/task.interfaces';
 
 interface FiltersProps {
-  filterData: LocationFilter;
-  setFilterData: React.Dispatch<React.SetStateAction<LocationFilter>>;
+  filterData: TaskFilter;
+  setFilterData: React.Dispatch<React.SetStateAction<TaskFilter>>;
   handleApplyFilter: () => void;
   isOpen: boolean;
   activeFilter: 'bulk' | 'general' | null;

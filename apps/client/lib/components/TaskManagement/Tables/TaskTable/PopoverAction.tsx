@@ -8,6 +8,7 @@ import { Task, taskFormDetails } from '~/lib/interfaces/task.interfaces';
 import { useDeleteTaskMutation } from '~/lib/redux/services/task/general.services';
 import { ROUTES } from '~/lib/utils/constants';
 import usePermissionAccess from '~/lib/hooks/useRoleAccess';
+import { useEffect } from 'react';
 
 const PopoverAction = (task: Task, type: 'drawer' | 'page') => {
   const {
@@ -37,6 +38,10 @@ const PopoverAction = (task: Task, type: 'drawer' | 'page') => {
       onCloseDelete();
     }
   };
+
+  useEffect(() => {
+    console.log({ canEditTask, canDeleteTask });
+  }, [canEditTask, canDeleteTask]);
 
   return (
     <>

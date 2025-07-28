@@ -14,7 +14,7 @@ const CategoryFilter = (props: CategoryFilterProps) => {
   const { selectedOptions, handleSelectedOption } = props;
   const [pageNumber, setPageNumber] = useState(1);
   const [options, setOptions] = useState<Option[]>([]);
-  const { data, isLoading } = useGetAllAssetCategoryQuery({
+  const { data, isLoading, isFetching } = useGetAllAssetCategoryQuery({
     pageNumber: pageNumber,
     pageSize: DEFAULT_PAGE_SIZE,
   });
@@ -38,7 +38,7 @@ const CategoryFilter = (props: CategoryFilterProps) => {
       handleClick={(value) => handleSelectedOption(value)}
       hasMoreOptions={data?.data?.hasNextPage}
       loadMoreOptions={() => setPageNumber((prev) => prev + 1)}
-      isLoading={isLoading}
+      isLoading={isLoading || isFetching}
     />
   );
 };

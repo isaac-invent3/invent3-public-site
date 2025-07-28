@@ -12,7 +12,7 @@ const OwnerFilter = () => {
   const { owner } = useAppSelector((state) => state.template.templateFilters);
   const [pageNumber, setPageNumber] = useState(1);
   const [options, setOptions] = useState<Option[]>([]);
-  const { data, isLoading } = useGetAllUsersQuery({
+  const { data, isLoading, isFetching } = useGetAllUsersQuery({
     pageNumber: pageNumber,
     pageSize: DEFAULT_PAGE_SIZE,
   });
@@ -48,7 +48,7 @@ const OwnerFilter = () => {
       }
       hasMoreOptions={data?.data?.hasNextPage}
       loadMoreOptions={() => setPageNumber((prev) => prev + 1)}
-      isLoading={isLoading}
+      isLoading={isLoading || isFetching}
     />
   );
 };

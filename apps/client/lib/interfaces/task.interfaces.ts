@@ -1,5 +1,6 @@
 import { BaseEntity } from '@repo/interfaces';
 import { FORM_ENUM } from '../utils/constants';
+import { LocationFilter, Option } from './general.interfaces';
 
 export interface BaseMainTask extends BaseEntity {
   taskId: number;
@@ -206,6 +207,9 @@ interface UpdateTaskInstanceMetadataPayload {
   assignedTo?: number;
   lastModifiedBy: string;
 }
+interface TaskFilter extends LocationFilter {
+  users: Option[];
+}
 
 export type {
   Task,
@@ -220,4 +224,5 @@ export type {
   TaskPayload,
   TaskInstancePayload,
   UpdateTaskInstanceMetadataPayload,
+  TaskFilter,
 };

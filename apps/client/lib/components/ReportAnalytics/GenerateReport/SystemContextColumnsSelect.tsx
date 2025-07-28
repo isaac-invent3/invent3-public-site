@@ -16,14 +16,15 @@ const SystemContextColumnsSelect = (props: SystemContextColumnsSelectProps) => {
 
   const { setFieldValue, values } = useFormikContext<GenerateReportDetails>();
 
-  const { data, isLoading } = useGetSystemContextTypeColumnsInfoQuery(
-    {
-      systemContextTypeId: selectedContextTypeId!,
-      pageNumber: 1,
-      pageSize: DEFAULT_PAGE_SIZE,
-    },
-    { skip: selectedContextTypeId === undefined }
-  );
+  const { data, isLoading, isFetching } =
+    useGetSystemContextTypeColumnsInfoQuery(
+      {
+        systemContextTypeId: selectedContextTypeId!,
+        pageNumber: 1,
+        pageSize: DEFAULT_PAGE_SIZE,
+      },
+      { skip: selectedContextTypeId === undefined }
+    );
 
   const allOptions = generateOptions(
     data?.data.items,
@@ -46,7 +47,7 @@ const SystemContextColumnsSelect = (props: SystemContextColumnsSelectProps) => {
   return (
     <FilterDropDown
       label=""
-      isLoading={isLoading}
+      isLoading={isLoading || isFetching}
       options={allOptions}
       handleClick={(value) => {
         if (containsOptions(selectedOptions, value)) {

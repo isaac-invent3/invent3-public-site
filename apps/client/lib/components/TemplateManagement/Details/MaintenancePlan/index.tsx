@@ -43,7 +43,7 @@ const MaintenancePlan = () => {
             <VStack alignItems="flex-start" width="full" spacing="8px">
               <Stack
                 direction={{ base: 'column', sm: 'row' }}
-                spacing={{ base: '8px', lg: 0 }}
+                spacing={{ base: '8px' }}
               >
                 <Text fontWeight={800} color="black" size="md">
                   Schedules under the Plan

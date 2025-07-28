@@ -47,7 +47,7 @@ export const journeyGuideSteps = [
     title: 'Add Maintenance Plan',
     subtitle: 'Add schedules or later',
     buttonSuffix: 'Create Maintenance Plan',
-    link: `/${ROUTES.MAINTENANCE_PLANS}/add`,
+    link: `/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_PLANS}/add`,
     key: 'AddMaintenancePlan',
   },
   {

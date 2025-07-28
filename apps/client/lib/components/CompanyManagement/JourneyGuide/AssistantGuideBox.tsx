@@ -39,7 +39,6 @@ const AssistantGuideBox = (props: AssistantGuideBoxProps) => {
       const nextStepIndex = guideSteps.findIndex(
         (step) => !journeyGuideData?.data[step.key as keyof CompanyJourneyGuide]
       );
-      console.log({ nextStepIndex });
 
       if (nextStepIndex === -1) {
         // All steps completed

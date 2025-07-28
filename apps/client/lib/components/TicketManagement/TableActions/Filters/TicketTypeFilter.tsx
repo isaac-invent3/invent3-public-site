@@ -1,46 +1,50 @@
-import { FilterDropDown } from '@repo/ui/components';
 import React, { useEffect, useState } from 'react';
+import { FilterDropDown } from '@repo/ui/components';
 import { Option } from '~/lib/interfaces/general.interfaces';
-import { useGetAllMaintenanceTypeQuery } from '~/lib/redux/services/maintenance/type.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { generateOptions } from '~/lib/utils/helperFunctions';
+import { useGetAllTicketTypesQuery } from '~/lib/redux/services/ticket.services';
 
-interface MaintenanceTypeFilterProps {
+interface TicketTypeFilterProps {
   selectedOptions: Option[];
   // eslint-disable-next-line no-unused-vars
   handleSelectedOption: (option: Option) => void;
 }
-const MaintenanceTypeFilter = (props: MaintenanceTypeFilterProps) => {
+
+const TicketTypeFilter = (props: TicketTypeFilterProps) => {
+  // eslint-disable-next-line no-unused-vars
   const { selectedOptions, handleSelectedOption } = props;
+
   const [pageNumber, setPageNumber] = useState(1);
   const [options, setOptions] = useState<Option[]>([]);
-  const { data, isLoading, isFetching } = useGetAllMaintenanceTypeQuery({
+  const { data, isLoading } = useGetAllTicketTypesQuery({
     pageNumber: pageNumber,
     pageSize: DEFAULT_PAGE_SIZE,
   });
 
   useEffect(() => {
     if (data?.data?.items) {
-      const newCategories = generateOptions(
+      const newTicketTypes = generateOptions(
         data?.data?.items,
-        'typeName',
-        'maintenanceTypeId'
+        'ticketTypeName',
+        'ticketTypeId'
       );
-      setOptions((prev) => [...prev, ...newCategories]);
+      setOptions((prev) => [...prev, ...newTicketTypes]);
     }
   }, [data]);
 
   return (
     <FilterDropDown
-      label="Maintenance Type:"
+      showBorder
+      label="Types:"
       options={options}
       selectedOptions={selectedOptions}
-      handleClick={(value) => handleSelectedOption(value)}
+      handleClick={(option) => handleSelectedOption(option)}
       hasMoreOptions={data?.data?.hasNextPage}
       loadMoreOptions={() => setPageNumber((prev) => prev + 1)}
-      isLoading={isLoading || isFetching}
+      isLoading={isLoading}
     />
   );
 };
 
-export default MaintenanceTypeFilter;
+export default TicketTypeFilter;

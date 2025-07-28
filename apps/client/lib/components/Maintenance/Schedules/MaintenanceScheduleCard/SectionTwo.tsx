@@ -22,15 +22,15 @@ const SectionTwo = (props: SectionTwoProps) => {
   const dateInfo = [
     {
       label: 'Last Maintenance Run',
-      value: '2024-12-03T10:51:51.847Z',
+      value: data?.lastMaintenanceRun,
     },
     {
       label: 'Next Maintenance Run',
-      value: '2024-07-03T10:51:51.847Z',
+      value: data?.nextMaintenanceRun,
     },
     {
       label: 'Schedule End Date',
-      value: null,
+      value: data?.endDate,
     },
   ];
 

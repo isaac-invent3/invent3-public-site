@@ -10,6 +10,7 @@ import {
 import { BackButton, Button, GenericDrawer } from '@repo/ui/components';
 import TaskFormDrawer from '../TaskFormDrawer';
 import { taskFormDetails } from '~/lib/interfaces/task.interfaces';
+import usePermissionAccess from '~/lib/hooks/useRoleAccess';
 
 interface TaskListDrawerProps {
   isOpen: boolean;
@@ -37,6 +38,7 @@ const TaskListDrawer = (props: TaskListDrawerProps) => {
     onOpen: onOpenForm,
     onClose: onCLoseForm,
   } = useDisclosure();
+  const canCreateTask = usePermissionAccess('task:create');
 
   return (
     <GenericDrawer isOpen={isOpen} onClose={onClose} maxWidth="907px">
@@ -50,7 +52,7 @@ const TaskListDrawer = (props: TaskListDrawerProps) => {
           justifyContent="space-between"
         >
           <BackButton handleClick={onClose} />
-          {showAddTaskButton && (
+          {showAddTaskButton && canCreateTask && (
             <Button
               handleClick={onOpenForm}
               customStyles={{ width: '138px', height: '35px' }}
@@ -60,7 +62,7 @@ const TaskListDrawer = (props: TaskListDrawerProps) => {
           )}
         </HStack>
       </DrawerHeader>
-      <DrawerBody p={{base:'16px', md:0}} m={0}>
+      <DrawerBody p={{ base: '16px', md: 0 }} m={0}>
         <VStack width="full" alignItems="flex-start" spacing="32px">
           <Heading
             size={{ base: 'lg', lg: 'xl' }}

@@ -1,15 +1,19 @@
 import { FilterDisplay } from '@repo/ui/components';
-import { LocationFilter } from '~/lib/interfaces/general.interfaces';
 import BulkActions from './BulkAction';
 import Filters from './Filters';
+import {
+  TicketCategory,
+  TicketFilter,
+} from '~/lib/interfaces/ticket.interfaces';
 
 interface TableActionsProps {
-  filterData: LocationFilter;
-  setFilterData: React.Dispatch<React.SetStateAction<LocationFilter>>;
+  filterData: TicketFilter;
+  setFilterData: React.Dispatch<React.SetStateAction<TicketFilter>>;
   handleApplyFilter: () => void;
   isOpen: boolean;
   activeFilter: 'bulk' | 'general' | null;
   selectedTicketIds: number[];
+  ticketCategory: TicketCategory;
 }
 const TableActions = (props: TableActionsProps) => {
   const {
@@ -19,6 +23,7 @@ const TableActions = (props: TableActionsProps) => {
     activeFilter,
     isOpen,
     selectedTicketIds,
+    ticketCategory,
   } = props;
 
   return (
@@ -31,6 +36,7 @@ const TableActions = (props: TableActionsProps) => {
           filterData={filterData}
           setFilterData={setFilterData}
           handleApplyFilter={handleApplyFilter}
+          ticketCategory={ticketCategory}
         />
       )}
     </FilterDisplay>

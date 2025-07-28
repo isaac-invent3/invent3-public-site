@@ -1,4 +1,10 @@
-import { ComponentWithAs, Flex, FlexProps, Icon, IconProps } from '@chakra-ui/react';
+import {
+  ComponentWithAs,
+  Flex,
+  FlexProps,
+  Icon,
+  IconProps,
+} from '@chakra-ui/react';
 import React from 'react';
 
 interface HeaderIconProps extends FlexProps {
@@ -22,6 +28,7 @@ const HeaderIcon = React.forwardRef<HTMLDivElement, HeaderIconProps>(
         alignItems="center"
         flexShrink={0}
         cursor="pointer"
+        position="relative"
         onClick={handleClick}
         {...rest}
       >

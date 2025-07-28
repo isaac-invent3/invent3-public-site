@@ -6,7 +6,7 @@ import NotifcationSkeletion from '../NotifcationSkeletion';
 import NotificationDetail from '../NotificationDetail';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { LoadingSpinner } from '@repo/ui/components';
-import { useEffect, useState } from 'react';
+import { MutableRefObject, useEffect, useState } from 'react';
 import { Notification } from '~/lib/interfaces/notification.interfaces';
 // const textStyle = { fontSize: '9.33px', lineHeight: '11.09px' };
 

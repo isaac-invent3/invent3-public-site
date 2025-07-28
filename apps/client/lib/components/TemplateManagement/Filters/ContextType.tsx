@@ -14,7 +14,7 @@ const ContextTypeFilter = () => {
   );
   const [pageNumber, setPageNumber] = useState(1);
   const [options, setOptions] = useState<Option[]>([]);
-  const { data, isLoading } = useGetAllSystemContextTypeQuery({
+  const { data, isLoading, isFetching } = useGetAllSystemContextTypeQuery({
     pageNumber: pageNumber,
     pageSize: DEFAULT_PAGE_SIZE,
     isOnlyTemplateAllowed: true,
@@ -51,7 +51,7 @@ const ContextTypeFilter = () => {
       }
       hasMoreOptions={data?.data?.hasNextPage}
       loadMoreOptions={() => setPageNumber((prev) => prev + 1)}
-      isLoading={isLoading}
+      isLoading={isLoading || isFetching}
     />
   );
 };

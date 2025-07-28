@@ -3,21 +3,28 @@ import { SubModuleKey } from '../interfaces/role.interfaces';
 import Cookies from 'js-cookie';
 import { ROLE_IDS_ENUM } from '../utils/constants';
 
-import { useMemo } from 'react';
+import { useEffect, useState } from 'react';
+
+const getPermissions = () => {
+  const raw = Cookies.get('permissionData');
+  try {
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+};
 
 const usePermissionAccess = (key: SubModuleKey): boolean => {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
+  const [permissions, setPermissions] = useState<string[]>(getPermissions());
 
-  const permissions = useMemo(() => {
-    const raw = Cookies.get('permissionData');
-    try {
-      return raw ? JSON.parse(raw) : [];
-    } catch {
-      return [];
-    }
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPermissions(getPermissions());
+    }, 1000);
+
+    return () => clearInterval(interval);
   }, []);
-
-  // if (status === 'loading' || status === 'unauthenticated') return false;
 
   if (
     permissions.includes(key) ||

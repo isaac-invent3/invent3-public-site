@@ -43,12 +43,7 @@ const TicketModal = (props: TicketModalProps) => {
   );
   const { getSearchParam, clearSearchParamsAfter, updateSearchParam } =
     useCustomSearchParams();
-  const ticketId = getSearchParam(SYSTEM_CONTEXT_DETAILS.TICKETS.slug);
-  const {
-    isOpen: isOpenTicket,
-    onClose: onCloseTicket,
-    onOpen: onOpenTicket,
-  } = useDisclosure();
+
   const dispatch = useAppDispatch();
 
   const searchCriterion = {
@@ -87,13 +82,6 @@ const TicketModal = (props: TicketModalProps) => {
       setPageNumber(1);
     }
   }, [search]);
-
-  //Open Task detail drawer if task id exists
-  useEffect(() => {
-    if (ticketId !== undefined) {
-      onOpenTicket();
-    }
-  }, [ticketId]);
 
   // SignalR Connection
   const connectionState = useSignalR('tickets-hub');
@@ -205,20 +193,6 @@ const TicketModal = (props: TicketModalProps) => {
           shouldHideFooter={true}
         />
       </GenericTemplateModal>
-      {ticketId && (
-        <TicketDrawerWrapper
-          isOpen={isOpenTicket}
-          onClose={() => {
-            clearSearchParamsAfter(SYSTEM_CONTEXT_DETAILS.TICKETS.slug, {
-              removeSelf: true,
-            });
-            onCloseTicket();
-          }}
-          data={null}
-          category="new"
-          action="view"
-        />
-      )}
     </>
   );
 };

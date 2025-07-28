@@ -1,3 +1,5 @@
+import { LocationFilter, Option } from './general.interfaces';
+
 interface Ticket {
   rowId: number;
   ticketId: number;
@@ -116,6 +118,11 @@ type TicketCategory =
   | 'in_progress'
   | 'completed';
 
+interface TicketFilter extends LocationFilter {
+  users: Option[];
+  ticketTypes: Option[];
+}
+
 export type {
   CreateTicketForm,
   CreateTicketPayload,
@@ -125,4 +132,5 @@ export type {
   TicketCategory,
   TicketTypeDetails,
   UpdateTicketPayload,
+  TicketFilter,
 };

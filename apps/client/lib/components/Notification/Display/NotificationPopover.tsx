@@ -9,9 +9,8 @@ import {
 } from '@chakra-ui/react';
 import { NotifcationTabs } from '../Tabs';
 import NotificationHeader from '../NotificationHeader';
-import HeaderIcon from '~/lib/layout/ProtectedPage/Header/HeaderIcon';
-import { NotificationIcon } from '../../CustomIcons/layout';
 import { NotificationTabType } from '~/lib/interfaces/notification.interfaces';
+import NotificationIconWithBadge from './NotificationIconWithBadge';
 
 interface NotificationPopoverProps {
   isOpen: boolean;
@@ -56,11 +55,7 @@ const NotificationPopover = (props: NotificationPopoverProps) => {
         placement="bottom-start"
       >
         <PopoverTrigger>
-          <HeaderIcon
-            icon={NotificationIcon}
-            size="24px"
-            handleClick={onOpen}
-          />
+          <NotificationIconWithBadge handleClick={onOpen} />
         </PopoverTrigger>
         <PopoverContent
           p={0}
@@ -92,15 +87,12 @@ const NotificationPopover = (props: NotificationPopoverProps) => {
               handleMarkNotificationsAsRead={handleMarkNotificationsAsRead}
             />
           </PopoverHeader>
-          <PopoverBody
-            pt="20px"
-            px="20px"
-            id="notificationsDiv"
-            overflowY="auto"
-          >
-            {isOpen && (
-              <NotifcationTabs activeTab={activeTab} handleClose={onClose} />
-            )}
+          <PopoverBody pt="20px" px="20px" height="500px">
+            <VStack id="notificationsDiv" height="full" overflowY="auto">
+              {isOpen && (
+                <NotifcationTabs activeTab={activeTab} handleClose={onClose} />
+              )}
+            </VStack>
           </PopoverBody>
         </PopoverContent>
       </Popover>

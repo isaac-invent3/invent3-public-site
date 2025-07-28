@@ -107,6 +107,8 @@ interface MaintenanceSchedule extends BaseMaintenanceSchedule {
   intervalId: number;
   intervalValue: number;
   occurrences: string;
+  lastMaintenanceRun: string;
+  nextMaintenanceRun: string;
 }
 
 interface MaintenanceScheduleInstance extends BaseMaintenanceSchedule {

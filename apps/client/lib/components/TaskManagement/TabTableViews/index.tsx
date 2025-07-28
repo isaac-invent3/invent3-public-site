@@ -4,11 +4,8 @@ import { generateSearchCriterion } from '@repo/utils';
 import _ from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import {
-  LocationFilter,
-  SearchCriterion,
-} from '~/lib/interfaces/general.interfaces';
-import { TaskInstance } from '~/lib/interfaces/task.interfaces';
+import { SearchCriterion } from '~/lib/interfaces/general.interfaces';
+import { TaskFilter, TaskInstance } from '~/lib/interfaces/task.interfaces';
 import { useSearchTaskInstancesMutation } from '~/lib/redux/services/task/instance.services';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 import TaskInstanceTable from '../Tables/TaskInstanceTable';
@@ -18,6 +15,7 @@ export const initialFilterData = {
   region: [],
   area: [],
   branch: [],
+  users: [],
 };
 
 interface TabTableViewProps {
@@ -55,8 +53,7 @@ const TabTableView = (props: TabTableViewProps) => {
     handleSelectRow,
     setSelectedRows,
   } = props;
-  const [filterData, setFilterData] =
-    useState<LocationFilter>(initialFilterData);
+  const [filterData, setFilterData] = useState<TaskFilter>(initialFilterData);
   const { handleSubmit } = useCustomMutation();
   const [selectedTaskIds, setSelectedTaskIds] = useState<number[]>([]);
 
@@ -66,25 +63,24 @@ const TabTableView = (props: TabTableViewProps) => {
     (value) => _.isArray(value) && _.isEmpty(value)
   );
 
-  const [searchPlan, { isLoading: searchLoading }] =
+  const [searchTask, { isLoading: searchLoading }] =
     useSearchTaskInstancesMutation({});
   const [searchData, setSearchData] =
     useState<ListResponse<TaskInstance> | null>(null);
 
   // Search Criterion
   const searchCriterion = {
-    ...(search && {
-      criterion: [
-        {
-          columnName: 'taskInstanceName',
-          columnValue: search,
-          operation: OPERATORS.Contains,
-        },
-        specificSearchCriterion,
-      ],
-    }),
-    ...(!isFilterEmpty && {
+    ...((!isFilterEmpty || search) && {
       orCriterion: [
+        ...(filterData.users && filterData.users.length >= 1
+          ? [
+              generateSearchCriterion(
+                'assignedToEmployeeId',
+                filterData.users.map((item) => item.value),
+                OPERATORS.Equals
+              ),
+            ]
+          : []),
         ...(filterData.region && filterData.region.length >= 1
           ? [
               generateSearchCriterion(
@@ -112,6 +108,29 @@ const TabTableView = (props: TabTableViewProps) => {
               ),
             ]
           : []),
+
+        ...(search
+          ? [
+              [
+                {
+                  columnName: 'taskInstanceName',
+                  columnValue: search,
+                  operation: OPERATORS.Contains,
+                },
+                ...(!isNaN(Number(search))
+                  ? [
+                      'taskInstanceId',
+                      'scheduleInstanceId',
+                      'assignedToEmployeeId',
+                    ].map((item) => ({
+                      columnName: item,
+                      columnValue: search,
+                      operation: OPERATORS.Equals,
+                    }))
+                  : []),
+              ],
+            ]
+          : []),
       ],
     }),
     pageNumber: currentPage,
@@ -121,10 +140,10 @@ const TabTableView = (props: TabTableViewProps) => {
   // Function that handles search/filters
   const handleSearch = useCallback(async () => {
     if (search || !isFilterEmpty) {
-      const response = await handleSubmit(searchPlan, searchCriterion, '');
+      const response = await handleSubmit(searchTask, searchCriterion, '');
       response?.data?.data && setSearchData(response?.data?.data);
     }
-  }, [searchPlan, searchCriterion]);
+  }, [searchTask, searchCriterion]);
 
   // Trigger search when search input changes or pagination updates
   useEffect(() => {

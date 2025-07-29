@@ -92,7 +92,7 @@ const Date = (props: DateProps) => {
       false
     );
 
-    if (!response?.data) {
+    if (response?.data) {
       setValues({
         ...values,
         ...formattedInfo,

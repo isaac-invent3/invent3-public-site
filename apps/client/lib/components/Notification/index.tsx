@@ -1,10 +1,8 @@
 import { useDisclosure, useMediaQuery } from '@chakra-ui/react';
 import { getSession, useSession } from 'next-auth/react';
 import { useLayoutEffect, useState } from 'react';
-import { NotificationIcon } from '~/lib/components/CustomIcons/layout';
 import useSignalR from '~/lib/hooks/useSignalR';
 import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
-import HeaderIcon from '~/lib/layout/ProtectedPage/Header/HeaderIcon';
 import {
   notificationApi,
   useMarkAllNotificationsAsReadMutation,
@@ -86,7 +84,6 @@ const NotificationComponents = () => {
         <NotificationPopover
           isOpen={isOpenPopover}
           onOpen={() => {
-            // buttonClick();
             onOpenPopover();
           }}
           onClose={onClosePopover}

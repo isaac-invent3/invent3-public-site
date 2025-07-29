@@ -1,79 +1,24 @@
-import { Flex, Text, VStack } from '@chakra-ui/react';
-import { useSession } from 'next-auth/react';
-import { useGetUserNotificationQuery } from '~/lib/redux/services/notification.services';
-import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
-import NotifcationSkeletion from '../NotifcationSkeletion';
-import NotificationDetail from '../NotificationDetail';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import { LoadingSpinner } from '@repo/ui/components';
-import { MutableRefObject, useEffect, useState } from 'react';
-import { Notification } from '~/lib/interfaces/notification.interfaces';
-// const textStyle = { fontSize: '9.33px', lineHeight: '11.09px' };
+import { NotificationTabType } from '~/lib/interfaces/notification.interfaces';
+import { Archived } from './Archived';
+import { Alerts } from './Alerts';
+import { UnreadNotifications } from './UnreadNotifications';
+import { AllNotifications } from './AllNotifications';
 
 export const NotifcationTabs = ({
   activeTab,
   handleClose,
 }: {
-  activeTab: string;
+  activeTab: NotificationTabType;
   handleClose?: () => void;
 }) => {
-  const session = useSession();
-  const [pageNumber, setPageNumber] = useState(1);
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-  const { data, isLoading, isFetching } = useGetUserNotificationQuery(
-    {
-      pageSize: DEFAULT_PAGE_SIZE,
-      pageNumber,
-      userId: session?.data?.user?.userId!,
-      isRead: activeTab === 'Unread' ? false : undefined,
-      isArchived: activeTab === 'Archived' ? true : undefined,
-      isAlert: activeTab === 'Alerts' ? true : undefined,
-    },
-    { skip: !session?.data?.user?.userId }
-  );
-
-  useEffect(() => {
-    if (data?.data?.items) {
-      setNotifications((prev) => [...prev, ...data.data.items]);
-    }
-  }, [data]);
-
-  if (isLoading) {
-    return <NotifcationSkeletion noOfskeleton={7} />;
-  }
-
   return (
-    <InfiniteScroll
-      dataLength={notifications.length}
-      next={() => {
-        setPageNumber((prev) => prev + 1);
-      }}
-      hasMore={(data?.data && data?.data?.hasNextPage) ?? false}
-      scrollableTarget="notificationsDiv"
-      loader={<LoadingSpinner size="md" customStyle={{ mt: '8px' }} />}
-      style={{ overflow: 'hidden' }}
-    >
-      {notifications.length < 1 ? (
-        <Text
-          width="full"
-          textAlign="center"
-          color="neutral.600"
-          my="10vh"
-          size="md"
-        >
-          No Notifications at the moment
-        </Text>
-      ) : (
-        <VStack width="full" alignItems="flex-start" spacing="16.33px">
-          {notifications.map((notification, index) => (
-            <NotificationDetail
-              notification={notification}
-              key={index}
-              handleClose={handleClose}
-            />
-          ))}
-        </VStack>
+    <>
+      {activeTab === 'All' && <AllNotifications handleClose={handleClose} />}
+      {activeTab === 'Unread' && (
+        <UnreadNotifications handleClose={handleClose} />
       )}
-    </InfiniteScroll>
+      {activeTab === 'Alerts' && <Alerts handleClose={handleClose} />}
+      {activeTab === 'Archived' && <Archived handleClose={handleClose} />}
+    </>
   );
 };

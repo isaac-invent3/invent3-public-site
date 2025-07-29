@@ -19,7 +19,7 @@ const StateSelect = (props: StateSelectProps) => {
   const { stateName } = useAppSelector((state) => state.asset.assetForm);
   const [searchState] = useSearchStatesMutation({});
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetStatesByCountryIdQuery(
+  const { data, isLoading, isFetching } = useGetStatesByCountryIdQuery(
     {
       id: countryId ?? undefined,
       pageSize: 37,
@@ -53,7 +53,7 @@ const StateSelect = (props: StateSelectProps) => {
       valueKey="stateId"
       defaultInputValue={stateName}
       mutationFn={searchState}
-      isLoading={isLoading}
+      isLoading={isLoading || isFetching}
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
       specialSearch={countryId ? stateSearchCriterion : undefined}

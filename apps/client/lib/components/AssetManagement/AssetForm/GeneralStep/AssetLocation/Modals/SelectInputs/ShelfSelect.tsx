@@ -22,22 +22,25 @@ const ShelfSelect = (props: ShelfSelectProps) => {
   const [searchShelf] = useSearchShelfMutation({});
 
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllShelvesQuery(
+  const { data, isLoading, isFetching } = useGetAllShelvesQuery(
     {
       pageSize: DEFAULT_PAGE_SIZE,
       pageNumber,
     },
     { skip: type === 'specificById' }
   );
-  const { data: shelvesByAisleIdData, isLoading: isLoadingShelvesByAisleId } =
-    useGetShelvesByAisleIdQuery(
-      {
-        id: aisleId ?? undefined,
-        pageSize: DEFAULT_PAGE_SIZE,
-        pageNumber,
-      },
-      { skip: !aisleId }
-    );
+  const {
+    data: shelvesByAisleIdData,
+    isLoading: isLoadingShelvesByAisleId,
+    isFetching: isFetchingShelvesByAisleId,
+  } = useGetShelvesByAisleIdQuery(
+    {
+      id: aisleId ?? undefined,
+      pageSize: DEFAULT_PAGE_SIZE,
+      pageNumber,
+    },
+    { skip: !aisleId }
+  );
 
   const shelvesByAisleIdCriterion = (
     searchValue: string
@@ -66,7 +69,12 @@ const ShelfSelect = (props: ShelfSelectProps) => {
       valueKey="shelfId"
       defaultInputValue={shelfName}
       mutationFn={searchShelf}
-      isLoading={isLoading || isLoadingShelvesByAisleId}
+      isLoading={
+        isLoading ||
+        isLoadingShelvesByAisleId ||
+        isFetching ||
+        isFetchingShelvesByAisleId
+      }
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
       handleSelect={handleSelect}

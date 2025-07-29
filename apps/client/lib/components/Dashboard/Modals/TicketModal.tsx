@@ -9,10 +9,11 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { OPERATORS } from '@repo/constants';
 import { useDisclosure } from '@chakra-ui/react';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
-import { Ticket } from '~/lib/interfaces/ticket.interfaces';
+import { Ticket, TicketCategory } from '~/lib/interfaces/ticket.interfaces';
 import {
   ticketApi,
   useGetAllTicketsQuery,
+  useGetTicketsByTabScopeQuery,
   useSearchTicketsMutation,
 } from '~/lib/redux/services/ticket.services';
 import TicketDrawerWrapper from '../../TicketManagement/Drawers/TicketDrawerWrapper';
@@ -20,19 +21,25 @@ import TicketTable from '../../TicketManagement/TicketTable';
 import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
 import useSignalR from '~/lib/hooks/useSignalR';
 import { useAppDispatch } from '~/lib/redux/hooks';
+import { useSession } from 'next-auth/react';
 
 interface TicketModalProps {
   isOpen: boolean;
   onClose: () => void;
+  scope?: TicketCategory;
 }
 const TicketModal = (props: TicketModalProps) => {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, scope } = props;
   const [search, setSearch] = useState('');
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const { data, isLoading, isFetching } = useGetAllTicketsQuery({
+  const session = useSession();
+  const user = session?.data?.user;
+  const { data, isLoading, isFetching } = useGetTicketsByTabScopeQuery({
     pageNumber,
     pageSize,
+    tabScopeName: scope,
+    userId: scope === 'assigned' ? user?.userId! : undefined,
   });
   const [searchData, setSearchData] = useState<
     BaseApiResponse<ListResponse<Ticket>> | undefined
@@ -41,8 +48,6 @@ const TicketModal = (props: TicketModalProps) => {
   const [searchTicket, { isLoading: searchLoading }] = useSearchTicketsMutation(
     {}
   );
-  const { getSearchParam, clearSearchParamsAfter, updateSearchParam } =
-    useCustomSearchParams();
 
   const dispatch = useAppDispatch();
 

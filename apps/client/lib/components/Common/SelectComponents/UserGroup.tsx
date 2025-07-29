@@ -18,7 +18,7 @@ const UserGroupSelect = (props: UserGroupSelectProps) => {
   const { handleSelect, selectName, selectTitle, defaultInputValue } = props;
   const [searchRoles] = useSearchUserGroupMutation({});
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllUserGroupsInfoHeaderQuery({
+  const { data, isLoading, isFetching } = useGetAllUserGroupsInfoHeaderQuery({
     pageSize: 50,
     pageNumber,
   });
@@ -31,7 +31,7 @@ const UserGroupSelect = (props: UserGroupSelectProps) => {
       labelKey="groupName"
       valueKey="groupId"
       mutationFn={searchRoles}
-      isLoading={isLoading}
+      isLoading={isLoading || isFetching}
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
       handleSelect={handleSelect}

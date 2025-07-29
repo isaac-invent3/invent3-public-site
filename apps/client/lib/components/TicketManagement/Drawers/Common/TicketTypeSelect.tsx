@@ -19,7 +19,7 @@ const TicketTypeSelect = (props: TicketTypeSelectProps) => {
   const { handleSelect, selectName, selectTitle, defaultInputValue } = props;
   const [searchTicketType] = useSearchTicketTypesMutation({});
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllTicketTypesQuery({
+  const { data, isLoading, isFetching } = useGetAllTicketTypesQuery({
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
@@ -31,7 +31,7 @@ const TicketTypeSelect = (props: TicketTypeSelectProps) => {
       labelKey="ticketTypeName"
       valueKey="ticketTypeId"
       mutationFn={searchTicketType}
-      isLoading={isLoading}
+      isLoading={isLoading || isFetching}
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
       handleSelect={handleSelect}

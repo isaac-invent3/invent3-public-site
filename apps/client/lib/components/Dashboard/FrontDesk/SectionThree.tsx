@@ -29,7 +29,7 @@ const SectionThree = () => {
       >
         <HStack width="full" justifyContent="space-between">
           <HStack width="full" alignItems="center">
-            <CardHeader>Recent Tickets</CardHeader>
+            <CardHeader>Unassigned Tickets</CardHeader>
             <Text
               color="neutral.800"
               py="6px"
@@ -62,7 +62,7 @@ const SectionThree = () => {
           shouldHideFooter
         />
       </VStack>
-      {isOpen && <TicketModal isOpen={isOpen} onClose={onClose} />}
+      {isOpen && <TicketModal isOpen={isOpen} onClose={onClose} scope="new" />}
     </>
   );
 };

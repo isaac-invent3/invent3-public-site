@@ -22,14 +22,18 @@ const LGASelect = (props: LGASelectProps) => {
   const { lgaName } = useAppSelector((state) => state.asset.assetForm);
   const [searchLga] = useSearchLGAMutation({});
   const [pageNumber, setPageNumber] = useState(1);
-  const { data: allLgasData, isLoading: isLoadingAllLGAS } = useGetAllLGASQuery(
+  const {
+    data: allLgasData,
+    isLoading: isLoadingAllLGAS,
+    isFetching: isFetchingAllLGAS,
+  } = useGetAllLGASQuery(
     {
       pageSize: DEFAULT_PAGE_SIZE,
       pageNumber,
     },
     { skip: type === 'specificById' }
   );
-  const { data, isLoading } = useGetLGAByStateIdQuery(
+  const { data, isLoading, isFetching } = useGetLGAByStateIdQuery(
     {
       id: stateId ?? undefined,
       pageSize: 47,
@@ -63,7 +67,9 @@ const LGASelect = (props: LGASelectProps) => {
       valueKey="lgaId"
       defaultInputValue={lgaName}
       mutationFn={searchLga}
-      isLoading={isLoading || isLoadingAllLGAS}
+      isLoading={
+        isLoading || isLoadingAllLGAS || isFetching || isFetchingAllLGAS
+      }
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
       handleSelect={handleSelect}

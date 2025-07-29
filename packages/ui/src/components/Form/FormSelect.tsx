@@ -4,8 +4,7 @@ import SelectInput, { SelectInputProps } from '../Select';
 import { Option } from '@repo/interfaces';
 import { CSSObjectWithLabel } from 'react-select';
 
-interface FormSelectProps
-  extends Omit<SelectInputProps, 'selectedOptions' | 'handleSelect'> {
+interface FormSelectProps extends Omit<SelectInputProps, 'handleSelect'> {
   name: string;
   // eslint-disable-next-line no-unused-vars
   onSelect?: (option: Option | Option[]) => void;
@@ -23,7 +22,7 @@ const FormSelect = (props: FormSelectProps) => {
         props.isInvalid ? props.isInvalid : meta.touched && !!meta.error
       }
       errorMessage={meta.error}
-      selectedOption={meta.value}
+      selectedOption={props.selectedOption ?? meta.value}
       handleSelect={(option) => {
         props.onSelect && props.onSelect(option);
         if (props.isMultiSelect) {

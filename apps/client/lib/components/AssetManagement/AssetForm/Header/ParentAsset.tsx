@@ -52,7 +52,11 @@ const ParentAsset = () => {
           flexShrink={0}
         >
           <Image
-            src={`${primaryImagePrefix}${primaryImage}`}
+            src={
+              primaryImage && primaryImagePrefix
+                ? `${primaryImagePrefix}${primaryImage}`
+                : ''
+            }
             fill
             alt="Parent asset image"
           />

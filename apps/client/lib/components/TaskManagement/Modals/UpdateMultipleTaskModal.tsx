@@ -46,17 +46,23 @@ const UpdateMultipleTaskModal = (props: UpdateMultipleTaskModalProps) => {
   const [updateTaskInstanceMetadata, { isLoading: isUpdating }] =
     useUpdateTaskInstanceMetadataIdsMutation({});
 
-  const { data: taskStatuses, isLoading: isFetchingTaskStatuses } =
-    useGetAllTaskStatusesQuery({
-      pageSize: DEFAULT_PAGE_SIZE,
-      pageNumber: 1,
-    });
+  const {
+    data: taskStatuses,
+    isLoading: isLoadingTaskStatuses,
+    isFetching: isFetchingTaskStatuses,
+  } = useGetAllTaskStatusesQuery({
+    pageSize: DEFAULT_PAGE_SIZE,
+    pageNumber: 1,
+  });
 
-  const { data: taskPriorities, isLoading: isFetchingTaskPriorities } =
-    useGetAllTaskPrioritiesQuery({
-      pageSize: DEFAULT_PAGE_SIZE,
-      pageNumber: 1,
-    });
+  const {
+    data: taskPriorities,
+    isLoading: isLoadingTaskPriorities,
+    isFetching: isFetchingTaskPriorities,
+  } = useGetAllTaskPrioritiesQuery({
+    pageSize: DEFAULT_PAGE_SIZE,
+    pageNumber: 1,
+  });
 
   const { data, isLoading, isFetching } = useGetTaskInstancesByListOfIdsQuery({
     pageSize,
@@ -182,7 +188,9 @@ const UpdateMultipleTaskModal = (props: UpdateMultipleTaskModalProps) => {
                       data={taskStatuses}
                       labelKey="statusName"
                       valueKey="taskStatusId"
-                      isLoading={isFetchingTaskStatuses}
+                      isLoading={
+                        isLoadingTaskStatuses || isFetchingTaskStatuses
+                      }
                       pageNumber={pageNumber}
                       setPageNumber={setPageNumber}
                     />
@@ -207,7 +215,9 @@ const UpdateMultipleTaskModal = (props: UpdateMultipleTaskModalProps) => {
                       data={taskPriorities}
                       labelKey="priority"
                       valueKey="taskPriorityId"
-                      isLoading={isFetchingTaskPriorities}
+                      isLoading={
+                        isLoadingTaskPriorities || isFetchingTaskPriorities
+                      }
                       pageNumber={pageNumber}
                       setPageNumber={setPageNumber}
                     />

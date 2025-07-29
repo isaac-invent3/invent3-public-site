@@ -6,8 +6,8 @@ import { useField } from 'formik';
 import { useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import {
+  useGetAllActiveUsersQuery,
   useGetAllUserGroupsInfoHeaderQuery,
-  useGetAllUsersQuery,
   useSearchUserGroupMutation,
   useSearchUsersMutation,
 } from '~/lib/redux/services/user.services';
@@ -18,16 +18,19 @@ const ApprovalAssignee = () => {
 
   const [userListPageNumber, setUserListPageNumber] = useState(1);
 
-  const { data, isLoading } = useGetAllUsersQuery({
+  const { data, isLoading, isFetching } = useGetAllActiveUsersQuery({
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber: userListPageNumber,
   });
 
-  const { data: userGroups, isLoading: isLoadingUserGroups } =
-    useGetAllUserGroupsInfoHeaderQuery({
-      pageSize: DEFAULT_PAGE_SIZE,
-      pageNumber: userListPageNumber,
-    });
+  const {
+    data: userGroups,
+    isLoading: isLoadingUserGroups,
+    isFetching: isFetchingUserGroups,
+  } = useGetAllUserGroupsInfoHeaderQuery({
+    pageSize: DEFAULT_PAGE_SIZE,
+    pageNumber: userListPageNumber,
+  });
 
   const [searchUserGroups] = useSearchUserGroupMutation({});
 
@@ -57,7 +60,7 @@ const ApprovalAssignee = () => {
               valueKey="userId"
               defaultInputValue={undefined}
               mutationFn={searchUser}
-              isLoading={isLoading}
+              isLoading={isLoading || isFetching}
               pageNumber={userListPageNumber}
               setPageNumber={setUserListPageNumber}
               handleSelect={(option) => {
@@ -76,7 +79,7 @@ const ApprovalAssignee = () => {
               valueKey="groupId"
               defaultInputValue={undefined}
               mutationFn={searchUserGroups}
-              isLoading={isLoadingUserGroups}
+              isLoading={isLoadingUserGroups || isFetchingUserGroups}
               pageNumber={userListPageNumber}
               setPageNumber={setUserListPageNumber}
               handleSelect={(option) => {

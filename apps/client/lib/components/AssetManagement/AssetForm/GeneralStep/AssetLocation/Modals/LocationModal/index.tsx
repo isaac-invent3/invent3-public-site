@@ -97,7 +97,7 @@ const LocationModal = (props: LocationModalProps) => {
       aisleId: assetFormDetails.facilityId,
       shelfId: assetFormDetails.facilityId,
     },
-    validationSchema: locationSchema,
+    validationSchema: locationSchema(true),
     onSubmit: async (values) => {
       Object.entries(values).map(([key, value]) => {
         setFieldValue(key as keyof AssetFormDetails, value, true);
@@ -132,7 +132,7 @@ const LocationModal = (props: LocationModalProps) => {
       // Reset formik fields based on the hierarchy
       formik.setValues((prevValues) => ({
         ...prevValues,
-        [key]: option.value, // Set the current key's value
+        [`${key}Id`]: option.value, // Set the current key's value
         ...resetFormikFields(`${key}Id`), // Reset dependent formik fields
       }));
     }

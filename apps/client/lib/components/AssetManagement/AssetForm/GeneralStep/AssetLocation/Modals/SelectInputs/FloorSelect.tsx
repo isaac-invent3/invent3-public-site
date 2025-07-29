@@ -25,7 +25,7 @@ const FloorSelect = (props: FloorSelectProps) => {
   const [searchFloors] = useSearchFloorsMutation({});
 
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllFloorsQuery(
+  const { data, isLoading, isFetching } = useGetAllFloorsQuery(
     {
       pageSize: DEFAULT_PAGE_SIZE,
       pageNumber,
@@ -35,6 +35,7 @@ const FloorSelect = (props: FloorSelectProps) => {
   const {
     data: floorsByBuildingIdData,
     isLoading: isLoadingFloorsByBuildingIdData,
+    isFetching: isFetchingFloorsByBuildingIdData,
   } = useGetFloorsByBuildingIdQuery(
     {
       id: buildingId ?? undefined,
@@ -73,7 +74,12 @@ const FloorSelect = (props: FloorSelectProps) => {
       valueKey="floorId"
       defaultInputValue={floorName}
       mutationFn={searchFloors}
-      isLoading={isLoading || isLoadingFloorsByBuildingIdData}
+      isLoading={
+        isLoading ||
+        isLoadingFloorsByBuildingIdData ||
+        isFetching ||
+        isFetchingFloorsByBuildingIdData
+      }
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
       handleSelect={handleSelect}

@@ -3,38 +3,47 @@ import { locationSchema } from './location.schema';
 import { createDateSchema } from '../general.schema';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
-const generalInfoSchema = locationSchema.shape({
-  assetName: Yup.string().required('Name is required'),
-  description: Yup.string().required('Description is Required'),
-  images: Yup.array()
-    .of(
-      Yup.object().shape({
-        imageId: Yup.number().nullable(),
-        imageName: Yup.string().required(),
-        base64PhotoImage: Yup.string().required(),
-        base64Prefix: Yup.string().nullable(),
-        isPrimaryImage: Yup.boolean().required(),
-      })
-    )
-    .required('Images are required')
-    .min(1, 'Images must contain at least one item')
-    .test('has-primary', 'One image must be set as primary', (images) =>
-      images.some((img) => img.isPrimaryImage)
-    ),
-  brandName: Yup.string().required('Make is Required'),
-  modelRef: Yup.string().required('Model is Required'),
-  serialNo: Yup.string().required('Serial No. is Required'),
-  categoryId: Yup.string().required('Category is Required'),
-  subCategoryId: Yup.string().required('Subcategory is Required'),
-  weightKg: Yup.number().required('Weight is Required'),
-  widthCm: Yup.number().required('Width is Required'),
-  heightCm: Yup.number().required('Height is Required'),
-  lengthCm: Yup.number().required('Length is Required'),
-  currentOwner: Yup.number().required('Owner is Required'),
-  assignedTo: Yup.number().required('This is Required'),
-  responsibleFor: Yup.number().required('This is Required'),
-  parentId: Yup.number().nullable(),
-});
+const generalInfoSchema = (isUpdate: boolean) =>
+  locationSchema(isUpdate).shape({
+    assetName: Yup.string().required('Name is required'),
+    description: Yup.string().required('Description is Required'),
+    images: Yup.array()
+      .of(
+        Yup.object().shape({
+          imageId: Yup.number().nullable(),
+          imageName: Yup.string().required(),
+          base64PhotoImage: Yup.string().required(),
+          base64Prefix: Yup.string().nullable(),
+          isPrimaryImage: Yup.boolean().required(),
+        })
+      )
+      .required('Images are required')
+      .min(1, 'Images must contain at least one item')
+      .test('has-primary', 'One image must be set as primary', (images) =>
+        images.some((img) => img.isPrimaryImage)
+      ),
+    brandName: Yup.string().required('Make is Required'),
+    modelRef: Yup.string().required('Model is Required'),
+    serialNo: Yup.string().required('Serial No. is Required'),
+    categoryId: Yup.string().required('Category is Required'),
+    subCategoryId: Yup.string().required('Subcategory is Required'),
+    weightKg: Yup.number().required('Weight is Required'),
+    widthCm: Yup.number().required('Width is Required'),
+    heightCm: Yup.number().required('Height is Required'),
+    lengthCm: Yup.number().required('Length is Required'),
+    parentId: Yup.number().nullable(),
+    ...(isUpdate
+      ? {
+          currentOwner: Yup.number().required('Owner is Required'),
+          assignedTo: Yup.number().required('This is Required'),
+          responsibleFor: Yup.number().required('This is Required'),
+        }
+      : {
+          currentOwner: Yup.number(),
+          assignedTo: Yup.number(),
+          responsibleFor: Yup.number(),
+        }),
+  });
 
 const acquisitionInfoSchema = Yup.object().shape({
   acquisitionDate: createDateSchema(

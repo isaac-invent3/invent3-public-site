@@ -17,6 +17,7 @@ interface AssetLocationProps {
     value: string | number | undefined | null,
     shouldValidate?: boolean
   ) => void;
+  type?: 'create' | 'edit';
 }
 const AssetLocation = (props: AssetLocationProps) => {
   const {
@@ -31,7 +32,7 @@ const AssetLocation = (props: AssetLocationProps) => {
     aisleName,
     shelfName,
   } = useAppSelector((state) => state.asset.assetForm);
-  const { setFieldValue } = props;
+  const { setFieldValue, type } = props;
   const [field, meta, helpers] = useField('facilityId');
   const { isOpen, onClose, onOpen } = useDisclosure();
 
@@ -92,9 +93,11 @@ const AssetLocation = (props: AssetLocationProps) => {
                 justifyContent="center"
                 height="full"
               >
-                <FormAddButton handleClick={onOpen}>
-                  {facilityName ? 'Edit' : 'Add'} Location
-                </FormAddButton>
+                {type === 'create' && (
+                  <FormAddButton handleClick={onOpen}>
+                    {facilityName ? 'Edit' : 'Add'} Location
+                  </FormAddButton>
+                )}
                 {meta.touched && meta.error !== undefined && (
                   <ErrorMessage>Location is required</ErrorMessage>
                 )}

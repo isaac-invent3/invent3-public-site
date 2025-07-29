@@ -56,7 +56,7 @@ const SubCategorySelect = (props: SubCategorySelectProps) => {
       valueKey="subCategoryId"
       mutationFn={searchCategory}
       defaultInputValue={subCategoryName}
-      isLoading={isLoading}
+      isLoading={isLoading || isFetching}
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
       specialSearch={subCategorySearchCriterion}

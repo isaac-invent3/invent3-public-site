@@ -6,7 +6,7 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { User } from '~/lib/interfaces/user.interfaces';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import {
-  useGetAllUsersQuery,
+  useGetAllActiveUsersQuery,
   useSearchUsersMutation,
 } from '~/lib/redux/services/user.services';
 import { addNewUserGroupUser } from '~/lib/redux/slices/RoleSlice';
@@ -27,7 +27,7 @@ const AddUserModal = (props: AddUserModalProps) => {
   );
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllUsersQuery({
+  const { data, isLoading } = useGetAllActiveUsersQuery({
     pageSize: pageSize,
     pageNumber,
   });

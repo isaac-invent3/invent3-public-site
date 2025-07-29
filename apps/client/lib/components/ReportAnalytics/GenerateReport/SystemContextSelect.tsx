@@ -26,11 +26,12 @@ const SystemContextSelect = (props: SystemContextSelectProps) => {
   } = props;
   const [searchAsset] = useSearchContextTypesMutation({});
   const [pageNumber, setPageNumber] = useState(1);
-  
-  const { data, isLoading } = useGetReportableSystemContextTypesQuery({
-    pageSize: DEFAULT_PAGE_SIZE,
-    pageNumber,
-  });
+
+  const { data, isLoading, isFetching } =
+    useGetReportableSystemContextTypesQuery({
+      pageSize: DEFAULT_PAGE_SIZE,
+      pageNumber,
+    });
 
   const searchReportableContextTypesCriterion = (
     searchValue: string
@@ -58,7 +59,7 @@ const SystemContextSelect = (props: SystemContextSelectProps) => {
       labelKey="displayName"
       valueKey="systemContextTypeId"
       mutationFn={searchAsset}
-      isLoading={isLoading}
+      isLoading={isLoading || isFetching}
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
       handleSelect={handleSelect}

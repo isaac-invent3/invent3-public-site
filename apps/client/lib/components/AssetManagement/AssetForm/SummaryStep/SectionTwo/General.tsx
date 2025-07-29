@@ -32,12 +32,17 @@ const General = () => {
     countryName,
     stateName,
     lgaName,
+    parentAssetName,
   } = assetFormDetails;
 
   const row1 = [
     {
       label: 'Asset Name',
       value: assetName,
+    },
+    {
+      label: 'Parent Asset',
+      value: parentAssetName,
     },
     {
       label: 'Asset Type',

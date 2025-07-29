@@ -11,7 +11,7 @@ import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 const AssetGroupType = () => {
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllAssetGroupTypesQuery({
+  const { data, isLoading, isFetching } = useGetAllAssetGroupTypesQuery({
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
@@ -29,7 +29,7 @@ const AssetGroupType = () => {
       valueKey="groupTypeId"
       defaultInputValue={typeName}
       mutationFn={searchAssetGroupType}
-      isLoading={isLoading}
+      isLoading={isLoading || isFetching}
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
       handleSelect={(option) =>

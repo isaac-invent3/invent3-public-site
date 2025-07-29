@@ -17,7 +17,7 @@ const CountrySelect = ({ handleSelect }: CountrySelectProps) => {
   const [searchCategory] = useSearchCountriesMutation({});
   const { countryName } = useAppSelector((state) => state.asset.assetForm);
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllCountriesQuery({
+  const { data, isLoading, isFetching } = useGetAllCountriesQuery({
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
@@ -30,7 +30,7 @@ const CountrySelect = ({ handleSelect }: CountrySelectProps) => {
       valueKey="countryId"
       defaultInputValue={countryName}
       mutationFn={searchCategory}
-      isLoading={isLoading}
+      isLoading={isLoading || isFetching}
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
       handleSelect={handleSelect}

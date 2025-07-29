@@ -1,3 +1,4 @@
+import { is } from 'date-fns/locale';
 import React, { useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { Option } from '~/lib/interfaces/general.interfaces';
@@ -19,7 +20,7 @@ const TaskStatusSelect = (props: TaskStatusSelectProps) => {
   const { handleSelect, selectName, selectTitle, defaultInputValue } = props;
   const [searchTaskStatus] = useSearchTaskStatusesMutation({});
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllTaskStatusesQuery({
+  const { data, isLoading, isFetching } = useGetAllTaskStatusesQuery({
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
@@ -31,7 +32,7 @@ const TaskStatusSelect = (props: TaskStatusSelectProps) => {
       labelKey="statusName"
       valueKey="taskStatusId"
       mutationFn={searchTaskStatus}
-      isLoading={isLoading}
+      isLoading={isLoading || isFetching}
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
       handleSelect={handleSelect}

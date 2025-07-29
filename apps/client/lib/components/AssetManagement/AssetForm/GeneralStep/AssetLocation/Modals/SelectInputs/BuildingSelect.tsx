@@ -25,7 +25,7 @@ const BuildingSelect = (props: BuildingSelectProps) => {
   const [searchBuilding] = useSearchBuildingMutation({});
 
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllBuildingsQuery(
+  const { data, isLoading, isFetching } = useGetAllBuildingsQuery(
     {
       pageSize: DEFAULT_PAGE_SIZE,
       pageNumber,
@@ -35,6 +35,7 @@ const BuildingSelect = (props: BuildingSelectProps) => {
   const {
     data: buildingByFacilityIdData,
     isLoading: isLoadingBuildingByFacilityId,
+    isFetching: isFetchingBuildingByFacilityId,
   } = useGetBuildingsByFacilityIdQuery(
     {
       id: facilityId ?? undefined,
@@ -73,7 +74,12 @@ const BuildingSelect = (props: BuildingSelectProps) => {
       valueKey="buildingId"
       mutationFn={searchBuilding}
       defaultInputValue={buildingName}
-      isLoading={isLoading || isLoadingBuildingByFacilityId}
+      isLoading={
+        isLoading ||
+        isLoadingBuildingByFacilityId ||
+        isFetching ||
+        isFetchingBuildingByFacilityId
+      }
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
       handleSelect={handleSelect}

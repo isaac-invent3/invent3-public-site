@@ -5,14 +5,14 @@ import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateTemplateFilter } from '~/lib/redux/slices/TemplateSlice';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { generateOptions } from '~/lib/utils/helperFunctions';
-import { useGetAllUsersQuery } from '~/lib/redux/services/user.services';
+import { useGetAllActiveUsersQuery } from '~/lib/redux/services/user.services';
 
 const OwnerFilter = () => {
   const dispatch = useAppDispatch();
   const { owner } = useAppSelector((state) => state.template.templateFilters);
   const [pageNumber, setPageNumber] = useState(1);
   const [options, setOptions] = useState<Option[]>([]);
-  const { data, isLoading, isFetching } = useGetAllUsersQuery({
+  const { data, isLoading, isFetching } = useGetAllActiveUsersQuery({
     pageNumber: pageNumber,
     pageSize: DEFAULT_PAGE_SIZE,
   });

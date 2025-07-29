@@ -27,7 +27,7 @@ const UserSelect = (props: UserSelectProps) => {
   const [searchUsers] = useSearchUsersMutation({});
 
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllActiveUsersQuery({
+  const { data, isLoading, isFetching } = useGetAllActiveUsersQuery({
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
@@ -40,7 +40,7 @@ const UserSelect = (props: UserSelectProps) => {
       valueKey="userId"
       defaultInputValue={defaultName}
       mutationFn={searchUsers}
-      isLoading={isLoading}
+      isLoading={isLoading || isFetching}
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
       handleSelect={handleSelect}

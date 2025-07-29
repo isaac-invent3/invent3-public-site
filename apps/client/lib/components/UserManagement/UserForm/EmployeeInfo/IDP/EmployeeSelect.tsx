@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import {
-  useGetAllUsersQuery,
+  useGetAllActiveUsersQuery,
   useSearchUsersMutation,
 } from '~/lib/redux/services/user.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
@@ -20,7 +20,7 @@ const EmployeeSelect = (props: EmployeeSelectProps) => {
   const [searchUser] = useSearchUsersMutation({});
 
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllUsersQuery({
+  const { data, isLoading, isFetching } = useGetAllActiveUsersQuery({
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
@@ -32,7 +32,7 @@ const EmployeeSelect = (props: EmployeeSelectProps) => {
       labelKey="email"
       valueKey="userId"
       mutationFn={searchUser}
-      isLoading={isLoading}
+      isLoading={isLoading || isFetching}
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
       handleSelect={handleSelect}

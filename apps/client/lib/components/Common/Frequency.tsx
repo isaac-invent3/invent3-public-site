@@ -17,7 +17,7 @@ interface FrequencySelectProps {
 const FrequencySelect = (props: FrequencySelectProps) => {
   const { handleSelect, selectName, selectTitle, defaultName } = props;
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllMaintenanceFrequenciesQuery({
+  const { data, isLoading, isFetching } = useGetAllMaintenanceFrequenciesQuery({
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
@@ -34,7 +34,7 @@ const FrequencySelect = (props: FrequencySelectProps) => {
       valueKey="frequencyId"
       defaultInputValue={defaultName}
       mutationFn={searchMaintenanceFrequency}
-      isLoading={isLoading}
+      isLoading={isLoading || isFetching}
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
       handleSelect={handleSelect}

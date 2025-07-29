@@ -34,7 +34,7 @@ const JobDesignationModal = (props: JobDesignationModalProps) => {
   const { handleSubmit } = useCustomMutation();
   const [pageNumber, setPageNumber] = useState(1);
   const [searchDesignationType] = useSearchDesignationTypeMutation({});
-  const { data, isLoading } = useGetAllDesignationTypesQuery({
+  const { data, isLoading, isFetching } = useGetAllDesignationTypesQuery({
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
@@ -102,7 +102,7 @@ const JobDesignationModal = (props: JobDesignationModalProps) => {
                     labelKey="designationTypeName"
                     valueKey="designationTypeId"
                     mutationFn={searchDesignationType}
-                    isLoading={isLoading}
+                    isLoading={isLoading || isFetching}
                     pageNumber={pageNumber}
                     setPageNumber={setPageNumber}
                   />

@@ -8,7 +8,7 @@ const PolicyByCategorySelect = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const params = useParams();
   const id = params?.id as unknown as number;
-  const { data, isLoading } = useGetAssetCategoryPoliciesQuery({
+  const { data, isLoading, isFetching } = useGetAssetCategoryPoliciesQuery({
     assetCategoryId: id,
   });
   return (
@@ -25,7 +25,7 @@ const PolicyByCategorySelect = () => {
         data={data}
         labelKey="policyName"
         valueKey="policyId"
-        isLoading={isLoading}
+        isLoading={isLoading || isFetching}
         pageNumber={pageNumber}
         setPageNumber={setPageNumber}
       />

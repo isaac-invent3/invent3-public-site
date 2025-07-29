@@ -45,7 +45,7 @@ const VendorDetails = () => {
     }
   );
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllAssetVendorsQuery({
+  const { data, isLoading, isFetching } = useGetAllAssetVendorsQuery({
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
@@ -107,7 +107,7 @@ const VendorDetails = () => {
                   valueKey="vendorId"
                   defaultInputValue={vendorDetails?.vendorName}
                   mutationFn={searchVendor}
-                  isLoading={isLoading}
+                  isLoading={isLoading || isFetching}
                   pageNumber={pageNumber}
                   setPageNumber={setPageNumber}
                   handleSelect={(option) => {

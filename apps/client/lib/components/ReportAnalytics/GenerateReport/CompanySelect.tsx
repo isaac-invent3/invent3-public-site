@@ -26,7 +26,7 @@ const CompanySelect = (props: CompanySelectProps) => {
   } = props;
   const [searchCompanies] = useSearchCompaniesMutation({});
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllCompaniesQuery({
+  const { data, isLoading, isFetching } = useGetAllCompaniesQuery({
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
@@ -38,7 +38,7 @@ const CompanySelect = (props: CompanySelectProps) => {
       labelKey="companyName"
       valueKey="companyId"
       mutationFn={searchCompanies}
-      isLoading={isLoading}
+      isLoading={isLoading || isFetching}
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
       handleSelect={handleSelect}

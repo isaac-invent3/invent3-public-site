@@ -38,7 +38,7 @@ const ChangeAssetStatusModal = (props: ChangeAssetStatusModalProps) => {
   const [updateAssetStatus, { isLoading: isUpdating }] =
     useUpdateAssetStatusMutation({});
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllAssetStatusQuery(
+  const { data, isLoading, isFetching } = useGetAllAssetStatusQuery(
     {
       pageNumber,
       pageSize: DEFAULT_PAGE_SIZE,
@@ -115,7 +115,7 @@ const ChangeAssetStatusModal = (props: ChangeAssetStatusModalProps) => {
                     labelKey="statusName"
                     valueKey="statusId"
                     mutationFn={searchStatus}
-                    isLoading={isLoading}
+                    isLoading={isLoading || isFetching}
                     pageNumber={pageNumber}
                     setPageNumber={setPageNumber}
                   />

@@ -2,8 +2,11 @@ import { Grid, GridItem } from '@chakra-ui/react';
 import { FormInputWrapper } from '@repo/ui/components';
 
 import AssetSelect from '~/lib/components/Common/SelectComponents/AssetSelect';
+import { useAppDispatch } from '~/lib/redux/hooks';
+import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 
 const ParentAsset = () => {
+  const dispatch = useAppDispatch();
   return (
     <FormInputWrapper
       sectionMaxWidth="118px"
@@ -26,7 +29,13 @@ const ParentAsset = () => {
         width="full"
       >
         <GridItem colSpan={{ base: 1, md: 2, lg: 2 }}>
-          <AssetSelect selectName="parentId" selectTitle="Parent Asset" />
+          <AssetSelect
+            selectName="parentId"
+            selectTitle="Parent Asset"
+            handleSelect={(option) =>
+              dispatch(updateAssetForm({ parentAssetName: option.label }))
+            }
+          />
         </GridItem>
       </Grid>
     </FormInputWrapper>

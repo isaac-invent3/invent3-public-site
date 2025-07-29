@@ -15,14 +15,15 @@ const AssetGroupContext = () => {
   const { assetGroupTypeName } = useAppSelector(
     (state) => state.maintenance.planForm
   );
-  const { data, isLoading } = useGetAllGroupContextRecordsByTypeIdQuery(
-    {
-      groupTypeId: values?.assetGroupTypeID ?? undefined,
-      pageSize: DEFAULT_PAGE_SIZE,
-      pageNumber,
-    },
-    { skip: !values?.assetGroupTypeID }
-  );
+  const { data, isLoading, isFetching } =
+    useGetAllGroupContextRecordsByTypeIdQuery(
+      {
+        groupTypeId: values?.assetGroupTypeID ?? undefined,
+        pageSize: DEFAULT_PAGE_SIZE,
+        pageNumber,
+      },
+      { skip: !values?.assetGroupTypeID }
+    );
   const { typeName } = useAppSelector(
     (state) => state.maintenance.scheduleForm
   );
@@ -42,7 +43,7 @@ const AssetGroupContext = () => {
         labelKey="groupContextTypeName"
         valueKey="groupContextID"
         defaultInputValue={typeName}
-        isLoading={isLoading}
+        isLoading={isLoading || isFetching}
         pageNumber={pageNumber}
         setPageNumber={setPageNumber}
         handleSelect={(option) =>

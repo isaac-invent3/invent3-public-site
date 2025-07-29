@@ -21,7 +21,7 @@ const BudgetExpenditure = (props: BudgetExpenditureProps) => {
   const { values, setFieldValue } = useFormikContext<BMSData>();
   const [searchAsset] = useSearchCategoriesMutation({});
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllAssetCategoryQuery({
+  const { data, isLoading, isFetching } = useGetAllAssetCategoryQuery({
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
@@ -61,7 +61,7 @@ const BudgetExpenditure = (props: BudgetExpenditureProps) => {
                       labelKey="categoryName"
                       valueKey="categoryId"
                       mutationFn={searchAsset}
-                      isLoading={isLoading}
+                      isLoading={isLoading || isFetching}
                       pageNumber={pageNumber}
                       setPageNumber={setPageNumber}
                       handleSelect={(option) => {

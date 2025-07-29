@@ -17,7 +17,7 @@ import {
 
 const AcquisitionDateConditon = () => {
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllAssetConditionQuery({
+  const { data, isLoading, isFetching } = useGetAllAssetConditionQuery({
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
@@ -81,7 +81,7 @@ const AcquisitionDateConditon = () => {
                 valueKey="conditionId"
                 defaultInputValue={conditionName}
                 mutationFn={searchCondition}
-                isLoading={isLoading}
+                isLoading={isLoading || isFetching}
                 pageNumber={pageNumber}
                 setPageNumber={setPageNumber}
                 handleSelect={(option) =>

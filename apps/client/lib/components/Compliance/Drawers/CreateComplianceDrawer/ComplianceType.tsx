@@ -6,7 +6,7 @@ import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 const ComplianceType = () => {
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllComplianceTypesQuery({
+  const { data, isLoading, isFetching } = useGetAllComplianceTypesQuery({
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
@@ -24,7 +24,7 @@ const ComplianceType = () => {
         data={data}
         labelKey="typeName"
         valueKey="complianceTypeId"
-        isLoading={isLoading}
+        isLoading={isLoading || isFetching}
         pageNumber={pageNumber}
         setPageNumber={setPageNumber}
       />

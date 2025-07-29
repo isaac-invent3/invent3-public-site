@@ -24,7 +24,7 @@ const RoomByFloorSelect = (props: RoomByFloorSelectProps) => {
   const [searchRooms] = useSearchRoomsMutation({});
 
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllRoomsInAFloorQuery(
+  const { data, isLoading, isFetching } = useGetAllRoomsInAFloorQuery(
     {
       floorId: floorId!,
     },
@@ -33,6 +33,7 @@ const RoomByFloorSelect = (props: RoomByFloorSelectProps) => {
   const {
     data: roomsByDepartmentIdData,
     isLoading: isLoadingRoomsByDepartmentIdData,
+    isFetching: isFetchingRoomsByDepartmentIdData,
   } = useGetAllRoomsInAFloorQuery(
     {
       floorId: floorId!,
@@ -67,7 +68,12 @@ const RoomByFloorSelect = (props: RoomByFloorSelectProps) => {
       valueKey="roomId"
       defaultInputValue={roomName}
       mutationFn={searchRooms}
-      isLoading={isLoading || isLoadingRoomsByDepartmentIdData}
+      isLoading={
+        isLoading ||
+        isLoadingRoomsByDepartmentIdData ||
+        isFetching ||
+        isFetchingRoomsByDepartmentIdData
+      }
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
       handleSelect={handleSelect}

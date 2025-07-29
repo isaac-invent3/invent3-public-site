@@ -22,22 +22,25 @@ const AisleSelect = (props: AisleSelectProps) => {
   const [searchAisle] = useSearchAisleMutation({});
 
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllAislesQuery(
+  const { data, isLoading, isFetching } = useGetAllAislesQuery(
     {
       pageSize: DEFAULT_PAGE_SIZE,
       pageNumber,
     },
     { skip: type === 'specificById' }
   );
-  const { data: aislesByRoomIdData, isLoading: isLoadingAislesByRoomId } =
-    useGetAislesByRoomIdQuery(
-      {
-        id: roomId ?? undefined,
-        pageSize: DEFAULT_PAGE_SIZE,
-        pageNumber,
-      },
-      { skip: !roomId }
-    );
+  const {
+    data: aislesByRoomIdData,
+    isLoading: isLoadingAislesByRoomId,
+    isFetching: isFetchingAislesByRoomId,
+  } = useGetAislesByRoomIdQuery(
+    {
+      id: roomId ?? undefined,
+      pageSize: DEFAULT_PAGE_SIZE,
+      pageNumber,
+    },
+    { skip: !roomId }
+  );
 
   const aisleByRoomIdSearchCriterion = (
     searchValue: string
@@ -66,7 +69,12 @@ const AisleSelect = (props: AisleSelectProps) => {
       valueKey="aisleId"
       defaultInputValue={aisleName}
       mutationFn={searchAisle}
-      isLoading={isLoading || isLoadingAislesByRoomId}
+      isLoading={
+        isLoading ||
+        isLoadingAislesByRoomId ||
+        isFetching ||
+        isFetchingAislesByRoomId
+      }
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
       handleSelect={handleSelect}

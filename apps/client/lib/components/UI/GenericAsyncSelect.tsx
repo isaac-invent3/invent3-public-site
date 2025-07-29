@@ -29,6 +29,7 @@ interface GenericAsyncSelectProps {
   isMultiSelect?: boolean;
   customProps?: { [name: string]: any };
   selectStyles?: CSSObjectWithLabel;
+  selectedOption?: string | number | Option | Option[] | undefined;
 }
 
 const GenericAsyncSelect = (props: GenericAsyncSelectProps) => {
@@ -52,6 +53,7 @@ const GenericAsyncSelect = (props: GenericAsyncSelectProps) => {
     isInvalid,
     isMultiSelect,
     selectStyles,
+    selectedOption,
   } = props;
   const { handleSubmit } = useCustomMutation();
   const [options, setOptions] = useState<Option[]>([]);
@@ -144,6 +146,7 @@ const GenericAsyncSelect = (props: GenericAsyncSelectProps) => {
       isInvalid={isInvalid}
       isMultiSelect={isMultiSelect}
       selectStyles={selectStyles}
+      selectedOption={selectedOption}
     />
   );
 };

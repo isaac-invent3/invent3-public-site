@@ -25,7 +25,7 @@ const RoomSelect = (props: RoomSelectProps) => {
   const [searchRooms] = useSearchRoomsMutation({});
 
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllRoomsQuery(
+  const { data, isLoading, isFetching } = useGetAllRoomsQuery(
     {
       pageSize: DEFAULT_PAGE_SIZE,
       pageNumber,
@@ -35,6 +35,7 @@ const RoomSelect = (props: RoomSelectProps) => {
   const {
     data: roomsByDepartmentIdData,
     isLoading: isLoadingRoomsByDepartmentIdData,
+    isFetching: isFetchingRoomsByDepartmentIdData,
   } = useGetRoomsByDepartmentIdQuery(
     {
       id: departmentId ?? undefined,
@@ -73,7 +74,12 @@ const RoomSelect = (props: RoomSelectProps) => {
       valueKey="roomId"
       defaultInputValue={roomName}
       mutationFn={searchRooms}
-      isLoading={isLoading || isLoadingRoomsByDepartmentIdData}
+      isLoading={
+        isLoading ||
+        isLoadingRoomsByDepartmentIdData ||
+        isFetching ||
+        isFetchingRoomsByDepartmentIdData
+      }
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
       handleSelect={handleSelect}

@@ -142,6 +142,7 @@ interface AssetFormDetails {
   parentId: number | null;
   assetId: number | null;
   assetName: string | null;
+  parentAssetName: string | null;
   brandName: string | null;
   modelRef: string | null;
   description: string | null;

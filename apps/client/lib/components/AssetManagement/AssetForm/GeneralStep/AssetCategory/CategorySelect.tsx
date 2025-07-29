@@ -20,7 +20,7 @@ const CategorySelect = (props: CategorySelectProps) => {
   const [searchCategory] = useSearchCategoriesMutation({});
 
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllAssetCategoryQuery({
+  const { data, isLoading, isFetching } = useGetAllAssetCategoryQuery({
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
@@ -33,7 +33,7 @@ const CategorySelect = (props: CategorySelectProps) => {
       valueKey="categoryId"
       defaultInputValue={categoryName}
       mutationFn={searchCategory}
-      isLoading={isLoading}
+      isLoading={isLoading || isFetching}
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
       handleSelect={handleSelect}

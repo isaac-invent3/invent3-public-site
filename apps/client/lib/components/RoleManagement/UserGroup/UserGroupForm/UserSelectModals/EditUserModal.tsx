@@ -3,7 +3,7 @@ import UserSelectSecondaryModal from '~/lib/components/Common/Modals/UserSelectM
 
 import { User } from '~/lib/interfaces/user.interfaces';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import { useGetAllUsersQuery } from '~/lib/redux/services/user.services';
+import { useGetAllActiveUsersQuery } from '~/lib/redux/services/user.services';
 import { deleteUserGroupUser } from '~/lib/redux/slices/RoleSlice';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
@@ -21,7 +21,7 @@ const EditUserModal = (props: EditUserModalProps) => {
   const dispatch = useAppDispatch();
   const [pageSize] = useState(DEFAULT_PAGE_SIZE);
   const [pageNumber] = useState(1);
-  const { isLoading } = useGetAllUsersQuery({
+  const { isLoading } = useGetAllActiveUsersQuery({
     pageSize: pageSize,
     pageNumber,
   });

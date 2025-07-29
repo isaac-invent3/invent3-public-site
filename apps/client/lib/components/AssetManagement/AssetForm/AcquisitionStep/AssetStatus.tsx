@@ -14,7 +14,7 @@ const AssetStatusSelect = () => {
   const [searchStatus] = useSearchStatusMutation({});
 
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllAssetStatusQuery({
+  const { data, isLoading, isFetching } = useGetAllAssetStatusQuery({
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
@@ -26,7 +26,7 @@ const AssetStatusSelect = () => {
       labelKey="statusName"
       valueKey="statusId"
       mutationFn={searchStatus}
-      isLoading={isLoading}
+      isLoading={isLoading || isFetching}
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
       defaultInputValue={statusName}

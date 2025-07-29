@@ -12,6 +12,7 @@ const initialAssetForm = {
   assetId: null,
   parentId: null,
   assetName: null,
+  parentAssetName: null,
   description: null,
   brandName: null,
   modelRef: null,

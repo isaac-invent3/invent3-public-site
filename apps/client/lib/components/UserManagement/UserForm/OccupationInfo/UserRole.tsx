@@ -15,7 +15,7 @@ const UserRole = () => {
   const dispatch = useAppDispatch();
   const { countryName } = useAppSelector((state) => state.asset.assetForm);
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllRolesQuery({
+  const { data, isLoading, isFetching } = useGetAllRolesQuery({
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
@@ -34,7 +34,7 @@ const UserRole = () => {
         valueKey="roleId"
         defaultInputValue={countryName}
         mutationFn={searchRoles}
-        isLoading={isLoading}
+        isLoading={isLoading || isFetching}
         pageNumber={pageNumber}
         setPageNumber={setPageNumber}
         handleSelect={(option) => {

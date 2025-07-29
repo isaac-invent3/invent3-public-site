@@ -19,7 +19,7 @@ const IndustryTypeSelect = (props: IndustryTypeSelectProps) => {
   const { handleSelect, selectName, selectTitle, defaultInputValue } = props;
   const [searchAssetType] = useSearchIndustriesMutation({});
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllIndustriesQuery({
+  const { data, isLoading, isFetching } = useGetAllIndustriesQuery({
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
@@ -31,7 +31,7 @@ const IndustryTypeSelect = (props: IndustryTypeSelectProps) => {
       labelKey="industryName"
       valueKey="industryId"
       mutationFn={searchAssetType}
-      isLoading={isLoading}
+      isLoading={isLoading || isFetching}
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
       handleSelect={handleSelect}

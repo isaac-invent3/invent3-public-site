@@ -1,17 +1,29 @@
 import * as Yup from 'yup';
 
-const locationSchema = Yup.object().shape({
-  countryId: Yup.number().required('Country is Required'),
-  stateId: Yup.number().required('State is Required'),
-  lgaId: Yup.number().required('LGA is Required'),
-  facilityId: Yup.string().required('Facility is Required'),
-  buildingId: Yup.string().nullable(),
-  floorId: Yup.string().nullable(),
-  departmentId: Yup.string().nullable(),
-  roomId: Yup.string().nullable(),
-  aisleId: Yup.string().nullable(),
-  shelfId: Yup.string().nullable(),
-});
+const locationSchema = (isRequired: boolean) =>
+  Yup.object().shape({
+    ...(isRequired
+      ? {
+          currentOwner: Yup.number().required('Owner is Required'),
+          assignedTo: Yup.number().required('This is Required'),
+          responsibleFor: Yup.number().required('This is Required'),
+        }
+      : {
+          currentOwner: Yup.number(),
+          assignedTo: Yup.number(),
+          responsibleFor: Yup.number(),
+        }),
+    countryId: Yup.number().required('Country is Required'),
+    stateId: Yup.number().required('State is Required'),
+    lgaId: Yup.number().required('LGA is Required'),
+    facilityId: Yup.string().required('Facility is Required'),
+    buildingId: Yup.string().nullable(),
+    floorId: Yup.string().nullable(),
+    departmentId: Yup.string().nullable(),
+    roomId: Yup.string().nullable(),
+    aisleId: Yup.string().nullable(),
+    shelfId: Yup.string().nullable(),
+  });
 
 const facilitySchema = Yup.object().shape({
   lgaId: Yup.number().required('LGA is Required'),

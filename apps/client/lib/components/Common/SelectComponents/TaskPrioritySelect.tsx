@@ -19,7 +19,7 @@ const TaskPrioritySelect = (props: TaskPrioritySelectProps) => {
   const { handleSelect, selectName, selectTitle, defaultInputValue } = props;
   const [searchTaskPriority] = useSearchTaskPrioritiesMutation({});
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllTaskPrioritiesQuery({
+  const { data, isLoading, isFetching } = useGetAllTaskPrioritiesQuery({
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
@@ -31,7 +31,7 @@ const TaskPrioritySelect = (props: TaskPrioritySelectProps) => {
       labelKey="priority"
       valueKey="taskPriorityId"
       mutationFn={searchTaskPriority}
-      isLoading={isLoading}
+      isLoading={isLoading || isFetching}
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
       handleSelect={handleSelect}

@@ -17,7 +17,7 @@ const Info = (props: InfoProps) => {
         textOverflow="ellipsis"
         maxW="full"
       >
-        {value}
+        {value ?? 'N/A'}
       </Text>
     </VStack>
   );

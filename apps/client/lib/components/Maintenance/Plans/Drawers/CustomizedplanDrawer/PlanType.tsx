@@ -9,7 +9,7 @@ import { FormInputWrapper } from '@repo/ui/components';
 
 const Plan = () => {
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllMaintenancePlanQuery({
+  const { data, isLoading, isFetching } = useGetAllMaintenancePlanQuery({
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
@@ -30,7 +30,7 @@ const Plan = () => {
         labelKey="planName"
         valueKey="maintenancePlanId"
         mutationFn={searchMaintenancePlan}
-        isLoading={isLoading}
+        isLoading={isLoading || isFetching}
         pageNumber={pageNumber}
         setPageNumber={setPageNumber}
       />

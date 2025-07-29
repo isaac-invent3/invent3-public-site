@@ -12,7 +12,7 @@ import {
 
 const DisposalDetails = () => {
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllAssetDisposalReasonsQuery({
+  const { data, isLoading, isFetching } = useGetAllAssetDisposalReasonsQuery({
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
@@ -38,7 +38,7 @@ const DisposalDetails = () => {
           labelKey="reason"
           valueKey="disposalReasonId"
           mutationFn={searchDisposalReason}
-          isLoading={isLoading}
+          isLoading={isLoading || isFetching}
           pageNumber={pageNumber}
           setPageNumber={setPageNumber}
         />

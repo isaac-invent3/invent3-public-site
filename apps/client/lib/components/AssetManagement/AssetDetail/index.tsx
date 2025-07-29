@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useGetAssetInfoHeaderByIdQuery } from '~/lib/redux/services/asset/general.services';
-import { setAsset } from '~/lib/redux/slices/AssetSlice';
+import { clearAsset, setAsset } from '~/lib/redux/slices/AssetSlice';
 import { SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
 import GenericErrorState from '../../UI/GenericErrorState';
 import AssetInfo from './AssetInfo';
@@ -46,6 +46,7 @@ const AssetDetail = ({
 
   const closeDrawer = () => {
     clearSearchParamsAfter(assetSlug, { removeSelf: true });
+    dispatch(clearAsset());
     onClose();
   };
 

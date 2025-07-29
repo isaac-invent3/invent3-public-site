@@ -22,7 +22,7 @@ const DepartmentSelect = (props: DepartmentSelectProps) => {
   const [searchDepartment] = useSearchDepartmentsMutation({});
 
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllDepartmentsQuery(
+  const { data, isLoading, isFetching } = useGetAllDepartmentsQuery(
     {
       pageSize: DEFAULT_PAGE_SIZE,
       pageNumber,
@@ -32,6 +32,7 @@ const DepartmentSelect = (props: DepartmentSelectProps) => {
   const {
     data: departmentsByFloorIdData,
     isLoading: isLoadingDepartmentsByFloorIdData,
+    isFetching: isFetchingDepartmentsByFloorIdData,
   } = useGetDepartmentsByFloorIdQuery(
     {
       id: floorId ?? undefined,
@@ -68,7 +69,12 @@ const DepartmentSelect = (props: DepartmentSelectProps) => {
       valueKey="departmentId"
       defaultInputValue={departmentName}
       mutationFn={searchDepartment}
-      isLoading={isLoading || isLoadingDepartmentsByFloorIdData}
+      isLoading={
+        isLoading ||
+        isLoadingDepartmentsByFloorIdData ||
+        isFetching ||
+        isFetchingDepartmentsByFloorIdData
+      }
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
       handleSelect={handleSelect}

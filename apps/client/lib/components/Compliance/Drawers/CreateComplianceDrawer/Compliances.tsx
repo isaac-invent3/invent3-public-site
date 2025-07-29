@@ -8,7 +8,7 @@ import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 const Compliance = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [field, meta, helpers] = useField('regulationId');
-  const { data, isLoading } = useGetAllComplianceByTypeQuery(
+  const { data, isLoading, isFetching } = useGetAllComplianceByTypeQuery(
     {
       pageSize: DEFAULT_PAGE_SIZE,
       pageNumber,
@@ -30,7 +30,7 @@ const Compliance = () => {
         data={data}
         labelKey="standard"
         valueKey="regulationId"
-        isLoading={isLoading}
+        isLoading={isLoading || isFetching}
         pageNumber={pageNumber}
         setPageNumber={setPageNumber}
       />

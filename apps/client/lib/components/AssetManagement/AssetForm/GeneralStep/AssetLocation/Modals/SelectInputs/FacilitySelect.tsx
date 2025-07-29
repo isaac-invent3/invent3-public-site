@@ -23,22 +23,25 @@ const FacilitySelect = (props: FacilitySelectProps) => {
   const [searchFacility] = useSearchFacilitiesMutation({});
 
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllFacilitiesQuery(
+  const { data, isLoading, isFetching } = useGetAllFacilitiesQuery(
     {
       pageSize: DEFAULT_PAGE_SIZE,
       pageNumber,
     },
     { skip: type === 'specificById' }
   );
-  const { data: facilitiesByLGAIDData, isLoading: isLoadingFacilitiesByLGAId } =
-    useGetFacilitiesByLGAIdQuery(
-      {
-        id: lgaId ?? undefined,
-        pageSize: DEFAULT_PAGE_SIZE,
-        pageNumber,
-      },
-      { skip: !lgaId }
-    );
+  const {
+    data: facilitiesByLGAIDData,
+    isLoading: isLoadingFacilitiesByLGAId,
+    isFetching: isFetchingFacilitiesByLGAId,
+  } = useGetFacilitiesByLGAIdQuery(
+    {
+      id: lgaId ?? undefined,
+      pageSize: DEFAULT_PAGE_SIZE,
+      pageNumber,
+    },
+    { skip: !lgaId }
+  );
 
   const facilitiesByLGAIdCriterion = (
     searchValue: string
@@ -67,7 +70,12 @@ const FacilitySelect = (props: FacilitySelectProps) => {
       valueKey="facilityId"
       defaultInputValue={facilityName}
       mutationFn={searchFacility}
-      isLoading={isLoading || isLoadingFacilitiesByLGAId}
+      isLoading={
+        isLoading ||
+        isLoadingFacilitiesByLGAId ||
+        isFetching ||
+        isFetchingFacilitiesByLGAId
+      }
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
       handleSelect={handleSelect}

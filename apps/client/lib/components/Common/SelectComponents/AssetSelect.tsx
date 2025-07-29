@@ -20,7 +20,7 @@ const AssetSelect = (props: AssetSelectProps) => {
   const { handleSelect, selectName, selectTitle, defaultInputValue } = props;
   const [searchAsset] = useSearchAssetsMutation({});
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading } = useGetAllAssetQuery({
+  const { data, isLoading, isFetching } = useGetAllAssetQuery({
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
@@ -32,7 +32,7 @@ const AssetSelect = (props: AssetSelectProps) => {
       labelKey="displayName"
       valueKey="assetId"
       mutationFn={searchAsset}
-      isLoading={isLoading}
+      isLoading={isLoading || isFetching}
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
       handleSelect={handleSelect}

@@ -17,9 +17,10 @@ import { ROUTES } from '~/lib/utils/constants';
 interface GeneralStepProps {
   activeStep: number;
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
+  type: 'create' | 'edit';
 }
 const GeneralStep = (props: GeneralStepProps) => {
-  const { activeStep, setActiveStep } = props;
+  const { activeStep, setActiveStep, type } = props;
   const asset = useAppSelector((state) => state.asset.asset);
   const formDetails = useAppSelector((state) => state.asset.assetForm);
   const dispatch = useAppDispatch();
@@ -52,7 +53,7 @@ const GeneralStep = (props: GeneralStepProps) => {
       aisleId: formDetails.aisleId ?? null,
       shelfId: formDetails.shelfId ?? null,
     },
-    validationSchema: generalInfoSchema,
+    validationSchema: generalInfoSchema(type === 'edit'),
     enableReinitialize: true,
     onSubmit: async (values) => {
       dispatch(updateAssetForm(values));
@@ -86,8 +87,14 @@ const GeneralStep = (props: GeneralStepProps) => {
             <AssetDetail />
             {asset === null && <ParentAsset />}
             <AssetDimension />
-            <AssetLocation setFieldValue={formik.setFieldValue} />
-            <AssetOwner />
+            <AssetLocation setFieldValue={formik.setFieldValue} type={type} />
+            <VStack
+              pointerEvents={type === 'edit' ? 'none' : 'auto'}
+              cursor={type === 'edit' ? 'not-allowed' : 'auto'}
+              width="full"
+            >
+              <AssetOwner />
+            </VStack>
           </VStack>
           <Flex width="full" mt="16px">
             <FormActionButtons

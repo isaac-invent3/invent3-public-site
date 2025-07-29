@@ -37,7 +37,11 @@ const AssetForm = (props: AssetFormProps) => {
           direction="column"
           pb="24px"
         >
-          <GeneralStep activeStep={activeStep} setActiveStep={setActiveStep} />
+          <GeneralStep
+            activeStep={activeStep}
+            setActiveStep={setActiveStep}
+            type={type}
+          />
           <SlideTransition trigger={activeStep === 2}>
             <AcquisitionStep
               activeStep={activeStep}

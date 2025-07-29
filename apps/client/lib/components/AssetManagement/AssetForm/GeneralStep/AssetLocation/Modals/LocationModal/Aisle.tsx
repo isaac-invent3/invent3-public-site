@@ -6,14 +6,17 @@ import { FormLocation } from '~/lib/interfaces/location.interfaces';
 import AisleModal from '../AisleModal';
 import AisleSelect from '../SelectInputs/AisleSelect';
 import { FormAddButton } from '@repo/ui/components';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 interface AisleProps {
   handleReadableLocation: (option: Option, key: keyof FormLocation) => void;
-  roomId: number | null;
 }
 const Aisle = (props: AisleProps) => {
-  const { handleReadableLocation, roomId } = props;
+  const { handleReadableLocation } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { room, aisle } = useAppSelector(
+    (state) => state.location.localLocation
+  );
 
   return (
     <>
@@ -21,14 +24,15 @@ const Aisle = (props: AisleProps) => {
         <AisleSelect
           handleSelect={(option) => handleReadableLocation(option, 'aisle')}
           type="specificById"
-          roomId={roomId}
+          roomId={room?.value as number}
+          selectedOption={aisle}
         />
         <FormAddButton handleClick={onOpen}>Add New Aisle</FormAddButton>
       </VStack>
       <AisleModal
         isOpen={isOpen}
         onClose={onClose}
-        defaultRoomId={roomId}
+        defaultRoomId={room?.value as number}
         handleReadableLocation={handleReadableLocation}
       />
     </>

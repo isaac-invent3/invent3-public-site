@@ -6,14 +6,18 @@ import { FormLocation } from '~/lib/interfaces/location.interfaces';
 import DepartmentModal from '../DepartmentModal';
 import DepartmentSelect from '../SelectInputs/DepartmentSelect';
 import { FormAddButton } from '@repo/ui/components';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 interface DepartmentProps {
   handleReadableLocation: (option: Option, key: keyof FormLocation) => void;
-  floorId: number | null;
 }
 const Department = (props: DepartmentProps) => {
-  const { handleReadableLocation, floorId } = props;
+  const { handleReadableLocation } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { floor, department } = useAppSelector(
+    (state) => state.location.localLocation
+  );
+
   return (
     <>
       <VStack alignItems="flex-end" width="full">
@@ -21,7 +25,8 @@ const Department = (props: DepartmentProps) => {
           handleSelect={(option) =>
             handleReadableLocation(option, 'department')
           }
-          floorId={floorId}
+          floorId={(floor?.value as number) ?? null}
+          selectedOption={department}
           type="specificById"
         />
         <FormAddButton handleClick={onOpen}>Add New Department</FormAddButton>
@@ -29,7 +34,7 @@ const Department = (props: DepartmentProps) => {
       <DepartmentModal
         isOpen={isOpen}
         onClose={onClose}
-        defaultFloorId={floorId}
+        defaultFloorId={(floor?.value as number) ?? null}
         handleReadableLocation={handleReadableLocation}
       />
     </>

@@ -4,14 +4,16 @@ const locationSchema = (isRequired: boolean) =>
   Yup.object().shape({
     ...(isRequired
       ? {
-          currentOwner: Yup.number().required('Owner is Required'),
-          assignedTo: Yup.number().required('This is Required'),
-          responsibleFor: Yup.number().required('This is Required'),
+          countryId: Yup.number().required('Country is Required'),
+          stateId: Yup.number().required('State is Required'),
+          lgaId: Yup.number().required('LGA is Required'),
+          facilityId: Yup.string().required('Facility is Required'),
         }
       : {
-          currentOwner: Yup.number(),
-          assignedTo: Yup.number(),
-          responsibleFor: Yup.number(),
+          countryId: Yup.number(),
+          stateId: Yup.number(),
+          lgaId: Yup.number(),
+          facilityId: Yup.string(),
         }),
     countryId: Yup.number().required('Country is Required'),
     stateId: Yup.number().required('State is Required'),

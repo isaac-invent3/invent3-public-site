@@ -15,10 +15,11 @@ interface FacilitySelectProps {
   type: 'general' | 'specificById';
   lgaId?: number | null;
   name?: string;
+  selectedOption?: Option | null;
 }
 
 const FacilitySelect = (props: FacilitySelectProps) => {
-  const { handleSelect, type, lgaId, name } = props;
+  const { handleSelect, type, lgaId, name, selectedOption } = props;
   const { facilityName } = useAppSelector((state) => state.asset.assetForm);
   const [searchFacility] = useSearchFacilitiesMutation({});
 
@@ -83,6 +84,7 @@ const FacilitySelect = (props: FacilitySelectProps) => {
       specialSearch={
         type === 'specificById' ? facilitiesByLGAIdCriterion : undefined
       }
+      selectedOption={selectedOption ?? undefined}
     />
   );
 };

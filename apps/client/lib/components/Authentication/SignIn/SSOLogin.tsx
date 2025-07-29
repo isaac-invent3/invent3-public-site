@@ -63,7 +63,11 @@ const SSOLogin = () => {
           position: 'top-right',
           duration: 2000,
         });
-        router.push(ref ?? `/${ROUTES.DASHBOARD}`);
+        const companySlug = data?.companySlug;
+        const destination = ref ?? `/${ROUTES.DASHBOARD}`;
+        router.push(
+          companySlug ? `/${companySlug}${destination}` : destination
+        );
       } catch (error) {
         console.error('Error handling Google callback:', error);
       } finally {

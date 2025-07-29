@@ -201,6 +201,13 @@ const TicketManagement = () => {
     }),
     ...(!isFilterEmpty && {
       orCriterion: [
+        [
+          {
+            columnName: 'ticketTitle',
+            columnValue: search,
+            operation: OPERATORS.Contains,
+          },
+        ],
         ...(filterData.users && filterData.users.length >= 1
           ? [
               generateSearchCriterion(

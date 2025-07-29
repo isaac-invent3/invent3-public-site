@@ -6,21 +6,25 @@ import { FormLocation } from '~/lib/interfaces/location.interfaces';
 import BuildingModal from '../BuildingModal';
 import BuildingSelect from '../SelectInputs/BuildingSelect';
 import { FormAddButton } from '@repo/ui/components';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 interface BuildingProps {
   handleReadableLocation: (option: Option, key: keyof FormLocation) => void;
-  facilityId: number | null;
 }
 const Building = (props: BuildingProps) => {
-  const { handleReadableLocation, facilityId } = props;
+  const { handleReadableLocation } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { facility, building } = useAppSelector(
+    (state) => state.location.localLocation
+  );
 
   return (
     <>
       <VStack alignItems="flex-end" width="full">
         <BuildingSelect
           handleSelect={(option) => handleReadableLocation(option, 'building')}
-          facilityId={facilityId}
+          facilityId={(facility?.value as number) ?? null}
+          selectedOption={building}
           type="specificById"
         />
         <FormAddButton handleClick={onOpen}>Add New Building</FormAddButton>
@@ -28,7 +32,7 @@ const Building = (props: BuildingProps) => {
       <BuildingModal
         isOpen={isOpen}
         onClose={onClose}
-        defaultFacilityId={facilityId}
+        defaultFacilityId={(facility?.value as number) ?? null}
         handleReadableLocation={handleReadableLocation}
       />
     </>

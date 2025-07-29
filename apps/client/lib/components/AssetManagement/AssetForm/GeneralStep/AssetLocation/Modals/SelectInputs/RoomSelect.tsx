@@ -17,10 +17,18 @@ interface RoomSelectProps {
   departmentId?: number | null;
   selectStyles?: CSSObjectWithLabel;
   selectName?: string;
+  selectedOption?: Option | null;
 }
 
 const RoomSelect = (props: RoomSelectProps) => {
-  const { handleSelect, type, departmentId, selectStyles, selectName } = props;
+  const {
+    handleSelect,
+    type,
+    departmentId,
+    selectStyles,
+    selectName,
+    selectedOption,
+  } = props;
   const { roomName } = useAppSelector((state) => state.asset.assetForm);
   const [searchRooms] = useSearchRoomsMutation({});
 
@@ -88,6 +96,7 @@ const RoomSelect = (props: RoomSelectProps) => {
         type === 'specificById' ? roomsByDepartmentIdCriterion : undefined
       }
       selectStyles={selectStyles}
+      selectedOption={selectedOption ?? undefined}
     />
   );
 };

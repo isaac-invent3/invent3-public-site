@@ -14,10 +14,9 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';
 import { departmentSchema } from '~/lib/schemas/asset/location.schema';
 import FloorSelect from './SelectInputs/FloorSelect';
-import { useAppDispatch } from '~/lib/redux/hooks';
-import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import { Option } from '@repo/interfaces';
 import { FormLocation } from '~/lib/interfaces/location.interfaces';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 interface DepartmentModalProps {
   isOpen: boolean;
@@ -38,6 +37,7 @@ const DepartmentModal = (props: DepartmentModalProps) => {
   } = props;
   const [createDepartment, { isLoading }] = useCreateDepartmentMutation({});
   const { handleSubmit } = useCustomMutation();
+  const { building } = useAppSelector((state) => state.location.localLocation);
 
   const formik = useFormik({
     initialValues: {
@@ -103,7 +103,10 @@ const DepartmentModal = (props: DepartmentModalProps) => {
                     description="Select Floor"
                     isRequired
                   >
-                    <FloorSelect type="general" />
+                    <FloorSelect
+                      type="specificById"
+                      buildingId={building?.value as number}
+                    />
                   </FormInputWrapper>
                 )}
                 <FormInputWrapper

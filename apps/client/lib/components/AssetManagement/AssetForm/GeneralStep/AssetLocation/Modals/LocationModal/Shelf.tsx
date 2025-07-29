@@ -6,20 +6,24 @@ import { FormLocation } from '~/lib/interfaces/location.interfaces';
 import ShelfModal from '../ShelfModal';
 import ShelfSelect from '../SelectInputs/ShelfSelect';
 import { FormAddButton } from '@repo/ui/components';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 interface ShelfProps {
   handleReadableLocation: (option: Option, key: keyof FormLocation) => void;
-  aisleId: number | null;
 }
 const Shelf = (props: ShelfProps) => {
-  const { handleReadableLocation, aisleId } = props;
+  const { handleReadableLocation } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { aisle, shelf } = useAppSelector(
+    (state) => state.location.localLocation
+  );
   return (
     <>
       <VStack alignItems="flex-end" width="full">
         <ShelfSelect
           handleSelect={(option) => handleReadableLocation(option, 'shelf')}
-          aisleId={aisleId}
+          aisleId={(aisle?.value as number) ?? null}
+          selectedOption={shelf}
           type="specificById"
         />
         <FormAddButton handleClick={onOpen}>Add New Shelf</FormAddButton>
@@ -27,7 +31,7 @@ const Shelf = (props: ShelfProps) => {
       <ShelfModal
         isOpen={isOpen}
         onClose={onClose}
-        defaultAisleId={aisleId}
+        defaultAisleId={(aisle?.value as number) ?? null}
         handleReadableLocation={handleReadableLocation}
       />
     </>

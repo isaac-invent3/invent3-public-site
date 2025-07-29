@@ -30,7 +30,7 @@ const SectionOne = () => {
       <SummaryCard
         title="Total Asset Value"
         icon={AssetManagementIcon}
-        value={`$${formatNumberShort(data?.data?.totalAssetValue ?? 0)}`}
+        value={`₦${formatNumberShort(data?.data?.totalAssetValue ?? 0)}`}
         isLoading={isLoading}
         showRange={false}
         percentChange={data?.data?.totalAssetValuePercentageChange}

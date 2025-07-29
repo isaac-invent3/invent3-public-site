@@ -16,6 +16,7 @@ import { aisleSchema } from '~/lib/schemas/asset/location.schema';
 import RoomSelect from './SelectInputs/RoomSelect';
 import { FormLocation } from '~/lib/interfaces/location.interfaces';
 import { Option } from '@repo/interfaces';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 interface AisleModalProps {
   isOpen: boolean;
@@ -36,6 +37,9 @@ const AisleModal = (props: AisleModalProps) => {
   } = props;
   const [createAisle, { isLoading }] = useCreateAisleMutation({});
   const { handleSubmit } = useCustomMutation();
+  const { department } = useAppSelector(
+    (state) => state.location.localLocation
+  );
 
   const formik = useFormik({
     initialValues: {
@@ -102,7 +106,10 @@ const AisleModal = (props: AisleModalProps) => {
                     description="Select Room"
                     isRequired
                   >
-                    <RoomSelect type="general" />
+                    <RoomSelect
+                      type="specificById"
+                      departmentId={department?.value as number}
+                    />
                   </FormInputWrapper>
                 )}
                 <FormInputWrapper

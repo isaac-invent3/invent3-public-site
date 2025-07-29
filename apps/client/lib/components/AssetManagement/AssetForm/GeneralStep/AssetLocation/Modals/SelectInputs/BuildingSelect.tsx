@@ -17,10 +17,18 @@ interface BuildingSelectProps {
   facilityId?: number | null;
   selectStyles?: CSSObjectWithLabel;
   selectName?: string;
+  selectedOption?: Option | null;
 }
 
 const BuildingSelect = (props: BuildingSelectProps) => {
-  const { handleSelect, type, facilityId, selectStyles, selectName } = props;
+  const {
+    handleSelect,
+    type,
+    facilityId,
+    selectStyles,
+    selectName,
+    selectedOption,
+  } = props;
   const { buildingName } = useAppSelector((state) => state.asset.assetForm);
   const [searchBuilding] = useSearchBuildingMutation({});
 
@@ -88,6 +96,7 @@ const BuildingSelect = (props: BuildingSelectProps) => {
         type === 'specificById' ? buildingByFacilityIdCriterion : undefined
       }
       selectStyles={selectStyles}
+      selectedOption={selectedOption ?? undefined}
     />
   );
 };

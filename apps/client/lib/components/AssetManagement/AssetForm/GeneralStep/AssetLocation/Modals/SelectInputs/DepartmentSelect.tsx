@@ -14,10 +14,11 @@ interface DepartmentSelectProps {
   handleSelect?: (options: Option) => void;
   type: 'general' | 'specificById';
   floorId?: number | null;
+  selectedOption?: Option | null;
 }
 
 const DepartmentSelect = (props: DepartmentSelectProps) => {
-  const { handleSelect, type, floorId } = props;
+  const { handleSelect, type, floorId, selectedOption } = props;
   const { departmentName } = useAppSelector((state) => state.asset.assetForm);
   const [searchDepartment] = useSearchDepartmentsMutation({});
 
@@ -82,6 +83,7 @@ const DepartmentSelect = (props: DepartmentSelectProps) => {
       specialSearch={
         type === 'specificById' ? departmentByFloorIdCriterion : undefined
       }
+      selectedOption={selectedOption ?? undefined}
     />
   );
 };

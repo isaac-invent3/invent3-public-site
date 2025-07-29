@@ -102,7 +102,14 @@ const ScheduleInstanceForm = () => {
 
   return (
     <>
-      <Flex width="full" height="full" direction="column" gap="40px" pb="25px">
+      <Flex
+        width="full"
+        height="full"
+        direction="column"
+        gap="40px"
+        pb="25px"
+        px={{ base: '16px', md: 0 }}
+      >
         <PageHeader>Edit Maintenance Schedule Instance</PageHeader>
         <Flex
           width="full"
@@ -170,7 +177,9 @@ const ScheduleInstanceForm = () => {
                       (isLoading || formik.isSubmitting)
                     }
                     loadingText="Saving..."
-                    customStyles={{ minW: '234px' }}
+                    customStyles={{
+                      width: { base: 'full', lg: 'min-content' },
+                    }}
                   >
                     Save This and Future Instances
                   </Button>

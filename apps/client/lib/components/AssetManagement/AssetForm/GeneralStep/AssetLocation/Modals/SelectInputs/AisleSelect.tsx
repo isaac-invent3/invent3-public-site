@@ -14,10 +14,11 @@ interface AisleSelectProps {
   handleSelect?: (options: Option) => void;
   type: 'general' | 'specificById';
   roomId?: number | null;
+  selectedOption?: Option | null;
 }
 
 const AisleSelect = (props: AisleSelectProps) => {
-  const { handleSelect, type, roomId } = props;
+  const { handleSelect, type, roomId, selectedOption } = props;
   const { aisleName } = useAppSelector((state) => state.asset.assetForm);
   const [searchAisle] = useSearchAisleMutation({});
 
@@ -82,6 +83,7 @@ const AisleSelect = (props: AisleSelectProps) => {
       specialSearch={
         type === 'specificById' ? aisleByRoomIdSearchCriterion : undefined
       }
+      selectedOption={selectedOption ?? undefined}
     />
   );
 };

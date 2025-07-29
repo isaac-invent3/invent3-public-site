@@ -112,7 +112,7 @@ const TicketDrawerBodySubSection = (props: TicketDrawerBodySubSectionProps) => {
               </Text>
             )}
             <Text color="black" size="md">
-              N/A
+              {data?.assetName ?? 'N/A'}
             </Text>
           </VStack>
         </VStack>

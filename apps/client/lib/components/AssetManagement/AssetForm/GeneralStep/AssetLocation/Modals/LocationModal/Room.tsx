@@ -6,20 +6,24 @@ import { FormLocation } from '~/lib/interfaces/location.interfaces';
 import RoomSelect from '../SelectInputs/RoomSelect';
 import RoomModal from '../RoomModal';
 import { FormAddButton } from '@repo/ui/components';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 interface RoomProps {
   handleReadableLocation: (option: Option, key: keyof FormLocation) => void;
-  departmentId: number | null;
 }
 const Room = (props: RoomProps) => {
-  const { handleReadableLocation, departmentId } = props;
+  const { handleReadableLocation } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { department, room } = useAppSelector(
+    (state) => state.location.localLocation
+  );
   return (
     <>
       <VStack alignItems="flex-end" width="full">
         <RoomSelect
           handleSelect={(option) => handleReadableLocation(option, 'room')}
-          departmentId={departmentId}
+          departmentId={(department?.value as number) ?? null}
+          selectedOption={room}
           type="specificById"
         />
         <FormAddButton handleClick={onOpen}>Add New Room</FormAddButton>
@@ -27,7 +31,7 @@ const Room = (props: RoomProps) => {
       <RoomModal
         isOpen={isOpen}
         onClose={onClose}
-        defaultDepartmentId={departmentId}
+        defaultDepartmentId={(department?.value as number) ?? null}
         handleReadableLocation={handleReadableLocation}
       />
     </>

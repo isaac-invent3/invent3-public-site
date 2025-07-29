@@ -14,7 +14,7 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';
 import { floorSchema } from '~/lib/schemas/asset/location.schema';
 import BuildingSelect from './SelectInputs/BuildingSelect';
-import { useAppDispatch } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { Option } from '@repo/interfaces';
 import { FormLocation } from '~/lib/interfaces/location.interfaces';
 // import DocumentUploadAndView from '~/lib/components/Common/DocumentUploadAndView';
@@ -47,7 +47,7 @@ const FloorModal = (props: FloorModalProps) => {
   } = props;
   const [createFloor, { isLoading }] = useCreateFloorMutation({});
   const { handleSubmit } = useCustomMutation();
-  const dispatch = useAppDispatch();
+  const { facility } = useAppSelector((state) => state.location.localLocation);
 
   const formik = useFormik({
     initialValues: {
@@ -121,7 +121,10 @@ const FloorModal = (props: FloorModalProps) => {
                       description="Select Building"
                       isRequired
                     >
-                      <BuildingSelect type="general" />
+                      <BuildingSelect
+                        type="specificById"
+                        facilityId={facility?.value as number}
+                      />
                     </FormInputWrapper>
                   ))}
 

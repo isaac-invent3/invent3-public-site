@@ -16,6 +16,7 @@ import DepartmentSelect from './SelectInputs/DepartmentSelect';
 import { getSession } from 'next-auth/react';
 import { Option } from '@repo/interfaces';
 import { FormLocation } from '~/lib/interfaces/location.interfaces';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 interface RoomModalProps {
   isOpen: boolean;
@@ -36,6 +37,7 @@ const RoomModal = (props: RoomModalProps) => {
   } = props;
   const [createRoom, { isLoading }] = useCreateRoomMutation({});
   const { handleSubmit } = useCustomMutation();
+  const { floor } = useAppSelector((state) => state.location.localLocation);
 
   const formik = useFormik({
     initialValues: {
@@ -99,7 +101,10 @@ const RoomModal = (props: RoomModalProps) => {
                     description="Select Department"
                     isRequired
                   >
-                    <DepartmentSelect type="general" />
+                    <DepartmentSelect
+                      type="specificById"
+                      floorId={floor?.value as number}
+                    />
                   </FormInputWrapper>
                 )}
                 <FormInputWrapper

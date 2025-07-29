@@ -1,9 +1,6 @@
 import { FormLocation } from '~/lib/interfaces/location.interfaces';
 
-const intialState = {
-  label: null,
-  value: null,
-};
+const intialState = null;
 
 const resetFormikFields = (
   key:

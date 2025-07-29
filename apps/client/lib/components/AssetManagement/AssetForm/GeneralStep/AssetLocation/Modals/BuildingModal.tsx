@@ -19,7 +19,7 @@ import {
   BuildingFormData,
   FormLocation,
 } from '~/lib/interfaces/location.interfaces';
-import { useAppDispatch } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { Option } from '@repo/interfaces';
 
 interface BuildingModalProps {
@@ -45,6 +45,7 @@ const BuildingModal = (props: BuildingModalProps) => {
   } = props;
   const [createBuilding, { isLoading }] = useCreateBuildingMutation({});
   const { handleSubmit } = useCustomMutation();
+  const { lga } = useAppSelector((state) => state.location.localLocation);
 
   const formik = useFormik({
     initialValues: {
@@ -120,7 +121,10 @@ const BuildingModal = (props: BuildingModalProps) => {
                       isRequired
                       description="Select Facility"
                     >
-                      <FacilitySelect type="general" />
+                      <FacilitySelect
+                        type="specificById"
+                        lgaId={lga?.value as number}
+                      />
                     </FormInputWrapper>
                   ))}
                 <FormInputWrapper

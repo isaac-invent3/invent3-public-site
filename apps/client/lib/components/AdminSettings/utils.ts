@@ -18,6 +18,9 @@ const maxFailedLoginAttemptsOptions = [
 const passwordExpiryPeriodOptions = [
   { label: '7 Days', value: 1 },
   { label: '30 Days', value: 2 },
+  { label: '60 Days', value: 3 },
+  { label: '120 Days', value: 4 },
+  { label: '180 Days', value: 5 },
 ];
 
 const passwordLengthOptions = [

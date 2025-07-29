@@ -14,10 +14,11 @@ interface ShelfSelectProps {
   handleSelect?: (options: Option) => void;
   type: 'general' | 'specificById';
   aisleId?: number | null;
+  selectedOption?: Option | null;
 }
 
 const ShelfSelect = (props: ShelfSelectProps) => {
-  const { handleSelect, type, aisleId } = props;
+  const { handleSelect, type, aisleId, selectedOption } = props;
   const { shelfName } = useAppSelector((state) => state.asset.assetForm);
   const [searchShelf] = useSearchShelfMutation({});
 
@@ -82,6 +83,7 @@ const ShelfSelect = (props: ShelfSelectProps) => {
       specialSearch={
         type === 'specificById' ? shelvesByAisleIdCriterion : undefined
       }
+      selectedOption={selectedOption ?? undefined}
     />
   );
 };

@@ -15,6 +15,7 @@ import { shelfSchema } from '~/lib/schemas/asset/location.schema';
 import AisleSelect from './SelectInputs/AisleSelect';
 import { Option } from '@repo/interfaces';
 import { FormLocation } from '~/lib/interfaces/location.interfaces';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 interface ShelfModalProps {
   isOpen: boolean;
@@ -35,6 +36,7 @@ const ShelfModal = (props: ShelfModalProps) => {
   } = props;
   const [createShelf, { isLoading }] = useCreateShelfMutation({});
   const { handleSubmit } = useCustomMutation();
+  const { room } = useAppSelector((state) => state.location.localLocation);
 
   const formik = useFormik({
     initialValues: {
@@ -98,7 +100,10 @@ const ShelfModal = (props: ShelfModalProps) => {
                     description="Select Aisle"
                     isRequired
                   >
-                    <AisleSelect type="general" />
+                    <AisleSelect
+                      type="specificById"
+                      roomId={room?.value as number}
+                    />
                   </FormInputWrapper>
                 )}
                 <FormInputWrapper

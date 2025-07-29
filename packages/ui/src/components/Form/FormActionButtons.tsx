@@ -78,7 +78,12 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
         <ChakraText color="primary.500">Back</ChakraText>
       </Button>
 
-      <HStack width="full" spacing="16px" justifyContent={{ md: 'flex-end' }}>
+      <HStack
+        width="full"
+        spacing="16px"
+        flexWrap={{ base: 'wrap' }}
+        justifyContent={{ md: 'flex-end' }}
+      >
         {activeStep === 1 && (
           <Button
             type="button"

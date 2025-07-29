@@ -27,6 +27,7 @@ import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import LGASelect from '../../../../../../Common/SelectComponents/Location/LGASelect';
 import StateSelect from '../../../../../../Common/SelectComponents/Location/StateSelect';
 import CountrySelect from '../../../../../../Common/SelectComponents/Location/CountrySelect';
+import { setLocalLocation } from '~/lib/redux/slices/LocationSlice';
 
 interface LocationModalProps {
   isOpen: boolean;
@@ -40,49 +41,8 @@ interface LocationModalProps {
 const LocationModal = (props: LocationModalProps) => {
   const { isOpen, onClose, setFieldValue } = props;
   const assetFormDetails = useAppSelector((state) => state.asset.assetForm);
+  const localLocation = useAppSelector((state) => state.location.localLocation);
   const dispatch = useAppDispatch();
-  const [localLocation, setLocalLocation] = useState<FormLocation>({
-    country: {
-      label: assetFormDetails.countryName,
-      value: assetFormDetails.countryId,
-    },
-    state: {
-      label: assetFormDetails.stateName,
-      value: assetFormDetails.stateId,
-    },
-    lga: {
-      label: assetFormDetails.lgaName,
-      value: assetFormDetails.lgaId,
-    },
-    facility: {
-      label: assetFormDetails.facilityName,
-      value: assetFormDetails.facilityId,
-    },
-    building: {
-      label: assetFormDetails.buildingName,
-      value: assetFormDetails.buildingId,
-    },
-    floor: {
-      label: assetFormDetails.floorName,
-      value: assetFormDetails.floorId,
-    },
-    department: {
-      label: assetFormDetails.departmentName,
-      value: assetFormDetails.departmentId,
-    },
-    room: {
-      label: assetFormDetails.roomName,
-      value: assetFormDetails.roomId,
-    },
-    aisle: {
-      label: assetFormDetails.aisleName,
-      value: assetFormDetails.aisleId,
-    },
-    shelf: {
-      label: assetFormDetails.shelfName,
-      value: assetFormDetails.shelfId,
-    },
-  });
 
   const formik = useFormik({
     initialValues: {
@@ -104,16 +64,16 @@ const LocationModal = (props: LocationModalProps) => {
       });
       dispatch(
         updateAssetForm({
-          countryName: localLocation.country.label,
-          stateName: localLocation.state.label,
-          lgaName: localLocation.lga.label,
-          facilityName: localLocation.facility.label,
-          buildingName: localLocation.building.label,
-          floorName: localLocation.floor.label,
-          departmentName: localLocation.department.label,
-          roomName: localLocation.room.label,
-          aisleName: localLocation.aisle.label,
-          shelfName: localLocation.shelf.label,
+          countryName: localLocation.country?.label,
+          stateName: localLocation.state?.label,
+          lgaName: localLocation.lga?.label,
+          facilityName: localLocation.facility?.label,
+          buildingName: localLocation.building?.label,
+          floorName: localLocation.floor?.label,
+          departmentName: localLocation.department?.label,
+          roomName: localLocation.room?.label,
+          aisleName: localLocation.aisle?.label,
+          shelfName: localLocation.shelf?.label,
         })
       );
       onClose();
@@ -121,13 +81,14 @@ const LocationModal = (props: LocationModalProps) => {
   });
 
   const handleReadableLocation = (option: Option, key: keyof FormLocation) => {
-    if (localLocation[key].value !== option.value) {
+    if (localLocation[key]?.value !== option.value) {
       // Update localLocation as before
-      setLocalLocation((prev) => ({
-        ...prev,
-        [key]: option,
-        ...resetDependentFields(key), // Reset dependent fields in localLocation
-      }));
+      dispatch(
+        setLocalLocation({
+          [key]: option,
+          ...resetDependentFields(key),
+        })
+      );
 
       // Reset formik fields based on the hierarchy
       formik.setValues((prevValues) => ({
@@ -171,13 +132,13 @@ const LocationModal = (props: LocationModalProps) => {
                     }}
                   />
                   <StateSelect
-                    countryId={localLocation.country.value}
+                    countryId={localLocation.country?.value as number}
                     handleSelect={(option) => {
                       handleReadableLocation(option, 'state');
                     }}
                   />
                   <LGASelect
-                    stateId={localLocation.state.value}
+                    stateId={localLocation.state?.value as number}
                     handleSelect={(option) =>
                       handleReadableLocation(option, 'lga')
                     }
@@ -189,43 +150,24 @@ const LocationModal = (props: LocationModalProps) => {
                   width="full"
                   spacing="16px"
                 >
-                  <Facility
-                    handleReadableLocation={handleReadableLocation}
-                    lgaId={localLocation.lga.value}
-                    stateId={localLocation.state.value}
-                  />
-                  <Building
-                    handleReadableLocation={handleReadableLocation}
-                    facilityId={localLocation.facility.value}
-                  />
+                  <Facility handleReadableLocation={handleReadableLocation} />
+                  <Building handleReadableLocation={handleReadableLocation} />
                 </Stack>
                 <Stack
                   direction={{ base: 'column', md: 'row' }}
                   width="full"
                   spacing="16px"
                 >
-                  <Floor
-                    handleReadableLocation={handleReadableLocation}
-                    buildingId={localLocation.building.value}
-                  />
-                  <Department
-                    handleReadableLocation={handleReadableLocation}
-                    floorId={localLocation.floor.value}
-                  />
+                  <Floor handleReadableLocation={handleReadableLocation} />
+                  <Department handleReadableLocation={handleReadableLocation} />
                 </Stack>
                 <Stack
                   direction={{ base: 'column', md: 'row' }}
                   width="full"
                   spacing="16px"
                 >
-                  <Room
-                    handleReadableLocation={handleReadableLocation}
-                    departmentId={localLocation.department.value}
-                  />
-                  <Aisle
-                    handleReadableLocation={handleReadableLocation}
-                    roomId={localLocation.room.value}
-                  />
+                  <Room handleReadableLocation={handleReadableLocation} />
+                  <Aisle handleReadableLocation={handleReadableLocation} />
                 </Stack>
                 <Stack
                   direction={{ base: 'column', md: 'row' }}
@@ -233,10 +175,7 @@ const LocationModal = (props: LocationModalProps) => {
                   spacing="16px"
                 >
                   <Flex width="50%">
-                    <Shelf
-                      handleReadableLocation={handleReadableLocation}
-                      aisleId={localLocation.aisle.value}
-                    />
+                    <Shelf handleReadableLocation={handleReadableLocation} />
                   </Flex>
                 </Stack>
               </VStack>

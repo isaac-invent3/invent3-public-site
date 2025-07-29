@@ -17,10 +17,18 @@ interface FloorSelectProps {
   buildingId?: number | null;
   selectStyles?: CSSObjectWithLabel;
   selectName?: string;
+  selectedOption?: Option | null;
 }
 
 const FloorSelect = (props: FloorSelectProps) => {
-  const { handleSelect, type, buildingId, selectStyles, selectName } = props;
+  const {
+    handleSelect,
+    type,
+    buildingId,
+    selectStyles,
+    selectName,
+    selectedOption,
+  } = props;
   const { floorName } = useAppSelector((state) => state.asset.assetForm);
   const [searchFloors] = useSearchFloorsMutation({});
 
@@ -88,6 +96,7 @@ const FloorSelect = (props: FloorSelectProps) => {
         type === 'specificById' ? floorsByBuildingIdCriterion : undefined
       }
       selectStyles={selectStyles}
+      selectedOption={selectedOption ?? undefined}
     />
   );
 };

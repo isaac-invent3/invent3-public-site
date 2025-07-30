@@ -140,7 +140,7 @@ export const config = {
             roleSystemModuleContextPermissions: JSON.parse(
               credentials?.roleSystemModuleContextPermissions
             ),
-            username: credentials.username,
+            username: credentials.email,
             // companySlug: hasSubdomain ? subdomain : null,
             companySlug: JSON.parse(credentials.companySlug) ?? tenantName,
           };

@@ -1,7 +1,6 @@
 import {
   Divider,
   Flex,
-  HStack,
   ModalBody,
   ModalHeader,
   VStack,
@@ -20,7 +19,6 @@ import NotesGrid from './NotesGrid';
 import PinnedNotesSection from './PinnedNotesGrid';
 import SkeletonGrid from './SkeletonGrid';
 import useNotes from './useNotes';
-import { useEffect } from 'react';
 
 interface AllNotesModalProps {
   isOpen: boolean;
@@ -49,11 +47,6 @@ const AllNotes = (props: AllNotesModalProps) => {
 
   const renderContent = () => {
     const hasNotes = searchedNotes.length || unPinnedNotes.length;
-
-    useEffect(() => {
-      console.log({ isSearched });
-    }, [isSearched]);
-
     return (
       <VStack
         width="full"

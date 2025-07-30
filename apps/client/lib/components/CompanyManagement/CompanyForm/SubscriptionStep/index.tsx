@@ -73,6 +73,7 @@ const SubscriptionStep = (props: SubscriptionStepProps) => {
               title="Subscription Plan"
               description="Provide the person’s Job Title"
               w={{ base: 'full', md: '50%' }}
+              isRequired={false}
             >
               <FormSelect
                 name="subscriptionPlanId"

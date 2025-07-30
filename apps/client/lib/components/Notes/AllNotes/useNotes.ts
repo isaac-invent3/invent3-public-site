@@ -1,5 +1,6 @@
 import { OPERATORS } from '@repo/constants';
-import { ListResponse } from '@repo/interfaces';
+import { BaseApiResponse, ListResponse } from '@repo/interfaces';
+import { set } from 'lodash';
 import { useSession } from 'next-auth/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
@@ -23,7 +24,11 @@ const useNotes = ({
   const user = session?.data?.user;
   const [search, setSearch] = useState('');
   const { handleSubmit } = useCustomMutation();
-  const [searchData, setSearchData] = useState<ListResponse<Note> | null>(null);
+  const [searchData, setSearchData] = useState<BaseApiResponse<
+    ListResponse<Note>
+  > | null>(null);
+  const [pinnedPageNumber, setPinnedPageNumber] = useState(1);
+  const [pageNumber, setPageNumber] = useState(1);
 
   const {
     data: pinnedNotes,
@@ -32,9 +37,14 @@ const useNotes = ({
   } = useGetPinnedNotesQuery(
     {
       userId: user?.userId!,
-      pageSize: 15,
+      pageSize: DEFAULT_PAGE_SIZE,
+      pageNumber: pinnedPageNumber,
       systemContextTypeId: data?.systemContextId!,
-      systemContextIds: [],
+      systemContextIds: [
+        typeof data?.contextId === 'string'
+          ? Number(data?.contextId)
+          : data?.contextId!,
+      ],
     },
     { skip: !user?.userId || !data?.systemContextId || !isOpen }
   );
@@ -46,9 +56,14 @@ const useNotes = ({
   } = useGetUnPinnedNotesQuery(
     {
       userId: user?.userId!,
-      pageSize: 15,
+      pageSize: DEFAULT_PAGE_SIZE,
+      pageNumber: pageNumber,
       systemContextTypeId: data?.systemContextId!,
-      systemContextIds: [],
+      systemContextIds: [
+        typeof data?.contextId === 'string'
+          ? Number(data?.contextId)
+          : data?.contextId!,
+      ],
     },
     { skip: !user?.userId || !data?.systemContextId || !isOpen }
   );
@@ -69,20 +84,23 @@ const useNotes = ({
       ],
     }),
 
-    pageNumber: 1,
+    pageNumber,
     pageSize: DEFAULT_PAGE_SIZE,
   };
 
   const handleSearch = useCallback(async () => {
     if (search) {
       const response = await handleSubmit(searchNotes, searchCriterion, '');
-      response?.data?.data && setSearchData(response?.data?.data);
+      response?.data?.data && setSearchData(response?.data);
     }
   }, [searchNotes, searchCriterion]);
 
   useEffect(() => {
     if (search) {
       handleSearch();
+    } else {
+      setSearchData(null);
+      setPageNumber(1);
     }
   }, [search]);
 
@@ -103,19 +121,26 @@ const useNotes = ({
   );
 
   const searchedNotes = () => {
-    if (search && searchData) return searchData.items;
+    if (search && searchData) return searchData?.data?.items;
 
     return [];
   };
 
   return {
     searchedNotes: searchedNotes(),
-    isFetchingNotes,
+    isFetchingOtherNotes:
+      isGettingUnPinnedNotes || isFetchingUnpinnedNotes || isSearchingNotes,
+    isFetchingPinnedNotes: isGettingPinnedNotes || isFetchingPinnedNotes,
     unPinnedNotes: unPinnedNotes?.data?.items ?? [],
     pinnedNotes: pinnedNotes?.data?.items ?? [],
-
     setSearch,
     isSearched: Boolean(search),
+    pinnedTotalPages: pinnedNotes?.data?.totalPages ?? 0,
+    otherNotesTotalPages: unPinnedNotes?.data?.totalPages ?? 0,
+    pinnedPageNumber,
+    pageNumber,
+    setPinnedPageNumber: setPinnedPageNumber,
+    setPageNumber: setPageNumber,
   };
 };
 

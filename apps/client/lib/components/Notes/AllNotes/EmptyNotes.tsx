@@ -1,12 +1,16 @@
-import { Icon, Text, VStack } from '@chakra-ui/react';
+import { Icon, StackProps, Text, VStack } from '@chakra-ui/react';
 import { EmptyNotesIcon } from '../../CustomIcons';
 
-const EmptyNotes = () => {
+interface EmptyNotesProps {
+  message?: string;
+  customStyles?: StackProps;
+}
+const EmptyNotes = ({ message, customStyles }: EmptyNotesProps) => {
   return (
-    <VStack justifyContent="center" h="500px" w="full">
+    <VStack justifyContent="center" h="300px" w="full" {...customStyles}>
       <Icon as={EmptyNotesIcon} w="130px" h="130px" mb="8px" />
       <Text size="md" color="#2C2C2C" fontWeight={700}>
-        No Notes
+        {message ?? 'No Notes'}
       </Text>
     </VStack>
   );

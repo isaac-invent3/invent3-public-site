@@ -5,12 +5,22 @@ interface ButtonPaginationProps {
   totalPages: number;
   currentPage: number;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  showIfHasMorePages?: boolean;
 }
 const ButtonPagination = (props: ButtonPaginationProps) => {
-  const { totalPages, currentPage, setCurrentPage } = props;
+  const {
+    totalPages,
+    currentPage,
+    setCurrentPage,
+    showIfHasMorePages = false,
+  } = props;
 
   return (
-    <Flex justifyContent="space-between" width="full">
+    <Flex
+      justifyContent="space-between"
+      width="full"
+      display={showIfHasMorePages ? (totalPages > 1 ? 'flex' : 'none') : 'flex'}
+    >
       <Button
         variant="secondary"
         handleClick={() => setCurrentPage((prev) => prev - 1)}

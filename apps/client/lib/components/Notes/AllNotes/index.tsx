@@ -6,7 +6,11 @@ import {
   ModalHeader,
   VStack,
 } from '@chakra-ui/react';
-import { GenericModal, ModalCloseButtonText } from '@repo/ui/components';
+import {
+  ButtonPagination,
+  GenericModal,
+  ModalCloseButtonText,
+} from '@repo/ui/components';
 import useFormatUrl from '~/lib/hooks/useFormatUrl';
 import useParseUrlData from '~/lib/hooks/useParseUrl';
 import EmptyNotes from './EmptyNotes';
@@ -16,6 +20,7 @@ import NotesGrid from './NotesGrid';
 import PinnedNotesSection from './PinnedNotesGrid';
 import SkeletonGrid from './SkeletonGrid';
 import useNotes from './useNotes';
+import { useEffect } from 'react';
 
 interface AllNotesModalProps {
   isOpen: boolean;
@@ -27,22 +32,27 @@ const AllNotes = (props: AllNotesModalProps) => {
   const data = useParseUrlData(formattedUrl);
   const { isOpen, onClose } = props;
   const {
-    isFetchingNotes,
+    isFetchingPinnedNotes,
+    isFetchingOtherNotes,
     searchedNotes,
     isSearched,
     pinnedNotes,
     setSearch,
     unPinnedNotes,
+    pinnedTotalPages,
+    otherNotesTotalPages,
+    pinnedPageNumber,
+    pageNumber,
+    setPinnedPageNumber,
+    setPageNumber,
   } = useNotes({ data: data, isOpen: isOpen });
 
   const renderContent = () => {
-    if (isFetchingNotes) return <SkeletonGrid count={15} />;
-
     const hasNotes = searchedNotes.length || unPinnedNotes.length;
-    const hasPinnedNotes = pinnedNotes.length > 0;
-    const hasNoNotes = !hasNotes && !hasPinnedNotes;
 
-    if (hasNoNotes) return <EmptyNotes />;
+    useEffect(() => {
+      console.log({ isSearched });
+    }, [isSearched]);
 
     return (
       <VStack
@@ -50,16 +60,36 @@ const AllNotes = (props: AllNotesModalProps) => {
         spacing="16px"
         divider={<Divider borderColor="#BBBBBB" />}
       >
-        {!isSearched && hasPinnedNotes && (
-          <PinnedNotesSection pinnedNotes={pinnedNotes} />
+        {!isSearched && (
+          <VStack width="full" spacing="16px">
+            <PinnedNotesSection
+              pinnedNotes={pinnedNotes}
+              isFetching={isFetchingPinnedNotes}
+            />
+            <ButtonPagination
+              currentPage={pinnedPageNumber}
+              setCurrentPage={setPinnedPageNumber}
+              totalPages={pinnedTotalPages}
+              showIfHasMorePages={true}
+            />
+          </VStack>
         )}
-
-        {hasNotes && (
-          <NotesGrid
-            notes={searchedNotes}
-            unPinnedNotes={unPinnedNotes}
-            isSearched={isSearched}
-          />
+        {isFetchingOtherNotes && <SkeletonGrid count={10} />}
+        {!isFetchingOtherNotes && !hasNotes && <EmptyNotes />}
+        {hasNotes && !isFetchingOtherNotes && (
+          <VStack width="full" spacing="16px">
+            <NotesGrid
+              notes={searchedNotes}
+              unPinnedNotes={unPinnedNotes}
+              isSearched={isSearched}
+            />
+            <ButtonPagination
+              currentPage={pageNumber}
+              setCurrentPage={setPageNumber}
+              totalPages={otherNotesTotalPages}
+              showIfHasMorePages={true}
+            />
+          </VStack>
         )}
       </VStack>
     );

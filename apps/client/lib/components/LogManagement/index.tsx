@@ -117,17 +117,13 @@ const LogManagement = () => {
         ...(search
           ? [
               [
-                ...[
-                  'message',
-                  'username',
-                  'firstName',
-                  'lastName',
-                  'email',
-                ].map((item) => ({
-                  columnName: item,
-                  columnValue: search,
-                  operation: OPERATORS.Contains,
-                })),
+                ...['username', 'firstName', 'lastName', 'email'].map(
+                  (item) => ({
+                    columnName: item,
+                    columnValue: search,
+                    operation: OPERATORS.Contains,
+                  })
+                ),
                 ...(!isNaN(Number(search))
                   ? [
                       {

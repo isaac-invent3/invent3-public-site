@@ -52,24 +52,43 @@ const PasswordPolicy = () => {
           />
         </SectionWrapper>
         <SectionWrapper
-          title="Password Expiry Period"
-          subtitle="Regular updates for safer access."
-          sectionInfoWidth="212px"
-          spacing={{ base: '8px', sm: '24px' }}
-          direction={{ base: 'column', sm: 'row' }}
-          sectionInfoStyle={{ maxW: { base: '100%', sm: '212px' } }}
+          title="Password Expiration"
+          subtitle="Enable Password expiration in your organization"
+          sectionInfoWidth="307px"
+          sectionInfoStyle={{ maxW: { base: '60%', md: '307px' } }}
         >
-          <FormSelect
-            name="passwordExpiryPeriodId"
-            title="Period"
-            options={passwordExpiryPeriodOptions}
-            containerStyles={{
-              width: isMobile ? '100%' : '179px',
-            }}
-            selectStyles={{ height: '46px', pt: '0px' }}
-            showTitleAfterSelect={false}
+          <Switch
+            size="sm"
+            isChecked={values.passwordExpirationEnabled}
+            onChange={() =>
+              setFieldValue(
+                'passwordExpirationEnabled',
+                !values.passwordExpirationEnabled
+              )
+            }
           />
         </SectionWrapper>
+        {values.passwordExpirationEnabled && (
+          <SectionWrapper
+            title="Password Expiry Period"
+            subtitle="Regular updates for safer access."
+            sectionInfoWidth="212px"
+            spacing={{ base: '8px', sm: '24px' }}
+            direction={{ base: 'column', sm: 'row' }}
+            sectionInfoStyle={{ maxW: { base: '100%', sm: '212px' } }}
+          >
+            <FormSelect
+              name="passwordExpiryPeriodId"
+              title="Period"
+              options={passwordExpiryPeriodOptions}
+              containerStyles={{
+                width: isMobile ? '100%' : '179px',
+              }}
+              selectStyles={{ height: '46px', pt: '0px' }}
+              showTitleAfterSelect={false}
+            />
+          </SectionWrapper>
+        )}
       </VStack>
     </VStack>
   );

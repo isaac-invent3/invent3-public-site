@@ -3,6 +3,7 @@ import React from 'react';
 import { FormSelect } from '@repo/ui/components';
 import SectionWrapper from '../../UserSettings/Common/SectionWrapper';
 import {
+  maxDormantPeriodOptions,
   maxFailedLoginAttemptsOptions,
   sessionTimeoutDurationOptions,
 } from '../utils';
@@ -23,6 +24,14 @@ const generalInfo = [
     subtitle: 'Prevent unauthorized access with account lock.',
     label: 'Times',
     options: maxFailedLoginAttemptsOptions,
+  },
+  {
+    name: 'maxDormantPeriod',
+    title: 'Disable Inactive Users',
+    subtitle:
+      'Set the number of days to disable a user’s account if the user remains inactive.',
+    label: 'Period',
+    options: maxDormantPeriodOptions,
   },
 ];
 
@@ -57,11 +66,11 @@ const LoginSecurity = () => {
             <SectionWrapper
               title={item.title}
               subtitle={item.subtitle}
-              sectionInfoWidth="212px"
+              sectionInfoWidth="307px"
               key={index}
               spacing={{ base: '8px', sm: '24px' }}
               direction={{ base: 'column', sm: 'row' }}
-              sectionInfoStyle={{ maxW: { base: '100%', sm: '212px' } }}
+              sectionInfoStyle={{ maxW: { base: '100%', sm: '307px' } }}
             >
               <FormSelect
                 name={item.name}

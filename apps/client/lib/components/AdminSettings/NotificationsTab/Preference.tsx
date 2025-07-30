@@ -1,8 +1,14 @@
 import { Switch, Text, VStack } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
+import React from 'react';
 import SectionWrapper from '../../UserSettings/Common/SectionWrapper';
 import { useFormikContext } from 'formik';
 import { Settings } from '~/lib/interfaces/settings.interfaces';
+
+type KeyType =
+  | 'emailNotifications'
+  | 'pushNotifications'
+  | 'smsnotifications'
+  | 'whatsappNotifications';
 
 const NOTICATION_TYPE = [
   {
@@ -20,6 +26,17 @@ const NOTICATION_TYPE = [
     subtitle: 'Quick reminders straight to phone',
     name: 'smsnotifications',
   },
+  {
+    title: 'Whatsapp Notifications',
+    subtitle:
+      'Receive updates and alerts via Whatsapp. (Ensure the phone number on your profile is Whatsapp enabled.)',
+    name: 'WhatsappNotifications',
+  },
+  {
+    title: 'Webhook Notifications',
+    subtitle: 'Allow Notifications for a third-party',
+    name: 'WhatsappNotifications',
+  },
 ];
 const Preferences = () => {
   const { setFieldValue, values } = useFormikContext<Settings>();
@@ -35,31 +52,16 @@ const Preferences = () => {
             <SectionWrapper
               title={item.title}
               subtitle={item.subtitle}
-              sectionInfoWidth="212px"
+              sectionInfoWidth="547px"
               key={index}
             >
               <Switch
                 size="sm"
-                isChecked={
-                  values[
-                    item.name as
-                      | 'emailNotifications'
-                      | 'pushNotifications'
-                      | 'smsnotifications'
-                  ]
-                }
+                isChecked={values[item.name as KeyType]}
                 onChange={() =>
                   setFieldValue(
-                    item.name as
-                      | 'emailNotifications'
-                      | 'pushNotifications'
-                      | 'smsnotifications',
-                    !values[
-                      item.name as
-                        | 'emailNotifications'
-                        | 'pushNotifications'
-                        | 'smsnotifications'
-                    ]
+                    item.name as KeyType,
+                    !values[item.name as KeyType]
                   )
                 }
               />

@@ -35,7 +35,7 @@ const dropdownData: DropdownData[] = [
   },
   {
     label: 'Status',
-    value: 'Status',
+    value: 'AssetStatus',
   },
 ];
 0;

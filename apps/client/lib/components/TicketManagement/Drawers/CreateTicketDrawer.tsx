@@ -73,10 +73,7 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
     assignedToEmployeeName: null,
     ticketTypeId: null,
     ticketPriorityId: null,
-    issueReportDate: moment(new Date().toISOString()).utcOffset(
-      0,
-      true
-    ) as unknown as string,
+    issueReportDate: moment().utc().toISOString(),
   };
 
   const formik = useFormik<CreateTicketForm>({

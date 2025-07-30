@@ -41,6 +41,9 @@ interface Settings extends BaseEntity {
   complianceAuditRetentionPeriodId: number;
   complianceAutoReportScheduleId: number;
   dateCreated: string;
+  whatsappNotifications: boolean;
+  maxDormantPeriod: string;
+  passwordExpirationEnabled: boolean;
 }
 
 interface UpdateSettingsPayload {

@@ -436,7 +436,7 @@ interface AssetCountByColumnName {
 }
 type ValidColumnNames =
   | 'Condition'
-  | 'Status'
+  | 'AssetStatus'
   | 'Condition'
   | 'Category'
   | 'AssetType';

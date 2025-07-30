@@ -23,6 +23,12 @@ const passwordExpiryPeriodOptions = [
   { label: '180 Days', value: 5 },
 ];
 
+const maxDormantPeriodOptions = [
+  { label: '90 Days', value: 90 },
+  { label: '120 Days', value: 120 },
+  { label: '180 Days', value: 180 },
+];
+
 const passwordLengthOptions = [
   { label: '8', value: 8 },
   { label: '12', value: 12 },
@@ -50,4 +56,5 @@ export {
   passwordExpiryPeriodOptions,
   passwordLengthOptions,
   exportFrequencyOptions,
+  maxDormantPeriodOptions,
 };

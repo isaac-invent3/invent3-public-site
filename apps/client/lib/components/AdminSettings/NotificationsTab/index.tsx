@@ -24,6 +24,7 @@ const Notifications = () => {
       alertComplianceViolation: settings?.alertComplianceViolation,
       alertNewUserAdded: settings?.alertNewUserAdded,
       alertSubscriptionExpiresSoon: settings?.alertSubscriptionExpiresSoon,
+      whatsappNotifications: settings?.whatsappNotifications,
     },
     validationSchema: notificationSchema,
     enableReinitialize: true,

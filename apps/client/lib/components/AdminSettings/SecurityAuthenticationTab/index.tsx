@@ -23,6 +23,8 @@ const SecurityAuthentication = () => {
       minPasswordLengthId: settings?.minPasswordLengthId,
       specialCharactersRequired: settings?.specialCharactersRequired,
       passwordExpiryPeriodId: settings?.passwordExpiryPeriodId,
+      passwordExpirationEnabled: settings?.passwordExpirationEnabled,
+      maxDormantPeriod: settings?.maxDormantPeriod,
     },
     validationSchema: securityAuthenticationSchema,
     enableReinitialize: true,

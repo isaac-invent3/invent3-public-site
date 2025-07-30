@@ -142,7 +142,7 @@ export const config = {
             ),
             username: credentials.username,
             // companySlug: hasSubdomain ? subdomain : null,
-            companySlug: credentials.companySlug ?? tenantName,
+            companySlug: JSON.parse(credentials.companySlug) ?? tenantName,
           };
         }
         const payload = {

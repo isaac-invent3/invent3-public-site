@@ -52,7 +52,7 @@ const GeneralFilter = (props: GeneralFilterProps) => {
         selectedBranch={filterData.branch}
         handleSelectedOption={handleFilterData}
       />
-      {columnType !== 'Status' && (
+      {columnType !== 'AssetStatus' && (
         <StatusFilter
           selectedOptions={filterData.status}
           handleSelectedOption={(value) => handleFilterData(value, 'status')}

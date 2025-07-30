@@ -314,10 +314,6 @@ export async function middleware(request: NextRequest) {
     const checkPath = tenantData ? `/${remainingPath}` : pathname;
     const requestedPath = `/${checkPath.split('/')?.[1] as string}`;
 
-    if (checkPath === '/signin') {
-      return response;
-    }
-
     if (tenantData) {
       if (remainingPath === '' || remainingPath === '/') {
         return NextResponse.redirect(new URL(`/${tenant}/signin`, request.url));

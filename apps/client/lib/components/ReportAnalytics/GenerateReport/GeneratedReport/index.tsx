@@ -88,6 +88,7 @@ const GeneratedReport = (props: GeneratedReportProps) => {
     }
 
     const payload: SaveReportPayload = {
+      authorId: session?.user?.userId!,
       reportName: data.templateName,
       description: data.templateDescription,
       createdBy: session?.user.username!,

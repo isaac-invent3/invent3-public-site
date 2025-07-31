@@ -29,7 +29,7 @@ const getRelationalOperators = (
       additionalOperators.push(
         {
           label: '< Less Than',
-          value: 2,
+          value: 5,
         },
         {
           label: '> Greater Than',
@@ -72,8 +72,6 @@ const exitAnimation = keyframes`
     transform: translateY(20px);
   }
 `;
-
-
 
 export {
   getRelationalOperators,

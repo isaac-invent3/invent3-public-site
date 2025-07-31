@@ -40,7 +40,7 @@ type ContextTypeColumn = {
 };
 
 interface GenerateReportDetails {
-  selectedCompany?:string
+  selectedCompany?: string;
   criterion: GenerateReportCriterion[];
   systemContextTypeId: number | undefined;
   contextTypeColumns: Option[];
@@ -115,6 +115,7 @@ interface GenerateReportResponse {
 }
 
 interface SaveReportPayload {
+  authorId: number;
   reportName: string;
   description: string;
   isDefaultReport: boolean;

@@ -92,32 +92,32 @@ const Date = (props: DateProps) => {
       false
     );
 
-    if (response?.data) {
-      setValues({
-        ...values,
+    // if (response?.data) {
+    setValues({
+      ...values,
+      ...formattedInfo,
+      frequencyId: info.frequency?.value as number,
+      scheduledDate: startDateTime,
+      endDate: endDateTime,
+    });
+    dispatch(
+      updateScheduleForm({
+        frequencyName: info.frequency?.label,
+        firstInstanceDate: response?.data?.data,
         ...formattedInfo,
-        frequencyId: info.frequency?.value as number,
-        scheduledDate: startDateTime,
-        endDate: endDateTime,
-      });
-      dispatch(
-        updateScheduleForm({
-          frequencyName: info.frequency?.label,
-          firstInstanceDate: response?.data?.data,
-          ...formattedInfo,
-        })
-      );
-      onCloseRecurrence();
-    } else {
-      toast({
-        title: 'Error',
-        description: 'Selected Recurrence does not have an instance',
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-        position: 'top-right',
-      });
-    }
+      })
+    );
+    //   onCloseRecurrence();
+    // } else {
+    // toast({
+    //   title: 'Error',
+    //   description: 'Selected Recurrence does not have an instance',
+    //   status: 'error',
+    //   duration: 5000,
+    //   isClosable: true,
+    //   position: 'top-right',
+    // });
+    // }
   };
 
   return (

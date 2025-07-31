@@ -52,7 +52,10 @@ const Filters = (props: FiltersProps) => {
   return (
     <FilterWrapper
       handleApplyFilter={handleApplyFilter}
-      handleClearFilter={() => setFilterData(initialFilterData)}
+      handleClearFilter={() => {
+        setFilterData(initialFilterData);
+        handleApplyFilter();
+      }}
     >
       <PlanTypeFilter
         selectedOptions={filterData.planType}

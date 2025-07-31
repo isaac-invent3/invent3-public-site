@@ -154,7 +154,7 @@ const LogManagement = () => {
     if (search || !isFilterEmpty) {
       handleSearch();
     }
-  }, [search, isFilterEmpty, pageNumber, pageSize]);
+  }, [search, pageNumber, pageSize]);
 
   // Reset pagination when clearing the search
   useEffect(() => {

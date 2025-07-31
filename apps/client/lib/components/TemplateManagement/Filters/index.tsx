@@ -22,7 +22,10 @@ const TemplateFilters = (props: TemplateFiltersProps) => {
   return (
     <FilterWrapper
       handleApplyFilter={handleApplyFilter}
-      handleClearFilter={() => dispatch(clearTemplateFilter())}
+      handleClearFilter={() => {
+        dispatch(clearTemplateFilter());
+        handleApplyFilter();
+      }}
     >
       {type === 'page' && <ContextTypeFilter />}
       <OwnerFilter />

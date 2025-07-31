@@ -1,6 +1,6 @@
 import { useDisclosure, useMediaQuery } from '@chakra-ui/react';
 import { getSession, useSession } from 'next-auth/react';
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import useSignalR from '~/lib/hooks/useSignalR';
 import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
 import {
@@ -9,10 +9,11 @@ import {
 } from '~/lib/redux/services/notification.services';
 import NotificationPopover from './Display/NotificationPopover';
 import NotificationDrawer from './Display/NotificationDrawer';
-import { useAppDispatch } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { NotificationTabType } from '~/lib/interfaces/notification.interfaces';
 import NotificationIconWithBadge from './Display/NotificationIconWithBadge';
+import AllNotes from '../Notes/AllNotes';
 
 const NotificationComponents = () => {
   const {
@@ -25,12 +26,18 @@ const NotificationComponents = () => {
     onOpen: onOpenDrawer,
     onClose: onCloseDrawer,
   } = useDisclosure();
+  const {
+    isOpen: isOpenNote,
+    onOpen: onOpenNote,
+    onClose: onCloseNote,
+  } = useDisclosure();
   const [activeTab, setActiveTab] = useState<NotificationTabType>('All');
   const [isMobile] = useMediaQuery('(max-width: 480px)');
   const [markAllAsReadMutation, { isLoading }] =
     useMarkAllNotificationsAsReadMutation();
   const dispatch = useAppDispatch();
   const session = useSession();
+  const parsedUrlData = useAppSelector((state) => state.notes.parsedUrlData);
 
   const handleMarkNotificationsAsRead = async () => {
     const session = await getSession();
@@ -73,9 +80,11 @@ const NotificationComponents = () => {
     },
   });
 
-  useLayoutEffect(() => {
-    onClosePopover();
-  }, []);
+  useEffect(() => {
+    if (parsedUrlData) {
+      onOpenNote();
+    }
+  }, [parsedUrlData]);
 
   return (
     <>
@@ -103,6 +112,11 @@ const NotificationComponents = () => {
           activeTab={activeTab}
         />
       )}
+      <AllNotes
+        onClose={onCloseNote}
+        isOpen={isOpenNote}
+        defaultData={parsedUrlData}
+      />
     </>
   );
 };

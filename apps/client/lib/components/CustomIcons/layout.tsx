@@ -333,7 +333,7 @@ const UnreadNotificationIcon = createIcon({
         r="3.59302"
         fill="#FF3B30"
         stroke="white"
-        stroke-width="0.79845"
+        strokeWidth="0.79845"
       />
     </svg>
   ),

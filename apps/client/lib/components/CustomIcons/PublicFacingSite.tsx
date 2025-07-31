@@ -238,7 +238,7 @@ const TripleCircleIcon = createIcon({
         cy="12"
         r="11.7"
         stroke="#455A64"
-        stroke-width="0.6"
+        strokeWidth="0.6"
         stroke-dasharray="0.2 0.2"
       />
       <circle
@@ -246,7 +246,7 @@ const TripleCircleIcon = createIcon({
         cy="11.9998"
         r="9.7"
         stroke="#455A64"
-        stroke-width="0.6"
+        strokeWidth="0.6"
         stroke-dasharray="0.2 0.2"
       />
       <circle
@@ -254,7 +254,7 @@ const TripleCircleIcon = createIcon({
         cy="12.0002"
         r="7.7"
         stroke="#455A64"
-        stroke-width="0.6"
+        strokeWidth="0.6"
         stroke-dasharray="0.2 0.2"
       />
     </svg>

@@ -11,7 +11,7 @@ import {
   ModalCloseButtonText,
 } from '@repo/ui/components';
 import useFormatUrl from '~/lib/hooks/useFormatUrl';
-import useParseUrlData from '~/lib/hooks/useParseUrl';
+import useParseUrlData, { ParseUrlDataResponse } from '~/lib/hooks/useParseUrl';
 import EmptyNotes from './EmptyNotes';
 import Filters from './Filters';
 import Header from './Header';
@@ -23,12 +23,13 @@ import useNotes from './useNotes';
 interface AllNotesModalProps {
   isOpen: boolean;
   onClose: () => void;
+  defaultData?: ParseUrlDataResponse | null;
 }
 
 const AllNotes = (props: AllNotesModalProps) => {
   const formattedUrl = useFormatUrl();
   const data = useParseUrlData(formattedUrl);
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, defaultData } = props;
   const {
     isFetchingPinnedNotes,
     isFetchingOtherNotes,
@@ -43,7 +44,7 @@ const AllNotes = (props: AllNotesModalProps) => {
     pageNumber,
     setPinnedPageNumber,
     setPageNumber,
-  } = useNotes({ data: data, isOpen: isOpen });
+  } = useNotes({ data: defaultData ?? data, isOpen: isOpen });
 
   const renderContent = () => {
     const hasNotes = searchedNotes.length || unPinnedNotes.length;
@@ -125,8 +126,6 @@ const AllNotes = (props: AllNotesModalProps) => {
             minH="500px"
             overflowY="scroll"
           >
-            <Filters setSearch={setSearch} />
-
             {renderContent()}
           </VStack>
         </ModalBody>

@@ -51,7 +51,10 @@ const VendorFilters = (props: VendorFiltersProps) => {
   return (
     <FilterWrapper
       handleApplyFilter={handleApplyFilter}
-      handleClearFilter={() => setFilterData(initialFilterData)}
+      handleClearFilter={() => {
+        setFilterData(initialFilterData);
+        handleApplyFilter();
+      }}
     >
       <DateRangeFilter
         fromDate={

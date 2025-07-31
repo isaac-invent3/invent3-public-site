@@ -10,7 +10,6 @@ import {
   Tabs,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import SecurityTab from './SecurityTab';
 import GeneralTab from './GeneralTab';
 import Notification from './Notification';
@@ -18,7 +17,7 @@ import Teams from './Teams';
 import PageHeader from '../UI/PageHeader';
 import { useGetUserConfigurationOptionsQuery } from '~/lib/redux/services/user.services';
 import { useSession } from 'next-auth/react';
-import { useAppDispatch } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { setInitialOptions } from '~/lib/redux/slices/UserSlice';
 import { BackButton, GenericDrawer } from '@repo/ui/components';
 
@@ -50,6 +49,19 @@ const UserSettings = (props: UserSettingsProps) => {
       );
     }
   }, [data]);
+
+  const { formConfigurationOptions, userConfigurationOptions } = useAppSelector(
+    (state) => state.user
+  );
+
+  useEffect(() => {
+    console.log(
+      'Form Configuration Options:',
+      formConfigurationOptions,
+      'User Configuration Options:',
+      userConfigurationOptions
+    );
+  }, [formConfigurationOptions, userConfigurationOptions]);
 
   return (
     <GenericDrawer isOpen={isOpen} onClose={onClose} maxWidth="690px">

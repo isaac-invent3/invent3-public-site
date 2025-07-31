@@ -1,6 +1,6 @@
 'use client';
 import { addDays } from 'date-fns';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   DateRangePicker,
   Range as IRange,
@@ -36,12 +36,23 @@ const DateRange = (props: BaseDateRangeProps) => {
     getInitialDateRange()
   );
 
+  useEffect(() => {
+    if (dateRange && dateRange?.startDate && dateRange?.endDate) {
+      setSelectedDateRange([
+        {
+          startDate: dateRange?.startDate ?? new Date(),
+          endDate: dateRange?.endDate ?? new Date(),
+          key: 'selection',
+        },
+      ]);
+    }
+  }, [dateRange]);
+
   return (
     <DateRangePicker
       onChange={(item: RangeKeyDict) => {
         const value = item?.selection ?? item?.range1;
         const newDateRange = value ? [value] : [];
-
         setSelectedDateRange(newDateRange);
 
         if (handleChangeDate && value) {

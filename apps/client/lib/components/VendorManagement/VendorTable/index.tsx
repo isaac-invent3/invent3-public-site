@@ -71,7 +71,7 @@ const VendorTable = (props: VendorTableProps) => {
           header: 'Vendor Name',
           enableSorting: true,
         }),
-        columnHelper.accessor('vendorName', {
+        columnHelper.accessor('contactFirstName', {
           cell: (info) => ContactPerson(info.row.original),
           header: 'Contact Person',
           enableSorting: false,

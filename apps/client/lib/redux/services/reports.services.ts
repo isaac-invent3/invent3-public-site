@@ -47,7 +47,13 @@ export const reportApi = createApi({
 
     getReportDasboardValues: builder.query<
       BaseApiResponse<ReportDashboardValuesResponse>,
-      QueryParams & { startDate: string; endDate: string }
+      QueryParams & {
+        startDate: string;
+        endDate: string;
+        regionIds?: number[];
+        lgaIds?: number[];
+        facilityIds?: number[];
+      }
     >({
       query: (data) => ({
         url: generateQueryStr(`/Reports/GetReportDashboardValues?`, data),

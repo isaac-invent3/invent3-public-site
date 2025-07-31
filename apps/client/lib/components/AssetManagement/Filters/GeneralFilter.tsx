@@ -38,7 +38,10 @@ const GeneralFilter = (props: GeneralFilterProps) => {
   return (
     <FilterWrapper
       handleApplyFilter={handleApplyFilter}
-      handleClearFilter={() => dispatch(clearAssetFilter())}
+      handleClearFilter={() => {
+        dispatch(clearAssetFilter());
+        handleApplyFilter();
+      }}
     >
       {columnType !== 'Category' && (
         <CategoryFilter

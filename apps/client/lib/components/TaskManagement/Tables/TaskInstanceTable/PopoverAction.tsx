@@ -38,11 +38,6 @@ const PopoverAction = (task: TaskInstance, type: 'drawer' | 'page') => {
     onOpen: onOpenMarkCompleted,
     onClose: onCloseMarkCompleted,
   } = useDisclosure();
-  const {
-    isOpen: isOpenViewDetails,
-    onOpen: onOpenViewDetails,
-    onClose: onCloseViewDetails,
-  } = useDisclosure();
 
   const { handleSubmit } = useCustomMutation();
 
@@ -65,14 +60,8 @@ const PopoverAction = (task: TaskInstance, type: 'drawer' | 'page') => {
   const taskSlugName = SYSTEM_CONTEXT_DETAILS.TASKS.slug;
   const slugValue = getSearchParam(taskSlugName);
 
-  useEffect(() => {
-    if (slugValue && slugValue == task?.taskInstanceGuid) {
-      onOpenViewDetails();
-    }
-  }, []);
-
   const openAction = () => {
-    updateSearchParam(taskSlugName, task?.taskInstanceGuid);
+    updateSearchParam(taskSlugName, task?.taskInstanceId);
   };
 
   return (

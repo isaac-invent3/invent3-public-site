@@ -1,9 +1,15 @@
-import { Avatar, Flex, HStack, Icon, Text } from '@chakra-ui/react';
+import {
+  Avatar,
+  Flex,
+  HStack,
+  Icon,
+  Text,
+  useDisclosure,
+} from '@chakra-ui/react';
 
 import { Notification } from '~/lib/interfaces/notification.interfaces';
 import { NotificationInfoIcon } from '../CustomIcons';
 import moment from 'moment';
-import Link from 'next/link';
 import { NOTIFICATION_EVENT_TYPE_ENUM } from '~/lib/utils/constants';
 import { useEffect, useState } from 'react';
 import { useMarkANotificationAsReadMutation } from '~/lib/redux/services/notification.services';
@@ -11,6 +17,8 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';
 import { findSystemContextDetailById } from '~/lib/hooks/useParseUrl';
 import { useRouter } from 'next/navigation';
+import { useAppDispatch } from '~/lib/redux/hooks';
+import { setParsedUrlData } from '~/lib/redux/slices/NoteSlice';
 
 const textStyle = { fontSize: '11px', lineHeight: '100%' };
 
@@ -43,6 +51,7 @@ const NotificationText = ({
   const systemContextDetails = findSystemContextDetailById(
     notification.systemContextTypeId
   );
+  const dispatch = useAppDispatch();
   const router = useRouter();
 
   const handleNavigate = () => {
@@ -52,6 +61,16 @@ const NotificationText = ({
       );
       if (handleClose) handleClose();
     }
+  };
+
+  const handleOpenNote = () => {
+    dispatch(
+      setParsedUrlData({
+        systemContextId: notification.systemContextTypeId,
+        contextId: notification.contextId,
+      })
+    );
+    if (handleClose) handleClose();
   };
 
   switch (notification.notificationEventTypeId) {
@@ -137,6 +156,37 @@ const NotificationText = ({
           has been assigned to you.
         </Text>
       );
+    case NOTIFICATION_EVENT_TYPE_ENUM.TAG:
+      return (
+        <Text
+          color="neutral.600"
+          {...textStyle}
+          cursor="pointer"
+          onClick={handleOpenNote}
+        >
+          <Text color={keyTextColor} as="span" fontWeight={800} {...textStyle}>
+            {name}
+          </Text>{' '}
+          tagged you to a {systemContextDetails?.label}:{' '}
+          <Text color={keyTextColor} fontWeight={600} as="span" {...textStyle}>
+            {message}
+          </Text>
+        </Text>
+      );
+    case NOTIFICATION_EVENT_TYPE_ENUM.ADD:
+      return (
+        <Text color="neutral.600" {...textStyle} cursor="pointer">
+          <Text color={keyTextColor} as="span" fontWeight={800} {...textStyle}>
+            {name}
+          </Text>{' '}
+          was added to the
+          <Text color={keyTextColor} fontWeight={600} as="span" {...textStyle}>
+            {message}
+          </Text>
+          {''}
+          {systemContextDetails?.label}
+        </Text>
+      );
 
     default:
       return (
@@ -159,6 +209,11 @@ const NotificationDetail = (props: NotificationDetailProps) => {
   const [markNotificationAsRead, { isLoading }] =
     useMarkANotificationAsReadMutation();
   const { handleSubmit } = useCustomMutation();
+  const {
+    isOpen: isOpenNote,
+    onClose: onCloseNote,
+    onOpen: onOpenNote,
+  } = useDisclosure();
 
   const handleMarkNotificationAsRead = async () => {
     const data = await getSession();
@@ -182,57 +237,59 @@ const NotificationDetail = (props: NotificationDetailProps) => {
   }, [notification]);
 
   return (
-    <HStack
-      width="full"
-      justifyContent="space-between"
-      pb="10.67px"
-      borderColor="#BBBBBB"
-      borderBottomWidth="0.67px"
-      alignItems="flex-start"
-      cursor="pointer"
-      opacity={isLoading ? 0.6 : 1}
-      onClick={() => {
-        if (!isRead) {
-          handleMarkNotificationAsRead();
-        }
-      }}
-    >
-      <HStack spacing="10.67px" maxW="70%" alignItems="flex-start">
-        <Flex
-          width="6px"
-          height="6px"
-          rounded="full"
-          bgColor="#17A1FA"
-          flexShrink={0}
-          visibility={isRead ? 'hidden' : 'visible'}
-          mt="8px"
-        />
-        <HStack spacing="10.67px" alignItems="flex-start">
-          {name ? (
-            <Avatar width="26.67px" height="26.67px" />
-          ) : (
-            <Flex
-              flexShrink={0}
-              width="26.67px"
-              height="26.67px"
-              rounded="full"
-              bgColor="#DEDEDE"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <Icon as={NotificationInfoIcon} boxSize="16px" />
-            </Flex>
-          )}
-          <NotificationText
-            notification={notification}
-            handleClose={handleClose}
+    <>
+      <HStack
+        width="full"
+        justifyContent="space-between"
+        pb="10.67px"
+        borderColor="#BBBBBB"
+        borderBottomWidth="0.67px"
+        alignItems="flex-start"
+        cursor="pointer"
+        opacity={isLoading ? 0.6 : 1}
+        onClick={() => {
+          if (!isRead) {
+            handleMarkNotificationAsRead();
+          }
+        }}
+      >
+        <HStack spacing="10.67px" maxW="70%" alignItems="flex-start">
+          <Flex
+            width="6px"
+            height="6px"
+            rounded="full"
+            bgColor="#17A1FA"
+            flexShrink={0}
+            visibility={isRead ? 'hidden' : 'visible'}
+            mt="8px"
           />
+          <HStack spacing="10.67px" alignItems="flex-start">
+            {name ? (
+              <Avatar width="26.67px" height="26.67px" />
+            ) : (
+              <Flex
+                flexShrink={0}
+                width="26.67px"
+                height="26.67px"
+                rounded="full"
+                bgColor="#DEDEDE"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <Icon as={NotificationInfoIcon} boxSize="16px" />
+              </Flex>
+            )}
+            <NotificationText
+              notification={notification}
+              handleClose={handleClose}
+            />
+          </HStack>
         </HStack>
+        <Text color="neutral.600" {...textStyle} whiteSpace="nowrap">
+          {formatDate(dateCreated)}
+        </Text>
       </HStack>
-      <Text color="neutral.600" {...textStyle} whiteSpace="nowrap">
-        {formatDate(dateCreated)}
-      </Text>
-    </HStack>
+    </>
   );
 };
 

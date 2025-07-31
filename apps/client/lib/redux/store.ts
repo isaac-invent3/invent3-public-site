@@ -107,7 +107,7 @@ import { designationApi } from './services/designation.services';
 export const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['general', 'report'],
+  whitelist: ['general'],
 };
 
 const rootReducer = combineReducers({

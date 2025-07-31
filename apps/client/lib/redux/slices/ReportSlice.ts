@@ -13,7 +13,7 @@ interface updateReportFilterPayload {
 }
 
 const getTodayDate = () => {
-  return dateFormatter(new Date(), 'DD-MM-YYYY') as string;
+  return dateFormatter(new Date(), 'DD/MM/YYYY') as string;
 };
 
 const initialState: SliceProps = {

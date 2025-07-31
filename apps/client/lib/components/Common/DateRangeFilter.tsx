@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { Button, DateRange } from '@repo/ui/components';
 import moment from 'moment';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Range } from 'react-date-range';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ChevronDownIcon } from '~/lib/components/CustomIcons';
@@ -55,6 +55,14 @@ const DateRangeFilter = ({
   const convertStringToDate = (date: string | undefined) => {
     return moment(date, 'DD/MM/YYYY').toDate() ?? undefined;
   };
+
+  const memoizedDateRange = useMemo(() => {
+    return {
+      startDate: fromDate ? convertStringToDate(fromDate) : undefined,
+      endDate: toDate ? convertStringToDate(toDate) : undefined,
+      key: 'selection',
+    };
+  }, [fromDate, toDate]);
 
   return (
     <Popover
@@ -115,10 +123,7 @@ const DateRangeFilter = ({
               handleChangeDate={(info) => {
                 setRange(info);
               }}
-              dateRange={{
-                startDate: fromDate ? convertStringToDate(fromDate) : undefined,
-                endDate: toDate ? convertStringToDate(toDate) : undefined,
-              }}
+              dateRange={memoizedDateRange}
             />
             <Button
               handleClick={() => handleDateSelection()}

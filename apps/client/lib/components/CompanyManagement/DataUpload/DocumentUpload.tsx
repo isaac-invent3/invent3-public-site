@@ -46,7 +46,7 @@ const DocumentUpload = () => {
           />
           <InfoCard
             customStyle={{ maxW: '301px', height: 'fit-content' }}
-            infoText="The template document has different tabs that caters to the different data to be uploaded"
+            infoText="The zipped documents, each should be named to correspond to the contents in the template document under the image file name column"
           />
         </Stack>
         <VStack width="full" spacing="4px">

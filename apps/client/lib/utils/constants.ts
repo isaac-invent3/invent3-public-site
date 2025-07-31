@@ -193,6 +193,8 @@ const SYSTEM_CONTEXT_TYPE = {
   TEMPLATES: 65,
   ROLES: 56,
   FEEDBACK: 151,
+  USER_ROLE: 125,
+  GROUP: 36,
 };
 
 const ROUTES = {
@@ -311,6 +313,27 @@ const SYSTEM_CONTEXT_DETAILS: Record<ContextKey, SystemContextDetail> = {
     displayName: 'Feedbacks',
     label: 'feedback',
   },
+  NOTES: {
+    id: SYSTEM_CONTEXT_TYPE.NOTES,
+    route: ROUTES.FEEDBACK,
+    slug: 'noteId',
+    displayName: 'Notes',
+    label: 'note',
+  },
+  USERROLE: {
+    id: SYSTEM_CONTEXT_TYPE.USER_ROLE,
+    route: ROUTES.ROLES,
+    slug: 'roleId',
+    displayName: 'Roles',
+    label: 'role',
+  },
+  GROUP: {
+    id: SYSTEM_CONTEXT_TYPE.GROUP,
+    route: ROUTES.ROLES,
+    slug: 'groupId',
+    displayName: 'Groups',
+    label: 'group',
+  },
 };
 
 const NOTIFICATION_EVENT_TYPE_ENUM = {
@@ -325,6 +348,8 @@ const NOTIFICATION_EVENT_TYPE_ENUM = {
   COMPLETED: 9,
   CANCELLED: 10,
   TAG: 11,
+  INFORM: 12,
+  ADD: 13,
 };
 
 const ASSET_GROUP_TYPE = {

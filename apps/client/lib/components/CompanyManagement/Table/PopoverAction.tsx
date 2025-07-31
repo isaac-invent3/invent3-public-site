@@ -24,6 +24,13 @@ const PopoverAction = ({ company }: PopoverActionProps) => {
           <Text
             cursor="pointer"
             as="a"
+            href={`/${ROUTES.COMPANY}/${company.companyId}/data-upload`}
+          >
+            Upload Data
+          </Text>
+          <Text
+            cursor="pointer"
+            as="a"
             href={`/${ROUTES.COMPANY}/${company.companyId}/edit`}
           >
             Edit

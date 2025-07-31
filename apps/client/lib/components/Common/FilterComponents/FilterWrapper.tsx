@@ -24,7 +24,6 @@ const FilterWrapper = (props: FilterWrapperProps) => {
         customStyles={{ minW: '120px', width: 'max-content', height: '36px' }}
         handleClick={() => {
           handleClearFilter();
-          handleApplyFilter();
         }}
       >
         Reset Filter

@@ -5,6 +5,7 @@ import {
   Grid,
   HStack,
   Link,
+  SimpleGrid,
   Skeleton,
   Stack,
   Text,
@@ -26,14 +27,16 @@ import DefaultReport from './ReportDashboard/DefaultReport';
 import ReportCard from './ReportDashboard/ReportCard';
 import SavedTemplate from './ReportDashboard/SavedTemplate';
 import TicketStatusPieChart from './ReportDashboard/TicketStatusPieChart';
+import { useEffect, useState } from 'react';
+import { ReportFilterInput } from '~/lib/interfaces/report.interfaces';
 
 const ReportAnalytics = () => {
   const { data: defaultReports, isLoading: defaultReportsLoading } =
     useGetAllDefaultReportsQuery({
       pageSize: DEFAULT_PAGE_SIZE,
     });
-
   const { filters } = useAppSelector((state) => state.report);
+  const [finalFilters, setFinalFilters] = useState<ReportFilterInput>(filters);
   const session = useSession();
   const user = session?.data?.user;
 
@@ -42,15 +45,21 @@ const ReportAnalytics = () => {
       pageSize: DEFAULT_PAGE_SIZE,
     });
 
-  const { data: reportDashboardValues, isLoading: reportDashboardLoading } =
-    useGetReportDasboardValuesQuery({
-      startDate: moment(filters.fromDate, 'DD/MM/YYYY HH:mm')
-        .utcOffset(0, true)
-        .toISOString(),
-      endDate: moment(filters.toDate, 'DD/MM/YYYY HH:mm')
-        .utcOffset(0, true)
-        .toISOString(),
-    });
+  const {
+    data: reportDashboardValues,
+    isLoading: reportDashboardLoading,
+    isFetching: isFetchingReportDashboard,
+  } = useGetReportDasboardValuesQuery({
+    startDate: moment(finalFilters.fromDate, 'DD/MM/YYYY')
+      .utcOffset(0, true)
+      .toISOString(),
+    endDate: moment(finalFilters.toDate, 'DD/MM/YYYY')
+      .utcOffset(0, true)
+      .toISOString(),
+    regionIds: finalFilters.region?.map((item) => item.value as number) || [],
+    lgaIds: finalFilters.area?.map((item) => item.value as number) || [],
+    facilityIds: finalFilters.branch?.map((item) => item.value as number) || [],
+  });
 
   const cardData = [
     {
@@ -95,7 +104,7 @@ const ReportAnalytics = () => {
     >
       <Header />
 
-      <GeneralFilter />
+      <GeneralFilter setFinalFilters={setFinalFilters} />
 
       <Stack
         alignItems="center"
@@ -106,6 +115,7 @@ const ReportAnalytics = () => {
         borderBlock="1px solid #BBBBBB"
         justifyContent="space-between"
         direction={{ base: 'column', md: 'row' }}
+        opacity={isFetchingReportDashboard ? 0.7 : 1}
       >
         <Grid
           templateColumns={{
@@ -179,14 +189,8 @@ const ReportAnalytics = () => {
             </VStack>
           )}
 
-        <Grid
-          templateColumns={{
-            base: 'repeat(2, 1fr)',
-            sm: 'repeat(3, 1fr)',
-            md: 'repeat(4, 1fr)',
-            lg: 'repeat(5, 1fr)',
-            xl: 'repeat(7, 1fr)',
-          }}
+        <SimpleGrid
+          columns={{ base: 2, md: 3, lg: 4, xl: 5 }}
           width="100%"
           gap="16px"
           mt="10px"
@@ -205,7 +209,7 @@ const ReportAnalytics = () => {
                 isLoading={defaultReportsLoading}
               />
             ))}
-        </Grid>
+        </SimpleGrid>
       </VStack>
 
       <VStack mt="5">
@@ -244,14 +248,8 @@ const ReportAnalytics = () => {
             </VStack>
           )}
 
-        <Grid
-          templateColumns={{
-            base: 'repeat(2, 1fr)',
-            sm: 'repeat(3, 1fr)',
-            md: 'repeat(4, 1fr)',
-            lg: 'repeat(5, 1fr)',
-            xl: 'repeat(7, 1fr)',
-          }}
+        <SimpleGrid
+          columns={{ base: 2, md: 3, lg: 4, xl: 5 }}
           width="100%"
           gap="16px"
           mt="10px"
@@ -267,7 +265,7 @@ const ReportAnalytics = () => {
             savedReports?.data.items.map((report, index) => (
               <SavedTemplate key={index} report={report} />
             ))}
-        </Grid>
+        </SimpleGrid>
       </VStack>
     </Flex>
   );

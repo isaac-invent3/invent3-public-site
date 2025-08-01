@@ -59,7 +59,7 @@ const NoteDetails = (props: NoteFormModalProps) => {
   const parsedData = useAppSelector((state) => state.notes.parsedUrlData);
   const {
     data: noteDetail,
-    isLoading: isLoadingNoteDetail,
+    isLoading: isLoadingNoteDetails,
     isFetching: isFetchingNoteDetails,
   } = useGetNoteByIdQuery(
     { id: parsedData?.contextId as number },
@@ -81,8 +81,6 @@ const NoteDetails = (props: NoteFormModalProps) => {
     },
     { skip: !note?.noteId }
   );
-
-  const isLoadingNoteDetails = true;
 
   return (
     <>
@@ -118,7 +116,7 @@ const NoteDetails = (props: NoteFormModalProps) => {
           {(isLoadingNoteDetails || isFetchingNoteDetails) && (
             <LoadingSpinner />
           )}
-          {note && !isLoadingNoteDetails && (
+          {note && !isLoadingNoteDetails && !isFetchingNoteDetails && (
             <Stack
               alignItems="start"
               justifyContent="space-between"

@@ -142,7 +142,11 @@ export const config = {
             ),
             username: credentials.email,
             // companySlug: hasSubdomain ? subdomain : null,
-            companySlug: credentials.companySlug ?? tenantName,
+            companySlug: ['', 'null', null, undefined].includes(
+              credentials.companySlug
+            )
+              ? tenantName
+              : credentials.companySlug,
           };
         }
         const payload = {

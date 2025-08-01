@@ -117,7 +117,25 @@ export const reportApi = createApi({
         body,
       }),
     }),
-    exportReport: builder.mutation<
+    exportReportById: builder.mutation<
+      BaseApiResponse<string>,
+      {
+        reportId: number;
+        exportType: number;
+        startDate?: string;
+        endDate?: string;
+        regionIds?: number[];
+        lgaIds?: number[];
+        facilityIds?: number[];
+      } & QueryParams
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/Reports/Export?`, data),
+        method: 'POST',
+        headers: getHeaders(),
+      }),
+    }),
+    exportReportByCriterion: builder.mutation<
       BaseApiResponse<string>,
       {
         exportType: number;
@@ -149,5 +167,6 @@ export const {
   useScheduleReportMutation,
   useGenerateReportMutation,
   useSaveReportAsTemplateMutation,
-  useExportReportMutation,
+  useExportReportByCriterionMutation,
+  useExportReportByIdMutation,
 } = reportApi;

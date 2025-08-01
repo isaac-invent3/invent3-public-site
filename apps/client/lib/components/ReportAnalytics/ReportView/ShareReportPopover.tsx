@@ -18,25 +18,32 @@ import { Button } from '@repo/ui/components';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { DownloadIcon } from '../../CustomIcons';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { useExportReportMutation } from '~/lib/redux/services/reports.services';
 import { handleExport } from '~/lib/utils/helperFunctions';
 import { EXPORT_TYPE_ENUM } from '~/lib/utils/constants';
 import moment from 'moment';
 import { GenerateReportCriterion } from '~/lib/interfaces/report.interfaces';
+import {
+  useExportReportByCriterionMutation,
+  useExportReportByIdMutation,
+} from '~/lib/redux/services/reports.services';
 
 type SelectedReportActions = 'download-pdf' | 'download-csv' | 'share-email';
 
 interface PopoverActionProps {
-  reportCriterion: GenerateReportCriterion[];
-  systemContextTypeId: number;
+  reportId?: number | null;
+  reportCriterion?: GenerateReportCriterion[];
+  systemContextTypeId?: number;
 }
 const ShareReportPopover = (props: PopoverActionProps) => {
-  const { reportCriterion, systemContextTypeId } = props;
+  const { reportId, reportCriterion, systemContextTypeId } = props;
   const { filters } = useAppSelector((state) => state.report);
   const [exportType, setExportType] = useState<number | null>(null);
   const { handleSubmit } = useCustomMutation();
   const openModal = (action: SelectedReportActions) => {};
-  const [exportReport, { isLoading }] = useExportReportMutation();
+  const [exportReportById, { isLoading: isLoadingIdReport }] =
+    useExportReportByIdMutation();
+  const [exportReportByCriterion, { isLoading: isLoadingCriterionReport }] =
+    useExportReportByCriterionMutation();
 
   const popoverRef = useRef(null);
 
@@ -48,11 +55,27 @@ const ShareReportPopover = (props: PopoverActionProps) => {
   });
 
   const submitExport = async (exportType: number) => {
-    const resp = await handleSubmit(exportReport, {
-      exportType,
-      reportCriterion,
-      systemContextTypeId,
-    });
+    let resp;
+
+    if (reportId) {
+      resp = await handleSubmit(exportReportById, {
+        reportId: reportId!,
+        exportType,
+        // startDate: moment(filters.fromDate, 'DD-MM-YYYY')
+        //   .utcOffset(0, true)
+        //   .toISOString(),
+        // endDate: moment(filters.toDate, 'DD-MM-YYYY')
+        //   .utcOffset(0, true)
+        //   .toISOString(),
+      });
+    }
+    if (reportCriterion) {
+      resp = await handleSubmit(exportReportByCriterion, {
+        exportType,
+        reportCriterion,
+        systemContextTypeId: systemContextTypeId!,
+      });
+    }
     if (resp?.data?.data) {
       await handleExport(resp?.data?.data);
     }
@@ -98,7 +121,8 @@ const ShareReportPopover = (props: PopoverActionProps) => {
                   submitExport(EXPORT_TYPE_ENUM.PDF);
                 }}
               >
-                {isLoading && exportType === EXPORT_TYPE_ENUM.PDF
+                {(isLoadingCriterionReport || isLoadingIdReport) &&
+                exportType === EXPORT_TYPE_ENUM.PDF
                   ? 'Exporting...'
                   : 'Download as PDF'}
               </Text>
@@ -109,7 +133,8 @@ const ShareReportPopover = (props: PopoverActionProps) => {
                   submitExport(EXPORT_TYPE_ENUM.CSV);
                 }}
               >
-                {isLoading && exportType === EXPORT_TYPE_ENUM.CSV
+                {(isLoadingCriterionReport || isLoadingIdReport) &&
+                exportType === EXPORT_TYPE_ENUM.CSV
                   ? 'Exporting...'
                   : 'Download as CSV'}
               </Text>

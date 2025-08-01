@@ -1,5 +1,5 @@
 'use client';
-import { Flex, HStack, Skeleton, Text, VStack } from '@chakra-ui/react';
+import { Flex, HStack, Skeleton, Stack, Text, VStack } from '@chakra-ui/react';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import moment from 'moment';
@@ -80,12 +80,15 @@ const ReportView = (props: ReportViewProps) => {
         borderBottom="1px solid #BBBBBB"
         paddingBottom="16px"
         marginBottom="16px"
+        px={{ base: '16px', lg: 'none' }}
       >
         <Skeleton isLoaded={!loadingReportInfo} width="full" height="full">
-          <HStack
+          <Stack
             width="full"
             justifyContent="space-between"
-            alignItems="center"
+            alignItems={{ base: 'flex-start', lg: 'center' }}
+            direction={{ base: 'column', lg: 'row' }}
+            spacing="16px"
           >
             <VStack alignItems="start">
               <HStack spacing="16px">
@@ -123,24 +126,25 @@ const ReportView = (props: ReportViewProps) => {
                 </Text>
               </HStack>
             </VStack>
+            <HStack spacing="16px" flexWrap="wrap">
+              <Text
+                color="#0E2642"
+                size="md"
+                fontWeight="500"
+                lineHeight="16.63px"
+              >
+                Total Record: {reportTableData?.data.totalItems}
+              </Text>
 
-            <Text
-              color="#0E2642"
-              size="md"
-              fontWeight="500"
-              lineHeight="16.63px"
-            >
-              Total Record: {reportTableData?.data.totalItems}
-            </Text>
-
-            {reportInfo?.data && (
-              <ReportViewFilters
-                activeFilter={activeFilter}
-                setActiveFilter={setActiveFilter}
-                report={reportInfo?.data}
-              />
-            )}
-          </HStack>
+              {reportInfo?.data && (
+                <ReportViewFilters
+                  activeFilter={activeFilter}
+                  setActiveFilter={setActiveFilter}
+                  report={reportInfo?.data}
+                />
+              )}
+            </HStack>
+          </Stack>
         </Skeleton>
       </VStack>
 

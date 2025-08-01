@@ -21,7 +21,7 @@ const ReportViewFilters = (props: ReportViewFiltersProps) => {
   } = useDisclosure();
 
   return (
-    <HStack spacing="16px">
+    <HStack spacing="16px" flexWrap="wrap">
       <FilterButton
         chevron={false}
         icon={CalendarIcon}

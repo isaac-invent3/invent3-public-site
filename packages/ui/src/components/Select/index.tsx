@@ -24,6 +24,7 @@ const DropdownIndicator = (props: any) => {
 };
 
 export interface SelectInputProps {
+  name: string;
   title: string;
   options: Option[];
   selectedOption?: Option | Option[] | string | number;
@@ -48,6 +49,7 @@ export interface SelectInputProps {
 }
 function SelectInput(props: SelectInputProps) {
   const {
+    name,
     title,
     options,
     selectedOption,
@@ -114,6 +116,25 @@ function SelectInput(props: SelectInputProps) {
     }
   }, [selectedOption]);
 
+  //Move Label on AutoFill
+  useEffect(() => {
+    const node = document.getElementById(name);
+
+    if (!node) return;
+
+    const handleAnimationStart = (e: AnimationEvent) => {
+      if (e.animationName === 'autofill-start') {
+        setIsFocused(true); // Float the label
+      }
+    };
+
+    node.addEventListener('animationstart', handleAnimationStart);
+
+    return () => {
+      node.removeEventListener('animationstart', handleAnimationStart);
+    };
+  }, []);
+
   return (
     <Box width={width} position="relative" height="full" {...containerStyles}>
       <FormControl isInvalid={isInvalid} position="relative">
@@ -163,6 +184,7 @@ function SelectInput(props: SelectInputProps) {
           </FormLabel>
         )}
         <SelectComponent
+          id={name}
           isSearchable={isSearchable}
           options={options}
           isLoading={isLoading || false}

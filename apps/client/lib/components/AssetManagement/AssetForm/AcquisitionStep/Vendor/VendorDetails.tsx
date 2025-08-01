@@ -114,6 +114,11 @@ const VendorDetails = () => {
                     setSelectedVendor(Number(option.value) ?? undefined);
                     dispatch(updateAssetForm({ vendorFormDetails: null }));
                   }}
+                  selectedOption={
+                    vendorDetails
+                      ? { value: 9999, label: vendorDetails?.vendorName! }
+                      : undefined
+                  }
                 />
                 {!canCreateVendor && (
                   <FormAddButton handleClick={onOpen}>

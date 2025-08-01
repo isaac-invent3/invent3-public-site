@@ -129,7 +129,10 @@ const GeneratedReport = (props: GeneratedReportProps) => {
           border="1px solid #D4D4D4"
         />
 
-        <ShareReportPopover reportId={null} />
+        <ShareReportPopover
+          systemContextTypeId={generatePayload.systemContextTypeId!}
+          reportCriterion={generatePayload.criterion}
+        />
       </HStack>
 
       <DataTable

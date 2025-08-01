@@ -17,7 +17,7 @@ interface SaveReportAsTemplateModalProps {
   isOpen: boolean;
   onClose: () => void;
   // eslint-disable-next-line no-unused-vars
-  handleSave: (payload: SaveAsTemplatePayload) => void;
+  handleSave: (payload: SaveAsTemplatePayload) => Promise<void>;
   isLoading: boolean;
 }
 
@@ -32,7 +32,7 @@ const SaveAsTemplateModal = (props: SaveReportAsTemplateModalProps) => {
     validationSchema: templateSchema,
     enableReinitialize: true,
     onSubmit: async (values, { resetForm }) => {
-      handleSave(values);
+      await handleSave(values);
       resetForm();
     },
   });

@@ -53,9 +53,13 @@ const SummarySection = (props: SummarySectionProps) => {
 
   const [saveAsTemplate, setSaveAsTemplate] = useState(false);
 
-  const handleSaveAsTemplate = (data: SaveAsTemplatePayload) => {
+  const handleSaveAsTemplate = async (data: SaveAsTemplatePayload) => {
     setSaveAsTemplate(true);
-    handleSubmitSchedule(true, data.templateName, data.templateDescription);
+    await handleSubmitSchedule(
+      true,
+      data.templateName,
+      data.templateDescription
+    );
   };
 
   const generatePayload = async (

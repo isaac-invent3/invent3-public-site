@@ -53,9 +53,9 @@ const SummarySection = (props: SummarySectionProps) => {
     useUpdateMaintenancePlanWithSchedulesMutation();
   const [saveAsTemplate, setSaveAsTemplate] = useState(false);
 
-  const handleSaveAsTemplate = (data: SaveAsTemplatePayload) => {
+  const handleSaveAsTemplate = async (data: SaveAsTemplatePayload) => {
     setSaveAsTemplate(true);
-    handleSubmitPlan(true, data.templateName, data.templateDescription);
+    await handleSubmitPlan(true, data.templateName, data.templateDescription);
   };
 
   const generateCreatePayload = async (

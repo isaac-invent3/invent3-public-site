@@ -144,7 +144,7 @@ const NoteDetails = (props: NoteFormModalProps) => {
                 >
                   <PageHeader>Notes</PageHeader>
 
-                  {data?.systemContextId && (
+                  {data?.systemContextId && !note?.isTagged && (
                     <>
                       <Button
                         handleClick={onNoteFormOpen}

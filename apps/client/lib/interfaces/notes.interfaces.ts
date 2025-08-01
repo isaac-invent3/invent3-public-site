@@ -13,6 +13,7 @@ interface Note extends BaseEntity {
   hasComment: boolean;
   content: string;
   isPrivate: boolean;
+  isTagged: boolean;
   parentId: number;
   dateCreated: string;
   notePriorityId: number;

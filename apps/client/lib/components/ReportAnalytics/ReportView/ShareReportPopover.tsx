@@ -15,21 +15,23 @@ import {
 import { useRef, useState } from 'react';
 
 import { Button } from '@repo/ui/components';
-import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { useAppSelector } from '~/lib/redux/hooks';
 import { DownloadIcon } from '../../CustomIcons';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useExportReportMutation } from '~/lib/redux/services/reports.services';
 import { handleExport } from '~/lib/utils/helperFunctions';
 import { EXPORT_TYPE_ENUM } from '~/lib/utils/constants';
 import moment from 'moment';
+import { GenerateReportCriterion } from '~/lib/interfaces/report.interfaces';
 
 type SelectedReportActions = 'download-pdf' | 'download-csv' | 'share-email';
 
 interface PopoverActionProps {
-  reportId: number | null;
+  reportCriterion: GenerateReportCriterion[];
+  systemContextTypeId: number;
 }
 const ShareReportPopover = (props: PopoverActionProps) => {
-  const { reportId } = props;
+  const { reportCriterion, systemContextTypeId } = props;
   const { filters } = useAppSelector((state) => state.report);
   const [exportType, setExportType] = useState<number | null>(null);
   const { handleSubmit } = useCustomMutation();
@@ -47,14 +49,9 @@ const ShareReportPopover = (props: PopoverActionProps) => {
 
   const submitExport = async (exportType: number) => {
     const resp = await handleSubmit(exportReport, {
-      reportId: reportId!,
       exportType,
-      startDate: moment(filters.fromDate, 'DD-MM-YYYY')
-        .utcOffset(0, true)
-        .toISOString(),
-      endDate: moment(filters.toDate, 'DD-MM-YYYY')
-        .utcOffset(0, true)
-        .toISOString(),
+      reportCriterion,
+      systemContextTypeId,
     });
     if (resp?.data?.data) {
       await handleExport(resp?.data?.data);

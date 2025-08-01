@@ -1,6 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { BaseApiResponse, ListResponse, QueryParams } from '@repo/interfaces';
 import {
+  GenerateReportCriterion,
   GenerateReportPayload,
   GenerateReportResponse,
   Report,
@@ -119,19 +120,21 @@ export const reportApi = createApi({
     exportReport: builder.mutation<
       BaseApiResponse<string>,
       {
-        reportId: number;
         exportType: number;
-        startDate?: string;
-        endDate?: string;
-        regionIds?: number[];
-        lgaIds?: number[];
-        facilityIds?: number[];
-      } & QueryParams
+        reportCriterion?: GenerateReportCriterion[];
+        systemContextTypeId: number;
+      }
     >({
-      query: (data) => ({
-        url: generateQueryStr(`/Reports/Export?`, data),
+      query: ({ exportType, ...data }) => ({
+        url: generateQueryStr(`/Invent3Pro/Reports/GenerateAndExport?`, {
+          exportType,
+        }),
         method: 'POST',
         headers: getHeaders(),
+        body: {
+          criterion: data?.reportCriterion,
+          systemContextTypeId: data?.systemContextTypeId,
+        },
       }),
     }),
   }),

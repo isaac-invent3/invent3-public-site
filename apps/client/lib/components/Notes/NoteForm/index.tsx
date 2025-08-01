@@ -80,6 +80,7 @@ const NoteForm = (props: NoteFormModalProps) => {
 
       const createNoteDto = {
         systemContextTypeId: parsedUrl?.systemContextId!,
+        systemContextId: parsedUrl?.systemContextId,
         authorId: Number(session?.user.id),
         createdBy: session?.user?.username!,
         ...rest,
@@ -109,6 +110,7 @@ const NoteForm = (props: NoteFormModalProps) => {
           noteId: note.noteId,
           ...payload.createNoteDto,
           systemContextIds: payload.systemContextIds,
+          systemContextId: parsedUrl?.systemContextId,
           tags: payload.tags,
           lastModifiedBy: session?.user?.username!,
         };

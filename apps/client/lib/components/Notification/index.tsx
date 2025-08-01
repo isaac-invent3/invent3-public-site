@@ -13,7 +13,7 @@ import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { NotificationTabType } from '~/lib/interfaces/notification.interfaces';
 import NotificationIconWithBadge from './Display/NotificationIconWithBadge';
-import AllNotes from '../Notes/AllNotes';
+import NoteDetails from '../Notes/NoteDetails';
 
 const NotificationComponents = () => {
   const {
@@ -112,11 +112,7 @@ const NotificationComponents = () => {
           activeTab={activeTab}
         />
       )}
-      <AllNotes
-        onClose={onCloseNote}
-        isOpen={isOpenNote}
-        defaultData={parsedUrlData}
-      />
+      <NoteDetails onClose={onCloseNote} isOpen={isOpenNote} />
     </>
   );
 };

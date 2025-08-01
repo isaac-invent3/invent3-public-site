@@ -203,7 +203,7 @@ const NoteCard = (props: NoteCardProps) => {
 
       {isNoteDetailOpen && (
         <NoteDetails
-          note={props.data}
+          defaultNote={props.data}
           isOpen={isNoteDetailOpen}
           onClose={onCloseNoteDetail}
         />

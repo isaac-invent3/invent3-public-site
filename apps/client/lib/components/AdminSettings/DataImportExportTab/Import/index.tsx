@@ -33,6 +33,7 @@ const Import = () => {
         sectionInfoStyle={{ maxW: { base: '100%' } }}
       >
         <Select
+          name="mapping"
           title="Mapping"
           options={[]}
           selectedOption={undefined}

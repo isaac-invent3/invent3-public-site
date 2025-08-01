@@ -114,6 +114,7 @@ const GeneralTab = () => {
                 sectionInfoStyle={{ maxW: { base: '100%', sm: '212px' } }}
               >
                 <Select
+                  name="timezone"
                   title={item.title}
                   options={item.options}
                   selectedOption={selectedOption}

@@ -74,6 +74,7 @@ const AssetCount = () => {
         <Text>Show Assets Count by: </Text>
 
         <Select
+          name="type"
           title="Type"
           options={dropdownData}
           selectedOption={selectedClass}

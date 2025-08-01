@@ -138,6 +138,7 @@ const DynamicConditions = () => {
                         position="relative"
                       >
                         <Select
+                          name="column"
                           title="Column"
                           isLoading={isLoading}
                           options={selectedColumns}
@@ -178,6 +179,7 @@ const DynamicConditions = () => {
                         position="relative"
                       >
                         <Select
+                          name="operator"
                           title="Operator"
                           showTitleAfterSelect={true}
                           options={getRelationalOperators(

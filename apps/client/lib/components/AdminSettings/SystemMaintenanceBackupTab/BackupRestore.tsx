@@ -44,6 +44,7 @@ const BackupRestore = () => {
               sectionInfoStyle={{ maxW: { base: '100%' } }}
             >
               <Select
+                name={item.label}
                 title={item.label}
                 options={item.options}
                 selectedOption={undefined}
@@ -63,6 +64,7 @@ const BackupRestore = () => {
         >
           <Stack direction={{ base: 'column', md: 'row' }} spacing="24px">
             <Select
+              name="module"
               title="Module"
               options={[]}
               selectedOption={undefined}

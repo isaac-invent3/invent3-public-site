@@ -110,6 +110,7 @@ const DynamicConditionValue = (props: DynamicConditionValueProps) => {
     // Change to Generic Async Select so i can search
     return (
       <Select
+        name="value"
         title="Value"
         isLoading={isFetching}
         options={options}

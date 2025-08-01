@@ -37,6 +37,7 @@ const Export = () => {
               sectionInfoStyle={{ maxW: { base: '100%' } }}
             >
               <Select
+                name="export"
                 title={item.label}
                 options={item.options}
                 selectedOption={undefined}
@@ -56,6 +57,7 @@ const Export = () => {
         >
           <Stack direction={{ base: 'column', md: 'row' }} spacing="24px">
             <Select
+              name="module"
               title="Module"
               options={[]}
               selectedOption={undefined}

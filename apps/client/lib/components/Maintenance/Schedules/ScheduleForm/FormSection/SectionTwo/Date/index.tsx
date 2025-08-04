@@ -107,7 +107,7 @@ const Date = (props: DateProps) => {
         ...formattedInfo,
       })
     );
-    //   onCloseRecurrence();
+    onCloseRecurrence();
     // } else {
     // toast({
     //   title: 'Error',

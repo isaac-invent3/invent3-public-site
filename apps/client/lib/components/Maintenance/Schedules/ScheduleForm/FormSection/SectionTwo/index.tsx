@@ -25,7 +25,7 @@ const SectionTwo = (props: SectionTwoProps) => {
   return (
     <VStack spacing="45px" width="full" alignItems="flex-start">
       <SimpleGrid
-         columns={{ base: 1, md: 2 }}
+        columns={{ base: 1, md: 2 }}
         alignItems="flex-start"
         width="full"
         spacing="40px"
@@ -38,7 +38,7 @@ const SectionTwo = (props: SectionTwoProps) => {
         />
       </SimpleGrid>
       <SimpleGrid
-         columns={{ base: 1, md: 2 }}
+        columns={{ base: 1, md: 2 }}
         alignItems="flex-start"
         width="full"
         spacing="40px"
@@ -55,7 +55,7 @@ const SectionTwo = (props: SectionTwoProps) => {
         />
       </SimpleGrid>
       <SimpleGrid
-         columns={{ base: 1, md: 2 }}
+        columns={{ base: 1, md: 2 }}
         alignItems="flex-start"
         width="full"
         spacing="40px"
@@ -69,7 +69,7 @@ const SectionTwo = (props: SectionTwoProps) => {
           scheduleType={scheduleType}
         />
         <Tasks
-          showTaskCount={scheduleType === 'main'}
+          showTaskCount={scheduleType === 'instance'}
           sectionMaxWidth="141px"
           spacing="41px"
         />

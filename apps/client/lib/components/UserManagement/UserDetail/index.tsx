@@ -40,7 +40,7 @@ const UserDetail = ({
   } = useGetUserByIdQuery(
     { userId: userId! },
     {
-      skip: !userId || Boolean(selectedUser),
+      skip: !userId,
     }
   );
 
@@ -50,10 +50,10 @@ const UserDetail = ({
   };
 
   const user = useMemo(() => {
-    if (userData?.data && !selectedUser) dispatch(setUser(userData?.data));
+    if (userData?.data) dispatch(setUser(userData?.data));
 
-    return selectedUser || userData?.data;
-  }, [userData, selectedUser]);
+    return userData?.data || selectedUser;
+  }, [userData]);
 
   const userNotFound = useMemo(() => {
     const notFound = !user && !isLoading && !isFetching;

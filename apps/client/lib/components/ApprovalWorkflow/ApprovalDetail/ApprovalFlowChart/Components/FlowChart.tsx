@@ -9,13 +9,17 @@ import {
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { getSession } from 'next-auth/react';
-import { usePathname, useRouter } from 'next/navigation';
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import {
   useGetAllApprovalWorkflowPartyInstancesQuery,
   useUpdateApprovalWorkflowPartyInstancesMutation,
 } from '~/lib/redux/services/approval-workflow/partyInstances.services';
-import { ROUTES } from '~/lib/utils/constants';
 import ApprovalDetailsPanel from '../RightPanel';
 import { useApprovalFlowContext } from './Context';
 import { CustomEdge, CustomNode } from './Interfaces';
@@ -34,18 +38,15 @@ interface ApprovalChartProps {
 
 const ApprovalFlowChart = (props: ApprovalChartProps) => {
   const { setElements, elements } = useApprovalFlowContext();
-
-  const pathname = usePathname();
-  const router = useRouter();
-
-  const approvalRequestId = Number(pathname?.split('/')[2]);
+  const params = useParams();
+  const approvalRequestId = Number(params?.id);
 
   const { data, isLoading, isFetching } =
     useGetAllApprovalWorkflowPartyInstancesQuery(
       {
         pageNumber: 1,
         pageSize: 100,
-        approvalRequestId,
+        approvalRequestId: approvalRequestId!,
       },
       { skip: !approvalRequestId }
     );
@@ -581,8 +582,6 @@ const ApprovalFlowChart = (props: ApprovalChartProps) => {
   };
 
   if (!approvalRequestId) {
-    router.push(ROUTES.APPROVAL);
-
     return null;
   }
 

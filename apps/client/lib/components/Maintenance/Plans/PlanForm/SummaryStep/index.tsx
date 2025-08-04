@@ -245,7 +245,7 @@ const SummarySection = (props: SummarySectionProps) => {
               !isSuccess && (
                 <Button
                   variant="outline"
-                  customStyles={{ width: 'max-content' }}
+                  customStyles={{ width: { base: 'full', md: 'max-content' } }}
                   handleClick={onOpenSaveAsTemplate}
                 >
                   Save and Create Template

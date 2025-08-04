@@ -13,7 +13,7 @@ const taskBaseSchema = () =>
     taskStatusName: Yup.string().nullable(),
     assignedTo: Yup.number().required('Assignee is Required'),
     assignedToEmployeeName: Yup.string().required('Assignee is Required'),
-    costEstimate: Yup.number().required('Cost Estimate is Required'),
+    costEstimate: Yup.number().nullable(),
     actualCost: Yup.number().nullable(),
     estimatedDurationInHours: Yup.number().required(
       'Estimated Duration is required'
@@ -36,7 +36,7 @@ const updateTaskInstanceMetadataSchema = Yup.object().shape({
       assignedToId?: string;
     }) {
       const { taskStatusId, taskPriorityId, assignedToId } = value || {};
-      return (!taskStatusId || !taskPriorityId || !assignedToId);
+      return !taskStatusId || !taskPriorityId || !assignedToId;
     }
   ),
 

@@ -38,9 +38,10 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
   return (
     <Stack
       width="full"
-      direction={{ base: 'row' }}
+      direction={{ base: 'column', md: 'row' }}
       justifyContent={{ base: 'space-between' }}
       alignItems={{ base: 'center', md: 'space-between' }}
+      spacing="16px"
     >
       <Button
         customStyles={{

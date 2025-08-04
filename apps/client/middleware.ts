@@ -116,9 +116,12 @@ export function signOut(request: NextRequest): NextResponse {
 
   // Get full path + query string
   const fullPathWithQuery = request.nextUrl.pathname + request.nextUrl.search;
-
-  // Encode it safely
   const encodedRef = encodeURIComponent(fullPathWithQuery);
+
+  // Prevent redirect loop by NEVER using /signin as ref when already on /signin
+  if (request.nextUrl.pathname === '/signin') {
+    return NextResponse.next();
+  }
 
   // Build redirect URL
   const url = new URL('/signin', request.url);
@@ -249,18 +252,22 @@ export async function middleware(request: NextRequest) {
         return updateCookie(null, request, response);
       }
     }
+    const checkPath = tenantData ? `/${remainingPath}` : pathname;
+
+    // Don't check permission for protected global route or super admin route if the user is a super admin
+    const formattedPath = `/${checkPath.split('/')?.[1] as string}`;
 
     // Redirect to tenant if token has a different tenant. Note: This is for only the relative path approach
-    if (token.companySlug && token.companySlug !== tenant) {
+    if (
+      token.companySlug &&
+      token.companySlug !== tenant &&
+      formattedPath !== '/signin'
+    ) {
       const url = new URL(`/${token.companySlug}/${pathname}`, request.url);
       url.search = request.nextUrl.search; // Preserve query string
       return NextResponse.redirect(url);
     }
 
-    const checkPath = tenantData ? `/${remainingPath}` : pathname;
-
-    // Don't check permission for protected global route or super admin route if the user is a super admin
-    const formattedPath = `/${checkPath.split('/')?.[1] as string}`;
     if (
       protectedGlobalRoute.includes(formattedPath) ||
       (protectedSuperAdminRoute.includes(formattedPath) &&
@@ -275,9 +282,14 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next();
     }
 
+    // Stop redirect loop
+    if (formattedPath === '/signin') {
+      const url = new URL(`/signin`, request.url);
+      return NextResponse.rewrite(url);
+    }
+
     // Redirect to Dashboard for public routes
-    // Avoid redirecting from /signin if that's the current page
-    if (publicRoutes.includes(checkPath) && checkPath !== '/signin') {
+    if (publicRoutes.includes(checkPath)) {
       if (tenantData) {
         return NextResponse.redirect(
           new URL(`/${tenant}/dashboard`, request.url)
@@ -287,6 +299,7 @@ export async function middleware(request: NextRequest) {
     }
 
     const permissionData = await checkPermission({ path: checkPath });
+
     if (
       !permissionData &&
       !(
@@ -364,7 +377,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!api/|_next/|__next|_static/|_vercel|fonts/|[\\w-]+\\.\\w+).*)',
+    '/((?!api/|_next/|__next|_static/|_vercel|fonts/|\\.well-known/|[\\w-]+\\.\\w+).*)',
     '/',
     '/signin',
     '/forgot-password',

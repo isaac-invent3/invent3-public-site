@@ -3,17 +3,22 @@ import { Grid, GridItem, HStack, Text, VStack } from '@chakra-ui/react';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { MaintenanceColorCode } from '~/lib/utils/ColorCodes';
-import { dateFormatter } from '~/lib/utils/Formatters';
+import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
 
 const SectionOne = () => {
   const formDetails = useAppSelector((state) => state.maintenance.scheduleForm);
   const planInfo = formDetails.maintenancePlanInfo;
 
+  const scheduleCost = formDetails.tasks.reduce(
+    (sum, task) => sum + (task.costEstimate ?? 0),
+    0
+  );
+
   return (
     <Grid
       templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(4, 1fr)' }}
       rowGap="32px"
-      columnGap={0}
+      columnGap="32px"
       width="full"
     >
       <GridItem colSpan={1} width="full">
@@ -40,7 +45,7 @@ const SectionOne = () => {
         </VStack>
       </GridItem>
 
-      <GridItem colSpan={{base:1, md:2}} width="full">
+      <GridItem colSpan={{ base: 1 }} width="full">
         <VStack alignItems="flex-start" spacing="8px">
           <Text color="neutral.600" fontWeight={700}>
             Maintenance Plan
@@ -67,6 +72,16 @@ const SectionOne = () => {
             {planInfo?.endDate
               ? dateFormatter(planInfo?.endDate, 'Do MMM, YYYY')
               : 'N/A'}
+          </Text>
+        </VStack>
+      </GridItem>
+      <GridItem colSpan={1} width="full">
+        <VStack alignItems="flex-start" width="full" spacing="8px">
+          <Text color="neutral.600" fontWeight={700}>
+            Estimate Cost
+          </Text>
+          <Text color="black" maxW="80%">
+            {amountFormatter(scheduleCost)}
           </Text>
         </VStack>
       </GridItem>

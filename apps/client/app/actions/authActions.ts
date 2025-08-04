@@ -35,10 +35,10 @@ export async function handleCredentialsSignin({
     throw error;
   }
 }
-
 export async function handleSignOut(ref?: string) {
   const session = await auth();
   if (!session) {
+    await signOut({ redirectTo: '/' });
     return;
   }
   const tenantName = session?.user?.companySlug
@@ -51,7 +51,9 @@ export async function handleSignOut(ref?: string) {
   try {
     if (session.error) {
       await signOut({ redirectTo: redirectUrl });
+      return;
     }
+    // Fire and forget logout request
     fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/logout`, {
       method: 'POST',
       headers: {
@@ -65,11 +67,9 @@ export async function handleSignOut(ref?: string) {
     }).catch((error) => {
       console.error('Error sending logout request:', error);
     });
-
-    console.log('Logout request sent.');
+    await signOut({ redirectTo: redirectUrl });
   } catch (error) {
     console.error('An error occurred during logout:', error);
-  } finally {
     await signOut({ redirectTo: redirectUrl });
   }
 }

@@ -167,7 +167,8 @@ const ApprovalNode = ({ data, isConnectable, id }: NodeProps<CustomNode>) => {
                     textDecoration: 'underline',
                     textUnderlineOffset: 2,
                   },
-                  onClick: () => {
+                  onClick: (e) => {
+                    e.stopPropagation();
                     if (data?.userId) {
                       setSelectedUserId(data.userId);
                       onOpenUser();
@@ -232,6 +233,7 @@ const ApprovalNode = ({ data, isConnectable, id }: NodeProps<CustomNode>) => {
         <UserDetail
           isOpen={isOpenUser}
           onClose={() => {
+            setSelectedUserId(null);
             onCloseUser();
           }}
           defaultUserId={selectedUserId || undefined}

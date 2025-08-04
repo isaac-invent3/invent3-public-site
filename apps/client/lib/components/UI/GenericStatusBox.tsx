@@ -16,6 +16,7 @@ const GenericStatusBox = (props: GenericStatusBoxProps) => {
       rounded="6px"
       spacing="8px"
       width="max-content"
+      whiteSpace="nowrap"
       {...rest}
     >
       <Box

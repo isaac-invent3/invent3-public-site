@@ -93,7 +93,7 @@ const SectionTwo = () => {
     if (assetDisposal?.data) {
       setDetails((prev) => ({
         ...prev,
-        assetDisplayName: 'Test',
+        assetDisplayName: 'Asset',
         assetId: assetDisposal?.data?.assetId,
         reason: assetDisposal?.data?.comments,
         date: assetDisposal?.data?.disposalDate

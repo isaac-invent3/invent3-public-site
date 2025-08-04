@@ -13,7 +13,7 @@ const CostEstimate = (props: CostEstimateProps) => {
       customSpacing={spacing}
       title="Cost Estimate"
       description="Enter the estimate cost for this task"
-      isRequired
+      isRequired={false}
     >
       <Field
         as={FormTextInput}

@@ -99,6 +99,53 @@ const LocationModal = (props: LocationModalProps) => {
     }
   };
 
+  useEffect(() => {
+    dispatch(
+      setLocalLocation({
+        country: {
+          label: assetFormDetails?.countryName!,
+          value: assetFormDetails?.countryId!,
+        },
+        state: {
+          label: assetFormDetails?.stateName!,
+          value: assetFormDetails?.stateId!,
+        },
+        lga: {
+          label: assetFormDetails?.lgaName!,
+          value: assetFormDetails?.lgaId!,
+        },
+        facility: {
+          label: assetFormDetails?.facilityName!,
+          value: assetFormDetails?.facilityId!,
+        },
+        building: {
+          label: assetFormDetails?.buildingName!,
+          value: assetFormDetails?.buildingId!,
+        },
+        floor: {
+          label: assetFormDetails?.floorName!,
+          value: assetFormDetails?.floorId!,
+        },
+        department: {
+          label: assetFormDetails?.departmentName!,
+          value: assetFormDetails?.departmentId!,
+        },
+        room: {
+          label: assetFormDetails?.roomName!,
+          value: assetFormDetails?.roomId!,
+        },
+        shelf: {
+          label: assetFormDetails?.shelfName!,
+          value: assetFormDetails?.shelfId!,
+        },
+        aisle: {
+          label: assetFormDetails?.aisleName!,
+          value: assetFormDetails?.aisleId!,
+        },
+      })
+    );
+  }, [assetFormDetails]);
+
   return (
     <GenericModal
       isOpen={isOpen}
@@ -130,12 +177,14 @@ const LocationModal = (props: LocationModalProps) => {
                     handleSelect={(option) => {
                       handleReadableLocation(option, 'country');
                     }}
+                    defaultInputValue={assetFormDetails?.countryName!}
                   />
                   <StateSelect
                     countryId={localLocation.country?.value as number}
                     handleSelect={(option) => {
                       handleReadableLocation(option, 'state');
                     }}
+                    defaultInputValue={assetFormDetails?.stateName!}
                   />
                   <LGASelect
                     stateId={localLocation.state?.value as number}
@@ -143,6 +192,7 @@ const LocationModal = (props: LocationModalProps) => {
                       handleReadableLocation(option, 'lga')
                     }
                     type="specificById"
+                    defaultInputValue={assetFormDetails?.lgaName!}
                   />
                 </SimpleGrid>
                 <Stack

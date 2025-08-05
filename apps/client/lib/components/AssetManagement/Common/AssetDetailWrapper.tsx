@@ -61,7 +61,6 @@ const AssetDetailWrapper = (props: AssetDetailWrapperProps) => {
           <HStack
             spacing={{ base: '8px', sm: '16px' }}
             flexWrap={{ base: 'wrap', sm: 'nowrap' }}
-            width="full"
           >
             {showMaintenanceHistoryButton && (
               <Button

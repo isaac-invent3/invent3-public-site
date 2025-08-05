@@ -14,7 +14,6 @@ const VendorCategory = () => {
   const [field, meta, helpers] = useField('categoryId'); //eslint-disable-line
   const [searchRoles] = useSearchAssetTypesMutation({});
   const dispatch = useAppDispatch();
-  const { countryName } = useAppSelector((state) => state.asset.assetForm);
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading, isFetching } = useGetAllAssetTypesQuery({
     pageSize: DEFAULT_PAGE_SIZE,
@@ -29,19 +28,18 @@ const VendorCategory = () => {
       isRequired
     >
       <GenericAsyncSelect
-        selectName="categoryId"
+        selectName="vendorCategoryId"
         selectTitle="Vendor Category"
         data={data}
         labelKey="typeName"
         valueKey="assetTypeId"
-        defaultInputValue={countryName}
         mutationFn={searchRoles}
         isLoading={isLoading || isFetching}
         pageNumber={pageNumber}
         setPageNumber={setPageNumber}
         handleSelect={(option) => {
           helpers.setValue(option.value);
-          dispatch(updateVendorForm({ categoryName: option.label }));
+          dispatch(updateVendorForm({ vendorCategoryName: option.label }));
         }}
       />
     </FormInputWrapper>

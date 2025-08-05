@@ -20,6 +20,20 @@ import {
 } from '~/lib/redux/services/approval-workflow/requestComments.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
+const getRelativeTimeShort = (date: string) => {
+  const localDate = moment.utc(date).local(); // Parse as UTC, convert to local
+  const now = moment();
+  const duration = moment.duration(now.diff(localDate));
+
+  const hours = Math.floor(duration.asHours());
+  const minutes = Math.floor(duration.asMinutes());
+  const seconds = Math.floor(duration.asSeconds());
+
+  if (hours >= 1) return `${hours}h ago`;
+  if (minutes >= 1) return `${minutes}m ago`;
+  return `${seconds}s ago`;
+};
+
 const renderComments = (comments: ApprovalWorkflowComment[], depth = 0) => {
   return comments.map((comment) => (
     <VStack
@@ -39,7 +53,9 @@ const renderComments = (comments: ApprovalWorkflowComment[], depth = 0) => {
             </Text>
 
             <Text color="neutral.600">
-              {comment.dateCreated ? moment(comment.dateCreated).fromNow() : ''}
+              {comment.dateCreated
+                ? getRelativeTimeShort(comment.dateCreated)
+                : ''}
             </Text>
           </HStack>
 

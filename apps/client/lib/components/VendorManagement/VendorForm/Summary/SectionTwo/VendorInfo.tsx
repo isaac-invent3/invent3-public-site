@@ -7,7 +7,7 @@ import { useAppSelector } from '~/lib/redux/hooks';
 const VendorInfo = () => {
   const {
     vendorName,
-    categoryName,
+    vendorCategoryName,
     description,
     contactFirstName,
     contactLastName,
@@ -15,9 +15,9 @@ const VendorInfo = () => {
     primaryPhoneNumber,
     address1,
     address2,
-    countryName,
-    stateName,
-    cityName,
+    vendorCountryName,
+    vendorStateName,
+    vendorCityName,
     postalCode,
   } = useAppSelector((state) => state.vendor.vendorForm);
 
@@ -28,7 +28,7 @@ const VendorInfo = () => {
     },
     {
       label: 'Vendor Category',
-      value: categoryName,
+      value: vendorCategoryName,
     },
   ];
 
@@ -55,15 +55,15 @@ const VendorInfo = () => {
     },
     {
       label: 'Country',
-      value: countryName,
+      value: vendorCountryName,
     },
     {
       label: 'State',
-      value: stateName,
+      value: vendorStateName,
     },
     {
       label: 'City',
-      value: cityName,
+      value: vendorCityName,
     },
     {
       label: 'Postal/Zip Code',

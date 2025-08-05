@@ -46,7 +46,6 @@ const AssetDetail = ({
 
   const closeDrawer = () => {
     clearSearchParamsAfter(assetSlug, { removeSelf: true });
-    dispatch(clearAsset());
     onClose();
   };
 

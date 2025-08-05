@@ -13,7 +13,7 @@ import { getSession } from 'next-auth/react';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import StatusSuccessModal from './SuccessModal';
 import {
-  useGetAllAssetStatusQuery,
+  useGetAllNonSystemAssetStatusQuery,
   useSearchStatusMutation,
   useUpdateAssetStatusMutation,
 } from '~/lib/redux/services/asset/general.services';
@@ -38,7 +38,7 @@ const ChangeAssetStatusModal = (props: ChangeAssetStatusModalProps) => {
   const [updateAssetStatus, { isLoading: isUpdating }] =
     useUpdateAssetStatusMutation({});
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading, isFetching } = useGetAllAssetStatusQuery(
+  const { data, isLoading, isFetching } = useGetAllNonSystemAssetStatusQuery(
     {
       pageNumber,
       pageSize: DEFAULT_PAGE_SIZE,
@@ -114,10 +114,11 @@ const ChangeAssetStatusModal = (props: ChangeAssetStatusModalProps) => {
                     data={data}
                     labelKey="statusName"
                     valueKey="statusId"
-                    mutationFn={searchStatus}
+                    mutationFn={undefined}
                     isLoading={isLoading || isFetching}
                     pageNumber={pageNumber}
                     setPageNumber={setPageNumber}
+                    isSearchable={false}
                   />
                 </VStack>
                 {/* Main Form Ends Here */}

@@ -185,6 +185,17 @@ export const assetApi = createApi({
       }),
       providesTags: ['allStatuses'],
     }),
+    getAllNonSystemAssetStatus: builder.query<
+      BaseApiResponse<ListResponse<AssetStatus>>,
+      QueryParams
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/AssetStatus/NonSystemStatus?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allStatuses'],
+    }),
     searchStatus: builder.mutation<
       BaseApiResponse<ListResponse<AssetStatus>>,
       SearchQuery
@@ -242,4 +253,5 @@ export const {
   useUpdateAssetStatusMutation,
   useAssetMeanTimeComputationQuery,
   useGetAssetCountByColumnNameQuery,
+  useGetAllNonSystemAssetStatusQuery,
 } = assetApi;

@@ -35,25 +35,28 @@ const Address = () => {
             placeholder="Address 2"
           />
         </SimpleGrid>
-        <SimpleGrid width="full" gap="16px" columns={{base:2, md:4}}>
+        <SimpleGrid width="full" gap="16px" columns={{ base: 2, md: 4 }}>
           <CountrySelect
+            name="vendorCountryId"
             handleSelect={(option) => {
-              setFieldValue('countryId', option.value);
-              dispatch(updateVendorForm({ countryName: option.label }));
+              setFieldValue('vendorCountryId', option.value);
+              dispatch(updateVendorForm({ vendorCountryName: option.label }));
             }}
           />
           <StateSelect
-            countryId={values.countryId}
+            countryId={values.vendorCountryId}
+            name="vendorStateId"
             handleSelect={(option) => {
-              setFieldValue('stateId', option.value);
-              dispatch(updateVendorForm({ stateName: option.label }));
+              setFieldValue('vendorStateId', option.value);
+              dispatch(updateVendorForm({ vendorStateName: option.label }));
             }}
           />
           <LGASelect
-            stateId={values.stateId}
+            stateId={values.vendorStateId}
+            name="vendorCityId"
             handleSelect={(option) => {
-              setFieldValue('cityId', option.value);
-              dispatch(updateVendorForm({ cityName: option.label }));
+              setFieldValue('vendorCityId', option.value);
+              dispatch(updateVendorForm({ vendorCityName: option.label }));
             }}
             type="specificById"
           />

@@ -27,7 +27,7 @@ const VendorInfo = (props: VendorInfoProps) => {
       logo: formDetails?.logo ?? null,
       vendorName: formDetails?.vendorName ?? null,
       description: formDetails?.description ?? null,
-      categoryId: formDetails?.categoryId ?? null,
+      vendorCategoryId: formDetails?.vendorCategoryId ?? null,
     },
     validationSchema: vendorInfoSchema,
     enableReinitialize: true,

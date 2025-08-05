@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { Option, SearchCriterion } from '~/lib/interfaces/general.interfaces';
-import { useAppSelector } from '~/lib/redux/hooks';
 import {
   useGetStatesByCountryIdQuery,
   useSearchStatesMutation,
@@ -12,11 +11,12 @@ interface StateSelectProps {
   countryId: number | null;
   // eslint-disable-next-line no-unused-vars
   handleSelect?: (options: Option) => void;
+  name?: string;
+  defaultInputValue?: string;
 }
 
 const StateSelect = (props: StateSelectProps) => {
-  const { countryId, handleSelect } = props;
-  const { stateName } = useAppSelector((state) => state.asset.assetForm);
+  const { name, countryId, handleSelect, defaultInputValue } = props;
   const [searchState] = useSearchStatesMutation({});
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading, isFetching } = useGetStatesByCountryIdQuery(
@@ -46,12 +46,12 @@ const StateSelect = (props: StateSelectProps) => {
 
   return (
     <GenericAsyncSelect
-      selectName="stateId"
+      selectName={name ?? 'stateId'}
       selectTitle="State"
       data={data}
       labelKey="stateName"
       valueKey="stateId"
-      defaultInputValue={stateName}
+      defaultInputValue={defaultInputValue}
       mutationFn={searchState}
       isLoading={isLoading || isFetching}
       pageNumber={pageNumber}

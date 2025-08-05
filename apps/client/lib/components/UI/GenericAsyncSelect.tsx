@@ -30,6 +30,7 @@ interface GenericAsyncSelectProps {
   customProps?: { [name: string]: any };
   selectStyles?: CSSObjectWithLabel;
   selectedOption?: string | number | Option | Option[] | undefined;
+  isSearchable?: boolean;
 }
 
 const GenericAsyncSelect = (props: GenericAsyncSelectProps) => {
@@ -54,6 +55,7 @@ const GenericAsyncSelect = (props: GenericAsyncSelectProps) => {
     isMultiSelect,
     selectStyles,
     selectedOption,
+    isSearchable = true,
   } = props;
   const { handleSubmit } = useCustomMutation();
   const [options, setOptions] = useState<Option[]>([]);
@@ -142,7 +144,7 @@ const GenericAsyncSelect = (props: GenericAsyncSelectProps) => {
       isAsync={mutationFn ? true : false}
       handleOnMenuScrollToBottom={handlePagination}
       showTitleAfterSelect={showTitleAfterSelect}
-      isSearchable
+      isSearchable={isSearchable}
       isInvalid={isInvalid}
       isMultiSelect={isMultiSelect}
       selectStyles={selectStyles}

@@ -23,6 +23,7 @@ import { getSession, useSession } from 'next-auth/react';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useState } from 'react';
+import { CloseIcon } from '~/lib/components/CustomIcons';
 
 const Approvers = () => {
   const params = useParams();
@@ -121,6 +122,19 @@ const Approvers = () => {
                   background="#07CC3B26"
                 >
                   <Icon as={CheckIcon} color="#018A1E" boxSize="14px" />
+                </Flex>
+              )}
+
+              {item.currentStatusId === APPROVAL_WORKFLOW_STATUSES.REJECTED && (
+                <Flex
+                  alignItems="center"
+                  justifyContent="center"
+                  w="24px"
+                  h="24px"
+                  rounded="full"
+                  background="#F500001A"
+                >
+                  <Icon as={CloseIcon} color="#F50000" boxSize="20px" />
                 </Flex>
               )}
               {item.currentStatusId ===

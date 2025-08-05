@@ -52,7 +52,7 @@ const SummaryStep = (props: SummaryStepProps) => {
     phoneNumber: vendorFormDetails.primaryPhoneNumber!,
     emailAddress: vendorFormDetails.primaryEmail!,
     statusId: vendorFormDetails.vendorStatusId!,
-    vendorCategoryId: vendorFormDetails.categoryId!,
+    vendorCategoryId: vendorFormDetails.vendorCategoryId!,
   };
   const formDocumentIds = vendorFormDetails.vendorDocuments.map(
     (item) => item.documentId as number

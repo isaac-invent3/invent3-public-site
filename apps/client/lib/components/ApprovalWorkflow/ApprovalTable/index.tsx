@@ -37,11 +37,14 @@ const ApprovalTable = (props: ApprovalTableProps) => {
   const dispatch = useAppDispatch();
 
   const { data, isLoading, isFetching } =
-    useGetAllApprovalWorkflowRequestsQuery({
-      pageNumber: currentPage,
-      pageSize: pageSize,
-      approvalTypeId: selectedApprovalType?.approvalTypeId ?? undefined,
-    });
+    useGetAllApprovalWorkflowRequestsQuery(
+      {
+        pageNumber: currentPage,
+        pageSize: pageSize,
+        approvalTypeId: selectedApprovalType?.approvalTypeId ?? undefined,
+      },
+      { skip: !selectedApprovalType }
+    );
 
   // SignalR Connection
   const connectionState = useSignalR('approvalworkflow-hub');
@@ -196,7 +199,7 @@ const ApprovalTable = (props: ApprovalTableProps) => {
       <DataTable
         columns={columns}
         data={data?.data?.items ?? []}
-        isLoading={isLoading}
+        isLoading={isLoading || !selectedApprovalType}
         isFetching={isFetching}
         totalPages={data?.data?.totalPages}
         setPageNumber={setCurrentPage}

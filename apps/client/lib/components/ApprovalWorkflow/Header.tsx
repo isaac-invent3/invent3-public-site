@@ -10,7 +10,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { FilterButton } from '@repo/ui/components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ApprovalWorkflowType } from '~/lib/interfaces/approvalWorkflow.interfaces';
 import { useGetAllApprovalWorkflowTypesQuery } from '~/lib/redux/services/approval-workflow/types.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
@@ -32,6 +32,12 @@ const Header = (props: ApprovalHeaderProps) => {
     pageNumber: 1,
     pageSize: DEFAULT_PAGE_SIZE,
   });
+
+  useEffect(() => {
+    if (data?.data && data?.data?.items.length > 0) {
+      setSelectedApprovalType(data?.data?.items[0] ?? null);
+    }
+  }, [data]);
 
   return (
     <VStack

@@ -12,7 +12,7 @@ const vendorInfoSchema = Yup.object().shape({
     .required('Logo is required'),
   vendorName: Yup.string().required('Vendor name is required'),
   description: Yup.string().required('Description is required'),
-  categoryId: Yup.string().required('Vendor Category is required'),
+  vendorCategoryId: Yup.string().required('Vendor Category is required'),
 });
 
 const contactInformationSchema = Yup.object().shape({
@@ -22,9 +22,9 @@ const contactInformationSchema = Yup.object().shape({
   primaryPhoneNumber: Yup.number().required('Phone number is required'),
   address1: Yup.string().nullable(),
   address2: Yup.string().nullable(),
-  countryId: Yup.number().nullable(),
-  stateId: Yup.number().nullable(),
-  cityId: Yup.number().nullable(),
+  vendorCountryId: Yup.number().nullable(),
+  vendorStateId: Yup.number().nullable(),
+  vendorCityId: Yup.number().nullable(),
   postalCode: Yup.string().nullable(),
 });
 

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { Option, SearchCriterion } from '~/lib/interfaces/general.interfaces';
-import { useAppSelector } from '~/lib/redux/hooks';
 import {
   useGetAllLGASQuery,
   useGetLGAByStateIdQuery,
@@ -15,11 +14,11 @@ interface LGASelectProps {
   type: 'general' | 'specificById';
   stateId?: number | null;
   name?: string;
+  defaultInputValue?: string;
 }
 
 const LGASelect = (props: LGASelectProps) => {
-  const { stateId, handleSelect, type, name } = props;
-  const { lgaName } = useAppSelector((state) => state.asset.assetForm);
+  const { stateId, handleSelect, type, name, defaultInputValue } = props;
   const [searchLga] = useSearchLGAMutation({});
   const [pageNumber, setPageNumber] = useState(1);
   const {
@@ -65,7 +64,7 @@ const LGASelect = (props: LGASelectProps) => {
       data={type === 'general' ? allLgasData : stateId ? data : []}
       labelKey="lgaName"
       valueKey="lgaId"
-      defaultInputValue={lgaName}
+      defaultInputValue={defaultInputValue}
       mutationFn={searchLga}
       isLoading={
         isLoading || isLoadingAllLGAS || isFetching || isFetchingAllLGAS

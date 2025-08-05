@@ -299,6 +299,7 @@ export async function middleware(request: NextRequest) {
     }
 
     const permissionData = await checkPermission({ path: checkPath });
+    console.log({ permissionData });
 
     if (
       !permissionData &&

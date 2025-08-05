@@ -181,6 +181,7 @@ export default function Page() {
         ...acquisitionInfo,
       })
     );
+  } else {
     dispatch(clearAsset());
   }
   return <AssetForm type="create" />;

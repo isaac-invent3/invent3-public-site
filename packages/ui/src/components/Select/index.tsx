@@ -185,6 +185,7 @@ function SelectInput(props: SelectInputProps) {
         )}
         <SelectComponent
           id={name}
+          inputId={name}
           isSearchable={isSearchable}
           options={options}
           isLoading={isLoading || false}

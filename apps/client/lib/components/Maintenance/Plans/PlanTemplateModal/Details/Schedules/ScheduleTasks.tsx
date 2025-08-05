@@ -6,9 +6,10 @@ import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 interface ScheduleTasksProps {
   scheduleId: number;
+  type?: 'page' | 'drawer' | 'template';
 }
 const ScheduleTasks = (props: ScheduleTasksProps) => {
-  const { scheduleId } = props;
+  const { scheduleId, type } = props;
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const { data, isLoading, isFetching } = useGetAllTasksByScheduleIdQuery(
@@ -35,7 +36,7 @@ const ScheduleTasks = (props: ScheduleTasksProps) => {
         pageSize={pageSize}
         setPageSize={setPageSize}
         isSortable={false}
-        type="page"
+        type={type ?? 'page'}
         showFooter={
           data?.data ? (data?.data?.totalPages > 1 ? true : false) : false
         }

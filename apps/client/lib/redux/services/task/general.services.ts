@@ -72,7 +72,7 @@ export const taskApi = createApi({
     >({
       query: ({ id, ...data }) => ({
         url: generateQueryStr(
-          `/Tasks/GetMaintenanceScheduleTasksByScheduleId/${id}?`,
+          `/Tasks/GetMaintenanceScheduleTasksInfoHeadersByScheduleId/${id}?`,
           data
         ),
         method: 'GET',

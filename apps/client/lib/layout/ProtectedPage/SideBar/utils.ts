@@ -196,7 +196,7 @@ const clientSideBarData: SideBarData[] = [
     name: 'Compliance',
     route: ROUTES.COMPLIANCE,
     icon: TemplateIcon,
-    permissionKey: 'audit',
+    permissionKey: 'compliance',
     description:
       'Manage compliance requirements and certifications for regulatory adherence.',
   },

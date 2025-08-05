@@ -24,7 +24,7 @@ interface TaskTableProps {
   setPageSize?: React.Dispatch<React.SetStateAction<number>>;
   isSelectable?: boolean;
   isSortable?: boolean;
-  type: 'drawer' | 'page';
+  type: 'drawer' | 'page' | 'template';
   showPopover?: boolean;
   showScheduleId?: boolean;
   showTableBgColor?: boolean;
@@ -84,12 +84,7 @@ const TaskTable = (props: TaskTableProps) => {
           header: 'Priority',
           enableSorting: isSortable,
         }),
-        columnHelper.accessor('dateCompleted', {
-          cell: (info) =>
-            dateFormatter(info.getValue(), 'DD / MM / YYYY') ?? 'N/A',
-          header: 'Completion Date',
-          enableSorting: isSortable,
-        }),
+
         columnHelper.accessor('estimatedDurationInHours', {
           cell: (info) => {
             const value = info.getValue();
@@ -101,7 +96,8 @@ const TaskTable = (props: TaskTableProps) => {
           enableSorting: false,
         }),
         columnHelper.accessor('costEstimate', {
-          cell: (info) => amountFormatter(info.getValue()),
+          cell: (info) =>
+            info.getValue() ? amountFormatter(info.getValue()) : 'N/A',
           header: 'Estimate Cost',
           enableSorting: false,
         }),
@@ -110,23 +106,18 @@ const TaskTable = (props: TaskTableProps) => {
           header: 'Assigned To',
           enableSorting: isSortable,
         }),
-        columnHelper.accessor('status', {
-          cell: (info) => {
-            return (
-              <GenericStatusBox
-                colorCode={info.row.original.statusColorCode}
-                text={info.getValue() as string}
-              />
-            );
-          },
-          header: 'Status',
-          enableSorting: false,
-        }),
       ];
       const popOverColumns = columnHelper.accessor('taskType', {
         cell: (info) => PopoverAction(info.row.original, type),
         header: '',
         enableSorting: false,
+      });
+
+      const completionColumn = columnHelper.accessor('dateCompleted', {
+        cell: (info) =>
+          dateFormatter(info.getValue(), 'DD / MM / YYYY') ?? 'N/A',
+        header: 'Completion Date',
+        enableSorting: isSortable,
       });
 
       const scheduleColumn = columnHelper.accessor('scheduleId', {
@@ -135,8 +126,26 @@ const TaskTable = (props: TaskTableProps) => {
         enableSorting: false,
       });
 
+      const statusColumn = columnHelper.accessor('status', {
+        cell: (info) => {
+          return (
+            <GenericStatusBox
+              colorCode={info.row.original.statusColorCode}
+              text={info.getValue() as string}
+            />
+          );
+        },
+        header: 'Status',
+        enableSorting: false,
+      });
+
       if (showScheduleId) {
         baseColumns.splice(3, 0, scheduleColumn);
+      }
+
+      if (type !== 'template') {
+        baseColumns.splice(3, 0, completionColumn);
+        baseColumns.push(statusColumn);
       }
 
       if (showPopover) {

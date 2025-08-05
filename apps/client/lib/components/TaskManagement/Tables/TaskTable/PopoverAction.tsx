@@ -10,7 +10,7 @@ import { ROUTES } from '~/lib/utils/constants';
 import usePermissionAccess from '~/lib/hooks/useRoleAccess';
 import { useEffect } from 'react';
 
-const PopoverAction = (task: Task, type: 'drawer' | 'page') => {
+const PopoverAction = (task: Task, type: 'drawer' | 'page' | 'template') => {
   const {
     isOpen: isOpenEdit,
     onOpen: onOpenEdit,

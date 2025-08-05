@@ -206,7 +206,10 @@ const Schedule = (props: MaintenanceSchedulesProps) => {
                     }}
                     key={index}
                   />
-                  <ScheduleTasks scheduleId={schedule.scheduleId} />
+                  <ScheduleTasks
+                    scheduleId={schedule.scheduleId}
+                    type="template"
+                  />
                 </VStack>
               </VStack>
             );

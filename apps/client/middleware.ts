@@ -111,20 +111,26 @@ export async function refreshAccessToken(
   return token;
 }
 
-export function signOut(request: NextRequest): NextResponse {
+export function signOut(
+  request: NextRequest,
+  tenantName: string | undefined
+): NextResponse {
   console.log('Signing out');
+
+  // If protected page, redirect to signin with ref (respect tenant)
+  const signoutPath = tenantName ? `/${tenantName}/signin` : `/signin`;
 
   // Get full path + query string
   const fullPathWithQuery = request.nextUrl.pathname + request.nextUrl.search;
   const encodedRef = encodeURIComponent(fullPathWithQuery);
 
   // Prevent redirect loop by NEVER using /signin as ref when already on /signin
-  if (request.nextUrl.pathname === '/signin') {
+  if (request.nextUrl.pathname === signoutPath) {
     return NextResponse.next();
   }
 
   // Build redirect URL
-  const url = new URL('/signin', request.url);
+  const url = new URL(signoutPath, request.url);
   url.searchParams.set('ref', encodedRef);
 
   // Create redirect response
@@ -149,7 +155,8 @@ export function signOut(request: NextRequest): NextResponse {
 export function updateCookie(
   sessionToken: string | null,
   request: NextRequest,
-  response: NextResponse
+  response: NextResponse,
+  tenantName: string | undefined
 ): NextResponse<unknown> {
   console.log('updating cookies');
   /*
@@ -177,7 +184,7 @@ export function updateCookie(
     return response;
   }
   request.cookies.delete(SESSION_COOKIE);
-  return signOut(request);
+  return signOut(request, tenantName);
 }
 
 export async function middleware(request: NextRequest) {
@@ -217,7 +224,9 @@ export async function middleware(request: NextRequest) {
 
   const remainingPath = segments.slice(1).join('/');
 
-  if (!SECRET) return signOut(request);
+  const tenantName = tenantData ? tenant : undefined;
+
+  if (!SECRET) return signOut(request, tenantName);
 
   const token = await getToken({
     req: request,
@@ -236,7 +245,7 @@ export async function middleware(request: NextRequest) {
         );
         if (refreshedToken.accessToken === token.accessToken) {
           console.error('Error refreshing token – tokens unchanged');
-          return updateCookie(null, request, response);
+          return updateCookie(null, request, response, tenantName);
         }
 
         const newSessionToken = await encode({
@@ -246,10 +255,10 @@ export async function middleware(request: NextRequest) {
           salt: SESSION_COOKIE,
         });
 
-        return updateCookie(newSessionToken, request, response);
+        return updateCookie(newSessionToken, request, response, tenantName);
       } catch (error) {
         console.error('Error refreshing token: ', error);
-        return updateCookie(null, request, response);
+        return updateCookie(null, request, response, tenantName);
       }
     }
     const checkPath = tenantData ? `/${remainingPath}` : pathname;
@@ -281,10 +290,12 @@ export async function middleware(request: NextRequest) {
       }
       return NextResponse.next();
     }
+    // If protected page, redirect to signin with ref (respect tenant)
+    const signoutPath = tenantName ? `/${tenantName}/signin` : `/signin`;
 
     // Stop redirect loop
     if (formattedPath === '/signin') {
-      const url = new URL(`/signin`, request.url);
+      const url = new URL(signoutPath, request.url);
       return NextResponse.rewrite(url);
     }
 

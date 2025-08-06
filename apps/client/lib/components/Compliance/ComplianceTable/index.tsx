@@ -102,7 +102,7 @@ const ComplianceTable = (props: ComplianceTableProps) => {
           cell: (info) => {
             return <GenericStatusBox text={info.getValue()} />;
           },
-          header: 'Non Compliant',
+          header: 'Compliance Status',
           enableSorting: false,
         }),
         columnHelper.accessor('facilityId', {

@@ -11,7 +11,7 @@ import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import TemplateTable from './TemplateTable';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { ListResponse } from '@repo/interfaces';
-import { Template } from '~/lib/interfaces/template.interfaces';
+import { Template, TemplateFilter } from '~/lib/interfaces/template.interfaces';
 import { OPERATORS } from '@repo/constants';
 import {
   FilterButton,
@@ -20,16 +20,15 @@ import {
 } from '@repo/ui/components';
 import { FilterIcon } from '../CustomIcons';
 import _ from 'lodash';
-import { useAppSelector } from '~/lib/redux/hooks';
 import PopoverAction from './PopoverAction';
 import TemplateFilters from './Filters';
-import { generateSearchCriterion } from '@repo/utils';
+import { generateSearchCriteria } from '@repo/utils';
+import { usePageFilter } from '~/lib/hooks/usePageFilter';
 
 export const initialFilterData = {
-  planType: [],
-  region: [],
-  area: [],
-  branch: [],
+  contextTypeId: [],
+  owner: [],
+  createdDate: null,
 };
 
 const TemplateManagement = () => {
@@ -41,81 +40,61 @@ const TemplateManagement = () => {
   });
   const [search, setSearch] = useState('');
   const { isOpen, onToggle } = useDisclosure();
-  const filterData = useAppSelector((state) => state.template.templateFilters);
   const [searchData, setSearchData] = useState<
     ListResponse<Template> | undefined
   >(undefined);
   const { handleSubmit } = useCustomMutation();
   const [searchTemplate, { isLoading: searchLoading }] =
     useSearchTemplatesMutation({});
-
-  // Checks if all filterdata is empty
-  const isFilterEmpty = _.every(filterData, (value) => _.isEmpty(value));
-
-  const searchCriterion = {
-    ...(search && {
-      criterion: [
-        {
-          columnName: 'templateName',
-          columnValue: search,
-          operation: OPERATORS.Contains,
-        },
-      ],
-    }),
-    ...(!isFilterEmpty && {
-      orCriterion: [
-        ...(filterData.contextTypeId && filterData.contextTypeId.length > 0
-          ? [
-              generateSearchCriterion(
-                'systemContextTypeId',
-                filterData.contextTypeId,
-                OPERATORS.Equals
-              ),
-            ]
-          : []),
-        ...(filterData.owner && filterData.owner.length > 0
-          ? [
-              generateSearchCriterion(
-                'createdBy',
-                filterData.owner,
-                OPERATORS.Equals
-              ),
-            ]
-          : []),
-        ...(filterData.createdDate
-          ? [
-              generateSearchCriterion(
-                'dateCreated',
-                [filterData.createdDate as string],
-                OPERATORS.Contains
-              ),
-            ]
-          : []),
-      ].filter((arr) => arr && arr.length > 0),
-    }),
-    pageNumber,
-    pageSize,
-  };
+  const {
+    filterData,
+    setFilterData,
+    appliedFilter,
+    isFilterEmpty,
+    applyFilter,
+    clearFilter,
+  } = usePageFilter<TemplateFilter>(initialFilterData);
 
   const handleSearch = useCallback(async () => {
-    const response = await handleSubmit(searchTemplate, searchCriterion, '');
-    setSearchData(response?.data?.data);
-  }, [searchTemplate, searchCriterion]);
+    const { orCriterion } = generateSearchCriteria(
+      search,
+      appliedFilter,
+      {
+        contextTypeId: {
+          key: 'systemContextTypeId',
+          operator: OPERATORS.Equals,
+        },
+        owner: { key: 'createdBy', operator: OPERATORS.Equals },
+        createdDate: { key: 'dateCreated', operator: OPERATORS.Equals },
+      },
+      ['templateName']
+    );
+    const payload = {
+      pageNumber,
+      pageSize,
+      orCriterion,
+    };
 
-  // Trigger search when search input changes or pagination updates
+    if (orCriterion.length > 0) {
+      const response = await handleSubmit(searchTemplate, payload, '');
+      setSearchData(response?.data?.data);
+    }
+  }, [searchTemplate, search, appliedFilter, pageNumber, pageSize]);
+
+  // Trigger search when search or input changes or applied filter changes or pagination updates
   useEffect(() => {
-    if (search) {
+    if (search || !isFilterEmpty) {
       handleSearch();
     }
-  }, [search, pageNumber, pageSize]);
+  }, [search, appliedFilter, pageNumber, pageSize]);
 
   // Reset pagination when clearing the search
   useEffect(() => {
-    if (!search) {
+    if (!search || isFilterEmpty) {
       setPageSize(DEFAULT_PAGE_SIZE);
       setPageNumber(1);
     }
-  }, [search]);
+  }, [search, appliedFilter]);
 
   return (
     <Flex
@@ -146,7 +125,19 @@ const TemplateManagement = () => {
         <SlideTransition trigger={isOpen} direction="bottom">
           {isOpen && (
             <Flex width="full" px={{ base: '16px', lg: 0 }}>
-              <TemplateFilters handleApplyFilter={handleSearch} type="page" />
+              <TemplateFilters
+                filterData={filterData}
+                setFilterData={setFilterData}
+                onApply={() => {
+                  applyFilter();
+                  handleSearch(); // manually trigger
+                }}
+                onClear={() => {
+                  clearFilter();
+                  handleSearch(); // to reload default data
+                }}
+                type="page"
+              />
             </Flex>
           )}
         </SlideTransition>
@@ -154,7 +145,7 @@ const TemplateManagement = () => {
 
       <TemplateTable
         data={
-          (search || !isFilterEmpty) && searchData
+          (search || !isFilterEmpty) && searchData && !searchLoading
             ? searchData.items
             : (data?.data?.items ?? [])
         }

@@ -5,8 +5,8 @@ import type {
 } from '@reduxjs/toolkit/query';
 import { fetchBaseQuery } from '@reduxjs/toolkit/query';
 import { getSession } from 'next-auth/react';
-import { handleSignOut } from '~/app/actions/authActions';
 import { env } from 'next-runtime-env';
+import { handleSignOutClient } from '../utils/handleSignOutClient';
 
 // const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
 const baseURL = env('NEXT_PUBLIC_API_URL');
@@ -17,7 +17,7 @@ const baseQuery = fetchBaseQuery({
     const session = await getSession();
 
     if (session?.error) {
-      return handleSignOut(window.location.pathname);
+      return handleSignOutClient(window.location.pathname);
     }
 
     if (session?.user) {
@@ -44,7 +44,7 @@ const baseQueryWithReauth: BaseQueryFn<
   // const path = typeof args === 'string' ? args : args.url;
   // If you get a 401 response, try refreshing the token
   if (result.error && result.error.status === 401) {
-    handleSignOut(window.location.pathname);
+    handleSignOutClient(window.location.pathname);
   }
 
   return result;

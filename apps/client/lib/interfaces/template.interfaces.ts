@@ -14,7 +14,7 @@ interface Template {
 
 interface TemplateFilter {
   contextTypeId: number[];
-  owner: number[];
+  owner: string[];
   createdDate: string | null;
 }
 

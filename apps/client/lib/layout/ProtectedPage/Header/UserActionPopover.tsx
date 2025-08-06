@@ -21,12 +21,12 @@ import {
   Setting2Icon,
   UserProfileIcon,
 } from '~/lib/components/CustomIcons/layout';
-import { handleSignOut } from '~/app/actions/authActions';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { ROLE_IDS_ENUM } from '~/lib/utils/constants';
 import Profile from '~/lib/components/Profile';
 import UserSettings from '~/lib/components/UserSettings';
+import { handleSignOutClient } from '~/lib/utils/handleSignOutClient';
 
 interface ActionButtonProps {
   icon: ComponentWithAs<'svg', IconProps>;
@@ -242,7 +242,7 @@ const UserActionPopover = () => {
               <ActionButton
                 icon={ExitIcon}
                 name="Logout"
-                handleClick={() => handleSignOut()}
+                handleClick={() => handleSignOutClient()}
               />
             </VStack>
           </PopoverBody>

@@ -11,9 +11,9 @@ import Notes from './Notes';
 import { getSession, useSession } from 'next-auth/react';
 import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
 import useSignalR from '~/lib/hooks/useSignalR';
-import { handleSignOut } from '~/app/actions/authActions';
 import AssistanceGuide from '~/lib/components/CompanyManagement/JourneyGuide/AssistanceGuide';
 import { ROLE_IDS_ENUM } from '~/lib/utils/constants';
+import { handleSignOutClient } from '~/lib/utils/handleSignOutClient';
 
 interface ProtectedLayoutProps {
   children: React.ReactNode;
@@ -31,7 +31,7 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
       async () => {
         const session = await getSession();
         if (!session) {
-          handleSignOut(); // Logs out the user
+          handleSignOutClient(); // Logs out the user
         }
       },
       31 * 60 * 1000

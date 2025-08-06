@@ -9,12 +9,12 @@ import {
 } from '@chakra-ui/react';
 import { Button, SlideTransition } from '@repo/ui/components';
 import React, { useEffect, useRef, useState } from 'react';
-import { handleSignOut } from '~/app/actions/authActions';
 import {
   InfoIcon,
   MinusIcon,
   PlusIcon,
 } from '~/lib/components/CustomIcons/layout';
+import { handleSignOutClient } from '~/lib/utils/handleSignOutClient';
 
 const CountDownTimer = () => {
   const { isOpen, onToggle, onClose } = useDisclosure();
@@ -28,7 +28,7 @@ const CountDownTimer = () => {
 
   useEffect(() => {
     if (time === 0) {
-      handleSignOut();
+      handleSignOutClient();
       return;
     } // Stop re-running when time is 0
 
@@ -123,7 +123,7 @@ const CountDownTimer = () => {
                 px: '16px',
                 width: 'max-content',
               }}
-              handleClick={handleSignOut}
+              handleClick={handleSignOutClient}
             >
               Logout Now
             </Button>

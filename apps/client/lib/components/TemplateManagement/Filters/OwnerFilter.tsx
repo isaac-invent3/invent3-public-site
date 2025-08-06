@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { FilterDropDown } from '@repo/ui/components';
 import { Option } from '~/lib/interfaces/general.interfaces';
-import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import { updateTemplateFilter } from '~/lib/redux/slices/TemplateSlice';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { generateOptions } from '~/lib/utils/helperFunctions';
 import { useGetAllActiveUsersQuery } from '~/lib/redux/services/user.services';
 
-const OwnerFilter = () => {
-  const dispatch = useAppDispatch();
-  const { owner } = useAppSelector((state) => state.template.templateFilters);
+interface OwnerFilterProps {
+  selected: string[];
+  onChange: (option: Option) => void;
+}
+const OwnerFilter = (props: OwnerFilterProps) => {
+  const { selected, onChange } = props;
   const [pageNumber, setPageNumber] = useState(1);
   const [options, setOptions] = useState<Option[]>([]);
   const { data, isLoading, isFetching } = useGetAllActiveUsersQuery({
@@ -22,7 +23,7 @@ const OwnerFilter = () => {
       const newCategories = generateOptions(
         data?.data?.items,
         'username',
-        'userId'
+        'username'
       );
       setOptions((prev) => [...prev, ...newCategories]);
     }
@@ -33,19 +34,11 @@ const OwnerFilter = () => {
       showBorder
       label="Owner:"
       options={options}
-      selectedOptions={owner.map((item) => ({
+      selectedOptions={selected.map((item) => ({
         value: item,
         label: item.toString(),
       }))}
-      handleClick={(option) =>
-        dispatch(
-          updateTemplateFilter({
-            owner: owner.includes(+option.value)
-              ? owner
-              : [...owner, +option.value],
-          })
-        )
-      }
+      handleClick={(option) => onChange(option)}
       hasMoreOptions={data?.data?.hasNextPage}
       loadMoreOptions={() => setPageNumber((prev) => prev + 1)}
       isLoading={isLoading || isFetching}

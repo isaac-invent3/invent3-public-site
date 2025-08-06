@@ -5,13 +5,13 @@ import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import TemplateFilters from '../../../TemplateManagement/Filters';
 import { useSearchTemplatesMutation } from '~/lib/redux/services/template.services';
-import { Template } from '~/lib/interfaces/template.interfaces';
+import { Template, TemplateFilter } from '~/lib/interfaces/template.interfaces';
 import GenericTemplateModal from '../GenericTemplateModal';
 import { ListResponse } from '@repo/interfaces';
 import TemplateTable from '~/lib/components/TemplateManagement/TemplateTable';
-import { generateSearchCriterion } from '@repo/utils';
-import { useAppSelector } from '~/lib/redux/hooks';
+import { generateSearchCriteria } from '@repo/utils';
 import _ from 'lodash';
+import { usePageFilter } from '~/lib/hooks/usePageFilter';
 
 interface TemplateModalProps {
   isOpen: boolean;
@@ -55,49 +55,51 @@ const TemplateModal = (props: TemplateModalProps) => {
   >(undefined);
   const { handleSubmit } = useCustomMutation();
   const [showDetails, setShowDetails] = useState(false);
-  const filterData = useAppSelector((state) => state.template.templateFilters);
-  // Checks if all filterdata is empty
-  const isFilterEmpty = _.every(filterData, (value) => _.isEmpty(value));
-
-  const searchCriterion = {
-    criterion: [
-      {
-        columnName: 'templateName',
-        columnValue: search,
-        operation: OPERATORS.Contains,
-      },
-    ],
-    ...(!isFilterEmpty && {
-      orCriterion: [
-        ...filterData.owner.map((item) => [
-          ...generateSearchCriterion('createdBy', [item], OPERATORS.Equals),
-        ]),
-        ...[filterData.createdDate]
-          .filter(Boolean)
-          .map((item) => [
-            ...generateSearchCriterion(
-              'dateCreated',
-              [item as string],
-              OPERATORS.Contains
-            ),
-          ]),
-      ],
-    }),
-    pageNumber,
-    pageSize,
-  };
+  const {
+    filterData,
+    setFilterData,
+    appliedFilter,
+    isFilterEmpty,
+    applyFilter,
+    clearFilter,
+  } = usePageFilter<TemplateFilter>({
+    contextTypeId: [],
+    owner: [],
+    createdDate: null,
+  });
 
   const handleSearch = useCallback(async () => {
-    const response = await handleSubmit(searchTemplate, searchCriterion, '');
-    setSearchData(response?.data?.data);
-  }, [searchTemplate, searchCriterion]);
+    const { orCriterion } = generateSearchCriteria(
+      search,
+      appliedFilter,
+      {
+        contextTypeId: {
+          key: 'systemContextTypeId',
+          operator: OPERATORS.Equals,
+        },
+        owner: { key: 'createdBy', operator: OPERATORS.Equals },
+        createdDate: { key: 'dateCreated', operator: OPERATORS.Contains },
+      },
+      ['templateName', 'description']
+    );
+    const payload = {
+      pageNumber,
+      pageSize,
+      orCriterion,
+    };
+
+    if (orCriterion.length > 0) {
+      const response = await handleSubmit(searchTemplate, payload, '');
+      setSearchData(response?.data?.data);
+    }
+  }, [searchTemplate, search, appliedFilter, pageNumber, pageSize]);
 
   // Trigger search when search input changes or pagination updates
   useEffect(() => {
-    if (search) {
+    if (search || !isFilterEmpty) {
       handleSearch();
     }
-  }, [search, pageNumber, pageSize]);
+  }, [search, appliedFilter, pageNumber, pageSize]);
 
   // Reset pagination when clearing the search
   useEffect(() => {
@@ -139,7 +141,17 @@ const TemplateModal = (props: TemplateModalProps) => {
       setPageSize={setPageSize}
       filters={
         <Flex width="full" mb="16px" flexWrap="wrap">
-          <TemplateFilters handleApplyFilter={handleSearch} type="modal" />
+          <TemplateFilters
+            filterData={filterData}
+            setFilterData={setFilterData}
+            onApply={() => {
+              applyFilter();
+            }}
+            onClear={() => {
+              clearFilter();
+            }}
+            type="modal"
+          />
         </Flex>
       }
     >

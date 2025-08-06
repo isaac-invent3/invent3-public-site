@@ -68,4 +68,48 @@ const createSearchCriterion = ({
   return searchCriteria;
 };
 
+export const generateSearchCriteria = (
+  search: string,
+  filterData: any,
+  mapping: Record<
+    string,
+    { key: string; operator: (typeof OPERATORS)[keyof typeof OPERATORS] }
+  >,
+  searchColumns: string[]
+) => {
+  const orCriterion: SearchCriterion[][] = [];
+
+  // Handle search across multiple fields
+  if (search) {
+    const searchCriteria = searchColumns.map((column) => ({
+      columnName: column,
+      columnValue: search,
+      operation: OPERATORS.Contains,
+    }));
+    orCriterion.push(searchCriteria);
+  }
+
+  // Handle filter data
+  Object.entries(mapping).forEach(([filterKey, config]) => {
+    const value = filterData[filterKey];
+    if (!value || (Array.isArray(value) && value.length === 0)) return;
+
+    const valuesArray = Array.isArray(value) ? value : [value];
+    const filterCriteria: SearchCriterion[] = valuesArray.map(
+      (val) =>
+        ({
+          columnName: config.key,
+          columnValue: val,
+          operation: config.operator,
+        }) as unknown as SearchCriterion
+    );
+
+    orCriterion.push(filterCriteria);
+  });
+
+  return {
+    orCriterion,
+  };
+};
+
 export default createSearchCriterion;

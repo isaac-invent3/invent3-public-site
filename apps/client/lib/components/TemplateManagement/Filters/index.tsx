@@ -1,48 +1,64 @@
 import OwnerFilter from './OwnerFilter';
 import ContextTypeFilter from './ContextType';
 import FilterWrapper from '../../Common/FilterComponents/FilterWrapper';
-import {
-  clearTemplateFilter,
-  updateTemplateFilter,
-} from '~/lib/redux/slices/TemplateSlice';
-import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { DatePopover } from '@repo/ui/components';
 import moment from 'moment';
+import { TemplateFilter } from '~/lib/interfaces/template.interfaces';
 
 interface TemplateFiltersProps {
-  handleApplyFilter: () => void;
   type: 'page' | 'modal';
+  filterData: TemplateFilter;
+  setFilterData: React.Dispatch<React.SetStateAction<TemplateFilter>>;
+  onApply: () => void;
+  onClear: () => void;
 }
 const TemplateFilters = (props: TemplateFiltersProps) => {
-  const { handleApplyFilter, type } = props;
-  const dispatch = useAppDispatch();
-  const { createdDate } = useAppSelector(
-    (state) => state.template.templateFilters
-  );
+  const { type, filterData, setFilterData, onApply, onClear } = props;
   return (
-    <FilterWrapper
-      handleApplyFilter={handleApplyFilter}
-      handleClearFilter={() => {
-        dispatch(clearTemplateFilter());
-        handleApplyFilter();
-      }}
-    >
-      {type === 'page' && <ContextTypeFilter />}
-      <OwnerFilter />
-      <DatePopover
+    <FilterWrapper handleApplyFilter={onApply} handleClearFilter={onClear}>
+      {type === 'page' && (
+        <ContextTypeFilter
+          selected={filterData.contextTypeId}
+          onChange={(option) =>
+            setFilterData((prev) => ({
+              ...prev,
+              contextTypeId: filterData.contextTypeId.includes(+option.value)
+                ? filterData.contextTypeId.filter(
+                    (value) => value !== option.value
+                  )
+                : [...filterData.contextTypeId, +option.value],
+            }))
+          }
+        />
+      )}
+      <OwnerFilter
+        selected={filterData.owner}
+        onChange={(option) =>
+          setFilterData((prev) => ({
+            ...prev,
+            owner: filterData.owner.includes(option.value as string)
+              ? filterData.owner.filter(
+                  (item) => item !== (option.value as string)
+                )
+              : [...filterData.owner, option.value as string],
+          }))
+        }
+      />
+      {/* <DatePopover
         label="Date Created"
         selectedDate={
-          createdDate ? moment(createdDate, 'YYYY-MM-DD').toDate() : undefined
+          filterData.createdDate
+            ? moment(filterData.createdDate, 'YYYY-MM-DD').toDate()
+            : undefined
         }
         setSelectedDate={(date) =>
-          dispatch(
-            updateTemplateFilter({
-              createdDate: moment(date).format('YYYY-MM-DD'),
-            })
-          )
+          setFilterData((prev) => ({
+            ...prev,
+            createdDate: moment(date).format('YYYY-MM-DD'),
+          }))
         }
         customStyle={{ border: '1px solid #DADFE5' }}
-      />
+      /> */}
     </FilterWrapper>
   );
 };

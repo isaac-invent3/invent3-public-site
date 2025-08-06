@@ -3,6 +3,7 @@
 import { signIn, signOut, auth } from '~/auth';
 import { AuthError } from 'next-auth';
 import { ROUTES } from '~/lib/utils/constants';
+import { redirect } from 'next/navigation';
 
 export async function handleCredentialsSignin({
   username,
@@ -35,25 +36,25 @@ export async function handleCredentialsSignin({
     throw error;
   }
 }
+
 export async function handleSignOut(ref?: string) {
   const session = await auth();
-  if (!session) {
-    await signOut({ redirectTo: '/' });
-    return;
-  }
+
   const tenantName = session?.user?.companySlug
-    ? `/${session?.user?.companySlug}`
+    ? `/${session.user.companySlug}`
     : '';
   const redirectUrl = ref
     ? `${tenantName}/signin?ref=${encodeURIComponent(ref)}`
     : `${tenantName}/signin`;
 
+  // If no session or has error, just redirect
+  if (!session || session.error) {
+    await signOut();
+    redirect(redirectUrl);
+  }
+
   try {
-    if (session.error) {
-      await signOut({ redirectTo: redirectUrl });
-      return;
-    }
-    // Fire and forget logout request
+    // Optional: Call backend logout to invalidate session/token
     fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/logout`, {
       method: 'POST',
       headers: {
@@ -64,12 +65,11 @@ export async function handleSignOut(ref?: string) {
         apiKey: session.user.apiKey,
         sessionId: session.user.sessionId,
       }),
-    }).catch((error) => {
-      console.error('Error sending logout request:', error);
     });
-    await signOut({ redirectTo: redirectUrl });
   } catch (error) {
-    console.error('An error occurred during logout:', error);
-    await signOut({ redirectTo: redirectUrl });
+    console.error('Logout API error:', error);
   }
+
+  await signOut();
+  redirect(redirectUrl); // Redirect manually from server action
 }

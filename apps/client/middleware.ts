@@ -235,15 +235,17 @@ export async function middleware(request: NextRequest) {
     salt: SESSION_COOKIE,
   });
 
-  if (token) {
-    if (shouldUpdateToken(token)) {
+  let currentToken = token;
+
+  if (currentToken) {
+    if (shouldUpdateToken(currentToken)) {
       try {
         const refreshedToken = await refreshAccessToken(
-          token,
+          currentToken,
           // hasSubdomain ? subdomain : null
           tenantData ? tenant : null
         );
-        if (refreshedToken.accessToken === token.accessToken) {
+        if (refreshedToken.accessToken === currentToken.accessToken) {
           console.error('Error refreshing token – tokens unchanged');
           return updateCookie(null, request, response, tenantName);
         }
@@ -254,6 +256,8 @@ export async function middleware(request: NextRequest) {
           maxAge: SESSION_TIMEOUT,
           salt: SESSION_COOKIE,
         });
+
+        currentToken = refreshedToken;
 
         return updateCookie(newSessionToken, request, response, tenantName);
       } catch (error) {
@@ -268,11 +272,14 @@ export async function middleware(request: NextRequest) {
 
     // Redirect to tenant if token has a different tenant. Note: This is for only the relative path approach
     if (
-      token.companySlug &&
-      token.companySlug !== tenant &&
+      currentToken.companySlug &&
+      currentToken.companySlug !== tenant &&
       formattedPath !== '/signin'
     ) {
-      const url = new URL(`/${token.companySlug}/${pathname}`, request.url);
+      const url = new URL(
+        `/${currentToken.companySlug}/${pathname}`,
+        request.url
+      );
       url.search = request.nextUrl.search; // Preserve query string
       return NextResponse.redirect(url);
     }
@@ -280,10 +287,10 @@ export async function middleware(request: NextRequest) {
     if (
       protectedGlobalRoute.includes(formattedPath) ||
       (protectedSuperAdminRoute.includes(formattedPath) &&
-        token.roleIds.includes(ROLE_IDS_ENUM.SUPER_ADMIN) &&
+        currentToken.roleIds.includes(ROLE_IDS_ENUM.SUPER_ADMIN) &&
         ((protectedCMFAndClientAdminRoute.includes(formattedPath) &&
-          token.roleIds.includes(ROLE_IDS_ENUM.CLIENT_ADMIN)) ||
-          token.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY)))
+          currentToken.roleIds.includes(ROLE_IDS_ENUM.CLIENT_ADMIN)) ||
+          currentToken.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY)))
     ) {
       if (tenantData) {
         return NextResponse.rewrite(new URL(`${checkPath}`, request.url));
@@ -317,10 +324,10 @@ export async function middleware(request: NextRequest) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           path: checkPath,
-          accessToken: token.accessToken,
-          apiKey: token.apiKey,
-          companySlug: token.companySlug,
-          accessibleRoutes: token.roleSystemModuleContextPermissions,
+          accessToken: currentToken.accessToken,
+          apiKey: currentToken.apiKey,
+          companySlug: currentToken.companySlug,
+          accessibleRoutes: currentToken.roleSystemModuleContextPermissions,
         }),
       }
     );
@@ -330,12 +337,13 @@ export async function middleware(request: NextRequest) {
     }
 
     const { hasPermission, permissionKeys } = await res.json();
+    console.log({ permissionKeys });
 
     if (
       !hasPermission &&
       !(
-        token.roleIds.includes(ROLE_IDS_ENUM.SUPER_ADMIN) ||
-        token.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY)
+        currentToken.roleIds.includes(ROLE_IDS_ENUM.SUPER_ADMIN) ||
+        currentToken.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY)
       )
     ) {
       return NextResponse.rewrite(new URL('/404', request.url));

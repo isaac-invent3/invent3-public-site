@@ -137,7 +137,7 @@ const RoleDetails = ({ role }: RoleDetailsProps) => {
       </Flex>
       <GenericSuccessModal
         isOpen={isOpen}
-        onClose={() => router.push(`${ROUTES.ROLES}`)}
+        onClose={() => router.push(`/${ROUTES.ROLES}`)}
         successText="Role and Permissions Updated Successfully"
         mainModalStyle={{ closeOnOverlayClick: false, closeOnEsc: false }}
       >

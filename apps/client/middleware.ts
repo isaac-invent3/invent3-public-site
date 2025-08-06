@@ -309,11 +309,30 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL(`/dashboard`, request.url));
     }
 
-    const permissionData = await checkPermission({ path: checkPath });
-    console.log({ permissionData });
+    // Check User Permission
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/check-permission`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          path: checkPath,
+          accessToken: token.accessToken,
+          apiKey: token.apiKey,
+          companySlug: token.companySlug,
+          accessibleRoutes: token.roleSystemModuleContextPermissions,
+        }),
+      }
+    );
+
+    if (!res.ok) {
+      return NextResponse.rewrite(new URL('/404', request.url));
+    }
+
+    const { hasPermission, permissionKeys } = await res.json();
 
     if (
-      !permissionData &&
+      !hasPermission &&
       !(
         token.roleIds.includes(ROLE_IDS_ENUM.SUPER_ADMIN) ||
         token.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY)
@@ -330,11 +349,12 @@ export async function middleware(request: NextRequest) {
     // Set cookies on the correct response
     responseToReturn.cookies.set(
       'permissionData',
-      JSON.stringify(permissionData?.permissionKeys)
+      JSON.stringify(permissionKeys)
     );
 
     return responseToReturn;
   }
+
   if (!token) {
     const checkPath = tenantData ? `/${remainingPath}` : pathname;
     const requestedPath = `/${checkPath.split('/')?.[1] as string}`;

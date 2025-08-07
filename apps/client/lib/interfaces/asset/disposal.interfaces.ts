@@ -16,22 +16,19 @@ interface AssetDisposalReason {
 }
 
 interface AssetDisposal {
-  isNew: boolean;
-  createdDate: string;
-  createdBy: string;
-  lastModifiedDate: string;
-  lastModifiedBy: string;
-  isDeleted: boolean;
-  deletedDate: string;
-  deletedBy: string;
-  guid: string;
-  disposalRequestId: number;
-  currentOwner: number;
   disposalReasonId: number;
-  disposalDate: string;
+  reason: string;
+  description: string;
+  disposalRequestId: number;
+  guid: string;
+  currentOwner: number;
+  disposalDate: Date;
   assetId: number;
   comments: string;
   disposalRequestedBy: number;
+  isDeleted: boolean;
+  assetName: string;
+  fullName: string;
 }
 
 interface AssetDisposalQuery {

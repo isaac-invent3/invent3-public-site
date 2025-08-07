@@ -59,7 +59,7 @@ export const assetDisposalApi = createApi({
       { id: number }
     >({
       query: ({ id }) => ({
-        url: `/AssetDisposalRequests/${id}?`,
+        url: `/AssetDisposalRequests/GetAssetDisposalRequestInfoHeader/${id}?`,
         method: 'GET',
         headers: getHeaders(),
       }),

@@ -93,9 +93,9 @@ const SectionTwo = () => {
     if (assetDisposal?.data) {
       setDetails((prev) => ({
         ...prev,
-        assetDisplayName: 'Asset',
+        assetDisplayName: assetDisposal?.data?.assetName,
         assetId: assetDisposal?.data?.assetId,
-        reason: assetDisposal?.data?.comments,
+        reason: assetDisposal?.data?.comments ?? '--',
         date: assetDisposal?.data?.disposalDate
           ? dateFormatter(assetDisposal?.data?.disposalDate, 'MMMM DD, YYYY')
           : null,

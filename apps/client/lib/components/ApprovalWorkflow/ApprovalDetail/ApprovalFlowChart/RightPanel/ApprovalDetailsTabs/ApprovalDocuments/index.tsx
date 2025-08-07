@@ -75,7 +75,9 @@ const ApprovalDocuments = () => {
           divider={<StackDivider borderColor="neutral.600" />}
           spacing="16px"
         >
-          {data?.data && data?.data?.items.length >= 1 ? (
+          {!isLoading &&
+            data?.data &&
+            data?.data?.items.length >= 1 &&
             data?.data?.items.map((item, index: number) => {
               const { extensionName } = getDocumentInfo({
                 base64Document: item.document,
@@ -109,8 +111,8 @@ const ApprovalDocuments = () => {
                   </Text>
                 </HStack>
               );
-            })
-          ) : (
+            })}
+          {!isLoading && !data?.data && (
             <Text
               width="full"
               size="md"

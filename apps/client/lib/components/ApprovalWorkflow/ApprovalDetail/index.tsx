@@ -13,7 +13,12 @@ const ApprovalDetail = () => {
   const data = useAppSelector((state) => state.approval.approvalRequest);
 
   return (
-    <Flex width="full" direction="column" pb="24px">
+    <Flex
+      width="full"
+      direction="column"
+      pb="24px"
+      px={{ base: '16px', lg: 0 }}
+    >
       <PageHeader>Approval Requests</PageHeader>
       <HStack mt="8px" mb="24px">
         <Text

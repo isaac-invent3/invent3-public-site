@@ -124,6 +124,14 @@ export function signOut(
   const redirectPath = tenantName ? `/${tenantName}/signin` : `/signin`;
   const url = new URL(redirectPath, request.url);
 
+  // Prevent redirect loop by NEVER using /signin as ref when already on /signin
+  if (
+    request.nextUrl.pathname.endsWith('/signin') ||
+    request.nextUrl.searchParams.has('ref')
+  ) {
+    return NextResponse.next();
+  }
+
   // Construct actualPath (path + query string)
   const actualPath = tenantName ? remainingPath : pathname;
   let refValue = actualPath;
@@ -255,7 +263,10 @@ export async function middleware(request: NextRequest) {
 
         currentToken = refreshedToken;
 
-        const checkPath = tenantData ? `/${remainingPath}` : pathname;
+        const checkPath =
+          tenantName && tenant && !normalizedAllRoutes.includes(tenant)
+            ? `/${remainingPath}`
+            : pathname;
         const url = new URL(checkPath, request.url); // e.g. /dashboard
 
         url.search = request.nextUrl.search; // retain ?view=client_admin
@@ -270,17 +281,16 @@ export async function middleware(request: NextRequest) {
         return signOut(request, tenantName);
       }
     }
-    const checkPath = tenantData ? `/${remainingPath}` : pathname;
+    const checkPath =
+      tenantName && tenant && !normalizedAllRoutes.includes(tenant)
+        ? `/${remainingPath}`
+        : pathname;
 
     // Don't check permission for protected global route or super admin route if the user is a super admin
     const formattedPath = `/${checkPath.split('/')?.[1] as string}`;
 
     // Redirect to tenant if token has a different tenant. Note: This is for only the relative path approach
-    if (
-      currentToken.companySlug &&
-      currentToken.companySlug !== tenant &&
-      formattedPath !== '/signin'
-    ) {
+    if (tenantName && tenantName !== tenant) {
       const url = new URL(
         `/${currentToken.companySlug}/${pathname}`,
         request.url
@@ -297,7 +307,7 @@ export async function middleware(request: NextRequest) {
           currentToken.roleIds.includes(ROLE_IDS_ENUM.CLIENT_ADMIN)) ||
           currentToken.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY)))
     ) {
-      if (tenantData) {
+      if (tenantName) {
         return NextResponse.rewrite(new URL(`${checkPath}`, request.url));
       }
       return NextResponse.next();
@@ -314,7 +324,7 @@ export async function middleware(request: NextRequest) {
     if (publicRoutes.includes(checkPath)) {
       if (tenantData) {
         return NextResponse.redirect(
-          new URL(`/${tenant}/dashboard`, request.url)
+          new URL(`/${tenantName}/dashboard`, request.url)
         );
       }
       return NextResponse.redirect(new URL(`/dashboard`, request.url));
@@ -354,7 +364,7 @@ export async function middleware(request: NextRequest) {
     }
 
     // Decide which response to return
-    const responseToReturn = tenantData
+    const responseToReturn = tenantName
       ? NextResponse.rewrite(new URL(`${checkPath}`, request.url))
       : NextResponse.next();
 

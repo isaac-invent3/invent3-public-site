@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { checkPermission } from './app/actions/permissionAction';
 import { encode, getToken, JWT } from 'next-auth/jwt';
 import { ROLE_IDS_ENUM } from './lib/utils/constants';
 import { validateTenant } from './app/actions/validateTenantAction';
@@ -117,21 +116,25 @@ export function signOut(
 ): NextResponse {
   console.log('Signing out');
 
-  // If protected page, redirect to signin with ref (respect tenant)
-  const signoutPath = tenantName ? `/${tenantName}/signin` : `/signin`;
+  const pathname = request.nextUrl.pathname; // e.g., /tenant/dashboard
 
-  // Get full path + query string
-  const fullPathWithQuery = request.nextUrl.pathname + request.nextUrl.search;
-  const encodedRef = encodeURIComponent(fullPathWithQuery);
+  const segments = pathname.split('/').filter(Boolean); // split by "/"
+  const remainingPath = segments.slice(1).join('/'); // remove tenant segment if any
 
-  // Prevent redirect loop by NEVER using /signin as ref when already on /signin
-  if (request.nextUrl.pathname === signoutPath) {
-    return NextResponse.next();
+  const redirectPath = tenantName ? `/${tenantName}/signin` : `/signin`;
+  const url = new URL(redirectPath, request.url);
+
+  // Construct actualPath (path + query string)
+  const actualPath = tenantName ? remainingPath : pathname;
+  let refValue = actualPath;
+
+  const searchParams = new URLSearchParams(request.nextUrl.searchParams);
+  if ([...searchParams].length > 0) {
+    refValue += `?${searchParams.toString()}`;
   }
 
-  // Build redirect URL
-  const url = new URL(signoutPath, request.url);
-  url.searchParams.set('ref', encodedRef);
+  // Encode the ref and append to URL
+  url.searchParams.set('ref', encodeURIComponent(refValue));
 
   // Create redirect response
   const response = NextResponse.redirect(url);
@@ -168,12 +171,6 @@ export function updateCookie(
    */
 
   if (sessionToken) {
-    request.cookies.set(SESSION_COOKIE, sessionToken);
-    response = NextResponse.next({
-      request: {
-        headers: request.headers,
-      },
-    });
     response.cookies.set(SESSION_COOKIE, sessionToken, {
       httpOnly: true,
       maxAge: SESSION_TIMEOUT,
@@ -224,9 +221,7 @@ export async function middleware(request: NextRequest) {
 
   const remainingPath = segments.slice(1).join('/');
 
-  const tenantName = tenantData ? tenant : undefined;
-
-  if (!SECRET) return signOut(request, tenantName);
+  if (!SECRET) return signOut(request, undefined);
 
   const token = await getToken({
     req: request,
@@ -237,17 +232,20 @@ export async function middleware(request: NextRequest) {
 
   let currentToken = token;
 
+  const tenantName =
+    (currentToken?.managedCompanySlug ?? currentToken?.companySlug) ||
+    undefined;
+
   if (currentToken) {
     if (shouldUpdateToken(currentToken)) {
       try {
         const refreshedToken = await refreshAccessToken(
           currentToken,
-          // hasSubdomain ? subdomain : null
-          tenantData ? tenant : null
+          tenantName
         );
         if (refreshedToken.accessToken === currentToken.accessToken) {
           console.error('Error refreshing token – tokens unchanged');
-          return updateCookie(null, request, response, tenantName);
+          return signOut(request, tenantName);
         }
 
         const newSessionToken = await encode({
@@ -259,10 +257,19 @@ export async function middleware(request: NextRequest) {
 
         currentToken = refreshedToken;
 
-        return updateCookie(newSessionToken, request, response, tenantName);
+        const checkPath = tenantData ? `/${remainingPath}` : pathname;
+        const url = new URL(checkPath, request.url); // e.g. /dashboard
+
+        url.search = request.nextUrl.search; // retain ?view=client_admin
+
+        const newResponse = NextResponse.rewrite(url);
+        updateCookie(newSessionToken, request, newResponse, tenantName);
+        request.cookies.set(SESSION_COOKIE, newSessionToken);
+
+        return newResponse;
       } catch (error) {
         console.error('Error refreshing token: ', error);
-        return updateCookie(null, request, response, tenantName);
+        return signOut(request, tenantName);
       }
     }
     const checkPath = tenantData ? `/${remainingPath}` : pathname;
@@ -297,14 +304,13 @@ export async function middleware(request: NextRequest) {
       }
       return NextResponse.next();
     }
-    // If protected page, redirect to signin with ref (respect tenant)
-    const signoutPath = tenantName ? `/${tenantName}/signin` : `/signin`;
+    // // If protected page, redirect to signin with ref (respect tenant)
+    // const signoutPath = tenantName ? `/${tenantName}/signin` : `/signin`;
 
-    // Stop redirect loop
-    if (formattedPath === '/signin') {
-      const url = new URL(signoutPath, request.url);
-      return NextResponse.rewrite(url);
-    }
+    // // Stop redirect loop
+    // if (pathname.endsWith('/signin')) {
+    //   return NextResponse.next();
+    // }
 
     // Redirect to Dashboard for public routes
     if (publicRoutes.includes(checkPath)) {
@@ -363,7 +369,7 @@ export async function middleware(request: NextRequest) {
     return responseToReturn;
   }
 
-  if (!token) {
+  if (!currentToken) {
     const checkPath = tenantData ? `/${remainingPath}` : pathname;
     const requestedPath = `/${checkPath.split('/')?.[1] as string}`;
 

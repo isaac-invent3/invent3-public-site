@@ -47,8 +47,8 @@ const AssetComplianceHistoryDrawer = ({
   onClose,
   data,
 }: AssetComplianceHistoryDrawerProps) => {
-  const [pageSize, setPageSize] = useState(1);
-  const [pageNumber, setPageNumber] = useState(DEFAULT_PAGE_SIZE);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+  const [pageNumber, setPageNumber] = useState(1);
   const columnHelper = createColumnHelper<ComplianceAuditLogsByAsset>();
   const {
     data: auditLogs,

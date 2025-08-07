@@ -232,9 +232,7 @@ export async function middleware(request: NextRequest) {
 
   let currentToken = token;
 
-  const tenantName =
-    (currentToken?.managedCompanySlug ?? currentToken?.companySlug) ||
-    undefined;
+  const tenantName = currentToken?.companySlug || undefined;
 
   if (currentToken) {
     if (shouldUpdateToken(currentToken)) {

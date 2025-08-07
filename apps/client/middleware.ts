@@ -265,13 +265,13 @@ export async function middleware(request: NextRequest) {
 
         const checkPath =
           tenantName && tenant && !normalizedAllRoutes.includes(tenant)
-            ? `/${remainingPath}`
+            ? `/${tenantName}/${remainingPath}`
             : pathname;
-        const url = new URL(checkPath, request.url); // e.g. /dashboard
+        const url = new URL(checkPath, request.url); // e.g. /dashboard or /demo/dashboard
 
         url.search = request.nextUrl.search; // retain ?view=client_admin
 
-        const newResponse = NextResponse.rewrite(url);
+        const newResponse = NextResponse.redirect(url);
         updateCookie(newSessionToken, request, newResponse, tenantName);
         request.cookies.set(SESSION_COOKIE, newSessionToken);
 

@@ -116,38 +116,14 @@ export function signOut(
 ): NextResponse {
   console.log('Signing out');
 
-  const pathname = request.nextUrl.pathname; // e.g., /tenant/dashboard
+  const pathname = request.nextUrl.pathname;
 
-  const segments = pathname.split('/').filter(Boolean); // split by "/"
-  const remainingPath = segments.slice(1).join('/'); // remove tenant segment if any
-
+  // Build redirect path
   const redirectPath = tenantName ? `/${tenantName}/signin` : `/signin`;
   const url = new URL(redirectPath, request.url);
 
-  // Prevent redirect loop by NEVER using /signin as ref when already on /signin
-  if (
-    request.nextUrl.pathname.endsWith('/signin') ||
-    request.nextUrl.searchParams.has('ref')
-  ) {
-    return NextResponse.next();
-  }
-
-  // Construct actualPath (path + query string)
-  const actualPath = tenantName ? remainingPath : pathname;
-  let refValue = actualPath;
-
-  const searchParams = new URLSearchParams(request.nextUrl.searchParams);
-  if ([...searchParams].length > 0) {
-    refValue += `?${searchParams.toString()}`;
-  }
-
-  // Encode the ref and append to URL
-  url.searchParams.set('ref', encodeURIComponent(refValue));
-
-  // Create redirect response
+  // Always clear cookies first
   const response = NextResponse.redirect(url);
-
-  // Expire cookies
   response.cookies.set(SESSION_COOKIE, '', {
     value: '',
     maxAge: -1,
@@ -158,9 +134,26 @@ export function signOut(
     maxAge: -1,
     path: '/',
   });
-
   request.cookies.delete(SESSION_COOKIE);
-  return response;
+
+  // Prevent redirect loop when already on /signin
+  if (pathname.endsWith('/signin') || request.nextUrl.searchParams.has('ref')) {
+    return response;
+  }
+
+  // Encode ref only if not already there
+  const segments = pathname.split('/').filter(Boolean);
+  const remainingPath = segments.slice(1).join('/');
+  const actualPath = tenantName ? remainingPath : pathname;
+
+  let refValue = actualPath;
+  const searchParams = new URLSearchParams(request.nextUrl.searchParams);
+  if ([...searchParams].length > 0) {
+    refValue += `?${searchParams.toString()}`;
+  }
+  url.searchParams.set('ref', encodeURIComponent(refValue));
+
+  return NextResponse.redirect(url);
 }
 
 export function updateCookie(

@@ -23,7 +23,7 @@ const extractTenantFromReferer = (
   }
 };
 
-export const TOKEN_REFRESH_BUFFER_SECONDS = 60; // 5 minutes
+export const TOKEN_REFRESH_BUFFER_SECONDS = 60; // one minutes
 const getTimeInSeconds = () => Math.floor(Date.now() / 1000);
 
 // Create a shared mutex for controlling access to the refresh token process

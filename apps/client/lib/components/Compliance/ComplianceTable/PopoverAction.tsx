@@ -12,7 +12,6 @@ const PopoverAction = ({ facilityId }: { facilityId: number }) => {
           <Link href={`/${ROUTES.COMPLIANCE}/facility/${facilityId}`}>
             <Text cursor="pointer">View Details</Text>
           </Link>
-          <Text cursor="pointer">Remove Facility</Text>
         </VStack>
       </GenericPopover>
     </>

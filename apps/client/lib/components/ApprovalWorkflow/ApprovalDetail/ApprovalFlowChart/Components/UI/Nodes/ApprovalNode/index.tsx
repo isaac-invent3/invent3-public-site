@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import type { NodeProps } from '@xyflow/react';
 import { Handle, Position } from '@xyflow/react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import UserInfo from '~/lib/components/Common/UserInfo';
 import {
   CursorIcon,
@@ -40,24 +40,24 @@ const ApprovalNode = ({ data, isConnectable, id }: NodeProps<CustomNode>) => {
     handler: onClose,
   });
 
-  // useEffect(() => {
-  //   const handleClickOutside = (event: MouseEvent) => {
-  //     if (
-  //       popoverRef.current &&
-  //       !popoverRef.current.contains(event.target as HTMLElement)
-  //     ) {
-  //       onClose();
-  //     }
-  //   };
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        popoverRef.current &&
+        !popoverRef.current.contains(event.target as HTMLElement)
+      ) {
+        onClose();
+      }
+    };
 
-  //   document.addEventListener('mousedown', handleClickOutside);
-  //   document.addEventListener('click', handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('click', handleClickOutside);
 
-  //   return () => {
-  //     document.removeEventListener('mousedown', handleClickOutside);
-  //     document.removeEventListener('click', handleClickOutside);
-  //   };
-  // }, [onClose]);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [onClose]);
 
   return (
     <>

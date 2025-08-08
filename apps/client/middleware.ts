@@ -73,6 +73,7 @@ export async function refreshAccessToken(
     apiKey: token.apiKey,
   };
   console.log('updating');
+  console.log({ payload, subdomain });
   try {
     const response = await fetch(
       process.env.NEXT_PUBLIC_API_URL + '/api/Invent3Pro/refresh-tokens',

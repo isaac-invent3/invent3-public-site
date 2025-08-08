@@ -100,8 +100,8 @@ const AssetComplianceDetailDrawer = ({
                   Start Date:
                 </Text>
                 <Text fontWeight={700} color="primary.500">
-                  {info.row.original?.frequency
-                    ? dateFormatter(info.row.original.frequency, 'DD-MM-YYYY')
+                  {info.row.original?.startDate
+                    ? dateFormatter(info.row.original?.startDate, 'DD-MM-YYYY')
                     : 'N/A'}
                 </Text>
               </VStack>

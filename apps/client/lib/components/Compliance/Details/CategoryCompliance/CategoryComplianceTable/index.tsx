@@ -129,7 +129,12 @@ const CategoryComplianceTable = (props: CategoryComplianceTableProps) => {
         }),
 
         columnHelper.accessor('complianceStatus', {
-          cell: (info) => <GenericStatusBox text={info.getValue()} />,
+          cell: (info) => (
+            <GenericStatusBox
+              text={info.getValue()}
+              colorCode={info.row.original.displayColorCode}
+            />
+          ),
           header: 'Status',
           enableSorting: false,
         }),

@@ -17,5 +17,5 @@ export default function Page({ params }: { params: { id: number } }) {
   }
   if (!data?.data) return notFound();
 
-  return <AssetDispose data={data?.data} />;
+  return <AssetDispose data={data?.data} inAWorkflow={false} />;
 }

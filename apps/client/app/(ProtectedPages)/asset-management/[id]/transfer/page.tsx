@@ -17,5 +17,5 @@ export default function Page({ params }: { params: { id: number } }) {
   }
   if (!data?.data) return notFound();
 
-  return <AssetTransfer data={data?.data} />;
+  return <AssetTransfer data={data?.data} inAWorkflow={false} />;
 }

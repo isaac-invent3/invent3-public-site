@@ -63,7 +63,7 @@ export default function Page({ params }: { params: { id: number } }) {
         countryId: user?.countryId,
         stateId: user?.stateId,
         cityId: user?.lgaId,
-        cityName: user?.lastName,
+        cityName: user?.lganame,
         countryName: user?.countryName,
         stateName: user?.stateName,
         documents: formDocuments ?? [],

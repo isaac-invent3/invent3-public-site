@@ -149,6 +149,10 @@ const companyManagementBreadCrumb: BreadcrumbNode = {
 const complianceBreadCrumb: BreadcrumbNode = {
   route: `/${ROUTES.COMPLIANCE}`,
   label: 'Compliance',
+  children: {
+    facility: { label: 'Facility' },
+    'asset-category': { label: 'Asset Category' },
+  },
 };
 const adminSettingsBreadcrumb: BreadcrumbNode = {
   route: `/${ROUTES.USER_SETTINGS}`,

@@ -31,6 +31,8 @@ const useAssetDepreciationTable = (props: useAssetDepreciationTable) => {
   const { data, isLoading, isFetching } =
     useGetAssetDepreciationFinancialImpactQuery({
       datePeriod: DATE_PERIOD.YEAR,
+      pageNumber,
+      pageSize: customPageSize ?? pageSize,
     });
   const [searchData, setSearchData] = useState<
     BaseApiResponse<ListResponse<Company>> | undefined

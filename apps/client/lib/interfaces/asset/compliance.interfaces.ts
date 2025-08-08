@@ -123,6 +123,7 @@ interface AssetBasedCompliance {
   compliant: number;
   nonCompliant: number;
   complianceStatus: string;
+  displayColorCode: string;
 }
 
 interface AssetComplianceDetail {
@@ -149,15 +150,16 @@ interface AssetComplianceCategoryDetail {
 
 interface CategoryPolicy {
   standard: string;
-  typeName: null;
-  frequency: null;
+  typeName: string;
+  frequency: string;
   nextInspectionDate: Date;
 }
 
 interface Policy {
   standard: string;
-  typeName: null;
-  frequency: null;
+  typeName: string;
+  frequency: string;
+  startDate: string;
   complianceStatusName: string;
   complianceStatusId: number;
 }
@@ -194,7 +196,7 @@ interface CreateAssetComplianceDto {
 
 export interface CreateComplianceDocumentDto {
   documentName: string;
-  document: string;
+  base64Document: string;
   base64Prefix: string;
   createdBy: string;
 }

@@ -5,7 +5,7 @@ import { BackButton, SearchInput, FilterButton } from '@repo/ui/components';
 
 interface HeaderProps {
   headerName: string;
-  setSearch: React.Dispatch<React.SetStateAction<string>>;
+  setSearch?: React.Dispatch<React.SetStateAction<string>>;
   openFilter: boolean;
   setOpenFilter: () => void;
   setShowDetails?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -63,15 +63,17 @@ const Header = (props: HeaderProps) => {
             borderColor="neutral.300"
             flexWrap="wrap"
           >
-            <SearchInput
-              setSearch={setSearch}
-              placeholderText={searchPlaceholder ?? 'Search'}
-              containerStyle={{
-                border: '1px solid #DADFE5',
-                rounded: '8px',
-                overflow: 'hidden',
-              }}
-            />
+            {setSearch && (
+              <SearchInput
+                setSearch={setSearch}
+                placeholderText={searchPlaceholder ?? 'Search'}
+                containerStyle={{
+                  border: '1px solid #DADFE5',
+                  rounded: '8px',
+                  overflow: 'hidden',
+                }}
+              />
+            )}
             {hasFilters && (
               <FilterButton
                 icon={FilterIcon}

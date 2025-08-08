@@ -202,7 +202,8 @@ function SelectInput(props: SelectInputProps) {
             }),
             control: (provided) => ({
               ...provided,
-              height: '50px',
+              minHeight: '50px',
+              height: 'auto',
               width: '100%',
               borderRadius: '8px',
               fontSize: '14px',

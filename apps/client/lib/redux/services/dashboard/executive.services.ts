@@ -1,5 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { BaseApiResponse, ListResponse } from '@repo/interfaces';
+import { BaseApiResponse, ListResponse, QueryParams } from '@repo/interfaces';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import {
@@ -83,7 +83,7 @@ export const executiveDashboardApis = createApi({
     }),
     getComplianceAssessment: builder.query<
       BaseApiResponse<ListResponse<AssetComplaince>>,
-      { datePeriod: number }
+      { datePeriod: number } & QueryParams
     >({
       query: (data) => ({
         url: generateQueryStr(
@@ -109,7 +109,7 @@ export const executiveDashboardApis = createApi({
     }),
     getTicketResolutionPerformance: builder.query<
       BaseApiResponse<Ticket[]>,
-      { datePeriod: number }
+      { datePeriod: number } & QueryParams
     >({
       query: (data) => ({
         url: generateQueryStr(
@@ -122,7 +122,7 @@ export const executiveDashboardApis = createApi({
     }),
     getAssetDepreciationFinancialImpact: builder.query<
       BaseApiResponse<ListResponse<FinancialImpact>>,
-      { datePeriod: number }
+      { datePeriod: number } & QueryParams
     >({
       query: (data) => ({
         url: generateQueryStr(
@@ -135,7 +135,7 @@ export const executiveDashboardApis = createApi({
     }),
     getPendingApprovalRequest: builder.query<
       BaseApiResponse<ListResponse<ApprovalWorkflowRequest>>,
-      { datePeriod: number }
+      { datePeriod: number } & QueryParams
     >({
       query: (data) => ({
         url: generateQueryStr(
@@ -148,7 +148,7 @@ export const executiveDashboardApis = createApi({
     }),
     getAssetPerformance: builder.query<
       BaseApiResponse<ListResponse<AssetPerformance>>,
-      { datePeriod: number }
+      { datePeriod: number } & QueryParams
     >({
       query: (data) => ({
         url: generateQueryStr(`/Invent3Pro/GetCLevelAssetPerformance?`, data),

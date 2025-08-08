@@ -8,7 +8,9 @@ import { updateUserForm } from '~/lib/redux/slices/UserSlice';
 
 const Branch = () => {
   const [field, meta, helpers] = useField('branchId'); //eslint-disable-line
-  const { cityId } = useAppSelector((state) => state.user.userForm);
+  const { cityId, branchId, branchName } = useAppSelector(
+    (state) => state.user.userForm
+  );
   const dispatch = useAppDispatch();
   return (
     <FormInputWrapper
@@ -22,6 +24,7 @@ const Branch = () => {
           type="specificById"
           lgaId={cityId}
           name="branchId"
+          defaultValue={branchName}
           handleSelect={(option) => {
             helpers.setValue(option.value);
             dispatch(updateUserForm({ branchName: option.label }));

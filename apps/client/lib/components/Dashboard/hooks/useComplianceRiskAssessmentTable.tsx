@@ -26,6 +26,8 @@ const useComplianceRiskAssessmentTable = (
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const { data, isLoading, isFetching } = useGetComplianceAssessmentQuery({
     datePeriod: DATE_PERIOD.YEAR,
+    pageNumber,
+    pageSize: customPageSize ?? pageSize,
   });
   const [searchData, setSearchData] = useState<
     BaseApiResponse<ListResponse<Company>> | undefined

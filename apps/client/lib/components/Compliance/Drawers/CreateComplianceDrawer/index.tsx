@@ -87,7 +87,7 @@ const CreateAssetComplianceDrawer = (
             data?.documents.length > 0
               ? data?.documents.map((item: Document) => ({
                   documentName: item.documentName!,
-                  document: item.base64Document!,
+                  base64Document: item.base64Document!,
                   base64Prefix: item.base64Prefix!,
                   createdBy: session?.user?.email!,
                 }))

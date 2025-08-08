@@ -10,7 +10,7 @@ const SummaryInfo = ({ data }: { data: FacilityAssetComplianceSummary }) => {
       value: data?.assetCategories?.toLocaleString() ?? '-',
     },
     {
-      label: 'Compliance',
+      label: 'Compliant Asset',
       value: data?.compliantItems?.toLocaleString() ?? '-',
     },
     {

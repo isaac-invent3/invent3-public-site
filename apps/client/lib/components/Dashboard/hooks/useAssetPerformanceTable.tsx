@@ -28,6 +28,8 @@ const useAssetPerformanceTable = (props: useAssetPerformanceTable) => {
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const { data, isLoading, isFetching } = useGetAssetPerformanceQuery({
     datePeriod: DATE_PERIOD.YEAR,
+    pageNumber,
+    pageSize: customPageSize ?? pageSize,
   });
   const [searchData, setSearchData] = useState<
     BaseApiResponse<ListResponse<Company>> | undefined

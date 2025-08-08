@@ -15,13 +15,20 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import PageHeader from '../../UI/PageHeader';
 import { ROUTES } from '~/lib/utils/constants';
 import { useTransferAssetMutation } from '~/lib/redux/services/asset/transfer.services';
+import TransferDisposalInProgressModal from '../Modals/TransferDisposalInProgressModal';
 
 interface AssetTransferProps {
   data: Asset;
+  inAWorkflow: boolean;
 }
 const AssetTransfer = (props: AssetTransferProps) => {
-  const { data } = props;
+  const { data, inAWorkflow } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenInfo,
+    onOpen: onOpenInfo,
+    onClose: onCloseInfo,
+  } = useDisclosure();
   const dispatch = useAppDispatch();
   const [transferAsset, { isLoading }] = useTransferAssetMutation({});
   const { handleSubmit } = useCustomMutation();
@@ -62,62 +69,75 @@ const AssetTransfer = (props: AssetTransferProps) => {
     };
   }, [data]);
 
-  return (
-    <Flex width="full" direction="column" pb="24px">
-      <Flex px={{ base: '16px', md: 0 }}>
-        <PageHeader>Asset Transfer Request</PageHeader>
-      </Flex>
-      <FormikProvider value={formik}>
-        <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
-          <Flex width="full" direction="column" gap="24px" mt="32px">
-            <Flex
-              width="full"
-              py="32px"
-              px={{ base: '16px', md: '25px' }}
-              direction="column"
-              gap={{ base: '28px', md: '31px' }}
-              rounded={{ md: '6px' }}
-              bgColor="white"
-              minH="70vh"
-            >
-              <SectionOne />
-              <SectionTwo />
-            </Flex>
-            <HStack
-              spacing="16px"
-              justifyContent={{ base: 'space-between', md: 'flex-end' }}
-              width="full"
-              px={{ base: '16px', md: 0 }}
-            >
-              <Button
-                type="button"
-                customStyles={{ width: '96px', bgColor: '#F6F6F6B2' }}
-                variant="secondary"
-                href={`/${ROUTES.ASSETS}`}
-              >
-                Cancel
-              </Button>
+  useEffect(() => {
+    if (inAWorkflow) {
+      onOpenInfo();
+    }
+  }, [inAWorkflow]);
 
-              <Button
-                type="submit"
-                customStyles={{ width: '161px' }}
-                isLoading={formik.isSubmitting || isLoading}
+  return (
+    <>
+      <Flex width="full" direction="column" pb="24px">
+        <Flex px={{ base: '16px', md: 0 }}>
+          <PageHeader>Asset Transfer Request</PageHeader>
+        </Flex>
+        <FormikProvider value={formik}>
+          <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
+            <Flex width="full" direction="column" gap="24px" mt="32px">
+              <Flex
+                width="full"
+                py="32px"
+                px={{ base: '16px', md: '25px' }}
+                direction="column"
+                gap={{ base: '28px', md: '31px' }}
+                rounded={{ md: '6px' }}
+                bgColor="white"
+                minH="70vh"
               >
-                Transfer
-              </Button>
-            </HStack>
-          </Flex>
-        </form>
-      </FormikProvider>
-      {isOpen && (
-        <AssetSuccessModal
-          isOpen={isOpen}
-          onClose={onClose}
-          buttonWidth="193px"
-          successText="Asset Transfer Request Successful"
-        />
-      )}
-    </Flex>
+                <SectionOne />
+                <SectionTwo />
+              </Flex>
+              <HStack
+                spacing="16px"
+                justifyContent={{ base: 'space-between', md: 'flex-end' }}
+                width="full"
+                px={{ base: '16px', md: 0 }}
+              >
+                <Button
+                  type="button"
+                  customStyles={{ width: '96px', bgColor: '#F6F6F6B2' }}
+                  variant="secondary"
+                  href={`/${ROUTES.ASSETS}`}
+                >
+                  Cancel
+                </Button>
+
+                <Button
+                  type="submit"
+                  customStyles={{ width: '161px' }}
+                  isLoading={formik.isSubmitting || isLoading}
+                >
+                  Transfer
+                </Button>
+              </HStack>
+            </Flex>
+          </form>
+        </FormikProvider>
+        {isOpen && (
+          <AssetSuccessModal
+            isOpen={isOpen}
+            onClose={onClose}
+            buttonWidth="193px"
+            successText="Asset Transfer Request Successful"
+          />
+        )}
+      </Flex>
+      <TransferDisposalInProgressModal
+        isOpen={isOpenInfo}
+        onClose={onCloseInfo}
+        type="transfer"
+      />
+    </>
   );
 };
 

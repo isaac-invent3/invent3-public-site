@@ -96,7 +96,7 @@ const SummaryInfo = ({ data }: { data: AssetCategoryComplianceSummary }) => {
           </SimpleGrid>
           <VStack alignItems="flex-start" spacing="8px">
             <Text fontWeight={800} color="white">
-              Total Compliance Policies
+              Total Compliant Policies
             </Text>
             <HStack
               spacing={{ base: '24px', lg: '97px' }}

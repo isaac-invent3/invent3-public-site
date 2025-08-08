@@ -5,11 +5,14 @@ import CountrySelect from '~/lib/components/Common/SelectComponents/Location/Cou
 import LGASelect from '~/lib/components/Common/SelectComponents/Location/LGASelect';
 import StateSelect from '~/lib/components/Common/SelectComponents/Location/StateSelect';
 import { UserFormDetails } from '~/lib/interfaces/user.interfaces';
-import { useAppDispatch } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateUserForm } from '~/lib/redux/slices/UserSlice';
 
 const Location = () => {
   const { setFieldValue, values } = useFormikContext<UserFormDetails>();
+  const { countryName, stateName, cityName } = useAppSelector(
+    (state) => state.user.userForm
+  );
   const dispatch = useAppDispatch();
   return (
     <FormInputWrapper
@@ -25,6 +28,7 @@ const Location = () => {
               setFieldValue('countryId', option.value);
               dispatch(updateUserForm({ countryName: option.label }));
             }}
+            defaultInputValue={countryName ?? undefined}
           />
           <StateSelect
             countryId={values.countryId}
@@ -32,6 +36,7 @@ const Location = () => {
               setFieldValue('stateId', option.value);
               dispatch(updateUserForm({ stateName: option.label }));
             }}
+            defaultInputValue={stateName ?? undefined}
           />
           <LGASelect
             stateId={values.stateId}
@@ -41,6 +46,7 @@ const Location = () => {
               dispatch(updateUserForm({ cityName: option.label }));
             }}
             type="specificById"
+            defaultInputValue={cityName ?? undefined}
           />
         </SimpleGrid>
       </VStack>

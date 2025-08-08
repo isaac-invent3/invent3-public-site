@@ -17,7 +17,7 @@ interface GenericTemplateModalProps {
   showDetails?: boolean;
   hideOtherInfoWhenDetailsIsShown?: boolean;
   setShowDetails?: React.Dispatch<React.SetStateAction<boolean>>;
-  setSearch: React.Dispatch<React.SetStateAction<string>>;
+  setSearch?: React.Dispatch<React.SetStateAction<string>>;
   setPageNumber?: React.Dispatch<React.SetStateAction<number>>;
   setPageSize?: React.Dispatch<React.SetStateAction<number>>;
   children: React.ReactNode;

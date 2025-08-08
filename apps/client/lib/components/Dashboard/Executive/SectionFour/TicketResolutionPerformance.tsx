@@ -1,55 +1,13 @@
 import { Flex, HStack, Text, useDisclosure, VStack } from '@chakra-ui/react';
-import React, { useMemo } from 'react';
-import { Button, DataTable } from '@repo/ui/components';
-import { DATE_PERIOD } from '~/lib/utils/constants';
+import React from 'react';
+import { Button } from '@repo/ui/components';
 import CardHeader from '../../Common/CardHeader';
-import { createColumnHelper } from '@tanstack/react-table';
-import { useGetTicketResolutionPerformanceQuery } from '~/lib/redux/services/dashboard/executive.services';
-import TicketModal from '../../Modals/TicketModal';
-import { Ticket } from '~/lib/interfaces/ticket.interfaces';
+import useTicketResolutionTable from '../../hooks/useTicketResolutionTable';
+import TicketResolutionModal from '../../Modals/TicketResolutionModal';
 
 const TicketResolutionPerformance = () => {
-  const { data, isLoading } = useGetTicketResolutionPerformanceQuery({
-    datePeriod: DATE_PERIOD.YEAR,
-  });
-  const { isOpen, onClose, onOpen } = useDisclosure();
-
-  const columnHelper = createColumnHelper<Ticket>();
-  const columns = useMemo(
-    () => {
-      const baseColumns = [
-        columnHelper.accessor('ticketId', {
-          cell: (info) => info.getValue(),
-          header: '#',
-          enableSorting: false,
-        }),
-        columnHelper.accessor('ticketTypeName', {
-          cell: (info) => info.getValue(),
-          header: 'Type',
-          enableSorting: false,
-        }),
-        columnHelper.accessor('ticketPriorityName', {
-          cell: (info) => info.getValue(),
-          header: 'Priority',
-          enableSorting: false,
-        }),
-        columnHelper.accessor('assignedTo', {
-          cell: (info) => info.getValue(),
-          header: 'Assigned To',
-          enableSorting: false,
-        }),
-        columnHelper.accessor('statusName', {
-          cell: (info) => info.getValue(),
-          header: 'Status',
-          enableSorting: false,
-        }),
-      ];
-
-      return baseColumns;
-    },
-    [[data]] //eslint-disable-line
-  );
-
+  const { TicketResolutionTable } = useTicketResolutionTable({});
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
       <VStack
@@ -63,6 +21,7 @@ const TicketResolutionPerformance = () => {
         spacing="16px"
         bgColor="white"
         rounded="8px"
+        minH="353px"
       >
         <HStack width="full" justifyContent="space-between">
           <HStack>
@@ -90,29 +49,9 @@ const TicketResolutionPerformance = () => {
             View All
           </Button>
         </HStack>
-        <Flex width="full">
-          <DataTable
-            columns={columns}
-            data={data?.data ?? []}
-            isLoading={isLoading}
-            showFooter={false}
-            customThStyle={{
-              paddingLeft: '16px',
-              paddingTop: '17px',
-              paddingBottom: '17px',
-              fontWeight: 700,
-            }}
-            customTdStyle={{
-              paddingLeft: '16px',
-              paddingTop: '16px',
-              paddingBottom: '16px',
-            }}
-            customTBodyRowStyle={{ verticalAlign: 'top' }}
-            maxTdWidth="250px"
-          />
-        </Flex>
+        <Flex width="full">{TicketResolutionTable}</Flex>
       </VStack>
-      {isOpen && <TicketModal isOpen={isOpen} onClose={onClose} />}
+      {isOpen && <TicketResolutionModal isOpen={isOpen} onClose={onClose} />}
     </>
   );
 };

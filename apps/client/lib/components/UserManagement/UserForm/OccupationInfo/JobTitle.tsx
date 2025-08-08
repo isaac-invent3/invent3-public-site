@@ -19,7 +19,7 @@ import JobDesignationModal from '../../Modals/JobDesignationModal';
 const JobTitle = () => {
   const [field, meta, helpers] = useField('jobTitleId'); //eslint-disable-line
   const dispatch = useAppDispatch();
-  const { countryName } = useAppSelector((state) => state.asset.assetForm);
+  const { jobTitleName } = useAppSelector((state) => state.user.userForm);
   const [pageNumber, setPageNumber] = useState(1);
   const [searchDesignation] = useSearchDesignationMutation({});
   const { data, isLoading, isFetching } = useGetAllDesignationsQuery({
@@ -43,7 +43,7 @@ const JobTitle = () => {
             data={data}
             labelKey="designationName"
             valueKey="designationId"
-            defaultInputValue={countryName}
+            defaultInputValue={jobTitleName}
             mutationFn={searchDesignation}
             isLoading={isLoading || isFetching}
             pageNumber={pageNumber}

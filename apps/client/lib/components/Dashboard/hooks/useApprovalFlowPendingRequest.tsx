@@ -3,7 +3,7 @@ import _ from 'lodash';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { BaseApiResponse, ListResponse } from '@repo/interfaces';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { DATE_PERIOD, DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import { DATE_PERIOD, DEFAULT_PAGE_SIZE, ROUTES } from '~/lib/utils/constants';
 import { OPERATORS } from '@repo/constants';
 import { Company } from '~/lib/interfaces/company.interfaces';
 import { useSearchCompaniesMutation } from '~/lib/redux/services/company.services';
@@ -18,6 +18,7 @@ import { ApprovalWorkflowRequest } from '~/lib/interfaces/approvalWorkflow.inter
 import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
 import useSignalR from '~/lib/hooks/useSignalR';
 import { useAppDispatch } from '~/lib/redux/hooks';
+import { useRouter } from 'next/navigation';
 
 interface useApprovalFlowPendingRequestTable {
   search?: string;
@@ -32,6 +33,8 @@ const useApprovalFlowPendingRequestTable = (
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const { data, isLoading, isFetching } = useGetPendingApprovalRequestQuery({
     datePeriod: DATE_PERIOD.YEAR,
+    pageNumber,
+    pageSize: customPageSize ?? pageSize,
   });
   const [searchData, setSearchData] = useState<
     BaseApiResponse<ListResponse<Company>> | undefined
@@ -41,6 +44,7 @@ const useApprovalFlowPendingRequestTable = (
     {}
   );
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const searchCriterion = {
     ...(search && {
@@ -183,6 +187,9 @@ const useApprovalFlowPendingRequestTable = (
           paddingLeft: '16px',
           paddingTop: '12px',
           paddingBottom: '12px',
+        }}
+        handleSelectRow={(row) => {
+          router.push(`/${ROUTES.APPROVAL}/${row.approvalRequestId}/detail`);
         }}
       />
     </Flex>

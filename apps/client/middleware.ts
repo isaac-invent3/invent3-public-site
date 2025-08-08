@@ -117,12 +117,40 @@ export function signOut(
   console.log('Signing out');
 
   const pathname = request.nextUrl.pathname;
-
-  // Build redirect path
   const redirectPath = tenantName ? `/${tenantName}/signin` : `/signin`;
   const url = new URL(redirectPath, request.url);
 
-  // Always clear cookies first
+  // Prevent redirect loop when already on /signin
+  if (pathname.endsWith('/signin') || request.nextUrl.searchParams.has('ref')) {
+    return NextResponse.next();
+  }
+
+  // Encode the ref (path + search)
+  const segments = pathname.split('/').filter(Boolean);
+  const remainingPath = segments.slice(1).join('/');
+  const actualPath = tenantName ? remainingPath : pathname;
+
+  let refValue = actualPath;
+  const searchParams = new URLSearchParams(request.nextUrl.searchParams);
+  if ([...searchParams].length > 0) {
+    refValue += `?${searchParams.toString()}`;
+  }
+  url.searchParams.set('ref', encodeURIComponent(refValue));
+
+  return clearCookiesAndRedirect(request, url);
+}
+
+export function forceSignOut(
+  request: NextRequest,
+  tenantName: string | undefined
+): NextResponse {
+  console.log('Force signing out');
+  const redirectPath = tenantName ? `/${tenantName}/signin` : `/signin`;
+  const url = new URL(redirectPath, request.url);
+  return clearCookiesAndRedirect(request, url);
+}
+
+function clearCookiesAndRedirect(request: NextRequest, url: URL): NextResponse {
   const response = NextResponse.redirect(url);
   response.cookies.set(SESSION_COOKIE, '', {
     value: '',
@@ -135,25 +163,7 @@ export function signOut(
     path: '/',
   });
   request.cookies.delete(SESSION_COOKIE);
-
-  // Prevent redirect loop when already on /signin
-  if (pathname.endsWith('/signin') || request.nextUrl.searchParams.has('ref')) {
-    return response;
-  }
-
-  // Encode ref only if not already there
-  const segments = pathname.split('/').filter(Boolean);
-  const remainingPath = segments.slice(1).join('/');
-  const actualPath = tenantName ? remainingPath : pathname;
-
-  let refValue = actualPath;
-  const searchParams = new URLSearchParams(request.nextUrl.searchParams);
-  if ([...searchParams].length > 0) {
-    refValue += `?${searchParams.toString()}`;
-  }
-  url.searchParams.set('ref', encodeURIComponent(refValue));
-
-  return NextResponse.redirect(url);
+  return response;
 }
 
 export function updateCookie(
@@ -236,6 +246,10 @@ export async function middleware(request: NextRequest) {
   const tenantName = currentToken?.companySlug || undefined;
 
   if (currentToken) {
+    // Used to sign user out on client side failed refresh token
+    if (currentToken?.error) {
+      return forceSignOut(request, tenantName);
+    }
     if (shouldUpdateToken(currentToken)) {
       try {
         const refreshedToken = await refreshAccessToken(

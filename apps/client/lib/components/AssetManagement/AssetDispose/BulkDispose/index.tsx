@@ -43,7 +43,6 @@ const BulkDispose = () => {
         bulkActionTypeId: ASSET_BULK_ACTION_TYPE.ASSET_DISPOSAL,
         disposalReasonId: values.disposalReasonId!,
         comments: values.comments!,
-        assetIds: getSelectedAssetIds(),
         actionDate: moment(values.disposalDate, 'DD/MM/YYYY')
           .utcOffset(0, true)
           .toISOString()!,
@@ -78,6 +77,7 @@ const BulkDispose = () => {
         createAssetBulkActionDto,
         createAssetDocumentsDto,
         assetDocumentIds,
+        assetIds: getSelectedAssetIds(),
       };
       const resp = await handleSubmit(createBulkAction, finalPayload, '');
       if (resp?.data) {

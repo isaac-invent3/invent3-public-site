@@ -45,6 +45,7 @@ interface CreateAssetBulkActionPayload {
   createAssetBulkActionDto: CreateAssetBulkActionDto;
   createAssetDocumentsDto?: AssetDocumentsDto[] | null;
   assetDocumentIds?: number[] | null;
+  assetIds: number[] | null;
 }
 
 interface CreateAssetBulkActionDto {

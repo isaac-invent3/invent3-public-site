@@ -44,9 +44,9 @@ const useSignalR = (path: string) => {
         headers: {
           Authorization: `Bearer ${session.user.accessToken}`,
           ApiKey: `${session.user.apiKey}`,
-          ...(session?.user?.companySlug || session?.user?.managedCompanySlug
+          ...(session?.user?.companySlug
             ? {
-                'X-Tenant-ID': `${session.user.managedCompanySlug ?? session.user.companySlug}`,
+                'X-Tenant-ID': `${session.user.companySlug}`,
               }
             : {}),
         },

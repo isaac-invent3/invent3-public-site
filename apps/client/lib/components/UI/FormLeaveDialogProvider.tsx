@@ -1,24 +1,38 @@
 import { Flex } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+
+let storedHandler: ((e: BeforeUnloadEvent) => void) | null = null;
+
+export function disableBeforeUnload() {
+  if (storedHandler) {
+    window.removeEventListener('beforeunload', storedHandler);
+    storedHandler = null;
+  }
+}
 
 const withFormLeaveDialog = <P extends object>(
   WrappedComponent: React.ComponentType<P>
 ) => {
   const HOC = (props: P) => {
-    const session = useSession();
+    const { data: session } = useSession();
+    const sessionRef = useRef(session);
+
+    // keep latest session value
+    useEffect(() => {
+      sessionRef.current = session;
+    }, [session]);
 
     useEffect(() => {
-      const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-        if (session?.data?.error || !session?.data) {
+      storedHandler = (event: BeforeUnloadEvent) => {
+        if (sessionRef.current && !sessionRef.current.error) {
           event.preventDefault();
         }
       };
 
-      window.addEventListener('beforeunload', handleBeforeUnload);
-
+      window.addEventListener('beforeunload', storedHandler);
       return () => {
-        window.removeEventListener('beforeunload', handleBeforeUnload);
+        disableBeforeUnload();
       };
     }, []);
 

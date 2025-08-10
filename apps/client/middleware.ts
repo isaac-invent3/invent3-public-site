@@ -54,6 +54,11 @@ export const SESSION_COOKIE = SESSION_SECURE
   : 'authjs.session-token';
 export const SESSION_TIMEOUT = 1800; // 30 Mins
 
+function isSigninPath(pathname: string): boolean {
+  // Matches `/signin` and `/tenant-name/signin`
+  return /\/signin$/.test(pathname);
+}
+
 export function shouldUpdateToken(token: JWT): boolean {
   const timeInSeconds = Math.floor(Date.now() / 1000);
   return (
@@ -73,7 +78,6 @@ export async function refreshAccessToken(
     apiKey: token.apiKey,
   };
   console.log('updating');
-  console.log({ payload, subdomain });
   try {
     const response = await fetch(
       process.env.NEXT_PUBLIC_API_URL + '/api/Invent3Pro/refresh-tokens',
@@ -122,7 +126,7 @@ export function signOut(
   const url = new URL(redirectPath, request.url);
 
   // Prevent redirect loop when already on /signin
-  if (pathname.endsWith('/signin') || request.nextUrl.searchParams.has('ref')) {
+  if (isSigninPath(pathname) || request.nextUrl.searchParams.has('ref')) {
     return NextResponse.next();
   }
 
@@ -152,6 +156,8 @@ export function forceSignOut(
 }
 
 function clearCookiesAndRedirect(request: NextRequest, url: URL): NextResponse {
+  request.cookies.delete(SESSION_COOKIE);
+
   const response = NextResponse.redirect(url);
   response.cookies.set(SESSION_COOKIE, '', {
     value: '',
@@ -248,9 +254,11 @@ export async function middleware(request: NextRequest) {
 
   if (currentToken) {
     // Used to sign user out on client side failed refresh token
-    if (currentToken?.error) {
+    if (currentToken?.error === 'RefreshAccessTokenError') {
+      console.warn('Token refresh previously failed – forcing signout');
       return forceSignOut(request, tenantName);
     }
+
     if (shouldUpdateToken(currentToken)) {
       try {
         const refreshedToken = await refreshAccessToken(
@@ -359,7 +367,6 @@ export async function middleware(request: NextRequest) {
     }
 
     const { hasPermission, permissionKeys } = await res.json();
-    console.log({ permissionKeys });
 
     if (
       !hasPermission &&

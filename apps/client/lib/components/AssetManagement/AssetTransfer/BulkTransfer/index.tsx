@@ -42,7 +42,6 @@ const BulkTransfer = () => {
         newOwnerId: values?.newOwnerId!,
         transferredTo: values?.transferredTo!,
         comments: values?.comments!,
-        assetIds: getSelectedAssetIds(),
         actionDate: moment(values.transferDate, 'DD/MM/YYYY')
           .utcOffset(0, true)
           .toISOString(),
@@ -77,6 +76,7 @@ const BulkTransfer = () => {
         createAssetBulkActionDto,
         createAssetDocumentsDto: null,
         assetDocumentIds: null,
+        assetIds: getSelectedAssetIds(),
       };
       const resp = await handleSubmit(createBulkAction, finalPayload, '');
       if (resp?.data) {

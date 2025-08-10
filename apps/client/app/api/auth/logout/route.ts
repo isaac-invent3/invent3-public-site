@@ -12,6 +12,11 @@ export async function POST(request: any) {
         'Access-Control-Allow-Origin': '*',
         Authorization: `Bearer ${body.accessToken}`,
         ApiKey: `${body.apiKey}`,
+        ...(body.tenantName
+          ? {
+              'X-Tenant-ID': `${body.tenantName}`,
+            }
+          : {}),
       },
     }
   );

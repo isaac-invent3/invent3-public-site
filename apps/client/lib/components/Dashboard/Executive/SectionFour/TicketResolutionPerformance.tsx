@@ -6,7 +6,9 @@ import useTicketResolutionTable from '../../hooks/useTicketResolutionTable';
 import TicketResolutionModal from '../../Modals/TicketResolutionModal';
 
 const TicketResolutionPerformance = () => {
-  const { TicketResolutionTable } = useTicketResolutionTable({});
+  const { TicketResolutionTable } = useTicketResolutionTable({
+    customPageSize: 5,
+  });
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>

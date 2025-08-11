@@ -7,7 +7,9 @@ import useAssetPerformanceTable from '../../hooks/useAssetPerformanceTable';
 import AssetPerformanceModal from '../../Modals/AssetPerformanceModal';
 
 const AssetPerformanceTable = () => {
-  const { AssetPerformanceTable } = useAssetPerformanceTable({});
+  const { AssetPerformanceTable } = useAssetPerformanceTable({
+    customPageSize: 5,
+  });
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>

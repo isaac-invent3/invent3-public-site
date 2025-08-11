@@ -6,9 +6,9 @@ import useComplianceRiskAssessmentTable from '../../hooks/useComplianceRiskAsses
 import ComplianceRiskAssessmentModal from '../../Modals/ComplianceRiskAssessmentModal';
 
 const ComplianceRiskAssessment = () => {
-  const { ComplianceRiskAssessmentTable } = useComplianceRiskAssessmentTable(
-    {}
-  );
+  const { ComplianceRiskAssessmentTable } = useComplianceRiskAssessmentTable({
+    customPageSize: 5,
+  });
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (

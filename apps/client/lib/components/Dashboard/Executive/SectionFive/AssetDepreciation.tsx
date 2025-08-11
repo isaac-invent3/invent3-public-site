@@ -6,7 +6,9 @@ import useAssetDepreciationTable from '../../hooks/useAssetDepreciationTable';
 import AssetDepreciationModal from '../../Modals/AssetDepreciationModal';
 
 const AssetDepreciation = () => {
-  const { AssetDepreciationTable } = useAssetDepreciationTable({});
+  const { AssetDepreciationTable } = useAssetDepreciationTable({
+    customPageSize: 5,
+  });
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (

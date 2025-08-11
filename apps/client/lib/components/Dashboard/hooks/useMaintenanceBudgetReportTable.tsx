@@ -90,12 +90,12 @@ const useMaintenanceBudgetReportTable = (
           enableSorting: false,
         }),
         columnHelper.accessor('preventive', {
-          cell: (info) => `${info.getValue()}%`,
+          cell: (info) => (info.getValue() ? `${info.getValue()}%` : 'N/A'),
           header: 'Preventive(%)',
           enableSorting: false,
         }),
         columnHelper.accessor('corrective', {
-          cell: (info) => `${info.getValue()}%`,
+          cell: (info) => (info.getValue() ? `${info.getValue()}%` : 'N/A'),
           header: 'Corrective(%)',
           enableSorting: false,
         }),

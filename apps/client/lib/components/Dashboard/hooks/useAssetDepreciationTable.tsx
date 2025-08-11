@@ -177,12 +177,12 @@ const useAssetDepreciationTable = (props: useAssetDepreciationTable) => {
         }),
         columnHelper.accessor('initialValue', {
           cell: (info) => amountFormatter(info.getValue() ?? 0),
-          header: 'Initial Cost($)',
+          header: 'Initial Cost(₦)',
           enableSorting: false,
         }),
         columnHelper.accessor('currentValue', {
           cell: (info) => amountFormatter(info.getValue() ?? 0),
-          header: 'Current Value($)',
+          header: 'Current Value(₦)',
           enableSorting: false,
         }),
         columnHelper.accessor('depreciationRate', {

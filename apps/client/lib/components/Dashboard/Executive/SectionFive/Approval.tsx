@@ -7,7 +7,7 @@ import ApprovalFlowPendingRequestModal from '../../Modals/ApprovalFlowPendingReq
 
 const ApprovalRequests = () => {
   const { ApprovalFlowPendingRequestTable } =
-    useApprovalFlowPendingRequestTable({});
+    useApprovalFlowPendingRequestTable({ customPageSize: 5 });
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>

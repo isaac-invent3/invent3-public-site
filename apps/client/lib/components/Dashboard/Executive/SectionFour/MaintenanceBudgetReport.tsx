@@ -7,7 +7,9 @@ import useMaintenanceBudgetReportTable from '../../hooks/useMaintenanceBudgetRep
 import MaintenanceBudgetReportModal from '../../Modals/MaintenanceBudgetReportModal';
 
 const MaintenanceBudgetReport = () => {
-  const { MaintenanceBudgetReportTable } = useMaintenanceBudgetReportTable({});
+  const { MaintenanceBudgetReportTable } = useMaintenanceBudgetReportTable({
+    customPageSize: 5,
+  });
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>

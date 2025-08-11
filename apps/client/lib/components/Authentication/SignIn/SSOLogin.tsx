@@ -81,12 +81,12 @@ const SSOLogin = () => {
   }, []);
 
   const providers = [
-    {
-      image: '/office-365.png',
-      label: 'Login 365',
-      action: () => {},
-      isLoading: false,
-    },
+    // {
+    //   image: '/office-365.png',
+    //   label: 'Login 365',
+    //   action: () => {},
+    //   isLoading: false,
+    // },
     {
       image: '/google.png',
       label: 'Google',

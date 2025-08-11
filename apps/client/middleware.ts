@@ -5,7 +5,7 @@ import { validateTenant } from './app/actions/validateTenantAction';
 
 const publicRoutes = [
   '/',
-  // '/signin',
+  '/signin',
   '/forgot-password',
   '/about-us',
   '/contact-us',

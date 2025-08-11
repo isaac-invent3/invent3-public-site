@@ -40,6 +40,8 @@ export const complianceApi = createApi({
     'allCategoryCompliance',
     'allComplianceRegulations',
     'assetBasedCompliance',
+    'assetComplianceAuditLog',
+    'assetCategoryComplianceSummary',
   ],
   endpoints: (builder) => ({
     getAllAssetCompliance: builder.query<
@@ -150,7 +152,7 @@ export const complianceApi = createApi({
         method: 'GET',
         headers: getHeaders(),
       }),
-      providesTags: [],
+      providesTags: ['assetComplianceAuditLog'],
     }),
 
     getComplianceSummary: builder.query<
@@ -182,6 +184,7 @@ export const complianceApi = createApi({
         method: 'GET',
         headers: getHeaders(),
       }),
+      providesTags: ['assetCategoryComplianceSummary'],
     }),
     getComplianceAssetCategoryDetails: builder.query<
       BaseApiResponse<AssetComplianceCategoryDetail>,
@@ -270,7 +273,11 @@ export const complianceApi = createApi({
         headers: getHeaders(),
         body,
       }),
-      invalidatesTags: ['assetBasedCompliance'],
+      invalidatesTags: [
+        'assetBasedCompliance',
+        'assetComplianceAuditLog',
+        'assetCategoryComplianceSummary',
+      ],
     }),
   }),
 });

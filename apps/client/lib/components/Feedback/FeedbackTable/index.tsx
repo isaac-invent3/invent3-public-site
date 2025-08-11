@@ -154,7 +154,6 @@ const FeedbackTable = (props: FeedbackTableProps) => {
                 colorCode={
                   feedback.displayColorCode ?? COLOR_CODES_FALLBACK.default
                 }
-                width="80px"
                 text={feedback.statusName ?? 'Status'}
               />
             );
@@ -196,7 +195,11 @@ const FeedbackTable = (props: FeedbackTableProps) => {
         isSelectable={isSelectable}
         handleSelectRow={handleSelectRow}
         showFooter={
-          shouldHideFooter && data?.data?.totalPages === 1 ? true : false
+          shouldHideFooter
+            ? data?.data?.totalPages === 1
+              ? true
+              : false
+            : true
         }
         maxTdWidth="200px"
         customThStyle={{

@@ -41,11 +41,6 @@ const CategoryCompliance = ({ data }: CategoryComplianceProps) => {
     onClose: onCloseAssetCompliance,
   } = useDisclosure();
   const {
-    isOpen: isOpenMarkComplianceStatus,
-    onOpen: onOpenMarkComplianceStatus,
-    onClose: onCloseMarkComplianceStatus,
-  } = useDisclosure();
-  const {
     isOpen: isOpenAsset,
     onOpen: onOpenAsset,
     onClose: onCloseAsset,

@@ -171,7 +171,7 @@ const FeedbackOverview = () => {
               selectedRows={selectedRows}
               setSelectedRows={setSelectedRows}
               emptyLines={25}
-              shouldHideFooter={true}
+              shouldHideFooter={false}
               handleSelectRow={(row) => {
                 updateSearchParam(
                   SYSTEM_CONTEXT_DETAILS.FEEDBACK.slug,

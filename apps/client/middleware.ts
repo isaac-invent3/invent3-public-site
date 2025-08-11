@@ -5,7 +5,7 @@ import { validateTenant } from './app/actions/validateTenantAction';
 
 const publicRoutes = [
   '/',
-  '/signin',
+  // '/signin',
   '/forgot-password',
   '/about-us',
   '/contact-us',
@@ -252,6 +252,19 @@ export async function middleware(request: NextRequest) {
 
   const tenantName = currentToken?.companySlug || undefined;
 
+  if (isSigninPath(pathname) || request.nextUrl.searchParams.has('ref')) {
+    const isTenantValid =
+      pathname === '/signin' ||
+      tenant === tenantName || // Matches logged-in user's tenant
+      Boolean(tenantData); // Found in DB
+
+    if (isTenantValid) {
+      return NextResponse.rewrite(new URL('/signin', request.url));
+    } else {
+      return NextResponse.rewrite(new URL('/404', request.url));
+    }
+  }
+
   if (currentToken) {
     // Used to sign user out on client side failed refresh token
     if (currentToken?.error === 'RefreshAccessTokenError') {
@@ -448,7 +461,7 @@ export const config = {
   matcher: [
     '/((?!api/|_next/|__next|_static/|_vercel|fonts/|\\.well-known/|[\\w-]+\\.\\w+).*)',
     '/',
-    '/signin',
+    // '/signin',
     '/forgot-password',
     '/dashboard/:path*',
     '/approval-flow/:path*',

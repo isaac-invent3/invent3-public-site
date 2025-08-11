@@ -254,7 +254,10 @@ const FeedbackFormModal = (props: FeedbackFormModalProps) => {
                   setError={(error) =>
                     formik.setErrors({ createFeedbackAttachmentDto: error })
                   }
-                  error={formik.errors.createFeedbackAttachmentDto?.toString()}
+                  error={
+                    formik.touched.createFeedbackAttachmentDto &&
+                    formik.errors.createFeedbackAttachmentDto?.toString()
+                  }
                 />
               </FormInputWrapper>
             </VStack>

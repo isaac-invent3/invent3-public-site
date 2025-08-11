@@ -70,7 +70,7 @@ const AssetComplianceHistoryDrawer = ({
           enableSorting: false,
         }),
         columnHelper.accessor('dateCreated', {
-          cell: (info) => dateFormatter(info.getValue(), 'YYYY-MM-DDTHH:mm:ss'),
+          cell: (info) => dateFormatter(info.getValue(), 'DD-MM-YYYY'),
           header: 'Review Date',
           enableSorting: false,
         }),

@@ -55,7 +55,8 @@ const CategoryComplianceTable = (props: CategoryComplianceTableProps) => {
           enableSorting: false,
         }),
         columnHelper.accessor('floor', {
-          cell: (info) => `${info.getValue()}/${info.row.original.zone}`,
+          cell: (info) =>
+            `${info.getValue()}${info.row.original.zone ? `/${info.row.original.zone}` : ''}`,
           header: 'Location (Floor/Zone)',
           enableSorting: false,
         }),
@@ -117,7 +118,8 @@ const CategoryComplianceTable = (props: CategoryComplianceTableProps) => {
           enableSorting: false,
         }),
         columnHelper.accessor('floor', {
-          cell: (info) => `${info.getValue()}/${info.row.original.zone}`,
+          cell: (info) =>
+            `${info.getValue()}${info.row.original.zone ? `/${info.row.original.zone}` : ''}`,
           header: 'Location (Floor/Zone)',
           enableSorting: false,
         }),

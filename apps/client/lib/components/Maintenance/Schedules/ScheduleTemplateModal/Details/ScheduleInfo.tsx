@@ -46,7 +46,7 @@ const ScheduleInfo = (props: ScheduleInfoProps) => {
           ),
         }}
       />
-      <ScheduleTasks scheduleId={schedule.scheduleId} />
+      <ScheduleTasks scheduleId={schedule.scheduleId} type="template" />
     </VStack>
   );
 };

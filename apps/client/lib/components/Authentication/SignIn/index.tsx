@@ -15,7 +15,7 @@ import { Field, FormikProvider, useFormik } from 'formik';
 import AuthLayout from '../AuthLayout';
 import SSOLogin from './SSOLogin';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { signIn } from 'next-auth/react';
+import { signIn, signOut } from 'next-auth/react';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { utilityApi } from '~/lib/redux/services/utility.services';
 import { setCredentials } from '~/lib/redux/slices/GeneralSlice';
@@ -37,6 +37,11 @@ const SignIn = () => {
   const [has2fa, setHas2FA] = useState(false);
   const [email, setEmail] = useState('');
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  useEffect(() => {
+    // Always start from a clean session state
+    signOut({ redirect: false });
+  }, []);
 
   const handleLogin = async (values: {
     email: string;

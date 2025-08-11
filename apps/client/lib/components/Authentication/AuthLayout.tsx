@@ -25,11 +25,12 @@ const InfoLearnMore = () => {
         A new way to experience managing your physical assets and facilities
         using AI
       </Text>
-      <Link href="/solutions">
+      <Link href="/solutions" passHref>
         <Text
           fontWeight={700}
           size={{ base: 'base', md: 'md' }}
           color={{ base: '#98FEFE', md: '#E4FEFE' }}
+          textDecoration="underline"
         >
           Learn more
         </Text>
@@ -124,6 +125,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
                 display={{ base: 'none', lg: 'flex' }}
                 position="absolute"
                 bottom="115px"
+                zIndex={99}
               >
                 <InfoLearnMore />
               </Flex>

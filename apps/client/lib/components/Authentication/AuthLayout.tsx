@@ -77,7 +77,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
           position="absolute"
           left="173px"
           top="0"
-          zIndex={99}
+          zIndex={{ lg: 99 }}
           display={{ base: 'none', md: 'flex' }}
         >
           <Flex width="225px" height="100vh" position="fixed" top="-30%">

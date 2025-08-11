@@ -230,7 +230,7 @@ const clientAdminCMFData: SideBarData[] = [
     name: 'Facility Management',
     route: ROUTES.LOCATION,
     icon: LocationIcon,
-    permissionKey: 'user',
+    permissionKey: 'settings',
     contextId: SYSTEM_CONTEXT_TYPE.TEMPLATES,
 
     description: "Manage company's location.",

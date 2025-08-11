@@ -25,19 +25,26 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
   const { data, update } = useSession();
 
   //Session timeout check
-  // This effect checks the session every minute and signs out the user if the session is invalid
   useEffect(() => {
-    const interval = setInterval(
-      async () => {
-        const session = await getSession();
-        if (!session) {
-          handleSignOutClient(); // Logs out the user
-        }
-      },
-      31 * 60 * 1000
-    ); // Check every 31 minutes
+    let timeout: NodeJS.Timeout;
 
-    return () => clearInterval(interval);
+    (async () => {
+      const session = await getSession();
+
+      if (!session?.expires) return;
+
+      const expiryMs = new Date(session.expires).getTime();
+      const nowMs = Date.now();
+
+      // Sign out 60 seconds before actual expiry
+      const msUntilSignOut = Math.max(expiryMs - nowMs - 60_000, 0);
+
+      timeout = setTimeout(() => {
+        handleSignOutClient();
+      }, msUntilSignOut);
+    })();
+
+    return () => clearTimeout(timeout);
   }, []);
 
   // Hide Assistant Guide after 1 minutes

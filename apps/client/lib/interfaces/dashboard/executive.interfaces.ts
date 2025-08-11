@@ -35,7 +35,7 @@ interface MaintenanceTrend {
 interface TicketTrends {
   categoryName: string;
   percentage: number;
-  assetCount: number;
+  totalTicketsResolved: number;
 }
 
 interface Compliance {

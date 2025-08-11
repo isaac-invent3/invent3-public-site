@@ -30,6 +30,7 @@ import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
 import useSignalR from '~/lib/hooks/useSignalR';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { maintenanceScheduleApi } from '~/lib/redux/services/maintenance/schedule.services';
+import moment from 'moment';
 
 const ContentDisplay = (
   content: string | React.ReactNode,
@@ -72,6 +73,7 @@ const useUpcomingMaintenanceTable = (props: useUpcomingMaintenanceTable) => {
     pageSize: customPageSize ?? pageSize,
     pageNumber,
     ...(perUser ? { assignedTo: user?.userId! } : {}),
+    startDateRange: moment().startOf('day').toISOString(),
   });
   const maintenanceScheduleInstanceId = getSearchParam(
     SYSTEM_CONTEXT_DETAILS.MAINTENANCE_SCHEDULE_INSTANCE.slug

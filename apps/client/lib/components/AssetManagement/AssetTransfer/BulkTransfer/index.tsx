@@ -1,7 +1,7 @@
 'use client';
 
 import { Flex, HStack, useDisclosure } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FormikProvider, useFormik } from 'formik';
 import { assetTransferSchema } from '~/lib/schemas/asset/main.schema';
 import { getSession } from 'next-auth/react';
@@ -19,9 +19,21 @@ import PageHeader from '~/lib/components/UI/PageHeader';
 import { ASSET_BULK_ACTION_TYPE, ROUTES } from '~/lib/utils/constants';
 import { useRouter } from 'next/navigation';
 import { useCreateBulkAssetActionMutation } from '~/lib/redux/services/asset/bulkAction.services';
+import ApprovalWorkflowWarning from '../../Common/ApprovalWorkflowWarning';
+import TransferDisposalInProgressModal from '../../Modals/TransferDisposalInProgressModal';
 
-const BulkTransfer = () => {
+interface BulkTransferProps {
+  hasWorkflow: boolean;
+  assetsInWorkFlow: number[];
+}
+const BulkTransfer = (props: BulkTransferProps) => {
+  const { hasWorkflow, assetsInWorkFlow } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenInfo,
+    onOpen: onOpenInfo,
+    onClose: onCloseInfo,
+  } = useDisclosure();
   const [createBulkAction, { isLoading }] = useCreateBulkAssetActionMutation(
     {}
   );
@@ -92,6 +104,12 @@ const BulkTransfer = () => {
     router.push(`/${ROUTES.ASSETS}`);
   };
 
+  useEffect(() => {
+    if (assetsInWorkFlow.length > 0 && hasWorkflow) {
+      onOpenInfo();
+    }
+  }, [assetsInWorkFlow]);
+
   return (
     <Flex width="full" direction="column" pb="24px">
       <Flex px={{ base: '16px', md: 0 }}>
@@ -149,6 +167,16 @@ const BulkTransfer = () => {
           successText="Bulk Asset Transfer Request Successful"
         />
       )}
+      <TransferDisposalInProgressModal
+        isOpen={isOpenInfo}
+        onClose={onCloseInfo}
+        assetIds={assetsInWorkFlow}
+      />
+      <ApprovalWorkflowWarning
+        type="transfer"
+        isBulk={true}
+        hasWorkflow={hasWorkflow}
+      />
     </Flex>
   );
 };

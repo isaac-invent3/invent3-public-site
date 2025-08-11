@@ -12,6 +12,7 @@ import {
 } from '~/lib/interfaces/approvalWorkflow.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
+import { APPROVAL_REQUEST_TYPES } from '~/lib/utils/constants';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -95,6 +96,23 @@ export const approvalWorkflowRequestApi = createApi({
       }),
       providesTags: ['allApprovalWorkflowRequests'],
     }),
+
+    checkAssetHasOngoingApprovalRequest: builder.query<
+      BaseApiResponse<number[]>,
+      {
+        assetIds: number[];
+        requestType: (typeof APPROVAL_REQUEST_TYPES)[keyof typeof APPROVAL_REQUEST_TYPES];
+      }
+    >({
+      query: (data) => ({
+        url: generateQueryStr(
+          `/Invent3Pro/CheckAssetHasOngoingApprovalRequest?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
   }),
 });
 
@@ -105,4 +123,5 @@ export const {
   useGetApprovalWorkflowRequestByIdQuery,
   useSearchApprovalWorkflowRequestQuery,
   useUpdateApprovalWorkflowRequestMutation,
+  useCheckAssetHasOngoingApprovalRequestQuery,
 } = approvalWorkflowRequestApi;

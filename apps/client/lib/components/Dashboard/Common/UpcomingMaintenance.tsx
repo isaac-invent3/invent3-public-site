@@ -12,6 +12,7 @@ const UpcomingMaintenance = ({ perUser }: UpcomingMaintenanceProps) => {
   const { UpcomingMaintenanceTable } = useUpcomingMaintenanceTable({
     customPageSize: 5,
     perUser,
+    showFooter: false,
   });
   const { isOpen, onOpen, onClose } = useDisclosure();
 

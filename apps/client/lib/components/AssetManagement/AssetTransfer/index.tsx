@@ -16,13 +16,15 @@ import PageHeader from '../../UI/PageHeader';
 import { ROUTES } from '~/lib/utils/constants';
 import { useTransferAssetMutation } from '~/lib/redux/services/asset/transfer.services';
 import TransferDisposalInProgressModal from '../Modals/TransferDisposalInProgressModal';
+import ApprovalWorkflowWarning from '../Common/ApprovalWorkflowWarning';
 
 interface AssetTransferProps {
   data: Asset;
   inAWorkflow: boolean;
+  hasWorkflow: boolean;
 }
 const AssetTransfer = (props: AssetTransferProps) => {
-  const { data, inAWorkflow } = props;
+  const { data, inAWorkflow, hasWorkflow } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: isOpenInfo,
@@ -70,7 +72,7 @@ const AssetTransfer = (props: AssetTransferProps) => {
   }, [data]);
 
   useEffect(() => {
-    if (inAWorkflow) {
+    if (inAWorkflow && hasWorkflow) {
       onOpenInfo();
     }
   }, [inAWorkflow]);
@@ -135,7 +137,11 @@ const AssetTransfer = (props: AssetTransferProps) => {
       <TransferDisposalInProgressModal
         isOpen={isOpenInfo}
         onClose={onCloseInfo}
+      />
+      <ApprovalWorkflowWarning
         type="transfer"
+        isBulk={false}
+        hasWorkflow={hasWorkflow}
       />
     </>
   );

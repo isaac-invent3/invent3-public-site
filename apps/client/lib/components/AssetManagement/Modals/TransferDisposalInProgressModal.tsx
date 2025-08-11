@@ -7,12 +7,12 @@ import { ROUTES } from '~/lib/utils/constants';
 interface TransferDisposalInProgressModalProps {
   isOpen: boolean;
   onClose: () => void;
-  type: 'transfer' | 'disposal';
+  assetIds?: number[];
 }
 const TransferDisposalInProgressModal = (
   props: TransferDisposalInProgressModalProps
 ) => {
-  const { isOpen, onClose, type } = props;
+  const { isOpen, onClose, assetIds } = props;
   return (
     <GenericModal
       isOpen={isOpen}
@@ -41,7 +41,7 @@ const TransferDisposalInProgressModal = (
                 lineHeight="100%"
                 fontSize={{ base: '24px', lg: '32px' }}
               >
-                {type === 'transfer' ? 'Transfer' : 'Disposal'} in Progress!
+                Request in Progress!
               </Heading>
               <Text
                 size="md"
@@ -49,9 +49,21 @@ const TransferDisposalInProgressModal = (
                 textAlign="center"
                 lineHeight="100%"
               >
-                A {type} is currently ongoing for this asset. You cannot
-                initiate another request until the current process is completed
-                to avoid conflicts or duplication.
+                {assetIds?.length ? (
+                  <>
+                    Asset{assetIds.length > 1 ? 's' : ''}{' '}
+                    {assetIds.map((item, index) => (
+                      <Text as="span" key={index} fontWeight={800} size="md">
+                        {item}
+                        {index < assetIds.length - 1 && ', '}
+                      </Text>
+                    ))}{' '}
+                    are already in a workflow. Please remove them or wait till
+                    the workflow is completed
+                  </>
+                ) : (
+                  'You already have a pending request being processed. Please wait until it is completed before submitting a new one.'
+                )}
               </Text>
             </VStack>
           </VStack>

@@ -1,7 +1,7 @@
 'use client';
 
 import { Flex, HStack, useDisclosure } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FormikProvider, useFormik } from 'formik';
 import { getSession } from 'next-auth/react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
@@ -10,7 +10,6 @@ import AssetSuccessModal from '../../Modals/AssetSuccessModal';
 import BulkAssetTable from '../../Common/BulkAssetTable';
 import { Button } from '@repo/ui/components';
 import SectionTwo from './SectionTwo';
-import { useRequestAssetDisposalMutation } from '~/lib/redux/services/asset/disposal.services';
 import { assetDisposeSchema } from '~/lib/schemas/asset/main.schema';
 import {
   getSelectedAssetIds,
@@ -21,9 +20,21 @@ import { ASSET_BULK_ACTION_TYPE, ROUTES } from '~/lib/utils/constants';
 import { useRouter } from 'next/navigation';
 import { Document } from '~/lib/interfaces/general.interfaces';
 import { useCreateBulkAssetActionMutation } from '~/lib/redux/services/asset/bulkAction.services';
+import ApprovalWorkflowWarning from '../../Common/ApprovalWorkflowWarning';
+import TransferDisposalInProgressModal from '../../Modals/TransferDisposalInProgressModal';
 
-const BulkDispose = () => {
+interface BulkDisposeProps {
+  assetsInWorkFlow: number[];
+  hasWorkflow: boolean;
+}
+const BulkDispose = (props: BulkDisposeProps) => {
+  const { assetsInWorkFlow, hasWorkflow } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenInfo,
+    onOpen: onOpenInfo,
+    onClose: onCloseInfo,
+  } = useDisclosure();
   const [createBulkAction, { isLoading }] = useCreateBulkAssetActionMutation(
     {}
   );
@@ -92,6 +103,13 @@ const BulkDispose = () => {
     onClose();
     router.push(`/${ROUTES.ASSETS}`);
   };
+
+  useEffect(() => {
+    if (assetsInWorkFlow.length > 0 && hasWorkflow) {
+      onOpenInfo();
+    }
+  }, [assetsInWorkFlow]);
+
   return (
     <Flex width="full" direction="column" pb="24px">
       <Flex px={{ base: '16px', md: 0 }}>
@@ -149,6 +167,16 @@ const BulkDispose = () => {
           successText="Bulk Asset Dispose Request Successful"
         />
       )}
+      <TransferDisposalInProgressModal
+        isOpen={isOpenInfo}
+        onClose={onCloseInfo}
+        assetIds={assetsInWorkFlow}
+      />
+      <ApprovalWorkflowWarning
+        type="disposal"
+        isBulk={true}
+        hasWorkflow={hasWorkflow}
+      />
     </Flex>
   );
 };

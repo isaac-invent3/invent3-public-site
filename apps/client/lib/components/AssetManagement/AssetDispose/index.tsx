@@ -17,13 +17,15 @@ import PageHeader from '../../UI/PageHeader';
 import { ROUTES } from '~/lib/utils/constants';
 import { Document } from '~/lib/interfaces/general.interfaces';
 import TransferDisposalInProgressModal from '../Modals/TransferDisposalInProgressModal';
+import ApprovalWorkflowWarning from '../Common/ApprovalWorkflowWarning';
 
 interface AssetDisposeProps {
   data: Asset;
   inAWorkflow: boolean;
+  hasWorkflow: boolean;
 }
 const AssetDispose = (props: AssetDisposeProps) => {
-  const { data, inAWorkflow } = props;
+  const { data, inAWorkflow, hasWorkflow } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: isOpenInfo,
@@ -100,7 +102,7 @@ const AssetDispose = (props: AssetDisposeProps) => {
   }, [data]);
 
   useEffect(() => {
-    if (inAWorkflow) {
+    if (hasWorkflow && inAWorkflow) {
       onOpenInfo();
     }
   }, [inAWorkflow]);
@@ -165,7 +167,11 @@ const AssetDispose = (props: AssetDisposeProps) => {
       <TransferDisposalInProgressModal
         isOpen={isOpenInfo}
         onClose={onCloseInfo}
+      />
+      <ApprovalWorkflowWarning
         type="disposal"
+        isBulk={false}
+        hasWorkflow={hasWorkflow}
       />
     </>
   );

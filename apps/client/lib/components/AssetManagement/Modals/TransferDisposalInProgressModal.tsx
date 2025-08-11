@@ -58,8 +58,9 @@ const TransferDisposalInProgressModal = (
                         {index < assetIds.length - 1 && ', '}
                       </Text>
                     ))}{' '}
-                    are already in a workflow. Please remove them or wait till
-                    the workflow is completed
+                    are currently part of an active workflow. Please remove them
+                    from the list or wait until the workflow is completed before
+                    proceeding.
                   </>
                 ) : (
                   'You already have a pending request being processed. Please wait until it is completed before submitting a new one.'

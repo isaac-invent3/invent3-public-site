@@ -40,6 +40,7 @@ import NoteForm from '../NoteForm';
 import NoteComments from './Comments';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { useMemo } from 'react';
+import { useSession } from 'next-auth/react';
 
 interface NoteFormModalProps {
   isOpen: boolean;
@@ -54,6 +55,7 @@ const NoteDetails = (props: NoteFormModalProps) => {
     onOpen: onNoteFormOpen,
     onClose: onNoteFormClose,
   } = useDisclosure();
+  const session = useSession();
   const formattedUrl = useFormatUrl();
   const data = useParseUrlData(formattedUrl);
   const parsedData = useAppSelector((state) => state.notes.parsedUrlData);
@@ -144,20 +146,21 @@ const NoteDetails = (props: NoteFormModalProps) => {
                 >
                   <PageHeader>Notes</PageHeader>
 
-                  {data?.systemContextId && !note?.isTagged && (
-                    <>
-                      <Button
-                        handleClick={onNoteFormOpen}
-                        customStyles={{
-                          w: '150px',
-                          alignSelf: 'end',
-                          height: { base: '36px', md: 'min-content' },
-                        }}
-                      >
-                        Edit Note
-                      </Button>
-                    </>
-                  )}
+                  {data?.systemContextId &&
+                    note?.authorId === session?.data?.user?.userId && (
+                      <>
+                        <Button
+                          handleClick={onNoteFormOpen}
+                          customStyles={{
+                            w: '150px',
+                            alignSelf: 'end',
+                            height: { base: '36px', md: 'min-content' },
+                          }}
+                        >
+                          Edit Note
+                        </Button>
+                      </>
+                    )}
                 </Stack>
 
                 <HStack

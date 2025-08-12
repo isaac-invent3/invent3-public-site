@@ -69,9 +69,7 @@ const MarkComplianceStatusDrawer = (props: MarkComplianceStatusDrawerProps) => {
             compliancePolicyId: data?.compliancePolicyId!,
             comments: data?.comments!,
             performedBy: data?.performedBy!,
-            dateCreated: moment(data.date, 'DD/MM/YYYY')
-              .utcOffset(0, true)
-              .toISOString(),
+            dateCreated: moment(data.date, 'DD/MM/YYYY').utc().toISOString(),
             createdBy: session?.user?.email!,
           },
           assetIds: assetIds ?? selectedAssets,

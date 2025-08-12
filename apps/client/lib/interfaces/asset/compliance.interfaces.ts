@@ -104,6 +104,7 @@ interface AssetComplianceCategory {
   compliant: number;
   nonCompliant: number;
   complianceStatus: string;
+  displayColorCode: string;
 }
 
 interface AssetCategoryComplianceSummary {

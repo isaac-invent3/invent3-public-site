@@ -78,7 +78,7 @@ const CreateAssetComplianceDrawer = (
             complianceRegulationId: data?.complianceRegulationId!,
             nextInspectionDate: data.nextInspectionDate
               ? moment(data.nextInspectionDate, 'DD/MM/YYYY')
-                  .utcOffset(0, true)
+                  .utc()
                   .toISOString()
               : null,
             createdBy: session?.user?.email!,

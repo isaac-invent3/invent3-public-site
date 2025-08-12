@@ -62,10 +62,10 @@ const ShareReportPopover = (props: PopoverActionProps) => {
         reportId: reportId!,
         exportType,
         // startDate: moment(filters.fromDate, 'DD-MM-YYYY')
-        //   .utcOffset(0, true)
+        //   .utc()
         //   .toISOString(),
         // endDate: moment(filters.toDate, 'DD-MM-YYYY')
-        //   .utcOffset(0, true)
+        //   .utc()
         //   .toISOString(),
       });
     }

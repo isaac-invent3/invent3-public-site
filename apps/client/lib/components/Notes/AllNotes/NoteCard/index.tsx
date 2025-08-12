@@ -14,6 +14,7 @@ import { Note } from '~/lib/interfaces/notes.interfaces';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import NoteDetails from '../../NoteDetails';
 import PopoverAction from './PopoverAction';
+import { useSession } from 'next-auth/react';
 
 interface NoteCardProps {
   data: Note;
@@ -28,6 +29,7 @@ const NoteCard = (props: NoteCardProps) => {
   } = useDisclosure();
 
   const [noteLoading, setNoteLoading] = useState(props.isFetching ?? false);
+  const session = useSession();
 
   if (!props.data) return;
 
@@ -196,7 +198,12 @@ const NoteCard = (props: NoteCardProps) => {
               {dateFormatter(lastModifiedDate, 'DD/MM/YYYY')}
             </Text>
 
-            <PopoverAction data={props.data} setNoteLoading={setNoteLoading} />
+            {data?.authorId === session?.data?.user?.userId && (
+              <PopoverAction
+                data={props.data}
+                setNoteLoading={setNoteLoading}
+              />
+            )}
           </HStack>
         </Box>
       </Card>

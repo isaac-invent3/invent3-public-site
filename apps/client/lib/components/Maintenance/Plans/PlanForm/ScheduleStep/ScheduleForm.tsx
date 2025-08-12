@@ -162,7 +162,11 @@ const ScheduleForm = (props: ScheduleFormProps) => {
                   : undefined
               }
             />
-            <HStack w='full' spacing={{ base: '16px', md: '24px' }} justifyContent={{base:'space-between', md:undefined}}>
+            <HStack
+              w="full"
+              spacing={{ base: '16px', md: '24px' }}
+              justifyContent={{ base: 'space-between', md: undefined }}
+            >
               <Button
                 variant="secondary"
                 customStyles={{

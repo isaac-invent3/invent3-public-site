@@ -79,12 +79,10 @@ const Date = (props: DateProps) => {
         ...formattedInfo,
         frequencyId: info.frequency?.value as number,
         startDate: moment(startDateTime, 'DD/MM/YYYY HH:mm')
-          .utcOffset(0, true)
+          .utc()
           .toISOString(),
         endDate: endDateTime
-          ? moment(endDateTime, 'DD/MM/YYYY HH:mm')
-              .utcOffset(0, true)
-              .toISOString()
+          ? moment(endDateTime, 'DD/MM/YYYY HH:mm').utc().toISOString()
           : null,
       },
       '',

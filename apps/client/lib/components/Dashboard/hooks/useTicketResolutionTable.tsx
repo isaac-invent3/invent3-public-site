@@ -104,7 +104,7 @@ const useTicketResolutionTable = (props: useTicketResolutionTable) => {
     <Flex width="full" direction="column">
       <DataTable
         columns={columns}
-        data={data?.data ?? []}
+        data={data?.data?.items ?? []}
         isLoading={isLoading}
         isFetching={isFetching}
         showFooter={false}
@@ -125,7 +125,10 @@ const useTicketResolutionTable = (props: useTicketResolutionTable) => {
   return {
     // handleSearch,
     TicketResolutionTable,
-    totalPages: search && searchData ? searchData.data?.totalPages : 1,
+    totalPages:
+      search && searchData
+        ? searchData.data?.totalPages
+        : data?.data?.totalPages,
     pageSize,
     pageNumber,
     setPageNumber,

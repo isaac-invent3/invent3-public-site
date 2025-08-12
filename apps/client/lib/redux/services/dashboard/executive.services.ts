@@ -108,7 +108,7 @@ export const executiveDashboardApis = createApi({
       }),
     }),
     getTicketResolutionPerformance: builder.query<
-      BaseApiResponse<Ticket[]>,
+      BaseApiResponse<ListResponse<Ticket>>,
       { datePeriod: number } & QueryParams
     >({
       query: (data) => ({

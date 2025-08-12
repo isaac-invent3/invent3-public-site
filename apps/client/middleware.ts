@@ -140,7 +140,9 @@ export function signOut(
   if ([...searchParams].length > 0) {
     refValue += `?${searchParams.toString()}`;
   }
-  url.searchParams.set('ref', encodeURIComponent(refValue));
+  if (!refValue.toLowerCase().includes('signin')) {
+    url.searchParams.set('ref', encodeURIComponent(refValue));
+  }
 
   return clearCookiesAndRedirect(request, url);
 }

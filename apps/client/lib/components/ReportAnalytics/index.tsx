@@ -50,12 +50,8 @@ const ReportAnalytics = () => {
     isLoading: reportDashboardLoading,
     isFetching: isFetchingReportDashboard,
   } = useGetReportDasboardValuesQuery({
-    startDate: moment(finalFilters.fromDate, 'DD/MM/YYYY')
-      .utcOffset(0, true)
-      .toISOString(),
-    endDate: moment(finalFilters.toDate, 'DD/MM/YYYY')
-      .utcOffset(0, true)
-      .toISOString(),
+    startDate: moment(finalFilters.fromDate, 'DD/MM/YYYY').utc().toISOString(),
+    endDate: moment(finalFilters.toDate, 'DD/MM/YYYY').utc().toISOString(),
     regionIds: finalFilters.region?.map((item) => item.value as number) || [],
     lgaIds: finalFilters.area?.map((item) => item.value as number) || [],
     facilityIds: finalFilters.branch?.map((item) => item.value as number) || [],

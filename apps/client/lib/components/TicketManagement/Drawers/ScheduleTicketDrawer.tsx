@@ -103,11 +103,8 @@ const ScheduleTicketDrawer = (props: AssignTicketDrawerProps) => {
           scheduledDate: moment(
             moment().format('DD/MM/YYYY HH:mm'),
             'DD/MM/YYYY hh:mmA'
-          ).utcOffset(0, true),
-          endDate: moment(
-            payload.resolutionDate,
-            'DD/MM/YYYY hh:mmA'
-          ).utcOffset(0, true),
+          ).utc(),
+          endDate: moment(payload.resolutionDate, 'DD/MM/YYYY hh:mmA').utc(),
         },
 
         createTaskDtos: generateTasksArray(

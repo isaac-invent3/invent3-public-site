@@ -13,11 +13,11 @@ const taskBaseSchema = () =>
     taskStatusName: Yup.string().nullable(),
     assignedTo: Yup.number().required('Assignee is Required'),
     assignedToEmployeeName: Yup.string().required('Assignee is Required'),
-    costEstimate: Yup.number().nullable(),
+    costEstimate: Yup.number().nullable().min(0, 'Duration must be atleast 0'),
     actualCost: Yup.number().nullable(),
-    estimatedDurationInHours: Yup.number().required(
-      'Estimated Duration is required'
-    ),
+    estimatedDurationInHours: Yup.number()
+      .required('Estimated Duration is required')
+      .min(0, 'Duration must be atleast 0'),
     comments: Yup.string().nullable(),
   });
 

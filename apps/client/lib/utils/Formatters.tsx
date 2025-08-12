@@ -21,21 +21,18 @@ function amountFormatter(
 const dateFormatter = (
   date: string | Date | null | undefined,
   format?: string,
-  stringFormat?: string | string[]
+  stringFormat?: string | string[],
+  useLocal: boolean = true
 ) => {
-  if (date) {
-    if (stringFormat) {
-      return moment
-        .utc(date, stringFormat)
-        .local()
-        .format(format ?? 'DD-MM-YYYY');
-    }
-    return moment
-      .utc(date)
-      .local()
-      .format(format ?? 'DD-MM-YYYY');
+  if (!date) return null;
+
+  const m = stringFormat ? moment.utc(date, stringFormat) : moment.utc(date);
+
+  if (useLocal) {
+    m.local();
   }
-  return null;
+
+  return m.format(format ?? 'DD-MM-YYYY');
 };
 
 export { amountFormatter, dateFormatter };

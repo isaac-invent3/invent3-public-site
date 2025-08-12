@@ -55,7 +55,7 @@ const BulkTransfer = (props: BulkTransferProps) => {
         transferredTo: values?.transferredTo!,
         comments: values?.comments!,
         actionDate: moment(values.transferDate, 'DD/MM/YYYY')
-          .utcOffset(0, true)
+          .utc()
           .toISOString(),
         initiatedBy: values.newOwnerId!,
         requestedBy: session?.user.userId!,

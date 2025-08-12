@@ -68,11 +68,7 @@ const SectionTwo = (props: SectionTwoProps) => {
           buttonVariant={buttonVariant}
           scheduleType={scheduleType}
         />
-        <Tasks
-          showTaskCount={scheduleType === 'instance'}
-          sectionMaxWidth="141px"
-          spacing="41px"
-        />
+        <Tasks showTaskCount={true} sectionMaxWidth="141px" spacing="41px" />
       </SimpleGrid>
     </VStack>
   );

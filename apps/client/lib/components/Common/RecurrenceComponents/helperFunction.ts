@@ -25,7 +25,7 @@ function generateTimeIntervalsForDay(
 const handleCombineDateTime = (date: string, time: string) => {
   const combinedDateTime =
     moment(date)
-      .utcOffset(0, true)
+      .utc()
       .set({
         hour: parseInt(time.split(':')?.[0] ?? '0'),
         minute: parseInt(time.split(':')?.[1] ?? '0'),

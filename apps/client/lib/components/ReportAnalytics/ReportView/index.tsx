@@ -32,12 +32,8 @@ const ReportView = (props: ReportViewProps) => {
   const { data: reportTableData, isLoading: loadingReportTableData } =
     useViewReportByIdQuery({
       reportId: props.id,
-      startDate: moment(filters.fromDate, 'DD-MM-YYYY')
-        .utcOffset(0, true)
-        .toISOString(),
-      endDate: moment(filters.toDate, 'DD-MM-YYYY')
-        .utcOffset(0, true)
-        .toISOString(),
+      startDate: moment(filters.fromDate, 'DD-MM-YYYY').utc().toISOString(),
+      endDate: moment(filters.toDate, 'DD-MM-YYYY').utc().toISOString(),
       pageNumber: 1,
       pageSize: DEFAULT_PAGE_SIZE,
     });

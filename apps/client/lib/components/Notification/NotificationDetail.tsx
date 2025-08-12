@@ -23,8 +23,8 @@ import { setParsedUrlData } from '~/lib/redux/slices/NoteSlice';
 const textStyle = { fontSize: '11px', lineHeight: '100%' };
 
 function formatDate(date: string) {
-  const now = moment().utcOffset(0, true).local();
-  const inputDate = moment(date).utcOffset(0, true).local();
+  const now = moment().utc().local();
+  const inputDate = moment(date).utc().local();
 
   if (inputDate.isSame(now, 'day')) {
     return `Today at ${inputDate.format('h:mma')}`;

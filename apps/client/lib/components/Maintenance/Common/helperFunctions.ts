@@ -90,11 +90,11 @@ const generateMaintenanceScheduleDTO = (
     maintenanceTypeId: formDetail.typeId!,
     frequencyId: formDetail.frequencyId!,
     scheduledDate: moment(formDetail.scheduledDate, 'DD/MM/YYYY hh:mmA')
-      .utcOffset(0, true)
+      .utc()
       .toISOString(),
     endDate: formDetail.endDate
       ? moment(formDetail.scheduledDate, 'DD/MM/YYYY hh:mmA')
-          .utcOffset(0, true)
+          .utc()
           .toISOString()
       : null,
     intervalValue: formDetail.intervalValue!,

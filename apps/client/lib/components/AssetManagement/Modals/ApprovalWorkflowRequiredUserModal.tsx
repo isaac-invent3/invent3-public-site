@@ -1,7 +1,16 @@
-import { Flex, Heading, ModalBody, Text, VStack } from '@chakra-ui/react';
-import { GenericModal } from '@repo/ui/components';
+import {
+  Flex,
+  Heading,
+  ModalBody,
+  ModalHeader,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
+import { GenericModal, ModalCloseButtonText } from '@repo/ui/components';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React from 'react';
+import { ROUTES } from '~/lib/utils/constants';
 
 interface ApprovalWorkflowRequiredUserModalProps {
   isOpen: boolean;
@@ -13,6 +22,7 @@ const ApprovalWorkflowRequiredUserModal = (
   props: ApprovalWorkflowRequiredUserModalProps
 ) => {
   const { isOpen, onClose, type, isBulk } = props;
+  const router = useRouter();
   return (
     <GenericModal
       isOpen={isOpen}
@@ -23,6 +33,20 @@ const ApprovalWorkflowRequiredUserModal = (
       }}
       mainModalStyle={{ closeOnOverlayClick: false, closeOnEsc: false }}
     >
+      <ModalHeader
+        m={0}
+        p={0}
+        position="relative"
+        pt={{ base: '32px', md: '48px' }}
+      >
+        <Flex position="absolute" top="0" right="0" mt="16px" pr="16px">
+          <Flex>
+            <ModalCloseButtonText
+              onClose={() => router.push(`/${ROUTES.ASSETS}`)}
+            />
+          </Flex>
+        </Flex>
+      </ModalHeader>
       <ModalBody p={0} m={0}>
         <VStack
           py={{ base: '60px', lg: '88px' }}

@@ -51,7 +51,7 @@ const AssetTransfer = (props: AssetTransferProps) => {
         comments: values?.comments!,
         assetId: data?.assetId,
         transferDate: moment(values.transferDate, 'DD/MM/YYYY')
-          .utcOffset(0, true)
+          .utc()
           .toISOString(),
         initiatedBy: Number(session?.user?.userId)!,
         createdBy: session?.user.username!,

@@ -55,7 +55,7 @@ const BulkDispose = (props: BulkDisposeProps) => {
         disposalReasonId: values.disposalReasonId!,
         comments: values.comments!,
         actionDate: moment(values.disposalDate, 'DD/MM/YYYY')
-          .utcOffset(0, true)
+          .utc()
           .toISOString()!,
         disposalRequestedBy: session?.user?.userId!,
         requestedBy: session?.user.userId!,

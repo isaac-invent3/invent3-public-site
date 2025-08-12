@@ -98,7 +98,12 @@ const FacilityComplianceTable = (props: FacilityComplianceTableProps) => {
         }),
         columnHelper.accessor('complianceStatus', {
           cell: (info) => {
-            return <GenericStatusBox text={info.getValue()} />;
+            return (
+              <GenericStatusBox
+                text={info.getValue()}
+                colorCode={info.row.original.displayColorCode}
+              />
+            );
           },
           header: 'Status',
           enableSorting: false,

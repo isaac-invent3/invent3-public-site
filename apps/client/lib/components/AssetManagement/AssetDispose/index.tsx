@@ -53,7 +53,7 @@ const AssetDispose = (props: AssetDisposeProps) => {
         comments: values.comments!,
         assetIds: [data?.assetId],
         disposalDate: moment(values.disposalDate, 'DD/MM/YYYY')
-          .utcOffset(0, true)
+          .utc()
           .toISOString()!,
         disposalRequestedBy: data?.currentOwnerId!,
         createdBy: session?.user?.username!,

@@ -62,7 +62,7 @@ const ScheduleInstanceForm = () => {
         updateMaintenanceScheduleInstanceDto: {
           scheduleInstanceId: values.scheduleId!,
           scheduledDate: moment(values.scheduledDate, 'DD/MM/YYYY hh:mmA')
-            .utcOffset(0, true)
+            .utc()
             .toISOString()!,
           scheduleInstanceName: values.name!,
           updateType: instanceUpdateType!,

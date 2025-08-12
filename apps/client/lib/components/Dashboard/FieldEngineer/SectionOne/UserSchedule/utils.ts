@@ -20,7 +20,7 @@ export function generateWeekDays(week: WeekType) {
     return {
       day: day.format('ddd'), // Short day name (e.g., Mon, Tue)
       date: day.format('MM/DD'), // Month/Day format (e.g., 01/25)
-      fullDay: day.utcOffset(0, true).toISOString(),
+      fullDay: day.utc().toISOString(),
     };
   });
 

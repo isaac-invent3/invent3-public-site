@@ -259,7 +259,7 @@ export const config = {
         user: {
           ...session.user,
           id: token.id.toString(),
-          userId: token.id,
+          userId: +token.id,
           companyId: token.companyId,
           firstName: token.firstName,
           lastName: token.lastName,

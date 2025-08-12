@@ -96,7 +96,7 @@ const CommentItem = ({
               {comment.authorFirstName}
             </Text>
             <Text size="xs" color="neutral.600">
-              {moment(comment.dateCreated).utcOffset(0, true).fromNow()}
+              {moment(comment.dateCreated).utc().fromNow()}
             </Text>
           </HStack>
           <Text size="xs" fontWeight={400} color="neutral.600">

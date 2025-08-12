@@ -105,7 +105,8 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
             dateFormatter(
               info.getValue(),
               'DD/MM/YYYY hh:mmA',
-              'DD/MM/YYYY HH:mm'
+              'DD/MM/YYYY HH:mm',
+              type === 'edit'
             ),
           header: 'Start Date',
           enableSorting: false,
@@ -166,7 +167,12 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
         assetLocation: item.assetLocation,
         description: item.description,
         comment: item.comments,
-        scheduledDate: dateFormatter(item.scheduledDate, 'DD/MM/YYYY HH:mm'),
+        scheduledDate: dateFormatter(
+          item.scheduledDate,
+          'DD/MM/YYYY HH:mm',
+          undefined,
+          type === 'edit'
+        ),
         endDate: item.endDate ?? null,
         intervalValue: 1,
         dayOccurrences: [],
@@ -175,7 +181,12 @@ const ScheduleList = (props: MaintenanceSchedulesProps) => {
         yearOccurrences: {},
         deletedTaskIDs: [],
         updatedTaskIDs: [],
-        completionDate: dateFormatter(item.completionDate, 'DD/MM/YYYY HH:mm'),
+        completionDate: dateFormatter(
+          item.completionDate,
+          'DD/MM/YYYY HH:mm',
+          undefined,
+          type === 'edit'
+        ),
         ticketId: item.ticketId,
         maintenancePlanInfo: {
           planName: item.planName,

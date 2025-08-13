@@ -99,14 +99,17 @@ const profileBreadcrumb: BreadcrumbNode = {
 const reportBreadcrumb: BreadcrumbNode = {
   route: `/${ROUTES.REPORT}`,
   label: 'Reports & Analytics',
+  children: {
+    add: { label: 'Add User' },
+    edit: { label: 'Edit User' },
+  },
 };
 
 const userManagementBreadcrumb: BreadcrumbNode = {
   route: `/${ROUTES.USERS}`,
   label: 'User Management',
   children: {
-    add: { label: 'Add User' },
-    edit: { label: 'Edit User' },
+    generate: { label: 'Generate' },
   },
 };
 

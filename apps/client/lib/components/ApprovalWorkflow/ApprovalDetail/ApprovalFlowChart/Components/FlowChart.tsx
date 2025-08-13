@@ -9,12 +9,7 @@ import {
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { getSession } from 'next-auth/react';
-import {
-  useParams,
-  usePathname,
-  useRouter,
-  useSearchParams,
-} from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import {
   useGetAllApprovalWorkflowPartyInstancesQuery,
@@ -31,6 +26,8 @@ import {
 } from './Logic/updateApprovalFlowElements';
 import edgeTypes from './UI/Edges';
 import nodeTypes from './UI/Nodes';
+import { useAppDispatch } from '~/lib/redux/hooks';
+import { setOpenPopoverId } from '~/lib/redux/slices/ApprovalSlice';
 
 interface ApprovalChartProps {
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -40,6 +37,7 @@ const ApprovalFlowChart = (props: ApprovalChartProps) => {
   const { setElements, elements } = useApprovalFlowContext();
   const params = useParams();
   const approvalRequestId = Number(params?.id);
+  const dispatch = useAppDispatch();
 
   const { data, isLoading, isFetching } =
     useGetAllApprovalWorkflowPartyInstancesQuery(
@@ -68,6 +66,10 @@ const ApprovalFlowChart = (props: ApprovalChartProps) => {
   const [nodes, setNodes, onNodesChange] = useNodesState(layoutElements.nodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(layoutElements.edges);
   const [draggingNodeId, setDraggingNodeId] = useState<string | null>(null);
+  const [dragStartPos, setDragStartPos] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
 
   const onConnect = useCallback(
     (params: CustomEdge | Connection) =>
@@ -251,7 +253,13 @@ const ApprovalFlowChart = (props: ApprovalChartProps) => {
    */
   const onNodeDragStart = (_: any, node: CustomNode) => {
     setDraggingNodeId(node.id);
-
+    setDragStartPos({ x: node.position.x, y: node.position.y });
+    console.log({
+      triggerDrag: {
+        drag: { x: node.position.x, y: node.position.y },
+        node,
+      },
+    });
     const { position } = node;
     const posX = position.x;
 
@@ -430,6 +438,19 @@ const ApprovalFlowChart = (props: ApprovalChartProps) => {
    */
   const onNodeDragStop = async (_: any, node: CustomNode) => {
     if (!draggingNodeId) return;
+    console.log({ dragStartPos, node, test: 'it came here' });
+
+    const DRAG_THRESHOLD = 3;
+    // Detect if movement actually happened
+    if (
+      dragStartPos &&
+      Math.abs(dragStartPos.x - node.position.x) < DRAG_THRESHOLD &&
+      Math.abs(dragStartPos.y - node.position.y) < DRAG_THRESHOLD
+    ) {
+      // No meaningful movement
+      setDraggingNodeId(null);
+      return;
+    }
 
     const session = await getSession();
 
@@ -602,6 +623,7 @@ const ApprovalFlowChart = (props: ApprovalChartProps) => {
             onNodeDragStart={onNodeDragStart}
             onNodeDragStop={onNodeDragStop}
             fitView
+            onPaneClick={() => dispatch(setOpenPopoverId(null))}
             nodesDraggable={
               !(
                 isLoading ||

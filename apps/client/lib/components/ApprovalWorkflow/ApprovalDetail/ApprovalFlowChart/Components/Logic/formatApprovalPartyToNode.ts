@@ -2,6 +2,7 @@ import { MarkerType } from '@xyflow/react';
 import { ApprovalWorkflowPartyInstance } from '~/lib/interfaces/approvalWorkflow.interfaces';
 import { CustomEdge, CustomNode } from '../Interfaces';
 import { createNewNode } from './updateApprovalFlowElements';
+import { APPROVAL_ACTION } from '~/lib/utils/constants';
 
 const createBaseNodesFromApprovalPartyInstance = (
   items: ApprovalWorkflowPartyInstance[]
@@ -9,8 +10,15 @@ const createBaseNodesFromApprovalPartyInstance = (
   const newNodes = items.map((item) => {
     return {
       id: item.approvalWorkFlowPartyInstanceId.toString(),
-      data: { ...item, levelNumber: item.levelNumber ? item.levelNumber : 1 },
+      data: {
+        ...item,
+        levelNumber: item.levelNumber ? item.levelNumber + 1 : 2,
+      },
       position: { x: 0, y: 0 },
+      draggable:
+        item.approvalActionId === APPROVAL_ACTION.REQUESTED_THE_APPROVAL
+          ? false
+          : true,
     };
   });
 
@@ -20,11 +28,11 @@ const createBaseNodesFromApprovalPartyInstance = (
 const createBaseEdgesFromApprovalPartyInstance = (
   items: ApprovalWorkflowPartyInstance[]
 ) => {
-  const instances = items.filter((el) => el.levelNumber);
+  const instances = items.filter((el) => el.levelNumber != null);
 
   const levels = instances.reduce(
     (acc, instance) => {
-      const level = instance.levelNumber;
+      const level = instance.levelNumber + 1;
       if (!acc[level]) {
         acc[level] = [];
       }

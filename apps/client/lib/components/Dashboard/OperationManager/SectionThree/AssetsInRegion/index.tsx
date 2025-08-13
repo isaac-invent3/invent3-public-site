@@ -64,8 +64,13 @@ const AssetsInRegion = () => {
           ? `Assets in ${selectedState?.label}`
           : 'All Assets In Nigeria'}
       </CardHeader>
-      <Skeleton isLoaded={!isLoading && !isFetching} width="full" height="full">
-        <Box width="full" height="full">
+      <Skeleton
+        isLoaded={!isLoading && !isFetching}
+        width="full"
+        height="full"
+        minH="324px"
+      >
+        <Box width="full" height="full" minH="324px">
           {transformedCenter ? (
             <Map
               /* @ts-ignore */

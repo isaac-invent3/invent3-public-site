@@ -7,12 +7,11 @@ import {
   Icon,
   Text,
   useDisclosure,
-  useOutsideClick,
   VStack,
 } from '@chakra-ui/react';
 import type { NodeProps } from '@xyflow/react';
 import { Handle, Position } from '@xyflow/react';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import UserInfo from '~/lib/components/Common/UserInfo';
 import {
   CursorIcon,
@@ -22,6 +21,9 @@ import {
 import { CustomNode } from '../../../Interfaces';
 import PopoverAction from './PopoverAction';
 import UserDetail from '~/lib/components/UserManagement/UserDetail';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { setOpenPopoverId } from '~/lib/redux/slices/ApprovalSlice';
+import { APPROVAL_ACTION } from '~/lib/utils/constants';
 
 const ApprovalNode = ({ data, isConnectable, id }: NodeProps<CustomNode>) => {
   const { approvalActionId, userId } = data;
@@ -32,36 +34,22 @@ const ApprovalNode = ({ data, isConnectable, id }: NodeProps<CustomNode>) => {
     onClose: onCloseUser,
     onOpen: onOpenUser,
   } = useDisclosure();
-  const popoverRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
 
-  useOutsideClick({
-    ref: popoverRef,
-    handler: onClose,
-  });
+  const dispatch = useAppDispatch();
+  const openPopoverId = useAppSelector((state) => state.approval.openPopoverId);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        popoverRef.current &&
-        !popoverRef.current.contains(event.target as HTMLElement)
-      ) {
-        onClose();
-      }
-    };
+  const isPopoverOpen = openPopoverId === id;
 
-    document.addEventListener('mousedown', handleClickOutside);
-    document.addEventListener('click', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, [onClose]);
+  const togglePopover = (e: React.MouseEvent) => {
+    e.stopPropagation(); // prevent pane click from firing
+    dispatch(setOpenPopoverId(isPopoverOpen ? null : id));
+  };
 
   return (
     <>
-      <Box position="relative" zIndex={1}>
+      <Box position="relative" zIndex={1} ref={wrapperRef}>
         <Card
           rounded="8px"
           p="16px"
@@ -97,14 +85,21 @@ const ApprovalNode = ({ data, isConnectable, id }: NodeProps<CustomNode>) => {
                 w="full"
                 justifyContent="flex-end"
                 position="absolute"
-                onClick={onOpen}
+                display={
+                  data?.approvalActionId ===
+                  APPROVAL_ACTION.REQUESTED_THE_APPROVAL
+                    ? 'none'
+                    : 'flex'
+                }
               >
                 <Icon
                   as={ThreeVerticalDotsIcon}
                   boxSize="16px"
                   cursor="pointer"
                   color="neutral.700"
-                  onClick={onOpen}
+                  position="relative"
+                  zIndex={999}
+                  onClick={togglePopover}
                 />
               </Flex>
               {data?.currentStatusId === 3 && (
@@ -212,7 +207,6 @@ const ApprovalNode = ({ data, isConnectable, id }: NodeProps<CustomNode>) => {
           />
         </Card>
         <Box
-          ref={popoverRef}
           position="absolute"
           maxW="180px"
           width="180px"
@@ -222,7 +216,7 @@ const ApprovalNode = ({ data, isConnectable, id }: NodeProps<CustomNode>) => {
           right={-170}
           zIndex={999}
           rounded="8px"
-          display={isOpen ? 'flex' : 'none'}
+          display={isPopoverOpen ? 'flex' : 'none'}
         >
           <Flex width="100%" height="100%">
             <PopoverAction nodeId={id} data={data} />

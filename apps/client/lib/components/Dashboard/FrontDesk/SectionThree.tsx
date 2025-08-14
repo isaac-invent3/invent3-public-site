@@ -26,6 +26,7 @@ const SectionThree = () => {
         spacing="16px"
         bgColor="white"
         rounded="8px"
+        minH="324px"
       >
         <HStack width="full" justifyContent="space-between">
           <HStack width="full" alignItems="center">

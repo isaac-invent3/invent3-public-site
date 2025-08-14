@@ -422,10 +422,11 @@ interface UpdateAssetPayload {
 }
 
 interface MeanTimeComputation {
-  mtbf: number;
-  mttr: number;
-  unit: string;
-  month: number;
+  meanMtbfAllAssets: number;
+  meanMttrAllAssets: number;
+  mtbfPercentageChange: number;
+  mttrPercentageChange: number;
+  datePeriod: number;
 }
 
 interface AssetCountByColumnName {

@@ -75,12 +75,12 @@ const TaskCompletionRateChart = (props: TaskCompletionRateChartProps) => {
           )}
           firstStack={{
             label: 'Completed',
-            values: data?.map((item) => item.complete),
+            values: data?.map((item) => item.tasksCompleted),
             color: completedColorCode,
           }}
           secondStack={{
             label: 'Not Completed',
-            values: data?.map((item) => item.inComplete),
+            values: data?.map((item) => item.taskNotCompleted),
             color: notCompletedColorCode,
           }}
           isLoading={isLoading}

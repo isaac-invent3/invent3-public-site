@@ -47,7 +47,10 @@ const MaintenanceSuccessChart = ({
             lineHeight="11.88px"
           >
             {' '}
-            . {data?.percentageMissed ?? '-'}
+            .{' '}
+            {data?.percentageMissed
+              ? `${data?.percentageMissed?.toFixed(2)}%`
+              : '-'}
           </Text>
         </Text>
       ),
@@ -65,7 +68,10 @@ const MaintenanceSuccessChart = ({
             lineHeight="11.88px"
           >
             {' '}
-            . {data?.percentageCompleted ?? '-'}
+            .{' '}
+            {data?.percentageCompleted
+              ? `${data?.percentageCompleted?.toFixed(2)}%`
+              : '-'}
           </Text>
         </Text>
       ),

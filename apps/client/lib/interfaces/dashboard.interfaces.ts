@@ -61,7 +61,7 @@ interface FrontendDashboardStats {
 
 interface FrontendDashboardChartData {
   openedAndResolvedTickets: OpenedAndResolvedTicket[];
-  completeAndIncompleteTasks: CompleteAndIncompleteTask[];
+  completeAndIncompleteTasks: GenericTaskCompleteData[];
 }
 
 interface CompleteAndIncompleteTask {
@@ -140,8 +140,10 @@ interface CompanyDistritution {
 }
 
 interface GenericTaskCompleteData {
-  inComplete: number;
-  complete: number;
+  taskNotCompleted: number;
+  tasksCompleted: number;
+  variance: number;
+  weekId: number;
   monthId: number;
   year: number;
 }

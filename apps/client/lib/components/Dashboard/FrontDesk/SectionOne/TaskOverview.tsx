@@ -77,7 +77,7 @@ const TaskOverview = (props: TaskOverviewProps) => {
             lineHeight="15.44px"
             fontWeight={700}
           >
-            {percentageCompleted ?? 0}%
+            {percentageCompleted ? percentageCompleted?.toFixed(2) : 0}%
           </CircularProgressLabel>
         </CircularProgress>
       </HStack>

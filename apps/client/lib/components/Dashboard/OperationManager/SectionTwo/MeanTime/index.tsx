@@ -48,13 +48,13 @@ const MeanTime = () => {
         <Flex direction="column" justifyContent="space-between" gap="32px">
           <Info
             title="Mean Time Between Failures (MTBF)"
-            days={data?.data.mtbf ?? 0}
-            valueChange={20}
+            days={data?.data.meanMtbfAllAssets ?? 0}
+            valueChange={data?.data?.mtbfPercentageChange ?? 0}
             isLoading={isLoading || isFetching}
           />
           <Info
             title="Mean Time To Repair (MTTR)"
-            days={data?.data.mttr ?? 0}
+            days={data?.data?.mttrPercentageChange ?? 0}
             valueChange={20}
             isLoading={isLoading || isFetching}
           />

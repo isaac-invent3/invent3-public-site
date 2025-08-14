@@ -33,12 +33,32 @@ const SectionTwo = () => {
     year: +selectedYear?.value!,
   });
 
-  const { data: maintenanceData, isLoading: loadingMaintenance } =
+  const { data: maintenanceCompleteData, isLoading: loadingMaintenance } =
     useGetFrontdeskMaintenanceSuccessChartDataQuery({
-      year: currentYear,
-      monthNo: +selectedMonth?.value!,
       userId: user?.userId!,
     });
+
+  const tempData = maintenanceCompleteData?.data?.find(
+    (item) => item.monthId === selectedMonth?.value
+  );
+
+  const maintenanceData:
+    | {
+        missed: number;
+        completed: number;
+        percentageMissed?: number;
+        percentageCompleted?: number;
+        monthId: number;
+      }
+    | undefined = tempData
+    ? {
+        ...tempData,
+        percentageCompleted:
+          (tempData.completed / (tempData.completed + tempData.missed)) * 100,
+        percentageMissed:
+          (tempData.missed / (tempData.completed + tempData.missed)) * 100,
+      }
+    : undefined;
 
   return (
     <Grid
@@ -79,12 +99,11 @@ const SectionTwo = () => {
           selectedMonth={selectedMonth}
           setSelectedMonth={setSelectedMonth}
           data={{
-            missed: maintenanceData?.data?.missed ?? 0,
-            completed: maintenanceData?.data?.completed ?? 0,
-            percentageMissed: maintenanceData?.data?.percentageMissed ?? 0,
-            percentageCompleted:
-              maintenanceData?.data?.percentageCompleted ?? 0,
-            monthId: maintenanceData?.data?.monthId ?? 0,
+            missed: maintenanceData?.missed ?? 0,
+            completed: maintenanceData?.completed ?? 0,
+            percentageMissed: maintenanceData?.percentageMissed ?? 0,
+            percentageCompleted: maintenanceData?.percentageCompleted ?? 0,
+            monthId: maintenanceData?.monthId ?? 0,
           }}
         />
       </GridItem>

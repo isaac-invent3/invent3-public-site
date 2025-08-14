@@ -18,7 +18,7 @@ import {
   TextInput,
 } from '@repo/ui/components';
 import { Field, FormikProvider, useFormik } from 'formik';
-import { getSession } from 'next-auth/react';
+import { getSession, useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import EndDateTime from '~/lib/components/Common/RecurrenceComponents/EndDateTime';
 import Frequency from '~/lib/components/Common/RecurrenceComponents/Frequency';
@@ -30,6 +30,7 @@ import { useAppSelector } from '~/lib/redux/hooks';
 import { useScheduleReportMutation } from '~/lib/redux/services/reports.services';
 import { scheduleReportSchema } from '~/lib/schemas/report.schema';
 import ScheduleReportSuccessModal from '../Modals/ScheduleReportSuccessModal';
+import moment from 'moment';
 
 interface ScheduleReportDrawerProps {
   isOpen: boolean;
@@ -39,6 +40,7 @@ interface ScheduleReportDrawerProps {
 
 const ScheduleReportDrawer = (props: ScheduleReportDrawerProps) => {
   const { isOpen, onClose, reportId } = props;
+  const session = useSession();
 
   const recurrence = useAppSelector((state) => state.date.info.recurrence);
 
@@ -46,6 +48,8 @@ const ScheduleReportDrawer = (props: ScheduleReportDrawerProps) => {
     useScheduleReportMutation({});
 
   const { handleSubmit } = useCustomMutation();
+  const today = moment().format('DD/MM/YYYY HH:mm');
+  const [selectedStartDate, setSelectedStartDate] = useState(today);
 
   const {
     isOpen: isScheduleSuccessModalOpen,
@@ -58,19 +62,26 @@ const ScheduleReportDrawer = (props: ScheduleReportDrawerProps) => {
       reportId,
       frequencyId: null,
       intervalValue: null,
+      startDate: null,
+      endDate: null,
       dayOccurrences: [],
       weekOccurrences: [],
       monthOccurrences: [],
       yearOccurrences: [],
-      recipientIds: [1],
+      recipientIds: [session?.data?.user?.userId!],
     },
 
     enableReinitialize: true,
-    validationSchema: scheduleReportSchema,
+    validationSchema: scheduleReportSchema(selectedStartDate),
     onSubmit: async (data, { resetForm }) => {
       const session = await getSession();
 
-      const payload = { ...data, createdBy: session?.user.username! };
+      const payload = {
+        ...data,
+        startDate: moment(data.startDate, 'DD/MM/YYYY HH:mm').utc(),
+        endDate: moment(data.endDate, 'DD/MM/YYYY HH:mm').utc(),
+        createdBy: session?.user.username!,
+      };
 
       const response = await handleSubmit(scheduleReport, payload, '');
 
@@ -107,6 +118,14 @@ const ScheduleReportDrawer = (props: ScheduleReportDrawerProps) => {
   useEffect(() => {
     updateForm(recurrence);
   }, [recurrence]);
+
+  useEffect(() => {
+    console.log({ data: formik.values.startDate });
+    if (formik.values.startDate) {
+      setSelectedStartDate(formik.values.startDate);
+    }
+  }, [formik.values.startDate]);
+
   return (
     <GenericDrawer isOpen={isOpen} onClose={onClose} maxWidth="507px">
       <DrawerHeader p={0} m={0}>
@@ -142,9 +161,16 @@ const ScheduleReportDrawer = (props: ScheduleReportDrawerProps) => {
               <VStack width="full" mt="40px" pb="71px" spacing="0px">
                 <Frequency setMaxInterval={setMaxInterval} />
                 <Intervals maxInterval={maxInterval} />
-                <StartDateTime />
-                <EndDateTime />
-                <FormInputWrapper
+                <StartDateTime
+                  minStartDate={moment(today, 'DD/MM/YYYY HH:mm').toDate()}
+                />
+                <EndDateTime
+                  minEndDate={moment(
+                    selectedStartDate,
+                    'DD/MM/YYYY HH:mm'
+                  ).toDate()}
+                />
+                {/* <FormInputWrapper
                   sectionMaxWidth="130px"
                   mt="32px"
                   customSpacing="29px"
@@ -170,14 +196,14 @@ const ScheduleReportDrawer = (props: ScheduleReportDrawerProps) => {
 
                       <Field
                         as={TextInput}
-                        name="ticketTitle"
+                        name="other"
                         type="text"
-                        label="Ticket Title"
+                        label="Email"
                         customStyle={{ height: '32px', width: '100%' }}
                       />
                     </HStack>
                   </VStack>
-                </FormInputWrapper>
+                </FormInputWrapper> */}
               </VStack>
             </form>
           </Flex>

@@ -196,24 +196,46 @@ const breadcrumbMap: Record<string, BreadcrumbNode> = {
   [ROUTES.FEEDBACK]: feedbackBreadcrumb,
 };
 
-const getBreadcrumb = (pathSegments: string[]): breadCrumbRoute[] => {
+const getBreadcrumb = (
+  pathSegments: string[],
+  basePath = ''
+): breadCrumbRoute[] => {
   let currentMap = breadcrumbMap;
   const breadcrumbs: breadCrumbRoute[] = [
     { label: 'Dashboard', route: `/${ROUTES.DASHBOARD}` },
   ];
 
-  for (const segment of pathSegments) {
-    if (currentMap[segment]) {
+  // Build breadcrumbs based on the segments
+  for (let idx = 0; idx < pathSegments.length; idx++) {
+    const segment = pathSegments[idx];
+
+    if (segment && currentMap[segment]) {
       const node = currentMap[segment];
+      let routeValue: string;
+
+      if (node.route === 'back') {
+        // Include the next segment if it exists (usually an ID)
+        const nextSegment = pathSegments[idx + 1];
+        if (nextSegment) {
+          routeValue = `${basePath}/${segment}/${nextSegment}`;
+          idx++; // Skip the ID segment in breadcrumb labels
+        } else {
+          routeValue = `${basePath}/${segment}`;
+        }
+      } else {
+        routeValue = node.route || `${basePath}/${segment}`;
+      }
+
       breadcrumbs.push({
         label: node.label,
-        route: node.route || '#',
+        route: routeValue,
       });
 
-      // Traverse deeper if children exist
       if (node.children) {
         currentMap = node.children;
       }
+
+      basePath = routeValue;
     }
   }
 

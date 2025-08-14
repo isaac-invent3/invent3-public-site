@@ -248,7 +248,13 @@ const NoteDetails = (props: NoteFormModalProps) => {
                   </Text>
                   <HStack justifyContent="space-between" w="full">
                     <UserInfo
-                      name={`${note.authorFirstName ?? 'George'} ${note.authorLastName ?? 'Clooney'}`}
+                      name={
+                        [note?.authorFirstName, note?.authorLastName].filter(
+                          Boolean
+                        ).length > 1
+                          ? `${note?.authorFirstName} ${note.authorLastName}`
+                          : 'N/A'
+                      }
                       customAvatarStyle={{
                         width: '24px',
                         height: '24px',

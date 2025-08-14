@@ -53,7 +53,8 @@ const NoteComments = ({ note }: { note: Note }) => {
 
     const payload = {
       createNoteDto: {
-        systemContextTypeId: parsedUrl?.systemContextId!,
+        systemContextTypeId: note?.systemContextTypeId,
+        systemContextId: note?.systemContextId,
         authorId: Number(session?.user.id),
         createdBy: session?.user?.username!,
         title: '',
@@ -89,13 +90,22 @@ const NoteComments = ({ note }: { note: Note }) => {
           justifyContent="center"
           border="none"
         >
-          <Box borderColor="neutral.600" opacity='40%' width="full" borderWidth={0.5}></Box>
+          <Box
+            borderColor="neutral.600"
+            opacity="40%"
+            width="full"
+            borderWidth={0.5}
+          ></Box>
         </StackDivider>
       }
     >
       <form style={{ width: '100%' }} onSubmit={handleAddComment}>
         <HStack gap="8px" w="full">
-          <Avatar width="28px" height="28px" name={data?.user?.username} />
+          <Avatar
+            width="28px"
+            height="28px"
+            name={data?.user?.firstName ?? ''}
+          />
 
           <TextInput
             label="Comment"

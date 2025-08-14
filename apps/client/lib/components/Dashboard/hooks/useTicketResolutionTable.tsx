@@ -1,13 +1,15 @@
 import { Flex } from '@chakra-ui/react';
 import _ from 'lodash';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { BaseApiResponse, ListResponse } from '@repo/interfaces';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { DATE_PERIOD, DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { createColumnHelper } from '@tanstack/react-table';
 import { DataTable } from '@repo/ui/components';
-import { useGetTicketResolutionPerformanceQuery } from '~/lib/redux/services/dashboard/executive.services';
+import { useSearchTicketResolutionPerformanceMutation } from '~/lib/redux/services/dashboard/executive.services';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
+import { generateSearchCriteria } from '@repo/utils';
+import { OPERATORS } from '@repo/constants';
 
 interface useTicketResolutionTable {
   search?: string;
@@ -18,42 +20,41 @@ const useTicketResolutionTable = (props: useTicketResolutionTable) => {
   const { search, customPageSize } = props;
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+  const { handleSubmit } = useCustomMutation();
 
-  const { data, isLoading, isFetching } =
-    useGetTicketResolutionPerformanceQuery({
-      datePeriod: DATE_PERIOD.YEAR,
-      pageSize: customPageSize ?? pageSize,
-      pageNumber,
-    });
   const [searchData, setSearchData] = useState<
     BaseApiResponse<ListResponse<Ticket>> | undefined
   >(undefined);
-  const { handleSubmit } = useCustomMutation();
+  const [searchTicketResolution, { isLoading }] =
+    useSearchTicketResolutionPerformanceMutation({});
 
-  //   const searchCriterion = {
-  //     ...(search && {
-  //       criterion: [
-  //         {
-  //           columnName: 'ticketTitle',
-  //           columnValue: search,
-  //           operation: OPERATORS.Contains,
-  //         },
-  //       ],
-  //     }),
-  //     pageNumber,
-  //     pageSize,
-  //   };
+  const handleSearch = useCallback(async () => {
+    const { orCriterion } = generateSearchCriteria(
+      undefined,
+      {
+        search: [search],
+      },
+      {
+        search: {
+          key: ['ticketTypeName', 'ticketPriorityName', 'assignedTo'],
+          operator: OPERATORS.Contains,
+        },
+      },
+      undefined
+    );
+    const payload = {
+      pageNumber,
+      pageSize: customPageSize ?? pageSize,
+      orCriterion,
+    };
 
-  //   const handleSearch = useCallback(async () => {
-  //     const response = await handleSubmit(searchLog, searchCriterion, '');
-  //     setSearchData(response?.data);
-  //   }, [searchLog, searchCriterion]);
+    const response = await handleSubmit(searchTicketResolution, payload, '');
+    setSearchData(response?.data);
+  }, [searchTicketResolution, search, pageSize, pageNumber]);
 
   // Trigger search when search input changes or pagination updates
   useEffect(() => {
-    if (search) {
-      //   handleSearch();
-    }
+    handleSearch();
   }, [search, pageNumber, pageSize]);
 
   // Reset pagination when clearing the search
@@ -97,16 +98,16 @@ const useTicketResolutionTable = (props: useTicketResolutionTable) => {
 
       return baseColumns;
     },
-    [[data]] //eslint-disable-line
+    [[searchData?.data?.items]] //eslint-disable-line
   );
 
   const TicketResolutionTable = (
     <Flex width="full" direction="column">
       <DataTable
         columns={columns}
-        data={data?.data?.items ?? []}
+        data={searchData?.data?.items ?? []}
         isLoading={isLoading}
-        isFetching={isFetching}
+        isFetching={isLoading}
         showFooter={false}
         maxTdWidth="200px"
         customTdStyle={{
@@ -125,10 +126,7 @@ const useTicketResolutionTable = (props: useTicketResolutionTable) => {
   return {
     // handleSearch,
     TicketResolutionTable,
-    totalPages:
-      search && searchData
-        ? searchData.data?.totalPages
-        : data?.data?.totalPages,
+    totalPages: search && searchData ? searchData.data?.totalPages : 0,
     pageSize,
     pageNumber,
     setPageNumber,

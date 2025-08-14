@@ -1,5 +1,10 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { BaseApiResponse, ListResponse, QueryParams } from '@repo/interfaces';
+import {
+  BaseApiResponse,
+  ListResponse,
+  QueryParams,
+  SearchQuery,
+} from '@repo/interfaces';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import {
@@ -81,19 +86,6 @@ export const executiveDashboardApis = createApi({
         headers: getHeaders(),
       }),
     }),
-    getComplianceAssessment: builder.query<
-      BaseApiResponse<ListResponse<AssetComplaince>>,
-      { datePeriod: number } & QueryParams
-    >({
-      query: (data) => ({
-        url: generateQueryStr(
-          `/Invent3Pro/GetCLevelComplianceAssesment?`,
-          data
-        ),
-        method: 'GET',
-        headers: getHeaders(),
-      }),
-    }),
     getMaintenanceBudgetReport: builder.query<
       BaseApiResponse<MaintenanceBudget[]>,
       { datePeriod: number }
@@ -107,53 +99,60 @@ export const executiveDashboardApis = createApi({
         headers: getHeaders(),
       }),
     }),
-    getTicketResolutionPerformance: builder.query<
+    searchComplianceAssessment: builder.mutation<
+      BaseApiResponse<ListResponse<AssetComplaince>>,
+      SearchQuery
+    >({
+      query: (body) => ({
+        url: `/Invent3Pro/GetCLevelComplianceAssesment`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
+
+    searchTicketResolutionPerformance: builder.mutation<
       BaseApiResponse<ListResponse<Ticket>>,
-      { datePeriod: number } & QueryParams
+      SearchQuery
     >({
-      query: (data) => ({
-        url: generateQueryStr(
-          `/Invent3Pro/GetCLevelTicketResolutionPerformance?`,
-          data
-        ),
-        method: 'GET',
+      query: (body) => ({
+        url: `/Invent3Pro/GetCLevelTicketResolutionPerformance`,
+        method: 'POST',
         headers: getHeaders(),
+        body,
       }),
     }),
-    getAssetDepreciationFinancialImpact: builder.query<
-      BaseApiResponse<ListResponse<FinancialImpact>>,
-      { datePeriod: number } & QueryParams
-    >({
-      query: (data) => ({
-        url: generateQueryStr(
-          `/Invent3Pro/GetCLevelAssetDepreciationFinancialImpact?`,
-          data
-        ),
-        method: 'GET',
-        headers: getHeaders(),
-      }),
-    }),
-    getPendingApprovalRequest: builder.query<
-      BaseApiResponse<ListResponse<ApprovalWorkflowRequest>>,
-      { datePeriod: number } & QueryParams
-    >({
-      query: (data) => ({
-        url: generateQueryStr(
-          `/Invent3Pro/GetCLevelApprovalFlowPendingRequests?`,
-          data
-        ),
-        method: 'GET',
-        headers: getHeaders(),
-      }),
-    }),
-    getAssetPerformance: builder.query<
+    searchAssetPerformance: builder.mutation<
       BaseApiResponse<ListResponse<AssetPerformance>>,
-      { datePeriod: number } & QueryParams
+      SearchQuery
     >({
-      query: (data) => ({
-        url: generateQueryStr(`/Invent3Pro/GetCLevelAssetPerformance?`, data),
-        method: 'GET',
+      query: (body) => ({
+        url: `/Invent3Pro/GetCLevelAssetPerformance`,
+        method: 'POST',
         headers: getHeaders(),
+        body,
+      }),
+    }),
+    searchAssetDepreciationFinancialImpact: builder.mutation<
+      BaseApiResponse<ListResponse<FinancialImpact>>,
+      SearchQuery
+    >({
+      query: (body) => ({
+        url: `/Invent3Pro/GetCLevelAssetDepreciationFinancialImpact`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
+    searchPendingApprovalRequest: builder.mutation<
+      BaseApiResponse<ListResponse<ApprovalWorkflowRequest>>,
+      SearchQuery
+    >({
+      query: (body) => ({
+        url: `/Invent3Pro/GetCLevelApprovalFlowPendingRequests`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
       }),
     }),
   }),
@@ -162,13 +161,13 @@ export const executiveDashboardApis = createApi({
 export const {
   useGetAssetTrendsQuery,
   useGetDashboardStatQuery,
-  useGetAssetDepreciationFinancialImpactQuery,
   useGetAssetDistributionQuery,
-  useGetComplianceAssessmentQuery,
   useGetMaintenanceBudgetReportQuery,
   useGetMaintenanceTrendQuery,
-  useGetPendingApprovalRequestQuery,
-  useGetTicketResolutionPerformanceQuery,
   useGetTicketResolutionTrendsQuery,
-  useGetAssetPerformanceQuery,
+  useSearchAssetPerformanceMutation,
+  useSearchAssetDepreciationFinancialImpactMutation,
+  useSearchComplianceAssessmentMutation,
+  useSearchPendingApprovalRequestMutation,
+  useSearchTicketResolutionPerformanceMutation,
 } = executiveDashboardApis;

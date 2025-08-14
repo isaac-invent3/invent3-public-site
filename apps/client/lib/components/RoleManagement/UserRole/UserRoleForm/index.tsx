@@ -151,10 +151,7 @@ const UserRoleForm = () => {
         successText="Role and Permissions Created Successfully"
         mainModalStyle={{ closeOnOverlayClick: false, closeOnEsc: false }}
       >
-        <Button
-          customStyles={{ width: '193px' }}
-          handleClick={() => router.push(`/${ROUTES.ROLES}`)}
-        >
+        <Button customStyles={{ width: '193px' }} href={`/${ROUTES.ROLES}`}>
           Continue
         </Button>
       </GenericSuccessModal>

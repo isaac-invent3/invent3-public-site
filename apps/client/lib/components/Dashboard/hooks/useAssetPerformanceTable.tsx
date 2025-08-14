@@ -3,19 +3,17 @@ import _ from 'lodash';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { BaseApiResponse, ListResponse } from '@repo/interfaces';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { DATE_PERIOD, DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { OPERATORS } from '@repo/constants';
-import { Company } from '~/lib/interfaces/company.interfaces';
-import { useSearchCompaniesMutation } from '~/lib/redux/services/company.services';
 import { createColumnHelper } from '@tanstack/react-table';
 import { amountFormatter } from '~/lib/utils/Formatters';
 import { DataTable } from '@repo/ui/components';
-import { useGetAssetPerformanceQuery } from '~/lib/redux/services/dashboard/executive.services';
+import { useSearchAssetPerformanceMutation } from '~/lib/redux/services/dashboard/executive.services';
 import {
   AssetPerformance,
   FinancialImpact,
 } from '~/lib/interfaces/dashboard/executive.interfaces';
-import GenericStatusBox from '../../UI/GenericStatusBox';
+import { generateSearchCriteria } from '@repo/utils';
 
 interface useAssetPerformanceTable {
   search?: string;
@@ -26,43 +24,40 @@ const useAssetPerformanceTable = (props: useAssetPerformanceTable) => {
   const { search, customPageSize } = props;
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const { data, isLoading, isFetching } = useGetAssetPerformanceQuery({
-    datePeriod: DATE_PERIOD.YEAR,
-    pageNumber,
-    pageSize: customPageSize ?? pageSize,
-  });
   const [searchData, setSearchData] = useState<
-    BaseApiResponse<ListResponse<Company>> | undefined
+    BaseApiResponse<ListResponse<AssetPerformance>> | undefined
   >(undefined);
   const { handleSubmit } = useCustomMutation();
-  const [searchLog, { isLoading: searchLoading }] = useSearchCompaniesMutation(
-    {}
-  );
-
-  const searchCriterion = {
-    ...(search && {
-      criterion: [
-        {
-          columnName: 'companyName',
-          columnValue: search,
-          operation: OPERATORS.Contains,
-        },
-      ],
-    }),
-    pageNumber,
-    pageSize,
-  };
+  const [searchAssetPerformance, { isLoading }] =
+    useSearchAssetPerformanceMutation({});
 
   const handleSearch = useCallback(async () => {
-    const response = await handleSubmit(searchLog, searchCriterion, '');
+    const { orCriterion } = generateSearchCriteria(
+      undefined,
+      {
+        search: [search],
+      },
+      {
+        search: {
+          key: ['assetName', 'assetCategory'],
+          operator: OPERATORS.Contains,
+        },
+      },
+      undefined
+    );
+    const payload = {
+      pageNumber,
+      pageSize: customPageSize ?? pageSize,
+      orCriterion,
+    };
+
+    const response = await handleSubmit(searchAssetPerformance, payload, '');
     setSearchData(response?.data);
-  }, [searchLog, searchCriterion]);
+  }, [searchAssetPerformance, search, pageSize, pageNumber]);
 
   // Trigger search when search input changes or pagination updates
   useEffect(() => {
-    if (search) {
-      //   handleSearch();
-    }
+    handleSearch();
   }, [search, pageNumber, pageSize]);
 
   // Reset pagination when clearing the search
@@ -111,16 +106,16 @@ const useAssetPerformanceTable = (props: useAssetPerformanceTable) => {
 
       return baseColumns;
     },
-    [[data]] //eslint-disable-line
+    [[searchData?.data?.items]] //eslint-disable-line
   );
 
   const AssetPerformanceTable = (
     <Flex width="full" direction="column">
       <DataTable
         columns={columns}
-        data={data?.data?.items ?? []}
+        data={searchData?.data?.items ?? []}
         isLoading={isLoading}
-        isFetching={isFetching}
+        isFetching={isLoading}
         showFooter={false}
         maxTdWidth="200px"
         customTdStyle={{
@@ -139,11 +134,7 @@ const useAssetPerformanceTable = (props: useAssetPerformanceTable) => {
   return {
     handleSearch,
     AssetPerformanceTable,
-    totalPages:
-      search && searchData
-        ? searchData.data?.totalPages
-        : data?.data?.totalPages,
-
+    totalPages: search && searchData ? searchData.data?.totalPages : 0,
     pageSize,
     pageNumber,
     setPageNumber,

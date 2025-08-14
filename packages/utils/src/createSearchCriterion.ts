@@ -69,13 +69,16 @@ const createSearchCriterion = ({
 };
 
 export const generateSearchCriteria = (
-  search: string,
-  filterData: any,
+  search?: string,
+  filterData: any = {},
   mapping: Record<
     string,
-    { key: string; operator: (typeof OPERATORS)[keyof typeof OPERATORS] }
-  >,
-  searchColumns: string[]
+    {
+      key: string | string[];
+      operator: (typeof OPERATORS)[keyof typeof OPERATORS];
+    }
+  > = {},
+  searchColumns: string[] = []
 ) => {
   const orCriterion: SearchCriterion[][] = [];
 
@@ -91,18 +94,23 @@ export const generateSearchCriteria = (
 
   // Handle filter data
   Object.entries(mapping).forEach(([filterKey, config]) => {
-    const value = filterData[filterKey];
+    const value = filterData?.[filterKey];
     if (!value || (Array.isArray(value) && value.length === 0)) return;
 
     const valuesArray = Array.isArray(value) ? value : [value];
-    const filterCriteria: SearchCriterion[] = valuesArray.map(
-      (val) =>
-        ({
-          columnName: config.key,
+    const keysArray = Array.isArray(config.key) ? config.key : [config.key];
+
+    const filterCriteria: SearchCriterion[] = [];
+
+    keysArray.forEach((key) => {
+      valuesArray.forEach((val) => {
+        filterCriteria.push({
+          columnName: key,
           columnValue: val,
           operation: config.operator,
-        }) as unknown as SearchCriterion
-    );
+        } as SearchCriterion);
+      });
+    });
 
     orCriterion.push(filterCriteria);
   });

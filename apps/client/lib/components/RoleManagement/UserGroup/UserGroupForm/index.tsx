@@ -293,11 +293,7 @@ const UserGroupForm = ({ type }: UserGroupFormProps) => {
         successText={`User Group ${type === 'create' ? 'Created' : 'updated'} Successfully`}
         mainModalStyle={{ closeOnOverlayClick: false, closeOnEsc: false }}
       >
-        <Button
-          customStyles={{ width: '193px' }}
-          handleClick={onCloseSuccess}
-          href={`/${ROUTES.ROLES}`}
-        >
+        <Button customStyles={{ width: '193px' }} href={`/${ROUTES.ROLES}`}>
           Continue
         </Button>
       </GenericSuccessModal>

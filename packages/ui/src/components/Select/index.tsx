@@ -203,13 +203,14 @@ function SelectInput(props: SelectInputProps) {
             control: (provided) => ({
               ...provided,
               minHeight: '50px',
-              height: 'auto',
+              height: '100%',
               width: '100%',
               borderRadius: '8px',
               fontSize: '14px',
               fontWeight: 500,
               lineHeight: '17.07px',
-              paddingTop: showTitleAfterSelect ? '10px' : '0px',
+              paddingTop:
+                showTitleAfterSelect && isMultiSelect ? '14px' : '0px',
               ':focus-within': {
                 borderColor: 'transparent',
               },
@@ -275,7 +276,7 @@ function SelectInput(props: SelectInputProps) {
             }),
             valueContainer: (provided) => ({
               ...provided,
-              flexWrap: 'nowrap',
+              flexWrap: 'wrap',
               overflowX: 'auto',
             }),
             input: (provided) => ({

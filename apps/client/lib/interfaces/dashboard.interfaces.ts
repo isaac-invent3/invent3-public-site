@@ -142,8 +142,8 @@ interface CompanyDistritution {
 interface GenericTaskCompleteData {
   taskNotCompleted: number;
   tasksCompleted: number;
-  variance: number;
-  weekId: number;
+  variance?: number;
+  weekId?: number;
   monthId: number;
   year: number;
 }

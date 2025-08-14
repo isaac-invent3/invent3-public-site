@@ -91,8 +91,8 @@ const LeftSide = () => {
               completedColorCode="#033376"
               data={
                 data?.data?.map((item) => ({
-                  complete: item.tasksCompleted,
-                  inComplete: item.taskNotCompleted,
+                  tasksCompleted: item.tasksCompleted,
+                  taskNotCompleted: item.taskNotCompleted,
                   monthId: item.monthId,
                   year: item.year,
                 })) ?? []

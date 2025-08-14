@@ -33,8 +33,8 @@ const SectionTwo = () => {
         data={
           data?.data
             ? data?.data?.map((item) => ({
-                complete: item.completed,
-                inComplete: item.overdue,
+                tasksCompleted: item.completed,
+                taskNotCompleted: item.overdue,
                 monthId: item.monthId,
                 year: item.year,
               }))

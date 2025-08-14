@@ -3,22 +3,15 @@ import _ from 'lodash';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { BaseApiResponse, ListResponse } from '@repo/interfaces';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { DATE_PERIOD, DEFAULT_PAGE_SIZE, ROUTES } from '~/lib/utils/constants';
+import { DEFAULT_PAGE_SIZE, ROUTES } from '~/lib/utils/constants';
 import { OPERATORS } from '@repo/constants';
-import { Company } from '~/lib/interfaces/company.interfaces';
-import { useSearchCompaniesMutation } from '~/lib/redux/services/company.services';
 import { createColumnHelper } from '@tanstack/react-table';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import { DataTable } from '@repo/ui/components';
-import {
-  executiveDashboardApis,
-  useGetPendingApprovalRequestQuery,
-} from '~/lib/redux/services/dashboard/executive.services';
 import { ApprovalWorkflowRequest } from '~/lib/interfaces/approvalWorkflow.interfaces';
-import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
-import useSignalR from '~/lib/hooks/useSignalR';
-import { useAppDispatch } from '~/lib/redux/hooks';
 import { useRouter } from 'next/navigation';
+import { generateSearchCriteria } from '@repo/utils';
+import { useSearchPendingApprovalRequestMutation } from '~/lib/redux/services/dashboard/executive.services';
 
 interface useApprovalFlowPendingRequestTable {
   search?: string;
@@ -31,45 +24,49 @@ const useApprovalFlowPendingRequestTable = (
   const { search, customPageSize } = props;
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const { data, isLoading, isFetching } = useGetPendingApprovalRequestQuery({
-    datePeriod: DATE_PERIOD.YEAR,
-    pageNumber,
-    pageSize: customPageSize ?? pageSize,
-  });
   const [searchData, setSearchData] = useState<
-    BaseApiResponse<ListResponse<Company>> | undefined
+    BaseApiResponse<ListResponse<ApprovalWorkflowRequest>> | undefined
   >(undefined);
   const { handleSubmit } = useCustomMutation();
-  const [searchLog, { isLoading: searchLoading }] = useSearchCompaniesMutation(
-    {}
-  );
-  const dispatch = useAppDispatch();
   const router = useRouter();
-
-  const searchCriterion = {
-    ...(search && {
-      criterion: [
-        {
-          columnName: 'companyName',
-          columnValue: search,
-          operation: OPERATORS.Contains,
-        },
-      ],
-    }),
-    pageNumber,
-    pageSize,
-  };
+  const [searchPendingApprovalRequest, { isLoading }] =
+    useSearchPendingApprovalRequestMutation({});
 
   const handleSearch = useCallback(async () => {
-    const response = await handleSubmit(searchLog, searchCriterion, '');
+    const { orCriterion } = generateSearchCriteria(
+      undefined,
+      {
+        search: [search],
+      },
+      {
+        search: {
+          key: [
+            'approvalTypeName',
+            'requestedByUserFirstName',
+            'requestedByUserName',
+          ],
+          operator: OPERATORS.Contains,
+        },
+      },
+      undefined
+    );
+    const payload = {
+      pageNumber,
+      pageSize: customPageSize ?? pageSize,
+      orCriterion,
+    };
+
+    const response = await handleSubmit(
+      searchPendingApprovalRequest,
+      payload,
+      ''
+    );
     setSearchData(response?.data);
-  }, [searchLog, searchCriterion]);
+  }, [searchPendingApprovalRequest, search, pageSize, pageNumber]);
 
   // Trigger search when search input changes or pagination updates
   useEffect(() => {
-    if (search) {
-      //   handleSearch();
-    }
+    handleSearch();
   }, [search, pageNumber, pageSize]);
 
   // Reset pagination when clearing the search
@@ -114,73 +111,15 @@ const useApprovalFlowPendingRequestTable = (
 
       return baseColumns;
     },
-    [[data]] //eslint-disable-line
+    [[searchData?.data?.items]] //eslint-disable-line
   );
-
-  // SignalR Connection
-  const connectionState = useSignalR('approvalworkflow-hub');
-
-  // useSignalREventHandler({
-  //   eventName: 'UpdateApprovalWorkflow',
-  //   connectionState,
-  //   callback: (updatedApproval) => {
-  //     // Update the query cache when an approval is updated
-  //     const parsedApproval = JSON.parse(updatedApproval);
-  //     dispatch(
-  //       approvalWorkflowRequestApi.util.updateQueryData(
-  //         'getAllApprovalWorkflowRequests',
-  //         {
-  //           pageNumber: currentPage,
-  //           pageSize,
-  //           approvalTypeId: selectedApprovalType?.approvalTypeId ?? undefined,
-  //         },
-  //         (draft) => {
-  //           if (draft?.data?.items) {
-  //             const index = draft.data.items.findIndex(
-  //               (item) =>
-  //                 item.approvalRequestId === parsedApproval.approvalRequestId
-  //             );
-  //             if (index !== -1) {
-  //               draft.data.items[index] = parsedApproval; // Update the existing approval
-  //             }
-  //           }
-  //         }
-  //       )
-  //     );
-  //   },
-  // });
-
-  useSignalREventHandler({
-    eventName: 'CreateApprovalWorkflow',
-    connectionState,
-    callback: (newApproval) => {
-      // Update the query cache when a new approval is created
-      const parsedApproval = JSON.parse(newApproval);
-      dispatch(
-        executiveDashboardApis.util.updateQueryData(
-          'getPendingApprovalRequest',
-          {
-            // pageNumber,
-            // pageSize,
-            datePeriod: DATE_PERIOD.YEAR,
-          },
-          (draft) => {
-            if (draft?.data?.items) {
-              draft.data.items.unshift(parsedApproval); // Add the new approval to the beginning
-            }
-          }
-        )
-      );
-    },
-  });
-
   const ApprovalFlowPendingRequestTable = (
     <Flex width="full" direction="column">
       <DataTable
         columns={columns}
-        data={data?.data?.items ?? []}
+        data={searchData?.data?.items ?? []}
         isLoading={isLoading}
-        isFetching={isFetching}
+        isFetching={isLoading}
         showFooter={false}
         maxTdWidth="200px"
         customTdStyle={{
@@ -194,19 +133,11 @@ const useApprovalFlowPendingRequestTable = (
       />
     </Flex>
   );
-  //   const Filter = (
-  //     <Flex width="full" pb="16px">
-  //       <GeneralFilter handleApplyFilter={handleSearch} />
-  //     </Flex>
-  //   );
+
   return {
     handleSearch,
     ApprovalFlowPendingRequestTable,
-    totalPages:
-      search && searchData
-        ? searchData.data?.totalPages
-        : data?.data?.totalPages,
-
+    totalPages: search && searchData ? searchData.data?.totalPages : 0,
     pageSize,
     pageNumber,
     setPageNumber,

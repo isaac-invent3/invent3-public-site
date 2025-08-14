@@ -30,14 +30,14 @@ const ReportViewFilters = (props: ReportViewFiltersProps) => {
         isActive={false}
       />
 
-      <FilterButton
+      {/* <FilterButton
         icon={FilterIcon}
         label="Filters"
         handleClick={() =>
           setActiveFilter((prev) => (prev === 'general' ? null : 'general'))
         }
         isActive={activeFilter === 'general'}
-      />
+      /> */}
 
       <ShareReportPopover reportId={report.reportId} />
 

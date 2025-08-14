@@ -162,6 +162,7 @@ interface Policy {
   typeName: string;
   frequency: string;
   startDate: string;
+  description: string;
   complianceStatusName: string;
   complianceStatusId: number;
 }

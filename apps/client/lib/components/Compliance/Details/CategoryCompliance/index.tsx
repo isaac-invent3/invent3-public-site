@@ -69,6 +69,7 @@ const CategoryCompliance = ({ data }: CategoryComplianceProps) => {
     categoryId: id!,
     pageNumber,
     pageSize,
+    searchParam: search,
   });
   const { ExportPopover } = useExport({
     ids: [],
@@ -155,16 +156,6 @@ const CategoryCompliance = ({ data }: CategoryComplianceProps) => {
                   setActiveFilter((prev) => (prev === 'bulk' ? null : 'bulk'))
                 }
                 isActive={activeFilter === 'bulk'}
-              />
-              <FilterButton
-                icon={FilterIcon}
-                label="Filter"
-                handleClick={() =>
-                  setActiveFilter((prev) =>
-                    prev === 'general' ? null : 'general'
-                  )
-                }
-                isActive={activeFilter === 'general'}
               />
               {ExportPopover}
             </HStack>

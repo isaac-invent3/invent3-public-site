@@ -4,6 +4,7 @@ import {
   HStack,
   Icon,
   Text,
+  Tooltip,
   VStack,
 } from '@chakra-ui/react';
 import {
@@ -72,8 +73,23 @@ const AssetComplianceCategoryDetailDrawer = ({
           header: 'Frequency',
           enableSorting: false,
         }),
-        columnHelper.accessor('complianceStatusId', {
-          cell: () => <Icon as={InfoIcon} boxSize="16px" color="blue.500" />,
+        columnHelper.accessor('description', {
+          cell: (info) => (
+            <Tooltip
+              label={info.getValue()}
+              placement="bottom"
+              bgColor="#CADBF2"
+              color="blue.500"
+              width="181px"
+              rounded="4px"
+              py="8px"
+              px="16px"
+              mx="16px"
+              fontSize="12px"
+            >
+              <Icon as={InfoIcon} boxSize="16px" color="blue.500" />
+            </Tooltip>
+          ),
           header: '',
           enableSorting: false,
         }),

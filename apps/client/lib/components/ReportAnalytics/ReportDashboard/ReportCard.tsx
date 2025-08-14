@@ -51,7 +51,7 @@ const ReportCard = (props: ReportCardProps) => {
             color="#0366EF"
             fontWeight="500"
             fontSize="12px"
-            href={`/${ROUTES.REPORT}/${card.reportId}`}
+            href={`/${ROUTES.REPORT}/${card.reportId}/detail`}
           >
             View Report
           </Link>

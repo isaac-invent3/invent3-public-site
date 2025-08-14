@@ -33,7 +33,7 @@ const ROUTES_PERMISSION_KEY: { [name: string]: PermissionKey } = {
   [`/${ROUTES.TICKETS}`]: 'ticket',
   [`/${ROUTES.TICKETS}/bulk-update`]: 'ticket:edit',
   [`/${ROUTES.REPORT}`]: 'report',
-  [`/${ROUTES.REPORT}/[id]`]: 'report',
+  [`/${ROUTES.REPORT}/[id]/detail`]: 'report',
   [`/${ROUTES.REPORT}/generate`]: 'report:generate',
   [`/${ROUTES.TEMPLATES}`]: 'template',
   [`/${ROUTES.TEMPLATES}/[id]/detail`]: 'template',

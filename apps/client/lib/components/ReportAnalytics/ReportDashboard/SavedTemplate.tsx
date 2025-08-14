@@ -57,7 +57,7 @@ const SavedTemplate = (props: SavedTemplateProps) => {
             color="#0366EF"
             fontWeight="500"
             fontSize="12px"
-            href={`/${ROUTES.REPORT}/${report.reportId}`}
+            href={`/${ROUTES.REPORT}/${report.reportId}/detail`}
           >
             Generate Report
           </Link>

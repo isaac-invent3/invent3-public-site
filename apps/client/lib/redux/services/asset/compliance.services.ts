@@ -68,7 +68,7 @@ export const complianceApi = createApi({
     }),
     getAllFacilityCompliance: builder.query<
       BaseApiResponse<ListResponse<FacilityAssetCompliance>>,
-      QueryParams
+      QueryParams & { searchParam?: string }
     >({
       query: (data) => ({
         url: generateQueryStr(`/AssetCompliances/FacilityCompliance?`, data),
@@ -79,7 +79,7 @@ export const complianceApi = createApi({
     }),
     getAllCategoryComplianceByFacility: builder.query<
       BaseApiResponse<ListResponse<AssetComplianceCategory>>,
-      QueryParams & { facilityId: number }
+      QueryParams & { facilityId: number; searchParam?: string }
     >({
       query: ({ facilityId, ...data }) => ({
         url: generateQueryStr(
@@ -128,7 +128,11 @@ export const complianceApi = createApi({
     }),
     getAllAssetBasedCompliances: builder.query<
       BaseApiResponse<ListResponse<AssetBasedCompliance>>,
-      QueryParams & { facilityId: number; categoryId: number }
+      QueryParams & {
+        facilityId: number;
+        categoryId: number;
+        searchParam?: string;
+      }
     >({
       query: ({ facilityId, categoryId, ...data }) => ({
         url: generateQueryStr(

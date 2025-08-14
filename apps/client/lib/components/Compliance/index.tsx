@@ -1,13 +1,12 @@
 'use client';
 
-import { Flex, HStack, useDisclosure, VStack } from '@chakra-ui/react';
+import { Flex, HStack, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { DEFAULT_PAGE_SIZE, ROUTES } from '~/lib/utils/constants';
 import ComplianceTable from './ComplianceTable';
 import { useGetAllFacilityComplianceQuery } from '~/lib/redux/services/asset/compliance.services';
-import { FilterButton, SearchInput } from '@repo/ui/components';
-import { FilterIcon } from '../CustomIcons';
-import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { SearchInput } from '@repo/ui/components';
+import { useAppSelector } from '~/lib/redux/hooks';
 import useExport from '~/lib/hooks/useExport';
 import Header from './Header';
 import { useRouter } from 'next/navigation';
@@ -15,15 +14,13 @@ import { useRouter } from 'next/navigation';
 const Compliance = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+  const [search, setSearch] = useState('');
   const { data, isLoading, isFetching } = useGetAllFacilityComplianceQuery({
     pageNumber,
     pageSize,
+    searchParam: search,
   });
-  const { isOpen, onToggle } = useDisclosure();
-  const [search, setSearch] = useState('');
-  const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const { selectedTableIds } = useAppSelector((state) => state.common);
-  const dispatch = useAppDispatch();
   const { ExportPopover } = useExport({
     ids: selectedTableIds,
     exportTableName: 'AssetCompliances',
@@ -55,29 +52,8 @@ const Compliance = () => {
                 placeholderText="Search..."
                 width={{ base: 'full', md: '363px' }}
               />
-              <HStack spacing="16px">
-                <FilterButton
-                  icon={FilterIcon}
-                  label="Filter"
-                  handleClick={onToggle}
-                  isActive={isOpen}
-                />
-                {ExportPopover}
-              </HStack>
+              <HStack spacing="16px">{ExportPopover}</HStack>
             </HStack>
-            {/* {isOpen && (
-                        <SlideTransition trigger={isOpen} direction="bottom">
-                          {isOpen && (
-                            <Flex width="full" mt="8px">
-                              <Filters
-                                handleApplyFilter={handleSearch}
-                                setFilterData={setFilterData}
-                                filterData={filterData}
-                              />
-                            </Flex>
-                          )}
-                        </SlideTransition>
-                      )} */}
           </VStack>
         </VStack>
 

@@ -33,6 +33,7 @@ const FacilityCompliance = ({ data }: FacilityComplianceProps) => {
     facilityId: id!,
     pageNumber,
     pageSize,
+    searchParam: search,
   });
   const { ExportPopover } = useExport({
     ids: [],
@@ -58,27 +59,7 @@ const FacilityCompliance = ({ data }: FacilityComplianceProps) => {
               placeholderText="Search..."
               width={{ base: 'full', md: '363px' }}
             />
-            <HStack spacing="16px">
-              <FilterButton
-                icon={BulkSearchIcon}
-                label="Bulk Actions"
-                handleClick={() =>
-                  setActiveFilter((prev) => (prev === 'bulk' ? null : 'bulk'))
-                }
-                isActive={activeFilter === 'bulk'}
-              />
-              <FilterButton
-                icon={FilterIcon}
-                label="Filter"
-                handleClick={() =>
-                  setActiveFilter((prev) =>
-                    prev === 'general' ? null : 'general'
-                  )
-                }
-                isActive={activeFilter === 'general'}
-              />
-              {ExportPopover}
-            </HStack>
+            <HStack spacing="16px">{ExportPopover}</HStack>
           </HStack>
           <FacilityComplianceTable
             data={complianceCategory?.data?.items ?? []}

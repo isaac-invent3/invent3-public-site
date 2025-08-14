@@ -100,8 +100,8 @@ const reportBreadcrumb: BreadcrumbNode = {
   route: `/${ROUTES.REPORT}`,
   label: 'Reports & Analytics',
   children: {
-    add: { label: 'Add User' },
-    edit: { label: 'Edit User' },
+    generate: { label: 'Generate' },
+    detail: { label: 'Report Detail' },
   },
 };
 
@@ -109,7 +109,8 @@ const userManagementBreadcrumb: BreadcrumbNode = {
   route: `/${ROUTES.USERS}`,
   label: 'User Management',
   children: {
-    generate: { label: 'Generate' },
+    add: { label: 'Add User' },
+    edit: { label: 'Edit User' },
   },
 };
 
@@ -153,7 +154,7 @@ const complianceBreadCrumb: BreadcrumbNode = {
   route: `/${ROUTES.COMPLIANCE}`,
   label: 'Compliance',
   children: {
-    facility: { label: 'Facility' },
+    facility: { label: 'Facility', route: 'back' },
     'asset-category': { label: 'Asset Category' },
   },
 };

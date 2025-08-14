@@ -138,9 +138,6 @@ const ShareReportPopover = (props: PopoverActionProps) => {
                   ? 'Exporting...'
                   : 'Download as CSV'}
               </Text>
-              <Text cursor="pointer" onClick={() => openModal('share-email')}>
-                Share via email
-              </Text>
             </VStack>
           </PopoverBody>
         </PopoverContent>

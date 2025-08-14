@@ -19,7 +19,11 @@ import {
 } from '~/lib/interfaces/report.interfaces';
 import { useGenerateReportMutation } from '~/lib/redux/services/reports.services';
 import { generateReportSchema } from '~/lib/schemas/report.schema';
-import { DEFAULT_PAGE_SIZE, ROLE_IDS_ENUM } from '~/lib/utils/constants';
+import {
+  DEFAULT_PAGE_SIZE,
+  ROLE_IDS_ENUM,
+  ROUTES,
+} from '~/lib/utils/constants';
 import GeneratedReport from './GeneratedReport';
 import CompanySelect from './CompanySelect';
 
@@ -252,6 +256,7 @@ const GenerateReport = () => {
                 bgColor: '#F6F6F6',
               },
             }}
+            href={`/${ROUTES.REPORT}`}
           >
             <Icon
               as={ChevronLeftIcon}

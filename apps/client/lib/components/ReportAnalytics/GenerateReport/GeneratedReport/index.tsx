@@ -144,7 +144,7 @@ const GeneratedReport = (props: GeneratedReportProps) => {
         pageSize={pageSize}
         setPageSize={setPageSize}
         emptyLines={5}
-        isSelectable
+        isSelectable={false}
         maxTdWidth="200px"
         customThStyle={{
           paddingLeft: '16px',

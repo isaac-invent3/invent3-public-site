@@ -46,7 +46,7 @@ const ExportButtonPopover = () => {
                 minH: '36px',
                 py: '6px',
                 px: '8px',
-                pr:'24px',
+                pr: '24px',
                 width: '94px',
                 justifyContent: 'flex-start',
               }}
@@ -70,9 +70,6 @@ const ExportButtonPopover = () => {
               </Text>
               <Text cursor="pointer" onClick={() => openModal('download-csv')}>
                 Download as CSV
-              </Text>
-              <Text cursor="pointer" onClick={() => openModal('share-email')}>
-                Share via email
               </Text>
             </VStack>
           </PopoverBody>

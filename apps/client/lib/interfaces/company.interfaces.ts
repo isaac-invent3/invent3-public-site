@@ -151,6 +151,11 @@ interface CompanyJourneyGuide {
   AddAdminSettings: boolean;
 }
 
+interface TenantSummary {
+  totalAssets: number;
+  totalUsers: number;
+}
+
 export type {
   Company,
   CompanyFormDetails,
@@ -162,4 +167,5 @@ export type {
   CompanyConfigurationOption,
   CompanyConfigurationObject,
   CompanyJourneyGuide,
+  TenantSummary,
 };

@@ -1,3 +1,4 @@
+import { TableContainerProps } from '@chakra-ui/react';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import React from 'react';
@@ -5,9 +6,14 @@ import React from 'react';
 interface CustomTableProps {
   headers: string[];
   data: React.ReactNode[][];
+  customTableContainerStyle?: TableContainerProps;
 }
 
-const UploadStatusTable: React.FC<CustomTableProps> = ({ headers, data }) => {
+const UploadStatusTable: React.FC<CustomTableProps> = ({
+  headers,
+  data,
+  customTableContainerStyle,
+}) => {
   const convertedRows = data.map((row) => {
     const obj: { [key: string]: React.ReactNode } = {};
     headers.forEach((header, i) => {
@@ -46,7 +52,10 @@ const UploadStatusTable: React.FC<CustomTableProps> = ({ headers, data }) => {
         paddingBottom: '16px',
       }}
       customTBodyRowStyle={{ verticalAlign: 'top' }}
-      customTableContainerStyle={{ rounded: '4px' }}
+      customTableContainerStyle={{
+        rounded: '4px',
+        ...customTableContainerStyle,
+      }}
     />
   );
 };

@@ -12,6 +12,7 @@ import {
   CompanyJourneyGuide,
   CompanySummary,
   CreateCompanyPayload,
+  TenantSummary,
   UpdateCompanyPayload,
 } from '~/lib/interfaces/company.interfaces';
 
@@ -44,6 +45,16 @@ export const companyApi = createApi({
     getCompaniesSummary: builder.query<BaseApiResponse<CompanySummary>, void>({
       query: () => ({
         url: `/Invent3Pro/GetCompaniesDashboardSummary`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getTenantAssetAndUserCount: builder.query<
+      BaseApiResponse<TenantSummary>,
+      { tenantName: string }
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/Companies/GetTenantAssetAndUserCounts`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -129,4 +140,5 @@ export const {
   useToggleCompanyStatusMutation,
   useGetCompanyJourneyGuideQuery,
   useGetCompanyApiKeyQuery,
+  useGetTenantAssetAndUserCountQuery,
 } = companyApi;

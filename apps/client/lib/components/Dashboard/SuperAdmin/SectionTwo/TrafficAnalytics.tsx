@@ -8,21 +8,14 @@ import LineChart from '../../Common/Charts/LineChart';
 import { useGetSuperAdminTrafficCountGraphQuery } from '~/lib/redux/services/dashboard/superadmin.services';
 import { transformMonthIdsToShortNames } from '../../Common/utils';
 
-const rangeOptions = [
-  {
-    label: 'Daily',
-    value: 1,
-  },
-  {
-    label: 'Weekly',
-    value: 2,
-  },
-];
 const TrafficAnalytics = () => {
-  const { data, isLoading } = useGetSuperAdminTrafficCountGraphQuery();
   const [selectedRange, setSelectedRange] = useState<Option | undefined>(
-    rangeOptions[0] as Option
+    generateLastFiveYears()[0] as Option
   );
+  const { data, isLoading, isFetching } =
+    useGetSuperAdminTrafficCountGraphQuery({
+      year: +selectedRange?.value!,
+    });
 
   return (
     <VStack
@@ -33,6 +26,7 @@ const TrafficAnalytics = () => {
       spacing="16px"
       bgColor="white"
       rounded="8px"
+      opacity={isFetching ? 0.7 : 1}
     >
       <HStack width="full" justifyContent="space-between">
         <CardHeader>Traffic Analytics</CardHeader>
@@ -61,7 +55,7 @@ const TrafficAnalytics = () => {
             borderColor: '#0366EF',
             pointBorderColor: '#fff',
             pointBackgroundColor: '#0366EF',
-            pointRadius: 0,
+            pointRadius: 4,
             borderWidth: 2,
             tension: 0.4,
             fill: false,

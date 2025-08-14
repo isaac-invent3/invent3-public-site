@@ -7,6 +7,7 @@ import {
   TrafficCount,
   UserDemographics,
 } from '~/lib/interfaces/dashboard.interfaces';
+import { generateQueryStr } from '~/lib/utils/queryGenerator';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -49,10 +50,13 @@ export const superAdminApi = createApi({
     }),
     getSuperAdminTrafficCountGraph: builder.query<
       BaseApiResponse<TrafficCount[]>,
-      void
+      { year: number }
     >({
-      query: () => ({
-        url: `/Invent3Pro/GetSuperAdminTrafficCountGraph`,
+      query: (data) => ({
+        url: generateQueryStr(
+          `/Invent3Pro/GetSuperAdminTrafficCountGraph?`,
+          data
+        ),
         method: 'GET',
         headers: getHeaders(),
       }),

@@ -102,9 +102,10 @@ const NoteComments = ({ note }: { note: Note }) => {
       <form style={{ width: '100%' }} onSubmit={handleAddComment}>
         <HStack gap="8px" w="full">
           <Avatar
-            width="28px"
-            height="28px"
-            name={data?.user?.firstName ?? ''}
+            // width="28px"
+            // height="28px"
+            size="sm"
+            name={`${data?.user?.firstName} ${data?.user?.lastName}`}
           />
 
           <TextInput

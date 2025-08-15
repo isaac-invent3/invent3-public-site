@@ -327,6 +327,10 @@ const NoteDetails = (props: NoteFormModalProps) => {
         note={note}
         onClose={onNoteFormClose}
         isOpen={isNoteFormOpened}
+        taggedUsers={noteTaggedUsers?.data.items.map((item) => ({
+          name: `${item?.firstName ?? ''} ${item?.lastName ?? ''}`,
+          id: item.userId,
+        }))}
       />
     </>
   );

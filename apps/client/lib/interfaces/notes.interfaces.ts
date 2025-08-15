@@ -25,6 +25,9 @@ interface NoteTaggedUser extends BaseEntity {
   noteId: number;
   notesTagId: number;
   userId: number;
+  firstName: string;
+  lastName: string;
+  username: string;
 }
 
 interface GetAllNotesQueryParams extends QueryParams {

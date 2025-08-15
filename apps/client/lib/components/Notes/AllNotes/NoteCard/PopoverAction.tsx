@@ -119,11 +119,13 @@ const PopoverAction = ({ data, setNoteLoading }: NotePopoverProps) => {
         isLoading={isDeleting}
       />
 
-      <NoteForm
-        note={data}
-        onClose={editNote.onClose}
-        isOpen={editNote.isOpen}
-      />
+      {editNote.isOpen && (
+        <NoteForm
+          note={data}
+          onClose={editNote.onClose}
+          isOpen={editNote.isOpen}
+        />
+      )}
     </>
   );
 };

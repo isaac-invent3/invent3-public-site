@@ -13,6 +13,7 @@ interface UserSelectModalProps {
   handleSelectUser: (option: Option) => void;
   sectionInfoText?: string;
   sectionInfoTitle?: string;
+  buttonText?: string;
 }
 
 const UserSelectModal = (props: UserSelectModalProps) => {
@@ -22,6 +23,7 @@ const UserSelectModal = (props: UserSelectModalProps) => {
     handleSelectUser,
     sectionInfoText,
     sectionInfoTitle,
+    buttonText,
   } = props;
   const [selectedUser, setSelectedUser] = useState<Option | null>(null);
 
@@ -85,7 +87,7 @@ const UserSelectModal = (props: UserSelectModalProps) => {
                   Cancel
                 </Button>
                 <Button customStyles={{ width: '116px' }} type="submit">
-                  Assign
+                  {buttonText ?? 'Assign'}
                 </Button>
               </HStack>
             </VStack>

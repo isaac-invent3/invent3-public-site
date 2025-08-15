@@ -1,42 +1,44 @@
 import {
+  Flex,
   HStack,
-  Icon,
   ModalBody,
   ModalFooter,
   ModalHeader,
   Stack,
   Text,
-  Tooltip,
   VStack,
 } from '@chakra-ui/react';
 import {
   Button,
   CheckBox,
-  FilterDropDown,
   FormInputWrapper,
   GenericModal,
+  ModalCloseButtonText,
 } from '@repo/ui/components';
 import { FormikProvider, useFormik } from 'formik';
 import { getSession } from 'next-auth/react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import useFormatUrl from '~/lib/hooks/useFormatUrl';
-import useParseUrlData, {
-  findSystemContextDetailById,
-} from '~/lib/hooks/useParseUrl';
+import useParseUrlData from '~/lib/hooks/useParseUrl';
 import { Note } from '~/lib/interfaces/notes.interfaces';
 import {
+  notesApi,
   useCreateNoteMutation,
   useUpdateNoteMutation,
 } from '~/lib/redux/services/notes.services';
-import { InfoIcon } from '../../CustomIcons';
 import PageHeader from '../../UI/PageHeader';
 import NoteContent from './NoteContent';
 import NoteTag from './NoteTag';
 import NoteTitle from './NoteTitle';
+import { useEffect, useState } from 'react';
+import { useAppDispatch } from '~/lib/redux/hooks';
+import { generateTagChanges } from './utils';
+
 interface NoteFormModalProps {
   isOpen: boolean;
   onClose: () => void;
   note?: Note;
+  taggedUsers?: { name: string; id: number }[];
 }
 
 interface CreateNoteForm {
@@ -49,22 +51,27 @@ interface CreateNoteForm {
 }
 
 const NoteForm = (props: NoteFormModalProps) => {
-  const { isOpen, onClose, note } = props;
+  const { isOpen, onClose, note, taggedUsers } = props;
 
   const { handleSubmit } = useCustomMutation();
 
   const [createNote, { isLoading: createLoading }] = useCreateNoteMutation();
-  const [updateNote, { isLoading: updateLoading }] = useUpdateNoteMutation();
-
+  const [updateNote, { isLoading: updateLoading, isSuccess }] =
+    useUpdateNoteMutation();
   const formattedUrl = useFormatUrl();
   const parsedUrl = useParseUrlData(formattedUrl);
+  const dispatch = useAppDispatch();
+  const [isLoadingTag, setIsLoadingTag] = useState(false);
+  const [localNoteTaggedUsers, setLocalNoteTaggedUsers] = useState<
+    { name: string; id: number }[]
+  >(taggedUsers ?? []);
 
   const initialValues: CreateNoteForm = {
     content: note?.content ?? '',
     title: note?.title ?? '',
     isPrivate: note?.isPrivate ?? false,
     notePriorityId: note?.notePriorityId ?? 0,
-    tags: [],
+    tags: localNoteTaggedUsers,
     systemContextIds: [],
   };
 
@@ -111,7 +118,7 @@ const NoteForm = (props: NoteFormModalProps) => {
           ...payload.createNoteDto,
           systemContextIds: payload.systemContextIds,
           systemContextId: Number(parsedUrl?.contextId)!,
-          tags: payload.tags,
+          tags: generateTagChanges(localNoteTaggedUsers, tags),
           lastModifiedBy: session?.user?.username!,
         };
 
@@ -129,21 +136,79 @@ const NoteForm = (props: NoteFormModalProps) => {
     },
   });
 
+  const fetchTaggedUsers = async (): Promise<
+    { name: string; id: number }[]
+  > => {
+    let hasNextPage = true;
+    let taggedUsers: { name: string; id: number }[] = [];
+    let pageNumber = 1;
+
+    while (hasNextPage && note) {
+      const result = await dispatch(
+        notesApi.endpoints.getNoteTaggedUsers.initiate({
+          id: note?.noteId!,
+          pageNumber,
+          pageSize: 50,
+        })
+      );
+
+      if (result.data?.data?.items) {
+        taggedUsers = [
+          ...taggedUsers,
+          ...result.data?.data?.items.map((item) => ({
+            name: `${item?.firstName ?? ''} ${item?.lastName ?? ''}`,
+            id: item.userId!,
+          })),
+        ];
+      }
+      hasNextPage = result.data?.data.hasNextPage ?? false;
+      pageNumber += 1;
+    }
+
+    return taggedUsers;
+  };
+
+  useEffect(() => {
+    let isMounted = true;
+    setIsLoadingTag(true);
+    const fetchData = async () => {
+      setLocalNoteTaggedUsers([]); // Clear existing tagged user before fetching new
+
+      const taggedUser = await fetchTaggedUsers();
+
+      if (isMounted) {
+        setLocalNoteTaggedUsers(taggedUser);
+        formik.setFieldValue('tags', taggedUser);
+        setIsLoadingTag(false);
+      }
+    };
+
+    fetchData();
+    return () => {
+      isMounted = false;
+    };
+  }, [note, isSuccess]);
+
   return (
     <>
       <GenericModal
         isOpen={isOpen}
         onClose={onClose}
         contentStyle={{
-          width: { base: '100%', lg: '1150px' },
+          width: { base: '100%', lg: '900px' },
           px: { base: '16px', lg: '48px' },
           py: { base: '32px', lg: '48px' },
           bgColor: '#E7E7E7',
-          // maxW: '80vw',
+          maxW: '80vw',
         }}
       >
         <ModalHeader m={0} p={0}>
-          <PageHeader>Add New Note</PageHeader>
+          <PageHeader>{note ? 'Edit Note' : 'Add New Note'}</PageHeader>
+          <Flex position="absolute" top="20px" right="20px">
+            <Flex>
+              <ModalCloseButtonText onClose={onClose} />
+            </Flex>
+          </Flex>
         </ModalHeader>
 
         <FormikProvider value={formik}>
@@ -162,7 +227,7 @@ const NoteForm = (props: NoteFormModalProps) => {
                 margin="0px"
                 padding="0px"
                 paddingInline="0px !important"
-                width={{ lg: '80%', base: '100%' }}
+                width={{ lg: '100%', base: '100%' }}
                 order={{ base: 1, md: 0 }}
                 spacing="24px"
                 px="24px"
@@ -171,7 +236,7 @@ const NoteForm = (props: NoteFormModalProps) => {
                 <NoteTitle />
 
                 <NoteContent />
-                <NoteTag />
+                <NoteTag isLoading={isLoadingTag} />
 
                 <FormInputWrapper
                   sectionMaxWidth="157px"
@@ -194,7 +259,7 @@ const NoteForm = (props: NoteFormModalProps) => {
                 </FormInputWrapper>
               </VStack>
 
-              <VStack
+              {/* <VStack
                 order={{ base: 0, md: 1 }}
                 alignItems="start"
                 spacing="40px"
@@ -263,7 +328,7 @@ const NoteForm = (props: NoteFormModalProps) => {
                     chevronStyles={{ display: 'none' }}
                   />
                 </VStack>
-              </VStack>
+              </VStack>*/}
             </Stack>
           </ModalBody>
 

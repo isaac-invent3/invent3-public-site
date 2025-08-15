@@ -36,7 +36,9 @@ const Header = () => {
             Add New Note
           </Button>
 
-          <NoteForm onClose={onNoteFormClose} isOpen={isNoteFormOpened} />
+          {isNoteFormOpened && (
+            <NoteForm onClose={onNoteFormClose} isOpen={isNoteFormOpened} />
+          )}
         </>
       )}
     </Stack>

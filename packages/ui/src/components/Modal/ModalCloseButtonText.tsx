@@ -1,4 +1,4 @@
-import { HStack, Icon, StackProps, Text } from '@chakra-ui/react';
+import { HStack, Icon, Text } from '@chakra-ui/react';
 import { CloseIcon } from '../CustomIcons';
 
 const ModalCloseButtonText = ({ onClose }: { onClose: () => void }) => {

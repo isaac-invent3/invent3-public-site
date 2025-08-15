@@ -156,6 +156,15 @@ interface TenantSummary {
   totalUsers: number;
 }
 
+interface CompanyDistribution {
+  rowID: number;
+  companyCount: number;
+  stateId: number;
+  countryId: number;
+  stateName: string;
+  isDeleted: boolean;
+}
+
 export type {
   Company,
   CompanyFormDetails,
@@ -168,4 +177,5 @@ export type {
   CompanyConfigurationObject,
   CompanyJourneyGuide,
   TenantSummary,
+  CompanyDistribution,
 };

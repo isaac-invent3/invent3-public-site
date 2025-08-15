@@ -9,6 +9,7 @@ import {
 } from '@repo/interfaces';
 import {
   Company,
+  CompanyDistribution,
   CompanyJourneyGuide,
   CompanySummary,
   CreateCompanyPayload,
@@ -127,6 +128,16 @@ export const companyApi = createApi({
         headers: getHeaders(),
       }),
     }),
+    getCompanyDistribution: builder.query<
+      BaseApiResponse<ListResponse<CompanyDistribution>>,
+      void
+    >({
+      query: () => ({
+        url: '/Companies/GetCompanyDistribution',
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
   }),
 });
 
@@ -141,4 +152,5 @@ export const {
   useGetCompanyJourneyGuideQuery,
   useGetCompanyApiKeyQuery,
   useGetTenantAssetAndUserCountQuery,
+  useGetCompanyDistributionQuery,
 } = companyApi;

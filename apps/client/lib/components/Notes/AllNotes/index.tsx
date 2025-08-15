@@ -101,6 +101,17 @@ const AllNotes = (props: AllNotesModalProps) => {
           pt: { base: '32px', md: 0 },
           bgColor: '#E7E7E7',
           maxW: '80vw',
+          sx: {
+            scrollbarWidth: '0px',
+            scrollbarColor: 'transparent transparent',
+            '&::-webkit-scrollbar': {
+              width: '0px',
+              height: '0px',
+            },
+            '&::-webkit-scrollbar-thumb': {
+              background: 'transparent',
+            },
+          },
         }}
       >
         <ModalHeader

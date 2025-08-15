@@ -4,6 +4,7 @@ import {
   AssetManagementIcon,
   AuditLogIcon,
   CompanyIcon,
+  ComplianceIcon,
   DashboardIcon,
   FeedbackIcon,
   LocationIcon,
@@ -195,7 +196,7 @@ const clientSideBarData: SideBarData[] = [
   {
     name: 'Compliance',
     route: ROUTES.COMPLIANCE,
-    icon: TemplateIcon,
+    icon: ComplianceIcon,
     permissionKey: 'compliance',
     description:
       'Manage compliance requirements and certifications for regulatory adherence.',

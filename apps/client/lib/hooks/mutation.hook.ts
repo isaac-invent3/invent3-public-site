@@ -25,6 +25,7 @@ const useCustomMutation = () => {
             title: successMessage,
             status: 'success',
             position: 'top-right',
+            duration: 3000,
           });
         }
         if (successFn) {
@@ -50,6 +51,7 @@ const useCustomMutation = () => {
             title: displayError || 'An error occured',
             status: 'error',
             position: 'top-right',
+            duration: 3000,
           });
         }
       }
@@ -59,6 +61,7 @@ const useCustomMutation = () => {
         title: 'An error occured',
         status: 'error',
         position: 'top-right',
+        duration: 3000,
       });
 
       throw error;

@@ -10,9 +10,11 @@ interface VendorFiltersProps {
   filterData: VendorFilter;
   setFilterData: React.Dispatch<React.SetStateAction<VendorFilter>>;
   handleApplyFilter: () => void;
+  handleClearFilter: () => void;
 }
 const VendorFilters = (props: VendorFiltersProps) => {
-  const { filterData, setFilterData, handleApplyFilter } = props;
+  const { filterData, setFilterData, handleApplyFilter, handleClearFilter } =
+    props;
 
   // type FilterLabel = keyof VendorFilter;
 
@@ -51,10 +53,7 @@ const VendorFilters = (props: VendorFiltersProps) => {
   return (
     <FilterWrapper
       handleApplyFilter={handleApplyFilter}
-      handleClearFilter={() => {
-        setFilterData(initialFilterData);
-        handleApplyFilter();
-      }}
+      handleClearFilter={handleClearFilter}
     >
       <DateRangeFilter
         fromDate={

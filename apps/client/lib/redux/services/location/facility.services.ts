@@ -10,7 +10,6 @@ import {
 import {
   Facility,
   GroupByState,
-  LocationBase,
   LocationMasterFormDto,
   LocationQueryParams,
 } from '~/lib/interfaces/location.interfaces';

@@ -92,7 +92,7 @@ const BuildingDetailDrawer = (props: BuildingDetailDrawerProps) => {
             handleButtonClick={onOpenCreateModal}
             showCloseAll={false}
           >
-            <FacilityPopoverAction data={facilityData} />
+            <FacilityPopoverAction data={facilityData} closeDrawer={onClose} />
           </HeaderActionButtons>
         </DrawerHeader>
         <DrawerBody p={0}>

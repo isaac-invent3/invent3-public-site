@@ -10,15 +10,23 @@ interface VendorActionProps {
   filterData: VendorFilter;
   setFilterData: React.Dispatch<React.SetStateAction<VendorFilter>>;
   handleApplyFilter: () => void;
+  handleClear: () => void;
 }
 const VendorAction = (props: VendorActionProps) => {
-  const { isOpen, activeAction, handleApplyFilter, filterData, setFilterData } =
-    props;
+  const {
+    isOpen,
+    activeAction,
+    handleApplyFilter,
+    filterData,
+    setFilterData,
+    handleClear,
+  } = props;
   return (
     <FilterDisplay isOpen={isOpen}>
       {activeAction === 'filter' && (
         <Filters
           handleApplyFilter={handleApplyFilter}
+          handleClearFilter={handleClear}
           filterData={filterData}
           setFilterData={setFilterData}
         />

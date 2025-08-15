@@ -19,10 +19,12 @@ import { Facility } from '~/lib/interfaces/location.interfaces';
 interface EditFacilityModalProps {
   isOpen: boolean;
   onClose: () => void;
+  handleSuccess: () => void;
   data: Facility;
+  showSuccessMessage?: boolean;
 }
 const EditFacilityModal = (props: EditFacilityModalProps) => {
-  const { isOpen, onClose, data } = props;
+  const { isOpen, onClose, data, showSuccessMessage, handleSuccess } = props;
   const [updateFacility, { isLoading }] = useUpdateFacilityMutation({});
   const { handleSubmit } = useCustomMutation();
 
@@ -44,10 +46,15 @@ const EditFacilityModal = (props: EditFacilityModalProps) => {
         facilityId: data.facilityId,
         lastModifiedBy: session?.user?.username ?? '',
       };
-      const response = await handleSubmit(updateFacility, finalValue, '');
+      const response = await handleSubmit(
+        updateFacility,
+        finalValue,
+        showSuccessMessage ? 'Facility Updated Successfully' : ''
+      );
       if (response?.data) {
-        onClose();
         resetForm();
+        handleSuccess();
+        onClose();
       }
     },
   });

@@ -8,12 +8,21 @@ import { getSession } from 'next-auth/react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { Facility } from '~/lib/interfaces/location.interfaces';
 import { ChevronDownIcon } from '~/lib/components/CustomIcons';
-import { useRouter } from 'next/navigation';
-import { useDeleteFacilityMutation } from '~/lib/redux/services/location/facility.services';
-import { ROUTES } from '~/lib/utils/constants';
+import {
+  facilityApi,
+  useDeleteFacilityMutation,
+} from '~/lib/redux/services/location/facility.services';
 import EditFacilityModal from '../../../LocationModals/EditModals/EditFacilityModal';
+import { useAppDispatch } from '~/lib/redux/hooks';
+import { useEffect } from 'react';
 
-const FacilityPopoverAction = ({ data }: { data: Facility }) => {
+const FacilityPopoverAction = ({
+  data,
+  closeDrawer,
+}: {
+  data: Facility;
+  closeDrawer: () => void;
+}) => {
   const {
     isOpen: isOpenEdit,
     onOpen: onOpenEdit,
@@ -26,7 +35,7 @@ const FacilityPopoverAction = ({ data }: { data: Facility }) => {
   } = useDisclosure();
   const [deleteBuilding, { isLoading }] = useDeleteFacilityMutation();
   const { handleSubmit } = useCustomMutation();
-  const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const handleDelete = async () => {
     const session = await getSession();
@@ -36,8 +45,9 @@ const FacilityPopoverAction = ({ data }: { data: Facility }) => {
       'Facility Deleted Successfully'
     );
     if (response?.data) {
+      dispatch(facilityApi.util.invalidateTags(['facilitiesByStateId']));
       onCloseDelete();
-      router.push(`/${ROUTES.LOCATION}/${data?.stateId}`);
+      closeDrawer();
     }
   };
 
@@ -80,7 +90,13 @@ const FacilityPopoverAction = ({ data }: { data: Facility }) => {
       <EditFacilityModal
         data={data}
         onClose={onCloseEdit}
+        handleSuccess={() => {
+          dispatch(facilityApi.util.invalidateTags(['facilitiesByStateId']));
+          onCloseEdit();
+          closeDrawer();
+        }}
         isOpen={isOpenEdit}
+        showSuccessMessage
       />
     </>
   );

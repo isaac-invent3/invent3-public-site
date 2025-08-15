@@ -30,13 +30,18 @@ const VendorManagement = () => {
     onClose: onCloseDetails,
     onOpen: onOpenDetails,
   } = useDisclosure();
-  const [filterData, setFilterData] = useState<VendorFilter>(initialFilterData);
   const searchParams = useSearchParams();
   const VendorId = searchParams?.get(SYSTEM_CONTEXT_DETAILS.VENDOR.slug);
 
-  const { handleSearch, VendorInfoTable } = useVendorTable({
-    search,
+  const {
+    handleSearch,
+    VendorInfoTable,
+    applyFilter,
+    clearFilter,
+    setFilterData,
     filterData,
+  } = useVendorTable({
+    search,
     isSelectable: true,
   });
 
@@ -81,10 +86,10 @@ const VendorManagement = () => {
                 minW: { md: '363px', base: undefined },
               }}
             />
-            <ActionButton
+            {/* <ActionButton
               activeAction={activeAction}
               setActiveAction={setActiveAction}
-            />
+            /> */}
           </HStack>
         </VStack>
         {isOpen && (
@@ -94,9 +99,16 @@ const VendorManagement = () => {
                 <VendorActionDisplay
                   isOpen={isOpen}
                   activeAction={activeAction}
-                  handleApplyFilter={handleSearch}
-                  setFilterData={setFilterData}
                   filterData={filterData}
+                  setFilterData={setFilterData}
+                  handleApplyFilter={() => {
+                    applyFilter();
+                    handleSearch(); // manually trigger
+                  }}
+                  handleClear={() => {
+                    clearFilter();
+                    handleSearch(); // to reload default data
+                  }}
                 />
               </Flex>
             )}

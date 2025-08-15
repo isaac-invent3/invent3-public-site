@@ -73,9 +73,9 @@ const ApprovalWorkflowRequiredClientModal = (
               textAlign="center"
               lineHeight="100%"
             >
-              Before you can request a bulk asset disposal, you need to set up
-              an approval workflow. Please go to Settings to create a new
-              workflow and select an appropriate approval type.
+              Before you can request a bulk asset {type}, you need to set up an
+              approval workflow. Please go to Settings to create a new workflow
+              and select an appropriate approval type.
             </Text>
           </VStack>
           <Button

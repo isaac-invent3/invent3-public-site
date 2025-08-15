@@ -27,6 +27,7 @@ const TrafficAnalytics = () => {
       bgColor="white"
       rounded="8px"
       opacity={isFetching ? 0.7 : 1}
+      pointerEvents={isFetching ? 'none' : 'initial'}
     >
       <HStack width="full" justifyContent="space-between">
         <CardHeader>Traffic Analytics</CardHeader>

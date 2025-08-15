@@ -12,28 +12,23 @@ import {
   vendorApi,
 } from '~/lib/redux/services/vendor.services';
 import { Vendor, VendorFilter } from '~/lib/interfaces/vendor.interfaces';
-import { generateSearchCriterion } from '@repo/utils';
+import { generateSearchCriteria, generateSearchCriterion } from '@repo/utils';
 import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
 import useSignalR from '~/lib/hooks/useSignalR';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateSelectedTableIds } from '~/lib/redux/slices/CommonSlice';
+import { initialFilterData } from '..';
+import { usePageFilter } from '~/lib/hooks/usePageFilter';
 
 interface useVendorTable {
   search?: string;
   showFooter?: boolean;
-  filterData?: VendorFilter;
   customPageSize?: number;
   isSelectable?: boolean;
 }
 
 const useVendorTable = (props: useVendorTable) => {
-  const {
-    search,
-    showFooter = true,
-    filterData,
-    customPageSize,
-    isSelectable,
-  } = props;
+  const { search, showFooter = true, customPageSize, isSelectable } = props;
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const { data, isLoading, isFetching } = useGetAllVendorsQuery({
@@ -51,79 +46,51 @@ const useVendorTable = (props: useVendorTable) => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const { selectedTableIds } = useAppSelector((state) => state.common);
 
-  // Checks if all filterdata is empty
-  const isFilterEmpty = _.every(filterData, (value) => _.isEmpty(value));
-
-  const searchCriterion = {
-    ...(search && {
-      criterion: [
-        {
-          columnName: 'vendorName',
-          columnValue: search,
-          operation: OPERATORS.Contains,
-        },
-      ],
-      ...(!isFilterEmpty && {
-        orCriterion: [
-          ...[filterData?.startDate]
-            .filter(Boolean)
-            .map((item) => [
-              ...generateSearchCriterion(
-                'createdDate',
-                [item as string],
-                OPERATORS.Contains
-              ),
-            ]),
-          ...[filterData?.endDate]
-            .filter(Boolean)
-            .map((item) => [
-              ...generateSearchCriterion(
-                'createdDate',
-                [item as string],
-                OPERATORS.Contains
-              ),
-            ]),
-        ],
-      }),
-    }),
-    pageNumber,
-    pageSize,
-  };
-
-  // Trigger search when search input changes or pagination updates
-  useEffect(() => {
-    if (search) {
-      handleSearch();
-    }
-  }, [search, pageNumber, pageSize]);
-
-  // Reset pagination when clearing the search
-  useEffect(() => {
-    if (!search) {
-      setPageSize(DEFAULT_PAGE_SIZE);
-      setPageNumber(1);
-    }
-  }, [search]);
+  const {
+    filterData,
+    setFilterData,
+    appliedFilter,
+    isFilterEmpty,
+    applyFilter,
+    clearFilter,
+  } = usePageFilter<VendorFilter>(initialFilterData);
 
   const handleSearch = useCallback(async () => {
-    const response = await handleSubmit(searchVendor, searchCriterion, '');
-    setSearchData(response?.data);
-  }, [searchVendor, searchCriterion]);
+    const { orCriterion } = generateSearchCriteria(
+      search,
+      appliedFilter,
+      {
+        startDate: { key: 'createdDate', operator: OPERATORS.GreaterThan },
+        endDate: { key: 'createdDate', operator: OPERATORS.LessThanOrEquals },
+      },
+      ['vendorName']
+    );
+    const payload = {
+      pageNumber,
+      pageSize,
+      orCriterion,
+    };
 
-  // Trigger search when search input changes or pagination updates
+    if (orCriterion.length > 0) {
+      const response = await handleSubmit(searchVendor, payload, '');
+      setSearchData(response?.data);
+    }
+  }, [searchVendor, search, appliedFilter, pageNumber, pageSize]);
+
+  // Trigger search when search or input changes or applied filter changes or pagination updates
   useEffect(() => {
-    if (search) {
+    if (search || !isFilterEmpty) {
       handleSearch();
     }
-  }, [search, pageNumber, pageSize]);
+  }, [search, appliedFilter, pageNumber, pageSize]);
 
   // Reset pagination when clearing the search
   useEffect(() => {
-    if (!search) {
+    if (!search || isFilterEmpty) {
       setPageSize(DEFAULT_PAGE_SIZE);
       setPageNumber(1);
     }
-  }, [search]);
+  }, [search, appliedFilter]);
 
   // SignalR Connection
   const connectionState = useSignalR('vendors-hub');
@@ -230,8 +197,8 @@ const useVendorTable = (props: useVendorTable) => {
     <Flex width="full" direction="column">
       <VendorTable
         data={
-          search && searchData
-            ? searchData?.data?.items
+          (search || !isFilterEmpty) && searchData && !searchLoading
+            ? searchData.data?.items
             : (data?.data?.items ?? [])
         }
         isFetching={isFetching || searchLoading}
@@ -257,13 +224,17 @@ const useVendorTable = (props: useVendorTable) => {
     handleSearch,
     VendorInfoTable,
     totalPages:
-      search && searchData
-        ? searchData.data?.totalPages
-        : (data?.data?.totalPages ?? 0),
+      (search || !isFilterEmpty) && searchData
+        ? searchData?.data?.totalPages
+        : data?.data?.totalPages,
     pageSize,
     pageNumber,
     setPageNumber,
     setPageSize,
+    applyFilter,
+    clearFilter,
+    filterData,
+    setFilterData,
     // Filter,
   };
 };

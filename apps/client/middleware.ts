@@ -20,13 +20,11 @@ const publicRoutes = [
   '/blog',
 ];
 const protectedGlobalRoute = ['/dashboard'];
-const protectedSuperAdminRoute = [''];
-const protectedCMFAndClientAdminRoute = ['/facility-management'];
+const protectedClientAdminRoute = ['/facility-management'];
 
 const allRoutes = [
   ...publicRoutes,
   ...protectedGlobalRoute,
-  ...protectedSuperAdminRoute,
   '/dashboard',
   '/approval-flow',
   '/asset-management',
@@ -78,6 +76,7 @@ export async function refreshAccessToken(
     apiKey: token.apiKey,
   };
   console.log('updating');
+  console.log({ payload, subdomain });
   try {
     const response = await fetch(
       process.env.NEXT_PUBLIC_API_URL + '/api/Invent3Pro/refresh-tokens',
@@ -332,11 +331,10 @@ export async function middleware(request: NextRequest) {
 
     if (
       protectedGlobalRoute.includes(formattedPath) ||
-      (protectedSuperAdminRoute.includes(formattedPath) &&
-        currentToken.roleIds.includes(ROLE_IDS_ENUM.SUPER_ADMIN) &&
-        ((protectedCMFAndClientAdminRoute.includes(formattedPath) &&
-          currentToken.roleIds.includes(ROLE_IDS_ENUM.CLIENT_ADMIN)) ||
-          currentToken.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY)))
+      currentToken.roleIds.includes(ROLE_IDS_ENUM.SUPER_ADMIN) ||
+      currentToken.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY) ||
+      (protectedClientAdminRoute.includes(formattedPath) &&
+        currentToken.roleIds.includes(ROLE_IDS_ENUM.CLIENT_ADMIN))
     ) {
       if (tenantName) {
         return NextResponse.rewrite(new URL(`${checkPath}`, request.url));
@@ -383,13 +381,7 @@ export async function middleware(request: NextRequest) {
 
     const { hasPermission, permissionKeys } = await res.json();
 
-    if (
-      !hasPermission &&
-      !(
-        currentToken.roleIds.includes(ROLE_IDS_ENUM.SUPER_ADMIN) ||
-        currentToken.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY)
-      )
-    ) {
+    if (!hasPermission) {
       return NextResponse.rewrite(new URL('/404', request.url));
     }
 

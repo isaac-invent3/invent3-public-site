@@ -98,6 +98,7 @@ interface CompanyDto extends BaseDto {
   activeDirectoryUrl: string | null;
   companyName: string;
   address: string;
+  locationId: number;
   emailAddress: string;
   phoneNumber: string | null;
   industryId: number;

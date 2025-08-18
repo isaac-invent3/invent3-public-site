@@ -55,7 +55,7 @@ export const companyApi = createApi({
       { tenantName: string }
     >({
       query: (data) => ({
-        url: generateQueryStr(`/Companies/GetTenantAssetAndUserCounts`, data),
+        url: generateQueryStr(`/Companies/GetTenantAssetAndUserCounts?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),

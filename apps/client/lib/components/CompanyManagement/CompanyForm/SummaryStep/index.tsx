@@ -62,6 +62,7 @@ const SummaryStep = (props: SummaryStepProps) => {
     activeDirectoryUrl: companyForm?.activeDirectoryUrl!,
     companyName: companyForm?.companyName!,
     address: companyForm?.address1!,
+    locationId: companyForm?.lgaId!,
     emailAddress: companyForm?.companyEmail!,
     phoneNumber: null,
     industryId: companyForm?.industryTypeId!,

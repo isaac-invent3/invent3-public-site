@@ -20,6 +20,10 @@ const companyInfoSchema = (validateUser: boolean) =>
     registrationNumber: Yup.string().required(
       'Company Registration Number is Required'
     ),
+    address1: Yup.string().required('Address is required'),
+    countryId: Yup.string().required('Country is required'),
+    stateId: Yup.string().required('State is required'),
+    lgaId: Yup.string().required('LGA is required'),
     ...(validateUser
       ? { clientAdminId: Yup.number().required('User is Required') }
       : { clientAdminId: Yup.number().nullable() }),

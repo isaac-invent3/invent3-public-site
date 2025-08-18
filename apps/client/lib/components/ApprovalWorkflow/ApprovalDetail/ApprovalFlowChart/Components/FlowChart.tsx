@@ -502,7 +502,7 @@ const ApprovalFlowChart = (props: ApprovalChartProps) => {
           id: node.data?.approvalWorkFlowPartyInstanceId!,
           overlap: false,
           data: {
-            levelNumber: newLevel + 1,
+            levelNumber: newLevel,
             lastModifiedBy: session?.user?.username!,
             approvalWorkFlowPartyInstanceId:
               node.data?.approvalWorkFlowPartyInstanceId!,
@@ -513,20 +513,24 @@ const ApprovalFlowChart = (props: ApprovalChartProps) => {
           nds.filter((n) => n.id !== overlappingNode.id)
         );
       }
-      console.log({ node, overlappingNode });
 
-      await updateApprovalWorkflowPartyInstanceMutation({
-        id: node.data?.approvalWorkFlowPartyInstanceId!,
-        overlap: true,
-        data: {
-          levelNumber: overlappingNode?.data?.levelNumber
-            ? overlappingNode?.data?.levelNumber - 1
-            : 1,
-          lastModifiedBy: session?.user?.username!,
-          approvalWorkFlowPartyInstanceId:
-            node.data?.approvalWorkFlowPartyInstanceId!,
-        },
-      });
+      if (overlappingNode?.data?.levelNumber === 1) {
+        setNodes(tempNodes);
+        setEdges(tempEdges);
+      } else {
+        await updateApprovalWorkflowPartyInstanceMutation({
+          id: node.data?.approvalWorkFlowPartyInstanceId!,
+          overlap: true,
+          data: {
+            levelNumber: overlappingNode?.data?.levelNumber
+              ? overlappingNode?.data?.levelNumber - 1
+              : 1,
+            lastModifiedBy: session?.user?.username!,
+            approvalWorkFlowPartyInstanceId:
+              node.data?.approvalWorkFlowPartyInstanceId!,
+          },
+        });
+      }
 
       return;
     }
@@ -585,20 +589,24 @@ const ApprovalFlowChart = (props: ApprovalChartProps) => {
     });
 
     // if (leftNodes[0]?.data?.levelNumber)
+    if (leftNodes.length > 0) {
+      const leftInstance = leftNodes[0]?.data;
+      const newLevel = leftInstance?.levelNumber ?? 0 + 1;
 
-    const leftInstance = leftNodes[0]?.data;
-    const newLevel = leftInstance?.levelNumber ?? 0 + 1;
-
-    await updateApprovalWorkflowPartyInstanceMutation({
-      id: node.data?.approvalWorkFlowPartyInstanceId!,
-      overlap: false,
-      data: {
-        levelNumber: newLevel + 1,
-        lastModifiedBy: session?.user?.username!,
-        approvalWorkFlowPartyInstanceId:
-          node.data?.approvalWorkFlowPartyInstanceId!,
-      },
-    });
+      await updateApprovalWorkflowPartyInstanceMutation({
+        id: node.data?.approvalWorkFlowPartyInstanceId!,
+        overlap: false,
+        data: {
+          levelNumber: newLevel,
+          lastModifiedBy: session?.user?.username!,
+          approvalWorkFlowPartyInstanceId:
+            node.data?.approvalWorkFlowPartyInstanceId!,
+        },
+      });
+    } else {
+      setNodes(tempNodes);
+      setEdges(tempEdges);
+    }
 
     // Reset dragging state
     setDraggingNodeId(null);

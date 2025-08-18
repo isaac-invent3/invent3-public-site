@@ -12,7 +12,7 @@ const createBaseNodesFromApprovalPartyInstance = (
       id: item.approvalWorkFlowPartyInstanceId.toString(),
       data: {
         ...item,
-        levelNumber: item.levelNumber ? item.levelNumber + 1 : 2,
+        levelNumber: item.levelNumber + 1,
       },
       position: { x: 0, y: 0 },
       draggable:

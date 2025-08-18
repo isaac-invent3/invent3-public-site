@@ -1,17 +1,8 @@
-import { Box, Text, VStack } from '@chakra-ui/react';
-import {
-  ArcElement,
-  ChartData,
-  Chart as ChartJS,
-  ChartOptions,
-  Legend,
-  Tooltip,
-} from 'chart.js';
-import { Pie } from 'react-chartjs-2';
+import { Box, Stack, Text, VStack } from '@chakra-ui/react';
+
 import { TicketStatistics } from '~/lib/interfaces/report.interfaces';
-
-ChartJS.register(ArcElement, Tooltip, Legend);
-
+import PieChart from '../../Dashboard/Common/Charts/PieChart';
+import ChartLegend from '../../Dashboard/Common/Charts/ChartLegend';
 interface TicketStatusPieChartProps {
   ticketsStatistics: TicketStatistics;
 }
@@ -19,31 +10,38 @@ interface TicketStatusPieChartProps {
 const TicketStatusPieChart = (props: TicketStatusPieChartProps) => {
   const { ticketsStatistics } = props;
 
-  const data: ChartData<'pie'> = {
-    labels: ['Resolved Tickets', 'Escalated Tickets', 'Open Tickets'],
-    datasets: [
-      {
-        data: [
-          ticketsStatistics.resolvedTickets,
-          ticketsStatistics.escalatedTickets,
-          ticketsStatistics.openTickets,
-        ],
-        backgroundColor: ['#0366EF', '#EABC30', '#D9D9D9'],
-        borderWidth: 0,
-        label: 'My First Dataset',
-      },
-    ],
-  };
-
-  // Chart.js options
-  const options: ChartOptions<'pie'> = {
-    // responsive: true,
-    
-
-    plugins: {
-      // legend: undefined,
+  const ticketStatusData = [
+    {
+      label: 'Open Tickets',
+      value: ticketsStatistics.openTickets,
+      color: '#D9D9D9',
+      children: (
+        <Text color="primary.500" fontWeight={800} size="md">
+          {ticketsStatistics.openTickets}
+        </Text>
+      ),
     },
-  };
+    {
+      label: 'Escalated Tickets',
+      value: ticketsStatistics.escalatedTickets,
+      color: '#EABC30',
+      children: (
+        <Text color="primary.500" fontWeight={800} size="md">
+          {ticketsStatistics.escalatedTickets}
+        </Text>
+      ),
+    },
+    {
+      label: 'Resolved Tickets',
+      value: ticketsStatistics.resolvedTickets,
+      color: '#0366EF',
+      children: (
+        <Text color="primary.500" fontWeight={800} size="md">
+          {ticketsStatistics.resolvedTickets}
+        </Text>
+      ),
+    },
+  ];
 
   return (
     <Box
@@ -54,14 +52,42 @@ const TicketStatusPieChart = (props: TicketStatusPieChartProps) => {
       height="100%"
       w={{ base: 'full', md: '50%' }}
     >
-      <VStack alignItems="start" height="100%" w="full">
+      <VStack alignItems="flex-start" height="100%" w="full" spacing="35px">
         <Text size="md" color="#42403D">
           Ticket Status
         </Text>
 
-        <Box width="full" height="80%">
-          <Pie data={data} options={options} />
-        </Box>
+        <Stack
+          width="full"
+          direction="row"
+          wrap="wrap"
+          justifyContent="flex-start"
+          spacing={{ base: '16px', lg: '49px' }}
+        >
+          <Box width="155px" height="155px">
+            <PieChart
+              dataValues={ticketStatusData.map((item) => item.value)}
+              labels={ticketStatusData.map((item) => item.label)}
+              pieLabel="Ticket"
+              backgroundColors={ticketStatusData.map((item) => item.color)}
+            />
+          </Box>
+          <ChartLegend
+            chartLegendItems={ticketStatusData}
+            containerStyle={{
+              spacing: '16px',
+              direction: 'column',
+              mt: '24px',
+            }}
+            textStyle={{
+              whiteSpace: 'nowrap',
+              minW: '142px',
+              // mt: '4px',
+            }}
+            textChildrenStyle={{ direction: 'row', mt: '4px' }}
+            boxStyle={{ width: '20px', height: '20px' }}
+          />
+        </Stack>
       </VStack>
     </Box>
   );

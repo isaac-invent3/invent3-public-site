@@ -99,10 +99,13 @@ export const reportApi = createApi({
       BaseApiResponse<ListResponse<GenerateReportResponse>>,
       GenerateReportPayload
     >({
-      query: (body) => ({
+      query: ({ selectedCompany, ...body }) => ({
         url: `/Invent3Pro/GenerateReport`,
         method: 'POST',
-        headers: getHeaders(),
+        headers: {
+          ...getHeaders(),
+          ...(selectedCompany ? { 'X-Tenant-ID': selectedCompany } : {}),
+        },
         body,
       }),
     }),

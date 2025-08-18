@@ -21,6 +21,7 @@ interface ChartLegendProps {
   containerStyle?: StackProps;
   textStyle?: TextProps;
   boxStyle?: FlexProps;
+  textChildrenStyle?: StackProps;
 }
 
 const ChartLegend = ({
@@ -29,6 +30,7 @@ const ChartLegend = ({
   boxStyle,
   textStyle,
   isLoading,
+  textChildrenStyle,
 }: ChartLegendProps) => {
   return (
     <Stack spacing="16px" direction="row" {...containerStyle}>
@@ -43,12 +45,19 @@ const ChartLegend = ({
             mt="1px"
             {...boxStyle}
           />
-          <VStack alignItems="flex-start" spacing="4px" m={0} p={0}>
+          <Stack
+            alignItems="flex-start"
+            spacing="4px"
+            m={0}
+            p={0}
+            direction="column"
+            {...textChildrenStyle}
+          >
             <Text color="neutral.600" fontWeight={700} {...textStyle}>
               {item.label}
             </Text>
             <Skeleton isLoaded={!isLoading}>{item.children}</Skeleton>
-          </VStack>
+          </Stack>
         </HStack>
       ))}
     </Stack>

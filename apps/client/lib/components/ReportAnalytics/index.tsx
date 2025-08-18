@@ -57,7 +57,7 @@ const ReportAnalytics = () => {
     facilityIds: finalFilters.branch?.map((item) => item.value as number) || [],
   });
 
-  const cardData = [
+  const normalCardData = [
     {
       title: 'Total Assets',
       value: reportDashboardValues?.data.totalAssets?.statValue,
@@ -76,7 +76,7 @@ const ReportAnalytics = () => {
     },
     {
       title: 'Maintenance Cost',
-      value: reportDashboardValues?.data.totalMaintenanceCost?.statValue,
+      value: reportDashboardValues?.data.totalMaintenanceCost?.statValue ?? 0,
       reportId: reportDashboardValues?.data.totalMaintenanceCost?.reportId,
     },
     {
@@ -90,6 +90,44 @@ const ReportAnalytics = () => {
       reportId: reportDashboardValues?.data.totalTasks?.reportId,
     },
   ];
+
+  const cmfCardData = [
+    {
+      title: 'Total Client Companies Managed',
+      value: reportDashboardValues?.data.totalAssets?.statValue,
+      reportId: reportDashboardValues?.data.totalAssets?.reportId,
+    },
+    {
+      title: 'Total Active Client Companies',
+      value: reportDashboardValues?.data.newAssets?.statValue,
+      reportId: reportDashboardValues?.data.newAssets?.reportId,
+    },
+    {
+      title: 'Total Assets Under Management',
+      value: reportDashboardValues?.data.totalAssetsDisposed?.statValue,
+      reportId: reportDashboardValues?.data.totalAssetsDisposed?.reportId,
+    },
+    {
+      title: 'Total Open Tickets',
+      value: reportDashboardValues?.data.totalMaintenanceCost?.statValue ?? 0,
+      reportId: reportDashboardValues?.data.totalMaintenanceCost?.reportId,
+    },
+    {
+      title: 'Total Maintenance Tasks Completed',
+      value: reportDashboardValues?.data.totalMaintenancePlans?.statValue,
+      reportId: reportDashboardValues?.data.totalMaintenancePlans?.reportId,
+    },
+    {
+      title: 'Total Compliance Violations Logged',
+      value: reportDashboardValues?.data.totalTasks?.statValue,
+      reportId: reportDashboardValues?.data.totalTasks?.reportId,
+      color: 'red.500',
+    },
+  ];
+
+  const cardData = user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY)
+    ? cmfCardData
+    : normalCardData;
 
   return (
     <Flex

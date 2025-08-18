@@ -36,7 +36,7 @@ const CompanySelect = (props: CompanySelectProps) => {
       selectTitle={selectTitle}
       data={data}
       labelKey="companyName"
-      valueKey="companyId"
+      valueKey="tenantName"
       mutationFn={searchCompanies}
       isLoading={isLoading || isFetching}
       pageNumber={pageNumber}

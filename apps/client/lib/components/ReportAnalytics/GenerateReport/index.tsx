@@ -28,6 +28,7 @@ import GeneratedReport from './GeneratedReport';
 import CompanySelect from './CompanySelect';
 
 const GenerateReport = () => {
+  const session = useSession();
   const initialValues: GenerateReportDetails = {
     criterion: [
       {
@@ -40,7 +41,7 @@ const GenerateReport = () => {
     systemContextTypeId: undefined,
     contextTypeColumns: [],
     contextTypeName: undefined,
-    selectedCompany: undefined,
+    selectedCompany: session?.data?.user?.companySlug,
     startDate: '',
     endDate: '',
   };
@@ -52,13 +53,12 @@ const GenerateReport = () => {
 
   const [generatedReport, setGeneratedReport] =
     useState<ListResponse<GenerateReportResponse> | null>(null);
-  const session = useSession();
   const user = session?.data?.user;
 
   const formik = useFormik({
     initialValues,
     enableReinitialize: false,
-    validationSchema: generateReportSchema,
+    validationSchema: generateReportSchema(),
     onSubmit: async (data) => {
       const response = await handleSubmit(
         generateReport,
@@ -95,7 +95,7 @@ const GenerateReport = () => {
                   customSpacing="24px"
                   description="Choose the company for this report"
                   title="Select Company"
-                  isRequired
+                  isRequired={false}
                   maxW={{ base: 'full', md: '49%' }}
                 >
                   <VStack width="full" spacing="4px" alignItems="flex-start">

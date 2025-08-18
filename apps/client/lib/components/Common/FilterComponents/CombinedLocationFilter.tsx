@@ -29,7 +29,8 @@ const CombinedLocationFilter = (props: CombinedLocationFilterProps) => {
   const session = useSession();
   return (
     (session?.data?.user?.roleIds.includes(ROLE_IDS_ENUM.CLIENT_ADMIN) ||
-      session?.data?.user?.roleIds.includes(ROLE_IDS_ENUM.EXECUTIVE)) && (
+      session?.data?.user?.roleIds.includes(ROLE_IDS_ENUM.EXECUTIVE) ||
+      session?.data?.user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY)) && (
       <HStack spacing="7px" flexWrap="wrap" {...rest}>
         <RegionFilter
           selectedOptions={selectedRegion}

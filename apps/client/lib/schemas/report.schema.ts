@@ -19,6 +19,7 @@ const generateReportSchema = () =>
       )
       .required('Criterion is Required')
       .min(1),
+    selectedCompany: Yup.string().nullable(),
     contextTypeId: Yup.number().required('Context Type ID is Required'),
     // orderByCriteria: Yup.object().shape({
     //   columnName: Yup.string().required('Column Name is Required'),

@@ -16,12 +16,21 @@ const getTodayDate = () => {
   return dateFormatter(new Date(), 'DD/MM/YYYY') as string;
 };
 
+const getFirstDayOfYear = () => {
+  const now = new Date();
+  return dateFormatter(
+    new Date(now.getFullYear(), 0, 1),
+    'DD/MM/YYYY'
+  ) as string;
+};
+
 const initialState: SliceProps = {
   filters: {
     region: [],
     area: [],
     branch: [],
-    fromDate: getTodayDate(),
+    companies: [],
+    fromDate: getFirstDayOfYear(),
     toDate: getTodayDate(),
   },
 };

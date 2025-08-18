@@ -53,6 +53,7 @@ interface GenerateReportPayload extends QueryParams {
   criterion: GenerateReportCriterion[];
   systemContextTypeId: number | undefined;
   contextTypeColumns: Option[];
+  selectedCompany?: string;
 }
 
 interface ViewReportTableDataPayload extends SearchQuery {
@@ -106,6 +107,7 @@ interface ReportFilterInput {
   region: Option[];
   area: Option[];
   branch: Option[];
+  companies: Option[];
   fromDate: string;
   toDate: string;
 }

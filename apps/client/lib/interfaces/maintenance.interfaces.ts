@@ -109,6 +109,7 @@ interface MaintenanceSchedule extends BaseMaintenanceSchedule {
   occurrences: string;
   lastMaintenanceRun: string;
   nextMaintenanceRun: string;
+  openTasks: number;
 }
 
 interface MaintenanceScheduleInstance extends BaseMaintenanceSchedule {

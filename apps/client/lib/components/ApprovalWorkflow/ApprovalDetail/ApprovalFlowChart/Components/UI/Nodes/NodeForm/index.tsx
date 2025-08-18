@@ -72,8 +72,8 @@ const NodeFormModal = (props: NodeFormModalProps) => {
       approvalRequestId: selectedInstance.approvalRequestId,
       levelNumber:
         position === 'right'
-          ? selectedInstance.levelNumber + 1
-          : selectedInstance.levelNumber,
+          ? selectedInstance.levelNumber
+          : selectedInstance.levelNumber - 1,
       createdBy: session?.user?.username!,
       overlap: position === 'same_level' ? true : false,
     };

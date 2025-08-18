@@ -118,13 +118,18 @@ const NoteForm = (props: NoteFormModalProps) => {
           ...payload.createNoteDto,
           systemContextIds: payload.systemContextIds,
           systemContextId: Number(parsedUrl?.contextId)!,
-          tags: generateTagChanges(localNoteTaggedUsers, tags),
           lastModifiedBy: session?.user?.username!,
         };
 
         const response = await handleSubmit(
           updateNote,
-          { id: note.noteId, data: { updateNoteDto: updatedPayload } },
+          {
+            id: note.noteId,
+            data: {
+              updateNoteDto: updatedPayload,
+              tags: generateTagChanges(localNoteTaggedUsers, tags),
+            },
+          },
           'Note Updated Successfully!'
         );
 

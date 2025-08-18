@@ -1,6 +1,5 @@
 import { OPERATORS } from '@repo/constants';
 import { BaseApiResponse, ListResponse } from '@repo/interfaces';
-import { set } from 'lodash';
 import { useSession } from 'next-auth/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';

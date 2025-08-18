@@ -64,6 +64,8 @@ const ApprovalFlowChart = (props: ApprovalChartProps) => {
   }>({ nodes: [], edges: [] });
 
   const [nodes, setNodes, onNodesChange] = useNodesState(layoutElements.nodes);
+  const [tempNodes, setTempNodes] = useState<CustomNode[]>([]);
+  const [tempEdges, setTempEdges] = useState<CustomEdge[]>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState(layoutElements.edges);
   const [draggingNodeId, setDraggingNodeId] = useState<string | null>(null);
   const [dragStartPos, setDragStartPos] = useState<{
@@ -253,13 +255,9 @@ const ApprovalFlowChart = (props: ApprovalChartProps) => {
    */
   const onNodeDragStart = (_: any, node: CustomNode) => {
     setDraggingNodeId(node.id);
+    setTempNodes(nodes);
+    setTempEdges(edges);
     setDragStartPos({ x: node.position.x, y: node.position.y });
-    console.log({
-      triggerDrag: {
-        drag: { x: node.position.x, y: node.position.y },
-        node,
-      },
-    });
     const { position } = node;
     const posX = position.x;
 
@@ -438,8 +436,6 @@ const ApprovalFlowChart = (props: ApprovalChartProps) => {
    */
   const onNodeDragStop = async (_: any, node: CustomNode) => {
     if (!draggingNodeId) return;
-    console.log({ dragStartPos, node, test: 'it came here' });
-
     const DRAG_THRESHOLD = 3;
     // Detect if movement actually happened
     if (
@@ -449,6 +445,8 @@ const ApprovalFlowChart = (props: ApprovalChartProps) => {
     ) {
       // No meaningful movement
       setDraggingNodeId(null);
+      setNodes(tempNodes);
+      setEdges(tempEdges);
       return;
     }
 
@@ -515,19 +513,23 @@ const ApprovalFlowChart = (props: ApprovalChartProps) => {
           nds.filter((n) => n.id !== overlappingNode.id)
         );
       }
+      console.log({ node, overlappingNode });
 
       await updateApprovalWorkflowPartyInstanceMutation({
         id: node.data?.approvalWorkFlowPartyInstanceId!,
         overlap: true,
         data: {
-          levelNumber: node.data.levelNumber,
+          levelNumber: overlappingNode?.data?.levelNumber
+            ? overlappingNode?.data?.levelNumber - 1
+            : 1,
           lastModifiedBy: session?.user?.username!,
           approvalWorkFlowPartyInstanceId:
             node.data?.approvalWorkFlowPartyInstanceId!,
         },
       });
-    }
 
+      return;
+    }
     // If no overlapping node, adjust edges based on left and right nodes
     setEdges((eds) => {
       let updatedEdges = [...eds];

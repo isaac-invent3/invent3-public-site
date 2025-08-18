@@ -160,11 +160,12 @@ const ApprovalComments = () => {
               </HStack>
             ))}
 
-        {!isLoading && data?.data?.items.length === 0 && (
-          <Text width="full" textAlign="center" my="20%" color="neutral.600">
-            No comments at the moment
-          </Text>
-        )}
+        {!isLoading &&
+          (!data?.data || (data?.data && data?.data?.items.length === 0)) && (
+            <Text width="full" textAlign="center" my="20%" color="neutral.600">
+              No comments at the moment
+            </Text>
+          )}
         {!isLoading &&
           data?.data?.items &&
           renderComments(data?.data?.items ?? [])}

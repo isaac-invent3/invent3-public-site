@@ -24,6 +24,7 @@ import UserDetail from '~/lib/components/UserManagement/UserDetail';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { setOpenPopoverId } from '~/lib/redux/slices/ApprovalSlice';
 import { APPROVAL_ACTION } from '~/lib/utils/constants';
+import { dateFormatter } from '~/lib/utils/Formatters';
 
 const ApprovalNode = ({ data, isConnectable, id }: NodeProps<CustomNode>) => {
   const { approvalActionId, userId } = data;
@@ -184,7 +185,9 @@ const ApprovalNode = ({ data, isConnectable, id }: NodeProps<CustomNode>) => {
                 <Icon as={CalendarIcon} boxSize="14px" color="neutral.600" />
 
                 <Text color="neutral.600" isTruncated pl="4px">
-                  {'- -'}
+                  {data?.actionDate
+                    ? dateFormatter(data?.actionDate, 'MMMM DD, YYYY')
+                    : '- -'}
                 </Text>
               </HStack>
             </VStack>

@@ -66,6 +66,7 @@ interface ApprovalWorkflowPartyInstance {
   approvalRequirementTypeName: string;
   employeeDesignation: string;
   lastModifiedBy?: string;
+  actionDate?: string;
 }
 
 interface GetApprovalWorkflowPartyInstances extends QueryParams {

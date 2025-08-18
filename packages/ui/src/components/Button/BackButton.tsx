@@ -17,7 +17,7 @@ const BackButton = (props: BackButtonProps) => {
       bgColor="#F6F6F6"
       width="85px"
       minH="32px"
-      onClick={() => handleClick()}
+      onClick={handleClick}
       {...customStyles}
     >
       <Icon as={LongBackArrowIcon} boxSize="16px" color="#374957" />

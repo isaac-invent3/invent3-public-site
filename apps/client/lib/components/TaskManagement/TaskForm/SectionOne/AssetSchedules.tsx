@@ -64,7 +64,7 @@ const AssetSchedules = () => {
       //   enableSorting: false,
       // }),
 
-      columnHelper.accessor('activeTasksCount', {
+      columnHelper.accessor('openTasks', {
         cell: (info) => info.getValue() ?? 'N/A',
         header: 'No. Of Tasks',
         enableSorting: false,

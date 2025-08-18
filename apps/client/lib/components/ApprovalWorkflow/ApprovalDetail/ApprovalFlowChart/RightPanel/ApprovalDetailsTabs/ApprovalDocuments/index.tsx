@@ -112,19 +112,20 @@ const ApprovalDocuments = () => {
                 </HStack>
               );
             })}
-          {!isLoading && !data?.data && (
-            <Text
-              width="full"
-              size="md"
-              fontWeight={400}
-              fontStyle="italic"
-              my="41px"
-              color="neutral.600"
-              textAlign="center"
-            >
-              No Document at the moment.
-            </Text>
-          )}
+          {!isLoading &&
+            (!data?.data || (data?.data && data?.data?.items.length === 0)) && (
+              <Text
+                width="full"
+                size="md"
+                fontWeight={400}
+                fontStyle="italic"
+                my="41px"
+                color="neutral.600"
+                textAlign="center"
+              >
+                No Document at the moment.
+              </Text>
+            )}
         </VStack>
         {(data?.data?.hasPreviousPage || data?.data?.hasNextPage) && (
           <ButtonPagination

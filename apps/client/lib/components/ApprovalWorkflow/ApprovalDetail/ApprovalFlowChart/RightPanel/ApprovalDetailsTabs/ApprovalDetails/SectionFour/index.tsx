@@ -74,14 +74,16 @@ const SectionFour = () => {
           </HStack>
         </Box>
       </VStack>
-      <UserDetail
-        isOpen={isOpenUser}
-        onClose={() => {
-          onCloseUser();
-        }}
-        defaultUserId={approvalRequest?.requestedByUserId}
-        showHeader={false}
-      />
+      {isOpenUser && (
+        <UserDetail
+          isOpen={isOpenUser}
+          onClose={() => {
+            onCloseUser();
+          }}
+          defaultUserId={approvalRequest?.requestedByUserId}
+          showHeader={false}
+        />
+      )}
     </>
   );
 };

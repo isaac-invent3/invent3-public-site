@@ -110,6 +110,7 @@ const SectionTwo = () => {
         assetDisplayName: assetTransfer?.data?.assetName,
         assetId: assetTransfer?.data?.assetId,
         newOwner: assetTransfer?.data?.newOwner,
+        newOwnerId: assetTransfer?.data?.newOwnerId,
         newLocation: assetTransfer?.data?.transsferedToLocation,
         reason: assetTransfer?.data?.comments,
         date: assetTransfer?.data?.transferDate
@@ -288,13 +289,15 @@ const SectionTwo = () => {
         }}
         defaultAssetId={details?.assetId || undefined}
       />
-      <UserDetail
-        isOpen={isOpenUser}
-        onClose={() => {
-          onCloseUser();
-        }}
-        defaultUserId={details?.newOwnerId || undefined}
-      />
+      {isOpenUser && (
+        <UserDetail
+          isOpen={isOpenUser}
+          onClose={() => {
+            onCloseUser();
+          }}
+          defaultUserId={details?.newOwnerId || undefined}
+        />
+      )}
       {details?.assetBulkActionId && (
         <BulkAssetModal
           isOpen={isOpenBulkAsset}

@@ -95,51 +95,6 @@ const Plans = (props: PlansProp) => {
                 ),
               ]
             : []),
-          ...(filterData.region && filterData.region.length >= 1
-            ? [
-                generateSearchCriterion(
-                  'stateId',
-                  filterData.region.map((item) => item.value),
-                  OPERATORS.Equals
-                ),
-              ]
-            : []),
-          ...(filterData.area && filterData.area.length >= 1
-            ? [
-                generateSearchCriterion(
-                  'lgaId',
-                  filterData.area.map((item) => item.value),
-                  OPERATORS.Equals
-                ),
-              ]
-            : []),
-          ...(filterData.branch && filterData.branch.length >= 1
-            ? [
-                generateSearchCriterion(
-                  'facilityId',
-                  filterData.branch.map((item) => item.value),
-                  OPERATORS.Equals
-                ),
-              ]
-            : []),
-          ...[filterData.startDate]
-            .filter(Boolean)
-            .map((item) => [
-              ...generateSearchCriterion(
-                'startDate',
-                [item as string],
-                OPERATORS.Contains
-              ),
-            ]),
-          ...[filterData.endDate]
-            .filter(Boolean)
-            .map((item) => [
-              ...generateSearchCriterion(
-                'endDate',
-                [item as string],
-                OPERATORS.Contains
-              ),
-            ]),
         ],
     pageNumber: currentPage,
     pageSize: pageSize,

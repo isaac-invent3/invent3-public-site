@@ -61,7 +61,7 @@ const Filters = (props: FiltersProps) => {
         selectedOptions={filterData.planType}
         handleSelectedOption={(value) => handleFilterData(value, 'planType')}
       />
-      <CombinedLocationFilter
+      {/* <CombinedLocationFilter
         selectedRegion={filterData.region}
         selectedArea={filterData.area}
         selectedBranch={filterData.branch}
@@ -87,7 +87,7 @@ const Filters = (props: FiltersProps) => {
             endDate: moment(option.toDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
           }));
         }}
-      />
+      /> */}
     </FilterWrapper>
   );
 };

@@ -55,8 +55,8 @@ const ApprovalWorkflowRequiredUserModal = (
           spacing="40px"
         >
           <VStack width="full" spacing="16px" maxW="370px">
-            <Flex width="60px" height="60px" position="relative">
-              <Image src="/error-icon.png" fill alt="error-icon" />
+            <Flex width="64px" height="64px" position="relative">
+              <Image src="/warning.png" fill alt="warning-icon" />
             </Flex>
             <VStack width="full" spacing="16px" textAlign="center">
               <Heading

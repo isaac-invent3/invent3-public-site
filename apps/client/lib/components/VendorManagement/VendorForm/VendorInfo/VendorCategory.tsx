@@ -2,20 +2,20 @@ import { FormInputWrapper } from '@repo/ui/components';
 import { useField } from 'formik';
 import React, { useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
-import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { useAppDispatch } from '~/lib/redux/hooks';
 import {
-  useGetAllAssetTypesQuery,
-  useSearchAssetTypesMutation,
-} from '~/lib/redux/services/asset/types.services';
+  useGetVendorCategoriesQuery,
+  useSearchVendorCategoriesMutation,
+} from '~/lib/redux/services/vendor.services';
 import { updateVendorForm } from '~/lib/redux/slices/VendorSlice';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 const VendorCategory = () => {
   const [field, meta, helpers] = useField('categoryId'); //eslint-disable-line
-  const [searchRoles] = useSearchAssetTypesMutation({});
+  const [searchVendorCategories] = useSearchVendorCategoriesMutation({});
   const dispatch = useAppDispatch();
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading, isFetching } = useGetAllAssetTypesQuery({
+  const { data, isLoading, isFetching } = useGetVendorCategoriesQuery({
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
@@ -31,9 +31,9 @@ const VendorCategory = () => {
         selectName="vendorCategoryId"
         selectTitle="Vendor Category"
         data={data}
-        labelKey="typeName"
-        valueKey="assetTypeId"
-        mutationFn={searchRoles}
+        labelKey="categoryName"
+        valueKey="categoryId"
+        mutationFn={searchVendorCategories}
         isLoading={isLoading || isFetching}
         pageNumber={pageNumber}
         setPageNumber={setPageNumber}

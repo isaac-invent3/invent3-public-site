@@ -100,10 +100,17 @@ interface UpdateVendorPayload {
     | UpdateVendorContractDocumentDto[]
     | null;
 }
+
+interface VendorCategory extends BaseEntity {
+  categoryId: number;
+  categoryName: string;
+}
+
 export type {
   Vendor,
   VendorFormDetails,
   VendorFilter,
   CreateVendorPayload,
   UpdateVendorPayload,
+  VendorCategory,
 };

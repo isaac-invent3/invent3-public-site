@@ -24,13 +24,29 @@ const extractTenantFromReferer = (
 };
 
 export const TOKEN_REFRESH_BUFFER_SECONDS = 60; // one minutes
-const getTimeInSeconds = () => Math.floor(Date.now() / 1000);
 
 // Create a shared mutex for controlling access to the refresh token process
 const refreshTokenMutex = new Mutex();
 
 // Map of refreshed tokens to prevent redundant refreshes
-const refreshedTokens = new Map();
+const refreshedTokens = new Map<string, JWT>();
+
+const getTimeInSeconds = () => Math.floor(Date.now() / 1000);
+
+// Clean up old entries every 5 minutes
+// This prevents the map from growing indefinitely.
+setInterval(
+  () => {
+    for (const [key, value] of refreshedTokens.entries()) {
+      // A token entry is only useful for a very short time after a refresh.
+      // If it's been in the map for more than a minute, it's stale.
+      if (getTimeInSeconds() > value.accessTokenExpires + 120) {
+        refreshedTokens.delete(key);
+      }
+    }
+  },
+  5 * 60 * 1000
+); // Run every 5 minutes
 
 // @ts-ignore
 async function refreshAccessToken(token: JWT) {
@@ -218,7 +234,7 @@ export const config = {
       }
 
       // Set accessTokenExpires if not already set, to prevent resetting it on each callback
-      if (!token.accessTokenExpires) {
+      if (!token.accessTokenExpires && user?.expiresIn) {
         token.accessTokenExpires = getTimeInSeconds() + user.expiresIn;
         token.exp = getTimeInSeconds() + user.expiresIn;
       }

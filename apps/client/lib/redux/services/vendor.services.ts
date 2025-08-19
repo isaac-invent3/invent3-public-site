@@ -10,6 +10,7 @@ import {
 import {
   UpdateVendorPayload,
   Vendor,
+  VendorCategory,
 } from '~/lib/interfaces/vendor.interfaces';
 
 const getHeaders = () => ({
@@ -70,6 +71,28 @@ export const vendorApi = createApi({
       }),
       invalidatesTags: ['allVendors'],
     }),
+    getVendorCategories: builder.query<
+      BaseApiResponse<ListResponse<VendorCategory>>,
+      QueryParams
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/VendorCategories?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allVendors'],
+    }),
+    searchVendorCategories: builder.mutation<
+      BaseApiResponse<ListResponse<VendorCategory>>,
+      SearchQuery
+    >({
+      query: (body) => ({
+        url: `/VendorCategories/Search`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
   }),
 });
 
@@ -79,4 +102,6 @@ export const {
   useDeleteVendorMutation,
   useGetVendorByIdQuery,
   useUpdateVendorMutation,
+  useGetVendorCategoriesQuery,
+  useSearchVendorCategoriesMutation,
 } = vendorApi;

@@ -209,11 +209,6 @@ const NotificationDetail = (props: NotificationDetailProps) => {
   const [markNotificationAsRead, { isLoading }] =
     useMarkANotificationAsReadMutation();
   const { handleSubmit } = useCustomMutation();
-  const {
-    isOpen: isOpenNote,
-    onClose: onCloseNote,
-    onOpen: onOpenNote,
-  } = useDisclosure();
 
   const handleMarkNotificationAsRead = async () => {
     const data = await getSession();

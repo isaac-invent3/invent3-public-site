@@ -38,17 +38,32 @@ export const assetTypeApi = createApi({
         headers: getHeaders(),
       }),
     }),
-
-    searchAssetTypes: builder.mutation<BaseApiResponse<AssetType>, SearchQuery>(
+    searchAssetTypes: builder.mutation<
+      BaseApiResponse<ListResponse<AssetType>>,
+      SearchQuery
+    >({
+      query: (body) => ({
+        url: `/AssetStatus/Search`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
+    createAssetType: builder.mutation<
+      BaseApiResponse<AssetType>,
       {
-        query: (body) => ({
-          url: `/AssetStatus/Search`,
-          method: 'POST',
-          headers: getHeaders(),
-          body,
-        }),
+        typeName: string;
+        createdBy: string;
       }
-    ),
+    >({
+      query: (body) => ({
+        url: `/AssetTypes`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allAssetTypes'],
+    }),
   }),
 });
 
@@ -56,4 +71,5 @@ export const {
   useGetAllAssetTypesQuery,
   useSearchAssetTypesMutation,
   useGetAssetTypeByIdQuery,
+  useCreateAssetTypeMutation,
 } = assetTypeApi;

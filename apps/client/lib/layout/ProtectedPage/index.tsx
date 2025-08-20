@@ -40,6 +40,7 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
       const msUntilSignOut = Math.max(expiryMs - nowMs - 60_000, 0);
 
       timeout = setTimeout(() => {
+        console.log('Called from Layout');
         handleSignOutClient();
       }, msUntilSignOut);
     })();

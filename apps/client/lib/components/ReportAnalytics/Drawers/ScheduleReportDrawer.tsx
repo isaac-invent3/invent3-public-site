@@ -241,7 +241,6 @@ const ScheduleReportDrawer = (props: ScheduleReportDrawerProps) => {
       <ScheduleReportSuccessModal
         isOpen={isScheduleSuccessModalOpen}
         onClose={onScheduleSuccessClose}
-        date=""
       />
     </GenericDrawer>
   );

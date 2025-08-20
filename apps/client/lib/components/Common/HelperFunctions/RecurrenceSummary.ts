@@ -36,6 +36,9 @@ const formatRecurrenceInterval = (interval: number) => {
   return { recurrenceInterval, intervalSuffix };
 };
 
+const formatStartDateLabel = (startDate: string | null) =>
+  startDate ? `Starts ${dateFormatter(startDate, 'MMM D, YYYY')} and ` : '';
+
 const formatEndDateLabel = (endDate: string | null) =>
   endDate ? `, until ${dateFormatter(endDate, 'MMM D, YYYY')}` : '';
 
@@ -106,26 +109,34 @@ function parseOccurrences(occurrences: any) {
 interface SummaryTextProps {
   occurrences: any;
   frequency: string | undefined;
+  startDate?: string | null;
   endDate: string | null;
   interval: number;
 }
 const summaryText = ({
   occurrences,
   frequency,
+  startDate,
   endDate,
   interval,
 }: SummaryTextProps) => {
+  const startDateLabel = startDate ? formatStartDateLabel(startDate) : '';
   const endDateLabel = formatEndDateLabel(endDate);
+  let sentence;
   switch (frequency) {
     case 'Daily':
-      return `${formatDaily(occurrences, interval)}${endDateLabel}`;
+      sentence = formatDaily(occurrences, interval);
+      return `${startDateLabel}${startDateLabel ? _.lowerFirst(sentence) : sentence}${endDateLabel}`;
     case 'Weekly':
-      return `${formatWeekly(occurrences, interval)}${endDateLabel}`;
+      sentence = formatWeekly(occurrences, interval);
+      return `${startDateLabel}${startDateLabel ? _.lowerFirst(sentence) : sentence}${endDateLabel}`;
     case 'Monthly':
     case 'Quarterly':
-      return `${formatMonthlyOrQuarterly(occurrences, interval)}${endDateLabel}`;
+      sentence = formatMonthlyOrQuarterly(occurrences, interval);
+      return `${startDateLabel}${startDateLabel ? _.lowerFirst(sentence) : sentence}${endDateLabel}`;
     case 'Annually':
-      return `${formatAnnually(occurrences, interval)}${endDateLabel}`;
+      sentence = formatAnnually(occurrences, interval);
+      return `${startDateLabel}${startDateLabel ? _.lowerFirst(sentence) : sentence}${endDateLabel}`;
     default:
       return '';
   }

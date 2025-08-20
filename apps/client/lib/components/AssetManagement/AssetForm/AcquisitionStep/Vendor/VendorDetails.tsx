@@ -16,7 +16,6 @@ import {
 } from '~/lib/redux/services/asset/vendors.services';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
-import AssetTypeSelect from '~/lib/components/Common/SelectComponents/AssetTypeSelect';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import {
   FormAddButton,
@@ -25,6 +24,7 @@ import {
 } from '@repo/ui/components';
 import VendorDrawer from './VendorDrawer';
 import usePermissionAccess from '~/lib/hooks/useRoleAccess';
+import AssetTypeSelect from '../AssetType';
 
 const VendorDetails = () => {
   const dispatch = useAppDispatch();

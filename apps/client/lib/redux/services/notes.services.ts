@@ -72,7 +72,7 @@ export const notesApi = createApi({
     }),
     getNoteById: builder.query<BaseApiResponse<Note>, { id: number }>({
       query: ({ id }) => ({
-        url: `/Notes/${id}`,
+        url: `/Notes/GetNoteInfoHeader/${id}`,
         method: 'GET',
         headers: getHeaders(),
       }),

@@ -298,7 +298,7 @@ const NoteDetails = (props: NoteFormModalProps) => {
                             width="28px"
                             height="28px"
                             border="2px solid white"
-                            name={item.createdBy}
+                            name={`${item?.firstName ?? ''} ${item?.lastName ?? ''}`}
                           />
                         ))}
                     </AvatarGroup>

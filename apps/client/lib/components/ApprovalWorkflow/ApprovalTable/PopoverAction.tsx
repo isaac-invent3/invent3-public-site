@@ -1,15 +1,22 @@
 /* eslint-disable no-unused-vars */
 import { Text, VStack } from '@chakra-ui/react';
 import { GenericPopover } from '@repo/ui/components';
+import Link from 'next/link';
+import { ApprovalWorkflowRequest } from '~/lib/interfaces/approvalWorkflow.interfaces';
+import { ROUTES } from '~/lib/utils/constants';
 
-interface PopoverActionProps {}
+interface PopoverActionProps {
+  data: ApprovalWorkflowRequest;
+}
 
-const PopoverAction = (props: PopoverActionProps) => {
+const PopoverAction = ({ data }: PopoverActionProps) => {
   return (
     <>
       <GenericPopover width="137px" placement="bottom-start">
         <VStack width="full" alignItems="flex-start" spacing="16px">
-          <Text cursor="pointer">View Workflow</Text>
+          <Link href={`/${ROUTES.ASSETS}//${data.approvalRequestId}/detail`}>
+            <Text cursor="pointer">View Workflow</Text>
+          </Link>
         </VStack>
       </GenericPopover>
     </>

@@ -173,7 +173,7 @@ const ApprovalTable = (props: ApprovalTableProps) => {
           cell: (info) => {
             return (
               <GenericStatusBox
-                colorCode={COLOR_CODES_FALLBACK.default}
+                colorCode={info.row.original?.displayColorCode}
                 width="100px"
                 text={info.getValue()}
               />
@@ -183,7 +183,7 @@ const ApprovalTable = (props: ApprovalTableProps) => {
         }),
 
         columnHelper.accessor('approvalTypeId', {
-          cell: () => <PopoverAction />,
+          cell: (info) => <PopoverAction data={info.row.original} />,
           header: '',
           enableSorting: false,
         }),

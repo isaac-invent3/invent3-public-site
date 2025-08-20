@@ -139,7 +139,7 @@ export const approvalWorkflowPartyInstanceApi = createApi({
     >({
       query: ({ partyInstanceId, ...body }) => ({
         url: generateQueryStr(
-          `/ApprovalRequests/UpdateApprovalRequestPartyInstanceStatus/${partyInstanceId}?`,
+          `/Invent3Pro/UpdateApprovalRequestPartyInstanceStatus/${partyInstanceId}?`,
           body
         ),
         method: 'PUT',

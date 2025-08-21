@@ -2,7 +2,6 @@ import CombinedLocationFilter from '~/lib/components/Common/FilterComponents/Com
 import FilterWrapper from '~/lib/components/Common/FilterComponents/FilterWrapper';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { ScheduleFilter } from '~/lib/interfaces/maintenance.interfaces';
-import { initialFilterData } from '..';
 import DateRangeFilter from '~/lib/components/Common/DateRangeFilter';
 import { isArray } from 'lodash';
 import moment from 'moment';
@@ -12,10 +11,11 @@ import MaintenanceTypeFilter from './MaintenanceTypeFilter';
 interface FiltersProps {
   filterData: ScheduleFilter;
   setFilterData: React.Dispatch<React.SetStateAction<ScheduleFilter>>;
-  handleApplyFilter: () => void;
+  onApply: () => void;
+  onClear: () => void;
 }
 const Filters = (props: FiltersProps) => {
-  const { filterData, setFilterData, handleApplyFilter } = props;
+  const { filterData, setFilterData, onApply, onClear } = props;
 
   type FilterLabel = keyof ScheduleFilter;
 
@@ -51,19 +51,9 @@ const Filters = (props: FiltersProps) => {
     });
   };
   return (
-    <FilterWrapper
-      handleApplyFilter={handleApplyFilter}
-      handleClearFilter={() => {
-        setFilterData(initialFilterData);
-        handleApplyFilter();
-      }}
-    >
-      <PlanTypeFilter
-        selectedOptions={filterData.planType}
-        handleSelectedOption={(value) => handleFilterData(value, 'planType')}
-      />
+    <FilterWrapper handleApplyFilter={onApply} handleClearFilter={onClear}>
       <MaintenanceTypeFilter
-        selectedOptions={filterData.planType}
+        selectedOptions={filterData.maintenanceType}
         handleSelectedOption={(value) =>
           handleFilterData(value, 'maintenanceType')
         }

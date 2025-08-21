@@ -30,6 +30,8 @@ import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import { updateSelectedTableIds } from '~/lib/redux/slices/CommonSlice';
 import { setUser } from '~/lib/redux/slices/UserSlice';
+import { generateSearchCriteria } from '@repo/utils';
+import { usePageFilter } from '~/lib/hooks/usePageFilter';
 
 export const initialFilterData = {
   startDate: undefined,
@@ -39,10 +41,6 @@ export const initialFilterData = {
 const UserManagement = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const { data, isLoading, isFetching } = useGetAllUsersQuery({
-    pageNumber,
-    pageSize,
-  });
   const [search, setSearch] = useState('');
   const [activeAction, setActiveAction] = useState<'bulk' | 'filter' | null>(
     null
@@ -62,7 +60,6 @@ const UserManagement = () => {
   );
   const { handleSubmit } = useCustomMutation();
   const [searchUser, { isLoading: searchLoading }] = useSearchUsersMutation({});
-  const [filterData, setFilterData] = useState<UserFilter>(initialFilterData);
   const searchParams = useSearchParams();
   const userId = searchParams?.get(SYSTEM_CONTEXT_DETAILS.USER.slug);
   const { updateSearchParam } = useCustomSearchParams();
@@ -77,57 +74,56 @@ const UserManagement = () => {
     }
   }, [activeAction]);
 
-  // Checks if all filterdata is empty
-  const isFilterEmpty = _.every(filterData, (value) => _.isEmpty(value));
+  const {
+    filterData,
+    setFilterData,
+    appliedFilter,
+    isFilterEmpty,
+    applyFilter,
+    clearFilter,
+  } = usePageFilter<UserFilter>(initialFilterData);
 
-  const searchCriterion = {
-    ...((!isFilterEmpty || search) && {
-      orCriterion: [
-        ...(search
-          ? [
-              [
-                {
-                  columnName: 'firstName',
-                  columnValue: search,
-                  operation: OPERATORS.Contains,
-                },
-              ],
-            ]
-          : []),
-        ...(search
-          ? [
-              [
-                {
-                  columnName: 'lastName',
-                  columnValue: search,
-                  operation: OPERATORS.Contains,
-                },
-              ],
-            ]
-          : []),
-      ],
-    }),
-    pageNumber,
-    pageSize,
-  };
+  const { data, isLoading, isFetching } = useGetAllUsersQuery(
+    {
+      pageNumber,
+      pageSize,
+    },
+    {
+      skip: search !== '' || !isFilterEmpty,
+    }
+  );
 
   const handleSearch = useCallback(async () => {
-    const response = await handleSubmit(searchUser, searchCriterion, '');
-    setSearchData(response?.data?.data);
-  }, [searchUser, searchCriterion]);
+    const { orCriterion } = generateSearchCriteria(search, appliedFilter, {}, [
+      'firstName',
+      'lastName',
+    ]);
+    const payload = {
+      pageNumber,
+      pageSize,
+      orCriterion,
+    };
 
-  // Trigger search when search input changes or pagination updates
+    if (orCriterion.length > 0) {
+      const response = await handleSubmit(searchUser, payload, '');
+      setSearchData(response?.data?.data);
+    }
+  }, [searchUser, search, appliedFilter, pageNumber, pageSize]);
+
+  // Trigger search when search or input changes or applied filter changes or pagination updates
   useEffect(() => {
-    if (search) {
+    if (search || !isFilterEmpty) {
       handleSearch();
     }
-  }, [search, pageNumber, pageSize]);
+  }, [search, appliedFilter, pageNumber, pageSize]);
 
   // Reset pagination when clearing the search
   useEffect(() => {
-    setPageSize(DEFAULT_PAGE_SIZE);
-    setPageNumber(1);
-  }, [search]);
+    if (!search || isFilterEmpty) {
+      setPageSize(DEFAULT_PAGE_SIZE);
+      setPageNumber(1);
+    }
+  }, [search, appliedFilter]);
 
   // Open Detail Modal if assetId exists
   useEffect(() => {
@@ -155,13 +151,6 @@ const UserManagement = () => {
       dispatch(updateSelectedTableIds([]));
     }
   }, [selectedRows]);
-
-  //Handle apply Filter
-  const handleApplyFilter = () => {
-    setPageSize(1);
-    setPageSize(DEFAULT_PAGE_SIZE);
-    handleSearch();
-  };
 
   // SignalR Connection
   const connectionState = useSignalR('users-hub');
@@ -281,7 +270,14 @@ const UserManagement = () => {
                 <UserActionDisplay
                   isOpen={isOpen}
                   activeAction={activeAction}
-                  handleApplyFilter={handleApplyFilter}
+                  onApply={() => {
+                    applyFilter();
+                    handleSearch(); // manually trigger
+                  }}
+                  onClear={() => {
+                    clearFilter();
+                    handleSearch(); // to reload default data
+                  }}
                   setFilterData={setFilterData}
                   filterData={filterData}
                 />

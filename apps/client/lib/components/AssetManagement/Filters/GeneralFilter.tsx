@@ -4,26 +4,22 @@ import {
 } from '~/lib/interfaces/asset/general.interface';
 import CategoryFilter from './FilterComponents/CategoryFilter';
 import StatusFilter from './FilterComponents/StatusFilter';
-import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import {
-  clearAssetFilter,
-  updateAssetFilter,
-} from '~/lib/redux/slices/AssetSlice';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import CombinedLocationFilter from '../../Common/FilterComponents/CombinedLocationFilter';
 import FilterWrapper from '../../Common/FilterComponents/FilterWrapper';
 
 interface GeneralFilterProps {
-  handleApplyFilter: () => void;
   columnType?: ValidColumnNames;
+  filterData: FilterInput;
+  setFilterData: React.Dispatch<React.SetStateAction<FilterInput>>;
+  onApply: () => void;
+  onClear: () => void;
 }
 
 type FilterLabel = keyof FilterInput;
 
 const GeneralFilter = (props: GeneralFilterProps) => {
-  const { handleApplyFilter, columnType } = props;
-  const filterData = useAppSelector((state) => state.asset.assetFilter);
-  const dispatch = useAppDispatch();
+  const { onApply, onClear, filterData, setFilterData, columnType } = props;
 
   const handleFilterData = (option: Option, filterLabel: FilterLabel) => {
     const newValue =
@@ -32,17 +28,11 @@ const GeneralFilter = (props: GeneralFilterProps) => {
         ? filterData[filterLabel].filter((item) => item.value !== option.value)
         : [...filterData[filterLabel], option];
 
-    dispatch(updateAssetFilter({ [filterLabel]: newValue }));
+    setFilterData((prev) => ({ ...prev, [filterLabel]: newValue }));
   };
 
   return (
-    <FilterWrapper
-      handleApplyFilter={handleApplyFilter}
-      handleClearFilter={() => {
-        dispatch(clearAssetFilter());
-        handleApplyFilter();
-      }}
-    >
+    <FilterWrapper handleApplyFilter={onApply} handleClearFilter={onClear}>
       {columnType !== 'Category' && (
         <CategoryFilter
           selectedOptions={filterData.category}

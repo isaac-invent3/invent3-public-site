@@ -224,6 +224,7 @@ interface AssetFormDetails {
 interface FilterInput extends LocationFilter {
   category: Option[];
   status: Option[];
+  columnId: Option[];
 }
 
 interface AcquisitionInfo {

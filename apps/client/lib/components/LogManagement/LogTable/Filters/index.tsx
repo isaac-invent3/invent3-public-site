@@ -10,10 +10,11 @@ import ContextTypeFilter from '~/lib/components/Common/FilterComponents/ContextT
 interface FiltersProps {
   filterData: LogFilter;
   setFilterData: React.Dispatch<React.SetStateAction<LogFilter>>;
-  handleApplyFilter: () => void;
+  onApply: () => void;
+  onClear: () => void;
 }
 const Filters = (props: FiltersProps) => {
-  const { filterData, setFilterData, handleApplyFilter } = props;
+  const { filterData, setFilterData, onApply, onClear } = props;
 
   type FilterLabel = keyof LogFilter;
 
@@ -48,13 +49,7 @@ const Filters = (props: FiltersProps) => {
     });
   };
   return (
-    <FilterWrapper
-      handleApplyFilter={handleApplyFilter}
-      handleClearFilter={() => {
-        setFilterData(initialFilterData);
-        handleApplyFilter();
-      }}
-    >
+    <FilterWrapper handleApplyFilter={onApply} handleClearFilter={onClear}>
       <ContextTypeFilter
         selectedOptions={filterData.systemContextTypeIds.map((item) => ({
           value: item,

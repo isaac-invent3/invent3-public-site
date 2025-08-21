@@ -226,6 +226,7 @@ interface ScheduleFilter extends LocationFilter {
   maintenanceType: Option[];
   scheduleDate: string | undefined;
   completionDate: string | undefined;
+  statusId?: number[];
 }
 
 interface PlanPayload {

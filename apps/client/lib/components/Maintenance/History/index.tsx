@@ -19,23 +19,14 @@ import PopoverAction from './PopoverAction';
 import { Flex, useDisclosure, useMediaQuery } from '@chakra-ui/react';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import TaskInstanceListView from '../../TaskManagement/Drawers/TaskListDrawer/TaskInstanceListView';
-import { generateSearchCriterion } from '@repo/utils';
+import { generateSearchCriteria, generateSearchCriterion } from '@repo/utils';
 import { OPERATORS } from '@repo/constants';
 import { ListResponse } from '@repo/interfaces';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import _ from 'lodash';
 import Filters from './Filters';
 import { useAppSelector } from '~/lib/redux/hooks';
-
-export const initialFilterData = {
-  planType: [],
-  maintenanceType: [],
-  region: [],
-  area: [],
-  branch: [],
-  scheduleDate: undefined,
-  completionDate: undefined,
-};
+import { usePageFilter } from '~/lib/hooks/usePageFilter';
 
 interface MaintenanceHistoryProp {
   search: string;
@@ -45,19 +36,13 @@ interface MaintenanceHistoryProp {
 const MaintenanceHistory = (props: MaintenanceHistoryProp) => {
   const { search, openFilter } = props;
   const columnHelper = createColumnHelper<MaintenanceScheduleInstance>();
-  const [currentPage, setCurrentPage] = useState(1);
+  const [pageNumber, setPageNumber] = useState(1);
   const appConfigValues = useAppSelector(
     (state) => state.general.appConfigValues
   );
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const { data, isLoading, isFetching } = useGetAllScheduleInstanceQuery({
-    pageSize,
-    pageNumber: currentPage,
-    statusId: +appConfigValues?.DEFAULT_COMPLETED_TASK_STATUS_ID!,
-  });
+
   const [isMobile] = useMediaQuery('(max-width: 768px)');
-  const [filterData, setFilterData] =
-    useState<ScheduleFilter>(initialFilterData);
   const { getSearchParam, updateSearchParam } = useCustomSearchParams();
   const maintenanceScheduleInstanceId = getSearchParam(
     'maintenanceScheduleInstanceId'
@@ -65,132 +50,89 @@ const MaintenanceHistory = (props: MaintenanceHistoryProp) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { handleSubmit } = useCustomMutation();
 
-  // Checks if all filterdata is empty
-  const isFilterEmpty = _.every(
-    filterData,
-    (value) => _.isArray(value) && _.isEmpty(value)
-  );
-
   const [searchPlan, { isLoading: searchLoading }] =
     useSearchScheduleInstanceMutation({});
-  const [searchData, setSearchData] =
-    useState<ListResponse<MaintenanceScheduleInstance> | null>(null);
+  const [searchData, setSearchData] = useState<
+    ListResponse<MaintenanceScheduleInstance> | undefined
+  >(undefined);
 
-  // Search Criterion
-  const searchCriterion = {
-    ...(search && {
-      criterion: [
-        {
-          columnName: 'scheduleInstanceName',
-          columnValue: search,
-          operation: OPERATORS.Contains,
-        },
-      ],
-    }),
-    ...((!isFilterEmpty || search) && {
-      orCriterion: [
-        ...(filterData.planType && filterData.planType.length >= 1
-          ? [
-              generateSearchCriterion(
-                'planTypeId',
-                filterData.planType.map((item) => item.value),
-                OPERATORS.Equals
-              ),
-            ]
-          : []),
-        ...(filterData.maintenanceType && filterData.maintenanceType.length >= 1
-          ? [
-              generateSearchCriterion(
-                'maintenanceTypeId',
-                filterData.maintenanceType.map((item) => item.value),
-                OPERATORS.Equals
-              ),
-            ]
-          : []),
-        ...(filterData.region && filterData.region.length >= 1
-          ? [
-              generateSearchCriterion(
-                'stateId',
-                filterData.region.map((item) => item.value),
-                OPERATORS.Equals
-              ),
-            ]
-          : []),
-        ...(filterData.area && filterData.area.length >= 1
-          ? [
-              generateSearchCriterion(
-                'lgaId',
-                filterData.area.map((item) => item.value),
-                OPERATORS.Equals
-              ),
-            ]
-          : []),
-        ...(filterData.branch && filterData.branch.length >= 1
-          ? [
-              generateSearchCriterion(
-                'facilityId',
-                filterData.branch.map((item) => item.value),
-                OPERATORS.Equals
-              ),
-            ]
-          : []),
-        ...[filterData.scheduleDate]
-          .filter(Boolean)
-          .map((item) => [
-            ...generateSearchCriterion(
-              'scheduleDate',
-              [item as string],
-              OPERATORS.Contains
-            ),
-          ]),
-        ...[filterData.completionDate]
-          .filter(Boolean)
-          .map((item) => [
-            ...generateSearchCriterion(
-              'completionDate',
-              [item as string],
-              OPERATORS.Contains
-            ),
-          ]),
-      ],
-    }),
-    pageNumber: currentPage,
-    pageSize: pageSize,
+  const initialFilterData = {
+    planType: [],
+    maintenanceType: [],
+    region: [],
+    area: [],
+    branch: [],
+    scheduleDate: undefined,
+    completionDate: undefined,
+    statusId: [+appConfigValues?.DEFAULT_COMPLETED_TASK_STATUS_ID!],
   };
 
-  // Function that handles search/filters
-  const handleSearch = useCallback(async () => {
-    if (search || !isFilterEmpty) {
-      const response = await handleSubmit(searchPlan, searchCriterion, '');
-      response?.data?.data && setSearchData(response?.data?.data);
-    }
-  }, [searchPlan, searchCriterion]);
+  const {
+    filterData,
+    setFilterData,
+    appliedFilter,
+    isFilterEmpty,
+    applyFilter,
+    clearFilter,
+  } = usePageFilter<ScheduleFilter>(initialFilterData);
 
-  // Trigger search when search input changes or pagination updates
+  const { data, isLoading, isFetching } = useGetAllScheduleInstanceQuery({
+    pageSize,
+    pageNumber,
+    statusId: +appConfigValues?.DEFAULT_COMPLETED_TASK_STATUS_ID!,
+  });
+
+  const handleSearch = useCallback(async () => {
+    const { orCriterion } = generateSearchCriteria(
+      search,
+      appliedFilter,
+      {
+        maintenanceType: {
+          key: 'maintenanceTypeId',
+          operator: OPERATORS.Equals,
+        },
+
+        statusId: { key: 'statusCategoryId', operator: OPERATORS.Equals },
+        region: { key: 'stateId', operator: OPERATORS.Equals },
+        area: { key: 'lgaId', operator: OPERATORS.Equals },
+        branch: { key: 'facilityId', operator: OPERATORS.Equals },
+        scheduleDate: { key: 'scheduleDate', operator: OPERATORS.Contains },
+        completionDate: { key: 'completionDate', operator: OPERATORS.Contains },
+      },
+      ['scheduleInstanceName']
+    );
+    const payload = {
+      pageNumber,
+      pageSize,
+      orCriterion,
+    };
+
+    if (orCriterion.length > 0) {
+      const response = await handleSubmit(searchPlan, payload, '');
+      setSearchData(response?.data?.data);
+    }
+  }, [searchPlan, search, appliedFilter, pageNumber, pageSize]);
+
+  // Trigger search when search or input changes or applied filter changes or pagination updates
   useEffect(() => {
-    if (search) {
+    if (search || !isFilterEmpty) {
       handleSearch();
     }
-  }, [search, currentPage, pageSize]);
+  }, [search, appliedFilter, pageNumber, pageSize]);
 
-  // Reset pagination when the search input is cleared or apply filter flag is false
+  // Reset pagination when clearing the search
   useEffect(() => {
-    setPageSize(DEFAULT_PAGE_SIZE);
-    setCurrentPage(1);
-  }, [search, isFilterEmpty]);
+    if (!search || isFilterEmpty) {
+      setPageSize(DEFAULT_PAGE_SIZE);
+      setPageNumber(1);
+    }
+  }, [search, appliedFilter]);
 
   useEffect(() => {
     if (maintenanceScheduleInstanceId) {
       onOpen();
     }
   }, [maintenanceScheduleInstanceId]);
-
-  //Handle apply Filter
-  const handleApplyFilter = () => {
-    setCurrentPage(1);
-    setPageSize(DEFAULT_PAGE_SIZE);
-    handleSearch();
-  };
 
   const mobileColumns = useMemo(
     () => {
@@ -310,7 +252,14 @@ const MaintenanceHistory = (props: MaintenanceHistoryProp) => {
             <Filters
               filterData={filterData}
               setFilterData={setFilterData}
-              handleApplyFilter={handleApplyFilter}
+              onApply={() => {
+                applyFilter();
+                handleSearch(); // manually trigger
+              }}
+              onClear={() => {
+                clearFilter();
+                handleSearch(); // to reload default data
+              }}
             />
           </FilterDisplay>
         </Flex>
@@ -329,8 +278,8 @@ const MaintenanceHistory = (props: MaintenanceHistoryProp) => {
         }
         isLoading={isLoading}
         isFetching={isFetching || searchLoading}
-        setPageNumber={setCurrentPage}
-        pageNumber={currentPage}
+        setPageNumber={setPageNumber}
+        pageNumber={pageNumber}
         pageSize={pageSize}
         setPageSize={setPageSize}
         emptyLines={25}

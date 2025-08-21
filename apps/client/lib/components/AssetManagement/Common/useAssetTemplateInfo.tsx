@@ -6,17 +6,18 @@ import {
   useGetAllAssetQuery,
   useSearchAssetsMutation,
 } from '~/lib/redux/services/asset/general.services';
-import { ListResponse } from '@repo/interfaces';
+import { ListResponse, Option } from '@repo/interfaces';
 import {
   Asset,
+  FilterInput,
   ValidColumnNames,
 } from '~/lib/interfaces/asset/general.interface';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { useAppSelector } from '~/lib/redux/hooks';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
-import { generateSearchCriterion } from '@repo/utils';
+import { generateSearchCriteria } from '@repo/utils';
 import { OPERATORS } from '@repo/constants';
 import GeneralFilter from '../Filters/GeneralFilter';
+import { usePageFilter } from '~/lib/hooks/usePageFilter';
 
 interface UseAssetTemplateInfo {
   // eslint-disable-next-line no-unused-vars
@@ -31,6 +32,18 @@ interface UseAssetTemplateInfo {
 const useAssetTemplateInfo = (props: UseAssetTemplateInfo) => {
   const { PopoverComponent, handleSelectRow, search, columnId, columnType } =
     props;
+  const initialAssetFilter = {
+    category: [],
+    status: [],
+    region: [],
+    area: [],
+    branch: [],
+    columnId:
+      columnId && columnType
+        ? [{ label: columnType, value: columnId } as unknown as Option]
+        : [],
+  };
+
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const { data, isLoading, isFetching } = useGetAllAssetQuery(
@@ -43,111 +56,63 @@ const useAssetTemplateInfo = (props: UseAssetTemplateInfo) => {
   const [searchAsset, { isLoading: searchLoading }] = useSearchAssetsMutation(
     {}
   );
-  const [searchData, setSearchData] = useState<ListResponse<Asset> | null>(
-    null
+  const [searchData, setSearchData] = useState<ListResponse<Asset> | undefined>(
+    undefined
   );
   const { handleSubmit } = useCustomMutation();
-  const { assetFilter: filterData } = useAppSelector((state) => state.asset);
 
-  // Checks if all filterdata is empty
-  const isFilterEmpty =
-    _.every(filterData, (value) => _.isArray(value) && _.isEmpty(value)) &&
-    columnId === undefined;
-
-  // Search Criterion
-  const searchCriterion = {
-    ...(search && {
-      criterion: [
-        {
-          columnName: 'assetName',
-          columnValue: search,
-          operation: OPERATORS.Contains,
-        },
-      ],
-    }),
-    ...(!isFilterEmpty && {
-      orCriterion: [
-        ...(filterData.category && filterData.category.length >= 1
-          ? [
-              generateSearchCriterion(
-                'categoryId',
-                filterData.category.map((item) => item.value),
-                OPERATORS.Equals
-              ),
-            ]
-          : []),
-        ...(filterData.status && filterData.status.length >= 1
-          ? [
-              generateSearchCriterion(
-                'AssetStatusId',
-                filterData.status.map((item) => item.value),
-                OPERATORS.Equals
-              ),
-            ]
-          : []),
-        ...(filterData.region && filterData.region.length >= 1
-          ? [
-              generateSearchCriterion(
-                'stateId',
-                filterData.region.map((item) => item.value),
-                OPERATORS.Equals
-              ),
-            ]
-          : []),
-        ...(filterData.area && filterData.area.length >= 1
-          ? [
-              generateSearchCriterion(
-                'lgaId',
-                filterData.area.map((item) => item.value),
-                OPERATORS.Equals
-              ),
-            ]
-          : []),
-        ...(filterData.branch && filterData.branch.length >= 1
-          ? [
-              generateSearchCriterion(
-                'facilityId',
-                filterData.branch.map((item) => item.value),
-                OPERATORS.Equals
-              ),
-            ]
-          : []),
-        ...(columnType && columnId
-          ? [
-              [
-                ...generateSearchCriterion(
-                  `${columnType}ID`,
-                  [columnId],
-                  OPERATORS.Equals
-                ),
-              ],
-            ]
-          : []),
-      ].filter((criterion) => criterion.length > 0),
-    }),
-    pageNumber: pageNumber,
-    pageSize: pageSize,
-  };
+  const {
+    filterData,
+    setFilterData,
+    appliedFilter,
+    isFilterEmpty,
+    applyFilter,
+    clearFilter,
+  } = usePageFilter<FilterInput>(initialAssetFilter);
 
   const handleSearch = useCallback(async () => {
-    const response = await handleSubmit(searchAsset, searchCriterion, '');
-    response?.data?.data && setSearchData(response?.data?.data);
-  }, [searchAsset, searchCriterion]);
+    const { orCriterion } = generateSearchCriteria(
+      search,
+      appliedFilter,
+      {
+        category: {
+          key: 'categoryId',
+          operator: OPERATORS.Equals,
+        },
+        status: { key: 'AssetStatusId', operator: OPERATORS.Equals },
+        region: { key: 'stateId', operator: OPERATORS.Equals },
+        area: { key: 'lgaId', operator: OPERATORS.Equals },
+        branch: { key: 'facilityId', operator: OPERATORS.Equals },
+        columnId: { key: `${columnType}ID`, operator: OPERATORS.Equals },
+      },
+      ['assetName']
+    );
+    const payload = {
+      pageNumber,
+      pageSize: 10,
+      orCriterion,
+    };
 
-  // Trigger search when search input changes or pagination updates
+    if (orCriterion.length > 0) {
+      const response = await handleSubmit(searchAsset, payload, '');
+      setSearchData(response?.data?.data);
+    }
+  }, [searchAsset, search, appliedFilter, pageNumber, pageSize]);
+
+  // Trigger search when search or input changes or applied filter changes or pagination updates
   useEffect(() => {
     if (search || !isFilterEmpty) {
       handleSearch();
     }
-  }, [search, pageNumber, pageSize, isFilterEmpty]);
+  }, [search, appliedFilter, pageNumber, pageSize, columnType, columnId]);
 
   // Reset pagination when clearing the search
   useEffect(() => {
-    if (!search) {
+    if (!search || isFilterEmpty) {
       setPageSize(DEFAULT_PAGE_SIZE);
       setPageNumber(1);
     }
-  }, [search]);
+  }, [search, appliedFilter]);
 
   const AssetTemplateTable = (
     <Flex width="full" direction="column">
@@ -182,7 +147,19 @@ const useAssetTemplateInfo = (props: UseAssetTemplateInfo) => {
   );
   const Filter = (
     <Flex width="full" pb="16px">
-      <GeneralFilter handleApplyFilter={handleSearch} columnType={columnType} />
+      <GeneralFilter
+        filterData={filterData}
+        setFilterData={setFilterData}
+        onApply={() => {
+          applyFilter();
+          handleSearch(); // manually trigger
+        }}
+        onClear={() => {
+          clearFilter();
+          handleSearch(); // to reload default data
+        }}
+        columnType={columnType}
+      />
     </Flex>
   );
   return {
@@ -197,6 +174,7 @@ const useAssetTemplateInfo = (props: UseAssetTemplateInfo) => {
     setPageNumber,
     setPageSize,
     Filter,
+    applyFilter,
   };
 };
 

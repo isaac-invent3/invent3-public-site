@@ -8,10 +8,11 @@ import UsersFilter from '~/lib/components/Common/FilterComponents/UsersFilter';
 interface FiltersProps {
   filterData: TaskFilter;
   setFilterData: React.Dispatch<React.SetStateAction<TaskFilter>>;
-  handleApplyFilter: () => void;
+  onApply: () => void;
+  onClear: () => void;
 }
 const GeneralFilter = (props: FiltersProps) => {
-  const { filterData, setFilterData, handleApplyFilter } = props;
+  const { filterData, setFilterData, onApply, onClear } = props;
 
   type FilterLabel = keyof TaskFilter;
 
@@ -41,13 +42,7 @@ const GeneralFilter = (props: FiltersProps) => {
     });
   };
   return (
-    <FilterWrapper
-      handleApplyFilter={handleApplyFilter}
-      handleClearFilter={() => {
-        setFilterData(initialFilterData);
-        handleApplyFilter();
-      }}
-    >
+    <FilterWrapper handleApplyFilter={onApply} handleClearFilter={onClear}>
       <UsersFilter
         selectedOptions={filterData.users.map((item) => ({
           value: item.value,

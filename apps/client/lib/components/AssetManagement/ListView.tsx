@@ -3,11 +3,11 @@ import _ from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
 
 import { ListResponse } from '@repo/interfaces';
-import { generateSearchCriterion } from '@repo/utils';
+import { generateSearchCriteria } from '@repo/utils';
 import { useSearchParams } from 'next/navigation';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
-import { Asset } from '~/lib/interfaces/asset/general.interface';
+import { Asset, FilterInput } from '~/lib/interfaces/asset/general.interface';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import {
   assetApi,
@@ -28,6 +28,7 @@ import AssetTable from './Common/AssetTable';
 import AssetFilterDisplay from './Filters/AssetFilterDisplay';
 import useSignalR from '~/lib/hooks/useSignalR';
 import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
+import { usePageFilter } from '~/lib/hooks/usePageFilter';
 
 interface ListViewProps {
   search: string;
@@ -35,38 +36,48 @@ interface ListViewProps {
   activeFilter: 'bulk' | 'general' | null;
 }
 
+export const initialAssetFilter = {
+  category: [],
+  status: [],
+  region: [],
+  area: [],
+  branch: [],
+  columnId: [],
+};
+
 const ListView = (props: ListViewProps) => {
   const { search, activeFilter, openFilter } = props;
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const searchParams = useSearchParams();
   const assetIdString = searchParams?.get(SYSTEM_CONTEXT_DETAILS.ASSETS.slug);
   const { handleSubmit } = useCustomMutation();
   const { updateSearchParam } = useCustomSearchParams();
 
-  const { assetFilter: filterData, selectedAssetIds } = useAppSelector(
-    (state) => state.asset
-  );
+  const { selectedAssetIds } = useAppSelector((state) => state.asset);
   const dispatch = useAppDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  // Checks if all filterdata is empty
-  const isFilterEmpty = _.every(
-    filterData,
-    (value) => _.isArray(value) && _.isEmpty(value)
-  );
 
   const [searchAsset, { isLoading: searchLoading }] = useSearchAssetsMutation(
     {}
   );
-  const [searchData, setSearchData] = useState<ListResponse<Asset> | null>(
-    null
+  const [searchData, setSearchData] = useState<ListResponse<Asset> | undefined>(
+    undefined
   );
+
+  const {
+    filterData,
+    setFilterData,
+    appliedFilter,
+    isFilterEmpty,
+    applyFilter,
+    clearFilter,
+  } = usePageFilter<FilterInput>(initialAssetFilter);
 
   const { data, isLoading, isFetching } = useGetAllAssetQuery(
     {
-      pageNumber: currentPage,
+      pageNumber: pageNumber,
       pageSize: pageSize,
     },
     {
@@ -74,90 +85,48 @@ const ListView = (props: ListViewProps) => {
     }
   );
 
-  // Search Criterion
-  const searchCriterion = {
-    ...(search && {
-      criterion: [
-        {
-          columnName: 'assetName',
-          columnValue: search,
-          operation: OPERATORS.Contains,
-        },
-      ],
-    }),
-    ...(!isFilterEmpty && {
-      orCriterion: [
-        ...(filterData.category && filterData.category.length >= 1
-          ? [
-              generateSearchCriterion(
-                'categoryId',
-                filterData.category.map((item) => item.value),
-                OPERATORS.Equals
-              ),
-            ]
-          : []),
-        ...(filterData.status && filterData.status.length >= 1
-          ? [
-              generateSearchCriterion(
-                'AssetStatusId',
-                filterData.status.map((item) => item.value),
-                OPERATORS.Equals
-              ),
-            ]
-          : []),
-        ...(filterData.region && filterData.region.length >= 1
-          ? [
-              generateSearchCriterion(
-                'stateId',
-                filterData.region.map((item) => item.value),
-                OPERATORS.Equals
-              ),
-            ]
-          : []),
-        ...(filterData.area && filterData.area.length >= 1
-          ? [
-              generateSearchCriterion(
-                'lgaId',
-                filterData.area.map((item) => item.value),
-                OPERATORS.Equals
-              ),
-            ]
-          : []),
-        ...(filterData.branch && filterData.branch.length >= 1
-          ? [
-              generateSearchCriterion(
-                'facilityId',
-                filterData.branch.map((item) => item.value),
-                OPERATORS.Equals
-              ),
-            ]
-          : []),
-      ].filter((criterion) => criterion.length > 0),
-    }),
-    pageNumber: currentPage,
-    pageSize: pageSize,
-  };
-
-  // Function that handles search/filters
   const handleSearch = useCallback(async () => {
-    if (search || !isFilterEmpty) {
-      const response = await handleSubmit(searchAsset, searchCriterion, '');
-      response?.data?.data && setSearchData(response?.data?.data);
-    }
-  }, [searchAsset, searchCriterion]);
+    const { orCriterion } = generateSearchCriteria(
+      search,
+      appliedFilter,
+      {
+        category: {
+          key: 'categoryId',
+          operator: OPERATORS.Equals,
+        },
+        status: { key: 'AssetStatusId', operator: OPERATORS.Equals },
+        region: { key: 'stateId', operator: OPERATORS.Equals },
+        area: { key: 'lgaId', operator: OPERATORS.Equals },
+        branch: { key: 'facilityId', operator: OPERATORS.Equals },
+      },
+      ['assetName']
+    );
+    const payload = {
+      pageNumber,
+      pageSize,
+      orCriterion,
+    };
 
-  // Trigger search when search input changes or pagination updates
+    if (orCriterion.length > 0) {
+      const response = await handleSubmit(searchAsset, payload, '');
+      setSearchData(response?.data?.data);
+    }
+  }, [searchAsset, search, appliedFilter, pageNumber, pageSize]);
+
+  // Trigger search when search or input changes or applied filter changes or pagination updates
   useEffect(() => {
     if (search || !isFilterEmpty) {
       handleSearch();
     }
-  }, [search, currentPage, pageSize]);
+  }, [search, appliedFilter, pageNumber, pageSize]);
 
-  // Reset pagination when the search input or filter changes
+  // Reset pagination when clearing the search
   useEffect(() => {
-    setPageSize(DEFAULT_PAGE_SIZE);
-    setCurrentPage(1);
-  }, [search, isFilterEmpty]);
+    if (!search || isFilterEmpty) {
+      setPageSize(DEFAULT_PAGE_SIZE);
+      setPageNumber(1);
+    }
+  }, [search, appliedFilter]);
 
   // Open Detail Modal if assetId exists
   useEffect(() => {
@@ -186,13 +155,6 @@ const ListView = (props: ListViewProps) => {
     }
   }, [selectedRows]);
 
-  //Handle apply Filter
-  const handleApplyFilter = () => {
-    setCurrentPage(1);
-    setPageSize(DEFAULT_PAGE_SIZE);
-    handleSearch();
-  };
-
   // SignalR Connection
   const connectionState = useSignalR('asset-hub');
 
@@ -206,7 +168,7 @@ const ListView = (props: ListViewProps) => {
         assetApi.util.updateQueryData(
           'getAllAsset',
           {
-            pageNumber: currentPage,
+            pageNumber: pageNumber,
             pageSize,
           },
           (draft) => {
@@ -229,7 +191,7 @@ const ListView = (props: ListViewProps) => {
         assetApi.util.updateQueryData(
           'getAllAsset',
           {
-            pageNumber: currentPage,
+            pageNumber: pageNumber,
             pageSize,
           },
           (draft) => {
@@ -254,7 +216,16 @@ const ListView = (props: ListViewProps) => {
           <AssetFilterDisplay
             activeFilter={activeFilter}
             isOpen={openFilter}
-            handleApplyFilter={handleApplyFilter}
+            filterData={filterData}
+            setFilterData={setFilterData}
+            onApply={() => {
+              applyFilter();
+              handleSearch(); // manually trigger
+            }}
+            onClear={() => {
+              clearFilter();
+              handleSearch(); // to reload default data
+            }}
           />
         </Flex>
         <AssetTable
@@ -265,8 +236,8 @@ const ListView = (props: ListViewProps) => {
           }
           isLoading={isLoading}
           isFetching={isFetching || searchLoading}
-          pageNumber={currentPage}
-          setPageNumber={setCurrentPage}
+          pageNumber={pageNumber}
+          setPageNumber={setPageNumber}
           pageSize={pageSize}
           setPageSize={setPageSize}
           totalPages={

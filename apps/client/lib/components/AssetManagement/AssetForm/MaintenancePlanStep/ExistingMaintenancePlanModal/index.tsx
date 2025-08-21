@@ -20,8 +20,9 @@ import { ListResponse } from '@repo/interfaces';
 import { initialFilterData } from '~/lib/components/Maintenance/Plans';
 import { Flex } from '@chakra-ui/react';
 import Filters from '~/lib/components/Maintenance/Plans/Filters';
-import { generateSearchCriterion } from '@repo/utils';
+import { generateSearchCriteria } from '@repo/utils';
 import _ from 'lodash';
+import { usePageFilter } from '~/lib/hooks/usePageFilter';
 
 interface ExistingMaintenancePlanModalProps {
   isOpen: boolean;
@@ -37,92 +38,73 @@ const ExistingMaintenancePlanModal = (
   const dispatch = useAppDispatch();
   const { maintenancePlans: existingSelectedPlans, newMaintenancePlanIds } =
     useAppSelector((state) => state.asset.assetForm);
-  const { data, isLoading, isFetching } = useGetAllMaintenancePlanQuery(
-    {
-      pageNumber,
-      pageSize,
-    },
-    { skip: search !== '' || !isOpen }
-  );
+
   const [searchMaintenancePlan, { isLoading: searchLoading }] =
     useSearchMaintenancePlanMutation({});
-  const [searchData, setSearchData] =
-    useState<ListResponse<MaintenancePlan> | null>(null);
+  const [searchData, setSearchData] = useState<
+    ListResponse<MaintenancePlan> | undefined
+  >(undefined);
   const { handleSubmit } = useCustomMutation();
   const [showDetails, setShowDetails] = useState(false);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   // eslint-disable-next-line no-unused-vars
   const [field, meta, helpers] = useField('maintenancePlans');
-  const [filterData, setFilterData] = useState<PlanFilter>(initialFilterData);
 
-  // Checks if all filterdata is empty
-  const isFilterEmpty = _.every(
+  const {
     filterData,
-    (value) => _.isArray(value) && _.isEmpty(value)
+    setFilterData,
+    appliedFilter,
+    isFilterEmpty,
+    applyFilter,
+    clearFilter,
+  } = usePageFilter<PlanFilter>(initialFilterData);
+
+  const { data, isLoading, isFetching } = useGetAllMaintenancePlanQuery(
+    {
+      pageNumber,
+      pageSize,
+    },
+    { skip: search !== '' || !isOpen || !isFilterEmpty }
   );
 
-  const searchCriterion = {
-    ...(search && {
-      criterion: [
-        {
-          columnName: 'planName',
-          columnValue: search,
-          operation: OPERATORS.Contains,
-        },
-      ],
-    }),
-    ...(!isFilterEmpty && {
-      orCriterion: [
-        ...(filterData.planType && filterData.planType.length >= 1
-          ? [
-              generateSearchCriterion(
-                'planTypeId',
-                filterData.planType.map((item) => item.value),
-                OPERATORS.Equals
-              ),
-            ]
-          : []),
-        ...(filterData.region && filterData.region.length >= 1
-          ? [
-              generateSearchCriterion(
-                'stateId',
-                filterData.region.map((item) => item.value),
-                OPERATORS.Equals
-              ),
-            ]
-          : []),
-        ...(filterData.area && filterData.area.length >= 1
-          ? [
-              generateSearchCriterion(
-                'lgaId',
-                filterData.area.map((item) => item.value),
-                OPERATORS.Equals
-              ),
-            ]
-          : []),
-        ...(filterData.branch && filterData.branch.length >= 1
-          ? [
-              generateSearchCriterion(
-                'facilityId',
-                filterData.branch.map((item) => item.value),
-                OPERATORS.Equals
-              ),
-            ]
-          : []),
-      ],
-    }),
-    pageNumber: pageNumber,
-    pageSize: pageSize,
-  };
-
   const handleSearch = useCallback(async () => {
-    const response = await handleSubmit(
-      searchMaintenancePlan,
-      searchCriterion,
-      ''
+    const { orCriterion } = generateSearchCriteria(
+      search,
+      appliedFilter,
+      {
+        planType: { key: 'planTypeId', operator: OPERATORS.Equals },
+        region: { key: 'stateId', operator: OPERATORS.Equals },
+        area: { key: 'lgaId', operator: OPERATORS.Equals },
+        branch: { key: 'facilityId', operator: OPERATORS.Equals },
+      },
+      ['planName']
     );
-    response?.data?.data && setSearchData(response?.data?.data);
-  }, [searchMaintenancePlan, searchCriterion]);
+    const payload = {
+      pageNumber,
+      pageSize,
+      orCriterion,
+    };
+
+    if (orCriterion.length > 0) {
+      const response = await handleSubmit(searchMaintenancePlan, payload, '');
+      setSearchData(response?.data?.data);
+    }
+  }, [searchMaintenancePlan, search, appliedFilter, pageNumber, pageSize]);
+
+  // Trigger search when search or input changes or applied filter changes or pagination updates
+  useEffect(() => {
+    if (search || !isFilterEmpty) {
+      handleSearch();
+    }
+  }, [search, appliedFilter, pageNumber, pageSize]);
+
+  // Reset pagination when clearing the search
+  useEffect(() => {
+    if (!search || isFilterEmpty) {
+      setPageSize(DEFAULT_PAGE_SIZE);
+      setPageNumber(1);
+    }
+  }, [search, appliedFilter]);
 
   // Removes Plans Duplicate
   const removeDuplicate = (
@@ -143,21 +125,6 @@ const ExistingMaintenancePlanModal = (
 
     return uniqueMaintenancePlans;
   };
-
-  // Trigger search when search input changes or pagination updates
-  useEffect(() => {
-    if (search) {
-      handleSearch();
-    }
-  }, [search, pageNumber, pageSize]);
-
-  // Reset pagination when clearing the search
-  useEffect(() => {
-    if (!search) {
-      setPageSize(DEFAULT_PAGE_SIZE);
-      setPageNumber(1);
-    }
-  }, [search]);
 
   const handleAddDocuments = () => {
     const selectedMaintenancePlans: MaintenancePlan[] = [];
@@ -225,7 +192,14 @@ const ExistingMaintenancePlanModal = (
           <Filters
             filterData={filterData}
             setFilterData={setFilterData}
-            handleApplyFilter={handleSearch}
+            onApply={() => {
+              applyFilter();
+              handleSearch(); // manually trigger
+            }}
+            onClear={() => {
+              clearFilter();
+              handleSearch(); // to reload default data
+            }}
           />
         </Flex>
       }

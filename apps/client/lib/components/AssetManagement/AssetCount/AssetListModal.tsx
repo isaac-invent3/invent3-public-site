@@ -1,5 +1,5 @@
 import { useDisclosure } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import GenericTemplateModal from '~/lib/components/Common/Modals/GenericTemplateModal';
 import {
   Asset,
@@ -40,12 +40,17 @@ const AssetListModal = (props: AssetListModalProps) => {
     setPageSize,
     setPageNumber,
     Filter,
+    applyFilter,
   } = useAssetTemplateInfo({
     handleSelectRow,
     search,
     columnType: columnName,
     columnId: columnId,
   });
+
+  useEffect(() => {
+    applyFilter();
+  }, []);
 
   return (
     <>

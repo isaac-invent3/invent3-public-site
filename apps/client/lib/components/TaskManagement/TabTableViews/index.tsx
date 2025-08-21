@@ -1,6 +1,6 @@
 import { Flex } from '@chakra-ui/react';
 import { ListResponse } from '@repo/interfaces';
-import { generateSearchCriterion } from '@repo/utils';
+import { generateSearchCriteria, generateSearchCriterion } from '@repo/utils';
 import _ from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
@@ -10,6 +10,7 @@ import { useSearchTaskInstancesMutation } from '~/lib/redux/services/task/instan
 import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 import TaskInstanceTable from '../Tables/TaskInstanceTable';
 import Filters from './Filters';
+import { usePageFilter } from '~/lib/hooks/usePageFilter';
 
 export const initialFilterData = {
   region: [],
@@ -53,110 +54,90 @@ const TabTableView = (props: TabTableViewProps) => {
     handleSelectRow,
     setSelectedRows,
   } = props;
-  const [filterData, setFilterData] = useState<TaskFilter>(initialFilterData);
   const { handleSubmit } = useCustomMutation();
   const [selectedTaskIds, setSelectedTaskIds] = useState<number[]>([]);
-
-  // Checks if all filterdata is empty
-  const isFilterEmpty = _.every(
-    filterData,
-    (value) => _.isArray(value) && _.isEmpty(value)
-  );
-
   const [searchTask, { isLoading: searchLoading }] =
     useSearchTaskInstancesMutation({});
-  const [searchData, setSearchData] =
-    useState<ListResponse<TaskInstance> | null>(null);
+  const [searchData, setSearchData] = useState<
+    ListResponse<TaskInstance> | undefined
+  >(undefined);
 
-  // Search Criterion
-  const searchCriterion = {
-    ...((!isFilterEmpty || search) && {
-      orCriterion: [
-        ...(filterData.users && filterData.users.length >= 1
-          ? [
-              generateSearchCriterion(
-                'assignedToEmployeeId',
-                filterData.users.map((item) => item.value),
-                OPERATORS.Equals
-              ),
-            ]
-          : []),
-        ...(filterData.region && filterData.region.length >= 1
-          ? [
-              generateSearchCriterion(
-                'stateId',
-                filterData.region.map((item) => item.value),
-                OPERATORS.Equals
-              ),
-            ]
-          : []),
-        ...(filterData.area && filterData.area.length >= 1
-          ? [
-              generateSearchCriterion(
-                'lgaId',
-                filterData.area.map((item) => item.value),
-                OPERATORS.Equals
-              ),
-            ]
-          : []),
-        ...(filterData.branch && filterData.branch.length >= 1
-          ? [
-              generateSearchCriterion(
-                'facilityId',
-                filterData.branch.map((item) => item.value),
-                OPERATORS.Equals
-              ),
-            ]
-          : []),
+  const {
+    filterData,
+    setFilterData,
+    appliedFilter,
+    isFilterEmpty,
+    applyFilter,
+    clearFilter,
+  } = usePageFilter<TaskFilter>(initialFilterData);
 
-        ...(search
-          ? [
-              [
-                {
-                  columnName: 'taskInstanceName',
-                  columnValue: search,
-                  operation: OPERATORS.Contains,
-                },
-                ...(!isNaN(Number(search))
-                  ? [
-                      'taskInstanceId',
-                      'scheduleInstanceId',
-                      'assignedToEmployeeId',
-                    ].map((item) => ({
-                      columnName: item,
-                      columnValue: search,
-                      operation: OPERATORS.Equals,
-                    }))
-                  : []),
-              ],
-            ]
-          : []),
-      ],
-    }),
-    pageNumber: currentPage,
-    pageSize: pageSize,
-  };
-
-  // Function that handles search/filters
   const handleSearch = useCallback(async () => {
-    if (search || !isFilterEmpty) {
-      const response = await handleSubmit(searchTask, searchCriterion, '');
-      response?.data?.data && setSearchData(response?.data?.data);
-    }
-  }, [searchTask, searchCriterion]);
+    const { orCriterion } = generateSearchCriteria(
+      search,
+      appliedFilter,
+      {
+        users: {
+          key: 'assignedToEmployeeId',
+          operator: OPERATORS.Equals,
+        },
+        region: { key: 'stateId', operator: OPERATORS.Equals },
+        area: { key: 'lgaId', operator: OPERATORS.Equals },
+        branch: { key: 'facilityId', operator: OPERATORS.Equals },
+      },
+      []
+    );
+    const finalOrCriterion = [
+      ...orCriterion,
+      ...(specificSearchCriterion ? [[specificSearchCriterion]] : []),
+      ...(search
+        ? [
+            [
+              {
+                columnName: 'taskInstanceName',
+                columnValue: search,
+                operation: OPERATORS.Contains,
+              },
+              ...(!isNaN(Number(search))
+                ? [
+                    'taskInstanceId',
+                    'scheduleInstanceId',
+                    'assignedToEmployeeId',
+                  ].map((item) => ({
+                    columnName: item,
+                    columnValue: search,
+                    operation: OPERATORS.Equals,
+                  }))
+                : []),
+            ],
+          ]
+        : []),
+    ];
+    const payload = {
+      pageNumber: currentPage,
+      pageSize,
+      orCriterion: finalOrCriterion,
+    };
 
-  // Trigger search when search input changes or pagination updates
+    if (finalOrCriterion.length > 0) {
+      const response = await handleSubmit(searchTask, payload, '');
+      setSearchData(response?.data?.data);
+    }
+  }, [searchTask, search, appliedFilter, currentPage, pageSize]);
+
+  // Trigger search when search or input changes or applied filter changes or pagination updates
   useEffect(() => {
-    if (search) {
+    if (search || !isFilterEmpty) {
       handleSearch();
     }
-  }, [search, currentPage, pageSize]);
+  }, [search, appliedFilter, currentPage, pageSize]);
 
-  // Reset pagination when the search input is cleared or apply filter flag is false
+  // Reset pagination when clearing the search
   useEffect(() => {
-    setPageSize(DEFAULT_PAGE_SIZE);
-    setCurrentPage(1);
-  }, [search, isFilterEmpty]);
+    if (!search || isFilterEmpty) {
+      setPageSize(DEFAULT_PAGE_SIZE);
+      setCurrentPage(1);
+    }
+  }, [search, appliedFilter]);
 
   useEffect(() => {
     if (selectedRows && selectedRows.length > 0) {
@@ -170,20 +151,20 @@ const TabTableView = (props: TabTableViewProps) => {
     }
   }, [selectedRows]);
 
-  //Handle apply Filter
-  const handleApplyFilter = () => {
-    setCurrentPage(1);
-    setPageSize(DEFAULT_PAGE_SIZE);
-    handleSearch();
-  };
-
   return (
     <Flex width="full" direction="column" mt="16px">
       <Flex width="full" mb="16px">
         <Filters
           filterData={filterData}
           setFilterData={setFilterData}
-          handleApplyFilter={handleApplyFilter}
+          onApply={() => {
+            applyFilter();
+            handleSearch(); // manually trigger
+          }}
+          onClear={() => {
+            clearFilter();
+            handleSearch(); // to reload default data
+          }}
           activeFilter={activeFilter}
           isOpen={openFilter}
           selectedTaskIds={selectedTaskIds ?? []}

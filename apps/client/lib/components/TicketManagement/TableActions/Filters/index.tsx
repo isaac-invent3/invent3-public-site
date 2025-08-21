@@ -12,12 +12,12 @@ import UsersFilter from '~/lib/components/Common/FilterComponents/UsersFilter';
 interface FiltersProps {
   filterData: TicketFilter;
   setFilterData: React.Dispatch<React.SetStateAction<TicketFilter>>;
-  handleApplyFilter: () => void;
+  onApply: () => void;
+  onClear: () => void;
   ticketCategory: TicketCategory;
 }
 const Filters = (props: FiltersProps) => {
-  const { filterData, setFilterData, handleApplyFilter, ticketCategory } =
-    props;
+  const { filterData, setFilterData, onApply, onClear, ticketCategory } = props;
 
   type FilterLabel = keyof TicketFilter;
 
@@ -47,13 +47,7 @@ const Filters = (props: FiltersProps) => {
     });
   };
   return (
-    <FilterWrapper
-      handleApplyFilter={handleApplyFilter}
-      handleClearFilter={() => {
-        setFilterData(initialFilterData);
-        handleApplyFilter();
-      }}
-    >
+    <FilterWrapper handleApplyFilter={onApply} handleClearFilter={onClear}>
       <TicketTypeFilter
         selectedOptions={filterData.ticketTypes.map((item) => ({
           value: item.value,

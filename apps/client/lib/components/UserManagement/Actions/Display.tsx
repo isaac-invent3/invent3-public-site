@@ -9,18 +9,20 @@ interface UserActionDisplayProps {
   activeAction: ActionType;
   filterData: UserFilter;
   setFilterData: React.Dispatch<React.SetStateAction<UserFilter>>;
-  handleApplyFilter: () => void;
+  onApply: () => void;
+  onClear: () => void;
 }
 const UserActionDisplay = (props: UserActionDisplayProps) => {
-  const { isOpen, activeAction, handleApplyFilter, filterData, setFilterData } =
+  const { isOpen, activeAction, onApply, onClear, filterData, setFilterData } =
     props;
   return (
     <FilterDisplay isOpen={isOpen}>
       {activeAction === 'filter' && (
         <Filters
-          handleApplyFilter={handleApplyFilter}
           filterData={filterData}
           setFilterData={setFilterData}
+          onApply={onApply}
+          onClear={onClear}
         />
       )}
     </FilterDisplay>

@@ -11,10 +11,11 @@ import moment from 'moment';
 interface FiltersProps {
   filterData: PlanFilter;
   setFilterData: React.Dispatch<React.SetStateAction<PlanFilter>>;
-  handleApplyFilter: () => void;
+  onApply: () => void;
+  onClear: () => void;
 }
 const Filters = (props: FiltersProps) => {
-  const { filterData, setFilterData, handleApplyFilter } = props;
+  const { filterData, setFilterData, onApply, onClear } = props;
 
   type FilterLabel = keyof PlanFilter;
 
@@ -50,13 +51,7 @@ const Filters = (props: FiltersProps) => {
     });
   };
   return (
-    <FilterWrapper
-      handleApplyFilter={handleApplyFilter}
-      handleClearFilter={() => {
-        setFilterData(initialFilterData);
-        handleApplyFilter();
-      }}
-    >
+    <FilterWrapper handleApplyFilter={onApply} handleClearFilter={onClear}>
       <PlanTypeFilter
         selectedOptions={filterData.planType}
         handleSelectedOption={(value) => handleFilterData(value, 'planType')}

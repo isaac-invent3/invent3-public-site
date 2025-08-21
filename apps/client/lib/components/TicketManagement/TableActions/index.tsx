@@ -9,7 +9,8 @@ import {
 interface TableActionsProps {
   filterData: TicketFilter;
   setFilterData: React.Dispatch<React.SetStateAction<TicketFilter>>;
-  handleApplyFilter: () => void;
+  onApply: () => void;
+  onClear: () => void;
   isOpen: boolean;
   activeFilter: 'bulk' | 'general' | null;
   selectedTicketIds: number[];
@@ -19,7 +20,8 @@ const TableActions = (props: TableActionsProps) => {
   const {
     filterData,
     setFilterData,
-    handleApplyFilter,
+    onApply,
+    onClear,
     activeFilter,
     isOpen,
     selectedTicketIds,
@@ -35,7 +37,8 @@ const TableActions = (props: TableActionsProps) => {
         <Filters
           filterData={filterData}
           setFilterData={setFilterData}
-          handleApplyFilter={handleApplyFilter}
+          onApply={onApply}
+          onClear={onClear}
           ticketCategory={ticketCategory}
         />
       )}

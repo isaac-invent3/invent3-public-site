@@ -38,7 +38,7 @@ import { FilterButton, SearchInput } from '@repo/ui/components';
 import { BulkSearchIcon, FilterIcon } from '../CustomIcons';
 import TableActions from './TableActions';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { generateSearchCriterion } from '@repo/utils';
+import { generateSearchCriteria } from '@repo/utils';
 import { OPERATORS } from '@repo/constants';
 import { BaseApiResponse, ListResponse } from '@repo/interfaces';
 import _ from 'lodash';
@@ -46,6 +46,7 @@ import useSignalR from '~/lib/hooks/useSignalR';
 import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
 import LoadingDrawer from './Drawers/LoadingDrawer';
 import { setSelectedTicket } from '~/lib/redux/slices/TicketSlice';
+import { usePageFilter } from '~/lib/hooks/usePageFilter';
 
 export const ALlTicketTabs = [
   'New',
@@ -67,7 +68,6 @@ const TicketManagement = () => {
   const router = useRouter();
   const { getSearchParam } = useCustomSearchParams();
   const [tabIndex, setTabIndex] = useState<number | undefined>(undefined);
-  const [filterData, setFilterData] = useState<TicketFilter>(initialFilterData);
   const [activeFilter, setActiveFilter] = useState<'bulk' | 'general' | null>(
     null
   );
@@ -84,7 +84,7 @@ const TicketManagement = () => {
   const selectedTicket = useAppSelector((state) => state.ticket.selectedTicket);
   const { handleSubmit } = useCustomMutation();
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [selectedTicketIds, setSelectedTicketIds] = useState<number[]>([]);
   const appConfigValue = useAppSelector(
@@ -166,121 +166,74 @@ const TicketManagement = () => {
     return 'new';
   }, [tabIndex]);
 
-  // Checks if all filterdata is empty
-  const isFilterEmpty = _.every(
-    filterData,
-    (value) => _.isArray(value) && _.isEmpty(value)
-  );
-
-  const { data, isLoading, isFetching } = useGetTicketsByTabScopeQuery(
-    {
-      pageNumber: currentPage,
-      pageSize: pageSize,
-      tabScopeName: getTicketCategory,
-    },
-    { skip: !isFilterEmpty || search !== '' }
-  );
   const dispatch = useAppDispatch();
 
   const [searchTickets, { isLoading: searchLoading }] =
     useSearchTicketsMutation({});
-  const [searchData, setSearchData] = useState<BaseApiResponse<
-    ListResponse<Ticket>
-  > | null>(null);
+  const [searchData, setSearchData] = useState<
+    BaseApiResponse<ListResponse<Ticket>> | undefined
+  >(undefined);
 
-  // Search Criterion
-  const searchCriterion = {
-    ...(search && {
-      criterion: [
-        {
-          columnName: 'ticketTitle',
-          columnValue: search,
-          operation: OPERATORS.Contains,
-        },
-      ],
-    }),
-    ...(!isFilterEmpty && {
-      orCriterion: [
-        [
-          {
-            columnName: 'ticketTitle',
-            columnValue: search,
-            operation: OPERATORS.Contains,
-          },
-        ],
-        ...(filterData.users && filterData.users.length >= 1
-          ? [
-              generateSearchCriterion(
-                'assignedToEmployeeId',
-                filterData.users.map((item) => item.value),
-                OPERATORS.Equals
-              ),
-            ]
-          : []),
-        ...(filterData.ticketTypes && filterData.ticketTypes.length >= 1
-          ? [
-              generateSearchCriterion(
-                'ticketTypeId',
-                filterData.ticketTypes.map((item) => item.value),
-                OPERATORS.Equals
-              ),
-            ]
-          : []),
-        ...(filterData.region && filterData.region.length >= 1
-          ? [
-              generateSearchCriterion(
-                'stateId',
-                filterData.region.map((item) => item.value),
-                OPERATORS.Equals
-              ),
-            ]
-          : []),
-        ...(filterData.area && filterData.area.length >= 1
-          ? [
-              generateSearchCriterion(
-                'lgaId',
-                filterData.area.map((item) => item.value),
-                OPERATORS.Equals
-              ),
-            ]
-          : []),
-        ...(filterData.branch && filterData.branch.length >= 1
-          ? [
-              generateSearchCriterion(
-                'facilityId',
-                filterData.branch.map((item) => item.value),
-                OPERATORS.Equals
-              ),
-            ]
-          : []),
-      ],
-    }),
-    pageNumber: currentPage,
-    pageSize: pageSize,
-  };
+  const {
+    filterData,
+    setFilterData,
+    appliedFilter,
+    isFilterEmpty,
+    applyFilter,
+    clearFilter,
+  } = usePageFilter<TicketFilter>(initialFilterData);
 
-  // Function that handles search/filters
+  const { data, isLoading, isFetching } = useGetTicketsByTabScopeQuery(
+    {
+      pageNumber: pageNumber,
+      pageSize: pageSize,
+      tabScopeName: getTicketCategory,
+    },
+    { skip: search !== '' || !isFilterEmpty }
+  );
+
   const handleSearch = useCallback(async () => {
-    if (search || !isFilterEmpty) {
-      const response = await handleSubmit(searchTickets, searchCriterion, '');
-      response?.data && setSearchData(response?.data);
-    }
-  }, [searchTickets, searchCriterion]);
+    const { orCriterion } = generateSearchCriteria(
+      search,
+      appliedFilter,
+      {
+        users: {
+          key: 'assignedToEmployeeId',
+          operator: OPERATORS.Equals,
+        },
+        ticketTypes: { key: 'ticketTypeId', operator: OPERATORS.Equals },
+        region: { key: 'stateId', operator: OPERATORS.Equals },
+        area: { key: 'lgaId', operator: OPERATORS.Equals },
+        branch: { key: 'facilityId', operator: OPERATORS.Equals },
+      },
+      ['ticketTitle']
+    );
+    const payload = {
+      pageNumber,
+      pageSize,
+      orCriterion,
+    };
 
-  // Trigger search when search input changes or pagination updates
+    if (orCriterion.length > 0) {
+      const response = await handleSubmit(searchTickets, payload, '');
+      setSearchData(response?.data);
+    }
+  }, [searchTickets, search, appliedFilter, pageNumber, pageSize]);
+
+  // Trigger search when search or input changes or applied filter changes or pagination updates
   useEffect(() => {
     if (search || !isFilterEmpty) {
       handleSearch();
     }
-  }, [search, isFilterEmpty, currentPage, pageSize]);
+  }, [search, appliedFilter, pageNumber, pageSize]);
 
-  // Reset pagination when the search input is cleared or apply filter flag is false
+  // Reset pagination when clearing the search
   useEffect(() => {
     if (!search || isFilterEmpty) {
-      setCurrentPage(1);
       setPageSize(DEFAULT_PAGE_SIZE);
+      setPageNumber(1);
     }
-  }, [search, isFilterEmpty]);
+  }, [search, appliedFilter]);
 
   //Set Selected Ticket
   useEffect(() => {
@@ -330,7 +283,7 @@ const TicketManagement = () => {
           ticketApi.util.updateQueryData(
             'getTicketsByTabScope',
             {
-              pageNumber: currentPage,
+              pageNumber: pageNumber,
               pageSize,
               tabScopeName: getTicketCategory,
             },
@@ -356,7 +309,7 @@ const TicketManagement = () => {
         ticketApi.util.updateQueryData(
           'getTicketsByTabScope',
           {
-            pageNumber: currentPage,
+            pageNumber: pageNumber,
             pageSize,
             tabScopeName: getTicketCategory,
           },
@@ -399,7 +352,7 @@ const TicketManagement = () => {
         ticketApi.util.updateQueryData(
           'getTicketsByTabScope',
           {
-            pageNumber: currentPage,
+            pageNumber: pageNumber,
             pageSize,
             tabScopeName: getTicketCategory,
           },
@@ -486,8 +439,15 @@ const TicketManagement = () => {
                 <TableActions
                   filterData={filterData}
                   setFilterData={setFilterData}
-                  handleApplyFilter={handleApplyFilter}
                   activeFilter={activeFilter}
+                  onApply={() => {
+                    applyFilter();
+                    handleSearch(); // manually trigger
+                  }}
+                  onClear={() => {
+                    clearFilter();
+                    handleSearch(); // to reload default data
+                  }}
                   isOpen={isOpen}
                   selectedTicketIds={selectedTicketIds ?? []}
                   ticketCategory={getTicketCategory}
@@ -503,9 +463,9 @@ const TicketManagement = () => {
                 isLoading={isLoading}
                 isFetching={isFetching || searchLoading}
                 isSelectable
-                currentPage={currentPage}
+                currentPage={pageNumber}
                 pageSize={pageSize}
-                setCurrentPage={setCurrentPage}
+                setCurrentPage={setPageNumber}
                 setPageSize={setPageSize}
                 selectedRows={selectedRows}
                 setSelectedRows={setSelectedRows}

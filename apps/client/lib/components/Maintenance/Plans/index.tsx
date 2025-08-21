@@ -21,13 +21,14 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { FilterDisplay } from '@repo/ui/components';
 import MaintenancePlanTable from './PlanTable';
 import { ListResponse } from '@repo/interfaces';
-import { generateSearchCriterion } from '@repo/utils';
+import { generateSearchCriteria, generateSearchCriterion } from '@repo/utils';
 import PopoverAction from './PopoverAction';
 import PlanDetailsDrawer from './Drawers/PlanDetailDrawer';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import useSignalR from '~/lib/hooks/useSignalR';
 import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
 import { useAppDispatch } from '~/lib/redux/hooks';
+import { usePageFilter } from '~/lib/hooks/usePageFilter';
 
 export const initialFilterData = {
   planType: [],
@@ -46,80 +47,72 @@ interface PlansProp {
 
 const Plans = (props: PlansProp) => {
   const { search, openFilter, type = 'current' } = props;
-  const [filterData, setFilterData] = useState<PlanFilter>(initialFilterData);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const { data, isLoading, isFetching } = useGetAllMaintenancePlanQuery({
-    pageSize,
-    pageNumber: currentPage,
-  });
   const { handleSubmit } = useCustomMutation();
   const { getSearchParam } = useCustomSearchParams();
   const maintenancePlanId = getSearchParam('maintenancePlanId');
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { updateSearchParam, clearSearchParamsAfter } = useCustomSearchParams();
   const dispatch = useAppDispatch();
-
-  // Checks if all filterdata is empty
-  const isFilterEmpty = _.every(
-    filterData,
-    (value) => (_.isArray(value) && _.isEmpty(value)) || value === undefined
-  );
-
   const [searchPlan, { isLoading: searchLoading }] =
     useSearchMaintenancePlanMutation({});
-  const [searchData, setSearchData] =
-    useState<ListResponse<MaintenancePlan> | null>(null);
+  const [searchData, setSearchData] = useState<
+    ListResponse<MaintenancePlan> | undefined
+  >(undefined);
 
-  // Search Criterion
-  const searchCriterion = {
-    ...(search && {
-      criterion: [
-        {
-          columnName: 'planName',
-          columnValue: search,
-          operation: OPERATORS.Contains,
-        },
-      ],
-    }),
+  const {
+    filterData,
+    setFilterData,
+    appliedFilter,
+    isFilterEmpty,
+    applyFilter,
+    clearFilter,
+  } = usePageFilter<PlanFilter>(initialFilterData);
 
-    orCriterion: isFilterEmpty
-      ? undefined
-      : [
-          ...(filterData.planType && filterData.planType.length >= 1
-            ? [
-                generateSearchCriterion(
-                  'planTypeId',
-                  filterData.planType.map((item) => item.value),
-                  OPERATORS.Equals
-                ),
-              ]
-            : []),
-        ],
-    pageNumber: currentPage,
-    pageSize: pageSize,
-  };
-
-  // Function that handles search/filters
-  const handleSearch = useCallback(async () => {
-    if (search || !isFilterEmpty) {
-      const response = await handleSubmit(searchPlan, searchCriterion, '');
-      response?.data?.data && setSearchData(response?.data?.data);
+  const { data, isLoading, isFetching } = useGetAllMaintenancePlanQuery(
+    {
+      pageSize,
+      pageNumber: pageNumber,
+    },
+    {
+      skip: search !== '' || !isFilterEmpty,
     }
-  }, [searchPlan, searchCriterion]);
+  );
 
-  // Trigger search when search input changes or pagination updates
+  const handleSearch = useCallback(async () => {
+    const { orCriterion } = generateSearchCriteria(
+      search,
+      appliedFilter,
+      { planType: { key: 'planTypeId', operator: OPERATORS.Equals } },
+      ['planName']
+    );
+    const payload = {
+      pageNumber,
+      pageSize,
+      orCriterion,
+    };
+
+    if (orCriterion.length > 0) {
+      const response = await handleSubmit(searchPlan, payload, '');
+      setSearchData(response?.data?.data);
+    }
+  }, [searchPlan, search, appliedFilter, pageNumber, pageSize]);
+
+  // Trigger search when search or input changes or applied filter changes or pagination updates
   useEffect(() => {
-    if (search) {
+    if (search || !isFilterEmpty) {
       handleSearch();
     }
-  }, [search, currentPage, pageSize]);
+  }, [search, appliedFilter, pageNumber, pageSize]);
 
-  // Reset pagination when the search input is cleared or apply filter flag is false
+  // Reset pagination when clearing the search
   useEffect(() => {
-    setPageSize(DEFAULT_PAGE_SIZE);
-    setCurrentPage(1);
-  }, [search, isFilterEmpty]);
+    if (!search || isFilterEmpty) {
+      setPageSize(DEFAULT_PAGE_SIZE);
+      setPageNumber(1);
+    }
+  }, [search, appliedFilter]);
 
   //Open Plan detail drawer if plan id exists
   useEffect(() => {
@@ -127,13 +120,6 @@ const Plans = (props: PlansProp) => {
       onOpen();
     }
   }, [maintenancePlanId]);
-
-  //Handle apply Filter
-  const handleApplyFilter = () => {
-    setCurrentPage(1);
-    setPageSize(DEFAULT_PAGE_SIZE);
-    handleSearch();
-  };
 
   // SignalR Connection
   const connectionState = useSignalR('maintenanceplan-hub');
@@ -148,7 +134,7 @@ const Plans = (props: PlansProp) => {
         maintenancePlanApi.util.updateQueryData(
           'getAllMaintenancePlan',
           {
-            pageNumber: currentPage,
+            pageNumber: pageNumber,
             pageSize,
           },
           (draft) => {
@@ -171,7 +157,7 @@ const Plans = (props: PlansProp) => {
         maintenancePlanApi.util.updateQueryData(
           'getAllMaintenancePlan',
           {
-            pageNumber: currentPage,
+            pageNumber: pageNumber,
             pageSize,
           },
           (draft) => {
@@ -200,7 +186,7 @@ const Plans = (props: PlansProp) => {
         maintenancePlanApi.util.updateQueryData(
           'getAllMaintenancePlan',
           {
-            pageNumber: currentPage,
+            pageNumber: pageNumber,
             pageSize,
           },
           (draft) => {
@@ -224,7 +210,14 @@ const Plans = (props: PlansProp) => {
             <Filters
               filterData={filterData}
               setFilterData={setFilterData}
-              handleApplyFilter={handleApplyFilter}
+              onApply={() => {
+                applyFilter();
+                handleSearch(); // manually trigger
+              }}
+              onClear={() => {
+                clearFilter();
+                handleSearch(); // to reload default data
+              }}
             />
           </FilterDisplay>
         </Flex>
@@ -245,8 +238,8 @@ const Plans = (props: PlansProp) => {
         isSelectable={false}
         isLoading={isLoading}
         isFetching={isFetching || searchLoading}
-        pageNumber={currentPage}
-        setPageNumber={setCurrentPage}
+        pageNumber={pageNumber}
+        setPageNumber={setPageNumber}
         pageSize={pageSize}
         setPageSize={setPageSize}
         PopoverComponent={(plan) => PopoverAction(plan, 'current')}

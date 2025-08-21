@@ -9,10 +9,11 @@ import { UserFilter } from '~/lib/interfaces/user.interfaces';
 interface FiltersProps {
   filterData: UserFilter;
   setFilterData: React.Dispatch<React.SetStateAction<UserFilter>>;
-  handleApplyFilter: () => void;
+  onApply: () => void;
+  onClear: () => void;
 }
 const Filters = (props: FiltersProps) => {
-  const { filterData, setFilterData, handleApplyFilter } = props;
+  const { filterData, setFilterData, onApply, onClear } = props;
 
   // type FilterLabel = keyof UserFilter;
 
@@ -49,13 +50,7 @@ const Filters = (props: FiltersProps) => {
   // };
 
   return (
-    <FilterWrapper
-      handleApplyFilter={handleApplyFilter}
-      handleClearFilter={() => {
-        setFilterData(initialFilterData);
-        handleApplyFilter();
-      }}
-    >
+    <FilterWrapper handleApplyFilter={onApply} handleClearFilter={onClear}>
       <DateRangeFilter
         fromDate={
           filterData.startDate

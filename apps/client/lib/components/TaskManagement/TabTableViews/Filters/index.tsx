@@ -6,7 +6,8 @@ import { TaskFilter } from '~/lib/interfaces/task.interfaces';
 interface FiltersProps {
   filterData: TaskFilter;
   setFilterData: React.Dispatch<React.SetStateAction<TaskFilter>>;
-  handleApplyFilter: () => void;
+  onApply: () => void;
+  onClear: () => void;
   isOpen: boolean;
   activeFilter: 'bulk' | 'general' | null;
   selectedTaskIds: number[];
@@ -15,7 +16,8 @@ const Filters = (props: FiltersProps) => {
   const {
     filterData,
     setFilterData,
-    handleApplyFilter,
+    onApply,
+    onClear,
     activeFilter,
     isOpen,
     selectedTaskIds,
@@ -30,7 +32,8 @@ const Filters = (props: FiltersProps) => {
         <GeneralFilter
           filterData={filterData}
           setFilterData={setFilterData}
-          handleApplyFilter={handleApplyFilter}
+                onApply={onApply}
+          onClear={onClear}
         />
       )}
     </FilterDisplay>

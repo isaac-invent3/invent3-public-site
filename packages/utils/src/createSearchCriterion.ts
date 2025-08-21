@@ -89,7 +89,9 @@ export const generateSearchCriteria = (
       columnValue: search,
       operation: OPERATORS.Contains,
     }));
-    orCriterion.push(searchCriteria);
+    if (searchCriteria.length > 0) {
+      orCriterion.push(searchCriteria);
+    }
   }
 
   // Handle filter data
@@ -98,12 +100,19 @@ export const generateSearchCriteria = (
     if (!value || (Array.isArray(value) && value.length === 0)) return;
 
     const valuesArray = Array.isArray(value) ? value : [value];
+    // Normalize values: if object -> take .value, else keep as is
+    const finalArray = valuesArray.map((item) => {
+      if (typeof item === 'object' && item !== null && 'value' in item) {
+        return item.value;
+      }
+      return item;
+    });
     const keysArray = Array.isArray(config.key) ? config.key : [config.key];
 
     const filterCriteria: SearchCriterion[] = [];
 
     keysArray.forEach((key) => {
-      valuesArray.forEach((val) => {
+      finalArray.forEach((val) => {
         filterCriteria.push({
           columnName: key,
           columnValue: val,

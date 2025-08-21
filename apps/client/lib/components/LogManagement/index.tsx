@@ -17,7 +17,7 @@ import {
 } from '@repo/ui/components';
 import { FilterIcon } from '../CustomIcons';
 import _ from 'lodash';
-import { generateSearchCriterion } from '@repo/utils';
+import { generateSearchCriteria, generateSearchCriterion } from '@repo/utils';
 import LogTable from './LogTable';
 import {
   useGetAllAuditRecordsQuery,
@@ -32,6 +32,7 @@ import { updateSelectedTableIds } from '~/lib/redux/slices/CommonSlice';
 import useExport from '~/lib/hooks/useExport';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import { setAuditLog } from '~/lib/redux/slices/AuditLogSlice';
+import { usePageFilter } from '~/lib/hooks/usePageFilter';
 
 export const initialFilterData = {
   userIds: [],
@@ -70,10 +71,15 @@ const LogManagement = () => {
   const { handleSubmit } = useCustomMutation();
   const [searchLog, { isLoading: searchLoading }] =
     useSearchAuditRecordsMutation({});
-  const [filterData, setFilterData] = useState<LogFilter>(initialFilterData);
 
-  // Checks if all filterdata is empty
-  const isFilterEmpty = _.every(filterData, (value) => _.isEmpty(value));
+  const {
+    filterData,
+    setFilterData,
+    appliedFilter,
+    isFilterEmpty,
+    applyFilter,
+    clearFilter,
+  } = usePageFilter<LogFilter>(initialFilterData);
 
   const { data, isLoading, isFetching } = useGetAllAuditRecordsQuery(
     {
@@ -83,78 +89,56 @@ const LogManagement = () => {
     { skip: !isFilterEmpty || search !== '' }
   );
 
-  const searchCriterion = {
-    ...((!isFilterEmpty || search) && {
-      orCriterion: [
-        ...(filterData.systemContextTypeIds &&
-        filterData.systemContextTypeIds.length > 0
-          ? [
-              generateSearchCriterion(
-                'systemModuleContextTypeId',
-                filterData.systemContextTypeIds.map((item) => item),
-                OPERATORS.Equals
-              ),
-            ]
-          : []),
-        ...[filterData.startDate]
-          .filter(Boolean)
-          .map((item) => [
-            ...generateSearchCriterion(
-              'dateCreated',
-              [item as string],
-              OPERATORS.GreaterThan
-            ),
-          ]),
-        ...[filterData.endDate]
-          .filter(Boolean)
-          .map((item) => [
-            ...generateSearchCriterion(
-              'dateCreated',
-              [item as string],
-              OPERATORS.LessThanOrEquals
-            ),
-          ]),
-        ...(search
-          ? [
-              [
-                ...['username', 'firstName', 'lastName', 'email'].map(
-                  (item) => ({
-                    columnName: item,
-                    columnValue: search,
-                    operation: OPERATORS.Contains,
-                  })
-                ),
-                ...(!isNaN(Number(search))
-                  ? [
-                      {
-                        columnName: 'auditRecordId',
-                        columnValue: search,
-                        operation: OPERATORS.Equals,
-                      },
-                    ]
-                  : []),
-              ],
-            ]
-          : []),
-      ],
-    }),
-    pageNumber,
-    pageSize,
-  };
-
   const handleSearch = useCallback(async () => {
-    if (search !== '' || !isFilterEmpty) {
-      const response = await handleSubmit(searchLog, searchCriterion, '');
+    const { orCriterion } = generateSearchCriteria(search, appliedFilter, {
+      systemContextTypeIds: {
+        key: 'systemModuleContextTypeId',
+        operator: OPERATORS.Equals,
+      },
+      startDate: { key: 'dateCreated', operator: OPERATORS.GreaterThan },
+      endDate: { key: 'dateCreated', operator: OPERATORS.GreaterThan },
+    });
+    const finalOrCriterion = [
+      ...orCriterion,
+      ...(search
+        ? [
+            [
+              ...['username', 'firstName', 'lastName', 'email'].map((item) => ({
+                columnName: item,
+                columnValue: search,
+                operation: OPERATORS.Contains,
+              })),
+              ...(!isNaN(Number(search))
+                ? [
+                    {
+                      columnName: 'auditRecordId',
+                      columnValue: search,
+                      operation: OPERATORS.Equals,
+                    },
+                  ]
+                : []),
+            ],
+          ]
+        : []),
+    ];
+    const payload = {
+      pageNumber: pageNumber,
+      pageSize,
+      orCriterion: finalOrCriterion,
+    };
+
+    if (finalOrCriterion.length > 0) {
+      const response = await handleSubmit(searchLog, payload, '');
       setSearchData(response?.data?.data);
     }
-  }, [searchLog, searchCriterion]);
+  }, [searchLog, search, appliedFilter, pageNumber, pageSize]);
 
-  // Trigger search when search input changes or pagination updates
+  // Trigger search when search or input changes or applied filter changes or pagination updates
   useEffect(() => {
     if (search || !isFilterEmpty) {
       handleSearch();
     }
-  }, [search, pageNumber, pageSize]);
+  }, [search, appliedFilter, pageNumber, pageSize]);
 
   // Reset pagination when clearing the search
   useEffect(() => {
@@ -162,7 +146,7 @@ const LogManagement = () => {
       setPageSize(DEFAULT_PAGE_SIZE);
       setPageNumber(1);
     }
-  }, [search, isFilterEmpty]);
+  }, [search, appliedFilter]);
 
   // Open Detail Modal if assetId exists
   useEffect(() => {
@@ -232,9 +216,16 @@ const LogManagement = () => {
                 {isOpen && (
                   <Flex width="full" mt="8px">
                     <Filters
-                      handleApplyFilter={handleSearch}
                       setFilterData={setFilterData}
                       filterData={filterData}
+                      onApply={() => {
+                        applyFilter();
+                        handleSearch(); // manually trigger
+                      }}
+                      onClear={() => {
+                        clearFilter();
+                        handleSearch(); // to reload default data
+                      }}
                     />
                   </Flex>
                 )}

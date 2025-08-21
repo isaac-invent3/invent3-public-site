@@ -43,6 +43,7 @@ const initialCompanyFilter = {
   region: [],
   area: [],
   branch: [],
+  columnId: [],
 };
 
 export interface SliceProps {

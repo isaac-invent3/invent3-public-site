@@ -192,6 +192,8 @@ function SelectInput(props: SelectInputProps) {
           defaultOptions={options}
           loadOptions={promiseOptions}
           onMenuScrollToBottom={handleOnMenuScrollToBottom}
+          menuPortalTarget={document.body}
+          menuPosition="fixed"
           onFocus={handleFocus}
           onBlur={handleBlur}
           placeholder={title}
@@ -282,6 +284,10 @@ function SelectInput(props: SelectInputProps) {
             input: (provided) => ({
               ...provided,
               minWidth: 'auto',
+            }),
+            menuPortal: (base) => ({
+              ...base,
+              zIndex: 9999,
             }),
           }}
           defaultInputValue={defaultInputValue}

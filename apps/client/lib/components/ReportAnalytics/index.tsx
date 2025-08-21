@@ -17,6 +17,7 @@ import { useAppSelector } from '~/lib/redux/hooks';
 import {
   useGetAllDefaultReportsQuery,
   useGetAllSavedReportsQuery,
+  useGetCMFReportDasboardValuesQuery,
   useGetReportDasboardValuesQuery,
 } from '~/lib/redux/services/reports.services';
 import { DEFAULT_PAGE_SIZE, ROLE_IDS_ENUM } from '~/lib/utils/constants';
@@ -27,7 +28,7 @@ import DefaultReport from './ReportDashboard/DefaultReport';
 import ReportCard from './ReportDashboard/ReportCard';
 import SavedTemplate from './ReportDashboard/SavedTemplate';
 import TicketStatusPieChart from './ReportDashboard/TicketStatusPieChart';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ReportFilterInput } from '~/lib/interfaces/report.interfaces';
 
 const ReportAnalytics = () => {
@@ -49,13 +50,39 @@ const ReportAnalytics = () => {
     data: reportDashboardValues,
     isLoading: reportDashboardLoading,
     isFetching: isFetchingReportDashboard,
-  } = useGetReportDasboardValuesQuery({
-    startDate: moment(finalFilters.fromDate, 'DD/MM/YYYY').utc().toISOString(),
-    endDate: moment(finalFilters.toDate, 'DD/MM/YYYY').utc().toISOString(),
-    regionIds: finalFilters.region?.map((item) => item.value as number) || [],
-    lgaIds: finalFilters.area?.map((item) => item.value as number) || [],
-    facilityIds: finalFilters.branch?.map((item) => item.value as number) || [],
-  });
+  } = useGetReportDasboardValuesQuery(
+    {
+      startDate: moment(finalFilters.fromDate, 'DD/MM/YYYY')
+        .utc()
+        .toISOString(),
+      endDate: moment(finalFilters.toDate, 'DD/MM/YYYY').utc().toISOString(),
+      regionIds: finalFilters.region?.map((item) => item.value as number) || [],
+      lgaIds: finalFilters.area?.map((item) => item.value as number) || [],
+      facilityIds:
+        finalFilters.branch?.map((item) => item.value as number) || [],
+    },
+    { skip: !user || user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY) }
+  );
+
+  const {
+    data: cmfReportDashboardValues,
+    isLoading: cmfReportDashboardLoading,
+    isFetching: isFetchingCMFReportDashboard,
+  } = useGetCMFReportDasboardValuesQuery(
+    {
+      startDate: moment(finalFilters.fromDate, 'DD/MM/YYYY')
+        .utc()
+        .toISOString(),
+      endDate: moment(finalFilters.toDate, 'DD/MM/YYYY').utc().toISOString(),
+      regionIds: finalFilters.region?.map((item) => item.value as number) || [],
+      tenants:
+        finalFilters.companies?.map((item) => item.value as string) || [],
+      lgaIds: finalFilters.area?.map((item) => item.value as number) || [],
+      facilityIds:
+        finalFilters.branch?.map((item) => item.value as number) || [],
+    },
+    { skip: !user || !user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY) }
+  );
 
   const normalCardData = [
     {
@@ -94,33 +121,43 @@ const ReportAnalytics = () => {
   const cmfCardData = [
     {
       title: 'Total Client Companies Managed',
-      value: reportDashboardValues?.data.totalAssets?.statValue,
-      reportId: reportDashboardValues?.data.totalAssets?.reportId,
+      value:
+        cmfReportDashboardValues?.data?.totalClientCompaniesManaged?.statValue,
+      reportId:
+        cmfReportDashboardValues?.data?.totalClientCompaniesManaged?.reportId,
     },
     {
       title: 'Total Active Client Companies',
-      value: reportDashboardValues?.data.newAssets?.statValue,
-      reportId: reportDashboardValues?.data.newAssets?.reportId,
+      value:
+        cmfReportDashboardValues?.data?.totalActiveClientCompanies?.statValue,
+      reportId:
+        cmfReportDashboardValues?.data?.totalActiveClientCompanies?.reportId,
     },
     {
       title: 'Total Assets Under Management',
-      value: reportDashboardValues?.data.totalAssetsDisposed?.statValue,
-      reportId: reportDashboardValues?.data.totalAssetsDisposed?.reportId,
+      value:
+        cmfReportDashboardValues?.data?.totalAssetsUnderManagement?.statValue,
+      reportId:
+        cmfReportDashboardValues?.data?.totalAssetsUnderManagement?.reportId,
     },
     {
       title: 'Total Open Tickets',
-      value: reportDashboardValues?.data.totalMaintenanceCost?.statValue ?? 0,
-      reportId: reportDashboardValues?.data.totalMaintenanceCost?.reportId,
+      value: cmfReportDashboardValues?.data?.totalOpenTasks?.statValue ?? 0,
+      reportId: cmfReportDashboardValues?.data?.totalOpenTasks?.reportId,
     },
     {
       title: 'Total Maintenance Tasks Completed',
-      value: reportDashboardValues?.data.totalMaintenancePlans?.statValue,
-      reportId: reportDashboardValues?.data.totalMaintenancePlans?.reportId,
+      value: cmfReportDashboardValues?.data?.totalOpenTasks?.statValue,
+      reportId: cmfReportDashboardValues?.data?.totalOpenTasks?.reportId,
     },
     {
       title: 'Total Compliance Violations Logged',
-      value: reportDashboardValues?.data.totalTasks?.statValue,
-      reportId: reportDashboardValues?.data.totalTasks?.reportId,
+      value:
+        cmfReportDashboardValues?.data?.totalComplianceViolationsLogged
+          ?.statValue,
+      reportId:
+        cmfReportDashboardValues?.data?.totalComplianceViolationsLogged
+          ?.reportId,
       color: 'red.500',
     },
   ];
@@ -149,7 +186,9 @@ const ReportAnalytics = () => {
         borderBlock="1px solid #BBBBBB"
         justifyContent="space-between"
         direction={{ base: 'column', md: 'row' }}
-        opacity={isFetchingReportDashboard ? 0.7 : 1}
+        opacity={
+          isFetchingReportDashboard || isFetchingCMFReportDashboard ? 0.7 : 1
+        }
       >
         <Grid
           templateColumns={{
@@ -161,7 +200,7 @@ const ReportAnalytics = () => {
         >
           {cardData.map((card, index) => (
             <ReportCard
-              isLoading={reportDashboardLoading}
+              isLoading={reportDashboardLoading || cmfReportDashboardLoading}
               card={card}
               key={index}
             />
@@ -169,11 +208,9 @@ const ReportAnalytics = () => {
         </Grid>
         {user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY) ? (
           <TicketStatusPieChart
-            ticketsStatistics={{
-              escalatedTickets: 20,
-              openTickets: 125,
-              resolvedTickets: 140,
-            }}
+            ticketsStatistics={
+              cmfReportDashboardValues?.data?.topTicketStatusChart ?? []
+            }
           />
         ) : (
           <BranchesWithTopAssetsChart

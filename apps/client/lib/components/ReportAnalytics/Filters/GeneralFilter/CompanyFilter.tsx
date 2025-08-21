@@ -24,7 +24,7 @@ const CompanyFilter = (props: CompanyFilterProps) => {
       const newCompanies = generateOptions(
         data?.data?.items,
         'companyName',
-        'companyId'
+        'tenantName'
       );
       setOptions((prev) => [...prev, ...newCompanies]);
     }

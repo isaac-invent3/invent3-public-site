@@ -1,6 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { BaseApiResponse, ListResponse, QueryParams } from '@repo/interfaces';
 import {
+  CMFReportDashboardValuesResponse,
   GenerateReportCriterion,
   GenerateReportPayload,
   GenerateReportResponse,
@@ -58,6 +59,24 @@ export const reportApi = createApi({
     >({
       query: (data) => ({
         url: generateQueryStr(`/Reports/GetReportDashboardValues?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['reportDashboardValues'],
+    }),
+    getCMFReportDasboardValues: builder.query<
+      BaseApiResponse<CMFReportDashboardValuesResponse>,
+      QueryParams & {
+        startDate: string;
+        endDate: string;
+        tenants?: string[];
+        regionIds?: number[];
+        lgaIds?: number[];
+        facilityIds?: number[];
+      }
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/Reports/GetCMFReportDashboardValues?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -172,4 +191,5 @@ export const {
   useSaveReportAsTemplateMutation,
   useExportReportByCriterionMutation,
   useExportReportByIdMutation,
+  useGetCMFReportDasboardValuesQuery,
 } = reportApi;

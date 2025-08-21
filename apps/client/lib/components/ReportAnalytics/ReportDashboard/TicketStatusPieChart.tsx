@@ -1,47 +1,68 @@
 import { Box, Stack, Text, VStack } from '@chakra-ui/react';
 
-import { TicketStatistics } from '~/lib/interfaces/report.interfaces';
+import { TopTicketStatusChart } from '~/lib/interfaces/report.interfaces';
 import PieChart from '../../Dashboard/Common/Charts/PieChart';
-import ChartLegend from '../../Dashboard/Common/Charts/ChartLegend';
+// import ChartLegend from '../../Dashboard/Common/Charts/ChartLegend';
 interface TicketStatusPieChartProps {
-  ticketsStatistics: TicketStatistics;
+  ticketsStatistics: TopTicketStatusChart[];
 }
 
 const TicketStatusPieChart = (props: TicketStatusPieChartProps) => {
   const { ticketsStatistics } = props;
 
-  const ticketStatusData = [
-    {
-      label: 'Open Tickets',
-      value: ticketsStatistics.openTickets,
-      color: '#D9D9D9',
-      children: (
-        <Text color="primary.500" fontWeight={800} size="md">
-          {ticketsStatistics.openTickets}
-        </Text>
-      ),
-    },
-    {
-      label: 'Escalated Tickets',
-      value: ticketsStatistics.escalatedTickets,
-      color: '#EABC30',
-      children: (
-        <Text color="primary.500" fontWeight={800} size="md">
-          {ticketsStatistics.escalatedTickets}
-        </Text>
-      ),
-    },
-    {
-      label: 'Resolved Tickets',
-      value: ticketsStatistics.resolvedTickets,
-      color: '#0366EF',
-      children: (
-        <Text color="primary.500" fontWeight={800} size="md">
-          {ticketsStatistics.resolvedTickets}
-        </Text>
-      ),
-    },
-  ];
+  const trendColors = ['#98FEFE', '#4183DD', '#0E2642'];
+
+  const chartDataRaw = ticketsStatistics?.map((item) => item.percentage) || [];
+  const sum = chartDataRaw.reduce((acc, val) => acc + (val || 0), 0);
+  const others = Math.max(0, 100 - sum);
+  const chartData = chartDataRaw.length > 0 ? [...chartDataRaw, others] : [];
+
+  const chartLegendItems =
+    ticketsStatistics.map((item, idx) => ({
+      label: item.ticketStatusName,
+      color: trendColors[idx] || '#B0B0B0', // fallback color if more than 3 categories
+    })) || [];
+
+  // Append 'Others' with default color if needed
+  if (chartLegendItems.length > 0) {
+    chartLegendItems.push({
+      label: 'Others',
+      color: '#B0B0B0',
+    });
+  }
+
+  // const ticketStatusData = [
+  //   {
+  //     label: 'Open Tickets',
+  //     value: ticketsStatistics.openTickets,
+  //     color: '#D9D9D9',
+  //     children: (
+  //       <Text color="primary.500" fontWeight={800} size="md">
+  //         {ticketsStatistics.openTickets}
+  //       </Text>
+  //     ),
+  //   },
+  //   {
+  //     label: 'Escalated Tickets',
+  //     value: ticketsStatistics.escalatedTickets,
+  //     color: '#EABC30',
+  //     children: (
+  //       <Text color="primary.500" fontWeight={800} size="md">
+  //         {ticketsStatistics.escalatedTickets}
+  //       </Text>
+  //     ),
+  //   },
+  //   {
+  //     label: 'Resolved Tickets',
+  //     value: ticketsStatistics.resolvedTickets,
+  //     color: '#0366EF',
+  //     children: (
+  //       <Text color="primary.500" fontWeight={800} size="md">
+  //         {ticketsStatistics.resolvedTickets}
+  //       </Text>
+  //     ),
+  //   },
+  // ];
 
   return (
     <Box
@@ -57,7 +78,20 @@ const TicketStatusPieChart = (props: TicketStatusPieChartProps) => {
           Ticket Status
         </Text>
 
-        <Stack
+        {chartData && chartData.filter(Boolean).length > 0 ? (
+          <PieChart
+            dataValues={chartData}
+            labels={chartLegendItems.map((item) => item.label)}
+            pieLabel="Ticket Resolution"
+            backgroundColors={chartLegendItems.map((item) => item.color)}
+          />
+        ) : (
+          <Text width="full" textAlign="center" color="neutral.800">
+            No Data at the moment
+          </Text>
+        )}
+
+        {/* <Stack
           width="full"
           direction="row"
           wrap="wrap"
@@ -87,7 +121,7 @@ const TicketStatusPieChart = (props: TicketStatusPieChartProps) => {
             textChildrenStyle={{ direction: 'row', mt: '4px' }}
             boxStyle={{ width: '20px', height: '20px' }}
           />
-        </Stack>
+        </Stack> */}
       </VStack>
     </Box>
   );

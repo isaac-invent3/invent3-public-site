@@ -88,6 +88,22 @@ interface ReportDashboardValuesResponse {
   totalTasks: DashboardValuesObj;
 }
 
+interface CMFReportDashboardValuesResponse {
+  totalClientCompaniesManaged: DashboardValuesObj;
+  totalActiveClientCompanies: DashboardValuesObj;
+  totalAssetsUnderManagement: DashboardValuesObj;
+  totalOpenTasks: DashboardValuesObj;
+  totalMaintenanceTasksCompleted: DashboardValuesObj;
+  totalComplianceViolationsLogged: DashboardValuesObj;
+  topTicketStatusChart: TopTicketStatusChart[];
+}
+
+export interface TopTicketStatusChart {
+  ticketStatusName: string;
+  ticketStatusCount: number;
+  percentage: number;
+}
+
 interface ViewReportTableData {
   reportValues: Record<string, any>;
 }
@@ -144,4 +160,5 @@ export type {
   ViewReportTableData,
   ViewReportTableDataPayload,
   TicketStatistics,
+  CMFReportDashboardValuesResponse,
 };

@@ -93,6 +93,18 @@ export const vendorApi = createApi({
         body,
       }),
     }),
+    createVendorCategory: builder.mutation<
+      BaseApiResponse<VendorCategory>,
+      { categoryName: string; createdBy: string }
+    >({
+      query: (body) => ({
+        url: `/VendorCategories`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allVendors'],
+    }),
   }),
 });
 
@@ -104,4 +116,5 @@ export const {
   useUpdateVendorMutation,
   useGetVendorCategoriesQuery,
   useSearchVendorCategoriesMutation,
+  useCreateVendorCategoryMutation,
 } = vendorApi;

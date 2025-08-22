@@ -302,4 +302,9 @@ async function filterSidebarData() {
   }
 }
 
-export { clientSideBarData, filterSidebarData, sideBarData };
+export {
+  clientSideBarData,
+  filterSidebarData,
+  sideBarData,
+  clientAdminCMFData,
+};

@@ -50,12 +50,7 @@ const CompanySubInfo = () => {
           headers={['Name', 'Role', 'Email']}
           data={[
             [
-              [
-                company?.contactPersonFirstName,
-                company?.contactPersonLastName,
-              ].filter(Boolean).length > 0
-                ? `${company?.contactPersonFirstName ?? ''} ${company?.contactPersonLastName ?? ''}`
-                : 'N/A',
+              company?.contactPersonName ?? 'N/A',
               'Admin',
               `${company?.contactPersonEmail ?? 'N/A'}`,
             ],

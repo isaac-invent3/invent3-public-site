@@ -68,18 +68,8 @@ const CompanyTable = (props: CompanyTableProps) => {
           header: 'Industry',
           enableSorting: false,
         }),
-        columnHelper.accessor('contactPersonFirstName', {
-          cell: (info) =>
-            [
-              info.row.original.contactPersonFirstName,
-              info.row.original.contactPersonLastName,
-            ].filter(Boolean).length >= 1 ? (
-              <UserInfo
-                name={`${info.row.original.contactPersonFirstName ?? ''} ${info.row.original.contactPersonLastName ?? ''}`}
-              />
-            ) : (
-              'N/A'
-            ),
+        columnHelper.accessor('contactPersonName', {
+          cell: (info) => info.getValue() ?? 'N/A',
           header: 'Primary Contact Person',
           enableSorting: false,
         }),

@@ -1,6 +1,9 @@
 import { SimpleGrid } from '@chakra-ui/react';
 import React from 'react';
-import { clientSideBarData } from '~/lib/layout/ProtectedPage/SideBar/utils';
+import {
+  clientAdminCMFData,
+  clientSideBarData,
+} from '~/lib/layout/ProtectedPage/SideBar/utils';
 import Module from './Module';
 
 const CompanyModules = () => {
@@ -12,7 +15,7 @@ const CompanyModules = () => {
       rounded={{ base: '8px', lg: '16px' }}
       p={{ base: '16px', lg: '40px' }}
     >
-      {clientSideBarData.map((item, index) => (
+      {[...clientSideBarData, ...clientAdminCMFData].map((item, index) => (
         <Module
           key={index}
           name={item.name}

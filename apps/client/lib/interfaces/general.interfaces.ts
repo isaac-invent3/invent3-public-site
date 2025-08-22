@@ -185,7 +185,9 @@ type ExportTableName =
   | 'AssetCompliances'
   | 'AuditRecords'
   | 'Users'
-  | 'Vendors';
+  | 'Vendors'
+  | 'Tickets'
+  | 'Tasks';
 
 type ValidFileType =
   | 'application/pdf'

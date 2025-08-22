@@ -25,8 +25,7 @@ interface Company {
   base64Prefix: string;
   industryName: string;
   lgaid: number;
-  contactPersonFirstName: string;
-  contactPersonLastName: string;
+  contactPersonName: string;
   contactPersonEmail: string;
   contactPersonImagePrefix: string;
   contactPersonPrimaryImage: string;

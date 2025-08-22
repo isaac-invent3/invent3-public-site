@@ -47,6 +47,8 @@ import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
 import LoadingDrawer from './Drawers/LoadingDrawer';
 import { setSelectedTicket } from '~/lib/redux/slices/TicketSlice';
 import { usePageFilter } from '~/lib/hooks/usePageFilter';
+import useExport from '~/lib/hooks/useExport';
+import { updateSelectedTableIds } from '~/lib/redux/slices/CommonSlice';
 
 export const ALlTicketTabs = [
   'New',
@@ -91,6 +93,12 @@ const TicketManagement = () => {
   const appConfigValue = useAppSelector(
     (state) => state.general.appConfigValues
   );
+  const selectedIds = useAppSelector((state) => state.common.selectedTableIds);
+  const { ExportPopover } = useExport({
+    ids: selectedIds,
+    exportTableName: 'Tickets',
+    tableDisplayName: 'ticket',
+  });
 
   const getActionAndTicketCategoryKey = (
     data: Ticket
@@ -237,6 +245,13 @@ const TicketManagement = () => {
     }
   }, [search, appliedFilter]);
 
+  // Reset Selected Row when SelectedIds array is emptied
+  useEffect(() => {
+    if (selectedIds.length === 0 && selectedRows.length > 0) {
+      setSelectedRows([]);
+    }
+  }, [selectedIds]);
+
   //Set Selected Ticket
   useEffect(() => {
     if (selectedRows && selectedRows.length > 0) {
@@ -247,6 +262,7 @@ const TicketManagement = () => {
         .filter((id): id is number => id !== undefined);
 
       setSelectedTicketIds(ticketIds);
+      dispatch(updateSelectedTableIds(ticketIds));
     }
   }, [selectedRows]);
 
@@ -429,6 +445,7 @@ const TicketManagement = () => {
                     }
                     isActive={activeFilter === 'general'}
                   />
+                  {ExportPopover}
                 </HStack>
               </Stack>
             </Flex>

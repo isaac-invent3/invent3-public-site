@@ -61,7 +61,7 @@ const BMSDashboard = () => {
                 <LocationCard
                   href={`/dashboard/bms/${item.facilityId}/detail`}
                   title={item.facilityName}
-                  subtitle={`${item.facilityName} ${item.facilityName}`}
+                  subtitle={`${item.facilityName}`}
                   key={index}
                 />
               ))}

@@ -34,7 +34,9 @@ const TheChallenges = (props: TheChallengesProps) => {
             headingStyles={{ width: 'full' }}
             description={sectionDescription}
           />
-          <Button customStyles={{ width: '175px' }}>Get a Free Demo</Button>
+          <Button customStyles={{ width: '175px' }} href="/contact-us">
+            Get a Free Demo
+          </Button>
         </VStack>
         <SimpleGrid
           width="full"

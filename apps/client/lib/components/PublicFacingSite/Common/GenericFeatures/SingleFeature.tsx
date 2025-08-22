@@ -61,7 +61,10 @@ const SingleFeature = (props: SingleFeatureProps) => {
           </Flex>
         </Flex>
 
-        <Button customStyles={{ width: { base: 'full', lg: 'min-content' } }}>
+        <Button
+          customStyles={{ width: { base: 'full', lg: 'min-content' } }}
+          href={buttonLink}
+        >
           {buttonText}
         </Button>
       </VStack>

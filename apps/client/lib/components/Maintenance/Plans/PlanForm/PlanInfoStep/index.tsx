@@ -54,7 +54,7 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
       ? plan?.assetId
         ? 'asset'
         : 'asset_group'
-      : 'asset_group',
+      : 'asset',
   };
   const previousDay = moment().subtract(1, 'days').format('DD/MM/YYYY');
   const todayDate = moment().format('DD/MM/YYYY');

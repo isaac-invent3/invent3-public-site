@@ -171,6 +171,7 @@ const WhyUs = () => {
             customStyles={{
               width: { base: 'full', lg: '203px' },
             }}
+            href="/contact-us"
           >
             Request a Demo
           </Button>

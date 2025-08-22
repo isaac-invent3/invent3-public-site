@@ -107,13 +107,13 @@ const DataSecurity = ({ customStyles }: { customStyles?: FlexProps }) => {
               </VStack>
             ))}
           </SimpleGrid>
-          <Button
+          {/* <Button
             customStyles={{
               width: { base: 'full', lg: '233px' },
             }}
           >
             Learn More About Our Security
-          </Button>
+          </Button> */}
         </VStack>
       </Flex>
     </Flex>

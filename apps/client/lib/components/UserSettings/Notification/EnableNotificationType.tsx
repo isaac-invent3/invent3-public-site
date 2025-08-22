@@ -13,22 +13,39 @@ import { updateFormConfigurationOptions } from '~/lib/redux/slices/UserSlice';
 
 const NOTICATION_TYPE = [
   {
-    title: 'Mobile Push Notifications',
-    subtitle: 'Enable notifications on mobile devices for updates',
+    title: 'Push Notifications',
+    subtitle: 'Enable notifications on mobile and desktop devices for updates',
     onKey: MOBILE_NOTIFICATION.MOBILE_PUSH_NOTIFICATION_ON,
     offKey: MOBILE_NOTIFICATION.MOBILE_PUSH_NOTIFICATION_OFF,
     typeObject: MOBILE_NOTIFICATION,
   },
   {
-    title: 'Desktop Notifications',
-    subtitle: 'Receive notifications directly on your desktop',
+    title: 'SMS Notifications',
+    subtitle: 'Receive notifications directly via SMS',
     onKey: DESKTOP_NOTIFICATION.DESKTOP_NOTIFICATION_ON,
     offKey: DESKTOP_NOTIFICATION.DESKTOP_NOTIFICATION_OFF,
     typeObject: DESKTOP_NOTIFICATION,
   },
+  // {
+  //   title: 'Desktop Notifications',
+  //   subtitle: 'Receive notifications directly on your desktop',
+  //   onKey: DESKTOP_NOTIFICATION.DESKTOP_NOTIFICATION_ON,
+  //   offKey: DESKTOP_NOTIFICATION.DESKTOP_NOTIFICATION_OFF,
+  //   typeObject: DESKTOP_NOTIFICATION,
+  // },
   {
     title: 'Email Notifications',
-    subtitle: 'Enable notifications on mobile devices for updates',
+    subtitle: 'Receive updates and alerts via email',
+    onKey: EMAIL_NOTIFICATION.EMAIL_NOTIFICATION_ON,
+    offKey: EMAIL_NOTIFICATION.EMAIL_NOTIFICATION_OFF,
+    typeObject: EMAIL_NOTIFICATION,
+  },
+  {
+    title: 'Whatsapp Notifications',
+    subtitle: [
+      'Receive updates and alerts via Whatsapp.',
+      ['(Ensure the phone number on your profile is Whatsapp enabled.)'],
+    ],
     onKey: EMAIL_NOTIFICATION.EMAIL_NOTIFICATION_ON,
     offKey: EMAIL_NOTIFICATION.EMAIL_NOTIFICATION_OFF,
     typeObject: EMAIL_NOTIFICATION,
@@ -66,7 +83,8 @@ const EnableNotificationType = () => {
           <SectionWrapper
             title={item.title}
             subtitle={item.subtitle}
-            sectionInfoWidth="212px"
+            sectionInfoWidth="325px"
+            nestedSubtitleStyle={{ fontStyle: 'italic', color: 'neutral.700' }}
             key={index}
           >
             <Switch

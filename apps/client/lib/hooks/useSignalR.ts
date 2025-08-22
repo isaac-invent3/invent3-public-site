@@ -16,7 +16,21 @@ export interface SignalRConnectionState {
   state: HubConnectionState;
 }
 
-const useSignalR = (path: string) => {
+type SignalRType =
+  | 'approvalworkflow-hub'
+  | 'asset-hub'
+  | 'dataUploadHistory-hub'
+  | 'companies-hub'
+  | 'tasks-hub'
+  | 'maintenanceschedule-hub'
+  | 'tickets-hub'
+  | 'maintenanceplan-hub'
+  | 'notification-hub'
+  | 'userRole-hub'
+  | 'users-hub'
+  | 'vendors-hub';
+
+const useSignalR = (path: SignalRType) => {
   const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const [connectionState, setConnectionState] =

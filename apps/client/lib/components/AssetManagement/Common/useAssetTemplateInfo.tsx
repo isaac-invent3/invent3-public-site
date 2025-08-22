@@ -89,7 +89,7 @@ const useAssetTemplateInfo = (props: UseAssetTemplateInfo) => {
     );
     const payload = {
       pageNumber,
-      pageSize: 10,
+      pageSize,
       orCriterion,
     };
 

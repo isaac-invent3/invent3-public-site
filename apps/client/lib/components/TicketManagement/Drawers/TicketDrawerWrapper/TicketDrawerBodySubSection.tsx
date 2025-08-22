@@ -82,18 +82,22 @@ const TicketDrawerBodySubSection = (props: TicketDrawerBodySubSectionProps) => {
           </VStack>
         )}
 
-        <VStack spacing="8px" alignItems="center">
-          <Text fontWeight={700} color="neutral.600">
-            {category === 'new' ? 'Requested Date' : 'First Respond Date'}
-          </Text>
+        {(category === 'new' || category === 'completed') && (
+          <VStack spacing="8px" alignItems="center">
+            <Text fontWeight={700} color="neutral.600">
+              {category === 'new' ? 'Requested Date' : 'Resolution Date'}
+            </Text>
 
-          <Text>
-            {dateFormatter(
-              category === 'new' ? data?.issueReportDate : data?.resolutionDate,
-              'DD/MM/YYYY'
-            ) ?? 'N/A'}
-          </Text>
-        </VStack>
+            <Text>
+              {dateFormatter(
+                category === 'new'
+                  ? data?.issueReportDate
+                  : data?.resolutionDate,
+                'DD/MM/YYYY'
+              ) ?? 'N/A'}
+            </Text>
+          </VStack>
+        )}
       </HStack>
 
       <SimpleGrid

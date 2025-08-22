@@ -122,21 +122,24 @@ const ReportAnalytics = () => {
     {
       title: 'Total Client Companies Managed',
       value:
-        cmfReportDashboardValues?.data?.totalClientCompaniesManaged?.statValue,
+        cmfReportDashboardValues?.data?.totalClientCompaniesManaged
+          ?.statValue ?? 0,
       reportId:
         cmfReportDashboardValues?.data?.totalClientCompaniesManaged?.reportId,
     },
     {
       title: 'Total Active Client Companies',
       value:
-        cmfReportDashboardValues?.data?.totalActiveClientCompanies?.statValue,
+        cmfReportDashboardValues?.data?.totalActiveClientCompanies?.statValue ??
+        0,
       reportId:
         cmfReportDashboardValues?.data?.totalActiveClientCompanies?.reportId,
     },
     {
       title: 'Total Assets Under Management',
       value:
-        cmfReportDashboardValues?.data?.totalAssetsUnderManagement?.statValue,
+        cmfReportDashboardValues?.data?.totalAssetsUnderManagement?.statValue ??
+        0,
       reportId:
         cmfReportDashboardValues?.data?.totalAssetsUnderManagement?.reportId,
     },
@@ -147,7 +150,7 @@ const ReportAnalytics = () => {
     },
     {
       title: 'Total Maintenance Tasks Completed',
-      value: cmfReportDashboardValues?.data?.totalOpenTasks?.statValue,
+      value: cmfReportDashboardValues?.data?.totalOpenTasks?.statValue ?? 0,
       reportId: cmfReportDashboardValues?.data?.totalOpenTasks?.reportId,
     },
     {

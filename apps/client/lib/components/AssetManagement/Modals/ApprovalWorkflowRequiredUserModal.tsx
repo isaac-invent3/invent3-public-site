@@ -66,9 +66,8 @@ const ApprovalWorkflowRequiredUserModal = (
                 fontSize={{ base: '24px', lg: '32px' }}
                 maxW="359px"
               >
-                {isBulk ? 'Bulk' : ''}{' '}
-                {type === 'transfer' ? 'Transfer' : 'Disposal'} Request
-                Unavailable!
+                {isBulk ? 'Bulk' : ''} Asset{' '}
+                {type === 'transfer' ? 'Transfer' : 'Disposal'} Workflow Not Set
               </Heading>
               <Text
                 size="md"
@@ -76,13 +75,14 @@ const ApprovalWorkflowRequiredUserModal = (
                 textAlign="center"
                 lineHeight="100%"
               >
-                You’re unable to submit a {isBulk ? 'bulk' : ''}{' '}
-                {type === 'transfer' ? 'transfer' : 'disposal'} request at this
-                time. Please contact your{' '}
-                <Text as="span" color="primary.500" fontWeight={700}>
-                  Client Admin
-                </Text>{' '}
-                to set up the required approval workflow.
+                {isBulk
+                  ? 'Bulk ' + type === 'transfer'
+                    ? 'transfer'
+                    : 'disposal'
+                  : 'Approval'}{' '}
+                workflow not set. Contact Client Admin to enable{' '}
+                {isBulk ? 'bulk ' : ''}
+                {type === 'transfer' ? 'transfer' : 'disposal'}.
               </Text>
             </VStack>
           </VStack>

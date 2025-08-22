@@ -68,6 +68,7 @@ const TicketManagement = () => {
   const router = useRouter();
   const { getSearchParam } = useCustomSearchParams();
   const [tabIndex, setTabIndex] = useState<number | undefined>(undefined);
+  const [isTabChanging, setIsTabChanging] = useState(false);
   const [activeFilter, setActiveFilter] = useState<'bulk' | 'general' | null>(
     null
   );
@@ -150,6 +151,7 @@ const TicketManagement = () => {
   // Update the URL whenever the tab is changed
   const handleTabChange = (index: number) => {
     setTabIndex(index);
+    setIsTabChanging(true);
     const tabName = ALlTicketTabs[index];
     if (tabName) {
       router.push(`/${ROUTES.TICKETS}?tab=${tabName}`);
@@ -257,12 +259,11 @@ const TicketManagement = () => {
     }
   }, [activeFilter]);
 
-  //Handle apply Filter
-  const handleApplyFilter = () => {
-    setPageSize(1);
-    setPageSize(DEFAULT_PAGE_SIZE);
-    handleSearch();
-  };
+  useEffect(() => {
+    if (!isFetching && !isLoading) {
+      setIsTabChanging(false);
+    }
+  }, [isFetching, isLoading]);
 
   const connectionState = useSignalR('tickets-hub');
 
@@ -460,7 +461,7 @@ const TicketManagement = () => {
                 data={
                   (search || !isFilterEmpty) && searchData ? searchData : data
                 }
-                isLoading={isLoading}
+                isLoading={isLoading || (isFetching && isTabChanging)}
                 isFetching={isFetching || searchLoading}
                 isSelectable
                 currentPage={pageNumber}

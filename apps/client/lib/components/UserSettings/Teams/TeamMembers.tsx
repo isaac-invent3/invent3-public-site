@@ -15,7 +15,7 @@ const TeamMembers = ({ isLoading, data }: TeamMembersProps) => {
       subtitle="See the list of members in your team."
       sectionInfoWidth="221px"
       spacing={{ base: '16px', lg: '16px' }}
-      direction={{ base: 'column', md: 'row' }}
+      direction={{ base: 'column' }}
       sectionInfoStyle={{ maxW: { base: 'full', md: '221px' } }}
     >
       {isLoading && <Skeleton width="full" height="250px" />}

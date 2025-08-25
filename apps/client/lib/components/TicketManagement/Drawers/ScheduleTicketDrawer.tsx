@@ -168,7 +168,7 @@ const ScheduleTicketDrawer = (props: AssignTicketDrawerProps) => {
             sectionMaxWidth="141px"
             customSpacing="24px"
             description="Specify the deadline for task completion"
-            title="Resolution Date"
+            title="Due Date"
             isRequired
           >
             <VStack width="full" spacing="12px" alignItems="flex-start">

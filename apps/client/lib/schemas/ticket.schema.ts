@@ -6,7 +6,7 @@ const scheduleTicketSchema = (minResolutionDate?: string) =>
   Yup.object().shape({
     assignedTo: Yup.number().required('Assignee is Required'),
     resolutionDate: createDateSchema(true, true, minResolutionDate).required(
-      'Resolution Date is Required'
+      'Due Date is Required'
     ),
     tasks: Yup.array()
       .of(taskBaseSchema())

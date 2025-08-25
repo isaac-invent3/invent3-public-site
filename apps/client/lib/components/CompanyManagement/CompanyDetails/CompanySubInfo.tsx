@@ -8,17 +8,22 @@ import {
 } from '@chakra-ui/react';
 import UploadStatusTable from '../DataUpload/UploadStatusTable';
 import { useAppSelector } from '~/lib/redux/hooks';
-import { useGetTenantAssetAndUserCountQuery } from '~/lib/redux/services/company.services';
+import {
+  useGetCompanyComplianceStatusQuery,
+  useGetTenantAssetAndUserCountQuery,
+} from '~/lib/redux/services/company.services';
+import { COMPANY_COMPLIANCE_ENUM, ROUTES } from '~/lib/utils/constants';
+import Link from 'next/link';
 
 const CompanySubInfo = () => {
-  const complianceStatusData = [
-    ['ISO 27001', '28 March 2025', 'Verified'],
-    ['GDPR', '28 March 2025', 'Pending'],
-  ];
   const company = useAppSelector((state) => state.company.company);
   const { data, isLoading } = useGetTenantAssetAndUserCountQuery({
     tenantName: company?.tenantName!,
   });
+  const { data: complianceStatus, isLoading: isLoadingCompliance } =
+    useGetCompanyComplianceStatusQuery({
+      tenantName: company?.tenantName!,
+    });
 
   const tenantData = [
     {
@@ -37,12 +42,12 @@ const CompanySubInfo = () => {
   return (
     <Stack
       direction={{ base: 'column', md: 'row' }}
-      w="full"
+      width="full"
       flexWrap="wrap"
       justifyContent="space-between"
       spacing="32px"
     >
-      <VStack flex={{ base: 1, md: 2 }} alignItems="start">
+      <VStack flex={1} width={{ base: 'full', md: '50%' }} alignItems="start">
         <Text size="md" fontWeight={700} color="primary.500">
           Contact Person
         </Text>
@@ -58,43 +63,82 @@ const CompanySubInfo = () => {
           customTableContainerStyle={{ bgColor: 'transparent' }}
         />
       </VStack>
-      <VStack flex={{ base: 1, md: 2 }} alignItems="start">
+      <VStack
+        alignItems="flex-start"
+        flex={1}
+        width={{ base: 'full', md: '25%' }}
+        height="full"
+      >
         <Text size="md" fontWeight={700} color="primary.500">
-          Compliance Status
+          Company Compliance Status
         </Text>
-        <UploadStatusTable
-          headers={['Requirement', 'Last Updated', 'Status']}
-          data={complianceStatusData}
-          customTableContainerStyle={{ bgColor: 'transparent' }}
-        />
+        <Skeleton isLoaded={!isLoadingCompliance} rounded="8px" width="full">
+          <VStack
+            bgColor="#EEEEEE"
+            py="8px"
+            px="16px"
+            rounded="8px"
+            spacing="8px"
+            width="full"
+            alignItems="flex-start"
+            height="full"
+            minH="76px"
+          >
+            <Text size="xl" lineHeight="100%" color="black">
+              {complianceStatus?.data === COMPANY_COMPLIANCE_ENUM.COMPLIANT &&
+                'Compliant'}
+              {complianceStatus?.data ===
+                COMPANY_COMPLIANCE_ENUM.NON_COMPLIANT && 'Not Compliant'}
+              {complianceStatus?.data ===
+                COMPANY_COMPLIANCE_ENUM.NOT_APPLICABLE && 'Not Applicable'}
+            </Text>
+            {complianceStatus?.data ===
+              COMPANY_COMPLIANCE_ENUM.NON_COMPLIANT && (
+              <Link href={`/${ROUTES.COMPLIANCE}`}>
+                <Text color="blue.500" size="md">
+                  Check Assets for the non-compliants
+                </Text>
+              </Link>
+            )}
+          </VStack>
+        </Skeleton>
       </VStack>
-      <Skeleton isLoaded={!isLoading} rounded="8px">
-        <Grid
-          bgColor="white"
-          p="16px"
-          rounded="8px"
-          flex={1}
-          gap="16px"
-          templateColumns={{
-            base: 'repeat(1, 1fr)',
-            md: 'repeat(2, 1fr)',
-          }}
-          height="full"
-        >
-          {tenantData.map((item, index) => (
-            <GridItem colSpan={1} width="full" key={index}>
-              <VStack alignItems="start">
-                <Text size="md" color="neutral.600">
-                  {item.label}
-                </Text>
-                <Text size="lg" color="black">
-                  {item.value}
-                </Text>
-              </VStack>
-            </GridItem>
-          ))}
-        </Grid>
-      </Skeleton>
+      <VStack flex={1} width={{ base: 'full', md: '25%' }} alignItems="start">
+        <Text size="md" fontWeight={700} color="primary.500">
+          Company Assets
+        </Text>
+        <Skeleton isLoaded={!isLoading} rounded="8px">
+          <Grid
+            bgColor="#EEEEEE"
+            p="16px"
+            rounded="8px"
+            flex={1}
+            gap="16px"
+            templateColumns={{
+              base: 'repeat(1, 1fr)',
+              md: 'repeat(2, 1fr)',
+            }}
+          >
+            {tenantData.map((item, index) => (
+              <GridItem colSpan={1} width="full" key={index}>
+                <VStack alignItems="flex-start" spacing="8px">
+                  <Text
+                    size="md"
+                    color="primary.500"
+                    fontWeight={700}
+                    // minH="40px"
+                  >
+                    {item.label}
+                  </Text>
+                  <Text size="xl" lineHeight="100%" color="black">
+                    {item.value}
+                  </Text>
+                </VStack>
+              </GridItem>
+            ))}
+          </Grid>
+        </Skeleton>
+      </VStack>
     </Stack>
   );
 };

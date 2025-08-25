@@ -15,7 +15,7 @@ import {
 import { useCreateAssetTypeMutation } from '~/lib/redux/services/asset/types.services';
 
 import { updatePlanForm } from '~/lib/redux/slices/MaintenanceSlice';
-import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import { ASSET_GROUP_TYPE, DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 const AssetGroupContext = () => {
   const [pageNumber, setPageNumber] = useState(1);
@@ -91,7 +91,7 @@ const AssetGroupContext = () => {
                 : undefined
             }
           />
-          {values?.assetGroupTypeID === 1 && (
+          {values?.assetGroupTypeID === ASSET_GROUP_TYPE.ASSET_TYPE && (
             <FormAddButton handleClick={onOpen}>
               Add New Asset Type
             </FormAddButton>

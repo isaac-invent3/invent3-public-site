@@ -60,6 +60,16 @@ export const companyApi = createApi({
         headers: getHeaders(),
       }),
     }),
+    getCompanyComplianceStatus: builder.query<
+      BaseApiResponse<number>,
+      { tenantName: string }
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/Invent3Pro/GetCompanyComplianceStatus?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
     getCompanyApiKey: builder.query<
       BaseApiResponse<{ apiKey: string }>,
       { companyId: number; requestedBy: string }
@@ -153,4 +163,5 @@ export const {
   useGetCompanyApiKeyQuery,
   useGetTenantAssetAndUserCountQuery,
   useGetCompanyDistributionQuery,
+  useGetCompanyComplianceStatusQuery,
 } = companyApi;

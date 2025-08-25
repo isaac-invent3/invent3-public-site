@@ -96,11 +96,13 @@ const CompanyForm = (props: CompanyFormProps) => {
           </Flex>
         </Flex>
       </Flex>
-      <JourneyGuide
-        isOpen={isOpen}
-        onClose={onClose}
-        closeWithNavigating={true}
-      />
+      {type === 'create' && (
+        <JourneyGuide
+          isOpen={isOpen}
+          onClose={onClose}
+          closeWithNavigating={true}
+        />
+      )}
     </>
   );
 };

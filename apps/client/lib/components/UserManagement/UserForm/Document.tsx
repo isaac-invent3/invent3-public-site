@@ -76,10 +76,7 @@ const DocumentStep = (props: DocumentStepProps) => {
                   handleRemoveDocument(document)
                 }
                 handleAddDocuments={(documents) =>
-                  formik.setFieldValue('documents', [
-                    ...formik.values.documents,
-                    ...documents,
-                  ])
+                  formik.setFieldValue('documents', documents)
                 }
                 documents={formik.values.documents}
                 setError={(error) => formik.setErrors({ documents: error })}

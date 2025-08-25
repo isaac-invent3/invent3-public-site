@@ -19,6 +19,14 @@ const taskBaseSchema = () =>
       .required('Estimated Duration is required')
       .min(0, 'Duration must be atleast 0'),
     comments: Yup.string().nullable(),
+    document: Yup.object()
+      .shape({
+        documentId: Yup.number().nullable(),
+        documentName: Yup.string().required(),
+        base64Document: Yup.string().required(),
+        base64Prefix: Yup.string().nullable(),
+      })
+      .nullable(),
   });
 
 const updateTaskInstanceMetadataSchema = Yup.object().shape({

@@ -62,7 +62,7 @@ const ManualInsertion = (props: ManualInsertionProps) => {
             rounded="6px"
             minH="60vh"
           >
-            <Picture />
+            {/* <Picture /> */}
             <FullName />
             <PhoneNumber />
             <Email />

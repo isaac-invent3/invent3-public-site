@@ -38,6 +38,7 @@ import {
 } from '~/lib/utils/helperFunctions';
 import CreateTicketSuccessModal from '../Modals/CreateTicketSuccessModal';
 import TicketTypeSelect from './Common/TicketTypeSelect';
+import AttachFile from '../../Common/AttachFileAndView/AttachFile';
 
 interface CreateTicketDrawerProps {
   isOpen: boolean;
@@ -72,6 +73,7 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
     assignedTo: null,
     assignedToEmployeeName: null,
     ticketTypeId: null,
+    document: null,
     ticketPriorityId: null,
     issueReportDate: moment().utc().toISOString(),
   };
@@ -295,6 +297,31 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                       {dateFormatter(new Date(), `DD / MM / YYYY`)}
                     </Text>
                   </FormInputWrapper>
+                  {/* <FormInputWrapper
+                    sectionMaxWidth="141px"
+                    customSpacing="24px"
+                    description="Attach any relevant files to this ticket"
+                    title="Attach File"
+                    alignItems={{ lg: 'center' }}
+                  >
+                    <AttachFile
+                      document={undefined}
+                      handleAddDocuments={(document) => {
+                        // formik.setFieldValue('documents', [
+                        //   ...formik.values.documents,
+                        //   document,
+                        // ]);
+                      }}
+                      handleRemoveDocuments={(document) => {
+                        // formik.setFieldValue(
+                        //   'documents',
+                        //   formik.values.documents.filter(
+                        //     (doc) => doc.documentId !== document.documentId
+                        //   )
+                        // );
+                      }}
+                    />
+                  </FormInputWrapper> */}
                 </VStack>
               </form>
             </Flex>

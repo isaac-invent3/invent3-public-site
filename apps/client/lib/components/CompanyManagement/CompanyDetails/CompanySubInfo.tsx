@@ -107,7 +107,7 @@ const CompanySubInfo = () => {
         <Text size="md" fontWeight={700} color="primary.500">
           Company Assets
         </Text>
-        <Skeleton isLoaded={!isLoading} rounded="8px">
+        <Skeleton isLoaded={!isLoading} rounded="8px" width="full">
           <Grid
             bgColor="#EEEEEE"
             p="16px"
@@ -118,6 +118,7 @@ const CompanySubInfo = () => {
               base: 'repeat(1, 1fr)',
               md: 'repeat(2, 1fr)',
             }}
+            width="full"
           >
             {tenantData.map((item, index) => (
               <GridItem colSpan={1} width="full" key={index}>

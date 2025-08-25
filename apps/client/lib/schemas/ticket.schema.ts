@@ -45,6 +45,14 @@ const createTicketSchema = () =>
     reportedByEmployeeId: Yup.number().nullable(),
     ticketTypeId: Yup.number().required('Ticket Type is Required'),
     ticketPriorityId: Yup.number().required('Ticket Priority is Required'),
+    document: Yup.object()
+      .shape({
+        documentId: Yup.number().nullable(),
+        documentName: Yup.string().required(),
+        base64Document: Yup.string().required(),
+        base64Prefix: Yup.string().nullable(),
+      })
+      .nullable(),
   });
 
 const updateTicketMetadataSchema = Yup.object().shape({

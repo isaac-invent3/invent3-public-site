@@ -71,7 +71,7 @@ const SubscriptionStep = (props: SubscriptionStepProps) => {
               sectionMaxWidth="141px"
               customSpacing="47px"
               title="Subscription Plan"
-              description="Provide the person’s Job Title"
+              description="Select the subscription plan for this company"
               w={{ base: 'full', md: '50%' }}
               isRequired={false}
             >
@@ -97,7 +97,7 @@ const SubscriptionStep = (props: SubscriptionStepProps) => {
                 sectionMaxWidth="141px"
                 customSpacing="47px"
                 title="Start Date"
-                description="Provide the person’s Job Title"
+                description="Select the subscription start date"
               >
                 <DateTimeButtons
                   buttonVariant="secondary"
@@ -115,7 +115,7 @@ const SubscriptionStep = (props: SubscriptionStepProps) => {
                 sectionMaxWidth="141px"
                 customSpacing="47px"
                 title="End Date"
-                description="Provide the person’s Job Title"
+                description="Select the subscription end date"
               >
                 <DateTimeButtons
                   buttonVariant="secondary"

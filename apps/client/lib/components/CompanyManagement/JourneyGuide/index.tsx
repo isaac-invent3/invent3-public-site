@@ -89,7 +89,7 @@ interface JourneyGuideProps {
   closeWithNavigating?: boolean;
 }
 const JourneyGuide = (props: JourneyGuideProps) => {
-  const { isOpen, onClose, closeWithNavigating } = props;
+  const { isOpen, onClose, closeWithNavigating = false } = props;
   const [activeStep, setActiveStep] = useState(0);
   const { data } = useSession();
   const { data: journeyGuideData } = useGetCompanyJourneyGuideQuery(
@@ -104,7 +104,7 @@ const JourneyGuide = (props: JourneyGuideProps) => {
   ];
 
   useEffect(() => {
-    if (journeyGuideData?.data) {
+    if (journeyGuideData?.data && !closeWithNavigating) {
       const nextStepIndex = steps.findIndex(
         (step) => !journeyGuideData?.data[step.key as keyof CompanyJourneyGuide]
       );
@@ -253,7 +253,9 @@ const JourneyGuide = (props: JourneyGuideProps) => {
                 ? { handleClick: onClose }
                 : { href: steps[activeStep]?.link ?? '#' })}
             >
-              {steps[activeStep]?.buttonSuffix ?? "You're Done"}
+              {closeWithNavigating
+                ? 'Start'
+                : (steps[activeStep]?.buttonSuffix ?? "You're Done")}
             </Button>
           </Flex>
         </VStack>
@@ -310,7 +312,9 @@ const JourneyGuide = (props: JourneyGuideProps) => {
               ? { handleClick: onClose }
               : { href: steps[activeStep]?.link ?? '#' })}
           >
-            {steps[activeStep]?.buttonSuffix ?? "You're Done"}
+            {closeWithNavigating
+              ? 'Start'
+              : (steps[activeStep]?.buttonSuffix ?? "You're Done")}
           </Button>
         </VStack>
         {/* Right Side Ends Here */}

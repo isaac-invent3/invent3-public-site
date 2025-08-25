@@ -24,6 +24,8 @@ import CompletedTab from './TabTableViews/CompletedTab';
 import PendingAndInProgressTab from './TabTableViews/PendingAndInProgressTab';
 import TaskDetailDrawer from './Drawers/TaskDetailDrawer';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
+import useExport from '~/lib/hooks/useExport';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 const ALlTabs = ['Pending', 'In Progress', 'Completed'];
 
@@ -32,6 +34,12 @@ const TaskManagement = () => {
   const searchParams = useSearchParams();
   const [search, setSearch] = useState('');
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const selectedIds = useAppSelector((state) => state.common.selectedTableIds);
+  const { ExportPopover } = useExport({
+    ids: selectedIds,
+    exportTableName: 'Tasks',
+    tableDisplayName: 'task',
+  });
   const [tabIndex, setTabIndex] = useState<number | undefined>(undefined);
   const [activeFilter, setActiveFilter] = useState<'bulk' | 'general' | null>(
     null
@@ -130,6 +138,7 @@ const TaskManagement = () => {
                     }
                     isActive={activeFilter === 'general'}
                   />
+                  {ExportPopover}
                 </HStack>
               </Flex>
             </Flex>
@@ -162,6 +171,7 @@ const TaskManagement = () => {
                   }
                   isActive={activeFilter === 'general'}
                 />
+                {ExportPopover}
               </HStack>
             </Flex>
 

@@ -1,4 +1,5 @@
 import { BaseEntity } from '@repo/interfaces';
+import { AssetDocumentsDto } from './general.interface';
 
 interface AssetTransfer extends BaseEntity {
   transferId: number;
@@ -34,14 +35,20 @@ interface AssetTransferInfoHeader {
   assetName: string;
 }
 
-interface AssetTransferQuery {
+interface AssetTransferPayload {
+  createBulkAssetTransferDto: CreateBulkAssetTransferDto;
+  createAssetDocumentsDto?: AssetDocumentsDto[] | null;
+  assetDocumentIds?: number[] | null;
+}
+
+interface CreateBulkAssetTransferDto {
   transferredTo: number;
   newOwnerId: number;
   initiatedBy: number;
   transferDate: string;
-  assetId: number;
+  assetIds: number[];
   comments: string | null;
   createdBy: string;
 }
 
-export type { AssetTransfer, AssetTransferInfoHeader, AssetTransferQuery };
+export type { AssetTransfer, AssetTransferInfoHeader, AssetTransferPayload };

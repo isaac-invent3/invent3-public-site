@@ -4,7 +4,7 @@ import { BaseApiResponse } from '@repo/interfaces';
 import {
   AssetTransfer,
   AssetTransferInfoHeader,
-  AssetTransferQuery,
+  AssetTransferPayload,
 } from '~/lib/interfaces/asset/transfer.interfaces';
 
 const getHeaders = () => ({
@@ -17,10 +17,10 @@ export const assetTransferApi = createApi({
   endpoints: (builder) => ({
     transferAsset: builder.mutation<
       BaseApiResponse<AssetTransfer>,
-      AssetTransferQuery
+      AssetTransferPayload
     >({
       query: (body) => ({
-        url: `/AssetTransfers`,
+        url: `/Invent3Pro/CreateAssetTransferRequest`,
         method: 'POST',
         headers: getHeaders(),
         body,

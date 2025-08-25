@@ -7,7 +7,10 @@ import {
   QueryParams,
   SearchQuery,
 } from '@repo/interfaces';
-import { AssetType } from '~/lib/interfaces/asset/type.interface';
+import {
+  AssetType,
+  AssetTypePayload,
+} from '~/lib/interfaces/asset/type.interface';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -51,10 +54,7 @@ export const assetTypeApi = createApi({
     }),
     createAssetType: builder.mutation<
       BaseApiResponse<AssetType>,
-      {
-        typeName: string;
-        createdBy: string;
-      }
+      AssetTypePayload
     >({
       query: (body) => ({
         url: `/AssetTypes`,

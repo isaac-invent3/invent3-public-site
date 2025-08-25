@@ -4,13 +4,17 @@ import React, { useState } from 'react';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import {
+  useCreateAssetTypeMutation,
   useGetAllAssetTypesQuery,
   useSearchAssetTypesMutation,
 } from '~/lib/redux/services/asset/types.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import AssetTypeModal from './AssetTypeModal';
 import { useField } from 'formik';
-import { useAppSelector } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
+import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
+import { AssetTypePayload } from '~/lib/interfaces/asset/type.interface';
 
 interface AssetTypeSelectProps {
   // eslint-disable-next-line no-unused-vars
@@ -31,6 +35,22 @@ const AssetTypeSelect = (props: AssetTypeSelectProps) => {
     pageSize: DEFAULT_PAGE_SIZE,
     pageNumber,
   });
+  const dispatch = useAppDispatch();
+  const [createAssetType] = useCreateAssetTypeMutation({});
+  const { handleSubmit } = useCustomMutation();
+
+  const handleAddAssetType = async (payload: AssetTypePayload) => {
+    const response = await handleSubmit(createAssetType, payload, '');
+    if (response?.data) {
+      helpers.setValue(response?.data?.data?.assetTypeId);
+      dispatch(
+        updateAssetForm({
+          assetTypeName: response?.data?.data?.typeName!,
+        })
+      );
+      onClose();
+    }
+  };
   return (
     <>
       <VStack alignItems="flex-end" width="full">
@@ -57,7 +77,11 @@ const AssetTypeSelect = (props: AssetTypeSelectProps) => {
         />
         <FormAddButton handleClick={onOpen}>Add New Asset Type</FormAddButton>
       </VStack>
-      <AssetTypeModal isOpen={isOpen} onClose={onClose} />
+      <AssetTypeModal
+        isOpen={isOpen}
+        onClose={onClose}
+        handleAdd={(payload: AssetTypePayload) => handleAddAssetType(payload)}
+      />
     </>
   );
 };

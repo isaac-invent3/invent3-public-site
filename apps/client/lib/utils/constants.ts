@@ -334,6 +334,27 @@ const SYSTEM_CONTEXT_DETAILS: Record<ContextKey, SystemContextDetail> = {
     displayName: 'Groups',
     label: 'group',
   },
+  ASSET_TRANSFER: {
+    id: SYSTEM_CONTEXT_TYPE.ASSET_TRANSFER,
+    route: ROUTES.APPROVAL,
+    slug: '',
+    displayName: 'Asset Transfer',
+    label: 'asset transfer',
+  },
+  ASSET_DISPOSAL: {
+    id: SYSTEM_CONTEXT_TYPE.ASSET_DISPOSAL,
+    route: ROUTES.APPROVAL,
+    slug: '',
+    displayName: 'Asset Disposal',
+    label: 'asset diposal',
+  },
+  ASSET_BULK_ACTION: {
+    id: SYSTEM_CONTEXT_TYPE.ASSET_BULK_ACTION,
+    route: ROUTES.APPROVAL,
+    slug: '',
+    displayName: 'Bulk Action',
+    label: 'bulk action',
+  },
 };
 
 const NOTIFICATION_EVENT_TYPE_ENUM = {

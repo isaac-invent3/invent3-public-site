@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Field, FormikProvider, useField, useFormik } from 'formik';
+import { Field, FormikProvider, useFormik } from 'formik';
 
 import {
   Button,
@@ -7,46 +7,33 @@ import {
   GenericModal,
   ModalHeading,
 } from '@repo/ui/components';
-import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';
-import { useAppDispatch } from '~/lib/redux/hooks';
-import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
-import { useCreateAssetTypeMutation } from '~/lib/redux/services/asset/types.services';
 import { typeSchema } from '~/lib/schemas/asset/type.schema';
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
+import { AssetTypePayload } from '~/lib/interfaces/asset/type.interface';
 
 interface AssetTypeModalProps {
   isOpen: boolean;
   onClose: () => void;
+  handleAdd: (payload: AssetTypePayload) => Promise<void>;
 }
 const AssetTypeModal = (props: AssetTypeModalProps) => {
-  const { isOpen, onClose } = props;
-  const [createAssetType, { isLoading }] = useCreateAssetTypeMutation({});
-  const { handleSubmit } = useCustomMutation();
-  const [field, meta, helpers] = useField('assetTypeId');
-  const dispatch = useAppDispatch();
+  const { isOpen, onClose, handleAdd } = props;
 
   const formik = useFormik({
     initialValues: {
       typeName: '',
     },
     validationSchema: typeSchema,
-    onSubmit: async (values) => {
+    onSubmit: async (values, { setSubmitting }) => {
       const session = await getSession();
       const finalValue = {
         ...values,
         createdBy: session?.user?.username ?? '',
       };
-      const response = await handleSubmit(createAssetType, finalValue, '');
-      if (response?.data) {
-        helpers.setValue(response?.data?.data?.assetTypeId);
-        dispatch(
-          updateAssetForm({
-            assetTypeName: response?.data?.data?.typeName!,
-          })
-        );
-        onClose();
-      }
+      setSubmitting(true);
+      await handleAdd(finalValue);
+      setSubmitting(false);
     },
   });
 
@@ -87,10 +74,7 @@ const AssetTypeModal = (props: AssetTypeModalProps) => {
                 >
                   Cancel
                 </Button>
-                <Button
-                  type="submit"
-                  isLoading={isLoading || formik.isSubmitting}
-                >
+                <Button type="submit" isLoading={formik.isSubmitting}>
                   Add Asset Type
                 </Button>
               </HStack>

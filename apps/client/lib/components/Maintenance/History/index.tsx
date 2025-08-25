@@ -92,7 +92,7 @@ const MaintenanceHistory = (props: MaintenanceHistoryProp) => {
           operator: OPERATORS.Equals,
         },
 
-        statusId: { key: 'statusCategoryId', operator: OPERATORS.Equals },
+        statusId: { key: 'currentStatusId', operator: OPERATORS.Equals },
         region: { key: 'stateId', operator: OPERATORS.Equals },
         area: { key: 'lgaId', operator: OPERATORS.Equals },
         branch: { key: 'facilityId', operator: OPERATORS.Equals },

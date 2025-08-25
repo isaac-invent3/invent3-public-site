@@ -46,15 +46,19 @@ const AssetTransfer = (props: AssetTransferProps) => {
     onSubmit: async (values) => {
       const session = await getSession();
       const formValues = {
-        newOwnerId: values?.newOwnerId!,
-        transferredTo: values?.transferredTo!,
-        comments: values?.comments!,
-        assetId: data?.assetId,
-        transferDate: moment(values.transferDate, 'DD/MM/YYYY')
-          .utc()
-          .toISOString(),
-        initiatedBy: Number(session?.user?.userId)!,
-        createdBy: session?.user.username!,
+        createBulkAssetTransferDto: {
+          newOwnerId: values?.newOwnerId!,
+          transferredTo: values?.transferredTo!,
+          comments: values?.comments!,
+          assetIds: [data?.assetId!],
+          transferDate: moment(values.transferDate, 'DD/MM/YYYY')
+            .utc()
+            .toISOString(),
+          initiatedBy: Number(session?.user?.userId)!,
+          createdBy: session?.user.username!,
+        },
+        createAssetDocumentsDto: null,
+        assetDocumentIds: null,
       };
       const resp = await handleSubmit(transferAsset, formValues, '');
       if (resp?.data) {

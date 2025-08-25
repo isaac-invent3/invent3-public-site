@@ -25,9 +25,11 @@ export const Alerts = ({ handleClose }: { handleClose?: () => void }) => {
 
   useEffect(() => {
     if (data?.data?.items) {
-      setNotifications((prev) => [...prev, ...data.data.items]);
+      setNotifications((prev) =>
+        pageNumber === 1 ? data.data.items : [...prev, ...data.data.items]
+      );
     }
-  }, [data]);
+  }, [data, pageNumber]);
 
   if (isLoading) {
     return <NotifcationSkeletion noOfskeleton={7} />;

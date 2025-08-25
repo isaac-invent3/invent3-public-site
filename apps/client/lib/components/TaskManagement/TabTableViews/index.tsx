@@ -11,6 +11,8 @@ import { DEFAULT_PAGE_SIZE, OPERATORS } from '~/lib/utils/constants';
 import TaskInstanceTable from '../Tables/TaskInstanceTable';
 import Filters from './Filters';
 import { usePageFilter } from '~/lib/hooks/usePageFilter';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { updateSelectedTableIds } from '~/lib/redux/slices/CommonSlice';
 
 export const initialFilterData = {
   region: [],
@@ -55,12 +57,14 @@ const TabTableView = (props: TabTableViewProps) => {
     setSelectedRows,
   } = props;
   const { handleSubmit } = useCustomMutation();
+  const selectedIds = useAppSelector((state) => state.common.selectedTableIds);
   const [selectedTaskIds, setSelectedTaskIds] = useState<number[]>([]);
   const [searchTask, { isLoading: searchLoading }] =
     useSearchTaskInstancesMutation({});
   const [searchData, setSearchData] = useState<
     ListResponse<TaskInstance> | undefined
   >(undefined);
+  const dispatch = useAppDispatch();
 
   const {
     filterData,
@@ -139,6 +143,13 @@ const TabTableView = (props: TabTableViewProps) => {
     }
   }, [search, appliedFilter]);
 
+  // Reset Selected Row when SelectedIds array is emptied
+  useEffect(() => {
+    if (selectedIds.length === 0 && selectedTaskIds.length > 0) {
+      setSelectedTaskIds([]);
+    }
+  }, [selectedIds]);
+
   useEffect(() => {
     if (selectedRows && selectedRows.length > 0) {
       const sourceItems = searchData?.items || data?.items || [];
@@ -146,8 +157,8 @@ const TabTableView = (props: TabTableViewProps) => {
       const taskInstanceIds = selectedRows
         .map((rowId) => sourceItems[rowId]?.taskInstanceId)
         .filter((id): id is number => id !== undefined);
-
       setSelectedTaskIds(taskInstanceIds);
+      dispatch(updateSelectedTableIds(taskInstanceIds));
     }
   }, [selectedRows]);
 

@@ -24,7 +24,7 @@ const textStyle = { fontSize: '11px', lineHeight: '100%' };
 
 function formatDate(date: string) {
   const now = moment().utc().local();
-  const inputDate = moment(date).utc().local();
+  const inputDate = moment.utc(date).local();
 
   if (inputDate.isSame(now, 'day')) {
     return `Today at ${inputDate.format('h:mma')}`;
@@ -57,7 +57,7 @@ const NotificationText = ({
   const handleNavigate = () => {
     if (systemContextDetails?.route && contextId) {
       router.push(
-        `/${systemContextDetails?.route}?${systemContextDetails?.slug}=${contextId}`
+        `/${systemContextDetails?.route}${systemContextDetails?.slug ? `?${systemContextDetails?.slug}=${contextId}` : `${contextId}/detail`}`
       );
       if (handleClose) handleClose();
     }

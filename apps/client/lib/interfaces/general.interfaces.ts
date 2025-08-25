@@ -138,7 +138,10 @@ type ContextKey =
   | 'FEEDBACK'
   | 'NOTES'
   | 'USERROLE'
-  | 'GROUP';
+  | 'GROUP'
+  | 'ASSET_TRANSFER'
+  | 'ASSET_DISPOSAL'
+  | 'ASSET_BULK_ACTION';
 
 interface SystemContextDetail {
   id: (typeof SYSTEM_CONTEXT_TYPE)[keyof typeof SYSTEM_CONTEXT_TYPE];

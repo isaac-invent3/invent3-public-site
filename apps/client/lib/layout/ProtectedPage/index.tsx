@@ -41,7 +41,7 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
 
       timeout = setTimeout(() => {
         console.log('Called from Layout');
-        handleSignOutClient();
+        // handleSignOutClient();
       }, msUntilSignOut);
     })();
 

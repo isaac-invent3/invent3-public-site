@@ -15,6 +15,7 @@ interface SelectableButtonGroupProps {
   isMultiSelect: boolean;
   hasAtLeastOneSelected?: boolean;
   isLoading?: boolean;
+  colorOptions?: { id: number; colorCode: string }[];
 }
 
 const SelectableButtonGroup = (props: SelectableButtonGroupProps) => {
@@ -28,6 +29,7 @@ const SelectableButtonGroup = (props: SelectableButtonGroupProps) => {
     isMultiSelect,
     hasAtLeastOneSelected = false,
     isLoading,
+    colorOptions,
   } = props;
 
   const handleClick = (item: Option) => {
@@ -78,7 +80,14 @@ const SelectableButtonGroup = (props: SelectableButtonGroupProps) => {
             customStyles={{
               py: '10px',
               borderColor: isSelected ? 'none' : '#BBBBBB80',
-              color: isSelected ? 'white' : 'black',
+              color: colorOptions
+                ? colorOptions[item.value as number]?.colorCode
+                : isSelected
+                  ? 'white'
+                  : 'black',
+              bgColor: colorOptions
+                ? `${colorOptions[item.value as number]?.colorCode}14`
+                : 'initial',
               ...customButtonStyle,
             }}
           >

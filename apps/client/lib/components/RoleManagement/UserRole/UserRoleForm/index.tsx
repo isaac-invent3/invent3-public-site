@@ -26,6 +26,7 @@ import { useCreateRoleModulePermissionMutation } from '~/lib/redux/services/role
 import { userRoleSchema } from '~/lib/schemas/user.schema';
 import { FORM_ENUM, ROUTES } from '~/lib/utils/constants';
 import Permissions from '../../Permissions';
+import withFormLeaveDialog from '~/lib/components/UI/FormLeaveDialogProvider';
 
 const UserRoleForm = () => {
   const { formRoleModules } = useAppSelector((state) => state.role);
@@ -159,4 +160,4 @@ const UserRoleForm = () => {
   );
 };
 
-export default UserRoleForm;
+export default withFormLeaveDialog(UserRoleForm);

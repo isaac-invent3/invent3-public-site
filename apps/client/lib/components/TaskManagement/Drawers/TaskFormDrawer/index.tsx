@@ -8,7 +8,12 @@ import {
 } from '@chakra-ui/react';
 import { FormikProvider, useFormik } from 'formik';
 
-import { BackButton, Button, ModalHeading } from '@repo/ui/components';
+import {
+  BackButton,
+  Button,
+  FormInputWrapper,
+  ModalHeading,
+} from '@repo/ui/components';
 import { taskBaseSchema } from '~/lib/schemas/task.schema';
 import { taskFormDetails } from '~/lib/interfaces/task.interfaces';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
@@ -31,6 +36,8 @@ import {
   useUpdateTaskInstanceMutation,
 } from '~/lib/redux/services/task/instance.services';
 import { useAppSelector } from '~/lib/redux/hooks';
+import AttachFile from '~/lib/components/Common/AttachFileAndView/AttachFile';
+import TaskAttachment from '../../Common/TaskAttachment';
 
 interface TaskFormDrawerProps {
   isOpen: boolean;
@@ -99,6 +106,7 @@ const TaskFormDrawer = (props: TaskFormDrawerProps) => {
       costEstimate: data?.costEstimate ?? null,
       actualCost: data?.actualCost ?? null,
       comments: data?.comments ?? null,
+      document: data?.document ?? null,
     },
     validationSchema: taskBaseSchema,
     enableReinitialize: true,
@@ -240,6 +248,7 @@ const TaskFormDrawer = (props: TaskFormDrawerProps) => {
                   <EstimatedDuration sectionMaxWidth="118px" spacing="73px" />
                   <CostEstimate sectionMaxWidth="118px" spacing="73px" />
                   <TaskAssignedTo sectionMaxWidth="118px" spacing="73px" />
+                  <TaskAttachment sectionMaxWidth="118px" spacing="73px" />
                 </VStack>
                 {/* Main Form Ends Here */}
               </VStack>

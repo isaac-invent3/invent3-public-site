@@ -58,6 +58,7 @@ const FormTaskListDrawer = (props: FormTaskListDrawerProps) => {
             actualCost: item.actualCost,
             comments: item.comments,
             estimatedDurationInHours: item.estimatedDurationInHours,
+            document: item.document ?? null,
             localId: index + 1,
           });
         });

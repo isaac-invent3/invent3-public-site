@@ -39,6 +39,7 @@ import {
 import CreateTicketSuccessModal from '../Modals/CreateTicketSuccessModal';
 import TicketTypeSelect from './Common/TicketTypeSelect';
 import AttachFile from '../../Common/AttachFileAndView/AttachFile';
+import { useEffect } from 'react';
 
 interface CreateTicketDrawerProps {
   isOpen: boolean;
@@ -297,7 +298,7 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                       {dateFormatter(new Date(), `DD / MM / YYYY`)}
                     </Text>
                   </FormInputWrapper>
-                  {/* <FormInputWrapper
+                  <FormInputWrapper
                     sectionMaxWidth="141px"
                     customSpacing="24px"
                     description="Attach any relevant files to this ticket"
@@ -305,23 +306,15 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                     alignItems={{ lg: 'center' }}
                   >
                     <AttachFile
-                      document={undefined}
+                      document={formik.values.document ?? undefined}
                       handleAddDocuments={(document) => {
-                        // formik.setFieldValue('documents', [
-                        //   ...formik.values.documents,
-                        //   document,
-                        // ]);
+                        formik.setFieldValue('document', document);
                       }}
-                      handleRemoveDocuments={(document) => {
-                        // formik.setFieldValue(
-                        //   'documents',
-                        //   formik.values.documents.filter(
-                        //     (doc) => doc.documentId !== document.documentId
-                        //   )
-                        // );
+                      handleRemoveDocuments={() => {
+                        formik.setFieldValue('document', null);
                       }}
                     />
-                  </FormInputWrapper> */}
+                  </FormInputWrapper>
                 </VStack>
               </form>
             </Flex>

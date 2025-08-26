@@ -26,6 +26,7 @@ const CompanyLocation = () => {
       customSpacing="47px"
       description="Enter details of the person responsible for the asset."
       title="Physical Address"
+      isRequired
     >
       <Grid
         templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(4, 1fr)' }}
@@ -37,7 +38,7 @@ const CompanyLocation = () => {
             as={FormTextInput}
             name="address1"
             type="text"
-            label="Address 1"
+            label="Address Line 1"
           />
         </GridItem>
 
@@ -46,7 +47,7 @@ const CompanyLocation = () => {
             as={FormTextInput}
             name="address2"
             type="text"
-            label="Address 2"
+            label="Address Line 2"
           />
         </GridItem>
 

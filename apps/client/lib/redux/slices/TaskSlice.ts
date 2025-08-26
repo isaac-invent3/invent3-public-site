@@ -28,6 +28,7 @@ const initialTaskForm = {
   priorityColorCode: null,
   statusColorCode: null,
   assignedToEmployeeName: null,
+  document: null,
   localId: null,
 };
 

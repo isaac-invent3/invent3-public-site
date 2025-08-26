@@ -53,6 +53,10 @@ const TaskPriority = (props: TaskPriorityProps) => {
           isLoading={isLoading}
           buttonVariant="secondary"
           customButtonStyle={{ width: 'max-content' }}
+          colorOptions={data?.data.items.map((item) => ({
+            id: item.taskPriorityId!,
+            colorCode: item.displayColorCode!,
+          }))}
         />
         {meta.touched && meta.error !== undefined && (
           <ErrorMessage>{meta.error}</ErrorMessage>

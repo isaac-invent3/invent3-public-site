@@ -37,6 +37,7 @@ import mapIdsToObject from '~/lib/components/Common/HelperFunctions/mapIdsToObje
 import _ from 'lodash';
 import { useEffect } from 'react';
 import { updateUserGroupFormDetails } from '~/lib/redux/slices/RoleSlice';
+import withFormLeaveDialog from '~/lib/components/UI/FormLeaveDialogProvider';
 
 interface UserGroupFormProps {
   type: 'create' | 'edit';
@@ -301,4 +302,4 @@ const UserGroupForm = ({ type }: UserGroupFormProps) => {
   );
 };
 
-export default UserGroupForm;
+export default withFormLeaveDialog(UserGroupForm);

@@ -49,6 +49,7 @@ export default function Page({ params }: { params: { id: number } }) {
         actualCost: task?.actualCost ?? null,
         comments: task?.comments ?? null,
         localId: task?.taskId,
+        document: task?.document ?? null,
       })
     );
   }

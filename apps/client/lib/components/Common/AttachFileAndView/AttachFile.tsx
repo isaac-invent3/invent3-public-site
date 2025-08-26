@@ -9,7 +9,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import { InfoIcon } from '~/lib/components/CustomIcons';
+import { DeleteIcon, InfoIcon } from '~/lib/components/CustomIcons';
 import { Document, ValidFileType } from '~/lib/interfaces/general.interfaces';
 import _ from 'lodash';
 import { Button } from '@repo/ui/components';
@@ -17,7 +17,7 @@ import { Button } from '@repo/ui/components';
 interface AttachFileProps {
   variant?: 'primary' | 'secondary';
   handleAddDocuments: (document: Document) => void;
-  handleRemoveDocuments: (document: Document) => void;
+  handleRemoveDocuments: () => void;
   document?: Document;
   setError?: (error: string) => void;
   error?: string | undefined;
@@ -157,15 +157,34 @@ const AttachFile = (props: AttachFileProps) => {
         rounded="8px"
         py="5px"
         px="6px"
+        alignItems="flex-start"
       >
         <label htmlFor="attachement">
-          <Button customStyles={{ height: '40px', width: '97px' }}>
+          <Button
+            customStyles={{
+              height: '40px',
+              width: '97px',
+              as: 'p',
+              cursor: 'pointer',
+            }}
+          >
             Choose File
           </Button>
         </label>
-        <Text size="md" color="black">
-          {document?.documentName ?? ''}
-        </Text>
+        {document && (
+          <HStack>
+            <Text size="md" color="black">
+              {document?.documentName ?? ''}
+            </Text>
+            <Icon
+              as={DeleteIcon}
+              boxSize="16px"
+              color="error.500"
+              cursor="pointer"
+              onClick={handleRemoveDocuments}
+            />
+          </HStack>
+        )}
       </HStack>
       <FormErrorMessage
         color="error.500"

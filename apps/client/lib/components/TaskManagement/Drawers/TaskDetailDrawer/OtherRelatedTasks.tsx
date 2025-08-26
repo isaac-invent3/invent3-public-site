@@ -18,8 +18,7 @@ const OtherRelatedTasks = ({ data }: OtherRelatedTasksProps) => {
       width="full"
       spacing="8px"
       alignItems="flex-start"
-      pl="32px"
-      pr="28px"
+      px={{ base: '24px', md: '42px' }}
     >
       <Text color="neutral.600" fontWeight={700}>
         Other Related Tasks:

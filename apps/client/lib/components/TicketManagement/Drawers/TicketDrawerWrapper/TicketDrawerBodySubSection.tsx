@@ -15,6 +15,7 @@ import {
 } from '~/lib/interfaces/ticket.interfaces';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import Description from '../Common/Description';
+import ViewAttachement from '~/lib/components/Common/AttachFileAndView/ViewAttachement';
 
 interface TicketDrawerBodySubSectionProps {
   data: Ticket;
@@ -132,7 +133,6 @@ const TicketDrawerBodySubSection = (props: TicketDrawerBodySubSectionProps) => {
       </SimpleGrid>
 
       <Description info={data?.issueDescription} />
-
       <UserSelectModal
         isOpen={isOpen}
         onClose={onClose}
@@ -145,6 +145,14 @@ const TicketDrawerBodySubSection = (props: TicketDrawerBodySubSectionProps) => {
           );
         }}
       />
+      {data?.attachment && (
+        <ViewAttachement
+          attachement={data?.attachment}
+          handleRemoveDocument={() =>
+            formikContext?.setFieldValue('document', null)
+          }
+        />
+      )}
     </VStack>
   );
 };

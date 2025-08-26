@@ -1,4 +1,4 @@
-import { LocationFilter, Option } from './general.interfaces';
+import { Document, LocationFilter, Option } from './general.interfaces';
 
 interface Ticket {
   rowId: number;
@@ -55,6 +55,7 @@ interface Ticket {
   activeTasksCount: number;
   completedTasksCount: number;
   assetLocation: string;
+  attachment: Document | null;
 }
 
 interface CreateTicketPayload {
@@ -86,6 +87,7 @@ interface DeleteTicketPayload {
 interface CreateTicketForm extends Omit<CreateTicketPayload, 'createdBy'> {
   reportedByEmployeeName: string | null;
   assignedToEmployeeName: string | null;
+  document: Document | null;
 }
 
 interface TicketTypeDetails {

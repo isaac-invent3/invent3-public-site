@@ -99,7 +99,6 @@ const CompanyInfoStep = (props: CompanyInfoStepProps) => {
                 customSpacing="47px"
                 title="Registration Number"
                 description="Provide the company’s registration number"
-                isRequired
                 w={{ base: 'full', lg: '50%' }}
               >
                 <Field
@@ -116,6 +115,7 @@ const CompanyInfoStep = (props: CompanyInfoStepProps) => {
                 title="Industry Type"
                 description="Select the Industry type"
                 w={{ base: 'full', lg: '50%' }}
+                isRequired
               >
                 <IndustryTypeSelect
                   selectName="industryTypeId"

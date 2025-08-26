@@ -19,6 +19,7 @@ import OtherRelatedTasks from './OtherRelatedTasks';
 import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
 import usePermissionAccess from '~/lib/hooks/useRoleAccess';
+import ViewAttachement from '~/lib/components/Common/AttachFileAndView/ViewAttachement';
 
 interface TaskDetailDrawerProps {
   isOpen: boolean;
@@ -117,6 +118,12 @@ const TaskDetailDrawer = (props: TaskDetailDrawerProps) => {
               <SectionOne data={task} />
               <SectionTwo data={task} />
               <OtherRelatedTasks data={task} />
+              {task?.document && (
+                <ViewAttachement
+                  attachement={task?.document}
+                  handleRemoveDocument={() => {}}
+                />
+              )}
             </VStack>
             <MarkTaskAsCompletedModal
               isOpen={isOpenMarkAsCompleted}

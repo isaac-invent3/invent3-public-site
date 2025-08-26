@@ -6,6 +6,7 @@ import TaskAssignedTo from '../../Common/AssignedTo';
 import TaskType from '../../Common/TaskType';
 import CostEstimate from '../../Common/CostEstimate';
 import EstimatedDuration from '../../Common/EstimatedDuration';
+import TaskAttachment from '../../Common/TaskAttachment';
 
 const SectionTwo = () => {
   return (
@@ -40,6 +41,14 @@ const SectionTwo = () => {
       >
         <TaskPriority sectionMaxWidth="141px" spacing="40px" />
         <TaskAssignedTo sectionMaxWidth="141px" spacing="47px" />
+      </SimpleGrid>
+      <SimpleGrid
+        columns={{ base: 1, md: 2 }}
+        alignItems="flex-start"
+        width="full"
+        spacing={{ base: '30px', md: '78px' }}
+      >
+        <TaskAttachment sectionMaxWidth="141px" spacing="40px" />
       </SimpleGrid>
     </VStack>
   );

@@ -1,6 +1,6 @@
 import { BaseEntity } from '@repo/interfaces';
 import { FORM_ENUM } from '../utils/constants';
-import { LocationFilter, Option } from './general.interfaces';
+import { Document, LocationFilter, Option } from './general.interfaces';
 
 export interface BaseMainTask extends BaseEntity {
   taskId: number;
@@ -68,6 +68,7 @@ interface BaseTask {
   shelfRef: string;
   assetLocation: string;
   statusCategoryId: number;
+  document: Document | null;
 }
 
 interface TaskInstanceModel extends BaseEntity {
@@ -126,6 +127,7 @@ interface baseTaskFormDetail {
   estimatedDurationInHours: number | null;
   actualCost: number | null;
   comments: string | null;
+  document: Document | null;
 }
 
 interface FormDetails {

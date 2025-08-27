@@ -24,40 +24,9 @@ const UserRole = ({ search }: UserRoleProps) => {
   const { data, isLoading, isFetching } = useGetAllRolesQuery({
     pageNumber,
     pageSize,
+    searchParam: search,
   });
   const dispatch = useAppDispatch();
-
-  const [searchData, setSearchData] = useState<ListResponse<Role> | undefined>(
-    undefined
-  );
-  const { handleSubmit } = useCustomMutation();
-  const [searchRole, { isLoading: searchLoading }] = useSearchRolesMutation({});
-
-  const searchCriterion = {
-    ...(search && {
-      criterion: [
-        {
-          columnName: 'roleName',
-          columnValue: search,
-          operation: OPERATORS.Contains,
-        },
-      ],
-    }),
-    pageNumber,
-    pageSize,
-  };
-
-  const handleSearch = useCallback(async () => {
-    const response = await handleSubmit(searchRole, searchCriterion, '');
-    setSearchData(response?.data?.data);
-  }, [searchRole, searchCriterion]);
-
-  // Trigger search when search input changes or pagination updates
-  useEffect(() => {
-    if (search) {
-      handleSearch();
-    }
-  }, [search, pageNumber, pageSize]);
 
   // Reset pagination when clearing the search
   useEffect(() => {
@@ -149,14 +118,10 @@ const UserRole = ({ search }: UserRoleProps) => {
   return (
     <Flex width="full" mt="8px">
       <RoleTable
-        data={
-          search && searchData ? searchData.items : (data?.data?.items ?? [])
-        }
+        data={data?.data?.items ?? []}
         isLoading={isLoading}
-        isFetching={isFetching || searchLoading}
-        totalPages={
-          search && searchData ? searchData?.totalPages : data?.data?.totalPages
-        }
+        isFetching={isFetching}
+        totalPages={data?.data?.totalPages}
         showFooter={true}
         emptyLines={25}
         isSelectable

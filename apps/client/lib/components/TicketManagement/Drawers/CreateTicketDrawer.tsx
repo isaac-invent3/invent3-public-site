@@ -39,7 +39,6 @@ import {
 import CreateTicketSuccessModal from '../Modals/CreateTicketSuccessModal';
 import TicketTypeSelect from './Common/TicketTypeSelect';
 import AttachFile from '../../Common/AttachFileAndView/AttachFile';
-import { useEffect } from 'react';
 
 interface CreateTicketDrawerProps {
   isOpen: boolean;
@@ -89,12 +88,24 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
       /* eslint-disable no-unused-vars */
       const { assignedToEmployeeName, reportedByEmployeeName, ...payload } =
         data;
-
+      const { document, ...ticketDto } = data;
       const response = await handleSubmit(
         createTicketMutation,
         {
-          ...payload,
-          createdBy: session?.user.username,
+          createTicketDto: {
+            ...ticketDto,
+            createdBy: session?.user.username!,
+          },
+          createTicketDocumentDto: document
+            ? [
+                {
+                  documentName: document.documentName!,
+                  base64Document: document.base64Document!,
+                  createdBy: session?.user.username!,
+                },
+              ]
+            : null,
+          createTicketDocumentsLinkDtos: null,
         },
         ''
       );
@@ -233,6 +244,12 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                             options[0]?.value
                           );
                         }}
+                        colorOptions={ticketPriorities?.data.items.map(
+                          (item) => ({
+                            id: item.taskPriorityId!,
+                            colorCode: item.displayColorCode!,
+                          })
+                        )}
                       />
 
                       {formik.submitCount > 0 &&

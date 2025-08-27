@@ -137,6 +137,7 @@ const TaskFormDrawer = (props: TaskFormDrawerProps) => {
           estimatedDurationInHours: values.estimatedDurationInHours!,
           costEstimate: values.costEstimate!,
           comments: values.comments!,
+          document: values.document,
         };
 
         const baseTaskInfo = {
@@ -184,10 +185,25 @@ const TaskFormDrawer = (props: TaskFormDrawerProps) => {
           }
         } else {
           // Creation Mode
+          const { document, ...taskPayload } = baseTaskInfo;
           if (type === 'main') {
             response = await handleSubmit(
               createTask,
-              { ...baseTaskInfo, createdBy: session?.user.username! },
+              {
+                createTaskDto: {
+                  ...taskPayload,
+                  createdBy: session?.user.username!,
+                },
+                createTaskDocumentDto: values.document
+                  ? [
+                      {
+                        documentName: document?.documentName!,
+                        base64Document: document?.base64Document!,
+                      },
+                    ]
+                  : null,
+                createTaskDocumentsLinkDtos: null,
+              },
               ''
             );
           } else {

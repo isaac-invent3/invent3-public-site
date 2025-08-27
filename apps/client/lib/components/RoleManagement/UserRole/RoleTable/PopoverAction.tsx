@@ -38,7 +38,7 @@ const PopoverAction = ({ role }: PopoverActionProps) => {
             as="a"
             href={`/${ROUTES.ROLES}/role/${role.roleId}/detail`}
           >
-            View Details
+            Modify
           </Text>
           {!Object.values(ROLE_IDS_ENUM).includes(role.roleId) && (
             <Text cursor="pointer" color="red.500" onClick={() => onOpen()}>

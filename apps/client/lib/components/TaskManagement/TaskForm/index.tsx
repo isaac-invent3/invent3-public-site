@@ -65,6 +65,7 @@ const TaskForm = (props: TaskFormProps) => {
           : null),
       actualCost: formDetails?.actualCost ?? null,
       comments: formDetails?.comments ?? null,
+      document: formDetails?.document ?? null,
     },
     validationSchema: taskSchema,
     enableReinitialize: true,
@@ -82,6 +83,7 @@ const TaskForm = (props: TaskFormProps) => {
         comments: values.comments,
         scheduleId: values.scheduleId!,
         estimatedDurationInHours: values.estimatedDurationInHours!,
+        document: values.document,
       };
       if (type === 'edit') {
         response = await handleSubmit(
@@ -95,9 +97,24 @@ const TaskForm = (props: TaskFormProps) => {
           ''
         );
       } else {
+        const { document, ...taskPayload } = info;
         response = await handleSubmit(
           createTask,
-          { ...info, createdBy: session?.user?.username! },
+          {
+            createTaskDto: {
+              ...taskPayload,
+              createdBy: session?.user.username!,
+            },
+            createTaskDocumentDto: values.document
+              ? [
+                  {
+                    documentName: document?.documentName!,
+                    base64Document: document?.base64Document!,
+                  },
+                ]
+              : null,
+            createTaskDocumentsLinkDtos: null,
+          },
           ''
         );
       }

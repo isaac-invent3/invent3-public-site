@@ -1,11 +1,12 @@
 'use client';
 
-import { Box, Flex, Text, useDisclosure, VStack } from '@chakra-ui/react';
+import { Box, Flex, Icon, Text, useDisclosure, VStack } from '@chakra-ui/react';
 import {
   AssetCountByColumnName,
   ValidColumnNames,
 } from '~/lib/interfaces/asset/general.interface';
 import AssetListModal from './AssetListModal';
+import { DefaultAssetCountIcon } from '../../CustomIcons';
 
 interface AssetCountCardProps {
   data: AssetCountByColumnName;
@@ -41,10 +42,14 @@ const AssetCountCard = (props: AssetCountCardProps) => {
           gap="1em"
         >
           <Flex w="64px" h="64px" alignItems="center" justifyContent="center">
-            <Box
-              boxSize="64px"
-              dangerouslySetInnerHTML={{ __html: data.icon! }}
-            />
+            {data?.icon ? (
+              <Box
+                boxSize="64px"
+                dangerouslySetInnerHTML={{ __html: data.icon! }}
+              />
+            ) : (
+              <Icon as={DefaultAssetCountIcon} boxSize="64px" />
+            )}
           </Flex>
 
           <Text fontSize="lg" fontWeight={800} color="neutral.800">

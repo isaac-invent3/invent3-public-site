@@ -30,7 +30,7 @@ export const ticketApi = createApi({
       CreateTicketPayload
     >({
       query: (body) => ({
-        url: `/Tickets`,
+        url: `/Invent3Pro/Tickets/Create`,
         method: 'POST',
         headers: getHeaders(),
         body,

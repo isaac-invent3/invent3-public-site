@@ -21,6 +21,7 @@ import { ExportTableName } from '../interfaces/general.interfaces';
 import { useState } from 'react';
 import { getSession } from 'next-auth/react';
 import { Button, GenericSuccessModal } from '@repo/ui/components';
+import { TicketCategory } from '../interfaces/ticket.interfaces';
 
 interface UseExportProps {
   ids: number[];
@@ -29,15 +30,21 @@ interface UseExportProps {
   hasRequestedBy?: boolean;
   isQueued?: boolean;
   showInvent3?: boolean;
+  extraData?: {
+    taskStatus?: string;
+    tabScope?: TicketCategory;
+    userId?: number;
+    statusCategoryId?: number;
+  };
 }
 const useExport = (props: UseExportProps) => {
   const {
     ids,
     exportTableName,
-    tableDisplayName,
     hasRequestedBy = false,
     isQueued,
     showInvent3 = false,
+    extraData,
   } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -45,24 +52,12 @@ const useExport = (props: UseExportProps) => {
     onOpen: onOpenSuccess,
     onClose: onCloseSuccess,
   } = useDisclosure();
-  const toast = useToast();
   const { handleSubmit } = useCustomMutation();
   const [exportTable, { isLoading }] = useExportTableMutation();
   const [exportType, setExportType] = useState<number | null>(null);
 
   const handlePopoverClick = () => {
-    // if (ids.length > 0) {
     onOpen();
-    // } else {
-    //   toast({
-    //     title: `No ${_.startCase(tableDisplayName)} Selected`,
-    //     description: `Please select atleast one ${_.lowerCase(tableDisplayName)}`,
-    //     status: 'error',
-    //     duration: 5000,
-    //     isClosable: true,
-    //     position: 'top-right',
-    //   });
-    // }
   };
 
   const submitExport = async (exportType: number) => {
@@ -75,6 +70,7 @@ const useExport = (props: UseExportProps) => {
         ids,
         requestedBy: hasRequestedBy ? session?.user.username : undefined,
         showInvent3: showInvent3,
+        extraData,
       },
       undefined,
       () => {

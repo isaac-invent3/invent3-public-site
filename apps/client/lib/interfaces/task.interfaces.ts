@@ -1,6 +1,11 @@
 import { BaseEntity } from '@repo/interfaces';
 import { FORM_ENUM } from '../utils/constants';
-import { Document, LocationFilter, Option } from './general.interfaces';
+import {
+  BaseDto,
+  Document,
+  LocationFilter,
+  Option,
+} from './general.interfaces';
 
 export interface BaseMainTask extends BaseEntity {
   taskId: number;
@@ -192,6 +197,23 @@ interface TaskPayload extends TaskMetadata {
   scheduleId: number;
 }
 
+interface TaskDocumentDto extends BaseDto {
+  documentName: string;
+  base64Document: string;
+}
+
+interface TaskDocumentsLink {
+  taskDocumentId: number;
+  taskId: number;
+  createdBy: string;
+}
+
+interface CreateTaskPayload {
+  createTaskDto: TaskPayload & { createdBy: string };
+  createTaskDocumentDto: TaskDocumentDto[] | null;
+  createTaskDocumentsLinkDtos: TaskDocumentsLink[] | null;
+}
+
 interface TaskInstancePayload extends TaskMetadata {
   taskInstanceId?: number;
   taskStatusId?: number;
@@ -227,4 +249,5 @@ export type {
   TaskInstancePayload,
   UpdateTaskInstanceMetadataPayload,
   TaskFilter,
+  CreateTaskPayload,
 };

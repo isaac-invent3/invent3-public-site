@@ -42,18 +42,6 @@ const UserGroupTable = (props: UserGroupTableProps) => {
           header: 'Owner',
           enableSorting: true,
         }),
-        columnHelper.accessor('statusName', {
-          cell: (info) => {
-            return (
-              <GenericStatusBox
-                text={info.row.original.statusName}
-                colorCode={info.row.original.displayColorCode}
-              />
-            );
-          },
-          header: 'Status',
-          enableSorting: false,
-        }),
 
         columnHelper.accessor('owner', {
           cell: (info) => <PopoverAction group={info.row.original} />,
@@ -103,19 +91,6 @@ const UserGroupTable = (props: UserGroupTableProps) => {
           header: 'Date Created',
           enableSorting: false,
         }),
-        columnHelper.accessor('statusId', {
-          cell: (info) => {
-            return (
-              <GenericStatusBox
-                text={info.row.original.statusName}
-                colorCode={info.row.original.displayColorCode}
-              />
-            );
-          },
-          header: 'Status',
-          enableSorting: false,
-        }),
-
         columnHelper.accessor('guid', {
           cell: (info) => <PopoverAction group={info.row.original} />,
           header: '',

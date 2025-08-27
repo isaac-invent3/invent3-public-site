@@ -23,7 +23,7 @@ const ToggleCompanyStatusModal = (props: ToggleCompanyStatusModalProps) => {
   const [toggleStatus, { isLoading }] = useToggleCompanyStatusMutation({});
   const { handleSubmit } = useCustomMutation();
   const isActive =
-    companyDetails?.subscriptionPlanId === USER_STATUS_ENUM.ACTIVE;
+    companyDetails?.subscriptionStatusId === USER_STATUS_ENUM.ACTIVE;
   const loadingText = isActive ? 'Deactivating...' : 'Activating...';
 
   const handleToggleStatus = async () => {

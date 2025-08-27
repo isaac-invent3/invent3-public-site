@@ -16,6 +16,7 @@ import {
 } from '~/lib/utils/constants';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import GenericStatusBox from '../../UI/GenericStatusBox';
 
 interface CompanyTableProps extends GenericTableProps {
   data: BaseApiResponse<ListResponse<Company>> | undefined;
@@ -87,6 +88,18 @@ const CompanyTable = (props: CompanyTableProps) => {
           cell: (info) =>
             dateFormatter(info.getValue(), 'DD / MM / YYYY') ?? 'N/A',
           header: 'Creation Date',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('subscriptionStatusName', {
+          cell: (info) => {
+            return (
+              <GenericStatusBox
+                text={info.getValue()}
+                colorCode={info.row.original?.displayColorCode}
+              />
+            );
+          },
+          header: 'Subscription Status',
           enableSorting: false,
         }),
       ];

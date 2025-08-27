@@ -6,6 +6,7 @@ import {
   SearchQuery,
 } from '@repo/interfaces';
 import {
+  CreateTaskPayload,
   SingleTask,
   Task,
   TaskPayload,
@@ -21,9 +22,12 @@ export const taskApi = createApi({
   baseQuery: baseQueryWithReauth,
   tagTypes: ['allTasks', 'allTasksByScheduleId'],
   endpoints: (builder) => ({
-    createTask: builder.mutation<BaseApiResponse<SingleTask>, TaskPayload>({
+    createTask: builder.mutation<
+      BaseApiResponse<SingleTask>,
+      CreateTaskPayload
+    >({
       query: (body) => ({
-        url: `/Tasks`,
+        url: `/Invent3Pro/Tasks/Create`,
         method: 'POST',
         headers: getHeaders(),
         body,

@@ -2,7 +2,7 @@
 import { Text, useDisclosure, VStack } from '@chakra-ui/react';
 import { GenericPopover } from '@repo/ui/components';
 import { Company } from '~/lib/interfaces/company.interfaces';
-import { ROUTES } from '~/lib/utils/constants';
+import { ROUTES, USER_STATUS_ENUM } from '~/lib/utils/constants';
 import ToggleCompanyStatusModal from '../Modals/ToggleCompanyStatusModal';
 
 interface PopoverActionProps {
@@ -10,6 +10,7 @@ interface PopoverActionProps {
 }
 const PopoverAction = ({ company }: PopoverActionProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const isActive = company?.subscriptionStatusId === USER_STATUS_ENUM.ACTIVE;
   return (
     <>
       <GenericPopover width="137px" placement="bottom-start">
@@ -35,8 +36,12 @@ const PopoverAction = ({ company }: PopoverActionProps) => {
           >
             Edit
           </Text>
-          <Text cursor="pointer" onClick={onOpen}>
-            Deactivate
+          <Text
+            cursor="pointer"
+            color={isActive ? 'red.500' : 'black'}
+            onClick={() => onOpen()}
+          >
+            {isActive ? 'Deactivate' : 'Activate'}
           </Text>
         </VStack>
       </GenericPopover>

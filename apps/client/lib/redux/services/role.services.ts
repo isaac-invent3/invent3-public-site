@@ -24,7 +24,7 @@ export const rolesApi = createApi({
   endpoints: (builder) => ({
     getAllRoles: builder.query<
       BaseApiResponse<ListResponse<Role>>,
-      QueryParams
+      QueryParams & { searchParam?: string }
     >({
       query: (data) => ({
         url: generateQueryStr(`/UserRoles/GetUserRolesInfoHeaders?`, data),

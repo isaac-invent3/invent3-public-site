@@ -169,6 +169,7 @@ const planScopeOptions = [
 const STATUS_CATEGORY_ENUM = {
   ACTIVE: 1,
   INACTIVE: 2,
+  COMPLETED: 3,
 };
 
 const SYSTEM_CONTEXT_TYPE = {

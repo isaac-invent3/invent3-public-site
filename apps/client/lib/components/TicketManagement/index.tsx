@@ -94,10 +94,22 @@ const TicketManagement = () => {
     (state) => state.general.appConfigValues
   );
   const selectedIds = useAppSelector((state) => state.common.selectedTableIds);
+
+  const getTicketCategory: TicketCategory = useMemo(() => {
+    if (tabIndex === 0) return 'new';
+    if (tabIndex === 1) return 'assigned';
+    if (tabIndex === 2) return 'scheduled';
+    if (tabIndex === 3) return 'in_progress';
+    if (tabIndex === 4) return 'completed';
+
+    return 'new';
+  }, [tabIndex]);
+
   const { ExportPopover } = useExport({
     ids: selectedIds,
     exportTableName: 'Tickets',
     tableDisplayName: 'ticket',
+    extraData: { tabScope: getTicketCategory },
   });
 
   const getActionAndTicketCategoryKey = (
@@ -160,21 +172,12 @@ const TicketManagement = () => {
   const handleTabChange = (index: number) => {
     setTabIndex(index);
     setIsTabChanging(true);
+    dispatch(updateSelectedTableIds([]));
     const tabName = ALlTicketTabs[index];
     if (tabName) {
       router.push(`/${ROUTES.TICKETS}?tab=${tabName}`);
     }
   };
-
-  const getTicketCategory: TicketCategory = useMemo(() => {
-    if (tabIndex === 0) return 'new';
-    if (tabIndex === 1) return 'assigned';
-    if (tabIndex === 2) return 'scheduled';
-    if (tabIndex === 3) return 'in_progress';
-    if (tabIndex === 4) return 'completed';
-
-    return 'new';
-  }, [tabIndex]);
 
   const dispatch = useAppDispatch();
 

@@ -190,7 +190,7 @@ type ExportTableName =
   | 'Users'
   | 'Vendors'
   | 'Tickets'
-  | 'Tasks';
+  | 'TaskInstances';
 
 type ValidFileType =
   | 'application/pdf'

@@ -13,6 +13,7 @@ import {
   UpdateSettingsPayload,
 } from '~/lib/interfaces/settings.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
+import { TicketCategory } from '~/lib/interfaces/ticket.interfaces';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -55,14 +56,28 @@ export const utilityApi = createApi({
         ids?: number[];
         requestedBy?: string;
         showInvent3?: boolean;
+        extraData?: {
+          taskStatus?: string;
+          tabScope?: TicketCategory;
+          userId?: number;
+          statusCategory?: string;
+        };
       }
     >({
-      query: ({ tableName, exportType, ids, requestedBy, showInvent3 }) => ({
+      query: ({
+        tableName,
+        exportType,
+        ids,
+        requestedBy,
+        showInvent3,
+        extraData,
+      }) => ({
         url: generateQueryStr(
           `/${showInvent3 ? 'Invent3Pro/' : ''}${tableName}/Export?`,
           {
             exportType,
             requestedBy: requestedBy!,
+            ...extraData,
           }
         ),
         method: 'POST',

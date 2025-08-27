@@ -1,4 +1,9 @@
-import { Document, LocationFilter, Option } from './general.interfaces';
+import {
+  BaseDto,
+  Document,
+  LocationFilter,
+  Option,
+} from './general.interfaces';
 
 interface Ticket {
   rowId: number;
@@ -58,7 +63,7 @@ interface Ticket {
   attachment: Document | null;
 }
 
-interface CreateTicketPayload {
+interface TicketDto {
   ticketTitle: string;
   issueDescription: string;
   issueReportDate: string;
@@ -70,7 +75,7 @@ interface CreateTicketPayload {
   createdBy?: string;
 }
 
-interface UpdateTicketPayload extends Partial<CreateTicketPayload> {
+interface UpdateTicketPayload extends Partial<TicketDto> {
   id: number;
   ticketId: number;
   ticketStatusId?: number | null;
@@ -84,7 +89,7 @@ interface DeleteTicketPayload {
   deletedBy?: string;
 }
 
-interface CreateTicketForm extends Omit<CreateTicketPayload, 'createdBy'> {
+interface CreateTicketForm extends Omit<TicketDto, 'createdBy'> {
   reportedByEmployeeName: string | null;
   assignedToEmployeeName: string | null;
   document: Document | null;
@@ -103,6 +108,23 @@ interface TicketTypeDetails {
   lastModifiedDate: string | null;
   ticketTypeId: number;
   ticketTypeName: string;
+}
+
+interface TicketDocumentDto extends BaseDto {
+  documentName: string;
+  base64Document: string;
+}
+
+interface TicketDocumentsLink {
+  ticketDocumentId: number;
+  ticketId: number;
+  createdBy: string;
+}
+
+interface CreateTicketPayload {
+  createTicketDto: TicketDto & { createdBy: string };
+  createTicketDocumentDto: TicketDocumentDto[] | null;
+  createTicketDocumentsLinkDtos: TicketDocumentsLink[] | null;
 }
 
 type SelectedTicketAction =

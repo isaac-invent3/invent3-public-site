@@ -81,13 +81,28 @@ const SelectableButtonGroup = (props: SelectableButtonGroupProps) => {
               py: '10px',
               borderColor: isSelected ? 'none' : '#BBBBBB80',
               color: colorOptions
-                ? colorOptions[item.value as number]?.colorCode
+                ? isSelected
+                  ? 'white'
+                  : colorOptions[item.value as number]?.colorCode
                 : isSelected
                   ? 'white'
                   : 'black',
               bgColor: colorOptions
-                ? `${colorOptions[item.value as number]?.colorCode}14`
-                : 'initial',
+                ? isSelected
+                  ? `${colorOptions[item.value as number]?.colorCode}`
+                  : `${colorOptions[item.value as number]?.colorCode}14`
+                : isSelected
+                  ? 'primary.500'
+                  : '#F6F6F6',
+              _hover: {
+                bgColor: colorOptions
+                  ? isSelected
+                    ? `${colorOptions[item.value as number]?.colorCode}`
+                    : `${colorOptions[item.value as number]?.colorCode}14`
+                  : isSelected
+                    ? 'primary.500'
+                    : '#E8E8E8',
+              },
               ...customButtonStyle,
             }}
           >

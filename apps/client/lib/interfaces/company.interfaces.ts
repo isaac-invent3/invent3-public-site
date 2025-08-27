@@ -14,6 +14,8 @@ interface Company {
   subscriptionPlanId: number;
   subscriptionPlanTypeId: number;
   subscriptionStatusId: number;
+  subscriptionStatusName: string;
+  displayColorCode: string;
   industryId: number;
   locationId: number;
   webUrl: string;

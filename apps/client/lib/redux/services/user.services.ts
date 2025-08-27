@@ -75,7 +75,7 @@ export const userApi = createApi({
     }),
     getAllUserGroupsInfoHeader: builder.query<
       BaseApiResponse<ListResponse<UserGroupInfoHeader>>,
-      QueryParams
+      QueryParams & { searchParam?: string }
     >({
       query: (data) => ({
         url: generateQueryStr(`/Groups/GroupInfoHeaders?`, data),

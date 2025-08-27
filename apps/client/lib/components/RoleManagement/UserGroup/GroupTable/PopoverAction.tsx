@@ -44,7 +44,7 @@ const PopoverAction = ({ group }: PopoverActionProps) => {
             as="a"
             href={`/${ROUTES.ROLES}/group/${group.groupId}/edit`}
           >
-            Edit
+            Modify
           </Text>
           <Text cursor="pointer" color="red.500" as="button" onClick={onOpen}>
             Delete

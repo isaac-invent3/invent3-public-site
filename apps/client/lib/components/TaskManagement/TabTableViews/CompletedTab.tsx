@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   taskInstanceApi,
   useGetAllCompletedTaskInstancesQuery,
@@ -13,6 +13,7 @@ import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import useSignalR from '~/lib/hooks/useSignalR';
 import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { updateSelectedTableIds } from '~/lib/redux/slices/CommonSlice';
 
 interface CompletedTabProps {
   search: string;
@@ -30,6 +31,7 @@ const CompletedTab = (props: CompletedTabProps) => {
     pageNumber: currentPage,
   });
   const dispatch = useAppDispatch();
+  const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const appConfigValue = useAppSelector(
     (state) => state.general.appConfigValues
   );
@@ -88,6 +90,8 @@ const CompletedTab = (props: CompletedTabProps) => {
       setPageSize={setPageSize}
       data={data?.data}
       specificSearchCriterion={searchCriterion}
+      selectedRows={selectedRows}
+      setSelectedRows={setSelectedRows}
       handleSelectRow={(row) =>
         updateSearchParam(
           SYSTEM_CONTEXT_DETAILS.TASKS.slug,

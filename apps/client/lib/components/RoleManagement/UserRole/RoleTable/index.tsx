@@ -43,13 +43,6 @@ const RoleTable = (props: RoleTableProps) => {
           header: 'Accounts',
           enableSorting: false,
         }),
-        columnHelper.accessor('roleId', {
-          cell: () => {
-            return <GenericStatusBox text="Active" colorCode="#07CC3B" />;
-          },
-          header: 'Status',
-          enableSorting: false,
-        }),
         columnHelper.accessor('currentStatusId', {
           cell: (info) => <PopoverAction role={info.row.original} />,
           header: '',
@@ -86,19 +79,6 @@ const RoleTable = (props: RoleTableProps) => {
           header: 'Date Created',
           enableSorting: false,
         }),
-        columnHelper.accessor('currentStatusId', {
-          cell: (info) => {
-            return (
-              <GenericStatusBox
-                text={info.row.original.currentStatusName}
-                colorCode={info.row.original.currentStatusDisplayColorCode}
-              />
-            );
-          },
-          header: 'Status',
-          enableSorting: false,
-        }),
-
         columnHelper.accessor('currentStatusDisplayColorCode', {
           cell: (info) => <PopoverAction role={info.row.original} />,
           header: '',

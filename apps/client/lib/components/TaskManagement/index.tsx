@@ -25,9 +25,15 @@ import PendingAndInProgressTab from './TabTableViews/PendingAndInProgressTab';
 import TaskDetailDrawer from './Drawers/TaskDetailDrawer';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import useExport from '~/lib/hooks/useExport';
-import { useAppSelector } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import { updateSelectedTableIds } from '~/lib/redux/slices/CommonSlice';
 
 const ALlTabs = ['Pending', 'In Progress', 'Completed'];
+const TabToStatusCategoryMap: { [key: string]: number } = {
+  0: STATUS_CATEGORY_ENUM.INACTIVE,
+  1: STATUS_CATEGORY_ENUM.ACTIVE,
+  2: STATUS_CATEGORY_ENUM.COMPLETED,
+};
 
 const TaskManagement = () => {
   const router = useRouter();
@@ -35,15 +41,19 @@ const TaskManagement = () => {
   const [search, setSearch] = useState('');
   const { isOpen, onOpen, onClose } = useDisclosure();
   const selectedIds = useAppSelector((state) => state.common.selectedTableIds);
-  const { ExportPopover } = useExport({
-    ids: selectedIds,
-    exportTableName: 'Tasks',
-    tableDisplayName: 'task',
-  });
+  const dispatch = useAppDispatch();
   const [tabIndex, setTabIndex] = useState<number | undefined>(undefined);
   const [activeFilter, setActiveFilter] = useState<'bulk' | 'general' | null>(
     null
   );
+  const { ExportPopover } = useExport({
+    ids: selectedIds,
+    exportTableName: 'TaskInstances',
+    tableDisplayName: 'task',
+    extraData: {
+      statusCategoryId: TabToStatusCategoryMap[tabIndex?.toString() || '0'],
+    },
+  });
   const { getSearchParam, clearSearchParamsAfter } = useCustomSearchParams();
   const taskInstanceId = getSearchParam(SYSTEM_CONTEXT_DETAILS.TASKS.slug);
   const {
@@ -76,6 +86,7 @@ const TaskManagement = () => {
   // Update the URL whenever the tab is changed
   const handleTabChange = (index: number) => {
     setTabIndex(index);
+    dispatch(updateSelectedTableIds([]));
     const tabName = ALlTabs[index];
     if (tabName) {
       router.push(`/${ROUTES.TASKS}?tab=${tabName}`);

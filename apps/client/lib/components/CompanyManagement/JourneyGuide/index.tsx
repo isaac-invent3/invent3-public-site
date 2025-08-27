@@ -90,7 +90,7 @@ interface JourneyGuideProps {
 }
 const JourneyGuide = (props: JourneyGuideProps) => {
   const { isOpen, onClose, closeWithNavigating = false } = props;
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(2);
   const { data } = useSession();
   const { data: journeyGuideData } = useGetCompanyJourneyGuideQuery(
     { companyId: data?.user?.companyId! },
@@ -122,13 +122,17 @@ const JourneyGuide = (props: JourneyGuideProps) => {
     <GenericModal
       isOpen={isOpen}
       onClose={onClose}
+      mainModalStyle={{
+        closeOnOverlayClick: false,
+        closeOnEsc: false,
+      }}
       contentStyle={{
         width: { lg: '846px' },
         p: 0,
         bgColor: '#E4E3DF',
         maxW: '80vw',
         rounded: '24px',
-        bgImage: '/journey-main-bg.jpg',
+        bgImage: '/journey-main-bg.png',
         bgSize: 'cover',
         overflow: 'hidden',
         position: 'relative',
@@ -158,6 +162,7 @@ const JourneyGuide = (props: JourneyGuideProps) => {
                 fontWeight={800}
                 fontSize={{ base: '24px', md: '40px' }}
                 lineHeight="100%"
+                color="black"
               >
                 Journey Guide
               </Heading>
@@ -166,7 +171,9 @@ const JourneyGuide = (props: JourneyGuideProps) => {
               size={{ base: 'md', lg: 'lg' }}
               lineHeight={{ base: '100%', lg: '150%' }}
               fontWeight={400}
-              maxW="292px"
+              letterSpacing="0"
+              maxW="387px"
+              color="black"
             >
               This step-by-step workflow will guide you through the complete
               process of configuring a new company profile.
@@ -255,7 +262,9 @@ const JourneyGuide = (props: JourneyGuideProps) => {
             >
               {closeWithNavigating
                 ? 'Start'
-                : (steps[activeStep]?.buttonSuffix ?? "You're Done")}
+                : steps[activeStep]?.buttonSuffix
+                  ? `Step ${activeStep} - ${steps[activeStep]?.buttonSuffix}`
+                  : "You're Done"}
             </Button>
           </Flex>
         </VStack>
@@ -263,48 +272,23 @@ const JourneyGuide = (props: JourneyGuideProps) => {
         {/* Right Side Starts Here */}
         <VStack
           width={{ base: 'full', lg: '50%' }}
-          justifyContent="space-between"
+          justifyContent="end"
           px={{ base: '24px', md: '32px' }}
           py={{ base: '24px', md: '24px' }}
           alignItems={{ lg: 'flex-end' }}
           position="relative"
           display={{ base: 'none', lg: 'flex' }}
         >
-          <HStack width="full" justifyContent="space-between">
-            <HStack
-              bgColor="white"
-              border="1px solid #0E2642"
-              rounded="6px"
-              py="6px"
-              px="9px"
-              spacing="12px"
-            >
-              <Icon boxSize="25px" />
-              <VStack alignItems="flex-start" spacing="4px">
-                <Text
-                  fontSize="9px"
-                  fontWeight={700}
-                  lineHeight="150%"
-                  color="neutral.700"
-                >
-                  Having troubles?
-                </Text>
-                <Link href="mailto:support@invent3.ai">
-                  <Text fontSize="11px" fontWeight={700} lineHeight="100%">
-                    Contact Us
-                  </Text>
-                </Link>
-              </VStack>
-            </HStack>
-            <ModalCloseButtonText onClose={() => onClose()} />
-          </HStack>
           <Flex
-            position="relative"
-            height="300px"
-            width="379px"
-            left={'-120px'}
+            position="absolute"
+            height="509.15px"
+            width="560.36px"
+            // left={'-140px'}
+            right={'10px'}
+            flex={1}
+            bottom={'30px'}
           >
-            <Image src="/journey-image.png" alt="journey-image" fill />
+            <Image src="/journey-image.svg" alt="journey-image" fill />
           </Flex>
           <Button
             customStyles={{ width: '195px' }}
@@ -314,7 +298,9 @@ const JourneyGuide = (props: JourneyGuideProps) => {
           >
             {closeWithNavigating
               ? 'Start'
-              : (steps[activeStep]?.buttonSuffix ?? "You're Done")}
+              : steps[activeStep]?.buttonSuffix
+                ? `Step ${activeStep + 1} - ${steps[activeStep]?.buttonSuffix}`
+                : "You're Done"}
           </Button>
         </VStack>
         {/* Right Side Ends Here */}

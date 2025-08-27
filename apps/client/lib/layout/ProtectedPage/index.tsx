@@ -11,9 +11,15 @@ import Notes from './Notes';
 import { getSession, useSession } from 'next-auth/react';
 import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
 import useSignalR from '~/lib/hooks/useSignalR';
-import AssistanceGuide from '~/lib/components/CompanyManagement/JourneyGuide/AssistanceGuide';
 import { ROLE_IDS_ENUM } from '~/lib/utils/constants';
 import { handleSignOutClient } from '~/lib/utils/handleSignOutClient';
+import JourneyGuide, {
+  CMFJourneyGuideSteps,
+  journeyGuideSteps,
+} from '~/lib/components/CompanyManagement/JourneyGuide';
+import { useGetCompanyJourneyGuideQuery } from '~/lib/redux/services/company.services';
+import { CompanyJourneyGuide } from '~/lib/interfaces/company.interfaces';
+import { usePathname } from 'next/navigation';
 
 interface ProtectedLayoutProps {
   children: React.ReactNode;
@@ -21,8 +27,23 @@ interface ProtectedLayoutProps {
 const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
   const [isCollapse, setIsCollapse] = useState(true);
   const [showCountdown, setShowCountdown] = useState(false);
-  const [showAssistantGuide, setShowAssistantGuide] = useState(false);
-  const { data, update } = useSession();
+  const [showJourneyGuide, setShowJourneyGuide] = useState(false);
+  const { data } = useSession();
+  const { data: journeyGuideData } = useGetCompanyJourneyGuideQuery(
+    { companyId: data?.user?.companyId! },
+    { skip: !data?.user }
+  );
+  const pathName = usePathname();
+  const companySlug = data?.user?.companySlug;
+  const finalPathName = companySlug
+    ? pathName?.replace(`/${companySlug}`, '')
+    : pathName;
+
+  const steps = [
+    ...(data?.user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY)
+      ? CMFJourneyGuideSteps
+      : journeyGuideSteps),
+  ];
 
   //Session timeout check
   useEffect(() => {
@@ -48,12 +69,20 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
     return () => clearTimeout(timeout);
   }, []);
 
-  // Hide Assistant Guide after 1 minutes
+  // Journey Guide check
   useEffect(() => {
-    if (data?.user && !data?.user?.hasShownGuide) {
-      setShowAssistantGuide(true);
+    if (journeyGuideData?.data) {
+      const hasIncompleteStep = steps.findIndex(
+        (step) => !journeyGuideData?.data[step.key as keyof CompanyJourneyGuide]
+      );
+      if (
+        hasIncompleteStep !== -1 &&
+        finalPathName !== steps?.[hasIncompleteStep]?.link
+      ) {
+        setShowJourneyGuide(true);
+      }
     }
-  }, []);
+  }, [journeyGuideData]);
 
   // SignalR Connection
   const connectionState = useSignalR('userRole-hub');
@@ -69,21 +98,22 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
   });
 
   return (
-    <Flex
-      width="full"
-      height="100vh"
-      bgColor="#D9D9D9"
-      overflowY="scroll"
-      position="relative"
-      overflowX="hidden"
-    >
-      <Notes isCollapse={isCollapse} />
-      {showCountdown && <CountDownTimer />}
+    <>
+      <Flex
+        width="full"
+        height="100vh"
+        bgColor="#D9D9D9"
+        overflowY="scroll"
+        position="relative"
+        overflowX="hidden"
+      >
+        <Notes isCollapse={isCollapse} />
+        {showCountdown && <CountDownTimer />}
 
-      <HStack position="relative">
-        <SideBar isCollapse={isCollapse} setIsCollapse={setIsCollapse} />
+        <HStack position="relative">
+          <SideBar isCollapse={isCollapse} setIsCollapse={setIsCollapse} />
 
-        {/* {!isCollapse && (
+          {/* {!isCollapse && (
           <Flex
             position="absolute"
             right="-270px"
@@ -104,27 +134,25 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
             />
           </Flex>
         )} */}
-      </HStack>
-      <Flex
-        width={{ base: 'full', md: 'calc(100vw - 88px)' }}
-        ml={{ md: '88px' }}
-        px={{ base: 0, md: '24px' }}
-        pt="32px"
-        direction="column"
-        height="full"
-      >
-        <Header setIsCollapse={setIsCollapse} />
-        {(data?.user?.roleIds.includes(ROLE_IDS_ENUM.CLIENT_ADMIN) ||
-          data?.user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY)) && (
-          <AssistanceGuide
-            isOpen={showAssistantGuide}
-            onClose={() => setShowAssistantGuide(false)}
-          />
-        )}
-        <CompanyPageHeader />
-        {children}
+        </HStack>
+        <Flex
+          width={{ base: 'full', md: 'calc(100vw - 88px)' }}
+          ml={{ md: '88px' }}
+          px={{ base: 0, md: '24px' }}
+          pt="32px"
+          direction="column"
+          height="full"
+        >
+          <Header setIsCollapse={setIsCollapse} />
+          <CompanyPageHeader />
+          {children}
+        </Flex>
       </Flex>
-    </Flex>
+      {(data?.user?.roleIds.includes(ROLE_IDS_ENUM.CLIENT_ADMIN) ||
+        data?.user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY)) && (
+        <JourneyGuide isOpen={showJourneyGuide} onClose={() => {}} />
+      )}
+    </>
   );
 };
 

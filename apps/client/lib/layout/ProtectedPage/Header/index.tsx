@@ -2,13 +2,10 @@ import { HStack, Image, Stack, VStack } from '@chakra-ui/react';
 
 import { GenericBreadCrumb } from '@repo/ui/components';
 import { usePathname } from 'next/navigation';
-// import { SearchIcon, SettingsIcon } from '~/lib/components/CustomIcons/layout';
 import NotificationComponents from '~/lib/components/Notification';
 import Feedback from './Feedback';
 import { getBreadcrumb } from './BreadCrumb';
-// import HeaderIcon from './HeaderIcon';
 import UserActionPopover from './UserActionPopover';
-import AssistantGuideBox from '~/lib/components/CompanyManagement/JourneyGuide/AssistantGuideBox';
 import { useSession } from 'next-auth/react';
 import { ROLE_IDS_ENUM } from '~/lib/utils/constants';
 
@@ -62,32 +59,14 @@ const Header = (props: HeaderProps) => {
             />
           </HStack>
           <HStack spacing={{ base: '8px', md: '24px' }}>
-            <HStack display={{ base: 'none', lg: 'flex' }}>
-              {(data?.user?.roleIds.includes(ROLE_IDS_ENUM.CLIENT_ADMIN) ||
-                data?.user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY)) && (
-                <AssistantGuideBox />
-              )}
-            </HStack>
             {!data?.user?.roleIds.includes(ROLE_IDS_ENUM.SUPER_ADMIN) && (
               <Feedback />
             )}
-            {/* <HeaderIcon icon={SearchIcon} size="20px" />
-          <HeaderIcon icon={SettingsIcon} size="24px" /> */}
             <NotificationComponents />
             <UserActionPopover />
           </HStack>
         </HStack>
       </Stack>
-      {(data?.user?.roleIds.includes(ROLE_IDS_ENUM.CLIENT_ADMIN) ||
-        data?.user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY)) && (
-        <HStack
-          display={{ base: 'flex', lg: 'none' }}
-          mb="16px"
-          px={{ base: '16px', md: 0 }}
-        >
-          <AssistantGuideBox containerStyle={{ width: '100%' }} />
-        </HStack>
-      )}
     </VStack>
   );
 };

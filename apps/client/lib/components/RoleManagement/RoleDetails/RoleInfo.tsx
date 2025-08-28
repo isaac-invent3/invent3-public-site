@@ -9,7 +9,6 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import { Role } from '~/lib/interfaces/role.interfaces';
-import GenericStatusBox from '../../UI/GenericStatusBox';
 
 interface InfoWrapperProps extends StackProps {
   label: string;
@@ -60,21 +59,14 @@ const RoleInfo = ({ role }: RoleInfoProps) => {
           </InfoWrapper>
           <InfoWrapper label="Accounts" minW="126px">
             <AvatarGroup size="sm" max={4}>
-              {Array(role.noOfAssociatedUsers)
-                .fill('')
-                .map((_, index) => (
-                  <Avatar name="" src="" key={index} />
-                ))}
+              {role?.noOfAssociatedUsers
+                ? Array(role.noOfAssociatedUsers)
+                    .fill('')
+                    .map((_, index) => <Avatar name="" src="" key={index} />)
+                : 'N/A'}
             </AvatarGroup>
           </InfoWrapper>
         </HStack>
-        <InfoWrapper label="Status" minW="126px">
-          <GenericStatusBox
-            text={role.currentStatusName}
-            color={role.currentStatusDisplayColorCode}
-            textStyles={{ color: 'white' }}
-          />
-        </InfoWrapper>
       </Stack>
     </Stack>
   );

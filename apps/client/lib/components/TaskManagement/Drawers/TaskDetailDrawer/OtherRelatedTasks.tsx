@@ -14,12 +14,7 @@ const OtherRelatedTasks = ({ data }: OtherRelatedTasksProps) => {
     });
 
   return (
-    <VStack
-      width="full"
-      spacing="8px"
-      alignItems="flex-start"
-      px={{ base: '24px', md: '42px' }}
-    >
+    <VStack width="full" spacing="8px" alignItems="flex-start">
       <Text color="neutral.600" fontWeight={700}>
         Other Related Tasks:
       </Text>

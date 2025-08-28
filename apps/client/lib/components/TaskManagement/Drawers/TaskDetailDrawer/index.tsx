@@ -2,24 +2,29 @@ import {
   DrawerBody,
   DrawerHeader,
   HStack,
+  Skeleton,
   Spinner,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
 
 import { BackButton, Button, GenericDrawer } from '@repo/ui/components';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import GenericErrorState from '~/lib/components/UI/GenericErrorState';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import { TaskInstance } from '~/lib/interfaces/task.interfaces';
 import { useGetTaskInstanceByIdQuery } from '~/lib/redux/services/task/instance.services';
-import { SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
+import {
+  DEFAULT_PAGE_SIZE,
+  SYSTEM_CONTEXT_DETAILS,
+} from '~/lib/utils/constants';
 import MarkTaskAsCompletedModal from '../../Modals/MarkTaskAsCompletedModal';
 import OtherRelatedTasks from './OtherRelatedTasks';
 import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
 import usePermissionAccess from '~/lib/hooks/useRoleAccess';
 import ViewAttachement from '~/lib/components/Common/AttachFileAndView/ViewAttachement';
+import { useGetTaskDocumentsByIdQuery } from '~/lib/redux/services/task/general.services';
 
 interface TaskDetailDrawerProps {
   isOpen: boolean;
@@ -46,6 +51,15 @@ const TaskDetailDrawer = (props: TaskDetailDrawerProps) => {
       skip: !taskId || Boolean(data),
     }
   );
+  const { data: taskDocuments, isLoading: isLoadingDocument } =
+    useGetTaskDocumentsByIdQuery(
+      {
+        taskId: taskInstance?.data?.parentTaskId!,
+        pageNumber: 1,
+        pageSize: DEFAULT_PAGE_SIZE,
+      },
+      { skip: !taskInstance?.data?.parentTaskId }
+    );
 
   const closeDrawer = () => {
     clearSearchParamsAfter(taskSlug, { removeSelf: true });
@@ -63,6 +77,10 @@ const TaskDetailDrawer = (props: TaskDetailDrawerProps) => {
 
     return notFound;
   }, [task, isLoading]);
+
+  useEffect(() => {
+    console.log({ data });
+  }, [data]);
 
   return (
     <GenericDrawer isOpen={isOpen} onClose={closeDrawer} maxWidth="597px">
@@ -116,14 +134,31 @@ const TaskDetailDrawer = (props: TaskDetailDrawerProps) => {
               pb="20px"
             >
               <SectionOne data={task} />
-              <SectionTwo data={task} />
-              <OtherRelatedTasks data={task} />
-              {task?.document && (
-                <ViewAttachement
-                  attachement={task?.document}
-                  handleRemoveDocument={() => {}}
-                />
-              )}
+              <VStack
+                width="full"
+                alignItems="flex-start"
+                spacing="32px"
+                px={{ base: '24px', md: '42px' }}
+              >
+                <SectionTwo data={task} />
+                <OtherRelatedTasks data={task} />
+                {isLoadingDocument && <Skeleton width="full" height="100px" />}
+                {taskDocuments?.data &&
+                  taskDocuments?.data?.items.length > 0 && (
+                    <ViewAttachement
+                      attachement={{
+                        documentId: taskDocuments?.data?.items[0]?.documentId!,
+                        documentName:
+                          taskDocuments?.data?.items[0]?.documentName!,
+                        base64Document:
+                          taskDocuments?.data?.items[0]?.document!,
+                        base64Prefix:
+                          taskDocuments?.data?.items[0]?.base64Prefix!,
+                      }}
+                      handleRemoveDocument={() => {}}
+                    />
+                  )}
+              </VStack>
             </VStack>
             <MarkTaskAsCompletedModal
               isOpen={isOpenMarkAsCompleted}

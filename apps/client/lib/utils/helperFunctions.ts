@@ -302,6 +302,15 @@ const handleExport = async (filePath: string) => {
   }
 };
 
+const downloadDocument = (item: Document) => {
+  if (item.base64Document) {
+    const link = document.createElement('a');
+    link.href = `${item.base64Prefix}${item.base64Document}`;
+    link.download = item.documentName ?? 'untitled';
+    link.click();
+  }
+};
+
 export {
   formatNumberShort,
   formattedDateTime,
@@ -315,4 +324,5 @@ export {
   transformToCalendarEvents,
   extractTenantFromUrl,
   handleExport,
+  downloadDocument,
 };

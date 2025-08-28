@@ -1,6 +1,7 @@
 import {
   HStack,
   SimpleGrid,
+  Skeleton,
   Text,
   VStack,
   useDisclosure,
@@ -16,6 +17,8 @@ import {
 import { dateFormatter } from '~/lib/utils/Formatters';
 import Description from '../Common/Description';
 import ViewAttachement from '~/lib/components/Common/AttachFileAndView/ViewAttachement';
+import { useGetTicketDocumentsByIdQuery } from '~/lib/redux/services/ticket.services';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 interface TicketDrawerBodySubSectionProps {
   data: Ticket;
@@ -30,6 +33,10 @@ export interface AssignedToFormDetails {
 
 const TicketDrawerBodySubSection = (props: TicketDrawerBodySubSectionProps) => {
   const { data, category, action } = props;
+  const { data: ticketDocuments, isLoading } = useGetTicketDocumentsByIdQuery(
+    { ticketId: data.ticketId, pageNumber: 1, pageSize: DEFAULT_PAGE_SIZE },
+    { skip: !data?.ticketId }
+  );
 
   const AvatarSize = {
     width: category === 'new' ? '42px' : '24px',
@@ -145,12 +152,16 @@ const TicketDrawerBodySubSection = (props: TicketDrawerBodySubSectionProps) => {
           );
         }}
       />
-      {data?.attachment && (
+      {isLoading && <Skeleton width="full" height="100px" />}
+      {ticketDocuments?.data && ticketDocuments?.data?.items.length > 0 && (
         <ViewAttachement
-          attachement={data?.attachment}
-          handleRemoveDocument={() =>
-            formikContext?.setFieldValue('document', null)
-          }
+          attachement={{
+            documentId: ticketDocuments?.data?.items[0]?.documentId!,
+            documentName: ticketDocuments?.data?.items[0]?.documentName!,
+            base64Document: ticketDocuments?.data?.items[0]?.document!,
+            base64Prefix: ticketDocuments?.data?.items[0]?.base64Prefix!,
+          }}
+          handleRemoveDocument={() => {}}
         />
       )}
     </VStack>

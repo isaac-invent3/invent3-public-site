@@ -123,6 +123,13 @@ interface SidebarChildren {
   route: string;
 }
 
+interface GenericDocument extends BaseDto {
+  documentId: number | null;
+  documentName: string | null;
+  document: string | null;
+  base64Prefix: string | null;
+}
+
 type ContextKey =
   | 'ASSETS'
   | 'MAINTENANCE_PLANS'
@@ -265,4 +272,5 @@ export type {
   DataUpload,
   FailedUploadItems,
   DataUploadStageHistory,
+  GenericDocument,
 };

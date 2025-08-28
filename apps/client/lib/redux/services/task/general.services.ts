@@ -13,6 +13,7 @@ import {
 } from '~/lib/interfaces/task.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
+import { GenericDocument } from '~/lib/interfaces/general.interfaces';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -84,6 +85,19 @@ export const taskApi = createApi({
       }),
       providesTags: ['allTasksByScheduleId'],
     }),
+    getTaskDocumentsById: builder.query<
+      BaseApiResponse<ListResponse<GenericDocument>>,
+      QueryParams & { taskId: number }
+    >({
+      query: ({ taskId, ...data }) => ({
+        url: generateQueryStr(
+          `/TaskDocuments/GetTaskDocumentsByTaskId/${taskId}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
     searchTasks: builder.mutation<
       BaseApiResponse<ListResponse<Task>>,
       SearchQuery
@@ -106,4 +120,5 @@ export const {
   useGetTaskByIdQuery,
   useSearchTasksMutation,
   useGetAllTasksByScheduleIdQuery,
+  useGetTaskDocumentsByIdQuery,
 } = taskApi;

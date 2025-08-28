@@ -60,7 +60,6 @@ interface Ticket {
   activeTasksCount: number;
   completedTasksCount: number;
   assetLocation: string;
-  attachment: Document | null;
 }
 
 interface TicketDto {

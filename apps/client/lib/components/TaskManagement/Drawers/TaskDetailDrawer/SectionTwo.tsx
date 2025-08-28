@@ -8,12 +8,7 @@ interface SectionTwoProps {
 }
 const SectionTwo = ({ data }: SectionTwoProps) => {
   return (
-    <VStack
-      width="full"
-      spacing="34px"
-      pl={{ base: '24px', md: '42px' }}
-      pr="28px"
-    >
+    <VStack width="full" spacing="34px">
       <SimpleGrid
         width="full"
         spacing={{ base: '30px', md: '57px' }}

@@ -16,6 +16,7 @@ import {
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../baseQueryWithReauth';
 import { UpdateTicketMetadataPayload } from '~/lib/interfaces/template.interfaces';
+import { Document, GenericDocument } from '~/lib/interfaces/general.interfaces';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -64,6 +65,20 @@ export const ticketApi = createApi({
     >({
       query: (data) => ({
         url: generateQueryStr(`/Tickets?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+
+    getTicketDocumentsById: builder.query<
+      BaseApiResponse<ListResponse<GenericDocument>>,
+      QueryParams & { ticketId: number }
+    >({
+      query: ({ ticketId, ...data }) => ({
+        url: generateQueryStr(
+          `/TicketDocuments/GetTicketDocumentsByTicketId/${ticketId}?`,
+          data
+        ),
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -183,4 +198,5 @@ export const {
   useUpdateTicketMetadataPayloadMutation,
   useGetTicketsByListOfIdsQuery,
   useGetAllTicketsQuery,
+  useGetTicketDocumentsByIdQuery,
 } = ticketApi;

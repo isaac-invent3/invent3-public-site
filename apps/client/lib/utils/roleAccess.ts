@@ -44,7 +44,6 @@ const ROUTES_PERMISSION_KEY: { [name: string]: PermissionKey } = {
   [`/${ROUTES.USERS}/[id]/edit`]: 'user',
   [`/${ROUTES.AUDIT_LOG}`]: 'audit',
   [`/${ROUTES.ROLES}`]: 'role',
-  [`/${ROUTES.ROLES}/role`]: 'role',
   [`/${ROUTES.ROLES}/role/add`]: 'role',
   [`/${ROUTES.ROLES}/role/[id]/detail`]: 'role',
   [`/${ROUTES.ROLES}/group/add`]: 'role',

@@ -1,7 +1,7 @@
 import { Flex, HStack, Icon, Text, VStack } from '@chakra-ui/react';
 import { DeleteIcon } from '../../CustomIcons';
 import { Document } from '~/lib/interfaces/general.interfaces';
-import { getDocumentInfo } from '~/lib/utils/helperFunctions';
+import { downloadDocument, getDocumentInfo } from '~/lib/utils/helperFunctions';
 
 interface ViewAttachementProps {
   attachement: Document;
@@ -40,11 +40,18 @@ const ViewAttachement = (props: ViewAttachementProps) => {
           </Text>
         </Flex>
         <VStack spacing="4px" alignItems="flex-start">
-          <Text size="md" fontWeight={700} color="blue.500" lineHeight="100%">
+          <Text
+            size="md"
+            fontWeight={700}
+            color="blue.500"
+            lineHeight="100%"
+            cursor="pointer"
+            onClick={() => downloadDocument(attachement)}
+          >
             {attachement.documentName}
           </Text>
           <Text fontWeight={400} color="neutral.600">
-            {sizeInMB}MB
+            {sizeInMB?.toFixed(2)}MB
           </Text>
         </VStack>
       </HStack>

@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { Text, useDisclosure, VStack } from '@chakra-ui/react';
 import { GenericDeleteModal, GenericPopover } from '@repo/ui/components';
-import { useAppDispatch } from '~/lib/redux/hooks';
 import { ROUTES } from '~/lib/utils/constants';
 import { UserGroupInfoHeader } from '~/lib/interfaces/user.interfaces';
 import { getSession } from 'next-auth/react';

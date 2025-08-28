@@ -155,7 +155,7 @@ const MobileNav = () => {
                 </Text>
               </HStack>
               <VStack spacing="16px">
-                <Button
+                {/* <Button
                   py="16px"
                   px="32px"
                   minH="49px"
@@ -171,7 +171,7 @@ const MobileNav = () => {
                   onClick={() => handleNavigation('/signin')}
                 >
                   Sign In
-                </Button>
+                </Button> */}
                 <Button
                   py="16px"
                   px="32px"

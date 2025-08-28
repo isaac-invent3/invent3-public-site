@@ -9,6 +9,7 @@ interface FormSelectProps extends Omit<SelectInputProps, 'handleSelect'> {
   // eslint-disable-next-line no-unused-vars
   onSelect?: (option: Option | Option[]) => void;
   selectStyles?: CSSObjectWithLabel;
+  showErrorMessage?: boolean;
 }
 
 const FormSelect = (props: FormSelectProps) => {

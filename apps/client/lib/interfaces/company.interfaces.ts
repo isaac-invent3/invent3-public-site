@@ -67,6 +67,7 @@ interface CompanyFormDetails {
   countryName: string | null;
   postalCode: string | null;
   subscriptionPlanId: number | null;
+  subscriptionPlanName: string | null;
   startDate: string | null;
   endDate: string | null;
   contactFirstName: string | null;

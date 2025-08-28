@@ -15,7 +15,15 @@ import ErrorMessage from './ErrorMessage';
 
 export interface TextInputProps {
   name: string;
-  type: 'text' | 'password' | 'number' | 'date' | 'time' | 'datetime';
+  type:
+    | 'text'
+    | 'password'
+    | 'number'
+    | 'date'
+    | 'time'
+    | 'datetime'
+    | 'email'
+    | 'url';
   label: string;
   value?: string | number;
   placeholder?: string;
@@ -34,6 +42,7 @@ export interface TextInputProps {
   // eslint-disable-next-line no-unused-vars
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
   onFocus?: () => void;
+  showErrorMessage?: boolean;
 }
 
 const TextInput = forwardRef<HTMLInputElement, TextInputProps>((props, ref) => {
@@ -56,6 +65,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>((props, ref) => {
     onFocus,
     formControlWrapperStyles,
     showTitleAfterContent = true,
+    showErrorMessage = true,
   } = props;
 
   const [show, setShow] = useState(false);
@@ -191,7 +201,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>((props, ref) => {
         )}
       </InputGroup>
 
-      {isInvalid && errorMessage && (
+      {isInvalid && errorMessage && showErrorMessage && (
         <ErrorMessage mt="4px">{errorMessage}</ErrorMessage>
       )}
     </FormControl>

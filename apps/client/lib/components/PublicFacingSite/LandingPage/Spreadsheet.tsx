@@ -75,9 +75,9 @@ const Spreadsheet = () => {
                 color: 'primary.500',
               },
             }}
-            href="/contact-us"
+            href="/waitlist"
           >
-            Get a Free Demo
+            Join Waitlist
           </Button>
         </VStack>
       </Flex>

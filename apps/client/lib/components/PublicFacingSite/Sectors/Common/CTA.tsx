@@ -80,11 +80,11 @@ const CTA = (props: CTAProps) => {
                   color: 'primary.500',
                   _hover: { bgColor: 'white', color: 'primary.500' },
                 }}
-                href="/contact-us"
+                href="/waitlist"
               >
                 Request a free Demo
               </Button>
-              <Link href="/contact-us">
+              <Link href="/waitlist">
                 <Button
                   customStyles={{
                     width: { base: 'full', lg: '220px' },

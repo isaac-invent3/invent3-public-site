@@ -18,6 +18,7 @@ const publicRoutes = [
   '/solutions',
   '/built-for-all-industries',
   '/blog',
+  '/waitlist',
 ];
 const protectedGlobalRoute = ['/dashboard'];
 const protectedClientAdminRoute = ['/facility-management'];

@@ -162,8 +162,8 @@ const Features = () => {
         </VStack>
         <GenericFeatures
           featureItems={featureItems}
-          buttonLink="/contact-us"
-          buttonText="Get a Free Demo"
+          buttonLink="/waitlist"
+          buttonText="Join Waitlist"
           containerRef={containerRef}
         />
       </Flex>

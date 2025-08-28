@@ -37,7 +37,7 @@ const Header = () => {
         <HStack spacing="40px">
           <DesktopNav />
           <HStack spacing="16px">
-            <Link href="/signin" passHref>
+            {/* <Link href="/signin" passHref>
               <Button
                 py="16px"
                 px="32px"
@@ -55,7 +55,7 @@ const Header = () => {
               >
                 Sign In
               </Button>
-            </Link>
+            </Link> */}
             <Button
               py="16px"
               px="32px"

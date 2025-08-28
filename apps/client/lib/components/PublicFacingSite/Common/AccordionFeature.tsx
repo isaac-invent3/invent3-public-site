@@ -86,9 +86,9 @@ const AccordionFeature = (props: AccordionFeatureProps) => {
                       mt: { base: '44px', lg: '55px' },
                       width: { base: 'full', lg: '203px' },
                     }}
-                    href="/contact-us"
+                    href="/waitlist"
                   >
-                    Request a Free Demo
+                    Join Waitlist
                   </Button>
                 )}
               </AccordionPanel>

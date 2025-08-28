@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { CSSObjectWithLabel } from 'react-select';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import {
@@ -12,12 +13,14 @@ interface CountrySelectProps {
   handleSelect?: (options: Option) => void;
   name?: string;
   defaultInputValue?: string;
+  selectStyles?: CSSObjectWithLabel;
 }
 
 const CountrySelect = ({
   name,
   handleSelect,
   defaultInputValue,
+  selectStyles,
 }: CountrySelectProps) => {
   const [searchCategory] = useSearchCountriesMutation({});
   const [pageNumber, setPageNumber] = useState(1);
@@ -38,6 +41,7 @@ const CountrySelect = ({
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
       handleSelect={handleSelect}
+      selectStyles={selectStyles}
     />
   );
 };

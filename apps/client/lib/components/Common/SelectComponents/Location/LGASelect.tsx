@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { CSSObjectWithLabel } from 'react-select';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { Option, SearchCriterion } from '~/lib/interfaces/general.interfaces';
 import {
@@ -15,10 +16,12 @@ interface LGASelectProps {
   stateId?: number | null;
   name?: string;
   defaultInputValue?: string;
+  selectStyles?: CSSObjectWithLabel;
 }
 
 const LGASelect = (props: LGASelectProps) => {
-  const { stateId, handleSelect, type, name, defaultInputValue } = props;
+  const { stateId, handleSelect, type, name, defaultInputValue, selectStyles } =
+    props;
   const [searchLga] = useSearchLGAMutation({});
   const [pageNumber, setPageNumber] = useState(1);
   const {
@@ -76,6 +79,7 @@ const LGASelect = (props: LGASelectProps) => {
       specialSearch={
         type === 'specificById' && stateId ? lgaSearchCriterion : undefined
       }
+      selectStyles={selectStyles}
     />
   );
 };

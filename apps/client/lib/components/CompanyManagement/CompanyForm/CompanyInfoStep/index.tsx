@@ -136,9 +136,10 @@ const CompanyInfoStep = (props: CompanyInfoStepProps) => {
               <FormInputWrapper
                 sectionMaxWidth="141px"
                 customSpacing="47px"
-                title="Company Email"
-                description="Provide the company’s email"
+                title="Company Support Email"
+                description="Provide the company’s support email"
                 w={{ base: 'full', lg: '50%' }}
+                isRequired
               >
                 <Field
                   as={FormTextInput}

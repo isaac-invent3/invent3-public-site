@@ -8,6 +8,7 @@ import {
 import { FormikProvider, useFormik } from 'formik';
 import moment from 'moment';
 import { useState } from 'react';
+import { Option } from '~/lib/interfaces/general.interfaces';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useGetAllSubscriptionPlansQuery } from '~/lib/redux/services/subscription.services';
 import { updateCompanyForm } from '~/lib/redux/slices/CompanySlice';
@@ -84,6 +85,16 @@ const SubscriptionStep = (props: SubscriptionStepProps) => {
                   'subscriptionPlanId'
                 )}
                 isSearchable
+                onSelect={(selected) => {
+                  const option = Array.isArray(selected)
+                    ? selected[0]
+                    : selected;
+                  dispatch(
+                    updateCompanyForm({
+                      subscriptionPlanName: option?.label ?? null,
+                    })
+                  );
+                }}
               />
             </FormInputWrapper>
 
@@ -106,6 +117,7 @@ const SubscriptionStep = (props: SubscriptionStepProps) => {
                   selectedDate={formik.values.startDate ?? undefined}
                   handleDateTimeSelect={(dateTime) => {
                     // setInputtedStartDate(dateTime);
+                    console.log({ test: dateTime?.trim() });
                     formik.setFieldValue('startDate', dateTime?.trim() ?? null);
                   }}
                 />

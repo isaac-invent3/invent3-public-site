@@ -112,6 +112,7 @@ const ContactInformationStep = (props: ContactInformationStepProps) => {
                 customSpacing="47px"
                 title="Phone Number"
                 description="Provide the person’s email"
+                isRequired
               >
                 <Field
                   as={FormTextInput}

@@ -107,9 +107,9 @@ const ThreeSteps = () => {
             customStyles={{
               width: { base: 'full', lg: '203px' },
             }}
-            href="/contact-us"
+            href="/waitlist"
           >
-            Request a Demo
+            Join Waitlist
           </Button>
         </VStack>
       </Flex>

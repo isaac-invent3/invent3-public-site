@@ -1,4 +1,4 @@
-import { Flex, useDisclosure, VStack } from '@chakra-ui/react';
+import { Flex, HStack, Stack, useDisclosure, VStack } from '@chakra-ui/react';
 import { FormActionButtons } from '@repo/ui/components';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
@@ -21,6 +21,7 @@ import {
 import CompanySuccessModal from './SuccessModal';
 import { setCompany } from '~/lib/redux/slices/CompanySlice';
 import AuthenticationProtocol from './SectionOne/AuthenticationProtocol';
+import Subscription from './SectionOne/Subscription';
 
 interface SummaryStepProps {
   activeStep: number;
@@ -177,15 +178,28 @@ const SummaryStep = (props: SummaryStepProps) => {
             <Flex width={{ base: 'full', lg: '50%' }}>
               <CompanyInfo />
             </Flex>
-            <Flex width={{ base: 'full', lg: '50%' }}>
-              <ContactInformation />
-            </Flex>
-            <Flex width={{ base: 'full', lg: '50%' }}>
-              <AuthenticationProtocol />
-            </Flex>
-            {/* <Flex width={{ base: 'full', lg: '20%' }}>
-              <Subscription />
-            </Flex> */}
+            <VStack
+              width="full"
+              spacing={{ base: '32px', lg: '80px' }}
+              alignItems="flex-start"
+            >
+              <Stack
+                width="full"
+                alignItems="flex-start"
+                spacing={{ base: '32px', lg: '62px' }}
+                direction={{ base: 'column', lg: 'row' }}
+              >
+                <Flex width={{ base: 'full', lg: '50%' }}>
+                  <ContactInformation />
+                </Flex>
+                <Flex width={{ base: 'full', lg: '50%' }}>
+                  <AuthenticationProtocol />
+                </Flex>
+              </Stack>
+              <Flex width={{ base: 'full', lg: '50%' }}>
+                <Subscription />
+              </Flex>
+            </VStack>
           </Flex>
         </VStack>
         <FormActionButtons

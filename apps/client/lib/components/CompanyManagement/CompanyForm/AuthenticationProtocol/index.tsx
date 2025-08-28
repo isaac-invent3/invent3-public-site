@@ -86,7 +86,7 @@ const AuthenticationProtocol = (props: AuthenticationProtocolProps) => {
               title="Select Authentication Method"
               description="Select Authentication Method"
             >
-              <VStack alignItems="flex-start" spacing="29px">
+              <VStack alignItems="flex-start" spacing="29px" maxW="80%">
                 <HStack spacing={{ base: '24px', lg: '110px' }} width="full">
                   {methodData.map((item, index) => (
                     <HStack key={index} spacing="16px">
@@ -143,16 +143,20 @@ const AuthenticationProtocol = (props: AuthenticationProtocolProps) => {
 
             {formik.values.companyAuthProtocolId ===
               AUTHENTICATION_PROTOCOL_ENUM.BASIC && (
-              <VStack width="full" alignItems="flex-start" spacing="24px">
+              <VStack
+                width="full"
+                alignItems="flex-start"
+                spacing="24px"
+                maxW="80%"
+              >
                 <Text size="lg" color="primary.500" fontWeight={700}>
                   Authentication Preferences
                 </Text>
                 <FormInputWrapper
                   sectionMaxWidth="232px"
                   customSpacing="65px"
-                  title="Generate Password for new users"
-                  isRequired
-                  description="Generate Password for new users"
+                  title="Generate Temporary Password for new users"
+                  description="Create a one-time password to help new users access their account securely."
                   justifyContent="space-between"
                 >
                   <Switch size="md" />
@@ -160,9 +164,8 @@ const AuthenticationProtocol = (props: AuthenticationProtocolProps) => {
                 <FormInputWrapper
                   sectionMaxWidth="250px"
                   customSpacing="65px"
-                  title="Users change Password on first login"
-                  isRequired
-                  description="Users change Password on first login"
+                  title="Users must change Password on first login"
+                  description="For security, you’ll be required to update your password when logging in for the first time."
                   justifyContent="space-between"
                 >
                   <Switch size="md" />

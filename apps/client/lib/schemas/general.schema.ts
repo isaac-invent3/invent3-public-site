@@ -176,6 +176,16 @@ const contactSchema = Yup.object().shape({
   message: Yup.string().required('Message is Required'),
 });
 
+const waitlistSchema = Yup.object().shape({
+  companyName: Yup.string().required('Company Name is Required'),
+  industry: Yup.string().required('Industry is Required'),
+  website: Yup.string().required('Company Website is Required'),
+  email: Yup.string()
+    .email('Invalid Email Adress')
+    .required('Email is Required'),
+  name: Yup.string().required('Name is Required'),
+});
+
 export {
   createDateSchema,
   assigneeSchema,
@@ -184,4 +194,5 @@ export {
   documentSchema,
   singleDocumentSchema,
   contactSchema,
+  waitlistSchema,
 };

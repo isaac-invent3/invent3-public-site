@@ -40,7 +40,7 @@ const CTA = () => {
             headingStyles={{ maxW: '546px' }}
             descriptionStyles={{ color: 'white', maxW: '572px' }}
           />
-          <Link href="/contact-us">
+          <Link href="/waitlist">
             <Button
               bgColor="white"
               height="50px"

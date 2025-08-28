@@ -29,6 +29,7 @@ const initialCompanyForm = {
   contactEmail: null,
   contactPhoneNumber: null,
   subscriptionPlanId: null,
+  subscriptionPlanName: null,
   startDate: null,
   endDate: null,
   clientAdminId: null,

@@ -14,6 +14,7 @@ const CompanyInfo = () => {
     countryName,
     stateName,
     lgaName,
+    postalCode,
   } = useAppSelector((state) => state.company.companyForm);
 
   const row1 = [
@@ -32,10 +33,6 @@ const CompanyInfo = () => {
       value: companyWebsite,
     },
     {
-      label: 'Industry Type',
-      value: industryTypeName,
-    },
-    {
       label: 'Company Email',
       value: companyEmail,
     },
@@ -44,9 +41,13 @@ const CompanyInfo = () => {
   const row3 = [
     {
       label: 'Physical Address',
-      value: [address1, lgaName, stateName, countryName]
+      value: [address1, postalCode, lgaName, stateName, countryName]
         .filter(Boolean)
         .join(', '),
+    },
+    {
+      label: 'Industry Type',
+      value: industryTypeName,
     },
   ];
 
@@ -55,33 +56,24 @@ const CompanyInfo = () => {
       <DetailHeader variant="primary">Company Info</DetailHeader>
       <VStack width="full" spacing="24px" alignItems="flex-start">
         {/* Row 1  */}
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} width="full" gap="16px">
+        <SimpleGrid columns={{ base: 1, md: 2 }} width="full" gap="16px">
           {row1.map((item) => (
             <Info {...item} key={item.label} />
           ))}
         </SimpleGrid>
 
         {/* Row 2  */}
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} width="full" gap="16px">
+        <SimpleGrid columns={{ base: 1, md: 2 }} width="full" gap="16px">
           {row2.map((item) => (
             <Info {...item} key={item.label} />
           ))}
         </SimpleGrid>
         {/* Row 3  */}
-        <Grid templateColumns="repeat(4, 1fr)" width="full">
-          <GridItem colSpan={2} width="full">
-            <HStack width="full" spacing="16px" alignItems="flex-start">
-              {row3.slice(0, 2).map((item) => (
-                <Info {...item} key={item.label} />
-              ))}
-            </HStack>
-          </GridItem>
-          <GridItem colSpan={2} width="full">
-            {row3.slice(2).map((item) => (
-              <Info {...item} key={item.label} />
-            ))}
-          </GridItem>
-        </Grid>
+        <SimpleGrid columns={{ base: 1, md: 2 }} width="full" gap="16px">
+          {row3.map((item) => (
+            <Info {...item} key={item.label} />
+          ))}
+        </SimpleGrid>
       </VStack>
     </VStack>
   );

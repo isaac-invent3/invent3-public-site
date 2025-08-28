@@ -20,7 +20,7 @@ interface CompanyFormProps {
 }
 const CompanyForm = (props: CompanyFormProps) => {
   const { type, companyType } = props;
-  const [activeStep, setActiveStep] = useState(1);
+  const [activeStep, setActiveStep] = useState(5);
   const session = useSession();
   const user = session?.data?.user;
   const isThirdParty =
@@ -35,7 +35,7 @@ const CompanyForm = (props: CompanyFormProps) => {
   ];
   const SUPER_ADMIN_STEPS = [
     'Company Info',
-    'Company Admin',
+    'Company Administrator',
     'Authentication Protocol',
     'Subscription',
     'Summary',

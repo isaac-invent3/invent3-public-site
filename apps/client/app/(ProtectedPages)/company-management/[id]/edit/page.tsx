@@ -43,6 +43,7 @@ export default function Page({ params }: { params: { id: number } }) {
         contactEmail: company.contactPersonEmail,
         contactPhoneNumber: company.phoneNumber,
         subscriptionPlanId: null,
+        subscriptionPlanName: null,
         startDate: null,
         endDate: null,
         companyAuthProtocolId: null,

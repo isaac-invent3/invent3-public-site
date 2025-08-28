@@ -148,9 +148,9 @@ const Hero = () => {
                 _hover={{ opacity: 0.8 }}
                 _active={{ opacity: 0.8 }}
                 as="a"
-                href="/contact-us"
+                href="/waitlist"
               >
-                Get a free Demo
+                Join Waitlist
               </Button>
               <Button
                 variant="outline"

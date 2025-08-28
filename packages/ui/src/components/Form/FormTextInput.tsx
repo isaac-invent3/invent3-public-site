@@ -4,6 +4,7 @@ import TextInput, { TextInputProps } from '../TextInput';
 interface FormTextInputProps
   extends Omit<TextInputProps, 'value' | 'onChange'> {
   name: string;
+  showErrorMessage?: boolean;
 }
 
 const FormTextInput = (props: FormTextInputProps) => {

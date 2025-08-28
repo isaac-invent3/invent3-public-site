@@ -52,9 +52,9 @@ const KeyPoints = () => {
             display: { base: 'none', md: 'flex' },
             width: { base: 'full', md: '203px' },
           }}
-          href="/contact-us"
+          href="/waitlist"
         >
-          Request a Demo
+          Join Waitlist
         </Button>
       </SimpleGrid>
       <Button
@@ -62,9 +62,9 @@ const KeyPoints = () => {
           display: { base: 'flex', md: 'none' },
           width: 'full',
         }}
-        href="/contact-us"
+        href="/waitlist"
       >
-        Request a Demo
+        Join Waitlist
       </Button>
     </VStack>
   );

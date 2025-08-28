@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { CSSObjectWithLabel } from 'react-select';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { Option, SearchCriterion } from '~/lib/interfaces/general.interfaces';
 import {
@@ -13,10 +14,12 @@ interface StateSelectProps {
   handleSelect?: (options: Option) => void;
   name?: string;
   defaultInputValue?: string;
+  selectStyles?: CSSObjectWithLabel;
 }
 
 const StateSelect = (props: StateSelectProps) => {
-  const { name, countryId, handleSelect, defaultInputValue } = props;
+  const { name, countryId, handleSelect, defaultInputValue, selectStyles } =
+    props;
   const [searchState] = useSearchStatesMutation({});
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading, isFetching } = useGetStatesByCountryIdQuery(
@@ -59,6 +62,7 @@ const StateSelect = (props: StateSelectProps) => {
       specialSearch={countryId ? stateSearchCriterion : undefined}
       fetchKey={countryId}
       handleSelect={handleSelect}
+      selectStyles={selectStyles}
     />
   );
 };

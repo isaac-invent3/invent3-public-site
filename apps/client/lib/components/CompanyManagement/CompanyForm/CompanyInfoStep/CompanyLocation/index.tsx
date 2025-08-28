@@ -13,7 +13,8 @@ import { updateCompanyForm } from '~/lib/redux/slices/CompanySlice';
 const CompanyLocation = () => {
   const [field, meta, helpers] = useField('facilityId');
   const dispatch = useAppDispatch();
-  const { setFieldValue, values } = useFormikContext<CompanyFormDetails>();
+  const { setFieldValue, values, errors } =
+    useFormikContext<CompanyFormDetails>();
 
   useEffect(() => {
     if (meta.value) {
@@ -32,22 +33,18 @@ const CompanyLocation = () => {
         templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(4, 1fr)' }}
         gap="16px"
         width="full"
+        bgColor="#F7F7F7"
+        px="12px"
+        py="16px"
+        rounded="8px"
       >
-        <GridItem colSpan={{ base: 1, md: 2 }}>
+        <GridItem colSpan={{ base: 1, md: 4 }}>
           <Field
             as={FormTextInput}
             name="address1"
             type="text"
-            label="Address Line 1"
-          />
-        </GridItem>
-
-        <GridItem colSpan={{ base: 1, md: 2 }}>
-          <Field
-            as={FormTextInput}
-            name="address2"
-            type="text"
-            label="Address Line 2"
+            label="Enter Address"
+            customStyle={{ bgColor: 'white' }}
           />
         </GridItem>
 
@@ -56,6 +53,9 @@ const CompanyLocation = () => {
             handleSelect={(option) => {
               setFieldValue('countryId', option.value);
               dispatch(updateCompanyForm({ countryName: option.label }));
+            }}
+            selectStyles={{
+              backgroundColor: errors.countryId ? '#FFDCDC' : 'white',
             }}
           />
         </GridItem>
@@ -67,6 +67,9 @@ const CompanyLocation = () => {
               setFieldValue('stateId', option.value);
               dispatch(updateCompanyForm({ stateName: option.label }));
             }}
+            selectStyles={{
+              backgroundColor: errors.stateId ? '#FFDCDC' : 'white',
+            }}
           />
         </GridItem>
 
@@ -76,6 +79,9 @@ const CompanyLocation = () => {
             handleSelect={(option) => {
               setFieldValue('lgaId', option.value);
               dispatch(updateCompanyForm({ lgaName: option.label }));
+            }}
+            selectStyles={{
+              backgroundColor: errors.lgaId ? '#FFDCDC' : 'white',
             }}
             type="specificById"
           />
@@ -87,6 +93,7 @@ const CompanyLocation = () => {
             name="postalCode"
             type="text"
             label="zip/postalCode"
+            customStyle={{ bgColor: 'white' }}
           />
         </GridItem>
       </Grid>

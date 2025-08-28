@@ -18,7 +18,7 @@ const HowItWorks = () => {
           width: { base: 'full', sm: '174px' },
           display: { base: 'flex', lg: 'none' },
         }}
-        href="/contact-us"
+        href="/waitlist"
       >
         Get Started
       </Button>

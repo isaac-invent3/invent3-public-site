@@ -12,7 +12,9 @@ const companyInfoSchema = (validateUser: boolean) =>
       })
       .required('Company logo is required'),
     companyName: Yup.string().required('Company Name is required'),
-    companyEmail: Yup.string().email('Invalid email format').nullable(),
+    companyEmail: Yup.string()
+      .email('Invalid email format')
+      .required('Company Support Email is required'),
     companyWebsite: Yup.string().url().nullable(),
     industryTypeId: Yup.number().required('Industry is required'),
     registrationNumber: Yup.string().nullable(),

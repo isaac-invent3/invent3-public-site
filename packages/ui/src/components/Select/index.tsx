@@ -46,6 +46,7 @@ export interface SelectInputProps {
   containerStyles?: BoxProps;
   selectStyles?: CSSObjectWithLabel;
   isMultiSelect?: boolean;
+  showErrorMessage?: boolean;
 }
 function SelectInput(props: SelectInputProps) {
   const {
@@ -68,6 +69,7 @@ function SelectInput(props: SelectInputProps) {
     containerStyles,
     selectStyles,
     isMultiSelect,
+    showErrorMessage = true,
   } = props;
   const SelectComponent = isAsync ? AsyncSelect : Select;
   const [isFocused, setIsFocused] = useState(false);
@@ -221,8 +223,8 @@ function SelectInput(props: SelectInputProps) {
               },
               boxShadow: 'none',
               paddingLeft: '8px',
-              backgroundColor: isInvalid ? '#FFDCDC' : '#F7F7F7',
               borderColor: isInvalid ? '#FD3C3C' : 'transparent',
+              backgroundColor: isInvalid ? '#FFDCDC' : '#F7F7F7',
               ...selectStyles,
             }),
             menu: (provided) => ({
@@ -324,7 +326,7 @@ function SelectInput(props: SelectInputProps) {
           }}
         />
 
-        {isInvalid && errorMessage && (
+        {isInvalid && errorMessage && showErrorMessage && (
           <ErrorMessage mt="4px">{errorMessage}</ErrorMessage>
         )}
       </FormControl>

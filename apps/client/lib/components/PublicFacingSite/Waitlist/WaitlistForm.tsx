@@ -109,7 +109,7 @@ const WaitListForm = () => {
               selectStyles={{
                 height: '50px',
                 pt: '0px',
-                backgroundColor: formik.errors.industry ? '#FFDCDC' : '#F7F7F7',
+                backgroundColor: formik.errors.industry ? '#FFDCDC' : 'white',
                 borderColor: 'none',
               }}
               showTitleAfterSelect={false}

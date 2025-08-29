@@ -1,10 +1,9 @@
-import { useToast } from '@chakra-ui/react';
+import { useDisclosure, useToast } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import { useSession } from 'next-auth/react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { Task } from '~/lib/interfaces/task.interfaces';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
-import { useCreateTaskMutation } from '~/lib/redux/services/task/general.services';
 import { useUpdateTicketMutation } from '~/lib/redux/services/ticket.services';
 import ScheduledTicketTasks from './Common/ScheduledTicketTasks';
 import TicketActivity from './Common/TicketActivity';
@@ -14,7 +13,9 @@ import {
   useUpdateMaintenanceScheduleAndTasksMutation,
 } from '~/lib/redux/services/maintenance/schedule.services';
 import { FORM_ENUM } from '~/lib/utils/constants';
-import { useState } from 'react';
+import { useAppSelector } from '~/lib/redux/hooks';
+import ReOpenTicketModal from '../Modals/ReOpenTicketModal';
+import ReopenedSuccessModal from '../Modals/ReOpenTicketModal/ReopenedSuccessModal';
 
 interface EditTicketDrawerProps {
   isOpen: boolean;
@@ -50,6 +51,26 @@ const EditTicketDrawer = (props: EditTicketDrawerProps) => {
   const { data: session } = useSession();
   const { handleSubmit } = useCustomMutation();
   const username = session?.user?.username;
+  const appConfigValue = useAppSelector(
+    (state) => state.general.appConfigValues
+  );
+  const completedStatusId =
+    typeof appConfigValue?.DEFAULT_COMPLETED_TASK_STATUS_ID === 'string'
+      ? +appConfigValue?.DEFAULT_COMPLETED_TASK_STATUS_ID
+      : appConfigValue?.DEFAULT_COMPLETED_TASK_STATUS_ID;
+
+  const shouldReopenTicket = data?.ticketStatusId === completedStatusId;
+
+  const {
+    isOpen: reOpenIsOpen,
+    onClose: reOpenOnClose,
+    onOpen: reOpenOnOpen,
+  } = useDisclosure();
+  const {
+    isOpen: reOpenSuccessIsOpen,
+    onClose: reOpenSuccessOnClose,
+    onOpen: reOpenSuccessOnOpen,
+  } = useDisclosure();
 
   const formik = useFormik<EditTicketForm>({
     initialValues: {
@@ -65,59 +86,70 @@ const EditTicketDrawer = (props: EditTicketDrawerProps) => {
     // validationSchema: scheduleTicketSchema,
     enableReinitialize: true,
     onSubmit: async (payload) => {
-      const requestBody = {
-        ticketId: data.ticketId,
-        lastModifiedBy: username,
-        ticketTypeId: payload.ticketTypeId,
-        ticketPriorityId: payload.ticketPriorityId,
-        ticketStatusId: payload.ticketStatusId,
-        assignedTo: payload.assignedTo,
-      };
+      if (shouldReopenTicket) {
+        reOpenOnOpen();
+      } else {
+        handleUpdateTicket();
+      }
+    },
+  });
 
-      await handleSubmit(
-        updateScheduleAndTask,
-        {
-          updateMaintenanceScheduleDto: {
-            scheduleId: maintenanceSchedule?.data?.scheduleId,
-            actionType: FORM_ENUM.update,
-            changeInitiatedBy: username!,
-          },
-          updateTaskDtos: payload.tasks
-            .filter((item) => item.taskId === null)
-            .map((task) => ({
-              taskId: null,
-              taskDescription: task.taskDescription!,
-              taskName: task.taskName!,
-              scheduleId: task.scheduleId!,
-              taskTypeId: task.taskTypeId!,
-              priorityId: task.priorityId!,
-              assignedTo: task.assignedTo!,
-              estimatedDurationInHours: task.estimatedDurationInHours!,
-              costEstimate: task.costEstimate!,
-              comments: task.comments!,
-              actionType: FORM_ENUM.add,
-              changeInitiatedBy: username!,
-            })),
+  const handleUpdateTicket = async () => {
+    const requestBody = {
+      ticketId: data.ticketId,
+      lastModifiedBy: username,
+      ticketTypeId: formik.values.ticketTypeId,
+      ticketPriorityId: formik.values.ticketPriorityId,
+      ticketStatusId: formik.values.ticketStatusId,
+      assignedTo: formik.values.assignedTo,
+    };
+
+    await handleSubmit(
+      updateScheduleAndTask,
+      {
+        updateMaintenanceScheduleDto: {
+          scheduleId: maintenanceSchedule?.data?.scheduleId,
+          actionType: FORM_ENUM.update,
+          changeInitiatedBy: username!,
         },
-        ''
-      );
+        updateTaskDtos: formik.values.tasks
+          .filter((item) => item.taskId === null)
+          .map((task) => ({
+            taskId: null,
+            taskDescription: task.taskDescription!,
+            taskName: task.taskName!,
+            scheduleId: task.scheduleId!,
+            taskTypeId: task.taskTypeId!,
+            priorityId: task.priorityId!,
+            assignedTo: task.assignedTo!,
+            estimatedDurationInHours: task.estimatedDurationInHours!,
+            costEstimate: task.costEstimate!,
+            comments: task.comments!,
+            actionType: FORM_ENUM.add,
+            changeInitiatedBy: username!,
+          })),
+      },
+      ''
+    );
 
-      const response = await updateTicketMutation({
-        id: data.ticketId,
-        ...requestBody,
-      });
+    const response = await updateTicketMutation({
+      id: data.ticketId,
+      ...requestBody,
+    });
 
-      if (response) {
+    if (response) {
+      if (shouldReopenTicket) {
+        reOpenSuccessOnOpen();
+      } else {
         toast({
           title: 'Ticket Was Updated Successfully',
           status: 'success',
           position: 'top-right',
         });
-
         onClose();
       }
-    },
-  });
+    }
+  };
 
   return (
     <>
@@ -131,13 +163,27 @@ const EditTicketDrawer = (props: EditTicketDrawerProps) => {
         isEditing={isUpdatingTicket || isUpdating}
         handleEdit={() => formik.handleSubmit()}
       >
-        {/* <TicketActivity /> */}
+        <TicketActivity />
         <ScheduledTicketTasks
           data={data}
           scheduleId={maintenanceSchedule?.data?.scheduleId}
           isFetchingSchedule={isFetchingSchedule}
         />
       </TicketDrawerWrapper>
+      <ReOpenTicketModal
+        isOpen={reOpenIsOpen}
+        onClose={reOpenOnClose}
+        data={data}
+        isLoading={isUpdating || isUpdatingTicket}
+        handleUpdate={handleUpdateTicket}
+      />
+      <ReopenedSuccessModal
+        isOpen={reOpenSuccessIsOpen}
+        onClose={() => {
+          reOpenSuccessOnClose();
+          onClose();
+        }}
+      />
     </>
   );
 };

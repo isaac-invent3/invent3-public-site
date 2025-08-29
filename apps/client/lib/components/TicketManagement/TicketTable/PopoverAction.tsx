@@ -117,10 +117,18 @@ const PopoverAction = (props: PopoverActionProps) => {
               </Text>
             </VStack>
           )}
-          {canDeleteTicket && (
-            <Text cursor="pointer" onClick={() => openModal('delete')}>
-              Delete
-            </Text>
+
+          {ticketCategory === 'completed' && (
+            <VStack width="full" alignItems="flex-start" spacing="16px">
+              {canAssignTicket && (
+                <Text cursor="pointer" onClick={() => openModal('edit')}>
+                  Reopen Ticket
+                </Text>
+              )}
+              <Text cursor="pointer" onClick={handleViewDetails}>
+                View Details
+              </Text>
+            </VStack>
           )}
         </VStack>
       </GenericPopover>

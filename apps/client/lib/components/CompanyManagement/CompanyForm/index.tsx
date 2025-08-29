@@ -20,7 +20,7 @@ interface CompanyFormProps {
 }
 const CompanyForm = (props: CompanyFormProps) => {
   const { type, companyType } = props;
-  const [activeStep, setActiveStep] = useState(5);
+  const [activeStep, setActiveStep] = useState(1);
   const session = useSession();
   const user = session?.data?.user;
   const isThirdParty =

@@ -75,7 +75,7 @@ const ScheduledTicketTasks = (props: ScheduledTicketTasksProps) => {
   const isLoading = isFetchingTasks || props.isFetchingSchedule;
 
   return (
-    <VStack width="full" alignItems="flex-start" pt="24px">
+    <VStack width="full" alignItems="flex-start" pt="0px">
       <HStack width="full" alignItems="center" justifyContent="space-between">
         <Text color="neutral.600" fontWeight={700}>
           Tasks

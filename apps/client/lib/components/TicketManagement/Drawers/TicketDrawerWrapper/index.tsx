@@ -5,6 +5,7 @@ import {
   Flex,
   Heading,
   Stack,
+  Text,
   VStack,
 } from '@chakra-ui/react';
 import { FormikContextType, FormikProvider } from 'formik';
@@ -27,6 +28,8 @@ import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import { SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
 import { useEffect, useState } from 'react';
 import GenericErrorState from '~/lib/components/UI/GenericErrorState';
+import { useAppSelector } from '~/lib/redux/hooks';
+import { DrawerAction } from '~/lib/components/UI/DrawerAction';
 
 const getTicketCategory = (data: Ticket) => {
   if (data.isScheduled) {
@@ -66,6 +69,14 @@ const TicketDrawerWrapper = (props: TicketDrawerProps) => {
     props;
   const { getSearchParam, removeSearchParam } = useCustomSearchParams();
   const ticketSlug = SYSTEM_CONTEXT_DETAILS.TICKETS.slug;
+  const appConfigValue = useAppSelector(
+    (state) => state.general.appConfigValues
+  );
+  const completedStatusId =
+    typeof appConfigValue?.DEFAULT_COMPLETED_TASK_STATUS_ID === 'string'
+      ? +appConfigValue?.DEFAULT_COMPLETED_TASK_STATUS_ID
+      : appConfigValue?.DEFAULT_COMPLETED_TASK_STATUS_ID;
+  const shouldReopenTicket = data?.ticketStatusId === completedStatusId;
   const [ticketCategory, setTicketCategory] = useState(category);
   const ticketId = getSearchParam(ticketSlug)
     ? Number(getSearchParam(ticketSlug))
@@ -106,7 +117,7 @@ const TicketDrawerWrapper = (props: TicketDrawerProps) => {
                 px="24px"
                 pb="16px"
               >
-                Edit Ticket
+                {shouldReopenTicket ? 'Closed Ticket' : 'Edit Ticket'}
               </Heading>
             )}
 
@@ -162,14 +173,26 @@ const TicketDrawerWrapper = (props: TicketDrawerProps) => {
                 data={ticketDetail}
                 category={ticketCategory}
               >
-                {action === 'edit' && (
+                {action === 'edit' && !shouldReopenTicket && (
                   <Button
                     isLoading={props.isEditing}
                     handleClick={props.handleEdit}
                     customStyles={{ width: '107px', height: '35px' }}
                   >
-                    Save Changes
+                    {shouldReopenTicket ? 'Re-open Ticket' : 'Save Changes'}
                   </Button>
+                )}
+                {action === 'edit' && shouldReopenTicket && (
+                  <DrawerAction>
+                    <Text
+                      cursor="pointer"
+                      as="button"
+                      onClick={() => props.handleEdit()}
+                      whiteSpace="nowrap"
+                    >
+                      Re-open Ticket
+                    </Text>
+                  </DrawerAction>
                 )}
               </TicketDrawerHeader>
             )}

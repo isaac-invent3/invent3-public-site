@@ -266,6 +266,10 @@ const TicketTable = (props: TicketTableProps) => {
         emptyLines={emptyLines}
         isSelectable={isSelectable}
         handleSelectRow={(row) => {
+          console.log({
+            action: [getAction(row)],
+            category: category ?? 'new',
+          });
           dispatch(
             setSelectedTicket({
               action: [getAction(row)],

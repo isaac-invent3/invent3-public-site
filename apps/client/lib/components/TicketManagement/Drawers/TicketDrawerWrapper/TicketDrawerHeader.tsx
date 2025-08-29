@@ -1,4 +1,4 @@
-import { Flex, HStack } from '@chakra-ui/react';
+import { Flex, HStack, Text, VStack } from '@chakra-ui/react';
 import { Button } from '@repo/ui/components';
 import usePermissionAccess from '~/lib/hooks/useRoleAccess';
 import {
@@ -12,6 +12,7 @@ import {
   setSelectedTicket,
 } from '~/lib/redux/slices/TicketSlice';
 import PopoverAction from '../../TicketTable/PopoverAction';
+import { DrawerAction } from '~/lib/components/UI/DrawerAction';
 
 interface TicketDrawerHeaderProps {
   data: Ticket;
@@ -26,10 +27,18 @@ const TicketDrawerHeader = (props: TicketDrawerHeaderProps) => {
   const canMarkTicketAsCompleted = usePermissionAccess('ticket:mark_completed');
   const canDeleteTicket = usePermissionAccess('ticket:delete');
   const canScheduleTicket = usePermissionAccess('ticket:schedule');
+  const appConfigValue = useAppSelector(
+    (state) => state.general.appConfigValues
+  );
 
   const dispatch = useAppDispatch();
 
   const { selectedTicket } = useAppSelector((state) => state.ticket);
+
+  const completedStatusId =
+    typeof appConfigValue?.DEFAULT_COMPLETED_TASK_STATUS_ID === 'string'
+      ? +appConfigValue?.DEFAULT_COMPLETED_TASK_STATUS_ID
+      : appConfigValue?.DEFAULT_COMPLETED_TASK_STATUS_ID;
 
   const openModal = (action: SelectedTicketAction) => {
     if (selectedTicket) {
@@ -49,51 +58,56 @@ const TicketDrawerHeader = (props: TicketDrawerHeaderProps) => {
     <>
       <HStack spacing="8px">
         {children}
-        <Flex display={{ base: 'flex', lg: 'none' }}>
-          <PopoverAction ticket={data} category={category} />
-        </Flex>
         {(action === 'view' || action === 'assign') &&
-          !category.includes('completed') && (
-            <HStack spacing="8px" display={{ base: 'none', lg: 'flex' }}>
-              {canScheduleTicket && (
-                <Button
-                  handleClick={() => openModal('schedule')}
-                  customStyles={{ width: '126px', height: '35px' }}
-                >
-                  Schedule Ticket
-                </Button>
-              )}
+          !category.includes('completed') &&
+          data?.ticketStatusId !== completedStatusId && (
+            <DrawerAction>
+              <VStack width="full" alignItems="flex-start" spacing="16px">
+                {canScheduleTicket && (
+                  <Text
+                    cursor="pointer"
+                    as="button"
+                    onClick={() => openModal('schedule')}
+                  >
+                    Schedule Ticket
+                  </Text>
+                )}
 
-              {category === 'new' && action === 'view' && canAssignTicket && (
-                <Button
-                  handleClick={() => openModal('assign')}
-                  variant="outline"
-                  customStyles={{ width: '126px', height: '35px' }}
-                >
-                  Assign Ticket
-                </Button>
-              )}
-
-              {canDeleteTicket && (
-                <Button
-                  customStyles={{ width: '84px', height: '35px' }}
-                  variant="secondary"
-                  handleClick={() => openModal('delete')}
-                >
-                  Delete
-                </Button>
-              )}
-            </HStack>
+                {category === 'new' && action === 'view' && canAssignTicket && (
+                  <Text
+                    cursor="pointer"
+                    as="button"
+                    onClick={() => openModal('assign')}
+                  >
+                    Assign Ticket
+                  </Text>
+                )}
+                {canDeleteTicket &&
+                  data?.ticketStatusId !== completedStatusId && (
+                    <Text
+                      cursor="pointer"
+                      as="button"
+                      onClick={() => openModal('delete')}
+                    >
+                      Delete
+                    </Text>
+                  )}
+              </VStack>
+            </DrawerAction>
           )}
-
-        {action === 'edit' && canMarkTicketAsCompleted && (
-          <Button
-            customStyles={{ width: '139px', height: '35px' }}
-            variant="secondary"
-            handleClick={() => openModal('markAsCompleted')}
-          >
-            Mark as Completed
-          </Button>
+        {action === 'schedule' && category === 'in_progress' && (
+          <DrawerAction>
+            {canMarkTicketAsCompleted && (
+              <Text
+                cursor="pointer"
+                as="button"
+                onClick={() => openModal('markAsCompleted')}
+                whiteSpace="nowrap"
+              >
+                Mark as Completed
+              </Text>
+            )}
+          </DrawerAction>
         )}
       </HStack>
     </>

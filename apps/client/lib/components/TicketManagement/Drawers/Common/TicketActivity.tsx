@@ -24,7 +24,9 @@ const timelines = [
   },
   {
     title: <strong>View more activity</strong>,
-    color: '#C4C4C4',
+    color: '#0366EF',
+    textColor: '#0366EF',
+    more: true,
   },
 ];
 
@@ -41,7 +43,7 @@ const TicketActivity = () => {
   };
 
   return (
-    <VStack width="full" alignItems="flex-start" pt="24px">
+    <VStack width="full" alignItems="flex-start" pt="0px">
       <Text color="neutral.600" fontWeight={700}>
         Ticket Activity
       </Text>
@@ -59,7 +61,12 @@ const TicketActivity = () => {
             <Box boxSize={8} rounded="full" bgColor={timeline.color} />
 
             <VStack gap={1} alignItems={'start'}>
-              <Text>{timeline.title}</Text>
+              <Text
+                color={timeline?.textColor ?? 'black'}
+                cursor={timeline?.more ? 'pointer' : 'initial'}
+              >
+                {timeline.title}
+              </Text>
 
               <Text color="#656565" fontSize="11px" fontWeight={500}>
                 {timeline.description}

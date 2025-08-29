@@ -12,7 +12,7 @@ const Team = () => {
   return (
     <FormInputWrapper
       sectionMaxWidth="141px"
-      customSpacing="81px"
+      customSpacing="36px"
       description="Select Team"
       title="Team"
     >

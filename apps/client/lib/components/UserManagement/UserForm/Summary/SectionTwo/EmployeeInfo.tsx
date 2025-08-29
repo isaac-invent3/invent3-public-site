@@ -37,18 +37,6 @@ const EmployeeInfo = () => {
       value: workEmail,
     },
     {
-      label: 'Country',
-      value: countryName,
-    },
-    {
-      label: 'State',
-      value: stateName,
-    },
-    {
-      label: 'City',
-      value: cityName,
-    },
-    {
       label: 'Facility',
       value: branchName,
     },
@@ -57,12 +45,12 @@ const EmployeeInfo = () => {
     <VStack width="full">
       <DetailHeader variant="primary">Employee Info</DetailHeader>
       <VStack width="full" spacing="20px">
-        <SimpleGrid width="full" gap="20px" columns={{ base: 2, md: 3 }}>
+        <SimpleGrid width="full" gap="20px" columns={{ base: 2 }}>
           {infoOne.map((item, index) => (
             <SummaryInfo {...item} key={index} />
           ))}
         </SimpleGrid>
-        <SimpleGrid width="full" gap="20px" columns={{ base: 2, md: 3 }}>
+        <SimpleGrid width="full" gap="20px" columns={{ base: 2 }}>
           {infoTwo.map((item, index) => (
             <SummaryInfo {...item} key={index} />
           ))}

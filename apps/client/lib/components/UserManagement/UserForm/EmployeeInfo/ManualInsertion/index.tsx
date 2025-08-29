@@ -5,12 +5,12 @@ import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { FormActionButtons } from '@repo/ui/components';
 import { ROUTES } from '~/lib/utils/constants';
 import { updateUserForm } from '~/lib/redux/slices/UserSlice';
-import Picture from './Picture';
 import FullName from './FullName';
 import PhoneNumber from './PhoneNumber';
 import Email from './Email';
-import Location from './Location';
 import { employeeInfoSchema } from '~/lib/schemas/user.schema';
+import Branch from './Branch';
+import Picture from './Picture';
 
 interface ManualInsertionProps {
   activeStep: number;
@@ -28,10 +28,7 @@ const ManualInsertion = (props: ManualInsertionProps) => {
       lastName: formDetails?.lastName ?? null,
       mobileNumber: formDetails?.mobileNumber ?? null,
       workEmail: formDetails?.workEmail ?? null,
-      gender: formDetails?.gender ?? null,
-      countryId: formDetails?.countryId ?? null,
-      stateId: formDetails?.stateId ?? null,
-      cityId: formDetails?.cityId ?? null,
+      branchId: formDetails?.branchId ?? null,
     },
     validationSchema: employeeInfoSchema,
     enableReinitialize: true,
@@ -62,11 +59,11 @@ const ManualInsertion = (props: ManualInsertionProps) => {
             rounded="6px"
             minH="60vh"
           >
-            {/* <Picture /> */}
+            <Picture />
             <FullName />
             <PhoneNumber />
             <Email />
-            <Location />
+            <Branch />
           </VStack>
           <Flex width="full" mt="16px">
             <FormActionButtons

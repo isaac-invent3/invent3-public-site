@@ -6,10 +6,11 @@ import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateUserForm } from '~/lib/redux/slices/UserSlice';
 import { occupationInfoSchema } from '~/lib/schemas/user.schema';
 import { ROUTES } from '~/lib/utils/constants';
-import Branch from './Branch';
 import EmploymentType from './EmploymentType';
 import JobTitle from './JobTitle';
 import Team from './Team';
+import UserRole from './UserRole';
+import UserGroup from './UserGroup';
 
 interface OccupationInfoProps {
   activeStep: number;
@@ -23,9 +24,10 @@ const OccupationInfo = (props: OccupationInfoProps) => {
   const formik = useFormik({
     initialValues: {
       employmentTypeId: formDetails?.employmentTypeId ?? null,
-      branchId: formDetails?.branchId ?? null,
       jobTitleId: formDetails?.jobTitleId ?? null,
       teamId: formDetails?.teamId ?? null,
+      userRoleIds: formDetails?.userRoleIds ?? [],
+      userGroupIds: formDetails?.userGroupIds ?? [],
     },
     validationSchema: occupationInfoSchema,
     enableReinitialize: true,
@@ -58,11 +60,14 @@ const OccupationInfo = (props: OccupationInfoProps) => {
           >
             <SimpleGrid width="full" columns={{ base: 1, md: 2 }} gap="37px">
               <EmploymentType />
-              <Branch />
+              <Team />
             </SimpleGrid>
             <SimpleGrid width="full" columns={{ base: 1, md: 2 }} gap="37px">
               <JobTitle />
-              <Team />
+              <UserRole />
+            </SimpleGrid>
+            <SimpleGrid width="full" columns={{ base: 1, md: 2 }} gap="37px">
+              <UserGroup />
             </SimpleGrid>
           </VStack>
           <Flex width="full" mt="16px">

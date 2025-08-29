@@ -182,7 +182,7 @@ const SummaryStep = (props: SummaryStepProps) => {
         width="full"
         gap="16px"
         direction="column"
-        display={activeStep === 5 - step ? 'flex' : 'none'}
+        display={activeStep === 4 - step ? 'flex' : 'none'}
       >
         <VStack
           width="full"
@@ -201,8 +201,8 @@ const SummaryStep = (props: SummaryStepProps) => {
         </VStack>
         <FormActionButtons
           cancelLink={`/${ROUTES.USERS}`}
-          totalStep={isManual ? 5 : 4}
-          activeStep={isManual ? 5 : 4}
+          totalStep={isManual ? 4 : 3}
+          activeStep={isManual ? 4 : 3}
           setActiveStep={setActiveStep}
           handleContinue={handleSumbitUser}
           isLoading={createLoading || updateLoading}

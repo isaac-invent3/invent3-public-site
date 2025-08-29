@@ -14,6 +14,7 @@ import QuestionAnswerAccordion from '../FAQ/QuestionAnswerAccordion';
 import Image from 'next/image';
 import SectionInfo from '../Common/SectionInfo';
 import WaitListForm from './WaitlistForm';
+import Link from 'next/link';
 
 const companies = ['/github.svg', '/asana.svg', '/gumroad.svg'];
 
@@ -31,9 +32,11 @@ const Waitlist = () => {
         py="16px"
         px={{ base: '16px', lg: '80px' }}
       >
-        <Flex position="relative" width="110.87px" height="36.81px">
-          <Image src="/logo-blue.svg" fill alt="invent3 logo" />
-        </Flex>
+        <Link href="/">
+          <Flex position="relative" width="110.87px" height="36.81px">
+            <Image src="/logo-blue.svg" fill alt="invent3 logo" />
+          </Flex>
+        </Link>
       </Flex>
       <Flex
         width="full"

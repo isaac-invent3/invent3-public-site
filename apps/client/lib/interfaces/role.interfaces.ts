@@ -121,6 +121,7 @@ interface updateRoleSystemModuleContextPermissionDtos
 interface createRoleModulePermissionPayload {
   createRoleDto: {
     roleName: string;
+    description: string;
     createdBy: string;
   };
   createRoleSystemModuleContextPermissionDtos: createRoleSystemModuleContextPermissionDtos[];

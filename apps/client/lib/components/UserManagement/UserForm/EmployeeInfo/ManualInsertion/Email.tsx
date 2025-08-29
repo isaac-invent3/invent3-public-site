@@ -8,8 +8,9 @@ const Email = () => {
       <FormInputWrapper
         sectionMaxWidth="157px"
         customSpacing="65px"
-        description="Email"
-        title="Email"
+        description="Enter Work Email"
+        title="Work Email"
+        isRequired
       >
         <Field
           as={FormTextInput}

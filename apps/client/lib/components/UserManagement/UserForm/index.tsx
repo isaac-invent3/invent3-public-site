@@ -6,7 +6,6 @@ import { FormStepper, SlideTransition } from '@repo/ui/components';
 import PageHeader from '../../UI/PageHeader';
 import DocumentStep from './Document';
 import SummaryStep from './Summary';
-import RoleGroupInfo from './RoleGroupInfo';
 import OccupationInfo from './OccupationInfo';
 import EmployeeInfo from './EmployeeInfo';
 import withFormLeaveDialog from '../../UI/FormLeaveDialogProvider';
@@ -23,7 +22,6 @@ const UserForm = (props: UserFormProps) => {
   const STEPS = [
     isManual || type === 'edit' ? 'Employee Info' : 'Add Employee',
     ...(isManual || type === 'edit' ? ['Occupation Info'] : []),
-    'User Role',
     'Document',
     'Summary',
   ];
@@ -53,20 +51,13 @@ const UserForm = (props: UserFormProps) => {
           </SlideTransition>
         )}
         <SlideTransition trigger={activeStep === 3 - stepReduction}>
-          <RoleGroupInfo
-            activeStep={activeStep}
-            setActiveStep={setActiveStep}
-            isManual={isManual}
-          />
-        </SlideTransition>
-        <SlideTransition trigger={activeStep === 4 - stepReduction}>
           <DocumentStep
             activeStep={activeStep}
             setActiveStep={setActiveStep}
             isManual={isManual}
           />
         </SlideTransition>
-        <SlideTransition trigger={activeStep === 5 - stepReduction}>
+        <SlideTransition trigger={activeStep === 4 - stepReduction}>
           <SummaryStep
             activeStep={activeStep}
             setActiveStep={setActiveStep}

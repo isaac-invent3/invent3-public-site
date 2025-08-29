@@ -31,7 +31,7 @@ const DocumentStep = (props: DocumentStepProps) => {
     enableReinitialize: true,
     onSubmit: async (values) => {
       dispatch(updateUserForm(values));
-      setActiveStep(isManual ? 5 : 4);
+      setActiveStep(isManual ? 4 : 3);
     },
   });
 
@@ -46,7 +46,7 @@ const DocumentStep = (props: DocumentStepProps) => {
     <Flex
       width="full"
       direction="column"
-      display={activeStep === 4 - step ? 'flex' : 'none'}
+      display={activeStep === 3 - step ? 'flex' : 'none'}
     >
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>

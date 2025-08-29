@@ -32,14 +32,14 @@ const JobTitle = () => {
     <>
       <FormInputWrapper
         sectionMaxWidth="141px"
-        customSpacing="81px"
-        description="Select Job Designation"
-        title="Job Designation"
+        customSpacing="36px"
+        description="Select Job Role"
+        title="Job Role"
       >
         <VStack width="full" spacing="4px" alignItems="flex-end">
           <GenericAsyncSelect
             selectName="jobTitleId"
-            selectTitle="Job Title"
+            selectTitle="Job Role"
             data={data}
             labelKey="designationName"
             valueKey="designationId"
@@ -54,9 +54,7 @@ const JobTitle = () => {
             }}
             fetchKey={1}
           />
-          <FormAddButton handleClick={onOpen}>
-            Add New Designation
-          </FormAddButton>
+          <FormAddButton handleClick={onOpen}>Add New Role</FormAddButton>
           {meta.touched && meta.error !== undefined && (
             <ErrorMessage>{meta.error}</ErrorMessage>
           )}

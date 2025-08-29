@@ -16,31 +16,23 @@ const employeeInfoSchema = Yup.object().shape({
     })
     .nullable(),
   firstName: Yup.string().required('First name is Required'),
-  middleName: Yup.string().nullable(),
   lastName: Yup.string().required('Last name is Required'),
-  dob: createDateSchema(false, false).nullable(),
   mobileNumber: Yup.string().nullable(),
-  workEmail: Yup.string().email().nullable(),
-  gender: Yup.string().nullable(),
-  countryId: Yup.number().required('Country is Required'),
-  stateId: Yup.number().required('State is Required'),
-  cityId: Yup.number().required('LGA is Required'),
+  workEmail: Yup.string().email().required('Work Email is Required'),
+  branchId: Yup.string().required('Facility is required'),
 });
 
 const occupationInfoSchema = Yup.object().shape({
   employmentTypeId: Yup.string().nullable(),
-  branchId: Yup.string().required('Branch is required'),
   jobTitleId: Yup.string().nullable(),
   teamId: Yup.array().of(Yup.number()).nullable(),
-});
-
-const roleGroupInfoSchema = Yup.object().shape({
   userRoleIds: Yup.array().of(Yup.number()).min(1, 'Role is required'),
   userGroupIds: Yup.array().of(Yup.number()).nullable(),
 });
 
 const userRoleSchema = Yup.object().shape({
   roleName: Yup.string().required('Role name is required'),
+  description: Yup.string().required('Description is required'),
 });
 
 const userIDPSchema = Yup.object().shape({
@@ -70,7 +62,6 @@ export {
   occupationInfoSchema,
   userRoleSchema,
   userGroupSchema,
-  roleGroupInfoSchema,
   userIDPSchema,
   designationSchema,
 };

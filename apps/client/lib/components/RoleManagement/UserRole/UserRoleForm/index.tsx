@@ -13,6 +13,7 @@ import {
   Button,
   ErrorMessage,
   FormInputWrapper,
+  FormTextAreaInput,
   FormTextInput,
   GenericSuccessModal,
 } from '@repo/ui/components';
@@ -40,6 +41,7 @@ const UserRoleForm = () => {
   const formik = useFormik({
     initialValues: {
       roleName: '',
+      description: undefined,
     },
     validationSchema: userRoleSchema,
     enableReinitialize: true,
@@ -66,6 +68,7 @@ const UserRoleForm = () => {
         {
           createRoleDto: {
             roleName: values.roleName!,
+            description: values.description!,
             createdBy: username!,
           },
           createRoleSystemModuleContextPermissionDtos: selectedPermissions,
@@ -100,7 +103,12 @@ const UserRoleForm = () => {
                 pb="33px"
                 minH="60vh"
               >
-                <SimpleGrid columns={{ base: 1, md: 2 }} width="full" px="24px">
+                <SimpleGrid
+                  columns={{ base: 1, md: 2 }}
+                  width="full"
+                  gap="29px"
+                  px="24px"
+                >
                   <FormInputWrapper
                     sectionMaxWidth="141px"
                     customSpacing="40px"
@@ -117,6 +125,22 @@ const UserRoleForm = () => {
                         placeholder="Role Name"
                       />
                     </VStack>
+                  </FormInputWrapper>
+                  <FormInputWrapper
+                    sectionMaxWidth="141px"
+                    customSpacing="40px"
+                    title="Description"
+                    description="Provide details about this role"
+                    isRequired
+                  >
+                    <Field
+                      as={FormTextAreaInput}
+                      name="description"
+                      type="text"
+                      label="Description"
+                      placeholder="What’s the task about?"
+                      customStyle={{ height: '96px' }}
+                    />
                   </FormInputWrapper>
                 </SimpleGrid>
                 <Permissions />

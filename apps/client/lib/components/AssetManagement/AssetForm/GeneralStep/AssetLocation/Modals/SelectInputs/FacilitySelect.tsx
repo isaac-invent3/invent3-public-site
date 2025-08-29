@@ -17,11 +17,19 @@ interface FacilitySelectProps {
   name?: string;
   selectedOption?: Option | null;
   defaultValue?: string | null;
+  labelKey?: string[] | string;
 }
 
 const FacilitySelect = (props: FacilitySelectProps) => {
-  const { handleSelect, type, lgaId, name, selectedOption, defaultValue } =
-    props;
+  const {
+    handleSelect,
+    type,
+    lgaId,
+    name,
+    selectedOption,
+    defaultValue,
+    labelKey,
+  } = props;
   const { facilityName } = useAppSelector((state) => state.asset.assetForm);
   const [searchFacility] = useSearchFacilitiesMutation({});
 
@@ -69,7 +77,7 @@ const FacilitySelect = (props: FacilitySelectProps) => {
       selectName={name ?? 'facilityId'}
       selectTitle="Facility"
       data={type === 'general' ? data : lgaId ? facilitiesByLGAIDData : []}
-      labelKey="facilityName"
+      labelKey={labelKey ?? 'facilityName'}
       valueKey="facilityId"
       defaultInputValue={defaultValue ?? facilityName}
       mutationFn={searchFacility}

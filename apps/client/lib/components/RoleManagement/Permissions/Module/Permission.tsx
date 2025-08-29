@@ -20,8 +20,8 @@ export const Permission = (props: PermissionProps) => {
   const dispatch = useAppDispatch();
   const formRoleModules = useAppSelector((state) => state.role.formRoleModules);
   return (
-    <HStack alignItems="flex-start" justifyContent="space-between" width="full">
-      <VStack alignItems="flex-start" spacing="8px">
+    <HStack alignItems="flex-start" spacing="16px" width="full">
+      <VStack alignItems="flex-start" spacing="8px" width="248px">
         <Text color="black" size="md" maxW="238px">
           {subModuleContextTypeName}
         </Text>

@@ -10,6 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { OPERATORS } from '@repo/constants';
 import { GenericModal, LoadingSpinner, SearchInput } from '@repo/ui/components';
+import { generateSearchCriteria } from '@repo/utils';
 import React, { useCallback, useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { CloseIcon } from '~/lib/components/CustomIcons';
@@ -58,42 +59,24 @@ const UserSelectSecondaryModal = (props: UserSelectSecondaryModalProps) => {
     pageNumber,
   });
   const { handleSubmit } = useCustomMutation();
-
-  const searchCriterion = {
-    ...(search && {
-      orCriterion: [
-        ...(search
-          ? [
-              [
-                {
-                  columnName: 'firstName',
-                  columnValue: search,
-                  operation: OPERATORS.Contains,
-                },
-              ],
-            ]
-          : []),
-        ...(search
-          ? [
-              [
-                {
-                  columnName: 'lastName',
-                  columnValue: search,
-                  operation: OPERATORS.Contains,
-                },
-              ],
-            ]
-          : []),
-      ],
-    }),
-    pageNumber,
-    pageSize,
-  };
-
   const handleSearch = useCallback(async () => {
-    const response = await handleSubmit(searchUsers, searchCriterion, '');
-    if (response?.data?.data) setUsers(response?.data?.data.items);
-  }, [searchUsers, searchCriterion]);
+    const { orCriterion } = generateSearchCriteria(search, {}, {}, [
+      'firstName',
+      'lastName',
+    ]);
+    const payload = {
+      pageNumber,
+      pageSize,
+      orCriterion,
+    };
+
+    if (orCriterion.length > 0) {
+      const response = await handleSubmit(searchUsers, payload, '');
+      if (response?.data) {
+        setUsers(response?.data?.data?.items);
+      }
+    }
+  }, [searchUsers, search, pageNumber, pageSize]);
 
   // Trigger search when search input changes or pagination updates
   useEffect(() => {

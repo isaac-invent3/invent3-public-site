@@ -5,8 +5,7 @@ import { Field, FormikProvider, useFormik } from 'formik';
 import { Button, FormSelect, FormTextInput } from '@repo/ui/components';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { waitlistSchema } from '~/lib/schemas/general.schema';
-import { useState } from 'react';
-import { useSubmitContactRequestMutation } from '~/lib/redux/services/utility.services';
+import { useSubmitWaitlistRequestMutation } from '~/lib/redux/services/utility.services';
 
 const CustomTextInputForm = ({
   name,
@@ -48,33 +47,30 @@ const CustomTextInputForm = ({
 };
 
 const WaitListForm = () => {
-  const [submitRequest, { isLoading }] = useSubmitContactRequestMutation({});
+  const [submitRequest, { isLoading }] = useSubmitWaitlistRequestMutation({});
   const { handleSubmit } = useCustomMutation();
 
   const formik = useFormik({
     initialValues: {
       companyName: '',
-      website: '',
-      name: '',
+      companyWebsite: '',
+      fullName: '',
       industry: '',
-      email: '',
+      emailAddress: '',
     },
     validationSchema: waitlistSchema,
     onSubmit: async (values, { resetForm }) => {
-      //   const response = await handleSubmit(
-      //     submitRequest,
-      //     {
-      //       ...values,
-      //       contactRequestType: selectedType,
-      //       subject:
-      //         contactType?.find((item) => item.value === selectedType)?.label ||
-      //         '',
-      //     },
-      //     'You have Successfully Joined the Waitlist'
-      //   );
-      //   if (response?.data) {
-      //     resetForm();
-      //   }
+      const response = await handleSubmit(
+        submitRequest,
+        {
+          ...values,
+          contactUsRequestTypes: 2,
+        },
+        'You have Successfully Joined the Waitlist'
+      );
+      if (response?.data) {
+        resetForm();
+      }
     },
   });
 
@@ -117,19 +113,19 @@ const WaitListForm = () => {
             />
           </SimpleGrid>
           <CustomTextInputForm
-            name="website"
+            name="companyWebsite"
             title="Company Website"
             type="url"
             placeholder="Company Website"
           />
           <SimpleGrid columns={{ base: 1, lg: 2 }} width="full" gap="8px">
             <CustomTextInputForm
-              name="name"
+              name="fullName"
               title="Your Name"
               placeholder="Your Name"
             />
             <CustomTextInputForm
-              name="email"
+              name="emailAddress"
               title="Your Email Address"
               placeholder="Your Email Address"
             />

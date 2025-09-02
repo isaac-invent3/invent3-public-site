@@ -263,6 +263,15 @@ interface ContactPayload {
   contactRequestType: number;
 }
 
+interface WaitlistPayload {
+  companyName: string;
+  industry: string;
+  companyWebsite: string;
+  fullName: string;
+  emailAddress: string;
+  contactUsRequestTypes: number;
+}
+
 export type {
   Settings,
   UpdateSettingsPayload,
@@ -271,4 +280,5 @@ export type {
   FloorSetting,
   RoomSetting,
   ContactPayload,
+  WaitlistPayload,
 };

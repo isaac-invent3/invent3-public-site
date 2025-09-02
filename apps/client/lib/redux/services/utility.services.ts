@@ -11,6 +11,7 @@ import {
   ContactPayload,
   Settings,
   UpdateSettingsPayload,
+  WaitlistPayload,
 } from '~/lib/interfaces/settings.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import { TicketCategory } from '~/lib/interfaces/ticket.interfaces';
@@ -100,6 +101,14 @@ export const utilityApi = createApi({
         body,
       }),
     }),
+    submitWaitlistRequest: builder.mutation<void, WaitlistPayload>({
+      query: (body) => ({
+        url: `/Invent3Pro/SubmitWaitlistRequest`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
     uploadData: builder.mutation<any, any>({
       query: (body) => ({
         url: `/Invent3Pro/Bulk-upload`,
@@ -140,4 +149,5 @@ export const {
   useUploadDataMutation,
   useGetMostRecentUploadQuery,
   useGetDataUploadFailedItemByUploadIdQuery,
+  useSubmitWaitlistRequestMutation,
 } = utilityApi;

@@ -14,7 +14,7 @@ import DetailHeader from '../../UI/DetailHeader';
 import InfoCard from '../../UI/InfoCard';
 import UploadStatusTable from './UploadStatusTable';
 import DocumentUploadAndView from '../../Common/DocumentUploadAndView';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   DataUploadStageHistory,
   Document,
@@ -32,7 +32,10 @@ import useSignalR from '~/lib/hooks/useSignalR';
 import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
-const DataUpload = () => {
+interface DataUploadProps {
+  children?: React.ReactNode;
+}
+const DataUpload = ({ children }: DataUploadProps) => {
   const headers = ['Stage', 'Status', 'Actions'];
   const [document, setDocumet] = useState<Document | null>(null);
   const {
@@ -271,7 +274,7 @@ const DataUpload = () => {
           rounded="6px"
           minH="60vh"
         >
-          <VStack width="full" alignItems="flex-start">
+          <VStack width="full" spacing={{ base: '16px', lg: '32px' }}>
             <DetailHeader variant="primary" customStyles={{ size: 'lg' }}>
               1. Download Template
             </DetailHeader>
@@ -309,7 +312,7 @@ const DataUpload = () => {
               />
             </Stack>
           </VStack>
-          <VStack width="full">
+          <VStack width="full" spacing={{ base: '16px', lg: '32px' }}>
             <DetailHeader
               variant="primary"
               customStyles={{ size: 'lg', mt: { base: '16px', lg: '72px' } }}
@@ -365,6 +368,7 @@ const DataUpload = () => {
               </VStack>
             </FormInputWrapper>
           </VStack>
+          {children}
         </VStack>
         <Button
           customStyles={{ width: 'max-content' }}

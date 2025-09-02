@@ -13,7 +13,7 @@ import { updateCompanyForm } from '~/lib/redux/slices/CompanySlice';
 const CompanyLocation = () => {
   const [field, meta, helpers] = useField('facilityId');
   const dispatch = useAppDispatch();
-  const { setFieldValue, values, errors } =
+  const { setFieldValue, values, errors, submitCount } =
     useFormikContext<CompanyFormDetails>();
 
   useEffect(() => {
@@ -55,7 +55,8 @@ const CompanyLocation = () => {
               dispatch(updateCompanyForm({ countryName: option.label }));
             }}
             selectStyles={{
-              backgroundColor: errors.countryId ? '#FFDCDC' : 'white',
+              backgroundColor:
+                errors.countryId && submitCount > 0 ? '#FFDCDC' : 'white',
             }}
           />
         </GridItem>
@@ -68,7 +69,8 @@ const CompanyLocation = () => {
               dispatch(updateCompanyForm({ stateName: option.label }));
             }}
             selectStyles={{
-              backgroundColor: errors.stateId ? '#FFDCDC' : 'white',
+              backgroundColor:
+                errors.stateId && submitCount > 0 ? '#FFDCDC' : 'white',
             }}
           />
         </GridItem>
@@ -81,7 +83,8 @@ const CompanyLocation = () => {
               dispatch(updateCompanyForm({ lgaName: option.label }));
             }}
             selectStyles={{
-              backgroundColor: errors.lgaId ? '#FFDCDC' : 'white',
+              backgroundColor:
+                errors.lgaId && submitCount > 0 ? '#FFDCDC' : 'white',
             }}
             type="specificById"
           />

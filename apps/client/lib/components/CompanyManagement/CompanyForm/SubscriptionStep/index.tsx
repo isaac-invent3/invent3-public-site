@@ -7,8 +7,7 @@ import {
 } from '@repo/ui/components';
 import { FormikProvider, useFormik } from 'formik';
 import moment from 'moment';
-import { useState } from 'react';
-import { Option } from '~/lib/interfaces/general.interfaces';
+import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useGetAllSubscriptionPlansQuery } from '~/lib/redux/services/subscription.services';
 import { updateCompanyForm } from '~/lib/redux/slices/CompanySlice';
@@ -46,6 +45,18 @@ const SubscriptionStep = (props: SubscriptionStepProps) => {
       setActiveStep(5);
     },
   });
+
+  useEffect(() => {
+    if (data?.data && data?.data?.items.length > 0) {
+      formik.setFieldValue(
+        'subscriptionPlanId',
+        data?.data?.items[0]?.subscriptionPlanId
+      );
+      updateCompanyForm({
+        subscriptionPlanName: data?.data?.items[0]?.subscriptionPlanName,
+      });
+    }
+  }, [data]);
 
   return (
     <Flex
@@ -116,8 +127,6 @@ const SubscriptionStep = (props: SubscriptionStepProps) => {
                   minDate={new Date()}
                   selectedDate={formik.values.startDate ?? undefined}
                   handleDateTimeSelect={(dateTime) => {
-                    // setInputtedStartDate(dateTime);
-                    console.log({ test: dateTime?.trim() });
                     formik.setFieldValue('startDate', dateTime?.trim() ?? null);
                   }}
                 />

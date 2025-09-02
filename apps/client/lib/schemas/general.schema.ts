@@ -179,11 +179,11 @@ const contactSchema = Yup.object().shape({
 const waitlistSchema = Yup.object().shape({
   companyName: Yup.string().required('Company Name is Required'),
   industry: Yup.string().required('Industry is Required'),
-  website: Yup.string().required('Company Website is Required'),
-  email: Yup.string()
+  companyWebsite: Yup.string().required('Company Website is Required'),
+  emailAddress: Yup.string()
     .email('Invalid Email Adress')
     .required('Email is Required'),
-  name: Yup.string().required('Name is Required'),
+  fullName: Yup.string().required('Name is Required'),
 });
 
 export {

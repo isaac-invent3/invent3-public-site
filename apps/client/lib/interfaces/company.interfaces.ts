@@ -78,6 +78,9 @@ interface CompanyFormDetails {
   activeDirectoryUrl: string | null;
   companyAuthProtocolId: number | null;
   companyAuthProtocolName: string | null;
+  admins: AdminFormDetails[];
+  deletedAdminIDs: number[];
+  updatedAdminIDs: number[];
 }
 
 interface CompanyImageDto extends BaseDto {
@@ -168,6 +171,15 @@ interface CompanyDistribution {
   isDeleted: boolean;
 }
 
+interface AdminFormDetails {
+  contactId: number | null;
+  localId: number | null;
+  contactFirstName: string | null;
+  contactLastName: string | null;
+  contactEmail: string | null;
+  contactPhoneNumber: string | null;
+}
+
 export type {
   Company,
   CompanyFormDetails,
@@ -181,4 +193,5 @@ export type {
   CompanyJourneyGuide,
   TenantSummary,
   CompanyDistribution,
+  AdminFormDetails,
 };

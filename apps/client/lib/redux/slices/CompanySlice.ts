@@ -2,6 +2,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 import { FilterInput } from '~/lib/interfaces/asset/general.interface';
 import {
+  AdminFormDetails,
   Company,
   CompanyFormDetails,
 } from '~/lib/interfaces/company.interfaces';
@@ -36,6 +37,18 @@ const initialCompanyForm = {
   companyAuthProtocolId: null,
   activeDirectoryUrl: null,
   companyAuthProtocolName: 'Basic Authentication',
+  admins: [],
+  deletedAdminIDs: [],
+  updatedAdminIDs: [],
+};
+
+const initialAdminForm = {
+  contactId: null,
+  localId: null,
+  contactFirstName: null,
+  contactLastName: null,
+  contactEmail: null,
+  contactPhoneNumber: null,
 };
 
 const initialCompanyFilter = {
@@ -52,6 +65,8 @@ export interface SliceProps {
   companyForm: CompanyFormDetails;
   companyFilter: FilterInput;
   selectedCompanyIds: number[];
+  companyAdmins: AdminFormDetails[];
+  adminForm: AdminFormDetails;
 }
 
 const initialState: SliceProps = {
@@ -59,6 +74,8 @@ const initialState: SliceProps = {
   companyForm: initialCompanyForm,
   companyFilter: initialCompanyFilter,
   selectedCompanyIds: [],
+  companyAdmins: [],
+  adminForm: initialAdminForm,
 };
 
 export const CompanySlice = createSlice({
@@ -80,9 +97,7 @@ export const CompanySlice = createSlice({
     ) => {
       state.companyForm = { ...state.companyForm, ...payload };
     },
-    clearCompanyForm: (state) => {
-      state.companyForm = initialCompanyForm;
-    },
+
     updateCompanyFilter: (
       state,
       { payload }: PayloadAction<Partial<FilterInput>>
@@ -91,6 +106,24 @@ export const CompanySlice = createSlice({
     },
     clearCompanyFilter: (state) => {
       state.companyFilter = initialCompanyFilter;
+    },
+    clearCompanyForm: (state) => {
+      state.companyForm = initialCompanyForm;
+    },
+    updateSingleAdminForm: (
+      state,
+      { payload }: PayloadAction<Partial<AdminFormDetails>>
+    ) => {
+      state.adminForm = { ...state.adminForm, ...payload };
+    },
+    clearSingleAdminForm: (state) => {
+      state.adminForm = initialAdminForm;
+    },
+    updateCompanyAdminsForm: (
+      state,
+      { payload }: PayloadAction<Partial<AdminFormDetails>>
+    ) => {
+      state.companyAdmins = { ...state.companyAdmins, ...payload };
     },
     updateSelectedCompanyIds: (state, { payload }: PayloadAction<number[]>) => {
       state.selectedCompanyIds = payload;
@@ -111,6 +144,9 @@ export const {
   updateCompanyFilter,
   updateCompanyForm,
   updateSelectedCompanyIds,
+  updateCompanyAdminsForm,
+  updateSingleAdminForm,
+  clearSingleAdminForm,
 } = CompanySlice.actions;
 
 export default CompanySlice.reducer;

@@ -49,6 +49,9 @@ export default function Page({ params }: { params: { id: number } }) {
         companyAuthProtocolId: null,
         companyAuthProtocolName: null,
         activeDirectoryUrl: null,
+        admins: [],
+        deletedAdminIDs: [],
+        updatedAdminIDs: [],
       })
     );
   }

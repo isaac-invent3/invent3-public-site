@@ -28,6 +28,7 @@ const companyInfoSchema = (validateUser: boolean) =>
   });
 
 const contactInfoSchema = Yup.object().shape({
+  localId: Yup.number().nullable(),
   contactFirstName: Yup.string().required('First Name is required'),
   contactLastName: Yup.string().required('Last Name is required'),
   contactEmail: Yup.string()
@@ -60,9 +61,17 @@ const authenticationMethodSchema = (validateUrl: boolean) =>
         }),
   });
 
+const companyAdminSchema = Yup.object().shape({
+  admins: Yup.array()
+    .of(contactInfoSchema)
+    .required('Admin is required')
+    .min(1, 'There must be atleast one schedule'),
+});
+
 export {
   companyInfoSchema,
   contactInfoSchema,
   companySubscriptionSchema,
   authenticationMethodSchema,
+  companyAdminSchema,
 };

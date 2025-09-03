@@ -1,4 +1,4 @@
-import { Flex, useMediaQuery } from '@chakra-ui/react';
+import { Flex, Text, useMediaQuery } from '@chakra-ui/react';
 import { BaseApiResponse, ListResponse } from '@repo/interfaces';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
@@ -188,8 +188,13 @@ const TicketTable = (props: TicketTableProps) => {
 
         ...(category === 'in_progress'
           ? [
-              columnHelper.accessor('rowId', {
-                cell: (info) => info.getValue(),
+              columnHelper.accessor('completedTasksCount', {
+                cell: (info) => (
+                  <Text color="neutral.800">
+                    {info?.row.original.completedTasksCount ?? 0}/
+                    {info?.row.original.totalTasksCount ?? 0}
+                  </Text>
+                ),
                 header: 'Tasks Progress',
                 enableSorting: false,
               }),
@@ -197,8 +202,7 @@ const TicketTable = (props: TicketTableProps) => {
           : []),
 
         columnHelper.accessor('dateCreated', {
-          cell: (info) =>
-            dateFormatter(info.getValue(), 'DD / MM / YYYY hh:mma'),
+          cell: (info) => dateFormatter(info.getValue(), 'DD / MM / YYYY'),
           header: 'Requested Date',
           enableSorting: false,
         }),
@@ -207,7 +211,7 @@ const TicketTable = (props: TicketTableProps) => {
           ? [
               columnHelper.accessor('resolutionDate', {
                 cell: (info) =>
-                  dateFormatter(info.getValue(), 'DD / MM / YYYY hh:mma'),
+                  dateFormatter(info.getValue(), 'DD / MM / YYYY'),
                 header: 'Resolution Date',
                 enableSorting: false,
               }),

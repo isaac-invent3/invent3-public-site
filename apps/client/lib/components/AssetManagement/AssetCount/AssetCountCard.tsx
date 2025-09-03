@@ -45,7 +45,14 @@ const AssetCountCard = (props: AssetCountCardProps) => {
             {data?.icon ? (
               <Box
                 boxSize="64px"
-                dangerouslySetInnerHTML={{ __html: data.icon! }}
+                sx={{
+                  '& svg': {
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain',
+                  },
+                }}
+                dangerouslySetInnerHTML={{ __html: data.icon }}
               />
             ) : (
               <Icon as={DefaultAssetCountIcon} boxSize="64px" />

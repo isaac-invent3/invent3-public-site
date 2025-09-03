@@ -16,7 +16,8 @@ import {
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../baseQueryWithReauth';
 import { UpdateTicketMetadataPayload } from '~/lib/interfaces/template.interfaces';
-import { Document, GenericDocument } from '~/lib/interfaces/general.interfaces';
+import { GenericDocument } from '~/lib/interfaces/general.interfaces';
+import { AuditRecord } from '~/lib/interfaces/log.interfaces';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -181,6 +182,21 @@ export const ticketApi = createApi({
         body,
       }),
     }),
+    getTicketAuditTrailById: builder.query<
+      BaseApiResponse<ListResponse<AuditRecord>>,
+      {
+        ticketId: number;
+      } & QueryParams
+    >({
+      query: ({ ticketId, ...data }) => ({
+        url: generateQueryStr(
+          `/Tickets/GetTicketAuditTrail/${ticketId}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
   }),
 });
 
@@ -199,4 +215,5 @@ export const {
   useGetTicketsByListOfIdsQuery,
   useGetAllTicketsQuery,
   useGetTicketDocumentsByIdQuery,
+  useGetTicketAuditTrailByIdQuery,
 } = ticketApi;

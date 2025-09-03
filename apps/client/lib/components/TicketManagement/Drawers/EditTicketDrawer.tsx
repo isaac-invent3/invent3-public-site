@@ -163,7 +163,7 @@ const EditTicketDrawer = (props: EditTicketDrawerProps) => {
         isEditing={isUpdatingTicket || isUpdating}
         handleEdit={() => formik.handleSubmit()}
       >
-        <TicketActivity />
+        <TicketActivity ticketId={data?.ticketId} />
         <ScheduledTicketTasks
           data={data}
           scheduleId={maintenanceSchedule?.data?.scheduleId}

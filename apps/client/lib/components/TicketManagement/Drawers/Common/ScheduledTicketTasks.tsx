@@ -15,7 +15,6 @@ import { CheckBox, FormAddButton } from '@repo/ui/components';
 import { ScheduleFormDetails } from '~/lib/interfaces/maintenance.interfaces';
 import { Task, taskFormDetails } from '~/lib/interfaces/task.interfaces';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
-import { useGetMaintenanceSchedulesByTicketIdQuery } from '~/lib/redux/services/maintenance/schedule.services';
 import { useGetAllTasksByScheduleIdQuery } from '~/lib/redux/services/task/general.services';
 
 interface ScheduledTicketTasksProps {

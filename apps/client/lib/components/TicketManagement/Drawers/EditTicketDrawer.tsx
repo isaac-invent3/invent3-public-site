@@ -13,9 +13,10 @@ import {
   useUpdateMaintenanceScheduleAndTasksMutation,
 } from '~/lib/redux/services/maintenance/schedule.services';
 import { FORM_ENUM } from '~/lib/utils/constants';
-import { useAppSelector } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import ReOpenTicketModal from '../Modals/ReOpenTicketModal';
 import ReopenedSuccessModal from '../Modals/ReOpenTicketModal/ReopenedSuccessModal';
+import { taskApi } from '~/lib/redux/services/task/general.services';
 
 interface EditTicketDrawerProps {
   isOpen: boolean;
@@ -51,6 +52,7 @@ const EditTicketDrawer = (props: EditTicketDrawerProps) => {
   const { data: session } = useSession();
   const { handleSubmit } = useCustomMutation();
   const username = session?.user?.username;
+  const dispatch = useAppDispatch();
   const appConfigValue = useAppSelector(
     (state) => state.general.appConfigValues
   );
@@ -141,6 +143,7 @@ const EditTicketDrawer = (props: EditTicketDrawerProps) => {
       if (shouldReopenTicket) {
         reOpenSuccessOnOpen();
       } else {
+        dispatch(taskApi.util.invalidateTags(['allTasksByScheduleId']));
         toast({
           title: 'Ticket Was Updated Successfully',
           status: 'success',

@@ -1,26 +1,25 @@
-import { Text, useDisclosure } from '@chakra-ui/react';
+import { Icon, useDisclosure } from '@chakra-ui/react';
 import { GenericDeleteModal } from '@repo/ui/components';
-import { ScheduleFormDetails } from '~/lib/interfaces/maintenance.interfaces';
+import { DeleteIcon } from '~/lib/components/CustomIcons';
+import { AdminFormDetails } from '~/lib/interfaces/company.interfaces';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import { updatePlanForm } from '~/lib/redux/slices/MaintenanceSlice';
+import { updateCompanyForm } from '~/lib/redux/slices/CompanySlice';
 
-const ActionPopover = (type: 'create' | 'edit', info: ScheduleFormDetails) => {
-  const { schedules, deletedScheduleIDs } = useAppSelector(
-    (state) => state.maintenance.planForm
+const ActionPopover = (type: 'create' | 'edit', info: AdminFormDetails) => {
+  const { admins, deletedAdminIDs } = useAppSelector(
+    (state) => state.company.companyForm
   );
   const dispatch = useAppDispatch();
   const { isOpen, onClose, onOpen } = useDisclosure();
 
-  const handleDeleteSchedule = async () => {
-    const newSchedules = schedules.filter(
-      (item) => item.localId !== info.localId
-    );
-    dispatch(updatePlanForm({ schedules: newSchedules }));
-    //Mark as deleted
-    if (info.scheduleId) {
+  const handleDeleteAdmin = async () => {
+    const newAdmins = admins.filter((item) => item.localId !== info.localId);
+    dispatch(updateCompanyForm({ admins: newAdmins }));
+    // Mark as deleted
+    if (info.contactId) {
       dispatch(
-        updatePlanForm({
-          deletedScheduleIDs: [...deletedScheduleIDs, info.scheduleId],
+        updateCompanyForm({
+          deletedAdminIDs: [...deletedAdminIDs, info.contactId],
         })
       );
     }
@@ -28,23 +27,19 @@ const ActionPopover = (type: 'create' | 'edit', info: ScheduleFormDetails) => {
 
   return (
     <>
-      <Text color="#F50000" cursor="pointer" onClick={onOpen}>
-        Delete
-      </Text>
+      <Icon
+        as={DeleteIcon}
+        color="#F50000"
+        boxSize="20px"
+        cursor="pointer"
+        onClick={onOpen}
+      />
       {isOpen && (
         <GenericDeleteModal
           isOpen={isOpen}
           onClose={onClose}
-          handleDelete={handleDeleteSchedule}
-        >
-          <Text size="md" color="#A00000" width="full">
-            By deleting this schedule,{' '}
-            <Text fontWeight={800} as="span">
-              {info.taskCount} active tasks
-            </Text>{' '}
-            will also be deleted
-          </Text>
-        </GenericDeleteModal>
+          handleDelete={handleDeleteAdmin}
+        />
       )}
     </>
   );

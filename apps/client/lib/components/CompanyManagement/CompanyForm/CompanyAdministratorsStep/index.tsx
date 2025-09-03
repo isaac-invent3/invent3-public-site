@@ -17,10 +17,10 @@ const CompanyAdminStep = (props: CompanyAdminStepProps) => {
   const { activeStep, setActiveStep, type } = props;
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [showAdminForm, setShowAdminForm] = useState(false);
-  const formDetails = useAppSelector((state) => state.maintenance.planForm);
+  const formDetails = useAppSelector((state) => state.company.companyForm);
   const formik = useFormik({
     initialValues: {
-      administrators: formDetails.schedules ?? [],
+      admins: formDetails.admins ?? [],
     },
     validationSchema: companyAdminSchema,
     enableReinitialize: true,
@@ -76,7 +76,9 @@ const CompanyAdminStep = (props: CompanyAdminStepProps) => {
               activeStep={2}
               setActiveStep={setActiveStep}
               disableBackButton={showAdminForm}
-              disablePrimaryButton={showAdminForm}
+              disablePrimaryButton={
+                showAdminForm || formDetails?.admins.length < 1
+              }
             />
           </Flex>
         </form>

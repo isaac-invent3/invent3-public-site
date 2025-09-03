@@ -6,6 +6,7 @@ import {
   HStack,
   Stack,
   useDisclosure,
+  useToast,
   VStack,
 } from '@chakra-ui/react';
 import {
@@ -35,6 +36,7 @@ const AdminForm = (props: AdminFormProps) => {
     onOpen: onOpenDialog,
     onClose: onCloseDialog,
   } = useDisclosure();
+  const toast = useToast();
 
   const formik = useFormik({
     initialValues: {
@@ -51,8 +53,30 @@ const AdminForm = (props: AdminFormProps) => {
       const newAdminInfo = {
         ...values,
       };
+
+      // Check for duplicates (ignore current record if updating)
+      const duplicate = companyDetails.admins.find(
+        (admin) =>
+          admin.localId !== values.localId && // ignore self if updating
+          (admin.contactEmail === values.contactEmail ||
+            admin.contactPhoneNumber === values.contactPhoneNumber)
+      );
+
+      if (duplicate) {
+        toast({
+          title: 'Duplicate entry',
+          description:
+            'An admin with the same email or phone number already exists.',
+          status: 'error',
+          duration: 4000,
+          isClosable: true,
+          position: 'top-right',
+        });
+        return;
+      }
+
       if (values.localId) {
-        //Update an existing schedule
+        //Update an existing admin
         const newCompanyAdmin = companyDetails.admins.filter(
           (item) => item.localId !== values.localId
         );
@@ -61,7 +85,7 @@ const AdminForm = (props: AdminFormProps) => {
             admins: [...newCompanyAdmin, newAdminInfo],
           })
         );
-        //Mark as updated if schedule Id exist and is not included in the list
+        //Mark as updated if admin Id exist and is not included in the list
         if (
           formDetails.contactId &&
           !companyDetails.updatedAdminIDs.includes(formDetails.contactId)
@@ -76,7 +100,7 @@ const AdminForm = (props: AdminFormProps) => {
           );
         }
       } else {
-        // Store the new schedule
+        // Store the new admin
         dispatch(
           updateCompanyForm({
             admins: [

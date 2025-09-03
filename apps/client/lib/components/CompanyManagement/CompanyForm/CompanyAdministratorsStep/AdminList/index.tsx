@@ -1,23 +1,19 @@
 import { Flex, useDisclosure } from '@chakra-ui/react';
 import { createColumnHelper } from '@tanstack/react-table';
 import React, { useEffect, useMemo, useState } from 'react';
-import {
-  MaintenanceSchedule,
-  ScheduleFormDetails,
-} from '~/lib/interfaces/maintenance.interfaces';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import { useGetMaintenanceSchedulesByPlanIdQuery } from '~/lib/redux/services/maintenance/schedule.services';
-import {
-  clearScheduleForm,
-  updatePlanForm,
-  updateScheduleForm,
-} from '~/lib/redux/slices/MaintenanceSlice';
-import { dateFormatter } from '~/lib/utils/Formatters';
 import { LeaveDialogModal, DataTable } from '@repo/ui/components';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import AddAdminButtonWithErrorMessage from './AddAdminButtonWithErrorMessage';
+import { AdminFormDetails } from '~/lib/interfaces/company.interfaces';
+import {
+  clearSingleAdminForm,
+  updateCompanyForm,
+  updateSingleAdminForm,
+} from '~/lib/redux/slices/CompanySlice';
+import ActionPopover from './ActionPopover';
 
-interface MaintenanceSchedulesProps {
+interface AdminListProps {
   type: 'create' | 'edit' | 'list';
   showAdminInfo: boolean;
   setShowAdminInfo: React.Dispatch<React.SetStateAction<boolean>>;
@@ -26,7 +22,7 @@ interface MaintenanceSchedulesProps {
   selectMultiple: boolean;
 }
 
-const AdminList = (props: MaintenanceSchedulesProps) => {
+const AdminList = (props: AdminListProps) => {
   const {
     type,
     showAdminInfo,
@@ -36,8 +32,8 @@ const AdminList = (props: MaintenanceSchedulesProps) => {
     selectMultiple,
   } = props;
 
-  const { planId, schedules: allPlanSchedules } = useAppSelector(
-    (state) => state.maintenance.planForm
+  const { admins: allCompanyAdmins } = useAppSelector(
+    (state) => state.company.companyForm
   );
   const {
     isOpen: isOpenDialog,
@@ -48,21 +44,21 @@ const AdminList = (props: MaintenanceSchedulesProps) => {
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [action, setAction] = useState<'new' | 'update' | null>(null);
   const dispatch = useAppDispatch();
-  const { data, isLoading, isFetching } =
-    useGetMaintenanceSchedulesByPlanIdQuery(
-      {
-        id: planId!,
-        pageSize,
-        pageNumber: currentPage,
-      },
-      { skip: !planId }
-    );
-  const columnHelper = createColumnHelper<ScheduleFormDetails>();
+  // const { data, isLoading, isFetching } =
+  //   useGetMaintenanceSchedulesByPlanIdQuery(
+  //     {
+  //       id: planId!,
+  //       pageSize,
+  //       pageNumber: currentPage,
+  //     },
+  //     { skip: !planId }
+  //   );
+  const columnHelper = createColumnHelper<AdminFormDetails>();
 
   const handleProceedDialogForAddSchedule = () => {
     setAction('new');
     setSelectedRows([]);
-    dispatch(clearScheduleForm());
+    dispatch(clearSingleAdminForm());
     setShowAdminInfo(true);
     onCloseDialog();
   };
@@ -79,43 +75,49 @@ const AdminList = (props: MaintenanceSchedulesProps) => {
   const columns = useMemo(
     () => {
       const baseColumns = [
-        columnHelper.accessor('name', {
-          cell: (info) => info.getValue(),
+        columnHelper.accessor('contactFirstName', {
+          cell: (info) => info.getValue() ?? 'N/A',
           header: 'First Name',
           enableSorting: false,
         }),
-        columnHelper.accessor('typeName', {
-          cell: (info) => info.getValue(),
+        columnHelper.accessor('contactLastName', {
+          cell: (info) => info.getValue() ?? 'N/A',
           header: 'Surname',
           enableSorting: false,
         }),
-        columnHelper.accessor('frequencyName', {
+        columnHelper.accessor('contactEmail', {
           cell: (info) => info.getValue() ?? 'N/A',
           header: 'Email',
           enableSorting: false,
         }),
-        columnHelper.accessor('taskCount', {
+        columnHelper.accessor('contactPhoneNumber', {
           cell: (info) => info.getValue() ?? 'N/A',
           header: 'Phone Number',
+          enableSorting: false,
+        }),
+        columnHelper.display({
+          id: 'actions',
+          cell: (info) => ActionPopover(type as 'edit', info.row.original),
+          header: '',
           enableSorting: false,
         }),
       ];
       return baseColumns;
     },
-    [[allPlanSchedules]] //eslint-disable-line
+    [[allCompanyAdmins]] //eslint-disable-line
   );
 
   useEffect(() => {
     if (selectedRows.length >= 1) {
-      const schedule: ScheduleFormDetails | undefined =
-        allPlanSchedules[selectedRows?.[0] as number];
-      if (schedule) {
-        dispatch(updateScheduleForm(schedule));
+      const admin: AdminFormDetails | undefined =
+        allCompanyAdmins[selectedRows?.[0] as number];
+      if (admin) {
+        dispatch(updateSingleAdminForm(admin));
         setAction('update');
         setShowAdminInfo(true);
       }
     } else if (action === 'update') {
-      dispatch(clearScheduleForm());
+      dispatch(clearSingleAdminForm());
       setShowAdminInfo(false);
     }
   }, [selectedRows]);
@@ -127,79 +129,37 @@ const AdminList = (props: MaintenanceSchedulesProps) => {
     }
   }, [showAdminInfo]);
 
-  const formattedSchedules = useMemo(() => {
-    if (data?.data && data?.data?.items?.length >= 1) {
-      const schedules: MaintenanceSchedule[] = data.data.items;
-      return schedules.map((item) => ({
-        name: item.scheduleName,
-        localId: item.scheduleId,
-        scheduleId: item.scheduleId,
-        planId: item.maintenancePlanId,
-        typeId: item.maintenanceTypeId,
-        typeName: item.maintenanceType,
-        assetId: item.assetId,
-        assetTypeId: item.assetTypeId,
-        assetName: item.assetName,
-        sla: item.sla,
-        frequencyId: item.frequencyId,
-        frequencyName: item.frequencyName,
-        assetLocation: item.assetLocation,
-        description: item.description,
-        comment: item.comments,
-        scheduledDate: dateFormatter(
-          item.scheduledDate,
-          'DD/MM/YYYY HH:mm',
-          undefined,
-          type === 'edit'
-        ),
-        endDate: item.endDate ?? null,
-        intervalValue: 1,
-        dayOccurrences: [],
-        weekOccurrences: [],
-        monthOccurrences: [],
-        yearOccurrences: {},
-        deletedTaskIDs: [],
-        updatedTaskIDs: [],
-        completionDate: dateFormatter(
-          item.completionDate,
-          'DD/MM/YYYY HH:mm',
-          undefined,
-          type === 'edit'
-        ),
-        ticketId: item.ticketId,
-        maintenancePlanInfo: {
-          planName: item.planName,
-          planType: item.maintenanceType,
-          assetName: null,
-          assetTypeName: null,
-          planStatus: null,
-          startDate: null,
-          endDate: null,
-        },
-        taskCount: item.activeTasksCount,
-        tasks: [],
-        firstInstanceDate: null,
-      }));
-    }
+  const formattedAdmins: AdminFormDetails[] = useMemo(() => {
+    // if (data?.data && data?.data?.items?.length >= 1) {
+    //   const admins: AdminFormDetails[] = data.data.items;
+    //   return admins.map((item) => ({
+    //     contactId: item.contactId,
+    //     localId: item.contactId,
+    //     contactFirstName: item.contactFirstName,
+    //     contactLastName: item.contactLastName,
+    //     contactEmail: item.contactEmail,
+    //     contactPhoneNumber: item.contactPhoneNumber,
+    //   }));
+    // }
     return [];
-  }, [data?.data?.items]);
+  }, []);
 
   useEffect(() => {
-    if (formattedSchedules.length > 0) {
-      // Only add schedules from formattedSchedules that don't already exist in allPlanSchedules based on localId
-      const existingLocalIds = new Set(allPlanSchedules.map((s) => s.localId));
-      const newSchedules = formattedSchedules.filter(
+    if (formattedAdmins.length > 0) {
+      // Only add admins from formattedAdmins that don't already exist in allCompanyAdmins based on localId
+      const existingLocalIds = new Set(allCompanyAdmins.map((s) => s.localId));
+      const admins = formattedAdmins.filter(
         (s) => !existingLocalIds.has(s.localId)
       );
-      if (newSchedules.length > 0) {
+      if (admins.length > 0) {
         dispatch(
-          updatePlanForm({
-            schedules: [...allPlanSchedules, ...newSchedules],
+          updateCompanyForm({
+            admins: [...allCompanyAdmins, ...admins],
           })
         );
       }
     }
-  }, [formattedSchedules]);
+  }, [formattedAdmins]);
 
   const handleAddAdmin = () => {
     if (selectedRows.length > 0) {
@@ -226,18 +186,19 @@ const AdminList = (props: MaintenanceSchedulesProps) => {
     <Flex direction="column" width="full" gap="25px" alignItems="start">
       <DataTable
         columns={columns}
-        data={allPlanSchedules}
+        data={allCompanyAdmins}
         showFooter={type === 'edit'}
         emptyLines={5}
         isSelectable={true}
         hideSelectAllCheckBox={!selectMultiple}
-        isLoading={isLoading}
-        isFetching={isFetching}
+        isLoading={false}
+        isFetching={false}
         pageNumber={currentPage}
         setPageNumber={setCurrentPage}
         pageSize={pageSize}
         setPageSize={setPageSize}
-        totalPages={data?.data?.totalPages}
+        // totalPages={data?.data?.totalPages}
+        totalPages={1}
         selectedRows={selectedRows}
         setSelectedRows={(items) => handleSetSelectedRows(items)}
         selectMultipleRows={selectMultiple}

@@ -2,14 +2,16 @@ import { Text, VStack } from '@chakra-ui/react';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import React, { useMemo, useState } from 'react';
-import { FailedUploadItems } from '~/lib/interfaces/general.interfaces';
-import { useGetDataUploadFailedItemByUploadIdQuery } from '~/lib/redux/services/utility.services';
+import { FailedUploadItems } from '~/lib/interfaces/dataUpload.interfaces';
+import { useGetDataUploadFailedItemByUploadIdQuery } from '~/lib/redux/services/dataUpload.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 const ValidationTwoError = ({
   dataUploadId,
+  showTitle = true,
 }: {
   dataUploadId: number | undefined;
+  showTitle?: boolean;
 }) => {
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [pageNumber, setPageNumber] = useState(1);

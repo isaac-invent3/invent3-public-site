@@ -16,9 +16,6 @@ const DocumentUpload = () => {
     setDocuments(updatedDocuments);
   };
 
-  useEffect(() => {
-    console.log({ documents });
-  }, [document]);
   return (
     <FormInputWrapper
       sectionMaxWidth="157px"

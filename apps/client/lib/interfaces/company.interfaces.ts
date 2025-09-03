@@ -1,3 +1,4 @@
+import { BaseEntity } from '@repo/interfaces';
 import { FORM_ENUM } from '../utils/constants';
 import { BaseDto } from './general.interfaces';
 

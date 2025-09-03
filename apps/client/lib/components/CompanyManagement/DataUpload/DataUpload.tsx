@@ -15,15 +15,8 @@ import InfoCard from '../../UI/InfoCard';
 import UploadStatusTable from './UploadStatusTable';
 import DocumentUploadAndView from '../../Common/DocumentUploadAndView';
 import React, { useEffect, useState } from 'react';
-import {
-  DataUploadStageHistory,
-  Document,
-} from '~/lib/interfaces/general.interfaces';
+import { Document } from '~/lib/interfaces/general.interfaces';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import {
-  useGetMostRecentUploadQuery,
-  useUploadDataMutation,
-} from '~/lib/redux/services/utility.services';
 import { getSession } from 'next-auth/react';
 import { CloseIcon } from '../../CustomIcons';
 import ValidationOneErrorModal from './ValidationOneErrorModal';
@@ -31,6 +24,11 @@ import ValidationTwoError from './ValidationTwoError.tsx';
 import useSignalR from '~/lib/hooks/useSignalR';
 import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
 import { dateFormatter } from '~/lib/utils/Formatters';
+import {
+  useGetMostRecentUploadQuery,
+  useUploadDataMutation,
+} from '~/lib/redux/services/dataUpload.services';
+import { DataUploadStageHistory } from '~/lib/interfaces/dataUpload.interfaces';
 
 interface DataUploadProps {
   children?: React.ReactNode;
@@ -274,7 +272,11 @@ const DataUpload = ({ children }: DataUploadProps) => {
           rounded="6px"
           minH="60vh"
         >
-          <VStack width="full" spacing={{ base: '16px', lg: '32px' }}>
+          <VStack
+            width="full"
+            spacing={{ base: '16px', lg: '32px' }}
+            alignItems="flex-start"
+          >
             <DetailHeader variant="primary" customStyles={{ size: 'lg' }}>
               1. Download Template
             </DetailHeader>

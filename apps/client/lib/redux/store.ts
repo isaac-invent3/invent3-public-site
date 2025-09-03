@@ -38,6 +38,7 @@ import { templateApi } from './services/template.services';
 import { ticketApi } from './services/ticket.services';
 import { userApi } from './services/user.services';
 import { utilityApi } from './services/utility.services';
+import { dataUploadAPi } from './services/dataUpload.services';
 import assetSlice from './slices/AssetSlice';
 import dashboardSlice from './slices/DashboardSlice';
 import dateSlice from './slices/DateSlice';
@@ -163,7 +164,12 @@ const rootReducer = combineReducers({
 
   // Ticket APIs
   [ticketApi.reducerPath]: ticketApi.reducer,
+
+  // Utility APIs
   [utilityApi.reducerPath]: utilityApi.reducer,
+
+  // Data Upload APIs
+  [dataUploadAPi.reducerPath]: dataUploadAPi.reducer,
 
   // User-related APIs
   [userApi.reducerPath]: userApi.reducer,
@@ -345,6 +351,9 @@ export const makeStore = () => {
 
         // Utility APIs
         utilityApi.middleware,
+
+        // Data Upload APIs
+        dataUploadAPi.middleware,
 
         // User-related APIs
         userApi.middleware,

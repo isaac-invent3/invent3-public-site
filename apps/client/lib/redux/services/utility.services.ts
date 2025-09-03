@@ -2,9 +2,7 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import baseQueryWithReauth from '../baseQueryWithReauth';
 import {
   AppConfig,
-  DataUpload,
   ExportTableName,
-  FailedUploadItems,
 } from '~/lib/interfaces/general.interfaces';
 import { BaseApiResponse, ListResponse, QueryParams } from '@repo/interfaces';
 import {
@@ -109,33 +107,6 @@ export const utilityApi = createApi({
         body,
       }),
     }),
-    uploadData: builder.mutation<any, any>({
-      query: (body) => ({
-        url: `/Invent3Pro/Bulk-upload`,
-        method: 'POST',
-        body,
-      }),
-    }),
-    getMostRecentUpload: builder.query<BaseApiResponse<DataUpload>, {}>({
-      query: () => ({
-        url: '/DataUploadHistory/GetMostRecentUpload',
-        method: 'GET',
-        headers: getHeaders(),
-      }),
-    }),
-    getDataUploadFailedItemByUploadId: builder.query<
-      BaseApiResponse<ListResponse<FailedUploadItems>>,
-      QueryParams & { id: number }
-    >({
-      query: ({ id, ...data }) => ({
-        url: generateQueryStr(
-          `/DataUploadFailedItems/GetDataUploadFailedItemByUploadId/${id}?`,
-          data
-        ),
-        method: 'GET',
-        headers: getHeaders(),
-      }),
-    }),
   }),
 });
 
@@ -146,8 +117,5 @@ export const {
   useExportTableMutation,
   useDownloadFileQuery,
   useSubmitContactRequestMutation,
-  useUploadDataMutation,
-  useGetMostRecentUploadQuery,
-  useGetDataUploadFailedItemByUploadIdQuery,
   useSubmitWaitlistRequestMutation,
 } = utilityApi;

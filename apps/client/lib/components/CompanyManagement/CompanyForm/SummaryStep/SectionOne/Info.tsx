@@ -13,7 +13,7 @@ const Info = (props: InfoProps) => {
       <Text color="neutral.600">{label}</Text>
       <Text
         size="md"
-        color="black"
+        color="neutral.800"
         overflow="hidden"
         textOverflow="ellipsis"
         maxW="full"

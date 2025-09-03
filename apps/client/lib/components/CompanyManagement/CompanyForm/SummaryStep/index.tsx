@@ -136,14 +136,13 @@ const SummaryStep = (props: SummaryStepProps) => {
         <VStack
           width="full"
           alignItems="flex-start"
-          spacing={{ base: '32px', lg: '40px' }}
+          spacing={{ base: '32px', lg: '26px' }}
           bgColor="white"
           pt={{ base: '16px' }}
           pl={{ md: '24px', lg: '16px' }}
-          pb={{ base: '16px', lg: '40px' }}
+          pb={{ base: '16px' }}
           pr={{ md: '24px', lg: '44px' }}
           rounded="8px"
-          minH="60vh"
         >
           <VStack
             spacing="8px"
@@ -151,7 +150,6 @@ const SummaryStep = (props: SummaryStepProps) => {
             alignItems="flex-start"
           >
             <DetailHeader variant="primary">Company Logo</DetailHeader>
-
             <Flex
               position="relative"
               width="100px"
@@ -172,8 +170,9 @@ const SummaryStep = (props: SummaryStepProps) => {
           </VStack>
           <Flex
             width="full"
-            gap={{ base: '32px' }}
+            gap={{ base: '32px', lg: '16px' }}
             direction={{ base: 'column', lg: 'row' }}
+            minH="inherit"
           >
             <Flex width={{ base: 'full', lg: '50%' }}>
               <CompanyInfo />
@@ -186,19 +185,21 @@ const SummaryStep = (props: SummaryStepProps) => {
               <Stack
                 width="full"
                 alignItems="flex-start"
-                spacing={{ base: '32px', lg: '62px' }}
+                spacing={{ base: '32px', lg: '16px' }}
                 direction={{ base: 'column', lg: 'row' }}
               >
                 <Flex width={{ base: 'full', lg: '50%' }}>
                   <ContactInformation />
                 </Flex>
-                <Flex width={{ base: 'full', lg: '50%' }}>
+                <Flex
+                  width={{ base: 'full', lg: '50%' }}
+                  direction="column"
+                  gap={{ base: '32px', lg: '16px' }}
+                >
                   <AuthenticationProtocol />
+                  <Subscription />
                 </Flex>
               </Stack>
-              <Flex width={{ base: 'full', lg: '50%' }}>
-                <Subscription />
-              </Flex>
             </VStack>
           </Flex>
         </VStack>

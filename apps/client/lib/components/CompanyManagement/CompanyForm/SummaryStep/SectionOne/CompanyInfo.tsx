@@ -52,7 +52,16 @@ const CompanyInfo = () => {
   ];
 
   return (
-    <VStack spacing="8px" width="full" alignItems="flex-start">
+    <VStack
+      spacing="8px"
+      width="full"
+      alignItems="flex-start"
+      bgColor="#F5F5F5"
+      height="full"
+      rounded="16px"
+      p="16px"
+      pb={{ lg: '118px' }}
+    >
       <DetailHeader variant="primary">Company Info</DetailHeader>
       <VStack width="full" spacing="24px" alignItems="flex-start">
         {/* Row 1  */}

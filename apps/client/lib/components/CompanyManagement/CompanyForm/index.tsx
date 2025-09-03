@@ -13,6 +13,7 @@ import withFormLeaveDialog from '../../UI/FormLeaveDialogProvider';
 import { useSession } from 'next-auth/react';
 import AuthenticationProtocol from './AuthenticationProtocol';
 import JourneyGuide from '../JourneyGuide';
+import CompanyAdminStep from './CompanyAdministratorsStep';
 
 interface CompanyFormProps {
   type: 'create' | 'edit';
@@ -35,7 +36,7 @@ const CompanyForm = (props: CompanyFormProps) => {
   ];
   const SUPER_ADMIN_STEPS = [
     'Company Info',
-    'Company Administrator',
+    'Company Administrators',
     'Authentication Protocol',
     'Subscription',
     'Summary',
@@ -65,9 +66,10 @@ const CompanyForm = (props: CompanyFormProps) => {
               setActiveStep={setActiveStep}
             />
             <SlideTransition trigger={activeStep === 2}>
-              <ContactInformationStep
+              <CompanyAdminStep
                 activeStep={activeStep}
                 setActiveStep={setActiveStep}
+                type={type}
               />
             </SlideTransition>
             <SlideTransition trigger={activeStep === 3}>

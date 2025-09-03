@@ -24,7 +24,15 @@ const AuthenticationProtocol = () => {
   ];
 
   return (
-    <VStack spacing="8px" width="full" alignItems="flex-start">
+    <VStack
+      spacing="8px"
+      width="full"
+      alignItems="flex-start"
+      bgColor="#F5F5F5"
+      height="full"
+      rounded="16px"
+      p="16px"
+    >
       <DetailHeader variant="primary">Authentication Protocol</DetailHeader>
       <VStack width="full" spacing="24px" alignItems="flex-start">
         <SimpleGrid columns={1} width="full" gap="16px">

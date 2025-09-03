@@ -30,7 +30,15 @@ const Subscription = () => {
   ];
 
   return (
-    <VStack spacing="8px" width="full" alignItems="flex-start">
+    <VStack
+      spacing="8px"
+      width="full"
+      alignItems="flex-start"
+      bgColor="#F5F5F5"
+      height="full"
+      rounded="16px"
+      p="16px"
+    >
       <DetailHeader variant="primary">Subscription</DetailHeader>
       <SimpleGrid columns={{ base: 1, md: 3 }} width="full" gap="16px">
         {row2.map((item) => (

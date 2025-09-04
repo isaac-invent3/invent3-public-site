@@ -109,7 +109,7 @@ const WaitListForm = () => {
                 borderColor: 'none',
               }}
               showTitleAfterSelect={false}
-              showErrorMessage={false}
+              showErrorMessage={true}
             />
           </SimpleGrid>
           <CustomTextInputForm

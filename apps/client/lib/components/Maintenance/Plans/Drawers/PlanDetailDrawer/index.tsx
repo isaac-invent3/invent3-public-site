@@ -13,7 +13,11 @@ import GenericErrorState from '~/lib/components/UI/GenericErrorState';
 import { useGetMaintenancePlanByIdQuery } from '~/lib/redux/services/maintenance/plan.services';
 import { useEffect, useState } from 'react';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
-import { ROUTES, SYSTEM_CONTEXT_DETAILS } from '~/lib/utils/constants';
+import {
+  MAINTENANCE_PLAN_ENUM,
+  ROUTES,
+  SYSTEM_CONTEXT_DETAILS,
+} from '~/lib/utils/constants';
 
 interface PlanDetailsModalProps {
   isOpen: boolean;
@@ -75,7 +79,10 @@ const PlanDetailsModal = (props: PlanDetailsModalProps) => {
         ) : plan ? (
           <Flex direction="column">
             <InfoSection data={plan} />
-            <Schedules planId={plan?.maintenancePlanId} />
+            <Schedules
+              planId={plan?.maintenancePlanId}
+              isGroup={plan?.planTypeId === MAINTENANCE_PLAN_ENUM.default}
+            />
           </Flex>
         ) : (
           isError && <GenericErrorState subtitle="Maintenance plan not found" />

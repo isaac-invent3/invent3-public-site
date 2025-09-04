@@ -132,7 +132,6 @@ const WaitListForm = () => {
           </SimpleGrid>
           <Button
             type="submit"
-            handleClick={() => console.log(formik.errors)}
             isLoading={isLoading || formik.isSubmitting}
             customStyles={{
               width: { base: 'full', lg: 'max-content' },

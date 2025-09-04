@@ -127,6 +127,20 @@ export const maintenanceScheduleApi = createApi({
       }),
       providesTags: ['allMaintenanceScheduleByPlanId'],
     }),
+    getGroupMaintenanceSchedulesByPlanId: builder.query<
+      BaseApiResponse<ListResponse<MaintenanceSchedule>>,
+      { id: number; pageSize?: number; pageNumber: number }
+    >({
+      query: ({ id, ...data }) => ({
+        url: generateQueryStr(
+          `/MaintenanceSchedules/GetMaintenanceSchedulesByGroupPlanId/${id}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allMaintenanceScheduleByPlanId'],
+    }),
     getMaintenanceSchedulesByArea: builder.query<
       BaseApiResponse<ListResponse<MaintenanceSchedule>>,
       {
@@ -229,4 +243,5 @@ export const {
   useGetMaintenanceSchedulesByTicketIdQuery,
   useGetAllMaintenanceScheduleByAssetIdQuery,
   useUpdateMaintenanceScheduleAndTasksMutation,
+  useGetGroupMaintenanceSchedulesByPlanIdQuery,
 } = maintenanceScheduleApi;

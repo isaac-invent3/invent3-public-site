@@ -109,7 +109,7 @@ export const facilityApi = createApi({
     createMasterFacility: builder.mutation<
       void,
       {
-        createFacilityDtos: [LocationMasterFormDto];
+        createFacilityDtos: LocationMasterFormDto[];
       }
     >({
       query: (body) => ({

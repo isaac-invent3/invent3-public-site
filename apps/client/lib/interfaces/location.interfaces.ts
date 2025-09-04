@@ -190,6 +190,21 @@ interface createFacilityDtos {
   createdBy: string;
 }
 
+interface FacilityFormInterface {
+  localId: number;
+  countryId: number;
+  stateId: number;
+  lgaId: number;
+  address: string;
+  facilityName: string;
+  countryName: string;
+  stateName: string;
+  lgaName: string;
+}
+
+interface FacilitiesInterface {
+  facilities: FacilityFormInterface[];
+}
 interface LocationMasterFormInterface {
   facilityId: number;
   countryId: number;
@@ -202,7 +217,7 @@ interface LocationMasterFormInterface {
 
 interface LocationMasterFormDto {
   createFacilityDto: createFacilityDtos;
-  createBuildingDtos: CreateBuildingDto[];
+  createBuildingDtos?: CreateBuildingDto[];
 }
 
 interface BuildingFormData {
@@ -255,4 +270,6 @@ export type {
   FloorFormData,
   LocationMasterFormDto,
   LocationBase,
+  FacilitiesInterface,
+  FacilityFormInterface,
 };

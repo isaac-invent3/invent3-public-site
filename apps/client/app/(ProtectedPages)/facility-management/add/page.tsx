@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
-import LocationForm from '~/lib/components/FacilityManagement/LocationForm';
+import FacilityInfoStep from '~/lib/components/FacilityManagement/LocationForm/FacilityInfoStep';
 
 export const metadata: Metadata = {
   title: 'Facility Management - Add Facility',
 };
 
 const Page = () => {
-  return <LocationForm type="create" />;
+  return <FacilityInfoStep />;
 };
 
 export default Page;

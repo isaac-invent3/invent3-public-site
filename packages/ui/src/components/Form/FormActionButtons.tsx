@@ -88,9 +88,10 @@ const FormActionButtons = (props: FormActionButtonsProps) => {
         {activeStep === 1 && (
           <Button
             type="button"
+            variant="outline"
             customStyles={{
-              width: { base: 'full', md: '96px' },
-              bgColor: '#F6F6F6B2',
+              width: { base: 'full', md: '161px' },
+              // bgColor: '#F6F6F6B2',
               color: 'primary.500',
             }}
             href={cancelLink}

@@ -113,7 +113,7 @@ const LocationForm = (props: LocationFormProps) => {
           <FormikProvider value={formik}>
             <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
               <VStack width="full" alignItems="flex-end">
-                <FacilityInfoStep activeStep={activeStep} />
+                {/* <FacilityInfoStep activeStep={activeStep} /> */}
                 <SlideTransition trigger={activeStep === 2}>
                   <BuildingStep activeStep={activeStep} />
                 </SlideTransition>

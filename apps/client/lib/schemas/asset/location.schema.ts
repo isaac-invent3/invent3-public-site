@@ -36,6 +36,31 @@ const facilitySchema = Yup.object().shape({
   latitude: Yup.number().nullable(),
 });
 
+const extendedFacilitySchema = facilitySchema.shape({
+  localId: Yup.number().nullable(),
+  countryId: Yup.number().required('Country is Required'),
+  stateId: Yup.number().required('State is Required'),
+  countryName: Yup.string(),
+  stateName: Yup.string(),
+  lgaName: Yup.string(),
+  facilityName: Yup.string().required('Facility Name is Required'), // overrides with stricter msg
+  address: Yup.string().nullable(), // overrides, keeps nullable
+  picture: Yup.object()
+    .shape({
+      imageId: Yup.number().nullable(),
+      imageName: Yup.string().nullable(),
+      base64PhotoImage: Yup.string().nullable(),
+      base64Prefix: Yup.string().nullable(),
+    })
+    .nullable(),
+});
+
+const facilitiesSchema = Yup.object().shape({
+  facilities: Yup.array()
+    .of(extendedFacilitySchema)
+    .min(1, 'At least one facility is required'),
+});
+
 const buildingSchema = Yup.object().shape({
   facilityId: Yup.number().required('Facility is Required'),
   buildingName: Yup.string().required('Name is Required'),
@@ -213,4 +238,5 @@ export {
   aisleSchema,
   shelfSchema,
   locationMasterSchema,
+  facilitiesSchema,
 };

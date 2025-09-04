@@ -300,10 +300,10 @@ export const config = {
   },
   session: {
     strategy: 'jwt',
-    maxAge: 1800,
+    maxAge: 3600,
   },
   jwt: {
-    maxAge: 1800,
+    maxAge: 3600,
   },
   debug: process.env.NODE_ENV === 'development',
 } satisfies NextAuthConfig;

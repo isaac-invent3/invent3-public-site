@@ -66,7 +66,7 @@ const ROUTES_PERMISSION_KEY: { [name: string]: PermissionKey } = {
   [`/${ROUTES.APPROVAL}`]: 'approval',
   [`/${ROUTES.APPROVAL}/[id]/detail`]: 'approval',
   [`/${ROUTES.LOCATION}`]: 'settings',
-  [`/${ROUTES.LOCATION}/[stateId]`]: 'settings',
+  [`/${ROUTES.LOCATION}/[stateId]/detail`]: 'settings',
   [`/${ROUTES.LOCATION}/add`]: 'settings',
 };
 

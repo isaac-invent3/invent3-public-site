@@ -14,7 +14,7 @@ const PopoverAction = ({ data }: PopoverActionProps) => {
     <>
       <GenericPopover width="137px" placement="bottom-start">
         <VStack width="full" alignItems="flex-start" spacing="16px">
-          <Link href={`/${ROUTES.ASSETS}//${data.approvalRequestId}/detail`}>
+          <Link href={`/${ROUTES.APPROVAL}/${data.approvalRequestId}/detail`}>
             <Text cursor="pointer">View Workflow</Text>
           </Link>
         </VStack>

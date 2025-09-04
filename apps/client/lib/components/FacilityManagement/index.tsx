@@ -77,7 +77,7 @@ const FacilityManagement = () => {
           >
             {data?.data?.map((item, index) => (
               <LocationCard
-                href={`/${ROUTES.LOCATION}/${item.stateId}`}
+                href={`/${ROUTES.LOCATION}/${item.stateId}/detail`}
                 title={`${item.stateName} State`}
                 subtitle={`${item.totalBranchCount} Branches`}
                 key={index}

@@ -175,6 +175,15 @@ const feedbackBreadcrumb: BreadcrumbNode = {
   label: 'Feedback',
 };
 
+const locationBreadCrumb: BreadcrumbNode = {
+  route: `/${ROUTES.LOCATION}`,
+  label: 'Facility Management',
+  children: {
+    detail: { label: 'Facilities' },
+    add: { label: 'Add New Facility' },
+  },
+};
+
 const breadcrumbMap: Record<string, BreadcrumbNode> = {
   [ROUTES.DASHBOARD]: dashboardBreadcrumb,
   [ROUTES.ASSETS]: assetsBreadcrumb,
@@ -193,6 +202,7 @@ const breadcrumbMap: Record<string, BreadcrumbNode> = {
   [ROUTES.AUDIT_LOG]: auditLogBreadcrumb,
   [ROUTES.TEMPLATES]: templateBreadcrumb,
   [ROUTES.FEEDBACK]: feedbackBreadcrumb,
+  [ROUTES.LOCATION]: locationBreadCrumb,
 };
 
 const getBreadcrumb = (

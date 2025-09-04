@@ -377,13 +377,13 @@ export async function middleware(request: NextRequest) {
     );
 
     if (!res.ok) {
-      return NextResponse.rewrite(new URL('/404', request.url));
+      return NextResponse.rewrite(new URL('/403', request.url));
     }
 
     const { hasPermission, permissionKeys } = await res.json();
 
     if (!hasPermission) {
-      return NextResponse.rewrite(new URL('/404', request.url));
+      return NextResponse.rewrite(new URL('/403', request.url));
     }
 
     // Decide which response to return

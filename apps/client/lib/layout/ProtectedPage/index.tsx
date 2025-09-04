@@ -57,12 +57,11 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
       const expiryMs = new Date(session.expires).getTime();
       const nowMs = Date.now();
 
-      // Sign out 60 seconds before actual expiry
+      // Sign out 60 seconds before actual expiry so I can still get the tenant name from the session
       const msUntilSignOut = Math.max(expiryMs - nowMs - 60_000, 0);
 
       timeout = setTimeout(() => {
-        console.log('Called from Layout');
-        // handleSignOutClient();
+        handleSignOutClient();
       }, msUntilSignOut);
     })();
 

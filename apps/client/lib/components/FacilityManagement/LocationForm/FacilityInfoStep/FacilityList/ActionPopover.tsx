@@ -24,7 +24,7 @@ const ActionPopover = (
       (item) => item.localId !== info.localId
     );
     setFieldValue('facilities', newFacilities);
-    setFacilityLists(newFacilities);
+    setFacilityLists(newFacilities.filter((items) => items.localId !== null));
   };
 
   return (

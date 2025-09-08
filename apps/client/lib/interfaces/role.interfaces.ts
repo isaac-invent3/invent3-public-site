@@ -3,6 +3,7 @@ import { FORM_ENUM } from '../utils/constants';
 interface Role {
   roleId: number;
   roleName: string;
+  description: string;
   noOfAssociatedUsers: number;
   noOfAssignedSystemModuleContextTypes: number;
   dateCreated: string;

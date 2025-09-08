@@ -5,7 +5,7 @@ import { Role } from '~/lib/interfaces/role.interfaces';
 import { updateUserGroupRoleIds } from '~/lib/redux/slices/RoleSlice';
 
 const SingleRole = ({ data }: { data: Role }) => {
-  const { roleId, roleName } = data;
+  const { roleId, roleName, description } = data;
   const dispatch = useAppDispatch();
   const userGroupFormDetails = useAppSelector(
     (state) => state.role.userGroupFormDetails
@@ -39,13 +39,6 @@ const SingleRole = ({ data }: { data: Role }) => {
           <Text color="black" fontWeight={700}>
             {roleName}
           </Text>
-          {/* <Text
-              textAlign="left"
-              display={{ base: 'flex', md: 'none' }}
-              width="full"
-            >
-              N/A
-            </Text> */}
         </VStack>
       </HStack>
       <HStack
@@ -58,7 +51,7 @@ const SingleRole = ({ data }: { data: Role }) => {
           textAlign="left"
           display={{ base: 'none', md: 'flex' }}
         >
-          N/A
+          {description ?? 'N/A'}
         </Text>
       </HStack>
     </HStack>

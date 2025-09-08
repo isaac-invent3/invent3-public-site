@@ -1,7 +1,6 @@
 import { BaseEntity } from '@repo/interfaces';
-import { FORM_ENUM } from '../utils/constants';
+import { EMPLOYEE_TYPE_ENUM, FORM_ENUM } from '../utils/constants';
 import { BaseDto, Document, LocationDto } from './general.interfaces';
-import { Role } from './role.interfaces';
 
 interface Employee {
   employeeId: number;
@@ -228,8 +227,8 @@ interface UserFormDetails {
   branchName: string | null;
   jobTitleId: number | null;
   jobTitleName: string | null;
-  teamId: number | null;
-  teamName: string | null;
+  teamIds: number[];
+  teamNames: string[];
   userRoleIds: number[];
   userRoleNames: string[];
   userGroupIds: number[];
@@ -237,6 +236,7 @@ interface UserFormDetails {
   initialRoleIds: number[];
   initialGroupIds: number[];
   initialDocumentIds: number[];
+  initialTeamIds: number[];
 }
 
 interface Group {
@@ -309,6 +309,9 @@ interface UserDto extends BaseDto {
   roles: Record<number, typeof FORM_ENUM.add | typeof FORM_ENUM.delete> | null;
   groups: Record<number, typeof FORM_ENUM.add | typeof FORM_ENUM.delete> | null;
   permissions?: Record<number, typeof FORM_ENUM.add | typeof FORM_ENUM.delete>;
+  employmentType:
+    | typeof EMPLOYEE_TYPE_ENUM.FULL_TIME
+    | typeof EMPLOYEE_TYPE_ENUM.PART_TIME;
 }
 
 interface UserImageDto extends BaseDto {
@@ -325,7 +328,9 @@ interface UserDocumentDto extends BaseDto {
 }
 
 interface CreateUserPayload {
-  createUserDto: UserDto;
+  createUserDto: UserDto & {
+    teams: number[];
+  };
   createUserImageDto: UserImageDto[] | null;
   createUserDocumentDto: UserDocumentDto[] | null;
   createLocationDto: LocationDto;
@@ -333,7 +338,12 @@ interface CreateUserPayload {
 }
 
 interface UpdateUserPayload {
-  updateUserDto: UserDto;
+  updateUserDto: UserDto & {
+    teams?: Record<
+      number,
+      typeof FORM_ENUM.add | typeof FORM_ENUM.delete
+    > | null;
+  };
   updateLocationDto: LocationDto;
   multiPurposeUserImageDto: UserImageDto[] | null;
   multiPurposeUserDocumentDto: UserDocumentDto[] | null;

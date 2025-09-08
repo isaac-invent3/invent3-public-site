@@ -105,6 +105,7 @@ import { assetTransferApi } from './services/asset/transfer.services';
 import { approvalWorkflowRequestCommentApi } from './services/approval-workflow/requestComments.services';
 import { assetBulkActionApi } from './services/asset/bulkAction.services';
 import { designationApi } from './services/designation.services';
+import { teamApi } from './services/team.services';
 export const persistConfig = {
   key: 'root',
   storage,
@@ -245,6 +246,9 @@ const rootReducer = combineReducers({
 
   // Settings APIS
   [settingsApi.reducerPath]: settingsApi.reducer,
+
+  // Teams APIS
+  [teamApi.reducerPath]: teamApi.reducer,
 
   // Auth APIS
   [authApi.reducerPath]: authApi.reducer,
@@ -404,6 +408,9 @@ export const makeStore = () => {
 
         // Settings Apis
         settingsApi.middleware,
+
+        // Teams Apis
+        teamApi.middleware,
 
         // Auth Apis
         authApi.middleware,

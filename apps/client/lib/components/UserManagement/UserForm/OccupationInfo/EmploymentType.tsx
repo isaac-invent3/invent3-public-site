@@ -9,15 +9,16 @@ import { useField } from 'formik';
 import React from 'react';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { updateUserForm } from '~/lib/redux/slices/UserSlice';
+import { EMPLOYEE_TYPE_ENUM } from '~/lib/utils/constants';
 
 const EmploymentTypeOptions = [
   {
     label: 'Full Time',
-    value: 'full-time',
+    value: EMPLOYEE_TYPE_ENUM.FULL_TIME,
   },
   {
     label: 'Part Time',
-    value: 'part-time',
+    value: EMPLOYEE_TYPE_ENUM.PART_TIME,
   },
 ];
 const EmploymentType = () => {

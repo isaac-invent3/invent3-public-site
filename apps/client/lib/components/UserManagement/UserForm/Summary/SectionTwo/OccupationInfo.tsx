@@ -8,7 +8,6 @@ const OccupationInfo = () => {
     employmentTypeName,
     branchName,
     jobTitleName,
-    teamName,
     userRoleNames,
     userGroupNames,
   } = useAppSelector((state) => state.user.userForm);
@@ -25,10 +24,6 @@ const OccupationInfo = () => {
     {
       label: 'Job Title',
       value: jobTitleName,
-    },
-    {
-      label: 'Team',
-      value: teamName,
     },
   ];
   return (

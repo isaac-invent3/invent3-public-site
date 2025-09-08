@@ -63,6 +63,16 @@ const SummaryStep = (props: SummaryStepProps) => {
     userFormDetails.userGroupIds
   );
 
+  // Teams
+  const newlyAddedTeams = _.difference(
+    userFormDetails.teamIds,
+    userFormDetails.initialTeamIds
+  );
+  const deletedTeams = _.difference(
+    userFormDetails.initialTeamIds,
+    userFormDetails.teamIds
+  );
+
   const formDocumentIds = userFormDetails.documents.map(
     (item) => item.documentId as number
   );
@@ -86,6 +96,7 @@ const SummaryStep = (props: SummaryStepProps) => {
     designationId: userFormDetails.jobTitleId,
     companyId: data?.user?.managedCompanyId! ?? data?.user?.companyId!,
     employeeId: null,
+    employmentType: userFormDetails?.employmentTypeId!,
     bio: null,
     roles: mapIdsToObject(newlyAddedRoles, deletedRoles),
     groups: mapIdsToObject(newlyAddedGroups, deletedGroups),
@@ -106,7 +117,7 @@ const SummaryStep = (props: SummaryStepProps) => {
   };
 
   const createUserPayload: CreateUserPayload = {
-    createUserDto: USER,
+    createUserDto: { ...USER, teams: userFormDetails?.teamIds },
     createLocationDto: LOCATION,
     createUserImageDto: userFormDetails.picture?.base64PhotoImage
       ? [
@@ -132,7 +143,10 @@ const SummaryStep = (props: SummaryStepProps) => {
   };
 
   const updateUserPayload: UpdateUserPayload = {
-    updateUserDto: USER,
+    updateUserDto: {
+      ...USER,
+      teams: mapIdsToObject(newlyAddedTeams, deletedTeams),
+    },
     updateLocationDto: LOCATION,
     multiPurposeUserImageDto: userFormDetails.picture?.base64PhotoImage
       ? [

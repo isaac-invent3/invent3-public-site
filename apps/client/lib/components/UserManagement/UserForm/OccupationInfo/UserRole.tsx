@@ -15,7 +15,6 @@ const UserRole = () => {
   const [field, meta, helpers] = useField('userRoleId'); //eslint-disable-line
   const [searchRoles] = useSearchRolesMutation({});
   const dispatch = useAppDispatch();
-  const { countryName } = useAppSelector((state) => state.asset.assetForm);
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading, isFetching } = useGetAllRolesQuery({
     pageSize: DEFAULT_PAGE_SIZE,
@@ -35,7 +34,6 @@ const UserRole = () => {
         data={data}
         labelKey="roleName"
         valueKey="roleId"
-        defaultInputValue={countryName}
         mutationFn={searchRoles}
         isLoading={isLoading || isFetching}
         pageNumber={pageNumber}

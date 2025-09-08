@@ -25,7 +25,7 @@ const OccupationInfo = (props: OccupationInfoProps) => {
     initialValues: {
       employmentTypeId: formDetails?.employmentTypeId ?? null,
       jobTitleId: formDetails?.jobTitleId ?? null,
-      teamId: formDetails?.teamId ?? null,
+      teamIds: formDetails?.teamIds ?? [],
       userRoleIds: formDetails?.userRoleIds ?? [],
       userGroupIds: formDetails?.userGroupIds ?? [],
     },

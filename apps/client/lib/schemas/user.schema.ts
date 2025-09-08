@@ -25,7 +25,7 @@ const employeeInfoSchema = Yup.object().shape({
 const occupationInfoSchema = Yup.object().shape({
   employmentTypeId: Yup.string().nullable(),
   jobTitleId: Yup.string().nullable(),
-  teamId: Yup.array().of(Yup.number()).nullable(),
+  teamIds: Yup.array().of(Yup.number()).nullable(),
   userRoleIds: Yup.array().of(Yup.number()).min(1, 'Role is required'),
   userGroupIds: Yup.array().of(Yup.number()).nullable(),
 });

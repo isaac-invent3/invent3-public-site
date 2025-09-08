@@ -5,7 +5,7 @@ import DetailHeader from '~/lib/components/UI/DetailHeader';
 import { useAppSelector } from '~/lib/redux/hooks';
 
 const SectionOne = () => {
-  const { picture, documents } = useAppSelector((state) => state.user.userForm);
+  const { picture } = useAppSelector((state) => state.user.userForm);
 
   return (
     <Stack
@@ -44,9 +44,6 @@ const SectionOne = () => {
           </Text>
         )}
       </VStack>
-      <Flex width={{ base: 'full', md: '230px' }}>
-        <DocumentSummaryView documents={documents} />
-      </Flex>
     </Stack>
   );
 };

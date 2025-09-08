@@ -73,8 +73,8 @@ export default function Page({ params }: { params: { id: number } }) {
         branchName: user?.facilityName,
         jobTitleId: user?.designationId,
         jobTitleName: user?.designationName,
-        teamId: null,
-        teamName: null,
+        teamIds: [],
+        teamNames: [],
         userRoleIds: data?.data?.userRoles?.map((item) => item.roleId),
         userRoleNames: data?.data?.userRoles?.map((item) => item.roleName),
         userGroupIds: data?.data?.userGroups?.map((item) => item.groupId),
@@ -84,6 +84,7 @@ export default function Page({ params }: { params: { id: number } }) {
         initialDocumentIds: userDocuments?.data
           ? userDocuments?.data?.items?.map((item) => item.documentId)
           : [],
+        initialTeamIds: [],
       })
     );
   }

@@ -4,7 +4,6 @@ import { Flex, useDisclosure } from '@chakra-ui/react';
 import { FormStepper, SlideTransition } from '@repo/ui/components';
 import { useEffect, useState } from 'react';
 import CompanyInfoStep from './CompanyInfoStep';
-import ContactInformationStep from './ContactInformationStep';
 import Header from './Header';
 import SubscriptionStep from './SubscriptionStep';
 import SummaryStep from './SummaryStep';

@@ -1,11 +1,17 @@
-import { Icon, useDisclosure } from '@chakra-ui/react';
+import { HStack, Icon, useDisclosure } from '@chakra-ui/react';
 import { GenericDeleteModal } from '@repo/ui/components';
-import { DeleteIcon } from '~/lib/components/CustomIcons';
+import { DeleteIcon, PenIcon } from '~/lib/components/CustomIcons';
 import { AdminFormDetails } from '~/lib/interfaces/company.interfaces';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateCompanyForm } from '~/lib/redux/slices/CompanySlice';
 
-const ActionPopover = (type: 'create' | 'edit', info: AdminFormDetails) => {
+interface ActionPopoverProps {
+  type: 'create' | 'edit' | 'list';
+  info: AdminFormDetails;
+  handleEditAdmin: (data: AdminFormDetails) => void;
+}
+const ActionPopover = (props: ActionPopoverProps) => {
+  const { type, info, handleEditAdmin } = props;
   const { admins, deletedAdminIDs } = useAppSelector(
     (state) => state.company.companyForm
   );
@@ -27,13 +33,24 @@ const ActionPopover = (type: 'create' | 'edit', info: AdminFormDetails) => {
 
   return (
     <>
-      <Icon
-        as={DeleteIcon}
-        color="#F50000"
-        boxSize="20px"
-        cursor="pointer"
-        onClick={onOpen}
-      />
+      <HStack spacing="16px">
+        {type === 'create' && (
+          <Icon
+            as={PenIcon}
+            color="#212121"
+            boxSize="20px"
+            cursor="pointer"
+            onClick={() => handleEditAdmin(info)}
+          />
+        )}
+        <Icon
+          as={DeleteIcon}
+          color="#F50000"
+          boxSize="20px"
+          cursor="pointer"
+          onClick={onOpen}
+        />
+      </HStack>
       {isOpen && (
         <GenericDeleteModal
           isOpen={isOpen}

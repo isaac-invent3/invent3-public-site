@@ -22,6 +22,7 @@ import CompanySuccessModal from './SuccessModal';
 import { setCompany } from '~/lib/redux/slices/CompanySlice';
 import AuthenticationProtocol from './SectionOne/AuthenticationProtocol';
 import Subscription from './SectionOne/Subscription';
+import { UserDto } from '~/lib/interfaces/user.interfaces';
 
 interface SummaryStepProps {
   activeStep: number;
@@ -72,16 +73,40 @@ const SummaryStep = (props: SummaryStepProps) => {
     [`${type === 'create' ? 'createdBy' : 'lastModifiedBy'}`]: username,
   };
 
-  const CompanyUserDto = {
-    phoneNumber: companyForm?.contactPhoneNumber!,
-    firstName: companyForm?.contactFirstName!,
-    lastName: companyForm?.contactLastName!,
-    email: companyForm?.contactEmail!,
-    [`${type === 'create' ? 'createdBy' : 'lastModifiedBy'}`]: username,
-  };
+  const companyAdmins: Partial<UserDto>[] =
+    companyForm?.admins.map((item) => ({
+      firstName: item.contactFirstName!,
+      lastName: item.contactLastName!,
+      email: item.contactEmail!,
+      phoneNumber: item.contactPhoneNumber!,
+      createdBy: username,
+    })) ?? [];
+
+  const companyAdminUpdate: {
+    key: Partial<UserDto>;
+    value: typeof FORM_ENUM.add | typeof FORM_ENUM.delete;
+  }[] = [
+    ...companyForm?.admins
+      .filter((item) => item.contactId === null)
+      .map((item) => ({
+        key: {
+          firstName: item.contactFirstName!,
+          lastName: item.contactLastName!,
+          email: item.contactEmail!,
+          phoneNumber: item.contactPhoneNumber!,
+          createdBy: username,
+        },
+        value: FORM_ENUM.add,
+      })),
+    ...companyForm?.deletedAdminIDs.map((item) => ({
+      key: { userId: item },
+      value: FORM_ENUM.delete,
+    })),
+  ];
 
   const createCompanyPayload = {
     createCompanyDto: { ...CompanyDto, companyType: companyType! },
+    createUserDtos: companyAdmins,
     createCompanyImageDtos: [
       {
         imageName: companyForm.companyLogo?.imageName!,
@@ -92,12 +117,12 @@ const SummaryStep = (props: SummaryStepProps) => {
         createdBy: username!,
       },
     ],
-    createUserDto: CompanyUserDto,
     ...(isThirdParty ? { clientAdminId: companyForm?.clientAdminId! } : {}),
   };
 
   const updateCompanyPayload = {
     updateCompanyDto: CompanyDto,
+    updateUserDtos: companyAdminUpdate,
     multiPurposeCompanyImageDto: [
       {
         imageName: companyForm.companyLogo?.imageName!,
@@ -109,7 +134,6 @@ const SummaryStep = (props: SummaryStepProps) => {
         changeInitiatedBy: username!,
       },
     ],
-    updateUserDto: CompanyUserDto,
   };
 
   const handleSumbitCompany = async () => {

@@ -1,11 +1,4 @@
-import {
-  Avatar,
-  Flex,
-  HStack,
-  Icon,
-  Text,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { Avatar, Flex, HStack, Icon, Text } from '@chakra-ui/react';
 
 import { Notification } from '~/lib/interfaces/notification.interfaces';
 import { NotificationInfoIcon } from '../CustomIcons';

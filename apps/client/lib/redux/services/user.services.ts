@@ -51,6 +51,20 @@ export const userApi = createApi({
       }),
       providesTags: ['allUsers'],
     }),
+    getAllCompanyAdminUsers: builder.query<
+      BaseApiResponse<ListResponse<User>>,
+      QueryParams & { companyId: number; companySlug: string }
+    >({
+      query: ({ companyId, companySlug, ...data }) => ({
+        url: generateQueryStr(`/Users/GetCompanyAdmins/${companyId}?`, data),
+        method: 'GET',
+        headers: {
+          ...getHeaders(),
+          'X-Tenant-ID': companySlug,
+        },
+      }),
+      providesTags: ['allUsers'],
+    }),
     getAllActiveUsers: builder.query<
       BaseApiResponse<ListResponse<User>>,
       QueryParams
@@ -315,4 +329,5 @@ export const {
   useGetActiveDirectoryUsersQuery,
   useGetAllActiveUsersQuery,
   useInitiateResetPasswordMutation,
+  useGetAllCompanyAdminUsersQuery,
 } = userApi;

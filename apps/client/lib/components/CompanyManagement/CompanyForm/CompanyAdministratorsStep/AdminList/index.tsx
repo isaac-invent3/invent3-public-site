@@ -12,6 +12,7 @@ import {
   updateSingleAdminForm,
 } from '~/lib/redux/slices/CompanySlice';
 import ActionPopover from './ActionPopover';
+import { useGetAllCompanyAdminUsersQuery } from '~/lib/redux/services/user.services';
 
 interface AdminListProps {
   type: 'create' | 'edit' | 'list';
@@ -32,9 +33,11 @@ const AdminList = (props: AdminListProps) => {
     selectMultiple,
   } = props;
 
-  const { admins: allCompanyAdmins } = useAppSelector(
-    (state) => state.company.companyForm
-  );
+  const {
+    admins: allCompanyAdmins,
+    companyId,
+    tenantName,
+  } = useAppSelector((state) => state.company.companyForm);
   const {
     isOpen: isOpenDialog,
     onOpen: onOpenDialog,
@@ -44,18 +47,15 @@ const AdminList = (props: AdminListProps) => {
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [action, setAction] = useState<'new' | 'update' | null>(null);
   const dispatch = useAppDispatch();
-  // const { data, isLoading, isFetching } =
-  //   useGetMaintenanceSchedulesByPlanIdQuery(
-  //     {
-  //       id: planId!,
-  //       pageSize,
-  //       pageNumber: currentPage,
-  //     },
-  //     { skip: !planId }
-  //   );
+  const { data, isLoading, isFetching } = useGetAllCompanyAdminUsersQuery({
+    companyId: companyId!,
+    companySlug: tenantName!,
+    pageSize,
+    pageNumber: currentPage,
+  });
   const columnHelper = createColumnHelper<AdminFormDetails>();
 
-  const handleProceedDialogForAddSchedule = () => {
+  const handleProceedDialogForAddAdmin = () => {
     setAction('new');
     setSelectedRows([]);
     dispatch(clearSingleAdminForm());
@@ -63,13 +63,15 @@ const AdminList = (props: AdminListProps) => {
     onCloseDialog();
   };
 
-  const handleProceedDialogForSelectedRow = (items: number[]) => {
-    setSelectedRows(items);
+  const handleProceedDialogForSelectedRow = (data: AdminFormDetails) => {
+    dispatch(updateSingleAdminForm(data));
+    setAction('update');
+    setShowAdminInfo(true);
     onCloseDialog();
   };
 
   const [handleProceed, setHandleProceed] = useState(
-    () => handleProceedDialogForAddSchedule
+    () => handleProceedDialogForAddAdmin
   );
 
   const columns = useMemo(
@@ -97,7 +99,14 @@ const AdminList = (props: AdminListProps) => {
         }),
         columnHelper.display({
           id: 'actions',
-          cell: (info) => ActionPopover(type as 'edit', info.row.original),
+          cell: (info) =>
+            ActionPopover({
+              type,
+              info: info.row.original,
+              handleEditAdmin: (data) => {
+                handleAdminUpdate(data);
+              },
+            }),
           header: '',
           enableSorting: false,
         }),
@@ -122,27 +131,40 @@ const AdminList = (props: AdminListProps) => {
     }
   }, [selectedRows]);
 
-  // Clear selectedRows if showSchedule Info is changed to false
-  useEffect(() => {
-    if (!showAdminInfo) {
-      setSelectedRows([]);
+  const handleAdminUpdate = (data: AdminFormDetails) => {
+    if (showAdminInfo) {
+      setHandleProceed(() => () => {
+        handleProceedDialogForSelectedRow(data);
+      });
+      onOpenDialog();
+    } else {
+      handleProceedDialogForSelectedRow(data);
     }
-  }, [showAdminInfo]);
+  };
 
   const formattedAdmins: AdminFormDetails[] = useMemo(() => {
-    // if (data?.data && data?.data?.items?.length >= 1) {
-    //   const admins: AdminFormDetails[] = data.data.items;
-    //   return admins.map((item) => ({
-    //     contactId: item.contactId,
-    //     localId: item.contactId,
-    //     contactFirstName: item.contactFirstName,
-    //     contactLastName: item.contactLastName,
-    //     contactEmail: item.contactEmail,
-    //     contactPhoneNumber: item.contactPhoneNumber,
-    //   }));
-    // }
+    if (data?.data && data?.data?.items?.length >= 1) {
+      const users = data.data.items;
+      return users.map((item) => ({
+        contactId: item.userId,
+        localId: item.userId,
+        contactFirstName: item.firstName,
+        contactLastName: item.lastName,
+        contactEmail: item.email,
+        contactPhoneNumber: item.phoneNumber,
+      }));
+    }
     return [];
   }, []);
+
+  const handleAddAdmin = () => {
+    if (selectedRows.length > 0) {
+      setHandleProceed(() => handleProceedDialogForAddAdmin);
+      onOpenDialog();
+    } else {
+      handleProceedDialogForAddAdmin();
+    }
+  };
 
   useEffect(() => {
     if (formattedAdmins.length > 0) {
@@ -161,46 +183,23 @@ const AdminList = (props: AdminListProps) => {
     }
   }, [formattedAdmins]);
 
-  const handleAddAdmin = () => {
-    if (selectedRows.length > 0) {
-      setHandleProceed(() => handleProceedDialogForAddSchedule);
-      onOpenDialog();
-    } else {
-      handleProceedDialogForAddSchedule();
-    }
-  };
-
-  const handleSetSelectedRows = (items: number[]) => {
-    // Show the Form Dialog modal only when the type is create or edit
-    if (selectedRows.length > 0 && type !== 'list') {
-      setHandleProceed(() => () => {
-        handleProceedDialogForSelectedRow(items);
-      });
-      onOpenDialog();
-    } else {
-      setSelectedRows(items);
-    }
-  };
-
   return (
     <Flex direction="column" width="full" gap="25px" alignItems="start">
       <DataTable
         columns={columns}
         data={allCompanyAdmins}
-        showFooter={type === 'edit'}
+        showFooter={type === 'edit' && data?.data && data?.data?.totalPages > 1}
         emptyLines={5}
-        isSelectable={true}
+        isSelectable={false}
         hideSelectAllCheckBox={!selectMultiple}
-        isLoading={false}
-        isFetching={false}
+        isLoading={isLoading}
+        isFetching={isFetching}
         pageNumber={currentPage}
         setPageNumber={setCurrentPage}
         pageSize={pageSize}
         setPageSize={setPageSize}
-        // totalPages={data?.data?.totalPages}
-        totalPages={1}
+        totalPages={data?.data?.totalPages}
         selectedRows={selectedRows}
-        setSelectedRows={(items) => handleSetSelectedRows(items)}
         selectMultipleRows={selectMultiple}
         showEmptyState={type === 'edit'}
         customThStyle={{

@@ -11,6 +11,7 @@ const initialCompanyForm = {
   companyId: null,
   companyLogo: null,
   companyName: null,
+  tenantName: null,
   registrationNumber: null,
   industryTypeId: null,
   industryTypeName: null,

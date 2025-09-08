@@ -4,9 +4,9 @@ import React from 'react';
 import { SOCIAL_LINKS } from './data';
 
 const contactInfo = [
-  'Info@Invent3.ai',
-  '+447-65887-83792',
-  '364 , downton Forth Delaware,',
+  'hello@Invent3.ai',
+  '+234 913 312 8401',
+  'Block D4, Horizon 2 Extension Estate Lekki, Lagos, Nigeria',
 ];
 
 const SectionTwo = () => {

@@ -1,6 +1,6 @@
-import { BaseEntity } from '@repo/interfaces';
 import { FORM_ENUM } from '../utils/constants';
 import { BaseDto } from './general.interfaces';
+import { UserDto } from './user.interfaces';
 
 interface Company {
   companyId: number;
@@ -9,22 +9,29 @@ interface Company {
   companyName: string;
   tenantName: string;
   address: string;
+  subscriptionPlanName: string;
+  subscriptionPlanTypeName: string;
+  subscriptionStatusName: string;
+  displayColorCode: string;
   emailAddress: string;
   phoneNumber: string;
   dateCreated: string;
+  cmfId: string;
   subscriptionPlanId: number;
   subscriptionPlanTypeId: number;
   subscriptionStatusId: number;
-  subscriptionStatusName: string;
-  displayColorCode: string;
   industryId: number;
   locationId: number;
+  stateId: number;
+  countryId: number;
+  lgaName: string;
+  stateName: string;
+  countryName: string;
+  postCode: string;
   webUrl: string;
   registrationNumber: string;
   apikey: string;
-  imageName: string;
   photoImage: string;
-  isPrimaryImage: boolean;
   base64Prefix: string;
   industryName: string;
   lgaid: number;
@@ -53,6 +60,7 @@ interface CompanyFormDetails {
   companyId: number | null;
   companyLogo: CompanyFormImage | null;
   companyName: string | null;
+  tenantName: string | null;
   registrationNumber: string | null;
   industryTypeId: number | null;
   industryTypeName: string | null;
@@ -115,14 +123,17 @@ interface CreateCompanyPayload {
   createCompanyDto: {
     companyType: number;
   };
+  createUserDtos: Partial<UserDto>[];
   createCompanyImageDtos: CompanyImageDto[];
-  createUserDto: CompanyUserDto;
   clientAdminId?: number;
 }
 interface UpdateCompanyPayload {
   updateCompanyDto: CompanyDto;
+  updateUserDtos?: {
+    key: Partial<UserDto>;
+    value: typeof FORM_ENUM.add | typeof FORM_ENUM.delete;
+  }[];
   multiPurposeCompanyImageDto: CompanyImageDto[];
-  updateUserDto: CompanyUserDto;
 }
 interface CompanyConfigurationPayload {
   companyId: number;

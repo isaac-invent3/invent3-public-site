@@ -375,6 +375,7 @@ export type {
   UserFilter,
   UserFormDetails,
   UserGroupInfoHeader,
+  UserDto,
   UserGroupPayload,
   CreateUserPayload,
   Group,

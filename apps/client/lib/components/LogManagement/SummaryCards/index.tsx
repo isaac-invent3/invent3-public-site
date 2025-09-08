@@ -16,46 +16,31 @@ const SummaryCards = () => {
         title="Total Logs Recorded"
         icon={TicketIcon}
         containerStyle={{ minH: '164px' }}
-      >
-        <Skeleton isLoaded={!isLoading} minW="30px" minH="30px">
-          <Text size="xl" fontWeight={800} color="primary.500">
-            {data?.data?.totalAuditsRecorded}
-          </Text>
-        </Skeleton>
-      </SummaryCardWrapper>
+        isLoading={isLoading}
+        count={data?.data?.totalAuditsRecorded}
+      />
       <SummaryCardWrapper
         title="Critical Events"
         icon={TicketIcon}
         containerStyle={{ minH: '164px' }}
-      >
-        <Skeleton isLoaded={!isLoading} minW="30px" minH="30px">
-          <Text size="xl" fontWeight={800} color="red.500">
-            {data?.data?.criticalEvents}
-          </Text>
-        </Skeleton>
-      </SummaryCardWrapper>
+        isLoading={isLoading}
+        count={data?.data?.criticalEvents}
+        customCountStyle={{ color: 'red.500' }}
+      />
       <SummaryCardWrapper
         title="Most Active Users"
         icon={MaintenanceIcon}
         containerStyle={{ minH: '164px' }}
-      >
-        <Skeleton isLoaded={!isLoading} minW="30px" minH="30px">
-          <Text size="xl" fontWeight={800} color="primary.500">
-            {data?.data?.mostActiveUsers}
-          </Text>
-        </Skeleton>
-      </SummaryCardWrapper>
+        isLoading={isLoading}
+        count={data?.data?.mostActiveUsers}
+      />
       <SummaryCardWrapper
         title="Recent Alerts"
         icon={TaskIcon}
         containerStyle={{ minH: '164px' }}
-      >
-        <Skeleton isLoaded={!isLoading} minW="30px" minH="30px">
-          <Text size="xl" fontWeight={800} color="primary.500">
-            {data?.data?.recentAlerts}
-          </Text>
-        </Skeleton>
-      </SummaryCardWrapper>
+        isLoading={isLoading}
+        count={data?.data?.recentAlerts}
+      />
     </SimpleGrid>
   );
 };

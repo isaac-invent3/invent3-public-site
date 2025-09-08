@@ -47,42 +47,27 @@ const SummaryCard = (props: SummaryCardProps) => {
         rounded: 'full',
         bgColor: '#0F264233',
       }}
+      additionalContent={
+        showRange && (
+          <Text color="neutral.600" fontWeight={700} mb="4px">
+            This month
+          </Text>
+        )
+      }
+      count={value}
+      isLoading={isLoading}
     >
-      <VStack
-        justifyContent="space-between"
-        alignItems="flex-start"
-        height="full"
-      >
-        <HStack alignItems="flex-end" spacing="4px">
+      {percentChange && (
+        <HStack spacing="4px">
           <Skeleton isLoaded={!isLoading}>
-            <Text
-              mt="8px"
-              fontSize="24px"
-              lineHeight="28.51px"
-              fontWeight={800}
-              color="primary.500"
-            >
-              {value?.toLocaleString() ?? '-'}
-            </Text>
+            <ProgressIndicator valueChange={percentChange ?? 0} />
           </Skeleton>
-          {showRange && (
-            <Text color="neutral.600" fontWeight={700} mb="4px">
-              This month
-            </Text>
-          )}
+          <Text color="neutral.600" fontWeight={700}>
+            Compared to last month
+          </Text>
         </HStack>
-        {percentChange && (
-          <HStack spacing="4px">
-            <Skeleton isLoaded={!isLoading}>
-              <ProgressIndicator valueChange={percentChange ?? 0} />
-            </Skeleton>
-            <Text color="neutral.600" fontWeight={700}>
-              Compared to last month
-            </Text>
-          </HStack>
-        )}
-        {children}
-      </VStack>
+      )}
+      {children}
     </SummaryCardWrapper>
   );
 };

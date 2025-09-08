@@ -1,12 +1,12 @@
-'use client'; // Error boundaries must be Client Components
-import { Flex, Heading, Text, VStack } from '@chakra-ui/react';
+'use client';
+import { Flex, Heading, Icon, Text, VStack } from '@chakra-ui/react';
 import { Button } from '@repo/ui/components';
 import { useSession } from 'next-auth/react';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import { LongRightIcon } from '~/lib/components/CustomIcons';
 
-export default function NotFound() {
+export default function PermissionDenied() {
   const router = useRouter();
   const session = useSession();
   return (
@@ -18,25 +18,37 @@ export default function NotFound() {
     >
       <VStack
         width="full"
-        maxW={{ base: '90%', md: '555px' }}
+        maxW={{ base: '90%' }}
         spacing={{ base: '16px', md: '24px' }}
       >
         <VStack spacing={{ base: '16px', md: '32px' }}>
-          <Flex
-            position="relative"
-            width={{ base: '278px', md: '555px' }}
-            height={{ base: '108px', md: '208px' }}
+          <Heading
+            fontSize={{ base: '40px', md: '104px' }}
+            lineHeight="120%"
+            letterSpacing="0.04em"
+            textAlign="center"
+            fontWeight={800}
+            bgImage="url('/text-bg.jpg')"
+            bgSize="cover"
+            bgPos="center"
+            bgRepeat="no-repeat"
+            bgClip="text"
+            sx={{
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            }}
           >
-            <Image src={'/oops.png'} fill alt="oops-image" />
-          </Flex>
+            Access Denied!
+          </Heading>
           <Heading
             color="primary.500"
             fontSize={{ base: '24px', md: '32px' }}
             lineHeight={{ base: '32px', md: '40px' }}
             letterSpacing="0.04em"
             textAlign="center"
+            fontWeight={800}
           >
-            403 - PERMISSION DENIED
+            403 - NO PERMISSION
           </Heading>
         </VStack>
         <VStack spacing={{ base: '16px', md: '24px' }}>
@@ -48,14 +60,15 @@ export default function NotFound() {
             textAlign="center"
             maxW="555px"
           >
-            Sorry, you don’t have permission to view this page. If you believe
-            this is a mistake, please contact the administrator.
+            You don’t have permission to view this page. If you think this is a
+            mistake, please contact your administrator.
           </Text>
           <Button
-            customStyles={{ width: 'max-content' }}
+            customStyles={{ width: '195px', color: 'white' }}
             handleClick={() => router.push(session?.data ? '/dashboard' : '/')}
           >
             Go to Homepage
+            <Icon as={LongRightIcon} boxSize="16px" ml="16px" />
           </Button>
         </VStack>
       </VStack>

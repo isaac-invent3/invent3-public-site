@@ -16,37 +16,22 @@ const OpenTicketSummary = (props: OpenTicketSummaryProps) => {
       title="Open Ticket"
       icon={TicketIcon}
       containerStyle={{ minH: '164px' }}
+      additionalContent={
+        <Text color="neutral.600" fontWeight={700} mb="4px">
+          This month
+        </Text>
+      }
+      isLoading={isLoading}
+      count={ticketCount}
     >
-      <VStack
-        justifyContent="space-between"
-        alignItems="flex-start"
-        height="full"
-      >
-        <HStack alignItems="flex-end" spacing="4px">
-          <Skeleton isLoaded={!isLoading}>
-            <Text
-              mt="8px"
-              fontSize="24px"
-              lineHeight="28.51px"
-              fontWeight={800}
-              color="primary.500"
-            >
-              {ticketCount?.toLocaleString() ?? '-'}
-            </Text>
-          </Skeleton>
-          <Text color="neutral.600" fontWeight={700} mb="4px">
-            This month
-          </Text>
-        </HStack>
-        <HStack spacing="4px">
-          <Skeleton isLoaded={!isLoading}>
-            <ProgressIndicator valueChange={percentChange ?? 0} />
-          </Skeleton>
-          <Text color="neutral.600" fontWeight={700}>
-            Compared to last month
-          </Text>
-        </HStack>
-      </VStack>
+      <HStack spacing="4px">
+        <Skeleton isLoaded={!isLoading}>
+          <ProgressIndicator valueChange={percentChange ?? 0} />
+        </Skeleton>
+        <Text color="neutral.600" fontWeight={700}>
+          Compared to last month
+        </Text>
+      </HStack>
     </SummaryCardWrapper>
   );
 };

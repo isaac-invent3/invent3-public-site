@@ -30,41 +30,25 @@ const TaskOverview = (props: TaskOverviewProps) => {
       title="Task Overview"
       icon={TaskIcon}
       containerStyle={{ minH: '164px' }}
+      count={taskCount}
+      additionalContent={
+        <Text color="neutral.600" fontWeight={700} mb="4px">
+          This month
+        </Text>
+      }
+      isLoading={isLoading}
     >
       <HStack width="full" spacing="23px" justifyContent="space-between">
-        <VStack
-          justifyContent="space-between"
-          alignItems="flex-start"
-          height="full"
-          spacing="28px"
-        >
-          <HStack alignItems="flex-end" spacing="4px">
-            <Skeleton isLoaded={!isLoading}>
-              <Text
-                mt="8px"
-                fontSize="24px"
-                lineHeight="28.51px"
-                fontWeight={800}
-                color="primary.500"
-              >
-                {taskCount?.toLocaleString() ?? '-'}
-              </Text>
-            </Skeleton>
-            <Text color="neutral.600" fontWeight={700} mb="4px">
-              This month
+        <Skeleton isLoaded={!isLoading}>
+          <VStack alignItems="flex-start" spacing="11px">
+            <Text color="neutral.600">
+              {completedTaskCount?.toLocaleString() ?? '-'} Completed
             </Text>
-          </HStack>
-          <Skeleton isLoaded={!isLoading}>
-            <VStack alignItems="flex-start" spacing="11px">
-              <Text color="neutral.600">
-                {completedTaskCount?.toLocaleString() ?? '-'} Completed
-              </Text>
-              <Text color="neutral.600">
-                {notCompletedTaskCount?.toLocaleString() ?? '-'} Not Completed
-              </Text>
-            </VStack>
-          </Skeleton>
-        </VStack>
+            <Text color="neutral.600">
+              {notCompletedTaskCount?.toLocaleString() ?? '-'} Not Completed
+            </Text>
+          </VStack>
+        </Skeleton>
         <CircularProgress
           value={percentageCompleted ?? 0}
           color="primary.500"

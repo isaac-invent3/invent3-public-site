@@ -11,7 +11,7 @@ import SummaryCardWrapper from '../Common/SummaryCardWrapper';
 
 interface SummaryCardProps {
   isLoading: boolean;
-  value: number | string | React.ReactElement | undefined;
+  value?: number;
   title: string;
   icon: ComponentWithAs<'svg', IconProps>;
 
@@ -24,7 +24,7 @@ const SummaryCard = (props: SummaryCardProps) => {
       title={title}
       icon={icon}
       containerStyle={{ minH: '120px' }}
-      headerStyle={{ maxW: '60%', size:'md' }}
+      headerStyle={{ maxW: '60%', size: 'md' }}
       iconStyle={{
         color: 'primary.500',
         boxSize: '16px',
@@ -37,27 +37,15 @@ const SummaryCard = (props: SummaryCardProps) => {
         rounded: 'full',
         bgColor: '#0F264233',
       }}
-    >
-      <VStack
-        justifyContent="space-between"
-        alignItems="flex-start"
-        height="full"
-      >
-        <HStack alignItems="flex-end" spacing="4px">
-          <Skeleton isLoaded={!isLoading}>
-            <Text
-              mt="8px"
-              fontSize="24px"
-              lineHeight="28.51px"
-              fontWeight={800}
-              color="primary.500"
-            >
-              {(formatValue ? value?.toLocaleString() : value) ?? '-'}
-            </Text>
-          </Skeleton>
-        </HStack>
-      </VStack>
-    </SummaryCardWrapper>
+      additionalContent={
+        <Text color="neutral.600" fontWeight={700} mb="4px">
+          This month
+        </Text>
+      }
+      isLoading={isLoading}
+      count={value}
+      formatValue={formatValue}
+    />
   );
 };
 

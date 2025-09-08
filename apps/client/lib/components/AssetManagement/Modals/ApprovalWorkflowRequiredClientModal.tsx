@@ -11,6 +11,7 @@ import {
   GenericModal,
   ModalCloseButtonText,
 } from '@repo/ui/components';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { ROUTES } from '~/lib/utils/constants';
@@ -44,9 +45,11 @@ const ApprovalWorkflowRequiredClientModal = (
       >
         <Flex position="absolute" top="0" right="0" mt="16px" pr="16px">
           <Flex>
-            <ModalCloseButtonText
-              onClose={() => router.push(`/${ROUTES.ASSETS}`)}
-            />
+            <Link href={`/${ROUTES.ASSETS}`} passHref>
+              <ModalCloseButtonText
+                onClose={() => router.push(`/${ROUTES.ASSETS}`)}
+              />
+            </Link>
           </Flex>
         </Flex>
       </ModalHeader>
@@ -72,6 +75,7 @@ const ApprovalWorkflowRequiredClientModal = (
               color="neutral.700"
               textAlign="center"
               lineHeight="100%"
+              fontWeight={400}
             >
               Before you can request a bulk asset {type}, you need to set up an
               approval workflow. Please go to Settings to create a new workflow

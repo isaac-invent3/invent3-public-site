@@ -28,15 +28,21 @@ const SectionTwo = () => {
   const [selectedMonth, setSelectedMonth] = useState<Option | null>(
     currentMonthOption ?? null
   );
-  const { data, isLoading, isFetching } = useGetFrontdeskChartDataQuery({
-    userId: user?.userId!,
-    year: +selectedYear?.value!,
-  });
+  const { data, isLoading, isFetching } = useGetFrontdeskChartDataQuery(
+    {
+      userId: user?.userId!,
+      year: +selectedYear?.value!,
+    },
+    { skip: !user?.userId }
+  );
 
   const { data: maintenanceCompleteData, isLoading: loadingMaintenance } =
-    useGetFrontdeskMaintenanceSuccessChartDataQuery({
-      userId: user?.userId!,
-    });
+    useGetFrontdeskMaintenanceSuccessChartDataQuery(
+      {
+        userId: user?.userId!,
+      },
+      { skip: !user?.userId }
+    );
 
   const tempData = maintenanceCompleteData?.data?.find(
     (item) => item.monthId === selectedMonth?.value

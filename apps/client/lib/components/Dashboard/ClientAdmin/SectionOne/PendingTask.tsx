@@ -39,59 +39,41 @@ const PendingTask = (props: PendingTaskProps) => {
       title="Pending Tasks"
       icon={TaskIcon}
       containerStyle={{ minH: '164px' }}
+      count={totalTask}
+      additionalContent={
+        <Text color="neutral.600" fontWeight={700} mb="4px">
+          Total Task
+        </Text>
+      }
     >
-      <VStack
-        justifyContent="space-between"
-        alignItems="flex-start"
-        height="full"
-        width="full"
-        spacing={0}
-      >
-        <HStack alignItems="flex-end" spacing="4px">
-          <Skeleton isLoaded={!isLoading}>
-            <Text
-              mt="8px"
-              fontSize="24px"
-              lineHeight="28.51px"
-              fontWeight={800}
-              color="primary.500"
-            >
-              {totalTask !== undefined ? totalTask?.toLocaleString() : '-'}
-            </Text>
-          </Skeleton>
-          <Text color="neutral.600" fontWeight={700} mb="4px">
-            Total Task
-          </Text>
-        </HStack>
-        <HStack spacing="4px" width="full" justifyContent="space-between">
-          <ChartLegend
-            chartLegendItems={chartLegendItems}
-            containerStyle={{
-              direction: 'column',
-              spacing: '6px',
-              mt: '13px',
-            }}
-            textStyle={{
-              whiteSpace: 'nowrap',
-            }}
+      <HStack spacing="4px" width="full" justifyContent="space-between">
+        <ChartLegend
+          chartLegendItems={chartLegendItems}
+          containerStyle={{
+            direction: 'column',
+            spacing: '6px',
+            mt: '13px',
+          }}
+          textStyle={{
+            whiteSpace: 'nowrap',
+          }}
+        />
+        <Flex width="80px">
+          <DoughtnutChart
+            labels={chartLegendItems.map((item) => item.label)}
+            datasets={[
+              {
+                data: chartLegendItems.map((item) => item.value ?? 0),
+                backgroundColor: chartLegendItems.map((item) => item.color),
+                borderWidth: 0,
+              },
+            ]}
+            type="full"
+            height="80px"
+            cutout="60%"
           />
-          <Flex width="80px">
-            <DoughtnutChart
-              labels={chartLegendItems.map((item) => item.label)}
-              datasets={[
-                {
-                  data: chartLegendItems.map((item) => item.value ?? 0),
-                  backgroundColor: chartLegendItems.map((item) => item.color),
-                  borderWidth: 0,
-                },
-              ]}
-              type="full"
-              height="80px"
-              cutout="60%"
-            />
-          </Flex>
-        </HStack>
-      </VStack>
+        </Flex>
+      </HStack>
     </SummaryCardWrapper>
   );
 };

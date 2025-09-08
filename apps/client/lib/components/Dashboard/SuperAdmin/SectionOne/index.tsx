@@ -34,7 +34,7 @@ const SectionOne = () => {
       <SummaryCard
         title="Active Subscription"
         icon={CardIcon}
-        value={data?.data?.activeSubscriptionsByMonth}
+        value={data?.data?.activeSubscriptionsByMonth ?? 0}
         isLoading={isLoading}
         percentChange={data?.data?.activeSubscriptionsPercentageChange}
       />

@@ -35,46 +35,31 @@ const SectionOne = () => {
         title="Upcoming Maintenance"
         icon={MaintenanceIcon}
         containerStyle={{ minH: '164px' }}
+        count={data?.data?.upcomingMaintenanceByWeek}
+        additionalContent={
+          <Text color="neutral.600" fontWeight={700} mb="4px">
+            This week
+          </Text>
+        }
+        isLoading={isLoading}
       >
-        <VStack
-          justifyContent="space-between"
-          alignItems="flex-start"
-          height="full"
-        >
-          <HStack alignItems="flex-end" spacing="4px">
-            <Skeleton isLoaded={!isLoading}>
-              <Text
-                mt="8px"
-                fontSize="24px"
-                lineHeight="28.51px"
-                fontWeight={800}
-                color="primary.500"
-              >
-                {data?.data?.upcomingMaintenanceByWeek?.toLocaleString() ?? '-'}
-              </Text>
-            </Skeleton>
-            <Text color="neutral.600" fontWeight={700} mb="4px">
-              This week
+        <HStack spacing="4px">
+          <Skeleton isLoaded={!isLoading}>
+            <Text
+              color="#07CC3B"
+              py="2.65px"
+              px="5.3px"
+              rounded="full"
+              bgColor="#07CC3B0D"
+              fontWeight={700}
+            >
+              {data?.data?.upcomingMaintenanceByDay?.toLocaleString() ?? '-'}
             </Text>
-          </HStack>
-          <HStack spacing="4px">
-            <Skeleton isLoaded={!isLoading}>
-              <Text
-                color="#07CC3B"
-                py="2.65px"
-                px="5.3px"
-                rounded="full"
-                bgColor="#07CC3B0D"
-                fontWeight={700}
-              >
-                {data?.data?.upcomingMaintenanceByDay?.toLocaleString() ?? '-'}
-              </Text>
-            </Skeleton>
-            <Text color="neutral.600" fontWeight={700}>
-              Today
-            </Text>
-          </HStack>
-        </VStack>
+          </Skeleton>
+          <Text color="neutral.600" fontWeight={700}>
+            Today
+          </Text>
+        </HStack>
       </SummaryCardWrapper>
       {/* Upcoming Maintenance */}
       <TaskOverview

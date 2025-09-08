@@ -17,7 +17,7 @@ import withFormLeaveDialog from '~/lib/components/UI/FormLeaveDialogProvider';
 import { useRouter } from 'next/navigation';
 import { useCreateMasterFacilityMutation } from '~/lib/redux/services/location/facility.services';
 import { facilitiesSchema } from '~/lib/schemas/asset/location.schema';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import FacilityForm from './FacilityForm';
 import FacilityList from './FacilityList';
 import { FacilityFormInterface } from '~/lib/interfaces/location.interfaces';

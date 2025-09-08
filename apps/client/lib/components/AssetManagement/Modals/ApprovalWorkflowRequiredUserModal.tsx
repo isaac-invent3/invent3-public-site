@@ -8,6 +8,7 @@ import {
 } from '@chakra-ui/react';
 import { GenericModal, ModalCloseButtonText } from '@repo/ui/components';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { ROUTES } from '~/lib/utils/constants';
@@ -30,6 +31,7 @@ const ApprovalWorkflowRequiredUserModal = (
       contentStyle={{
         width: '526px',
         rounded: '8px',
+        minH: '387px',
       }}
       mainModalStyle={{ closeOnOverlayClick: false, closeOnEsc: false }}
     >
@@ -37,24 +39,26 @@ const ApprovalWorkflowRequiredUserModal = (
         m={0}
         p={0}
         position="relative"
-        pt={{ base: '32px', md: '48px' }}
+        pt={{ base: '32px', md: '0px' }}
       >
-        <Flex position="absolute" top="0" right="0" mt="16px" pr="16px">
+        <Flex position="absolute" top="0" right="0" mt="20px" pr="20px">
           <Flex>
-            <ModalCloseButtonText
-              onClose={() => router.push(`/${ROUTES.ASSETS}`)}
-            />
+            <Link href={`/${ROUTES.ASSETS}`} passHref>
+              <ModalCloseButtonText
+                onClose={() => router.push(`/${ROUTES.ASSETS}`)}
+              />
+            </Link>
           </Flex>
         </Flex>
       </ModalHeader>
       <ModalBody p={0} m={0}>
         <VStack
-          py={{ base: '60px', lg: '88px' }}
+          py={{ base: '60px' }}
           px={{ base: '24px', lg: '48px' }}
           width="full"
           spacing="40px"
         >
-          <VStack width="full" spacing="16px" maxW="370px">
+          <VStack width="full" spacing="40px" maxW="370px">
             <Flex width="64px" height="64px" position="relative">
               <Image src="/warning.png" fill alt="warning-icon" />
             </Flex>
@@ -74,11 +78,12 @@ const ApprovalWorkflowRequiredUserModal = (
                 color="neutral.700"
                 textAlign="center"
                 lineHeight="100%"
+                fontWeight={400}
               >
                 {isBulk
                   ? 'Bulk ' + type === 'transfer'
-                    ? 'transfer'
-                    : 'disposal'
+                    ? 'Transfer'
+                    : 'Disposal'
                   : 'Approval'}{' '}
                 workflow not set. Contact Client Admin to enable{' '}
                 {isBulk ? 'bulk ' : ''}

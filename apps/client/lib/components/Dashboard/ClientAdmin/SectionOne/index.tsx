@@ -19,7 +19,7 @@ const SectionOne = () => {
     <SimpleGrid
       width="full"
       spacing="16px"
-      columns={{ base: 1, sm: 2, md: 3, xl: 5 }}
+      columns={{ base: 1, sm: 2, md: 3, lg: 4 }}
     >
       <TotalAssetSummary
         isLoading={isLoading}
@@ -42,72 +42,22 @@ const SectionOne = () => {
       <SummaryCardWrapper
         title="Total Number of Vendors"
         containerStyle={{ minH: '164px' }}
+        additionalContent={
+          <Text color="neutral.600" fontWeight={700} mb="4px">
+            This month
+          </Text>
+        }
+        isLoading={isLoading}
+        count={data?.data?.totalNoOfVendors}
       >
-        <VStack
-          justifyContent="space-between"
-          alignItems="flex-start"
-          height="full"
-        >
-          <HStack alignItems="flex-end" spacing="4px">
-            <Skeleton isLoaded={!isLoading}>
-              <Text
-                mt="8px"
-                fontSize="24px"
-                lineHeight="28.51px"
-                fontWeight={800}
-                color="primary.500"
-              >
-                {data?.data?.totalNoOfVendors?.toLocaleString() ?? '-'}
-              </Text>
-            </Skeleton>
-            <Text color="neutral.600" fontWeight={700} mb="4px">
-              This month
-            </Text>
-          </HStack>
-          <HStack spacing="4px">
-            <ProgressIndicator
-              valueChange={data?.data?.totalNoOfVendorsPercentageChange ?? 0}
-            />
-            <Text color="neutral.600" fontWeight={700}>
-              Compared to last month
-            </Text>
-          </HStack>
-        </VStack>
-      </SummaryCardWrapper>
-      <SummaryCardWrapper
-        title="Number of Open Approval"
-        containerStyle={{ minH: '164px' }}
-      >
-        <VStack
-          justifyContent="space-between"
-          alignItems="flex-start"
-          height="full"
-        >
-          <HStack alignItems="flex-end" spacing="4px">
-            <Skeleton isLoaded={!isLoading}>
-              <Text
-                mt="8px"
-                fontSize="24px"
-                lineHeight="28.51px"
-                fontWeight={800}
-                color="primary.500"
-              >
-                {data?.data?.noOfOpenApprovals?.toLocaleString() ?? '-'}
-              </Text>
-            </Skeleton>
-            <Text color="neutral.600" fontWeight={700} mb="4px">
-              Open Approvals
-            </Text>
-          </HStack>
-          <HStack spacing="4px">
-            <ProgressIndicator
-              valueChange={data?.data?.noOfOpenApprovalsPercentageChange ?? 0}
-            />
-            <Text color="neutral.600" fontWeight={700}>
-              Compared to last month
-            </Text>
-          </HStack>
-        </VStack>
+        <HStack spacing="4px">
+          <ProgressIndicator
+            valueChange={data?.data?.totalNoOfVendorsPercentageChange ?? 0}
+          />
+          <Text color="neutral.600" fontWeight={700}>
+            Compared to last month
+          </Text>
+        </HStack>
       </SummaryCardWrapper>
     </SimpleGrid>
   );

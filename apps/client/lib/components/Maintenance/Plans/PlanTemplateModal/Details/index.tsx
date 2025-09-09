@@ -4,14 +4,14 @@ import { Button } from '@repo/ui/components';
 import PlanInfo from './PlanInfo';
 import Schedule from './Schedules';
 import { Template } from '~/lib/interfaces/template.interfaces';
-import { useGetMaintenancePlanByIdQuery } from '~/lib/redux/services/maintenance/plan.services';
+import { useGetMaintenancePlanInfoHeaderByIdQuery } from '~/lib/redux/services/maintenance/plan.services';
 
 interface DetailsProps {
   template: Template;
 }
 const Details = (props: DetailsProps) => {
   const { template } = props;
-  const { data, isLoading } = useGetMaintenancePlanByIdQuery(
+  const { data, isLoading } = useGetMaintenancePlanInfoHeaderByIdQuery(
     { id: template.contextId },
     {
       skip: !template.contextId,

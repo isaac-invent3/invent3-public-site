@@ -196,7 +196,9 @@ type ExportTableName =
   | 'Users'
   | 'Vendors'
   | 'Tickets'
-  | 'TaskInstances';
+  | 'TaskInstances'
+  | 'MaintenancePlans'
+  | 'MaintenanceScheduleInstances';
 
 type ValidFileType =
   | 'application/pdf'

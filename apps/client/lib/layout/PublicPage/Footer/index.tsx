@@ -36,13 +36,14 @@ const Footer = () => {
           borderBottom="1px solid #BBBBBB"
           mb={{ base: '16px', md: '24px' }}
           alignItems="flex-start"
-          gap="24px"
+          gap={{ base: '24px' }}
+          flexWrap="wrap"
         >
-          <Flex width={{ base: 'full', lg: '55%' }}>
+          <Flex width={{ base: 'full', lg: 'min-content' }}>
             <SectionOne />
           </Flex>
           <Flex
-            width={{ base: 'full', lg: '45%' }}
+            width={{ base: 'full', lg: 'max-content' }}
             justifyContent={{ lg: 'flex-end' }}
           >
             <SectionTwo />

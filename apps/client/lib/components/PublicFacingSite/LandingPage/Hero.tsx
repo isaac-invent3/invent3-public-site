@@ -227,7 +227,7 @@ const Hero = () => {
             position="absolute"
             zIndex={9}
             top={{ base: 50, md: 120, lg: 120, xl: 150 }}
-            left={{ base: 170, sm: 170, md: 250, lg: 300, xl: 450 }}
+            left={{ base: 170, sm: 170, md: 250, lg: 350, xl: 450 }}
             bottom={0}
             ref={image1Ref}
           />
@@ -248,7 +248,7 @@ const Hero = () => {
             height={{ base: '80px', md: '120px', lg: '199.55px' }}
             position="absolute"
             zIndex={9}
-            left={{ base: 170, sm: 150, md: 300, xl: 400 }}
+            left={{ base: 170, sm: 150, md: 350, xl: 400 }}
             bottom={{ base: 30, sm: 0, md: -140, lg: -50, xl: -200 }}
             ref={image3Ref}
           />

@@ -12,11 +12,13 @@ const contactInfo = [
 const SectionTwo = () => {
   return (
     <Stack
+      width="full"
       direction={{ base: 'column', xl: 'row' }}
       spacing={{ base: '24px', lg: '32px' }}
-      alignItems="flex-start"
+      alignItems={{ base: 'flex-start', lg: 'flex-end', xl: 'flex-start' }}
+      flexWrap="wrap"
     >
-      <VStack width="full" spacing="8px" alignItems="flex-start">
+      <VStack spacing="8px" alignItems="flex-start">
         <Text
           color="black"
           fontWeight={700}
@@ -27,13 +29,18 @@ const SectionTwo = () => {
           Contact Information
         </Text>
         {contactInfo.map((item, index) => (
-          <Text key={index} size="md">
+          <Text key={index} size="md" width="249px">
             {item}
           </Text>
         ))}
       </VStack>
 
-      <VStack width="full" spacing="8px" alignItems="flex-start">
+      <VStack
+        width="min-content"
+        spacing="8px"
+        alignItems="flex-start"
+        minW="249px"
+      >
         <Text
           color="black"
           fontWeight={700}

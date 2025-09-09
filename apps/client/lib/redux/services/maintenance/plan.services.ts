@@ -85,7 +85,7 @@ export const maintenancePlanApi = createApi({
       { id: number }
     >({
       query: ({ id }) => ({
-        url: `/MaintenancePlans/GetMaintenancePlanInfoHeader/${id}`,
+        url: `/MaintenancePlans/GetPlanInfoHeader/${id}`,
         method: 'GET',
         headers: getHeaders(),
       }),

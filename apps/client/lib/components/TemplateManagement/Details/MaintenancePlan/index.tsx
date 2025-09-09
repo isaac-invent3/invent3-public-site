@@ -4,13 +4,13 @@ import { Flex, Skeleton, Stack, Text, VStack } from '@chakra-ui/react';
 import DetailHeader from '../Common/Header';
 import TemplateInfo from '../Common/TemplateInfo';
 import { useAppSelector } from '~/lib/redux/hooks';
-import { useGetMaintenancePlanByIdQuery } from '~/lib/redux/services/maintenance/plan.services';
+import { useGetMaintenancePlanInfoHeaderByIdQuery } from '~/lib/redux/services/maintenance/plan.services';
 import PlanInfo from '~/lib/components/Maintenance/Plans/PlanTemplateModal/Details/PlanInfo';
 import Schedule from '~/lib/components/Maintenance/Plans/PlanTemplateModal/Details/Schedules';
 
 const MaintenancePlan = () => {
   const template = useAppSelector((state) => state.template.template);
-  const { data, isLoading } = useGetMaintenancePlanByIdQuery(
+  const { data, isLoading } = useGetMaintenancePlanInfoHeaderByIdQuery(
     { id: template?.contextId! },
     {
       skip: !template?.contextId,

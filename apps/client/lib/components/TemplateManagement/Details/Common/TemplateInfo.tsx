@@ -47,7 +47,7 @@ const TemplateInfo = () => {
 
       {/* Right Side Start */}
       <SimpleGrid
-        columns={{ base: 2, md: 3 }}
+        columns={{ base: 2, lg: 3 }}
         gap={{ base: '24px', lg: '32px' }}
         alignItems="flex-start"
       >
@@ -60,7 +60,14 @@ const TemplateInfo = () => {
         </VStack>
         <VStack alignItems="flex-start" spacing="8px">
           <Text color="neutral.300">Created By:</Text>
-          <Text color="white" size={{ base: 'md', lg: 'lg' }} fontWeight={800}>
+          <Text
+            color="white"
+            size={{ base: 'md', lg: 'lg' }}
+            fontWeight={800}
+            width="full"
+            noOfLines={1}
+            textOverflow="ellipsis"
+          >
             {template?.createdBy}
           </Text>
         </VStack>

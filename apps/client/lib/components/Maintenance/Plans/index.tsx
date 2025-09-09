@@ -27,8 +27,10 @@ import PlanDetailsDrawer from './Drawers/PlanDetailDrawer';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import useSignalR from '~/lib/hooks/useSignalR';
 import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
-import { useAppDispatch } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { usePageFilter } from '~/lib/hooks/usePageFilter';
+import useExport from '~/lib/hooks/useExport';
+import { updateSelectedTableIds } from '~/lib/redux/slices/CommonSlice';
 
 export const initialFilterData = {
   planType: [],
@@ -60,6 +62,8 @@ const Plans = (props: PlansProp) => {
   const [searchData, setSearchData] = useState<
     ListResponse<MaintenancePlan> | undefined
   >(undefined);
+  const [selectedRows, setSelectedRows] = useState<number[]>([]);
+  const { selectedTableIds } = useAppSelector((state) => state.common);
 
   const {
     filterData,
@@ -120,6 +124,28 @@ const Plans = (props: PlansProp) => {
       onOpen();
     }
   }, [maintenancePlanId]);
+
+  // Reset Selected Row when SelectedIds array is emptied
+  useEffect(() => {
+    if (selectedTableIds.length === 0 && selectedRows.length > 0) {
+      setSelectedRows([]);
+    }
+  }, [selectedTableIds]);
+
+  // Update selectedTableIds array when selected row is greater than 1
+  useEffect(() => {
+    if (selectedRows.length > 0) {
+      const sourceItems = searchData?.items || data?.data?.items || [];
+      const maintenancePlanIds = selectedRows
+        .map((rowId) => sourceItems[rowId]?.maintenancePlanId) // Access by index and get id
+        .filter((id): id is number => id !== undefined); // Filter out undefined values
+      dispatch(updateSelectedTableIds(maintenancePlanIds));
+    }
+    if (selectedRows.length === 0) {
+      // Reset selectedTableIds when no rows are selected
+      dispatch(updateSelectedTableIds([]));
+    }
+  }, [selectedRows]);
 
   // SignalR Connection
   const connectionState = useSignalR('maintenanceplan-hub');
@@ -235,7 +261,9 @@ const Plans = (props: PlansProp) => {
         }
         showFooter={true}
         emptyLines={15}
-        isSelectable={false}
+        isSelectable={true}
+        selectedRows={selectedRows}
+        setSelectedRows={setSelectedRows}
         isLoading={isLoading}
         isFetching={isFetching || searchLoading}
         pageNumber={pageNumber}

@@ -1,11 +1,11 @@
 import { SimpleGrid, Text, VStack } from '@chakra-ui/react';
 
-import { SingleMaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
+import { MaintenancePlan } from '~/lib/interfaces/maintenance.interfaces';
 import { MAINTENANCE_PLAN_ENUM } from '~/lib/utils/constants';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
 interface PlanInfoProps {
-  data: SingleMaintenancePlan;
+  data: MaintenancePlan;
   type?: 'primary' | 'secondary';
 }
 
@@ -16,12 +16,8 @@ const PlanInfo = (props: PlanInfoProps) => {
   const prefix = !isPrimary ? 'Plan' : '';
   const info = [
     {
-      label: isCustomPlan
-        ? 'Asset'
-        : data?.maintenancePlanInfoHeader?.groupTypeName,
-      value: isCustomPlan
-        ? 'N/A'
-        : data?.maintenancePlanInfoHeader?.assetGroupContextName,
+      label: isCustomPlan ? 'Asset' : data?.groupTypeName,
+      value: isCustomPlan ? data?.assetName : data?.assetGroupContextName,
     },
     {
       label: `${prefix} Start Date`,

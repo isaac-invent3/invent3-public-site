@@ -4,7 +4,7 @@ import {
   AppConfig,
   ExportTableName,
 } from '~/lib/interfaces/general.interfaces';
-import { BaseApiResponse, ListResponse, QueryParams } from '@repo/interfaces';
+import { BaseApiResponse } from '@repo/interfaces';
 import {
   ContactPayload,
   Settings,

@@ -19,6 +19,9 @@ import { FilterButton, SearchInput } from '@repo/ui/components';
 import { FilterIcon } from '../CustomIcons';
 import { ROUTES } from '~/lib/utils/constants';
 import MaintenanceHistory from './History';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import useExport from '~/lib/hooks/useExport';
+import { updateSelectedTableIds } from '~/lib/redux/slices/CommonSlice';
 
 const AllTabs = ['plans', 'schedules', 'history'];
 
@@ -29,12 +32,23 @@ const Maintenance = (props: MaintenanceProps) => {
   const { activeTab = 0 } = props;
   const router = useRouter();
   const [tabIndex, setTabIndex] = useState(activeTab);
-  // eslint-disable-next-line no-unused-vars
+  const dispatch = useAppDispatch();
   const [search, setSearch] = useState('');
   const { isOpen, onClose, onToggle } = useDisclosure();
+  const { selectedTableIds } = useAppSelector((state) => state.common);
+  const { ExportPopover } = useExport({
+    ids: selectedTableIds,
+    exportTableName:
+      tabIndex === 1 ? 'MaintenancePlans' : 'MaintenanceScheduleInstances',
+    tableDisplayName: tabIndex === 1 ? 'plans' : 'schedules',
+    hasRequestedBy: false,
+    isQueued: false,
+    showInvent3: true,
+  });
 
   // Update the URL whenever the tab is changed
   const handleTabChange = (index: number) => {
+    dispatch(updateSelectedTableIds([]));
     setTabIndex(index);
     onClose();
     const tabName = AllTabs[index];
@@ -77,6 +91,7 @@ const Maintenance = (props: MaintenanceProps) => {
                     handleClick={onToggle}
                     isActive={isOpen}
                   />
+                  {ExportPopover}
                 </HStack>
               </Flex>
             )}

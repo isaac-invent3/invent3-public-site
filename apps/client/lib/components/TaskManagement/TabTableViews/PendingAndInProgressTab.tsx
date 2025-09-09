@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   taskInstanceApi,
   useGetAllTaskInstancesQuery,
@@ -14,7 +14,6 @@ import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import useSignalR from '~/lib/hooks/useSignalR';
 import useSignalREventHandler from '~/lib/hooks/useSignalREventHandler';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import { updateSelectedTableIds } from '~/lib/redux/slices/CommonSlice';
 
 interface PendingAndInProgressTabProps {
   statusCategoryId: number;

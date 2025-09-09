@@ -9,7 +9,7 @@ const SectionOne = () => {
     <Stack
       direction={{ base: 'column', md: 'row' }}
       width="full"
-      spacing={{ base: '24px', md: '40px', lg: '80px' }}
+      spacing={{ base: '24px', md: '40px', '2xl': '80px' }}
       alignItems="flex-start"
     >
       <VStack alignItems="flex-start" spacing={{ base: '16px', md: '24px' }}>
@@ -26,8 +26,8 @@ const SectionOne = () => {
           size="md"
           lineHeight="24px"
           fontWeight={400}
-          width={{ base: 'full', lg: '349px' }}
-          maxW="349px"
+          width={{ base: 'full', lg: '277px' }}
+          maxW="277px"
         >
           Invent3 is an AI-powered physical asset and facility management
           platform that optimizes efficiency.

@@ -2,23 +2,46 @@
 
 import {
   Flex,
-  Heading,
   HStack,
   Icon,
-  SimpleGrid,
-  Skeleton,
-  VStack,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  useMediaQuery,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import PageHeader from '../UI/PageHeader';
 import { AddIcon } from '../CustomIcons';
-import { Button, EmptyState } from '@repo/ui/components';
-import LocationCard from './LocationCard';
+import { Button } from '@repo/ui/components';
 import { ROUTES } from '~/lib/utils/constants';
-import { useGetAggregateFacilityByStateQuery } from '~/lib/redux/services/location/facility.services';
+import { useRouter, useSearchParams } from 'next/navigation';
+import ListView from './ListView';
+import MapView from './MapView';
 
 const FacilityManagement = () => {
-  const { data, isLoading } = useGetAggregateFacilityByStateQuery();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [tabIndex, setTabIndex] = useState(0);
+  const [isDesktop] = useMediaQuery('(min-width: 768px)');
+
+  // Retrieve the `tab` parameter from URL on mount
+  useMemo(() => {
+    const tab = searchParams?.get('tab');
+    if (tab === 'map') {
+      setTabIndex(1); // Set to the map tab if "map" is in the URL
+    } else {
+      setTabIndex(0); // Otherwise default to list tab
+    }
+  }, [searchParams]);
+
+  // Update the URL whenever the tab is changed
+  const handleTabChange = (index: number) => {
+    setTabIndex(index);
+    const tabName = index === 1 ? 'map' : 'list';
+    router.push(`/${ROUTES.LOCATION}?tab=${tabName}`);
+  };
   return (
     <Flex
       width="full"
@@ -41,53 +64,27 @@ const FacilityManagement = () => {
           Add New Facility
         </Button>
       </HStack>
-      <VStack
-        width="full"
-        rounded="6px"
-        minHeight="60vh"
-        spacing="19px"
-        p="16px"
-        alignItems="flex-start"
-        bgColor="white"
+
+      <Tabs
+        variant="custom"
+        width={'full'}
+        onChange={(index) => handleTabChange(index)}
+        index={tabIndex}
       >
-        <Heading size="lg">Facility - Nigeria</Heading>
-        {isLoading && (
-          <SimpleGrid
-            width="full"
-            columns={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
-            gap={{ base: '16px', lg: '8px' }}
-          >
-            {Array(10)
-              .fill('')
-              .map((_, index) => (
-                <Skeleton
-                  width="full"
-                  height="175px"
-                  rounded="8px"
-                  key={index}
-                />
-              ))}
-          </SimpleGrid>
-        )}
-        {!isLoading && data?.data && data?.data?.length > 0 && (
-          <SimpleGrid
-            width="full"
-            columns={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
-            gap={{ base: '16px', lg: '8px' }}
-          >
-            {data?.data?.map((item, index) => (
-              <LocationCard
-                href={`/${ROUTES.LOCATION}/${item.stateId}/detail`}
-                title={`${item.stateName} State`}
-                subtitle={`${item.totalBranchCount} Branches`}
-                key={index}
-                customStyle={{ width: 'full' }}
-              />
-            ))}
-          </SimpleGrid>
-        )}
-        {!isLoading && data && data?.data?.length === 0 && <EmptyState />}
-      </VStack>
+        <Flex width="full" position="relative">
+          <TabList mx={{ base: '16px', md: 0 }} width="full">
+            <Tab>List View</Tab>
+            {isDesktop && <Tab>Map View</Tab>}
+          </TabList>
+        </Flex>
+
+        <TabPanels>
+          <TabPanel pt="16px">
+            <ListView />
+          </TabPanel>
+          <TabPanel>{tabIndex === 1 && <MapView />}</TabPanel>
+        </TabPanels>
+      </Tabs>
     </Flex>
   );
 };

@@ -10,8 +10,10 @@ import {
 import {
   Facility,
   GroupByState,
+  LGAFacilityCount,
   LocationMasterFormDto,
   LocationQueryParams,
+  StateFacilityCount,
 } from '~/lib/interfaces/location.interfaces';
 
 const getHeaders = () => ({
@@ -20,7 +22,13 @@ const getHeaders = () => ({
 export const facilityApi = createApi({
   reducerPath: 'facilityApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['allFacilities', 'facilitiesByLGAId', 'facilitiesByStateId'],
+  tagTypes: [
+    'allFacilities',
+    'facilitiesByLGAId',
+    'facilitiesByStateId',
+    'allLGAsFacilityCount',
+    'allStatesFacilityCount',
+  ],
   endpoints: (builder) => ({
     getAllFacilities: builder.query<
       BaseApiResponse<ListResponse<Facility>>,
@@ -148,6 +156,34 @@ export const facilityApi = createApi({
       }),
       invalidatesTags: ['facilitiesByLGAId', 'facilitiesByLGAId'],
     }),
+    getStateFacilityCountByCountryId: builder.query<
+      BaseApiResponse<ListResponse<StateFacilityCount>>,
+      { id: number | undefined; pageNumber?: number; pageSize?: number }
+    >({
+      query: ({ id, ...data }) => ({
+        url: generateQueryStr(
+          `/Facilities/GetStateFacilityCountByCountryId/${id}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allStatesFacilityCount'],
+    }),
+    getLGAFacilityCountByStateId: builder.query<
+      BaseApiResponse<ListResponse<LGAFacilityCount>>,
+      { id: number | undefined; pageNumber?: number; pageSize?: number }
+    >({
+      query: ({ id, ...data }) => ({
+        url: generateQueryStr(
+          `/Facilities/GetLGAFacilityCountByStateId/${id}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allLGAsFacilityCount'],
+    }),
   }),
 });
 
@@ -162,4 +198,6 @@ export const {
   useCreateMasterFacilityMutation,
   useDeleteFacilityMutation,
   useUpdateFacilityMutation,
+  useGetLGAFacilityCountByStateIdQuery,
+  useGetStateFacilityCountByCountryIdQuery,
 } = facilityApi;

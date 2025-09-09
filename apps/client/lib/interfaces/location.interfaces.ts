@@ -245,6 +245,36 @@ type LocationBase =
   | 'Aisles'
   | 'Shelves';
 
+interface SingleMapFacilityData {
+  name: string;
+  count: number;
+  id: number;
+}
+
+interface LGAFacilityCount {
+  rowId: number;
+  facilityCount: number;
+  lgaId: number;
+  lgaName: string;
+  stateId: number;
+}
+
+interface StateFacilityCount {
+  rowId: number;
+  facilityCount: number;
+  countryId: number;
+  stateName: string;
+  stateId: number;
+}
+
+interface FacilityMapStats {
+  stateId?: number;
+  stateName?: string;
+  lgaId?: number;
+  lgaName?: string;
+  facilityCount?: number;
+}
+
 export type {
   State,
   FormLocation,
@@ -272,4 +302,8 @@ export type {
   LocationBase,
   FacilitiesInterface,
   FacilityFormInterface,
+  SingleMapFacilityData,
+  StateFacilityCount,
+  LGAFacilityCount,
+  FacilityMapStats,
 };

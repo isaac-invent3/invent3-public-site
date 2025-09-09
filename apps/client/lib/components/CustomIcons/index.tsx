@@ -1549,6 +1549,44 @@ const LongRightIcon = createIcon({
   ),
 });
 
+const FacilityMapIcon = createIcon({
+  displayName: 'FacilityMapIcon',
+  viewBox: '0 0 17 17',
+
+  path: (
+    <svg
+      width="17"
+      height="17"
+      viewBox="0 0 17 17"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g clip-path="url(#clip0_12137_62080)">
+        <path
+          d="M11.6172 10.0964H12.9505V11.4297H11.6172V10.0964ZM12.9505 7.42969H11.6172V8.76302H12.9505V7.42969Z"
+          fill="#00A129"
+        />
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M8.95312 4.76237H15.6198V14.0957H0.953125V2.0957H8.95312V4.76237ZM5.61979 3.42904H7.61979V4.76237H5.61979V3.42904ZM7.61979 12.7624V11.429H5.61979V12.7624H7.61979ZM7.61979 10.0957V8.76237H5.61979V10.0957H7.61979ZM7.61979 7.42904V6.0957H5.61979V7.42904H7.61979ZM14.2865 12.7624V6.0957H8.95312V7.42904H10.2865V8.76237H8.95312V10.0957H10.2865V11.429H8.95312V12.7624H14.2865ZM2.28646 12.7624V11.429H4.28646V12.7624H2.28646ZM2.28646 10.0957H4.28646V8.76237H2.28646V10.0957ZM4.28646 7.42904V6.0957H2.28646V7.42904H4.28646ZM2.28646 4.76237H4.28646V3.42904H2.28646V4.76237Z"
+          fill="#00A129"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0_12137_62080">
+          <rect
+            width="16"
+            height="16"
+            fill="white"
+            transform="translate(0.289062 0.0957031)"
+          />
+        </clipPath>
+      </defs>
+    </svg>
+  ),
+});
+
 export {
   AddIcon,
   AssetBoxIcon,
@@ -1601,4 +1639,5 @@ export {
   DoubleRightChevronIcon,
   DefaultAssetCountIcon,
   LongRightIcon,
+  FacilityMapIcon,
 };

@@ -64,6 +64,30 @@ interface Facility extends BaseEntity {
   totalBuildingsInFacility: number;
 }
 
+interface FacilityExtended {
+  rowId: number;
+  facilityId: number;
+  guid: string;
+  facilityName: string;
+  address: string;
+  currentCapacity: number;
+  maxCapacity: number;
+  image: string;
+  imageBasePrefix: string;
+  energyCostPerKwh: number;
+  latitude: number;
+  longitude: number;
+  isDeleted: boolean;
+  facilityRef: string;
+  lgaid: number;
+  lganame: string;
+  stateId: number;
+  stateName: string;
+  countryId: number;
+  countryName: string;
+  totalBuildingsInFacility: number;
+}
+
 interface Floor extends BaseEntity {
   floorId: number;
   buildingId: number;
@@ -306,4 +330,5 @@ export type {
   StateFacilityCount,
   LGAFacilityCount,
   FacilityMapStats,
+  FacilityExtended,
 };

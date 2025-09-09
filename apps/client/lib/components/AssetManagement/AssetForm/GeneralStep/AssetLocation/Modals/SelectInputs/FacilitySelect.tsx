@@ -3,6 +3,7 @@ import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { Option, SearchCriterion } from '~/lib/interfaces/general.interfaces';
 import { useAppSelector } from '~/lib/redux/hooks';
 import {
+  useGetAllFacilitiesExtendedDataQuery,
   useGetAllFacilitiesQuery,
   useGetFacilitiesByLGAIdQuery,
   useSearchFacilitiesMutation,
@@ -34,7 +35,7 @@ const FacilitySelect = (props: FacilitySelectProps) => {
   const [searchFacility] = useSearchFacilitiesMutation({});
 
   const [pageNumber, setPageNumber] = useState(1);
-  const { data, isLoading, isFetching } = useGetAllFacilitiesQuery(
+  const { data, isLoading, isFetching } = useGetAllFacilitiesExtendedDataQuery(
     {
       pageSize: DEFAULT_PAGE_SIZE,
       pageNumber,
@@ -81,6 +82,7 @@ const FacilitySelect = (props: FacilitySelectProps) => {
       valueKey="facilityId"
       defaultInputValue={defaultValue ?? facilityName}
       mutationFn={searchFacility}
+      delimiter={', '}
       isLoading={
         isLoading ||
         isLoadingFacilitiesByLGAId ||

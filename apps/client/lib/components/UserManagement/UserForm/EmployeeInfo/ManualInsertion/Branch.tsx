@@ -22,7 +22,13 @@ const Branch = () => {
         type="general"
         lgaId={cityId}
         name="branchId"
-        labelKey="address"
+        labelKey={[
+          'facilityRef',
+          'facilityName',
+          'lganame',
+          'stateName',
+          'countryName',
+        ]}
         defaultValue={branchName}
         handleSelect={(option) => {
           helpers.setValue(option.value);

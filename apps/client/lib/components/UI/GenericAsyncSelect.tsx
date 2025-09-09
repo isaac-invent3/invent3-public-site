@@ -31,6 +31,7 @@ interface GenericAsyncSelectProps {
   selectStyles?: CSSObjectWithLabel;
   selectedOption?: string | number | Option | Option[] | undefined;
   isSearchable?: boolean;
+  delimiter?: string;
 }
 
 const GenericAsyncSelect = (props: GenericAsyncSelectProps) => {
@@ -56,6 +57,7 @@ const GenericAsyncSelect = (props: GenericAsyncSelectProps) => {
     selectStyles,
     selectedOption,
     isSearchable = true,
+    delimiter,
   } = props;
   const { handleSubmit } = useCustomMutation();
   const [options, setOptions] = useState<Option[]>([]);
@@ -95,7 +97,8 @@ const GenericAsyncSelect = (props: GenericAsyncSelectProps) => {
     const formattedOptions = generateOptions(
       response?.data?.data?.items ?? response?.data?.data,
       labelKey,
-      valueKey
+      valueKey,
+      delimiter
     );
     return formattedOptions;
   };
@@ -114,7 +117,8 @@ const GenericAsyncSelect = (props: GenericAsyncSelectProps) => {
       const formattedOptions = generateOptions(
         data?.data?.items ?? data?.data,
         labelKey,
-        valueKey
+        valueKey,
+        delimiter
       );
       // If fetchKey is provided and it has changed, replace the options
       if (fetchKey !== undefined && fetchKey !== prevFetchKey) {

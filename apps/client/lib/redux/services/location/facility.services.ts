@@ -9,6 +9,7 @@ import {
 } from '@repo/interfaces';
 import {
   Facility,
+  FacilityExtended,
   GroupByState,
   LGAFacilityCount,
   LocationMasterFormDto,
@@ -28,6 +29,7 @@ export const facilityApi = createApi({
     'facilitiesByStateId',
     'allLGAsFacilityCount',
     'allStatesFacilityCount',
+    'allFacilitiesExtendedData',
   ],
   endpoints: (builder) => ({
     getAllFacilities: builder.query<
@@ -40,6 +42,17 @@ export const facilityApi = createApi({
         headers: getHeaders(),
       }),
       providesTags: ['allFacilities'],
+    }),
+    getAllFacilitiesExtendedData: builder.query<
+      BaseApiResponse<ListResponse<FacilityExtended>>,
+      QueryParams
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/Facilities/GetAllFacilities?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allFacilitiesExtendedData'],
     }),
     getFacilitiesByLGAId: builder.query<
       BaseApiResponse<ListResponse<Facility>>,
@@ -200,4 +213,5 @@ export const {
   useUpdateFacilityMutation,
   useGetLGAFacilityCountByStateIdQuery,
   useGetStateFacilityCountByCountryIdQuery,
+  useGetAllFacilitiesExtendedDataQuery,
 } = facilityApi;

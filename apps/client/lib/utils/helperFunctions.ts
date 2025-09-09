@@ -16,7 +16,8 @@ interface IOption {
 function generateOptions(
   options: IOption[] | undefined,
   labelKey: string | string[],
-  valueKey: string
+  valueKey: string,
+  delimiter?: string
 ) {
   const selectOptions = [];
 
@@ -25,7 +26,10 @@ function generateOptions(
       if (options[i]) {
         // Handle labelKey being a string or array of strings
         const label = Array.isArray(labelKey)
-          ? labelKey.map((key) => options[i]?.[key] ?? '').join(' ') // Concatenate labels with spaces
+          ? labelKey
+              .map((key) => options[i]?.[key] ?? '')
+              .filter(Boolean)
+              .join(delimiter ?? ' ') // Concatenate labels with spaces
           : (options[i]?.[labelKey] ?? '');
 
         selectOptions.push({

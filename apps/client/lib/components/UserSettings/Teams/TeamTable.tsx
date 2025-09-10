@@ -9,16 +9,17 @@ import { useGetUserGroupMembersQuery } from '~/lib/redux/services/user.services'
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useSession } from 'next-auth/react';
+import { useGetAllUserTeamMembersQuery } from '~/lib/redux/services/team.services';
 
 interface TeamTableProps {
-  groupId: number;
+  teamId: number;
 }
-const TeamTable = ({ groupId }: TeamTableProps) => {
+const TeamTable = ({ teamId }: TeamTableProps) => {
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [pageNumber, setPageNumber] = useState(1);
   const session = useSession();
-  const { data, isLoading, isFetching } = useGetUserGroupMembersQuery(
-    { groupId, userId: session?.data?.user?.userId! },
+  const { data, isLoading, isFetching } = useGetAllUserTeamMembersQuery(
+    { teamId },
     { skip: !session?.data?.user?.userId }
   );
   const [isMobile] = useMediaQuery('(max-width: 768px)');
@@ -106,7 +107,7 @@ const TeamTable = ({ groupId }: TeamTableProps) => {
   return (
     <DataTable
       columns={isMobile ? mobileColumns : columns}
-      data={data?.data?.items ?? []}
+      data={[]}
       isLoading={isLoading}
       isFetching={isFetching}
       totalPages={data?.data?.totalPages}

@@ -29,6 +29,7 @@ interface TaskInstanceTableProps {
   showPopover?: boolean;
   showScheduleId?: boolean;
   showTableBgColor?: boolean;
+  isCompleted?: boolean;
 }
 const TaskInstanceTable = (props: TaskInstanceTableProps) => {
   const {
@@ -52,6 +53,7 @@ const TaskInstanceTable = (props: TaskInstanceTableProps) => {
     showPopover = true,
     showScheduleId = true,
     showTableBgColor = true,
+    isCompleted,
   } = props;
 
   const columnHelper = createColumnHelper<TaskInstance>();
@@ -85,12 +87,6 @@ const TaskInstanceTable = (props: TaskInstanceTableProps) => {
             );
           },
           header: 'Priority',
-          enableSorting: isSortable,
-        }),
-        columnHelper.accessor('dateCompleted', {
-          cell: (info) =>
-            dateFormatter(info.getValue(), 'DD / MM / YYYY') ?? 'N/A',
-          header: 'Completion Date',
           enableSorting: isSortable,
         }),
         columnHelper.accessor('estimatedDurationInHours', {
@@ -139,8 +135,19 @@ const TaskInstanceTable = (props: TaskInstanceTableProps) => {
         enableSorting: false,
       });
 
+      const completedColumn = columnHelper.accessor('dateCompleted', {
+        cell: (info) =>
+          dateFormatter(info.getValue(), 'DD / MM / YYYY') ?? 'N/A',
+        header: 'Completion Date',
+        enableSorting: isSortable,
+      });
+
       if (showScheduleId) {
         baseColumns.splice(3, 0, scheduleColumn);
+      }
+
+      if (isCompleted) {
+        baseColumns.splice(5, 0, completedColumn);
       }
 
       if (showPopover) {

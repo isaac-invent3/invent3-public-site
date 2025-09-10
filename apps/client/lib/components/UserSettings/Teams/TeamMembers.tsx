@@ -2,11 +2,11 @@ import React from 'react';
 import SectionWrapper from '../Common/SectionWrapper';
 import TeamsAccordion from './TeamsAccordion';
 import { Skeleton } from '@chakra-ui/react';
-import { UserGroup } from '~/lib/interfaces/user.interfaces';
+import { UserTeam } from '~/lib/interfaces/team.interfaces';
 
 interface TeamMembersProps {
   isLoading: boolean;
-  data: UserGroup[];
+  data: UserTeam[];
 }
 const TeamMembers = ({ isLoading, data }: TeamMembersProps) => {
   return (
@@ -19,7 +19,7 @@ const TeamMembers = ({ isLoading, data }: TeamMembersProps) => {
       sectionInfoStyle={{ maxW: { base: 'full', md: '221px' } }}
     >
       {isLoading && <Skeleton width="full" height="250px" />}
-      {!isLoading && data && <TeamsAccordion userGroups={data} />}
+      {!isLoading && data && <TeamsAccordion userTeams={data} />}
     </SectionWrapper>
   );
 };

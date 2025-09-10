@@ -45,7 +45,8 @@ const User = (props: UserProps) => {
           base: '70px',
           md: variant === 'fullDetails' ? '99px' : '40px',
         }}
-        src=""
+        size="xl"
+        name={name ?? ''}
       />
       <VStack spacing={{ base: '16px', md: '24px' }} alignItems="flex-start">
         <VStack alignItems="flex-start" spacing="8px">

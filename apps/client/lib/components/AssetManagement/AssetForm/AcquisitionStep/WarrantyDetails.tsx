@@ -79,7 +79,7 @@ const WarrantyDetails = () => {
             customSpacing="0px"
             description="List conditions covered by the warranty."
             title="Warranty Terms"
-            isRequired
+            isRequired={false}
             direction={{ base: 'column', md: 'row' }}
             formSectionCustomStyle={{
               maxW: { md: '130px' },

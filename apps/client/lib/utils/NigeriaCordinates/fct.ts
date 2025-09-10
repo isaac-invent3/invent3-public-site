@@ -1,13 +1,12 @@
 import { Point } from 'react-simple-maps';
 
 const FCT_ABUJA_COORDINATES: { [key: string]: Point } = {
-  Abaji: [8.238056, 7.250833],
-  Bwari: [9.062222, 7.630556],
-  Gwagwalada: [8.946944, 7.191389],
-  Kuje: [8.6425, 7.582222],
-  'Municipal Area Council': [9.0575, 7.495833],
-  Otokpa: [8.925, 7.490833],
-  Abuja: [9.0575, 7.495833],
+  Abaji: [8.475556, 6.943333],
+  Bwari: [9.28559, 7.37867],
+  Gwagwalada: [8.950833, 7.076737],
+  Kuje: [8.88222, 7.22028],
+  'Abuja Municipal': [9.05785, 7.49508],
+  Kwali: [8.88346, 7.01858],
 };
 
 export default FCT_ABUJA_COORDINATES;

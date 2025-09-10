@@ -37,7 +37,7 @@ const STATE_CORDINATES: { [key: string]: Point } = {
   Taraba: [11.3636, 8.8873],
   Yobe: [11.5, 12.0],
   Zamfara: [6.2234, 12.1221],
-  'ABUJA(FCT)': [7.4951, 9.0579],
+  'Abuja(FCT)': [7.4951, 9.0579],
 };
 
 export default STATE_CORDINATES;

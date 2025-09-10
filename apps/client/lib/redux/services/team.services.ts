@@ -7,7 +7,7 @@ import {
   QueryParams,
   SearchQuery,
 } from '@repo/interfaces';
-import { Team, TeamPayload } from '~/lib/interfaces/team.interfaces';
+import { Team, TeamPayload, UserTeam } from '~/lib/interfaces/team.interfaces';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -15,7 +15,7 @@ const getHeaders = () => ({
 export const teamApi = createApi({
   reducerPath: 'teamApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['allTeams'],
+  tagTypes: ['allTeams', 'allUserTeams'],
   endpoints: (builder) => ({
     getAllTeams: builder.query<
       BaseApiResponse<ListResponse<Team>>,
@@ -27,6 +27,34 @@ export const teamApi = createApi({
         headers: getHeaders(),
       }),
       providesTags: ['allTeams'],
+    }),
+    getAllUserTeams: builder.query<
+      BaseApiResponse<ListResponse<UserTeam>>,
+      QueryParams & { userId: number }
+    >({
+      query: (data) => ({
+        url: generateQueryStr(
+          `/UserTeams/GetUserTeamsInfoHeaderByUserId?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allUserTeams'],
+    }),
+    getAllUserTeamMembers: builder.query<
+      BaseApiResponse<ListResponse<UserTeam>>,
+      QueryParams & { teamId: number }
+    >({
+      query: (data) => ({
+        url: generateQueryStr(
+          `/UserTeams/GetUserTeamsInfoHeaderByUserId?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allUserTeams'],
     }),
     getTeamById: builder.query<
       BaseApiResponse<Team>,
@@ -66,4 +94,6 @@ export const {
   useSearchTeamsMutation,
   useGetTeamByIdQuery,
   useCreateTeamMutation,
+  useGetAllUserTeamsQuery,
+  useGetAllUserTeamMembersQuery,
 } = teamApi;

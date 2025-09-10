@@ -98,6 +98,7 @@ const CompletedTab = (props: CompletedTabProps) => {
           row?.taskInstanceId
         )
       }
+      isCompleted
     />
   );
 };

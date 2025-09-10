@@ -9,17 +9,17 @@ import {
   Text,
   Icon,
 } from '@chakra-ui/react';
-import { UserGroup } from '~/lib/interfaces/user.interfaces';
 import { TeamIconOne } from '../../CustomIcons';
 import TeamTable from './TeamTable';
+import { UserTeam } from '~/lib/interfaces/team.interfaces';
 
 interface TeamsAccordionProps {
-  userGroups: UserGroup[];
+  userTeams: UserTeam[];
 }
-const TeamsAccordion = ({ userGroups }: TeamsAccordionProps) => {
+const TeamsAccordion = ({ userTeams }: TeamsAccordionProps) => {
   return (
     <Accordion width="full" allowMultiple overflow="auto">
-      {userGroups.map((group, index) => (
+      {userTeams.map((team, index) => (
         <AccordionItem key={index} border="none">
           {({ isExpanded }) => (
             <>
@@ -41,14 +41,14 @@ const TeamsAccordion = ({ userGroups }: TeamsAccordionProps) => {
                     size="lg"
                     fontWeight={isExpanded ? 700 : 500}
                   >
-                    {group.groupName}
+                    {team.name}
                   </Text>
                 </HStack>
 
                 <AccordionIcon />
               </AccordionButton>
               <AccordionPanel p={0}>
-                {isExpanded && <TeamTable groupId={group.groupId} />}
+                {isExpanded && <TeamTable teamId={team.teamId} />}
               </AccordionPanel>
             </>
           )}

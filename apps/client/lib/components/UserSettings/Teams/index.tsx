@@ -2,12 +2,12 @@ import { Divider, VStack } from '@chakra-ui/react';
 import React from 'react';
 import MyTeam from './MyTeam';
 import TeamMembers from './TeamMembers';
-import { useGetUserGroupsQuery } from '~/lib/redux/services/user.services';
 import { useSession } from 'next-auth/react';
+import { useGetAllUserTeamsQuery } from '~/lib/redux/services/team.services';
 
 const Teams = () => {
   const session = useSession();
-  const { data, isLoading } = useGetUserGroupsQuery(
+  const { data, isLoading } = useGetAllUserTeamsQuery(
     { pageSize: 25, userId: session?.data?.user?.userId! },
     { skip: !session?.data?.user?.userId }
   );

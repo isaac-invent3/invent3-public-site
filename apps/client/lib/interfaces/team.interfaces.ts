@@ -8,6 +8,16 @@ interface Team extends BaseEntity {
   dateCreated: Date;
 }
 
+interface UserTeam {
+  userTeamId: number;
+  userId: number;
+  teamId: number;
+  name: string;
+  description: string;
+  dateCreated: Date;
+  isDeleted: boolean;
+}
+
 interface TeamPayload {
   name: string;
   description?: string;
@@ -16,4 +26,4 @@ interface TeamPayload {
   createdBy: string;
 }
 
-export type { Team, TeamPayload };
+export type { Team, TeamPayload, UserTeam };

@@ -34,14 +34,14 @@ const generalInfoSchema = (isUpdate: boolean) =>
     parentId: Yup.number().nullable(),
     ...(isUpdate
       ? {
+          currentOwner: Yup.number().nullable(),
+          assignedTo: Yup.number().nullable(),
+          responsibleFor: Yup.number().nullable(),
+        }
+      : {
           currentOwner: Yup.number().required('Owner is Required'),
           assignedTo: Yup.number().required('This is Required'),
           responsibleFor: Yup.number().required('This is Required'),
-        }
-      : {
-          currentOwner: Yup.number(),
-          assignedTo: Yup.number(),
-          responsibleFor: Yup.number(),
         }),
   });
 

@@ -77,9 +77,9 @@ const ApprovalWorkflowRequiredClientModal = (
               lineHeight="100%"
               fontWeight={400}
             >
-              Before you can request a bulk asset {type}, you need to set up an
-              approval workflow. Please go to Settings to create a new workflow
-              and select an appropriate approval type.
+              Set up an approval workflow in Settings before starting a{' '}
+              {isBulk ? 'bulk ' : ''}
+              {type}.
             </Text>
           </VStack>
           <Button

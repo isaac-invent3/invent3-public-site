@@ -65,7 +65,7 @@ const SectionOne = () => {
               />
               <DetailSection details={info2} labelMinWidth="65px" />
             </Stack>
-            <Flex width="full" display={{ base: 'none', lg: 'flex' }}>
+            <Flex display={{ base: 'none', lg: 'flex' }}>
               <LocationConditionInfo />
             </Flex>
           </HStack>

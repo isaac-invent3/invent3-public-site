@@ -1,12 +1,12 @@
 import React from 'react';
 import SectionWrapper from '../Common/SectionWrapper';
 import { HStack, Icon, Skeleton, Text, VStack } from '@chakra-ui/react';
-import { UserGroup } from '~/lib/interfaces/user.interfaces';
 import { TeamIconTwo } from '../../CustomIcons';
+import { UserTeam } from '~/lib/interfaces/team.interfaces';
 
 interface MyTeamProps {
   isLoading: boolean;
-  data: UserGroup[];
+  data: UserTeam[];
 }
 const MyTeam = ({ isLoading, data }: MyTeamProps) => {
   return (
@@ -33,7 +33,7 @@ const MyTeam = ({ isLoading, data }: MyTeamProps) => {
                   color="black"
                   key={index}
                 >
-                  {item.groupName}
+                  {item.name}
                 </Text>
               </HStack>
             ))}

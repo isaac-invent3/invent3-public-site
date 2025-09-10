@@ -39,7 +39,7 @@ const Maintenance = (props: MaintenanceProps) => {
   const { ExportPopover } = useExport({
     ids: selectedTableIds,
     exportTableName:
-      tabIndex === 1 ? 'MaintenancePlans' : 'MaintenanceScheduleInstances',
+      tabIndex === 0 ? 'MaintenancePlans' : 'MaintenanceScheduleInstances',
     tableDisplayName: tabIndex === 1 ? 'plans' : 'schedules',
     hasRequestedBy: false,
     isQueued: false,

@@ -153,6 +153,7 @@ const PendingAndInProgressTab = (props: PendingAndInProgressTabProps) => {
       setCurrentPage={setCurrentPage}
       setPageSize={setPageSize}
       data={data?.data}
+      isCompleted={false}
       specificSearchCriterion={searchCriterion}
       selectedRows={selectedRows}
       setSelectedRows={setSelectedRows}

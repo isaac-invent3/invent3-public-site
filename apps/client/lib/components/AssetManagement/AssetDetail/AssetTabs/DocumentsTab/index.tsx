@@ -64,7 +64,6 @@ const DocumentsTab = () => {
                 spacing="11px"
                 px="5px"
                 key={index}
-                width="100px"
                 cursor="pointer"
                 onClick={() => downloadDocument(item)}
               >
@@ -72,7 +71,13 @@ const DocumentsTab = () => {
                   as={FILE_ICONS[extensionName ?? 'invalid']}
                   boxSize="58px"
                 />
-                <Text size="md" color="neutral.600" textAlign="center">
+                <Text
+                  size="md"
+                  color="neutral.600"
+                  textAlign="center"
+                  width="100px"
+                  textOverflow="ellipsis"
+                >
                   {item.documentName}
                 </Text>
               </VStack>

@@ -37,6 +37,7 @@ interface TabTableViewProps {
   setSelectedRows?: React.Dispatch<React.SetStateAction<number[]>>;
   // eslint-disable-next-line no-unused-vars
   handleSelectRow?: (row: TaskInstance) => void;
+  isCompleted?: boolean;
 }
 
 const TabTableView = (props: TabTableViewProps) => {
@@ -55,6 +56,7 @@ const TabTableView = (props: TabTableViewProps) => {
     selectedRows,
     handleSelectRow,
     setSelectedRows,
+    isCompleted,
   } = props;
   const { handleSubmit } = useCustomMutation();
   const selectedIds = useAppSelector((state) => state.common.selectedTableIds);
@@ -205,6 +207,7 @@ const TabTableView = (props: TabTableViewProps) => {
         handleSelectRow={handleSelectRow}
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
+        isCompleted={isCompleted}
       />
     </Flex>
   );

@@ -43,7 +43,7 @@ const Maintenance = (props: MaintenanceProps) => {
     tableDisplayName: tabIndex === 1 ? 'plans' : 'schedules',
     hasRequestedBy: false,
     isQueued: false,
-    showInvent3: true,
+    showInvent3: false,
   });
 
   // Update the URL whenever the tab is changed

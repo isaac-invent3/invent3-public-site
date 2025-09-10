@@ -18,24 +18,29 @@ import AssetCountCard from './AssetCountCard';
 interface DropdownData {
   label: string;
   value: ValidColumnNames;
+  searchColumnPrefix: ValidColumnNames;
 }
 
 const dropdownData: DropdownData[] = [
   {
     label: 'Asset Type',
     value: 'AssetType',
+    searchColumnPrefix: 'AssetType',
   },
   {
     label: 'Category',
     value: 'Category',
+    searchColumnPrefix: 'Category',
   },
   {
     label: 'Condition',
     value: 'Condition',
+    searchColumnPrefix: 'Condition',
   },
   {
     label: 'Status',
-    value: 'AssetStatus',
+    value: 'Status',
+    searchColumnPrefix: 'AssetStatus',
   },
 ];
 0;
@@ -112,7 +117,7 @@ const AssetCount = () => {
           data?.data.map((item, index) => (
             <AssetCountCard
               data={item}
-              type={selectedClass?.value!}
+              type={selectedClass?.searchColumnPrefix!}
               key={index}
             />
           ))}

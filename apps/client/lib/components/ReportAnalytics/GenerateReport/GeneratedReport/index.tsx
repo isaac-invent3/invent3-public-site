@@ -3,7 +3,7 @@ import { ListResponse } from '@repo/interfaces';
 import { DataTable, FilterButton } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import { getSession } from 'next-auth/react';
-import { useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import SaveAsTemplateModal, {
   SaveAsTemplatePayload,
 } from '~/lib/components/Common/Modals/SaveAsTemplateModal';
@@ -15,7 +15,10 @@ import {
   Report,
   SaveReportPayload,
 } from '~/lib/interfaces/report.interfaces';
-import { useSaveReportAsTemplateMutation } from '~/lib/redux/services/reports.services';
+import {
+  useGenerateReportMutation,
+  useSaveReportAsTemplateMutation,
+} from '~/lib/redux/services/reports.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import ScheduleReportDrawer from '../../Drawers/ScheduleReportDrawer';
 import SaveReportTemplateSuccessModal from '../../Modals/SaveReportTemplateSuccessModal';
@@ -28,11 +31,14 @@ interface GeneratedReportProps {
 
 const GeneratedReport = (props: GeneratedReportProps) => {
   const { response, generatePayload } = props;
-
+  const [localResponse, setLocalResponse] =
+    useState<ListResponse<GenerateReportResponse> | null>(null);
   const columnHelper = createColumnHelper<any>();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [savedReport, setSavedReport] = useState<Report | null>(null);
+  const [generateReport, { isLoading: isGeneratingReport }] =
+    useGenerateReportMutation({});
 
   const { handleSubmit } = useCustomMutation();
   const [saveReport, { isLoading: isSavingReport }] =
@@ -55,11 +61,11 @@ const GeneratedReport = (props: GeneratedReportProps) => {
 
   const columns = useMemo(
     () => {
-      const dynamicColumns = generateDynamicColumns(response.items || []);
+      const dynamicColumns = generateDynamicColumns(localResponse?.items || []);
 
       return dynamicColumns;
     },
-    [[response.items]] //eslint-disable-line
+    [[localResponse?.items]] //eslint-disable-line
   );
 
   const {
@@ -107,6 +113,30 @@ const GeneratedReport = (props: GeneratedReportProps) => {
     }
   };
 
+  useEffect(() => {
+    if (response) {
+      setLocalResponse(response);
+    }
+  }, [response]);
+
+  const handleSearch = useCallback(async () => {
+    const response = await handleSubmit(
+      generateReport,
+      {
+        ...generatePayload,
+        pageSize: pageSize,
+        pageNumber: currentPage,
+      },
+      ''
+    );
+
+    response?.data && setLocalResponse(response?.data.data);
+  }, [currentPage, pageSize]);
+
+  useEffect(() => {
+    handleSearch();
+  }, [currentPage, pageSize]);
+
   return (
     <VStack mt={6}>
       <HStack spacing="16px" alignSelf="flex-end" flexWrap="wrap">
@@ -137,14 +167,15 @@ const GeneratedReport = (props: GeneratedReportProps) => {
 
       <DataTable
         columns={columns}
-        data={response.items ?? []}
-        totalPages={response.totalPages}
+        data={localResponse?.items ?? []}
+        totalPages={localResponse?.totalPages}
         setPageNumber={setCurrentPage}
         pageNumber={currentPage}
         pageSize={pageSize}
         setPageSize={setPageSize}
         emptyLines={5}
         isSelectable={false}
+        isFetching={isGeneratingReport}
         maxTdWidth="200px"
         customThStyle={{
           paddingLeft: '16px',

@@ -5,7 +5,7 @@ interface Team extends BaseEntity {
   name: string;
   description: string;
   owner: number;
-  dateCreated: Date;
+  dateCreated: string;
 }
 
 interface UserTeam {
@@ -14,7 +14,7 @@ interface UserTeam {
   teamId: number;
   name: string;
   description: string;
-  dateCreated: Date;
+  dateCreated: string;
   isDeleted: boolean;
 }
 
@@ -22,8 +22,28 @@ interface TeamPayload {
   name: string;
   description?: string;
   owner?: number;
-  dateCreated?: Date;
+  dateCreated?: string;
   createdBy: string;
 }
 
-export type { Team, TeamPayload, UserTeam };
+interface TeamMember {
+  userTeamId: number;
+  userId: number;
+  teamId: number;
+  name: string;
+  description: string;
+  isDeleted: boolean;
+  username: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  statusID: number;
+  statusName: string;
+  designationID: number;
+  designationName: string;
+  dateCreated: string;
+  lastActive: string;
+  displayColorCode: string;
+}
+
+export type { Team, TeamPayload, UserTeam, TeamMember };

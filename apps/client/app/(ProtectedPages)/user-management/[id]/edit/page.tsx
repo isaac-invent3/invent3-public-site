@@ -67,14 +67,14 @@ export default function Page({ params }: { params: { id: number } }) {
         countryName: user?.countryName,
         stateName: user?.stateName,
         documents: formDocuments ?? [],
-        employmentTypeId: null,
+        employmentTypeId: user?.employmentType,
         employmentTypeName: null,
         branchId: user?.facilityId,
         branchName: user?.facilityName,
         jobTitleId: user?.designationId,
         jobTitleName: user?.designationName,
-        teamIds: [],
-        teamNames: [],
+        teamIds: data?.data?.userTeams?.map((item) => item.teamId),
+        teamNames: data?.data?.userTeams?.map((item) => item.name),
         userRoleIds: data?.data?.userRoles?.map((item) => item.roleId),
         userRoleNames: data?.data?.userRoles?.map((item) => item.roleName),
         userGroupIds: data?.data?.userGroups?.map((item) => item.groupId),
@@ -84,7 +84,7 @@ export default function Page({ params }: { params: { id: number } }) {
         initialDocumentIds: userDocuments?.data
           ? userDocuments?.data?.items?.map((item) => item.documentId)
           : [],
-        initialTeamIds: [],
+        initialTeamIds: data?.data?.userTeams?.map((item) => item.teamId),
       })
     );
   }

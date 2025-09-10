@@ -43,11 +43,12 @@ const AssetSummary = () => {
     >
       <Stack
         width="full"
+        height="full"
         direction={{ base: 'row' }}
         justifyContent="space-around"
         divider={<StackDivider borderColor="#BBBBBB" />}
         spacing="14px"
-        overflow="scroll"
+        overflowX="scroll"
       >
         {details.map((item, index) => (
           <VStack key={index} spacing="16px">

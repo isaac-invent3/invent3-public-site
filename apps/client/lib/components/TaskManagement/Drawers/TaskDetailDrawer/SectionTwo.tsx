@@ -18,11 +18,11 @@ const SectionTwo = ({ data }: SectionTwoProps) => {
           <Text color="neutral.600" fontWeight={700}>
             Schedule ID
           </Text>
-          <Text color="neutral.600" size="md">
+          <Text color="black" size="md">
             <Text as="span" color="black">
               {data?.scheduleInstanceId}
             </Text>{' '}
-            - {data?.taskInstanceId}
+            - {data?.scheduleInstanceName}
           </Text>
         </VStack>
         <VStack width="full" spacing="8px" alignItems="flex-start">

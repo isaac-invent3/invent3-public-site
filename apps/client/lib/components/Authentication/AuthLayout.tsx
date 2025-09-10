@@ -123,7 +123,6 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
                 width="344px"
                 maxW="344px"
                 display={{ base: 'none', lg: 'flex' }}
-                position="absolute"
                 bottom="115px"
                 zIndex={99}
               >

@@ -438,10 +438,11 @@ interface AssetCountByColumnName {
 }
 type ValidColumnNames =
   | 'Condition'
-  | 'AssetStatus'
+  | 'Status'
   | 'Condition'
   | 'Category'
-  | 'AssetType';
+  | 'AssetType'
+  | 'AssetStatus';
 
 export type {
   AcquisitionInfo,

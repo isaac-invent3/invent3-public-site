@@ -53,6 +53,7 @@ export const taskInstanceApi = createApi({
         'allTaskInstancesByScheduleInstanceId',
         'allTaskInstances',
         'singleTaskInstance',
+        'allCompletedTaskInstances',
       ],
     }),
     updateTaskInstanceMetadataIds: builder.mutation<

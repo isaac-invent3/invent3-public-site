@@ -133,17 +133,21 @@ const DynamicConditionValue = (props: DynamicConditionValueProps) => {
     );
   }
 
-  const numericTypes = ['int', 'datetime2', 'decimal'];
+  const typeMap: Record<string, string> = {
+    int: 'number',
+    decimal: 'number',
+    datetime2: 'date',
+    date: 'date',
+  };
+
+  const inputType =
+    typeMap[selectedContextTypeColumn?.dataType ?? ''] ?? 'text';
 
   return (
     <TextInput
       name="value"
       label="Value"
-      type={
-        numericTypes.includes(selectedContextTypeColumn?.dataType ?? '')
-          ? 'number'
-          : 'text'
-      }
+      type={inputType}
       errorMessage={meta.error}
       value={meta.value as string}
       isInvalid={meta.touched && !!meta.error}

@@ -15,15 +15,7 @@ import ErrorMessage from './ErrorMessage';
 
 export interface TextInputProps {
   name: string;
-  type:
-    | 'text'
-    | 'password'
-    | 'number'
-    | 'date'
-    | 'time'
-    | 'datetime'
-    | 'email'
-    | 'url';
+  type: React.HTMLInputTypeAttribute;
   label: string;
   value?: string | number;
   placeholder?: string;

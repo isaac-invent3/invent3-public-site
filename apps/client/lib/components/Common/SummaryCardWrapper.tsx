@@ -54,6 +54,17 @@ const SummaryCardWrapper = (props: SummaryCardWrapperProps) => {
       rounded="8px"
       spacing={0}
       {...containerStyle}
+      sx={{
+        scrollbarWidth: '0px',
+        scrollbarColor: 'transparent transparent',
+        '&::-webkit-scrollbar': {
+          width: '0px',
+          height: '0px',
+        },
+        '&::-webkit-scrollbar-thumb': {
+          background: 'transparent',
+        },
+      }}
     >
       <HStack
         width="full"

@@ -7,7 +7,12 @@ import {
   QueryParams,
   SearchQuery,
 } from '@repo/interfaces';
-import { Team, TeamPayload, UserTeam } from '~/lib/interfaces/team.interfaces';
+import {
+  Team,
+  TeamMember,
+  TeamPayload,
+  UserTeam,
+} from '~/lib/interfaces/team.interfaces';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -43,14 +48,11 @@ export const teamApi = createApi({
       providesTags: ['allUserTeams'],
     }),
     getAllUserTeamMembers: builder.query<
-      BaseApiResponse<ListResponse<UserTeam>>,
+      BaseApiResponse<ListResponse<TeamMember>>,
       QueryParams & { teamId: number }
     >({
-      query: (data) => ({
-        url: generateQueryStr(
-          `/UserTeams/GetUserTeamsInfoHeaderByUserId?`,
-          data
-        ),
+      query: ({ teamId, ...data }) => ({
+        url: generateQueryStr(`/UserTeams/GetUsersWithTeam/${teamId}?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),

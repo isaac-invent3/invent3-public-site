@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 
 import { BackButton, Button, GenericDrawer } from '@repo/ui/components';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import GenericErrorState from '~/lib/components/UI/GenericErrorState';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import { TaskInstance } from '~/lib/interfaces/task.interfaces';
@@ -25,6 +25,7 @@ import SectionTwo from './SectionTwo';
 import usePermissionAccess from '~/lib/hooks/useRoleAccess';
 import ViewAttachement from '~/lib/components/Common/AttachFileAndView/ViewAttachement';
 import { useGetTaskDocumentsByIdQuery } from '~/lib/redux/services/task/general.services';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 interface TaskDetailDrawerProps {
   isOpen: boolean;
@@ -61,6 +62,10 @@ const TaskDetailDrawer = (props: TaskDetailDrawerProps) => {
       { skip: !taskInstance?.data?.parentTaskId }
     );
 
+  const appConfigValue = useAppSelector(
+    (state) => state.general.appConfigValues
+  );
+
   const closeDrawer = () => {
     clearSearchParamsAfter(taskSlug, { removeSelf: true });
     onClose();
@@ -77,10 +82,6 @@ const TaskDetailDrawer = (props: TaskDetailDrawerProps) => {
 
     return notFound;
   }, [task, isLoading]);
-
-  useEffect(() => {
-    console.log({ data });
-  }, [data]);
 
   return (
     <GenericDrawer isOpen={isOpen} onClose={closeDrawer} maxWidth="597px">
@@ -116,14 +117,16 @@ const TaskDetailDrawer = (props: TaskDetailDrawerProps) => {
             >
               <BackButton handleClick={closeDrawer} />
 
-              {canMarkTaskAsCompleted && (
-                <Button
-                  handleClick={onOpenMarkAsCompleted}
-                  customStyles={{ width: '138px', height: '35px' }}
-                >
-                  Mark as completed
-                </Button>
-              )}
+              {canMarkTaskAsCompleted &&
+                task?.currentStatusId !==
+                  +appConfigValue?.DEFAULT_COMPLETED_TASK_STATUS_ID! && (
+                  <Button
+                    handleClick={onOpenMarkAsCompleted}
+                    customStyles={{ width: '138px', height: '35px' }}
+                  >
+                    Mark as completed
+                  </Button>
+                )}
             </HStack>
           </DrawerHeader>
           <DrawerBody p={0}>
@@ -164,6 +167,7 @@ const TaskDetailDrawer = (props: TaskDetailDrawerProps) => {
               isOpen={isOpenMarkAsCompleted}
               onClose={onCLoseMarkAsCompleted}
               data={task}
+              closeDrawer={closeDrawer}
             />
           </DrawerBody>
         </>

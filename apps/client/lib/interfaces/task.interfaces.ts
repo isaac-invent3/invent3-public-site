@@ -109,6 +109,7 @@ interface TaskInstance extends BaseTask {
   taskInstanceGuid: string;
   parentTaskId: number;
   scheduleInstanceId: number;
+  scheduleInstanceName: string;
   taskInstanceName: string;
   currentStatus: string;
   currentStatusId: number;

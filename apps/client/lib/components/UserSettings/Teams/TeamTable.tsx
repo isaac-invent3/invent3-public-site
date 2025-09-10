@@ -4,12 +4,11 @@ import { dateFormatter } from '~/lib/utils/Formatters';
 import GenericStatusBox from '../../UI/GenericStatusBox';
 import UserInfo from '../../Common/UserInfo';
 import { Text, useMediaQuery } from '@chakra-ui/react';
-import { UserGroupMember } from '~/lib/interfaces/user.interfaces';
-import { useGetUserGroupMembersQuery } from '~/lib/redux/services/user.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useSession } from 'next-auth/react';
 import { useGetAllUserTeamMembersQuery } from '~/lib/redux/services/team.services';
+import { TeamMember } from '~/lib/interfaces/team.interfaces';
 
 interface TeamTableProps {
   teamId: number;
@@ -23,7 +22,7 @@ const TeamTable = ({ teamId }: TeamTableProps) => {
     { skip: !session?.data?.user?.userId }
   );
   const [isMobile] = useMediaQuery('(max-width: 768px)');
-  const columnHelper = createColumnHelper<UserGroupMember>();
+  const columnHelper = createColumnHelper<TeamMember>();
 
   const mobileColumns = useMemo(
     () => {
@@ -32,23 +31,28 @@ const TeamTable = ({ teamId }: TeamTableProps) => {
           cell: (info) => (
             <UserInfo name={`${info.getValue()} ${info.row.original.lastName}`}>
               <Text color="neutral.700" fontWeight={400}>
-                {info.row.original.email}
+                {info.row.original.username}
               </Text>
             </UserInfo>
           ),
           header: 'Name',
           enableSorting: false,
         }),
-        columnHelper.accessor('employeeStatus', {
-          cell: () => {
-            return <GenericStatusBox text="Not Active" />;
+        columnHelper.accessor('statusName', {
+          cell: (info) => {
+            return (
+              <GenericStatusBox
+                text={info.getValue()}
+                colorCode={info.row.original.displayColorCode}
+              />
+            );
           },
           header: 'Status',
           enableSorting: false,
         }),
-        columnHelper.accessor('employeeStatusId', {
-          cell: () => {
-            return 'Frontend Developer';
+        columnHelper.accessor('designationName', {
+          cell: (info) => {
+            return info.getValue();
           },
           header: 'Role',
           enableSorting: false,
@@ -66,28 +70,33 @@ const TeamTable = ({ teamId }: TeamTableProps) => {
           cell: (info) => (
             <UserInfo name={`${info.getValue()} ${info.row.original.lastName}`}>
               <Text color="neutral.700" fontWeight={400}>
-                {info.row.original.email}
+                {info.row.original.username}
               </Text>
             </UserInfo>
           ),
           header: 'Name',
           enableSorting: false,
         }),
-        columnHelper.accessor('employeeStatus', {
-          cell: () => {
-            return <GenericStatusBox text="Not Active" />;
+        columnHelper.accessor('statusName', {
+          cell: (info) => {
+            return (
+              <GenericStatusBox
+                text={info.getValue()}
+                colorCode={info.row.original.displayColorCode}
+              />
+            );
           },
           header: 'Status',
           enableSorting: false,
         }),
-        columnHelper.accessor('employeeStatusId', {
-          cell: () => {
-            return 'Frontend Developer';
+        columnHelper.accessor('designationName', {
+          cell: (info) => {
+            return info.getValue();
           },
           header: 'Role',
           enableSorting: false,
         }),
-        columnHelper.accessor('dateAdded', {
+        columnHelper.accessor('dateCreated', {
           cell: (info) =>
             dateFormatter(info.getValue(), 'DD / MM / YYYY') ?? 'N/A',
           header: 'Date Added',
@@ -107,7 +116,7 @@ const TeamTable = ({ teamId }: TeamTableProps) => {
   return (
     <DataTable
       columns={isMobile ? mobileColumns : columns}
-      data={[]}
+      data={data?.data?.items ?? []}
       isLoading={isLoading}
       isFetching={isFetching}
       totalPages={data?.data?.totalPages}

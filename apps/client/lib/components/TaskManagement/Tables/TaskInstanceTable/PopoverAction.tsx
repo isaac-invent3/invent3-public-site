@@ -2,7 +2,6 @@ import { Text, useDisclosure, VStack } from '@chakra-ui/react';
 import { getSession } from 'next-auth/react';
 
 import { GenericDeleteModal, GenericPopover } from '@repo/ui/components';
-import { useEffect } from 'react';
 import TaskFormDrawer from '~/lib/components/TaskManagement/Drawers/TaskFormDrawer';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
@@ -15,7 +14,6 @@ import {
   STATUS_CATEGORY_ENUM,
   SYSTEM_CONTEXT_DETAILS,
 } from '~/lib/utils/constants';
-import TaskDetailDrawer from '../../Drawers/TaskDetailDrawer';
 import MarkTaskAsCompletedModal from '../../Modals/MarkTaskAsCompletedModal';
 import usePermissionAccess from '~/lib/hooks/useRoleAccess';
 
@@ -58,7 +56,6 @@ const PopoverAction = (task: TaskInstance, type: 'drawer' | 'page') => {
   const { updateSearchParam, getSearchParam } = useCustomSearchParams();
 
   const taskSlugName = SYSTEM_CONTEXT_DETAILS.TASKS.slug;
-  const slugValue = getSearchParam(taskSlugName);
 
   const openAction = () => {
     updateSearchParam(taskSlugName, task?.taskInstanceId);
@@ -122,6 +119,7 @@ const PopoverAction = (task: TaskInstance, type: 'drawer' | 'page') => {
           isOpen={isOpenMarkCompleted}
           onClose={onCloseMarkCompleted}
           data={task}
+          closeDrawer={() => {}}
         />
       )}
     </>

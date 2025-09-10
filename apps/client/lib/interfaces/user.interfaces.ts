@@ -1,6 +1,7 @@
 import { BaseEntity } from '@repo/interfaces';
 import { EMPLOYEE_TYPE_ENUM, FORM_ENUM } from '../utils/constants';
 import { BaseDto, Document, LocationDto } from './general.interfaces';
+import { UserTeam } from './team.interfaces';
 
 interface Employee {
   employeeId: number;
@@ -43,6 +44,7 @@ interface User {
   locationId: number;
   lgaId: number;
   stateId: number;
+  employmentType: number;
   facilityName: string;
   facilityRef: string;
   address: string;
@@ -57,6 +59,7 @@ interface User {
   userRoles: UserRole[];
   userGroups: UserGroup[];
   userPermissions: UserPermission[];
+  userTeams: UserTeam[];
 }
 
 export interface UserDesignationInfo {

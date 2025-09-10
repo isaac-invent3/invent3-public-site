@@ -25,10 +25,11 @@ import { useAppSelector } from '~/lib/redux/hooks';
 interface MarkTaskAsCompletedModalProps {
   isOpen: boolean;
   onClose: () => void;
+  closeDrawer: () => void;
   data?: TaskInstance;
 }
 const MarkTaskAsCompletedModal = (props: MarkTaskAsCompletedModalProps) => {
-  const { isOpen, onClose, data } = props;
+  const { isOpen, onClose, data, closeDrawer } = props;
   const { handleSubmit } = useCustomMutation();
   const {
     isOpen: isOpenSuccess,
@@ -69,7 +70,8 @@ const MarkTaskAsCompletedModal = (props: MarkTaskAsCompletedModalProps) => {
       response = await handleSubmit(
         updateTask,
         info,
-        'Task Marked as Completed Successfully!'
+        // 'Task Marked as Completed Successfully!'
+        ''
       );
       if (response?.data) {
         onOpenSuccess();
@@ -80,6 +82,7 @@ const MarkTaskAsCompletedModal = (props: MarkTaskAsCompletedModalProps) => {
   const handleCloseSuccessModal = () => {
     onCloseSuccess();
     onClose();
+    closeDrawer();
   };
 
   return (

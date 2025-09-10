@@ -155,7 +155,7 @@ const AdminList = (props: AdminListProps) => {
       }));
     }
     return [];
-  }, []);
+  }, [data]);
 
   const handleAddAdmin = () => {
     if (selectedRows.length > 0) {

@@ -103,7 +103,7 @@ const APIKeys = () => {
       }}
       spacing={{ lg: '220px' }}
     >
-      <Flex width="full">
+      <Flex width="full" overflow="auto">
         <DataTable
           columns={isMobile ? mobileColumns : columns}
           data={data?.data?.items ?? []}

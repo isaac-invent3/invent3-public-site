@@ -14,6 +14,10 @@ import { FilterIcon } from '~/lib/components/CustomIcons';
 import { useGetAllThirdPartyIntegrationsQuery } from '~/lib/redux/services/integration.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import ThirdPartyDetailDrawer from './DetailDrawer';
+import { useAppSelector } from '~/lib/redux/hooks';
+import { useUpdateSettingsMutation } from '~/lib/redux/services/utility.services';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
+import { getSession } from 'next-auth/react';
 
 const ThirdParty = () => {
   // eslint-disable-next-line no-unused-vars
@@ -21,14 +25,41 @@ const ThirdParty = () => {
   const { data, isLoading } = useGetAllThirdPartyIntegrationsQuery({
     pageSize: DEFAULT_PAGE_SIZE,
   });
+  const { handleSubmit } = useCustomMutation();
+  const [updateSettings] = useUpdateSettingsMutation();
+  const settings = useAppSelector((state) => state.settings.settings);
+  const [isEnabled, setIsEnabled] = useState(
+    settings?.enableThirdPartyIntegration
+  );
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const toggleIntegrations = async (value: boolean) => {
+    const session = await getSession();
+    await handleSubmit(
+      updateSettings,
+      {
+        enableThirdPartyIntegration: value,
+        settingsId: settings?.settingId!,
+        companyId: session?.user?.companyId!,
+        lastModifiedBy: session?.user?.username!,
+      },
+      ''
+    );
+  };
   return (
     <VStack spacing="24px" width="full" alignItems="flex-start">
       <HStack width="full" justifyContent="space-between">
         <Text fontWeight={700} size="lg">
           Third-Party Integrations
         </Text>
-        <Switch size="sm" />
+        <Switch
+          size="sm"
+          isChecked={isEnabled}
+          onChange={() => {
+            toggleIntegrations(!isEnabled);
+            setIsEnabled((prev) => !prev);
+          }}
+        />
       </HStack>
       <VStack width="full" spacing="16px">
         <SectionWrapper

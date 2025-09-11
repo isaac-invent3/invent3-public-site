@@ -102,7 +102,13 @@ const Webhooks = () => {
         }}
         spacing={{ lg: '220px' }}
       >
-        <Flex width="full" direction="column" alignItems="flex-end" gap="16px">
+        <Flex
+          width="full"
+          direction="column"
+          alignItems="flex-end"
+          gap="16px"
+          overflow="auto"
+        >
           <Button
             customStyles={{ width: 'min-content', height: '36px' }}
             handleClick={onOpen}

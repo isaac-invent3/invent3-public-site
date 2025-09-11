@@ -139,10 +139,10 @@ const TicketDrawerBodyHeader = (props: TicketDrawerBodyHeaderProps) => {
           spacing="20px"
           alignItems="flex-start"
           justifyContent="space-between"
-          flexWrap="wrap"
+          // flexWrap="wrap"
           width="full"
         >
-          <HStack spacing="16px" flexWrap="wrap">
+          <HStack spacing="16px">
             <VStack alignItems="flex-start" spacing="8px">
               <Text color="neutral.600">Status:</Text>
               <TicketInfoDropDown
@@ -179,39 +179,40 @@ const TicketDrawerBodyHeader = (props: TicketDrawerBodyHeaderProps) => {
               />
             </VStack>
           </HStack>
-
-          <VStack alignItems="flex-start" spacing="8px">
-            <Text color="neutral.600">Ticket Type</Text>
-            <TicketInfoDropDown
-              label="Ticket Type"
-              name="ticketTypeId"
-              isLoading={isFetchingTicketTypes}
-              width={action === 'edit' ? '110px' : '150px'}
-              colorCode="#6E7D8E33"
-              showColorDot={false}
-              hasBorder={false}
-              options={generateOptions(
-                ticketTypes?.data.items,
-                'ticketTypeName',
-                'ticketTypeId'
-              )}
-            />
-          </VStack>
-
-          {action === 'edit' && (
-            <VStack alignItems="flex-start" spacing="15px">
-              <Text color="neutral.600">Due Date</Text>
-              {/* TODO: Insert End Date here */}
-              <Text color="black">
-                {isFetchingSchedule
-                  ? 'Loading ...'
-                  : dateFormatter(
-                      maintenanceSchedule?.data.endDate,
-                      'DD-MM-YYYY '
-                    )}
-              </Text>
+          <HStack spacing="20px" alignItems="flex-start">
+            <VStack alignItems="flex-start" spacing="8px">
+              <Text color="neutral.600">Ticket Type</Text>
+              <TicketInfoDropDown
+                label="Ticket Type"
+                name="ticketTypeId"
+                isLoading={isFetchingTicketTypes}
+                width={action === 'edit' ? '110px' : '150px'}
+                colorCode="#6E7D8E33"
+                showColorDot={false}
+                hasBorder={false}
+                options={generateOptions(
+                  ticketTypes?.data.items,
+                  'ticketTypeName',
+                  'ticketTypeId'
+                )}
+              />
             </VStack>
-          )}
+
+            {action === 'edit' && (
+              <VStack alignItems="flex-start" spacing="15px">
+                <Text color="neutral.600">Due Date</Text>
+                {/* TODO: Insert End Date here */}
+                <Text color="black" whiteSpace="nowrap">
+                  {isFetchingSchedule
+                    ? 'Loading ...'
+                    : dateFormatter(
+                        maintenanceSchedule?.data.endDate,
+                        'DD-MM-YYYY '
+                      )}
+                </Text>
+              </VStack>
+            )}
+          </HStack>
         </HStack>
       </HStack>
     </TicketInfoHeader>

@@ -161,6 +161,19 @@ const createApprovalWorkflowSchema = Yup.object().shape({
   ),
 });
 
+const apiKeySchema = Yup.object().shape({
+  companyApiKeyName: Yup.string().required('Name is Required'),
+  usageLimit: Yup.number().required('Usage Limit is Required'),
+  statusId: Yup.number().nullable(),
+});
+
+const webhookSchema = Yup.object().shape({
+  webhookUrlName: Yup.string().required('Name is Required'),
+  event: Yup.string().required('Event is Required'),
+  secret: Yup.string().nullable(),
+  authKey: Yup.string().nullable(),
+});
+
 export {
   generalSchema,
   notificationSchema,
@@ -169,4 +182,6 @@ export {
   complianceSchema,
   bmsSettingsSchema,
   createApprovalWorkflowSchema,
+  apiKeySchema,
+  webhookSchema,
 };

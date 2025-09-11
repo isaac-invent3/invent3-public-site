@@ -91,6 +91,7 @@ import { moduleApi } from './services/modules.services';
 import { superAdminApi } from './services/dashboard/superadmin.services';
 import { clientAdminApi } from './services/dashboard/clientadmin.services';
 import { industryApi } from './services/industry.services';
+import { integrationApi } from './services/integration.services';
 import { subscriptionApi } from './services/subscription.services';
 import { thirdPartyApi } from './services/dashboard/thirdparty.services';
 import { complianceApi } from './services/asset/compliance.services';
@@ -106,6 +107,9 @@ import { approvalWorkflowRequestCommentApi } from './services/approval-workflow/
 import { assetBulkActionApi } from './services/asset/bulkAction.services';
 import { designationApi } from './services/designation.services';
 import { teamApi } from './services/team.services';
+import { companyApiKey } from './services/apiKey.services';
+import { webhookApi } from './services/webhook.services';
+
 export const persistConfig = {
   key: 'root',
   storage,
@@ -249,6 +253,15 @@ const rootReducer = combineReducers({
 
   // Teams APIS
   [teamApi.reducerPath]: teamApi.reducer,
+
+  // Integrations APIS
+  [integrationApi.reducerPath]: integrationApi.reducer,
+
+  // Company API Keys APIS
+  [companyApiKey.reducerPath]: companyApiKey.reducer,
+
+  // Webhook URL APIS
+  [webhookApi.reducerPath]: webhookApi.reducer,
 
   // Auth APIS
   [authApi.reducerPath]: authApi.reducer,
@@ -411,6 +424,15 @@ export const makeStore = () => {
 
         // Teams Apis
         teamApi.middleware,
+
+        // Integration Apis
+        integrationApi.middleware,
+
+        // APIKeys Apis
+        companyApiKey.middleware,
+
+        // Webhook Apis
+        webhookApi.middleware,
 
         // Auth Apis
         authApi.middleware,

@@ -6,7 +6,7 @@ interface DetailProps {
   labelStyle?: TextProps;
   valueStyle?: TextProps;
   itemContainerStyle?: StackProps;
-  labelMinWidth: string | object
+  labelMinWidth?: string | object;
   label: string;
   value?: string | number | React.ReactNode;
   children?: React.ReactNode;

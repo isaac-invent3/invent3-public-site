@@ -19,6 +19,7 @@ import Description from '../Common/Description';
 import ViewAttachement from '~/lib/components/Common/AttachFileAndView/ViewAttachement';
 import { useGetTicketDocumentsByIdQuery } from '~/lib/redux/services/ticket.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import SourceAlert from './SourceAlert';
 
 interface TicketDrawerBodySubSectionProps {
   data: Ticket;
@@ -48,6 +49,7 @@ const TicketDrawerBodySubSection = (props: TicketDrawerBodySubSectionProps) => {
 
   return (
     <VStack width="full" alignItems="flex-start" spacing="32px" py="24px">
+      <SourceAlert />
       <HStack
         width="full"
         alignItems="flex-start"

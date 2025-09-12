@@ -89,6 +89,10 @@ const clientSideBarData: SideBarData[] = [
         name: 'Asset Count',
         route: `${ROUTES.ASSETS}/asset-count`,
       },
+      {
+        name: 'Lifecycle Dashboard',
+        route: `${ROUTES.ASSETS}/lifecycle`,
+      },
     ],
     description:
       'Organize, track, and optimize asset lifecycles for efficiency and cost savings.',

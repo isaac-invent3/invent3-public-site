@@ -11,6 +11,7 @@ const ROUTES_PERMISSION_KEY: { [name: string]: PermissionKey } = {
   [`/${ROUTES.ASSETS}/[id]/transfer`]: 'asset:transfer',
   [`/${ROUTES.ASSETS}/bulk-dispose`]: 'asset:dispose',
   [`/${ROUTES.ASSETS}/bulk-transfer`]: 'asset:transfer',
+  [`/${ROUTES.ASSETS}/lifecycle`]: 'asset',
   [`/${ROUTES.MAINTENANCE}`]: 'maintenance',
   [`/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_PLANS}`]: 'maintenance',
   [`/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_PLANS}/add`]:

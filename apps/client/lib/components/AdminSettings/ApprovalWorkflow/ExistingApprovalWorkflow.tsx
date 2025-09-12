@@ -1,4 +1,5 @@
 import {
+  Accordion,
   Collapse,
   Flex,
   HStack,
@@ -238,7 +239,7 @@ const ExistingApprovalWorkflow = ({ data }: ExistingApprovalWorkflowProps) => {
                 alignItems="flex-start"
                 position="relative"
                 bgColor="#F7F7F7"
-                px="40px"
+                px="16px"
                 pt="20px"
               >
                 {shouldEdit && (
@@ -277,13 +278,15 @@ const ExistingApprovalWorkflow = ({ data }: ExistingApprovalWorkflowProps) => {
                   </SectionWrapper>
                 )}
                 <VStack width="full" spacing="32px">
-                  {formik.values.levels.map((level, index) => (
-                    <Approvers
-                      data={level}
-                      key={index}
-                      shouldEdit={shouldEdit}
-                    />
-                  ))}
+                  <Accordion width="full" allowToggle>
+                    {formik.values.levels.map((level, index) => (
+                      <Approvers
+                        data={level}
+                        key={index}
+                        shouldEdit={shouldEdit}
+                      />
+                    ))}
+                  </Accordion>
                 </VStack>
 
                 <Flex width="full" justifyContent="flex-end" pb="16px">

@@ -1,4 +1,5 @@
 import {
+  Accordion,
   Flex,
   Heading,
   HStack,
@@ -113,11 +114,12 @@ const CreateApprovalWorkflow = ({
           spacing="24px"
           width="full"
           alignItems="flex-start"
-          bgColor="#F7F7F7"
+          bgColor="#F0F0F0"
           p={{ base: '16px', md: '24px' }}
+          rounded="16px"
         >
           <Heading fontWeight={800} color="primary.500">
-            Create a New Approval
+            Create a New Approval Flow
           </Heading>
           <VStack
             spacing="16px"
@@ -172,7 +174,69 @@ const CreateApprovalWorkflow = ({
                 selectStyles={{
                   height: '46px',
                   pt: '0px',
-                  backgroundColor: '#EBEBEB',
+                  backgroundColor: '#FCFCFC',
+                }}
+                showTitleAfterSelect={false}
+              />
+            </SectionWrapper>
+            <SectionWrapper
+              title="Turnaround Time"
+              subtitle="How long for each approver to act on the request."
+              spacing={{ base: '8px', sm: '16px', lg: '128px' }}
+              direction={{ base: 'column', lg: 'row' }}
+              sectionInfoStyle={{
+                width: { lg: '246px' },
+              }}
+              subtitleStyle={{ width: '246px' }}
+              width="full"
+              justifyContent="space-between"
+              alignItems={{ base: 'flex-start', lg: 'center' }}
+            >
+              <FormSelect
+                name="turnaroundTime"
+                title="Duration"
+                options={[24, 48, 64].map((item, index) => ({
+                  label: `${item}hrs`,
+                  value: index + 1,
+                }))}
+                containerStyles={{
+                  width: isMobile ? '100%' : '179px',
+                }}
+                selectStyles={{
+                  height: '46px',
+                  pt: '0px',
+                  backgroundColor: '#FCFCFC',
+                }}
+                showTitleAfterSelect={false}
+              />
+            </SectionWrapper>
+            <SectionWrapper
+              title="Escalation Turnaround Time"
+              subtitle="How long for each escalated approver to act on the request."
+              spacing={{ base: '8px', sm: '16px', lg: '128px' }}
+              direction={{ base: 'column', lg: 'row' }}
+              sectionInfoStyle={{
+                width: { lg: '246px' },
+              }}
+              subtitleStyle={{ width: '246px' }}
+              width="full"
+              justifyContent="space-between"
+              alignItems={{ base: 'flex-start', lg: 'center' }}
+            >
+              <FormSelect
+                name="escalationTurnaroundTime"
+                title="Duration"
+                options={[24, 48, 64].map((item, index) => ({
+                  label: `${item}hrs`,
+                  value: index + 1,
+                }))}
+                containerStyles={{
+                  width: isMobile ? '100%' : '179px',
+                }}
+                selectStyles={{
+                  height: '46px',
+                  pt: '0px',
+                  backgroundColor: '#FCFCFC',
                 }}
                 showTitleAfterSelect={false}
               />
@@ -184,13 +248,15 @@ const CreateApprovalWorkflow = ({
               alignItems="flex-start"
               spacing="32px"
             >
-              <Text fontSize="16px" color="primary.500" fontWeight={800}>
+              <Text fontSize="16px" color="primary.500" fontWeight={700}>
                 Add Approvers For Each Level
               </Text>
               <VStack width="full" spacing="32px">
-                {formik.values.levels.map((level, index) => (
-                  <Approvers data={level} key={index} />
-                ))}
+                <Accordion width="full" allowToggle>
+                  {formik.values.levels.map((level, index) => (
+                    <Approvers data={level} key={index} />
+                  ))}
+                </Accordion>
               </VStack>
             </VStack>
           </VStack>

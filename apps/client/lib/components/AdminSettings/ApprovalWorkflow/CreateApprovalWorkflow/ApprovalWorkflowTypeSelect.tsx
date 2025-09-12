@@ -55,7 +55,7 @@ const ApprovalWorkflowTypeSelect = (props: ApprovalWorkflowTypeSelectProps) => {
       selectStyles={{
         height: '46px',
         pt: '0px',
-        backgroundColor: '#EBEBEB',
+        backgroundColor: '#FCFCFC',
       }}
       showTitleAfterSelect={false}
     />

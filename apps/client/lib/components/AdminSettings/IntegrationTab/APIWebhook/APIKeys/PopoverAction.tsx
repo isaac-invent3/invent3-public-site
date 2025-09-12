@@ -4,6 +4,8 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';
 import { useDeleteCompanyApiKeyMutation } from '~/lib/redux/services/apiKey.services';
 import { CompanyApiKeys } from '~/lib/interfaces/apiKey.interfaces';
+import { USER_STATUS_ENUM } from '~/lib/utils/constants';
+import ToggleAPIKeyModal from './ToggleAPIKeyModal';
 
 const PopoverAction = ({ data }: { data: CompanyApiKeys }) => {
   const {
@@ -11,6 +13,8 @@ const PopoverAction = ({ data }: { data: CompanyApiKeys }) => {
     onOpen: onOpenDelete,
     onClose: onCloseDelete,
   } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const isActive = data?.statusId === USER_STATUS_ENUM.ACTIVE;
 
   const { handleSubmit } = useCustomMutation();
   const [deleteAPiKey, { isLoading }] = useDeleteCompanyApiKeyMutation({});
@@ -31,11 +35,16 @@ const PopoverAction = ({ data }: { data: CompanyApiKeys }) => {
     <>
       <GenericPopover width="129px" placement="bottom-start">
         <VStack width="full" alignItems="flex-start" spacing="16px">
-          <Text cursor="pointer" onClick={onOpenDelete} color="#F50000">
-            Delete
+          <Text
+            cursor="pointer"
+            color={isActive ? 'red.500' : 'black'}
+            onClick={() => onOpen()}
+          >
+            {isActive ? 'Revoke' : 'Activate'}
           </Text>
         </VStack>
       </GenericPopover>
+      <ToggleAPIKeyModal isOpen={isOpen} onClose={onClose} apiKey={data} />
       {isOpenDelete && (
         <GenericDeleteModal
           isOpen={isOpenDelete}

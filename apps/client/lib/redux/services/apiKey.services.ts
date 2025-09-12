@@ -50,6 +50,18 @@ export const companyApiKey = createApi({
       }),
       invalidatesTags: ['allCompanyApiKeys'],
     }),
+    toggleAPIKeyStatus: builder.mutation<
+      BaseApiResponse<CompanyApiKeys>,
+      { id: number; lastModifiedBy: string }
+    >({
+      query: ({ id, ...body }) => ({
+        url: generateQueryStr(`/CompanyApiKeys/ToggleStatus/${id}?`, body),
+        method: 'PUT',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allCompanyApiKeys'],
+    }),
   }),
 });
 
@@ -57,4 +69,5 @@ export const {
   useGetAllCompanyApiKeysQuery,
   useDeleteCompanyApiKeyMutation,
   useCreateAPIKeyMutation,
+  useToggleAPIKeyStatusMutation,
 } = companyApiKey;

@@ -4,9 +4,16 @@ interface GenericStatusBoxProps extends StackProps {
   colorCode?: string | null;
   text: string;
   textStyles?: TextProps;
+  showDot?: boolean;
 }
 const GenericStatusBox = (props: GenericStatusBoxProps) => {
-  const { colorCode = '#8595A5', text, textStyles, ...rest } = props;
+  const {
+    colorCode = '#8595A5',
+    text,
+    textStyles,
+    showDot = true,
+    ...rest
+  } = props;
   return (
     <HStack
       padding="6px"
@@ -19,13 +26,15 @@ const GenericStatusBox = (props: GenericStatusBoxProps) => {
       whiteSpace="nowrap"
       {...rest}
     >
-      <Box
-        width="8px"
-        height="8px"
-        rounded="full"
-        bgColor={colorCode ?? '#8595A5'}
-        flexShrink={0}
-      />
+      {showDot && (
+        <Box
+          width="8px"
+          height="8px"
+          rounded="full"
+          bgColor={colorCode ?? '#8595A5'}
+          flexShrink={0}
+        />
+      )}
       <Text
         color="black"
         textOverflow="ellipsis"

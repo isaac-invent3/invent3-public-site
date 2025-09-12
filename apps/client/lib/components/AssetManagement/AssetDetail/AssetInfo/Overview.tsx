@@ -33,6 +33,7 @@ const Overview = () => {
     brandName,
     modelRef,
     displayColorCode,
+    assetCode,
   } = assetData;
 
   const assetInfo1 = [
@@ -40,9 +41,6 @@ const Overview = () => {
       label: 'Make:',
       value: brandName ?? 'N/A',
     },
-  ];
-
-  const assetInfo2 = [
     {
       label: 'Model:',
       value: modelRef ?? 'N/A',
@@ -50,6 +48,21 @@ const Overview = () => {
     {
       label: 'Serial Number:',
       value: serialNo ?? 'N/A',
+    },
+  ];
+
+  const assetInfo2 = [
+    {
+      label: 'Asset Code:',
+      value: assetCode ?? 'N/A',
+    },
+    {
+      label: 'Asset ID:',
+      value: assetId ?? 'N/A',
+    },
+    {
+      label: 'Time in Stage:',
+      value: '3 years, 2 months',
     },
   ];
 
@@ -94,65 +107,49 @@ const Overview = () => {
         </Flex>
       )}
       <VStack alignItems="flex-start" width="full" spacing="16px">
-        <HStack spacing="16px">
-          <Heading
-            as="h3"
-            size={{ base: 'lg', md: 'xl' }}
-            fontWeight={{ base: 700, md: 800 }}
+        <HStack width="full" justifyContent="space-between">
+          <HStack spacing="16px">
+            <Heading
+              as="h3"
+              size={{ base: 'lg', md: 'xl' }}
+              fontWeight={{ base: 700, md: 800 }}
+            >
+              {assetName}
+            </Heading>
+            <GenericStatusBox
+              text={currentStatus}
+              colorCode={displayColorCode}
+              showDot={false}
+            />
+          </HStack>
+          <Flex
+            bgColor="white"
+            height={{ base: '37px', md: '50px' }}
+            width={{ base: '92px', md: '121px' }}
           >
-            {assetName}
-          </Heading>
+            <ReactBarcode
+              value={assetId ? assetId.toString() : ''}
+              renderer={Renderer.CANVAS}
+              options={{ displayValue: false, margin: 0 }}
+              style={{
+                width: '100%',
+                height: '100%',
+              }}
+            />
+          </Flex>
         </HStack>
         <Stack
           width="full"
           direction={{ base: 'column', md: 'row' }}
           spacing={{ base: '8px', md: '42px' }}
-          alignItems="flex-start"
+          alignItems="flex-end"
         >
           <VStack alignItems="flex-start" spacing="8px">
-            <HStack spacing="8px" alignItems="center">
-              <Text
-                color="neutral.600"
-                minW={{ base: '95px', md: '65px' }}
-                size="md"
-              >
-                Status:
-              </Text>
-              <GenericStatusBox
-                text={currentStatus}
-                colorCode={displayColorCode}
-              />
-            </HStack>
-            <HStack spacing="8px" alignItems="flex-start">
-              <Text
-                size="md"
-                color="neutral.600"
-                minW={{ base: '95px', md: '65px' }}
-              >
-                Asset ID:
-              </Text>
-              <Text size="md" color="black">
-                {assetId}
-              </Text>
-            </HStack>
-            <HStack spacing="8px" alignItems="flex-start">
-              <Text
-                color="neutral.600"
-                size="md"
-                minW={{ base: '95px', md: '65px' }}
-                whiteSpace="nowrap"
-              >
-                Category:
-              </Text>
-              <Text size="md" color="black">
-                {assetCategory}
-              </Text>
-            </HStack>
             {assetInfo1.map((info, index) => (
               <HStack spacing="8px" alignItems="flex-start" key={index}>
                 <Text
                   color="neutral.600"
-                  minW={{ base: '95px', md: '65px' }}
+                  minW={{ base: '95px', md: '102px' }}
                   size="md"
                 >
                   {info.label}
@@ -162,6 +159,20 @@ const Overview = () => {
                 </Text>
               </HStack>
             ))}
+            <HStack spacing="8px" alignItems="center">
+              <Text
+                color="neutral.600"
+                minW={{ base: '95px', md: '65px' }}
+                size="md"
+              >
+                LifeCycle Stage:
+              </Text>
+              <GenericStatusBox
+                text="In Use"
+                colorCode="#058828"
+                showDot={false}
+              />
+            </HStack>
           </VStack>
           <VStack alignItems="flex-start" spacing="8px">
             {assetInfo2.map((info, index) => (
@@ -174,26 +185,6 @@ const Overview = () => {
                 </Text>
               </HStack>
             ))}
-            <HStack alignItems="flex-start" spacing="12px">
-              <Text color="neutral.600" width="95px" size="md">
-                Barcode:
-              </Text>
-              <Flex
-                bgColor="white"
-                height={{ base: '37px', md: '71px' }}
-                width={{ base: '92px', md: '175px' }}
-              >
-                <ReactBarcode
-                  value={assetId ? assetId.toString() : ''}
-                  renderer={Renderer.CANVAS}
-                  options={{ displayValue: false, margin: 0 }}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                  }}
-                />
-              </Flex>
-            </HStack>
           </VStack>
         </Stack>
       </VStack>

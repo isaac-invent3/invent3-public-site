@@ -29,7 +29,7 @@ const CompanyForm = (props: CompanyFormProps) => {
 
   const THIRD_PARTY_STEPS = [
     'Company Info',
-    'Company Contact',
+    'Company Administrators',
     'Authentication Protocol',
     'Summary',
   ];

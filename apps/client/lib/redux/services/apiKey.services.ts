@@ -55,7 +55,7 @@ export const companyApiKey = createApi({
       { id: number; lastModifiedBy: string }
     >({
       query: ({ id, ...body }) => ({
-        url: generateQueryStr(`/CompanyApiKeys/ToggleStatus/${id}?`, body),
+        url: generateQueryStr(`/CompanyApiKeys/ToggleKeyStatus/${id}?`, body),
         method: 'PUT',
         headers: getHeaders(),
         body,

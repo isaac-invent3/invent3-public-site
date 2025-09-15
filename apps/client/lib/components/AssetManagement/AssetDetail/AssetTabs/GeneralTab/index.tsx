@@ -1,13 +1,21 @@
-import { VStack } from '@chakra-ui/react';
+import { SimpleGrid } from '@chakra-ui/react';
 import InfoOne from './InfoOne';
-import InfoTwo from './InfoTwo.tsx';
+import AssetMap from './AssetMap';
 
 const GeneralTab = () => {
   return (
-    <VStack width="full" spacing="30px" my="24px">
+    <SimpleGrid
+      width="full"
+      spacing="16px"
+      my="24px"
+      bgColor="white"
+      p={{ base: '8px', lg: '16px' }}
+      rounded="8px"
+      columns={{ base: 1, lg: 2 }}
+    >
       <InfoOne />
-      <InfoTwo />
-    </VStack>
+      <AssetMap />
+    </SimpleGrid>
   );
 };
 

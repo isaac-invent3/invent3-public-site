@@ -5,6 +5,7 @@ interface GenericStatusBoxProps extends StackProps {
   text: string;
   textStyles?: TextProps;
   showDot?: boolean;
+  useColorCodeAsTextColor?: boolean;
 }
 const GenericStatusBox = (props: GenericStatusBoxProps) => {
   const {
@@ -12,6 +13,7 @@ const GenericStatusBox = (props: GenericStatusBoxProps) => {
     text,
     textStyles,
     showDot = true,
+    useColorCodeAsTextColor = false,
     ...rest
   } = props;
   return (
@@ -36,7 +38,7 @@ const GenericStatusBox = (props: GenericStatusBoxProps) => {
         />
       )}
       <Text
-        color="black"
+        color={useColorCodeAsTextColor && colorCode ? colorCode : 'black'}
         textOverflow="ellipsis"
         noOfLines={2}
         textTransform="capitalize"

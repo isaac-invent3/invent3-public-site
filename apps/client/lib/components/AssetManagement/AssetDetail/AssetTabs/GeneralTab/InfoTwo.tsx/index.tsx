@@ -1,5 +1,5 @@
 import { Flex, SimpleGrid } from '@chakra-ui/react';
-import OwnersInfo from './OwnersInfo';
+import OwnersInfo from '../InfoOne/OwnersInfo';
 import dynamic from 'next/dynamic';
 
 const MapViewDynamic = dynamic(() => import('./MapView'), { ssr: false });

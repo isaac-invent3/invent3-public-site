@@ -57,11 +57,12 @@ const Overview = () => {
     <Stack
       width="full"
       py={{ base: '16px', md: '24px' }}
-      px={{ base: '16px', md: '32px' }}
-      bgColor="#B4BFCA4D"
+      px={{ base: '16px' }}
+      bgColor="white"
       spacing="24px"
       alignItems="flex-start"
       direction={{ base: 'column', sm: 'row' }}
+      rounded="8px"
     >
       {generalInfo.loadingImage ? (
         <Skeleton
@@ -77,7 +78,7 @@ const Overview = () => {
           height={{ base: '97px', md: '175px' }}
           width={{ base: '120px', md: '216px' }}
           rounded="16px"
-          bgColor="white"
+          bgColor="#E6E6E6"
           overflow="hidden"
           flexShrink={0}
           objectFit="cover"
@@ -94,14 +95,37 @@ const Overview = () => {
         </Flex>
       )}
       <VStack alignItems="flex-start" width="full" spacing="16px">
-        <HStack spacing="16px">
-          <Heading
-            as="h3"
-            size={{ base: 'lg', md: 'xl' }}
-            fontWeight={{ base: 700, md: 800 }}
+        <HStack width="full" justifyContent="space-between">
+          <HStack spacing="16px" width="full">
+            <Heading
+              as="h3"
+              size={{ base: 'lg', md: 'xl' }}
+              fontWeight={{ base: 700, md: 800 }}
+            >
+              {assetName}
+            </Heading>
+            <GenericStatusBox
+              text={currentStatus}
+              colorCode={displayColorCode}
+              showDot={false}
+              useColorCodeAsTextColor={true}
+            />
+          </HStack>
+          <Flex
+            bgColor="white"
+            height={{ base: '37px', md: '50px' }}
+            width={{ base: '92px', md: '121px' }}
           >
-            {assetName}
-          </Heading>
+            <ReactBarcode
+              value={assetId ? assetId.toString() : ''}
+              renderer={Renderer.CANVAS}
+              options={{ displayValue: false, margin: 0 }}
+              style={{
+                width: '100%',
+                height: '100%',
+              }}
+            />
+          </Flex>
         </HStack>
         <Stack
           width="full"

@@ -1,6 +1,6 @@
 import { VStack } from '@chakra-ui/react';
-import DetailSection from '../../../DetailSection';
 import { useAppSelector } from '~/lib/redux/hooks';
+import Detail from '~/lib/components/UI/ContentDetails/Detail';
 
 const OwnersInfo = () => {
   const assetData = useAppSelector((state) => state.asset.asset);
@@ -30,12 +30,10 @@ const OwnersInfo = () => {
     },
   ];
   return (
-    <VStack alignItems="flex-start" spacing="16px" width="full">
-      <DetailSection
-        labelMinWidth="101px"
-        details={details}
-        header="Owner's Info"
-      />
+    <VStack alignItems="flex-start" spacing="8px" width="full">
+      {details.map((item, index) => (
+        <Detail {...item} key={index} labelMinWidth="100px" />
+      ))}
     </VStack>
   );
 };

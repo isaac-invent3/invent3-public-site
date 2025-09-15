@@ -1,6 +1,7 @@
 import {
   Drawer,
   DrawerContent,
+  DrawerContentProps,
   DrawerOverlay,
   DrawerProps,
 } from '@chakra-ui/react';
@@ -12,10 +13,18 @@ interface IGenericDrawer {
   children: React.ReactNode;
   maxWidth?: string;
   customStyle?: Omit<DrawerProps, 'onClose' | 'isOpen' | 'children'>;
+  customContentStyle?: DrawerContentProps;
 }
 
 const GenericDrawer = (props: IGenericDrawer) => {
-  const { isOpen, onClose, children, maxWidth } = props;
+  const {
+    isOpen,
+    onClose,
+    children,
+    maxWidth,
+    customStyle,
+    customContentStyle,
+  } = props;
   const [innerHeight, setH] = useState<number>(
     typeof window !== 'undefined' ? window.innerHeight : 100
   );
@@ -43,6 +52,7 @@ const GenericDrawer = (props: IGenericDrawer) => {
       blockScrollOnMount={false}
       preserveScrollBarGap={true}
       trapFocus={false}
+      {...customStyle}
     >
       <DrawerOverlay
         height={`${innerHeight}px !important`}
@@ -56,6 +66,7 @@ const GenericDrawer = (props: IGenericDrawer) => {
         overflow="auto"
         position="relative"
         zIndex={999}
+        {...customContentStyle}
       >
         {children}
       </DrawerContent>

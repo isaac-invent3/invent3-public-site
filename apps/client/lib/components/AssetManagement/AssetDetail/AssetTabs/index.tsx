@@ -15,6 +15,8 @@ import HistoryTab from './HistoryTab';
 import MaintenanceTab from './MaintenanceTab';
 import RelationshipTab from './RelationshipTab';
 import AssetTickets from './AssetTickets';
+import DepreciationTab from './DepreciationTab';
+import FailureForecast from './FailureForecast';
 
 const AssetTabs = () => {
   const [tabIndex, setTabIndex] = useState(0);
@@ -34,11 +36,11 @@ const AssetTabs = () => {
       slug: 'maintenancePlan',
       component: <MaintenanceTab />,
     },
-    {
-      label: 'Maintenance History',
-      slug: 'maintenanceHistory',
-      component: <HistoryTab />,
-    },
+    // {
+    //   label: 'Maintenance History',
+    //   slug: 'maintenanceHistory',
+    //   component: <HistoryTab />,
+    // },
     {
       label: 'Documents',
       slug: 'assetDocuments',
@@ -53,6 +55,16 @@ const AssetTabs = () => {
       label: 'Open Tickets',
       slug: 'openTickets',
       component: <AssetTickets />,
+    },
+    {
+      label: 'Depreciation',
+      slug: 'depreciation',
+      component: <DepreciationTab />,
+    },
+    {
+      label: 'Failure Forecast',
+      slug: 'failureForecast',
+      component: <FailureForecast />,
     },
   ];
 
@@ -89,7 +101,7 @@ const AssetTabs = () => {
 
         <TabPanels>
           {AllTabs.map((item, index) => (
-            <TabPanel key={item.label}>
+            <TabPanel key={item.label} mb="24px">
               {index === tabIndex && item.component}
             </TabPanel>
           ))}

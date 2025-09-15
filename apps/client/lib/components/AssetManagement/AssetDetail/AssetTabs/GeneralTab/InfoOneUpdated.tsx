@@ -3,7 +3,7 @@ import DetailHeader from '../../../../UI/DetailHeader';
 import DetailSection from '../../DetailSection';
 import { useAppSelector } from '~/lib/redux/hooks';
 import PhotoViewer from './InfoTwo.tsx/Photos';
-import OwnersInfo from './InfoTwo.tsx/OwnersInfo';
+import OwnersInfo from './InfoOne/OwnersInfo';
 
 const InfoOne = () => {
   const assetData = useAppSelector((state) => state.asset.asset);

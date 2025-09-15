@@ -1,4 +1,4 @@
-import { Flex, Grid, GridItem, Skeleton } from '@chakra-ui/react';
+import { Flex, Grid, GridItem, SimpleGrid, Skeleton } from '@chakra-ui/react';
 import DetailSection from '../../../DetailSection';
 import VendorDetails from './VendorDetails';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
@@ -35,31 +35,46 @@ const InfoOne = (props: InfoOneProps) => {
       value: data?.conditionName ?? 'N/A',
     },
   ];
+
+  const details2 = [
+    {
+      label: 'Start Date:',
+      value: data?.warrantyStartDate
+        ? dateFormatter(data?.warrantyStartDate, 'Do MMM, YYYY')
+        : 'N/A',
+    },
+    {
+      label: 'End Date:',
+      value: data?.warrantyEndDate
+        ? dateFormatter(data?.warrantyEndDate, 'Do MMM, YYYY')
+        : 'N/A',
+    },
+    {
+      label: 'Warranty Terms:',
+      value: data?.warrantyDetails ?? 'N/A',
+    },
+  ];
   return (
-    <Grid
-      templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(3, 1fr)' }}
-      gap={{ base: '24px', md: '66px' }}
-      width="full"
-    >
-      <GridItem colSpan={1} width="full">
-        <Flex width={{ base: 'full', md: 'max-content' }} whiteSpace="nowrap">
-          <Skeleton isLoaded={!isLoading} width="full">
-            <DetailSection labelMinWidth="105px" details={details} />
-          </Skeleton>
-        </Flex>
-      </GridItem>
-      <GridItem colSpan={2}>
-        <Skeleton
-          isLoaded={!isLoading}
-          width="full"
-          rounded="8px"
-          height="full"
-          display={{ base: 'none', md: 'flex' }}
-        >
-          <VendorDetails data={data} />
+    <SimpleGrid width="full" gap="24px" columns={{ base: 1, lg: 2 }}>
+      <Flex width={{ base: 'full' }}>
+        <Skeleton isLoaded={!isLoading} width="full">
+          <DetailSection
+            details={details}
+            labelMinWidth="151px"
+            header="Warranty Details"
+          />
         </Skeleton>
-      </GridItem>
-    </Grid>
+      </Flex>
+      <Flex width={{ base: 'full' }}>
+        <Skeleton isLoaded={!isLoading} width="full">
+          <DetailSection
+            details={details2}
+            labelMinWidth="151px"
+            header="Warranty Details"
+          />
+        </Skeleton>
+      </Flex>
+    </SimpleGrid>
   );
 };
 

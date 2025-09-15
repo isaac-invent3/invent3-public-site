@@ -69,6 +69,7 @@ const AssetDetail = ({
       onClose={closeDrawer}
       maxWidth="850px"
       customStyle={{ trapFocus: true }}
+      customContentStyle={{ bgColor: '#E6E6E6' }}
     >
       {assetNotFound && (
         <GenericErrorState

@@ -1,4 +1,4 @@
-import { Flex, SimpleGrid, Stack, Text } from '@chakra-ui/react';
+import { Flex, Heading, SimpleGrid, Text, VStack } from '@chakra-ui/react';
 
 import { useAppSelector } from '~/lib/redux/hooks';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
@@ -11,11 +11,16 @@ interface SummaryInfoProps {
 const SummaryInfo = (props: SummaryInfoProps) => {
   const { label, value, children } = props;
   return (
-    <Flex direction="column">
-      <Text size="md" mb="8px" color="neutral.600">
-        {label}
-      </Text>
-      <Text size="md" color="black">
+    <Flex
+      direction="column"
+      gap="10px"
+      bgColor="#FFFFFF99"
+      p="16px"
+      height="full"
+      rounded="8px"
+    >
+      <Text color="neutral.600">{label}</Text>
+      <Text fontSize="20px" lineHeight="100%" color="primary.500">
         {value}
       </Text>
       {children}
@@ -33,8 +38,8 @@ const Summary = () => {
   const {
     lastMaintenanceDate,
     nextMaintenanceDate,
-    initialValue,
     y2DMaintenanceCost,
+    currentCost,
   } = assetData;
   const Summary1 = [
     // {
@@ -42,8 +47,8 @@ const Summary = () => {
     //   value: '85%',
     // },
     {
-      label: 'Purchase Cost',
-      value: initialValue !== null ? amountFormatter(initialValue) : 'N/A',
+      label: 'Current Value',
+      value: currentCost !== null ? amountFormatter(currentCost) : 'N/A',
     },
     {
       label: 'Maintenance Cost (YTD)',
@@ -71,32 +76,57 @@ const Summary = () => {
     },
   ];
   return (
-    <Stack
-      width="full"
-      p="16px"
-      borderWidth="0.7px"
-      borderColor="#BBBBBBB2"
-      rounded="8px"
-      justifyContent="space-between"
-      alignItems="flex-start"
-      direction={{ base: 'column', sm: 'row' }}
-      spacing={{ base: '24px' }}
-    >
+    <VStack width="full" alignItems="flex-start" spacing="8px">
+      <Heading
+        size="base"
+        lineHeight="100%"
+        fontWeight={700}
+        color="primary.500"
+      >
+        Key Metrics
+      </Heading>
       <SimpleGrid
-        columns={{ base: 1, md: 2 }}
-        spacing="24px"
+        columns={{ base: 1, md: 4 }}
+        spacing="8px"
         alignItems="flex-start"
+        width="full"
       >
         {Summary1.map((item) => (
           <SummaryInfo {...item} key={item.label} />
         ))}
+        <SummaryInfo
+          label="Last Maintenance Date"
+          value={
+            lastMaintenanceDate !== null
+              ? dateFormatter(lastMaintenanceDate, 'Do MMM, YYYY')
+              : 'N/A'
+          }
+          children={
+            <Text
+              py="4px"
+              px="8px"
+              rounded="16px"
+              bgColor="neutral.300"
+              color="black"
+              fontWeight={700}
+              fontSize="10px"
+              lineHeight="130%"
+              width="max-content"
+            >
+              Preventive
+            </Text>
+          }
+        />
+        <SummaryInfo
+          label="Next Maintenance Date"
+          value={
+            nextMaintenanceDate !== null
+              ? dateFormatter(nextMaintenanceDate, 'Do MMM, YYYY')
+              : 'N/A'
+          }
+        />
       </SimpleGrid>
-      <SimpleGrid columns={{ base: 1, md: 2 }} spacing="24px">
-        {Summary2.map((item) => (
-          <SummaryInfo {...item} key={item.label} />
-        ))}
-      </SimpleGrid>
-    </Stack>
+    </VStack>
   );
 };
 

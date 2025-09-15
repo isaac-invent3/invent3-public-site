@@ -3,6 +3,7 @@ import InfoOne from './InfoOne';
 import InfoTwo from './InfoTwo';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { useGetAcquisitionInfoByAssetIdQuery } from '~/lib/redux/services/asset/general.services';
+import VendorTexts from './InfoOne/VendorDetails';
 
 const AcquisitionTab = () => {
   const assetData = useAppSelector((state) => state.asset.asset);
@@ -18,9 +19,16 @@ const AcquisitionTab = () => {
   );
 
   return (
-    <VStack width="full" spacing={{ base: '0px', md: '40px' }} my="24px">
+    <VStack
+      width="full"
+      spacing={{ base: '0px', md: '24px' }}
+      my="24px"
+      bgColor="white"
+      p={{ base: '8px', lg: '16px' }}
+      rounded="8px"
+    >
       <InfoOne isLoading={isLoading} data={data?.data} />
-      <InfoTwo isLoading={isLoading} data={data?.data} />
+      <VendorTexts data={data?.data} />
     </VStack>
   );
 };

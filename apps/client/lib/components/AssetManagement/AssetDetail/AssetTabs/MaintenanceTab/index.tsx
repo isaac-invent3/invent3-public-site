@@ -6,6 +6,7 @@ import { ButtonPagination } from '@repo/ui/components';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { useGetAllMaintenancePlansByAssetIdQuery } from '~/lib/redux/services/maintenance/plan.services';
 import PlanCard from '~/lib/components/Maintenance/Plans/PlanCard';
+import Link from 'next/link';
 
 const MaintenanceTab = () => {
   const assetData = useAppSelector((state) => state.asset.asset);
@@ -41,10 +42,16 @@ const MaintenanceTab = () => {
     <Flex
       width="full"
       alignItems="flex-end"
-      gap="16px"
+      gap="8px"
       direction="column"
-      my="32px"
+      bgColor="white"
+      p={{ base: '8px', lg: '16px' }}
+      rounded="8px"
+      mt="9px"
     >
+      <Link href="#">
+        <Text color="blue.500">View Maintenance History</Text>
+      </Link>
       <VStack width="full" spacing="16px" mb={4}>
         {data?.data && data?.data?.items?.length >= 1 ? (
           data?.data?.items?.map((item: MaintenancePlan) => (

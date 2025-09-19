@@ -6,11 +6,16 @@ const ModalCloseButtonText = ({ onClose }: { onClose: () => void }) => {
     <HStack
       spacing="8px"
       as="button"
-      justifySelf="end"
       onClick={() => onClose()}
+      width="32px"
+      height="32px"
+      flexShrink={0}
+      rounded="full"
+      bgColor="neutral.100"
+      justifyContent="center"
+      alignItems="center"
     >
-      <Text color="#F50000">Close</Text>
-      <Icon as={CloseIcon} color="#F50000" boxSize="12px" />
+      <Icon as={CloseIcon} color="#0E2642" boxSize="16px" />
     </HStack>
   );
 };

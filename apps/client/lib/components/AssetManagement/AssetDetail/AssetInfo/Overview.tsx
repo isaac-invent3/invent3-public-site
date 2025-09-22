@@ -7,9 +7,24 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
+import moment from 'moment';
 import { ReactBarcode, Renderer } from 'react-jsbarcode';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import { useAppSelector } from '~/lib/redux/hooks';
+
+const getDurationLabel = (lifeCycleStageChangeDate: string | Date) => {
+  const start = moment(lifeCycleStageChangeDate);
+  const now = moment();
+
+  const years = now.diff(start, 'years');
+  start.add(years, 'years');
+
+  const months = now.diff(start, 'months');
+
+  return `${years > 0 ? years + (years === 1 ? ' year' : ' years') : ''}${
+    years && months ? ', ' : ''
+  }${months > 0 ? months + (months === 1 ? ' month' : ' months') : ''}`.trim();
+};
 
 const Overview = () => {
   const {
@@ -29,7 +44,9 @@ const Overview = () => {
     currentStatus,
     assetName,
     assetId,
-    assetCategory,
+    lifeCycleStageName,
+    lifeCycleStageChangeDate,
+    lifeCycleColorCode,
     brandName,
     modelRef,
     displayColorCode,
@@ -50,6 +67,23 @@ const Overview = () => {
     {
       label: 'Serial Number:',
       value: serialNo ?? 'N/A',
+    },
+  ];
+
+  const assetInfo2 = [
+    {
+      label: 'Asset Code:',
+      value: assetCode ?? 'N/A',
+    },
+    {
+      label: 'Asset ID:',
+      value: assetId ?? 'N/A',
+    },
+    {
+      label: 'Time in Stage:',
+      value: lifeCycleStageChangeDate
+        ? getDurationLabel(lifeCycleStageChangeDate)
+        : 'N/A',
     },
   ];
 
@@ -186,6 +220,26 @@ const Overview = () => {
                 </Text>
               </HStack>
             ))}
+            <HStack spacing="8px" alignItems="center">
+              <Text
+                color="neutral.600"
+                minW={{ base: '95px', md: '65px' }}
+                size="md"
+              >
+                LifeCycle Stage:
+              </Text>
+              {lifeCycleStageName ? (
+                <GenericStatusBox
+                  text={lifeCycleStageName}
+                  colorCode={lifeCycleColorCode}
+                  showDot={false}
+                />
+              ) : (
+                <Text color="black" size="md">
+                  N/A
+                </Text>
+              )}
+            </HStack>
           </VStack>
           <VStack alignItems="flex-start" spacing="8px">
             {assetInfo2.map((info, index) => (

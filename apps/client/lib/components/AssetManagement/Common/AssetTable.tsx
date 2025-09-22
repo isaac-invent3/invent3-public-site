@@ -14,24 +14,33 @@ import {
 import { InfoIcon, ThreeVerticalDotsIcon } from '../../CustomIcons';
 import GenericStatusBox from '../../UI/GenericStatusBox';
 
-const AssetName = (name: string | null) => {
+const AssetName = (asset: Asset) => {
   return (
     <HStack spacing="8px">
-      <Box width="8px" height="8px" rounded="full" bgColor="#07CC3B" />
+      {asset?.assetHealthColorCode && (
+        <Box
+          width="8px"
+          height="8px"
+          rounded="full"
+          bgColor={asset?.assetHealthColorCode}
+        />
+      )}
       <Text fontWeight={700} textDecoration="underline">
-        {name}
+        {asset?.assetName}
       </Text>
-      <Text
-        bgColor="#FF383C"
-        color="white"
-        py="4px"
-        px="7px"
-        rounded="full"
-        fontSize="8px"
-        lineHeight="100%"
-      >
-        High
-      </Text>
+      {
+        <Text
+          bgColor={asset?.assetHealthColorCode}
+          color="white"
+          py="4px"
+          px="7px"
+          rounded="full"
+          fontSize="8px"
+          lineHeight="100%"
+        >
+          {asset?.healthName}
+        </Text>
+      }
     </HStack>
   );
 };
@@ -116,7 +125,7 @@ const AssetTable = (props: AssetTableProps) => {
           enableSorting: false,
         }),
         columnHelper.accessor('assetName', {
-          cell: (info) => AssetName(info.getValue()),
+          cell: (info) => AssetName(info.row.original),
           header: 'Asset Name',
           enableSorting: false,
         }),
@@ -166,7 +175,7 @@ const AssetTable = (props: AssetTableProps) => {
           enableSorting: false,
         }),
         columnHelper.accessor('assetName', {
-          cell: (info) => AssetName(info.getValue()) ?? 'N/A',
+          cell: (info) => AssetName(info.row.original) ?? 'N/A',
           header: () => <AssetHeader />,
           enableSorting: false,
         }),

@@ -127,6 +127,13 @@ interface Asset {
   y2DMaintenanceCost: number | null;
   assetLocation: string | null;
   noOfChildAssets: number;
+  lifeCycleId: number;
+  lifeCycleStageChangeDate: string;
+  assetHealthId: number;
+  healthName: string;
+  assetHealthColorCode: string;
+  lifeCycleStageName: string;
+  lifeCycleColorCode: string;
 }
 
 interface AssetFormImage {

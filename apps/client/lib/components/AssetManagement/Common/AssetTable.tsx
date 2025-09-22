@@ -3,17 +3,59 @@ import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import { Asset } from '~/lib/interfaces/asset/general.interface';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
-import { Icon, Text, useMediaQuery } from '@chakra-ui/react';
-import { ThreeVerticalDotsIcon } from '../../CustomIcons';
+import {
+  Box,
+  HStack,
+  Icon,
+  Text,
+  Tooltip,
+  useMediaQuery,
+} from '@chakra-ui/react';
+import { InfoIcon, ThreeVerticalDotsIcon } from '../../CustomIcons';
 import GenericStatusBox from '../../UI/GenericStatusBox';
 
 const AssetName = (name: string | null) => {
   return (
-    <Text fontWeight={700} textDecoration="underline">
-      {name}
-    </Text>
+    <HStack spacing="8px">
+      <Box width="8px" height="8px" rounded="full" bgColor="#07CC3B" />
+      <Text fontWeight={700} textDecoration="underline">
+        {name}
+      </Text>
+      <Text
+        bgColor="#FF383C"
+        color="white"
+        py="4px"
+        px="7px"
+        rounded="full"
+        fontSize="8px"
+        lineHeight="100%"
+      >
+        High
+      </Text>
+    </HStack>
   );
 };
+
+const AssetHeader = () => (
+  <HStack spacing="8px">
+    <Text fontWeight={700}>Asset Name</Text>
+    <Tooltip
+      label="The colour indicator represents the health of the asset"
+      placement="top-start"
+      bgColor="black"
+      color="white"
+      width="181px"
+      rounded="4px"
+      py="3px"
+      px="6px"
+      fontSize="10px"
+      fontWeight={400}
+      hasArrow
+    >
+      <Icon as={InfoIcon} boxSize="12px" color="blue.500" />
+    </Tooltip>
+  </HStack>
+);
 
 const Dots = () => {
   return <Icon as={ThreeVerticalDotsIcon} boxSize="14px" color="neutral.700" />;
@@ -125,7 +167,7 @@ const AssetTable = (props: AssetTableProps) => {
         }),
         columnHelper.accessor('assetName', {
           cell: (info) => AssetName(info.getValue()) ?? 'N/A',
-          header: 'Asset Name',
+          header: () => <AssetHeader />,
           enableSorting: false,
         }),
         columnHelper.accessor('assetCode', {

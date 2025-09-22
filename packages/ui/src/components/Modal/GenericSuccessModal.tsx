@@ -36,6 +36,12 @@ const GenericSuccessModal = (props: GenericSuccessModalProps) => {
   const [showRibbon, setShowRibbon] = useState(false);
 
   useEffect(() => {
+    const video = document.createElement('video');
+    video.src = '/success-check.mp4';
+    video.preload = 'auto';
+  }, []);
+
+  useEffect(() => {
     if (isOpen) {
       setShowRibbon(true);
 
@@ -95,6 +101,7 @@ const GenericSuccessModal = (props: GenericSuccessModalProps) => {
                 playsInline
                 muted
                 autoPlay
+                preload="auto"
               />
             </VStack>
             <VStack spacing="8px" width="full">

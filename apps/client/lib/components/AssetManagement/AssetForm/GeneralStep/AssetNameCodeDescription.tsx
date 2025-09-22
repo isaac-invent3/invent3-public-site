@@ -38,7 +38,6 @@ const AssetNameCodeDescription = () => {
         templateColumns="repeat(4, 1fr)"
         gap={{ base: '16px', md: '11px' }}
         width="full"
-        height="full"
       >
         <GridItem colSpan={{ base: 4, md: 2 }}>
           <VStack
@@ -73,7 +72,7 @@ const AssetNameCodeDescription = () => {
             </VStack>
           </VStack>
         </GridItem>
-        <GridItem colSpan={{ base: 4, md: 2 }} height="full">
+        <GridItem colSpan={{ base: 4, md: 2 }}>
           <Field
             as={FormTextAreaInput}
             name="description"

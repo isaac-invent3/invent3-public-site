@@ -1,4 +1,4 @@
-import { SimpleGrid } from '@chakra-ui/react';
+import { Grid, GridItem, SimpleGrid } from '@chakra-ui/react';
 
 import UserSelect from '../../../../Common/SelectComponents/UserSelect';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
@@ -22,32 +22,46 @@ const AssetOwner = () => {
         maxW: { md: '118px' },
       }}
     >
-      <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} gap="11px" width="full">
-        <UserSelect
-          selectName="currentOwner"
-          selectTitle="Owner"
-          defaultName={currentOwnerName}
-          handleSelect={(option) =>
-            dispatch(updateAssetForm({ currentOwnerName: option.label }))
-          }
-        />
-        <UserSelect
-          selectName="assignedTo"
-          selectTitle="Assigned to"
-          defaultName={assignedToName}
-          handleSelect={(option) =>
-            dispatch(updateAssetForm({ assignedToName: option.label }))
-          }
-        />
-        <UserSelect
-          selectName="responsibleFor"
-          selectTitle="Responsible for"
-          defaultName={responsibleForName}
-          handleSelect={(option) =>
-            dispatch(updateAssetForm({ responsibleForName: option.label }))
-          }
-        />
-      </SimpleGrid>
+      <Grid
+        templateColumns={{
+          base: '1fr',
+          md: 'repeat(2, minmax(0, 1fr))',
+          lg: 'repeat(4, minmax(0, 1fr))',
+        }}
+        gap="11px"
+        width="full"
+      >
+        <GridItem colSpan={1}>
+          <UserSelect
+            selectName="currentOwner"
+            selectTitle="Owner"
+            defaultName={currentOwnerName}
+            handleSelect={(option) =>
+              dispatch(updateAssetForm({ currentOwnerName: option.label }))
+            }
+          />
+        </GridItem>
+        <GridItem colSpan={1}>
+          <UserSelect
+            selectName="assignedTo"
+            selectTitle="Assigned to"
+            defaultName={assignedToName}
+            handleSelect={(option) =>
+              dispatch(updateAssetForm({ assignedToName: option.label }))
+            }
+          />
+        </GridItem>
+        <GridItem colSpan={1}>
+          <UserSelect
+            selectName="responsibleFor"
+            selectTitle="Responsible for"
+            defaultName={responsibleForName}
+            handleSelect={(option) =>
+              dispatch(updateAssetForm({ responsibleForName: option.label }))
+            }
+          />
+        </GridItem>
+      </Grid>
     </FormInputWrapper>
   );
 };

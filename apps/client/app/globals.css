@@ -83,3 +83,12 @@ select:-webkit-autofill {
 }
 
 
+input,
+select,
+textarea {
+  font-size: 16px !important;  /* stops iOS Safari zoom */
+  min-width: 0;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+}
+

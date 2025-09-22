@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-vars */
 import {
   Flex,
+  Grid,
+  GridItem,
   HStack,
   ModalBody,
   SimpleGrid,
@@ -167,34 +169,42 @@ const LocationModal = (props: LocationModalProps) => {
 
               {/* Main Form Starts Here */}
               <VStack width="full" spacing="16px">
-                <SimpleGrid
+                <Grid
                   width="full"
-                  alignItems="flex-start"
-                  spacing="8px"
-                  columns={{ base: 1, md: 3 }}
+                  templateColumns={{
+                    base: '1fr',
+                    md: 'repeat(3, minmax(0, 1fr))',
+                  }}
+                  gap="16px"
                 >
-                  <CountrySelect
-                    handleSelect={(option) => {
-                      handleReadableLocation(option, 'country');
-                    }}
-                    defaultInputValue={assetFormDetails?.countryName!}
-                  />
-                  <StateSelect
-                    countryId={localLocation.country?.value as number}
-                    handleSelect={(option) => {
-                      handleReadableLocation(option, 'state');
-                    }}
-                    defaultInputValue={assetFormDetails?.stateName!}
-                  />
-                  <LGASelect
-                    stateId={localLocation.state?.value as number}
-                    handleSelect={(option) =>
-                      handleReadableLocation(option, 'lga')
-                    }
-                    type="specificById"
-                    defaultInputValue={assetFormDetails?.lgaName!}
-                  />
-                </SimpleGrid>
+                  <GridItem colSpan={1}>
+                    <CountrySelect
+                      handleSelect={(option) => {
+                        handleReadableLocation(option, 'country');
+                      }}
+                      defaultInputValue={assetFormDetails?.countryName!}
+                    />
+                  </GridItem>
+                  <GridItem colSpan={1}>
+                    <StateSelect
+                      countryId={localLocation.country?.value as number}
+                      handleSelect={(option) => {
+                        handleReadableLocation(option, 'state');
+                      }}
+                      defaultInputValue={assetFormDetails?.stateName!}
+                    />
+                  </GridItem>
+                  <GridItem colSpan={1}>
+                    <LGASelect
+                      stateId={localLocation.state?.value as number}
+                      handleSelect={(option) =>
+                        handleReadableLocation(option, 'lga')
+                      }
+                      type="specificById"
+                      defaultInputValue={assetFormDetails?.lgaName!}
+                    />
+                  </GridItem>
+                </Grid>
                 <Stack
                   direction={{ base: 'column', md: 'row' }}
                   width="full"
@@ -224,7 +234,7 @@ const LocationModal = (props: LocationModalProps) => {
                   width="full"
                   spacing="16px"
                 >
-                  <Flex width="50%">
+                  <Flex width={{ base: 'full', md: '50%' }}>
                     <Shelf handleReadableLocation={handleReadableLocation} />
                   </Flex>
                 </Stack>

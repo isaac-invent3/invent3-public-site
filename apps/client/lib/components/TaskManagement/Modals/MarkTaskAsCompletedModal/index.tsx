@@ -97,7 +97,7 @@ const MarkTaskAsCompletedModal = (props: MarkTaskAsCompletedModalProps) => {
             <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
               <VStack
                 width="full"
-                px="32px"
+                px={{ base: '16px', lg: '32px' }}
                 pt="56px"
                 pb="34px"
                 spacing="56px"
@@ -108,6 +108,7 @@ const MarkTaskAsCompletedModal = (props: MarkTaskAsCompletedModalProps) => {
                     fontWeight={800}
                     size={{ base: 'lg', lg: 'xl' }}
                     color="primary.500"
+                    textAlign="center"
                   >
                     Mark as completed?
                   </Heading>

@@ -1,82 +1,50 @@
-import { Box, Flex, HStack, Text } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import { Flex, Icon } from '@chakra-ui/react';
+import React from 'react';
+import { AssetIcon } from '~/lib/components/CustomIcons';
 
-interface CountMarkerProps {
-  name: string | null;
-  value: number;
-  externalHover: boolean;
-}
-
-const CountMarker = (props: CountMarkerProps) => {
-  const { value, name, externalHover } = props;
-  const [isHovered, setIsHovered] = useState(false);
-
-  useEffect(() => {
-    if (externalHover) {
-      setIsHovered(true);
-    } else {
-      setIsHovered(false);
-    }
-  }, [externalHover]);
-
+const CountMarker = () => {
   return (
     <Flex direction="column" position="absolute" width="full">
-      {isHovered && (
+      <foreignObject x={-20} y={-20} width={40} height={40}>
         <Flex
-          direction="column"
-          minW="min-content"
-          position="absolute"
-          top={-8}
+          width="40px"
+          height="40px"
+          rounded="full"
+          bgColor="none"
+          justifyContent="center"
+          alignItems="center"
+          transition="background-color 0.3s ease"
         >
-          <HStack
-            spacing="4px"
+          <Flex
+            rounded="full"
             bgColor="white"
-            py="4px"
-            px="8px"
-            rounded="8px"
-            height="full"
-            width="full"
+            width="24px"
+            height="24px"
+            justifyContent="center"
+            alignItems="center"
+            transition="width 0.3s ease, height 0.3s ease"
           >
-            <Text
-              color="neutral.600"
-              fontWeight={500}
-              whiteSpace="nowrap"
-              width="full"
+            <Flex
+              rounded="full"
+              borderWidth="1px"
+              borderColor="#00A129"
+              width="20px"
+              height="20px"
+              justifyContent="center"
+              alignItems="center"
+              transition="width 0.3s ease, height 0.3s ease"
             >
-              {name}
-            </Text>
-          </HStack>
-
-          {/* Inverted Arrow */}
-          <Box
-            width="0"
-            height="0"
-            borderLeft="9px solid transparent"
-            borderRight="9px solid transparent"
-            borderTop="11px solid white"
-            position="relative"
-            top="-3px"
-            ml="10px"
-            borderRadius="4px"
-            zIndex={1}
-          />
+              <Icon
+                as={AssetIcon}
+                boxSize="16px"
+                color="#00A129"
+                position="relative"
+                zIndex={9}
+              />
+            </Flex>
+          </Flex>
         </Flex>
-      )}
-      <Flex
-        p="7.5px"
-        rounded="full"
-        bgColor="#00A129"
-        cursor="pointer"
-        minW="32px"
-        minH="32px"
-        shrink={0}
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Text color="white" fontWeight={800} size="md">
-          {value}
-        </Text>
-      </Flex>
+      </foreignObject>
     </Flex>
   );
 };

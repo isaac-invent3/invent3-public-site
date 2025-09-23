@@ -24,7 +24,7 @@ const AcquisitionTab = () => {
       spacing={{ base: '0px', md: '24px' }}
       my="24px"
       bgColor="white"
-      p={{ base: '8px', lg: '16px' }}
+      p={{ base: '16px' }}
       rounded="8px"
     >
       <InfoOne isLoading={isLoading} data={data?.data} />

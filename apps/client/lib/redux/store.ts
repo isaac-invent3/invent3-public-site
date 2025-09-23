@@ -98,6 +98,7 @@ import { complianceApi } from './services/asset/compliance.services';
 import { notesApi } from './services/notes.services';
 import { fieldEngineerDashboardApi } from './services/dashboard/fieldengineer.services';
 import { feedbackApi } from './services/feedback.services';
+import { forecastApi } from './services/forecast.services';
 import { executiveDashboardApis } from './services/dashboard/executive.services';
 import { BMSApi } from './services/dashboard/bms.services';
 import { settingsApi } from './services/settings.services';
@@ -266,6 +267,9 @@ const rootReducer = combineReducers({
   // Auth APIS
   [authApi.reducerPath]: authApi.reducer,
 
+  // Forecast APIS
+  [forecastApi.reducerPath]: forecastApi.reducer,
+
   asset: assetSlice,
   auditLog: auditLogSlice,
   general: generalSlice,
@@ -431,6 +435,9 @@ export const makeStore = () => {
 
         // Webhook Apis
         webhookApi.middleware,
+
+        // Report Apis
+        forecastApi.middleware,
 
         // Auth Apis
         authApi.middleware,

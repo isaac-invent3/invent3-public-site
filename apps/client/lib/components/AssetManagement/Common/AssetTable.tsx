@@ -17,30 +17,15 @@ import GenericStatusBox from '../../UI/GenericStatusBox';
 const AssetName = (asset: Asset) => {
   return (
     <HStack spacing="8px">
-      {asset?.assetHealthColorCode && (
-        <Box
-          width="8px"
-          height="8px"
-          rounded="full"
-          bgColor={asset?.assetHealthColorCode}
-        />
-      )}
+      <Box
+        width="8px"
+        height="8px"
+        rounded="full"
+        bgColor={asset?.assetHealthColorCode}
+      />
       <Text fontWeight={700} textDecoration="underline">
         {asset?.assetName}
       </Text>
-      {
-        <Text
-          bgColor={asset?.assetHealthColorCode}
-          color="white"
-          py="4px"
-          px="7px"
-          rounded="full"
-          fontSize="8px"
-          lineHeight="100%"
-        >
-          {asset?.healthName}
-        </Text>
-      }
     </HStack>
   );
 };
@@ -193,6 +178,11 @@ const AssetTable = (props: AssetTableProps) => {
           cell: (info) => info.getValue() ?? 'N/A',
           header: 'Subcategory',
           enableSorting: isSortable,
+        }),
+        columnHelper.accessor('riskScoreName', {
+          cell: (info) => info.getValue() ?? 'N/A',
+          header: 'Risk Score',
+          enableSorting: false,
         }),
         columnHelper.accessor('currentStatus', {
           cell: (info) => {

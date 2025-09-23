@@ -1,4 +1,4 @@
-import { Stack, StackProps, Text, TextProps } from '@chakra-ui/react';
+import { Skeleton, Stack, StackProps, Text, TextProps } from '@chakra-ui/react';
 import { isEmpty } from 'lodash';
 import React from 'react';
 
@@ -10,6 +10,7 @@ interface DetailProps {
   label: string;
   value?: string | number | React.ReactNode;
   children?: React.ReactNode;
+  isLoading?: boolean;
 }
 const Detail = (props: DetailProps) => {
   const {
@@ -20,6 +21,7 @@ const Detail = (props: DetailProps) => {
     label,
     value,
     children,
+    isLoading,
   } = props;
   return (
     <Stack
@@ -39,9 +41,11 @@ const Detail = (props: DetailProps) => {
       {children ? (
         children
       ) : (
-        <Text size={{ base: 'base', md: 'md' }} {...valueStyle}>
-          {isEmpty(value) ? 'N/A' : value}
-        </Text>
+        <Skeleton isLoaded={!isLoading}>
+          <Text size={{ base: 'base', md: 'md' }} {...valueStyle}>
+            {isEmpty(value) ? 'N/A' : value}
+          </Text>
+        </Skeleton>
       )}
     </Stack>
   );

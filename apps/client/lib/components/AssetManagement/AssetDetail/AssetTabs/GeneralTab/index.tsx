@@ -9,7 +9,7 @@ const GeneralTab = () => {
       spacing="16px"
       my="24px"
       bgColor="white"
-      p={{ base: '8px', lg: '16px' }}
+      p={{ base: '16px' }}
       rounded="8px"
       columns={{ base: 1, lg: 2 }}
     >

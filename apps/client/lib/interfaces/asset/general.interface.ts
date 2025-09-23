@@ -134,6 +134,8 @@ interface Asset {
   assetHealthColorCode: string;
   lifeCycleStageName: string;
   lifeCycleColorCode: string;
+  riskScoreName: string;
+  riskScoreValue: number;
 }
 
 interface AssetFormImage {

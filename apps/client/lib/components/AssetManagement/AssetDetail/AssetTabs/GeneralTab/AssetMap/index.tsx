@@ -1,33 +1,18 @@
-import { Box, Flex, Skeleton, VStack } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import { Box, Skeleton, VStack } from '@chakra-ui/react';
+import React from 'react';
 import { Map, Marker } from 'pigeon-maps';
-import { useGetCompanyDistributionQuery } from '~/lib/redux/services/company.services';
-import { CompanyDistribution } from '~/lib/interfaces/company.interfaces';
-import NIGERIA_CORDINATES from '~/lib/utils/NigeriaCordinates';
 import CountMarker from './CountMarker';
+import NIGERIA_CORDINATES from '~/lib/utils/NigeriaCordinates';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 const AssetMap = () => {
-  const { data, isLoading, isFetching } = useGetCompanyDistributionQuery();
-  const [hoveredName, setHoveredName] = useState<string | null>(null);
-  const [sortedCompanyDistribution, setsortedCompanyDistribution] = useState<
-    CompanyDistribution[]
-  >([]);
+  const assetData = useAppSelector((state) => state.asset.asset);
 
-  useEffect(() => {
-    if (data?.data?.items) {
-      const sortedData = [...data.data.items].sort(
-        (a: CompanyDistribution, b: CompanyDistribution) => {
-          const nameA = a.stateName;
-          const nameB = b.stateName;
+  if (!assetData) {
+    return null;
+  }
+  const { stateName } = assetData;
 
-          if (nameA === hoveredName) return 1;
-          if (nameB === hoveredName) return -1;
-          return 0;
-        }
-      );
-      setsortedCompanyDistribution(sortedData);
-    }
-  }, [data, hoveredName]);
   return (
     <VStack
       height="full"
@@ -40,52 +25,28 @@ const AssetMap = () => {
       overflow="hidden"
     >
       <Skeleton
-        isLoaded={!isLoading && !isFetching}
         width="full"
         height="full"
         minH="286px"
         overflow="hidden"
+        isLoaded
       >
         <Box width="full" height="full" minH="286px" overflow="hidden">
           <Map
             /* @ts-ignore */
             height="100%"
-            defaultCenter={[9.082, 8.6753]}
+            defaultCenter={NIGERIA_CORDINATES.states?.[stateName as 'Abia']}
             defaultZoom={6}
             attribution={false}
           >
-            {sortedCompanyDistribution.map(
-              (item: CompanyDistribution, index: number) => {
-                const anchor =
-                  NIGERIA_CORDINATES?.states?.[item.stateName as 'Abia'];
-
-                const name = item.stateName;
-                const companyCount = item.companyCount;
-
-                if (companyCount > 0 && name) {
-                  return (
-                    <Marker
-                      key={index}
-                      anchor={anchor}
-                      style={{ pointerEvents: 'auto' }}
-                      hover={true}
-                      payload={{ name }}
-                      onMouseOver={(event) =>
-                        setHoveredName(event.payload.name)
-                      }
-                      onMouseOut={() => setHoveredName(null)}
-                    >
-                      <CountMarker
-                        name={name}
-                        value={companyCount}
-                        externalHover={hoveredName === name}
-                      />
-                    </Marker>
-                  );
-                }
-                return null;
-              }
-            )}
+            <Marker
+              anchor={NIGERIA_CORDINATES.states?.[stateName as 'Abia']}
+              style={{ pointerEvents: 'auto' }}
+              hover={true}
+              payload={{ name }}
+            >
+              <CountMarker />
+            </Marker>
           </Map>
         </Box>
       </Skeleton>

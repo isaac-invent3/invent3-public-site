@@ -7,7 +7,10 @@ import {
   QueryParams,
   SearchQuery,
 } from '@repo/interfaces';
-import { AssetDepreciation } from '~/lib/interfaces/asset/depreciation.interfaces';
+import {
+  AssetDepreciation,
+  AssetDepreciationHistory,
+} from '~/lib/interfaces/asset/depreciation.interfaces';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -39,10 +42,35 @@ export const depreciationApi = createApi({
         body,
       }),
     }),
+    getSingleAssetDepreciationInfoByAssetId: builder.query<
+      BaseApiResponse<AssetDepreciation>,
+      { assetId: number }
+    >({
+      query: ({ assetId }) => ({
+        url: `AssetDepreciations/GetSingleAssetDepreciationInfo/${assetId}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getAllAssetDepreciationHistoryByDepreciationId: builder.query<
+      BaseApiResponse<ListResponse<AssetDepreciationHistory>>,
+      { depreciationId: number } & QueryParams
+    >({
+      query: ({ depreciationId, ...data }) => ({
+        url: generateQueryStr(
+          `/AssetDepreciationHistory/GetDepreciationHistory/${depreciationId}?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
   }),
 });
 
 export const {
   useGetAllAssetDepreciationQuery,
   useSearchDepreciationMutation,
+  useGetSingleAssetDepreciationInfoByAssetIdQuery,
+  useGetAllAssetDepreciationHistoryByDepreciationIdQuery,
 } = depreciationApi;

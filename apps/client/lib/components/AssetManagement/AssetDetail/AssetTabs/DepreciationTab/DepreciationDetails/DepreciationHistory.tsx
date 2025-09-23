@@ -1,25 +1,33 @@
-import {
-  Collapse,
-  HStack,
-  Icon,
-  Text,
-  useDisclosure,
-  useMediaQuery,
-  VStack,
-} from '@chakra-ui/react';
+import { Collapse, HStack, Icon, Text, VStack } from '@chakra-ui/react';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import React, { useMemo, useState } from 'react';
 import { ChevronDownIcon, ChevronUpIcon } from '~/lib/components/CustomIcons';
-import { AssetDepreciation } from '~/lib/interfaces/asset/depreciation.interfaces';
+import { AssetDepreciationHistory } from '~/lib/interfaces/asset/depreciation.interfaces';
+import { useAppSelector } from '~/lib/redux/hooks';
+import { useGetAllAssetDepreciationHistoryByDepreciationIdQuery } from '~/lib/redux/services/asset/depreciation.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
-import { dateFormatter } from '~/lib/utils/Formatters';
+import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
 
-const DepreciationHistory = () => {
+const DepreciationHistory = ({
+  depreciationId,
+}: {
+  depreciationId?: number;
+}) => {
   const [isOpen, setIsOpen] = useState(true);
-  const columnHelper = createColumnHelper<AssetDepreciation>();
+  const columnHelper = createColumnHelper<AssetDepreciationHistory>();
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+
+  const { data, isLoading, isFetching } =
+    useGetAllAssetDepreciationHistoryByDepreciationIdQuery(
+      {
+        depreciationId: depreciationId!,
+        pageSize,
+        pageNumber,
+      },
+      { skip: !depreciationId }
+    );
 
   const columns = useMemo(() => {
     const baseColumns = [
@@ -28,25 +36,27 @@ const DepreciationHistory = () => {
         header: 'Year',
         enableSorting: false,
       }),
-      columnHelper.accessor('depreciationMethod', {
-        cell: (info) => info.getValue() ?? 'N/A',
+      columnHelper.accessor('initialValue', {
+        cell: (info) =>
+          info.getValue() ? amountFormatter(info.getValue()) : 'N/A',
         header: 'Opening Value',
         enableSorting: false,
       }),
-      columnHelper.accessor('currentValue', {
-        cell: (info) => info.getValue() ?? 'N/A',
+      columnHelper.accessor('depreciation', {
+        cell: (info) => info.getValue(),
         header: 'Depreciation',
         enableSorting: false,
       }),
-      columnHelper.accessor('depreciationRate', {
-        cell: (info) => info.getValue() ?? 'N/A',
+      columnHelper.accessor('currentValue', {
+        cell: (info) =>
+          info.getValue() ? amountFormatter(info.getValue()) : 'N/A',
         header: 'Closing Value',
         enableSorting: false,
       }),
     ];
 
     return baseColumns;
-  }, []); //eslint-disable-line
+  }, [data?.data?.items]); //eslint-disable-line
 
   return (
     <VStack width="full" spacing="8px">
@@ -73,10 +83,10 @@ const DepreciationHistory = () => {
       >
         <DataTable
           columns={columns}
-          data={[]}
+          data={data?.data?.items ?? []}
           showFooter={false}
-          isLoading={false}
-          isFetching={false}
+          isLoading={isLoading}
+          isFetching={isFetching}
           setPageNumber={setPageNumber}
           pageNumber={pageNumber}
           pageSize={pageSize}

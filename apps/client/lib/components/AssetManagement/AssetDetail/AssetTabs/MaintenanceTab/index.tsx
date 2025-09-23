@@ -45,7 +45,7 @@ const MaintenanceTab = () => {
       gap="8px"
       direction="column"
       bgColor="white"
-      p={{ base: '8px', lg: '16px' }}
+      p={{ base: '16px' }}
       rounded="8px"
       mt="9px"
     >

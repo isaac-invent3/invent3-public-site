@@ -1,4 +1,11 @@
-import { useMediaQuery } from '@chakra-ui/react';
+import {
+  Box,
+  HStack,
+  Icon,
+  Text,
+  Tooltip,
+  useMediaQuery,
+} from '@chakra-ui/react';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import React, { useMemo } from 'react';
@@ -7,6 +14,45 @@ import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import { TaskInstance } from '~/lib/interfaces/task.interfaces';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
 import PopoverAction from './PopoverAction';
+import { InfoIcon } from '~/lib/components/CustomIcons';
+
+const TaskName = (task: TaskInstance) => {
+  return (
+    <HStack spacing="8px">
+      <Box
+        width="8px"
+        height="8px"
+        rounded="full"
+        bgColor="#F50000"
+        display={task?.isEscalated ? 'flex' : 'none'}
+      />
+      <Text fontWeight={700} textDecoration="underline">
+        {task?.taskInstanceName}
+      </Text>
+    </HStack>
+  );
+};
+
+const TaskNameHeader = () => (
+  <HStack spacing="8px">
+    <Text fontWeight={700}>Task</Text>
+    <Tooltip
+      label="The colour indicator represents escalated tasks"
+      placement="top-start"
+      bgColor="black"
+      color="white"
+      width="181px"
+      rounded="4px"
+      py="3px"
+      px="6px"
+      fontSize="10px"
+      fontWeight={400}
+      hasArrow
+    >
+      <Icon as={InfoIcon} boxSize="12px" color="blue.500" />
+    </Tooltip>
+  </HStack>
+);
 
 interface TaskInstanceTableProps {
   data: TaskInstance[];
@@ -68,8 +114,8 @@ const TaskInstanceTable = (props: TaskInstanceTableProps) => {
           enableSorting: false,
         }),
         columnHelper.accessor('taskInstanceName', {
-          cell: (info) => info.getValue(),
-          header: 'Task',
+          cell: (info) => TaskName(info.row.original),
+          header: () => <TaskNameHeader />,
           enableSorting: false,
         }),
         columnHelper.accessor('taskDescription', {
@@ -167,8 +213,8 @@ const TaskInstanceTable = (props: TaskInstanceTableProps) => {
           enableSorting: false,
         }),
         columnHelper.accessor('taskInstanceName', {
-          cell: (info) => info.getValue(),
-          header: 'Task',
+          cell: (info) => TaskName(info.row.original),
+          header: () => <TaskNameHeader />,
           enableSorting: false,
         }),
 

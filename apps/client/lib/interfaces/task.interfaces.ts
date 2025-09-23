@@ -117,6 +117,7 @@ interface TaskInstance extends BaseTask {
   statusAlias: string;
   categoryName: string;
   assetName: string;
+  isEscalated: boolean;
 }
 
 interface SingleTask extends BaseMainTask {

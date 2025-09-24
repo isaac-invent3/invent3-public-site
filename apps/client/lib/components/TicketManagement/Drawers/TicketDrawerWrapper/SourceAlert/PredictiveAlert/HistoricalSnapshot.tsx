@@ -1,9 +1,38 @@
 import { HStack, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
 import LineChart from '~/lib/components/Dashboard/Common/Charts/LineChart';
 import DropDown from '~/lib/components/Dashboard/Common/DropDown';
+import { Option } from '~/lib/interfaces/general.interfaces';
+import {
+  useGetAssetBmsReadingsBySubcategoryIdQuery,
+  useGetBmsReadingSubCategoriesQuery,
+} from '~/lib/redux/services/bms/bmsReading.services';
+import { dateFormatter } from '~/lib/utils/Formatters';
+import { generateOptions } from '~/lib/utils/helperFunctions';
 
-const HistoryDataSnapShot = () => {
+interface HistoryDataSnapShotProps {
+  assetId?: number;
+  isLoading: boolean;
+}
+const HistoryDataSnapShot = ({
+  assetId,
+  isLoading,
+}: HistoryDataSnapShotProps) => {
+  const [selectedSubCategory, setSelectedSubCategory] = useState<Option | null>(
+    null
+  );
+  const {
+    data: bmsReadingSubCategories,
+    isLoading: bmsReadingSubCategoriesLoading,
+  } = useGetBmsReadingSubCategoriesQuery({});
+  const { data: assetBmsReading, isLoading: assetBmsReadingLoading } =
+    useGetAssetBmsReadingsBySubcategoryIdQuery(
+      {
+        assetId: assetId!,
+        subcategoryId: (selectedSubCategory?.value as number)!,
+      },
+      { skip: !selectedSubCategory }
+    );
   return (
     <VStack spacing="16px" width="full" alignItems="flex-start">
       <HStack spacing="16px" width="full" justifyContent="space-between">
@@ -11,19 +40,33 @@ const HistoryDataSnapShot = () => {
           Historical Data Snapshot
         </Text>
         <DropDown
-          options={[]}
-          label="Temperature"
-          handleClick={(option) => {}}
-          selectedOptions={null}
+          options={generateOptions(
+            bmsReadingSubCategories?.data?.items,
+            'subCategoryName',
+            'subCategoryId'
+          )}
+          label="Sub Category"
+          handleClick={(option) => setSelectedSubCategory(option)}
+          selectedOptions={selectedSubCategory}
           width="100px"
         />
       </HStack>
       <LineChart
-        labels={['Temperature']}
+        labels={
+          assetBmsReading?.data
+            ? assetBmsReading?.data?.items?.map(
+                (item) => dateFormatter(item.day, 'D')!
+              )
+            : []
+        }
         datasets={[
           {
-            label: 'Actual',
-            data: [10, 12, 9, 15, 39],
+            label: '',
+            data: assetBmsReading
+              ? assetBmsReading?.data?.items?.map(
+                  (item) => item.averageReadingValue
+                )
+              : [],
             borderColor: '#8D35F1',
             pointBorderColor: '#fff',
             pointBackgroundColor: '#8D35F1',
@@ -33,7 +76,9 @@ const HistoryDataSnapShot = () => {
             fill: false,
           },
         ]}
-        isLoading={false}
+        isLoading={
+          isLoading || assetBmsReadingLoading || bmsReadingSubCategoriesLoading
+        }
       />
     </VStack>
   );

@@ -20,6 +20,7 @@ import JourneyGuide, {
 import { useGetCompanyJourneyGuideQuery } from '~/lib/redux/services/company.services';
 import { CompanyJourneyGuide } from '~/lib/interfaces/company.interfaces';
 import { usePathname } from 'next/navigation';
+import ImminentFailureAlertList from '~/lib/components/Notification/AlertBanners/ImminentFailureAlert';
 
 interface ProtectedLayoutProps {
   children: React.ReactNode;
@@ -151,6 +152,7 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
         data?.user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY)) && (
         <JourneyGuide isOpen={showJourneyGuide} onClose={() => {}} />
       )}
+      <ImminentFailureAlertList />
     </>
   );
 };

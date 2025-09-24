@@ -1,3 +1,5 @@
+import { BaseEntity } from '@repo/interfaces';
+
 interface HighestOccupancyRate {
   facilityId: number;
   occupancyRate: number;
@@ -288,6 +290,18 @@ interface OccupancyDistribution {
   currentOccupancy: number;
   maxCapacity: number;
 }
+
+interface BmsReadingSubCategory extends BaseEntity {
+  subCategoryId: number;
+  categoryId: number;
+  subCategoryName: string;
+}
+
+interface AssetBMSReading {
+  day: string;
+  averageReadingValue: number;
+}
+
 export type {
   HighestOccupancyRate,
   HighestSystemFailures,
@@ -324,4 +338,6 @@ export type {
   FinancialTrend,
   MonthlyCostSpend,
   OccupancyDistribution,
+  BmsReadingSubCategory,
+  AssetBMSReading,
 };

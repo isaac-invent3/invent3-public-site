@@ -1587,6 +1587,26 @@ const FacilityMapIcon = createIcon({
   ),
 });
 
+const WarningIcon = createIcon({
+  displayName: 'WarningIcon',
+  viewBox: '0 0 48 48',
+
+  path: (
+    <svg
+      width="48"
+      height="48"
+      viewBox="0 0 48 48"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M8.94024 41.9994H39.0602C42.1402 41.9994 44.0602 38.6594 42.5202 35.9994L27.4602 9.97938C25.9202 7.31938 22.0802 7.31938 20.5402 9.97938L5.48024 35.9994C3.94024 38.6594 5.86024 41.9994 8.94024 41.9994ZM24.0002 27.9994C22.9002 27.9994 22.0002 27.0994 22.0002 25.9994V21.9994C22.0002 20.8994 22.9002 19.9994 24.0002 19.9994C25.1002 19.9994 26.0002 20.8994 26.0002 21.9994V25.9994C26.0002 27.0994 25.1002 27.9994 24.0002 27.9994ZM26.0002 35.9994H22.0002V31.9994H26.0002V35.9994Z"
+        fill="#F50000"
+      />
+    </svg>
+  ),
+});
+
 export {
   AddIcon,
   AssetBoxIcon,
@@ -1640,4 +1660,5 @@ export {
   DefaultAssetCountIcon,
   LongRightIcon,
   FacilityMapIcon,
+  WarningIcon,
 };

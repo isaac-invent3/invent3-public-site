@@ -1,10 +1,26 @@
-import { HStack, Text, useDisclosure, VStack } from '@chakra-ui/react';
+import {
+  HStack,
+  Skeleton,
+  Text,
+  useDisclosure,
+  VStack,
+} from '@chakra-ui/react';
 import React from 'react';
 import Detail from '~/lib/components/UI/ContentDetails/Detail';
 import PredictiveAlert from './PredictiveAlert';
+import { Ticket } from '~/lib/interfaces/ticket.interfaces';
+import { useGetAlertPredictionsByAlertIdQuery } from '~/lib/redux/services/prediction.services';
+import { dateFormatter } from '~/lib/utils/Formatters';
 
-const SourceAlert = () => {
+const SourceAlert = ({ ticket }: { ticket: Ticket }) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const { data, isLoading } = useGetAlertPredictionsByAlertIdQuery({
+    alertId: ticket.predictiveAlertId!,
+  });
+
+  if (isLoading) {
+    return <Skeleton width="full" height="100px" rounded="6px" />;
+  }
   return (
     <>
       <VStack spacing="8px" width="full">
@@ -26,28 +42,42 @@ const SourceAlert = () => {
         >
           <Detail
             label="Asset"
-            value="HVAC Unit 3A"
+            value={data?.data?.assetName ?? 'N/A'}
             itemContainerStyle={{ direction: 'column' }}
             valueStyle={{ color: 'black' }}
             labelStyle={{ size: 'base', fontWeight: 700 }}
           />
           <Detail
             label="Risk Level"
-            value="85%"
+            value={
+              data?.data?.riskScore
+                ? `${data?.data?.riskScore.toFixed(2)}%`
+                : 'N/A'
+            }
             itemContainerStyle={{ direction: 'column' }}
             valueStyle={{ color: 'red.500', fontWeight: 700 }}
             labelStyle={{ size: 'base', fontWeight: 700 }}
           />
           <Detail
             label="Predicted Failure Date"
-            value="23 / 10 / 2024"
+            value={
+              data?.data?.alertedDate
+                ? dateFormatter(data?.data?.alertedDate, 'DD / MM / YYYY')
+                : 'N/A'
+            }
             itemContainerStyle={{ direction: 'column' }}
             valueStyle={{ color: 'black' }}
             labelStyle={{ size: 'base', fontWeight: 700 }}
           />
         </HStack>
       </VStack>
-      <PredictiveAlert isOpen={isOpen} onClose={onClose} />
+      <PredictiveAlert
+        isOpen={isOpen}
+        onClose={onClose}
+        predictiveAlertId={ticket?.predictiveAlertId}
+        type="detail"
+        prediction={data?.data}
+      />
     </>
   );
 };

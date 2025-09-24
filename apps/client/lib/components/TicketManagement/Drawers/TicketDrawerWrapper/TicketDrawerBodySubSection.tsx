@@ -49,7 +49,7 @@ const TicketDrawerBodySubSection = (props: TicketDrawerBodySubSectionProps) => {
 
   return (
     <VStack width="full" alignItems="flex-start" spacing="32px" py="24px">
-      <SourceAlert />
+      <SourceAlert ticket={data} />
       <HStack
         width="full"
         alignItems="flex-start"

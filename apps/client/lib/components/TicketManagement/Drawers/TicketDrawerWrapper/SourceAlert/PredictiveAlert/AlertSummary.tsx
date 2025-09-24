@@ -1,78 +1,116 @@
-import { HStack, Icon, Text, Tooltip, VStack } from '@chakra-ui/react';
+import {
+  HStack,
+  Icon,
+  Text,
+  Tooltip,
+  useDisclosure,
+  VStack,
+} from '@chakra-ui/react';
+import moment from 'moment';
 import React from 'react';
+import AssetDetail from '~/lib/components/AssetManagement/AssetDetail';
 import { InfoIcon } from '~/lib/components/CustomIcons';
 import Detail from '~/lib/components/UI/ContentDetails/Detail';
+import { Prediction } from '~/lib/interfaces/prediction.interfaces';
+import { dateFormatter } from '~/lib/utils/Formatters';
 
-const AlertSummary = () => {
+interface AlertSummaryProps {
+  prediction?: Prediction;
+  isLoading: boolean;
+}
+const AlertSummary = ({ prediction, isLoading }: AlertSummaryProps) => {
+  const { isOpen, onClose, onOpen } = useDisclosure();
+  const forcastedDate = moment(prediction?.datePredicted);
+  const dayDiff = moment().diff(forcastedDate, 'days');
+
   return (
-    <VStack spacing="16px" width="full" alignItems="flex-start">
-      <Text color="neutral.600" fontWeight={700}>
-        Alert Summary
-      </Text>
-      <VStack spacing="8px" width="full" alignItems="flex-start">
-        <Detail
-          label="Risk Score:"
-          value="85%"
-          labelStyle={{ color: 'neutral.700' }}
-          valueStyle={{ fontWeight: 800 }}
-        />
-        <Detail
-          label="Predicted Failure Date:"
-          value="Sept 12, 2025"
-          labelStyle={{ color: 'neutral.700' }}
-          valueStyle={{ fontWeight: 800 }}
-        />
-        <HStack spacing="16px" width="full">
+    <>
+      <VStack spacing="16px" width="full" alignItems="flex-start">
+        <Text color="neutral.600" fontWeight={700}>
+          Alert Summary
+        </Text>
+        <VStack spacing="8px" width="full" alignItems="flex-start">
           <Detail
-            label="Confidence Level:"
-            value="High"
+            label="Risk Score:"
+            value={prediction?.riskScore ? `${prediction?.riskScore}%` : 'N/A'}
             labelStyle={{ color: 'neutral.700' }}
             valueStyle={{ fontWeight: 800 }}
           />
-          <Tooltip
-            label="Confidence reflects model accuracy and data completeness."
-            placement="top"
-            bgColor="black"
-            color="white"
-            minW="190px"
-            rounded="10px"
-            padding="6px"
-            fontSize="12px"
-          >
-            <HStack
-              width="12px"
-              height="12px"
-              justifyContent="center"
-              flexShrink={0}
+          <Detail
+            label="Predicted Failure Date:"
+            value={
+              prediction?.alertedDate
+                ? dateFormatter(prediction?.alertedDate, 'MMM D, YYYY')
+                : 'N/A'
+            }
+            labelStyle={{ color: 'neutral.700' }}
+            valueStyle={{ fontWeight: 800 }}
+            isLoading={isLoading}
+          />
+          <HStack spacing="16px" width="full">
+            <Detail
+              label="Confidence Level:"
+              value={prediction?.confidenceLevelName ?? 'N/A'}
+              labelStyle={{ color: 'neutral.700' }}
+              valueStyle={{ fontWeight: 800 }}
+              isLoading={isLoading}
+            />
+            <Tooltip
+              label="Confidence reflects model accuracy and data completeness."
+              placement="top"
+              bgColor="black"
+              color="white"
+              minW="190px"
+              rounded="10px"
+              padding="6px"
+              fontSize="12px"
             >
-              <Icon as={InfoIcon} boxSize="12px" color="blue.500" />
-            </HStack>
-          </Tooltip>
-        </HStack>
-        <Detail
-          label="Asset Link:"
-          value="View Asset Profile"
-          labelStyle={{ color: 'neutral.700' }}
-          valueStyle={{
-            color: 'blue.500',
-            onClick: () => {},
-            cursor: 'pointer',
-          }}
-        />
+              <HStack
+                width="12px"
+                height="12px"
+                justifyContent="center"
+                flexShrink={0}
+              >
+                <Icon as={InfoIcon} boxSize="12px" color="blue.500" />
+              </HStack>
+            </Tooltip>
+          </HStack>
+          <Detail
+            label="Asset Link:"
+            value="View Asset Profile"
+            labelStyle={{ color: 'neutral.700' }}
+            valueStyle={{
+              color: 'blue.500',
+              onClick: () => {
+                if (prediction?.assetId) {
+                  onOpen();
+                }
+              },
+              cursor: 'pointer',
+            }}
+            isLoading={isLoading}
+          />
+        </VStack>
+        <Text
+          bgColor="#17A1FA0D"
+          border="1px solid #17A1FA80"
+          rounded="6px"
+          padding="6px"
+          color="black"
+          lineHeight="150%"
+          fontWeight={400}
+        >
+          This alert was generated by the predictive maintenance engine. The
+          asset shows high likelihood of failure within {dayDiff} days.
+        </Text>
       </VStack>
-      <Text
-        bgColor="#17A1FA0D"
-        border="1px solid #17A1FA80"
-        rounded="6px"
-        padding="6px"
-        color="black"
-        lineHeight="150%"
-        fontWeight={400}
-      >
-        This alert was generated by the predictive maintenance engine. The asset
-        shows high likelihood of failure within 7 days.
-      </Text>
-    </VStack>
+      <AssetDetail
+        isOpen={isOpen}
+        onClose={onClose}
+        defaultAssetId={prediction?.assetId}
+        showHeaderButtons={false}
+      />
+    </>
   );
 };
 

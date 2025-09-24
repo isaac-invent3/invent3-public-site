@@ -110,6 +110,8 @@ import { designationApi } from './services/designation.services';
 import { teamApi } from './services/team.services';
 import { companyApiKey } from './services/apiKey.services';
 import { webhookApi } from './services/webhook.services';
+import { predictionApi } from './services/prediction.services';
+import { bmsReadingApi } from './services/bms/bmsReading.services';
 
 export const persistConfig = {
   key: 'root',
@@ -269,6 +271,12 @@ const rootReducer = combineReducers({
 
   // Forecast APIS
   [forecastApi.reducerPath]: forecastApi.reducer,
+
+  // Prediction APIS
+  [predictionApi.reducerPath]: predictionApi.reducer,
+
+  // BMS APIS
+  [bmsReadingApi.reducerPath]: bmsReadingApi.reducer,
 
   asset: assetSlice,
   auditLog: auditLogSlice,
@@ -441,6 +449,12 @@ export const makeStore = () => {
 
         // Auth Apis
         authApi.middleware,
+
+        // Prediction Apis
+        predictionApi.middleware,
+
+        // BMS Apis
+        bmsReadingApi.middleware,
       ]),
   });
 };

@@ -1,13 +1,31 @@
-import { VStack, Text as ChakraText, Icon } from '@chakra-ui/react';
-import React from 'react';
+import {
+  VStack,
+  Text as ChakraText,
+  StackProps,
+  TextProps,
+} from '@chakra-ui/react';
 
 interface EmptyStateProps {
   emptyText?: string;
+  containerStyle?: StackProps;
+  textStyle?: TextProps;
 }
-const EmptyState = ({ emptyText }: EmptyStateProps) => {
+const EmptyState = ({
+  emptyText,
+  containerStyle,
+  textStyle,
+}: EmptyStateProps) => {
   return (
-    <VStack width="full" my="20vh">
-      <ChakraText color="neutral.600" size="md">
+    <VStack width="full" {...containerStyle}>
+      <ChakraText
+        color="neutral.600"
+        size="md"
+        fontStyle="italic"
+        width="full"
+        textAlign="center"
+        my={8}
+        {...textStyle}
+      >
         {emptyText ?? 'No Data Found'}
       </ChakraText>
     </VStack>

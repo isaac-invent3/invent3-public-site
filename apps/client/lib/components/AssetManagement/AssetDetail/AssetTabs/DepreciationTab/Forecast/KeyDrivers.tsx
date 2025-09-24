@@ -5,6 +5,7 @@ import {
   UnorderedList,
   VStack,
 } from '@chakra-ui/react';
+import { EmptyState } from '@repo/ui/components';
 import React from 'react';
 import { AssetForecast } from '~/lib/interfaces/forecast.interfaces';
 
@@ -43,16 +44,7 @@ const KeyDrivers = (props: KeyDriversProps) => {
         </UnorderedList>
       )}
       {!isLoading && (data?.forecastDrivers.length === 0 || !data) && (
-        <Text
-          fontStyle="italic"
-          color="neutral.300"
-          width="full"
-          textAlign="center"
-          size="md"
-          my={8}
-        >
-          No Data at the moment
-        </Text>
+        <EmptyState />
       )}
     </VStack>
   );

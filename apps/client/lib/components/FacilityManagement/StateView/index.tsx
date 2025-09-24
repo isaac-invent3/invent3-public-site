@@ -118,7 +118,7 @@ const StateView = ({ data: stateData }: { data: State }) => {
               </SimpleGrid>
             )}
             {!isLoading && data && data?.data?.items.length === 0 && (
-              <EmptyState />
+              <EmptyState containerStyle={{ my: '20vh' }} />
             )}
           </VStack>
           {(data?.data?.hasPreviousPage || data?.data?.hasNextPage) && (

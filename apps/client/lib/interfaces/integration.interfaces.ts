@@ -11,9 +11,12 @@ interface ThirdPartyIntegration {
   thirdPartyIntegrationId: number;
   integrationName: string;
   integrationType: number;
+  integrationTypeName: string;
   authentication: number;
+  authenticationMethodName: string;
   lastSyncDate: string;
   syncFrequency: number;
+  syncFrequencyName: string;
   endpoint: string;
 }
 

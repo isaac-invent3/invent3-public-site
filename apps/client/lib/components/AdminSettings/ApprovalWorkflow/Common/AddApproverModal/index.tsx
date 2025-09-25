@@ -10,10 +10,11 @@ interface AddApproverModalProps {
   isOpen: boolean;
   onClose: () => void;
   levelNumber: number;
+  isEscalator?: boolean;
 }
 const AddApproverModal = (props: AddApproverModalProps) => {
-  const { isOpen, onClose, levelNumber } = props;
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const { isOpen, onClose, levelNumber, isEscalator } = props;
+  const [user, setSelectedUser] = useState<User | null>(null);
   const { setFieldValue, values } =
     useFormikContext<CreateApprovalWorkflowFormikValues>();
   const {
@@ -51,6 +52,26 @@ const AddApproverModal = (props: AddApproverModalProps) => {
           }}
           handleCustomAddUser={(user) => {
             setSelectedUser(user);
+            if (isEscalator) {
+              // If it's an escalator, set the user directly without opening action modal
+              const currentApprovers =
+                values.levels[levelNumber - 1]?.approvers || [];
+              // Check if the user is already an approver
+              const isAlreadyApprover = user
+                ? currentApprovers.some((a) => a.userId === user.userId)
+                : false;
+
+              if (!isAlreadyApprover && user) {
+                setFieldValue(`levels.${levelNumber - 1}.escalatorApprover`, {
+                  userId: user.userId,
+                  userFullName: `${user.firstName} ${user.lastName}`,
+                });
+              }
+              onCloseAddUser();
+              onClose();
+              return;
+            }
+            onCloseAddUser();
             onOpenApprovalAction();
           }}
         />
@@ -66,18 +87,19 @@ const AddApproverModal = (props: AddApproverModalProps) => {
             const currentApprovers =
               values.levels[levelNumber - 1]?.approvers || [];
             // Check if the user is already an approver
-            const isAlreadyApprover = selectedUser
-              ? currentApprovers.some((a) => a.userId === selectedUser.userId)
+            const isAlreadyApprover = user
+              ? currentApprovers.some((a) => a.userId === user.userId)
               : false;
 
-            if (!isAlreadyApprover && selectedUser) {
+            if (!isAlreadyApprover && user) {
               setFieldValue(`levels.${levelNumber - 1}.approvers`, [
                 ...currentApprovers,
                 {
-                  userId: selectedUser.userId,
-                  userFullName: `${selectedUser.firstName} ${selectedUser.lastName}`,
+                  userId: user.userId,
+                  userFullName: `${user.firstName} ${user.lastName}`,
                   approvalActionId: action.actionId,
                   approvalActionName: action.actionName,
+                  // isEscalator: false,
                   partyId: null,
                 },
               ]);
@@ -85,7 +107,7 @@ const AddApproverModal = (props: AddApproverModalProps) => {
             onCloseApprovalAction();
             onClose();
           }}
-          user={selectedUser!}
+          user={user!}
           handleBack={handleBack}
         />
       )}

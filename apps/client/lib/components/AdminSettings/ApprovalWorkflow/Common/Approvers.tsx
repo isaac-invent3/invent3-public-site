@@ -52,6 +52,10 @@ const Approvers = ({ data, shouldEdit = true }: ApproversProps) => {
       }
     }
   };
+
+  const escalatorApprover =
+    values.levels[data.levelNumber - 1]?.escalatorApprover;
+
   return (
     <AccordionItem
       bgColor="#F7F7F7"
@@ -275,23 +279,60 @@ const Approvers = ({ data, shouldEdit = true }: ApproversProps) => {
                 justifyContent="flex-start"
                 alignItems={{ base: 'flex-start' }}
               >
-                <IconButton
-                  variant="solid"
-                  bgColor="#F1F1F1"
-                  aria-label="Add Approver"
-                  icon={<AddIcon color="#374957" boxSize="24px" />}
-                  sx={{
-                    width: '50px',
-                    height: '50px',
-                    rounded: 'full',
-                  }}
-                  onClick={onOpen}
-                />
+                {escalatorApprover && (
+                  <HStack cursor="pointer" role="group">
+                    <UserInfo
+                      name={escalatorApprover?.userFullName}
+                      role="Escalation Approver"
+                      customAvatarStyle={{
+                        width: '50px',
+                        height: '50px',
+                        fontWeight: 700,
+                      }}
+                      roleStyle={{
+                        fontStyle: 'italic',
+                        mt: '4px',
+                      }}
+                    />
+                    <Icon
+                      as={CloseIcon}
+                      boxSize="16px"
+                      color="black"
+                      visibility="hidden"
+                      _groupHover={{
+                        visibility: shouldEdit ? 'visible' : 'hidden',
+                      }}
+                      transition="all 0.3s ease"
+                      cursor="pointer"
+                      onClick={() => {
+                        setFieldValue(
+                          `levels.${data.levelNumber - 1}.escalatorApprover`,
+                          null
+                        );
+                      }}
+                    />
+                  </HStack>
+                )}
+                {!escalatorApprover && (
+                  <IconButton
+                    variant="solid"
+                    bgColor="#F1F1F1"
+                    aria-label="Add Approver"
+                    icon={<AddIcon color="#374957" boxSize="24px" />}
+                    sx={{
+                      width: '50px',
+                      height: '50px',
+                      rounded: 'full',
+                    }}
+                    onClick={onOpen}
+                  />
+                )}
               </SectionWrapper>
               <AddApproverModal
                 isOpen={isOpen}
                 onClose={onClose}
                 levelNumber={data?.levelNumber}
+                isEscalator={true}
               />
             </Stack>
           </AccordionPanel>

@@ -19,6 +19,18 @@ import { useGetAllApprovalWorkflowTypesQuery } from '~/lib/redux/services/approv
 import ApprovalWorkflowTypeSelect from './ApprovalWorkflowTypeSelect';
 import Approvers from '../Common/Approvers';
 import { FORM_ENUM } from '~/lib/utils/constants';
+import { CreateApprovalWorkflowFormikValues } from '~/lib/interfaces/approvalWorkflow.interfaces';
+
+const DURATION_OPTIONS = [
+  { label: '2 days', hours: 2 * 24 },
+  { label: '1 week', hours: 7 * 24 },
+  { label: '1 month', hours: 30 * 24 },
+];
+
+export const options = DURATION_OPTIONS.map((item, index) => ({
+  label: item.label,
+  value: item.hours,
+}));
 
 const CreateApprovalWorkflow = ({
   onClose,
@@ -35,14 +47,18 @@ const CreateApprovalWorkflow = ({
   const { handleSubmit } = useCustomMutation();
   const [createApprovalWorkflow, { isLoading }] =
     useCreateApprovalWorkflowMutation();
-  const formik = useFormik({
+  const formik = useFormik<CreateApprovalWorkflowFormikValues>({
     initialValues: {
       approvalTypeId: null,
       approvalLevel: 1,
+      turnaroundTime: null,
+      escalationTurnaroundTime: null,
+      deletedParties: [],
       levels: [
         {
           levelNumber: 1,
           approvers: [],
+          escalatorApprover: null,
         },
       ],
     },
@@ -51,6 +67,19 @@ const CreateApprovalWorkflow = ({
     onSubmit: async (values, { setSubmitting }) => {
       setSubmitting(true);
       const session = await getSession();
+      const escalatorForLevelObject = values.levels.reduce(
+        (acc, level) => {
+          if (
+            level.escalatorApprover &&
+            level.escalatorApprover.userId != null
+          ) {
+            acc[level.levelNumber] = level.escalatorApprover.userId;
+          }
+          return acc;
+        },
+        {} as { [key: number]: number }
+      );
+
       const response = await handleSubmit(
         createApprovalWorkflow,
         {
@@ -73,6 +102,12 @@ const CreateApprovalWorkflow = ({
               changeInitiatedBy: session?.user?.username!,
             }))
           ),
+          turnAroundTime: values.turnaroundTime!,
+          escalationTurnAroundTime: values.escalationTurnaroundTime!,
+          escalatorForLevel:
+            Object.keys(escalatorForLevelObject).length > 0
+              ? escalatorForLevelObject
+              : null,
         },
         'Approval Workflow Added Successfully'
       );
@@ -195,7 +230,7 @@ const CreateApprovalWorkflow = ({
               <FormSelect
                 name="turnaroundTime"
                 title="Duration"
-                options={[24, 48, 64].map((item, index) => ({
+                options={options.map((item, index) => ({
                   label: `${item}hrs`,
                   value: index + 1,
                 }))}
@@ -226,7 +261,7 @@ const CreateApprovalWorkflow = ({
               <FormSelect
                 name="escalationTurnaroundTime"
                 title="Duration"
-                options={[24, 48, 64].map((item, index) => ({
+                options={options.map((item, index) => ({
                   label: `${item}hrs`,
                   value: index + 1,
                 }))}

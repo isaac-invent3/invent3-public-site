@@ -32,11 +32,11 @@ const ThirdPartyDetailDrawer = (props: ThirdPartyDetailDrawerProps) => {
     },
     {
       label: 'Inegration Type',
-      value: data?.integrationType ?? 'N/A',
+      value: data?.integrationTypeName ?? 'N/A',
     },
     {
       label: 'Authentication',
-      value: data?.authentication ?? 'N/A',
+      value: data?.authenticationMethodName ?? 'N/A',
     },
   ];
 
@@ -51,7 +51,7 @@ const ThirdPartyDetailDrawer = (props: ThirdPartyDetailDrawerProps) => {
     },
     {
       label: 'Sync Frequency',
-      value: data?.syncFrequency ?? 'N/A',
+      value: data?.syncFrequencyName ?? 'N/A',
     },
   ];
 

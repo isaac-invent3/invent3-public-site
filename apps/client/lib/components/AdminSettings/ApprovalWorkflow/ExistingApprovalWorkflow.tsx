@@ -29,6 +29,7 @@ import { getSession } from 'next-auth/react';
 import { Button, FormSelect, GenericDeleteModal } from '@repo/ui/components';
 import SectionWrapper from '../../UserSettings/Common/SectionWrapper';
 import Approvers from './Common/Approvers';
+import { options } from './CreateApprovalWorkflow';
 
 interface ExistingApprovalWorkflowProps {
   data: ApprovalWorkflow;
@@ -58,6 +59,8 @@ const ExistingApprovalWorkflow = ({ data }: ExistingApprovalWorkflowProps) => {
     initialValues: {
       approvalTypeId: data?.approvalTypeId ?? null,
       approvalLevel: 1,
+      turnaroundTime: data?.turnAroundTime ?? null,
+      escalationTurnaroundTime: data?.escalationTurnAroundTime ?? null,
       levels: [],
       deletedParties: [] as { levelNumber: number; partyId: number }[],
     },
@@ -243,39 +246,103 @@ const ExistingApprovalWorkflow = ({ data }: ExistingApprovalWorkflowProps) => {
                 pt="20px"
               >
                 {shouldEdit && (
-                  <SectionWrapper
-                    title="Number of Approval Levels"
-                    subtitle="Select the number of approval levels required for this workflow."
-                    spacing={{ base: '8px', sm: '16px', lg: '128px' }}
-                    direction={{ base: 'column', lg: 'row' }}
-                    sectionInfoStyle={{
-                      width: { lg: '246px' },
-                    }}
-                    subtitleStyle={{ width: '246px' }}
-                    width="full"
-                    justifyContent="space-between"
-                    alignItems={{ base: 'flex-start', lg: 'center' }}
-                  >
-                    <FormSelect
-                      name="approvalLevel"
-                      title="Levels"
-                      options={Array(5)
-                        .fill('')
-                        .map((_, index) => ({
-                          label: `${index + 1}`,
+                  <VStack spacing="16px" width="full">
+                    <SectionWrapper
+                      title="Number of Approval Levels"
+                      subtitle="Select the number of approval levels required for this workflow."
+                      spacing={{ base: '8px', sm: '16px', lg: '128px' }}
+                      direction={{ base: 'column', lg: 'row' }}
+                      sectionInfoStyle={{
+                        width: { lg: '246px' },
+                      }}
+                      subtitleStyle={{ width: '246px' }}
+                      width="full"
+                      justifyContent="space-between"
+                      alignItems={{ base: 'flex-start', lg: 'center' }}
+                    >
+                      <FormSelect
+                        name="approvalLevel"
+                        title="Levels"
+                        options={Array(5)
+                          .fill('')
+                          .map((_, index) => ({
+                            label: `${index + 1}`,
+                            value: index + 1,
+                          }))}
+                        containerStyles={{
+                          width: isMobile ? '100%' : '179px',
+                        }}
+                        selectStyles={{
+                          height: '46px',
+                          pt: '0px',
+                          backgroundColor: '#EBEBEB',
+                        }}
+                        showTitleAfterSelect={false}
+                      />
+                    </SectionWrapper>
+                    <SectionWrapper
+                      title="Turnaround Time"
+                      subtitle="How long for each approver to act on the request."
+                      spacing={{ base: '8px', sm: '16px', lg: '128px' }}
+                      direction={{ base: 'column', lg: 'row' }}
+                      sectionInfoStyle={{
+                        width: { lg: '246px' },
+                      }}
+                      subtitleStyle={{ width: '246px' }}
+                      width="full"
+                      justifyContent="space-between"
+                      alignItems={{ base: 'flex-start', lg: 'center' }}
+                    >
+                      <FormSelect
+                        name="turnaroundTime"
+                        title="Duration"
+                        options={options.map((item, index) => ({
+                          label: `${item}hrs`,
                           value: index + 1,
                         }))}
-                      containerStyles={{
-                        width: isMobile ? '100%' : '179px',
+                        containerStyles={{
+                          width: isMobile ? '100%' : '179px',
+                        }}
+                        selectStyles={{
+                          height: '46px',
+                          pt: '0px',
+                          backgroundColor: '#EBEBEB',
+                        }}
+                        showTitleAfterSelect={false}
+                      />
+                    </SectionWrapper>
+                    <SectionWrapper
+                      title="Escalation Turnaround Time"
+                      subtitle="How long for each escalated approver to act on the request."
+                      spacing={{ base: '8px', sm: '16px', lg: '128px' }}
+                      direction={{ base: 'column', lg: 'row' }}
+                      sectionInfoStyle={{
+                        width: { lg: '246px' },
                       }}
-                      selectStyles={{
-                        height: '46px',
-                        pt: '0px',
-                        backgroundColor: '#EBEBEB',
-                      }}
-                      showTitleAfterSelect={false}
-                    />
-                  </SectionWrapper>
+                      subtitleStyle={{ width: '246px' }}
+                      width="full"
+                      justifyContent="space-between"
+                      alignItems={{ base: 'flex-start', lg: 'center' }}
+                    >
+                      <FormSelect
+                        name="escalationTurnaroundTime"
+                        title="Duration"
+                        options={options.map((item, index) => ({
+                          label: `${item}hrs`,
+                          value: index + 1,
+                        }))}
+                        containerStyles={{
+                          width: isMobile ? '100%' : '179px',
+                        }}
+                        selectStyles={{
+                          height: '46px',
+                          pt: '0px',
+                          backgroundColor: '#EBEBEB',
+                        }}
+                        showTitleAfterSelect={false}
+                      />
+                    </SectionWrapper>
+                  </VStack>
                 )}
                 <VStack width="full" spacing="32px">
                   <Accordion width="full" allowToggle>

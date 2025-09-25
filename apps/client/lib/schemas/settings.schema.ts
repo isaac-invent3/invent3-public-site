@@ -147,6 +147,12 @@ const createApprovalWorkflowSchema = Yup.object().shape({
             })
           )
           .min(1, 'At least one approver is required'),
+        escalatorApprover: Yup.object()
+          .shape({
+            userId: Yup.number().required('User is Required'),
+            userFullName: Yup.string().nullable(),
+          })
+          .nullable(),
       })
     )
     .required('Level is Required')
@@ -158,6 +164,10 @@ const createApprovalWorkflowSchema = Yup.object().shape({
       partyId: Yup.number().required('Party is Required'),
       levelNumber: Yup.number().required('Level number is Required'),
     })
+  ),
+  turnAroundTime: Yup.number().required('Turnaround time is Required'),
+  escalationTurnAroundTime: Yup.number().required(
+    'Escalation Turnaround time is Required'
   ),
 });
 

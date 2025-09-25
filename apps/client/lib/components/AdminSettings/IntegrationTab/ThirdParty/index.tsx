@@ -98,9 +98,10 @@ const ThirdParty = () => {
             data?.data?.items.map((item, index) => (
               <>
                 <Flex
+                  width={{ base: 'min-content', lg: 'min-content' }}
                   minW={{ base: '60px', lg: '74px' }}
-                  width={{ base: 'min-content' }}
                   height={{ base: '60px', lg: '74px' }}
+                  p="8px"
                   rounded="6px"
                   bgColor="neutral.100"
                   justifyContent="center"
@@ -116,7 +117,7 @@ const ThirdParty = () => {
                     color="black"
                     textAlign="center"
                   >
-                    {item.integrationName}
+                    {item?.integrationName}
                   </Text>
                 </Flex>
                 <ThirdPartyDetailDrawer

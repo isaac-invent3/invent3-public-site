@@ -195,6 +195,8 @@ interface ApprovalWorkflow {
   approvalTypeName: string;
   systemContextTypeId: number;
   totalNoOfParties: number;
+  turnAroundTime: number;
+  escalationTurnAroundTime: number;
 }
 
 interface ApprovalWorkflowParty {
@@ -235,6 +237,11 @@ interface CreateApprovalWorkflowPayload {
     actionType: number;
     changeInitiatedBy: string;
   }[];
+  escalatorForLevel: {
+    [key: number]: number;
+  } | null;
+  turnAroundTime: number;
+  escalationTurnAroundTime: number;
 }
 
 interface UpdateApprovalWorkflowPayload {
@@ -256,6 +263,11 @@ interface UpdateApprovalWorkflowPayload {
     actionType: number;
     changeInitiatedBy: string;
   }[];
+  escalatorForLevel: {
+    [key: number]: number;
+  } | null;
+  turnAroundTime: number;
+  escalationTurnAroundTime: number;
 }
 
 interface ApprovalLevel {
@@ -267,6 +279,12 @@ interface ApprovalLevel {
     approvalActionId: number;
     approvalActionName: string;
   }[];
+  escalatorApprover?: EscalatorApprover | null;
+}
+
+interface EscalatorApprover {
+  userId: number;
+  userFullName: string | null;
 }
 
 interface CreateApprovalWorkflowTypePayload {}
@@ -275,11 +293,14 @@ interface CreateApprovalWorkflowInstancePayload {}
 
 interface CreateApprovalWorkflowFormikValues {
   approvalTypeId: number | null;
-  approvalWorkFlowName: string;
-  description: string;
-  isDefaultApprovalWorkFlow: boolean;
+  approvalLevel: number;
+  approvalWorkFlowName?: string;
+  description?: string;
+  isDefaultApprovalWorkFlow?: boolean;
   levels: ApprovalLevel[];
   deletedParties: { partyId: number; levelNumber: number }[];
+  turnaroundTime: number | null;
+  escalationTurnaroundTime: number | null;
 }
 
 export type {
@@ -308,4 +329,5 @@ export type {
   UpdateApprovalWorkflowPayload,
   ApprovalWorkflowParty,
   UpdateApprovalWorkflowPartyInstancePayload,
+  EscalatorApprover,
 };

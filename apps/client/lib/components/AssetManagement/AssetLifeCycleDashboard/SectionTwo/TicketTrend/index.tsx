@@ -1,28 +1,36 @@
 import { HStack, VStack } from '@chakra-ui/react';
-import React from 'react';
+import { Option } from '@repo/interfaces';
+import React, { useState } from 'react';
 import CardHeader from '~/lib/components/Dashboard/Common/CardHeader';
-import ChartLegend from '~/lib/components/Dashboard/Common/Charts/ChartLegend';
 import LineChart from '~/lib/components/Dashboard/Common/Charts/LineChart';
+import DropDown from '~/lib/components/Dashboard/Common/DropDown';
 import { transformMonthIdsToShortNames } from '~/lib/components/Dashboard/Common/utils';
-import { OpenedAndResolvedTicket } from '~/lib/interfaces/dashboard.interfaces';
+import {
+  useGetLifeCycleTrendByLifeCyleIdQuery,
+  useGetLifecyleStagesQuery,
+} from '~/lib/redux/services/asset/lifeCycle.services';
+import {
+  generateLastFiveYears,
+  generateOptions,
+} from '~/lib/utils/helperFunctions';
 
-const chartLegendItems = [
-  {
-    label: 'Opened',
-    color: '#0261B8',
-  },
-  {
-    label: 'Resolved',
-    color: '#FF7A37',
-  },
-];
+const TrendOverTime = () => {
+  const [selectedYear, setSelectedYear] = useState<Option | null>(
+    generateLastFiveYears()[0] as Option
+  );
+  const [selectedLifeCyleId, setSelectedLifeCyleId] = useState<
+    Option | undefined
+  >(generateLastFiveYears()[0] as Option);
+  const { data: lifeCycleStageData, isLoading: isLoadingStages } =
+    useGetLifecyleStagesQuery({});
+  const { data, isLoading } = useGetLifeCycleTrendByLifeCyleIdQuery(
+    {
+      lifeCycleId: selectedLifeCyleId?.value as number,
+      year: selectedYear?.value as number,
+    },
+    { skip: !selectedLifeCyleId?.value }
+  );
 
-interface TrendOverTimeProps {
-  data: OpenedAndResolvedTicket[];
-  isLoading: boolean;
-}
-const TrendOverTime = (props: TrendOverTimeProps) => {
-  const { data, isLoading } = props;
   return (
     <VStack
       width="full"
@@ -35,6 +43,31 @@ const TrendOverTime = (props: TrendOverTimeProps) => {
     >
       <HStack width="full" justifyContent="space-between">
         <CardHeader>Trends Over Time</CardHeader>
+        <HStack spacing="8px">
+          <DropDown
+            options={generateOptions(
+              lifeCycleStageData?.data?.items,
+              'lifeCycleStageName',
+              'lifeCycleId'
+            )}
+            label="Year"
+            handleClick={(option) => {
+              setSelectedYear(option);
+            }}
+            selectedOptions={selectedYear}
+            width="100px"
+            isLoading={isLoadingStages}
+          />
+          <DropDown
+            options={generateLastFiveYears()}
+            label="Year"
+            handleClick={(option) => {
+              setSelectedYear(option);
+            }}
+            selectedOptions={selectedYear}
+            width="100px"
+          />
+        </HStack>
       </HStack>
       <VStack
         width="full"
@@ -45,13 +78,19 @@ const TrendOverTime = (props: TrendOverTimeProps) => {
       >
         {/* <ChartLegend chartLegendItems={chartLegendItems} /> */}
         <LineChart
-          labels={transformMonthIdsToShortNames(
-            data?.map((item) => item.monthId)
-          )}
+          labels={
+            data?.data
+              ? transformMonthIdsToShortNames(
+                  data?.data?.items?.map((item) => item.month)
+                )
+              : []
+          }
           datasets={[
             {
-              label: 'Opened',
-              data: data?.map((item) => item.openTickets),
+              label: 'Trend',
+              data: data?.data
+                ? data?.data?.items?.map((item) => item.count)
+                : [],
               borderColor: '#0366EF',
               pointBorderColor: '#fff',
               pointBackgroundColor: '#0366EF',
@@ -59,16 +98,6 @@ const TrendOverTime = (props: TrendOverTimeProps) => {
               borderWidth: 2,
               tension: 0.4,
               fill: false,
-            },
-            {
-              label: 'Resolved',
-              data: data?.map((item) => item.resolvedTickets),
-              borderColor: '#00A129',
-              borderDash: [8, 4],
-              pointRadius: 0,
-              fill: false,
-              tension: 0.4,
-              borderWidth: 2,
             },
           ]}
           isLoading={isLoading}

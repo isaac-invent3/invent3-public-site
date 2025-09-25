@@ -13,10 +13,11 @@ const Address = () => {
   const dispatch = useAppDispatch();
   return (
     <FormInputWrapper
-      sectionMaxWidth="157px"
-      customSpacing="65px"
+      sectionMaxWidth="133px"
+      customSpacing="17px"
       description="Enter the address of the  contact person"
       title="Address"
+      isRequired
     >
       <VStack width="full" spacing="8px">
         <SimpleGrid width="full" gap="16px" columns={{ base: 1, md: 2 }}>
@@ -29,7 +30,7 @@ const Address = () => {
           />
           <Field
             as={FormTextInput}
-            name="address1"
+            name="address2"
             type="text"
             label="Address 2"
             placeholder="Address 2"

@@ -9,10 +9,20 @@ const vendorInfoSchema = Yup.object().shape({
       base64PhotoImage: Yup.string().required(),
       base64Prefix: Yup.string().nullable(),
     })
-    .required('Logo is required'),
+    .nullable(),
   vendorName: Yup.string().required('Vendor name is required'),
   description: Yup.string().required('Description is required'),
   vendorCategoryId: Yup.string().required('Vendor Category is required'),
+  contactFirstName: Yup.string().required('First name is required'),
+  contactLastName: Yup.string().required('Last name is required'),
+  primaryEmail: Yup.string().email().required('Email is required'),
+  primaryPhoneNumber: Yup.number().required('Phone number is required'),
+  address1: Yup.string().required('Address is required'),
+  address2: Yup.string().nullable(),
+  vendorCountryId: Yup.number().nullable(),
+  vendorStateId: Yup.number().nullable(),
+  vendorCityId: Yup.number().nullable(),
+  postalCode: Yup.string().nullable(),
 });
 
 const contactInformationSchema = Yup.object().shape({
@@ -20,7 +30,7 @@ const contactInformationSchema = Yup.object().shape({
   contactLastName: Yup.string().required('Last name is required'),
   primaryEmail: Yup.string().email().required('Email is required'),
   primaryPhoneNumber: Yup.number().required('Phone number is required'),
-  address1: Yup.string().nullable(),
+  address1: Yup.string().required('Address is required'),
   address2: Yup.string().nullable(),
   vendorCountryId: Yup.number().nullable(),
   vendorStateId: Yup.number().nullable(),

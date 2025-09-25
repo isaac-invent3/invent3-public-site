@@ -12,10 +12,10 @@ const ContactName = () => {
       alignItems={{ base: 'flex-end', lg: 'flex-start' }}
     >
       <FormInputWrapper
-        sectionMaxWidth="157px"
-        customSpacing="65px"
-        description="Provide essential information about the contact person being added."
-        title="Primary Contact Name"
+        sectionMaxWidth="133px"
+        customSpacing="17px"
+        description="Provide User’s Full Name"
+        title="Full Name"
         isRequired
       >
         <Field

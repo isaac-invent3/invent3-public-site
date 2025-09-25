@@ -1,4 +1,4 @@
-import { Flex, SimpleGrid, VStack } from '@chakra-ui/react';
+import { Flex, SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import { Field, FormikProvider, useFormik } from 'formik';
 
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
@@ -41,17 +41,11 @@ const ContactInformation = (props: ContactInformationProps) => {
     enableReinitialize: true,
     onSubmit: async (values) => {
       dispatch(updateVendorForm(values));
-      setActiveStep(3);
     },
   });
 
   return (
-    <Flex
-      width="full"
-      height="full"
-      direction="column"
-      display={activeStep === 2 ? 'flex' : 'none'}
-    >
+    <Flex width="full" height="full" direction="column">
       <FormikProvider value={formik}>
         <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
           <VStack
@@ -62,10 +56,13 @@ const ContactInformation = (props: ContactInformationProps) => {
             pt="26px"
             pl="16px"
             pb="33px"
-            pr={{ base: '16px', md: '44px' }}
+            pr={{ base: '16px', md: '16px' }}
             rounded="6px"
-            minH="60vh"
+            // minH="60vh"
           >
+            <Text size="lg" color="primary.500" fontWeight={700}>
+              Personal Information
+            </Text>
             <ContactName />
             <SimpleGrid
               width="full"
@@ -103,7 +100,7 @@ const ContactInformation = (props: ContactInformationProps) => {
                 />
               </FormInputWrapper>
             </SimpleGrid>
-            <Address />
+            {/* <Address /> */}
           </VStack>
           <Flex width="full" mt="16px">
             <FormActionButtons

@@ -7,11 +7,7 @@ import {
   useSearchAssetsMutation,
 } from '~/lib/redux/services/asset/general.services';
 import { ListResponse, Option } from '@repo/interfaces';
-import {
-  Asset,
-  FilterInput,
-  ValidColumnNames,
-} from '~/lib/interfaces/asset/general.interface';
+import { Asset, FilterInput } from '~/lib/interfaces/asset/general.interface';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { generateSearchCriteria } from '@repo/utils';
@@ -25,8 +21,8 @@ interface UseAssetTemplateInfo {
   // eslint-disable-next-line no-unused-vars
   handleSelectRow: (data: Asset) => void;
   search: string;
-  columnId?: number;
-  columnType?: ValidColumnNames;
+  columnId?: number | string;
+  columnType?: string;
 }
 
 const useAssetTemplateInfo = (props: UseAssetTemplateInfo) => {

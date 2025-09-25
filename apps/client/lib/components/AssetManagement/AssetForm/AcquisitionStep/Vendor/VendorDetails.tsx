@@ -22,7 +22,7 @@ import {
   FormInputWrapper,
   FormSectionInfo,
 } from '@repo/ui/components';
-import VendorDrawer from './VendorDrawer';
+import VendorFormModal from './VendorFormModal';
 import usePermissionAccess from '~/lib/hooks/useRoleAccess';
 import AssetTypeSelect from '../AssetType';
 
@@ -120,11 +120,11 @@ const VendorDetails = () => {
                       : undefined
                   }
                 />
-                {!canCreateVendor && (
-                  <FormAddButton handleClick={onOpen}>
-                    {vendorFormDetails ? 'Edit' : 'Add'} New Vendor
-                  </FormAddButton>
-                )}
+                {/* {!canCreateVendor && ( */}
+                <FormAddButton handleClick={onOpen}>
+                  {vendorFormDetails ? 'Edit' : 'Add'} New Vendor
+                </FormAddButton>
+                {/* )} */}
               </VStack>
             </FormInputWrapper>
           </GridItem>
@@ -187,7 +187,7 @@ const VendorDetails = () => {
           </GridItem>
         </Grid>
       </Stack>
-      <VendorDrawer isOpen={isOpen} onClose={onClose} />
+      <VendorFormModal isOpen={isOpen} onClose={onClose} />
     </>
   );
 };

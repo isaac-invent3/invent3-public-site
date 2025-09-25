@@ -13,9 +13,9 @@ import AssetDetail from '../AssetDetail';
 interface AssetListModalProps {
   isOpen: boolean;
   onClose: () => void;
-  name: string;
-  columnId: number;
-  columnName: ValidColumnNames;
+  name?: string;
+  columnId?: number | string;
+  columnName?: string;
 }
 const AssetListModal = (props: AssetListModalProps) => {
   const { isOpen, onClose, name, columnId, columnName } = props;

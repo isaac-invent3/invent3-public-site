@@ -112,6 +112,7 @@ import { companyApiKey } from './services/apiKey.services';
 import { webhookApi } from './services/webhook.services';
 import { predictionApi } from './services/prediction.services';
 import { bmsReadingApi } from './services/bms/bmsReading.services';
+import { assetLifeCycleApi } from './services/asset/lifeCycle.services';
 
 export const persistConfig = {
   key: 'root',
@@ -131,6 +132,7 @@ const rootReducer = combineReducers({
   [assetTypeApi.reducerPath]: assetTypeApi.reducer,
   [conditionApi.reducerPath]: conditionApi.reducer,
   [assetVendorsApi.reducerPath]: assetVendorsApi.reducer,
+  [assetLifeCycleApi.reducerPath]: assetLifeCycleApi.reducer,
   [complianceApi.reducerPath]: complianceApi.reducer,
 
   // Maintenance-related APIs
@@ -321,6 +323,7 @@ export const makeStore = () => {
         assetTransferApi.middleware,
         assetBulkActionApi.middleware,
         assetVendorsApi.middleware,
+        assetLifeCycleApi.middleware,
         complianceApi.middleware,
 
         // Maintenance-related APIs

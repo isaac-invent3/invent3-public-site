@@ -136,6 +136,8 @@ interface Asset {
   lifeCycleColorCode: string;
   riskScoreName: string;
   riskScoreValue: number;
+  riskScoreColor: string;
+  forecastedReplacementDate: string;
 }
 
 interface AssetFormImage {

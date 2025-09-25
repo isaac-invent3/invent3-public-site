@@ -1,14 +1,13 @@
-import { HStack, Text, useDisclosure, VStack } from '@chakra-ui/react';
+import { Flex, HStack, Text, useDisclosure, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { Button } from '@repo/ui/components';
-import useVendorTable from '~/lib/components/VendorManagement/VendorTable/useVendorTable';
-import AssetRiskTable from './AssetRiskTable';
 import CardHeader from '~/lib/components/Dashboard/Common/CardHeader';
+import useAssetRiskTable from './useAssetAtRiskTable';
+import AssetAtRiskModal from './AssetAtRiskModal';
 
 const SectionThree = () => {
-  const { VendorInfoTable } = useVendorTable({
+  const { AssetRiskTable } = useAssetRiskTable({
     customPageSize: 5,
-    showFooter: false,
   });
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -47,9 +46,9 @@ const SectionThree = () => {
             View All
           </Button>
         </HStack>
-        <AssetRiskTable data={[]} />
+        <Flex width="full">{AssetRiskTable}</Flex>
       </VStack>
-      {/* {isOpen && <VendorModal isOpen={isOpen} onClose={onClose} />} */}
+      {isOpen && <AssetAtRiskModal isOpen={isOpen} onClose={onClose} />}
     </>
   );
 };

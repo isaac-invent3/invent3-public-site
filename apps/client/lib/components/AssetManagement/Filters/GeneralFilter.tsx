@@ -1,7 +1,4 @@
-import {
-  FilterInput,
-  ValidColumnNames,
-} from '~/lib/interfaces/asset/general.interface';
+import { FilterInput } from '~/lib/interfaces/asset/general.interface';
 import CategoryFilter from './FilterComponents/CategoryFilter';
 import StatusFilter from './FilterComponents/StatusFilter';
 import { Option } from '~/lib/interfaces/general.interfaces';
@@ -9,7 +6,7 @@ import CombinedLocationFilter from '../../Common/FilterComponents/CombinedLocati
 import FilterWrapper from '../../Common/FilterComponents/FilterWrapper';
 
 interface GeneralFilterProps {
-  columnType?: ValidColumnNames;
+  columnType?: string;
   filterData: FilterInput;
   setFilterData: React.Dispatch<React.SetStateAction<FilterInput>>;
   onApply: () => void;

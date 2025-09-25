@@ -53,10 +53,10 @@ interface VendorDto {
   contactFirstName: string;
   contactLastName: string;
   description: string;
-  address: string;
+  address: string | null;
   phoneNumber: string;
   emailAddress: string;
-  statusId: number;
+  statusId: number | null;
   vendorCategoryId: number;
 }
 
@@ -89,7 +89,7 @@ interface UpdateVendorContractDocumentDto
 
 interface CreateVendorPayload {
   createVendor: VendorDto & { createdBy: string };
-  createVendorImageDto: CreateVendorImageDto[];
+  createVendorImageDto: CreateVendorImageDto[] | null;
   createVendorContractDocumentDto: CreateVendorContractDocumentDto[] | null;
 }
 

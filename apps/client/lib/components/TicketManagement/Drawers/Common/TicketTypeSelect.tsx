@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { CSSObjectWithLabel } from 'react-select';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import {
@@ -13,10 +14,17 @@ interface TicketTypeSelectProps {
   selectName: string;
   selectTitle: string;
   defaultInputValue?: string | null;
+  selectStyles?: CSSObjectWithLabel;
 }
 
 const TicketTypeSelect = (props: TicketTypeSelectProps) => {
-  const { handleSelect, selectName, selectTitle, defaultInputValue } = props;
+  const {
+    handleSelect,
+    selectName,
+    selectTitle,
+    defaultInputValue,
+    selectStyles,
+  } = props;
   const [searchTicketType] = useSearchTicketTypesMutation({});
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading, isFetching } = useGetAllTicketTypesQuery({
@@ -36,6 +44,7 @@ const TicketTypeSelect = (props: TicketTypeSelectProps) => {
       setPageNumber={setPageNumber}
       handleSelect={handleSelect}
       defaultInputValue={defaultInputValue}
+      selectStyles={selectStyles}
     />
   );
 };

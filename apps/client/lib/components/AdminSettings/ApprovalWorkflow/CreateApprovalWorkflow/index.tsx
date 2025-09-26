@@ -231,8 +231,8 @@ const CreateApprovalWorkflow = ({
                 name="turnaroundTime"
                 title="Duration"
                 options={options.map((item, index) => ({
-                  label: `${item}hrs`,
-                  value: index + 1,
+                  label: item.label,
+                  value: item.value,
                 }))}
                 containerStyles={{
                   width: isMobile ? '100%' : '179px',
@@ -262,8 +262,8 @@ const CreateApprovalWorkflow = ({
                 name="escalationTurnaroundTime"
                 title="Duration"
                 options={options.map((item, index) => ({
-                  label: `${item}hrs`,
-                  value: index + 1,
+                  label: item.label,
+                  value: item.value,
                 }))}
                 containerStyles={{
                   width: isMobile ? '100%' : '179px',

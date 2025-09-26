@@ -1,7 +1,9 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import baseQueryWithReauth from '../baseQueryWithReauth';
-import { BaseApiResponse } from '@repo/interfaces';
+import { BaseApiResponse, ListResponse } from '@repo/interfaces';
 import { Prediction } from '~/lib/interfaces/prediction.interfaces';
+import { QueryParams } from '@prismicio/client';
+import { generateQueryStr } from '~/lib/utils/queryGenerator';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
@@ -21,7 +23,45 @@ export const predictionApi = createApi({
         headers: getHeaders(),
       }),
     }),
+    getRecentPredictionAlert: builder.query<
+      BaseApiResponse<ListResponse<Prediction>>,
+      QueryParams
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/Predictions/GetRecentPredictionAlerts?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    generateWorkOrderFromPrediction: builder.mutation<
+      BaseApiResponse<Prediction>,
+      { alertId: number }
+    >({
+      query: ({ alertId }) => ({
+        url: `/Predictions/GenerateWorkOrderFromPrediction/${alertId}`,
+        method: 'POST',
+        headers: getHeaders(),
+      }),
+    }),
+    acknowledgePredictions: builder.mutation<
+      BaseApiResponse<Prediction>,
+      { alertId: number; acknowlegedBy: string }
+    >({
+      query: ({ alertId, acknowlegedBy }) => ({
+        url: generateQueryStr(
+          `/Predictions/AcknowledgePrediction/${alertId}?`,
+          { acknowlegedBy }
+        ),
+        method: 'PUT',
+        headers: getHeaders(),
+      }),
+    }),
   }),
 });
 
-export const { useGetAlertPredictionsByAlertIdQuery } = predictionApi;
+export const {
+  useGetAlertPredictionsByAlertIdQuery,
+  useAcknowledgePredictionsMutation,
+  useGenerateWorkOrderFromPredictionMutation,
+  useGetRecentPredictionAlertQuery,
+} = predictionApi;

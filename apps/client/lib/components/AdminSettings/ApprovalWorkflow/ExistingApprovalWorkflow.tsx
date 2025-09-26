@@ -119,29 +119,30 @@ const ExistingApprovalWorkflow = ({ data }: ExistingApprovalWorkflowProps) => {
     if (approvalWorkflowParty?.data) {
       const levels = approvalWorkflowParty.data?.items.reduce<ApprovalLevel[]>(
         (acc, party) => {
-          const level = acc.find(
+          let level = acc.find(
             (l: ApprovalLevel) => l.levelNumber === party.levelNumber
           );
-          if (level) {
+          if (!level) {
+            level = {
+              levelNumber: party.levelNumber,
+              approvers: [],
+              escalatorApprover: null,
+            };
+            acc.push(level);
+          }
+
+          if (party.isEscalationApprover) {
+            level.escalatorApprover = {
+              userId: party.userId,
+              userFullName: `${party.firstName} ${party.lastName}` || null,
+            };
+          } else {
             level.approvers.push({
               userId: party.userId,
               userFullName: `${party.firstName} ${party.lastName}` || null,
               approvalActionId: party.approvalActionId,
               approvalActionName: party.actionName,
               partyId: party.approvalWorkFlowPartyId,
-            });
-          } else {
-            acc.push({
-              levelNumber: party.levelNumber,
-              approvers: [
-                {
-                  userId: party.userId,
-                  userFullName: `${party.firstName} ${party.lastName}` || null,
-                  approvalActionId: party.approvalActionId,
-                  approvalActionName: party.actionName,
-                  partyId: party.approvalWorkFlowPartyId,
-                },
-              ],
             });
           }
           return acc;
@@ -297,8 +298,8 @@ const ExistingApprovalWorkflow = ({ data }: ExistingApprovalWorkflowProps) => {
                         name="turnaroundTime"
                         title="Duration"
                         options={options.map((item, index) => ({
-                          label: `${item}hrs`,
-                          value: index + 1,
+                          label: item.label,
+                          value: item.value,
                         }))}
                         containerStyles={{
                           width: isMobile ? '100%' : '179px',
@@ -328,8 +329,8 @@ const ExistingApprovalWorkflow = ({ data }: ExistingApprovalWorkflowProps) => {
                         name="escalationTurnaroundTime"
                         title="Duration"
                         options={options.map((item, index) => ({
-                          label: `${item}hrs`,
-                          value: index + 1,
+                          label: item.label,
+                          value: item.value,
                         }))}
                         containerStyles={{
                           width: isMobile ? '100%' : '179px',

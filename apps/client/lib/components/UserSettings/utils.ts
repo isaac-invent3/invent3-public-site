@@ -21,6 +21,11 @@ const EMAIL_NOTIFICATION = {
   EMAIL_NOTIFICATION_OFF: 9, // Disable email notifications
 };
 
+const WHATSAPP_NOTIFICATION = {
+  WHATSAPP_NOTIFICATION_ON: 104, // Enable whatsapp notifications
+  WHATSAPP_NOTIFICATION_OFF: 105, // Disable whatsapp notifications
+};
+
 const NOTES_NOTIFICATION = {
   NOTES_NO_NOTIFICATIONS: 10, // "Do not notify me"
   NOTES_MENTIONS_ONLY: 11, // "Mentions Only (only notify me if I'm mentioned in a note)"
@@ -102,6 +107,7 @@ export {
   MOBILE_NOTIFICATION,
   DESKTOP_NOTIFICATION,
   EMAIL_NOTIFICATION,
+  WHATSAPP_NOTIFICATION,
   NOTES_NOTIFICATION,
   REMINDERS_NOTIFICATION,
   APPROVAL_NOTIFICATION,

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { CSSObjectWithLabel } from 'react-select';
 import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import {
@@ -13,10 +14,17 @@ interface TaskPrioritySelectProps {
   selectName: string;
   selectTitle: string;
   defaultInputValue?: string | null;
+  selectStyles?: CSSObjectWithLabel;
 }
 
 const TaskPrioritySelect = (props: TaskPrioritySelectProps) => {
-  const { handleSelect, selectName, selectTitle, defaultInputValue } = props;
+  const {
+    handleSelect,
+    selectName,
+    selectTitle,
+    defaultInputValue,
+    selectStyles,
+  } = props;
   const [searchTaskPriority] = useSearchTaskPrioritiesMutation({});
   const [pageNumber, setPageNumber] = useState(1);
   const { data, isLoading, isFetching } = useGetAllTaskPrioritiesQuery({
@@ -36,6 +44,7 @@ const TaskPrioritySelect = (props: TaskPrioritySelectProps) => {
       setPageNumber={setPageNumber}
       handleSelect={handleSelect}
       defaultInputValue={defaultInputValue}
+      selectStyles={selectStyles}
     />
   );
 };

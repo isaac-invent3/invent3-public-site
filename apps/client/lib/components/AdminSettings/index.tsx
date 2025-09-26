@@ -24,6 +24,7 @@ import { setSettings } from '~/lib/redux/slices/SettingsSlice';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import BMSData from './BMSData';
 import ApprovalWorkflow from './ApprovalWorkflow';
+import SLAConfiguration from './SLAConfiguration';
 
 const ALlTabs = [
   'General Settings',
@@ -36,6 +37,7 @@ const ALlTabs = [
   'Compliance',
   'BMS Data',
   'Approval Workflow',
+  'SLA Configuration',
 ];
 
 const AdminSettings = () => {
@@ -104,6 +106,7 @@ const AdminSettings = () => {
           <TabPanel>{tabIndex === 6 && <ComplianceTab />}</TabPanel>
           <TabPanel>{tabIndex === 7 && <BMSData />}</TabPanel>
           <TabPanel>{tabIndex === 8 && <ApprovalWorkflow />}</TabPanel>
+          <TabPanel>{tabIndex === 9 && <SLAConfiguration />}</TabPanel>
         </TabPanels>
       </Tabs>
     </Flex>

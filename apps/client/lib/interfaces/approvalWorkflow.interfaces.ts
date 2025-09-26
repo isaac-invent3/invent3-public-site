@@ -217,6 +217,7 @@ interface ApprovalWorkflowParty {
   approvalRequirementTypeId: number;
   approvalRequirementTypeName: string;
   employeeDesignation: string;
+  isEscalationApprover: boolean;
 }
 
 interface CreateApprovalWorkflowPayload {

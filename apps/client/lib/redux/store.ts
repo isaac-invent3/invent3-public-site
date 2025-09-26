@@ -113,6 +113,7 @@ import { webhookApi } from './services/webhook.services';
 import { predictionApi } from './services/prediction.services';
 import { bmsReadingApi } from './services/bms/bmsReading.services';
 import { assetLifeCycleApi } from './services/asset/lifeCycle.services';
+import { slaApi } from './services/settings/sla.services';
 
 export const persistConfig = {
   key: 'root',
@@ -279,6 +280,9 @@ const rootReducer = combineReducers({
 
   // BMS APIS
   [bmsReadingApi.reducerPath]: bmsReadingApi.reducer,
+
+  // SLA APIs
+  [slaApi.reducerPath]: slaApi.reducer,
 
   asset: assetSlice,
   auditLog: auditLogSlice,
@@ -458,6 +462,9 @@ export const makeStore = () => {
 
         // BMS Apis
         bmsReadingApi.middleware,
+
+        // SLA Apis
+        slaApi.middleware,
       ]),
   });
 };

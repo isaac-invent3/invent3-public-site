@@ -8,6 +8,7 @@ import {
   filterOptionsById,
   getSystemConfigurationOptionIds,
   MOBILE_NOTIFICATION,
+  WHATSAPP_NOTIFICATION,
 } from '../utils';
 import { updateFormConfigurationOptions } from '~/lib/redux/slices/UserSlice';
 
@@ -46,9 +47,9 @@ const NOTICATION_TYPE = [
       'Receive updates and alerts via Whatsapp.',
       ['(Ensure the phone number on your profile is Whatsapp enabled.)'],
     ],
-    onKey: EMAIL_NOTIFICATION.EMAIL_NOTIFICATION_ON,
-    offKey: EMAIL_NOTIFICATION.EMAIL_NOTIFICATION_OFF,
-    typeObject: EMAIL_NOTIFICATION,
+    onKey: WHATSAPP_NOTIFICATION.WHATSAPP_NOTIFICATION_ON,
+    offKey: WHATSAPP_NOTIFICATION.WHATSAPP_NOTIFICATION_OFF,
+    typeObject: WHATSAPP_NOTIFICATION,
   },
 ];
 const EnableNotificationType = () => {

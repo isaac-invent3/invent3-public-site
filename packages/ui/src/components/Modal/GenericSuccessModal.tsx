@@ -15,7 +15,7 @@ interface GenericSuccessModalProps {
   isOpen: boolean;
   onClose: () => void;
   successText?: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   headingText?: string;
   customStyle?: ModalContentProps;
   contentStyle?: StackProps;

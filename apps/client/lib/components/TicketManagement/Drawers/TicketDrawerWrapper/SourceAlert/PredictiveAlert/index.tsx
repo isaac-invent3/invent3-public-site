@@ -14,14 +14,20 @@ import FailureDrivers from './FailureDrivers';
 import SuggestedActions from './SuggestedActions';
 import HistoryDataSnapShot from './HistoricalSnapshot';
 import { Prediction } from '~/lib/interfaces/prediction.interfaces';
-import { useGetAlertPredictionsByAlertIdQuery } from '~/lib/redux/services/prediction.services';
+import {
+  useAcknowledgePredictionsMutation,
+  useGenerateWorkOrderFromPredictionMutation,
+  useGetAlertPredictionsByAlertIdQuery,
+} from '~/lib/redux/services/prediction.services';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import moment from 'moment';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
+import { getSession } from 'next-auth/react';
 
 interface PredictiveAlertProps {
   isOpen: boolean;
   onClose: () => void;
-  predictiveAlertId: number;
+  predictiveAlertId?: number;
   type: 'alert' | 'detail';
   prediction?: Prediction;
 }
@@ -29,8 +35,8 @@ interface PredictiveAlertProps {
 const PredictiveAlert = (props: PredictiveAlertProps) => {
   const { isOpen, onClose, predictiveAlertId, type, prediction } = props;
   const { data, isLoading } = useGetAlertPredictionsByAlertIdQuery(
-    { alertId: predictiveAlertId },
-    { skip: prediction !== undefined }
+    { alertId: predictiveAlertId! },
+    { skip: prediction !== undefined || !predictiveAlertId }
   );
 
   const predictiveAlertDetail = useMemo(() => {
@@ -39,6 +45,35 @@ const PredictiveAlert = (props: PredictiveAlertProps) => {
 
   const forcastedDate = moment(predictiveAlertDetail?.datePredicted);
   const dayDiff = moment().diff(forcastedDate, 'days');
+  const { handleSubmit } = useCustomMutation();
+  const [acknowledePrediction, { isLoading: isAcknowledging }] =
+    useAcknowledgePredictionsMutation({});
+  const [generateWorkOrder, { isLoading: isGenerating }] =
+    useGenerateWorkOrderFromPredictionMutation({});
+
+  const handleAcknowledge = async () => {
+    const session = await getSession();
+    await handleSubmit(
+      acknowledePrediction,
+      {
+        alertId: predictiveAlertDetail?.alertId!,
+        acknowlegedBy: session?.user?.username!,
+      },
+      'Alert Acknowledged Successfully'
+    );
+    onClose();
+  };
+
+  const handleGenerateWorkOrder = async () => {
+    await handleSubmit(
+      generateWorkOrder,
+      {
+        alertId: predictiveAlertDetail?.alertId!,
+      },
+      'Work Order Generated Successfully'
+    );
+    onClose();
+  };
 
   return (
     <GenericDrawer isOpen={isOpen} onClose={onClose} maxWidth="548px">
@@ -145,10 +180,21 @@ const PredictiveAlert = (props: PredictiveAlertProps) => {
             justifyContent="center"
             spacing="16px"
           >
-            <Button variant="secondary" customStyles={{ width: '138px' }}>
+            <Button
+              variant="secondary"
+              customStyles={{ width: '138px' }}
+              handleClick={handleAcknowledge}
+              isLoading={isAcknowledging}
+              loadingText="Acknowledging..."
+            >
               Acknowledge
             </Button>
-            <Button customStyles={{ width: '237px' }}>
+            <Button
+              customStyles={{ width: '237px' }}
+              handleClick={handleGenerateWorkOrder}
+              isLoading={isGenerating}
+              loadingText="Generating..."
+            >
               Generate Work Order
             </Button>
           </HStack>

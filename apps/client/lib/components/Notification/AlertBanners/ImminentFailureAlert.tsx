@@ -11,16 +11,16 @@ import {
 import React, { useState } from 'react';
 import { CloseIcon, WarningIcon } from '../../CustomIcons';
 import PredictiveAlert from '../../TicketManagement/Drawers/TicketDrawerWrapper/SourceAlert/PredictiveAlert';
+import { useGetRecentPredictionAlertQuery } from '~/lib/redux/services/prediction.services';
+import { Prediction } from '~/lib/interfaces/prediction.interfaces';
 
 interface ImminentFailureAlertProps {
-  id: number;
-  description: string;
+  predicton: Prediction;
   closeAlert: (id: number) => void;
 }
 
 const ImminentFailureAlert = ({
-  id,
-  description,
+  predicton,
   closeAlert,
 }: ImminentFailureAlertProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -63,7 +63,7 @@ const ImminentFailureAlert = ({
               Imminent Failure Alert
             </Text>
             <Text size="md" lineHeight="100%" color="#F50000">
-              {description}
+              {predicton?.assetName} is predicted to fail within 7 days
             </Text>
           </VStack>
         </HStack>
@@ -82,7 +82,7 @@ const ImminentFailureAlert = ({
             as={CloseIcon}
             color="#0366EF"
             cursor="pointer"
-            onClick={() => closeAlert(id)}
+            onClick={() => closeAlert(predicton?.predictionId)}
           />
           <Text
             lineHeight="100%"
@@ -99,6 +99,7 @@ const ImminentFailureAlert = ({
         isOpen={isOpen}
         onClose={onClose}
         predictiveAlertId={1}
+        prediction={predicton}
         type="alert"
       />
     </>
@@ -106,13 +107,26 @@ const ImminentFailureAlert = ({
 };
 
 const ImminentFailureAlertList = () => {
-  const [alerts, setAlerts] = useState<{ id: number; description: string }[]>(
-    []
+  const [alerts, setAlerts] = useState<Prediction[]>([]);
+  const { data: predictionAlertData } = useGetRecentPredictionAlertQuery(
+    { page: 1, pageSize: 10 },
+    {
+      pollingInterval: 30000,
+    }
   );
-
   const removeAlert = (id: number) => {
-    setAlerts((prev) => prev.filter((alert) => alert.id !== id));
+    setAlerts((prev) => prev.filter((alert) => alert.predictionId !== id));
   };
+
+  React.useEffect(() => {
+    if (
+      predictionAlertData &&
+      predictionAlertData.data &&
+      predictionAlertData.data.items.length > 0
+    ) {
+      setAlerts(predictionAlertData.data.items);
+    }
+  }, [predictionAlertData]);
 
   return (
     <Box
@@ -127,9 +141,8 @@ const ImminentFailureAlertList = () => {
       {alerts?.length > 0 &&
         alerts.map((alert) => (
           <ImminentFailureAlert
-            key={alert.id}
-            id={alert.id}
-            description={alert.description}
+            key={alert.predictionId}
+            predicton={alert}
             closeAlert={removeAlert}
           />
         ))}

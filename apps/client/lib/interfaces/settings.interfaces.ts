@@ -42,6 +42,7 @@ interface Settings extends BaseEntity {
   complianceAutoReportScheduleId: number;
   dateCreated: string;
   whatsappNotifications: boolean;
+  webhookNotifications: boolean;
   maxDormantPeriod: string;
   passwordExpirationEnabled: boolean;
   enableThirdPartyIntegration: boolean;

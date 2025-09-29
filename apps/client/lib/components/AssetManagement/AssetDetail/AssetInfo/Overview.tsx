@@ -50,6 +50,9 @@ const Overview = () => {
     brandName,
     modelRef,
     displayColorCode,
+    assetCode,
+    riskScoreName,
+    riskScoreColor,
   } = assetData;
 
   const assetInfo1 = [
@@ -98,36 +101,45 @@ const Overview = () => {
       direction={{ base: 'column', sm: 'row' }}
       rounded="8px"
     >
-      {generalInfo.loadingImage ? (
-        <Skeleton
-          height={{ base: '97px', md: '175px' }}
-          width={{ base: '120px', md: '216px' }}
-          rounded="16px"
-          bgColor="white"
-          overflow="hidden"
-          flexShrink={0}
-        />
-      ) : (
-        <Flex
-          height={{ base: '97px', md: '175px' }}
-          width={{ base: '120px', md: '216px' }}
-          rounded="16px"
-          bgColor="#E6E6E6"
-          overflow="hidden"
-          flexShrink={0}
-          objectFit="cover"
-        >
-          <Flex
-            width="full"
-            height="full"
-            bgSize="contain"
-            bgRepeat="no-repeat"
-            bgPosition="center"
-            mx="8px"
-            bgImage={`${primaryImage?.base64Prefix}${primaryImage?.photoImage}`}
+      <VStack>
+        {generalInfo.loadingImage ? (
+          <Skeleton
+            height={{ base: '97px', md: '175px' }}
+            width={{ base: '120px', md: '216px' }}
+            rounded="16px"
+            bgColor="white"
+            overflow="hidden"
+            flexShrink={0}
           />
-        </Flex>
-      )}
+        ) : (
+          <Flex
+            height={{ base: '97px', md: '175px' }}
+            width={{ base: '120px', md: '216px' }}
+            rounded="16px"
+            bgColor="#E6E6E6"
+            overflow="hidden"
+            flexShrink={0}
+            objectFit="cover"
+          >
+            <Flex
+              width="full"
+              height="full"
+              bgSize="contain"
+              bgRepeat="no-repeat"
+              bgPosition="center"
+              mx="8px"
+              bgImage={`${primaryImage?.base64Prefix}${primaryImage?.photoImage}`}
+            />
+          </Flex>
+        )}
+        <GenericStatusBox
+          text="Anomally Detected"
+          colorCode="#f50000"
+          showDot={false}
+          rounded="full"
+          useColorCodeAsTextColor
+        />
+      </VStack>
       <VStack alignItems="flex-start" width="full" spacing="16px">
         <HStack width="full" justifyContent="space-between">
           <HStack spacing="16px" width="full">
@@ -252,25 +264,20 @@ const Overview = () => {
                 </Text>
               </HStack>
             ))}
-            <HStack alignItems="flex-start" spacing="12px">
+            <HStack spacing="12px" alignItems="flex-start">
               <Text color="neutral.600" width="95px" size="md">
-                Barcode:
+                Risk Indicator:
               </Text>
-              <Flex
-                bgColor="white"
-                height={{ base: '37px', md: '71px' }}
-                width={{ base: '92px', md: '175px' }}
-              >
-                <ReactBarcode
-                  value={assetId ? assetId.toString() : ''}
-                  renderer={Renderer.CANVAS}
-                  options={{ displayValue: false, margin: 0 }}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                  }}
+              {riskScoreName ? (
+                <GenericStatusBox
+                  text={riskScoreName}
+                  colorCode={riskScoreColor}
+                  showDot={false}
+                  rounded="full"
                 />
-              </Flex>
+              ) : (
+                'N/A'
+              )}
             </HStack>
           </VStack>
         </Stack>

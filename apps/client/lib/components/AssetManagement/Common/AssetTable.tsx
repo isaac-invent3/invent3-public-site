@@ -180,7 +180,18 @@ const AssetTable = (props: AssetTableProps) => {
           enableSorting: isSortable,
         }),
         columnHelper.accessor('riskScoreName', {
-          cell: (info) => info.getValue() ?? 'N/A',
+          cell: (info) =>
+            info.getValue() ? (
+              <GenericStatusBox
+                text={info.getValue()}
+                colorCode={info.row.original.riskScoreColor}
+                rounded="full"
+                showDot
+                useColorCodeAsTextColor
+              />
+            ) : (
+              'N/A'
+            ),
           header: 'Risk Score',
           enableSorting: false,
         }),

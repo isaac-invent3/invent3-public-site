@@ -98,7 +98,8 @@ const ThirdParty = () => {
             data?.data?.items.map((item, index) => (
               <>
                 <Flex
-                  width={{ base: '60px', lg: '74px' }}
+                  minW={{ base: '60px', lg: '74px' }}
+                  width={{ base: 'min-content' }}
                   height={{ base: '60px', lg: '74px' }}
                   rounded="6px"
                   bgColor="neutral.100"
@@ -107,11 +108,13 @@ const ThirdParty = () => {
                   key={index}
                   cursor="pointer"
                   onClick={onOpen}
+                  p="8px"
                 >
                   <Text
-                    size={{ base: 'lg', lg: 'xl' }}
+                    size={{ base: 'lg' }}
                     fontWeight={700}
                     color="black"
+                    textAlign="center"
                   >
                     {item.integrationName}
                   </Text>

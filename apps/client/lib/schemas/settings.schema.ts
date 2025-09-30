@@ -169,9 +169,8 @@ const apiKeySchema = Yup.object().shape({
 
 const webhookSchema = Yup.object().shape({
   webhookUrlName: Yup.string().required('Name is Required'),
-  event: Yup.string().required('Event is Required'),
-  secret: Yup.string().nullable(),
-  authKey: Yup.string().nullable(),
+  url: Yup.string().required('URL is Required').url('Invalid URL format'),
+  authMethodId: Yup.number().required('Method is Required'),
 });
 
 export {

@@ -3,8 +3,11 @@ import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../baseQueryWithReauth';
 import { BaseApiResponse, ListResponse, QueryParams } from '@repo/interfaces';
 import {
+  AuthMethod,
   CompanyWebhookURL,
-  createWebhookPayload,
+  CreateWebhookPayload,
+  UpdateWebhookPayload,
+  WebhookSystemModuleContextPermission,
 } from '~/lib/interfaces/webhook.interfaces';
 
 const getHeaders = () => ({
@@ -13,7 +16,11 @@ const getHeaders = () => ({
 export const webhookApi = createApi({
   reducerPath: 'webhookApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['allCompanyWebhookUrls'],
+  tagTypes: [
+    'allCompanyWebhookUrls',
+    'allWebhookSystemModuleContextPermissions',
+    'allAuthMethods',
+  ],
   endpoints: (builder) => ({
     getAllCompanyWebhookUrls: builder.query<
       BaseApiResponse<ListResponse<CompanyWebhookURL>>,
@@ -40,15 +47,49 @@ export const webhookApi = createApi({
     }),
     createWebhook: builder.mutation<
       BaseApiResponse<CompanyWebhookURL>,
-      createWebhookPayload
+      CreateWebhookPayload
     >({
       query: (body) => ({
-        url: `/CompanyWebhookUrls`,
+        url: `/Invent3Pro/CreateWebhookModulePermissions`,
         method: 'POST',
         headers: getHeaders(),
         body,
       }),
       invalidatesTags: ['allCompanyWebhookUrls'],
+    }),
+    updateWebhook: builder.mutation<
+      BaseApiResponse<CompanyWebhookURL>,
+      UpdateWebhookPayload
+    >({
+      query: (body) => ({
+        url: `/Invent3Pro/UpdateWebhookModulePermissions`,
+        method: 'PUT',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['allCompanyWebhookUrls'],
+    }),
+    getWebhookSystemModuleContextPermissions: builder.query<
+      BaseApiResponse<ListResponse<WebhookSystemModuleContextPermission>>,
+      QueryParams & { webhookIds?: number[] }
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/WebhookSystemModuleContextPermissions?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allWebhookSystemModuleContextPermissions'],
+    }),
+    getAllAuthenticationMethod: builder.query<
+      BaseApiResponse<ListResponse<AuthMethod>>,
+      QueryParams
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/CompanyWebhookUrls/GetAuthMethods?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['allAuthMethods'],
     }),
   }),
 });
@@ -57,4 +98,7 @@ export const {
   useGetAllCompanyWebhookUrlsQuery,
   useDeleteCompanyWebhookURLMutation,
   useCreateWebhookMutation,
+  useUpdateWebhookMutation,
+  useGetAllAuthenticationMethodQuery,
+  useGetWebhookSystemModuleContextPermissionsQuery,
 } = webhookApi;

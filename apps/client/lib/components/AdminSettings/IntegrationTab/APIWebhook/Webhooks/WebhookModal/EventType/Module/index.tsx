@@ -4,14 +4,12 @@ import {
   Icon,
   SimpleGrid,
   Skeleton,
-  StackDivider,
   Text,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
 import { ChevronDownIcon } from '~/lib/components/CustomIcons';
 import { Module } from '~/lib/interfaces/module.interfaces';
-import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useGetAllSubModulesQuery } from '~/lib/redux/services/modules.services';
 import { Permission } from './Event';
 
@@ -23,8 +21,6 @@ const ModuleItem = ({ data }: { data: Module }) => {
     { pageSize: 50, systemModuleContextTypeId: data.systemModuleContextTypeId },
     { skip: !isOpen }
   );
-  const dispatch = useAppDispatch();
-  const formRoleModules = useAppSelector((state) => state.role.formRoleModules);
 
   return (
     <VStack width="full" spacing={0}>
@@ -39,7 +35,7 @@ const ModuleItem = ({ data }: { data: Module }) => {
       >
         <HStack
           spacing="16px"
-          width={{ base: '90%', md: '60%' }}
+          width={{ base: '90%', md: '30%' }}
           alignItems="flex-start"
         >
           <VStack
@@ -60,7 +56,7 @@ const ModuleItem = ({ data }: { data: Module }) => {
           </VStack>
         </HStack>
         <HStack
-          width={{ base: '10%', md: '40%' }}
+          width={{ base: '10%', md: '70%' }}
           position="relative"
           justifyContent="flex-start"
         >

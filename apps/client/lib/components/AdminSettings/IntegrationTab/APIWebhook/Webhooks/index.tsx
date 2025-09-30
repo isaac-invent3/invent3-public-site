@@ -29,8 +29,13 @@ const Webhooks = () => {
           header: 'Webhook Name',
           enableSorting: false,
         }),
-        columnHelper.accessor('statusId', {
-          cell: (info) => <GenericStatusBox text="Active" />,
+        columnHelper.accessor('statusName', {
+          cell: (info) => (
+            <GenericStatusBox
+              text={info.getValue()}
+              colorCode={info.row.original.displayColorCode}
+            />
+          ),
           header: 'Status',
           enableSorting: false,
         }),
@@ -54,19 +59,14 @@ const Webhooks = () => {
           header: 'Webhook Name',
           enableSorting: false,
         }),
-        columnHelper.accessor('companyWebhookUrlId', {
+        columnHelper.accessor('url', {
           cell: (info) => info.getValue() ?? 'N/A',
           header: 'Webhook URL',
           enableSorting: false,
         }),
-        columnHelper.accessor('authMethodId', {
+        columnHelper.accessor('authMethodName', {
           cell: (info) => info.getValue() ?? 'N/A',
-          header: 'Method',
-          enableSorting: false,
-        }),
-        columnHelper.accessor('authMethodId', {
-          cell: (info) => info.getValue() ?? 'N/A',
-          header: 'Authentication',
+          header: 'Authentication Method',
           enableSorting: false,
         }),
         columnHelper.accessor('secret', {
@@ -74,8 +74,13 @@ const Webhooks = () => {
           header: 'Secret Key',
           enableSorting: false,
         }),
-        columnHelper.accessor('statusId', {
-          cell: (info) => <GenericStatusBox text="Active" />,
+        columnHelper.accessor('statusName', {
+          cell: (info) => (
+            <GenericStatusBox
+              text={info.getValue()}
+              colorCode={info.row.original.displayColorCode}
+            />
+          ),
           header: 'Status',
           enableSorting: false,
         }),
@@ -100,7 +105,8 @@ const Webhooks = () => {
         sectionInfoStyle={{
           maxW: { base: '60%', md: '212px' },
         }}
-        spacing={{ lg: '220px' }}
+        direction={{ base: 'column', md: 'row' }}
+        spacing={{ base: '20px', lg: '220px' }}
       >
         <Flex
           width="full"
@@ -146,7 +152,7 @@ const Webhooks = () => {
           />
         </Flex>
       </SectionWrapper>
-      <WebhookModal isOpen={isOpen} onClose={onClose} />
+      <WebhookModal isOpen={isOpen} onClose={onClose} type="create" />
     </>
   );
 };

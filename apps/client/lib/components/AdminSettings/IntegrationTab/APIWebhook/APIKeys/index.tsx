@@ -101,7 +101,8 @@ const APIKeys = () => {
       sectionInfoStyle={{
         maxW: { base: '60%', md: '212px' },
       }}
-      spacing={{ lg: '220px' }}
+      direction={{ base: 'column', md: 'row' }}
+      spacing={{ base: '20px', lg: '220px' }}
     >
       <Flex width="full" overflow="auto">
         <DataTable

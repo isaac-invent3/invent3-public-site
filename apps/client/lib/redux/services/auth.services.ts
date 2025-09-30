@@ -9,7 +9,7 @@ const getHeaders = () => ({
 export const authApi = createApi({
   reducerPath: 'authApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: [],
+  tagTypes: ['allAuthMethods'],
   endpoints: (builder) => ({
     check2FA: builder.query<
       BaseApiResponse<{ twoFactorAuthuenticationEnabled: boolean }>,

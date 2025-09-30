@@ -56,6 +56,7 @@ export const ALlTicketTabs = [
   'Scheduled',
   'In Progress',
   'Completed',
+  'Suspended',
 ];
 
 export const initialFilterData = {

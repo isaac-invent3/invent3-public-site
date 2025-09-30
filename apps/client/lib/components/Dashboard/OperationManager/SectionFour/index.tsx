@@ -2,6 +2,7 @@ import { Flex } from '@chakra-ui/react';
 
 import CTA from './CTA';
 import RecentAsset from './RecentAsset';
+import AssetCategoryRiskScore from './AssetCategoryRiskScore';
 
 const SectionFour = () => {
   return (
@@ -15,7 +16,7 @@ const SectionFour = () => {
         <RecentAsset />
       </Flex>
       <Flex width={{ base: 'full' }}>
-        <CTA />
+        <AssetCategoryRiskScore />
       </Flex>
     </Flex>
   );

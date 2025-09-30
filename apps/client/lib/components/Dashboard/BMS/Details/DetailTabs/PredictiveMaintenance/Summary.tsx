@@ -1,4 +1,13 @@
-import { Grid, GridItem, SimpleGrid, Stack } from '@chakra-ui/react';
+import {
+  Grid,
+  GridItem,
+  HStack,
+  SimpleGrid,
+  Skeleton,
+  Stack,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 import React from 'react';
 import SummaryCard from '../../../Common/SummaryCard';
 import { useParams } from 'next/navigation';
@@ -7,6 +16,8 @@ import {
   useGetBMSPredictiveMaintenanceOverviewQuery,
 } from '~/lib/redux/services/dashboard/bms.services';
 import ItemDetail from '../../../Common/ItemDetail';
+import { Button } from '@repo/ui/components';
+import { ROUTES } from '~/lib/utils/constants';
 
 const Summary = () => {
   const params = useParams();
@@ -22,12 +33,6 @@ const Summary = () => {
 
   const summaryData = [
     {
-      title: 'Total Predictive Maintenance',
-      value: data?.data?.totalMaintenance?.toLocaleString() ?? '-',
-      subtitle: 'This Month',
-      icon: '/adjust.png',
-    },
-    {
       title: 'Scheduled Maintenance',
       value: data?.data?.scheduledMaintenance?.toLocaleString() ?? '-',
       subtitle: 'This week',
@@ -41,6 +46,30 @@ const Summary = () => {
       gap="16px"
       width="full"
     >
+      <GridItem>
+        <SummaryCard title="Total Assets">
+          <HStack
+            width="full"
+            justifyContent="space-between"
+            alignItems="flex-end"
+          >
+            <VStack alignItems="flex-start" spacing="8px">
+              <Skeleton isLoaded={!isLoading}>
+                <Text fontWeight={800} size="xl">
+                  {data?.data?.totalMaintenance?.toLocaleString() ?? '-'}
+                </Text>
+              </Skeleton>
+              <Text color="neutral.600">This Month</Text>
+            </VStack>
+            <Button
+              customStyles={{ width: '66px', height: '28px' }}
+              href={`/${ROUTES.ASSETS}`}
+            >
+              View All
+            </Button>
+          </HStack>
+        </SummaryCard>
+      </GridItem>
       {summaryData.map((item, index) => (
         <GridItem colSpan={1} height="full">
           <SummaryCard
@@ -51,8 +80,14 @@ const Summary = () => {
           />
         </GridItem>
       ))}
-      <GridItem colSpan={{ base: 1, lg: 2 }}>
-        <SummaryCard title="Equipment Health Score" icon="/adjust.png">
+      <GridItem colSpan={{ base: 1, lg: 2 }} height="full">
+        <SummaryCard
+          title="Equipment Health Score"
+          icon="/adjust.png"
+          containerStyle={{
+            height: 'full',
+          }}
+        >
           <Stack
             direction={{ base: 'column', lg: 'row' }}
             flexWrap="wrap"

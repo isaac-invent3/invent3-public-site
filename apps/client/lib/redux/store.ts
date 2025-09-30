@@ -114,6 +114,7 @@ import { predictionApi } from './services/prediction.services';
 import { bmsReadingApi } from './services/bms/bmsReading.services';
 import { assetLifeCycleApi } from './services/asset/lifeCycle.services';
 import { slaApi } from './services/settings/sla.services';
+import { bmsAnomaliesApi } from './services/bms/bmsAnomalies.services';
 
 export const persistConfig = {
   key: 'root',
@@ -280,6 +281,7 @@ const rootReducer = combineReducers({
 
   // BMS APIS
   [bmsReadingApi.reducerPath]: bmsReadingApi.reducer,
+  [bmsAnomaliesApi.reducerPath]: bmsAnomaliesApi.reducer,
 
   // SLA APIs
   [slaApi.reducerPath]: slaApi.reducer,
@@ -462,6 +464,7 @@ export const makeStore = () => {
 
         // BMS Apis
         bmsReadingApi.middleware,
+        bmsAnomaliesApi.middleware,
 
         // SLA Apis
         slaApi.middleware,

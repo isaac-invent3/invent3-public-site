@@ -1,11 +1,20 @@
-import { Flex, Heading, SimpleGrid, Text, VStack } from '@chakra-ui/react';
+import {
+  Flex,
+  Heading,
+  HStack,
+  SimpleGrid,
+  Text,
+  useDisclosure,
+  VStack,
+} from '@chakra-ui/react';
 
 import { useAppSelector } from '~/lib/redux/hooks';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
+import AnomalyDrawer from '../../Drawers/AnomalyDrawer';
 
 interface SummaryInfoProps {
   label: string;
-  value: string | number | React.ReactElement | null;
+  value?: string | number | React.ReactElement | null;
   children?: React.ReactNode;
 }
 const SummaryInfo = (props: SummaryInfoProps) => {
@@ -16,8 +25,9 @@ const SummaryInfo = (props: SummaryInfoProps) => {
       gap="10px"
       bgColor="#FFFFFF99"
       p="16px"
-      height="full"
       rounded="8px"
+      minW="150px"
+      flex="1"
     >
       <Text color="neutral.600">{label}</Text>
       <Text fontSize="20px" lineHeight="100%" color="primary.500">
@@ -30,6 +40,7 @@ const SummaryInfo = (props: SummaryInfoProps) => {
 
 const Summary = () => {
   const assetData = useAppSelector((state) => state.asset.asset);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   if (!assetData) {
     return null;
@@ -76,57 +87,77 @@ const Summary = () => {
     },
   ];
   return (
-    <VStack width="full" alignItems="flex-start" spacing="8px">
-      <Heading
-        size="base"
-        lineHeight="100%"
-        fontWeight={700}
-        color="primary.500"
-      >
-        Key Metrics
-      </Heading>
-      <SimpleGrid
-        columns={{ base: 1, md: 4 }}
-        spacing="8px"
-        alignItems="flex-start"
-        width="full"
-      >
-        {Summary1.map((item) => (
-          <SummaryInfo {...item} key={item.label} />
-        ))}
-        <SummaryInfo
-          label="Last Maintenance Date"
-          value={
-            lastMaintenanceDate !== null
-              ? dateFormatter(lastMaintenanceDate, 'Do MMM, YYYY')
-              : 'N/A'
-          }
-          children={
-            <Text
-              py="4px"
-              px="8px"
-              rounded="16px"
-              bgColor="neutral.300"
-              color="black"
-              fontWeight={700}
-              fontSize="10px"
-              lineHeight="130%"
-              width="max-content"
+    <>
+      <VStack width="full" alignItems="flex-start" spacing="8px">
+        <Heading
+          size="base"
+          lineHeight="100%"
+          fontWeight={700}
+          color="primary.500"
+        >
+          Key Metrics
+        </Heading>
+        <HStack spacing="8px" width="full" overflowX="auto" align="stretch">
+          {Summary1.map((item) => (
+            <SummaryInfo {...item} key={item.label} />
+          ))}
+          <SummaryInfo
+            label="Last Maintenance Date"
+            value={
+              lastMaintenanceDate !== null
+                ? dateFormatter(lastMaintenanceDate, 'Do MMM, YYYY')
+                : 'N/A'
+            }
+            children={
+              <Text
+                py="4px"
+                px="8px"
+                rounded="16px"
+                bgColor="neutral.300"
+                color="black"
+                fontWeight={700}
+                fontSize="10px"
+                lineHeight="130%"
+                width="max-content"
+              >
+                Preventive
+              </Text>
+            }
+          />
+          <SummaryInfo
+            label="Next Maintenance Date"
+            value={
+              nextMaintenanceDate !== null
+                ? dateFormatter(nextMaintenanceDate, 'Do MMM, YYYY')
+                : 'N/A'
+            }
+          />
+          <SummaryInfo label="Anomalies">
+            <HStack
+              width="full"
+              justifyContent="space-between"
+              alignItems="flex-end"
             >
-              Preventive
-            </Text>
-          }
-        />
-        <SummaryInfo
-          label="Next Maintenance Date"
-          value={
-            nextMaintenanceDate !== null
-              ? dateFormatter(nextMaintenanceDate, 'Do MMM, YYYY')
-              : 'N/A'
-          }
-        />
-      </SimpleGrid>
-    </VStack>
+              <Text color="#F50000">
+                <Text as="span" fontSize="20px" lineHeight="100%">
+                  1{' '}
+                </Text>
+                active
+              </Text>
+              <Text
+                cursor="pointer"
+                color="blue.500"
+                fontWeight={700}
+                onClick={onOpen}
+              >
+                View
+              </Text>
+            </HStack>
+          </SummaryInfo>
+        </HStack>
+      </VStack>
+      <AnomalyDrawer isOpen={isOpen} onClose={onClose} />
+    </>
   );
 };
 

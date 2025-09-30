@@ -302,6 +302,21 @@ interface AssetBMSReading {
   averageReadingValue: number;
 }
 
+interface BMSAnomaly {
+  anomalyId: number;
+  readingId: number;
+  sensorId: number;
+  actualReadingValue: number;
+  baselineValue: number;
+  statusId: number;
+  severity: number;
+  description: string;
+  isDeleted: boolean;
+  assetId: number;
+  assetBmscategoryId: number;
+  assetBmssubCategoryId: number;
+}
+
 export type {
   HighestOccupancyRate,
   HighestSystemFailures,
@@ -340,4 +355,5 @@ export type {
   OccupancyDistribution,
   BmsReadingSubCategory,
   AssetBMSReading,
+  BMSAnomaly,
 };

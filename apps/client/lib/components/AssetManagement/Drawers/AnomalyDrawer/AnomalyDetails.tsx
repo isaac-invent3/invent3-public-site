@@ -1,36 +1,45 @@
 import { Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import Detail from '~/lib/components/UI/ContentDetails/Detail';
-import { Prediction } from '~/lib/interfaces/prediction.interfaces';
+import { BMSAnomaly } from '~/lib/interfaces/dashboard/bms.interfaces';
 
 interface AnomalyDetailProps {
-  prediction?: Prediction;
-  isLoading: boolean;
+  anomaly?: BMSAnomaly;
 }
-const AnomalyDetail = ({ prediction, isLoading }: AnomalyDetailProps) => {
+const AnomalyDetail = ({ anomaly }: AnomalyDetailProps) => {
   const details = [
     {
       label: 'Parameter:',
-      value: 'Vibration',
+      value: anomaly?.subCategoryName ?? 'N/A',
     },
     {
       label: 'Observed Value:',
-      value: '35Hz',
+      value:
+        anomaly?.actualReadingValue !== undefined &&
+        anomaly?.unitAlias !== undefined
+          ? `${anomaly.actualReadingValue}${anomaly.unitAlias}`
+          : 'N/A',
     },
     {
       label: 'Expected Range:',
-      value: '20-25 Hz',
+      value:
+        anomaly?.baselineValue !== undefined && anomaly?.unitAlias !== undefined
+          ? `${anomaly.baselineValue}${anomaly.unitAlias}`
+          : 'N/A',
     },
     {
       label: 'Deviation',
-      value: '+40% above baseline',
+      value:
+        anomaly?.deviation !== undefined
+          ? `${anomaly.deviation}% above baseline`
+          : 'N/A',
     },
   ];
   return (
     <>
       <VStack spacing="16px" width="full" alignItems="flex-start">
         <Text color="neutral.600" fontWeight={700}>
-          AnomalyDetail Details
+          Anomaly Details
         </Text>
         <VStack spacing="8px" width="full" alignItems="flex-start">
           {details.map((detail) => (
@@ -40,16 +49,15 @@ const AnomalyDetail = ({ prediction, isLoading }: AnomalyDetailProps) => {
               value={detail.value}
               labelStyle={{ color: 'neutral.700' }}
               valueStyle={{ fontWeight: 800 }}
-              isLoading={isLoading}
-              labelMinWidth={'130px'}
+              labelMinWidth={'110px'}
             />
           ))}
           <Detail
             label="Severity:"
-            value={prediction?.riskScore ? `${prediction?.riskScore}%` : 'N/A'}
+            value={anomaly?.severityName ?? 'N/A'}
             labelStyle={{ color: 'neutral.700' }}
-            valueStyle={{ fontWeight: 800 }}
-            labelMinWidth={'130px'}
+            valueStyle={{ fontWeight: 800, color: anomaly?.severityColorCode }}
+            labelMinWidth={'110px'}
           />
         </VStack>
       </VStack>

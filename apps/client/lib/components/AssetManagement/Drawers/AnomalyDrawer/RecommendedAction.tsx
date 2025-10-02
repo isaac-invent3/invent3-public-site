@@ -11,18 +11,15 @@ import { ForecastInfo } from '~/lib/interfaces/forecast.interfaces';
 
 const RecommendedAction = ({
   suggestions,
-  isLoading,
 }: {
   suggestions?: ForecastInfo[];
-  isLoading: boolean;
 }) => {
   return (
     <VStack spacing="16px" width="full" alignItems="flex-start">
       <Text color="neutral.600" fontWeight={700}>
         Recommended Actions
       </Text>
-      {isLoading && <Skeleton width="full" height="100px" />}
-      {!isLoading && suggestions && suggestions?.length > 0 && (
+      {suggestions && suggestions?.length > 0 && (
         <UnorderedList
           spacing="8px"
           width="full"
@@ -42,9 +39,7 @@ const RecommendedAction = ({
           ))}
         </UnorderedList>
       )}
-      {!isLoading && (!suggestions || suggestions?.length === 0) && (
-        <EmptyState />
-      )}
+      {(!suggestions || suggestions?.length === 0) && <EmptyState />}
     </VStack>
   );
 };

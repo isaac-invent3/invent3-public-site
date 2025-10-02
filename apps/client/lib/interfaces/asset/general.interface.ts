@@ -138,6 +138,7 @@ interface Asset {
   riskScoreValue: number;
   riskScoreColor: string;
   forecastedReplacementDate: string;
+  isCritical: boolean;
 }
 
 interface AssetFormImage {

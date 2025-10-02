@@ -53,6 +53,7 @@ const Overview = () => {
     assetCode,
     riskScoreName,
     riskScoreColor,
+    isCritical,
   } = assetData;
 
   const assetInfo1 = [
@@ -138,6 +139,8 @@ const Overview = () => {
           showDot={false}
           rounded="full"
           useColorCodeAsTextColor
+          bgColor="none"
+          border="none"
         />
       </VStack>
       <VStack alignItems="flex-start" width="full" spacing="16px">
@@ -155,6 +158,7 @@ const Overview = () => {
               colorCode={displayColorCode}
               showDot={false}
               useColorCodeAsTextColor={true}
+              rounded="full"
             />
           </HStack>
           <Flex
@@ -245,6 +249,8 @@ const Overview = () => {
                   text={lifeCycleStageName}
                   colorCode={lifeCycleColorCode}
                   showDot={false}
+                  rounded="full"
+                  useColorCodeAsTextColor
                 />
               ) : (
                 <Text color="black" size="md">
@@ -254,6 +260,35 @@ const Overview = () => {
             </HStack>
           </VStack>
           <VStack alignItems="flex-start" spacing="8px">
+            <HStack spacing="8px" alignItems="center">
+              <Text
+                color="neutral.600"
+                minW={{ base: '95px', md: '65px' }}
+                size="md"
+              >
+                Asset Code:
+              </Text>
+              {assetCode ? (
+                <HStack spacing="7px">
+                  <Text color="black" size="md">
+                    {assetCode}
+                  </Text>
+                  {isCritical && (
+                    <GenericStatusBox
+                      text="Critical"
+                      colorCode="#F50000"
+                      showDot={false}
+                      rounded="full"
+                      useColorCodeAsTextColor
+                    />
+                  )}
+                </HStack>
+              ) : (
+                <Text color="black" size="md">
+                  N/A
+                </Text>
+              )}
+            </HStack>
             {assetInfo2.map((info, index) => (
               <HStack spacing="12px" alignItems="flex-start" key={index}>
                 <Text color="neutral.600" width="95px" size="md">

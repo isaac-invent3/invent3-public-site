@@ -2,14 +2,13 @@ import { HStack, Icon, Text, Tooltip, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { InfoIcon } from '~/lib/components/CustomIcons';
 import Detail from '~/lib/components/UI/ContentDetails/Detail';
-import { Prediction } from '~/lib/interfaces/prediction.interfaces';
+import { BMSAnomaly } from '~/lib/interfaces/dashboard/bms.interfaces';
 import { dateFormatter } from '~/lib/utils/Formatters';
 
 interface SummaryProps {
-  prediction?: Prediction;
-  isLoading: boolean;
+  anomaly?: BMSAnomaly;
 }
-const Summary = ({ prediction, isLoading }: SummaryProps) => {
+const Summary = ({ anomaly }: SummaryProps) => {
   return (
     <>
       <VStack spacing="16px" width="full" alignItems="flex-start">
@@ -19,28 +18,29 @@ const Summary = ({ prediction, isLoading }: SummaryProps) => {
         <VStack spacing="8px" width="full" alignItems="flex-start">
           <Detail
             label="Status:"
-            value={prediction?.riskScore ? `${prediction?.riskScore}%` : 'N/A'}
+            value={anomaly?.statusName ?? 'N/A'}
             labelStyle={{ color: 'neutral.700' }}
-            valueStyle={{ fontWeight: 800 }}
+            valueStyle={{ fontWeight: 800, color: anomaly?.displayColorCode }}
+            labelMinWidth="80px"
           />
           <Detail
             label="Detected On:"
             value={
-              prediction?.alertedDate
-                ? dateFormatter(prediction?.alertedDate, 'MMM D, YYYY, HH:mm A')
+              anomaly?.dateDetected
+                ? dateFormatter(anomaly?.dateDetected, 'MMM D, YYYY, HH:mm A')
                 : 'N/A'
             }
             labelStyle={{ color: 'neutral.700' }}
             valueStyle={{ fontWeight: 800 }}
-            isLoading={isLoading}
+            labelMinWidth="80px"
           />
-          <HStack spacing="16px" width="full">
+          {/* <HStack spacing="16px" width="full">
             <Detail
               label="Confidence:"
-              value={prediction?.confidenceLevelName ?? 'N/A'}
+              value={anomaly?.anomalyId ?? 'N/A'}
               labelStyle={{ color: 'neutral.700' }}
               valueStyle={{ fontWeight: 800 }}
-              isLoading={isLoading}
+              labelMinWidth="80px"
             />
             <Tooltip
               label="Confidence reflects model accuracy and data completeness."
@@ -61,7 +61,7 @@ const Summary = ({ prediction, isLoading }: SummaryProps) => {
                 <Icon as={InfoIcon} boxSize="12px" color="blue.500" />
               </HStack>
             </Tooltip>
-          </HStack>
+          </HStack> */}
         </VStack>
       </VStack>
     </>

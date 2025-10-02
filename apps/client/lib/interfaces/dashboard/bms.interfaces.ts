@@ -315,6 +315,17 @@ interface BMSAnomaly {
   assetId: number;
   assetBmscategoryId: number;
   assetBmssubCategoryId: number;
+  dateDetected: string;
+  subCategoryName: string;
+  deviation: number;
+  severityColorCode: string;
+  severityName: string;
+  displayColorCode: string;
+  statusName: string;
+  unitAlias: string;
+  isDismissed: boolean;
+  isAcknowledged: boolean;
+  hasTicket: boolean;
 }
 
 export type {

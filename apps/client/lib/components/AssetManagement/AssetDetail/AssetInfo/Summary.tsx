@@ -3,6 +3,7 @@ import {
   Heading,
   HStack,
   SimpleGrid,
+  Skeleton,
   Text,
   useDisclosure,
   VStack,
@@ -11,6 +12,7 @@ import {
 import { useAppSelector } from '~/lib/redux/hooks';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
 import AnomalyDrawer from '../../Drawers/AnomalyDrawer';
+import { useGetBmsAnomaliesByAssetIdQuery } from '~/lib/redux/services/bms/bmsAnomalies.services';
 
 interface SummaryInfoProps {
   label: string;
@@ -51,7 +53,12 @@ const Summary = () => {
     nextMaintenanceDate,
     y2DMaintenanceCost,
     currentCost,
+    assetId,
   } = assetData;
+
+  const { data: bmsAnomalies, isLoading: isLoadingAnomalies } =
+    useGetBmsAnomaliesByAssetIdQuery({ assetId }, { skip: !assetId });
+
   const Summary1 = [
     // {
     //   label: 'Utilization Rate',
@@ -138,25 +145,33 @@ const Summary = () => {
               justifyContent="space-between"
               alignItems="flex-end"
             >
-              <Text color="#F50000">
-                <Text as="span" fontSize="20px" lineHeight="100%">
-                  1{' '}
+              <Skeleton isLoaded={!isLoadingAnomalies}>
+                <Text color="#F50000">
+                  <Text as="span" fontSize="20px" lineHeight="100%">
+                    {bmsAnomalies ? bmsAnomalies?.data?.totalItems : 0}{' '}
+                  </Text>
+                  active
                 </Text>
-                active
-              </Text>
-              <Text
-                cursor="pointer"
-                color="blue.500"
-                fontWeight={700}
-                onClick={onOpen}
-              >
-                View
-              </Text>
+              </Skeleton>
+              {bmsAnomalies && bmsAnomalies?.data?.items?.length > 0 && (
+                <Text
+                  cursor="pointer"
+                  color="blue.500"
+                  fontWeight={700}
+                  onClick={onOpen}
+                >
+                  View
+                </Text>
+              )}
             </HStack>
           </SummaryInfo>
         </HStack>
       </VStack>
-      <AnomalyDrawer isOpen={isOpen} onClose={onClose} />
+      <AnomalyDrawer
+        isOpen={isOpen}
+        onClose={onClose}
+        anomalies={bmsAnomalies?.data?.items ?? []}
+      />
     </>
   );
 };

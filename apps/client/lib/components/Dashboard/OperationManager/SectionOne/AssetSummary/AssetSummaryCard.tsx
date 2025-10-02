@@ -1,11 +1,4 @@
-import {
-  ComponentWithAs,
-  Flex,
-  IconProps,
-  Skeleton,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
+import { ComponentWithAs, Flex, IconProps } from '@chakra-ui/react';
 
 import { useAppSelector } from '~/lib/redux/hooks';
 import SummaryCardWrapper from '../../../../Common/SummaryCardWrapper';

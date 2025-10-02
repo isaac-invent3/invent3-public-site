@@ -1,34 +1,50 @@
-import { Flex, HStack, VStack } from '@chakra-ui/react';
-import React from 'react';
+import { Flex, HStack, Skeleton, VStack } from '@chakra-ui/react';
+import React, { useState } from 'react';
 import CardHeader from '../../Common/CardHeader';
 import ChartLegend from '../../Common/Charts/ChartLegend';
 import DoughtnutChart from '../../Common/Charts/DoughtnutChart';
 import DropDown from '../../Common/DropDown';
 import { useGetAllAssetCategoryQuery } from '~/lib/redux/services/asset/category.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
-import { generateOptions } from '~/lib/utils/helperFunctions';
+import {
+  formatNumberShort,
+  generateOptions,
+} from '~/lib/utils/helperFunctions';
+import { Option } from '~/lib/interfaces/general.interfaces';
+import { useGetAssetRiskScoresForCategoryQuery } from '~/lib/redux/services/asset/general.services';
 
 const AssetCategoryRiskScore = () => {
   const { data: allAssetCategories, isLoading } = useGetAllAssetCategoryQuery({
     pageSize: DEFAULT_PAGE_SIZE,
   });
+  const [selectedOption, setSelectedOption] = useState<Option | null>(null);
+  const { data, isLoading: isLoadingRiskscore } =
+    useGetAssetRiskScoresForCategoryQuery(
+      { categoryId: (selectedOption?.value as number)! },
+      { skip: !selectedOption?.value }
+    );
+
   const chartLegendItems = [
     {
-      label: 'High Priority',
+      label: 'High Risk',
       color: '#0E2642',
-      value: 50,
+      value: data?.data?.highRiskAssets ?? 0,
     },
     {
-      label: 'Medium Priority',
+      label: 'Medium Risk',
       color: '#EABC30',
-      value: 100,
+      value: data?.data?.mediumRiskAssets ?? 0,
     },
     {
-      label: 'Low Priority',
+      label: 'Low Risk',
       color: '#0366EF',
-      value: 150,
+      value: data?.data?.lowRiskAssets ?? 0,
     },
   ];
+  const totalAsset =
+    (data?.data?.highRiskAssets ?? 0) +
+    (data?.data?.mediumRiskAssets ?? 0) +
+    (data?.data?.lowRiskAssets ?? 0);
 
   return (
     <VStack
@@ -66,25 +82,38 @@ const AssetCategoryRiskScore = () => {
             'categoryId'
           )}
           label="Category"
-          handleClick={() => {}}
-          selectedOptions={null}
+          handleClick={(option) => {
+            setSelectedOption(option);
+          }}
+          selectedOptions={selectedOption}
           width="131px"
+          isLoading={isLoading}
         />
       </HStack>
-      <Flex width="full">
-        <DoughtnutChart
-          labels={chartLegendItems.map((item) => item.label)}
-          datasets={[
-            {
-              data: chartLegendItems.map((item) => item.value ?? 0),
-              backgroundColor: chartLegendItems.map((item) => item.color),
-              borderWidth: 0,
-            },
-          ]}
-          type="full"
-          height="206px"
-          cutout="50%"
-        />
+      <Flex width="full" justifyContent="center">
+        {isLoadingRiskscore && (
+          <Skeleton width="206px" height="206px" rounded="full" />
+        )}
+        {!isLoadingRiskscore && (
+          <DoughtnutChart
+            labels={chartLegendItems.map((item) => item.label)}
+            datasets={[
+              {
+                data: chartLegendItems.map((item) => item.value ?? 0),
+                backgroundColor: chartLegendItems.map((item) => item.color),
+                borderWidth: 0,
+              },
+            ]}
+            type="full"
+            height="206px"
+            cutout="50%"
+            centerLabel={{
+              title: 'Total Assets',
+              value: formatNumberShort(totalAsset),
+            }}
+            showSliceLabels={true}
+          />
+        )}
       </Flex>
     </VStack>
   );

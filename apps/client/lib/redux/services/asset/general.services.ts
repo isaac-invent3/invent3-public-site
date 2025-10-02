@@ -9,6 +9,7 @@ import {
   AcquisitionInfo,
   Asset,
   AssetCountByColumnName,
+  AssetRiskScore,
   AssetStatus,
   CreateAssetPayload,
   MeanTimeComputation,
@@ -233,6 +234,16 @@ export const assetApi = createApi({
         headers: getHeaders(),
       }),
     }),
+    getAssetRiskScoresForCategory: builder.query<
+      BaseApiResponse<AssetRiskScore>,
+      { categoryId: number }
+    >({
+      query: ({ categoryId }) => ({
+        url: `/Assets/GetAssetRiskScoresForCategory/${categoryId}`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
   }),
 });
 
@@ -254,4 +265,5 @@ export const {
   useAssetMeanTimeComputationQuery,
   useGetAssetCountByColumnNameQuery,
   useGetAllNonSystemAssetStatusQuery,
+  useGetAssetRiskScoresForCategoryQuery,
 } = assetApi;

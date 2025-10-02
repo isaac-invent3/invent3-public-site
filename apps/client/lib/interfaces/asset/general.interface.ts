@@ -456,6 +456,18 @@ type ValidColumnNames =
   | 'AssetType'
   | 'AssetStatus';
 
+interface AssetRiskScore {
+  categoryId: number;
+  categoryName: string;
+  highRiskAssets: number;
+  highRiskPercentage: number;
+  mediumRiskAssets: number;
+  mediumRiskPercentage: number;
+  lowRiskAssets: number;
+  lowRiskPercentage: number;
+  assetCount: number;
+}
+
 export type {
   AcquisitionInfo,
   Asset,
@@ -477,4 +489,5 @@ export type {
   StateAssetCount,
   UpdateAssetPayload,
   ValidColumnNames,
+  AssetRiskScore,
 };

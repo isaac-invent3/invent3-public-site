@@ -29,7 +29,7 @@ const QuickLinks = () => {
       height="full"
       p="16px"
       alignItems="flex-start"
-      spacing={{ base: '16px', lg: '24px' }}
+      spacing={{ base: '16px' }}
       bgColor="white"
       rounded="8px"
     >

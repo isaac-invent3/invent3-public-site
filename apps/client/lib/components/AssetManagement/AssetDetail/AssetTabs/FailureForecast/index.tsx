@@ -6,6 +6,8 @@ import VisualTimeline from './VisualTimeline';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { FORECAST_TYPE_ENUM } from '~/lib/utils/constants';
 import { useGetAssetForecastQuery } from '~/lib/redux/services/forecast.services';
+import SuggestedSpareParts from './SuggestedSpareParts';
+import RetirementForecasts from './RetirementForecasts';
 
 const FailureForecast = () => {
   const assetData = useAppSelector((state) => state.asset.asset);
@@ -33,6 +35,10 @@ const FailureForecast = () => {
         <DriversAffectingPrediction isLoading={isLoading} data={data?.data} />
       </SimpleGrid>
       <VisualTimeline isLoading={isLoading} data={data?.data} />
+      <SimpleGrid width="full" spacing="40px" columns={{ base: 1, lg: 2 }}>
+        <SuggestedSpareParts isLoading={isLoading} data={data?.data} />
+        <RetirementForecasts isLoading={isLoading} data={data?.data} />
+      </SimpleGrid>
     </VStack>
   );
 };

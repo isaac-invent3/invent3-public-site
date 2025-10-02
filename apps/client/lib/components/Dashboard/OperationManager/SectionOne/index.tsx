@@ -1,7 +1,7 @@
 import { SimpleGrid } from '@chakra-ui/react';
 
 import AssetCountStats from './AssetCountStats';
-import QuickLinks from './QuickLinks';
+import AssetSummary from './AssetSummary';
 
 const SectionOne = () => {
   return (
@@ -11,7 +11,7 @@ const SectionOne = () => {
       gap="16px"
       px={{ base: '16px', md: 0 }}
     >
-      <QuickLinks />
+      <AssetSummary />
       <AssetCountStats />
     </SimpleGrid>
   );

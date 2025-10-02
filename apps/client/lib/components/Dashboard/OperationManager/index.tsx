@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateInfo } from '~/lib/redux/slices/DashboardSlice';
 import Header from '../Header';
 import Filter from '../Header/Filter';
+import QuickLinkAlert from './QuickLinkAlert';
 
 const OperationManager = () => {
   const { selectedCountry, selectedState } = useAppSelector(
@@ -44,6 +45,7 @@ const OperationManager = () => {
       </Header>
       <VStack width="full" mt="32px" spacing="16px">
         <SectionOne />
+        <QuickLinkAlert />
         <SectionTwo />
         <SectionThree />
         <SectionFour />

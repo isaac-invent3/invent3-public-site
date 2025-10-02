@@ -73,6 +73,8 @@ const DropDown = (props: DropDownProps) => {
       >
         <Text
           color={selectedOptions ? 'neutral.800' : 'neutral.300'}
+          noOfLines={1}
+          textOverflow="ellipsis"
           {...selectedOptionStyles}
         >
           {selectedOptions ? selectedOptions.label : label}

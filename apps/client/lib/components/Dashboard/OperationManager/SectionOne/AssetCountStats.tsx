@@ -1,4 +1,4 @@
-import { HStack, Skeleton, StackDivider, Text } from '@chakra-ui/react';
+import { HStack, Skeleton, StackDivider, Text, VStack } from '@chakra-ui/react';
 
 import { useAppSelector } from '~/lib/redux/hooks';
 
@@ -13,22 +13,20 @@ const Stats = (props: StatsProps) => {
   const { isLoading } = useAppSelector((state) => state.dashboard.info);
 
   return (
-    <HStack color={color} spacing="8px">
+    <VStack color={color} spacing="8px" alignItems="flex-start">
+      <Text size={{ base: 'md', md: 'md' }}>
+        {text1} {text2}
+      </Text>
       <Skeleton isLoaded={!isLoading} minW={isLoading ? '40px' : 'min-content'}>
         <Text
           fontWeight={800}
-          fontSize={{ base: '24px', xl: '48px' }}
-          lineHeight={{ base: '28.51px', xl: '57.02px' }}
+          fontSize={{ base: '24px', md: '40px' }}
+          lineHeight={{ base: '100%' }}
         >
           {value !== undefined ? value?.toLocaleString() : '-'}
         </Text>
       </Skeleton>
-      <Text size={{ base: 'md', md: 'lg' }} fontWeight={{ base: 500, md: 700 }}>
-        {text1}
-        <br />
-        {text2}
-      </Text>
-    </HStack>
+    </VStack>
   );
 };
 
@@ -59,16 +57,18 @@ const AssetCountStats = () => {
       width="full"
       height="full"
       px={{ base: '8px', md: '16px' }}
-      py="27.5px"
+      pr={{ lg: '32px' }}
+      // py="27.5px"
       bgColor="white"
       rounded="8px"
     >
       <HStack
         divider={<StackDivider border="1px solid #BBBBBB" />}
         width="full"
-        // maxW="620px"
-        justifyContent={{ base: 'space-between', lg: 'flex-start' }}
-        spacing={{ md: '32px', xl: '45px' }}
+        justifyContent={{ base: 'space-between' }}
+        py="16px"
+        height="full"
+        alignItems="flex-start"
       >
         {data.map((item, index) => (
           <Stats {...item} key={index} />

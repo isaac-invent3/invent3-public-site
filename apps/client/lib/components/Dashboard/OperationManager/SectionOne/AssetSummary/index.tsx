@@ -12,11 +12,7 @@ const AssetSummary = () => {
   const valueChange = stats?.totalAssetsPercentageChange ?? 0;
 
   return (
-    <Stack
-      width="full"
-      spacing="14px"
-      direction={{ base: 'row', lg: 'column' }}
-    >
+    <Stack width="full" spacing="14px" direction={{ base: 'row' }}>
       <AssetSummaryCard
         title="Total Assets"
         value={stats?.totalAssets}

@@ -231,6 +231,8 @@ interface AssetFormDetails {
     phoneNumber: string | null;
     emailAddress: string | null;
   };
+  lifeCycleStageId: number | null;
+  lifeCycleStageName: string | null;
 }
 
 interface FilterInput extends LocationFilter {

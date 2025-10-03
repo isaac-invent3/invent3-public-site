@@ -90,6 +90,8 @@ const initialAssetForm = {
     emailAddress: null,
   },
   vendorFormDetails: null,
+  lifeCycleStageId: null,
+  lifeCycleStageName: null,
 };
 
 interface GeneralInfo {

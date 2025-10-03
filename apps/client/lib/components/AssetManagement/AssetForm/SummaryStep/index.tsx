@@ -27,6 +27,7 @@ import {
 import { FormActionButtons } from '@repo/ui/components';
 import SectionThree from './SectionThree';
 import { FORM_ENUM, ROUTES } from '~/lib/utils/constants';
+import SectionFour from './SectionFour';
 
 interface SummaryStepProps {
   activeStep: number;
@@ -266,15 +267,15 @@ const SummaryStep = (props: SummaryStepProps) => {
           spacing={{ base: '32px', lg: '40px' }}
           bgColor="white"
           pt={{ base: '16px' }}
-          pl={{ md: '24px', lg: '16px' }}
+          px={{ md: '24px', lg: '16px' }}
           pb={{ base: '16px', lg: '40px' }}
-          pr={{ md: '24px', lg: '44px' }}
           rounded="8px"
           minH="60vh"
         >
           <SectionOne />
           <SectionTwo />
           <SectionThree />
+          <SectionFour />
         </VStack>
         <FormActionButtons
           cancelLink={`/${ROUTES.ASSETS}`}

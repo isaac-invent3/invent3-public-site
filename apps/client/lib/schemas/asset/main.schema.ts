@@ -72,6 +72,7 @@ const acquisitionInfoSchema = Yup.object().shape({
   currentValue: Yup.number().nullable(),
   lifeExpectancy: Yup.number().nullable(),
   accumulatedDepreciation: Yup.number().nullable(),
+  lifeCycleStageId: Yup.number().nullable(),
   depreciationStartDate: createDateSchema(false, false).required(
     'Depreciation Start Date is required'
   ),

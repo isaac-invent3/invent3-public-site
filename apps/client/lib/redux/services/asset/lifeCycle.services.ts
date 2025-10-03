@@ -1,7 +1,12 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import baseQueryWithReauth from '../../baseQueryWithReauth';
-import { BaseApiResponse, ListResponse, QueryParams } from '@repo/interfaces';
+import {
+  BaseApiResponse,
+  ListResponse,
+  QueryParams,
+  SearchQuery,
+} from '@repo/interfaces';
 import {
   AssetLifeCycle,
   LifeCycleStages,
@@ -72,6 +77,17 @@ export const assetLifeCycleApi = createApi({
       }),
       providesTags: [],
     }),
+    searchLifecyleStages: builder.mutation<
+      BaseApiResponse<ListResponse<LifeCycleStages>>,
+      SearchQuery
+    >({
+      query: (body) => ({
+        url: `/AssetLifeCycleStages/Search`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
   }),
 });
 
@@ -81,4 +97,5 @@ export const {
   useGetAssetAtRiskMutation,
   useGetLifeCycleStageChartQuery,
   useGetLifecyleStagesQuery,
+  useSearchLifecyleStagesMutation,
 } = assetLifeCycleApi;

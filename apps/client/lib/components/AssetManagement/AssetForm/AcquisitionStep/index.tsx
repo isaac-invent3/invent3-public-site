@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import { FormActionButtons } from '@repo/ui/components';
 import { ROUTES } from '~/lib/utils/constants';
+import AssetLifecyleStageSelect from './AssetLifecyleStage';
 
 interface AcquisitionStepProps {
   activeStep: number;
@@ -25,6 +26,7 @@ const AcquisitionStep = (props: AcquisitionStepProps) => {
     acquisitionDate: formDetails.acquisitionDate ?? '',
     conditionId: formDetails.conditionId ?? null,
     statusId: formDetails.statusId ?? null,
+    lifeCycleStageId: formDetails.statusId ?? null,
     assetTypeId: formDetails.assetTypeId ?? null,
     initialValue: formDetails.initialValue ?? undefined,
     purchaseDate: formDetails.purchaseDate ?? '',
@@ -79,6 +81,7 @@ const AcquisitionStep = (props: AcquisitionStepProps) => {
               <WarrantyDetails />
               <DepreciationDetails />
               <VendorDetails />
+              <AssetLifecyleStageSelect />
             </VStack>
           </VStack>
           <Flex width="full" mt="16px">

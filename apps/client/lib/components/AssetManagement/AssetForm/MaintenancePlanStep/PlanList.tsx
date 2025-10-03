@@ -85,9 +85,10 @@ const Popover = (props: PopoverProps) => {
 
 interface PlanListProps {
   viewOnly?: boolean;
+  showEmptyState?: boolean;
 }
 const PlanList = (props: PlanListProps) => {
-  const { viewOnly = false } = props;
+  const { viewOnly = false, showEmptyState = false } = props;
   const assetForm = useAppSelector((state) => state.asset.assetForm);
   const [assetTypePlans, setAssetTypePlans] = useState<MaintenancePlan[]>([]);
   const {
@@ -151,7 +152,7 @@ const PlanList = (props: PlanListProps) => {
           isLoading={isLoading || isFetching}
           isSelectable={false}
           isFetching={isFetching}
-          showEmptyState={false}
+          showEmptyState={showEmptyState}
           disabledRows={assetTypePlans.map((_, index) => index)}
           PopoverComponent={(data) => (viewOnly ? <></> : Popover({ data }))}
         />

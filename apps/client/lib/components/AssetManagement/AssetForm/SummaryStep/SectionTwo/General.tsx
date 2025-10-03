@@ -1,4 +1,11 @@
-import { Grid, GridItem, HStack, SimpleGrid, VStack } from '@chakra-ui/react';
+import {
+  Grid,
+  GridItem,
+  HStack,
+  SimpleGrid,
+  VStack,
+  Text,
+} from '@chakra-ui/react';
 
 import DetailHeader from '~/lib/components/UI/DetailHeader';
 import Info from './Info';
@@ -33,13 +40,10 @@ const General = () => {
     stateName,
     lgaName,
     parentAssetName,
+    lifeCycleStageName,
   } = assetFormDetails;
 
   const row1 = [
-    {
-      label: 'Asset Name',
-      value: assetName,
-    },
     {
       label: 'Parent Asset',
       value: parentAssetName,
@@ -145,8 +149,26 @@ const General = () => {
 
   return (
     <VStack spacing="8px" width="full" alignItems="flex-start">
-      <DetailHeader variant="primary">General</DetailHeader>
+      <DetailHeader variant="primary">
+        General Details{'   '}
+        {lifeCycleStageName && (
+          <Text
+            as="span"
+            bgColor="neutral.300"
+            py="4px"
+            px="8px"
+            rounded="full"
+            fontWeight={700}
+            fontSize="10px"
+            lineHeight="130%"
+            color="black"
+          >
+            {lifeCycleStageName}
+          </Text>
+        )}
+      </DetailHeader>
       <VStack width="full" spacing="24px" alignItems="flex-start">
+        <Info value={assetName} label="Asset Name" />
         {/* Row 1  */}
         <SimpleGrid columns={4} width="full">
           {row1.map((item) => (

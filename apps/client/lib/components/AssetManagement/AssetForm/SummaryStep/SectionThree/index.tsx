@@ -1,14 +1,34 @@
-import { VStack } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
-import DetailHeader from '~/lib/components/UI/DetailHeader';
-import PlanList from '../../MaintenancePlanStep/PlanList';
+import Description from '../SectionOne/Description';
+import DocumentSummaryView from '~/lib/components/Common/DocumentUploadAndView/DocumentSummaryView';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 const SectionThree = () => {
+  const { documents } = useAppSelector((state) => state.asset.assetForm);
   return (
-    <VStack spacing="8px" width="full" alignItems="flex-start" overflow="auto">
-      <DetailHeader variant="primary">Maintenance Plan</DetailHeader>
-      <PlanList viewOnly />
-    </VStack>
+    <Flex
+      width="full"
+      gap={{ base: '32px', lg: '16px' }}
+      direction={{ base: 'column', lg: 'row' }}
+    >
+      <Flex
+        width={{ base: 'full', lg: '53%' }}
+        bgColor="#F5F5F5"
+        p="16px"
+        rounded="16px"
+      >
+        <Description />
+      </Flex>
+      <Flex
+        width={{ base: 'full', lg: '48%' }}
+        bgColor="#F5F5F5"
+        p="16px"
+        rounded="16px"
+      >
+        <DocumentSummaryView documents={documents} />
+      </Flex>
+    </Flex>
   );
 };
 

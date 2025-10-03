@@ -159,7 +159,7 @@ const AuthenticationProtocol = (props: AuthenticationProtocolProps) => {
                   description="Create a one-time password to help new users access their account securely."
                   justifyContent="space-between"
                 >
-                  <Switch size="md" />
+                  <Switch size="md" isChecked readOnly />
                 </FormInputWrapper>
                 <FormInputWrapper
                   sectionMaxWidth="250px"
@@ -168,7 +168,7 @@ const AuthenticationProtocol = (props: AuthenticationProtocolProps) => {
                   description="For security, you’ll be required to update your password when logging in for the first time."
                   justifyContent="space-between"
                 >
-                  <Switch size="md" />
+                  <Switch size="md" isChecked readOnly />
                 </FormInputWrapper>
               </VStack>
             )}

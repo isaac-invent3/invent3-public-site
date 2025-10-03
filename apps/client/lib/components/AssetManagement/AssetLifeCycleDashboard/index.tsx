@@ -6,6 +6,7 @@ import { Flex, VStack } from '@chakra-ui/react';
 import SectionOne from './SectionOne';
 import SectionTwo from './SectionTwo';
 import SectionThree from './SectionThree';
+import SectionFour from './SectionFour';
 
 const AssetLifeCycleDashboard = () => {
   return (
@@ -21,6 +22,7 @@ const AssetLifeCycleDashboard = () => {
         <SectionOne />
         <SectionTwo />
         <SectionThree />
+        <SectionFour />
       </VStack>
     </Flex>
   );

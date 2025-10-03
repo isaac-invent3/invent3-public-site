@@ -197,6 +197,16 @@ export const ticketApi = createApi({
         headers: getHeaders(),
       }),
     }),
+    getEscalatedTicketCount: builder.query<
+      BaseApiResponse<{ escalatedTickets: number }>,
+      void
+    >({
+      query: (data) => ({
+        url: `/Tickets/GetEscalatedTicketsCount`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
   }),
 });
 
@@ -216,4 +226,5 @@ export const {
   useGetAllTicketsQuery,
   useGetTicketDocumentsByIdQuery,
   useGetTicketAuditTrailByIdQuery,
+  useGetEscalatedTicketCountQuery,
 } = ticketApi;

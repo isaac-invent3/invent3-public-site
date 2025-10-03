@@ -4,7 +4,7 @@ import Link from 'next/link';
 import React from 'react';
 import { ROUTES } from '~/lib/utils/constants';
 
-const EscalationAlert = () => {
+const EscalationAlert = ({ escalationCount }: { escalationCount: number }) => {
   return (
     <HStack
       width="full"
@@ -48,7 +48,8 @@ const EscalationAlert = () => {
             Escalation Alert!
           </Text>
           <Text color="black" size="lg" lineHeight="100%" fontWeight={400}>
-            3 Tickets have been escalated due to inactivity beyond 48 hours.
+            {escalationCount} Tickets have been escalated due to inactivity
+            beyond 48 hours.
           </Text>
         </VStack>
       </HStack>
@@ -60,9 +61,9 @@ const EscalationAlert = () => {
         zIndex={9}
       >
         <Text size="lg" color="black" lineHeight="100%" fontWeight={700}>
-          Total Escalated: 3
+          Total Escalated: {escalationCount}
         </Text>
-        <Link href={`${ROUTES.TICKETS}`}>
+        <Link href={`/${ROUTES.TICKETS}`}>
           <Text
             cursor="pointer"
             lineHeight="100%"

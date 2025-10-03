@@ -50,19 +50,19 @@ const SUPPORT_LINKS = [
 const SOCIAL_LINKS = [
   {
     icon: FacebookIcon,
-    link: '',
+    link: 'https://www.facebook.com/share/15FGWwDZ193/?mibextid=wwXIfr',
   },
   {
     icon: TwitterIcon,
-    link: '',
+    link: 'https://x.com/invent3ai?s=21',
   },
   {
     icon: InstagramIcon,
-    link: '',
+    link: 'https://www.instagram.com/invent3.ai?igsh=MTBmbHNyaTRtdGRoNA==',
   },
   {
     icon: LinkedInIcon,
-    link: '',
+    link: 'https://www.linkedin.com/company/invent3/',
   },
 ];
 

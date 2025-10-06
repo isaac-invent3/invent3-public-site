@@ -109,7 +109,6 @@ const ThirdParty = () => {
                   key={index}
                   cursor="pointer"
                   onClick={onOpen}
-                  p="8px"
                 >
                   <Text
                     size={{ base: 'lg' }}

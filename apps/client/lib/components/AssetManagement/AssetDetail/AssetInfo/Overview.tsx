@@ -40,7 +40,6 @@ const Overview = () => {
   const primaryImage = assetImages?.find((item) => item.isPrimaryImage);
 
   const {
-    serialNo,
     currentStatus,
     assetName,
     assetId,
@@ -48,7 +47,6 @@ const Overview = () => {
     lifeCycleStageChangeDate,
     lifeCycleColorCode,
     brandName,
-    modelRef,
     displayColorCode,
     assetCode,
     riskScoreName,
@@ -60,17 +58,6 @@ const Overview = () => {
     {
       label: 'Make:',
       value: brandName ?? 'N/A',
-    },
-  ];
-
-  const assetInfo2 = [
-    {
-      label: 'Model:',
-      value: modelRef ?? 'N/A',
-    },
-    {
-      label: 'Serial Number:',
-      value: serialNo ?? 'N/A',
     },
   ];
 
@@ -207,19 +194,6 @@ const Overview = () => {
               </Text>
               <Text size="md" color="black">
                 {assetId}
-              </Text>
-            </HStack>
-            <HStack spacing="8px" alignItems="flex-start">
-              <Text
-                color="neutral.600"
-                size="md"
-                minW={{ base: '95px', md: '65px' }}
-                whiteSpace="nowrap"
-              >
-                Category:
-              </Text>
-              <Text size="md" color="black">
-                {assetCategory}
               </Text>
             </HStack>
             {assetInfo1.map((info, index) => (

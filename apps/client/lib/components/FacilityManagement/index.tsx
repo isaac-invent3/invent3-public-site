@@ -4,6 +4,7 @@ import {
   Flex,
   HStack,
   Icon,
+  Stack,
   Tab,
   TabList,
   TabPanel,
@@ -50,20 +51,39 @@ const FacilityManagement = () => {
       gap="32px"
       px={{ base: '16px', lg: '0px' }}
     >
-      <HStack width="full" justifyContent="space-between">
+      <Stack
+        width="full"
+        justifyContent="space-between"
+        direction={{ base: 'column', md: 'row' }}
+        spacing="16px"
+        px={{ base: '16px', md: 0 }}
+      >
         <PageHeader>Facility Management</PageHeader>
-        <Button
-          customStyles={{
-            width: '184px',
-            height: { base: '36px', md: 'min-content' },
-            alignSelf: 'end',
-          }}
-          href={`/${ROUTES.LOCATION}/add`}
-        >
-          <Icon as={AddIcon} boxSize="18px" color="#D2FEFD" mr="4px" />
-          Add New Facility
-        </Button>
-      </HStack>
+        <HStack>
+          <Button
+            customStyles={{
+              width: '198px',
+              height: { base: '36px', md: 'min-content' },
+              alignSelf: 'end',
+            }}
+            href={`/${ROUTES.LOCATION}/cross-facility`}
+            variant="outline"
+          >
+            Cross-Facility Comparison
+          </Button>
+          <Button
+            customStyles={{
+              width: '184px',
+              height: { base: '36px', md: 'min-content' },
+              alignSelf: 'end',
+            }}
+            href={`/${ROUTES.LOCATION}/add`}
+          >
+            <Icon as={AddIcon} boxSize="18px" color="#D2FEFD" mr="4px" />
+            Add New Facility
+          </Button>
+        </HStack>
+      </Stack>
 
       <Tabs
         variant="custom"

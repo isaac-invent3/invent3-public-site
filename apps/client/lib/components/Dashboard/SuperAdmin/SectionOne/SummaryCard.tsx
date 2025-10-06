@@ -4,7 +4,6 @@ import {
   IconProps,
   Skeleton,
   Text,
-  VStack,
 } from '@chakra-ui/react';
 import React from 'react';
 import SummaryCardWrapper from '../../../Common/SummaryCardWrapper';
@@ -18,6 +17,7 @@ interface SummaryCardProps {
   icon: ComponentWithAs<'svg', IconProps>;
   children?: React.ReactNode;
   showRange?: boolean;
+  rangeText?: string;
 }
 const SummaryCard = (props: SummaryCardProps) => {
   const {
@@ -28,6 +28,7 @@ const SummaryCard = (props: SummaryCardProps) => {
     icon,
     children,
     showRange = true,
+    rangeText,
   } = props;
   return (
     <SummaryCardWrapper
@@ -50,7 +51,7 @@ const SummaryCard = (props: SummaryCardProps) => {
       additionalContent={
         showRange && (
           <Text color="neutral.600" fontWeight={700} mb="4px">
-            This month
+            {rangeText ?? 'This month'}
           </Text>
         )
       }

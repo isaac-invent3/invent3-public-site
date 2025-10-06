@@ -26,6 +26,7 @@ interface SummaryCardWrapperProps {
   additionalContent?: React.ReactNode;
   formatValue?: boolean;
   customCountStyle?: TextProps;
+  subContainerStyle?: StackProps;
 }
 
 const SummaryCardWrapper = (props: SummaryCardWrapperProps) => {
@@ -42,6 +43,7 @@ const SummaryCardWrapper = (props: SummaryCardWrapperProps) => {
     additionalContent,
     formatValue = true,
     customCountStyle,
+    subContainerStyle,
   } = props;
 
   return (
@@ -99,6 +101,7 @@ const SummaryCardWrapper = (props: SummaryCardWrapperProps) => {
         justifyContent="space-between"
         alignItems="flex-start"
         height="full"
+        {...subContainerStyle}
       >
         <HStack alignItems="flex-end" spacing="4px">
           <Skeleton

@@ -4,6 +4,7 @@ import {
   IconProps,
   ResponsiveValue,
   Skeleton,
+  StackProps,
   Text,
 } from '@chakra-ui/react';
 import React from 'react';
@@ -24,6 +25,8 @@ interface SummaryCardProps {
   showIconBgColor?: boolean;
   textSize?: ResponsiveValue<string>;
   iconStyle?: IconProps | undefined;
+  containerStyle?: StackProps;
+  subContainerStyle?: StackProps;
 }
 const SummaryCard = (props: SummaryCardProps) => {
   const {
@@ -40,12 +43,14 @@ const SummaryCard = (props: SummaryCardProps) => {
     showIconBgColor,
     textSize,
     iconStyle,
+    containerStyle,
+    subContainerStyle,
   } = props;
   return (
     <SummaryCardWrapper
       title={title}
       icon={icon}
-      containerStyle={{ minH: '180px' }}
+      containerStyle={{ minH: '180px', ...containerStyle }}
       headerStyle={{
         maxW: '70%',
         size: textSize ?? { base: 'base', sm: 'base' },
@@ -70,6 +75,7 @@ const SummaryCard = (props: SummaryCardProps) => {
       }
       formatValue={formatValue}
       count={value}
+      subContainerStyle={subContainerStyle}
     >
       {percentChange && (
         <HStack spacing="4px">

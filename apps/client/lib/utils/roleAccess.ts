@@ -69,6 +69,7 @@ const ROUTES_PERMISSION_KEY: { [name: string]: PermissionKey } = {
   [`/${ROUTES.LOCATION}`]: 'settings',
   [`/${ROUTES.LOCATION}/[stateId]/detail`]: 'settings',
   [`/${ROUTES.LOCATION}/add`]: 'settings',
+  [`/${ROUTES.LOCATION}/cross-facility`]: 'settings',
 };
 
 function getPathPermissionKey(pathname: string): PermissionKey | undefined {

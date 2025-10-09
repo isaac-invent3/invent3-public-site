@@ -30,6 +30,8 @@ import SavedTemplate from './ReportDashboard/SavedTemplate';
 import TicketStatusPieChart from './ReportDashboard/TicketStatusPieChart';
 import { useState } from 'react';
 import { ReportFilterInput } from '~/lib/interfaces/report.interfaces';
+import PredictiveMaintenance from '../Dashboard/BMS/Details/DetailTabs/PredictiveMaintenance';
+import PredictiveMaintenanceReport from './PredictiveMaintenanceReport';
 
 const ReportAnalytics = () => {
   const { data: defaultReports, isLoading: defaultReportsLoading } =
@@ -224,15 +226,15 @@ const ReportAnalytics = () => {
           />
         )}
       </Stack>
-
-      <VStack>
+      <PredictiveMaintenanceReport />
+      <VStack borderTop="1px solid #BBBBBB" mt={6}>
         <HStack
           alignItems="center"
           justifyContent="space-between"
           width="full"
           mt="5"
         >
-          <Text color="#0E2642" fontSize={14} fontWeight={500}>
+          <Text color="#0E2642" fontSize={14} fontWeight={700}>
             Default Reports
           </Text>
 
@@ -264,7 +266,7 @@ const ReportAnalytics = () => {
           )}
 
         <SimpleGrid
-          columns={{ base: 2, md: 3, lg: 4, xl: 5 }}
+          columns={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
           width="100%"
           gap="16px"
           mt="10px"
@@ -293,7 +295,7 @@ const ReportAnalytics = () => {
           width="full"
           mt="5"
         >
-          <Text color="#0E2642" fontSize={14} fontWeight={500}>
+          <Text color="#0E2642" fontSize={14} fontWeight={700}>
             Saved Templates
           </Text>
 
@@ -323,7 +325,7 @@ const ReportAnalytics = () => {
           )}
 
         <SimpleGrid
-          columns={{ base: 2, md: 3, lg: 4, xl: 5 }}
+          columns={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
           width="100%"
           gap="16px"
           mt="10px"

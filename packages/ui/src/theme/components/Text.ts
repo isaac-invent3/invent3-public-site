@@ -7,27 +7,27 @@ const CustomText: ComponentStyleConfig = {
   sizes: {
     xs: {
       fontSize: '10px',
-      lineHeight: '11.88px',
+      lineHeight: '100%',
     },
     base: {
       fontSize: '12px',
-      lineHeight: '14.26px',
+      lineHeight: '100%',
     },
     md: {
       fontSize: '14px',
-      lineHeight: '16.63px',
+      lineHeight: '100%',
     },
     lg: {
       fontSize: '16px',
-      lineHeight: '19.01px',
+      lineHeight: '100%',
     },
     xl: {
       fontSize: '24px',
-      lineHeight: '28.51px',
+      lineHeight: '100%',
     },
     '2xl': {
       fontSize: '32px',
-      lineHeight: '38.02px',
+      lineHeight: '100%',
     },
   },
   defaultProps: {

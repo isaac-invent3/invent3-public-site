@@ -108,12 +108,10 @@ const ImminentFailureAlert = ({
 
 const ImminentFailureAlertList = () => {
   const [alerts, setAlerts] = useState<Prediction[]>([]);
-  const { data: predictionAlertData } = useGetRecentPredictionAlertQuery(
-    { page: 1, pageSize: 10 },
-    {
-      pollingInterval: 30000,
-    }
-  );
+  const { data: predictionAlertData } = useGetRecentPredictionAlertQuery({
+    page: 1,
+    pageSize: 10,
+  });
   const removeAlert = (id: number) => {
     setAlerts((prev) => prev.filter((alert) => alert.predictionId !== id));
   };

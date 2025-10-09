@@ -24,11 +24,11 @@ const AssetComparisonModal = (props: AssetComparisonModalProps) => {
       <GenericTemplateModal
         isOpen={isOpen}
         onClose={onClose}
-        headerName={'At-Risk Assets'}
+        headerName={'Asset Comparison Modal'}
         pageSize={pageSize}
         pageNumber={pageNumber}
         totalPages={totalPages}
-        setSearch={setSearch}
+        setSearch={undefined}
         setPageNumber={setPageNumber}
         setPageSize={setPageSize}
         // filters={Filter}

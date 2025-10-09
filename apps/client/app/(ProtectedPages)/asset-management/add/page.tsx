@@ -175,6 +175,8 @@ export default function Page() {
         countryName: asset.countryName,
         lifeExpectancy: asset.lifeExpectancy,
         initialValue: asset.initialValue,
+        lifeCycleStageId: asset.lifeCycleId,
+        lifeCycleStageName: asset.lifeCycleStageName,
         images: formImages ?? [],
         documents: formDocuments ?? [],
         maintenancePlans: assetCustomMaintenancePlan?.data.items ?? [],

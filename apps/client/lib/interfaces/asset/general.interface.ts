@@ -139,6 +139,10 @@ interface Asset {
   riskScoreColor: string;
   forecastedReplacementDate: string;
   isCritical: boolean;
+  roi: number;
+  acquisitionCost: number;
+  disposalCost: number;
+  totalLifeCycleCost: number;
 }
 
 interface AssetFormImage {
@@ -388,6 +392,7 @@ interface AssetDto extends BaseDto {
   scrapvalue: number;
   parentId: number;
   subCategoryId: number;
+  lifeCycleId: number;
 }
 
 interface AssetImageDto extends BaseDto {

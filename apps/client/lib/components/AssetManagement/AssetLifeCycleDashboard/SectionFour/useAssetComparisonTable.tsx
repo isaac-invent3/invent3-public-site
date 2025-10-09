@@ -10,7 +10,10 @@ import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
 import { DataTable } from '@repo/ui/components';
 import { generateSearchCriteria } from '@repo/utils';
 import { Asset } from '~/lib/interfaces/asset/general.interface';
-import { useGetAssetAtRiskMutation } from '~/lib/redux/services/asset/lifeCycle.services';
+import {
+  useGetAssetAtRiskMutation,
+  useGetAssetLifeCycleFinancialComparisonsQuery,
+} from '~/lib/redux/services/asset/lifeCycle.services';
 
 interface useAssetComparisonTable {
   search?: string;
@@ -25,36 +28,39 @@ const useAssetComparisonTable = (props: useAssetComparisonTable) => {
     BaseApiResponse<ListResponse<Asset>> | undefined
   >(undefined);
   const { handleSubmit } = useCustomMutation();
-  const [searchAssetAtRisk, { isLoading }] = useGetAssetAtRiskMutation({});
+  const { data, isLoading } = useGetAssetLifeCycleFinancialComparisonsQuery({
+    pageSize,
+    pageNumber: customPageSize,
+  });
 
-  const handleSearch = useCallback(async () => {
-    const { orCriterion } = generateSearchCriteria(
-      undefined,
-      {
-        search: [search],
-      },
-      {
-        search: {
-          key: ['assetName', 'assetCategory'],
-          operator: OPERATORS.Contains,
-        },
-      },
-      undefined
-    );
-    const payload = {
-      pageNumber,
-      pageSize: customPageSize ?? pageSize,
-      orCriterion,
-    };
+  // const handleSearch = useCallback(async () => {
+  //   const { orCriterion } = generateSearchCriteria(
+  //     undefined,
+  //     {
+  //       search: [search],
+  //     },
+  //     {
+  //       search: {
+  //         key: ['assetName', 'assetCategory'],
+  //         operator: OPERATORS.Contains,
+  //       },
+  //     },
+  //     undefined
+  //   );
+  //   const payload = {
+  //     pageNumber,
+  //     pageSize: customPageSize ?? pageSize,
+  //     orCriterion,
+  //   };
 
-    const response = await handleSubmit(searchAssetAtRisk, payload, '');
-    setSearchData(response?.data);
-  }, [searchAssetAtRisk, search, pageSize, pageNumber]);
+  //   const response = await handleSubmit(searchAssetLifeCycleFinancialComparison, payload, '');
+  //   setSearchData(response?.data);
+  // }, [ search, pageSize, pageNumber]);
 
   // Trigger search when search input changes or pagination updates
-  useEffect(() => {
-    handleSearch();
-  }, [search, pageNumber, pageSize]);
+  // useEffect(() => {
+  //   handleSearch();
+  // }, [search, pageNumber, pageSize]);
 
   // Reset pagination when clearing the search
   useEffect(() => {
@@ -73,7 +79,7 @@ const useAssetComparisonTable = (props: useAssetComparisonTable) => {
           header: 'Asset Name',
           enableSorting: false,
         }),
-        columnHelper.accessor('initialValue', {
+        columnHelper.accessor('acquisitionCost', {
           cell: (info) => amountFormatter(info.getValue() ?? 0),
           header: 'Acquisition Cost',
           enableSorting: false,
@@ -83,17 +89,17 @@ const useAssetComparisonTable = (props: useAssetComparisonTable) => {
           header: 'Maintenance Cost',
           enableSorting: false,
         }),
-        columnHelper.accessor('currentCost', {
+        columnHelper.accessor('disposalCost', {
           cell: (info) => amountFormatter(info.getValue() ?? 0),
           header: 'Disposal Cost',
           enableSorting: false,
         }),
-        columnHelper.accessor('buildingId', {
+        columnHelper.accessor('totalLifeCycleCost', {
           cell: (info) => amountFormatter(info.getValue() ?? 0),
           header: 'Total Lifecyle',
           enableSorting: false,
         }),
-        columnHelper.accessor('assetId', {
+        columnHelper.accessor('roi', {
           cell: (info) => `${info.getValue()}%`,
           header: 'ROI',
           enableSorting: false,
@@ -102,14 +108,14 @@ const useAssetComparisonTable = (props: useAssetComparisonTable) => {
 
       return baseColumns;
     },
-    [[searchData?.data?.items]] //eslint-disable-line
+    [[data?.data?.items]] //eslint-disable-line
   );
 
   const AssetComparisonTable = (
     <Flex width="full" direction="column">
       <DataTable
         columns={columns}
-        data={searchData?.data?.items ?? []}
+        data={data?.data?.items ?? []}
         isLoading={isLoading}
         isFetching={isLoading}
         showFooter={false}
@@ -128,9 +134,9 @@ const useAssetComparisonTable = (props: useAssetComparisonTable) => {
   //     </Flex>
   //   );
   return {
-    handleSearch,
+    // handleSearch,
     AssetComparisonTable,
-    totalPages: search && searchData ? searchData.data?.totalPages : 0,
+    totalPages: data?.data?.totalPages ?? 0,
     pageSize,
     pageNumber,
     setPageNumber,

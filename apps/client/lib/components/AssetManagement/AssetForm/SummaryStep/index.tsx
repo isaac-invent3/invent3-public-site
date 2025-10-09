@@ -138,6 +138,7 @@ const SummaryStep = (props: SummaryStepProps) => {
     resalevalue: assetFormDetails.resaleValue!,
     scrapvalue: assetFormDetails.scrapValue!,
     parentId: assetData?.assetId! ?? assetFormDetails.parentId!,
+    lifeCycleId: assetFormDetails.lifeCycleStageId!,
     subCategoryId: assetFormDetails.subCategoryId!,
     [`${type === 'create' ? 'createdBy' : 'lastModifiedBy'}`]: username,
   };

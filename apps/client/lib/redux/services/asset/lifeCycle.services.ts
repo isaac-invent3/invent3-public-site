@@ -66,6 +66,19 @@ export const assetLifeCycleApi = createApi({
         body,
       }),
     }),
+    getAssetLifeCycleFinancialComparisons: builder.query<
+      BaseApiResponse<ListResponse<Asset>>,
+      QueryParams
+    >({
+      query: (data) => ({
+        url: generateQueryStr(
+          `/Assets/GetAssetLifeCycleFinancialComparisons?`,
+          data
+        ),
+        method: 'POST',
+        headers: getHeaders(),
+      }),
+    }),
     getLifecyleStages: builder.query<
       BaseApiResponse<ListResponse<LifeCycleStages>>,
       QueryParams
@@ -98,4 +111,5 @@ export const {
   useGetLifeCycleStageChartQuery,
   useGetLifecyleStagesQuery,
   useSearchLifecyleStagesMutation,
+  useGetAssetLifeCycleFinancialComparisonsQuery,
 } = assetLifeCycleApi;

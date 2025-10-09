@@ -63,10 +63,6 @@ const Overview = () => {
 
   const assetInfo2 = [
     {
-      label: 'Asset Code:',
-      value: assetCode ?? 'N/A',
-    },
-    {
       label: 'Asset ID:',
       value: assetId ?? 'N/A',
     },
@@ -172,11 +168,7 @@ const Overview = () => {
         >
           <VStack alignItems="flex-start" spacing="8px">
             <HStack spacing="8px" alignItems="center">
-              <Text
-                color="neutral.600"
-                minW={{ base: '95px', md: '65px' }}
-                size="md"
-              >
+              <Text color="neutral.600" minW="110px" size="md">
                 Status:
               </Text>
               <GenericStatusBox
@@ -185,11 +177,7 @@ const Overview = () => {
               />
             </HStack>
             <HStack spacing="8px" alignItems="flex-start">
-              <Text
-                size="md"
-                color="neutral.600"
-                minW={{ base: '95px', md: '65px' }}
-              >
+              <Text size="md" color="neutral.600" minW="110px">
                 Asset ID:
               </Text>
               <Text size="md" color="black">
@@ -198,11 +186,7 @@ const Overview = () => {
             </HStack>
             {assetInfo1.map((info, index) => (
               <HStack spacing="8px" alignItems="flex-start" key={index}>
-                <Text
-                  color="neutral.600"
-                  minW={{ base: '95px', md: '65px' }}
-                  size="md"
-                >
+                <Text color="neutral.600" minW="110px" size="md">
                   {info.label}
                 </Text>
                 <Text color="black" size="md">
@@ -211,11 +195,7 @@ const Overview = () => {
               </HStack>
             ))}
             <HStack spacing="8px" alignItems="center">
-              <Text
-                color="neutral.600"
-                minW={{ base: '95px', md: '65px' }}
-                size="md"
-              >
+              <Text color="neutral.600" minW="110px" size="md">
                 LifeCycle Stage:
               </Text>
               {lifeCycleStageName ? (
@@ -235,16 +215,12 @@ const Overview = () => {
           </VStack>
           <VStack alignItems="flex-start" spacing="8px">
             <HStack spacing="8px" alignItems="center">
-              <Text
-                color="neutral.600"
-                minW={{ base: '95px', md: '65px' }}
-                size="md"
-              >
+              <Text color="neutral.600" minW="110px" size="md">
                 Asset Code:
               </Text>
               {assetCode ? (
                 <HStack spacing="7px">
-                  <Text color="black" size="md">
+                  <Text color="black" size="md" width="110px">
                     {assetCode}
                   </Text>
                   {isCritical && (
@@ -265,7 +241,7 @@ const Overview = () => {
             </HStack>
             {assetInfo2.map((info, index) => (
               <HStack spacing="12px" alignItems="flex-start" key={index}>
-                <Text color="neutral.600" width="95px" size="md">
+                <Text color="neutral.600" width="110px" size="md">
                   {info.label}
                 </Text>
                 <Text color="black" size="md">
@@ -274,7 +250,7 @@ const Overview = () => {
               </HStack>
             ))}
             <HStack spacing="12px" alignItems="flex-start">
-              <Text color="neutral.600" width="95px" size="md">
+              <Text color="neutral.600" width="110px" size="md">
                 Risk Indicator:
               </Text>
               {riskScoreName ? (

@@ -54,6 +54,16 @@ export const SESSION_COOKIE = SESSION_SECURE
   : 'authjs.session-token';
 export const SESSION_TIMEOUT = 1800; // 30 Mins
 
+function normalizePath(...parts: string[]) {
+  return (
+    '/' +
+    parts
+      .filter(Boolean)
+      .map((p) => p.replace(/^\/+|\/+$/g, ''))
+      .join('/')
+  );
+}
+
 function isSigninPath(pathname: string): boolean {
   // Matches `/signin` and `/tenant-name/signin`
   return /\/signin$/.test(pathname);
@@ -123,7 +133,9 @@ export function signOut(
   console.log('Signing out');
 
   const pathname = request.nextUrl.pathname;
-  const redirectPath = tenantName ? `/${tenantName}/signin` : `/signin`;
+  const redirectPath = tenantName
+    ? normalizePath(tenantName, 'signin')
+    : '/signin';
   const url = new URL(redirectPath, request.url);
 
   // Prevent redirect loop when already on /signin
@@ -297,12 +309,13 @@ export async function middleware(request: NextRequest) {
         const cleanRemaining = remainingPath.replace(/^\/+/, '');
         const checkPath =
           tenantName && tenant && !normalizedAllRoutes.includes(tenant)
-            ? `/${tenantName}/${cleanRemaining}`
+            ? normalizePath(tenantName, cleanRemaining)
             : pathname;
-        const url = new URL(checkPath, request.url); // e.g. /dashboard or /demo/dashboard
+        const url = new URL(checkPath, request.url);
+        url.search = request.nextUrl.search;
+        // e.g. /dashboard or /demo/dashboard
 
         url.search = request.nextUrl.search; // retain ?view=client_admin
-        url.pathname = url.pathname.replace(/\/{2,}/g, '/');
         const newResponse = NextResponse.redirect(url);
         updateCookie(newSessionToken, request, newResponse, tenantName);
         request.cookies.set(SESSION_COOKIE, newSessionToken);
@@ -325,9 +338,10 @@ export async function middleware(request: NextRequest) {
     // Redirect to tenant if token has a different tenant. Note: This is for only the relative path approach
     if (tenantName && tenantName !== tenant) {
       const url = new URL(
-        `/${currentToken.companySlug}/${pathname}`,
+        normalizePath(currentToken.companySlug, pathname),
         request.url
       );
+
       url.search = request.nextUrl.search; // Preserve query string
       return NextResponse.redirect(url);
     }
@@ -340,7 +354,9 @@ export async function middleware(request: NextRequest) {
         currentToken.roleIds.includes(ROLE_IDS_ENUM.CLIENT_ADMIN))
     ) {
       if (tenantName) {
-        return NextResponse.rewrite(new URL(`${checkPath}`, request.url));
+        return NextResponse.rewrite(
+          new URL(normalizePath(checkPath), request.url)
+        );
       }
       return NextResponse.next();
     }
@@ -390,7 +406,7 @@ export async function middleware(request: NextRequest) {
 
     // Decide which response to return
     const responseToReturn = tenantName
-      ? NextResponse.rewrite(new URL(`${checkPath}`, request.url))
+      ? NextResponse.rewrite(new URL(normalizePath(checkPath), request.url))
       : NextResponse.next();
 
     // Set cookies on the correct response
@@ -432,7 +448,9 @@ export async function middleware(request: NextRequest) {
     }
 
     // If protected page, redirect to signin with ref (respect tenant)
-    const redirectPath = tenantData ? `/${tenant}/signin` : `/signin`;
+    const redirectPath = tenantName
+      ? normalizePath(tenantName, 'signin')
+      : '/signin';
     const url = new URL(redirectPath, request.url);
     const actualPath = tenantData ? remainingPath : pathname;
 

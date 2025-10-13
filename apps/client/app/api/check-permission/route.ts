@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     const [key] = routeInfo;
 
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/SystemSubModuleContextTypes/GetSystemSubModuleKeyValuesByParentModuleId/${key}?pageSize=50`,
+      `${process.env.API_BASE_URL}/api/SystemSubModuleContextTypes/GetSystemSubModuleKeyValuesByParentModuleId/${key}?pageSize=50`,
       {
         method: 'GET',
         headers: {

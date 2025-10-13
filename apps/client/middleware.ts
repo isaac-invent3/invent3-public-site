@@ -19,6 +19,7 @@ const publicRoutes = [
   '/built-for-all-industries',
   '/blog',
   '/waitlist',
+  'Invent3Pro',
 ];
 const protectedGlobalRoute = ['/dashboard'];
 const protectedClientAdminRoute = ['/facility-management'];
@@ -293,10 +294,10 @@ export async function middleware(request: NextRequest) {
         });
 
         currentToken = refreshedToken;
-
+        const cleanRemaining = remainingPath.replace(/^\/+/, '');
         const checkPath =
           tenantName && tenant && !normalizedAllRoutes.includes(tenant)
-            ? `/${tenantName}/${remainingPath}`
+            ? `/${tenantName}/${cleanRemaining}`
             : pathname;
         const url = new URL(checkPath, request.url); // e.g. /dashboard or /demo/dashboard
 
@@ -312,9 +313,10 @@ export async function middleware(request: NextRequest) {
         return signOut(request, tenantName);
       }
     }
+    const cleanRemaining = remainingPath.replace(/^\/+/, '');
     const checkPath =
       tenantName && tenant && !normalizedAllRoutes.includes(tenant)
-        ? `/${remainingPath}`
+        ? `/${cleanRemaining}`
         : pathname;
 
     // Don't check permission for protected global route or super admin route if the user is a super admin
@@ -401,7 +403,8 @@ export async function middleware(request: NextRequest) {
   }
 
   if (!currentToken) {
-    const checkPath = tenantData ? `/${remainingPath}` : pathname;
+    const cleanRemaining = remainingPath.replace(/^\/+/, '');
+    const checkPath = tenantData ? `/${cleanRemaining}` : pathname;
     const requestedPath = `/${checkPath.split('/')?.[1] as string}`;
 
     if (tenantData) {

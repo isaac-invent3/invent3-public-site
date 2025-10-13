@@ -377,6 +377,7 @@ export async function middleware(request: NextRequest) {
       }
       return NextResponse.redirect(new URL(`/dashboard`, request.url));
     }
+    console.log({ checkPath });
 
     // Check User Permission
     const res = await fetch(

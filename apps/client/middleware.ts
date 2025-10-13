@@ -476,9 +476,8 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!api/|_next/|__next|_static/|_vercel|fonts/|\\.well-known/|[\\w-]+\\.\\w+).*)',
+    '/((?!api/|_next/|__next|_static/|_vercel|fonts/|\\.well-known/|Invent3Pro/|.*-hub/|swagger|swagger-ui|docs).*)',
     '/',
-    // '/signin',
     '/forgot-password',
     '/dashboard/:path*',
     '/approval-flow/:path*',
@@ -495,7 +494,6 @@ export const config = {
     '/company-management/:path*',
     '/compliance/:path*',
     '/feedback/:path*',
-    '/report-analytics/:path*',
     '/facility-management/:path*',
   ],
 };

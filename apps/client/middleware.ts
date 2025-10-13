@@ -301,7 +301,7 @@ export async function middleware(request: NextRequest) {
         const url = new URL(checkPath, request.url); // e.g. /dashboard or /demo/dashboard
 
         url.search = request.nextUrl.search; // retain ?view=client_admin
-
+        url.pathname = url.pathname.replace(/\/{2,}/g, '/');
         const newResponse = NextResponse.redirect(url);
         updateCookie(newSessionToken, request, newResponse, tenantName);
         request.cookies.set(SESSION_COOKIE, newSessionToken);

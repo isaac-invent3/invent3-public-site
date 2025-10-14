@@ -49,8 +49,7 @@ const PhotoViewer = () => {
   }, [isLoading]);
 
   return (
-    <VStack alignItems="flex-start" spacing="16px" width="full">
-      <DetailHeader variant="secondary">Photos</DetailHeader>
+    <VStack alignItems="flex-start" spacing="16px" width="full" py={2}>
       <Flex width="full" gap="16px" wrap="wrap">
         {isLoading ? (
           Array(4)

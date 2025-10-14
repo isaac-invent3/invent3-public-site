@@ -2,7 +2,7 @@ import { Flex, SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import DetailHeader from '../../../../UI/DetailHeader';
 import DetailSection from '../../DetailSection';
 import { useAppSelector } from '~/lib/redux/hooks';
-import PhotoViewer from './InfoTwo.tsx/Photos';
+import PhotoViewer from './InfoTwo/Photos';
 import OwnersInfo from './InfoOne/OwnersInfo';
 
 const InfoOne = () => {

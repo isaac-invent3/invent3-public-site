@@ -53,14 +53,11 @@ const DriversAffectingPrediction = (props: DriversAffectingPredictionProps) => {
                 </ListItem>
               ))}
             </UnorderedList>
-            <Text color="blue.500" mt="18px">
+            <Text color="blue.500" mt="18px" cursor="pointer" onClick={onOpen}>
               View Drill-Down Failure Explanation
             </Text>
           </VStack>
         )}
-        <Text color="blue.500" mt="18px" cursor="pointer" onClick={onOpen}>
-          View Drill-Down Failure Explanation
-        </Text>
         {!isLoading && (data?.forecastDrivers.length === 0 || !data) && (
           <Text
             fontStyle="italic"

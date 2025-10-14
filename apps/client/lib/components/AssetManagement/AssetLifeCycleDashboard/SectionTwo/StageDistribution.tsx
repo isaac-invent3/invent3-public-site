@@ -68,7 +68,7 @@ const StageDistribution = () => {
         {!isLoading &&
           data &&
           (data &&
-          data?.data?.items.map((item) => item?.percentage).filter(Boolean)
+          data?.data?.items?.map((item) => item?.percentage).filter(Boolean)
             .length > 0 ? (
             <Flex width="218px">
               <PieChart

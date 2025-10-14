@@ -186,7 +186,7 @@ const AssetTable = (props: AssetTableProps) => {
                 text={info.getValue()}
                 colorCode={info.row.original.riskScoreColor}
                 rounded="full"
-                showDot
+                showDot={false}
                 useColorCodeAsTextColor
               />
             ) : (

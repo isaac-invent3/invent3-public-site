@@ -13,6 +13,7 @@ import AssetLocation from './AssetLocation';
 import { useAppSelector } from '~/lib/redux/hooks';
 import OwnersInfo from './OwnersInfo';
 import AssetDimension from './AssetDimension';
+import PhotoViewer from '../InfoTwo/Photos';
 
 const InfoOne = () => {
   const assetData = useAppSelector((state) => state.asset.asset);
@@ -43,6 +44,10 @@ const InfoOne = () => {
     {
       label: "Owner's Info",
       details: <OwnersInfo />,
+    },
+    {
+      label: 'Photos',
+      details: <PhotoViewer />,
     },
   ];
 

@@ -59,6 +59,7 @@ const DepreciationDetails = () => {
               name="depreciationRate"
               type="number"
               label="Depreciation Rate"
+              placeholder="Depreciation Rate e.g 0.1"
               customStyles
             />
           </Stack>

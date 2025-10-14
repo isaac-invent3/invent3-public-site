@@ -135,8 +135,6 @@ const Overview = () => {
           showDot={false}
           rounded="full"
           useColorCodeAsTextColor
-          bgColor="none"
-          border="none"
         />
       </VStack>
       <VStack alignItems="flex-start" width="full" spacing="16px">

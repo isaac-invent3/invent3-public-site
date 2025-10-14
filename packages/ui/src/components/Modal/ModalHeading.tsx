@@ -4,6 +4,7 @@ import {
   VStack,
   StackProps,
   TextProps,
+  HeadingProps,
 } from '@chakra-ui/react';
 
 interface ModalHeadingProps {
@@ -11,9 +12,10 @@ interface ModalHeadingProps {
   subheading?: string;
   customStyle?: StackProps;
   textStyle?: TextProps;
+  headingStyle?: HeadingProps;
 }
 const ModalHeading = (props: ModalHeadingProps) => {
-  const { heading, subheading, customStyle, textStyle } = props;
+  const { heading, subheading, customStyle, textStyle, headingStyle } = props;
 
   return (
     <VStack width="full" alignItems="flex-start" spacing="8px" {...customStyle}>
@@ -21,6 +23,7 @@ const ModalHeading = (props: ModalHeadingProps) => {
         fontWeight={800}
         size={{ base: 'lg', md: 'xl' }}
         color="primary.500"
+        {...headingStyle}
       >
         {heading}
       </Heading>

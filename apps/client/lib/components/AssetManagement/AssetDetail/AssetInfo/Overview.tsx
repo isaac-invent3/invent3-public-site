@@ -16,14 +16,17 @@ const getDurationLabel = (lifeCycleStageChangeDate: string | Date) => {
   const start = moment(lifeCycleStageChangeDate);
   const now = moment();
 
-  const years = now.diff(start, 'years');
-  start.add(years, 'years');
+  if (start.isAfter(now)) return '0 months';
 
-  const months = now.diff(start, 'months');
+  const totalMonths = now.diff(start, 'months', true);
+  const years = Math.floor(totalMonths / 12);
+  const months = Math.floor(totalMonths % 12);
 
-  return `${years > 0 ? years + (years === 1 ? ' year' : ' years') : ''}${
-    years && months ? ', ' : ''
-  }${months > 0 ? months + (months === 1 ? ' month' : ' months') : ''}`.trim();
+  const parts: string[] = [];
+  if (years > 0) parts.push(`${years} ${years === 1 ? 'year' : 'years'}`);
+  if (months > 0) parts.push(`${months} ${months === 1 ? 'month' : 'months'}`);
+
+  return parts.length ? parts.join(', ') : '0 months';
 };
 
 const Overview = () => {
@@ -52,12 +55,22 @@ const Overview = () => {
     riskScoreName,
     riskScoreColor,
     isCritical,
+    serialNo,
+    modelRef,
   } = assetData;
 
   const assetInfo1 = [
     {
       label: 'Make:',
       value: brandName ?? 'N/A',
+    },
+    {
+      label: 'Model:',
+      value: modelRef ?? 'N/A',
+    },
+    {
+      label: 'Serial Number:',
+      value: serialNo ?? 'N/A',
     },
   ];
 
@@ -167,23 +180,6 @@ const Overview = () => {
           alignItems="flex-start"
         >
           <VStack alignItems="flex-start" spacing="8px">
-            <HStack spacing="8px" alignItems="center">
-              <Text color="neutral.600" minW="110px" size="md">
-                Status:
-              </Text>
-              <GenericStatusBox
-                text={currentStatus}
-                colorCode={displayColorCode}
-              />
-            </HStack>
-            <HStack spacing="8px" alignItems="flex-start">
-              <Text size="md" color="neutral.600" minW="110px">
-                Asset ID:
-              </Text>
-              <Text size="md" color="black">
-                {assetId}
-              </Text>
-            </HStack>
             {assetInfo1.map((info, index) => (
               <HStack spacing="8px" alignItems="flex-start" key={index}>
                 <Text color="neutral.600" minW="110px" size="md">
@@ -194,7 +190,11 @@ const Overview = () => {
                 </Text>
               </HStack>
             ))}
-            <HStack spacing="8px" alignItems="center">
+            <HStack
+              spacing="8px"
+              alignItems="center"
+              display={{ base: 'none', md: 'flex' }}
+            >
               <Text color="neutral.600" minW="110px" size="md">
                 LifeCycle Stage:
               </Text>
@@ -262,6 +262,28 @@ const Overview = () => {
                 />
               ) : (
                 'N/A'
+              )}
+            </HStack>
+            <HStack
+              spacing="8px"
+              alignItems="center"
+              display={{ base: 'flex', md: 'none' }}
+            >
+              <Text color="neutral.600" minW="110px" size="md">
+                LifeCycle Stage:
+              </Text>
+              {lifeCycleStageName ? (
+                <GenericStatusBox
+                  text={lifeCycleStageName}
+                  colorCode={lifeCycleColorCode}
+                  showDot={false}
+                  rounded="full"
+                  useColorCodeAsTextColor
+                />
+              ) : (
+                <Text color="black" size="md">
+                  N/A
+                </Text>
               )}
             </HStack>
           </VStack>

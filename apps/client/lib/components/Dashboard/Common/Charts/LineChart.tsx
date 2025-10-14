@@ -29,6 +29,8 @@ interface LineChartProps {
   height?: string;
   showXGrid?: boolean;
   showYGrid?: boolean;
+  xLabel?: string;
+  yLabel?: string;
 }
 const LineChart = (props: LineChartProps) => {
   const {
@@ -38,6 +40,8 @@ const LineChart = (props: LineChartProps) => {
     height,
     showXGrid = true,
     showYGrid,
+    xLabel = '',
+    yLabel = '',
   } = props;
 
   const data = {
@@ -63,6 +67,14 @@ const LineChart = (props: LineChartProps) => {
     },
     scales: {
       x: {
+        title: xLabel
+          ? {
+              display: true,
+              text: xLabel,
+              color: '#838383',
+              font: { size: 12, weight: '700' },
+            }
+          : undefined,
         grid: {
           borderDash: [8, 4],
           color: '#BBBBBB',
@@ -73,6 +85,14 @@ const LineChart = (props: LineChartProps) => {
         },
       },
       y: {
+        title: yLabel
+          ? {
+              display: true,
+              text: yLabel,
+              color: '#838383',
+              font: { size: 12, weight: '700' },
+            }
+          : undefined,
         grid: {
           display: showYGrid,
         },
@@ -81,7 +101,7 @@ const LineChart = (props: LineChartProps) => {
         },
       },
     },
-  };
+  } as any;
 
   return (
     <Skeleton isLoaded={!isLoading} width="full">

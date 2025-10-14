@@ -1,4 +1,11 @@
-import { HStack, StackProps, Text, TextProps, VStack } from '@chakra-ui/react';
+import {
+  HStack,
+  ResponsiveValue,
+  StackProps,
+  Text,
+  TextProps,
+  VStack,
+} from '@chakra-ui/react';
 import DetailHeader from '../DetailHeader';
 import _ from 'lodash';
 
@@ -7,7 +14,7 @@ interface DetailSectionProps {
     label: string;
     value: string | number | React.ReactNode;
   }[];
-  labelMinWidth: string;
+  labelMinWidth: ResponsiveValue<string>;
   header?: string;
   labelStyle?: TextProps;
   valueStyle?: TextProps;

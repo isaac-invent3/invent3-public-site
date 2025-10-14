@@ -7,7 +7,6 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import Detail from '~/lib/components/UI/ContentDetails/Detail';
-import DetailHeader from '~/lib/components/UI/DetailHeader';
 import { AssetForecast } from '~/lib/interfaces/forecast.interfaces';
 
 interface RetirementForecastsProps {
@@ -20,7 +19,6 @@ const RetirementForecasts = (props: RetirementForecastsProps) => {
 
   return (
     <VStack width="full" spacing="12px" alignItems="flex-start">
-      <DetailHeader variant="secondary">Retirement Forecasts</DetailHeader>
       {isLoading && <Skeleton width="full" height="100px" />}
       {!isLoading && data && data?.forecastDrivers.length > 0 && (
         <VStack width="full" spacing="12px" alignItems="flex-start">

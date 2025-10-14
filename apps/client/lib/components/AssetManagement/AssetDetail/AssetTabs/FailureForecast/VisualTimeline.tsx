@@ -1,7 +1,6 @@
 import { Box, Flex, Skeleton, Text, VStack } from '@chakra-ui/react';
 import moment from 'moment';
 import React from 'react';
-import DetailHeader from '~/lib/components/UI/DetailHeader';
 import { AssetForecast } from '~/lib/interfaces/forecast.interfaces';
 
 interface ConfidenceTooltipProps {
@@ -92,7 +91,6 @@ const VisualTimeline = (props: VisualTimelineProps) => {
 
   return (
     <VStack width="full" alignItems="flex-start" pb="21px">
-      <DetailHeader variant="secondary">Visual Timeline</DetailHeader>
       {isLoading && <Skeleton width="full" height="100px" mt="8px" />}
 
       {!isLoading &&

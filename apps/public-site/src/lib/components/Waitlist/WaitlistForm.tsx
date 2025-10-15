@@ -1,6 +1,6 @@
-import { SimpleGrid, VStack } from '@chakra-ui/react';
+import { SimpleGrid, VStack, useToast } from '@chakra-ui/react';
 import { Field, FormikProvider, useFormik } from 'formik';
-
+import { useState } from 'react';
 import { Button, FormSelect, FormTextInput } from '@repo/ui/components';
 import { waitlistSchema } from '@/lib/schemas/general.schema';
 
@@ -43,8 +43,8 @@ const CustomTextInputForm = ({
 };
 
 const WaitListForm = () => {
-  // const [submitRequest, { isLoading }] = useSubmitWaitlistRequestMutation({});
-  // const { handleSubmit } = useCustomMutation();
+  const [isLoading, setIsLoading] = useState(false);
+  const toast = useToast();
 
   const formik = useFormik({
     initialValues: {
@@ -56,19 +56,59 @@ const WaitListForm = () => {
     },
     validationSchema: waitlistSchema,
     onSubmit: async (values, { resetForm }) => {
-      console.log({ values });
-      resetForm();
-      // const response = await handleSubmit(
-      //   submitRequest,
-      //   {
-      //     ...values,
-      //     contactUsRequestTypes: 2,
-      //   },
-      //   'You have Successfully Joined the Waitlist'
-      // );
-      // if (response?.data) {
-      //   resetForm();
-      // }
+      setIsLoading(true);
+      try {
+        const response = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            access_key: process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY!,
+            subject: 'New Waitlist Signup',
+            type: "Waitlist",
+            "Company Name": values.companyName,
+            "Company Website": values.companyWebsite,
+            "Full Name": values.fullName,
+            "Industry": values.industry,
+            "Email Address": values.emailAddress,
+          }),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          toast({
+            title: 'Joined Successfully 🎉',
+            description: 'You have successfully joined the waitlist!',
+            status: 'success',
+            duration: 4000,
+            isClosable: true,
+            position: 'top-right',
+          });
+          resetForm();
+        } else {
+          toast({
+            title: 'Submission Failed',
+            description: result.message || 'Something went wrong. Try again later.',
+            status: 'error',
+            duration: 4000,
+            isClosable: true,
+            position: 'top-right',
+          });
+        }
+      } catch (error) {
+        toast({
+          title: 'Network Error',
+          description: 'Please check your connection and try again.',
+          status: 'error',
+          duration: 4000,
+          isClosable: true,
+          position: 'top-right',
+        });
+      } finally {
+        setIsLoading(false);
+      }
     },
   });
 
@@ -110,12 +150,14 @@ const WaitListForm = () => {
               showErrorMessage={true}
             />
           </SimpleGrid>
+
           <CustomTextInputForm
             name="companyWebsite"
             title="Company Website"
             type="url"
             placeholder="Company Website"
           />
+
           <SimpleGrid columns={{ base: 1, lg: 2 }} width="full" gap="8px">
             <CustomTextInputForm
               name="fullName"
@@ -128,9 +170,10 @@ const WaitListForm = () => {
               placeholder="Your Email Address"
             />
           </SimpleGrid>
+
           <Button
             type="submit"
-            isLoading={formik.isSubmitting}
+            isLoading={formik.isSubmitting || isLoading}
             customStyles={{
               width: { base: 'full', lg: 'max-content' },
               px: { lg: '75px' },

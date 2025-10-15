@@ -1,4 +1,4 @@
-import { HStack, SimpleGrid, Text, VStack } from '@chakra-ui/react';
+import { HStack, SimpleGrid, Text, useToast, VStack } from '@chakra-ui/react';
 import { Field, FormikProvider, useFormik } from 'formik';
 
 import {
@@ -59,9 +59,9 @@ const CustomTextInputForm = ({
 };
 
 const ContactForm = () => {
-  // const [submitRequest, { isLoading }] = useSubmitContactRequestMutation({});
-  // const { handleSubmit } = useCustomMutation();
   const [selectedType, setSelectedType] = useState(2);
+    const [isLoading, setIsLoading] = useState(false);
+  const toast = useToast();
 
   const formik = useFormik({
     initialValues: {
@@ -74,24 +74,62 @@ const ContactForm = () => {
       message: '',
     },
     validationSchema: contactSchema,
-    onSubmit: async (values, { resetForm }) => {
-      console.log({ values });
-      resetForm();
-      // const response = await handleSubmit(
-      //   submitRequest,
-      //   {
-      //     ...values,
-      //     contactRequestType: selectedType,
-      //     subject:
-      //       contactType?.find((item) => item.value === selectedType)?.label ||
-      //       '',
-      //   },
-      //   'Message Submitted Successfully'
-      // );
-      // if (response?.data) {
-      //   resetForm();
-      // }
-    },
+      onSubmit: async (values, { resetForm }) => {
+      setIsLoading(true);
+      try {
+        const response = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            access_key: process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY!,
+            "Contact Request Type":
+              contactType.find((item) => item.value === selectedType)?.label ||
+              '',
+            "Contact Person Name": `${values.firstName} ${values.lastName}`,
+            company: values.company,
+            designation: values.designation ?? "N/A",
+            email: values.email,
+            "Phone Number": values.phoneNumber,
+            message: values.message,
+            
+          }),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          toast({
+            title: 'Message Sent',
+            description: 'Your message has been submitted successfully!',
+            status: 'success',
+            duration: 4000,
+            isClosable: true,
+            position: 'top-right',
+          });
+          resetForm();
+        } else {
+          toast({
+            title: 'Submission Failed',
+            description: result.message || 'Please try again later.',
+            status: 'error',
+            duration: 4000,
+            isClosable: true,
+            position: 'top-right',
+          });
+        }
+      } catch (error) {
+        toast({
+          title: 'Network Error',
+          description: 'Could not send your message. Please check your internet connection.',
+          status: 'error',
+          duration: 4000,
+          isClosable: true,
+          position: 'top-right',
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    }
   });
 
   return (
@@ -188,7 +226,7 @@ const ContactForm = () => {
           </VStack>
           <Button
             type="submit"
-            isLoading={formik.isSubmitting}
+            isLoading={formik.isSubmitting || isLoading}
             customStyles={{ width: { base: 'full', md: '203px' } }}
           >
             Submit

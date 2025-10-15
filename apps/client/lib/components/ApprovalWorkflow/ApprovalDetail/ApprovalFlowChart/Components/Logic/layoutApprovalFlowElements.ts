@@ -1,18 +1,26 @@
 import { Position } from '@xyflow/react';
 import dagre from 'dagre';
 import { cloneDeep } from 'lodash';
-import { isNode } from 'react-flow-renderer';
-import { ApprovalFlowElement, CustomEdge } from '../Interfaces';
+import { ApprovalFlowElement, CustomEdge, CustomNode } from '../Interfaces';
 
 const NODE_WIDTH = 300;
 const NODE_HEIGHT = 180;
 
 /**
- * Adjusts the layout of the flow elements using the Dagre graph layout algorithm.
- * @param {ApprovalFlowInitialElement[]} flowElements - The flow elements to be layouted.
- * @returns {ApprovalFlowInitialElement[]} - The flow elements with updated positions.
+ * Type guard to check if an element is a CustomNode
  */
-const layoutApprovalFlowElements = (flowElements: ApprovalFlowElement[]) => {
+const isCustomNode = (el: ApprovalFlowElement): el is CustomNode => {
+  return (el as CustomNode).position !== undefined;
+};
+
+/**
+ * Adjusts the layout of the flow elements using the Dagre graph layout algorithm.
+ * @param {ApprovalFlowElement[]} flowElements - The flow elements to be layouted.
+ * @returns {ApprovalFlowElement[]} - The flow elements with updated positions.
+ */
+export const layoutApprovalFlowElements = (
+  flowElements: ApprovalFlowElement[]
+): ApprovalFlowElement[] => {
   const clonedFlowElements = cloneDeep(flowElements);
   const dagreGraph = new dagre.graphlib.Graph();
 
@@ -21,7 +29,7 @@ const layoutApprovalFlowElements = (flowElements: ApprovalFlowElement[]) => {
 
   // Add nodes and edges to the Dagre graph
   clonedFlowElements.forEach((element) => {
-    if (isNode(element)) {
+    if (isCustomNode(element)) {
       dagreGraph.setNode(element.id, {
         width: element.width || NODE_WIDTH,
         height: element.height || NODE_HEIGHT,
@@ -34,8 +42,9 @@ const layoutApprovalFlowElements = (flowElements: ApprovalFlowElement[]) => {
 
   dagre.layout(dagreGraph);
 
+  // Update positions based on Dagre layout
   return clonedFlowElements.map((element) => {
-    if (isNode(element)) {
+    if (isCustomNode(element)) {
       const nodeWithPosition = dagreGraph.node(element.id);
 
       element.targetPosition = Position.Left;
@@ -46,8 +55,7 @@ const layoutApprovalFlowElements = (flowElements: ApprovalFlowElement[]) => {
         y: (nodeWithPosition?.y || 0) - (element.height || NODE_HEIGHT) / 2,
       };
     }
+
     return element;
   });
 };
-
-export { layoutApprovalFlowElements };

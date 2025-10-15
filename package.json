@@ -1,6 +1,10 @@
 {
   "name": "invent3-frontend",
   "private": true,
+  "packageManager": "pnpm@9.7.0",
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "build": "turbo build",
     "dev": "NODE_TLS_REJECT_UNAUTHORIZED=0 turbo dev",
@@ -29,10 +33,6 @@
     "standard-version": "^9.5.0",
     "turbo": "^2.1.1",
     "typescript": "^5.4.5"
-  },
-  "packageManager": "pnpm@9.7.0",
-  "engines": {
-    "node": "20.x"
   },
   "browser": {
     "crypto": false,

@@ -1,5 +1,5 @@
 {
-    "installCommand": "corepack prepare pnpm@9.7.0 --activate && pnpm install",
+    "installCommand": "pnpm install",
     "buildCommand": "turbo run build --filter=public-site",
     "framework": "nextjs",
     "outputDirectory": "apps/public-site/.next"

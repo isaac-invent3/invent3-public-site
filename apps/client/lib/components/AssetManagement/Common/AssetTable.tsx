@@ -75,7 +75,7 @@ interface AssetTableProps {
   isSortable?: boolean;
   showPopover?: boolean;
   // eslint-disable-next-line no-unused-vars
-  PopoverComponent?: (data: Asset) => JSX.Element | undefined;
+  PopoverComponent?: (data: Asset) => React.ReactElement | undefined;
 }
 const AssetTable = (props: AssetTableProps) => {
   const [isMobile] = useMediaQuery('(max-width: 768px)');

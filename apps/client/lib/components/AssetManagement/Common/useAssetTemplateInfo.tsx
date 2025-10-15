@@ -17,7 +17,7 @@ import { usePageFilter } from '~/lib/hooks/usePageFilter';
 
 interface UseAssetTemplateInfo {
   // eslint-disable-next-line no-unused-vars
-  PopoverComponent?: (data: Asset) => JSX.Element;
+  PopoverComponent?: (data: Asset) => React.ReactElement;
   // eslint-disable-next-line no-unused-vars
   handleSelectRow: (data: Asset) => void;
   search: string;

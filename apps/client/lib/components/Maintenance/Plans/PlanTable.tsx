@@ -30,7 +30,7 @@ interface MaintenancePlanProps {
   showPopover?: boolean;
   showEmptyState?: boolean;
   // eslint-disable-next-line no-unused-vars
-  PopoverComponent?: (data: MaintenancePlan) => JSX.Element;
+  PopoverComponent?: (data: MaintenancePlan) => React.ReactElement;
   type?: PlanTableType;
 }
 const MaintenancePlanTable = (props: MaintenancePlanProps) => {

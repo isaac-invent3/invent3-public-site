@@ -3,7 +3,7 @@ import { useRef, useState, useEffect } from 'react';
 
 interface OverflowTdProps {
   children: React.ReactNode | string;
-  isNumeric: boolean;
+  isNumeric?: boolean;
   customTdStyle?: TableCellProps;
   maxW: string;
   isDisabledRow?: boolean;

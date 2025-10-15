@@ -2,10 +2,10 @@
   "extends": "@repo/typescript-config/react-library.json",
   "compilerOptions": {
     "outDir": "dist",
-    "baseUrl": "./"
-    // "paths": {
-    //   "@/*": ["src/*"]
-    // }
+    "baseUrl": "./",
+    "jsx": "react-jsx",
+    "types": ["react", "react-dom"],
+    "skipLibCheck": true
   },
   "include": [
     "packages/**/*",
@@ -14,7 +14,8 @@
     "**/*.ts",
     "**/*.tsx",
     "src/**/*",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "react-table.d.ts"
   ],
   "exclude": ["node_modules", "dist"]
 }

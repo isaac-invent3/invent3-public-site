@@ -21,7 +21,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "lib/components/AssetManagement/AssetDetail/AssetTabs/GeneralTab/InfoTwo"
+    "react-table.d.ts"
   ],
   "exclude": ["node_modules"]
 }

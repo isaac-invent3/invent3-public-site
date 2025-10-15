@@ -11,7 +11,7 @@ interface StoreProviderProps {
 }
 
 const StoreProvider: React.FC<StoreProviderProps> = ({ children }) => {
-  const storeRef = useRef<AppStore>();
+  const storeRef = useRef<AppStore | null>(null);
   const persistorRef = useRef<Persistor>({} as Persistor);
   if (!storeRef.current) {
     storeRef.current = makeStore();

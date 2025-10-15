@@ -22,7 +22,7 @@ interface TemplateTableProps {
   disabledRows?: number[];
   setSelectedRows?: React.Dispatch<React.SetStateAction<number[]>>;
   // eslint-disable-next-line no-unused-vars
-  PopoverComponent?: (data: Template) => JSX.Element;
+  PopoverComponent?: (data: Template) => React.ReactElement;
   setPageNumber?: React.Dispatch<React.SetStateAction<number>>;
   setPageSize?: React.Dispatch<React.SetStateAction<number>>;
   setSelectedTemplate?: React.Dispatch<React.SetStateAction<Template | null>>;

@@ -27,7 +27,7 @@ const Notes = (props: NotesProps) => {
 
   const [position, setPosition] = useState({ x: initialX, y: initialY });
 
-  const nodeRef = useRef(null);
+  const nodeRef = useRef<HTMLDivElement>(null);
 
   const handleStop: DraggableEventHandler = (e, data) => {
     const { x, y } = data;
@@ -64,7 +64,7 @@ const Notes = (props: NotesProps) => {
       position={position}
       onStop={handleStop}
       bounds="parent"
-      nodeRef={nodeRef}
+      nodeRef={nodeRef as React.RefObject<HTMLElement>}
     >
       <div
         ref={nodeRef}

@@ -21,7 +21,7 @@ import GenericStatusBox from '../../UI/GenericStatusBox';
 interface CompanyTableProps extends GenericTableProps {
   data: BaseApiResponse<ListResponse<Company>> | undefined;
   // eslint-disable-next-line no-unused-vars
-  PopoverComponent?: (data: Company) => JSX.Element | undefined;
+  PopoverComponent?: (data: Company) => React.ReactElement | undefined;
 }
 
 const CompanyTable = (props: CompanyTableProps) => {

@@ -30,9 +30,10 @@
     "turbo": "^2.1.1",
     "typescript": "^5.4.5"
   },
-  "packageManager": "pnpm@9.1.2",
+  "packageManager": "pnpm@9.12.0",
   "engines": {
-    "node": ">=18"
+    "node": ">=18 <=20",
+    "pnpm": ">=9.12.0"
   },
   "browser": {
     "crypto": false,

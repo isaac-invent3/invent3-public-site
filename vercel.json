@@ -1,6 +1,9 @@
 {
-    "installCommand": "pnpm install",
+    "installCommand": "corepack enable && corepack prepare pnpm@9.12.0 --activate && pnpm install --prefer-offline",
     "buildCommand": "turbo run build --filter=public-site",
     "framework": "nextjs",
-    "outputDirectory": "apps/public-site/.next"
+    "outputDirectory": "apps/public-site/.next",
+    "env": {
+        "NODE_ENV": "production"
+    }
 }

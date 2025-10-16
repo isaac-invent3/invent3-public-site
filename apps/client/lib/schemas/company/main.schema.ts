@@ -65,7 +65,7 @@ const companyAdminSchema = Yup.object().shape({
   admins: Yup.array()
     .of(contactInfoSchema)
     .required('Admin is required')
-    .min(1, 'There must be atleast one schedule'),
+    .min(1, 'There must be at least one schedule'),
 });
 
 export {

@@ -21,14 +21,14 @@ const LocationConditionInfo = () => {
     currentCondition,
   } = assetData;
   return (
-    <HStack alignItems="flex-start" spacing="56px" width="full">
-      <Stack
-        direction={{ base: 'column', lg: 'row' }}
-        alignItems="flex-start"
-        spacing={{ base: '8px', lg: '16px' }}
-        width="max-content"
-      >
-        <Text color="neutral.600" size="md">
+    <Stack
+      alignItems="flex-start"
+      spacing={{ base: '8px', '2xl': '56px' }}
+      width="max-content"
+      direction={{ base: 'column', '2xl': 'row' }}
+    >
+      <Stack direction="row" alignItems="flex-start" width="max-content">
+        <Text color="neutral.600" size="md" minW="65px">
           Location:
         </Text>
         <Text
@@ -54,19 +54,20 @@ const LocationConditionInfo = () => {
             .join(', ') ?? 'N/A'}
         </Text>
       </Stack>
-      <VStack
-        spacing="8px"
+      <Stack
+        direction="row"
         alignItems="flex-start"
-        width={{ base: '40%', lg: 'max-content' }}
+        justifyContent="flex-start"
+        width="max-content"
       >
-        <Text color="neutral.600" size="md">
+        <Text color="neutral.600" size="md" minW="65px">
           Condition:
         </Text>
-        <Text color="black" size="md" lineHeight="22px">
+        <Text color="black" size="md">
           {currentCondition ?? 'N/A'}
         </Text>
-      </VStack>
-    </HStack>
+      </Stack>
+    </Stack>
   );
 };
 

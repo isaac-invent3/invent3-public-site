@@ -11,10 +11,10 @@ const scheduleTicketSchema = (minResolutionDate?: string) =>
     tasks: Yup.array()
       .of(taskBaseSchema())
       .required('Tasks are required')
-      .min(1, 'There must be atleast one task'),
+      .min(1, 'There must be at least one task'),
     taskCount: Yup.number()
       .required('Tasks is required')
-      .min(1, 'There must be atleast one task'),
+      .min(1, 'There must be at least one task'),
   });
 
 const updateTicketSchema = () =>
@@ -26,10 +26,10 @@ const updateTicketSchema = () =>
     tasks: Yup.array()
       .of(taskBaseSchema())
       .required('Tasks are required')
-      .min(1, 'There must be atleast one task'),
+      .min(1, 'There must be at least one task'),
     taskCount: Yup.number()
       .required('Tasks is required')
-      .min(1, 'There must be atleast one task'),
+      .min(1, 'There must be at least one task'),
   });
 
 const assignTicketSchema = () =>

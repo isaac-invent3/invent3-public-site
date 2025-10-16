@@ -61,7 +61,7 @@ const InfoOne = (props: InfoOneProps) => {
           <DetailSection
             details={details}
             labelMinWidth="151px"
-            header="Warranty Details"
+            header="Acquisition Details"
           />
         </Skeleton>
       </Flex>

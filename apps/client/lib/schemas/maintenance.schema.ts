@@ -41,11 +41,11 @@ const scheduleSchema = (
       ? {
           taskCount: Yup.number()
             .required('Tasks is required')
-            .min(1, 'There must be atleast one task'),
+            .min(1, 'There must be at least one task'),
           tasks: Yup.array()
             .of(taskBaseSchema())
             .required('Tasks are required')
-            .min(1, 'There must be atleast one task'),
+            .min(1, 'There must be at least one task'),
         }
       : {
           taskCount: Yup.number().nullable(),
@@ -110,6 +110,6 @@ const planScheduleSchema = (
     schedules: Yup.array()
       .of(scheduleSchema(validateTask, validateAsset, validatePlanId))
       .required('Schedule is required')
-      .min(1, 'There must be atleast one schedule'),
+      .min(1, 'There must be at least one schedule'),
   });
 export { scheduleSchema, planSchema, planScheduleSchema };

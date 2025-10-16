@@ -1,6 +1,6 @@
 import { HStack, VStack } from '@chakra-ui/react';
 import { Option } from '@repo/interfaces';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CardHeader from '~/lib/components/Dashboard/Common/CardHeader';
 import LineChart from '~/lib/components/Dashboard/Common/Charts/LineChart';
 import DropDown from '~/lib/components/Dashboard/Common/DropDown';
@@ -18,9 +18,9 @@ const TrendOverTime = () => {
   const [selectedYear, setSelectedYear] = useState<Option | null>(
     generateLastFiveYears()[0] as Option
   );
-  const [selectedLifeCyleId, setSelectedLifeCyleId] = useState<
-    Option | undefined
-  >(generateLastFiveYears()[0] as Option);
+  const [selectedLifeCyleId, setSelectedLifeCyleId] = useState<Option | null>(
+    null
+  );
   const { data: lifeCycleStageData, isLoading: isLoadingStages } =
     useGetLifecyleStagesQuery({});
   const { data, isLoading } = useGetLifeCycleTrendByLifeCyleIdQuery(
@@ -30,6 +30,15 @@ const TrendOverTime = () => {
     },
     { skip: !selectedLifeCyleId?.value }
   );
+
+  useEffect(() => {
+    if (lifeCycleStageData && lifeCycleStageData?.data?.items.length > 0) {
+      setSelectedLifeCyleId({
+        label: lifeCycleStageData?.data?.items[0]?.lifeCycleStageName!,
+        value: lifeCycleStageData?.data?.items[0]?.lifeCycleId!,
+      });
+    }
+  }, [lifeCycleStageData]);
 
   return (
     <VStack
@@ -50,11 +59,11 @@ const TrendOverTime = () => {
               'lifeCycleStageName',
               'lifeCycleId'
             )}
-            label="Year"
+            label="Lifecycle"
             handleClick={(option) => {
-              setSelectedYear(option);
+              setSelectedLifeCyleId(option);
             }}
-            selectedOptions={selectedYear}
+            selectedOptions={selectedLifeCyleId}
             width="100px"
             isLoading={isLoadingStages}
           />
@@ -81,16 +90,14 @@ const TrendOverTime = () => {
           labels={
             data?.data
               ? transformMonthIdsToShortNames(
-                  data?.data?.items?.map((item) => item.month)
+                  data?.data?.map((item) => item.month)
                 )
               : []
           }
           datasets={[
             {
               label: 'Trend',
-              data: data?.data
-                ? data?.data?.items?.map((item) => item.count)
-                : [],
+              data: data?.data ? data?.data?.map((item) => item.count) : [],
               borderColor: '#0366EF',
               pointBorderColor: '#fff',
               pointBackgroundColor: '#0366EF',

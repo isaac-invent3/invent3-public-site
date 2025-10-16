@@ -13,11 +13,11 @@ const taskBaseSchema = () =>
     taskStatusName: Yup.string().nullable(),
     assignedTo: Yup.number().required('Assignee is Required'),
     assignedToEmployeeName: Yup.string().required('Assignee is Required'),
-    costEstimate: Yup.number().nullable().min(0, 'Duration must be atleast 0'),
+    costEstimate: Yup.number().nullable().min(0, 'Duration must be at least 0'),
     actualCost: Yup.number().nullable(),
     estimatedDurationInHours: Yup.number()
       .required('Estimated Duration is required')
-      .min(0, 'Duration must be atleast 0'),
+      .min(0, 'Duration must be at least 0'),
     comments: Yup.string().nullable(),
     document: Yup.object()
       .shape({
@@ -51,7 +51,7 @@ const updateTaskInstanceMetadataSchema = Yup.object().shape({
   taskInstanceIds: Yup.array()
     .of(Yup.number())
     .required('Task Instances are required')
-    .min(1, 'There must be atleast one task selected'),
+    .min(1, 'There must be at least one task selected'),
 });
 
 const taskSchema = () =>

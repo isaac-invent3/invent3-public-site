@@ -13,7 +13,7 @@ const BulkActions = ({ selectedTaskIds }: { selectedTaskIds: number[] }) => {
     } else {
       toast({
         title: 'No Task Selected',
-        description: 'Please select atleast one task',
+        description: 'Please select at least one task',
         status: 'error',
         duration: 5000,
         isClosable: true,

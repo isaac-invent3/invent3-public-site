@@ -34,7 +34,7 @@ const AcquisitionStep = (props: AcquisitionStepProps) => {
     warrantyEndDate: formDetails.warrantyEndDate ?? '',
     warrantyDetails: formDetails.warrantyDetails ?? '',
     depreciationStartDate: formDetails.depreciationStartDate ?? '',
-    depreciationMethod: formDetails.depreciationMethod ?? '',
+    depreciationId: formDetails.depreciationId ?? null,
     depreciationRate: formDetails.depreciationRate ?? undefined,
     vendorId: formDetails.vendorId ?? null,
     resaleValue: formDetails.resaleValue ?? null,

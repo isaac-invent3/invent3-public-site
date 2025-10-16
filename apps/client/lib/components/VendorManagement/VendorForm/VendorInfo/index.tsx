@@ -27,25 +27,27 @@ interface VendorInfoProps {
 }
 const VendorInfo = (props: VendorInfoProps) => {
   const { activeStep, setActiveStep, type, cancelAction, handleClose } = props;
-  const formDetails = useAppSelector((state) => state.vendor.vendorForm);
+  const formDetails = useAppSelector(
+    (state) => state.asset.assetForm.vendorFormDetails?.createVendor
+  );
   const dispatch = useAppDispatch();
 
   const formik = useFormik({
     initialValues: {
-      logo: formDetails?.logo ?? null,
+      logo: null,
       vendorName: formDetails?.vendorName ?? null,
       description: formDetails?.description ?? null,
       vendorCategoryId: formDetails?.vendorCategoryId ?? null,
       contactFirstName: formDetails?.contactFirstName ?? null,
       contactLastName: formDetails?.contactLastName ?? null,
       primaryEmail: formDetails?.contactFirstName ?? null,
-      primaryPhoneNumber: formDetails?.primaryPhoneNumber ?? null,
-      address1: formDetails?.address1 ?? null,
-      address2: formDetails?.address2 ?? null,
+      primaryPhoneNumber: formDetails?.phoneNumber ?? null,
+      address1: formDetails?.address ?? null,
+      address2: null,
       vendorCountryId: formDetails?.vendorCountryId ?? null,
       vendorStateId: formDetails?.vendorStateId ?? null,
       vendorCityId: formDetails?.vendorCityId ?? null,
-      postalCode: formDetails?.postalCode ?? null,
+      postalCode: null,
     },
     validationSchema: vendorInfoSchema,
     enableReinitialize: true,
@@ -65,6 +67,9 @@ const VendorInfo = (props: VendorInfoProps) => {
               emailAddress: values.primaryEmail!,
               statusId: null,
               vendorCategoryId: values.vendorCategoryId!,
+              vendorCountryId: values?.vendorCountryId!,
+              vendorStateId: values?.vendorStateId!,
+              vendorCityId: values?.vendorCityId!,
               createdBy: username!,
             },
             createVendorContractDocumentDto: null,

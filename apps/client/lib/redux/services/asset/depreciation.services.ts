@@ -65,6 +65,27 @@ export const depreciationApi = createApi({
         headers: getHeaders(),
       }),
     }),
+    getAllDepreciationMethod: builder.query<
+      BaseApiResponse<ListResponse<AssetDepreciation>>,
+      QueryParams
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/DepreciationMethods?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    searchDepreciationMethod: builder.mutation<
+      BaseApiResponse<ListResponse<AssetDepreciation>>,
+      SearchQuery
+    >({
+      query: (body) => ({
+        url: `/DepreciationMethods/Search`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
   }),
 });
 
@@ -73,4 +94,6 @@ export const {
   useSearchDepreciationMutation,
   useGetSingleAssetDepreciationInfoByAssetIdQuery,
   useGetAllAssetDepreciationHistoryByDepreciationIdQuery,
+  useGetAllDepreciationMethodQuery,
+  useSearchDepreciationMethodMutation,
 } = depreciationApi;

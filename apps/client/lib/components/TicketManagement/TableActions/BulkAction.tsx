@@ -17,7 +17,7 @@ const BulkActions = ({
     } else {
       toast({
         title: 'No Ticket Selected',
-        description: 'Please select atleast one ticket',
+        description: 'Please select at least one ticket',
         status: 'error',
         duration: 5000,
         isClosable: true,

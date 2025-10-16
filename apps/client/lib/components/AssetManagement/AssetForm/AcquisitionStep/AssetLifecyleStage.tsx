@@ -27,33 +27,42 @@ const AssetLifecyleStageSelect = () => {
       alignItems="flex-start"
       spacing={{ base: '16px', lg: '33px' }}
     >
-      <Flex width="full" maxW="144px" display={{ base: 'none', lg: 'flex' }}>
-        <FormSectionInfo
-          title="Asset Stage"
-          info="Lifecycle stage auto-detected from asset data."
-          isRequired={false}
-        />
-      </Flex>
-      <Grid templateColumns={{ lg: 'repeat(3, 1fr)' }} gap="16px" width="full">
-        <GridItem colSpan={1}>
-          <GenericAsyncSelect
-            selectName="lifeCycleStageId"
-            selectTitle="Asset Stage"
-            data={data}
-            labelKey="lifeCycleStageName"
-            valueKey="lifeCycleId"
-            mutationFn={searchLifecycleStage}
-            isLoading={isLoading || isFetching}
-            pageNumber={pageNumber}
-            setPageNumber={setPageNumber}
-            defaultInputValue={statusName}
-            handleSelect={(option) =>
-              dispatch(updateAssetForm({ lifeCycleStageName: option.label }))
-            }
-            isSearchable={false}
-          />
-        </GridItem>
-      </Grid>
+      <FormInputWrapper
+        sectionMaxWidth="144px"
+        customSpacing="32px"
+        title="Asset Stage"
+        isRequired={false}
+        description="Enter lifecycle stage of asset"
+        direction={{ base: 'column', md: 'row' }}
+        formSectionCustomStyle={{
+          maxW: { base: '130px', lg: '144px' },
+        }}
+      >
+        <Grid
+          templateColumns={{ lg: 'repeat(3, 1fr)' }}
+          gap="16px"
+          width="full"
+        >
+          <GridItem colSpan={1}>
+            <GenericAsyncSelect
+              selectName="lifeCycleStageId"
+              selectTitle="Asset Stage"
+              data={data}
+              labelKey="lifeCycleStageName"
+              valueKey="lifeCycleId"
+              mutationFn={searchLifecycleStage}
+              isLoading={isLoading || isFetching}
+              pageNumber={pageNumber}
+              setPageNumber={setPageNumber}
+              defaultInputValue={statusName}
+              handleSelect={(option) =>
+                dispatch(updateAssetForm({ lifeCycleStageName: option.label }))
+              }
+              isSearchable={false}
+            />
+          </GridItem>
+        </Grid>
+      </FormInputWrapper>
     </Stack>
   );
 };

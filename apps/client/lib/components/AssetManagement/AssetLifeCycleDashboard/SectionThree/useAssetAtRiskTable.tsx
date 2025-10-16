@@ -1,16 +1,14 @@
 import { Flex } from '@chakra-ui/react';
 import _ from 'lodash';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { BaseApiResponse, ListResponse } from '@repo/interfaces';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
-import { OPERATORS } from '@repo/constants';
 import { createColumnHelper } from '@tanstack/react-table';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import { DataTable } from '@repo/ui/components';
-import { generateSearchCriteria } from '@repo/utils';
 import { Asset } from '~/lib/interfaces/asset/general.interface';
-import { useGetAssetAtRiskMutation } from '~/lib/redux/services/asset/lifeCycle.services';
+import { useGetAssetAtRiskQuery } from '~/lib/redux/services/asset/lifeCycle.services';
 
 interface useAssetRiskTable {
   search?: string;
@@ -25,36 +23,39 @@ const useAssetRiskTable = (props: useAssetRiskTable) => {
     BaseApiResponse<ListResponse<Asset>> | undefined
   >(undefined);
   const { handleSubmit } = useCustomMutation();
-  const [searchAssetAtRisk, { isLoading }] = useGetAssetAtRiskMutation({});
+  const { data, isLoading } = useGetAssetAtRiskQuery({
+    pageSize: customPageSize ?? pageSize,
+    pageNumber,
+  });
 
-  const handleSearch = useCallback(async () => {
-    const { orCriterion } = generateSearchCriteria(
-      undefined,
-      {
-        search: [search],
-      },
-      {
-        search: {
-          key: ['assetName', 'assetCategory'],
-          operator: OPERATORS.Contains,
-        },
-      },
-      undefined
-    );
-    const payload = {
-      pageNumber,
-      pageSize: customPageSize ?? pageSize,
-      orCriterion,
-    };
+  // const handleSearch = useCallback(async () => {
+  //   const { orCriterion } = generateSearchCriteria(
+  //     undefined,
+  //     {
+  //       search: [search],
+  //     },
+  //     {
+  //       search: {
+  //         key: ['assetName', 'assetCategory'],
+  //         operator: OPERATORS.Contains,
+  //       },
+  //     },
+  //     undefined
+  //   );
+  //   const payload = {
+  //     pageNumber,
+  //     pageSize: customPageSize ?? pageSize,
+  //     orCriterion,
+  //   };
 
-    const response = await handleSubmit(searchAssetAtRisk, payload, '');
-    setSearchData(response?.data);
-  }, [searchAssetAtRisk, search, pageSize, pageNumber]);
+  //   const response = await handleSubmit(searchAssetAtRisk, payload, '');
+  //   setSearchData(response?.data);
+  // }, [searchAssetAtRisk, search, pageSize, pageNumber]);
 
   // Trigger search when search input changes or pagination updates
-  useEffect(() => {
-    handleSearch();
-  }, [search, pageNumber, pageSize]);
+  // useEffect(() => {
+  //   handleSearch();
+  // }, [search, pageNumber, pageSize]);
 
   // Reset pagination when clearing the search
   useEffect(() => {
@@ -104,7 +105,7 @@ const useAssetRiskTable = (props: useAssetRiskTable) => {
     <Flex width="full" direction="column">
       <DataTable
         columns={columns}
-        data={searchData?.data?.items ?? []}
+        data={data?.data?.items ?? []}
         isLoading={isLoading}
         isFetching={isLoading}
         showFooter={false}
@@ -123,7 +124,7 @@ const useAssetRiskTable = (props: useAssetRiskTable) => {
   //     </Flex>
   //   );
   return {
-    handleSearch,
+    // handleSearch,
     AssetRiskTable,
     totalPages: search && searchData ? searchData.data?.totalPages : 0,
     pageSize,

@@ -1,19 +1,14 @@
 import { Flex } from '@chakra-ui/react';
 import _ from 'lodash';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { BaseApiResponse, ListResponse } from '@repo/interfaces';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
-import { OPERATORS } from '@repo/constants';
 import { createColumnHelper } from '@tanstack/react-table';
-import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
+import { amountFormatter } from '~/lib/utils/Formatters';
 import { DataTable } from '@repo/ui/components';
-import { generateSearchCriteria } from '@repo/utils';
 import { Asset } from '~/lib/interfaces/asset/general.interface';
-import {
-  useGetAssetAtRiskMutation,
-  useGetAssetLifeCycleFinancialComparisonsQuery,
-} from '~/lib/redux/services/asset/lifeCycle.services';
+import { useGetAssetLifeCycleFinancialComparisonsQuery } from '~/lib/redux/services/asset/lifeCycle.services';
 
 interface useAssetComparisonTable {
   search?: string;
@@ -29,8 +24,8 @@ const useAssetComparisonTable = (props: useAssetComparisonTable) => {
   >(undefined);
   const { handleSubmit } = useCustomMutation();
   const { data, isLoading } = useGetAssetLifeCycleFinancialComparisonsQuery({
-    pageSize,
-    pageNumber: customPageSize,
+    pageSize: customPageSize ?? pageSize,
+    pageNumber: pageNumber,
   });
 
   // const handleSearch = useCallback(async () => {

@@ -145,7 +145,7 @@ const PlanCard = (props: PlanCardProps) => {
               >
                 {data?.activeSchedules > 0
                   ? `${data?.activeSchedules < 10 ? 0 : ''}${data?.activeSchedules}`
-                  : '--'}
+                  : 'N/A'}
               </Text>
             </HStack>
           </VStack>

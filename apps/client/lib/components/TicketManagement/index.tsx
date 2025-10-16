@@ -55,8 +55,8 @@ export const ALlTicketTabs = [
   'Assigned',
   'Scheduled',
   'In Progress',
-  'Completed',
   'Suspended',
+  'Completed',
 ];
 
 export const initialFilterData = {
@@ -402,7 +402,7 @@ const TicketManagement = () => {
           <Flex
             width="full"
             position="relative"
-            direction={{ base: 'column', lg: 'row' }}
+            direction={{ base: 'column', '2xl': 'row' }}
             px={{ base: '16px', md: 0 }}
           >
             <TabList>
@@ -411,7 +411,7 @@ const TicketManagement = () => {
               ))}
             </TabList>
             <Flex
-              position={{ base: 'static', lg: 'absolute' }}
+              position={{ base: 'static', '2xl': 'absolute' }}
               right={0}
               bottom="8px"
               mt="21px"

@@ -76,7 +76,7 @@ const acquisitionInfoSchema = Yup.object().shape({
   depreciationStartDate: createDateSchema(false, false).required(
     'Depreciation Start Date is required'
   ),
-  depreciationMethod: Yup.string().nullable(),
+  depreciationId: Yup.number().nullable(),
   depreciationRate: Yup.number()
     .required('Depreciation Rate is required')
     .min(0, 'Rate must be greater than 0'),
@@ -130,7 +130,7 @@ const bulkStatusActionSchema = Yup.object().shape({
   assetIds: Yup.array()
     .of(Yup.number())
     .required('Assets are required')
-    .min(1, 'There must be atleast one asset selected'),
+    .min(1, 'There must be at least one asset selected'),
 });
 
 export {

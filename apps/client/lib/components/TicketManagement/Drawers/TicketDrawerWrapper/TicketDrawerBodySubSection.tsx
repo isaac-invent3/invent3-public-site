@@ -20,6 +20,7 @@ import ViewAttachement from '~/lib/components/Common/AttachFileAndView/ViewAttac
 import { useGetTicketDocumentsByIdQuery } from '~/lib/redux/services/ticket.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import SourceAlert from './SourceAlert';
+import TicketActivity from '../Common/TicketActivity';
 
 interface TicketDrawerBodySubSectionProps {
   data: Ticket;
@@ -49,7 +50,7 @@ const TicketDrawerBodySubSection = (props: TicketDrawerBodySubSectionProps) => {
 
   return (
     <VStack width="full" alignItems="flex-start" spacing="32px" py="24px">
-      <SourceAlert ticket={data} />
+      {data?.predictiveAlertId && <SourceAlert ticket={data} />}
       <HStack
         width="full"
         alignItems="flex-start"
@@ -154,6 +155,7 @@ const TicketDrawerBodySubSection = (props: TicketDrawerBodySubSectionProps) => {
           );
         }}
       />
+      <TicketActivity ticketId={data?.ticketId} />
       {isLoading && <Skeleton width="full" height="100px" />}
       {ticketDocuments?.data && ticketDocuments?.data?.items.length > 0 && (
         <ViewAttachement

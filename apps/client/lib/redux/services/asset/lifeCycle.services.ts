@@ -23,7 +23,7 @@ export const assetLifeCycleApi = createApi({
   tagTypes: [],
   endpoints: (builder) => ({
     getLifeCycleStageSummary: builder.query<
-      BaseApiResponse<ListResponse<AssetLifeCycle>>,
+      BaseApiResponse<AssetLifeCycle[]>,
       void
     >({
       query: (data) => ({
@@ -45,7 +45,7 @@ export const assetLifeCycleApi = createApi({
       providesTags: [],
     }),
     getLifeCycleTrendByLifeCyleId: builder.query<
-      BaseApiResponse<ListResponse<LifeCycleTrend>>,
+      BaseApiResponse<LifeCycleTrend[]>,
       { lifeCycleId: number; year?: number }
     >({
       query: (data) => ({
@@ -55,15 +55,14 @@ export const assetLifeCycleApi = createApi({
       }),
       providesTags: [],
     }),
-    getAssetAtRisk: builder.mutation<
+    getAssetAtRisk: builder.query<
       BaseApiResponse<ListResponse<Asset>>,
       QueryParams
     >({
       query: (body) => ({
-        url: `/Assets/AssetAtRisk`,
-        method: 'POST',
+        url: generateQueryStr(`/Assets/AssetAtRisk?`, body),
+        method: 'GET',
         headers: getHeaders(),
-        body,
       }),
     }),
     getAssetLifeCycleFinancialComparisons: builder.query<
@@ -75,7 +74,7 @@ export const assetLifeCycleApi = createApi({
           `/Assets/GetAssetLifeCycleFinancialComparisons?`,
           data
         ),
-        method: 'POST',
+        method: 'GET',
         headers: getHeaders(),
       }),
     }),
@@ -107,7 +106,7 @@ export const assetLifeCycleApi = createApi({
 export const {
   useGetLifeCycleStageSummaryQuery,
   useGetLifeCycleTrendByLifeCyleIdQuery,
-  useGetAssetAtRiskMutation,
+  useGetAssetAtRiskQuery,
   useGetLifeCycleStageChartQuery,
   useGetLifecyleStagesQuery,
   useSearchLifecyleStagesMutation,

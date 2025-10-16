@@ -54,7 +54,7 @@ const SectionOne = () => {
             columnGap="56px"
             rowGap="8px"
             alignItems="flex-start"
-            flexWrap="wrap"
+            flexWrap={{ base: 'wrap', '2xl': 'nowrap' }}
           >
             <Stack direction="column" rowGap="8px">
               <DetailSection
@@ -65,14 +65,9 @@ const SectionOne = () => {
               />
               <DetailSection details={info2} labelMinWidth="65px" />
             </Stack>
-            <Flex display={{ base: 'none', lg: 'flex' }}>
-              <LocationConditionInfo />
-            </Flex>
+            <LocationConditionInfo />
           </HStack>
         </AssetDetailWrapper>
-        <Flex width="full" display={{ base: 'flex', lg: 'none' }}>
-          <LocationConditionInfo />
-        </Flex>
       </Flex>
     </Flex>
   );

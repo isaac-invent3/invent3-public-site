@@ -58,6 +58,9 @@ interface VendorDto {
   emailAddress: string;
   statusId: number | null;
   vendorCategoryId: number;
+  vendorCountryId: number;
+  vendorStateId: number;
+  vendorCityId: number;
 }
 
 interface VendorImageDto {

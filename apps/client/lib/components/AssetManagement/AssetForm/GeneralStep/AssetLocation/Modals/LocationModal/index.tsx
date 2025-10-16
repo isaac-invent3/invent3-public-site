@@ -164,7 +164,7 @@ const LocationModal = (props: LocationModalProps) => {
             >
               <ModalHeading
                 heading="Add Location"
-                subheading=" You are required to add atleast 4 levels for the asset location"
+                subheading=" You are required to add at least 4 levels for the asset location"
               />
 
               {/* Main Form Starts Here */}

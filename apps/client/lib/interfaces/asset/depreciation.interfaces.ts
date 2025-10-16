@@ -22,4 +22,11 @@ interface AssetDepreciationHistory extends BaseEntity {
   dateCreated: string;
 }
 
-export type { AssetDepreciation, AssetDepreciationHistory };
+interface DepreciationMethod extends BaseEntity {
+  depreciationMethodId: number;
+  methodName: string;
+  depreciationDefaultRate: number;
+  displayColorCode: string;
+}
+
+export type { AssetDepreciation, AssetDepreciationHistory, DepreciationMethod };

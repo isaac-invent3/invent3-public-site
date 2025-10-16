@@ -53,6 +53,9 @@ const SummaryStep = (props: SummaryStepProps) => {
     emailAddress: vendorFormDetails.primaryEmail!,
     statusId: vendorFormDetails.vendorStatusId!,
     vendorCategoryId: vendorFormDetails.vendorCategoryId!,
+    vendorCountryId: null!,
+    vendorStateId: null!,
+    vendorCityId: null!,
   };
   const formDocumentIds = vendorFormDetails.vendorDocuments.map(
     (item) => item.documentId as number

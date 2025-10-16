@@ -7,8 +7,25 @@ import {
 } from '@repo/ui/components';
 
 import { Field } from 'formik';
+import { useState } from 'react';
+import GenericAsyncSelect from '~/lib/components/UI/GenericAsyncSelect';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
+import {
+  useGetAllDepreciationMethodQuery,
+  useSearchDepreciationMethodMutation,
+} from '~/lib/redux/services/asset/depreciation.services';
+import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
+import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
 const DepreciationDetails = () => {
+  const { statusName } = useAppSelector((state) => state.asset.assetForm);
+  const dispatch = useAppDispatch();
+  const [searchDepreciationMethod] = useSearchDepreciationMethodMutation({});
+  const [pageNumber, setPageNumber] = useState(1);
+  const { data, isLoading, isFetching } = useGetAllDepreciationMethodQuery({
+    pageSize: DEFAULT_PAGE_SIZE,
+    pageNumber,
+  });
   return (
     <Stack
       width="full"
@@ -47,12 +64,21 @@ const DepreciationDetails = () => {
             alignItems="flex-start"
             spacing="16px"
           >
-            <Field
-              as={FormTextInput}
-              name="depreciationMethod"
-              type="text"
-              label="Depreciation Method"
-              customStyles
+            <GenericAsyncSelect
+              selectName="depreciationId"
+              selectTitle="Depreciation Method"
+              data={data}
+              labelKey="methodName"
+              valueKey="depreciationMethodId"
+              mutationFn={searchDepreciationMethod}
+              isLoading={isLoading || isFetching}
+              pageNumber={pageNumber}
+              setPageNumber={setPageNumber}
+              defaultInputValue={statusName}
+              handleSelect={(option) =>
+                dispatch(updateAssetForm({ depreciationMethod: option.label }))
+              }
+              isSearchable={false}
             />
             <Field
               as={FormTextInput}

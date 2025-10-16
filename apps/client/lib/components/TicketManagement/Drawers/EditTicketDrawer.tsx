@@ -6,7 +6,6 @@ import { Task } from '~/lib/interfaces/task.interfaces';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
 import { useUpdateTicketMutation } from '~/lib/redux/services/ticket.services';
 import ScheduledTicketTasks from './Common/ScheduledTicketTasks';
-import TicketActivity from './Common/TicketActivity';
 import TicketDrawerWrapper from './TicketDrawerWrapper';
 import {
   useGetMaintenanceSchedulesByTicketIdQuery,
@@ -166,7 +165,6 @@ const EditTicketDrawer = (props: EditTicketDrawerProps) => {
         isEditing={isUpdatingTicket || isUpdating}
         handleEdit={() => formik.handleSubmit()}
       >
-        <TicketActivity ticketId={data?.ticketId} />
         <ScheduledTicketTasks
           data={data}
           scheduleId={maintenanceSchedule?.data?.scheduleId}

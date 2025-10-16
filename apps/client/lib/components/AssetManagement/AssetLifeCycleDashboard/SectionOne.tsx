@@ -19,7 +19,7 @@ const SectionOne = () => {
           ))}
 
       {!isLoading &&
-        data?.data?.items?.map((item, index) => (
+        data?.data?.map((item, index) => (
           <>
             <SummaryCardWrapper
               title={item?.lifeCycleStageDisplayName}

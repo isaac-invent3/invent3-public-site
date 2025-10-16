@@ -23,7 +23,7 @@ const BulkActions = () => {
     } else {
       toast({
         title: 'No Asset Selected',
-        description: 'Please select atleast one asset',
+        description: 'Please select at least one asset',
         status: 'error',
         duration: 5000,
         isClosable: true,

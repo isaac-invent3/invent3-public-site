@@ -1,7 +1,7 @@
 import { FilterDropDown } from '@repo/ui/components';
 import React, { useEffect, useState } from 'react';
 import { Option } from '~/lib/interfaces/general.interfaces';
-import { useGetAllAssetCategoryQuery } from '~/lib/redux/services/asset/category.services';
+import { useGetLifecyleStagesQuery } from '~/lib/redux/services/asset/lifeCycle.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { generateOptions } from '~/lib/utils/helperFunctions';
 
@@ -14,7 +14,7 @@ const MetricsFilter = (props: MetricsFilterProps) => {
   const { selectedOptions, handleSelectedOption } = props;
   const [pageNumber, setPageNumber] = useState(1);
   const [options, setOptions] = useState<Option[]>([]);
-  const { data, isLoading, isFetching } = useGetAllAssetCategoryQuery({
+  const { data, isLoading, isFetching } = useGetLifecyleStagesQuery({
     pageNumber: pageNumber,
     pageSize: DEFAULT_PAGE_SIZE,
   });
@@ -23,8 +23,8 @@ const MetricsFilter = (props: MetricsFilterProps) => {
     if (data?.data?.items) {
       const newCategories = generateOptions(
         data?.data?.items,
-        'categoryName',
-        'categoryId'
+        'lifeCycleStageName',
+        'lifeCycleId'
       );
       setOptions((prev) => [...prev, ...newCategories]);
     }

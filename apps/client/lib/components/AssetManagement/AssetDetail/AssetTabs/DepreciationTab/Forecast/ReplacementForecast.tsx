@@ -28,12 +28,14 @@ const ReplacementForecast = (props: ReplacementForecastProps) => {
             <Text size="lg" lineHeight="130%" color="neutral.800">
               {moment(data?.dateForcasted).format('[Q]Q YYYY')}
             </Text>
-            <GenericStatusBox
-              showDot={false}
-              text={data?.confidenceLevelName!}
-              colorCode={data?.confidenceLevelColor}
-              rounded="full"
-            />
+            {data?.confidenceLevelName && (
+              <GenericStatusBox
+                showDot={false}
+                text={data?.confidenceLevelName!}
+                colorCode={data?.confidenceLevelColor}
+                rounded="full"
+              />
+            )}
           </HStack>
           <Text color="neutral.800">
             {data?.forecastDrivers.map((item) => item.driverFeature).join(', ')}

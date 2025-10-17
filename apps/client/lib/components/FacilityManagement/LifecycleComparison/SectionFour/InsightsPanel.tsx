@@ -1,15 +1,15 @@
-import { ListItem, UnorderedList, VStack } from '@chakra-ui/react';
+import { ListItem, Skeleton, UnorderedList, VStack } from '@chakra-ui/react';
+import { EmptyState } from '@repo/ui/components';
 import React from 'react';
 import CardHeader from '~/lib/components/Dashboard/Common/CardHeader';
+import { LifeCycleFilter } from '~/lib/interfaces/location/lifecycle.interfaces';
+import { useGetLifeCycleComparisonReportInsightsQuery } from '~/lib/redux/services/location/lifecycleComparison.services';
 
-const InsightsPanel = () => {
-  const dataItems = [
-    'Lagos HQ lifecycle costs are 37% lower than Abuja Branch.',
-    'Kano Office retains the highest residual value (52%), suggesting better asset utilization.',
-    'Abuja Branch and Accra Office show highest failure rates (6 & 5 per year), driving higher costs.',
-    'If Abuja Branch aligns with Lagos HQ practices, potential savings of ₦7.3M ($8,900) annually are possible.',
-    'Port Harcourt Hub performance is mid-range, but trending downward in RUL, requiring monitoring.',
-  ];
+const InsightsPanel = ({ filters }: { filters: LifeCycleFilter }) => {
+  const { data, isLoading, isFetching } =
+    useGetLifeCycleComparisonReportInsightsQuery({
+      ...filters,
+    });
   return (
     <VStack
       width="full"
@@ -22,23 +22,34 @@ const InsightsPanel = () => {
       rounded="8px"
     >
       <CardHeader>Insights Panel</CardHeader>
+      {isLoading || (isFetching && <Skeleton width="full" height="50px" />)}
+      {!isLoading && !isFetching && data?.data && data?.data?.length == 0 && (
+        <EmptyState
+          emptyText="No Insight at the moment"
+          containerStyle={{ my: 8 }}
+        />
+      )}
       <UnorderedList
         spacing="16px"
         width="full"
         alignItems="flex-start"
         pl="8px"
       >
-        {dataItems?.map((item, index) => (
-          <ListItem
-            key={index}
-            color="neutral.600"
-            fontSize="14px"
-            fontWeight={700}
-            lineHeight="100%"
-          >
-            {item}
-          </ListItem>
-        ))}
+        {!isLoading &&
+          !isFetching &&
+          data?.data &&
+          data?.data?.length > 0 &&
+          data?.data?.map((item, index) => (
+            <ListItem
+              key={index}
+              color="neutral.600"
+              fontSize="14px"
+              fontWeight={700}
+              lineHeight="100%"
+            >
+              {item}
+            </ListItem>
+          ))}
       </UnorderedList>
     </VStack>
   );

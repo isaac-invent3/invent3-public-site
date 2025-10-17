@@ -291,7 +291,7 @@ const JourneyGuide = (props: JourneyGuideProps) => {
             <Image src="/journey-image.svg" alt="journey-image" fill />
           </Flex>
           <Button
-            customStyles={{ width: '195px' }}
+            customStyles={{ minW: '195px', width: 'min-content' }}
             {...(closeWithNavigating
               ? { handleClick: onClose }
               : { href: steps[activeStep]?.link ?? '#' })}

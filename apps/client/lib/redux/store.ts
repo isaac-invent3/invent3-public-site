@@ -115,6 +115,7 @@ import { bmsReadingApi } from './services/bms/bmsReading.services';
 import { assetLifeCycleApi } from './services/asset/lifeCycle.services';
 import { slaApi } from './services/settings/sla.services';
 import { bmsAnomaliesApi } from './services/bms/bmsAnomalies.services';
+import { lifeCycleComparisonApi } from './services/location/lifecycleComparison.services';
 
 export const persistConfig = {
   key: 'root',
@@ -198,6 +199,7 @@ const rootReducer = combineReducers({
   [roomApi.reducerPath]: roomApi.reducer,
   [shelfApi.reducerPath]: shelfApi.reducer,
   [stateApi.reducerPath]: stateApi.reducer,
+  [lifeCycleComparisonApi.reducerPath]: lifeCycleComparisonApi.reducer,
 
   // Report APIS
   [reportApi.reducerPath]: reportApi.reducer,
@@ -384,6 +386,7 @@ export const makeStore = () => {
         roomApi.middleware,
         shelfApi.middleware,
         stateApi.middleware,
+        lifeCycleComparisonApi.middleware,
 
         // Utility APIs
         utilityApi.middleware,

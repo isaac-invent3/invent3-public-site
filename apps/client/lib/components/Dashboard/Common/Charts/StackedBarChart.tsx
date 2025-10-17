@@ -7,6 +7,8 @@ import {
   LinearScale,
   Tooltip,
   Legend,
+  ChartOptions,
+  BorderRadius,
 } from 'chart.js';
 import { Flex, Skeleton } from '@chakra-ui/react';
 
@@ -17,52 +19,61 @@ interface ItemProps {
   values: number[];
   color: string;
 }
+
 interface StackedBarChartProps {
   labels: (string | undefined)[];
   firstStack: ItemProps;
-  secondStack: ItemProps;
+  secondStack?: ItemProps;
   isLoading: boolean;
   height?: string;
+  showGridX?: boolean;
+  showGridY?: boolean;
+  barRadius?: number | Partial<BorderRadius>; // 👈 New flexible radius prop
 }
+
 const StackedBarChart = (props: StackedBarChartProps) => {
-  const { labels, firstStack, secondStack, isLoading, height } = props;
+  const {
+    labels,
+    firstStack,
+    secondStack,
+    isLoading,
+    height,
+    showGridX = false,
+    showGridY = true,
+    barRadius = 0,
+  } = props;
+
   const data = {
-    labels: labels,
+    labels,
     datasets: [
       {
         label: firstStack.label,
         data: firstStack.values,
         backgroundColor: firstStack.color,
-        // borderRadius: {
-        //   topLeft: 3.48,
-        //   topRight: 3.48,
-        // },
+        borderRadius: barRadius,
       },
-      {
-        label: secondStack.label,
-        data: secondStack.values,
-        backgroundColor: secondStack.color,
-        // borderRadius: {
-        //   topLeft: 3.48,
-        //   topRight: 3.48,
-        // },
-      },
+      ...(secondStack
+        ? [
+            {
+              label: secondStack.label,
+              data: secondStack.values,
+              backgroundColor: secondStack.color,
+              borderRadius: barRadius,
+            },
+          ]
+        : []),
     ],
   };
 
-  const options = {
+  const options: ChartOptions<'bar'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: {
-        display: false,
-      },
+      legend: { display: false },
       tooltip: {
         enabled: true,
         callbacks: {
-          label: function (tooltipItem: any) {
-            return `${tooltipItem.raw?.toLocaleString()}`;
-          },
+          label: (tooltipItem) => `${tooltipItem.raw?.toLocaleString()}`,
         },
       },
     },
@@ -70,7 +81,9 @@ const StackedBarChart = (props: StackedBarChartProps) => {
       x: {
         stacked: true,
         grid: {
-          display: false,
+          display: showGridX,
+          color: '#E0E0E0',
+          // borderDash: [6, 3],
         },
         ticks: {
           color: '#838383',
@@ -79,8 +92,9 @@ const StackedBarChart = (props: StackedBarChartProps) => {
       y: {
         stacked: true,
         grid: {
-          borderDash: [8, 4],
+          display: showGridY,
           color: '#BBBBBB',
+          // borderDash: [8, 4],
         },
         ticks: {
           color: '#838383',

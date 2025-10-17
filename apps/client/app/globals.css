@@ -91,3 +91,11 @@ textarea {
   box-sizing: border-box;
 }
 
+
+@media print {
+  .no-pdf {
+    display: none !important;
+  }
+}
+
+

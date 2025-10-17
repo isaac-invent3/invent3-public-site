@@ -1,19 +1,20 @@
-import { Flex, useMediaQuery } from '@chakra-ui/react';
+import { useMediaQuery, VStack } from '@chakra-ui/react';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useMemo } from 'react';
-import { amountFormatter } from '~/lib/utils/Formatters';
 import { useGetLifeCycleComparisonReportQuery } from '~/lib/redux/services/location/lifecycleComparison.services';
-import {
-  LifecycleComparisonReport,
-  LifeCycleFilter,
-} from '~/lib/interfaces/location/lifecycle.interfaces';
+import { LifecycleComparisonReport } from '~/lib/interfaces/location/lifecycle.interfaces';
+import CardHeader from '../../Dashboard/Common/CardHeader';
 
-const FacilityList = ({ filters }: { filters: LifeCycleFilter }) => {
+const TechnicianLoadDistribution = () => {
   const columnHelper = createColumnHelper<LifecycleComparisonReport>();
   const [isMobile] = useMediaQuery('(max-width: 768px)');
   const { data, isLoading, isFetching } = useGetLifeCycleComparisonReportQuery({
-    ...filters,
+    datePeriod: [],
+    facilities: [],
+    assetCategories: [],
+    assetStatus: [],
+    metricsToCompare: [],
   });
 
   const columns = useMemo(
@@ -21,32 +22,37 @@ const FacilityList = ({ filters }: { filters: LifeCycleFilter }) => {
       const baseColumns = [
         columnHelper.accessor('facilityName', {
           cell: (info) => info.getValue(),
-          header: 'Facility Name',
+          header: 'Technician',
           enableSorting: false,
         }),
         columnHelper.accessor('meanAssetAge', {
           cell: (info) => info.getValue(),
-          header: 'Avg Asset Age (yrs)',
+          header: 'Skill Level',
           enableSorting: true,
         }),
         columnHelper.accessor('meanLifeCycleCost', {
-          cell: (info) => amountFormatter(info.getValue() ?? 0),
-          header: 'Avg Lifecycle Cost (yrs)',
+          cell: (info) => info.getValue() ?? 'N/A',
+          header: 'Location',
           enableSorting: true,
         }),
         columnHelper.accessor('residualVale', {
-          cell: (info) => amountFormatter(info.getValue() ?? 0),
-          header: 'Residual Value %',
+          cell: (info) => info.getValue() ?? 'N/A',
+          header: 'Active Tickets',
           enableSorting: true,
         }),
         columnHelper.accessor('meanFailure_Year', {
-          cell: (info) => amountFormatter(info.getValue() ?? 0),
-          header: 'Avg Failures / Yr',
+          cell: (info) => info.getValue() ?? 'N/A',
+          header: 'Max Capacity',
           enableSorting: true,
         }),
         columnHelper.accessor('meanRiskScore', {
           cell: (info) => info.getValue() ?? 'N/A',
-          header: 'Avg Risk Score',
+          header: 'Load %',
+          enableSorting: true,
+        }),
+        columnHelper.accessor('meanRiskScore', {
+          cell: (info) => info.getValue() ?? 'N/A',
+          header: 'Status',
           enableSorting: true,
         }),
       ];
@@ -61,17 +67,17 @@ const FacilityList = ({ filters }: { filters: LifeCycleFilter }) => {
       const baseColumns = [
         columnHelper.accessor('facilityName', {
           cell: (info) => info.getValue(),
-          header: 'Facility Name',
+          header: 'Technician',
           enableSorting: false,
         }),
         columnHelper.accessor('meanAssetAge', {
           cell: (info) => info.getValue(),
-          header: 'Avg Asset Age (yrs)',
+          header: 'Skill Level',
           enableSorting: true,
         }),
         columnHelper.accessor('meanLifeCycleCost', {
-          cell: (info) => amountFormatter(info.getValue() ?? 0),
-          header: 'Avg Lifecycle Cost (yrs)',
+          cell: (info) => info.getValue() ?? 'N/A',
+          header: 'Location',
           enableSorting: true,
         }),
       ];
@@ -82,7 +88,21 @@ const FacilityList = ({ filters }: { filters: LifeCycleFilter }) => {
   );
 
   return (
-    <Flex width="full" minH="310px" height="full" bgColor="white">
+    <VStack
+      width="full"
+      height="full"
+      pl="16px"
+      pr="15px"
+      pt="21px"
+      pb="12px"
+      alignItems="flex-start"
+      spacing="16px"
+      bgColor="white"
+      rounded="8px"
+      minH="352px"
+    >
+      <CardHeader>Technician Load Distribution</CardHeader>
+
       <DataTable
         columns={isMobile ? mobileColumns : columns}
         data={data?.data ?? []}
@@ -103,8 +123,8 @@ const FacilityList = ({ filters }: { filters: LifeCycleFilter }) => {
           paddingBottom: '12px',
         }}
       />
-    </Flex>
+    </VStack>
   );
 };
 
-export default FacilityList;
+export default TechnicianLoadDistribution;

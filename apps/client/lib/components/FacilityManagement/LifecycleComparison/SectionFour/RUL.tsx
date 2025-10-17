@@ -1,53 +1,27 @@
 import { Box, HStack, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import CardHeader from '~/lib/components/Dashboard/Common/CardHeader';
-import ChartLegend from '~/lib/components/Dashboard/Common/Charts/ChartLegend';
 import LineChart from '~/lib/components/Dashboard/Common/Charts/LineChart';
+import { LifeCycleFilter } from '~/lib/interfaces/location/lifecycle.interfaces';
+import { useGetLifeCycleComparisonReportRULQuery } from '~/lib/redux/services/location/lifecycleComparison.services';
 
-const RUL = () => {
+const RUL = ({ filters }: { filters: LifeCycleFilter }) => {
+  const { data, isLoading, isFetching } =
+    useGetLifeCycleComparisonReportRULQuery({
+      ...filters,
+    });
+  const currentYear = new Date().getFullYear();
   const dataItems = [
     {
-      year: '2022',
+      year: currentYear.toString(),
       color: '#00A129',
-      values: [
-        { label: 'Lagos HQ', value: 40 },
-        { label: 'Abuja HQ', value: 25 },
-        { label: 'Port Harcourt Hub', value: 35 },
-        { label: 'Kano Office', value: 15 },
-        { label: 'Accra Office', value: 20 },
-      ],
-    },
-    {
-      year: '2023',
-      color: '#EABC30',
-      values: [
-        { label: 'Lagos HQ', value: 45 },
-        { label: 'Abuja HQ', value: 30 },
-        { label: 'Port Harcourt Hub', value: 50 },
-        { label: 'Kano Office', value: 20 },
-        { label: 'Accra Office', value: 25 },
-      ],
-    },
-    {
-      year: '2024',
-      color: '#0366EF',
-      values: [
-        { label: 'Lagos HQ', value: 55 },
-        { label: 'Abuja HQ', value: 40 },
-        { label: 'Port Harcourt Hub', value: 45 },
-        { label: 'Kano Office', value: 30 },
-        { label: 'Accra Office', value: 35 },
-      ],
+      values:
+        data?.data?.map((item) => ({ label: item.key!, value: item.value })) ??
+        [],
     },
   ];
 
-  const offices = [
-    'Lagos HQ',
-    'Abuja HQ',
-    'Port Harcourt Hub',
-    'Kano Office',
-    'Accra Office',
-  ];
+  const offices = data?.data?.map((item) => item.key) ?? [];
 
   const datasets = dataItems.map((yearItem) => ({
     label: yearItem.year,
@@ -97,7 +71,7 @@ const RUL = () => {
       <LineChart
         labels={offices}
         datasets={datasets}
-        isLoading={false}
+        isLoading={isLoading || isFetching}
         showYGrid={false}
       />
     </VStack>

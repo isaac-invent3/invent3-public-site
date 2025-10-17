@@ -1,4 +1,4 @@
-import { HStack } from '@chakra-ui/react';
+import { FlexProps, HStack } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { CheckBox, FilterDropDown } from '@repo/ui/components';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
@@ -10,6 +10,7 @@ interface StatusFilterProps {
   selectedOptions: Option[];
   // eslint-disable-next-line no-unused-vars
   handleSelectedOption: (option: Option) => void;
+  containerStyles?: FlexProps;
 }
 
 interface DisplayCode {
@@ -18,7 +19,7 @@ interface DisplayCode {
 
 interface StatusOption extends Option, DisplayCode {}
 const StatusFilter = (props: StatusFilterProps) => {
-  const { selectedOptions, handleSelectedOption } = props;
+  const { selectedOptions, handleSelectedOption, containerStyles } = props;
   const [pageNumber, setPageNumber] = useState(1);
   const [options, setOptions] = useState<StatusOption[]>([]);
   const { data, isLoading, isFetching } = useGetAllAssetStatusQuery({
@@ -49,6 +50,7 @@ const StatusFilter = (props: StatusFilterProps) => {
       hasMoreOptions={data?.data?.hasNextPage}
       loadMoreOptions={() => setPageNumber((prev) => prev + 1)}
       isLoading={isLoading || isFetching}
+      containerStyles={containerStyles}
     >
       {options.map((item, index) => (
         <HStack spacing="8px" key={index}>

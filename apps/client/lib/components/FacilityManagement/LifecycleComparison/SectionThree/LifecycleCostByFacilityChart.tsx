@@ -1,47 +1,43 @@
 import { Flex, HStack, Skeleton, VStack } from '@chakra-ui/react';
-import React, { useState } from 'react';
-import { Option } from '~/lib/interfaces/general.interfaces';
-import { useGetAssetRiskScoresForCategoryQuery } from '~/lib/redux/services/asset/general.services';
-import ChartLegend from '~/lib/components/Dashboard/Common/Charts/ChartLegend';
-import DoughtnutChart from '~/lib/components/Dashboard/Common/Charts/DoughtnutChart';
+import React, { useMemo } from 'react';
 import CardHeader from '~/lib/components/Dashboard/Common/CardHeader';
+import ChartLegend from '~/lib/components/Dashboard/Common/Charts/ChartLegend';
 import PieChart from '~/lib/components/Dashboard/Common/Charts/PieChart';
+import { CostByFacility } from '~/lib/interfaces/location/lifecycle.interfaces';
 
-const LifecycleCostByFacilityChart = () => {
-  const [selectedOption, setSelectedOption] = useState<Option | null>(null);
-  const { data, isLoading: isLoadingRiskscore } =
-    useGetAssetRiskScoresForCategoryQuery(
-      { categoryId: (selectedOption?.value as number)! },
-      { skip: !selectedOption?.value }
-    );
-
-  const chartLegendItems = [
-    {
-      label: 'Lagos HQ',
-      color: '#98FEFE',
-      value: 1800,
-    },
-    {
-      label: 'Kano Office',
-      color: '#4183DD',
-      value: 1500,
-    },
-    {
-      label: 'Accra Office',
-      color: '#00A129',
-      value: 1000,
-    },
-    {
-      label: 'Abuja Branch',
-      color: '#EABC30',
-      value: 1700,
-    },
-    {
-      label: 'Port Harcourt Hub',
-      color: '#0F2540',
-      value: 1700,
-    },
+// ✅ Always returns a string
+const generateColor = (index: number): string => {
+  const palette = [
+    '#98FEFE',
+    '#4183DD',
+    '#00A129',
+    '#EABC30',
+    '#0F2540',
+    '#E76F51',
+    '#8ECAE6',
+    '#FB8500',
+    '#219EBC',
+    '#023047',
   ];
+  return palette[index % palette.length] ?? '#CCCCCC';
+};
+
+const LifecycleCostByFacilityChart = ({
+  lifeCycleCosts,
+  isLoading,
+}: {
+  lifeCycleCosts: CostByFacility[];
+  isLoading: boolean;
+}) => {
+  const chartLegendItems = useMemo(() => {
+    if (!lifeCycleCosts?.length) return [];
+
+    return lifeCycleCosts.map((facility, index) => ({
+      label: facility.facilityName,
+      color: generateColor(index), // ✅ always a string now
+      value: facility.totalLifeCycleCost,
+    }));
+  }, [lifeCycleCosts]);
 
   return (
     <VStack
@@ -56,6 +52,7 @@ const LifecycleCostByFacilityChart = () => {
       maxH="375px"
     >
       <CardHeader>Lifecycle Cost by Facility</CardHeader>
+
       <HStack
         width="full"
         flexWrap="wrap"
@@ -63,7 +60,10 @@ const LifecycleCostByFacilityChart = () => {
         spacing="46px"
       >
         <ChartLegend
-          chartLegendItems={chartLegendItems.slice(0, 3)}
+          chartLegendItems={chartLegendItems.slice(
+            0,
+            Math.ceil(chartLegendItems.length / 2)
+          )}
           containerStyle={{
             direction: 'column',
             spacing: '6px',
@@ -73,7 +73,9 @@ const LifecycleCostByFacilityChart = () => {
           }}
         />
         <ChartLegend
-          chartLegendItems={chartLegendItems.slice(3, 5)}
+          chartLegendItems={chartLegendItems.slice(
+            Math.ceil(chartLegendItems.length / 2)
+          )}
           containerStyle={{
             direction: 'column',
             spacing: '6px',
@@ -83,11 +85,11 @@ const LifecycleCostByFacilityChart = () => {
           }}
         />
       </HStack>
+
       <Flex width="full" justifyContent="center">
-        {isLoadingRiskscore && (
+        {isLoading ? (
           <Skeleton width="206px" height="206px" rounded="full" />
-        )}
-        {!isLoadingRiskscore && (
+        ) : (
           <PieChart
             labels={chartLegendItems.map((item) => item.label)}
             dataValues={chartLegendItems.map((item) => item.value ?? 0)}

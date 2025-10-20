@@ -62,6 +62,7 @@ const FormStepper = (props: FormStepperProps) => {
       bgColor="#B4BFCA80"
       rounded="4px"
       overflow="auto"
+      flexShrink={0}
     >
       <Flex
         direction="row"

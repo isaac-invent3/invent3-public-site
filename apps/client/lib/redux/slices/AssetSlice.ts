@@ -6,6 +6,7 @@ import {
   FilterInput,
 } from '~/lib/interfaces/asset/general.interface';
 import { AssetImage } from '~/lib/interfaces/asset/image.interfaces';
+import { AssetLifeCycleSimulation } from '~/lib/interfaces/asset/lifeCycle.interfaces';
 
 const initialAssetForm = {
   images: [],
@@ -94,6 +95,22 @@ const initialAssetForm = {
   lifeCycleStageName: null,
 };
 
+const initialAssetLifeCycleSimulationForm = {
+  assetName: null,
+  categoryName: null,
+  acquisitionDate: null,
+  purchaseCost: null,
+  expectedUsefulLife: null,
+  currentAge: null,
+  location: null,
+  currentCondition: null,
+  maintenanceFrequency: null,
+  manintenanceCost: null,
+  depreciationModel: null,
+  residualValue: null,
+  autoAdjust: null,
+};
+
 interface GeneralInfo {
   loadingImage: boolean;
 }
@@ -114,6 +131,7 @@ export interface SliceProps {
   assetFilter: FilterInput;
   selectedAssetIds: number[];
   generalInfo: GeneralInfo;
+  lifeCycleSimulationForm: AssetLifeCycleSimulation;
 }
 
 const initialState: SliceProps = {
@@ -125,6 +143,7 @@ const initialState: SliceProps = {
   generalInfo: {
     loadingImage: false,
   },
+  lifeCycleSimulationForm: initialAssetLifeCycleSimulationForm,
 };
 
 export const AssetSlice = createSlice({
@@ -173,6 +192,18 @@ export const AssetSlice = createSlice({
     ) => {
       state.generalInfo = { ...state.generalInfo, ...payload };
     },
+    updateAssetLifecycleSimulationForm: (
+      state,
+      { payload }: PayloadAction<Partial<AssetLifeCycleSimulation>>
+    ) => {
+      state.lifeCycleSimulationForm = {
+        ...state.lifeCycleSimulationForm,
+        ...payload,
+      };
+    },
+    clearAssetLifecycleSimulationForm: (state) => {
+      state.lifeCycleSimulationForm = initialAssetLifeCycleSimulationForm;
+    },
   },
 });
 
@@ -188,6 +219,8 @@ export const {
   updateSelectedAssetIds,
   clearSelectedAssetIds,
   updateGeneralInfo,
+  updateAssetLifecycleSimulationForm,
+  clearAssetLifecycleSimulationForm,
 } = AssetSlice.actions;
 
 export default AssetSlice.reducer;

@@ -24,4 +24,25 @@ interface LifeCycleStages extends BaseEntity {
   lifeCycleStageName: string;
 }
 
-export type { AssetLifeCycle, LifeCycleTrend, LifeCycleStages };
+interface AssetLifeCycleSimulation {
+  assetName: string | null;
+  categoryName: string | null;
+  acquisitionDate: string | null;
+  purchaseCost: number | null;
+  expectedUsefulLife: number | null;
+  currentAge: number | null;
+  location: string | null;
+  currentCondition: string | null;
+  maintenanceFrequency: number | null;
+  manintenanceCost: number | null;
+  depreciationModel: number | null;
+  residualValue: number | null;
+  autoAdjust: boolean | null;
+}
+
+export type {
+  AssetLifeCycle,
+  LifeCycleTrend,
+  LifeCycleStages,
+  AssetLifeCycleSimulation,
+};

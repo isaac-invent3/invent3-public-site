@@ -49,41 +49,31 @@ const Overview = () => {
     lifeCycleStageName,
     lifeCycleStageChangeDate,
     lifeCycleColorCode,
-    brandName,
     displayColorCode,
     assetCode,
     riskScoreName,
     riskScoreColor,
-    isCritical,
-    serialNo,
-    modelRef,
+    healthName,
+    assetHealthColorCode,
   } = assetData;
 
-  const assetInfo1 = [
+  const assetInfo2 = [
     {
-      label: 'Make:',
-      value: brandName ?? 'N/A',
-    },
-    {
-      label: 'Model:',
-      value: modelRef ?? 'N/A',
-    },
-    {
-      label: 'Serial Number:',
-      value: serialNo ?? 'N/A',
+      label: 'Stage Duration:',
+      value: lifeCycleStageChangeDate
+        ? getDurationLabel(lifeCycleStageChangeDate)
+        : 'N/A',
     },
   ];
 
-  const assetInfo2 = [
+  const assetInfo1 = [
     {
       label: 'Asset ID:',
       value: assetId ?? 'N/A',
     },
     {
-      label: 'Time in Stage:',
-      value: lifeCycleStageChangeDate
-        ? getDurationLabel(lifeCycleStageChangeDate)
-        : 'N/A',
+      label: 'Asset Code:',
+      value: assetCode ?? 'N/A',
     },
   ];
 
@@ -189,6 +179,27 @@ const Overview = () => {
               </HStack>
             ))}
             <HStack
+              spacing="12px"
+              alignItems="flex-start"
+              display={{ base: 'none', md: 'flex' }}
+            >
+              <Text color="neutral.600" width="110px" size="md">
+                Risk Indicator:
+              </Text>
+              {riskScoreName ? (
+                <GenericStatusBox
+                  text={riskScoreName}
+                  colorCode={riskScoreColor}
+                  showDot={false}
+                  rounded="full"
+                />
+              ) : (
+                'N/A'
+              )}
+            </HStack>
+          </VStack>
+          <VStack alignItems="flex-start" spacing="8px">
+            <HStack
               spacing="8px"
               alignItems="center"
               display={{ base: 'none', md: 'flex' }}
@@ -210,33 +221,6 @@ const Overview = () => {
                 </Text>
               )}
             </HStack>
-          </VStack>
-          <VStack alignItems="flex-start" spacing="8px">
-            <HStack spacing="8px" alignItems="center">
-              <Text color="neutral.600" minW="110px" size="md">
-                Asset Code:
-              </Text>
-              {assetCode ? (
-                <HStack spacing="7px">
-                  <Text color="black" size="md" width="110px">
-                    {assetCode}
-                  </Text>
-                  {isCritical && (
-                    <GenericStatusBox
-                      text="Critical"
-                      colorCode="#F50000"
-                      showDot={false}
-                      rounded="full"
-                      useColorCodeAsTextColor
-                    />
-                  )}
-                </HStack>
-              ) : (
-                <Text color="black" size="md">
-                  N/A
-                </Text>
-              )}
-            </HStack>
             {assetInfo2.map((info, index) => (
               <HStack spacing="12px" alignItems="flex-start" key={index}>
                 <Text color="neutral.600" width="110px" size="md">
@@ -247,7 +231,11 @@ const Overview = () => {
                 </Text>
               </HStack>
             ))}
-            <HStack spacing="12px" alignItems="flex-start">
+            <HStack
+              spacing="12px"
+              alignItems="flex-start"
+              display={{ base: 'flex', md: 'none' }}
+            >
               <Text color="neutral.600" width="110px" size="md">
                 Risk Indicator:
               </Text>
@@ -260,6 +248,25 @@ const Overview = () => {
                 />
               ) : (
                 'N/A'
+              )}
+            </HStack>
+
+            <HStack spacing="8px" alignItems="center">
+              <Text color="neutral.600" minW="110px" size="md">
+                Asset Health:
+              </Text>
+              {healthName ? (
+                <GenericStatusBox
+                  text={healthName}
+                  colorCode={assetHealthColorCode}
+                  showDot={false}
+                  rounded="full"
+                  useColorCodeAsTextColor
+                />
+              ) : (
+                <Text color="black" size="md">
+                  N/A
+                </Text>
               )}
             </HStack>
             <HStack

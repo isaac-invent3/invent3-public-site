@@ -10,36 +10,24 @@ import {
 import React from 'react';
 import { ChevronDownIcon, ChevronUpIcon } from '~/lib/components/CustomIcons';
 import AssetLocation from './AssetLocation';
-import { useAppSelector } from '~/lib/redux/hooks';
 import OwnersInfo from './OwnersInfo';
 import AssetDimension from './AssetDimension';
 import PhotoViewer from '../InfoTwo/Photos';
+import AssetInfo from './AssetInfo';
 
 const InfoOne = () => {
-  const assetData = useAppSelector((state) => state.asset.asset);
-
-  if (!assetData) {
-    return null;
-  }
-
-  const { description } = assetData;
-
   const info = [
     {
-      label: 'Asset Location',
-      details: <AssetLocation />,
-    },
-    {
-      label: 'Asset Description',
-      details: (
-        <Text fontWeight={400} lineHeight="140%">
-          {description}
-        </Text>
-      ),
+      label: 'Asset Info',
+      details: <AssetInfo />,
     },
     {
       label: 'Asset Dimension',
       details: <AssetDimension />,
+    },
+    {
+      label: 'Asset Location',
+      details: <AssetLocation />,
     },
     {
       label: "Owner's Info",

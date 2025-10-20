@@ -200,15 +200,17 @@ const TicketDrawerBodyHeader = (props: TicketDrawerBodyHeaderProps) => {
 
             {action === 'edit' && (
               <VStack alignItems="flex-start" spacing="15px">
-                <Text color="neutral.600">Due Date</Text>
+                <Text color="neutral.600" whiteSpace="nowrap">
+                  Due Date
+                </Text>
                 {/* TODO: Insert End Date here */}
                 <Text color="black" whiteSpace="nowrap">
                   {isFetchingSchedule
                     ? 'Loading ...'
-                    : dateFormatter(
+                    : (dateFormatter(
                         maintenanceSchedule?.data.endDate,
                         'DD-MM-YYYY '
-                      )}
+                      ) ?? 'N/A')}
                 </Text>
               </VStack>
             )}

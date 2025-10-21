@@ -4,7 +4,7 @@ interface AssetDepreciation extends BaseEntity {
   depreciationId: number;
   assetId: number;
   depreciationDate: string;
-  methodName: string;
+  depreciationMethod: string;
   depreciationRate: number;
   initialValue: number;
   accumulatedDepreciation: number;

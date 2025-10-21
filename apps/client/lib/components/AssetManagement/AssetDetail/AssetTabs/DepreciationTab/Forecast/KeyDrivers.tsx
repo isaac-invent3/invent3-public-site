@@ -23,7 +23,7 @@ const KeyDrivers = (props: KeyDriversProps) => {
         Key Drivers:
       </Text>
       {isLoading && <Skeleton width="full" height="100px" />}
-      {!isLoading && data && data?.forecastDrivers.length > 0 && (
+      {!isLoading && data && data?.forecastDrivers?.length > 0 && (
         <UnorderedList
           spacing="8px"
           width="full"
@@ -43,9 +43,10 @@ const KeyDrivers = (props: KeyDriversProps) => {
           ))}
         </UnorderedList>
       )}
-      {!isLoading && (data?.forecastDrivers.length === 0 || !data) && (
-        <EmptyState />
-      )}
+      {!isLoading &&
+        (data?.forecastDrivers?.length === 0 || !data?.forecastDrivers) && (
+          <EmptyState />
+        )}
     </VStack>
   );
 };

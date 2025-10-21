@@ -37,7 +37,7 @@ const SuggestedSpareParts = (props: SuggestedSparePartsProps) => {
   return (
     <VStack width="full" spacing="12px" alignItems="flex-start">
       {isLoading && <Skeleton width="full" height="100px" />}
-      {!isLoading && data && data?.forecastDrivers.length > 0 && (
+      {!isLoading && data && data?.forecastDrivers?.length > 0 && (
         <VStack width="full" spacing="12px" alignItems="flex-start">
           <UnorderedList
             spacing="8px"
@@ -84,18 +84,19 @@ const SuggestedSpareParts = (props: SuggestedSparePartsProps) => {
           <SuggestedSpartPartsTable />
         </VStack>
       )}
-      {!isLoading && (data?.forecastDrivers.length === 0 || !data) && (
-        <Text
-          fontStyle="italic"
-          color="neutral.300"
-          width="full"
-          textAlign="center"
-          size="md"
-          my={8}
-        >
-          No Data at the moment
-        </Text>
-      )}
+      {!isLoading &&
+        (data?.forecastDrivers?.length === 0 || !data?.forecastDrivers) && (
+          <Text
+            fontStyle="italic"
+            color="neutral.300"
+            width="full"
+            textAlign="center"
+            size="md"
+            my={8}
+          >
+            No Data at the moment
+          </Text>
+        )}
     </VStack>
   );
 };

@@ -22,8 +22,8 @@ const AssetField = () => {
         handleSelect={(option) => {
           dispatch(
             updateTaskForm({
-              assetName: option.label,
-              assetId: +option.value,
+              assetName: option?.label,
+              assetId: +option?.value,
             })
           );
         }}

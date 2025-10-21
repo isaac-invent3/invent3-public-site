@@ -63,7 +63,7 @@ const AssetField = () => {
         defaultInputValue={assetName}
         handleSelect={(option) => {
           setSelectedAsset(option);
-          dispatch(updateScheduleForm({ assetName: option.label }));
+          dispatch(updateScheduleForm({ assetName: option?.label }));
         }}
       />
     </FormInputWrapper>

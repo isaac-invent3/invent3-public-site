@@ -122,7 +122,7 @@ const CompanyInfoStep = (props: CompanyInfoStepProps) => {
                   selectTitle="Industry Type"
                   handleSelect={(option) =>
                     dispatch(
-                      updateCompanyForm({ industryTypeName: option.label })
+                      updateCompanyForm({ industryTypeName: option?.label })
                     )
                   }
                 />

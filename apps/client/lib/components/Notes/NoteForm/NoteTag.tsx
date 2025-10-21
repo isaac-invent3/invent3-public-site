@@ -127,8 +127,8 @@ const NoteTag = ({ isLoading }: { isLoading: boolean }) => {
                       if (existingUser) return;
 
                       push({
-                        name: option.label,
-                        id: option.value,
+                        name: option?.label,
+                        id: option?.value,
                       });
                     }}
                     sectionInfoText="Tagged user"

@@ -33,7 +33,7 @@ const ParentAsset = () => {
             selectName="parentId"
             selectTitle="Parent Asset"
             handleSelect={(option) =>
-              dispatch(updateAssetForm({ parentAssetName: option.label }))
+              dispatch(updateAssetForm({ parentAssetName: option?.label }))
             }
           />
         </GridItem>

@@ -108,7 +108,7 @@ const GenerateReport = () => {
                           : false
                       }
                       handleSelect={(option) => {
-                        setFieldValue('selectedCompany', option.value);
+                        setFieldValue('selectedCompany', option?.value);
                       }}
                     />
                     {formik.submitCount > 0 &&
@@ -152,7 +152,7 @@ const GenerateReport = () => {
                           : false
                       }
                       handleSelect={(option) => {
-                        setFieldValue('contextTypeId', option.value);
+                        setFieldValue('contextTypeId', option?.value);
                       }}
                     />
                     {formik.submitCount > 0 &&

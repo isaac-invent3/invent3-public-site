@@ -7,7 +7,7 @@ import { CSSObjectWithLabel } from 'react-select';
 interface FormSelectProps extends Omit<SelectInputProps, 'handleSelect'> {
   name: string;
   // eslint-disable-next-line no-unused-vars
-  onSelect?: (option: Option | Option[]) => void;
+  onSelect?: (option: Option | Option[] | null) => void;
   selectStyles?: CSSObjectWithLabel;
   showErrorMessage?: boolean;
 }
@@ -27,9 +27,12 @@ const FormSelect = (props: FormSelectProps) => {
       handleSelect={(option) => {
         props.onSelect && props.onSelect(option);
         if (props.isMultiSelect) {
-          helpers.setValue((option as Option[]).map((item) => item.value));
+          const values = Array.isArray(option)
+            ? option.map((item) => item.value)
+            : [];
+          helpers.setValue(values);
         } else {
-          helpers.setValue((option as Option)?.value);
+          helpers.setValue((option as Option)?.value ?? null);
         }
       }}
     />

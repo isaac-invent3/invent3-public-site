@@ -46,8 +46,8 @@ const VendorCategory = () => {
             pageNumber={pageNumber}
             setPageNumber={setPageNumber}
             handleSelect={(option) => {
-              helpers.setValue(option.value);
-              dispatch(updateVendorForm({ vendorCategoryName: option.label }));
+              helpers.setValue(option?.value);
+              dispatch(updateVendorForm({ vendorCategoryName: option?.label }));
             }}
             selectedOption={
               vendorCategoryName

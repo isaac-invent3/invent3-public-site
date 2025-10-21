@@ -56,7 +56,7 @@ const AssetLifecyleStageSelect = () => {
               setPageNumber={setPageNumber}
               defaultInputValue={statusName}
               handleSelect={(option) =>
-                dispatch(updateAssetForm({ lifeCycleStageName: option.label }))
+                dispatch(updateAssetForm({ lifeCycleStageName: option?.label }))
               }
               isSearchable={false}
             />

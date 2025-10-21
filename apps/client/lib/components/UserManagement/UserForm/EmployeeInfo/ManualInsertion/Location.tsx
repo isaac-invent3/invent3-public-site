@@ -25,16 +25,16 @@ const Location = () => {
         <SimpleGrid width="full" gap="16px" columns={{ base: 2, md: 3 }}>
           <CountrySelect
             handleSelect={(option) => {
-              setFieldValue('countryId', option.value);
-              dispatch(updateUserForm({ countryName: option.label }));
+              setFieldValue('countryId', option?.value);
+              dispatch(updateUserForm({ countryName: option?.label }));
             }}
             defaultInputValue={countryName ?? undefined}
           />
           <StateSelect
             countryId={values.countryId}
             handleSelect={(option) => {
-              setFieldValue('stateId', option.value);
-              dispatch(updateUserForm({ stateName: option.label }));
+              setFieldValue('stateId', option?.value);
+              dispatch(updateUserForm({ stateName: option?.label }));
             }}
             defaultInputValue={stateName ?? undefined}
           />
@@ -42,8 +42,8 @@ const Location = () => {
             stateId={values.stateId}
             name="cityId"
             handleSelect={(option) => {
-              setFieldValue('cityId', option.value);
-              dispatch(updateUserForm({ cityName: option.label }));
+              setFieldValue('cityId', option?.value);
+              dispatch(updateUserForm({ cityName: option?.label }));
             }}
             type="specificById"
             defaultInputValue={cityName ?? undefined}

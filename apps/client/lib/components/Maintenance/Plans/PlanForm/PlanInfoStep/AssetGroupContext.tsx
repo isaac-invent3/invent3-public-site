@@ -80,7 +80,7 @@ const AssetGroupContext = () => {
             pageNumber={pageNumber}
             setPageNumber={setPageNumber}
             handleSelect={(option) =>
-              dispatch(updatePlanForm({ assetGroupContextName: option.label }))
+              dispatch(updatePlanForm({ assetGroupContextName: option?.label }))
             }
             selectedOption={
               assetGroupContextName

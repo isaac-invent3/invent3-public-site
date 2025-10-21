@@ -24,7 +24,7 @@ const VendorFilters = (props: VendorFiltersProps) => {
   //       const selectedFilterData = [...prev[filterLabel]];
 
   //       const optionIndex = selectedFilterData.find(
-  //         (item) => item.value === option.value
+  //         (item) => item.value === option?.value
   //       );
 
   //       if (optionIndex) {
@@ -32,7 +32,7 @@ const VendorFilters = (props: VendorFiltersProps) => {
   //         return {
   //           ...prev,
   //           [filterLabel]: selectedFilterData.filter(
-  //             (item) => item.value !== option.value
+  //             (item) => item.value !== option?.value
   //           ),
   //         };
   //       } else {

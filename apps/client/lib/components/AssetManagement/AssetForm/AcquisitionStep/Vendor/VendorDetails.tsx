@@ -111,7 +111,7 @@ const VendorDetails = () => {
                   pageNumber={pageNumber}
                   setPageNumber={setPageNumber}
                   handleSelect={(option) => {
-                    setSelectedVendor(Number(option.value) ?? undefined);
+                    setSelectedVendor(Number(option?.value) ?? undefined);
                     dispatch(updateAssetForm({ vendorFormDetails: null }));
                   }}
                   selectedOption={
@@ -180,7 +180,7 @@ const VendorDetails = () => {
                 selectName="assetTypeId"
                 selectTitle="Asset Type"
                 handleSelect={(option) =>
-                  dispatch(updateAssetForm({ assetTypeName: option.label }))
+                  dispatch(updateAssetForm({ assetTypeName: option?.label }))
                 }
               />
             </FormInputWrapper>

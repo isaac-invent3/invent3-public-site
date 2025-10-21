@@ -64,7 +64,7 @@ const ApprovalAssignee = () => {
               pageNumber={userListPageNumber}
               setPageNumber={setUserListPageNumber}
               handleSelect={(option) => {
-                helpers.setValue(option.value);
+                helpers.setValue(option?.value);
               }}
               showTitleAfterSelect
             />
@@ -83,7 +83,7 @@ const ApprovalAssignee = () => {
               pageNumber={userListPageNumber}
               setPageNumber={setUserListPageNumber}
               handleSelect={(option) => {
-                helpers.setValue(option.value);
+                helpers.setValue(option?.value);
               }}
               showTitleAfterSelect
             />

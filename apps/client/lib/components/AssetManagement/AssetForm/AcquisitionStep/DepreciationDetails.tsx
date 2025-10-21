@@ -76,7 +76,7 @@ const DepreciationDetails = () => {
               setPageNumber={setPageNumber}
               defaultInputValue={statusName}
               handleSelect={(option) =>
-                dispatch(updateAssetForm({ depreciationMethod: option.label }))
+                dispatch(updateAssetForm({ depreciationMethod: option?.label }))
               }
               isSearchable={false}
             />

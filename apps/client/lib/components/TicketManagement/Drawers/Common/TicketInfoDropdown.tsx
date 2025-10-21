@@ -52,7 +52,7 @@ const TicketInfoDropDown = (props: DropDownProps) => {
     if (isLoading) return 'Loading ...';
 
     if (meta.value) {
-      return options.find((option) => option.value === meta.value)?.label;
+      return options.find((option) => option?.value === meta.value)?.label;
     }
 
     return label;
@@ -126,13 +126,13 @@ const TicketInfoDropDown = (props: DropDownProps) => {
                 onClick={() => {
                   onClose();
                   handleClick && handleClick(option);
-                  helpers.setValue(option.value);
+                  helpers.setValue(option?.value);
                 }}
                 cursor="pointer"
                 _hover={{ bgColor: 'neutral.300' }}
                 width="full"
               >
-                {option.label}
+                {option?.label}
               </Text>
             ))
           ) : (

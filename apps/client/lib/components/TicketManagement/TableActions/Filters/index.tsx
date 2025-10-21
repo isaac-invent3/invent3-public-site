@@ -26,7 +26,7 @@ const Filters = (props: FiltersProps) => {
       const selectedFilterData = [...prev[filterLabel]];
 
       const optionIndex = selectedFilterData.find(
-        (item) => item.value === option.value
+        (item) => item.value === option?.value
       );
 
       if (optionIndex) {
@@ -34,7 +34,7 @@ const Filters = (props: FiltersProps) => {
         return {
           ...prev,
           [filterLabel]: selectedFilterData.filter(
-            (item) => item.value !== option.value
+            (item) => item.value !== option?.value
           ),
         };
       } else {

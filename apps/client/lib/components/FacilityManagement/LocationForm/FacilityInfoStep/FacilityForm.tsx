@@ -144,7 +144,7 @@ const FacilityForm = (props: FacilityFormProps) => {
               handleSelect={(option) =>
                 setFieldValue(
                   `facilities.${activeFacility}.stateName`,
-                  option.label
+                  option?.label
                 )
               }
             />
@@ -171,7 +171,7 @@ const FacilityForm = (props: FacilityFormProps) => {
               handleSelect={(option) =>
                 setFieldValue(
                   `facilities.${activeFacility}.lgaName`,
-                  option.label
+                  option?.label
                 )
               }
             />

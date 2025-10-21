@@ -85,7 +85,7 @@ const AcquisitionDateConditon = () => {
                 pageNumber={pageNumber}
                 setPageNumber={setPageNumber}
                 handleSelect={(option) =>
-                  dispatch(updateAssetForm({ conditionName: option.label }))
+                  dispatch(updateAssetForm({ conditionName: option?.label }))
                 }
               />
             </FormInputWrapper>

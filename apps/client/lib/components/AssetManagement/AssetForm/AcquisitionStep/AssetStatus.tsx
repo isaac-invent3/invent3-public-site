@@ -28,7 +28,7 @@ const AssetStatusSelect = () => {
       setPageNumber={setPageNumber}
       defaultInputValue={statusName}
       handleSelect={(option) =>
-        dispatch(updateAssetForm({ statusName: option.label }))
+        dispatch(updateAssetForm({ statusName: option?.label }))
       }
       isSearchable={false}
     />

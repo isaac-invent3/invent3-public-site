@@ -33,7 +33,7 @@ const AssetGroupType = () => {
       pageNumber={pageNumber}
       setPageNumber={setPageNumber}
       handleSelect={(option) =>
-        dispatch(updatePlanForm({ assetGroupTypeName: option.label }))
+        dispatch(updatePlanForm({ assetGroupTypeName: option?.label }))
       }
     />
   );

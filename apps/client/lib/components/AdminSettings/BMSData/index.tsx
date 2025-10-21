@@ -89,7 +89,7 @@ const BMSData = () => {
                 <FacilitySelect
                   type="general"
                   handleSelect={(option) =>
-                    formik.setFieldValue('facilityId', option.value)
+                    formik.setFieldValue('facilityId', option?.value)
                   }
                 />
               </Flex>

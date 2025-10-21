@@ -49,7 +49,7 @@ const NewOwner = (props: NewOwnerProps) => {
       <UserSelect
         selectName="newOwnerId"
         selectTitle="User"
-        handleSelect={(option) => setSelectedUserId(option.value as number)}
+        handleSelect={(option) => setSelectedUserId(option?.value as number)}
       />
       {user && (
         <UserDisplay

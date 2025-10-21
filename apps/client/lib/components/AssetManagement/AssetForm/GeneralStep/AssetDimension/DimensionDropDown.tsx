@@ -75,7 +75,7 @@ const DimensionDropDown = (props: DimensionDropDownProps) => {
         >
           {options.map((option) => (
             <Text
-              key={option.value}
+              key={option?.value}
               size="md"
               color="black"
               width="full"
@@ -83,11 +83,11 @@ const DimensionDropDown = (props: DimensionDropDownProps) => {
               _hover={{ bgColor: 'neutral.200' }}
               cursor="pointer"
               onClick={() => {
-                handleChange(option.value as string);
+                handleChange(option?.value as string);
                 onClose();
               }}
             >
-              {option.label}
+              {option?.label}
             </Text>
           ))}
         </VStack>

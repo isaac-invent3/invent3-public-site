@@ -24,14 +24,14 @@ const Filters = (props: FiltersProps) => {
         const selectedFilterData = [...prev[filterLabel]];
 
         const optionIndex = selectedFilterData.find(
-          (item) => item === option.value
+          (item) => item === option?.value
         );
         if (optionIndex) {
           // Remove the value if it already exists
           return {
             ...prev,
             [filterLabel]: selectedFilterData.filter(
-              (item) => item !== option.value
+              (item) => item !== option?.value
             ),
           };
         } else {

@@ -38,10 +38,10 @@ const AssetCategory = () => {
           <VStack alignItems="flex-end" width="full">
             <CategorySelect
               handleSelect={(option) => {
-                setSelectedCategory(option.value as number);
+                setSelectedCategory(option?.value as number);
                 dispatch(
                   updateAssetForm({
-                    categoryName: option.label,
+                    categoryName: option?.label,
                   })
                 );
               }}
@@ -52,7 +52,7 @@ const AssetCategory = () => {
             <SubCategorySelect
               categoryId={selectedCategory}
               handleSelect={(option) => {
-                dispatch(updateAssetForm({ subCategoryName: option.label }));
+                dispatch(updateAssetForm({ subCategoryName: option?.label }));
               }}
             />
             <FormAddButton handleClick={onOpenSubCategory}>

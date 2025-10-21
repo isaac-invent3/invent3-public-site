@@ -36,10 +36,10 @@ const SelectableButtonGroup = (props: SelectableButtonGroupProps) => {
     let finalValue: Option[];
     if (isMultiSelect) {
       const isSelected = selectedOptions.some(
-        (option) => option.value === item.value
+        (option) => option?.value === item.value
       );
       const newSelectedOptions = isSelected
-        ? selectedOptions.filter((option) => option.value !== item.value)
+        ? selectedOptions.filter((option) => option?.value !== item.value)
         : [...selectedOptions, item];
       finalValue = newSelectedOptions;
     } else {
@@ -70,7 +70,7 @@ const SelectableButtonGroup = (props: SelectableButtonGroupProps) => {
     <HStack spacing="8px" flexWrap="wrap" {...customContainerStyle}>
       {options.map((item, index) => {
         const isSelected = selectedOptions.some(
-          (option) => option.value === item.value
+          (option) => option?.value === item.value
         );
         return (
           <Button

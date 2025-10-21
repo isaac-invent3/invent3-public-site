@@ -40,24 +40,24 @@ const Address = () => {
           <CountrySelect
             name="vendorCountryId"
             handleSelect={(option) => {
-              setFieldValue('vendorCountryId', option.value);
-              dispatch(updateVendorForm({ vendorCountryName: option.label }));
+              setFieldValue('vendorCountryId', option?.value);
+              dispatch(updateVendorForm({ vendorCountryName: option?.label }));
             }}
           />
           <StateSelect
             countryId={values.vendorCountryId}
             name="vendorStateId"
             handleSelect={(option) => {
-              setFieldValue('vendorStateId', option.value);
-              dispatch(updateVendorForm({ vendorStateName: option.label }));
+              setFieldValue('vendorStateId', option?.value);
+              dispatch(updateVendorForm({ vendorStateName: option?.label }));
             }}
           />
           <LGASelect
             stateId={values.vendorStateId}
             name="vendorCityId"
             handleSelect={(option) => {
-              setFieldValue('vendorCityId', option.value);
-              dispatch(updateVendorForm({ vendorCityName: option.label }));
+              setFieldValue('vendorCityId', option?.value);
+              dispatch(updateVendorForm({ vendorCityName: option?.label }));
             }}
             type="specificById"
           />

@@ -51,8 +51,8 @@ const CompanyLocation = () => {
         <GridItem colSpan={1}>
           <CountrySelect
             handleSelect={(option) => {
-              setFieldValue('countryId', option.value);
-              dispatch(updateCompanyForm({ countryName: option.label }));
+              setFieldValue('countryId', option?.value);
+              dispatch(updateCompanyForm({ countryName: option?.label }));
             }}
             selectStyles={{
               backgroundColor:
@@ -65,8 +65,8 @@ const CompanyLocation = () => {
           <StateSelect
             countryId={values?.countryId}
             handleSelect={(option) => {
-              setFieldValue('stateId', option.value);
-              dispatch(updateCompanyForm({ stateName: option.label }));
+              setFieldValue('stateId', option?.value);
+              dispatch(updateCompanyForm({ stateName: option?.label }));
             }}
             selectStyles={{
               backgroundColor:
@@ -79,8 +79,8 @@ const CompanyLocation = () => {
           <LGASelect
             stateId={values?.stateId}
             handleSelect={(option) => {
-              setFieldValue('lgaId', option.value);
-              dispatch(updateCompanyForm({ lgaName: option.label }));
+              setFieldValue('lgaId', option?.value);
+              dispatch(updateCompanyForm({ lgaName: option?.label }));
             }}
             selectStyles={{
               backgroundColor:

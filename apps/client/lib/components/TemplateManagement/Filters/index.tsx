@@ -22,11 +22,11 @@ const TemplateFilters = (props: TemplateFiltersProps) => {
           onChange={(option) =>
             setFilterData((prev) => ({
               ...prev,
-              contextTypeId: filterData.contextTypeId.includes(+option.value)
+              contextTypeId: filterData.contextTypeId.includes(+option?.value)
                 ? filterData.contextTypeId.filter(
-                    (value) => value !== option.value
+                    (value) => value !== option?.value
                   )
-                : [...filterData.contextTypeId, +option.value],
+                : [...filterData.contextTypeId, +option?.value],
             }))
           }
         />
@@ -36,11 +36,11 @@ const TemplateFilters = (props: TemplateFiltersProps) => {
         onChange={(option) =>
           setFilterData((prev) => ({
             ...prev,
-            owner: filterData.owner.includes(option.value as string)
+            owner: filterData.owner.includes(option?.value as string)
               ? filterData.owner.filter(
-                  (item) => item !== (option.value as string)
+                  (item) => item !== (option?.value as string)
                 )
-              : [...filterData.owner, option.value as string],
+              : [...filterData.owner, option?.value as string],
           }))
         }
       />

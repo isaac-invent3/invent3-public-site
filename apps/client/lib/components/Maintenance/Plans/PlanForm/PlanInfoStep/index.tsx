@@ -196,7 +196,7 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
                         selectTitle="Asset"
                         defaultInputValue={plan?.assetName}
                         handleSelect={(option) =>
-                          dispatch(updatePlanForm({ assetName: option.label }))
+                          dispatch(updatePlanForm({ assetName: option?.label }))
                         }
                       />
                     ) : (

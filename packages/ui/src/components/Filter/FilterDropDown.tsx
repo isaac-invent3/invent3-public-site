@@ -177,16 +177,16 @@ const FilterDropDown = ({
             selectedOptions &&
             options.length > 0 &&
             options.map((option) => (
-              <HStack key={option.value} spacing="8px">
+              <HStack key={option?.value} spacing="8px">
                 <CheckBox
                   isChecked={
                     selectedOptions.find(
-                      (item) => item.value === option.value
+                      (item) => item.value === option?.value
                     ) !== undefined
                   }
                   handleChange={() => handleClick && handleClick(option)}
                 />
-                {<Text color="neutral.800">{option.label}</Text>}
+                {<Text color="neutral.800">{option?.label}</Text>}
               </HStack>
             ))}
 

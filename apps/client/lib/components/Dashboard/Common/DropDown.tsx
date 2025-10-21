@@ -119,7 +119,7 @@ const DropDown = (props: DropDownProps) => {
                 _hover={{ bgColor: 'neutral.300' }}
                 width="full"
               >
-                {option.label}
+                {option?.label}
               </Text>
             ))
           ) : (

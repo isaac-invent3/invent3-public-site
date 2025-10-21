@@ -27,21 +27,21 @@ const LocationSelect = (props: LocationSelectProps) => {
       <FacilitySelect
         type="general"
         handleSelect={(option) =>
-          setLocation({ ...location, facilityId: +option.value })
+          setLocation({ ...location, facilityId: +option?.value })
         }
       />
       <BuildingSelect
         type="specificById"
         facilityId={location.facilityId}
         handleSelect={(option) =>
-          setLocation({ ...location, buildingId: +option.value })
+          setLocation({ ...location, buildingId: +option?.value })
         }
       />
       <FloorSelect
         type="specificById"
         buildingId={location.buildingId}
         handleSelect={(option) =>
-          setLocation({ ...location, floorId: +option.value })
+          setLocation({ ...location, floorId: +option?.value })
         }
       />
     </SimpleGrid>

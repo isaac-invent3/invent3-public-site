@@ -37,7 +37,7 @@ export interface SelectInputProps {
   defaultInputValue?: string;
   errorMessage?: string;
   // eslint-disable-next-line no-unused-vars
-  handleSelect?: (options: Option | Option[]) => void;
+  handleSelect?: (options: Option | Option[] | null) => void;
   handleOnMenuScrollToBottom?: () => void;
   // eslint-disable-next-line no-unused-vars
   callBackFunction?: (selectedOption: string) => Promise<Option[]>;
@@ -47,6 +47,7 @@ export interface SelectInputProps {
   selectStyles?: CSSObjectWithLabel;
   isMultiSelect?: boolean;
   showErrorMessage?: boolean;
+  isClearable?: boolean;
 }
 function SelectInput(props: SelectInputProps) {
   const {
@@ -70,6 +71,7 @@ function SelectInput(props: SelectInputProps) {
     selectStyles,
     isMultiSelect,
     showErrorMessage = true,
+    isClearable = true,
   } = props;
   const SelectComponent = isAsync ? AsyncSelect : Select;
   const [isFocused, setIsFocused] = useState(false);
@@ -200,6 +202,7 @@ function SelectInput(props: SelectInputProps) {
           onBlur={handleBlur}
           placeholder={title}
           isMulti={isMultiSelect}
+          isClearable={isClearable}
           styles={{
             container: (provided) => ({
               ...provided,
@@ -303,12 +306,17 @@ function SelectInput(props: SelectInputProps) {
                   )
                 : typeof selectedOption === 'string' ||
                     typeof selectedOption === 'number'
-                  ? options.find((option) => option.value === selectedOption)
+                  ? options.find((option) => option?.value === selectedOption)
                   : selectedOption
               : null
           }
           onChange={(selectedOptions) => {
-            if (selectedOptions && handleSelect) {
+            if (handleSelect) {
+              if (!selectedOptions) {
+                handleSelect(null);
+                return;
+              }
+
               if (isMultiSelect) {
                 handleSelect(selectedOptions as Option[]);
               } else {

@@ -49,8 +49,8 @@ const JobTitle = () => {
             pageNumber={pageNumber}
             setPageNumber={setPageNumber}
             handleSelect={(option) => {
-              helpers.setValue(option.value);
-              dispatch(updateUserForm({ jobTitleName: option.label }));
+              helpers.setValue(option?.value);
+              dispatch(updateUserForm({ jobTitleName: option?.label }));
             }}
             fetchKey={1}
           />

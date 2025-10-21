@@ -24,7 +24,7 @@ const Frequency = (props: FrequencyProps) => {
         selectTitle="Frequency"
         defaultName={defaultName}
         handleSelect={(option) =>
-          dispatch(updateScheduleForm({ frequencyName: option.label }))
+          dispatch(updateScheduleForm({ frequencyName: option?.label }))
         }
       />
     </FormInputWrapper>

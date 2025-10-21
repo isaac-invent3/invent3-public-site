@@ -20,9 +20,9 @@ const GeneralFilter = (props: GeneralFilterProps) => {
 
   const handleFilterData = (option: Option, filterLabel: FilterLabel) => {
     const newValue =
-      filterData[filterLabel].find((item) => item.value === option.value) !==
+      filterData[filterLabel].find((item) => item.value === option?.value) !==
       undefined
-        ? filterData[filterLabel].filter((item) => item.value !== option.value)
+        ? filterData[filterLabel].filter((item) => item.value !== option?.value)
         : [...filterData[filterLabel], option];
 
     setFilterData((prev) => ({ ...prev, [filterLabel]: newValue }));

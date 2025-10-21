@@ -101,7 +101,7 @@ const BranchFilter = (props: BranchFilterProps) => {
                       <CheckBox
                         isChecked={
                           selectedOptions.find(
-                            (option) => option.value === item.value
+                            (option) => option?.value === item.value
                           ) !== undefined
                         }
                         handleChange={() => handleSelectedOption(item)}

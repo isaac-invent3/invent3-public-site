@@ -55,10 +55,10 @@ export const ReportSlice = createSlice({
       } else {
         const newValue =
           filterData[filterLabel].find(
-            (item) => item.value === option.value
+            (item) => item.value === option?.value
           ) !== undefined
             ? filterData[filterLabel].filter(
-                (item) => item.value !== option.value
+                (item) => item.value !== option?.value
               )
             : [...filterData[filterLabel], option];
 

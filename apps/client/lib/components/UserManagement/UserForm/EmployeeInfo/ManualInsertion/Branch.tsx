@@ -31,8 +31,8 @@ const Branch = () => {
         ]}
         defaultValue={branchName}
         handleSelect={(option) => {
-          helpers.setValue(option.value);
-          dispatch(updateUserForm({ branchName: option.label }));
+          helpers.setValue(option?.value);
+          dispatch(updateUserForm({ branchName: option?.label }));
         }}
       />
     </FormInputWrapper>

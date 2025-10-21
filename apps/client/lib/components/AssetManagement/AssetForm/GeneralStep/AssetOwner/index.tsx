@@ -37,7 +37,7 @@ const AssetOwner = () => {
             selectTitle="Owner"
             defaultName={currentOwnerName}
             handleSelect={(option) =>
-              dispatch(updateAssetForm({ currentOwnerName: option.label }))
+              dispatch(updateAssetForm({ currentOwnerName: option?.label }))
             }
           />
         </GridItem>
@@ -47,7 +47,7 @@ const AssetOwner = () => {
             selectTitle="Assigned to"
             defaultName={assignedToName}
             handleSelect={(option) =>
-              dispatch(updateAssetForm({ assignedToName: option.label }))
+              dispatch(updateAssetForm({ assignedToName: option?.label }))
             }
           />
         </GridItem>
@@ -57,7 +57,7 @@ const AssetOwner = () => {
             selectTitle="Responsible for"
             defaultName={responsibleForName}
             handleSelect={(option) =>
-              dispatch(updateAssetForm({ responsibleForName: option.label }))
+              dispatch(updateAssetForm({ responsibleForName: option?.label }))
             }
           />
         </GridItem>

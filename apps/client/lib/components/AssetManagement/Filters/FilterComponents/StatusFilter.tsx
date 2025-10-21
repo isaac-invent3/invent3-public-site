@@ -56,7 +56,7 @@ const StatusFilter = (props: StatusFilterProps) => {
         <HStack spacing="8px" key={index}>
           <CheckBox
             isChecked={
-              selectedOptions.find((option) => option.value === item.value) !==
+              selectedOptions.find((option) => option?.value === item.value) !==
               undefined
             }
             handleChange={() => handleSelectedOption(item)}

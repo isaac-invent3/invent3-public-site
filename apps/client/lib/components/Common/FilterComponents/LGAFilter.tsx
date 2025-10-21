@@ -99,7 +99,7 @@ const LGAFilter = (props: LGAFilterProps) => {
                       <CheckBox
                         isChecked={
                           selectedOptions.find(
-                            (option) => option.value === item.value
+                            (option) => option?.value === item.value
                           ) !== undefined
                         }
                         handleChange={() => handleSelectedOption(item)}

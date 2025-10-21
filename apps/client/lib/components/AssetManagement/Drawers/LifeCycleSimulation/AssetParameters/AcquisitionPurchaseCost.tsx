@@ -20,7 +20,7 @@ const AcquisitionPurchaseCost = () => {
           sectionMaxWidth="141px"
           customSpacing="16px"
           description="Acquisition Date"
-          title="Acquisition Date"
+          title="Choose the date the asset was acquired."
           isRequired
         >
           <FormDatePicker
@@ -34,7 +34,7 @@ const AcquisitionPurchaseCost = () => {
         <FormInputWrapper
           sectionMaxWidth="141px"
           customSpacing="16px"
-          description="Enter the initial cost of the asset."
+          description="Enter the asset’s purchase cost."
           title="Purchase Price"
           isRequired
         >

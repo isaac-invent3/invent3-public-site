@@ -54,7 +54,7 @@ const AssetParameters = (props: AssetParametersProps) => {
           <VStack
             width="full"
             justifyContent="space-between"
-            px={8}
+            px={{ lg: 8 }}
             height="full"
           >
             <VStack spacing={{ base: '24px', lg: '32px' }} width="full">
@@ -65,7 +65,15 @@ const AssetParameters = (props: AssetParametersProps) => {
               <CurrentCondition />
             </VStack>
             <HStack width="full" justifyContent="space-between">
-              <BackButton handleClick={onClose} />
+              <BackButton
+                handleClick={onClose}
+                variant="secondary"
+                customStyles={{
+                  height: '50px',
+                  width: '96px',
+                  justifyContent: 'center',
+                }}
+              />
               <Button
                 customStyles={{ width: '161px' }}
                 handleClick={formik.handleSubmit}

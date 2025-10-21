@@ -1,26 +1,12 @@
-import { HStack, Progress, Text, VStack } from '@chakra-ui/react';
+import { HStack, Progress, Skeleton, Text, VStack } from '@chakra-ui/react';
+import { EmptyState } from '@repo/ui/components';
 import React from 'react';
 import CardHeader from '~/lib/components/Dashboard/Common/CardHeader';
+import { useGetTicketTechnicianLocationsQuery } from '~/lib/redux/services/ticket.services';
 
 const TechnicianLocations = () => {
-  const data = [
-    {
-      location: 'Lagos HQ',
-      noOfTechnician: 2,
-    },
-    {
-      location: 'Abuja',
-      noOfTechnician: 8,
-    },
-    {
-      location: 'Kano',
-      noOfTechnician: 6,
-    },
-    {
-      location: 'PH',
-      noOfTechnician: 2,
-    },
-  ];
+  const { data, isLoading } = useGetTicketTechnicianLocationsQuery();
+
   return (
     <VStack
       width="full"
@@ -34,31 +20,46 @@ const TechnicianLocations = () => {
     >
       <CardHeader>Technician Load Distribution</CardHeader>
       <VStack width="full" spacing={4}>
-        {data?.map((item, index) => (
-          <VStack width="full" key={index} spacing="9px">
-            <HStack width="full" justifyContent="space-between">
-              <Text fontWeight={700} color="neutral.800">
-                {item.location}
-              </Text>
-              <Text fontWeight={700} color="neutral.800">
-                {item.noOfTechnician} Techs
-              </Text>
-            </HStack>
-            <Progress
-              value={item.noOfTechnician}
-              size="md"
-              width="full"
-              rounded="full"
-              max={10}
-              sx={{
-                '& > div': {
-                  backgroundColor: '#EABC30',
-                },
-                backgroundColor: '#F2F1F1',
-              }}
-            />
-          </VStack>
-        ))}
+        {isLoading &&
+          Array(6)
+            .fill('')
+            .map((_, index) => (
+              <Skeleton height="20px" rounded="full" width="full" key={index} />
+            ))}
+        {!isLoading &&
+          data?.data &&
+          data?.data?.length > 0 &&
+          data?.data?.map((item, index) => (
+            <VStack width="full" key={index} spacing="9px">
+              <HStack width="full" justifyContent="space-between">
+                <Text fontWeight={700} color="neutral.800">
+                  {item.facility}
+                </Text>
+                <Text fontWeight={700} color="neutral.800">
+                  {item.totalTechnicians} Techs
+                </Text>
+              </HStack>
+              <Progress
+                value={item.totalTechnicians}
+                size="md"
+                width="full"
+                rounded="full"
+                max={10}
+                sx={{
+                  '& > div': {
+                    backgroundColor: '#EABC30',
+                  },
+                  backgroundColor: '#F2F1F1',
+                }}
+              />
+            </VStack>
+          ))}
+        {!isLoading && data?.data?.length === 0 && (
+          <EmptyState
+            emptyText="No Data at the moment"
+            containerStyle={{ my: 10 }}
+          />
+        )}
       </VStack>
     </VStack>
   );

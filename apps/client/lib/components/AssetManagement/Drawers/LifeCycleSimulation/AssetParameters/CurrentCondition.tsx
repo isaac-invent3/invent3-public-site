@@ -12,7 +12,7 @@ const CurrentCondition = () => {
     <FormInputWrapper
       sectionMaxWidth="141px"
       customSpacing="16px"
-      description="Select CurrentCondition to be associated"
+      description="Choose the asset’s current condition."
       title="CurrentCondition"
       isRequired
     >

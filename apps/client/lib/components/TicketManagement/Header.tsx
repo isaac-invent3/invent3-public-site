@@ -21,7 +21,6 @@ const Header = () => {
         <PageHeader>Ticket Management</PageHeader>
         <HStack>
           <Button
-            handleClick={onOpen}
             customStyles={{
               width: '157px',
               height: { base: '36px', md: '50px' },

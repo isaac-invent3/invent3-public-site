@@ -315,6 +315,22 @@ const downloadDocument = (item: Document) => {
   }
 };
 
+const generateColor = (index: number): string => {
+  const palette = [
+    '#98FEFE',
+    '#4183DD',
+    '#00A129',
+    '#EABC30',
+    '#0F2540',
+    '#E76F51',
+    '#8ECAE6',
+    '#FB8500',
+    '#219EBC',
+    '#023047',
+  ];
+  return palette[index % palette.length] ?? '#CCCCCC';
+};
+
 export {
   formatNumberShort,
   formattedDateTime,
@@ -329,4 +345,5 @@ export {
   extractTenantFromUrl,
   handleExport,
   downloadDocument,
+  generateColor,
 };

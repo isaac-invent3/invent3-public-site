@@ -7,7 +7,7 @@ const Location = () => {
     <FormInputWrapper
       sectionMaxWidth="141px"
       customSpacing="16px"
-      description="Select Location to be associated"
+      description="Select where the asset is located."
       title="Location"
       isRequired
     >

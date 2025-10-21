@@ -1,15 +1,10 @@
 import { Grid, GridItem, VStack } from '@chakra-ui/react';
-import {
-  ErrorMessage,
-  FormInputWrapper,
-  FormTextInput,
-} from '@repo/ui/components';
-import { Field, useField } from 'formik';
+import { FormInputWrapper, FormTextInput } from '@repo/ui/components';
+import { Field } from 'formik';
 import React from 'react';
 import CategorySelect from '../../../AssetForm/GeneralStep/AssetCategory/CategorySelect';
 
 const AssetNameCategory = () => {
-  const [field, meta, helpers] = useField('categoryName');
   return (
     <Grid
       templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}
@@ -22,7 +17,7 @@ const AssetNameCategory = () => {
           customSpacing="16px"
           title="Asset Name"
           isRequired
-          description="Input the asset name"
+          description="Enter the name of the asset."
         >
           <Field
             as={FormTextInput}
@@ -38,14 +33,9 @@ const AssetNameCategory = () => {
           customSpacing="16px"
           title="Category"
           isRequired
-          description="Category Name"
+          description="Select the asset’s category."
         >
-          <VStack width="full" alignItems="flex-start">
-            <CategorySelect handleSelect={(option) => {}} />
-            {meta.touched && meta.error !== undefined && (
-              <ErrorMessage>{meta.error}</ErrorMessage>
-            )}
-          </VStack>
+          <CategorySelect name="categoryName" handleSelect={(option) => {}} />
         </FormInputWrapper>
       </GridItem>
     </Grid>

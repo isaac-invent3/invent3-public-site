@@ -4,23 +4,7 @@ import CardHeader from '~/lib/components/Dashboard/Common/CardHeader';
 import ChartLegend from '~/lib/components/Dashboard/Common/Charts/ChartLegend';
 import PieChart from '~/lib/components/Dashboard/Common/Charts/PieChart';
 import { CostByFacility } from '~/lib/interfaces/location/lifecycle.interfaces';
-
-// ✅ Always returns a string
-const generateColor = (index: number): string => {
-  const palette = [
-    '#98FEFE',
-    '#4183DD',
-    '#00A129',
-    '#EABC30',
-    '#0F2540',
-    '#E76F51',
-    '#8ECAE6',
-    '#FB8500',
-    '#219EBC',
-    '#023047',
-  ];
-  return palette[index % palette.length] ?? '#CCCCCC';
-};
+import { generateColor } from '~/lib/utils/helperFunctions';
 
 const LifecycleCostByFacilityChart = ({
   lifeCycleCosts,
@@ -34,7 +18,7 @@ const LifecycleCostByFacilityChart = ({
 
     return lifeCycleCosts.map((facility, index) => ({
       label: facility.facilityName,
-      color: generateColor(index), // ✅ always a string now
+      color: generateColor(index),
       value: facility.totalLifeCycleCost,
     }));
   }, [lifeCycleCosts]);

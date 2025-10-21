@@ -18,6 +18,7 @@ const CompletedIcon = () => {
       bgColor="#34C759"
       rounded="4px"
       justifyContent="center"
+      flexShrink={0}
     >
       <Icon as={CheckIcon} boxSize="11px" color="white" />
     </HStack>
@@ -38,6 +39,7 @@ const ActiveInactiveIcon = (props: ActiveInactiveIconProps) => {
       rounded="4px"
       opacity={active ? 1 : 0.5}
       justifyContent="center"
+      flexShrink={0}
     >
       <ChakraText size="md" color="white" fontWeight={800}>
         {boxIndex + 1}
@@ -49,10 +51,12 @@ const ActiveInactiveIcon = (props: ActiveInactiveIconProps) => {
 interface FormStepperProps {
   currentStep: number;
   steps: string[];
+  shouldWrap?: boolean;
+  maxW?: string;
 }
 
 const FormStepper = (props: FormStepperProps) => {
-  const { currentStep, steps } = props;
+  const { currentStep, steps, shouldWrap = false, maxW } = props;
   return (
     <Flex
       width="full"
@@ -98,7 +102,9 @@ const FormStepper = (props: FormStepperProps) => {
                   fontSize="md"
                   color="black"
                   fontWeight={700}
-                  whiteSpace="nowrap"
+                  width="full"
+                  minW={maxW}
+                  whiteSpace={shouldWrap ? 'wrap' : 'nowrap'}
                   opacity={currentStep >= index + 1 ? 1 : 0.5}
                 >
                   {step}

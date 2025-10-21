@@ -149,6 +149,23 @@ interface TicketFilter extends LocationFilter {
   ticketTypes: Option[];
 }
 
+interface TicketBalancingSummary {
+  totalActiveTechnicians: number;
+  averageCurrentLoad: number;
+  unassignedTickets: number;
+  balancingEfficiency: number;
+}
+
+interface TechnicianLoad {
+  name: string;
+  activeTickets: number;
+  maxCapacity: number;
+  location: string;
+  load: number;
+  loadStatus: string;
+  loadStatusColorCode: string;
+}
+
 export type {
   CreateTicketForm,
   CreateTicketPayload,
@@ -159,4 +176,6 @@ export type {
   TicketTypeDetails,
   UpdateTicketPayload,
   TicketFilter,
+  TicketBalancingSummary,
+  TechnicianLoad,
 };

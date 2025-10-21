@@ -2,9 +2,9 @@ import { Grid, GridItem } from '@chakra-ui/react';
 import { FormInputWrapper, FormTextInput } from '@repo/ui/components';
 import { Field } from 'formik';
 import React from 'react';
-import CategorySelect from '../../../AssetForm/GeneralStep/AssetCategory/CategorySelect';
+import FrequencySelect from '~/lib/components/Common/Frequency';
 
-const LifeExpectancyCurrentAge = () => {
+const MaintenanceFrequencyCost = () => {
   return (
     <Grid
       templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}
@@ -15,31 +15,29 @@ const LifeExpectancyCurrentAge = () => {
         <FormInputWrapper
           sectionMaxWidth="141px"
           customSpacing="16px"
-          title="Expected Useful Life"
+          title="Maintenance Frequency"
           isRequired
-          description="Enter how long the asset is expected to last."
+          description="How often maintenance is done"
         >
-          <Field
-            as={FormTextInput}
-            name="expectedUsefulLife"
-            type="text"
-            label="Asset Name"
+          <FrequencySelect
+            selectName="maintenanceFrequency"
+            selectTitle="Frequency"
           />
         </FormInputWrapper>
       </GridItem>
       <GridItem colSpan={1} width="full">
         <FormInputWrapper
-          sectionMaxWidth="141px"
+          sectionMaxWidth="200px"
           customSpacing="16px"
-          title="Current Age"
+          title="Average Maintenance Cost (₦)"
           isRequired
-          description="Enter how old the asset is."
+          description="Enter the typical maintenance cost."
         >
           <Field
             as={FormTextInput}
-            name="currentAge"
-            type="number"
-            label="Asset Name"
+            name="maintenanceCost"
+            type="text"
+            label="Maintenance Cost"
           />
         </FormInputWrapper>
       </GridItem>
@@ -47,4 +45,4 @@ const LifeExpectancyCurrentAge = () => {
   );
 };
 
-export default LifeExpectancyCurrentAge;
+export default MaintenanceFrequencyCost;

@@ -1,13 +1,14 @@
 // eslint-disable-next-line no-redeclare
 import { HStack, Icon, StackProps, Text } from '@chakra-ui/react';
-import { LongBackArrowIcon } from '../CustomIcons';
+import { LongBackArrowIcon, ChevronLeftIcon } from '../CustomIcons';
 
 interface BackButtonProps {
   handleClick: () => void;
   customStyles?: StackProps;
+  variant?: 'primary' | 'secondary';
 }
 const BackButton = (props: BackButtonProps) => {
-  const { handleClick, customStyles } = props;
+  const { handleClick, customStyles, variant = 'primary' } = props;
   return (
     <HStack
       cursor="pointer"
@@ -19,8 +20,13 @@ const BackButton = (props: BackButtonProps) => {
       minH="32px"
       onClick={handleClick}
       {...customStyles}
+      alignItems="center"
     >
-      <Icon as={LongBackArrowIcon} boxSize="16px" color="#374957" />
+      <Icon
+        as={variant === 'primary' ? LongBackArrowIcon : ChevronLeftIcon}
+        boxSize="16px"
+        color="#374957"
+      />
       <Text color="primary.500">Back</Text>
     </HStack>
   );

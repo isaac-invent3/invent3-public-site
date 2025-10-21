@@ -1,25 +1,29 @@
-import { SimpleGrid, Text } from '@chakra-ui/react';
+import { SimpleGrid } from '@chakra-ui/react';
 import React from 'react';
 import { AssetBoxIcon } from '~/lib/components/CustomIcons';
 import SummaryCard from '~/lib/components/Dashboard/Common/Summaries/SummaryCardWithPercentChange';
+import { useGetTicketLoadBalancingSummaryQuery } from '~/lib/redux/services/ticket.services';
 
 const Summary = () => {
+  const { data, isLoading } = useGetTicketLoadBalancingSummaryQuery();
+
   const summaryData = [
     {
       label: 'Total Active Technicians',
-      value: 24,
+      value: data?.data?.totalActiveTechnicians,
     },
     {
       label: 'Average Current Load',
-      value: 4.2,
+      value: data?.data?.averageCurrentLoad,
+      suffix: 'Tickets',
     },
     {
       label: 'Unassigned Tickets',
-      value: 12,
+      value: data?.data?.unassignedTickets,
     },
     {
       label: 'Balancing Efficiency',
-      value: '91%',
+      value: `${data?.data?.balancingEfficiency ?? 0}%`,
     },
   ];
 
@@ -30,9 +34,15 @@ const Summary = () => {
           title={item.label}
           icon={AssetBoxIcon}
           value={item.value ?? 'N/A'}
-          isLoading={false}
-          showRange={false}
+          isLoading={isLoading}
+          showRange={item?.suffix ? true : false}
           key={index}
+          rangeText={item?.suffix}
+          rangeStyle={{
+            color: 'primary.500',
+            fontWeight: 800,
+            fontSize: { base: '14px', lg: '24px' },
+          }}
         />
       ))}
     </SimpleGrid>

@@ -3,26 +3,17 @@ import React from 'react';
 import CardHeader from '~/lib/components/Dashboard/Common/CardHeader';
 import ChartLegend from '~/lib/components/Dashboard/Common/Charts/ChartLegend';
 import DoughtnutChart from '~/lib/components/Dashboard/Common/Charts/DoughtnutChart';
+import { useGetTicketDistributionBySkillGroupQuery } from '~/lib/redux/services/ticket.services';
+import { generateColor } from '~/lib/utils/helperFunctions';
 
 const TicketDistributionBySkillGroup = () => {
-  const isLoading = false;
-  const chartLegendItems = [
-    {
-      label: 'Electrical',
-      color: '#0E2642',
-      value: 50,
-    },
-    {
-      label: 'Plumbing',
-      color: '#EABC30',
-      value: 90,
-    },
-    {
-      label: 'General',
-      color: '#0366EF',
-      value: 100,
-    },
-  ];
+  const { data, isLoading } = useGetTicketDistributionBySkillGroupQuery();
+  const chartLegendItems =
+    data?.data?.map((item, index) => ({
+      label: item.name ?? 'N/A',
+      color: generateColor(index),
+      value: item.distributionPercentage,
+    })) ?? [];
 
   return (
     <VStack
@@ -35,7 +26,7 @@ const TicketDistributionBySkillGroup = () => {
       rounded="8px"
       minH="357px"
     >
-      <CardHeader>Technician Load Distribution</CardHeader>
+      <CardHeader>Ticket Distribution By Skill Group</CardHeader>
       <HStack width="full" alignItems="flex-start">
         <ChartLegend
           chartLegendItems={chartLegendItems}

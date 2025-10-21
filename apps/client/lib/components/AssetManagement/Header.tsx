@@ -45,7 +45,10 @@ const Header = () => {
           {canSimulateUsers && (
             <Button
               variant="outline"
-              customStyles={{ width: '191px' }}
+              customStyles={{
+                width: '191px',
+                height: { base: '36px', md: 'min-content' },
+              }}
               handleClick={onOpenSimulator}
             >
               Simulate Lifecycle Wizard

@@ -10,6 +10,7 @@ import {
 import {
   AssetDepreciation,
   AssetDepreciationHistory,
+  DepreciationMethod,
 } from '~/lib/interfaces/asset/depreciation.interfaces';
 
 const getHeaders = () => ({
@@ -66,7 +67,7 @@ export const depreciationApi = createApi({
       }),
     }),
     getAllDepreciationMethod: builder.query<
-      BaseApiResponse<ListResponse<AssetDepreciation>>,
+      BaseApiResponse<ListResponse<DepreciationMethod>>,
       QueryParams
     >({
       query: (data) => ({
@@ -76,7 +77,7 @@ export const depreciationApi = createApi({
       }),
     }),
     searchDepreciationMethod: builder.mutation<
-      BaseApiResponse<ListResponse<AssetDepreciation>>,
+      BaseApiResponse<ListResponse<DepreciationMethod>>,
       SearchQuery
     >({
       query: (body) => ({

@@ -8,7 +8,9 @@ import {
 import {
   CreateTicketPayload,
   DeleteTicketPayload,
+  TechnicianLoad,
   Ticket,
+  TicketBalancingSummary,
   TicketCategory,
   TicketTypeDetails,
   UpdateTicketPayload,
@@ -207,6 +209,56 @@ export const ticketApi = createApi({
         headers: getHeaders(),
       }),
     }),
+    getTicketLoadBalancingSummary: builder.query<
+      BaseApiResponse<TicketBalancingSummary>,
+      void
+    >({
+      query: () => ({
+        url: `/Invent3Pro/TicketBalancingDashboardSummary`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getTechnicianLoadDistribution: builder.query<
+      BaseApiResponse<TechnicianLoad[]>,
+      QueryParams
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/Invent3Pro/TechnicianLoadDistribution?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getTicketDistributionBySkillGroup: builder.query<
+      BaseApiResponse<{ name: string; distributionPercentage: number }[]>,
+      void
+    >({
+      query: () => ({
+        url: `/Invent3Pro/TicketDistributionBySkillGroup`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getActiveTicketsPerTechnician: builder.query<
+      BaseApiResponse<{ name: string; totalTickets: number }[]>,
+      void
+    >({
+      query: () => ({
+        url: `/Invent3Pro/ActiveTicketsPerTechnician`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
+    getTicketTechnicianLocations: builder.query<
+      BaseApiResponse<{ facility: string; totalTechnicians: number }[]>,
+      void
+    >({
+      query: () => ({
+        url: `/Invent3Pro/TicketTechnicianLocations`,
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
   }),
 });
 
@@ -227,4 +279,9 @@ export const {
   useGetTicketDocumentsByIdQuery,
   useGetTicketAuditTrailByIdQuery,
   useGetEscalatedTicketCountQuery,
+  useGetTicketLoadBalancingSummaryQuery,
+  useGetActiveTicketsPerTechnicianQuery,
+  useGetTechnicianLoadDistributionQuery,
+  useGetTicketDistributionBySkillGroupQuery,
+  useGetTicketTechnicianLocationsQuery,
 } = ticketApi;

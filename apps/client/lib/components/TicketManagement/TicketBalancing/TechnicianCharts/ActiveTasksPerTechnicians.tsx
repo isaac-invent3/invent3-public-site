@@ -2,30 +2,11 @@ import { VStack } from '@chakra-ui/react';
 import React from 'react';
 import CardHeader from '~/lib/components/Dashboard/Common/CardHeader';
 import StackedBarChart from '~/lib/components/Dashboard/Common/Charts/StackedBarChart';
+import { useGetActiveTicketsPerTechnicianQuery } from '~/lib/redux/services/ticket.services';
 
 const ActiveTasksPerTechnicians = () => {
-  const data = [
-    {
-      technician: 'T. Okafor',
-      activeTask: 6,
-    },
-    {
-      technician: 'L. Bello',
-      activeTask: 4,
-    },
-    {
-      technician: 'R. Adeyemi',
-      activeTask: 5,
-    },
-    {
-      technician: 'C. Musa',
-      activeTask: 4,
-    },
-    {
-      technician: 'B. Johnson',
-      activeTask: 2,
-    },
-  ];
+  const { data, isLoading } = useGetActiveTicketsPerTechnicianQuery();
+
   return (
     <VStack
       width="full"
@@ -40,13 +21,13 @@ const ActiveTasksPerTechnicians = () => {
       <CardHeader>Active Tasks per Technician</CardHeader>
 
       <StackedBarChart
-        labels={data?.map((item) => item.technician)}
+        labels={data?.data?.map((item) => item.name) ?? []}
         firstStack={{
           label: 'Budget',
-          values: data?.map((item) => item.activeTask) ?? [],
+          values: data?.data?.map((item) => item.totalTickets) ?? [],
           color: '#17A1FA',
         }}
-        isLoading={false}
+        isLoading={isLoading}
         barRadius={32}
       />
     </VStack>

@@ -6,6 +6,7 @@ import {
   Skeleton,
   StackProps,
   Text,
+  TextProps,
 } from '@chakra-ui/react';
 import React from 'react';
 import SummaryCardWrapper from '../../../Common/SummaryCardWrapper';
@@ -27,6 +28,7 @@ interface SummaryCardProps {
   iconStyle?: IconProps | undefined;
   containerStyle?: StackProps;
   subContainerStyle?: StackProps;
+  rangeStyle?: TextProps;
 }
 const SummaryCard = (props: SummaryCardProps) => {
   const {
@@ -45,6 +47,7 @@ const SummaryCard = (props: SummaryCardProps) => {
     iconStyle,
     containerStyle,
     subContainerStyle,
+    rangeStyle,
   } = props;
   return (
     <SummaryCardWrapper
@@ -68,7 +71,7 @@ const SummaryCard = (props: SummaryCardProps) => {
       }}
       additionalContent={
         showRange && (
-          <Text color="neutral.600" fontWeight={700} mb="4px">
+          <Text color="neutral.600" fontWeight={700} mb="4px" {...rangeStyle}>
             {rangeText ?? 'This month'}
           </Text>
         )
@@ -76,6 +79,7 @@ const SummaryCard = (props: SummaryCardProps) => {
       formatValue={formatValue}
       count={value}
       subContainerStyle={subContainerStyle}
+      isLoading={isLoading}
     >
       {percentChange && (
         <HStack spacing="4px">

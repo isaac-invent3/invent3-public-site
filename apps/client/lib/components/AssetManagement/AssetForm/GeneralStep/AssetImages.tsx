@@ -193,7 +193,7 @@ const AssetImages = () => {
                   event.target.value = ''; // Clear the input after selecting files
                 }}
                 type="file"
-                accept="image/*"
+                accept="image/png, image/jpeg, image/jpg"
                 multiple // Enable multiple image uploads
               />
               <label htmlFor="file">

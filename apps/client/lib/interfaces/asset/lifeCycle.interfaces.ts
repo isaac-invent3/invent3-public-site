@@ -32,7 +32,7 @@ interface AssetLifeCycleSimulation {
   expectedUsefulLife: number | null;
   currentAge: number | null;
   location: string | null;
-  currentCondition: string | null;
+  currentCondition: number | null;
   maintenanceFrequency: number | null;
   manintenanceCost: number | null;
   depreciationModel: number | null;

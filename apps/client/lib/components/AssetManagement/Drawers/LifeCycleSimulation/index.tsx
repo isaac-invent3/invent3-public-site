@@ -25,7 +25,7 @@ interface LifeCycleSimulationProps {
 
 const LifeCycleSimulation = (props: LifeCycleSimulationProps) => {
   const { isOpen, onClose } = props;
-  const [activeStep, setActiveStep] = useState(2);
+  const [activeStep, setActiveStep] = useState(1);
 
   const STEPS = [
     'Define Asset Parameters',

@@ -5,9 +5,13 @@ import {
   SliderTrack,
 } from '@chakra-ui/react';
 import { FormInputWrapper } from '@repo/ui/components';
+import { useFormikContext } from 'formik';
 import React from 'react';
+import { AssetLifeCycleSimulation } from '~/lib/interfaces/asset/lifeCycle.interfaces';
 
 const CurrentCondition = () => {
+  const { setFieldValue, values } =
+    useFormikContext<AssetLifeCycleSimulation>();
   return (
     <FormInputWrapper
       sectionMaxWidth="141px"
@@ -18,7 +22,7 @@ const CurrentCondition = () => {
     >
       <Slider
         aria-label="custom-slider"
-        defaultValue={40}
+        defaultValue={values?.currentCondition ?? undefined}
         min={0}
         max={100}
         step={1}
@@ -26,6 +30,7 @@ const CurrentCondition = () => {
         sx={{
           h: '10px',
         }}
+        onChange={(value) => setFieldValue('currentCondition', value)}
       >
         <SliderTrack bg="#F2F1F1" borderRadius="full" h="10px">
           <SliderFilledTrack bg="blue.500" />{' '}

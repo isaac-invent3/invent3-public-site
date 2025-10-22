@@ -23,7 +23,7 @@ const LifeExpectancyCurrentAge = () => {
             as={FormTextInput}
             name="expectedUsefulLife"
             type="text"
-            label="Asset Name"
+            label="Expected Useful Life"
           />
         </FormInputWrapper>
       </GridItem>
@@ -39,7 +39,7 @@ const LifeExpectancyCurrentAge = () => {
             as={FormTextInput}
             name="currentAge"
             type="number"
-            label="Asset Name"
+            label="Current Age"
           />
         </FormInputWrapper>
       </GridItem>

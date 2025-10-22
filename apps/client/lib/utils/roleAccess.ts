@@ -32,6 +32,7 @@ const ROUTES_PERMISSION_KEY: { [name: string]: PermissionKey } = {
   [`/${ROUTES.TASKS}/[id]`]: 'task',
   [`/${ROUTES.TASKS}/[id]/edit`]: 'task:edit',
   [`/${ROUTES.TICKETS}`]: 'ticket',
+  [`/${ROUTES.TICKETS}/workload-balancing`]: 'ticket',
   [`/${ROUTES.TICKETS}/bulk-update`]: 'ticket:edit',
   [`/${ROUTES.REPORT}`]: 'report',
   [`/${ROUTES.REPORT}/[id]/detail`]: 'report',

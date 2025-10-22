@@ -29,7 +29,7 @@ const AssetParameters = (props: AssetParametersProps) => {
       currentAge: null,
       purchasePrice: null,
       location: null,
-      currentCondition: null,
+      currentCondition: 0,
     },
     validationSchema: assetParameterSchema,
     enableReinitialize: true,

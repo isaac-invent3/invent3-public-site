@@ -17,7 +17,7 @@ const CurrentCondition = () => {
       sectionMaxWidth="141px"
       customSpacing="16px"
       description="Choose the asset’s current condition."
-      title="CurrentCondition"
+      title="Current Condition"
       isRequired
     >
       <Slider

@@ -153,6 +153,9 @@ export const AssetSlice = createSlice({
     setAsset: (state, { payload }: PayloadAction<Asset>) => {
       state.asset = payload;
     },
+    updateAsset: (state, { payload }: PayloadAction<Partial<Asset>>) => {
+      if (state.asset) state.asset = { ...state.asset, ...payload };
+    },
     setAssetImage: (state, { payload }: PayloadAction<AssetImage[]>) => {
       state.assetImages = payload;
     },
@@ -210,6 +213,7 @@ export const AssetSlice = createSlice({
 export const {
   setAsset,
   clearAsset,
+  updateAsset,
   setAssetForm,
   setAssetImage,
   clearAssetForm,

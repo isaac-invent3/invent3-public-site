@@ -2,17 +2,18 @@ import {
   Flex,
   Heading,
   HStack,
-  SimpleGrid,
   Skeleton,
   Text,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
 
-import { useAppSelector } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
 import AnomalyDrawer from '../../Drawers/AnomalyDrawer';
 import { useGetBmsAnomaliesByAssetIdQuery } from '~/lib/redux/services/bms/bmsAnomalies.services';
+import { useEffect } from 'react';
+import { updateAsset } from '~/lib/redux/slices/AssetSlice';
 
 interface SummaryInfoProps {
   label: string;
@@ -58,6 +59,7 @@ const Summary = () => {
 
   const { data: bmsAnomalies, isLoading: isLoadingAnomalies } =
     useGetBmsAnomaliesByAssetIdQuery({ assetId }, { skip: !assetId });
+  const dispatch = useAppDispatch();
 
   const Summary1 = [
     // {
@@ -77,22 +79,12 @@ const Summary = () => {
     },
   ];
 
-  const Summary2 = [
-    {
-      label: 'Last Maintenance Date',
-      value:
-        lastMaintenanceDate !== null
-          ? dateFormatter(lastMaintenanceDate, 'Do MMM, YYYY')
-          : 'N/A',
-    },
-    {
-      label: 'Next Maintenance Date',
-      value:
-        nextMaintenanceDate !== null
-          ? dateFormatter(nextMaintenanceDate, 'Do MMM, YYYY')
-          : 'N/A',
-    },
-  ];
+  useEffect(() => {
+    if (bmsAnomalies?.data && bmsAnomalies?.data?.items?.length > 0) {
+      dispatch(updateAsset({ hasAnomaly: true }));
+    }
+  }, [bmsAnomalies]);
+
   return (
     <>
       <VStack width="full" alignItems="flex-start" spacing="8px">

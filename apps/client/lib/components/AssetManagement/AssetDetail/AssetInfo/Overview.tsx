@@ -55,6 +55,7 @@ const Overview = () => {
     riskScoreColor,
     healthName,
     assetHealthColorCode,
+    hasAnomaly,
   } = assetData;
 
   const assetInfo2 = [
@@ -119,13 +120,15 @@ const Overview = () => {
             />
           </Flex>
         )}
-        <GenericStatusBox
-          text="Anomally Detected"
-          colorCode="#f50000"
-          showDot={false}
-          rounded="full"
-          useColorCodeAsTextColor
-        />
+        {hasAnomaly && (
+          <GenericStatusBox
+            text="Anomally Detected"
+            colorCode="#f50000"
+            showDot={false}
+            rounded="full"
+            useColorCodeAsTextColor
+          />
+        )}
       </VStack>
       <VStack alignItems="flex-start" width="full" spacing="16px">
         <HStack width="full" justifyContent="space-between">

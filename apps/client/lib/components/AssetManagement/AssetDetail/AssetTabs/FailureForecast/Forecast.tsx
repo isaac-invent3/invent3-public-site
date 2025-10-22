@@ -15,7 +15,7 @@ const Forecast = (props: ForecastProps) => {
   const today = moment();
   const start = moment(data?.forecastedLabelStartDate);
   const end = moment(data?.forcastedLabelEndDate);
-  const diffStartDays = today.diff(start, 'days');
+  const diffStartDays = start.diff(today, 'days');
   const diffEndDays = today.diff(end, 'days');
   return (
     <VStack width="full" spacing="16px" alignItems="flex-start">
@@ -30,8 +30,8 @@ const Forecast = (props: ForecastProps) => {
           <VStack width="full" alignItems="flex-start" spacing="5px">
             <HStack spacing="12px">
               <Text fontSize="24px" lineHeight="130%" color="neutral.800">
-                {data?.forecastedLabelStartDate && data?.forcastedLabelEndDate
-                  ? `${diffStartDays} - ${diffEndDays} days`
+                {data?.forecastedLabelStartDate
+                  ? `${diffStartDays} days`
                   : 'N/A'}
               </Text>
               <GenericStatusBox

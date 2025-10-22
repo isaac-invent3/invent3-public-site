@@ -23,8 +23,9 @@ const CommonDatePicker = (props: CommonDatePickerProps) => {
         }
       }}
       dateFormat="mm/dd/yyyy"
-      // showMonthDropdown
-      // showYearDropdown
+      showMonthDropdown
+      showYearDropdown
+      // scrollableYearDropdown
       minDate={minDate}
       maxDate={maxDate}
       selected={selectedDate}

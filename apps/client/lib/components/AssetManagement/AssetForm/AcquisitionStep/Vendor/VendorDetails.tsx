@@ -111,8 +111,12 @@ const VendorDetails = () => {
                   pageNumber={pageNumber}
                   setPageNumber={setPageNumber}
                   handleSelect={(option) => {
-                    setSelectedVendor(Number(option?.value) ?? undefined);
-                    dispatch(updateAssetForm({ vendorFormDetails: null }));
+                    if (!option) {
+                      dispatch(updateAssetForm({ vendorDetails: null! }));
+                    }
+                    setSelectedVendor(
+                      option?.value ? Number(option?.value) : undefined
+                    );
                   }}
                   selectedOption={
                     vendorDetails
@@ -140,7 +144,7 @@ const VendorDetails = () => {
               spacing="16px"
             >
               <Text color="neutral.600">Details</Text>
-              {vendorDetails.vendorName ? (
+              {vendorDetails?.vendorName ? (
                 <VStack width="full" spacing="4px" alignItems="flex-start">
                   <Text size="lg" color="black" fontWeight={700}>
                     {vendorDetails?.vendorName}

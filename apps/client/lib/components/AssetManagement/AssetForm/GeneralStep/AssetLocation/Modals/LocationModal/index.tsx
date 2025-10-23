@@ -1,3 +1,4 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 /* eslint-disable no-unused-vars */
 import {
   Flex,
@@ -9,7 +10,7 @@ import {
   Stack,
   VStack,
 } from '@chakra-ui/react';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 import { useEffect, useState } from 'react';
 import { locationSchema } from '~/lib/schemas/asset/location.schema';
 import { Button, GenericModal, ModalHeading } from '@repo/ui/components';
@@ -46,7 +47,7 @@ const LocationModal = (props: LocationModalProps) => {
   const localLocation = useAppSelector((state) => state.location.localLocation);
   const dispatch = useAppDispatch();
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       countryId: assetFormDetails.countryId,
       stateId: assetFormDetails.stateId,

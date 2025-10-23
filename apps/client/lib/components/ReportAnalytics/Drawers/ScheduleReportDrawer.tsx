@@ -1,3 +1,4 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import {
   DrawerBody,
   DrawerFooter,
@@ -17,7 +18,7 @@ import {
   GenericDrawer,
   TextInput,
 } from '@repo/ui/components';
-import { Field, FormikProvider, useFormik } from 'formik';
+import { Field, FormikProvider } from 'formik';
 import { getSession, useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import EndDateTime from '~/lib/components/Common/RecurrenceComponents/EndDateTime';
@@ -57,7 +58,7 @@ const ScheduleReportDrawer = (props: ScheduleReportDrawerProps) => {
     onOpen: onScheduleSuccessOpen,
   } = useDisclosure();
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       reportId,
       frequencyId: null,

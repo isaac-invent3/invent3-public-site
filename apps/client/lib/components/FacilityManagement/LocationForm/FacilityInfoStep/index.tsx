@@ -1,7 +1,9 @@
 'use client';
 
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
+
 import { Flex, useDisclosure, VStack } from '@chakra-ui/react';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 
 import { getSession } from 'next-auth/react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
@@ -47,7 +49,7 @@ const FacilityFormPage = () => {
     []
   );
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       facilities: [
         {
@@ -163,7 +165,7 @@ const FacilityFormPage = () => {
       </FormikProvider>
       <GenericSuccessModal
         isOpen={isOpenSuccess}
-        onClose={() => router.push(`${ROUTES.LOCATION}`)}
+        onClose={() => router.push(`/${ROUTES.LOCATION}`)}
         successText="Facility Added Successfully"
         mainModalStyle={{ closeOnOverlayClick: false, closeOnEsc: false }}
       >

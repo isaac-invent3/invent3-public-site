@@ -1,6 +1,7 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
 import { Button, FormInputWrapper, GenericModal } from '@repo/ui/components';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 import { useState } from 'react';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { assigneeSchema } from '~/lib/schemas/general.schema';
@@ -27,7 +28,7 @@ const UserSelectModal = (props: UserSelectModalProps) => {
   } = props;
   const [selectedUser, setSelectedUser] = useState<Option | null>(null);
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       assignee: null,
     },

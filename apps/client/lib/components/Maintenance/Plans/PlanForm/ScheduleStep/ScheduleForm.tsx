@@ -1,5 +1,6 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import { HStack, useDisclosure, VStack } from '@chakra-ui/react';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 
 import { Button, LeaveDialogModal } from '@repo/ui/components';
 import moment from 'moment';
@@ -29,7 +30,7 @@ const ScheduleForm = (props: ScheduleFormProps) => {
     .subtract(1, 'days')
     .format('DD/MM/YYYY');
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       localId: formDetails.localId ?? null,
       name: formDetails.name ?? null,

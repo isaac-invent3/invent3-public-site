@@ -1,5 +1,6 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import { Flex, SimpleGrid, Text, VStack } from '@chakra-ui/react';
-import { Field, FormikProvider, useFormik } from 'formik';
+import { Field, FormikProvider } from 'formik';
 
 import {
   FormActionButtons,
@@ -32,7 +33,7 @@ const VendorInfo = (props: VendorInfoProps) => {
   );
   const dispatch = useAppDispatch();
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       logo: null,
       vendorName: formDetails?.vendorName ?? null,

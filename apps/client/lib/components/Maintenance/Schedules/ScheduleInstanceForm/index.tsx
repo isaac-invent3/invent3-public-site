@@ -1,7 +1,8 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import { Flex, useDisclosure, VStack } from '@chakra-ui/react';
 
 import { useAppSelector } from '~/lib/redux/hooks';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 import { scheduleSchema } from '~/lib/schemas/maintenance.schema';
 import { Button, FormActionButtons } from '@repo/ui/components';
 import { useUpdateScheduleInstanceandTaskInstancesMutation } from '~/lib/redux/services/maintenance/scheduleInstance.services';
@@ -25,7 +26,7 @@ const ScheduleInstanceForm = () => {
     useUpdateScheduleInstanceandTaskInstancesMutation({});
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       name: formDetails.name ?? null,
       planId: formDetails.planId ?? null,

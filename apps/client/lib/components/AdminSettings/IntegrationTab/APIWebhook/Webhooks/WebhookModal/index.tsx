@@ -1,3 +1,4 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 /* eslint-disable no-unused-vars */
 import {
   Flex,
@@ -8,7 +9,7 @@ import {
   SimpleGrid,
   VStack,
 } from '@chakra-ui/react';
-import { Field, FormikProvider, useFormik } from 'formik';
+import { Field, FormikProvider } from 'formik';
 
 import {
   Button,
@@ -60,7 +61,7 @@ const WebhookModal = (props: WebhookModalProps) => {
   const [permissionError, setPermissionError] = useState('');
   const { handleSubmit } = useCustomMutation();
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       webhookUrlName: data?.webhookUrlName || null,
       url: data?.url || null,

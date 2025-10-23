@@ -1,5 +1,7 @@
 'use client';
 
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
+
 import {
   Flex,
   HStack,
@@ -7,7 +9,7 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import { Field, FormikProvider, useFormik } from 'formik';
+import { Field, FormikProvider } from 'formik';
 
 import {
   Button,
@@ -38,7 +40,7 @@ const UserRoleForm = () => {
   const [permissionError, setPermissionError] = useState('');
   const router = useRouter();
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       roleName: '',
       description: undefined,

@@ -1,3 +1,4 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import {
   DrawerBody,
   DrawerFooter,
@@ -6,7 +7,7 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 
 import {
   BackButton,
@@ -81,7 +82,7 @@ const TaskFormDrawer = (props: TaskFormDrawerProps) => {
 
   const isCreating = isCreatingTask || isCreatingTaskInstance;
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       taskId: data?.taskId ?? null,
       taskTypeId: data?.taskTypeId ?? null,

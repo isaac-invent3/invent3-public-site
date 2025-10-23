@@ -1,9 +1,10 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import { StackDivider, VStack } from '@chakra-ui/react';
 import React from 'react';
 import Preferences from './Preference';
 import AlertConfiguration from './AlertConfiguration';
 import { Button } from '@repo/ui/components';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useUpdateSettingsMutation } from '~/lib/redux/services/utility.services';
 import { useAppSelector } from '~/lib/redux/hooks';
@@ -15,7 +16,7 @@ const Notifications = () => {
   const [updateSettings, { isLoading }] = useUpdateSettingsMutation();
   const settings = useAppSelector((state) => state.settings.settings);
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       emailNotifications: settings?.emailNotifications,
       pushNotifications: settings?.pushNotifications,
@@ -44,6 +45,7 @@ const Notifications = () => {
       setSubmitting(false);
     },
   });
+
   return (
     <FormikProvider value={formik}>
       <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>

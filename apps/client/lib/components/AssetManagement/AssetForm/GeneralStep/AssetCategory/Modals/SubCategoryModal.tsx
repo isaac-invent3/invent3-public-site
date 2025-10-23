@@ -1,6 +1,7 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 /* eslint-disable no-unused-vars */
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
-import { Field, FormikProvider, useField, useFormik } from 'formik';
+import { Field, FormikProvider, useField } from 'formik';
 
 import {
   Button,
@@ -28,7 +29,7 @@ const SubCategoryModal = (props: SubCategoryModalProps) => {
   const [field, meta, helpers] = useField('subCategoryId');
   const dispatch = useAppDispatch();
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       categoryId: defaultCategory,
       subCategoryName: '',

@@ -4,7 +4,7 @@ import {
   FormInputWrapper,
   RadioBox,
 } from '@repo/ui/components';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import AssetSelect from '~/lib/components/Common/SelectComponents/AssetSelect';
@@ -23,6 +23,7 @@ import PlanTitle from '../../Common/PlanTitle';
 import StartDate from '../../Common/StartDate';
 import AssetGroupContext from './AssetGroupContext';
 import AssetGroupType from './AssetGroupType';
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 
 interface PlanInfoStepProps {
   activeStep: number;
@@ -59,7 +60,7 @@ const PlanInfoStep = (props: PlanInfoStepProps) => {
   const previousDay = moment().subtract(1, 'days').format('DD/MM/YYYY');
   const todayDate = moment().format('DD/MM/YYYY');
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues,
     validationSchema: planSchema(
       isDefaultPlan,

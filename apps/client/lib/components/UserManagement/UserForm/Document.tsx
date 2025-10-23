@@ -1,5 +1,6 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import { Flex, useMediaQuery, VStack } from '@chakra-ui/react';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 
 import { FormActionButtons, FormInputWrapper } from '@repo/ui/components';
 import { Document } from '~/lib/interfaces/general.interfaces';
@@ -25,7 +26,7 @@ const DocumentStep = (props: DocumentStepProps) => {
     documents: formDetails.documents ?? [],
   };
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues,
     validationSchema: documentSchema,
     enableReinitialize: true,

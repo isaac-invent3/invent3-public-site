@@ -1,7 +1,8 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import { Flex, HStack, useDisclosure } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { Asset } from '~/lib/interfaces/asset/general.interface';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 import { assetDisposeSchema } from '~/lib/schemas/asset/main.schema';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { clearAsset, setAsset } from '~/lib/redux/slices/AssetSlice';
@@ -38,7 +39,7 @@ const AssetDispose = (props: AssetDisposeProps) => {
   );
   const { handleSubmit } = useCustomMutation();
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       disposalDate: '',
       disposalReasonId: undefined,

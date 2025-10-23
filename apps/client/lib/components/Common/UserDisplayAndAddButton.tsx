@@ -18,6 +18,7 @@ interface UserDisplayAndAddButtonProps {
   customAvatarStyle?: AvatarProps;
   sectionInfoText?: string;
   sectionInfoTitle?: string;
+  name?: string;
 }
 
 const UserDisplayAndAddButton = (props: UserDisplayAndAddButtonProps) => {
@@ -27,12 +28,13 @@ const UserDisplayAndAddButton = (props: UserDisplayAndAddButtonProps) => {
     sectionInfoText,
     customAvatarStyle,
     sectionInfoTitle,
+    name,
   } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
-      <HStack>
+      <HStack id={name}>
         {selectedUser ? (
           <HStack cursor="pointer" role="group">
             <UserInfo

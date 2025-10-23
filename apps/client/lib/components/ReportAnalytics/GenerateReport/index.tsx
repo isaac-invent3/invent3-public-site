@@ -1,7 +1,9 @@
 'use client';
+
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import { Box, Flex, Grid, Icon, Text, VStack } from '@chakra-ui/react';
 import { Button, ErrorMessage } from '@repo/ui/components';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 import { ChevronLeftIcon } from '../../CustomIcons';
 import Header from '../Header';
 import DynamicConditions from './DynamicConditions';
@@ -55,7 +57,7 @@ const GenerateReport = () => {
     useState<ListResponse<GenerateReportResponse> | null>(null);
   const user = session?.data?.user;
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues,
     enableReinitialize: false,
     validationSchema: generateReportSchema(),

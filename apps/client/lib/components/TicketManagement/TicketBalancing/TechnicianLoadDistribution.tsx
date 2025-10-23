@@ -25,14 +25,14 @@ const TechnicianLoadDistribution = () => {
     () => {
       const baseColumns = [
         columnHelper.accessor('name', {
-          cell: (info) => info.getValue(),
+          cell: (info) => info.getValue() ?? 'N/A',
           header: 'Technician',
           enableSorting: false,
         }),
-        columnHelper.display({
+        columnHelper.accessor('skillGroup', {
+          cell: (info) => info.getValue() ?? 'N/A',
           header: 'Skill Level',
-          cell: 'Electrical',
-          enableSorting: true,
+          enableSorting: false,
         }),
         columnHelper.accessor('location', {
           cell: (info) => info.getValue() ?? 'N/A',
@@ -119,10 +119,10 @@ const TechnicianLoadDistribution = () => {
 
       <DataTable
         columns={columns}
-        data={data?.data ?? []}
+        data={data?.data?.items ?? []}
         isLoading={isLoading}
         isFetching={isFetching}
-        showFooter={false}
+        showFooter={data?.data ? data?.data?.totalPages > 1 : false}
         pageSize={pageSize}
         pageNumber={pageNumber}
         setPageNumber={setPageNumber}

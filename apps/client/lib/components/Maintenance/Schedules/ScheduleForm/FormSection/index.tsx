@@ -1,5 +1,6 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import { Divider, Flex, VStack } from '@chakra-ui/react';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 
 import { scheduleSchema } from '~/lib/schemas/maintenance.schema';
 import SectionOne from './SectionOne';
@@ -42,7 +43,7 @@ const FormSection = (props: FormSectionProps) => {
     'DD/MM/YYYY'
   );
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       name: formDetails.name ?? null,
       planId: formDetails.planId ?? null,

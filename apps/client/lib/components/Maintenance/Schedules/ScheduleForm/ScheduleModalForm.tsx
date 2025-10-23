@@ -1,6 +1,7 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 /* eslint-disable no-unused-vars */
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 
 import {
   BackButton,
@@ -47,7 +48,7 @@ const ScheduleModalForm = (props: ScheduleModalFormProps) => {
 
   const planEndDate = moment(endDate).format('DD/MM/YYYY');
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       name: null,
       planId: planId ?? null,

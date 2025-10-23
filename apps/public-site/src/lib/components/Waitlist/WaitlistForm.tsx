@@ -66,12 +66,12 @@ const WaitListForm = () => {
           body: JSON.stringify({
             access_key: process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY!,
             subject: 'New Waitlist Signup',
-            type: "Waitlist",
-            "Company Name": values.companyName,
-            "Company Website": values.companyWebsite,
-            "Full Name": values.fullName,
-            "Industry": values.industry,
-            "Email Address": values.emailAddress,
+            type: 'Waitlist',
+            'Company Name': values.companyName,
+            'Company Website': values.companyWebsite,
+            'Full Name': values.fullName,
+            Industry: values.industry,
+            'Email Address': values.emailAddress,
           }),
         });
 
@@ -90,7 +90,8 @@ const WaitListForm = () => {
         } else {
           toast({
             title: 'Submission Failed',
-            description: result.message || 'Something went wrong. Try again later.',
+            description:
+              result.message || 'Something went wrong. Try again later.',
             status: 'error',
             duration: 4000,
             isClosable: true,

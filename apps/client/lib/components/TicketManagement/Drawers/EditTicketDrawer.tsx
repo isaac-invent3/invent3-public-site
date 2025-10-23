@@ -1,5 +1,6 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import { useDisclosure, useToast } from '@chakra-ui/react';
-import { useFormik } from 'formik';
+import {} from 'formik';
 import { useSession } from 'next-auth/react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { Task } from '~/lib/interfaces/task.interfaces';
@@ -73,7 +74,7 @@ const EditTicketDrawer = (props: EditTicketDrawerProps) => {
     onOpen: reOpenSuccessOnOpen,
   } = useDisclosure();
 
-  const formik = useFormik<EditTicketForm>({
+  const formik = useAppFormik<EditTicketForm>({
     initialValues: {
       tasks: [],
       taskCount: 0,

@@ -32,7 +32,12 @@ const TaskPriority = (props: TaskPriorityProps) => {
       description="Set the urgency level for this task"
       isRequired
     >
-      <VStack width="full" spacing="8px" alignItems="flex-start">
+      <VStack
+        width="full"
+        spacing="8px"
+        alignItems="flex-start"
+        id="priorityId"
+      >
         <SelectableButtonGroup
           options={generateOptions(
             data?.data.items,

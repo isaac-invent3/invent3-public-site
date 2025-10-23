@@ -19,7 +19,7 @@ import {
   GenericDrawer,
   SelectableButtonGroup,
 } from '@repo/ui/components';
-import { Field, FormikProvider, useFormik } from 'formik';
+import { Field, FormikProvider } from 'formik';
 import moment from 'moment';
 import { getSession } from 'next-auth/react';
 import AssetSelect from '~/lib/components/Common/SelectComponents/AssetSelect';
@@ -39,6 +39,7 @@ import {
 import CreateTicketSuccessModal from '../Modals/CreateTicketSuccessModal';
 import TicketTypeSelect from './Common/TicketTypeSelect';
 import AttachFile from '../../Common/AttachFileAndView/AttachFile';
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 
 interface CreateTicketDrawerProps {
   isOpen: boolean;
@@ -78,7 +79,7 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
     issueReportDate: moment().utc().toISOString(),
   };
 
-  const formik = useFormik<CreateTicketForm>({
+  const formik = useAppFormik<CreateTicketForm>({
     initialValues,
     enableReinitialize: false,
     validationSchema: createTicketSchema,
@@ -226,7 +227,12 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                     title="Priority"
                     isRequired
                   >
-                    <VStack width="full" spacing="4px" alignItems="flex-start">
+                    <VStack
+                      width="full"
+                      spacing="4px"
+                      alignItems="flex-start"
+                      id="ticketPriorityId"
+                    >
                       <SelectableButtonGroup
                         isMultiSelect={false}
                         buttonVariant="secondary"
@@ -281,6 +287,7 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                         );
                       }}
                       sectionInfoTitle="Raised By"
+                      name="reportedByEmployeeId"
                     />
                   </FormInputWrapper>
 
@@ -301,6 +308,7 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                         );
                       }}
                       sectionInfoTitle="Assigned To"
+                      name="assignedToEmployeeName"
                     />
                   </FormInputWrapper>
 

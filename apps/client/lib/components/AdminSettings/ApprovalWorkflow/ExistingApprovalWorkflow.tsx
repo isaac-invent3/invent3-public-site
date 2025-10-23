@@ -16,7 +16,7 @@ import {
   ApprovalLevel,
   ApprovalWorkflow,
 } from '~/lib/interfaces/approvalWorkflow.interfaces';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 import { FORM_ENUM } from '~/lib/utils/constants';
 import { createApprovalWorkflowSchema } from '~/lib/schemas/settings.schema';
 import {
@@ -30,6 +30,7 @@ import { Button, FormSelect, GenericDeleteModal } from '@repo/ui/components';
 import SectionWrapper from '../../UserSettings/Common/SectionWrapper';
 import Approvers from './Common/Approvers';
 import { options } from './CreateApprovalWorkflow';
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 
 interface ExistingApprovalWorkflowProps {
   data: ApprovalWorkflow;
@@ -55,7 +56,7 @@ const ExistingApprovalWorkflow = ({ data }: ExistingApprovalWorkflowProps) => {
     useUpdateApprovalWorkflowMutation();
   const [deleteApprovalWorkflow, { isLoading: isDeleting }] =
     useDeleteApprovalWorkflowMutation();
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       approvalTypeId: data?.approvalTypeId ?? null,
       approvalLevel: 1,
@@ -347,7 +348,7 @@ const ExistingApprovalWorkflow = ({ data }: ExistingApprovalWorkflowProps) => {
                 )}
                 <VStack width="full" spacing="32px">
                   <Accordion width="full" allowToggle>
-                    {formik.values.levels.map((level, index) => (
+                    {formik.values.levels.map((level, index: number) => (
                       <Approvers
                         data={level}
                         key={index}

@@ -1,5 +1,6 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import { Flex, VStack } from '@chakra-ui/react';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { FormActionButtons } from '@repo/ui/components';
@@ -21,7 +22,7 @@ const ManualInsertion = (props: ManualInsertionProps) => {
   const formDetails = useAppSelector((state) => state.user.userForm);
   const dispatch = useAppDispatch();
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       picture: formDetails?.picture ?? null,
       firstName: formDetails?.firstName ?? null,

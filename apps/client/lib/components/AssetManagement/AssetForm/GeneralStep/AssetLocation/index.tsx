@@ -53,7 +53,12 @@ const AssetLocation = (props: AssetLocationProps) => {
         maxW: { md: '118px' },
       }}
     >
-      <Grid templateColumns="repeat(4, 1fr)" gap="16px" width="full">
+      <Grid
+        templateColumns="repeat(4, 1fr)"
+        gap="16px"
+        width="full"
+        id="countryId"
+      >
         <GridItem colSpan={4}>
           <Grid templateColumns="repeat(4, 1fr)" width="full" gap="16px">
             {facilityName && (

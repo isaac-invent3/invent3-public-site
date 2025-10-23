@@ -1,3 +1,4 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import {
   Accordion,
   Flex,
@@ -8,7 +9,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 import { createApprovalWorkflowSchema } from '~/lib/schemas/settings.schema';
 import { Button, FormSelect } from '@repo/ui/components';
 import { getSession } from 'next-auth/react';
@@ -47,7 +48,7 @@ const CreateApprovalWorkflow = ({
   const { handleSubmit } = useCustomMutation();
   const [createApprovalWorkflow, { isLoading }] =
     useCreateApprovalWorkflowMutation();
-  const formik = useFormik<CreateApprovalWorkflowFormikValues>({
+  const formik = useAppFormik<CreateApprovalWorkflowFormikValues>({
     initialValues: {
       approvalTypeId: null,
       approvalLevel: 1,

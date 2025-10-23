@@ -21,7 +21,12 @@ const TaskAssignedTo = (props: TaskAssignedToProps) => {
       description="Select the person responsible for this task"
       isRequired
     >
-      <VStack width="full" spacing="4px" alignItems="flex-start">
+      <VStack
+        width="full"
+        spacing="4px"
+        alignItems="flex-start"
+        id="assignedToEmployeeName"
+      >
         <UserDisplayAndAddButton
           selectedUser={values?.assignedToEmployeeName}
           handleSelectUser={(user) => {

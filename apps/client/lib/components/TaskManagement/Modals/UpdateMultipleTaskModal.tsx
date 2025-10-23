@@ -1,3 +1,4 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import {
   Grid,
   HStack,
@@ -12,7 +13,7 @@ import {
   GenericModal,
   ModalHeading,
 } from '@repo/ui/components';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 import { getSession } from 'next-auth/react';
 import { useState } from 'react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
@@ -70,7 +71,7 @@ const UpdateMultipleTaskModal = (props: UpdateMultipleTaskModalProps) => {
     taskInstanceIds: selectedTaskIds,
   });
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       taskStatusId: undefined,
       taskPriorityId: undefined,

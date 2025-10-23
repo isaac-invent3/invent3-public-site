@@ -10,7 +10,7 @@ const SectionOne = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <SimpleGrid width="full" columns={{ base: 1, sm: 2, lg: 4 }} gap="16px">
+    <SimpleGrid width="full" columns={{ base: 1, sm: 2, lg: 3 }} gap="16px">
       {isLoading &&
         Array(5)
           .fill(0)
@@ -44,7 +44,7 @@ const SectionOne = () => {
               name={item.lifeCycleStageDisplayName}
               isOpen={isOpen}
               onClose={onClose}
-              columnId={item?.searchColumnValue!}
+              columnId={'LifeCycle'}
               columnName={item?.searchColumnName}
             />
           </>

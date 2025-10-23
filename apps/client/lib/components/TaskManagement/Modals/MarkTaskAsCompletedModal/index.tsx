@@ -1,3 +1,4 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import {
   Heading,
   HStack,
@@ -6,7 +7,7 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import { Field, FormikProvider, useFormik } from 'formik';
+import { Field, FormikProvider } from 'formik';
 
 import {
   Button,
@@ -43,7 +44,7 @@ const MarkTaskAsCompletedModal = (props: MarkTaskAsCompletedModalProps) => {
     (state) => state.general.appConfigValues
   );
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       actualCost: null,
     },

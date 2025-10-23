@@ -1,8 +1,10 @@
 'use client';
 
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
+
 import { Flex, Heading, Text, useToast, VStack } from '@chakra-ui/react';
 import { twoFASchema } from '~/lib/schemas/auth.schema';
-import { Field, FormikProvider, useFormik } from 'formik';
+import { Field, FormikProvider } from 'formik';
 import { Button, FormTextInput } from '@repo/ui/components';
 import { authApi } from '~/lib/redux/services/auth.services';
 import { useAppDispatch } from '~/lib/redux/hooks';
@@ -18,7 +20,7 @@ const TwoFactorValidation = (props: TwoFactorValidationProps) => {
   const dispatch = useAppDispatch();
   const toast = useToast();
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       code: null!,
     },

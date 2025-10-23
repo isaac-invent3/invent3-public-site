@@ -220,7 +220,7 @@ export const ticketApi = createApi({
       }),
     }),
     getTechnicianLoadDistribution: builder.query<
-      BaseApiResponse<TechnicianLoad[]>,
+      BaseApiResponse<ListResponse<TechnicianLoad>>,
       QueryParams
     >({
       query: (data) => ({

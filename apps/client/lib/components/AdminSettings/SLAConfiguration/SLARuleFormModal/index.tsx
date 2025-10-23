@@ -1,3 +1,4 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 /* eslint-disable no-unused-vars */
 import {
   HStack,
@@ -7,7 +8,7 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 
 import {
   Button,
@@ -60,7 +61,7 @@ const SLARuleFormModal = (props: SLARuleFormModalProps) => {
     useUpdateSLADefintionMutation({});
   const { handleSubmit } = useCustomMutation();
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       ticketTypeId: data?.ticketTypeId ?? null,
       priorityId: data?.priorityId ?? null,

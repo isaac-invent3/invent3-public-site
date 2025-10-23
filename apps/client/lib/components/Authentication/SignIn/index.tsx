@@ -1,5 +1,7 @@
 'use client';
 
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
+
 import {
   Divider,
   Flex,
@@ -11,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import { loginSchema } from '~/lib/schemas/auth.schema';
-import { Field, FormikProvider, useFormik } from 'formik';
+import { Field, FormikProvider } from 'formik';
 import AuthLayout from '../AuthLayout';
 import SSOLogin from './SSOLogin';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -86,7 +88,7 @@ const SignIn = () => {
     }
   };
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       email: '',
       password: '',

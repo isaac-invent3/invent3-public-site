@@ -1,3 +1,4 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import { Heading, HStack, ModalBody, VStack } from '@chakra-ui/react';
 import {
   Button,
@@ -5,7 +6,7 @@ import {
   FormTextInput,
   GenericModal,
 } from '@repo/ui/components';
-import { Field, FormikProvider, useFormik } from 'formik';
+import { Field, FormikProvider } from 'formik';
 import { templateSchema } from '~/lib/schemas/general.schema';
 
 export interface SaveAsTemplatePayload {
@@ -24,7 +25,7 @@ interface SaveReportAsTemplateModalProps {
 const SaveAsTemplateModal = (props: SaveReportAsTemplateModalProps) => {
   const { isOpen, onClose, handleSave, isLoading } = props;
 
-  const formik = useFormik<SaveAsTemplatePayload>({
+  const formik = useAppFormik<SaveAsTemplatePayload>({
     initialValues: {
       templateName: '',
       templateDescription: '',

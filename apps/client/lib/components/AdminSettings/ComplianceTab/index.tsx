@@ -4,19 +4,20 @@ import CompliancePolicies from './CompliancePolicies';
 import ComplianceViolationAlertsAutomation from './ComplianceViolationAlertsAutomation';
 import ComplianceReporting from './ComplianceReporting';
 import { Button } from '@repo/ui/components';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 import { complianceSchema } from '~/lib/schemas/settings.schema';
 import { getSession } from 'next-auth/react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useUpdateSettingsMutation } from '~/lib/redux/services/utility.services';
 import { useAppSelector } from '~/lib/redux/hooks';
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 
 const ComplianceTab = () => {
   const { handleSubmit } = useCustomMutation();
   const [updateSettings, { isLoading }] = useUpdateSettingsMutation();
   const settings = useAppSelector((state) => state.settings.settings);
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       iso27001: settings?.iso27001,
       gdpr: settings?.gdpr,
@@ -56,6 +57,7 @@ const ComplianceTab = () => {
       setSubmitting(false);
     },
   });
+
   return (
     <FormikProvider value={formik}>
       <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>

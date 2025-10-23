@@ -1,5 +1,6 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import { Flex, VStack } from '@chakra-ui/react';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 import React, { useState } from 'react';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { FormActionButtons, SlideTransition } from '@repo/ui/components';
@@ -18,7 +19,7 @@ const CompanyAdminStep = (props: CompanyAdminStepProps) => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [showAdminForm, setShowAdminForm] = useState(false);
   const formDetails = useAppSelector((state) => state.company.companyForm);
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       admins: formDetails.admins ?? [],
     },

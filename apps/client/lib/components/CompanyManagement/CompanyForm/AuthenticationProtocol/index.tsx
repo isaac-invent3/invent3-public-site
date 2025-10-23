@@ -1,3 +1,4 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import {
   Flex,
   HStack,
@@ -12,9 +13,10 @@ import {
   FormTextInput,
   RadioBox,
 } from '@repo/ui/components';
-import { Field, FormikProvider, useFormik } from 'formik';
+import { Field, FormikProvider } from 'formik';
 import { useState } from 'react';
 import InfoCard from '~/lib/components/UI/InfoCard';
+
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateCompanyForm } from '~/lib/redux/slices/CompanySlice';
 import { authenticationMethodSchema } from '~/lib/schemas/company/main.schema';
@@ -41,7 +43,7 @@ const AuthenticationProtocol = (props: AuthenticationProtocolProps) => {
   const [companyAuthProtocol, setCompanyAuthProtocol] = useState(
     AUTHENTICATION_PROTOCOL_ENUM.BASIC
   );
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       companyAuthProtocolId:
         formDetails?.companyAuthProtocolId ??

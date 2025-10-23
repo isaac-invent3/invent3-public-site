@@ -1,6 +1,7 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 /* eslint-disable no-unused-vars */
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
-import { Field, FormikProvider, useField, useFormik } from 'formik';
+import { Field, FormikProvider, useField } from 'formik';
 
 import {
   Button,
@@ -39,7 +40,7 @@ const DepartmentModal = (props: DepartmentModalProps) => {
   const { handleSubmit } = useCustomMutation();
   const { building } = useAppSelector((state) => state.location.localLocation);
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       floorId: (defaultFloorId ?? undefined)!,
       departmentName: '',

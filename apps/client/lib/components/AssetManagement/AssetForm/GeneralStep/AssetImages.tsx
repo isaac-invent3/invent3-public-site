@@ -62,7 +62,7 @@ const AssetImages = () => {
           maxW: { md: '118px' },
         }}
       >
-        <HStack spacing="12px" alignItems="flex-start" width="full">
+        <HStack spacing="12px" alignItems="flex-start" width="full" id="images">
           {/* Display */}
           {meta.value.length >= 1 && (
             <HStack spacing="12px" wrap="wrap" width="full" maxW="max-content">

@@ -106,7 +106,7 @@ const AssetSchedules = () => {
       description="Plans attached to the selected asset"
       isRequired
     >
-      <Flex direction="column" width="full" gap="8px">
+      <Flex direction="column" width="full" gap="8px" id="scheduleId">
         <DataTable
           columns={columns}
           data={data?.data?.items ?? []}

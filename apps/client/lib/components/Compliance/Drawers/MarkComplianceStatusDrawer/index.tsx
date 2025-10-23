@@ -1,3 +1,4 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import {
   DrawerBody,
   DrawerFooter,
@@ -18,7 +19,7 @@ import {
   FormTextInput,
   GenericDrawer,
 } from '@repo/ui/components';
-import { Field, FormikProvider, useFormik } from 'formik';
+import { Field, FormikProvider } from 'formik';
 import { getSession } from 'next-auth/react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useMarkComplianceStatusMutation } from '~/lib/redux/services/asset/compliance.services';
@@ -54,7 +55,7 @@ const MarkComplianceStatusDrawer = (props: MarkComplianceStatusDrawerProps) => {
     date: null,
   };
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues,
     enableReinitialize: false,
     validationSchema: markComplianceSchema,

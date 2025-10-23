@@ -1,5 +1,7 @@
 'use client';
 
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
+
 import {
   Avatar,
   AvatarGroup,
@@ -10,7 +12,7 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import { Field, FormikProvider, useFormik } from 'formik';
+import { Field, FormikProvider } from 'formik';
 
 import {
   Button,
@@ -74,7 +76,7 @@ const UserGroupForm = ({ type }: UserGroupFormProps) => {
     onOpen: onOpenSuccess,
   } = useDisclosure();
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       groupName: groupName,
       userIds: newlyAddedUsers.map((item) => item.userId),

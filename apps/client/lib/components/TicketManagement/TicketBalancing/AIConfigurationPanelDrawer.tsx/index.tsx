@@ -1,3 +1,4 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import {
   DrawerBody,
   DrawerFooter,
@@ -20,8 +21,9 @@ import {
   GenericDrawer,
   RadioBox,
 } from '@repo/ui/components';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 import React from 'react';
+
 import { CreateTicketForm } from '~/lib/interfaces/ticket.interfaces';
 import { createTicketSchema } from '~/lib/schemas/ticket.schema';
 
@@ -76,7 +78,7 @@ const AIConfigurationPanelDrawer = (props: AIConfigurationPanelDrawerProps) => {
     ticketPriorityId: null,
   };
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues,
     enableReinitialize: false,
     validationSchema: createTicketSchema,

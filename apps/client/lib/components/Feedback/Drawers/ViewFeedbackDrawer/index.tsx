@@ -1,3 +1,4 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import {
   DrawerBody,
   DrawerHeader,
@@ -19,7 +20,7 @@ import {
   GenericPopover,
   LoadingSpinner,
 } from '@repo/ui/components';
-import { Field, FormikProvider, useFormik } from 'formik';
+import { Field, FormikProvider } from 'formik';
 import { getSession, useSession } from 'next-auth/react';
 import { useMemo, useState } from 'react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
@@ -94,7 +95,7 @@ const ViewFeedbackDrawer = (props: FeedbackDrawerProps) => {
   const [resolveFeedback, { isLoading: isResolving }] =
     useResolveFeedbackMutation();
 
-  const formik = useFormik<Partial<Feedback>>({
+  const formik = useAppFormik<Partial<Feedback>>({
     initialValues: {
       assignedTo: feedback?.assignedTo ?? null,
       resolutionNote: feedback?.resolutionNote ?? '',

@@ -1,3 +1,4 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import {
   DrawerBody,
   DrawerFooter,
@@ -6,7 +7,7 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import { Field, FormikProvider, useFormik } from 'formik';
+import { Field, FormikProvider } from 'formik';
 
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import {
@@ -44,7 +45,7 @@ const EditTemplateDrawer = (props: EditTemplateDrawerProps) => {
   } = useDisclosure();
   const dispatch = useAppDispatch();
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       templateName: template?.templateName ?? '',
       description: template?.description ?? '',

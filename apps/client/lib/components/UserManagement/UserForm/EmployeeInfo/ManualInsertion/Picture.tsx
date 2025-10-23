@@ -23,7 +23,12 @@ const Picture = () => {
         sectionMaxWidth="118px"
         customSpacing="104px"
       >
-        <HStack spacing="12px" alignItems="flex-start" width="full">
+        <HStack
+          spacing="12px"
+          alignItems="flex-start"
+          width="full"
+          id="picture"
+        >
           {/* Display */}
           {meta.value?.base64PhotoImage && (
             <Box

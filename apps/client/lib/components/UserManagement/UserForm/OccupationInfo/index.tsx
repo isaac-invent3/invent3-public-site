@@ -1,5 +1,6 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import { Flex, SimpleGrid, VStack } from '@chakra-ui/react';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 
 import { FormActionButtons } from '@repo/ui/components';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
@@ -21,7 +22,7 @@ const OccupationInfo = (props: OccupationInfoProps) => {
   const formDetails = useAppSelector((state) => state.user.userForm);
   const dispatch = useAppDispatch();
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       employmentTypeId: formDetails?.employmentTypeId ?? null,
       jobTitleId: formDetails?.jobTitleId ?? null,

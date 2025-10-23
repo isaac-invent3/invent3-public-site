@@ -1,10 +1,11 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import { Flex, Stack, VStack } from '@chakra-ui/react';
 import {
   FormActionButtons,
   FormInputWrapper,
   FormTextInput,
 } from '@repo/ui/components';
-import { Field, FormikProvider, useFormik } from 'formik';
+import { Field, FormikProvider } from 'formik';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateCompanyForm } from '~/lib/redux/slices/CompanySlice';
 import { ROLE_IDS_ENUM, ROUTES } from '~/lib/utils/constants';
@@ -28,7 +29,7 @@ const CompanyInfoStep = (props: CompanyInfoStepProps) => {
   const isThirdParty =
     user?.roleIds.includes(ROLE_IDS_ENUM.THIRD_PARTY) ?? false;
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       companyLogo: formDetails.companyLogo ?? null,
       companyName: formDetails.companyName ?? '',

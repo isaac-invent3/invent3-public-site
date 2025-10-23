@@ -32,7 +32,12 @@ const TaskType = (props: TaskTypeProps) => {
       description="Add the type of this task"
       isRequired
     >
-      <VStack width="full" spacing="8px" alignItems="flex-start">
+      <VStack
+        width="full"
+        spacing="8px"
+        alignItems="flex-start"
+        id="taskTypeId"
+      >
         <SelectableButtonGroup
           options={generateOptions(data?.data.items, 'typeName', 'taskTypeId')}
           selectedOptions={[

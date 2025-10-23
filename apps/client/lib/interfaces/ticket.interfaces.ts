@@ -164,6 +164,7 @@ interface TechnicianLoad {
   load: number;
   loadStatus: string;
   loadStatusColorCode: string;
+  skillGroup: string;
 }
 
 export type {

@@ -1,12 +1,14 @@
 'use client';
 
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
+
 import { Flex, Grid, HStack, useDisclosure, VStack } from '@chakra-ui/react';
 import {
   Button,
   FormInputWrapper,
   GenericSuccessModal,
 } from '@repo/ui/components';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 import { getSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
@@ -46,7 +48,7 @@ const BulkTicketUpdate = () => {
     ticketIds: getSelectedTicketIds(),
   });
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       ticketStatusId: undefined,
       ticketPriorityId: undefined,

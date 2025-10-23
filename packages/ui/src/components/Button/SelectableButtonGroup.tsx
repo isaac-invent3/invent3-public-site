@@ -16,6 +16,7 @@ interface SelectableButtonGroupProps {
   hasAtLeastOneSelected?: boolean;
   isLoading?: boolean;
   colorOptions?: { id: number; colorCode: string }[];
+  id?: string;
 }
 
 const SelectableButtonGroup = (props: SelectableButtonGroupProps) => {
@@ -30,6 +31,7 @@ const SelectableButtonGroup = (props: SelectableButtonGroupProps) => {
     hasAtLeastOneSelected = false,
     isLoading,
     colorOptions,
+    id,
   } = props;
 
   const handleClick = (item: Option) => {
@@ -67,7 +69,7 @@ const SelectableButtonGroup = (props: SelectableButtonGroupProps) => {
   }
 
   return (
-    <HStack spacing="8px" flexWrap="wrap" {...customContainerStyle}>
+    <HStack spacing="8px" flexWrap="wrap" id={id} {...customContainerStyle}>
       {options.map((item, index) => {
         const isSelected = selectedOptions.some(
           (option) => option?.value === item.value

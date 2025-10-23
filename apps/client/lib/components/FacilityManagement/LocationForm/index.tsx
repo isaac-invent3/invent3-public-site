@@ -1,5 +1,7 @@
 'use client';
 
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
+
 import { Flex, useDisclosure, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import {
@@ -11,7 +13,7 @@ import {
 } from '@repo/ui/components';
 import withFormLeaveDialog from '../../UI/FormLeaveDialogProvider';
 import PageHeader from '../../UI/PageHeader';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 import { ROUTES } from '~/lib/utils/constants';
 import { locationMasterSchema } from '~/lib/schemas/asset/location.schema';
 import FacilityInfoStep from './FacilityInfoStep';
@@ -52,7 +54,7 @@ const LocationForm = (props: LocationFormProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       picture: null,
       countryId: 1,

@@ -1,9 +1,10 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import { StackDivider, VStack } from '@chakra-ui/react';
 import React from 'react';
 import LoginSecurity from './LoginSecurity';
 import PasswordPolicy from './PasswordPolicy';
 import { Button } from '@repo/ui/components';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 import { useAppSelector } from '~/lib/redux/hooks';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useUpdateSettingsMutation } from '~/lib/redux/services/utility.services';
@@ -15,7 +16,7 @@ const SecurityAuthentication = () => {
   const [updateSettings, { isLoading }] = useUpdateSettingsMutation();
   const settings = useAppSelector((state) => state.settings.settings);
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       twoFactorAuthentication: settings?.twoFactorAuthentication,
       sessionDurationTimeoutId: settings?.sessionDurationTimeoutId,
@@ -44,6 +45,7 @@ const SecurityAuthentication = () => {
       setSubmitting(false);
     },
   });
+
   return (
     <FormikProvider value={formik}>
       <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>

@@ -1,6 +1,7 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 /* eslint-disable no-unused-vars */
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
-import { Field, FormikProvider, useFormik } from 'formik';
+import { Field, FormikProvider } from 'formik';
 
 import {
   Button,
@@ -28,7 +29,7 @@ const EditFacilityModal = (props: EditFacilityModalProps) => {
   const [updateFacility, { isLoading }] = useUpdateFacilityMutation({});
   const { handleSubmit } = useCustomMutation();
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       lgaId: data?.lgaid,
       facilityName: data?.facilityName!,

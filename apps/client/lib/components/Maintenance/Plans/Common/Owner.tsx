@@ -24,7 +24,7 @@ const Owner = (props: OwnerProps) => {
       description="Identify the person responsible for this plan"
       isRequired
     >
-      <VStack width="full" spacing="4px" alignItems="flex-start">
+      <VStack width="full" spacing="4px" alignItems="flex-start" id="ownerId">
         <UserDisplayAndAddButton
           selectedUser={selectedUser?.label ?? defaultName}
           sectionInfoText="Choose a contact or enter an email address. You can also assign a task to yourself."

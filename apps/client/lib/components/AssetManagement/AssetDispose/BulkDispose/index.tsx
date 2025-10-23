@@ -1,8 +1,10 @@
 'use client';
 
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
+
 import { Flex, HStack, useDisclosure } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 import { getSession } from 'next-auth/react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import moment from 'moment';
@@ -40,7 +42,7 @@ const BulkDispose = (props: BulkDisposeProps) => {
   );
   const router = useRouter();
   const { handleSubmit } = useCustomMutation();
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       disposalDate: '',
       disposalReasonId: undefined,

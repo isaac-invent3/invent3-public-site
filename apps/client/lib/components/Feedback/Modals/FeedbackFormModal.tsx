@@ -1,3 +1,4 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import {
   Heading,
   HStack,
@@ -19,7 +20,7 @@ import {
   FormTextInput,
   GenericModal,
 } from '@repo/ui/components';
-import { Field, FormikProvider, useFormik } from 'formik';
+import { Field, FormikProvider } from 'formik';
 import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
@@ -66,7 +67,7 @@ const FeedbackFormModal = (props: FeedbackFormModalProps) => {
   const [createFeedback, { isLoading }] =
     useCreateFeedbackWithAttachmentMutation();
 
-  const formik = useFormik<FeedbackFormPayload>({
+  const formik = useAppFormik<FeedbackFormPayload>({
     initialValues: {
       createFeedbackAttachmentDto: [],
       createFeedbackDto: {

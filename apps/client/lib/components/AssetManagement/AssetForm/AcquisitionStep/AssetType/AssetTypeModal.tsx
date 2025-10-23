@@ -1,5 +1,6 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 /* eslint-disable no-unused-vars */
-import { Field, FormikProvider, useFormik } from 'formik';
+import { Field, FormikProvider } from 'formik';
 
 import {
   Button,
@@ -20,7 +21,7 @@ interface AssetTypeModalProps {
 const AssetTypeModal = (props: AssetTypeModalProps) => {
   const { isOpen, onClose, handleAdd } = props;
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       typeName: '',
     },

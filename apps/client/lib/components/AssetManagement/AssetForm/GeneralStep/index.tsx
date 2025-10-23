@@ -1,5 +1,6 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import { Flex, VStack } from '@chakra-ui/react';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 
 import { generalInfoSchema } from '~/lib/schemas/asset/main.schema';
 import AssetImages from './AssetImages';
@@ -13,6 +14,7 @@ import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import ParentAsset from './ParentAsset';
 import { FormActionButtons } from '@repo/ui/components';
 import { ROUTES } from '~/lib/utils/constants';
+import { useEffect } from 'react';
 
 interface GeneralStepProps {
   activeStep: number;
@@ -25,7 +27,7 @@ const GeneralStep = (props: GeneralStepProps) => {
   const formDetails = useAppSelector((state) => state.asset.assetForm);
   const dispatch = useAppDispatch();
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       images: formDetails.images ?? [],
       assetName: formDetails.assetName ?? '',

@@ -1,6 +1,7 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 /* eslint-disable no-unused-vars */
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
-import { Field, FormikProvider, useField, useFormik } from 'formik';
+import { Field, FormikProvider, useField } from 'formik';
 
 import {
   Button,
@@ -17,6 +18,7 @@ import BuildingSelect from './SelectInputs/BuildingSelect';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { Option } from '@repo/interfaces';
 import { FormLocation } from '~/lib/interfaces/location.interfaces';
+
 // import DocumentUploadAndView from '~/lib/components/Common/DocumentUploadAndView';
 
 interface FloorModalProps {
@@ -49,7 +51,7 @@ const FloorModal = (props: FloorModalProps) => {
   const { handleSubmit } = useCustomMutation();
   const { facility } = useAppSelector((state) => state.location.localLocation);
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       buildingId: (defaultBuildingId ?? undefined)!,
       floorName: '',

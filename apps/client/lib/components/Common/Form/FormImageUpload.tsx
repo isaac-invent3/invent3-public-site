@@ -23,7 +23,7 @@ const FormImageUpload = (props: FormImageUploadProps) => {
 
   return useMemo(
     () => (
-      <HStack spacing="12px" alignItems="flex-start" width="full">
+      <HStack spacing="12px" alignItems="flex-start" width="full" id={name}>
         {/* Display */}
         {meta.value && (
           <Box

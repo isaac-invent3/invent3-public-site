@@ -1,3 +1,4 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import {
   Box,
   Flex,
@@ -15,7 +16,8 @@ import {
   FormTextInput,
   LeaveDialogModal,
 } from '@repo/ui/components';
-import { Field, FormikProvider, useFormik } from 'formik';
+import { Field, FormikProvider } from 'formik';
+
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import {
   clearSingleAdminForm,
@@ -38,7 +40,7 @@ const AdminForm = (props: AdminFormProps) => {
   } = useDisclosure();
   const toast = useToast();
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       localId: formDetails.localId ?? null,
       contactId: formDetails.contactId ?? null,

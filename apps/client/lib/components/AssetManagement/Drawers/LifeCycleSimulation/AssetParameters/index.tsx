@@ -1,6 +1,7 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import { Flex, HStack, VStack } from '@chakra-ui/react';
 import { BackButton, Button } from '@repo/ui/components';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 import React from 'react';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { updateAssetLifecycleSimulationForm } from '~/lib/redux/slices/AssetSlice';
@@ -20,7 +21,7 @@ const AssetParameters = (props: AssetParametersProps) => {
   const { activeStep, setActiveStep, onClose } = props;
   const dispatch = useAppDispatch();
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       assetName: null,
       categoryName: null,

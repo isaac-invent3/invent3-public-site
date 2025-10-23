@@ -1,6 +1,7 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 /* eslint-disable no-unused-vars */
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
-import { Field, FormikProvider, useFormik, useFormikContext } from 'formik';
+import { Field, FormikProvider, useFormikContext } from 'formik';
 
 import {
   Button,
@@ -30,7 +31,7 @@ const RoomModal = (props: RoomModalProps) => {
   const { values: currentData, setFieldValue } =
     useFormikContext<LocationMasterFormInterface>();
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       buildingId: null!,
       floorId: null!,

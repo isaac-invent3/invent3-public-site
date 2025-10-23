@@ -1,3 +1,4 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import { Flex, Stack, VStack } from '@chakra-ui/react';
 import {
   DateTimeButtons,
@@ -5,9 +6,10 @@ import {
   FormInputWrapper,
   FormSelect,
 } from '@repo/ui/components';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
+
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { useGetAllSubscriptionPlansQuery } from '~/lib/redux/services/subscription.services';
 import { updateCompanyForm } from '~/lib/redux/slices/CompanySlice';
@@ -29,7 +31,7 @@ const SubscriptionStep = (props: SubscriptionStepProps) => {
   });
 
   const [inputtedStartDate] = useState<Date | undefined>(undefined);
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       subscriptionPlanId: formDetails.subscriptionPlanId ?? null,
       startDate: formDetails.startDate ?? null,

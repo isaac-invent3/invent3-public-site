@@ -1,9 +1,10 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import { HStack, Switch, Text, useMediaQuery, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { Button, FormSelect } from '@repo/ui/components';
 
 import SectionWrapper from '../../UserSettings/Common/SectionWrapper';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 import { getSession } from 'next-auth/react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useUpdateSettingsMutation } from '~/lib/redux/services/utility.services';
@@ -32,7 +33,7 @@ const GeneralTab = () => {
   const [updateSettings, { isLoading }] = useUpdateSettingsMutation();
   const settings = useAppSelector((state) => state.settings.settings);
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       languageId: settings?.languageId,
       automaticTimeZoneId: settings?.automaticTimeZoneId,
@@ -56,6 +57,7 @@ const GeneralTab = () => {
       setSubmitting(false);
     },
   });
+
   return (
     <FormikProvider value={formik}>
       <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>

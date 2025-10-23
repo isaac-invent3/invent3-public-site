@@ -1,3 +1,4 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 /* eslint-disable no-unused-vars */
 import {
   DrawerBody,
@@ -6,7 +7,7 @@ import {
   HStack,
   VStack,
 } from '@chakra-ui/react';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 
 import {
   BackButton,
@@ -38,7 +39,7 @@ const CustomizedPlanModal = (props: CustomizedPlanModalProps) => {
   const [createPlan, { isLoading }] = useCreateMaintenancePlanMutation({});
   const { handleSubmit } = useCustomMutation();
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       planName: null,
       startDate: null,

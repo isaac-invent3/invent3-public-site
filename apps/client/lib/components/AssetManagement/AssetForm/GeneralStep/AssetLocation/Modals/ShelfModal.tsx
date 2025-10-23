@@ -1,6 +1,7 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 /* eslint-disable no-unused-vars */
 import { HStack, ModalBody, VStack } from '@chakra-ui/react';
-import { Field, FormikProvider, useField, useFormik } from 'formik';
+import { Field, FormikProvider, useField } from 'formik';
 import {
   Button,
   FormInputWrapper,
@@ -38,7 +39,7 @@ const ShelfModal = (props: ShelfModalProps) => {
   const { handleSubmit } = useCustomMutation();
   const { room } = useAppSelector((state) => state.location.localLocation);
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       aisleId: defaultAisleId ?? undefined,
       shelfName: '',

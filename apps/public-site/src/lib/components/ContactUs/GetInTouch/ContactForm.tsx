@@ -60,7 +60,7 @@ const CustomTextInputForm = ({
 
 const ContactForm = () => {
   const [selectedType, setSelectedType] = useState(2);
-    const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
 
   const formik = useFormik({
@@ -74,7 +74,7 @@ const ContactForm = () => {
       message: '',
     },
     validationSchema: contactSchema,
-      onSubmit: async (values, { resetForm }) => {
+    onSubmit: async (values, { resetForm }) => {
       setIsLoading(true);
       try {
         const response = await fetch('https://api.web3forms.com/submit', {
@@ -82,16 +82,15 @@ const ContactForm = () => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             access_key: process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY!,
-            "Contact Request Type":
+            'Contact Request Type':
               contactType.find((item) => item.value === selectedType)?.label ||
               '',
-            "Contact Person Name": `${values.firstName} ${values.lastName}`,
+            'Contact Person Name': `${values.firstName} ${values.lastName}`,
             company: values.company,
-            designation: values.designation ?? "N/A",
+            designation: values.designation ?? 'N/A',
             email: values.email,
-            "Phone Number": values.phoneNumber,
+            'Phone Number': values.phoneNumber,
             message: values.message,
-            
           }),
         });
 
@@ -120,7 +119,8 @@ const ContactForm = () => {
       } catch (error) {
         toast({
           title: 'Network Error',
-          description: 'Could not send your message. Please check your internet connection.',
+          description:
+            'Could not send your message. Please check your internet connection.',
           status: 'error',
           duration: 4000,
           isClosable: true,
@@ -129,7 +129,7 @@ const ContactForm = () => {
       } finally {
         setIsLoading(false);
       }
-    }
+    },
   });
 
   return (

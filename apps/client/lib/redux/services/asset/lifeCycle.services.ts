@@ -34,7 +34,7 @@ export const assetLifeCycleApi = createApi({
       providesTags: [],
     }),
     getLifeCycleStageChart: builder.query<
-      BaseApiResponse<ListResponse<AssetLifeCycle>>,
+      BaseApiResponse<AssetLifeCycle[]>,
       { year?: number; month?: number }
     >({
       query: (data) => ({

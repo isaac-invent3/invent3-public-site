@@ -1,8 +1,10 @@
 'use client';
 
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
+
 import { Flex, Grid, HStack, useDisclosure, VStack } from '@chakra-ui/react';
 import { Button, FormInputWrapper } from '@repo/ui/components';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 import { getSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
@@ -42,7 +44,7 @@ const BulkTaskUpdate = () => {
     taskInstanceIds: getSelectedTaskIds(),
   });
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       taskStatusId: undefined,
       taskPriorityId: undefined,

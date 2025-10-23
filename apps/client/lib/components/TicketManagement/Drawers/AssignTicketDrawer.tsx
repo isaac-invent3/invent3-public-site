@@ -1,5 +1,6 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import { HStack, useToast } from '@chakra-ui/react';
-import { useFormik } from 'formik';
+import {} from 'formik';
 import { useSession } from 'next-auth/react';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
 import { useAppDispatch } from '~/lib/redux/hooks';
@@ -33,7 +34,7 @@ const AssignTicketDrawer = (props: AssignTicketDrawerProps) => {
 
   const username = session?.user?.username;
 
-  const formik = useFormik<AssignTicketForm>({
+  const formik = useAppFormik<AssignTicketForm>({
     initialValues: {
       assignedTo: null,
       assignedToEmployeeName: null,
@@ -116,6 +117,7 @@ const AssignTicketDrawer = (props: AssignTicketDrawerProps) => {
             formik.setFieldValue('assignedToEmployeeName', user?.label ?? null);
           }}
           sectionInfoTitle="Assigned To"
+          name="assignedToEmployeeName"
         />
       </FormInputWrapper>
 

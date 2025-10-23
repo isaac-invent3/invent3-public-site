@@ -1,3 +1,4 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import {
   Heading,
   HStack,
@@ -5,7 +6,7 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import { Field, FormikProvider, useFormik } from 'formik';
+import { Field, FormikProvider } from 'formik';
 
 import {
   Button,
@@ -33,7 +34,7 @@ const ChangePasswordModal = (props: ChangePasswordModalProps) => {
   } = useDisclosure();
   const [changePassword, { isLoading }] = useChangeUserPasswordMutation({});
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       currentPassword: '',
       newPassword: '',

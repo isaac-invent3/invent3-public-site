@@ -1,10 +1,12 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import { Box, Flex, Grid, GridItem, Stack } from '@chakra-ui/react';
 import {
   FormActionButtons,
   FormInputWrapper,
   FormTextInput,
 } from '@repo/ui/components';
-import { Field, FormikProvider, useFormik } from 'formik';
+import { Field, FormikProvider } from 'formik';
+
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateCompanyForm } from '~/lib/redux/slices/CompanySlice';
 import { contactInfoSchema } from '~/lib/schemas/company/main.schema';
@@ -19,7 +21,7 @@ const ContactInformationStep = (props: ContactInformationStepProps) => {
   const { companyForm: formDetails } = useAppSelector((state) => state.company);
   const dispatch = useAppDispatch();
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       contactFirstName: formDetails?.contactFirstName,
       contactLastName: formDetails?.contactLastName,

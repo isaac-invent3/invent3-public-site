@@ -1,3 +1,4 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import {
   DrawerBody,
   DrawerFooter,
@@ -18,7 +19,7 @@ import {
   GenericDrawer,
   GenericSuccessModal,
 } from '@repo/ui/components';
-import { Field, FormikProvider, useFormik } from 'formik';
+import { Field, FormikProvider } from 'formik';
 import { getSession } from 'next-auth/react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useCreateAssetComplianceMutation } from '~/lib/redux/services/asset/compliance.services';
@@ -60,7 +61,7 @@ const CreateAssetComplianceDrawer = (
     documents: [],
   };
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues,
     enableReinitialize: false,
     validationSchema: createComplianceSchema,

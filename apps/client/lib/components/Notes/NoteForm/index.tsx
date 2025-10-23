@@ -1,3 +1,4 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import {
   Flex,
   HStack,
@@ -15,7 +16,7 @@ import {
   GenericModal,
   ModalCloseButtonText,
 } from '@repo/ui/components';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 import { getSession } from 'next-auth/react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import useFormatUrl from '~/lib/hooks/useFormatUrl';
@@ -75,7 +76,7 @@ const NoteForm = (props: NoteFormModalProps) => {
     systemContextIds: [],
   };
 
-  const formik = useFormik<CreateNoteForm>({
+  const formik = useAppFormik<CreateNoteForm>({
     initialValues,
     enableReinitialize: false,
     onSubmit: async (data) => {

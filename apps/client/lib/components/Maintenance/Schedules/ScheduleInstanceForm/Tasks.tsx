@@ -58,6 +58,7 @@ const Tasks = () => {
       }
     }
   }, [data]);
+
   return (
     <TaskListTable
       data={values.tasks}

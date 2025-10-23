@@ -5,17 +5,18 @@ import ExportSettings from './ExportSettings';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { useUpdateSettingsMutation } from '~/lib/redux/services/utility.services';
 import { useAppSelector } from '~/lib/redux/hooks';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 import { auditLogSchema } from '~/lib/schemas/settings.schema';
 import { getSession } from 'next-auth/react';
 import { Button } from '@repo/ui/components';
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 
 const AuditTab = () => {
   const { handleSubmit } = useCustomMutation();
   const [updateSettings, { isLoading }] = useUpdateSettingsMutation();
   const settings = useAppSelector((state) => state.settings.settings);
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       enableAuditLogs: settings?.enableAuditLogs,
       retentionPeriodId: settings?.retentionPeriodId,
@@ -42,6 +43,7 @@ const AuditTab = () => {
       setSubmitting(false);
     },
   });
+
   return (
     <FormikProvider value={formik}>
       <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>

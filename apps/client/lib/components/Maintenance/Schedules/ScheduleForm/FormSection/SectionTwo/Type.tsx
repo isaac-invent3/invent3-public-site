@@ -50,6 +50,7 @@ const Type = (props: TypeProps) => {
           buttonVariant={buttonVariant}
           customButtonStyle={{ width: 'max-content' }}
           isLoading={isLoading}
+          id="typeId"
         />
         {meta.touched && meta.error !== undefined && (
           <ErrorMessage>{meta.error}</ErrorMessage>

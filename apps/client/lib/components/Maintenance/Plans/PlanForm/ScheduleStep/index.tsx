@@ -1,5 +1,6 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import { Flex, VStack } from '@chakra-ui/react';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 import React, { useState } from 'react';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { planScheduleSchema } from '~/lib/schemas/maintenance.schema';
@@ -19,7 +20,7 @@ const ScheduleStep = (props: ScheduleStepProps) => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [showScheduleForm, setShowScheduleForm] = useState(false);
   const formDetails = useAppSelector((state) => state.maintenance.planForm);
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       schedules: formDetails.schedules ?? [],
     },

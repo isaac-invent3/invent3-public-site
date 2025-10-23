@@ -1,3 +1,4 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import { Flex, Grid, GridItem, HStack, VStack } from '@chakra-ui/react';
 import {
   BackButton,
@@ -5,7 +6,7 @@ import {
   FormInputWrapper,
   FormTextInput,
 } from '@repo/ui/components';
-import { Field, FormikProvider, useFormik } from 'formik';
+import { Field, FormikProvider } from 'formik';
 import React from 'react';
 import { useAppDispatch } from '~/lib/redux/hooks';
 import { updateAssetLifecycleSimulationForm } from '~/lib/redux/slices/AssetSlice';
@@ -23,7 +24,7 @@ const MaintenanceDepreciationParameters = (
   const { activeStep, setActiveStep } = props;
   const dispatch = useAppDispatch();
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       maintenanceFrequency: null,
       maintenanceCost: null,

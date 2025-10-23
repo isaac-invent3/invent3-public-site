@@ -1,7 +1,9 @@
 'use client';
 
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
+
 import { Divider, Flex, useDisclosure, VStack } from '@chakra-ui/react';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 
 import { useAppSelector } from '~/lib/redux/hooks';
 import { taskSchema } from '~/lib/schemas/task.schema';
@@ -39,7 +41,7 @@ const TaskForm = (props: TaskFormProps) => {
 
   const defaultHeader = type === 'create' ? 'Add New Task' : 'Edit Task';
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       scheduleId: formDetails?.scheduleId ?? null,
       taskId: formDetails?.taskId ?? null,

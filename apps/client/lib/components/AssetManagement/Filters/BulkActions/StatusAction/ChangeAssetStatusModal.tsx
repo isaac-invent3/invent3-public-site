@@ -1,3 +1,4 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import {
   Heading,
   HStack,
@@ -6,7 +7,7 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 import { Button, GenericModal } from '@repo/ui/components';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { getSession } from 'next-auth/react';
@@ -51,7 +52,7 @@ const ChangeAssetStatusModal = (props: ChangeAssetStatusModalProps) => {
   );
   const dispatch = useAppDispatch();
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       statusId: undefined,
       assetIds: selectedAssetIds,

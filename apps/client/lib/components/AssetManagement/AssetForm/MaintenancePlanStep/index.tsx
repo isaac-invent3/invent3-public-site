@@ -1,5 +1,6 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import { Flex, useDisclosure, VStack } from '@chakra-ui/react';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 import { useAppSelector } from '~/lib/redux/hooks';
 import {
   FormActionButtons,
@@ -25,7 +26,7 @@ const MaintenancePlanStep = (props: MaintenancePlanStepProps) => {
       formDetails.maintenancePlans.map((plan) => plan.maintenancePlanId) ?? [],
   };
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues,
     validationSchema: assetMaintenancePlanSchema,
     enableReinitialize: true,

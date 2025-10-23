@@ -1,5 +1,6 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import { Divider, Flex, VStack } from '@chakra-ui/react';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 
 import { FormActionButtons } from '@repo/ui/components';
 import { ROUTES } from '~/lib/utils/constants';
@@ -14,7 +15,7 @@ interface IDPProps {
 const IDP = (props: IDPProps) => {
   const { activeStep, setActiveStep } = props;
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       employeeId: null,
     },

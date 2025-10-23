@@ -1,3 +1,4 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import React, { useEffect, useState } from 'react';
 import {
   HStack,
@@ -12,7 +13,7 @@ import { RecurrenceInfo } from '~/lib/interfaces/general.interfaces';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import Summary from './Summary';
 import moment from 'moment';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 import { recurrenceSchema } from '~/lib/schemas/general.schema';
 import Frequency from './Frequency';
 import Intervals from './Intervals';
@@ -45,7 +46,7 @@ const RecurrenceModal = (props: RecurrenceModalProps) => {
   const recurrence = useAppSelector((state) => state.date.info.recurrence);
   const [maxInterval, setMaxInterval] = useState(1);
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       startDate: recurrence.startDate
         ? `${moment(recurrence.startDate).format('DD/MM/YYYY')}${recurrence.startTime ? ` ${recurrence.startTime}` : ''}`
@@ -121,8 +122,8 @@ const RecurrenceModal = (props: RecurrenceModalProps) => {
           mb="19px"
           mt="10px"
           alignItems="flex-start"
-          gap='12px'
-          flexDir={{base:'column', md:'row'}}
+          gap="12px"
+          flexDir={{ base: 'column', md: 'row' }}
         >
           <Summary />
           <HStack spacing="16px" width="full" justifyContent="flex-end">

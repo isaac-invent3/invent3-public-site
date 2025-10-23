@@ -1,5 +1,6 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import { HStack, useDisclosure, VStack } from '@chakra-ui/react';
-import { useFormik } from 'formik';
+import {} from 'formik';
 import moment from 'moment';
 import { useSession } from 'next-auth/react';
 import Tasks from '~/lib/components/Maintenance/Schedules/ScheduleForm/FormSection/SectionTwo/Tasks';
@@ -65,7 +66,7 @@ const ScheduleTicketDrawer = (props: AssignTicketDrawerProps) => {
     onClose: onCloseSuccess,
   } = useDisclosure();
 
-  const formik = useFormik<ScheduleTicketForm>({
+  const formik = useAppFormik<ScheduleTicketForm>({
     initialValues: {
       tasks: [],
       taskCount: 0,

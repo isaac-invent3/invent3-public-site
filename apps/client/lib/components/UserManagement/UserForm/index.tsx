@@ -25,6 +25,7 @@ const UserForm = (props: UserFormProps) => {
     'Document',
     'Summary',
   ];
+
   return (
     <Flex
       width="full"

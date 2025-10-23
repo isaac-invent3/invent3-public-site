@@ -117,6 +117,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>((props, ref) => {
         )}
 
         <Input
+          id={name}
           ref={ref}
           name={name}
           type={inputType}

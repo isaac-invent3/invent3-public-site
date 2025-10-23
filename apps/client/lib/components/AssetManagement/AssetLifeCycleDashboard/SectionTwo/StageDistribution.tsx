@@ -68,21 +68,17 @@ const StageDistribution = () => {
         {!isLoading &&
           data &&
           (data &&
-          data?.data?.items?.map((item) => item?.percentage).filter(Boolean)
-            .length > 0 ? (
+          data?.data?.map((item) => item?.percentage).filter(Boolean).length >
+            0 ? (
             <Flex width="218px">
               <PieChart
-                dataValues={
-                  data?.data?.items?.map((item) => item.percentage) || []
-                }
+                dataValues={data?.data?.map((item) => item.percentage) || []}
                 labels={
-                  data?.data?.items?.map((item) => item.lifeCycleStageName) ||
-                  []
+                  data?.data?.map((item) => item.lifeCycleStageName) || []
                 }
                 pieLabel="Distribution"
                 backgroundColors={
-                  data?.data?.items?.map((item) => item.lifeCycleColorCode) ||
-                  []
+                  data?.data?.map((item) => item.lifeCycleColorCode) || []
                 }
               />
             </Flex>
@@ -93,7 +89,7 @@ const StageDistribution = () => {
           ))}
         <ChartLegend
           chartLegendItems={
-            data?.data?.items?.map((item) => ({
+            data?.data?.map((item) => ({
               label: item?.lifeCycleStageName,
               color: item?.lifeCycleColorCode,
             })) || []

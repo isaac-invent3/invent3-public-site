@@ -1,5 +1,6 @@
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 import { Flex, VStack } from '@chakra-ui/react';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 
 import { acquisitionInfoSchema } from '~/lib/schemas/asset/main.schema';
 import AcquisitionDateConditon from './AcquisitionDateCondition';
@@ -44,7 +45,7 @@ const AcquisitionStep = (props: AcquisitionStepProps) => {
     accumulatedDepreciation: formDetails.accumulatedDepreciation ?? null,
   };
 
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues,
     validationSchema: acquisitionInfoSchema,
     enableReinitialize: true,

@@ -1,8 +1,10 @@
 'use client';
 
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
+
 import { Flex, HStack, useDisclosure } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
-import { FormikProvider, useFormik } from 'formik';
+import { FormikProvider } from 'formik';
 import { assetTransferSchema } from '~/lib/schemas/asset/main.schema';
 import { getSession } from 'next-auth/react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
@@ -39,7 +41,7 @@ const BulkTransfer = (props: BulkTransferProps) => {
   );
   const { handleSubmit } = useCustomMutation();
   const router = useRouter();
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       newOwnerId: undefined,
       transferDate: undefined,

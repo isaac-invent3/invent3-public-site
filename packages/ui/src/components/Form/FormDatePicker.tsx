@@ -28,7 +28,7 @@ const CustomDatePicker = (props: CustomDatePickerProps) => {
   const [field, meta, helpers] = useField(name);
 
   return (
-    <VStack width="full" alignItems="flex-start" spacing="4px">
+    <VStack width="full" alignItems="flex-start" spacing="4px" id={name}>
       <DateTimeButtons
         buttonVariant="secondary"
         includeTime={false}

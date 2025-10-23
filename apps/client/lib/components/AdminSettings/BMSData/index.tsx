@@ -1,6 +1,6 @@
 import { Flex, HStack, Icon, Skeleton, Text, VStack } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
-import { FieldArray, FormikProvider, useFormik } from 'formik';
+import { FieldArray, FormikProvider } from 'formik';
 import FacilitySelect from '../../AssetManagement/AssetForm/GeneralStep/AssetLocation/Modals/SelectInputs/FacilitySelect';
 import { bmsSettingsSchema } from '~/lib/schemas/settings.schema';
 import BuildingSettings from './BuildingSettings';
@@ -13,11 +13,12 @@ import {
   useBmsSettingsMutation,
   useGetBuildingSettingsByFacilityIdQuery,
 } from '~/lib/redux/services/settings.services';
+import { useAppFormik } from '~/lib/hooks/useAppFormik';
 
 const BMSData = () => {
   const { handleSubmit } = useCustomMutation();
   const [updateSettings, { isLoading }] = useBmsSettingsMutation();
-  const formik = useFormik({
+  const formik = useAppFormik({
     initialValues: {
       facilityId: null!,
       bmsBuildingSettingsModel: [],

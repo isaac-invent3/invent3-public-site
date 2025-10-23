@@ -142,6 +142,7 @@ type TicketCategory =
   | 'assigned'
   | 'scheduled'
   | 'in_progress'
+  | 'suspended'
   | 'completed';
 
 interface TicketFilter extends LocationFilter {

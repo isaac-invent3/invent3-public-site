@@ -101,7 +101,8 @@ const TicketManagement = () => {
     if (tabIndex === 1) return 'assigned';
     if (tabIndex === 2) return 'scheduled';
     if (tabIndex === 3) return 'in_progress';
-    if (tabIndex === 4) return 'completed';
+    if (tabIndex === 4) return 'suspended';
+    if (tabIndex === 5) return 'completed';
 
     return 'new';
   }, [tabIndex]);

@@ -9,7 +9,6 @@ export function useScrollToFirstError<FormValues>(
       const firstErrorKey = Object.keys(formik.errors)[0];
       if (firstErrorKey) {
         const errorElement = document.getElementById(firstErrorKey);
-        console.log({ errors: formik.errors, firstErrorKey, errorElement });
         if (errorElement) {
           errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
           errorElement.focus?.();

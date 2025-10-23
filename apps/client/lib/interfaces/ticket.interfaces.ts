@@ -167,6 +167,15 @@ interface TechnicianLoad {
   skillGroup: string;
 }
 
+interface AIConfigurationPanelPayload {
+  minimumRestHours: number;
+  skillMatchWeight: number;
+  availiabilityWeight: number;
+  locationProximityWeight: number;
+  pastPerformanceWeight: number;
+  createdBy: string;
+}
+
 export type {
   CreateTicketForm,
   CreateTicketPayload,
@@ -179,4 +188,5 @@ export type {
   TicketFilter,
   TicketBalancingSummary,
   TechnicianLoad,
+  AIConfigurationPanelPayload,
 };

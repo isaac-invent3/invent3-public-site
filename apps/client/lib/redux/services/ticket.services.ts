@@ -6,6 +6,7 @@ import {
   SearchQuery,
 } from '@repo/interfaces';
 import {
+  AIConfigurationPanelPayload,
   CreateTicketPayload,
   DeleteTicketPayload,
   TechnicianLoad,
@@ -259,6 +260,17 @@ export const ticketApi = createApi({
         headers: getHeaders(),
       }),
     }),
+    createAIConfigurationPayload: builder.mutation<
+      void,
+      AIConfigurationPanelPayload
+    >({
+      query: (body) => ({
+        url: `/WorkloadBalanceConfiguration`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
   }),
 });
 
@@ -284,4 +296,5 @@ export const {
   useGetTechnicianLoadDistributionQuery,
   useGetTicketDistributionBySkillGroupQuery,
   useGetTicketTechnicianLocationsQuery,
+  useCreateAIConfigurationPayloadMutation,
 } = ticketApi;

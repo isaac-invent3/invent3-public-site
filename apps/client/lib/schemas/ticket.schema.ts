@@ -61,10 +61,19 @@ const updateTicketMetadataSchema = Yup.object().shape({
   assignedToId: Yup.string(),
 });
 
+const aiConfigurationWorkloadBalancingSchema = Yup.object().shape({
+  minimumRestHours: Yup.number(),
+  skillMatchWeight: Yup.number(),
+  availiabilityWeight: Yup.number(),
+  locationProximityWeight: Yup.number(),
+  pastPerformanceWeight: Yup.number(),
+});
+
 export {
   createTicketSchema,
   scheduleTicketSchema,
   updateTicketSchema,
   assignTicketSchema,
   updateTicketMetadataSchema,
+  aiConfigurationWorkloadBalancingSchema,
 };

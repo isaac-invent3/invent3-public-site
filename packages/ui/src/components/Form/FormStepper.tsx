@@ -67,6 +67,7 @@ const FormStepper = (props: FormStepperProps) => {
       rounded="4px"
       overflow="auto"
       flexShrink={0}
+      className=".no-pdf"
     >
       <Flex
         direction="row"

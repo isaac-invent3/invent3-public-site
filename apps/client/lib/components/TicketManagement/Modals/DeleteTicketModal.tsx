@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/react';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
 import { useDeleteTicketMutation } from '~/lib/redux/services/ticket.services';
 import { GenericDeleteModal } from '@repo/ui/components';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
 
 interface DeleteTicketSuccessModalProps {
   isOpen: boolean;
@@ -11,25 +12,23 @@ interface DeleteTicketSuccessModalProps {
 }
 const DeleteTicketSuccessModal = (props: DeleteTicketSuccessModalProps) => {
   const { isOpen, onClose, data } = props;
-
-  const toast = useToast();
+  const { handleSubmit } = useCustomMutation();
 
   const [deleteTicket, { isLoading }] = useDeleteTicketMutation({});
   const { data: session } = useSession();
 
   const handleDeleteTask = async () => {
-    await deleteTicket({
-      id: data.ticketId,
-      deletedBy: session?.user.username,
-    });
-
-    toast({
-      title: 'Ticket Deleted Successfully',
-      status: 'success',
-      position: 'top-right',
-    });
-
-    onClose();
+    const response = await handleSubmit(
+      deleteTicket,
+      {
+        id: data.ticketId,
+        deletedBy: session?.user.username,
+      },
+      'Ticket Deleted Successfully'
+    );
+    if (response?.data) {
+      onClose();
+    }
   };
 
   return (

@@ -1,15 +1,6 @@
-import {
-  Collapse,
-  DrawerBody,
-  DrawerHeader,
-  HStack,
-  Icon,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
+import { DrawerBody, DrawerHeader, HStack, VStack } from '@chakra-ui/react';
 import { BackButton, EmptyState, GenericDrawer } from '@repo/ui/components';
 import React, { useState } from 'react';
-import { ChevronDownIcon } from '~/lib/components/CustomIcons';
 import { BMSAnomaly } from '~/lib/interfaces/dashboard/bms.interfaces';
 import AnomalyContainer from './AnomalyContainer';
 
@@ -44,6 +35,7 @@ const AnomalyDrawer = (props: AnomalyDrawerProps) => {
               key={index}
               isOpen={openIndex === index}
               onToggle={() => setOpenIndex(openIndex === index ? null : index)}
+              index={index}
             />
           ))}
           {anomalies?.length === 0 && (

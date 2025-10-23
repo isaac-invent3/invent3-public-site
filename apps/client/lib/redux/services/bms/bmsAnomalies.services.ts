@@ -18,17 +18,20 @@ export const bmsAnomaliesApi = createApi({
     >({
       query: ({ assetId, ...data }) => ({
         url: generateQueryStr(
-          `/BMSAnomalies/GetBmsAnomaliesByAssetId/${assetId}`,
+          `/BMSAnomalies/GetBmsAnomaliesByAssetId/${assetId}?`,
           data
         ),
         method: 'GET',
         headers: getHeaders(),
       }),
     }),
-    createTicketFromAnomaly: builder.mutation<void, { anomalyId: number }>({
+    createTicketFromAnomaly: builder.mutation<
+      void,
+      { anomalyId: number; createdBy: string }
+    >({
       query: ({ anomalyId, ...data }) => ({
         url: generateQueryStr(
-          `/BMSAnomalies/CreateTicketFromAnomaly/${anomalyId}`,
+          `/BMSAnomalies/CreateTicketFromAnomaly/${anomalyId}?`,
           data
         ),
         method: 'POST',
@@ -42,7 +45,7 @@ export const bmsAnomaliesApi = createApi({
     >({
       query: ({ anomalyId, ...data }) => ({
         url: generateQueryStr(
-          `/BMSAnomalies/AcknowledgeAnomaly/${anomalyId}`,
+          `/BMSAnomalies/AcknowledgeAnomaly/${anomalyId}?`,
           data
         ),
         method: 'PUT',
@@ -56,7 +59,7 @@ export const bmsAnomaliesApi = createApi({
     >({
       query: ({ anomalyId, ...data }) => ({
         url: generateQueryStr(
-          `/BMSAnomalies/DismissAnomaly/${anomalyId}`,
+          `/BMSAnomalies/DismissAnomaly/${anomalyId}?`,
           data
         ),
         method: 'PUT',

@@ -26,11 +26,13 @@ interface AnomalyContainerProps {
   anomaly?: BMSAnomaly;
   isOpen: boolean;
   onToggle: () => void;
+  index: number;
 }
 const AnomalyContainer = ({
   anomaly,
   isOpen,
   onToggle,
+  index,
 }: AnomalyContainerProps) => {
   const { asset } = useAppSelector((state) => state.asset);
   const { handleSubmit } = useCustomMutation();
@@ -68,10 +70,12 @@ const AnomalyContainer = ({
   };
 
   const handleCreateTicket = async () => {
+    const session = await getSession();
     await handleSubmit(
       createTicket,
       {
         anomalyId: anomaly?.anomalyId!,
+        createdBy: session?.user?.username!,
       },
       'Ticket Created Successfully'
     );
@@ -90,7 +94,7 @@ const AnomalyContainer = ({
         onClick={onToggle}
       >
         <Text color="black" size="md" lineHeight="100%">
-          Test
+          Anomaly {index + 1}
         </Text>
         <Icon
           as={ChevronDownIcon}

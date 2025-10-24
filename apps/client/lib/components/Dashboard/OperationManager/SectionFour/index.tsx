@@ -7,18 +7,14 @@ const SectionFour = () => {
   return (
     <Flex
       width="full"
-      gap={{ base: '16px', lg: 0 }}
+      gap={{ base: '16px', md: 0 }}
       direction={{ base: 'column', md: 'row' }}
       px={{ base: '16px', md: 0 }}
     >
-      <Flex
-        width="full"
-        maxW={{ md: 'calc(100% - 354px)' }}
-        pr={{ lg: '16px' }}
-      >
+      <Flex width="full" maxW={{ md: 'calc(100% - 354px)' }}>
         <RecentAsset />
       </Flex>
-      <Flex width={{ base: 'full', lg: '354px' }}>
+      <Flex width={{ base: 'full', md: '354px' }} pl={{ md: '16px' }}>
         <AssetCategoryRiskScore />
       </Flex>
     </Flex>

@@ -273,22 +273,30 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                     description="Name of user that initiated the ticket"
                     title="Ticket Raised By"
                   >
-                    <UserDisplayAndAddButton
-                      selectedUser={formik.values.reportedByEmployeeName}
-                      handleSelectUser={(user) => {
-                        formik.setFieldValue(
-                          'reportedByEmployeeId',
-                          user?.value ?? null
-                        );
+                    <VStack width="full" alignItems="start" spacing="4px">
+                      <UserDisplayAndAddButton
+                        selectedUser={formik.values.reportedByEmployeeName}
+                        handleSelectUser={(user) => {
+                          formik.setFieldValue(
+                            'reportedByEmployeeId',
+                            user?.value ?? null
+                          );
 
-                        formik.setFieldValue(
-                          'reportedByEmployeeName',
-                          user?.label ?? null
-                        );
-                      }}
-                      sectionInfoTitle="Raised By"
-                      name="reportedByEmployeeId"
-                    />
+                          formik.setFieldValue(
+                            'reportedByEmployeeName',
+                            user?.label ?? null
+                          );
+                        }}
+                        sectionInfoTitle="Raised By"
+                        name="reportedByEmployeeId"
+                      />
+                      {formik.submitCount > 0 &&
+                        formik.errors.reportedByEmployeeId && (
+                          <ErrorMessage>
+                            {formik.errors.reportedByEmployeeId}
+                          </ErrorMessage>
+                        )}
+                    </VStack>
                   </FormInputWrapper>
 
                   <FormInputWrapper

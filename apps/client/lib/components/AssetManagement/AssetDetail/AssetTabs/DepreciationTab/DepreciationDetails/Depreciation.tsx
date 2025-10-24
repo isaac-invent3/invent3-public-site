@@ -29,7 +29,7 @@ const Depreciation = (props: DepreciationProps) => {
       label: 'Useful Life:',
       value:
         data?.intialUsefulLife || data?.remainingUsefulLife
-          ? `${data?.intialUsefulLife} of ${data?.remainingUsefulLife} years used`
+          ? `${data?.remainingUsefulLife} of ${data?.intialUsefulLife} years used`
           : 'N/A',
     },
   ];

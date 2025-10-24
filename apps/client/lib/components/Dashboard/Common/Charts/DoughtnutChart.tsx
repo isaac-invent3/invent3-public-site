@@ -18,8 +18,9 @@ interface DoughtnutChartProps {
   type: 'half' | 'full';
   height?: string;
   cutout?: string;
-  centerLabel?: { title: string; value: string }; // 👈 supports multi-line
-  showSliceLabels?: boolean; // 👈 toggle labels on cuts
+  centerLabel?: { title: string; value: string };
+  showSliceLabels?: boolean;
+  tooltipFormatter?: (value: number, total: number, label: string) => string[];
 }
 
 const DoughtnutChart = (props: DoughtnutChartProps) => {
@@ -31,6 +32,7 @@ const DoughtnutChart = (props: DoughtnutChartProps) => {
     cutout,
     centerLabel,
     showSliceLabels,
+    tooltipFormatter,
   } = props;
 
   const isEmpty =
@@ -60,10 +62,38 @@ const DoughtnutChart = (props: DoughtnutChartProps) => {
       legend: {
         display: false,
       },
+      tooltip: {
+        callbacks: {
+          label: function (tooltipItem: any) {
+            const dataset =
+              tooltipItem.chart.data.datasets[tooltipItem.datasetIndex];
+            const value = dataset.data[tooltipItem.dataIndex];
+            const total = dataset.data.reduce(
+              (acc: number, val: number) => acc + val,
+              0
+            );
+            const label = tooltipItem.label;
+
+            if (tooltipFormatter) {
+              return tooltipFormatter(value, total, label);
+            }
+
+            // ✅ Default generic fallback
+            const percent = ((value / total) * 100).toFixed(0);
+            return [`${label}: ${percent}%`, `Value: ${value}`];
+          },
+        },
+        backgroundColor: '#000000CC',
+        bodyColor: '#fff',
+        titleColor: '#fff',
+        displayColors: false,
+        padding: 10,
+        cornerRadius: 6,
+      },
     },
   };
 
-  // Plugin: Center multi-line label
+  // ✅ Center text plugin remains the same
   const centerTextPlugin = {
     id: 'centerText',
     beforeDraw: (chart: any) => {
@@ -72,7 +102,6 @@ const DoughtnutChart = (props: DoughtnutChartProps) => {
         const ctx = chart.ctx;
         ctx.restore();
 
-        // Title (e.g. "Total Assets")
         ctx.font = 'bold 10px sans-serif';
         ctx.fillStyle = '#838383';
         ctx.textBaseline = 'middle';
@@ -80,7 +109,6 @@ const DoughtnutChart = (props: DoughtnutChartProps) => {
         const titleY = height / 2 - 10;
         ctx.fillText(centerLabel.title, titleX, titleY);
 
-        // Value (e.g. "54k")
         ctx.font = 'bold 14px sans-serif';
         ctx.fillStyle = '#838383';
         const valueX = width / 2 - ctx.measureText(centerLabel.value).width / 2;
@@ -92,7 +120,7 @@ const DoughtnutChart = (props: DoughtnutChartProps) => {
     },
   };
 
-  // Plugin: Labels on slices
+  // ✅ Slice label plugin remains the same
   const sliceLabelPlugin = {
     id: 'sliceLabels',
     afterDatasetsDraw: (chart: any) => {
@@ -114,13 +142,13 @@ const DoughtnutChart = (props: DoughtnutChartProps) => {
             );
             const percent = ((value / total) * 100).toFixed(0) + '%';
 
-            ctx.fillStyle = '#fff'; // text color
+            ctx.fillStyle = '#fff';
             ctx.font = 'bold 12px sans-serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
 
-            ctx.fillText(`${percent}`, x, y - 8); // % above
-            ctx.fillText(`${value.toLocaleString()}`, x, y + 8); // value below
+            ctx.fillText(`${percent}`, x, y - 8);
+            ctx.fillText(`${value.toLocaleString()}`, x, y + 8);
           });
         }
       });

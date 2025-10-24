@@ -42,7 +42,7 @@ const createTicketSchema = () =>
     ticketTitle: Yup.string().required('Ticket Title is Required'),
     issueDescription: Yup.string().required('Description is Required'),
     assetId: Yup.number().required('Asset is Required'),
-    reportedByEmployeeId: Yup.number().nullable(),
+    reportedByEmployeeId: Yup.number().required('Requested User is Required'),
     ticketTypeId: Yup.number().required('Ticket Type is Required'),
     ticketPriorityId: Yup.number().required('Ticket Priority is Required'),
     document: Yup.object()

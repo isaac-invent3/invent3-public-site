@@ -112,6 +112,13 @@ const AssetCategoryRiskScore = () => {
               value: formatNumberShort(totalAsset),
             }}
             showSliceLabels={true}
+            tooltipFormatter={(value, total, label) => {
+              const percent = ((value / total) * 100).toFixed(0);
+              return [
+                `Risk Percentage: ${percent}%`,
+                `Risk Score: ${value.toLocaleString()}`,
+              ];
+            }}
           />
         )}
       </Flex>

@@ -470,7 +470,7 @@ export const makeStore = () => {
         bmsAnomaliesApi.middleware,
 
         // SLA Apis
-        // slaApi.middleware,
+        slaApi.middleware,
       ]),
   });
 };

@@ -178,11 +178,13 @@ function clearCookiesAndRedirect(request: NextRequest, url: URL): NextResponse {
     value: '',
     maxAge: -1,
     path: '/',
+    domain: '.invent3.ai',
   });
   response.cookies.set('permissionData', '', {
     value: '',
     maxAge: -1,
     path: '/',
+    domain: '.invent3.ai',
   });
   request.cookies.delete(SESSION_COOKIE);
   return response;
@@ -207,8 +209,9 @@ export function updateCookie(
     response.cookies.set(SESSION_COOKIE, sessionToken, {
       httpOnly: true,
       maxAge: SESSION_TIMEOUT,
-      secure: SESSION_SECURE,
-      sameSite: 'lax',
+      secure: true,
+      sameSite: 'none',
+      domain: '.invent3.ai',
     });
     console.log('cookies updated');
     return response;

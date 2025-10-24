@@ -2,23 +2,22 @@ import { Box, HStack, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import CardHeader from '~/lib/components/Dashboard/Common/CardHeader';
 import LineChart from '~/lib/components/Dashboard/Common/Charts/LineChart';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 const LifeCycleCostCurve = () => {
+  const data = useAppSelector((state) => state.asset.simulationData);
   const dataItems = [
     {
-      scenario: 'Base',
+      scenario: 'Normal Plan',
       color: '#8D35F1',
-      values: [
-        { label: '2025', value: 10 },
-        { label: '2027', value: 25 },
-        { label: '2029', value: 35 },
-        { label: '2031', value: 45 },
-        { label: '2033', value: 55 },
-        { label: '2035', value: 60 },
-      ],
+      values:
+        data?.lifeCycleCostCurve?.NormalPlan?.map((item) => ({
+          label: item.year,
+          value: item.totalCost,
+        })) ?? [],
     },
     {
-      scenario: 'Optimized',
+      scenario: 'Smart Plan',
       color: '#07CC3B',
       values: [
         { label: '2025', value: 10 },
@@ -30,7 +29,7 @@ const LifeCycleCostCurve = () => {
       ],
     },
     {
-      scenario: 'Delayed',
+      scenario: 'Late Plan',
       color: '#EABC30',
       values: [
         { label: '2025', value: 10 },
@@ -43,7 +42,9 @@ const LifeCycleCostCurve = () => {
     },
   ];
 
-  const year = ['2025', '2027', '2029', '2031', '2033', '2035'];
+  const year =
+    data?.lifeCycleCostCurve?.NormalPlan?.map((item) => item.year.toString()) ??
+    [];
 
   const datasets = dataItems.map((data) => ({
     label: data.scenario,

@@ -36,7 +36,7 @@ const MaintenanceFrequencyCost = () => {
           <Field
             as={FormTextInput}
             name="maintenanceCost"
-            type="text"
+            type="number"
             label="Maintenance Cost"
           />
         </FormInputWrapper>

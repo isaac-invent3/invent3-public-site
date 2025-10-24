@@ -13,17 +13,67 @@ const assetParameterSchema = Yup.object().shape({
   ).required('Acquisition Date is required'),
   expectedUsefulLife: Yup.string().required('Expected Useful Life is Required'),
   currentAge: Yup.number().required('Current Age is Required'),
-  purchasePrice: Yup.number().required('Purchase Price is Required'),
+  purchaseCost: Yup.number().required('Purchase Price is Required'),
   location: Yup.string().required('Location is Required'),
   currentCondition: Yup.string().required('Condition is Required'),
 });
 
-const maintenanceDepreciationSchema = Yup.object().shape({
-  maintenanceFrequency: Yup.number().required('Frequency is Required'),
-  maintenanceCost: Yup.number().required('Cost is Required'),
-  depreciationModel: Yup.number().required('Depreciation Model is Required'),
-  residualValue: Yup.number().required('Residual Value is Required'),
-  autoAdjust: Yup.boolean().required('Auto Adjust is Required'),
+const maintenanceDepreciationSchema = (
+  isCustomDetail: boolean,
+  isManualRate?: boolean
+) =>
+  Yup.object().shape({
+    maintenanceFrequency: Yup.number().required('Frequency is Required'),
+    maintenanceCost: Yup.number().required('Cost is Required'),
+    depreciationModel: Yup.number().required('Depreciation Model is Required'),
+    residualValue: Yup.number().required('Residual Value is Required'),
+    autoAdjust: Yup.boolean().required('Auto Adjust is Required'),
+
+    annualCostBreakDown: isManualRate
+      ? Yup.array()
+          .of(
+            Yup.object().shape({
+              year: Yup.number().required('Year is Required'),
+              depreciationRate: Yup.number().required(
+                'Depreciation Rate is Required'
+              ),
+            })
+          )
+          .required('Annual Rate Breakdown is required')
+          .min(1, 'At least one rate breakdown is needed')
+      : Yup.array()
+          .of(
+            Yup.object().shape({
+              year: Yup.number().nullable(),
+              depreciationRate: Yup.number().nullable(),
+            })
+          )
+          .nullable(),
+
+    ...(isCustomDetail
+      ? {
+          scheduleType: Yup.number().required('Schedule Type is Required'),
+          initialDepreciationRate: Yup.number().required(
+            'Initial Rate is Required'
+          ),
+          adjustmentCurve: Yup.number().required(
+            'Adjustment Curve is Required'
+          ),
+        }
+      : {
+          scheduleType: Yup.number().nullable(),
+          initialDepreciationRate: Yup.number().nullable(),
+          adjustmentCurve: Yup.number().nullable(),
+        }),
+  });
+
+const annualRateSchema = Yup.object().shape({
+  year: Yup.number().required('Year is Required'),
+  depreciationRate: Yup.number().required('Depreciation Rate is Required'),
 });
 
-export { assetParameterSchema, maintenanceDepreciationSchema };
+export {
+  assetParameterSchema,
+  maintenanceDepreciationSchema,
+  annualRateSchema,
+};

@@ -2,54 +2,53 @@ import React, { useMemo } from 'react';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useMediaQuery } from '@chakra-ui/react';
-import { useGetAllAssetQuery } from '~/lib/redux/services/asset/general.services';
-import { Asset } from '~/lib/interfaces/asset/general.interface';
-import { amountFormatter, dateFormatter } from '~/lib/utils/Formatters';
+import { amountFormatter } from '~/lib/utils/Formatters';
+import { useAppSelector } from '~/lib/redux/hooks';
+import { SimulatedScenarion } from '~/lib/interfaces/asset/lifeCycle.interfaces';
 
 const ScenarioTable = () => {
   const [isMobile] = useMediaQuery('(max-width: 768px)');
-  const columnHelper = createColumnHelper<Asset>();
-  const { data, isLoading, isFetching } = useGetAllAssetQuery({ pageSize: 5 });
+  const columnHelper = createColumnHelper<SimulatedScenarion>();
+  const data = useAppSelector((state) => state.asset.simulationData);
 
   const columns = useMemo(
     () => {
       const baseColumns = [
-        columnHelper.accessor('assetName', {
-          cell: (info) => 'Base',
+        columnHelper.accessor('scenario', {
+          cell: (info) => info.getValue ?? 'N/A',
           header: 'Scenario',
           enableSorting: false,
         }),
-        columnHelper.accessor('acquisitionDate', {
-          cell: (info) =>
-            info.getValue() ? dateFormatter(info.getValue(), 'YYYY') : 'N/A',
+        columnHelper.display({
+          cell: (info) => '2022',
           header: 'Replacement Year',
           enableSorting: false,
         }),
-        columnHelper.accessor('totalLifeCycleCost', {
-          cell: (info) =>
-            info.getValue() ? amountFormatter(info.getValue()) : 'N/A',
-          header: 'Total Cost',
-          enableSorting: false,
-        }),
+        // columnHelper.accessor('totalLifeCycleCost', {
+        //   cell: (info) =>
+        //     info.getValue() ? amountFormatter(info.getValue()) : 'N/A',
+        //   header: 'Total Cost',
+        //   enableSorting: false,
+        // }),
         columnHelper.accessor('maintenanceCost', {
           cell: (info) =>
             info.getValue() ? amountFormatter(info.getValue()!) : 'N/A',
           header: 'Maintenance Cost',
           enableSorting: false,
         }),
-        columnHelper.accessor('disposalCost', {
+        columnHelper.accessor('depreciationLoss', {
           cell: (info) =>
-            info.getValue() ? amountFormatter(info.getValue()!) : 'N/A',
+            info.getValue() ? amountFormatter(info.getValue()) : 'N/A',
           header: 'Depreciation Loss',
           enableSorting: false,
         }),
-        columnHelper.accessor('currentCost', {
+        columnHelper.accessor('residualValue', {
           cell: (info) =>
-            info.getValue() ? amountFormatter(info.getValue()!) : 'N/A',
+            info.getValue() ? amountFormatter(info.getValue()) : 'N/A',
           header: 'Residual Value',
           enableSorting: false,
         }),
-        columnHelper.accessor('riskScoreName', {
+        columnHelper.accessor('riskScore', {
           cell: (info) => info.getValue() ?? 'N/A',
           header: 'Risk Score',
           enableSorting: false,
@@ -57,40 +56,37 @@ const ScenarioTable = () => {
       ];
       return baseColumns;
     },
-    [data?.data?.items] //eslint-disable-line
+    [data?.simulatedScenarions] //eslint-disable-line
   );
 
   const mobileColumns = useMemo(
     () => {
       const baseColumns = [
-        columnHelper.accessor('assetName', {
-          cell: (info) => 'Base',
+        columnHelper.accessor('scenario', {
+          cell: (info) => info.getValue ?? 'N/A',
           header: 'Scenario',
           enableSorting: false,
         }),
-        columnHelper.accessor('acquisitionDate', {
-          cell: (info) =>
-            info.getValue() ? dateFormatter(info.getValue(), 'YYYY') : 'N/A',
+        columnHelper.display({
+          cell: (info) => '2022',
           header: 'Replacement Year',
           enableSorting: false,
         }),
-        columnHelper.accessor('totalLifeCycleCost', {
+        columnHelper.accessor('maintenanceCost', {
           cell: (info) =>
             info.getValue() ? amountFormatter(info.getValue()) : 'N/A',
-          header: 'Total Cost',
+          header: 'Maintenance Cost',
           enableSorting: false,
         }),
       ];
       return baseColumns;
     },
-    [data?.data?.items] //eslint-disable-line
+    [data] //eslint-disable-line
   );
   return (
     <DataTable
       columns={isMobile ? mobileColumns : columns}
-      data={data?.data?.items ?? []}
-      isLoading={isLoading}
-      isFetching={isFetching}
+      data={data?.simulatedScenarions ?? []}
       showFooter={false}
       maxTdWidth="200px"
       customThStyle={{

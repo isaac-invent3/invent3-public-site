@@ -40,7 +40,7 @@ const AcquisitionPurchaseCost = () => {
         >
           <Field
             as={FormTextInput}
-            name="purchasePrice"
+            name="purchaseCost"
             type="number"
             label="Purchase Price"
           />

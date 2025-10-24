@@ -22,7 +22,7 @@ const LifeExpectancyCurrentAge = () => {
           <Field
             as={FormTextInput}
             name="expectedUsefulLife"
-            type="text"
+            type="number"
             label="Expected Useful Life"
           />
         </FormInputWrapper>

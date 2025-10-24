@@ -9,8 +9,10 @@ import {
 } from '@repo/interfaces';
 import {
   AssetLifeCycle,
+  LifeCycleSimulationResponse,
   LifeCycleStages,
   LifeCycleTrend,
+  SimulationPayload,
 } from '~/lib/interfaces/asset/lifeCycle.interfaces';
 import { Asset } from '~/lib/interfaces/asset/general.interface';
 
@@ -100,6 +102,17 @@ export const assetLifeCycleApi = createApi({
         body,
       }),
     }),
+    runAssetLifecycleSimulationWizard: builder.mutation<
+      BaseApiResponse<LifeCycleSimulationResponse>,
+      SimulationPayload
+    >({
+      query: (body) => ({
+        url: `/Invent3Pro/RunAssetLifecycleSimulationWizard`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
   }),
 });
 
@@ -111,4 +124,5 @@ export const {
   useGetLifecyleStagesQuery,
   useSearchLifecyleStagesMutation,
   useGetAssetLifeCycleFinancialComparisonsQuery,
+  useRunAssetLifecycleSimulationWizardMutation,
 } = assetLifeCycleApi;

@@ -3,7 +3,7 @@ import { Flex, HStack, VStack } from '@chakra-ui/react';
 import { BackButton, Button } from '@repo/ui/components';
 import { FormikProvider } from 'formik';
 import React from 'react';
-import { useAppDispatch } from '~/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
 import { updateAssetLifecycleSimulationForm } from '~/lib/redux/slices/AssetSlice';
 import { assetParameterSchema } from '~/lib/schemas/asset/lifeCycleSimulation.schema';
 import AssetNameCategory from './AssetNameCategory';
@@ -20,17 +20,18 @@ interface AssetParametersProps {
 const AssetParameters = (props: AssetParametersProps) => {
   const { activeStep, setActiveStep, onClose } = props;
   const dispatch = useAppDispatch();
+  const state = useAppSelector((state) => state.asset.lifeCycleSimulationForm);
 
   const formik = useAppFormik({
     initialValues: {
-      assetName: null,
-      categoryName: null,
-      acquisitionDate: null,
-      expectedUsefulLife: null,
-      currentAge: null,
-      purchasePrice: null,
-      location: null,
-      currentCondition: 0,
+      assetName: state?.assetName ?? '',
+      categoryName: state?.categoryName ?? null,
+      acquisitionDate: state?.acquisitionDate ?? '',
+      purchaseCost: state?.purchaseCost ?? null,
+      expectedUsefulLife: state?.expectedUsefulLife ?? null,
+      currentAge: state?.currentAge ?? null,
+      location: state?.location ?? '',
+      currentCondition: state?.currentCondition ?? 0,
     },
     validationSchema: assetParameterSchema,
     enableReinitialize: true,

@@ -6,7 +6,10 @@ import {
   FilterInput,
 } from '~/lib/interfaces/asset/general.interface';
 import { AssetImage } from '~/lib/interfaces/asset/image.interfaces';
-import { AssetLifeCycleSimulation } from '~/lib/interfaces/asset/lifeCycle.interfaces';
+import {
+  AssetLifeCycleSimulation,
+  LifeCycleSimulationResponse,
+} from '~/lib/interfaces/asset/lifeCycle.interfaces';
 
 const initialAssetForm = {
   images: [],
@@ -109,6 +112,11 @@ const initialAssetLifeCycleSimulationForm = {
   depreciationModel: null,
   residualValue: null,
   autoAdjust: null,
+  scheduleType: null,
+  initialDepreciationRate: null,
+  adjustmentCurve: null,
+  stepInterval: null,
+  annualCostBreakDown: [],
 };
 
 interface GeneralInfo {
@@ -132,6 +140,7 @@ export interface SliceProps {
   selectedAssetIds: number[];
   generalInfo: GeneralInfo;
   lifeCycleSimulationForm: AssetLifeCycleSimulation;
+  simulationData: LifeCycleSimulationResponse | null;
 }
 
 const initialState: SliceProps = {
@@ -144,6 +153,7 @@ const initialState: SliceProps = {
     loadingImage: false,
   },
   lifeCycleSimulationForm: initialAssetLifeCycleSimulationForm,
+  simulationData: null,
 };
 
 export const AssetSlice = createSlice({
@@ -207,6 +217,12 @@ export const AssetSlice = createSlice({
     clearAssetLifecycleSimulationForm: (state) => {
       state.lifeCycleSimulationForm = initialAssetLifeCycleSimulationForm;
     },
+    setSimulationData: (
+      state,
+      { payload }: PayloadAction<LifeCycleSimulationResponse>
+    ) => {
+      state.simulationData = payload;
+    },
   },
 });
 
@@ -225,6 +241,7 @@ export const {
   updateGeneralInfo,
   updateAssetLifecycleSimulationForm,
   clearAssetLifecycleSimulationForm,
+  setSimulationData,
 } = AssetSlice.actions;
 
 export default AssetSlice.reducer;

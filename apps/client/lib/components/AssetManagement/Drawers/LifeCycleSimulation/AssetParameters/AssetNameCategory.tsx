@@ -1,4 +1,4 @@
-import { Grid, GridItem, VStack } from '@chakra-ui/react';
+import { Grid, GridItem } from '@chakra-ui/react';
 import { FormInputWrapper, FormTextInput } from '@repo/ui/components';
 import { Field } from 'formik';
 import React from 'react';

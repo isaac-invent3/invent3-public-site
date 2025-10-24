@@ -38,6 +38,103 @@ interface AssetLifeCycleSimulation {
   depreciationModel: number | null;
   residualValue: number | null;
   autoAdjust: boolean | null;
+  scheduleType: number | null;
+  initialDepreciationRate: number | null;
+  adjustmentCurve: number | null;
+  stepInterval: number | null;
+  annualCostBreakDown: AnnualCostBreakDownItem[];
+}
+
+interface AnnualCostBreakDownItem {
+  year: number;
+  depreciationRate: number;
+}
+
+interface MaintenanceDepreciationFormValues {
+  maintenanceFrequency: number | null;
+  maintenanceCost: number | null;
+  depreciationModel: number | null;
+  residualValue: number | null;
+  autoAdjust: boolean;
+  scheduleType: number | null;
+  initialDepreciationRate: number | null;
+  adjustmentCurve: number | null;
+  stepInterval: number | null;
+  annualCostBreakDown: AnnualCostBreakDownItem[];
+}
+
+interface LifeCycleSimulationResponse {
+  simulatedScenarions: SimulatedScenarion[];
+  lifeCycleCostCurve: LifeCycleCostCurve;
+  riskOverTime: RiskOverTime;
+  estimatedReplacementYear: number;
+  projectLifeCycleCost: number;
+  residualValue: number;
+  annualCostBreakdowns: AnnualCostBreakdown[];
+}
+
+export interface AnnualCostBreakdown {
+  year: number;
+  depreciationRate: number;
+  maintenanceCost: number;
+  depreciationLoss: number;
+  residualValue: number;
+  risk: string;
+}
+
+export interface LifeCycleCostCurve {
+  NormalPlan: LifeCycleCostCurveNormalPlan[];
+}
+
+export interface LifeCycleCostCurveNormalPlan {
+  year: number;
+  totalCost: number;
+}
+
+export interface RiskOverTime {
+  NormalPlan: RiskOverTimeNormalPlan[];
+}
+
+export interface RiskOverTimeNormalPlan {
+  year: number;
+  riskIndex: number;
+}
+
+export interface SimulatedScenarion {
+  scenario: number;
+  depreciationRate: number;
+  maintenanceCost: number;
+  depreciationLoss: number;
+  residualValue: number;
+  riskScore: number;
+}
+
+interface SimulationPayload {
+  assetParameters: {
+    assetName: string;
+    assetCategoryId: string;
+    acquisitionDate: string;
+    acquisitionCost: number;
+    expectedUsefulLife: number;
+    currentAge: number;
+    currentCondition: number;
+  };
+
+  depreciationParameters: {
+    depreciationMethod: number | null;
+    residualValue: number;
+    maintenanceCost: number;
+    scheduleType: number;
+    initialDepreciationRate: number;
+    adjustmentCurve: number;
+    stepInterval: number;
+    annualCostBreakdown: {
+      year: number;
+      depreciationRate: number;
+    }[];
+  };
+
+  maintenanceFrequency: number;
 }
 
 export type {
@@ -45,4 +142,8 @@ export type {
   LifeCycleTrend,
   LifeCycleStages,
   AssetLifeCycleSimulation,
+  MaintenanceDepreciationFormValues,
+  AnnualCostBreakDownItem,
+  LifeCycleSimulationResponse,
+  SimulationPayload,
 };

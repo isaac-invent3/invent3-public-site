@@ -1,20 +1,22 @@
 import { SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
+import { useAppSelector } from '~/lib/redux/hooks';
 import { formatNumberShort } from '~/lib/utils/helperFunctions';
 
 const Summary = () => {
+  const simulationData = useAppSelector((state) => state.asset.simulationData);
   const data = [
     {
       label: 'Planned Replacement Year',
-      value: 2032,
+      value: simulationData?.estimatedReplacementYear,
     },
     {
       label: 'Projected Lifecycle Cost',
-      value: `₦${formatNumberShort(42000000)}`,
+      value: `₦${formatNumberShort(simulationData?.projectLifeCycleCost ?? 0)}`,
     },
     {
       label: 'Residual Value',
-      value: `₦${formatNumberShort(8000000)}`,
+      value: `₦${formatNumberShort(simulationData?.residualValue ?? 0)}`,
     },
   ];
   return (

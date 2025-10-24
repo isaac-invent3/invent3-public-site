@@ -286,7 +286,7 @@ const rootReducer = combineReducers({
   [bmsAnomaliesApi.reducerPath]: bmsAnomaliesApi.reducer,
 
   // SLA APIs
-  // [slaApi.reducerPath]: slaApi.reducer,
+  [slaApi.reducerPath]: slaApi.reducer,
 
   asset: assetSlice,
   auditLog: auditLogSlice,

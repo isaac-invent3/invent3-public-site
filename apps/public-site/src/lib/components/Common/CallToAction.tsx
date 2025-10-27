@@ -83,6 +83,7 @@ const CTA = () => {
               direction={{ base: 'row' }}
               spacing={{ base: '16px', md: '32px' }}
               width={{ base: 'full', md: 'max-content' }}
+              justifyContent="center"
             >
               <Link href="/contact-us">
                 <Button

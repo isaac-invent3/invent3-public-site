@@ -272,6 +272,7 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                     customSpacing="24px"
                     description="Name of user that initiated the ticket"
                     title="Ticket Raised By"
+                    isRequired
                   >
                     <VStack width="full" alignItems="start" spacing="4px">
                       <UserDisplayAndAddButton

@@ -189,7 +189,7 @@ const AIConfigurationPanelDrawer = ({
               sectionMaxWidth="141px"
               customSpacing="19px"
               title="Minimum Rest Hours"
-              isRequired
+              isRequired={false}
               description="Minimum rest time for a technician before the next ticket assignment."
             >
               <FormSelect

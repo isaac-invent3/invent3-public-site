@@ -62,7 +62,7 @@ const updateTicketMetadataSchema = Yup.object().shape({
 });
 
 const aiConfigurationWorkloadBalancingSchema = Yup.object().shape({
-  minimumRestHours: Yup.number(),
+  minimumRestHours: Yup.number().nullable(),
   skillMatchWeight: Yup.number(),
   availiabilityWeight: Yup.number(),
   locationProximityWeight: Yup.number(),

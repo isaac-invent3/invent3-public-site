@@ -26,7 +26,9 @@ const ReplacementForecast = (props: ReplacementForecastProps) => {
         <VStack width="full" alignItems="flex-start" spacing="8px">
           <HStack spacing="16px">
             <Text size="lg" lineHeight="130%" color="neutral.800">
-              {moment(data?.dateForcasted).format('[Q]Q YYYY')}
+              {data?.dateForcasted
+                ? moment(data?.dateForcasted).format('[Q]Q YYYY')
+                : 'N/A'}
             </Text>
             {data?.confidenceLevelName && (
               <GenericStatusBox
@@ -38,7 +40,11 @@ const ReplacementForecast = (props: ReplacementForecastProps) => {
             )}
           </HStack>
           <Text color="neutral.800">
-            {data?.forecastDrivers.map((item) => item.driverFeature).join(', ')}
+            {data?.forecastDrivers
+              ? data?.forecastDrivers
+                  ?.map((item) => item.driverFeature)
+                  .join(', ')
+              : 'N/A'}
           </Text>
         </VStack>
       )}

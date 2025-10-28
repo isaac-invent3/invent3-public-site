@@ -53,8 +53,8 @@ const LifeCycleSimulation = (props: LifeCycleSimulationProps) => {
             <FormStepper
               currentStep={activeStep}
               steps={STEPS}
-              shouldWrap
-              maxW="120px"
+              // shouldWrap
+              // maxW="120px"
             />
             <Flex
               width="full"

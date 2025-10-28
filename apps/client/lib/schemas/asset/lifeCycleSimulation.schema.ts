@@ -72,8 +72,28 @@ const annualRateSchema = Yup.object().shape({
   depreciationRate: Yup.number().required('Depreciation Rate is Required'),
 });
 
+const lifeCycleTransitionSchema = Yup.object().shape({
+  criterion: Yup.array()
+    .of(
+      Yup.object().shape({
+        columnName: Yup.string().required('Column Name is Required'),
+        columnValue: Yup.string().required('Column Value is Required'),
+        operation: Yup.number().required('Operation is Required'),
+        join: Yup.number().when(
+          ['$isLast'],
+          (value: any[], schema: Yup.NumberSchema) => {
+            return value[0] ? schema : schema.required('Join is Required');
+          }
+        ),
+      })
+    )
+    .required('Criterion is Required')
+    .min(1),
+});
+
 export {
   assetParameterSchema,
   maintenanceDepreciationSchema,
   annualRateSchema,
+  lifeCycleTransitionSchema,
 };

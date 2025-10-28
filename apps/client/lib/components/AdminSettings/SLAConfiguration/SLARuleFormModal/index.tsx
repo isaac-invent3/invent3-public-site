@@ -122,7 +122,7 @@ const SLARuleFormModal = (props: SLARuleFormModalProps) => {
                     <FormInputWrapper
                       sectionMaxWidth="128px"
                       customSpacing="24px"
-                      description="Ticket of different maintenance type"
+                      description=" Select the type of maintenance ticket this SLA applies to"
                       title="Ticket Type"
                       isRequired
                     >
@@ -139,7 +139,7 @@ const SLARuleFormModal = (props: SLARuleFormModalProps) => {
                     <FormInputWrapper
                       sectionMaxWidth="128px"
                       customSpacing="24px"
-                      description="How urgent should we approach the rule"
+                      description="Specify the urgency level for this rule"
                       title="Priority Level"
                       isRequired
                     >
@@ -162,7 +162,7 @@ const SLARuleFormModal = (props: SLARuleFormModalProps) => {
                     <FormInputWrapper
                       sectionMaxWidth="128px"
                       customSpacing="24px"
-                      description="How urgent should we approach the rule"
+                      description="Set the maximum time allowed to respond to the ticket"
                       title="Response Time"
                       isRequired
                     >
@@ -186,7 +186,7 @@ const SLARuleFormModal = (props: SLARuleFormModalProps) => {
                     <FormInputWrapper
                       sectionMaxWidth="128px"
                       customSpacing="24px"
-                      description="How urgent should we approach the rule"
+                      description="Define how long it should take to fully resolve the ticket"
                       title="Resolution Time"
                       isRequired
                     >
@@ -216,7 +216,7 @@ const SLARuleFormModal = (props: SLARuleFormModalProps) => {
                     <FormInputWrapper
                       sectionMaxWidth="128px"
                       customSpacing="24px"
-                      description="How urgent should we approach the rule"
+                      description="Enable automated notifications to alert responsible parties before the SLA deadline is missed."
                       title="Send reminders before SLA breach"
                       isRequired={false}
                       justifyContent="space-between"
@@ -235,7 +235,7 @@ const SLARuleFormModal = (props: SLARuleFormModalProps) => {
                     <FormInputWrapper
                       sectionMaxWidth="128px"
                       customSpacing="24px"
-                      description="How urgent should we approach the rule"
+                      description="Specify how long before the SLA breach a reminder should be sent"
                       title="Reminder Interval"
                       isRequired={false}
                     >
@@ -257,7 +257,7 @@ const SLARuleFormModal = (props: SLARuleFormModalProps) => {
                     <FormInputWrapper
                       sectionMaxWidth="128px"
                       customSpacing="24px"
-                      description="How urgent should we approach the rule"
+                      description="Toggle to activate or deactivate this SLA rule."
                       title="SLA Active"
                       isRequired={false}
                       justifyContent="space-between"

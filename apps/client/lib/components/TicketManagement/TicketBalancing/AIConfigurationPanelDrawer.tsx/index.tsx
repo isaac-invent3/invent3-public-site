@@ -49,7 +49,7 @@ const AIConfigurationPanelDrawer = ({
   ] as const;
 
   const initialValues = {
-    minimumRestHours: 3,
+    minimumRestHours: null,
     skillMatchWeight: 25,
     availiabilityWeight: 25,
     locationProximityWeight: 25,

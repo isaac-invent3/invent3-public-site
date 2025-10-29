@@ -72,7 +72,7 @@ const annualRateSchema = Yup.object().shape({
   depreciationRate: Yup.number().required('Depreciation Rate is Required'),
 });
 
-const lifeCycleTransitionSchema = Yup.object().shape({
+const conditionSchema = Yup.object().shape({
   criterion: Yup.array()
     .of(
       Yup.object().shape({
@@ -87,13 +87,13 @@ const lifeCycleTransitionSchema = Yup.object().shape({
         ),
       })
     )
-    .required('Criterion is Required')
-    .min(1),
+    .required('Condition is Required')
+    .min(1, 'Add at least 1 Conditions'),
 });
 
 export {
   assetParameterSchema,
   maintenanceDepreciationSchema,
   annualRateSchema,
-  lifeCycleTransitionSchema,
+  conditionSchema,
 };

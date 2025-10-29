@@ -9,7 +9,7 @@ import {
 } from '~/lib/interfaces/report.interfaces';
 import { SystemContextTypeColumns } from '~/lib/interfaces/systemContextType.interfaces';
 import { useGetSystemContextTypeColumnsInfoQuery } from '~/lib/redux/services/systemcontexttypes.services';
-import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import { DEFAULT_PAGE_SIZE, SYSTEM_CONTEXT_TYPE } from '~/lib/utils/constants';
 import {
   entryAnimation,
   exitAnimation,
@@ -19,6 +19,7 @@ import {
 } from '~/lib/components/ReportAnalytics/GenerateReport/DynamicConditions/helpers';
 import OperatorDropdown from '~/lib/components/ReportAnalytics/GenerateReport/OperationDropdown';
 import DynamicConditionValue from '~/lib/components/ReportAnalytics/GenerateReport/DynamicConditions/ValueComponent';
+import { generateOptions } from '~/lib/utils/helperFunctions';
 
 const DynamicConditions = () => {
   const [removingIndex, setRemovingIndex] = useState<number | null>(null);
@@ -27,19 +28,31 @@ const DynamicConditions = () => {
     criterion: GenerateReportCriterion[];
   }>();
 
-  //   const getSelectedColumnOption = (index: number): Option | undefined => {
-  //     return selectedColumns.find(
-  //       (item) => item.value === values.criterion[index]?.columnName
-  //     );
-  //   };
+  const { data, isLoading } = useGetSystemContextTypeColumnsInfoQuery({
+    systemContextTypeId: SYSTEM_CONTEXT_TYPE.ASSETS,
+    pageNumber: 1,
+    pageSize: DEFAULT_PAGE_SIZE,
+  });
 
-  //   const getSelectedColumnData = (
-  //     index: number
-  //   ): SystemContextTypeColumns | undefined => {
-  //     return data?.data.items.find(
-  //       (item) => item.columnName === values.criterion[index]?.columnName
-  //     );
-  //   };
+  const selectedColumns = generateOptions(
+    data?.data?.items,
+    'columnName',
+    'columnName'
+  );
+
+  const getSelectedColumnOption = (index: number): Option | undefined => {
+    return selectedColumns.find(
+      (item) => item.value === values.criterion[index]?.columnName
+    );
+  };
+
+  const getSelectedColumnData = (
+    index: number
+  ): SystemContextTypeColumns | undefined => {
+    return data?.data.items.find(
+      (item) => item.columnName === values.criterion[index]?.columnName
+    );
+  };
 
   return (
     <VStack
@@ -59,7 +72,6 @@ const DynamicConditions = () => {
             ) => {
               const name = `criterion[${index}][${key}]`;
               const error = getIn(form.errors, name);
-
               return {
                 status: submitCount > 0 && error,
                 message: error,
@@ -130,10 +142,10 @@ const DynamicConditions = () => {
                         <Select
                           name="column"
                           title="Column"
-                          isLoading={false}
-                          options={[]}
+                          isLoading={isLoading}
+                          options={selectedColumns}
                           showTitleAfterSelect={true}
-                          //   selectedOption={getSelectedColumnOption(index)}
+                          selectedOption={getSelectedColumnOption(index)}
                           isInvalid={
                             getErrorMessage('columnName', index).status
                           }
@@ -172,14 +184,13 @@ const DynamicConditions = () => {
                           name="operator"
                           title="Operator"
                           showTitleAfterSelect={true}
-                          //   options={getRelationalOperators(
-                          //     getSelectedColumnData(index)?.dataType
-                          //   )}
-                          //   selectedOption={getSelectedOperatorOption(
-                          //     getSelectedColumnData(index)?.dataType,
-                          //     values.criterion[index]?.operation
-                          //   )}
-                          options={[]}
+                          options={getRelationalOperators(
+                            getSelectedColumnData(index)?.dataType
+                          )}
+                          selectedOption={getSelectedOperatorOption(
+                            getSelectedColumnData(index)?.dataType,
+                            values.criterion[index]?.operation
+                          )}
                           isInvalid={getErrorMessage('operation', index).status}
                           handleSelect={(option) => {
                             setFieldValue(
@@ -206,7 +217,7 @@ const DynamicConditions = () => {
                         )}
                       </VStack>
                       <DynamicConditionValue
-                        selectedContextTypeColumn={undefined}
+                        selectedContextTypeColumn={getSelectedColumnData(index)}
                         index={index}
                       />
 

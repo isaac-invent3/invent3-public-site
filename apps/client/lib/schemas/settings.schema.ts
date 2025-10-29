@@ -183,6 +183,28 @@ const webhookSchema = Yup.object().shape({
   authMethodId: Yup.number().required('Method is Required'),
 });
 
+const transitionRuleSchema = Yup.object().shape({
+  stageId: Yup.number().required('Stage is Required'),
+  conditions: Yup.array()
+    .of(
+      Yup.object().shape({
+        columnName: Yup.string().required('Column Name is Required'),
+        columnValue: Yup.string().required('Column Value is Required'),
+        operation: Yup.number().required('Operation is Required'),
+        join: Yup.number().when(
+          ['$isLast'],
+          (value: any[], schema: Yup.NumberSchema) => {
+            return value[0] ? schema : schema.required('Join is Required');
+          }
+        ),
+      })
+    )
+    .required('Conditon is Required')
+    .min(1, 'Add at least one condition'),
+  description: Yup.string().required('Description is Required'),
+  status: Yup.boolean().required('Status is Required'),
+});
+
 export {
   generalSchema,
   notificationSchema,
@@ -193,4 +215,5 @@ export {
   createApprovalWorkflowSchema,
   apiKeySchema,
   webhookSchema,
+  transitionRuleSchema,
 };

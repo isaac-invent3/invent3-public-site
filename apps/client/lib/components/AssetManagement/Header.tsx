@@ -8,6 +8,7 @@ import AssetTemplateModal from './Modals/AssetTemplateModal';
 import { Button } from '@repo/ui/components';
 import { useSession } from 'next-auth/react';
 import LifeCycleSimulation from './Drawers/LifeCycleSimulation';
+import AssetPredictiveRiskTrendDrawer from './Drawers/AssetPredictiveRiskTrendDrawer';
 
 const Header = () => {
   const canCreateAsset = usePermissionAccess('asset:create');
@@ -18,6 +19,11 @@ const Header = () => {
     isOpen: isOpenSimulator,
     onOpen: onOpenSimulator,
     onClose: onCloseSimulator,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenAssetPredictiveRisk,
+    onOpen: onOpenAssetPredictiveRisk,
+    onClose: onCloseAssetPredictiveRisk,
   } = useDisclosure();
 
   const assetClassName = getSearchParam('assetClass');
@@ -41,7 +47,7 @@ const Header = () => {
         px={{ base: '16px', md: 0 }}
       >
         <PageHeader>{assetClassName ?? 'Asset Management'}</PageHeader>
-        <HStack spacing={2}>
+        <HStack spacing={2} flexWrap="wrap">
           {canSimulateUsers && (
             <Button
               variant="outline"
@@ -54,6 +60,16 @@ const Header = () => {
               Simulate Lifecycle Wizard
             </Button>
           )}
+          <Button
+            variant="outline"
+            customStyles={{
+              width: '191px',
+              height: { base: '36px', md: 'min-content' },
+            }}
+            handleClick={onOpenAssetPredictiveRisk}
+          >
+            Compare Asset Trends
+          </Button>
           {canCreateAsset && (
             <ActionButtonPopover
               onOpenTemplateModal={onOpen}
@@ -76,6 +92,10 @@ const Header = () => {
       <LifeCycleSimulation
         isOpen={isOpenSimulator}
         onClose={onCloseSimulator}
+      />
+      <AssetPredictiveRiskTrendDrawer
+        isOpen={isOpenAssetPredictiveRisk}
+        onClose={onCloseAssetPredictiveRisk}
       />
     </>
   );

@@ -14,6 +14,7 @@ import {
 import {
   BackButton,
   Button,
+  ErrorMessage,
   FormAddButton,
   FormInputWrapper,
   FormTextAreaInput,
@@ -23,12 +24,10 @@ import {
 import { Field, FormikProvider } from 'formik';
 import { getSession } from 'next-auth/react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
-import { useCreateAssetComplianceMutation } from '~/lib/redux/services/asset/compliance.services';
-import { createComplianceSchema } from '~/lib/schemas/asset/compliance.schema';
-import { Document } from '~/lib/interfaces/general.interfaces';
-import moment from 'moment';
 import StageSelect from './StageSelect';
 import ConditionBuilder from './ConditionBuilder';
+import { transitionRuleSchema } from '~/lib/schemas/settings.schema';
+import { formatConditionsPreview } from '~/lib/utils/conditionHelper';
 
 interface StageTransitionRuleDrawerProps {
   isOpen: boolean;
@@ -47,60 +46,22 @@ const StageTransitionRuleDrawer = (props: StageTransitionRuleDrawerProps) => {
     onOpen: onOpenConditionBuilder,
     onClose: onCloseConditionBuilder,
   } = useDisclosure();
-  const { handleSubmit } = useCustomMutation();
-
-  const [createAssetCompliance, { isLoading: isCreatingCompliance }] =
-    useCreateAssetComplianceMutation();
 
   const initialValues = {
-    assetCategoryId: null,
-    regulationId: null,
-    complianceRegulationId: null,
-    nextInspectionDate: null,
-    frequencyId: null,
-    documents: [],
+    stageId: null,
+    conditions: [],
+    description: undefined,
+    status: false,
   };
 
   const formik = useAppFormik({
     initialValues,
     enableReinitialize: false,
-    validationSchema: createComplianceSchema,
+    validationSchema: transitionRuleSchema,
     onSubmit: async (data, { setSubmitting }) => {
       console.log({ data });
       setSubmitting(true);
       const session = await getSession();
-      const response = await handleSubmit(
-        createAssetCompliance,
-        {
-          createAssetComplianceDto: {
-            assetCategoryId: data?.assetCategoryId!,
-            regulationId: data?.regulationId!,
-            frequencyId: data?.frequencyId!,
-            complianceRegulationId: data?.complianceRegulationId!,
-            nextInspectionDate: data.nextInspectionDate
-              ? moment(data.nextInspectionDate, 'DD/MM/YYYY')
-                  .utc()
-                  .toISOString()
-              : null,
-            createdBy: session?.user?.email!,
-          },
-          createComplianceDocumentDtos:
-            data?.documents.length > 0
-              ? data?.documents.map((item: Document) => ({
-                  documentName: item.documentName!,
-                  base64Document: item.base64Document!,
-                  base64Prefix: item.base64Prefix!,
-                  createdBy: session?.user?.email!,
-                }))
-              : null,
-        },
-        ''
-      );
-
-      if (response?.data) {
-        formik.resetForm();
-        onOpenSuccess();
-      }
       setSubmitting(false);
     },
   });
@@ -160,14 +121,39 @@ const StageTransitionRuleDrawer = (props: StageTransitionRuleDrawerProps) => {
                       title="Conditions"
                       isRequired
                     >
-                      <VStack width="full" spacing={4} alignItems="flex-start">
-                        <HStack width="full" justifyContent="space-between">
-                          <Text>Text</Text>
-                          <Text cursor="pointer">Edit</Text>
-                        </HStack>
-                        <FormAddButton handleClick={onOpenConditionBuilder}>
-                          Add Condition
-                        </FormAddButton>
+                      <VStack width="full" spacing={1} alignItems="flex-start">
+                        <VStack
+                          width="full"
+                          spacing={4}
+                          alignItems="flex-start"
+                        >
+                          {formik.values.conditions.length > 0 && (
+                            <HStack width="full" justifyContent="space-between">
+                              <Text size="md" maxW="209px">
+                                {formatConditionsPreview(
+                                  formik.values.conditions
+                                )}
+                              </Text>
+                              <Text
+                                cursor="pointer"
+                                color="blue.500"
+                                onClick={onOpenConditionBuilder}
+                              >
+                                Edit
+                              </Text>
+                            </HStack>
+                          )}
+                          {formik.values.conditions.length === 0 && (
+                            <FormAddButton handleClick={onOpenConditionBuilder}>
+                              Add Condition
+                            </FormAddButton>
+                          )}
+                        </VStack>
+                        {formik.errors?.conditions && (
+                          <ErrorMessage>
+                            {formik.errors?.conditions}
+                          </ErrorMessage>
+                        )}
                       </VStack>
                     </FormInputWrapper>
                     <FormInputWrapper
@@ -197,7 +183,16 @@ const StageTransitionRuleDrawer = (props: StageTransitionRuleDrawerProps) => {
                         <Text size="md" lineHeight="140%">
                           Active
                         </Text>
-                        <Switch size="sm" />
+                        <Switch
+                          size="sm"
+                          isChecked={formik.values.status}
+                          onChange={() =>
+                            formik.setFieldValue(
+                              'status',
+                              !formik.values.status
+                            )
+                          }
+                        />
                       </HStack>
                     </FormInputWrapper>
                   </VStack>
@@ -213,9 +208,7 @@ const StageTransitionRuleDrawer = (props: StageTransitionRuleDrawerProps) => {
                       Preview
                     </Text>
                     <Text color="neutral.600" size="md" maxW="80%" minH="100px">
-                      IF Current Stage = Acquisition AND Conditions = Asset Age
-                      &gt; 3 years THEN Allowed Transitions → In Use,
-                      Maintenance. Status: Active.
+                      {formatConditionsPreview(formik.values.conditions)}
                     </Text>
                   </VStack>
                 </VStack>
@@ -241,7 +234,7 @@ const StageTransitionRuleDrawer = (props: StageTransitionRuleDrawerProps) => {
               </Button>
 
               <Button
-                isLoading={isCreatingCompliance || formik.isSubmitting}
+                isLoading={formik.isSubmitting}
                 handleClick={() => {
                   formik.handleSubmit();
                 }}
@@ -279,6 +272,10 @@ const StageTransitionRuleDrawer = (props: StageTransitionRuleDrawerProps) => {
       <ConditionBuilder
         isOpen={isOpenConditionBuilder}
         onClose={onCloseConditionBuilder}
+        setParentFieldValue={(value) =>
+          formik.setFieldValue('conditions', value)
+        }
+        initialCondition={formik.values.conditions}
       />
     </>
   );

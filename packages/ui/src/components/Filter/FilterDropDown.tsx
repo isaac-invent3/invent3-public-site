@@ -30,6 +30,7 @@ interface FilterDropDownProps {
   children?: ReactNode;
   showBorder?: boolean;
   labelStyles?: StackProps;
+  nestedLabelStyles?: StackProps;
   containerStyles?: FlexProps;
   chevronStyles?: IconProps;
   customLabel?: React.ReactNode;
@@ -47,6 +48,7 @@ const FilterDropDown = ({
   showBorder,
   labelStyles,
   containerStyles,
+  nestedLabelStyles,
   chevronStyles,
   customLabel,
 }: FilterDropDownProps) => {
@@ -109,7 +111,7 @@ const FilterDropDown = ({
         {...labelStyles}
       >
         {customLabel ?? (
-          <HStack spacing="8px">
+          <HStack spacing="8px" {...nestedLabelStyles}>
             <HStack spacing="8px">
               {label && (
                 <Text width="full" whiteSpace="nowrap" color="neutral.600">

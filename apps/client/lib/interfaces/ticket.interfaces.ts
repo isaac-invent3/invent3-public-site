@@ -169,7 +169,7 @@ interface TechnicianLoad {
 }
 
 interface AIConfigurationPanelPayload {
-  minimumRestHours: number;
+  minimumRestHours: number | null;
   skillMatchWeight: number;
   availiabilityWeight: number;
   locationProximityWeight: number;

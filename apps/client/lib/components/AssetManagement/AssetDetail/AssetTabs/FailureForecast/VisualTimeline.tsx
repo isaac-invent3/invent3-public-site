@@ -90,7 +90,7 @@ const VisualTimeline = (props: VisualTimelineProps) => {
   const diffEndDays = today.diff(end, 'days');
 
   return (
-    <VStack width="full" alignItems="flex-start" pb="21px">
+    <VStack width="full" alignItems="flex-start" p={2} pb="21px">
       {isLoading && <Skeleton width="full" height="100px" mt="8px" />}
 
       {!isLoading &&

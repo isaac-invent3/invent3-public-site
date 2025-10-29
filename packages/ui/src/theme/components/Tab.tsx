@@ -20,7 +20,7 @@ const customVariant = definePartsStyle(() => {
       alignItems: 'center',
       px: '4px',
       py: 0,
-      pb: '17px',
+      pb: '11px',
       mr: '19px',
     },
     tablist: {

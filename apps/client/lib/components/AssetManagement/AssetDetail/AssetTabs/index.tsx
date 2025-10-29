@@ -17,96 +17,63 @@ import RelationshipTab from './RelationshipTab';
 import AssetTickets from './AssetTickets';
 import DepreciationTab from './DepreciationTab';
 import FailureForecast from './FailureForecast';
+import DynamicTabs from '~/lib/components/UI/DynamicTab';
 
 const AssetTabs = () => {
-  const [tabIndex, setTabIndex] = useState(0);
+  const { updateSearchParam, getSearchParam } = useCustomSearchParams();
+  const tabParam = getSearchParam('tab');
   const AllTabs = [
     {
-      label: 'General',
-      slug: 'general',
+      name: 'General',
       component: <GeneralTab />,
     },
     {
-      label: 'Acquisition',
-      slug: 'acquisition',
+      name: 'Acquisition',
       component: <AcquisitionTab />,
     },
     {
-      label: 'Maintenance Plan',
-      slug: 'maintenancePlan',
+      name: 'Maintenance Plan',
       component: <MaintenanceTab />,
     },
-    // {
-    //   label: 'Maintenance History',
-    //   slug: 'maintenanceHistory',
-    //   component: <HistoryTab />,
-    // },
     {
-      label: 'Documents',
-      slug: 'assetDocuments',
+      name: 'Documents',
       component: <DocumentsTab />,
     },
     {
-      label: 'Components',
-      slug: 'assetComponents',
+      name: 'Components',
       component: <RelationshipTab />,
     },
     {
-      label: 'Open Tickets',
-      slug: 'openTickets',
+      name: 'Open Tickets',
       component: <AssetTickets />,
     },
     {
-      label: 'Depreciation',
-      slug: 'depreciation',
+      name: 'Depreciation',
       component: <DepreciationTab />,
     },
     {
-      label: 'Failure Forecast',
-      slug: 'failureForecast',
+      name: 'Failure Forecast',
       component: <FailureForecast />,
     },
   ];
 
-  const { updateSearchParam, getSearchParam } = useCustomSearchParams();
+  // useEffect(() => {
+  //   const tabSelected = getSearchParam('tabSelected');
 
-  useEffect(() => {
-    const tabSelected = getSearchParam('tabSelected');
+  //   if (tabSelected) {
+  //     const foundIndex = AllTabs.findIndex((tab) => tab.slug === tabSelected);
 
-    if (tabSelected) {
-      const foundIndex = AllTabs.findIndex((tab) => tab.slug === tabSelected);
-
-      setTabIndex(foundIndex !== -1 ? foundIndex : 0);
-    }
-  }, []);
+  //     setTabIndex(foundIndex !== -1 ? foundIndex : 0);
+  //   }
+  // }, []);
   return (
     <Flex width="full" px={{ base: '16px', md: '32px' }}>
-      <Tabs
-        variant="custom"
-        onChange={(index) => setTabIndex(index)}
-        width={'full'}
-        index={tabIndex}
-      >
-        <TabList>
-          {AllTabs.map((item) => (
-            <Tab
-              paddingBottom="10px"
-              key={item.label}
-              onClick={() => updateSearchParam('tabSelected', item.slug)}
-            >
-              {item.label}
-            </Tab>
-          ))}
-        </TabList>
-
-        <TabPanels>
-          {AllTabs.map((item, index) => (
-            <TabPanel key={item.label} mb="24px">
-              {index === tabIndex && item.component}
-            </TabPanel>
-          ))}
-        </TabPanels>
-      </Tabs>
+      <DynamicTabs
+        tabs={AllTabs}
+        activeTabParam={tabParam}
+        onTabChange={(name) => updateSearchParam('tab', name)}
+        isLoading={false}
+      />
     </Flex>
   );
 };

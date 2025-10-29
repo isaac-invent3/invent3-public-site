@@ -18,7 +18,7 @@ const RetirementForecasts = (props: RetirementForecastsProps) => {
   const { data, isLoading } = props;
 
   return (
-    <VStack width="full" spacing="12px" alignItems="flex-start">
+    <VStack width="full" spacing="12px" alignItems="flex-start" p={2}>
       {isLoading && <Skeleton width="full" height="100px" />}
       {!isLoading && data && data?.forecastDrivers?.length > 0 && (
         <VStack width="full" spacing="12px" alignItems="flex-start">

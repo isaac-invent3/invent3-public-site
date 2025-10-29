@@ -14,7 +14,6 @@ import {
   Button,
   VStack,
   useDisclosure,
-  HStack,
   Icon,
   Text,
   Box,
@@ -130,7 +129,7 @@ const DynamicTabs: React.FC<DynamicTabsProps> = ({
           ref={tabListRef}
           overflowX="visible"
           borderBottom="1px solid"
-          borderColor="gray.200"
+          borderColor="#BBBBBB"
         >
           {visibleTabs.map((tab) => (
             <Tab key={tab.name}>{tab.name}</Tab>
@@ -150,8 +149,8 @@ const DynamicTabs: React.FC<DynamicTabsProps> = ({
                   as="button"
                   mb="-1px"
                   px={4}
-                  py={2}
-                  pb="17px"
+                  pt={2}
+                  pb="11px"
                   display="flex"
                   alignItems="center"
                   gap={2}

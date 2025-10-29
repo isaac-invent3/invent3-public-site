@@ -99,7 +99,7 @@ const FailureForecast = () => {
                     />
                   </HStack>
                 </AccordionButton>
-                <AccordionPanel p="8px">{item.details}</AccordionPanel>
+                <AccordionPanel p="0px">{item.details}</AccordionPanel>
               </>
             )}
           </AccordionItem>

@@ -10,6 +10,7 @@ import UserDisplayAndAddButton from '../../Common/UserDisplayAndAddButton';
 import { Button, ErrorMessage, FormInputWrapper } from '@repo/ui/components';
 import TicketDrawerWrapper from './TicketDrawerWrapper';
 import { clearSelectedTicket } from '~/lib/redux/slices/TicketSlice';
+import TicketActivity from './Common/TicketActivity';
 
 interface AssignTicketDrawerProps {
   isOpen: boolean;
@@ -101,6 +102,7 @@ const AssignTicketDrawer = (props: AssignTicketDrawerProps) => {
       onClose={onClose}
       drawerFooter={<AssignDrawerFooter />}
     >
+      <TicketActivity ticketId={data?.ticketId} />
       <FormInputWrapper
         sectionMaxWidth="141px"
         customSpacing="24px"

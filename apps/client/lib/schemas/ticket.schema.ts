@@ -37,7 +37,7 @@ const assignTicketSchema = () =>
     assignedTo: Yup.number().required('Assignee is Required'),
   });
 
-const createTicketSchema = () =>
+const createTicketSchema = (hasSLA?: boolean) =>
   Yup.object().shape({
     ticketTitle: Yup.string().required('Ticket Title is Required'),
     issueDescription: Yup.string().required('Description is Required'),
@@ -53,6 +53,9 @@ const createTicketSchema = () =>
         base64Prefix: Yup.string().nullable(),
       })
       .nullable(),
+    ...(hasSLA
+      ? { slaDefinitionId: Yup.number().required('SLA is Required') }
+      : { slaDefinitionId: Yup.number().nullable() }),
   });
 
 const updateTicketMetadataSchema = Yup.object().shape({

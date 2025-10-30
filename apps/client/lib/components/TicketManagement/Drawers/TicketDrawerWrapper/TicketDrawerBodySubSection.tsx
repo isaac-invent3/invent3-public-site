@@ -155,7 +155,7 @@ const TicketDrawerBodySubSection = (props: TicketDrawerBodySubSectionProps) => {
           );
         }}
       />
-      <TicketActivity ticketId={data?.ticketId} />
+
       {isLoading && <Skeleton width="full" height="100px" />}
       {ticketDocuments?.data && ticketDocuments?.data?.items.length > 0 && (
         <ViewAttachement

@@ -36,10 +36,12 @@ import {
   generateOptions,
   getSelectedOption,
 } from '~/lib/utils/helperFunctions';
-import CreateTicketSuccessModal from '../Modals/CreateTicketSuccessModal';
-import TicketTypeSelect from './Common/TicketTypeSelect';
-import AttachFile from '../../Common/AttachFileAndView/AttachFile';
+import CreateTicketSuccessModal from '../../Modals/CreateTicketSuccessModal';
+import TicketTypeSelect from '../Common/TicketTypeSelect';
+import AttachFile from '../../..//Common/AttachFileAndView/AttachFile';
 import { useAppFormik } from '~/lib/hooks/useAppFormik';
+import SLAField from './SLAField';
+import { useState } from 'react';
 
 interface CreateTicketDrawerProps {
   isOpen: boolean;
@@ -49,6 +51,7 @@ interface CreateTicketDrawerProps {
 
 const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
   const { isOpen, onClose, asset } = props;
+  const [hasSLA, setHasSLA] = useState(false);
   const {
     isOpen: isOpenSuccess,
     onOpen: onOpenSuccess,
@@ -76,25 +79,28 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
     ticketTypeId: null,
     document: null,
     ticketPriorityId: null,
+    slaRequired: false,
+    slaDefinitionId: null,
     issueReportDate: moment().utc().toISOString(),
   };
 
   const formik = useAppFormik<CreateTicketForm>({
     initialValues,
     enableReinitialize: false,
-    validationSchema: createTicketSchema,
+    validationSchema: createTicketSchema(hasSLA),
     onSubmit: async (data) => {
       const session = await getSession();
 
       /* eslint-disable no-unused-vars */
       const { assignedToEmployeeName, reportedByEmployeeName, ...payload } =
         data;
-      const { document, ...ticketDto } = data;
+      const { document, slaRequired, ...ticketDto } = data;
       const response = await handleSubmit(
         createTicketMutation,
         {
           createTicketDto: {
             ...ticketDto,
+            slaRequired: hasSLA,
             createdBy: session?.user.username!,
           },
           createTicketDocumentDto: document
@@ -320,6 +326,7 @@ const CreateTicketDrawer = (props: CreateTicketDrawerProps) => {
                       name="assignedToEmployeeName"
                     />
                   </FormInputWrapper>
+                  <SLAField hasSLA={hasSLA} setHasSLA={setHasSLA} />
 
                   <FormInputWrapper
                     sectionMaxWidth="141px"

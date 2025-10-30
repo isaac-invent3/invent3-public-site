@@ -4,6 +4,7 @@ import {
   ModalBody,
   ModalFooter,
   useDisclosure,
+  VStack,
 } from '@chakra-ui/react';
 import Header from './Header';
 import { useEffect, useRef } from 'react';
@@ -11,6 +12,7 @@ interface GenericTemplateModalProps {
   isOpen: boolean;
   onClose: () => void;
   headerName: string;
+  subHeading?: string;
   pageSize?: number;
   pageNumber?: number;
   totalPages?: number;
@@ -23,6 +25,7 @@ interface GenericTemplateModalProps {
   children: React.ReactNode;
   filters?: React.ReactNode;
   footer?: React.ReactNode;
+  extraFooter?: React.ReactNode;
   searchPlaceholder?: string;
 }
 const GenericTemplateModal = (props: GenericTemplateModalProps) => {
@@ -30,6 +33,7 @@ const GenericTemplateModal = (props: GenericTemplateModalProps) => {
     isOpen,
     onClose,
     headerName,
+    subHeading,
     pageSize,
     pageNumber,
     setPageSize,
@@ -41,6 +45,7 @@ const GenericTemplateModal = (props: GenericTemplateModalProps) => {
     filters,
     totalPages,
     footer,
+    extraFooter,
     searchPlaceholder,
     hideOtherInfoWhenDetailsIsShown = true,
   } = props;
@@ -62,6 +67,7 @@ const GenericTemplateModal = (props: GenericTemplateModalProps) => {
     >
       <Header
         headerName={headerName}
+        subHeading={subHeading}
         setSearch={setSearch}
         openFilter={openFilter}
         setOpenFilter={onToggle}
@@ -87,13 +93,16 @@ const GenericTemplateModal = (props: GenericTemplateModalProps) => {
           justifyContent="flex-end"
         >
           {footer ?? (
-            <TablePagination
-              pageNumber={pageNumber}
-              setPageNumber={setPageNumber}
-              pageSize={pageSize}
-              setPageSize={setPageSize}
-              totalPage={totalPages ?? 0}
-            />
+            <VStack width="full" alignItems="flex-end">
+              <TablePagination
+                pageNumber={pageNumber}
+                setPageNumber={setPageNumber}
+                pageSize={pageSize}
+                setPageSize={setPageSize}
+                totalPage={totalPages ?? 0}
+              />
+              {extraFooter}
+            </VStack>
           )}
         </ModalFooter>
       )}

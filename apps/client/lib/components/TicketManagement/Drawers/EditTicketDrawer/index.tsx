@@ -6,17 +6,18 @@ import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { Task } from '~/lib/interfaces/task.interfaces';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
 import { useUpdateTicketMutation } from '~/lib/redux/services/ticket.services';
-import ScheduledTicketTasks from './Common/ScheduledTicketTasks';
-import TicketDrawerWrapper from './TicketDrawerWrapper';
+import ScheduledTicketTasks from '../Common/ScheduledTicketTasks';
+import TicketDrawerWrapper from '../TicketDrawerWrapper';
 import {
   useGetMaintenanceSchedulesByTicketIdQuery,
   useUpdateMaintenanceScheduleAndTasksMutation,
 } from '~/lib/redux/services/maintenance/schedule.services';
 import { FORM_ENUM } from '~/lib/utils/constants';
 import { useAppDispatch, useAppSelector } from '~/lib/redux/hooks';
-import ReOpenTicketModal from '../Modals/ReOpenTicketModal';
-import ReopenedSuccessModal from '../Modals/ReOpenTicketModal/ReopenedSuccessModal';
+import ReOpenTicketModal from '../../Modals/ReOpenTicketModal';
+import ReopenedSuccessModal from '../../Modals/ReOpenTicketModal/ReopenedSuccessModal';
 import { taskApi } from '~/lib/redux/services/task/general.services';
+import DetailTabs from './DetailTabs';
 
 interface EditTicketDrawerProps {
   isOpen: boolean;
@@ -166,7 +167,7 @@ const EditTicketDrawer = (props: EditTicketDrawerProps) => {
         isEditing={isUpdatingTicket || isUpdating}
         handleEdit={() => formik.handleSubmit()}
       >
-        <ScheduledTicketTasks
+        <DetailTabs
           data={data}
           scheduleId={maintenanceSchedule?.data?.scheduleId}
           isFetchingSchedule={isFetchingSchedule}

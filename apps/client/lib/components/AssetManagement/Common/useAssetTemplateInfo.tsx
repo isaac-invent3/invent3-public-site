@@ -23,11 +23,22 @@ interface UseAssetTemplateInfo {
   search: string;
   columnId?: number | string;
   columnType?: string;
+  isSelectable?: boolean;
+  selectedRows?: number[]; // asset IDs that are selected
+  setSelectedRows?: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
 const useAssetTemplateInfo = (props: UseAssetTemplateInfo) => {
-  const { PopoverComponent, handleSelectRow, search, columnId, columnType } =
-    props;
+  const {
+    PopoverComponent,
+    handleSelectRow,
+    search,
+    columnId,
+    columnType,
+    isSelectable = false,
+    selectedRows,
+    setSelectedRows,
+  } = props;
   const initialAssetFilter = {
     category: [],
     status: [],
@@ -132,9 +143,11 @@ const useAssetTemplateInfo = (props: UseAssetTemplateInfo) => {
         handleSelectRow={(row) => {
           handleSelectRow(row);
         }}
+        selectedRows={selectedRows}
+        setSelectedRows={setSelectedRows}
         showFooter={false}
         emptyLines={25}
-        isSelectable={false}
+        isSelectable={isSelectable}
         PopoverComponent={(data) =>
           PopoverComponent ? PopoverComponent(data) : undefined
         }
@@ -171,6 +184,10 @@ const useAssetTemplateInfo = (props: UseAssetTemplateInfo) => {
     setPageSize,
     Filter,
     applyFilter,
+    assets:
+      (search || !isFilterEmpty) && searchData
+        ? searchData.items
+        : (data?.data?.items ?? []),
   };
 };
 

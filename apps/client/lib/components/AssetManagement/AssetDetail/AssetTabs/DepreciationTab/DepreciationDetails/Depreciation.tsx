@@ -91,6 +91,28 @@ const Depreciation = (props: DepreciationProps) => {
             isLoading={isLoading}
           />
         ))}
+        <Detail
+          label="Residual Value:"
+          labelMinWidth="189px"
+          isLoading={isLoading}
+        >
+          {data?.currentValue ? (
+            <HStack spacing={2}>
+              <Text color="primary.500" size="md">
+                {data?.currentValue
+                  ? amountFormatter(data?.currentValue)
+                  : 'N/A'}
+              </Text>
+              <Text fontSize="10px" color="neutral.700">
+                (after 5 years)
+              </Text>
+            </HStack>
+          ) : (
+            <Text color="primary.500" size="md">
+              N/A
+            </Text>
+          )}
+        </Detail>
       </VStack>
     </VStack>
   );

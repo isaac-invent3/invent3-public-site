@@ -1,12 +1,10 @@
-import { Collapse, HStack, Icon, Text, VStack } from '@chakra-ui/react';
+import { VStack } from '@chakra-ui/react';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import React, { useMemo, useState } from 'react';
-import { ChevronDownIcon, ChevronUpIcon } from '~/lib/components/CustomIcons';
 import { AssetDepreciationHistory } from '~/lib/interfaces/asset/depreciation.interfaces';
 import { useGetAllAssetDepreciationHistoryByDepreciationIdQuery } from '~/lib/redux/services/asset/depreciation.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
-import { amountFormatter } from '~/lib/utils/Formatters';
 
 const SuggestedSpartPartsTable = ({
   depreciationId,

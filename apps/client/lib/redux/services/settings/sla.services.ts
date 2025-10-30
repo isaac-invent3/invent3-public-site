@@ -1,5 +1,10 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { BaseApiResponse, ListResponse, QueryParams } from '@repo/interfaces';
+import {
+  BaseApiResponse,
+  ListResponse,
+  QueryParams,
+  SearchQuery,
+} from '@repo/interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import {
   CreateSLADefinitionPayload,
@@ -45,7 +50,7 @@ export const slaApi = createApi({
       UpdateSLADefinitionPayload
     >({
       query: (body) => ({
-        url: '/SlaDefinitions',
+        url: `/SlaDefinitions/${body.slaDefinitionId}`,
         method: 'PUT',
         headers: getHeaders(),
         body,
@@ -65,6 +70,17 @@ export const slaApi = createApi({
       }),
       invalidatesTags: ['allSLADefintions'],
     }),
+    searchSLADefinition: builder.mutation<
+      BaseApiResponse<ListResponse<SLADefinition>>,
+      SearchQuery
+    >({
+      query: (body) => ({
+        url: `/SlaDefinitions/Search`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+    }),
   }),
 });
 
@@ -73,4 +89,5 @@ export const {
   useCreateSLADefintionMutation,
   useUpdateSLADefintionMutation,
   useDeleteSLADefintionMutation,
+  useSearchSLADefinitionMutation,
 } = slaApi;

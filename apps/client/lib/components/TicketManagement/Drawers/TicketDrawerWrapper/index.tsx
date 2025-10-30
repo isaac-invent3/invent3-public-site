@@ -102,7 +102,7 @@ const TicketDrawerWrapper = (props: TicketDrawerProps) => {
   const renderDrawerContent = () => {
     return (
       <>
-        <DrawerBody p={0} m={0}>
+        <DrawerBody p={0} m={0} minH="full">
           <Flex
             direction="column"
             width="full"
@@ -155,7 +155,7 @@ const TicketDrawerWrapper = (props: TicketDrawerProps) => {
 
   return (
     <>
-      <GenericDrawer isOpen={isOpen} onClose={handleClose} maxWidth="507px">
+      <GenericDrawer isOpen={isOpen} onClose={handleClose} maxWidth="535px">
         <DrawerHeader p={0} m={0}>
           <Stack
             pt="16px"

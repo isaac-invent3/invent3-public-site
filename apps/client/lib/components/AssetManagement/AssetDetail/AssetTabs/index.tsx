@@ -1,17 +1,8 @@
-import {
-  Flex,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-} from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { Flex } from '@chakra-ui/react';
 import useCustomSearchParams from '~/lib/hooks/useCustomSearchParams';
 import AcquisitionTab from './AcquisitionTab';
 import DocumentsTab from './DocumentsTab';
 import GeneralTab from './GeneralTab';
-import HistoryTab from './HistoryTab';
 import MaintenanceTab from './MaintenanceTab';
 import RelationshipTab from './RelationshipTab';
 import AssetTickets from './AssetTickets';
@@ -56,16 +47,6 @@ const AssetTabs = () => {
       component: <FailureForecast />,
     },
   ];
-
-  // useEffect(() => {
-  //   const tabSelected = getSearchParam('tabSelected');
-
-  //   if (tabSelected) {
-  //     const foundIndex = AllTabs.findIndex((tab) => tab.slug === tabSelected);
-
-  //     setTabIndex(foundIndex !== -1 ? foundIndex : 0);
-  //   }
-  // }, []);
   return (
     <Flex width="full" px={{ base: '16px', md: '32px' }}>
       <DynamicTabs

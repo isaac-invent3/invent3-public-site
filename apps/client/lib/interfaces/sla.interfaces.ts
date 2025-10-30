@@ -38,6 +38,7 @@ interface CreateSLADefinitionPayload extends BaseSLADefinitionPayload {
 }
 
 interface UpdateSLADefinitionPayload extends BaseSLADefinitionPayload {
+  slaDefinitionId: number;
   lastModifiedBy: string;
 }
 

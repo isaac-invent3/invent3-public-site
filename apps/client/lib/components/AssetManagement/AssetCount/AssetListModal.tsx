@@ -1,5 +1,5 @@
 import { useDisclosure } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import GenericTemplateModal from '~/lib/components/Common/Modals/GenericTemplateModal';
 import {
   Asset,
@@ -14,11 +14,28 @@ interface AssetListModalProps {
   isOpen: boolean;
   onClose: () => void;
   name?: string;
+  subheading?: string;
   columnId?: number | string;
   columnName?: string;
+  isSelectable?: boolean;
+  handleAssets?: (assets: Asset[]) => void;
+  renderFooter?: (
+    handleReserve: () => void,
+    handleCancel: () => void
+  ) => React.ReactNode;
 }
 const AssetListModal = (props: AssetListModalProps) => {
-  const { isOpen, onClose, name, columnId, columnName } = props;
+  const {
+    isOpen,
+    onClose,
+    name,
+    subheading,
+    columnId,
+    columnName,
+    isSelectable,
+    handleAssets,
+    renderFooter,
+  } = props;
   const dispatch = useAppDispatch();
   const {
     isOpen: isOpenDetail,
@@ -26,9 +43,16 @@ const AssetListModal = (props: AssetListModalProps) => {
     onOpen: onOpenDetail,
   } = useDisclosure();
 
+  const [selectedAssets, setSelectedAssets] = useState<Asset[]>([]);
+  const [selectedRows, setSelectedRows] = useState<number[]>([]);
+
   const handleSelectRow = (data: Asset) => {
-    dispatch(setAsset(data));
-    onOpenDetail();
+    // if not selectable, open detail
+    if (!isSelectable) {
+      dispatch(setAsset(data));
+      onOpenDetail();
+      return;
+    }
   };
 
   const [search, setSearch] = useState('');
@@ -41,16 +65,31 @@ const AssetListModal = (props: AssetListModalProps) => {
     setPageNumber,
     Filter,
     applyFilter,
+    assets,
   } = useAssetTemplateInfo({
     handleSelectRow,
     search,
     columnType: columnName,
     columnId: columnId,
+    isSelectable: isSelectable,
+    selectedRows,
+    setSelectedRows,
   });
 
   useEffect(() => {
     applyFilter();
   }, []);
+
+  const handleReserve = () => {
+    console.log({ selectedRows });
+    const selectedAssets = assets.filter((_, index) =>
+      selectedRows.includes(index)
+    );
+    console.log({ selectedAssets });
+
+    if (handleAssets) handleAssets(selectedAssets);
+    onClose();
+  };
 
   return (
     <>
@@ -58,13 +97,14 @@ const AssetListModal = (props: AssetListModalProps) => {
         isOpen={isOpen}
         onClose={onClose}
         headerName={name ?? 'Assets'}
+        subHeading={subheading}
         pageSize={pageSize}
         pageNumber={pageNumber}
         totalPages={totalPages}
-        setSearch={setSearch}
         setPageNumber={setPageNumber}
         setPageSize={setPageSize}
         filters={Filter}
+        extraFooter={renderFooter ? renderFooter(handleReserve, onClose) : null}
       >
         {AssetTemplateTable}
       </GenericTemplateModal>

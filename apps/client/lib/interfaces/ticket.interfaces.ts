@@ -72,6 +72,8 @@ interface TicketDto {
   assetId: number | null;
   reportedByEmployeeId: number | null;
   ticketTypeId: number | null;
+  slaRequired: boolean | null;
+  slaDefinitionId: number | null;
   ticketPriorityId: number | null;
   assignedTo: number | null;
   createdBy?: string;

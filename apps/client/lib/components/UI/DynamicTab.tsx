@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useLayoutEffect } from 'react';
 import {
   Flex,
   Tab,
@@ -19,6 +19,7 @@ import {
   Box,
 } from '@chakra-ui/react';
 import { ThreeVerticalDotsIcon } from '../CustomIcons';
+import { debounce } from 'lodash';
 
 interface DynamicTabsProps {
   tabs: { name: string; component: React.ReactNode }[];
@@ -53,7 +54,7 @@ const DynamicTabs: React.FC<DynamicTabsProps> = ({
   const tabListRef = useRef<HTMLDivElement | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  // Handle initial tab selection via param
+  // Handle initial tab selection via URL/search param
   useEffect(() => {
     const mainIndex = tabs.findIndex((t) => t.name === activeTabParam);
     if (mainIndex !== -1) {
@@ -83,18 +84,18 @@ const DynamicTabs: React.FC<DynamicTabsProps> = ({
     onClose();
   };
 
-  // ✅ Dynamically calculate which tabs fit
-  useEffect(() => {
+  // ✅ Stable resize observer to detect overflow without flicker
+  useLayoutEffect(() => {
     const container = tabListRef.current;
     if (!container) return;
 
-    const resizeObserver = new ResizeObserver(() => {
+    const calculateTabs = () => {
       const containerWidth = container.offsetWidth;
       const childWidths = Array.from(container.children).map(
         (child) => (child as HTMLElement).offsetWidth
       );
 
-      const moreButtonWidth = 160; // space reserved for "More"
+      const moreButtonWidth = 160;
       let total = 0;
       let cutoffIndex = tabs.length;
 
@@ -106,15 +107,35 @@ const DynamicTabs: React.FC<DynamicTabsProps> = ({
         }
       }
 
-      setVisibleTabs(tabs.slice(0, cutoffIndex));
-      setOverflowTabs(tabs.slice(cutoffIndex));
-    });
+      const newVisible = tabs.slice(0, cutoffIndex);
+      const newOverflow = tabs.slice(cutoffIndex);
+
+      // ✅ Only update if values actually changed
+      const visibleChanged =
+        JSON.stringify(newVisible.map((t) => t.name)) !==
+        JSON.stringify(visibleTabs.map((t) => t.name));
+      const overflowChanged =
+        JSON.stringify(newOverflow.map((t) => t.name)) !==
+        JSON.stringify(overflowTabs.map((t) => t.name));
+
+      if (visibleChanged || overflowChanged) {
+        setVisibleTabs(newVisible);
+        setOverflowTabs(newOverflow);
+      }
+    };
+
+    const debouncedCalc = debounce(calculateTabs, 100);
+    const resizeObserver = new ResizeObserver(debouncedCalc);
 
     resizeObserver.observe(container);
-    return () => resizeObserver.disconnect();
+    calculateTabs(); // run once on mount
+
+    return () => {
+      resizeObserver.disconnect();
+      debouncedCalc.cancel();
+    };
   }, [tabs]);
 
-  // ✅ Determine if an overflow tab is active
   const isMoreActive = overflowTabs.some((t) => t.name === activeMoreTab);
 
   return (
@@ -130,6 +151,7 @@ const DynamicTabs: React.FC<DynamicTabsProps> = ({
           overflowX="visible"
           borderBottom="1px solid"
           borderColor="#BBBBBB"
+          width="full"
         >
           {visibleTabs.map((tab) => (
             <Tab key={tab.name}>{tab.name}</Tab>
@@ -144,7 +166,6 @@ const DynamicTabs: React.FC<DynamicTabsProps> = ({
               isLazy
             >
               <PopoverTrigger>
-                {/* ✅ Styled "More" as a tab-like element */}
                 <Box
                   as="button"
                   mb="-1px"
@@ -158,9 +179,7 @@ const DynamicTabs: React.FC<DynamicTabsProps> = ({
                   borderBottom="3px solid"
                   borderColor={isMoreActive ? 'primary.500' : 'transparent'}
                   color={isMoreActive ? 'primary.500' : 'neutral.600'}
-                  _hover={{
-                    color: 'primary.500',
-                  }}
+                  _hover={{ color: 'primary.500' }}
                 >
                   <Flex
                     bgColor="neutral.300"
@@ -209,7 +228,7 @@ const DynamicTabs: React.FC<DynamicTabsProps> = ({
 
       <TabPanels pt="16px">
         {visibleTabs.map((tab, index) => (
-          <TabPanel key={tab.name}>
+          <TabPanel key={tab.name} height="full">
             {tabIndex === index && tab.component}
           </TabPanel>
         ))}

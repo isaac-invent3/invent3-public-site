@@ -1,10 +1,11 @@
-import { Heading, HStack, ModalHeader, VStack } from '@chakra-ui/react';
+import { Heading, HStack, ModalHeader, Text, VStack } from '@chakra-ui/react';
 
 import { FilterIcon } from '~/lib/components/CustomIcons';
 import { BackButton, SearchInput, FilterButton } from '@repo/ui/components';
 
 interface HeaderProps {
   headerName: string;
+  subHeading?: string;
   setSearch?: React.Dispatch<React.SetStateAction<string>>;
   openFilter: boolean;
   setOpenFilter: () => void;
@@ -17,6 +18,7 @@ interface HeaderProps {
 const Header = (props: HeaderProps) => {
   const {
     headerName,
+    subHeading,
     setSearch,
     openFilter,
     setOpenFilter,
@@ -38,13 +40,18 @@ const Header = (props: HeaderProps) => {
         spacing={showDetails ? '31px' : '26px'}
         alignItems="flex-start"
       >
-        <Heading
-          color="primary.500"
-          fontWeight={800}
-          size={{ base: 'lg', md: 'xl' }}
-        >
-          {headerName}
-        </Heading>
+        <VStack width="full" spacing={2} alignItems="flex-start">
+          <Heading
+            color="primary.500"
+            fontWeight={800}
+            size={{ base: 'lg', md: 'xl' }}
+          >
+            {headerName}
+          </Heading>
+          <Text color="neutral.600" size="md">
+            {subHeading}
+          </Text>
+        </VStack>
         {showDetails && (
           <BackButton
             handleClick={() => setShowDetails && setShowDetails(false)}

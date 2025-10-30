@@ -82,7 +82,10 @@ const SLARuleFormModal = (props: SLARuleFormModalProps) => {
         response = await handleSubmit(createSLADefinition, finalValue);
       } else {
         finalValue.lastModifiedBy = session?.user?.username || '';
-        response = await handleSubmit(updateSLADefinition, finalValue);
+        response = await handleSubmit(updateSLADefinition, {
+          ...finalValue,
+          slaDefinitionId: data?.slaDefinitionId,
+        });
       }
       if (response?.data) {
         onOpenSuccess();

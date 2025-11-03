@@ -171,9 +171,9 @@ const WhyUs = () => {
             customStyles={{
               width: { base: 'full', lg: '203px' },
             }}
-            href="/waitlist"
+            href="/contact-us"
           >
-            Join Waitlist
+            Get a Free Demo
           </Button>
         </VStack>
       </Flex>

@@ -20,7 +20,7 @@ export const bmsReadingApi = createApi({
       QueryParams
     >({
       query: (data) => ({
-        url: generateQueryStr(`/BmsReadingSubCategories`, data),
+        url: generateQueryStr(`/BmsReadingSubCategories?`, data),
         method: 'GET',
         headers: getHeaders(),
       }),
@@ -31,7 +31,7 @@ export const bmsReadingApi = createApi({
     >({
       query: ({ assetId, ...data }) => ({
         url: generateQueryStr(
-          `/AssetBmsReadings/GetAssetBmsReadingsBySubcategoryId/${assetId}`,
+          `/AssetBmsReadings/GetAssetBmsReadingsBySubcategoryId/${assetId}?`,
           data
         ),
         method: 'GET',

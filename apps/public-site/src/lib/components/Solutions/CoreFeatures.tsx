@@ -114,9 +114,9 @@ const CoreFeatures = () => {
                 color: 'primary',
               },
             }}
-            href="/waitlist"
+            href="/contact-us"
           >
-            Join Waitlist
+            Get a Free Demo
           </Button>
         </VStack>
 

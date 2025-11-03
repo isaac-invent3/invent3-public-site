@@ -2,54 +2,34 @@ import { Box, HStack, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import CardHeader from '~/lib/components/Dashboard/Common/CardHeader';
 import LineChart from '~/lib/components/Dashboard/Common/Charts/LineChart';
+import { AssetComparison } from '~/lib/interfaces/asset/general.interface';
+import { dateFormatter } from '~/lib/utils/Formatters';
+import { generateColor } from '~/lib/utils/helperFunctions';
 
-const GraphPreview = () => {
-  const dataItems = [
-    {
-      asset: 'HVAC-203',
-      color: '#07CC3B',
-      values: [
-        { label: 'Oct 1', value: 10 },
-        { label: 'Oct 5', value: 20 },
-        { label: 'Oct 10', value: 30 },
-        { label: 'Oct 15', value: 40 },
-        { label: 'Oct 20', value: 50 },
-        { label: 'Oct 25', value: 60 },
-      ],
-    },
-    {
-      asset: 'HVAC-102',
-      color: '#EABC30',
-      values: [
-        { label: 'Oct 1', value: 10 },
-        { label: 'Oct 5', value: 17 },
-        { label: 'Oct 10', value: 27 },
-        { label: 'Oct 15', value: 37 },
-        { label: 'Oct 20', value: 47 },
-        { label: 'Oct 25', value: 57 },
-      ],
-    },
-    {
-      asset: 'HVAC-307',
-      color: '#07CC3B',
-      values: [
-        { label: 'Oct 1', value: 15 },
-        { label: 'Oct 5', value: 25 },
-        { label: 'Oct 10', value: 35 },
-        { label: 'Oct 15', value: 45 },
-        { label: 'Oct 20', value: 55 },
-        { label: 'Oct 25', value: 65 },
-      ],
-    },
-  ];
+const GraphPreview = ({ data }: { data?: AssetComparison[] }) => {
+  const dataItems = data
+    ? data?.map((item, index) => ({
+        asset: item.assetName,
+        color: generateColor(index),
+        values: item.assetRisks.map((item) => ({
+          label: dateFormatter(item.day, 'MMM D'),
+          value: item.predictiveScore,
+        })),
+      }))
+    : [];
 
-  const months = ['Oct 1', 'Oct 5', 'Oct 10', 'Oct 15', 'Oct 20', 'Oct 25'];
+  const months =
+    data?.[0]?.assetRisks
+      ?.map((item) => dateFormatter(item.day, 'MMM D'))
+      .filter((val): val is string => val != null) ?? [];
 
   const datasets = dataItems.map((data) => ({
     label: data.asset,
-    data: months.map(
-      (month) => data.values.find((v) => v.label === month)?.value ?? 0
-    ),
+    data: months
+      ? months.map(
+          (month) => data.values.find((v) => v.label === month)?.value ?? 0
+        )
+      : [],
     borderColor: data.color,
     pointBorderColor: '#fff',
     pointBackgroundColor: data.color,
@@ -87,7 +67,7 @@ const GraphPreview = () => {
         </CardHeader>
 
         <LineChart
-          labels={months}
+          labels={months ?? []}
           datasets={datasets}
           isLoading={false}
           showYGrid={false}

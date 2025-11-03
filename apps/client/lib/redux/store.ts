@@ -320,6 +320,7 @@ export const makeStore = () => {
         serializableCheck: {
           ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
         },
+        immutableCheck: false,
       }).concat([
         // Asset-related APIs
         assetApi.middleware,

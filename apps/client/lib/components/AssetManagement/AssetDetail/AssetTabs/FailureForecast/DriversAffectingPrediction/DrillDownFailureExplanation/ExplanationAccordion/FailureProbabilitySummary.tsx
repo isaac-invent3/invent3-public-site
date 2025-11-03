@@ -1,26 +1,43 @@
 import { Flex, SimpleGrid, Stack, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import DoughtnutChart from '~/lib/components/Dashboard/Common/Charts/DoughtnutChart';
+import { useAppSelector } from '~/lib/redux/hooks';
+import { useGetAssetFailureProbabilitySummaryQuery } from '~/lib/redux/services/forecast.services';
 
 const FailureProbabilitySummary = () => {
+  const assetData = useAppSelector((state) => state.asset.asset);
+
+  if (!assetData) {
+    return null;
+  }
+
+  const { data, isLoading } = useGetAssetFailureProbabilitySummaryQuery({
+    assetId: assetData?.assetId,
+  });
+
   const info = [
     {
       label: 'Model Confidence',
-      value: '87%',
+      value: data?.data?.modelConfidence
+        ? `${data?.data?.modelConfidence}%`
+        : 'N/A',
     },
     {
       label: 'Data Coverage',
-      value: '95%',
+      value: data?.data?.dataCoverage ? `${data?.data?.dataCoverage}%` : 'N/A',
     },
     {
       label: 'Recent Alerts',
-      value: '3 Active',
+      value: data?.data?.recentAlerts
+        ? `${data?.data?.recentAlerts} Active`
+        : 'N/A',
     },
     {
       label: 'Mean Time to Failure',
-      value: '4 Days',
+      value: data?.data?.meanTimeToFailure ?? 'N/A',
     },
   ];
+
   return (
     <Stack
       width="full"
@@ -53,24 +70,28 @@ const FailureProbabilitySummary = () => {
           Failure Probability
         </Text>
         <VStack position="relative" width="full">
-          <Flex height="83px" width="143px">
-            <DoughtnutChart
-              labels={['Failure Probability']}
-              datasets={[
-                {
-                  data: [87],
-                  backgroundColor: ['#F50000'],
-                  borderRadius: 0,
-                },
-              ]}
-              type="half"
-              height="83px"
-              cutout="75%"
-            />
-          </Flex>
+          {!isLoading && (
+            <Flex height="83px" width="143px">
+              <DoughtnutChart
+                labels={['Failure Probability']}
+                datasets={[
+                  {
+                    data: [data?.data?.modelConfidence ?? 0],
+                    backgroundColor: ['#F50000'],
+                    borderRadius: 0,
+                  },
+                ]}
+                type="half"
+                height="83px"
+                cutout="75%"
+              />
+            </Flex>
+          )}
           <VStack spacing="4px" position="absolute" top="50px">
             <Text color="primary.500" fontWeight={700} fontSize="32px">
-              87%
+              {data?.data?.modelConfidence
+                ? `${data?.data?.modelConfidence}%`
+                : 'N/A'}
             </Text>
           </VStack>
         </VStack>

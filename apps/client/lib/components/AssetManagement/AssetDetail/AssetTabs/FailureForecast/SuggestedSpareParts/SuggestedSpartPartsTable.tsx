@@ -2,52 +2,44 @@ import { VStack } from '@chakra-ui/react';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
 import React, { useMemo, useState } from 'react';
-import { AssetDepreciationHistory } from '~/lib/interfaces/asset/depreciation.interfaces';
-import { useGetAllAssetDepreciationHistoryByDepreciationIdQuery } from '~/lib/redux/services/asset/depreciation.services';
+import { Asset } from '~/lib/interfaces/asset/general.interface';
+import { useAppSelector } from '~/lib/redux/hooks';
+import { useGetFailureSparePartsSuggestionsQuery } from '~/lib/redux/services/forecast.services';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 
-const SuggestedSpartPartsTable = ({
-  depreciationId,
-}: {
-  depreciationId?: number;
-}) => {
-  const columnHelper = createColumnHelper<AssetDepreciationHistory>();
+const SuggestedSpartPartsTable = () => {
+  const columnHelper = createColumnHelper<Asset>();
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+  const assetData = useAppSelector((state) => state.asset.asset);
+
+  if (!assetData) {
+    return null;
+  }
 
   const { data, isLoading, isFetching } =
-    useGetAllAssetDepreciationHistoryByDepreciationIdQuery(
+    useGetFailureSparePartsSuggestionsQuery(
       {
-        depreciationId: depreciationId!,
+        assetId: assetData?.assetId!,
         pageSize,
         pageNumber,
       },
-      { skip: !depreciationId }
+      { skip: !assetData?.assetId }
     );
 
   const columns = useMemo(() => {
     const baseColumns = [
-      columnHelper.accessor('depreciation', {
+      columnHelper.accessor('assetName', {
         cell: (info) => info.getValue(),
         header: 'Part Name',
         enableSorting: false,
       }),
-      columnHelper.accessor('guid', {
+      columnHelper.accessor('assetCode', {
         cell: (info) => info.getValue(),
         header: 'Part Code',
         enableSorting: false,
       }),
-      columnHelper.accessor('currentValue', {
-        cell: (info) => info.getValue(),
-        header: 'Quantity',
-        enableSorting: false,
-      }),
-      columnHelper.accessor('depreciationId', {
-        cell: (info) => info.getValue(),
-        header: 'Stock Availability',
-        enableSorting: false,
-      }),
-      columnHelper.accessor('createdBy', {
+      columnHelper.accessor('brandName', {
         cell: (info) => info.getValue(),
         header: 'Supplier',
         enableSorting: false,
@@ -62,7 +54,7 @@ const SuggestedSpartPartsTable = ({
       <DataTable
         columns={columns}
         data={data?.data?.items ?? []}
-        showFooter={false}
+        showFooter={data?.data ? data?.data?.totalPages > 1 : false}
         isLoading={isLoading}
         isFetching={isFetching}
         setPageNumber={setPageNumber}

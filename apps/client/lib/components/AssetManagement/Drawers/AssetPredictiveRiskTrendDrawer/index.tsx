@@ -5,19 +5,19 @@ import {
   Flex,
   Heading,
   HStack,
+  Skeleton,
   Text,
   VStack,
 } from '@chakra-ui/react';
 import {
   BackButton,
   Button,
+  EmptyState,
   FormInputWrapper,
   FormSelect,
   GenericDrawer,
 } from '@repo/ui/components';
 import { FormikProvider } from 'formik';
-import { getSession } from 'next-auth/react';
-import CategorySelect from '~/lib/components/AssetManagement/AssetForm/GeneralStep/AssetCategory/CategorySelect';
 import GraphPreview from './GraphPreview';
 import { predictiveRiskComparisionSchema } from '~/lib/schemas/asset/prediction.schema';
 import { Option } from '@repo/interfaces';
@@ -25,6 +25,14 @@ import { useMemo } from 'react';
 import { DATE_PERIOD } from '~/lib/utils/constants';
 import _ from 'lodash';
 import AssetSelect from './AssetSelect';
+import useCustomMutation from '~/lib/hooks/mutation.hook';
+import { useCompareRiskTrendOverTimeMutation } from '~/lib/redux/services/forecast.services';
+
+interface ComparisionForm {
+  assets: number[];
+  type: number;
+  range: number;
+}
 
 interface AssetPredictiveRiskTrendDrawerProps {
   isOpen: boolean;
@@ -35,22 +43,32 @@ const AssetPredictiveRiskTrendDrawer = (
   props: AssetPredictiveRiskTrendDrawerProps
 ) => {
   const { isOpen, onClose } = props;
+  const { handleSubmit } = useCustomMutation();
+  const [compareRiskTrend, { isLoading, data }] =
+    useCompareRiskTrendOverTimeMutation({});
 
   const initialValues = {
     assets: [],
-    type: null,
-    range: null,
+    type: null!,
+    range: null!,
   };
 
-  const formik = useAppFormik({
+  const formik = useAppFormik<ComparisionForm>({
     initialValues,
     enableReinitialize: false,
     validationSchema: predictiveRiskComparisionSchema,
-    onSubmit: async (data, { setSubmitting }) => {
-      console.log({ data });
+    onSubmit: async (values, { setSubmitting }) => {
       setSubmitting(true);
-      const session = await getSession();
-
+      const response = await handleSubmit(
+        compareRiskTrend,
+        {
+          assetIds: values.assets,
+          fieldToCompare: values.type,
+          datePeriodType: values.range,
+        },
+        ''
+      );
+      console.log({ response });
       setSubmitting(false);
     },
   });
@@ -121,7 +139,10 @@ const AssetPredictiveRiskTrendDrawer = (
                       <FormSelect
                         name="type"
                         title="Type"
-                        options={[{ value: 1, label: 'Risk Score' }]}
+                        options={[
+                          { value: 1, label: 'Risk Score' },
+                          { value: 2, label: 'Health Score' },
+                        ]}
                         selectStyles={{ height: '46px', pt: '0px' }}
                       />
                     </FormInputWrapper>
@@ -142,13 +163,25 @@ const AssetPredictiveRiskTrendDrawer = (
                         <Button
                           customStyles={{ width: 'full', maxW: '131px' }}
                           handleClick={formik.handleSubmit}
+                          loadingText="Generating..."
+                          isLoading={isLoading}
                         >
-                          Refresh Graph
+                          {data?.data ? 'Refresh' : 'Load'} Graph
                         </Button>
                       </HStack>
                     </FormInputWrapper>
                   </VStack>
-                  <GraphPreview />
+                  {isLoading && (
+                    <Flex width="full" px="24px">
+                      <Skeleton width="full" height="300px" />
+                    </Flex>
+                  )}
+                  {data?.data && !isLoading && (
+                    <GraphPreview data={data?.data} />
+                  )}
+                  {!data?.data && !isLoading && (
+                    <EmptyState emptyText="No Data at the moment" />
+                  )}
                 </VStack>
               </form>
             </Flex>

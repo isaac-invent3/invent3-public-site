@@ -1,5 +1,4 @@
 import { Skeleton, Stack, StackProps, Text, TextProps } from '@chakra-ui/react';
-import { isEmpty } from 'lodash';
 import React from 'react';
 
 interface DetailProps {
@@ -23,6 +22,12 @@ const Detail = (props: DetailProps) => {
     children,
     isLoading,
   } = props;
+  const isValueEmpty = (value: any) => {
+    if (value === null || value === undefined) return true;
+    if (typeof value === 'string' && value.trim() === '') return true;
+    if (Array.isArray(value) && value.length === 0) return true;
+    return false;
+  };
   return (
     <Stack
       spacing="8px"
@@ -43,7 +48,7 @@ const Detail = (props: DetailProps) => {
       ) : (
         <Skeleton isLoaded={!isLoading}>
           <Text size={{ base: 'base', md: 'md' }} {...valueStyle}>
-            {isEmpty(value) ? 'N/A' : value}
+            {isValueEmpty(value) ? 'N/A' : value}
           </Text>
         </Skeleton>
       )}

@@ -205,7 +205,7 @@ export const ticketApi = createApi({
       void
     >({
       query: (data) => ({
-        url: `/Tickets/GetEscalatedTicketsCount`,
+        url: `/Tickets/GetTicketEscalationCount`,
         method: 'GET',
         headers: getHeaders(),
       }),

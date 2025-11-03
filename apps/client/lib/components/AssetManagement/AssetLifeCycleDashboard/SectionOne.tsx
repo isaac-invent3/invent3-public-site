@@ -44,7 +44,7 @@ const SectionOne = () => {
               name={item.lifeCycleStageDisplayName}
               isOpen={isOpen}
               onClose={onClose}
-              columnId={'LifeCycle'}
+              columnId={item?.searchColumnValue}
               columnName={item?.searchColumnName}
             />
           </>

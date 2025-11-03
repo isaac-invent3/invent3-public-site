@@ -14,16 +14,18 @@ import {
 } from '@repo/ui/components';
 import ExplanationAccordion from './ExplanationAccordion';
 import Summary from './Summary';
+import { AssetForecast } from '~/lib/interfaces/forecast.interfaces';
 
 interface DrillDownFailureExplanationProps {
   isOpen: boolean;
   onClose: () => void;
+  assetForcast?: AssetForecast;
 }
 
 const DrillDownFailureExplanation = (
   props: DrillDownFailureExplanationProps
 ) => {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, assetForcast } = props;
   return (
     <GenericDrawer isOpen={isOpen} onClose={onClose} maxWidth="685px">
       <DrawerHeader p={0} m={0}>
@@ -50,9 +52,9 @@ const DrillDownFailureExplanation = (
               }}
               customStyle={{ px: '24px' }}
             />
-            <Summary />
+            <Summary failureDate={assetForcast?.dateForcasted} />
           </VStack>
-          <ExplanationAccordion />
+          <ExplanationAccordion assetForcast={assetForcast} />
         </VStack>
       </DrawerBody>
       <DrawerFooter p={0} mb="30px">

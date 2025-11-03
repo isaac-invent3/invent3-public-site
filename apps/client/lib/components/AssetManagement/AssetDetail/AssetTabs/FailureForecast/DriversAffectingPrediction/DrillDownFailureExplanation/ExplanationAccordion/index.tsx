@@ -13,12 +13,17 @@ import InsightRecommendations from './InsightRecommendations';
 import FailureProbabilitySummary from './FailureProbabilitySummary';
 import FactorInfluenceBreakdown from './FactorInfluenceBreakdown';
 import SensorDataPattern from './SensorDataPattern';
+import { AssetForecast } from '~/lib/interfaces/forecast.interfaces';
 
-const ExplanationAccordion = () => {
+const ExplanationAccordion = ({
+  assetForcast,
+}: {
+  assetForcast?: AssetForecast;
+}) => {
   const info = [
     {
       label: 'Factor Influence Breakdown',
-      details: <FactorInfluenceBreakdown />,
+      details: <FactorInfluenceBreakdown assetForcast={assetForcast} />,
     },
     {
       label: 'Sensor Data Patterns',

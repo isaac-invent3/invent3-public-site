@@ -6,9 +6,9 @@ interface AssetForecast extends BaseEntity {
   forcastTypeId: number;
   forcastedLabelName: string;
   forcastedLabelValue: string;
-  forecastedLabelStartDate: Date;
-  forcastedLabelEndDate: Date;
-  dateForcasted: Date;
+  forecastedLabelStartDate: string;
+  forcastedLabelEndDate: string;
+  dateForcasted: string;
   confidenceLevel: number;
   confidenceLevelName: string;
   confidenceLevelColor: string;

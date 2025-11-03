@@ -7,7 +7,6 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import DetailHeader from '../DetailHeader';
-import _ from 'lodash';
 
 interface DetailSectionProps {
   details: {
@@ -35,6 +34,13 @@ const DetailSection = (props: DetailSectionProps) => {
     wrapperStyle,
   } = props;
 
+  const isValueEmpty = (value: any) => {
+    if (value === null || value === undefined) return true;
+    if (typeof value === 'string' && value.trim() === '') return true;
+    if (Array.isArray(value) && value.length === 0) return true;
+    return false;
+  };
+
   return (
     <VStack
       alignItems="flex-start"
@@ -49,26 +55,28 @@ const DetailSection = (props: DetailSectionProps) => {
         width="full"
         {...outerContainerStyle}
       >
-        {details.map((item, index) => (
-          <HStack
-            key={index}
-            spacing="8px"
-            alignItems="flex-start"
-            {...itemContainerStyle}
-          >
-            <Text
-              size="md"
-              minW={labelMinWidth}
-              color="neutral.600"
-              {...labelStyle}
+        {details.map((item, index) => {
+          return (
+            <HStack
+              key={index}
+              spacing="8px"
+              alignItems="flex-start"
+              {...itemContainerStyle}
             >
-              {item.label}
-            </Text>
-            <Text size="md" {...valueStyle}>
-              {_.isEmpty(item.value) ? 'N/A' : item.value}
-            </Text>
-          </HStack>
-        ))}
+              <Text
+                size="md"
+                minW={labelMinWidth}
+                color="neutral.600"
+                {...labelStyle}
+              >
+                {item.label}
+              </Text>
+              <Text size="md" {...valueStyle}>
+                {isValueEmpty(item.value) ? 'N/A' : item.value}
+              </Text>
+            </HStack>
+          );
+        })}
       </VStack>
     </VStack>
   );

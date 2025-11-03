@@ -476,6 +476,23 @@ interface AssetRiskScore {
   assetCount: number;
 }
 
+interface AssetComparison {
+  assetRisks: AssetRisk[];
+  assetName: string;
+}
+
+interface AssetRisk {
+  predictiveScore: number;
+  day: string;
+}
+
+interface FailureProbability {
+  modelConfidence: number;
+  dataCoverage: number;
+  recentAlerts: number;
+  meanTimeToFailure: string;
+}
+
 export type {
   AcquisitionInfo,
   Asset,
@@ -498,4 +515,6 @@ export type {
   UpdateAssetPayload,
   ValidColumnNames,
   AssetRiskScore,
+  AssetComparison,
+  FailureProbability,
 };

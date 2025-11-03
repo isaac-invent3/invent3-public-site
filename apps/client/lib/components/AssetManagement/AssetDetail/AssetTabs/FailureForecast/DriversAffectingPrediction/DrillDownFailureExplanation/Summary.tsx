@@ -4,20 +4,16 @@ import Detail from '~/lib/components/UI/ContentDetails/Detail';
 import DetailSection from '~/lib/components/UI/ContentDetails/DetailsSection';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import { useAppSelector } from '~/lib/redux/hooks';
+import { dateFormatter } from '~/lib/utils/Formatters';
 
-const Summary = () => {
-  const {
-    asset: assetData,
-    assetImages,
-    generalInfo,
-  } = useAppSelector((state) => state.asset);
+const Summary = ({ failureDate }: { failureDate?: string }) => {
+  const { asset: assetData } = useAppSelector((state) => state.asset);
 
   if (!assetData) {
     return null;
   }
 
   const {
-    currentStatus,
     assetName,
     assetId,
     healthName,
@@ -25,6 +21,8 @@ const Summary = () => {
     riskScoreName,
     riskScoreColor,
   } = assetData;
+
+  console.log({ assetData });
 
   const infoOne = [
     {
@@ -63,7 +61,9 @@ const Summary = () => {
         <VStack width="full" alignItems="flex-start">
           <Detail
             label="Predicted Failure Date:"
-            value="Oct 21, 2025"
+            value={
+              failureDate ? dateFormatter(failureDate, 'MMM DD, YYYY') : 'N/A'
+            }
             labelMinWidth="145px"
           />
           <Detail

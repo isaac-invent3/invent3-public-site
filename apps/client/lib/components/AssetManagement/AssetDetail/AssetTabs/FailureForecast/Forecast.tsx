@@ -46,7 +46,7 @@ const Forecast = (props: ForecastProps) => {
               Forecast updated daily using predictive model.
             </Text>
           </VStack>
-          {data && <Text color="blue.500">Schedule Preventive Task</Text>}
+          {data && <Text color="blue.500">Create Preventive Ticket</Text>}
         </VStack>
       )}
     </VStack>

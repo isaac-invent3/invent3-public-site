@@ -52,7 +52,7 @@ const DrillDownFailureExplanation = (
               }}
               customStyle={{ px: '24px' }}
             />
-            <Summary failureDate={assetForcast?.dateForcasted} />
+            <Summary failureDate={assetForcast?.forecastedLabelStartDate} />
           </VStack>
           <ExplanationAccordion assetForcast={assetForcast} />
         </VStack>

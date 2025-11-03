@@ -151,7 +151,7 @@ const AnomalyContainer = ({
           <HStack
             width="full"
             px={{ base: '24px' }}
-            justifyContent="center"
+            justifyContent="flex-end"
             spacing="8px"
           >
             {!anomaly?.isDismissed && !anomaly?.hasTicket && (

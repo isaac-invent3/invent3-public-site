@@ -65,9 +65,6 @@ const DriversAffectingPrediction = (props: DriversAffectingPredictionProps) => {
               </Text>
             </VStack>
           )}
-        <Text color="blue.500" mt="18px" cursor="pointer" onClick={onOpen}>
-          View Drill-Down Failure Explanation
-        </Text>
         {!isLoading &&
           (data?.forecastDrivers?.length === 0 || !data?.forecastDrivers) && (
             <Text

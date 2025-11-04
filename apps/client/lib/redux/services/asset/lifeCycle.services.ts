@@ -9,10 +9,15 @@ import {
 } from '@repo/interfaces';
 import {
   AssetLifeCycle,
+  AssetLifeCycleTransitionRule,
+  AssetLifeCycleTransitionRuleList,
+  AssetLifeCycleTransitionRulePayload,
+  CreateAssetLifeCycleTransitionRulePayload,
   LifeCycleSimulationResponse,
   LifeCycleStages,
   LifeCycleTrend,
   SimulationPayload,
+  UpdateAssetLifeCycleTransitionRulePayload,
 } from '~/lib/interfaces/asset/lifeCycle.interfaces';
 import { Asset } from '~/lib/interfaces/asset/general.interface';
 
@@ -22,7 +27,7 @@ const getHeaders = () => ({
 export const assetLifeCycleApi = createApi({
   reducerPath: 'assetLifeCycleApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: [],
+  tagTypes: ['assetLifeCycleTransitionRules'],
   endpoints: (builder) => ({
     getLifeCycleStageSummary: builder.query<
       BaseApiResponse<AssetLifeCycle[]>,
@@ -113,6 +118,41 @@ export const assetLifeCycleApi = createApi({
         body,
       }),
     }),
+    getAssetLifeCycleTransitionRules: builder.query<
+      BaseApiResponse<ListResponse<AssetLifeCycleTransitionRuleList>>,
+      QueryParams
+    >({
+      query: (data) => ({
+        url: generateQueryStr(`/AssetLifeCycleTransitionRules?`, data),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+      providesTags: ['assetLifeCycleTransitionRules'],
+    }),
+    createAssetLifeCycleTransitionRules: builder.mutation<
+      BaseApiResponse<AssetLifeCycleTransitionRule>,
+      CreateAssetLifeCycleTransitionRulePayload
+    >({
+      query: (body) => ({
+        url: `/AssetLifeCycleTransitionRules`,
+        method: 'POST',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['assetLifeCycleTransitionRules'],
+    }),
+    updateAssetLifeCycleTransitionRules: builder.mutation<
+      BaseApiResponse<AssetLifeCycleTransitionRule>,
+      UpdateAssetLifeCycleTransitionRulePayload
+    >({
+      query: (body) => ({
+        url: `/AssetLifeCycleTransitionRules/${body.ruleId}`,
+        method: 'PUT',
+        headers: getHeaders(),
+        body,
+      }),
+      invalidatesTags: ['assetLifeCycleTransitionRules'],
+    }),
   }),
 });
 
@@ -125,4 +165,7 @@ export const {
   useSearchLifecyleStagesMutation,
   useGetAssetLifeCycleFinancialComparisonsQuery,
   useRunAssetLifecycleSimulationWizardMutation,
+  useCreateAssetLifeCycleTransitionRulesMutation,
+  useUpdateAssetLifeCycleTransitionRulesMutation,
+  useGetAssetLifeCycleTransitionRulesQuery,
 } = assetLifeCycleApi;

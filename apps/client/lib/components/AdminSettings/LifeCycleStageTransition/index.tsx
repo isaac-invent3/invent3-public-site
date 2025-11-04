@@ -11,37 +11,41 @@ import React, { useMemo, useState } from 'react';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import { dateFormatter } from '~/lib/utils/Formatters';
 import { DataTable } from '@repo/ui/components';
-import { useGetLifecyleStagesQuery } from '~/lib/redux/services/asset/lifeCycle.services';
-import { LifeCycleStages } from '~/lib/interfaces/asset/lifeCycle.interfaces';
+import { useGetAssetLifeCycleTransitionRulesQuery } from '~/lib/redux/services/asset/lifeCycle.services';
+import { AssetLifeCycleTransitionRuleList } from '~/lib/interfaces/asset/lifeCycle.interfaces';
 import GenericStatusBox from '../../UI/GenericStatusBox';
 import StageTransitionRuleDrawer from './StageTransitionRuleDrawer';
+import Action from './Action';
 
 const LifeCycleStageTransition = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const columnHelper = createColumnHelper<LifeCycleStages>();
+  const columnHelper = createColumnHelper<AssetLifeCycleTransitionRuleList>();
   const [isMobile] = useMediaQuery('(max-width: 768px)');
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const { data, isLoading, isFetching } = useGetLifecyleStagesQuery({
-    pageNumber,
-    pageSize,
-  });
+  const { data, isLoading, isFetching } =
+    useGetAssetLifeCycleTransitionRulesQuery({
+      pageNumber,
+      pageSize,
+    });
 
   const mobileColumns = useMemo(
     () => {
       const baseColumns = [
-        columnHelper.accessor('lifeCycleStageName', {
+        columnHelper.accessor('toTransitionStage', {
           cell: (info) => info.getValue() ?? 'N/A',
           header: 'Destination Stage',
           enableSorting: false,
         }),
-        columnHelper.display({
-          cell: (info) => <GenericStatusBox text="Acitve" />,
+        columnHelper.accessor('isActive', {
+          cell: (info) => (
+            <GenericStatusBox text={info.getValue() ? 'Active' : 'Inactive'} />
+          ),
           header: 'Status',
           enableSorting: false,
         }),
-        columnHelper.accessor('lifeCycleId', {
-          cell: (info) => <Text color="blue.500">Edit</Text>,
+        columnHelper.accessor('ruleId', {
+          cell: (info) => <Action data={info.row.original} />,
           header: 'Action',
           enableSorting: false,
         }),
@@ -55,7 +59,7 @@ const LifeCycleStageTransition = () => {
   const columns = useMemo(
     () => {
       const baseColumns = [
-        columnHelper.accessor('lifeCycleStageName', {
+        columnHelper.accessor('toTransitionStage', {
           cell: (info) => info.getValue() ?? 'N/A',
           header: 'Destination Stage',
           enableSorting: false,
@@ -65,23 +69,25 @@ const LifeCycleStageTransition = () => {
           header: 'Description',
           enableSorting: false,
         }),
-        columnHelper.display({
+        columnHelper.accessor('conditions', {
           cell: () => 'N/A',
           header: 'Conditions',
           enableSorting: false,
         }),
-        columnHelper.display({
-          cell: (info) => <GenericStatusBox text="Acitve" />,
+        columnHelper.accessor('isActive', {
+          cell: (info) => (
+            <GenericStatusBox text={info.getValue() ? 'Active' : 'Inactive'} />
+          ),
           header: 'Status',
           enableSorting: false,
         }),
-        columnHelper.accessor('lastModifiedDate', {
-          cell: (info) => `${dateFormatter(info.getValue(), 'MMM DD, YYYY')}`,
-          header: 'Last Updated',
-          enableSorting: false,
-        }),
-        columnHelper.accessor('lifeCycleId', {
-          cell: (info) => <Text color="blue.500">Edit</Text>,
+        // columnHelper.accessor('lastModifiedDate', {
+        //   cell: (info) => `${dateFormatter(info.getValue(), 'MMM DD, YYYY')}`,
+        //   header: 'Last Updated',
+        //   enableSorting: false,
+        // }),
+        columnHelper.accessor('ruleId', {
+          cell: (info) => <Action data={info.row.original} />,
           header: 'Action',
           enableSorting: false,
         }),

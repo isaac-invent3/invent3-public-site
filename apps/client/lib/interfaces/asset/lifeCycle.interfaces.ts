@@ -137,6 +137,51 @@ interface SimulationPayload {
   maintenanceFrequency: number;
 }
 
+interface AssetLifeCycleTransitionRulePayload {
+  toTransitionStage: number;
+  isActive: boolean;
+  description: string;
+  requiresApproval: boolean;
+  condition: Condition[];
+}
+
+interface Condition {
+  columnName: string;
+  columnValue: string;
+  operation: number;
+  join: number;
+}
+
+interface CreateAssetLifeCycleTransitionRulePayload
+  extends AssetLifeCycleTransitionRulePayload {
+  createdBy: string;
+}
+
+interface AssetLifeCycleTransitionRule extends BaseEntity {
+  ruleId: number;
+  fromTransitionStage: number;
+  toTransitionStage: number;
+  description: string;
+  conditionExpression: string;
+  isActive: boolean;
+  requiresApproval: boolean;
+}
+
+interface AssetLifeCycleTransitionRuleList {
+  ruleId: number;
+  toTransitionStage: number;
+  isActive: boolean;
+  description: string;
+  requiresApproval: boolean;
+  conditions: Condition[];
+}
+
+interface UpdateAssetLifeCycleTransitionRulePayload
+  extends AssetLifeCycleTransitionRulePayload {
+  ruleId: number;
+  lastModifiedBy: string;
+}
+
 export type {
   AssetLifeCycle,
   LifeCycleTrend,
@@ -146,4 +191,9 @@ export type {
   AnnualCostBreakDownItem,
   LifeCycleSimulationResponse,
   SimulationPayload,
+  AssetLifeCycleTransitionRulePayload,
+  AssetLifeCycleTransitionRule,
+  CreateAssetLifeCycleTransitionRulePayload,
+  UpdateAssetLifeCycleTransitionRulePayload,
+  AssetLifeCycleTransitionRuleList,
 };

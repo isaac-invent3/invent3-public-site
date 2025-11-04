@@ -28,14 +28,25 @@ import StageSelect from './StageSelect';
 import ConditionBuilder from './ConditionBuilder';
 import { transitionRuleSchema } from '~/lib/schemas/settings.schema';
 import { formatConditionsPreview } from '~/lib/utils/conditionHelper';
+import { AssetLifeCycleTransitionRuleList } from '~/lib/interfaces/asset/lifeCycle.interfaces';
+import {
+  useCreateAssetLifeCycleTransitionRulesMutation,
+  useUpdateAssetLifeCycleTransitionRulesMutation,
+} from '~/lib/redux/services/asset/lifeCycle.services';
 
 interface StageTransitionRuleDrawerProps {
   isOpen: boolean;
   onClose: () => void;
+  data?: AssetLifeCycleTransitionRuleList;
 }
 
 const StageTransitionRuleDrawer = (props: StageTransitionRuleDrawerProps) => {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, data } = props;
+  const { handleSubmit } = useCustomMutation();
+  const [createAssetLifeCycleTransitionRule] =
+    useCreateAssetLifeCycleTransitionRulesMutation();
+  const [updateAssetLifeCycleTransitionRule] =
+    useUpdateAssetLifeCycleTransitionRulesMutation();
   const {
     isOpen: isOpenSuccess,
     onOpen: onOpenSuccess,
@@ -48,20 +59,54 @@ const StageTransitionRuleDrawer = (props: StageTransitionRuleDrawerProps) => {
   } = useDisclosure();
 
   const initialValues = {
-    stageId: null,
-    conditions: [],
-    description: undefined,
-    status: false,
+    stageId: data?.ruleId ?? null!,
+    conditions: (data?.conditions as any) ?? [],
+    description: data?.description ?? null!,
+    status: data?.isActive ?? false,
   };
 
   const formik = useAppFormik({
     initialValues,
     enableReinitialize: false,
     validationSchema: transitionRuleSchema,
-    onSubmit: async (data, { setSubmitting }) => {
+    onSubmit: async (values, { setSubmitting }) => {
       console.log({ data });
       setSubmitting(true);
       const session = await getSession();
+      let response;
+      if (!data) {
+        response = await handleSubmit(
+          createAssetLifeCycleTransitionRule,
+          {
+            requiresApproval: false,
+            condition: values.conditions,
+            toTransitionStage: values.stageId,
+            description: values.description,
+            isActive: true,
+            createdBy: session?.user?.username!,
+          },
+          ''
+        );
+      } else {
+        response = await handleSubmit(
+          updateAssetLifeCycleTransitionRule,
+          {
+            ruleId: data?.ruleId!,
+            requiresApproval: false,
+            condition: values.conditions,
+            toTransitionStage: values.stageId,
+            description: values.description,
+            isActive: true,
+            lastModifiedBy: session?.user?.username!,
+          },
+          ''
+        );
+      }
+
+      if (response?.data) {
+        onOpenSuccess();
+      }
+
       setSubmitting(false);
     },
   });
@@ -143,16 +188,40 @@ const StageTransitionRuleDrawer = (props: StageTransitionRuleDrawerProps) => {
                               </Text>
                             </HStack>
                           )}
-                          {formik.values.conditions.length === 0 && (
+                          {formik.values?.conditions.length === 0 && (
                             <FormAddButton handleClick={onOpenConditionBuilder}>
                               Add Condition
                             </FormAddButton>
                           )}
                         </VStack>
                         {formik.errors?.conditions && (
-                          <ErrorMessage>
-                            {formik.errors?.conditions}
-                          </ErrorMessage>
+                          <>
+                            {Array.isArray(formik.errors.conditions) ? (
+                              formik.errors.conditions.map((err, i) => {
+                                if (typeof err === 'string') {
+                                  return (
+                                    <ErrorMessage key={i}>{err}</ErrorMessage>
+                                  );
+                                }
+
+                                if (typeof err === 'object' && err !== null) {
+                                  return Object.entries(err).map(
+                                    ([key, message]) => (
+                                      <ErrorMessage key={key}>
+                                        {message as string}
+                                      </ErrorMessage>
+                                    )
+                                  );
+                                }
+
+                                return null;
+                              })
+                            ) : typeof formik.errors.conditions === 'string' ? (
+                              <ErrorMessage>
+                                {formik.errors.conditions}
+                              </ErrorMessage>
+                            ) : null}
+                          </>
                         )}
                       </VStack>
                     </FormInputWrapper>
@@ -256,7 +325,7 @@ const StageTransitionRuleDrawer = (props: StageTransitionRuleDrawerProps) => {
           onCloseSuccess();
           onClose();
         }}
-        successText="You have added a new Stage transition rule successfully"
+        successText={`${data ? 'You have updated the' : 'You have added a new Stage'} transition rule successfully`}
         mainModalStyle={{ closeOnOverlayClick: false, closeOnEsc: false }}
       >
         <Button

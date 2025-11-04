@@ -29,16 +29,17 @@ const ConditionBuilder = ({
   initialCondition,
 }: ConditionBuilderProps) => {
   const initialValues: { criterion: GenerateReportCriterion[] } = {
-    criterion: initialCondition
-      ? initialCondition
-      : [
-          {
-            columnName: null,
-            columnValue: null,
-            operation: null,
-            join: 1,
-          },
-        ],
+    criterion:
+      initialCondition?.length > 0
+        ? initialCondition
+        : [
+            {
+              columnName: null,
+              columnValue: null,
+              operation: null,
+              join: 1,
+            },
+          ],
   };
 
   const formik = useAppFormik({

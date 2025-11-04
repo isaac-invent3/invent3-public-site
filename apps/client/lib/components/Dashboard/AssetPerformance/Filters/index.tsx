@@ -1,13 +1,12 @@
-import { HStack, Stack, Text, VStack } from '@chakra-ui/react';
+import { HStack, Icon, Stack, Text, VStack } from '@chakra-ui/react';
 import { Button } from '@repo/ui/components';
 import React from 'react';
 import CategoryFilter from '~/lib/components/AssetManagement/Filters/FilterComponents/CategoryFilter';
-import DateRangeFilter from '../../../Common/FilterComponents/DateRangeFilter';
-import FacilityFilter from '../../../Common/FilterComponents/FacilityFilter';
-import MetricsFilter from '../../../Common/FilterComponents/MetricsFilter';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { LifeCycleFilter } from '~/lib/interfaces/location/lifecycle.interfaces';
-import StatusFilter from '~/lib/components/AssetManagement/Filters/FilterComponents/StatusFilter';
+import DateRangeFilter from '~/lib/components/Common/FilterComponents/DateRangeFilter';
+import FacilityFilter from '~/lib/components/Common/FilterComponents/FacilityFilter';
+import { DownloadIcon } from '~/lib/components/CustomIcons';
 
 interface FiltersProps {
   filters: LifeCycleFilter;
@@ -27,35 +26,18 @@ const Filters: React.FC<FiltersProps> = ({
   onReset,
 }) => {
   return (
-    <VStack
-      width="full"
-      bgColor="white"
-      padding="16px"
-      rounded="8px"
-      alignItems="flex-start"
-      spacing="16px"
-      className="no-pdf"
-    >
-      <Text size="md" color="neutral.800">
-        Filters
-      </Text>
+    <HStack width="full" justifyContent="space-between">
       <Stack
-        width="full"
-        justifyContent="space-between"
+        width="max-content"
         alignItems="flex-start"
         direction={{ base: 'column', lg: 'row' }}
-        spacing="16px"
+        spacing={{ base: '16px', xl: '64px' }}
+        bgColor="white"
+        py={2}
+        px={4}
+        rounded="8px"
       >
         <HStack spacing="7px" flexWrap="wrap">
-          <DateRangeFilter
-            handleSelectedOption={(val: Option) =>
-              onChange('datePeriod', [val], true)
-            }
-            selectedOptions={filters?.datePeriod.map((item) => ({
-              label: item.toString(),
-              value: item,
-            }))}
-          />
           <FacilityFilter
             handleSelectedOption={(val: Option) =>
               onChange('facilities', [val])
@@ -76,24 +58,14 @@ const Filters: React.FC<FiltersProps> = ({
             }))}
             hasBorder
           />
-          <MetricsFilter
+          <DateRangeFilter
             handleSelectedOption={(val: Option) =>
-              onChange('metricsToCompare', [val])
+              onChange('datePeriod', [val], true)
             }
-            selectedOptions={filters?.metricsToCompare.map((item) => ({
+            selectedOptions={filters?.datePeriod.map((item) => ({
               label: item.toString(),
               value: item,
             }))}
-          />
-          <StatusFilter
-            handleSelectedOption={(val: Option) =>
-              onChange('assetStatus', [val])
-            }
-            selectedOptions={filters?.assetStatus.map((item) => ({
-              label: item.toString(),
-              value: item,
-            }))}
-            containerStyles={{ border: '1px solid #BBBBBB', rounded: '6px' }}
           />
         </HStack>
 
@@ -114,7 +86,22 @@ const Filters: React.FC<FiltersProps> = ({
           </Text>
         </HStack>
       </Stack>
-    </VStack>
+      <Button
+        customStyles={{
+          minH: '36px',
+          py: '6px',
+          px: '8px',
+          pr: '24px',
+          width: '177px',
+        }}
+        handleClick={() => {}}
+        loadingText="Exporting..."
+        isLoading={false}
+      >
+        <Icon as={DownloadIcon} boxSize="18px" mr="8px" />
+        Export
+      </Button>
+    </HStack>
   );
 };
 

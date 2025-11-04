@@ -1,12 +1,25 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { GenericFilter } from '~/lib/interfaces/dashboard.interfaces';
+
+export const initialGeneralFilters = {
+  datePeriod: [],
+  facilities: [],
+  assetCategories: [],
+  metricsToCompare: [],
+  assetStatus: [],
+  costPeriod: [],
+  costType: [],
+};
 
 export interface SliceProps {
   selectedTableIds: number[];
+  filters: GenericFilter;
 }
 
 const initialState: SliceProps = {
   selectedTableIds: [],
+  filters: initialGeneralFilters,
 };
 
 export const CommonSlice = createSlice({
@@ -19,10 +32,23 @@ export const CommonSlice = createSlice({
     clearSelectedTableIds: (state) => {
       state.selectedTableIds = [];
     },
+    updateFilters: (
+      state,
+      { payload }: PayloadAction<Partial<GenericFilter>>
+    ) => {
+      state.filters = { ...state.filters, ...payload };
+    },
+    clearFilter: (state) => {
+      state.filters = initialGeneralFilters;
+    },
   },
 });
 
-export const { updateSelectedTableIds, clearSelectedTableIds } =
-  CommonSlice.actions;
+export const {
+  updateSelectedTableIds,
+  clearSelectedTableIds,
+  updateFilters,
+  clearFilter,
+} = CommonSlice.actions;
 
 export default CommonSlice.reducer;

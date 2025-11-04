@@ -76,11 +76,11 @@ const SummaryCardWrapper = (props: SummaryCardWrapperProps) => {
       >
         <CardHeader
           customStyle={{
-            ...headerStyle,
             color: 'neutral.600',
             fontWeight: 500,
             fontSize: '14px',
             lineHeight: '100%',
+            ...headerStyle,
           }}
         >
           {title}

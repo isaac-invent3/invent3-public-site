@@ -157,6 +157,16 @@ type DashboardView =
   | 'client_admin'
   | 'super_admin';
 
+interface GenericFilter {
+  datePeriod: number[];
+  facilities: number[];
+  assetCategories: number[];
+  metricsToCompare: number[];
+  assetStatus: number[];
+  costPeriod: number[];
+  costType: number[];
+}
+
 export type {
   AssetStatistics,
   ActualProjectedData,
@@ -175,4 +185,5 @@ export type {
   CompanyDistritution,
   GenericTaskCompleteData,
   DashboardView,
+  GenericFilter,
 };

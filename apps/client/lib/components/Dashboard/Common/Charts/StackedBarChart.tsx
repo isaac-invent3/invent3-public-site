@@ -29,6 +29,7 @@ interface StackedBarChartProps {
   showGridX?: boolean;
   showGridY?: boolean;
   barRadius?: number | Partial<BorderRadius>; // 👈 New flexible radius prop
+  isStacked?: boolean;
 }
 
 const StackedBarChart = (props: StackedBarChartProps) => {
@@ -41,6 +42,7 @@ const StackedBarChart = (props: StackedBarChartProps) => {
     showGridX = false,
     showGridY = true,
     barRadius = 0,
+    isStacked = true,
   } = props;
 
   const data = {
@@ -79,7 +81,7 @@ const StackedBarChart = (props: StackedBarChartProps) => {
     },
     scales: {
       x: {
-        stacked: true,
+        stacked: isStacked,
         grid: {
           display: showGridX,
           color: '#E0E0E0',
@@ -90,7 +92,7 @@ const StackedBarChart = (props: StackedBarChartProps) => {
         },
       },
       y: {
-        stacked: true,
+        stacked: isStacked,
         grid: {
           display: showGridY,
           color: '#BBBBBB',

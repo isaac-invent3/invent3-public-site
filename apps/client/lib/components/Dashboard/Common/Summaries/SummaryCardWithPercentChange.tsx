@@ -1,5 +1,6 @@
 import {
   ComponentWithAs,
+  HeadingProps,
   HStack,
   IconProps,
   ResponsiveValue,
@@ -29,6 +30,9 @@ interface SummaryCardProps {
   containerStyle?: StackProps;
   subContainerStyle?: StackProps;
   rangeStyle?: TextProps;
+  additionalContent?: React.ReactNode;
+  headerStyle?: HeadingProps;
+  customCountStyle?: TextProps;
 }
 const SummaryCard = (props: SummaryCardProps) => {
   const {
@@ -48,6 +52,9 @@ const SummaryCard = (props: SummaryCardProps) => {
     containerStyle,
     subContainerStyle,
     rangeStyle,
+    additionalContent,
+    headerStyle,
+    customCountStyle,
   } = props;
   return (
     <SummaryCardWrapper
@@ -57,6 +64,7 @@ const SummaryCard = (props: SummaryCardProps) => {
       headerStyle={{
         maxW: '70%',
         size: textSize ?? { base: 'base', sm: 'base' },
+        ...headerStyle,
       }}
       iconStyle={{
         color: 'primary.500',
@@ -70,15 +78,17 @@ const SummaryCard = (props: SummaryCardProps) => {
         bgColor: showIconBgColor ? '#0F264233' : 'none',
       }}
       additionalContent={
-        showRange && (
+        additionalContent ??
+        (showRange && (
           <Text color="neutral.600" fontWeight={700} mb="4px" {...rangeStyle}>
             {rangeText ?? 'This month'}
           </Text>
-        )
+        ))
       }
       formatValue={formatValue}
       count={value}
       subContainerStyle={subContainerStyle}
+      customCountStyle={customCountStyle}
       isLoading={isLoading}
     >
       {percentChange && (

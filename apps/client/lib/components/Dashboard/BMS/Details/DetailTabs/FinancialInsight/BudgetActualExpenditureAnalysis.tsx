@@ -5,7 +5,7 @@ import { Option } from '@repo/interfaces';
 import ChartLegend from '~/lib/components/Dashboard/Common/Charts/ChartLegend';
 import { useParams } from 'next/navigation';
 import { useGetBMSBudgetVActualExpenditureQuery } from '~/lib/redux/services/dashboard/bms.services';
-import StackedBarChart from '~/lib/components/Dashboard/Common/Charts/StackedBarChart';
+import BarChart from '~/lib/components/Dashboard/Common/Charts/BarChart';
 import { timeRangeOptions } from '~/lib/utils/constants';
 import { transformMonthIdsToShortNames } from '~/lib/components/Dashboard/Common/utils';
 import { generateLastFiveYears } from '~/lib/utils/helperFunctions';
@@ -64,20 +64,22 @@ const BudgetActualExpenditureAnalysis = () => {
             spacing: '16px',
           }}
         />
-        <StackedBarChart
+        <BarChart
           labels={transformMonthIdsToShortNames(
             data?.data?.map((item) => item.monthId) ?? []
           )}
-          firstStack={{
-            label: 'Budget',
-            values: data?.data?.map((item) => item.budget) ?? [],
-            color: '#4FBAFF',
-          }}
-          secondStack={{
-            label: 'Actual expenditure analysis',
-            values: data?.data?.map((item) => item.actualConsumption) ?? [],
-            color: '#0366EF',
-          }}
+          chartData={[
+            {
+              label: 'Budget',
+              values: data?.data?.map((item) => item.budget) ?? [],
+              color: '#4FBAFF',
+            },
+            {
+              label: 'Actual expenditure analysis',
+              values: data?.data?.map((item) => item.actualConsumption) ?? [],
+              color: '#0366EF',
+            },
+          ]}
           isLoading={false}
         />
       </Stack>

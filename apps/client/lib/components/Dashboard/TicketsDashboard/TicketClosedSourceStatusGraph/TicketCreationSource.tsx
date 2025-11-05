@@ -3,37 +3,22 @@ import React from 'react';
 import CardHeader from '../../Common/CardHeader';
 import ChartLegend from '../../Common/Charts/ChartLegend';
 import DoughtnutChart from '../../Common/Charts/DoughtnutChart';
-import { formatNumberShort } from '~/lib/utils/helperFunctions';
-import { useGetAssetPerformanceDistributionByCategoryQuery } from '~/lib/redux/services/dashboard/assetperformance.services';
-import { useAppSelector } from '~/lib/redux/hooks';
 
-const AssetHealthDistribution = () => {
-  const filters = useAppSelector((state) => state.common.filters);
-  const { data, isLoading, isFetching } =
-    useGetAssetPerformanceDistributionByCategoryQuery({
-      facilityIds: filters?.facilities,
-      assetCategoryIds: filters?.assetCategories,
-      datePeriod: filters?.datePeriod?.[0],
-    });
+const TicketCreationSource = () => {
+  const isLoading = false;
 
   const chartLegendItems = [
     {
-      label: 'Excellent (80 - 100%)',
-      color: '#0E2642',
-      value: data?.data?.good ?? 0,
-    },
-    {
-      label: 'Fair  (50 - 79%)',
-      color: '#EABC30',
-      value: data?.data?.fair ?? 0,
-    },
-    {
-      label: 'Poor  (<50%)',
+      label: 'Manual Entry',
       color: '#0366EF',
-      value: data?.data?.poor ?? 0,
+      value: 485,
+    },
+    {
+      label: 'Auto-generated',
+      color: '#0E2642',
+      value: 720,
     },
   ];
-  const totalAsset = data?.data?.totalAssets ?? 0;
 
   return (
     <VStack
@@ -47,7 +32,7 @@ const AssetHealthDistribution = () => {
       rounded="8px"
       maxH="375px"
     >
-      <CardHeader>Asset Health Distribution by Category</CardHeader>
+      <CardHeader>Ticket Creation Source</CardHeader>
       <HStack
         width="full"
         justifyContent="space-between"
@@ -80,17 +65,13 @@ const AssetHealthDistribution = () => {
               ]}
               type="full"
               height="206px"
-              cutout="50%"
-              centerLabel={{
-                title: 'Total Assets',
-                value: formatNumberShort(totalAsset),
-              }}
+              cutout="45%"
               showSliceLabels={true}
-              tooltipFormatter={(value, total, label) => {
+              tooltipFormatter={(value, total) => {
                 const percent = ((value / total) * 100).toFixed(0);
                 return [
-                  `Risk Percentage: ${percent}%`,
-                  `Risk Score: ${value.toLocaleString()}`,
+                  `Percentage: ${percent}%`,
+                  `Count: ${value.toLocaleString()}`,
                 ];
               }}
             />
@@ -101,4 +82,4 @@ const AssetHealthDistribution = () => {
   );
 };
 
-export default AssetHealthDistribution;
+export default TicketCreationSource;

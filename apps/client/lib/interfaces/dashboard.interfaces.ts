@@ -165,6 +165,7 @@ interface GenericFilter {
   assetStatus: number[];
   costPeriod: number[];
   costType: number[];
+  ticketTypes: number[];
 }
 
 export type {

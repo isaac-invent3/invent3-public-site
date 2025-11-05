@@ -1,8 +1,9 @@
 import { useAppFormik } from '~/lib/hooks/useAppFormik';
 /* eslint-disable no-unused-vars */
 import {
+  DrawerBody,
+  DrawerFooter,
   HStack,
-  ModalBody,
   Switch,
   Text,
   useDisclosure,
@@ -14,7 +15,7 @@ import {
   Button,
   FormInputWrapper,
   FormSelect,
-  GenericModal,
+  GenericDrawer,
   GenericSuccessModal,
   ModalHeading,
 } from '@repo/ui/components';
@@ -96,12 +97,8 @@ const SLARuleFormModal = (props: SLARuleFormModalProps) => {
 
   return (
     <>
-      <GenericModal
-        isOpen={isOpen}
-        onClose={onClose}
-        contentStyle={{ width: { sm: '525px' }, rounded: '16px' }}
-      >
-        <ModalBody p={0} m={0} width="full">
+      <GenericDrawer isOpen={isOpen} onClose={onClose} maxWidth="525px">
+        <DrawerBody p={0}>
           <FormikProvider value={formik}>
             <form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
               <VStack
@@ -279,27 +276,29 @@ const SLARuleFormModal = (props: SLARuleFormModalProps) => {
                   </VStack>
                 </VStack>
                 {/* Main Form Ends Here */}
-                <HStack spacing="14px">
-                  <Button
-                    variant="secondary"
-                    customStyles={{ width: '96px' }}
-                    handleClick={onClose}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    type="submit"
-                    customStyles={{ width: '157px' }}
-                    isLoading={isLoading || formik.isSubmitting || isUpdating}
-                  >
-                    Save Rule
-                  </Button>
-                </HStack>
               </VStack>
             </form>
           </FormikProvider>
-        </ModalBody>
-      </GenericModal>
+        </DrawerBody>
+        <DrawerFooter p={0} m={0}>
+          <HStack spacing="14px" mt="8px" px="24px" pb="32px">
+            <Button
+              variant="secondary"
+              customStyles={{ width: '96px' }}
+              handleClick={onClose}
+            >
+              Cancel
+            </Button>
+            <Button
+              handleClick={formik.handleSubmit}
+              customStyles={{ width: '157px' }}
+              isLoading={isLoading || formik.isSubmitting || isUpdating}
+            >
+              Save Rule
+            </Button>
+          </HStack>
+        </DrawerFooter>
+      </GenericDrawer>
       <GenericSuccessModal
         successText={`You have ${type === 'create' ? 'added' : 'updated'} a new SLA rule successfully`}
         isOpen={isOpenSuccess}

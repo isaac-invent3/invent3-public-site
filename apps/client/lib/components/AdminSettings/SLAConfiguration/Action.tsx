@@ -4,7 +4,7 @@ import React from 'react';
 import useCustomMutation from '~/lib/hooks/mutation.hook';
 import { SLADefinition } from '~/lib/interfaces/sla.interfaces';
 import { useDeleteSLADefintionMutation } from '~/lib/redux/services/settings/sla.services';
-import SLARuleFormModal from './SLARuleFormModal';
+import SLARuleFormModal from './SLARuleFormDrawer';
 import { GenericDeleteModal } from '@repo/ui/components';
 
 interface ActionProps {

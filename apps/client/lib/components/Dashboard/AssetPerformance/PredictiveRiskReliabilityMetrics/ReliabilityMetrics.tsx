@@ -1,16 +1,20 @@
 import { HStack, VStack } from '@chakra-ui/react';
-import React, { useState } from 'react';
-import { generateLastFiveYears } from '~/lib/utils/helperFunctions';
-import { Option } from '@repo/interfaces';
-import DropDown from '../../Common/DropDown';
+import React from 'react';
 import ChartLegend from '../../Common/Charts/ChartLegend';
-import StackedBarChart from '../../Common/Charts/StackedBarChart';
+import BarChart from '../../Common/Charts/BarChart';
 import CardHeader from '../../Common/CardHeader';
 import { transformMonthIdsToShortNames } from '../../Common/utils';
-import { useGetSuperAdminSubscriptionTrendQuery } from '~/lib/redux/services/dashboard/superadmin.services';
+import { useGetAssetPerformanceReliabilityMetricsQuery } from '~/lib/redux/services/dashboard/assetperformance.services';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 const ReliabilityMetrics = () => {
-  const { data, isLoading } = useGetSuperAdminSubscriptionTrendQuery();
+  const filters = useAppSelector((state) => state.common.filters);
+  const { data, isLoading, isFetching } =
+    useGetAssetPerformanceReliabilityMetricsQuery({
+      facilityIds: filters?.facilities,
+      assetCategoryIds: filters?.assetCategories,
+      datePeriod: filters?.datePeriod?.[0],
+    });
   const chartLegendItems = [
     {
       label: 'Mean Time Between Failures (hrs)',
@@ -43,25 +47,21 @@ const ReliabilityMetrics = () => {
           containerStyle={{ direction: 'column', spacing: '16px' }}
         />
       </HStack>
-      <StackedBarChart
-        labels={
-          data?.data
-            ? transformMonthIdsToShortNames(
-                data?.data.map((item) => item.monthId)
-              )
-            : []
-        }
-        firstStack={{
-          label: 'Mean Time Between Failures (hrs)',
-          values: data?.data?.map((item) => item.paid) ?? [],
-          color: '#0E2642',
-        }}
-        secondStack={{
-          label: 'Mean Time To Repair (MTTR) (hrs)',
-          values: data?.data?.map((item) => item.free) ?? [],
-          color: '#17A1FA',
-        }}
-        isLoading={isLoading}
+      <BarChart
+        labels={data?.data ? data?.data.map((item) => item.assetCategory) : []}
+        chartData={[
+          {
+            label: 'Mean Time Between Failures (hrs)',
+            values: data?.data?.map((item) => item.mbtf) ?? [],
+            color: '#0E2642',
+          },
+          {
+            label: 'Mean Time To Repair (MTTR) (hrs)',
+            values: data?.data?.map((item) => item.mttr) ?? [],
+            color: '#17A1FA',
+          },
+        ]}
+        isLoading={isLoading || isFetching}
         isStacked={false}
       />
     </VStack>

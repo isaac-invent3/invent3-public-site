@@ -4,7 +4,7 @@ import { generateLastFiveYears } from '~/lib/utils/helperFunctions';
 import { Option } from '@repo/interfaces';
 import DropDown from '../../Common/DropDown';
 import ChartLegend from '../../Common/Charts/ChartLegend';
-import StackedBarChart from '../../Common/Charts/StackedBarChart';
+import BarChart from '../../Common/Charts/BarChart';
 import CardHeader from '../../Common/CardHeader';
 import { transformMonthIdsToShortNames } from '../../Common/utils';
 import { useGetSuperAdminSubscriptionTrendQuery } from '~/lib/redux/services/dashboard/superadmin.services';
@@ -54,7 +54,7 @@ const SubscriptionTrends = () => {
         justifyContent="space-between"
       >
         <ChartLegend chartLegendItems={chartLegendItems} />
-        <StackedBarChart
+        <BarChart
           labels={
             data?.data
               ? transformMonthIdsToShortNames(
@@ -62,16 +62,18 @@ const SubscriptionTrends = () => {
                 )
               : []
           }
-          firstStack={{
-            label: 'Paid',
-            values: data?.data?.map((item) => item.paid) ?? [],
-            color: '#0E2642',
-          }}
-          secondStack={{
-            label: 'Free',
-            values: data?.data?.map((item) => item.free) ?? [],
-            color: '#98FEFE',
-          }}
+          chartData={[
+            {
+              label: 'Paid',
+              values: data?.data?.map((item) => item.paid) ?? [],
+              color: '#0E2642',
+            },
+            {
+              label: 'Free',
+              values: data?.data?.map((item) => item.free) ?? [],
+              color: '#98FEFE',
+            },
+          ]}
           isLoading={isLoading}
         />
       </VStack>

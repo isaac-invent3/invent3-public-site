@@ -14,6 +14,10 @@ import {
   FinancialImpact,
 } from '~/lib/interfaces/dashboard/executive.interfaces';
 import { generateSearchCriteria } from '@repo/utils';
+import { useGetAssetPerformanceByCategoryQuery } from '~/lib/redux/services/dashboard/assetperformance.services';
+import { useAppSelector } from '~/lib/redux/hooks';
+import { DashboardByCateogry } from '~/lib/interfaces/dashboard/assetperformance.interfaces';
+import GenericStatusBox from '../../UI/GenericStatusBox';
 
 interface useAssetPerformanceTableByCategory {
   search?: string;
@@ -30,8 +34,15 @@ const useAssetPerformanceTableByCategory = (
     BaseApiResponse<ListResponse<AssetPerformance>> | undefined
   >(undefined);
   const { handleSubmit } = useCustomMutation();
-  const [searchAssetPerformance, { isLoading }] =
-    useSearchAssetPerformanceMutation({});
+  const [searchAssetPerformance] = useSearchAssetPerformanceMutation({});
+  const filters = useAppSelector((state) => state.common.filters);
+  const { data, isLoading, isFetching } = useGetAssetPerformanceByCategoryQuery(
+    {
+      facilityIds: filters?.facilities,
+      assetCategoryIds: filters?.assetCategories,
+      datePeriod: filters?.datePeriod?.[0],
+    }
+  );
 
   const handleSearch = useCallback(async () => {
     const { orCriterion } = generateSearchCriteria(
@@ -70,7 +81,7 @@ const useAssetPerformanceTableByCategory = (
     }
   }, [search]);
 
-  const columnHelper = createColumnHelper<FinancialImpact>();
+  const columnHelper = createColumnHelper<DashboardByCateogry>();
   const columns = useMemo(
     () => {
       const baseColumns = [
@@ -79,46 +90,60 @@ const useAssetPerformanceTableByCategory = (
           header: 'Category',
           enableSorting: false,
         }),
-        columnHelper.accessor('assetName', {
+        columnHelper.accessor('assetCount', {
           cell: (info) => info.getValue(),
           header: 'Asset Count',
           enableSorting: false,
         }),
-        columnHelper.accessor('depreciationRate', {
+        columnHelper.accessor('avgUptime', {
           cell: (info) => `${info.getValue()}%`,
           header: 'Avg Uptime(%)',
           enableSorting: false,
         }),
-        columnHelper.accessor('currentValue', {
+        columnHelper.accessor('avgHealthScore', {
           cell: (info) => `${info.getValue()}%`,
           header: 'Avg Health Score',
           enableSorting: false,
         }),
-        columnHelper.accessor('currentValue', {
-          cell: (info) => amountFormatter(info.getValue() ?? 0),
-          header: 'Current Value',
+        columnHelper.accessor('mbtf', {
+          cell: (info) => info.getValue(),
+          header: 'MTBF (hrs)',
           enableSorting: false,
         }),
-        columnHelper.accessor('depreciationRate', {
-          cell: (info) => `${info.getValue()}%`,
-          header: 'Depreciation Rate(%)',
+        columnHelper.accessor('mttr', {
+          cell: (info) => info.getValue(),
+          header: 'MTTR (hrs)',
+          enableSorting: false,
+        }),
+        columnHelper.accessor('riskLevel', {
+          cell: (info) => (
+            <GenericStatusBox
+              text={info.getValue()}
+              colorCode={info.row.original.displayColorCode}
+            />
+          ),
+          header: 'Risk Level',
           enableSorting: false,
         }),
       ];
 
       return baseColumns;
     },
-    [[searchData?.data?.items]] //eslint-disable-line
+    [[data?.data?.items]] //eslint-disable-line
   );
 
   const AssetPerformanceTable = (
     <Flex width="full" direction="column">
       <DataTable
         columns={columns}
-        data={searchData?.data?.items ?? []}
+        data={data?.data?.items ?? []}
         isLoading={isLoading}
-        isFetching={isLoading}
-        showFooter={false}
+        isFetching={isFetching}
+        showFooter={data?.data ? data?.data?.totalPages > 1 : false}
+        pageNumber={pageNumber}
+        pageSize={pageSize}
+        setPageNumber={setPageNumber}
+        setPageSize={setPageSize}
         maxTdWidth="200px"
         customTdStyle={{
           paddingLeft: '16px',

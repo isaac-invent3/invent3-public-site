@@ -59,7 +59,7 @@ export const forecastApi = createApi({
       }
     >({
       query: (body) => ({
-        url: `/Assets/CompareRiskTrendOverTime`,
+        url: `/Invent3Pro/CompareRiskTrendOverTime`,
         method: 'POST',
         headers: getHeaders(),
         body,

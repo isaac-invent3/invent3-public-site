@@ -1,13 +1,22 @@
-import { HStack, Icon, StackProps, Text } from '@chakra-ui/react';
+import {
+  HStack,
+  Icon,
+  IconProps,
+  StackProps,
+  Text,
+  TextProps,
+} from '@chakra-ui/react';
 import React from 'react';
 import { DowntrendIcon, UptrendIcon } from '../../CustomIcons';
 
 interface ProgressIndicatorProps {
   valueChange: number;
   customStyles?: StackProps;
+  textStyles?: TextProps;
+  iconStyles?: IconProps;
 }
 const ProgressIndicator = (props: ProgressIndicatorProps) => {
-  const { valueChange, customStyles } = props;
+  const { valueChange, customStyles, textStyles, iconStyles } = props;
   return (
     <HStack
       py="4px"
@@ -21,8 +30,9 @@ const ProgressIndicator = (props: ProgressIndicatorProps) => {
         as={valueChange < 0 ? DowntrendIcon : UptrendIcon}
         boxSize="18px"
         color={valueChange < 0 ? '#BA0000' : '#00A129'}
+        {...iconStyles}
       />
-      <Text color={valueChange < 0 ? '#BA0000' : '#00A129'}>
+      <Text color={valueChange < 0 ? '#BA0000' : '#00A129'} {...textStyles}>
         {valueChange < 0 && '-'}
         {valueChange > 0 && '+'}
         {valueChange < 0

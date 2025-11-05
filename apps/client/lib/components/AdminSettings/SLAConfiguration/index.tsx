@@ -14,7 +14,7 @@ import Action from './Action';
 import { DataTable } from '@repo/ui/components';
 import { useGetSLADefinitionsQuery } from '~/lib/redux/services/settings/sla.services';
 import { SLADefinition } from '~/lib/interfaces/sla.interfaces';
-import SLARuleFormModal from './SLARuleFormModal';
+import SLARuleFormModal from './SLARuleFormDrawer';
 
 const SLAConfiguration = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();

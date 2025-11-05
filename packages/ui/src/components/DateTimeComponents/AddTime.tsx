@@ -125,7 +125,12 @@ const AddTime = (props: AddTimeProps) => {
                 handleIncrement={handleHourIncrement}
                 handleDecrement={handleHourDecrement}
                 handleValueChange={(value) => setHours(value)}
-                minNumber={1}
+                handleBlur={() => {
+                  if (hours === 0) {
+                    setHours(1);
+                  }
+                }}
+                minNumber={0}
                 maxNumber={12}
                 value={hours}
               />

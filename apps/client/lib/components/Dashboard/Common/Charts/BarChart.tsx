@@ -20,10 +20,9 @@ interface ItemProps {
   color: string;
 }
 
-interface StackedBarChartProps {
+interface BarChartProps {
   labels: (string | undefined)[];
-  firstStack: ItemProps;
-  secondStack?: ItemProps;
+  chartData: ItemProps[];
   isLoading: boolean;
   height?: string;
   showGridX?: boolean;
@@ -32,11 +31,10 @@ interface StackedBarChartProps {
   isStacked?: boolean;
 }
 
-const StackedBarChart = (props: StackedBarChartProps) => {
+const BarChart = (props: BarChartProps) => {
   const {
     labels,
-    firstStack,
-    secondStack,
+    chartData,
     isLoading,
     height,
     showGridX = false,
@@ -47,24 +45,14 @@ const StackedBarChart = (props: StackedBarChartProps) => {
 
   const data = {
     labels,
-    datasets: [
-      {
-        label: firstStack.label,
-        data: firstStack.values,
-        backgroundColor: firstStack.color,
-        borderRadius: barRadius,
-      },
-      ...(secondStack
-        ? [
-            {
-              label: secondStack.label,
-              data: secondStack.values,
-              backgroundColor: secondStack.color,
-              borderRadius: barRadius,
-            },
-          ]
-        : []),
-    ],
+    datasets: chartData
+      ? chartData.map((item, index) => ({
+          label: item.label,
+          data: item.values,
+          backgroundColor: item.color,
+          borderRadius: barRadius,
+        }))
+      : [],
   };
 
   const options: ChartOptions<'bar'> = {
@@ -114,4 +102,4 @@ const StackedBarChart = (props: StackedBarChartProps) => {
   );
 };
 
-export default StackedBarChart;
+export default BarChart;

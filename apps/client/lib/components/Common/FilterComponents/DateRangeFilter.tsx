@@ -1,4 +1,5 @@
 import { FilterDropDown } from '@repo/ui/components';
+import _ from 'lodash';
 import React, { useMemo } from 'react';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { DATE_PERIOD } from '~/lib/utils/constants';
@@ -16,7 +17,7 @@ const DateRangeFilter = ({
   const options = useMemo<Option[]>(
     () =>
       Object.entries(DATE_PERIOD).map(([label, value]) => ({
-        label,
+        label: _.capitalize(`${label}ly`),
         value,
       })),
     []

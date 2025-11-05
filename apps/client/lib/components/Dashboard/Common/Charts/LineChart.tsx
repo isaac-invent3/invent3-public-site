@@ -31,6 +31,7 @@ interface LineChartProps {
   showYGrid?: boolean;
   xLabel?: string;
   yLabel?: string;
+  showDots?: boolean;
 }
 const LineChart = (props: LineChartProps) => {
   const {
@@ -42,6 +43,7 @@ const LineChart = (props: LineChartProps) => {
     showYGrid,
     xLabel = '',
     yLabel = '',
+    showDots = true,
   } = props;
 
   const data = {
@@ -52,6 +54,12 @@ const LineChart = (props: LineChartProps) => {
   const options = {
     responsive: true,
     maintainAspectRatio: false,
+    elements: {
+      point: {
+        radius: showDots ? 3 : 0,
+        hoverRadius: showDots ? 5 : 0,
+      },
+    },
     plugins: {
       legend: {
         display: false,

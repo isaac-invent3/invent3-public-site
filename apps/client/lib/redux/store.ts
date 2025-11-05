@@ -116,6 +116,7 @@ import { assetLifeCycleApi } from './services/asset/lifeCycle.services';
 import { slaApi } from './services/settings/sla.services';
 import { bmsAnomaliesApi } from './services/bms/bmsAnomalies.services';
 import { lifeCycleComparisonApi } from './services/location/lifecycleComparison.services';
+import { assetPerformanceDashboardApi } from './services/dashboard/assetperformance.services';
 
 export const persistConfig = {
   key: 'root',
@@ -162,6 +163,8 @@ const rootReducer = combineReducers({
   [fieldEngineerDashboardApi.reducerPath]: fieldEngineerDashboardApi.reducer,
   [executiveDashboardApis.reducerPath]: executiveDashboardApis.reducer,
   [BMSApi.reducerPath]: BMSApi.reducer,
+  [assetPerformanceDashboardApi.reducerPath]:
+    assetPerformanceDashboardApi.reducer,
 
   // Category and condition APIs
   [categoryApi.reducerPath]: categoryApi.reducer,
@@ -363,6 +366,7 @@ export const makeStore = () => {
         fieldEngineerDashboardApi.middleware,
         executiveDashboardApis.middleware,
         BMSApi.middleware,
+        assetPerformanceDashboardApi.middleware,
 
         // Depreciation APIs
         depreciationApi.middleware,

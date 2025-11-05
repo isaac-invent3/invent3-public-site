@@ -15,7 +15,7 @@ const ScenarioTable = () => {
     () => {
       const baseColumns = [
         columnHelper.accessor('scenario', {
-          cell: (info) => info.getValue ?? 'N/A',
+          cell: (info) => info.getValue() ?? 'N/A',
           header: 'Scenario',
           enableSorting: false,
         }),

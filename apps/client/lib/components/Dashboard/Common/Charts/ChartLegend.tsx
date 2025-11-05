@@ -22,6 +22,7 @@ interface ChartLegendProps {
   textStyle?: TextProps;
   boxStyle?: FlexProps;
   textChildrenStyle?: StackProps;
+  showSecondaryLine?: boolean;
 }
 
 const ChartLegend = ({
@@ -31,20 +32,31 @@ const ChartLegend = ({
   textStyle,
   isLoading,
   textChildrenStyle,
+  showSecondaryLine,
 }: ChartLegendProps) => {
   return (
     <Stack spacing="16px" direction="row" {...containerStyle}>
       {chartLegendItems.map((item, index) => (
         <HStack spacing="8px" key={index} alignItems="flex-start">
-          <Box
-            flexShrink={0}
-            width="10px"
-            height="10px"
-            rounded="full"
-            bgColor={item.color}
-            mt="1px"
-            {...boxStyle}
-          />
+          <HStack spacing={0}>
+            <Box
+              flexShrink={0}
+              width="10px"
+              height="10px"
+              rounded="full"
+              bgColor={item.color}
+              mt="1px"
+              {...boxStyle}
+            />
+            {showSecondaryLine && (
+              <Box
+                height="2px"
+                width="15px"
+                borderRightRadius="full"
+                bgColor={item.color}
+              />
+            )}
+          </HStack>
           <Stack
             alignItems="flex-start"
             spacing="4px"

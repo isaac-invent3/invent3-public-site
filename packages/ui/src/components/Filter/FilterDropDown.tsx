@@ -107,7 +107,7 @@ const FilterDropDown = ({
         px="12px"
         rounded="6px"
         ref={buttonRef}
-        border={showBorder ? '1px solid #DADFE5' : 'none'}
+        border={showBorder ? '1px solid #BBBBBB' : 'none'}
         {...labelStyles}
       >
         {customLabel ?? (
@@ -173,8 +173,7 @@ const FilterDropDown = ({
             </Text>
           )}
 
-          {!isLoading &&
-            !children &&
+          {!children &&
             options &&
             selectedOptions &&
             options.length > 0 &&

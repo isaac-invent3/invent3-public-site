@@ -4,7 +4,7 @@ import { generateLastFiveYears } from '~/lib/utils/helperFunctions';
 import CardHeader from '../CardHeader';
 import DropDown from '../DropDown';
 import ChartLegend from './ChartLegend';
-import StackedBarChart from './StackedBarChart';
+import BarChart from './BarChart';
 import { GenericTaskCompleteData } from '~/lib/interfaces/dashboard.interfaces';
 import { Option } from '@repo/interfaces';
 import { transformMonthIdsToShortNames } from '../utils';
@@ -69,20 +69,22 @@ const TaskCompletionRateChart = (props: TaskCompletionRateChartProps) => {
         justifyContent="space-between"
       >
         <ChartLegend chartLegendItems={chartLegendItems} />
-        <StackedBarChart
+        <BarChart
           labels={transformMonthIdsToShortNames(
             data?.map((item) => item.monthId)
           )}
-          firstStack={{
-            label: 'Completed',
-            values: data?.map((item) => item.tasksCompleted),
-            color: completedColorCode,
-          }}
-          secondStack={{
-            label: 'Not Completed',
-            values: data?.map((item) => item.taskNotCompleted),
-            color: notCompletedColorCode,
-          }}
+          chartData={[
+            {
+              label: 'Completed',
+              values: data?.map((item) => item.tasksCompleted),
+              color: completedColorCode,
+            },
+            {
+              label: 'Not Completed',
+              values: data?.map((item) => item.taskNotCompleted),
+              color: notCompletedColorCode,
+            },
+          ]}
           isLoading={isLoading}
         />
       </VStack>

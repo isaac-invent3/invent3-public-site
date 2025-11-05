@@ -1,17 +1,18 @@
-import { HStack, Icon, Stack, Text, VStack } from '@chakra-ui/react';
+import { HStack, Icon, Stack, Text } from '@chakra-ui/react';
 import { Button } from '@repo/ui/components';
 import React from 'react';
 import CategoryFilter from '~/lib/components/AssetManagement/Filters/FilterComponents/CategoryFilter';
 import { Option } from '~/lib/interfaces/general.interfaces';
-import { LifeCycleFilter } from '~/lib/interfaces/location/lifecycle.interfaces';
 import DateRangeFilter from '~/lib/components/Common/FilterComponents/DateRangeFilter';
 import FacilityFilter from '~/lib/components/Common/FilterComponents/FacilityFilter';
 import { DownloadIcon } from '~/lib/components/CustomIcons';
+import TicketTypeFilter from '~/lib/components/TicketManagement/TableActions/Filters/TicketTypeFilter';
+import { GenericFilter } from '~/lib/interfaces/dashboard.interfaces';
 
 interface FiltersProps {
-  filters: LifeCycleFilter;
+  filters: GenericFilter;
   onChange: (
-    key: keyof LifeCycleFilter,
+    key: keyof GenericFilter,
     value: Option[],
     singleSelect?: boolean
   ) => void;
@@ -31,7 +32,7 @@ const Filters: React.FC<FiltersProps> = ({
         width="max-content"
         alignItems="flex-start"
         direction={{ base: 'column', lg: 'row' }}
-        spacing={{ base: '16px', xl: '64px' }}
+        spacing={{ base: '16px' }}
         bgColor="white"
         py={2}
         px={4}
@@ -57,6 +58,17 @@ const Filters: React.FC<FiltersProps> = ({
               value: item,
             }))}
             hasBorder
+          />
+          <TicketTypeFilter
+            label="Ticket Type"
+            handleSelectedOption={(val: Option) =>
+              onChange('ticketTypes', [val])
+            }
+            selectedOptions={filters?.assetCategories.map((item) => ({
+              label: item.toString(),
+              value: item,
+            }))}
+            // hasBorder
           />
           <DateRangeFilter
             handleSelectedOption={(val: Option) =>

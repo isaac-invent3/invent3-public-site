@@ -9,11 +9,12 @@ interface TicketTypeFilterProps {
   selectedOptions: Option[];
   // eslint-disable-next-line no-unused-vars
   handleSelectedOption: (option: Option) => void;
+  label?: string;
 }
 
 const TicketTypeFilter = (props: TicketTypeFilterProps) => {
   // eslint-disable-next-line no-unused-vars
-  const { selectedOptions, handleSelectedOption } = props;
+  const { selectedOptions, handleSelectedOption, label } = props;
 
   const [pageNumber, setPageNumber] = useState(1);
   const [options, setOptions] = useState<Option[]>([]);
@@ -36,7 +37,7 @@ const TicketTypeFilter = (props: TicketTypeFilterProps) => {
   return (
     <FilterDropDown
       showBorder
-      label="Types:"
+      label={label ?? 'Types:'}
       options={options}
       selectedOptions={selectedOptions}
       handleClick={(option) => handleSelectedOption(option)}

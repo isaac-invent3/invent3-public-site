@@ -11,6 +11,7 @@ interface NumberBoxProps {
   handleDecrement: () => void;
   // eslint-disable-next-line no-unused-vars
   handleValueChange: (value: number) => void;
+  handleBlur?: () => void;
   value: number;
   maxNumber?: number;
   minNumber?: number;
@@ -22,6 +23,7 @@ const NumberBox = (props: NumberBoxProps) => {
     handleIncrement,
     handleDecrement,
     handleValueChange,
+    handleBlur,
     value,
     minNumber = 0,
     maxNumber,
@@ -64,6 +66,7 @@ const NumberBox = (props: NumberBoxProps) => {
         type="text"
         onChange={handleInputChange}
         value={formatValue(value)}
+        onBlur={handleBlur}
         _focusVisible={{ borderColor: 'primary.500' }}
         {...customStyle}
       />

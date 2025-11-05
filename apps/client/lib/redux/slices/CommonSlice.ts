@@ -10,6 +10,7 @@ export const initialGeneralFilters = {
   assetStatus: [],
   costPeriod: [],
   costType: [],
+  ticketTypes: [],
 };
 
 export interface SliceProps {

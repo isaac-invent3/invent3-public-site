@@ -45,7 +45,7 @@ const EscalationAlert = ({ escalationCount }: { escalationCount: number }) => {
             fontWeight={700}
             color="#D67D00"
           >
-            Escalation Alert!
+            Escalated Ticket!
           </Text>
           <Text color="black" size="lg" lineHeight="100%" fontWeight={400}>
             {escalationCount} Tickets have been escalated due to inactivity

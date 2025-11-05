@@ -5,7 +5,7 @@ import { Option } from '@repo/interfaces';
 import CardHeader from '../../Common/CardHeader';
 import DropDown from '../../Common/DropDown';
 import ChartLegend from '../../Common/Charts/ChartLegend';
-import StackedBarChart from '../../Common/Charts/StackedBarChart';
+import BarChart from '../../Common/Charts/BarChart';
 import { transformMonthIdsToShortNames } from '../../Common/utils';
 import { useGetMaintenanceTrendQuery } from '~/lib/redux/services/dashboard/executive.services';
 import { useAppSelector } from '~/lib/redux/hooks';
@@ -61,7 +61,7 @@ const ScheduledUnplannedMaintenance = () => {
         justifyContent="space-between"
       >
         <ChartLegend chartLegendItems={chartLegendItems} />
-        <StackedBarChart
+        <BarChart
           labels={
             data?.data
               ? transformMonthIdsToShortNames(
@@ -69,20 +69,23 @@ const ScheduledUnplannedMaintenance = () => {
                 )
               : []
           }
-          firstStack={{
-            label: 'Unplanned Maintenance',
-            values:
-              data?.data?.map((item) => item.totalUnplannedMaintenanceCount) ??
-              [],
-            color: '#0E2642',
-          }}
-          secondStack={{
-            label: 'Scheduled',
-            values:
-              data?.data?.map((item) => item.totalPlannedMaintenanceCount) ??
-              [],
-            color: '#98FEFE',
-          }}
+          chartData={[
+            {
+              label: 'Unplanned Maintenance',
+              values:
+                data?.data?.map(
+                  (item) => item.totalUnplannedMaintenanceCount
+                ) ?? [],
+              color: '#0E2642',
+            },
+            {
+              label: 'Scheduled',
+              values:
+                data?.data?.map((item) => item.totalPlannedMaintenanceCount) ??
+                [],
+              color: '#98FEFE',
+            },
+          ]}
           isLoading={isLoading}
         />
       </VStack>

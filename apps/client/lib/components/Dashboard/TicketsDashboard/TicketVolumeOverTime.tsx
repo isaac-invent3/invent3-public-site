@@ -2,23 +2,23 @@ import { HStack, VStack } from '@chakra-ui/react';
 import React from 'react';
 import CardHeader from '~/lib/components/Dashboard/Common/CardHeader';
 import LineChart from '~/lib/components/Dashboard/Common/Charts/LineChart';
-import ChartLegend from '../../Common/Charts/ChartLegend';
+import ChartLegend from '../Common/Charts/ChartLegend';
 
-const PerformanceTrends = () => {
+const TicketVolumeOverTime = () => {
   const data = [
     {
-      asset: 'HVAC',
+      asset: 'Closed',
       color: '#00A129',
       value: [10, 20, 40, 50, 70],
     },
     {
-      asset: 'Generator',
+      asset: 'Created',
       color: '#0366EF',
       value: [15, 25, 35, 45, 60],
     },
     {
-      asset: 'Pump',
-      color: '#FF7A37',
+      asset: 'Overdue',
+      color: '#F50000',
       value: [20, 30, 40, 60, 80],
     },
   ];
@@ -34,7 +34,7 @@ const PerformanceTrends = () => {
       rounded="8px"
     >
       <HStack width="full" justifyContent="space-between">
-        <CardHeader>Performance Trends</CardHeader>
+        <CardHeader>Ticket Volume Over Time</CardHeader>
         <ChartLegend
           chartLegendItems={data?.map((item) => ({
             label: item.asset,
@@ -74,4 +74,4 @@ const PerformanceTrends = () => {
   );
 };
 
-export default PerformanceTrends;
+export default TicketVolumeOverTime;

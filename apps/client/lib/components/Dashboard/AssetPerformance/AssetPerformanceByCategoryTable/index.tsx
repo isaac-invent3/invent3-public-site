@@ -2,8 +2,8 @@ import { Flex, HStack, useDisclosure, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { Button } from '@repo/ui/components';
 import CardHeader from '../../Common/CardHeader';
-import TicketResolutionModal from '../../Modals/TicketResolutionModal';
 import useAssetPerformanceTableByCategory from '../../hooks/useAssetPerformanceTableByCategory';
+import AssetPerformanceByCategoryModal from '../../Modals/AssetPerformanceByCategoryModal';
 
 const AssetPerformanceByCategoryTable = () => {
   const { AssetPerformanceTable } = useAssetPerformanceTableByCategory({
@@ -42,7 +42,9 @@ const AssetPerformanceByCategoryTable = () => {
         </HStack>
         <Flex width="full">{AssetPerformanceTable}</Flex>
       </VStack>
-      {isOpen && <TicketResolutionModal isOpen={isOpen} onClose={onClose} />}
+      {isOpen && (
+        <AssetPerformanceByCategoryModal isOpen={isOpen} onClose={onClose} />
+      )}
     </>
   );
 };

@@ -46,9 +46,9 @@ const PieChart = ({
         },
         // Tip: comment this out if a slice is too light to see white text
         color: '#fff',
-        font: { weight: 'bold' },
-        anchor: 'center',
-        align: 'center',
+        font: { weight: 'bold' as const },
+        anchor: 'center' as const,
+        align: 'center' as const,
         // clamp: true,
       },
       // (optional) also show % in tooltip

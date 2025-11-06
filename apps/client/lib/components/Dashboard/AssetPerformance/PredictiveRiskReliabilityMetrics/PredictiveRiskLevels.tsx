@@ -5,11 +5,11 @@ import BubbleChart from '../../Common/Charts/BubbleChart';
 import { useAppSelector } from '~/lib/redux/hooks';
 import { useGetAssetPerformancePredictiveRiskLevelQuery } from '~/lib/redux/services/dashboard/assetperformance.services';
 
-// Helper to format currency nicely (₦1.5M, ₦750k, etc.)
+// Helper to format currency nicely (1.5M, 750k, etc.)
 const formatCurrency = (value: number): string => {
-  if (value >= 1_000_000) return `₦${(value / 1_000_000).toFixed(1)}M`;
-  if (value >= 1_000) return `₦${(value / 1_000).toFixed(0)}k`;
-  return `₦${value}`;
+  if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}M`;
+  if (value >= 1_000) return `${(value / 1_000).toFixed(0)}k`;
+  return `${value}`;
 };
 
 const PredictiveRiskLevels = () => {

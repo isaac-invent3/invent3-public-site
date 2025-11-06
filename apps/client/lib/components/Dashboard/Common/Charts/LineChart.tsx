@@ -64,6 +64,9 @@ const LineChart = (props: LineChartProps) => {
       legend: {
         display: false,
       },
+      datalabels: {
+        display: false,
+      },
       tooltip: {
         enabled: true,
         callbacks: {

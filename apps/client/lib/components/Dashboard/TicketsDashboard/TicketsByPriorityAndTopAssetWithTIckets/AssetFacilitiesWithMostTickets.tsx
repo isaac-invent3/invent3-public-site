@@ -1,37 +1,38 @@
 import { HStack, useMediaQuery, VStack } from '@chakra-ui/react';
 import { DataTable } from '@repo/ui/components';
 import { createColumnHelper } from '@tanstack/react-table';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import GenericStatusBox from '~/lib/components/UI/GenericStatusBox';
 import { Ticket } from '~/lib/interfaces/ticket.interfaces';
-import { useGetTicketsByTabScopeQuery } from '~/lib/redux/services/ticket.services';
-import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
 import CardHeader from '../../Common/CardHeader';
+import { useAppSelector } from '~/lib/redux/hooks';
+import { useGetTopTicketCountQuery } from '~/lib/redux/services/dashboard/ticketDashboard.services';
+import { TicketCountByFacility } from '~/lib/interfaces/dashboard/ticket.interfaces';
 
 const AssetFacilitiesWithMostTickets = () => {
-  const columnHelper = createColumnHelper<Ticket>();
+  const columnHelper = createColumnHelper<TicketCountByFacility>();
   const [isMobile] = useMediaQuery('(max-width: 768px)');
-  const [pageNumber, setPageNumber] = useState(1);
-  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const { data, isLoading, isFetching } = useGetTicketsByTabScopeQuery({
-    pageNumber,
-    pageSize: 5,
+  const filters = useAppSelector((state) => state.common.filters);
+  const { data, isLoading, isFetching } = useGetTopTicketCountQuery({
+    facilityIds: filters?.facilities,
+    assetCategoryIds: filters?.assetCategories,
+    ticketTypes: filters?.ticketTypes,
+    datePeriod: filters?.datePeriod?.[0],
   });
-
   const mobileColumns = useMemo(
     () => {
       const baseColumns = [
-        columnHelper.accessor('assetName', {
+        columnHelper.accessor('facility', {
           cell: (info) => info.getValue() ?? 'N/A',
-          header: 'Asset / Facility',
+          header: 'Facility',
           enableSorting: false,
         }),
-        columnHelper.accessor('totalTasksCount', {
+        columnHelper.accessor('ticketCount', {
           cell: (info) => info.getValue() ?? 'N/A',
           header: 'Ticket Count',
           enableSorting: false,
         }),
-        columnHelper.accessor('openTasks', {
+        columnHelper.accessor('slaCompliance', {
           cell: (info) => (
             <GenericStatusBox
               text={info.getValue()?.toString() ?? ''}
@@ -46,28 +47,28 @@ const AssetFacilitiesWithMostTickets = () => {
 
       return baseColumns;
     },
-    [data?.data?.items] //eslint-disable-line
+    [data?.data] //eslint-disable-line
   );
 
   const columns = useMemo(
     () => {
       const baseColumns = [
-        columnHelper.accessor('assetName', {
+        columnHelper.accessor('facility', {
           cell: (info) => info.getValue() ?? 'N/A',
-          header: 'Asset / Facility',
+          header: 'Facility',
           enableSorting: false,
         }),
-        columnHelper.accessor('totalTasksCount', {
+        columnHelper.accessor('ticketCount', {
           cell: (info) => info.getValue() ?? 'N/A',
           header: 'Ticket Count',
           enableSorting: false,
         }),
-        columnHelper.accessor('roomRef', {
+        columnHelper.accessor('avgResolutionTime', {
           cell: (info) => info.getValue() ?? 'N/A',
           header: 'Avg Resolution Time (hrs)',
           enableSorting: false,
         }),
-        columnHelper.accessor('openTasks', {
+        columnHelper.accessor('slaCompliance', {
           cell: (info) => (
             <GenericStatusBox
               text={info.getValue()?.toString() ?? ''}
@@ -82,7 +83,7 @@ const AssetFacilitiesWithMostTickets = () => {
 
       return baseColumns;
     },
-    [data?.data?.items] //eslint-disable-line
+    [data?.data] //eslint-disable-line
   );
 
   return (
@@ -103,14 +104,10 @@ const AssetFacilitiesWithMostTickets = () => {
       </HStack>
       <DataTable
         columns={isMobile ? mobileColumns : columns}
-        data={data?.data?.items ?? []}
-        showFooter={data?.data ? data?.data?.totalPages > 1 : false}
+        data={data?.data ?? []}
+        showFooter={false}
         isLoading={isLoading}
         isFetching={isFetching}
-        setPageNumber={setPageNumber}
-        pageNumber={pageNumber}
-        pageSize={pageSize}
-        setPageSize={setPageSize}
         emptyLines={3}
         maxTdWidth="250px"
         customThStyle={{

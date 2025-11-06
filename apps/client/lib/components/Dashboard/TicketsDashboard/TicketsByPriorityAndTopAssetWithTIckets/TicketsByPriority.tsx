@@ -4,24 +4,31 @@ import ChartLegend from '../../Common/Charts/ChartLegend';
 import BarChart from '../../Common/Charts/BarChart';
 import CardHeader from '../../Common/CardHeader';
 import { transformMonthIdsToShortNames } from '../../Common/utils';
-import { useGetSuperAdminSubscriptionTrendQuery } from '~/lib/redux/services/dashboard/superadmin.services';
+import { useGetTicketByPriorityLevelQuery } from '~/lib/redux/services/dashboard/ticketDashboard.services';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 const TicketsByPriority = () => {
-  const { data, isLoading } = useGetSuperAdminSubscriptionTrendQuery();
+  const filters = useAppSelector((state) => state.common.filters);
+  const { data, isLoading, isFetching } = useGetTicketByPriorityLevelQuery({
+    facilityIds: filters?.facilities,
+    assetCategoryIds: filters?.assetCategories,
+    ticketTypes: filters?.ticketTypes,
+    datePeriod: filters?.datePeriod?.[0],
+  });
   const dataItems = [
     {
       label: 'Completed',
-      values: data?.data?.map((item) => item.paid) ?? [],
+      values: data?.data?.map((item) => item.completed) ?? [],
       color: '#EABC30',
     },
     {
       label: 'In Progress',
-      values: data?.data?.map((item) => item.free) ?? [],
+      values: data?.data?.map((item) => item.inProgress) ?? [],
       color: '#17A1FA',
     },
     {
       label: 'Open',
-      values: data?.data?.map((item) => item.free) ?? [],
+      values: data?.data?.map((item) => item.open) ?? [],
       color: '#0E2642',
     },
   ];
@@ -51,15 +58,9 @@ const TicketsByPriority = () => {
         />
       </HStack>
       <BarChart
-        labels={
-          data?.data
-            ? transformMonthIdsToShortNames(
-                data?.data.map((item) => item.monthId)
-              )
-            : []
-        }
+        labels={data?.data ? data?.data.map((item) => item.priorityLevel) : []}
         chartData={dataItems.reverse()}
-        isLoading={isLoading}
+        isLoading={isLoading || isFetching}
         isStacked
       />
     </VStack>

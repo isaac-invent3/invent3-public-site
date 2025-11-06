@@ -1,12 +1,13 @@
-import { HStack, Icon, Stack, Text, VStack } from '@chakra-ui/react';
+import { HStack, Icon, Stack, Text } from '@chakra-ui/react';
 import { Button } from '@repo/ui/components';
-import React from 'react';
+import React, { useState } from 'react';
 import CategoryFilter from '~/lib/components/AssetManagement/Filters/FilterComponents/CategoryFilter';
 import { Option } from '~/lib/interfaces/general.interfaces';
 import { LifeCycleFilter } from '~/lib/interfaces/location/lifecycle.interfaces';
 import DateRangeFilter from '~/lib/components/Common/FilterComponents/DateRangeFilter';
 import FacilityFilter from '~/lib/components/Common/FilterComponents/FacilityFilter';
 import { DownloadIcon } from '~/lib/components/CustomIcons';
+import { downloadPageAsPDF } from '~/lib/utils/pdfUtils';
 
 interface FiltersProps {
   filters: LifeCycleFilter;
@@ -25,10 +26,29 @@ const Filters: React.FC<FiltersProps> = ({
   onApply,
   onReset,
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const handleDownloadPDF = async () => {
+    try {
+      setIsLoading(true);
+      await downloadPageAsPDF({
+        elementId: 'asset-performance',
+        fileName: 'Asset Performance Dashboard.pdf',
+        excludeSelectors: ['.no-pdf'],
+        headingId: 'page-heading',
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
-    <HStack width="full" justifyContent="space-between" alignItems="flex-start">
+    <Stack
+      width="full"
+      direction={{ base: 'column', lg: 'row' }}
+      justifyContent="space-between"
+      alignItems="flex-start"
+    >
       <Stack
-        width="max-content"
+        width={{ base: 'full', lg: 'max-content' }}
         alignItems="flex-start"
         direction={{ base: 'column', lg: 'row' }}
         spacing={{ base: '16px', xl: '64px' }}
@@ -36,6 +56,7 @@ const Filters: React.FC<FiltersProps> = ({
         py={2}
         px={4}
         rounded="8px"
+        className="no-pdf"
       >
         <HStack spacing="7px" flexWrap="wrap">
           <FacilityFilter
@@ -94,14 +115,14 @@ const Filters: React.FC<FiltersProps> = ({
           pr: '24px',
           width: '177px',
         }}
-        handleClick={() => {}}
+        handleClick={handleDownloadPDF}
         loadingText="Exporting..."
-        isLoading={false}
+        isLoading={isLoading}
       >
         <Icon as={DownloadIcon} boxSize="18px" mr="8px" />
         Export
       </Button>
-    </HStack>
+    </Stack>
   );
 };
 

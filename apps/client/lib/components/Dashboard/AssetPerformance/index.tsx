@@ -66,6 +66,7 @@ const AssetPerformanceDashboard = () => {
       direction="column"
       gap="24px"
       pb="16px"
+      px={{ base: '16px', md: 0 }}
     >
       <VStack width="full" alignItems="flex-start" spacing="16px">
         <PageHeader id="page-heading">Asset Performance Dashboard</PageHeader>

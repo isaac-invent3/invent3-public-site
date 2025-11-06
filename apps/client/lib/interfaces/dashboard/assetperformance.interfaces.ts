@@ -37,10 +37,21 @@ interface DashboardByCateogry {
   displayColorCode: string;
 }
 
+interface PerformanceTrend {
+  assetName: string;
+  trends: Trend[];
+}
+
+interface Trend {
+  day: Date;
+  value: number;
+}
+
 export type {
   PerformanceSummary,
   DistributionByCategory,
   ReliabilityMetrics,
   PredictiveRiskLevel,
   DashboardByCateogry,
+  PerformanceTrend,
 };

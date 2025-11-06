@@ -66,6 +66,7 @@ const TicketsDashboard = () => {
       direction="column"
       gap="14px"
       pb="16px"
+      px={{ base: '16px', md: 0 }}
     >
       <VStack width="full" alignItems="flex-start" spacing="8px" pb="26px">
         <PageHeader id="page-heading">Tickets Dashboard</PageHeader>

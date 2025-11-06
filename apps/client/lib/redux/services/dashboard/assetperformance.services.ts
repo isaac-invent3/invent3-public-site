@@ -7,6 +7,7 @@ import {
   PredictiveRiskLevel,
   ReliabilityMetrics,
   DashboardByCateogry,
+  PerformanceTrend,
 } from '~/lib/interfaces/dashboard/assetperformance.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 
@@ -90,6 +91,19 @@ export const assetPerformanceDashboardApi = createApi({
         headers: getHeaders(),
       }),
     }),
+    getPerformanceTrends: builder.query<
+      BaseApiResponse<PerformanceTrend[]>,
+      PerformanceQuery
+    >({
+      query: (data) => ({
+        url: generateQueryStr(
+          `/Invent3Pro/AssetPerformanceDashboardPerformanceTrends?`,
+          data
+        ),
+        method: 'GET',
+        headers: getHeaders(),
+      }),
+    }),
   }),
 });
 
@@ -99,4 +113,5 @@ export const {
   useGetAssetPerformanceDistributionByCategoryQuery,
   useGetAssetPerformancePredictiveRiskLevelQuery,
   useGetAssetPerformanceReliabilityMetricsQuery,
+  useGetPerformanceTrendsQuery,
 } = assetPerformanceDashboardApi;

@@ -62,6 +62,9 @@ const DoughtnutChart = (props: DoughtnutChartProps) => {
       legend: {
         display: false,
       },
+      datalabels: {
+        display: false,
+      },
       tooltip: {
         callbacks: {
           label: function (tooltipItem: any) {

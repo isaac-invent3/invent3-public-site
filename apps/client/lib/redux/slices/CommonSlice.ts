@@ -11,6 +11,7 @@ export const initialGeneralFilters = {
   costPeriod: [],
   costType: [],
   ticketTypes: [],
+  riskThreshold: [],
 };
 
 export interface SliceProps {

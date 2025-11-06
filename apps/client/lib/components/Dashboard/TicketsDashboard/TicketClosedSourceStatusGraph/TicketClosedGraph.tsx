@@ -3,20 +3,26 @@ import React from 'react';
 import ChartLegend from '../../Common/Charts/ChartLegend';
 import BarChart from '../../Common/Charts/BarChart';
 import CardHeader from '../../Common/CardHeader';
-import { transformMonthIdsToShortNames } from '../../Common/utils';
-import { useGetSuperAdminSubscriptionTrendQuery } from '~/lib/redux/services/dashboard/superadmin.services';
+import { useGetTicketClosedByTechnicianQuery } from '~/lib/redux/services/dashboard/ticketDashboard.services';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 const TicketClosedGraph = () => {
-  const { data, isLoading } = useGetSuperAdminSubscriptionTrendQuery();
+  const filters = useAppSelector((state) => state.common.filters);
+  const { data, isLoading, isFetching } = useGetTicketClosedByTechnicianQuery({
+    facilityIds: filters?.facilities,
+    assetCategoryIds: filters?.assetCategories,
+    ticketTypes: filters?.ticketTypes,
+    datePeriod: filters?.datePeriod?.[0],
+  });
   const dataItems = [
     {
       label: 'Within SLA',
-      values: data?.data?.map((item) => item.paid) ?? [],
+      values: data?.data?.map((item) => item.withinSla) ?? [],
       color: '#0E2642',
     },
     {
       label: 'Late',
-      values: data?.data?.map((item) => item.free) ?? [],
+      values: data?.data?.map((item) => item.breached) ?? [],
       color: '#17A1FA',
     },
   ];
@@ -24,6 +30,7 @@ const TicketClosedGraph = () => {
   return (
     <VStack
       height="full"
+      width="full"
       p="20px"
       alignItems="flex-start"
       spacing="16px"
@@ -46,15 +53,9 @@ const TicketClosedGraph = () => {
         />
       </HStack>
       <BarChart
-        labels={
-          data?.data
-            ? transformMonthIdsToShortNames(
-                data?.data.map((item) => item.monthId)
-              )
-            : []
-        }
+        labels={data?.data ? data?.data.map((item) => item.technician) : []}
         chartData={dataItems}
-        isLoading={isLoading}
+        isLoading={isLoading || isFetching}
         isStacked={false}
       />
     </VStack>

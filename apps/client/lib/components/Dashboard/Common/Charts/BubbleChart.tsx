@@ -9,15 +9,25 @@ import {
   ChartDataset,
   ChartData,
 } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Flex, Skeleton } from '@chakra-ui/react';
 
-ChartJS.register(PointElement, CategoryScale, LinearScale, Tooltip, Legend);
+// Register plugins
+ChartJS.register(
+  PointElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend,
+  ChartDataLabels
+);
 
 interface BubbleDataPoint {
   x: number;
   y: number;
   r: number;
-  color?: string; // optional per-bubble color
+  color?: string;
+  amountLabel?: string;
 }
 
 interface BubbleChartProps {
@@ -49,7 +59,6 @@ const BubbleChart = ({
     labels,
     datasets: datasets.map((ds) => ({
       ...ds,
-      // Map per-bubble color safely as readonly arrays
       backgroundColor: ds.data.map(
         (bubble) =>
           bubble.color ||
@@ -73,29 +82,27 @@ const BubbleChart = ({
     elements: {
       point: {
         radius: showDots ? (ctx: any) => ctx.raw?.r || 5 : 0,
-        hoverRadius: showDots ? 8 : 0,
+        hoverRadius: showDots ? 10 : 0,
       },
     },
     plugins: {
-      legend: {
-        display: false,
-        position: 'top' as const,
-        labels: {
-          color: '#4A4A4A',
-          font: { size: 12, weight: 'normal' },
-        },
-      },
+      legend: { display: false },
       tooltip: {
         callbacks: {
           label: function (context: any) {
-            const { x, y, r } = context.raw || {};
-            return `x: ${x}, y: ${y}, size: ${r}`;
+            const { amountLabel, x, y } = context.raw || {};
+            return [
+              `Condition Index: ${x}`,
+              `Risk Score: ${y}`,
+              `Asset Cost: ${amountLabel}`,
+            ];
           },
         },
       },
       datalabels: {
         display: true,
         color: '#000',
+        align: 'center' as const,
         font: {
           weight: 'bold',
           size: 10,
@@ -112,7 +119,6 @@ const BubbleChart = ({
               display: true,
               text: xLabel,
               color: '#838383',
-              //   font: { size: 12, weight: '700' },
             }
           : undefined,
         grid: {
@@ -128,7 +134,6 @@ const BubbleChart = ({
               display: true,
               text: yLabel,
               color: '#838383',
-              //   font: { size: 12, weight: '700' },
             }
           : undefined,
         grid: { display: showYGrid },

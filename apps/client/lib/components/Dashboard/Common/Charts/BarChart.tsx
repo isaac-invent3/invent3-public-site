@@ -27,8 +27,10 @@ interface BarChartProps {
   height?: string;
   showGridX?: boolean;
   showGridY?: boolean;
-  barRadius?: number | Partial<BorderRadius>; // 👈 New flexible radius prop
+  barRadius?: number | Partial<BorderRadius>;
   isStacked?: boolean;
+  /** 👇 New prop to control bar orientation */
+  horizontal?: boolean;
 }
 
 const BarChart = (props: BarChartProps) => {
@@ -41,12 +43,13 @@ const BarChart = (props: BarChartProps) => {
     showGridY = true,
     barRadius = 0,
     isStacked = true,
+    horizontal = false, // 👈 default to vertical
   } = props;
 
   const data = {
     labels,
     datasets: chartData
-      ? chartData.map((item, index) => ({
+      ? chartData.map((item) => ({
           label: item.label,
           data: item.values,
           backgroundColor: item.color,
@@ -58,8 +61,12 @@ const BarChart = (props: BarChartProps) => {
   const options: ChartOptions<'bar'> = {
     responsive: true,
     maintainAspectRatio: false,
+    indexAxis: horizontal ? 'y' : 'x', // 👈 Control orientation
     plugins: {
       legend: { display: false },
+      datalabels: {
+        display: false,
+      },
       tooltip: {
         enabled: true,
         callbacks: {
@@ -73,7 +80,6 @@ const BarChart = (props: BarChartProps) => {
         grid: {
           display: showGridX,
           color: '#E0E0E0',
-          // borderDash: [6, 3],
         },
         ticks: {
           color: '#838383',
@@ -84,7 +90,6 @@ const BarChart = (props: BarChartProps) => {
         grid: {
           display: showGridY,
           color: '#BBBBBB',
-          // borderDash: [8, 4],
         },
         ticks: {
           color: '#838383',

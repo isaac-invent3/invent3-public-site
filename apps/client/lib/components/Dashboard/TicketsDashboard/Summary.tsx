@@ -3,15 +3,25 @@ import React from 'react';
 import SummaryCard from '../Common/Summaries/SummaryCardWithPercentChange';
 import { AssetBoxIcon } from '../../CustomIcons';
 import ProgressIndicator from '../Common/ProgressIndicator';
+import { useGetTicketPerformanceDashboardSummaryQuery } from '~/lib/redux/services/dashboard/ticketDashboard.services';
+import { useAppSelector } from '~/lib/redux/hooks';
 
 const Summary = () => {
+  const filters = useAppSelector((state) => state.common.filters);
+  const { data, isLoading, isFetching } =
+    useGetTicketPerformanceDashboardSummaryQuery({
+      facilityIds: filters?.facilities,
+      assetCategoryIds: filters?.assetCategories,
+      ticketTypes: filters?.ticketTypes,
+      datePeriod: filters?.datePeriod?.[0],
+    });
   return (
-    <SimpleGrid width="full" gap="14px" columns={{ base: 1, sm: 2, md: 4 }}>
+    <SimpleGrid width="full" gap="14px" columns={{ base: 1, sm: 2, lg: 4 }}>
       <SummaryCard
         title="Total Tickets"
         icon={AssetBoxIcon}
-        value={1205}
-        isLoading={false}
+        value={data?.data?.totalTickets ?? 'N/A'}
+        isLoading={isLoading || isFetching}
         showRange={false}
         containerStyle={{ minH: '155px' }}
         additionalContent={
@@ -26,8 +36,8 @@ const Summary = () => {
       <SummaryCard
         title="Open Tickets"
         icon={AssetBoxIcon}
-        value={320}
-        isLoading={false}
+        value={data?.data?.openTickets ?? 'N/A'}
+        isLoading={isLoading || isFetching}
         showRange={false}
         containerStyle={{ minH: '155px', position: 'relative' }}
         additionalContent={
@@ -58,8 +68,8 @@ const Summary = () => {
       <SummaryCard
         title="Overdue Tickets"
         icon={AssetBoxIcon}
-        value={18}
-        isLoading={false}
+        value={data?.data?.overdueTickets ?? 'N/A'}
+        isLoading={isLoading || isFetching}
         showRange={true}
         containerStyle={{ minH: '155px', position: 'relative' }}
         customCountStyle={{ color: '#F50000' }}
@@ -90,8 +100,12 @@ const Summary = () => {
       <SummaryCard
         title="SLA Compliance Rate"
         icon={AssetBoxIcon}
-        value={'91.2%'}
-        isLoading={false}
+        value={
+          data?.data?.slaComplianceRate
+            ? `${data?.data?.slaComplianceRate}%`
+            : 'N/A'
+        }
+        isLoading={isLoading || isFetching}
         showRange={false}
         containerStyle={{ minH: '155px', position: 'relative' }}
       />

@@ -15,7 +15,7 @@ const Summary = () => {
       datePeriod: filters?.datePeriod?.[0],
     });
   return (
-    <SimpleGrid width="full" gap="14px" columns={{ base: 1, sm: 2, md: 4 }}>
+    <SimpleGrid width="full" gap="14px" columns={{ base: 1, sm: 2, lg: 4 }}>
       <SummaryCard
         title="Total Asset"
         icon={AssetBoxIcon}

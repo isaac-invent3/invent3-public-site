@@ -3,27 +3,26 @@ import React from 'react';
 import CardHeader from '../../Common/CardHeader';
 import ChartLegend from '../../Common/Charts/ChartLegend';
 import DoughtnutChart from '../../Common/Charts/DoughtnutChart';
+import { useAppSelector } from '~/lib/redux/hooks';
+import { useGetTicketByStatusQuery } from '~/lib/redux/services/dashboard/ticketDashboard.services';
+import { generateColor } from '~/lib/utils/helperFunctions';
 
 const TicketStatus = () => {
-  const isLoading = false;
+  const filters = useAppSelector((state) => state.common.filters);
+  const { data, isLoading, isFetching } = useGetTicketByStatusQuery({
+    facilityIds: filters?.facilities,
+    assetCategoryIds: filters?.assetCategories,
+    ticketTypes: filters?.ticketTypes,
+    datePeriod: filters?.datePeriod?.[0],
+  });
 
-  const chartLegendItems = [
-    {
-      label: 'Overdue',
-      color: '#0366EF',
-      value: 485,
-    },
-    {
-      label: 'Open',
-      color: '#FFCC00',
-      value: 720,
-    },
-    {
-      label: 'Open',
-      color: '#0E2642',
-      value: 720,
-    },
-  ];
+  const chartLegendItems = data?.data
+    ? data?.data?.map((item, index) => ({
+        label: item.statusName,
+        value: item.value,
+        color: generateColor(index),
+      }))
+    : [];
 
   return (
     <VStack
@@ -37,7 +36,7 @@ const TicketStatus = () => {
       rounded="8px"
       maxH="375px"
     >
-      <CardHeader>Ticket Creation Source</CardHeader>
+      <CardHeader>Ticket by Status</CardHeader>
       <HStack
         width="full"
         justifyContent="space-between"
@@ -55,10 +54,10 @@ const TicketStatus = () => {
           }}
         />
         <Flex width="full">
-          {isLoading && (
+          {(isLoading || isFetching) && (
             <Skeleton width="206px" height="206px" rounded="full" />
           )}
-          {!isLoading && (
+          {!isLoading && !isFetching && (
             <DoughtnutChart
               labels={chartLegendItems.map((item) => item.label)}
               datasets={[

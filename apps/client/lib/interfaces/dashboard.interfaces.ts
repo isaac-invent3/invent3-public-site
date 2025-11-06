@@ -166,6 +166,7 @@ interface GenericFilter {
   costPeriod: number[];
   costType: number[];
   ticketTypes: number[];
+  riskThreshold: number[];
 }
 
 export type {

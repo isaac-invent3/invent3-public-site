@@ -9,7 +9,7 @@ export const initialGeneralFilters = {
   metricsToCompare: [],
   assetStatus: [],
   costPeriod: [],
-  costType: [],
+  costTypes: [],
   ticketTypes: [],
   riskThreshold: [],
 };

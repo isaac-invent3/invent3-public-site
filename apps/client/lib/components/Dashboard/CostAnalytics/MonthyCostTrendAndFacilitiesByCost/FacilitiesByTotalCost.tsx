@@ -3,31 +3,23 @@ import React from 'react';
 import ChartLegend from '../../Common/Charts/ChartLegend';
 import BarChart from '../../Common/Charts/BarChart';
 import CardHeader from '../../Common/CardHeader';
-import { useGetTicketByPriorityLevelQuery } from '~/lib/redux/services/dashboard/ticketDashboard.services';
 import { useAppSelector } from '~/lib/redux/hooks';
+import { useGetCostAnalyticsTopFacilitiesByCostQuery } from '~/lib/redux/services/dashboard/costanalytics.services';
 
-const TicketsByPriority = () => {
+const FacilitiesByTotalCost = () => {
   const filters = useAppSelector((state) => state.common.filters);
-  const { data, isLoading, isFetching } = useGetTicketByPriorityLevelQuery({
-    facilityIds: filters?.facilities,
-    assetCategoryIds: filters?.assetCategories,
-    ticketTypes: filters?.ticketTypes,
-    datePeriod: filters?.datePeriod?.[0],
-  });
+  const { data, isLoading, isFetching } =
+    useGetCostAnalyticsTopFacilitiesByCostQuery({
+      facilityIds: filters?.facilities,
+      assetCategoryIds: filters?.assetCategories,
+      costTypes: filters?.costTypes,
+      costPeriod: filters?.datePeriod?.[0],
+    });
+
   const dataItems = [
     {
-      label: 'Completed',
-      values: data?.data?.map((item) => item.completed) ?? [],
-      color: '#EABC30',
-    },
-    {
-      label: 'In Progress',
-      values: data?.data?.map((item) => item.inProgress) ?? [],
-      color: '#17A1FA',
-    },
-    {
-      label: 'Open',
-      values: data?.data?.map((item) => item.open) ?? [],
+      label: 'Cost',
+      values: data?.data?.map((item) => item.cost) ?? [],
       color: '#0E2642',
     },
   ];
@@ -35,6 +27,7 @@ const TicketsByPriority = () => {
   return (
     <VStack
       height="full"
+      width="full"
       p="20px"
       alignItems="flex-start"
       spacing="16px"
@@ -46,7 +39,7 @@ const TicketsByPriority = () => {
         justifyContent="space-between"
         alignItems="flex-start"
       >
-        <CardHeader>Tickets by Priority Level</CardHeader>
+        <CardHeader>Top 5 Facilities by Total Cost</CardHeader>
 
         <ChartLegend
           chartLegendItems={dataItems.map((item) => ({
@@ -57,13 +50,14 @@ const TicketsByPriority = () => {
         />
       </HStack>
       <BarChart
-        labels={data?.data ? data?.data.map((item) => item.priorityLevel) : []}
-        chartData={dataItems.reverse()}
+        labels={data?.data ? data?.data.map((item) => item.facility) : []}
+        chartData={dataItems}
         isLoading={isLoading || isFetching}
-        isStacked
+        isStacked={false}
+        yLabel="Cost (₦M)"
       />
     </VStack>
   );
 };
 
-export default TicketsByPriority;
+export default FacilitiesByTotalCost;

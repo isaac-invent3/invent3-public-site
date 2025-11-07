@@ -9,6 +9,7 @@ import { DownloadIcon } from '~/lib/components/CustomIcons';
 import TicketTypeFilter from '~/lib/components/TicketManagement/TableActions/Filters/TicketTypeFilter';
 import { GenericFilter } from '~/lib/interfaces/dashboard.interfaces';
 import { downloadPageAsPDF } from '~/lib/utils/pdfUtils';
+import CostTypeFilters from './CostTypeFilters';
 
 interface FiltersProps {
   filters: GenericFilter;
@@ -32,8 +33,8 @@ const Filters: React.FC<FiltersProps> = ({
     try {
       setIsLoading(true);
       await downloadPageAsPDF({
-        elementId: 'lifecycle-simulation-review',
-        fileName: 'Lifecycle_Simulation.pdf',
+        elementId: 'cost-dashboard',
+        fileName: 'Cost_Analytics_Dashboard.pdf',
         excludeSelectors: ['.no-pdf'],
         headingId: 'page-heading',
       });
@@ -81,18 +82,8 @@ const Filters: React.FC<FiltersProps> = ({
             }))}
             hasBorder
           />
-          <TicketTypeFilter
-            label="Ticket Type"
-            handleSelectedOption={(val: Option) =>
-              onChange('ticketTypes', [val])
-            }
-            selectedOptions={filters?.assetCategories.map((item) => ({
-              label: item.toString(),
-              value: item,
-            }))}
-            // hasBorder
-          />
           <DateRangeFilter
+            label="Cost Period"
             handleSelectedOption={(val: Option) =>
               onChange('datePeriod', [val], true)
             }
@@ -100,6 +91,15 @@ const Filters: React.FC<FiltersProps> = ({
               label: item.toString(),
               value: item,
             }))}
+          />
+          <CostTypeFilters
+            label="Cost Types"
+            handleSelectedOption={(val: Option) => onChange('costTypes', [val])}
+            selectedOptions={filters?.costTypes.map((item) => ({
+              label: item.toString(),
+              value: item,
+            }))}
+            // hasBorder
           />
         </HStack>
 
@@ -128,9 +128,9 @@ const Filters: React.FC<FiltersProps> = ({
           pr: '24px',
           width: '177px',
         }}
-        handleClick={() => {}}
+        handleClick={handleDownloadPDF}
         loadingText="Exporting..."
-        isLoading={false}
+        isLoading={isLoading}
       >
         <Icon as={DownloadIcon} boxSize="18px" mr="8px" />
         Export

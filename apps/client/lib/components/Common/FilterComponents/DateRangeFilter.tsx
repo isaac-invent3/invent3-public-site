@@ -7,11 +7,13 @@ import { DATE_PERIOD } from '~/lib/utils/constants';
 interface DateRangeFilterProps {
   selectedOptions: Option[];
   handleSelectedOption: (option: Option) => void;
+  label?: string;
 }
 
 const DateRangeFilter = ({
   selectedOptions,
   handleSelectedOption,
+  label,
 }: DateRangeFilterProps) => {
   // Convert DATE_PERIOD into Option[] once
   const options = useMemo<Option[]>(
@@ -25,7 +27,7 @@ const DateRangeFilter = ({
 
   return (
     <FilterDropDown
-      label="Date Range:"
+      label={label ?? 'Date Range:'}
       options={options}
       selectedOptions={selectedOptions}
       handleClick={(value) => handleSelectedOption(value)}

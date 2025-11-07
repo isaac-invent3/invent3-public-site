@@ -24,6 +24,12 @@ const PredictiveMaintenanceReport = () => {
         'Show which parameters contributed most to a predicted failure',
       route: `/${ROUTES.LOCATION}/cross-facility`,
     },
+    {
+      title: 'Predictive SLA Compliance',
+      description:
+        'Monitor how predictive maintenance tasks align with defined SLA rules and deadlines.',
+      route: `/${ROUTES.REPORT}/predictive-sla-compliance`,
+    },
   ];
   return (
     <VStack spacing={4} width="full" alignItems="flex-start">

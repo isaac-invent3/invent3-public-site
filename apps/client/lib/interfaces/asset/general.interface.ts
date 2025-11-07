@@ -144,6 +144,7 @@ interface Asset {
   disposalCost: number;
   totalLifeCycleCost: number;
   hasAnomaly: boolean;
+  residualValue: number | null;
 }
 
 interface AssetFormImage {

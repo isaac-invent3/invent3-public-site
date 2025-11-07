@@ -103,7 +103,7 @@ const SummaryCardWrapper = (props: SummaryCardWrapperProps) => {
         height="full"
         {...subContainerStyle}
       >
-        <HStack alignItems="flex-end" spacing="4px">
+        <HStack alignItems="flex-end" spacing="8px" flexWrap="wrap">
           <Skeleton
             isLoaded={!isLoading}
             minW={isLoading ? '50px' : 'min-content'}

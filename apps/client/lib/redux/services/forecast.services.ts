@@ -95,6 +95,40 @@ export const forecastApi = createApi({
       }),
       providesTags: [],
     }),
+
+    createTicketFromForecast: builder.mutation<
+      void,
+      { forecastId: number; createdBy: string }
+    >({
+      query: ({ forecastId, ...data }) => ({
+        url: generateQueryStr(`/CreateTicketFromForecast/${forecastId}?`, data),
+        method: 'POST',
+        headers: getHeaders(),
+        body: {},
+      }),
+    }),
+    acknowledgeForecast: builder.mutation<
+      void,
+      { forecastId: number; acknowledgedBy: string }
+    >({
+      query: ({ forecastId, ...data }) => ({
+        url: generateQueryStr(`/AcknowledgeForecast/${forecastId}?`, data),
+        method: 'PUT',
+        headers: getHeaders(),
+        body: {},
+      }),
+    }),
+    dismissForecast: builder.mutation<
+      void,
+      { forecastId: number; dismissedBy: string }
+    >({
+      query: ({ forecastId, ...data }) => ({
+        url: generateQueryStr(`/DismissForecast/${forecastId}?`, data),
+        method: 'PUT',
+        headers: getHeaders(),
+        body: {},
+      }),
+    }),
   }),
 });
 
@@ -104,4 +138,7 @@ export const {
   useCompareRiskTrendOverTimeMutation,
   useGetAssetFailureInsightsQuery,
   useGetAssetFailureProbabilitySummaryQuery,
+  useAcknowledgeForecastMutation,
+  useCreateTicketFromForecastMutation,
+  useDismissForecastMutation,
 } = forecastApi;

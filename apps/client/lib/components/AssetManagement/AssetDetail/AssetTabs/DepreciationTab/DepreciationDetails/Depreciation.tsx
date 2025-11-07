@@ -10,6 +10,7 @@ import React from 'react';
 import { InfoIcon } from '~/lib/components/CustomIcons';
 import Detail from '~/lib/components/UI/ContentDetails/Detail';
 import { AssetDepreciation } from '~/lib/interfaces/asset/depreciation.interfaces';
+import { useAppSelector } from '~/lib/redux/hooks';
 import { amountFormatter } from '~/lib/utils/Formatters';
 
 interface DepreciationProps {
@@ -19,6 +20,12 @@ interface DepreciationProps {
 
 const Depreciation = (props: DepreciationProps) => {
   const { isLoading, data } = props;
+  const assetData = useAppSelector((state) => state.asset.asset);
+
+  if (!assetData) {
+    return null;
+  }
+  const { residualValue } = assetData;
 
   const details = [
     {
@@ -96,15 +103,13 @@ const Depreciation = (props: DepreciationProps) => {
           labelMinWidth="189px"
           isLoading={isLoading}
         >
-          {data?.currentValue ? (
+          {residualValue ? (
             <HStack spacing={2}>
               <Text color="primary.500" size="md">
-                {data?.currentValue
-                  ? amountFormatter(data?.currentValue)
-                  : 'N/A'}
+                {residualValue ? amountFormatter(residualValue) : 'N/A'}
               </Text>
               <Text fontSize="10px" color="neutral.700">
-                (after 5 years)
+                (after {data?.remainingUsefulLife?.toFixed(2)} years)
               </Text>
             </HStack>
           ) : (

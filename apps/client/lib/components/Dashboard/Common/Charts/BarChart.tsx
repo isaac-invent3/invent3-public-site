@@ -29,8 +29,10 @@ interface BarChartProps {
   showGridY?: boolean;
   barRadius?: number | Partial<BorderRadius>;
   isStacked?: boolean;
-  /** 👇 New prop to control bar orientation */
   horizontal?: boolean;
+  /** 👇 New props for axis labels */
+  xLabel?: string;
+  yLabel?: string;
 }
 
 const BarChart = (props: BarChartProps) => {
@@ -43,7 +45,9 @@ const BarChart = (props: BarChartProps) => {
     showGridY = true,
     barRadius = 0,
     isStacked = true,
-    horizontal = false, // 👈 default to vertical
+    horizontal = false,
+    xLabel,
+    yLabel,
   } = props;
 
   const data = {
@@ -61,12 +65,10 @@ const BarChart = (props: BarChartProps) => {
   const options: ChartOptions<'bar'> = {
     responsive: true,
     maintainAspectRatio: false,
-    indexAxis: horizontal ? 'y' : 'x', // 👈 Control orientation
+    indexAxis: horizontal ? 'y' : 'x',
     plugins: {
       legend: { display: false },
-      datalabels: {
-        display: false,
-      },
+      datalabels: { display: false },
       tooltip: {
         enabled: true,
         callbacks: {
@@ -84,6 +86,12 @@ const BarChart = (props: BarChartProps) => {
         ticks: {
           color: '#838383',
         },
+        title: {
+          display: !!xLabel,
+          text: xLabel,
+          color: '#4A4A4A',
+          font: { size: 14, weight: 'bold' },
+        },
       },
       y: {
         stacked: isStacked,
@@ -93,6 +101,12 @@ const BarChart = (props: BarChartProps) => {
         },
         ticks: {
           color: '#838383',
+        },
+        title: {
+          display: !!yLabel,
+          text: yLabel,
+          color: '#4A4A4A',
+          font: { size: 14, weight: 'bold' },
         },
       },
     },

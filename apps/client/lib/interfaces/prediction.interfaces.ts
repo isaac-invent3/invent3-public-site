@@ -29,4 +29,36 @@ interface Prediction {
   suggestions: ForecastInfo[];
 }
 
-export type { Prediction };
+interface PredictiveSlaDashboardSummary {
+  totalPredictiveTickets: number;
+  onTimeCompliance: number;
+  breachedSla: number;
+  avgResponseTime: number;
+}
+
+interface SLATrends {
+  day: string;
+  onTime: number;
+  breached: number;
+  atRisk: number;
+}
+
+interface PredictiveSlaTicketBreakdown {
+  ticketId: number;
+  assetName: string;
+  riskLevel: string;
+  riskLevelColor: string;
+  slaDeadline: Date;
+  actualCompletion: Date;
+  slaStatus: string;
+  slaStatusColor: string;
+  deviation: number;
+  deviationColor: string;
+}
+
+export type {
+  Prediction,
+  PredictiveSlaDashboardSummary,
+  PredictiveSlaTicketBreakdown,
+  SLATrends,
+};

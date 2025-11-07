@@ -164,7 +164,7 @@ interface GenericFilter {
   metricsToCompare: number[];
   assetStatus: number[];
   costPeriod: number[];
-  costType: number[];
+  costTypes: number[];
   ticketTypes: number[];
   riskThreshold: number[];
 }

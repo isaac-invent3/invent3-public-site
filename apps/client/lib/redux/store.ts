@@ -119,6 +119,7 @@ import { lifeCycleComparisonApi } from './services/location/lifecycleComparison.
 import { assetPerformanceDashboardApi } from './services/dashboard/assetperformance.services';
 import { ticketDashboardApis } from './services/dashboard/ticketDashboard.services';
 import { predictiveMaintenanceApi } from './services/dashboard/predictivemaintenance.services';
+import { costAnalyticsApi } from './services/dashboard/costanalytics.services';
 
 export const persistConfig = {
   key: 'root',
@@ -169,6 +170,7 @@ const rootReducer = combineReducers({
     assetPerformanceDashboardApi.reducer,
   [ticketDashboardApis.reducerPath]: ticketDashboardApis.reducer,
   [predictiveMaintenanceApi.reducerPath]: predictiveMaintenanceApi.reducer,
+  [costAnalyticsApi.reducerPath]: costAnalyticsApi.reducer,
 
   // Category and condition APIs
   [categoryApi.reducerPath]: categoryApi.reducer,
@@ -274,7 +276,7 @@ const rootReducer = combineReducers({
   [integrationApi.reducerPath]: integrationApi.reducer,
 
   // Company API Keys APIS
-  // [companyApiKey.reducerPath]: companyApiKey.reducer,
+  [companyApiKey.reducerPath]: companyApiKey.reducer,
 
   // Webhook URL APIS
   [webhookApi.reducerPath]: webhookApi.reducer,
@@ -288,12 +290,12 @@ const rootReducer = combineReducers({
   // Prediction APIS
   [predictionApi.reducerPath]: predictionApi.reducer,
 
-  // // BMS APIS
-  // [bmsReadingApi.reducerPath]: bmsReadingApi.reducer,
-  // [bmsAnomaliesApi.reducerPath]: bmsAnomaliesApi.reducer,
+  // BMS APIS
+  [bmsReadingApi.reducerPath]: bmsReadingApi.reducer,
+  [bmsAnomaliesApi.reducerPath]: bmsAnomaliesApi.reducer,
 
-  // // SLA APIs
-  // [slaApi.reducerPath]: slaApi.reducer,
+  // SLA APIs
+  [slaApi.reducerPath]: slaApi.reducer,
 
   asset: assetSlice,
   auditLog: auditLogSlice,
@@ -373,6 +375,7 @@ export const makeStore = () => {
         assetPerformanceDashboardApi.middleware,
         ticketDashboardApis.middleware,
         predictiveMaintenanceApi.middleware,
+        costAnalyticsApi.middleware,
 
         // Depreciation APIs
         depreciationApi.middleware,
@@ -462,7 +465,7 @@ export const makeStore = () => {
         integrationApi.middleware,
 
         // APIKeys Apis
-        // companyApiKey.middleware,
+        companyApiKey.middleware,
 
         // Webhook Apis
         webhookApi.middleware,
@@ -476,12 +479,12 @@ export const makeStore = () => {
         // Prediction Apis
         predictionApi.middleware,
 
-        // // BMS Apis
-        // bmsReadingApi.middleware,
-        // bmsAnomaliesApi.middleware,
+        // BMS Apis
+        bmsReadingApi.middleware,
+        bmsAnomaliesApi.middleware,
 
-        // // SLA Apis
-        // slaApi.middleware,
+        // SLA Apis
+        slaApi.middleware,
       ]),
   });
 };

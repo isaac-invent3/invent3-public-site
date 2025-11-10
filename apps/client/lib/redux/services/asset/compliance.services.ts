@@ -1,6 +1,7 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+
 import {
   BaseApiResponse,
   ListResponse,
@@ -30,19 +31,7 @@ import {
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const complianceApi = createApi({
-  reducerPath: 'complianceApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: [
-    'allCompliance',
-    'allComplianceByFacility',
-    'allFacilityCompliance',
-    'allCategoryCompliance',
-    'allComplianceRegulations',
-    'assetBasedCompliance',
-    'assetComplianceAuditLog',
-    'assetCategoryComplianceSummary',
-  ],
+export const complianceApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllAssetCompliance: builder.query<
       BaseApiResponse<ListResponse<AssetComplaince>>,

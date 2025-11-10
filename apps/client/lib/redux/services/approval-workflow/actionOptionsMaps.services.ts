@@ -1,4 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import {
   BaseApiResponse,
   ListResponse,
@@ -7,15 +8,11 @@ import {
 } from '@repo/interfaces';
 import { ApprovalWorkflowActionOptionMap } from '~/lib/interfaces/approvalWorkflow.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const approvalWorkflowActionOptionsMapApi = createApi({
-  reducerPath: 'approvalWorkflowActionOptionsMapApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ['ApprovalWorkflowActionOptionMaps'],
+export const approvalWorkflowActionOptionsMapApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // ApprovalActionOptionMaps Endpoints
     createApprovalActionOptionMap: builder.mutation<
@@ -33,7 +30,7 @@ export const approvalWorkflowActionOptionsMapApi = createApi({
 
     getAllApprovalActionOptionMaps: builder.query<
       BaseApiResponse<ListResponse<ApprovalWorkflowActionOptionMap>>,
-      {approvalActionId: number } & QueryParams 
+      { approvalActionId: number } & QueryParams
     >({
       query: (data) => ({
         url: generateQueryStr(`/ApprovalActionOptionMaps?`, data),

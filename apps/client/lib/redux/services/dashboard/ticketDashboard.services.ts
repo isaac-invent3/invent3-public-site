@@ -1,6 +1,7 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import { BaseApiResponse } from '@repo/interfaces';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import {
   PriorityLevelCount,
@@ -23,10 +24,7 @@ interface ticketQuery {
   ticketTypes?: number[];
 }
 
-export const ticketDashboardApis = createApi({
-  reducerPath: 'ticketDashboardApis',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: [],
+export const ticketDashboardApis = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getTicketPerformanceDashboardSummary: builder.query<
       BaseApiResponse<TicketPerformanceDashboardSummary>,

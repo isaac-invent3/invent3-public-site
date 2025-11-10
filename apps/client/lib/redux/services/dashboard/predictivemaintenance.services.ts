@@ -1,6 +1,7 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import { BaseApiResponse, ListResponse, QueryParams } from '@repo/interfaces';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import {
   PredictiveMaintenanceDashboardSummary,
@@ -23,10 +24,7 @@ interface MaintenanceQuery {
   riskThreshold?: number;
 }
 
-export const predictiveMaintenanceApi = createApi({
-  reducerPath: 'predictiveMaintenanceApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: [],
+export const predictiveMaintenanceApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getPredictiveMaintenanceDashboardSummary: builder.query<
       BaseApiResponse<PredictiveMaintenanceDashboardSummary>,

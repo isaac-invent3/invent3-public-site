@@ -1,6 +1,7 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+
 import { BaseApiResponse } from '@repo/interfaces';
 import {
   LifeCycleSummary,
@@ -13,9 +14,7 @@ const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
 
-export const lifeCycleComparisonApi = createApi({
-  reducerPath: 'lifeCycleComparisonApi',
-  baseQuery: baseQueryWithReauth,
+export const lifeCycleComparisonApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getLifecycleDashboardSummary: builder.query<
       BaseApiResponse<LifeCycleSummary>,

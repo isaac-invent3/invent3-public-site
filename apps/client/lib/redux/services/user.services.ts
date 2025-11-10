@@ -1,6 +1,6 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../baseQueryWithReauth';
+
 import {
   BaseApiResponse,
   ListResponse,
@@ -27,18 +27,7 @@ import {
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const userApi = createApi({
-  reducerPath: 'userApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: [
-    'allUsers',
-    'userProfile',
-    'allUserConfigurationOptions',
-    'userDetail',
-    'userGroups',
-    'allUserGroupInfoHeaders',
-    'allActiveUsers',
-  ],
+export const userApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllUsers: builder.query<
       BaseApiResponse<ListResponse<User>>,

@@ -1,15 +1,12 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import baseQueryWithReauth from '../baseQueryWithReauth';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import { BaseApiResponse } from '@repo/interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const authApi = createApi({
-  reducerPath: 'authApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ['allAuthMethods'],
+export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     check2FA: builder.query<
       BaseApiResponse<{ twoFactorAuthuenticationEnabled: boolean }>,

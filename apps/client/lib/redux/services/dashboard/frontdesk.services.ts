@@ -1,6 +1,7 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import { BaseApiResponse } from '@repo/interfaces';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+
 import {
   FrontendDashboardChartData,
   FrontendDashboardStats,
@@ -11,10 +12,7 @@ const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
 
-export const frontdeskDashboardApi = createApi({
-  reducerPath: 'frontdeskDashboardApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: [],
+export const frontdeskDashboardApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getFrontdeskDashboardStat: builder.query<
       BaseApiResponse<FrontendDashboardStats>,

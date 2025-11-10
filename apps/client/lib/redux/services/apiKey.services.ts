@@ -1,6 +1,6 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../baseQueryWithReauth';
+
 import { BaseApiResponse, ListResponse, QueryParams } from '@repo/interfaces';
 import {
   CompanyApiKeys,
@@ -10,10 +10,7 @@ import {
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const companyApiKey = createApi({
-  reducerPath: 'companyApiKey',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ['allCompanyApiKeys'],
+export const companyApiKey = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllCompanyApiKeys: builder.query<
       BaseApiResponse<ListResponse<CompanyApiKeys>>,

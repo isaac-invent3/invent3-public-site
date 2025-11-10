@@ -1,5 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import { BaseApiResponse, ListResponse, QueryParams } from '@repo/interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import {
@@ -10,10 +10,7 @@ import {
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const bmsReadingApi = createApi({
-  reducerPath: 'bmsReadingApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: [],
+export const bmsReadingApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getBmsReadingSubCategories: builder.query<
       BaseApiResponse<ListResponse<BmsReadingSubCategory>>,

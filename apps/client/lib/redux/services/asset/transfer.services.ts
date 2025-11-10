@@ -1,5 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import { BaseApiResponse } from '@repo/interfaces';
 import {
   AssetTransfer,
@@ -10,10 +10,7 @@ import {
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const assetTransferApi = createApi({
-  reducerPath: 'assetTransferApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: [],
+export const assetTransferApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     transferAsset: builder.mutation<
       BaseApiResponse<AssetTransfer>,

@@ -1,6 +1,7 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import { BaseApiResponse } from '@repo/interfaces';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+
 import {
   SubscriptionTrend,
   SuperAdminDashboardStats,
@@ -13,10 +14,7 @@ const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
 
-export const superAdminApi = createApi({
-  reducerPath: 'superAdminApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: [],
+export const superAdminApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getSuperAdminDashboardStat: builder.query<
       BaseApiResponse<SuperAdminDashboardStats>,

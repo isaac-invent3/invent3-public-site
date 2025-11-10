@@ -1,4 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import {
   BaseApiResponse,
   ListResponse,
@@ -12,20 +13,11 @@ import {
   UpdateTaskInstanceMetadataPayload,
 } from '~/lib/interfaces/task.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const taskInstanceApi = createApi({
-  reducerPath: 'taskInstanceApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: [
-    'allTaskInstances',
-    'allTaskInstancesByScheduleInstanceId',
-    'allCompletedTaskInstances',
-    'singleTaskInstance',
-  ],
+export const taskInstanceApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     createTaskInstance: builder.mutation<
       BaseApiResponse<TaskInstanceModel>,

@@ -1,6 +1,7 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import { BaseApiResponse } from '@repo/interfaces';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+
 import { UserActivity } from '~/lib/interfaces/dashboard/clientadmin.interfaces';
 import { DashboardSummary } from '~/lib/interfaces/dashboard/thirdparty.interfaces';
 import { Company } from '~/lib/interfaces/company.interfaces';
@@ -9,10 +10,7 @@ const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
 
-export const thirdPartyApi = createApi({
-  reducerPath: 'thirdPartyApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: [],
+export const thirdPartyApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getDashboardStat: builder.query<BaseApiResponse<DashboardSummary>, void>({
       query: () => ({

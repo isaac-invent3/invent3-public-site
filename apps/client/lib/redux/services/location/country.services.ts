@@ -1,6 +1,7 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+
 import {
   BaseApiResponse,
   ListResponse,
@@ -12,10 +13,7 @@ import { Country } from '~/lib/interfaces/location.interfaces';
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const countryApi = createApi({
-  reducerPath: 'countryApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: [],
+export const countryApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllCountries: builder.query<
       BaseApiResponse<ListResponse<Country>>,

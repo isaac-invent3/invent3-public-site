@@ -1,15 +1,12 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import { ApprovalWorkflowAction } from '~/lib/interfaces/approvalWorkflow.interfaces';
 import { BaseApiResponse, ListResponse, SearchQuery } from '@repo/interfaces';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const approvalWorkflowActionApi = createApi({
-  reducerPath: 'approvalWorkflowActionApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ['ApprovalWorkflowAction'],
+export const approvalWorkflowActionApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     createApprovalAction: builder.mutation<
       BaseApiResponse<ApprovalWorkflowAction>,

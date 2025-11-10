@@ -1,5 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import baseQueryWithReauth from '../baseQueryWithReauth';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import {
   BaseApiResponse,
   ListResponse,
@@ -16,10 +16,7 @@ import {
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const designationApi = createApi({
-  reducerPath: 'designationApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ['allDesignations'],
+export const designationApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllDesignations: builder.query<
       BaseApiResponse<ListResponse<Designation>>,

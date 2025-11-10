@@ -1,5 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import baseQueryWithReauth from '../baseQueryWithReauth';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import { BaseApiResponse, ListResponse, SearchQuery } from '@repo/interfaces';
 import {
   Prediction,
@@ -14,10 +14,7 @@ const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
 
-export const predictionApi = createApi({
-  reducerPath: 'predictionApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: [],
+export const predictionApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAlertPredictionsByAlertId: builder.query<
       BaseApiResponse<Prediction>,

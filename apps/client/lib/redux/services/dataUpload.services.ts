@@ -1,5 +1,3 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import baseQueryWithReauth from '../baseQueryWithReauth';
 import {
   ImportHistory,
   DataUpload,
@@ -7,14 +5,12 @@ import {
 } from '~/lib/interfaces/dataUpload.interfaces';
 import { BaseApiResponse, ListResponse, QueryParams } from '@repo/interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const dataUploadAPi = createApi({
-  reducerPath: 'dataUploadAPi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: [],
+export const dataUploadAPi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     uploadData: builder.mutation<any, any>({
       query: (body) => ({

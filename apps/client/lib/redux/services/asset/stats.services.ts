@@ -1,6 +1,7 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+
 import { BaseApiResponse, ListResponse } from '@repo/interfaces';
 import {
   AssetStatsCummalative,
@@ -11,10 +12,7 @@ import {
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const assetStatsApi = createApi({
-  reducerPath: 'assetStatsApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ['allStateAssetCount', 'allLGAAssetCount'],
+export const assetStatsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getStateAssetCountByCountryId: builder.query<
       BaseApiResponse<ListResponse<AssetStatsState>>,

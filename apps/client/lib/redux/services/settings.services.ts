@@ -1,5 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import baseQueryWithReauth from '../baseQueryWithReauth';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import { BaseApiResponse } from '@repo/interfaces';
 import {
   BMSData,
@@ -11,10 +11,7 @@ import {
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const settingsApi = createApi({
-  reducerPath: 'settingsApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: [],
+export const settingsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     bmsSettings: builder.mutation<void, BMSData & { createdBy: string }>({
       query: (body) => ({

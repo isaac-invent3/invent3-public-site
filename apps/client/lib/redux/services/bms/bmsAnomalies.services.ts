@@ -1,5 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import { BaseApiResponse, ListResponse, QueryParams } from '@repo/interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import { BMSAnomaly } from '~/lib/interfaces/dashboard/bms.interfaces';
@@ -7,10 +7,7 @@ import { BMSAnomaly } from '~/lib/interfaces/dashboard/bms.interfaces';
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const bmsAnomaliesApi = createApi({
-  reducerPath: 'bmsAnomaliesApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: [],
+export const bmsAnomaliesApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getBmsAnomaliesByAssetId: builder.query<
       BaseApiResponse<ListResponse<BMSAnomaly>>,

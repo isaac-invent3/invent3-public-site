@@ -1,4 +1,4 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
 import {
   BaseApiResponse,
   ListResponse,
@@ -15,16 +15,12 @@ import {
   UpdateNotePayload,
 } from '~/lib/interfaces/notes.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../baseQueryWithReauth';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
 
-export const notesApi = createApi({
-  reducerPath: 'notesApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ['allNotes', 'pinnedNotes', 'noteComments', 'unPinnedNotes'],
+export const notesApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllUserNotes: builder.query<
       BaseApiResponse<ListResponse<Note>>,

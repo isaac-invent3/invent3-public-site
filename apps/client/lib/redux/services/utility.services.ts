@@ -1,5 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import baseQueryWithReauth from '../baseQueryWithReauth';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import {
   AppConfig,
   ExportTableName,
@@ -17,10 +17,7 @@ import { TicketCategory } from '~/lib/interfaces/ticket.interfaces';
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const utilityApi = createApi({
-  reducerPath: 'utilityApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: [],
+export const utilityApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAppConfigValues: builder.query<BaseApiResponse<AppConfig>, {}>({
       query: () => ({

@@ -1,6 +1,7 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+
 import {
   BaseApiResponse,
   ListResponse,
@@ -15,10 +16,7 @@ import {
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const departmentApi = createApi({
-  reducerPath: 'departmentApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ['allDepartments', 'departmentsByFloorId'],
+export const departmentApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllDepartments: builder.query<
       BaseApiResponse<ListResponse<Department>>,

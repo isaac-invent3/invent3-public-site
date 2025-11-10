@@ -1,6 +1,7 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+
 import {
   BaseApiResponse,
   ListResponse,
@@ -15,10 +16,7 @@ import {
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const assetTypeApi = createApi({
-  reducerPath: 'assetTypeApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ['allAssetTypes'],
+export const assetTypeApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllAssetTypes: builder.query<
       BaseApiResponse<ListResponse<AssetType>>,

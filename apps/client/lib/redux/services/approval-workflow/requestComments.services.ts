@@ -1,5 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import { BaseApiResponse, ListResponse, QueryParams } from '@repo/interfaces';
 import { ApprovalWorkflowComment } from '~/lib/interfaces/approvalWorkflow.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
@@ -7,10 +7,7 @@ import { generateQueryStr } from '~/lib/utils/queryGenerator';
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const approvalWorkflowRequestCommentApi = createApi({
-  reducerPath: 'approvalWorkflowRequestCommentApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ['allApprovalRequestComments'],
+export const approvalWorkflowRequestCommentApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllCommentsByApprovalRequestId: builder.query<
       BaseApiResponse<ListResponse<ApprovalWorkflowComment>>,

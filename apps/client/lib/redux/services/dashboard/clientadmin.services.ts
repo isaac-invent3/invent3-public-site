@@ -1,6 +1,7 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import { BaseApiResponse, ListResponse, QueryParams } from '@repo/interfaces';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+
 import {
   AssetTrend,
   DashboardStats,
@@ -14,10 +15,7 @@ const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
 
-export const clientAdminApi = createApi({
-  reducerPath: 'clientAdminApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: [],
+export const clientAdminApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getDashboardStat: builder.query<
       BaseApiResponse<DashboardStats>,

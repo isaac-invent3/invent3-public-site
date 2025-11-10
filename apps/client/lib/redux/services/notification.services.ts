@@ -1,4 +1,4 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
 import { BaseApiResponse, ListResponse } from '@repo/interfaces';
 import {
   GetUserNotificationQueryParams,
@@ -7,16 +7,12 @@ import {
   NotificationCount,
 } from '~/lib/interfaces/notification.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../baseQueryWithReauth';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
 
-export const notificationApi = createApi({
-  reducerPath: 'notificationApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ['allNotifications', 'notificationCount'],
+export const notificationApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getUserNotification: builder.query<
       BaseApiResponse<ListResponse<Notification>>,

@@ -1,4 +1,4 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
 import { BaseApiResponse, ListResponse, QueryParams } from '@repo/interfaces';
 import {
   CMFReportDashboardValuesResponse,
@@ -13,15 +13,11 @@ import {
   ViewReportTableDataPayload,
 } from '~/lib/interfaces/report.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../baseQueryWithReauth';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const reportApi = createApi({
-  reducerPath: 'reportApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ['allSavedReports', 'allDefaultReports', 'reportDashboardValues'],
+export const reportApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllSavedReports: builder.query<
       BaseApiResponse<ListResponse<Report>>,

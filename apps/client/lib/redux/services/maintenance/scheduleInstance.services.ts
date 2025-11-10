@@ -1,6 +1,7 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+
 import {
   MaintenanceScheduleInstance,
   UpdateScheduleInstanceAndTasksPayload,
@@ -15,10 +16,7 @@ import {
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const scheduleInstanceApi = createApi({
-  reducerPath: 'scheduleInstance',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ['allScheduleInstances'],
+export const scheduleInstanceApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     updateScheduleInstanceandTaskInstances: builder.mutation<
       void,

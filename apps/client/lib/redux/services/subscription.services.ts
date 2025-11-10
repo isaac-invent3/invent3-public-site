@@ -1,6 +1,6 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../baseQueryWithReauth';
+
 import {
   BaseApiResponse,
   ListResponse,
@@ -12,10 +12,7 @@ import { SubscriptionPlan } from '~/lib/interfaces/subscription.interfaces';
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const subscriptionApi = createApi({
-  reducerPath: 'subscriptionApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ['allSubscriptions'],
+export const subscriptionApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllSubscriptionPlans: builder.query<
       BaseApiResponse<ListResponse<SubscriptionPlan>>,

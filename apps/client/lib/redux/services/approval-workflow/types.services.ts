@@ -1,4 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import {
   BaseApiResponse,
   DeleteRecordQuery,
@@ -11,15 +12,11 @@ import {
   CreateApprovalWorkflowTypePayload,
 } from '~/lib/interfaces/approvalWorkflow.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const approvalWorkflowTypeApi = createApi({
-  reducerPath: 'approvalWorkflowTypeApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ['allApprovalWorkflowTypes'],
+export const approvalWorkflowTypeApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     createApprovalWorkflowTypes: builder.mutation<
       BaseApiResponse<ApprovalWorkflowType>,

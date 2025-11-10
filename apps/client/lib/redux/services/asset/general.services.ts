@@ -1,4 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import {
   BaseApiResponse,
   ListResponse,
@@ -22,15 +23,11 @@ import {
 } from '~/lib/interfaces/asset/image.interfaces';
 import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const assetApi = createApi({
-  reducerPath: 'assetApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ['allAsset', 'singleAsset', 'allStatuses', 'allAssetTypes'],
+export const assetApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllAsset: builder.query<
       BaseApiResponse<ListResponse<Asset>>,

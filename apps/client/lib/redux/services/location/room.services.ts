@@ -1,6 +1,7 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+
 import {
   BaseApiResponse,
   ListResponse,
@@ -15,10 +16,7 @@ import {
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const roomApi = createApi({
-  reducerPath: 'roomApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ['allRooms', 'roomsByDepartmentId'],
+export const roomApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllRooms: builder.query<
       BaseApiResponse<ListResponse<Room>>,

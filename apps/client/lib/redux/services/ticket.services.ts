@@ -1,4 +1,4 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
 import {
   BaseApiResponse,
   ListResponse,
@@ -17,7 +17,7 @@ import {
   UpdateTicketPayload,
 } from '~/lib/interfaces/ticket.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../baseQueryWithReauth';
+
 import { UpdateTicketMetadataPayload } from '~/lib/interfaces/template.interfaces';
 import { GenericDocument } from '~/lib/interfaces/general.interfaces';
 import { AuditRecord } from '~/lib/interfaces/log.interfaces';
@@ -25,10 +25,7 @@ import { AuditRecord } from '~/lib/interfaces/log.interfaces';
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const ticketApi = createApi({
-  reducerPath: 'ticketApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ['allTickets', 'allTicketTypes', 'allAssetOpenTickets'],
+export const ticketApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     createTicket: builder.mutation<
       BaseApiResponse<Ticket>,

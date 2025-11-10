@@ -1,4 +1,4 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
 import {
   BaseApiResponse,
   ListResponse,
@@ -15,15 +15,11 @@ import {
   UpdateFeedbackPayload,
 } from '~/lib/interfaces/feedback.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../baseQueryWithReauth';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const feedbackApi = createApi({
-  reducerPath: 'feedbackApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ['allFeedbacks', 'feedbackTypes', 'feedbackAttachments'],
+export const feedbackApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllFeedbacks: builder.query<
       BaseApiResponse<ListResponse<Feedback>>,

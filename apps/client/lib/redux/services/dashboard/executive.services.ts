@@ -1,11 +1,12 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import {
   BaseApiResponse,
   ListResponse,
   QueryParams,
   SearchQuery,
 } from '@repo/interfaces';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import {
   AssetDistribution,
@@ -25,10 +26,7 @@ const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
 
-export const executiveDashboardApis = createApi({
-  reducerPath: 'executiveDashboardApis',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: [],
+export const executiveDashboardApis = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getDashboardStat: builder.query<BaseApiResponse<DashboardStats>, void>({
       query: () => ({

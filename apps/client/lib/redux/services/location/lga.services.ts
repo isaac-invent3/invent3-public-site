@@ -1,6 +1,7 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+
 import {
   BaseApiResponse,
   ListResponse,
@@ -12,10 +13,7 @@ import { LGA, LocationQueryParams } from '~/lib/interfaces/location.interfaces';
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const lgaApi = createApi({
-  reducerPath: 'lgaApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ['allBuildings', 'buildingsByFacilityId'],
+export const lgaApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllLGAS: builder.query<BaseApiResponse<ListResponse<LGA>>, QueryParams>({
       query: (data) => ({

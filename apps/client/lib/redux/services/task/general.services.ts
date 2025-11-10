@@ -1,4 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import {
   BaseApiResponse,
   ListResponse,
@@ -12,16 +13,13 @@ import {
   TaskPayload,
 } from '~/lib/interfaces/task.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+
 import { GenericDocument } from '~/lib/interfaces/general.interfaces';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const taskApi = createApi({
-  reducerPath: 'taskApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ['allTasks', 'allTasksByScheduleId'],
+export const taskApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     createTask: builder.mutation<
       BaseApiResponse<SingleTask>,

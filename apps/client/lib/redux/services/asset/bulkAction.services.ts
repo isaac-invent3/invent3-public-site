@@ -1,5 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import { BaseApiResponse, ListResponse, QueryParams } from '@repo/interfaces';
 import {
   AssetBulkAction,
@@ -11,10 +11,7 @@ import { generateQueryStr } from '~/lib/utils/queryGenerator';
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const assetBulkActionApi = createApi({
-  reducerPath: 'assetBulkActionApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: [],
+export const assetBulkActionApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getABulkAssetAction: builder.query<
       BaseApiResponse<AssetBulkAction>,

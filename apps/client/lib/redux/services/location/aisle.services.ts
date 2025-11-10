@@ -1,6 +1,7 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+
 import {
   BaseApiResponse,
   ListResponse,
@@ -15,10 +16,7 @@ import {
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const aisleApi = createApi({
-  reducerPath: 'aisleApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ['allAisles', 'aislesByRoomId'],
+export const aisleApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllAisles: builder.query<
       BaseApiResponse<ListResponse<Aisle>>,

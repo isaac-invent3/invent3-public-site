@@ -1,6 +1,7 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import { BaseApiResponse } from '@repo/interfaces';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+
 import {
   AssetOverview,
   MaintenanceSuccessChartData,
@@ -12,10 +13,7 @@ const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
 
-export const fieldEngineerDashboardApi = createApi({
-  reducerPath: 'fieldEngineerDashboardApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: [],
+export const fieldEngineerDashboardApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getFieldEngineerTicketOverview: builder.query<
       BaseApiResponse<TicketOverView>,

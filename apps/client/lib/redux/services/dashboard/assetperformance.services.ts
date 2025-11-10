@@ -1,6 +1,7 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import { BaseApiResponse, ListResponse, QueryParams } from '@repo/interfaces';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+
 import {
   DistributionByCategory,
   PerformanceSummary,
@@ -21,10 +22,7 @@ interface PerformanceQuery {
   datePeriod?: number;
 }
 
-export const assetPerformanceDashboardApi = createApi({
-  reducerPath: 'assetPerformanceDashboardApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: [],
+export const assetPerformanceDashboardApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAssetPerformanceDashboardSummary: builder.query<
       BaseApiResponse<PerformanceSummary>,

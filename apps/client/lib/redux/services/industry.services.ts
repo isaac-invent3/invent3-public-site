@@ -1,6 +1,6 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../baseQueryWithReauth';
+
 import {
   BaseApiResponse,
   ListResponse,
@@ -12,10 +12,7 @@ import { Industry } from '~/lib/interfaces/industry.interfaces';
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const industryApi = createApi({
-  reducerPath: 'industryApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ['allIndustries'],
+export const industryApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllIndustries: builder.query<
       BaseApiResponse<ListResponse<Industry>>,

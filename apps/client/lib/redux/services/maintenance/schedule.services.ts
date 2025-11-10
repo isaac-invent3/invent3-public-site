@@ -1,4 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import {
   BaseApiResponse,
   ListResponse,
@@ -12,20 +13,11 @@ import {
   UpdateScheduleAndTasksPayload,
 } from '~/lib/interfaces/maintenance.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const maintenanceScheduleApi = createApi({
-  reducerPath: 'maintenanceSchedule',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: [
-    'allMaintenanceSchedule',
-    'maintenanceScheduleStats',
-    'maintenanceScheduleByArea',
-    'allMaintenanceScheduleByPlanId',
-    'maintenanceScheduleByTicketId',
-  ],
+export const maintenanceScheduleApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     createMaintenanceScheduleAndTasks: builder.mutation<
       BaseApiResponse<MaintenanceSchedule>,

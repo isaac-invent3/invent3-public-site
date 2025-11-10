@@ -1,6 +1,7 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+
 import {
   BaseApiResponse,
   ListResponse,
@@ -12,10 +13,7 @@ import { AssetCondition } from '~/lib/interfaces/asset/condition.interface';
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const conditionApi = createApi({
-  reducerPath: 'conditionApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ['allCondition'],
+export const conditionApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllAssetCondition: builder.query<
       BaseApiResponse<ListResponse<AssetCondition>>,

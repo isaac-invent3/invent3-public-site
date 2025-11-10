@@ -1,6 +1,7 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+
 import {
   BaseApiResponse,
   ListResponse,
@@ -18,10 +19,7 @@ import {
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const maintenancePlanApi = createApi({
-  reducerPath: 'maintenancePlanApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ['allMaintenancePlan', 'allMaintenancePlansByAssetId'],
+export const maintenancePlanApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     createMaintenancePlan: builder.mutation<
       BaseApiResponse<SingleMaintenancePlan>,

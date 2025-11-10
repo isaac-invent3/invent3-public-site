@@ -1,11 +1,12 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import {
   BaseApiResponse,
   ListResponse,
   QueryParams,
   SearchQuery,
 } from '@repo/interfaces';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import {
   CategoryByCost,
@@ -29,10 +30,7 @@ interface CostQuery {
   costTypes?: number[];
 }
 
-export const costAnalyticsApi = createApi({
-  reducerPath: 'costAnalyticsApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: [],
+export const costAnalyticsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getCostAnalyticsDashboardSummary: builder.query<
       BaseApiResponse<CostAnalyticsDashboardSummary>,

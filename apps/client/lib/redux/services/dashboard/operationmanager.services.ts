@@ -1,4 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import { BaseApiResponse, ListResponse, QueryParams } from '@repo/interfaces';
 import { Asset } from '~/lib/interfaces/asset/general.interface';
 import {
@@ -7,7 +8,7 @@ import {
   ProjectedAndActualCostsByArea,
 } from '~/lib/interfaces/dashboard.interfaces';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+
 import { MaintenanceSchedule } from '~/lib/interfaces/maintenance.interfaces';
 
 const getHeaders = () => ({
@@ -15,10 +16,7 @@ const getHeaders = () => ({
 });
 
 type ID = string | number | undefined;
-export const operationManagerDashboardApis = createApi({
-  reducerPath: 'operationManagerDashboardApis',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: [],
+export const operationManagerDashboardApis = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getRecentAssets: builder.query<
       BaseApiResponse<ListResponse<Asset>>,

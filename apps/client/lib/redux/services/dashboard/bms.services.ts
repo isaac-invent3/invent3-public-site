@@ -1,6 +1,7 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import { BaseApiResponse } from '@repo/interfaces';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
 import {
   AllowedCapacity,
@@ -44,10 +45,7 @@ const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
 
-export const BMSApi = createApi({
-  reducerPath: 'BMSApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: [],
+export const BMSApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getBMSHighestOccupancyRate: builder.query<
       BaseApiResponse<HighestOccupancyRate>,

@@ -1,6 +1,6 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
 import { BaseApiResponse, ListResponse, QueryParams } from '@repo/interfaces';
-import baseQueryWithReauth from '../baseQueryWithReauth';
+
 import { AssetForecast } from '~/lib/interfaces/forecast.interfaces';
 import { FORECAST_TYPE_ENUM } from '~/lib/utils/constants';
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
@@ -13,10 +13,7 @@ import {
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const forecastApi = createApi({
-  reducerPath: 'forecastApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: [],
+export const forecastApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAssetForecast: builder.query<
       BaseApiResponse<AssetForecast>,

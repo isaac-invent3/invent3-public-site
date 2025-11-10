@@ -1,6 +1,7 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import { generateQueryStr } from '~/lib/utils/queryGenerator';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
+
 import {
   BaseApiResponse,
   ListResponse,
@@ -24,10 +25,7 @@ import { Asset } from '~/lib/interfaces/asset/general.interface';
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const assetLifeCycleApi = createApi({
-  reducerPath: 'assetLifeCycleApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ['assetLifeCycleTransitionRules'],
+export const assetLifeCycleApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getLifeCycleStageSummary: builder.query<
       BaseApiResponse<AssetLifeCycle[]>,

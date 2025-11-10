@@ -1,4 +1,5 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '~/lib/redux/services/baseApi.services';
+
 import {
   BaseApiResponse,
   ListResponse,
@@ -11,15 +12,11 @@ import {
   SLADefinition,
   UpdateSLADefinitionPayload,
 } from '~/lib/interfaces/sla.interfaces';
-import baseQueryWithReauth from '../../baseQueryWithReauth';
 
 const getHeaders = () => ({
   'Content-Type': 'application/json',
 });
-export const slaApi = createApi({
-  reducerPath: 'slaApi',
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ['allSLADefintions'],
+export const slaApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getSLADefinitions: builder.query<
       BaseApiResponse<ListResponse<SLADefinition>>,

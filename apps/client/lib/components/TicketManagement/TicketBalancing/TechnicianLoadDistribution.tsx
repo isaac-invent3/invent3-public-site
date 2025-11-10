@@ -50,7 +50,7 @@ const TechnicianLoadDistribution = () => {
           enableSorting: true,
         }),
         columnHelper.accessor('load', {
-          cell: (info) => info.getValue() ?? 'N/A',
+          cell: (info) => info.getValue()?.toFixed(2) ?? 'N/A',
           header: 'Load %',
           enableSorting: true,
         }),

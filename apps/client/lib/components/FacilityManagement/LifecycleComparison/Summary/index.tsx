@@ -37,7 +37,7 @@ const Summary = ({
       <SummaryCard
         title="Avg Remaining Useful Life (RUL)"
         icon={AssetBoxIcon}
-        value={data?.meanRul ? `${data?.meanRul} Years` : 'N/A'}
+        value={data?.meanRul ? `${data?.meanRul?.toFixed(2)} Years` : 'N/A'}
         isLoading={isLoading}
         showRange={false}
         containerStyle={{ justifyContent: 'flex-start' }}

@@ -36,7 +36,7 @@ const TechnicianLocations = () => {
                   {item.facility}
                 </Text>
                 <Text fontWeight={700} color="neutral.800">
-                  {item.totalTechnicians} Techs
+                  {item.totalTechnicians} Technicians
                 </Text>
               </HStack>
               <Progress

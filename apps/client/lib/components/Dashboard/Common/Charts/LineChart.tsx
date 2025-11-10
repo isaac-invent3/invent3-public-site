@@ -9,6 +9,7 @@ import {
   Tooltip,
   Legend,
   ChartDataset,
+  ChartOptions,
 } from 'chart.js';
 import { Flex, Skeleton } from '@chakra-ui/react';
 
@@ -32,7 +33,10 @@ interface LineChartProps {
   xLabel?: string;
   yLabel?: string;
   showDots?: boolean;
+  fillArea?: boolean;
+  fillGradient?: boolean;
 }
+
 const LineChart = (props: LineChartProps) => {
   const {
     labels,
@@ -44,20 +48,47 @@ const LineChart = (props: LineChartProps) => {
     xLabel = '',
     yLabel = '',
     showDots = true,
+    fillArea = false,
+    fillGradient = false,
   } = props;
+
+  const formattedDatasets = datasets.map((dataset) => ({
+    ...dataset,
+    fill: fillArea ? true : false,
+    backgroundColor: fillArea
+      ? (ctx: any) => {
+          const chart = ctx.chart;
+          const { ctx: canvasCtx, chartArea } = chart;
+
+          // ✅ Prevent crash before layout is ready
+          if (!chartArea) return null;
+
+          if (!fillGradient) return dataset.borderColor || '#36A2EB44';
+
+          const { top, bottom } = chartArea;
+          const gradient = canvasCtx.createLinearGradient(0, top, 0, bottom);
+          gradient.addColorStop(0, `${dataset.borderColor || '#36A2EB'}33`);
+          gradient.addColorStop(1, `${dataset.borderColor || '#36A2EB'}00`);
+          return gradient;
+        }
+      : undefined,
+  }));
 
   const data = {
     labels,
-    datasets,
+    datasets: formattedDatasets,
   };
 
-  const options = {
+  const options: ChartOptions<'line'> = {
     responsive: true,
     maintainAspectRatio: false,
     elements: {
       point: {
         radius: showDots ? 3 : 0,
         hoverRadius: showDots ? 5 : 0,
+      },
+      line: {
+        tension: 0.4,
       },
     },
     plugins: {
@@ -83,14 +114,15 @@ const LineChart = (props: LineChartProps) => {
               display: true,
               text: xLabel,
               color: '#838383',
-              font: { size: 12, weight: '700' },
+              font: { size: 12, weight: 'bold' },
             }
           : undefined,
         grid: {
+          // use any cast to bypass Chart.js typings for borderDash
           borderDash: [8, 4],
           color: '#BBBBBB',
           display: showXGrid,
-        },
+        } as any,
         ticks: {
           color: '#838383',
         },
@@ -101,7 +133,7 @@ const LineChart = (props: LineChartProps) => {
               display: true,
               text: yLabel,
               color: '#838383',
-              font: { size: 12, weight: '700' },
+              font: { size: 12, weight: 'bold' },
             }
           : undefined,
         grid: {
@@ -112,7 +144,7 @@ const LineChart = (props: LineChartProps) => {
         },
       },
     },
-  } as any;
+  };
 
   return (
     <Skeleton isLoaded={!isLoading} width="full">

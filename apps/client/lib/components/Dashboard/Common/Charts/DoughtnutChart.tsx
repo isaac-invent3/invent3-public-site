@@ -20,6 +20,8 @@ interface DoughtnutChartProps {
   cutout?: string;
   centerLabel?: { title: string; value: string };
   showSliceLabels?: boolean;
+  showPercentLabel?: boolean;
+  showCountLabel?: boolean;
   tooltipFormatter?: (value: number, total: number, label: string) => string[];
 }
 
@@ -32,6 +34,8 @@ const DoughtnutChart = (props: DoughtnutChartProps) => {
     cutout,
     centerLabel,
     showSliceLabels,
+    showPercentLabel = true,
+    showCountLabel = true,
     tooltipFormatter,
   } = props;
 
@@ -40,7 +44,7 @@ const DoughtnutChart = (props: DoughtnutChartProps) => {
     datasets.every((d) => d.data.every((val) => val === 0));
 
   const data = {
-    labels: labels,
+    labels,
     datasets: isEmpty
       ? [
           {
@@ -81,7 +85,6 @@ const DoughtnutChart = (props: DoughtnutChartProps) => {
               return tooltipFormatter(value, total, label);
             }
 
-            // ✅ Default generic fallback
             const percent = ((value / total) * 100).toFixed(0);
             return [`${label}: ${percent}%`, `Value: ${value}`];
           },
@@ -96,7 +99,6 @@ const DoughtnutChart = (props: DoughtnutChartProps) => {
     },
   };
 
-  // ✅ Center text plugin remains the same
   const centerTextPlugin = {
     id: 'centerText',
     beforeDraw: (chart: any) => {
@@ -123,7 +125,6 @@ const DoughtnutChart = (props: DoughtnutChartProps) => {
     },
   };
 
-  // ✅ Slice label plugin remains the same
   const sliceLabelPlugin = {
     id: 'sliceLabels',
     afterDatasetsDraw: (chart: any) => {
@@ -137,7 +138,6 @@ const DoughtnutChart = (props: DoughtnutChartProps) => {
         if (!meta.hidden) {
           meta.data.forEach((element: any, index: number) => {
             const { x, y } = element.tooltipPosition();
-
             const value = dataset.data[index];
             const total = dataset.data.reduce(
               (acc: number, val: number) => acc + val,
@@ -150,8 +150,15 @@ const DoughtnutChart = (props: DoughtnutChartProps) => {
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
 
-            ctx.fillText(`${percent}`, x, y - 8);
-            ctx.fillText(`${value.toLocaleString()}`, x, y + 8);
+            // ✅ Conditionally render percent and count
+            if (showPercentLabel && showCountLabel) {
+              ctx.fillText(`${percent}`, x, y - 8);
+              ctx.fillText(`${value.toLocaleString()}`, x, y + 8);
+            } else if (showPercentLabel) {
+              ctx.fillText(`${percent}`, x, y);
+            } else if (showCountLabel) {
+              ctx.fillText(`${value.toLocaleString()}`, x, y);
+            }
           });
         }
       });

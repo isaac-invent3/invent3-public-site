@@ -123,6 +123,7 @@ export const baseApi = createApi({
     'vendorDetail',
     'allCompanyWebhookUrls',
     'allWebhookSystemModuleContextPermissions',
+    'AllAIInsightFeeds',
   ],
   endpoints: () => ({}),
 });

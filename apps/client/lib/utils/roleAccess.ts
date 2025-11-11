@@ -26,6 +26,7 @@ const ROUTES_PERMISSION_KEY: { [name: string]: PermissionKey } = {
   [`/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_SCHEDULES}/instances/[id]/edit`]:
     'maintenance:schedule_edit',
   [`/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_HISTORY}`]: 'maintenance',
+  [`/${ROUTES.MAINTENANCE}/predicted-failure-schedule`]: 'maintenance',
   [`/${ROUTES.TASKS}`]: 'task',
   [`/${ROUTES.TASKS}/add`]: 'task:create',
   [`/${ROUTES.TASKS}/bulk-update`]: 'task:edit',

@@ -1,4 +1,4 @@
-import { Stack, useDisclosure } from '@chakra-ui/react';
+import { HStack, Stack, useDisclosure } from '@chakra-ui/react';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import PageHeader from '~/lib/components/UI/PageHeader';
@@ -7,6 +7,7 @@ import ScheduleTemplateModal from '../Schedules/ScheduleTemplateModal';
 import ActionButtonPopover from '../../UI/ActionButtonsPopover';
 import { ROUTES } from '~/lib/utils/constants';
 import usePermissionAccess from '~/lib/hooks/useRoleAccess';
+import { Button } from '@repo/ui/components';
 
 const Header = () => {
   const pathname = usePathname();
@@ -48,46 +49,57 @@ const Header = () => {
       px={{ base: '16px', md: 0 }}
     >
       <PageHeader>Maintenance</PageHeader>
-      {tabName?.toLowerCase() === 'plans' && canCreatePlan && (
-        <ActionButtonPopover
-          onOpenTemplateModal={onOpenPlanTemplate}
-          actions={[
-            {
-              label: 'Create a New Plan',
-              route: `/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_PLANS}/add`,
-            },
-          ]}
-          buttonLabel="Add New Plan"
-          modalLabel="Create From Template"
-        >
-          {isOpenPlanTemplate && (
-            <PlanTemplateModal
-              isOpen={isOpenPlanTemplate}
-              onClose={onClosePlanTemplate}
-            />
-          )}
-        </ActionButtonPopover>
-      )}
-      {tabName?.toLowerCase() === 'schedules' && canCreateSchedule && (
-        <ActionButtonPopover
-          onOpenTemplateModal={onOpenScheduleTemplate}
-          actions={[
-            {
-              label: 'Create a New Schedule',
-              route: `/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_SCHEDULES}/add`,
-            },
-          ]}
-          buttonLabel="Add New Schedule"
-          modalLabel="Create From Template"
-        >
-          {isOpenScheduleTemplate && (
-            <ScheduleTemplateModal
-              isOpen={isOpenScheduleTemplate}
-              onClose={onCloseScheduleTemplate}
-            />
-          )}
-        </ActionButtonPopover>
-      )}
+      <HStack spacing={3}>
+        {tabName?.toLowerCase() === 'plans' && canCreatePlan && (
+          <ActionButtonPopover
+            onOpenTemplateModal={onOpenPlanTemplate}
+            actions={[
+              {
+                label: 'Create a New Plan',
+                route: `/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_PLANS}/add`,
+              },
+            ]}
+            buttonLabel="Add New Plan"
+            modalLabel="Create From Template"
+          >
+            {isOpenPlanTemplate && (
+              <PlanTemplateModal
+                isOpen={isOpenPlanTemplate}
+                onClose={onClosePlanTemplate}
+              />
+            )}
+          </ActionButtonPopover>
+        )}
+        {tabName?.toLowerCase() === 'schedules' && (
+          <Button
+            customStyles={{ width: '213px' }}
+            variant="outline"
+            href={`/${ROUTES.MAINTENANCE}/predicted-failure-schedule`}
+          >
+            Predicted Failures Schedule
+          </Button>
+        )}
+        {tabName?.toLowerCase() === 'schedules' && canCreateSchedule && (
+          <ActionButtonPopover
+            onOpenTemplateModal={onOpenScheduleTemplate}
+            actions={[
+              {
+                label: 'Create a New Schedule',
+                route: `/${ROUTES.MAINTENANCE}/${ROUTES.MAINTENANCE_SCHEDULES}/add`,
+              },
+            ]}
+            buttonLabel="Add New Schedule"
+            modalLabel="Create From Template"
+          >
+            {isOpenScheduleTemplate && (
+              <ScheduleTemplateModal
+                isOpen={isOpenScheduleTemplate}
+                onClose={onCloseScheduleTemplate}
+              />
+            )}
+          </ActionButtonPopover>
+        )}
+      </HStack>
     </Stack>
   );
 };

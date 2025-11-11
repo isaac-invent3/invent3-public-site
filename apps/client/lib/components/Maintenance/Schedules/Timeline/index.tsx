@@ -17,11 +17,10 @@ import {
   getDisplayDate,
   transformToCalendarEvents,
 } from '~/lib/utils/helperFunctions';
-import CustomDateHeader from './CustomDateHeader';
-import CustomToolbar from './CustomToolBar';
+import CustomDateHeader from '../../../Common/CalenderView/CustomDateHeader';
+import CustomToolbar from '../../../Common/CalenderView/CustomToolBar';
 import Event from './Events';
 import './style.css';
-('~/lib/redux/services/maintenance/schedule.services');
 
 const mLocalizer = momentLocalizer(moment);
 

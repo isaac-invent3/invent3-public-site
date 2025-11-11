@@ -9,6 +9,7 @@ import {
 } from '~/lib/redux/services/asset/lifeCycle.services';
 import { updateAssetForm } from '~/lib/redux/slices/AssetSlice';
 import { DEFAULT_PAGE_SIZE } from '~/lib/utils/constants';
+import IsAssetReusable from './IsAssetReusable';
 
 const AssetLifecyleStageSelect = () => {
   const { statusName } = useAppSelector((state) => state.asset.assetForm);
@@ -43,7 +44,7 @@ const AssetLifecyleStageSelect = () => {
           gap="16px"
           width="full"
         >
-          <GridItem colSpan={1}>
+          <GridItem colSpan={1} width="full">
             <GenericAsyncSelect
               selectName="lifeCycleStageId"
               selectTitle="Asset Stage"
@@ -60,6 +61,9 @@ const AssetLifecyleStageSelect = () => {
               }
               isSearchable={false}
             />
+          </GridItem>
+          <GridItem colSpan={1} width="full">
+            <IsAssetReusable />
           </GridItem>
         </Grid>
       </FormInputWrapper>

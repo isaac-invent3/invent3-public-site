@@ -96,6 +96,7 @@ const initialAssetForm = {
   vendorFormDetails: null,
   lifeCycleStageId: null,
   lifeCycleStageName: null,
+  isReusable: null,
 };
 
 const initialAssetLifeCycleSimulationForm = {

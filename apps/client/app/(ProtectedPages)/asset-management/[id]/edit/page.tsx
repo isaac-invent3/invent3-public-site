@@ -177,6 +177,7 @@ export default function Page({ params }: { params: { id: number } }) {
         images: formImages ?? [],
         documents: formDocuments ?? [],
         maintenancePlans: assetCustomMaintenancePlan?.data.items ?? [],
+        isReusable: asset.isReusable,
         ...acquisitionInfo,
       })
     );

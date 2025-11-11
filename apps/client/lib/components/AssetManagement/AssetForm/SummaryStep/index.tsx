@@ -140,6 +140,7 @@ const SummaryStep = (props: SummaryStepProps) => {
     parentId: assetData?.assetId! ?? assetFormDetails.parentId!,
     lifeCycleId: assetFormDetails.lifeCycleStageId!,
     subCategoryId: assetFormDetails.subCategoryId!,
+    isReusable: assetFormDetails.isReusable,
     [`${type === 'create' ? 'createdBy' : 'lastModifiedBy'}`]: username,
   };
 

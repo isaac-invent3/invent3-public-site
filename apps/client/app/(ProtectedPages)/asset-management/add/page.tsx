@@ -180,6 +180,7 @@ export default function Page() {
         images: formImages ?? [],
         documents: formDocuments ?? [],
         maintenancePlans: assetCustomMaintenancePlan?.data.items ?? [],
+        isReusable: asset.isReusable,
         ...acquisitionInfo,
       })
     );

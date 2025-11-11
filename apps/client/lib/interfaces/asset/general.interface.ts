@@ -145,6 +145,7 @@ interface Asset {
   totalLifeCycleCost: number;
   hasAnomaly: boolean;
   residualValue: number | null;
+  isReusable: boolean;
 }
 
 interface AssetFormImage {
@@ -239,6 +240,7 @@ interface AssetFormDetails {
   };
   lifeCycleStageId: number | null;
   lifeCycleStageName: string | null;
+  isReusable: boolean | null;
 }
 
 interface FilterInput extends LocationFilter {
@@ -395,6 +397,7 @@ interface AssetDto extends BaseDto {
   parentId: number;
   subCategoryId: number;
   lifeCycleId: number;
+  isReusable: boolean | null;
 }
 
 interface AssetImageDto extends BaseDto {

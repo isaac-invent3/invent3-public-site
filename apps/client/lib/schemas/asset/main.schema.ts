@@ -81,6 +81,7 @@ const acquisitionInfoSchema = Yup.object().shape({
     .required('Depreciation Rate is required')
     .min(0, 'Rate must be greater than 0'),
   vendorId: Yup.number().nullable(),
+  isReusable: Yup.boolean().nullable(),
 });
 
 const documentSchema = Yup.object().shape({

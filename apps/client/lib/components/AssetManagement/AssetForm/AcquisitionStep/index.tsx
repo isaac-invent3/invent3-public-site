@@ -43,6 +43,7 @@ const AcquisitionStep = (props: AcquisitionStepProps) => {
     currentValue: formDetails.currentValue ?? null,
     lifeExpectancy: formDetails.lifeExpectancy ?? null,
     accumulatedDepreciation: formDetails.accumulatedDepreciation ?? null,
+    isReusable: formDetails.isReusable ?? null,
   };
 
   const formik = useAppFormik({

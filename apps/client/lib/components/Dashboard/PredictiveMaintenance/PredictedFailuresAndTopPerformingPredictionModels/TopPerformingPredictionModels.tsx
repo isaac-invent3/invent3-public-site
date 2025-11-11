@@ -1,6 +1,5 @@
 import { HStack, VStack } from '@chakra-ui/react';
 import React from 'react';
-import ChartLegend from '../../Common/Charts/ChartLegend';
 import BarChart from '../../Common/Charts/BarChart';
 import CardHeader from '../../Common/CardHeader';
 import { useAppSelector } from '~/lib/redux/hooks';
@@ -39,14 +38,6 @@ const TopPerformingPredictionModels = () => {
         alignItems="flex-start"
       >
         <CardHeader>Top Performing Prediction Models</CardHeader>
-
-        <ChartLegend
-          chartLegendItems={dataItems.map((item) => ({
-            label: item.label,
-            color: item.color,
-          }))}
-          containerStyle={{ direction: 'column', spacing: '8px' }}
-        />
       </HStack>
       <BarChart
         labels={data?.data ? data?.data.map((item) => item.model) : []}

@@ -21,6 +21,7 @@ import { useGetCompanyJourneyGuideQuery } from '~/lib/redux/services/company.ser
 import { CompanyJourneyGuide } from '~/lib/interfaces/company.interfaces';
 import { usePathname } from 'next/navigation';
 import ImminentFailureAlertList from '~/lib/components/Notification/AlertBanners/ImminentFailureAlert';
+import DuplicateDetectedAlert from '~/lib/components/Notification/AlertBanners/DuplicateDetectedAlert';
 
 interface ProtectedLayoutProps {
   children: React.ReactNode;
@@ -153,6 +154,7 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
         <JourneyGuide isOpen={showJourneyGuide} onClose={() => {}} />
       )}
       <ImminentFailureAlertList />
+      {/* <DuplicateDetectedAlert /> */}
     </>
   );
 };

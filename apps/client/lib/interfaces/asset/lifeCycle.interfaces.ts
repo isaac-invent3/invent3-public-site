@@ -34,7 +34,7 @@ interface AssetLifeCycleSimulation {
   location: string | null;
   currentCondition: number | null;
   maintenanceFrequency: number | null;
-  manintenanceCost: number | null;
+  maintenanceCost: number | null;
   depreciationModel: number | null;
   residualValue: number | null;
   autoAdjust: boolean | null;

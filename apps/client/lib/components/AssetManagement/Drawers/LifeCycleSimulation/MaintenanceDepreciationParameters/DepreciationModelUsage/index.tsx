@@ -18,6 +18,7 @@ import React from 'react';
 import { MaintenanceDepreciationFormValues } from '~/lib/interfaces/asset/lifeCycle.interfaces';
 import { useGetAllDepreciationMethodQuery } from '~/lib/redux/services/asset/depreciation.services';
 import CustomDepreciation from './CustomDepreciation';
+import InfoCard from '~/lib/components/UI/InfoCard';
 
 const DepreciationModelUsage = ({
   setIsCustomDetail,
@@ -92,34 +93,38 @@ const DepreciationModelUsage = ({
           </FormInputWrapper>
         </GridItem>
         <GridItem colSpan={1} width="full">
-          <FormInputWrapper
-            sectionMaxWidth="189px"
-            customSpacing="16px"
-            title="Auto-Adjust with Usage?"
-            isRequired
-            description="Auto-Adjust with Usage"
-            justifyContent="space-between"
-          >
-            <VStack alignItems="start" spacing={2}>
-              <HStack spacing={4}>
-                <Text color="black" size="md" lineHeight="140%">
-                  No
-                </Text>
-                <Switch
-                  size="md"
-                  onChange={() => {
-                    setFieldValue('autoAdjust', !values.autoAdjust);
-                  }}
-                />
-                <Text color="black" size="md" lineHeight="140%">
-                  Yes
-                </Text>
-              </HStack>
-              {touched?.autoAdjust && errors?.autoAdjust && (
-                <ErrorMessage>{errors?.autoAdjust}</ErrorMessage>
-              )}
-            </VStack>
-          </FormInputWrapper>
+          <VStack width="full" spacing={4}>
+            <FormInputWrapper
+              sectionMaxWidth="189px"
+              customSpacing="16px"
+              title="Auto-Adjust with Usage?"
+              isRequired
+              description="Auto-Adjust with Usage"
+              justifyContent="space-between"
+            >
+              <VStack alignItems="start" spacing={2}>
+                <HStack spacing={4}>
+                  <Text color="black" size="md" lineHeight="140%">
+                    No
+                  </Text>
+                  <Switch
+                    size="md"
+                    onChange={() => {
+                      setFieldValue('autoAdjust', !values.autoAdjust);
+                    }}
+                    isChecked={values.autoAdjust}
+                  />
+                  <Text color="black" size="md" lineHeight="140%">
+                    Yes
+                  </Text>
+                </HStack>
+                {touched?.autoAdjust && errors?.autoAdjust && (
+                  <ErrorMessage>{errors?.autoAdjust}</ErrorMessage>
+                )}
+              </VStack>
+            </FormInputWrapper>
+            <InfoCard infoText="Depreciation and cost projections will update automatically as usage data changes." />
+          </VStack>
         </GridItem>
       </Grid>
       <SlideTransition trigger={values?.depreciationModel === 999}>

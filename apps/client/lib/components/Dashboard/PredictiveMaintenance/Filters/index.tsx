@@ -87,7 +87,7 @@ const Filters: React.FC<FiltersProps> = ({
             handleSelectedOption={(val: Option) =>
               onChange('ticketTypes', [val])
             }
-            selectedOptions={filters?.assetCategories.map((item) => ({
+            selectedOptions={filters?.ticketTypes.map((item) => ({
               label: item.toString(),
               value: item,
             }))}
@@ -97,7 +97,7 @@ const Filters: React.FC<FiltersProps> = ({
             handleSelectedOption={(val: Option) =>
               onChange('riskThreshold', [val], true)
             }
-            selectedOptions={filters?.datePeriod.map((item) => ({
+            selectedOptions={filters?.riskThreshold.map((item) => ({
               label: item.toString(),
               value: item,
             }))}

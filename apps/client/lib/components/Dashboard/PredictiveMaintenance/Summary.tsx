@@ -18,7 +18,7 @@ const Summary = () => {
   return (
     <SimpleGrid width="full" gap="14px" columns={{ base: 1, sm: 2, lg: 4 }}>
       <SummaryCard
-        title="Assets Monitored by AI"
+        title="Assets Monitored by Sensors"
         icon={AssetBoxIcon}
         value={data?.data?.assetsMonitored ?? 'N/A'}
         isLoading={isLoading || isFetching}

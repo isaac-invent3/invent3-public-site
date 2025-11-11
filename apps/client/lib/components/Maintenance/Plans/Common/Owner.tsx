@@ -14,7 +14,10 @@ const Owner = (props: OwnerProps) => {
   const { sectionMaxWidth, spacing, defaultName } = props;
   // eslint-disable-next-line no-unused-vars
   const [field, meta, helpers] = useField('ownerId');
-  const [selectedUser, setSelectedUser] = useState<Option | null>(null);
+  const [selectedUser, setSelectedUser] = useState<Option | null>({
+    label: defaultName!,
+    value: 999,
+  });
 
   return (
     <FormInputWrapper
@@ -26,7 +29,7 @@ const Owner = (props: OwnerProps) => {
     >
       <VStack width="full" spacing="4px" alignItems="flex-start" id="ownerId">
         <UserDisplayAndAddButton
-          selectedUser={selectedUser?.label ?? defaultName}
+          selectedUser={selectedUser?.label}
           sectionInfoText="Choose a contact or enter an email address. You can also assign a task to yourself."
           handleSelectUser={(user) => {
             helpers.setValue(user?.value);

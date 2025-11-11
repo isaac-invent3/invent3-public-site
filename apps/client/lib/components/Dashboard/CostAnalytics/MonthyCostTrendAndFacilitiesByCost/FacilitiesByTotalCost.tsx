@@ -40,14 +40,6 @@ const FacilitiesByTotalCost = () => {
         alignItems="flex-start"
       >
         <CardHeader>Top 5 Facilities by Total Cost</CardHeader>
-
-        <ChartLegend
-          chartLegendItems={dataItems.map((item) => ({
-            label: item.label,
-            color: item.color,
-          }))}
-          containerStyle={{ direction: 'column', spacing: '8px' }}
-        />
       </HStack>
       <BarChart
         labels={data?.data ? data?.data.map((item) => item.facility) : []}

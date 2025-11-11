@@ -32,7 +32,7 @@ const AssetLevelPredictiveSummary = () => {
             customStyles={{
               py: 0,
               height: '28px',
-              width: '68px',
+              width: 'min-content',
               fontSize: '12px',
               lineHeight: '14.26px',
             }}

@@ -23,7 +23,8 @@ const LifeExpectancyCurrentAge = () => {
             as={FormTextInput}
             name="expectedUsefulLife"
             type="number"
-            label="Expected Useful Life in Years"
+            label="Expected Useful Life"
+            placeholder="Expected Useful Life in Years"
           />
         </FormInputWrapper>
       </GridItem>
@@ -31,7 +32,7 @@ const LifeExpectancyCurrentAge = () => {
         <FormInputWrapper
           sectionMaxWidth="141px"
           customSpacing="16px"
-          title="Current Age in Years"
+          title="Current Age"
           isRequired
           description="Enter how old the asset is."
         >
@@ -40,6 +41,7 @@ const LifeExpectancyCurrentAge = () => {
             name="currentAge"
             type="number"
             label="Current Age"
+            placeholder="Current Age in Years"
           />
         </FormInputWrapper>
       </GridItem>

@@ -35,12 +35,6 @@ const useCostBreakdownTable = (props: useCostBreakdownTable) => {
       {
         search: [search],
       },
-      {
-        search: {
-          key: ['asset', 'category'],
-          operator: OPERATORS.Contains,
-        },
-      },
       undefined
     );
     const payload = {
@@ -114,10 +108,7 @@ const useCostBreakdownTable = (props: useCostBreakdownTable) => {
         }),
         columnHelper.accessor('roi', {
           cell: (info) => (
-            <Text
-              color="#0366EF"
-              fontWeight={700}
-            >{`${info.getValue()}%`}</Text>
+            <Text color="#0366EF" fontWeight={700}>{`${info.getValue()}`}</Text>
           ),
           header: 'ROI',
           enableSorting: false,

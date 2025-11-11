@@ -123,7 +123,7 @@ export const costAnalyticsApi = baseApi.injectEndpoints({
     >({
       query: (data) => ({
         url: `/Invent3Pro/CostAnalyticsDetailedCostBreakdown?`,
-        method: 'GET',
+        method: 'POST',
         headers: getHeaders(),
         body: data,
       }),

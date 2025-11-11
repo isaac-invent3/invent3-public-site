@@ -109,7 +109,7 @@ const initialAssetLifeCycleSimulationForm = {
   location: null,
   currentCondition: null,
   maintenanceFrequency: null,
-  manintenanceCost: null,
+  maintenanceCost: null,
   depreciationModel: null,
   residualValue: null,
   autoAdjust: null,

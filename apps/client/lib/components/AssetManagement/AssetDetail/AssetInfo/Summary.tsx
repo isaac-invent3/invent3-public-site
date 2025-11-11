@@ -4,6 +4,7 @@ import {
   HStack,
   Skeleton,
   Text,
+  TextProps,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
@@ -19,9 +20,10 @@ interface SummaryInfoProps {
   label: string;
   value?: string | number | React.ReactElement | null;
   children?: React.ReactNode;
+  labelStyle?: TextProps;
 }
 const SummaryInfo = (props: SummaryInfoProps) => {
-  const { label, value, children } = props;
+  const { label, value, children, labelStyle } = props;
   return (
     <Flex
       direction="column"
@@ -32,7 +34,9 @@ const SummaryInfo = (props: SummaryInfoProps) => {
       minW="150px"
       flex="1"
     >
-      <Text color="neutral.600">{label}</Text>
+      <Text color="neutral.600" {...labelStyle}>
+        {label}
+      </Text>
       <Text fontSize="20px" lineHeight="100%" color="primary.500">
         {value}
       </Text>
@@ -62,10 +66,6 @@ const Summary = () => {
   const dispatch = useAppDispatch();
 
   const Summary1 = [
-    // {
-    //   label: 'Utilization Rate',
-    //   value: '85%',
-    // },
     {
       label: 'Current Value',
       value: currentCost !== null ? amountFormatter(currentCost) : 'N/A',
@@ -98,7 +98,11 @@ const Summary = () => {
         </Heading>
         <HStack spacing="8px" width="full" overflowX="auto" align="stretch">
           {Summary1.map((item) => (
-            <SummaryInfo {...item} key={item.label} />
+            <SummaryInfo
+              {...item}
+              key={item.label}
+              labelStyle={{ noOfLines: 2, minH: '2em' }}
+            />
           ))}
           <SummaryInfo
             label="Last Maintenance Date"

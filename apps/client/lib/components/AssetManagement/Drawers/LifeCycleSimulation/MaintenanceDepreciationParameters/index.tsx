@@ -43,7 +43,7 @@ const MaintenanceDepreciationParameters = (
   const formik = useAppFormik<MaintenanceDepreciationFormValues>({
     initialValues: {
       maintenanceFrequency: state?.maintenanceFrequency ?? null,
-      maintenanceCost: state?.manintenanceCost ?? null,
+      maintenanceCost: state?.maintenanceCost ?? null,
       depreciationModel: state?.depreciationModel ?? null,
       residualValue: state?.residualValue ?? null,
       autoAdjust: state?.autoAdjust ?? false,
@@ -91,11 +91,11 @@ const MaintenanceDepreciationParameters = (
           },
           maintenanceFrequency: values.maintenanceFrequency!,
         };
+        dispatch(updateAssetLifecycleSimulationForm(values));
 
         const response = await handleSubmit(simulateLifecycle, payload, '');
 
         if (response?.data) {
-          dispatch(updateAssetLifecycleSimulationForm(payload));
           dispatch(setSimulationData(response?.data?.data));
           setActiveStep(3);
         }

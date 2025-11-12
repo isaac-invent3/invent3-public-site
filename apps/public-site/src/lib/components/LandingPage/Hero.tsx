@@ -173,6 +173,7 @@ const Hero = () => {
                   _hover={{ bgColor: 'white', color: 'primary.500' }}
                   _active={{ bgColor: 'white', color: 'primary.500' }}
                   onClick={onOpen}
+                  role="group"
                 >
                   <Icon as={PlayIcon} boxSize="24px" mr="8px" /> Watch Video
                 </Button>

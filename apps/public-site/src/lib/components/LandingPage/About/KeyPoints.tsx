@@ -43,7 +43,13 @@ const KeyPoints = () => {
           columnGap={{ base: '16px', lg: '32px' }}
         >
           {Info.map((item, index) => (
-            <VStack alignItems="flex-start" spacing="12px" key={index}>
+            <VStack
+              alignItems="flex-start"
+              spacing="12px"
+              key={index}
+              p={0}
+              m={0}
+            >
               <Text
                 color="primary.500"
                 fontSize={{ base: '16px' }}
@@ -60,11 +66,13 @@ const KeyPoints = () => {
           <Button
             customStyles={{
               display: { base: 'none', md: 'flex' },
-              width: { base: 'full', md: '203px' },
+              width: { base: 'full', md: 'full' },
+              px: 1,
             }}
             handleClick={onOpen}
           >
-            <Icon as={PlayIcon} boxSize="24px" mr="8px" /> Watch Video
+            <Icon as={PlayIcon} boxSize="24px" mr="8px" color="white" /> Watch
+            Video
           </Button>
         </SimpleGrid>
         <Button
@@ -74,7 +82,8 @@ const KeyPoints = () => {
           }}
           handleClick={onOpen}
         >
-          <Icon as={PlayIcon} boxSize="24px" mr="8px" /> Watch Video
+          <Icon as={PlayIcon} boxSize="24px" mr="8px" color="white" /> Watch
+          Video
         </Button>
       </VStack>
       <YouTubeModal
